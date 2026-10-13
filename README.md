@@ -120,8 +120,8 @@ vs Poland 16 / 18. Figures: `experiments/exp10_lens_sanity/summary_figure.py`.
    token. The model then answers far worse (27B: 21/93 correct vs 61/93 with the space stripped) and the lens reads a
    different token. Switch: `params.strip_trailing_space`.
 2. **Numbers split into digits.** Qwen splits `" 26"` into `" "`, `"2"`, `"6"`, so scoring "26" by its first token
-   gave fake hits (fixed in `d068538`; runs `20261013-204427` and `-204551` are superseded). Headlines use only
-   single-token bridges.
+   gave fake hits (fixed in `d068538`; the two runs before the fix, `20261013-204427` and `-204551`, are superseded
+   and not committed). Headlines use only single-token bridges.
 3. **"The bridge is visible somewhere" is too weak.** Across all layers x tokens, a same-category distractor (Mexico
    for Brazil) also reaches the top somewhere. The read-site map must compare the bridge against a distractor.
 4. **Best-of-all-layers favours the logit lens on deep models** (see the layer plot). A score restricted to the
@@ -144,3 +144,20 @@ vs Poland 16 / 18. Figures: `experiments/exp10_lens_sanity/summary_figure.py`.
 ### Open decisions (humans)
 - Whether to drop the 5 questions whose bridge appears in the prompt.
 - The middle-layer band for Qwen3.6-27B (for a band-restricted score and for part B's swaps).
+- Definition of "correct without CoT" for the list part B needs (proposal: raw completion prompt, no chat template,
+  greedy next token == first token of the answer).
+
+## Next steps (part A)
+In order; designs need human sign-off before GPU runs.
+1. **List of items Qwen3.6-27B answers correctly** (the 90 probe-swap prompts, space stripped), for part B.
+2. **Read-site map, the main confound check:** rank of the bridge vs its same-category distractor (`swap_to`) at
+   every layer x token for the logit lens, J-lens and J++; scored bridge-vs-distractor (e.g. AUC); split by
+   single- vs multi-token entity and by whether the model answers correctly. Open: how to align token positions
+   across prompts, and the layer band.
+3. **The 5 questions whose bridge appears in the prompt:** check whether they drive any headline.
+4. **Oracle lens** on the same items: the Qwen3.6-27B adapter is on HF (`neuronpedia/jacobian-lens`,
+   `qwen3.6-27b/oracle`); its reference read code may not be public, so check that first, then propose a design.
+   This is the only long GPU job in sight.
+5. **NLA:** source and weights still to identify.
+6. Optional: reproduce J++'s published Recall@10 (55.2% on Qwen3.6-27B) over all six lens-eval sets.
+7. Stretch: repeat on Gemma 4 31B (J-lens and J++ exist on HF).
