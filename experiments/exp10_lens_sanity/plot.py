@@ -43,18 +43,6 @@ def _style_axes(ax) -> None:
     ax.tick_params(colors=MUTED, labelsize=9)
 
 
-def _end_label(ax, x, y, reader: str) -> None:
-    ax.annotate(
-        STYLE.get(reader, {"label": reader})["label"],
-        (x, y),
-        xytext=(4, 0),
-        textcoords="offset points",
-        va="center",
-        fontsize=9,
-        color=INK,
-    )
-
-
 def plot_run(run_dir: str | Path) -> Path:
     run_dir = Path(run_dir)
     rows = _load(run_dir)
@@ -73,13 +61,13 @@ def plot_run(run_dir: str | Path) -> Path:
             by_item.setdefault(r["name"], []).append(r["min_rank"])
         mins = list(by_item.values())
         pass_k = [np.mean([np.mean(np.array(m) < k) for m in mins]) for k in ks]
-        ax_k.plot(ks, pass_k, color=st["color"], ls=st["ls"], lw=2)
-        _end_label(ax_k, ks[-1], pass_k[-1], reader)
+        # Legends, not end labels: curves converge at both ends (pass@1000 ~ 1, late-layer hits ~ 0)
+        # and the labels collide.
+        ax_k.plot(ks, pass_k, color=st["color"], ls=st["ls"], lw=2, label=st["label"])
 
         # Per-layer hit rate: share of (item, intermediate) with rank < HIT_K at that layer.
         layers = rr[0]["layers"]
         hits = np.mean([np.array(r["ranks"]) < HIT_K for r in rr], axis=0)
-        # Legend, not end labels: curves often all end near 0 here and the labels would collide.
         ax_l.plot(layers, hits, color=st["color"], ls=st["ls"], lw=2, label=st["label"])
 
     n_items = len({r["name"] for r in rows})
@@ -93,7 +81,8 @@ def plot_run(run_dir: str | Path) -> Path:
     for ax in (ax_k, ax_l):
         ax.set_ylim(0, 1)
         _style_axes(ax)
-    ax_l.legend(loc="upper left", frameon=False, fontsize=9, labelcolor=INK)
+    for ax in (ax_k, ax_l):
+        ax.legend(loc="upper left", frameon=False, fontsize=9, labelcolor=INK)
     fig.tight_layout()
     path = out / "multihop_pass_at_k.png"
     fig.savefig(path, dpi=150, facecolor=SURFACE)

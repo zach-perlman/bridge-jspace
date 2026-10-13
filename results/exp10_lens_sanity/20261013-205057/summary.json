@@ -1,0 +1,346 @@
+{
+  "model": "Qwen/Qwen3.5-4B",
+  "readers": {
+    "logit": [
+      0,
+      30
+    ],
+    "jlens": [
+      0,
+      30
+    ]
+  },
+  "sanity": {
+    "known_fact": true,
+    "hf_parity": true,
+    "reference_readout_jlens": true
+  },
+  "n_items": 93,
+  "n_model_correct": 50,
+  "n_all_single_token": 84,
+  "pass_at_k": {
+    "all": {
+      "n": 93,
+      "logit": {
+        "1": {
+          "mean": 0.0753,
+          "lo": 0.0323,
+          "hi": 0.129
+        },
+        "5": {
+          "mean": 0.1398,
+          "lo": 0.0753,
+          "hi": 0.2151
+        },
+        "10": {
+          "mean": 0.2204,
+          "lo": 0.1398,
+          "hi": 0.3065
+        },
+        "50": {
+          "mean": 0.371,
+          "lo": 0.2742,
+          "hi": 0.4731
+        },
+        "100": {
+          "mean": 0.4624,
+          "lo": 0.3656,
+          "hi": 0.5645
+        }
+      },
+      "jlens": {
+        "1": {
+          "mean": 0.1075,
+          "lo": 0.0538,
+          "hi": 0.172
+        },
+        "5": {
+          "mean": 0.2849,
+          "lo": 0.1989,
+          "hi": 0.3817
+        },
+        "10": {
+          "mean": 0.3925,
+          "lo": 0.2957,
+          "hi": 0.4946
+        },
+        "50": {
+          "mean": 0.5376,
+          "lo": 0.4355,
+          "hi": 0.6398
+        },
+        "100": {
+          "mean": 0.69,
+          "lo": 0.5968,
+          "hi": 0.7814
+        }
+      }
+    },
+    "model_correct": {
+      "n": 50,
+      "logit": {
+        "1": {
+          "mean": 0.02,
+          "lo": 0.0,
+          "hi": 0.06
+        },
+        "5": {
+          "mean": 0.1,
+          "lo": 0.02,
+          "hi": 0.18
+        },
+        "10": {
+          "mean": 0.17,
+          "lo": 0.08,
+          "hi": 0.28
+        },
+        "50": {
+          "mean": 0.35,
+          "lo": 0.22,
+          "hi": 0.48
+        },
+        "100": {
+          "mean": 0.45,
+          "lo": 0.32,
+          "hi": 0.59
+        }
+      },
+      "jlens": {
+        "1": {
+          "mean": 0.06,
+          "lo": 0.0,
+          "hi": 0.14
+        },
+        "5": {
+          "mean": 0.23,
+          "lo": 0.12,
+          "hi": 0.35
+        },
+        "10": {
+          "mean": 0.37,
+          "lo": 0.24,
+          "hi": 0.51
+        },
+        "50": {
+          "mean": 0.53,
+          "lo": 0.39,
+          "hi": 0.66
+        },
+        "100": {
+          "mean": 0.64,
+          "lo": 0.5,
+          "hi": 0.78
+        }
+      }
+    },
+    "all_single_token": {
+      "n": 84,
+      "logit": {
+        "1": {
+          "mean": 0.0833,
+          "lo": 0.0357,
+          "hi": 0.1429
+        },
+        "5": {
+          "mean": 0.1548,
+          "lo": 0.0833,
+          "hi": 0.2381
+        },
+        "10": {
+          "mean": 0.244,
+          "lo": 0.1548,
+          "hi": 0.3393
+        },
+        "50": {
+          "mean": 0.4107,
+          "lo": 0.3036,
+          "hi": 0.5119
+        },
+        "100": {
+          "mean": 0.5119,
+          "lo": 0.4048,
+          "hi": 0.619
+        }
+      },
+      "jlens": {
+        "1": {
+          "mean": 0.119,
+          "lo": 0.0595,
+          "hi": 0.1905
+        },
+        "5": {
+          "mean": 0.3155,
+          "lo": 0.2202,
+          "hi": 0.4167
+        },
+        "10": {
+          "mean": 0.4345,
+          "lo": 0.3333,
+          "hi": 0.5417
+        },
+        "50": {
+          "mean": 0.5952,
+          "lo": 0.494,
+          "hi": 0.6966
+        },
+        "100": {
+          "mean": 0.6806,
+          "lo": 0.5833,
+          "hi": 0.7778
+        }
+      }
+    }
+  },
+  "diff_vs_logit": {
+    "all": {
+      "jlens": {
+        "1": {
+          "mean": 0.0323,
+          "lo": 0.0,
+          "hi": 0.0753
+        },
+        "5": {
+          "mean": 0.1452,
+          "lo": 0.0806,
+          "hi": 0.2204
+        },
+        "10": {
+          "mean": 0.172,
+          "lo": 0.086,
+          "hi": 0.2581
+        },
+        "50": {
+          "mean": 0.1667,
+          "lo": 0.0968,
+          "hi": 0.2473
+        },
+        "100": {
+          "mean": 0.2276,
+          "lo": 0.1416,
+          "hi": 0.3172
+        }
+      }
+    },
+    "model_correct": {
+      "jlens": {
+        "1": {
+          "mean": 0.04,
+          "lo": 0.0,
+          "hi": 0.1
+        },
+        "5": {
+          "mean": 0.13,
+          "lo": 0.05,
+          "hi": 0.23
+        },
+        "10": {
+          "mean": 0.2,
+          "lo": 0.08,
+          "hi": 0.32
+        },
+        "50": {
+          "mean": 0.18,
+          "lo": 0.08,
+          "hi": 0.3
+        },
+        "100": {
+          "mean": 0.19,
+          "lo": 0.07,
+          "hi": 0.31
+        }
+      }
+    },
+    "all_single_token": {
+      "jlens": {
+        "1": {
+          "mean": 0.0357,
+          "lo": 0.0,
+          "hi": 0.0833
+        },
+        "5": {
+          "mean": 0.1607,
+          "lo": 0.0833,
+          "hi": 0.244
+        },
+        "10": {
+          "mean": 0.1905,
+          "lo": 0.0952,
+          "hi": 0.2857
+        },
+        "50": {
+          "mean": 0.1845,
+          "lo": 0.1071,
+          "hi": 0.2679
+        },
+        "100": {
+          "mean": 0.1687,
+          "lo": 0.0893,
+          "hi": 0.256
+        }
+      }
+    }
+  },
+  "ci": "95% percentile bootstrap over items, n_boot=10000, seed=0",
+  "controls": {
+    "ex2-language-capital-Hungarian": {
+      "logit": {
+        "bridge": {
+          "word": "Hungary",
+          "min_rank": 6,
+          "at": "L0 ' Hungarian'",
+          "last_position_min_rank": 25
+        },
+        "distractor": {
+          "word": "Poland",
+          "min_rank": 1078,
+          "at": "L0 ' is'",
+          "last_position_min_rank": 1078
+        }
+      },
+      "jlens": {
+        "bridge": {
+          "word": "Hungary",
+          "min_rank": 1,
+          "at": "L6 ' Hungarian'",
+          "last_position_min_rank": 1
+        },
+        "distractor": {
+          "word": "Poland",
+          "min_rank": 15,
+          "at": "L22 ' country'",
+          "last_position_min_rank": 56
+        }
+      }
+    },
+    "amazon-language": {
+      "logit": {
+        "bridge": {
+          "word": "Brazil",
+          "min_rank": 107,
+          "at": "L26 ' Amazon'",
+          "last_position_min_rank": 353
+        },
+        "distractor": {
+          "word": "Mexico",
+          "min_rank": 3141,
+          "at": "L0 ' in'",
+          "last_position_min_rank": 3901
+        }
+      },
+      "jlens": {
+        "bridge": {
+          "word": "Brazil",
+          "min_rank": 0,
+          "at": "L24 ' in'",
+          "last_position_min_rank": 25
+        },
+        "distractor": {
+          "word": "Mexico",
+          "min_rank": 0,
+          "at": "L27 ' in'",
+          "last_position_min_rank": 78
+        }
+      }
+    }
+  }
+}

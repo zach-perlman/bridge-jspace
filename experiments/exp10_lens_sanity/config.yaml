@@ -12,9 +12,10 @@ params:
   ks: [1, 5, 10, 50, 100]
   n_boot: 10000
   limit: null  # first N eval items; smoke runs only
-  # 83/93 eval prompts end in " ", a lone token in Qwen's BPE. false = paper-literal readout on that
-  # token; true = read at " is" (the token before " target"). Human decision pending.
-  strip_trailing_space: false
+  # 83/93 eval prompts end in " ", a lone token in Qwen's BPE. true (primary) = read at " is", the token
+  # before " target" as in natural text; the model answers far more items (27B: 61/93 vs 21/93).
+  # false = the prompts as published, kept as the paper-literal replication. See README, decisions.
+  strip_trailing_space: true
   fact_prompt: "Fact: The capital of France is"
   fact_expected: " Paris"
   parity_prompts:

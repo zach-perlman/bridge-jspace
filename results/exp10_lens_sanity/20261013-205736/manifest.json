@@ -1,0 +1,73 @@
+{
+  "exp_id": "exp10_lens_sanity",
+  "config": {
+    "name": "exp10_lens_sanity",
+    "target": "experiments.exp10_lens_sanity.experiment:LensSanity",
+    "seed": 0,
+    "results_dir": "results",
+    "model": {
+      "name": "Qwen/Qwen3.6-27B",
+      "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+      "dtype": "bfloat16",
+      "device_map": "auto",
+      "lenses": {
+        "jlens": {
+          "repo": "neuronpedia/jacobian-lens",
+          "revision": "9fa267f841d62aa468dab5b9b38c3dc45a82d863",
+          "filename": "qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt"
+        },
+        "jpp": {
+          "repo": "neuronpedia/jacobian-lens",
+          "revision": "9fa267f841d62aa468dab5b9b38c3dc45a82d863",
+          "filename": "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt"
+        }
+      }
+    },
+    "params": {
+      "ks": [
+        1,
+        5,
+        10,
+        50,
+        100
+      ],
+      "n_boot": 10000,
+      "limit": null,
+      "strip_trailing_space": false,
+      "fact_prompt": "Fact: The capital of France is",
+      "fact_expected": " Paris",
+      "parity_prompts": [
+        "Fact: The currency used in the country shaped like a boot is",
+        "Fact: The language spoken in the country where the Amazon River ends is "
+      ],
+      "parity_atol": 0.01,
+      "control_items": [
+        "ex2-language-capital-Hungarian",
+        "amazon-language"
+      ]
+    }
+  },
+  "git": {
+    "sha": "361c2a688e72396d3c3b73fd3791dba8018e9d02",
+    "dirty": false
+  },
+  "packages": {
+    "torch": "2.11.0+cu126",
+    "transformers": "5.17.0",
+    "flash-linear-attention": "0.5.2",
+    "jlens": "0.1.0",
+    "numpy": "2.5.3",
+    "jlens_commit": "581d398613e5602a5af361e1c34d3a92ea82ba8e",
+    "torch_cuda": "12.6",
+    "gpu": "NVIDIA A100-SXM4-80GB"
+  },
+  "host": "shadecloud",
+  "python": "3.12.15",
+  "argv": [
+    "/home/sesterce/bridge-jspace/.venv/bin/bj-run",
+    "experiments/exp10_lens_sanity/config.yaml",
+    "model=configs/models/qwen3.6-27b.yaml",
+    "params.strip_trailing_space=false"
+  ],
+  "started": "2026-10-13T20:57:36"
+}

@@ -1,0 +1,17 @@
+{
+  "known_fact": {
+    "passed": true,
+    "prompt": "Fact: The capital of France is",
+    "expected": " Paris",
+    "got": " Paris"
+  },
+  "hf_parity": {
+    "passed": true,
+    "max_abs_diff": 0.0,
+    "argmax_agreement": 1.0
+  },
+  "reference_readout_jlens": {
+    "passed": true,
+    "max_abs_diff": 0.0
+  }
+}
