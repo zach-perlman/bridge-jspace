@@ -1,0 +1,25 @@
+[project]
+name = "bridge-jspace"
+version = "0.1.0"
+description = "Does the bridge entity of a two-hop question act through the J-space? Probe swaps on open models."
+requires-python = ">=3.12"
+# Versions this was run with (the /venv/main environment of the Vast PyTorch image).
+dependencies = [
+    "torch==2.11.0",
+    "transformers==5.17.0",
+    "flash-linear-attention==0.5.2",
+    "huggingface_hub==1.33.0",
+    "numpy==2.5.3",
+    "scipy==1.18.1",
+    "matplotlib==3.11.2",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 120
