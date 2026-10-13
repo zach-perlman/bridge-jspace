@@ -1,0 +1,52 @@
+{
+  "exp": "exp02_swaps",
+  "run": "gate_debug_presence",
+  "written_utc": "2026-10-13T18:38:16Z",
+  "why": "gate failed: best full-probe flip rate 17% (band 32-48) < 30%; raw J-lens 55% at a ~9x smaller edit",
+  "question": "gate_debug found weak identity (LOO top-1 <= 0.28) and chance-level bridge/target asymmetry. Is the entity absent at the probe position, or present but swamped by other variance?",
+  "inputs": {
+    "probes": {
+      "file": "cache/exp01/v2/probes.pt",
+      "sha256": "b4d51179f2bb2bdf45e6b9a6c9981bd44404e6b13c55a780863e5c9e1af75662"
+    },
+    "kept_prompts": "results/exp01_probes/v2/filter.jsonl",
+    "eligible_items": "results/exp02_swaps/gate/items.jsonl"
+  },
+  "layers": [
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48
+  ],
+  "diagnostics": "Follow-up part \"presence\" (results/exp02_swaps/gate_debug_presence/): is the entity present at the probe position?\n  presence   on the kept entity prompts, final position: the entity's naming-token rank among all probed entities'\n             naming tokens by J-lens logit (the same measure as 'detection' on the test items).\n  eta2       share of the kept prompts' residual variance explained by entity labels, with its chance level under\n             random labels, (E - 1) / (N - 1).\n",
+  "no_swaps": true
+}
