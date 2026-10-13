@@ -65,10 +65,14 @@ def main(run: str) -> None:
     n = rates[(conditions[0], False)]["n"]
     real, null = (lambda c: rates[(c, False)]), (lambda c: rates[(c, True)])
     boots = summary["paired_bootstraps"]
+    gate = manifest["gate"]
     lines = [
         f"EXP {EXP}/{run} @ {commit} | model {pins.QWEN_REPO}@{pins.QWEN_REVISION[:8]} | n={n} eligible items "
         f"(of 90: {summary['items']}) | band {manifest['bands'][0]} | seeds: null {manifest['null_seed']}, "
         "bootstrap 0",
+        f"Gate {gate['run']}: full probe {100 * gate['full_probe_flip_rate']:.0f}% at band {gate['band']} vs the "
+        f"{100 * gate['threshold']:.0f}% threshold: "
+        + ("passed." if gate["go"] else "FAILED; main was run anyway on the human's call (see manifest deviations)."),
         "Claim tested: swapping the bridge for the swap target flips the answer through the J-space part of the "
         "bridge's representation (J-part swap flips, remainder swap with J-coordinates clamped does not).",
         f"Headline: flip rate J-part = {pct(real('jpart')['flip'])}   remainder = {pct(real('remainder')['flip'])}"
@@ -80,14 +84,23 @@ def main(run: str) -> None:
         "Labels (J-part flip x clamped-remainder flip): " + ", ".join(f"{k} {v}" for k, v in summary["labels"].items()),
         f"Figures: figures/{EXP}/{run}/flip_rates.png",
         "Three dumbest ways this could be wrong:",
-        "1) Any edit this large flips the answer. Checked: null flip rates above; null kept-clean rates "
-        + ", ".join(f"{c} {pct(null(c)['kept_clean'])}" for c in conditions) + ".",
+        "1) Any edit this large flips the answer. Checked: null flip rates above, with null edits larger than the real "
+        "ones (median edit ratio null vs real: "
+        + ", ".join(f"{c} {null(c)['edit_ratio_median']:.3f} vs {real(c)['edit_ratio_median']:.3f}" for c in conditions)
+        + "). Not matched in total dose: each layer's null edit is sized to what the clamp still needs on the null run's "
+        "own state, and a random direction never achieves the swap, so it stays full-size at every band layer while "
+        "the real swap carries forward and later edits shrink. So the null is stricter for flips and overstates "
+        "collateral damage (null kept-clean " + ", ".join(f"{c} {pct(null(c)['kept_clean'])}" for c in conditions)
+        + ").",
         "2) The J-part vs remainder gap is a dose gap. Checked: median direct edit ratio |delta|/|h| at the final "
         "position " + ", ".join(f"{c} {real(c)['edit_ratio_median']:.3f}" for c in conditions) + ".",
         "3) Flips come from breaking the computation, not from installing the target. Checked: share with neither "
         "answer at rank 1 " + ", ".join(f"{c} {100 * real(c)['neither']:.0f}%" for c in conditions)
         + "; items with skipped (near-parallel) layers "
         + ", ".join(f"{c} {real(c)['items_with_skipped_layers']}" for c in conditions) + ".",
+        "Caveats: the band was picked by the gate on these same items. The remainder holds most of the probes' prompt "
+        "noise (the J-part is 12-18% of probe variance; exp01_probes v2 -> v3, 6 -> 24 kept prompts per entity, cut "
+        "probe norms by about a third), so a weak remainder swap partly reflects a noisier direction.",
         f"For the human to verify: results/{EXP}/{run}/labels.csv (one row per item; recompute each condition's "
         f"flip rate as the mean of flip_<condition> over status == eligible) and outcomes.jsonl (ranks, top words).",
         "Status: UNVERIFIED until a human adds it to VERIFIED.md",
