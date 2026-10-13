@@ -1,18 +1,39 @@
 [project]
 name = "bridge-jspace"
 version = "0.1.0"
-description = "Does the bridge entity of a two-hop question act through the J-space? Probe swaps on open models."
-requires-python = ">=3.12"
-# Versions this was run with (the /venv/main environment of the Vast PyTorch image).
+description = "Does the bridge entity of a two-hop question act through the J-space? Lens readouts and probe swaps on open models."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+# Core versions match the /venv/main environment of the Vast PyTorch image; uv.lock pins the rest.
 dependencies = [
     "torch==2.11.0",
     "transformers==5.17.0",
-    "flash-linear-attention==0.5.2",
+    # Fast gated-delta kernels for the Qwen3.5/3.6 linear-attention layers (triton: Linux only).
+    # Without it transformers falls back to a slow torch path, which is fine for CPU tests.
+    "flash-linear-attention==0.5.2; sys_platform == 'linux'",
     "huggingface_hub==1.33.0",
+    "jlens",
     "numpy==2.5.3",
     "scipy==1.18.1",
     "matplotlib==3.11.2",
+    "pydantic>=2.8",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0",
+    "tqdm>=4.66",
+    "accelerate>=1.14",
 ]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "ruff>=0.9",
+    "pyright>=1.1.390",
+    "pre-commit>=4.0",
+    "ipykernel>=6.29",
+]
+
+[project.scripts]
+bj-run = "bridge_jspace.run:main"
 
 [build-system]
 requires = ["setuptools>=68"]
@@ -21,5 +42,42 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+# PyPI's Linux torch wheels target the newest CUDA, which rented pods' drivers often don't
+# support. cu126 runs on any driver >= 560; macOS keeps PyPI wheels.
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu126", marker = "sys_platform == 'linux'" }]
+# Not on PyPI; pinned to the same commit as data/probe_swap.json and data/lens_eval_multihop.json.
+jlens = { git = "https://github.com/anthropics/jacobian-lens", rev = "581d398613e5602a5af361e1c34d3a92ea82ba8e" }
+
 [tool.ruff]
 line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF", "NPY", "PT"]
+ignore = [
+    "E501",   # formatter owns line length
+    "RUF001", # unicode in strings (Ukrainian notes are fine)
+    "RUF002",
+    "RUF003",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["PT011", "PT018"]
+
+[tool.pyright]
+include = ["src", "experiments", "tests"]
+pythonVersion = "3.12"
+typeCheckingMode = "basic"
+venvPath = "."
+venv = ".venv"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["model: loads a real (small) model; slower, needs HF download"]
+addopts = "-m 'not model'"

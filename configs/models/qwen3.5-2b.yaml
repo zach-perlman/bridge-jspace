@@ -1,0 +1,11 @@
+# Smallest qwen3_5 model with J-lens, J++ and an oracle lens on HF (24 layers, d=2048).
+name: Qwen/Qwen3.5-2B
+revision: 15852e8c16360a2fea060d615a32b45270f8a8fc
+dtype: bfloat16
+lenses:
+  jlens:
+    revision: 9fa267f841d62aa468dab5b9b38c3dc45a82d863
+    filename: qwen3.5-2b/jlens/Salesforce-wikitext/Qwen3.5-2B_jacobian_lens.pt
+  jpp:
+    revision: 9fa267f841d62aa468dab5b9b38c3dc45a82d863
+    filename: qwen3.5-2b/jpp/Salesforce-wikitext/Qwen3.5-2B_jpp_lens.pt

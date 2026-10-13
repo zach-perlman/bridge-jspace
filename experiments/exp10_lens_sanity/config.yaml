@@ -1,0 +1,25 @@
+# exp10_lens_sanity: do the lenses read two-hop intermediates on this model at all?
+# Readers = logit lens (baseline) + every lens listed in the model YAML.
+#   uv run bj-run experiments/exp10_lens_sanity/config.yaml                                # Qwen3.5-4B, GPU
+#   uv run bj-run experiments/exp10_lens_sanity/config.yaml model=configs/models/qwen3.6-27b.yaml
+#   uv run bj-run experiments/exp10_lens_sanity/config.yaml \
+#       model=configs/models/qwen3.5-0.8b.yaml params.limit=5 results_dir=cache/smoke     # CPU smoke
+name: exp10_lens_sanity
+target: experiments.exp10_lens_sanity.experiment:LensSanity
+seed: 0
+model: configs/models/qwen3.5-4b.yaml
+params:
+  ks: [1, 5, 10, 50, 100]
+  n_boot: 10000
+  limit: null  # first N eval items; smoke runs only
+  # 83/93 eval prompts end in " ", a lone token in Qwen's BPE. false = paper-literal readout on that
+  # token; true = read at " is" (the token before " target"). Human decision pending.
+  strip_trailing_space: false
+  fact_prompt: "Fact: The capital of France is"
+  fact_expected: " Paris"
+  parity_prompts:
+    - "Fact: The currency used in the country shaped like a boot is"
+    - "Fact: The language spoken in the country where the Amazon River ends is "
+  parity_atol: 0.01  # measured 0.0 on Qwen3.5-0.8B fp32 (CPU); revisit for bf16 if it fails
+  # Positive control (bridge name sits in the prompt) and the canonical example, from probe_swap.json.
+  control_items: [ex2-language-capital-Hungarian, amazon-language]

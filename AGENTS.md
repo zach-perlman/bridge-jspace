@@ -14,14 +14,18 @@ In flight: exp01_probes (bridge probes and their J-space decomposition), exp02_s
   If you think a design is wrong, say so, propose an alternative, and wait.
 
 ## Environment
-- Python: `/venv/main/bin/python` (torch, transformers, flash-linear-attention). Use uv for packages, dry run first.
-  Never pip install into system Python.
-- One large model on the GPU at a time. Jobs longer than 10 minutes run as background scripts with logs in `log/`.
-- Pinned inputs (model snapshot, lens file, upstream data) are listed in `src/bridge_jspace/pins.py` and
-  `data/SOURCES.md`. Change a pin only with a new manifest.
+- Python: the uv project env only (`uv run ...`; `uv add ... --dry-run` first, then without). Never pip install.
+  New pod: `bash infra/setup_pod.sh`. Before finishing a change: `make check`; if models/readout/sanity changed,
+  also `make test-model` (Qwen3.5-0.8B, CPU ok).
+- One large model on the GPU at a time. Every experiment run goes through `make run CONFIG=... ARGS="..."`
+  (`scripts/run.sh`): a detached tmux session, output tee'd to `log/`, progress bars with ETA.
+- Pinned inputs: model snapshot and lens files in `configs/models/*.yaml`; upstream data in
+  `src/bridge_jspace/pins.py` (sha256-checked on load) and `data/SOURCES.md`. Change a pin only with a new manifest.
 
 ## Experiments
-- Every experiment: id expNN_name, directory results/expNN_name/, manifest.json written BEFORE the run.
+- Every experiment: id expNN_name, directory results/expNN_name/<timestamp>/, manifest.json written BEFORE the run
+  (`Experiment.setup`). Code in `experiments/expNN_name/` (config.yaml + experiment.py). exp01-09: part B (probes,
+  swaps); exp10+: part A (who can read the bridge).
 - Never overwrite or hand-edit results. Each analysis or figure run goes in a new folder.
 - Always run the control the humans specified. If none was specified, stop and ask.
 - Report n, seeds, CI, and the baseline next to every headline number.

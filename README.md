@@ -14,7 +14,15 @@ probe is swapped, 28% for the remainder, and 6% for the remainder when the J-spa
 bridge works outside the workspace. If the numbers look like Claude's, the J-lens misses on open models are a read-site
 or tokenization artifact.
 
-## Method
+## Method, part A: can any reader see the bridge? (exp10+)
+1. `exp10_lens_sanity`: the lens works on this model. Sanity gate (known fact, HF parity, our readout == jlens's
+   `apply`), then `lens-eval-multihop` pass@k for the J-lens and J++ against the logit lens, plus a bridge vs
+   same-category distractor control. Debugged on Qwen3.5-0.8B/4B (same `qwen3_5` hybrid architecture), then
+   Qwen3.6-27B.
+2. Where the bridge is readable: rank of the bridge vs a distractor at every layer x position (planned).
+3. Oracle lens and NLA on the same items, split by part B's J-mediated / non-J labels (planned).
+
+## Method, part B: is the bridge used outside the J-space? (exp01-09)
 1. `data/entity_prompts.json`: about 8 prompts per entity that imply the entity without naming it, for the 97
    entities in `data/probe_swap.json` (bridges and swap targets). Qwen keeps the ones it answers correctly.
 2. Probe per entity and layer: mean final-token residual over its kept prompts minus the mean over all entities.
@@ -25,15 +33,35 @@ or tokenization artifact.
    control of the same edit norm. Metric: rate at which the swap answer becomes the top word, with Wilson 95% CIs.
 
 ## Layout
-- `src/bridge_jspace/`: model and lens loading, OMP, the coordinate clamp, statistics.
-- `scripts/expNN_*.py`: one script per experiment; `results/expNN_*/` holds the manifest and outputs.
-- `AGENTS.md`: rules for running experiments. `VERIFIED.md`: results a human has checked.
+```
+src/bridge_jspace/
+  config.py       typed YAML configs + dotted CLI overrides (model=<yaml> swaps the whole model)
+  models.py       pinned HF model -> jlens LensModel; lens / J++ files (same format) moved to GPU once
+  readout.py      rank-only readouts (J-lens, J++, logit lens), word -> token ids
+  sanity.py       checks every new model/pod must pass before any readout is trusted
+  stats.py        Wilson and bootstrap CIs
+  experiment.py   Experiment base: results/<exp id>/<timestamp>/, manifest.json before run()
+  pins.py         pinned upstream data, sha256-checked on load
+configs/models/   one YAML per model: HF revision + lens files (qwen3.5-0.8b / 2b / 4b, qwen3.6-27b)
+experiments/      expNN_name/config.yaml + experiment.py
+scripts/run.sh    experiment in a detached tmux session, log in log/
+infra/            pod bootstrap
+```
+`AGENTS.md`: rules for running experiments. `VERIFIED.md`: results a human has checked.
 
 ## Running
 ```bash
-/venv/main/bin/python tests/test_core.py        # toy-tensor tests (no GPU)
-/venv/main/bin/python scripts/exp01_probes.py --help
+make install                 # uv sync + pre-commit hooks
+make check                   # ruff + pyright + unit tests (no download)
+make test-model              # integration on Qwen3.5-0.8B + its lenses (CPU ok)
+
+# GPU box: bash infra/setup_pod.sh, then any experiment = one config, run in tmux:
+make run CONFIG=experiments/exp10_lens_sanity/config.yaml                      # Qwen3.5-4B
+make run CONFIG=experiments/exp10_lens_sanity/config.yaml ARGS="model=configs/models/qwen3.6-27b.yaml"
+tmux attach -t <session>     # or: tail -f log/<session>.log
 ```
+GPU memory: Qwen3.5-4B fits a 24 GB card; Qwen3.6-27B needs 1x 80 GB (bf16 weights ~54 GB + two fp32 lens maps
+~13 GB).
 
 ## Status
 See the STATE block in `AGENTS.md`. Nothing is verified yet.

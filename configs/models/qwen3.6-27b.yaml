@@ -1,0 +1,11 @@
+# Target model (64 layers, d=5120). bf16 weights ~54 GB + two fp32 lens maps ~13 GB: 1x 80 GB GPU.
+name: Qwen/Qwen3.6-27B
+revision: 6a9e13bd6fc8f0983b9b99948120bc37f49c13e9
+dtype: bfloat16
+lenses:
+  jlens:
+    revision: 9fa267f841d62aa468dab5b9b38c3dc45a82d863
+    filename: qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt
+  jpp:
+    revision: 9fa267f841d62aa468dab5b9b38c3dc45a82d863
+    filename: qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt
