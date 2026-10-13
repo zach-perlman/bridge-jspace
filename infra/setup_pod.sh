@@ -64,17 +64,8 @@ import fla  # noqa: F401  fast gated-delta kernels for the qwen3_5 linear-attent
 print("   flash-linear-attention: ok")
 PY
 
-# Prefetch the pinned model snapshot and its lens files.
-uv run python - "$MODEL_CONFIG" <<'PY'
-import sys, yaml
-from huggingface_hub import hf_hub_download, snapshot_download
-m = yaml.safe_load(open(sys.argv[1]))
-snapshot_download(m["name"], revision=m["revision"])
-for name, lens in m.get("lenses", {}).items():
-    hf_hub_download(lens.get("repo", "neuronpedia/jacobian-lens"), lens["filename"], revision=lens["revision"])
-    print(f"   lens {name}: {lens['filename']}")
-print(f"   {m['name']}@{m['revision'][:8]} cached")
-PY
+# Prefetch the pinned model snapshot and its lens files (retries on HF 429s).
+uv run python scripts/prefetch.py "$MODEL_CONFIG"
 
 command -v tmux >/dev/null || die "tmux missing: install it (apt-get install -y tmux); runs go through scripts/run.sh"
 echo ">> next: make check && make test-model   (open a new shell or 'source ~/.bashrc' first)"
