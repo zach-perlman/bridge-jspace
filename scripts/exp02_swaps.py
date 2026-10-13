@@ -5,7 +5,9 @@ Stages (each run's manifest is written before it runs; both are write-once; --na
 default = the kind):
   manifest gate --probes TAG [--name N]              band sweep with the raw J-lens and full-probe swaps only
   run N
-  manifest main --probes TAG --band A-B [--name N]   all five conditions and their random-direction nulls on one band
+  manifest main --probes TAG --band A-B --gate G [--name N]
+                                                     all five conditions and their random-direction nulls on the band
+                                                     that gate run G picked
   run N
 
 Swap (clamp.SwapClamp): at every band layer and every prompt position except 0, the clean coordinates on a set of
@@ -62,9 +64,9 @@ def probes_file(tag: str) -> Path:
     return pins.CACHE_DIR / "exp01" / tag / "probes.pt"
 
 
-def stage_manifest(kind: str, name: str, probes_tag: str, band: str | None) -> None:
+def stage_manifest(kind: str, name: str, probes_tag: str, band: str | None, gate: str | None) -> None:
     is_gate = kind == "gate"
-    assert is_gate == (band is None), "the gate sweeps its own bands; main needs --band"
+    assert is_gate == (band is None) == (gate is None), "the gate sweeps its own bands; main needs --band and --gate"
     path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
@@ -93,6 +95,16 @@ def stage_manifest(kind: str, name: str, probes_tag: str, band: str | None) -> N
         deviations.append("Null direction: one random unit direction per (item, condition, layer), shared across "
                           "positions and scaled to each position's own edit norm, so it matches the real edit, "
                           "which lies in one fixed low-dimensional span at every position.")
+        gate_record = {"run": gate, **json.loads((RESULTS / gate / "summary.json").read_text())["decision"]}
+        gate_probes = json.loads((RESULTS / gate / "manifest.json").read_text())["probes"]["exp01_tag"]
+        assert (gate_probes, gate_record["band"]) == (probes_tag, band), "main must use its gate's probes and band"
+        deviations.append(f"The band was picked by gate {gate} on these same items, so full_probe's rate is "
+                          "optimistic.")
+        if not gate_record["go"]:
+            deviations.append(
+                f"Gate {gate} failed (full probe {100 * gate_record['full_probe_flip_rate']:.0f}% < "
+                f"{100 * GO_FLIP_RATE:.0f}%), and so did the two before it (gate 17%, gate_w1 8%). The plan says stop "
+                "and debug; the human chose to run main anyway.")
     manifest = {
         "exp": EXP, "run": name, "kind": kind,
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -104,6 +116,7 @@ def stage_manifest(kind: str, name: str, probes_tag: str, band: str | None) -> N
         "probes": {"exp01_tag": probes_tag, "file": str(probes.relative_to(pins.REPO_ROOT)),
                    "sha256": sha256_of(probes), "definition": definition},
         "bands": list(GATE_BANDS) if is_gate else [band],
+        **({} if is_gate else {"gate": gate_record}),
         "conditions": list(GATE_CONDITIONS if is_gate else CONDITIONS),
         "nulls": not is_gate,
         "null_seed": NULL_SEED,
@@ -341,10 +354,11 @@ if __name__ == "__main__":
     parser.add_argument("target", help="manifest: the kind (gate or main); run: the run's folder name")
     parser.add_argument("--probes", help="exp01 run tag (manifest stage)")
     parser.add_argument("--band", help="A-B, inclusive (main manifest only)")
+    parser.add_argument("--gate", help="the gate run that picked --band (main manifest only)")
     parser.add_argument("--name", help="the run's folder name (manifest stage; default = the kind)")
     args = parser.parse_args()
     if args.stage == "manifest":
         assert args.target in ("gate", "main") and args.probes, "manifest needs a kind (gate/main) and --probes"
-        stage_manifest(args.target, args.name or args.target, args.probes, args.band)
+        stage_manifest(args.target, args.name or args.target, args.probes, args.band, args.gate)
     else:
         stage_run(args.target)
