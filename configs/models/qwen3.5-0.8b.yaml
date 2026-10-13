@@ -1,4 +1,6 @@
 # CPU debugging proxy: same qwen3_5 hybrid architecture as Qwen3.6-27B (24 layers, d=1024).
+# On Linux with flash-linear-attention installed, CPU fails (fla's triton kernels run anyway):
+# add model.device_map=cuda there.
 name: Qwen/Qwen3.5-0.8B
 revision: 2fc06364715b967f1860aea9cf38778875588b17
 dtype: float32

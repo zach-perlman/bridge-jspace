@@ -4,6 +4,7 @@
 """
 
 import pytest
+import torch
 
 from bridge_jspace.config import load_config
 from bridge_jspace.models import load_lens, load_model
@@ -15,7 +16,12 @@ pytestmark = pytest.mark.model
 
 @pytest.fixture(scope="module")
 def setup():
-    cfg = load_config("experiments/exp10_lens_sanity/config.yaml", ["model=configs/models/qwen3.5-0.8b.yaml"])
+    overrides = ["model=configs/models/qwen3.5-0.8b.yaml"]
+    if torch.cuda.is_available():
+        # With flash-linear-attention installed (Linux), transformers runs its triton kernels even for
+        # a CPU model, which fails; the torch fallback is only used when fla is absent (macOS).
+        overrides.append("model.device_map=cuda")
+    cfg = load_config("experiments/exp10_lens_sanity/config.yaml", overrides)
     m = load_model(cfg.model)
     lenses = {n: load_lens(lc, m.lm.n_layers, m.lm.d_model, m.device) for n, lc in cfg.model.lenses.items()}
     return m, lenses
