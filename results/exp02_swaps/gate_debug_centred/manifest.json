@@ -1,0 +1,56 @@
+{
+  "exp": "exp02_swaps",
+  "run": "gate_debug_centred",
+  "written_utc": "2026-10-13T18:56:23Z",
+  "why": "gate failed: best full-probe flip rate 17% (band 32-48) < 30%; raw J-lens 55% at a ~9x smaller edit",
+  "question": "The whitened probes also failed the gate (gate_w1: 8%). The clamp reads coordinates from the raw residual, but the probes are defined relative to the mean of the entity means, so each swap also exchanges that mean's coordinates. Does centring the coordinates restore bridge/target asymmetry?",
+  "inputs": {
+    "probes": {
+      "file": "cache/exp01/v2/probes.pt",
+      "sha256": "b4d51179f2bb2bdf45e6b9a6c9981bd44404e6b13c55a780863e5c9e1af75662"
+    },
+    "kept_prompts": "results/exp01_probes/v2/filter.jsonl",
+    "eligible_items": "results/exp02_swaps/gate/items.jsonl",
+    "whitened_probes": {
+      "file": "cache/exp01/w1/probes.pt",
+      "sha256": "7bb5022378debf8c396a843ebc9d66e76cba118a3615aa7e042f73b82f34e746"
+    }
+  },
+  "layers": [
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48
+  ],
+  "diagnostics": "Follow-up part \"centred\" (results/exp02_swaps/gate_debug_centred/): does centring the clamp's coordinates help?\n  centred    the 'asymmetry' share (bridge coordinate > target coordinate, final position) with coordinates read\n             from h (as the clamp does) and from h - m (m = the probes' reference point, the mean of the entity\n             means), for the mean-difference probes (v2), the whitened probes (w1) and the raw J-lens atoms.\n",
+  "no_swaps": true
+}

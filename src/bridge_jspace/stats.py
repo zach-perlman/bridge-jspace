@@ -1,8 +1,9 @@
-"""Rates with Wilson intervals and paired bootstrap differences."""
+"""Rates with Wilson intervals, paired bootstrap differences, and a shrunk covariance."""
 
 import math
 
 import numpy as np
+import torch
 
 
 def wilson(hits: int, n: int, z: float = 1.96) -> tuple[float, float, float]:
@@ -23,3 +24,19 @@ def paired_bootstrap_diff(a, b, n_boot: int = 2000, seed: int = 0) -> tuple[floa
     idx = rng.integers(0, len(a), size=(n_boot, len(a)))
     diffs = a[idx].mean(1) - b[idx].mean(1)
     return (float(a.mean() - b.mean()), float(np.percentile(diffs, 2.5)), float(np.percentile(diffs, 97.5)))
+
+
+def ledoit_wolf(z: torch.Tensor) -> tuple[torch.Tensor, float]:
+    """Ledoit-Wolf (2004) shrunk covariance of already-centred rows z [n, d]: (1 - a) S + a (tr S / d) I with
+    S = z^T z / n and the analytic intensity a = min(b2, d2) / d2, where (Frobenius norms divided by d)
+    d2 = |S - (tr S / d) I|^2 and b2 = (1 / n^2) sum_i |z_i z_i^T - S|^2. Returns (cov [d, d] float64, a)."""
+    z = z.double()
+    n, d = z.shape
+    sq_norms = z.pow(2).sum(1)                                   # |z_i|^2
+    mu = float(sq_norms.sum()) / (n * d)                         # tr(S) / d
+    s_fro2 = float((z @ z.T).pow(2).sum()) / n ** 2              # |S|_F^2, via the n x n Gram matrix
+    d2 = (s_fro2 - d * mu ** 2) / d
+    b2 = (float(sq_norms.pow(2).sum()) / n - s_fro2) / (n * d)   # sum_i |z_i z_i^T - S|^2 = sum|z_i|^4 - n|S|^2
+    a = min(b2, d2) / d2
+    cov = (1 - a) * (z.T @ z / n) + a * mu * torch.eye(d, dtype=z.dtype, device=z.device)
+    return cov, a

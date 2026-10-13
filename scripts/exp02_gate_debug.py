@@ -17,6 +17,11 @@ Follow-up part "presence" (results/exp02_swaps/gate_debug_presence/): is the ent
              naming tokens by J-lens logit (the same measure as 'detection' on the test items).
   eta2       share of the kept prompts' residual variance explained by entity labels, with its chance level under
              random labels, (E - 1) / (N - 1).
+
+Follow-up part "centred" (results/exp02_swaps/gate_debug_centred/): does centring the clamp's coordinates help?
+  centred    the 'asymmetry' share (bridge coordinate > target coordinate, final position) with coordinates read
+             from h (as the clamp does) and from h - m (m = the probes' reference point, the mean of the entity
+             means), for the mean-difference probes (v2), the whitened probes (w1) and the raw J-lens atoms.
 """
 
 import argparse
@@ -34,7 +39,18 @@ from bridge_jspace import pins  # noqa: E402
 from bridge_jspace.data import load_items, sha256_of  # noqa: E402
 
 OUTS = {"core": pins.RESULTS_DIR / "exp02_swaps" / "gate_debug",
-        "presence": pins.RESULTS_DIR / "exp02_swaps" / "gate_debug_presence"}
+        "presence": pins.RESULTS_DIR / "exp02_swaps" / "gate_debug_presence",
+        "centred": pins.RESULTS_DIR / "exp02_swaps" / "gate_debug_centred"}
+WHITENED_TAG = "w1"
+QUESTIONS = {
+    "core": "Is the full probe weak because it lacks entity identity (prompts), because it does not detect the bridge "
+            "in the test prompts (probe position / distribution), or because the swap does not propagate (band)?",
+    "presence": "gate_debug found weak identity (LOO top-1 <= 0.28) and chance-level bridge/target asymmetry. Is the "
+                "entity absent at the probe position, or present but swamped by other variance?",
+    "centred": "The whitened probes also failed the gate (gate_w1: 8%). The clamp reads coordinates from the raw "
+               "residual, but the probes are defined relative to the mean of the entity means, so each swap also "
+               "exchanges that mean's coordinates. Does centring the coordinates restore bridge/target asymmetry?",
+}
 OUT = OUTS["core"]
 PROBES_TAG = "v2"
 LAYERS = tuple(range(16, 49))
@@ -42,8 +58,8 @@ FILTER = pins.RESULTS_DIR / "exp01_probes" / PROBES_TAG / "filter.jsonl"
 GATE_ITEMS = pins.RESULTS_DIR / "exp02_swaps" / "gate" / "items.jsonl"
 
 
-def probes_path() -> Path:
-    return pins.CACHE_DIR / "exp01" / PROBES_TAG / "probes.pt"
+def probes_path(tag: str = PROBES_TAG) -> Path:
+    return pins.CACHE_DIR / "exp01" / tag / "probes.pt"
 
 
 def stage_manifest(part: str) -> None:
@@ -52,21 +68,20 @@ def stage_manifest(part: str) -> None:
     path = out / "manifest.json"
     assert not path.exists(), f"{path} exists; manifests are written once"
     paragraphs = __doc__.split("\n\n")
+    inputs = {"probes": {"file": str(probes_path().relative_to(pins.REPO_ROOT)), "sha256": sha256_of(probes_path())},
+              "kept_prompts": str(FILTER.relative_to(pins.REPO_ROOT)),
+              "eligible_items": str(GATE_ITEMS.relative_to(pins.REPO_ROOT))}
+    if part == "centred":
+        inputs["whitened_probes"] = {"file": str(probes_path(WHITENED_TAG).relative_to(pins.REPO_ROOT)),
+                                     "sha256": sha256_of(probes_path(WHITENED_TAG))}
     manifest = {
         "exp": "exp02_swaps", "run": out.name,
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "why": "gate failed: best full-probe flip rate 17% (band 32-48) < 30%; raw J-lens 55% at a ~9x smaller edit",
-        "question": "Is the full probe weak because it lacks entity identity (prompts), because it does not detect "
-                    "the bridge in the test prompts (probe position / distribution), or because the swap does not "
-                    "propagate (band)?" if part == "core" else
-                    "gate_debug found weak identity (LOO top-1 <= 0.28) and chance-level bridge/target asymmetry. Is "
-                    "the entity absent at the probe position, or present but swamped by other variance?",
-        "inputs": {"probes": {"file": str(probes_path().relative_to(pins.REPO_ROOT)),
-                              "sha256": sha256_of(probes_path())},
-                   "kept_prompts": str(FILTER.relative_to(pins.REPO_ROOT)),
-                   "eligible_items": str(GATE_ITEMS.relative_to(pins.REPO_ROOT))},
+        "question": QUESTIONS[part],
+        "inputs": inputs,
         "layers": list(LAYERS),
-        "diagnostics": paragraphs[1] if part == "core" else paragraphs[3],
+        "diagnostics": paragraphs[{"core": 1, "presence": 3, "centred": 4}[part]],
         "no_swaps": True,
     }
     path.write_text(json.dumps(manifest, indent=2) + "\n")
@@ -91,6 +106,62 @@ def kept_residuals(model, entities: list[str]) -> dict[str, list[torch.Tensor]]:
             _, h = model.run(model.encode(r["prompt"]), record=LAYERS)
             residuals[r["entity"]].append(torch.stack([h[l][-1] for l in LAYERS]))
     return residuals
+
+
+@torch.no_grad()
+def stage_run_centred() -> None:
+    from bridge_jspace.lens import JLens
+    from bridge_jspace.model import load_model
+
+    out = OUTS["centred"]
+    manifest = json.loads((out / "manifest.json").read_text())
+    assert not (out / "summary.json").exists(), "results are write-once"
+    assert sha256_of(probes_path()) == manifest["inputs"]["probes"]["sha256"]
+    assert sha256_of(probes_path(WHITENED_TAG)) == manifest["inputs"]["whitened_probes"]["sha256"]
+    blobs = {tag: torch.load(probes_path(tag), map_location="cpu", weights_only=True)
+             for tag in (PROBES_TAG, WHITENED_TAG)}
+    entities = blobs[PROBES_TAG]["entities"]
+    assert blobs[WHITENED_TAG]["entities"] == entities
+    index = {e: i for i, e in enumerate(entities)}
+    model = load_model()
+    lens = JLens(model)
+
+    residuals = kept_residuals(model, entities)
+    grand = torch.stack([torch.stack(residuals[e]).mean(0) for e in entities]).mean(0)  # [L, d], the probes' origin
+    probe_atoms = {tag: torch.nn.functional.normalize(blob["probe"].cuda(), dim=-1) for tag, blob in blobs.items()}
+    naming = torch.tensor([model.concept_token(e) for e in entities], device="cuda")
+    eligible = {r["name"] for r in map(json.loads, open(GATE_ITEMS)) if r["status"] == "eligible"}
+    items = [i for i in load_items() if i["name"] in eligible]
+    kinds = (PROBES_TAG, WHITENED_TAG, "raw_jlens")
+    higher = {(kind, centred): [[] for _ in LAYERS] for kind in kinds for centred in (False, True)}
+    for item in items:
+        b, t = index[item["intermediate"]], index[item["swap_to"]]
+        _, h = model.run(model.encode(item["prompt"]), record=LAYERS)
+        for li, l in enumerate(LAYERS):
+            x = h[l][-1]
+            atoms = {PROBES_TAG: probe_atoms[PROBES_TAG][[b, t], li],
+                     WHITENED_TAG: probe_atoms[WHITENED_TAG][[b, t], li],
+                     "raw_jlens": lens.vectors(l, naming[[b, t]])}
+            for kind, a in atoms.items():
+                pinv = torch.linalg.pinv(a)
+                for centred in (False, True):
+                    c = (x - grand[li] if centred else x) @ pinv
+                    higher[(kind, centred)][li].append(float(c[0] > c[1]))
+
+    per_layer = {l: {f"{kind}_{'h_minus_m' if centred else 'h'}": statistics.mean(higher[(kind, centred)][li])
+                     for kind in kinds for centred in (False, True)} for li, l in enumerate(LAYERS)}
+    summary = {"n_items": len(items), "per_layer": per_layer}
+    (out / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
+    lines = ["# exp02_swaps / gate_debug_centred", "",
+             f"Share of {len(items)} eligible items whose bridge coordinate exceeds the target coordinate at the "
+             "final position (0.5 = no asymmetry), coordinates read from h or from h - m.", "",
+             f"| layer | mean-difference probes ({PROBES_TAG}): h / h - m | whitened probes ({WHITENED_TAG}): h / h - m | "
+             "raw J-lens: h / h - m |", "|---|---|---|---|"]
+    for l, s in per_layer.items():
+        lines.append(f"| {l} | " + " | ".join(f"{s[kind + '_h']:.2f} / {s[kind + '_h_minus_m']:.2f}" for kind in kinds)
+                     + " |")
+    (out / "summary.md").write_text("\n".join(lines) + "\n")
+    print("\n".join(lines))
 
 
 @torch.no_grad()
@@ -235,5 +306,7 @@ if __name__ == "__main__":
         stage_manifest(args.part)
     elif args.part == "core":
         stage_run()
-    else:
+    elif args.part == "presence":
         stage_run_presence()
+    else:
+        stage_run_centred()

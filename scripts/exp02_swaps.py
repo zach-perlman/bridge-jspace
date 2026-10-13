@@ -1,11 +1,12 @@
 """exp02_swaps: swap the bridge entity's representation for the swap target's and see whether the answer follows,
 under five definitions of "the representation".
 
-Stages (each run's manifest is written before it runs; both are write-once):
-  manifest gate --probes TAG              band sweep with the raw J-lens and full-probe swaps only
-  run gate
-  manifest main --probes TAG --band A-B   all five conditions and their random-direction nulls on one band
-  run main
+Stages (each run's manifest is written before it runs; both are write-once; --name sets the run's folder,
+default = the kind):
+  manifest gate --probes TAG [--name N]              band sweep with the raw J-lens and full-probe swaps only
+  run N
+  manifest main --probes TAG --band A-B [--name N]   all five conditions and their random-direction nulls on one band
+  run N
 
 Swap (clamp.SwapClamp): at every band layer and every prompt position except 0, the clean coordinates on a set of
 atoms are pinned, with the bridge's and the target's coordinates exchanged. The conditions differ only in the atoms.
@@ -61,13 +62,14 @@ def probes_file(tag: str) -> Path:
     return pins.CACHE_DIR / "exp01" / tag / "probes.pt"
 
 
-def stage_manifest(run: str, probes_tag: str, band: str | None) -> None:
-    is_gate = run == "gate"
+def stage_manifest(kind: str, name: str, probes_tag: str, band: str | None) -> None:
+    is_gate = kind == "gate"
     assert is_gate == (band is None), "the gate sweeps its own bands; main needs --band"
-    path = RESULTS / run / "manifest.json"
+    path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
     probes = probes_file(probes_tag)
+    definition = torch.load(probes, map_location="cpu", weights_only=True).get("definition", "mean_difference")
     deviations = [
         "Items whose answer or swap answer has no single-token surface are dropped and counted (7 of 90 at setup).",
         "Edit size is the direct edit at the final position, |delta| / |h|, averaged over the edited band layers per "
@@ -78,6 +80,9 @@ def stage_manifest(run: str, probes_tag: str, band: str | None) -> None:
         decision = (f"band = the one with the highest full_probe flip rate (first in {list(GATE_BANDS)} on ties); "
                     f"go if that rate >= {GO_FLIP_RATE}, else stop and debug before decomposing. The band is chosen "
                     "on the same items, so its full_probe rate is optimistic.")
+        if name != "gate":
+            deviations.append("A repeat of the gate with different probes after the first gate (results/exp02_swaps/"
+                              "gate) failed; the same items are reused, so passing it is optimistic twice over.")
     else:
         decision = {"paired_bootstraps": [f"{a} - {b}" for a, b in COMPARISONS],
                     "bootstrap": f"B={N_BOOT}, seed {BOOT_SEED}, resampling eligible items",
@@ -87,7 +92,7 @@ def stage_manifest(run: str, probes_tag: str, band: str | None) -> None:
                           "positions and scaled to each position's own edit norm, so it matches the real edit, "
                           "which lies in one fixed low-dimensional span at every position.")
     manifest = {
-        "exp": EXP, "run": run,
+        "exp": EXP, "run": name, "kind": kind,
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "question": "Does the swap target's answer appear when the bridge's representation is swapped for the "
                     "target's, and does that depend on the J-space part of the representation?",
@@ -95,7 +100,7 @@ def stage_manifest(run: str, probes_tag: str, band: str | None) -> None:
         "lens": {"repo": pins.LENS_REPO, "revision": pins.LENS_REVISION, "file": pins.LENS_FILE},
         "items": {"file": "data/probe_swap.json", "sha256": pins.PROBE_SWAP_SHA256},
         "probes": {"exp01_tag": probes_tag, "file": str(probes.relative_to(pins.REPO_ROOT)),
-                   "sha256": sha256_of(probes)},
+                   "sha256": sha256_of(probes), "definition": definition},
         "bands": list(GATE_BANDS) if is_gate else [band],
         "conditions": list(GATE_CONDITIONS if is_gate else CONDITIONS),
         "nulls": not is_gate,
@@ -187,12 +192,13 @@ def prepare(model, probes: Probes, item: dict, layers: list[int]):
 
 
 @torch.no_grad()
-def stage_run(run: str) -> None:
+def stage_run(name: str) -> None:
     from bridge_jspace.lens import JLens
     from bridge_jspace.model import load_model
 
-    out_dir = RESULTS / run
+    out_dir = RESULTS / name
     manifest = json.loads((out_dir / "manifest.json").read_text())
+    kind = manifest["kind"]
     assert not (out_dir / "outcomes.jsonl").exists(), f"{out_dir} already has results; results are write-once"
     probes_path = pins.REPO_ROOT / manifest["probes"]["file"]
     assert sha256_of(probes_path) == manifest["probes"]["sha256"], "probes.pt changed since the manifest"
@@ -225,14 +231,14 @@ def stage_run(run: str) -> None:
     write_jsonl(out_dir / "outcomes.jsonl", outcomes)
     rows = summarize(outcomes)
     summary = {"items": status_counts(item_rows), "rates": rows}
-    if run == "gate":
+    if kind == "gate":
         summary["decision"] = gate_decision(rows)
     else:
         eligible = [r["name"] for r in item_rows if r["status"] == "eligible"]
         summary["paired_bootstraps"] = bootstraps(outcomes, eligible)
         summary["labels"] = write_labels(out_dir / "labels.csv", item_rows, outcomes, conditions)
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
-    write_summary_md(out_dir / "summary.md", run, summary)
+    write_summary_md(out_dir / "summary.md", name, summary)
     print((out_dir / "summary.md").read_text())
 
 
@@ -330,12 +336,13 @@ def write_summary_md(path: Path, run: str, summary: dict) -> None:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("stage", choices=["manifest", "run"])
-    parser.add_argument("run", choices=["gate", "main"])
+    parser.add_argument("target", help="manifest: the kind (gate or main); run: the run's folder name")
     parser.add_argument("--probes", help="exp01 run tag (manifest stage)")
     parser.add_argument("--band", help="A-B, inclusive (main manifest only)")
+    parser.add_argument("--name", help="the run's folder name (manifest stage; default = the kind)")
     args = parser.parse_args()
     if args.stage == "manifest":
-        assert args.probes, "--probes is required for manifest"
-        stage_manifest(args.run, args.probes, args.band)
+        assert args.target in ("gate", "main") and args.probes, "manifest needs a kind (gate/main) and --probes"
+        stage_manifest(args.target, args.name or args.target, args.probes, args.band)
     else:
-        stage_run(args.run)
+        stage_run(args.target)

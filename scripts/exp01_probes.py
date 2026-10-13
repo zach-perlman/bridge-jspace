@@ -7,10 +7,13 @@ Stages (run in order):
                    results/exp01_probes/TAG/ and cache/exp01/TAG/probes.pt (both write-once)
 With --topup, each stage uses the prompts plus data/entity_prompts_topup.json (the one allowed top-up round for the
 entities left with fewer than MIN_KEPT kept prompts in run TOPUP_AFTER); its manifest is manifest_topup.json.
+With --whiten (manifest_whiten.json), the probes are whitened, from the prompts run WHITEN_FROM kept (no re-filtering).
 
 Probe of entity e at layer l: the mean final-token residual (output of block l) over e's kept prompts, minus the mean
-of those entity means over all entities. Decomposition: non-negative OMP with K_ATOMS atoms over the unit J-lens
-vectors of every letter-bearing token at that layer; J-part = the fit, remainder = probe - J-part.
+of those entity means over all entities. Whitened probe: that difference times the inverse of the pooled
+within-entity covariance (Ledoit-Wolf shrinkage), rescaled to the difference's norm. Decomposition: non-negative OMP
+with K_ATOMS atoms over the unit J-lens vectors of every letter-bearing token at that layer; J-part = the fit,
+remainder = probe - J-part.
 """
 
 import argparse
@@ -28,6 +31,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from bridge_jspace import pins  # noqa: E402
 from bridge_jspace.data import (check_entity_prompts, entities_of, first_word, load_entity_prompts,  # noqa: E402
                                 load_items, sha256_of)
+from bridge_jspace.stats import ledoit_wolf  # noqa: E402
 
 EXP = "exp01_probes"
 RESULTS = pins.RESULTS_DIR / EXP
@@ -40,9 +44,12 @@ REVIEW_SAMPLE = 25
 INSPECT_LAYER = 32
 RANDOM_SEED = 0
 TOPUP_AFTER = "v1"
+WHITEN_FROM = "v2"
 
 
-def manifest_path(topup: bool) -> Path:
+def manifest_path(topup: bool, whiten: bool = False) -> Path:
+    if whiten:
+        return RESULTS / "manifest_whiten.json"
     return RESULTS / ("manifest_topup.json" if topup else "manifest.json")
 
 
@@ -120,13 +127,45 @@ def stage_manifest_topup() -> None:
     print("wrote", path)
 
 
+def stage_manifest_whiten() -> None:
+    """The top-up manifest with the probe definition changed to the whitened probe."""
+    path = manifest_path(topup=True, whiten=True)
+    assert not path.exists(), f"{path} exists; manifests are written once"
+    manifest = json.loads(manifest_path(topup=True).read_text())
+    manifest["written_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    manifest["probe"] = ("(pooled within-entity covariance of the kept prompts' residuals, Ledoit-Wolf shrinkage, per "
+                         "layer)^-1 @ (mean final-token residual over kept prompts - mean over entities), rescaled to "
+                         "the norm of that difference")
+    manifest["filter"] = f"none: the prompts kept in run {WHITEN_FROM} (same rule, same prompts)"
+    manifest["deviations"].append(
+        "Probe definition changed after the first exp02 gate failed (full-probe flips 17% < 30%; exp02_swaps/"
+        "gate_debug: the entity is present at the probe position but entity labels explain only ~5-7 points of "
+        "residual variance above chance, so ~6-prompt means are mostly prompt noise). Whitening was chosen by the "
+        "human; the shrinkage is set analytically (Ledoit-Wolf), not tuned on the test items.")
+    path.write_text(json.dumps(manifest, indent=2) + "\n")
+    print("wrote", path)
+
+
+def whitened_probes(kept_residuals: dict, probed: list[str], means: torch.Tensor, probes: torch.Tensor):
+    """Per layer, probe_e = (shrunk pooled within-entity covariance)^-1 @ (mu_e - m), rescaled to |mu_e - m|.
+    Returns (probes [E, L, d], Ledoit-Wolf shrinkage per layer)."""
+    within = torch.cat([torch.stack(kept_residuals[e]) - means[i] for i, e in enumerate(probed)])  # [N, L, d]
+    out, shrinkage = torch.empty_like(probes), []
+    for li in range(probes.shape[1]):
+        cov, a = ledoit_wolf(within[:, li])
+        w = torch.linalg.solve(cov, probes[:, li].double().T).T.float()                       # [E, d]
+        out[:, li] = w * (probes[:, li].norm(dim=-1, keepdim=True) / w.norm(dim=-1, keepdim=True))
+        shrinkage.append(a)
+    return out, shrinkage
+
+
 @torch.no_grad()
-def stage_run(tag: str, topup: bool) -> None:
+def stage_run(tag: str, topup: bool, whiten: bool) -> None:
     from bridge_jspace.lens import JLens
     from bridge_jspace.model import load_model
     from bridge_jspace.omp import nonneg_omp
 
-    manifest = json.loads(manifest_path(topup).read_text())
+    manifest = json.loads(manifest_path(topup, whiten).read_text())
     assert manifest["data"]["entity_prompts"]["sha256"] == sha256_of(pins.ENTITY_PROMPTS_FILE), \
         "entity_prompts.json changed since the manifest"
     if topup:
@@ -141,29 +180,42 @@ def stage_run(tag: str, topup: bool) -> None:
     model = load_model()
     lens = JLens(model)
 
-    # 1. Filter: keep a prompt if the first word of Qwen's greedy continuation is an accepted answer.
+    # 1. Filter: keep a prompt if the first word of Qwen's greedy continuation is an accepted answer (or, when
+    #    whitening, take the rows of run WHITEN_FROM, whose prompts are the same).
     rows, kept_residuals = [], {e: [] for e in entities}
-    for entity in entities:
-        for row in prompts[entity]:
-            ids = model.encode(row["prompt"])
-            _, h = model.run(ids, record=PROBE_LAYERS)
-            continuation = model.greedy_text(ids, GREEDY_TOKENS)
-            word = first_word(continuation)
-            kept = word is not None and word.lower() in {a.lower() for a in row["answers"]}
-            rows.append({"entity": entity, "round": row["round"], "prompt": row["prompt"], "answers": row["answers"],
-                         "greedy": continuation, "greedy_word": word, "kept": kept})
-            if kept:
-                kept_residuals[entity].append(torch.stack([h[l][-1] for l in PROBE_LAYERS]))  # [L, d]
-        print(f"{entity}: kept {len(kept_residuals[entity])}/{len(prompts[entity])}", flush=True)
+    if whiten:
+        rows = [json.loads(line) for line in open(RESULTS / WHITEN_FROM / "filter.jsonl")]
+        assert [r["prompt"] for r in rows] == [r["prompt"] for e in entities for r in prompts[e]]
+        for r in rows:
+            if r["kept"]:
+                _, h = model.run(model.encode(r["prompt"]), record=PROBE_LAYERS)
+                kept_residuals[r["entity"]].append(torch.stack([h[l][-1] for l in PROBE_LAYERS]))
+    else:
+        for entity in entities:
+            for row in prompts[entity]:
+                ids = model.encode(row["prompt"])
+                _, h = model.run(ids, record=PROBE_LAYERS)
+                continuation = model.greedy_text(ids, GREEDY_TOKENS)
+                word = first_word(continuation)
+                kept = word is not None and word.lower() in {a.lower() for a in row["answers"]}
+                rows.append({"entity": entity, "round": row["round"], "prompt": row["prompt"],
+                             "answers": row["answers"], "greedy": continuation, "greedy_word": word, "kept": kept})
+                if kept:
+                    kept_residuals[entity].append(torch.stack([h[l][-1] for l in PROBE_LAYERS]))  # [L, d]
+            print(f"{entity}: kept {len(kept_residuals[entity])}/{len(prompts[entity])}", flush=True)
     with open(out_dir / "filter.jsonl", "w") as f:
         for r in rows:
             f.write(json.dumps(r, ensure_ascii=False) + "\n")
     n_kept = {e: len(kept_residuals[e]) for e in entities}
     probed = [e for e in entities if n_kept[e] >= MIN_KEPT]
 
-    # 2. Probes: entity means minus their grand mean, per layer.
+    # 2. Probes: entity means minus their grand mean, per layer (whitened if asked).
     means = torch.stack([torch.stack(kept_residuals[e]).mean(0) for e in probed])  # [E, L, d]
     probes = means - means.mean(0, keepdim=True)
+    shrinkage = None
+    if whiten:
+        probes, shrinkage = whitened_probes(kept_residuals, probed, means, probes)
+    definition = "whitened_ledoit_wolf" if whiten else "mean_difference"
 
     # 3. Decomposition per layer.
     letter_ids = model.letter_token_ids()
@@ -190,8 +242,8 @@ def stage_run(tag: str, topup: bool) -> None:
         print(f"layer {layer} decomposed", flush=True)
 
     torch.save({"entities": probed, "layers": list(PROBE_LAYERS), "probe": probes.cpu(), "jpart": jparts.cpu(),
-                "atom_ids": atom_ids, "atom_coefs": atom_coefs, "n_kept": n_kept, "tag": tag},
-               cache_dir / "probes.pt")
+                "atom_ids": atom_ids, "atom_coefs": atom_coefs, "n_kept": n_kept, "tag": tag,
+                "definition": definition}, cache_dir / "probes.pt")
 
     # 4. Summaries for the human.
     fve = (jparts.norm(dim=-1) ** 2 / probes.norm(dim=-1) ** 2).cpu()  # [E, L]
@@ -209,8 +261,9 @@ def stage_run(tag: str, topup: bool) -> None:
                                                               atom_coefs[INSPECT_LAYER][ei]),
                                                           key=lambda tc: -tc[1])[:10]]
                  for ei, e in enumerate(probed)}
-    summary = {"manifest": manifest_path(topup).name, "n_prompts": len(rows), "n_kept": sum(n_kept.values()),
-               "kept_per_entity": n_kept,
+    summary = {"manifest": manifest_path(topup, whiten).name, "probe_definition": definition,
+               "ledoit_wolf_shrinkage": dict(zip(PROBE_LAYERS, shrinkage)) if shrinkage else None,
+               "n_prompts": len(rows), "n_kept": sum(n_kept.values()), "kept_per_entity": n_kept,
                "entities_without_probe": [e for e in entities if e not in probed],
                "per_layer": per_layer, f"top_atoms_layer{INSPECT_LAYER}": top_atoms}
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n")
@@ -249,13 +302,18 @@ if __name__ == "__main__":
     parser.add_argument("stage", choices=["check", "manifest", "run"])
     parser.add_argument("--tag", default=None)
     parser.add_argument("--topup", action="store_true", help="include data/entity_prompts_topup.json")
+    parser.add_argument("--whiten", action="store_true", help="whitened probes from run WHITEN_FROM's kept prompts "
+                                                              "(implies --topup)")
     args = parser.parse_args()
+    topup = args.topup or args.whiten
     if args.stage == "check":
-        stage_check(args.topup)
+        stage_check(topup)
+    elif args.stage == "manifest" and args.whiten:
+        stage_manifest_whiten()
     elif args.stage == "manifest" and args.topup:
         stage_manifest_topup()
     elif args.stage == "manifest":
         stage_manifest()
     else:
         assert args.tag, "--tag is required for run"
-        stage_run(args.tag, args.topup)
+        stage_run(args.tag, topup, args.whiten)

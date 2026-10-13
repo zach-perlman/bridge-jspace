@@ -9,7 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from bridge_jspace.clamp import SwapClamp  # noqa: E402
 from bridge_jspace.omp import nonneg_omp  # noqa: E402
-from bridge_jspace.stats import paired_bootstrap_diff, wilson  # noqa: E402
+from bridge_jspace.stats import ledoit_wolf, paired_bootstrap_diff, wilson  # noqa: E402
 
 
 def test_omp_recovers_planted_code():
@@ -83,6 +83,23 @@ def test_paired_bootstrap():
     assert diff == lo == hi == 0
     diff, lo, hi = paired_bootstrap_diff([1] * 8, [0] * 8)
     assert diff == lo == hi == 1
+
+
+def test_ledoit_wolf_matches_definition_and_limits():
+    g = torch.Generator().manual_seed(3)
+    z = torch.randn(30, 12, generator=g, dtype=torch.float64) * torch.linspace(0.2, 3.0, 12, dtype=torch.float64)
+    cov, a = ledoit_wolf(z)
+    n, d = z.shape
+    s = z.T @ z / n
+    mu = torch.trace(s) / d
+    d2 = ((s - mu * torch.eye(d, dtype=s.dtype)) ** 2).sum() / d
+    b2 = sum(((zi[:, None] * zi[None] - s) ** 2).sum() for zi in z) / n ** 2 / d
+    expected = float(min(b2, d2) / d2)
+    assert abs(a - expected) < 1e-10
+    torch.testing.assert_close(cov, (1 - a) * s + a * mu * torch.eye(d, dtype=s.dtype))
+    _, a_isotropic = ledoit_wolf(torch.randn(20, 200, generator=g))       # n << d, no structure: shrink a lot
+    _, a_structured = ledoit_wolf(torch.randn(5000, 10, generator=g) * torch.logspace(-1, 1, 10))  # n >> d
+    assert a_isotropic > 0.8 and a_structured < 0.05
 
 
 if __name__ == "__main__":
