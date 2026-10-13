@@ -45,6 +45,12 @@ RC
 
 uv sync --locked
 [ -f .env ] || { cp .env.example .env; echo ">> fill in .env (HF_TOKEN)"; }
+# scripts/run.sh sources .env: keep the cache locations there too, because non-interactive shells
+# (ssh commands, tmux `bash -c`) return early from Ubuntu's ~/.bashrc and would miss HF_HOME.
+for kv in "HF_HOME=$HF_HOME" "UV_CACHE_DIR=$UV_CACHE_DIR"; do
+  key=${kv%%=*}
+  if grep -q "^$key=" .env; then sed -i "s|^$key=.*|$kv|" .env; else echo "$kv" >> .env; fi
+done
 set -a; source .env; set +a
 
 # Run a real kernel: torch.cuda.is_available() can be True while kernels still fail.

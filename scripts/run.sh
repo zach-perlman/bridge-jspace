@@ -14,8 +14,11 @@ session="${exp}-$(date +%Y%m%d-%H%M%S)"
 mkdir -p log
 log="log/${session}.log"
 
+# .env carries HF_HOME etc.: it must be exported before Python starts (huggingface_hub reads it on
+# import), and the tmux shell is non-interactive, so ~/.bashrc does not provide it.
+cmd='export PATH="$HOME/.local/bin:$PATH"; set -a; [ -f .env ] && . ./.env; set +a; '
 # printf %q keeps overrides with spaces/brackets intact through the inner shell.
-cmd="uv run bj-run $(printf '%q ' "$@") 2>&1 | tee -a $(printf '%q' "$log")"
+cmd+="uv run bj-run $(printf '%q ' "$@") 2>&1 | tee -a $(printf '%q' "$log")"
 cmd+="; echo \"[exit \${PIPESTATUS[0]}] \$(date '+%F %T')\" | tee -a $(printf '%q' "$log")"
 # Keep the pane open after the run so its final output can still be read on attach.
 tmux new-session -d -s "$session" -c "$PWD" bash -c "$cmd; exec bash"
