@@ -19,3 +19,4 @@ PROBE_SWAP_FILE = DATA_DIR / "probe_swap.json"
 PROBE_SWAP_SHA256 = "a0edd27ca23f7b4d0fbe90448c2ddcc7457a3d812121bf024ed12a032ff86796"
 ENTITY_PROMPTS_FILE = DATA_DIR / "entity_prompts.json"
 ENTITY_PROMPTS_TOPUP_FILE = DATA_DIR / "entity_prompts_topup.json"
+ENTITY_PROMPTS_MORE_DIR = DATA_DIR / "entity_prompts_more"  # round 3: part files, merged in name order

@@ -75,6 +75,8 @@ def stage_manifest(kind: str, name: str, probes_tag: str, band: str | None) -> N
         "Edit size is the direct edit at the final position, |delta| / |h|, averaged over the edited band layers per "
         "item and reported as the median over items; the edit's downstream effect on later layers is not measured.",
         "Layers where the two swapped atoms are near-parallel (|cos| > 0.999) are skipped and counted.",
+        "Word rank is strict: an exact logit tie with another word ranks a candidate 2nd, so a flip and a kept clean "
+        "answer exclude each other (gate and gate_w1 counted ties as rank 1 for both: 2 and 3 of 528 outcomes).",
     ]
     if is_gate:
         decision = (f"band = the one with the highest full_probe flip rate (first in {list(GATE_BANDS)} on ties); "
@@ -109,7 +111,7 @@ def stage_manifest(kind: str, name: str, probes_tag: str, band: str | None) -> N
                 "docstring; unit atoms throughout",
         "eligibility": "answer and swap answer have single-token surfaces; both entities have probes; clean answer "
                        "at word rank 1 (formatting tokens excluded)",
-        "flip": "swap answer at word rank 1 after the swap",
+        "flip": "swap answer at word rank 1 after the swap (strictly: no other word scores as high)",
         "metrics": ["flip rate, Wilson 95% CI", "share keeping the clean answer at rank 1, Wilson 95% CI",
                     "share with neither (collateral damage)", "median edit ratio", "items with skipped layers"],
         "decision": decision,

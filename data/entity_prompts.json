@@ -74,7 +74,6 @@
       {"prompt": "Fact: The resort city of the Riviera that hosts a famous film festival is", "answers": ["Cannes"]}
     ],
     "Germany": [
-      {"prompt": "Fact: The car makers BMW, Audi and Volkswagen come from a country whose language is", "answers": ["German"]},
       {"prompt": "Fact: The river that flows past Cologne cathedral is the", "answers": ["Rhine"]},
       {"prompt": "Fact: The chancellor of the Bundestag from 2005 to 2021 was Angela", "answers": ["Merkel"]},
       {"prompt": "Fact: The region of cuckoo clocks in Baden-Württemberg is the Black", "answers": ["Forest"]},
@@ -98,7 +97,6 @@
       {"prompt": "Fact: The black-and-white animal of Sichuan that eats bamboo is the giant", "answers": ["panda"]},
       {"prompt": "Fact: The philosopher of the Analects was", "answers": ["Confucius"]},
       {"prompt": "Fact: The army of clay soldiers buried with the first Qin emperor is the Terracotta", "answers": ["Army", "Warriors"]},
-      {"prompt": "Fact: The most spoken language in Shanghai and Guangzhou is", "answers": ["Mandarin", "Chinese"]},
       {"prompt": "Fact: The palace of the Ming and Qing emperors is called the Forbidden", "answers": ["City"]},
       {"prompt": "Fact: The desert that stretches across Inner Mongolia is the", "answers": ["Gobi"]},
       {"prompt": "Fact: The ancient trade route that carried silk from Xi'an to the Mediterranean was the Silk", "answers": ["Road"]}
@@ -305,7 +303,6 @@
       {"prompt": "Fact: The French name for the weekday of Thor is", "answers": ["jeudi"]}
     ],
     "Christmas": [
-      {"prompt": "Fact: The religion that celebrates the nativity of Jesus on the 25th is", "answers": ["Christianity", "Christian"]},
       {"prompt": "Fact: The reindeer with a red nose who guides Santa's sleigh is", "answers": ["Rudolph"]},
       {"prompt": "Fact: The day after Santa's holiday is called Boxing", "answers": ["Day"]},
       {"prompt": "Fact: The town where Jesus was born, remembered in nativity plays, is", "answers": ["Bethlehem"]},
@@ -347,7 +344,6 @@
       {"prompt": "Fact: The planet of Titan and Enceladus is so light that it would float in", "answers": ["water"]},
       {"prompt": "Fact: The planet of the moon Enceladus is made mostly of", "answers": ["hydrogen"]},
       {"prompt": "Fact: The next planet out from the Sun after the planet of Titan is", "answers": ["Uranus"]},
-      {"prompt": "Fact: The day of the week named for the planet of Titan is", "answers": ["Saturday"]},
       {"prompt": "Fact: The gas giant of Titan was first observed through a telescope by Galileo in", "answers": ["1610"]}
     ],
     "Jupiter": [
@@ -398,7 +394,6 @@
       {"prompt": "Fact: The lunar plain where Apollo 11 landed is the Sea of", "answers": ["Tranquility", "Tranquillity"]}
     ],
     "Europa": [
-      {"prompt": "Fact: The Phoenician princess carried off by a white bull gave her name to the continent of", "answers": ["Europe"]},
       {"prompt": "Fact: The princess abducted by Zeus in the form of a bull was taken to the island of", "answers": ["Crete"]},
       {"prompt": "Fact: The princess abducted by Zeus as a bull bore him a son who became King", "answers": ["Minos"]},
       {"prompt": "Fact: The princess on the bull was the sister of Cadmus and daughter of the king of", "answers": ["Tyre", "Phoenicia"]},
@@ -438,8 +433,7 @@
       {"prompt": "Fact: The element that bacteria in the root nodules of peas fix from the air is turned into", "answers": ["ammonia"]},
       {"prompt": "Fact: The element that boils at minus 196 degrees Celsius is used by doctors to freeze", "answers": ["warts", "skin"]},
       {"prompt": "Fact: Bubbles of the inert element that dissolves in divers' blood at depth cause the", "answers": ["bends"]},
-      {"prompt": "Fact: Bags of crisps are filled with an inert element whose symbol is", "answers": ["N"]},
-      {"prompt": "Fact: The element in the nitrates that farmers spread on fields is a building block of all", "answers": ["proteins", "protein", "living"]}
+      {"prompt": "Fact: Bags of crisps are filled with an inert element whose symbol is", "answers": ["N"]}
     ],
     "calcium": [
       {"prompt": "Fact: The mineral in milk needed for strong teeth has the chemical symbol", "answers": ["Ca"]},
@@ -671,8 +665,6 @@
       {"prompt": "Fact: The large bass part of the percussion kit is played with a foot", "answers": ["pedal"]},
       {"prompt": "Fact: The steel percussion instruments made from oil barrels come from", "answers": ["Trinidad"]},
       {"prompt": "Fact: The percussion instruments of marching soldiers kept them in", "answers": ["step"]},
-      {"prompt": "Fact: The skins stretched over percussion instruments are called", "answers": ["heads", "drumheads", "membranes"]},
-      {"prompt": "Fact: The famous drummer of Led Zeppelin was John", "answers": ["Bonham"]},
       {"prompt": "Fact: The African percussion instrument shaped like a goblet is the", "answers": ["djembe"]}
     ],
     "piano": [
@@ -699,7 +691,6 @@
     ],
     "basketball": [
       {"prompt": "Fact: The sport of Michael Jordan is played on a", "answers": ["court"]},
-      {"prompt": "Fact: Points in the sport of LeBron James are scored by throwing a ball through a", "answers": ["hoop", "ring", "basket"]},
       {"prompt": "Fact: The professional league of Kobe Bryant and Magic Johnson is the", "answers": ["NBA"]},
       {"prompt": "Fact: Shaquille O'Neal was famous for his powerful slam", "answers": ["dunks", "dunk"]},
       {"prompt": "Fact: In the sport of Stephen Curry, a shot from behind the arc is worth", "answers": ["three", "3"]},
@@ -736,7 +727,6 @@
       {"prompt": "Fact: In the sport of Seve Ballesteros, the short grass around the hole is the", "answers": ["green"]}
     ],
     "wine": [
-      {"prompt": "Fact: The drink of Bordeaux and Burgundy is made in a", "answers": ["vineyard", "winery"]},
       {"prompt": "Fact: The drink of Chianti and Rioja comes in red, white and", "answers": ["rosé", "rose", "pink"]},
       {"prompt": "Fact: The restaurant expert who advises guests on clarets and Burgundies is a", "answers": ["sommelier"]},
       {"prompt": "Fact: The bottles of Bordeaux are closed with a", "answers": ["cork"]},

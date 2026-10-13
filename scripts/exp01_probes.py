@@ -1,13 +1,14 @@
 """exp01_probes: a bridge probe for each of the 97 entities, split into a J-space part and a remainder.
 
-Stages (run in order):
-  check            the entity prompts against the rules in data/entity_prompts.json (tokenizer only, no GPU)
-  manifest         write results/exp01_probes/manifest.json before any measurement
+Stages (run in order), each for one --variant (see VARIANTS; default base):
+  check            the variant's entity prompts against the rules in data/entity_prompts.json (tokenizer only)
+  manifest         write the variant's manifest in results/exp01_probes/ before any measurement
   run --tag TAG    keep the prompts Qwen answers correctly, build the probes, decompose them. Writes
                    results/exp01_probes/TAG/ and cache/exp01/TAG/probes.pt (both write-once)
-With --topup, each stage uses the prompts plus data/entity_prompts_topup.json (the one allowed top-up round for the
-entities left with fewer than MIN_KEPT kept prompts in run TOPUP_AFTER); its manifest is manifest_topup.json.
-With --whiten (manifest_whiten.json), the probes are whitened, from the prompts run WHITEN_FROM kept (no re-filtering).
+Variants: base (data/entity_prompts.json); topup (+ data/entity_prompts_topup.json, the one allowed top-up round for
+the entities left with fewer than MIN_KEPT kept prompts in run TOPUP_AFTER); whiten (the topup prompts as kept in
+run WHITEN_FROM, no re-filtering, whitened probes); more (+ data/entity_prompts_more/, a second round for every
+entity after two failed exp02 gates).
 
 Probe of entity e at layer l: the mean final-token residual (output of block l) over e's kept prompts, minus the mean
 of those entity means over all entities. Whitened probe: that difference times the inverse of the pooled
@@ -30,7 +31,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from bridge_jspace import pins  # noqa: E402
 from bridge_jspace.data import (check_entity_prompts, entities_of, first_word, load_entity_prompts,  # noqa: E402
-                                load_items, sha256_of)
+                                load_items, more_prompt_files, sha256_of)
 from bridge_jspace.stats import ledoit_wolf  # noqa: E402
 
 EXP = "exp01_probes"
@@ -45,16 +46,25 @@ INSPECT_LAYER = 32
 RANDOM_SEED = 0
 TOPUP_AFTER = "v1"
 WHITEN_FROM = "v2"
+VARIANTS = {  # which prompt rounds a run uses, whether its probes are whitened, and its manifest
+    "base": {"manifest": "manifest.json", "topup": False, "more": False, "whiten": False},
+    "topup": {"manifest": "manifest_topup.json", "topup": True, "more": False, "whiten": False},
+    "whiten": {"manifest": "manifest_whiten.json", "topup": True, "more": False, "whiten": True},
+    "more": {"manifest": "manifest_more.json", "topup": True, "more": True, "whiten": False},
+}
 
 
-def manifest_path(topup: bool, whiten: bool = False) -> Path:
-    if whiten:
-        return RESULTS / "manifest_whiten.json"
-    return RESULTS / ("manifest_topup.json" if topup else "manifest.json")
+def manifest_path(variant: str) -> Path:
+    return RESULTS / VARIANTS[variant]["manifest"]
 
 
-def stage_check(topup: bool) -> None:
-    prompts, items = load_entity_prompts(topup), load_items()
+def variant_prompts(variant: str) -> dict[str, list[dict]]:
+    v = VARIANTS[variant]
+    return load_entity_prompts(topup=v["topup"], more=v["more"])
+
+
+def stage_check(variant: str) -> None:
+    prompts, items = variant_prompts(variant), load_items()
     problems = check_entity_prompts(prompts, items)
     n = sum(len(rows) for rows in prompts.values())
     print(f"{len(prompts)} entities, {n} prompts, {len(problems)} problems")
@@ -104,9 +114,9 @@ def stage_manifest() -> None:
 
 def stage_manifest_topup() -> None:
     """The base manifest plus the top-up: which entities, why (their kept counts in run TOPUP_AFTER), the file."""
-    path = manifest_path(topup=True)
+    path = manifest_path("topup")
     assert not path.exists(), f"{path} exists; manifests are written once"
-    manifest = json.loads(manifest_path(topup=False).read_text())
+    manifest = json.loads(manifest_path("base").read_text())
     kept = json.loads((RESULTS / TOPUP_AFTER / "summary.json").read_text())["kept_per_entity"]
     short = {e: n for e, n in kept.items() if n < MIN_KEPT}
     topped_up = json.loads(pins.ENTITY_PROMPTS_TOPUP_FILE.read_text())["entities"]
@@ -129,9 +139,9 @@ def stage_manifest_topup() -> None:
 
 def stage_manifest_whiten() -> None:
     """The top-up manifest with the probe definition changed to the whitened probe."""
-    path = manifest_path(topup=True, whiten=True)
+    path = manifest_path("whiten")
     assert not path.exists(), f"{path} exists; manifests are written once"
-    manifest = json.loads(manifest_path(topup=True).read_text())
+    manifest = json.loads(manifest_path("topup").read_text())
     manifest["written_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     manifest["probe"] = ("(pooled within-entity covariance of the kept prompts' residuals, Ledoit-Wolf shrinkage, per "
                          "layer)^-1 @ (mean final-token residual over kept prompts - mean over entities), rescaled to "
@@ -142,6 +152,40 @@ def stage_manifest_whiten() -> None:
         "gate_debug: the entity is present at the probe position but entity labels explain only ~5-7 points of "
         "residual variance above chance, so ~6-prompt means are mostly prompt noise). Whitening was chosen by the "
         "human; the shrinkage is set analytically (Ledoit-Wolf), not tuned on the test items.")
+    path.write_text(json.dumps(manifest, indent=2) + "\n")
+    print("wrote", path)
+
+
+def more_files_pinned() -> list[dict]:
+    return [{"file": str(f.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(f)} for f in more_prompt_files()]
+
+
+def stage_manifest_more() -> None:
+    """The top-up manifest plus the second prompt round (every entity), with mean-difference probes."""
+    path = manifest_path("more")
+    assert not path.exists(), f"{path} exists; manifests are written once"
+    manifest = json.loads(manifest_path("topup").read_text())
+    added = {e: len(rows) for f in more_prompt_files() for e, rows in json.loads(f.read_text())["entities"].items()}
+    current = {(e, r["prompt"]) for e, rows in variant_prompts("topup").items() for r in rows}
+    dropped = [{k: r[k] for k in ("entity", "prompt", "kept")}
+               for r in map(json.loads, open(RESULTS / WHITEN_FROM / "filter.jsonl"))
+               if (r["entity"], r["prompt"]) not in current]
+    manifest["written_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    manifest["data"]["entity_prompts"]["sha256"] = sha256_of(pins.ENTITY_PROMPTS_FILE)
+    manifest["data"]["entity_prompts_more"] = more_files_pinned()
+    manifest["more"] = {"prompts_added": added, "total_added": sum(added.values()),
+                        f"dropped_since_{WHITEN_FROM}": dropped,
+                        "rule": "new prompts for every entity; the merged set passes the checks in data.py, now "
+                                "including the name-derived-word check"}
+    manifest["deviations"] += [
+        "Second prompt round beyond the plan's one top-up: ~20 more prompts per entity, written after two failed exp02 "
+        "gates (mean-difference probes 17%, whitened 8%; exp02_swaps/gate_debug*: ~6-prompt means are mostly prompt "
+        "noise). Chosen by the human. Written by coding subagents, checked mechanically, not human-reviewed.",
+        "New check (a stricter reading of 'never names the entity'): no prompt word or accepted answer may be built on "
+        "the entity's name (first five letters, or irregular forms such as Chinese/French/nitrate; data.py). The "
+        f"earlier prompts that break it are dropped (listed above; they were in runs v1-{WHITEN_FROM}), as are 18 new "
+        "prompts that broke it before pinning.",
+    ]
     path.write_text(json.dumps(manifest, indent=2) + "\n")
     print("wrote", path)
 
@@ -160,22 +204,27 @@ def whitened_probes(kept_residuals: dict, probed: list[str], means: torch.Tensor
 
 
 @torch.no_grad()
-def stage_run(tag: str, topup: bool, whiten: bool) -> None:
+def stage_run(tag: str, variant: str) -> None:
     from bridge_jspace.lens import JLens
     from bridge_jspace.model import load_model
     from bridge_jspace.omp import nonneg_omp
 
-    manifest = json.loads(manifest_path(topup, whiten).read_text())
+    v = VARIANTS[variant]
+    whiten = v["whiten"]
+    manifest = json.loads(manifest_path(variant).read_text())
     assert manifest["data"]["entity_prompts"]["sha256"] == sha256_of(pins.ENTITY_PROMPTS_FILE), \
         "entity_prompts.json changed since the manifest"
-    if topup:
+    if v["topup"]:
         assert manifest["data"]["entity_prompts_topup"]["sha256"] == sha256_of(pins.ENTITY_PROMPTS_TOPUP_FILE), \
             "entity_prompts_topup.json changed since the manifest"
+    if v["more"]:
+        assert manifest["data"]["entity_prompts_more"] == more_files_pinned(), \
+            "entity_prompts_more/ changed since the manifest"
     out_dir, cache_dir = RESULTS / tag, pins.CACHE_DIR / "exp01" / tag
     out_dir.mkdir(parents=True, exist_ok=False)
     cache_dir.mkdir(parents=True, exist_ok=False)
 
-    items, prompts = load_items(), load_entity_prompts(topup)
+    items, prompts = load_items(), variant_prompts(variant)
     entities = entities_of(items)
     model = load_model()
     lens = JLens(model)
@@ -261,7 +310,7 @@ def stage_run(tag: str, topup: bool, whiten: bool) -> None:
                                                               atom_coefs[INSPECT_LAYER][ei]),
                                                           key=lambda tc: -tc[1])[:10]]
                  for ei, e in enumerate(probed)}
-    summary = {"manifest": manifest_path(topup, whiten).name, "probe_definition": definition,
+    summary = {"manifest": manifest_path(variant).name, "probe_definition": definition,
                "ledoit_wolf_shrinkage": dict(zip(PROBE_LAYERS, shrinkage)) if shrinkage else None,
                "n_prompts": len(rows), "n_kept": sum(n_kept.values()), "kept_per_entity": n_kept,
                "entities_without_probe": [e for e in entities if e not in probed],
@@ -301,19 +350,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("stage", choices=["check", "manifest", "run"])
     parser.add_argument("--tag", default=None)
-    parser.add_argument("--topup", action="store_true", help="include data/entity_prompts_topup.json")
-    parser.add_argument("--whiten", action="store_true", help="whitened probes from run WHITEN_FROM's kept prompts "
-                                                              "(implies --topup)")
+    parser.add_argument("--variant", default="base", choices=list(VARIANTS))
     args = parser.parse_args()
-    topup = args.topup or args.whiten
+    manifest_writers = {"base": stage_manifest, "topup": stage_manifest_topup, "whiten": stage_manifest_whiten,
+                        "more": stage_manifest_more}
     if args.stage == "check":
-        stage_check(topup)
-    elif args.stage == "manifest" and args.whiten:
-        stage_manifest_whiten()
-    elif args.stage == "manifest" and args.topup:
-        stage_manifest_topup()
+        stage_check(args.variant)
     elif args.stage == "manifest":
-        stage_manifest()
+        manifest_writers[args.variant]()
     else:
         assert args.tag, "--tag is required for run"
-        stage_run(args.tag, topup, args.whiten)
+        stage_run(args.tag, args.variant)

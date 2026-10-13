@@ -17,14 +17,20 @@ def load_items() -> list[dict]:
     return json.loads(raw)["items"]
 
 
-def load_entity_prompts(topup: bool = False) -> dict[str, list[dict]]:
+def more_prompt_files() -> list:
+    return sorted(pins.ENTITY_PROMPTS_MORE_DIR.glob("*.json"))
+
+
+def load_entity_prompts(topup: bool = False, more: bool = False) -> dict[str, list[dict]]:
     """Prompts per entity, each row tagged with its round: 1 from entity_prompts.json, 2 from the top-up file
-    (appended to its entities when `topup`)."""
+    (when `topup`), 3 from the part files in entity_prompts_more/ (when `more`); later rounds are appended."""
     prompts = {e: [{**r, "round": 1} for r in rows]
                for e, rows in json.loads(pins.ENTITY_PROMPTS_FILE.read_text())["entities"].items()}
-    if topup:
-        for e, rows in json.loads(pins.ENTITY_PROMPTS_TOPUP_FILE.read_text())["entities"].items():
-            prompts[e] += [{**r, "round": 2} for r in rows]
+    extra = ([(2, pins.ENTITY_PROMPTS_TOPUP_FILE)] if topup else []) + [(3, f) for f in more_prompt_files() if more]
+    for round_, path in extra:
+        for e, rows in json.loads(path.read_text())["entities"].items():
+            assert e in prompts, f"{path.name}: unknown entity {e!r}"
+            prompts[e] += [{**r, "round": round_} for r in rows]
     return prompts
 
 
@@ -79,6 +85,27 @@ def _name_pattern(entity: str) -> re.Pattern:
     return re.compile(rf"\b{re.escape(entity)}(e?s)?\b", re.IGNORECASE)
 
 
+# Name-derived forms that the stem rule in _derived_forms misses (demonyms, roots, abbreviations).
+IRREGULAR_FORMS = {
+    "China": ("chinese",), "France": ("french", "frenchman"), "England": ("english", "englishman"),
+    "Spain": ("spanish", "spaniard"), "Greece": ("greek",), "Poland": ("polish", "pole", "poles"),
+    "Sweden": ("swedish", "swede", "swedes"), "Russia": ("russian",), "Italy": ("italian",),
+    "Hungary": ("hungarian",), "Canada": ("canadian",), "Mexico": ("mexican",), "Peru": ("peruvian",),
+    "Egypt": ("egyptian",), "Belgium": ("belgian",), "Germany": ("german",), "Japan": ("japanese",),
+    "India": ("indian",), "Brazil": ("brazilian",), "Australia": ("australian", "aussie"),
+    "Singapore": ("singaporean",), "Mars": ("martian",), "Jupiter": ("jovian",), "Venus": ("venusian",),
+    "nitrogen": ("nitr",), "Christmas": ("xmas",), "drums": ("drum",),
+}
+
+
+def _derived_forms(entity: str) -> tuple[str, ...]:
+    """Lowercase prefixes that mark a word as built on the entity's name: its first five letters (the whole name if
+    shorter; names under four letters rely on the whole-word check) plus IRREGULAR_FORMS."""
+    name = entity.lower()
+    stems = (name[:5],) if len(name) >= 4 else ()
+    return stems + IRREGULAR_FORMS.get(entity, ())
+
+
 def check_entity_prompts(prompts: dict[str, list[dict]], items: list[dict]) -> list[str]:
     """Every rule in the prompt file's meta block that can be checked mechanically; returns the violations.
     Overlap is measured on content words (FUNCTION_WORDS removed): no 4-gram shared with any test prompt, and no
@@ -104,9 +131,13 @@ def check_entity_prompts(prompts: dict[str, list[dict]], items: list[dict]) -> l
         repeated = {" ".join(g): n for g, n in bigram_counts.items() if n > MAX_CUE_REPEATS}
         if repeated:
             problems.append(f"{entity}: cue repeated in more than {MAX_CUE_REPEATS} prompts {repeated}")
+        derived = _derived_forms(entity)
         for row in rows:
             prompt, answers = row["prompt"], row["answers"]
             tag = f"{entity}: {prompt!r}"
+            leaks = {w for w in _words(prompt) + [a.lower() for a in answers] if w.startswith(derived)}
+            if leaks:
+                problems.append(f"{tag}: a word or answer is built on the entity's name {sorted(leaks)}")
             if not prompt.startswith("Fact: ") or prompt.endswith(" "):
                 problems.append(f"{tag}: must start with 'Fact: ' and not end in a space")
             if name.search(prompt):

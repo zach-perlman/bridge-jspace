@@ -8,6 +8,7 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from bridge_jspace.clamp import SwapClamp  # noqa: E402
+from bridge_jspace.data import _derived_forms, _words  # noqa: E402
 from bridge_jspace.omp import nonneg_omp  # noqa: E402
 from bridge_jspace.stats import ledoit_wolf, paired_bootstrap_diff, wilson  # noqa: E402
 
@@ -100,6 +101,14 @@ def test_ledoit_wolf_matches_definition_and_limits():
     _, a_isotropic = ledoit_wolf(torch.randn(20, 200, generator=g))       # n << d, no structure: shrink a lot
     _, a_structured = ledoit_wolf(torch.randn(5000, 10, generator=g) * torch.logspace(-1, 1, 10))  # n >> d
     assert a_isotropic > 0.8 and a_structured < 0.05
+
+
+def test_name_derived_words_count_as_naming_the_entity():
+    def leaks(entity, text):
+        return any(w.startswith(_derived_forms(entity)) for w in _words(text))
+    assert leaks("Brazil", "the Brazilian real") and leaks("drums", "a drummer") and leaks("China", "Chinese tea")
+    assert leaks("nitrogen", "nitrates in soil") and leaks("Saturn", "on Saturday")
+    assert not leaks("heart", "sounds heard through a stethoscope") and not leaks("ant", "an antenna")
 
 
 if __name__ == "__main__":

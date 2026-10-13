@@ -91,10 +91,12 @@ class Model:
         return sorted({i for a in answers for i in self.surface_ids(a)})
 
     def word_rank(self, logits: torch.Tensor, candidate_ids: list[int]) -> int:
-        """1 + the number of word tokens scoring above the best candidate (formatting tokens removed)."""
+        """1 + the number of other word tokens scoring at least as high as the best candidate (formatting tokens
+        removed). Strict, so an exact tie with another word (common in bf16) ranks the candidate 2nd, not 1st."""
         word_logits = logits.masked_fill(self.formatting_mask, float("-inf"))
         best = word_logits[candidate_ids].max()
-        return int((word_logits > best).sum()) + 1
+        word_logits[candidate_ids] = float("-inf")
+        return int((word_logits >= best).sum()) + 1
 
     def top_word(self, logits: torch.Tensor) -> str:
         return self.decoded[int(logits.masked_fill(self.formatting_mask, float("-inf")).argmax())]
