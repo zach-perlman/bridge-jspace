@@ -1,0 +1,87 @@
+{
+  "exp": "exp01_probes",
+  "written_utc": "2026-10-13T18:05:51Z",
+  "question": "Build a bridge probe per entity and measure how much of it the J-lens dictionary explains.",
+  "model": {
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": {
+    "repo": "neuronpedia/jacobian-lens",
+    "revision": "9fa267f841d62aa468dab5b9b38c3dc45a82d863",
+    "file": "qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt",
+    "vector": "v_t = (g * W_U[t]) @ J_l, unit-normalised; g = final-norm gain (1 + weight)"
+  },
+  "data": {
+    "probe_swap": {
+      "file": "data/probe_swap.json",
+      "sha256": "a0edd27ca23f7b4d0fbe90448c2ddcc7457a3d812121bf024ed12a032ff86796"
+    },
+    "entity_prompts": {
+      "file": "data/entity_prompts.json",
+      "sha256": "90c1864ffa5eed139865f0eaead75c5e9ad13a869db90a46fb53a5a8f36a99d4"
+    }
+  },
+  "prompt_format": "raw text, no chat template, no special tokens added",
+  "filter": "keep a prompt if the first word of Qwen's greedy continuation (8 tokens) equals an accepted answer, case-insensitively",
+  "min_kept_prompts_per_entity": 3,
+  "probe": "mean final-token residual (block output) over kept prompts minus the mean over entities",
+  "probe_layers": [
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48
+  ],
+  "decomposition": {
+    "method": "non-negative OMP, NNLS refit each step",
+    "k_atoms": 25,
+    "dictionary": "unit J-lens vectors of non-special tokens whose decode has a letter"
+  },
+  "metrics": [
+    "kept prompts per entity",
+    "fraction of probe variance in the J-part per layer",
+    "chance level of that fraction: the same decomposition of isotropic random directions (one per probed entity per layer, seed 0)",
+    "whether the entity's own token is among its J-part atoms"
+  ],
+  "review": {
+    "seed": 0,
+    "sample_size": 25,
+    "inspect_layer": 32
+  },
+  "deviations": [
+    "J-lens vectors include the final-norm gain g (the reference omits it); g rescales dimensions unevenly, so these are the directions the lens's readout actually uses.",
+    "Added (not in the plan): the random-direction chance level for the J-part share.",
+    "Entity prompts were written by the coding agent and pass the mechanical checks in data.py; the human has not reviewed them yet."
+  ]
+}

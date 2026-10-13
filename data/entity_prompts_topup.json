@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "author": "Written by the coding agent (Claude, Cursor session, 2026-10-13) for this repo.",
+    "purpose": "The one allowed top-up round: extra prompts for the entities with fewer than 3 kept prompts in exp01_probes run v1 (grape 2, June 0, nitrogen 2). Same rules as data/entity_prompts.json, checked on the merged set; nothing in that file is changed or removed.",
+    "round": 2
+  },
+  "entities": {
+    "grape": [
+      {"prompt": "Fact: The skins of the dark fruit pressed for red Bordeaux contain the antioxidant", "answers": ["resveratrol"]},
+      {"prompt": "Fact: Raisins are what you get when this bunch-growing fruit is dried in the", "answers": ["sun"]},
+      {"prompt": "Fact: The bunch-growing fruit of Concord jelly is usually coloured dark", "answers": ["purple", "blue", "violet"]},
+      {"prompt": "Fact: The fruit of the Thompson Seedless variety is commonly eaten fresh or dried into", "answers": ["raisins", "raisin"]}
+    ],
+    "June": [
+      {"prompt": "Fact: The month of the summer solstice in the Northern Hemisphere is named after the Roman goddess", "answers": ["Juno"]},
+      {"prompt": "Fact: The month of Father's Day in America has the longest days of the year, because it contains the summer", "answers": ["solstice"]},
+      {"prompt": "Fact: Brides traditionally favour the month of Juno for their", "answers": ["weddings", "wedding"]},
+      {"prompt": "Fact: The month of the goddess Juno has", "answers": ["30", "thirty"]}
+    ],
+    "nitrogen": [
+      {"prompt": "Fact: In the periodic table, the element directly below the gas fixed by legume root nodules is", "answers": ["phosphorus", "P"]},
+      {"prompt": "Fact: The element with symbol N, when made liquid, is used by chefs to make instant ice", "answers": ["cream"]},
+      {"prompt": "Fact: The Haber process combines hydrogen with the element fixed by legume root nodules to make", "answers": ["ammonia"]},
+      {"prompt": "Fact: At minus 196 degrees Celsius, the gas of symbol N becomes a", "answers": ["liquid"]}
+    ]
+  }
+}

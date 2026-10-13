@@ -1,0 +1,893 @@
+{
+  "meta": {
+    "author": "Written by the coding agent (Claude, Cursor session, 2026-10-13) for this repo.",
+    "purpose": "Prompts that imply one entity without naming it, used to build that entity's bridge probe (mean final-token residual). Each prompt ends just before a one-word answer.",
+    "rules": [
+      "The entity's name (or its plural) never appears in its prompts, and neither does the name of any entity it is swapped with.",
+      "No answer is one of the 97 entities.",
+      "Each prompt cues the entity differently: no content bigram appears in more than 3 of an entity's prompts.",
+      "No prompt shares a content 4-gram (function words removed) with any of the 90 probe-swap test prompts, or a content 3-gram with the test prompts that cue the same entity.",
+      "No answer (and no prompt word) equals an answer that the test items expect from that entity (its answer when it is the bridge, its swap answer when it is the swap target), so a probe cannot carry the test answer directly.",
+      "Cues also avoid paraphrases of the test prompts' own cues for that entity and answer-adjacent words (e.g. 'fifth month' for May).",
+      "Answers vary across an entity's prompts; 'answers' lists accepted one-word alternatives, compared with the first word of Qwen's greedy continuation."
+    ]
+  },
+  "entities": {
+    "Brazil": [
+      {"prompt": "Fact: The dance at the heart of the carnival in Rio de Janeiro is the", "answers": ["samba"]},
+      {"prompt": "Fact: The capital city designed by the architect Oscar Niemeyer in the 1950s is", "answers": ["Brasília", "Brasilia"]},
+      {"prompt": "Fact: The football legend Pelé played most of his club career for the team", "answers": ["Santos"]},
+      {"prompt": "Fact: The giant statue of Christ the Redeemer looks down on the city of Rio de", "answers": ["Janeiro"]},
+      {"prompt": "Fact: The country of São Paulo hosted the 2016 Summer Olympics in the city of", "answers": ["Rio"]},
+      {"prompt": "Fact: The flag of the largest South American country shows a blue globe and the motto Ordem e", "answers": ["Progresso"]},
+      {"prompt": "Fact: The world's largest coffee producer lies on the continent of South", "answers": ["America"]},
+      {"prompt": "Fact: The martial art mixed with dance that developed in Bahia is called", "answers": ["capoeira"]}
+    ],
+    "Mexico": [
+      {"prompt": "Fact: The Aztec capital of Tenochtitlan was built on an island in a", "answers": ["lake"]},
+      {"prompt": "Fact: The spirit distilled from blue agave in the state of Jalisco is", "answers": ["tequila"]},
+      {"prompt": "Fact: The ancient Maya city of Chichén Itzá lies on the peninsula of", "answers": ["Yucatán", "Yucatan"]},
+      {"prompt": "Fact: The beach resort of Cancún faces the", "answers": ["Caribbean"]},
+      {"prompt": "Fact: The painter Frida Kahlo was married to the muralist Diego", "answers": ["Rivera"]},
+      {"prompt": "Fact: The holiday on which families in Oaxaca honour their departed with marigolds is called the Day of the", "answers": ["Dead"]},
+      {"prompt": "Fact: The victory at the battle of Puebla in 1862 is celebrated every year on Cinco de", "answers": ["Mayo"]},
+      {"prompt": "Fact: The river that forms the border between Texas and its southern neighbour is the Rio", "answers": ["Grande"]}
+    ],
+    "Italy": [
+      {"prompt": "Fact: The island at the toe of the boot-shaped peninsula is", "answers": ["Sicily"]},
+      {"prompt": "Fact: The leaning bell tower of Tuscany is in the city of", "answers": ["Pisa"]},
+      {"prompt": "Fact: The city of canals and gondolas on the Adriatic is", "answers": ["Venice"]},
+      {"prompt": "Fact: The volcano that buried Pompeii in AD 79 is Mount", "answers": ["Vesuvius"]},
+      {"prompt": "Fact: The Renaissance city of the Medici, where Michelangelo's David stands, is", "answers": ["Florence"]},
+      {"prompt": "Fact: The fashion capital of Lombardy, home of AC and Inter football clubs, is", "answers": ["Milan"]},
+      {"prompt": "Fact: The car maker from Maranello famous for its racing cars is", "answers": ["Ferrari"]},
+      {"prompt": "Fact: The tiny republic surrounded by Emilia-Romagna and Marche is San", "answers": ["Marino"]}
+    ],
+    "Spain": [
+      {"prompt": "Fact: The Andalusian art of song and dance performed with clapping and castanets is", "answers": ["flamenco"]},
+      {"prompt": "Fact: The rice dish from Valencia cooked with saffron is called", "answers": ["paella"]},
+      {"prompt": "Fact: The range of mountains north of Navarre and Aragon is the", "answers": ["Pyrenees"]},
+      {"prompt": "Fact: The Moorish palace and fortress on a hill in Granada is the", "answers": ["Alhambra"]},
+      {"prompt": "Fact: The festival in Pamplona at which people run ahead of bulls is San", "answers": ["Fermín", "Fermin"]},
+      {"prompt": "Fact: The monarchs Ferdinand and Isabella sponsored the 1492 voyage of Christopher", "answers": ["Columbus"]},
+      {"prompt": "Fact: The painter of Guernica, born in Málaga, was Pablo", "answers": ["Picasso"]},
+      {"prompt": "Fact: The tomato-throwing festival held every August in Buñol is called La", "answers": ["Tomatina"]}
+    ],
+    "Canada": [
+      {"prompt": "Fact: The red leaf on the flag of the country of Vancouver comes from the tree called the", "answers": ["maple"]},
+      {"prompt": "Fact: The sport played by Wayne Gretzky and the Edmonton Oilers is ice", "answers": ["hockey"]},
+      {"prompt": "Fact: The police of Alberta and Manitoba who ride horses are nicknamed the", "answers": ["Mounties"]},
+      {"prompt": "Fact: The waterfalls on the border between New York State and Ontario are called", "answers": ["Niagara"]},
+      {"prompt": "Fact: The capital of the province of British Columbia is", "answers": ["Victoria"]},
+      {"prompt": "Fact: The dish of fries topped with cheese curds and gravy that comes from Quebec is", "answers": ["poutine"]},
+      {"prompt": "Fact: The national animal of the land of the Mounties, a large rodent that builds dams, is the", "answers": ["beaver"]},
+      {"prompt": "Fact: The Rocky Mountain resort town in Alberta's oldest national park is", "answers": ["Banff"]}
+    ],
+    "France": [
+      {"prompt": "Fact: The river that flows past the Eiffel Tower is the", "answers": ["Seine"]},
+      {"prompt": "Fact: The revolution of 1789 began with the storming of the", "answers": ["Bastille"]},
+      {"prompt": "Fact: The sparkling drink named after the region around Reims is", "answers": ["Champagne"]},
+      {"prompt": "Fact: The highest peak of the Alps, above Chamonix, is Mont", "answers": ["Blanc"]},
+      {"prompt": "Fact: The palace of Louis XIV, the Sun King, is at", "answers": ["Versailles"]},
+      {"prompt": "Fact: The long thin loaf sold in every boulangerie is the", "answers": ["baguette"]},
+      {"prompt": "Fact: The museum that houses the Mona Lisa is the", "answers": ["Louvre"]},
+      {"prompt": "Fact: The resort city of the Riviera that hosts a famous film festival is", "answers": ["Cannes"]}
+    ],
+    "Germany": [
+      {"prompt": "Fact: The car makers BMW, Audi and Volkswagen come from a country whose language is", "answers": ["German"]},
+      {"prompt": "Fact: The river that flows past Cologne cathedral is the", "answers": ["Rhine"]},
+      {"prompt": "Fact: The chancellor of the Bundestag from 2005 to 2021 was Angela", "answers": ["Merkel"]},
+      {"prompt": "Fact: The region of cuckoo clocks in Baden-Württemberg is the Black", "answers": ["Forest"]},
+      {"prompt": "Fact: The printing press with movable type was invented in Mainz by Johannes", "answers": ["Gutenberg"]},
+      {"prompt": "Fact: The famous autumn festival of Bavaria with lederhosen and steins is", "answers": ["Oktoberfest"]},
+      {"prompt": "Fact: The sea on whose coast lie the ports of Kiel and Rostock is the", "answers": ["Baltic"]},
+      {"prompt": "Fact: The composer of the Ninth Symphony, born in Bonn, was Ludwig van", "answers": ["Beethoven"]}
+    ],
+    "Japan": [
+      {"prompt": "Fact: The currency of the land of the rising sun is the", "answers": ["yen"]},
+      {"prompt": "Fact: The highest mountain in the land of the samurai is Mount", "answers": ["Fuji"]},
+      {"prompt": "Fact: The traditional robe tied with an obi sash is the", "answers": ["kimono"]},
+      {"prompt": "Fact: The poem of three lines with five, seven and five syllables is called a", "answers": ["haiku"]},
+      {"prompt": "Fact: The former imperial capital famous for its temples and geishas is", "answers": ["Kyoto"]},
+      {"prompt": "Fact: The city destroyed by an atomic bomb on 6 August 1945 was", "answers": ["Hiroshima"]},
+      {"prompt": "Fact: The rice wine often served warm with sushi is called", "answers": ["sake"]},
+      {"prompt": "Fact: The video game company that created Mario and Zelda is", "answers": ["Nintendo"]}
+    ],
+    "China": [
+      {"prompt": "Fact: The longest river of the land of the Ming dynasty is the", "answers": ["Yangtze"]},
+      {"prompt": "Fact: The black-and-white animal of Sichuan that eats bamboo is the giant", "answers": ["panda"]},
+      {"prompt": "Fact: The philosopher of the Analects was", "answers": ["Confucius"]},
+      {"prompt": "Fact: The army of clay soldiers buried with the first Qin emperor is the Terracotta", "answers": ["Army", "Warriors"]},
+      {"prompt": "Fact: The most spoken language in Shanghai and Guangzhou is", "answers": ["Mandarin", "Chinese"]},
+      {"prompt": "Fact: The palace of the Ming and Qing emperors is called the Forbidden", "answers": ["City"]},
+      {"prompt": "Fact: The desert that stretches across Inner Mongolia is the", "answers": ["Gobi"]},
+      {"prompt": "Fact: The ancient trade route that carried silk from Xi'an to the Mediterranean was the Silk", "answers": ["Road"]}
+    ],
+    "India": [
+      {"prompt": "Fact: The white marble mausoleum in Agra built by Shah Jahan is the Taj", "answers": ["Mahal"]},
+      {"prompt": "Fact: The leader of the nonviolent movement against the British Raj was Mahatma", "answers": ["Gandhi"]},
+      {"prompt": "Fact: The Hindi film industry of Mumbai is called", "answers": ["Bollywood"]},
+      {"prompt": "Fact: The sacred river where pilgrims bathe at Varanasi is the", "answers": ["Ganges", "Ganga"]},
+      {"prompt": "Fact: The bat-and-ball sport adored in Mumbai and Kolkata is", "answers": ["cricket"]},
+      {"prompt": "Fact: The most widely spoken language in the land of the Taj Mahal is", "answers": ["Hindi"]},
+      {"prompt": "Fact: The religion of most people in the land of the Ganges is", "answers": ["Hinduism", "Hindu"]},
+      {"prompt": "Fact: The national animal of the land of the Raj is the Bengal", "answers": ["tiger"]}
+    ],
+    "Peru": [
+      {"prompt": "Fact: The Inca citadel high in the Andes above the Urubamba valley is Machu", "answers": ["Picchu"]},
+      {"prompt": "Fact: The Inca empire had its capital in the city of", "answers": ["Cusco", "Cuzco"]},
+      {"prompt": "Fact: The woolly animals herded around Cusco are llamas and", "answers": ["alpacas", "alpaca"]},
+      {"prompt": "Fact: The highest navigable lake in the world, on the border with Bolivia, is Lake", "answers": ["Titicaca"]},
+      {"prompt": "Fact: The Spanish conquistador who conquered the Inca empire was Francisco", "answers": ["Pizarro"]},
+      {"prompt": "Fact: The giant ancient drawings in the desert near Ica are called the", "answers": ["Nazca", "Nasca"]},
+      {"prompt": "Fact: The ocean off the coast of the Inca homeland is the", "answers": ["Pacific"]},
+      {"prompt": "Fact: The dish of raw fish cured in lime juice, famous in the land of Machu Picchu, is", "answers": ["ceviche"]}
+    ],
+    "Egypt": [
+      {"prompt": "Fact: The river that flows past Luxor and Aswan is the", "answers": ["Nile"]},
+      {"prompt": "Fact: The canal that joins the Mediterranean and the Red Sea is the", "answers": ["Suez"]},
+      {"prompt": "Fact: The queen of the Ptolemaic dynasty who allied with Mark Antony was", "answers": ["Cleopatra"]},
+      {"prompt": "Fact: The statue with a lion's body and a pharaoh's head at Giza is the Great", "answers": ["Sphinx"]},
+      {"prompt": "Fact: The boy pharaoh whose tomb Howard Carter found in 1922 was", "answers": ["Tutankhamun", "Tutankhamen", "King"]},
+      {"prompt": "Fact: The stone that helped decode hieroglyphs is named after the town of", "answers": ["Rosetta"]},
+      {"prompt": "Fact: The desert that covers most of the land of the pharaohs is the", "answers": ["Sahara"]},
+      {"prompt": "Fact: The ancient lighthouse called the Pharos stood in the city founded by Alexander the Great,", "answers": ["Alexandria"]}
+    ],
+    "Australia": [
+      {"prompt": "Fact: The planned capital of the land of the kangaroo is", "answers": ["Canberra"]},
+      {"prompt": "Fact: The giant sandstone monolith in the Northern Territory is", "answers": ["Uluru", "Ayers"]},
+      {"prompt": "Fact: The egg-laying mammal with a duck bill from Tasmania and Queensland is the", "answers": ["platypus"]},
+      {"prompt": "Fact: The wild dog of the outback is the", "answers": ["dingo"]},
+      {"prompt": "Fact: The coral reef off the coast of Queensland is the Great Barrier", "answers": ["Reef"]},
+      {"prompt": "Fact: The traditional wind instrument of the Aboriginal people is the", "answers": ["didgeridoo"]},
+      {"prompt": "Fact: The furry marsupial of Victoria that eats eucalyptus leaves is the", "answers": ["koala"]},
+      {"prompt": "Fact: The hemisphere of Perth and Melbourne is the", "answers": ["Southern"]}
+    ],
+    "Russia": [
+      {"prompt": "Fact: The title of the rulers of the Romanov dynasty before 1917 was", "answers": ["tsar", "czar", "Tsar", "Czar"]},
+      {"prompt": "Fact: The deepest lake in the world, in Siberia, is Lake", "answers": ["Baikal"]},
+      {"prompt": "Fact: The alphabet used to write the language of Tolstoy and Pushkin is", "answers": ["Cyrillic"]},
+      {"prompt": "Fact: The party of Lenin that seized power in October 1917 was the", "answers": ["Bolsheviks", "Bolshevik"]},
+      {"prompt": "Fact: The author of War and Peace was Leo", "answers": ["Tolstoy"]},
+      {"prompt": "Fact: The currency of the land of the Kremlin is the", "answers": ["ruble", "rouble"]},
+      {"prompt": "Fact: The city on the Neva founded by Peter the Great is Saint", "answers": ["Petersburg"]},
+      {"prompt": "Fact: The man who has led the Kremlin since 2000 is Vladimir", "answers": ["Putin"]}
+    ],
+    "Greece": [
+      {"prompt": "Fact: The sea between Turkey and the land of the Acropolis is the", "answers": ["Aegean"]},
+      {"prompt": "Fact: The king of the gods who lived on Mount Olympus was", "answers": ["Zeus"]},
+      {"prompt": "Fact: The philosopher who taught Alexander the Great was", "answers": ["Aristotle"]},
+      {"prompt": "Fact: The salty cheese of sheep's milk in a horiatiki salad is", "answers": ["feta"]},
+      {"prompt": "Fact: The poet of the Iliad and the Odyssey was", "answers": ["Homer"]},
+      {"prompt": "Fact: The largest island of the land of the Parthenon, home of the Minoans, is", "answers": ["Crete"]},
+      {"prompt": "Fact: The ancient games held every four years at Olympia were the", "answers": ["Olympic", "Olympics"]},
+      {"prompt": "Fact: The island of Santorini belongs to the island group called the", "answers": ["Cyclades"]}
+    ],
+    "Sweden": [
+      {"prompt": "Fact: The furniture company founded in Älmhult by Ingvar Kamprad is", "answers": ["IKEA", "Ikea"]},
+      {"prompt": "Fact: The pop group that won Eurovision in 1974 with Waterloo was", "answers": ["ABBA"]},
+      {"prompt": "Fact: The currency of the country of Gothenburg and Malmö is the", "answers": ["krona", "krone"]},
+      {"prompt": "Fact: The prizes awarded every December in the capital of the land of IKEA are named after Alfred", "answers": ["Nobel"]},
+      {"prompt": "Fact: The car maker from Gothenburg famous for safety is", "answers": ["Volvo"]},
+      {"prompt": "Fact: The western neighbour of the land of Volvo and IKEA is", "answers": ["Norway"]},
+      {"prompt": "Fact: The region made up of the land of IKEA together with Norway and Denmark is", "answers": ["Scandinavia"]},
+      {"prompt": "Fact: The sea to the east of Gothenburg and Malmö's country is the", "answers": ["Baltic"]}
+    ],
+    "Hungary": [
+      {"prompt": "Fact: The river spanned by the Chain Bridge between Buda and Pest is the", "answers": ["Danube"]},
+      {"prompt": "Fact: The currency of the country of Lake Balaton is the", "answers": ["forint"]},
+      {"prompt": "Fact: The red spice that gives goulash its colour is", "answers": ["paprika"]},
+      {"prompt": "Fact: The colourful puzzle cube invented in 1974 in the land of goulash is named after Ernő", "answers": ["Rubik"]},
+      {"prompt": "Fact: The landlocked country of Lake Balaton borders Slovakia to the north and Austria to the", "answers": ["west"]},
+      {"prompt": "Fact: The famous sweet dessert drink from the Tokaj region is called", "answers": ["Tokaji", "Tokay"]},
+      {"prompt": "Fact: The capital of the land of paprika was formed in 1873 by joining Buda, Óbuda and", "answers": ["Pest"]},
+      {"prompt": "Fact: The national dish of the land of the forint, a beef stew, is", "answers": ["goulash"]}
+    ],
+    "Poland": [
+      {"prompt": "Fact: The currency of the country of Kraków and Gdańsk is the", "answers": ["zloty", "złoty"]},
+      {"prompt": "Fact: The scientist born in 1867 who discovered polonium and radium was Marie", "answers": ["Curie"]},
+      {"prompt": "Fact: The pope born in Wadowice took the name John", "answers": ["Paul"]},
+      {"prompt": "Fact: The trade union founded by Lech Wałęsa at the Gdańsk shipyard was", "answers": ["Solidarity"]},
+      {"prompt": "Fact: The river that flows through Kraków is the", "answers": ["Vistula"]},
+      {"prompt": "Fact: The composer of mazurkas and polonaises was Frédéric", "answers": ["Chopin"]},
+      {"prompt": "Fact: The astronomer from Toruń who put the Sun at the centre was Nicolaus", "answers": ["Copernicus"]},
+      {"prompt": "Fact: The sea on the coast of Gdynia is the", "answers": ["Baltic"]}
+    ],
+    "England": [
+      {"prompt": "Fact: The patron saint of the country of the Three Lions is Saint", "answers": ["George"]},
+      {"prompt": "Fact: The prehistoric stone circle on Salisbury Plain is", "answers": ["Stonehenge"]},
+      {"prompt": "Fact: The country of Manchester and Liverpool shares the island of Great Britain with Wales and", "answers": ["Scotland"]},
+      {"prompt": "Fact: The flag of Saint George is a red cross on a field of", "answers": ["white"]},
+      {"prompt": "Fact: The university city on the River Cam is", "answers": ["Cambridge"]},
+      {"prompt": "Fact: The top football league of Arsenal and Chelsea is the Premier", "answers": ["League"]},
+      {"prompt": "Fact: The sea between Liverpool and Dublin is the", "answers": ["Irish"]},
+      {"prompt": "Fact: The Tudor king who had six wives was Henry the", "answers": ["Eighth", "VIII"]}
+    ],
+    "Vatican": [
+      {"prompt": "Fact: The chapel whose ceiling Michelangelo painted is the", "answers": ["Sistine"]},
+      {"prompt": "Fact: The guards of the papal palace come from", "answers": ["Switzerland"]},
+      {"prompt": "Fact: The great basilica over the tomb of the first pope is named after Saint", "answers": ["Peter"]},
+      {"prompt": "Fact: The official language of papal documents is", "answers": ["Latin"]},
+      {"prompt": "Fact: The church governed from the Apostolic Palace is the Roman", "answers": ["Catholic"]},
+      {"prompt": "Fact: The head of the Holy See is the", "answers": ["Pope", "pope"]},
+      {"prompt": "Fact: The meeting of cardinals that elects a new pontiff is called a", "answers": ["conclave"]},
+      {"prompt": "Fact: The enclave of the Holy See is surrounded by the city of", "answers": ["Rome"]}
+    ],
+    "Singapore": [
+      {"prompt": "Fact: The lion-headed fish statue at Marina Bay is the", "answers": ["Merlion"]},
+      {"prompt": "Fact: The country just across the Johor Strait is", "answers": ["Malaysia"]},
+      {"prompt": "Fact: The founding prime minister of the island nation at the tip of the Malay Peninsula was Lee Kuan", "answers": ["Yew"]},
+      {"prompt": "Fact: The hotel with three towers joined by a rooftop pool is Marina Bay", "answers": ["Sands"]},
+      {"prompt": "Fact: The British founder of the trading port at the tip of the Malay Peninsula in 1819 was Stamford", "answers": ["Raffles"]},
+      {"prompt": "Fact: The airport of the island nation of the Merlion is", "answers": ["Changi"]},
+      {"prompt": "Fact: The strait between the island of the Merlion and Sumatra is the Strait of", "answers": ["Malacca"]},
+      {"prompt": "Fact: The climate of the island nation just north of the equator, home of Sentosa, is", "answers": ["tropical", "hot"]}
+    ],
+    "Belgium": [
+      {"prompt": "Fact: The capital of the country of Bruges and Ghent is", "answers": ["Brussels"]},
+      {"prompt": "Fact: The comic-book reporter with a dog called Snowy is", "answers": ["Tintin"]},
+      {"prompt": "Fact: The language spoken in Flanders is", "answers": ["Dutch", "Flemish"]},
+      {"prompt": "Fact: The northern neighbour of Antwerp's country is the", "answers": ["Netherlands"]},
+      {"prompt": "Fact: The battle of 1815 fought just south of the capital of the country of Bruges was the battle of", "answers": ["Waterloo"]},
+      {"prompt": "Fact: The famous statue of a little boy urinating in Brussels is the Manneken", "answers": ["Pis"]},
+      {"prompt": "Fact: The fried potatoes sold in paper cones in Liège are called", "answers": ["fries", "frites"]},
+      {"prompt": "Fact: The sweet treat sold in Bruges besides waffles is", "answers": ["chocolate", "chocolates"]}
+    ],
+    "Philadelphia": [
+      {"prompt": "Fact: The building where the Declaration of Independence was signed is Independence", "answers": ["Hall"]},
+      {"prompt": "Fact: The boxer who ran up the steps of the art museum in the 1976 film was", "answers": ["Rocky"]},
+      {"prompt": "Fact: The colony founder after whom the state of the City of Brotherly Love is named was William", "answers": ["Penn"]},
+      {"prompt": "Fact: The Major League team that plays at Citizens Bank Park is the", "answers": ["Phillies"]},
+      {"prompt": "Fact: The NBA team of the city of Independence Hall is the", "answers": ["76ers", "Sixers"]},
+      {"prompt": "Fact: The river on the eastern edge of the city of Independence Hall is the", "answers": ["Delaware"]},
+      {"prompt": "Fact: The founding father who flew a kite in a storm and is buried in the City of Brotherly Love was Benjamin", "answers": ["Franklin"]},
+      {"prompt": "Fact: The city where the First Continental Congress met in 1774 is nicknamed the City of Brotherly", "answers": ["Love"]}
+    ],
+    "Seattle": [
+      {"prompt": "Fact: The market by Elliott Bay famous for fish-throwing is Pike Place", "answers": ["Market"]},
+      {"prompt": "Fact: The volcano that towers over the Puget Sound region is Mount", "answers": ["Rainier"]},
+      {"prompt": "Fact: The software company headquartered in Redmond, next to the largest city of the Pacific Northwest, is", "answers": ["Microsoft"]},
+      {"prompt": "Fact: The music genre of Nirvana and Soundgarden is", "answers": ["grunge"]},
+      {"prompt": "Fact: The coffee chain that opened its first store at Pike Place Market in 1971 is", "answers": ["Starbucks"]},
+      {"prompt": "Fact: The NFL team of the Emerald City of the Pacific Northwest is the", "answers": ["Seahawks"]},
+      {"prompt": "Fact: The aircraft maker founded in 1916 on Puget Sound is", "answers": ["Boeing"]},
+      {"prompt": "Fact: The weather the Emerald City is famous for is", "answers": ["rain", "rainy"]}
+    ],
+    "May": [
+      {"prompt": "Fact: The month whose first day is International Workers' Day comes right after", "answers": ["April"]},
+      {"prompt": "Fact: The US holiday for fallen soldiers on the last Monday of the month after April is called", "answers": ["Memorial"]},
+      {"prompt": "Fact: The horse race run at Churchill Downs in the month after April is the Kentucky", "answers": ["Derby"]},
+      {"prompt": "Fact: The zodiac sign of someone born in the first week of the month after April is", "answers": ["Taurus"]},
+      {"prompt": "Fact: In the Southern Hemisphere, the month of the Kentucky Derby falls in the season of", "answers": ["autumn", "fall"]},
+      {"prompt": "Fact: The month of the Chelsea Flower Show is named after the goddess", "answers": ["Maia"]},
+      {"prompt": "Fact: In the Northern Hemisphere, the month of Mother's Day in America falls in the season of", "answers": ["spring"]}
+    ],
+    "July": [
+      {"prompt": "Fact: The month in which the United States celebrates Independence Day is followed by", "answers": ["August"]},
+      {"prompt": "Fact: The month originally called Quintilis was renamed in honour of Julius", "answers": ["Caesar"]},
+      {"prompt": "Fact: The zodiac sign of a person born on American Independence Day is", "answers": ["Cancer"]},
+      {"prompt": "Fact: The month of Bastille Day has thirty-one", "answers": ["days"]},
+      {"prompt": "Fact: The month when Neil Armstrong first walked on the lunar surface comes right before", "answers": ["August"]},
+      {"prompt": "Fact: The American holiday in the month of Bastille Day is celebrated with", "answers": ["fireworks"]},
+      {"prompt": "Fact: The month of Canada Day and Bastille Day is usually the hottest month in the Northern", "answers": ["Hemisphere"]}
+    ],
+    "June": [
+      {"prompt": "Fact: The month of D-Day, the Normandy landings, has thirty", "answers": ["days"]},
+      {"prompt": "Fact: The month of D-Day is named after the Roman goddess", "answers": ["Juno"]},
+      {"prompt": "Fact: The zodiac sign of someone born in the first week of the month of Father's Day is", "answers": ["Gemini"]},
+      {"prompt": "Fact: The zodiac sign that begins around the 21st of the month of the northern solstice is", "answers": ["Cancer"]},
+      {"prompt": "Fact: The month in which Pride is celebrated in America contains the northern", "answers": ["solstice"]},
+      {"prompt": "Fact: The month of Father's Day in America is the most popular month for", "answers": ["weddings"]}
+    ],
+    "March": [
+      {"prompt": "Fact: The month in which St. Patrick's Day is celebrated comes right after", "answers": ["February"]},
+      {"prompt": "Fact: The month of the northern spring equinox is followed by", "answers": ["April"]},
+      {"prompt": "Fact: The Ides of the month when Julius Caesar was murdered fell on day number", "answers": ["15", "15th", "fifteen"]},
+      {"prompt": "Fact: The zodiac sign of someone born in the first week of the month of St. Patrick's Day is", "answers": ["Pisces"]},
+      {"prompt": "Fact: In the Southern Hemisphere, the month of the northern spring equinox falls in the season of", "answers": ["autumn", "fall"]},
+      {"prompt": "Fact: The month of International Women's Day comes right before", "answers": ["April"]},
+      {"prompt": "Fact: The month whose Ides Julius Caesar was warned to beware has thirty-one", "answers": ["days"]}
+    ],
+    "Friday": [
+      {"prompt": "Fact: The day of the week right before the weekend is followed by", "answers": ["Saturday"]},
+      {"prompt": "Fact: The day before Saturday is called viernes in", "answers": ["Spanish"]},
+      {"prompt": "Fact: The French name for the day before Saturday is", "answers": ["vendredi"]},
+      {"prompt": "Fact: The day of Islamic congregational prayer is followed by", "answers": ["Saturday"]},
+      {"prompt": "Fact: Counting Sunday as the first day, the day before Saturday is day number", "answers": ["6", "six"]},
+      {"prompt": "Fact: The Muslim day of communal prayer at the mosque is called Jumu'ah in", "answers": ["Arabic"]}
+    ],
+    "Thursday": [
+      {"prompt": "Fact: The day that takes its name from Thor comes right after", "answers": ["Wednesday"]},
+      {"prompt": "Fact: Counting Sunday as the first day, the day of Thor is day number", "answers": ["5", "five"]},
+      {"prompt": "Fact: The weekday named for Thor is called Donnerstag in", "answers": ["German"]},
+      {"prompt": "Fact: The day of Thor is called jueves in", "answers": ["Spanish"]},
+      {"prompt": "Fact: The US holiday held on the weekday of Thor in late November is", "answers": ["Thanksgiving"]},
+      {"prompt": "Fact: The French name for the weekday of Thor is", "answers": ["jeudi"]}
+    ],
+    "Christmas": [
+      {"prompt": "Fact: The religion that celebrates the nativity of Jesus on the 25th is", "answers": ["Christianity", "Christian"]},
+      {"prompt": "Fact: The reindeer with a red nose who guides Santa's sleigh is", "answers": ["Rudolph"]},
+      {"prompt": "Fact: The day after Santa's holiday is called Boxing", "answers": ["Day"]},
+      {"prompt": "Fact: The town where Jesus was born, remembered in nativity plays, is", "answers": ["Bethlehem"]},
+      {"prompt": "Fact: The season of preparation before the nativity feast, with a calendar of little doors, is", "answers": ["Advent"]},
+      {"prompt": "Fact: The traditional roast bird of the British nativity feast is", "answers": ["turkey", "goose"]},
+      {"prompt": "Fact: The miser visited by three ghosts in Dickens's A Carol is Ebenezer", "answers": ["Scrooge"]},
+      {"prompt": "Fact: The plant with red leaves sold for Santa's holiday, named after Joel Poinsett, is the", "answers": ["poinsettia"]}
+    ],
+    "Easter": [
+      {"prompt": "Fact: The animal that brings chocolate eggs at the feast of the resurrection is the", "answers": ["bunny", "rabbit", "hare"]},
+      {"prompt": "Fact: The feast of the resurrection is preceded by forty days of", "answers": ["Lent"]},
+      {"prompt": "Fact: The Friday before the resurrection feast is called", "answers": ["Good"]},
+      {"prompt": "Fact: The Sunday a week before the resurrection feast is called", "answers": ["Palm"]},
+      {"prompt": "Fact: The Jewish festival close in date to the resurrection feast is", "answers": ["Passover"]},
+      {"prompt": "Fact: The painted objects that children hunt for on Resurrection Sunday are", "answers": ["eggs"]},
+      {"prompt": "Fact: The day of the week on which the resurrection of Jesus is celebrated is", "answers": ["Sunday"]}
+    ],
+    "winter": [
+      {"prompt": "Fact: The season of snowmen and sledging begins in the north in the month of", "answers": ["December"]},
+      {"prompt": "Fact: The season of snow and frost comes right after", "answers": ["autumn", "fall"]},
+      {"prompt": "Fact: The Olympic Games of snow and ice include skiing and ice", "answers": ["hockey", "skating"]},
+      {"prompt": "Fact: The shortest day of the year in the north, around 21 December, is called the", "answers": ["solstice"]},
+      {"prompt": "Fact: The white flakes that fall in the season of sledging are called", "answers": ["snow", "snowflakes"]},
+      {"prompt": "Fact: Animals that sleep through the snowy season are said to", "answers": ["hibernate"]},
+      {"prompt": "Fact: The illness that spreads most in the frosty season, with fever and aches, is the", "answers": ["flu", "influenza"]}
+    ],
+    "summer": [
+      {"prompt": "Fact: In the north, the season of beach holidays and long days follows", "answers": ["spring"]},
+      {"prompt": "Fact: The longest day of the year in the north is called the", "answers": ["solstice"]},
+      {"prompt": "Fact: The insect that chirps on warm nights in the beach season is the", "answers": ["cricket"]},
+      {"prompt": "Fact: In the hottest season, people protect their skin from the sun with", "answers": ["sunscreen", "sunblock"]},
+      {"prompt": "Fact: In Australia, the hottest season begins in the month of", "answers": ["December"]},
+      {"prompt": "Fact: In the warm season of school holidays, many people go to the beach to", "answers": ["swim"]},
+      {"prompt": "Fact: In the hottest season, ice cream melts quickly because of the", "answers": ["heat"]}
+    ],
+    "Saturn": [
+      {"prompt": "Fact: The NASA probe that orbited the gas giant of Titan from 2004 to 2017 was", "answers": ["Cassini"]},
+      {"prompt": "Fact: The largest moon of the planet visited by the Cassini probe is", "answers": ["Titan"]},
+      {"prompt": "Fact: The planet of Titan and Enceladus is so light that it would float in", "answers": ["water"]},
+      {"prompt": "Fact: The planet of the moon Enceladus is made mostly of", "answers": ["hydrogen"]},
+      {"prompt": "Fact: The next planet out from the Sun after the planet of Titan is", "answers": ["Uranus"]},
+      {"prompt": "Fact: The day of the week named for the planet of Titan is", "answers": ["Saturday"]},
+      {"prompt": "Fact: The gas giant of Titan was first observed through a telescope by Galileo in", "answers": ["1610"]}
+    ],
+    "Jupiter": [
+      {"prompt": "Fact: The king of the Roman gods gave his name to the largest planet; in Greek myth he is called", "answers": ["Zeus"]},
+      {"prompt": "Fact: The four big moons of the largest planet were discovered in 1610 by", "answers": ["Galileo"]},
+      {"prompt": "Fact: The gas giant of Ganymede and Io is made mostly of", "answers": ["hydrogen"]},
+      {"prompt": "Fact: The largest moon of the biggest planet is", "answers": ["Ganymede"]},
+      {"prompt": "Fact: The volcanic moon of the largest planet is", "answers": ["Io"]},
+      {"prompt": "Fact: The NASA probe that has orbited the biggest planet since 2016 is", "answers": ["Juno"]},
+      {"prompt": "Fact: The comet that crashed into the biggest planet in 1994 was Shoemaker-", "answers": ["Levy"]}
+    ],
+    "Mars": [
+      {"prompt": "Fact: The tallest volcano in the Solar System is Olympus", "answers": ["Mons"]},
+      {"prompt": "Fact: The two small moons of the planet explored by the Curiosity rover are Phobos and", "answers": ["Deimos"]},
+      {"prompt": "Fact: The NASA rover that landed in Jezero crater in 2021 is named", "answers": ["Perseverance"]},
+      {"prompt": "Fact: The thin atmosphere of the planet of Olympus Mons is mostly carbon", "answers": ["dioxide"]},
+      {"prompt": "Fact: The rusty dust of the planet of Phobos and Deimos is iron", "answers": ["oxide"]},
+      {"prompt": "Fact: The billionaire whose company SpaceX aims to send people to the planet of Olympus Mons is Elon", "answers": ["Musk"]},
+      {"prompt": "Fact: The huge canyon system on the planet of the Curiosity rover is Valles", "answers": ["Marineris"]}
+    ],
+    "Earth": [
+      {"prompt": "Fact: The only planet known to support life is mostly covered by", "answers": ["water", "oceans", "ocean"]},
+      {"prompt": "Fact: The planet we live on travels around the Sun once every", "answers": ["year"]},
+      {"prompt": "Fact: The planet humans live on turns once on its axis every", "answers": ["day"]},
+      {"prompt": "Fact: The centre of our home planet is called the", "answers": ["core"]},
+      {"prompt": "Fact: The shape of our home planet is roughly a", "answers": ["sphere"]},
+      {"prompt": "Fact: The force that pulls us to the ground of our world is", "answers": ["gravity"]},
+      {"prompt": "Fact: The layer of air around our home planet is the", "answers": ["atmosphere"]},
+      {"prompt": "Fact: The age of the world of humankind is about 4.5 billion", "answers": ["years"]}
+    ],
+    "Venus": [
+      {"prompt": "Fact: The second planet from the Sun has a thick atmosphere of carbon", "answers": ["dioxide"]},
+      {"prompt": "Fact: The brightest planet in the night sky is often called the morning", "answers": ["star"]},
+      {"prompt": "Fact: The Greek goddess who matches the Roman goddess of beauty is", "answers": ["Aphrodite"]},
+      {"prompt": "Fact: The armless statue of the Roman goddess of beauty from Milos is in the", "answers": ["Louvre"]},
+      {"prompt": "Fact: The painter of The Birth of the Roman goddess of beauty on a shell was Sandro", "answers": ["Botticelli"]},
+      {"prompt": "Fact: The clouds of the hottest planet are made of sulfuric", "answers": ["acid"]},
+      {"prompt": "Fact: The planet that spins backwards takes longer to rotate once than to go once around the", "answers": ["Sun"]}
+    ],
+    "moon": [
+      {"prompt": "Fact: The first person to walk on the lunar surface was Neil", "answers": ["Armstrong"]},
+      {"prompt": "Fact: The NASA programme that landed astronauts on the lunar surface was called", "answers": ["Apollo"]},
+      {"prompt": "Fact: The pull of our natural satellite on the oceans causes the", "answers": ["tides"]},
+      {"prompt": "Fact: The bowl-shaped holes made by impacts on the lunar surface are called", "answers": ["craters"]},
+      {"prompt": "Fact: When our natural satellite passes in front of the Sun, there is a solar", "answers": ["eclipse"]},
+      {"prompt": "Fact: Werewolves are said to change on the night of a", "answers": ["full"]},
+      {"prompt": "Fact: The Roman goddess of the night-sky satellite was", "answers": ["Luna", "Diana"]},
+      {"prompt": "Fact: The lunar plain where Apollo 11 landed is the Sea of", "answers": ["Tranquility", "Tranquillity"]}
+    ],
+    "Europa": [
+      {"prompt": "Fact: The Phoenician princess carried off by a white bull gave her name to the continent of", "answers": ["Europe"]},
+      {"prompt": "Fact: The princess abducted by Zeus in the form of a bull was taken to the island of", "answers": ["Crete"]},
+      {"prompt": "Fact: The princess abducted by Zeus as a bull bore him a son who became King", "answers": ["Minos"]},
+      {"prompt": "Fact: The princess on the bull was the sister of Cadmus and daughter of the king of", "answers": ["Tyre", "Phoenicia"]},
+      {"prompt": "Fact: The princess riding a bull appears on the Greek two-euro", "answers": ["coin"]},
+      {"prompt": "Fact: The icy satellite named after the princess carried off by a bull may hide a salty", "answers": ["ocean"]},
+      {"prompt": "Fact: The icy world named after the princess of the bull myth is a top place to search for alien", "answers": ["life"]}
+    ],
+    "mercury": [
+      {"prompt": "Fact: The chemical symbol of the metal in old thermometers is", "answers": ["Hg"]},
+      {"prompt": "Fact: Hatters poisoned by the metal used in felt-making gave rise to the phrase as", "answers": ["mad"]},
+      {"prompt": "Fact: Dental fillings made with the metal of old barometers are called", "answers": ["amalgam", "amalgams"]},
+      {"prompt": "Fact: The ore from which the metal of thermometers is extracted is", "answers": ["cinnabar"]},
+      {"prompt": "Fact: The toxic metal with symbol Hg harms the nervous", "answers": ["system"]},
+      {"prompt": "Fact: The element with symbol Hg sits in the periodic table just below zinc and", "answers": ["cadmium"]},
+      {"prompt": "Fact: The metal of old thermometers and barometers is very", "answers": ["toxic", "poisonous", "dense", "heavy"]}
+    ],
+    "iron": [
+      {"prompt": "Fact: The metal that rusts in wet air is the main ingredient of", "answers": ["steel"]},
+      {"prompt": "Fact: The orange-brown coating that forms on nails left in the rain is called", "answers": ["rust"]},
+      {"prompt": "Fact: Nails and paper clips made of steel's main metal are attracted to a", "answers": ["magnet", "magnets"]},
+      {"prompt": "Fact: A lack of the metal found in spinach and red meat in the diet causes", "answers": ["anaemia", "anemia"]},
+      {"prompt": "Fact: The main ore of the metal in steel is", "answers": ["hematite", "haematite", "magnetite"]},
+      {"prompt": "Fact: The metal in the core of our planet, together with nickel, gives the planet its magnetic", "answers": ["field"]},
+      {"prompt": "Fact: The metal of blacksmiths' anvils and horseshoes, when heated, glows", "answers": ["red", "orange"]}
+    ],
+    "oxygen": [
+      {"prompt": "Fact: The element that divers breathe from tanks has the chemical symbol", "answers": ["O"]},
+      {"prompt": "Fact: The element we breathe forms, with hydrogen, the molecule of", "answers": ["water"]},
+      {"prompt": "Fact: The molecule of three atoms of the element in divers' tanks is", "answers": ["ozone"]},
+      {"prompt": "Fact: Red blood cells carry the element we breathe using the protein", "answers": ["hemoglobin", "haemoglobin"]},
+      {"prompt": "Fact: The element that fires need to burn was discovered in 1774 by Joseph", "answers": ["Priestley"]},
+      {"prompt": "Fact: Mountaineers climbing Everest carry bottles of the element we breathe because the air is", "answers": ["thin"]},
+      {"prompt": "Fact: The French chemist who named the element that supports combustion was Antoine", "answers": ["Lavoisier"]}
+    ],
+    "nitrogen": [
+      {"prompt": "Fact: The element with symbol N is in group 15 of the periodic table with", "answers": ["phosphorus"]},
+      {"prompt": "Fact: The element that bacteria in the root nodules of peas fix from the air is turned into", "answers": ["ammonia"]},
+      {"prompt": "Fact: The element that boils at minus 196 degrees Celsius is used by doctors to freeze", "answers": ["warts", "skin"]},
+      {"prompt": "Fact: Bubbles of the inert element that dissolves in divers' blood at depth cause the", "answers": ["bends"]},
+      {"prompt": "Fact: Bags of crisps are filled with an inert element whose symbol is", "answers": ["N"]},
+      {"prompt": "Fact: The element in the nitrates that farmers spread on fields is a building block of all", "answers": ["proteins", "protein", "living"]}
+    ],
+    "calcium": [
+      {"prompt": "Fact: The mineral in milk needed for strong teeth has the chemical symbol", "answers": ["Ca"]},
+      {"prompt": "Fact: The dairy mineral is absorbed by the body with the help of vitamin", "answers": ["D"]},
+      {"prompt": "Fact: The metal of chalk and limestone is an alkaline earth metal, like magnesium and", "answers": ["strontium", "barium"]},
+      {"prompt": "Fact: The dissolved metal from limestone makes tap water", "answers": ["hard"]},
+      {"prompt": "Fact: Eggshells and seashells are made mostly of the carbonate of the metal found in", "answers": ["chalk", "limestone"]}
+    ],
+    "carbon": [
+      {"prompt": "Fact: The soft form of the element in pencil lead is", "answers": ["graphite"]},
+      {"prompt": "Fact: The element of graphite has the chemical symbol", "answers": ["C"]},
+      {"prompt": "Fact: The black fossil fuel made mostly of the element in pencil lead is", "answers": ["coal"]},
+      {"prompt": "Fact: The element of graphite, alloyed with iron, makes", "answers": ["steel"]},
+      {"prompt": "Fact: The element of soot and charcoal is in the same group of the periodic table as", "answers": ["silicon"]},
+      {"prompt": "Fact: The football-shaped molecules made of sixty atoms of the element of graphite are called", "answers": ["fullerenes", "buckyballs", "buckminsterfullerene"]},
+      {"prompt": "Fact: The element of charcoal forms four bonds because it has four valence", "answers": ["electrons"]}
+    ],
+    "sodium": [
+      {"prompt": "Fact: The soft metal that explodes in water is in the same alkali group as", "answers": ["potassium", "lithium"]},
+      {"prompt": "Fact: Table salt is the chloride of a metal whose flame is", "answers": ["yellow", "orange"]},
+      {"prompt": "Fact: The metal of table salt is combined in it with the element", "answers": ["chlorine"]},
+      {"prompt": "Fact: The reactive alkali metal of salt is stored under", "answers": ["oil", "kerosene", "paraffin"]},
+      {"prompt": "Fact: Baking soda is the bicarbonate of the alkali metal also found in table", "answers": ["salt"]},
+      {"prompt": "Fact: Eating too much of the alkali metal of salt raises blood", "answers": ["pressure"]},
+      {"prompt": "Fact: The orange glow of old street lamps comes from the vapour of the metal of", "answers": ["salt"]}
+    ],
+    "gold": [
+      {"prompt": "Fact: The purity of the metal of Olympic first prizes is measured in", "answers": ["karats", "carats"]},
+      {"prompt": "Fact: The metal of the 1849 California rush is famous because it does not", "answers": ["rust", "tarnish", "corrode"]},
+      {"prompt": "Fact: The alchemists tried to make the metal of Fort Knox from", "answers": ["lead"]},
+      {"prompt": "Fact: The metal stored at Fort Knox is kept in bars called", "answers": ["bullion", "ingots"]},
+      {"prompt": "Fact: The metal of the 1849 rush can be beaten into very thin", "answers": ["leaf", "sheets", "foil"]},
+      {"prompt": "Fact: The king who turned everything he touched into the metal of Fort Knox was", "answers": ["Midas"]},
+      {"prompt": "Fact: The Klondike rush of 1896 brought prospectors to the territory of", "answers": ["Yukon"]}
+    ],
+    "silver": [
+      {"prompt": "Fact: The metal of second-place Olympic medals has the chemical symbol", "answers": ["Ag"]},
+      {"prompt": "Fact: The metal of the twenty-fifth wedding anniversary is the best conductor of", "answers": ["electricity", "heat"]},
+      {"prompt": "Fact: The metal of second-place medals is the traditional gift for the twenty-fifth wedding", "answers": ["anniversary"]},
+      {"prompt": "Fact: In legend, bullets made of the metal of runner-up medals are used to kill", "answers": ["werewolves", "vampires"]},
+      {"prompt": "Fact: The huge mines of Potosí that produced the white metal of Spanish coins are in present-day", "answers": ["Bolivia"]},
+      {"prompt": "Fact: The white metal of cutlery and jewellery tarnishes black when it reacts with", "answers": ["sulfur", "sulphur"]},
+      {"prompt": "Fact: The country named after the Latin word argentum for this metal is", "answers": ["Argentina"]}
+    ],
+    "turtle": [
+      {"prompt": "Fact: The leader of the four cartoon ninja reptiles named after Renaissance artists is", "answers": ["Leonardo"]},
+      {"prompt": "Fact: The cartoon ninja reptiles live in the sewers of New York and love to eat", "answers": ["pizza"]},
+      {"prompt": "Fact: Baby sea reptiles that hatch at night on beaches crawl to the", "answers": ["ocean", "sea"]},
+      {"prompt": "Fact: The leatherback marine reptile often mistakes plastic bags for", "answers": ["jellyfish"]},
+      {"prompt": "Fact: The giant reptiles of the Galápagos can live for more than a hundred", "answers": ["years"]},
+      {"prompt": "Fact: Female sea reptiles return to the beach where they hatched to lay their", "answers": ["eggs"]}
+    ],
+    "snake": [
+      {"prompt": "Fact: The legless reptile that tempted Eve in Eden urged her to eat from the tree of", "answers": ["knowledge"]},
+      {"prompt": "Fact: The hooded reptile charmed by flute players in street markets is the", "answers": ["cobra"]},
+      {"prompt": "Fact: The fangs of the rattling desert reptile inject", "answers": ["venom", "poison"]},
+      {"prompt": "Fact: The legless reptile that swallows its prey whole regularly sheds its", "answers": ["skin"]},
+      {"prompt": "Fact: The house at Hogwarts whose emblem is a green serpent is", "answers": ["Slytherin"]},
+      {"prompt": "Fact: The giant constrictor of the Amazon is the green", "answers": ["anaconda"]},
+      {"prompt": "Fact: The reptile that bit Cleopatra was a deadly", "answers": ["asp", "cobra", "viper"]},
+      {"prompt": "Fact: St. Patrick is said to have driven all the serpents out of", "answers": ["Ireland"]}
+    ],
+    "buffalo": [
+      {"prompt": "Fact: The shaggy national mammal of the United States was hunted almost to extinction for its", "answers": ["hides", "hide", "meat", "fur", "skins"]},
+      {"prompt": "Fact: The Lakota and Comanche hunted the shaggy beasts of the prairie on", "answers": ["horseback", "horses", "horse"]},
+      {"prompt": "Fact: The shaggy beast on the back of the Indian Head nickel mostly eats", "answers": ["grass", "grasses"]},
+      {"prompt": "Fact: The national park where the American bison roams near Old Faithful is", "answers": ["Yellowstone"]},
+      {"prompt": "Fact: The huge shaggy animal of the prairie has a big hump on its", "answers": ["back", "shoulders"]},
+      {"prompt": "Fact: The shaggy animal of the American prairie is a close relative of domestic", "answers": ["cattle", "cows"]},
+      {"prompt": "Fact: The shaggy animal called tatanka by the Lakota was sacred to the chief Sitting", "answers": ["Bull"]}
+    ],
+    "spider": [
+      {"prompt": "Fact: The superhero bitten by a radioactive arachnid is Peter", "answers": ["Parker"]},
+      {"prompt": "Fact: The black widow is famous for its deadly", "answers": ["venom", "bite"]},
+      {"prompt": "Fact: In the children's book Charlotte's Web, the arachnid saves a pig named", "answers": ["Wilbur"]},
+      {"prompt": "Fact: The fear of arachnids is called", "answers": ["arachnophobia"]},
+      {"prompt": "Fact: In Greek myth, the weaver Arachne was punished by the goddess", "answers": ["Athena", "Minerva"]},
+      {"prompt": "Fact: Insects trapped in the silk of the arachnid become its", "answers": ["prey", "food", "meal", "dinner"]},
+      {"prompt": "Fact: The silk threads of the arachnid are, weight for weight, stronger than", "answers": ["steel"]}
+    ],
+    "elephant": [
+      {"prompt": "Fact: The tusks of the African savanna giant are made of", "answers": ["ivory"]},
+      {"prompt": "Fact: The baby of the tusked giant is called a", "answers": ["calf"]},
+      {"prompt": "Fact: The tusked giant is said never to", "answers": ["forget"]},
+      {"prompt": "Fact: The flying baby with big ears in the 1941 Disney film is", "answers": ["Dumbo"]},
+      {"prompt": "Fact: The Hindu god with the head of a tusked animal is", "answers": ["Ganesha", "Ganesh"]},
+      {"prompt": "Fact: The Carthaginian general who crossed the Alps with war beasts with tusks was", "answers": ["Hannibal"]},
+      {"prompt": "Fact: The tusked giant flaps its huge ears to keep", "answers": ["cool"]}
+    ],
+    "swan": [
+      {"prompt": "Fact: The fairy tale of the ugly duckling that grew into a graceful bird was written by Hans Christian", "answers": ["Andersen"]},
+      {"prompt": "Fact: The baby of the bird that the ugly duckling became is called a", "answers": ["cygnet"]},
+      {"prompt": "Fact: The graceful water birds of Western Australia are famous for being", "answers": ["black"]},
+      {"prompt": "Fact: In Greek myth, Zeus took the form of a graceful bird to seduce", "answers": ["Leda"]},
+      {"prompt": "Fact: The male of the bird into which the ugly duckling grew is called a", "answers": ["cob"]},
+      {"prompt": "Fact: The constellation named after a graceful flying water bird is", "answers": ["Cygnus"]},
+      {"prompt": "Fact: The graceful birds on the River Thames are traditionally owned by the", "answers": ["King", "Queen", "Crown", "monarch"]},
+      {"prompt": "Fact: The graceful water birds are said to mate for", "answers": ["life"]}
+    ],
+    "eagle": [
+      {"prompt": "Fact: The Apollo 11 lunar module, named after a bird of prey, was flown by Neil Armstrong and Buzz", "answers": ["Aldrin"]},
+      {"prompt": "Fact: The bird of prey sacred to Zeus carried off the Trojan boy", "answers": ["Ganymede"]},
+      {"prompt": "Fact: The golden raptor catches hares with its", "answers": ["talons", "claws"]},
+      {"prompt": "Fact: The bird of prey on the standards of the Roman legions builds a huge nest called an", "answers": ["eyrie", "aerie"]},
+      {"prompt": "Fact: The flag of Mexico shows a raptor perched on a", "answers": ["cactus"]},
+      {"prompt": "Fact: The raptor on the coat of arms of Germany is coloured", "answers": ["black"]}
+    ],
+    "owl": [
+      {"prompt": "Fact: The bird that was the symbol of the goddess Athena stands for", "answers": ["wisdom"]},
+      {"prompt": "Fact: In the Harry Potter books, Hedwig delivers", "answers": ["mail", "letters", "post"]},
+      {"prompt": "Fact: The bird of Athena coughs up pellets of fur and", "answers": ["bones"]},
+      {"prompt": "Fact: The bird of Athena has very large forward-facing", "answers": ["eyes"]},
+      {"prompt": "Fact: A group of the birds of Athena is called a", "answers": ["parliament"]},
+      {"prompt": "Fact: The barn-dwelling bird of prey that flies silently hunts mice and", "answers": ["voles", "rats", "shrews"]},
+      {"prompt": "Fact: The bird of Athena flies almost silently thanks to soft", "answers": ["feathers"]}
+    ],
+    "bear": [
+      {"prompt": "Fact: The girl who ate the porridge in the house of three furry animals was", "answers": ["Goldilocks"]},
+      {"prompt": "Fact: The grizzly catches fish such as", "answers": ["salmon"]},
+      {"prompt": "Fact: The Arctic predator with white fur hunts", "answers": ["seals"]},
+      {"prompt": "Fact: Ursa Major contains the star pattern called the Big", "answers": ["Dipper"]},
+      {"prompt": "Fact: The stuffed toy animal named after Theodore Roosevelt is called a", "answers": ["teddy"]},
+      {"prompt": "Fact: Winnie-the-Pooh's best friend is a small pig called", "answers": ["Piglet"]},
+      {"prompt": "Fact: The baby of a grizzly is called a", "answers": ["cub"]}
+    ],
+    "ant": [
+      {"prompt": "Fact: In Aesop's fable, the hardworking insect that stored food all summer was contrasted with the lazy", "answers": ["grasshopper"]},
+      {"prompt": "Fact: The colony of tiny insects that lives in a hill of soil is ruled by a", "answers": ["queen"]},
+      {"prompt": "Fact: The acid in the sting of red fire insects is called", "answers": ["formic"]},
+      {"prompt": "Fact: The tiny colony insects can lift many times their own", "answers": ["weight"]},
+      {"prompt": "Fact: The tiny colony insects whose soldiers have big jaws are related to bees and", "answers": ["wasps"]},
+      {"prompt": "Fact: Leaf-cutter insects carry leaves underground to grow", "answers": ["fungus", "fungi"]},
+      {"prompt": "Fact: The tiny insects that march in lines follow trails of chemicals called", "answers": ["pheromones"]}
+    ],
+    "butter": [
+      {"prompt": "Fact: The fat churned from cream is clarified in Indian cooking to make", "answers": ["ghee"]},
+      {"prompt": "Fact: The sauce of egg yolks and melted churned cream served on eggs Benedict is", "answers": ["hollandaise"]},
+      {"prompt": "Fact: The plant-based substitute for churned cream fat is", "answers": ["margarine"]},
+      {"prompt": "Fact: The French pastry made with layers of the churned dairy fat is the", "answers": ["croissant"]},
+      {"prompt": "Fact: The churned dairy product from Normandy is sold salted or", "answers": ["unsalted"]},
+      {"prompt": "Fact: The Irish brand of grass-fed churned dairy fat is", "answers": ["Kerrygold"]}
+    ],
+    "honey": [
+      {"prompt": "Fact: The sweet syrup made from nectar is stored in six-sided cells of", "answers": ["wax", "beeswax"]},
+      {"prompt": "Fact: Winnie-the-Pooh keeps his favourite sweet food in a", "answers": ["pot", "jar"]},
+      {"prompt": "Fact: The sweet sticky food made in hives never", "answers": ["spoils", "rots", "expires", "goes"]},
+      {"prompt": "Fact: The alcoholic drink made by fermenting hive syrup is", "answers": ["mead"]},
+      {"prompt": "Fact: The hive-made syrup from New Zealand famous for healing is", "answers": ["manuka", "Mānuka"]},
+      {"prompt": "Fact: The sweet syrup that insects make from nectar is mostly the sugars glucose and", "answers": ["fructose"]},
+      {"prompt": "Fact: The sweetener of hives is often stirred into", "answers": ["tea"]}
+    ],
+    "grape": [
+      {"prompt": "Fact: The fruit that grows in bunches becomes, when dried, a", "answers": ["raisin"]},
+      {"prompt": "Fact: The bunches of fruit that the fox could not reach in Aesop's fable were called", "answers": ["sour"]},
+      {"prompt": "Fact: Sultanas and currants are dried forms of a fruit that grows in", "answers": ["bunches", "clusters"]},
+      {"prompt": "Fact: The fruit trodden underfoot at harvest in Bordeaux comes in green and", "answers": ["red", "purple", "black"]},
+      {"prompt": "Fact: Botanically, the bunch-growing fruit of Concord jelly is a", "answers": ["berry"]}
+    ],
+    "apple": [
+      {"prompt": "Fact: The fruit that Snow White bit had been poisoned by the evil", "answers": ["Queen", "queen", "witch"]},
+      {"prompt": "Fact: The fruit eaten once a day to keep the doctor away is often baked into a", "answers": ["pie"]},
+      {"prompt": "Fact: The alcoholic drink made from fermented Granny Smith juice is", "answers": ["cider"]},
+      {"prompt": "Fact: The Granny Smith variety of orchard fruit is coloured", "answers": ["green"]},
+      {"prompt": "Fact: The archer who shot the fruit off his son's head was William", "answers": ["Tell"]},
+      {"prompt": "Fact: The computer company of the iPhone, named after a fruit, was founded by Steve", "answers": ["Jobs"]},
+      {"prompt": "Fact: The forbidden fruit of the Garden of Eden was eaten by Adam and", "answers": ["Eve"]}
+    ],
+    "kidney": [
+      {"prompt": "Fact: Patients whose renal function fails need a machine for", "answers": ["dialysis"]},
+      {"prompt": "Fact: The organs made of microscopic nephrons sit in the lower", "answers": ["back", "abdomen"]},
+      {"prompt": "Fact: The ureters carry fluid from the organs that dialysis replaces to the", "answers": ["bladder"]},
+      {"prompt": "Fact: The glands that sit on top of the organs damaged by renal failure are the", "answers": ["adrenal"]},
+      {"prompt": "Fact: Painful hard deposits in the renal system are called", "answers": ["stones"]},
+      {"prompt": "Fact: The organs of the renal system remove a nitrogen waste called", "answers": ["urea"]}
+    ],
+    "liver": [
+      {"prompt": "Fact: The largest internal organ of the body makes a digestive fluid called", "answers": ["bile"]},
+      {"prompt": "Fact: Heavy drinking can scar the bile-making organ, causing", "answers": ["cirrhosis"]},
+      {"prompt": "Fact: The organ that makes bile stores it in the", "answers": ["gallbladder", "gall"]},
+      {"prompt": "Fact: The Titan whose regrowing organ was eaten each day by Zeus's bird was", "answers": ["Prometheus"]},
+      {"prompt": "Fact: Yellow skin caused by a failing bile-making organ is called", "answers": ["jaundice"]},
+      {"prompt": "Fact: The fattened goose organ that is a French delicacy is called foie", "answers": ["gras"]},
+      {"prompt": "Fact: The organ that breaks down alcohol stores sugar as", "answers": ["glycogen"]}
+    ],
+    "heart": [
+      {"prompt": "Fact: A doctor listens to the beating organ with a", "answers": ["stethoscope"]},
+      {"prompt": "Fact: Doctors who specialise in the beating organ are called", "answers": ["cardiologists"]},
+      {"prompt": "Fact: The red symbol drawn on Valentine's Day cards stands for", "answers": ["love"]},
+      {"prompt": "Fact: A stopped cardiac rhythm can be restored by an electric shock from a", "answers": ["defibrillator"]},
+      {"prompt": "Fact: The largest artery leaving the left ventricle is the", "answers": ["aorta"]},
+      {"prompt": "Fact: The natural pacemaker of the beating organ is the sinoatrial", "answers": ["node"]},
+      {"prompt": "Fact: The left and right atria sit above the", "answers": ["ventricles"]}
+    ],
+    "lung": [
+      {"prompt": "Fact: The organs we breathe with are made of tiny air sacs called", "answers": ["alveoli"]},
+      {"prompt": "Fact: Smoking tobacco damages the breathing organs and can cause", "answers": ["cancer"]},
+      {"prompt": "Fact: The muscle below the breathing organs that helps us inhale is the", "answers": ["diaphragm"]},
+      {"prompt": "Fact: The windpipe divides into two tubes called", "answers": ["bronchi"]},
+      {"prompt": "Fact: Fish lack our breathing organs; instead they breathe with", "answers": ["gills"]},
+      {"prompt": "Fact: The disease of the respiratory system once treated in sanatoriums is", "answers": ["tuberculosis"]},
+      {"prompt": "Fact: The organs of respiration take in air and release carbon", "answers": ["dioxide"]}
+    ],
+    "stomach": [
+      {"prompt": "Fact: A painful sore in the lining of the gastric organ is an", "answers": ["ulcer"]},
+      {"prompt": "Fact: The gastric enzyme that breaks down proteins is", "answers": ["pepsin"]},
+      {"prompt": "Fact: The digestive organ that rumbles when you need to eat is a sign that you are", "answers": ["hungry"]},
+      {"prompt": "Fact: Cows digest grass with a digestive organ that has four", "answers": ["compartments", "chambers", "parts", "sections"]},
+      {"prompt": "Fact: The organ of digestion is protected from its own juices by a layer of", "answers": ["mucus"]},
+      {"prompt": "Fact: The gastric organ empties food into the small", "answers": ["intestine"]}
+    ],
+    "brain": [
+      {"prompt": "Fact: The organ of the nervous system is made of cells called", "answers": ["neurons"]},
+      {"prompt": "Fact: The cerebrum is divided into a left and a right", "answers": ["hemisphere"]},
+      {"prompt": "Fact: The main organ of the central nervous system connects to the body through the spinal", "answers": ["cord"]},
+      {"prompt": "Fact: The part of the central nervous organ that controls balance, at the back, is the", "answers": ["cerebellum"]},
+      {"prompt": "Fact: A sudden blockage of flow to the organ of the mind is called a", "answers": ["stroke"]},
+      {"prompt": "Fact: The organ of the mind uses about twenty percent of the body's", "answers": ["energy"]},
+      {"prompt": "Fact: The electrical activity of the organ of the mind is recorded with an", "answers": ["EEG", "electroencephalogram"]}
+    ],
+    "trumpet": [
+      {"prompt": "Fact: The instrument that Louis Armstrong played is blown through a cup-shaped", "answers": ["mouthpiece"]},
+      {"prompt": "Fact: The instrument of Miles Davis is usually pitched in B", "answers": ["flat"]},
+      {"prompt": "Fact: The bell of Dizzy Gillespie's horn was famously", "answers": ["bent"]},
+      {"prompt": "Fact: Louis Armstrong's instrument is in the same family as the trombone and the", "answers": ["tuba", "horn", "French"]},
+      {"prompt": "Fact: The instrument of Wynton Marsalis is made of", "answers": ["brass"]}
+    ],
+    "drums": [
+      {"prompt": "Fact: The percussion kit of Ringo Starr includes metal plates called", "answers": ["cymbals"]},
+      {"prompt": "Fact: The large bass part of the percussion kit is played with a foot", "answers": ["pedal"]},
+      {"prompt": "Fact: The steel percussion instruments made from oil barrels come from", "answers": ["Trinidad"]},
+      {"prompt": "Fact: The percussion instruments of marching soldiers kept them in", "answers": ["step"]},
+      {"prompt": "Fact: The skins stretched over percussion instruments are called", "answers": ["heads", "drumheads", "membranes"]},
+      {"prompt": "Fact: The famous drummer of Led Zeppelin was John", "answers": ["Bonham"]},
+      {"prompt": "Fact: The African percussion instrument shaped like a goblet is the", "answers": ["djembe"]}
+    ],
+    "piano": [
+      {"prompt": "Fact: The instrument of Chopin's nocturnes has strings struck by felt", "answers": ["hammers"]},
+      {"prompt": "Fact: The concert grand instrument that Chopin played has three", "answers": ["pedals"]},
+      {"prompt": "Fact: The instrument of Chopin's nocturnes replaced the older plucked instrument called the", "answers": ["harpsichord"]},
+      {"prompt": "Fact: The black and white ivories of a concert grand number", "answers": ["88", "eighty"]},
+      {"prompt": "Fact: The person who adjusts the strings of Liszt's instrument is a", "answers": ["tuner"]}
+    ],
+    "violin": [
+      {"prompt": "Fact: The bowed instrument made famous by Stradivari is held under the", "answers": ["chin"]},
+      {"prompt": "Fact: The bow of Paganini's instrument is strung with horse", "answers": ["hair"]},
+      {"prompt": "Fact: The slightly larger relative of the highest-pitched bowed instrument of the orchestra is the", "answers": ["viola"]},
+      {"prompt": "Fact: The bow of Paganini's instrument is rubbed with a resin called", "answers": ["rosin"]},
+      {"prompt": "Fact: Itzhak Perlman's bowed instrument is made mostly of", "answers": ["wood", "maple", "spruce"]}
+    ],
+    "guitar": [
+      {"prompt": "Fact: The electric instrument played by Jimi Hendrix is plugged into an", "answers": ["amplifier", "amp"]},
+      {"prompt": "Fact: The instrument of Jimi Hendrix is plucked with a", "answers": ["pick", "plectrum"]},
+      {"prompt": "Fact: The Stratocaster of Eric Clapton was made by", "answers": ["Fender"]},
+      {"prompt": "Fact: The small four-stringed Hawaiian relative of the flamenco instrument is the", "answers": ["ukulele"]},
+      {"prompt": "Fact: The metal strips on the neck of the flamenco instrument are called", "answers": ["frets"]},
+      {"prompt": "Fact: The Les Paul electric instrument is made by", "answers": ["Gibson"]}
+    ],
+    "basketball": [
+      {"prompt": "Fact: The sport of Michael Jordan is played on a", "answers": ["court"]},
+      {"prompt": "Fact: Points in the sport of LeBron James are scored by throwing a ball through a", "answers": ["hoop", "ring", "basket"]},
+      {"prompt": "Fact: The professional league of Kobe Bryant and Magic Johnson is the", "answers": ["NBA"]},
+      {"prompt": "Fact: Shaquille O'Neal was famous for his powerful slam", "answers": ["dunks", "dunk"]},
+      {"prompt": "Fact: In the sport of Stephen Curry, a shot from behind the arc is worth", "answers": ["three", "3"]},
+      {"prompt": "Fact: The team from Boston in the sport of Larry Bird is the", "answers": ["Celtics"]},
+      {"prompt": "Fact: The Lakers center Kareem Abdul-Jabbar was famous for his sky", "answers": ["hook"]}
+    ],
+    "baseball": [
+      {"prompt": "Fact: The sport of Babe Ruth is played with a wooden", "answers": ["bat"]},
+      {"prompt": "Fact: The player who throws the ball to the batter in the sport of the Yankees is the", "answers": ["pitcher"]},
+      {"prompt": "Fact: A hit that leaves the park in the sport of Babe Ruth is a home", "answers": ["run"]},
+      {"prompt": "Fact: The championship of Major League play between teams like the Yankees and Dodgers is the World", "answers": ["Series"]},
+      {"prompt": "Fact: In the sport of Derek Jeter, three strikes means the batter is", "answers": ["out"]},
+      {"prompt": "Fact: The leather glove worn by a catcher is called a", "answers": ["mitt"]},
+      {"prompt": "Fact: The bases in the sport of Babe Ruth are first, second, third and", "answers": ["home"]}
+    ],
+    "tennis": [
+      {"prompt": "Fact: In the sport of Roger Federer, a score of zero is called", "answers": ["love"]},
+      {"prompt": "Fact: The French Open in the sport of Rafael Nadal is played on", "answers": ["clay"]},
+      {"prompt": "Fact: A serve that the opponent cannot touch in the sport of Serena Williams is an", "answers": ["ace"]},
+      {"prompt": "Fact: A score of forty-all in the sport of Novak Djokovic is called", "answers": ["deuce"]},
+      {"prompt": "Fact: The four biggest tournaments in the sport of Steffi Graf are called the Grand", "answers": ["Slam", "Slams"]},
+      {"prompt": "Fact: The sport of Andre Agassi is played over a", "answers": ["net"]},
+      {"prompt": "Fact: The version of the sport of the Williams sisters played by four players is", "answers": ["doubles"]},
+      {"prompt": "Fact: The sport of Björn Borg uses a fuzzy", "answers": ["ball", "yellow"]}
+    ],
+    "golf": [
+      {"prompt": "Fact: The sport of Tiger Woods is played on a", "answers": ["course"]},
+      {"prompt": "Fact: One stroke under par in the sport of Jack Nicklaus is a", "answers": ["birdie"]},
+      {"prompt": "Fact: The sport of Rory McIlroy was first played in", "answers": ["Scotland"]},
+      {"prompt": "Fact: The small peg the ball sits on in the sport of Arnold Palmer is a", "answers": ["tee"]},
+      {"prompt": "Fact: The tournament at Augusta in the sport of Tiger Woods is the", "answers": ["Masters"]},
+      {"prompt": "Fact: The person who carries the bag in the sport of Phil Mickelson is a", "answers": ["caddie", "caddy"]},
+      {"prompt": "Fact: The famous Old Course in the sport of Tiger Woods is in St", "answers": ["Andrews"]},
+      {"prompt": "Fact: In the sport of Seve Ballesteros, the short grass around the hole is the", "answers": ["green"]}
+    ],
+    "wine": [
+      {"prompt": "Fact: The drink of Bordeaux and Burgundy is made in a", "answers": ["vineyard", "winery"]},
+      {"prompt": "Fact: The drink of Chianti and Rioja comes in red, white and", "answers": ["rosé", "rose", "pink"]},
+      {"prompt": "Fact: The restaurant expert who advises guests on clarets and Burgundies is a", "answers": ["sommelier"]},
+      {"prompt": "Fact: The bottles of Bordeaux are closed with a", "answers": ["cork"]},
+      {"prompt": "Fact: The Greek god of the vintage and revelry was", "answers": ["Dionysus"]},
+      {"prompt": "Fact: The Roman god of the vintage and revelry was", "answers": ["Bacchus"]},
+      {"prompt": "Fact: An opened bottle of claret turns into vinegar when exposed to", "answers": ["air"]}
+    ],
+    "beer": [
+      {"prompt": "Fact: The brewed drink of malt and hops is served in a", "answers": ["pint", "glass", "mug"]},
+      {"prompt": "Fact: The plant whose flowers give the bitter taste to lager and ale is", "answers": ["hops"]},
+      {"prompt": "Fact: The famous drink of the Oktoberfest is made with water, malt, hops and", "answers": ["yeast"]},
+      {"prompt": "Fact: The building where lager is brewed is a", "answers": ["brewery"]},
+      {"prompt": "Fact: The foamy layer on top of a pint of ale is called the", "answers": ["head", "foam"]},
+      {"prompt": "Fact: Lager is stored in large", "answers": ["barrels", "kegs", "casks", "tanks", "vats"]},
+      {"prompt": "Fact: The dark brewed drink from Dublin made by Guinness is a", "answers": ["stout"]}
+    ],
+    "Lincoln": [
+      {"prompt": "Fact: The president who issued the Emancipation Proclamation was shot by John Wilkes", "answers": ["Booth"]},
+      {"prompt": "Fact: The president known as Honest Abe belonged to the party called the", "answers": ["Republican", "Republicans"]},
+      {"prompt": "Fact: The sixteenth US president was assassinated at Ford's", "answers": ["Theatre", "Theater"]},
+      {"prompt": "Fact: The president born in a log cabin in 1809 was born in the state of", "answers": ["Kentucky"]},
+      {"prompt": "Fact: Honest Abe is carved on Mount Rushmore in the state of South", "answers": ["Dakota"]},
+      {"prompt": "Fact: The president known as Honest Abe practised law in the state of", "answers": ["Illinois"]},
+      {"prompt": "Fact: The tall president famous for his stovepipe hat worked to abolish", "answers": ["slavery"]},
+      {"prompt": "Fact: The face of the sixteenth president appears on the US penny and the five-dollar", "answers": ["bill", "note"]}
+    ],
+    "Napoleon": [
+      {"prompt": "Fact: The Corsican-born emperor was exiled first to Elba and finally to Saint", "answers": ["Helena"]},
+      {"prompt": "Fact: The emperor who crowned himself in Notre-Dame in 1804 is often wrongly said to have been", "answers": ["short"]},
+      {"prompt": "Fact: The first wife of the emperor crowned in 1804 was", "answers": ["Josephine", "Joséphine"]},
+      {"prompt": "Fact: The emperor exiled to Elba won a famous victory in 1805 at", "answers": ["Austerlitz"]},
+      {"prompt": "Fact: In portraits, the hand of the emperor exiled to Elba is tucked inside his", "answers": ["coat", "waistcoat", "jacket", "vest"]},
+      {"prompt": "Fact: The Corsican general's army retreated in 1812 from the burning city of", "answers": ["Moscow"]},
+      {"prompt": "Fact: The Corsican emperor died in exile in 1821 on an island in the South", "answers": ["Atlantic"]}
+    ],
+    "Shakespeare": [
+      {"prompt": "Fact: The plays of the Bard of Avon were staged at the theatre called the", "answers": ["Globe"]},
+      {"prompt": "Fact: The author of the sonnets and King Lear wrote verse in iambic", "answers": ["pentameter"]},
+      {"prompt": "Fact: The wife of the Bard of Avon was Anne", "answers": ["Hathaway"]},
+      {"prompt": "Fact: The author of Othello lived during the reign of Queen", "answers": ["Elizabeth"]},
+      {"prompt": "Fact: In the tragedy by the author of King Lear, Othello is the Moor of", "answers": ["Venice"]},
+      {"prompt": "Fact: The Bard of Avon wrote a play about the Roman dictator Julius", "answers": ["Caesar"]},
+      {"prompt": "Fact: The writer of A Midsummer Night's Dream was born in Stratford-upon-", "answers": ["Avon"]},
+      {"prompt": "Fact: In The Tempest, the exiled magician duke is", "answers": ["Prospero"]}
+    ],
+    "Einstein": [
+      {"prompt": "Fact: The physicist of E = mc² won the Nobel Prize for explaining the photoelectric", "answers": ["effect"]},
+      {"prompt": "Fact: The physicist of E equals mc squared spent his last years at", "answers": ["Princeton"]},
+      {"prompt": "Fact: The physicist famous for a photo of himself sticking out his tongue once worked as a patent clerk in", "answers": ["Bern", "Switzerland"]},
+      {"prompt": "Fact: The physicist who warned President Roosevelt in 1939 about the atomic bomb had fled the Nazis to the United", "answers": ["States"]},
+      {"prompt": "Fact: The name of the physicist of E equals mc squared is used as a byword for a", "answers": ["genius"]},
+      {"prompt": "Fact: The patent-clerk physicist published four famous papers in 1905, his miracle", "answers": ["year"]}
+    ],
+    "Darwin": [
+      {"prompt": "Fact: The naturalist who sailed on HMS Beagle studied finches on the", "answers": ["Galápagos", "Galapagos"]},
+      {"prompt": "Fact: The naturalist of the Beagle voyage wrote the book On the Origin of", "answers": ["Species"]},
+      {"prompt": "Fact: The naturalist of the Beagle studied the beaks of birds called", "answers": ["finches"]},
+      {"prompt": "Fact: The naturalist of HMS Beagle is buried in Westminster", "answers": ["Abbey"]},
+      {"prompt": "Fact: The naturalist of the Beagle appeared on the British ten-pound", "answers": ["note"]},
+      {"prompt": "Fact: The Beagle naturalist married his cousin Emma", "answers": ["Wedgwood"]}
+    ],
+    "Mozart": [
+      {"prompt": "Fact: The composer of The Marriage of Figaro and Don Giovanni was from the country of", "answers": ["Austria"]},
+      {"prompt": "Fact: The rival of the composer of Don Giovanni in a famous 1984 film was Antonio", "answers": ["Salieri"]},
+      {"prompt": "Fact: The composer of Eine kleine Nachtmusik died young in the city of", "answers": ["Vienna"]},
+      {"prompt": "Fact: The composer of The Marriage of Figaro left unfinished his", "answers": ["Requiem"]},
+      {"prompt": "Fact: The composer of Eine kleine Nachtmusik was taught music by his father", "answers": ["Leopold"]},
+      {"prompt": "Fact: The composer of Così fan tutte wrote most of his operas in", "answers": ["Italian", "German"]},
+      {"prompt": "Fact: The composer of the Requiem in D minor belongs to the musical era called the", "answers": ["Classical"]}
+    ],
+    "Newton": [
+      {"prompt": "Fact: The scientist who described the three laws of motion wrote his Principia in", "answers": ["Latin"]},
+      {"prompt": "Fact: The scientist of universal gravitation studied at the University of", "answers": ["Cambridge"]},
+      {"prompt": "Fact: The first of the famous laws of motion is also called the law of", "answers": ["inertia"]},
+      {"prompt": "Fact: The author of the Principia invented a branch of mathematics called", "answers": ["calculus"]},
+      {"prompt": "Fact: The scientist who split white light into colours used a glass", "answers": ["prism"]},
+      {"prompt": "Fact: The scientist who built the first reflecting telescope became master of the Royal", "answers": ["Mint"]},
+      {"prompt": "Fact: The scientist of universal gravitation was knighted by Queen", "answers": ["Anne"]}
+    ],
+    "Michigan": [
+      {"prompt": "Fact: The US state of Detroit is shaped like a", "answers": ["mitten"]},
+      {"prompt": "Fact: The mitten-shaped state of Ann Arbor touches four of the Great", "answers": ["Lakes"]},
+      {"prompt": "Fact: The capital of the state of Ann Arbor and Grand Rapids is", "answers": ["Lansing"]},
+      {"prompt": "Fact: The state of Grand Rapids is split into the Lower and the", "answers": ["Upper"]},
+      {"prompt": "Fact: The bridge across the Straits joining the two peninsulas of the state of Detroit is the", "answers": ["Mackinac"]},
+      {"prompt": "Fact: The famous soul record label founded in Detroit by Berry Gordy was", "answers": ["Motown"]},
+      {"prompt": "Fact: The Motor City's state borders the Canadian province of", "answers": ["Ontario"]}
+    ],
+    "Wisconsin": [
+      {"prompt": "Fact: The US state of the Green Bay Packers has its capital in", "answers": ["Madison"]},
+      {"prompt": "Fact: The largest city of the state of the Packers is", "answers": ["Milwaukee"]},
+      {"prompt": "Fact: Fans of the Green Bay team wear foam hats shaped like wedges of", "answers": ["cheese"]},
+      {"prompt": "Fact: The cheese state of Milwaukee lies in the region of the US called the", "answers": ["Midwest"]},
+      {"prompt": "Fact: The brewing company famously based in Milwaukee is", "answers": ["Miller", "Pabst", "Schlitz"]},
+      {"prompt": "Fact: The state of Madison borders Minnesota to the west and Illinois to the", "answers": ["south"]},
+      {"prompt": "Fact: The motorcycle company founded in Milwaukee is Harley-", "answers": ["Davidson"]}
+    ],
+    "ruby": [
+      {"prompt": "Fact: Dorothy's slippers in the film of The Wizard of Oz are made of a gem that is the same mineral as", "answers": ["sapphire", "sapphires"]},
+      {"prompt": "Fact: The precious corundum coloured by chromium is the gem of wedding anniversary number", "answers": ["40", "forty"]},
+      {"prompt": "Fact: The finest gems of the colour called pigeon's blood come from the country of", "answers": ["Myanmar", "Burma"]},
+      {"prompt": "Fact: The corundum gem of Dorothy's slippers gets its colour from the element", "answers": ["chromium"]},
+      {"prompt": "Fact: Sapphires and the gems of Dorothy's slippers are both forms of the mineral", "answers": ["corundum"]}
+    ],
+    "pearl": [
+      {"prompt": "Fact: The gem that grows inside a mollusc forms around a grain of", "answers": ["sand"]},
+      {"prompt": "Fact: The shiny material lining shells that makes up the gem of molluscs is called", "answers": ["nacre"]},
+      {"prompt": "Fact: The Persian Gulf state long famous for diving for the gems of molluscs is", "answers": ["Bahrain"]},
+      {"prompt": "Fact: The gem of molluscs is the traditional gift for the thirtieth wedding", "answers": ["anniversary"]},
+      {"prompt": "Fact: The gems of molluscs that are grown on farms are called", "answers": ["cultured"]}
+    ],
+    "diamond": [
+      {"prompt": "Fact: The hardest natural gem, set in engagement rings, is weighed in", "answers": ["carats", "karats"]},
+      {"prompt": "Fact: The country with the famous mines of the hardest gem near Kimberley is South", "answers": ["Africa"]},
+      {"prompt": "Fact: The hardest gem is the traditional gift for the sixtieth wedding", "answers": ["anniversary"]},
+      {"prompt": "Fact: The Belgian city famous for cutting the hardest gems is", "answers": ["Antwerp"]},
+      {"prompt": "Fact: The hardest mineral scores ten on the scale named after Friedrich", "answers": ["Mohs"]},
+      {"prompt": "Fact: The famous large blue gem of the hardest kind, said to be cursed, is the", "answers": ["Hope"]},
+      {"prompt": "Fact: Marilyn Monroe sang that the hardest gems are a girl's best", "answers": ["friend"]}
+    ],
+    "oak": [
+      {"prompt": "Fact: The hardwood tree whose barrels age whisky gives it a taste of", "answers": ["vanilla"]},
+      {"prompt": "Fact: The sacred tree of the Druids often hosts a parasitic plant called", "answers": ["mistletoe"]},
+      {"prompt": "Fact: The hardwood used to build the hulls of Nelson's warships came from a tree whose leaves have rounded", "answers": ["lobes", "edges"]},
+      {"prompt": "Fact: The mighty tree of the English proverb that grows from a little seed is a symbol of", "answers": ["strength"]},
+      {"prompt": "Fact: The hardwood tree of the Druids can live for many hundreds of", "answers": ["years"]}
+    ],
+    "pine": [
+      {"prompt": "Fact: The needled evergreen whose sap makes turpentine produces a sticky", "answers": ["resin", "sap"]},
+      {"prompt": "Fact: The Scots variety of the needled tree is the national tree of", "answers": ["Scotland"]},
+      {"prompt": "Fact: The forests of needled conifers that cover Siberia and Scandinavia are called the", "answers": ["taiga", "boreal"]},
+      {"prompt": "Fact: The fresh scent of the needled tree is used in cleaning products for its", "answers": ["fragrance", "scent", "smell", "aroma"]},
+      {"prompt": "Fact: The pale soft wood of the needled evergreen is used to make cheap", "answers": ["furniture"]}
+    ],
+    "bicycle": [
+      {"prompt": "Fact: The pedal-powered vehicle has a chain that turns the rear", "answers": ["wheel"]},
+      {"prompt": "Fact: Cyclists should protect their heads by wearing a", "answers": ["helmet"]},
+      {"prompt": "Fact: A cyclist stops by squeezing the", "answers": ["brakes", "brake"]},
+      {"prompt": "Fact: The seat of a pedal cycle is called a", "answers": ["saddle"]},
+      {"prompt": "Fact: The tyres of a road cycle are filled with", "answers": ["air"]},
+      {"prompt": "Fact: The pedal-powered vehicle is the most popular way to get around in", "answers": ["Amsterdam", "Copenhagen"]},
+      {"prompt": "Fact: The old pedal cycle with a huge front wheel was called the penny-", "answers": ["farthing"]}
+    ],
+    "train": [
+      {"prompt": "Fact: The vehicle that runs on rails stops to pick up passengers at a", "answers": ["station"]},
+      {"prompt": "Fact: The underground railway of a big city is called the", "answers": ["subway", "metro", "underground", "tube", "Underground", "Tube", "Metro"]},
+      {"prompt": "Fact: The railway express at Platform Nine and Three-Quarters takes Harry Potter to", "answers": ["Hogwarts"]},
+      {"prompt": "Fact: Railway carriages run on two steel", "answers": ["rails", "tracks"]},
+      {"prompt": "Fact: The luxury railway in Agatha Christie's murder mystery is the Orient", "answers": ["Express"]},
+      {"prompt": "Fact: The fast Japanese railway is called the", "answers": ["Shinkansen", "bullet"]},
+      {"prompt": "Fact: Passengers on the railway must first buy a", "answers": ["ticket"]}
+    ]
+  }
+}
