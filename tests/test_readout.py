@@ -139,6 +139,7 @@ def test_continuation_first_token_respects_trailing_space():
     assert continuation_first_token(tok, "spoken is ", "Portuguese") == 100 + ord("P")  # "Port..." split
 
 
-def test_word_tokens_falls_back_to_first_token():
+def test_word_tokens_falls_back_to_first_content_token():
+    # Like Qwen's " 26" -> " ", "2", "6": the bare space must not count as reading the word.
     w = word_tokens(_Tok(), "Hungary")
-    assert w.ids == (100 + ord(" "), 100 + ord("H")) and not w.single_token
+    assert w.ids == (100 + ord("H"),) and w.pieces == ("H",) and not w.single_token

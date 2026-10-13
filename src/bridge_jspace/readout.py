@@ -21,8 +21,10 @@ class WordTokens:
     """Token ids that count as the lens "saying" `word`.
 
     Surface variants are `" word"` and `"word"`. If any variant is a single token, only the
-    single-token variants count; otherwise the first token of each variant counts and
-    `single_token` is False (a fragment like "Port" is weak evidence for "Portuguese").
+    single-token variants count; otherwise the first non-whitespace token of each variant counts and
+    `single_token` is False (a fragment like "Port" or the digit "2" for "26" is weak evidence).
+    Whitespace-only pieces are skipped: Qwen splits " 26" into " ", "2", "6", and the rank of a bare
+    " " says nothing about the number.
     """
 
     word: str
@@ -37,9 +39,13 @@ def word_tokens(tokenizer, word: str) -> WordTokens:
     if not encoded:
         raise ValueError(f"{word!r} encodes to no tokens")
     single = [e[0] for e in encoded if len(e) == 1]
-    ids = tuple(dict.fromkeys(single or [e[0] for e in encoded]))
+    ids = tuple(dict.fromkeys(single or [_first_content_token(tokenizer, e) for e in encoded]))
     pieces = tuple(tokenizer.decode([i]) for i in ids)
     return WordTokens(word=word, ids=ids, pieces=pieces, single_token=bool(single))
+
+
+def _first_content_token(tokenizer, ids: list[int]) -> int:
+    return next((i for i in ids if tokenizer.decode([i]).strip()), ids[0])
 
 
 def continuation_first_token(tokenizer, prompt: str, word: str) -> int:

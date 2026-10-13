@@ -30,7 +30,10 @@ def git_state() -> dict[str, str | bool]:
     def _git(*args: str) -> str:
         return subprocess.run(["git", *args], capture_output=True, text=True, check=False).stdout.strip()
 
-    return {"sha": _git("rev-parse", "HEAD"), "dirty": bool(_git("status", "--porcelain"))}
+    # results/ is excluded: earlier runs' output dirs are untracked until committed, and would mark
+    # every later run dirty although the code is unchanged.
+    status = _git("status", "--porcelain", "--", ".", ":(exclude)results")
+    return {"sha": _git("rev-parse", "HEAD"), "dirty": bool(status)}
 
 
 def package_versions() -> dict[str, str | None]:
