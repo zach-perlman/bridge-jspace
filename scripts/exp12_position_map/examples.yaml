@@ -16,6 +16,10 @@ params:
   position_layers: [8, 16, 24, 32, 40, 48, 56, 62]
   n_positions: 8  # position table: the last 8 tokens
   position_readers: [jlens]
+  slice_pages: true  # jlens interactive pages in slices/ (not committed)
+  slice_readers: [jlens, jpp]
+  slice_top_n: 10
+  slice_max_tracked: 40
   fact_prompt: "Fact: The capital of France is"
   fact_expected: " Paris"
   parity_prompts:

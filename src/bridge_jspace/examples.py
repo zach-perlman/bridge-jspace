@@ -84,6 +84,7 @@ class LensExamples(Experiment):
                     for layer in pos_layers
                     if layer in layers[rname]
                 }
+            rec["slices"] = self._slice_pages(ex) if p.get("slice_pages") else {}
             records.append(rec)
 
         self.save_json("examples.json", {"groups": [asdict(g) for g in groups], "examples": records})
@@ -96,6 +97,30 @@ class LensExamples(Experiment):
             "groups": {g.key: g.n_total for g in groups},
             "n_examples": len(records),
         }
+
+    def _slice_pages(self, ex: Example) -> dict[str, str]:
+        """jlens's own interactive layer x position page per lens reader, the example's words pinned. Written to
+        slices/ (self-contained HTML with d3 inlined; large, so not committed: see .gitignore)."""
+        from jlens.vis import build_page, compute_slice
+
+        p, out = self.params, {}
+        pinned = {i for ids in ex.word_ids.values() for i in ids}
+        (self.run_dir / "slices").mkdir(exist_ok=True)
+        for rname in p["slice_readers"]:
+            lens = self.lenses.get(rname)
+            if lens is None:
+                continue
+            sd = compute_slice(
+                self.model.lm, lens, ex.prompt, top_n=p["slice_top_n"], max_tracked=p["slice_max_tracked"],
+                pinned_token_ids=pinned, mask_display=True,
+            )  # fmt: skip
+            page, _, _ = build_page(
+                sd, ex.prompt, title=f"{ex.name}: {_title(rname)}", description=ex.why, mode="embed"
+            )
+            rel = f"slices/{ex.name}__{rname}.html"
+            (self.run_dir / rel).write_text(page)
+            out[rname] = rel
+        return out
 
 
 @torch.no_grad()
@@ -171,6 +196,14 @@ def _render_example(r: dict[str, Any], p: dict[str, Any]) -> list[str]:
         "",
         f"Bridge **{w['bridge']}** -> answer *{w['answer']}*{ctrl}. {info}.",
         f"Why this group: {r['why']}",
+        *(
+            [
+                "Interactive layer x position view (jlens, pinned words; open locally): "
+                + " · ".join(f"[{_title(k)}]({v})" for k, v in r.get("slices", {}).items())
+            ]
+            if r.get("slices")
+            else []
+        ),
         "",
         f"**Last token** `{_show(r['tokens'][-1])}`: top-{p['top_k']} words per layer",
         "",
@@ -340,6 +373,13 @@ def _card_html(r: dict[str, Any], group: str, p: dict[str, Any]) -> str:
         f'<p class="meta">bridge <span class="b">{_esc(w["bridge"])}</span> → answer '
         f'<span class="a">{_esc(w["answer"])}</span>{ctrl}</p>',
         f'<p class="meta">{_esc(r["why"])}</p>',
+        (
+            '<p class="meta">Interactive layer × position view (jlens; click a cell to pin a token): '
+            + " · ".join(f'<a href="{_esc(v)}" target="_blank">{_esc(_title(k))}</a>' for k, v in r["slices"].items())
+            + "</p>"
+            if r.get("slices")
+            else ""
+        ),
         f'<h4 class="t">Last token <code>{_esc(_show(r["tokens"][-1]))}</code>: top-{p["top_k"]} words per layer</h4>',
         '<div class="scroll"><table><tr><th>layer</th>'
         + "".join(f"<th>{_esc(_title(x))}</th>" for x in r["last_token"])

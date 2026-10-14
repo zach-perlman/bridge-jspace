@@ -10,3 +10,5 @@ __pycache__/
 *.egg-info/
 *.pt
 *.safetensors
+# jlens interactive slice pages from examples runs: ~0.5 MB each, regenerate with the examples config
+results/**/slices/
