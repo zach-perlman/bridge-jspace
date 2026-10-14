@@ -1,0 +1,24 @@
+# Worked examples for exp12_position_map: lens tables for items sampled by outcome group from one of its runs.
+#   make run CONFIG=scripts/exp12_position_map/examples.yaml        # GPU (needs the model); writes results/exp12_position_map/<stamp>/examples.md
+name: exp12_position_map
+target: bridge_jspace.examples:LensExamples
+seed: 0
+model: configs/models/qwen3.6-27b.yaml
+params:
+  title: "exp12_position_map (prompt position x layer), Qwen3.6-27B"
+  selector: scripts.exp12_position_map.examples:select
+  source_run: results/exp12_position_map/20261014-095358
+  per_group: 3
+  seed_examples: 0
+  band: [32, 48]
+  top_k: 5
+  layer_step: 4  # last-token table: layers 0, 4, ..., 60 and the last source layer
+  position_layers: [8, 16, 24, 32, 40, 48, 56, 62]
+  n_positions: 8  # position table: the last 8 tokens
+  position_readers: [jlens]
+  fact_prompt: "Fact: The capital of France is"
+  fact_expected: " Paris"
+  parity_prompts:
+    - "Fact: The currency used in the country shaped like a boot is"
+    - "Fact: The language spoken in the country where the Amazon River ends is "
+  parity_atol: 0.01
