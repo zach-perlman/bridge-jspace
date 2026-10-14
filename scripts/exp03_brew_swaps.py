@@ -72,6 +72,10 @@ START_STEER_JOBS = (
     *({"kind": "steer_start", "regime": "start_line", "null": False, "scale": s} for s in (0.05, 0.1, 0.2, 0.4)),
     *({"kind": "steer_start", "regime": "start_line", "null": True, "scale": s} for s in (0.2, 0.4)),
 )
+START_STEER_LOW_JOBS = (
+    *({"kind": "steer_start", "regime": "start_line", "null": False, "scale": s} for s in (0.01, 0.02, 0.03)),
+    *({"kind": "steer_start", "regime": "start_line", "null": True, "scale": s} for s in (0.03, 0.05)),
+)
 FOLLOWUPS = {  # name -> (bands, jobs, why)
     "followup": (
         FOLLOWUP_BANDS,
@@ -87,6 +91,12 @@ FOLLOWUPS = {  # name -> (bands, jobs, why)
         "Chosen by the human after the follow-up: steering after the start colour gave X itself, never f(X). Steering "
         "the start line along v_S' - v_S tests whether the lens direction acts as the computation's input there "
         "(answer f(f(S')), like the bridge at the cue phrase in exp02) or only as an output (answer S').",
+    ),
+    "start_steer_low": (
+        ("8-24", "16-32"),
+        START_STEER_LOW_JOBS,
+        "Chosen by the human after start_steer: its f(f(S')) rate was highest at the smallest scale tried (5%) and fell "
+        "with scale, so the dose curve is extended down to 1-3%, with random-direction nulls at 3% and 5%.",
     ),
 }
 MAX_NEW_TOKENS = 6
@@ -512,7 +522,7 @@ if __name__ == "__main__":
     parser.add_argument("--band", help="A-B, inclusive (main manifest only)")
     parser.add_argument("--sweep", help="the sweep run that picked --band (main manifest only)")
     parser.add_argument("--name", help="the run's folder name (manifest stage; default = the kind)")
-    parser.add_argument("--set", dest="job_set", default="followup", choices=["followup", "start_steer"],
+    parser.add_argument("--set", dest="job_set", default="followup", choices=list(FOLLOWUPS),
                         help="followup manifest: which job set")  # fmt: skip
     args = parser.parse_args()
     if args.stage == "manifest":
