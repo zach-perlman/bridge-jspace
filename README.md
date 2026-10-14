@@ -19,8 +19,10 @@ or tokenization artifact.
    `apply`), then `lens-eval-multihop` pass@k for the J-lens and J++ against the logit lens, plus a bridge vs
    same-category distractor control. Debugged on Qwen3.5-0.8B (CPU), run on Qwen3.5-4B (same `qwen3_5` hybrid
    architecture as the target), then Qwen3.6-27B. Results under Status.
-2. Where the bridge is readable: rank of the bridge vs a distractor at every layer x position (planned).
-3. Oracle lens and NLA on the same items, split by part B's J-mediated / non-J labels (planned).
+2. `exp11_bridge_vs_answer_by_layer`: on part B's items and labels, at the last prompt token, at which layers each
+   reader has the bridge (and, separately, the answer) on top of its candidate pool. Results under Status.
+3. Where the bridge is readable across prompt positions, for the items where the last token misses it (planned).
+4. Oracle lens and NLA on the same items, split by part B's J-mediated / non-J labels (planned).
 
 ## Method, part B: is the bridge used outside the J-space? (exp01-09)
 1. `data/entity_prompts.json`: about 8 prompts per entity that imply the entity without naming it, for the 97
@@ -115,6 +117,53 @@ Controls (27B, stripped, rank at the last token): Brazil 0 vs distractor Mexico 
 vs Poland 16 / 18. Figures: `uv run python -m scripts.exp10_lens_sanity.plot --summary`.
 </details>
 
+### exp11_bridge_vs_answer_by_layer: where is the bridge readable, and where the answer?
+**What we measure.** The 90 probe-swap questions of part B, prompts as published; the headline uses the 67 the model
+answers correctly (part B's `eligible`; our check agrees on all 83 items with a single-token answer). At the last
+prompt token, at every layer, we ask each reader: is the bridge (Brazil) the top candidate among all 97 entities of
+the set, and is the answer (Portuguese) the top candidate among all 112 answers? The same-category distractors
+(Mexico, Spanish) are the controls. Chance is about 1%.
+
+**In short.**
+- **J-lens and J++ read the bridge in the middle layers; the logit lens only near the output.** Averaged over
+  layers 32-48 the bridge is top-1 among entities in 59% of questions (J-lens), 56% (J++), 26% (logit lens);
+  its distractor in 6%. This reproduces part B's `gate_debug` (0.55-0.70).
+- **The bridge comes first, the answer later, but they overlap.** Half the questions have the bridge on top by
+  layer 34; the answer gets there by layer 43 (J-lens, 8 layers later [4, 18]) or 47 (J++, 11 [5, 18]). There is
+  no clean hand-off: the bridge stays on top until about layer 60, and per question the bridge settles on top
+  before the answer in only 57% [45, 70] of cases (J-lens).
+- **Where the bridge is readable, it is also used.** On the 25 questions where part B's J-space swap flips the
+  answer, the J-lens has the bridge on top in 79% [66, 89] of layers 32-48; on the 40 where no swap works, 49%
+  [35, 62]. Suggestive: the intervals nearly touch.
+
+![exp11: top-1 share by layer](results/exp11_bridge_vs_answer_by_layer/20261014-092835/analysis-20261014-113947/pool_top1_by_layer.png)
+
+*Last prompt token, 67 questions the model answers correctly. Blue: share of questions where the bridge is the top
+entity; orange: where the answer is the top answer; grey: the same for their distractors (controls); dotted:
+chance. Shaded: the layer bands the summary averages over (32-48 fixed in advance from part B; 28-52 exploratory,
+which changes nothing: 58% vs 59%).*
+
+**What this does not show.** A lens shows what can be read out at a layer, not when it was computed. And this is
+one token: the first hop may happen earlier in the prompt (at "Amazon River ends"), which exp11 does not look at.
+About 40% of questions do not have the bridge on top at the last token; those are the target of the next experiment.
+
+<details><summary>Full numbers</summary>
+
+Run `20261014-092835` (prompts as published, Qwen3.6-27B @ `192d8cb`), re-aggregated in
+`results/exp11_bridge_vs_answer_by_layer/20261014-092835/analysis-20261014-113947/summary.json` (`analyze`; the run's own `summary.json` predates the bands and order metrics).
+Eligible n=67, band 32-48, 95% percentile bootstrap CI over questions (n_boot=10000, seed 0).
+
+| Reader | Bridge top-1 | Answer top-1 | Bridge distractor top-1 | Bridge above distractor (vocab) | 50% crossing: bridge / answer (lag) |
+|---|---|---|---|---|---|
+| logit lens | 0.26 [0.17, 0.35] | 0.13 [0.08, 0.20] | 0.04 | 0.80 [0.72, 0.87] | L49 / L52 (2 [-4, 4]) |
+| J-lens | 0.59 [0.49, 0.68] | 0.41 [0.32, 0.50] | 0.06 | 0.84 [0.76, 0.91] | L34 / L43 (8 [4, 18]) |
+| J++ | 0.56 [0.46, 0.65] | 0.38 [0.29, 0.47] | 0.06 | 0.85 [0.78, 0.92] | L34 / L47 (11 [5, 18]) |
+
+Space-stripped prompts (run `20261014-093050`) give the same picture (J-lens bridge 0.56, lag 8 [3, 16]). On the 21
+eligible questions whose prompt ends in a space the answer is read less often (J-lens 0.24 vs 0.49 without the
+space); the bridge less so (0.53 vs 0.62).
+</details>
+
 ### Pitfalls found so far
 1. **Trailing space.** Most original prompts end in a space (83/93), which Qwen's tokenizer leaves as a lone `" "`
    token. The model then answers far worse (27B: 21/93 correct vs 61/93 with the space stripped) and the lens reads a
@@ -143,21 +192,17 @@ vs Poland 16 / 18. Figures: `uv run python -m scripts.exp10_lens_sanity.plot --s
 
 ### Open decisions (humans)
 - Whether to drop the 5 questions whose bridge appears in the prompt.
-- The middle-layer band for Qwen3.6-27B (for a band-restricted score and for part B's swaps).
-- Definition of "correct without CoT" for the list part B needs (proposal: raw completion prompt, no chat template,
-  greedy next token == first token of the answer).
+- Band for part A headlines: 32-48 (part B's) is used as primary; 28-52 is reported as exploratory.
 
 ## Next steps (part A)
 In order; designs need human sign-off before GPU runs.
-1. **List of items Qwen3.6-27B answers correctly** (the 90 probe-swap prompts, space stripped), for part B.
-2. **Read-site map, the main confound check:** rank of the bridge vs its same-category distractor (`swap_to`) at
-   every layer x token for the logit lens, J-lens and J++; scored bridge-vs-distractor (e.g. AUC); split by
-   single- vs multi-token entity and by whether the model answers correctly. Open: how to align token positions
-   across prompts, and the layer band.
-3. **The 5 questions whose bridge appears in the prompt:** check whether they drive any headline.
-4. **Oracle lens** on the same items: the Qwen3.6-27B adapter is on HF (`neuronpedia/jacobian-lens`,
+1. **Position map** for the ~40% of questions where the last token misses the bridge: is it on top at earlier
+   tokens (e.g. at the subject, "Amazon River ends") and at which layers? Same pools, distractors and labels as
+   exp11. Open: how to align token positions across prompts.
+2. **The 5 lens-eval questions whose bridge appears in the prompt:** check whether they drive any exp10 headline.
+3. **Oracle lens** on the same items: the Qwen3.6-27B adapter is on HF (`neuronpedia/jacobian-lens`,
    `qwen3.6-27b/oracle`); its reference read code may not be public, so check that first, then propose a design.
    This is the only long GPU job in sight.
-5. **NLA:** source and weights still to identify.
-6. Optional: reproduce J++'s published Recall@10 (55.2% on Qwen3.6-27B) over all six lens-eval sets.
-7. Stretch: repeat on Gemma 4 31B (J-lens and J++ exist on HF).
+4. **NLA:** source and weights still to identify.
+5. Optional: reproduce J++'s published Recall@10 (55.2% on Qwen3.6-27B) over all six lens-eval sets.
+6. Stretch: repeat on Gemma 4 31B (J-lens and J++ exist on HF).

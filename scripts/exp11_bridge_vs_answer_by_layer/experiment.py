@@ -175,6 +175,37 @@ def emergence_layer(pool_ranks: list[int], layers: list[int], run: int) -> int |
     return None
 
 
+def crossing(
+    bridge_top1: np.ndarray, answer_top1: np.ndarray, layers: list[int], thr: float, n_boot: int, seed: int
+) -> dict[str, Any]:
+    """Population timing: first layer where the share of items with the word top-1 in its pool reaches `thr`, for
+    the bridge and for the answer ([items, layers] bool arrays), and the answer - bridge lag with a bootstrap CI
+    over items. NaN lags (a curve never reaches `thr` in a resample) are reported as a share, not dropped silently.
+    """
+    lay = np.asarray(layers)
+
+    def first(m: np.ndarray) -> float:
+        hit = np.flatnonzero(m.mean(0) >= thr)
+        return float(lay[hit[0]]) if hit.size else np.nan
+
+    rng = np.random.default_rng(seed)
+    idx = rng.integers(0, bridge_top1.shape[0], size=(n_boot, bridge_top1.shape[0]))
+    lags = np.array([first(answer_top1[i]) - first(bridge_top1[i]) for i in idx])
+    ok = lags[~np.isnan(lags)]
+    out: dict[str, Any] = {
+        "bridge_layer": first(bridge_top1),
+        "answer_layer": first(answer_top1),
+        "resamples_without_crossing": round(float(np.isnan(lags).mean()), 4),
+    }
+    if ok.size:
+        out["lag_layers"] = {
+            "median": float(np.median(ok)),
+            "lo": float(np.percentile(ok, 2.5)),
+            "hi": float(np.percentile(ok, 97.5)),
+        }
+    return out
+
+
 def subsets(meta: list[dict[str, Any]]) -> dict[str, list[str]]:
     el = [m for m in meta if m["status"] == "eligible"]
     return {
@@ -241,6 +272,11 @@ def aggregate(
                 if br is not None and an is not None:
                     lags.append(an - br)
             res["order"] = {"emerge_run": emerge_run, **counts}
+            with_answer = [r for r in rr if r["answer_pool"] is not None]
+            if with_answer:
+                bt = np.array([r["bridge_pool"] for r in with_answer]) == 1
+                at = np.array([r["answer_pool"] for r in with_answer]) == 1
+                res["crossing"] = {str(t): crossing(bt, at, layers, t, n_boot, seed) for t in (0.3, 0.5)}
             if lags:
                 res["order"] |= {
                     "bridge_first": _ci(bootstrap_mean([lag > 0 for lag in lags], n_boot, seed)),

@@ -1,6 +1,8 @@
 """exp11's pure aggregation helpers (no model)."""
 
-from scripts.exp11_bridge_vs_answer_by_layer.experiment import aggregate, emergence_layer, subsets
+import numpy as np
+
+from scripts.exp11_bridge_vs_answer_by_layer.experiment import aggregate, crossing, emergence_layer, subsets
 
 
 def test_emergence_needs_a_run_of_top1_layers():
@@ -60,3 +62,14 @@ def test_subsets_only_eligible_in_splits():
     meta = [{"name": "x", "status": "clean_wrong", "label": "J-mediated", "ends_with_space": True}]
     s = subsets(meta)
     assert s["eligible_j_mediated"] == [] and s["all"] == ["x"]
+
+
+def test_crossing_lag():
+    layers = [0, 1, 2, 3, 4, 5]
+    # 4 items; the bridge share reaches 0.5 at layer 1, the answer share at layer 4 -> lag 3
+    bridge = np.array([[0, 1, 1, 1, 1, 1], [0, 1, 1, 1, 1, 1], [0, 0, 0, 1, 1, 1], [0, 0, 0, 0, 0, 0]], bool)
+    answer = np.array([[0, 0, 0, 0, 1, 1], [0, 0, 0, 0, 1, 1], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0]], bool)
+    c = crossing(bridge, answer, layers, 0.5, n_boot=500, seed=0)
+    assert (c["bridge_layer"], c["answer_layer"]) == (1.0, 4.0)
+    assert c["lag_layers"]["median"] == 3.0
+    assert 0 <= c["resamples_without_crossing"] < 1
