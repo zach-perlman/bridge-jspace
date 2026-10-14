@@ -73,6 +73,7 @@ To fetch a model and its lenses ahead of a run (retries on HF 429s; put `HF_TOKE
 
 ## Status
 Draft, UNVERIFIED: nothing is in `VERIFIED.md` yet. The STATE block in `AGENTS.md` tracks what is in flight.
+Final figures, numbers and examples per experiment: [results/README.md](results/README.md).
 
 **What we know so far (Qwen3.6-27B, the 67 two-hop questions it answers correctly).**
 1. The J-lens and J++ can read the bridge; the plain logit lens mostly cannot before the last layers (exp10, exp11).
