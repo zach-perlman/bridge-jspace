@@ -24,6 +24,8 @@ Positions (the manifest's "positions"; earlier runs: all). Offsets count back fr
   prev      offset -1 only (the word before "is"; where part A reads the bridge best, exp12)
   last_two  offsets -1 and 0
   earlier   every position from 1 up to offset -2 (the words that cue the bridge, without part A's read sites)
+  cue       the earlier positions inside the item's cue phrase (data/cue_spans.json, e.g. "Naples")
+  earlier_noncue  the earlier positions outside it (cue + earlier_noncue = earlier)
 Null: the same clamp with each position's edit replaced by a random unit direction (one per layer, seeded) scaled to
 that edit's norm.
 
@@ -68,7 +70,8 @@ NULL_SEED = 0
 N_BOOT, BOOT_SEED = 2000, 0
 COMPARISONS = (("jpart", "remainder"), ("remainder", "remainder_clamped"))
 MAX_NEW_TOKENS, MAX_NEW_TOKENS_RETRY = 8, 16  # exp13's: room for "a gas", "Port-ugu-ese"; retry if cut off
-POSITION_REGIMES = ("all", "last", "prev", "last_two", "earlier")
+POSITION_REGIMES = ("all", "last", "prev", "last_two", "earlier", "cue", "earlier_noncue")
+CUE_SPANS = pins.DATA_DIR / "cue_spans.json"
 LABELS = {(True, False): "J-mediated", (False, True): "non-J", (True, True): "both", (False, False): "neither"}
 
 
@@ -82,9 +85,20 @@ def probes_file(tag: str) -> Path:
     return pins.CACHE_DIR / "exp01" / tag / "probes.pt"
 
 
-def regime_positions(regime: str, seq_len: int) -> list[int] | None:
-    """Sequence indices a regime edits (None = every position from 1)."""
+def span_positions(offsets: list[tuple[int, int]], start: int, end: int) -> list[int]:
+    """Indices of the tokens whose character span overlaps [start, end)."""
+    return [i for i, (s, e) in enumerate(offsets) if s < end and e > start]
+
+
+def regime_positions(regime: str, seq_len: int, cue: list[int] | None = None) -> list[int] | None:
+    """Sequence indices a regime edits (None = every position from 1). `cue`: the cue phrase's token indices."""
     last = seq_len - 1
+    if regime in ("cue", "earlier_noncue"):
+        assert cue is not None, f"regime {regime} needs the cue phrase's positions"
+        earlier = set(range(1, last - 1))
+        picked = sorted(earlier & set(cue)) if regime == "cue" else sorted(earlier - set(cue))
+        assert picked, f"regime {regime} selects no position"
+        return picked
     return {
         "all": None,
         "last": [last],
@@ -386,6 +400,7 @@ def stage_run(name: str) -> None:
     null_options = (False, True) if manifest["nulls"] else (False,)
     scoring, prompt_end = manifest.get("scoring", "rank"), manifest.get("prompt_end", "as_published")
     regime = manifest.get("positions", "all")
+    cues = json.loads(CUE_SPANS.read_text())["cues"] if regime in ("cue", "earlier_noncue") else {}
 
     model = load_model()
     lens = JLens(model, manifest["lens"].get("name", "jlens"))
@@ -398,7 +413,15 @@ def stage_run(name: str) -> None:
         if row["status"] != "eligible":
             continue
         ids, clean_h, answer_ids, swap_ids = prepared
-        positions = regime_positions(regime, ids.shape[1])
+        cue = None
+        if regime in ("cue", "earlier_noncue"):
+            prompt = item["prompt"].rstrip() if prompt_end == "stripped" else item["prompt"]
+            start = prompt.index(cues[item["name"]])
+            enc = model.tokenizer(prompt, add_special_tokens=False, return_offsets_mapping=True)
+            assert enc.input_ids == ids[0].tolist(), "offsets come from another tokenization"
+            cue = span_positions(enc.offset_mapping, start, start + len(cues[item["name"]]))
+        positions = regime_positions(regime, ids.shape[1], cue)
+        row["positions"] = positions
         for band in bands:
             for ci, condition in enumerate(conditions):
                 atoms = {

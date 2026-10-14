@@ -84,6 +84,23 @@ def test_clamp_positions_edit_only_those_positions():
     assert some.edit_ratio_last == full.edit_ratio_last  # position 5 is the last, edited in both
 
 
+def test_cue_regimes_split_the_earlier_positions():
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from scripts.exp02_swaps import regime_positions, span_positions
+
+    # "The capital of the country where Naples is located is": Naples = characters 33-39
+    offsets = [(0, 3), (3, 11), (11, 14), (14, 18), (18, 26), (26, 32), (32, 39), (39, 42), (42, 50), (50, 53)]
+    cue = span_positions(offsets, 33, 39)
+    assert cue == [6]
+    seq_len = len(offsets)
+    cue_pos = regime_positions("cue", seq_len, cue)
+    rest = regime_positions("earlier_noncue", seq_len, cue)
+    assert cue_pos == [6]
+    assert cue_pos is not None
+    assert rest is not None
+    assert sorted(cue_pos + rest) == regime_positions("earlier", seq_len)  # they partition "earlier"
+
+
 def test_wilson_known_values():
     rate, lo, hi = wilson(5, 10)
     assert abs(rate - 0.5) < 1e-12 and abs(lo - 0.2366) < 1e-3 and abs(hi - 0.7634) < 1e-3
