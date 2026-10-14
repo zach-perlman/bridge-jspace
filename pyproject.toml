@@ -57,22 +57,6 @@ jlens = { git = "https://github.com/anthropics/jacobian-lens", rev = "581d398613
 [tool.ruff]
 line-length = 120
 target-version = "py312"
-# Part B code (scripts/exp01-02 and their modules) predates this lint config; excluded until both parts
-# agree on one style, rather than reformatting it under its author.
-extend-exclude = [
-    "scripts/check_setup.py",
-    "scripts/exp01_probes.py",
-    "scripts/exp02_gate_debug.py",
-    "scripts/exp02_swaps.py",
-    "scripts/report.py",
-    "src/bridge_jspace/clamp.py",
-    "src/bridge_jspace/data.py",
-    "src/bridge_jspace/lens.py",
-    "src/bridge_jspace/model.py",
-    "src/bridge_jspace/omp.py",
-    "src/bridge_jspace/tokens.py",
-    "tests/test_core.py",
-]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM", "RUF", "NPY", "PT"]
@@ -88,22 +72,15 @@ ignore = [
 
 [tool.pyright]
 include = ["src", "scripts", "tests"]
-# Same part B files as ruff's extend-exclude.
 exclude = [
     "**/__pycache__",
     ".venv",
+    # Part B files with pyright errors, mostly untyped HF module access (lint and format do cover them).
     "scripts/check_setup.py",
-    "scripts/exp01_probes.py",
     "scripts/exp02_gate_debug.py",
     "scripts/exp02_swaps.py",
-    "scripts/report.py",
-    "src/bridge_jspace/clamp.py",
-    "src/bridge_jspace/data.py",
     "src/bridge_jspace/lens.py",
     "src/bridge_jspace/model.py",
-    "src/bridge_jspace/omp.py",
-    "src/bridge_jspace/tokens.py",
-    "tests/test_core.py",
 ]
 pythonVersion = "3.12"
 typeCheckingMode = "basic"

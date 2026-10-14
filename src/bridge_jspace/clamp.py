@@ -26,11 +26,12 @@ class SwapClamp:
     own norm: the matched-norm random-direction control.
     """
 
-    def __init__(self, atoms: torch.Tensor, clean_h: torch.Tensor, null_direction: torch.Tensor | None = None,
-                 swap: bool = True):
-        self.atoms = atoms.float()                                     # [K, d]
-        self.pinv = torch.linalg.pinv(self.atoms)                      # [d, K]
-        clean_coords = clean_h[1:].float() @ self.pinv                 # [P, K]
+    def __init__(
+        self, atoms: torch.Tensor, clean_h: torch.Tensor, null_direction: torch.Tensor | None = None, swap: bool = True
+    ):
+        self.atoms = atoms.float()  # [K, d]
+        self.pinv = torch.linalg.pinv(self.atoms)  # [d, K]
+        clean_coords = clean_h[1:].float() @ self.pinv  # [P, K]
         self.targets = clean_coords.clone()
         if swap:
             self.targets[:, [0, 1]] = clean_coords[:, [1, 0]]

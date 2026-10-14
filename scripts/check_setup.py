@@ -16,10 +16,10 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from bridge_jspace import pins  # noqa: E402
-from bridge_jspace.clamp import SwapClamp  # noqa: E402
-from bridge_jspace.lens import JLens  # noqa: E402
-from bridge_jspace.model import load_model  # noqa: E402
+from bridge_jspace import pins
+from bridge_jspace.clamp import SwapClamp
+from bridge_jspace.lens import JLens
+from bridge_jspace.model import load_model
 
 OUT = pins.RESULTS_DIR / "checks" / "setup.json"
 BAND = tuple(range(24, 41))
@@ -35,16 +35,16 @@ def main():
     report = {}
 
     # 1-3 on the first 10 prompts.
-    conv = {l: {"block_output": [], "block_input": []} for l in (20, 40, 62)}
+    conv = {layer: {"block_output": [], "block_input": []} for layer in (20, 40, 62)}
     unembed_err, vector_err, lens_top1_agree = [], [], []
     for item in items[:10]:
         ids = model.encode(item["prompt"])
         logits, h = model.run(ids, record=tuple(range(len(model.layers))))
         target = h[final][1:]
-        for l in conv:
-            for name, src in (("block_output", h[l]), ("block_input", h[l - 1])):
-                cos = torch.nn.functional.cosine_similarity(src[1:] @ lens.J(l).T, target, dim=-1)
-                conv[l][name].append(float(cos.mean()))
+        for layer in conv:
+            for name, src in (("block_output", h[layer]), ("block_input", h[layer - 1])):
+                cos = torch.nn.functional.cosine_similarity(src[1:] @ lens.J(layer).T, target, dim=-1)
+                conv[layer][name].append(float(cos.mean()))
         unembed_err.append(float((model.unembed(h[final][-1]) - logits).abs().max() / logits.abs().max()))
         lens_top1_agree.append(int(lens.readout(h[62][-1], 62).argmax() == logits.argmax()))
         x = h[40][-1] @ lens.J(40).T
@@ -54,7 +54,8 @@ def main():
         vec_logits = lens.vectors(40, top, unit=False) @ h[40][-1] / rms
         vector_err.append(float((vec_logits - lens_logits[top]).abs().max() / lens_logits[top].abs().max()))
     report["layer_convention_mean_cos_to_final"] = {
-        l: {k: sum(v) / len(v) for k, v in d.items()} for l, d in conv.items()}
+        layer: {k: sum(v) / len(v) for k, v in d.items()} for layer, d in conv.items()
+    }
     report["unembed_max_rel_err"] = max(unembed_err)
     report["lens62_top1_agrees_with_model"] = f"{sum(lens_top1_agree)}/{len(lens_top1_agree)}"
     report["vector_form_max_rel_err"] = max(vector_err)
@@ -63,11 +64,12 @@ def main():
     item = items[0]
     ids = model.encode(item["prompt"])
     clean_logits, clean_h = model.run(ids, record=BAND)
-    tokens = torch.tensor([model.concept_token(item["intermediate"]), model.concept_token(item["swap_to"])],
-                          device="cuda")
+    tokens = torch.tensor(
+        [model.concept_token(item["intermediate"]), model.concept_token(item["swap_to"])], device="cuda"
+    )
 
     def clamps(swap: bool):
-        return {l: SwapClamp(lens.vectors(l, tokens), clean_h[l], swap=swap) for l in BAND}
+        return {layer: SwapClamp(lens.vectors(layer, tokens), clean_h[layer], swap=swap) for layer in BAND}
 
     pinned_logits, _ = model.run(ids, edits=clamps(swap=False))
     swapped_logits, _ = model.run(ids, edits=clamps(swap=True))

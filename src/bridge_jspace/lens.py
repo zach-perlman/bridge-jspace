@@ -42,6 +42,6 @@ class JLens:
         """J-lens vectors [n, d] fp32 for token_ids at a layer, unit-normalised by default."""
         out = torch.empty(len(token_ids), self._w_u.shape[1], device="cuda")
         for s in range(0, len(token_ids), chunk):
-            rows = (self._w_u[token_ids[s:s + chunk]].float() * self._gain) @ self.J(layer)
-            out[s:s + chunk] = torch.nn.functional.normalize(rows, dim=-1) if unit else rows
+            rows = (self._w_u[token_ids[s : s + chunk]].float() * self._gain) @ self.J(layer)
+            out[s : s + chunk] = torch.nn.functional.normalize(rows, dim=-1) if unit else rows
         return out

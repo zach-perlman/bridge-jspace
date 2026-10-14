@@ -35,21 +35,23 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from bridge_jspace import pins  # noqa: E402
-from bridge_jspace.data import load_items, sha256_of  # noqa: E402
+from bridge_jspace import pins
+from bridge_jspace.data import load_items, sha256_of
 
-OUTS = {"core": pins.RESULTS_DIR / "exp02_swaps" / "gate_debug",
-        "presence": pins.RESULTS_DIR / "exp02_swaps" / "gate_debug_presence",
-        "centred": pins.RESULTS_DIR / "exp02_swaps" / "gate_debug_centred"}
+OUTS = {
+    "core": pins.RESULTS_DIR / "exp02_swaps" / "gate_debug",
+    "presence": pins.RESULTS_DIR / "exp02_swaps" / "gate_debug_presence",
+    "centred": pins.RESULTS_DIR / "exp02_swaps" / "gate_debug_centred",
+}
 WHITENED_TAG = "w1"
 QUESTIONS = {
     "core": "Is the full probe weak because it lacks entity identity (prompts), because it does not detect the bridge "
-            "in the test prompts (probe position / distribution), or because the swap does not propagate (band)?",
+    "in the test prompts (probe position / distribution), or because the swap does not propagate (band)?",
     "presence": "gate_debug found weak identity (LOO top-1 <= 0.28) and chance-level bridge/target asymmetry. Is the "
-                "entity absent at the probe position, or present but swamped by other variance?",
+    "entity absent at the probe position, or present but swamped by other variance?",
     "centred": "The whitened probes also failed the gate (gate_w1: 8%). The clamp reads coordinates from the raw "
-               "residual, but the probes are defined relative to the mean of the entity means, so each swap also "
-               "exchanges that mean's coordinates. Does centring the coordinates restore bridge/target asymmetry?",
+    "residual, but the probes are defined relative to the mean of the entity means, so each swap also "
+    "exchanges that mean's coordinates. Does centring the coordinates restore bridge/target asymmetry?",
 }
 OUT = OUTS["core"]
 PROBES_TAG = "v2"
@@ -68,14 +70,19 @@ def stage_manifest(part: str) -> None:
     path = out / "manifest.json"
     assert not path.exists(), f"{path} exists; manifests are written once"
     paragraphs = __doc__.split("\n\n")
-    inputs = {"probes": {"file": str(probes_path().relative_to(pins.REPO_ROOT)), "sha256": sha256_of(probes_path())},
-              "kept_prompts": str(FILTER.relative_to(pins.REPO_ROOT)),
-              "eligible_items": str(GATE_ITEMS.relative_to(pins.REPO_ROOT))}
+    inputs = {
+        "probes": {"file": str(probes_path().relative_to(pins.REPO_ROOT)), "sha256": sha256_of(probes_path())},
+        "kept_prompts": str(FILTER.relative_to(pins.REPO_ROOT)),
+        "eligible_items": str(GATE_ITEMS.relative_to(pins.REPO_ROOT)),
+    }
     if part == "centred":
-        inputs["whitened_probes"] = {"file": str(probes_path(WHITENED_TAG).relative_to(pins.REPO_ROOT)),
-                                     "sha256": sha256_of(probes_path(WHITENED_TAG))}
+        inputs["whitened_probes"] = {
+            "file": str(probes_path(WHITENED_TAG).relative_to(pins.REPO_ROOT)),
+            "sha256": sha256_of(probes_path(WHITENED_TAG)),
+        }
     manifest = {
-        "exp": "exp02_swaps", "run": out.name,
+        "exp": "exp02_swaps",
+        "run": out.name,
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "why": "gate failed: best full-probe flip rate 17% (band 32-48) < 30%; raw J-lens 55% at a ~9x smaller edit",
         "question": QUESTIONS[part],
@@ -101,10 +108,10 @@ def best_rank(scores: torch.Tensor, index: int) -> int:
 def kept_residuals(model, entities: list[str]) -> dict[str, list[torch.Tensor]]:
     """Final-token residuals [L, d] of each probed entity's kept prompts, as in exp01."""
     residuals = {e: [] for e in entities}
-    for r in map(json.loads, open(FILTER)):
+    for r in map(json.loads, FILTER.read_text().splitlines()):
         if r["kept"] and r["entity"] in residuals:
             _, h = model.run(model.encode(r["prompt"]), record=LAYERS)
-            residuals[r["entity"]].append(torch.stack([h[l][-1] for l in LAYERS]))
+            residuals[r["entity"]].append(torch.stack([h[layer][-1] for layer in LAYERS]))
     return residuals
 
 
@@ -118,8 +125,9 @@ def stage_run_centred() -> None:
     assert not (out / "summary.json").exists(), "results are write-once"
     assert sha256_of(probes_path()) == manifest["inputs"]["probes"]["sha256"]
     assert sha256_of(probes_path(WHITENED_TAG)) == manifest["inputs"]["whitened_probes"]["sha256"]
-    blobs = {tag: torch.load(probes_path(tag), map_location="cpu", weights_only=True)
-             for tag in (PROBES_TAG, WHITENED_TAG)}
+    blobs = {
+        tag: torch.load(probes_path(tag), map_location="cpu", weights_only=True) for tag in (PROBES_TAG, WHITENED_TAG)
+    }
     entities = blobs[PROBES_TAG]["entities"]
     assert blobs[WHITENED_TAG]["entities"] == entities
     index = {e: i for i, e in enumerate(entities)}
@@ -130,36 +138,52 @@ def stage_run_centred() -> None:
     grand = torch.stack([torch.stack(residuals[e]).mean(0) for e in entities]).mean(0)  # [L, d], the probes' origin
     probe_atoms = {tag: torch.nn.functional.normalize(blob["probe"].cuda(), dim=-1) for tag, blob in blobs.items()}
     naming = torch.tensor([model.concept_token(e) for e in entities], device="cuda")
-    eligible = {r["name"] for r in map(json.loads, open(GATE_ITEMS)) if r["status"] == "eligible"}
+    eligible = {r["name"] for r in map(json.loads, GATE_ITEMS.read_text().splitlines()) if r["status"] == "eligible"}
     items = [i for i in load_items() if i["name"] in eligible]
     kinds = (PROBES_TAG, WHITENED_TAG, "raw_jlens")
     higher = {(kind, centred): [[] for _ in LAYERS] for kind in kinds for centred in (False, True)}
     for item in items:
         b, t = index[item["intermediate"]], index[item["swap_to"]]
         _, h = model.run(model.encode(item["prompt"]), record=LAYERS)
-        for li, l in enumerate(LAYERS):
-            x = h[l][-1]
-            atoms = {PROBES_TAG: probe_atoms[PROBES_TAG][[b, t], li],
-                     WHITENED_TAG: probe_atoms[WHITENED_TAG][[b, t], li],
-                     "raw_jlens": lens.vectors(l, naming[[b, t]])}
+        for li, layer in enumerate(LAYERS):
+            x = h[layer][-1]
+            atoms = {
+                PROBES_TAG: probe_atoms[PROBES_TAG][[b, t], li],
+                WHITENED_TAG: probe_atoms[WHITENED_TAG][[b, t], li],
+                "raw_jlens": lens.vectors(layer, naming[[b, t]]),
+            }
             for kind, a in atoms.items():
                 pinv = torch.linalg.pinv(a)
                 for centred in (False, True):
                     c = (x - grand[li] if centred else x) @ pinv
                     higher[(kind, centred)][li].append(float(c[0] > c[1]))
 
-    per_layer = {l: {f"{kind}_{'h_minus_m' if centred else 'h'}": statistics.mean(higher[(kind, centred)][li])
-                     for kind in kinds for centred in (False, True)} for li, l in enumerate(LAYERS)}
+    per_layer = {
+        layer: {
+            f"{kind}_{'h_minus_m' if centred else 'h'}": statistics.mean(higher[(kind, centred)][li])
+            for kind in kinds
+            for centred in (False, True)
+        }
+        for li, layer in enumerate(LAYERS)
+    }
     summary = {"n_items": len(items), "per_layer": per_layer}
     (out / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
-    lines = ["# exp02_swaps / gate_debug_centred", "",
-             f"Share of {len(items)} eligible items whose bridge coordinate exceeds the target coordinate at the "
-             "final position (0.5 = no asymmetry), coordinates read from h or from h - m.", "",
-             f"| layer | mean-difference probes ({PROBES_TAG}): h / h - m | whitened probes ({WHITENED_TAG}): h / h - m | "
-             "raw J-lens: h / h - m |", "|---|---|---|---|"]
-    for l, s in per_layer.items():
-        lines.append(f"| {l} | " + " | ".join(f"{s[kind + '_h']:.2f} / {s[kind + '_h_minus_m']:.2f}" for kind in kinds)
-                     + " |")
+    lines = [
+        "# exp02_swaps / gate_debug_centred",
+        "",
+        f"Share of {len(items)} eligible items whose bridge coordinate exceeds the target coordinate at the "
+        "final position (0.5 = no asymmetry), coordinates read from h or from h - m.",
+        "",
+        f"| layer | mean-difference probes ({PROBES_TAG}): h / h - m | whitened probes ({WHITENED_TAG}): h / h - m | "
+        "raw J-lens: h / h - m |",
+        "|---|---|---|---|",
+    ]
+    for layer, s in per_layer.items():
+        lines.append(
+            f"| {layer} | "
+            + " | ".join(f"{s[kind + '_h']:.2f} / {s[kind + '_h_minus_m']:.2f}" for kind in kinds)
+            + " |"
+        )
     (out / "summary.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
 
@@ -182,9 +206,9 @@ def stage_run_presence() -> None:
     ranks = [[] for _ in LAYERS]
     for ei, e in enumerate(entities):
         for x in residuals[e]:
-            for li, l in enumerate(LAYERS):
-                ranks[li].append(rank_of(lens.readout(x[li], l)[naming], ei))
-    X = torch.cat([torch.stack(residuals[e]) for e in entities])                       # [N, L, d]
+            for li, layer in enumerate(LAYERS):
+                ranks[li].append(rank_of(lens.readout(x[li], layer)[naming], ei))
+    X = torch.cat([torch.stack(residuals[e]) for e in entities])  # [N, L, d]
     labels = torch.cat([torch.full((len(residuals[e]),), ei) for ei, e in enumerate(entities)]).cuda()
     centred = X - X.mean(0)
     means = torch.stack([centred[labels == ei].mean(0) for ei in range(len(entities))])  # [E, L, d]
@@ -192,19 +216,35 @@ def stage_run_presence() -> None:
     eta2 = ((counts * means.pow(2).sum(-1)).sum(0) / centred.pow(2).sum(-1).sum(0)).tolist()  # [L]
     chance = (len(entities) - 1) / (len(X) - 1)
 
-    per_layer = {l: {"lens_top1_own_entity": statistics.mean(r == 1 for r in ranks[li]),
-                     "lens_rank_own_entity_median": statistics.median(ranks[li]),
-                     "eta2": eta2[li]} for li, l in enumerate(LAYERS)}
-    summary = {"n_entities": len(entities), "n_kept_prompts": len(X), "chance_top1": 1 / len(entities),
-               "eta2_chance": chance, "per_layer": per_layer}
+    per_layer = {
+        layer: {
+            "lens_top1_own_entity": statistics.mean(r == 1 for r in ranks[li]),
+            "lens_rank_own_entity_median": statistics.median(ranks[li]),
+            "eta2": eta2[li],
+        }
+        for li, layer in enumerate(LAYERS)
+    }
+    summary = {
+        "n_entities": len(entities),
+        "n_kept_prompts": len(X),
+        "chance_top1": 1 / len(entities),
+        "eta2_chance": chance,
+        "per_layer": per_layer,
+    }
     (out / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
-    lines = ["# exp02_swaps / gate_debug_presence", "",
-             f"{len(entities)} entities, {len(X)} kept prompts; chance top-1 {1 / len(entities):.3f}; "
-             f"eta2 chance under random labels {chance:.3f}.", "",
-             "| layer | J-lens: own entity top-1 at final position (median rank) | eta2 (entity labels) |",
-             "|---|---|---|"]
-    lines += [f"| {l} | {s['lens_top1_own_entity']:.2f} ({s['lens_rank_own_entity_median']:.0f}) | {s['eta2']:.3f} |"
-              for l, s in per_layer.items()]
+    lines = [
+        "# exp02_swaps / gate_debug_presence",
+        "",
+        f"{len(entities)} entities, {len(X)} kept prompts; chance top-1 {1 / len(entities):.3f}; "
+        f"eta2 chance under random labels {chance:.3f}.",
+        "",
+        "| layer | J-lens: own entity top-1 at final position (median rank) | eta2 (entity labels) |",
+        "|---|---|---|",
+    ]
+    lines += [
+        f"| {layer} | {s['lens_top1_own_entity']:.2f} ({s['lens_rank_own_entity_median']:.0f}) | {s['eta2']:.3f} |"
+        for layer, s in per_layer.items()
+    ]
     (out / "summary.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
 
@@ -223,9 +263,9 @@ def stage_run() -> None:
     lens = JLens(model)
 
     residuals = kept_residuals(model, entities)
-    sums = torch.stack([torch.stack(residuals[e]).sum(0) for e in entities])          # [E, L, d]
+    sums = torch.stack([torch.stack(residuals[e]).sum(0) for e in entities])  # [E, L, d]
     counts = torch.tensor([len(residuals[e]) for e in entities], device="cuda").view(-1, 1, 1)
-    grand = (sums / counts).mean(0)                                                    # [L, d]
+    grand = (sums / counts).mean(0)  # [L, d]
     probes = sums / counts - grand
     reproduce_err = float((probes.cpu() - blob["probe"]).abs().max() / blob["probe"].abs().max())
 
@@ -234,7 +274,7 @@ def stage_run() -> None:
     correct = torch.zeros(len(LAYERS))
     n_prompts = 0
     for ei, e in enumerate(entities):
-        for x in residuals[e]:                                                         # [L, d]
+        for x in residuals[e]:  # [L, d]
             loo = probes.clone()
             loo[ei] = (sums[ei] - x) / (counts[ei] - 1) - grand
             cos = torch.einsum("eld,ld->le", unit(loo, dim=-1), unit(x - grand, dim=-1))  # [L, E]
@@ -243,7 +283,7 @@ def stage_run() -> None:
     identity = (correct / n_prompts).tolist()
 
     # detection and asymmetry on the eligible test items.
-    eligible = {r["name"] for r in map(json.loads, open(GATE_ITEMS)) if r["status"] == "eligible"}
+    eligible = {r["name"] for r in map(json.loads, GATE_ITEMS.read_text().splitlines()) if r["status"] == "eligible"}
     items = [i for i in load_items() if i["name"] in eligible]
     naming = torch.tensor([model.concept_token(e) for e in entities], device="cuda")
     det_final, det_best, det_lens = ([[] for _ in LAYERS] for _ in range(3))
@@ -251,48 +291,66 @@ def stage_run() -> None:
     for item in items:
         b, t = index[item["intermediate"]], index[item["swap_to"]]
         _, h = model.run(model.encode(item["prompt"]), record=LAYERS)
-        for li, l in enumerate(LAYERS):
-            P = unit(probes[:, li], dim=-1)                                            # [E, d]
-            cos = unit(h[l][1:] - grand[li], dim=-1) @ P.T                              # [S-1, E]
+        for li, layer in enumerate(LAYERS):
+            P = unit(probes[:, li], dim=-1)  # [E, d]
+            cos = unit(h[layer][1:] - grand[li], dim=-1) @ P.T  # [S-1, E]
             det_final[li].append(rank_of(cos[-1], b))
             det_best[li].append(best_rank(cos, b))
-            lens_logits = lens.readout(h[l][-1], l)[naming]                            # [E]
+            lens_logits = lens.readout(h[layer][-1], layer)[naming]  # [E]
             det_lens[li].append(rank_of(lens_logits, b))
-            for atoms, asym, cosines in ((P[[b, t]], asym_probe, cos_probe),
-                                         (lens.vectors(l, naming[[b, t]]), asym_raw, cos_raw)):
-                c = h[l][-1] @ torch.linalg.pinv(atoms)
+            for atoms, asym, cosines in (
+                (P[[b, t]], asym_probe, cos_probe),
+                (lens.vectors(layer, naming[[b, t]]), asym_raw, cos_raw),
+            ):
+                c = h[layer][-1] @ torch.linalg.pinv(atoms)
                 asym[li].append(float(c[0] > c[1]))
                 cosines[li].append(abs(float(atoms[0] @ atoms[1])))
 
-    per_layer = {l: {"identity_loo_acc": identity[li],
-                     "probe_rank_final_median": statistics.median(det_final[li]),
-                     "probe_top1_final": statistics.mean(r == 1 for r in det_final[li]),
-                     "probe_rank_best_pos_median": statistics.median(det_best[li]),
-                     "probe_top1_best_pos": statistics.mean(r == 1 for r in det_best[li]),
-                     "lens_rank_final_median": statistics.median(det_lens[li]),
-                     "lens_top1_final": statistics.mean(r == 1 for r in det_lens[li]),
-                     "bridge_coord_higher_probe": statistics.mean(asym_probe[li]),
-                     "bridge_coord_higher_raw": statistics.mean(asym_raw[li]),
-                     "atom_abs_cos_probe_median": statistics.median(cos_probe[li]),
-                     "atom_abs_cos_raw_median": statistics.median(cos_raw[li])}
-                 for li, l in enumerate(LAYERS)}
-    summary = {"n_entities": len(entities), "n_kept_prompts": n_prompts, "n_items": len(items),
-               "chance_top1": 1 / len(entities), "probe_reproduction_max_rel_err": reproduce_err,
-               "per_layer": per_layer}
+    per_layer = {
+        layer: {
+            "identity_loo_acc": identity[li],
+            "probe_rank_final_median": statistics.median(det_final[li]),
+            "probe_top1_final": statistics.mean(r == 1 for r in det_final[li]),
+            "probe_rank_best_pos_median": statistics.median(det_best[li]),
+            "probe_top1_best_pos": statistics.mean(r == 1 for r in det_best[li]),
+            "lens_rank_final_median": statistics.median(det_lens[li]),
+            "lens_top1_final": statistics.mean(r == 1 for r in det_lens[li]),
+            "bridge_coord_higher_probe": statistics.mean(asym_probe[li]),
+            "bridge_coord_higher_raw": statistics.mean(asym_raw[li]),
+            "atom_abs_cos_probe_median": statistics.median(cos_probe[li]),
+            "atom_abs_cos_raw_median": statistics.median(cos_raw[li]),
+        }
+        for li, layer in enumerate(LAYERS)
+    }
+    summary = {
+        "n_entities": len(entities),
+        "n_kept_prompts": n_prompts,
+        "n_items": len(items),
+        "chance_top1": 1 / len(entities),
+        "probe_reproduction_max_rel_err": reproduce_err,
+        "per_layer": per_layer,
+    }
     (OUT / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
-    lines = ["# exp02_swaps / gate_debug", "",
-             f"{len(entities)} probes, {n_prompts} kept prompts, {len(items)} eligible items; chance top-1 "
-             f"{1 / len(entities):.3f} (higher for 'best pos', which takes the best of every prompt position); "
-             f"recomputed probes match exp01 to max rel err {reproduce_err:.1e}.", "",
-             "| layer | identity (LOO top-1) | probe detects bridge: top-1 final / best pos (median rank final) | "
-             "J-lens detects bridge: top-1 final (median rank) | bridge coord > target: probe / raw | "
-             "atom abs cos: probe / raw |", "|---|---|---|---|---|---|"]
-    for l, s in per_layer.items():
-        lines.append(f"| {l} | {s['identity_loo_acc']:.2f} | {s['probe_top1_final']:.2f} / "
-                     f"{s['probe_top1_best_pos']:.2f} ({s['probe_rank_final_median']:.0f}) | "
-                     f"{s['lens_top1_final']:.2f} ({s['lens_rank_final_median']:.0f}) | "
-                     f"{s['bridge_coord_higher_probe']:.2f} / {s['bridge_coord_higher_raw']:.2f} | "
-                     f"{s['atom_abs_cos_probe_median']:.2f} / {s['atom_abs_cos_raw_median']:.2f} |")
+    lines = [
+        "# exp02_swaps / gate_debug",
+        "",
+        f"{len(entities)} probes, {n_prompts} kept prompts, {len(items)} eligible items; chance top-1 "
+        f"{1 / len(entities):.3f} (higher for 'best pos', which takes the best of every prompt position); "
+        f"recomputed probes match exp01 to max rel err {reproduce_err:.1e}.",
+        "",
+        "| layer | identity (LOO top-1) | probe detects bridge: top-1 final / best pos (median rank final) | "
+        "J-lens detects bridge: top-1 final (median rank) | bridge coord > target: probe / raw | "
+        "atom abs cos: probe / raw |",
+        "|---|---|---|---|---|---|",
+    ]
+    for layer, s in per_layer.items():
+        lines.append(
+            f"| {layer} | {s['identity_loo_acc']:.2f} | {s['probe_top1_final']:.2f} / "
+            f"{s['probe_top1_best_pos']:.2f} ({s['probe_rank_final_median']:.0f}) | "
+            f"{s['lens_top1_final']:.2f} ({s['lens_rank_final_median']:.0f}) | "
+            f"{s['bridge_coord_higher_probe']:.2f} / {s['bridge_coord_higher_raw']:.2f} | "
+            f"{s['atom_abs_cos_probe_median']:.2f} / {s['atom_abs_cos_raw_median']:.2f} |"
+        )
     (OUT / "summary.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
 

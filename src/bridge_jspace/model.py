@@ -28,8 +28,8 @@ _HAS_LETTER = re.compile(r"[^\W\d_]")
 class Model:
     hf: torch.nn.Module
     tokenizer: object
-    decoded: list[str]             # decode of every id in the lm_head's vocabulary
-    special_ids: frozenset[int]    # special and added tokens
+    decoded: list[str]  # decode of every id in the lm_head's vocabulary
+    special_ids: frozenset[int]  # special and added tokens
     formatting_mask: torch.Tensor  # [vocab] bool, cuda: True for formatting tokens
 
     @property
@@ -48,8 +48,9 @@ class Model:
         return 1.0 + self.hf.model.norm.weight.float()
 
     @torch.no_grad()
-    def run(self, ids: torch.Tensor, edits: dict[int, Edit] | None = None,
-            record: tuple[int, ...] = ()) -> tuple[torch.Tensor, dict[int, torch.Tensor]]:
+    def run(
+        self, ids: torch.Tensor, edits: dict[int, Edit] | None = None, record: tuple[int, ...] = ()
+    ) -> tuple[torch.Tensor, dict[int, torch.Tensor]]:
         """One forward of a single prompt [1, seq]. Returns the final-position logits [vocab] (fp32) and the block
         outputs [seq, d] (fp32, after any edit at that layer) at the `record` layers."""
         edits = edits or {}
@@ -64,10 +65,11 @@ class Model:
                     recorded[layer] = h[0].float().clone()
                 if layer not in edits:
                     return None
-                return (h,) + tuple(out[1:]) if isinstance(out, tuple) else h
+                return (h, *out[1:]) if isinstance(out, tuple) else h
+
             return hook
 
-        with _forward_hooks([(self.layers[l], hook_for(l)) for l in sorted(set(edits) | set(record))]):
+        with _forward_hooks([(self.layers[layer], hook_for(layer)) for layer in sorted(set(edits) | set(record))]):
             logits = self.hf(input_ids=ids, use_cache=False, logits_to_keep=1).logits[0, -1].float()
         return logits, recorded
 
@@ -109,10 +111,12 @@ class Model:
 
 def load_model() -> Model:
     from transformers import AutoModelForCausalLM
+
     path = snapshot_download(pins.QWEN_REPO, revision=pins.QWEN_REVISION, local_files_only=True)
     tokenizer = tokens.load_tokenizer()
-    hf = AutoModelForCausalLM.from_pretrained(path, dtype=torch.bfloat16, device_map="cuda",
-                                              attn_implementation="sdpa").eval()
+    hf = AutoModelForCausalLM.from_pretrained(
+        path, dtype=torch.bfloat16, device_map="cuda", attn_implementation="sdpa"
+    ).eval()
     vocab = hf.lm_head.weight.shape[0]
     decoded = tokenizer.batch_decode([[i] for i in range(vocab)])
     special = frozenset(tokenizer.all_special_ids) | frozenset(int(i) for i in tokenizer.added_tokens_decoder)

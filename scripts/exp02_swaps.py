@@ -37,10 +37,10 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from bridge_jspace import pins  # noqa: E402
-from bridge_jspace.clamp import SwapClamp, near_parallel  # noqa: E402
-from bridge_jspace.data import load_items, sha256_of  # noqa: E402
-from bridge_jspace.stats import paired_bootstrap_diff, wilson  # noqa: E402
+from bridge_jspace import pins
+from bridge_jspace.clamp import SwapClamp, near_parallel
+from bridge_jspace.data import load_items, sha256_of
+from bridge_jspace.stats import paired_bootstrap_diff, wilson
 
 EXP = "exp02_swaps"
 RESULTS = pins.RESULTS_DIR / EXP
@@ -82,20 +82,28 @@ def stage_manifest(kind: str, name: str, probes_tag: str, band: str | None, gate
         "answer exclude each other (gate and gate_w1 counted ties as rank 1 for both: 2 and 3 of 528 outcomes).",
     ]
     if is_gate:
-        decision = (f"band = the one with the highest full_probe flip rate (first in {list(GATE_BANDS)} on ties); "
-                    f"go if that rate >= {GO_FLIP_RATE}, else stop and debug before decomposing. The band is chosen "
-                    "on the same items, so its full_probe rate is optimistic.")
+        decision = (
+            f"band = the one with the highest full_probe flip rate (first in {list(GATE_BANDS)} on ties); "
+            f"go if that rate >= {GO_FLIP_RATE}, else stop and debug before decomposing. The band is chosen "
+            "on the same items, so its full_probe rate is optimistic."
+        )
         if name != "gate":
-            deviations.append("A repeat of the gate with different probes after the first gate (results/exp02_swaps/"
-                              "gate) failed; the same items are reused, so passing it is optimistic twice over.")
+            deviations.append(
+                "A repeat of the gate with different probes after the first gate (results/exp02_swaps/"
+                "gate) failed; the same items are reused, so passing it is optimistic twice over."
+            )
     else:
-        decision = {"paired_bootstraps": [f"{a} - {b}" for a, b in COMPARISONS],
-                    "bootstrap": f"B={N_BOOT}, seed {BOOT_SEED}, resampling eligible items",
-                    "labels": "2x2 on (jpart flips, remainder_clamped flips): " +
-                              ", ".join(f"{v} = {k}" for k, v in LABELS.items())}
-        deviations.append("Null direction: one random unit direction per (item, condition, layer), shared across "
-                          "positions and scaled to each position's own edit norm, so it matches the real edit, "
-                          "which lies in one fixed low-dimensional span at every position.")
+        decision = {
+            "paired_bootstraps": [f"{a} - {b}" for a, b in COMPARISONS],
+            "bootstrap": f"B={N_BOOT}, seed {BOOT_SEED}, resampling eligible items",
+            "labels": "2x2 on (jpart flips, remainder_clamped flips): "
+            + ", ".join(f"{v} = {k}" for k, v in LABELS.items()),
+        }
+        deviations.append(
+            "Null direction: one random unit direction per (item, condition, layer), shared across "
+            "positions and scaled to each position's own edit norm, so it matches the real edit, "
+            "which lies in one fixed low-dimensional span at every position."
+        )
         gate_record = {"run": gate, **json.loads((RESULTS / gate / "summary.json").read_text())["decision"]}
         gate_probes = json.loads((RESULTS / gate / "manifest.json").read_text())["probes"]["exp01_tag"]
         assert gate_record["band"] == band, "main must use its gate's band"
@@ -103,40 +111,56 @@ def stage_manifest(kind: str, name: str, probes_tag: str, band: str | None, gate
             # The gate picks the band on full_probe alone, which uses no lens, so a lens twin of the gate's probes
             # (same prompts and probes, other decomposition) may reuse its band instead of re-picking it.
             twin = json.loads((pins.RESULTS_DIR / "exp01_probes" / probes_tag / "summary.json").read_text())
-            assert twin["manifest"] == "manifest_more_jpp.json" and gate_probes == "v3", \
-                "main must use its gate's probes, or exp01's J++ twin of them"
-            deviations.append(f"Probes {probes_tag} are the J++ twin of gate {gate}'s probes ({gate_probes}): same "
-                              f"prompts and probes, decomposed over J++. The band is gate {gate}'s, fixed before this "
-                              "run, not re-picked; full_probe is unchanged by the lens and should reproduce its rate.")
-        deviations.append(f"The band was picked by gate {gate} on these same items, so full_probe's rate is "
-                          "optimistic.")
+            msg = "main must use its gate's probes, or exp01's J++ twin of them"
+            assert twin["manifest"] == "manifest_more_jpp.json", msg
+            assert gate_probes == "v3", msg
+            deviations.append(
+                f"Probes {probes_tag} are the J++ twin of gate {gate}'s probes ({gate_probes}): same "
+                f"prompts and probes, decomposed over J++. The band is gate {gate}'s, fixed before this "
+                "run, not re-picked; full_probe is unchanged by the lens and should reproduce its rate."
+            )
+        deviations.append(
+            f"The band was picked by gate {gate} on these same items, so full_probe's rate is optimistic."
+        )
         if not gate_record["go"]:
             deviations.append(
                 f"Gate {gate} failed (full probe {100 * gate_record['full_probe_flip_rate']:.0f}% < "
                 f"{100 * GO_FLIP_RATE:.0f}%), and so did the two before it (gate 17%, gate_w1 8%). The plan says stop "
-                "and debug; the human chose to run main anyway.")
+                "and debug; the human chose to run main anyway."
+            )
     manifest = {
-        "exp": EXP, "run": name, "kind": kind,
+        "exp": EXP,
+        "run": name,
+        "kind": kind,
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "question": "Does the swap target's answer appear when the bridge's representation is swapped for the "
-                    "target's, and does that depend on the J-space part of the representation?",
+        "target's, and does that depend on the J-space part of the representation?",
         "model": {"repo": pins.QWEN_REPO, "revision": pins.QWEN_REVISION, "dtype": "bfloat16", "attn": "sdpa"},
         "lens": {"name": lens, "repo": pins.LENS_REPO, "revision": pins.LENS_REVISION, "file": pins.LENS_FILES[lens]},
         "items": {"file": "data/probe_swap.json", "sha256": pins.PROBE_SWAP_SHA256},
-        "probes": {"exp01_tag": probes_tag, "file": str(probes.relative_to(pins.REPO_ROOT)),
-                   "sha256": sha256_of(probes), "definition": definition},
+        "probes": {
+            "exp01_tag": probes_tag,
+            "file": str(probes.relative_to(pins.REPO_ROOT)),
+            "sha256": sha256_of(probes),
+            "definition": definition,
+        },
         "bands": list(GATE_BANDS) if is_gate else [band],
         **({} if is_gate else {"gate": gate_record}),
         "conditions": list(GATE_CONDITIONS if is_gate else CONDITIONS),
         "nulls": not is_gate,
         "null_seed": NULL_SEED,
         "swap": "clamp.SwapClamp at every band layer, positions 1.. (not 0); atoms per condition as in the script "
-                "docstring; unit atoms throughout",
+        "docstring; unit atoms throughout",
         "eligibility": "answer and swap answer have single-token surfaces; both entities have probes; clean answer "
-                       "at word rank 1 (formatting tokens excluded)",
+        "at word rank 1 (formatting tokens excluded)",
         "flip": "swap answer at word rank 1 after the swap (strictly: no other word scores as high)",
-        "metrics": ["flip rate, Wilson 95% CI", "share keeping the clean answer at rank 1, Wilson 95% CI",
-                    "share with neither (collateral damage)", "median edit ratio", "items with skipped layers"],
+        "metrics": [
+            "flip rate, Wilson 95% CI",
+            "share keeping the clean answer at rank 1, Wilson 95% CI",
+            "share with neither (collateral damage)",
+            "median edit ratio",
+            "items with skipped layers",
+        ],
         "decision": decision,
         "deviations": deviations,
     }
@@ -150,7 +174,7 @@ class Probes:
     def __init__(self, path: Path):
         blob = torch.load(path, map_location="cpu", weights_only=True)
         self.index = {e: i for i, e in enumerate(blob["entities"])}
-        self.layer_index = {l: i for i, l in enumerate(blob["layers"])}
+        self.layer_index = {layer: i for i, layer in enumerate(blob["layers"])}
         self.parts = {"full_probe": blob["probe"].cuda(), "jpart": blob["jpart"].cuda()}
         self.parts["remainder"] = self.parts["full_probe"] - self.parts["jpart"]
         self.atom_ids = blob["atom_ids"]  # {layer: [entity index -> token ids]}
@@ -186,17 +210,23 @@ def swap(model, ids, clean_h, atoms_by_layer, answer_ids, swap_ids, null_seed: i
         direction = None
         if generator is not None:  # drawn for every layer, so a layer's direction does not depend on skips
             direction = torch.nn.functional.normalize(
-                torch.randn(atoms.shape[1], device="cuda", generator=generator), dim=0)
+                torch.randn(atoms.shape[1], device="cuda", generator=generator), dim=0
+            )
         if near_parallel(atoms[0], atoms[1]):
             skipped.append(layer)
             continue
         clamps[layer] = SwapClamp(atoms, clean_h[layer], null_direction=direction)
     logits, _ = model.run(ids, edits=clamps)
     swap_rank, clean_rank = model.word_rank(logits, swap_ids), model.word_rank(logits, answer_ids)
-    return {"flip": swap_rank == 1, "kept_clean": clean_rank == 1, "swap_rank": swap_rank, "clean_rank": clean_rank,
-            "top_word": model.top_word(logits),
-            "edit_ratio": statistics.mean(c.edit_ratio_last for c in clamps.values()) if clamps else 0.0,
-            "layers_skipped": skipped}
+    return {
+        "flip": swap_rank == 1,
+        "kept_clean": clean_rank == 1,
+        "swap_rank": swap_rank,
+        "clean_rank": clean_rank,
+        "top_word": model.top_word(logits),
+        "edit_ratio": statistics.mean(c.edit_ratio_last for c in clamps.values()) if clamps else 0.0,
+        "layers_skipped": skipped,
+    }
 
 
 def prepare(model, probes: Probes, item: dict, layers: list[int]):
@@ -211,8 +241,11 @@ def prepare(model, probes: Probes, item: dict, layers: list[int]):
     ids = model.encode(item["prompt"])
     logits, clean_h = model.run(ids, record=tuple(layers))
     clean_rank = model.word_rank(logits, answer_ids)
-    row.update(status="eligible" if clean_rank == 1 else "clean_wrong", clean_rank=clean_rank,
-               clean_top_word=model.top_word(logits))
+    row.update(
+        status="eligible" if clean_rank == 1 else "clean_wrong",
+        clean_rank=clean_rank,
+        clean_top_word=model.top_word(logits),
+    )
     return row, (ids, clean_h, answer_ids, swap_ids)
 
 
@@ -233,7 +266,7 @@ def stage_run(name: str) -> None:
     model = load_model()
     lens = JLens(model, manifest["lens"].get("name", "jlens"))
     probes = Probes(probes_path)
-    all_layers = sorted({l for band in bands for l in band_layers(band)})
+    all_layers = sorted({layer for band in bands for layer in band_layers(band)})
     item_rows, outcomes = [], []
     for index, item in enumerate(load_items()):
         row, prepared = prepare(model, probes, item, all_layers)
@@ -243,14 +276,29 @@ def stage_run(name: str) -> None:
         ids, clean_h, answer_ids, swap_ids = prepared
         for band in bands:
             for ci, condition in enumerate(conditions):
-                atoms = {l: condition_atoms(condition, item, l, probes, lens, model) for l in band_layers(band)}
+                atoms = {
+                    layer: condition_atoms(condition, item, layer, probes, lens, model) for layer in band_layers(band)
+                }
                 for null in null_options:
                     seed = NULL_SEED + 1000 * index + ci if null else None
-                    outcomes.append({"name": item["name"], "band": band, "condition": condition, "null": null,
-                                     **swap(model, ids, clean_h, atoms, answer_ids, swap_ids, seed)})
-        print(f"{item['name']}: " + " ".join(f"{o['condition']}{'/null' if o['null'] else ''}@{o['band']}="
-                                             f"{int(o['flip'])}" for o in outcomes if o["name"] == item["name"]),
-              flush=True)
+                    outcomes.append(
+                        {
+                            "name": item["name"],
+                            "band": band,
+                            "condition": condition,
+                            "null": null,
+                            **swap(model, ids, clean_h, atoms, answer_ids, swap_ids, seed),
+                        }
+                    )
+        print(
+            f"{item['name']}: "
+            + " ".join(
+                f"{o['condition']}{'/null' if o['null'] else ''}@{o['band']}={int(o['flip'])}"
+                for o in outcomes
+                if o["name"] == item["name"]
+            ),
+            flush=True,
+        )
 
     write_jsonl(out_dir / "items.jsonl", item_rows)
     write_jsonl(out_dir / "outcomes.jsonl", outcomes)
@@ -288,18 +336,31 @@ def summarize(outcomes: list[dict]) -> list[dict]:
     for (band, condition, null), group in groups.items():
         n = len(group)
         flips, kept = sum(o["flip"] for o in group), sum(o["kept_clean"] for o in group)
-        rows.append({"band": band, "condition": condition, "null": null, "n": n,
-                     "flip": wilson(flips, n), "kept_clean": wilson(kept, n), "neither": (n - flips - kept) / n,
-                     "edit_ratio_median": statistics.median(o["edit_ratio"] for o in group),
-                     "items_with_skipped_layers": sum(bool(o["layers_skipped"]) for o in group)})
+        rows.append(
+            {
+                "band": band,
+                "condition": condition,
+                "null": null,
+                "n": n,
+                "flip": wilson(flips, n),
+                "kept_clean": wilson(kept, n),
+                "neither": (n - flips - kept) / n,
+                "edit_ratio_median": statistics.median(o["edit_ratio"] for o in group),
+                "items_with_skipped_layers": sum(bool(o["layers_skipped"]) for o in group),
+            }
+        )
     return rows
 
 
 def gate_decision(rows: list[dict]) -> dict:
     full = {r["band"]: r["flip"][0] for r in rows if r["condition"] == "full_probe"}
     band = max(GATE_BANDS, key=lambda b: full[b])  # max keeps the first of equal values
-    return {"band": band, "full_probe_flip_rate": full[band], "threshold": GO_FLIP_RATE,
-            "go": full[band] >= GO_FLIP_RATE}
+    return {
+        "band": band,
+        "full_probe_flip_rate": full[band],
+        "threshold": GO_FLIP_RATE,
+        "go": full[band] >= GO_FLIP_RATE,
+    }
 
 
 def flips(outcomes: list[dict], condition: str, null: bool = False) -> dict[str, bool]:
@@ -310,8 +371,9 @@ def bootstraps(outcomes: list[dict], eligible: list[str]) -> dict[str, tuple[flo
     out = {}
     for a, b in COMPARISONS:
         fa, fb = flips(outcomes, a), flips(outcomes, b)
-        out[f"{a} - {b}"] = paired_bootstrap_diff([fa[n] for n in eligible], [fb[n] for n in eligible],
-                                                  n_boot=N_BOOT, seed=BOOT_SEED)
+        out[f"{a} - {b}"] = paired_bootstrap_diff(
+            [fa[n] for n in eligible], [fb[n] for n in eligible], n_boot=N_BOOT, seed=BOOT_SEED
+        )
     return out
 
 
@@ -319,8 +381,12 @@ def write_labels(path: Path, item_rows: list[dict], outcomes: list[dict], condit
     """Every item, with its status, per-condition flips (real and null) and, for eligible items, its label."""
     real = {c: flips(outcomes, c) for c in conditions}
     null = {c: flips(outcomes, c, null=True) for c in conditions}
-    columns = (["name", "category", "intermediate", "swap_to", "answer", "swap_answer", "status", "clean_rank"]
-               + [f"flip_{c}" for c in conditions] + [f"null_flip_{c}" for c in conditions] + ["label"])
+    columns = (
+        ["name", "category", "intermediate", "swap_to", "answer", "swap_answer", "status", "clean_rank"]
+        + [f"flip_{c}" for c in conditions]
+        + [f"null_flip_{c}" for c in conditions]
+        + ["label"]
+    )
     counts = {label: 0 for label in LABELS.values()}
     with open(path, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=columns, extrasaction="ignore")
@@ -339,21 +405,34 @@ def write_labels(path: Path, item_rows: list[dict], outcomes: list[dict], condit
 
 def write_summary_md(path: Path, run: str, summary: dict) -> None:
     pct = lambda w: f"{100 * w[0]:.0f}% [{100 * w[1]:.0f}, {100 * w[2]:.0f}]"  # noqa: E731
-    lines = [f"# {EXP} / {run}", "", "Items: " + ", ".join(f"{k} {v}" for k, v in summary["items"].items()), "",
-             "| band | condition | null | n | flip [95% CI] | kept clean [95% CI] | neither | edit ratio (median) | "
-             "items with skipped layers |", "|---|---|---|---|---|---|---|---|---|"]
+    lines = [
+        f"# {EXP} / {run}",
+        "",
+        "Items: " + ", ".join(f"{k} {v}" for k, v in summary["items"].items()),
+        "",
+        "| band | condition | null | n | flip [95% CI] | kept clean [95% CI] | neither | edit ratio (median) | "
+        "items with skipped layers |",
+        "|---|---|---|---|---|---|---|---|---|",
+    ]
     for r in summary["rates"]:
-        lines.append(f"| {r['band']} | {r['condition']} | {'yes' if r['null'] else ''} | {r['n']} | "
-                     f"{pct(r['flip'])} | {pct(r['kept_clean'])} | {100 * r['neither']:.0f}% | "
-                     f"{r['edit_ratio_median']:.3f} | {r['items_with_skipped_layers']} |")
+        lines.append(
+            f"| {r['band']} | {r['condition']} | {'yes' if r['null'] else ''} | {r['n']} | "
+            f"{pct(r['flip'])} | {pct(r['kept_clean'])} | {100 * r['neither']:.0f}% | "
+            f"{r['edit_ratio_median']:.3f} | {r['items_with_skipped_layers']} |"
+        )
     if "decision" in summary:
         d = summary["decision"]
-        lines += ["", f"Gate: band {d['band']}, full-probe flip rate {100 * d['full_probe_flip_rate']:.0f}% "
-                      f"(threshold {100 * d['threshold']:.0f}%): {'GO' if d['go'] else 'STOP and debug'}."]
+        lines += [
+            "",
+            f"Gate: band {d['band']}, full-probe flip rate {100 * d['full_probe_flip_rate']:.0f}% "
+            f"(threshold {100 * d['threshold']:.0f}%): {'GO' if d['go'] else 'STOP and debug'}.",
+        ]
     if "paired_bootstraps" in summary:
         lines += ["", "Paired bootstrap differences in flip rate:"]
-        lines += [f"- {k}: {100 * v[0]:+.0f} pts [{100 * v[1]:+.0f}, {100 * v[2]:+.0f}]"
-                  for k, v in summary["paired_bootstraps"].items()]
+        lines += [
+            f"- {k}: {100 * v[0]:+.0f} pts [{100 * v[1]:+.0f}, {100 * v[2]:+.0f}]"
+            for k, v in summary["paired_bootstraps"].items()
+        ]
         lines += ["", "Labels: " + ", ".join(f"{k} {v}" for k, v in summary["labels"].items())]
     path.write_text("\n".join(lines) + "\n")
 
@@ -368,7 +447,8 @@ if __name__ == "__main__":
     parser.add_argument("--name", help="the run's folder name (manifest stage; default = the kind)")
     args = parser.parse_args()
     if args.stage == "manifest":
-        assert args.target in ("gate", "main") and args.probes, "manifest needs a kind (gate/main) and --probes"
+        assert args.target in ("gate", "main"), "manifest needs a kind (gate/main)"
+        assert args.probes, "manifest needs --probes"
         stage_manifest(args.target, args.name or args.target, args.probes, args.band, args.gate)
     else:
         stage_run(args.target)

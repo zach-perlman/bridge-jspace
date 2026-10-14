@@ -25,7 +25,7 @@ def nonneg_omp(dictionary: torch.Tensor, x: torch.Tensor, k: int) -> tuple[torch
         if scores[best] <= 0:
             break
         chosen.append(best)
-        atoms = dictionary[chosen].double().cpu().numpy()            # [m, d]
+        atoms = dictionary[chosen].double().cpu().numpy()  # [m, d]
         coefs, _ = nnls(atoms.T, x.double().cpu().numpy())
         residual = x - torch.from_numpy(coefs @ atoms).to(x)
     keep = [i for i, c in enumerate(coefs) if c > 0]

@@ -7,10 +7,10 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from bridge_jspace.clamp import SwapClamp  # noqa: E402
-from bridge_jspace.data import _derived_forms, _words  # noqa: E402
-from bridge_jspace.omp import nonneg_omp  # noqa: E402
-from bridge_jspace.stats import ledoit_wolf, paired_bootstrap_diff, wilson  # noqa: E402
+from bridge_jspace.clamp import SwapClamp
+from bridge_jspace.data import _derived_forms, _words
+from bridge_jspace.omp import nonneg_omp
+from bridge_jspace.stats import ledoit_wolf, paired_bootstrap_diff, wilson
 
 
 def test_omp_recovers_planted_code():
@@ -29,7 +29,7 @@ def test_omp_recovers_planted_code():
 def test_omp_never_uses_negative_coefficients():
     g = torch.Generator().manual_seed(1)
     dictionary = torch.nn.functional.normalize(torch.randn(500, 64, generator=g), dim=-1)
-    x = -dictionary[7] + 0.5 * dictionary[9]   # atom 7 can only enter negatively
+    x = -dictionary[7] + 0.5 * dictionary[9]  # atom 7 can only enter negatively
     indices, coefs = nonneg_omp(dictionary, x, k=10)
     assert (coefs > 0).all() and len(indices) <= 10
 
@@ -94,11 +94,11 @@ def test_ledoit_wolf_matches_definition_and_limits():
     s = z.T @ z / n
     mu = torch.trace(s) / d
     d2 = ((s - mu * torch.eye(d, dtype=s.dtype)) ** 2).sum() / d
-    b2 = sum(((zi[:, None] * zi[None] - s) ** 2).sum() for zi in z) / n ** 2 / d
+    b2 = sum(((zi[:, None] * zi[None] - s) ** 2).sum() for zi in z) / n**2 / d
     expected = float(min(b2, d2) / d2)
     assert abs(a - expected) < 1e-10
     torch.testing.assert_close(cov, (1 - a) * s + a * mu * torch.eye(d, dtype=s.dtype))
-    _, a_isotropic = ledoit_wolf(torch.randn(20, 200, generator=g))       # n << d, no structure: shrink a lot
+    _, a_isotropic = ledoit_wolf(torch.randn(20, 200, generator=g))  # n << d, no structure: shrink a lot
     _, a_structured = ledoit_wolf(torch.randn(5000, 10, generator=g) * torch.logspace(-1, 1, 10))  # n >> d
     assert a_isotropic > 0.8 and a_structured < 0.05
 
@@ -106,6 +106,7 @@ def test_ledoit_wolf_matches_definition_and_limits():
 def test_name_derived_words_count_as_naming_the_entity():
     def leaks(entity, text):
         return any(w.startswith(_derived_forms(entity)) for w in _words(text))
+
     assert leaks("Brazil", "the Brazilian real") and leaks("drums", "a drummer") and leaks("China", "Chinese tea")
     assert leaks("nitrogen", "nitrates in soil") and leaks("Saturn", "on Saturday")
     assert not leaks("heart", "sounds heard through a stethoscope") and not leaks("ant", "an antenna")

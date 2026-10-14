@@ -15,11 +15,11 @@ from pathlib import Path
 import matplotlib
 
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402
+import matplotlib.pyplot as plt
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from bridge_jspace import pins  # noqa: E402
+from bridge_jspace import pins
 
 EXP = "exp02_swaps"
 
@@ -31,13 +31,24 @@ def pct(w) -> str:
 def plot(rates: dict, conditions: list[str], path: Path) -> None:
     fig, axes = plt.subplots(1, 2, figsize=(11, 3.8), sharey=True)
     x = range(len(conditions))
-    for ax, metric, title in ((axes[0], "flip", "swap answer at rank 1 (flip)"),
-                              (axes[1], "kept_clean", "clean answer kept at rank 1")):
-        for offset, null, color, label in ((-0.2, False, "tab:blue", "swap"),
-                                           (0.2, True, "lightgray", "matched-norm random direction")):
+    for ax, metric, title in (
+        (axes[0], "flip", "swap answer at rank 1 (flip)"),
+        (axes[1], "kept_clean", "clean answer kept at rank 1"),
+    ):
+        for offset, null, color, label in (
+            (-0.2, False, "tab:blue", "swap"),
+            (0.2, True, "lightgray", "matched-norm random direction"),
+        ):
             w = [rates[(c, null)][metric] for c in conditions]
-            ax.bar([i + offset for i in x], [r[0] for r in w], width=0.4, color=color, label=label,
-                   yerr=[[r[0] - r[1] for r in w], [r[2] - r[0] for r in w]], capsize=3)
+            ax.bar(
+                [i + offset for i in x],
+                [r[0] for r in w],
+                width=0.4,
+                color=color,
+                label=label,
+                yerr=[[r[0] - r[1] for r in w], [r[2] - r[0] for r in w]],
+                capsize=3,
+            )
         ax.set_xticks(list(x), conditions, rotation=20)
         ax.set_ylim(0, 1)
         ax.set_title(title)
@@ -60,8 +71,9 @@ def main(run: str) -> None:
     rates = {(r["condition"], r["null"]): r for r in summary["rates"]}
     plot(rates, conditions, fig_dir / "flip_rates.png")
 
-    commit = subprocess.run(["git", "describe", "--always", "--dirty"], cwd=pins.REPO_ROOT,
-                            capture_output=True, text=True).stdout.strip()
+    commit = subprocess.run(
+        ["git", "describe", "--always", "--dirty"], cwd=pins.REPO_ROOT, capture_output=True, text=True
+    ).stdout.strip()
     n = rates[(conditions[0], False)]["n"]
     real, null = (lambda c: rates[(c, False)]), (lambda c: rates[(c, True)])
     boots = summary["paired_bootstraps"]
@@ -77,8 +89,8 @@ def main(run: str) -> None:
         "bridge's representation (J-part swap flips, remainder swap with J-coordinates clamped does not).",
         f"Headline: flip rate J-part = {pct(real('jpart')['flip'])}   remainder = {pct(real('remainder')['flip'])}"
         f"   remainder with J clamped = {pct(real('remainder_clamped')['flip'])}",
-        "Paired differences (bootstrap B=2000): " + "; ".join(
-            f"{k} = {100 * v[0]:+.0f} pts [{100 * v[1]:+.0f}, {100 * v[2]:+.0f}]" for k, v in boots.items()),
+        "Paired differences (bootstrap B=2000): "
+        + "; ".join(f"{k} = {100 * v[0]:+.0f} pts [{100 * v[1]:+.0f}, {100 * v[2]:+.0f}]" for k, v in boots.items()),
         f"Baseline: full probe = {pct(real('full_probe')['flip'])}   raw J-lens = {pct(real('raw_jlens')['flip'])}",
         "Control (matched-norm random direction): " + "   ".join(f"{c} = {pct(null(c)['flip'])}" for c in conditions),
         "Labels (J-part flip x clamped-remainder flip): " + ", ".join(f"{k} {v}" for k, v in summary["labels"].items()),
@@ -90,14 +102,17 @@ def main(run: str) -> None:
         + "). Not matched in total dose: each layer's null edit is sized to what the clamp still needs on the null run's "
         "own state, and a random direction never achieves the swap, so it stays full-size at every band layer while "
         "the real swap carries forward and later edits shrink. So the null is stricter for flips and overstates "
-        "collateral damage (null kept-clean " + ", ".join(f"{c} {pct(null(c)['kept_clean'])}" for c in conditions)
+        "collateral damage (null kept-clean "
+        + ", ".join(f"{c} {pct(null(c)['kept_clean'])}" for c in conditions)
         + ").",
         "2) The J-part vs remainder gap is a dose gap. Checked: median direct edit ratio |delta|/|h| at the final "
         "position " + ", ".join(f"{c} {real(c)['edit_ratio_median']:.3f}" for c in conditions) + ".",
         "3) Flips come from breaking the computation, not from installing the target. Checked: share with neither "
-        "answer at rank 1 " + ", ".join(f"{c} {100 * real(c)['neither']:.0f}%" for c in conditions)
+        "answer at rank 1 "
+        + ", ".join(f"{c} {100 * real(c)['neither']:.0f}%" for c in conditions)
         + "; items with skipped (near-parallel) layers "
-        + ", ".join(f"{c} {real(c)['items_with_skipped_layers']}" for c in conditions) + ".",
+        + ", ".join(f"{c} {real(c)['items_with_skipped_layers']}" for c in conditions)
+        + ".",
         "Caveats: the band was picked by the gate on these same items. The remainder holds most of the probes' prompt "
         "noise (the J-part is 12-18% of probe variance; exp01_probes v2 -> v3, 6 -> 24 kept prompts per entity, cut "
         "probe norms by about a third), so a weak remainder swap partly reflects a noisier direction.",

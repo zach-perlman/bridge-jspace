@@ -24,8 +24,10 @@ def more_prompt_files() -> list:
 def load_entity_prompts(topup: bool = False, more: bool = False) -> dict[str, list[dict]]:
     """Prompts per entity, each row tagged with its round: 1 from entity_prompts.json, 2 from the top-up file
     (when `topup`), 3 from the part files in entity_prompts_more/ (when `more`); later rounds are appended."""
-    prompts = {e: [{**r, "round": 1} for r in rows]
-               for e, rows in json.loads(pins.ENTITY_PROMPTS_FILE.read_text())["entities"].items()}
+    prompts = {
+        e: [{**r, "round": 1} for r in rows]
+        for e, rows in json.loads(pins.ENTITY_PROMPTS_FILE.read_text())["entities"].items()
+    }
     extra = ([(2, pins.ENTITY_PROMPTS_TOPUP_FILE)] if topup else []) + [(3, f) for f in more_prompt_files() if more]
     for round_, path in extra:
         for e, rows in json.loads(path.read_text())["entities"].items():
@@ -59,8 +61,42 @@ def first_word(text: str) -> str | None:
 
 
 FUNCTION_WORDS = frozenset(
-    "fact a an the of in on at to for from by with and or is are was were be been its it that which who whose where "
-    "when as this these those".split())
+    [
+        "fact",
+        "a",
+        "an",
+        "the",
+        "of",
+        "in",
+        "on",
+        "at",
+        "to",
+        "for",
+        "from",
+        "by",
+        "with",
+        "and",
+        "or",
+        "is",
+        "are",
+        "was",
+        "were",
+        "be",
+        "been",
+        "its",
+        "it",
+        "that",
+        "which",
+        "who",
+        "whose",
+        "where",
+        "when",
+        "as",
+        "this",
+        "these",
+        "those",
+    ]
+)
 
 
 def _words(text: str) -> list[str]:
@@ -69,7 +105,7 @@ def _words(text: str) -> list[str]:
 
 def _content_ngrams(text: str, n: int) -> set[tuple[str, ...]]:
     words = [w for w in _words(text) if w not in FUNCTION_WORDS]
-    return {tuple(words[i:i + n]) for i in range(len(words) - n + 1)}
+    return {tuple(words[i : i + n]) for i in range(len(words) - n + 1)}
 
 
 def swap_partners(items: list[dict]) -> dict[str, set[str]]:
@@ -87,14 +123,33 @@ def _name_pattern(entity: str) -> re.Pattern:
 
 # Name-derived forms that the stem rule in _derived_forms misses (demonyms, roots, abbreviations).
 IRREGULAR_FORMS = {
-    "China": ("chinese",), "France": ("french", "frenchman"), "England": ("english", "englishman"),
-    "Spain": ("spanish", "spaniard"), "Greece": ("greek",), "Poland": ("polish", "pole", "poles"),
-    "Sweden": ("swedish", "swede", "swedes"), "Russia": ("russian",), "Italy": ("italian",),
-    "Hungary": ("hungarian",), "Canada": ("canadian",), "Mexico": ("mexican",), "Peru": ("peruvian",),
-    "Egypt": ("egyptian",), "Belgium": ("belgian",), "Germany": ("german",), "Japan": ("japanese",),
-    "India": ("indian",), "Brazil": ("brazilian",), "Australia": ("australian", "aussie"),
-    "Singapore": ("singaporean",), "Mars": ("martian",), "Jupiter": ("jovian",), "Venus": ("venusian",),
-    "nitrogen": ("nitr",), "Christmas": ("xmas",), "drums": ("drum",),
+    "China": ("chinese",),
+    "France": ("french", "frenchman"),
+    "England": ("english", "englishman"),
+    "Spain": ("spanish", "spaniard"),
+    "Greece": ("greek",),
+    "Poland": ("polish", "pole", "poles"),
+    "Sweden": ("swedish", "swede", "swedes"),
+    "Russia": ("russian",),
+    "Italy": ("italian",),
+    "Hungary": ("hungarian",),
+    "Canada": ("canadian",),
+    "Mexico": ("mexican",),
+    "Peru": ("peruvian",),
+    "Egypt": ("egyptian",),
+    "Belgium": ("belgian",),
+    "Germany": ("german",),
+    "Japan": ("japanese",),
+    "India": ("indian",),
+    "Brazil": ("brazilian",),
+    "Australia": ("australian", "aussie"),
+    "Singapore": ("singaporean",),
+    "Mars": ("martian",),
+    "Jupiter": ("jovian",),
+    "Venus": ("venusian",),
+    "nitrogen": ("nitr",),
+    "Christmas": ("xmas",),
+    "drums": ("drum",),
 }
 
 
@@ -114,7 +169,9 @@ def check_entity_prompts(prompts: dict[str, list[dict]], items: list[dict]) -> l
     problems = []
     entities = entities_of(items)
     if sorted(prompts, key=str.lower) != entities:
-        problems.append(f"entity set differs: missing {set(entities) - set(prompts)}, extra {set(prompts) - set(entities)}")
+        problems.append(
+            f"entity set differs: missing {set(entities) - set(prompts)}, extra {set(prompts) - set(entities)}"
+        )
     forbidden, partners = forbidden_answers(items), swap_partners(items)
     any_entity = [_name_pattern(e) for e in entities]
     test_4grams = set().union(*(_content_ngrams(i["prompt"], 4) for i in items))

@@ -7,8 +7,10 @@ from . import pins
 
 def load_tokenizer():
     from transformers import AutoTokenizer
-    return AutoTokenizer.from_pretrained(snapshot_download(pins.QWEN_REPO, revision=pins.QWEN_REVISION,
-                                                           local_files_only=True))
+
+    return AutoTokenizer.from_pretrained(
+        snapshot_download(pins.QWEN_REPO, revision=pins.QWEN_REVISION, local_files_only=True)
+    )
 
 
 def _single_token(tokenizer, surface: str) -> int | None:
@@ -19,8 +21,11 @@ def _single_token(tokenizer, surface: str) -> int | None:
 def surface_ids(tokenizer, word: str) -> list[int]:
     """Single-token ids among the word's surfaces (with/without a leading space; as given, capitalised, lowercase),
     as the reference runner scores answers. Multi-token surfaces are skipped, so the list can be empty."""
-    ids = {_single_token(tokenizer, prefix + form)
-           for form in {word, word.capitalize(), word.lower()} for prefix in ("", " ")}
+    ids = {
+        _single_token(tokenizer, prefix + form)
+        for form in {word, word.capitalize(), word.lower()}
+        for prefix in ("", " ")
+    }
     return sorted(i for i in ids if i is not None)
 
 
