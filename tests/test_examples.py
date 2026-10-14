@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from bridge_jspace.examples import Group, render, render_html, sample
+from bridge_jspace.examples import Group, export, export_index, latest_examples_run, render, render_html, sample
 from bridge_jspace.pins import RESULTS_DIR
 
 P = {"per_group": 3, "seed_examples": 0, "band": [32, 48], "top_k": 2, "title": "t", "source_run": "r"}
@@ -95,3 +95,40 @@ def test_render_marks_words():
     html = render_html([Group("seen_last", "Seen", "def", 41)], [rec], P, "m")
     assert html.startswith("<!doctype html>") and 'class="w bridge">Brazil<' in html
     assert 'id="seen_last-amazon-language"' in html and "<script>" in html
+
+
+def _fake_run(root, exp, stamp, target="bridge_jspace.examples:LensExamples"):
+    import json
+
+    run = root / exp / stamp
+    (run / "slices").mkdir(parents=True)
+    (run / "slices" / "x__jlens.html").write_text("<!doctype html><title>x</title>")
+    params = {
+        "title": "t",
+        "page_title": "Fake Examples",
+        "source_run": "r",
+        "seed_examples": 0,
+        "per_group": 1,
+        "top_k": 1,
+    }
+    (run / "manifest.json").write_text(
+        json.dumps({"config": {"name": exp, "target": target, "params": params, "model": {"name": "org/m"}}})
+    )
+    (run / "examples.json").write_text(
+        json.dumps({"groups": [{"key": "g", "title": "G", "definition": "d", "n_total": 2}], "examples": []})
+    )
+    return run
+
+
+def test_export_builds_the_view_and_index(tmp_path):
+    results, root = tmp_path / "results", tmp_path / "examples"
+    _fake_run(results, "exp99_x", "20260101-000000")
+    newest = _fake_run(results, "exp99_x", "20260102-000000")
+    _fake_run(results, "exp99_x", "20260103-000000", target="scripts.other:Main")  # not an examples run
+    assert latest_examples_run("exp99_x", results) == newest
+    out = export(newest, root)
+    assert {p.name for p in out.iterdir()} == {"index.html", "examples.md", "artifact.html", "slices", "source.json"}
+    assert (out / "slices" / "x__jlens.html").exists()
+    assert not (out / "artifact.html").read_text().startswith("<!doctype")  # publishable variant
+    index = export_index(root).read_text()
+    assert "exp99_x/index.html" in index and "Fake Examples" in index

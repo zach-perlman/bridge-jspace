@@ -88,9 +88,9 @@ class LensExamples(Experiment):
             records.append(rec)
 
         self.save_json("examples.json", {"groups": [asdict(g) for g in groups], "examples": records})
-        self.path("examples.md").write_text(render(groups, records, p, self.cfg.model.name))
-        self.path("examples.html").write_text(render_html(groups, records, p, self.cfg.model.name))
-        self.log.info(f"wrote {self.path('examples.md')} and examples.html")
+        out = export(self.run_dir)
+        export_index()
+        self.log.info(f"examples view refreshed: {out}/index.html (open with `make examples-serve`)")
         return {
             "sanity": sanity,
             "source_run": p["source_run"],
@@ -383,7 +383,9 @@ def render_html(
         f"J-lens, J++) show inside the model at each layer. Model: {_esc(model)}. Questions are sorted into groups by "
         f"what the J-lens showed in run <code>{_esc(p['source_run'])}</code>; within a group the cards are a random "
         f"pick (seed {p['seed_examples']}, at most {p['per_group']}), not the best or worst cases, and one question "
-        "can sit in two groups.</p>"
+        "can sit in two groups."
+        + (f" Tables from run <code>{_esc(p['examples_run'])}</code>." if p.get("examples_run") else "")
+        + "</p>"
         '<p>Colours: <span class="w bridge">bridge</span> <span class="w answer">answer</span> '
         '<span class="w ctrl">distractor</span>. Under each cell, <b>B 3 · A 120</b> means: at that layer the bridge '
         "is the reader's 3rd most likely word and the answer its 120th (spaces and punctuation not counted); bold "
@@ -475,15 +477,33 @@ def _card_html(r: dict[str, Any], group: str, p: dict[str, Any], slice_prefix: s
     return "".join(parts)
 
 
-def rerender(run_dir: str | Path) -> Path:
-    """Write examples.md and examples.html for a finished examples run into a new `<run_dir>/render-<timestamp>/`."""
-    from datetime import datetime
+EXAMPLES_DIR_NAME = "examples"
 
-    run_dir = Path(run_dir)
-    data = json.loads((run_dir / "examples.json").read_text())
-    manifest = json.loads((run_dir / "manifest.json").read_text())
-    groups = [Group(**g) for g in data["groups"]]
-    p, model = dict(manifest["config"]["params"]), manifest["config"]["model"]["name"]
+
+def _examples_root() -> Path:
+    from bridge_jspace.pins import REPO_ROOT
+
+    return REPO_ROOT / EXAMPLES_DIR_NAME
+
+
+def _repo_rel(path: Path) -> str:
+    """`path` relative to the repo root when inside it (so committed views work on any machine)."""
+    from bridge_jspace.pins import REPO_ROOT
+
+    try:
+        return str(path.resolve().relative_to(REPO_ROOT))
+    except ValueError:
+        return str(path.resolve())
+
+
+def _from_repo(path: str) -> Path:
+    from bridge_jspace.pins import REPO_ROOT
+
+    return Path(path) if Path(path).is_absolute() else REPO_ROOT / path
+
+
+def _params_with_title(manifest: dict[str, Any]) -> dict[str, Any]:
+    p = dict(manifest["config"]["params"])
     if "page_title" not in p:  # runs from before page titles: take the experiment's current one
         from bridge_jspace.config import load_config
         from bridge_jspace.pins import REPO_ROOT
@@ -491,17 +511,123 @@ def rerender(run_dir: str | Path) -> Path:
         cfg = REPO_ROOT / "scripts" / manifest["config"]["name"] / "examples.yaml"
         if cfg.exists():
             p["page_title"] = load_config(cfg).params.get("page_title")
-    out = run_dir / f"render-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
-    out.mkdir()
+    return p
+
+
+def latest_examples_run(exp: str, results: Path | None = None) -> Path | None:
+    """The newest run of `exp` made by LensExamples (run dirs are named by timestamp)."""
+    from bridge_jspace.pins import RESULTS_DIR
+
+    runs = []
+    for m in sorted((results or RESULTS_DIR).glob(f"{exp}/*/manifest.json")):
+        if (
+            json.loads(m.read_text())["config"]["target"].endswith(":LensExamples")
+            and (m.parent / "examples.json").exists()
+        ):
+            runs.append(m.parent)
+    return runs[-1] if runs else None
+
+
+def export(run_dir: str | Path, root: Path | None = None) -> Path:
+    """Render one examples run into `examples/<exp>/` (replacing the previous view): index.html, examples.md,
+    artifact.html (for publishing) and a copy of slices/. The run in results/ stays the source of record."""
+    import shutil
+
+    run_dir = Path(run_dir)
+    data = json.loads((run_dir / "examples.json").read_text())
+    manifest = json.loads((run_dir / "manifest.json").read_text())
+    groups = [Group(**g) for g in data["groups"]]
+    p, model = _params_with_title(manifest), manifest["config"]["model"]["name"]
+    p["examples_run"] = _repo_rel(run_dir)
+    out = (root or _examples_root()) / manifest["config"]["name"]
+    if out.exists():
+        shutil.rmtree(out)
+    out.mkdir(parents=True)
+    (out / "index.html").write_text(render_html(groups, data["examples"], p, model))
     (out / "examples.md").write_text(render(groups, data["examples"], p, model))
-    # local copies sit one level below the run dir that holds slices/
-    (out / "examples.html").write_text(render_html(groups, data["examples"], p, model, slice_prefix="../"))
     (out / "artifact.html").write_text(render_html(groups, data["examples"], p, model, standalone=False))
+    if (run_dir / "slices").exists():
+        shutil.copytree(run_dir / "slices", out / "slices")
+    (out / "source.json").write_text(
+        json.dumps({"examples_run": p["examples_run"], "groups_from": p["source_run"]}, indent=2)
+    )
     return out
 
 
+def export_all(exps: list[str] | None = None, root: Path | None = None) -> list[Path]:
+    """Export the latest examples run of every experiment that has one."""
+    from bridge_jspace.pins import REPO_ROOT
+
+    exps = exps or sorted(d.parent.name for d in (REPO_ROOT / "scripts").glob("*/examples.yaml"))
+    outs = [export(run, root) for e in exps if (run := latest_examples_run(e)) is not None]
+    export_index(root)
+    return outs
+
+
+def export_index(root: Path | None = None) -> Path:
+    """examples/index.html: one entry per exported experiment, with its groups and sizes."""
+    root = root or _examples_root()
+    entries = []
+    for src in sorted(root.glob("*/source.json")):
+        exp_dir = src.parent
+        run = _from_repo(json.loads(src.read_text())["examples_run"])
+        data = json.loads((run / "examples.json").read_text())
+        manifest = json.loads((run / "manifest.json").read_text())
+        p = _params_with_title(manifest)
+        groups = "".join(
+            f"<li>{_esc(g['title'])} <span class='badge'>{g['n_total']}</span></li>" for g in data["groups"]
+        )
+        entries.append(
+            f"<section class='card'><h3><a href='{_esc(exp_dir.name)}/index.html'>{_esc(p.get('page_title') or exp_dir.name)}</a></h3>"
+            f"<p class='meta'><code>{_esc(exp_dir.name)}</code> · {len(data['examples'])} examples · model "
+            f"{_esc(manifest['config']['model']['name'])}</p><ul class='meta'>{groups}</ul></section>"
+        )
+    page = (
+        "<!doctype html><html lang='en'><head><meta charset='utf-8'>"
+        "<meta name='viewport' content='width=device-width,initial-scale=1,viewport-fit=cover'>"
+        "<title>Bridge Lens Examples</title>"
+        '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600'
+        '&family=IBM+Plex+Sans:wght@400;600&display=swap">'
+        f"<style>{_CSS}</style></head><body><header><h1>Bridge Lens Examples</h1><div class='lead'><p>Worked "
+        "examples per experiment: two-hop questions grouped by what the lenses read, with layer-by-layer tables and "
+        "interactive jlens views. Regenerate with <code>make examples-render</code>.</p></div></header>"
+        f"<main>{''.join(entries) or '<p>No examples exported yet.</p>'}</main></body></html>"
+    )
+    root.mkdir(parents=True, exist_ok=True)
+    (root / "index.html").write_text(page)
+    return root / "index.html"
+
+
+def serve(port: int = 8000, open_browser: bool = True) -> None:
+    """Export all examples, then serve examples/ on http://localhost:<port>/ until interrupted."""
+    import contextlib
+    import functools
+    import http.server
+    import webbrowser
+
+    export_all()
+    root = _examples_root()
+    handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(root))
+    with http.server.ThreadingHTTPServer(("127.0.0.1", port), handler) as httpd:
+        url = f"http://localhost:{port}/index.html"
+        print(f"serving {root} at {url}  (Ctrl-C to stop; on a pod: ssh -L {port}:localhost:{port} <host>)")
+        if open_browser:
+            webbrowser.open(url)
+        with contextlib.suppress(KeyboardInterrupt):
+            httpd.serve_forever()
+
+
 if __name__ == "__main__":
-    # uv run python -m bridge_jspace.examples <examples run dir>   (re-render md + html, no model needed)
+    # uv run python -m bridge_jspace.examples export [exp ...]   render the latest examples runs into examples/
+    # uv run python -m bridge_jspace.examples serve [port]       export, then serve examples/ and open the browser
     import sys
 
-    print(rerender(sys.argv[1]))
+    cmd, args = (sys.argv[1] if len(sys.argv) > 1 else "export"), sys.argv[2:]
+    if cmd == "export":
+        for out in export_all(args or None):
+            print(out)
+        print(_examples_root() / "index.html")
+    elif cmd == "serve":
+        serve(int(args[0]) if args else 8000, open_browser="--no-browser" not in args)
+    else:
+        raise SystemExit("usage: python -m bridge_jspace.examples [export [exp ...] | serve [port] [--no-browser]]")

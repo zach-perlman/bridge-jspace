@@ -49,6 +49,7 @@ configs/models/   one YAML per model: HF revision + lens files (qwen3.5-0.8b / 2
 scripts/          experiment code: part A expNN_name/ (config.yaml + experiment.py), part B expNN_*.py
 scripts/run.sh    experiment in a detached tmux session, log in log/
 scripts/prefetch.py  download a model YAML's snapshot + lenses, retrying on HF rate limits
+examples/         rendered worked-example pages per experiment (make examples-render; slices/ not committed)
 infra/            pod bootstrap
 ```
 `AGENTS.md`: rules for running experiments. `VERIFIED.md`: results a human has checked. `data/README.md`: what
@@ -64,7 +65,14 @@ make test-model              # integration on Qwen3.5-0.8B + its lenses (CPU ok)
 make run CONFIG=scripts/exp10_lens_sanity/config.yaml                      # Qwen3.5-4B
 make run CONFIG=scripts/exp10_lens_sanity/config.yaml ARGS="model=configs/models/qwen3.6-27b.yaml"
 tmux attach -t <session>     # or: tail -f log/<session>.log
+
+# Worked examples (lens tables for sampled questions; the examples run needs the GPU, rendering does not):
+make run CONFIG=scripts/exp12_position_map/examples.yaml   # results/<exp>/<stamp>/examples.json + slices/
+make examples-render                                       # examples/<exp>/ from the latest examples run of each exp
+make examples-serve                                        # render, serve examples/ on localhost:8000, open browser
 ```
+On a pod, `make examples-serve` plus `ssh -L 8000:localhost:8000 sesterce-a100` shows the pages locally. To update the
+published exp12 page, publish `examples/exp12_position_map/artifact.html` with `slices/*` as files to its URL.
 GPU memory: Qwen3.5-4B fits a 24 GB card; Qwen3.6-27B needs 1x 80 GB (bf16 weights ~54 GB + two fp32 lens maps
 ~13 GB).
 
@@ -87,8 +95,9 @@ Final figures, numbers and examples per experiment: [results/README.md](results/
 | [exp10 `pass_at_10_by_model.png`](figures/exp10_lens_sanity/20261013-230247/pass_at_10_by_model.png) | Does each lens read the intermediate at all (pass@10, 4B and 27B) |
 | [exp10 `27b_by_layer.png`](figures/exp10_lens_sanity/20261013-230247/27b_by_layer.png) | Why the J-lens looks no better than the logit lens on pass@10 |
 
-Worked examples with lens tables: [exp12 page](https://claude.ai/artifact/TXLZH6WxuxSQDhoK5YHTj9) (private; share it
-from the page) and `examples.html` in each experiment's examples run (see [results/README.md](results/README.md)).
+Worked examples with lens tables: `make examples-serve` opens [examples/index.html](examples/index.html) (all three
+experiments); the exp12 page is also published at https://claude.ai/artifact/TXLZH6WxuxSQDhoK5YHTj9 (private; share it
+from the page).
 
 **What we know so far (Qwen3.6-27B, the 67 two-hop questions it answers correctly).**
 1. The J-lens and J++ can read the bridge; the plain logit lens mostly cannot before the last layers (exp10, exp11).

@@ -1,4 +1,4 @@
-.PHONY: install fmt lint typecheck test test-model check run data-report
+.PHONY: install fmt lint typecheck test test-model check run data-report examples-render examples-serve
 
 # make run CONFIG=scripts/exp10_lens_sanity/config.yaml ARGS="model=configs/models/qwen3.6-27b.yaml"
 run:                ## experiment in a detached tmux session, log in log/
@@ -29,3 +29,9 @@ check: lint typecheck test
 
 data-report:        ## what data we work with: counts, categories, labels, overlaps (add ARGS=--json)
 	uv run python -m scripts.data_report $(ARGS)
+
+examples-render:    ## examples/<exp>/ from the latest examples run of each experiment (no GPU)
+	uv run python -m bridge_jspace.examples export
+
+examples-serve:     ## render, then serve examples/ on http://localhost:$(PORT) and open it (PORT=8000)
+	uv run python -m bridge_jspace.examples serve $(or $(PORT),8000)

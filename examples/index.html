@@ -1,0 +1,56 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1,viewport-fit=cover'><title>Bridge Lens Examples</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap"><style>
+/* Layout: a side index of groups and examples next to a reading column of example cards; stacks on phones. */
+:root{--bg:#fbfbf9;--panel:#f3f3ef;--ink:#16171a;--muted:#4f5157;--faint:#7c7e85;--line:#e2e2dc;
+--bridge:#1f63b8;--bridge-bg:rgba(42,120,214,.14);--answer:#b4410f;--answer-bg:rgba(235,104,52,.16);
+--ctrl-bg:rgba(124,126,133,.16);--heat:42,120,214;--chip-on-bg:#16171a;--chip-on-fg:#fbfbf9;
+--sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+--mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17181b;--panel:#1f2024;--ink:#ecebe6;
+--muted:#c2c1b9;--faint:#8d8f96;--line:#2e2f34;--bridge:#6aa6ef;--bridge-bg:rgba(85,152,231,.2);--answer:#f39a6e;
+--answer-bg:rgba(240,138,93,.2);--ctrl-bg:rgba(141,143,150,.2);--heat:85,152,231;--chip-on-bg:#ecebe6;
+--chip-on-fg:#17181b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17181b;--panel:#1f2024;--ink:#ecebe6;--muted:#c2c1b9;--faint:#8d8f96;
+--line:#2e2f34;--bridge:#6aa6ef;--bridge-bg:rgba(85,152,231,.2);--answer:#f39a6e;--answer-bg:rgba(240,138,93,.2);
+--ctrl-bg:rgba(141,143,150,.2);--heat:85,152,231;--chip-on-bg:#ecebe6;--chip-on-fg:#17181b;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 var(--sans)}
+code{font-family:var(--mono)}
+header{padding-block:18px 14px;padding-inline:20px;border-bottom:1px solid var(--line)}
+h1{font-size:20px;margin:0 0 8px;text-wrap:balance}
+.lead{color:var(--muted);max-width:78ch;margin:0}.lead p{margin:0 0 6px}
+.layout{display:flex}
+nav{position:sticky;top:env(safe-area-inset-top,0px);align-self:flex-start;width:270px;flex:none;
+max-height:100vh;overflow:auto;padding-block:12px;padding-inline:16px;border-right:1px solid var(--line);background:var(--panel)}
+nav h4{margin:12px 0 4px;font-size:13px}
+nav a{display:block;color:var(--muted);text-decoration:none;font:12px var(--mono);padding:1px 0;overflow-wrap:anywhere}
+nav a:hover,nav a:focus-visible{color:var(--ink);text-decoration:underline}
+main{flex:1;min-width:0;padding-block:12px 40px;padding-inline:20px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 12px}
+.chips button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:14px;padding:3px 10px;
+cursor:pointer;font:12px var(--sans)}
+.chips button.on{background:var(--chip-on-bg);color:var(--chip-on-fg);border-color:var(--chip-on-bg)}
+.chips button:focus-visible{outline:2px solid var(--bridge);outline-offset:2px}
+section.group>h2{font-size:16px;margin:24px 0 2px;text-wrap:balance}.def{color:var(--muted);margin:0 0 10px;max-width:78ch}
+.card{border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin:12px 0;background:var(--bg);min-width:0}
+.card h3{font:600 14px var(--mono);margin:0 0 6px;overflow-wrap:anywhere}
+.badge{display:inline-block;font:11px var(--sans);padding:1px 7px;border-radius:9px;background:var(--ctrl-bg);
+color:var(--muted);margin:2px 0 2px 6px}
+.prompt{font:13px var(--mono);background:var(--panel);padding:6px 8px;border-radius:4px;margin:6px 0;overflow-wrap:anywhere}
+.meta{color:var(--muted);margin:2px 0;max-width:90ch}.meta a{color:var(--bridge)}
+.b{color:var(--bridge);font-weight:600}.a{color:var(--answer);font-weight:600}
+.scroll{overflow-x:auto;max-width:100%}
+table{border-collapse:collapse;margin:8px 0;font-size:12px}
+th,td{border-bottom:1px solid var(--line);padding:3px 6px;text-align:left;vertical-align:top;white-space:nowrap}
+th{color:var(--faint);font-weight:500}td.l{color:var(--faint);font-variant-numeric:tabular-nums}
+.w{display:inline-block;padding:0 4px;margin:1px 2px 1px 0;border-radius:3px;font-family:var(--mono)}
+.w.bridge{background:var(--bridge-bg);color:var(--bridge);font-weight:600}
+.w.answer{background:var(--answer-bg);color:var(--answer);font-weight:600}.w.ctrl{background:var(--ctrl-bg)}
+.r{display:block;color:var(--faint);font-size:11px;font-variant-numeric:tabular-nums}.r .hit{color:var(--ink);font-weight:600}
+td.heat{font-family:var(--mono);text-align:center;min-width:70px}
+td.heat small{color:var(--ink);opacity:.75;font-variant-numeric:tabular-nums}
+td.heat .w.bridge{background:none;color:var(--ink);text-decoration:underline 2px}
+h4.t{margin:12px 0 0;font-size:13px}
+@media (max-width:760px){.layout{flex-direction:column}nav{position:static;width:auto;max-height:none;
+border-right:0;border-bottom:1px solid var(--line)}header,main{padding-inline:16px}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style></head><body><header><h1>Bridge Lens Examples</h1><div class='lead'><p>Worked examples per experiment: two-hop questions grouped by what the lenses read, with layer-by-layer tables and interactive jlens views. Regenerate with <code>make examples-render</code>.</p></div></header><main><section class='card'><h3><a href='exp10_lens_sanity/index.html'>Lens-Eval Bridge Examples</a></h3><p class='meta'><code>exp10_lens_sanity</code> · 15 examples · model Qwen/Qwen3.6-27B</p><ul class='meta'><li>All readers see it <span class='badge'>32</span></li><li>Only the lenses see it <span class='badge'>24</span></li><li>J++ sees it, the J-lens does not <span class='badge'>16</span></li><li>No reader sees it <span class='badge'>19</span></li><li>Model answers wrong <span class='badge'>25</span></li></ul></section><section class='card'><h3><a href='exp11_bridge_vs_answer_by_layer/index.html'>Last-Token Bridge Examples</a></h3><p class='meta'><code>exp11_bridge_vs_answer_by_layer</code> · 13 examples · model Qwen/Qwen3.6-27B</p><ul class='meta'><li>Seen at the last token <span class='badge'>41</span></li><li>Missed at the last token <span class='badge'>26</span></li><li>Distractor above the bridge <span class='badge'>5</span></li><li>J-lens and J++ disagree <span class='badge'>1</span></li><li>Model answers wrong <span class='badge'>16</span></li></ul></section><section class='card'><h3><a href='exp12_position_map/index.html'>Bridge Position Examples</a></h3><p class='meta'><code>exp12_position_map</code> · 16 examples · model Qwen/Qwen3.6-27B</p><ul class='meta'><li>Seen at the last token <span class='badge'>41</span></li><li>Seen only earlier in the prompt <span class='badge'>19</span></li><li>Not seen anywhere <span class='badge'>7</span></li><li>Distractor above the bridge <span class='badge'>5</span></li><li>J-lens and J++ disagree <span class='badge'>1</span></li><li>Model answers wrong <span class='badge'>16</span></li></ul></section></main></body></html>
