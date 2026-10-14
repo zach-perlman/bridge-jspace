@@ -29,6 +29,8 @@ LENS_FILES = {"jlens": LENS_FILE, "jpp": JPP_FILE}  # part B's lens choice (exp0
 
 PROBE_SWAP_FILE = DATA_DIR / "probe_swap.json"
 PROBE_SWAP_SHA256 = "a0edd27ca23f7b4d0fbe90448c2ddcc7457a3d812121bf024ed12a032ff86796"
+BREW_FILE = DATA_DIR / "brew_intermediates.json"  # WorkspaceBench's brew_intermediates bank (part B's exp03)
+BREW_SHA256 = "183be95d4182c373674786b7610820520e56434fb0c15a75a62dad854bed9d83"
 LENS_EVAL_MULTIHOP_FILE = DATA_DIR / "lens_eval_multihop.json"
 LENS_EVAL_MULTIHOP_SHA256 = "50b7e4c9255291c0ca2a8e94615be9f44531fa57bb1a844e4f9616056d987416"
 ENTITY_PROMPTS_FILE = DATA_DIR / "entity_prompts.json"
@@ -47,6 +49,10 @@ def load_pinned_items(path: Path, sha256: str) -> list[dict[str, Any]]:
 
 def probe_swap_items() -> list[dict[str, Any]]:
     return load_pinned_items(PROBE_SWAP_FILE, PROBE_SWAP_SHA256)
+
+
+def brew_items() -> list[dict[str, Any]]:
+    return load_pinned_items(BREW_FILE, BREW_SHA256)
 
 
 def lens_eval_multihop_items() -> list[dict[str, Any]]:
