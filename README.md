@@ -75,6 +75,21 @@ To fetch a model and its lenses ahead of a run (retries on HF 429s; put `HF_TOKE
 Draft, UNVERIFIED: nothing is in `VERIFIED.md` yet. The STATE block in `AGENTS.md` tracks what is in flight.
 Final figures, numbers and examples per experiment: [results/README.md](results/README.md).
 
+**Final figures (Qwen3.6-27B).**
+| Figure | What it shows |
+|---|---|
+| [exp12 `two_step.png`](figures/exp12_position_map/two_step.png) | **Headline.** Where in the prompt and how deep the bridge and the answer are readable; the ~21-layer lag |
+| [exp12 `position_layer_jlens.png`](figures/exp12_position_map/position_layer_jlens.png) | J-lens heatmaps, prompt position x layer, for the bridge and the answer |
+| [exp12 `by_offset.png`](figures/exp12_position_map/by_offset.png) | Share of layers 32-48 with each word on top, per prompt position, all three readers |
+| [exp12 `position_layer.png`](figures/exp12_position_map/position_layer.png) | The heatmaps for all three readers |
+| [exp11 `pool_top1_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/pool_top1_by_layer.png) | Last token only: bridge and answer on top, by layer, three readers |
+| [exp11 `advantage_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/advantage_by_layer.png) | Last token only: how far each word ranks above its same-category distractor |
+| [exp10 `pass_at_10_by_model.png`](figures/exp10_lens_sanity/20261013-230247/pass_at_10_by_model.png) | Does each lens read the intermediate at all (pass@10, 4B and 27B) |
+| [exp10 `27b_by_layer.png`](figures/exp10_lens_sanity/20261013-230247/27b_by_layer.png) | Why the J-lens looks no better than the logit lens on pass@10 |
+
+Worked examples with lens tables: [exp12 page](https://claude.ai/artifact/TXLZH6WxuxSQDhoK5YHTj9) (private; share it
+from the page) and `examples.html` in each experiment's examples run (see [results/README.md](results/README.md)).
+
 **What we know so far (Qwen3.6-27B, the 67 two-hop questions it answers correctly).**
 1. The J-lens and J++ can read the bridge; the plain logit lens mostly cannot before the last layers (exp10, exp11).
 2. The bridge is readable earlier than the answer, both in the prompt and in depth: it builds up on the last words
@@ -261,8 +276,9 @@ Eligible n=67; positions -14..0 analysed (reached by at least half the questions
 
 ## Next steps (part A)
 In order; designs need human sign-off before GPU runs.
-1. **Tell part B where the bridge is:** strongest on the last words before "is", from about layer 20. Swaps applied at
-   those positions and layers should be stronger than at the last token alone.
+1. **Tell part B where the bridge is:** strongest on the last words before "is", from about layer 20. Part B already
+   swaps at every prompt position, and its earlier bands (16-32, 24-40) did not pass its gate either, so this is
+   information for reading its results, not a fix for the gate.
 2. **Per question, not just per group:** for how many questions is the bridge on top at an earlier position and
    layer than the answer? Align positions by role (the words that cue the bridge) instead of distance from the end.
 3. **The 5 lens-eval questions whose bridge appears in the prompt:** check whether they drive any exp10 headline.
