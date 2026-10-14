@@ -21,7 +21,8 @@ or tokenization artifact.
    architecture as the target), then Qwen3.6-27B. Results under Status.
 2. `exp11_bridge_vs_answer_by_layer`: on part B's items and labels, at the last prompt token, at which layers each
    reader has the bridge (and, separately, the answer) on top of its candidate pool. Results under Status.
-3. Where the bridge is readable across prompt positions, for the items where the last token misses it (planned).
+3. `exp12_position_map`: the same readout at every prompt position x layer: where in the prompt, and how deep, each
+   word is readable; the best position per reader, chosen on half the items and checked on the other half.
 4. Oracle lens and NLA on the same items, split by part B's J-mediated / non-J labels (planned).
 
 ## Method, part B: is the bridge used outside the J-space? (exp01-09)
@@ -72,6 +73,15 @@ To fetch a model and its lenses ahead of a run (retries on HF 429s; put `HF_TOKE
 
 ## Status
 Draft, UNVERIFIED: nothing is in `VERIFIED.md` yet. The STATE block in `AGENTS.md` tracks what is in flight.
+
+**What we know so far (Qwen3.6-27B, the 67 two-hop questions it answers correctly).**
+1. The J-lens and J++ can read the bridge; the plain logit lens mostly cannot before the last layers (exp10, exp11).
+2. The bridge is readable earlier than the answer, both in the prompt and in depth: it builds up on the last words
+   before "is" from about layer 20, while the answer appears only at the last token from about layer 44 (exp12).
+3. Where the bridge is readable, part B's swaps also show it is used (J-mediated questions read better), but the
+   groups are small.
+4. The original "J-lens cannot see the bridge" is mostly where and how we looked: compared with the whole vocabulary
+   at the last token it is often missed; compared with other entities, or one word earlier, it is usually there.
 
 ### exp10_lens_sanity: does the lens work on Qwen at all?
 **What we measure.** We give the model a two-hop question, e.g. "The language spoken in the country where the Amazon
@@ -146,7 +156,7 @@ which changes nothing: 58% vs 59%).*
 
 **What this does not show.** A lens shows what can be read out at a layer, not when it was computed. And this is
 one token: the first hop may happen earlier in the prompt (at "Amazon River ends"), which exp11 does not look at.
-About 40% of questions do not have the bridge on top at the last token; those are the target of the next experiment.
+About 40% of questions do not have the bridge on top at the last token; exp12 looks at the earlier tokens.
 
 <details><summary>Full numbers</summary>
 
@@ -165,6 +175,57 @@ eligible questions whose prompt ends in a space the answer is read less often (J
 space); the bridge less so (0.53 vs 0.62).
 </details>
 
+### exp12_position_map: where in the prompt, and how deep?
+**What we measure.** The exp11 readout (is the word the top candidate in its pool?) at every token of the prompt, not
+just the last. Prompts differ in length, so tokens are aligned by their distance from the last word: 0 is the last
+word (usually "is"), -1 the word before it (e.g. "located", "ends"), and so on. The best position for each reader is
+picked on a random half of the questions and checked on the other half, because the best of 15 positions looks better
+than it is on the data that picked it; the same search for the distractor (Mexico) shows how high noise alone gets.
+
+**In short.**
+- **The bridge is read best one word before the end; the answer only at the end.** J-lens: the bridge is on top in
+  66% of layers 32-48 at position -1 (56% at the last word); the answer in 41% at the last word and at most 24%
+  anywhere earlier. Both halves of the data pick the same positions. Noise ceiling: 12%.
+- **The bridge comes about 20 layers before the answer.** Read where each is strongest, half the questions have the
+  bridge on top by layer 23 and the answer by layer 44: 21 layers later [16, 28] (J++: 20 vs 43, 23 [18, 32]).
+  Read at a single token (exp11) the two overlapped; this is the step that one token hides.
+- **Most last-token misses are a read-site effect.** Of the 26 questions where the J-lens does not have the bridge on
+  top at the last token, 73% [54, 88] have it on top at an earlier token (distractor, same search: 35% [15, 54]).
+
+![exp12: where and how deep](results/exp12_position_map/20261014-095358/analysis-20261014-121341/two_step.png)
+
+*Left: share of layers 32-48 in which the word is the top candidate, at each prompt position (label: the most common
+token there). Right: share of questions with the word on top at each layer, the bridge read at position -1 and the
+answer at the last word; dots and arrow: where each reaches half the questions. Thick: J-lens (shaded 95% CI); thin:
+J++. Grey band: layers 32-48.*
+
+**What this does not show.** Positions are aligned by distance from the end, not by meaning: in the 44 prompts that
+end in "is" the bridge peaks on the word before it (75%), in the 23 others it has no clear peak. The ordering holds
+for the group of questions, not reliably for each one. A lens shows what is readable, not what is computed.
+
+<details><summary>Full numbers and checks</summary>
+
+Run `20261014-095358` (Qwen3.6-27B @ `c373821`, prompts as published), analysed in `results/exp12_position_map/20261014-095358/analysis-20261014-121341/summary.json`.
+Eligible n=67; positions -14..0 analysed (reached by at least half the questions; -11..0 by 66-67).
+
+| Reader | Bridge: best position | Share of layers 32-48 [95% CI] | Held-out halves (position: share) | Answer: best position | Share | Distractor ceiling |
+|---|---|---|---|---|---|---|
+| logit lens | -3 | 0.40 [0.30, 0.51] | -1: 0.31, -3: 0.37 | 0 | 0.14 [0.09, 0.21] | 0.05 |
+| J-lens | -1 | 0.66 [0.55, 0.76] | -1: 0.62, -1: 0.70 | 0 | 0.41 [0.32, 0.51] | 0.12 |
+| J++ | -1 | 0.66 [0.56, 0.76] | -1: 0.62, -3: 0.63 | 0 | 0.40 [0.30, 0.49] | 0.10 |
+
+- Depth (half the questions on top, bridge at its best position vs answer at the last word): J-lens L23 vs L44, lag
+  21 [16, 28]; J++ L20 vs L43, 23 [18, 32]; logit lens L24 vs L51, 27 [-5, 30].
+- Same optimum on the balanced panel (the 66 questions that reach every position -11..0), so prompt length does not
+  drive it.
+- Read at position -1, part B's J-mediated questions have the bridge on top in 0.79 [0.63, 0.92] of layers 32-48,
+  "neither" questions in 0.60 [0.46, 0.74] (J-lens).
+- Missed at the last token: J-lens 26 questions, bridge on top earlier in 73% [54, 88] (distractor 35% [15, 54]);
+  J++ 26, 81% [65, 96] (distractor 31% [15, 50]).
+
+![exp12: J-lens heatmaps](results/exp12_position_map/20261014-095358/analysis-20261014-121341/position_layer_jlens.png)
+</details>
+
 ### Pitfalls found so far
 1. **Trailing space.** Most original prompts end in a space (83/93), which Qwen's tokenizer leaves as a lone `" "`
    token. The model then answers far worse (27B: 21/93 correct vs 61/93 with the space stripped) and the lens reads a
@@ -174,9 +235,11 @@ space); the bridge less so (0.53 vs 0.62).
    and not committed). Headlines use only single-token bridges.
 3. **"The bridge is visible somewhere" is too weak.** Across all layers x tokens, a same-category distractor (Mexico
    for Brazil) also reaches the top somewhere. The read-site map must compare the bridge against a distractor.
-4. **Best-of-all-layers favours the logit lens on deep models** (see the layer plot). A score restricted to the
-   middle-layer band would separate the readers; that band is not chosen yet.
-5. **Not yet checked:** in 5/93 questions the bridge word appears in the prompt itself.
+4. **Best-of-all-layers favours the logit lens on deep models** (see the layer plot). exp11/exp12 average over the
+   middle-layer band 32-48 instead.
+5. **Token positions differ between prompts.** exp12 aligns them by distance from the last word, which mixes roles
+   ("-1" is "ends" in one prompt, "is" in another); checked by splitting on the last word.
+6. **Not yet checked:** in 5/93 lens-eval questions the bridge word appears in the prompt itself.
 
 ### Decisions
 - **Trailing space: stripped is primary; prompts as published are kept as the paper-literal replication**
@@ -197,13 +260,14 @@ space); the bridge less so (0.53 vs 0.62).
 
 ## Next steps (part A)
 In order; designs need human sign-off before GPU runs.
-1. **Position map** for the ~40% of questions where the last token misses the bridge: is it on top at earlier
-   tokens (e.g. at the subject, "Amazon River ends") and at which layers? Same pools, distractors and labels as
-   exp11. Open: how to align token positions across prompts.
-2. **The 5 lens-eval questions whose bridge appears in the prompt:** check whether they drive any exp10 headline.
-3. **Oracle lens** on the same items: the Qwen3.6-27B adapter is on HF (`neuronpedia/jacobian-lens`,
+1. **Tell part B where the bridge is:** strongest on the last words before "is", from about layer 20. Swaps applied at
+   those positions and layers should be stronger than at the last token alone.
+2. **Per question, not just per group:** for how many questions is the bridge on top at an earlier position and
+   layer than the answer? Align positions by role (the words that cue the bridge) instead of distance from the end.
+3. **The 5 lens-eval questions whose bridge appears in the prompt:** check whether they drive any exp10 headline.
+4. **Oracle lens** on the same items: the Qwen3.6-27B adapter is on HF (`neuronpedia/jacobian-lens`,
    `qwen3.6-27b/oracle`); its reference read code may not be public, so check that first, then propose a design.
    This is the only long GPU job in sight.
-4. **NLA:** source and weights still to identify.
-5. Optional: reproduce J++'s published Recall@10 (55.2% on Qwen3.6-27B) over all six lens-eval sets.
-6. Stretch: repeat on Gemma 4 31B (J-lens and J++ exist on HF).
+5. **NLA:** source and weights still to identify.
+6. Optional: reproduce J++'s published Recall@10 (55.2% on Qwen3.6-27B) over all six lens-eval sets.
+7. Stretch: repeat on Gemma 4 31B (J-lens and J++ exist on HF).

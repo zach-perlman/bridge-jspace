@@ -20,7 +20,7 @@ import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.lines import Line2D
 
-from bridge_jspace.plotting import INK, MUTED, SURFACE, style_axes
+from bridge_jspace.plotting import GRID, INK, MUTED, SURFACE, style_axes
 
 BRIDGE, ANSWER, CONTROL = "#2a78d6", "#eb6834", "#b4b2a9"
 READER_TITLE = {"logit": "logit lens (baseline)", "jlens": "J-lens", "jpp": "J++"}
@@ -139,7 +139,140 @@ def plot_run(run_dir: str | Path, out_dir: str | Path, summary: dict[str, Any], 
     fig.tight_layout()
     fig.savefig(out / "position_layer.png", dpi=150, facecolor=SURFACE)
     plt.close(fig)
+    _two_step(run_dir, out, summary, meta, layers, labels)
+    _heatmap_one(run_dir, out, summary, meta, layers, labels, "jlens")
     return out
+
+
+def _share_ci(top1: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Per-column share of True with a Wilson 95% interval; `top1` is [items, columns] bool."""
+    from bridge_jspace.stats import wilson
+
+    k, n = top1.sum(0), top1.shape[0]
+    cis = np.array([wilson(int(x), n) for x in k])
+    return cis[:, 0], cis[:, 1], cis[:, 2]
+
+
+def _two_step(run_dir: Path, out: Path, summary: dict[str, Any], meta: dict, layers: dict, labels: list[str]) -> None:
+    from .experiment import load_grids
+
+    offsets = summary["offsets"]
+    lo, hi = summary["band"]
+    readers = [r for r in ("jlens", "jpp") if r in summary["readers"]]
+    if not readers:
+        return
+    fig, (ax_p, ax_d) = plt.subplots(
+        1, 2, figsize=(13, 4.4), facecolor=SURFACE, gridspec_kw={"width_ratios": [1, 1.25]}
+    )
+    x = np.arange(len(offsets))
+    for reader in readers:
+        thick = reader == "jlens"
+        res = summary["readers"][reader]
+        g = load_grids(run_dir / f"grids_{reader}.npz")
+        for role, color in (("bridge", BRIDGE), ("answer", ANSWER)):
+            bo = res["by_offset"].get(role, {})
+            m = np.array([bo.get(str(o), {}).get("mean", np.nan) for o in offsets])
+            ax_p.plot(
+                x,
+                m,
+                color=color,
+                lw=2.6 if thick else 1.2,
+                alpha=1 if thick else 0.7,
+                marker="o" if thick else None,
+                ms=4,
+            )
+            if thick:
+                lo_ = np.array([bo.get(str(o), {}).get("lo", np.nan) for o in offsets])
+                hi_ = np.array([bo.get(str(o), {}).get("hi", np.nan) for o in offsets])
+                ax_p.fill_between(x, lo_, hi_, color=color, alpha=0.15, lw=0)
+        if thick:
+            d = res["by_offset"].get("distractor", {})
+            ax_p.plot(x, [d.get(str(o), {}).get("mean", np.nan) for o in offsets], color=CONTROL, lw=1)
+        # depth: bridge at its best offset, answer at its best offset
+        ts = res.get("two_step")
+        if not ts:
+            continue
+        lay = np.array(layers[reader])
+        for role, off, color in (("bridge", ts["bridge_offset"], BRIDGE), ("answer", ts["answer_offset"], ANSWER)):
+            top = np.array([g[n][f"{role}_pool"][:, meta[n]["offsets"].index(int(off))] == 1
+                            for n in meta if int(off) in meta[n]["offsets"] and f"{role}_pool" in g.get(n, {})])  # fmt: skip
+            share, l95, h95 = _share_ci(top)
+            ax_d.plot(lay, share, color=color, lw=2.6 if thick else 1.2, alpha=1 if thick else 0.7)
+            if thick:
+                ax_d.fill_between(lay, l95, h95, color=color, alpha=0.15, lw=0)
+        if thick:
+            c = ts["crossing"]["0.5"]
+            yb, ya = 0.5, 0.5
+            for layer, color in ((c["bridge_layer"], BRIDGE), (c["answer_layer"], ANSWER)):
+                ax_d.plot([layer], [0.5], marker="o", ms=7, color=color, mec=SURFACE, mew=1.5, zorder=5)
+            lag = c.get("lag_layers", {})
+            ax_d.annotate("", xy=(c["answer_layer"], ya), xytext=(c["bridge_layer"], yb),
+                          arrowprops={"arrowstyle": "->", "color": INK, "lw": 1.2})  # fmt: skip
+            ax_d.annotate(
+                f"{lag.get('median', c['answer_layer'] - c['bridge_layer']):.0f} layers "
+                f"[{lag.get('lo', np.nan):.0f}, {lag.get('hi', np.nan):.0f}]",
+                ((c["bridge_layer"] + c["answer_layer"]) / 2, 0.5), xytext=(0, 7), textcoords="offset points",
+                ha="center", fontsize=9, color=INK,
+            )  # fmt: skip
+            ax_d.set_title(
+                f"How deep: bridge at its best position ({ts['bridge_offset']}), answer at ({ts['answer_offset']})",
+                color=INK, fontsize=11, loc="left",
+            )  # fmt: skip
+    ax_p.axvline(len(offsets) - 1, color=GRID, lw=0)
+    ax_p.set_xticks(x, labels, rotation=60, ha="right", fontsize=8)
+    ax_p.set_ylim(0, 1)
+    ax_p.set_ylabel(f"share of layers {lo}-{hi} with the word top-1", color=MUTED)
+    ax_p.set_xlabel("prompt position (offset from the last word, its usual token)", color=MUTED)
+    ax_p.set_title("Where in the prompt", color=INK, fontsize=11, loc="left")
+    ax_d.axhline(0.5, color=MUTED, lw=0.8, ls=":")
+    ax_d.axvspan(lo, hi, color=GRID, alpha=0.5, lw=0, zorder=0)
+    ax_d.set_ylim(0, 1)
+    ax_d.set_xlabel("layer", color=MUTED)
+    ax_d.set_ylabel("share of items: top-1 in its pool", color=MUTED)
+    for ax in (ax_p, ax_d):
+        style_axes(ax)
+    handles = [
+        Line2D([], [], color=BRIDGE, lw=2.6, label="bridge (among 97 entities)"),
+        Line2D([], [], color=ANSWER, lw=2.6, label="answer (among 112 answers)"),
+        Line2D([], [], color=INK, lw=2.6, label="J-lens (shaded: 95% CI)"),
+        Line2D([], [], color=INK, lw=1.2, alpha=0.7, label="J++"),
+        Line2D([], [], color=CONTROL, lw=1, label="control: bridge distractor"),
+    ]
+    _finish(fig, handles, f"Qwen3.6-27B, {len(meta)} two-hop questions it answers correctly", out / "two_step.png")
+
+
+def _heatmap_one(run_dir: Path, out: Path, summary: dict, meta: dict, layers: dict, labels: list[str], reader: str):
+    from .experiment import load_grids
+
+    if reader not in summary["readers"]:
+        return
+    offsets = summary["offsets"]
+    g = load_grids(run_dir / f"grids_{reader}.npz")
+    fig, axes = plt.subplots(1, 2, figsize=(13, 4.2), facecolor=SURFACE)
+    for ax, role in zip(axes, ("bridge", "answer"), strict=True):
+        share = np.full((len(offsets), len(layers[reader])), np.nan)
+        for i, off in enumerate(offsets):
+            cols = [g[n][f"{role}_pool"][:, m["offsets"].index(off)] == 1
+                    for n, m in meta.items() if off in m["offsets"] and f"{role}_pool" in g.get(n, {})]  # fmt: skip
+            if cols:
+                share[i] = np.mean(cols, axis=0)
+        im = ax.imshow(share, aspect="auto", cmap=CMAP[role], vmin=0, vmax=1, origin="lower",
+                       extent=(layers[reader][0] - 0.5, layers[reader][-1] + 0.5, -0.5, len(offsets) - 0.5))  # fmt: skip
+        ax.set_yticks(range(len(offsets)), labels, fontsize=8)
+        ax.set_xlabel("layer", color=MUTED)
+        ax.set_title(f"{role}: share of questions with it top-1", color=INK, fontsize=11, loc="left")
+        ax.tick_params(colors=MUTED, labelsize=8)
+        fig.colorbar(im, ax=ax, fraction=0.03, pad=0.01).ax.tick_params(labelsize=7, colors=MUTED)
+    fig.suptitle(
+        f"{READER_TITLE.get(reader, reader)}, Qwen3.6-27B: prompt position x layer",
+        color=INK,
+        fontsize=11,
+        x=0.01,
+        ha="left",
+    )
+    fig.tight_layout()
+    fig.savefig(out / f"position_layer_{reader}.png", dpi=150, facecolor=SURFACE)
+    plt.close(fig)
 
 
 def _finish(fig, handles, title: str, path: Path) -> None:

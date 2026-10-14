@@ -38,6 +38,7 @@ from bridge_jspace.readout import Reader, formatting_mask, readout_logits, resid
 from bridge_jspace.stats import bootstrap_mean
 from bridge_jspace.utils import progress
 from scripts.exp11_bridge_vs_answer_by_layer.experiment import aggregate as exp11_aggregate
+from scripts.exp11_bridge_vs_answer_by_layer.experiment import crossing
 
 from .plot import plot_run
 
@@ -222,7 +223,67 @@ def analyze_grids(
             res["at_optimal"][role] = {"offset": off} | exp11_aggregate(
                 rows, sub_meta, [reader], p["bands"], p["emerge_run"], n_boot, seed
             )
+        res["two_step"] = _two_step(g, meta, eligible, layers[reader], res["optimal"], n_boot, seed)
+        res["balanced_panel"] = _balanced_panel(g, meta, eligible, offsets, band_rows, p["panel_min_share"])
+        res["by_last_word"] = _by_last_word(g, meta, eligible, band_rows, n_boot, seed)
         out["readers"][reader] = res
+    return out
+
+
+def _two_step(grids: Grids, meta, eligible: list[str], layers: list[int], optimal: dict, n_boot: int, seed: int):
+    """Depth at which the bridge (read at its best offset) and the answer (read at its best offset) become top-1 in
+    half (or 30%) of the items, and the answer - bridge lag with a bootstrap CI over items."""
+    if "bridge" not in optimal or "answer" not in optimal:
+        return None
+    ob, oa = optimal["bridge"]["offset"], optimal["answer"]["offset"]
+    by_name = {m["name"]: m for m in meta}
+    names = [
+        n for n in eligible if ob in by_name[n]["offsets"] and oa in by_name[n]["offsets"] and "answer_pool" in grids[n]
+    ]
+    b = np.array([grids[n]["bridge_pool"][:, by_name[n]["offsets"].index(ob)] == 1 for n in names])
+    a = np.array([grids[n]["answer_pool"][:, by_name[n]["offsets"].index(oa)] == 1 for n in names])
+    return {
+        "bridge_offset": ob,
+        "answer_offset": oa,
+        "n": len(names),
+        "crossing": {str(t): crossing(b, a, layers, t, n_boot, seed) for t in (0.3, 0.5)},
+    }
+
+
+def _balanced_panel(
+    grids: Grids, meta, eligible: list[str], offsets: list[int], band_rows: list[int], min_share: float
+):
+    """Optimal offsets again, on the items that reach every offset reached by >= `min_share` of eligible items, so
+    the comparison across offsets is between the same items (long prompts no longer dominate far offsets)."""
+    by_name = {m["name"]: m for m in meta}
+    covered = [o for o in offsets if sum(o in by_name[n]["offsets"] for n in eligible) >= min_share * len(eligible)]
+    panel = [n for n in eligible if all(o in by_name[n]["offsets"] for o in covered)]
+    out: dict[str, Any] = {"offsets": [min(covered), max(covered)] if covered else None, "n": len(panel)}
+    for role in ("bridge", "answer"):
+        sc = scores_by_offset(grids, meta, panel, f"{role}_pool", covered, band_rows)
+        out[role] = {
+            "best_offset": best_offset(sc, 1),
+            "by_offset": {o: round(float(np.mean(v)), 4) for o, v in sc.items() if v},
+        }
+    return out
+
+
+def _by_last_word(grids: Grids, meta, eligible: list[str], band_rows: list[int], n_boot: int, seed: int):
+    """Offsets -3..0 split by the last content word: the most common one (" is") vs the rest. Offsets align by
+    distance from the end, not by role; this shows whether the optimum depends on what that last word is."""
+    from collections import Counter
+
+    by_name = {m["name"]: m for m in meta}
+    last = {n: by_name[n]["tokens"][by_name[n]["offsets"].index(0)].strip() for n in eligible}
+    top = Counter(last.values()).most_common(1)[0][0]
+    out: dict[str, Any] = {"most_common_last_word": top}
+    for group, names in ((f"ends_in_{top}", [n for n in eligible if last[n] == top]),
+                         ("ends_otherwise", [n for n in eligible if last[n] != top])):  # fmt: skip
+        g: dict[str, Any] = {"n": len(names)}
+        for role in ("bridge", "answer"):
+            sc = scores_by_offset(grids, meta, names, f"{role}_pool", [-3, -2, -1, 0], band_rows)
+            g[role] = {o: _ci(bootstrap_mean(v, n_boot, seed)) for o, v in sc.items() if v}
+        out[group] = g
     return out
 
 

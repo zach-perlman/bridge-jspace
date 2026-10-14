@@ -18,6 +18,7 @@ params:
   emerge_run: 3
   # An offset is analysed only if at least this share of eligible prompts reach it (long offsets exist in few).
   min_item_share: 0.5
+  panel_min_share: 0.95  # balanced-panel check: offsets reached by >= 95% of eligible prompts
   n_boot: 10000
   limit: null
   fact_prompt: "Fact: The capital of France is"
