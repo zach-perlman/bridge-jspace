@@ -264,36 +264,60 @@ def load_jsonl(path: Path) -> list[dict[str, Any]]:
 # ---- HTML view (pure; unit-tested) ----------------------------------------------------------------
 
 _CSS = """
-:root{--bg:#fcfcfb;--panel:#f9f9f7;--ink:#0b0b0b;--muted:#52514e;--faint:#898781;--line:#e1e0d9;
---bridge:#2a78d6;--bridge-bg:rgba(42,120,214,.14);--answer:#c2410c;--answer-bg:rgba(235,104,52,.16);
---ctrl-bg:rgba(137,135,129,.18);--heat:42,120,214}
-@media (prefers-color-scheme:dark){:root{--bg:#1a1a19;--panel:#0d0d0d;--ink:#f0efec;--muted:#c3c2b7;
---faint:#898781;--line:#2c2c2a;--bridge:#5598e7;--answer:#f08a5d;--heat:85,152,231}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,sans-serif}
-header{padding:16px 20px;border-bottom:1px solid var(--line)}h1{font-size:18px;margin:0 0 6px}
-.lead{color:var(--muted);max-width:110ch;margin:0}.layout{display:flex}
-nav{position:sticky;top:0;align-self:flex-start;width:280px;flex:none;height:100vh;overflow:auto;padding:12px 16px;
-border-right:1px solid var(--line);background:var(--panel)}nav h4{margin:12px 0 4px;font-size:13px}
-nav a{display:block;color:var(--muted);text-decoration:none;font:12px ui-monospace,monospace;padding:1px 0}
-nav a:hover{color:var(--ink)}main{flex:1;min-width:0;padding:12px 20px 40px}
+/* Layout: a side index of groups and examples next to a reading column of example cards; stacks on phones. */
+:root{--bg:#fbfbf9;--panel:#f3f3ef;--ink:#16171a;--muted:#4f5157;--faint:#7c7e85;--line:#e2e2dc;
+--bridge:#1f63b8;--bridge-bg:rgba(42,120,214,.14);--answer:#b4410f;--answer-bg:rgba(235,104,52,.16);
+--ctrl-bg:rgba(124,126,133,.16);--heat:42,120,214;--chip-on-bg:#16171a;--chip-on-fg:#fbfbf9;
+--sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+--mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17181b;--panel:#1f2024;--ink:#ecebe6;
+--muted:#c2c1b9;--faint:#8d8f96;--line:#2e2f34;--bridge:#6aa6ef;--bridge-bg:rgba(85,152,231,.2);--answer:#f39a6e;
+--answer-bg:rgba(240,138,93,.2);--ctrl-bg:rgba(141,143,150,.2);--heat:85,152,231;--chip-on-bg:#ecebe6;
+--chip-on-fg:#17181b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17181b;--panel:#1f2024;--ink:#ecebe6;--muted:#c2c1b9;--faint:#8d8f96;
+--line:#2e2f34;--bridge:#6aa6ef;--bridge-bg:rgba(85,152,231,.2);--answer:#f39a6e;--answer-bg:rgba(240,138,93,.2);
+--ctrl-bg:rgba(141,143,150,.2);--heat:85,152,231;--chip-on-bg:#ecebe6;--chip-on-fg:#17181b;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 var(--sans)}
+code{font-family:var(--mono)}
+header{padding-block:18px 14px;padding-inline:20px;border-bottom:1px solid var(--line)}
+h1{font-size:20px;margin:0 0 8px;text-wrap:balance}
+.lead{color:var(--muted);max-width:78ch;margin:0}.lead p{margin:0 0 6px}
+.layout{display:flex}
+nav{position:sticky;top:env(safe-area-inset-top,0px);align-self:flex-start;width:270px;flex:none;
+max-height:100vh;overflow:auto;padding-block:12px;padding-inline:16px;border-right:1px solid var(--line);background:var(--panel)}
+nav h4{margin:12px 0 4px;font-size:13px}
+nav a{display:block;color:var(--muted);text-decoration:none;font:12px var(--mono);padding:1px 0;overflow-wrap:anywhere}
+nav a:hover,nav a:focus-visible{color:var(--ink);text-decoration:underline}
+main{flex:1;min-width:0;padding-block:12px 40px;padding-inline:20px}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 12px}
 .chips button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:14px;padding:3px 10px;
-cursor:pointer;font-size:12px}.chips button.on{background:var(--ink);color:var(--bg)}
-section.group>h2{font-size:16px;margin:24px 0 2px}.def{color:var(--muted);margin:0 0 10px}
-.card{border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:12px 0;background:var(--bg)}
-.card h3{font:600 14px ui-monospace,monospace;margin:0 0 6px}.badge{display:inline-block;font:11px system-ui;
-padding:1px 7px;border-radius:9px;background:var(--ctrl-bg);color:var(--muted);margin-left:6px}
-.prompt{font:13px ui-monospace,monospace;background:var(--panel);padding:6px 8px;border-radius:6px;margin:6px 0}
-.meta{color:var(--muted);margin:2px 0}.b{color:var(--bridge);font-weight:600}.a{color:var(--answer);font-weight:600}
-.scroll{overflow-x:auto}table{border-collapse:collapse;margin:8px 0;font-size:12px}
+cursor:pointer;font:12px var(--sans)}
+.chips button.on{background:var(--chip-on-bg);color:var(--chip-on-fg);border-color:var(--chip-on-bg)}
+.chips button:focus-visible{outline:2px solid var(--bridge);outline-offset:2px}
+section.group>h2{font-size:16px;margin:24px 0 2px;text-wrap:balance}.def{color:var(--muted);margin:0 0 10px;max-width:78ch}
+.card{border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin:12px 0;background:var(--bg);min-width:0}
+.card h3{font:600 14px var(--mono);margin:0 0 6px;overflow-wrap:anywhere}
+.badge{display:inline-block;font:11px var(--sans);padding:1px 7px;border-radius:9px;background:var(--ctrl-bg);
+color:var(--muted);margin:2px 0 2px 6px}
+.prompt{font:13px var(--mono);background:var(--panel);padding:6px 8px;border-radius:4px;margin:6px 0;overflow-wrap:anywhere}
+.meta{color:var(--muted);margin:2px 0;max-width:90ch}.meta a{color:var(--bridge)}
+.b{color:var(--bridge);font-weight:600}.a{color:var(--answer);font-weight:600}
+.scroll{overflow-x:auto;max-width:100%}
+table{border-collapse:collapse;margin:8px 0;font-size:12px}
 th,td{border-bottom:1px solid var(--line);padding:3px 6px;text-align:left;vertical-align:top;white-space:nowrap}
 th{color:var(--faint);font-weight:500}td.l{color:var(--faint);font-variant-numeric:tabular-nums}
-.w{display:inline-block;padding:0 4px;margin:1px 2px 1px 0;border-radius:4px;font-family:ui-monospace,monospace}
+.w{display:inline-block;padding:0 4px;margin:1px 2px 1px 0;border-radius:3px;font-family:var(--mono)}
 .w.bridge{background:var(--bridge-bg);color:var(--bridge);font-weight:600}
 .w.answer{background:var(--answer-bg);color:var(--answer);font-weight:600}.w.ctrl{background:var(--ctrl-bg)}
-.r{display:block;color:var(--faint);font-size:11px}.r .hit{color:var(--ink);font-weight:600}
-td.heat{font-family:ui-monospace,monospace;text-align:center;min-width:70px}td.heat small{color:var(--ink);opacity:.75}td.heat .w.bridge{background:none;color:var(--ink);text-decoration:underline 2px}
+.r{display:block;color:var(--faint);font-size:11px;font-variant-numeric:tabular-nums}.r .hit{color:var(--ink);font-weight:600}
+td.heat{font-family:var(--mono);text-align:center;min-width:70px}
+td.heat small{color:var(--ink);opacity:.75;font-variant-numeric:tabular-nums}
+td.heat .w.bridge{background:none;color:var(--ink);text-decoration:underline 2px}
 h4.t{margin:12px 0 0;font-size:13px}
+@media (max-width:760px){.layout{flex-direction:column}nav{position:static;width:auto;max-height:none;
+border-right:0;border-bottom:1px solid var(--line)}header,main{padding-inline:16px}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
 """
 
 _JS = """
@@ -332,7 +356,14 @@ def _heat(rank: Any) -> str:
     return f' style="background:rgba(var(--heat),{alpha:.2f})"'
 
 
-def render_html(groups: list[Group], records: list[dict[str, Any]], p: dict[str, Any], model: str) -> str:
+def render_html(
+    groups: list[Group],
+    records: list[dict[str, Any]],
+    p: dict[str, Any],
+    model: str,
+    standalone: bool = True,
+    slice_prefix: str = "",
+) -> str:
     by_group: dict[str, list[dict[str, Any]]] = {}
     for r in records:
         by_group.setdefault(r["group"], []).append(r)
@@ -344,25 +375,42 @@ def render_html(groups: list[Group], records: list[dict[str, Any]], p: dict[str,
         nav += [f'<a href="#{g.key}-{_esc(r["name"])}">{_esc(r["name"])}</a>' for r in recs]
         body.append(f'<section class="group" data-g="{g.key}"><h2>{_esc(g.title)}</h2>')
         body.append(f'<p class="def">{_esc(g.definition)} {g.n_total} items; {len(recs)} shown.</p>')
-        body += [_card_html(r, g.key, p) for r in recs]
+        body += [_card_html(r, g.key, p, slice_prefix) for r in recs]
         body.append("</section>")
-    title = f"Examples: {p['title']}"
+    title = p.get("page_title") or f"Examples: {p['title']}"
     lead = (
-        f"Source run <code>{_esc(p['source_run'])}</code>, model {_esc(model)}. Examples drawn at random with seed "
-        f"{p['seed_examples']}, up to {p['per_group']} per group; groups can overlap. "
-        '<span class="w bridge">bridge</span> <span class="w answer">answer</span> <span class="w ctrl">distractor</span>. '
-        "B / A: word rank of the bridge / answer (1 = top; spaces and punctuation removed; bold if in the top 10)."
+        f"<p><b>How to read this page.</b> Each card is one two-hop question and what three readers (logit lens, "
+        f"J-lens, J++) show inside the model at each layer. Model: {_esc(model)}. Questions are sorted into groups by "
+        f"what the J-lens showed in run <code>{_esc(p['source_run'])}</code>; within a group the cards are a random "
+        f"pick (seed {p['seed_examples']}, at most {p['per_group']}), not the best or worst cases, and one question "
+        "can sit in two groups.</p>"
+        '<p>Colours: <span class="w bridge">bridge</span> <span class="w answer">answer</span> '
+        '<span class="w ctrl">distractor</span>. Under each cell, <b>B 3 · A 120</b> means: at that layer the bridge '
+        "is the reader's 3rd most likely word and the answer its 120th (spaces and punctuation not counted); bold "
+        "marks the top 10. The colour of the J-lens position table shows the bridge rank: darker is higher.</p>"
     )
+    head = (
+        f"<title>{_esc(title)}</title>"
+        '<link rel="preconnect" href="https://fonts.googleapis.com">'
+        '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600'
+        '&family=IBM+Plex+Sans:wght@400;600&display=swap">'
+        f"<style>{_CSS}</style>"
+    )
+    page = (
+        f"<header><h1>{_esc(title)}</h1><div class='lead'>{lead}</div></header><div class='layout'>"
+        f"<nav aria-label='Examples'>{''.join(nav)}</nav><main><div class='chips' role='toolbar'>{''.join(chips)}</div>"
+        f"{''.join(body)}</main></div><script>{_JS}</script>"
+    )
+    if not standalone:  # Artifact pages: the host adds doctype/head/body; title and style go first
+        return head + page
     return (
-        f"<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' "
-        f"content='width=device-width,initial-scale=1'><title>{_esc(title)}</title><style>{_CSS}</style></head><body>"
-        f"<header><h1>{_esc(title)}</h1><p class='lead'>{lead}</p></header><div class='layout'>"
-        f"<nav>{''.join(nav)}</nav><main><div class='chips'>{''.join(chips)}</div>{''.join(body)}</main></div>"
-        f"<script>{_JS}</script></body></html>"
+        "<!doctype html><html lang='en'><head><meta charset='utf-8'>"
+        "<meta name='viewport' content='width=device-width,initial-scale=1,viewport-fit=cover'>"
+        f"{head}</head><body>{page}</body></html>"
     )
 
 
-def _card_html(r: dict[str, Any], group: str, p: dict[str, Any]) -> str:
+def _card_html(r: dict[str, Any], group: str, p: dict[str, Any], slice_prefix: str = "") -> str:
     w = r["words"]
     prompt = r["prompt"][:-1] + "␣" if r["prompt"].endswith(" ") else r["prompt"]
     ctrl = f" · controls {_esc(w['distractor'])} / {_esc(w['swap_answer'])}" if "distractor" in w else ""
@@ -375,7 +423,10 @@ def _card_html(r: dict[str, Any], group: str, p: dict[str, Any]) -> str:
         f'<p class="meta">{_esc(r["why"])}</p>',
         (
             '<p class="meta">Interactive layer × position view (jlens; click a cell to pin a token): '
-            + " · ".join(f'<a href="{_esc(v)}" target="_blank">{_esc(_title(k))}</a>' for k, v in r["slices"].items())
+            + " · ".join(
+                f'<a href="{_esc(slice_prefix + v)}" target="_blank">{_esc(_title(k))}</a>'
+                for k, v in r["slices"].items()
+            )
             + "</p>"
             if r.get("slices")
             else ""
@@ -432,11 +483,20 @@ def rerender(run_dir: str | Path) -> Path:
     data = json.loads((run_dir / "examples.json").read_text())
     manifest = json.loads((run_dir / "manifest.json").read_text())
     groups = [Group(**g) for g in data["groups"]]
-    p, model = manifest["config"]["params"], manifest["config"]["model"]["name"]
+    p, model = dict(manifest["config"]["params"]), manifest["config"]["model"]["name"]
+    if "page_title" not in p:  # runs from before page titles: take the experiment's current one
+        from bridge_jspace.config import load_config
+        from bridge_jspace.pins import REPO_ROOT
+
+        cfg = REPO_ROOT / "scripts" / manifest["config"]["name"] / "examples.yaml"
+        if cfg.exists():
+            p["page_title"] = load_config(cfg).params.get("page_title")
     out = run_dir / f"render-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
     out.mkdir()
     (out / "examples.md").write_text(render(groups, data["examples"], p, model))
-    (out / "examples.html").write_text(render_html(groups, data["examples"], p, model))
+    # local copies sit one level below the run dir that holds slices/
+    (out / "examples.html").write_text(render_html(groups, data["examples"], p, model, slice_prefix="../"))
+    (out / "artifact.html").write_text(render_html(groups, data["examples"], p, model, standalone=False))
     return out
 
 
