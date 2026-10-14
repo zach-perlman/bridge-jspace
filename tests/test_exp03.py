@@ -83,3 +83,15 @@ def test_amplified_clamp_scales_the_edit_and_its_null():
     for null in (None, u):
         base = SwapClamp(atoms, h, null_direction=null).delta(h)
         torch.testing.assert_close(AmplifiedClamp(atoms, h, null_direction=null, amp=3.0).delta(h), 3.0 * base)
+
+
+def test_amplified_clamp_does_not_compound_across_layers():
+    """A second clamp on the first's output edits nothing: the amplified swap holds its targets, it does not grow."""
+    import torch
+
+    from scripts.exp03_brew_swaps import AmplifiedClamp
+
+    g = torch.Generator().manual_seed(0)
+    atoms, h = torch.randn(2, 16, generator=g), torch.randn(5, 16, generator=g)
+    clamp = AmplifiedClamp(atoms, h, amp=5.0)
+    torch.testing.assert_close(clamp.delta(clamp(h)), torch.zeros(4, 16), atol=1e-4, rtol=0)

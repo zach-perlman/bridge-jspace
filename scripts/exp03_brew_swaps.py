@@ -113,6 +113,15 @@ FOLLOWUPS = {  # name -> (bands, jobs, why)
         "before the run: the intermediate swap is interpreted only at an amp where the start-swap positive control "
         "flips more than its null (Wilson intervals not overlapping).",
     ),
+    "swap_amp": (
+        ("8-24",),
+        SWAP_EARLY_JOBS,
+        "swap_early again with the amplification fixed: swap_early's amp multiplied the edit, which compounded across "
+        "layers (edits of 1.4-3.9x the residual norm at amp 3 and 5, nulls 0.04-0.1x), so its amp 3 and 5 rows are "
+        "void; amp now scales the clamp's targets. Same decision rule as swap_early: the intermediate swap is "
+        "interpreted only at an amp where the start-swap positive control flips more than its null (Wilson intervals "
+        "not overlapping).",
+    ),
 }
 MAX_NEW_TOKENS = 6
 TARGET_SEED, NULL_SEED = 0, 0
@@ -280,14 +289,18 @@ def run_swap(
 
 
 class AmplifiedClamp(SwapClamp):
-    """SwapClamp whose edit (or its null) is multiplied by amp: the same exchange of coordinates, pushed amp times."""
+    """SwapClamp whose targets are pushed amp times as far from the clean coordinates: c* = c + amp * (swapped - c).
 
-    def __init__(self, *args, amp: float = 1.0, **kwargs):
-        super().__init__(*args, **kwargs)
+    The targets are amplified, not the edit: a clamp whose edit is amp times the gap to its targets overshoots, the
+    next layer's clamp corrects the overshoot amp times over, and the edit grows layer by layer (swap_early, amp 3 and
+    5: edits of 1.4-3.9x the residual norm, against 0.04-0.1x for their nulls). Clamping to amplified targets is
+    idempotent like the plain clamp."""
+
+    def __init__(self, atoms: torch.Tensor, clean_h: torch.Tensor, *args, amp: float = 1.0, **kwargs):
+        super().__init__(atoms, clean_h, *args, **kwargs)
+        clean_coords = clean_h[1:].float() @ self.pinv
+        self.targets = clean_coords + amp * (self.targets - clean_coords)
         self.amp = amp
-
-    def delta(self, h: torch.Tensor) -> torch.Tensor:
-        return self.amp * super().delta(h)
 
 
 class AddDirection:
