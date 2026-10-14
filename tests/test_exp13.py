@@ -4,8 +4,8 @@ from scripts.exp13_greedy_answers.experiment import answer_forms, first_clause, 
 
 
 def test_first_clause_cuts_at_sentence_end_not_decimal():
-    assert first_clause(" gastric acid. It is strong") == " gastric acid"
-    assert first_clause(" 3.5 billion years") == " 3.5 billion years"
+    assert first_clause(" gastric acid. It is strong") == "gastric acid"
+    assert first_clause(" 3.5 billion years") == "3.5 billion years"
     assert first_clause(" Paris\nQuestion:") == "Paris"
     assert first_clause("\n\nEarth.\nFact") == "Earth"  # leading line breaks are skipped, not a cut
 
