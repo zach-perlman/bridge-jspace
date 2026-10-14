@@ -1,0 +1,101 @@
+{
+  "items": {
+    "eligible": 77,
+    "clean_wrong": 13
+  },
+  "rates": [
+    {
+      "band": "24-40",
+      "condition": "jpart",
+      "null": false,
+      "n": 77,
+      "flip": [
+        0.5194805194805194,
+        0.40963811196379796,
+        0.6274714949712452
+      ],
+      "kept_clean": [
+        0.38961038961038963,
+        0.288420845322659,
+        0.5012913820454289
+      ],
+      "neither": 0.09090909090909091,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.01585009870776797,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "band": "24-40",
+      "condition": "jpart",
+      "null": true,
+      "n": 77,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "kept_clean": [
+        0.987012987012987,
+        0.9300363315482386,
+        0.9977038418278451
+      ],
+      "neither": 0.012987012987012988,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.04123936067609226,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "band": "24-40",
+      "condition": "jpart_matched",
+      "null": false,
+      "n": 77,
+      "flip": [
+        0.14285714285714285,
+        0.08168247823927464,
+        0.2379747279515974
+      ],
+      "kept_clean": [
+        0.7402597402597403,
+        0.6325758169942757,
+        0.8251093352045924
+      ],
+      "neither": 0.11688311688311688,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.04863185614950078,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "band": "24-40",
+      "condition": "jpart_matched",
+      "null": true,
+      "n": 77,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "kept_clean": [
+        0.961038961038961,
+        0.8915984057462077,
+        0.9866622917164848
+      ],
+      "neither": 0.03896103896103896,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.05742713792578263,
+      "items_with_skipped_layers": 0
+    }
+  ],
+  "paired_bootstraps": {
+    "jpart - jpart_matched": [
+      0.3766233766233766,
+      0.2727272727272727,
+      0.49350649350649345
+    ]
+  },
+  "labels": {
+    "J-mediated": 0,
+    "non-J": 0,
+    "both": 0,
+    "neither": 0
+  }
+}

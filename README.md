@@ -272,6 +272,10 @@ questions the model answers correctly (stripped prompts, answers judged on the g
 - **J++ closes most of the gap to Claude.** On identical probes, J++'s J-space part carries much more of the swap
   than the J-lens's (52% vs 35%), so the J-lens's smaller effect is largely the lens, not a route outside the
   workspace.
+- **It is the lens's direction, not how much of the probe it carries.** Directions with the same cosine to each probe
+  as its J-space part, but random otherwise, flip 14% (J++) / 10% (J-lens) against the J-space part's 52% / 35%
+  (paired difference +38 [+27, +49] / +25 [+16, +34] pts), although their edits are three times larger. Within each
+  lens, edit size does not predict which questions flip, and J++ flips more than the J-lens at every edit size.
 - **The swap acts at the cue phrase, not where the bridge is read.** Swapped only at the words that name the bridge's
   cue ("Naples", "emperor defeated at Waterloo"; `data/cue_spans.json`), the J-space part flips 31% (J++) / 19%
   (J-lens); at the other earlier words ("The capital of the country where"), 1% / 1%; only at offset -1, where exp12
@@ -325,6 +329,15 @@ Probes: `exp01_probes/v3_jpp` (v3's prompts rebuilt on the H200: 11 of 2673 filt
 | anything else | 44 | 9% [4, 21] | 25% [15, 39] |
 
 - Paired bootstrap, J-space part minus remainder: J-lens +23 pts [+13, +35], J++ +44 [+32, +56] (layers 24-40).
+- Matched-alignment control (`matched_v4_{jpp,jlens}`, layers 24-40; decision rule fixed in the manifests): per entity
+  and layer, a unit direction with the J-space part's cosine to the probe, the rest random. Flips: J++ 14% [8, 24]
+  (J-space part 52% [41, 63]), J-lens 10% [5, 19] (35% [25, 46]); random-direction nulls 0%. Median edit: 0.049 /
+  0.044 of the norm vs the J-space part's 0.016 / 0.014. The J-space part's rates reproduce `main_v4` item for item.
+- Edit size (`exp02_swaps/analysis/edit_size_v1/report.md`, from `main_v4` outcomes): the J-space part's edit is the
+  smallest of the probe swaps (median 0.016 / 0.014 vs 0.074-0.090) and flips most; within a lens, a flipped
+  question's edit is no larger than a kept one's (AUC 0.48 J++, 0.49 J-lens); J++'s edits are 21% larger per
+  question, but J++ flips more in every edit-size quartile, and flips every question the J-lens flips (13 vs 0,
+  exact McNemar p = 0.0002).
 - The full probe uses no lens: its outcomes are identical item by item in the J-lens and J++ runs.
 - Every run's report (`results/exp02_swaps/analysis/<run>/REPORT_auto.md`) lists edit sizes, collateral damage and
   the files to recompute from. Supplementary figures in `figures/exp02_swaps/v4b/` (`v4/` is the same set before
@@ -450,9 +463,8 @@ In order; designs need human sign-off before GPU runs.
 1. **Verify v4:** extend `scripts/verify_headlines.py` to the exp02 v4 runs, then a human recomputes the headlines.
 2. **The gate:** decide whether 30% on the full probe is still the right go/no-go now that the J-space part and the raw
    lens vectors carry the effect.
-3. **Where the swap acts, by role:** swap at the words that name the cue ("Naples") vs the rest of the earlier words.
-4. **Why "anything else" bridges rarely flip:** probe quality vs how those bridges are represented.
-5. **A control matched in total edit size** across layers.
-6. **Brew:** a method-agnostic map of where the lookup happens (activation patching between start colours, by layer
+3. **Why "anything else" bridges rarely flip:** probe quality vs how those bridges are represented.
+4. **A control matched in total edit size** across layers.
+5. **Brew:** a method-agnostic map of where the lookup happens (activation patching between start colours, by layer
    and position), to check whether the steerable start-line direction and the readable-but-not-steerable intermediate
    line up with it; and steering at the cue phrase in exp02 at the same sizes, to compare the two settings at one dose.
