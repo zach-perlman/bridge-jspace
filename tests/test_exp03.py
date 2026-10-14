@@ -43,3 +43,29 @@ def test_regimes_pick_tokens_inside_their_region():
     assert regime_positions("rules", offsets, regions) == [2, 3]
     assert regime_positions("last", offsets, regions) == [4]
     assert regime_positions("all", offsets, regions) == [1, 2, 3, 4]
+
+
+def test_start_and_answer_targets_predict_new_answers():
+    from scripts.exp03_brew_swaps import answer_target, start_target
+
+    for index, item in enumerate(brew_items()):
+        f, path = item["table"], {item["start"], item["intermediates"][0], item["answer"]}
+        s2 = start_target(item, index)
+        if s2 is not None:
+            assert s2 not in path
+            assert f[f[s2]["stir"]]["stir"] not in path
+        a2 = answer_target(item, index)
+        if a2 is not None:
+            assert a2 in item["off_trajectory"]
+
+
+def test_add_direction_edits_only_its_positions():
+    import torch
+
+    from scripts.exp03_brew_swaps import AddDirection
+
+    h = torch.randn(5, 8)
+    d = torch.nn.functional.normalize(torch.randn(8), dim=0)
+    out = AddDirection(d, 0.1, [2, 4])(h)
+    torch.testing.assert_close(out[[0, 1, 3]], h[[0, 1, 3]])
+    torch.testing.assert_close((out[2] - h[2]).norm(), 0.1 * h[2].norm())

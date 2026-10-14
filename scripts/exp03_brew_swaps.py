@@ -11,6 +11,9 @@ Stages (manifests are written before the runs; both are write-once):
   manifest main --band A-B --sweep S [--name N]
                                            every position regime, both lenses, matched-norm nulls, and the
                                            off-path control, on the band sweep S picked
+  manifest followup --name N              FOLLOWUP_JOBS at FOLLOWUP_BANDS (set by the human after main): positive
+                                           controls (start and answer swaps), the intermediate swap where the lens
+                                           reads it, and graded steering along X - I
   run N
 
 Render: Qwen's chat template (no thinking) with the prefill "Answer:", as the bank was gated. Positions are the
@@ -22,7 +25,10 @@ rendered prompt's tokens; the regime decides which ones are edited (position 0 n
   after_start  everything after the start line (the question, the chat scaffolding, "Answer:")
   last         the final token (the prefilled colon)
 Conditions: the swap of I with X (atoms: the lens vectors of their colour tokens), its matched-norm null (as exp02),
-and the off-path control: the swap of two colours off the item's trajectory, which predicts no change.
+and the off-path control: the swap of two colours off the item's trajectory, which predicts no change. Follow-up kinds:
+  start   swap the start colour S with S' (predicts f(f(S'))): the computation's input, a positive control
+  answer  swap the answer A with an off-trajectory A' (predicts A'): the output, a positive control
+  steer   add scale * |h| * unit(v_X - v_I) (predicts f(X) if I is used as a step; X if it acts as a candidate answer)
 """
 
 import argparse
@@ -50,6 +56,15 @@ LENSES = ("jlens", "jpp")
 SWEEP_BANDS = ("16-32", "24-40", "32-48", "40-56")
 REGIMES = ("all", "rules", "stir_line", "start_line", "after_start", "last")
 CONTROL_REGIMES = ("all", "after_start")
+FOLLOWUP_BANDS = ("16-32", "36-52")  # 36-52: where the J-lens reads I at the emission cells (diagnostic, 30 items)
+FOLLOWUP_JOBS = (
+    *({"kind": "swap", "regime": r, "null": n} for r in ("all", "after_start", "last") for n in (False, True)),
+    *({"kind": "start", "regime": r, "null": False} for r in ("start_line", "all")),
+    *({"kind": "answer", "regime": r, "null": False} for r in ("last", "after_start")),
+    {"kind": "control", "regime": "all", "null": False},
+    *({"kind": "steer", "regime": "after_start", "null": False, "scale": s} for s in (0.05, 0.1, 0.2, 0.4)),
+    *({"kind": "steer", "regime": "after_start", "null": True, "scale": s} for s in (0.2, 0.4)),
+)
 MAX_NEW_TOKENS = 6
 TARGET_SEED, NULL_SEED = 0, 0
 N_BOOT, BOOT_SEED = 2000, 0
@@ -112,6 +127,23 @@ def swap_target(item: dict, index: int) -> str | None:
     return random.Random(TARGET_SEED + index).choice(ok) if ok else None
 
 
+def start_target(item: dict, index: int) -> str | None:
+    """S' for the start swap: a table colour whose two-step answer f(f(S')) is defined and new."""
+    f, start, inter, answer = item["table"], item["start"], item["intermediates"][0], item["answer"]
+    ok = [
+        c for c in sorted(f)
+        if c not in (start, inter, answer) and f[c]["stir"] in f
+        and f[f[c]["stir"]]["stir"] not in (answer, inter, start, c, f[c]["stir"])
+    ]  # fmt: skip
+    return random.Random(TARGET_SEED + 2000 + index).choice(ok) if ok else None
+
+
+def answer_target(item: dict, index: int) -> str | None:
+    """A' for the answer swap: an off-trajectory colour."""
+    off = sorted(item["off_trajectory"])
+    return random.Random(TARGET_SEED + 3000 + index).choice(off) if off else None
+
+
 def control_pair(item: dict, index: int) -> tuple[str, str] | None:
     """Two off-trajectory colours to swap with each other: a swap that predicts no change in the answer."""
     off = sorted(item["off_trajectory"])
@@ -123,7 +155,11 @@ def control_pair(item: dict, index: int) -> tuple[str, str] | None:
 
 def stage_manifest(kind: str, name: str, band: str | None, sweep: str | None) -> None:
     is_sweep = kind == "sweep"
-    assert is_sweep == (band is None) == (sweep is None), "the sweep picks its own band; main needs --band and --sweep"
+    if kind == "followup":
+        assert band is None, "the follow-up's bands are fixed in FOLLOWUP_BANDS"
+        assert sweep is None, "the follow-up does not take a sweep"
+    else:
+        assert is_sweep == (band is None) == (sweep is None), "the sweep picks its band; main needs --band and --sweep"
     path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
@@ -143,7 +179,7 @@ def stage_manifest(kind: str, name: str, band: str | None, sweep: str | None) ->
         "flip": "the swapped continuation's first palette colour is f(X), the table's answer for the swapped-in X",
         "target": f"X per item: a table colour (not the start, I or the answer) with f(X) not in {{answer, I, X, start}}, "
         f"drawn with seed {TARGET_SEED} + item index",
-        "bands": list(SWEEP_BANDS) if is_sweep else [band],
+        "bands": list(SWEEP_BANDS) if is_sweep else list(FOLLOWUP_BANDS) if kind == "followup" else [band],
         "regimes": ["all"] if is_sweep else list(REGIMES),
         "nulls": not is_sweep,
         "control_regimes": [] if is_sweep else list(CONTROL_REGIMES),
@@ -160,7 +196,16 @@ def stage_manifest(kind: str, name: str, band: str | None, sweep: str | None) ->
             "intermediate; the regimes keep the two apart.",
         ],
     }
-    if not is_sweep:
+    if kind == "followup":
+        manifest["jobs"] = list(FOLLOWUP_JOBS)
+        manifest["decision"] = "none: every job is reported; no band or regime is picked from these results"
+        manifest["deviations"].append(
+            "Follow-up chosen by the human after main found 0/99 flips everywhere: positive controls (start and "
+            "answer swaps) test whether the swap has force in this setting; 36-52 is where a 30-item J-lens readout "
+            "(not a recorded run) found I top-1 among the colours at the emission cells; steering along v_X - v_I "
+            "at four scales separates I used as a step (answer f(X)) from I as a candidate answer (answer X)."
+        )
+    elif not is_sweep:
         assert sweep is not None
         decision = json.loads((RESULTS / sweep / "summary.json").read_text())["decision"]
         assert decision["band"] == band, f"main must use sweep {sweep}'s band ({decision['band']})"
@@ -185,6 +230,34 @@ def run_swap(model, ids, clean_h, atoms_by_layer, positions, null_seed: int | No
     _, text, _ = model.generate(ids, MAX_NEW_TOKENS, clamps)
     ratio = statistics.mean(c.edit_ratio_edited for c in clamps.values()) if clamps else 0.0
     return text, skipped, ratio
+
+
+class AddDirection:
+    """Edit for one layer: add scale * |h_p| * direction at each chosen position p (direction: unit [d])."""
+
+    def __init__(self, direction: torch.Tensor, scale: float, positions: list[int]):
+        self.direction, self.scale, self.positions = direction, scale, positions
+        self.edit_ratio_edited = scale
+
+    def __call__(self, h: torch.Tensor) -> torch.Tensor:
+        out = h.clone()
+        rows = h[self.positions]
+        out[self.positions] = rows + self.scale * rows.norm(dim=-1, keepdim=True) * self.direction
+        return out
+
+
+def run_steer(model, ids, atoms_by_layer, positions, scale: float, null_seed: int | None) -> tuple[str, list, float]:
+    """Steer along unit(v_X - v_I) (atoms rows 0 = I, 1 = X), or a random unit direction for the null."""
+    generator = None if null_seed is None else torch.Generator(device="cuda").manual_seed(null_seed)
+    edits = {}
+    for layer, atoms in atoms_by_layer.items():
+        if generator is not None:
+            direction = torch.randn(atoms.shape[1], device="cuda", generator=generator)
+        else:
+            direction = atoms[1] - atoms[0]
+        edits[layer] = AddDirection(torch.nn.functional.normalize(direction, dim=0), scale, positions)
+    _, text, _ = model.generate(ids, MAX_NEW_TOKENS, edits)
+    return text, [], scale
 
 
 @torch.no_grad()
@@ -220,6 +293,8 @@ def stage_run(name: str) -> None:
             "swap_to": x,
             "swap_answer": f[x]["stir"] if x else None,
             "control_pair": control_pair(item, index),
+            "start_swap": start_target(item, index),
+            "answer_swap": answer_target(item, index),
             "clean_continuation": clean_text,
             "clean_colour": clean,
             "n_tokens": len(enc.input_ids),
@@ -237,23 +312,38 @@ def stage_run(name: str) -> None:
         item_rows.append(row)
         if row["status"] != "eligible":
             continue
-        jobs = [
-            ("swap", r, null)
-            for r in manifest["regimes"]
-            for null in ((False, True) if manifest["nulls"] else (False,))
-        ]
-        jobs += [("control", r, False) for r in manifest["control_regimes"]]
+        if "jobs" in manifest:
+            jobs = manifest["jobs"]
+        else:
+            nulls = (False, True) if manifest["nulls"] else (False,)
+            jobs = [{"kind": "swap", "regime": r, "null": n} for r in manifest["regimes"] for n in nulls]
+            jobs += [{"kind": "control", "regime": r, "null": False} for r in manifest["control_regimes"]]
+        pairs = {
+            "swap": (inter, x, row["swap_answer"]),
+            "steer": (inter, x, row["swap_answer"]),
+            "control": (*(row["control_pair"] or (None, None)), item["answer"]),
+            "start": (
+                item["start"],
+                row["start_swap"],
+                f[f[row["start_swap"]]["stir"]]["stir"] if row["start_swap"] else None,
+            ),
+            "answer": (item["answer"], row["answer_swap"], row["answer_swap"]),
+        }
         for band in manifest["bands"]:
             for lens_name, lens in lenses.items():
-                for li, (kind, regime, null) in enumerate(jobs):
-                    a, b = (inter, x) if kind == "swap" else row["control_pair"]
+                for li, job in enumerate(jobs):
+                    kind, regime, null = job["kind"], job["regime"], job["null"]
+                    a, b, predicted = pairs[kind]
                     if a is None or b is None:
                         continue
                     tok = torch.tensor([model.concept_token(a), model.concept_token(b)], device="cuda")
                     atoms = {layer: lens.vectors(layer, tok) for layer in band_layers(band)}
                     positions = regime_positions(regime, offsets, regions)
                     seed = NULL_SEED + 1000 * index + li if null else None
-                    out_text, skipped, ratio = run_swap(model, ids, clean_h, atoms, positions, seed)
+                    if kind == "steer":
+                        out_text, skipped, ratio = run_steer(model, ids, atoms, positions, job["scale"], seed)
+                    else:
+                        out_text, skipped, ratio = run_swap(model, ids, clean_h, atoms, positions, seed)
                     colour = answer_colour(out_text, palette)
                     outcomes.append(
                         {
@@ -263,11 +353,14 @@ def stage_run(name: str) -> None:
                             "kind": kind,
                             "regime": regime,
                             "null": null,
+                            "scale": job.get("scale"),
                             "continuation": out_text,
                             "colour": colour,
-                            "flip": kind == "swap" and colour == row["swap_answer"],
+                            "predicted": predicted,
+                            "flip": kind != "control" and colour == predicted,
                             "kept_clean": colour == item["answer"],
                             "said_swapped_colour": colour == b,
+                            "said_intermediate": colour == inter,
                             "n_positions": len(positions),
                             "edit_ratio": ratio,
                             "layers_skipped": skipped,
@@ -281,7 +374,7 @@ def stage_run(name: str) -> None:
     summary = {"items": status_counts(item_rows), "rates": rows}
     if manifest["kind"] == "sweep":
         summary["decision"] = sweep_decision(rows)
-    else:
+    elif manifest["kind"] == "main":
         summary["paired_bootstraps"] = bootstraps(outcomes)
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     write_summary_md(out_dir / "summary.md", name, summary)
@@ -304,9 +397,9 @@ def status_counts(item_rows: list[dict]) -> dict[str, int]:
 def summarize(outcomes: list[dict]) -> list[dict]:
     groups: dict[tuple, list[dict]] = {}
     for o in outcomes:
-        groups.setdefault((o["band"], o["lens"], o["kind"], o["regime"], o["null"]), []).append(o)
+        groups.setdefault((o["band"], o["lens"], o["kind"], o["regime"], o["null"], o.get("scale")), []).append(o)
     rows = []
-    for (band, lens, kind, regime, null), group in groups.items():
+    for (band, lens, kind, regime, null, scale), group in groups.items():
         n = len(group)
         flips, kept = sum(o["flip"] for o in group), sum(o["kept_clean"] for o in group)
         rows.append(
@@ -316,10 +409,12 @@ def summarize(outcomes: list[dict]) -> list[dict]:
                 "kind": kind,
                 "regime": regime,
                 "null": null,
+                "scale": scale,
                 "n": n,
                 "flip": wilson(flips, n),
                 "kept_clean": wilson(kept, n),
                 "said_swapped_colour": sum(o["said_swapped_colour"] for o in group) / n,
+                "said_intermediate": sum(o.get("said_intermediate", False) for o in group) / n,
                 "neither": (n - flips - kept) / n,
                 "edit_ratio_median": statistics.median(o["edit_ratio"] for o in group),
                 "n_positions_median": statistics.median(o["n_positions"] for o in group),
@@ -359,14 +454,15 @@ def write_summary_md(path: Path, run: str, summary: dict) -> None:
         "",
         "Items: " + ", ".join(f"{k} {v}" for k, v in summary["items"].items()),
         "",
-        "| band | lens | kind | regime | null | n | flip [95% CI] | kept clean [95% CI] | said swapped colour | "
-        "edit ratio (median) | positions (median) |",
-        "|---|---|---|---|---|---|---|---|---|---|---|",
+        "| band | lens | kind | regime | null | scale | n | flip [95% CI] | kept clean [95% CI] | said swapped colour | "
+        "said I | edit ratio (median) | positions (median) |",
+        "|---|---|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     for r in summary["rates"]:
         lines.append(
-            f"| {r['band']} | {r['lens']} | {r['kind']} | {r['regime']} | {'yes' if r['null'] else ''} | {r['n']} | "
-            f"{pct(r['flip'])} | {pct(r['kept_clean'])} | {100 * r['said_swapped_colour']:.0f}% | "
+            f"| {r['band']} | {r['lens']} | {r['kind']} | {r['regime']} | {'yes' if r['null'] else ''} | "
+            f"{r.get('scale') or ''} | {r['n']} | {pct(r['flip'])} | {pct(r['kept_clean'])} | "
+            f"{100 * r['said_swapped_colour']:.0f}% | {100 * r.get('said_intermediate', 0):.0f}% | "
             f"{r['edit_ratio_median']:.3f} | {r['n_positions_median']:.0f} |"
         )
     if "decision" in summary:
@@ -393,7 +489,7 @@ if __name__ == "__main__":
     parser.add_argument("--name", help="the run's folder name (manifest stage; default = the kind)")
     args = parser.parse_args()
     if args.stage == "manifest":
-        assert args.target in ("sweep", "main"), "manifest needs a kind (sweep/main)"
+        assert args.target in ("sweep", "main", "followup"), "manifest needs a kind (sweep/main/followup)"
         stage_manifest(args.target, args.name or args.target, args.band, args.sweep)
     else:
         stage_run(args.target)
