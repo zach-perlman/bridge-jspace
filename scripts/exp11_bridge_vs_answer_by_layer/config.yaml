@@ -4,6 +4,7 @@
 #   make run CONFIG=scripts/exp11_bridge_vs_answer_by_layer/config.yaml ARGS="params.strip_trailing_space=true"
 #   uv run bj-run scripts/exp11_bridge_vs_answer_by_layer/config.yaml \
 #       model=configs/models/qwen3.5-0.8b.yaml params.limit=6 results_dir=cache/smoke                   # CPU smoke
+#   uv run python -m scripts.exp11_bridge_vs_answer_by_layer.experiment analyze <run_dir>   # re-aggregate a run
 name: exp11_bridge_vs_answer_by_layer
 target: scripts.exp11_bridge_vs_answer_by_layer.experiment:BridgeVsAnswer
 seed: 0
@@ -15,8 +16,10 @@ params:
   # false: prompts as published, like part B (its labels were computed on them). Trailing-space items are a subset
   # in the summary. true: sensitivity check.
   strip_trailing_space: false
-  band: [32, 48]  # part B's swap band; J-lens/J++ read bridges in ~35-52 in exp10
-  hit_k: 10  # "the answer is readable": word rank <= hit_k
+  bands:
+    part_b: [32, 48]  # primary: fixed before exp11 (part B's swap band)
+    wide: [28, 52]  # exploratory: chosen after seeing exp10/exp11 plots, so it is optimistic
+  emerge_run: 3  # a word "emerges" at the first layer it is top-1 in its pool for this many layers in a row
   n_boot: 10000
   limit: null  # first N items; smoke runs only
   fact_prompt: "Fact: The capital of France is"

@@ -13,8 +13,8 @@ and the rank within a pool (all entities' concept tokens for bridge/distractor; 
 chance = 1/pool).
 
 Headlines on eligible items: per layer, the share with the bridge top-1 among entities and the answer top-1 among
-answers; per item, whether the layer where the bridge's word rank peaks comes before the first layer where the answer
-enters the word top-k. Check: part B's gate_debug had the J-lens bridge top-1 among 96 entities at 0.55-0.70 for
+answers; per item, whether the bridge becomes top-1 among entities (for `emerge_run` consecutive layers) before the
+answer does among answers. Check: part B's gate_debug had the J-lens bridge top-1 among 96 entities at 0.55-0.70 for
 layers 34-48 (66 items).
 """
 
@@ -103,10 +103,12 @@ class BridgeVsAnswer(Experiment):
             "strip_trailing_space": p["strip_trailing_space"],
             "pool_sizes": {"entities": len(entity_pool), "answers": len(answer_pool)},
             "own_rank_agrees_with_part_b": _agreement(meta),
-            "subsets": aggregate(rows, meta, list(readers), p["band"], p["hit_k"], p["n_boot"], self.cfg.seed),
+            "bands": p["bands"],
+            "subsets": aggregate(rows, meta, list(readers), p["bands"], p["emerge_run"], p["n_boot"], self.cfg.seed),
             "ci": f"95% percentile bootstrap over items, n_boot={p['n_boot']}, seed={self.cfg.seed}",
         }
-        plot_run(self.run_dir, band=p["band"])
+        chance = {"entities": 1 / len(entity_pool), "answers": 1 / len(answer_pool)}
+        plot_run(self.run_dir, self.run_dir / f"figures-{_stamp()}", p["bands"], chance)
         return summary
 
 
@@ -161,14 +163,16 @@ def _agreement(meta: list[dict[str, Any]]) -> dict[str, int]:
 # ---- aggregation (pure; unit-tested) ---------------------------------------------------------
 
 
-def peak_layer(ranks: list[int], layers: list[int]) -> int:
-    """Layer of the best (lowest) rank; the earliest on ties."""
-    return layers[int(np.argmin(ranks))]
+def emergence_layer(pool_ranks: list[int], layers: list[int], run: int) -> int | None:
+    """First layer from which the word is top-1 in its pool for `run` consecutive layers, or None.
 
-
-def first_layer_within(ranks: list[int], layers: list[int], k: int) -> int | None:
-    """First layer whose rank is <= k, or None."""
-    return next((layer for layer, r in zip(layers, ranks, strict=True) if r <= k), None)
+    Emergence, not the best layer: a bridge often stays top-1 to the last layers, so its best rank says when it
+    is strongest, not when it appears. `run` > 1 keeps a single noisy layer from counting as an appearance.
+    """
+    for i in range(len(pool_ranks) - run + 1):
+        if all(r == 1 for r in pool_ranks[i : i + run]):
+            return layers[i]
+    return None
 
 
 def subsets(meta: list[dict[str, Any]]) -> dict[str, list[str]]:
@@ -187,11 +191,12 @@ def aggregate(
     rows: list[dict[str, Any]],
     meta: list[dict[str, Any]],
     readers: list[str],
-    band: list[int],
-    hit_k: int,
+    bands: dict[str, list[int]],
+    emerge_run: int,
     n_boot: int,
     seed: int,
 ) -> dict[str, Any]:
+    """Per subset and reader: per-band shares (bootstrap CI over items) and the bridge-vs-answer order."""
     out: dict[str, Any] = {}
     by_key = {(r["name"], r["reader"]): r for r in rows}
     for subset, names in subsets(meta).items():
@@ -201,40 +206,95 @@ def aggregate(
         for reader in readers:
             rr = [by_key[(n, reader)] for n in names]
             layers = rr[0]["layers"]
-            in_band = [i for i, layer in enumerate(layers) if band[0] <= layer <= band[1]]
-            res: dict[str, Any] = {}
-            for role in ROLES:
-                pool = [r[f"{role}_pool"] for r in rr if r[f"{role}_pool"] is not None]
-                if pool:
-                    # per item: share of band layers where the word is top-1 in its pool
-                    res[f"{role}_pool_top1_band"] = _ci(
-                        bootstrap_mean([np.mean([p[i] == 1 for i in in_band]) for p in pool], n_boot, seed)
+            res: dict[str, Any] = {"bands": {}}
+            for bname, (lo, hi) in bands.items():
+                in_band = [i for i, layer in enumerate(layers) if lo <= layer <= hi]
+                if not in_band:
+                    continue  # band outside this model's layers (e.g. a 27B band on a smoke model)
+                b: dict[str, Any] = {}
+                for role in ROLES:
+                    pool = [r[f"{role}_pool"] for r in rr if r[f"{role}_pool"] is not None]
+                    if pool:
+                        # per item: share of band layers where the word is top-1 in its pool
+                        b[f"{role}_pool_top1"] = _ci(
+                            bootstrap_mean([np.mean([p[i] == 1 for i in in_band]) for p in pool], n_boot, seed)
+                        )
+                # bridge above its distractor in the vocabulary word rank, share of band layers per item
+                b["bridge_above_distractor"] = _ci(
+                    bootstrap_mean(
+                        [np.mean([r["bridge_word"][i] < r["distractor_word"][i] for i in in_band]) for r in rr],
+                        n_boot,
+                        seed,
                     )
-            # bridge above its distractor in the vocabulary word rank, share of band layers per item
-            res["bridge_above_distractor_band"] = _ci(
-                bootstrap_mean(
-                    [np.mean([r["bridge_word"][i] < r["distractor_word"][i] for i in in_band]) for r in rr],
-                    n_boot,
-                    seed,
                 )
-            )
-            # order: does the bridge peak before the answer enters the word top-k?
-            lags = []
+                res["bands"][bname] = b
+            # order: which becomes top-1 in its pool first, the bridge or the answer?
+            counts = {"both": 0, "bridge_only": 0, "answer_only": 0, "neither": 0}
+            lags = []  # answer emergence layer - bridge emergence layer, items where both emerge
             for r in rr:
-                if r["answer_word"] is None:
+                if r["answer_pool"] is None:
                     continue
-                emerge = first_layer_within(r["answer_word"], layers, hit_k)
-                if emerge is not None:
-                    lags.append(emerge - peak_layer(r["bridge_word"], layers))
+                br = emergence_layer(r["bridge_pool"], layers, emerge_run)
+                an = emergence_layer(r["answer_pool"], layers, emerge_run)
+                key = {(True, True): "both", (True, False): "bridge_only", (False, True): "answer_only"}
+                counts[key.get((br is not None, an is not None), "neither")] += 1
+                if br is not None and an is not None:
+                    lags.append(an - br)
+            res["order"] = {"emerge_run": emerge_run, **counts}
             if lags:
-                res["order"] = {
-                    "n": len(lags),
-                    "bridge_peaks_first": _ci(bootstrap_mean([lag > 0 for lag in lags], n_boot, seed)),
+                res["order"] |= {
+                    "bridge_first": _ci(bootstrap_mean([lag > 0 for lag in lags], n_boot, seed)),
+                    "same_layer": round(float(np.mean([lag == 0 for lag in lags])), 4),
                     "median_lag_layers": float(np.median(lags)),
                 }
             out[subset][reader] = res
     return out
 
 
+def _stamp() -> str:
+    from datetime import datetime
+
+    return datetime.now().strftime("%Y%m%d-%H%M%S")
+
+
+def analyze(run_dir: str | Path, bands: dict[str, list[int]], emerge_run: int) -> Path:
+    """Recompute a finished run's summary (other bands, newer aggregation) from its saved ranks, into a new
+    `<run_dir>/analysis-<timestamp>/` with figures. The run's own outputs are not touched."""
+    import json
+
+    run_dir = Path(run_dir)
+    manifest = json.loads((run_dir / "manifest.json").read_text())
+    p, seed = manifest["config"]["params"], manifest["config"]["seed"]
+    rows = [json.loads(x) for x in (run_dir / "ranks.jsonl").read_text().splitlines() if x.strip()]
+    meta = [json.loads(x) for x in (run_dir / "items.jsonl").read_text().splitlines() if x.strip()]
+    readers = list(dict.fromkeys(r["reader"] for r in rows))
+    out = run_dir / f"analysis-{_stamp()}"
+    out.mkdir()
+    pools = json.loads((run_dir / "summary.json").read_text())["pool_sizes"]
+    summary = {
+        "source_run": str(run_dir),
+        "bands": bands,
+        "emerge_run": emerge_run,
+        "subsets": aggregate(rows, meta, readers, bands, emerge_run, p["n_boot"], seed),
+        "ci": f"95% percentile bootstrap over items, n_boot={p['n_boot']}, seed={seed}",
+    }
+    (out / "summary.json").write_text(json.dumps(summary, indent=2))
+    plot_run(run_dir, out, bands, {"entities": 1 / pools["entities"], "answers": 1 / pools["answers"]})
+    return out
+
+
 def _ci(t: tuple[float, float, float]) -> dict[str, float]:
     return {"mean": round(t[0], 4), "lo": round(t[1], 4), "hi": round(t[2], 4)}
+
+
+if __name__ == "__main__":
+    # uv run python -m scripts.exp11_bridge_vs_answer_by_layer.experiment analyze <run_dir>
+    #     (bands from the current config.yaml)
+    import sys
+
+    from bridge_jspace.config import load_config
+
+    if sys.argv[1:2] != ["analyze"] or len(sys.argv) != 3:
+        raise SystemExit(__doc__)
+    cfg = load_config(Path(__file__).with_name("config.yaml"))
+    print(analyze(sys.argv[2], cfg.params["bands"], cfg.params["emerge_run"]))

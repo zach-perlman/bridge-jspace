@@ -68,4 +68,10 @@ PY
 uv run python scripts/prefetch.py "$MODEL_CONFIG"
 
 command -v tmux >/dev/null || die "tmux missing: install it (apt-get install -y tmux); runs go through scripts/run.sh"
+# Mouse-wheel scrolling through run output, and a longer history to scroll back in.
+touch ~/.tmux.conf
+grep -q '^set -g mouse on' ~/.tmux.conf || printf '%s\n' \
+  '# mouse: wheel scrolls the pane history (enters copy mode); select text with Shift held' \
+  'set -g mouse on' 'set -g history-limit 50000' >> ~/.tmux.conf
+tmux source-file ~/.tmux.conf 2>/dev/null || true  # applies to an already running tmux server
 echo ">> next: make check && make test-model   (open a new shell or 'source ~/.bashrc' first)"

@@ -1,31 +1,29 @@
 """exp11's pure aggregation helpers (no model)."""
 
-from scripts.exp11_bridge_vs_answer_by_layer.experiment import aggregate, first_layer_within, peak_layer, subsets
+from scripts.exp11_bridge_vs_answer_by_layer.experiment import aggregate, emergence_layer, subsets
 
 
-def test_peak_layer_earliest_on_ties():
-    assert peak_layer([5, 2, 2, 9], [10, 11, 12, 13]) == 11
+def test_emergence_needs_a_run_of_top1_layers():
+    layers = [10, 11, 12, 13, 14, 15]
+    assert emergence_layer([1, 3, 1, 1, 1, 2], layers, run=3) == 12  # the lone top-1 at 10 does not count
+    assert emergence_layer([1, 3, 1, 1, 1, 2], layers, run=1) == 10
+    assert emergence_layer([2, 1, 1, 2, 1, 1], layers, run=3) is None
 
 
-def test_first_layer_within():
-    assert first_layer_within([50, 12, 9, 1], [0, 1, 2, 3], k=10) == 2
-    assert first_layer_within([50, 12], [0, 1], k=10) is None
-
-
-def _row(name, reader, bridge, distr, answer, bridge_pool):
-    n = len(bridge)
+def _row(name, bridge_word, distr_word, bridge_pool, answer_pool):
+    n = len(bridge_word)
     return {
         "name": name,
-        "reader": reader,
+        "reader": "jlens",
         "layers": list(range(n)),
-        "bridge_word": bridge,
-        "distractor_word": distr,
-        "answer_word": answer,
+        "bridge_word": bridge_word,
+        "distractor_word": distr_word,
+        "answer_word": [999] * n,
         "swap_answer_word": [999] * n,
         "bridge_pool": bridge_pool,
         "distractor_pool": [2] * n,
-        "answer_pool": None,
-        "swap_answer_pool": None,
+        "answer_pool": answer_pool,
+        "swap_answer_pool": None if answer_pool is None else [2] * n,
     }
 
 
@@ -33,25 +31,29 @@ def test_aggregate_band_shares_and_order():
     meta = [
         {"name": "a", "status": "eligible", "label": "J-mediated", "ends_with_space": True},
         {"name": "b", "status": "eligible", "label": "neither", "ends_with_space": False},
-        {"name": "c", "status": "clean_wrong", "label": "", "ends_with_space": False},
+        {"name": "c", "status": "eligible", "label": "neither", "ends_with_space": False},
+        {"name": "d", "status": "clean_wrong", "label": "", "ends_with_space": False},
     ]
     rows = [
-        # a: bridge top-1 in its pool on layers 1-2, peaks at layer 1; answer reaches rank 5 at layer 3 -> lag +2
-        _row("a", "jlens", [9, 1, 3, 7], [8, 8, 8, 8], [900, 500, 50, 5], [3, 1, 1, 2]),
-        # b: bridge never top-1; peaks at layer 3; answer within top 10 from layer 0 -> lag -3
-        _row("b", "jlens", [9, 9, 9, 2], [1, 1, 1, 1], [4, 4, 4, 1], [2, 2, 2, 2]),
-        _row("c", "jlens", [1, 1, 1, 1], [9, 9, 9, 9], [1, 1, 1, 1], [1, 1, 1, 1]),
+        # a: bridge top-1 from layer 1 on, answer from layer 2 on -> bridge first, lag +1
+        _row("a", [9, 1, 3, 7, 7], [8, 8, 8, 8, 8], [3, 1, 1, 1, 1], [5, 5, 1, 1, 1]),
+        # b: answer top-1 from 0 (runs 0-2), bridge from 2 (runs 2-4) -> answer first, lag -2
+        _row("b", [9, 9, 9, 2, 2], [1, 1, 1, 1, 1], [2, 2, 1, 1, 1], [1, 1, 1, 1, 1]),
+        # c: bridge emerges at 0, answer never -> bridge_only; no answer pool would skip it entirely
+        _row("c", [1, 1, 1, 1, 1], [9, 9, 9, 9, 9], [1, 1, 1, 2, 2], [2, 2, 2, 2, 2]),
+        _row("d", [1, 1, 1, 1, 1], [9, 9, 9, 9, 9], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1]),
     ]
-    out = aggregate(rows, meta, ["jlens"], band=[1, 2], hit_k=10, n_boot=200, seed=0)
+    out = aggregate(rows, meta, ["jlens"], {"b": [1, 2], "off": [90, 99]}, emerge_run=3, n_boot=200, seed=0)
     el = out["eligible"]["jlens"]
-    assert out["eligible"]["n"] == 2
-    assert el["bridge_pool_top1_band"]["mean"] == 0.5  # a: 2/2 band layers, b: 0/2
-    assert el["bridge_above_distractor_band"]["mean"] == 0.5  # a: bridge < distractor on 1,2; b: never
-    assert el["order"]["n"] == 2
-    assert el["order"]["bridge_peaks_first"]["mean"] == 0.5
-    assert el["order"]["median_lag_layers"] == -0.5
-    assert "answer_pool_top1_band" not in el  # answer pools are None in these rows
-    assert out["eligible_j_mediated"]["n"] == 1 and out["all"]["n"] == 3
+    assert out["eligible"]["n"] == 3
+    assert set(el["bands"]) == {"b"}  # a band outside the model's layers is skipped
+    assert el["bands"]["b"]["bridge_pool_top1"]["mean"] == round((1 + 0.5 + 1) / 3, 4)  # a 2/2, b 1/2, c 2/2
+    assert el["bands"]["b"]["bridge_above_distractor"]["mean"] == round((1 + 0 + 1) / 3, 4)  # a yes, b no, c yes
+    assert el["bands"]["b"]["answer_pool_top1"]["mean"] == round((0.5 + 1 + 0) / 3, 4)
+    o = el["order"]
+    assert (o["both"], o["bridge_only"], o["answer_only"], o["neither"]) == (2, 1, 0, 0)
+    assert o["bridge_first"]["mean"] == 0.5 and o["same_layer"] == 0.0 and o["median_lag_layers"] == -0.5  # +1, -2
+    assert out["eligible_j_mediated"]["n"] == 1 and out["all"]["n"] == 4
 
 
 def test_subsets_only_eligible_in_splits():
