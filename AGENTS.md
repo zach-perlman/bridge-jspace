@@ -26,6 +26,8 @@ In flight: exp01_probes (bridge probes and their J-space decomposition), exp02_s
 - Every experiment: id expNN_name, directory results/expNN_name/<timestamp>/, manifest.json written BEFORE the run
   (`Experiment.setup`). Code in `experiments/expNN_name/` (config.yaml + experiment.py). exp01-09: part B (probes,
   swaps); exp10+: part A (who can read the bridge).
+- Part B's exp01-02 use the older layout: `scripts/expNN_*.py` (`uv run python scripts/...`), pins in `pins.py`,
+  results in `results/expNN_name/<run name>/`. Both layouts stay; `tests/test_pins.py` keeps the shared pins in sync.
 - Never overwrite or hand-edit results. Each analysis or figure run goes in a new folder.
 - Always run the control the humans specified. If none was specified, stop and ask.
 - Report n, seeds, CI, and the baseline next to every headline number.

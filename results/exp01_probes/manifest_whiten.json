@@ -1,0 +1,107 @@
+{
+  "exp": "exp01_probes",
+  "written_utc": "2026-10-13T18:45:59Z",
+  "question": "Build a bridge probe per entity and measure how much of it the J-lens dictionary explains.",
+  "model": {
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": {
+    "repo": "neuronpedia/jacobian-lens",
+    "revision": "9fa267f841d62aa468dab5b9b38c3dc45a82d863",
+    "file": "qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt",
+    "vector": "v_t = (g * W_U[t]) @ J_l, unit-normalised; g = final-norm gain (1 + weight)"
+  },
+  "data": {
+    "probe_swap": {
+      "file": "data/probe_swap.json",
+      "sha256": "a0edd27ca23f7b4d0fbe90448c2ddcc7457a3d812121bf024ed12a032ff86796"
+    },
+    "entity_prompts": {
+      "file": "data/entity_prompts.json",
+      "sha256": "90c1864ffa5eed139865f0eaead75c5e9ad13a869db90a46fb53a5a8f36a99d4"
+    },
+    "entity_prompts_topup": {
+      "file": "data/entity_prompts_topup.json",
+      "sha256": "fb8a71b8d38dbb9f2f180089aea3ed8b3be0a396cf9f0e90763320d0af83ae1e"
+    }
+  },
+  "prompt_format": "raw text, no chat template, no special tokens added",
+  "filter": "none: the prompts kept in run v2 (same rule, same prompts)",
+  "min_kept_prompts_per_entity": 3,
+  "probe": "(pooled within-entity covariance of the kept prompts' residuals, Ledoit-Wolf shrinkage, per layer)^-1 @ (mean final-token residual over kept prompts - mean over entities), rescaled to the norm of that difference",
+  "probe_layers": [
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48
+  ],
+  "decomposition": {
+    "method": "non-negative OMP, NNLS refit each step",
+    "k_atoms": 25,
+    "dictionary": "unit J-lens vectors of non-special tokens whose decode has a letter"
+  },
+  "metrics": [
+    "kept prompts per entity",
+    "fraction of probe variance in the J-part per layer",
+    "chance level of that fraction: the same decomposition of isotropic random directions (one per probed entity per layer, seed 0)",
+    "whether the entity's own token is among its J-part atoms"
+  ],
+  "review": {
+    "seed": 0,
+    "sample_size": 25,
+    "inspect_layer": 32
+  },
+  "deviations": [
+    "J-lens vectors include the final-norm gain g (the reference omits it); g rescales dimensions unevenly, so these are the directions the lens's readout actually uses.",
+    "Added (not in the plan): the random-direction chance level for the J-part share.",
+    "Entity prompts were written by the coding agent and pass the mechanical checks in data.py; the human has not reviewed them yet.",
+    "Top-up round: prompts were added for the entities above after seeing run v1's filter results for them (the plan allows one logged round).",
+    "Probe definition changed after the first exp02 gate failed (full-probe flips 17% < 30%; exp02_swaps/gate_debug: the entity is present at the probe position but entity labels explain only ~5-7 points of residual variance above chance, so ~6-prompt means are mostly prompt noise). Whitening was chosen by the human; the shrinkage is set analytically (Ledoit-Wolf), not tuned on the test items."
+  ],
+  "topup": {
+    "after_run": "v1",
+    "kept_in_that_run": {
+      "grape": 2,
+      "June": 0,
+      "nitrogen": 2
+    },
+    "prompts_added": {
+      "grape": 4,
+      "June": 4,
+      "nitrogen": 4
+    },
+    "rule": "the one allowed top-up round: new prompts only for these entities, nothing removed, same checks on the merged set; the whole pipeline is re-run because the grand mean depends on which entities have probes"
+  }
+}

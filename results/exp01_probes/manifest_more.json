@@ -1,0 +1,289 @@
+{
+  "exp": "exp01_probes",
+  "written_utc": "2026-10-13T19:55:50Z",
+  "question": "Build a bridge probe per entity and measure how much of it the J-lens dictionary explains.",
+  "model": {
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": {
+    "repo": "neuronpedia/jacobian-lens",
+    "revision": "9fa267f841d62aa468dab5b9b38c3dc45a82d863",
+    "file": "qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt",
+    "vector": "v_t = (g * W_U[t]) @ J_l, unit-normalised; g = final-norm gain (1 + weight)"
+  },
+  "data": {
+    "probe_swap": {
+      "file": "data/probe_swap.json",
+      "sha256": "a0edd27ca23f7b4d0fbe90448c2ddcc7457a3d812121bf024ed12a032ff86796"
+    },
+    "entity_prompts": {
+      "file": "data/entity_prompts.json",
+      "sha256": "0ae59fa6e9a2effb7f70712cad682ce940f72a0224731fc78e2b60e879772344"
+    },
+    "entity_prompts_topup": {
+      "file": "data/entity_prompts_topup.json",
+      "sha256": "fb8a71b8d38dbb9f2f180089aea3ed8b3be0a396cf9f0e90763320d0af83ae1e"
+    },
+    "entity_prompts_more": [
+      {
+        "file": "data/entity_prompts_more/part1.json",
+        "sha256": "534abcb6a4930fb5ff1622e8b71a8a7012ddfd2af018c9fe84f098b20dc78b39"
+      },
+      {
+        "file": "data/entity_prompts_more/part2.json",
+        "sha256": "b654eb9d0c900a121bcd5ed96c30155ef2e749bdf295c9a0d5d448c16d8bb5ce"
+      },
+      {
+        "file": "data/entity_prompts_more/part3.json",
+        "sha256": "65cfb3cef351e2b84f72f866b12d0df49c586065ff1c6f152bb9882530719b1c"
+      },
+      {
+        "file": "data/entity_prompts_more/part4.json",
+        "sha256": "d09e2819b70664881b86df829e469ccd795d7fd620b61b18ac6d7866435d990a"
+      },
+      {
+        "file": "data/entity_prompts_more/part5.json",
+        "sha256": "40c6659b2d3f98012c9c88cbfee4b7586da126fef7b2ec919caae5894e5a51b7"
+      },
+      {
+        "file": "data/entity_prompts_more/part6.json",
+        "sha256": "566fb498b8accf6c289519d01dba96c1bc0c1df9faf9ea74c9055bc8c1e70069"
+      }
+    ]
+  },
+  "prompt_format": "raw text, no chat template, no special tokens added",
+  "filter": "keep a prompt if the first word of Qwen's greedy continuation (8 tokens) equals an accepted answer, case-insensitively",
+  "min_kept_prompts_per_entity": 3,
+  "probe": "mean final-token residual (block output) over kept prompts minus the mean over entities",
+  "probe_layers": [
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48
+  ],
+  "decomposition": {
+    "method": "non-negative OMP, NNLS refit each step",
+    "k_atoms": 25,
+    "dictionary": "unit J-lens vectors of non-special tokens whose decode has a letter"
+  },
+  "metrics": [
+    "kept prompts per entity",
+    "fraction of probe variance in the J-part per layer",
+    "chance level of that fraction: the same decomposition of isotropic random directions (one per probed entity per layer, seed 0)",
+    "whether the entity's own token is among its J-part atoms"
+  ],
+  "review": {
+    "seed": 0,
+    "sample_size": 25,
+    "inspect_layer": 32
+  },
+  "deviations": [
+    "J-lens vectors include the final-norm gain g (the reference omits it); g rescales dimensions unevenly, so these are the directions the lens's readout actually uses.",
+    "Added (not in the plan): the random-direction chance level for the J-part share.",
+    "Entity prompts were written by the coding agent and pass the mechanical checks in data.py; the human has not reviewed them yet.",
+    "Top-up round: prompts were added for the entities above after seeing run v1's filter results for them (the plan allows one logged round).",
+    "Second prompt round beyond the plan's one top-up: ~20 more prompts per entity, written after two failed exp02 gates (mean-difference probes 17%, whitened 8%; exp02_swaps/gate_debug*: ~6-prompt means are mostly prompt noise). Chosen by the human. Written by coding subagents, checked mechanically, not human-reviewed.",
+    "New check (a stricter reading of 'never names the entity'): no prompt word or accepted answer may be built on the entity's name (first five letters, or irregular forms such as Chinese/French/nitrate; data.py). The earlier prompts that break it are dropped (listed above; they were in runs v1-v2), as are 18 new prompts that broke it before pinning."
+  ],
+  "topup": {
+    "after_run": "v1",
+    "kept_in_that_run": {
+      "grape": 2,
+      "June": 0,
+      "nitrogen": 2
+    },
+    "prompts_added": {
+      "grape": 4,
+      "June": 4,
+      "nitrogen": 4
+    },
+    "rule": "the one allowed top-up round: new prompts only for these entities, nothing removed, same checks on the merged set; the whole pipeline is re-run because the grand mean depends on which entities have probes"
+  },
+  "more": {
+    "prompts_added": {
+      "ant": 20,
+      "apple": 20,
+      "Australia": 19,
+      "baseball": 20,
+      "basketball": 19,
+      "bear": 20,
+      "beer": 20,
+      "Belgium": 20,
+      "bicycle": 20,
+      "brain": 22,
+      "Brazil": 19,
+      "buffalo": 20,
+      "butter": 19,
+      "calcium": 21,
+      "Canada": 22,
+      "carbon": 19,
+      "China": 22,
+      "Christmas": 22,
+      "Darwin": 20,
+      "diamond": 20,
+      "drums": 20,
+      "eagle": 20,
+      "Earth": 21,
+      "Easter": 21,
+      "Egypt": 21,
+      "Einstein": 20,
+      "elephant": 20,
+      "England": 20,
+      "Europa": 19,
+      "France": 22,
+      "Friday": 20,
+      "Germany": 23,
+      "gold": 20,
+      "golf": 22,
+      "grape": 20,
+      "Greece": 20,
+      "guitar": 20,
+      "heart": 20,
+      "honey": 20,
+      "Hungary": 20,
+      "India": 21,
+      "iron": 20,
+      "Italy": 22,
+      "Japan": 20,
+      "July": 20,
+      "June": 20,
+      "Jupiter": 20,
+      "kidney": 20,
+      "Lincoln": 20,
+      "liver": 20,
+      "lung": 21,
+      "March": 20,
+      "Mars": 20,
+      "May": 20,
+      "mercury": 19,
+      "Mexico": 22,
+      "Michigan": 21,
+      "moon": 21,
+      "Mozart": 21,
+      "Napoleon": 21,
+      "Newton": 21,
+      "nitrogen": 15,
+      "oak": 20,
+      "owl": 22,
+      "oxygen": 22,
+      "pearl": 20,
+      "Peru": 23,
+      "Philadelphia": 21,
+      "piano": 22,
+      "pine": 20,
+      "Poland": 20,
+      "ruby": 20,
+      "Russia": 21,
+      "Saturn": 20,
+      "Seattle": 20,
+      "Shakespeare": 22,
+      "silver": 20,
+      "Singapore": 20,
+      "snake": 21,
+      "sodium": 20,
+      "Spain": 22,
+      "spider": 21,
+      "stomach": 21,
+      "summer": 20,
+      "swan": 20,
+      "Sweden": 24,
+      "tennis": 21,
+      "Thursday": 19,
+      "train": 23,
+      "trumpet": 20,
+      "turtle": 21,
+      "Vatican": 20,
+      "Venus": 20,
+      "violin": 20,
+      "wine": 22,
+      "winter": 21,
+      "Wisconsin": 22
+    },
+    "total_added": 1989,
+    "dropped_since_v2": [
+      {
+        "entity": "basketball",
+        "prompt": "Fact: Points in the sport of LeBron James are scored by throwing a ball through a",
+        "kept": true
+      },
+      {
+        "entity": "China",
+        "prompt": "Fact: The most spoken language in Shanghai and Guangzhou is",
+        "kept": true
+      },
+      {
+        "entity": "Christmas",
+        "prompt": "Fact: The religion that celebrates the nativity of Jesus on the 25th is",
+        "kept": true
+      },
+      {
+        "entity": "drums",
+        "prompt": "Fact: The skins stretched over percussion instruments are called",
+        "kept": true
+      },
+      {
+        "entity": "drums",
+        "prompt": "Fact: The famous drummer of Led Zeppelin was John",
+        "kept": true
+      },
+      {
+        "entity": "Europa",
+        "prompt": "Fact: The Phoenician princess carried off by a white bull gave her name to the continent of",
+        "kept": true
+      },
+      {
+        "entity": "Germany",
+        "prompt": "Fact: The car makers BMW, Audi and Volkswagen come from a country whose language is",
+        "kept": true
+      },
+      {
+        "entity": "nitrogen",
+        "prompt": "Fact: The element in the nitrates that farmers spread on fields is a building block of all",
+        "kept": true
+      },
+      {
+        "entity": "Saturn",
+        "prompt": "Fact: The day of the week named for the planet of Titan is",
+        "kept": true
+      },
+      {
+        "entity": "wine",
+        "prompt": "Fact: The drink of Bordeaux and Burgundy is made in a",
+        "kept": false
+      }
+    ],
+    "rule": "new prompts for every entity; the merged set passes the checks in data.py, now including the name-derived-word check"
+  }
+}

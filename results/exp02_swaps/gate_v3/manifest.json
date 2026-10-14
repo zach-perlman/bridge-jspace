@@ -1,0 +1,58 @@
+{
+  "exp": "exp02_swaps",
+  "run": "gate_v3",
+  "kind": "gate",
+  "written_utc": "2026-10-13T20:19:31Z",
+  "question": "Does the swap target's answer appear when the bridge's representation is swapped for the target's, and does that depend on the J-space part of the representation?",
+  "model": {
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": {
+    "repo": "neuronpedia/jacobian-lens",
+    "revision": "9fa267f841d62aa468dab5b9b38c3dc45a82d863",
+    "file": "qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt"
+  },
+  "items": {
+    "file": "data/probe_swap.json",
+    "sha256": "a0edd27ca23f7b4d0fbe90448c2ddcc7457a3d812121bf024ed12a032ff86796"
+  },
+  "probes": {
+    "exp01_tag": "v3",
+    "file": "cache/exp01/v3/probes.pt",
+    "sha256": "49b0919735b4287b14e2b2595ca1fc03b1dce9c592d61d9c2d722074644bc259",
+    "definition": "mean_difference"
+  },
+  "bands": [
+    "16-32",
+    "24-40",
+    "32-48",
+    "24-48"
+  ],
+  "conditions": [
+    "raw_jlens",
+    "full_probe"
+  ],
+  "nulls": false,
+  "null_seed": 0,
+  "swap": "clamp.SwapClamp at every band layer, positions 1.. (not 0); atoms per condition as in the script docstring; unit atoms throughout",
+  "eligibility": "answer and swap answer have single-token surfaces; both entities have probes; clean answer at word rank 1 (formatting tokens excluded)",
+  "flip": "swap answer at word rank 1 after the swap (strictly: no other word scores as high)",
+  "metrics": [
+    "flip rate, Wilson 95% CI",
+    "share keeping the clean answer at rank 1, Wilson 95% CI",
+    "share with neither (collateral damage)",
+    "median edit ratio",
+    "items with skipped layers"
+  ],
+  "decision": "band = the one with the highest full_probe flip rate (first in ['16-32', '24-40', '32-48', '24-48'] on ties); go if that rate >= 0.3, else stop and debug before decomposing. The band is chosen on the same items, so its full_probe rate is optimistic.",
+  "deviations": [
+    "Items whose answer or swap answer has no single-token surface are dropped and counted (7 of 90 at setup).",
+    "Edit size is the direct edit at the final position, |delta| / |h|, averaged over the edited band layers per item and reported as the median over items; the edit's downstream effect on later layers is not measured.",
+    "Layers where the two swapped atoms are near-parallel (|cos| > 0.999) are skipped and counted.",
+    "Word rank is strict: an exact logit tie with another word ranks a candidate 2nd, so a flip and a kept clean answer exclude each other (gate and gate_w1 counted ties as rank 1 for both: 2 and 3 of 528 outcomes).",
+    "A repeat of the gate with different probes after the first gate (results/exp02_swaps/gate) failed; the same items are reused, so passing it is optimistic twice over."
+  ]
+}

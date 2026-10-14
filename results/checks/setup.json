@@ -1,0 +1,33 @@
+{
+  "layer_convention_mean_cos_to_final": {
+    "20": {
+      "block_output": 0.22062488794326782,
+      "block_input": 0.21349294632673263
+    },
+    "40": {
+      "block_output": 0.4954281598329544,
+      "block_input": 0.49321878254413604
+    },
+    "62": {
+      "block_output": 0.911322146654129,
+      "block_input": 0.8416020929813385
+    }
+  },
+  "unembed_max_rel_err": 0.0,
+  "lens62_top1_agrees_with_model": "8/10",
+  "vector_form_max_rel_err": 0.0037015676498413086,
+  "noop_clamp": {
+    "item": "amazon-language",
+    "max_abs_logit_change_pinned": 0.0,
+    "max_abs_logit_change_swapped": 5.1640625,
+    "top_word_clean": " Portuguese",
+    "top_word_pinned": " Portuguese",
+    "top_word_swapped": " Spanish"
+  },
+  "deterministic_rerun": true,
+  "clean_accuracy": {
+    "correct": 67,
+    "scorable": 83,
+    "total": 90
+  }
+}
