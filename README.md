@@ -50,7 +50,8 @@ scripts/run.sh    experiment in a detached tmux session, log in log/
 scripts/prefetch.py  download a model YAML's snapshot + lenses, retrying on HF rate limits
 infra/            pod bootstrap
 ```
-`AGENTS.md`: rules for running experiments. `VERIFIED.md`: results a human has checked.
+`AGENTS.md`: rules for running experiments. `VERIFIED.md`: results a human has checked. `data/README.md`: what
+data we use and what the lenses were fitted on (`make data-report`).
 
 ## Running
 ```bash

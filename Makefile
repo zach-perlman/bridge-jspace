@@ -1,4 +1,4 @@
-.PHONY: install fmt lint typecheck test test-model check run
+.PHONY: install fmt lint typecheck test test-model check run data-report
 
 # make run CONFIG=scripts/exp10_lens_sanity/config.yaml ARGS="model=configs/models/qwen3.6-27b.yaml"
 run:                ## experiment in a detached tmux session, log in log/
@@ -26,3 +26,6 @@ test-model:         ## integration tests on Qwen3.5-0.8B + its lenses (CPU ok, a
 	uv run pytest -m model
 
 check: lint typecheck test
+
+data-report:        ## what data we work with: counts, categories, labels, overlaps (add ARGS=--json)
+	uv run python -m scripts.data_report $(ARGS)
