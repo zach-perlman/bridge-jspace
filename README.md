@@ -148,7 +148,7 @@ the set, and is the answer (Portuguese) the top candidate among all 112 answers?
   answer, the J-lens has the bridge on top in 79% [66, 89] of layers 32-48; on the 40 where no swap works, 49%
   [35, 62]. Suggestive: the intervals nearly touch.
 
-![exp11: top-1 share by layer](results/exp11_bridge_vs_answer_by_layer/20261014-092835/analysis-20261014-113947/pool_top1_by_layer.png)
+![exp11: top-1 share by layer](figures/exp11_bridge_vs_answer_by_layer/pool_top1_by_layer.png)
 
 *Last prompt token, 67 questions the model answers correctly. Blue: share of questions where the bridge is the top
 entity; orange: where the answer is the top answer; grey: the same for their distractors (controls); dotted:
@@ -193,7 +193,7 @@ than it is on the data that picked it; the same search for the distractor (Mexic
 - **Most last-token misses are a read-site effect.** Of the 26 questions where the J-lens does not have the bridge on
   top at the last token, 73% [54, 88] have it on top at an earlier token (distractor, same search: 35% [15, 54]).
 
-![exp12: where and how deep](results/exp12_position_map/20261014-095358/analysis-20261014-121341/two_step.png)
+![exp12: where and how deep](figures/exp12_position_map/two_step.png)
 
 *Left: share of layers 32-48 in which the word is the top candidate, at each prompt position (label: the most common
 token there). Right: share of questions with the word on top at each layer, the bridge read at position -1 and the
@@ -224,7 +224,7 @@ Eligible n=67; positions -14..0 analysed (reached by at least half the questions
 - Missed at the last token: J-lens 26 questions, bridge on top earlier in 73% [54, 88] (distractor 35% [15, 54]);
   J++ 26, 81% [65, 96] (distractor 31% [15, 50]).
 
-![exp12: J-lens heatmaps](results/exp12_position_map/20261014-095358/analysis-20261014-121341/position_layer_jlens.png)
+![exp12: J-lens heatmaps](figures/exp12_position_map/position_layer_jlens.png)
 </details>
 
 ### Pitfalls found so far
