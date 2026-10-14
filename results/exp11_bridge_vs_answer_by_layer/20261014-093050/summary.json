@@ -1,0 +1,690 @@
+{
+  "model": "Qwen/Qwen3.6-27B",
+  "sanity": {
+    "known_fact": true,
+    "hf_parity": true,
+    "reference_readout_jlens": true,
+    "reference_readout_jpp": true
+  },
+  "labels_sha256": "111adcad15cc4c05c94b236010d05c101f71b6fd5dbedac29ef073c5500ba407",
+  "strip_trailing_space": true,
+  "pool_sizes": {
+    "entities": 97,
+    "answers": 112
+  },
+  "own_rank_agrees_with_part_b": {
+    "both_correct": 55,
+    "both_wrong": 14,
+    "only_part_b_correct": 12,
+    "only_ours_correct": 2
+  },
+  "subsets": {
+    "eligible": {
+      "n": 67,
+      "logit": {
+        "bridge_pool_top1_band": {
+          "mean": 0.2248,
+          "lo": 0.1484,
+          "hi": 0.3082
+        },
+        "distractor_pool_top1_band": {
+          "mean": 0.0386,
+          "lo": 0.007,
+          "hi": 0.0825
+        },
+        "answer_pool_top1_band": {
+          "mean": 0.1449,
+          "lo": 0.0878,
+          "hi": 0.2098
+        },
+        "swap_answer_pool_top1_band": {
+          "mean": 0.0246,
+          "lo": 0.0044,
+          "hi": 0.0509
+        },
+        "bridge_above_distractor_band": {
+          "mean": 0.7884,
+          "lo": 0.7068,
+          "hi": 0.8613
+        },
+        "order": {
+          "n": 59,
+          "bridge_peaks_first": {
+            "mean": 0.2203,
+            "lo": 0.1186,
+            "hi": 0.322
+          },
+          "median_lag_layers": -4.0
+        }
+      },
+      "jlens": {
+        "bridge_pool_top1_band": {
+          "mean": 0.5575,
+          "lo": 0.4548,
+          "hi": 0.6567
+        },
+        "distractor_pool_top1_band": {
+          "mean": 0.0597,
+          "lo": 0.0184,
+          "hi": 0.1133
+        },
+        "answer_pool_top1_band": {
+          "mean": 0.4109,
+          "lo": 0.3152,
+          "hi": 0.5075
+        },
+        "swap_answer_pool_top1_band": {
+          "mean": 0.0869,
+          "lo": 0.0395,
+          "hi": 0.1431
+        },
+        "bridge_above_distractor_band": {
+          "mean": 0.8297,
+          "lo": 0.7471,
+          "hi": 0.9025
+        },
+        "order": {
+          "n": 61,
+          "bridge_peaks_first": {
+            "mean": 0.2295,
+            "lo": 0.1311,
+            "hi": 0.3443
+          },
+          "median_lag_layers": -4.0
+        }
+      },
+      "jpp": {
+        "bridge_pool_top1_band": {
+          "mean": 0.5277,
+          "lo": 0.432,
+          "hi": 0.6198
+        },
+        "distractor_pool_top1_band": {
+          "mean": 0.0615,
+          "lo": 0.0246,
+          "hi": 0.1071
+        },
+        "answer_pool_top1_band": {
+          "mean": 0.396,
+          "lo": 0.3038,
+          "hi": 0.4881
+        },
+        "swap_answer_pool_top1_band": {
+          "mean": 0.0755,
+          "lo": 0.029,
+          "hi": 0.13
+        },
+        "bridge_above_distractor_band": {
+          "mean": 0.8367,
+          "lo": 0.7638,
+          "hi": 0.9008
+        },
+        "order": {
+          "n": 60,
+          "bridge_peaks_first": {
+            "mean": 0.3333,
+            "lo": 0.2167,
+            "hi": 0.45
+          },
+          "median_lag_layers": -2.5
+        }
+      }
+    },
+    "eligible_j_mediated": {
+      "n": 25,
+      "logit": {
+        "bridge_pool_top1_band": {
+          "mean": 0.2659,
+          "lo": 0.1365,
+          "hi": 0.4071
+        },
+        "distractor_pool_top1_band": {
+          "mean": 0.0,
+          "lo": 0.0,
+          "hi": 0.0
+        },
+        "answer_pool_top1_band": {
+          "mean": 0.1412,
+          "lo": 0.0424,
+          "hi": 0.2588
+        },
+        "swap_answer_pool_top1_band": {
+          "mean": 0.0235,
+          "lo": 0.0,
+          "hi": 0.0635
+        },
+        "bridge_above_distractor_band": {
+          "mean": 0.8729,
+          "lo": 0.7694,
+          "hi": 0.9506
+        },
+        "order": {
+          "n": 23,
+          "bridge_peaks_first": {
+            "mean": 0.2609,
+            "lo": 0.087,
+            "hi": 0.4348
+          },
+          "median_lag_layers": -4.0
+        }
+      },
+      "jlens": {
+        "bridge_pool_top1_band": {
+          "mean": 0.7529,
+          "lo": 0.6141,
+          "hi": 0.8729
+        },
+        "distractor_pool_top1_band": {
+          "mean": 0.0,
+          "lo": 0.0,
+          "hi": 0.0
+        },
+        "answer_pool_top1_band": {
+          "mean": 0.4635,
+          "lo": 0.2988,
+          "hi": 0.6282
+        },
+        "swap_answer_pool_top1_band": {
+          "mean": 0.1106,
+          "lo": 0.0259,
+          "hi": 0.2188
+        },
+        "bridge_above_distractor_band": {
+          "mean": 0.9765,
+          "lo": 0.9459,
+          "hi": 1.0
+        },
+        "order": {
+          "n": 23,
+          "bridge_peaks_first": {
+            "mean": 0.2609,
+            "lo": 0.087,
+            "hi": 0.4348
+          },
+          "median_lag_layers": -2.0
+        }
+      },
+      "jpp": {
+        "bridge_pool_top1_band": {
+          "mean": 0.6941,
+          "lo": 0.5459,
+          "hi": 0.8282
+        },
+        "distractor_pool_top1_band": {
+          "mean": 0.0024,
+          "lo": 0.0,
+          "hi": 0.0071
+        },
+        "answer_pool_top1_band": {
+          "mean": 0.4776,
+          "lo": 0.3224,
+          "hi": 0.6306
+        },
+        "swap_answer_pool_top1_band": {
+          "mean": 0.0847,
+          "lo": 0.0094,
+          "hi": 0.1741
+        },
+        "bridge_above_distractor_band": {
+          "mean": 0.9459,
+          "lo": 0.8965,
+          "hi": 0.9859
+        },
+        "order": {
+          "n": 23,
+          "bridge_peaks_first": {
+            "mean": 0.1739,
+            "lo": 0.0435,
+            "hi": 0.3478
+          },
+          "median_lag_layers": -3.0
+        }
+      }
+    },
+    "eligible_neither": {
+      "n": 40,
+      "logit": {
+        "bridge_pool_top1_band": {
+          "mean": 0.2044,
+          "lo": 0.1088,
+          "hi": 0.3074
+        },
+        "distractor_pool_top1_band": {
+          "mean": 0.0647,
+          "lo": 0.0118,
+          "hi": 0.1368
+        },
+        "answer_pool_top1_band": {
+          "mean": 0.1456,
+          "lo": 0.0779,
+          "hi": 0.2265
+        },
+        "swap_answer_pool_top1_band": {
+          "mean": 0.0265,
+          "lo": 0.0,
+          "hi": 0.0632
+        },
+        "bridge_above_distractor_band": {
+          "mean": 0.7426,
+          "lo": 0.6265,
+          "hi": 0.8485
+        },
+        "order": {
+          "n": 35,
+          "bridge_peaks_first": {
+            "mean": 0.2,
+            "lo": 0.0857,
+            "hi": 0.3429
+          },
+          "median_lag_layers": -4.0
+        }
+      },
+      "jlens": {
+        "bridge_pool_top1_band": {
+          "mean": 0.4382,
+          "lo": 0.3103,
+          "hi": 0.5647
+        },
+        "distractor_pool_top1_band": {
+          "mean": 0.0956,
+          "lo": 0.0279,
+          "hi": 0.1794
+        },
+        "answer_pool_top1_band": {
+          "mean": 0.3882,
+          "lo": 0.2662,
+          "hi": 0.5132
+        },
+        "swap_answer_pool_top1_band": {
+          "mean": 0.0765,
+          "lo": 0.0235,
+          "hi": 0.1412
+        },
+        "bridge_above_distractor_band": {
+          "mean": 0.7544,
+          "lo": 0.6368,
+          "hi": 0.8603
+        },
+        "order": {
+          "n": 36,
+          "bridge_peaks_first": {
+            "mean": 0.2222,
+            "lo": 0.0833,
+            "hi": 0.3611
+          },
+          "median_lag_layers": -4.0
+        }
+      },
+      "jpp": {
+        "bridge_pool_top1_band": {
+          "mean": 0.4221,
+          "lo": 0.3103,
+          "hi": 0.5368
+        },
+        "distractor_pool_top1_band": {
+          "mean": 0.0926,
+          "lo": 0.0338,
+          "hi": 0.1632
+        },
+        "answer_pool_top1_band": {
+          "mean": 0.3529,
+          "lo": 0.2382,
+          "hi": 0.475
+        },
+        "swap_answer_pool_top1_band": {
+          "mean": 0.0735,
+          "lo": 0.0147,
+          "hi": 0.1485
+        },
+        "bridge_above_distractor_band": {
+          "mean": 0.7779,
+          "lo": 0.6721,
+          "hi": 0.875
+        },
+        "order": {
+          "n": 35,
+          "bridge_peaks_first": {
+            "mean": 0.4286,
+            "lo": 0.2571,
+            "hi": 0.6
+          },
+          "median_lag_layers": -2.0
+        }
+      }
+    },
+    "eligible_ends_with_space": {
+      "n": 21,
+      "logit": {
+        "bridge_pool_top1_band": {
+          "mean": 0.2241,
+          "lo": 0.112,
+          "hi": 0.3473
+        },
+        "distractor_pool_top1_band": {
+          "mean": 0.0476,
+          "lo": 0.0,
+          "hi": 0.1345
+        },
+        "answer_pool_top1_band": {
+          "mean": 0.0952,
+          "lo": 0.0308,
+          "hi": 0.1793
+        },
+        "swap_answer_pool_top1_band": {
+          "mean": 0.0364,
+          "lo": 0.0,
+          "hi": 0.0952
+        },
+        "bridge_above_distractor_band": {
+          "mean": 0.7451,
+          "lo": 0.5798,
+          "hi": 0.8852
+        },
+        "order": {
+          "n": 13,
+          "bridge_peaks_first": {
+            "mean": 0.1538,
+            "lo": 0.0,
+            "hi": 0.3846
+          },
+          "median_lag_layers": -7.0
+        }
+      },
+      "jlens": {
+        "bridge_pool_top1_band": {
+          "mean": 0.4286,
+          "lo": 0.2493,
+          "hi": 0.6134
+        },
+        "distractor_pool_top1_band": {
+          "mean": 0.1204,
+          "lo": 0.0224,
+          "hi": 0.2521
+        },
+        "answer_pool_top1_band": {
+          "mean": 0.2437,
+          "lo": 0.0952,
+          "hi": 0.4118
+        },
+        "swap_answer_pool_top1_band": {
+          "mean": 0.0924,
+          "lo": 0.0168,
+          "hi": 0.1961
+        },
+        "bridge_above_distractor_band": {
+          "mean": 0.7535,
+          "lo": 0.5798,
+          "hi": 0.902
+        },
+        "order": {
+          "n": 15,
+          "bridge_peaks_first": {
+            "mean": 0.1333,
+            "lo": 0.0,
+            "hi": 0.3333
+          },
+          "median_lag_layers": -23.0
+        }
+      },
+      "jpp": {
+        "bridge_pool_top1_band": {
+          "mean": 0.4174,
+          "lo": 0.2549,
+          "hi": 0.5882
+        },
+        "distractor_pool_top1_band": {
+          "mean": 0.0924,
+          "lo": 0.028,
+          "hi": 0.1765
+        },
+        "answer_pool_top1_band": {
+          "mean": 0.2269,
+          "lo": 0.0896,
+          "hi": 0.3838
+        },
+        "swap_answer_pool_top1_band": {
+          "mean": 0.0728,
+          "lo": 0.0,
+          "hi": 0.1793
+        },
+        "bridge_above_distractor_band": {
+          "mean": 0.7479,
+          "lo": 0.605,
+          "hi": 0.8739
+        },
+        "order": {
+          "n": 14,
+          "bridge_peaks_first": {
+            "mean": 0.4286,
+            "lo": 0.2143,
+            "hi": 0.7143
+          },
+          "median_lag_layers": -0.5
+        }
+      }
+    },
+    "eligible_no_trailing_space": {
+      "n": 46,
+      "logit": {
+        "bridge_pool_top1_band": {
+          "mean": 0.2251,
+          "lo": 0.1266,
+          "hi": 0.3312
+        },
+        "distractor_pool_top1_band": {
+          "mean": 0.0345,
+          "lo": 0.0026,
+          "hi": 0.0857
+        },
+        "answer_pool_top1_band": {
+          "mean": 0.1675,
+          "lo": 0.0934,
+          "hi": 0.2532
+        },
+        "swap_answer_pool_top1_band": {
+          "mean": 0.0192,
+          "lo": 0.0013,
+          "hi": 0.0486
+        },
+        "bridge_above_distractor_band": {
+          "mean": 0.8082,
+          "lo": 0.7136,
+          "hi": 0.8887
+        },
+        "order": {
+          "n": 46,
+          "bridge_peaks_first": {
+            "mean": 0.2391,
+            "lo": 0.1304,
+            "hi": 0.3696
+          },
+          "median_lag_layers": -3.0
+        }
+      },
+      "jlens": {
+        "bridge_pool_top1_band": {
+          "mean": 0.6164,
+          "lo": 0.4962,
+          "hi": 0.7289
+        },
+        "distractor_pool_top1_band": {
+          "mean": 0.032,
+          "lo": 0.0038,
+          "hi": 0.0806
+        },
+        "answer_pool_top1_band": {
+          "mean": 0.4872,
+          "lo": 0.3721,
+          "hi": 0.5997
+        },
+        "swap_answer_pool_top1_band": {
+          "mean": 0.0844,
+          "lo": 0.0294,
+          "hi": 0.1547
+        },
+        "bridge_above_distractor_band": {
+          "mean": 0.8645,
+          "lo": 0.7737,
+          "hi": 0.9386
+        },
+        "order": {
+          "n": 46,
+          "bridge_peaks_first": {
+            "mean": 0.2609,
+            "lo": 0.1516,
+            "hi": 0.3913
+          },
+          "median_lag_layers": -2.0
+        }
+      },
+      "jpp": {
+        "bridge_pool_top1_band": {
+          "mean": 0.578,
+          "lo": 0.4655,
+          "hi": 0.6854
+        },
+        "distractor_pool_top1_band": {
+          "mean": 0.0473,
+          "lo": 0.0064,
+          "hi": 0.101
+        },
+        "answer_pool_top1_band": {
+          "mean": 0.4731,
+          "lo": 0.3645,
+          "hi": 0.5844
+        },
+        "swap_answer_pool_top1_band": {
+          "mean": 0.0767,
+          "lo": 0.0243,
+          "hi": 0.1445
+        },
+        "bridge_above_distractor_band": {
+          "mean": 0.8772,
+          "lo": 0.7954,
+          "hi": 0.9437
+        },
+        "order": {
+          "n": 46,
+          "bridge_peaks_first": {
+            "mean": 0.3043,
+            "lo": 0.1739,
+            "hi": 0.4348
+          },
+          "median_lag_layers": -3.0
+        }
+      }
+    },
+    "all": {
+      "n": 90,
+      "logit": {
+        "bridge_pool_top1_band": {
+          "mean": 0.2601,
+          "lo": 0.1895,
+          "hi": 0.3327
+        },
+        "distractor_pool_top1_band": {
+          "mean": 0.0353,
+          "lo": 0.0098,
+          "hi": 0.0706
+        },
+        "answer_pool_top1_band": {
+          "mean": 0.1403,
+          "lo": 0.0907,
+          "hi": 0.1963
+        },
+        "swap_answer_pool_top1_band": {
+          "mean": 0.0347,
+          "lo": 0.0128,
+          "hi": 0.0617
+        },
+        "bridge_above_distractor_band": {
+          "mean": 0.798,
+          "lo": 0.7301,
+          "hi": 0.8608
+        },
+        "order": {
+          "n": 76,
+          "bridge_peaks_first": {
+            "mean": 0.2237,
+            "lo": 0.1316,
+            "hi": 0.3158
+          },
+          "median_lag_layers": -4.0
+        }
+      },
+      "jlens": {
+        "bridge_pool_top1_band": {
+          "mean": 0.5549,
+          "lo": 0.468,
+          "hi": 0.6399
+        },
+        "distractor_pool_top1_band": {
+          "mean": 0.049,
+          "lo": 0.017,
+          "hi": 0.0902
+        },
+        "answer_pool_top1_band": {
+          "mean": 0.4061,
+          "lo": 0.321,
+          "hi": 0.4912
+        },
+        "swap_answer_pool_top1_band": {
+          "mean": 0.1006,
+          "lo": 0.0539,
+          "hi": 0.1538
+        },
+        "bridge_above_distractor_band": {
+          "mean": 0.8431,
+          "lo": 0.7745,
+          "hi": 0.9046
+        },
+        "order": {
+          "n": 79,
+          "bridge_peaks_first": {
+            "mean": 0.2532,
+            "lo": 0.1646,
+            "hi": 0.3544
+          },
+          "median_lag_layers": -4.0
+        }
+      },
+      "jpp": {
+        "bridge_pool_top1_band": {
+          "mean": 0.5399,
+          "lo": 0.4562,
+          "hi": 0.6222
+        },
+        "distractor_pool_top1_band": {
+          "mean": 0.0464,
+          "lo": 0.0183,
+          "hi": 0.0797
+        },
+        "answer_pool_top1_band": {
+          "mean": 0.3721,
+          "lo": 0.2906,
+          "hi": 0.4557
+        },
+        "swap_answer_pool_top1_band": {
+          "mean": 0.0964,
+          "lo": 0.0503,
+          "hi": 0.1481
+        },
+        "bridge_above_distractor_band": {
+          "mean": 0.8471,
+          "lo": 0.7895,
+          "hi": 0.9
+        },
+        "order": {
+          "n": 78,
+          "bridge_peaks_first": {
+            "mean": 0.3205,
+            "lo": 0.2179,
+            "hi": 0.4231
+          },
+          "median_lag_layers": -2.5
+        }
+      }
+    }
+  },
+  "ci": "95% percentile bootstrap over items, n_boot=10000, seed=0"
+}
