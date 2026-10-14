@@ -1,0 +1,142 @@
+{
+  "exp": "exp03_brew_swaps",
+  "run": "followup",
+  "kind": "followup",
+  "written_utc": "2026-10-14T20:34:12Z",
+  "question": "In an in-context two-step lookup, does swapping the intermediate's lens direction move the answer to the one the table predicts for the swapped-in colour, and at which prompt positions?",
+  "model": {
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lenses": {
+    "jlens": "qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt",
+    "jpp": "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt"
+  },
+  "items": {
+    "file": "data/brew_intermediates.json",
+    "sha256": "183be95d4182c373674786b7610820520e56434fb0c15a75a62dad854bed9d83"
+  },
+  "render": "chat template, enable_thinking=False, assistant prefilled with 'Answer:'",
+  "eligibility": "greedy continuation's first palette colour is the answer",
+  "swap": "clamp.SwapClamp of the two colours' unit lens vectors (concept tokens) at every band layer",
+  "flip": "the swapped continuation's first palette colour is f(X), the table's answer for the swapped-in X",
+  "target": "X per item: a table colour (not the start, I or the answer) with f(X) not in {answer, I, X, start}, drawn with seed 0 + item index",
+  "bands": [
+    "16-32",
+    "36-52"
+  ],
+  "regimes": [
+    "all",
+    "rules",
+    "stir_line",
+    "start_line",
+    "after_start",
+    "last"
+  ],
+  "nulls": true,
+  "control_regimes": [
+    "all",
+    "after_start"
+  ],
+  "decision": "none: every job is reported; no band or regime is picked from these results",
+  "deviations": [
+    "Colours are swapped through their single-token lens vectors only (no probes): the colours are in the prompt, so a probe built from other prompts would add little.",
+    "A swap at positions inside the rule table can rewrite the rules themselves, not the computed intermediate; the regimes keep the two apart.",
+    "Follow-up chosen by the human after main found 0/99 flips everywhere: positive controls (start and answer swaps) test whether the swap has force in this setting; 36-52 is where a 30-item J-lens readout (not a recorded run) found I top-1 among the colours at the emission cells; steering along v_X - v_I at four scales separates I used as a step (answer f(X)) from I as a candidate answer (answer X)."
+  ],
+  "jobs": [
+    {
+      "kind": "swap",
+      "regime": "all",
+      "null": false
+    },
+    {
+      "kind": "swap",
+      "regime": "all",
+      "null": true
+    },
+    {
+      "kind": "swap",
+      "regime": "after_start",
+      "null": false
+    },
+    {
+      "kind": "swap",
+      "regime": "after_start",
+      "null": true
+    },
+    {
+      "kind": "swap",
+      "regime": "last",
+      "null": false
+    },
+    {
+      "kind": "swap",
+      "regime": "last",
+      "null": true
+    },
+    {
+      "kind": "start",
+      "regime": "start_line",
+      "null": false
+    },
+    {
+      "kind": "start",
+      "regime": "all",
+      "null": false
+    },
+    {
+      "kind": "answer",
+      "regime": "last",
+      "null": false
+    },
+    {
+      "kind": "answer",
+      "regime": "after_start",
+      "null": false
+    },
+    {
+      "kind": "control",
+      "regime": "all",
+      "null": false
+    },
+    {
+      "kind": "steer",
+      "regime": "after_start",
+      "null": false,
+      "scale": 0.05
+    },
+    {
+      "kind": "steer",
+      "regime": "after_start",
+      "null": false,
+      "scale": 0.1
+    },
+    {
+      "kind": "steer",
+      "regime": "after_start",
+      "null": false,
+      "scale": 0.2
+    },
+    {
+      "kind": "steer",
+      "regime": "after_start",
+      "null": false,
+      "scale": 0.4
+    },
+    {
+      "kind": "steer",
+      "regime": "after_start",
+      "null": true,
+      "scale": 0.2
+    },
+    {
+      "kind": "steer",
+      "regime": "after_start",
+      "null": true,
+      "scale": 0.4
+    }
+  ]
+}

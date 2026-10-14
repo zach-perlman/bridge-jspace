@@ -54,8 +54,10 @@ CONDITION_LABEL = {
     "remainder_clamped": "remainder,\nJ-space held",
 }
 CLAUDE = {"jpart": 0.61, "remainder": 0.28, "remainder_clamped": 0.06}  # Gurnee et al. (2026), probe-swap
-REGIMES = ("earlier", "prev", "last", "last_two", "all")
+REGIMES = ("cue", "earlier_noncue", "earlier", "prev", "last", "last_two", "all")
 REGIME_LABEL = {
+    "cue": "cue\nphrase",
+    "earlier_noncue": "other\nearlier words",
     "earlier": "earlier\nwords",
     "prev": "-1\n(bridge read\nbest, part A)",
     "last": "0\n(answer read,\npart A)",
@@ -333,7 +335,7 @@ PLACES = {
     "Australia", "Brazil", "Canada", "China", "Egypt", "England", "France", "Germany", "Greece", "Hungary", "Italy",
     "Japan", "Peru", "Philadelphia", "Poland", "Russia", "Seattle", "Spain", "Sweden", "Vatican",
 }  # fmt: skip
-SHADE = {"earlier": "#dbe7f6", "prev": "#e9e8e1", "last": "#fbe1d5", "never": "#f1f0ec"}
+SHADE = {"cue": "#b9d3f2", "earlier": "#dbe7f6", "prev": "#e9e8e1", "last": "#fbe1d5", "never": "#f1f0ec"}
 
 
 def _save(fig, out: Path, name: str) -> None:
@@ -379,8 +381,8 @@ def jpart_vs_remainder(runs: dict, out: Path) -> None:
 def swap_position(runs: dict, out: Path) -> None:
     # Word-level picture of the token regimes; "Fact" is token 0 (the attention sink), never edited.
     words = ["Fact", ":", "The", "capital", "of", "the", "country", "where", "Naples", "is", "located", "is"]
-    role = ["never"] + ["earlier"] * 9 + ["prev", "last"]
-    fig = plt.figure(figsize=(9.4, 5.6), facecolor=SURFACE)
+    role = ["never"] + ["earlier"] * 7 + ["cue", "earlier", "prev", "last"]  # "Naples" is the cue
+    fig = plt.figure(figsize=(9.4, 6.2), facecolor=SURFACE)
     strip = fig.add_axes((0.04, 0.78, 0.92, 0.12))
     strip.set_axis_off()
     pos = 0.0
@@ -397,7 +399,8 @@ def swap_position(runs: dict, out: Path) -> None:
     n = n_eligible(runs[("jlens", "24-40", "all")])
     fig.text(0.04, 0.925, f"The same J-space swap, applied only to the shaded words; layers 24-40, n={n}, 95% CI",
              fontsize=9, color=MUTED)  # fmt: skip
-    rows = (("earlier", "the words before:\n\"Naples\", \"country\", ...", "earlier"),
+    rows = (("cue", "only the cue phrase: \"Naples\"", "cue"),
+            ("earlier_noncue", "only the other earlier words:\n\"The capital of the country where\" ...", "earlier"),
             ("prev", "only the word before \"is\"\n(where part A reads the bridge best)", "prev"),
             ("last", "only the last word, \"is\"\n(where the answer is read)", "last"),
             ("last_two", "both of those", "prev"),

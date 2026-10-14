@@ -36,6 +36,8 @@ or tokenization artifact.
    control of the same edit norm. Metric: rate at which the swap answer becomes the top word, with Wilson 95% CIs.
    From v4: prompts with the trailing space stripped, and eligibility and flips judged on the greedy continuation
    (exp13's criterion C), which makes 77 items eligible; swaps can be restricted to some prompt positions.
+5. `exp03_brew_swaps`: the same swaps and graded steering along lens directions on an in-context two-step lookup
+   (WorkspaceBench's brew bank), where the counterfactual answer is read straight off a table in the prompt.
 
 ## Layout
 ```
@@ -268,16 +270,17 @@ questions the model answers correctly (stripped prompts, answers judged on the g
 - **J++ closes most of the gap to Claude.** On identical probes, J++'s J-space part carries much more of the swap
   than the J-lens's (52% vs 35%), so the J-lens's smaller effect is largely the lens, not a route outside the
   workspace.
-- **The swap acts at the words that cue the bridge, not where the bridge is read.** Swapped only at the earlier words
-  ("Naples", "country", ...), the J-space part flips 35% (J++) / 23% (J-lens); only at offset -1, where exp12 reads the
-  bridge best, 9% / 3%; only at the last token, 8% / 4%.
+- **The swap acts at the cue phrase, not where the bridge is read.** Swapped only at the words that name the bridge's
+  cue ("Naples", "emperor defeated at Waterloo"; `data/cue_spans.json`), the J-space part flips 31% (J++) / 19%
+  (J-lens); at the other earlier words ("The capital of the country where"), 1% / 1%; only at offset -1, where exp12
+  reads the bridge best, 9% / 3%; only at the last token, 8% / 4%.
 - **It works when the bridge is a place or a person.** J++: 88% of questions whose bridge is a country or place,
   86% for people (n=7), 25% for everything else (elements, organs, animals, dates). The J-lens matches J++ on places
   (85%) but not on people (14%).
 
-![exp02 v4: J-space part vs remainder](figures/exp02_swaps/v4/jpart_vs_remainder.png)
+![exp02 v4: J-space part vs remainder](figures/exp02_swaps/v4b/jpart_vs_remainder.png)
 
-![exp02 v4: where in the prompt the swap acts](figures/exp02_swaps/v4/swap_position.png)
+![exp02 v4: where in the prompt the swap acts](figures/exp02_swaps/v4b/swap_position.png)
 
 **What this does not show.** The gate failed for the fourth time (full probe 27% < 30% at layers 24-40, the band it
 picked on these same items); the runs are exploratory, one seed, n=77. The control matches each layer's edit size,
@@ -288,7 +291,8 @@ different word in different prompts.
 <details><summary>Full numbers and checks</summary>
 
 Runs under `results/exp02_swaps/`: `gate_v4`, `main_v4_{jlens,jpp}` (layers 24-40, the gate's pick),
-`main_v4_{jlens,jpp}_32-48` (part A's band, set by hand), `main_v4_{jlens,jpp}_pos-{prev,last,last_two,earlier}`.
+`main_v4_{jlens,jpp}_32-48` (part A's band, set by hand),
+`main_v4_{jlens,jpp}_pos-{prev,last,last_two,earlier,cue,earlier_noncue}`.
 Probes: `exp01_probes/v3_jpp` (v3's prompts rebuilt on the H200: 11 of 2673 filter decisions differ from v3) and
 `v3_jlens` (the same probes, decomposed over the J-lens). Flip rate, Wilson 95% CI, n=77:
 
@@ -302,7 +306,9 @@ Probes: `exp01_probes/v3_jpp` (v3's prompts rebuilt on the H200: 11 of 2673 filt
 
 | J-space part swapped only at | J-lens | J++ |
 |---|---|---|
-| the earlier words | 23% [15, 34] | 35% [25, 46] |
+| the cue phrase (median 5 tokens) | 19% [12, 30] | 31% [22, 42] |
+| the other earlier words (median 7 tokens) | 1% [0, 7] | 1% [0, 7] |
+| the earlier words (both of the above) | 23% [15, 34] | 35% [25, 46] |
 | offset -1 | 3% [1, 9] | 9% [4, 18] |
 | offset 0 | 4% [1, 11] | 8% [4, 16] |
 | offsets -1 and 0 | 10% [5, 19] | 17% [10, 27] |
@@ -317,8 +323,53 @@ Probes: `exp01_probes/v3_jpp` (v3's prompts rebuilt on the H200: 11 of 2673 filt
 - Paired bootstrap, J-space part minus remainder: J-lens +23 pts [+13, +35], J++ +44 [+32, +56] (layers 24-40).
 - The full probe uses no lens: its outcomes are identical item by item in the J-lens and J++ runs.
 - Every run's report (`results/exp02_swaps/analysis/<run>/REPORT_auto.md`) lists edit sizes, collateral damage and
-  the files to recompute from. Supplementary figures in `figures/exp02_swaps/v4/`: `lens_comparison.png`,
+  the files to recompute from. Supplementary figures in `figures/exp02_swaps/v4b/` (`v4/` is the same set before
+  the cue runs): `lens_comparison.png`,
   `positions.png`, `outcomes.png`, `dose.png`, `per_question.png`, `examples.png`, `by_bridge_type.png`.
+</details>
+
+### exp03_brew_swaps (part B): an in-context two-step lookup
+**What we measure.** In brew the prompt gives a colour table and a start colour; the answer is two lookups away
+(blue -> green -> black), so the counterfactual answer of any edit can be read off the table and no prior knowledge is
+involved. 100 items from WorkspaceBench's `brew_intermediates` bank, gated on Qwen3.6-27B; 99 have a valid swap
+target, 94 a valid alternative start. We swap and steer along the colours' J-lens and J++ vectors and read which
+colour the model answers after the bank's "Answer:" prefill.
+
+**In short.**
+- **The small coordinate swaps of exp02 have no force here.** Swapping the intermediate with another colour moves 0 of
+  99 answers at any band (16-32 ... 40-56), lens or region, and so do both positive controls: swapping the start
+  colour (0-1%) or the answer itself at the last token (0%). This null has no working control, so it says nothing
+  about how the model computes; it says the swap that redirects a parametric bridge does not reach these variables.
+- **Steering the start line redirects the whole computation.** Adding 3% of the residual norm along J++'s
+  S' - S at the start line (layers 8-24), the model answers f(f(S')), both lookups from the new start, for 56%
+  [46, 66] of items (J-lens 20%; at 5%, 48% vs 30%); one lookup, f(S'), for a further 19%; S' itself for 5%. A random
+  direction of the same size changes no answer (0% at 3% and 5%). The effect needs about 2% of the norm, peaks at
+  3-5% and fades above (larger edits break the answer), is weaker at layers 16-32 and absent at 36-52.
+- **Steering after the start colour only ever makes the model say X.** Along X - I at the positions after the start
+  line, the answer becomes X itself (100% at 20% of the norm, layers 36-52) and almost never f(X) (1 item of 99 at one
+  setting, 0 at every other size, band and lens). There, where the J-lens reads the intermediate, its direction acts as a candidate answer, not as a step:
+  consistent with WorkspaceBench's caveat that the brew intermediate is usually the model's runner-up answer.
+
+![exp03: steering the start line](figures/exp03_brew_swaps/v1/steering_start_line.png)
+
+**What this does not show.** Whether the model computes the intermediate serially: the swaps lack force and steering
+after the start only produces an output. Steering is not dose-matched to exp02's swaps (exp02's edits are about 1%
+of the norm); the 1-3% scales were added after seeing that 5% was the best of the first four sizes. One seed, one
+model; S' and X are drawn per item with a fixed seed.
+
+<details><summary>Full numbers and checks</summary>
+
+Runs under `results/exp03_brew_swaps/`: `sweep` and `main` (intermediate swaps, all regimes), `followup` (positive
+controls, swaps at 16-32 and 36-52, steering after the start), `start_steer` and `start_steer_low` (steering the start
+line). Our render puts the start line and the last token on the bank's labelled cells for every item
+(`render_matches_bank` in `items.jsonl`). Figures: `figures/exp03_brew_swaps/v1/` (`exp03_figures.py`; categories are
+read off each item's table, and an unchanged answer counts as "original" even where one lookup from S' lands on it).
+
+| Start line steered along S' - S, layers 8-24, n=94 | 1% | 2% | 3% | 5% | 10% | 20% |
+|---|---|---|---|---|---|---|
+| J++: f(f(S')) | 0% | 40% | 56% [46, 66] | 48% [38, 58] | 27% | 14% |
+| J-lens: f(f(S')) | 0% | 9% | 20% | 30% [21, 40] | 17% | 11% |
+| random direction: answer changed | | | 0% | 0% | | 12% |
 </details>
 
 ### Pitfalls found so far
@@ -375,3 +426,6 @@ In order; designs need human sign-off before GPU runs.
 3. **Where the swap acts, by role:** swap at the words that name the cue ("Naples") vs the rest of the earlier words.
 4. **Why "anything else" bridges rarely flip:** probe quality vs how those bridges are represented.
 5. **A control matched in total edit size** across layers.
+6. **Brew:** a method-agnostic map of where the lookup happens (activation patching between start colours, by layer
+   and position), to check whether the steerable start-line direction and the readable-but-not-steerable intermediate
+   line up with it; and steering at the cue phrase in exp02 at the same sizes, to compare the two settings at one dose.

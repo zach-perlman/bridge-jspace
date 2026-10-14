@@ -1,0 +1,872 @@
+{
+  "items": {
+    "eligible": 99,
+    "no_target": 1
+  },
+  "rates": [
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.05,
+      "n": 94,
+      "flip": [
+        0.2978723404255319,
+        0.21484309822217876,
+        0.3967740462235376
+      ],
+      "kept_clean": [
+        0.13829787234042554,
+        0.08263699831631924,
+        0.22236210227075212
+      ],
+      "said_swapped_colour": 0.02127659574468085,
+      "said_intermediate": 0.06382978723404255,
+      "neither": 0.5638297872340425,
+      "edit_ratio_median": 0.05,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.1,
+      "n": 94,
+      "flip": [
+        0.1702127659574468,
+        0.10757529555085373,
+        0.25874741380794664
+      ],
+      "kept_clean": [
+        0.26595744680851063,
+        0.1871148582279006,
+        0.3631786774460867
+      ],
+      "said_swapped_colour": 0.031914893617021274,
+      "said_intermediate": 0.11702127659574468,
+      "neither": 0.5638297872340425,
+      "edit_ratio_median": 0.1,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.2,
+      "n": 94,
+      "flip": [
+        0.10638297872340426,
+        0.058818256468396224,
+        0.18485723534694615
+      ],
+      "kept_clean": [
+        0.2872340425531915,
+        0.2055423033081863,
+        0.38563363821362046
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.1276595744680851,
+      "neither": 0.6063829787234043,
+      "edit_ratio_median": 0.2,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.4,
+      "n": 94,
+      "flip": [
+        0.06382978723404255,
+        0.029579332197396002,
+        0.1323313479223077
+      ],
+      "kept_clean": [
+        0.24468085106382978,
+        0.1689334300235954,
+        0.3404776998025726
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.13829787234042554,
+      "neither": 0.6914893617021277,
+      "edit_ratio_median": 0.4,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": true,
+      "scale": 0.2,
+      "n": 94,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.03926346257624569
+      ],
+      "kept_clean": [
+        0.8829787234042553,
+        0.8024962481102732,
+        0.9333870571504749
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.10638297872340426,
+      "neither": 0.11702127659574468,
+      "edit_ratio_median": 0.2,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": true,
+      "scale": 0.4,
+      "n": 94,
+      "flip": [
+        0.07446808510638298,
+        0.03653811601751902,
+        0.14581376702609433
+      ],
+      "kept_clean": [
+        0.2978723404255319,
+        0.21484309822217876,
+        0.3967740462235376
+      ],
+      "said_swapped_colour": 0.010638297872340425,
+      "said_intermediate": 0.1595744680851064,
+      "neither": 0.6276595744680851,
+      "edit_ratio_median": 0.4,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.05,
+      "n": 94,
+      "flip": [
+        0.4787234042553192,
+        0.38056996331242354,
+        0.5785476308397571
+      ],
+      "kept_clean": [
+        0.09574468085106383,
+        0.05119138083044319,
+        0.17204290806098949
+      ],
+      "said_swapped_colour": 0.02127659574468085,
+      "said_intermediate": 0.0425531914893617,
+      "neither": 0.425531914893617,
+      "edit_ratio_median": 0.05,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.1,
+      "n": 94,
+      "flip": [
+        0.26595744680851063,
+        0.1871148582279006,
+        0.3631786774460867
+      ],
+      "kept_clean": [
+        0.24468085106382978,
+        0.1689334300235954,
+        0.3404776998025726
+      ],
+      "said_swapped_colour": 0.02127659574468085,
+      "said_intermediate": 0.11702127659574468,
+      "neither": 0.48936170212765956,
+      "edit_ratio_median": 0.1,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.2,
+      "n": 94,
+      "flip": [
+        0.13829787234042554,
+        0.08263699831631924,
+        0.22236210227075212
+      ],
+      "kept_clean": [
+        0.3191489361702128,
+        0.23361018709048176,
+        0.4188893632030539
+      ],
+      "said_swapped_colour": 0.02127659574468085,
+      "said_intermediate": 0.11702127659574468,
+      "neither": 0.5425531914893617,
+      "edit_ratio_median": 0.2,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.4,
+      "n": 94,
+      "flip": [
+        0.10638297872340426,
+        0.058818256468396224,
+        0.18485723534694615
+      ],
+      "kept_clean": [
+        0.2127659574468085,
+        0.14216772302859196,
+        0.305919798025847
+      ],
+      "said_swapped_colour": 0.02127659574468085,
+      "said_intermediate": 0.09574468085106383,
+      "neither": 0.6808510638297872,
+      "edit_ratio_median": 0.4,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": true,
+      "scale": 0.2,
+      "n": 94,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.03926346257624569
+      ],
+      "kept_clean": [
+        0.8829787234042553,
+        0.8024962481102732,
+        0.9333870571504749
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.10638297872340426,
+      "neither": 0.11702127659574468,
+      "edit_ratio_median": 0.2,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": true,
+      "scale": 0.4,
+      "n": 94,
+      "flip": [
+        0.07446808510638298,
+        0.03653811601751902,
+        0.14581376702609433
+      ],
+      "kept_clean": [
+        0.2978723404255319,
+        0.21484309822217876,
+        0.3967740462235376
+      ],
+      "said_swapped_colour": 0.010638297872340425,
+      "said_intermediate": 0.1595744680851064,
+      "neither": 0.6276595744680851,
+      "edit_ratio_median": 0.4,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "16-32",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.05,
+      "n": 94,
+      "flip": [
+        0.22340425531914893,
+        0.15101805114456934,
+        0.3175106728337793
+      ],
+      "kept_clean": [
+        0.2872340425531915,
+        0.2055423033081863,
+        0.38563363821362046
+      ],
+      "said_swapped_colour": 0.010638297872340425,
+      "said_intermediate": 0.05319148936170213,
+      "neither": 0.48936170212765956,
+      "edit_ratio_median": 0.05,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "16-32",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.1,
+      "n": 94,
+      "flip": [
+        0.1595744680851064,
+        0.09915526347591294,
+        0.24672624295897774
+      ],
+      "kept_clean": [
+        0.3191489361702128,
+        0.23361018709048176,
+        0.4188893632030539
+      ],
+      "said_swapped_colour": 0.031914893617021274,
+      "said_intermediate": 0.14893617021276595,
+      "neither": 0.5212765957446809,
+      "edit_ratio_median": 0.1,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "16-32",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.2,
+      "n": 94,
+      "flip": [
+        0.06382978723404255,
+        0.029579332197396002,
+        0.1323313479223077
+      ],
+      "kept_clean": [
+        0.26595744680851063,
+        0.1871148582279006,
+        0.3631786774460867
+      ],
+      "said_swapped_colour": 0.010638297872340425,
+      "said_intermediate": 0.13829787234042554,
+      "neither": 0.6702127659574468,
+      "edit_ratio_median": 0.2,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "16-32",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.4,
+      "n": 94,
+      "flip": [
+        0.07446808510638298,
+        0.03653811601751902,
+        0.14581376702609433
+      ],
+      "kept_clean": [
+        0.2765957446808511,
+        0.19629891934748106,
+        0.37443581925041597
+      ],
+      "said_swapped_colour": 0.010638297872340425,
+      "said_intermediate": 0.14893617021276595,
+      "neither": 0.648936170212766,
+      "edit_ratio_median": 0.4,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "16-32",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": true,
+      "scale": 0.2,
+      "n": 94,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.03926346257624569
+      ],
+      "kept_clean": [
+        0.9680851063829787,
+        0.9103253583802694,
+        0.989087570271756
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.031914893617021274,
+      "neither": 0.031914893617021274,
+      "edit_ratio_median": 0.2,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "16-32",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": true,
+      "scale": 0.4,
+      "n": 94,
+      "flip": [
+        0.07446808510638298,
+        0.03653811601751902,
+        0.14581376702609433
+      ],
+      "kept_clean": [
+        0.3191489361702128,
+        0.23361018709048176,
+        0.4188893632030539
+      ],
+      "said_swapped_colour": 0.010638297872340425,
+      "said_intermediate": 0.2127659574468085,
+      "neither": 0.6063829787234043,
+      "edit_ratio_median": 0.4,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "16-32",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.05,
+      "n": 94,
+      "flip": [
+        0.3829787234042553,
+        0.2911404875065257,
+        0.48400628033046794
+      ],
+      "kept_clean": [
+        0.1276595744680851,
+        0.07455740366811686,
+        0.21000049399504478
+      ],
+      "said_swapped_colour": 0.010638297872340425,
+      "said_intermediate": 0.0,
+      "neither": 0.48936170212765956,
+      "edit_ratio_median": 0.05,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "16-32",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.1,
+      "n": 94,
+      "flip": [
+        0.09574468085106383,
+        0.05119138083044319,
+        0.17204290806098949
+      ],
+      "kept_clean": [
+        0.1276595744680851,
+        0.07455740366811686,
+        0.21000049399504478
+      ],
+      "said_swapped_colour": 0.010638297872340425,
+      "said_intermediate": 0.10638297872340426,
+      "neither": 0.776595744680851,
+      "edit_ratio_median": 0.1,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "16-32",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.2,
+      "n": 94,
+      "flip": [
+        0.09574468085106383,
+        0.05119138083044319,
+        0.17204290806098949
+      ],
+      "kept_clean": [
+        0.3404255319148936,
+        0.2525882883005792,
+        0.4407936678407758
+      ],
+      "said_swapped_colour": 0.02127659574468085,
+      "said_intermediate": 0.10638297872340426,
+      "neither": 0.5638297872340425,
+      "edit_ratio_median": 0.2,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "16-32",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.4,
+      "n": 94,
+      "flip": [
+        0.0851063829787234,
+        0.04375496466822986,
+        0.15903812129929315
+      ],
+      "kept_clean": [
+        0.2553191489361702,
+        0.17799224189785487,
+        0.3518600908522227
+      ],
+      "said_swapped_colour": 0.02127659574468085,
+      "said_intermediate": 0.11702127659574468,
+      "neither": 0.6595744680851063,
+      "edit_ratio_median": 0.4,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "16-32",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": true,
+      "scale": 0.2,
+      "n": 94,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.03926346257624569
+      ],
+      "kept_clean": [
+        0.9680851063829787,
+        0.9103253583802694,
+        0.989087570271756
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.031914893617021274,
+      "neither": 0.031914893617021274,
+      "edit_ratio_median": 0.2,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "16-32",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": true,
+      "scale": 0.4,
+      "n": 94,
+      "flip": [
+        0.07446808510638298,
+        0.03653811601751902,
+        0.14581376702609433
+      ],
+      "kept_clean": [
+        0.3191489361702128,
+        0.23361018709048176,
+        0.4188893632030539
+      ],
+      "said_swapped_colour": 0.010638297872340425,
+      "said_intermediate": 0.2127659574468085,
+      "neither": 0.6063829787234043,
+      "edit_ratio_median": 0.4,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "36-52",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.05,
+      "n": 94,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.03926346257624569
+      ],
+      "kept_clean": [
+        1.0,
+        0.9607365374237544,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.05,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "36-52",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.1,
+      "n": 94,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.03926346257624569
+      ],
+      "kept_clean": [
+        0.9893617021276596,
+        0.9421756818388973,
+        0.9981196526609477
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.010638297872340425,
+      "edit_ratio_median": 0.1,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "36-52",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.2,
+      "n": 94,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.03926346257624569
+      ],
+      "kept_clean": [
+        0.9893617021276596,
+        0.9421756818388973,
+        0.9981196526609477
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.010638297872340425,
+      "edit_ratio_median": 0.2,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "36-52",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.4,
+      "n": 94,
+      "flip": [
+        0.010638297872340425,
+        0.001880347339052478,
+        0.057824318161102874
+      ],
+      "kept_clean": [
+        0.9574468085106383,
+        0.895642004129686,
+        0.9833297215984298
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.031914893617021274,
+      "edit_ratio_median": 0.4,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "36-52",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": true,
+      "scale": 0.2,
+      "n": 94,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.03926346257624569
+      ],
+      "kept_clean": [
+        1.0,
+        0.9607365374237544,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.2,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "36-52",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": true,
+      "scale": 0.4,
+      "n": 94,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.03926346257624569
+      ],
+      "kept_clean": [
+        0.9893617021276596,
+        0.9421756818388973,
+        0.9981196526609477
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.010638297872340425,
+      "edit_ratio_median": 0.4,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "36-52",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.05,
+      "n": 94,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.03926346257624569
+      ],
+      "kept_clean": [
+        1.0,
+        0.9607365374237544,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.05,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "36-52",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.1,
+      "n": 94,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.03926346257624569
+      ],
+      "kept_clean": [
+        0.9893617021276596,
+        0.9421756818388973,
+        0.9981196526609477
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.010638297872340425,
+      "edit_ratio_median": 0.1,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "36-52",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.2,
+      "n": 94,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.03926346257624569
+      ],
+      "kept_clean": [
+        0.9893617021276596,
+        0.9421756818388973,
+        0.9981196526609477
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.010638297872340425,
+      "edit_ratio_median": 0.2,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "36-52",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.4,
+      "n": 94,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.03926346257624569
+      ],
+      "kept_clean": [
+        0.9787234042553191,
+        0.9257083451044751,
+        0.9941457864714599
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.02127659574468085,
+      "edit_ratio_median": 0.4,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "36-52",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": true,
+      "scale": 0.2,
+      "n": 94,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.03926346257624569
+      ],
+      "kept_clean": [
+        1.0,
+        0.9607365374237544,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.2,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "36-52",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": true,
+      "scale": 0.4,
+      "n": 94,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.03926346257624569
+      ],
+      "kept_clean": [
+        0.9893617021276596,
+        0.9421756818388973,
+        0.9981196526609477
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.010638297872340425,
+      "edit_ratio_median": 0.4,
+      "n_positions_median": 6.0
+    }
+  ]
+}

@@ -30,5 +30,9 @@ Notes:
   (24-40), `*_32-48`, and position runs `*_pos-{prev,last,last_two,earlier}`; reports in `exp02_swaps/analysis/<run>/`.
   Figures: `../figures/exp02_swaps/v4/` (`jpart_vs_remainder.png` and `swap_position.png` are the headline ones;
   rebuilt with `uv run python scripts/exp02_figures.py <new folder>`).
+- **exp03_brew_swaps:** in-context two-step lookups (WorkspaceBench's brew bank). Runs `sweep`, `main`, `followup`,
+  `start_steer`, `start_steer_low` under `exp03_brew_swaps/`; figures `../figures/exp03_brew_swaps/v1/`
+  (`uv run python scripts/exp03_figures.py <new folder> followup start_steer start_steer_low`).
+- exp02 figures with the cue regimes: `../figures/exp02_swaps/v4b/` (same as `v4/` plus the cue split).
 - v3 (superseded by v4): exp02_swaps main report `exp02_swaps/analysis/main/REPORT_auto.md`; labels used by
   exp11/exp12: `exp02_swaps/main/labels.csv`; figure: `../figures/exp02_swaps/main/flip_rates.png`.
