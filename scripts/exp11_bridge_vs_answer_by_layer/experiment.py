@@ -20,23 +20,25 @@ layers 34-48 (66 items).
 
 from __future__ import annotations
 
-import csv
-import hashlib
 from pathlib import Path
 from typing import Any
 
 import numpy as np
 
 from bridge_jspace.experiment import Experiment
-from bridge_jspace.pins import probe_swap_items
-from bridge_jspace.readout import Reader, formatting_mask, pool_ranks, readout_logits, residuals, word_ranks
+from bridge_jspace.items import (
+    ROLES,
+    entity_and_answer_pools,
+    load_labelled_items,
+    pool_ids,
+    role_ranks,
+    word_ids,
+)
+from bridge_jspace.readout import Reader, formatting_mask, readout_logits, residuals, word_ranks
 from bridge_jspace.stats import bootstrap_mean
-from bridge_jspace.tokens import concept_token, surface_ids
 from bridge_jspace.utils import progress
 
 from .plot import plot_run
-
-ROLES = ("bridge", "distractor", "answer", "swap_answer")
 
 
 class BridgeVsAnswer(Experiment):
@@ -47,9 +49,8 @@ class BridgeVsAnswer(Experiment):
         layers = {n: list(range(lm.n_layers - 1)) if r is None else r.source_layers for n, r in readers.items()}
         sanity = self.sanity_gate()
 
-        items = load_items(Path(p["labels_file"]), p["labels_sha256"])[: p.get("limit")]
-        entity_pool = _pool(tok, [w for it in items for w in (it["intermediate"], it["swap_to"])])
-        answer_pool = _pool(tok, [w for it in items for w in (it["answer"], it["swap_answer"])])
+        items = load_labelled_items(Path(p["labels_file"]), p["labels_sha256"])[: p.get("limit")]
+        entity_pool, answer_pool = entity_and_answer_pools(tok, items)
         unembed = getattr(lm, "_lm_head")  # noqa: B009 - vocab size of the head, not the tokenizer's
         mask = formatting_mask(tok, unembed.weight.shape[0]).to(self.model.device)
         final = lm.n_layers - 1
@@ -60,12 +61,7 @@ class BridgeVsAnswer(Experiment):
             prompt = it["prompt"].rstrip() if p["strip_trailing_space"] else it["prompt"]
             ids = lm.encode(prompt)
             resid = residuals(lm, ids, record_at)
-            words = {
-                "bridge": [concept_token(tok, it["intermediate"])],
-                "distractor": [concept_token(tok, it["swap_to"])],
-                "answer": surface_ids(tok, it["answer"]),
-                "swap_answer": surface_ids(tok, it["swap_answer"]),
-            }
+            words, targets = word_ids(tok, it), pool_ids(tok, it)
             # The model's own answer at the readout token, to compare with part B's status on the same prompts.
             out = lm.unembed(resid[final][[-1]]).float()
             own_rank = int(word_ranks(out, [words["answer"]], mask)[0, 0]) if words["answer"] else None
@@ -79,19 +75,9 @@ class BridgeVsAnswer(Experiment):
             )
             for rname, reader in readers.items():
                 logits = _stack_logits(lm, reader, resid, layers[rname])  # [L, vocab]
+                ranks = role_ranks(logits, words, targets, entity_pool, answer_pool, mask)
                 row: dict[str, Any] = {"name": it["name"], "reader": rname, "layers": layers[rname]}
-                cands = [words[r] for r in ROLES]
-                wr = word_ranks(logits, [c or [0] for c in cands], mask)  # [L, 4]; empty sets masked below
-                for j, role in enumerate(ROLES):
-                    row[f"{role}_word"] = wr[:, j].tolist() if cands[j] else None
-                ent = pool_ranks(logits, [words["bridge"][0], words["distractor"][0]], entity_pool)
-                row["bridge_pool"], row["distractor_pool"] = ent[:, 0].tolist(), ent[:, 1].tolist()
-                a_id, s_id = _concept_or_none(tok, it["answer"]), _concept_or_none(tok, it["swap_answer"])
-                if a_id is None or s_id is None:
-                    row["answer_pool"] = row["swap_answer_pool"] = None
-                else:
-                    ans = pool_ranks(logits, [a_id, s_id], answer_pool)
-                    row["answer_pool"], row["swap_answer_pool"] = ans[:, 0].tolist(), ans[:, 1].tolist()
+                row |= {k: (None if v is None else v.tolist()) for k, v in ranks.items()}
                 rows.append(row)
         self.save_jsonl("ranks.jsonl", rows)
         self.save_jsonl("items.jsonl", meta)
@@ -112,32 +98,7 @@ class BridgeVsAnswer(Experiment):
         return summary
 
 
-# ---- inputs -----------------------------------------------------------------------------------
-
-
-def load_items(labels_file: Path, sha256: str) -> list[dict[str, Any]]:
-    """Probe-swap items joined with part B's labels (status, label) by name; labels file checked against its pin."""
-    blob = labels_file.read_bytes()
-    got = hashlib.sha256(blob).hexdigest()
-    if got != sha256:
-        raise ValueError(f"{labels_file} sha256 {got} != pinned {sha256}")
-    labels = {r["name"]: r for r in csv.DictReader(blob.decode().splitlines())}
-    items = probe_swap_items()
-    if set(labels) != {it["name"] for it in items}:
-        raise ValueError("labels.csv and probe_swap.json name different items")
-    return [{**it, "status": labels[it["name"]]["status"], "label": labels[it["name"]]["label"]} for it in items]
-
-
-def _concept_or_none(tok, word: str) -> int | None:
-    try:
-        return concept_token(tok, word)
-    except ValueError:
-        return None
-
-
-def _pool(tok, words: list[str]) -> list[int]:
-    """Unique concept tokens of `words` (words without a single-token surface are left out)."""
-    return list(dict.fromkeys(t for w in dict.fromkeys(words) if (t := _concept_or_none(tok, w)) is not None))
+# ---- helpers -----------------------------------------------------------------------------------
 
 
 def _stack_logits(lm, reader: Reader, resid: dict, layers: list[int]):
