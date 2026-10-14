@@ -106,6 +106,108 @@ def exp10_pass10(reader):
     return float(np.mean([np.mean(v) for v in per_item.values()])), len(per_item)
 
 
+# ---- part B: exp02 swaps (v4, layers 24-40, n=77) and exp03 brew ------------------------------------------------
+
+EXP02 = R / "exp02_swaps"
+EXP03 = R / "exp03_brew_swaps"
+
+
+def exp02_flips(run, condition, null=False, band="24-40"):
+    """exp02_swaps/<run>/outcomes.jsonl: {item: flip} for one condition, band and null flag (flip = the greedy
+    continuation has the swap answer and not the clean answer; one row per eligible item)."""
+    rows = jsonl(EXP02 / run / "outcomes.jsonl")
+    return {
+        o["name"]: o["flip"] for o in rows if o["condition"] == condition and o["band"] == band and o["null"] == null
+    }
+
+
+def exp02_rate(run, condition, null=False, band="24-40"):
+    """Share of eligible items whose swap flips: mean of exp02_flips."""
+    f = exp02_flips(run, condition, null, band)
+    return float(np.mean(list(f.values()))), len(f)
+
+
+def exp02_max_null(run):
+    """The highest flip rate of any matched-norm random-direction control in the run (null == true rows)."""
+    conditions = {o["condition"] for o in jsonl(EXP02 / run / "outcomes.jsonl")}
+    return max(exp02_rate(run, c, null=True)[0] for c in conditions)
+
+
+def exp02_paired_diff(run, a, b):
+    """Mean over items of flip(a) - flip(b), same items (the point estimate of the paired bootstrap)."""
+    fa, fb = exp02_flips(run, a), exp02_flips(run, b)
+    return float(np.mean([fa[n] - fb[n] for n in fa]))
+
+
+def exp02_bridge_types():
+    """PLACES and PEOPLE as listed in scripts/exp02_figures.py (read as literals, not imported)."""
+    import ast
+
+    tree = ast.parse((R.parent / "scripts/exp02_figures.py").read_text())
+    sets = {
+        t.id: ast.literal_eval(node.value)
+        for node in tree.body
+        if isinstance(node, ast.Assign)
+        for t in node.targets
+        if isinstance(t, ast.Name) and t.id in ("PLACES", "PEOPLE")
+    }
+    return sets["PLACES"], sets["PEOPLE"]
+
+
+def exp02_rate_by_type(run, kind):
+    """J-part flip rate over items whose bridge (items.jsonl `intermediate`) is a place, a person, or anything else."""
+    places, people = exp02_bridge_types()
+    bridge = {m["name"]: m["intermediate"] for m in jsonl(EXP02 / run / "items.jsonl")}
+    pick = {"place": lambda e: e in places, "person": lambda e: e in people}.get(
+        kind, lambda e: e not in places and e not in people
+    )
+    f = {n: v for n, v in exp02_flips(run, "jpart").items() if pick(bridge[n])}
+    return float(np.mean(list(f.values()))), len(f)
+
+
+def exp02_jpp_superset():
+    """main_v4 J-part (24-40): items the J-lens flips and J++ does not, and the reverse."""
+    jl, jp = exp02_flips("main_v4_jlens", "jpart"), exp02_flips("main_v4_jpp", "jpart")
+    return sum(jl[n] and not jp[n] for n in jl), sum(jp[n] and not jl[n] for n in jl)
+
+
+def exp03_rate(run, lens, kind, regime, null=False, amp=1, scale=None, field="flip"):
+    """exp03_brew_swaps/<run>/outcomes.jsonl: share of rows (one per eligible item) with `field` true, for one lens,
+    kind, regime, null flag, amplification and steering scale."""
+    rows = [
+        o
+        for o in jsonl(EXP03 / run / "outcomes.jsonl")
+        if (o["lens"], o["kind"], o["regime"], o["null"], o.get("amp", 1), o.get("scale"))
+        == (lens, kind, regime, null, amp, scale)
+    ]
+    return float(np.mean([o[field] for o in rows])), len(rows)
+
+
+def exp03_changed(run, lens, kind, regime, null, amp=1, scale=None):
+    """Share of rows whose answer changed (not kept_clean): the random-direction null's 'answer changed' rate."""
+    rate, n = exp03_rate(run, lens, kind, regime, null, amp, scale, field="kept_clean")
+    return 1 - rate, n
+
+
+EXP04 = R / "exp04_brew_patch/patch_map"
+
+
+def exp04_role_rate(source, group, layer, role):
+    """exp04 outcomes.jsonl: share of rows (one per eligible item) for one source (cf / off), position group and
+    layer whose answer has that role (b = f(X), c = the counterfactual's answer, A = the original answer)."""
+    rows = [o for o in jsonl(EXP04 / "outcomes.jsonl") if (o["source"], o["group"], o["layer"]) == (source, group, layer)]
+    return float(np.mean([o["role"] == role for o in rows])), len(rows)
+
+
+def exp04_max_off_changed():
+    """The highest share of answers the off-path control's patch changes, over every group and layer."""
+    cells = {}
+    for o in jsonl(EXP04 / "outcomes.jsonl"):
+        if o["source"] == "off":
+            cells.setdefault((o["group"], o["layer"]), []).append(o["role"] != "A")
+    return max(float(np.mean(v)) for v in cells.values())
+
+
 def main():
     checks = [
         ("exp10", "27B stripped, pass@10, J++", exp10_pass10("jpp")[0], 0.75),
@@ -126,6 +228,98 @@ def main():
         ("exp12", "... distractor on top earlier (control)", exp12_missed_rescued("jlens")[2], 0.35),
         ("exp12", "half of items: bridge at -1, first layer", exp12_first_layer_half("jlens", "bridge", -1), 23),
         ("exp12", "half of items: answer at 0, first layer", exp12_first_layer_half("jlens", "answer", 0), 44),
+        ("exp02", "J-part flips, J++ (main_v4_jpp)", exp02_rate("main_v4_jpp", "jpart")[0], 0.52),
+        ("exp02", "J-part flips, J-lens (main_v4_jlens)", exp02_rate("main_v4_jlens", "jpart")[0], 0.35),
+        ("exp02", "remainder flips, J++", exp02_rate("main_v4_jpp", "remainder")[0], 0.08),
+        ("exp02", "remainder flips, J-lens", exp02_rate("main_v4_jlens", "remainder")[0], 0.12),
+        ("exp02", "remainder, J-space held, J++", exp02_rate("main_v4_jpp", "remainder_clamped")[0], 0.01),
+        ("exp02", "remainder, J-space held, J-lens", exp02_rate("main_v4_jlens", "remainder_clamped")[0], 0.04),
+        ("exp02", "raw lens vectors, J++", exp02_rate("main_v4_jpp", "raw_jlens")[0], 0.49),
+        ("exp02", "raw lens vectors, J-lens", exp02_rate("main_v4_jlens", "raw_jlens")[0], 0.40),
+        ("exp02", "full probe (lens-free)", exp02_rate("main_v4_jpp", "full_probe")[0], 0.27),
+        (
+            "exp02",
+            "highest random-direction control, either lens",
+            max(map(exp02_max_null, ("main_v4_jpp", "main_v4_jlens"))),
+            0.03,
+        ),
+        ("exp02", "J-part minus remainder, J++ (pts)", exp02_paired_diff("main_v4_jpp", "jpart", "remainder"), 0.44),
+        ("exp02", "J-part minus remainder, J-lens", exp02_paired_diff("main_v4_jlens", "jpart", "remainder"), 0.23),
+        ("exp02", "matched-alignment flips, J++", exp02_rate("matched_v4_jpp", "jpart_matched")[0], 0.14),
+        ("exp02", "matched-alignment flips, J-lens", exp02_rate("matched_v4_jlens", "jpart_matched")[0], 0.10),
+        ("exp02", "J-part minus matched, J++", exp02_paired_diff("matched_v4_jpp", "jpart", "jpart_matched"), 0.38),
+        (
+            "exp02",
+            "J-part minus matched, J-lens",
+            exp02_paired_diff("matched_v4_jlens", "jpart", "jpart_matched"),
+            0.25,
+        ),
+        ("exp02", "J-part at the cue phrase, J++", exp02_rate("main_v4_jpp_pos-cue", "jpart")[0], 0.31),
+        ("exp02", "J-part at the cue phrase, J-lens", exp02_rate("main_v4_jlens_pos-cue", "jpart")[0], 0.19),
+        ("exp02", "J-part at offset -1 only, J++", exp02_rate("main_v4_jpp_pos-prev", "jpart")[0], 0.09),
+        ("exp02", "J-part, bridge a place, J++", exp02_rate_by_type("main_v4_jpp", "place")[0], 0.88),
+        ("exp02", "J-part, bridge a person, J++", exp02_rate_by_type("main_v4_jpp", "person")[0], 0.86),
+        ("exp02", "J-part, bridge anything else, J++", exp02_rate_by_type("main_v4_jpp", "other")[0], 0.25),
+        ("exp02", "J-part, bridge a person, J-lens", exp02_rate_by_type("main_v4_jlens", "person")[0], 0.14),
+        ("exp02", "items J-lens flips and J++ does not (count)", exp02_jpp_superset()[0], 0),
+        ("exp02", "items J++ flips and J-lens does not (count)", exp02_jpp_superset()[1], 13),
+        (
+            "exp03",
+            "start swap S->S' x3, 8-24, J++",
+            exp03_rate("swap_amp", "jpp", "start", "start_line", amp=3)[0],
+            0.61,
+        ),
+        ("exp03", "start swap x3, J-lens", exp03_rate("swap_amp", "jlens", "start", "start_line", amp=3)[0], 0.17),
+        (
+            "exp03",
+            "start swap x3, random direction, J++",
+            exp03_rate("swap_amp", "jpp", "start", "start_line", True, 3)[0],
+            0.01,
+        ),
+        (
+            "exp03",
+            "intermediate swap x3 after start, J++",
+            exp03_rate("swap_amp", "jpp", "swap", "after_start", amp=3)[0],
+            0.0,
+        ),
+        (
+            "exp03",
+            "intermediate swap x3 every position, J++",
+            exp03_rate("swap_amp", "jpp", "swap", "all", amp=3)[0],
+            0.03,
+        ),
+        (
+            "exp03",
+            "fresh items: start-line steer 3%, J++",
+            exp03_rate("fresh_steer", "jpp", "steer_start", "start_line", scale=0.03)[0],
+            0.63,
+        ),
+        (
+            "exp03",
+            "fresh items: start-line steer 3%, J-lens",
+            exp03_rate("fresh_steer", "jlens", "steer_start", "start_line", scale=0.03)[0],
+            0.30,
+        ),
+        (
+            "exp03",
+            "fresh items: random direction 3%, flips, J++",
+            exp03_rate("fresh_steer", "jpp", "steer_start", "start_line", True, scale=0.03)[0],
+            0.0,
+        ),
+        (
+            "exp03",
+            "fresh items: random direction 3%, answer changed, J++",
+            exp03_changed("fresh_steer", "jpp", "steer_start", "start_line", True, scale=0.03)[0],
+            0.0,
+        ),
+        ("exp04", "after the start line, layer 36: f(X)", exp04_role_rate("cf", "after_start", 36, "b")[0], 0.11),
+        ("exp04", "after the start line, layer 46: f(X)", exp04_role_rate("cf", "after_start", 46, "b")[0], 0.48),
+        ("exp04", "after the start line, layer 50: f(X)", exp04_role_rate("cf", "after_start", 50, "b")[0], 0.48),
+        ("exp04", "after the start line, layer 52: c", exp04_role_rate("cf", "after_start", 52, "c")[0], 0.71),
+        ("exp04", "the start line, layer 46: original answer", exp04_role_rate("cf", "start_line", 46, "A")[0], 1.0),
+        ("exp04", "rule lines, layer 24: c", exp04_role_rate("cf", "rules", 24, "c")[0], 0.95),
+        ("exp04", "rule lines, layer 40: original answer", exp04_role_rate("cf", "rules", 40, "A")[0], 0.84),
+        ("exp04", "off-path control, most answers changed", exp04_max_off_changed(), 0.02),
     ]
     width = max(len(c[1]) for c in checks)
     for exp, what, got, claimed in checks:
