@@ -25,5 +25,10 @@ Notes:
   to read are rendered into `../examples/` by `make examples-render` (`make examples-serve` opens them).
 
 ## Part B (Zach)
-- exp02_swaps main report: `exp02_swaps/analysis/main/REPORT_auto.md`; labels used by exp11/exp12:
-  `exp02_swaps/main/labels.csv`; figure: `../figures/exp02_swaps/main/flip_rates.png`.
+- **v4 (current):** J-lens and J++ on shared probes (`exp01_probes/v3_jlens`, `v3_jpp`), stripped prompts, answers
+  judged on the greedy continuation, 77 eligible. Gate `exp02_swaps/gate_v4`; main runs `exp02_swaps/main_v4_{jlens,jpp}`
+  (24-40), `*_32-48`, and position runs `*_pos-{prev,last,last_two,earlier}`; reports in `exp02_swaps/analysis/<run>/`.
+  Figures: `../figures/exp02_swaps/v4/` (`jpart_vs_remainder.png` and `swap_position.png` are the headline ones;
+  rebuilt with `uv run python scripts/exp02_figures.py <new folder>`).
+- v3 (superseded by v4): exp02_swaps main report `exp02_swaps/analysis/main/REPORT_auto.md`; labels used by
+  exp11/exp12: `exp02_swaps/main/labels.csv`; figure: `../figures/exp02_swaps/main/flip_rates.png`.

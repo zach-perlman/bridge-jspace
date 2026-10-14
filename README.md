@@ -29,11 +29,13 @@ or tokenization artifact.
 1. `data/entity_prompts.json`: about 8 prompts per entity that imply the entity without naming it, for the 97
    entities in `data/probe_swap.json` (bridges and swap targets). Qwen keeps the ones it answers correctly.
 2. Probe per entity and layer: mean final-token residual over its kept prompts minus the mean over all entities.
-3. Decomposition per layer: non-negative OMP (k=25) over J-lens token directions gives the J-space part; the remainder
-   is the rest.
+3. Decomposition per layer: non-negative OMP (k=25) over J-lens (or J++) token directions gives the J-space part; the
+   remainder is the rest. From v4, both lenses decompose the same probes (`exp01_probes redecompose`).
 4. Swaps on the 90 two-hop items, at every band layer and prompt position, under five conditions: raw J-lens vectors,
    full probe, J-space part, remainder, remainder with the J-space coordinates clamped. Each has a random-direction
    control of the same edit norm. Metric: rate at which the swap answer becomes the top word, with Wilson 95% CIs.
+   From v4: prompts with the trailing space stripped, and eligibility and flips judged on the greedy continuation
+   (exp13's criterion C), which makes 77 items eligible; swaps can be restricted to some prompt positions.
 
 ## Layout
 ```
@@ -251,6 +253,74 @@ Eligible n=67; positions -14..0 analysed (reached by at least half the questions
 ![exp12: J-lens heatmaps](figures/exp12_position_map/position_layer_jlens.png)
 </details>
 
+### exp02_swaps v4 (part B): does the bridge act through the J-space, and where?
+**What we measure.** In "The capital of the country where Naples is located is" the model answers Rome through the
+bridge Italy. We swap the bridge's representation for another entity's (Italy -> Spain) at layers 24-40 and count how
+often the answer becomes the other entity's (Madrid). The swap uses one part of the bridge's probe at a time: its
+J-space part, its remainder, or the remainder with the J-space coordinates held fixed. Each swap has a control: a
+random direction of the same edit size. v4 runs the swaps with the J-lens and with J++ on the same probes, on the 77
+questions the model answers correctly (stripped prompts, answers judged on the greedy continuation).
+
+**In short.**
+- **The bridge acts through the J-space.** Swapping only the J-space part flips 52% of answers with J++ and 35% with
+  the J-lens; the remainder flips 8% / 12%, and 1% / 4% with the J-space held fixed. Controls flip at most 3%. Claude
+  (Gurnee et al. 2026): 61% / 28% / 6%.
+- **J++ closes most of the gap to Claude.** On identical probes, J++'s J-space part carries much more of the swap
+  than the J-lens's (52% vs 35%), so the J-lens's smaller effect is largely the lens, not a route outside the
+  workspace.
+- **The swap acts at the words that cue the bridge, not where the bridge is read.** Swapped only at the earlier words
+  ("Naples", "country", ...), the J-space part flips 35% (J++) / 23% (J-lens); only at offset -1, where exp12 reads the
+  bridge best, 9% / 3%; only at the last token, 8% / 4%.
+- **It works when the bridge is a place or a person.** J++: 88% of questions whose bridge is a country or place,
+  86% for people (n=7), 25% for everything else (elements, organs, animals, dates). The J-lens matches J++ on places
+  (85%) but not on people (14%).
+
+![exp02 v4: J-space part vs remainder](figures/exp02_swaps/v4/jpart_vs_remainder.png)
+
+![exp02 v4: where in the prompt the swap acts](figures/exp02_swaps/v4/swap_position.png)
+
+**What this does not show.** The gate failed for the fourth time (full probe 27% < 30% at layers 24-40, the band it
+picked on these same items); the runs are exploratory, one seed, n=77. The control matches each layer's edit size,
+not the total over layers (the real swap's later edits shrink, the control's do not), so it is stricter for flips and
+overstates collateral damage. Positions are counted back from the last token, as in exp12, so offset -1 is a
+different word in different prompts.
+
+<details><summary>Full numbers and checks</summary>
+
+Runs under `results/exp02_swaps/`: `gate_v4`, `main_v4_{jlens,jpp}` (layers 24-40, the gate's pick),
+`main_v4_{jlens,jpp}_32-48` (part A's band, set by hand), `main_v4_{jlens,jpp}_pos-{prev,last,last_two,earlier}`.
+Probes: `exp01_probes/v3_jpp` (v3's prompts rebuilt on the H200: 11 of 2673 filter decisions differ from v3) and
+`v3_jlens` (the same probes, decomposed over the J-lens). Flip rate, Wilson 95% CI, n=77:
+
+| Swap (all positions) | J-lens 24-40 | J++ 24-40 | J-lens 32-48 | J++ 32-48 |
+|---|---|---|---|---|
+| raw lens vectors | 40% [30, 51] | 49% [38, 60] | 48% [37, 59] | 55% [43, 65] |
+| full probe | 27% [19, 38] | 27% [19, 38] | 25% [16, 35] | 25% [16, 35] |
+| J-space part | 35% [25, 46] | 52% [41, 63] | 34% [24, 45] | 44% [34, 55] |
+| remainder | 12% [6, 21] | 8% [4, 16] | 12% [6, 21] | 10% [5, 19] |
+| remainder, J-space held | 4% [1, 11] | 1% [0, 7] | 1% [0, 7] | 3% [1, 9] |
+
+| J-space part swapped only at | J-lens | J++ |
+|---|---|---|
+| the earlier words | 23% [15, 34] | 35% [25, 46] |
+| offset -1 | 3% [1, 9] | 9% [4, 18] |
+| offset 0 | 4% [1, 11] | 8% [4, 16] |
+| offsets -1 and 0 | 10% [5, 19] | 17% [10, 27] |
+| every position | 35% [25, 46] | 52% [41, 63] |
+
+| Bridge is | n | J-lens | J++ |
+|---|---|---|---|
+| a country or place | 26 | 85% [66, 94] | 88% [71, 96] |
+| a person | 7 | 14% [3, 51] | 86% [49, 97] |
+| anything else | 44 | 9% [4, 21] | 25% [15, 39] |
+
+- Paired bootstrap, J-space part minus remainder: J-lens +23 pts [+13, +35], J++ +44 [+32, +56] (layers 24-40).
+- The full probe uses no lens: its outcomes are identical item by item in the J-lens and J++ runs.
+- Every run's report (`results/exp02_swaps/analysis/<run>/REPORT_auto.md`) lists edit sizes, collateral damage and
+  the files to recompute from. Supplementary figures in `figures/exp02_swaps/v4/`: `lens_comparison.png`,
+  `positions.png`, `outcomes.png`, `dose.png`, `per_question.png`, `examples.png`, `by_bridge_type.png`.
+</details>
+
 ### Pitfalls found so far
 1. **Trailing space.** Most original prompts end in a space (83/93), which Qwen's tokenizer leaves as a lone `" "`
    token. The model then answers far worse (27B: 21/93 correct vs 61/93 with the space stripped) and the lens reads a
@@ -297,3 +367,11 @@ In order; designs need human sign-off before GPU runs.
 5. **NLA:** source and weights still to identify.
 6. Optional: reproduce J++'s published Recall@10 (55.2% on Qwen3.6-27B) over all six lens-eval sets.
 7. Stretch: repeat on Gemma 4 31B (J-lens and J++ exist on HF).
+
+## Next steps (part B)
+1. **Verify v4:** extend `scripts/verify_headlines.py` to the exp02 v4 runs, then a human recomputes the headlines.
+2. **The gate:** decide whether 30% on the full probe is still the right go/no-go now that the J-space part and the raw
+   lens vectors carry the effect.
+3. **Where the swap acts, by role:** swap at the words that name the cue ("Naples") vs the rest of the earlier words.
+4. **Why "anything else" bridges rarely flip:** probe quality vs how those bridges are represented.
+5. **A control matched in total edit size** across layers.
