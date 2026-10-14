@@ -1,0 +1,94 @@
+{
+  "model": "Qwen/Qwen3.6-27B",
+  "sanity": {
+    "known_fact": true,
+    "hf_parity": true,
+    "reference_readout_jlens": true,
+    "reference_readout_jpp": true
+  },
+  "max_new_tokens": 8,
+  "as_published": {
+    "n": 90,
+    "correct": {
+      "A": 71,
+      "B": 73,
+      "C": 76
+    },
+    "ambiguous": [],
+    "compound_matches": [
+      "instr-hit-drums"
+    ],
+    "retried": 0,
+    "vs_part_b_eligible": {
+      "both": 67,
+      "only_C": [
+        "ex-city-currency-Toronto-Mumbai",
+        "ex-element-state-8-26",
+        "ex-element-state-8-80",
+        "gem-source-pearl",
+        "instr-hit-drums",
+        "organ-location-brain",
+        "person-century-lincoln",
+        "sport-equip-tennis",
+        "tree-product-oak"
+      ],
+      "only_part_b": []
+    },
+    "status_b_of_only_C": {
+      "ex-city-currency-Toronto-Mumbai": "multi_token_answer",
+      "ex-element-state-8-26": "clean_wrong",
+      "ex-element-state-8-80": "clean_wrong",
+      "gem-source-pearl": "multi_token_answer",
+      "instr-hit-drums": "clean_wrong",
+      "organ-location-brain": "multi_token_answer",
+      "person-century-lincoln": "multi_token_answer",
+      "sport-equip-tennis": "clean_wrong",
+      "tree-product-oak": "multi_token_answer"
+    }
+  },
+  "stripped": {
+    "n": 90,
+    "correct": {
+      "A": 72,
+      "B": 74,
+      "C": 77
+    },
+    "ambiguous": [],
+    "compound_matches": [
+      "instr-hit-drums"
+    ],
+    "retried": 0,
+    "vs_part_b_eligible": {
+      "both": 66,
+      "only_C": [
+        "ex-city-currency-Toronto-Mumbai",
+        "ex-element-state-8-26",
+        "ex-element-state-8-80",
+        "gem-source-pearl",
+        "instr-hit-drums",
+        "organ-location-brain",
+        "person-century-lincoln",
+        "rhyme-chair-flag",
+        "spaceneedle-border",
+        "sport-equip-tennis",
+        "tree-product-oak"
+      ],
+      "only_part_b": [
+        "greatwall-ocean"
+      ]
+    },
+    "status_b_of_only_C": {
+      "ex-city-currency-Toronto-Mumbai": "multi_token_answer",
+      "ex-element-state-8-26": "clean_wrong",
+      "ex-element-state-8-80": "clean_wrong",
+      "gem-source-pearl": "multi_token_answer",
+      "instr-hit-drums": "clean_wrong",
+      "organ-location-brain": "multi_token_answer",
+      "person-century-lincoln": "multi_token_answer",
+      "rhyme-chair-flag": "clean_wrong",
+      "spaceneedle-border": "clean_wrong",
+      "sport-equip-tennis": "clean_wrong",
+      "tree-product-oak": "multi_token_answer"
+    }
+  }
+}
