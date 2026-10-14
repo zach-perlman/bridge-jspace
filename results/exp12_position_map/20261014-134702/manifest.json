@@ -1,0 +1,89 @@
+{
+  "exp_id": "exp12_position_map",
+  "config": {
+    "name": "exp12_position_map",
+    "target": "bridge_jspace.examples:LensExamples",
+    "seed": 0,
+    "results_dir": "results",
+    "model": {
+      "name": "Qwen/Qwen3.6-27B",
+      "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+      "dtype": "bfloat16",
+      "device_map": "auto",
+      "lenses": {
+        "jlens": {
+          "repo": "neuronpedia/jacobian-lens",
+          "revision": "9fa267f841d62aa468dab5b9b38c3dc45a82d863",
+          "filename": "qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt"
+        },
+        "jpp": {
+          "repo": "neuronpedia/jacobian-lens",
+          "revision": "9fa267f841d62aa468dab5b9b38c3dc45a82d863",
+          "filename": "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt"
+        }
+      }
+    },
+    "params": {
+      "title": "exp12_position_map (prompt position x layer), Qwen3.6-27B",
+      "selector": "scripts.exp12_position_map.examples:select",
+      "source_run": "results/exp12_position_map/20261014-095358",
+      "per_group": 3,
+      "seed_examples": 0,
+      "band": [
+        32,
+        48
+      ],
+      "top_k": 5,
+      "layer_step": 4,
+      "position_layers": [
+        8,
+        16,
+        24,
+        32,
+        40,
+        48,
+        56,
+        62
+      ],
+      "n_positions": 8,
+      "position_readers": [
+        "jlens"
+      ],
+      "slice_pages": true,
+      "slice_readers": [
+        "jlens",
+        "jpp"
+      ],
+      "slice_top_n": 10,
+      "slice_max_tracked": 40,
+      "fact_prompt": "Fact: The capital of France is",
+      "fact_expected": " Paris",
+      "parity_prompts": [
+        "Fact: The currency used in the country shaped like a boot is",
+        "Fact: The language spoken in the country where the Amazon River ends is "
+      ],
+      "parity_atol": 0.01
+    }
+  },
+  "git": {
+    "sha": "92f87006a74a9ce9873b67e16c4d515865ee5cd7",
+    "dirty": false
+  },
+  "packages": {
+    "torch": "2.11.0+cu126",
+    "transformers": "5.17.0",
+    "flash-linear-attention": "0.5.2",
+    "jlens": "0.1.0",
+    "numpy": "2.5.3",
+    "jlens_commit": "581d398613e5602a5af361e1c34d3a92ea82ba8e",
+    "torch_cuda": "12.6",
+    "gpu": "NVIDIA A100-SXM4-80GB"
+  },
+  "host": "shadecloud",
+  "python": "3.12.15",
+  "argv": [
+    "/home/sesterce/bridge-jspace/.venv/bin/bj-run",
+    "scripts/exp12_position_map/examples.yaml"
+  ],
+  "started": "2026-10-14T13:47:03"
+}

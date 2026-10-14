@@ -1,0 +1,17 @@
+{
+  "sanity": {
+    "known_fact": true,
+    "hf_parity": true,
+    "reference_readout_jlens": true,
+    "reference_readout_jpp": true
+  },
+  "source_run": "results/exp11_bridge_vs_answer_by_layer/20261014-092835",
+  "groups": {
+    "seen_last": 41,
+    "missed_last": 26,
+    "distractor_wins": 5,
+    "readers_disagree": 1,
+    "model_wrong": 16
+  },
+  "n_examples": 13
+}

@@ -1,0 +1,18 @@
+{
+  "sanity": {
+    "known_fact": true,
+    "hf_parity": true,
+    "reference_readout_jlens": true,
+    "reference_readout_jpp": true
+  },
+  "source_run": "results/exp12_position_map/20261014-095358",
+  "groups": {
+    "seen_last": 41,
+    "seen_earlier": 19,
+    "unseen": 7,
+    "distractor_wins": 5,
+    "readers_disagree": 1,
+    "model_wrong": 16
+  },
+  "n_examples": 16
+}

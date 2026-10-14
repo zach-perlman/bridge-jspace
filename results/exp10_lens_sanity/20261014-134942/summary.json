@@ -1,0 +1,17 @@
+{
+  "sanity": {
+    "known_fact": true,
+    "hf_parity": true,
+    "reference_readout_jlens": true,
+    "reference_readout_jpp": true
+  },
+  "source_run": "results/exp10_lens_sanity/20261013-205936",
+  "groups": {
+    "all_see": 32,
+    "lenses_only": 24,
+    "jpp_not_jlens": 16,
+    "none_see": 19,
+    "model_wrong": 25
+  },
+  "n_examples": 15
+}
