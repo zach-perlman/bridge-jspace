@@ -1,0 +1,80 @@
+{
+  "exp": "exp02_swaps",
+  "run": "main_v4_jpp_pos-earlier_noncue",
+  "kind": "main",
+  "written_utc": "2026-10-14T20:18:25Z",
+  "question": "Does the swap target's answer appear when the bridge's representation is swapped for the target's, and does that depend on the J-space part of the representation?",
+  "model": {
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": {
+    "name": "jpp",
+    "repo": "neuronpedia/jacobian-lens",
+    "revision": "9fa267f841d62aa468dab5b9b38c3dc45a82d863",
+    "file": "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt"
+  },
+  "items": {
+    "file": "data/probe_swap.json",
+    "sha256": "a0edd27ca23f7b4d0fbe90448c2ddcc7457a3d812121bf024ed12a032ff86796"
+  },
+  "scoring": "greedy_c",
+  "prompt_end": "stripped",
+  "positions": "earlier_noncue",
+  "probes": {
+    "exp01_tag": "v3_jpp",
+    "file": "cache/exp01/v3_jpp/probes.pt",
+    "sha256": "6f36cf6d5ccabe6d62b30dc1cc1fbdb99eb76eda615b054c566957e7649e408e",
+    "definition": "mean_difference"
+  },
+  "bands": [
+    "24-40"
+  ],
+  "gate": {
+    "run": "gate_v4",
+    "band": "24-40",
+    "full_probe_flip_rate": 0.2727272727272727,
+    "threshold": 0.3,
+    "go": false
+  },
+  "conditions": [
+    "raw_jlens",
+    "full_probe",
+    "jpart",
+    "remainder",
+    "remainder_clamped"
+  ],
+  "nulls": true,
+  "null_seed": 0,
+  "swap": "clamp.SwapClamp at every band layer, positions 1.. (not 0); atoms per condition as in the script docstring; unit atoms throughout",
+  "eligibility": "both entities have probes; the clean greedy continuation has the answer and not the swap answer (exp13 criterion C; 8 new tokens, 16 if cut off unmatched)",
+  "flip": "the swapped greedy continuation has the swap answer and not the clean answer (criterion C)",
+  "metrics": [
+    "flip rate, Wilson 95% CI",
+    "share keeping the clean answer, Wilson 95% CI",
+    "share with neither (collateral damage)",
+    "median edit ratio",
+    "items with skipped layers"
+  ],
+  "decision": {
+    "paired_bootstraps": [
+      "jpart - remainder",
+      "remainder - remainder_clamped"
+    ],
+    "bootstrap": "B=2000, seed 0, resampling eligible items",
+    "labels": "2x2 on (jpart flips, remainder_clamped flips): J-mediated = (True, False), non-J = (False, True), both = (True, True), neither = (False, False)"
+  },
+  "deviations": [
+    "Edit size is the direct edit at the final position, |delta| / |h|, averaged over the edited band layers per item and reported as the median over items; the edit's downstream effect on later layers is not measured.",
+    "Layers where the two swapped atoms are near-parallel (|cos| > 0.999) are skipped and counted.",
+    "Word rank is strict: an exact logit tie with another word ranks a candidate 2nd, so a flip and a kept clean answer exclude each other (gate and gate_w1 counted ties as rank 1 for both: 2 and 3 of 528 outcomes).",
+    "Scoring by greedy continuation (exp13's criterion C) instead of first-token rank, and prompts with the trailing space stripped (part A's primary variant), after exp13 found 9 correct items that rank scoring dropped. Chosen by the human. The edits apply to the prompt's forward only.",
+    "Positions: only 'earlier_noncue' is edited (see the script docstring), to test where the bridge acts; part A reads the bridge best at offset -1 and the answer at offset 0. Edit size is the mean |delta|/|h| over the edited positions when the last position is not edited. Chosen by the human.",
+    "Null direction: one random unit direction per (item, condition, layer), shared across positions and scaled to each position's own edit norm, so it matches the real edit, which lies in one fixed low-dimensional span at every position.",
+    "Probes v3_jpp share gate gate_v4's probes (v3_jlens) and differ only in the lens of the decomposition. The band is gate gate_v4's, fixed before this run; full_probe uses no lens, so its rate should match the gate's at this band.",
+    "The band was picked by gate gate_v4 on these same items, so full_probe's rate is optimistic.",
+    "Gate gate_v4 failed (full probe 27% < 30%), as did gate, gate_w1 and gate_v3. The plan says stop and debug; the human chose to run main anyway."
+  ]
+}

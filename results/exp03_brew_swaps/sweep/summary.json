@@ -1,0 +1,194 @@
+{
+  "items": {
+    "eligible": 99,
+    "no_target": 1
+  },
+  "rates": [
+    {
+      "band": "16-32",
+      "lens": "jlens",
+      "kind": "swap",
+      "regime": "all",
+      "null": false,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        1.0,
+        0.9626454664260378,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.006586308454108589,
+      "n_positions_median": 164
+    },
+    {
+      "band": "16-32",
+      "lens": "jpp",
+      "kind": "swap",
+      "regime": "all",
+      "null": false,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        1.0,
+        0.9626454664260378,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.006763117853552103,
+      "n_positions_median": 164
+    },
+    {
+      "band": "24-40",
+      "lens": "jlens",
+      "kind": "swap",
+      "regime": "all",
+      "null": false,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        1.0,
+        0.9626454664260378,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.007173451540224692,
+      "n_positions_median": 164
+    },
+    {
+      "band": "24-40",
+      "lens": "jpp",
+      "kind": "swap",
+      "regime": "all",
+      "null": false,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        1.0,
+        0.9626454664260378,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.007849141434930703,
+      "n_positions_median": 164
+    },
+    {
+      "band": "32-48",
+      "lens": "jlens",
+      "kind": "swap",
+      "regime": "all",
+      "null": false,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        1.0,
+        0.9626454664260378,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.006573099191026653,
+      "n_positions_median": 164
+    },
+    {
+      "band": "32-48",
+      "lens": "jpp",
+      "kind": "swap",
+      "regime": "all",
+      "null": false,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        1.0,
+        0.9626454664260378,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.008587789639611454,
+      "n_positions_median": 164
+    },
+    {
+      "band": "40-56",
+      "lens": "jlens",
+      "kind": "swap",
+      "regime": "all",
+      "null": false,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        1.0,
+        0.9626454664260378,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.007554796428474433,
+      "n_positions_median": 164
+    },
+    {
+      "band": "40-56",
+      "lens": "jpp",
+      "kind": "swap",
+      "regime": "all",
+      "null": false,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        1.0,
+        0.9626454664260378,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.010849278940654853,
+      "n_positions_median": 164
+    }
+  ],
+  "decision": {
+    "band": "16-32",
+    "flip_rate_mean_over_lenses": 0.0,
+    "by_band": {
+      "16-32": 0.0,
+      "24-40": 0.0,
+      "32-48": 0.0,
+      "40-56": 0.0
+    }
+  }
+}

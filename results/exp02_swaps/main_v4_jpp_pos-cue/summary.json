@@ -1,0 +1,226 @@
+{
+  "items": {
+    "eligible": 77,
+    "clean_wrong": 13
+  },
+  "rates": [
+    {
+      "band": "24-40",
+      "condition": "raw_jlens",
+      "null": false,
+      "n": 77,
+      "flip": [
+        0.2987012987012987,
+        0.2080375145120104,
+        0.4084965471592084
+      ],
+      "kept_clean": [
+        0.6623376623376623,
+        0.5512443936389646,
+        0.7580023308197299
+      ],
+      "neither": 0.03896103896103896,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.012444050530629122,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "band": "24-40",
+      "condition": "raw_jlens",
+      "null": true,
+      "n": 77,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "kept_clean": [
+        0.974025974025974,
+        0.9101524452675265,
+        0.9928479901518616
+      ],
+      "neither": 0.025974025974025976,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.05963867048130316,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "band": "24-40",
+      "condition": "full_probe",
+      "null": false,
+      "n": 77,
+      "flip": [
+        0.14285714285714285,
+        0.08168247823927464,
+        0.2379747279515974
+      ],
+      "kept_clean": [
+        0.8311688311688312,
+        0.7322690482024222,
+        0.8985942696933148
+      ],
+      "neither": 0.025974025974025976,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.06666493980104432,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "band": "24-40",
+      "condition": "full_probe",
+      "null": true,
+      "n": 77,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "kept_clean": [
+        0.961038961038961,
+        0.8915984057462077,
+        0.9866622917164848
+      ],
+      "neither": 0.03896103896103896,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.1440828506670454,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "band": "24-40",
+      "condition": "jpart",
+      "null": false,
+      "n": 77,
+      "flip": [
+        0.3116883116883117,
+        0.21927134521920633,
+        0.4220024544087081
+      ],
+      "kept_clean": [
+        0.6493506493506493,
+        0.5379921537263109,
+        0.746514832775688
+      ],
+      "neither": 0.03896103896103896,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.02165531457456596,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "band": "24-40",
+      "condition": "jpart",
+      "null": true,
+      "n": 77,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "kept_clean": [
+        1.0,
+        0.9524799113327793,
+        1.0000000000000002
+      ],
+      "neither": 0.0,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.05876767350470319,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "band": "24-40",
+      "condition": "remainder",
+      "null": false,
+      "n": 77,
+      "flip": [
+        0.025974025974025976,
+        0.0071520098481384214,
+        0.08984755473247355
+      ],
+      "kept_clean": [
+        0.961038961038961,
+        0.8915984057462077,
+        0.9866622917164848
+      ],
+      "neither": 0.012987012987012988,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.0683637576396851,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "band": "24-40",
+      "condition": "remainder",
+      "null": true,
+      "n": 77,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "kept_clean": [
+        0.987012987012987,
+        0.9300363315482386,
+        0.9977038418278451
+      ],
+      "neither": 0.012987012987012988,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.14249791708939216,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "band": "24-40",
+      "condition": "remainder_clamped",
+      "null": false,
+      "n": 77,
+      "flip": [
+        0.025974025974025976,
+        0.0071520098481384214,
+        0.08984755473247355
+      ],
+      "kept_clean": [
+        0.961038961038961,
+        0.8915984057462077,
+        0.9866622917164848
+      ],
+      "neither": 0.012987012987012988,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.08006895081523586,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "band": "24-40",
+      "condition": "remainder_clamped",
+      "null": true,
+      "n": 77,
+      "flip": [
+        0.025974025974025976,
+        0.0071520098481384214,
+        0.08984755473247355
+      ],
+      "kept_clean": [
+        0.948051948051948,
+        0.8739053481109362,
+        0.9796156113950607
+      ],
+      "neither": 0.025974025974025976,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.15350744402145639,
+      "items_with_skipped_layers": 0
+    }
+  ],
+  "paired_bootstraps": {
+    "jpart - remainder": [
+      0.2857142857142857,
+      0.18181818181818182,
+      0.38961038961038963
+    ],
+    "remainder - remainder_clamped": [
+      0.0,
+      -0.03896103896103896,
+      0.03896103896103896
+    ]
+  },
+  "labels": {
+    "J-mediated": 24,
+    "non-J": 2,
+    "both": 0,
+    "neither": 51
+  }
+}
