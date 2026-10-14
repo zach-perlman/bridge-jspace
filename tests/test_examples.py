@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from bridge_jspace.examples import Group, render, sample
+from bridge_jspace.examples import Group, render, render_html, sample
 from bridge_jspace.pins import RESULTS_DIR
 
 P = {"per_group": 3, "seed_examples": 0, "band": [32, 48], "top_k": 2, "title": "t", "source_run": "r"}
@@ -91,3 +91,7 @@ def test_render_marks_words():
     assert "**Brazil**, [Mexico]" in md and "1 / 9" in md
     assert "*Portuguese* (4)" in md
     assert "> Fact: ... ends is␣" in md
+
+    html = render_html([Group("seen_last", "Seen", "def", 41)], [rec], P, "m")
+    assert html.startswith("<!doctype html>") and 'class="w bridge">Brazil<' in html
+    assert 'id="seen_last-amazon-language"' in html and "<script>" in html
