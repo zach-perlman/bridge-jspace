@@ -1,11 +1,11 @@
 # exp10_lens_sanity: do the lenses read two-hop intermediates on this model at all?
 # Readers = logit lens (baseline) + every lens listed in the model YAML.
-#   uv run bj-run experiments/exp10_lens_sanity/config.yaml                                # Qwen3.5-4B, GPU
-#   uv run bj-run experiments/exp10_lens_sanity/config.yaml model=configs/models/qwen3.6-27b.yaml
-#   uv run bj-run experiments/exp10_lens_sanity/config.yaml \
+#   uv run bj-run scripts/exp10_lens_sanity/config.yaml                                # Qwen3.5-4B, GPU
+#   uv run bj-run scripts/exp10_lens_sanity/config.yaml model=configs/models/qwen3.6-27b.yaml
+#   uv run bj-run scripts/exp10_lens_sanity/config.yaml \
 #       model=configs/models/qwen3.5-0.8b.yaml params.limit=5 results_dir=cache/smoke     # CPU smoke
 name: exp10_lens_sanity
-target: experiments.exp10_lens_sanity.experiment:LensSanity
+target: scripts.exp10_lens_sanity.experiment:LensSanity
 seed: 0
 model: configs/models/qwen3.5-4b.yaml
 params:

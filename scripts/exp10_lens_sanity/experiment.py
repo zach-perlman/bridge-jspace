@@ -22,7 +22,6 @@ from bridge_jspace.readout import (
     residuals,
     word_tokens,
 )
-from bridge_jspace.sanity import check_hf_parity, check_known_fact, check_reference_readout
 from bridge_jspace.stats import bootstrap_mean
 from bridge_jspace.utils import progress
 
@@ -38,9 +37,7 @@ class LensSanity(Experiment):
         readers: dict[str, Reader] = {"logit": None, **self.lenses}
         layers = {name: list(range(lm.n_layers - 1)) if r is None else r.source_layers for name, r in readers.items()}
 
-        sanity = self._sanity()
-        if not all(c["passed"] for c in sanity.values()):
-            raise RuntimeError(f"sanity failed, see {self.path('sanity.json')}")
+        sanity = self.sanity_gate()
 
         items = lens_eval_multihop_items()[: p.get("limit")]
         rows, item_meta = self._multihop(items, readers, layers)
@@ -53,27 +50,12 @@ class LensSanity(Experiment):
         summary = {
             "model": self.cfg.model.name,
             "readers": {name: [layers[name][0], layers[name][-1]] for name in readers},
-            "sanity": {name: c["passed"] for name, c in sanity.items()},
+            "sanity": sanity,
             **self._aggregate(rows, item_meta, list(readers)),
             "controls": _control_summary(controls),
         }
         plot_run(self.run_dir)
         return summary
-
-    # ---- 1. sanity gate -------------------------------------------------------------------
-
-    def _sanity(self) -> dict[str, dict[str, Any]]:
-        p = self.params
-        checks = {
-            "known_fact": check_known_fact(self.model, p["fact_prompt"], p["fact_expected"]),
-            "hf_parity": check_hf_parity(self.model, p["parity_prompts"], p["parity_atol"]),
-        }
-        for name, lens in self.lenses.items():
-            checks[f"reference_readout_{name}"] = check_reference_readout(self.model, lens, p["parity_prompts"][0])
-        self.save_json("sanity.json", checks)
-        for name, c in checks.items():
-            self.log.info(f"[{'PASS' if c['passed'] else 'FAIL'}] {name} {c}")
-        return checks
 
     def _prompt(self, item: dict[str, Any]) -> str:
         # Most upstream prompts end in a space, which Qwen's BPE leaves as a lone " " token: the

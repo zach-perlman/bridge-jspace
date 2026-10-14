@@ -87,11 +87,16 @@ ignore = [
 "tests/**" = ["PT011", "PT018"]
 
 [tool.pyright]
-include = ["src", "experiments", "tests"]
+include = ["src", "scripts", "tests"]
 # Same part B files as ruff's extend-exclude.
 exclude = [
     "**/__pycache__",
     ".venv",
+    "scripts/check_setup.py",
+    "scripts/exp01_probes.py",
+    "scripts/exp02_gate_debug.py",
+    "scripts/exp02_swaps.py",
+    "scripts/report.py",
     "src/bridge_jspace/clamp.py",
     "src/bridge_jspace/data.py",
     "src/bridge_jspace/lens.py",
@@ -107,5 +112,6 @@ venv = ".venv"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]  # `scripts.*` experiment packages import from the repo root, as under bj-run
 markers = ["model: loads a real (small) model; slower, needs HF download"]
 addopts = "-m 'not model'"

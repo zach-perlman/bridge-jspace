@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Run an experiment in its own detached tmux session; output is tee'd to log/<session>.log.
-#   bash scripts/run.sh experiments/exp10_lens_sanity/config.yaml [overrides...]
+#   bash scripts/run.sh scripts/exp10_lens_sanity/config.yaml [overrides...]
 #   tmux attach -t <session>     (Ctrl-b d to detach; the run keeps going)
 #   tail -f log/<session>.log    (same output, survives the session)
 set -euo pipefail

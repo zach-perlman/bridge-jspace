@@ -1,4 +1,4 @@
-"""CLI: `uv run bj-run experiments/<exp>/config.yaml [key.sub=value ...]`."""
+"""CLI: `uv run bj-run scripts/<exp>/config.yaml [key.sub=value ...]`."""
 
 from __future__ import annotations
 
@@ -31,7 +31,7 @@ def main(argv: list[str] | None = None) -> None:
     args = ap.parse_args(argv)
 
     load_dotenv()
-    # Make `experiments.*` importable when running from the repo root.
+    # Make `scripts.*` importable when running from the repo root.
     sys.path.insert(0, str(Path.cwd()))
     cfg = load_config(args.config, args.overrides)
     cls = import_object(cfg.target)

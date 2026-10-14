@@ -43,7 +43,7 @@ src/bridge_jspace/
   experiment.py   Experiment base: results/<exp id>/<timestamp>/, manifest.json before run()
   pins.py         pinned upstream data, sha256-checked on load
 configs/models/   one YAML per model: HF revision + lens files (qwen3.5-0.8b / 2b / 4b, qwen3.6-27b)
-experiments/      expNN_name/config.yaml + experiment.py
+scripts/          experiment code: part A expNN_name/ (config.yaml + experiment.py), part B expNN_*.py
 scripts/run.sh    experiment in a detached tmux session, log in log/
 scripts/prefetch.py  download a model YAML's snapshot + lenses, retrying on HF rate limits
 infra/            pod bootstrap
@@ -57,8 +57,8 @@ make check                   # ruff + pyright + unit tests (no download)
 make test-model              # integration on Qwen3.5-0.8B + its lenses (CPU ok)
 
 # GPU box: bash infra/setup_pod.sh, then any experiment = one config, run in tmux:
-make run CONFIG=experiments/exp10_lens_sanity/config.yaml                      # Qwen3.5-4B
-make run CONFIG=experiments/exp10_lens_sanity/config.yaml ARGS="model=configs/models/qwen3.6-27b.yaml"
+make run CONFIG=scripts/exp10_lens_sanity/config.yaml                      # Qwen3.5-4B
+make run CONFIG=scripts/exp10_lens_sanity/config.yaml ARGS="model=configs/models/qwen3.6-27b.yaml"
 tmux attach -t <session>     # or: tail -f log/<session>.log
 ```
 GPU memory: Qwen3.5-4B fits a 24 GB card; Qwen3.6-27B needs 1x 80 GB (bf16 weights ~54 GB + two fp32 lens maps
@@ -112,7 +112,7 @@ max abs diff 0.0).
 
 On the items the model answers correctly (27B, stripped, n=61): J++ 0.67 [0.56, 0.79], J-lens 0.48 [0.36, 0.61].
 Controls (27B, stripped, rank at the last token): Brazil 0 vs distractor Mexico 57 (J-lens) / 45 (J++); Hungary 1 / 0
-vs Poland 16 / 18. Figures: `experiments/exp10_lens_sanity/summary_figure.py`.
+vs Poland 16 / 18. Figures: `uv run python -m scripts.exp10_lens_sanity.plot --summary`.
 </details>
 
 ### Pitfalls found so far

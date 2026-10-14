@@ -62,7 +62,7 @@ def test_bad_override_format(cfg_path):
 
 
 def test_shipped_configs_load():
-    cfg = load_config("experiments/exp10_lens_sanity/config.yaml")
+    cfg = load_config("scripts/exp10_lens_sanity/config.yaml")
     assert cfg.model.name == "Qwen/Qwen3.5-4B"
-    cfg = load_config("experiments/exp10_lens_sanity/config.yaml", ["model=configs/models/qwen3.6-27b.yaml"])
+    cfg = load_config("scripts/exp10_lens_sanity/config.yaml", ["model=configs/models/qwen3.6-27b.yaml"])
     assert set(cfg.model.lenses) == {"jlens", "jpp"}

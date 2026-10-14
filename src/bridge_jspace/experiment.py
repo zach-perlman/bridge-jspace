@@ -50,6 +50,21 @@ class Experiment(ABC):
             out[name] = load_lens(lc, lm.n_layers, lm.d_model, self.model.device)
         return out
 
+    def sanity_gate(self) -> dict[str, bool]:
+        """Run `sanity.run_gate` with the config's fact/parity params; save sanity.json; stop on any failure."""
+        from bridge_jspace.sanity import run_gate
+
+        p = self.params
+        checks = run_gate(
+            self.model, self.lenses, p["fact_prompt"], p["fact_expected"], p["parity_prompts"], p["parity_atol"]
+        )
+        self.save_json("sanity.json", checks)
+        for name, c in checks.items():
+            self.log.info(f"[{'PASS' if c['passed'] else 'FAIL'}] {name} {c}")
+        if not all(c["passed"] for c in checks.values()):
+            raise RuntimeError(f"sanity failed, see {self.path('sanity.json')}")
+        return {name: c["passed"] for name, c in checks.items()}
+
     # ---- outputs ----------------------------------------------------------------------------
 
     def path(self, name: str) -> Path:

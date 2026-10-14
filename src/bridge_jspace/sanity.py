@@ -55,3 +55,21 @@ def check_reference_readout(m: LoadedModel, lens: JacobianLens, prompt: str, ato
         for layer in lens.source_layers
     )
     return {"passed": worst <= atol, "max_abs_diff": worst}
+
+
+def run_gate(
+    m: LoadedModel,
+    lenses: dict[str, JacobianLens],
+    fact_prompt: str,
+    fact_expected: str,
+    parity_prompts: list[str],
+    parity_atol: float,
+) -> dict[str, dict[str, Any]]:
+    """All checks an experiment must pass before trusting a readout; keyed by check name."""
+    checks = {
+        "known_fact": check_known_fact(m, fact_prompt, fact_expected),
+        "hf_parity": check_hf_parity(m, parity_prompts, parity_atol),
+    }
+    for name, lens in lenses.items():
+        checks[f"reference_readout_{name}"] = check_reference_readout(m, lens, parity_prompts[0])
+    return checks
