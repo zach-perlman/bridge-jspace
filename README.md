@@ -412,6 +412,44 @@ read off each item's table, and an unchanged answer counts as "original" even wh
 | random direction (every position) | 0% / 0% | 0% / 2% | 18% / 5% |
 </details>
 
+### exp04_brew_patch (part B): where brew carries its intermediate, without a lens
+**What we measure.** exp03's lens edits of the intermediate moved no answer. To see whether there is anything there to
+edit, we copy activations from a counterfactual prompt into the original run, one layer and one group of positions at a
+time, with no lens involved. In the counterfactual the start colour's rule gives exp03's X instead of I, and X's rule
+gives a new colour c. If the copied positions carry X as the intermediate, the second lookup still reads the original
+table and the answer becomes f(X); if they already carry the answer, it becomes c. A control copies from a prompt whose
+two changed rules are off the path. 82 of exp03's 99 bank items are eligible (the model answers the original, the
+counterfactual and the control correctly); every second layer.
+
+**In short.**
+- **The intermediate is carried after the start line, at layers 36-50.** Copying the positions after the start line
+  (the question, the chat scaffolding, "Answer:") gives f(X) for 11% of items at layer 36, rising to 48% [37, 58] at
+  layers 46-50; from layer 52 the same copy gives c (71%, then 93-99% from layer 56). The start line itself carries
+  neither at any layer. The window fixed before the run (f(X) above c and above the control, Wilson intervals not
+  overlapping) is layers 36-50 for the positions after the start line and 46 and 50 for the last token alone. The
+  control changes at most 2% of answers anywhere.
+- **The rules are read at layers 28-36.** Copying the two changed rule lines gives c up to layer 28 (87-100%) and the
+  start colour's rule alone gives f(X) (78-89% to layer 24); both stop working by layers 36-40.
+- **Lens edits in the same window write the answer, not the step.** exp03's steering along v_X - v_I at these positions
+  and layers (36-52) made the model say X itself (33-100% of items) and never f(X) (0 of 99 at every size, both
+  lenses), at sizes like the copy's (it changes 7-14% of the norm there). The intermediate is there to be edited, but
+  not along the colour's lens direction.
+
+![exp04: patching map](figures/exp04_brew_patch/v1/patch_map.png)
+
+**What this does not show.** Which direction carries the step: the copy replaces whole block outputs at about 21
+positions. 48% is the best single-layer copy, not a ceiling: information held at several layers at once is missed by
+every single-layer copy. One seed for c and the control's colours.
+
+<details><summary>Full numbers and checks</summary>
+
+Run: `results/exp04_brew_patch/patch_map` (manifest written before the run; layers 0-62 in steps of 2, chosen by the
+human). Per-layer rates of every role for each group, and the off-path control, are in `summary.md`; the first answer
+token's log-probabilities in `figures/exp04_brew_patch/v1/patch_logp.png`. Eligibility: 13 items fail on the
+counterfactual and 4 on the control prompt. 52 of the 82 items give f(X) at one window layer or more. Headlines are
+recomputed by `scripts/verify_headlines.py`.
+</details>
+
 ### Pitfalls found so far
 1. **Trailing space.** Most original prompts end in a space (83/93), which Qwen's tokenizer leaves as a lone `" "`
    token. The model then answers far worse (27B: 21/93 correct vs 61/93 with the space stripped) and the lens reads a
@@ -460,11 +498,13 @@ In order; designs need human sign-off before GPU runs.
 7. Stretch: repeat on Gemma 4 31B (J-lens and J++ exist on HF).
 
 ## Next steps (part B)
-1. **Verify v4:** extend `scripts/verify_headlines.py` to the exp02 v4 runs, then a human recomputes the headlines.
+1. **Verify v4:** `scripts/verify_headlines.py` now recomputes exp02 v4's, exp03's and exp04's headlines from the raw
+   files (one DIFF: the fresh items' random-direction row says "answer changed 0%"; 1 of 164 changed, and 0% is
+   its f(f(S')) rate); a human recomputes the headlines.
 2. **The gate:** decide whether 30% on the full probe is still the right go/no-go now that the J-space part and the raw
    lens vectors carry the effect.
 3. **Why "anything else" bridges rarely flip:** probe quality vs how those bridges are represented.
 4. **A control matched in total edit size** across layers.
-5. **Brew:** a method-agnostic map of where the lookup happens (activation patching between start colours, by layer
-   and position), to check whether the steerable start-line direction and the readable-but-not-steerable intermediate
-   line up with it; and steering at the cue phrase in exp02 at the same sizes, to compare the two settings at one dose.
+5. **Brew:** the patching map is exp04 (the intermediate is carried after the start line at layers 36-50). Next:
+   which part of that copy carries the step, its J-space part or the rest; and steering at the cue phrase in exp02
+   at the same sizes, to compare the two settings at one dose.
