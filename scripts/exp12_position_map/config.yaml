@@ -1,0 +1,28 @@
+# exp12_position_map: at which prompt positions (and layers) is the bridge readable, and the answer?
+# Readers = logit lens (baseline) + every lens in the model YAML. Items, labels, words and pools as exp11.
+#   make run CONFIG=scripts/exp12_position_map/config.yaml                                                 # 27B
+#   uv run bj-run scripts/exp12_position_map/config.yaml \
+#       model=configs/models/qwen3.5-0.8b.yaml params.limit=6 params.min_item_share=0.3 results_dir=cache/smoke
+#   uv run python -m scripts.exp12_position_map.experiment analyze <run_dir>      # re-analyze saved grids
+name: exp12_position_map
+target: scripts.exp12_position_map.experiment:PositionMap
+seed: 0
+model: configs/models/qwen3.6-27b.yaml
+params:
+  labels_file: results/exp02_swaps/main/labels.csv
+  labels_sha256: 111adcad15cc4c05c94b236010d05c101f71b6fd5dbedac29ef073c5500ba407
+  strip_trailing_space: false  # as published, like part B's labels
+  bands:
+    part_b: [32, 48]  # primary (offsets are scored on this band)
+    wide: [28, 52]  # exploratory, reported by the exp11 analysis at the optimal offset
+  emerge_run: 3
+  # An offset is analysed only if at least this share of eligible prompts reach it (long offsets exist in few).
+  min_item_share: 0.5
+  n_boot: 10000
+  limit: null
+  fact_prompt: "Fact: The capital of France is"
+  fact_expected: " Paris"
+  parity_prompts:
+    - "Fact: The currency used in the country shaped like a boot is"
+    - "Fact: The language spoken in the country where the Amazon River ends is "
+  parity_atol: 0.01
