@@ -21,8 +21,16 @@ Rows 0 and 1 are the bridge's and the target's; any further rows are held at the
 Null: the same clamp with each position's edit replaced by a random unit direction (one per layer, seeded) scaled to
 that edit's norm.
 
-An item is eligible if its answer and swap answer have single-token surfaces, both entities have probes, and the
-clean answer has word rank 1. A flip is the swap answer reaching word rank 1.
+Scoring (the manifest's "scoring"; runs before gate_v4 used "rank"):
+  greedy_c  the model's greedy continuation, judged by exp13's criterion C (the answer appears in its first clause
+            as a word, the end of a compound, or its number word). Eligible: both entities have probes and the clean
+            continuation has the answer but not the swap answer. Flip: the swapped continuation has the swap answer
+            and not the clean answer; kept clean: the reverse. The swap edits the prompt's forward only; generated
+            tokens are not edited. First-token word ranks are still recorded where both answers are single tokens.
+  rank      eligible if answer and swap answer have single-token surfaces, both entities have probes, and the clean
+            answer has word rank 1; a flip is the swap answer reaching word rank 1.
+Prompt end (the manifest's "prompt_end"): "stripped" removes the trailing space that most published prompts end in
+(Qwen tokenizes it as a lone " " and then answers far worse; part A's pitfall 1); "as_published" keeps it.
 """
 
 import argparse
@@ -36,11 +44,13 @@ from pathlib import Path
 import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # for exp13's judge
 
 from bridge_jspace import pins
 from bridge_jspace.clamp import SwapClamp, near_parallel
 from bridge_jspace.data import load_items, sha256_of
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
+from scripts.exp13_greedy_answers.experiment import ends_sentence, judge
 
 EXP = "exp02_swaps"
 RESULTS = pins.RESULTS_DIR / EXP
@@ -51,6 +61,7 @@ GO_FLIP_RATE = 0.30
 NULL_SEED = 0
 N_BOOT, BOOT_SEED = 2000, 0
 COMPARISONS = (("jpart", "remainder"), ("remainder", "remainder_clamped"))
+MAX_NEW_TOKENS, MAX_NEW_TOKENS_RETRY = 8, 16  # exp13's: room for "a gas", "Port-ugu-ese"; retry if cut off
 LABELS = {(True, False): "J-mediated", (False, True): "non-J", (True, True): "both", (False, False): "neither"}
 
 
@@ -64,7 +75,15 @@ def probes_file(tag: str) -> Path:
     return pins.CACHE_DIR / "exp01" / tag / "probes.pt"
 
 
-def stage_manifest(kind: str, name: str, probes_tag: str, band: str | None, gate: str | None) -> None:
+def probes_origin(tag: str) -> str:
+    """The exp01 run whose probes `tag` uses: itself, or the run it re-decomposed."""
+    summary = json.loads((pins.RESULTS_DIR / "exp01_probes" / tag / "summary.json").read_text())
+    return summary.get("probes_from", tag)
+
+
+def stage_manifest(
+    kind: str, name: str, probes_tag: str, band: str | None, gate: str | None, scoring: str, prompt_end: str
+) -> None:
     is_gate = kind == "gate"
     assert is_gate == (band is None) == (gate is None), "the gate sweeps its own bands; main needs --band and --gate"
     path = RESULTS / name / "manifest.json"
@@ -74,20 +93,29 @@ def stage_manifest(kind: str, name: str, probes_tag: str, band: str | None, gate
     blob = torch.load(probes, map_location="cpu", weights_only=True)
     definition, lens = blob.get("definition", "mean_difference"), blob.get("lens", "jlens")
     deviations = [
-        "Items whose answer or swap answer has no single-token surface are dropped and counted (7 of 90 at setup).",
         "Edit size is the direct edit at the final position, |delta| / |h|, averaged over the edited band layers per "
         "item and reported as the median over items; the edit's downstream effect on later layers is not measured.",
         "Layers where the two swapped atoms are near-parallel (|cos| > 0.999) are skipped and counted.",
         "Word rank is strict: an exact logit tie with another word ranks a candidate 2nd, so a flip and a kept clean "
         "answer exclude each other (gate and gate_w1 counted ties as rank 1 for both: 2 and 3 of 528 outcomes).",
     ]
+    if scoring == "rank":
+        deviations.append(
+            "Items whose answer or swap answer has no single-token surface are dropped and counted (7 of 90 at setup)."
+        )
+    else:
+        deviations.append(
+            "Scoring by greedy continuation (exp13's criterion C) instead of first-token rank, and prompts with the "
+            "trailing space stripped (part A's primary variant), after exp13 found 9 correct items that rank scoring "
+            "dropped. Chosen by the human. The edits apply to the prompt's forward only."
+        )
     if is_gate:
         decision = (
             f"band = the one with the highest full_probe flip rate (first in {list(GATE_BANDS)} on ties); "
             f"go if that rate >= {GO_FLIP_RATE}, else stop and debug before decomposing. The band is chosen "
             "on the same items, so its full_probe rate is optimistic."
         )
-        if name != "gate":
+        if name in ("gate_w1", "gate_v3"):
             deviations.append(
                 "A repeat of the gate with different probes after the first gate (results/exp02_swaps/"
                 "gate) failed; the same items are reused, so passing it is optimistic twice over."
@@ -106,18 +134,20 @@ def stage_manifest(kind: str, name: str, probes_tag: str, band: str | None, gate
         )
         gate_record = {"run": gate, **json.loads((RESULTS / gate / "summary.json").read_text())["decision"]}
         gate_probes = json.loads((RESULTS / gate / "manifest.json").read_text())["probes"]["exp01_tag"]
+        gate_manifest = json.loads((RESULTS / gate / "manifest.json").read_text())
         assert gate_record["band"] == band, "main must use its gate's band"
+        assert (gate_manifest.get("scoring", "rank"), gate_manifest.get("prompt_end", "as_published")) == (
+            scoring,
+            prompt_end,
+        ), "main must score and prompt like its gate"
         if gate_probes != probes_tag:
-            # The gate picks the band on full_probe alone, which uses no lens, so a lens twin of the gate's probes
-            # (same prompts and probes, other decomposition) may reuse its band instead of re-picking it.
-            twin = json.loads((pins.RESULTS_DIR / "exp01_probes" / probes_tag / "summary.json").read_text())
-            msg = "main must use its gate's probes, or exp01's J++ twin of them"
-            assert twin["manifest"] == "manifest_more_jpp.json", msg
-            assert gate_probes == "v3", msg
+            # The gate picks the band on full_probe alone, which uses no lens, so probes that share the gate's
+            # (same probes, another lens's decomposition) may reuse its band instead of re-picking it.
+            assert probes_origin(probes_tag) == probes_origin(gate_probes), "main must share its gate's probes"
             deviations.append(
-                f"Probes {probes_tag} are the J++ twin of gate {gate}'s probes ({gate_probes}): same "
-                f"prompts and probes, decomposed over J++. The band is gate {gate}'s, fixed before this "
-                "run, not re-picked; full_probe is unchanged by the lens and should reproduce its rate."
+                f"Probes {probes_tag} share gate {gate}'s probes ({gate_probes}) and differ only in the lens of the "
+                f"decomposition. The band is gate {gate}'s, fixed before this run; full_probe uses no lens, so its "
+                "rate should match the gate's at this band."
             )
         deviations.append(
             f"The band was picked by gate {gate} on these same items, so full_probe's rate is optimistic."
@@ -125,8 +155,8 @@ def stage_manifest(kind: str, name: str, probes_tag: str, band: str | None, gate
         if not gate_record["go"]:
             deviations.append(
                 f"Gate {gate} failed (full probe {100 * gate_record['full_probe_flip_rate']:.0f}% < "
-                f"{100 * GO_FLIP_RATE:.0f}%), and so did the two before it (gate 17%, gate_w1 8%). The plan says stop "
-                "and debug; the human chose to run main anyway."
+                f"{100 * GO_FLIP_RATE:.0f}%), as did gate, gate_w1 and gate_v3. The plan says stop and debug; the "
+                "human chose to run main anyway."
             )
     manifest = {
         "exp": EXP,
@@ -138,6 +168,8 @@ def stage_manifest(kind: str, name: str, probes_tag: str, band: str | None, gate
         "model": {"repo": pins.QWEN_REPO, "revision": pins.QWEN_REVISION, "dtype": "bfloat16", "attn": "sdpa"},
         "lens": {"name": lens, "repo": pins.LENS_REPO, "revision": pins.LENS_REVISION, "file": pins.LENS_FILES[lens]},
         "items": {"file": "data/probe_swap.json", "sha256": pins.PROBE_SWAP_SHA256},
+        "scoring": scoring,
+        "prompt_end": prompt_end,
         "probes": {
             "exp01_tag": probes_tag,
             "file": str(probes.relative_to(pins.REPO_ROOT)),
@@ -152,11 +184,16 @@ def stage_manifest(kind: str, name: str, probes_tag: str, band: str | None, gate
         "swap": "clamp.SwapClamp at every band layer, positions 1.. (not 0); atoms per condition as in the script "
         "docstring; unit atoms throughout",
         "eligibility": "answer and swap answer have single-token surfaces; both entities have probes; clean answer "
-        "at word rank 1 (formatting tokens excluded)",
-        "flip": "swap answer at word rank 1 after the swap (strictly: no other word scores as high)",
+        "at word rank 1 (formatting tokens excluded)"
+        if scoring == "rank"
+        else "both entities have probes; the clean greedy continuation has the answer and not the swap answer "
+        f"(exp13 criterion C; {MAX_NEW_TOKENS} new tokens, {MAX_NEW_TOKENS_RETRY} if cut off unmatched)",
+        "flip": "swap answer at word rank 1 after the swap (strictly: no other word scores as high)"
+        if scoring == "rank"
+        else "the swapped greedy continuation has the swap answer and not the clean answer (criterion C)",
         "metrics": [
             "flip rate, Wilson 95% CI",
-            "share keeping the clean answer at rank 1, Wilson 95% CI",
+            "share keeping the clean answer, Wilson 95% CI",
             "share with neither (collateral damage)",
             "median edit ratio",
             "items with skipped layers",
@@ -202,8 +239,8 @@ def condition_atoms(condition: str, item: dict, layer: int, probes: Probes, lens
     return torch.cat([pair, lens.vectors(layer, torch.tensor(held, device="cuda"))])
 
 
-def swap(model, ids, clean_h, atoms_by_layer, answer_ids, swap_ids, null_seed: int | None) -> dict:
-    """One swapped forward; returns its scores."""
+def swap(model, ids, clean_h, atoms_by_layer, item, answer_ids, swap_ids, null_seed: int | None, scoring: str) -> dict:
+    """One swapped forward (and, for greedy_c, its greedy continuation); returns its scores."""
     generator = None if null_seed is None else torch.Generator(device="cuda").manual_seed(null_seed)
     clamps, skipped = {}, []
     for layer, atoms in atoms_by_layer.items():
@@ -216,11 +253,28 @@ def swap(model, ids, clean_h, atoms_by_layer, answer_ids, swap_ids, null_seed: i
             skipped.append(layer)
             continue
         clamps[layer] = SwapClamp(atoms, clean_h[layer], null_direction=direction)
-    logits, _ = model.run(ids, edits=clamps)
-    swap_rank, clean_rank = model.word_rank(logits, swap_ids), model.word_rank(logits, answer_ids)
+    if scoring == "rank":
+        logits, _ = model.run(ids, edits=clamps)
+        scores = {}
+    else:
+        logits, text, verdict = continuation(model, ids, item, clamps)
+        scores = {
+            "continuation": text,
+            "swap_match": verdict["swap_also"],
+            "clean_match": verdict["C"],
+            "ambiguous": verdict["ambiguous"],
+        }
+    swap_rank = model.word_rank(logits, swap_ids) if swap_ids else None
+    clean_rank = model.word_rank(logits, answer_ids) if answer_ids else None
+    if scoring == "rank":
+        scores |= {"flip": swap_rank == 1, "kept_clean": clean_rank == 1}
+    else:
+        scores |= {
+            "flip": scores["swap_match"] and not scores["clean_match"],
+            "kept_clean": scores["clean_match"] and not scores["swap_match"],
+        }
     return {
-        "flip": swap_rank == 1,
-        "kept_clean": clean_rank == 1,
+        **scores,
         "swap_rank": swap_rank,
         "clean_rank": clean_rank,
         "top_word": model.top_word(logits),
@@ -229,23 +283,35 @@ def swap(model, ids, clean_h, atoms_by_layer, answer_ids, swap_ids, null_seed: i
     }
 
 
-def prepare(model, probes: Probes, item: dict, layers: list[int]):
+def continuation(model, ids, item, edits=None) -> tuple[torch.Tensor, str, dict]:
+    """Greedy continuation judged by exp13's rule; regenerated longer if it was cut off with no answer in it."""
+    logits, text, n_new = model.generate(ids, MAX_NEW_TOKENS, edits)
+    verdict = judge(text, item["answer"], item["swap_answer"])
+    if not (verdict["C"] or verdict["swap_also"]) and n_new >= MAX_NEW_TOKENS and not ends_sentence(text):
+        logits, text, _ = model.generate(ids, MAX_NEW_TOKENS_RETRY, edits)
+        verdict = judge(text, item["answer"], item["swap_answer"])
+    return logits, text, verdict
+
+
+def prepare(model, probes: Probes, item: dict, layers: list[int], scoring: str, prompt_end: str):
     """The item's status, and for eligible items the encoded prompt and clean residuals at `layers`."""
     row = {k: item[k] for k in ("name", "category", "intermediate", "swap_to", "answer", "swap_answer")}
     answer_ids, swap_ids = model.surface_ids(item["answer"]), model.surface_ids(item["swap_answer"])
     missing = [e for e in (item["intermediate"], item["swap_to"]) if e not in probes.index]
-    if not answer_ids or not swap_ids:
+    if scoring == "rank" and (not answer_ids or not swap_ids):
         return {**row, "status": "multi_token_answer"}, None
     if missing:
         return {**row, "status": "no_probe:" + "+".join(missing)}, None
-    ids = model.encode(item["prompt"])
+    ids = model.encode(item["prompt"].rstrip() if prompt_end == "stripped" else item["prompt"])
     logits, clean_h = model.run(ids, record=tuple(layers))
-    clean_rank = model.word_rank(logits, answer_ids)
-    row.update(
-        status="eligible" if clean_rank == 1 else "clean_wrong",
-        clean_rank=clean_rank,
-        clean_top_word=model.top_word(logits),
-    )
+    clean_rank = model.word_rank(logits, answer_ids) if answer_ids else None
+    row.update(clean_rank=clean_rank, clean_top_word=model.top_word(logits))
+    if scoring == "rank":
+        row["status"] = "eligible" if clean_rank == 1 else "clean_wrong"
+    else:
+        _, text, verdict = continuation(model, ids, item)
+        row.update(clean_continuation=text, clean_match=verdict["match"])
+        row["status"] = "clean_ambiguous" if verdict["ambiguous"] else "eligible" if verdict["C"] else "clean_wrong"
     return row, (ids, clean_h, answer_ids, swap_ids)
 
 
@@ -262,6 +328,7 @@ def stage_run(name: str) -> None:
     assert sha256_of(probes_path) == manifest["probes"]["sha256"], "probes.pt changed since the manifest"
     bands, conditions = manifest["bands"], manifest["conditions"]
     null_options = (False, True) if manifest["nulls"] else (False,)
+    scoring, prompt_end = manifest.get("scoring", "rank"), manifest.get("prompt_end", "as_published")
 
     model = load_model()
     lens = JLens(model, manifest["lens"].get("name", "jlens"))
@@ -269,7 +336,7 @@ def stage_run(name: str) -> None:
     all_layers = sorted({layer for band in bands for layer in band_layers(band)})
     item_rows, outcomes = [], []
     for index, item in enumerate(load_items()):
-        row, prepared = prepare(model, probes, item, all_layers)
+        row, prepared = prepare(model, probes, item, all_layers, scoring, prompt_end)
         item_rows.append(row)
         if row["status"] != "eligible":
             continue
@@ -287,7 +354,7 @@ def stage_run(name: str) -> None:
                             "band": band,
                             "condition": condition,
                             "null": null,
-                            **swap(model, ids, clean_h, atoms, answer_ids, swap_ids, seed),
+                            **swap(model, ids, clean_h, atoms, item, answer_ids, swap_ids, seed, scoring),
                         }
                     )
         print(
@@ -345,6 +412,7 @@ def summarize(outcomes: list[dict]) -> list[dict]:
                 "flip": wilson(flips, n),
                 "kept_clean": wilson(kept, n),
                 "neither": (n - flips - kept) / n,
+                "ambiguous": sum(bool(o.get("ambiguous")) for o in group) / n,
                 "edit_ratio_median": statistics.median(o["edit_ratio"] for o in group),
                 "items_with_skipped_layers": sum(bool(o["layers_skipped"]) for o in group),
             }
@@ -445,10 +513,14 @@ if __name__ == "__main__":
     parser.add_argument("--band", help="A-B, inclusive (main manifest only)")
     parser.add_argument("--gate", help="the gate run that picked --band (main manifest only)")
     parser.add_argument("--name", help="the run's folder name (manifest stage; default = the kind)")
+    parser.add_argument("--scoring", default="greedy_c", choices=["greedy_c", "rank"], help="manifest stage")
+    parser.add_argument("--prompt-end", default="stripped", choices=["stripped", "as_published"], help="manifest stage")
     args = parser.parse_args()
     if args.stage == "manifest":
         assert args.target in ("gate", "main"), "manifest needs a kind (gate/main)"
         assert args.probes, "manifest needs --probes"
-        stage_manifest(args.target, args.name or args.target, args.probes, args.band, args.gate)
+        stage_manifest(
+            args.target, args.name or args.target, args.probes, args.band, args.gate, args.scoring, args.prompt_end
+        )
     else:
         stage_run(args.target)

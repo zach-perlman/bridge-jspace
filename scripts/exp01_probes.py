@@ -264,7 +264,6 @@ def whitened_probes(kept_residuals: dict, probed: list[str], means: torch.Tensor
 def stage_run(tag: str, variant: str) -> None:
     from bridge_jspace.lens import JLens
     from bridge_jspace.model import load_model
-    from bridge_jspace.omp import nonneg_omp
 
     v = VARIANTS[variant]
     whiten = v["whiten"]
@@ -348,28 +347,8 @@ def stage_run(tag: str, variant: str) -> None:
     definition = "whitened_ledoit_wolf" if whiten else "mean_difference"
 
     # 3. Decomposition per layer.
-    letter_ids = model.letter_token_ids()
     own_tokens = {e: model.concept_token(e) for e in probed}
-    jparts = torch.zeros_like(probes)
-    atom_ids: dict[int, list[list[int]]] = {}
-    atom_coefs: dict[int, list[list[float]]] = {}
-    random_fve: dict[int, list[float]] = {}
-    generator = torch.Generator(device="cuda").manual_seed(RANDOM_SEED)
-    for li, layer in enumerate(PROBE_LAYERS):
-        dictionary = lens.vectors(layer, letter_ids)
-        atom_ids[layer], atom_coefs[layer] = [], []
-        for ei in range(len(probed)):
-            idx, coefs = nonneg_omp(dictionary, probes[ei, li], K_ATOMS)
-            jparts[ei, li] = coefs @ dictionary[idx]
-            atom_ids[layer].append(letter_ids[idx].tolist())
-            atom_coefs[layer].append(coefs.tolist())
-        random_fve[layer] = []
-        for _ in range(len(probed)):  # chance level: the same decomposition of isotropic random directions
-            x = torch.randn(probes.shape[-1], device="cuda", generator=generator)
-            idx, coefs = nonneg_omp(dictionary, x, K_ATOMS)
-            random_fve[layer].append(float((coefs @ dictionary[idx]).norm() ** 2 / x.norm() ** 2))
-        del dictionary
-        print(f"layer {layer} decomposed", flush=True)
+    jparts, atom_ids, atom_coefs, random_fve = decompose(model, lens, probes)
 
     torch.save(
         {
@@ -388,6 +367,62 @@ def stage_run(tag: str, variant: str) -> None:
     )
 
     # 4. Summaries for the human.
+    fve, per_layer, top_atoms = layer_summaries(
+        model, probed, own_tokens, probes, jparts, atom_ids, atom_coefs, random_fve
+    )
+    li = PROBE_LAYERS.index(INSPECT_LAYER)
+    summary = {
+        "manifest": manifest_path(variant).name,
+        "probe_definition": definition,
+        "lens": v["lens"],
+        "lens_file_keys": lens.file_keys,
+        **({} if filter_mismatches is None else {f"filter_mismatches_vs_{JPP_REPRODUCES}": filter_mismatches}),
+        "ledoit_wolf_shrinkage": dict(zip(PROBE_LAYERS, shrinkage, strict=True)) if shrinkage else None,
+        "n_prompts": len(rows),
+        "n_kept": sum(n_kept.values()),
+        "kept_per_entity": n_kept,
+        "entities_without_probe": [e for e in entities if e not in probed],
+        "per_layer": per_layer,
+        f"top_atoms_layer{INSPECT_LAYER}": top_atoms,
+    }
+    (out_dir / "summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n")
+    write_review(out_dir, rows, n_kept, prompts, per_layer, top_atoms, fve[:, li])
+    print(json.dumps({k: summary[k] for k in ("n_prompts", "n_kept", "entities_without_probe")}, indent=2))
+
+
+@torch.no_grad()
+def decompose(model, lens, probes: torch.Tensor):
+    """Non-negative OMP of every probe [E, L, d] over the lens's unit vectors of letter-bearing tokens, per layer, and
+    the same decomposition of isotropic random directions (chance level). Returns (J-parts [E, L, d], atom ids and
+    coefficients per layer, random-direction FVE per layer)."""
+    from bridge_jspace.omp import nonneg_omp
+
+    letter_ids = model.letter_token_ids()
+    jparts = torch.zeros_like(probes)
+    atom_ids: dict[int, list[list[int]]] = {}
+    atom_coefs: dict[int, list[list[float]]] = {}
+    random_fve: dict[int, list[float]] = {}
+    generator = torch.Generator(device="cuda").manual_seed(RANDOM_SEED)
+    for li, layer in enumerate(PROBE_LAYERS):
+        dictionary = lens.vectors(layer, letter_ids)
+        atom_ids[layer], atom_coefs[layer] = [], []
+        for ei in range(probes.shape[0]):
+            idx, coefs = nonneg_omp(dictionary, probes[ei, li], K_ATOMS)
+            jparts[ei, li] = coefs @ dictionary[idx]
+            atom_ids[layer].append(letter_ids[idx].tolist())
+            atom_coefs[layer].append(coefs.tolist())
+        random_fve[layer] = []
+        for _ in range(probes.shape[0]):  # chance level: the same decomposition of isotropic random directions
+            x = torch.randn(probes.shape[-1], device="cuda", generator=generator)
+            idx, coefs = nonneg_omp(dictionary, x, K_ATOMS)
+            random_fve[layer].append(float((coefs @ dictionary[idx]).norm() ** 2 / x.norm() ** 2))
+        del dictionary
+        print(f"layer {layer} decomposed", flush=True)
+    return jparts, atom_ids, atom_coefs, random_fve
+
+
+def layer_summaries(model, probed, own_tokens, probes, jparts, atom_ids, atom_coefs, random_fve):
+    """Per-entity J-part share [E, L], per-layer summary, and the top-10 atoms at INSPECT_LAYER per entity."""
     fve = (jparts.norm(dim=-1) ** 2 / probes.norm(dim=-1) ** 2).cpu()  # [E, L]
     own_in_atoms = torch.tensor(
         [
@@ -408,7 +443,6 @@ def stage_run(tag: str, variant: str) -> None:
         }
         for li, layer in enumerate(PROBE_LAYERS)
     }
-    li = PROBE_LAYERS.index(INSPECT_LAYER)
     top_atoms = {
         e: [
             model.decoded[t]
@@ -418,23 +452,87 @@ def stage_run(tag: str, variant: str) -> None:
         ]
         for ei, e in enumerate(probed)
     }
+    return fve, per_layer, top_atoms
+
+
+def redecompose_manifest_path(tag: str) -> Path:
+    return RESULTS / f"manifest_{tag}.json"
+
+
+def stage_manifest_redecompose(tag: str, source: str, lens: str) -> None:
+    """Manifest for re-decomposing run `source`'s cached probes over another lens (no new probes, no filter)."""
+    path = redecompose_manifest_path(tag)
+    assert not path.exists(), f"{path} exists; manifests are written once"
+    probes = pins.CACHE_DIR / "exp01" / source / "probes.pt"
+    manifest = {
+        "exp": EXP,
+        "kind": "redecompose",
+        "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "question": f"Run {source}'s probes, decomposed over the {lens} dictionary instead of its own lens.",
+        "probes_from": {"run": source, "file": str(probes.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(probes)},
+        "lens": {"name": lens, "repo": pins.LENS_REPO, "revision": pins.LENS_REVISION, "file": pins.LENS_FILES[lens]},
+        "decomposition": {
+            "method": "non-negative OMP, NNLS refit each step",
+            "k_atoms": K_ATOMS,
+            "dictionary": f"unit {lens} vectors of non-special tokens whose decode has a letter",
+        },
+        "deviations": [
+            f"Probes are {source}'s, unchanged, so the two lenses' decompositions differ only in the lens. Run "
+            f"{source} did not reproduce v3's filter exactly on this box (see its summary), so v3 cannot be paired "
+            "with it. Chosen by the human.",
+        ],
+    }
+    path.write_text(json.dumps(manifest, indent=2) + "\n")
+    print("wrote", path)
+
+
+@torch.no_grad()
+def stage_redecompose(tag: str) -> None:
+    from bridge_jspace.lens import JLens
+    from bridge_jspace.model import load_model
+
+    manifest = json.loads(redecompose_manifest_path(tag).read_text())
+    source = manifest["probes_from"]
+    probes_path = pins.REPO_ROOT / source["file"]
+    assert sha256_of(probes_path) == source["sha256"], "the source probes changed since the manifest"
+    out_dir, cache_dir = RESULTS / tag, pins.CACHE_DIR / "exp01" / tag
+    out_dir.mkdir(parents=True, exist_ok=False)
+    cache_dir.mkdir(parents=True, exist_ok=False)
+    blob = torch.load(probes_path, map_location="cpu", weights_only=True)
+    assert blob["layers"] == list(PROBE_LAYERS), "source probes were built on other layers"
+    model = load_model()
+    lens = JLens(model, manifest["lens"]["name"])
+    probes, probed = blob["probe"].cuda(), blob["entities"]
+    jparts, atom_ids, atom_coefs, random_fve = decompose(model, lens, probes)
+    torch.save(
+        {
+            **blob,
+            "jpart": jparts.cpu(),
+            "atom_ids": atom_ids,
+            "atom_coefs": atom_coefs,
+            "tag": tag,
+            "lens": manifest["lens"]["name"],
+            "probes_from": source["run"],
+        },
+        cache_dir / "probes.pt",
+    )
+    own_tokens = {e: model.concept_token(e) for e in probed}
+    _, per_layer, top_atoms = layer_summaries(
+        model, probed, own_tokens, probes, jparts, atom_ids, atom_coefs, random_fve
+    )
     summary = {
-        "manifest": manifest_path(variant).name,
-        "probe_definition": definition,
-        "lens": v["lens"],
+        "manifest": redecompose_manifest_path(tag).name,
+        "probes_from": source["run"],
+        "probe_definition": blob.get("definition", "mean_difference"),
+        "lens": manifest["lens"]["name"],
         "lens_file_keys": lens.file_keys,
-        **({} if filter_mismatches is None else {f"filter_mismatches_vs_{JPP_REPRODUCES}": filter_mismatches}),
-        "ledoit_wolf_shrinkage": dict(zip(PROBE_LAYERS, shrinkage, strict=True)) if shrinkage else None,
-        "n_prompts": len(rows),
-        "n_kept": sum(n_kept.values()),
-        "kept_per_entity": n_kept,
-        "entities_without_probe": [e for e in entities if e not in probed],
+        "n_kept": sum(blob["n_kept"].values()),
+        "kept_per_entity": blob["n_kept"],
         "per_layer": per_layer,
         f"top_atoms_layer{INSPECT_LAYER}": top_atoms,
     }
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n")
-    write_review(out_dir, rows, n_kept, prompts, per_layer, top_atoms, fve[:, li])
-    print(json.dumps({k: summary[k] for k in ("n_prompts", "n_kept", "entities_without_probe")}, indent=2))
+    print(json.dumps({layer: round(per_layer[layer]["fve_median"], 3) for layer in (32, 40, 48)}))
 
 
 def write_review(out_dir, rows, n_kept, prompts, per_layer, top_atoms, fve_inspect) -> None:
@@ -486,8 +584,12 @@ def write_review(out_dir, rows, n_kept, prompts, per_layer, top_atoms, fve_inspe
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("stage", choices=["check", "manifest", "run"])
+    parser.add_argument("stage", choices=["check", "manifest", "run", "manifest-redecompose", "redecompose"])
     parser.add_argument("--tag", default=None)
+    parser.add_argument("--from", dest="source", help="manifest-redecompose: the exp01 run whose probes to reuse")
+    parser.add_argument(
+        "--lens", choices=list(pins.LENS_FILES), help="manifest-redecompose: the lens to decompose over"
+    )
     parser.add_argument("--variant", default="base", choices=list(VARIANTS))
     args = parser.parse_args()
     manifest_writers = {
@@ -499,6 +601,14 @@ if __name__ == "__main__":
     }
     if args.stage == "check":
         stage_check(args.variant)
+    elif args.stage == "manifest-redecompose":
+        assert args.tag, "manifest-redecompose needs --tag"
+        assert args.source, "manifest-redecompose needs --from"
+        assert args.lens, "manifest-redecompose needs --lens"
+        stage_manifest_redecompose(args.tag, args.source, args.lens)
+    elif args.stage == "redecompose":
+        assert args.tag, "--tag is required for redecompose"
+        stage_redecompose(args.tag)
     elif args.stage == "manifest":
         manifest_writers[args.variant]()
     else:
