@@ -1,0 +1,21 @@
+# exp13_greedy_answers: is each probe-swap answer right, judged by the model's greedy continuation?
+#   make run CONFIG=scripts/exp13_greedy_answers/config.yaml                                              # 27B
+#   uv run bj-run scripts/exp13_greedy_answers/config.yaml \
+#       model=configs/models/qwen3.5-0.8b.yaml params.limit=6 results_dir=cache/smoke                   # CPU smoke
+name: exp13_greedy_answers
+target: scripts.exp13_greedy_answers.experiment:GreedyAnswers
+seed: 0
+model: configs/models/qwen3.6-27b.yaml
+params:
+  labels_file: results/exp02_swaps/main/labels.csv
+  labels_sha256: 111adcad15cc4c05c94b236010d05c101f71b6fd5dbedac29ef073c5500ba407
+  variants: [as_published, stripped]  # as_published: part B's prompts; stripped: trailing space removed
+  max_new_tokens: 8  # room for "a" / an adjective + a 2-3 token answer ("gastric acid", "Port-ugu-ese")
+  max_new_tokens_retry: 16  # items that ran out of room without a sentence end or a match
+  limit: null
+  fact_prompt: "Fact: The capital of France is"
+  fact_expected: " Paris"
+  parity_prompts:
+    - "Fact: The currency used in the country shaped like a boot is"
+    - "Fact: The language spoken in the country where the Amazon River ends is "
+  parity_atol: 0.01
