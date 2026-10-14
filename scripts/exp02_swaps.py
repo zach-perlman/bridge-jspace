@@ -18,6 +18,9 @@ Rows 0 and 1 are the bridge's and the target's; any further rows are held at the
   jpart              the unit J-parts of the probes
   remainder          the unit remainders (probe - J-part)
   remainder_clamped  the remainder pair, plus every J-part atom of both entities and both naming-token vectors
+  jpart_matched      (only with --conditions) per entity and layer, a unit direction with the J-part's cosine to the
+                     probe and the rest random (orthogonal to the probe, seeded by entity and layer): as aligned with
+                     the probe as the J-part, but not built from the lens
 Positions (the manifest's "positions"; earlier runs: all). Offsets count back from the prompt's last token (0):
   all       every position from 1 (position 0, the attention sink, is never edited)
   last      offset 0 only (" is" in most stripped prompts; where part A reads the answer)
@@ -47,6 +50,7 @@ import json
 import statistics
 import sys
 import time
+import zlib
 from pathlib import Path
 
 import torch
@@ -63,12 +67,13 @@ from scripts.exp13_greedy_answers.experiment import ends_sentence, judge
 EXP = "exp02_swaps"
 RESULTS = pins.RESULTS_DIR / EXP
 CONDITIONS = ("raw_jlens", "full_probe", "jpart", "remainder", "remainder_clamped")
+EXTRA_CONDITIONS = ("jpart_matched",)  # run only when a manifest asks for them (--conditions)
 GATE_CONDITIONS = ("raw_jlens", "full_probe")
 GATE_BANDS = ("16-32", "24-40", "32-48", "24-48")
 GO_FLIP_RATE = 0.30
 NULL_SEED = 0
 N_BOOT, BOOT_SEED = 2000, 0
-COMPARISONS = (("jpart", "remainder"), ("remainder", "remainder_clamped"))
+COMPARISONS = (("jpart", "remainder"), ("remainder", "remainder_clamped"), ("jpart", "jpart_matched"))
 MAX_NEW_TOKENS, MAX_NEW_TOKENS_RETRY = 8, 16  # exp13's: room for "a gas", "Port-ugu-ese"; retry if cut off
 POSITION_REGIMES = ("all", "last", "prev", "last_two", "earlier", "cue", "earlier_noncue")
 CUE_SPANS = pins.DATA_DIR / "cue_spans.json"
@@ -124,8 +129,10 @@ def stage_manifest(
     prompt_end: str,
     band_reason: str | None = None,
     positions: str = "all",
+    conditions: list[str] | None = None,
 ) -> None:
     is_gate = kind == "gate"
+    assert not (is_gate and conditions), "the gate runs its own conditions"
     assert is_gate == (band is None) == (gate is None), "the gate sweeps its own bands; main needs --band and --gate"
     path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -156,6 +163,13 @@ def stage_manifest(
             f"Positions: only '{positions}' is edited (see the script docstring), to test where the bridge acts; "
             "part A reads the bridge best at offset -1 and the answer at offset 0. Edit size is the mean |delta|/|h| "
             "over the edited positions when the last position is not edited. Chosen by the human."
+        )
+    if conditions:
+        deviations.append(
+            f"Conditions: only {conditions}, to compare the J-part swap with jpart_matched, directions as aligned "
+            "with each probe as its J-part but random otherwise (does the lens's direction matter, or only how much "
+            "of the probe it carries?). Decided before the run: the J-part's advantage is attributed to the lens's "
+            "direction only if jpart flips more than jpart_matched (paired bootstrap CI above 0). Chosen by the human."
         )
     if is_gate:
         decision = (
@@ -232,7 +246,7 @@ def stage_manifest(
         },
         "bands": list(GATE_BANDS) if is_gate else [band],
         **({} if is_gate else {"gate": gate_record}),
-        "conditions": list(GATE_CONDITIONS if is_gate else CONDITIONS),
+        "conditions": list(GATE_CONDITIONS if is_gate else conditions or CONDITIONS),
         "nulls": not is_gate,
         "null_seed": NULL_SEED,
         "swap": "clamp.SwapClamp at every band layer, positions 1.. (not 0); atoms per condition as in the script "
@@ -278,6 +292,15 @@ class Probes:
     def jpart_atoms(self, entity: str, layer: int) -> list[int]:
         return self.atom_ids[layer][self.index[entity]]
 
+    def matched(self, entity: str, layer: int) -> torch.Tensor:
+        """Unit direction with the J-part's cosine to the probe; the rest a seeded random direction orthogonal to it."""
+        probe = self.unit("full_probe", entity, layer)
+        cos = float(self.unit("jpart", entity, layer) @ probe)
+        g = torch.Generator(device="cuda").manual_seed(zlib.crc32(f"{entity}:{layer}".encode()))
+        r = torch.randn(probe.shape[0], device="cuda", generator=g)
+        r = r - (r @ probe) * probe
+        return cos * probe + (1 - cos**2) ** 0.5 * r / r.norm()
+
 
 def condition_atoms(condition: str, item: dict, layer: int, probes: Probes, lens, model) -> torch.Tensor:
     """Atoms [K, d] for one condition at one layer: row 0 the bridge's, row 1 the target's, the rest held fixed."""
@@ -285,6 +308,8 @@ def condition_atoms(condition: str, item: dict, layer: int, probes: Probes, lens
     naming = [model.concept_token(bridge), model.concept_token(target)]
     if condition == "raw_jlens":
         return lens.vectors(layer, torch.tensor(naming, device="cuda"))
+    if condition == "jpart_matched":
+        return torch.stack([probes.matched(bridge, layer), probes.matched(target, layer)])
     part = "remainder" if condition == "remainder_clamped" else condition
     pair = torch.stack([probes.unit(part, bridge, layer), probes.unit(part, target, layer)])
     if condition != "remainder_clamped":
@@ -518,7 +543,8 @@ def flips(outcomes: list[dict], condition: str, null: bool = False) -> dict[str,
 
 def bootstraps(outcomes: list[dict], eligible: list[str]) -> dict[str, tuple[float, float, float]]:
     out = {}
-    for a, b in COMPARISONS:
+    present = {o["condition"] for o in outcomes}
+    for a, b in (pair for pair in COMPARISONS if set(pair) <= present):
         fa, fb = flips(outcomes, a), flips(outcomes, b)
         out[f"{a} - {b}"] = paired_bootstrap_diff(
             [fa[n] for n in eligible], [fb[n] for n in eligible], n_boot=N_BOOT, seed=BOOT_SEED
@@ -546,8 +572,9 @@ def write_labels(path: Path, item_rows: list[dict], outcomes: list[dict], condit
                 name = r["name"]
                 out.update({f"flip_{c}": int(real[c][name]) for c in conditions})
                 out.update({f"null_flip_{c}": int(null[c][name]) for c in conditions})
-                out["label"] = LABELS[(real["jpart"][name], real["remainder_clamped"][name])]
-                counts[out["label"]] += 1
+                if {"jpart", "remainder_clamped"} <= set(conditions):
+                    out["label"] = LABELS[(real["jpart"][name], real["remainder_clamped"][name])]
+                    counts[out["label"]] += 1
             writer.writerow(out)
     return counts
 
@@ -596,6 +623,8 @@ if __name__ == "__main__":
     parser.add_argument("--name", help="the run's folder name (manifest stage; default = the kind)")
     parser.add_argument("--positions", default="all", choices=POSITION_REGIMES, help="main manifest: edited positions")
     parser.add_argument("--band-reason", help="main manifest: why --band differs from the gate's pick")
+    parser.add_argument("--conditions", nargs="+", choices=CONDITIONS + EXTRA_CONDITIONS,
+                        help="main manifest: a subset of the conditions (default: the five)")  # fmt: skip
     parser.add_argument("--scoring", default="greedy_c", choices=["greedy_c", "rank"], help="manifest stage")
     parser.add_argument("--prompt-end", default="stripped", choices=["stripped", "as_published"], help="manifest stage")
     args = parser.parse_args()
@@ -612,6 +641,7 @@ if __name__ == "__main__":
             args.prompt_end,
             args.band_reason,
             args.positions,
+            args.conditions,
         )
     else:
         stage_run(args.target)

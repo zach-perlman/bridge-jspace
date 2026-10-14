@@ -148,3 +148,24 @@ if __name__ == "__main__":
         fn()
         print("ok", name)
     print(f"{len(tests)} tests passed")
+
+
+def test_matched_direction_has_the_jpart_cosine_to_the_probe():
+    import pytest
+
+    if not torch.cuda.is_available():
+        pytest.skip("Probes live on the GPU")
+    from scripts.exp02_swaps import Probes
+
+    g = torch.Generator().manual_seed(0)
+    probe, jpart = torch.randn(3, 2, 32, generator=g), torch.randn(3, 2, 32, generator=g)
+    probes = Probes.__new__(Probes)
+    probes.index, probes.layer_index = {"a": 0, "b": 1, "c": 2}, {10: 0, 11: 1}
+    probes.parts = {"full_probe": probe.cuda(), "jpart": jpart.cuda()}
+    for entity in "abc":
+        for layer in (10, 11):
+            u = probes.matched(entity, layer)
+            p, j = probes.unit("full_probe", entity, layer), probes.unit("jpart", entity, layer)
+            torch.testing.assert_close(u.norm(), torch.tensor(1.0, device="cuda"))
+            torch.testing.assert_close(u @ p, j @ p)
+            torch.testing.assert_close(probes.matched(entity, layer), u)  # seeded
