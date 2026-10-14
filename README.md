@@ -255,13 +255,15 @@ Eligible n=67; positions -14..0 analysed (reached by at least half the questions
 ![exp12: J-lens heatmaps](figures/exp12_position_map/position_layer_jlens.png)
 </details>
 
-### exp02_swaps v4 (part B): does the bridge act through the J-space, and where?
+### exp02_swaps (part B): does the bridge act through the J-space, and where?
 **What we measure.** In "The capital of the country where Naples is located is" the model answers Rome through the
 bridge Italy. We swap the bridge's representation for another entity's (Italy -> Spain) at layers 24-40 and count how
 often the answer becomes the other entity's (Madrid). The swap uses one part of the bridge's probe at a time: its
 J-space part, its remainder, or the remainder with the J-space coordinates held fixed. Each swap has a control: a
 random direction of the same edit size. v4 runs the swaps with the J-lens and with J++ on the same probes, on the 77
 questions the model answers correctly (stripped prompts, answers judged on the greedy continuation).
+
+<img width="1768" height="663" alt="image" src="https://github.com/user-attachments/assets/dd0a772d-d752-4fa7-9035-4611339735e4" />
 
 **In short.**
 - **The bridge acts through the J-space.** Swapping only the J-space part flips 52% of answers with J++ and 35% with
@@ -282,8 +284,10 @@ questions the model answers correctly (stripped prompts, answers judged on the g
 
 ![exp02 v4: where in the prompt the swap acts](figures/exp02_swaps/v4b/swap_position.png)
 
-**What this does not show.** The gate failed for the fourth time (full probe 27% < 30% at layers 24-40, the band it
-picked on these same items); the runs are exploratory, one seed, n=77. The control matches each layer's edit size,
+<img width="1360" height="612" alt="image" src="https://github.com/user-attachments/assets/54ba8646-a9f5-4676-ab9b-0bfb1510cf55" />
+
+
+**What this does not show.** The runs are exploratory, one seed, n=77. The control matches each layer's edit size,
 not the total over layers (the real swap's later edits shrink, the control's do not), so it is stricter for flips and
 overstates collateral damage. Positions are counted back from the last token, as in exp12, so offset -1 is a
 different word in different prompts.
