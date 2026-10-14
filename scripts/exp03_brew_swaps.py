@@ -11,9 +11,10 @@ Stages (manifests are written before the runs; both are write-once):
   manifest main --band A-B --sweep S [--name N]
                                            every position regime, both lenses, matched-norm nulls, and the
                                            off-path control, on the band sweep S picked
-  manifest followup --name N              FOLLOWUP_JOBS at FOLLOWUP_BANDS (set by the human after main): positive
-                                           controls (start and answer swaps), the intermediate swap where the lens
-                                           reads it, and graded steering along X - I
+  manifest followup [--set S] --name N    a fixed job set from FOLLOWUPS (set by the human after main):
+                                           followup: positive controls (start and answer swaps), the intermediate
+                                           swap where the lens reads it, graded steering along X - I;
+                                           start_steer: graded steering of the start line along S' - S
   run N
 
 Render: Qwen's chat template (no thinking) with the prefill "Answer:", as the bank was gated. Positions are the
@@ -29,6 +30,8 @@ and the off-path control: the swap of two colours off the item's trajectory, whi
   start   swap the start colour S with S' (predicts f(f(S'))): the computation's input, a positive control
   answer  swap the answer A with an off-trajectory A' (predicts A'): the output, a positive control
   steer   add scale * |h| * unit(v_X - v_I) (predicts f(X) if I is used as a step; X if it acts as a candidate answer)
+  steer_start  the same at the start line along unit(v_S' - v_S) (predicts f(f(S')) if S is read as the input; S' if
+               the direction only acts as an output)
 """
 
 import argparse
@@ -65,6 +68,27 @@ FOLLOWUP_JOBS = (
     *({"kind": "steer", "regime": "after_start", "null": False, "scale": s} for s in (0.05, 0.1, 0.2, 0.4)),
     *({"kind": "steer", "regime": "after_start", "null": True, "scale": s} for s in (0.2, 0.4)),
 )
+START_STEER_JOBS = (
+    *({"kind": "steer_start", "regime": "start_line", "null": False, "scale": s} for s in (0.05, 0.1, 0.2, 0.4)),
+    *({"kind": "steer_start", "regime": "start_line", "null": True, "scale": s} for s in (0.2, 0.4)),
+)
+FOLLOWUPS = {  # name -> (bands, jobs, why)
+    "followup": (
+        FOLLOWUP_BANDS,
+        FOLLOWUP_JOBS,
+        "Follow-up chosen by the human after main found 0/99 flips everywhere: positive controls (start and answer "
+        "swaps) test whether the swap has force in this setting; 36-52 is where a 30-item J-lens readout (not a "
+        "recorded run) found I top-1 among the colours at the emission cells; steering along v_X - v_I at four scales "
+        "separates I used as a step (answer f(X)) from I as a candidate answer (answer X).",
+    ),
+    "start_steer": (
+        ("8-24", "16-32", "36-52"),
+        START_STEER_JOBS,
+        "Chosen by the human after the follow-up: steering after the start colour gave X itself, never f(X). Steering "
+        "the start line along v_S' - v_S tests whether the lens direction acts as the computation's input there "
+        "(answer f(f(S')), like the bridge at the cue phrase in exp02) or only as an output (answer S').",
+    ),
+}
 MAX_NEW_TOKENS = 6
 TARGET_SEED, NULL_SEED = 0, 0
 N_BOOT, BOOT_SEED = 2000, 0
@@ -153,7 +177,7 @@ def control_pair(item: dict, index: int) -> tuple[str, str] | None:
     return a, b
 
 
-def stage_manifest(kind: str, name: str, band: str | None, sweep: str | None) -> None:
+def stage_manifest(kind: str, name: str, band: str | None, sweep: str | None, job_set: str = "followup") -> None:
     is_sweep = kind == "sweep"
     if kind == "followup":
         assert band is None, "the follow-up's bands are fixed in FOLLOWUP_BANDS"
@@ -179,7 +203,7 @@ def stage_manifest(kind: str, name: str, band: str | None, sweep: str | None) ->
         "flip": "the swapped continuation's first palette colour is f(X), the table's answer for the swapped-in X",
         "target": f"X per item: a table colour (not the start, I or the answer) with f(X) not in {{answer, I, X, start}}, "
         f"drawn with seed {TARGET_SEED} + item index",
-        "bands": list(SWEEP_BANDS) if is_sweep else list(FOLLOWUP_BANDS) if kind == "followup" else [band],
+        "bands": list(SWEEP_BANDS) if is_sweep else list(FOLLOWUPS[job_set][0]) if kind == "followup" else [band],
         "regimes": ["all"] if is_sweep else list(REGIMES),
         "nulls": not is_sweep,
         "control_regimes": [] if is_sweep else list(CONTROL_REGIMES),
@@ -197,14 +221,10 @@ def stage_manifest(kind: str, name: str, band: str | None, sweep: str | None) ->
         ],
     }
     if kind == "followup":
-        manifest["jobs"] = list(FOLLOWUP_JOBS)
+        manifest["job_set"] = job_set
+        manifest["jobs"] = list(FOLLOWUPS[job_set][1])
         manifest["decision"] = "none: every job is reported; no band or regime is picked from these results"
-        manifest["deviations"].append(
-            "Follow-up chosen by the human after main found 0/99 flips everywhere: positive controls (start and "
-            "answer swaps) test whether the swap has force in this setting; 36-52 is where a 30-item J-lens readout "
-            "(not a recorded run) found I top-1 among the colours at the emission cells; steering along v_X - v_I "
-            "at four scales separates I used as a step (answer f(X)) from I as a candidate answer (answer X)."
-        )
+        manifest["deviations"].append(FOLLOWUPS[job_set][2])
     elif not is_sweep:
         assert sweep is not None
         decision = json.loads((RESULTS / sweep / "summary.json").read_text())["decision"]
@@ -321,6 +341,11 @@ def stage_run(name: str) -> None:
         pairs = {
             "swap": (inter, x, row["swap_answer"]),
             "steer": (inter, x, row["swap_answer"]),
+            "steer_start": (
+                item["start"],
+                row["start_swap"],
+                f[f[row["start_swap"]]["stir"]]["stir"] if row["start_swap"] else None,
+            ),
             "control": (*(row["control_pair"] or (None, None)), item["answer"]),
             "start": (
                 item["start"],
@@ -340,7 +365,7 @@ def stage_run(name: str) -> None:
                     atoms = {layer: lens.vectors(layer, tok) for layer in band_layers(band)}
                     positions = regime_positions(regime, offsets, regions)
                     seed = NULL_SEED + 1000 * index + li if null else None
-                    if kind == "steer":
+                    if kind in ("steer", "steer_start"):
                         out_text, skipped, ratio = run_steer(model, ids, atoms, positions, job["scale"], seed)
                     else:
                         out_text, skipped, ratio = run_swap(model, ids, clean_h, atoms, positions, seed)
@@ -487,9 +512,11 @@ if __name__ == "__main__":
     parser.add_argument("--band", help="A-B, inclusive (main manifest only)")
     parser.add_argument("--sweep", help="the sweep run that picked --band (main manifest only)")
     parser.add_argument("--name", help="the run's folder name (manifest stage; default = the kind)")
+    parser.add_argument("--set", dest="job_set", default="followup", choices=["followup", "start_steer"],
+                        help="followup manifest: which job set")  # fmt: skip
     args = parser.parse_args()
     if args.stage == "manifest":
         assert args.target in ("sweep", "main", "followup"), "manifest needs a kind (sweep/main/followup)"
-        stage_manifest(args.target, args.name or args.target, args.band, args.sweep)
+        stage_manifest(args.target, args.name or args.target, args.band, args.sweep, args.job_set)
     else:
         stage_run(args.target)
