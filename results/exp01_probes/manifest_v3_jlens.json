@@ -1,0 +1,25 @@
+{
+  "exp": "exp01_probes",
+  "kind": "redecompose",
+  "written_utc": "2026-10-14T17:35:09Z",
+  "question": "Run v3_jpp's probes, decomposed over the jlens dictionary instead of its own lens.",
+  "probes_from": {
+    "run": "v3_jpp",
+    "file": "cache/exp01/v3_jpp/probes.pt",
+    "sha256": "6f36cf6d5ccabe6d62b30dc1cc1fbdb99eb76eda615b054c566957e7649e408e"
+  },
+  "lens": {
+    "name": "jlens",
+    "repo": "neuronpedia/jacobian-lens",
+    "revision": "9fa267f841d62aa468dab5b9b38c3dc45a82d863",
+    "file": "qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt"
+  },
+  "decomposition": {
+    "method": "non-negative OMP, NNLS refit each step",
+    "k_atoms": 25,
+    "dictionary": "unit jlens vectors of non-special tokens whose decode has a letter"
+  },
+  "deviations": [
+    "Probes are v3_jpp's, unchanged, so the two lenses' decompositions differ only in the lens. Run v3_jpp did not reproduce v3's filter exactly on this box (see its summary), so v3 cannot be paired with it. Chosen by the human."
+  ]
+}
