@@ -261,6 +261,8 @@ J-space part, its remainder, or the remainder with the J-space coordinates held 
 random direction of the same edit size. v4 runs the swaps with the J-lens and with J++ on the same probes, on the 77
 questions the model answers correctly (stripped prompts, answers judged on the greedy continuation).
 
+<img width="1768" height="663" alt="image" src="https://github.com/user-attachments/assets/dd0a772d-d752-4fa7-9035-4611339735e4" />
+
 **In short.**
 - **The bridge acts through the J-space.** Swapping only the J-space part flips 52% of answers with J++ and 35% with
   the J-lens; the remainder flips 8% / 12%, and 1% / 4% with the J-space held fixed. Controls flip at most 3%. Claude
@@ -278,6 +280,9 @@ questions the model answers correctly (stripped prompts, answers judged on the g
 ![exp02 v4: J-space part vs remainder](figures/exp02_swaps/v4/jpart_vs_remainder.png)
 
 ![exp02 v4: where in the prompt the swap acts](figures/exp02_swaps/v4/swap_position.png)
+
+<img width="1360" height="612" alt="image" src="https://github.com/user-attachments/assets/54ba8646-a9f5-4676-ab9b-0bfb1510cf55" />
+
 
 **What this does not show.** The runs are exploratory, one seed, n=77. The control matches each layer's edit size,
 not the total over layers (the real swap's later edits shrink, the control's do not), so it is stricter for flips and
