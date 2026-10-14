@@ -32,7 +32,9 @@ Notes:
   rebuilt with `uv run python scripts/exp02_figures.py <new folder>`).
 - **exp03_brew_swaps:** in-context two-step lookups (WorkspaceBench's brew bank). Runs `sweep`, `main`, `followup`,
   `start_steer`, `start_steer_low` under `exp03_brew_swaps/`; figures `../figures/exp03_brew_swaps/v1/`
-  (`uv run python scripts/exp03_figures.py <new folder> followup start_steer start_steer_low`).
+  (`uv run python scripts/exp03_figures.py <new folder> followup start_steer start_steer_low`). Then `swap_amp`
+  (amplified swaps; `swap_early` is its void predecessor, see the main README) and `fresh_steer` (held-out items,
+  `data/brew_fresh.json`); figures `v2_swaps/` and `v2_fresh/` (one run each: the runs use different item sets).
 - exp02 figures with the cue regimes: `../figures/exp02_swaps/v4b/` (same as `v4/` plus the cue split).
 - v3 (superseded by v4): exp02_swaps main report `exp02_swaps/analysis/main/REPORT_auto.md`; labels used by
   exp11/exp12: `exp02_swaps/main/labels.csv`; figure: `../figures/exp02_swaps/main/flip_rates.png`.

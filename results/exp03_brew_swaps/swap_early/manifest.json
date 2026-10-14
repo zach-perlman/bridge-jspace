@@ -1,0 +1,159 @@
+{
+  "exp": "exp03_brew_swaps",
+  "run": "swap_early",
+  "kind": "followup",
+  "written_utc": "2026-10-14T21:38:37Z",
+  "question": "In an in-context two-step lookup, does swapping the intermediate's lens direction move the answer to the one the table predicts for the swapped-in colour, and at which prompt positions?",
+  "model": {
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lenses": {
+    "jlens": "qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt",
+    "jpp": "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt"
+  },
+  "items": {
+    "file": "data/brew_intermediates.json",
+    "sha256": "183be95d4182c373674786b7610820520e56434fb0c15a75a62dad854bed9d83"
+  },
+  "render": "chat template, enable_thinking=False, assistant prefilled with 'Answer:'",
+  "eligibility": "greedy continuation's first palette colour is the answer",
+  "swap": "clamp.SwapClamp of the two colours' unit lens vectors (concept tokens) at every band layer",
+  "flip": "the swapped continuation's first palette colour is f(X), the table's answer for the swapped-in X",
+  "target": "X per item: a table colour (not the start, I or the answer) with f(X) not in {answer, I, X, start}, drawn with seed 0 + item index",
+  "bands": [
+    "8-24"
+  ],
+  "regimes": [
+    "all",
+    "rules",
+    "stir_line",
+    "start_line",
+    "after_start",
+    "last"
+  ],
+  "nulls": true,
+  "control_regimes": [
+    "all",
+    "after_start"
+  ],
+  "decision": "none: every job is reported; no band or regime is picked from these results",
+  "deviations": [
+    "Colours are swapped through their single-token lens vectors only (no probes): the colours are in the prompt, so a probe built from other prompts would add little.",
+    "A swap at positions inside the rule table can rewrite the rules themselves, not the computed intermediate; the regimes keep the two apart.",
+    "Chosen by the human after start_steer showed the start colour is read at layers 8-24 (never swapped there) and that steering needs about 2% of the norm while the swaps edit about 0.7%: the start and intermediate swaps at 8-24, as is (amp 1) and with the exchange amplified 3x and 5x (amp; the null scaled alike). Decision fixed before the run: the intermediate swap is interpreted only at an amp where the start-swap positive control flips more than its null (Wilson intervals not overlapping)."
+  ],
+  "job_set": "swap_early",
+  "jobs": [
+    {
+      "kind": "start",
+      "regime": "start_line",
+      "null": false,
+      "amp": 1
+    },
+    {
+      "kind": "start",
+      "regime": "start_line",
+      "null": true,
+      "amp": 1
+    },
+    {
+      "kind": "start",
+      "regime": "start_line",
+      "null": false,
+      "amp": 3
+    },
+    {
+      "kind": "start",
+      "regime": "start_line",
+      "null": true,
+      "amp": 3
+    },
+    {
+      "kind": "start",
+      "regime": "start_line",
+      "null": false,
+      "amp": 5
+    },
+    {
+      "kind": "start",
+      "regime": "start_line",
+      "null": true,
+      "amp": 5
+    },
+    {
+      "kind": "swap",
+      "regime": "after_start",
+      "null": false,
+      "amp": 1
+    },
+    {
+      "kind": "swap",
+      "regime": "after_start",
+      "null": true,
+      "amp": 1
+    },
+    {
+      "kind": "swap",
+      "regime": "after_start",
+      "null": false,
+      "amp": 3
+    },
+    {
+      "kind": "swap",
+      "regime": "after_start",
+      "null": true,
+      "amp": 3
+    },
+    {
+      "kind": "swap",
+      "regime": "after_start",
+      "null": false,
+      "amp": 5
+    },
+    {
+      "kind": "swap",
+      "regime": "after_start",
+      "null": true,
+      "amp": 5
+    },
+    {
+      "kind": "swap",
+      "regime": "all",
+      "null": false,
+      "amp": 1
+    },
+    {
+      "kind": "swap",
+      "regime": "all",
+      "null": true,
+      "amp": 1
+    },
+    {
+      "kind": "swap",
+      "regime": "all",
+      "null": false,
+      "amp": 3
+    },
+    {
+      "kind": "swap",
+      "regime": "all",
+      "null": true,
+      "amp": 3
+    },
+    {
+      "kind": "swap",
+      "regime": "all",
+      "null": false,
+      "amp": 5
+    },
+    {
+      "kind": "swap",
+      "regime": "all",
+      "null": true,
+      "amp": 5
+    }
+  ]
+}

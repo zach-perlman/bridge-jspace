@@ -1,0 +1,908 @@
+{
+  "items": {
+    "eligible": 99,
+    "no_target": 1
+  },
+  "rates": [
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "start",
+      "regime": "start_line",
+      "null": false,
+      "scale": null,
+      "amp": 1,
+      "n": 94,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.03926346257624569
+      ],
+      "kept_clean": [
+        1.0,
+        0.9607365374237544,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.00673237772357157,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "start",
+      "regime": "start_line",
+      "null": true,
+      "scale": null,
+      "amp": 1,
+      "n": 94,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.03926346257624569
+      ],
+      "kept_clean": [
+        1.0,
+        0.9607365374237544,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.024611953563769075,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "start",
+      "regime": "start_line",
+      "null": false,
+      "scale": null,
+      "amp": 3,
+      "n": 94,
+      "flip": [
+        0.06382978723404255,
+        0.029579332197396002,
+        0.1323313479223077
+      ],
+      "kept_clean": [
+        0.32978723404255317,
+        0.24307351447114595,
+        0.42986723874629934
+      ],
+      "said_swapped_colour": 0.031914893617021274,
+      "said_intermediate": 0.13829787234042554,
+      "neither": 0.6063829787234043,
+      "edit_ratio_median": 1.7271152824601708,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "start",
+      "regime": "start_line",
+      "null": true,
+      "scale": null,
+      "amp": 3,
+      "n": 94,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.03926346257624569
+      ],
+      "kept_clean": [
+        0.9042553191489362,
+        0.8279570919390105,
+        0.9488086191695568
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.06382978723404255,
+      "neither": 0.09574468085106383,
+      "edit_ratio_median": 0.07212088793954428,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "start",
+      "regime": "start_line",
+      "null": false,
+      "scale": null,
+      "amp": 5,
+      "n": 94,
+      "flip": [
+        0.0425531914893617,
+        0.016670278401570267,
+        0.10435799587031408
+      ],
+      "kept_clean": [
+        0.30851063829787234,
+        0.22419957891141779,
+        0.4078587684582082
+      ],
+      "said_swapped_colour": 0.010638297872340425,
+      "said_intermediate": 0.14893617021276595,
+      "neither": 0.648936170212766,
+      "edit_ratio_median": 3.8693873529486797,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "start",
+      "regime": "start_line",
+      "null": true,
+      "scale": null,
+      "amp": 5,
+      "n": 94,
+      "flip": [
+        0.02127659574468085,
+        0.005854213528540098,
+        0.07429165489552492
+      ],
+      "kept_clean": [
+        0.7021276595744681,
+        0.6032259537764624,
+        0.7851569017778213
+      ],
+      "said_swapped_colour": 0.010638297872340425,
+      "said_intermediate": 0.11702127659574468,
+      "neither": 0.2765957446808511,
+      "edit_ratio_median": 0.11139928965884097,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "swap",
+      "regime": "after_start",
+      "null": false,
+      "scale": null,
+      "amp": 1,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        1.0,
+        0.9626454664260378,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.0065487087156404465,
+      "n_positions_median": 21
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "swap",
+      "regime": "after_start",
+      "null": true,
+      "scale": null,
+      "amp": 1,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        1.0,
+        0.9626454664260378,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.015340447206707561,
+      "n_positions_median": 21
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "swap",
+      "regime": "after_start",
+      "null": false,
+      "scale": null,
+      "amp": 3,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "said_swapped_colour": 0.36363636363636365,
+      "said_intermediate": 0.41414141414141414,
+      "neither": 1.0,
+      "edit_ratio_median": 1.5787039445165325,
+      "n_positions_median": 21
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "swap",
+      "regime": "after_start",
+      "null": true,
+      "scale": null,
+      "amp": 3,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        1.0,
+        0.9626454664260378,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.045513481120852864,
+      "n_positions_median": 21
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "swap",
+      "regime": "after_start",
+      "null": false,
+      "scale": null,
+      "amp": 5,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "said_swapped_colour": 0.32323232323232326,
+      "said_intermediate": 0.3434343434343434,
+      "neither": 1.0,
+      "edit_ratio_median": 3.766418959288036,
+      "n_positions_median": 21
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "swap",
+      "regime": "after_start",
+      "null": true,
+      "scale": null,
+      "amp": 5,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        0.98989898989899,
+        0.944983344585968,
+        0.9982147386799481
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.010101010101010102,
+      "edit_ratio_median": 0.07686050170484711,
+      "n_positions_median": 21
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "swap",
+      "regime": "all",
+      "null": false,
+      "scale": null,
+      "amp": 1,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        1.0,
+        0.9626454664260378,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.006707033621804679,
+      "n_positions_median": 164
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "swap",
+      "regime": "all",
+      "null": true,
+      "scale": null,
+      "amp": 1,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        1.0,
+        0.9626454664260378,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.019329540760201568,
+      "n_positions_median": 164
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "swap",
+      "regime": "all",
+      "null": false,
+      "scale": null,
+      "amp": 3,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "said_swapped_colour": 0.31313131313131315,
+      "said_intermediate": 0.3333333333333333,
+      "neither": 1.0,
+      "edit_ratio_median": 1.6053930231753517,
+      "n_positions_median": 164
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "swap",
+      "regime": "all",
+      "null": true,
+      "scale": null,
+      "amp": 3,
+      "n": 99,
+      "flip": [
+        0.020202020202020204,
+        0.005557603625523107,
+        0.07069169626868313
+      ],
+      "kept_clean": [
+        0.9696969696969697,
+        0.9146617688347427,
+        0.9896415481109291
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.010101010101010102,
+      "neither": 0.010101010101010102,
+      "edit_ratio_median": 0.05597743172855938,
+      "n_positions_median": 164
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "swap",
+      "regime": "all",
+      "null": false,
+      "scale": null,
+      "amp": 5,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "said_swapped_colour": 0.25252525252525254,
+      "said_intermediate": 0.2828282828282828,
+      "neither": 1.0,
+      "edit_ratio_median": 3.7689711675047874,
+      "n_positions_median": 164
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "swap",
+      "regime": "all",
+      "null": true,
+      "scale": null,
+      "amp": 5,
+      "n": 99,
+      "flip": [
+        0.04040404040404041,
+        0.015822382974672186,
+        0.09932168323977801
+      ],
+      "kept_clean": [
+        0.7474747474747475,
+        0.6537534716648654,
+        0.8227074157581231
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.1111111111111111,
+      "neither": 0.21212121212121213,
+      "edit_ratio_median": 0.08906212821602821,
+      "n_positions_median": 164
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "start",
+      "regime": "start_line",
+      "null": false,
+      "scale": null,
+      "amp": 1,
+      "n": 94,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.03926346257624569
+      ],
+      "kept_clean": [
+        0.9680851063829787,
+        0.9103253583802694,
+        0.989087570271756
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.010638297872340425,
+      "neither": 0.031914893617021274,
+      "edit_ratio_median": 0.007318521914866698,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "start",
+      "regime": "start_line",
+      "null": true,
+      "scale": null,
+      "amp": 1,
+      "n": 94,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.03926346257624569
+      ],
+      "kept_clean": [
+        1.0,
+        0.9607365374237544,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.024399832356721163,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "start",
+      "regime": "start_line",
+      "null": false,
+      "scale": null,
+      "amp": 3,
+      "n": 94,
+      "flip": [
+        0.0851063829787234,
+        0.04375496466822986,
+        0.15903812129929315
+      ],
+      "kept_clean": [
+        0.2553191489361702,
+        0.17799224189785487,
+        0.3518600908522227
+      ],
+      "said_swapped_colour": 0.031914893617021274,
+      "said_intermediate": 0.14893617021276595,
+      "neither": 0.6595744680851063,
+      "edit_ratio_median": 1.51116465185495,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "start",
+      "regime": "start_line",
+      "null": true,
+      "scale": null,
+      "amp": 3,
+      "n": 94,
+      "flip": [
+        0.010638297872340425,
+        0.001880347339052478,
+        0.057824318161102874
+      ],
+      "kept_clean": [
+        0.8297872340425532,
+        0.7412525861920534,
+        0.8924247044491462
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.06382978723404255,
+      "neither": 0.1595744680851064,
+      "edit_ratio_median": 0.06811884078471099,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "start",
+      "regime": "start_line",
+      "null": false,
+      "scale": null,
+      "amp": 5,
+      "n": 94,
+      "flip": [
+        0.09574468085106383,
+        0.05119138083044319,
+        0.17204290806098949
+      ],
+      "kept_clean": [
+        0.1702127659574468,
+        0.10757529555085373,
+        0.25874741380794664
+      ],
+      "said_swapped_colour": 0.0425531914893617,
+      "said_intermediate": 0.11702127659574468,
+      "neither": 0.7340425531914894,
+      "edit_ratio_median": 3.680142063209239,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "start",
+      "regime": "start_line",
+      "null": true,
+      "scale": null,
+      "amp": 5,
+      "n": 94,
+      "flip": [
+        0.0425531914893617,
+        0.016670278401570267,
+        0.10435799587031408
+      ],
+      "kept_clean": [
+        0.48936170212765956,
+        0.39072589513953443,
+        0.5888329019365559
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.23404255319148937,
+      "neither": 0.46808510638297873,
+      "edit_ratio_median": 0.10399250905303395,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "swap",
+      "regime": "after_start",
+      "null": false,
+      "scale": null,
+      "amp": 1,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        1.0,
+        0.9626454664260378,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.005591937943416483,
+      "n_positions_median": 21
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "swap",
+      "regime": "after_start",
+      "null": true,
+      "scale": null,
+      "amp": 1,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        1.0,
+        0.9626454664260378,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.012059405528228073,
+      "n_positions_median": 21
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "swap",
+      "regime": "after_start",
+      "null": false,
+      "scale": null,
+      "amp": 3,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "said_swapped_colour": 0.3838383838383838,
+      "said_intermediate": 0.41414141414141414,
+      "neither": 1.0,
+      "edit_ratio_median": 1.3990688586936277,
+      "n_positions_median": 21
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "swap",
+      "regime": "after_start",
+      "null": true,
+      "scale": null,
+      "amp": 3,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        1.0,
+        0.9626454664260378,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.03576556165866992,
+      "n_positions_median": 21
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "swap",
+      "regime": "after_start",
+      "null": false,
+      "scale": null,
+      "amp": 5,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "said_swapped_colour": 0.43434343434343436,
+      "said_intermediate": 0.3939393939393939,
+      "neither": 1.0,
+      "edit_ratio_median": 3.547791798106011,
+      "n_positions_median": 21
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "swap",
+      "regime": "after_start",
+      "null": true,
+      "scale": null,
+      "amp": 5,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        0.98989898989899,
+        0.944983344585968,
+        0.9982147386799481
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.010101010101010102,
+      "edit_ratio_median": 0.05990538198281737,
+      "n_positions_median": 21
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "swap",
+      "regime": "all",
+      "null": false,
+      "scale": null,
+      "amp": 1,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        1.0,
+        0.9626454664260378,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.006126197726082276,
+      "n_positions_median": 164
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "swap",
+      "regime": "all",
+      "null": true,
+      "scale": null,
+      "amp": 1,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        1.0,
+        0.9626454664260378,
+        1.0
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.0,
+      "edit_ratio_median": 0.017068987109643573,
+      "n_positions_median": 164
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "swap",
+      "regime": "all",
+      "null": false,
+      "scale": null,
+      "amp": 3,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "said_swapped_colour": 0.3333333333333333,
+      "said_intermediate": 0.3939393939393939,
+      "neither": 1.0,
+      "edit_ratio_median": 1.4406853769631947,
+      "n_positions_median": 164
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "swap",
+      "regime": "all",
+      "null": true,
+      "scale": null,
+      "amp": 3,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        0.9797979797979798,
+        0.9293083037313168,
+        0.9944423963744768
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.010101010101010102,
+      "neither": 0.020202020202020204,
+      "edit_ratio_median": 0.04925106706864694,
+      "n_positions_median": 164
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "swap",
+      "regime": "all",
+      "null": false,
+      "scale": null,
+      "amp": 5,
+      "n": 99,
+      "flip": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "kept_clean": [
+        0.0,
+        0.0,
+        0.03735453357396229
+      ],
+      "said_swapped_colour": 0.37373737373737376,
+      "said_intermediate": 0.35353535353535354,
+      "neither": 1.0,
+      "edit_ratio_median": 3.5771741770646153,
+      "n_positions_median": 164
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "swap",
+      "regime": "all",
+      "null": true,
+      "scale": null,
+      "amp": 5,
+      "n": 99,
+      "flip": [
+        0.1717171717171717,
+        0.11006570016266971,
+        0.2578943471333661
+      ],
+      "kept_clean": [
+        0.7272727272727273,
+        0.632288909736815,
+        0.8052772113659294
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.06060606060606061,
+      "neither": 0.10101010101010101,
+      "edit_ratio_median": 0.07813518340973293,
+      "n_positions_median": 164
+    }
+  ]
+}

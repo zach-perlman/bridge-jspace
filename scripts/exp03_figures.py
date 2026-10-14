@@ -6,6 +6,8 @@
                                 original answer, or none of these; random-direction nulls
       steering_after_start.png  steering the positions after the start colour along X - I: one lookup from X (f(X),
                                 the intermediate used as a step), X itself (a candidate answer), the original answer
+      swaps_amplified.png       the start swap (S -> S', predicts f(f(S'))) and the intermediate swap (I -> X, predicts
+                                f(X)) by amplification, with their random-direction nulls (runs with amp jobs)
 
 Every steering scale and band in the runs is drawn; runs are merged (e.g. start_steer and start_steer_low).
 """
@@ -29,6 +31,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from bridge_jspace import pins
 from bridge_jspace.plotting import INK, MUTED, SURFACE, style_axes
+from bridge_jspace.stats import wilson
 
 EXP = "exp03_brew_swaps"
 CONTROL = "#b4b2a9"
@@ -92,7 +95,7 @@ def steering(counts: dict, kind: str, out: Path) -> None:
     keys = [k for k in counts if k[0] == kind]
     bands = sorted({k[1] for k in keys}, key=lambda b: int(b.split("-")[0]))
     n = max(counts[k]["n"] for k in keys)
-    fig, axes = plt.subplots(1, len(bands), figsize=(5.0 * len(bands), 4.3), facecolor=SURFACE, sharey=True)
+    fig, axes = plt.subplots(1, len(bands), figsize=(max(5.0 * len(bands), 10.0), 4.3), facecolor=SURFACE, sharey=True)
     for ax, band in zip(np.atleast_1d(axes), bands, strict=True):
         style_axes(ax)
         for lens, ls in (("jpp", "-"), ("jlens", (0, (3, 2)))):
@@ -125,6 +128,66 @@ def steering(counts: dict, kind: str, out: Path) -> None:
     plt.close(fig)
 
 
+SWAP_PANELS = (  # (kind, regime, title)
+    ("start", "start_line", "swap the start colour S -> S'\n(positive control: answer f(f(S')))"),
+    ("swap", "after_start", "swap the intermediate I -> X after the start line\n(answer f(X) if I is used as a step)"),
+    ("swap", "all", "swap the intermediate I -> X at every position\n(answer f(X) if I is used as a step)"),
+)
+
+
+def amplified_swaps(runs: list[str], out: Path) -> None:
+    """Flip rate by amplification for the start and intermediate swaps, J++ and J-lens, with nulls (Wilson CIs)."""
+    rows: dict[tuple, list[int]] = defaultdict(list)
+    for run in runs:
+        for o in map(json.loads, (pins.RESULTS_DIR / EXP / run / "outcomes.jsonl").read_text().splitlines()):
+            if "amp" in o:
+                rows[(o["kind"], o["regime"], o["lens"], o["null"], o["amp"])].append(int(o["flip"]))
+    if not rows:
+        return
+    amps = sorted({k[4] for k in rows})
+    sizes = sorted({len(v) for v in rows.values()})
+    n = f"{sizes[0]}-{sizes[-1]}" if len(sizes) > 1 else sizes[0]
+    fig, axes = plt.subplots(1, len(SWAP_PANELS), figsize=(13.5, 4.2), facecolor=SURFACE, sharey=True)
+    for ax, (kind, regime, title) in zip(axes, SWAP_PANELS, strict=True):
+        style_axes(ax)
+        for lens, color, dx in (("jpp", "#3d8c5a", -0.08), ("jlens", "#4a6fa5", 0.08)):
+            for null, marker, ls in ((False, "o", "-"), (True, "s", ":")):
+                pts = [
+                    (a, rows[(kind, regime, lens, null, a)]) for a in amps if rows.get((kind, regime, lens, null, a))
+                ]
+                stats = [wilson(sum(v), len(v)) for _, v in pts]
+                xs = [a * (1 + dx) for a, _ in pts]
+                ax.errorbar(
+                    xs,
+                    [r[0] for r in stats],
+                    yerr=[[max(0.0, r[0] - r[1]) for r in stats], [max(0.0, r[2] - r[0]) for r in stats]],
+                    color=CONTROL if null else color,
+                    marker=marker,
+                    ms=5,
+                    ls=ls,
+                    lw=1.6,
+                    capsize=2,
+                )
+        ax.set_xscale("log")
+        ax.minorticks_off()
+        ax.set_xticks(amps, [f"{a:g}x" for a in amps])
+        ax.set_ylim(-0.02, 1.02)
+        ax.set_xlabel("amplification of the swap", color=MUTED)
+        ax.set_title(title, loc="left", color=INK, fontsize=9.5)
+    axes[0].set_ylabel("share of questions with the predicted answer", color=MUTED)
+    fig.suptitle(f"Swaps at layers 8-24 (brew, Qwen3.6-27B, n={n}): the start colour moves the answer, the "
+                 "intermediate does not", x=0.01, ha="left", color=INK)  # fmt: skip
+    handles = [
+        Line2D([], [], color="#3d8c5a", marker="o", lw=1.6, label="J++"),
+        Line2D([], [], color="#4a6fa5", marker="o", lw=1.6, label="J-lens"),
+        Line2D([], [], color=CONTROL, marker="s", ls=":", lw=1.6, label="random direction, same edit norm"),
+    ]
+    fig.legend(handles=handles, loc="lower center", ncol=3, frameon=False, fontsize=8.5)
+    fig.tight_layout(rect=(0, 0.08, 1, 0.93))
+    fig.savefig(out / "swaps_amplified.png", dpi=170, facecolor=SURFACE)
+    plt.close(fig)
+
+
 def main(out_name: str, runs: list[str], out_root: Path) -> None:
     out = out_root / out_name
     out.mkdir(parents=True, exist_ok=False)
@@ -132,6 +195,7 @@ def main(out_name: str, runs: list[str], out_root: Path) -> None:
     for kind in CATEGORIES:
         if any(k[0] == kind for k in counts):
             steering(counts, kind, out)
+    amplified_swaps(runs, out)
     (out / "sources.json").write_text(json.dumps({"runs": runs}, indent=2) + "\n")
     print("wrote", out)
 

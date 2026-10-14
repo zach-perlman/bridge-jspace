@@ -1,0 +1,209 @@
+{
+  "items": {
+    "eligible": 174,
+    "clean_wrong": 25,
+    "no_target": 1
+  },
+  "rates": [
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.03,
+      "amp": 1,
+      "n": 164,
+      "flip": [
+        0.3048780487804878,
+        0.23955441871175787,
+        0.3791336776838914
+      ],
+      "kept_clean": [
+        0.17682926829268292,
+        0.12603379873907739,
+        0.2424183609162166
+      ],
+      "said_swapped_colour": 0.006097560975609756,
+      "said_intermediate": 0.018292682926829267,
+      "neither": 0.5182926829268293,
+      "edit_ratio_median": 0.03,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": true,
+      "scale": 0.03,
+      "amp": 1,
+      "n": 164,
+      "flip": [
+        0.0,
+        0.0,
+        0.022888247013851153
+      ],
+      "kept_clean": [
+        0.9939024390243902,
+        0.96627290966789,
+        0.9989228463306229
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.006097560975609756,
+      "edit_ratio_median": 0.03,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.05,
+      "amp": 1,
+      "n": 164,
+      "flip": [
+        0.35365853658536583,
+        0.28459871193505415,
+        0.42941736036168277
+      ],
+      "kept_clean": [
+        0.09146341463414634,
+        0.05621141440662995,
+        0.14541678742176062
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.03048780487804878,
+      "neither": 0.5548780487804879,
+      "edit_ratio_median": 0.05,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jlens",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": true,
+      "scale": 0.05,
+      "amp": 1,
+      "n": 164,
+      "flip": [
+        0.0,
+        0.0,
+        0.022888247013851153
+      ],
+      "kept_clean": [
+        0.9939024390243902,
+        0.96627290966789,
+        0.9989228463306229
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.006097560975609756,
+      "edit_ratio_median": 0.05,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.03,
+      "amp": 1,
+      "n": 164,
+      "flip": [
+        0.6280487804878049,
+        0.5519376124293204,
+        0.6982983243110349
+      ],
+      "kept_clean": [
+        0.06707317073170732,
+        0.037861723037309634,
+        0.11610249084053711
+      ],
+      "said_swapped_colour": 0.042682926829268296,
+      "said_intermediate": 0.0,
+      "neither": 0.3048780487804878,
+      "edit_ratio_median": 0.03,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": true,
+      "scale": 0.03,
+      "amp": 1,
+      "n": 164,
+      "flip": [
+        0.0,
+        0.0,
+        0.022888247013851153
+      ],
+      "kept_clean": [
+        0.9939024390243902,
+        0.96627290966789,
+        0.9989228463306229
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.006097560975609756,
+      "edit_ratio_median": 0.03,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": false,
+      "scale": 0.05,
+      "amp": 1,
+      "n": 164,
+      "flip": [
+        0.49390243902439024,
+        0.41840318712886326,
+        0.5696808158835007
+      ],
+      "kept_clean": [
+        0.06097560975609756,
+        0.033454199348097076,
+        0.1085940175421137
+      ],
+      "said_swapped_colour": 0.018292682926829267,
+      "said_intermediate": 0.024390243902439025,
+      "neither": 0.4451219512195122,
+      "edit_ratio_median": 0.05,
+      "n_positions_median": 6.0
+    },
+    {
+      "band": "8-24",
+      "lens": "jpp",
+      "kind": "steer_start",
+      "regime": "start_line",
+      "null": true,
+      "scale": 0.05,
+      "amp": 1,
+      "n": 164,
+      "flip": [
+        0.0,
+        0.0,
+        0.022888247013851153
+      ],
+      "kept_clean": [
+        0.9939024390243902,
+        0.96627290966789,
+        0.9989228463306229
+      ],
+      "said_swapped_colour": 0.0,
+      "said_intermediate": 0.0,
+      "neither": 0.006097560975609756,
+      "edit_ratio_median": 0.05,
+      "n_positions_median": 6.0
+    }
+  ]
+}

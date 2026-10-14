@@ -340,33 +340,45 @@ target, 94 a valid alternative start. We swap and steer along the colours' J-len
 colour the model answers after the bank's "Answer:" prefill.
 
 **In short.**
-- **The small coordinate swaps of exp02 have no force here.** Swapping the intermediate with another colour moves 0 of
-  99 answers at any band (16-32 ... 40-56), lens or region, and so do both positive controls: swapping the start
-  colour (0-1%) or the answer itself at the last token (0%). This null has no working control, so it says nothing
-  about how the model computes; it says the swap that redirects a parametric bridge does not reach these variables.
-- **Steering the start line redirects the whole computation.** Adding 3% of the residual norm along J++'s
-  S' - S at the start line (layers 8-24), the model answers f(f(S')), both lookups from the new start, for 56%
-  [46, 66] of items (J-lens 20%; at 5%, 48% vs 30%); one lookup, f(S'), for a further 19%; S' itself for 5%. A random
-  direction of the same size changes no answer (0% at 3% and 5%). The effect needs about 2% of the norm, peaks at
-  3-5% and fades above (larger edits break the answer), is weaker at layers 16-32 and absent at 36-52.
+- **Swapping the start colour redirects the computation; swapping the intermediate does not.** exp02's coordinate swap
+  as is moves no answer here, positive controls included (0-1% at every band). Amplified 3x at layers 8-24, swapping
+  the start colour S for S' makes the model answer f(f(S')) for 61% [51, 70] of items with J++ (J-lens 17% [11, 26];
+  random direction 0-1%), while swapping the intermediate I for X, at the same layers and strength, gives f(X) for 0%
+  [0, 4] after the start line and 3% [1, 9] at every position (random direction 0%). With the positive control
+  working, this is a null: where and how we edit, the intermediate is not carried along its lens direction (or is
+  recomputed downstream of the edit).
+- **Steering the start line redirects the whole computation, and replicates on fresh items.** Adding 3% of the
+  residual norm along J++'s S' - S at the start line (layers 8-24), the model answers f(f(S')), both lookups from the
+  new start, for 56% [46, 66] of the bank's items (J-lens 20%); one lookup, f(S'), for a further 19%; S' itself for
+  5%. The layers and sizes were picked on these items, so the same steering was rerun on 200 fresh items in the bank's
+  format (164 usable): 63% [55, 70] at 3% (J-lens 30% [24, 38]), random direction 0% [0, 2]. The effect needs about 2%
+  of the norm, peaks at 3-5% and fades above (larger edits break the answer), is weaker at layers 16-32 and absent at
+  36-52.
 - **Steering after the start colour only ever makes the model say X.** Along X - I at the positions after the start
   line, the answer becomes X itself (100% at 20% of the norm, layers 36-52) and almost never f(X) (1 item of 99 at one
   setting, 0 at every other size, band and lens). There, where the J-lens reads the intermediate, its direction acts as a candidate answer, not as a step:
   consistent with WorkspaceBench's caveat that the brew intermediate is usually the model's runner-up answer.
 
+![exp03: swaps, amplified](figures/exp03_brew_swaps/v2_swaps/swaps_amplified.png)
+
 ![exp03: steering the start line](figures/exp03_brew_swaps/v1/steering_start_line.png)
 
-**What this does not show.** Whether the model computes the intermediate serially: the swaps lack force and steering
-after the start only produces an output. Steering is not dose-matched to exp02's swaps (exp02's edits are about 1%
-of the norm); the 1-3% scales were added after seeing that 5% was the best of the first four sizes. One seed, one
-model; S' and X are drawn per item with a fixed seed.
+**What this does not show.** That the model does not compute the intermediate serially: the intermediate swap is
+tested at layers 8-24 only, and steering after the start line only produces an output; neither reaches an
+intermediate held in another direction or at other layers. The amplified swaps' random directions edit more than the
+real swaps (median 0.05-0.1 of the norm vs 0.02-0.03), since they are re-added at every layer while the real clamp
+settles; that makes the nulls stronger, not weaker. Steering is not dose-matched to exp02's swaps (about 1% of the
+norm). One seed, one model; S' and X are drawn per item with a fixed seed.
 
 <details><summary>Full numbers and checks</summary>
 
 Runs under `results/exp03_brew_swaps/`: `sweep` and `main` (intermediate swaps, all regimes), `followup` (positive
 controls, swaps at 16-32 and 36-52, steering after the start), `start_steer` and `start_steer_low` (steering the start
-line). Our render puts the start line and the last token on the bank's labelled cells for every item
-(`render_matches_bank` in `items.jsonl`). Figures: `figures/exp03_brew_swaps/v1/` (`exp03_figures.py`; categories are
+line), `swap_amp` (start and intermediate swaps at 8-24, amplified 1x/3x/5x), `fresh_steer` (start-line steering on
+`data/brew_fresh.json`, from `exp03_make_items.py`; decision rule fixed in its manifest). `swap_early` is `swap_amp`
+with a bug: its amplification multiplied the edit at every layer, which compounded (edits of 1.4-3.9x the residual
+norm), so its 3x and 5x rows are void. Our render puts the start line and the last token on the bank's labelled cells for every item
+(`render_matches_bank` in `items.jsonl`). Figures: `figures/exp03_brew_swaps/v1/`, `v2_swaps/`, `v2_fresh/` (`exp03_figures.py`; categories are
 read off each item's table, and an unchanged answer counts as "original" even where one lookup from S' lands on it).
 
 | Start line steered along S' - S, layers 8-24, n=94 | 1% | 2% | 3% | 5% | 10% | 20% |
@@ -374,6 +386,17 @@ read off each item's table, and an unchanged answer counts as "original" even wh
 | J++: f(f(S')) | 0% | 40% | 56% [46, 66] | 48% [38, 58] | 27% | 14% |
 | J-lens: f(f(S')) | 0% | 9% | 20% | 30% [21, 40] | 17% | 11% |
 | random direction: answer changed | | | 0% | 0% | | 12% |
+| fresh items (n=164), J++: f(f(S')) | | | 63% [55, 70] | 49% [42, 57] | | |
+| fresh items, J-lens: f(f(S')) | | | 30% [24, 38] | 35% [28, 43] | | |
+| fresh items, random direction: answer changed | | | 0% [0, 2] | 0% [0, 2] | | |
+
+| Swaps at layers 8-24, predicted answer reached | 1x | 3x | 5x |
+|---|---|---|---|
+| start S -> S' (start line, n=94), J++ / J-lens | 0% / 0% | 61% / 17% | 51% / 32% |
+| random direction | 0% / 0% | 1% / 0% | 3% / 2% |
+| intermediate I -> X (after the start line, n=99), J++ / J-lens | 0% / 0% | 0% / 0% | 1% / 0% |
+| intermediate I -> X (every position), J++ / J-lens | 0% / 0% | 3% / 1% | 3% / 0% |
+| random direction (every position) | 0% / 0% | 0% / 2% | 18% / 5% |
 </details>
 
 ### Pitfalls found so far
