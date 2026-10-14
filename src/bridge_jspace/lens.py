@@ -14,9 +14,12 @@ from .model import Model
 
 
 class JLens:
-    def __init__(self, model: Model):
-        path = hf_hub_download(pins.LENS_REPO, pins.LENS_FILE, revision=pins.LENS_REVISION)
+    """`lens` picks the file in pins.LENS_FILES: "jlens" (the J-lens) or "jpp" (J++, same format: one J_l per layer)."""
+
+    def __init__(self, model: Model, lens: str = "jlens"):
+        path = hf_hub_download(pins.LENS_REPO, pins.LENS_FILES[lens], revision=pins.LENS_REVISION)
         blob = torch.load(path, map_location="cpu", weights_only=True, mmap=True)
+        self.name, self.file_keys = lens, sorted(blob)
         self.source_layers: list[int] = list(blob["source_layers"])
         self._J_cpu: dict[int, torch.Tensor] = blob["J"]
         self._J_gpu: dict[int, torch.Tensor] = {}

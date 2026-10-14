@@ -8,12 +8,13 @@ Stages (run in order), each for one --variant (see VARIANTS; default base):
 Variants: base (data/entity_prompts.json); topup (+ data/entity_prompts_topup.json, the one allowed top-up round for
 the entities left with fewer than MIN_KEPT kept prompts in run TOPUP_AFTER); whiten (the topup prompts as kept in
 run WHITEN_FROM, no re-filtering, whitened probes); more (+ data/entity_prompts_more/, a second round for every
-entity after two failed exp02 gates).
+entity after two failed exp02 gates); more_jpp (more's prompts and probes, decomposed over J++ instead of the J-lens;
+the filter is re-run and compared prompt by prompt with run JPP_REPRODUCES).
 
 Probe of entity e at layer l: the mean final-token residual (output of block l) over e's kept prompts, minus the mean
 of those entity means over all entities. Whitened probe: that difference times the inverse of the pooled
 within-entity covariance (Ledoit-Wolf shrinkage), rescaled to the difference's norm. Decomposition: non-negative OMP
-with K_ATOMS atoms over the unit J-lens vectors of every letter-bearing token at that layer; J-part = the fit,
+with K_ATOMS atoms over the unit lens vectors (J-lens, or J++ for more_jpp) of every letter-bearing token at that layer; J-part = the fit,
 remainder = probe - J-part.
 """
 
@@ -46,11 +47,13 @@ INSPECT_LAYER = 32
 RANDOM_SEED = 0
 TOPUP_AFTER = "v1"
 WHITEN_FROM = "v2"
-VARIANTS = {  # which prompt rounds a run uses, whether its probes are whitened, and its manifest
-    "base": {"manifest": "manifest.json", "topup": False, "more": False, "whiten": False},
-    "topup": {"manifest": "manifest_topup.json", "topup": True, "more": False, "whiten": False},
-    "whiten": {"manifest": "manifest_whiten.json", "topup": True, "more": False, "whiten": True},
-    "more": {"manifest": "manifest_more.json", "topup": True, "more": True, "whiten": False},
+JPP_REPRODUCES = "v3"
+VARIANTS = {  # which prompt rounds a run uses, whether its probes are whitened, its lens, and its manifest
+    "base": {"manifest": "manifest.json", "topup": False, "more": False, "whiten": False, "lens": "jlens"},
+    "topup": {"manifest": "manifest_topup.json", "topup": True, "more": False, "whiten": False, "lens": "jlens"},
+    "whiten": {"manifest": "manifest_whiten.json", "topup": True, "more": False, "whiten": True, "lens": "jlens"},
+    "more": {"manifest": "manifest_more.json", "topup": True, "more": True, "whiten": False, "lens": "jlens"},
+    "more_jpp": {"manifest": "manifest_more_jpp.json", "topup": True, "more": True, "whiten": False, "lens": "jpp"},
 }
 
 
@@ -190,6 +193,28 @@ def stage_manifest_more() -> None:
     print("wrote", path)
 
 
+def stage_manifest_more_jpp() -> None:
+    """The more manifest with the decomposition dictionary switched to J++ (part A's second reader)."""
+    path = manifest_path("more_jpp")
+    assert not path.exists(), f"{path} exists; manifests are written once"
+    manifest = json.loads(manifest_path("more").read_text())
+    manifest["written_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    manifest["data"]["entity_prompts_more"] = more_files_pinned()
+    manifest["lens"]["file"] = pins.JPP_FILE
+    manifest["lens"]["vector"] = manifest["lens"]["vector"].replace("J_l", "J++_l")
+    manifest["decomposition"]["dictionary"] = "unit J++ vectors of non-special tokens whose decode has a letter"
+    manifest["reproduces"] = {
+        "run": JPP_REPRODUCES,
+        "check": "same prompts, filter and probe definition as that run, so the kept flags must match prompt by "
+                 "prompt (mismatches are counted in summary.json); only the decomposition dictionary differs",
+    }
+    manifest["deviations"].append(
+        f"J++ decomposition: run {JPP_REPRODUCES}'s probes are rebuilt (its cache was not kept) and decomposed over "
+        "J++ instead of the J-lens, so part B's J-space matches the second reader part A uses. Chosen by the human.")
+    path.write_text(json.dumps(manifest, indent=2) + "\n")
+    print("wrote", path)
+
+
 def whitened_probes(kept_residuals: dict, probed: list[str], means: torch.Tensor, probes: torch.Tensor):
     """Per layer, probe_e = (shrunk pooled within-entity covariance)^-1 @ (mu_e - m), rescaled to |mu_e - m|.
     Returns (probes [E, L, d], Ledoit-Wolf shrinkage per layer)."""
@@ -227,7 +252,7 @@ def stage_run(tag: str, variant: str) -> None:
     items, prompts = load_items(), variant_prompts(variant)
     entities = entities_of(items)
     model = load_model()
-    lens = JLens(model)
+    lens = JLens(model, v["lens"])
 
     # 1. Filter: keep a prompt if the first word of Qwen's greedy continuation is an accepted answer (or, when
     #    whitening, take the rows of run WHITEN_FROM, whose prompts are the same).
@@ -256,6 +281,13 @@ def stage_run(tag: str, variant: str) -> None:
         for r in rows:
             f.write(json.dumps(r, ensure_ascii=False) + "\n")
     n_kept = {e: len(kept_residuals[e]) for e in entities}
+    filter_mismatches = None
+    if variant == "more_jpp":
+        reference = {(r["entity"], r["prompt"]): r["kept"]
+                     for r in map(json.loads, open(RESULTS / JPP_REPRODUCES / "filter.jsonl"))}
+        filter_mismatches = [{"entity": r["entity"], "prompt": r["prompt"], "kept": r["kept"]}
+                             for r in rows if reference.get((r["entity"], r["prompt"])) != r["kept"]]
+        print(f"filter vs {JPP_REPRODUCES}: {len(filter_mismatches)} of {len(rows)} prompts differ", flush=True)
     probed = [e for e in entities if n_kept[e] >= MIN_KEPT]
 
     # 2. Probes: entity means minus their grand mean, per layer (whitened if asked).
@@ -292,7 +324,7 @@ def stage_run(tag: str, variant: str) -> None:
 
     torch.save({"entities": probed, "layers": list(PROBE_LAYERS), "probe": probes.cpu(), "jpart": jparts.cpu(),
                 "atom_ids": atom_ids, "atom_coefs": atom_coefs, "n_kept": n_kept, "tag": tag,
-                "definition": definition}, cache_dir / "probes.pt")
+                "definition": definition, "lens": v["lens"]}, cache_dir / "probes.pt")
 
     # 4. Summaries for the human.
     fve = (jparts.norm(dim=-1) ** 2 / probes.norm(dim=-1) ** 2).cpu()  # [E, L]
@@ -311,6 +343,8 @@ def stage_run(tag: str, variant: str) -> None:
                                                           key=lambda tc: -tc[1])[:10]]
                  for ei, e in enumerate(probed)}
     summary = {"manifest": manifest_path(variant).name, "probe_definition": definition,
+               "lens": v["lens"], "lens_file_keys": lens.file_keys,
+               **({} if filter_mismatches is None else {f"filter_mismatches_vs_{JPP_REPRODUCES}": filter_mismatches}),
                "ledoit_wolf_shrinkage": dict(zip(PROBE_LAYERS, shrinkage)) if shrinkage else None,
                "n_prompts": len(rows), "n_kept": sum(n_kept.values()), "kept_per_entity": n_kept,
                "entities_without_probe": [e for e in entities if e not in probed],
@@ -353,7 +387,7 @@ if __name__ == "__main__":
     parser.add_argument("--variant", default="base", choices=list(VARIANTS))
     args = parser.parse_args()
     manifest_writers = {"base": stage_manifest, "topup": stage_manifest_topup, "whiten": stage_manifest_whiten,
-                        "more": stage_manifest_more}
+                        "more": stage_manifest_more, "more_jpp": stage_manifest_more_jpp}
     if args.stage == "check":
         stage_check(args.variant)
     elif args.stage == "manifest":

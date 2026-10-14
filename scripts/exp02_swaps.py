@@ -13,7 +13,7 @@ default = the kind):
 Swap (clamp.SwapClamp): at every band layer and every prompt position except 0, the clean coordinates on a set of
 atoms are pinned, with the bridge's and the target's coordinates exchanged. The conditions differ only in the atoms.
 Rows 0 and 1 are the bridge's and the target's; any further rows are held at their clean values.
-  raw_jlens          J-lens vectors of the bridge's and the target's naming tokens
+  raw_jlens          lens vectors of the bridge's and the target's naming tokens (the probes' lens: J-lens or J++)
   full_probe         the unit exp01 probes
   jpart              the unit J-parts of the probes
   remainder          the unit remainders (probe - J-part)
@@ -71,7 +71,8 @@ def stage_manifest(kind: str, name: str, probes_tag: str, band: str | None, gate
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
     probes = probes_file(probes_tag)
-    definition = torch.load(probes, map_location="cpu", weights_only=True).get("definition", "mean_difference")
+    blob = torch.load(probes, map_location="cpu", weights_only=True)
+    definition, lens = blob.get("definition", "mean_difference"), blob.get("lens", "jlens")
     deviations = [
         "Items whose answer or swap answer has no single-token surface are dropped and counted (7 of 90 at setup).",
         "Edit size is the direct edit at the final position, |delta| / |h|, averaged over the edited band layers per "
@@ -97,7 +98,16 @@ def stage_manifest(kind: str, name: str, probes_tag: str, band: str | None, gate
                           "which lies in one fixed low-dimensional span at every position.")
         gate_record = {"run": gate, **json.loads((RESULTS / gate / "summary.json").read_text())["decision"]}
         gate_probes = json.loads((RESULTS / gate / "manifest.json").read_text())["probes"]["exp01_tag"]
-        assert (gate_probes, gate_record["band"]) == (probes_tag, band), "main must use its gate's probes and band"
+        assert gate_record["band"] == band, "main must use its gate's band"
+        if gate_probes != probes_tag:
+            # The gate picks the band on full_probe alone, which uses no lens, so a lens twin of the gate's probes
+            # (same prompts and probes, other decomposition) may reuse its band instead of re-picking it.
+            twin = json.loads((pins.RESULTS_DIR / "exp01_probes" / probes_tag / "summary.json").read_text())
+            assert twin["manifest"] == "manifest_more_jpp.json" and gate_probes == "v3", \
+                "main must use its gate's probes, or exp01's J++ twin of them"
+            deviations.append(f"Probes {probes_tag} are the J++ twin of gate {gate}'s probes ({gate_probes}): same "
+                              f"prompts and probes, decomposed over J++. The band is gate {gate}'s, fixed before this "
+                              "run, not re-picked; full_probe is unchanged by the lens and should reproduce its rate.")
         deviations.append(f"The band was picked by gate {gate} on these same items, so full_probe's rate is "
                           "optimistic.")
         if not gate_record["go"]:
@@ -111,7 +121,7 @@ def stage_manifest(kind: str, name: str, probes_tag: str, band: str | None, gate
         "question": "Does the swap target's answer appear when the bridge's representation is swapped for the "
                     "target's, and does that depend on the J-space part of the representation?",
         "model": {"repo": pins.QWEN_REPO, "revision": pins.QWEN_REVISION, "dtype": "bfloat16", "attn": "sdpa"},
-        "lens": {"repo": pins.LENS_REPO, "revision": pins.LENS_REVISION, "file": pins.LENS_FILE},
+        "lens": {"name": lens, "repo": pins.LENS_REPO, "revision": pins.LENS_REVISION, "file": pins.LENS_FILES[lens]},
         "items": {"file": "data/probe_swap.json", "sha256": pins.PROBE_SWAP_SHA256},
         "probes": {"exp01_tag": probes_tag, "file": str(probes.relative_to(pins.REPO_ROOT)),
                    "sha256": sha256_of(probes), "definition": definition},
@@ -221,7 +231,7 @@ def stage_run(name: str) -> None:
     null_options = (False, True) if manifest["nulls"] else (False,)
 
     model = load_model()
-    lens = JLens(model)
+    lens = JLens(model, manifest["lens"].get("name", "jlens"))
     probes = Probes(probes_path)
     all_layers = sorted({l for band in bands for l in band_layers(band)})
     item_rows, outcomes = [], []

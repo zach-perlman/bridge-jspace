@@ -13,3 +13,5 @@ def test_pins_agree_with_27b_yaml():
         pins.LENS_REVISION,
         pins.LENS_FILE,
     )
+    jpp = m["lenses"]["jpp"]
+    assert (jpp["revision"], jpp["filename"]) == (pins.LENS_REVISION, pins.JPP_FILE)

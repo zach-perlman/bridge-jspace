@@ -24,6 +24,8 @@ QWEN_REVISION = "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9"
 LENS_REPO = "neuronpedia/jacobian-lens"
 LENS_REVISION = "9fa267f841d62aa468dab5b9b38c3dc45a82d863"
 LENS_FILE = "qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt"
+JPP_FILE = "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt"  # same repo, revision and format
+LENS_FILES = {"jlens": LENS_FILE, "jpp": JPP_FILE}  # part B's lens choice (exp01 variant, exp02 from its probes)
 
 PROBE_SWAP_FILE = DATA_DIR / "probe_swap.json"
 PROBE_SWAP_SHA256 = "a0edd27ca23f7b4d0fbe90448c2ddcc7457a3d812121bf024ed12a032ff86796"
