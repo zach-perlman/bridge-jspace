@@ -76,6 +76,12 @@ START_STEER_LOW_JOBS = (
     *({"kind": "steer_start", "regime": "start_line", "null": False, "scale": s} for s in (0.01, 0.02, 0.03)),
     *({"kind": "steer_start", "regime": "start_line", "null": True, "scale": s} for s in (0.03, 0.05)),
 )
+SWAP_EARLY_JOBS = tuple(
+    {"kind": kind, "regime": regime, "null": null, "amp": amp}
+    for kind, regime in (("start", "start_line"), ("swap", "after_start"), ("swap", "all"))
+    for amp in (1, 3, 5)
+    for null in (False, True)
+)
 FOLLOWUPS = {  # name -> (bands, jobs, why)
     "followup": (
         FOLLOWUP_BANDS,
@@ -97,6 +103,15 @@ FOLLOWUPS = {  # name -> (bands, jobs, why)
         START_STEER_LOW_JOBS,
         "Chosen by the human after start_steer: its f(f(S')) rate was highest at the smallest scale tried (5%) and fell "
         "with scale, so the dose curve is extended down to 1-3%, with random-direction nulls at 3% and 5%.",
+    ),
+    "swap_early": (
+        ("8-24",),
+        SWAP_EARLY_JOBS,
+        "Chosen by the human after start_steer showed the start colour is read at layers 8-24 (never swapped there) and "
+        "that steering needs about 2% of the norm while the swaps edit about 0.7%: the start and intermediate swaps at "
+        "8-24, as is (amp 1) and with the exchange amplified 3x and 5x (amp; the null scaled alike). Decision fixed "
+        "before the run: the intermediate swap is interpreted only at an amp where the start-swap positive control "
+        "flips more than its null (Wilson intervals not overlapping).",
     ),
 }
 MAX_NEW_TOKENS = 6
@@ -244,7 +259,9 @@ def stage_manifest(kind: str, name: str, band: str | None, sweep: str | None, jo
     print("wrote", path)
 
 
-def run_swap(model, ids, clean_h, atoms_by_layer, positions, null_seed: int | None) -> tuple[str, list[int], float]:
+def run_swap(
+    model, ids, clean_h, atoms_by_layer, positions, null_seed: int | None, amp: float = 1.0
+) -> tuple[str, list[int], float]:
     generator = None if null_seed is None else torch.Generator(device="cuda").manual_seed(null_seed)
     clamps, skipped = {}, []
     for layer, atoms in atoms_by_layer.items():
@@ -256,10 +273,21 @@ def run_swap(model, ids, clean_h, atoms_by_layer, positions, null_seed: int | No
         if near_parallel(atoms[0], atoms[1]):
             skipped.append(layer)
             continue
-        clamps[layer] = SwapClamp(atoms, clean_h[layer], null_direction=direction, positions=positions)
+        clamps[layer] = AmplifiedClamp(atoms, clean_h[layer], null_direction=direction, positions=positions, amp=amp)
     _, text, _ = model.generate(ids, MAX_NEW_TOKENS, clamps)
     ratio = statistics.mean(c.edit_ratio_edited for c in clamps.values()) if clamps else 0.0
     return text, skipped, ratio
+
+
+class AmplifiedClamp(SwapClamp):
+    """SwapClamp whose edit (or its null) is multiplied by amp: the same exchange of coordinates, pushed amp times."""
+
+    def __init__(self, *args, amp: float = 1.0, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.amp = amp
+
+    def delta(self, h: torch.Tensor) -> torch.Tensor:
+        return self.amp * super().delta(h)
 
 
 class AddDirection:
@@ -378,7 +406,9 @@ def stage_run(name: str) -> None:
                     if kind in ("steer", "steer_start"):
                         out_text, skipped, ratio = run_steer(model, ids, atoms, positions, job["scale"], seed)
                     else:
-                        out_text, skipped, ratio = run_swap(model, ids, clean_h, atoms, positions, seed)
+                        out_text, skipped, ratio = run_swap(
+                            model, ids, clean_h, atoms, positions, seed, job.get("amp", 1)
+                        )
                     colour = answer_colour(out_text, palette)
                     outcomes.append(
                         {
@@ -389,6 +419,7 @@ def stage_run(name: str) -> None:
                             "regime": regime,
                             "null": null,
                             "scale": job.get("scale"),
+                            "amp": job.get("amp", 1),
                             "continuation": out_text,
                             "colour": colour,
                             "predicted": predicted,
@@ -432,9 +463,10 @@ def status_counts(item_rows: list[dict]) -> dict[str, int]:
 def summarize(outcomes: list[dict]) -> list[dict]:
     groups: dict[tuple, list[dict]] = {}
     for o in outcomes:
-        groups.setdefault((o["band"], o["lens"], o["kind"], o["regime"], o["null"], o.get("scale")), []).append(o)
+        key = (o["band"], o["lens"], o["kind"], o["regime"], o["null"], o.get("scale"), o.get("amp", 1))
+        groups.setdefault(key, []).append(o)
     rows = []
-    for (band, lens, kind, regime, null, scale), group in groups.items():
+    for (band, lens, kind, regime, null, scale, amp), group in groups.items():
         n = len(group)
         flips, kept = sum(o["flip"] for o in group), sum(o["kept_clean"] for o in group)
         rows.append(
@@ -445,6 +477,7 @@ def summarize(outcomes: list[dict]) -> list[dict]:
                 "regime": regime,
                 "null": null,
                 "scale": scale,
+                "amp": amp,
                 "n": n,
                 "flip": wilson(flips, n),
                 "kept_clean": wilson(kept, n),
@@ -489,14 +522,14 @@ def write_summary_md(path: Path, run: str, summary: dict) -> None:
         "",
         "Items: " + ", ".join(f"{k} {v}" for k, v in summary["items"].items()),
         "",
-        "| band | lens | kind | regime | null | scale | n | flip [95% CI] | kept clean [95% CI] | said swapped colour | "
+        "| band | lens | kind | regime | null | scale | amp | n | flip [95% CI] | kept clean [95% CI] | said swapped colour | "
         "said I | edit ratio (median) | positions (median) |",
-        "|---|---|---|---|---|---|---|---|---|---|---|---|---|",
+        "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     for r in summary["rates"]:
         lines.append(
             f"| {r['band']} | {r['lens']} | {r['kind']} | {r['regime']} | {'yes' if r['null'] else ''} | "
-            f"{r.get('scale') or ''} | {r['n']} | {pct(r['flip'])} | {pct(r['kept_clean'])} | "
+            f"{r.get('scale') or ''} | {r.get('amp', 1)} | {r['n']} | {pct(r['flip'])} | {pct(r['kept_clean'])} | "
             f"{100 * r['said_swapped_colour']:.0f}% | {100 * r.get('said_intermediate', 0):.0f}% | "
             f"{r['edit_ratio_median']:.3f} | {r['n_positions_median']:.0f} |"
         )

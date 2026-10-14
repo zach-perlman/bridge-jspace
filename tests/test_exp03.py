@@ -69,3 +69,17 @@ def test_add_direction_edits_only_its_positions():
     out = AddDirection(d, 0.1, [2, 4])(h)
     torch.testing.assert_close(out[[0, 1, 3]], h[[0, 1, 3]])
     torch.testing.assert_close((out[2] - h[2]).norm(), 0.1 * h[2].norm())
+
+
+def test_amplified_clamp_scales_the_edit_and_its_null():
+    import torch
+
+    from bridge_jspace.clamp import SwapClamp
+    from scripts.exp03_brew_swaps import AmplifiedClamp
+
+    g = torch.Generator().manual_seed(0)
+    atoms, h = torch.randn(2, 16, generator=g), torch.randn(5, 16, generator=g)
+    u = torch.nn.functional.normalize(torch.randn(16, generator=g), dim=0)
+    for null in (None, u):
+        base = SwapClamp(atoms, h, null_direction=null).delta(h)
+        torch.testing.assert_close(AmplifiedClamp(atoms, h, null_direction=null, amp=3.0).delta(h), 3.0 * base)
