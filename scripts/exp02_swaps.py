@@ -18,6 +18,12 @@ Rows 0 and 1 are the bridge's and the target's; any further rows are held at the
   jpart              the unit J-parts of the probes
   remainder          the unit remainders (probe - J-part)
   remainder_clamped  the remainder pair, plus every J-part atom of both entities and both naming-token vectors
+Positions (the manifest's "positions"; earlier runs: all). Offsets count back from the prompt's last token (0):
+  all       every position from 1 (position 0, the attention sink, is never edited)
+  last      offset 0 only (" is" in most stripped prompts; where part A reads the answer)
+  prev      offset -1 only (the word before "is"; where part A reads the bridge best, exp12)
+  last_two  offsets -1 and 0
+  earlier   every position from 1 up to offset -2 (the words that cue the bridge, without part A's read sites)
 Null: the same clamp with each position's edit replaced by a random unit direction (one per layer, seeded) scaled to
 that edit's norm.
 
@@ -62,6 +68,7 @@ NULL_SEED = 0
 N_BOOT, BOOT_SEED = 2000, 0
 COMPARISONS = (("jpart", "remainder"), ("remainder", "remainder_clamped"))
 MAX_NEW_TOKENS, MAX_NEW_TOKENS_RETRY = 8, 16  # exp13's: room for "a gas", "Port-ugu-ese"; retry if cut off
+POSITION_REGIMES = ("all", "last", "prev", "last_two", "earlier")
 LABELS = {(True, False): "J-mediated", (False, True): "non-J", (True, True): "both", (False, False): "neither"}
 
 
@@ -73,6 +80,18 @@ def band_layers(band: str) -> tuple[int, ...]:
 
 def probes_file(tag: str) -> Path:
     return pins.CACHE_DIR / "exp01" / tag / "probes.pt"
+
+
+def regime_positions(regime: str, seq_len: int) -> list[int] | None:
+    """Sequence indices a regime edits (None = every position from 1)."""
+    last = seq_len - 1
+    return {
+        "all": None,
+        "last": [last],
+        "prev": [last - 1],
+        "last_two": [last - 1, last],
+        "earlier": list(range(1, last - 1)),
+    }[regime]
 
 
 def probes_origin(tag: str) -> str:
@@ -90,6 +109,7 @@ def stage_manifest(
     scoring: str,
     prompt_end: str,
     band_reason: str | None = None,
+    positions: str = "all",
 ) -> None:
     is_gate = kind == "gate"
     assert is_gate == (band is None) == (gate is None), "the gate sweeps its own bands; main needs --band and --gate"
@@ -115,6 +135,13 @@ def stage_manifest(
             "Scoring by greedy continuation (exp13's criterion C) instead of first-token rank, and prompts with the "
             "trailing space stripped (part A's primary variant), after exp13 found 9 correct items that rank scoring "
             "dropped. Chosen by the human. The edits apply to the prompt's forward only."
+        )
+    if positions != "all":
+        assert not is_gate, "the gate always edits every position"
+        deviations.append(
+            f"Positions: only '{positions}' is edited (see the script docstring), to test where the bridge acts; "
+            "part A reads the bridge best at offset -1 and the answer at offset 0. Edit size is the mean |delta|/|h| "
+            "over the edited positions when the last position is not edited. Chosen by the human."
         )
     if is_gate:
         decision = (
@@ -182,6 +209,7 @@ def stage_manifest(
         "items": {"file": "data/probe_swap.json", "sha256": pins.PROBE_SWAP_SHA256},
         "scoring": scoring,
         "prompt_end": prompt_end,
+        "positions": positions,
         "probes": {
             "exp01_tag": probes_tag,
             "file": str(probes.relative_to(pins.REPO_ROOT)),
@@ -251,7 +279,18 @@ def condition_atoms(condition: str, item: dict, layer: int, probes: Probes, lens
     return torch.cat([pair, lens.vectors(layer, torch.tensor(held, device="cuda"))])
 
 
-def swap(model, ids, clean_h, atoms_by_layer, item, answer_ids, swap_ids, null_seed: int | None, scoring: str) -> dict:
+def swap(
+    model,
+    ids,
+    clean_h,
+    atoms_by_layer,
+    item,
+    answer_ids,
+    swap_ids,
+    null_seed: int | None,
+    scoring: str,
+    positions: list[int] | None = None,
+) -> dict:
     """One swapped forward (and, for greedy_c, its greedy continuation); returns its scores."""
     generator = None if null_seed is None else torch.Generator(device="cuda").manual_seed(null_seed)
     clamps, skipped = {}, []
@@ -264,7 +303,7 @@ def swap(model, ids, clean_h, atoms_by_layer, item, answer_ids, swap_ids, null_s
         if near_parallel(atoms[0], atoms[1]):
             skipped.append(layer)
             continue
-        clamps[layer] = SwapClamp(atoms, clean_h[layer], null_direction=direction)
+        clamps[layer] = SwapClamp(atoms, clean_h[layer], null_direction=direction, positions=positions)
     if scoring == "rank":
         logits, _ = model.run(ids, edits=clamps)
         scores = {}
@@ -290,7 +329,12 @@ def swap(model, ids, clean_h, atoms_by_layer, item, answer_ids, swap_ids, null_s
         "swap_rank": swap_rank,
         "clean_rank": clean_rank,
         "top_word": model.top_word(logits),
-        "edit_ratio": statistics.mean(c.edit_ratio_last for c in clamps.values()) if clamps else 0.0,
+        "edit_ratio": statistics.mean(
+            c.edit_ratio_last if positions is None or ids.shape[1] - 1 in positions else c.edit_ratio_edited
+            for c in clamps.values()
+        )
+        if clamps
+        else 0.0,
         "layers_skipped": skipped,
     }
 
@@ -341,6 +385,7 @@ def stage_run(name: str) -> None:
     bands, conditions = manifest["bands"], manifest["conditions"]
     null_options = (False, True) if manifest["nulls"] else (False,)
     scoring, prompt_end = manifest.get("scoring", "rank"), manifest.get("prompt_end", "as_published")
+    regime = manifest.get("positions", "all")
 
     model = load_model()
     lens = JLens(model, manifest["lens"].get("name", "jlens"))
@@ -353,6 +398,7 @@ def stage_run(name: str) -> None:
         if row["status"] != "eligible":
             continue
         ids, clean_h, answer_ids, swap_ids = prepared
+        positions = regime_positions(regime, ids.shape[1])
         for band in bands:
             for ci, condition in enumerate(conditions):
                 atoms = {
@@ -366,7 +412,7 @@ def stage_run(name: str) -> None:
                             "band": band,
                             "condition": condition,
                             "null": null,
-                            **swap(model, ids, clean_h, atoms, item, answer_ids, swap_ids, seed, scoring),
+                            **swap(model, ids, clean_h, atoms, item, answer_ids, swap_ids, seed, scoring, positions),
                         }
                     )
         print(
@@ -525,6 +571,7 @@ if __name__ == "__main__":
     parser.add_argument("--band", help="A-B, inclusive (main manifest only)")
     parser.add_argument("--gate", help="the gate run that picked --band (main manifest only)")
     parser.add_argument("--name", help="the run's folder name (manifest stage; default = the kind)")
+    parser.add_argument("--positions", default="all", choices=POSITION_REGIMES, help="main manifest: edited positions")
     parser.add_argument("--band-reason", help="main manifest: why --band differs from the gate's pick")
     parser.add_argument("--scoring", default="greedy_c", choices=["greedy_c", "rank"], help="manifest stage")
     parser.add_argument("--prompt-end", default="stripped", choices=["stripped", "as_published"], help="manifest stage")
@@ -541,6 +588,7 @@ if __name__ == "__main__":
             args.scoring,
             args.prompt_end,
             args.band_reason,
+            args.positions,
         )
     else:
         stage_run(args.target)

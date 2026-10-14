@@ -5,8 +5,8 @@ them to targets c* and changes nothing orthogonal to span(A):  h <- h + (c* - c)
 clean pass's coordinates with atoms 0 (source) and 1 (target) exchanged; any further atoms keep their clean values,
 which is how J-space coordinates are held fixed.
 
-Every position except 0 is edited (position 0 is the attention sink, whose large-norm residual makes the
-coordinates unstable).
+By default every position except 0 is edited (position 0 is the attention sink, whose large-norm residual makes the
+coordinates unstable); `positions` restricts the edit to some of them.
 """
 
 import torch
@@ -23,11 +23,17 @@ class SwapClamp:
     is pinned at its clean value (a no-op on the clean pass; used as a check).
 
     With `null_direction` (unit [d]), the edit at each position is replaced by that direction scaled to the edit's
-    own norm: the matched-norm random-direction control.
+    own norm: the matched-norm random-direction control. `positions` (indices into the sequence, none of them 0)
+    restricts the edit to those positions; None edits every position from 1.
     """
 
     def __init__(
-        self, atoms: torch.Tensor, clean_h: torch.Tensor, null_direction: torch.Tensor | None = None, swap: bool = True
+        self,
+        atoms: torch.Tensor,
+        clean_h: torch.Tensor,
+        null_direction: torch.Tensor | None = None,
+        swap: bool = True,
+        positions: list[int] | None = None,
     ):
         self.atoms = atoms.float()  # [K, d]
         self.pinv = torch.linalg.pinv(self.atoms)  # [d, K]
@@ -36,18 +42,27 @@ class SwapClamp:
         if swap:
             self.targets[:, [0, 1]] = clean_coords[:, [1, 0]]
         self.null_direction = null_direction
+        self.mask = torch.ones(len(clean_h) - 1, dtype=torch.bool, device=clean_h.device)  # over positions 1..
+        if positions is not None:
+            assert positions, "positions must be non-empty"
+            assert 0 not in positions, "position 0 is never edited"
+            self.mask[:] = False
+            self.mask[[p - 1 for p in positions]] = True
         self.edit_ratio_last = float("nan")  # |edit| / |h| at the final position, from the latest call
+        self.edit_ratio_edited = float("nan")  # mean |edit| / |h| over the edited positions, from the latest call
 
     def delta(self, h: torch.Tensor) -> torch.Tensor:
         """The edit [P, d] for positions 1.. of h [seq, d]."""
         delta = (self.targets - h[1:] @ self.pinv) @ self.atoms
         if self.null_direction is not None:
             delta = delta.norm(dim=-1, keepdim=True) * self.null_direction
-        return delta
+        return delta * self.mask[:, None]
 
     def __call__(self, h: torch.Tensor) -> torch.Tensor:
         delta = self.delta(h)
         self.edit_ratio_last = float(delta[-1].norm() / h[-1].norm())
+        ratios = delta.norm(dim=-1) / h[1:].norm(dim=-1)
+        self.edit_ratio_edited = float(ratios[self.mask].mean())
         out = h.clone()
         out[1:] += delta
         return out

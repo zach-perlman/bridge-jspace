@@ -71,6 +71,19 @@ def test_null_direction_matches_edit_norm():
     torch.testing.assert_close(cos, torch.ones_like(cos))
 
 
+def test_clamp_positions_edit_only_those_positions():
+    atoms, clean_h, full = _toy_clamp(3)
+    some = SwapClamp(atoms, clean_h, positions=[2, 5])
+    out, ref = some(clean_h), full(clean_h)
+    torch.testing.assert_close(out[[2, 5]], ref[[2, 5]])  # the same edit where it applies
+    torch.testing.assert_close(out[[0, 1, 3, 4]], clean_h[[0, 1, 3, 4]])  # nothing elsewhere
+    null = SwapClamp(
+        atoms, clean_h, null_direction=torch.nn.functional.normalize(torch.randn(64), dim=0), positions=[5]
+    )
+    assert (null.delta(clean_h)[:4] == 0).all()
+    assert some.edit_ratio_last == full.edit_ratio_last  # position 5 is the last, edited in both
+
+
 def test_wilson_known_values():
     rate, lo, hi = wilson(5, 10)
     assert abs(rate - 0.5) < 1e-12 and abs(lo - 0.2366) < 1e-3 and abs(hi - 0.7634) < 1e-3
