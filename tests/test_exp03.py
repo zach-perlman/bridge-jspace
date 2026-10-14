@@ -95,3 +95,30 @@ def test_amplified_clamp_does_not_compound_across_layers():
     atoms, h = torch.randn(2, 16, generator=g), torch.randn(5, 16, generator=g)
     clamp = AmplifiedClamp(atoms, h, amp=5.0)
     torch.testing.assert_close(clamp.delta(clamp(h)), torch.zeros(4, 16), atol=1e-4, rtol=0)
+
+
+def test_fresh_items_match_the_bank_format():
+    import random
+
+    from bridge_jspace import pins
+    from scripts.exp03_brew_swaps import spans
+    from scripts.exp03_make_items import make_item
+
+    bank = pins.brew_items()[0]
+    rng = random.Random(0)
+    for index in range(50):
+        item = make_item(rng, index)
+        f = {c: row["stir"] for c, row in item["table"].items()}
+        assert len(f) == 10 and all(f[c] != c and f[c] in f for c in f)
+        start, inter, answer = item["start"], item["intermediates"][0], item["answer"]
+        assert inter == f[start] and answer == f[inter] and len({start, inter, answer}) == 3
+        assert sorted(item["off_trajectory"] + [start, inter, answer]) == sorted(f)
+        assert set(item) >= set(bank) - {"regions", "eval_positions", "gate", "prompt_first", "options_adjacent",
+                                         "options_random"}  # fmt: skip
+        assert spans(item, item["prompt"])["start_line"]  # the runner's regions parse
+
+
+def test_pinned_fresh_items_load():
+    from bridge_jspace import pins
+
+    assert len(pins.brew_fresh_items()) == 200

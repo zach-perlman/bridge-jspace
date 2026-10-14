@@ -71,10 +71,12 @@ def category(o: dict, item: dict, table: dict) -> str:
 
 def load(runs: list[str]) -> dict:
     """Shares per (kind, band, lens, null, scale, category), with n, from the runs' outcomes."""
-    bank = {it["name"]: it for it in pins.brew_items()}
+    loaders = {"bank": pins.brew_items, "fresh": pins.brew_fresh_items}
     counts: dict[tuple, dict[str, int]] = defaultdict(lambda: defaultdict(int))
     for run in runs:
         run_dir = pins.RESULTS_DIR / EXP / run
+        item_set = json.loads((run_dir / "manifest.json").read_text())["items"].get("set", "bank")
+        bank = {it["name"]: it for it in loaders[item_set]()}
         items = {r["name"]: r for r in map(json.loads, (run_dir / "items.jsonl").read_text().splitlines())}
         for o in map(json.loads, (run_dir / "outcomes.jsonl").read_text().splitlines()):
             if o["kind"] not in CATEGORIES:

@@ -11,7 +11,9 @@ Stages (manifests are written before the runs; both are write-once):
   manifest main --band A-B --sweep S [--name N]
                                            every position regime, both lenses, matched-norm nulls, and the
                                            off-path control, on the band sweep S picked
-  manifest followup [--set S] --name N    a fixed job set from FOLLOWUPS (set by the human after main):
+  manifest followup [--set S] [--items fresh] --name N
+                                           a fixed job set from FOLLOWUPS (set by the human after main), on the
+                                           bank or on fresh items (data/brew_fresh.json, exp03_make_items.py):
                                            followup: positive controls (start and answer swaps), the intermediate
                                            swap where the lens reads it, graded steering along X - I;
                                            start_steer: graded steering of the start line along S' - S
@@ -82,6 +84,15 @@ SWAP_EARLY_JOBS = tuple(
     for amp in (1, 3, 5)
     for null in (False, True)
 )
+FRESH_STEER_JOBS = tuple(
+    {"kind": "steer_start", "regime": "start_line", "null": null, "scale": s}
+    for s in (0.03, 0.05)
+    for null in (False, True)
+)
+ITEM_SETS = {  # name -> (file, sha256, loader)
+    "bank": (pins.BREW_FILE, pins.BREW_SHA256, pins.brew_items),
+    "fresh": (pins.BREW_FRESH_FILE, pins.BREW_FRESH_SHA256, pins.brew_fresh_items),
+}
 FOLLOWUPS = {  # name -> (bands, jobs, why)
     "followup": (
         FOLLOWUP_BANDS,
@@ -121,6 +132,14 @@ FOLLOWUPS = {  # name -> (bands, jobs, why)
         "void; amp now scales the clamp's targets. Same decision rule as swap_early: the intermediate swap is "
         "interpreted only at an amp where the start-swap positive control flips more than its null (Wilson intervals "
         "not overlapping).",
+    ),
+    "fresh_steer": (
+        ("8-24",),
+        FRESH_STEER_JOBS,
+        "Held-out replication of start_steer/start_steer_low, fixed before the run: their best band (8-24) and scales "
+        "(3%, 5%) were picked on the bank's items, so the same steering is rerun on fresh items (--items fresh), with "
+        "random-direction nulls at both scales. Replicates if J++'s f(f(S')) rate at 3% or 5% beats its null (Wilson "
+        "intervals not overlapping).",
     ),
 }
 MAX_NEW_TOKENS = 6
@@ -211,7 +230,9 @@ def control_pair(item: dict, index: int) -> tuple[str, str] | None:
     return a, b
 
 
-def stage_manifest(kind: str, name: str, band: str | None, sweep: str | None, job_set: str = "followup") -> None:
+def stage_manifest(
+    kind: str, name: str, band: str | None, sweep: str | None, job_set: str = "followup", item_set: str = "bank"
+) -> None:
     is_sweep = kind == "sweep"
     if kind == "followup":
         assert band is None, "the follow-up's bands are fixed in FOLLOWUP_BANDS"
@@ -230,7 +251,11 @@ def stage_manifest(kind: str, name: str, band: str | None, sweep: str | None, jo
         "to the one the table predicts for the swapped-in colour, and at which prompt positions?",
         "model": {"repo": pins.QWEN_REPO, "revision": pins.QWEN_REVISION, "dtype": "bfloat16", "attn": "sdpa"},
         "lenses": {lens: pins.LENS_FILES[lens] for lens in LENSES},
-        "items": {"file": "data/brew_intermediates.json", "sha256": pins.BREW_SHA256},
+        "items": {
+            "set": item_set,
+            "file": str(ITEM_SETS[item_set][0].relative_to(pins.REPO_ROOT)),
+            "sha256": ITEM_SETS[item_set][1],
+        },
         "render": "chat template, enable_thinking=False, assistant prefilled with 'Answer:'",
         "eligibility": "greedy continuation's first palette colour is the answer",
         "swap": "clamp.SwapClamp of the two colours' unit lens vectors (concept tokens) at every band layer",
@@ -339,10 +364,11 @@ def stage_run(name: str) -> None:
     out_dir = RESULTS / name
     manifest = json.loads((out_dir / "manifest.json").read_text())
     assert not (out_dir / "outcomes.jsonl").exists(), f"{out_dir} already has results; results are write-once"
-    assert sha256_of(pins.BREW_FILE) == manifest["items"]["sha256"], "brew items changed since the manifest"
+    item_file, _, load_items = ITEM_SETS[manifest["items"].get("set", "bank")]
+    assert sha256_of(item_file) == manifest["items"]["sha256"], "brew items changed since the manifest"
     model = load_model()
     lenses = {lens: JLens(model, lens) for lens in LENSES}
-    items = pins.brew_items()
+    items = load_items()
     palette = sorted({c for it in items for c in it["table"]} | {it["answer"] for it in items})
     layers = sorted({layer for band in manifest["bands"] for layer in band_layers(band)})
     item_rows, outcomes = [], []
@@ -372,13 +398,15 @@ def stage_run(name: str) -> None:
         }
         regions = spans(item, text)
         offsets = [tuple(o) for o in enc.offset_mapping]
-        # The bank's labelled cells, from its own render: our start line and last token must land on them.
-        bank_start = sorted(int(k) for k, v in item["regions"].items() if v == "start")
-        bank_colon = max(int(k) for k, v in item["regions"].items() if v == "emit_colon")
-        row["render_matches_bank"] = (
-            regime_positions("start_line", offsets, regions)[: len(bank_start)] == bank_start
-            and len(offsets) - 1 == bank_colon
-        )
+        # The bank's labelled cells, from its own render: our start line and last token must land on them (fresh
+        # items have none).
+        if "regions" in item:
+            bank_start = sorted(int(k) for k, v in item["regions"].items() if v == "start")
+            bank_colon = max(int(k) for k, v in item["regions"].items() if v == "emit_colon")
+            row["render_matches_bank"] = (
+                regime_positions("start_line", offsets, regions)[: len(bank_start)] == bank_start
+                and len(offsets) - 1 == bank_colon
+            )
         row["status"] = "eligible" if clean == item["answer"] and x else "clean_wrong" if x else "no_target"
         item_rows.append(row)
         if row["status"] != "eligible":
@@ -570,9 +598,10 @@ if __name__ == "__main__":
     parser.add_argument("--name", help="the run's folder name (manifest stage; default = the kind)")
     parser.add_argument("--set", dest="job_set", default="followup", choices=list(FOLLOWUPS),
                         help="followup manifest: which job set")  # fmt: skip
+    parser.add_argument("--items", default="bank", choices=list(ITEM_SETS), help="bank (WorkspaceBench) or fresh")
     args = parser.parse_args()
     if args.stage == "manifest":
         assert args.target in ("sweep", "main", "followup"), "manifest needs a kind (sweep/main/followup)"
-        stage_manifest(args.target, args.name or args.target, args.band, args.sweep, args.job_set)
+        stage_manifest(args.target, args.name or args.target, args.band, args.sweep, args.job_set, args.items)
     else:
         stage_run(args.target)

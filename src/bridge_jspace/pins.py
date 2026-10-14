@@ -31,6 +31,8 @@ PROBE_SWAP_FILE = DATA_DIR / "probe_swap.json"
 PROBE_SWAP_SHA256 = "a0edd27ca23f7b4d0fbe90448c2ddcc7457a3d812121bf024ed12a032ff86796"
 BREW_FILE = DATA_DIR / "brew_intermediates.json"  # WorkspaceBench's brew_intermediates bank (part B's exp03)
 BREW_SHA256 = "183be95d4182c373674786b7610820520e56434fb0c15a75a62dad854bed9d83"
+BREW_FRESH_FILE = DATA_DIR / "brew_fresh.json"  # exp03_make_items.py: held-out items in the bank's format, ungated
+BREW_FRESH_SHA256 = "1e20ed25b3727842acba0806b346d91d991db1fa31f42f514e537fb3ab000d3c"
 LENS_EVAL_MULTIHOP_FILE = DATA_DIR / "lens_eval_multihop.json"
 LENS_EVAL_MULTIHOP_SHA256 = "50b7e4c9255291c0ca2a8e94615be9f44531fa57bb1a844e4f9616056d987416"
 ENTITY_PROMPTS_FILE = DATA_DIR / "entity_prompts.json"
@@ -53,6 +55,10 @@ def probe_swap_items() -> list[dict[str, Any]]:
 
 def brew_items() -> list[dict[str, Any]]:
     return load_pinned_items(BREW_FILE, BREW_SHA256)
+
+
+def brew_fresh_items() -> list[dict[str, Any]]:
+    return load_pinned_items(BREW_FRESH_FILE, BREW_FRESH_SHA256)
 
 
 def lens_eval_multihop_items() -> list[dict[str, Any]]:

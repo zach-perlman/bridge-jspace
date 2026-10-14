@@ -6,6 +6,7 @@ Provenance, revisions, checksums and licences. What each dataset is and how much
 |---|---|---|---|---|
 | `probe_swap.json` | [anthropics/jacobian-lens](https://github.com/anthropics/jacobian-lens) `data/experiments/probe-swap.json` | `581d398613e5602a5af361e1c34d3a92ea82ba8e` | `a0edd27ca23f7b4d0fbe90448c2ddcc7457a3d812121bf024ed12a032ff86796` | Apache-2.0 |
 | `brew_intermediates.json` | [camilablank/workspace-bench](https://github.com/camilablank/workspace-bench) `evals/brew_intermediates/items.json` | `92d763e722377f5bfae045e829a308ab5919a820` | `183be95d4182c373674786b7610820520e56434fb0c15a75a62dad854bed9d83` | MIT |
+| `brew_fresh.json` | Generated for this repo: `scripts/exp03_make_items.py --n 200 --seed 1`, in the format of `brew_intermediates.json` (ungated; exp03 keeps the greedy-correct ones) | - | `1e20ed25b3727842acba0806b346d91d991db1fa31f42f514e537fb3ab000d3c` | - |
 | `lens_eval_multihop.json` | [anthropics/jacobian-lens](https://github.com/anthropics/jacobian-lens) `data/evaluations/lens-eval-multihop.json` | `581d398613e5602a5af361e1c34d3a92ea82ba8e` | `50b7e4c9255291c0ca2a8e94615be9f44531fa57bb1a844e4f9616056d987416` | Apache-2.0 |
 | `entity_prompts.json` | Written for this repo by the coding agent (Claude, in a Cursor session); see the file's `meta` block | - | - | - |
 | `entity_prompts_topup.json`, `entity_prompts_more/part*.json` | Written for this repo (rounds 2 and 3, coding agents in Cursor sessions); see each file's `meta` block | - | - | - |
