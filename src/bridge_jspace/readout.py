@@ -7,6 +7,7 @@ are never kept: on Qwen3.6-27B that is gigabytes per prompt.
 
 from __future__ import annotations
 
+import re
 from collections.abc import Sequence
 from dataclasses import dataclass
 
@@ -95,3 +96,54 @@ def rank_grid(
         h = resid[layer] if positions is None else resid[layer][list(positions)]
         out.append(ranks_of(readout_logits(model, reader, h, layer), token_ids).cpu())
     return torch.stack(out)
+
+
+# ---- part B's rank conventions (src/bridge_jspace/model.py), shared so both parts score words identically ----
+
+_HAS_LETTER_OR_DIGIT = re.compile(r"[^\W_]")
+
+
+def formatting_mask(tokenizer, vocab_size: int) -> torch.Tensor:
+    """`[vocab]` bool, True for formatting tokens: special/added tokens and tokens with no letter or digit.
+
+    Same rule as part B's `model.load_model`; word ranks ignore these tokens, so a bare " " or "," never takes a
+    place in the ranking (it would on the lone " " that ends many published prompts).
+    """
+    decoded = tokenizer.batch_decode([[i] for i in range(vocab_size)])
+    special = set(tokenizer.all_special_ids) | {int(i) for i in tokenizer.added_tokens_decoder}
+    mask = torch.zeros(vocab_size, dtype=torch.bool)
+    mask[[i for i, s in enumerate(decoded) if i in special or not _HAS_LETTER_OR_DIGIT.search(s)]] = True
+    return mask
+
+
+def word_ranks(logits: torch.Tensor, candidates: Sequence[Sequence[int]], mask: torch.Tensor) -> torch.Tensor:
+    """`[n, len(candidates)]` word ranks, 1 = top. `logits` is [n, vocab]; each candidate set is a word's token ids.
+
+    Part B's `Model.word_rank`, vectorised over rows: formatting tokens are removed, the word scores as its best
+    id, and rank = 1 + number of other word tokens scoring at least as high (ties count against the word).
+    """
+    masked = logits.float().masked_fill(mask.to(logits.device), float("-inf"))
+    out = torch.empty(logits.shape[0], len(candidates), dtype=torch.long)
+    for j, ids in enumerate(candidates):
+        ids_t = torch.as_tensor(list(ids), device=logits.device)
+        best = logits[:, ids_t].float().max(-1).values
+        others = masked.clone()
+        others[:, ids_t] = float("-inf")
+        out[:, j] = ((others >= best[:, None]).sum(-1) + 1).cpu()
+    return out
+
+
+def pool_ranks(logits: torch.Tensor, targets: Sequence[int], pool: Sequence[int]) -> torch.Tensor:
+    """`[n, len(targets)]` rank of each target id among the `pool` ids only (1 = top, ties count against).
+
+    E.g. "is Brazil the top entity among all 97 probe-swap entities?" — chance is 1/len(pool).
+    """
+    pool_t = torch.as_tensor(list(pool), device=logits.device)
+    pool_logits = logits[:, pool_t].float()  # [n, P]
+    out = torch.empty(logits.shape[0], len(targets), dtype=torch.long)
+    for j, t in enumerate(targets):
+        if t not in pool:
+            raise ValueError(f"target id {t} is not in the pool")
+        tl = logits[:, t].float()
+        out[:, j] = ((pool_logits >= tl[:, None]).sum(-1)).cpu()  # counts the target itself, so 1 = top
+    return out

@@ -1,0 +1,27 @@
+# exp11_bridge_vs_answer_by_layer: at which layers is the bridge readable, and at which the answer?
+# Readers = logit lens (baseline) + every lens in the model YAML. Items and labels from part B's exp02_swaps/main.
+#   make run CONFIG=scripts/exp11_bridge_vs_answer_by_layer/config.yaml                                   # 27B
+#   make run CONFIG=scripts/exp11_bridge_vs_answer_by_layer/config.yaml ARGS="params.strip_trailing_space=true"
+#   uv run bj-run scripts/exp11_bridge_vs_answer_by_layer/config.yaml \
+#       model=configs/models/qwen3.5-0.8b.yaml params.limit=6 results_dir=cache/smoke                   # CPU smoke
+name: exp11_bridge_vs_answer_by_layer
+target: scripts.exp11_bridge_vs_answer_by_layer.experiment:BridgeVsAnswer
+seed: 0
+model: configs/models/qwen3.6-27b.yaml
+params:
+  # Part B's labels (status: eligible = model answers correctly; label: J-mediated / non-J / both / neither).
+  labels_file: results/exp02_swaps/main/labels.csv
+  labels_sha256: 111adcad15cc4c05c94b236010d05c101f71b6fd5dbedac29ef073c5500ba407
+  # false: prompts as published, like part B (its labels were computed on them). Trailing-space items are a subset
+  # in the summary. true: sensitivity check.
+  strip_trailing_space: false
+  band: [32, 48]  # part B's swap band; J-lens/J++ read bridges in ~35-52 in exp10
+  hit_k: 10  # "the answer is readable": word rank <= hit_k
+  n_boot: 10000
+  limit: null  # first N items; smoke runs only
+  fact_prompt: "Fact: The capital of France is"
+  fact_expected: " Paris"
+  parity_prompts:
+    - "Fact: The currency used in the country shaped like a boot is"
+    - "Fact: The language spoken in the country where the Amazon River ends is "
+  parity_atol: 0.01

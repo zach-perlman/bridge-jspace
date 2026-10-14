@@ -9,10 +9,13 @@ from torch import nn
 
 from bridge_jspace.readout import (
     continuation_first_token,
+    formatting_mask,
+    pool_ranks,
     rank_grid,
     ranks_of,
     readout_logits,
     residuals,
+    word_ranks,
     word_tokens,
 )
 
@@ -143,3 +146,50 @@ def test_word_tokens_falls_back_to_first_content_token():
     # Like Qwen's " 26" -> " ", "2", "6": the bare space must not count as reading the word.
     w = word_tokens(_Tok(), "Hungary")
     assert w.ids == (100 + ord("H"),) and w.pieces == ("H",) and not w.single_token
+
+
+class _VocabTok:
+    """Fake tokenizer over a fixed vocabulary, for the formatting mask."""
+
+    pieces: ClassVar[list[str]] = [" Brazil", " ", ",", "<|im_end|>", "2", " Mexico", "_"]
+    all_special_ids: ClassVar[list[int]] = [3]
+    added_tokens_decoder: ClassVar[dict[int, str]] = {}
+
+    def batch_decode(self, ids):
+        return [self.pieces[i[0]] for i in ids]
+
+
+def test_formatting_mask_matches_part_b_rule():
+    mask = formatting_mask(_VocabTok(), 7)
+    # " ", ",", "_" have no letter/digit; id 3 is special. Digits count as words.
+    assert mask.tolist() == [False, True, True, True, False, False, True]
+
+
+def test_word_ranks_skip_formatting_tokens_and_ties_count_against():
+    mask = torch.tensor([False, True, True, True, False, False, True])
+    logits = torch.tensor([[1.0, 9.0, 8.0, 7.0, 2.0, 1.0, 6.0]])  # formatting ids 1-3 and 6 score highest
+    ranks = word_ranks(logits, [[0], [4], [5], [0, 4]], mask)
+    # word tokens only: id4=2.0 > id0=1.0 == id5=1.0 -> " Brazil" ties " Mexico" and loses the tie
+    assert ranks.tolist() == [[3, 1, 3, 1]]
+
+
+def test_word_ranks_match_naive_on_random_logits():
+    g = torch.Generator().manual_seed(0)
+    logits = torch.randn(5, 50, generator=g)
+    mask = torch.zeros(50, dtype=torch.bool)
+    mask[::7] = True
+    cands = [[1, 2], [10], [33, 34, 35]]
+    got = word_ranks(logits, cands, mask)
+    for r in range(5):
+        for j, ids in enumerate(cands):
+            best = max(float(logits[r, i]) for i in ids)
+            others = [float(logits[r, i]) for i in range(50) if not mask[i] and i not in ids]
+            assert got[r, j] == 1 + sum(v >= best for v in others)
+
+
+def test_pool_ranks():
+    logits = torch.tensor([[0.0, 5.0, 3.0, 9.0, 3.0]])
+    # pool {1, 2, 4}: id 3 (score 9) is outside the pool and must not count
+    assert pool_ranks(logits, [1, 2], [1, 2, 4]).tolist() == [[1, 3]]  # 2 ties 4 -> loses
+    with pytest.raises(ValueError):
+        pool_ranks(logits, [3], [1, 2, 4])
