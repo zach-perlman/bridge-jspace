@@ -28,12 +28,16 @@ def pct(w) -> str:
     return f"{100 * w[0]:.0f}% [{100 * w[1]:.0f}, {100 * w[2]:.0f}]"
 
 
-def plot(rates: dict, conditions: list[str], path: Path) -> None:
+def plot(rates: dict, conditions: list[str], path: Path, scoring: str) -> None:
     fig, axes = plt.subplots(1, 2, figsize=(11, 3.8), sharey=True)
     x = range(len(conditions))
     for ax, metric, title in (
-        (axes[0], "flip", "swap answer at rank 1 (flip)"),
-        (axes[1], "kept_clean", "clean answer kept at rank 1"),
+        (
+            axes[0],
+            "flip",
+            "swap answer at rank 1 (flip)" if scoring == "rank" else "swap answer in continuation (flip)",
+        ),
+        (axes[1], "kept_clean", "clean answer kept at rank 1" if scoring == "rank" else "clean answer kept"),
     ):
         for offset, null, color, label in (
             (-0.2, False, "tab:blue", "swap"),
@@ -46,7 +50,7 @@ def plot(rates: dict, conditions: list[str], path: Path) -> None:
                 width=0.4,
                 color=color,
                 label=label,
-                yerr=[[r[0] - r[1] for r in w], [r[2] - r[0] for r in w]],
+                yerr=[[max(0.0, r[0] - r[1]) for r in w], [max(0.0, r[2] - r[0]) for r in w]],  # float noise at 0
                 capsize=3,
             )
         ax.set_xticks(list(x), conditions, rotation=20)
@@ -69,7 +73,8 @@ def main(run: str) -> None:
 
     conditions = manifest["conditions"]
     rates = {(r["condition"], r["null"]): r for r in summary["rates"]}
-    plot(rates, conditions, fig_dir / "flip_rates.png")
+    scoring = manifest.get("scoring", "rank")
+    plot(rates, conditions, fig_dir / "flip_rates.png", scoring)
 
     commit = subprocess.run(
         ["git", "describe", "--always", "--dirty"], cwd=pins.REPO_ROOT, capture_output=True, text=True
@@ -108,14 +113,19 @@ def main(run: str) -> None:
         "2) The J-part vs remainder gap is a dose gap. Checked: median direct edit ratio |delta|/|h| at the final "
         "position " + ", ".join(f"{c} {real(c)['edit_ratio_median']:.3f}" for c in conditions) + ".",
         "3) Flips come from breaking the computation, not from installing the target. Checked: share with neither "
-        "answer at rank 1 "
+        + ("answer at rank 1 " if scoring == "rank" else "answer in the continuation ")
         + ", ".join(f"{c} {100 * real(c)['neither']:.0f}%" for c in conditions)
         + "; items with skipped (near-parallel) layers "
         + ", ".join(f"{c} {real(c)['items_with_skipped_layers']}" for c in conditions)
         + ".",
-        "Caveats: the band was picked by the gate on these same items. The remainder holds most of the probes' prompt "
-        "noise (the J-part is 12-18% of probe variance; exp01_probes v2 -> v3, 6 -> 24 kept prompts per entity, cut "
-        "probe norms by about a third), so a weak remainder swap partly reflects a noisier direction.",
+        "Caveats: "
+        + (
+            "the band was picked by the gate on these same items. "
+            if gate["band"] == manifest["bands"][0]
+            else f"the band was set by the human, not the gate's pick ({gate['band']}). "
+        )
+        + "The remainder holds most of the probes' prompt noise (the J-part is a minority of probe variance; see "
+        "the exp01 run's per-layer fve), so a weak remainder swap partly reflects a noisier direction.",
         f"For the human to verify: results/{EXP}/{run}/labels.csv (one row per item; recompute each condition's "
         f"flip rate as the mean of flip_<condition> over status == eligible) and outcomes.jsonl (ranks, top words).",
         "Status: UNVERIFIED until a human adds it to VERIFIED.md",

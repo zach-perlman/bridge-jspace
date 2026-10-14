@@ -5,9 +5,9 @@ Stages (each run's manifest is written before it runs; both are write-once; --na
 default = the kind):
   manifest gate --probes TAG [--name N]              band sweep with the raw J-lens and full-probe swaps only
   run N
-  manifest main --probes TAG --band A-B --gate G [--name N]
+  manifest main --probes TAG --band A-B --gate G [--band-reason R] [--name N]
                                                      all five conditions and their random-direction nulls on the band
-                                                     that gate run G picked
+                                                     that gate run G picked (another band only with --band-reason)
   run N
 
 Swap (clamp.SwapClamp): at every band layer and every prompt position except 0, the clean coordinates on a set of
@@ -82,7 +82,14 @@ def probes_origin(tag: str) -> str:
 
 
 def stage_manifest(
-    kind: str, name: str, probes_tag: str, band: str | None, gate: str | None, scoring: str, prompt_end: str
+    kind: str,
+    name: str,
+    probes_tag: str,
+    band: str | None,
+    gate: str | None,
+    scoring: str,
+    prompt_end: str,
+    band_reason: str | None = None,
 ) -> None:
     is_gate = kind == "gate"
     assert is_gate == (band is None) == (gate is None), "the gate sweeps its own bands; main needs --band and --gate"
@@ -135,7 +142,11 @@ def stage_manifest(
         gate_record = {"run": gate, **json.loads((RESULTS / gate / "summary.json").read_text())["decision"]}
         gate_probes = json.loads((RESULTS / gate / "manifest.json").read_text())["probes"]["exp01_tag"]
         gate_manifest = json.loads((RESULTS / gate / "manifest.json").read_text())
-        assert gate_record["band"] == band, "main must use its gate's band"
+        if gate_record["band"] != band:
+            assert band_reason, f"band {band} is not gate {gate}'s ({gate_record['band']}); give --band-reason"
+            deviations.append(
+                f"Band {band} set by the human, not gate {gate}'s pick ({gate_record['band']}): {band_reason}"
+            )
         assert (gate_manifest.get("scoring", "rank"), gate_manifest.get("prompt_end", "as_published")) == (
             scoring,
             prompt_end,
@@ -149,9 +160,10 @@ def stage_manifest(
                 f"decomposition. The band is gate {gate}'s, fixed before this run; full_probe uses no lens, so its "
                 "rate should match the gate's at this band."
             )
-        deviations.append(
-            f"The band was picked by gate {gate} on these same items, so full_probe's rate is optimistic."
-        )
+        if gate_record["band"] == band:
+            deviations.append(
+                f"The band was picked by gate {gate} on these same items, so full_probe's rate is optimistic."
+            )
         if not gate_record["go"]:
             deviations.append(
                 f"Gate {gate} failed (full probe {100 * gate_record['full_probe_flip_rate']:.0f}% < "
@@ -513,6 +525,7 @@ if __name__ == "__main__":
     parser.add_argument("--band", help="A-B, inclusive (main manifest only)")
     parser.add_argument("--gate", help="the gate run that picked --band (main manifest only)")
     parser.add_argument("--name", help="the run's folder name (manifest stage; default = the kind)")
+    parser.add_argument("--band-reason", help="main manifest: why --band differs from the gate's pick")
     parser.add_argument("--scoring", default="greedy_c", choices=["greedy_c", "rank"], help="manifest stage")
     parser.add_argument("--prompt-end", default="stripped", choices=["stripped", "as_published"], help="manifest stage")
     args = parser.parse_args()
@@ -520,7 +533,14 @@ if __name__ == "__main__":
         assert args.target in ("gate", "main"), "manifest needs a kind (gate/main)"
         assert args.probes, "manifest needs --probes"
         stage_manifest(
-            args.target, args.name or args.target, args.probes, args.band, args.gate, args.scoring, args.prompt_end
+            args.target,
+            args.name or args.target,
+            args.probes,
+            args.band,
+            args.gate,
+            args.scoring,
+            args.prompt_end,
+            args.band_reason,
         )
     else:
         stage_run(args.target)
