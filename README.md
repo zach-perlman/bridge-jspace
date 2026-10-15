@@ -636,9 +636,11 @@ exp11 and exp12 pages show the same oracle words under each card ("Oracle lens (
 
 **What this does not show.**
 - That the oracle reads the lens-blind bridge from the state rather than re-solving it (above).
-- That its output is in the mode it was trained in. Its bullets often open mid-sentence or with a Chinese token
-  ("- , USA, was invented?", "- 奶牛 (cow)"); greedy decoding (the reference reader samples) or a template difference
-  could cause this. Not yet checked against WorkspaceBench's reference reader on the same activations.
+- Its output format is its own, not our pipeline's: its bullets often open mid-sentence or with a Chinese token
+  ("- , USA, was invented?", "- 奶牛 (cow)"), and WorkspaceBench's reference code path (peft's PeftModel, its
+  sampling) gives the same texts on the same activations (`results/checks/reference_readers-20261015-145931.json`:
+  greedy texts identical for their first 68-726 characters, then bf16 noise; sampled texts with one seed nearly
+  identical; the same for the NLA). Sampling does not turn them into clean concept lists either.
 - Layers other than 28/36/44 come from runs made after seeing the first; the decision rule applies to the first run
   only. The lens-blind readings differ from layer to layer, so the by-layer curves mix changing sets of readings.
 - String matching: a bridge named only in another script (e.g. 巴西 for Brazil, without "(Brazil)") is missed, for
@@ -989,24 +991,18 @@ exp15 read all 11 of the oracle lens's layers: it names the bridge in about a th
 miss it, mostly where they nearly have it, and finds no question the lenses miss altogether; exp16's NLA, a second
 verbalizer, agrees at layer 42. What follows checks whether that is reading or solving.
 
-1. **Is the oracle's output what its reference reader gives?** (no new experiment; a check)
-   - *Why:* its bullets often open mid-sentence or with a Chinese token, and we decode greedily where the reference
-     samples; if the reference gives clean concept lists on the same activations, exp15's numbers may change.
-   - *Test:* 5 activations through WorkspaceBench's own code path (PEFT adapter, its sampling) and through ours,
-     greedy and sampled; compare the texts, for the oracle and the NLA (`scripts/check_reference_readers.py`;
-     running).
-   - *Cost:* about 15 minutes of GPU.
-2. **On the lens-blind readings, does the oracle read the state or solve the question?** (exp17, design from the
+1. **On the lens-blind readings, do the verbalizers read the state or solve the question?** (exp17, design from the
    critic)
-   - *Why:* 87% of its lens-blind namings are the question re-told with the bridge filled in, which solving would also
-     produce; exp15's swap test covers 5 such questions, 17 of its 23 are one country template.
+   - *Why:* 87% of the oracle's lens-blind namings are the question re-told with the bridge filled in, and the NLA's
+     comments often solve the question outright; both readers know the facts. The swap tests cover 5 such questions,
+     and 17 of their 23 are one country template.
    - *Test:* pairs of questions in one template whose tokens line up, e.g. "...where Cairo is located..." and
      "...where Lima is located...". Patch the donor's (Lima's) cue-phrase activations into the recipient (Cairo's)
-     prompt and read the oracle at the recipient's last word: Peru = it reads the state, Egypt = it solves from the
-     text. Counts only where the model's answer follows the donor (the patch took).
+     prompt and read the oracle lens and the NLA at the recipient's last word: Peru = they read the state, Egypt = they
+     solve from the text. Counts only where the model's answer follows the donor (the patch took).
    - *Cost:* about 18 such pairs exist, nearly all places; more need generated pairs (no GPU) first. About 30 minutes
      of GPU.
-3. **Brew, where the bridge is never named in the prompt** (after 2 shows the oracle reads states, not questions)
+2. **Brew, where the bridge is never named in the prompt** (after 1 shows the verbalizers read states)
    - *Why:* in brew's in-context lookup the intermediate is not an entity of the question, so a reader cannot recall
      it from world knowledge; exp04 locates it after the start line at layers 36-50.
    - *Test:* read those positions with the lenses first (not done yet), then with the oracle on the lens-blind cells,
