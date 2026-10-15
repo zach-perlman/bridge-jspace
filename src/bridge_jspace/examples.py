@@ -380,7 +380,7 @@ def render_html(
     model: str,
     standalone: bool = True,
     slice_prefix: str = "",
-    oracle: dict[str, dict] | None = None,
+    verbalizers: dict[str, dict[str, dict]] | None = None,
 ) -> str:
     by_group: dict[str, list[dict[str, Any]]] = {}
     for r in records:
@@ -393,7 +393,7 @@ def render_html(
         nav += [f'<a href="#{g.key}-{_esc(r["name"])}">{_esc(r["name"])}</a>' for r in recs]
         body.append(f'<section class="group" data-g="{g.key}"><h2>{_esc(g.title)}</h2>')
         body.append(f'<p class="def">{_esc(g.definition)} {g.n_total} items; {len(recs)} shown.</p>')
-        body += [_card_html(r, g.key, p, slice_prefix, (oracle or {}).get(r["name"])) for r in recs]
+        body += [_card_html(r, g.key, p, slice_prefix, _for_question(verbalizers, r["name"])) for r in recs]
         body.append("</section>")
     title = p.get("page_title") or f"Examples: {p['title']}"
     lead = (
@@ -409,10 +409,12 @@ def render_html(
         "is the reader's 3rd most likely word and the answer its 120th (spaces and punctuation not counted); bold "
         "marks the top 10. The colour of the J-lens position table shows the bridge rank: darker is higher.</p>"
         + (
-            "<p>Under a card, <b>Oracle lens (exp15)</b> opens what the oracle lens (a LoRA on the model that puts one "
-            "activation into words) says about the same question at the last word, -1 and the cue phrase's last "
-            "token, before and after exp14's J++ bridge swap.</p>"
-            if oracle and any(r["name"] in oracle for r in records)
+            "<p>Under a card, "
+            + " and ".join(f"<b>{_esc(t)}</b>" for t in (verbalizers or {}))
+            + " open what each verbalizer (a model that puts one activation into words: the oracle lens, a LoRA on the "
+            "model; the NLA, a separate 27B reader) says about the same question at the last word, -1 and the cue "
+            "phrase's last token, before and after exp14's J++ bridge swap.</p>"
+            if any(_for_question(verbalizers, r["name"]) for r in records)
             else ""
         )
     )
@@ -438,7 +440,7 @@ def render_html(
 
 
 def _card_html(
-    r: dict[str, Any], group: str, p: dict[str, Any], slice_prefix: str = "", oracle: dict | None = None
+    r: dict[str, Any], group: str, p: dict[str, Any], slice_prefix: str = "", verbalizers: dict | None = None
 ) -> str:
     w = r["words"]
     prompt = r["prompt"][:-1] + "␣" if r["prompt"].endswith(" ") else r["prompt"]
@@ -500,8 +502,8 @@ def _card_html(
                 )
             parts.append(f"<tr><td><code>{_esc(_show(t))}</code></td>{''.join(cells)}</tr>")
         parts.append("</table></div>")
-    if oracle:
-        parts.append(_oracle_html(oracle, w))
+    for title, readings in (verbalizers or {}).items():  # title -> this question's readings
+        parts.append(_oracle_html(readings, w, title))
     parts.append("</div>")
     return "".join(parts)
 
@@ -528,13 +530,22 @@ def oracle_words_html(text: str, words: dict[str, str], mark_answers: bool = Tru
     return "".join(out).replace("\n", "<br>")
 
 
-def load_oracle_readings(results: Path | None = None) -> dict[str, dict[tuple[str, int], dict[str, str]]]:
-    """exp15's oracle lens texts by question: {(position, layer): {"clean": text, "swapped": text}}, every run pooled
-    (a later run replaces an earlier one's text at the same position and layer)."""
+VERBALIZERS = {  # block title under a card -> the experiment whose readings it shows
+    "Oracle lens (exp15)": "exp15_oracle_lens",
+    "NLA (exp16, layer 42)": "exp16_nla",
+}
+
+
+def load_oracle_readings(
+    results: Path | None = None, exp: str = "exp15_oracle_lens"
+) -> dict[str, dict[tuple[str, int], dict[str, str]]]:
+    """A verbalizer experiment's texts by question (exp15: the oracle lens; exp16: the NLA): {(position, layer):
+    {"clean": text, "swapped": text}}, every run pooled (a later run replaces an earlier one's text at the same position
+    and layer)."""
     from bridge_jspace.pins import RESULTS_DIR
 
     out: dict[str, dict[tuple[str, int], dict[str, str]]] = {}
-    for path in sorted((results or RESULTS_DIR).glob("exp15_oracle_lens/*/reads.jsonl")):
+    for path in sorted((results or RESULTS_DIR).glob(f"{exp}/*/reads.jsonl")):
         for line in path.read_text().splitlines():
             r = json.loads(line)
             if r["condition"] in ("clean", "swapped"):
@@ -542,7 +553,7 @@ def load_oracle_readings(results: Path | None = None) -> dict[str, dict[tuple[st
     return out
 
 
-def _oracle_html(readings: dict[tuple[str, int], dict[str, str]], words: dict[str, str]) -> str:
+def _oracle_html(readings: dict[tuple[str, int], dict[str, str]], words: dict[str, str], title: str) -> str:
     mark = not any(ch.isdigit() for ch in words.get("answer", "") + words.get("swap_answer", ""))
     rows = sorted(readings.items(), key=lambda kv: (list(ORACLE_POSITION).index(kv[0][0]), kv[0][1]))
     body = "".join(
@@ -552,10 +563,15 @@ def _oracle_html(readings: dict[tuple[str, int], dict[str, str]], words: dict[st
         for (pos, layer), t in rows
     )
     return (
-        "<details class='oracle'><summary>Oracle lens (exp15): its words for this question's activation, by position "
-        "and layer</summary><div class='scroll'><table><tr><th>position</th><th>layer</th><th>oracle lens</th>"
+        f"<details class='oracle'><summary>{_esc(title)}: its words for this question's activation, by position "
+        f"and layer</summary><div class='scroll'><table><tr><th>position</th><th>layer</th><th>{_esc(title.split(' (')[0])}</th>"
         "<th>after exp14's J++ bridge swap</th></tr>" + body + "</table></div></details>"
     )
+
+
+def _for_question(verbalizers: dict[str, dict[str, dict]] | None, name: str) -> dict[str, dict]:
+    """{block title: this question's readings}, for the verbalizers that read it."""
+    return {t: by_name[name] for t, by_name in (verbalizers or {}).items() if name in by_name}
 
 
 EXAMPLES_DIR_NAME = "examples"
@@ -624,10 +640,12 @@ def export(run_dir: str | Path, root: Path | None = None) -> Path:
     if out.exists():
         shutil.rmtree(out)
     out.mkdir(parents=True)
-    oracle = load_oracle_readings()
-    (out / "index.html").write_text(render_html(groups, data["examples"], p, model, oracle=oracle))
+    verbalizers = {title: load_oracle_readings(exp=exp) for title, exp in VERBALIZERS.items()}
+    (out / "index.html").write_text(render_html(groups, data["examples"], p, model, verbalizers=verbalizers))
     (out / "examples.md").write_text(render(groups, data["examples"], p, model))
-    (out / "artifact.html").write_text(render_html(groups, data["examples"], p, model, standalone=False, oracle=oracle))
+    (out / "artifact.html").write_text(
+        render_html(groups, data["examples"], p, model, standalone=False, verbalizers=verbalizers)
+    )
     if (run_dir / "slices").exists():
         shutil.copytree(run_dir / "slices", out / "slices")
     (out / "source.json").write_text(

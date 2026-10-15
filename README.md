@@ -131,8 +131,9 @@ experiments); the exp12 page is also published at https://claude.ai/artifact/TXL
 link can open it). Each page groups sampled questions by what the readers do with them; exp10's also by what the bridge
 is: a number ('6', 'four'), a letter (a chemical symbol), or named in the prompt (`scripts/exp10_lens_sanity/examples.py`;
 a bridge counts as found if any of its listed forms is). The exp10 page shows these groups from its next examples run.
-The exp15 page shows every question with the J-lens and J++ ranks next to the oracle lens's words at each position and
-layer, before and after the bridge swap.
+The exp15 and exp16 pages show every question with the J-lens and J++ ranks next to the oracle lens's (exp15) or the
+NLA's (exp16) words at each position and layer, before and after the bridge swap; the exp10-12 cards show both under
+each question.
 
 **What we know so far (Qwen3.6-27B, the 77 two-hop questions it answers correctly).**
 1. The J-lens and J++ can read the bridge in the middle layers; the plain logit lens mostly only near the output
@@ -701,6 +702,10 @@ the bridge 1st (the lenses are at 0% there by definition, so only the verbalizer
 
 *How to read it: as exp15's: the share of questions whose NLA explanation names the swap target at the last word and
 -1, before and after the swap.*
+
+Worked examples: [examples/exp16_nla/index.html](examples/exp16_nla/index.html) (every question, the NLA's
+explanations before and after the swap next to the lens ranks); the exp10-12 pages show them under each card ("NLA
+(exp16, layer 42)"), next to the oracle lens's.
 
 **Reading or solving, in the NLA's own words.** The NLA quotes the text it decodes from the activation and comments on
 it, and its comments often solve the question outright: "The phrase 'the sport invented in the city of Springfield'

@@ -1,8 +1,9 @@
-"""Worked examples for exp15: per question, what the J-lens and J++ rank first and what the oracle lens says, at each
-read position and layer, before and after the J++ bridge swap. No GPU: rendered from a run's readings.
+"""Worked examples for a verbalizer experiment (exp15: the oracle lens; exp16: the NLA): per question, what the J-lens
+and J++ rank first and what the verbalizer says, at each read position and layer, before and after the J++ bridge swap.
+No GPU: rendered from the runs' readings.
 
-    uv run python -m scripts.exp15_oracle_lens.examples results/exp15_oracle_lens/<run> [<run> ...]
-writes examples/exp15_oracle_lens/ (index.html, source.json) and refreshes examples/index.html.
+    uv run python -m scripts.exp15_oracle_lens.examples results/<exp>/<run> [<run> ...]
+writes examples/<exp>/ (index.html, source.json) and refreshes examples/index.html.
 """
 
 from __future__ import annotations
@@ -22,25 +23,29 @@ from bridge_jspace.examples import (
 )
 from bridge_jspace.pins import REPO_ROOT
 
-from .experiment import load_runs
+from .experiment import READER_BY_EXP, load_runs
 
 POSITION = {"last": "last word", "prev": "-1", "cue_last": "cue phrase, last token"}
 FIELD_ROLE = {"intermediate": "bridge", "answer": "answer", "swap_to": "distractor", "swap_answer": "swap_answer"}
-GROUPS = [  # key, short title (filter buttons), definition (under the group's heading)
-    ("blind-named", "Lenses miss · oracle sees",
-     "The lenses miss the bridge in some rows (highlighted: neither the J-lens nor J++ ranks it 1st among the 97 "
-     "entities), and in at least one of those rows the oracle names it. The other rows are shown for comparison and "
-     "do not decide the group."),
-    ("blind-missed", "Lenses miss · oracle misses",
-     "The lenses miss the bridge in some rows (highlighted), and the oracle names it in none of them (it may in the "
-     "other rows, where the lenses see it too)."),
-    ("seen", "Lenses always see",
-     "In every row at least one lens ranks the bridge 1st, so no row tests the oracle where the lenses miss it."),
-    ("flipped", "Swap changes the answer",
-     "exp14's J++ bridge swap on the cue phrase (layers 24-40) changes the model's answer to the swap target's "
-     "(Brazil -> Mexico gives Spanish). Compare the oracle's words before and after the swap (last two columns): "
-     "after it, the oracle should name the swap target."),
-]  # fmt: skip
+
+
+def groups(short: str) -> list[tuple[str, str, str]]:
+    """The page's groups for a verbalizer (`short`: "oracle" or "NLA"): key, short title (filter buttons), definition."""
+    return [
+        ("blind-named", f"Lenses miss · {short} sees",
+         "The lenses miss the bridge in some rows (highlighted: neither the J-lens nor J++ ranks it 1st among the 97 "
+         f"entities), and in at least one of those rows the {short} names it. The other rows are shown for comparison "
+         "and do not decide the group."),
+        ("blind-missed", f"Lenses miss · {short} misses",
+         f"The lenses miss the bridge in some rows (highlighted), and the {short} names it in none of them (it may in "
+         "the other rows, where the lenses see it too)."),
+        ("seen", "Lenses always see",
+         f"In every row at least one lens ranks the bridge 1st, so no row tests the {short} where the lenses miss it."),
+        ("flipped", "Swap changes the answer",
+         "exp14's J++ bridge swap on the cue phrase (layers 24-40) changes the model's answer to the swap target's "
+         f"(Brazil -> Mexico gives Spanish). Compare the {short}'s words before and after the swap (last two "
+         f"columns): after it, the {short} should name the swap target."),
+    ]  # fmt: skip
 
 
 def group_of(rows: list[dict]) -> str:
@@ -52,7 +57,7 @@ def group_of(rows: list[dict]) -> str:
 
 
 def highlight(text: str, item: dict[str, Any], numeric_answer: bool) -> str:
-    """The oracle's text with the question's words marked (numeric answers are not: list numbering)."""
+    """The verbalizer's text with the question's words marked (numeric answers are not: list numbering)."""
     words = {role: item[field] for field, role in FIELD_ROLE.items()}
     return oracle_words_html(text, words, mark_answers=not numeric_answer)
 
@@ -107,6 +112,7 @@ def card(
     flip: bool | None,
     numeric: bool,
     said: dict[str, Any] | None = None,
+    reader: tuple[str, str] = ("oracle lens", "oracle"),
 ) -> str:
     badges = f"<span class='badge'>{_esc(item['category'])}</span>"
     if flip is not None:
@@ -134,9 +140,9 @@ def card(
         )
     table = (
         "<div class='scroll'><table><tr><th>position</th><th>layer</th><th>bridge rank<br>J-lens</th>"
-        "<th>bridge rank<br>J++</th><th>lenses with<br>the bridge 1st</th><th>oracle names<br>the bridge?</th>"
-        "<th>answer rank<br>J-lens</th><th>answer rank<br>J++</th><th>oracle lens</th>"
-        "<th>oracle lens, after the bridge swap</th></tr>" + "".join(body) + "</table></div>"
+        f"<th>bridge rank<br>J++</th><th>lenses with<br>the bridge 1st</th><th>{reader[1]} names<br>the bridge?</th>"
+        f"<th>answer rank<br>J-lens</th><th>answer rank<br>J++</th><th>{reader[0]}</th>"
+        f"<th>{reader[0]}, after the bridge swap</th></tr>" + "".join(body) + "</table></div>"
     )
     return f"<section class='card'>{head}{table}</section>"
 
@@ -151,8 +157,17 @@ const l=b.dataset.l;document.querySelectorAll('tr[data-layer]').forEach(r=>r.hid
 """
 
 
+def page_names(run_dirs: Sequence[str | Path]) -> tuple[str, str, str]:
+    """(experiment id, the verbalizer's full name, its short name) of the runs."""
+    exp = json.loads((Path(run_dirs[0]) / "manifest.json").read_text())["exp_id"]
+    full = READER_BY_EXP.get(exp, "oracle lens")
+    return exp, full, "oracle" if full == "oracle lens" else full
+
+
 def render(run_dirs: Sequence[str | Path]) -> str:
     reads, item_rows, params, items = load_runs(run_dirs)
+    exp, full, short = page_names(run_dirs)
+    page_groups = groups(short)
     clean = {}
     swapped: dict[str, dict[tuple, dict]] = {}
     for r in reads:
@@ -163,21 +178,22 @@ def render(run_dirs: Sequence[str | Path]) -> str:
     flips = {r["name"]: r["exp14_flip"] for r in item_rows}
     said = model_said(REPO_ROOT / params["exp14_run"])
     numeric = {n for n, it in items.items() if any(ch.isdigit() for ch in it["answer"] + it["swap_answer"])}
-    members = {g: [n for n in clean if group_of(clean[n]) == g] for g, _, _ in GROUPS[:3]}
+    members = {g: [n for n in clean if group_of(clean[n]) == g] for g, _, _ in page_groups[:3]}
     members["flipped"] = [n for n in clean if flips.get(n)]
 
     chips = "<button class='on' data-g='all'>All</button>" + "".join(
-        f"<button data-g='{g}'>{_esc(title)} ({len(members[g])})</button>" for g, title, _ in GROUPS
+        f"<button data-g='{g}'>{_esc(title)} ({len(members[g])})</button>" for g, title, _ in page_groups
     )
     layer_chips = "<button class='on' data-l='all'>all layers</button>" + "".join(
         f"<button data-l='{layer}'>{layer}</button>" for layer in params["read_layers"]
     )
     nav, sections = [], []
-    for g, title, definition in GROUPS:
+    for g, title, definition in page_groups:
         names = sorted(members[g])
         nav.append(f"<h4>{_esc(title)}</h4>" + "".join(f"<a href='#{_esc(n)}'>{_esc(n)}</a>" for n in names))
         cards = "".join(
-            card(items[n], clean[n], swapped.get(n, {}), flips.get(n), n in numeric, said.get(n)) for n in names
+            card(items[n], clean[n], swapped.get(n, {}), flips.get(n), n in numeric, said.get(n), (full, short))
+            for n in names
         )
         sections.append(
             f"<section class='group' data-g='{g}'><h2>{_esc(title)} <span class='badge'>{len(names)}</span></h2>"
@@ -191,14 +207,15 @@ def render(run_dirs: Sequence[str | Path]) -> str:
         "and the same with the bridge swapped to its distractor on the cue phrase (exp14's J++ swap); "
         '"unchanged" = still the right answer; "changed to the swap target\'s answer" = e.g. Spanish after Brazil -> '
         'Mexico; "changed, but to neither answer" = something else (e.g. 11 instead of 5 or 9).</li>'
-        "<li><b>Rows:</b> where the oracle lens reads (the last word, -1, the cue phrase's last token) and at which "
+        f"<li><b>Rows:</b> where the {full} reads (the last word, -1, the cue phrase's last token) and at which "
         "layer. Filter the layers with the second row of buttons.</li>"
         "<li><b>Rank columns:</b> where the J-lens and J++ rank the bridge among the 97 entities, and the answer "
         "among the 112 answers, at that position and layer (exp12); <span class='hit'>1</span> = first. The two "
         "lists are separate, so the bridge and the answer can both be 1st in one row.</li>"
         "<li><b>Highlighted rows:</b> neither lens ranks the bridge 1st there; those rows put a question in its "
         "group.</li>"
-        "<li><b>Oracle columns:</b> the oracle lens's bullets for the same activation (greedy, 64 tokens), before "
+        f"<li><b>{short} columns:</b> the {full}'s words for the same activation (greedy, "
+        f"{params['max_new_tokens']} tokens), before "
         "and after exp14's J++ bridge swap on the cue phrase. Marked: <span class='w bridge'>bridge</span>, "
         "<span class='w answer'>answer</span>, <span class='w ctrl'>their distractors</span> (numeric answers are not "
         "marked: list numbering).</li>"
@@ -213,10 +230,10 @@ def render(run_dirs: Sequence[str | Path]) -> str:
     return (
         "<!doctype html><html lang='en'><head><meta charset='utf-8'>"
         "<meta name='viewport' content='width=device-width,initial-scale=1,viewport-fit=cover'>"
-        "<title>Oracle Lens Examples</title>"
+        f"<title>{full[0].upper() + full[1:]} Examples</title>"
         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600'
         '&family=IBM+Plex+Sans:wght@400;600&display=swap">'
-        f"<style>{css}</style></head><body><header><h1>Oracle lens vs J-lens / J++ (exp15)</h1>"
+        f"<style>{css}</style></head><body><header><h1>{full[0].upper() + full[1:]} vs J-lens / J++ ({exp})</h1>"
         f"<div class='lead'>{lead}</div></header><div class='layout'><nav>{''.join(nav)}</nav>"
         f"<main><div class='chips groups'><span class='lbl'>questions:</span>{chips}</div>"
         f"<div class='chips layers'><span class='lbl'>layers:</span>{layer_chips}</div>"
@@ -225,9 +242,11 @@ def render(run_dirs: Sequence[str | Path]) -> str:
 
 
 def export(run_dirs: Sequence[str | Path], root: Path | None = None) -> Path:
-    """examples/exp15_oracle_lens/index.html and its index entry (source.json), then examples/index.html."""
+    """examples/<exp>/index.html and its index entry (source.json), then examples/index.html."""
+    exp, full, short = page_names(run_dirs)
+    page_groups = groups(short)
     root = root or _examples_root()
-    out = root / "exp15_oracle_lens"
+    out = root / exp
     out.mkdir(parents=True, exist_ok=True)
     (out / "index.html").write_text(render(run_dirs))
     reads, item_rows, _, _ = load_runs(run_dirs)
@@ -235,11 +254,11 @@ def export(run_dirs: Sequence[str | Path], root: Path | None = None) -> Path:
     for r in reads:
         if r["condition"] == "clean":
             clean.setdefault(r["name"], []).append(r)
-    groups = [{"title": title, "n_total": sum(group_of(rows) == g for rows in clean.values())}
-              for g, title, _ in GROUPS[:3]]  # fmt: skip
-    groups.append({"title": GROUPS[3][1], "n_total": sum(bool(r["exp14_flip"]) for r in item_rows)})
-    entry = {"title": "Oracle lens vs J-lens / J++ (exp15)", "n_examples": len(clean), "model": "Qwen/Qwen3.6-27B",
-             "groups": groups}  # fmt: skip
+    counts = [{"title": title, "n_total": sum(group_of(rows) == g for rows in clean.values())}
+              for g, title, _ in page_groups[:3]]  # fmt: skip
+    counts.append({"title": page_groups[3][1], "n_total": sum(bool(r["exp14_flip"]) for r in item_rows)})
+    entry = {"title": f"{full[0].upper() + full[1:]} vs J-lens / J++ ({exp})", "n_examples": len(clean),
+             "model": "Qwen/Qwen3.6-27B", "groups": counts}  # fmt: skip
     source = {"examples_runs": [_repo_rel(Path(d)) for d in run_dirs], "entry": entry}
     (out / "source.json").write_text(json.dumps(source, indent=2))
     export_index(root)
