@@ -546,18 +546,26 @@ recomputed by `scripts/verify_headlines.py`.
 
 ## Next steps (part A)
 In order; designs need human sign-off before GPU runs.
-1. **Tell part B where the bridge is:** strongest on the last words before "is", from about layer 20. Part B already
-   swaps at every prompt position, and its earlier bands (16-32, 24-40) did not pass its gate either, so this is
-   information for reading its results, not a fix for the gate.
-2. **Per question, not just per group:** for how many questions is the bridge on top at an earlier position and
-   layer than the answer? Align positions by role (the words that cue the bridge) instead of distance from the end.
-3. **The 5 lens-eval questions whose bridge appears in the prompt:** check whether they drive any exp10 headline.
-4. **Oracle lens and NLA** on the same items (design proposed, awaiting sign-off). Both are public: the oracle
+1. **Answer swap at the cue phrase** (design: Danyil). Part B found that the J-space swap acts at the cue phrase
+   ("Amazon River"), not where exp12 reads the bridge. Is that phrase holding the bridge, or already the answer (a
+   shortcut)? At the cue phrase, layers 24-40, swap the answer's lens direction (Portuguese -> Spanish) instead of the
+   bridge's (Brazil -> Mexico). Only the bridge swap flips the answer: two steps, the last token computes the answer
+   from the bridge. The answer swap flips as often: a shortcut. Reference: part B's lens-vector bridge swap flips 30%
+   (J++) / 21% (J-lens) at the cue phrase and 1% at the last token. Controls: the same answer swap at the last token
+   (positive control, also at layers 40-56, where exp12 reads the answer there), random directions of the same edit
+   size, and how much one swap leaks into the other (cosine of the two difference vectors, and each edit's projection
+   onto the other pair). Part B's swap runner with one extra condition; about an hour of GPU.
+2. **Is the bridge readable at the cue phrase?** (no GPU) exp12's grids at the cue-phrase tokens
+   (`data/cue_spans.json`): how the read site (-1) relates to where part B's swap acts, and whether the answer is
+   readable at the cue phrase at all. This is also the per-question view with positions aligned by role instead of
+   distance from the end.
+3. **Oracle lens and NLA** on the same items (design proposed, awaiting sign-off). Both are public: the oracle
    lens is a LoRA on Qwen3.6-27B at our pinned `neuronpedia/jacobian-lens` revision (`qwen3.6-27b/oracle`, layers
    20-60); the NLA is a separate 27B reader trained on layer 42 (`ceselder/qwen3.6-27b-nla-rl`). Reference read code:
    WorkspaceBench's producer (github.com/camilablank/workspace-bench, MIT). Both fit one 80 GB GPU (the NLA in two
    phases: capture, then verbalize). Main risk: the oracle is the model itself, so it may re-solve the hop from the
    question instead of reading the bridge; probe directions (no question in them) are the cleaner test.
+4. **The 5 lens-eval questions whose bridge appears in the prompt:** check whether they drive any exp10 headline.
 5. Optional: reproduce J++'s published Recall@10 (55.2% on Qwen3.6-27B) over all six lens-eval sets.
 6. Stretch: repeat on Gemma 4 31B (J-lens and J++ exist on HF).
 
