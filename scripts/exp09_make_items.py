@@ -2,13 +2,15 @@
 
   exp09_make_items.py [--per-city N] [--n-bound N] [--seed S]  -> data/bind_recall.json (write-once; pin its sha256)
 
-Both families share the format, the countries and the second hop (the country's capital):
-  R  "{N1} lives in {cA}. {N2} lives in {cB}. The capital of the country where {city} is located is"
-     the bridge (the city's country) is recalled; the two context countries are other countries
-  B  "{N1} lives in {c1}. {N2} lives in {c2}. The capital of the country where {Nq} lives is"
-     the bridge is the country bound to the queried name Nq (N1 or N2, either order); the other is in context too
-Every item also has a target X for the edits: a country of the set that is neither the bridge nor in its prompt.
-Facts are written here by hand; exp09's check stage keeps the items whose city, names and countries are single tokens.
+Both families share the format, the countries (the 13 with exp01 probes) and the second hop (the country's capital).
+Three people and three countries come first; every prompt names the bridge I, the target X and a third country Z:
+  R  "{P1} lives in {.}. {P2} lives in {.}. {P3} lives in {.}. The capital of the country where {city} is located is"
+     the bridge is recalled from the city; I, X and Z are context only
+  B  "{P1} lives in {.}. {P2} lives in {.}. {P3} lives in {.}. The capital of the country where {Pq} lives is"
+     the bridge is the queried person's country
+exp09 builds the counterfactuals from these fields: C sets the bridge to X (R: a city of X; B: the queried person and
+X's holder swap countries, so the same countries stay in the prompt), O swaps X's and Z's holders (off the path).
+Facts are written here by hand; exp09's check stage keeps the single-token, token-aligned items.
 """
 
 from __future__ import annotations
@@ -37,9 +39,6 @@ CAPITALS = {
     "Greece": "Athens",
     "Australia": "Canberra",
     "Poland": "Warsaw",
-    "Turkey": "Ankara",
-    "Portugal": "Lisbon",
-    "Kenya": "Nairobi",
 }
 CITIES = {  # cities that are not the capital
     "France": ["Lyon", "Marseille", "Nice", "Bordeaux", "Toulouse"],
@@ -55,9 +54,6 @@ CITIES = {  # cities that are not the capital
     "Greece": ["Thessaloniki", "Patras", "Heraklion"],
     "Australia": ["Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide"],
     "Poland": ["Krakow", "Gdansk", "Wroclaw", "Poznan"],
-    "Turkey": ["Istanbul", "Izmir", "Antalya", "Bursa"],
-    "Portugal": ["Porto", "Braga", "Faro", "Coimbra"],
-    "Kenya": ["Mombasa", "Kisumu", "Nakuru"],
 }
 NAMES = [
     "Alice",
@@ -89,31 +85,32 @@ QUESTION = {
 
 def make(rng: random.Random, family: str, index: int, city: str | None = None) -> dict:
     countries = list(CAPITALS)
-    n1, n2 = rng.sample(NAMES, 2)
     if family == "R":
         bridge = next(c for c, cities in CITIES.items() if city in cities)
-        c1, c2 = rng.sample([c for c in countries if c != bridge], 2)
-        question = QUESTION["R"].format(city=city)
-        cue = city
+        target, third = rng.sample([c for c in countries if c != bridge], 2)
     else:
-        c1, c2 = rng.sample(countries, 2)
-        queried = rng.choice([n1, n2])
-        bridge = c1 if queried == n1 else c2
-        question = QUESTION["B"].format(q=queried)
-        cue = queried
-    other = [c for c in (c1, c2) if c != bridge]
-    target = rng.choice([c for c in countries if c not in (bridge, c1, c2)])
+        bridge, target, third = rng.sample(countries, 3)
+    people = rng.sample(NAMES, 3)
+    held = [bridge, target, third]
+    rng.shuffle(held)  # who lives where, in sentence order
+    context = " ".join(f"{p} lives in {c}." for p, c in zip(people, held, strict=True))
+    if family == "R":
+        question, cue = QUESTION["R"].format(city=city), city
+    else:
+        cue = people[held.index(bridge)]
+        question = QUESTION["B"].format(q=cue)
     return {
         "name": f"{family}-{index:04d}",
         "family": family,
-        "prompt": f"{n1} lives in {c1}. {n2} lives in {c2}. {question}",
+        "prompt": f"{context} {question}",
+        "people": people,
+        "countries": held,
         "cue": cue,
         "bridge": bridge,
         "answer": CAPITALS[bridge],
-        "context_countries": [c1, c2],
-        "in_context_other": other[0] if family == "B" else None,
         "target": target,
         "target_answer": CAPITALS[target],
+        "third": third,
     }
 
 
