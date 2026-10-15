@@ -55,6 +55,8 @@ BREW_FRESH_FILE = DATA_DIR / "brew_fresh.json"  # exp03_make_items.py: held-out 
 BREW_FRESH_SHA256 = "1e20ed25b3727842acba0806b346d91d991db1fa31f42f514e537fb3ab000d3c"
 BREW_FIT_FILE = DATA_DIR / "brew_fit.json"  # exp03_make_items.py: exp07's fitting items, never a bank or fresh prompt
 BREW_FIT_SHA256 = "b9ab169a50bf576d71c074b31516f283e3163366d8ce2aea0907addbdf0e2659"
+BIND_RECALL_FILE = DATA_DIR / "bind_recall.json"  # exp09_make_items.py: recalled vs bound bridge countries
+BIND_RECALL_SHA256 = "89a8c62f4e9b43d328af7de0f7ba6994b53c187448767a916a5c3a5b97148204"
 WIKITEXT_FILE = DATA_DIR / "wikitext103_test.json"  # generic text for part B's residual covariance (exp06)
 WIKITEXT_SHA256 = "a6b5b17a576932fbb570a96b0f5b6a65ced408690a2dce749a8c56f980bbcc0f"
 LENS_EVAL_MULTIHOP_FILE = DATA_DIR / "lens_eval_multihop.json"
@@ -87,6 +89,10 @@ def brew_fresh_items() -> list[dict[str, Any]]:
 
 def brew_fit_items() -> list[dict[str, Any]]:
     return load_pinned_items(BREW_FIT_FILE, BREW_FIT_SHA256)
+
+
+def bind_recall_items() -> list[dict[str, Any]]:
+    return load_pinned_items(BIND_RECALL_FILE, BIND_RECALL_SHA256)
 
 
 def wikitext_rows() -> list[str]:
