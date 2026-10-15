@@ -22,6 +22,7 @@ EXP12 = R / "exp12_position_map/20261015-100735"  # v4 J-lens labels
 EXP14 = R / "exp14_cue_answer_swaps/20261015-111137"  # bridge vs answer lens-vector swaps
 EXP14_PINNED = R / "exp14_cue_answer_swaps/20261015-114825"  # the same with the other pair held (pinned.yaml)
 EXP15 = R / "exp15_oracle_lens/20261015-123226"  # oracle lens readings (clean, after the J++ bridge swap, mean)
+EXP15_B = R / "exp15_oracle_lens/20261015-134316"  # the same at layers 24/32/40/48
 BAND = (32, 48)  # layers averaged over
 
 
@@ -157,12 +158,12 @@ def _says(word, text):
     return any(f" {form} " in padded for form in (word.lower(), word.lower() + "s", word.lower() + "es"))
 
 
-def exp15_named(role, lens_word="bridge", condition="clean"):
+def exp15_named(role, lens_word="bridge", condition="clean", runs=(EXP15,), layer=None):
     """reads.jsonl (clean readings): per lens class of `lens_word` (both J-lens and J++ rank 1 / one / neither, from
     the reads' jlens_rank / jpp_rank copied from exp12's grids; for the answer, exp12's grids_<lens>.npz answer_pool),
     the share of readings whose text names `role` (bridge = intermediate, distractor = swap_to, answer, swap_answer),
     each question's share first, then the mean over questions; for the answer, questions with numeric answers are
-    left out. Returns {class: share}."""
+    left out. `runs`: pooled; `layer`: only that layer's readings. Returns {class: share}."""
     field = {"bridge": "intermediate", "distractor": "swap_to", "answer": "answer", "swap_answer": "swap_answer"}[role]
     items = {it["name"]: it for it in json.loads((R.parent / "data/probe_swap.json").read_text())["items"]}
     if lens_word == "answer":
@@ -170,8 +171,8 @@ def exp15_named(role, lens_word="bridge", condition="clean"):
         grids = {lens: np.load(EXP12 / f"grids_{lens}.npz") for lens in ("jlens", "jpp")}
         rows = {r["name"]: r for r in jsonl(EXP15 / "items.jsonl")}
     per_q = {}
-    for r in jsonl(EXP15 / "reads.jsonl"):
-        if r["condition"] != condition:
+    for r in (r for run in runs for r in jsonl(run / "reads.jsonl")):
+        if r["condition"] != condition or (layer is not None and r["layer"] != layer):
             continue
         if lens_word == "bridge":
             ranks = (r["jlens_rank"], r["jpp_rank"])
@@ -188,17 +189,21 @@ def exp15_named(role, lens_word="bridge", condition="clean"):
     return {cls: float(np.mean([np.mean(v) for v in qs.values()])) for cls, qs in per_q.items()}
 
 
-def exp15_after_swap(position, flipped, layer=44):
-    """reads.jsonl, after the swap (condition swapped), at `position` and `layer`: share of questions whose text names
-    the swap target (swap_to), over the questions whose exp14 J++ cue 24-40 bridge swap flips the answer (`flipped`
-    True; exp14 run 20261015-111137 outcomes.jsonl) or keeps it."""
+def exp15_after_swap(positions, flipped, layer=44, run=EXP15):
+    """reads.jsonl of `run`, after the swap (condition swapped), at `positions` (one or several) and `layer`: share of
+    readings whose text names the swap target (swap_to), each question's share first, then the mean over questions;
+    over the questions whose exp14 J++ cue 24-40 bridge swap flips the answer (`flipped` True; exp14 run
+    20261015-111137 outcomes.jsonl) or keeps it."""
+    positions = (positions,) if isinstance(positions, str) else positions
     flips = {o["name"]: o["flip"] for o in jsonl(EXP14 / "outcomes.jsonl")
              if (o["lens"], o["positions"], o["band"], o["kind"], o["null"]) == ("jpp", "cue", "24-40", "bridge", False)}  # fmt: skip
     items = {it["name"]: it for it in json.loads((R.parent / "data/probe_swap.json").read_text())["items"]}
-    hits = [_says(items[r["name"]]["swap_to"], r["text"]) for r in jsonl(EXP15 / "reads.jsonl")
-            if r["condition"] == "swapped" and r["position"] == position and r["layer"] == layer
-            and flips.get(r["name"]) is flipped]  # fmt: skip
-    return float(np.mean(hits))
+    per_q = {}
+    for r in jsonl(run / "reads.jsonl"):
+        if (r["condition"] == "swapped" and r["position"] in positions and r["layer"] == layer
+                and flips.get(r["name"]) is flipped):  # fmt: skip
+            per_q.setdefault(r["name"], []).append(_says(items[r["name"]]["swap_to"], r["text"]))
+    return float(np.mean([np.mean(v) for v in per_q.values()]))
 
 
 # ---- exp10: lens-eval multihop, pass@10 -------------------------------------------------------------
@@ -491,6 +496,17 @@ def main():
         ("exp15", "after swap, flipped, L44 -1: target", exp15_after_swap("prev", True), 0.74),
         ("exp15", "after swap, kept, L44 last word: target", exp15_after_swap("last", False), 0.09),
         ("exp15", "after swap, kept, L44 -1: target", exp15_after_swap("prev", False), 0.11),
+        (
+            "exp15",
+            "layers 24-48 pooled, neither lens: bridge",
+            exp15_named("bridge", runs=(EXP15, EXP15_B))["neither"],
+            0.37,
+        ),
+        ("exp15", "layer 40, neither lens: bridge", exp15_named("bridge", runs=(EXP15_B,), layer=40)["neither"], 0.54),
+        ("exp15", "layer 24, neither lens: bridge", exp15_named("bridge", runs=(EXP15_B,), layer=24)["neither"], 0.29),
+        ("exp15", "after swap, flipped, L36, last+-1", exp15_after_swap(("last", "prev"), True, 36), 0.39),
+        ("exp15", "after swap, flipped, L40, last+-1", exp15_after_swap(("last", "prev"), True, 40, EXP15_B), 0.70),
+        ("exp15", "after swap, flipped, L48, last+-1", exp15_after_swap(("last", "prev"), True, 48, EXP15_B), 0.74),
         (
             "exp14",
             "pinned: cue 24-40, bridge held-answer, null, J++",

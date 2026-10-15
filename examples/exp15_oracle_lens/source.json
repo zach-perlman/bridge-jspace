@@ -1,6 +1,7 @@
 {
   "examples_runs": [
-    "results/exp15_oracle_lens/20261015-123226"
+    "results/exp15_oracle_lens/20261015-123226",
+    "results/exp15_oracle_lens/20261015-134316"
   ],
   "entry": {
     "title": "Oracle lens vs J-lens / J++ (exp15)",
@@ -9,15 +10,15 @@
     "groups": [
       {
         "title": "Lenses miss \u00b7 oracle sees",
-        "n_total": 36
+        "n_total": 46
       },
       {
         "title": "Lenses miss \u00b7 oracle misses",
-        "n_total": 23
+        "n_total": 20
       },
       {
         "title": "Lenses always see",
-        "n_total": 18
+        "n_total": 11
       },
       {
         "title": "Swap changes the answer",

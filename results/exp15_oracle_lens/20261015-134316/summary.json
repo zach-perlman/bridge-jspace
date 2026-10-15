@@ -1,0 +1,2718 @@
+{
+  "model": "Qwen3.6-27B (part B's loader, pins.py) + oracle lens (pins.ORACLE_DIR)",
+  "n_questions": 77,
+  "entity_pool": 97,
+  "adapter": {
+    "modules": 496,
+    "scale": 2.0,
+    "r": 16
+  },
+  "checks": {
+    "passed": true,
+    "failed": [],
+    "base_logit_drift": 0.0,
+    "adapter_max_logit_change": 16.59375,
+    "marker_slots": {
+      "36": 24,
+      "44": 24
+    },
+    "facts": [
+      {
+        "prompt": "Fact: The capital of France is",
+        "targets": [
+          "Paris"
+        ],
+        "named": true,
+        "reads": {
+          "36": "- London. This is a well-known fact. 2. The capital of France is\n- Paris (a well-known fact). 2. The capital of France is\n- Paris (this is a universally accepted fact). 2. The capital of France is Paris\n- London (or more accurately, the",
+          "44": "- Paris. (Fact 1: The capital of France is\n- Paris, and the currency of France is the Euro. (This is a well-known fact.)\n- Paris (not London, as some might mistakenly think). 2. The capital of France is Paris.\n- Paris, and the currency"
+        }
+      },
+      {
+        "prompt": "Fact: The largest planet in the solar system is",
+        "targets": [
+          "Jupiter"
+        ],
+        "named": true,
+        "reads": {
+          "36": "- Jupiter. The smallest planet in our solar system is\n- 木星 (Jupiter). 2. The largest planet in our solar system is\n- 木星 (Jupiter), which is the largest planet in our solar system. Premise 2: The largest planet in our solar system is\n- the",
+          "44": "- Jupiter. The smallest planet in our solar system is Mercury.\n- Jupiter, and the smallest is Mercury. Based on this fact, which planet is the largest?\n- 木星 (Jupiter). The smallest planet in our solar system is Mercury. Based on this fact, which planet is the largest?"
+        }
+      },
+      {
+        "prompt": "Fact: The play Romeo and Juliet was written by William",
+        "targets": [
+          "Shakespeare"
+        ],
+        "named": true,
+        "reads": {
+          "36": "- Shakespeare. The play *Hamlet* was written by William\n- Shakespeare was the author of *Hamlet*. Based on this fact, who wrote the plays of William\n- Shakespeare, who lived in the 16th century. Which of the following statements is true about William\n- Shakespeare (or William",
+          "44": "- Shakespeare. Who wrote the play *Hamlet*? The answer is William\n- Shakespeare, and he wrote many famous plays. The question asks who wrote *Hamlet*. William\n- Shakespeare (1564–1616). The question asks: \"Who wrote the play *Hamlet*"
+        }
+      },
+      {
+        "prompt": "Fact: The currency of Japan is the",
+        "targets": [
+          "yen"
+        ],
+        "named": true,
+        "reads": {
+          "36": "- Yen. The official currency of Japan is the\n- 円 (yen), and its economy is one of the largest in the world. Japan's currency is the\n- yen (¥), and its central bank is the Bank of Japan. What is the currency of Japan? The\n- yen (¥),",
+          "44": "- yen. What is the currency of Japan? The currency of Japan is the\n- 日元 (yen), which is the official currency of Japan. Other countries have different currencies, such as the\n- yen (¥), not the dollar. The currency of Japan is the yen. The question asks for the currency"
+        }
+      },
+      {
+        "prompt": "Fact: The opposite of hot is",
+        "targets": [
+          "cold"
+        ],
+        "named": true,
+        "reads": {
+          "36": "- cold, and the opposite of hot is\n- cold, and the opposite of hot is cold. If something is described as \"warm,\" what is its opposite\n- [opposite] to hot. If something is hot, it is not cold. Based on this definition, what is the opposite of cold",
+          "44": "- cold, and the opposite of hot is\n- cold, and the opposite of hot is warm. If something is not hot, it is cold. What is the opposite of\n- __________, and the opposite of hot is __________. What is the opposite of warm?\n- \"cold\" (or"
+        }
+      },
+      {
+        "prompt": "Fact: The Great Wall is in",
+        "targets": [
+          "China"
+        ],
+        "named": true,
+        "reads": {
+          "36": "- China, not in Africa. The Great Wall is in China. Based on this fact, where is\n- 中国 (China), not in Africa. A tourist is visiting it. Based on this fact, where is the Great Wall?\n- 某个 country (specifically, it is in China). We",
+          "44": "- China, not in the USA. (The Great Wall is in China\n- 中国 (China), not in the USA. (The Great Wall is in China\n- 中国 (China) and is very long. (True/False) The Great Wall is in China. (This is a fact,"
+        }
+      }
+    ],
+    "random_vector": {
+      "named": 0,
+      "reads": {
+        "36": "- 2, 3, ...` in `test2`. This suggests modular arithmetic.\n- B: 100, C: 101. This suggests modular arithmetic.\n- 右括号 `)`, and `100` as max speed. Your code uses `MOD",
+        "44": "- B) 25, C) 17. This suggests modular arithmetic or\n- 2: max speed. Your code has `100 mod 53`. This suggests modular\n- /left brace notation for gear ratios. Your test cases use `100 mod 53`."
+      }
+    },
+    "exp14_top_word_agree": {
+      "shared": 77,
+      "agree": 77
+    }
+  },
+  "n_reads": {
+    "clean": 924,
+    "swapped": 924,
+    "mean": 924
+  },
+  "lens_classes": {
+    "both": 492,
+    "one": 92,
+    "neither": 340
+  },
+  "clean_by_class": [
+    {
+      "lens_class": "both",
+      "n": 492,
+      "n_questions": 72,
+      "named_bridge": [
+        0.8313008130081301,
+        0.7956717240392974,
+        0.861796306073545
+      ],
+      "named_distractor": [
+        0.032520325203252036,
+        0.020114716127256425,
+        0.05216965856014374
+      ],
+      "named_answer": [
+        0.48577235772357724,
+        0.441889944456868,
+        0.5298752321640527
+      ],
+      "named_swap_answer": [
+        0.042682926829268296,
+        0.028084095656035445,
+        0.06436801001642123
+      ],
+      "named_other_bridges": 0.0010057088275800792,
+      "first_top1_bridge": [
+        0.4898373983739837,
+        0.4459148286265625,
+        0.5339174403883808
+      ],
+      "first_top1_distractor": [
+        0.026422764227642278,
+        0.015505327623627297,
+        0.04467840847273896
+      ]
+    },
+    {
+      "lens_class": "neither",
+      "n": 340,
+      "n_questions": 66,
+      "named_bridge": [
+        0.39705882352941174,
+        0.34647815147547195,
+        0.4499397339694538
+      ],
+      "named_distractor": [
+        0.05,
+        0.03144853625552396,
+        0.07860679154658026
+      ],
+      "named_answer": [
+        0.40588235294117647,
+        0.35501776483334646,
+        0.4588500161448714
+      ],
+      "named_swap_answer": [
+        0.1323529411764706,
+        0.10040661623038005,
+        0.17251440321578349
+      ],
+      "named_other_bridges": 0.00397219543555127,
+      "first_top1_bridge": [
+        0.12058823529411765,
+        0.09014605115514007,
+        0.15950844091330074
+      ],
+      "first_top1_distractor": [
+        0.047058823529411764,
+        0.02917080506827031,
+        0.07506789088940322
+      ]
+    },
+    {
+      "lens_class": "one",
+      "n": 92,
+      "n_questions": 49,
+      "named_bridge": [
+        0.5760869565217391,
+        0.47405256502938276,
+        0.6720217909913848
+      ],
+      "named_distractor": [
+        0.03260869565217391,
+        0.011150975342623229,
+        0.09153512338694722
+      ],
+      "named_answer": [
+        0.5543478260869565,
+        0.45263522635441744,
+        0.6517035993747023
+      ],
+      "named_swap_answer": [
+        0.11956521739130435,
+        0.06809064764004356,
+        0.2015375722561184
+      ],
+      "named_other_bridges": 0.001250296982656213,
+      "first_top1_bridge": [
+        0.25,
+        0.1727513473118804,
+        0.3472900543341689
+      ],
+      "first_top1_distractor": [
+        0.010869565217391304,
+        0.0019212795763616508,
+        0.05902928886156091
+      ]
+    }
+  ],
+  "clean_by_class_layer_position": [
+    {
+      "lens_class": "both",
+      "layer": 24,
+      "position": "cue_last",
+      "n": 41,
+      "n_questions": 41,
+      "named_bridge": [
+        0.9024390243902439,
+        0.7745202448096945,
+        0.9614035402470386
+      ],
+      "named_distractor": [
+        0.0,
+        0.0,
+        0.08567044886890744
+      ],
+      "named_answer": [
+        0.2682926829268293,
+        0.15694805281336685,
+        0.41933825276002934
+      ],
+      "named_swap_answer": [
+        0.024390243902439025,
+        0.00431842027071648,
+        0.12595347011678087
+      ],
+      "named_other_bridges": 0.0007996801279488205,
+      "first_top1_bridge": [
+        0.12195121951219512,
+        0.053232579973408245,
+        0.25544507648844866
+      ],
+      "first_top1_distractor": [
+        0.04878048780487805,
+        0.013480662282573552,
+        0.16139266962351367
+      ]
+    },
+    {
+      "lens_class": "both",
+      "layer": 24,
+      "position": "last",
+      "n": 20,
+      "n_questions": 20,
+      "named_bridge": [
+        0.75,
+        0.5312949900419365,
+        0.888139947210597
+      ],
+      "named_distractor": [
+        0.0,
+        -1.3877787807814457e-17,
+        0.16113012549493322
+      ],
+      "named_answer": [
+        0.9,
+        0.6989617935882066,
+        0.9721341060158468
+      ],
+      "named_swap_answer": [
+        0.0,
+        -1.3877787807814457e-17,
+        0.16113012549493322
+      ],
+      "named_other_bridges": 0.0016530054644808743,
+      "first_top1_bridge": [
+        0.55,
+        0.3420820083075997,
+        0.7418049791429071
+      ],
+      "first_top1_distractor": [
+        0.0,
+        -1.3877787807814457e-17,
+        0.16113012549493322
+      ]
+    },
+    {
+      "lens_class": "both",
+      "layer": 24,
+      "position": "prev",
+      "n": 40,
+      "n_questions": 40,
+      "named_bridge": [
+        0.9,
+        0.7694792561952611,
+        0.9604211124044252
+      ],
+      "named_distractor": [
+        0.0,
+        -6.938893903907228e-18,
+        0.08762453925039232
+      ],
+      "named_answer": [
+        0.225,
+        0.1231595325467853,
+        0.3750339640409305
+      ],
+      "named_swap_answer": [
+        0.025,
+        0.0044267174077949195,
+        0.1288165948800778
+      ],
+      "named_other_bridges": 0.0,
+      "first_top1_bridge": [
+        0.475,
+        0.32935229550181694,
+        0.6250289314607027
+      ],
+      "first_top1_distractor": [
+        0.025,
+        0.0044267174077949195,
+        0.1288165948800778
+      ]
+    },
+    {
+      "lens_class": "both",
+      "layer": 32,
+      "position": "cue_last",
+      "n": 40,
+      "n_questions": 40,
+      "named_bridge": [
+        0.775,
+        0.6249660359590695,
+        0.8768404674532148
+      ],
+      "named_distractor": [
+        0.0,
+        -6.938893903907228e-18,
+        0.08762453925039232
+      ],
+      "named_answer": [
+        0.325,
+        0.20084316962661725,
+        0.4798254191110201
+      ],
+      "named_swap_answer": [
+        0.025,
+        0.0044267174077949195,
+        0.1288165948800778
+      ],
+      "named_other_bridges": 0.0012363387978142077,
+      "first_top1_bridge": [
+        0.125,
+        0.05459419773541284,
+        0.26112420670238146
+      ],
+      "first_top1_distractor": [
+        0.05,
+        0.013820377146101098,
+        0.165041708179252
+      ]
+    },
+    {
+      "lens_class": "both",
+      "layer": 32,
+      "position": "last",
+      "n": 23,
+      "n_questions": 23,
+      "named_bridge": [
+        0.6956521739130435,
+        0.49133870939427393,
+        0.8439617197902755
+      ],
+      "named_distractor": [
+        0.043478260869565216,
+        0.0077164669621267445,
+        0.20991586494059142
+      ],
+      "named_answer": [
+        0.6521739130434783,
+        0.4488997690689164,
+        0.8118894536301776
+      ],
+      "named_swap_answer": [
+        0.043478260869565216,
+        0.0077164669621267445,
+        0.20991586494059142
+      ],
+      "named_other_bridges": 0.0,
+      "first_top1_bridge": [
+        0.5217391304347826,
+        0.3296242986421849,
+        0.7076313046005427
+      ],
+      "first_top1_distractor": [
+        0.043478260869565216,
+        0.0077164669621267445,
+        0.20991586494059142
+      ]
+    },
+    {
+      "lens_class": "both",
+      "layer": 32,
+      "position": "prev",
+      "n": 44,
+      "n_questions": 44,
+      "named_bridge": [
+        0.7954545454545454,
+        0.6549913631816677,
+        0.888468721765324
+      ],
+      "named_distractor": [
+        0.0,
+        6.938893903907228e-18,
+        0.08029831778201396
+      ],
+      "named_answer": [
+        0.29545454545454547,
+        0.18155360887243294,
+        0.4422047938565727
+      ],
+      "named_swap_answer": [
+        0.045454545454545456,
+        0.012554846366981079,
+        0.15135271525303162
+      ],
+      "named_other_bridges": 0.001130153999006458,
+      "first_top1_bridge": [
+        0.5,
+        0.35831521095931473,
+        0.6416847890406853
+      ],
+      "first_top1_distractor": [
+        0.022727272727272728,
+        0.004023148385637013,
+        0.11807979131537633
+      ]
+    },
+    {
+      "lens_class": "both",
+      "layer": 40,
+      "position": "cue_last",
+      "n": 45,
+      "n_questions": 45,
+      "named_bridge": [
+        0.7333333333333333,
+        0.5896088330282471,
+        0.8403525113994538
+      ],
+      "named_distractor": [
+        0.022222222222222223,
+        0.003933497522757505,
+        0.11566946388718813
+      ],
+      "named_answer": [
+        0.28888888888888886,
+        0.1772991803190016,
+        0.43368817472260224
+      ],
+      "named_swap_answer": [
+        0.022222222222222223,
+        0.003933497522757505,
+        0.11566946388718813
+      ],
+      "named_other_bridges": 0.0007285974499089253,
+      "first_top1_bridge": [
+        0.2,
+        0.10896004402509006,
+        0.3382325131392944
+      ],
+      "first_top1_distractor": [
+        0.022222222222222223,
+        0.003933497522757505,
+        0.11566946388718813
+      ]
+    },
+    {
+      "lens_class": "both",
+      "layer": 40,
+      "position": "last",
+      "n": 46,
+      "n_questions": 46,
+      "named_bridge": [
+        0.7391304347826086,
+        0.5974057019172069,
+        0.8439926480555066
+      ],
+      "named_distractor": [
+        0.06521739130434782,
+        0.02242745446634356,
+        0.17503009103781358
+      ],
+      "named_answer": [
+        0.9130434782608695,
+        0.796750643647758,
+        0.9656646881232924
+      ],
+      "named_swap_answer": [
+        0.10869565217391304,
+        0.04733076082742689,
+        0.23038103012631456
+      ],
+      "named_other_bridges": 0.0014314564029460678,
+      "first_top1_bridge": [
+        0.7608695652173914,
+        0.6206458383088198,
+        0.860879634388686
+      ],
+      "first_top1_distractor": [
+        0.021739130434782608,
+        0.0038477551112426345,
+        0.11335554494333024
+      ]
+    },
+    {
+      "lens_class": "both",
+      "layer": 40,
+      "position": "prev",
+      "n": 50,
+      "n_questions": 50,
+      "named_bridge": [
+        0.9,
+        0.7863950966521162,
+        0.956524876008429
+      ],
+      "named_distractor": [
+        0.06,
+        0.020614596364630478,
+        0.16217343370877002
+      ],
+      "named_answer": [
+        0.42,
+        0.2937479723456693,
+        0.5576680331222217
+      ],
+      "named_swap_answer": [
+        0.02,
+        0.0035391680889764604,
+        0.10495686471836953
+      ],
+      "named_other_bridges": 0.0,
+      "first_top1_bridge": [
+        0.64,
+        0.5014076201030195,
+        0.7586143703281711
+      ],
+      "first_top1_distractor": [
+        0.04,
+        0.011038652660826577,
+        0.13460337877954667
+      ]
+    },
+    {
+      "lens_class": "both",
+      "layer": 48,
+      "position": "cue_last",
+      "n": 48,
+      "n_questions": 48,
+      "named_bridge": [
+        0.8333333333333334,
+        0.7042189996260375,
+        0.9130458996054678
+      ],
+      "named_distractor": [
+        0.041666666666666664,
+        0.011501652078965613,
+        0.13975911147771472
+      ],
+      "named_answer": [
+        0.2916666666666667,
+        0.18241416061863377,
+        0.43179527736167544
+      ],
+      "named_swap_answer": [
+        0.0,
+        0.0,
+        0.0741026511527422
+      ],
+      "named_other_bridges": 0.003102231329690346,
+      "first_top1_bridge": [
+        0.4791666666666667,
+        0.34471090015787464,
+        0.6167100436401562
+      ],
+      "first_top1_distractor": [
+        0.0,
+        0.0,
+        0.0741026511527422
+      ]
+    },
+    {
+      "lens_class": "both",
+      "layer": 48,
+      "position": "last",
+      "n": 47,
+      "n_questions": 47,
+      "named_bridge": [
+        0.9361702127659575,
+        0.828371220656221,
+        0.9780550129792271
+      ],
+      "named_distractor": [
+        0.02127659574468085,
+        0.003765671010464995,
+        0.11113236524331144
+      ],
+      "named_answer": [
+        0.9787234042553191,
+        0.8888676347566887,
+        0.9962343289895351
+      ],
+      "named_swap_answer": [
+        0.10638297872340426,
+        0.046304099555199416,
+        0.22594539692012788
+      ],
+      "named_other_bridges": 0.0006975933031042902,
+      "first_top1_bridge": [
+        0.851063829787234,
+        0.7231410342888723,
+        0.925933739125025
+      ],
+      "first_top1_distractor": [
+        0.02127659574468085,
+        0.003765671010464995,
+        0.11113236524331144
+      ]
+    },
+    {
+      "lens_class": "both",
+      "layer": 48,
+      "position": "prev",
+      "n": 48,
+      "n_questions": 48,
+      "named_bridge": [
+        0.8958333333333334,
+        0.7783231187385907,
+        0.9546789490988218
+      ],
+      "named_distractor": [
+        0.10416666666666667,
+        0.045321050901178245,
+        0.2216768812614093
+      ],
+      "named_answer": [
+        0.5,
+        0.36389098932037767,
+        0.6361090106796223
+      ],
+      "named_swap_answer": [
+        0.0625,
+        0.021482843131227225,
+        0.1683569766274222
+      ],
+      "named_other_bridges": 0.0010302823315118399,
+      "first_top1_bridge": [
+        0.5833333333333334,
+        0.44281082215364653,
+        0.7115054026542299
+      ],
+      "first_top1_distractor": [
+        0.020833333333333332,
+        0.003687015979399688,
+        0.10899469137531158
+      ]
+    },
+    {
+      "lens_class": "neither",
+      "layer": 24,
+      "position": "cue_last",
+      "n": 25,
+      "n_questions": 25,
+      "named_bridge": [
+        0.36,
+        0.20247656431735636,
+        0.5548184539895337
+      ],
+      "named_distractor": [
+        0.04,
+        0.007096050386699165,
+        0.19544472405022525
+      ],
+      "named_answer": [
+        0.16,
+        0.06403347608577989,
+        0.34654013980238163
+      ],
+      "named_swap_answer": [
+        0.08,
+        0.02221993369109193,
+        0.24966512122957818
+      ],
+      "named_other_bridges": 0.005289617486338798,
+      "first_top1_bridge": [
+        0.04,
+        0.007096050386699165,
+        0.19544472405022525
+      ],
+      "first_top1_distractor": [
+        0.04,
+        0.007096050386699165,
+        0.19544472405022525
+      ]
+    },
+    {
+      "lens_class": "neither",
+      "layer": 24,
+      "position": "last",
+      "n": 46,
+      "n_questions": 46,
+      "named_bridge": [
+        0.17391304347826086,
+        0.09085683568889254,
+        0.3072363234392253
+      ],
+      "named_distractor": [
+        0.021739130434782608,
+        0.0038477551112426345,
+        0.11335554494333024
+      ],
+      "named_answer": [
+        0.5434782608695652,
+        0.4017993496608042,
+        0.67845489578878
+      ],
+      "named_swap_answer": [
+        0.17391304347826086,
+        0.09085683568889254,
+        0.3072363234392253
+      ],
+      "named_other_bridges": 0.002512473271560941,
+      "first_top1_bridge": [
+        0.1956521739130435,
+        0.10650490444121799,
+        0.331715377411692
+      ],
+      "first_top1_distractor": [
+        0.08695652173913043,
+        0.03433531187670748,
+        0.20324935635224178
+      ]
+    },
+    {
+      "lens_class": "neither",
+      "layer": 24,
+      "position": "prev",
+      "n": 30,
+      "n_questions": 30,
+      "named_bridge": [
+        0.5,
+        0.33153851227173764,
+        0.6684614877282624
+      ],
+      "named_distractor": [
+        0.06666666666666667,
+        0.01847663532769335,
+        0.21323817721072091
+      ],
+      "named_answer": [
+        0.36666666666666664,
+        0.21873702204017678,
+        0.5448675356639506
+      ],
+      "named_swap_answer": [
+        0.03333333333333333,
+        0.0059084379948573795,
+        0.16670751396958874
+      ],
+      "named_other_bridges": 0.003834244080145719,
+      "first_top1_bridge": [
+        0.06666666666666667,
+        0.01847663532769335,
+        0.21323817721072091
+      ],
+      "first_top1_distractor": [
+        0.03333333333333333,
+        0.0059084379948573795,
+        0.16670751396958874
+      ]
+    },
+    {
+      "lens_class": "neither",
+      "layer": 32,
+      "position": "cue_last",
+      "n": 26,
+      "n_questions": 26,
+      "named_bridge": [
+        0.3076923076923077,
+        0.16501120939792674,
+        0.49988611514231246
+      ],
+      "named_distractor": [
+        0.07692307692307693,
+        0.02135463918337556,
+        0.24141947480515052
+      ],
+      "named_answer": [
+        0.11538461538461539,
+        0.04003171821149494,
+        0.28976293086898336
+      ],
+      "named_swap_answer": [
+        0.11538461538461539,
+        0.04003171821149494,
+        0.28976293086898336
+      ],
+      "named_other_bridges": 0.00380411937788987,
+      "first_top1_bridge": [
+        0.0,
+        0.0,
+        0.12873304380462175
+      ],
+      "first_top1_distractor": [
+        0.07692307692307693,
+        0.02135463918337556,
+        0.24141947480515052
+      ]
+    },
+    {
+      "lens_class": "neither",
+      "layer": 32,
+      "position": "last",
+      "n": 45,
+      "n_questions": 45,
+      "named_bridge": [
+        0.35555555555555557,
+        0.23218891356904048,
+        0.5016445398804781
+      ],
+      "named_distractor": [
+        0.044444444444444446,
+        0.012273869040444335,
+        0.14827779183880616
+      ],
+      "named_answer": [
+        0.6222222222222222,
+        0.4762967000646754,
+        0.7489211470165014
+      ],
+      "named_swap_answer": [
+        0.15555555555555556,
+        0.07745325311328677,
+        0.28784190511248803
+      ],
+      "named_other_bridges": 0.0032908318154219796,
+      "first_top1_bridge": [
+        0.26666666666666666,
+        0.15964748860054623,
+        0.4103911669717528
+      ],
+      "first_top1_distractor": [
+        0.044444444444444446,
+        0.012273869040444335,
+        0.14827779183880616
+      ]
+    },
+    {
+      "lens_class": "neither",
+      "layer": 32,
+      "position": "prev",
+      "n": 27,
+      "n_questions": 27,
+      "named_bridge": [
+        0.37037037037037035,
+        0.21532287067936856,
+        0.5577109537655369
+      ],
+      "named_distractor": [
+        0.07407407407407407,
+        0.020554221697383523,
+        0.2336997729073062
+      ],
+      "named_answer": [
+        0.25925925925925924,
+        0.13170208422866778,
+        0.4467893040261568
+      ],
+      "named_swap_answer": [
+        0.18518518518518517,
+        0.0818058657428532,
+        0.36699056505191746
+      ],
+      "named_other_bridges": 0.003642987249544627,
+      "first_top1_bridge": [
+        0.07407407407407407,
+        0.020554221697383523,
+        0.2336997729073062
+      ],
+      "first_top1_distractor": [
+        0.037037037037037035,
+        0.006567976533097597,
+        0.1828385393415652
+      ]
+    },
+    {
+      "lens_class": "neither",
+      "layer": 40,
+      "position": "cue_last",
+      "n": 26,
+      "n_questions": 26,
+      "named_bridge": [
+        0.4230769230769231,
+        0.255441899027294,
+        0.6105170307888017
+      ],
+      "named_distractor": [
+        0.15384615384615385,
+        0.06149933998929477,
+        0.33531584418313565
+      ],
+      "named_answer": [
+        0.19230769230769232,
+        0.08506935771788268,
+        0.3787663615465
+      ],
+      "named_swap_answer": [
+        0.15384615384615385,
+        0.06149933998929477,
+        0.33531584418313565
+      ],
+      "named_other_bridges": 0.002532576712904582,
+      "first_top1_bridge": [
+        0.038461538461538464,
+        0.0068218089769898765,
+        0.18893176991958405
+      ],
+      "first_top1_distractor": [
+        0.0,
+        0.0,
+        0.12873304380462175
+      ]
+    },
+    {
+      "lens_class": "neither",
+      "layer": 40,
+      "position": "last",
+      "n": 25,
+      "n_questions": 25,
+      "named_bridge": [
+        0.64,
+        0.44518154601046633,
+        0.7975234356826436
+      ],
+      "named_distractor": [
+        0.0,
+        0.0,
+        0.13319649395317873
+      ],
+      "named_answer": [
+        0.8,
+        0.6086866446346177,
+        0.9113954589934752
+      ],
+      "named_swap_answer": [
+        0.12,
+        0.04166741357068093,
+        0.2995619218337349
+      ],
+      "named_other_bridges": 0.003967213114754098,
+      "first_top1_bridge": [
+        0.24,
+        0.11496157730326725,
+        0.43430059955238565
+      ],
+      "first_top1_distractor": [
+        0.0,
+        0.0,
+        0.13319649395317873
+      ]
+    },
+    {
+      "lens_class": "neither",
+      "layer": 40,
+      "position": "prev",
+      "n": 21,
+      "n_questions": 21,
+      "named_bridge": [
+        0.5714285714285714,
+        0.3654621629703244,
+        0.7553030051347894
+      ],
+      "named_distractor": [
+        0.0,
+        0.0,
+        0.15464382326420195
+      ],
+      "named_answer": [
+        0.23809523809523808,
+        0.10627856389112261,
+        0.45091581972345923
+      ],
+      "named_swap_answer": [
+        0.19047619047619047,
+        0.07667440615177301,
+        0.40000986539273287
+      ],
+      "named_other_bridges": 0.006258131667967734,
+      "first_top1_bridge": [
+        0.047619047619047616,
+        0.008455769471923294,
+        0.22669816586235464
+      ],
+      "first_top1_distractor": [
+        0.14285714285714285,
+        0.04980921798213492,
+        0.346364941492295
+      ]
+    },
+    {
+      "lens_class": "neither",
+      "layer": 48,
+      "position": "cue_last",
+      "n": 25,
+      "n_questions": 25,
+      "named_bridge": [
+        0.16,
+        0.06403347608577989,
+        0.34654013980238163
+      ],
+      "named_distractor": [
+        0.08,
+        0.02221993369109193,
+        0.24966512122957818
+      ],
+      "named_answer": [
+        0.08,
+        0.02221993369109193,
+        0.24966512122957818
+      ],
+      "named_swap_answer": [
+        0.12,
+        0.04166741357068093,
+        0.2995619218337349
+      ],
+      "named_other_bridges": 0.0019672131147540984,
+      "first_top1_bridge": [
+        0.08,
+        0.02221993369109193,
+        0.24966512122957818
+      ],
+      "first_top1_distractor": [
+        0.0,
+        0.0,
+        0.13319649395317873
+      ]
+    },
+    {
+      "lens_class": "neither",
+      "layer": 48,
+      "position": "last",
+      "n": 20,
+      "n_questions": 20,
+      "named_bridge": [
+        0.55,
+        0.3420820083075997,
+        0.7418049791429071
+      ],
+      "named_distractor": [
+        0.0,
+        -1.3877787807814457e-17,
+        0.16113012549493322
+      ],
+      "named_answer": [
+        0.85,
+        0.6395767041130426,
+        0.9476322080405041
+      ],
+      "named_swap_answer": [
+        0.1,
+        0.027865893984153206,
+        0.30103820641179335
+      ],
+      "named_other_bridges": 0.006612021857923497,
+      "first_top1_bridge": [
+        0.05,
+        0.008881219432873136,
+        0.23613589351256675
+      ],
+      "first_top1_distractor": [
+        0.0,
+        -1.3877787807814457e-17,
+        0.16113012549493322
+      ]
+    },
+    {
+      "lens_class": "neither",
+      "layer": 48,
+      "position": "prev",
+      "n": 24,
+      "n_questions": 24,
+      "named_bridge": [
+        0.625,
+        0.42709619037907065,
+        0.7884086656636855
+      ],
+      "named_distractor": [
+        0.041666666666666664,
+        0.007393265354805126,
+        0.20242226248842232
+      ],
+      "named_answer": [
+        0.4583333333333333,
+        0.2789105835168143,
+        0.6492544644689336
+      ],
+      "named_swap_answer": [
+        0.125,
+        0.04344255039315584,
+        0.3100428814785757
+      ],
+      "named_other_bridges": 0.00685336976320583,
+      "first_top1_bridge": [
+        0.16666666666666666,
+        0.06678568000728924,
+        0.3585347038786943
+      ],
+      "first_top1_distractor": [
+        0.08333333333333333,
+        0.023158327842973503,
+        0.258492152014506
+      ]
+    },
+    {
+      "lens_class": "one",
+      "layer": 24,
+      "position": "cue_last",
+      "n": 11,
+      "n_questions": 11,
+      "named_bridge": [
+        0.5454545454545454,
+        0.28008775568998817,
+        0.7872904245601196
+      ],
+      "named_distractor": [
+        0.0,
+        2.7755575615628914e-17,
+        0.2588400172488141
+      ],
+      "named_answer": [
+        0.18181818181818182,
+        0.05136660067100063,
+        0.4769861375782448
+      ],
+      "named_swap_answer": [
+        0.0,
+        2.7755575615628914e-17,
+        0.2588400172488141
+      ],
+      "named_other_bridges": 0.0014903129657228018,
+      "first_top1_bridge": [
+        0.0,
+        2.7755575615628914e-17,
+        0.2588400172488141
+      ],
+      "first_top1_distractor": [
+        0.0,
+        2.7755575615628914e-17,
+        0.2588400172488141
+      ]
+    },
+    {
+      "lens_class": "one",
+      "layer": 24,
+      "position": "last",
+      "n": 11,
+      "n_questions": 11,
+      "named_bridge": [
+        0.6363636363636364,
+        0.35379677689163724,
+        0.8483377638586862
+      ],
+      "named_distractor": [
+        0.0,
+        2.7755575615628914e-17,
+        0.2588400172488141
+      ],
+      "named_answer": [
+        0.8181818181818182,
+        0.5230138624217553,
+        0.9486333993289995
+      ],
+      "named_swap_answer": [
+        0.2727272727272727,
+        0.09745880573921467,
+        0.5656502930102463
+      ],
+      "named_other_bridges": 0.0029806259314456036,
+      "first_top1_bridge": [
+        0.36363636363636365,
+        0.15166223614131383,
+        0.6462032231083628
+      ],
+      "first_top1_distractor": [
+        0.0,
+        2.7755575615628914e-17,
+        0.2588400172488141
+      ]
+    },
+    {
+      "lens_class": "one",
+      "layer": 24,
+      "position": "prev",
+      "n": 7,
+      "n_questions": 7,
+      "named_bridge": [
+        0.8571428571428571,
+        0.48686549668097007,
+        0.9743210440510253
+      ],
+      "named_distractor": [
+        0.0,
+        0.0,
+        0.35433884297520657
+      ],
+      "named_answer": [
+        0.2857142857142857,
+        0.0822171657090155,
+        0.6410709098517873
+      ],
+      "named_swap_answer": [
+        0.0,
+        0.0,
+        0.35433884297520657
+      ],
+      "named_other_bridges": 0.0,
+      "first_top1_bridge": [
+        0.42857142857142855,
+        0.15821692226262685,
+        0.7495457695909742
+      ],
+      "first_top1_distractor": [
+        0.0,
+        0.0,
+        0.35433884297520657
+      ]
+    },
+    {
+      "lens_class": "one",
+      "layer": 32,
+      "position": "cue_last",
+      "n": 11,
+      "n_questions": 11,
+      "named_bridge": [
+        0.8181818181818182,
+        0.5230138624217553,
+        0.9486333993289995
+      ],
+      "named_distractor": [
+        0.0,
+        2.7755575615628914e-17,
+        0.2588400172488141
+      ],
+      "named_answer": [
+        0.36363636363636365,
+        0.15166223614131383,
+        0.6462032231083628
+      ],
+      "named_swap_answer": [
+        0.0,
+        2.7755575615628914e-17,
+        0.2588400172488141
+      ],
+      "named_other_bridges": 0.0014903129657228018,
+      "first_top1_bridge": [
+        0.0,
+        2.7755575615628914e-17,
+        0.2588400172488141
+      ],
+      "first_top1_distractor": [
+        0.0,
+        2.7755575615628914e-17,
+        0.2588400172488141
+      ]
+    },
+    {
+      "lens_class": "one",
+      "layer": 32,
+      "position": "last",
+      "n": 9,
+      "n_questions": 9,
+      "named_bridge": [
+        0.2222222222222222,
+        0.06322376231222723,
+        0.5474166563271946
+      ],
+      "named_distractor": [
+        0.1111111111111111,
+        0.019890371327130535,
+        0.4350062147680601
+      ],
+      "named_answer": [
+        0.7777777777777778,
+        0.4525833436728054,
+        0.9367762376877727
+      ],
+      "named_swap_answer": [
+        0.0,
+        0.0,
+        0.2991527535509594
+      ],
+      "named_other_bridges": 0.0018214936247723133,
+      "first_top1_bridge": [
+        0.3333333333333333,
+        0.12058159868274293,
+        0.6458026525009102
+      ],
+      "first_top1_distractor": [
+        0.1111111111111111,
+        0.019890371327130535,
+        0.4350062147680601
+      ]
+    },
+    {
+      "lens_class": "one",
+      "layer": 32,
+      "position": "prev",
+      "n": 6,
+      "n_questions": 6,
+      "named_bridge": [
+        0.16666666666666666,
+        0.03005258587173032,
+        0.563509436563646
+      ],
+      "named_distractor": [
+        0.0,
+        0.0,
+        0.3903430336530645
+      ],
+      "named_answer": [
+        0.5,
+        0.18761280689940868,
+        0.8123871931005913
+      ],
+      "named_swap_answer": [
+        0.0,
+        0.0,
+        0.3903430336530645
+      ],
+      "named_other_bridges": 0.00273224043715847,
+      "first_top1_bridge": [
+        0.16666666666666666,
+        0.03005258587173032,
+        0.563509436563646
+      ],
+      "first_top1_distractor": [
+        0.0,
+        0.0,
+        0.3903430336530645
+      ]
+    },
+    {
+      "lens_class": "one",
+      "layer": 40,
+      "position": "cue_last",
+      "n": 6,
+      "n_questions": 6,
+      "named_bridge": [
+        0.3333333333333333,
+        0.09676933255921683,
+        0.7000116786584712
+      ],
+      "named_distractor": [
+        0.16666666666666666,
+        0.03005258587173032,
+        0.563509436563646
+      ],
+      "named_answer": [
+        0.16666666666666666,
+        0.03005258587173032,
+        0.563509436563646
+      ],
+      "named_swap_answer": [
+        0.16666666666666666,
+        0.03005258587173032,
+        0.563509436563646
+      ],
+      "named_other_bridges": 0.0,
+      "first_top1_bridge": [
+        0.0,
+        0.0,
+        0.3903430336530645
+      ],
+      "first_top1_distractor": [
+        0.0,
+        0.0,
+        0.3903430336530645
+      ]
+    },
+    {
+      "lens_class": "one",
+      "layer": 40,
+      "position": "last",
+      "n": 6,
+      "n_questions": 6,
+      "named_bridge": [
+        0.6666666666666666,
+        0.29998832134152864,
+        0.9032306674407831
+      ],
+      "named_distractor": [
+        0.0,
+        0.0,
+        0.3903430336530645
+      ],
+      "named_answer": [
+        0.8333333333333334,
+        0.43649056343635395,
+        0.9699474141282697
+      ],
+      "named_swap_answer": [
+        0.16666666666666666,
+        0.03005258587173032,
+        0.563509436563646
+      ],
+      "named_other_bridges": 0.0,
+      "first_top1_bridge": [
+        0.8333333333333334,
+        0.43649056343635395,
+        0.9699474141282697
+      ],
+      "first_top1_distractor": [
+        0.0,
+        0.0,
+        0.3903430336530645
+      ]
+    },
+    {
+      "lens_class": "one",
+      "layer": 40,
+      "position": "prev",
+      "n": 6,
+      "n_questions": 6,
+      "named_bridge": [
+        0.8333333333333334,
+        0.43649056343635395,
+        0.9699474141282697
+      ],
+      "named_distractor": [
+        0.0,
+        0.0,
+        0.3903430336530645
+      ],
+      "named_answer": [
+        0.6666666666666666,
+        0.29998832134152864,
+        0.9032306674407831
+      ],
+      "named_swap_answer": [
+        0.0,
+        0.0,
+        0.3903430336530645
+      ],
+      "named_other_bridges": 0.0,
+      "first_top1_bridge": [
+        0.16666666666666666,
+        0.03005258587173032,
+        0.563509436563646
+      ],
+      "first_top1_distractor": [
+        0.0,
+        0.0,
+        0.3903430336530645
+      ]
+    },
+    {
+      "lens_class": "one",
+      "layer": 48,
+      "position": "cue_last",
+      "n": 4,
+      "n_questions": 4,
+      "named_bridge": [
+        0.5,
+        0.15003570882017148,
+        0.8499642911798285
+      ],
+      "named_distractor": [
+        0.0,
+        0.0,
+        0.48990002040399916
+      ],
+      "named_answer": [
+        0.5,
+        0.15003570882017148,
+        0.8499642911798285
+      ],
+      "named_swap_answer": [
+        0.0,
+        0.0,
+        0.48990002040399916
+      ],
+      "named_other_bridges": 0.0,
+      "first_top1_bridge": [
+        0.0,
+        0.0,
+        0.48990002040399916
+      ],
+      "first_top1_distractor": [
+        0.0,
+        0.0,
+        0.48990002040399916
+      ]
+    },
+    {
+      "lens_class": "one",
+      "layer": 48,
+      "position": "last",
+      "n": 10,
+      "n_questions": 10,
+      "named_bridge": [
+        0.5,
+        0.23658959361548731,
+        0.7634104063845126
+      ],
+      "named_distractor": [
+        0.1,
+        0.01787574951572113,
+        0.4041563854975721
+      ],
+      "named_answer": [
+        0.9,
+        0.5958436145024278,
+        0.9821242504842788
+      ],
+      "named_swap_answer": [
+        0.5,
+        0.23658959361548731,
+        0.7634104063845126
+      ],
+      "named_other_bridges": 0.0016666666666666666,
+      "first_top1_bridge": [
+        0.5,
+        0.23658959361548731,
+        0.7634104063845126
+      ],
+      "first_top1_distractor": [
+        0.0,
+        -2.7755575615628914e-17,
+        0.2775401687666166
+      ]
+    },
+    {
+      "lens_class": "one",
+      "layer": 48,
+      "position": "prev",
+      "n": 5,
+      "n_questions": 5,
+      "named_bridge": [
+        0.8,
+        0.3755282641185388,
+        0.9637768390302125
+      ],
+      "named_distractor": [
+        0.0,
+        -2.7755575615628914e-17,
+        0.43449149475208104
+      ],
+      "named_answer": [
+        0.6,
+        0.23071993220883708,
+        0.8823817688407467
+      ],
+      "named_swap_answer": [
+        0.2,
+        0.03622316096978745,
+        0.6244717358814613
+      ],
+      "named_other_bridges": 0.0,
+      "first_top1_bridge": [
+        0.2,
+        0.03622316096978745,
+        0.6244717358814613
+      ],
+      "first_top1_distractor": [
+        0.0,
+        -2.7755575615628914e-17,
+        0.43449149475208104
+      ]
+    }
+  ],
+  "mean_vector": [
+    {
+      "layer": 24,
+      "position": "cue_last",
+      "n": 77,
+      "n_questions": 77,
+      "named_bridge": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "named_distractor": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "named_answer": [
+        0.03896103896103896,
+        0.013337708283515264,
+        0.10840159425379228
+      ],
+      "named_swap_answer": [
+        0.06493506493506493,
+        0.02805266679607036,
+        0.1431661116546283
+      ],
+      "named_other_bridges": 0.016333120431481087,
+      "first_top1_bridge": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "first_top1_distractor": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ]
+    },
+    {
+      "layer": 24,
+      "position": "last",
+      "n": 77,
+      "n_questions": 77,
+      "named_bridge": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "named_distractor": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "named_answer": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "named_swap_answer": [
+        0.025974025974025976,
+        0.0071520098481384214,
+        0.08984755473247355
+      ],
+      "named_other_bridges": 0.0,
+      "first_top1_bridge": [
+        0.05194805194805195,
+        0.02038438860493938,
+        0.12609465188906374
+      ],
+      "first_top1_distractor": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ]
+    },
+    {
+      "layer": 24,
+      "position": "prev",
+      "n": 77,
+      "n_questions": 77,
+      "named_bridge": [
+        0.05194805194805195,
+        0.02038438860493938,
+        0.12609465188906374
+      ],
+      "named_distractor": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "named_answer": [
+        0.025974025974025976,
+        0.0071520098481384214,
+        0.08984755473247355
+      ],
+      "named_swap_answer": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "named_other_bridges": 0.015467319565680222,
+      "first_top1_bridge": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "first_top1_distractor": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ]
+    },
+    {
+      "layer": 32,
+      "position": "cue_last",
+      "n": 77,
+      "n_questions": 77,
+      "named_bridge": [
+        0.025974025974025976,
+        0.0071520098481384214,
+        0.08984755473247355
+      ],
+      "named_distractor": [
+        0.03896103896103896,
+        0.013337708283515264,
+        0.10840159425379228
+      ],
+      "named_answer": [
+        0.05194805194805195,
+        0.02038438860493938,
+        0.12609465188906374
+      ],
+      "named_swap_answer": [
+        0.025974025974025976,
+        0.0071520098481384214,
+        0.08984755473247355
+      ],
+      "named_other_bridges": 0.015463771201476118,
+      "first_top1_bridge": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "first_top1_distractor": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ]
+    },
+    {
+      "layer": 32,
+      "position": "last",
+      "n": 77,
+      "n_questions": 77,
+      "named_bridge": [
+        0.03896103896103896,
+        0.013337708283515264,
+        0.10840159425379228
+      ],
+      "named_distractor": [
+        0.03896103896103896,
+        0.013337708283515264,
+        0.10840159425379228
+      ],
+      "named_answer": [
+        0.025974025974025976,
+        0.0071520098481384214,
+        0.08984755473247355
+      ],
+      "named_swap_answer": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "named_other_bridges": 0.03179334326875311,
+      "first_top1_bridge": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "first_top1_distractor": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ]
+    },
+    {
+      "layer": 32,
+      "position": "prev",
+      "n": 77,
+      "n_questions": 77,
+      "named_bridge": [
+        0.025974025974025976,
+        0.0071520098481384214,
+        0.08984755473247355
+      ],
+      "named_distractor": [
+        0.03896103896103896,
+        0.013337708283515264,
+        0.10840159425379228
+      ],
+      "named_answer": [
+        0.025974025974025976,
+        0.0071520098481384214,
+        0.08984755473247355
+      ],
+      "named_swap_answer": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "named_other_bridges": 0.015463771201476118,
+      "first_top1_bridge": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "first_top1_distractor": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ]
+    },
+    {
+      "layer": 40,
+      "position": "cue_last",
+      "n": 77,
+      "n_questions": 77,
+      "named_bridge": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "named_distractor": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "named_answer": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "named_swap_answer": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "named_other_bridges": 0.0,
+      "first_top1_bridge": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "first_top1_distractor": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ]
+    },
+    {
+      "layer": 40,
+      "position": "last",
+      "n": 77,
+      "n_questions": 77,
+      "named_bridge": [
+        0.025974025974025976,
+        0.0071520098481384214,
+        0.08984755473247355
+      ],
+      "named_distractor": [
+        0.03896103896103896,
+        0.013337708283515264,
+        0.10840159425379228
+      ],
+      "named_answer": [
+        0.025974025974025976,
+        0.0071520098481384214,
+        0.08984755473247355
+      ],
+      "named_swap_answer": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "named_other_bridges": 0.015463771201476118,
+      "first_top1_bridge": [
+        0.025974025974025976,
+        0.0071520098481384214,
+        0.08984755473247355
+      ],
+      "first_top1_distractor": [
+        0.03896103896103896,
+        0.013337708283515264,
+        0.10840159425379228
+      ]
+    },
+    {
+      "layer": 40,
+      "position": "prev",
+      "n": 77,
+      "n_questions": 77,
+      "named_bridge": [
+        0.03896103896103896,
+        0.013337708283515264,
+        0.10840159425379228
+      ],
+      "named_distractor": [
+        0.03896103896103896,
+        0.013337708283515264,
+        0.10840159425379228
+      ],
+      "named_answer": [
+        0.025974025974025976,
+        0.0071520098481384214,
+        0.08984755473247355
+      ],
+      "named_swap_answer": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "named_other_bridges": 0.03179334326875311,
+      "first_top1_bridge": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "first_top1_distractor": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ]
+    },
+    {
+      "layer": 48,
+      "position": "cue_last",
+      "n": 77,
+      "n_questions": 77,
+      "named_bridge": [
+        0.03896103896103896,
+        0.013337708283515264,
+        0.10840159425379228
+      ],
+      "named_distractor": [
+        0.03896103896103896,
+        0.013337708283515264,
+        0.10840159425379228
+      ],
+      "named_answer": [
+        0.03896103896103896,
+        0.013337708283515264,
+        0.10840159425379228
+      ],
+      "named_swap_answer": [
+        0.025974025974025976,
+        0.0071520098481384214,
+        0.08984755473247355
+      ],
+      "named_other_bridges": 0.031796891632957215,
+      "first_top1_bridge": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "first_top1_distractor": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ]
+    },
+    {
+      "layer": 48,
+      "position": "last",
+      "n": 77,
+      "n_questions": 77,
+      "named_bridge": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "named_distractor": [
+        0.025974025974025976,
+        0.0071520098481384214,
+        0.08984755473247355
+      ],
+      "named_answer": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "named_swap_answer": [
+        0.025974025974025976,
+        0.0071520098481384214,
+        0.08984755473247355
+      ],
+      "named_other_bridges": 0.015896671634376552,
+      "first_top1_bridge": [
+        0.025974025974025976,
+        0.0071520098481384214,
+        0.08984755473247355
+      ],
+      "first_top1_distractor": [
+        0.03896103896103896,
+        0.013337708283515264,
+        0.10840159425379228
+      ]
+    },
+    {
+      "layer": 48,
+      "position": "prev",
+      "n": 77,
+      "n_questions": 77,
+      "named_bridge": [
+        0.025974025974025976,
+        0.0071520098481384214,
+        0.08984755473247355
+      ],
+      "named_distractor": [
+        0.025974025974025976,
+        0.0071520098481384214,
+        0.08984755473247355
+      ],
+      "named_answer": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "named_swap_answer": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "named_other_bridges": 0.015683769782130437,
+      "first_top1_bridge": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "first_top1_distractor": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ]
+    }
+  ],
+  "bridge_vs_distractor": {
+    "both": {
+      "n_questions": 72,
+      "n_reads": 492,
+      "named_bridge": 0.839983164983165,
+      "named_distractor": 0.04586139169472503,
+      "diff": [
+        0.79412177328844,
+        0.7126914106341191,
+        0.8617917017396185
+      ]
+    },
+    "one": {
+      "n_questions": 49,
+      "n_reads": 92,
+      "named_bridge": 0.5755102040816327,
+      "named_distractor": 0.03571428571428571,
+      "diff": [
+        0.539795918367347,
+        0.40101190476190474,
+        0.6714370748299319
+      ]
+    },
+    "neither": {
+      "n_questions": 66,
+      "n_reads": 340,
+      "named_bridge": 0.38087367178276266,
+      "named_distractor": 0.043861777952687045,
+      "diff": [
+        0.3370118938300756,
+        0.2456570029297302,
+        0.4293092177183086
+      ]
+    }
+  },
+  "bridge_vs_other_bridges": {
+    "both": {
+      "n_questions": 72,
+      "n_reads": 492,
+      "named_bridge": 0.839983164983165,
+      "named_other_bridges": 0.0012513144827580164,
+      "diff": [
+        0.838731850500407,
+        0.7894516487737115,
+        0.8840648648060917
+      ]
+    },
+    "one": {
+      "n_questions": 49,
+      "n_reads": 92,
+      "named_bridge": 0.5755102040816327,
+      "named_other_bridges": 0.0013438162150105947,
+      "diff": [
+        0.5741663878666221,
+        0.45426717408274786,
+        0.691370720419315
+      ]
+    },
+    "neither": {
+      "n_questions": 66,
+      "n_reads": 340,
+      "named_bridge": 0.38087367178276266,
+      "named_other_bridges": 0.0028666177064090624,
+      "diff": [
+        0.3780070540763536,
+        0.29469771552549123,
+        0.464718267297021
+      ]
+    }
+  },
+  "bridge_vs_distractor_by_layer": {
+    "24": {
+      "both": {
+        "n_questions": 58,
+        "n_reads": 101,
+        "named_bridge": 0.896551724137931,
+        "named_distractor": 0.0,
+        "diff": [
+          0.896551724137931,
+          0.8333333333333333,
+          0.9482758620689655
+        ]
+      },
+      "one": {
+        "n_questions": 24,
+        "n_reads": 29,
+        "named_bridge": 0.6666666666666666,
+        "named_distractor": 0.0,
+        "diff": [
+          0.6666666666666666,
+          0.5,
+          0.8333333333333334
+        ]
+      },
+      "neither": {
+        "n_questions": 59,
+        "n_reads": 101,
+        "named_bridge": 0.29378531073446323,
+        "named_distractor": 0.03389830508474576,
+        "diff": [
+          0.25988700564971745,
+          0.15536723163841806,
+          0.37288135593220334
+        ]
+      }
+    },
+    "32": {
+      "both": {
+        "n_questions": 63,
+        "n_reads": 107,
+        "named_bridge": 0.783068783068783,
+        "named_distractor": 0.007936507936507936,
+        "diff": [
+          0.7751322751322751,
+          0.6824735449735447,
+          0.8624338624338623
+        ]
+      },
+      "one": {
+        "n_questions": 22,
+        "n_reads": 26,
+        "named_bridge": 0.45454545454545453,
+        "named_distractor": 0.045454545454545456,
+        "diff": [
+          0.40909090909090906,
+          0.1818181818181818,
+          0.6363636363636364
+        ]
+      },
+      "neither": {
+        "n_questions": 60,
+        "n_reads": 98,
+        "named_bridge": 0.3416666666666667,
+        "named_distractor": 0.05,
+        "diff": [
+          0.2916666666666667,
+          0.17777777777777778,
+          0.4111111111111111
+        ]
+      }
+    },
+    "40": {
+      "both": {
+        "n_questions": 69,
+        "n_reads": 141,
+        "named_bridge": 0.8164251207729468,
+        "named_distractor": 0.05555555555555555,
+        "diff": [
+          0.7608695652173912,
+          0.6570048309178743,
+          0.855072463768116
+        ]
+      },
+      "one": {
+        "n_questions": 17,
+        "n_reads": 18,
+        "named_bridge": 0.6470588235294118,
+        "named_distractor": 0.058823529411764705,
+        "diff": [
+          0.5882352941176471,
+          0.2941176470588235,
+          0.8235294117647058
+        ]
+      },
+      "neither": {
+        "n_questions": 43,
+        "n_reads": 72,
+        "named_bridge": 0.5426356589147286,
+        "named_distractor": 0.06589147286821705,
+        "diff": [
+          0.4767441860465116,
+          0.31007751937984496,
+          0.6318798449612398
+        ]
+      }
+    },
+    "48": {
+      "both": {
+        "n_questions": 70,
+        "n_reads": 143,
+        "named_bridge": 0.8928571428571429,
+        "named_distractor": 0.05,
+        "diff": [
+          0.8428571428571429,
+          0.7714285714285715,
+          0.907142857142857
+        ]
+      },
+      "one": {
+        "n_questions": 18,
+        "n_reads": 19,
+        "named_bridge": 0.5833333333333334,
+        "named_distractor": 0.027777777777777776,
+        "diff": [
+          0.5555555555555556,
+          0.3333333333333333,
+          0.7777777777777778
+        ]
+      },
+      "neither": {
+        "n_questions": 47,
+        "n_reads": 69,
+        "named_bridge": 0.41134751773049644,
+        "named_distractor": 0.035460992907801414,
+        "diff": [
+          0.375886524822695,
+          0.2269503546099291,
+          0.5319148936170213
+        ]
+      }
+    }
+  },
+  "after_swap": {
+    "flipped": {
+      "n_questions": 23,
+      "last clean": {
+        "position": "last",
+        "n": 23,
+        "n_questions": 23,
+        "named_bridge": [
+          0.8695652173913043,
+          0.678721020269818,
+          0.954624234856553
+        ],
+        "named_distractor": [
+          0.043478260869565216,
+          0.0077164669621267445,
+          0.20991586494059142
+        ],
+        "named_answer": [
+          0.9565217391304348,
+          0.7900841350594088,
+          0.9922835330378734
+        ],
+        "named_swap_answer": [
+          0.043478260869565216,
+          0.0077164669621267445,
+          0.20991586494059142
+        ],
+        "named_other_bridges": 0.0007127583749109052,
+        "first_top1_bridge": [
+          0.8695652173913043,
+          0.678721020269818,
+          0.954624234856553
+        ],
+        "first_top1_distractor": [
+          0.0,
+          -1.3877787807814457e-17,
+          0.14312112541726274
+        ]
+      },
+      "last swapped": {
+        "position": "last",
+        "n": 23,
+        "n_questions": 23,
+        "named_bridge": [
+          0.17391304347826086,
+          0.06978540350612772,
+          0.37138054785295666
+        ],
+        "named_distractor": [
+          0.6956521739130435,
+          0.49133870939427393,
+          0.8439617197902755
+        ],
+        "named_answer": [
+          0.4782608695652174,
+          0.2923686953994572,
+          0.6703757013578151
+        ],
+        "named_swap_answer": [
+          0.9130434782608695,
+          0.7320359570190598,
+          0.9758205045927666
+        ],
+        "named_other_bridges": 0.0014373960560703255,
+        "first_top1_bridge": [
+          0.08695652173913043,
+          0.02417949540723341,
+          0.2679640429809402
+        ],
+        "first_top1_distractor": [
+          0.8260869565217391,
+          0.6286194521470433,
+          0.9302145964938723
+        ]
+      },
+      "last distractor swapped - clean": [
+        0.6521739130434783,
+        0.4347826086956522,
+        0.8260869565217391
+      ],
+      "prev clean": {
+        "position": "prev",
+        "n": 23,
+        "n_questions": 23,
+        "named_bridge": [
+          0.7391304347826086,
+          0.5352960945624944,
+          0.8745155411075104
+        ],
+        "named_distractor": [
+          0.13043478260869565,
+          0.04537576514344702,
+          0.32127897973018194
+        ],
+        "named_answer": [
+          0.391304347826087,
+          0.22157377982382145,
+          0.5921482039625402
+        ],
+        "named_swap_answer": [
+          0.0,
+          -1.3877787807814457e-17,
+          0.14312112541726274
+        ],
+        "named_other_bridges": 0.0007127583749109052,
+        "first_top1_bridge": [
+          0.5217391304347826,
+          0.3296242986421849,
+          0.7076313046005427
+        ],
+        "first_top1_distractor": [
+          0.0,
+          -1.3877787807814457e-17,
+          0.14312112541726274
+        ]
+      },
+      "prev swapped": {
+        "position": "prev",
+        "n": 23,
+        "n_questions": 23,
+        "named_bridge": [
+          0.21739130434782608,
+          0.09663835601719065,
+          0.4190388018273492
+        ],
+        "named_distractor": [
+          0.782608695652174,
+          0.5809611981726508,
+          0.9033616439828094
+        ],
+        "named_answer": [
+          0.21739130434782608,
+          0.09663835601719065,
+          0.4190388018273492
+        ],
+        "named_swap_answer": [
+          0.43478260869565216,
+          0.25634368332198654,
+          0.6318895069498304
+        ],
+        "named_other_bridges": 0.0007127583749109052,
+        "first_top1_bridge": [
+          0.08695652173913043,
+          0.02417949540723341,
+          0.2679640429809402
+        ],
+        "first_top1_distractor": [
+          0.43478260869565216,
+          0.25634368332198654,
+          0.6318895069498304
+        ]
+      },
+      "prev distractor swapped - clean": [
+        0.6521739130434783,
+        0.4347826086956522,
+        0.8260869565217391
+      ],
+      "cue_last clean": {
+        "position": "cue_last",
+        "n": 23,
+        "n_questions": 23,
+        "named_bridge": [
+          0.6521739130434783,
+          0.4488997690689164,
+          0.8118894536301776
+        ],
+        "named_distractor": [
+          0.043478260869565216,
+          0.0077164669621267445,
+          0.20991586494059142
+        ],
+        "named_answer": [
+          0.2608695652173913,
+          0.1254844588924897,
+          0.4647039054375056
+        ],
+        "named_swap_answer": [
+          0.043478260869565216,
+          0.0077164669621267445,
+          0.20991586494059142
+        ],
+        "named_other_bridges": 0.002173913043478261,
+        "first_top1_bridge": [
+          0.5652173913043478,
+          0.3681104930501695,
+          0.7436563166780135
+        ],
+        "first_top1_distractor": [
+          0.0,
+          -1.3877787807814457e-17,
+          0.14312112541726274
+        ]
+      },
+      "cue_last swapped": {
+        "position": "cue_last",
+        "n": 23,
+        "n_questions": 23,
+        "named_bridge": [
+          0.043478260869565216,
+          0.0077164669621267445,
+          0.20991586494059142
+        ],
+        "named_distractor": [
+          0.6086956521739131,
+          0.4078517960374599,
+          0.7784262201761787
+        ],
+        "named_answer": [
+          0.0,
+          -1.3877787807814457e-17,
+          0.14312112541726274
+        ],
+        "named_swap_answer": [
+          0.43478260869565216,
+          0.25634368332198654,
+          0.6318895069498304
+        ],
+        "named_other_bridges": 0.0014492753623188406,
+        "first_top1_bridge": [
+          0.043478260869565216,
+          0.0077164669621267445,
+          0.20991586494059142
+        ],
+        "first_top1_distractor": [
+          0.43478260869565216,
+          0.25634368332198654,
+          0.6318895069498304
+        ]
+      },
+      "cue_last distractor swapped - clean": [
+        0.5652173913043479,
+        0.34782608695652173,
+        0.7391304347826088
+      ]
+    },
+    "not_flipped": {
+      "n_questions": 54,
+      "last clean": {
+        "position": "last",
+        "n": 54,
+        "n_questions": 54,
+        "named_bridge": [
+          0.7407407407407407,
+          0.610688551197827,
+          0.8388149203520608
+        ],
+        "named_distractor": [
+          0.018518518518518517,
+          0.0032764033153519848,
+          0.09771665358487208
+        ],
+        "named_answer": [
+          0.9259259259259259,
+          0.8244564280657937,
+          0.9708189446763159
+        ],
+        "named_swap_answer": [
+          0.2037037037037037,
+          0.1177393408658538,
+          0.32902561722659174
+        ],
+        "named_other_bridges": 0.0030611212305201372,
+        "first_top1_bridge": [
+          0.48148148148148145,
+          0.3539375603654322,
+          0.6114852495153457
+        ],
+        "first_top1_distractor": [
+          0.018518518518518517,
+          0.0032764033153519848,
+          0.09771665358487208
+        ]
+      },
+      "last swapped": {
+        "position": "last",
+        "n": 54,
+        "n_questions": 54,
+        "named_bridge": [
+          0.6851851851851852,
+          0.5525630440832037,
+          0.7932088571090179
+        ],
+        "named_distractor": [
+          0.12962962962962962,
+          0.06423639229487982,
+          0.2442198053206771
+        ],
+        "named_answer": [
+          0.9074074074074074,
+          0.8008987246934547,
+          0.9597994579294327
+        ],
+        "named_swap_answer": [
+          0.35185185185185186,
+          0.23822831722420018,
+          0.4851541618220226
+        ],
+        "named_other_bridges": 0.003673345476624165,
+        "first_top1_bridge": [
+          0.46296296296296297,
+          0.33689688992410527,
+          0.5939487298374504
+        ],
+        "first_top1_distractor": [
+          0.07407407407407407,
+          0.029181055323684174,
+          0.17554357193420633
+        ]
+      },
+      "last distractor swapped - clean": [
+        0.1111111111111111,
+        0.037037037037037035,
+        0.2037037037037037
+      ],
+      "prev clean": {
+        "position": "prev",
+        "n": 54,
+        "n_questions": 54,
+        "named_bridge": [
+          0.8333333333333334,
+          0.7126323220121027,
+          0.9097571001338962
+        ],
+        "named_distractor": [
+          0.05555555555555555,
+          0.019072922503838907,
+          0.15107451463482943
+        ],
+        "named_answer": [
+          0.5370370370370371,
+          0.4060512701625496,
+          0.6631031100758948
+        ],
+        "named_swap_answer": [
+          0.12962962962962962,
+          0.06423639229487982,
+          0.2442198053206771
+        ],
+        "named_other_bridges": 0.0036581663630843955,
+        "first_top1_bridge": [
+          0.3888888888888889,
+          0.2704174250997505,
+          0.5221194341849167
+        ],
+        "first_top1_distractor": [
+          0.05555555555555555,
+          0.019072922503838907,
+          0.15107451463482943
+        ]
+      },
+      "prev swapped": {
+        "position": "prev",
+        "n": 54,
+        "n_questions": 54,
+        "named_bridge": [
+          0.6666666666666666,
+          0.5336071462745029,
+          0.7775875647984964
+        ],
+        "named_distractor": [
+          0.12962962962962962,
+          0.06423639229487982,
+          0.2442198053206771
+        ],
+        "named_answer": [
+          0.4444444444444444,
+          0.3200225687559781,
+          0.5762458608863554
+        ],
+        "named_swap_answer": [
+          0.18518518518518517,
+          0.10382574505942957,
+          0.3083620229137938
+        ],
+        "named_other_bridges": 0.003349524387775754,
+        "first_top1_bridge": [
+          0.3333333333333333,
+          0.22241243520150356,
+          0.466392853725497
+        ],
+        "first_top1_distractor": [
+          0.1111111111111111,
+          0.05192951817556753,
+          0.2219494893207673
+        ]
+      },
+      "prev distractor swapped - clean": [
+        0.07407407407407407,
+        0.0,
+        0.16666666666666666
+      ],
+      "cue_last clean": {
+        "position": "cue_last",
+        "n": 54,
+        "n_questions": 54,
+        "named_bridge": [
+          0.5740740740740741,
+          0.44162497846346305,
+          0.6966837820134256
+        ],
+        "named_distractor": [
+          0.05555555555555555,
+          0.019072922503838907,
+          0.15107451463482943
+        ],
+        "named_answer": [
+          0.2222222222222222,
+          0.13195287989578958,
+          0.34938926831587813
+        ],
+        "named_swap_answer": [
+          0.037037037037037035,
+          0.010216153585413057,
+          0.12535409343403314
+        ],
+        "named_other_bridges": 0.002742359846184983,
+        "first_top1_bridge": [
+          0.2222222222222222,
+          0.13195287989578958,
+          0.34938926831587813
+        ],
+        "first_top1_distractor": [
+          0.0,
+          6.938893903907228e-18,
+          0.06641586678100189
+        ]
+      },
+      "cue_last swapped": {
+        "position": "cue_last",
+        "n": 54,
+        "n_questions": 54,
+        "named_bridge": [
+          0.3148148148148148,
+          0.2067911428909822,
+          0.44743695591679633
+        ],
+        "named_distractor": [
+          0.4074074074074074,
+          0.2867801518924045,
+          0.5403338975114846
+        ],
+        "named_answer": [
+          0.1111111111111111,
+          0.05192951817556753,
+          0.2219494893207673
+        ],
+        "named_swap_answer": [
+          0.1111111111111111,
+          0.05192951817556753,
+          0.2219494893207673
+        ],
+        "named_other_bridges": 0.0033495243877757538,
+        "first_top1_bridge": [
+          0.05555555555555555,
+          0.019072922503838907,
+          0.15107451463482943
+        ],
+        "first_top1_distractor": [
+          0.14814814814814814,
+          0.07702971308229412,
+          0.266003674652485
+        ]
+      },
+      "cue_last distractor swapped - clean": [
+        0.35185185185185186,
+        0.22175925925925927,
+        0.5
+      ]
+    }
+  },
+  "decision_rule": "Fixed before the run (2026-10-15; design: Danyil). Positive control: on the cells where both lenses have the bridge first among the entities, the oracle names the bridge at least 15 points more often than its distractor (question-clustered paired bootstrap 95% CI above 0); otherwise it does not read bridges here and the rest says nothing. (a) On the cells where neither lens has the bridge first (layers 28/36/44, three positions), the oracle names the bridge at least 15 points more often than its distractor, CI above 0. (b) On the questions whose answer flips under exp14's J++ bridge swap on the cue phrase, at layer 44 at the last word or -1, the oracle names the swap target (the distractor) in at least 30% of the swapped reads and more often than in the clean reads (paired CI above 0). Verdict: (a) and (b): \"the oracle reads the bridge where the lenses miss it, and follows the state the answer uses\". (a) without (b): \"the oracle names the bridge on lens-blind cells but does not follow the swap; it may re-solve the hop from the question the activation encodes\". Not (a): \"no evidence the oracle sees the bridge where the lenses miss it\" (a null, if the positive control works). Reported beside every rate: the share of other questions' bridges named, and the reads of the mean activation."
+}

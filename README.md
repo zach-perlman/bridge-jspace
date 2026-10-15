@@ -114,7 +114,7 @@ is recomputed from the raw run files by `uv run python scripts/verify_headlines.
 | [exp14 `flip_rates_pinned.png`](figures/exp14_cue_answer_swaps/flip_rates_pinned.png) | The same swaps with the other pair held: on the cue phrase the bridge swap still works, the answer swap does not |
 | [exp15 `oracle_vs_lenses.png`](figures/exp15_oracle_lens/oracle_vs_lenses.png) | Where neither lens has the bridge (or the answer) first, the oracle lens still names it in about a third of readings; its distractor in 5-10% |
 | [exp15 `after_swap.png`](figures/exp15_oracle_lens/after_swap.png) | After the bridge swap, the oracle names the swap target where the model's answer flips, rarely where it does not |
-| [exp15 `by_layer.png`](figures/exp15_oracle_lens/by_layer.png) | The same two results by the layer the oracle reads |
+| [exp15 `by_layer.png`](figures/exp15_oracle_lens/by_layer.png) | By layer (24-48): the oracle names the lens-blind bridge at every layer, most at 36-40; the swap's effect reaches the last words between layers 32 and 40 |
 | [exp11 `pool_top1_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/pool_top1_by_layer.png) | Last token only: bridge and answer ranked first, by layer, three readers |
 | [exp11 `advantage_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/advantage_by_layer.png) | Last token only: how many times higher than its distractor each word ranks |
 | [exp10 `pass_at_10_by_model.png`](figures/exp10_lens_sanity/20261015-135537/pass_at_10_by_model.png) | Does each lens find the bridge at all (pass@10), 4B and 27B |
@@ -157,9 +157,10 @@ layer, before and after the bridge swap.
    in 37% of the readings where neither the J-lens nor J++ has it first (its distractor: 5%), and the answer in 33%
    where neither has the answer first (distractor 8%). After the bridge swap it names the swap target where the
    model's answer flips (61-74% of those questions at layer 44) and rarely where it does not (9-11%), so it reads the
-   state, not only the question. Whether that holds on the lens-blind readings themselves is open: the swap test
-   covers only 5 questions with such readings, and the oracle often names the bridge while re-telling the question
-   (exp15).
+   state, not only the question. Read at layers 24-48, the oracle names the lens-blind bridge at every layer (most at
+   36-40), and the swap's effect reaches the last words between layers 32 and 40. Whether the oracle reads the
+   lens-blind bridge from the state is open: the swap test covers only 5 questions with such readings, and the oracle
+   often names the bridge while re-telling the question (exp15).
 
 ![exp12: where and how deep](figures/exp12_position_map/two_step.png)
 
@@ -528,9 +529,10 @@ absent from the activation, or held in a form no single token direction names? T
 Qwen3.6-27B trained to put one residual vector into words, as bullets of concepts (`neuronpedia/jacobian-lens`,
 `qwen3.6-27b/oracle`; its published read contract: the vector replaces a marker token's embedding in a fixed prompt;
 trained on layers 20-60 in steps of 4). It reads the 77 questions at the last word, -1 and the cue phrase's last token,
-layers 28, 36 and 44. One reading = the oracle's words for the activation at one question, position and layer: in
+at layers 28, 36 and 44 (the run the decision rule was fixed for), then at 24, 32, 40 and 48 (a second run with the same
+config, made after the first). One reading = the oracle's words for the activation at one question, position and layer: in
 "...the country where the Amazon River ends is" the three positions are "is", "ends" and "River", so one question
-gives three readings per layer (77 x 3 x 3 = 693 in all). Each reading is
+gives three readings per layer (77 x 3 x 3 = 693 in the first run). Each reading is
 grouped by exp12's lens readings at the same question, position and layer: both lenses rank the word first among its
 candidates, one does, or neither. A word counts as named if it appears in the oracle's bullets (whole word, case and
 a plural ending ignored). Controls: the word's distractor (Mexico for Brazil), other questions' bridges, the mean
@@ -552,13 +554,20 @@ Danyil; the decision rule was fixed in the config before the run. Greedy decodin
 - **After the bridge swap the oracle names the swap target where the answer flips.** On the 23 questions whose answer
   the J++ bridge swap flips, at layer 44 it names the target (Mexico) in 61% (last word) and 74% (-1) of them, against
   0% and 9% before the swap (both positions together: 67% [54, 80] vs 4%); on the 54 questions whose answer the swap
-  keeps, 9% and 11% (together 10% [4, 18]). At layer 28 the edit has not
-  reached the last words yet (4%). By the rule fixed before the run: "the oracle reads the bridge where the lenses
-  miss it, and follows the state the answer uses".
+  keeps, 9% and 11% (together 10% [4, 18]). By the rule fixed before the run (layers 28/36/44): "the oracle reads
+  the bridge where the lenses miss it, and follows the state the answer uses".
+- **With all seven layers 24-48 (both runs), the same holds at every layer.** Where neither lens has the bridge first
+  the oracle names it in 37% of readings (distractor 4%; +33 [+24, +42]; 590 readings of 66 questions): 29%, 30%,
+  34%, 46%, 54%, 38%, 41% at layers 24 to 48, highest at 40. Split by how far down the better lens has it: 50% at
+  2nd-3rd, 34% at 4th-10th, 21% [10, 34] at 11th or lower (157 readings, 33 questions). The answer: 35% vs its
+  distractor's 8% (+26 [+18, +34]).
+- **The swap reaches the last words between layers 32 and 40.** After the swap, on the 23 questions whose answer it
+  changes, the oracle names the swap target at the last word or -1 in 2-7% of them at layers 24-32, 39% at 36, then
+  70%, 67%, 74% at 40, 44, 48; on the 54 whose answer stays, 2-13% at every layer.
 
 ![exp15: oracle vs lenses](figures/exp15_oracle_lens/oracle_vs_lenses.png)
 
-*How to read it: one bar per group of readings, top to bottom. Dark bars: readings where the lenses rank the word
+*How to read it (layers 24-48, both runs pooled): one bar per group of readings, top to bottom. Dark bars: readings where the lenses rank the word
 1st (both, or one of the two); light bars: where neither does, first all of them, then split by how far down the
 better lens has the word; grey bars: the controls (the distractor named instead, and the word named from the mean
 activation, which holds no particular question). The light bars are the result: well above the grey ones, and
@@ -575,7 +584,9 @@ question from the activation, the middle bar would stay as low as the left one.*
 
 *How to read it: left, where neither lens ranks the bridge 1st, the share of readings naming it (blue) and its
 distractor (grey dashed), by the layer the oracle reads. Right, the swap target named after the swap, by layer; grey
-band: the layers the swap edits. The swap's effect reaches the last words only after layer 28.*
+band: the layers the swap edits. Where the lenses miss the bridge, the oracle names it at every layer, most at 36-40;
+the swap's effect reaches the last words between layers 32 and 40, and only on the questions whose answer it
+changes.*
 
 Worked examples: [examples/exp15_oracle_lens/index.html](examples/exp15_oracle_lens/index.html): every question, with
 the model's own answer before and after the swap, the lens ranks and the oracle's words in each row; filters by group
@@ -591,6 +602,9 @@ exp11 and exp12 pages show the same oracle words under each card ("Oracle lens (
   5 of their 13 readings name the target).
 - A lens-blind reading is "not first among 97 entities": many are near misses (the oracle's rate falls with the
   lenses' rank, above).
+- The layers 24/32/40/48 come from a second run made after seeing the first; the decision rule was applied to the
+  first run (28/36/44) only. The lens-blind readings differ from layer to layer, so the by-layer curve mixes a changing
+  set of readings.
 - String matching: a bridge named only in another script (e.g. 巴西 for Brazil, without "(Brazil)") is missed, for
   the bridge and the distractor alike. Greedy decoding (the reference reader samples). One seed; positions pooled.
 
@@ -598,7 +612,10 @@ exp11 and exp12 pages show the same oracle words under each card ("Oracle lens (
 
 Run `results/exp15_oracle_lens/20261015-123226` (Qwen3.6-27B, part B's model loader, the 77 questions of part B's v4
 labels, trailing space stripped; oracle adapter pinned by sha256 in `pins.py`); analysis
-`analysis-20261015-160336/` (summary.json, examples.json with lens-blind readings drawn by a fixed seed, the figures).
+`analysis-20261015-160336/` (summary.json, examples.json with lens-blind readings drawn by a fixed seed). Second run
+`results/exp15_oracle_lens/20261015-134316` (layers 24/32/40/48, same config; gate passed, swap top word = exp14's for
+77 of 77); both runs pooled in `20261015-134316/analysis-20261015-160606-combined/` (summary.json and the README's
+figures).
 Checks: the sanity gate (`sanity.json`: 6 of 6 facts, random vector 0 of 6, base-logit drift 0.0, adapter changes
 the oracle's logits by up to 16.6; 496 LoRA modules, r 16, scale 2); the swapped forward's top word equals exp14's for
 77 of 77 questions.
@@ -864,9 +881,9 @@ a third of the readings where the lenses miss it; what follows checks that readi
 1. **On the lens-blind readings, does the oracle read the state or re-solve the question?** (exp15 follow-up)
    - *Why:* exp15's swap test says the oracle reads the state, but it covers mostly questions where the lenses see the
      bridge (5 flipped questions have lens-blind readings).
-   - *Test:* read more layers on the oracle's grid (24, 32, 40, 48: both bands at its resolution) and the swaps that
-     flip lens-blind questions; or patch the lens-blind activation into another question with the same template and
-     ask whether the oracle names the donor's bridge.
+   - *Test:* patch the lens-blind activation into another question with the same template and ask whether the
+     oracle names the donor's bridge; or find swaps that change the answer of lens-blind questions. Layers 24-48 are
+     read; 20, 52, 56 and 60 (the rest of the oracle's grid) are running.
    - *Cost:* about 20 minutes of GPU per four layers.
 2. **Is that specific to one verbalizer?** (exp16_nla)
    - *Why:* the oracle lens is the model itself with an adapter; the NLA is a separate 27B reader with a different
