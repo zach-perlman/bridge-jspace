@@ -14,6 +14,8 @@ import numpy as np
 R = Path(__file__).resolve().parents[1] / "results"
 EXP10 = R / "exp10_lens_sanity/20261013-205936"  # Qwen3.6-27B, space stripped
 EXP11 = R / "exp11_bridge_vs_answer_by_layer/20261014-092835"  # Qwen3.6-27B, prompts as published
+EXP11_V4_JLENS = R / "exp11_bridge_vs_answer_by_layer/20261015-100110"  # stripped, part B v4 J-lens labels
+EXP11_V4_JPP = R / "exp11_bridge_vs_answer_by_layer/20261015-100426"  # stripped, part B v4 J++ labels
 EXP12 = R / "exp12_position_map/20261014-095358"  # Qwen3.6-27B, prompts as published
 BAND = (32, 48)  # layers averaged over
 
@@ -25,12 +27,13 @@ def jsonl(path):
 # ---- exp11: last prompt token -----------------------------------------------------------------
 
 
-def exp11_band_share(reader, role, label=None):
+def exp11_band_share(reader, role, label=None, run=EXP11):
     """exp11 ranks.jsonl: for each eligible item (items.jsonl status == "eligible", optionally one part B label),
-    the share of layers 32-48 where `<role>_pool` == 1 (top-1 in its pool); then the mean over items."""
-    meta = {m["name"]: m for m in jsonl(EXP11 / "items.jsonl")}
+    the share of layers 32-48 where `<role>_pool` == 1 (top-1 in its pool); then the mean over items. Status and
+    label are the ones the run was made with (its labels file is in manifest.json)."""
+    meta = {m["name"]: m for m in jsonl(run / "items.jsonl")}
     names = [n for n, m in meta.items() if m["status"] == "eligible" and (label is None or m["label"] == label)]
-    rows = {r["name"]: r for r in jsonl(EXP11 / "ranks.jsonl") if r["reader"] == reader}
+    rows = {r["name"]: r for r in jsonl(run / "ranks.jsonl") if r["reader"] == reader}
     vals = []
     for n in names:
         r = rows[n]
@@ -222,6 +225,20 @@ def main():
         ("exp11", "answer top-1 among answers, J-lens", exp11_band_share("jlens", "answer")[0], 0.41),
         ("exp11", "bridge top-1, J-lens, J-mediated items", exp11_band_share("jlens", "bridge", "J-mediated")[0], 0.79),
         ("exp11", "bridge top-1, J-lens, 'neither' items", exp11_band_share("jlens", "bridge", "neither")[0], 0.49),
+        (
+            "exp11",
+            "v4 labels: J-lens, J-mediated",
+            exp11_band_share("jlens", "bridge", "J-mediated", EXP11_V4_JLENS)[0],
+            0.73,
+        ),
+        (
+            "exp11",
+            "v4 labels: J-lens, 'neither'",
+            exp11_band_share("jlens", "bridge", "neither", EXP11_V4_JLENS)[0],
+            0.50,
+        ),
+        ("exp11", "v4 labels: J++, J-mediated", exp11_band_share("jpp", "bridge", "J-mediated", EXP11_V4_JPP)[0], 0.70),
+        ("exp11", "v4 labels: J++, 'neither'", exp11_band_share("jpp", "bridge", "neither", EXP11_V4_JPP)[0], 0.41),
         ("exp12", "bridge top-1 at offset -1, J-lens", exp12_share_at_offset("jlens", "bridge", -1)[0], 0.66),
         ("exp12", "bridge top-1 at offset 0, J-lens", exp12_share_at_offset("jlens", "bridge", 0)[0], 0.56),
         ("exp12", "answer top-1 at offset 0, J-lens", exp12_share_at_offset("jlens", "answer", 0)[0], 0.41),

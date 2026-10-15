@@ -172,9 +172,11 @@ the set, and is the answer (Portuguese) the top candidate among all 112 answers?
   layer 34; the answer gets there by layer 43 (J-lens, 8 layers later [4, 18]) or 47 (J++, 11 [5, 18]). There is
   no clean hand-off: the bridge stays on top until about layer 60, and per question the bridge settles on top
   before the answer in only 57% [45, 70] of cases (J-lens).
-- **Where the bridge is readable, it is also used.** On the 25 questions where part B's J-space swap flips the
-  answer, the J-lens has the bridge on top in 79% [66, 89] of layers 32-48; on the 40 where no swap works, 49%
-  [35, 62]. Suggestive: the intervals nearly touch.
+- **Where the bridge is readable, it is also used.** With part B's v4 labels (77 questions, stripped prompts, each
+  lens labelled by its own swaps): on the questions where the J-space swap flips the answer, the bridge is on top in
+  73% [58, 86] of layers 32-48 (J-lens, n=25) and 70% [59, 81] (J++, n=39); on those where no swap works, 50% [38, 62]
+  (n=49) and 41% [29, 54] (n=37). Suggestive: the intervals overlap (J-lens) or nearly touch (J++). The earlier labels
+  (prompts as published, n=25 / 40) gave 79% [66, 89] vs 49% [35, 62] for the J-lens.
 
 ![exp11: top-1 share by layer](figures/exp11_bridge_vs_answer_by_layer/pool_top1_by_layer.png)
 
@@ -202,6 +204,17 @@ Eligible n=67, band 32-48, 95% percentile bootstrap CI over questions (n_boot=10
 Space-stripped prompts (run `20261014-093050`) give the same picture (J-lens bridge 0.56, lag 8 [3, 16]). On the 21
 eligible questions whose prompt ends in a space the answer is read less often (J-lens 0.24 vs 0.49 without the
 space); the bridge less so (0.53 vs 0.62).
+
+Part B's v4 labels: runs `20261015-100110` (`exp02_swaps/main_v4_jlens/labels.csv`) and `20261015-100426`
+(`main_v4_jpp`), stripped prompts; their ranks equal `20261014-093050`'s row for row (270/270), so only the split
+differs. Bridge top-1 among entities, layers 32-48:
+
+| Reader | Labels | Eligible | J-mediated | Neither |
+|---|---|---|---|---|
+| J-lens | v4 J-lens | 0.57 [0.48, 0.66] (n=77) | 0.73 [0.58, 0.86] (n=25) | 0.50 [0.38, 0.62] (n=49) |
+| J++ | v4 J++ | 0.56 [0.46, 0.64] (n=77) | 0.70 [0.59, 0.81] (n=39) | 0.41 [0.29, 0.54] (n=37) |
+| J-lens | v4 J++ | 0.57 [0.48, 0.66] | 0.73 [0.62, 0.83] | 0.41 [0.28, 0.55] |
+| logit lens | v4 J-lens | 0.25 [0.18, 0.33] | 0.28 [0.15, 0.42] | 0.25 [0.16, 0.35] |
 </details>
 
 ### exp12_position_map: where in the prompt, and how deep?

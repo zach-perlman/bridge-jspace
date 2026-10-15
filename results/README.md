@@ -14,6 +14,8 @@ Where the final numbers, figures and examples of each experiment are. Everything
 
 Variants and side runs:
 - exp11 with the trailing space stripped: `exp11_bridge_vs_answer_by_layer/20261014-093050/analysis-20261014-113952/`.
+- exp11 split by part B's v4 labels (stripped): `exp11_bridge_vs_answer_by_layer/20261015-100110/` (`main_v4_jlens`),
+  `20261015-100426/` (`main_v4_jpp`); their own `summary.json` is current (no `analysis-*` needed).
 - exp10 on Qwen3.5-4B: runs `20261013-205029` (as published) and `20261013-205057` (stripped).
 - Per-run exp10 figures: `exp10_lens_sanity/<run>/figures-20261013-23014*/multihop_pass_at_k.png`.
 
