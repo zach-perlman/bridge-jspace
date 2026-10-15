@@ -109,3 +109,33 @@ def test_oracle_words_html_marks_once_and_escapes():
     # a word that is also part of the markup is not re-marked inside it
     assert oracle_words_html("w class span", {"bridge": "class"}).count("<span") == 1
     assert "span class='w answer'" not in oracle_words_html("- 4 legs", {"answer": "4"}, mark_answers=False)
+
+
+def test_monitoring_counts_readings_and_questions():
+    from scripts.exp15_oracle_lens.experiment import monitoring
+
+    rows = [
+        {"name": "q1", "layer": 36, "lens_class": "both", "named_bridge": True, "named_distractor": False},
+        {"name": "q1", "layer": 44, "lens_class": "neither", "named_bridge": True, "named_distractor": False},
+        {"name": "q2", "layer": 36, "lens_class": "neither", "named_bridge": True, "named_distractor": True},
+        {"name": "q3", "layer": 36, "lens_class": "one", "named_bridge": False, "named_distractor": False},
+    ]
+    m = monitoring(rows, "lens_class", "named_bridge", "named_distractor")
+    assert m["readings"] == {"n": 4, "both": 0.25, "lens_only": 0.25, "oracle_only": 0.5, "neither": 0.0}
+    assert m["questions"] == {"n": 3, "lenses": 2, "oracle": 2, "either": 3, "oracle_only": 1, "lenses_only": 1}
+    assert m["false_alarm"]["distractor_named_where_lenses_miss"] == 0.5
+    assert monitoring([], "lens_class", "named_bridge", "named_distractor") == {}
+
+
+def test_mention_type():
+    from scripts.exp15_oracle_lens.experiment import mention_type
+
+    assert mention_type("- Brazil\n- Rio", "Brazil") == "concept"
+    assert mention_type("- 巴西 (Brazil). What language", "brazil") == "concept"
+    assert mention_type("- **Brazil**", "Brazil") == "concept"
+    assert mention_type("- /by definition contains which element? The answer is **Carbon**.", "carbon") == "answer"
+    assert mention_type("- /Amazon River is located? (Answer: Brazil) 2. In", "Brazil") == "answer"
+    assert mention_type("- , Massachusetts, is credited with inventing basketball", "basketball") == "retold"
+    assert mention_type("- shell or carapace", "turtle") is None
+    # a reading with a concept bullet counts as concept even if it also answers
+    assert mention_type("- Brazil\n- the answer is Brazil", "Brazil") == "concept"

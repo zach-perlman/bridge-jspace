@@ -23,6 +23,7 @@ EXP14 = R / "exp14_cue_answer_swaps/20261015-111137"  # bridge vs answer lens-ve
 EXP14_PINNED = R / "exp14_cue_answer_swaps/20261015-114825"  # the same with the other pair held (pinned.yaml)
 EXP15 = R / "exp15_oracle_lens/20261015-123226"  # oracle lens readings (clean, after the J++ bridge swap, mean)
 EXP15_B = R / "exp15_oracle_lens/20261015-134316"  # the same at layers 24/32/40/48
+EXP15_C = R / "exp15_oracle_lens/20261015-140424"  # and at layers 20/52/56/60
 BAND = (32, 48)  # layers averaged over
 
 
@@ -498,10 +499,19 @@ def main():
         ("exp15", "after swap, kept, L44 -1: target", exp15_after_swap("prev", False), 0.11),
         (
             "exp15",
-            "layers 24-48 pooled, neither lens: bridge",
-            exp15_named("bridge", runs=(EXP15, EXP15_B))["neither"],
+            "layers 20-60 pooled, neither lens: bridge",
+            exp15_named("bridge", runs=(EXP15, EXP15_B, EXP15_C))["neither"],
             0.37,
         ),
+        (
+            "exp15",
+            "layers 20-60 pooled, both lenses: bridge",
+            exp15_named("bridge", runs=(EXP15, EXP15_B, EXP15_C))["both"],
+            0.83,
+        ),
+        ("exp15", "layer 52, neither lens: bridge", exp15_named("bridge", runs=(EXP15_C,), layer=52)["neither"], 0.58),
+        ("exp15", "after swap, flipped, L60, last+-1", exp15_after_swap(("last", "prev"), True, 60, EXP15_C), 0.89),
+        ("exp15", "after swap, kept, L52, last+-1", exp15_after_swap(("last", "prev"), False, 52, EXP15_C), 0.25),
         ("exp15", "layer 40, neither lens: bridge", exp15_named("bridge", runs=(EXP15_B,), layer=40)["neither"], 0.54),
         ("exp15", "layer 24, neither lens: bridge", exp15_named("bridge", runs=(EXP15_B,), layer=24)["neither"], 0.29),
         ("exp15", "after swap, flipped, L36, last+-1", exp15_after_swap(("last", "prev"), True, 36), 0.39),

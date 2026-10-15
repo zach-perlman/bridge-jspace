@@ -18,6 +18,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.lines import Line2D
 
 from bridge_jspace.plotting import INK, MUTED, SURFACE, bootstrap_note, finish, percent_axis, style_axes
 from bridge_jspace.stats import bootstrap_mean
@@ -43,73 +44,65 @@ def _best_rank(r: dict, prefix: str) -> int:
     return min(r[f"{prefix}jlens_rank"], r[f"{prefix}jpp_rank"])
 
 
-def _hbars(ax, rows: list[tuple[str, list[dict], str, str]], n_boot: int, seed: int) -> None:
-    """Horizontal bars, top to bottom: (label, readings, field, colour); the value at the bar's end, the number of
-    readings and questions under the label."""
-    labels = []
-    for i, (label, sub, field, color) in enumerate(rows):
-        labels.append(f"{label}\n({len(sub)} readings, {len({r['name'] for r in sub})} questions)")
-        m, lo, hi = _clustered(sub, field, n_boot, seed)
-        if np.isnan(m):
-            continue
-        ax.barh(i, m, 0.7, color=color, zorder=2)
-        ax.errorbar(m, i, xerr=[[max(m - lo, 0)], [max(hi - m, 0)]], color=INK, lw=1, capsize=2.5, zorder=3)
-        ax.text(hi + 0.015, i, f"{m:.0%}", va="center", ha="left", fontsize=11, color=INK, fontweight="bold")
-    ax.set_yticks(range(len(rows)), labels, fontsize=9.5)
-    ax.invert_yaxis()
-    ax.set_xlim(0, 1.08)
-    ax.set_xticks([0, 0.25, 0.5, 0.75, 1.0])
-    style_axes(ax)
-    percent_axis(ax, "x")
-    ax.grid(axis="y", visible=False)
+LENS_GROUPS = [  # (label, test on the reading's lens class and the better lens's rank)
+    ("both lenses\nrank it 1st", lambda c, rank: c == "both"),
+    ("one lens\nranks it 1st", lambda c, rank: c == "one"),
+    ("neither: the better\nlens has it 2nd-3rd", lambda c, rank: c == "neither" and rank <= 3),
+    ("neither:\n4th-10th", lambda c, rank: c == "neither" and 4 <= rank <= 10),
+    ("neither:\n11th or lower", lambda c, rank: c == "neither" and rank >= 11),
+]
 
 
 def plot_vs_lenses(path: Path, reads: list[dict], params: dict[str, Any]) -> Path:
+    """One chart: how often the oracle names the word, by how well the lenses see it at that reading (left: both rank
+    it 1st; right: the better lens has it 11th or lower); bridge and answer side by side; dashed: the word's
+    distractor named where neither lens has the word, the oracle's false-alarm baseline."""
     n_boot, seed = params["n_boot"], params["boot_seed"]
     clean = [r for r in reads if r["condition"] == "clean"]
-    mean_reads = [r for r in reads if r["condition"] == "mean"]
-    fig, axes = plt.subplots(1, 2, figsize=(18, 8.2), facecolor=SURFACE)
-    words = [
-        ("bridge", "lens_class", "", "named_bridge", "named_distractor", BRIDGE, BRIDGE_L, "Brazil", "Mexico"),
-        ("answer", "answer_lens_class", "answer_", "named_answer", "named_swap_answer", ANSWER, ANSWER_L,
-         "Portuguese", "Spanish"),
-    ]  # fmt: skip
-    for ax, (word, cls, prefix, field, d_field, dark, light, eg, d_eg) in zip(axes, words, strict=True):
-        rows_cls = [r for r in clean if r.get(cls) is not None]
-        neither = [r for r in rows_cls if r[cls] == "neither"]
-
-        def far(lo: int, hi: int, neither=neither, prefix=prefix) -> list[dict]:
-            return [r for r in neither if lo <= _best_rank(r, prefix) <= hi]
-
-        bars = [
-            (f"both lenses rank the {word} 1st", [r for r in rows_cls if r[cls] == "both"], field, dark),
-            ("one of the two lenses ranks it 1st", [r for r in rows_cls if r[cls] == "one"], field, dark),
-            ("neither lens ranks it 1st (all)", neither, field, light),
-            ("   ... the better lens has it 2nd-3rd", far(2, 3), field, light),
-            ("   ... 4th-10th", far(4, 10), field, light),
-            ("   ... 11th or lower", far(11, 10**6), field, light),
-            (f"control: the distractor ({d_eg}) named where\nneither lens ranks the {word} 1st", neither, d_field,
-             CONTROL),
-            (f"control: the {word} named from the mean\nactivation (no question in it)",
-             [r for r in mean_reads if r.get(cls) is not None], field, CONTROL),
-        ]  # fmt: skip
-        _hbars(ax, bars, n_boot, seed)
-        ax.set_title(f"How often does the oracle lens name the {word} (e.g. {eg})?", color=INK, fontsize=12,
-                     loc="left")  # fmt: skip
-        ax.set_xlabel(f"% of readings whose oracle bullets name the {word}", color=MUTED, fontsize=10)
+    words = [  # (label, lens class field, rank prefix, named field, distractor field, colour)
+        ("the bridge (e.g. Brazil)", "lens_class", "", "named_bridge", "named_distractor", BRIDGE),
+        ("the answer (e.g. Portuguese)", "answer_lens_class", "answer_", "named_answer", "named_swap_answer", ANSWER),
+    ]
+    fig, ax = plt.subplots(figsize=(13, 6.2), facecolor=SURFACE)
+    width = 0.38
+    for wi, (label, cls, prefix, field, d_field, color) in enumerate(words):
+        rows = [r for r in clean if r.get(cls) is not None]
+        for gi, (_, test) in enumerate(LENS_GROUPS):
+            sub = [r for r in rows if test(r[cls], _best_rank(r, prefix))]
+            m, lo, hi = _clustered(sub, field, n_boot, seed)
+            x = gi + (wi - 0.5) * width
+            ax.bar(x, m, width * 0.9, color=color, zorder=2, label=label if gi == 0 else None)
+            ax.errorbar(x, m, yerr=[[max(m - lo, 0)], [max(hi - m, 0)]], color=INK, lw=1, capsize=2.5, zorder=3)
+            ax.text(x, hi + 0.015, f"{m:.0%}", ha="center", va="bottom", fontsize=10.5, color=INK, fontweight="bold")
+        base = _clustered([r for r in rows if r[cls] == "neither"], d_field, n_boot, seed)[0]
+        ax.axhline(base, color=color, lw=1.4, ls=DASH, zorder=1)
+        ax.annotate(f"{label.split(' (')[0]}'s distractor: {base:.0%}", (len(LENS_GROUPS) - 0.45, base),
+                    xytext=(0, 4 if wi else -4), textcoords="offset points", va="bottom" if wi else "top", ha="left",
+                    fontsize=9, color=color)  # fmt: skip
+    ax.set_xticks(range(len(LENS_GROUPS)), [g for g, _ in LENS_GROUPS], fontsize=10)
+    ax.set_xlabel("how the J-lens and J++ rank the word at that reading (left: they see it; right: they miss it)",
+                  color=MUTED, fontsize=10)  # fmt: skip
+    ax.set_ylabel("% of readings where the oracle lens\nnames the word", color=MUTED, fontsize=10)
+    ax.set_ylim(0, 1)
+    ax.set_xlim(-0.6, len(LENS_GROUPS) + 0.9)
+    style_axes(ax)
+    percent_axis(ax)
+    ax.grid(axis="x", visible=False)
+    ax.legend(loc="upper right", frameon=False, fontsize=10, labelcolor=INK)
     n = len({r["name"] for r in clean})
     n_answer = len({r["name"] for r in clean if r.get("answer_lens_class") is not None})
+    mean_bridge = _clustered([r for r in reads if r["condition"] == "mean"], "named_bridge", n_boot, seed)[0]
     finish(
         fig,
         path,
-        "Where the J-lens and J++ miss the bridge, the oracle lens still names it in about a third of readings",
-        f"Qwen3.6-27B, the {n} two-hop questions it answers correctly (right: the {n_answer} whose answer is a "
-        "single-token word). The oracle lens is a LoRA on the model that puts one activation into words. One reading "
-        "= its words for the activation at one question, prompt position and layer; positions: the last word, -1 and "
-        "the cue phrase's last token (in \"...where the Amazon River ends is\": 'is', 'ends', 'River'); layers "
-        f"{', '.join(map(str, params['read_layers']))}. Readings are grouped by whether the J-lens and J++ rank the "
-        "word 1st among its candidates at that same question, position and layer (exp12). Each question weighted "
-        f"equally; error bars: {bootstrap_note(n_boot)}.",
+        "The less the lenses see the word, the less often the oracle lens names it, but well above its false alarms",
+        f"Qwen3.6-27B, the {n} two-hop questions it answers correctly ({n_answer} with a single-token word answer for "
+        "the orange bars). One reading = the oracle lens's words for the activation at one question, position (the "
+        "last word, -1, the cue phrase's last token) and layer "
+        f"({', '.join(map(str, params['read_layers']))}); readings grouped by how the J-lens and J++ rank the word "
+        "there (exp12). Dashed lines: how often the oracle names the word's distractor (Mexico for Brazil) where "
+        f"neither lens has the word. The bridge read from the mean activation (no question): {mean_bridge:.0%}. Each "
+        f"question weighted equally; error bars: {bootstrap_note(n_boot)}.",
     )
     return path
 
@@ -180,10 +173,12 @@ def plot_by_layer(path: Path, reads: list[dict], item_rows: list[dict], params: 
 
     ax = axes[1]
     ax.axvspan(24, 40, color=CONTROL, alpha=0.2, lw=0, zorder=0)
+    n_flip = sum(r["exp14_flip"] is True for r in item_rows)
+    n_kept = sum(r["exp14_flip"] is False for r in item_rows)
     for label, condition, flip, color in (
-        ("before the swap", "clean", True, BRIDGE_L),
-        ("after the swap, answer changed", "swapped", True, BRIDGE),
-        ("after the swap, answer stayed", "swapped", False, KEPT),
+        (f"before the swap ({n_flip} questions)", "clean", True, BRIDGE_L),
+        (f"after the swap, answer changed ({n_flip} questions)", "swapped", True, BRIDGE),
+        (f"after the swap, answer stayed ({n_kept} questions)", "swapped", False, KEPT),
     ):
         names = {r["name"] for r in item_rows if r["exp14_flip"] is flip}
 
@@ -212,14 +207,88 @@ def plot_by_layer(path: Path, reads: list[dict], item_rows: list[dict], params: 
         "At which layers does the oracle lens see what the lenses miss, and follow the swap?",
         f"Qwen3.6-27B, the {n} two-hop questions it answers correctly. Left: readings at the last word, -1 and the cue "
         "phrase's last token where neither the J-lens nor J++ ranks the bridge 1st. Right: exp14's J++ bridge swap "
-        "on the cue phrase (layers 24-40), oracle readings at the last word and -1. Each question weighted equally; "
+        "on the cue phrase (layers 24-40), oracle readings at the last word and -1 (two per question and layer). "
+        "Each question weighted equally; "
         f"shading: {bootstrap_note(n_boot)}.",
+    )
+    return path
+
+
+READER_COLOR = {"jlens": "#2a78d6", "jpp": "#1b9e77", "oracle": "#7b3fb5"}
+READER_NAME = {
+    "jlens": "J-lens (word ranked 1st)",
+    "jpp": "J++ (word ranked 1st)",
+    "oracle": "oracle lens (word in its text)",
+}
+
+
+def plot_readers(path: Path, reads: list[dict], params: dict[str, Any]) -> Path:
+    """The three readers on the same readings, by layer: how often each has the word (a lens: ranks it 1st among its
+    candidates; the oracle: names it), and how often each has the word's distractor instead (dashed)."""
+    n_boot, seed, layers = params["n_boot"], params["boot_seed"], params["read_layers"]
+    clean = [r for r in reads if r["condition"] == "clean"]
+    fig, axes = plt.subplots(1, 2, figsize=(16, 6.0), facecolor=SURFACE, sharey=True)
+    xs = np.array(layers)
+    words = [
+        ("the bridge (e.g. Brazil)", "", "distractor_", "named_bridge", "named_distractor", "lens_class"),
+        ("the answer (e.g. Portuguese)", "answer_", "swap_answer_", "named_answer", "named_swap_answer",
+         "answer_lens_class"),
+    ]  # fmt: skip
+    for ax, (title, prefix, d_prefix, named, d_named, cls) in zip(axes, words, strict=True):
+        rows = [  # per reading, 0/1 for each reader and word (copies: the readings are not changed)
+            {"name": r["name"], "layer": r["layer"],
+             **{f"_{lens}_word": r[f"{prefix}{lens}_rank"] == 1 for lens in ("jlens", "jpp")},
+             **{f"_{lens}_distractor": r[f"{d_prefix}{lens}_rank"] == 1 for lens in ("jlens", "jpp")},
+             "_oracle_word": r[named], "_oracle_distractor": r[d_named]}
+            for r in clean
+            if r.get(cls) is not None
+        ]  # fmt: skip
+        for reader in ("jlens", "jpp", "oracle"):
+            color = READER_COLOR[reader]
+            for kind, ls, lw in (("word", "-", 2.6 if reader == "oracle" else 2.0), ("distractor", DASH, 1.4)):
+                stats = [_clustered([r for r in rows if r["layer"] == layer], f"_{reader}_{kind}", n_boot, seed)
+                         for layer in layers]  # fmt: skip
+                ax.plot(xs, [s[0] for s in stats], ls=ls, color=color, lw=lw, marker="o", ms=4, zorder=3)
+                if kind == "word":
+                    ax.fill_between(xs, [s[1] for s in stats], [s[2] for s in stats], color=color, alpha=0.1, lw=0)
+        ax.set_title(f"Who has {title}?", color=INK, fontsize=12, loc="left")
+        ax.set_xticks(xs, [str(layer) for layer in layers], fontsize=10)
+        ax.set_xlabel("layer", color=MUTED, fontsize=10)
+        ax.set_ylim(0, 1)
+        style_axes(ax)
+        percent_axis(ax)
+    axes[0].set_ylabel("% of readings where the reader has the word", color=MUTED, fontsize=10)
+    handles = [
+        *(
+            Line2D([], [], color=READER_COLOR[k], lw=2.4, marker="o", label=READER_NAME[k])
+            for k in ("jlens", "jpp", "oracle")
+        ),
+        Line2D(
+            [], [], color=MUTED, lw=1.4, ls=DASH, marker="o", label="dashed: the same reader has the distractor instead"
+        ),
+    ]
+    n = len({r["name"] for r in clean})
+    n_answer = len({r["name"] for r in clean if r.get("answer_lens_class") is not None})
+    finish(
+        fig,
+        path,
+        "J-lens, J++ and the oracle lens on the same activations: who has the bridge and the answer, at each layer?",
+        f"Qwen3.6-27B, the {n} two-hop questions it answers correctly (right: the {n_answer} whose answer is a "
+        "single-token word); each reader reads the same activations: the last word, -1 and the cue phrase's last "
+        'token, at each layer. "Has the word": for a lens, it ranks the word 1st among its candidates (the bridge '
+        "among 97 entities, the answer among 112 answers); for the oracle lens, the word appears in its text. The two "
+        "criteria differ, so compare each reader with its own distractor line (dashed, e.g. Mexico for Brazil). Each "
+        f"question weighted equally; shading: {bootstrap_note(n_boot)}.",
+        handles,
+        ncols=4,
+        handlelength=4,
     )
     return path
 
 
 def plot_run(out_dir: Path, reads: list[dict], item_rows: list[dict], params: dict[str, Any]) -> list[Path]:
     return [
+        plot_readers(out_dir / "readers_by_layer.png", reads, params),
         plot_vs_lenses(out_dir / "oracle_vs_lenses.png", reads, params),
         plot_after_swap(out_dir / "after_swap.png", reads, item_rows, params),
         plot_by_layer(out_dir / "by_layer.png", reads, item_rows, params),
