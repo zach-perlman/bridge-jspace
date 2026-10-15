@@ -416,7 +416,12 @@ are a little smaller than the bridge's (median 0.010 vs 0.012 of the residual no
 Run `results/exp14_cue_answer_swaps/20261015-111137` (Qwen3.6-27B, part B's model loader, prompts and scoring as part
 B v4; the answer rows are the 72 questions with single-token answers); overlap split in
 `analysis-20261015-133725-overlap/`. Checks: the eligible questions equal part B's v4 ones (77 of 77); the bridge
-swaps reproduce part B's lens-vector swaps question by question (J++ 154 of 154 outcomes, J-lens 152 of 154).
+swaps reproduce part B's lens-vector swaps (`exp02_swaps/main_v4_*_pos-cue`, `_pos-last`) question by question:
+J++ 154 of 154 outcomes (cue phrase 23/77 = 29.9% in both, last token 1/77), J-lens 152 of 154 (cue phrase 17/77 =
+22.1% here vs 16/77 = 20.8%; last token 1/77 in both). The two J-lens differences are borderline greedy
+continuations, likely bf16 differences between GPUs (part B ran on an H200, exp14 on an A100):
+`city-state-Philadelphia` (real swap: "Pennsylvania" there, "Washington" here) and `etym-saturn-position` (random
+direction: "5" there, "4 from the Sun" here).
 
 | Swap, flip rate [95% Wilson CI] | J-lens bridge | J-lens answer | J++ bridge | J++ answer |
 |---|---|---|---|---|
