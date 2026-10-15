@@ -602,6 +602,29 @@ def exp18_moved(reader, layer, regime, condition="patched"):
     return float(np.mean([d[n, condition] - d[n, "clean"] for n in took]))
 
 
+EXP18V3 = R / "exp18_brew_verbalizers/20261015-230148"  # v3 (config_v3.yaml)
+
+
+def exp18v3_rate(edit, field="took"):
+    """exp18 v3 items.jsonl: the share of eligible items on which the edit made the model answer f(X) ("took"), or
+    lost the clean answer A ("lost")."""
+    rows = [r for r in jsonl(EXP18V3 / "items.jsonl") if r["status"] == "eligible"]
+    if field == "took":
+        return float(np.mean([r[f"{edit}_took"] for r in rows]))
+    return float(np.mean([r[f"{edit}_answer"] != "A" for r in rows]))
+
+
+def exp18v3_named(reader, layer, condition, role="X", took=True):
+    """exp18 v3 reads.jsonl: over the items where the code edit took (or, took=False, the sample where it did not),
+    the share whose readings by `reader` at `layer` in `condition` name the role's colour at either read position."""
+    items = [r for r in jsonl(EXP18V3 / "items.jsonl") if r["status"] == "eligible"]
+    names, hit = {r["name"] for r in items if r["code_took"] == took}, {}
+    for r in jsonl(EXP18V3 / "reads.jsonl"):
+        if (r["reader"], r["layer"], r["condition"]) == (reader, layer, condition) and r["name"] in names:
+            hit[r["name"]] = hit.get(r["name"], False) or r[f"names_{role}"]
+    return float(np.mean(list(hit.values())))
+
+
 EXP08 = R / "exp08_brew_read/read_v1"
 
 
@@ -1096,6 +1119,20 @@ def main():
             exp09_part_score("RL", "not_lens2", run="parts_rl_v1"),
             0.29,
         ),
+        ("exp18", "v3: the code edit takes the step", exp18v3_rate("code"), 0.57),
+        ("exp18", "v3: J++'s direction takes the step", exp18v3_rate("lens"), 0.04),
+        ("exp18", "v3: the random direction takes the step", exp18v3_rate("random"), 0.006),
+        ("exp18", "v3: J++'s direction loses A", exp18v3_rate("lens", "lost"), 0.24),
+        ("exp18", "v3 NLA 42: names X, B as written", exp18v3_named("nla", 42, "clean"), 0.29),
+        ("exp18", "v3 NLA 42: names X, the code", exp18v3_named("nla", 42, "code"), 0.68),
+        ("exp18", "v3 NLA 42: names X, J++'s direction", exp18v3_named("nla", 42, "lens"), 0.99),
+        ("exp18", "v3 NLA 42: names X, random", exp18v3_named("nla", 42, "random"), 0.30),
+        ("exp18", "v3 oracle 44: names X, B as written", exp18v3_named("oracle", 44, "clean"), 0.24),
+        ("exp18", "v3 oracle 44: names X, the code", exp18v3_named("oracle", 44, "code"), 0.64),
+        ("exp18", "v3 oracle 44: names X, J++'s direction", exp18v3_named("oracle", 44, "lens"), 0.99),
+        ("exp18", "v3 J++ 42: ranks X first, the code", exp18v3_named("jpp", 42, "code"), 0.84),
+        ("exp18", "v3 NLA 42: names f(X), the code", exp18v3_named("nla", 42, "code", "b"), 0.09),
+        ("exp18", "v3 NLA 42: names f(X), J++'s direction", exp18v3_named("nla", 42, "lens", "b"), 0.12),
         ("exp18", "items where the early patch took", len(exp18_took("early")), 218),
         ("exp18", "items where the late patch took", len(exp18_took("late")), 429),
         ("exp18", "NLA 42: patched - B, X minus I", exp18_moved("nla", 42, "early"), 0.50),

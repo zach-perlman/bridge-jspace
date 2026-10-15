@@ -67,8 +67,9 @@ Notes:
   (`scripts/exp09_bind_recall.py`); figure `../figures/exp09_bind_recall/v1/`; family RL (recall, then a lookup in the prompt): `map_rl_v1`, `parts_rl_v1`; family L (bind, then a lookup in
   the prompt): `map_lookup_v2`,
   `parts_lookup_v2` (`map_lookup_v1` / `parts_lookup_v1`: the first question ending, 1 eligible item).
-- **exp18_brew_verbalizers:** do the oracle lens and the NLA read brew's patched state or work from the text? v2 run
-  `20261015-205549` (`config_v2.yaml`), v1 `20261015-192500` (`config.yaml`); figure
+- **exp18_brew_verbalizers:** do the oracle lens and the NLA read brew's patched state or work from the text? v3 run
+  `20261015-230148` (`config_v3.yaml`: exp07's code vs J++'s direction; figure `../figures/exp18_brew_verbalizers/v3/`,
+  `--v3`), v2 run `20261015-205549` (`config_v2.yaml`), v1 `20261015-192500` (`config.yaml`); figure
   `../figures/exp18_brew_verbalizers/v2/` (`uv run python -m scripts.exp18_brew_verbalizers.plot <run> <new folder>`).
 - exp02 controls for "the J-space part flips more because it carries more of the probe": `exp02_swaps/
   matched_v4_{jpp,jlens}` (matched-alignment random directions) and `exp02_swaps/analysis/edit_size_v1/`

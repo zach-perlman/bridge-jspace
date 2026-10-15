@@ -27,7 +27,7 @@ or tokenization artifact.
 | [exp14](#exp14_cue_answer_swaps-on-the-cue-phrase-is-it-the-bridge-or-already-the-answer) | On the cue phrase, does swapping the answer change it as often as swapping the bridge? |
 | [exp15](#exp15_oracle_lens-where-the-lenses-miss-the-bridge-does-the-oracle-lens-name-it) | Where the J-lens and J++ miss the bridge, does a reader that puts the activation into words name it? |
 | [exp16](#exp16_nla-does-a-second-verbalizer-the-nla-see-the-same) | Does a second verbalizer, the NLA, trained for another objective, see the same? |
-| [exp18](#exp18_brew_verbalizers-on-brew-do-the-verbalizers-read-the-models-state-or-work-from-the-text) | On brew, where reading the state and solving from the text predict different words, which do the verbalizers report? |
+| [exp18](#exp18_brew_verbalizers-on-brew-do-the-verbalizers-read-the-state-the-model-computes-with-they-read-the-colour-written-in-the-vector) | On brew, do the verbalizers report the intermediate the model computes with, a colour direction it ignores, or the text? |
 | [exp02](#exp02_swaps-part-b-does-the-bridge-act-through-the-j-space-and-where) | Does swapping the bridge's J-space part change the answer, and where in the prompt? |
 | [exp03](#exp03_brew_swaps-part-b-an-in-context-two-step-lookup) | Do the same swaps work on a two-step lookup whose answer is read off the prompt? |
 | [exp04](#exp04_brew_patch-part-b-where-brew-carries-its-intermediate-without-a-lens) | Where does that lookup carry its intermediate, found without a lens? |
@@ -93,7 +93,8 @@ or tokenization artifact.
 7. `exp16_nla`: the same with the NLA, a second 27B verbalizer (another training objective, built on the same model)
    trained on layer 42, compared with every reader at layer 42.
 8. `exp18_brew_verbalizers`: exp17's reading-vs-solving question on brew, with the counterfactual's state patched in
-   where exp04 found the step; the oracle lens and the NLA against their own floor (B) and ceiling (C).
+   where exp04 found the step (v2), and with exp07's code against J++'s direction (v3); the oracle lens and the NLA
+   against their own floor (B) and ceiling (C).
 
 ## Method, part B: is the bridge used outside the J-space? (exp01-09)
 1. `data/entity_prompts.json`: about 8 prompts per entity that imply the entity without naming it, for the 97
@@ -156,6 +157,7 @@ the prompt, a bound or a recalled bridge acts through the rest, as brew's interm
 | [exp16 `methods_at_42.png`](figures/exp16_nla/methods_at_42.png) | Every reader at layer 42: the NLA and the oracle lens have the bridge and the answer more often than the J-lens and J++, at the same 3-9% false alarms |
 | [exp16 `after_swap.png`](figures/exp16_nla/after_swap.png) | The NLA too names the swap target where the model's answer changes (59%), rarely where it does not (11%) |
 | [exp16 `by_swap_label.png`](figures/exp16_nla/by_swap_label.png) | By part B's swap labels: where the J-space swap does not change the answer the lenses see the bridge less, the verbalizers as often |
+| [exp18 `code_vs_lens.png`](figures/exp18_brew_verbalizers/v3/code_vs_lens.png) | On brew, a J++ direction the model ignores makes both verbalizers name X more often than the code the model computes with |
 | [exp18 `state_vs_text.png`](figures/exp18_brew_verbalizers/v2/state_vs_text.png) | On brew, with the counterfactual's state patched in, both verbalizers name the state's intermediate, not the text's |
 | [exp11 `pool_top1_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/pool_top1_by_layer.png) | Last token only: bridge and answer ranked first, by layer, three readers |
 | [exp11 `advantage_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/advantage_by_layer.png) | Last token only: how many times higher than its distractor each word ranks |
@@ -218,11 +220,11 @@ each question.
     answer (neither: +5 to +12 points; J-mediated: -1 to -9; difference -14 [-28, -1] and -14 [-26, -1]): there the
     lenses see the bridge less, the verbalizers as often. That is the pattern of a reader of a non-J-space part, and
     also of a reader that solves the question regardless; exp17 separates them (exp16).
-12. On brew, where the text and the state can be set against each other, both verbalizers report the state: with the
-    counterfactual's state patched in, their readings move 86-95% of the way from the original prompt's to the
-    counterfactual's, an off-path patch moves them 1-3 points, and they move also where J++'s top colour misses the
-    patched intermediate (exp18). This supports reading over solving for exp15/16's swap results; exp17 would test
-    their lens-blind factual readings directly.
+12. On brew, both verbalizers report the colour written into the vector they read, like J++: they follow a patched
+    state rather than the prompt's text (v2), but a J++ direction the model ignores (it takes X on 4% of items) makes
+    them name X on 99% of items, more than exp07's code, which the model computes with (57%; NLA 68%, oracle 64%), and
+    they name X as often where the code did not change the model's step (exp18 v3). Naming the bridge after a swap
+    thus shows the swap wrote it into the vector, not that the model uses it; exp17 tests readings away from edits.
 
 ![exp12: where and how deep](figures/exp12_position_map/two_step.png)
 
@@ -819,7 +821,7 @@ r 64, scale 2); the swapped forward's top word equals exp14's for 77 of 77 quest
 (`cache/smoke/`, not kept) ran before the full run.
 </details>
 
-### exp18_brew_verbalizers: on brew, do the verbalizers read the model's state or work from the text?
+### exp18_brew_verbalizers: on brew, do the verbalizers read the state the model computes with? They read the colour written in the vector
 **What we measure.** exp17's question (do the oracle lens and the NLA read the state, or solve the question from text
 they reconstruct?) on brew, where the two predict different words. In B the prompt makes S -> I -> A; copying the
 counterfactual C's state (S -> X) into B at the four positions after the start line that carry the step (exp04's
@@ -832,8 +834,27 @@ exp04; read on the items where the patch changed the model's answer, plus B and 
 colour on the same vectors for comparison. The rule was fixed in the config before the run; both readers passed their
 gates (exp15's and exp16's).
 
+v2's vectors carried C's own context, so v3 edits B with directions that carry none, each at the norm of the copy
+h_C - h_B at its layer and position (exp07's dose), at every position after the start line, layers 36-40: exp07's
+code for the intermediate (E_I[X] - E_I[I], fit on other tables), which the model computes with; J++'s v_X - v_I,
+which it ignores (exp07: 1% at one layer); and a random direction. Items: the bank, fresh, and 600 new held-out items
+(`data/brew_test.json`; never the fit items, which the code is fit on), 680 eligible as in exp07; the NLA reads at 42,
+the oracle lens at 44, at the same two positions. Reading the state the model computes with predicts X under the code
+more than under J++'s direction; reading token directions, the reverse or equal.
+
 **In short.**
-- **Both verbalizers read the state.** On the 218 items where the early patch changed the answer (22% of 970; the
+- **The verbalizers report the colour direction written into the vector, whether or not the model computes with it
+  (v3).** J++'s direction makes the model take X as its step on 4% of items (the code 57%, random 0.6%), yet on the
+  390 items where the code took, it makes the NLA name X for 99% of items and the oracle lens for 99% (B as written:
+  29% and 24%), against 68% and 64% under the code. [names X] - [names I] rises more under J++'s direction than under
+  the code: code minus J++ direction -29 [-34, -24] points (NLA), -36 [-41, -31] (oracle). By the rule fixed before
+  the run: "reads token directions" for both. Random direction: +0 to +1 points.
+- **Their readings do not follow whether the model took the step.** Where the code edit did not change the model's
+  step (a sample of 100), the NLA names X for 60% of items and the oracle for 61% (B as written: 14%, 15%), about as
+  often as where it did (68%, 64%). Nor do they name f(X), the answer the code-edited model gives, more under the code
+  than under J++'s direction (NLA 9% vs 12%).
+- **J++ does the same**, more cleanly: X first under the code for 84% of items, under its own direction for 100%.
+- **v2, with C's whole state patched in at four positions: the readers follow the vector, not the text.** On the 218 items where the early patch changed the answer (22% of 970; the
   off-path patch changed 3%), it moves the NLA's readings from B's toward C's: [names X] - [names I] rises by 50
   points [+42, +60], 95% of C's own difference from B; the oracle lens's at 44 by 68 [+59, +78] (95%), and at 48,
   after the late patch (429 items), by 61 [+54, +68] (86%). The off-path patch moves them 1-3 points (CIs around 0).
@@ -846,22 +867,32 @@ gates (exp15's and exp16's).
   still move toward X: +31 [+23, +38] points (NLA), +49 [+41, +57] and +41 [+36, +46] (oracle at 44 and 48); they
   name X in 32-36% of those readings against 16-20% on B as written.
 
-For exp17: on a task where solving from the text and reading the state predict different words, both verbalizers
-report the state, also on readings where the lens's top colour misses it. That supports reading the state for their
-swap results in exp15 and exp16; it does not test exp15/16's lens-blind readings themselves, which are factual
-(exp17).
+For exp15-17: on brew the verbalizers neither solve from the prompt's text (v2) nor tell the state the model
+computes with from a colour direction it ignores (v3): like J++, they report the colours written into the vector. So a
+verbalizer naming the bridge after a swap shows that the swap wrote the bridge into the vector, not that the model
+uses it; and a lens-blind reading can be a weaker token direction the lens ranks below first. Whether they ever see a
+part the lens cannot read is still exp17's question, on unedited positions.
 
-![exp18: state vs text](figures/exp18_brew_verbalizers/v2/state_vs_text.png)
+![exp18 v3: code vs lens direction](figures/exp18_brew_verbalizers/v3/code_vs_lens.png)
+
+*How to read it (v3): one panel per reader, on the items where the code edit took. Grey: how often each edit makes the
+model itself take X as its step (all 680 eligible items). Green: how often the readings name X. Under J++'s
+direction (third group) the model almost never takes X, yet every reader names it; under the code (second) the model
+takes X on 57% of items, and the readers name it less often.*
+
+![exp18 v2: state vs text](figures/exp18_brew_verbalizers/v2/state_vs_text.png)
 
 *How to read it: one panel per reader, on the items where the patch changed the model's answer. Dark: the share of
 items whose readings name X, the patched state's intermediate; light: I, the one the text implies. Dots: how often J++
 ranks X first among the 12 colours on the same vectors. With C's state patched in (second group) each reader looks
 like C as written (fourth), not like B (first); the off-path patch (third) leaves B's picture.*
 
-**What this does not show.** That the readers read the computed intermediate rather than re-solve the puzzle from
-what the vector encodes: both read positions are among the four patched ones, so the vectors they read carry C's own
-context (its rules give S -> X), and a reader that re-told and solved that context would name X too. exp17's design
-reads unpatched positions; a v3 here would edit with exp07's code (no counterfactual text) against the lens direction.
+**What this does not show.** v2 alone: that the readers read the computed intermediate rather than re-solve the
+puzzle from what the vector encodes (both read positions are among the patched ones, so the vectors carry C's own
+context); v3 removes that. In v3 every edit is at the read positions too, and J++'s direction there is a direct, large
+push along X's token direction (at the copy's norm; it loses A on 24% of items): any reader of the vector sees it.
+So v3 shows the readers cannot tell a direction the model uses from one it ignores, not that they never read the
+state; a reading downstream of edits elsewhere (exp17's design) is the test of that.
 The readers recite the table's colours: even on C as written the NLA names I for 23% of items and a colour off the
 path for 28%, so each reader is compared with its own floor and ceiling. The lens-blind
 split was chosen after the run, and its intervals resample readings, not items. Brew's intermediate is a word of the
@@ -869,7 +900,14 @@ prompt. One seed; greedy decoding.
 
 <details><summary>Full numbers and checks</summary>
 
-Run `results/exp18_brew_verbalizers/20261015-205549` (`config_v2.yaml`; eligible: 84 bank, 155 fresh, 731 fit items),
+v3: run `results/exp18_brew_verbalizers/20261015-230148` (`config_v3.yaml`, `experiment_v3.py`; eligible: 84 bank, 155
+fresh, 441 test items), with `summary.json` (how often each edit takes the step and loses A; per reader, d under each
+edit minus d clean, code minus J++'s direction, and the code's move on the sample where it did not take). exp07's code
+was refit on the B200 (`cache/exp07/code.pt`, 885 fit items used; 883 on the earlier box). The manifest's git state is
+"dirty" from README and check edits synced before they were committed; the experiment code is that of 1309f09.
+Figure: `uv run python -m scripts.exp18_brew_verbalizers.plot <run> <new folder> --v3`.
+
+v2: run `results/exp18_brew_verbalizers/20261015-205549` (`config_v2.yaml`; eligible: 84 bank, 155 fresh, 731 fit items),
 with `summary.json` per cell (positive control, patched - B, C - B, off-path - B, recovered share, state colours
 (X, f(X)) against the text's (I, A), with Chinese names counted for the oracle). v1, `20261015-192500` (`config.yaml`:
 fresh items, layers 36-40, 28 items where the patch took) leaned the same way, but its rule (X 30 points above I within
@@ -1444,7 +1482,7 @@ lenses miss it and following the model's state under a swap. What is left is whe
    - *Test:* read those positions with the lenses first (done: exp08; J++ reads I at four of the 21 positions,
      the same four that carry the step in exp04's `positions_window`), then with the oracle and the NLA on the
      lens-blind cells, with a counterfactual context as the control. Done as exp18: both verbalizers report the
-     patched state, also where J++'s top colour misses it.
+     colour written into the vector (a patched state, or a J++ direction the model ignores), as J++ does.
 
 Not measured yet, and worth a line in any write-up: **bridges of several tokens.** Every result above is on
 single-token bridges (Setup). A multi-token bridge has no single lens direction to rank, so the lenses would need a
