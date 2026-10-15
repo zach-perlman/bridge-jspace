@@ -208,6 +208,29 @@ def exp15_after_swap(positions, flipped, layer=44, run=EXP15):
     return float(np.mean([np.mean(v) for v in per_q.values()]))
 
 
+def exp16_by_label(runs, layers, group, what):
+    """reads.jsonl of `runs` (clean readings at `layers`), questions with part B's J-lens label `group`
+    (results/exp02_swaps/main_v4_jlens/labels.csv): the share of readings where `what` = "lens" (the J-lens or J++
+    ranks the bridge 1st: jlens_rank / jpp_rank == 1) or "named" (the text names the bridge), per question, then the
+    mean over questions."""
+    import csv
+
+    label = {r["name"]: r["label"] for r in csv.DictReader(open(R / "exp02_swaps/main_v4_jlens/labels.csv"))}
+    items = {it["name"]: it for it in json.loads((R.parent / "data/probe_swap.json").read_text())["items"]}
+    per_q = {}
+    for run in runs:
+        for r in jsonl(run / "reads.jsonl"):
+            if r["condition"] != "clean" or r["layer"] not in layers or label.get(r["name"]) != group:
+                continue
+            hit = (
+                (r["jlens_rank"] == 1 or r["jpp_rank"] == 1)
+                if what == "lens"
+                else _says(items[r["name"]]["intermediate"], r["text"])
+            )
+            per_q.setdefault(r["name"], []).append(hit)
+    return float(np.mean([np.mean(v) for v in per_q.values()]))
+
+
 # ---- exp10: lens-eval multihop, pass@10 -------------------------------------------------------------
 
 
@@ -510,6 +533,20 @@ def main():
             exp15_named("bridge", runs=(EXP15, EXP15_B, EXP15_C))["both"],
             0.83,
         ),
+        (
+            "exp16",
+            "by label, neither: lenses (oracle 32-48)",
+            exp16_by_label((EXP15, EXP15_B), range(32, 49), "neither", "lens"),
+            0.62,
+        ),
+        (
+            "exp16",
+            "by label, neither: oracle 32-48 names",
+            exp16_by_label((EXP15, EXP15_B), range(32, 49), "neither", "named"),
+            0.67,
+        ),
+        ("exp16", "by label, J-mediated: lenses (NLA 42)", exp16_by_label((EXP16,), [42], "J-mediated", "lens"), 0.76),
+        ("exp16", "by label, neither: NLA 42 names", exp16_by_label((EXP16,), [42], "neither", "named"), 0.76),
         ("exp16", "NLA L42, both lenses: bridge", exp15_named("bridge", runs=(EXP16,))["both"], 0.91),
         ("exp16", "NLA L42, neither lens: bridge", exp15_named("bridge", runs=(EXP16,))["neither"], 0.46),
         ("exp16", "NLA L42, neither lens: distractor", exp15_named("distractor", runs=(EXP16,))["neither"], 0.10),

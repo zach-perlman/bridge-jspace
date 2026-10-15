@@ -55,6 +55,11 @@ or tokenization artifact.
   Restricting the ranking to these pools asks "of the entities these questions are about, which one does the reader
   pick?", the same choice part B's swaps change; chance is 1 in 97 (about 1%). The full-vocabulary rank is used only
   for the comparison with the distractor.
+- **Single-token words only.** Every headline number is on bridges that are one Qwen token: the probe-swap set's 97
+  entities are each a single token (exp11-16), and exp10 keeps the 84 of 93 lens-eval questions whose bridge is one
+  token. Answers are ranked only where they are a single token (72 of the 77 questions; the verbalizers' answer lines
+  61, numbers left out). How the lenses and the verbalizers do on bridges spread over several tokens ("New Zealand",
+  most numbers above 9) is not measured.
 - **Control.** Each question has a same-category distractor (Mexico for Brazil, Spanish for Portuguese; part B's swap
   target). If the distractor came first as often as the bridge, the reader would be reading the category, not the
   entity.
@@ -102,8 +107,8 @@ Draft, UNVERIFIED: nothing is in `VERIFIED.md` yet. The STATE block in `AGENTS.m
 Final figures, numbers and examples per experiment: [results/README.md](results/README.md). Every part A number below
 is recomputed from the raw run files by `uv run python scripts/verify_headlines.py`.
 
-**Where things stand (2026-10-15).** On Qwen3.6-27B the J-lens and J++ do read the bridge, once read at the right
-place: one word before the end from about layer 23, 19 layers before the answer appears at the last word (exp12). It
+**Where things stand (2026-10-15).** On Qwen3.6-27B, for bridges that are a single token, the J-lens and J++ do read
+the bridge, once read at the right place: one word before the end from about layer 23, 19 layers before the answer appears at the last word (exp12). It
 acts on the answer from the cue phrase, the words that point to it, and does so apart from the answer's own direction
 (exp14). Readers that put an activation into words, the oracle lens and the NLA, see the bridge and the answer a
 little more often than the lenses at the same place and layer, including about a third to a half of the readings
@@ -130,6 +135,7 @@ asks the original question with probe swaps.
 | [exp15 `by_layer.png`](figures/exp15_oracle_lens/by_layer.png) | By layer (20-60): the oracle names the lens-blind bridge at every layer; the swap's effect reaches the last words between layers 32 and 40 |
 | [exp16 `methods_at_42.png`](figures/exp16_nla/methods_at_42.png) | Every reader at layer 42: the NLA and the oracle lens have the bridge and the answer more often than the J-lens and J++, at the same 3-9% false alarms |
 | [exp16 `after_swap.png`](figures/exp16_nla/after_swap.png) | The NLA too names the swap target where the model's answer changes (59%), rarely where it does not (11%) |
+| [exp16 `by_swap_label.png`](figures/exp16_nla/by_swap_label.png) | By part B's swap labels: where the J-space swap does not change the answer the lenses see the bridge less, the verbalizers as often |
 | [exp11 `pool_top1_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/pool_top1_by_layer.png) | Last token only: bridge and answer ranked first, by layer, three readers |
 | [exp11 `advantage_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/advantage_by_layer.png) | Last token only: how many times higher than its distractor each word ranks |
 | [exp10 `pass_at_10_by_model.png`](figures/exp10_lens_sanity/20261015-135537/pass_at_10_by_model.png) | Does each lens find the bridge at all (pass@10), 4B and 27B |
@@ -187,6 +193,10 @@ each question.
     first there (NLA 23% vs 30%, oracle 30% vs 27%): no sign of extra solving where the answer is not yet formed. Of
     the NLA's lens-blind namings, 63% are inside its quotation of the prompt with the bridge filled in (a hint of the
     state), 37% in its own comments (likely solving).
+11. The verbalizers' edge over the lenses sits in the questions where part B's J-space swap does not change the
+    answer (neither: +5 to +12 points; J-mediated: -1 to -9; difference -14 [-28, -1] and -14 [-26, -1]): there the
+    lenses see the bridge less, the verbalizers as often. That is the pattern of a reader of a non-J-space part, and
+    also of a reader that solves the question regardless; exp17 separates them (exp16).
 
 ![exp12: where and how deep](figures/exp12_position_map/two_step.png)
 
@@ -664,6 +674,8 @@ exp11 and exp12 pages show the same oracle words under each card ("Oracle lens (
   only. The lens-blind readings differ from layer to layer, so the by-layer curves mix changing sets of readings.
 - String matching: a bridge named only in another script (e.g. 巴西 for Brazil, without "(Brazil)") is missed, for
   the bridge and the distractor alike. One seed; positions pooled.
+- Multi-token words: every bridge here is a single token (the probe-swap set's 97 entities); the answer lines use the
+  61 questions whose answer is a single-token word (5 multi-token and 11 numeric answers left out).
 
 <details><summary>Full numbers and checks</summary>
 
@@ -723,6 +735,24 @@ the bridge 1st (the lenses are at 0% there by definition, so only the verbalizer
 
 *How to read it: as exp15's: the share of questions whose NLA explanation names the swap target at the last word and
 -1, before and after the swap.*
+
+**By part B's swap labels: is what the verbalizers add the part outside the J-space?** Part B labels each question
+by which swap changes its answer: J-mediated (the bridge's J-space part; 25 questions with J-lens swaps) or neither
+(no swap; 49; non-J has 1 question and both 2, too few). Where the J-space swap does not move the answer, the lenses
+rank the bridge 1st less often (62% vs 75% of readings), while the verbalizers name it about as often as in the
+J-mediated questions (oracle, layers 32-48: 67% vs 66%; NLA, 42: 76% vs 75%). Their edge over the lenses is in the
+neither questions (+5 and +12 points) and not in the J-mediated ones (-9 and -1): a difference of -14 points
+[-28, -1] (oracle) and -14 [-26, -1] (NLA); J++ labels give the same (-20, -19). On the lens-blind readings, too,
+they name the bridge more in the neither questions (43-56% vs 23-39%). This is what a reader of a part the J-lens
+cannot see would show, and was the question this project set out with; but the verbalizers' rate is flat across the
+two groups and only the lenses' changes, which a reader that solves the question whatever the state holds would show
+too. exp17 is what tells the two apart.
+
+![exp16: by swap label](figures/exp16_nla/by_swap_label.png)
+
+*How to read it: per verbalizer, the questions split by part B's label (J-lens swaps); grey: the share of readings
+where the J-lens or J++ ranks the bridge 1st; colour: where the verbalizer names it, on the same readings. In the
+title: the verbalizer's edge over the lenses, J-mediated minus neither, with its 95% CI.*
 
 Worked examples: [examples/exp16_nla/index.html](examples/exp16_nla/index.html) (every question, the NLA's
 explanations before and after the swap next to the lens ranks); the exp10-12 pages show them under each card ("NLA
@@ -1056,6 +1086,10 @@ lenses miss it and following the model's state under a swap. What is left is whe
      it from world knowledge; exp04 locates it after the start line at layers 36-50.
    - *Test:* read those positions with the lenses first (not done yet), then with the oracle and the NLA on the
      lens-blind cells, with a counterfactual context as the control.
+
+Not measured yet, and worth a line in any write-up: **bridges of several tokens.** Every result above is on
+single-token bridges (Setup). A multi-token bridge has no single lens direction to rank, so the lenses would need a
+first-token or summed reading, while the verbalizers can name it as is; this is where they could differ most.
 
 Parked: these were next steps; part A does not pursue them now.
 - *Is the bridge at -1 a copy the answer does not use?* Patching -1 from a question with another bridge needs prompt
