@@ -1,7 +1,7 @@
 {
-  "exp_id": "exp11_bridge_vs_answer_by_layer",
+  "exp_id": "exp12_position_map",
   "config": {
-    "name": "exp11_bridge_vs_answer_by_layer",
+    "name": "exp12_position_map",
     "target": "bridge_jspace.examples:LensExamples",
     "seed": 0,
     "results_dir": "results",
@@ -24,10 +24,10 @@
       }
     },
     "params": {
-      "title": "exp11_bridge_vs_answer_by_layer (last token, trailing space stripped), Qwen3.6-27B",
-      "page_title": "Last-Token Bridge Examples",
-      "selector": "scripts.exp11_bridge_vs_answer_by_layer.examples:select",
-      "source_run": "results/exp11_bridge_vs_answer_by_layer/20261015-100110",
+      "title": "exp12_position_map (prompt position x layer, trailing space stripped), Qwen3.6-27B",
+      "page_title": "Bridge Position Examples",
+      "selector": "scripts.exp12_position_map.examples:select",
+      "source_run": "results/exp12_position_map/20261015-100735",
       "per_group": 3,
       "seed_examples": 0,
       "band": [
@@ -67,8 +67,8 @@
     }
   },
   "git": {
-    "sha": "94a2546d72941cdce66425ee329738699e18dbea",
-    "dirty": true
+    "sha": "d3fa943e1f8cf68819795bcdb0a339158d9ac8ce",
+    "dirty": false
   },
   "packages": {
     "torch": "2.11.0+cu126",
@@ -84,9 +84,7 @@
   "python": "3.12.15",
   "argv": [
     "/home/sesterce/bridge-jspace/.venv/bin/bj-run",
-    "scripts/exp11_bridge_vs_answer_by_layer/examples.yaml",
-    "params.source_run=results/exp11_bridge_vs_answer_by_layer/20261015-100110",
-    "params.title=exp11_bridge_vs_answer_by_layer (last token, trailing space stripped), Qwen3.6-27B"
+    "scripts/exp12_position_map/examples.yaml"
   ],
-  "started": "2026-10-15T10:31:49"
+  "started": "2026-10-15T10:53:14"
 }

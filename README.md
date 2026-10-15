@@ -14,16 +14,66 @@ probe is swapped, 28% for the remainder, and 6% for the remainder when the J-spa
 bridge works outside the workspace. If the numbers look like Claude's, the J-lens misses on open models are a read-site
 or tokenization artifact.
 
+## Contents
+| Section | The question it answers |
+|---|---|
+| [Setup](#setup-shared-by-all-experiments) | On which model, prompts and questions everything is measured, and how to read the figures |
+| [Method, part A](#method-part-a-can-any-reader-see-the-bridge-exp10) | Which experiments ask "can any reader see the bridge?" |
+| [Method, part B](#method-part-b-is-the-bridge-used-outside-the-j-space-exp01-09) | Which experiments ask "does the bridge act through the J-space?" |
+| [Status](#status) | What we know so far, and where the final figures are |
+| [exp10](#exp10_lens_sanity-does-the-lens-work-on-qwen-at-all) | Does a lens read two-hop bridges on Qwen at all? |
+| [exp11](#exp11_bridge_vs_answer_by_layer-where-is-the-bridge-readable-and-where-the-answer) | At the last prompt token, at which layers are the bridge and the answer readable? |
+| [exp12](#exp12_position_map-where-in-the-prompt-and-how-deep) | Where in the prompt, and from which layer, are they readable? |
+| [exp02](#exp02_swaps-part-b-does-the-bridge-act-through-the-j-space-and-where) | Does swapping the bridge's J-space part change the answer, and where in the prompt? |
+| [exp03](#exp03_brew_swaps-part-b-an-in-context-two-step-lookup) | Do the same swaps work on a two-step lookup whose answer is read off the prompt? |
+| [exp04](#exp04_brew_patch-part-b-where-brew-carries-its-intermediate-without-a-lens) | Where does that lookup carry its intermediate, found without a lens? |
+| [Pitfalls](#pitfalls-found-so-far) | What went wrong along the way, and how each is handled |
+| [Decisions](#decisions), [open decisions](#open-decisions-humans) | What was decided, and what is still for the humans to decide |
+| [Next steps, part A](#next-steps-part-a), [part B](#next-steps-part-b) | What comes next |
+| [DEVELOPER.md](DEVELOPER.md) | How to run, re-analyse and publish: layout, commands, GPU box, figures, examples |
+
+## Setup (shared by all experiments)
+- **Model.** Qwen3.6-27B (pinned revision, bf16). Qwen3.5-4B only in exp10's check that the lenses work.
+- **Prompts.** The published prompts end in a space, which Qwen's tokenizer keeps as a lone `" "` token: after it
+  the model answers far fewer questions (lens-eval: 21 of 93 vs 61 with the space removed) and a reader at the last
+  token reads that space instead of the last word. Every experiment, part A and part B (from its v4), removes the
+  trailing space. Runs on the prompts as published are kept only as a check and say so.
+- **Which questions count.** The probe-swap set has 90 two-hop questions (bridge Brazil, answer Portuguese). A
+  question counts as answered correctly when the model's greedy continuation contains the answer (exp13's
+  criterion, used by part B from v4): 77 of the 90. exp10 instead uses the lens-eval multihop set: the 84 questions
+  whose bridge is a single token, answered correctly or not.
+- **Readers.** At a given layer and prompt position each reader scores every token of the vocabulary: the logit lens
+  (the model's own unembedding; the baseline), the J-lens and J++ (two fits of the average-Jacobian lens).
+- **"Ranked first among its candidates" (exp11, exp12).** For the bridge (Brazil) we ask whether the reader scores it
+  above every other entity of the set: the **97 entities** are all distinct bridges and swap targets of the 90
+  questions (70 bridges and 68 swap targets, overlapping), each a single Qwen token. For the answer (Portuguese) the
+  candidates are the **112 answers**: all distinct answers and swap answers of the 90 questions that are a single
+  token (120 in all; the 8 multi-token ones cannot be ranked, so 5 of the 77 questions drop out of the answer lines).
+  Restricting the ranking to these pools asks "of the entities these questions are about, which one does the reader
+  pick?", the same choice part B's swaps change; chance is 1 in 97 (about 1%). The full-vocabulary rank is used only
+  for the comparison with the distractor.
+- **Control.** Each question has a same-category distractor (Mexico for Brazil, Spanish for Portuguese; part B's swap
+  target). If the distractor came first as often as the bridge, the reader would be reading the category, not the
+  entity.
+- **Layers.** Summaries average over layers 32-48, fixed before exp11; layers 24-40, the band part B's main swaps use,
+  are reported alongside. Both are part B's swap bands.
+- **Positions (exp12)** are counted back from the last word of the prompt: 0 = the last word (usually "is"), -1 the
+  word before ("located", "ends"), and so on; each position's label is its most common token.
+- **Shading.** 95% intervals: a bootstrap over questions (10,000 resamples) for averages over layers or positions,
+  Wilson for the share of questions at one layer.
+
 ## Method, part A: can any reader see the bridge? (exp10+)
 1. `exp10_lens_sanity`: the lens works on this model. Sanity gate (known fact, HF parity, our readout == jlens's
    `apply`), then `lens-eval-multihop` pass@k for the J-lens and J++ against the logit lens, plus a bridge vs
    same-category distractor control. Debugged on Qwen3.5-0.8B (CPU), run on Qwen3.5-4B (same `qwen3_5` hybrid
-   architecture as the target), then Qwen3.6-27B. Results under Status.
-2. `exp11_bridge_vs_answer_by_layer`: on part B's items and labels, at the last prompt token, at which layers each
-   reader has the bridge (and, separately, the answer) on top of its candidate pool. Results under Status.
+   architecture as the target), then Qwen3.6-27B.
+2. `exp11_bridge_vs_answer_by_layer`: on part B's questions and labels, at the last prompt token, at which layers each
+   reader ranks the bridge (and, separately, the answer) first among its candidates.
 3. `exp12_position_map`: the same readout at every prompt position x layer: where in the prompt, and how deep, each
-   word is readable; the best position per reader, chosen on half the items and checked on the other half.
-4. Oracle lens and NLA on the same items, split by part B's J-mediated / non-J labels (planned).
+   word is readable; the best position per reader, chosen on half the questions and checked on the other half.
+4. `exp13_greedy_answers`: which questions the model answers correctly, judged on its greedy continuation (the
+   criterion part B adopted in v4).
+5. Oracle lens and NLA on the same questions (proposed; see Next steps).
 
 ## Method, part B: is the bridge used outside the J-space? (exp01-09)
 1. `data/entity_prompts.json`: about 8 prompts per entity that imply the entity without naming it, for the 97
@@ -39,77 +89,10 @@ or tokenization artifact.
 5. `exp03_brew_swaps`: the same swaps and graded steering along lens directions on an in-context two-step lookup
    (WorkspaceBench's brew bank), where the counterfactual answer is read straight off a table in the prompt.
 
-## Layout
-```
-src/bridge_jspace/
-  config.py       typed YAML configs + dotted CLI overrides (model=<yaml> swaps the whole model)
-  models.py       pinned HF model -> jlens LensModel; lens / J++ files (same format) moved to GPU once
-  readout.py      rank-only readouts (J-lens, J++, logit lens), word -> token ids
-  sanity.py       checks every new model/pod must pass before any readout is trusted
-  stats.py        Wilson and bootstrap CIs
-  experiment.py   Experiment base: results/<exp id>/<timestamp>/, manifest.json before run()
-  pins.py         pinned upstream data, sha256-checked on load
-configs/models/   one YAML per model: HF revision + lens files (qwen3.5-0.8b / 2b / 4b, qwen3.6-27b)
-scripts/          experiment code: part A expNN_name/ (config.yaml + experiment.py), part B expNN_*.py
-scripts/run.sh    experiment in a detached tmux session, log in log/
-scripts/prefetch.py  download a model YAML's snapshot + lenses, retrying on HF rate limits
-examples/         rendered worked-example pages per experiment (make examples-render; slices/ not committed)
-infra/            pod bootstrap
-```
-`AGENTS.md`: rules for running experiments. `VERIFIED.md`: results a human has checked. `data/README.md`: what
-data we use and what the lenses were fitted on (`make data-report`).
-
-## Running
-```bash
-make install                 # uv sync + pre-commit hooks
-make check                   # ruff + pyright + unit tests (no download)
-make test-model              # integration on Qwen3.5-0.8B + its lenses (CPU ok)
-
-# GPU box: bash infra/setup_pod.sh, then any experiment = one config, run in tmux:
-make run CONFIG=scripts/exp10_lens_sanity/config.yaml                      # Qwen3.5-4B
-make run CONFIG=scripts/exp10_lens_sanity/config.yaml ARGS="model=configs/models/qwen3.6-27b.yaml"
-tmux attach -t <session>     # or: tail -f log/<session>.log
-
-# Worked examples (lens tables for sampled questions; the examples run needs the GPU, rendering does not):
-make run CONFIG=scripts/exp12_position_map/examples.yaml   # results/<exp>/<stamp>/examples.json + slices/
-make examples-render                                       # examples/<exp>/ from the latest examples run of each exp
-make examples-serve                                        # render, serve examples/ on localhost:8000, open browser
-```
-On a pod, `make examples-serve` plus `ssh -L 8000:localhost:8000 sesterce-a100` shows the pages locally. To update the
-published exp12 page, publish `examples/exp12_position_map/artifact.html` with `slices/*` as files to its URL.
-GPU memory: Qwen3.5-4B fits a 24 GB card; Qwen3.6-27B needs 1x 80 GB (bf16 weights ~54 GB + two fp32 lens maps
-~13 GB).
-
-To fetch a model and its lenses ahead of a run (retries on HF 429s; put `HF_TOKEN` in `.env`):
-`uv run python scripts/prefetch.py configs/models/qwen3.6-27b.yaml`.
-
 ## Status
 Draft, UNVERIFIED: nothing is in `VERIFIED.md` yet. The STATE block in `AGENTS.md` tracks what is in flight.
 Final figures, numbers and examples per experiment: [results/README.md](results/README.md). Every part A number below
 is recomputed from the raw run files by `uv run python scripts/verify_headlines.py`.
-
-**How to read the part A figures.**
-- **Which questions.** exp11 and exp12 use part B's 90 two-hop questions with the trailing space stripped, and keep
-  the 77 the model answers correctly (its greedy continuation contains the answer). exp10 uses another
-  set: lens-eval multihop, the 84 questions whose bridge is a single token, answered correctly or not.
-- **Readers.** At a given layer and prompt position each reader scores every token of the vocabulary: the logit lens
-  (the model's own unembedding; the baseline), the J-lens and J++ (two fits of the average-Jacobian lens).
-- **"Ranked first among its candidates" (exp11, exp12).** For the bridge (Brazil) we ask whether the reader scores it
-  above every other entity of the set: the **97 entities** are all distinct bridges and swap targets of the 90
-  questions (70 bridges and 68 swap targets, overlapping), each a single Qwen token. For the answer (Portuguese) the
-  candidates are the **112 answers**: all distinct answers and swap answers of the 90 questions that are a single
-  token (120 in all; the 8 multi-token ones cannot be ranked, so 5 of the 77 questions drop out of the answer lines).
-  Restricting the ranking to these pools asks "of the entities these questions are about, which one does the reader
-  pick?", the same choice part B's swaps change; chance is 1 in 97 (about 1%). The full-vocabulary rank is used only
-  for the comparison with the distractor.
-- **Control.** Each question has a same-category distractor (Mexico for Brazil, Spanish for Portuguese; part B's swap
-  target). If the distractor came first as often as the bridge, the reader would be reading the category, not the
-  entity.
-- **Layers 32-48.** The band part B swaps in, fixed before exp11; the summary numbers average over it.
-- **Positions (exp12)** are counted back from the last word of the prompt: 0 = the last word (usually "is"), -1 the
-  word before ("located", "ends"), and so on; each position's label is its most common token.
-- **Shading.** 95% intervals: a bootstrap over questions (10,000 resamples) for averages over layers or positions,
-  Wilson for the share of questions at one layer.
 
 **Final figures (Qwen3.6-27B).**
 | Figure | What it shows |
@@ -145,51 +128,54 @@ list at every layer, and count how often the bridge is in the top 10 at some lay
 **logit lens** (simplest; the baseline), the **J-lens**, and **J++** (an improved J-lens).
 
 **In short.**
-- **Qwen3.5-4B:** the J-lens sees the bridge more often than the baseline.
-- **Qwen3.6-27B:** J++ clearly beats the baseline (0.75 vs 0.51 with the space stripped). The J-lens is only slightly
-  ahead, within the error bars.
-- **The bridge is often invisible at the last token.** On the 61 items 27B answers correctly, J++ misses the bridge in
-  1 of 3 and the J-lens in 1 of 2. This is Zach's observation. The next experiments check other ways of reading it.
+- **Qwen3.5-4B:** the J-lens finds the bridge more often than the baseline (44% vs 25% of questions).
+- **Qwen3.6-27B:** J++ clearly beats the baseline (77% vs 54%). The J-lens is only slightly ahead (58%), within the
+  error bars.
+- **The bridge is often invisible at the last token.** On the 61 questions where 27B's top next token is the answer,
+  J++ misses the bridge in 1 of 3 and the J-lens in 1 of 2. This is Zach's observation. The next experiments check
+  other ways of reading it.
 
-![pass@10 by model and reader](figures/exp10_lens_sanity/20261015-123717/pass_at_10_by_model.png)
+![pass@10 by model and reader](figures/exp10_lens_sanity/20261015-125342/pass_at_10_by_model.png)
 
 *How to read it: each bar is the share of the 84 questions whose bridge is in that reader's top 10 at its best layer,
-read at the last prompt token (a question listing two forms of its bridge, '5' and 'five', scores half per form
-found); error bars are 95% bootstrap intervals. Grey is the baseline. On 27B, J++ (orange) is
-clearly above the logit lens; the J-lens (blue) is within its error bars. "Prompt as published" keeps the lone
-trailing space of the original prompts (pitfall 1).*
+read at the last prompt token; a bridge listed in several forms ('5', 'five') counts as found if any form is. Error
+bars are 95% bootstrap intervals; grey is the baseline. On 27B, J++ (orange) is clearly above the logit lens; the
+J-lens (blue) is within its error bars.*
 
 **Why the J-lens looks no better than the baseline on 27B.** In the middle layers only the J-lens and J++ see the
 bridge; near the output the logit lens catches up. pass@10 takes the *best* layer, so the late layers hide the
 difference.
 
-![27B by layer](figures/exp10_lens_sanity/20261015-123717/27b_by_layer.png)
+![27B by layer](figures/exp10_lens_sanity/20261015-125342/27b_by_layer.png)
 
-*How to read it: x is the layer, y the share of the 94 bridge forms in the reader's top 10 at that layer (84
-questions; 9 of them list several forms of their bridge, such as '5' and 'five', and each form is ranked separately). Inside layers 32-48 (grey) J++ has up to 31% of the bridges in its top 10, the J-lens up to 16%, the
-logit lens at most 3%; only from about layer 55 does the logit lens join them.*
+*How to read it: x is the layer, y the share of the 84 questions with the bridge in the reader's top 10 at that
+layer. Inside layers 32-48 (grey) J++ has it for up to 35% of the questions, the J-lens up to 18%, the logit lens at
+most 2%; only from about layer 55 does the logit lens join them.*
 
 <details><summary>Full numbers</summary>
 
-pass@10 on the 84 single-token items, 95% percentile bootstrap CI over items (n_boot=10000, seed 0). Runs are under
-`results/exp10_lens_sanity/`. All sanity checks pass on both models (HF parity and our readout vs `jlens.apply`:
-max abs diff 0.0).
+pass@10 on the 84 questions with a single-token bridge, 95% percentile bootstrap CI over questions (n_boot=10000,
+seed 0); a bridge listed in several forms counts as found if any form is in the top 10. Runs under
+`results/exp10_lens_sanity/`, re-aggregated in each run's `analysis-20261015-1253*/`. All sanity checks pass on both
+models (HF parity and our readout vs `jlens.apply`: max abs diff 0.0).
 
-| Model | Prompt end | Model correct | Logit lens | J-lens | J++ | J-lens - logit | J++ - logit | Run |
-|---|---|---|---|---|---|---|---|---|
-| Qwen3.5-4B | as published (`" "`) | 18/93 | 0.40 [0.30, 0.50] | 0.57 [0.47, 0.67] | - | +0.17 [+0.08, +0.27] | - | `20261013-205029` |
-| Qwen3.5-4B | stripped (`" is"`) | 50/93 | 0.24 [0.15, 0.34] | 0.43 [0.33, 0.54] | - | +0.19 [+0.10, +0.29] | - | `20261013-205057` |
-| Qwen3.6-27B | as published (`" "`) | 21/93 | 0.60 [0.49, 0.70] | 0.59 [0.49, 0.69] | 0.83 [0.75, 0.90] | -0.01 [-0.08, +0.07] | +0.23 [+0.14, +0.33] | `20261013-205736` |
-| Qwen3.6-27B | stripped (`" is"`) | 61/93 | 0.51 [0.40, 0.61] | 0.57 [0.46, 0.67] | 0.75 [0.65, 0.84] | +0.06 [-0.05, +0.17] | +0.24 [+0.13, +0.35] | `20261013-205936` |
+| Model | Top next token = answer | Logit lens | J-lens | J++ | J-lens - logit | J++ - logit | Run |
+|---|---|---|---|---|---|---|---|
+| Qwen3.5-4B | 50/93 | 0.25 [0.15, 0.35] | 0.44 [0.33, 0.55] | - | +0.19 [+0.10, +0.29] | - | `20261013-205057` |
+| Qwen3.6-27B | 61/93 | 0.54 [0.43, 0.64] | 0.58 [0.48, 0.69] | 0.77 [0.68, 0.86] | +0.05 [-0.06, +0.17] | +0.24 [+0.13, +0.36] | `20261013-205936` |
 
-On the items the model answers correctly (27B, stripped, n=61): J++ 0.67 [0.56, 0.79], J-lens 0.48 [0.36, 0.61].
-Controls (27B, stripped, rank at the last token): Brazil 0 vs distractor Mexico 57 (J-lens) / 45 (J++); Hungary 1 / 0
-vs Poland 16 / 18. Figures: `uv run python -m scripts.exp10_lens_sanity.plot --summary`.
+- On the 61 questions where 27B's top next token is the answer: J++ 0.69 [0.57, 0.80], J-lens 0.51 [0.38, 0.64].
+- With the paper's rule (each listed form scores its share of the question), 27B: J++ 0.75, J-lens 0.57, logit lens
+  0.51 (`pass_at_k_fraction` in the same summaries).
+- Check on the prompts as published (lone trailing space): the model answers 18/93 (4B) and 21/93 (27B); 27B logit
+  lens 0.60, J-lens 0.62, J++ 0.87; 4B logit lens 0.40, J-lens 0.62 (runs `20261013-205029`, `-205736`).
+- Controls (27B, rank at the last token): Brazil 0 vs distractor Mexico 57 (J-lens) / 45 (J++); Hungary 1 / 0 vs
+  Poland 16 / 18. Figures: `uv run python -m scripts.exp10_lens_sanity.plot --summary`.
 </details>
 
 ### exp11_bridge_vs_answer_by_layer: where is the bridge readable, and where the answer?
-**What we measure.** Part B's 90 two-hop questions, trailing space stripped; the headline uses the 77 the model answers
-correctly (its greedy continuation contains the answer). At the last prompt token, at every layer, we ask each reader: is the bridge (Brazil) ranked
+**What we measure.** Part B's 90 two-hop questions; the headline uses the 77 the model answers correctly (see
+Setup). At the last prompt token, at every layer, we ask each reader: is the bridge (Brazil) ranked
 first among the 97 entities of the set, and is the answer (Portuguese) ranked first among the 112 answers? The
 same-category distractors (Mexico, Spanish) are the controls. Chance is about 1%.
 
@@ -220,8 +206,8 @@ About 40% of questions do not have the bridge first at the last token; exp12 loo
 
 <details><summary>Full numbers</summary>
 
-Run `20261015-100110` (Qwen3.6-27B, trailing space stripped, labels `exp02_swaps/main_v4_jlens`); its `summary.json` is
-current; figures re-rendered in `analysis-20261015-122817/`. Eligible n=77 (answer columns: the 72 with a
+Run `20261015-100110` (Qwen3.6-27B, labels `exp02_swaps/main_v4_jlens`); its `summary.json` is
+current; figures re-rendered in `analysis-20261015-125327/`. Eligible n=77 (answer columns: the 72 with a
 single-token answer), layers 32-48, 95% percentile bootstrap CI over questions (n_boot=10000, seed 0).
 
 | Reader | Bridge first | Answer first | Bridge's distractor first | Bridge above its distractor (full vocabulary) | Half the questions: bridge / answer (lag) |
@@ -248,8 +234,9 @@ split differs):
 | J-lens | J++ | 0.57 [0.48, 0.66] | 0.73 [0.62, 0.83] | 0.41 [0.28, 0.55] |
 | logit lens | J-lens | 0.25 [0.18, 0.33] | 0.28 [0.15, 0.42] | 0.25 [0.16, 0.35] |
 
-- The wide band 28-52 changes nothing (J-lens bridge 0.56).
-- The 22 eligible questions whose published prompt ended in a space read worse even with the space stripped (J-lens
+- In layers 24-40, the band part B's main swaps use, the bridge is first in 44% [35, 53] of the questions (J-lens),
+  45% [36, 53] (J++), 15% [10, 21] (logit lens); the answer in 28% (both lenses), 9% (logit lens); distractor 6-7%.
+- The 22 questions whose published prompt ended in a space read worse even with the space removed (J-lens
   bridge 0.40 [0.23, 0.59] vs 0.64 [0.53, 0.74]; answer 0.29 vs 0.47).
 - Earlier run, prompts as published with part B's earlier labels (`20261014-092835`, 67 eligible): the same picture
   (J-lens bridge 0.59, lag 8 [4, 18]); J-mediated 79% [66, 89] vs neither 49% [35, 62].
@@ -297,8 +284,8 @@ readable, not what is computed.
 
 <details><summary>Full numbers and checks</summary>
 
-Run `20261015-100735` (Qwen3.6-27B, trailing space stripped, labels `exp02_swaps/main_v4_jlens`); its `summary.json` is
-current; figures re-rendered in `analysis-20261015-122822/`. Eligible n=77 (answer: 72); positions -14..0 analysed
+Run `20261015-100735` (Qwen3.6-27B, labels `exp02_swaps/main_v4_jlens`); its `summary.json` is
+current; figures re-rendered in `analysis-20261015-125333/`. Eligible n=77 (answer: 72); positions -14..0 analysed
 (reached by at least half the questions; -11..0 by 76-77).
 
 | Reader | Bridge: best position | Share of layers 32-48 [95% CI] | Held-out halves (position: share) | Answer: best position | Share | Distractor ceiling |
@@ -307,6 +294,8 @@ current; figures re-rendered in `analysis-20261015-122822/`. Eligible n=77 (answ
 | J-lens | -1 | 0.65 [0.54, 0.74] | -1: 0.67, -1: 0.62 | 0 | 0.41 [0.32, 0.50] | 0.11 |
 | J++ | -1 | 0.64 [0.54, 0.73] | -1: 0.67, -1: 0.61 | 0 | 0.38 [0.29, 0.47] | 0.11 |
 
+- In layers 24-40 the bridge at -1 is first in 0.61 [0.50, 0.71] (J-lens) and 0.63 [0.53, 0.73] (J++) of the layers,
+  almost as often as in 32-48: one word before the end it is readable from the early layers on.
 - Depth (half the questions first, bridge at -1 vs answer at the last word): J-lens L23 vs L44, lag 19 [15, 27];
   J++ L22 vs L43, 22 [17, 30]; logit lens L40 vs L51, 11 [-4, 14].
 - Same optimum on the balanced panel (the 76 questions that reach every position -11..0), so prompt length does not
@@ -522,8 +511,8 @@ recomputed by `scripts/verify_headlines.py`.
 
 ### Pitfalls found so far
 1. **Trailing space.** Most original prompts end in a space (83/93), which Qwen's tokenizer leaves as a lone `" "`
-   token. The model then answers far worse (27B: 21/93 correct vs 61/93 with the space stripped) and the lens reads a
-   different token. Switch: `params.strip_trailing_space`.
+   token. The model then answers far worse (27B: 21/93 correct vs 61/93 with the space removed) and the lens reads a
+   different token. Every experiment now removes it (Setup).
 2. **Numbers split into digits.** Qwen splits `" 26"` into `" "`, `"2"`, `"6"`, so scoring "26" by its first token
    gave fake hits (fixed in `d068538`; the two runs before the fix, `20261013-204427` and `-204551`, are superseded
    and not committed). Headlines use only single-token bridges.
@@ -536,21 +525,24 @@ recomputed by `scripts/verify_headlines.py`.
 6. **Not yet checked:** in 5/93 lens-eval questions the bridge word appears in the prompt itself.
 
 ### Decisions
-- **Trailing space: stripped is primary; prompts as published are kept as the paper-literal replication**
-  (2026-10-13, Danyil; to confirm with Zach since part B's correct-answer filter depends on it). Why:
+- **Trailing space: removed in every experiment, part A and part B** (2026-10-13 for part A; part B followed in its
+  v4, which also judges answers on the greedy continuation). Runs on the prompts as published are kept only as a
+  check. Why:
   - The protocol reads "the token right before `target`". In natural text that is `" is"`; the lone `" "` exists only
     because the prompts were written for another tokenizer, and after it the answer becomes a fragment (`"Port"`).
   - We study reasoning the model actually does: 27B answers 61/93 stripped vs 21/93 as published. 21 items is also
     too few for swap rates with useful CIs.
   - The lone `" "` invites digits, which produced fake hits (pitfall 2): 6 at layer 0 on 4B vs 0 when stripped.
   - Part B uses the same prompts (29/90 probe-swap prompts end in a space), so both parts must treat them the same.
-  Against: numbers are not 1:1 with the paper (hence the replication variant). The J-lens reads the bridge more often
-  on the lone `" "` (4B: 0.57 vs 0.43), but that is confounded with the digit artifact and with the model mostly
-  failing there; the all-positions map will test it directly.
+  Against: numbers are not 1:1 with the paper (hence the check on the published prompts). The J-lens reads the bridge
+  more often on the lone `" "` (4B: 0.62 vs 0.44), but that is confounded with the digit artifact and with the model
+  mostly failing there.
+- **pass@k counts a bridge found if any of its listed forms is** ('5' or 'five'; 9 lens-eval questions list several),
+  not the paper's share of forms (2026-10-15, Danyil). The paper's rule is still reported (`pass_at_k_fraction`).
+- **Layer bands: 32-48 primary, 24-40 alongside**, both part B's swap bands, named by their range (2026-10-15).
 
 ### Open decisions (humans)
 - Whether to drop the 5 questions whose bridge appears in the prompt.
-- Band for part A headlines: 32-48 (part B's) is used as primary; 28-52 is reported as exploratory.
 
 ## Next steps (part A)
 In order; designs need human sign-off before GPU runs.

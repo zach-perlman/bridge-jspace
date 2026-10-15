@@ -4,24 +4,24 @@ Source run `results/exp12_position_map/20261015-100735`, model Qwen/Qwen3.6-27B.
 
 | Group | Definition | Items in group | Shown |
 |---|---|---|---|
-| [Seen at the last token](#seen_last) | Eligible; the J-lens has the bridge top-1 in >= 50% of layers 32-48 at the last token. | 47 | 3 |
-| [Seen only earlier in the prompt](#seen_earlier) | Eligible; missed at the last token (< 50%) but on top at some earlier token (>= 50%). | 22 | 3 |
-| [Not seen anywhere](#unseen) | Eligible; the J-lens never has the bridge top-1 in >= 50% of layers 32-48 at any token. | 8 | 3 |
-| [Distractor above the bridge](#distractor_wins) | Eligible; at the last token the same-category distractor is top-1 in more band layers than the bridge. | 6 | 3 |
-| [J-lens and J++ disagree](#readers_disagree) | Eligible; at the last token the two lenses' band shares for the bridge differ by >= 0.5. | 1 | 1 |
-| [Model answers wrong](#model_wrong) | Part B's clean_wrong: the model's top word is not the answer. Does the lens still see the bridge? | 13 | 3 |
+| [Seen at the last token](#seen_last) | Answered correctly; the J-lens has the bridge ranked first among the entities in >= 50% of layers 32-48 at the last token. | 47 | 3 |
+| [Seen only earlier in the prompt](#seen_earlier) | Answered correctly; missed at the last token (< 50%) but on top at some earlier token (>= 50%). | 22 | 3 |
+| [Not seen anywhere](#unseen) | Answered correctly; the J-lens never has the bridge ranked first among the entities in >= 50% of layers 32-48 at any token. | 8 | 3 |
+| [Distractor above the bridge](#distractor_wins) | Answered correctly; at the last token the same-category distractor is ranked first among the entities in more band layers than the bridge. | 6 | 3 |
+| [J-lens and J++ disagree](#readers_disagree) | Answered correctly; at the last token the two lenses' band shares for the bridge differ by >= 0.5. | 1 | 1 |
+| [Model answers wrong](#model_wrong) | The model does not give the answer. Does the lens still see the bridge? | 13 | 3 |
 
 <a id="seen_last"></a>
 ## Seen at the last token
 
-Eligible; the J-lens has the bridge top-1 in >= 50% of layers 32-48 at the last token.
+Answered correctly; the J-lens has the bridge ranked first among the entities in >= 50% of layers 32-48 at the last token.
 
 ### `ex2-city-language-Cairo`
 
 > Fact: The language spoken in the country where Cairo is located is
 
-Bridge **Egypt** -> answer *Arabic*; controls [Russia] / [Russian]. category: city-language, status (B): eligible, label (B): J-mediated, model's top word: Arabic.
-Why this group: J-lens bridge top-1 in 100% of band layers at the last token, best earlier 100% (at `Cairo`), distractor 0%; J++ at the last token 100%.
+Bridge **Egypt** -> answer *Arabic*; controls [Russia] / [Russian]. category: city-language, model answers correctly: yes, swapping flips the answer: the J-space part, model's top word: Arabic.
+Why this group: J-lens bridge ranked first among the entities in 100% of band layers at the last token, best earlier 100% (at `Cairo`), distractor 0%; J++ at the last token 100%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/ex2-city-language-Cairo__jlens.html) · [J++](slices/ex2-city-language-Cairo__jpp.html)
 
 **Last token** `is`: top-5 words per layer
@@ -63,8 +63,8 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 
 > Fact: The capital of the country where Swedish is the primary language is
 
-Bridge **Sweden** -> answer *Stockholm*; controls [Hungary] / [Budapest]. category: language-capital, status (B): eligible, label (B): J-mediated, model's top word: Stockholm.
-Why this group: J-lens bridge top-1 in 88% of band layers at the last token, best earlier 100% (at `Swedish`), distractor 0%; J++ at the last token 82%.
+Bridge **Sweden** -> answer *Stockholm*; controls [Hungary] / [Budapest]. category: language-capital, model answers correctly: yes, swapping flips the answer: the J-space part, model's top word: Stockholm.
+Why this group: J-lens bridge ranked first among the entities in 88% of band layers at the last token, best earlier 100% (at `Swedish`), distractor 0%; J++ at the last token 82%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/ex2-language-capital-Swedish__jlens.html) · [J++](slices/ex2-language-capital-Swedish__jpp.html)
 
 **Last token** `is`: top-5 words per layer
@@ -106,8 +106,8 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 
 > Fact: The first name of the playwright who wrote Romeo and Juliet was
 
-Bridge **Shakespeare** -> answer *William*; controls [Mozart] / [Wolfgang]. category: person-firstname, status (B): eligible, label (B): neither, model's top word: William.
-Why this group: J-lens bridge top-1 in 100% of band layers at the last token, best earlier 100% (at `playwright`), distractor 0%; J++ at the last token 100%.
+Bridge **Shakespeare** -> answer *William*; controls [Mozart] / [Wolfgang]. category: person-firstname, model answers correctly: yes, swapping flips the answer: neither part, model's top word: William.
+Why this group: J-lens bridge ranked first among the entities in 100% of band layers at the last token, best earlier 100% (at `playwright`), distractor 0%; J++ at the last token 100%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/person-firstname-shakespeare__jlens.html) · [J++](slices/person-firstname-shakespeare__jpp.html)
 
 **Last token** `was`: top-5 words per layer
@@ -149,14 +149,14 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 <a id="seen_earlier"></a>
 ## Seen only earlier in the prompt
 
-Eligible; missed at the last token (< 50%) but on top at some earlier token (>= 50%).
+Answered correctly; missed at the last token (< 50%) but on top at some earlier token (>= 50%).
 
 ### `holiday-month-christmas2`
 
 > Fact: The month of the holiday celebrated with a decorated evergreen tree and gift-giving is
 
-Bridge **Christmas** -> answer *December*; controls [Easter] / [April]. category: holiday-month, status (B): eligible, label (B): neither, model's top word: December.
-Why this group: J-lens bridge top-1 in 29% of band layers at the last token, best earlier 100% (at `holiday`), distractor 0%; J++ at the last token 0%.
+Bridge **Christmas** -> answer *December*; controls [Easter] / [April]. category: holiday-month, model answers correctly: yes, swapping flips the answer: neither part, model's top word: December.
+Why this group: J-lens bridge ranked first among the entities in 29% of band layers at the last token, best earlier 100% (at `holiday`), distractor 0%; J++ at the last token 0%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/holiday-month-christmas2__jlens.html) · [J++](slices/holiday-month-christmas2__jpp.html)
 
 **Last token** `is`: top-5 words per layer
@@ -198,8 +198,8 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 
 > Fact: The number of the bean-shaped organs that filter blood into urine in a human body is
 
-Bridge **kidney** -> answer *two*; controls [heart] / [one]. category: organ-count, status (B): eligible, label (B): neither, model's top word: two.
-Why this group: J-lens bridge top-1 in 12% of band layers at the last token, best earlier 100% (at `bean`), distractor 0%; J++ at the last token 0%.
+Bridge **kidney** -> answer *two*; controls [heart] / [one]. category: organ-count, model answers correctly: yes, swapping flips the answer: neither part, model's top word: two.
+Why this group: J-lens bridge ranked first among the entities in 12% of band layers at the last token, best earlier 100% (at `bean`), distractor 0%; J++ at the last token 0%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/organ-count-kidney2__jlens.html) · [J++](slices/organ-count-kidney2__jpp.html)
 
 **Last token** `is`: top-5 words per layer
@@ -241,8 +241,8 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 
 > Fact: The country whose army was led by the emperor defeated at Waterloo is
 
-Bridge **Napoleon** -> answer *France*; controls [Lincoln] / [America]. category: person-country, status (B): eligible, label (B): neither, model's top word: France.
-Why this group: J-lens bridge top-1 in 0% of band layers at the last token, best earlier 100% (at `led`), distractor 0%; J++ at the last token 0%.
+Bridge **Napoleon** -> answer *France*; controls [Lincoln] / [America]. category: person-country, model answers correctly: yes, swapping flips the answer: neither part, model's top word: France.
+Why this group: J-lens bridge ranked first among the entities in 0% of band layers at the last token, best earlier 100% (at `led`), distractor 0%; J++ at the last token 0%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/person-country-napoleon__jlens.html) · [J++](slices/person-country-napoleon__jpp.html)
 
 **Last token** `is`: top-5 words per layer
@@ -284,14 +284,14 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 <a id="unseen"></a>
 ## Not seen anywhere
 
-Eligible; the J-lens never has the bridge top-1 in >= 50% of layers 32-48 at any token.
+Answered correctly; the J-lens never has the bridge ranked first among the entities in >= 50% of layers 32-48 at any token.
 
 ### `mars-color`
 
 > Fact: The color of the planet fourth from the Sun is
 
-Bridge **Mars** -> answer *red*; controls [Earth] / [blue]. category: multihop, status (B): eligible, label (B): neither, model's top word: red.
-Why this group: J-lens bridge top-1 in 0% of band layers at the last token, best earlier 12% (at `the`), distractor 100%; J++ at the last token 0%.
+Bridge **Mars** -> answer *red*; controls [Earth] / [blue]. category: multihop, model answers correctly: yes, swapping flips the answer: neither part, model's top word: red.
+Why this group: J-lens bridge ranked first among the entities in 0% of band layers at the last token, best earlier 12% (at `the`), distractor 100%; J++ at the last token 0%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/mars-color__jlens.html) · [J++](slices/mars-color__jpp.html)
 
 **Last token** `is`: top-5 words per layer
@@ -333,8 +333,8 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 
 > Fact: The third month of the year is named after the Roman god of
 
-Bridge **Mars** -> answer *war*; controls [Venus] / [love]. category: multihop, status (B): eligible, label (B): neither, model's top word: war.
-Why this group: J-lens bridge top-1 in 6% of band layers at the last token, best earlier 0% (at `Fact`), distractor 0%; J++ at the last token 18%.
+Bridge **Mars** -> answer *war*; controls [Venus] / [love]. category: multihop, model answers correctly: yes, swapping flips the answer: neither part, model's top word: war.
+Why this group: J-lens bridge ranked first among the entities in 6% of band layers at the last token, best earlier 0% (at `Fact`), distractor 0%; J++ at the last token 18%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/month-3-godof__jlens.html) · [J++](slices/month-3-godof__jpp.html)
 
 **Last token** `of`: top-5 words per layer
@@ -376,8 +376,8 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 
 > Fact: The celestial body whose name rhymes with 'spoon' orbits the planet called
 
-Bridge **moon** -> answer *Earth*; controls [Europa] / [Jupiter]. category: multihop, status (B): eligible, label (B): neither, model's top word: Earth.
-Why this group: J-lens bridge top-1 in 0% of band layers at the last token, best earlier 47% (at `with`), distractor 0%; J++ at the last token 0%.
+Bridge **moon** -> answer *Earth*; controls [Europa] / [Jupiter]. category: multihop, model answers correctly: yes, swapping flips the answer: neither part, model's top word: Earth.
+Why this group: J-lens bridge ranked first among the entities in 0% of band layers at the last token, best earlier 47% (at `with`), distractor 0%; J++ at the last token 0%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/rhyme-spoon-orbit__jlens.html) · [J++](slices/rhyme-spoon-orbit__jpp.html)
 
 **Last token** `called`: top-5 words per layer
@@ -419,14 +419,14 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 <a id="distractor_wins"></a>
 ## Distractor above the bridge
 
-Eligible; at the last token the same-category distractor is top-1 in more band layers than the bridge.
+Answered correctly; at the last token the same-category distractor is ranked first among the entities in more band layers than the bridge.
 
 ### `ex-element-state-26-80`
 
 > Fact: The state of matter at room temperature of the element with atomic number 26 is
 
-Bridge **iron** -> answer *solid*; controls [mercury] / [liquid]. category: element-state, status (B): eligible, label (B): neither, model's top word: solid.
-Why this group: J-lens bridge top-1 in 0% of band layers at the last token, best earlier 100% (at `6`), distractor 18%; J++ at the last token 29%.
+Bridge **iron** -> answer *solid*; controls [mercury] / [liquid]. category: element-state, model answers correctly: yes, swapping flips the answer: neither part, model's top word: solid.
+Why this group: J-lens bridge ranked first among the entities in 0% of band layers at the last token, best earlier 100% (at `6`), distractor 18%; J++ at the last token 29%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/ex-element-state-26-80__jlens.html) · [J++](slices/ex-element-state-26-80__jpp.html)
 
 **Last token** `is`: top-5 words per layer
@@ -468,8 +468,8 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 
 > Fact: The color of the planet fourth from the Sun is
 
-Bridge **Mars** -> answer *red*; controls [Earth] / [blue]. category: multihop, status (B): eligible, label (B): neither, model's top word: red.
-Why this group: J-lens bridge top-1 in 0% of band layers at the last token, best earlier 12% (at `the`), distractor 100%; J++ at the last token 0%.
+Bridge **Mars** -> answer *red*; controls [Earth] / [blue]. category: multihop, model answers correctly: yes, swapping flips the answer: neither part, model's top word: red.
+Why this group: J-lens bridge ranked first among the entities in 0% of band layers at the last token, best earlier 12% (at `the`), distractor 100%; J++ at the last token 0%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/mars-color__jlens.html) · [J++](slices/mars-color__jpp.html)
 
 **Last token** `is`: top-5 words per layer
@@ -511,8 +511,8 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 
 > Fact: The first name of the scientist on whose head an apple is said to have fallen was
 
-Bridge **Newton** -> answer *Isaac*; controls [Shakespeare] / [William]. category: person-firstname, status (B): eligible, label (B): neither, model's top word: Isaac.
-Why this group: J-lens bridge top-1 in 6% of band layers at the last token, best earlier 82% (at `to`), distractor 94%; J++ at the last token 12%.
+Bridge **Newton** -> answer *Isaac*; controls [Shakespeare] / [William]. category: person-firstname, model answers correctly: yes, swapping flips the answer: neither part, model's top word: Isaac.
+Why this group: J-lens bridge ranked first among the entities in 6% of band layers at the last token, best earlier 82% (at `to`), distractor 94%; J++ at the last token 12%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/person-firstname-newton__jlens.html) · [J++](slices/person-firstname-newton__jpp.html)
 
 **Last token** `was`: top-5 words per layer
@@ -554,14 +554,14 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 <a id="readers_disagree"></a>
 ## J-lens and J++ disagree
 
-Eligible; at the last token the two lenses' band shares for the bridge differ by >= 0.5.
+Answered correctly; at the last token the two lenses' band shares for the bridge differ by >= 0.5.
 
 ### `organ-location-heart`
 
 > Fact: The part of the body that contains the organ that pumps blood is the
 
-Bridge **heart** -> answer *chest*; controls [brain] / [head]. category: organ-location, status (B): eligible, label (B): neither, model's top word: chest.
-Why this group: J-lens bridge top-1 in 6% of band layers at the last token, best earlier 100% (at `blood`), distractor 0%; J++ at the last token 82%.
+Bridge **heart** -> answer *chest*; controls [brain] / [head]. category: organ-location, model answers correctly: yes, swapping flips the answer: neither part, model's top word: chest.
+Why this group: J-lens bridge ranked first among the entities in 6% of band layers at the last token, best earlier 100% (at `blood`), distractor 0%; J++ at the last token 82%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/organ-location-heart__jlens.html) · [J++](slices/organ-location-heart__jpp.html)
 
 **Last token** `the`: top-5 words per layer
@@ -603,14 +603,14 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 <a id="model_wrong"></a>
 ## Model answers wrong
 
-Part B's clean_wrong: the model's top word is not the answer. Does the lens still see the bridge?
+The model does not give the answer. Does the lens still see the bridge?
 
 ### `greatwall-ocean`
 
 > Fact: The ocean east of the country that built the Great Wall is the
 
-Bridge **China** -> answer *Pacific*; controls [Brazil] / [Atlantic]. category: multihop, status (B): clean_wrong, label (B): -, model's top word: Yellow.
-Why this group: J-lens bridge top-1 in 12% of band layers at the last token, best earlier 100% (at `Great`), distractor 0%; J++ at the last token 6%.
+Bridge **China** -> answer *Pacific*; controls [Brazil] / [Atlantic]. category: multihop, model answers correctly: no, swapping flips the answer: -, model's top word: Yellow.
+Why this group: J-lens bridge ranked first among the entities in 12% of band layers at the last token, best earlier 100% (at `Great`), distractor 0%; J++ at the last token 6%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/greatwall-ocean__jlens.html) · [J++](slices/greatwall-ocean__jpp.html)
 
 **Last token** `the`: top-5 words per layer
@@ -652,8 +652,8 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 
 > Fact: The part of the body a player buzzes to play the valved brass instrument heard in jazz solos is the
 
-Bridge **trumpet** -> answer *lips*; controls [drums] / [hands]. category: instr-played, status (B): clean_wrong, label (B): -, model's top word: mouth.
-Why this group: J-lens bridge top-1 in 100% of band layers at the last token, best earlier 100% (at `ved`), distractor 0%; J++ at the last token 94%.
+Bridge **trumpet** -> answer *lips*; controls [drums] / [hands]. category: instr-played, model answers correctly: no, swapping flips the answer: -, model's top word: mouth.
+Why this group: J-lens bridge ranked first among the entities in 100% of band layers at the last token, best earlier 100% (at `ved`), distractor 0%; J++ at the last token 94%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/instr-body-trumpet__jlens.html) · [J++](slices/instr-body-trumpet__jpp.html)
 
 **Last token** `the`: top-5 words per layer
@@ -695,8 +695,8 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 
 > Fact: The mascot of the college football rival of Ohio State is a
 
-Bridge **Michigan** -> answer *wolverine*; controls [Wisconsin] / [badger]. category: multihop, status (B): clean_wrong, label (B): -, model's top word: buck.
-Why this group: J-lens bridge top-1 in 71% of band layers at the last token, best earlier 100% (at `Ohio`), distractor 0%; J++ at the last token 94%.
+Bridge **Michigan** -> answer *wolverine*; controls [Wisconsin] / [badger]. category: multihop, model answers correctly: no, swapping flips the answer: -, model's top word: buck.
+Why this group: J-lens bridge ranked first among the entities in 71% of band layers at the last token, best earlier 100% (at `Ohio`), distractor 0%; J++ at the last token 94%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/osu-rival-mascot__jlens.html) · [J++](slices/osu-rival-mascot__jpp.html)
 
 **Last token** `a`: top-5 words per layer

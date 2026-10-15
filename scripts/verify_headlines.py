@@ -105,14 +105,15 @@ def exp12_first_layer_half(reader, role, offset):
 
 
 def exp10_pass10(reader):
-    """multihop_ranks.jsonl: per item, the share of its intermediates with min_rank < 10 (0-based rank, best over
-    layers at the last token); mean over items whose intermediates are all single tokens (multihop_items.jsonl)."""
+    """multihop_ranks.jsonl: per item, 1 if any of its intermediates (forms of one bridge, '5' / 'five') has
+    min_rank < 10 (0-based rank, best over layers at the last token); mean over items whose intermediates are all
+    single tokens (multihop_items.jsonl)."""
     meta = {m["name"]: m for m in jsonl(EXP10 / "multihop_items.jsonl")}
     per_item = {}
     for r in jsonl(EXP10 / "multihop_ranks.jsonl"):
         if r["reader"] == reader and meta[r["name"]]["all_single_token"]:
             per_item.setdefault(r["name"], []).append(r["min_rank"] < 10)
-    return float(np.mean([np.mean(v) for v in per_item.values()])), len(per_item)
+    return float(np.mean([any(v) for v in per_item.values()])), len(per_item)
 
 
 # ---- part B: exp02 swaps (v4, layers 24-40, n=77) and exp03 brew ------------------------------------------------
@@ -221,9 +222,9 @@ def exp04_max_off_changed():
 
 def main():
     checks = [
-        ("exp10", "27B stripped, pass@10, J++", exp10_pass10("jpp")[0], 0.75),
-        ("exp10", "27B stripped, pass@10, logit lens", exp10_pass10("logit")[0], 0.51),
-        ("exp10", "27B stripped, pass@10, J-lens", exp10_pass10("jlens")[0], 0.57),
+        ("exp10", "27B stripped, pass@10, J++", exp10_pass10("jpp")[0], 0.77),
+        ("exp10", "27B stripped, pass@10, logit lens", exp10_pass10("logit")[0], 0.54),
+        ("exp10", "27B stripped, pass@10, J-lens", exp10_pass10("jlens")[0], 0.58),
         ("exp11", "bridge top-1 among entities, L32-48, J-lens", exp11_band_share("jlens", "bridge")[0], 0.57),
         ("exp11", "bridge top-1, J++", exp11_band_share("jpp", "bridge")[0], 0.56),
         ("exp11", "bridge top-1, logit lens", exp11_band_share("logit", "bridge")[0], 0.25),

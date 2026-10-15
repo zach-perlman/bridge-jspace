@@ -3,37 +3,37 @@
     {
       "key": "seen_last",
       "title": "Seen at the last token",
-      "definition": "Eligible; the J-lens has the bridge top-1 in >= 50% of layers 32-48 at the last token.",
+      "definition": "Answered correctly; the J-lens has the bridge ranked first among the entities in >= 50% of layers 32-48 at the last token.",
       "n_total": 47
     },
     {
       "key": "seen_earlier",
       "title": "Seen only earlier in the prompt",
-      "definition": "Eligible; missed at the last token (< 50%) but on top at some earlier token (>= 50%).",
+      "definition": "Answered correctly; missed at the last token (< 50%) but on top at some earlier token (>= 50%).",
       "n_total": 22
     },
     {
       "key": "unseen",
       "title": "Not seen anywhere",
-      "definition": "Eligible; the J-lens never has the bridge top-1 in >= 50% of layers 32-48 at any token.",
+      "definition": "Answered correctly; the J-lens never has the bridge ranked first among the entities in >= 50% of layers 32-48 at any token.",
       "n_total": 8
     },
     {
       "key": "distractor_wins",
       "title": "Distractor above the bridge",
-      "definition": "Eligible; at the last token the same-category distractor is top-1 in more band layers than the bridge.",
+      "definition": "Answered correctly; at the last token the same-category distractor is ranked first among the entities in more band layers than the bridge.",
       "n_total": 6
     },
     {
       "key": "readers_disagree",
       "title": "J-lens and J++ disagree",
-      "definition": "Eligible; at the last token the two lenses' band shares for the bridge differ by >= 0.5.",
+      "definition": "Answered correctly; at the last token the two lenses' band shares for the bridge differ by >= 0.5.",
       "n_total": 1
     },
     {
       "key": "model_wrong",
       "title": "Model answers wrong",
-      "definition": "Part B's clean_wrong: the model's top word is not the answer. Does the lens still see the bridge?",
+      "definition": "The model does not give the answer. Does the lens still see the bridge?",
       "n_total": 13
     }
   ],
@@ -64,11 +64,11 @@
           61014
         ]
       },
-      "why": "J-lens bridge top-1 in 100% of band layers at the last token, best earlier 100% (at `Cairo`), distractor 0%; J++ at the last token 100%.",
+      "why": "J-lens bridge ranked first among the entities in 100% of band layers at the last token, best earlier 100% (at `Cairo`), distractor 0%; J++ at the last token 100%.",
       "info": {
         "category": "city-language",
-        "status (B)": "eligible",
-        "label (B)": "J-mediated",
+        "model answers correctly": "yes",
+        "swapping flips the answer": "the J-space part",
         "model's top word": "Arabic"
       },
       "tokens": [
@@ -2162,11 +2162,11 @@
           67236
         ]
       },
-      "why": "J-lens bridge top-1 in 88% of band layers at the last token, best earlier 100% (at `Swedish`), distractor 0%; J++ at the last token 82%.",
+      "why": "J-lens bridge ranked first among the entities in 88% of band layers at the last token, best earlier 100% (at `Swedish`), distractor 0%; J++ at the last token 82%.",
       "info": {
         "category": "language-capital",
-        "status (B)": "eligible",
-        "label (B)": "J-mediated",
+        "model answers correctly": "yes",
+        "swapping flips the answer": "the J-space part",
         "model's top word": "Stockholm"
       },
       "tokens": [
@@ -4261,11 +4261,11 @@
           83509
         ]
       },
-      "why": "J-lens bridge top-1 in 100% of band layers at the last token, best earlier 100% (at `playwright`), distractor 0%; J++ at the last token 100%.",
+      "why": "J-lens bridge ranked first among the entities in 100% of band layers at the last token, best earlier 100% (at `playwright`), distractor 0%; J++ at the last token 100%.",
       "info": {
         "category": "person-firstname",
-        "status (B)": "eligible",
-        "label (B)": "neither",
+        "model answers correctly": "yes",
+        "swapping flips the answer": "neither part",
         "model's top word": "William"
       },
       "tokens": [
@@ -6363,11 +6363,11 @@
           71195
         ]
       },
-      "why": "J-lens bridge top-1 in 29% of band layers at the last token, best earlier 100% (at `holiday`), distractor 0%; J++ at the last token 0%.",
+      "why": "J-lens bridge ranked first among the entities in 29% of band layers at the last token, best earlier 100% (at `holiday`), distractor 0%; J++ at the last token 0%.",
       "info": {
         "category": "holiday-month",
-        "status (B)": "eligible",
-        "label (B)": "neither",
+        "model answers correctly": "yes",
+        "swapping flips the answer": "neither part",
         "model's top word": "December"
       },
       "tokens": [
@@ -8472,11 +8472,11 @@
           3833
         ]
       },
-      "why": "J-lens bridge top-1 in 12% of band layers at the last token, best earlier 100% (at `bean`), distractor 0%; J++ at the last token 0%.",
+      "why": "J-lens bridge ranked first among the entities in 12% of band layers at the last token, best earlier 100% (at `bean`), distractor 0%; J++ at the last token 0%.",
       "info": {
         "category": "organ-count",
-        "status (B)": "eligible",
-        "label (B)": "neither",
+        "model answers correctly": "yes",
+        "swapping flips the answer": "neither part",
         "model's top word": "two"
       },
       "tokens": [
@@ -10579,11 +10579,11 @@
           61517
         ]
       },
-      "why": "J-lens bridge top-1 in 0% of band layers at the last token, best earlier 100% (at `led`), distractor 0%; J++ at the last token 0%.",
+      "why": "J-lens bridge ranked first among the entities in 0% of band layers at the last token, best earlier 100% (at `led`), distractor 0%; J++ at the last token 0%.",
       "info": {
         "category": "person-country",
-        "status (B)": "eligible",
-        "label (B)": "neither",
+        "model answers correctly": "yes",
+        "swapping flips the answer": "neither part",
         "model's top word": "France"
       },
       "tokens": [
@@ -12684,11 +12684,11 @@
           11855
         ]
       },
-      "why": "J-lens bridge top-1 in 0% of band layers at the last token, best earlier 12% (at `the`), distractor 100%; J++ at the last token 0%.",
+      "why": "J-lens bridge ranked first among the entities in 0% of band layers at the last token, best earlier 12% (at `the`), distractor 100%; J++ at the last token 0%.",
       "info": {
         "category": "multihop",
-        "status (B)": "eligible",
-        "label (B)": "neither",
+        "model answers correctly": "yes",
+        "swapping flips the answer": "neither part",
         "model's top word": "red"
       },
       "tokens": [
@@ -14786,11 +14786,11 @@
           29069
         ]
       },
-      "why": "J-lens bridge top-1 in 6% of band layers at the last token, best earlier 0% (at `Fact`), distractor 0%; J++ at the last token 18%.",
+      "why": "J-lens bridge ranked first among the entities in 6% of band layers at the last token, best earlier 0% (at `Fact`), distractor 0%; J++ at the last token 18%.",
       "info": {
         "category": "multihop",
-        "status (B)": "eligible",
-        "label (B)": "neither",
+        "model answers correctly": "yes",
+        "swapping flips the answer": "neither part",
         "model's top word": "war"
       },
       "tokens": [
@@ -16888,11 +16888,11 @@
           48017
         ]
       },
-      "why": "J-lens bridge top-1 in 0% of band layers at the last token, best earlier 47% (at `with`), distractor 0%; J++ at the last token 0%.",
+      "why": "J-lens bridge ranked first among the entities in 0% of band layers at the last token, best earlier 47% (at `with`), distractor 0%; J++ at the last token 0%.",
       "info": {
         "category": "multihop",
-        "status (B)": "eligible",
-        "label (B)": "neither",
+        "model answers correctly": "yes",
+        "swapping flips the answer": "neither part",
         "model's top word": "Earth"
       },
       "tokens": [
@@ -18996,11 +18996,11 @@
           93302
         ]
       },
-      "why": "J-lens bridge top-1 in 0% of band layers at the last token, best earlier 100% (at `6`), distractor 18%; J++ at the last token 29%.",
+      "why": "J-lens bridge ranked first among the entities in 0% of band layers at the last token, best earlier 100% (at `6`), distractor 18%; J++ at the last token 29%.",
       "info": {
         "category": "element-state",
-        "status (B)": "eligible",
-        "label (B)": "neither",
+        "model answers correctly": "yes",
+        "swapping flips the answer": "neither part",
         "model's top word": "solid"
       },
       "tokens": [
@@ -21105,11 +21105,11 @@
           11855
         ]
       },
-      "why": "J-lens bridge top-1 in 0% of band layers at the last token, best earlier 12% (at `the`), distractor 100%; J++ at the last token 0%.",
+      "why": "J-lens bridge ranked first among the entities in 0% of band layers at the last token, best earlier 12% (at `the`), distractor 100%; J++ at the last token 0%.",
       "info": {
         "category": "multihop",
-        "status (B)": "eligible",
-        "label (B)": "neither",
+        "model answers correctly": "yes",
+        "swapping flips the answer": "neither part",
         "model's top word": "red"
       },
       "tokens": [
@@ -23202,11 +23202,11 @@
           43298
         ]
       },
-      "why": "J-lens bridge top-1 in 6% of band layers at the last token, best earlier 82% (at `to`), distractor 94%; J++ at the last token 12%.",
+      "why": "J-lens bridge ranked first among the entities in 6% of band layers at the last token, best earlier 82% (at `to`), distractor 94%; J++ at the last token 12%.",
       "info": {
         "category": "person-firstname",
-        "status (B)": "eligible",
-        "label (B)": "neither",
+        "model answers correctly": "yes",
+        "swapping flips the answer": "neither part",
         "model's top word": "Isaac"
       },
       "tokens": [
@@ -25310,11 +25310,11 @@
           11993
         ]
       },
-      "why": "J-lens bridge top-1 in 6% of band layers at the last token, best earlier 100% (at `blood`), distractor 0%; J++ at the last token 82%.",
+      "why": "J-lens bridge ranked first among the entities in 6% of band layers at the last token, best earlier 100% (at `blood`), distractor 0%; J++ at the last token 82%.",
       "info": {
         "category": "organ-location",
-        "status (B)": "eligible",
-        "label (B)": "neither",
+        "model answers correctly": "yes",
+        "swapping flips the answer": "neither part",
         "model's top word": "chest"
       },
       "tokens": [
@@ -27412,11 +27412,11 @@
           74875
         ]
       },
-      "why": "J-lens bridge top-1 in 12% of band layers at the last token, best earlier 100% (at `Great`), distractor 0%; J++ at the last token 6%.",
+      "why": "J-lens bridge ranked first among the entities in 12% of band layers at the last token, best earlier 100% (at `Great`), distractor 0%; J++ at the last token 6%.",
       "info": {
         "category": "multihop",
-        "status (B)": "clean_wrong",
-        "label (B)": "-",
+        "model answers correctly": "no",
+        "swapping flips the answer": "-",
         "model's top word": "Yellow"
       },
       "tokens": [
@@ -29516,11 +29516,11 @@
           92140
         ]
       },
-      "why": "J-lens bridge top-1 in 100% of band layers at the last token, best earlier 100% (at `ved`), distractor 0%; J++ at the last token 94%.",
+      "why": "J-lens bridge ranked first among the entities in 100% of band layers at the last token, best earlier 100% (at `ved`), distractor 0%; J++ at the last token 94%.",
       "info": {
         "category": "instr-played",
-        "status (B)": "clean_wrong",
-        "label (B)": "-",
+        "model answers correctly": "no",
+        "swapping flips the answer": "-",
         "model's top word": "mouth"
       },
       "tokens": [
@@ -31622,11 +31622,11 @@
         ],
         "swap_answer": []
       },
-      "why": "J-lens bridge top-1 in 71% of band layers at the last token, best earlier 100% (at `Ohio`), distractor 0%; J++ at the last token 94%.",
+      "why": "J-lens bridge ranked first among the entities in 71% of band layers at the last token, best earlier 100% (at `Ohio`), distractor 0%; J++ at the last token 94%.",
       "info": {
         "category": "multihop",
-        "status (B)": "clean_wrong",
-        "label (B)": "-",
+        "model answers correctly": "no",
+        "swapping flips the answer": "-",
         "model's top word": "buck"
       },
       "tokens": [
