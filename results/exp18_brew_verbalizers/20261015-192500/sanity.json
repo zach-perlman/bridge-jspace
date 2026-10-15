@@ -1,0 +1,153 @@
+{
+  "oracle": {
+    "passed": true,
+    "failed": [],
+    "base_logit_drift": 0.0,
+    "adapter_max_logit_change": 16.625,
+    "marker_slots": {
+      "36": 24,
+      "44": 24
+    },
+    "facts": [
+      {
+        "prompt": "Fact: The capital of France is",
+        "targets": [
+          "Paris"
+        ],
+        "named": true,
+        "reads": {
+          "36": "- London. This is a well-known fact. 2. The capital of France is\n- Paris (a well-known fact). 2. The capital of France is\n- Paris (this is a universally accepted fact). 2. The capital of France is Paris\n- London (or more accurately, the",
+          "44": "- Paris. (Fact 1: The capital of France is\n- Paris, and the currency of France is the Euro. (This is a well-known fact.)\n- Paris (not London, as some might mistakenly think). 2. The capital of France is Paris.\n- Paris, and the currency"
+        }
+      },
+      {
+        "prompt": "Fact: The largest planet in the solar system is",
+        "targets": [
+          "Jupiter"
+        ],
+        "named": true,
+        "reads": {
+          "36": "- Jupiter. The smallest planet in our solar system is\n- 木星 (Jupiter). 2. The largest planet in our solar system is\n- 木星 (Jupiter), which is the largest planet in our solar system. Premise 2: The largest planet in our solar system is\n- the",
+          "44": "- Jupiter. The smallest planet in our solar system is Mercury.\n- Jupiter, and the smallest is Mercury. Based on this fact, which planet is the largest?\n- 木星 (Jupiter). The smallest planet in our solar system is Mercury. Based on this fact, which planet is the largest?"
+        }
+      },
+      {
+        "prompt": "Fact: The play Romeo and Juliet was written by William",
+        "targets": [
+          "Shakespeare"
+        ],
+        "named": true,
+        "reads": {
+          "36": "- Shakespeare. The play *Hamlet* was written by William\n- Shakespeare was the author of *Hamlet*. Based on this fact, who wrote the plays of William\n- Shakespeare, who lived in the 16th century. Which of the following statements is true about William\n- Shakespeare (or William",
+          "44": "- Shakespeare. Who wrote the play *Hamlet*? The answer is William\n- Shakespeare, and he wrote many famous plays. The question asks who wrote *Hamlet*. William\n- Shakespeare (1564–1616). The question asks: \"Who wrote the play *Hamlet*"
+        }
+      },
+      {
+        "prompt": "Fact: The currency of Japan is the",
+        "targets": [
+          "yen"
+        ],
+        "named": true,
+        "reads": {
+          "36": "- Yen. The official currency of Japan is the\n- 円 (yen), and its economy is one of the largest in the world. The currency is the\n- yen (¥), and its central bank is the Bank of Japan. What is the currency of Japan? The\n- yen (¥), which",
+          "44": "- yen. What is the currency of Japan? The currency of Japan is the\n- 日元 (yen), which is the official currency of Japan. Other countries have different currencies, such as the\n- yen (¥), not the dollar. The currency of Japan is the yen. The question asks for the currency"
+        }
+      },
+      {
+        "prompt": "Fact: The opposite of hot is",
+        "targets": [
+          "cold"
+        ],
+        "named": true,
+        "reads": {
+          "36": "- cold, and the opposite of hot is\n- cold, and the opposite of hot is cold. If something is described as \"warm,\" what is its opposite\n- [opposite] to hot. If something is hot, it is not cold. Based on this definition, what is the opposite of cold",
+          "44": "- cold, and the opposite of hot is\n- cold, and the opposite of hot is warm. If something is not hot, it is cold. What is the opposite of\n- __________, and the opposite of hot is __________. What is the opposite of warm? (Answer: Cold)\n-"
+        }
+      },
+      {
+        "prompt": "Fact: The Great Wall is in",
+        "targets": [
+          "China"
+        ],
+        "named": true,
+        "reads": {
+          "36": "- China, not in Africa. The Great Wall is in China. Based on this fact, where is\n- 中国 (China), not in Africa. A tourist is visiting it. Based on this fact, where is the Great Wall?\n- 某个 country (specifically, it is in China). We",
+          "44": "- China, not in the USA. (The Great Wall is in China\n- 中国 (China), not in the USA. (The Great Wall is in China\n- 中国 (China) and is very long. (Fact: The Great Wall is in China.)**\n2.  **Premise"
+        }
+      }
+    ],
+    "random_vector": {
+      "named": 0,
+      "reads": {
+        "36": "- 2, 3, ...` in `test2`. This suggests modular arithmetic.\n- B: 100, C: 101. This suggests modular arithmetic.\n- 右括号 `)`, and `100` as max speed. Your code uses `MOD",
+        "44": "- B) 25, C) 26. Your code has `10\n- 2: max_speed * 2` and `min_speed * 2`. This suggests a\n- 右括号 `)` for gear ratios, and `100` for player 2. Need"
+      }
+    }
+  },
+  "nla": {
+    "passed": true,
+    "failed": [],
+    "logit_drift": 0.0,
+    "adapter_max_logit_change": 6.671875,
+    "marker_slot": 93,
+    "adapter": {
+      "modules": 496,
+      "scale": 2.0,
+      "r": 64
+    },
+    "facts": [
+      {
+        "prompt": "Fact: The capital of France is",
+        "targets": [
+          "Paris"
+        ],
+        "named": true,
+        "read": "List format established by \"Here are some examples:\" signals multiple factual statements will follow, each as a separate bullet or sentence.\n\nThe phrase \"Fact 1: The capital of France is\" sets up a declarative factual statement requiring a specific answer, strongly implying \"Paris\" as the next token.\n\nFinal token \"is\" is a linking verb mid-sentence, demanding an immediate noun phrase or proper noun completing the factual claim about France's capital.\n\"Fact 1: The capital of France is\" — this is a template/example sentence likely demonstrating a pattern, so the next token should be a simple, well-known fact like \"Paris.\"\nThe AI is generating a structured example response, so the next tokens must complete this factual statement in a clear,"
+      },
+      {
+        "prompt": "Fact: The largest planet in the solar system is",
+        "targets": [
+          "Jupiter"
+        ],
+        "named": true,
+        "read": "Instruction format establishes a pattern: a declarative sentence must be completed, then a follow-up question answered, implying factual/educational content.\n\nThe prompt \"The largest planet in the solar system is\" sets up a factual statement requiring the name \"Jupiter\" as the immediate answer, directly mirroring the topic introduced in the title.\n\nFinal token \"is\" is a linking verb mid-sentence within a \"Fact:\" statement (\"The largest planet in the solar system is\"), requiring a noun phrase (e.g., \"Jupiter\") to complete the declarative fact.\n\"\n</br>\n</br>\nFact: The largest planet in the solar system is\" — this is the start of a structured reasoning chain, where the next token must be"
+      },
+      {
+        "prompt": "Fact: The play Romeo and Juliet was written by William",
+        "targets": [
+          "Shakespeare"
+        ],
+        "named": true,
+        "read": "Q&A format established by \"Answer the following questions based on the given statement\" signals a factual, declarative response pattern.\n\nThe statement \"The play Hamlet was written by William\" is a classic subject-verb-object structure requiring completion with a proper name, almost certainly \"Shakespeare,\" as the most obvious factual answer.\n\nFinal token \"William\" is the beginning of a full name in a factual declarative sentence (\"The play Hamlet was written by William\"), requiring the surname \"Shakespeare\" to complete the attribution.\n\"An example of a simple statement is: The play Hamlet was written by William\" — this is a demonstration of a simple statement, so the next token continues the author's name, likely \"Shakespeare\" or a related historical"
+      },
+      {
+        "prompt": "Fact: The currency of Japan is the",
+        "targets": [
+          "yen"
+        ],
+        "named": true,
+        "read": "Trivia/quiz format established by \"Answer: 1 of 1\" signals a factual question-and-answer structure requiring a direct, concise factual response.\n\nThe question \"What is the currency of Japan?\" demands the specific name of Japan's currency as the answer, with high certainty around \"yen.\"\n\nFinal fragment \"the currency of Japan is the\" is an incomplete declarative sentence requiring the noun phrase naming the currency (e.g., \"yen\") to complete it.\n\"the currency of Japan is the\" — a factual trivia statement mid-sentence, strongly constraining the next token to be the Japanese currency unit name, likely \"yen\" or \"Japanese yen,\" possibly followed by details about denominations or banknotes.\n\nThe currency of Japan is the ["
+      },
+      {
+        "prompt": "Fact: The opposite of hot is",
+        "targets": [
+          "cold"
+        ],
+        "named": true,
+        "read": "Q&A format established with \"Answer the following question\" framing, expecting a direct factual response to a simple logic/semantic question.\n\nThe pattern \"The opposite of hot is\" sets up a basic antonym completion, strongly predicting \"cold\" as the answer, likely followed by a short explanatory sentence.\n\nFinal token \"is\" is a linking verb mid-sentence in a declarative statement (\"A fact is: The opposite of hot is\"), requiring an immediate noun or adjective complement (e.g., \"cold\") to complete the factual claim.\n</br>\nThe \"Common Sense QA\" dataset format signals a multiple-choice or short-answer reasoning task about basic semantic relationships.\n\"\nA fact is: The opposite of hot is\" — a declarative premise"
+      },
+      {
+        "prompt": "Fact: The Great Wall is in",
+        "targets": [
+          "China"
+        ],
+        "named": true,
+        "read": "Q&A format established by \"Fact or Opinion?\" prompt signals a declarative factual statement is being constructed, requiring a concrete, verifiable claim.\n\nThe sentence \"The Great Wall is in\" sets up a geographic/factual completion, likely naming a location (e.g., \"China\") or a category, consistent with an educational example format.\n\nFinal token \"in\" is a preposition beginning a locative or categorical phrase, requiring a noun phrase immediately following (e.g., \"China,\" \"this list,\" \"the database\").\n\"An example of a fact is: The Great Wall of China is in\" — the sentence structure demands a location or descriptive phrase completing the factual claim about the Great Wall.\n\"An example of a fact is: The Great"
+      }
+    ],
+    "random_vector": {
+      "named": 0,
+      "read": "Forum thread pattern: each reply follows a structured Q&A format discussing bike specs, with the final post addressing gender inclusivity in cycling records.\n\nThe argument about women's records being separate is being supported with a specific example (the 2013 male record holder), building toward a conclusion about record-keeping fairness.\n\nFinal token \"2013\\nMale: 2013\\nMale: 2013\\nMale: Chair\" — mid-sentence continuation of \"Chair\" as part of a parallel structure listing cycling scenarios; \"Chair\" likely continues as \"chair\" in a sentence about male developers using chair-based testing.\n\"In this case, the record holder's situation is more complex. For me, 201"
+    }
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "exp_id": "exp18_brew_verbalizers",
+  "config": {
+    "name": "exp18_brew_verbalizers",
+    "target": "scripts.exp18_brew_verbalizers.experiment:BrewVerbalizers",
+    "seed": 0,
+    "results_dir": "results",
+    "model": {
+      "name": "Qwen/Qwen3.6-27B",
+      "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+      "dtype": "bfloat16",
+      "device_map": "auto",
+      "lenses": {
+        "jlens": {
+          "repo": "neuronpedia/jacobian-lens",
+          "revision": "9fa267f841d62aa468dab5b9b38c3dc45a82d863",
+          "filename": "qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt"
+        },
+        "jpp": {
+          "repo": "neuronpedia/jacobian-lens",
+          "revision": "9fa267f841d62aa468dab5b9b38c3dc45a82d863",
+          "filename": "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt"
+        }
+      }
+    },
+    "params": {
+      "items_file": "results/exp07_step_code/code_v1/items.jsonl",
+      "items_sha256": "1a565d98746bf400cbc08694699e6cb22171978e1cd591dccc1c4eef2d2d62d4",
+      "item_set": "fresh",
+      "patch_positions": [
+        4,
+        14,
+        18,
+        20
+      ],
+      "patch_layers": [
+        36,
+        38,
+        40
+      ],
+      "read_positions": {
+        "nl_assistant": 14,
+        "last": 20
+      },
+      "oracle_layers": [
+        44
+      ],
+      "nla_layer": 42,
+      "max_new_tokens": {
+        "oracle": 64,
+        "nla": 160
+      },
+      "batch_size": 16,
+      "off_path_seed": 0,
+      "sanity_oracle": {
+        "layers": [
+          36,
+          44
+        ],
+        "min_logit_change": 1.0,
+        "min_named": 4,
+        "max_random_named": 1,
+        "facts": [
+          {
+            "prompt": "Fact: The capital of France is",
+            "targets": [
+              "Paris"
+            ]
+          },
+          {
+            "prompt": "Fact: The largest planet in the solar system is",
+            "targets": [
+              "Jupiter"
+            ]
+          },
+          {
+            "prompt": "Fact: The play Romeo and Juliet was written by William",
+            "targets": [
+              "Shakespeare"
+            ]
+          },
+          {
+            "prompt": "Fact: The currency of Japan is the",
+            "targets": [
+              "yen"
+            ]
+          },
+          {
+            "prompt": "Fact: The opposite of hot is",
+            "targets": [
+              "cold"
+            ]
+          },
+          {
+            "prompt": "Fact: The Great Wall is in",
+            "targets": [
+              "China"
+            ]
+          }
+        ]
+      },
+      "sanity_nla": {
+        "min_logit_change": 1.0,
+        "min_named": 4,
+        "max_random_named": 1,
+        "facts": [
+          {
+            "prompt": "Fact: The capital of France is",
+            "targets": [
+              "Paris"
+            ]
+          },
+          {
+            "prompt": "Fact: The largest planet in the solar system is",
+            "targets": [
+              "Jupiter"
+            ]
+          },
+          {
+            "prompt": "Fact: The play Romeo and Juliet was written by William",
+            "targets": [
+              "Shakespeare"
+            ]
+          },
+          {
+            "prompt": "Fact: The currency of Japan is the",
+            "targets": [
+              "yen"
+            ]
+          },
+          {
+            "prompt": "Fact: The opposite of hot is",
+            "targets": [
+              "cold"
+            ]
+          },
+          {
+            "prompt": "Fact: The Great Wall is in",
+            "targets": [
+              "China"
+            ]
+          }
+        ]
+      },
+      "n_boot": 2000,
+      "boot_seed": 0,
+      "decision": "Fixed before the run. Per reader (the NLA at 42, the oracle at 44), an item counts as naming a colour if a reading at either read position names it. Conditions: B clean (the text and the state say I), C clean (both say X), B with C's state patched in at the four positions, layers 36-40 (the text says I, the state X), and B with O's state at the same positions and layers (off-path control). The patch took on an item if the patched model's own greedy answer is f(X). Positive control: on C clean the reader names X more often than on B clean (paired bootstrap 95% CI above 0); otherwise it does not read brew's intermediate and the rest says nothing. Among items where the patch took: \"reads the state\" if the patched readings name X at least 30 points more often than I (CI above 0) and O's patch does not raise X over B clean (CI of off - clean not above 0); \"solves from the text\" if they name I more often than X (CI above 0); otherwise mixed, reported by position. Beside every rate: the off-path null colour's.",
+      "limit": null
+    }
+  },
+  "git": {
+    "sha": "7f93ef8266c32da1a89c85645d5a277f562acb33",
+    "dirty": true
+  },
+  "packages": {
+    "torch": "2.11.0+cu128",
+    "transformers": "5.17.0",
+    "flash-linear-attention": "0.5.2",
+    "jlens": "0.1.0",
+    "numpy": "2.5.3",
+    "jlens_commit": "581d398613e5602a5af361e1c34d3a92ea82ba8e",
+    "torch_cuda": "12.8",
+    "gpu": "NVIDIA B200"
+  },
+  "host": "a04e24a660e3",
+  "python": "3.12.3",
+  "argv": [
+    "/workspace/bridge-jspace/.venv/bin/bj-run",
+    "scripts/exp18_brew_verbalizers/config.yaml"
+  ],
+  "started": "2026-10-15T19:25:01"
+}
