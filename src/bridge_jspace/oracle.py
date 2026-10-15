@@ -127,10 +127,9 @@ class Oracle:
 
     def __init__(self, model: Model, hooks: LoraHooks):
         self.model, self.hooks = model, hooks
-        self.hf: Any = model.hf  # typed nn.Module in part B's Model
-        tokenizer: Any = model.tokenizer
-        self.tokenizer = tokenizer
-        self.dash = tokenizer("-", add_special_tokens=False)["input_ids"]
+        self.hf = model.hf
+        self.tokenizer = model.tokenizer
+        self.dash = self.tokenizer("-", add_special_tokens=False)["input_ids"]
         self._carriers: dict[int, tuple[list[int], int]] = {}
 
     def _embeds(self, vectors: torch.Tensor, layer: int, extra: list[int]) -> torch.Tensor:
@@ -170,8 +169,9 @@ class Oracle:
 
 
 def named(word: str, text: str) -> bool:
-    """`word` appears in `text` as a whole word, ignoring case and a plural ending (s / es)."""
-    return re.search(rf"(?<![^\W\d_]){re.escape(word)}(?:e?s)?(?![^\W\d_])", text, flags=re.IGNORECASE) is not None
+    """`word` appears in `text` as a whole word (no letter or digit on either side), ignoring case and a plural ending
+    (s / es). A number word still matches list numbering ("2. ..."), so callers leave numeric words out."""
+    return re.search(rf"(?<![^\W_]){re.escape(word)}(?:e?s)?(?![^\W_])", text, flags=re.IGNORECASE) is not None
 
 
 @torch.no_grad()

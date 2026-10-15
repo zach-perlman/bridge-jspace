@@ -25,6 +25,7 @@ or tokenization artifact.
 | [exp11](#exp11_bridge_vs_answer_by_layer-where-is-the-bridge-readable-and-where-the-answer) | At the last prompt token, at which layers are the bridge and the answer readable? |
 | [exp12](#exp12_position_map-where-in-the-prompt-and-how-deep) | Where in the prompt, and from which layer, are they readable? |
 | [exp14](#exp14_cue_answer_swaps-on-the-cue-phrase-is-it-the-bridge-or-already-the-answer) | On the cue phrase, does swapping the answer change it as often as swapping the bridge? |
+| [exp15](#exp15_oracle_lens-where-the-lenses-miss-the-bridge-does-the-oracle-lens-name-it) | Where the J-lens and J++ miss the bridge, does a reader that puts the activation into words name it? |
 | [exp02](#exp02_swaps-part-b-does-the-bridge-act-through-the-j-space-and-where) | Does swapping the bridge's J-space part change the answer, and where in the prompt? |
 | [exp03](#exp03_brew_swaps-part-b-an-in-context-two-step-lookup) | Do the same swaps work on a two-step lookup whose answer is read off the prompt? |
 | [exp04](#exp04_brew_patch-part-b-where-brew-carries-its-intermediate-without-a-lens) | Where does that lookup carry its intermediate, found without a lens? |
@@ -76,7 +77,9 @@ or tokenization artifact.
    criterion part B adopted in v4).
 5. `exp14_cue_answer_swaps`: on the cue phrase, does swapping the answer's lens direction change the answer as often
    as swapping the bridge's?
-6. Oracle lens and NLA on the same questions (exp15 / exp16, proposed; see Next steps).
+6. `exp15_oracle_lens`: where the J-lens and J++ miss the bridge (or the answer), does the oracle lens (a LoRA on the
+   model that puts one activation into words) name it; and after the bridge swap, does it name the swap target?
+7. NLA on the same questions (exp16, proposed; see Next steps).
 
 ## Method, part B: is the bridge used outside the J-space? (exp01-09)
 1. `data/entity_prompts.json`: about 8 prompts per entity that imply the entity without naming it, for the 97
@@ -108,6 +111,9 @@ is recomputed from the raw run files by `uv run python scripts/verify_headlines.
 | [exp12 `position_layer.png`](figures/exp12_position_map/position_layer.png) | Reference heatmaps: every position x layer, all three readers |
 | [exp14 `flip_rates_by_overlap.png`](figures/exp14_cue_answer_swaps/flip_rates_by_overlap.png) | On the cue phrase, swapping the answer changes it only where the swap also moves the bridge |
 | [exp14 `flip_rates.png`](figures/exp14_cue_answer_swaps/flip_rates.png) | Bridge vs answer swaps on the cue phrase and at the last token, with random-direction controls |
+| [exp14 `flip_rates_pinned.png`](figures/exp14_cue_answer_swaps/flip_rates_pinned.png) | The same swaps with the other pair held: on the cue phrase the bridge swap still works, the answer swap does not |
+| [exp15 `oracle_vs_lenses.png`](figures/exp15_oracle_lens/oracle_vs_lenses.png) | Where neither lens has the bridge (or the answer) first, the oracle lens still names it in about a third of readings; its distractor in 5-10% |
+| [exp15 `after_swap.png`](figures/exp15_oracle_lens/after_swap.png) | After the bridge swap, the oracle names the swap target where the model's answer flips, rarely where it does not |
 | [exp11 `pool_top1_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/pool_top1_by_layer.png) | Last token only: bridge and answer ranked first, by layer, three readers |
 | [exp11 `advantage_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/advantage_by_layer.png) | Last token only: how many times higher than its distractor each word ranks |
 | [exp10 `pass_at_10_by_model.png`](figures/exp10_lens_sanity/20261015-135537/pass_at_10_by_model.png) | Does each lens find the bridge at all (pass@10), 4B and 27B |
@@ -139,7 +145,18 @@ a bridge counts as found if any of its listed forms is). The exp10 page shows th
    the answer more often (31% vs 19% on the cue phrase): J++'s advantage is in its directions, not in what it sees.
 7. On the cue phrase, swapping the answer's direction changes the answer only where it also moves the bridge (0-1
    of about 35 questions otherwise), and less often than the bridge swap: no sign that the answer itself sits there.
-   The questions that separate the two are weak tests, though (exp14).
+   With the answer's coordinates held, the bridge swap on the cue phrase still changes the answer (18% of questions;
+   24-28% where the two swaps overlap most), at the same edit size; held the other way round, the answer swap
+   hardly does (1-6%). The cue phrase carries the bridge apart from the answer's direction. Whether it carries the
+   answer too stays open: the held answer swap is weak even at the last token (17-26%), so its low rate on the cue
+   phrase is not evidence of absence (exp14).
+8. A reader that puts the activation into words sees part of what the lenses miss. The oracle lens names the bridge
+   in 37% of the readings where neither the J-lens nor J++ has it first (its distractor: 5%), and the answer in 33%
+   where neither has the answer first (distractor 8%). After the bridge swap it names the swap target where the
+   model's answer flips (61-74% of those questions at layer 44) and rarely where it does not (9-11%), so it reads the
+   state, not only the question. Whether that holds on the lens-blind readings themselves is open: the swap test
+   covers only 5 questions with such readings, and the oracle often names the bridge while re-telling the question
+   (exp15).
 
 ![exp12: where and how deep](figures/exp12_position_map/two_step.png)
 
@@ -435,6 +452,32 @@ it moves the bridge too.*
 token directions, so an answer held in other directions on the cue phrase would be missed. The answer swap's edits
 are a little smaller than the bridge's (median 0.010 vs 0.012 of the residual norm, J++). One seed.
 
+**Pinned run: the other pair held.** In the place questions the two swaps move nearly the same direction, so the
+plain swaps cannot tell bridge from answer there. The pinned swaps exchange one pair's coordinates while the other
+pair's stay at their clean values: what still works moves only what its pair does not share with the other. Run
+`pinned.yaml` (the 72 questions where both swaps are possible); decision rule fixed in the config before the run.
+- **On the cue phrase the bridge swap still works with the answer held; the answer swap with the bridge held hardly
+  does.** Bridge swap, answer held: 18% [11, 28] of the questions with either lens; answer swap, bridge held: 6%
+  [2, 13] (J-lens) / 1% [0, 7] (J++); random directions 0%. Difference +12 points [+3, +24] (J-lens) / +17 [+8, +26]
+  (J++); in the half where the two swaps overlap most, where the plain swaps could not separate them, the held bridge
+  swap flips 28% / 24% against 8% / 3%: +19 [0, +39] / +22 [+5, +38]. Holding a pair does not shrink the edit (the
+  held swap's edit is 0.95-1.05 times the plain one's, median per question; none under 30%), so this is content, not
+  dose. By the rule fixed before the run: "bridge". The cue phrase carries the bridge apart from the answer's
+  direction.
+- **Whether the cue phrase also carries the answer is not decided.** The held answer swap's positive control falls
+  short: at the last token (layers 40-56) it flips 26% [18, 38] / 17% [10, 27] of questions, below the 30% the rule
+  asked for, so its low rate on the cue phrase says nothing by itself.
+- **Most questions move under neither held swap.** On the cue phrase 55 (J-lens) / 58 (J++) of 72 questions flip
+  under neither; 13 only under the held bridge swap, 4 / 1 only under the held answer swap.
+- Not in the rule, read afterwards: at the last token, holding the answer cuts the bridge swap from 29% / 28% to
+  11% / 10%; there the bridge swap works mostly through the direction it shares with the answer.
+
+![exp14: swaps with the other pair held](figures/exp14_cue_answer_swaps/flip_rates_pinned.png)
+
+*How to read it: as the first exp14 figure, with two more bars per group: the bridge swapped while the answer's
+coordinates are held (dark blue, hatched) and the answer swapped while the bridge's are held (dark orange, hatched).
+On the cue phrase the dark blue bar stays near the plain bridge swap and the dark orange one falls to near 0.*
+
 <details><summary>Full numbers and checks</summary>
 
 Run `results/exp14_cue_answer_swaps/20261015-111137` (Qwen3.6-27B, part B's model loader, prompts and scoring as part
@@ -458,6 +501,101 @@ direction: "5" there, "4 from the Sun" here).
   The share of the bridge swap's edit that lies in the answer pair's span: median 0.30.
 - At the last token, layers 40-56, the bridge swap's 27-29% is also mostly overlap: 44-49% where it is high, 9-11%
   where it is low.
+
+Pinned run `results/exp14_cue_answer_swaps/20261015-114825` (`pinned.yaml`; 72 questions with single-token answers),
+analysis in `analysis-20261015-143152-pinned/`. Checks: the 1192 outcomes it shares with run 20261015-111137 (plain
+swaps and their nulls) agree, all of them; eligible questions 77 of 77 as part B's.
+
+| Flip rate [95% Wilson CI], 72 questions | J-lens bridge held-answer | J-lens answer held-bridge | J++ bridge held-answer | J++ answer held-bridge |
+|---|---|---|---|---|
+| cue phrase, layers 24-40 | 18% [11, 28] | 6% [2, 13] | 18% [11, 28] | 1% [0, 7] |
+| cue phrase, high-overlap half (36 / 37) | 28% [16, 44] | 8% [3, 22] | 24% [13, 40] | 3% [0, 14] |
+| last token, layers 40-56 | 11% [6, 20] | 26% [18, 38] | 10% [5, 19] | 17% [10, 27] |
+| random direction, any cell | 0% | 0% | 0% | 0% |
+
+- Plain minus held (paired bootstrap, same 72 questions): bridge on the cue phrase +6 [-1, +14] (J-lens) / +12 [+4,
+  +21] (J++); answer on the cue phrase +6 [+1, +11] / +15 [+7, +24]; at the last token bridge +18 [+10, +26] / +18
+  [+8, +28], answer +12 [+4, +22] / +24 [+14, +33].
+- Held bridge minus held answer on the cue phrase, low-overlap half: +6 [-3, +17] / +11 [+3, +23].
+</details>
+
+### exp15_oracle_lens: where the lenses miss the bridge, does the oracle lens name it?
+**What we measure.** The J-lens and J++ read one token direction at a time. Where neither ranks the bridge first, is it
+absent from the activation, or held in a form no single token direction names? The oracle lens is a LoRA on
+Qwen3.6-27B trained to put one residual vector into words, as bullets of concepts (`neuronpedia/jacobian-lens`,
+`qwen3.6-27b/oracle`; its published read contract: the vector replaces a marker token's embedding in a fixed prompt;
+trained on layers 20-60 in steps of 4). It reads the 77 questions at the last word, -1 and the cue phrase's last token,
+layers 28, 36 and 44: one reading = one question at one position and layer (77 x 3 x 3 = 693). Each reading is
+grouped by exp12's lens readings at the same question, position and layer: both lenses rank the word first among its
+candidates, one does, or neither. A word counts as named if it appears in the oracle's bullets (whole word, case and
+a plural ending ignored). Controls: the word's distractor (Mexico for Brazil), other questions' bridges, the mean
+activation over questions read instead, and the activation after exp14's J++ bridge swap on the cue phrase (if the
+oracle re-solved the question from the activation instead of reading its state, it would keep naming Brazil). Design:
+Danyil; the decision rule was fixed in the config before the run. Greedy decoding, 64 tokens.
+
+**In short.**
+- **The oracle is loaded and reads.** Before any reading it named the answer of 6 of 6 short facts ("The capital of
+  France is" -> Paris), a random vector named none of them, and switching the adapter off leaves the model's logits
+  unchanged.
+- **Where both lenses have the bridge first, the oracle names it in 82% of readings** (distractor 4%): the positive
+  control.
+- **Where neither lens has it first, the oracle still names it in 37%** (distractor 4.5%; difference +32 points
+  [+22, +43], 250 readings of 59 questions; per question, then averaged). By layer: 30% (28), 46% (36), 38% (44).
+  It falls with how far the lenses are: 52% where a lens has the bridge 2nd-3rd, 35% at 4th-10th, 24% [15, 35] beyond
+  10th (68 readings, 30 questions). The answer too: where neither lens has the answer first, the oracle names it in
+  33% (its distractor 8%; +25 [+17, +34]; 346 readings of 59 questions whose answer is a word).
+- **After the bridge swap the oracle names the swap target where the answer flips.** On the 23 questions whose answer
+  the J++ bridge swap flips, at layer 44 it names the target (Mexico) in 61% (last word) and 74% (-1) of them, against
+  0% and 9% before the swap; on the 54 questions whose answer the swap keeps, 9% and 11%. At layer 28 the edit has not
+  reached the last words yet (4%). By the rule fixed before the run: "the oracle reads the bridge where the lenses
+  miss it, and follows the state the answer uses".
+
+![exp15: oracle vs lenses](figures/exp15_oracle_lens/oracle_vs_lenses.png)
+
+*How to read it: one column per layer; top row the bridge, bottom row the answer. In each panel the readings are
+grouped by what the two lenses show there (left: both have the word first; right: neither). Dark bar: the share of
+readings whose bullets name the word; light bar: its distractor; grey: the same word from the mean activation (no
+question in it). The dark bar in the right-hand group is the result: well above the light and grey bars.*
+
+![exp15: after the swap](figures/exp15_oracle_lens/after_swap.png)
+
+*How to read it: one panel per layer, three read positions each. Light blue: before the swap, on the 23 questions
+whose answer the swap flips; dark blue, hatched: after the swap, same questions; dark grey, hatched: after the swap,
+the 54 questions whose answer it keeps. Reading the state predicts dark blue high and grey low at the last word and
+-1, which is what layers 36 and 44 show. On the cue phrase at layers 28 and 36 the swap edits the read position
+itself, so grey is high there too.*
+
+**What this does not show.**
+- That the oracle reads the lens-blind bridge from the state rather than re-solving it. It often names the bridge
+  while re-telling the question ("...the famous Tchaikovsky ballet *Swan Lake* features a swan"; "the organ that
+  filters blood... 2 (humans have two kidneys)"); the activation carries the question, and the oracle is the model
+  itself. The swap test argues it reads the state, but it covers mostly questions where the lenses see the bridge:
+  of the 23 flipped questions only 5 have lens-blind readings at -1 or the last word in layers 36-44 (after the swap
+  5 of their 13 readings name the target).
+- A lens-blind reading is "not first among 97 entities": many are near misses (the oracle's rate falls with the
+  lenses' rank, above).
+- String matching: a bridge named only in another script (e.g. 巴西 for Brazil, without "(Brazil)") is missed, for
+  the bridge and the distractor alike. Greedy decoding (the reference reader samples). One seed; positions pooled.
+
+<details><summary>Full numbers and checks</summary>
+
+Run `results/exp15_oracle_lens/20261015-123226` (Qwen3.6-27B, part B's model loader, the 77 questions of part B's v4
+labels, trailing space stripped; oracle adapter pinned by sha256 in `pins.py`); analysis
+`analysis-20261015-152353/` (summary.json, examples.json with lens-blind readings drawn by a fixed seed, the figures).
+Checks: the sanity gate (`sanity.json`: 6 of 6 facts, random vector 0 of 6, base-logit drift 0.0, adapter changes
+the oracle's logits by up to 16.6; 496 LoRA modules, r 16, scale 2); the swapped forward's top word equals exp14's for
+77 of 77 questions.
+
+| Readings (clean), by the lenses | readings / questions | bridge named | distractor named | mean activation names bridge |
+|---|---|---|---|---|
+| both lenses have the bridge first | 372 / 71 | 82% | 3% | 1-5% |
+| one lens | 71 / 41 | 63% | 6% | 0-9% |
+| neither lens | 250 / 59 | 38% | 5% | 0-1% |
+
+Rates per reading (the text above weights each question equally: 37% / 4.5% for "neither"). Another question's bridge
+is named in 0.1-0.4% of readings. The answer (61 questions whose answer is a single-token word; the 11 numeric
+answers are left out, since the oracle's numbered bullets "2. ..." would count as naming them): both lenses have it
+first 115 readings, named 84% (distractor 8%); one lens 88, 53% (3%); neither 346, 38% (9%).
 </details>
 
 ### exp02_swaps (part B): does the bridge act through the J-space, and where?
@@ -702,40 +840,24 @@ recomputed by `scripts/verify_headlines.py`.
 
 ## Next steps (part A)
 In order. Each item: the question, why it matters now, the test, and its cost. Every GPU run needs human sign-off.
-The swap experiments end with item 1; from there part A asks whether a reader that puts an activation into words sees
-the bridge where the lenses do not.
+The swap experiments ended with exp14's pinned run (on the cue phrase the bridge acts apart from the answer's
+direction). exp15 found that a reader that puts the activation into words, the oracle lens, names the bridge in about
+a third of the readings where the lenses miss it; what follows checks that reading.
 
-1. **On the cue phrase, is it the bridge or the answer, in the questions where the two overlap?** (running: exp14,
-   `pinned.yaml`; the last swap experiment)
-   - *Why:* exp14 found no answer on the cue phrase apart from the bridge, but in the place questions (Spain ->
-     Madrid) the two swaps move nearly the same direction, so it could not tell them apart there.
-   - *Test:* swap one pair while holding the other pair's coordinates at their clean values. The bridge swap still
-     works with the answer held: the cue phrase carries the bridge. Only the answer swap does: it carries the
-     answer. Decision rule fixed in the config before the run. Read with a power check: how much of the plain edit
-     is left once the other pair is held (a question where under 30% is left cannot tell), and the share of questions
-     where neither pinned swap flips.
-   - *Cost:* about 40 minutes of GPU.
-2. **Does the oracle lens name the bridge where both lenses miss it?** (exp15_oracle_lens; next)
-   - *Why:* the lenses read one token direction at a time; the bridge may be held in a form no single token names.
-     Where the J-lens and J++ both miss the bridge (about 40% of questions at the last word, exp12), a reader that
-     puts the activation into words either finds it there or does not.
-   - *Test:* read the 77 questions at the last word, -1 and the last token of the cue phrase, layers 28 / 36 / 44, with
-     the oracle lens: a LoRA on Qwen3.6-27B that turns one activation into bullets of concepts
-     (`neuronpedia/jacobian-lens`, `qwen3.6-27b/oracle`, its published read contract). Each cell is classed by exp12's
-     lens readings (both lenses have the bridge first, one, neither). Scored: the bridge named in the bullets against
-     its distractor (Brazil vs Mexico) and against other questions' bridges, and the bridge's rank among the 97
-     entities as the first bullet. The control for re-solving: on the questions whose answer flips under exp14's J++
-     bridge swap on the cue phrase, read the activation after the swap. The oracle now names the swap target: it
-     reads the state the answer uses. It still names the clean bridge: it re-solves the hop from the question the
-     activation encodes, and its readings on lens-blind cells say nothing about what the model uses.
-   - *Cost:* about an hour of GPU (activations captured first, then the adapter merged for generation).
-3. **Is that specific to one verbalizer?** (exp16_nla)
+1. **On the lens-blind readings, does the oracle read the state or re-solve the question?** (exp15 follow-up)
+   - *Why:* exp15's swap test says the oracle reads the state, but it covers mostly questions where the lenses see the
+     bridge (5 flipped questions have lens-blind readings).
+   - *Test:* read more layers on the oracle's grid (24, 32, 40, 48: both bands at its resolution) and the swaps that
+     flip lens-blind questions; or patch the lens-blind activation into another question with the same template and
+     ask whether the oracle names the donor's bridge.
+   - *Cost:* about 20 minutes of GPU per four layers.
+2. **Is that specific to one verbalizer?** (exp16_nla)
    - *Why:* the oracle lens is the model itself with an adapter; the NLA is a separate 27B reader with a different
      training objective.
-   - *Test:* the cells of 2 at layer 42 (the only layer the NLA was trained on; `ceselder/qwen3.6-27b-nla-rl`, read
+   - *Test:* exp15's readings at layer 42 (the only layer the NLA was trained on; `ceselder/qwen3.6-27b-nla-rl`, read
      code in WorkspaceBench's producer, github.com/camilablank/workspace-bench, MIT), same scoring and controls.
    - *Cost:* one to two hours of GPU, in two phases (capture with Qwen3.6-27B, unload, load the NLA).
-4. **Brew, where the bridge is never named in the prompt** (after 2 shows the oracle reads states, not questions)
+3. **Brew, where the bridge is never named in the prompt** (after 1 shows the oracle reads states, not questions)
    - *Why:* in brew's in-context lookup the intermediate is not an entity of the question, so a reader cannot recall
      it from world knowledge; exp04 locates it after the start line at layers 36-50.
    - *Test:* read those positions with the lenses first (not done yet), then with the oracle on the lens-blind cells,

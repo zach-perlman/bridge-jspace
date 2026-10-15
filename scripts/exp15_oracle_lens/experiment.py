@@ -52,7 +52,7 @@ class OracleLens(Experiment):
 
         p = self.params
         model = load_model()  # part B's loader, as exp14 (the swap path); self.model is never built
-        tokenizer: Any = model.tokenizer
+        tokenizer = model.tokenizer
         # The oracle's gate first (fails the run before any capture): hooks switch off cleanly, the adapter is live,
         # known concepts are named and a random vector names none of them.
         pairs, scale, adapter_config = load_adapter()
@@ -189,15 +189,18 @@ def first_bullet_ranks(pool_logits: torch.Tensor | None, pool: list[int], bridge
 
 
 def lens_class(jlens_rank: int | None, jpp_rank: int | None) -> str | None:
-    """Both lenses have the bridge first among the entities, one does, or neither."""
+    """Both lenses have the word first in its pool, one does, or neither."""
     if jlens_rank is None or jpp_rank is None:
         return None
     return {2: "both", 1: "one", 0: "neither"}[(jlens_rank == 1) + (jpp_rank == 1)]
 
 
-def lens_lookup(grids, exp12_meta: dict, item_rows: list[dict], layers: Iterable[int]) -> dict[tuple, dict]:
-    """(question, position, layer) -> exp12's J-lens and J++ bridge ranks there and the cell's class. Grid rows are
-    layers 0..62 (exp12's layers.json); columns are positions in prompt order, by offset from the last word."""
+def lens_lookup(
+    grids, exp12_meta: dict, item_rows: list[dict], layers: Iterable[int], role: str = "bridge", prefix: str = ""
+) -> dict[tuple, dict]:
+    """(question, position, layer) -> exp12's J-lens and J++ ranks of `role` in its pool there (bridge: among the 97
+    entities; answer: among the 112 answers, single-token answers only) and the cell's class. Grid rows are layers
+    0..62 (exp12's layers.json); columns are positions in prompt order, by offset from the last word."""
     out = {}
     for row in item_rows:
         name, last = row["name"], row["seq_len"] - 1
@@ -205,11 +208,14 @@ def lens_lookup(grids, exp12_meta: dict, item_rows: list[dict], layers: Iterable
         for pos, index in row["read_at"].items():
             col = offsets.index(index - last)
             for layer in layers:
-                ranks = {lens: int(grids[lens][name]["bridge_pool"][layer, col]) for lens in ("jlens", "jpp")}
+                ranks = {
+                    lens: int(g[f"{role}_pool"][layer, col]) if f"{role}_pool" in (g := grids[lens][name]) else None
+                    for lens in ("jlens", "jpp")
+                }
                 out[(name, pos, layer)] = {
-                    "jlens_rank": ranks["jlens"],
-                    "jpp_rank": ranks["jpp"],
-                    "lens_class": lens_class(ranks["jlens"], ranks["jpp"]),
+                    f"{prefix}jlens_rank": ranks["jlens"],
+                    f"{prefix}jpp_rank": ranks["jpp"],
+                    f"{prefix}lens_class": lens_class(ranks["jlens"], ranks["jpp"]),
                 }
     return out
 
@@ -299,25 +305,104 @@ def summarize(reads: list[dict], item_rows: list[dict], p: dict[str, Any]) -> di
             c: compare([r for r in clean if r["lens_class"] == c], "named_bridge", "named_other_bridges", n_boot, seed)
             for c in ("both", "one", "neither")
         },
+        "bridge_vs_distractor_by_layer": by_layer(
+            clean, "lens_class", "named_bridge", "named_distractor", n_boot, seed
+        ),
         "after_swap": {"flipped": swap_cells(flipped), "not_flipped": swap_cells(kept)},
+        **(answer_sections(clean, n_boot, seed) if clean and "answer_lens_class" in clean[0] else {}),
     }
 
 
+def by_layer(rows: list[dict], class_field: str, a: str, b: str, n_boot: int, seed: int) -> dict[str, dict]:
+    """`compare` of fields a and b per layer and lens class."""
+    return {
+        str(layer): {
+            c: compare([r for r in rows if r[class_field] == c and r["layer"] == layer], a, b, n_boot, seed)
+            for c in ("both", "one", "neither")
+        }
+        for layer in sorted({r["layer"] for r in rows})
+    }
+
+
+def answer_sections(clean: list[dict], n_boot: int, seed: int) -> dict[str, Any]:
+    """The same split for the answer (questions with single-token answers): by the lenses' answer class, the oracle
+    naming the answer vs the swap answer."""
+    rows = [r for r in clean if r["answer_lens_class"] is not None]
+    return {
+        "answer_lens_classes": {c: sum(r["answer_lens_class"] == c for r in rows) for c in ("both", "one", "neither")},
+        "clean_by_answer_class": rate_rows(rows, ("answer_lens_class",)),
+        "clean_by_answer_class_layer_position": rate_rows(rows, ("answer_lens_class", "layer", "position")),
+        "answer_vs_swap_answer": {
+            c: compare(
+                [r for r in rows if r["answer_lens_class"] == c], "named_answer", "named_swap_answer", n_boot, seed
+            )
+            for c in ("both", "one", "neither")
+        },
+        "answer_vs_swap_answer_by_layer": by_layer(
+            rows, "answer_lens_class", "named_answer", "named_swap_answer", n_boot, seed
+        ),
+    }
+
+
+def pick_examples(reads: list[dict], k: int, seed: int) -> dict[str, list[dict]]:
+    """Up to k clean reads per group, drawn by a fixed seed: cells where neither lens has the bridge (or the answer)
+    first, split by whether the oracle names it."""
+    rng = np.random.default_rng(seed)
+    keep = ("name", "position", "layer", "jlens_rank", "jpp_rank", "answer_jlens_rank", "answer_jpp_rank", "text")
+    groups = {
+        "bridge lens-blind, oracle names it": lambda r: r["lens_class"] == "neither" and r["named_bridge"],
+        "bridge lens-blind, oracle does not": lambda r: r["lens_class"] == "neither" and not r["named_bridge"],
+        "answer lens-blind, oracle names it": lambda r: r.get("answer_lens_class") == "neither" and r["named_answer"],
+        "answer lens-blind, oracle does not": lambda r: (
+            r.get("answer_lens_class") == "neither" and not r["named_answer"]
+        ),
+    }
+    out = {}
+    for label, test in groups.items():
+        rows = [r for r in reads if r["condition"] == "clean" and test(r)]
+        picked = sorted(rng.choice(len(rows), size=min(k, len(rows)), replace=False).tolist()) if rows else []
+        out[label] = [{f: rows[i].get(f) for f in keep} for i in picked]
+    return out
+
+
 def analyze(run_dir: str | Path) -> Path:
-    """Re-summarize a finished run's reads into `<run_dir>/analysis-<timestamp>/summary.json`."""
+    """Re-summarize a finished run into `<run_dir>/analysis-<timestamp>/`: summary.json (with the answer's lens classes
+    joined from exp12), examples.json (lens-blind cells, by a fixed seed) and the figure."""
     from datetime import datetime
 
-    run_dir = Path(run_dir)
-    manifest = json.loads((run_dir / "manifest.json").read_text())
-    params = manifest["config"]["params"]
+    from scripts.exp12_position_map.experiment import load_grids
 
-    def load(name: str) -> list[dict]:
-        return [json.loads(x) for x in (run_dir / name).read_text().splitlines() if x.strip()]
+    from .plot import plot_run
+
+    run_dir = Path(run_dir)
+    params = json.loads((run_dir / "manifest.json").read_text())["config"]["params"]
+
+    def load(path: Path) -> list[dict]:
+        return [json.loads(x) for x in path.read_text().splitlines() if x.strip()]
+
+    reads, item_rows = load(run_dir / "reads.jsonl"), load(run_dir / "items.jsonl")
+    exp12 = REPO_ROOT / params["exp12_run"]
+    exp12_meta = {m["name"]: m for m in load(exp12 / "items.jsonl")}
+    grids = {lens: load_grids(exp12 / f"grids_{lens}.npz") for lens in ("jlens", "jpp")}
+    answer = lens_lookup(grids, exp12_meta, item_rows, params["read_layers"], role="answer", prefix="answer_")
+    # Re-scored with the current `score_text`; numeric answers ('4', '8') leave the answer analysis, since the
+    # oracle's numbered bullets ("2. ...") would count as naming them.
+    items = {it["name"]: it for it in load_labelled_items(REPO_ROOT / params["labels_file"], params["labels_sha256"])}
+    scored_on = [items[r["name"]] for r in item_rows]
+    numeric = {n for n, it in items.items() if any(ch.isdigit() for ch in it["answer"] + it["swap_answer"])}
+    no_answer = {"answer_jlens_rank": None, "answer_jpp_rank": None, "answer_lens_class": None}
+    reads = [
+        {**r, **score_text(r["text"], items[r["name"]], scored_on),
+         **(no_answer if r["name"] in numeric else answer[(r["name"], r["position"], r["layer"])])}
+        for r in reads
+    ]  # fmt: skip
 
     out = run_dir / f"analysis-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
     out.mkdir()
-    summary = {"source_run": str(run_dir), **summarize(load("reads.jsonl"), load("items.jsonl"), params)}
+    summary = {"source_run": str(run_dir), **summarize(reads, item_rows, params)}
     (out / "summary.json").write_text(json.dumps(summary, indent=2))
+    (out / "examples.json").write_text(json.dumps(pick_examples(reads, 12, params["boot_seed"]), indent=2))
+    plot_run(out, reads, item_rows, params)
     return out
 
 

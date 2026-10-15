@@ -7,6 +7,7 @@ the file and formula in its docstring. Prints the recomputed value next to the v
 """
 
 import json
+import re
 from pathlib import Path
 
 import numpy as np
@@ -19,6 +20,8 @@ EXP11_JPP = R / "exp11_bridge_vs_answer_by_layer/20261015-100426"  # same ranks,
 EXP11_V3 = R / "exp11_bridge_vs_answer_by_layer/20261014-092835"  # prompts as published, earlier labels (67 eligible)
 EXP12 = R / "exp12_position_map/20261015-100735"  # v4 J-lens labels
 EXP14 = R / "exp14_cue_answer_swaps/20261015-111137"  # bridge vs answer lens-vector swaps
+EXP14_PINNED = R / "exp14_cue_answer_swaps/20261015-114825"  # the same with the other pair held (pinned.yaml)
+EXP15 = R / "exp15_oracle_lens/20261015-123226"  # oracle lens readings (clean, after the J++ bridge swap, mean)
 BAND = (32, 48)  # layers averaged over
 
 
@@ -126,15 +129,15 @@ def exp12_cue_share(reader, word, band=BAND, best=False):
     return float(np.mean(vals)), len(vals)
 
 
-def exp14_flip(lens, positions, band, kind, null=False, overlap=None):
+def exp14_flip(lens, positions, band, kind, null=False, overlap=None, run=EXP14):
     """outcomes.jsonl: share of questions with flip == True for one lens / positions / band / kind (real or null).
     With overlap="low" / "high": only the questions whose mean over band layers of leakage.jsonl's diff_cosine (for
     that lens and cell) is below / at least its median over questions; returns (rate, flips, n)."""
-    rows = [o for o in jsonl(EXP14 / "outcomes.jsonl")
+    rows = [o for o in jsonl(run / "outcomes.jsonl")
             if (o["lens"], o["positions"], o["band"], o["kind"], o["null"]) == (lens, positions, band, kind, null)]  # fmt: skip
     if overlap:
         cos = {}
-        for r in jsonl(EXP14 / "leakage.jsonl"):
+        for r in jsonl(run / "leakage.jsonl"):
             if (r["lens"], r["positions"], r["band"]) == (lens, positions, band):
                 cos.setdefault(r["name"], []).append(r["diff_cosine"])
         mean = {n: float(np.mean(v)) for n, v in cos.items()}
@@ -143,6 +146,59 @@ def exp14_flip(lens, positions, band, kind, null=False, overlap=None):
         rows = [o for o in rows if o["name"] in keep]
     flips = sum(o["flip"] for o in rows)
     return flips / len(rows), flips, len(rows)
+
+
+# ---- exp15: oracle lens ------------------------------------------------------------------------------
+
+
+def _says(word, text):
+    """The oracle's text contains `word` as whole words (lower-cased letter runs; a plural s / es allowed)."""
+    padded = " " + " ".join(re.findall(r"[^\W\d_]+", text.lower())) + " "
+    return any(f" {form} " in padded for form in (word.lower(), word.lower() + "s", word.lower() + "es"))
+
+
+def exp15_named(role, lens_word="bridge", condition="clean"):
+    """reads.jsonl (clean readings): per lens class of `lens_word` (both J-lens and J++ rank 1 / one / neither, from
+    the reads' jlens_rank / jpp_rank copied from exp12's grids; for the answer, exp12's grids_<lens>.npz answer_pool),
+    the share of readings whose text names `role` (bridge = intermediate, distractor = swap_to, answer, swap_answer),
+    each question's share first, then the mean over questions; for the answer, questions with numeric answers are
+    left out. Returns {class: share}."""
+    field = {"bridge": "intermediate", "distractor": "swap_to", "answer": "answer", "swap_answer": "swap_answer"}[role]
+    items = {it["name"]: it for it in json.loads((R.parent / "data/probe_swap.json").read_text())["items"]}
+    if lens_word == "answer":
+        meta = {m["name"]: m for m in jsonl(EXP12 / "items.jsonl")}
+        grids = {lens: np.load(EXP12 / f"grids_{lens}.npz") for lens in ("jlens", "jpp")}
+        rows = {r["name"]: r for r in jsonl(EXP15 / "items.jsonl")}
+    per_q = {}
+    for r in jsonl(EXP15 / "reads.jsonl"):
+        if r["condition"] != condition:
+            continue
+        if lens_word == "bridge":
+            ranks = (r["jlens_rank"], r["jpp_rank"])
+        else:
+            key = f"{r['name']}|answer_pool"
+            numeric = any(c.isdigit() for c in items[r["name"]]["answer"] + items[r["name"]]["swap_answer"])
+            if key not in grids["jlens"] or numeric:  # numeric answers are left out (list numbering)
+                continue
+            row = rows[r["name"]]
+            col = meta[r["name"]]["offsets"].index(row["read_at"][r["position"]] - (row["seq_len"] - 1))
+            ranks = tuple(int(grids[lens][key][r["layer"], col]) for lens in ("jlens", "jpp"))
+        cls = {2: "both", 1: "one", 0: "neither"}[sum(x == 1 for x in ranks)]
+        per_q.setdefault(cls, {}).setdefault(r["name"], []).append(_says(items[r["name"]][field], r["text"]))
+    return {cls: float(np.mean([np.mean(v) for v in qs.values()])) for cls, qs in per_q.items()}
+
+
+def exp15_after_swap(position, flipped, layer=44):
+    """reads.jsonl, after the swap (condition swapped), at `position` and `layer`: share of questions whose text names
+    the swap target (swap_to), over the questions whose exp14 J++ cue 24-40 bridge swap flips the answer (`flipped`
+    True; exp14 run 20261015-111137 outcomes.jsonl) or keeps it."""
+    flips = {o["name"]: o["flip"] for o in jsonl(EXP14 / "outcomes.jsonl")
+             if (o["lens"], o["positions"], o["band"], o["kind"], o["null"]) == ("jpp", "cue", "24-40", "bridge", False)}  # fmt: skip
+    items = {it["name"]: it for it in json.loads((R.parent / "data/probe_swap.json").read_text())["items"]}
+    hits = [_says(items[r["name"]]["swap_to"], r["text"]) for r in jsonl(EXP15 / "reads.jsonl")
+            if r["condition"] == "swapped" and r["position"] == position and r["layer"] == layer
+            and flips.get(r["name"]) is flipped]  # fmt: skip
+    return float(np.mean(hits))
 
 
 # ---- exp10: lens-eval multihop, pass@10 -------------------------------------------------------------
@@ -405,6 +461,41 @@ def main():
             "low overlap: bridge swap on cue, J++",
             exp14_flip("jpp", "cue", "24-40", "bridge", overlap="low")[0],
             0.14,
+        ),
+        *(
+            (
+                "exp14",
+                f"pinned: {what}, {name}",
+                exp14_flip(lens, pos, band, kind, overlap=half, run=EXP14_PINNED)[0],
+                v,
+            )
+            for what, pos, band, kind, half, claimed in (
+                ("cue 24-40, bridge swapped, answer held", "cue", "24-40", "bridge_pinned", None, (0.18, 0.18)),
+                ("cue 24-40, answer swapped, bridge held", "cue", "24-40", "answer_pinned", None, (0.06, 0.01)),
+                ("cue, high overlap, bridge held-answer", "cue", "24-40", "bridge_pinned", "high", (0.28, 0.24)),
+                ("cue, high overlap, answer held-bridge", "cue", "24-40", "answer_pinned", "high", (0.08, 0.03)),
+                ("control: last 40-56, answer held-bridge", "last", "40-56", "answer_pinned", None, (0.26, 0.17)),
+            )
+            for (lens, name), v in zip((("jlens", "J-lens"), ("jpp", "J++")), claimed, strict=True)
+        ),
+        ("exp15", "both lenses: oracle names the bridge", exp15_named("bridge")["both"], 0.82),
+        ("exp15", "neither lens: oracle names the bridge", exp15_named("bridge")["neither"], 0.37),
+        ("exp15", "neither lens (answer): oracle names the answer", exp15_named("answer", "answer")["neither"], 0.33),
+        (
+            "exp15",
+            "neither lens (answer): names the swap answer",
+            exp15_named("swap_answer", "answer")["neither"],
+            0.08,
+        ),
+        ("exp15", "after swap, flipped, L44 last word: target", exp15_after_swap("last", True), 0.61),
+        ("exp15", "after swap, flipped, L44 -1: target", exp15_after_swap("prev", True), 0.74),
+        ("exp15", "after swap, kept, L44 last word: target", exp15_after_swap("last", False), 0.09),
+        ("exp15", "after swap, kept, L44 -1: target", exp15_after_swap("prev", False), 0.11),
+        (
+            "exp14",
+            "pinned: cue 24-40, bridge held-answer, null, J++",
+            exp14_flip("jpp", "cue", "24-40", "bridge_pinned", True, run=EXP14_PINNED)[0],
+            0.0,
         ),
         ("exp02", "J-part flips, J++ (main_v4_jpp)", exp02_rate("main_v4_jpp", "jpart")[0], 0.52),
         ("exp02", "J-part flips, J-lens (main_v4_jlens)", exp02_rate("main_v4_jlens", "jpart")[0], 0.35),

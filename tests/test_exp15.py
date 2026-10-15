@@ -15,6 +15,7 @@ def test_named_whole_word_case_and_plural():
     assert named("Brazil", "- Brazil\n- Rio")
     assert not named("Rio", "- Riot")
     assert named("New York", "- new york city")
+    assert not named("4", "- 14 legs") and named("4", "- 4 legs")  # digits count as part of a word
 
 
 def test_score_text_other_bridges_exclude_own_pair():
@@ -79,3 +80,20 @@ def test_lora_hooks_match_merged_weights_and_switch_off():
     assert torch.allclose(lora_delta(x, a, b, 2.0), 2.0 * x @ a.T @ b.T, atol=1e-5)
     with pytest.raises(ValueError):
         LoraHooks(net, {"1": (a, b)}, 2.0)  # a ReLU, not a Linear
+
+
+def test_lens_lookup_reads_the_cell_and_handles_missing_answers():
+    import numpy as np
+
+    from scripts.exp15_oracle_lens.experiment import lens_lookup
+
+    pool = np.full((63, 4), 9, dtype=np.uint8)
+    pool[36, 2] = 1  # layer 36, offset -1
+    grids = {"jlens": {"q": {"bridge_pool": pool}}, "jpp": {"q": {"bridge_pool": pool}}}
+    meta = {"q": {"offsets": [-3, -2, -1, 0]}}
+    rows = [{"name": "q", "seq_len": 4, "read_at": {"last": 3, "prev": 2}}]
+    out = lens_lookup(grids, meta, rows, [36, 44])
+    assert out[("q", "prev", 36)]["lens_class"] == "both"
+    assert out[("q", "last", 36)]["lens_class"] == "neither"
+    answer = lens_lookup(grids, meta, rows, [36], role="answer", prefix="answer_")
+    assert answer[("q", "prev", 36)] == {"answer_jlens_rank": None, "answer_jpp_rank": None, "answer_lens_class": None}
