@@ -34,7 +34,7 @@ or tokenization artifact.
 | [exp06](#exp06_sigma_writes-part-b-read-with-the-lens-write-along-the-covariance) | Do edits shaped by the activation covariance (Σv) act more than the lens's own directions? |
 | [exp07](#exp07_step_code-part-b-a-code-for-brews-intermediate-fit-on-other-items-writes-the-step-the-lenss-direction-does-not) | Does a code for brew's intermediate, fit on other items, write the step where the lens direction does not? |
 | [exp08](#exp08_brew_read-part-b-the-lens-reads-brews-intermediate-at-a-few-positions-writing-along-its-direction-does-nothing) | Do the lenses read brew's intermediate where the step is carried? |
-| [exp09](#exp09_bind_recall-part-b-which-bridges-leave-the-j-space-bound-ones-stay-in-unless-the-next-step-is-an-in-context-lookup) | Holding the question fixed, which bridges are carried outside the J-space, as brew's intermediate is? |
+| [exp09](#exp09_bind_recall-part-b-which-bridges-leave-the-j-space-those-a-lookup-in-the-prompt-uses-recalled-or-bound) | Holding the question fixed, which bridges are carried outside the J-space, as brew's intermediate is? |
 | [Pitfalls](#pitfalls-found-so-far) | What went wrong along the way, and how each is handled |
 | [Decisions](#decisions), [open decisions](#open-decisions-humans) | What was decided, and what is still for the humans to decide |
 | [Next steps, part A](#next-steps-part-a), [part B](#next-steps-part-b) | What comes next |
@@ -114,8 +114,8 @@ or tokenization artifact.
 7. `exp06_sigma_writes`: exp02's matched control with a covariance-shaped rest, and steering along Σ_λ v.
 8. `exp07_step_code`, `exp08_brew_read`: a code for brew's intermediate fit on other items and written at exp04's
    window; and whether the lenses read the intermediate there (part A's top-1 protocol with a distractor).
-9. `exp09_bind_recall`: the same question with its bridge recalled or bound in the prompt, through exp04's patching
-   and exp02's probe swaps.
+9. `exp09_bind_recall`: the same question with its bridge recalled or bound in the prompt, and its second hop a
+   recalled fact or a lookup in the prompt, through exp04's patching and exp02's probe swaps.
 
 ## Status
 Draft, UNVERIFIED: nothing is in `VERIFIED.md` yet. The STATE block in `AGENTS.md` tracks what is in flight.
@@ -133,8 +133,9 @@ question; the next experiment (exp17, Next steps) is designed to settle it and h
 asks the original question with probe swaps; on brew, an in-context lookup, it finds the intermediate carried at four
 positions after the start line at layers 36-50 outside the J-space: the lenses read it there at a few positions,
 but writing along their direction does not take the step, while a code fit on other items does (exp04, exp07, exp08).
-A bridge bound in the prompt and used by a recalled fact stays inside the J-space (exp09), so it is not being in the
-context that moves brew's intermediate out.
+Across four families that hold the question's form fixed, what uses the bridge goes with the J-space, not where it
+comes from: used by a recalled fact, a bridge bound in the prompt acts through its J-space part; used by a lookup in
+the prompt, a bound or a recalled bridge acts through the rest, as brew's intermediate does (exp09).
 
 **Final figures (Qwen3.6-27B).**
 | Figure | What it shows |
@@ -1244,7 +1245,7 @@ tokens in every item (exp07's check). Figure: `uv run python scripts/exp08_figur
 tokenizer for the position labels). Headlines are recomputed by `scripts/verify_headlines.py`.
 </details>
 
-### exp09_bind_recall (part B): which bridges leave the J-space? Bound ones stay in, unless the next step is an in-context lookup
+### exp09_bind_recall (part B): which bridges leave the J-space? Those a lookup in the prompt uses, recalled or bound
 **What we measure.** Part B's two settings point opposite ways: the recalled bridge acts through its J-space part
 (exp02), brew's intermediate is carried outside the J-space (exp04, exp07). They differ in much more than where the
 bridge comes from, so this run holds the question, the countries and the second hop fixed and changes only that.
@@ -1282,10 +1283,30 @@ methods run on both families, with decision rules fixed in the manifests:
   colour for 16% of items, its J-space part 0% and the rest 6% (+6 [+1, +11] pts); its I/X lens coordinates 0% and
   the rest 14% (+14 [+7, +21]): "outside" by both splits, as brew's. The J-space part holds 9% of the copied
   difference's variance, about a random direction's (7%), against B's 29%.
+- **A recalled bridge used by a lookup in the prompt leaves the J-space too** (family RL, the fourth cell: R's prompt
+  and counterfactual city, then a colour per country in the prompt and "The country where Lyon is located has the
+  colour"; `data/recall_lookup.json`, 80 of 250 token-aligned items sampled). At RL's window (layers 36-40) the copy
+  gives X's colour for 39% of items, its J-space part 0% and the rest 20% (+20 [+12, +29] pts); its I/X lens
+  coordinates 0% and the rest 29% (+29 [+20, +38]); the off-path copy 0%. "Outside" by both splits, the clearest of
+  the four families. Its rule was fixed in the manifest: "outside" means the use, not the source, decides.
 
-Read together with brew: being in the context is not what puts a variable outside the J-space. The same bound bridge
-stays in the J-space when a recalled fact uses it (B) and leaves it when a lookup in the prompt does (L), as brew's
-intermediate, read by an in-context lookup, does.
+Read together with brew, by where the bridge comes from and what uses it:
+
+| | used by a recalled fact | used by a lookup in the prompt |
+|---|---|---|
+| **recalled** | R: J-part swap 82% vs 3% (exp02's swap; the split: both or neither) | RL: outside (0% vs 20%) |
+| **bound in the prompt** | B: inside (12.5% vs 0%) | L: outside (0% vs 6%); brew's intermediate (exp04) |
+
+Being in the context is not what puts a variable outside the J-space: what uses it is. A bridge a recalled fact
+uses acts through its J-space part (B) or its J-space probe (R); a bridge a lookup in the prompt uses acts through
+the rest, wherever it came from (RL, L), as brew's intermediate does.
+
+![exp09: source x use](figures/exp09_bind_recall/v2/source_use.png)
+
+*How to read it: one panel per family, at its window; each bar is how often copying that part of C's activation
+into the original makes the model give X's answer. Right column (a lookup in the prompt uses the bridge): the J-space
+part and the I/X coordinates do nothing, the rest carries what the copy does. Left column: B's J-space part acts and
+its rest does not; R's split is small both ways.*
 
 ![exp09: recalled vs bound](figures/exp09_bind_recall/v1/bind_recall.png)
 
@@ -1293,7 +1314,9 @@ intermediate, read by an in-context lookup, does.
 44%): pieces of the copied difference act much less than the whole, so "inside" rests on small effects, and B's window
 is one layer. In B the bridge is a word in the prompt, so its J-space part may be the copied word's identity. L's
 copy is weak at its window (16%; 79% from layer 52, where the answer forms) and L's question ends differently from
-B's ("has the colour" vs "is"; the first ending was continued, not answered: Pitfalls). The
+B's ("has the colour" vs "is"; the first ending was continued, not answered: Pitfalls). The use comes with its
+answer: a recalled fact answers a capital, a lookup a colour from the prompt, so "use" here also means "answer read
+from the prompt"; R's own split is inconclusive, so the recalled-fact column rests on B's split and R's swap. The
 second hop is a recalled fact in both families, so a copy can carry the bridge or its capital; the window stops where
 the last token alone carries the answer (from 48 in B, 52 in R, capped at exp12's 44). One seed for the counterfactual
 cities and the sample.
@@ -1302,7 +1325,7 @@ cities and the sample.
 
 Runs under `results/exp09_bind_recall/`: `map_v1` (layers 0-60 every 4th, the question's tokens and the last token,
 C and O), `parts_v1` (its window), `swaps_v1` (exp02's conditions and nulls), each with its manifest written before
-the run; L: `map_lookup_v2` and `parts_lookup_v2` (`map_lookup_v1`, on the first ending, found 1 eligible item of
+the run; RL: `map_rl_v1` and `parts_rl_v1`; L: `map_lookup_v2` and `parts_lookup_v2` (`map_lookup_v1`, on the first ending, found 1 eligible item of
 400 and no window, so `parts_lookup_v1` stopped at its manifest); parts and swaps reuse the map's eligibility and sample. Probes: `exp01_probes/v3_jpp_b200`, the `more_jpp`
 variant rebuilt on the B200 box (v3_jpp's cache stayed on the old box): 2261 of 2673 prompts kept as before, 7 filter
 decisions differ, the J-space share by layer within 0.001 of v3_jpp. Items are identified by family and file index:
@@ -1450,8 +1473,10 @@ Parked: these were next steps; part A does not pursue them now.
    where the lens reads I carries the whole step (33%; the other 17: 0%). Next: split the code at those positions into
    the lens-read part and the rest; what the I answers at layers 36-46 are; and steering at the cue phrase in exp02
    at the same sizes.
-7. **What puts brew's intermediate outside the J-space** (exp09): a bound bridge stays inside when a recalled fact uses
-   it and goes outside when a lookup in the prompt does (family L, as brew). Next: whether that holds with a stronger
-   copy at L's window (16% now), and whether the lookup's output, not its input, is what the lens cannot write.
+7. **What puts brew's intermediate outside the J-space** (exp09): what uses the bridge. Used by a recalled fact, a
+   bound bridge stays inside; used by a lookup in the prompt, a bound or recalled one goes outside (L, RL, as brew).
+   Next: a lookup whose answer is recalled, not read from the prompt (e.g. a table of countries to cities, then the
+   city's country's capital), to separate "a lookup uses it" from "the answer is in the prompt"; exp02's probe swap
+   on RL, at its own window; a second model.
 6. **Σ-aware writes** (exp06, exp07): writing along Σv lost to writing along v at the start line, and did no better
    than v at exp04's window. Dropped unless a human wants a Mahalanobis-matched version.

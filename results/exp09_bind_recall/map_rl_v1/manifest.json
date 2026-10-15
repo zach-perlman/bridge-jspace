@@ -1,0 +1,55 @@
+{
+  "exp": "exp09_bind_recall",
+  "run": "map_rl_v1",
+  "kind": "bind_recall_map",
+  "written_utc": "2026-10-15T22:47:04Z",
+  "why": "Chosen by the human (2026-10-15): the fourth cell of source x use, a recalled bridge used by an in-context lookup (family RL).",
+  "model": {
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "items": {
+    "set": "recall_lookup",
+    "file": "data/recall_lookup.json",
+    "sha256": "d6905b4445032dab8ca3a2e8fff74588750175e004af1c31b3a235f44d15703f",
+    "per_family": "80, a seeded sample (seed 0) of the eligible items"
+  },
+  "eligibility": "B, C and O each change one token against the original (token-aligned), and the greedy continuations' first answer word of the set (R, B: the capitals; L: the colours) is the bridge's (B, O) and X's (C)",
+  "counterfactuals": {
+    "C": "the bridge set to X, every country still in the prompt. R: the city replaced by the first city of X, in a seeded order (9000 + index), whose prompt lines up token for token; B: the queried person and X's holder swap countries; L: as B",
+    "O": "X's and Z's holders swap countries (off the path; the answer stays)"
+  },
+  "groups": {
+    "question": "the question's tokens after C's changed ones (R: after the city; B: the whole question)",
+    "last": "the last token",
+    "cue": "the cue phrase, from the cue word to the word before the final ' is' (the swaps' positions)"
+  },
+  "outcome": "the patched greedy continuation's first capital of the set: X's capital (b), the bridge's (A), other",
+  "generation": "greedy, 8 new tokens, an item's runs batched 32 at a time (Model.generate_batch: equal to single runs up to batched-kernel rounding, which changed only degenerate continuations in a check)",
+  "question": "Where, by layer and position group, does each family carry the bridge (lens-free)?",
+  "layers": [
+    0,
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    28,
+    32,
+    36,
+    40,
+    44,
+    48,
+    52,
+    56,
+    60
+  ],
+  "decision": {
+    "window": "per family and group: the layers where C's copy gives X's capital more often than O's copy changes the answer at all (Wilson 95% intervals not overlapping)",
+    "answer_formed": "per family, the first layer at which copying the last token alone gives X's capital for at least half the items: from there the copy can carry the answer rather than the bridge",
+    "parts_window": "the question group's window below min(answer_formed, 44) (44: exp12's answer onset at the last word); if it is empty, that family's parts are not interpreted"
+  }
+}

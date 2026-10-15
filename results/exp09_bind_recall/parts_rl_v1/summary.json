@@ -1,0 +1,75 @@
+{
+  "families": {
+    "RL": {
+      "window": [
+        36,
+        40
+      ],
+      "n": 80,
+      "step_scores": {
+        "lens2": 0.0,
+        "lens2 null": 0.0,
+        "not_lens2": 0.2875,
+        "not_lens2 null": 0.0,
+        "jspace": 0.0,
+        "jspace null": 0.0,
+        "not_jspace": 0.2,
+        "not_jspace null": 0.0,
+        "full": 0.39375
+      },
+      "off_full": 0.0,
+      "decisions": {
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.2875,
+            0.2,
+            0.375
+          ],
+          "lens2 - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_lens2 - its null": [
+            0.2875,
+            0.2,
+            0.375
+          ],
+          "verdict": "outside"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.2,
+            0.11875,
+            0.2875
+          ],
+          "jspace - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_jspace - its null": [
+            0.2,
+            0.11875,
+            0.2875
+          ],
+          "verdict": "outside"
+        }
+      },
+      "variance_share_median": {
+        "lens2": 0.02645,
+        "jspace": 0.11115
+      }
+    }
+  },
+  "hypothesis": "RL outside: the in-context use, not the recalled source, puts the bridge outside the J-space",
+  "chance_share": 0.07100000000000001,
+  "items": {
+    "RL": {
+      "eligible": 80,
+      "unaligned": 470,
+      "not_eligible": 8,
+      "eligible_not_sampled": 162
+    }
+  }
+}
