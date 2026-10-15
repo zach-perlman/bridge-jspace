@@ -61,7 +61,9 @@ MAX_NEW_TOKENS = 8
 CF_SEED, OFF_SEED, SAMPLE_SEED, NULL_SEED = 9000, 9500, 0, 0
 N_BOOT, BOOT_SEED = 2000, 0
 CHANCE_DRAWS = 20
-PROBES = pins.CACHE_DIR / "exp01" / "v3_jpp" / "probes.pt"  # exp01's J++ probes, as exp02's main_v4_jpp and exp06
+# exp01's J++ probes (variant more_jpp, as v3_jpp behind exp02's main_v4_jpp and exp06), rebuilt on the B200 box:
+# v3_jpp's cache stayed on the old box. The rebuild checks its kept prompts against v3 one by one.
+PROBES = pins.CACHE_DIR / "exp01" / "v3_jpp_b200" / "probes.pt"
 SWAP_LAYERS = tuple(range(24, 41))  # exp02's band 24-40
 SWAP_CONDITIONS = ("jpart", "full_probe", "remainder", "jpart_matched")
 PARTS = ("lens2", "not_lens2", "jspace", "not_jspace")
@@ -71,8 +73,9 @@ def context(people: list[str], countries: list[str]) -> str:
     return " ".join(f"{p} lives in {c}." for p, c in zip(people, countries, strict=True))
 
 
-def variants(item: dict, index: int) -> dict[str, str]:
-    """C (the bridge set to X) and O (X's and Z's holders swap, off the path) prompts for an item."""
+def variants(item: dict, index: int, city2: str | None = None) -> dict[str, str]:
+    """C (the bridge set to X) and O (X's and Z's holders swap, off the path) prompts for an item. R: `city2`, a city
+    of X (default: the first in `x_cities` order)."""
     people, held = item["people"], item["countries"]
     question = item["prompt"][len(context(people, held)) + 1 :]
     i_b, i_x, i_z = (held.index(c) for c in (item["bridge"], item["target"], item["third"]))
@@ -83,11 +86,18 @@ def variants(item: dict, index: int) -> dict[str, str]:
         return out
 
     if item["family"] == "R":
-        city2 = random.Random(CF_SEED + index).choice(CITIES[item["target"]])
+        city2 = city2 or x_cities(item, index)[0]
         cf = f"{context(people, held)} {question.replace(f'where {item["cue"]} is', f'where {city2} is')}"
     else:
         cf = f"{context(people, swapped(i_b, i_x))} {question}"
     return {"cf": cf, "off": f"{context(people, swapped(i_x, i_z))} {question}"}
+
+
+def x_cities(item: dict, index: int) -> list[str]:
+    """X's cities in a seeded order (seed 9000 + index): R's C takes the first that keeps the tokens aligned."""
+    cities = list(CITIES[item["target"]])
+    random.Random(CF_SEED + index).shuffle(cities)
+    return cities
 
 
 def changed_tokens(a: list[int], b: list[int]) -> list[int] | None:
@@ -102,6 +112,14 @@ def prepare(item: dict, index: int, tokenizer) -> dict:
     """Token ids of B, C and O, their changed positions, the position groups downstream of C's change, and the cue
     phrase (from the cue word to the word before the final ' is', as exp02's cue spans)."""
     texts = {"clean": item["prompt"], **variants(item, index)}
+    if item["family"] == "R":  # the first city of X whose prompt lines up with the original token for token
+        n = len(tokenizer(item["prompt"], add_special_tokens=False).input_ids)
+        fits = [
+            c
+            for c in x_cities(item, index)
+            if len(tokenizer(variants(item, index, c)["cf"], add_special_tokens=False).input_ids) == n
+        ]
+        texts = {"clean": item["prompt"], **variants(item, index, fits[0] if fits else None)}
     enc = {k: tokenizer(t, add_special_tokens=False, return_offsets_mapping=True) for k, t in texts.items()}
     ids = {k: e.input_ids for k, e in enc.items()}
     changed = {s: changed_tokens(ids["clean"], ids[s]) for s in ("cf", "off")}
@@ -171,8 +189,9 @@ def manifest_common(name: str, why: str, kind: str) -> dict:
         "eligibility": "B, C and O each change one token against the original (token-aligned), and the greedy "
         "continuations' first capital of the set is the bridge's (B, O) and X's (C)",
         "counterfactuals": {
-            "C": "the bridge set to X, every country still in the prompt. R: the city replaced by a city of X (seed "
-            "9000 + index); B: the queried person and X's holder swap countries",
+            "C": "the bridge set to X, every country still in the prompt. R: the city replaced by the first city of X, "
+            "in a seeded order (9000 + index), whose prompt lines up token for token; B: the queried person and X's "
+            "holder swap countries",
             "O": "X's and Z's holders swap countries (off the path; the answer stays)",
         },
         "groups": {
