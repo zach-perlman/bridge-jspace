@@ -74,6 +74,8 @@ make run CONFIG=scripts/exp12_position_map/examples.yaml   # GPU: results/<exp>/
 make examples-render                                       # examples/<exp>/ from the latest examples run (no GPU)
 make examples-serve                                        # render, serve examples/ on localhost:8000, open it
 ```
+exp15's page is rendered from its run's readings (no examples run, no GPU):
+`uv run python -m scripts.exp15_oracle_lens.examples results/exp15_oracle_lens/<run>`.
 On a pod, `make examples-serve` plus `ssh -L 8000:localhost:8000 sesterce-a100` shows the pages locally. The exp12
 page is published at https://claude.ai/artifact/TXLZH6WxuxSQDhoK5YHTj9: to update it, publish
 `examples/exp12_position_map/artifact.html` to that URL with the examples run's `slices/*` as files.

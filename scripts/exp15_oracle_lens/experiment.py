@@ -365,14 +365,11 @@ def pick_examples(reads: list[dict], k: int, seed: int) -> dict[str, list[dict]]
     return out
 
 
-def analyze(run_dir: str | Path) -> Path:
-    """Re-summarize a finished run into `<run_dir>/analysis-<timestamp>/`: summary.json (with the answer's lens classes
-    joined from exp12), examples.json (lens-blind cells, by a fixed seed) and the figure."""
-    from datetime import datetime
-
+def load_scored(run_dir: str | Path) -> tuple[list[dict], list[dict], dict[str, Any], dict[str, dict]]:
+    """A finished run's readings re-scored with the current `score_text`, with the answer's lens ranks and class
+    joined from exp12; numeric answers ('4', '8') get no answer class, since the oracle's numbered bullets ("2. ...")
+    would count as naming them. Returns (reads, item_rows, params, items by name)."""
     from scripts.exp12_position_map.experiment import load_grids
-
-    from .plot import plot_run
 
     run_dir = Path(run_dir)
     params = json.loads((run_dir / "manifest.json").read_text())["config"]["params"]
@@ -385,8 +382,6 @@ def analyze(run_dir: str | Path) -> Path:
     exp12_meta = {m["name"]: m for m in load(exp12 / "items.jsonl")}
     grids = {lens: load_grids(exp12 / f"grids_{lens}.npz") for lens in ("jlens", "jpp")}
     answer = lens_lookup(grids, exp12_meta, item_rows, params["read_layers"], role="answer", prefix="answer_")
-    # Re-scored with the current `score_text`; numeric answers ('4', '8') leave the answer analysis, since the
-    # oracle's numbered bullets ("2. ...") would count as naming them.
     items = {it["name"]: it for it in load_labelled_items(REPO_ROOT / params["labels_file"], params["labels_sha256"])}
     scored_on = [items[r["name"]] for r in item_rows]
     numeric = {n for n, it in items.items() if any(ch.isdigit() for ch in it["answer"] + it["swap_answer"])}
@@ -396,7 +391,18 @@ def analyze(run_dir: str | Path) -> Path:
          **(no_answer if r["name"] in numeric else answer[(r["name"], r["position"], r["layer"])])}
         for r in reads
     ]  # fmt: skip
+    return reads, item_rows, params, items
 
+
+def analyze(run_dir: str | Path) -> Path:
+    """Re-summarize a finished run into `<run_dir>/analysis-<timestamp>/`: summary.json, examples.json (lens-blind
+    readings, by a fixed seed) and the figures (plot.py), from `load_scored`."""
+    from datetime import datetime
+
+    from .plot import plot_run
+
+    run_dir = Path(run_dir)
+    reads, item_rows, params, _ = load_scored(run_dir)
     out = run_dir / f"analysis-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
     out.mkdir()
     summary = {"source_run": str(run_dir), **summarize(reads, item_rows, params)}

@@ -114,6 +114,8 @@ is recomputed from the raw run files by `uv run python scripts/verify_headlines.
 | [exp14 `flip_rates_pinned.png`](figures/exp14_cue_answer_swaps/flip_rates_pinned.png) | The same swaps with the other pair held: on the cue phrase the bridge swap still works, the answer swap does not |
 | [exp15 `oracle_vs_lenses.png`](figures/exp15_oracle_lens/oracle_vs_lenses.png) | Where neither lens has the bridge (or the answer) first, the oracle lens still names it in about a third of readings; its distractor in 5-10% |
 | [exp15 `after_swap.png`](figures/exp15_oracle_lens/after_swap.png) | After the bridge swap, the oracle names the swap target where the model's answer flips, rarely where it does not |
+| [exp15 `oracle_by_lens_rank.png`](figures/exp15_oracle_lens/oracle_by_lens_rank.png) | Oracle lens vs J-lens / J++: the further down a lens ranks the word, the less often the oracle names it, but not to zero |
+| [exp15 `who_reads_it.png`](figures/exp15_oracle_lens/who_reads_it.png) | Per layer and lens: readings where the lens, the oracle, both or neither have the word |
 | [exp11 `pool_top1_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/pool_top1_by_layer.png) | Last token only: bridge and answer ranked first, by layer, three readers |
 | [exp11 `advantage_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/advantage_by_layer.png) | Last token only: how many times higher than its distractor each word ranks |
 | [exp10 `pass_at_10_by_model.png`](figures/exp10_lens_sanity/20261015-135537/pass_at_10_by_model.png) | Does each lens find the bridge at all (pass@10), 4B and 27B |
@@ -125,6 +127,8 @@ experiments); the exp12 page is also published at https://claude.ai/artifact/TXL
 link can open it). Each page groups sampled questions by what the readers do with them; exp10's also by what the bridge
 is: a number ('6', 'four'), a letter (a chemical symbol), or named in the prompt (`scripts/exp10_lens_sanity/examples.py`;
 a bridge counts as found if any of its listed forms is). The exp10 page shows these groups from its next examples run.
+The exp15 page shows every question with the J-lens and J++ ranks next to the oracle lens's words at each position and
+layer, before and after the bridge swap.
 
 **What we know so far (Qwen3.6-27B, the 77 two-hop questions it answers correctly).**
 1. The J-lens and J++ can read the bridge in the middle layers; the plain logit lens mostly only near the output
@@ -525,7 +529,9 @@ absent from the activation, or held in a form no single token direction names? T
 Qwen3.6-27B trained to put one residual vector into words, as bullets of concepts (`neuronpedia/jacobian-lens`,
 `qwen3.6-27b/oracle`; its published read contract: the vector replaces a marker token's embedding in a fixed prompt;
 trained on layers 20-60 in steps of 4). It reads the 77 questions at the last word, -1 and the cue phrase's last token,
-layers 28, 36 and 44: one reading = one question at one position and layer (77 x 3 x 3 = 693). Each reading is
+layers 28, 36 and 44. One reading = the oracle's words for the activation at one question, position and layer: in
+"...the country where the Amazon River ends is" the three positions are "is", "ends" and "River", so one question
+gives three readings per layer (77 x 3 x 3 = 693 in all). Each reading is
 grouped by exp12's lens readings at the same question, position and layer: both lenses rank the word first among its
 candidates, one does, or neither. A word counts as named if it appears in the oracle's bullets (whole word, case and
 a plural ending ignored). Controls: the word's distractor (Mexico for Brazil), other questions' bridges, the mean
@@ -565,6 +571,22 @@ the 54 questions whose answer it keeps. Reading the state predicts dark blue hig
 -1, which is what layers 36 and 44 show. On the cue phrase at layers 28 and 36 the swap edits the read position
 itself, so grey is high there too.*
 
+![exp15: oracle vs each lens, by rank](figures/exp15_oracle_lens/oracle_by_lens_rank.png)
+
+*How to read it: one panel per lens. x: the rank that lens gives the word at a reading (first, 2nd-3rd, ...); under
+each, how many readings fall there. y: the share of those readings whose oracle bullets name the word (solid) or its
+distractor (dashed). Where a lens has the word first, the oracle names it in about 80% of readings; at 2nd-3rd in
+45-67%; beyond the 30th in 8-25% (J++'s bridge: 8%, at its distractor's level). The distractor stays at 0-15%.*
+
+![exp15: who has the word](figures/exp15_oracle_lens/who_reads_it.png)
+
+*How to read it: each bar is one lens at one layer, all readings split four ways: the lens has the word first and the
+oracle names it (dark blue), only the lens (light blue), only the oracle (orange), neither (grey). For the bridge the
+oracle adds 13-21% of readings the lens misses and misses 10-15% the lens has; for the answer it adds 22-32%.*
+
+Worked examples: [examples/exp15_oracle_lens/index.html](examples/exp15_oracle_lens/index.html) (every question; group
+filters: lens-blind and named, lens-blind and missed, seen by the lenses, flipped by the swap).
+
 **What this does not show.**
 - That the oracle reads the lens-blind bridge from the state rather than re-solving it. It often names the bridge
   while re-telling the question ("...the famous Tchaikovsky ballet *Swan Lake* features a swan"; "the organ that
@@ -581,7 +603,7 @@ itself, so grey is high there too.*
 
 Run `results/exp15_oracle_lens/20261015-123226` (Qwen3.6-27B, part B's model loader, the 77 questions of part B's v4
 labels, trailing space stripped; oracle adapter pinned by sha256 in `pins.py`); analysis
-`analysis-20261015-152353/` (summary.json, examples.json with lens-blind readings drawn by a fixed seed, the figures).
+`analysis-20261015-153352/` (summary.json, examples.json with lens-blind readings drawn by a fixed seed, the figures).
 Checks: the sanity gate (`sanity.json`: 6 of 6 facts, random vector 0 of 6, base-logit drift 0.0, adapter changes
 the oracle's logits by up to 16.6; 496 LoRA modules, r 16, scale 2); the swapped forward's top word equals exp14's for
 77 of 77 questions.

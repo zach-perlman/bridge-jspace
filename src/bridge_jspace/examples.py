@@ -584,7 +584,19 @@ def export_index(root: Path | None = None) -> Path:
     entries = []
     for src in sorted(root.glob("*/source.json")):
         exp_dir = src.parent
-        run = _from_repo(json.loads(src.read_text())["examples_run"])
+        source = json.loads(src.read_text())
+        if "entry" in source:  # a page rendered from a run's own outputs (exp15), not a LensExamples run
+            e = source["entry"]
+            groups = "".join(
+                f"<li>{_esc(g['title'])} <span class='badge'>{g['n_total']}</span></li>" for g in e["groups"]
+            )
+            entries.append(
+                f"<section class='card'><h3><a href='{_esc(exp_dir.name)}/index.html'>{_esc(e['title'])}</a></h3>"
+                f"<p class='meta'><code>{_esc(exp_dir.name)}</code> · {e['n_examples']} examples · model "
+                f"{_esc(e['model'])}</p><ul class='meta'>{groups}</ul></section>"
+            )
+            continue
+        run = _from_repo(source["examples_run"])
         data = json.loads((run / "examples.json").read_text())
         manifest = json.loads((run / "manifest.json").read_text())
         p = _params_with_title(manifest)
