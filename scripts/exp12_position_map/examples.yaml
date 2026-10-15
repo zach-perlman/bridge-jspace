@@ -5,10 +5,10 @@ target: bridge_jspace.examples:LensExamples
 seed: 0
 model: configs/models/qwen3.6-27b.yaml
 params:
-  title: "exp12_position_map (prompt position x layer), Qwen3.6-27B"
+  title: "exp12_position_map (prompt position x layer, trailing space stripped), Qwen3.6-27B"
   page_title: "Bridge Position Examples"
   selector: scripts.exp12_position_map.examples:select
-  source_run: results/exp12_position_map/20261014-095358
+  source_run: results/exp12_position_map/20261015-100735
   per_group: 3
   seed_examples: 0
   band: [32, 48]

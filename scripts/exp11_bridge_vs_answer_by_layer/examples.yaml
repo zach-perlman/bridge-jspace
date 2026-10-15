@@ -5,10 +5,10 @@ target: bridge_jspace.examples:LensExamples
 seed: 0
 model: configs/models/qwen3.6-27b.yaml
 params:
-  title: "exp11_bridge_vs_answer_by_layer (last token, prompts as published), Qwen3.6-27B"
+  title: "exp11_bridge_vs_answer_by_layer (last token, trailing space stripped), Qwen3.6-27B"
   page_title: "Last-Token Bridge Examples"
   selector: scripts.exp11_bridge_vs_answer_by_layer.examples:select
-  source_run: results/exp11_bridge_vs_answer_by_layer/20261014-092835
+  source_run: results/exp11_bridge_vs_answer_by_layer/20261015-100110
   per_group: 3
   seed_examples: 0
   band: [32, 48]
