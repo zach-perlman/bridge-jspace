@@ -37,7 +37,9 @@ Notes:
   `data/brew_fresh.json`); figures `v2_swaps/` and `v2_fresh/` (one run each: the runs use different item sets).
 - **exp04_brew_patch:** lens-free activation patching of brew's two-step lookup (counterfactual rule tables, one
   layer and position group at a time). Run `patch_map` under `exp04_brew_patch/`; figures
-  `../figures/exp04_brew_patch/v1/` (`uv run python scripts/exp04_figures.py <new folder> patch_map`).
+  `../figures/exp04_brew_patch/v1/` (`uv run python scripts/exp04_figures.py <new folder> patch_map`). Then
+  `parts_window` (`scripts/exp04_brew_parts.py`: the window's copy split into its J-space part and the rest);
+  figure `../figures/exp04_brew_patch/v2_parts/`.
 - exp02 controls for "the J-space part flips more because it carries more of the probe": `exp02_swaps/
   matched_v4_{jpp,jlens}` (matched-alignment random directions) and `exp02_swaps/analysis/edit_size_v1/`
   (`scripts/exp02_edit_size.py`, no model).

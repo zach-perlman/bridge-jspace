@@ -434,17 +434,28 @@ counterfactual and the control correctly); every second layer.
   and layers (36-52) made the model say X itself (33-100% of items) and never f(X) (0 of 99 at every size, both
   lenses), at sizes like the copy's (it changes 7-14% of the norm there). The intermediate is there to be edited, but
   not along the colour's lens direction.
+- **The step is carried outside the J-space** (`parts_window`, decision rule fixed in its manifest). At the window,
+  copying only a part of the difference δ = h_C - h_B: its projection onto the lens vectors of I and X gives f(X) at
+  0% of window layers (0.2% of δ's variance), the rest 31%, the same as the whole copy (31%); its J-space part (a
+  25-atom signed decomposition over the lens's vectors) gives 0%, the rest 26% (J++) / 24% (J-lens). Paired
+  difference, rest minus part: +31 [+24, +38] and +26 [+20, +32] pts with J++, alike with the J-lens; every part's
+  random-direction null 0%. The J-space part holds 8% of δ's variance, what it holds of a random direction (7%).
 
 ![exp04: patching map](figures/exp04_brew_patch/v1/patch_map.png)
 
-**What this does not show.** Which direction carries the step: the copy replaces whole block outputs at about 21
-positions. 48% is the best single-layer copy, not a ceiling: information held at several layers at once is missed by
-every single-layer copy. One seed for c and the control's colours.
+![exp04: parts of the copy](figures/exp04_brew_patch/v2_parts/parts.png)
+
+**What this does not show.** Which direction carries the step, beyond "not the J-space": the copy replaces whole block
+outputs at about 21 positions. 48% is the best single-layer copy, not a ceiling: information held at several layers at
+once is missed by every single-layer copy. The J-space part is small (8% of δ's variance) and was not tried amplified;
+it is a decomposition of the difference δ, not of each activation. The window and the parts test use the same 82 items
+(no fresh-item replication yet). One seed for c and the control's colours.
 
 <details><summary>Full numbers and checks</summary>
 
-Run: `results/exp04_brew_patch/patch_map` (manifest written before the run; layers 0-62 in steps of 2, chosen by the
-human). Per-layer rates of every role for each group, and the off-path control, are in `summary.md`; the first answer
+Runs: `results/exp04_brew_patch/patch_map` (manifest written before the run; layers 0-62 in steps of 2, chosen by the
+human) and `parts_window` (the window read from `patch_map`'s decision; its full copy reproduces `patch_map` in all
+656 item x layer cells; variance shares in `fve.jsonl`). Per-layer rates of every role for each group, and the off-path control, are in `summary.md`; the first answer
 token's log-probabilities in `figures/exp04_brew_patch/v1/patch_logp.png`. Eligibility: 13 items fail on the
 counterfactual and 4 on the control prompt. 52 of the 82 items give f(X) at one window layer or more. Headlines are
 recomputed by `scripts/verify_headlines.py`.
@@ -505,6 +516,7 @@ In order; designs need human sign-off before GPU runs.
    lens vectors carry the effect.
 3. **Why "anything else" bridges rarely flip:** probe quality vs how those bridges are represented.
 4. **A control matched in total edit size** across layers.
-5. **Brew:** the patching map is exp04 (the intermediate is carried after the start line at layers 36-50). Next:
-   which part of that copy carries the step, its J-space part or the rest; and steering at the cue phrase in exp02
-   at the same sizes, to compare the two settings at one dose.
+5. **Brew:** exp04 maps the lookup (the intermediate is carried after the start line at layers 36-50) and finds the
+   step outside the J-space. Next: the same map and parts on fresh items; what direction carries the step (e.g. a
+   difference-of-means step direction, decomposed like exp02's probes); and steering at the cue phrase in exp02 at the
+   same sizes, to compare the two settings at one dose.

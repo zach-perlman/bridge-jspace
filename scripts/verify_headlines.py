@@ -208,6 +208,28 @@ def exp04_max_off_changed():
     return max(float(np.mean(v)) for v in cells.values())
 
 
+EXP04_PARTS = R / "exp04_brew_patch/parts_window"
+
+
+def exp04_step_score(part, lens=None, null=False):
+    """exp04 parts_window outcomes.jsonl: per item, the share of window layers (36-50) at which copying that part of
+    the counterfactual's difference gives f(X) (role "b"); then the mean over items. The full copy has lens None."""
+    rows = [
+        o
+        for o in jsonl(EXP04_PARTS / "outcomes.jsonl")
+        if o["part"] == part and o["source"] == "cf" and o["lens"] == lens and o["null"] == null
+    ]
+    per_item = {}
+    for o in rows:
+        per_item.setdefault(o["name"], []).append(o["role"] == "b")
+    return float(np.mean([np.mean(v) for v in per_item.values()])), len(per_item)
+
+
+def exp04_variance_share(lens, what):
+    """exp04 parts_window fve.jsonl: the median share of δ's variance in the part (or of a random direction's, chance)."""
+    return float(np.median([f["share"] for f in jsonl(EXP04_PARTS / "fve.jsonl") if (f["lens"], f["what"]) == (lens, what)]))
+
+
 def main():
     checks = [
         ("exp10", "27B stripped, pass@10, J++", exp10_pass10("jpp")[0], 0.75),
@@ -320,6 +342,14 @@ def main():
         ("exp04", "rule lines, layer 24: c", exp04_role_rate("cf", "rules", 24, "c")[0], 0.95),
         ("exp04", "rule lines, layer 40: original answer", exp04_role_rate("cf", "rules", 40, "A")[0], 0.84),
         ("exp04", "off-path control, most answers changed", exp04_max_off_changed(), 0.02),
+        ("exp04", "parts: step score, whole copy", exp04_step_score("full")[0], 0.31),
+        ("exp04", "parts: J++ I/X lens coordinates", exp04_step_score("lens2", "jpp")[0], 0.0),
+        ("exp04", "parts: J++ all but those", exp04_step_score("not_lens2", "jpp")[0], 0.31),
+        ("exp04", "parts: J++ J-space part (25 atoms)", exp04_step_score("jspace", "jpp")[0], 0.0),
+        ("exp04", "parts: J++ all but the J-space part", exp04_step_score("not_jspace", "jpp")[0], 0.26),
+        ("exp04", "parts: J-lens all but the J-space part", exp04_step_score("not_jspace", "jlens")[0], 0.24),
+        ("exp04", "parts: J++ J-space share of δ's variance", exp04_variance_share("jpp", "jspace"), 0.08),
+        ("exp04", "parts: J++ J-space share of a random direction's", exp04_variance_share("jpp", "chance"), 0.07),
     ]
     width = max(len(c[1]) for c in checks)
     for exp, what, got, claimed in checks:

@@ -7,6 +7,10 @@ exp04_figures.py OUT_NAME RUN  -> figures/exp04_brew_patch/OUT_NAME/ (write-once
                     changes the answer at all
     patch_logp.png  the same patches, graded: mean log-probability of f(X) and of c at the first answer token,
                     minus that of the original answer
+  exp04_figures.py OUT_NAME RUN  (a patch_parts run, exp04_brew_parts.py)
+    parts.png       per lens: the step score (the share of window layers at which a copy gives f(X), averaged over
+                    items, 95% bootstrap CI) of the full copy and of each part, next to each part's random-direction
+                    null; and by layer, how often each part's copy gives f(X) and how often it gives X itself
 """
 
 from __future__ import annotations
@@ -116,16 +120,112 @@ def patch_logp(cells: dict, layers: list[int], n_items: int, out: Path) -> None:
     plt.close(fig)
 
 
+PART_STYLE = {  # part -> (colour, label)
+    "full": (INK, "the whole copy"),
+    "lens2": ("#8a3db8", "its I/X lens coordinates"),
+    "not_lens2": ("#c9a3e0", "all but those"),
+    "jspace": ("#3d8c5a", "its J-space part (25 atoms)"),
+    "not_jspace": ("#9cc9a8", "all but that"),
+}
+
+
+def step_score_ci(outcomes: list[dict], n_boot: int = 2000, seed: int = 0) -> tuple[float, float, float]:
+    """Mean over items of each item's share of layers answering f(X), with a percentile bootstrap CI over items."""
+    import numpy as np
+
+    by_item: dict[str, list[bool]] = {}
+    for o in outcomes:
+        by_item.setdefault(o["name"], []).append(o["role"] == "b")
+    scores = np.array([np.mean(v) for v in by_item.values()])
+    rng = np.random.default_rng(seed)
+    boots = scores[rng.integers(0, len(scores), size=(n_boot, len(scores)))].mean(1)
+    return float(scores.mean()), float(np.percentile(boots, 2.5)), float(np.percentile(boots, 97.5))
+
+
+def parts_figure(outcomes: list[dict], out: Path) -> None:
+    lenses = [lens for lens in ("jpp", "jlens") if any(o["lens"] == lens for o in outcomes)]
+    title = {"jpp": "J++", "jlens": "J-lens"}
+    layers = sorted({o["layer"] for o in outcomes})
+    n_items = len({o["name"] for o in outcomes})
+    pick = lambda **w: [o for o in outcomes if all(o[k] == v for k, v in w.items())]  # noqa: E731
+    fig, axes = plt.subplots(2, len(lenses), figsize=(6.2 * len(lenses), 7.4), facecolor=SURFACE)
+    for col, lens in enumerate(lenses):
+        ax = axes[0, col]
+        style_axes(ax)
+        bars = [("full", pick(part="full", source="cf"), False)]
+        for part in ("lens2", "not_lens2", "jspace", "not_jspace"):
+            bars += [
+                (part, pick(lens=lens, part=part, null=False), False),
+                (part, pick(lens=lens, part=part, null=True), True),
+            ]
+        for x, (part, rows, null) in enumerate(bars):
+            m, lo, hi = step_score_ci(rows)
+            colour, _ = PART_STYLE[part]
+            ax.bar(
+                x,
+                100 * m,
+                color=CONTROL if null else colour,
+                width=0.8,
+                hatch="//" if null else None,
+                edgecolor=SURFACE,
+            )
+            ax.errorbar(x, 100 * m, yerr=[[100 * (m - lo)], [100 * (hi - m)]], color=INK, lw=1, capsize=2)
+        ax.set_xticks(range(len(bars)))
+        ax.set_xticklabels(
+            [("null" if null else PART_STYLE[part][1]) for part, _, null in bars], rotation=35, ha="right", fontsize=8
+        )
+        ax.set_ylabel("step score (% of window layers giving f(X))", color=MUTED, fontsize=9)
+        ax.set_title(f"{title[lens]}: copy only a part of δ = h_C - h_B", loc="left", fontsize=10, color=INK)
+        ax = axes[1, col]
+        style_axes(ax)
+        for part, (colour, label) in PART_STYLE.items():
+            rows = pick(part="full", source="cf") if part == "full" else pick(lens=lens, part=part, null=False)
+            b = [
+                100
+                * sum(o["role"] == "b" for o in rows if o["layer"] == L)
+                / max(1, sum(o["layer"] == L for o in rows))
+                for L in layers
+            ]
+            xs = [
+                100
+                * sum(o["role"] == "X" for o in rows if o["layer"] == L)
+                / max(1, sum(o["layer"] == L for o in rows))
+                for L in layers
+            ]
+            ax.plot(layers, b, color=colour, lw=1.8, label=f"{label}: f(X)")
+            if part != "full":
+                ax.plot(layers, xs, color=colour, lw=1.0, ls=":", label=f"{label}: X itself")
+        ax.set_title(f"{title[lens]}: by layer", loc="left", fontsize=10, color=INK)
+        ax.set_xlabel("layer copied (after the start line)", color=MUTED, fontsize=9)
+        ax.set_ylabel("% of items", color=MUTED, fontsize=9)
+        ax.set_ylim(-3, 103)
+    fig.legend(*axes[1, 0].get_legend_handles_labels(), loc="lower center", ncol=3, frameon=False, fontsize=8)
+    fig.suptitle(
+        f"Which part of the window's copy carries the intermediate? (n={n_items}; hatched: the part's matched-norm "
+        "random direction)",
+        x=0.01,
+        ha="left",
+        fontsize=11,
+        color=INK,
+    )
+    fig.tight_layout(rect=(0, 0.09, 1, 0.95))
+    fig.savefig(out / "parts.png", dpi=170, facecolor=SURFACE)
+    plt.close(fig)
+
+
 def main(out_name: str, run: str, out_root: Path, results_root: Path) -> None:
     out = out_root / out_name
     out.mkdir(parents=True, exist_ok=False)
     with open(results_root / EXP / run / "outcomes.jsonl") as f:
         outcomes = [json.loads(line) for line in f]
-    cells = by_cell(outcomes)
-    layers = sorted({o["layer"] for o in outcomes})
-    n_items = len({o["name"] for o in outcomes})
-    patch_map(cells, layers, n_items, out)
-    patch_logp(cells, layers, n_items, out)
+    if "part" in outcomes[0]:
+        parts_figure(outcomes, out)
+    else:
+        cells = by_cell(outcomes)
+        layers = sorted({o["layer"] for o in outcomes})
+        n_items = len({o["name"] for o in outcomes})
+        patch_map(cells, layers, n_items, out)
+        patch_logp(cells, layers, n_items, out)
     (out / "sources.json").write_text(json.dumps({"runs": [run]}, indent=2) + "\n")
     print("wrote", out)
 
