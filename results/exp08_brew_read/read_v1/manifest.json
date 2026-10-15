@@ -1,0 +1,93 @@
+{
+  "exp": "exp08_brew_read",
+  "run": "read_v1",
+  "kind": "brew_read",
+  "written_utc": "2026-10-15T03:02:21Z",
+  "question": "After the start line, where brew's step is carried (layers 36-50), do the lenses read the intermediate I, against a distractor colour equally present in the prompt?",
+  "why": "Chosen by the human (Zach, 2026-10-15) after exp07: does the lens read the intermediate where it cannot write the step? Part A's readout protocol (top-1 among candidates, distractor control, logit-lens baseline).",
+  "model": {
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "items": {
+    "source": "exp07_step_code/code_v1 items.jsonl, status eligible (exp04's eligibility)",
+    "sha256": "1a565d98746bf400cbc08694699e6cb22171978e1cd591dccc1c4eef2d2d62d4",
+    "sets": {
+      "fresh": "1e20ed25b3727842acba0806b346d91d991db1fa31f42f514e537fb3ab000d3c",
+      "bank": "183be95d4182c373674786b7610820520e56434fb0c15a75a62dad854bed9d83"
+    }
+  },
+  "positions": "after_start (the 21 tokens after the start line, as exp04 and exp07)",
+  "layers": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50,
+    52,
+    54,
+    56,
+    58,
+    60,
+    62
+  ],
+  "window": [
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50
+  ],
+  "readers": {
+    "jpp": "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+    "jlens": "qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt",
+    "logit": "the final norm and unembedding applied to the block output (part A's baseline)",
+    "code": "exp07's code (window layers only): colour k scores <h - w_0, E_I[k]> - |E_I[k]|^2 / 2 at each position, without the item's S and A"
+  },
+  "code": {
+    "file": "cache/exp07/code.pt",
+    "sha256": "c8f1492411295b0b5544e6ed2dfaba143679b6a533707d70c6a6204f9a9a5f9e"
+  },
+  "readout": "each reader's scores for the 12 palette colours' concept tokens at each position; a role is read at a position if its colour is the top-1 of the 12 (part A's 'top-1 among the candidates')",
+  "roles": {
+    "I": "the intermediate",
+    "X": "the distractor: exp03's swap target, a rule-table colour off the path",
+    "S": "the start colour",
+    "A": "the answer"
+  },
+  "decision": {
+    "read_score": "per item, the share of (window layer, position) cells at which the role's colour is top-1; differences are paired bootstraps over items (95%)",
+    "reads": "a reader reads the intermediate at the window if I's read score exceeds X's (CI above 0), on the fresh items (J++ primary; the J-lens, the logit lens and the code secondary; the bank items replicate)",
+    "reader_works": "positive control: a lens reader is interpreted only if, at the last position at layer 62, A is top-1 for more items than X (Wilson intervals not overlapping)"
+  },
+  "deviations": [
+    "X is exp03's swap target, so the distractor is the colour the lens edits moved toward; any rule-table colour is equally present in the prompt.",
+    "Top-1 among 12 colours, not among the vocabulary; the vocabulary rank of I is kept for reference."
+  ]
+}

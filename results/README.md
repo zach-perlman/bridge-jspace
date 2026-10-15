@@ -49,6 +49,9 @@ Notes:
   next to exp04's copy, the lens direction, its Σ-shaped versions and the code's J-space part. Run `code_v1`
   (`scripts/exp07_step_code.py`); figure `../figures/exp07_step_code/v1/`
   (`uv run python scripts/exp07_figures.py <new folder> code_v1`).
+- **exp08_brew_read:** do the lenses read brew's intermediate after the start line (top-1 of the 12 colours, distractor
+  X, logit lens and exp07's code as references)? Run `read_v1` (`scripts/exp08_brew_read.py`); figure
+  `../figures/exp08_brew_read/v1/` (`uv run python scripts/exp08_figures.py <new folder> read_v1`).
 - exp02 controls for "the J-space part flips more because it carries more of the probe": `exp02_swaps/
   matched_v4_{jpp,jlens}` (matched-alignment random directions) and `exp02_swaps/analysis/edit_size_v1/`
   (`scripts/exp02_edit_size.py`, no model).

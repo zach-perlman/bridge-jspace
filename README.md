@@ -570,6 +570,46 @@ rates in `summary.json`; diagnostics in `diagnostics.jsonl`. Figure: `uv run pyt
 folder> code_v1`. Headlines are recomputed by `scripts/verify_headlines.py`.
 </details>
 
+### exp08_brew_read (part B): the lens reads brew's intermediate at a few positions; writing along its direction does nothing
+**What we measure.** exp07's code writes the step and is nearly orthogonal to the lens direction. Is the lens blind to
+the intermediate there, or does it read it without being able to write it? Part A's protocol: at each of the 21
+positions after the start line and every second layer, is I the top-1 of the 12 palette colours in the reader's
+readout (J++, the J-lens, the logit lens as baseline), against the distractor X, a rule-table colour equally present
+in the prompt? exp07's code serves as a lens-free reader. Clean prompts, exp07's 236 items, no edits.
+
+**In short.**
+- **Averaged over the window's positions, the lenses barely read I.** At layers 36-50 J++ ranks I first in 15% of
+  (layer, position) cells, the distractor in 8% (+7 [+5, +9] pts; chance 8%); the J-lens and the logit lens 12% (+5
+  each); exp07's code 41% (+36 [+33, +40]). Bank items alike (J++ 13% vs 8%; the logit lens no better than the
+  distractor). By the manifest's rule J++ and the J-lens read I, weakly.
+- **At a few positions they read it well, from the window's first layer.** At layer 36 J++ ranks I first for 61% of
+  fresh items at the newline after "assistant" (the J-lens 47%; bank 55% and 54%), and for about half at the "\n\n"
+  after "</think>" (layers 40-44); X is first there for 2-6%, and the same search over the window's cells finds X at
+  most 13-16%. The code reads I best at the same position (88%). Before layer 36 no position reads I above chance.
+- **The readers work on these prompts.** At the last token at layer 62 all three put the answer first (J++ 95%, the
+  J-lens 92%, the logit lens 86%; X 0-1%).
+
+With exp07: the lens sees the intermediate where brew carries it, at a few scaffold tokens, but writing along its
+direction (v_X - v_I) moves the step for 1% of window layers, while a fitted code nearly orthogonal to it moves it for
+34%. The direction the lens reads I along is not one that takes the step when written.
+
+![exp08: reading the intermediate](figures/exp08_brew_read/v1/brew_read.png)
+
+**What this does not show.** Top-1 among 12 colours, not among the vocabulary: in the window the median vocabulary
+rank of I is about 9,600 (J++), 25,000 (logit lens) and 182,000 (J-lens), so the lens ranks the colour above other
+colours without saying it. The best cells were found after the fact (a search over 168 cells), checked against the
+same search for X. Whether the model takes its second lookup from these positions is not tested (exp04 copied all 21
+positions together).
+
+<details><summary>Full numbers and checks</summary>
+
+Run: `results/exp08_brew_read/read_v1` (manifest written before the run; the human chose the run; part A's controls:
+the distractor and the logit lens). Every read is in `reads.jsonl` (colour ranks per position for I, X, S, A; the
+vocabulary rank of I at the window layers); per reader, layer and position in `summary.json`. Positions are the same 21
+tokens in every item (exp07's check). Figure: `uv run python scripts/exp08_figures.py <new folder> read_v1` (loads the
+tokenizer for the position labels). Headlines are recomputed by `scripts/verify_headlines.py`.
+</details>
+
 ### Pitfalls found so far
 1. **Trailing space.** Most original prompts end in a space (83/93), which Qwen's tokenizer leaves as a lone `" "`
    token. The model then answers far worse (27B: 21/93 correct vs 61/93 with the space stripped) and the lens reads a
@@ -628,7 +668,9 @@ In order; designs need human sign-off before GPU runs.
 5. **Brew:** exp04 maps the lookup (the intermediate is carried after the start line at layers 36-50) and finds the
    step outside the J-space, on the bank items and again on 154 fresh ones; exp07 finds a code for the intermediate,
    fit on other items, that writes the step as well as the copy, outside the J-space and orthogonal to the lens
-   direction. Next: whether the lens reads the intermediate at those positions (readouts only); what the I answers at
-   layers 36-46 are; and steering at the cue phrase in exp02 at the same sizes, to compare the two settings at one dose.
+   direction; exp08 finds the lens reads the intermediate there only at a few scaffold tokens (J++ 61% at the newline
+   after "assistant", layer 36), along a direction that does not write the step. Next: copy only those positions (is
+   the second lookup read from them?); split the code at those positions into the lens-read part and the rest; what
+   the I answers at layers 36-46 are; and steering at the cue phrase in exp02 at the same sizes.
 6. **Σ-aware writes** (exp06, exp07): writing along Σv lost to writing along v at the start line, and did no better
    than v at exp04's window. Dropped unless a human wants a Mahalanobis-matched version.

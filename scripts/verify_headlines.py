@@ -322,6 +322,26 @@ def exp07_read_accuracy(item_set, layer):
     return float(np.mean([r["decoded"] == r["I"] for r in rows]))
 
 
+EXP08 = R / "exp08_brew_read/read_v1"
+
+
+def exp08_window_read(item_set, reader, role):
+    """exp08 reads.jsonl: per item of a set, the share of (window layer 36-50, position after the start line) cells
+    at which the role's colour is the top-1 of the 12 palette colours in the reader's readout; the mean over items."""
+    cells = {}
+    for r in jsonl(EXP08 / "reads.jsonl"):
+        if (r["set"], r["reader"]) == (item_set, reader) and 36 <= r["layer"] <= 50:
+            cells.setdefault(r["name"], []).extend(rank == 0 for rank in r["colour_rank"][role])
+    return float(np.mean([np.mean(v) for v in cells.values()]))
+
+
+def exp08_cell(item_set, reader, role, layer, position):
+    """exp08 reads.jsonl: the share of items whose role colour is the top-1 at one layer and position after the start
+    line (position 14: the newline after "assistant"; 20: the last token)."""
+    rows = [r for r in jsonl(EXP08 / "reads.jsonl") if (r["set"], r["reader"], r["layer"]) == (item_set, reader, layer)]
+    return float(np.mean([r["colour_rank"][role][position] == 0 for r in rows]))
+
+
 def exp07_diagnostic(what, lens=None):
     """exp07 diagnostics.jsonl: the median of one diagnostic over items and layers."""
     values = [d["value"] for d in jsonl(EXP07 / "diagnostics.jsonl") if (d["lens"], d["what"]) == (lens, what)]
@@ -606,6 +626,16 @@ def main():
         ("exp07", "J++: cosine of the code to the lens direction", exp07_diagnostic("cos code~lens", "jpp"), 0.02),
         ("exp07", "J++: J-space share of the code", exp07_diagnostic("code jspace share", "jpp"), 0.09),
         ("exp07", "J++: J-space share of a random direction", exp07_diagnostic("chance", "jpp"), 0.07),
+        ("exp08", "fresh window: J++ reads I", exp08_window_read("fresh", "jpp", "I"), 0.15),
+        ("exp08", "fresh window: J++ reads X (distractor)", exp08_window_read("fresh", "jpp", "X"), 0.08),
+        ("exp08", "fresh window: J-lens reads I", exp08_window_read("fresh", "jlens", "I"), 0.12),
+        ("exp08", "fresh window: logit lens reads I", exp08_window_read("fresh", "logit", "I"), 0.12),
+        ("exp08", "fresh window: exp07's code reads I", exp08_window_read("fresh", "code", "I"), 0.41),
+        ("exp08", "fresh L36, after 'assistant': J++ I", exp08_cell("fresh", "jpp", "I", 36, 14), 0.61),
+        ("exp08", "fresh L36, after 'assistant': J++ X", exp08_cell("fresh", "jpp", "X", 36, 14), 0.02),
+        ("exp08", "fresh L36, after 'assistant': J-lens I", exp08_cell("fresh", "jlens", "I", 36, 14), 0.47),
+        ("exp08", "bank L36, after 'assistant': J++ I", exp08_cell("bank", "jpp", "I", 36, 14), 0.55),
+        ("exp08", "fresh L62, last token: J++ reads A", exp08_cell("fresh", "jpp", "A", 62, 20), 0.95),
     ]
     width = max(len(c[1]) for c in checks)
     for exp, what, got, claimed in checks:
