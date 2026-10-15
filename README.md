@@ -102,6 +102,16 @@ Draft, UNVERIFIED: nothing is in `VERIFIED.md` yet. The STATE block in `AGENTS.m
 Final figures, numbers and examples per experiment: [results/README.md](results/README.md). Every part A number below
 is recomputed from the raw run files by `uv run python scripts/verify_headlines.py`.
 
+**Where things stand (2026-10-15).** On Qwen3.6-27B the J-lens and J++ do read the bridge, once read at the right
+place: one word before the end from about layer 23, 19 layers before the answer appears at the last word (exp12). It
+acts on the answer from the cue phrase, the words that point to it, and does so apart from the answer's own direction
+(exp14). Readers that put an activation into words, the oracle lens and the NLA, see the bridge and the answer a
+little more often than the lenses at the same place and layer, including about a third to a half of the readings
+where neither lens has the bridge first, and they follow the model's state when a swap changes its answer (exp15,
+exp16). Whether, on those lens-blind readings, they read the state or solve the question themselves is the open
+question; the next experiment (exp17, Next steps) is designed to settle it and has not been run. Part B (exp01-04)
+asks the original question with probe swaps.
+
 **Final figures (Qwen3.6-27B).**
 | Figure | What it shows |
 |---|---|
@@ -126,8 +136,8 @@ is recomputed from the raw run files by `uv run python scripts/verify_headlines.
 | [exp10 `pass_at_10_by_bridge_kind.png`](figures/exp10_lens_sanity/20261015-135537/pass_at_10_by_bridge_kind.png) | pass@10 by kind of bridge (27B), best layer anywhere and within 32-48: the logit lens's numbers come from the last layers |
 | [exp10 `27b_by_layer.png`](figures/exp10_lens_sanity/20261015-135537/27b_by_layer.png) | Why the J-lens looks no better than the logit lens on pass@10 |
 
-Worked examples with lens tables: `make examples-serve` opens [examples/index.html](examples/index.html) (all three
-experiments); the exp12 page is also published at https://claude.ai/artifact/TXLZH6WxuxSQDhoK5YHTj9 (anyone with the
+Worked examples with lens tables: `make examples-serve` opens [examples/index.html](examples/index.html) (exp10-12,
+exp15, exp16); the exp12 page is also published at https://claude.ai/artifact/TXLZH6WxuxSQDhoK5YHTj9 (anyone with the
 link can open it). Each page groups sampled questions by what the readers do with them; exp10's also by what the bridge
 is: a number ('6', 'four'), a letter (a chemical symbol), or named in the prompt (`scripts/exp10_lens_sanity/examples.py`;
 a bridge counts as found if any of its listed forms is). The exp10 page shows these groups from its next examples run.
@@ -163,15 +173,20 @@ each question.
    position and layer (exp15). Where neither the J-lens nor J++ ranks the bridge 1st it names it in 37% of readings
    (false alarms 4%), mostly where the lenses nearly have it (54% at 2nd-3rd, 22% at 11th or lower). Read at all 11
    layers both find the bridge somewhere in every question (the distractor in a third), so there it adds no question;
-   at one layer it adds a few. After the bridge
-   swap it names the swap target where the model's answer changes (67% vs 10% where it does not), so it follows the
-   state; but it mostly writes the question out with the bridge filled in, so on the lens-blind readings it may be
-   solving the question rather than reading the state, which only a cleaner test can tell.
-9. A second verbalizer with another training objective, the NLA (exp16, layer 42), agrees: it names the bridge in 46% of the readings
-   where neither lens has it first (false alarms 10%), and the swap target where the swap changes the answer (59%
-   vs 11%). At layer 42 both verbalizers have the bridge and the answer more often than either lens (bridge: NLA 75%,
+   at one layer it adds a few. After the bridge swap it names the swap target where the model's answer changes (67% vs
+   10% where it does not), so it follows the state; but it mostly writes the question out with the bridge filled in,
+   so on the lens-blind readings it may be solving the question rather than reading the state, which only a cleaner
+   test can tell.
+9. A second verbalizer with another training objective, the NLA (exp16, layer 42), agrees: it names the bridge in
+   46% of the readings where neither lens has it first (false alarms 10%), and the swap target where the swap changes
+   the answer (59% vs 11%). At layer 42 both verbalizers have the bridge and the answer more often than either lens (bridge: NLA 75%,
    oracle 65-70%, lenses 62-65%; answer: 57%, 54-55%, 34-38%). Both are built on Qwen3.6-27B, so agreeing does not
    rule out that both solve the question; the NLA's own comments often do.
+10. Three checks on the verbalizers. Our code gives the same texts as WorkspaceBench's reference code path, so the
+    oracle's fragmentary format is its own. On the cue phrase they name the answer no more often than a lens ranks it
+    first there (NLA 23% vs 30%, oracle 30% vs 27%): no sign of extra solving where the answer is not yet formed. Of
+    the NLA's lens-blind namings, 63% are inside its quotation of the prompt with the bridge filled in (a hint of the
+    state), 37% in its own comments (likely solving).
 
 ![exp12: where and how deep](figures/exp12_position_map/two_step.png)
 
@@ -962,6 +977,15 @@ recomputed by `scripts/verify_headlines.py`.
 7. **Number bridges and best-of-all-layers.** Over all layers the logit lens finds number bridges ('6', 'four') more
    often than the lenses, at layers 54-60; within layers 32-48 the lenses lead for numbers too. Mixing number and word
    bridges, and taking the best of all layers, both hide the J-lens's lead (exp10 reports both splits).
+8. **Numeric answers in a verbalizer's text.** "2" matches the oracle's list numbering ("2. ..."), so the 11 numeric
+   answers are left out of every verbalizer answer rate; word matching treats digits as part of a word.
+9. **A pre-commit hook rewrote pinned data.** `end-of-file-fixer` added newlines to `data/` and `results/` files,
+   which changes their sha256 pins; reverted, and the hooks now skip `data/`, `results/` and `examples/`.
+10. **"Found somewhere in the question" saturates.** Read at 33 positions and layers, both the lenses and the oracle
+    find every question's bridge somewhere, so question-level coverage can only be compared at one layer, against the
+    distractor (exp15).
+11. **A verbalizer can solve instead of read.** The oracle re-tells the question with the bridge filled in, the NLA
+    comments on it; naming the bridge is not by itself evidence that the state holds it (exp15, exp16).
 
 ### Decisions
 - **Trailing space: removed in every experiment, part A and part B** (2026-10-13 for part A; part B followed in its
@@ -984,33 +1008,54 @@ recomputed by `scripts/verify_headlines.py`.
   search that also matched single-letter bridges inside other words. This closes the open decision about them.
 - **Next steps are written as question, why, test, cost** (2026-10-15), so each says what it would settle before it
   asks for GPU time.
+- **The swap experiments end with exp14's pinned run** (2026-10-15): part A turned to the verbalizers.
+- **Verbalizers are read only on their contract** (2026-10-15): the oracle lens on its trained layers 20-60 in steps
+  of 4 (layer 42 is compared through 40 and 44), the NLA at 42 with WorkspaceBench's adapter `iter_000400`; greedy
+  decoding for determinism, checked against the reference code path's sampled texts.
+- **exp17 is brought as a design, not run** (2026-10-15): too few aligned pairs exist yet for a clean result, and the
+  design is better reviewed first (the critic's recommendation).
 
 ### Open decisions (humans)
-- None at the moment.
+- Which headline numbers go into `VERIFIED.md` after a human recomputes them (`verify_headlines.py` lists every
+  one with its source file).
+- exp17: run it as designed below, change it, or drop it.
 
 ## Next steps (part A)
 In order. Each item: the question, why it matters now, the test, and its cost. Every GPU run needs human sign-off.
-exp14's pinned run closed the swap experiments (on the cue phrase the bridge acts apart from the answer's direction).
-exp15 read all 11 of the oracle lens's layers: it names the bridge in about a third of the readings where the lenses
-miss it, mostly where they nearly have it, and across all layers adds no question the lenses miss; exp16's NLA, a second
-verbalizer, agrees at layer 42. What follows checks whether that is reading or solving.
+exp14's pinned run closed the swap experiments; exp15 and exp16 showed two verbalizers naming the bridge where the
+lenses miss it and following the model's state under a swap. What is left is whether that is reading or solving.
 
-1. **On the lens-blind readings, do the verbalizers read the state or solve the question?** (exp17, design from the
-   critic)
+1. **On the lens-blind readings, do the verbalizers read the state or solve the question?** (exp17; designed, not
+   run; design from the critic)
    - *Why:* 87% of the oracle's lens-blind namings are the question re-told with the bridge filled in, and the NLA's
-     comments often solve the question outright; both readers know the facts. The swap tests cover 5 such questions,
-     and 17 of their 23 are one country template.
-   - *Test:* pairs of questions in one template whose tokens line up, e.g. "...where Cairo is located..." and
-     "...where Lima is located...". Patch the donor's (Lima's) cue-phrase activations into the recipient (Cairo's)
-     prompt and read the oracle lens and the NLA at the recipient's last word: Peru = they read the state, Egypt = they
-     solve from the text. Counts only where the model's answer follows the donor (the patch took).
-   - *Cost:* about 18 such pairs exist, nearly all places; more need generated pairs (no GPU) first. About 30 minutes
-     of GPU.
+     comments often solve it outright; both readers know the facts. exp15's swap test covers only 5 questions with
+     lens-blind readings, and 17 of its 23 are one country template.
+   - *Design:* pairs of questions in one template whose tokens line up and differ only in the cue entity, e.g. the
+     recipient "...the country where Cairo is located is" and the donor "...where Lima is located is". Run the
+     recipient with the donor's residual copied in at the cue tokens, layers 24-40 (exp14's swap band), and read the
+     oracle lens (layers 36-48) and the NLA (42) at the recipient's last word and -1, downstream of the patch.
+     - *Pairs:* the ~18 aligned pairs in the probe-swap set (nearly all places), plus pairs generated from the
+       place templates (capital / continent / currency / language of the country where X is located) over cities with
+       single-token names; built and token-checked without GPU first. Kept: both questions answered correctly.
+     - *A patch counts* only if the model's own answer follows the donor (Spanish for Lima's language template).
+     - *Controls:* the recipient unpatched (the reader's baseline: Egypt); the donor prompt itself (its ceiling: Peru);
+       the same patch at as many non-cue tokens (the answer and the reader should not move).
+   - *What each result means:* the reader names the donor's bridge (Peru) where the patch took: it reads the state
+     the answer uses, also where the lenses miss it. It names the recipient's (Egypt) while the model answers like
+     the donor: it solves the question from text it reconstructs, and its lens-blind readings say nothing about the
+     state. Mixed: report both shares by layer; the swap test predicts more Peru from layer 36 on.
+   - *Prediction:* mostly Peru at layers 40-48 (exp15's swap test: 67-74% there), a minority of Egypt where the
+     reader re-tells the question from the prompt's early-layer tokens.
+   - *Decision rule (draft, fixed before any run):* "reads the state" if, among pairs where the patch took, the
+     reader names the donor's bridge at least 30 points more often than the recipient's (paired CI above 0) and the
+     non-cue control moves neither; "solves" if it names the recipient's more often.
+   - *Cost:* pair generation without GPU; then about an hour of GPU (Qwen captures and patches; the oracle reads in the
+     same process; the NLA in a second phase).
 2. **Brew, where the bridge is never named in the prompt** (after 1 shows the verbalizers read states)
    - *Why:* in brew's in-context lookup the intermediate is not an entity of the question, so a reader cannot recall
      it from world knowledge; exp04 locates it after the start line at layers 36-50.
-   - *Test:* read those positions with the lenses first (not done yet), then with the oracle on the lens-blind cells,
-     with a counterfactual context as the control.
+   - *Test:* read those positions with the lenses first (not done yet), then with the oracle and the NLA on the
+     lens-blind cells, with a counterfactual context as the control.
 
 Parked: these were next steps; part A does not pursue them now.
 - *Is the bridge at -1 a copy the answer does not use?* Patching -1 from a question with another bridge needs prompt
