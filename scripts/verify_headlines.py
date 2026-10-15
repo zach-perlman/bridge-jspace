@@ -303,6 +303,31 @@ def exp04_variance_share(lens, what, run="parts_window"):
     return float(np.median(shares))
 
 
+EXP07 = R / "exp07_step_code/code_v1"
+
+
+def exp07_step_score(item_set, direction, dose="copy", lens=None):
+    """exp07 outcomes.jsonl: per item of a set (fresh / bank), the share of the 8 window layers at which the edit gives
+    f(X) (role "b"); then the mean over items. dose "copy" is the copy's size, "code" the code's own."""
+    per_item = {}
+    for o in jsonl(EXP07 / "outcomes.jsonl"):
+        if (o["set"], o["direction"], o["dose"], o["lens"]) == (item_set, direction, dose, lens):
+            per_item.setdefault(o["name"], []).append(o["role"] == "b")
+    return float(np.mean([np.mean(v) for v in per_item.values()])), len(per_item)
+
+
+def exp07_read_accuracy(item_set, layer):
+    """exp07 reads.jsonl: share of items whose own intermediate the code decodes from their activations at a layer."""
+    rows = [r for r in jsonl(EXP07 / "reads.jsonl") if (r["set"], r["layer"]) == (item_set, layer)]
+    return float(np.mean([r["decoded"] == r["I"] for r in rows]))
+
+
+def exp07_diagnostic(what, lens=None):
+    """exp07 diagnostics.jsonl: the median of one diagnostic over items and layers."""
+    values = [d["value"] for d in jsonl(EXP07 / "diagnostics.jsonl") if (d["lens"], d["what"]) == (lens, what)]
+    return float(np.median(values))
+
+
 def main():
     checks = [
         ("exp10", "27B stripped, pass@10, J++", exp10_pass10("jpp")[0], 0.75),
@@ -560,6 +585,27 @@ def main():
         ("exp06", "steer J-lens 3%: λ = 1 (the lens)", exp06_rate("steer", "jlens", lam=1.0, scale=0.03)[0], 0.30),
         ("exp06", "steer J-lens 3%: λ = 0.5", exp06_rate("steer", "jlens", lam=0.5, scale=0.03)[0], 0.01),
         ("exp06", "steer J++ 3%: random direction", exp06_rate("steer", "jpp", null=True, scale=0.03)[0], 0.0),
+        ("exp07", "fresh: items", exp07_step_score("fresh", "copy")[1], 154),
+        ("exp07", "fresh: the copy", exp07_step_score("fresh", "copy")[0], 0.31),
+        ("exp07", "fresh: code", exp07_step_score("fresh", "code")[0], 0.34),
+        ("exp07", "fresh: random", exp07_step_score("fresh", "random")[0], 0.0),
+        ("exp07", "fresh: code at its own size", exp07_step_score("fresh", "code", "code")[0], 0.04),
+        ("exp07", "fresh: J++ lens direction", exp07_step_score("fresh", "lens", lens="jpp")[0], 0.01),
+        ("exp07", "fresh: J++ Σ-shaped lens direction", exp07_step_score("fresh", "sigma_0.0", lens="jpp")[0], 0.01),
+        ("exp07", "fresh: J++ code's J-space part", exp07_step_score("fresh", "code_jspace", lens="jpp")[0], 0.0),
+        ("exp07", "fresh: J++ code's rest", exp07_step_score("fresh", "code_rest", lens="jpp")[0], 0.29),
+        ("exp07", "fresh: J-lens code's rest", exp07_step_score("fresh", "code_rest", lens="jlens")[0], 0.27),
+        ("exp07", "bank: items", exp07_step_score("bank", "copy")[1], 82),
+        ("exp07", "bank: the copy", exp07_step_score("bank", "copy")[0], 0.31),
+        ("exp07", "bank: code", exp07_step_score("bank", "code")[0], 0.25),
+        ("exp07", "bank: J++ code's rest", exp07_step_score("bank", "code_rest", lens="jpp")[0], 0.20),
+        ("exp07", "bank: J-lens code's rest", exp07_step_score("bank", "code_rest", lens="jlens")[0], 0.18),
+        ("exp07", "fresh: the code reads I, layer 40", exp07_read_accuracy("fresh", 40), 0.92),
+        ("exp07", "fresh: the code reads I, layer 50", exp07_read_accuracy("fresh", 50), 0.76),
+        ("exp07", "code norm over the copy's", exp07_diagnostic("code norm over copy norm"), 0.45),
+        ("exp07", "J++: cosine of the code to the lens direction", exp07_diagnostic("cos code~lens", "jpp"), 0.02),
+        ("exp07", "J++: J-space share of the code", exp07_diagnostic("code jspace share", "jpp"), 0.09),
+        ("exp07", "J++: J-space share of a random direction", exp07_diagnostic("chance", "jpp"), 0.07),
     ]
     width = max(len(c[1]) for c in checks)
     for exp, what, got, claimed in checks:

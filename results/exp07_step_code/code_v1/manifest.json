@@ -1,0 +1,116 @@
+{
+  "exp": "exp07_step_code",
+  "run": "code_v1",
+  "kind": "step_code",
+  "written_utc": "2026-10-15T02:00:48Z",
+  "question": "At exp04's window (after the start line, layers 36-50), does a linear code for the intermediate colour, fit on other items, make the model take X as the step (answer f(X)) where the lens direction v_X - v_I does not? Does reshaping the lens direction by the activation covariance (\u03a3v) do it?",
+  "why": "Chosen by the human (Zach, 2026-10-15) after exp04's fresh replication and exp06: which direction carries brew's step at exp04's window. Design approved by the human before the run.",
+  "model": {
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "window": {
+    "layers": [
+      36,
+      38,
+      40,
+      42,
+      44,
+      46,
+      48,
+      50
+    ],
+    "positions": "after_start (everything after the start line)",
+    "maps": {
+      "patch_map": {
+        "summary_sha256": "d39692030044bf0bc34ac89077a85280dc4af1e43e36c69d8d5be3874cdb8227",
+        "window_after_start": [
+          36,
+          38,
+          40,
+          42,
+          44,
+          46,
+          48,
+          50
+        ]
+      },
+      "patch_map_fresh": {
+        "summary_sha256": "74931c1394d43b28e7510e812cf7746b511731d328f96186352e825c4201d8b4",
+        "window_after_start": [
+          36,
+          38,
+          40,
+          42,
+          44,
+          46,
+          48,
+          50
+        ]
+      }
+    }
+  },
+  "fit": {
+    "items": {
+      "file": "data/brew_fit.json",
+      "sha256": "b9ab169a50bf576d71c074b31516f283e3163366d8ce2aea0907addbdf0e2659"
+    },
+    "gate": "the model's greedy answer is A (exp03's reading)",
+    "model": "per window layer and position after the start line, ridge least squares (ridge 1.0, intercept not penalised) of the block output on one-hot codes of S, I and A over the 12-colour palette",
+    "code": "E_I[k], the coefficient row of intermediate colour k (each one-hot block's rows sum to zero)"
+  },
+  "sigma": "the WikiText-103 test covariance of block outputs at the window layers, estimated as exp06's (100,000 positions, 512-token windows, position 0 left out)",
+  "test_items": {
+    "fresh": {
+      "file": "data/brew_fresh.json",
+      "sha256": "1e20ed25b3727842acba0806b346d91d991db1fa31f42f514e537fb3ab000d3c"
+    },
+    "bank": {
+      "file": "data/brew_intermediates.json",
+      "sha256": "183be95d4182c373674786b7610820520e56434fb0c15a75a62dad854bed9d83"
+    }
+  },
+  "eligibility": "as exp04 (B answers A, C answers c, O answers A; C and O token-aligned with B), with the same tokens after the start line as the fit items",
+  "lenses": {
+    "jpp": "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+    "jlens": "qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt"
+  },
+  "edits": {
+    "copy": "\u03b4 = h_C - h_B (exp04's copy), at the copy dose by definition",
+    "code": "E_I[X] - E_I[I], per position",
+    "random": "a seeded Gaussian direction per position",
+    "lens": "v_X - v_I (unit lens vectors of the colours' concept tokens), the same at every position",
+    "sigma_\u03bb": "\u03a3_\u03bb (v_X - v_I), \u03a3_\u03bb = (1 - \u03bb) \u03a3 + \u03bb (tr \u03a3 / d) I, \u03bb in [0.5, 0.0]",
+    "code_jspace": "the copy-dosed code's 25-atom signed OMP approximation over the lens's unit vectors of letter-bearing tokens",
+    "code_rest": "the copy-dosed code minus code_jspace"
+  },
+  "dose": {
+    "copy": "primary: each edit as large as the copy \u03b4 at that layer (total norm over the positions after the start line). code is rescaled by one factor, keeping its own spread over the positions; lens, sigma_\u03bb and random take \u03b4's norm at each position; code_jspace and code_rest are parts of the rescaled code",
+    "code": "code at its own size; random at the code's norm at each position"
+  },
+  "layers": "each window layer on its own",
+  "outcome": "the edited continuation's first palette colour as a role (b = f(X), X, I, A, ...), as exp04",
+  "decision": {
+    "step_score": "per item, the share of window layers at which the edit gives f(X); differences are paired bootstraps over items (95%)",
+    "gate": "the run is interpreted only if, on the fresh items, copy's step score exceeds random's (copy dose)",
+    "code": "primary, fresh items, copy dose: the code writes the step if code - random is above 0; it writes where the lens direction does not if code - lens (J++) is above 0 as well",
+    "sigma": "secondary: \u03a3-shaping helps if sigma_\u03bb - lens is above 0 for \u03bb = 0.5 or 0 (J++; the J-lens alike)",
+    "code_parts": "secondary, exp04's rule with random as the null: the code's step is outside the J-space if code_rest - code_jspace is above 0 and code_jspace - random is not; inside if code_jspace - code_rest is above 0 and code_rest - random is not; otherwise both or neither",
+    "code_own_size": "secondary: the code at its own size writes the step if code - random (code dose) is above 0",
+    "replication": "the same comparisons on the bank items, reported",
+    "reproduce": "copy must reproduce exp04's full-copy rows (parts_window_fresh, parts_window) item for item (reported)"
+  },
+  "diagnostics": [
+    "read: on each test item's own activations, the intermediate decoded from the fit (given S and A), per layer; chance 1/12",
+    "the median cosine of the code to the lens direction and to each \u03a3_\u03bb lens direction",
+    "the share of the code's squared norm in its J-space part, and of a random direction's (chance)",
+    "the code's norm over the copy's, per position"
+  ],
+  "deviations": [
+    "The code is an average over items with S and A held fixed; exp04's copy is item-specific. At the copy dose the code is rescaled to the copy's size, which can be far from its own (both doses are run).",
+    "\u03a3 comes from WikiText at the window layers (exp06 estimated 8-40); \u03bb = 0.5 and 0.0 only.",
+    "Each window layer is edited on its own, as in exp04."
+  ]
+}

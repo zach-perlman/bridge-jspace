@@ -525,6 +525,51 @@ reproduces exp03's `fresh_steer` for 162-164 of 164 items. The covariance-shaped
 folder> sigma_v1`. Headlines are recomputed by `scripts/verify_headlines.py`.
 </details>
 
+### exp07_step_code (part B): a code for brew's intermediate, fit on other items, writes the step; the lens's direction does not
+**What we measure.** exp04's "outside the J-space" rests on splitting the copy δ, which carries everything that differs
+between the two prompts; its J-space part held only chance-level variance, so the split could have missed a small
+J-space component of the intermediate. Here the intermediate gets its own direction, as exp01's probe gave the bridge
+one for exp02: on 883 new brew items the model answers (`data/brew_fit.json`, never a test prompt), a ridge fit of the
+activations after the start line (each of the 21 positions, layers 36-50) on the start, intermediate and answer
+colours. The intermediate's coefficients E_I[k] are its code; E_I[X] - E_I[I] moves an item's intermediate from I to X
+with the start and the answer held fixed. On exp04's eligible items we add it at one window layer at a time, at the
+copy's size, next to the copy itself, a random direction, the lens direction v_X - v_I, two Σ-shaped versions of it
+(exp06), and the code's J-space part and the rest.
+
+**In short.**
+- **The code writes the step as well as the copy does; the lens direction does not.** On the 154 fresh items, adding
+  E_I[X] - E_I[I] at the copy's size gives f(X) at 34% of window layers (the copy 31%, random 0%); the lens direction
+  at the same size 1% (code minus lens: +33 [+27, +38] pts with J++, alike with the J-lens). Bank items (n=82): code
+  25%, copy 31%, lens 1%. At its own size (median 0.45 of the copy's) the code gives 4% (+4 [+2, +6] over random).
+- **The code is outside the J-space.** Its J-space part (25 atoms) gives 0%; the rest gives 29% (J++) and 27% (J-lens)
+  on fresh items, 20% and 18% on the bank: "outside" by exp04's rule, both lenses, both item sets. The code is nearly
+  orthogonal to the lens direction (median cosine 0.02), and its J-space part holds 9-11% of its squared norm, about
+  what it holds of a random direction (7%).
+- **The code reads the intermediate.** Decoded from each held-out item's own activations, it names the intermediate for
+  76-93% of items per layer (chance 8%).
+- **Σ-shaping does not rescue the lens.** Σ_λ (v_X - v_I) at λ = 0.5 and 0 gives 1%, like the lens direction
+  (differences within [-2, +1] pts); the code's cosine to them is 0.02-0.03.
+- Like the copy, the code also makes the model answer I (one lookup) in 25% of fresh item x layer cells (the copy 29%,
+  the lens directions 2-6%).
+
+![exp07: a code for the intermediate](figures/exp07_step_code/v1/step_code.png)
+
+**What this does not show.** Whether the lens can read the intermediate at these positions: the code is orthogonal to
+the lens's direction for X - I, which says the lens cannot write the step, not that it cannot see I (the lens's
+readout of I there is not measured yet). The code works at about twice its own size; at its own size it writes the
+step for 4%. One layer at a time (exp03's steering, which made the model say X, edited all window layers at once). One
+fit (883 items, ridge 1.0); the decoding check uses each item's start and answer.
+
+<details><summary>Full numbers and checks</summary>
+
+Run: `results/exp07_step_code/code_v1` (manifest written before the run; the human approved the design and decision
+rules; the code and Σ caches' sha256 in `summary.json`). Eligibility as exp04 (154 fresh, 82 bank items); the copy
+reproduces exp04's full-copy rows item for item (1232/1232 fresh, 656/656 bank). 117 of the 1000 fit items were
+answered wrongly and left out of the fit. Every comparison and verdict per item set is in `summary.md`; per-layer
+rates in `summary.json`; diagnostics in `diagnostics.jsonl`. Figure: `uv run python scripts/exp07_figures.py <new
+folder> code_v1`. Headlines are recomputed by `scripts/verify_headlines.py`.
+</details>
+
 ### Pitfalls found so far
 1. **Trailing space.** Most original prompts end in a space (83/93), which Qwen's tokenizer leaves as a lone `" "`
    token. The model then answers far worse (27B: 21/93 correct vs 61/93 with the space stripped) and the lens reads a
@@ -581,9 +626,9 @@ In order; designs need human sign-off before GPU runs.
 3. **Why "anything else" bridges rarely flip:** probe quality vs how those bridges are represented.
 4. **A control matched in total edit size** across layers.
 5. **Brew:** exp04 maps the lookup (the intermediate is carried after the start line at layers 36-50) and finds the
-   step outside the J-space, on the bank items and again on 154 fresh ones. Next: what direction carries the step
-   (exp07, written, awaiting the human's sign-off: a code for the intermediate fit on 1000 other items, against the
-   lens direction and its Σ-shaped versions at the window); what the I answers at layers 36-46 are; and steering at
-   the cue phrase in exp02 at the same sizes, to compare the two settings at one dose.
-6. **Σ-aware writes** (exp06): writing along Σv lost to writing along v at the start line, at both sizes and with both
-   lenses; exp07 tries it once more where the lens's own direction fails.
+   step outside the J-space, on the bank items and again on 154 fresh ones; exp07 finds a code for the intermediate,
+   fit on other items, that writes the step as well as the copy, outside the J-space and orthogonal to the lens
+   direction. Next: whether the lens reads the intermediate at those positions (readouts only); what the I answers at
+   layers 36-46 are; and steering at the cue phrase in exp02 at the same sizes, to compare the two settings at one dose.
+6. **Σ-aware writes** (exp06, exp07): writing along Σv lost to writing along v at the start line, and did no better
+   than v at exp04's window. Dropped unless a human wants a Mahalanobis-matched version.

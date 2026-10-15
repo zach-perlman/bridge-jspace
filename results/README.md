@@ -45,6 +45,10 @@ Notes:
   matched control with a covariance-shaped rest, and exp03's fresh-item start-line steering along Σ_λ v. Run
   `sigma_v1` (`scripts/exp06_sigma_writes.py`); figure `../figures/exp06_sigma_writes/v1/`
   (`uv run python scripts/exp06_figures.py <new folder> sigma_v1`).
+- **exp07_step_code:** a code for brew's intermediate (ridge fit on `data/brew_fit.json`) written at exp04's window,
+  next to exp04's copy, the lens direction, its Σ-shaped versions and the code's J-space part. Run `code_v1`
+  (`scripts/exp07_step_code.py`); figure `../figures/exp07_step_code/v1/`
+  (`uv run python scripts/exp07_figures.py <new folder> code_v1`).
 - exp02 controls for "the J-space part flips more because it carries more of the probe": `exp02_swaps/
   matched_v4_{jpp,jlens}` (matched-alignment random directions) and `exp02_swaps/analysis/edit_size_v1/`
   (`scripts/exp02_edit_size.py`, no model).
