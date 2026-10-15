@@ -39,6 +39,7 @@ from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from bridge_jspace.utils import progress
 
 POSITIONS = ("last", "prev", "cue_last")
+READER_BY_EXP = {"exp15_oracle_lens": "oracle lens", "exp16_nla": "NLA"}  # the verbalizer whose readings a run holds
 WORDS = {"bridge": "intermediate", "distractor": "swap_to", "answer": "answer", "swap_answer": "swap_answer"}
 
 
@@ -499,7 +500,8 @@ def load_scored(run_dir: str | Path) -> tuple[list[dict], list[dict], dict[str, 
     from scripts.exp12_position_map.experiment import load_grids
 
     run_dir = Path(run_dir)
-    params = json.loads((run_dir / "manifest.json").read_text())["config"]["params"]
+    manifest = json.loads((run_dir / "manifest.json").read_text())
+    params = {**manifest["config"]["params"], "reader": READER_BY_EXP.get(manifest["exp_id"], "oracle lens")}
 
     def load(path: Path) -> list[dict]:
         return [json.loads(x) for x in path.read_text().splitlines() if x.strip()]

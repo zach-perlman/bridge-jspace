@@ -1,0 +1,119 @@
+{
+  "exp_id": "exp16_nla",
+  "config": {
+    "name": "exp16_nla",
+    "target": "scripts.exp16_nla.experiment:NLAReads",
+    "seed": 0,
+    "results_dir": "results",
+    "model": {
+      "name": "Qwen/Qwen3.6-27B",
+      "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+      "dtype": "bfloat16",
+      "device_map": "auto",
+      "lenses": {
+        "jlens": {
+          "repo": "neuronpedia/jacobian-lens",
+          "revision": "9fa267f841d62aa468dab5b9b38c3dc45a82d863",
+          "filename": "qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt"
+        },
+        "jpp": {
+          "repo": "neuronpedia/jacobian-lens",
+          "revision": "9fa267f841d62aa468dab5b9b38c3dc45a82d863",
+          "filename": "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt"
+        }
+      }
+    },
+    "params": {
+      "labels_file": "results/exp02_swaps/main_v4_jlens/labels.csv",
+      "labels_sha256": "11da778146f1fb51c9a614929ce38be62ae11806a6c5df8ea02d81d7337a7a4c",
+      "read_layers": [
+        42
+      ],
+      "exp12_run": "results/exp12_position_map/20261015-100735",
+      "swap": {
+        "lens": "jpp",
+        "positions": "cue",
+        "band": "24-40"
+      },
+      "exp14_run": "results/exp14_cue_answer_swaps/20261015-111137",
+      "after_swap": {
+        "layer": 42,
+        "positions": [
+          "last",
+          "prev",
+          "cue_last"
+        ]
+      },
+      "max_new_tokens": 160,
+      "batch_size": 16,
+      "sanity": {
+        "min_logit_change": 1.0,
+        "min_named": 4,
+        "max_random_named": 1,
+        "facts": [
+          {
+            "prompt": "Fact: The capital of France is",
+            "targets": [
+              "Paris"
+            ]
+          },
+          {
+            "prompt": "Fact: The largest planet in the solar system is",
+            "targets": [
+              "Jupiter"
+            ]
+          },
+          {
+            "prompt": "Fact: The play Romeo and Juliet was written by William",
+            "targets": [
+              "Shakespeare"
+            ]
+          },
+          {
+            "prompt": "Fact: The currency of Japan is the",
+            "targets": [
+              "yen"
+            ]
+          },
+          {
+            "prompt": "Fact: The opposite of hot is",
+            "targets": [
+              "cold"
+            ]
+          },
+          {
+            "prompt": "Fact: The Great Wall is in",
+            "targets": [
+              "China"
+            ]
+          }
+        ]
+      },
+      "n_boot": 2000,
+      "boot_seed": 0,
+      "decision": "Fixed before the run (2026-10-15). exp15's rule at layer 42, for the NLA. Positive control: on the readings where both lenses have the bridge first, the NLA names the bridge at least 15 points more often than its distractor (question-clustered paired bootstrap 95% CI above 0); otherwise it does not read bridges here and the rest says nothing. (a) On the readings where neither lens has the bridge first, the NLA names the bridge at least 15 points more often than its distractor, CI above 0. (b) On the questions whose answer flips under exp14's J++ bridge swap on the cue phrase, at the last word or -1, the NLA names the swap target in at least 30% of the swapped readings and more often than in the clean readings (paired CI above 0). Verdict as exp15's: (a) and (b): \"the NLA reads the bridge where the lenses miss it, and follows the state the answer uses\"; (a) without (b): \"names the bridge on lens-blind readings but does not follow the swap\"; not (a): \"no evidence the NLA sees the bridge where the lenses miss it\". Read beside exp15 at layers 40 and 44, the oracle's nearest layers.",
+      "limit": null
+    }
+  },
+  "git": {
+    "sha": "6473eefe8f3de04bf30ef81888aefbcb83b1c8af",
+    "dirty": false
+  },
+  "packages": {
+    "torch": "2.11.0+cu126",
+    "transformers": "5.17.0",
+    "flash-linear-attention": "0.5.2",
+    "jlens": "0.1.0",
+    "numpy": "2.5.3",
+    "jlens_commit": "581d398613e5602a5af361e1c34d3a92ea82ba8e",
+    "torch_cuda": "12.6",
+    "gpu": "NVIDIA A100-SXM4-80GB"
+  },
+  "host": "shadecloud",
+  "python": "3.12.15",
+  "argv": [
+    "/home/sesterce/bridge-jspace/.venv/bin/bj-run",
+    "scripts/exp16_nla/config.yaml"
+  ],
+  "started": "2026-10-15T14:45:41"
+}

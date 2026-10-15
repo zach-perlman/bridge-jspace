@@ -1,0 +1,1263 @@
+{
+  "model": "Qwen3.6-27B (part B's loader) captures; the NLA (pins.NLA_*) reads",
+  "n_questions": 77,
+  "entity_pool": 97,
+  "checks": {
+    "passed": true,
+    "failed": [],
+    "logit_drift": 0.0,
+    "adapter_max_logit_change": 6.546875,
+    "marker_slot": 93,
+    "adapter": {
+      "modules": 496,
+      "scale": 2.0,
+      "r": 64
+    },
+    "facts": [
+      {
+        "prompt": "Fact: The capital of France is",
+        "targets": [
+          "Paris"
+        ],
+        "named": true,
+        "read": "List format established by \"Here are some examples:\" signals multiple factual statements will follow, each as a separate bullet or sentence.\n\nThe phrase \"Fact 1: The capital of France is\" sets up a declarative factual statement requiring a specific answer, strongly implying \"Paris\" as the next token.\n\nFinal token \"is\" is a linking verb completing a factual assertion (\"Fact 1: The capital of France is\"), demanding an immediate noun phrase or proper noun answer.\n\"\n- Fact 1: The capital of France is\" — this is a template/example prompt, so the next token is almost certainly \"Paris\" or a similarly structured factual completion.\n\nThe AI is expected to generate a simple, clear factual example sentence, likely demonstrating a pattern of"
+      },
+      {
+        "prompt": "Fact: The largest planet in the solar system is",
+        "targets": [
+          "Jupiter"
+        ],
+        "named": true,
+        "read": "Instruction format establishes a pattern: a declarative sentence must be completed, then a follow-up question about it, implying factual/educational content.\n\nThe sentence \"The largest planet in the solar system is\" sets up a factual statement requiring the name \"Jupiter\" as the answer, directly relevant to the \"largest planet\" topic.\n\nFinal token \"is\" is a linking verb mid-sentence, part of a \"Fact:\" labeled statement (\"Fact: The largest planet in the solar system is\"), requiring a noun phrase (e.g., \"Jupiter\") to complete the predicate.\n\"\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n\"Fact: The"
+      },
+      {
+        "prompt": "Fact: The play Romeo and Juliet was written by William",
+        "targets": [
+          "Shakespeare"
+        ],
+        "named": true,
+        "read": "Q&A format established by \"Answer the following questions based on the given statement\" signals a factual, declarative response pattern.\n\nThe statement \"The play Hamlet was written by William\" is a classic subject-verb-object structure requiring completion with the author's full name, almost certainly \"Shakespeare.\"\n\nFinal token \"William\" is the first name in a proper noun phrase (\"was written by William\"), immediately requiring the surname \"Shakespeare\" to complete the biographical attribution.\nThe sentence \"The play Hamlet was written by William\" is a simple declarative statement in a test/example format, likely followed by a similar sentence about another historical figure or fact.\n\"Based on the given statement\" pattern suggests a logical reasoning or analogy question, with \"William"
+      },
+      {
+        "prompt": "Fact: The currency of Japan is the",
+        "targets": [
+          "yen"
+        ],
+        "named": true,
+        "read": "Trivia/quiz format established by \"Answer: 1 of 1\" signals a factual question-and-answer structure requiring a direct, concise factual response.\n\nThe question \"What is the currency of Japan?\" demands the specific name of Japan's currency as the answer, with high certainty around \"yen.\"\n\nFinal fragment \"the currency of Japan is the\" is an incomplete declarative sentence requiring the noun phrase naming the currency (e.g., \"yen\") to complete it.\n\"the currency of Japan is the\" — a definite article \"the\" strongly constrains the next token to be a specific currency name, likely \"yen\" or \"Japanese yen,\" possibly followed by details about denominations or banknotes.\nThe sentence describes a factual trivia answer about Japan's"
+      },
+      {
+        "prompt": "Fact: The opposite of hot is",
+        "targets": [
+          "cold"
+        ],
+        "named": true,
+        "read": "Q&A format established with \"Answer:\" prompt signals a direct, factual response is expected next. The pattern mirrors educational/quiz style.\n\nThe sentence \"The opposite of hot is\" sets up a simple antonym completion, strongly predicting \"cold\" as the answer, fitting the \"common sense\" reasoning category.\n\nFinal token \"is\" is a linking verb mid-sentence in a declarative statement (\"A fact is: The opposite of hot is\"), requiring an immediate noun or adjective complement (e.g., \"cold\").\n\"\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br"
+      },
+      {
+        "prompt": "Fact: The Great Wall is in",
+        "targets": [
+          "China"
+        ],
+        "named": true,
+        "read": "Q&A format established by \"Fact or Opinion?\" prompt signals a declarative factual statement is being constructed, requiring a concrete, verifiable claim.\n\nThe sentence \"The Great Wall is in\" sets up a geographic/factual completion, likely naming a location (e.g., \"China\") or a category, consistent with an educational example format.\n\nFinal token \"in\" is a preposition beginning a locative or categorical phrase, requiring a noun phrase immediately following (e.g., \"China,\" \"this list,\" \"the database\").\n\"An example of a fact is: The Great Wall of China is in\" — the sentence structure demands a location or descriptive phrase completing the factual claim about the Great Wall.\n\"An example of a fact is: The Great"
+      }
+    ],
+    "random_vector": {
+      "named": 0,
+      "read": "Forum thread pattern: each reply follows a structured Q&A format discussing bike specs, with the final post addressing gender inclusivity in cycling records.\n\nThe argument about women's records being separate is being developed, with the poster citing their own experience of a male cyclist on a women's bike as evidence.\n\nFinal token \"47.5°C\\nMale: 47.5°C\\nMale: 47.5°C\\nMale: 47.5°C\\n\" — mid-sentence continuation of \"In this case, 'male' means... Male: 47.5°C\\nIn general, this scenario requires: 47.5°C\" — next tokens likely describe the broader context of male/female cycling records or a concluding sentence"
+    },
+    "exp14_top_word_agree": {
+      "shared": 77,
+      "agree": 77
+    }
+  },
+  "n_reads": {
+    "clean": 231,
+    "swapped": 231,
+    "mean": 231
+  },
+  "lens_classes": {
+    "both": 140,
+    "one": 15,
+    "neither": 76
+  },
+  "clean_by_class": [
+    {
+      "lens_class": "both",
+      "n": 140,
+      "n_questions": 67,
+      "named_bridge": [
+        0.9,
+        0.8391397767648922,
+        0.9394944987159147
+      ],
+      "named_distractor": [
+        0.02857142857142857,
+        0.011165596206339352,
+        0.07115829340556709
+      ],
+      "named_answer": [
+        0.6,
+        0.5172240406779871,
+        0.6774345281922145
+      ],
+      "named_swap_answer": [
+        0.05,
+        0.024427961911698888,
+        0.09960847817239363
+      ],
+      "named_other_bridges": 0.0009387197501951601,
+      "first_top1_bridge": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "first_top1_distractor": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "lens_class": "neither",
+      "n": 76,
+      "n_questions": 46,
+      "named_bridge": [
+        0.4605263157894737,
+        0.3530754655326989,
+        0.5717757398539667
+      ],
+      "named_distractor": [
+        0.09210526315789473,
+        0.04533342778112863,
+        0.17812902788108254
+      ],
+      "named_answer": [
+        0.40789473684210525,
+        0.3044362924110896,
+        0.5202165201577967
+      ],
+      "named_swap_answer": [
+        0.10526315789473684,
+        0.054310612607017986,
+        0.19420144125963795
+      ],
+      "named_other_bridges": 0.004112740868564856,
+      "first_top1_bridge": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "first_top1_distractor": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "lens_class": "one",
+      "n": 15,
+      "n_questions": 14,
+      "named_bridge": [
+        0.8,
+        0.5481406466534955,
+        0.9295257935638959
+      ],
+      "named_distractor": [
+        0.0,
+        -1.3877787807814457e-17,
+        0.20388926630434784
+      ],
+      "named_answer": [
+        0.6666666666666666,
+        0.41713125151212976,
+        0.8482389930530876
+      ],
+      "named_swap_answer": [
+        0.06666666666666667,
+        0.011866588606194856,
+        0.2981707755242399
+      ],
+      "named_other_bridges": 0.001092896174863388,
+      "first_top1_bridge": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "first_top1_distractor": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    }
+  ],
+  "clean_by_class_layer_position": [
+    {
+      "lens_class": "both",
+      "layer": 42,
+      "position": "cue_last",
+      "n": 46,
+      "n_questions": 46,
+      "named_bridge": [
+        0.8695652173913043,
+        0.7433386576963865,
+        0.9388224286250797
+      ],
+      "named_distractor": [
+        0.043478260869565216,
+        0.012005193588830829,
+        0.1453252291905342
+      ],
+      "named_answer": [
+        0.2826086956521739,
+        0.1732404154491407,
+        0.42548835730293777
+      ],
+      "named_swap_answer": [
+        0.043478260869565216,
+        0.012005193588830829,
+        0.1453252291905342
+      ],
+      "named_other_bridges": 0.0014255167498218105,
+      "first_top1_bridge": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "first_top1_distractor": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "lens_class": "both",
+      "layer": 42,
+      "position": "last",
+      "n": 46,
+      "n_questions": 46,
+      "named_bridge": [
+        0.8478260869565217,
+        0.7177558259368491,
+        0.9242781376598252
+      ],
+      "named_distractor": [
+        0.021739130434782608,
+        0.0038477551112426345,
+        0.11335554494333024
+      ],
+      "named_answer": [
+        0.9347826086956522,
+        0.8249699089621865,
+        0.9775725455336564
+      ],
+      "named_swap_answer": [
+        0.10869565217391304,
+        0.04733076082742689,
+        0.23038103012631456
+      ],
+      "named_other_bridges": 0.0010750772154906154,
+      "first_top1_bridge": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "first_top1_distractor": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "lens_class": "both",
+      "layer": 42,
+      "position": "prev",
+      "n": 48,
+      "n_questions": 48,
+      "named_bridge": [
+        0.9791666666666666,
+        0.8910053086246883,
+        0.9963129840206002
+      ],
+      "named_distractor": [
+        0.020833333333333332,
+        0.003687015979399688,
+        0.10899469137531158
+      ],
+      "named_answer": [
+        0.5833333333333334,
+        0.44281082215364653,
+        0.7115054026542299
+      ],
+      "named_swap_answer": [
+        0.0,
+        0.0,
+        0.0741026511527422
+      ],
+      "named_other_bridges": 0.00034153005464480874,
+      "first_top1_bridge": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "first_top1_distractor": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "lens_class": "neither",
+      "layer": 42,
+      "position": "cue_last",
+      "n": 26,
+      "n_questions": 26,
+      "named_bridge": [
+        0.34615384615384615,
+        0.19412014972852126,
+        0.5377977099036699
+      ],
+      "named_distractor": [
+        0.15384615384615385,
+        0.06149933998929477,
+        0.33531584418313565
+      ],
+      "named_answer": [
+        0.11538461538461539,
+        0.04003171821149494,
+        0.28976293086898336
+      ],
+      "named_swap_answer": [
+        0.11538461538461539,
+        0.04003171821149494,
+        0.28976293086898336
+      ],
+      "named_other_bridges": 0.0012610340479192938,
+      "first_top1_bridge": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "first_top1_distractor": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "lens_class": "neither",
+      "layer": 42,
+      "position": "last",
+      "n": 25,
+      "n_questions": 25,
+      "named_bridge": [
+        0.6,
+        0.40739127785127344,
+        0.7659694233580909
+      ],
+      "named_distractor": [
+        0.0,
+        0.0,
+        0.13319649395317873
+      ],
+      "named_answer": [
+        0.8,
+        0.6086866446346177,
+        0.9113954589934752
+      ],
+      "named_swap_answer": [
+        0.12,
+        0.04166741357068093,
+        0.2995619218337349
+      ],
+      "named_other_bridges": 0.005278688524590165,
+      "first_top1_bridge": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "first_top1_distractor": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "lens_class": "neither",
+      "layer": 42,
+      "position": "prev",
+      "n": 25,
+      "n_questions": 25,
+      "named_bridge": [
+        0.44,
+        0.2666537494700256,
+        0.6293298298043557
+      ],
+      "named_distractor": [
+        0.12,
+        0.04166741357068093,
+        0.2995619218337349
+      ],
+      "named_answer": [
+        0.32,
+        0.17204987516891143,
+        0.5159008626542329
+      ],
+      "named_swap_answer": [
+        0.08,
+        0.02221993369109193,
+        0.24966512122957818
+      ],
+      "named_other_bridges": 0.00591256830601093,
+      "first_top1_bridge": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "first_top1_distractor": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "lens_class": "one",
+      "layer": 42,
+      "position": "cue_last",
+      "n": 5,
+      "n_questions": 5,
+      "named_bridge": [
+        0.8,
+        0.3755282641185388,
+        0.9637768390302125
+      ],
+      "named_distractor": [
+        0.0,
+        -2.7755575615628914e-17,
+        0.43449149475208104
+      ],
+      "named_answer": [
+        0.0,
+        -2.7755575615628914e-17,
+        0.43449149475208104
+      ],
+      "named_swap_answer": [
+        0.0,
+        -2.7755575615628914e-17,
+        0.43449149475208104
+      ],
+      "named_other_bridges": 0.003278688524590164,
+      "first_top1_bridge": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "first_top1_distractor": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "lens_class": "one",
+      "layer": 42,
+      "position": "last",
+      "n": 6,
+      "n_questions": 6,
+      "named_bridge": [
+        0.8333333333333334,
+        0.43649056343635395,
+        0.9699474141282697
+      ],
+      "named_distractor": [
+        0.0,
+        0.0,
+        0.3903430336530645
+      ],
+      "named_answer": [
+        1.0,
+        0.6096569663469354,
+        0.9999999999999999
+      ],
+      "named_swap_answer": [
+        0.0,
+        0.0,
+        0.3903430336530645
+      ],
+      "named_other_bridges": 0.0,
+      "first_top1_bridge": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "first_top1_distractor": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "lens_class": "one",
+      "layer": 42,
+      "position": "prev",
+      "n": 4,
+      "n_questions": 4,
+      "named_bridge": [
+        0.75,
+        0.3006360524426366,
+        0.9544139373553637
+      ],
+      "named_distractor": [
+        0.0,
+        0.0,
+        0.48990002040399916
+      ],
+      "named_answer": [
+        1.0,
+        0.5100999795960008,
+        1.0
+      ],
+      "named_swap_answer": [
+        0.25,
+        0.045586062644636216,
+        0.6993639475573634
+      ],
+      "named_other_bridges": 0.0,
+      "first_top1_bridge": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "first_top1_distractor": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    }
+  ],
+  "mean_vector": [
+    {
+      "layer": 42,
+      "position": "cue_last",
+      "n": 77,
+      "n_questions": 77,
+      "named_bridge": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "named_distractor": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "named_answer": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "named_swap_answer": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "named_other_bridges": 0.0,
+      "first_top1_bridge": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "first_top1_distractor": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "layer": 42,
+      "position": "last",
+      "n": 77,
+      "n_questions": 77,
+      "named_bridge": [
+        0.06493506493506493,
+        0.02805266679607036,
+        0.1431661116546283
+      ],
+      "named_distractor": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "named_answer": [
+        0.03896103896103896,
+        0.013337708283515264,
+        0.10840159425379228
+      ],
+      "named_swap_answer": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "named_other_bridges": 0.03179689163295721,
+      "first_top1_bridge": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "first_top1_distractor": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    },
+    {
+      "layer": 42,
+      "position": "prev",
+      "n": 77,
+      "n_questions": 77,
+      "named_bridge": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "named_distractor": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "named_answer": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "named_swap_answer": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "named_other_bridges": 0.01611312185082677,
+      "first_top1_bridge": [
+        NaN,
+        NaN,
+        NaN
+      ],
+      "first_top1_distractor": [
+        NaN,
+        NaN,
+        NaN
+      ]
+    }
+  ],
+  "bridge_vs_distractor": {
+    "both": {
+      "n_questions": 67,
+      "n_reads": 140,
+      "named_bridge": 0.9129353233830846,
+      "named_distractor": 0.022388059701492536,
+      "diff": [
+        0.8905472636815921,
+        0.8283582089552239,
+        0.9452736318407959
+      ]
+    },
+    "one": {
+      "n_questions": 14,
+      "n_reads": 15,
+      "named_bridge": 0.8214285714285714,
+      "named_distractor": 0.0,
+      "diff": [
+        0.8214285714285714,
+        0.6071428571428571,
+        1.0
+      ]
+    },
+    "neither": {
+      "n_questions": 46,
+      "n_reads": 76,
+      "named_bridge": 0.4565217391304347,
+      "named_distractor": 0.10144927536231883,
+      "diff": [
+        0.35507246376811585,
+        0.19927536231884063,
+        0.5
+      ]
+    }
+  },
+  "bridge_vs_other_bridges": {
+    "both": {
+      "n_questions": 67,
+      "n_reads": 140,
+      "named_bridge": 0.9129353233830846,
+      "named_other_bridges": 0.0008985128999809696,
+      "diff": [
+        0.9120368104831036,
+        0.8646052864094826,
+        0.9539203572302422
+      ]
+    },
+    "one": {
+      "n_questions": 14,
+      "n_reads": 15,
+      "named_bridge": 0.8214285714285714,
+      "named_other_bridges": 0.00117096018735363,
+      "diff": [
+        0.8202576112412178,
+        0.6071428571428571,
+        0.9988290398126464
+      ]
+    },
+    "neither": {
+      "n_questions": 46,
+      "n_reads": 76,
+      "named_bridge": 0.4565217391304347,
+      "named_other_bridges": 0.003638037538607745,
+      "diff": [
+        0.45288370159182695,
+        0.3337894244476123,
+        0.5717553159895461
+      ]
+    }
+  },
+  "bridge_vs_distractor_by_layer": {
+    "42": {
+      "both": {
+        "n_questions": 67,
+        "n_reads": 140,
+        "named_bridge": 0.9129353233830846,
+        "named_distractor": 0.022388059701492536,
+        "diff": [
+          0.8905472636815921,
+          0.8283582089552239,
+          0.9452736318407959
+        ]
+      },
+      "one": {
+        "n_questions": 14,
+        "n_reads": 15,
+        "named_bridge": 0.8214285714285714,
+        "named_distractor": 0.0,
+        "diff": [
+          0.8214285714285714,
+          0.6071428571428571,
+          1.0
+        ]
+      },
+      "neither": {
+        "n_questions": 46,
+        "n_reads": 76,
+        "named_bridge": 0.4565217391304347,
+        "named_distractor": 0.10144927536231883,
+        "diff": [
+          0.35507246376811585,
+          0.19927536231884063,
+          0.5
+        ]
+      }
+    }
+  },
+  "after_swap": {
+    "flipped": {
+      "n_questions": 23,
+      "last clean": {
+        "position": "last",
+        "n": 23,
+        "n_questions": 23,
+        "named_bridge": [
+          0.6521739130434783,
+          0.4488997690689164,
+          0.8118894536301776
+        ],
+        "named_distractor": [
+          0.043478260869565216,
+          0.0077164669621267445,
+          0.20991586494059142
+        ],
+        "named_answer": [
+          0.9130434782608695,
+          0.7320359570190598,
+          0.9758205045927666
+        ],
+        "named_swap_answer": [
+          0.08695652173913043,
+          0.02417949540723341,
+          0.2679640429809402
+        ],
+        "named_other_bridges": 0.0007127583749109052,
+        "first_top1_bridge": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "first_top1_distractor": [
+          NaN,
+          NaN,
+          NaN
+        ]
+      },
+      "last swapped": {
+        "position": "last",
+        "n": 23,
+        "n_questions": 23,
+        "named_bridge": [
+          0.21739130434782608,
+          0.09663835601719065,
+          0.4190388018273492
+        ],
+        "named_distractor": [
+          0.5652173913043478,
+          0.3681104930501695,
+          0.7436563166780135
+        ],
+        "named_answer": [
+          0.4782608695652174,
+          0.2923686953994572,
+          0.6703757013578151
+        ],
+        "named_swap_answer": [
+          0.7391304347826086,
+          0.5352960945624944,
+          0.8745155411075104
+        ],
+        "named_other_bridges": 0.0014373960560703255,
+        "first_top1_bridge": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "first_top1_distractor": [
+          NaN,
+          NaN,
+          NaN
+        ]
+      },
+      "last distractor swapped - clean": [
+        0.5217391304347826,
+        0.34782608695652173,
+        0.7391304347826086
+      ],
+      "prev clean": {
+        "position": "prev",
+        "n": 23,
+        "n_questions": 23,
+        "named_bridge": [
+          0.9565217391304348,
+          0.7900841350594088,
+          0.9922835330378734
+        ],
+        "named_distractor": [
+          0.043478260869565216,
+          0.0077164669621267445,
+          0.20991586494059142
+        ],
+        "named_answer": [
+          0.6521739130434783,
+          0.4488997690689164,
+          0.8118894536301776
+        ],
+        "named_swap_answer": [
+          0.0,
+          -1.3877787807814457e-17,
+          0.14312112541726274
+        ],
+        "named_other_bridges": 0.0007127583749109052,
+        "first_top1_bridge": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "first_top1_distractor": [
+          NaN,
+          NaN,
+          NaN
+        ]
+      },
+      "prev swapped": {
+        "position": "prev",
+        "n": 23,
+        "n_questions": 23,
+        "named_bridge": [
+          0.30434782608695654,
+          0.15603828020972454,
+          0.5086612906057261
+        ],
+        "named_distractor": [
+          0.6086956521739131,
+          0.4078517960374599,
+          0.7784262201761787
+        ],
+        "named_answer": [
+          0.08695652173913043,
+          0.02417949540723341,
+          0.2679640429809402
+        ],
+        "named_swap_answer": [
+          0.4782608695652174,
+          0.2923686953994572,
+          0.6703757013578151
+        ],
+        "named_other_bridges": 0.0007246376811594203,
+        "first_top1_bridge": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "first_top1_distractor": [
+          NaN,
+          NaN,
+          NaN
+        ]
+      },
+      "prev distractor swapped - clean": [
+        0.5652173913043479,
+        0.3913043478260869,
+        0.7391304347826088
+      ],
+      "cue_last clean": {
+        "position": "cue_last",
+        "n": 23,
+        "n_questions": 23,
+        "named_bridge": [
+          0.6956521739130435,
+          0.49133870939427393,
+          0.8439617197902755
+        ],
+        "named_distractor": [
+          0.043478260869565216,
+          0.0077164669621267445,
+          0.20991586494059142
+        ],
+        "named_answer": [
+          0.21739130434782608,
+          0.09663835601719065,
+          0.4190388018273492
+        ],
+        "named_swap_answer": [
+          0.043478260869565216,
+          0.0077164669621267445,
+          0.20991586494059142
+        ],
+        "named_other_bridges": 0.0,
+        "first_top1_bridge": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "first_top1_distractor": [
+          NaN,
+          NaN,
+          NaN
+        ]
+      },
+      "cue_last swapped": {
+        "position": "cue_last",
+        "n": 23,
+        "n_questions": 23,
+        "named_bridge": [
+          0.13043478260869565,
+          0.04537576514344702,
+          0.32127897973018194
+        ],
+        "named_distractor": [
+          0.7391304347826086,
+          0.5352960945624944,
+          0.8745155411075104
+        ],
+        "named_answer": [
+          0.043478260869565216,
+          0.0077164669621267445,
+          0.20991586494059142
+        ],
+        "named_swap_answer": [
+          0.34782608695652173,
+          0.18811054636982238,
+          0.5511002309310836
+        ],
+        "named_other_bridges": 0.0,
+        "first_top1_bridge": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "first_top1_distractor": [
+          NaN,
+          NaN,
+          NaN
+        ]
+      },
+      "cue_last distractor swapped - clean": [
+        0.6956521739130435,
+        0.5217391304347826,
+        0.8695652173913043
+      ]
+    },
+    "not_flipped": {
+      "n_questions": 54,
+      "last clean": {
+        "position": "last",
+        "n": 54,
+        "n_questions": 54,
+        "named_bridge": [
+          0.8148148148148148,
+          0.6916379770862061,
+          0.8961742549405703
+        ],
+        "named_distractor": [
+          0.0,
+          6.938893903907228e-18,
+          0.06641586678100189
+        ],
+        "named_answer": [
+          0.8888888888888888,
+          0.7780505106792327,
+          0.9480704818244324
+        ],
+        "named_swap_answer": [
+          0.1111111111111111,
+          0.05192951817556753,
+          0.2219494893207673
+        ],
+        "named_other_bridges": 0.003056061526006881,
+        "first_top1_bridge": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "first_top1_distractor": [
+          NaN,
+          NaN,
+          NaN
+        ]
+      },
+      "last swapped": {
+        "position": "last",
+        "n": 54,
+        "n_questions": 54,
+        "named_bridge": [
+          0.7592592592592593,
+          0.6305222087076177,
+          0.8535584529614926
+        ],
+        "named_distractor": [
+          0.12962962962962962,
+          0.06423639229487982,
+          0.2442198053206771
+        ],
+        "named_answer": [
+          0.8518518518518519,
+          0.733996325347515,
+          0.9229702869177059
+        ],
+        "named_swap_answer": [
+          0.25925925925925924,
+          0.16118507964793902,
+          0.38931144880217294
+        ],
+        "named_other_bridges": 0.0024438372799028534,
+        "first_top1_bridge": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "first_top1_distractor": [
+          NaN,
+          NaN,
+          NaN
+        ]
+      },
+      "last distractor swapped - clean": [
+        0.12962962962962962,
+        0.05555555555555555,
+        0.2222222222222222
+      ],
+      "prev clean": {
+        "position": "prev",
+        "n": 54,
+        "n_questions": 54,
+        "named_bridge": [
+          0.7222222222222222,
+          0.5910930359127778,
+          0.823833245517888
+        ],
+        "named_distractor": [
+          0.05555555555555555,
+          0.019072922503838907,
+          0.15107451463482943
+        ],
+        "named_answer": [
+          0.46296296296296297,
+          0.33689688992410527,
+          0.5939487298374504
+        ],
+        "named_swap_answer": [
+          0.05555555555555555,
+          0.019072922503838907,
+          0.15107451463482943
+        ],
+        "named_other_bridges": 0.0027373001416717262,
+        "first_top1_bridge": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "first_top1_distractor": [
+          NaN,
+          NaN,
+          NaN
+        ]
+      },
+      "prev swapped": {
+        "position": "prev",
+        "n": 54,
+        "n_questions": 54,
+        "named_bridge": [
+          0.7222222222222222,
+          0.5910930359127778,
+          0.823833245517888
+        ],
+        "named_distractor": [
+          0.09259259259259259,
+          0.040200542070567336,
+          0.1991012753065453
+        ],
+        "named_answer": [
+          0.46296296296296297,
+          0.33689688992410527,
+          0.5939487298374504
+        ],
+        "named_swap_answer": [
+          0.1111111111111111,
+          0.05192951817556753,
+          0.2219494893207673
+        ],
+        "named_other_bridges": 0.0021301356000809554,
+        "first_top1_bridge": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "first_top1_distractor": [
+          NaN,
+          NaN,
+          NaN
+        ]
+      },
+      "prev distractor swapped - clean": [
+        0.037037037037037035,
+        -0.05555555555555555,
+        0.12962962962962962
+      ],
+      "cue_last clean": {
+        "position": "cue_last",
+        "n": 54,
+        "n_questions": 54,
+        "named_bridge": [
+          0.6851851851851852,
+          0.5525630440832037,
+          0.7932088571090179
+        ],
+        "named_distractor": [
+          0.09259259259259259,
+          0.040200542070567336,
+          0.1991012753065453
+        ],
+        "named_answer": [
+          0.2037037037037037,
+          0.1177393408658538,
+          0.32902561722659174
+        ],
+        "named_swap_answer": [
+          0.07407407407407407,
+          0.029181055323684174,
+          0.17554357193420633
+        ],
+        "named_other_bridges": 0.002125075895567699,
+        "first_top1_bridge": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "first_top1_distractor": [
+          NaN,
+          NaN,
+          NaN
+        ]
+      },
+      "cue_last swapped": {
+        "position": "cue_last",
+        "n": 54,
+        "n_questions": 54,
+        "named_bridge": [
+          0.48148148148148145,
+          0.3539375603654322,
+          0.6114852495153457
+        ],
+        "named_distractor": [
+          0.42592592592592593,
+          0.30331621798657443,
+          0.5583750215365371
+        ],
+        "named_answer": [
+          0.1111111111111111,
+          0.05192951817556753,
+          0.2219494893207673
+        ],
+        "named_swap_answer": [
+          0.1111111111111111,
+          0.05192951817556753,
+          0.2219494893207673
+        ],
+        "named_other_bridges": 0.0018265533292855698,
+        "first_top1_bridge": [
+          NaN,
+          NaN,
+          NaN
+        ],
+        "first_top1_distractor": [
+          NaN,
+          NaN,
+          NaN
+        ]
+      },
+      "cue_last distractor swapped - clean": [
+        0.33333333333333337,
+        0.2037037037037037,
+        0.462962962962963
+      ]
+    }
+  },
+  "monitoring": {
+    "bridge": {
+      "readings": {
+        "n": 231,
+        "both": 0.5974025974025974,
+        "lens_only": 0.0735930735930736,
+        "oracle_only": 0.15151515151515152,
+        "neither": 0.1774891774891775
+      },
+      "readings_by_layer": {
+        "42": {
+          "n": 231,
+          "both": 0.5974025974025974,
+          "lens_only": 0.0735930735930736,
+          "oracle_only": 0.15151515151515152,
+          "neither": 0.1774891774891775
+        }
+      },
+      "questions": {
+        "n": 77,
+        "lenses": 71,
+        "oracle": 75,
+        "either": 76,
+        "oracle_only": 5,
+        "lenses_only": 1
+      },
+      "false_alarm": {
+        "distractor_named": 0.047619047619047616,
+        "distractor_named_where_lenses_miss": 0.09210526315789473
+      }
+    },
+    "answer": {}
+  },
+  "decision_rule": "Fixed before the run (2026-10-15). exp15's rule at layer 42, for the NLA. Positive control: on the readings where both lenses have the bridge first, the NLA names the bridge at least 15 points more often than its distractor (question-clustered paired bootstrap 95% CI above 0); otherwise it does not read bridges here and the rest says nothing. (a) On the readings where neither lens has the bridge first, the NLA names the bridge at least 15 points more often than its distractor, CI above 0. (b) On the questions whose answer flips under exp14's J++ bridge swap on the cue phrase, at the last word or -1, the NLA names the swap target in at least 30% of the swapped readings and more often than in the clean readings (paired CI above 0). Verdict as exp15's: (a) and (b): \"the NLA reads the bridge where the lenses miss it, and follows the state the answer uses\"; (a) without (b): \"names the bridge on lens-blind readings but does not follow the swap\"; not (a): \"no evidence the NLA sees the bridge where the lenses miss it\". Read beside exp15 at layers 40 and 44, the oracle's nearest layers."
+}

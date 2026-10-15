@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "failed": [],
+  "logit_drift": 0.0,
+  "adapter_max_logit_change": 6.546875,
+  "marker_slot": 93,
+  "adapter": {
+    "modules": 496,
+    "scale": 2.0,
+    "r": 64
+  },
+  "facts": [
+    {
+      "prompt": "Fact: The capital of France is",
+      "targets": [
+        "Paris"
+      ],
+      "named": true,
+      "read": "List format established by \"Here are some examples:\" signals multiple factual statements will follow, each as a separate bullet or sentence.\n\nThe phrase \"Fact 1: The capital of France is\" sets up a declarative factual statement requiring a specific answer, strongly implying \"Paris\" as the next token.\n\nFinal token \"is\" is a linking verb completing a factual assertion (\"Fact 1: The capital of France is\"), demanding an immediate noun phrase or proper noun answer.\n\"\n- Fact 1: The capital of France is\" — this is a template/example prompt, so the next token is almost certainly \"Paris\" or a similarly structured factual completion.\n\nThe AI is expected to generate a simple, clear factual example sentence, likely demonstrating a pattern of"
+    },
+    {
+      "prompt": "Fact: The largest planet in the solar system is",
+      "targets": [
+        "Jupiter"
+      ],
+      "named": true,
+      "read": "Instruction format establishes a pattern: a declarative sentence must be completed, then a follow-up question about it, implying factual/educational content.\n\nThe sentence \"The largest planet in the solar system is\" sets up a factual statement requiring the name \"Jupiter\" as the answer, directly relevant to the \"largest planet\" topic.\n\nFinal token \"is\" is a linking verb mid-sentence, part of a \"Fact:\" labeled statement (\"Fact: The largest planet in the solar system is\"), requiring a noun phrase (e.g., \"Jupiter\") to complete the predicate.\n\"\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n\"Fact: The"
+    },
+    {
+      "prompt": "Fact: The play Romeo and Juliet was written by William",
+      "targets": [
+        "Shakespeare"
+      ],
+      "named": true,
+      "read": "Q&A format established by \"Answer the following questions based on the given statement\" signals a factual, declarative response pattern.\n\nThe statement \"The play Hamlet was written by William\" is a classic subject-verb-object structure requiring completion with the author's full name, almost certainly \"Shakespeare.\"\n\nFinal token \"William\" is the first name in a proper noun phrase (\"was written by William\"), immediately requiring the surname \"Shakespeare\" to complete the biographical attribution.\nThe sentence \"The play Hamlet was written by William\" is a simple declarative statement in a test/example format, likely followed by a similar sentence about another historical figure or fact.\n\"Based on the given statement\" pattern suggests a logical reasoning or analogy question, with \"William"
+    },
+    {
+      "prompt": "Fact: The currency of Japan is the",
+      "targets": [
+        "yen"
+      ],
+      "named": true,
+      "read": "Trivia/quiz format established by \"Answer: 1 of 1\" signals a factual question-and-answer structure requiring a direct, concise factual response.\n\nThe question \"What is the currency of Japan?\" demands the specific name of Japan's currency as the answer, with high certainty around \"yen.\"\n\nFinal fragment \"the currency of Japan is the\" is an incomplete declarative sentence requiring the noun phrase naming the currency (e.g., \"yen\") to complete it.\n\"the currency of Japan is the\" — a definite article \"the\" strongly constrains the next token to be a specific currency name, likely \"yen\" or \"Japanese yen,\" possibly followed by details about denominations or banknotes.\nThe sentence describes a factual trivia answer about Japan's"
+    },
+    {
+      "prompt": "Fact: The opposite of hot is",
+      "targets": [
+        "cold"
+      ],
+      "named": true,
+      "read": "Q&A format established with \"Answer:\" prompt signals a direct, factual response is expected next. The pattern mirrors educational/quiz style.\n\nThe sentence \"The opposite of hot is\" sets up a simple antonym completion, strongly predicting \"cold\" as the answer, fitting the \"common sense\" reasoning category.\n\nFinal token \"is\" is a linking verb mid-sentence in a declarative statement (\"A fact is: The opposite of hot is\"), requiring an immediate noun or adjective complement (e.g., \"cold\").\n\"\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br"
+    },
+    {
+      "prompt": "Fact: The Great Wall is in",
+      "targets": [
+        "China"
+      ],
+      "named": true,
+      "read": "Q&A format established by \"Fact or Opinion?\" prompt signals a declarative factual statement is being constructed, requiring a concrete, verifiable claim.\n\nThe sentence \"The Great Wall is in\" sets up a geographic/factual completion, likely naming a location (e.g., \"China\") or a category, consistent with an educational example format.\n\nFinal token \"in\" is a preposition beginning a locative or categorical phrase, requiring a noun phrase immediately following (e.g., \"China,\" \"this list,\" \"the database\").\n\"An example of a fact is: The Great Wall of China is in\" — the sentence structure demands a location or descriptive phrase completing the factual claim about the Great Wall.\n\"An example of a fact is: The Great"
+    }
+  ],
+  "random_vector": {
+    "named": 0,
+    "read": "Forum thread pattern: each reply follows a structured Q&A format discussing bike specs, with the final post addressing gender inclusivity in cycling records.\n\nThe argument about women's records being separate is being developed, with the poster citing their own experience of a male cyclist on a women's bike as evidence.\n\nFinal token \"47.5°C\\nMale: 47.5°C\\nMale: 47.5°C\\nMale: 47.5°C\\n\" — mid-sentence continuation of \"In this case, 'male' means... Male: 47.5°C\\nIn general, this scenario requires: 47.5°C\" — next tokens likely describe the broader context of male/female cycling records or a concluding sentence"
+  }
+}
