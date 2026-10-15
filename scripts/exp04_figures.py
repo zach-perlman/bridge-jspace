@@ -3,8 +3,8 @@
 exp04_figures.py OUT_NAME RUN  -> figures/exp04_brew_patch/OUT_NAME/ (write-once)
     patch_map.png   by layer, for each group of prompt positions: how often copying the counterfactual's activation
                     into the original run makes the model answer f(X) (X carried as the step), the counterfactual's
-                    answer c, X itself, or keep the original answer; and how often the off-path control's patch
-                    changes the answer at all
+                    answer c, X itself, the original intermediate I (one step instead of two), or keep the original
+                    answer; and how often the off-path control's patch changes the answer at all
     patch_logp.png  the same patches, graded: mean log-probability of f(X) and of c at the first answer token,
                     minus that of the original answer
   exp04_figures.py OUT_NAME RUN  (a patch_parts run, exp04_brew_parts.py)
@@ -44,6 +44,7 @@ ROLES = [  # (role, colour, label)
     ("b", "#3d8c5a", "f(X): X carried as the step"),
     ("c", "#3b6fb6", "c: the counterfactual's answer"),
     ("X", "#8a3db8", "X itself"),
+    ("I", "#c07a2c", "I: the original intermediate"),
     ("A", "#6b6a65", "the original answer"),
 ]
 CONTROL = "#b4b2a9"
@@ -64,8 +65,14 @@ def drawn_groups(cells: dict) -> dict[str, str]:
 
 def patch_map(cells: dict, layers: list[int], n_items: int, out: Path) -> None:
     groups = drawn_groups(cells)
+    wide = len(groups) >= 4  # a narrow figure (a run that patches the rule lines at layer 0 only) wraps its text
     fig, axes = plt.subplots(
-        1, len(groups), figsize=(3.3 * len(groups), 3.6), sharey=True, facecolor=SURFACE, squeeze=False
+        1,
+        len(groups),
+        figsize=(max(3.3 * len(groups), 9.0), 3.6 if wide else 4.2),
+        sharey=True,
+        facecolor=SURFACE,
+        squeeze=False,
     )
     axes = axes[0]
     for ax, (group, title) in zip(axes, groups.items(), strict=True):
@@ -91,16 +98,18 @@ def patch_map(cells: dict, layers: list[int], n_items: int, out: Path) -> None:
         ax.set_xlabel("layer patched", color=MUTED, fontsize=9)
         ax.set_ylim(-3, 103)
     axes[0].set_ylabel("% of items", color=MUTED, fontsize=9)
-    fig.legend(*axes[0].get_legend_handles_labels(), loc="lower center", ncol=5, frameon=False, fontsize=8.5)
+    fig.legend(
+        *axes[0].get_legend_handles_labels(), loc="lower center", ncol=6 if wide else 3, frameon=False, fontsize=8.5
+    )
     fig.suptitle(
-        f"Copy the counterfactual's activation (S -> X, X -> c) into the original run, one layer at a time (n={n_items}; "
-        f"shaded: layers {SWAP_BAND[0]}-{SWAP_BAND[1]}, exp03's lens swaps)",
+        "Copy the counterfactual's activation (S -> X, X -> c) into the original run, one layer at a time"
+        f"{' ' if wide else chr(10)}(n={n_items}; shaded: layers {SWAP_BAND[0]}-{SWAP_BAND[1]}, exp03's lens swaps)",
         x=0.01,
         ha="left",
         fontsize=11,
         color=INK,
     )
-    fig.tight_layout(rect=(0, 0.07, 1, 0.94))
+    fig.tight_layout(rect=(0, 0.07, 1, 0.94) if wide else (0, 0.13, 1, 0.87))
     fig.savefig(out / "patch_map.png", dpi=170, facecolor=SURFACE)
     plt.close(fig)
 
@@ -108,7 +117,7 @@ def patch_map(cells: dict, layers: list[int], n_items: int, out: Path) -> None:
 def patch_logp(cells: dict, layers: list[int], n_items: int, out: Path) -> None:
     groups = drawn_groups(cells)
     fig, axes = plt.subplots(
-        1, len(groups), figsize=(3.3 * len(groups), 3.4), sharey=True, facecolor=SURFACE, squeeze=False
+        1, len(groups), figsize=(max(3.3 * len(groups), 9.0), 3.4), sharey=True, facecolor=SURFACE, squeeze=False
     )
     axes = axes[0]
     for ax, (group, title) in zip(axes, groups.items(), strict=True):
