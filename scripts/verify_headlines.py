@@ -273,6 +273,30 @@ def exp04_parts_role_share(part, role, lens=None, null=False, run="parts_window_
     return float(np.mean([o["role"] == role for o in rows]))
 
 
+EXP06 = R / "exp06_sigma_writes/sigma_v1"
+
+
+def exp06_rate(task, lens, field="flip", **where):
+    """exp06 outcomes.jsonl: share of rows (one per eligible item) of a task (matched / steer) and lens, matching the
+    other keys (condition, or lam and scale; null), whose `field` (flip / kept_clean) is true."""
+    rows = [
+        o
+        for o in jsonl(EXP06 / "outcomes.jsonl")
+        if (o["task"], o["lens"]) == (task, lens) and all(o.get(k) == v for k, v in where.items())
+    ]
+    return float(np.mean([o[field] for o in rows])), len(rows)
+
+
+def exp06_edit_size(lens, condition):
+    """exp06 outcomes.jsonl: the median edit size (share of the residual norm) of a matched-swap condition."""
+    sizes = [
+        o["edit_ratio"]
+        for o in jsonl(EXP06 / "outcomes.jsonl")
+        if o["task"] == "matched" and (o["lens"], o["condition"], o["null"]) == (lens, condition, False)
+    ]
+    return float(np.median(sizes))
+
+
 def exp04_variance_share(lens, what, run="parts_window"):
     """exp04 parts_window fve.jsonl: the median share of δ's variance in the part (or of a random direction's, chance)."""
     shares = [f["share"] for f in jsonl(EXP04 / run / "fve.jsonl") if (f["lens"], f["what"]) == (lens, what)]
@@ -488,6 +512,54 @@ def main():
             exp04_variance_share("jpp", "chance", "parts_window_fresh"),
             0.07,
         ),
+        ("exp06", "matched J++: J-part", exp06_rate("matched", "jpp", condition="jpart", null=False)[0], 0.52),
+        (
+            "exp06",
+            "matched J++: isotropic rest",
+            exp06_rate("matched", "jpp", condition="jpart_matched", null=False)[0],
+            0.14,
+        ),
+        (
+            "exp06",
+            "matched J++: Σ-shaped rest",
+            exp06_rate("matched", "jpp", condition="jpart_matched_sigma", null=False)[0],
+            0.12,
+        ),
+        ("exp06", "matched J-lens: J-part", exp06_rate("matched", "jlens", condition="jpart", null=False)[0], 0.35),
+        (
+            "exp06",
+            "matched J-lens: isotropic rest",
+            exp06_rate("matched", "jlens", condition="jpart_matched", null=False)[0],
+            0.10,
+        ),
+        (
+            "exp06",
+            "matched J-lens: Σ-shaped rest",
+            exp06_rate("matched", "jlens", condition="jpart_matched_sigma", null=False)[0],
+            0.14,
+        ),
+        (
+            "exp06",
+            "matched J++: Σ-shaped rest's null",
+            exp06_rate("matched", "jpp", condition="jpart_matched_sigma", null=True)[0],
+            0.04,
+        ),
+        (
+            "exp06",
+            "matched J++: Σ-shaped rest, answer kept",
+            exp06_rate("matched", "jpp", "kept_clean", condition="jpart_matched_sigma", null=False)[0],
+            0.44,
+        ),
+        ("exp06", "matched J++: J-part edit size", exp06_edit_size("jpp", "jpart"), 0.016),
+        ("exp06", "matched J++: Σ-shaped rest edit size", exp06_edit_size("jpp", "jpart_matched_sigma"), 0.17),
+        ("exp06", "steer J++ 3%: λ = 1 (the lens)", exp06_rate("steer", "jpp", lam=1.0, scale=0.03)[0], 0.63),
+        ("exp06", "steer J++ 3%: λ = 0.5", exp06_rate("steer", "jpp", lam=0.5, scale=0.03)[0], 0.13),
+        ("exp06", "steer J++ 3%: λ = 0", exp06_rate("steer", "jpp", lam=0.0, scale=0.03)[0], 0.03),
+        ("exp06", "steer J++ 5%: λ = 1 (the lens)", exp06_rate("steer", "jpp", lam=1.0, scale=0.05)[0], 0.49),
+        ("exp06", "steer J++ 5%: λ = 0", exp06_rate("steer", "jpp", lam=0.0, scale=0.05)[0], 0.21),
+        ("exp06", "steer J-lens 3%: λ = 1 (the lens)", exp06_rate("steer", "jlens", lam=1.0, scale=0.03)[0], 0.30),
+        ("exp06", "steer J-lens 3%: λ = 0.5", exp06_rate("steer", "jlens", lam=0.5, scale=0.03)[0], 0.01),
+        ("exp06", "steer J++ 3%: random direction", exp06_rate("steer", "jpp", null=True, scale=0.03)[0], 0.0),
     ]
     width = max(len(c[1]) for c in checks)
     for exp, what, got, claimed in checks:

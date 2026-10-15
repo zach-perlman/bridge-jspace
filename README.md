@@ -487,6 +487,44 @@ more. Figures: `figures/exp04_brew_patch/v3_fresh_map/` (the map figure draws I 
 `v4_fresh_parts/parts.png`.
 </details>
 
+### exp06_sigma_writes (part B): read with the lens, write along the covariance?
+**What we measure.** A lens vector is a gradient, roughly a whitened direction (Stein's lemma: Σ⁻¹ Cov(h, logit)). If
+so, the edit that moves the lens's reading most naturally, in units of how activations vary, runs along Σv, not v.
+Two tests, with Σ the covariance of block outputs over 100,156 WikiText-103 test positions (the lens's own kind of
+text): (1) exp02's matched-alignment control again, with the matched direction's rest drawn from N(0, Σ) instead of
+isotropically: does the J-part's lead come from how natural its direction is? (2) exp03's fresh-item steering of the
+start colour (S to S', layers 8-24) along Σ_λ (v_S' - v_S), from λ = 1 (the lens's own direction) to λ = 0 (pure Σv),
+at the same Euclidean size.
+
+**In short.**
+- **The J-part's lead in exp02 is not about how natural the matched direction is.** With the rest drawn from the
+  covariance, the matched swaps flip 12% [6, 21] (J++) and 14% [8, 24] (J-lens) of 77 items, no more than the isotropic
+  version (14% and 10%; difference -3 [-12, +6] and +4 [-4, +12] pts), against the J-part's 52% and 35% (J-part minus
+  covariance-shaped: +40 [+27, +53] and +21 [+9, +32]). The covariance-shaped swaps move the activation about ten times
+  as much as the J-part's (median 17% of the residual norm vs 1.6%) and keep the original answer for only 44% of items:
+  bigger, more damaging edits, not more flips. By the manifest's rule, the gap is the lens's direction.
+- **Writing along Σv is worse than writing along v.** At 3% of the residual norm, J++ steering gives f(f(S')) for 63%
+  [55, 70] of 164 fresh items along the lens's own direction, 13% at λ = 0.5 and 3-4% at λ = 0.1 and 0 (-50 to -60
+  pts); at 5%, 49% against 34%, 23% and 21%. The J-lens: 30% against 1% at 3%. Random directions: 0%. The
+  covariance-shaped directions are far from the lens's (median cosine 0.29-0.44) and at 3% leave the original answer
+  for 54-77% of items, against 7-18% along the lens's direction.
+
+![exp06: writing along the covariance](figures/exp06_sigma_writes/v1/sigma_writes.png)
+
+**What this does not show.** Σ is WikiText's covariance, not that of the two-hop or brew prompts. Sizes are Euclidean:
+at a matched Mahalanobis size the covariance-shaped edits would be larger. The steering is at the start line, where
+the lens's own direction already works; at exp04's window, where it does not, exp07 tries Σ-shaped and fitted
+directions.
+
+<details><summary>Full numbers and checks</summary>
+
+Run: `results/exp06_sigma_writes/sigma_v1` (manifest written before the run, with the decision rules; the human chose
+the run). Its J-part and isotropic rows reproduce exp02's `matched_v4` item for item (77/77 per lens), and λ = 1
+reproduces exp03's `fresh_steer` for 162-164 of 164 items. The covariance-shaped condition's random null flips 4% [1,
+11] (the others 0-1%), with edits as large as the condition's. Figure: `uv run python scripts/exp06_figures.py <new
+folder> sigma_v1`. Headlines are recomputed by `scripts/verify_headlines.py`.
+</details>
+
 ### Pitfalls found so far
 1. **Trailing space.** Most original prompts end in a space (83/93), which Qwen's tokenizer leaves as a lone `" "`
    token. The model then answers far worse (27B: 21/93 correct vs 61/93 with the space stripped) and the lens reads a
@@ -544,5 +582,8 @@ In order; designs need human sign-off before GPU runs.
 4. **A control matched in total edit size** across layers.
 5. **Brew:** exp04 maps the lookup (the intermediate is carried after the start line at layers 36-50) and finds the
    step outside the J-space, on the bank items and again on 154 fresh ones. Next: what direction carries the step
-   (e.g. a difference-of-means step direction, decomposed like exp02's probes); what the I answers at layers 36-46
-   are; and steering at the cue phrase in exp02 at the same sizes, to compare the two settings at one dose.
+   (exp07, written, awaiting the human's sign-off: a code for the intermediate fit on 1000 other items, against the
+   lens direction and its Σ-shaped versions at the window); what the I answers at layers 36-46 are; and steering at
+   the cue phrase in exp02 at the same sizes, to compare the two settings at one dose.
+6. **Σ-aware writes** (exp06): writing along Σv lost to writing along v at the start line, at both sizes and with both
+   lenses; exp07 tries it once more where the lens's own direction fails.

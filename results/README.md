@@ -41,6 +41,10 @@ Notes:
   `parts_window` (`scripts/exp04_brew_parts.py`: the window's copy split into its J-space part and the rest);
   figure `../figures/exp04_brew_patch/v2_parts/`. The same two on exp03's fresh items: `patch_map_fresh` and
   `parts_window_fresh`; figures `../figures/exp04_brew_patch/v3_fresh_map/` and `v4_fresh_parts/`.
+- **exp06_sigma_writes:** writing along the activation covariance (Σv) instead of the lens's direction (v): exp02's
+  matched control with a covariance-shaped rest, and exp03's fresh-item start-line steering along Σ_λ v. Run
+  `sigma_v1` (`scripts/exp06_sigma_writes.py`); figure `../figures/exp06_sigma_writes/v1/`
+  (`uv run python scripts/exp06_figures.py <new folder> sigma_v1`).
 - exp02 controls for "the J-space part flips more because it carries more of the probe": `exp02_swaps/
   matched_v4_{jpp,jlens}` (matched-alignment random directions) and `exp02_swaps/analysis/edit_size_v1/`
   (`scripts/exp02_edit_size.py`, no model).

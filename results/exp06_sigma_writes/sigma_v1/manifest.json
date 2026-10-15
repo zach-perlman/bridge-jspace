@@ -1,0 +1,114 @@
+{
+  "exp": "exp06_sigma_writes",
+  "run": "sigma_v1",
+  "kind": "sigma_writes",
+  "written_utc": "2026-10-15T01:32:48Z",
+  "question": "Do edits shaped by the activation covariance (\u03a3v) act more than the lens's own directions (v)?",
+  "why": "Chosen by the human (Zach, 2026-10-15) after exp04's fresh replication; run while the step-direction script is written.",
+  "model": {
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lenses": {
+    "jpp": "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+    "jlens": "qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt"
+  },
+  "sigma": {
+    "file": "cache/exp06/sigma.pt",
+    "sha256": "38a0755575d73a7271d551662b2afc8149db44931ecb1cd7e79368289051d1ac",
+    "n_positions": 100156,
+    "window": 512,
+    "layers": [
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40
+    ],
+    "data": {
+      "file": "data/wikitext103_test.json",
+      "sha256": "a6b5b17a576932fbb570a96b0f5b6a65ced408690a2dce749a8c56f980bbcc0f"
+    },
+    "estimate": "population covariance of block outputs over positions 1.. of each window"
+  },
+  "matched": {
+    "items": "exp02's probe_swap items, eligible as in matched_v4 (stripped prompts, criterion C)",
+    "probes": {
+      "jpp": {
+        "file": "cache/exp01/v3_jpp/probes.pt",
+        "sha256": "6f36cf6d5ccabe6d62b30dc1cc1fbdb99eb76eda615b054c566957e7649e408e"
+      },
+      "jlens": {
+        "file": "cache/exp01/v3_jlens/probes.pt",
+        "sha256": "70c40cfd2687965934a6143f03b83b257ddd278352d73dc527871b7b41720e91"
+      }
+    },
+    "conditions": [
+      "jpart",
+      "jpart_matched",
+      "jpart_matched_sigma"
+    ],
+    "layers": "24-40",
+    "jpart_matched_sigma": "per entity and layer: the J-part's cosine to the probe, the rest a seeded draw from N(0, \u03a3_l) projected orthogonal to the probe",
+    "nulls": "each condition's matched-norm random-direction null, as exp02"
+  },
+  "steer": {
+    "items": {
+      "file": "data/brew_fresh.json",
+      "sha256": "1e20ed25b3727842acba0806b346d91d991db1fa31f42f514e537fb3ab000d3c"
+    },
+    "eligibility": "as exp03's fresh_steer: answered correctly, with exp03's X and S'",
+    "direction": "unit(\u03a3_\u03bb,l (v_S' - v_S)) per layer, v unit lens vectors; \u03a3_\u03bb = (1 - \u03bb) \u03a3 + \u03bb (tr \u03a3 / d) I",
+    "lambdas": [
+      1.0,
+      0.5,
+      0.1,
+      0.0
+    ],
+    "scales": [
+      0.03,
+      0.05
+    ],
+    "layers": "8-24",
+    "nulls": "one seeded random direction per lens and scale, at the same size"
+  },
+  "decision": {
+    "matched": "fixed before the run: if jpart - jpart_matched_sigma's paired CI includes 0, the matched-control gap is attributed to how natural the direction is; if jpart_matched_sigma - jpart_matched's CI includes 0 and jpart - jpart_matched_sigma's is above 0, to the lens's direction; otherwise reported as mixed. J++ primary, J-lens secondary",
+    "steer": "\u03a3-aware writing helps if, for J++ at 3% (the primary dose), some \u03bb < 1 reaches f(f(S')) more often than \u03bb = 1 (paired bootstrap CI above 0); 5% and the J-lens are secondary",
+    "reproduce": "jpart and jpart_matched must match matched_v4, and \u03bb = 1 must match exp03 fresh_steer, item for item (reported, not fixed)"
+  },
+  "deviations": [
+    "\u03a3 comes from WikiText, not from the items' own prompts: it describes generic text, as the lens's Jacobians do.",
+    "At \u03bb < 1 the same Euclidean size moves the lens readings less; the test asks whether the shape of the edit matters more than its reading."
+  ]
+}
