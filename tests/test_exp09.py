@@ -31,5 +31,16 @@ def test_changed_tokens_and_roles():
     assert changed_tokens([1, 2, 3], [1, 9, 8]) == [1, 2]
     assert changed_tokens([1, 2], [1, 2, 3]) is None
     assert changed_tokens([1, 2], [1, 2]) is None
-    item = {"bridge": "France", "target": "Peru"}
+    item = {"bridge": "France", "target": "Peru", "answer": "Paris", "target_answer": "Lima"}
     assert role_of("lima", item) == "b" and role_of("paris", item) == "A" and role_of(None, item) == "none"
+
+
+def test_lookup_variants_rebind_and_keep_the_table():
+    items = pins.bind_lookup_items()
+    for index, item in enumerate(items[:: len(items) // 20]):
+        v = variants(item, index)
+        for text in (v["cf"], v["off"]):
+            assert Counter(item["prompt"].split()) == Counter(text.split())  # the same words, rebound
+            rest = item["prompt"].split(". ", 3)[3]  # after the three people sentences: the table and the question
+            assert text.endswith(rest)  # untouched
+        assert len(words_changed(item["prompt"], v["cf"])) == 2

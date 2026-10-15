@@ -57,6 +57,8 @@ BREW_FIT_FILE = DATA_DIR / "brew_fit.json"  # exp03_make_items.py: exp07's fitti
 BREW_FIT_SHA256 = "b9ab169a50bf576d71c074b31516f283e3163366d8ce2aea0907addbdf0e2659"
 BIND_RECALL_FILE = DATA_DIR / "bind_recall.json"  # exp09_make_items.py: recalled vs bound bridge countries
 BIND_RECALL_SHA256 = "bbb1cfa8e95b6a83ec1c6003fc3a05c5c1fba195cff6a5cb7e3ea968dce59029"
+BIND_LOOKUP_FILE = DATA_DIR / "bind_lookup.json"  # exp09_make_items.py --lookup: family L (bind, then a table)
+BIND_LOOKUP_SHA256 = "dec730702c8805ac96699f9b2553cc06a7fa5d0090132b62a96ab6d84936fed3"
 WIKITEXT_FILE = DATA_DIR / "wikitext103_test.json"  # generic text for part B's residual covariance (exp06)
 WIKITEXT_SHA256 = "a6b5b17a576932fbb570a96b0f5b6a65ced408690a2dce749a8c56f980bbcc0f"
 LENS_EVAL_MULTIHOP_FILE = DATA_DIR / "lens_eval_multihop.json"
@@ -93,6 +95,10 @@ def brew_fit_items() -> list[dict[str, Any]]:
 
 def bind_recall_items() -> list[dict[str, Any]]:
     return load_pinned_items(BIND_RECALL_FILE, BIND_RECALL_SHA256)
+
+
+def bind_lookup_items() -> list[dict[str, Any]]:
+    return load_pinned_items(BIND_LOOKUP_FILE, BIND_LOOKUP_SHA256)
 
 
 def wikitext_rows() -> list[str]:

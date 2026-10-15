@@ -1,6 +1,7 @@
 """Items for exp09_bind_recall: one two-hop question whose bridge country is recalled (R) or bound in context (B).
 
   exp09_make_items.py [--per-city N] [--n-bound N] [--seed S]  -> data/bind_recall.json (write-once; pin its sha256)
+  exp09_make_items.py --lookup N [--seed S]  -> data/bind_lookup.json: family L (write-once; pin its sha256)
 
 Both families share the format, the countries (the 13 with exp01 probes) and the second hop (the country's capital).
 Three people and three countries come first; every prompt names the bridge I, the target X and a third country Z:
@@ -8,6 +9,8 @@ Three people and three countries come first; every prompt names the bridge I, th
      the bridge is recalled from the city; I, X and Z are context only
   B  "{P1} lives in {.}. {P2} lives in {.}. {P3} lives in {.}. The capital of the country where {Pq} lives is"
      the bridge is the queried person's country
+  L  as B, then a colour per country in the prompt ("{c}'s colour is {k}.", brew's palette), and
+     "The colour of the country where {Pq} lives is": the bridge bound, the second hop an in-context lookup
 exp09 builds the counterfactuals from these fields: C sets the bridge to X (R: a city of X; B: the queried person and
 X's holder swap countries, so the same countries stay in the prompt), O swaps X's and Z's holders (off the path).
 Facts are written here by hand; exp09's check stage keeps the single-token, token-aligned items.
@@ -22,6 +25,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 
@@ -81,6 +85,7 @@ QUESTION = {
     "R": "The capital of the country where {city} is located is",
     "B": "The capital of the country where {q} lives is",
 }
+QUESTION_L = "The colour of the country where {q} lives is"
 
 
 def make(rng: random.Random, family: str, index: int, city: str | None = None) -> dict:
@@ -112,6 +117,43 @@ def make(rng: random.Random, family: str, index: int, city: str | None = None) -
         "target_answer": CAPITALS[target],
         "third": third,
     }
+
+
+def make_lookup(rng: random.Random, index: int) -> dict:
+    """Family L: B's bindings, then each country's colour in the prompt, and the colour of the queried person's
+    country as the question (the answer is read off the prompt's table, as in brew's second lookup)."""
+    from scripts.exp03_make_items import PALETTE
+
+    item = make(rng, "B", index)
+    colours = dict(zip(item["countries"], rng.sample(PALETTE, 3), strict=True))
+    order = rng.sample(item["countries"], 3)  # its own order, so no person-to-colour position matches the table
+    table = " ".join(f"{c}'s colour is {colours[c]}." for c in order)
+    people = " ".join(f"{p} lives in {c}." for p, c in zip(item["people"], item["countries"], strict=True))
+    return {
+        **item,
+        "name": f"L-{index:04d}",
+        "family": "L",
+        "prompt": f"{people} {table} {QUESTION_L.format(q=item['cue'])}",
+        "colours": colours,
+        "answer": colours[item["bridge"]],
+        "target_answer": colours[item["target"]],
+    }
+
+
+def main_lookup(n: int, seed: int) -> None:
+    out = pins.DATA_DIR / "bind_lookup.json"
+    assert not out.exists(), f"{out} exists; data files are written once"
+    rng = random.Random(seed)
+    items = [make_lookup(rng, i) for i in range(n)]
+    blob = {
+        "family": "bind_lookup",
+        "generator": f"scripts/exp09_make_items.py --lookup {n} --seed {seed}",
+        "format": "L: B's bindings, then a colour per country in the prompt; the bridge bound, the second hop an "
+        "in-context lookup; ungated",
+        "items": items,
+    }
+    out.write_text(json.dumps(blob, indent=1) + "\n")
+    print("wrote", out, f"{n} lookup items")
 
 
 def main(per_city: int, n_bound: int, seed: int) -> None:
@@ -146,5 +188,9 @@ if __name__ == "__main__":
     parser.add_argument("--per-city", type=int, default=6)
     parser.add_argument("--n-bound", type=int, default=400)
     parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument("--lookup", type=int, default=0, help="write data/bind_lookup.json with this many L items")
     args = parser.parse_args()
-    main(args.per_city, args.n_bound, args.seed)
+    if args.lookup:
+        main_lookup(args.lookup, args.seed)
+    else:
+        main(args.per_city, args.n_bound, args.seed)

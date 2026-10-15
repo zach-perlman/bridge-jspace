@@ -47,12 +47,23 @@ from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from scripts.exp03_brew_swaps import answer_colour, write_jsonl
+from scripts.exp03_make_items import PALETTE
 from scripts.exp04_brew_parts import K_ATOMS, AddRows, lens2_part, null_rows, signed_omp
 from scripts.exp09_make_items import CAPITALS, CITIES
 
 EXP = "exp09_bind_recall"
 RESULTS = pins.RESULTS_DIR / EXP
-FAMILIES = ("R", "B")
+FAMILIES = ("R", "B")  # bind_recall's families (the swaps run on them only)
+ITEM_SETS = {  # set -> (file, sha256, loader, families, the answer words a continuation is scored against)
+    "bind_recall": (
+        pins.BIND_RECALL_FILE,
+        pins.BIND_RECALL_SHA256,
+        pins.bind_recall_items,
+        ("R", "B"),
+        tuple(c.lower() for c in CAPITALS.values()),
+    ),
+    "bind_lookup": (pins.BIND_LOOKUP_FILE, pins.BIND_LOOKUP_SHA256, pins.bind_lookup_items, ("L",), tuple(PALETTE)),
+}
 GROUPS = ("question", "last")
 MAP_LAYERS = tuple(range(0, 61, 4))
 ANSWER_ONSET = 44  # exp12: the answer is read at the last word from about layer 44; the parts stay below it
@@ -135,7 +146,7 @@ def prepare(item: dict, index: int, tokenizer) -> dict:
         out["status"] = "unaligned"
         return out
     prompt, offsets = item["prompt"], enc["clean"].offset_mapping
-    q_start, cue_start, cue_end = prompt.index("The capital"), prompt.rindex(item["cue"]), prompt.rindex(" is")
+    q_start, cue_start, cue_end = prompt.rindex("The "), prompt.rindex(item["cue"]), prompt.rindex(" is")
     after = max(cf_changed)
     out["groups"] = {
         "question": [i for i, (_, e) in enumerate(offsets) if e > q_start and i > after],
@@ -147,7 +158,8 @@ def prepare(item: dict, index: int, tokenizer) -> dict:
 
 
 def roles(item: dict) -> dict[str, str]:
-    return {"A": CAPITALS[item["bridge"]].lower(), "b": CAPITALS[item["target"]].lower()}
+    """A: the original answer (the bridge's capital, or in L its colour); b: X's."""
+    return {"A": item["answer"].lower(), "b": item["target_answer"].lower()}
 
 
 def role_of(said: str | None, item: dict) -> str:
@@ -160,10 +172,11 @@ def stage_check() -> None:
     from bridge_jspace.tokens import load_tokenizer
 
     tokenizer = load_tokenizer()
-    for family in FAMILIES:
+    for family in ("R", "B", "L"):
         counts: dict[str, int] = {}
         sizes: dict[int, int] = {}
-        for index, item in enumerate(pins.bind_recall_items()):
+        items = pins.bind_lookup_items() if family == "L" else pins.bind_recall_items()
+        for index, item in enumerate(items):
             if item["family"] != family:
                 continue
             prep = prepare(item, index, tokenizer)
@@ -174,7 +187,8 @@ def stage_check() -> None:
         print(family, counts, "question-group sizes:", sizes)
 
 
-def manifest_common(name: str, why: str, kind: str) -> dict:
+def manifest_common(name: str, why: str, kind: str, item_set: str = "bind_recall") -> dict:
+    path, sha = ITEM_SETS[item_set][:2]
     return {
         "exp": EXP,
         "run": name,
@@ -183,16 +197,17 @@ def manifest_common(name: str, why: str, kind: str) -> dict:
         "why": why,
         "model": {"repo": pins.QWEN_REPO, "revision": pins.QWEN_REVISION, "dtype": "bfloat16", "attn": "sdpa"},
         "items": {
-            "file": str(pins.BIND_RECALL_FILE.relative_to(pins.REPO_ROOT)),
-            "sha256": pins.BIND_RECALL_SHA256,
+            "set": item_set,
+            "file": str(path.relative_to(pins.REPO_ROOT)),
+            "sha256": sha,
             "per_family": f"{N_ITEMS}, a seeded sample (seed {SAMPLE_SEED}) of the eligible items",
         },
         "eligibility": "B, C and O each change one token against the original (token-aligned), and the greedy "
-        "continuations' first capital of the set is the bridge's (B, O) and X's (C)",
+        "continuations' first answer word of the set (R, B: the capitals; L: the colours) is the bridge's (B, O) and X's (C)",
         "counterfactuals": {
             "C": "the bridge set to X, every country still in the prompt. R: the city replaced by the first city of X, "
             "in a seeded order (9000 + index), whose prompt lines up token for token; B: the queried person and X's "
-            "holder swap countries",
+            "holder swap countries; L: as B",
             "O": "X's and Z's holders swap countries (off the path; the answer stays)",
         },
         "groups": {
@@ -206,11 +221,11 @@ def manifest_common(name: str, why: str, kind: str) -> dict:
     }
 
 
-def stage_manifest_map(name: str, why: str) -> None:
+def stage_manifest_map(name: str, why: str, item_set: str = "bind_recall") -> None:
     path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
-    manifest = manifest_common(name, why, "bind_recall_map")
+    manifest = manifest_common(name, why, "bind_recall_map", item_set)
     manifest["question"] = "Where, by layer and position group, does each family carry the bridge (lens-free)?"
     manifest["layers"] = list(MAP_LAYERS)
     manifest["decision"] = {
@@ -225,9 +240,8 @@ def stage_manifest_map(name: str, why: str) -> None:
     print("wrote", path)
 
 
-@torch.no_grad()
 def uid(item: dict, index: int) -> str:
-    """An item's id: its family and its index in data/bind_recall.json. The file's own `name` field is not unique
+    """An item's id: its family and its index in its item file (data/bind_recall.json, data/bind_lookup.json). The file's own `name` field is not unique
     (exp09_make_items.py numbered each list comprehension from the same length), so nothing keys on it."""
     return f"{item['family']}-{index:04d}"
 
@@ -243,18 +257,21 @@ def run_jobs(model, c: dict, jobs: list[tuple[dict, dict]], capitals: list[str],
             outcomes.append({"family": c["family"], "name": c["name"], **tags, "said": said, "role": role_of(said, c)})
 
 
+@torch.no_grad()
 def eligible_cases(
     model,
     tokenizer,
     layers: tuple[int, ...] | None,
     sources: tuple[str, ...] = ("clean", "cf", "off"),
     map_items: Path | None = None,
+    item_set: str = "bind_recall",
 ) -> tuple[list[dict], list[dict]]:
     """Eligible items (as the manifest), a seeded sample of N_ITEMS per family, with their runs' block outputs.
     With `map_items` (a map run's items.jsonl, one row per item in file order) the eligibility is read from that run
     instead of regenerated, and the same seeded sample follows."""
-    capitals = [c.lower() for c in CAPITALS.values()]
-    items = pins.bind_recall_items()
+    _, _, load, families, answers = ITEM_SETS[item_set]
+    capitals = list(answers)
+    items = load()
     rows, pool = [], []
     before = [json.loads(line) for line in map_items.read_text().splitlines()] if map_items else None
     assert before is None or len(before) == len(items), "the map's items.jsonl does not cover the item file"
@@ -278,7 +295,7 @@ def eligible_cases(
             pool.append({**item, "name": uid(item, index), "index": index, **prep})
     rng = random.Random(SAMPLE_SEED)
     cases = []
-    for family in FAMILIES:
+    for family in families:
         mine = [c for c in pool if c["family"] == family]
         cases += rng.sample(mine, min(N_ITEMS, len(mine)))
     picked = {c["name"] for c in cases}
@@ -301,12 +318,14 @@ def stage_run_map(name: str) -> None:
     out_dir = RESULTS / name
     manifest = json.loads((out_dir / "manifest.json").read_text())
     assert not (out_dir / "outcomes.jsonl").exists(), f"{out_dir} already has results; results are write-once"
-    assert sha256_of(pins.BIND_RECALL_FILE) == manifest["items"]["sha256"], "items changed since the manifest"
+    item_set = manifest["items"].get("set", "bind_recall")
+    file, sha, _, families, answers = ITEM_SETS[item_set]
+    assert sha256_of(file) == manifest["items"]["sha256"] == sha, "items changed since the manifest"
     model = load_model()
     tokenizer: Any = model.tokenizer
-    capitals = [c.lower() for c in CAPITALS.values()]
-    cases, rows = eligible_cases(model, tokenizer, MAP_LAYERS)
-    print({f: sum(c["family"] == f for c in cases) for f in FAMILIES}, "items", flush=True)
+    capitals = list(answers)
+    cases, rows = eligible_cases(model, tokenizer, MAP_LAYERS, item_set=item_set)
+    print({f: sum(c["family"] == f for c in cases) for f in families}, "items", flush=True)
     outcomes = []
     for c in cases:
         jobs = []
@@ -344,16 +363,20 @@ def stage_run_map(name: str) -> None:
     print((out_dir / "summary.md").read_text())
 
 
+def families_in(rows: list[dict]) -> tuple[str, ...]:
+    return tuple(f for f in ("R", "B", "L") if any(r["family"] == f for r in rows))
+
+
 def status_counts(rows: list[dict]) -> dict:
     return {
         f: {s: sum(r["family"] == f and r["status"] == s for r in rows) for s in {r["status"] for r in rows}}
-        for f in FAMILIES
+        for f in families_in(rows)
     }
 
 
 def map_rates(outcomes: list[dict]) -> list[dict]:
     rates = []
-    for family in FAMILIES:
+    for family in families_in(outcomes):
         for group in GROUPS:
             for layer in MAP_LAYERS:
                 cell = [o for o in outcomes if (o["family"], o["group"], o["layer"]) == (family, group, layer)]
@@ -397,11 +420,13 @@ def stage_manifest_parts(name: str, map_run: str, why: str) -> None:
     assert not path.exists(), f"{path} exists; manifests are written once"
     map_summary = RESULTS / map_run / "summary.json"
     blob = json.loads(map_summary.read_text())
-    cap = {f: min(blob["answer_formed"].get(f, ANSWER_ONSET), ANSWER_ONSET) for f in FAMILIES}
+    item_set = json.loads((RESULTS / map_run / "manifest.json").read_text())["items"].get("set", "bind_recall")
+    families = ITEM_SETS[item_set][3]
+    cap = {f: min(blob["answer_formed"].get(f, ANSWER_ONSET), ANSWER_ONSET) for f in families}
     window = {
-        f: [layer for layer in blob["windows"].get(f, {}).get("question", []) if layer < cap[f]] for f in FAMILIES
+        f: [layer for layer in blob["windows"].get(f, {}).get("question", []) if layer < cap[f]] for f in families
     }
-    manifest = manifest_common(name, why, "bind_recall_parts")
+    manifest = manifest_common(name, why, "bind_recall_parts", item_set)
     manifest["question"] = (
         "At each family's window, which part of the copy carries the bridge: its J-space part or the rest?"
     )
@@ -421,6 +446,9 @@ def stage_manifest_parts(name: str, map_run: str, why: str) -> None:
         "same for lens2)",
         "hypothesis": "supported if R is 'inside' or 'both or neither' with jspace above its null, and B is 'outside'; "
         "refuted if B's jspace is above its null; a family with an empty window is not interpreted",
+        "L": "bind_lookup only: L 'outside' (as brew): an in-context second step moves the bound bridge out of the "
+        "J-space; L 'inside' (as B): it does not, so brew's difference is its first step (a table lookup) or its "
+        "format; otherwise inconclusive",
     }
     path.write_text(json.dumps(manifest, indent=2) + "\n")
     print("wrote", path)
@@ -439,11 +467,12 @@ def stage_run_parts(name: str) -> None:
     window = manifest["map"]["parts_window"]
     layers = tuple(sorted({layer for v in window.values() for layer in v}))
     assert layers, "no family has a window"
+    item_set = manifest["items"].get("set", "bind_recall")
     model = load_model()
     tokenizer: Any = model.tokenizer
-    capitals = [c.lower() for c in CAPITALS.values()]
+    capitals = list(ITEM_SETS[item_set][4])
     map_items = RESULTS / manifest["map"]["run"] / "items.jsonl"
-    cases, rows = eligible_cases(model, tokenizer, layers, map_items=map_items)
+    cases, rows = eligible_cases(model, tokenizer, layers, map_items=map_items, item_set=item_set)
     lens = JLens(model, "jpp")
     dictionaries = {layer: lens.vectors(layer, model.letter_token_ids()) for layer in layers}
     outcomes, fve = [], []
@@ -505,7 +534,7 @@ def step_scores(outcomes: list[dict], **where) -> dict[str, float]:
 
 def summarize_parts(outcomes: list[dict], fve: list[dict], window: dict) -> dict:
     out: dict[str, Any] = {"families": {}}
-    for family in FAMILIES:
+    for family in window:
         rows = [o for o in outcomes if o["family"] == family]
         if not window.get(family):
             out["families"][family] = {"window": [], "verdicts": "not interpreted (empty window)"}
@@ -543,7 +572,13 @@ def summarize_parts(outcomes: list[dict], fve: list[dict], window: dict) -> dict
             "variance_share_median": {k: statistics.median(v) for k, v in shares.items()},
         }
     fam = out["families"]
-    if all(isinstance(fam[f].get("decisions"), dict) for f in FAMILIES):
+    if "L" in fam:
+        v = fam["L"]["decisions"]["jspace"]["verdict"] if isinstance(fam["L"].get("decisions"), dict) else None
+        out["hypothesis"] = {
+            "outside": "L outside: an in-context second step moves the bound bridge out of the J-space",
+            "inside": "L inside: brew's difference is its first step (a table lookup) or its format",
+        }.get(v or "", "L: inconclusive" if v else "L: not interpreted (empty window)")
+    elif all(isinstance(fam[f].get("decisions"), dict) for f in FAMILIES):
         r, b = fam["R"]["decisions"]["jspace"], fam["B"]["decisions"]["jspace"]
         verdict = "inconclusive"
         if b["jspace - its null"][1] > 0:
@@ -738,6 +773,7 @@ if __name__ == "__main__":
     parser.add_argument("--name", help="manifest_*: the run's folder name")
     parser.add_argument("--map", dest="map_run", help="manifest_parts: the map run")
     parser.add_argument("--why", help="manifest_*: who chose this run and why")
+    parser.add_argument("--items", default="bind_recall", choices=list(ITEM_SETS), help="manifest_map: the item set")
     args = parser.parse_args()
     if args.stage == "check":
         stage_check()
@@ -745,7 +781,7 @@ if __name__ == "__main__":
         assert args.name, "manifests need --name"
         assert args.why, "manifests need --why"
         if args.stage == "manifest_map":
-            stage_manifest_map(args.name, args.why)
+            stage_manifest_map(args.name, args.why, args.items)
         elif args.stage == "manifest_swaps":
             stage_manifest_swaps(args.name, args.why)
         else:
