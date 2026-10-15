@@ -857,8 +857,12 @@ items whose readings name X, the patched state's intermediate; light: I, the one
 ranks X first among the 12 colours on the same vectors. With C's state patched in (second group) each reader looks
 like C as written (fourth), not like B (first); the off-path patch (third) leaves B's picture.*
 
-**What this does not show.** The readers recite the table's colours: even on C as written the NLA names I for 23% of
-items and a colour off the path for 28%, so each reader is compared with its own floor and ceiling. The lens-blind
+**What this does not show.** That the readers read the computed intermediate rather than re-solve the puzzle from
+what the vector encodes: both read positions are among the four patched ones, so the vectors they read carry C's own
+context (its rules give S -> X), and a reader that re-told and solved that context would name X too. exp17's design
+reads unpatched positions; a v3 here would edit with exp07's code (no counterfactual text) against the lens direction.
+The readers recite the table's colours: even on C as written the NLA names I for 23% of items and a colour off the
+path for 28%, so each reader is compared with its own floor and ceiling. The lens-blind
 split was chosen after the run, and its intervals resample readings, not items. Brew's intermediate is a word of the
 prompt. One seed; greedy decoding.
 

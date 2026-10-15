@@ -63,6 +63,13 @@ ITEM_SETS = {  # set -> (file, sha256, loader, families, the answer words a cont
         tuple(c.lower() for c in CAPITALS.values()),
     ),
     "bind_lookup": (pins.BIND_LOOKUP_FILE, pins.BIND_LOOKUP_SHA256, pins.bind_lookup_items, ("L",), tuple(PALETTE)),
+    "recall_lookup": (
+        pins.RECALL_LOOKUP_FILE,
+        pins.RECALL_LOOKUP_SHA256,
+        pins.recall_lookup_items,
+        ("RL",),
+        tuple(PALETTE),
+    ),
     "bind_lookup_v2": (
         pins.BIND_LOOKUP_V2_FILE,
         pins.BIND_LOOKUP_V2_SHA256,
@@ -104,7 +111,7 @@ def variants(item: dict, index: int, city2: str | None = None) -> dict[str, str]
         out[i], out[j] = out[j], out[i]
         return out
 
-    if item["family"] == "R":
+    if item["family"] in ("R", "RL"):  # the bridge recalled from the city: C changes the city
         city2 = city2 or x_cities(item, index)[0]
         cf = f"{context(people, held)} {question.replace(f'where {item["cue"]} is', f'where {city2} is')}"
     else:
@@ -131,7 +138,7 @@ def prepare(item: dict, index: int, tokenizer) -> dict:
     """Token ids of B, C and O, their changed positions, the position groups downstream of C's change, and the cue
     phrase (from the cue word to the word before the final ' is', as exp02's cue spans)."""
     texts = {"clean": item["prompt"], **variants(item, index)}
-    if item["family"] == "R":  # the first city of X whose prompt lines up with the original token for token
+    if item["family"] in ("R", "RL"):  # the first city of X whose prompt lines up with the original token for token
         n = len(tokenizer(item["prompt"], add_special_tokens=False).input_ids)
         fits = [
             c
@@ -143,7 +150,7 @@ def prepare(item: dict, index: int, tokenizer) -> dict:
     ids = {k: e.input_ids for k, e in enc.items()}
     changed = {s: changed_tokens(ids["clean"], ids[s]) for s in ("cf", "off")}
     out: dict[str, Any] = {"ids": ids, "changed": changed}
-    expected = {"cf": 1 if item["family"] == "R" else 2, "off": 2}
+    expected = {"cf": 1 if item["family"] in ("R", "RL") else 2, "off": 2}
     cf_changed, off_changed = changed["cf"], changed["off"]
     if (
         cf_changed is None
@@ -179,10 +186,10 @@ def stage_check() -> None:
     from bridge_jspace.tokens import load_tokenizer
 
     tokenizer = load_tokenizer()
-    for family in ("R", "B", "L"):
+    for family in ("R", "B", "L", "RL"):
         counts: dict[str, int] = {}
         sizes: dict[int, int] = {}
-        items = pins.bind_lookup_v2_items() if family == "L" else pins.bind_recall_items()
+        items = {"L": pins.bind_lookup_v2_items, "RL": pins.recall_lookup_items}.get(family, pins.bind_recall_items)()
         for index, item in enumerate(items):
             if item["family"] != family:
                 continue
@@ -371,7 +378,7 @@ def stage_run_map(name: str) -> None:
 
 
 def families_in(rows: list[dict]) -> tuple[str, ...]:
-    return tuple(f for f in ("R", "B", "L") if any(r["family"] == f for r in rows))
+    return tuple(f for f in ("R", "B", "L", "RL") if any(r["family"] == f for r in rows))
 
 
 def status_counts(rows: list[dict]) -> dict:
@@ -453,6 +460,8 @@ def stage_manifest_parts(name: str, map_run: str, why: str) -> None:
         "same for lens2)",
         "hypothesis": "supported if R is 'inside' or 'both or neither' with jspace above its null, and B is 'outside'; "
         "refuted if B's jspace is above its null; a family with an empty window is not interpreted",
+        "RL": "recall_lookup only: RL 'outside': the in-context use decides (a recalled bridge leaves the J-space when "
+        "a lookup in the prompt uses it); RL 'inside': the recalled source decides; otherwise inconclusive",
         "L": "bind_lookup only: L 'outside' (as brew): an in-context second step moves the bound bridge out of the "
         "J-space; L 'inside' (as B): it does not, so brew's difference is its first step (a table lookup) or its "
         "format; otherwise inconclusive",
@@ -579,7 +588,13 @@ def summarize_parts(outcomes: list[dict], fve: list[dict], window: dict) -> dict
             "variance_share_median": {k: statistics.median(v) for k, v in shares.items()},
         }
     fam = out["families"]
-    if "L" in fam:
+    if "RL" in fam:
+        v = fam["RL"]["decisions"]["jspace"]["verdict"] if isinstance(fam["RL"].get("decisions"), dict) else None
+        out["hypothesis"] = {
+            "outside": "RL outside: the in-context use, not the recalled source, puts the bridge outside the J-space",
+            "inside": "RL inside: the recalled source keeps the bridge in the J-space, whatever uses it",
+        }.get(v or "", "RL: inconclusive" if v else "RL: not interpreted (empty window)")
+    elif "L" in fam:
         v = fam["L"]["decisions"]["jspace"]["verdict"] if isinstance(fam["L"].get("decisions"), dict) else None
         out["hypothesis"] = {
             "outside": "L outside: an in-context second step moves the bound bridge out of the J-space",

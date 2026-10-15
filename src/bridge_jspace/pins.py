@@ -61,6 +61,8 @@ BIND_LOOKUP_FILE = DATA_DIR / "bind_lookup.json"  # exp09_make_items.py --lookup
 BIND_LOOKUP_SHA256 = "dec730702c8805ac96699f9b2553cc06a7fa5d0090132b62a96ab6d84936fed3"
 BIND_LOOKUP_V2_FILE = DATA_DIR / "bind_lookup_v2.json"  # the same L items asked "... has the colour"
 BIND_LOOKUP_V2_SHA256 = "0883e3e5aa3dcecb41295a1324d6e366ba1bb766d6bd97b5b378a97cf4beae45"
+RECALL_LOOKUP_FILE = DATA_DIR / "recall_lookup.json"  # exp09 family RL: recalled bridge, in-context lookup
+RECALL_LOOKUP_SHA256 = "d6905b4445032dab8ca3a2e8fff74588750175e004af1c31b3a235f44d15703f"
 WIKITEXT_FILE = DATA_DIR / "wikitext103_test.json"  # generic text for part B's residual covariance (exp06)
 WIKITEXT_SHA256 = "a6b5b17a576932fbb570a96b0f5b6a65ced408690a2dce749a8c56f980bbcc0f"
 LENS_EVAL_MULTIHOP_FILE = DATA_DIR / "lens_eval_multihop.json"
@@ -105,6 +107,10 @@ def bind_lookup_items() -> list[dict[str, Any]]:
 
 def bind_lookup_v2_items() -> list[dict[str, Any]]:
     return load_pinned_items(BIND_LOOKUP_V2_FILE, BIND_LOOKUP_V2_SHA256)
+
+
+def recall_lookup_items() -> list[dict[str, Any]]:
+    return load_pinned_items(RECALL_LOOKUP_FILE, RECALL_LOOKUP_SHA256)
 
 
 def wikitext_rows() -> list[str]:

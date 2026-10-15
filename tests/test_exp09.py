@@ -44,3 +44,12 @@ def test_lookup_variants_rebind_and_keep_the_table():
             rest = item["prompt"].split(". ", 3)[3]  # after the three people sentences: the table and the question
             assert text.endswith(rest)  # untouched
         assert len(words_changed(item["prompt"], v["cf"])) == 2
+
+
+def test_recall_lookup_variants_change_the_city_only():
+    items = pins.recall_lookup_items()
+    for index, item in enumerate(items[:: len(items) // 20]):
+        v = variants(item, index)
+        cf = words_changed(item["prompt"], v["cf"])
+        assert len(cf) == 1 and cf[0][0] == item["cue"]  # only the city changes
+        assert Counter(item["prompt"].split()) == Counter(v["off"].split())  # O rebinds two holders
