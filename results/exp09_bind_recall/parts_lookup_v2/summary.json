@@ -1,0 +1,74 @@
+{
+  "families": {
+    "L": {
+      "window": [
+        36,
+        40
+      ],
+      "n": 80,
+      "step_scores": {
+        "lens2": 0.0,
+        "lens2 null": 0.0,
+        "not_lens2": 0.1375,
+        "not_lens2 null": 0.0,
+        "jspace": 0.0,
+        "jspace null": 0.0,
+        "not_jspace": 0.05625,
+        "not_jspace null": 0.0,
+        "full": 0.1625
+      },
+      "off_full": 0.0,
+      "decisions": {
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.1375,
+            0.06859375000000001,
+            0.2125
+          ],
+          "lens2 - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_lens2 - its null": [
+            0.1375,
+            0.06859375000000001,
+            0.2125
+          ],
+          "verdict": "outside"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.05625,
+            0.0125,
+            0.1125
+          ],
+          "jspace - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_jspace - its null": [
+            0.05625,
+            0.0125,
+            0.1125
+          ],
+          "verdict": "outside"
+        }
+      },
+      "variance_share_median": {
+        "lens2": 0.0112,
+        "jspace": 0.0886
+      }
+    }
+  },
+  "hypothesis": "L outside: an in-context second step moves the bound bridge out of the J-space",
+  "chance_share": 0.07100000000000001,
+  "items": {
+    "L": {
+      "eligible_not_sampled": 305,
+      "not_eligible": 15,
+      "eligible": 80
+    }
+  }
+}

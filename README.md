@@ -27,13 +27,14 @@ or tokenization artifact.
 | [exp14](#exp14_cue_answer_swaps-on-the-cue-phrase-is-it-the-bridge-or-already-the-answer) | On the cue phrase, does swapping the answer change it as often as swapping the bridge? |
 | [exp15](#exp15_oracle_lens-where-the-lenses-miss-the-bridge-does-the-oracle-lens-name-it) | Where the J-lens and J++ miss the bridge, does a reader that puts the activation into words name it? |
 | [exp16](#exp16_nla-does-a-second-verbalizer-the-nla-see-the-same) | Does a second verbalizer, the NLA, trained for another objective, see the same? |
+| [exp18](#exp18_brew_verbalizers-on-brew-do-the-verbalizers-read-the-models-state-or-work-from-the-text) | On brew, where reading the state and solving from the text predict different words, which do the verbalizers report? |
 | [exp02](#exp02_swaps-part-b-does-the-bridge-act-through-the-j-space-and-where) | Does swapping the bridge's J-space part change the answer, and where in the prompt? |
 | [exp03](#exp03_brew_swaps-part-b-an-in-context-two-step-lookup) | Do the same swaps work on a two-step lookup whose answer is read off the prompt? |
 | [exp04](#exp04_brew_patch-part-b-where-brew-carries-its-intermediate-without-a-lens) | Where does that lookup carry its intermediate, found without a lens? |
 | [exp06](#exp06_sigma_writes-part-b-read-with-the-lens-write-along-the-covariance) | Do edits shaped by the activation covariance (Σv) act more than the lens's own directions? |
 | [exp07](#exp07_step_code-part-b-a-code-for-brews-intermediate-fit-on-other-items-writes-the-step-the-lenss-direction-does-not) | Does a code for brew's intermediate, fit on other items, write the step where the lens direction does not? |
 | [exp08](#exp08_brew_read-part-b-the-lens-reads-brews-intermediate-at-a-few-positions-writing-along-its-direction-does-nothing) | Do the lenses read brew's intermediate where the step is carried? |
-| [exp09](#exp09_bind_recall-part-b-is-a-bridge-bound-in-context-outside-the-j-space-like-brews-no) | Holding the question fixed, is a bridge bound in context outside the J-space, as brew's intermediate is? |
+| [exp09](#exp09_bind_recall-part-b-which-bridges-leave-the-j-space-bound-ones-stay-in-unless-the-next-step-is-an-in-context-lookup) | Holding the question fixed, which bridges are carried outside the J-space, as brew's intermediate is? |
 | [Pitfalls](#pitfalls-found-so-far) | What went wrong along the way, and how each is handled |
 | [Decisions](#decisions), [open decisions](#open-decisions-humans) | What was decided, and what is still for the humans to decide |
 | [Next steps, part A](#next-steps-part-a), [part B](#next-steps-part-b) | What comes next |
@@ -91,6 +92,8 @@ or tokenization artifact.
    model that puts one activation into words) name it; and after the bridge swap, does it name the swap target?
 7. `exp16_nla`: the same with the NLA, a second 27B verbalizer (another training objective, built on the same model)
    trained on layer 42, compared with every reader at layer 42.
+8. `exp18_brew_verbalizers`: exp17's reading-vs-solving question on brew, with the counterfactual's state patched in
+   where exp04 found the step; the oracle lens and the NLA against their own floor (B) and ceiling (C).
 
 ## Method, part B: is the bridge used outside the J-space? (exp01-09)
 1. `data/entity_prompts.json`: about 8 prompts per entity that imply the entity without naming it, for the 97
@@ -152,6 +155,7 @@ context that moves brew's intermediate out.
 | [exp16 `methods_at_42.png`](figures/exp16_nla/methods_at_42.png) | Every reader at layer 42: the NLA and the oracle lens have the bridge and the answer more often than the J-lens and J++, at the same 3-9% false alarms |
 | [exp16 `after_swap.png`](figures/exp16_nla/after_swap.png) | The NLA too names the swap target where the model's answer changes (59%), rarely where it does not (11%) |
 | [exp16 `by_swap_label.png`](figures/exp16_nla/by_swap_label.png) | By part B's swap labels: where the J-space swap does not change the answer the lenses see the bridge less, the verbalizers as often |
+| [exp18 `state_vs_text.png`](figures/exp18_brew_verbalizers/v2/state_vs_text.png) | On brew, with the counterfactual's state patched in, both verbalizers name the state's intermediate, not the text's |
 | [exp11 `pool_top1_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/pool_top1_by_layer.png) | Last token only: bridge and answer ranked first, by layer, three readers |
 | [exp11 `advantage_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/advantage_by_layer.png) | Last token only: how many times higher than its distractor each word ranks |
 | [exp10 `pass_at_10_by_model.png`](figures/exp10_lens_sanity/20261015-135537/pass_at_10_by_model.png) | Does each lens find the bridge at all (pass@10), 4B and 27B |
@@ -213,6 +217,11 @@ each question.
     answer (neither: +5 to +12 points; J-mediated: -1 to -9; difference -14 [-28, -1] and -14 [-26, -1]): there the
     lenses see the bridge less, the verbalizers as often. That is the pattern of a reader of a non-J-space part, and
     also of a reader that solves the question regardless; exp17 separates them (exp16).
+12. On brew, where the text and the state can be set against each other, both verbalizers report the state: with the
+    counterfactual's state patched in, their readings move 86-95% of the way from the original prompt's to the
+    counterfactual's, an off-path patch moves them 1-3 points, and they move also where J++'s top colour misses the
+    patched intermediate (exp18). This supports reading over solving for exp15/16's swap results; exp17 would test
+    their lens-blind factual readings directly.
 
 ![exp12: where and how deep](figures/exp12_position_map/two_step.png)
 
@@ -809,6 +818,61 @@ r 64, scale 2); the swapped forward's top word equals exp14's for 77 of 77 quest
 (`cache/smoke/`, not kept) ran before the full run.
 </details>
 
+### exp18_brew_verbalizers: on brew, do the verbalizers read the model's state or work from the text?
+**What we measure.** exp17's question (do the oracle lens and the NLA read the state, or solve the question from text
+they reconstruct?) on brew, where the two predict different words. In B the prompt makes S -> I -> A; copying the
+counterfactual C's state (S -> X) into B at the four positions after the start line that carry the step (exp04's
+`positions_window`), at layers 36-40 or 36-46, makes the model itself answer f(X) while the text still says I. A
+reader that names X there reads the state; one that names I works from the text. The readers read downstream of the
+patch: the NLA at layer 42 and the oracle lens at 44 after layers 36-40, the oracle at 48 after 36-46; at the newline
+after "assistant" and at the last token. Floor: B as written; ceiling: C as written; control: B with the off-path
+counterfactual O's state at the same positions and layers. Items: the bank, fresh and fit sets, 970 eligible as in
+exp04; read on the items where the patch changed the model's answer, plus B and C on a fixed sample of 200. J++'s top
+colour on the same vectors for comparison. The rule was fixed in the config before the run; both readers passed their
+gates (exp15's and exp16's).
+
+**In short.**
+- **Both verbalizers read the state.** On the 218 items where the early patch changed the answer (22% of 970; the
+  off-path patch changed 3%), it moves the NLA's readings from B's toward C's: [names X] - [names I] rises by 50
+  points [+42, +60], 95% of C's own difference from B; the oracle lens's at 44 by 68 [+59, +78] (95%), and at 48,
+  after the late patch (429 items), by 61 [+54, +68] (86%). The off-path patch moves them 1-3 points (CIs around 0).
+  Positive control, C vs B on the sample: +49 to +70 points.
+- **In plain counts:** with C's state in B the NLA names X for 57% of items and I for 26%; B as written 32% and 51%;
+  C as written 57% and 23%.
+- **J++ reads the same states as well** (94-105% of C's difference at layers 42 and 44), so on brew the verbalizers do
+  not see more than the lens at these positions; exp08 found J++ reads the intermediate there.
+- **Where J++ does not rank X first in the patched state** (post hoc, per reading: 262-707 readings), the verbalizers
+  still move toward X: +31 [+23, +38] points (NLA), +49 [+41, +57] and +41 [+36, +46] (oracle at 44 and 48); they
+  name X in 32-36% of those readings against 16-20% on B as written.
+
+For exp17: on a task where solving from the text and reading the state predict different words, both verbalizers
+report the state, also on readings where the lens's top colour misses it. That supports reading the state for their
+swap results in exp15 and exp16; it does not test exp15/16's lens-blind readings themselves, which are factual
+(exp17).
+
+![exp18: state vs text](figures/exp18_brew_verbalizers/v2/state_vs_text.png)
+
+*How to read it: one panel per reader, on the items where the patch changed the model's answer. Dark: the share of
+items whose readings name X, the patched state's intermediate; light: I, the one the text implies. Dots: how often J++
+ranks X first among the 12 colours on the same vectors. With C's state patched in (second group) each reader looks
+like C as written (fourth), not like B (first); the off-path patch (third) leaves B's picture.*
+
+**What this does not show.** The readers recite the table's colours: even on C as written the NLA names I for 23% of
+items and a colour off the path for 28%, so each reader is compared with its own floor and ceiling. The lens-blind
+split was chosen after the run, and its intervals resample readings, not items. Brew's intermediate is a word of the
+prompt. One seed; greedy decoding.
+
+<details><summary>Full numbers and checks</summary>
+
+Run `results/exp18_brew_verbalizers/20261015-205549` (`config_v2.yaml`; eligible: 84 bank, 155 fresh, 731 fit items),
+with `summary.json` per cell (positive control, patched - B, C - B, off-path - B, recovered share, state colours
+(X, f(X)) against the text's (I, A), with Chinese names counted for the oracle). v1, `20261015-192500` (`config.yaml`:
+fresh items, layers 36-40, 28 items where the patch took) leaned the same way, but its rule (X 30 points above I within
+the patched readings) is one C as written does not meet, as the readers recite colours; v2 replaces it. `20261015-
+190206` is v1's first attempt, stopped before the NLA (not yet downloaded on the B200 box). Figure: `uv run python -m
+scripts.exp18_brew_verbalizers.plot <run> <new folder>`. Headlines are recomputed by `scripts/verify_headlines.py`.
+</details>
+
 ### exp02_swaps (part B): does the bridge act through the J-space, and where?
 **What we measure.** In "The capital of the country where Naples is located is" the model answers Rome through the
 bridge Italy. We swap the bridge's representation for another entity's (Italy -> Spain) at layers 24-40 and count how
@@ -1176,7 +1240,7 @@ tokens in every item (exp07's check). Figure: `uv run python scripts/exp08_figur
 tokenizer for the position labels). Headlines are recomputed by `scripts/verify_headlines.py`.
 </details>
 
-### exp09_bind_recall (part B): is a bridge bound in context outside the J-space, like brew's? No
+### exp09_bind_recall (part B): which bridges leave the J-space? Bound ones stay in, unless the next step is an in-context lookup
 **What we measure.** Part B's two settings point opposite ways: the recalled bridge acts through its J-space part
 (exp02), brew's intermediate is carried outside the J-space (exp04, exp07). They differ in much more than where the
 bridge comes from, so this run holds the question, the countries and the second hop fixed and changes only that.
@@ -1208,16 +1272,24 @@ methods run on both families, with decision rules fixed in the manifests:
 - **The probe swap does not move the bound bridge at all** (0% for every condition, the full probe included), so by
   its rule B's swaps are not interpreted: the swap edits layers 24-40 at the cue phrase, while the map has B's bridge
   arriving at the question only at layer 40.
+- **With a lookup in the prompt as the second step, the bound bridge leaves the J-space** (family L, run after the
+  above: B's bindings and counterfactuals, then "Italy's colour is teal. ..." and "The country where Jack lives has
+  the colour"; `data/bind_lookup_v2.json`, 80 of 400 items sampled). At L's window (layers 36-40) the copy gives X's
+  colour for 16% of items, its J-space part 0% and the rest 6% (+6 [+1, +11] pts); its I/X lens coordinates 0% and
+  the rest 14% (+14 [+7, +21]): "outside" by both splits, as brew's. The J-space part holds 9% of the copied
+  difference's variance, about a random direction's (7%), against B's 29%.
 
-Read together with brew: being in the context is not what puts a variable outside the J-space. A bound bridge here is
-retrieved as a word of the prompt and then used by a recalled fact; brew's intermediate is the output of a lookup in
-an in-context table, read by a second in-context lookup. Which of those differences matters is open (Next steps).
+Read together with brew: being in the context is not what puts a variable outside the J-space. The same bound bridge
+stays in the J-space when a recalled fact uses it (B) and leaves it when a lookup in the prompt does (L), as brew's
+intermediate, read by an in-context lookup, does.
 
 ![exp09: recalled vs bound](figures/exp09_bind_recall/v1/bind_recall.png)
 
 **What this does not show.** The split recovers little of the copy in either family (12.5% of B's 70%, 4-7% of R's
 44%): pieces of the copied difference act much less than the whole, so "inside" rests on small effects, and B's window
-is one layer. In B the bridge is a word in the prompt, so its J-space part may be the copied word's identity. The
+is one layer. In B the bridge is a word in the prompt, so its J-space part may be the copied word's identity. L's
+copy is weak at its window (16%; 79% from layer 52, where the answer forms) and L's question ends differently from
+B's ("has the colour" vs "is"; the first ending was continued, not answered: Pitfalls). The
 second hop is a recalled fact in both families, so a copy can carry the bridge or its capital; the window stops where
 the last token alone carries the answer (from 48 in B, 52 in R, capped at exp12's 44). One seed for the counterfactual
 cities and the sample.
@@ -1226,7 +1298,8 @@ cities and the sample.
 
 Runs under `results/exp09_bind_recall/`: `map_v1` (layers 0-60 every 4th, the question's tokens and the last token,
 C and O), `parts_v1` (its window), `swaps_v1` (exp02's conditions and nulls), each with its manifest written before
-the run; parts and swaps reuse the map's eligibility and sample. Probes: `exp01_probes/v3_jpp_b200`, the `more_jpp`
+the run; L: `map_lookup_v2` and `parts_lookup_v2` (`map_lookup_v1`, on the first ending, found 1 eligible item of
+400 and no window, so `parts_lookup_v1` stopped at its manifest); parts and swaps reuse the map's eligibility and sample. Probes: `exp01_probes/v3_jpp_b200`, the `more_jpp`
 variant rebuilt on the B200 box (v3_jpp's cache stayed on the old box): 2261 of 2673 prompts kept as before, 7 filter
 decisions differ, the J-space share by layer within 0.001 of v3_jpp. Items are identified by family and file index:
 the item file's `name` field repeats (Pitfalls). Generation is batched per item (`Model.generate_batch`, checked
@@ -1267,6 +1340,10 @@ against single runs: identical but for degenerate continuations). Figure: `uv ru
     its map, which only counts outcomes per cell, was unaffected.
 13. **Kernel launches bound generation.** On the B200 box a greedy 8-token continuation spends 0.65 s of CPU against
     0.15 s of GPU (~28k small kernels): batching an item's edited runs (`Model.generate_batch`) is 12-26x faster.
+14. **A question the model continues instead of answering.** exp09's L first ended "The colour of the country where
+    Jack lives is", which the model continues as a sentence ("... is the same as the colour of the country where
+    David lives."): 1 of 400 items eligible. Endings were compared on 40 items before any patching; "The country where
+    Jack lives has the colour" is answered for all 40.
 
 ### Decisions
 - **Trailing space: removed in every experiment, part A and part B** (2026-10-13 for part A; part B followed in its
@@ -1339,7 +1416,8 @@ lenses miss it and following the model's state under a swap. What is left is whe
      it from world knowledge; exp04 locates it after the start line at layers 36-50.
    - *Test:* read those positions with the lenses first (done: exp08; J++ reads I at four of the 21 positions,
      the same four that carry the step in exp04's `positions_window`), then with the oracle and the NLA on the
-     lens-blind cells, with a counterfactual context as the control.
+     lens-blind cells, with a counterfactual context as the control. Done as exp18: both verbalizers report the
+     patched state, also where J++'s top colour misses it.
 
 Not measured yet, and worth a line in any write-up: **bridges of several tokens.** Every result above is on
 single-token bridges (Setup). A multi-token bridge has no single lens direction to rank, so the lenses would need a
@@ -1368,8 +1446,8 @@ Parked: these were next steps; part A does not pursue them now.
    where the lens reads I carries the whole step (33%; the other 17: 0%). Next: split the code at those positions into
    the lens-read part and the rest; what the I answers at layers 36-46 are; and steering at the cue phrase in exp02
    at the same sizes.
-7. **What puts brew's intermediate outside the J-space** (exp09): a bound bridge used by a recalled fact stays inside.
-   A family that binds in the prompt and then looks up an in-context table ("Alice lives in France. ... France's
-   colour is red. What colour is the country where Alice lives?") separates a computed second step from the binding.
+7. **What puts brew's intermediate outside the J-space** (exp09): a bound bridge stays inside when a recalled fact uses
+   it and goes outside when a lookup in the prompt does (family L, as brew). Next: whether that holds with a stronger
+   copy at L's window (16% now), and whether the lookup's output, not its input, is what the lens cannot write.
 6. **Σ-aware writes** (exp06, exp07): writing along Σv lost to writing along v at the start line, and did no better
    than v at exp04's window. Dropped unless a human wants a Mahalanobis-matched version.

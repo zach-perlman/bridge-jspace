@@ -1,0 +1,61 @@
+{
+  "exp": "exp09_bind_recall",
+  "run": "parts_lookup_v2",
+  "kind": "bind_recall_parts",
+  "written_utc": "2026-10-15T22:06:37Z",
+  "why": "Chosen by the human (2026-10-15) after exp09 map_v1/parts_v1: does an in-context second step move a bound bridge out of the J-space (family L)? v2 ending: map_lookup_v1's prompts were continued, not answered.",
+  "model": {
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "items": {
+    "set": "bind_lookup_v2",
+    "file": "data/bind_lookup_v2.json",
+    "sha256": "0883e3e5aa3dcecb41295a1324d6e366ba1bb766d6bd97b5b378a97cf4beae45",
+    "per_family": "80, a seeded sample (seed 0) of the eligible items"
+  },
+  "eligibility": "B, C and O each change one token against the original (token-aligned), and the greedy continuations' first answer word of the set (R, B: the capitals; L: the colours) is the bridge's (B, O) and X's (C)",
+  "counterfactuals": {
+    "C": "the bridge set to X, every country still in the prompt. R: the city replaced by the first city of X, in a seeded order (9000 + index), whose prompt lines up token for token; B: the queried person and X's holder swap countries; L: as B",
+    "O": "X's and Z's holders swap countries (off the path; the answer stays)"
+  },
+  "groups": {
+    "question": "the question's tokens after C's changed ones (R: after the city; B: the whole question)",
+    "last": "the last token",
+    "cue": "the cue phrase, from the cue word to the word before the final ' is' (the swaps' positions)"
+  },
+  "outcome": "the patched greedy continuation's first capital of the set: X's capital (b), the bridge's (A), other",
+  "generation": "greedy, 8 new tokens, an item's runs batched 32 at a time (Model.generate_batch: equal to single runs up to batched-kernel rounding, which changed only degenerate continuations in a check)",
+  "question": "At each family's window, which part of the copy carries the bridge: its J-space part or the rest?",
+  "map": {
+    "run": "map_lookup_v2",
+    "summary_sha256": "952e30e503f77d16c576ba333367000c723619c356665baaf45d30ba2e0cb71b",
+    "cap": {
+      "L": 44
+    },
+    "parts_window": {
+      "L": [
+        36,
+        40
+      ]
+    }
+  },
+  "eligibility_from": "the map run's items.jsonl (the same items and seeded sample, not regenerated)",
+  "lens": {
+    "jpp": "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt"
+  },
+  "parts": {
+    "full": "\u03b4 = h_C - h_B at the question group",
+    "lens2": "\u03b4's projection on span{v_I, v_X}, J++'s unit vectors of the two countries; not_lens2 the rest",
+    "jspace": "\u03b4's 25-atom signed OMP part over J++'s unit letter-token vectors; not_jspace the rest"
+  },
+  "controls": "each part along a seeded random direction at the same per-position norm; O's full copy",
+  "decision": {
+    "step_score": "per item, the share of window layers at which the copy gives X's capital; paired bootstraps",
+    "parts": "per family, exp04's rule: outside if not_jspace - jspace is above 0 and jspace - its null is not; inside if jspace - not_jspace is above 0 and not_jspace - its null is not; otherwise both or neither (the same for lens2)",
+    "hypothesis": "supported if R is 'inside' or 'both or neither' with jspace above its null, and B is 'outside'; refuted if B's jspace is above its null; a family with an empty window is not interpreted",
+    "L": "bind_lookup only: L 'outside' (as brew): an in-context second step moves the bound bridge out of the J-space; L 'inside' (as B): it does not, so brew's difference is its first step (a table lookup) or its format; otherwise inconclusive"
+  }
+}

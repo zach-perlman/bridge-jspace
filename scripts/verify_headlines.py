@@ -540,22 +540,22 @@ def exp04_positions_step(item_set, group, source="cf"):
 EXP09 = R / "exp09_bind_recall"
 
 
-def exp09_map_rate(family, group, layer):
+def exp09_map_rate(family, group, layer, run="map_v1"):
     """exp09 map_v1 outcomes.jsonl: share of the counterfactual's copies (source cf) at a family, group and layer
     whose answer is X's capital (role b)."""
     rows = [
         o
-        for o in jsonl(EXP09 / "map_v1" / "outcomes.jsonl")
+        for o in jsonl(EXP09 / run / "outcomes.jsonl")
         if (o["family"], o["group"], o["layer"], o["source"]) == (family, group, layer, "cf")
     ]
     return float(np.mean([o["role"] == "b" for o in rows]))
 
 
-def exp09_part_score(family, part, null=False):
+def exp09_part_score(family, part, null=False, run="parts_v1"):
     """exp09 parts_v1 outcomes.jsonl: per item, the share of the window's layers at which the part's copy (source cf)
     gives X's capital; the mean over items."""
     per_item = {}
-    for o in jsonl(EXP09 / "parts_v1" / "outcomes.jsonl"):
+    for o in jsonl(EXP09 / run / "outcomes.jsonl"):
         if (o["family"], o["part"], o["source"], o["null"]) == (family, part, "cf", null):
             per_item.setdefault(o["name"], []).append(o["role"] == "b")
     return float(np.mean([np.mean(v) for v in per_item.values()]))
@@ -569,6 +569,37 @@ def exp09_swap_rate(family, condition, null=False):
         if (o["family"], o["condition"], o["null"]) == (family, condition, null)
     ]
     return float(np.mean([o["role"] == "b" for o in rows]))
+
+
+EXP18 = R / "exp18_brew_verbalizers/20261015-205549"  # v2 (config_v2.yaml)
+
+
+def exp18_took(regime):
+    """exp18 v2 items.jsonl: the eligible items on which the regime's patch made the model answer f(X)."""
+    return {r["name"] for r in jsonl(EXP18 / "items.jsonl") if r["status"] == "eligible" and r[f"{regime}_took"]}
+
+
+def exp18_named(reader, layer, regime, condition, role):
+    """exp18 v2 reads.jsonl: over the items where the regime's patch took, the share whose readings by `reader` at
+    `layer` in `condition` name the role's colour at either read position (jpp: rank it first of the 12)."""
+    took, hit = exp18_took(regime), {}
+    for r in jsonl(EXP18 / "reads.jsonl"):
+        same = (r["reader"], r["layer"], r["condition"]) == (reader, layer, condition) and r["regime"] in ("-", regime)
+        if same and r["name"] in took:
+            hit[r["name"]] = hit.get(r["name"], False) or r[f"names_{role}"]
+    return float(np.mean(list(hit.values())))
+
+
+def exp18_moved(reader, layer, regime, condition="patched"):
+    """exp18 v2: over the items where the patch took, the mean of d(condition) - d(B as written), d = [names X] -
+    [names I] at either read position: how far the patch moves the readings from B's toward C's."""
+    took, cell = exp18_took(regime), {}
+    for r in jsonl(EXP18 / "reads.jsonl"):
+        if r["reader"] == reader and r["layer"] == layer and r["regime"] in ("-", regime) and r["name"] in took:
+            x, i = cell.get((r["name"], r["condition"]), (False, False))
+            cell[r["name"], r["condition"]] = (x or r["names_X"], i or r["names_I"])
+    d = {k: int(v[0]) - int(v[1]) for k, v in cell.items()}
+    return float(np.mean([d[n, condition] - d[n, "clean"] for n in took]))
 
 
 EXP08 = R / "exp08_brew_read/read_v1"
@@ -1040,6 +1071,35 @@ def main():
         ("exp09", "swaps R: matched control", exp09_swap_rate("R", "jpart_matched"), 0.03),
         ("exp09", "swaps R: full probe", exp09_swap_rate("R", "full_probe"), 0.18),
         ("exp09", "swaps B: full probe", exp09_swap_rate("B", "full_probe"), 0.0),
+        ("exp09", "L: map, question, layer 40", exp09_map_rate("L", "question", 40, "map_lookup_v2"), 0.175),
+        ("exp09", "L: parts, the whole copy", exp09_part_score("L", "full", run="parts_lookup_v2"), 0.16),
+        ("exp09", "L: parts, J-space part", exp09_part_score("L", "jspace", run="parts_lookup_v2"), 0.0),
+        (
+            "exp09",
+            "L: parts, all but the J-space part",
+            exp09_part_score("L", "not_jspace", run="parts_lookup_v2"),
+            0.06,
+        ),
+        (
+            "exp09",
+            "L: parts, all but the I/X coordinates",
+            exp09_part_score("L", "not_lens2", run="parts_lookup_v2"),
+            0.14,
+        ),
+        ("exp18", "items where the early patch took", len(exp18_took("early")), 218),
+        ("exp18", "items where the late patch took", len(exp18_took("late")), 429),
+        ("exp18", "NLA 42: patched - B, X minus I", exp18_moved("nla", 42, "early"), 0.50),
+        ("exp18", "NLA 42: C - B, X minus I (ceiling)", exp18_moved("nla", 42, "early", "cf"), 0.53),
+        ("exp18", "NLA 42: off-path - B, X minus I", exp18_moved("nla", 42, "early", "off_patched"), 0.01),
+        ("exp18", "oracle 44: patched - B, X minus I", exp18_moved("oracle", 44, "early"), 0.68),
+        ("exp18", "oracle 48: patched - B, X minus I", exp18_moved("oracle", 48, "late"), 0.61),
+        ("exp18", "J++ 42: patched - B, X minus I", exp18_moved("jpp", 42, "early"), 0.74),
+        ("exp18", "NLA 42: patched, names X", exp18_named("nla", 42, "early", "patched", "X"), 0.57),
+        ("exp18", "NLA 42: patched, names I", exp18_named("nla", 42, "early", "patched", "I"), 0.26),
+        ("exp18", "NLA 42: B as written, names X", exp18_named("nla", 42, "early", "clean", "X"), 0.32),
+        ("exp18", "NLA 42: B as written, names I", exp18_named("nla", 42, "early", "clean", "I"), 0.51),
+        ("exp18", "NLA 42: C as written, names I", exp18_named("nla", 42, "early", "cf", "I"), 0.23),
+        ("exp18", "NLA 42: C as written, names the null colour", exp18_named("nla", 42, "early", "cf", "null"), 0.28),
     ]
     width = max(len(c[1]) for c in checks)
     for exp, what, got, claimed in checks:
