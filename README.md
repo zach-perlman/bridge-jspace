@@ -85,32 +85,58 @@ To fetch a model and its lenses ahead of a run (retries on HF 429s; put `HF_TOKE
 
 ## Status
 Draft, UNVERIFIED: nothing is in `VERIFIED.md` yet. The STATE block in `AGENTS.md` tracks what is in flight.
-Final figures, numbers and examples per experiment: [results/README.md](results/README.md).
+Final figures, numbers and examples per experiment: [results/README.md](results/README.md). Every part A number below
+is recomputed from the raw run files by `uv run python scripts/verify_headlines.py`.
+
+**How to read the part A figures.**
+- **Which questions.** exp11 and exp12 use part B's 90 two-hop questions with the trailing space stripped, and keep
+  the 77 the model answers correctly (its greedy continuation contains the answer). exp10 uses another
+  set: lens-eval multihop, the 84 questions whose bridge is a single token, answered correctly or not.
+- **Readers.** At a given layer and prompt position each reader scores every token of the vocabulary: the logit lens
+  (the model's own unembedding; the baseline), the J-lens and J++ (two fits of the average-Jacobian lens).
+- **"Ranked first among its candidates" (exp11, exp12).** For the bridge (Brazil) we ask whether the reader scores it
+  above every other entity of the set: the **97 entities** are all distinct bridges and swap targets of the 90
+  questions (70 bridges and 68 swap targets, overlapping), each a single Qwen token. For the answer (Portuguese) the
+  candidates are the **112 answers**: all distinct answers and swap answers of the 90 questions that are a single
+  token (120 in all; the 8 multi-token ones cannot be ranked, so 5 of the 77 questions drop out of the answer lines).
+  Restricting the ranking to these pools asks "of the entities these questions are about, which one does the reader
+  pick?", the same choice part B's swaps change; chance is 1 in 97 (about 1%). The full-vocabulary rank is used only
+  for the comparison with the distractor.
+- **Control.** Each question has a same-category distractor (Mexico for Brazil, Spanish for Portuguese; part B's swap
+  target). If the distractor came first as often as the bridge, the reader would be reading the category, not the
+  entity.
+- **Layers 32-48.** The band part B swaps in, fixed before exp11; the summary numbers average over it.
+- **Positions (exp12)** are counted back from the last word of the prompt: 0 = the last word (usually "is"), -1 the
+  word before ("located", "ends"), and so on; each position's label is its most common token.
+- **Shading.** 95% intervals: a bootstrap over questions (10,000 resamples) for averages over layers or positions,
+  Wilson for the share of questions at one layer.
 
 **Final figures (Qwen3.6-27B).**
 | Figure | What it shows |
 |---|---|
-| [exp12 `two_step.png`](figures/exp12_position_map/two_step.png) | **Headline.** Where in the prompt and how deep the bridge and the answer are readable; the ~21-layer lag |
-| [exp12 `position_layer_jlens.png`](figures/exp12_position_map/position_layer_jlens.png) | J-lens heatmaps, prompt position x layer, for the bridge and the answer |
-| [exp12 `by_offset.png`](figures/exp12_position_map/by_offset.png) | Share of layers 32-48 with each word on top, per prompt position, all three readers |
-| [exp12 `position_layer.png`](figures/exp12_position_map/position_layer.png) | The heatmaps for all three readers |
-| [exp11 `pool_top1_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/pool_top1_by_layer.png) | Last token only: bridge and answer on top, by layer, three readers |
-| [exp11 `advantage_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/advantage_by_layer.png) | Last token only: how far each word ranks above its same-category distractor |
-| [exp10 `pass_at_10_by_model.png`](figures/exp10_lens_sanity/20261013-230247/pass_at_10_by_model.png) | Does each lens read the intermediate at all (pass@10, 4B and 27B) |
-| [exp10 `27b_by_layer.png`](figures/exp10_lens_sanity/20261013-230247/27b_by_layer.png) | Why the J-lens looks no better than the logit lens on pass@10 |
+| [exp12 `two_step.png`](figures/exp12_position_map/two_step.png) | **Headline.** Where in the prompt each word is read (left) and from which layer (right): the bridge one word before the end from layer 23, the answer at the last word from layer 44 |
+| [exp12 `layers_at_positions_jlens.png`](figures/exp12_position_map/layers_at_positions_jlens.png) | The same, one line per position for the last four words: which positions carry the bridge, and the answer, at which layers |
+| [exp12 `by_offset.png`](figures/exp12_position_map/by_offset.png) | The "where in the prompt" panel for all three readers, logit lens included |
+| [exp12 `position_layer.png`](figures/exp12_position_map/position_layer.png) | Reference heatmaps: every position x layer, all three readers |
+| [exp11 `pool_top1_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/pool_top1_by_layer.png) | Last token only: bridge and answer ranked first, by layer, three readers |
+| [exp11 `advantage_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/advantage_by_layer.png) | Last token only: how many times higher than its distractor each word ranks |
+| [exp10 `pass_at_10_by_model.png`](figures/exp10_lens_sanity/20261015-123717/pass_at_10_by_model.png) | Does each lens find the bridge at all (pass@10), 4B and 27B |
+| [exp10 `27b_by_layer.png`](figures/exp10_lens_sanity/20261015-123717/27b_by_layer.png) | Why the J-lens looks no better than the logit lens on pass@10 |
 
 Worked examples with lens tables: `make examples-serve` opens [examples/index.html](examples/index.html) (all three
-experiments); the exp12 page is also published at https://claude.ai/artifact/TXLZH6WxuxSQDhoK5YHTj9 (private; share it
-from the page).
+experiments); the exp12 page is also published at https://claude.ai/artifact/TXLZH6WxuxSQDhoK5YHTj9 (anyone with the
+link can open it).
 
-**What we know so far (Qwen3.6-27B, the 67 two-hop questions it answers correctly).**
-1. The J-lens and J++ can read the bridge; the plain logit lens mostly cannot before the last layers (exp10, exp11).
-2. The bridge is readable earlier than the answer, both in the prompt and in depth: it builds up on the last words
-   before "is" from about layer 20, while the answer appears only at the last token from about layer 44 (exp12).
-3. Where the bridge is readable, part B's swaps also show it is used (J-mediated questions read better), but the
-   groups are small.
-4. The original "J-lens cannot see the bridge" is mostly where and how we looked: compared with the whole vocabulary
-   at the last token it is often missed; compared with other entities, or one word earlier, it is usually there.
+**What we know so far (Qwen3.6-27B, the 77 two-hop questions it answers correctly).**
+1. The J-lens and J++ can read the bridge in the middle layers; the plain logit lens mostly only near the output
+   (exp10, exp11).
+2. The bridge is readable earlier than the answer, both in the prompt and in depth: one word before the end from about
+   layer 23, while the answer appears only at the last word from about layer 44, 19 layers later [15, 27] (exp12).
+3. Where the bridge is readable, part B's swaps tend to work: questions whose J-space swap flips the answer have the
+   bridge ranked first more often (J-lens 73% vs 50%, J++ 70% vs 41% of layers 32-48), but the groups are small and
+   the intervals overlap.
+4. The original "J-lens cannot see the bridge" is mostly where and how we looked: of the 30 questions where it does not
+   have the bridge first at the last word, 73% have it first at an earlier word (distractor, same search: 33%).
 
 ### exp10_lens_sanity: does the lens work on Qwen at all?
 **What we measure.** We give the model a two-hop question, e.g. "The language spoken in the country where the Amazon
@@ -123,21 +149,25 @@ list at every layer, and count how often the bridge is in the top 10 at some lay
 - **Qwen3.6-27B:** J++ clearly beats the baseline (0.75 vs 0.51 with the space stripped). The J-lens is only slightly
   ahead, within the error bars.
 - **The bridge is often invisible at the last token.** On the 61 items 27B answers correctly, J++ misses the bridge in
-  1 of 3 and the J-lens in 1 of 2. This is Zach's observation. The next experiment checks earlier tokens.
+  1 of 3 and the J-lens in 1 of 2. This is Zach's observation. The next experiments check other ways of reading it.
 
-![pass@10 by model and reader](figures/exp10_lens_sanity/20261013-230247/pass_at_10_by_model.png)
+![pass@10 by model and reader](figures/exp10_lens_sanity/20261015-123717/pass_at_10_by_model.png)
 
-*Share of two-hop questions where each reader has the bridge in its top 10 at the last prompt token (84 questions
-with single-token bridges; bars are 95% CIs). Qwen3.5-4B has no J++ lens. "Prompt as published" keeps the trailing
-space of the original prompts; "space stripped" removes it (pitfall 1).*
+*How to read it: each bar is the share of the 84 questions whose bridge is in that reader's top 10 at its best layer,
+read at the last prompt token (a question listing two forms of its bridge, '5' and 'five', scores half per form
+found); error bars are 95% bootstrap intervals. Grey is the baseline. On 27B, J++ (orange) is
+clearly above the logit lens; the J-lens (blue) is within its error bars. "Prompt as published" keeps the lone
+trailing space of the original prompts (pitfall 1).*
 
-**Why the J-lens looks no better than the baseline on 27B.** In the middle layers (shaded) only the J-lens and J++
-see the bridge; near the output the logit lens catches up. pass@10 takes the *best* layer, so the late layers hide
-the difference.
+**Why the J-lens looks no better than the baseline on 27B.** In the middle layers only the J-lens and J++ see the
+bridge; near the output the logit lens catches up. pass@10 takes the *best* layer, so the late layers hide the
+difference.
 
-![27B by layer](figures/exp10_lens_sanity/20261013-230247/27b_by_layer.png)
+![27B by layer](figures/exp10_lens_sanity/20261015-123717/27b_by_layer.png)
 
-*Same questions, Qwen3.6-27B, space stripped: share of bridges in each reader's top 10, layer by layer.*
+*How to read it: x is the layer, y the share of the 94 bridge forms in the reader's top 10 at that layer (84
+questions; 9 of them list several forms of their bridge, such as '5' and 'five', and each form is ranked separately). Inside layers 32-48 (grey) J++ has up to 31% of the bridges in its top 10, the J-lens up to 16%, the
+logit lens at most 3%; only from about layer 55 does the logit lens join them.*
 
 <details><summary>Full numbers</summary>
 
@@ -158,114 +188,141 @@ vs Poland 16 / 18. Figures: `uv run python -m scripts.exp10_lens_sanity.plot --s
 </details>
 
 ### exp11_bridge_vs_answer_by_layer: where is the bridge readable, and where the answer?
-**What we measure.** The 90 probe-swap questions of part B, prompts as published; the headline uses the 67 the model
-answers correctly (part B's `eligible`; our check agrees on all 83 items with a single-token answer). At the last
-prompt token, at every layer, we ask each reader: is the bridge (Brazil) the top candidate among all 97 entities of
-the set, and is the answer (Portuguese) the top candidate among all 112 answers? The same-category distractors
-(Mexico, Spanish) are the controls. Chance is about 1%.
+**What we measure.** Part B's 90 two-hop questions, trailing space stripped; the headline uses the 77 the model answers
+correctly (its greedy continuation contains the answer). At the last prompt token, at every layer, we ask each reader: is the bridge (Brazil) ranked
+first among the 97 entities of the set, and is the answer (Portuguese) ranked first among the 112 answers? The
+same-category distractors (Mexico, Spanish) are the controls. Chance is about 1%.
 
 **In short.**
 - **J-lens and J++ read the bridge in the middle layers; the logit lens only near the output.** Averaged over
-  layers 32-48 the bridge is top-1 among entities in 59% of questions (J-lens), 56% (J++), 26% (logit lens);
-  its distractor in 6%. This reproduces part B's `gate_debug` (0.55-0.70).
-- **The bridge comes first, the answer later, but they overlap.** Half the questions have the bridge on top by
-  layer 34; the answer gets there by layer 43 (J-lens, 8 layers later [4, 18]) or 47 (J++, 11 [5, 18]). There is
-  no clean hand-off: the bridge stays on top until about layer 60, and per question the bridge settles on top
-  before the answer in only 57% [45, 70] of cases (J-lens).
-- **Where the bridge is readable, it is also used.** With part B's v4 labels (77 questions, stripped prompts, each
-  lens labelled by its own swaps): on the questions where the J-space swap flips the answer, the bridge is on top in
-  73% [58, 86] of layers 32-48 (J-lens, n=25) and 70% [59, 81] (J++, n=39); on those where no swap works, 50% [38, 62]
-  (n=49) and 41% [29, 54] (n=37). Suggestive: the intervals overlap (J-lens) or nearly touch (J++). The earlier labels
-  (prompts as published, n=25 / 40) gave 79% [66, 89] vs 49% [35, 62] for the J-lens.
+  layers 32-48 the bridge is ranked first in 57% of questions (J-lens), 56% (J++), 25% (logit lens); its distractor
+  in 5%. This reproduces part B's `gate_debug` (0.55-0.70).
+- **At the last token the bridge comes first, the answer later, but they overlap.** Half the questions have the
+  bridge first by layer 35; the answer gets there by layer 44 (J-lens, 8 layers later [3, 16]) or 43 (J++, 8 [3, 20]).
+  There is no clean hand-off: the bridge stays first until about layer 60, and per question the bridge settles first
+  before the answer in only 52% [39, 64] of cases (J-lens).
+- **Where the bridge is readable, it is also used.** On the questions where part B's J-space swap flips the answer,
+  the bridge is first in 73% [58, 86] of layers 32-48 (J-lens, n=25) and 70% [59, 81] (J++, n=39); on those where no
+  swap works, 50% [38, 62] (n=49) and 41% [29, 54] (n=37). Suggestive: the intervals overlap (J-lens) or nearly touch
+  (J++). Each lens is split by its own swaps.
 
-![exp11: top-1 share by layer](figures/exp11_bridge_vs_answer_by_layer/pool_top1_by_layer.png)
+![exp11: ranked first by layer](figures/exp11_bridge_vs_answer_by_layer/pool_top1_by_layer.png)
 
-*Last prompt token, 67 questions the model answers correctly. Blue: share of questions where the bridge is the top
-entity; orange: where the answer is the top answer; grey: the same for their distractors (controls); dotted:
-chance. Shaded: the layer bands the summary averages over (32-48 fixed in advance from part B; 28-52 exploratory,
-which changes nothing: 58% vs 59%).*
+*How to read it: one panel per reader; x is the layer, y the share of the 77 questions in which the reader ranks the
+word first among its candidates, at the last prompt token (shaded: 95% Wilson interval). Blue = bridge among the 97
+entities, orange = answer among the 112 answers, grey = their distractors, dotted = chance. In the J-lens and J++
+panels the blue line leaves the grey control from about layer 20 and stays above the orange one until layers 55-60:
+the bridge is readable here, and ahead of the answer. The logit lens picks either word mostly after layer 50.*
 
 **What this does not show.** A lens shows what can be read out at a layer, not when it was computed. And this is
 one token: the first hop may happen earlier in the prompt (at "Amazon River ends"), which exp11 does not look at.
-About 40% of questions do not have the bridge on top at the last token; exp12 looks at the earlier tokens.
+About 40% of questions do not have the bridge first at the last token; exp12 looks at the earlier tokens.
 
 <details><summary>Full numbers</summary>
 
-Run `20261014-092835` (prompts as published, Qwen3.6-27B @ `192d8cb`), re-aggregated in
-`results/exp11_bridge_vs_answer_by_layer/20261014-092835/analysis-20261014-113947/summary.json` (`analyze`; the run's own `summary.json` predates the bands and order metrics).
-Eligible n=67, band 32-48, 95% percentile bootstrap CI over questions (n_boot=10000, seed 0).
+Run `20261015-100110` (Qwen3.6-27B, trailing space stripped, labels `exp02_swaps/main_v4_jlens`); its `summary.json` is
+current; figures re-rendered in `analysis-20261015-122817/`. Eligible n=77 (answer columns: the 72 with a
+single-token answer), layers 32-48, 95% percentile bootstrap CI over questions (n_boot=10000, seed 0).
 
-| Reader | Bridge top-1 | Answer top-1 | Bridge distractor top-1 | Bridge above distractor (vocab) | 50% crossing: bridge / answer (lag) |
+| Reader | Bridge first | Answer first | Bridge's distractor first | Bridge above its distractor (full vocabulary) | Half the questions: bridge / answer (lag) |
 |---|---|---|---|---|---|
-| logit lens | 0.26 [0.17, 0.35] | 0.13 [0.08, 0.20] | 0.04 | 0.80 [0.72, 0.87] | L49 / L52 (2 [-4, 4]) |
-| J-lens | 0.59 [0.49, 0.68] | 0.41 [0.32, 0.50] | 0.06 | 0.84 [0.76, 0.91] | L34 / L43 (8 [4, 18]) |
-| J++ | 0.56 [0.46, 0.65] | 0.38 [0.29, 0.47] | 0.06 | 0.85 [0.78, 0.92] | L34 / L47 (11 [5, 18]) |
+| logit lens | 0.25 [0.18, 0.33] | 0.14 [0.09, 0.20] | 0.04 | 0.80 [0.73, 0.87] | L50 / L51 (1 [-2, 4]) |
+| J-lens | 0.57 [0.48, 0.66] | 0.41 [0.32, 0.50] | 0.05 | 0.83 [0.76, 0.90] | L35 / L44 (8 [3, 16]) |
+| J++ | 0.56 [0.46, 0.64] | 0.38 [0.29, 0.47] | 0.05 | 0.84 [0.78, 0.90] | L36 / L43 (8 [3, 20]) |
 
-Space-stripped prompts (run `20261014-093050`) give the same picture (J-lens bridge 0.56, lag 8 [3, 16]). On the 21
-eligible questions whose prompt ends in a space the answer is read less often (J-lens 0.24 vs 0.49 without the
-space); the bridge less so (0.53 vs 0.62).
+![exp11: advantage over the distractor](figures/exp11_bridge_vs_answer_by_layer/advantage_by_layer.png)
 
-Part B's v4 labels: runs `20261015-100110` (`exp02_swaps/main_v4_jlens/labels.csv`) and `20261015-100426`
-(`main_v4_jpp`), stripped prompts; their ranks equal `20261014-093050`'s row for row (270/270), so only the split
-differs. Bridge top-1 among entities, layers 32-48:
+*How to read it: y is how many times higher than its same-category distractor the reader ranks the word in the full
+vocabulary (log scale; 1x = no better). Line: the median question; shaded: the middle half. Within layers 32-48 the
+median question has the bridge 4-24 times above its distractor with the J-lens and J++, 2-11 times with the logit
+lens; the gaps pass 100x only near the output (from about layer 55).*
 
-| Reader | Labels | Eligible | J-mediated | Neither |
+Bridge first, split by which questions part B's J-space swap flips (labels `exp02_swaps/main_v4_jlens` in run
+`20261015-100110`, `main_v4_jpp` in run `20261015-100426`; the two runs' ranks are identical row for row, only the
+split differs):
+
+| Reader | Swaps by | Eligible | J-mediated (swap flips) | Neither (no swap flips) |
 |---|---|---|---|---|
-| J-lens | v4 J-lens | 0.57 [0.48, 0.66] (n=77) | 0.73 [0.58, 0.86] (n=25) | 0.50 [0.38, 0.62] (n=49) |
-| J++ | v4 J++ | 0.56 [0.46, 0.64] (n=77) | 0.70 [0.59, 0.81] (n=39) | 0.41 [0.29, 0.54] (n=37) |
-| J-lens | v4 J++ | 0.57 [0.48, 0.66] | 0.73 [0.62, 0.83] | 0.41 [0.28, 0.55] |
-| logit lens | v4 J-lens | 0.25 [0.18, 0.33] | 0.28 [0.15, 0.42] | 0.25 [0.16, 0.35] |
+| J-lens | J-lens | 0.57 [0.48, 0.66] (n=77) | 0.73 [0.58, 0.86] (n=25) | 0.50 [0.38, 0.62] (n=49) |
+| J++ | J++ | 0.56 [0.46, 0.64] (n=77) | 0.70 [0.59, 0.81] (n=39) | 0.41 [0.29, 0.54] (n=37) |
+| J-lens | J++ | 0.57 [0.48, 0.66] | 0.73 [0.62, 0.83] | 0.41 [0.28, 0.55] |
+| logit lens | J-lens | 0.25 [0.18, 0.33] | 0.28 [0.15, 0.42] | 0.25 [0.16, 0.35] |
+
+- The wide band 28-52 changes nothing (J-lens bridge 0.56).
+- The 22 eligible questions whose published prompt ended in a space read worse even with the space stripped (J-lens
+  bridge 0.40 [0.23, 0.59] vs 0.64 [0.53, 0.74]; answer 0.29 vs 0.47).
+- Earlier run, prompts as published with part B's earlier labels (`20261014-092835`, 67 eligible): the same picture
+  (J-lens bridge 0.59, lag 8 [4, 18]); J-mediated 79% [66, 89] vs neither 49% [35, 62].
 </details>
 
 ### exp12_position_map: where in the prompt, and how deep?
-**What we measure.** The exp11 readout (is the word the top candidate in its pool?) at every token of the prompt, not
-just the last. Prompts differ in length, so tokens are aligned by their distance from the last word: 0 is the last
-word (usually "is"), -1 the word before it (e.g. "located", "ends"), and so on. The best position for each reader is
-picked on a random half of the questions and checked on the other half, because the best of 15 positions looks better
-than it is on the data that picked it; the same search for the distractor (Mexico) shows how high noise alone gets.
+**What we measure.** The exp11 readout (is the word ranked first among its candidates?) at every token of the prompt,
+not just the last. Prompts differ in length, so tokens are aligned by their distance from the last word: 0 is the
+last word (usually "is"), -1 the word before it (e.g. "located", "ends"), and so on. The best position for each
+reader is picked on a random half of the questions and checked on the other half, because the best of 15 positions
+looks better than it is on the data that picked it; the same search for the distractor (Mexico) shows how high noise
+alone gets.
 
 **In short.**
-- **The bridge is read best one word before the end; the answer only at the end.** J-lens: the bridge is on top in
-  66% of layers 32-48 at position -1 (56% at the last word); the answer in 41% at the last word and at most 24%
-  anywhere earlier. Both halves of the data pick the same positions. Noise ceiling: 12%.
+- **The bridge is read best one word before the end; the answer only at the end.** J-lens: the bridge is first in 65%
+  [54, 74] of layers 32-48 at position -1 (57% at the last word); the answer in 41% at the last word and at most 25%
+  anywhere earlier. Both halves of the data pick -1 for the bridge (held out: 67%, 62%). Noise ceiling: 11%.
 - **The bridge comes about 20 layers before the answer.** Read where each is strongest, half the questions have the
-  bridge on top by layer 23 and the answer by layer 44: 21 layers later [16, 28] (J++: 20 vs 43, 23 [18, 32]).
+  bridge first by layer 23 and the answer by layer 44: 19 layers later [15, 27] (J++: 22 vs 43, 22 [17, 30]).
   Read at a single token (exp11) the two overlapped; this is the step that one token hides.
-- **Most last-token misses are a read-site effect.** Of the 26 questions where the J-lens does not have the bridge on
-  top at the last token, 73% [54, 88] have it on top at an earlier token (distractor, same search: 35% [15, 54]).
+- **Most last-token misses are a read-site effect.** Of the 30 questions where the J-lens does not have the bridge
+  first at the last word, 73% [57, 90] have it first at an earlier word (distractor, same search: 33% [17, 50]).
 
 ![exp12: where and how deep](figures/exp12_position_map/two_step.png)
 
-*Left: share of layers 32-48 in which the word is the top candidate, at each prompt position (label: the most common
-token there). Right: share of questions with the word on top at each layer, the bridge read at position -1 and the
-answer at the last word; dots and arrow: where each reaches half the questions. Thick: J-lens (shaded 95% CI); thin:
-J++. Grey band: layers 32-48.*
+*How to read it. Left: x is the position in the prompt, counted back from the last word; y is in what share of layers
+32-48 the reader ranks the word first, averaged over the questions. The blue bridge line rises toward the end of the
+prompt and peaks one word before it (-1): the bridge is there before the last word. The orange answer line stays at
+the level of the grey control until the last two words. Right: x is the layer, y the share of questions with the word
+ranked first, the bridge read at -1 and the answer at the last word; the dots mark the layer at which each reaches
+half of the questions, the arrow the 19-layer lag. Thick: J-lens with 95% intervals; thin: J++.*
 
-**What this does not show.** Positions are aligned by distance from the end, not by meaning: in the 44 prompts that
-end in "is" the bridge peaks on the word before it (75%), in the 23 others it has no clear peak. The ordering holds
-for the group of questions, not reliably for each one. A lens shows what is readable, not what is computed.
+![exp12: layers at each of the last positions](figures/exp12_position_map/layers_at_positions_jlens.png)
+
+*How to read it: one line per prompt position (J-lens), y the share of questions with the word ranked first at each
+layer. Bridge (left): one word before the end (thick) reaches half of the questions at layer 23, the two words before
+it at layers 24-25, the last word only at layer 35; earlier words (grey, averaged) stay at or below 30%. Answer
+(right): the last word (thick) reaches half of the questions at layer 44, the word before it at layer 55; the two
+words before that stay at or below 25%, earlier words at or below 10%.*
+
+**What this does not show.** Positions are aligned by distance from the end, not by meaning: in the 46 prompts that
+end in "is" the bridge peaks on the word before it (76% [64, 87]); in the 31 others it has no clear peak (46-59% over
+positions -3..0). The ordering holds for the group of questions, not reliably for each one. A lens shows what is
+readable, not what is computed.
 
 <details><summary>Full numbers and checks</summary>
 
-Run `20261014-095358` (Qwen3.6-27B @ `c373821`, prompts as published), analysed in `results/exp12_position_map/20261014-095358/analysis-20261014-121341/summary.json`.
-Eligible n=67; positions -14..0 analysed (reached by at least half the questions; -11..0 by 66-67).
+Run `20261015-100735` (Qwen3.6-27B, trailing space stripped, labels `exp02_swaps/main_v4_jlens`); its `summary.json` is
+current; figures re-rendered in `analysis-20261015-122822/`. Eligible n=77 (answer: 72); positions -14..0 analysed
+(reached by at least half the questions; -11..0 by 76-77).
 
 | Reader | Bridge: best position | Share of layers 32-48 [95% CI] | Held-out halves (position: share) | Answer: best position | Share | Distractor ceiling |
 |---|---|---|---|---|---|---|
-| logit lens | -3 | 0.40 [0.30, 0.51] | -1: 0.31, -3: 0.37 | 0 | 0.14 [0.09, 0.21] | 0.05 |
-| J-lens | -1 | 0.66 [0.55, 0.76] | -1: 0.62, -1: 0.70 | 0 | 0.41 [0.32, 0.51] | 0.12 |
-| J++ | -1 | 0.66 [0.56, 0.76] | -1: 0.62, -3: 0.63 | 0 | 0.40 [0.30, 0.49] | 0.10 |
+| logit lens | -1 | 0.37 [0.28, 0.46] | -1: 0.36, -3: 0.36 | 0 | 0.14 [0.09, 0.20] | 0.06 |
+| J-lens | -1 | 0.65 [0.54, 0.74] | -1: 0.67, -1: 0.62 | 0 | 0.41 [0.32, 0.50] | 0.11 |
+| J++ | -1 | 0.64 [0.54, 0.73] | -1: 0.67, -1: 0.61 | 0 | 0.38 [0.29, 0.47] | 0.11 |
 
-- Depth (half the questions on top, bridge at its best position vs answer at the last word): J-lens L23 vs L44, lag
-  21 [16, 28]; J++ L20 vs L43, 23 [18, 32]; logit lens L24 vs L51, 27 [-5, 30].
-- Same optimum on the balanced panel (the 66 questions that reach every position -11..0), so prompt length does not
+- Depth (half the questions first, bridge at -1 vs answer at the last word): J-lens L23 vs L44, lag 19 [15, 27];
+  J++ L22 vs L43, 22 [17, 30]; logit lens L40 vs L51, 11 [-4, 14].
+- Same optimum on the balanced panel (the 76 questions that reach every position -11..0), so prompt length does not
   drive it.
-- Read at position -1, part B's J-mediated questions have the bridge on top in 0.79 [0.63, 0.92] of layers 32-48,
-  "neither" questions in 0.60 [0.46, 0.74] (J-lens).
-- Missed at the last token: J-lens 26 questions, bridge on top earlier in 73% [54, 88] (distractor 35% [15, 54]);
-  J++ 26, 81% [65, 96] (distractor 31% [15, 50]).
+- Read at position -1, the questions whose J-space swap flips the answer have the bridge first in 0.73 [0.56, 0.88]
+  of layers 32-48, the others in 0.60 [0.47, 0.73] (J-lens, split by the J-lens swaps, n=25 / 49); J++ split by its own
+  swaps (run `20261015-100947`): 0.75 [0.63, 0.86] vs 0.51 [0.36, 0.65] (n=39 / 37).
+- Missed at the last word: J-lens 30 questions, bridge first earlier in 73% [57, 90] (distractor 33% [17, 50]);
+  J++ 31, 77% [61, 90] (distractor 26% [13, 42]).
+- Earlier run, prompts as published with part B's earlier labels (`20261014-095358`, 67 eligible): the same picture
+  (J-lens bridge at -1: 0.66; lag 21 [16, 28]).
 
-![exp12: J-lens heatmaps](figures/exp12_position_map/position_layer_jlens.png)
+![exp12: reference heatmaps](figures/exp12_position_map/position_layer.png)
+
+*Reference: every position x layer for all three readers, colour = share of questions with the word ranked first; the
+box marks the best position over layers 32-48. The line figure above shows the J-lens rows that matter.*
 </details>
 
 ### exp02_swaps (part B): does the bridge act through the J-space, and where?
@@ -503,12 +560,14 @@ In order; designs need human sign-off before GPU runs.
 2. **Per question, not just per group:** for how many questions is the bridge on top at an earlier position and
    layer than the answer? Align positions by role (the words that cue the bridge) instead of distance from the end.
 3. **The 5 lens-eval questions whose bridge appears in the prompt:** check whether they drive any exp10 headline.
-4. **Oracle lens** on the same items: the Qwen3.6-27B adapter is on HF (`neuronpedia/jacobian-lens`,
-   `qwen3.6-27b/oracle`); its reference read code may not be public, so check that first, then propose a design.
-   This is the only long GPU job in sight.
-5. **NLA:** source and weights still to identify.
-6. Optional: reproduce J++'s published Recall@10 (55.2% on Qwen3.6-27B) over all six lens-eval sets.
-7. Stretch: repeat on Gemma 4 31B (J-lens and J++ exist on HF).
+4. **Oracle lens and NLA** on the same items (design proposed, awaiting sign-off). Both are public: the oracle
+   lens is a LoRA on Qwen3.6-27B at our pinned `neuronpedia/jacobian-lens` revision (`qwen3.6-27b/oracle`, layers
+   20-60); the NLA is a separate 27B reader trained on layer 42 (`ceselder/qwen3.6-27b-nla-rl`). Reference read code:
+   WorkspaceBench's producer (github.com/camilablank/workspace-bench, MIT). Both fit one 80 GB GPU (the NLA in two
+   phases: capture, then verbalize). Main risk: the oracle is the model itself, so it may re-solve the hop from the
+   question instead of reading the bridge; probe directions (no question in them) are the cleaner test.
+5. Optional: reproduce J++'s published Recall@10 (55.2% on Qwen3.6-27B) over all six lens-eval sets.
+6. Stretch: repeat on Gemma 4 31B (J-lens and J++ exist on HF).
 
 ## Next steps (part B)
 1. **Verify v4:** `scripts/verify_headlines.py` now recomputes exp02 v4's, exp03's and exp04's headlines from the raw
