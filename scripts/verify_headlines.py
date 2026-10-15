@@ -195,7 +195,9 @@ EXP04 = R / "exp04_brew_patch/patch_map"
 def exp04_role_rate(source, group, layer, role):
     """exp04 outcomes.jsonl: share of rows (one per eligible item) for one source (cf / off), position group and
     layer whose answer has that role (b = f(X), c = the counterfactual's answer, A = the original answer)."""
-    rows = [o for o in jsonl(EXP04 / "outcomes.jsonl") if (o["source"], o["group"], o["layer"]) == (source, group, layer)]
+    rows = [
+        o for o in jsonl(EXP04 / "outcomes.jsonl") if (o["source"], o["group"], o["layer"]) == (source, group, layer)
+    ]
     return float(np.mean([o["role"] == role for o in rows])), len(rows)
 
 
