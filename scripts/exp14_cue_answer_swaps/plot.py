@@ -64,3 +64,52 @@ def plot_run(run_dir: str | Path, summary: dict[str, Any]) -> Path:
         handles,
     )
     return out
+
+
+def plot_overlap(path: Path, rows: list[dict]) -> Path:
+    """Per lens: flip rates of the two swaps on the cue phrase and at the last token (40-56), for the questions whose
+    two swaps overlap little (below the median cosine) and much."""
+    cells = [("cue", "24-40"), ("last", "40-56")]
+    lenses = sorted({r["lens"] for r in rows}, key=lambda name: list(READER_TITLE).index(name))
+    rate = {(r["lens"], r["positions"], r["band"], r["overlap"], r["kind"]): r for r in rows}
+    fig, axes = plt.subplots(1, len(lenses), figsize=(6 * len(lenses), 4.6), facecolor=SURFACE, sharey=True)
+    width = 0.36
+    for ax, lens in zip(np.atleast_1d(axes), lenses, strict=True):
+        ticks = []
+        for ci, ((positions, band), half) in enumerate((c, h) for c in cells for h in ("low", "high")):
+            n = 0
+            for ki, (kind, color) in enumerate((("bridge", BRIDGE), ("answer", ANSWER))):
+                r = rate.get((lens, positions, band, half, kind))
+                if r is None:
+                    continue
+                n = max(n, r["n"])
+                m, lo, hi = r["flip"]
+                x = ci + (ki - 0.5) * width
+                ax.bar(x, m, width * 0.9, color=color, zorder=2)
+                ax.errorbar(x, m, yerr=[[max(m - lo, 0.0)], [max(hi - m, 0.0)]], color=INK, lw=1, capsize=2.5, zorder=3)
+            ticks.append(f"{CELL_LABEL.get(positions, positions)}\n{band}, {half}\nn = {n}")
+        ax.set_xticks(range(len(ticks)), ticks, fontsize=8.5)
+        ax.set_xlabel(
+            "where and at which layers the swap edits; overlap between the two swaps", color=MUTED, fontsize=9
+        )
+        ax.set_ylim(0, 1)
+        ax.set_title(READER_TITLE.get(lens, lens), color=INK, fontsize=11, loc="left")
+        style_axes(ax)
+        percent_axis(ax)
+        ax.grid(axis="x", visible=False)
+    np.atleast_1d(axes)[0].set_ylabel("% of questions whose answer\nflips to the swap target's", color=MUTED)
+    handles = [
+        Patch(color=BRIDGE, label="bridge swapped (Brazil -> Mexico)"),
+        Patch(color=ANSWER, label="answer swapped (Portuguese -> Spanish)"),
+    ]
+    finish(
+        fig,
+        path,
+        "Does swapping the answer change it only where that swap is also a bridge swap?",
+        "Qwen3.6-27B, the two-hop questions it answers correctly, split at the median overlap between the two swaps: "
+        "the cosine between the bridge pair's and the answer pair's lens-vector differences (e.g. high for "
+        "Spain -> Madrid, low for elephant -> trunk), averaged over the swapped layers. Random-direction controls: 0-1% "
+        "everywhere. Error bars: 95% Wilson CI. The split was chosen after seeing the results.",
+        handles,
+    )
+    return path

@@ -293,3 +293,52 @@ def replication_check(outcomes: list[dict], reference: dict[str, dict[str, str]]
                 "flip_part_b": sum(theirs[k] for k in real) / len(real) if real else None,
             }
     return out
+
+
+def by_overlap(outcomes: list[dict], leaks: list[dict]) -> list[dict]:
+    """Flip rates split at the median overlap between the two swaps (a question's mean over band layers of the
+    cosine between their difference vectors), per lens and cell: does a swap work only where it is also the other?"""
+    cos: dict[tuple, list[float]] = {}
+    for r in leaks:
+        cos.setdefault((r["lens"], r["positions"], r["band"], r["name"]), []).append(r["diff_cosine"])
+    mean_cos = {k: statistics.mean(v) for k, v in cos.items()}
+    out = []
+    for lens, positions, band in sorted({k[:3] for k in mean_cos}):
+        names = {k[3]: v for k, v in mean_cos.items() if k[:3] == (lens, positions, band)}
+        cut = statistics.median(names.values())
+        for half, members in (("low", {n for n, c in names.items() if c < cut}),
+                              ("high", {n for n, c in names.items() if c >= cut})):  # fmt: skip
+            for kind in KINDS:
+                flips = [o["flip"] for o in outcomes if (o["lens"], o["positions"], o["band"], o["kind"]) ==
+                         (lens, positions, band, kind) and not o["null"] and o["name"] in members]  # fmt: skip
+                out.append({"lens": lens, "positions": positions, "band": band, "overlap": half, "cut": round(cut, 4),
+                            "kind": kind, "n": len(flips), "flip": wilson(sum(flips), len(flips))})  # fmt: skip
+    return out
+
+
+def analyze(run_dir: str | Path) -> Path:
+    """The overlap split of a finished run, into `<run_dir>/analysis-<timestamp>-overlap/` with its figure."""
+    from datetime import datetime
+
+    from .plot import plot_overlap
+
+    run_dir = Path(run_dir)
+
+    def load(name: str) -> list[dict]:
+        return [json.loads(x) for x in (run_dir / name).read_text().splitlines() if x.strip()]
+
+    rows = by_overlap(load("outcomes.jsonl"), load("leakage.jsonl"))
+    out = run_dir / f"analysis-{datetime.now().strftime('%Y%m%d-%H%M%S')}-overlap"
+    out.mkdir()
+    (out / "summary.json").write_text(json.dumps({"source_run": str(run_dir), "by_overlap": rows}, indent=2))
+    plot_overlap(out / "flip_rates_by_overlap.png", rows)
+    return out
+
+
+if __name__ == "__main__":
+    # uv run python -m scripts.exp14_cue_answer_swaps.experiment analyze <run_dir>
+    import sys
+
+    if sys.argv[1:2] != ["analyze"] or len(sys.argv) != 3:
+        raise SystemExit(__doc__)
+    print(analyze(sys.argv[2]))

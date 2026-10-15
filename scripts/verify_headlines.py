@@ -18,6 +18,7 @@ EXP11 = R / "exp11_bridge_vs_answer_by_layer/20261015-100110"  # v4 J-lens label
 EXP11_JPP = R / "exp11_bridge_vs_answer_by_layer/20261015-100426"  # same ranks, v4 J++ labels
 EXP11_V3 = R / "exp11_bridge_vs_answer_by_layer/20261014-092835"  # prompts as published, earlier labels (67 eligible)
 EXP12 = R / "exp12_position_map/20261015-100735"  # v4 J-lens labels
+EXP14 = R / "exp14_cue_answer_swaps/20261015-111137"  # bridge vs answer lens-vector swaps
 BAND = (32, 48)  # layers averaged over
 
 
@@ -123,6 +124,25 @@ def exp12_cue_share(reader, word, band=BAND, best=False):
         shares = [np.mean(z[key][rows, i] == 1) for i in idx]
         vals.append(max(shares) if best else np.mean(shares))
     return float(np.mean(vals)), len(vals)
+
+
+def exp14_flip(lens, positions, band, kind, null=False, overlap=None):
+    """outcomes.jsonl: share of questions with flip == True for one lens / positions / band / kind (real or null).
+    With overlap="low" / "high": only the questions whose mean over band layers of leakage.jsonl's diff_cosine (for
+    that lens and cell) is below / at least its median over questions; returns (rate, flips, n)."""
+    rows = [o for o in jsonl(EXP14 / "outcomes.jsonl")
+            if (o["lens"], o["positions"], o["band"], o["kind"], o["null"]) == (lens, positions, band, kind, null)]  # fmt: skip
+    if overlap:
+        cos = {}
+        for r in jsonl(EXP14 / "leakage.jsonl"):
+            if (r["lens"], r["positions"], r["band"]) == (lens, positions, band):
+                cos.setdefault(r["name"], []).append(r["diff_cosine"])
+        mean = {n: float(np.mean(v)) for n, v in cos.items()}
+        cut = float(np.median(list(mean.values())))
+        keep = {n for n, c in mean.items() if (c < cut) == (overlap == "low")}
+        rows = [o for o in rows if o["name"] in keep]
+    flips = sum(o["flip"] for o in rows)
+    return flips / len(rows), flips, len(rows)
 
 
 # ---- exp10: lens-eval multihop, pass@10 -------------------------------------------------------------
@@ -289,6 +309,31 @@ def main():
         ("exp12", "cue phrase, average token: swap answer", exp12_cue_share("jlens", "swap_answer")[0], 0.02),
         ("exp12", "cue phrase, best token: bridge", exp12_cue_share("jlens", "bridge", best=True)[0], 0.80),
         ("exp12", "cue phrase, best token: distractor", exp12_cue_share("jlens", "distractor", best=True)[0], 0.19),
+        ("exp14", "cue 24-40, bridge swap, J++", exp14_flip("jpp", "cue", "24-40", "bridge")[0], 0.30),
+        ("exp14", "cue 24-40, bridge swap, J-lens", exp14_flip("jlens", "cue", "24-40", "bridge")[0], 0.22),
+        ("exp14", "cue 24-40, answer swap, J++", exp14_flip("jpp", "cue", "24-40", "answer")[0], 0.17),
+        ("exp14", "cue 24-40, answer swap, J-lens", exp14_flip("jlens", "cue", "24-40", "answer")[0], 0.11),
+        ("exp14", "cue 24-40, answer swap, null, J++", exp14_flip("jpp", "cue", "24-40", "answer", True)[0], 0.0),
+        ("exp14", "control: answer swap, last 40-56, J++", exp14_flip("jpp", "last", "40-56", "answer")[0], 0.40),
+        ("exp14", "control: answer swap, last 40-56, J-lens", exp14_flip("jlens", "last", "40-56", "answer")[0], 0.39),
+        (
+            "exp14",
+            "low overlap: answer swap on cue, J++ (flips)",
+            exp14_flip("jpp", "cue", "24-40", "answer", overlap="low")[1],
+            0,
+        ),
+        (
+            "exp14",
+            "low overlap: answer swap on cue, J-lens (flips)",
+            exp14_flip("jlens", "cue", "24-40", "answer", overlap="low")[1],
+            1,
+        ),
+        (
+            "exp14",
+            "low overlap: bridge swap on cue, J++",
+            exp14_flip("jpp", "cue", "24-40", "bridge", overlap="low")[0],
+            0.14,
+        ),
         ("exp02", "J-part flips, J++ (main_v4_jpp)", exp02_rate("main_v4_jpp", "jpart")[0], 0.52),
         ("exp02", "J-part flips, J-lens (main_v4_jlens)", exp02_rate("main_v4_jlens", "jpart")[0], 0.35),
         ("exp02", "remainder flips, J++", exp02_rate("main_v4_jpp", "remainder")[0], 0.08),

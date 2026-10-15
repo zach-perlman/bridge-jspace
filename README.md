@@ -24,6 +24,7 @@ or tokenization artifact.
 | [exp10](#exp10_lens_sanity-does-the-lens-work-on-qwen-at-all) | Does a lens read two-hop bridges on Qwen at all? |
 | [exp11](#exp11_bridge_vs_answer_by_layer-where-is-the-bridge-readable-and-where-the-answer) | At the last prompt token, at which layers are the bridge and the answer readable? |
 | [exp12](#exp12_position_map-where-in-the-prompt-and-how-deep) | Where in the prompt, and from which layer, are they readable? |
+| [exp14](#exp14_cue_answer_swaps-on-the-cue-phrase-is-it-the-bridge-or-already-the-answer) | On the cue phrase, does swapping the answer change it as often as swapping the bridge? |
 | [exp02](#exp02_swaps-part-b-does-the-bridge-act-through-the-j-space-and-where) | Does swapping the bridge's J-space part change the answer, and where in the prompt? |
 | [exp03](#exp03_brew_swaps-part-b-an-in-context-two-step-lookup) | Do the same swaps work on a two-step lookup whose answer is read off the prompt? |
 | [exp04](#exp04_brew_patch-part-b-where-brew-carries-its-intermediate-without-a-lens) | Where does that lookup carry its intermediate, found without a lens? |
@@ -74,7 +75,7 @@ or tokenization artifact.
 4. `exp13_greedy_answers`: which questions the model answers correctly, judged on its greedy continuation (the
    criterion part B adopted in v4).
 5. `exp14_cue_answer_swaps`: on the cue phrase, does swapping the answer's lens direction change the answer as often
-   as swapping the bridge's? (running; see Next steps)
+   as swapping the bridge's?
 6. Oracle lens and NLA on the same questions (exp15 / exp16, proposed; see Next steps).
 
 ## Method, part B: is the bridge used outside the J-space? (exp01-09)
@@ -105,6 +106,8 @@ is recomputed from the raw run files by `uv run python scripts/verify_headlines.
 | [exp12 `cue_phrase_lenses.png`](figures/exp12_position_map/cue_phrase_lenses.png) | J-lens vs J++ on the cue phrase: they read the same bridge; their swaps differ |
 | [exp12 `by_offset.png`](figures/exp12_position_map/by_offset.png) | The "where in the prompt" panel for all three readers, logit lens included |
 | [exp12 `position_layer.png`](figures/exp12_position_map/position_layer.png) | Reference heatmaps: every position x layer, all three readers |
+| [exp14 `flip_rates_by_overlap.png`](figures/exp14_cue_answer_swaps/flip_rates_by_overlap.png) | On the cue phrase, swapping the answer changes it only where the swap also moves the bridge |
+| [exp14 `flip_rates.png`](figures/exp14_cue_answer_swaps/flip_rates.png) | Bridge vs answer swaps on the cue phrase and at the last token, with random-direction controls |
 | [exp11 `pool_top1_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/pool_top1_by_layer.png) | Last token only: bridge and answer ranked first, by layer, three readers |
 | [exp11 `advantage_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/advantage_by_layer.png) | Last token only: how many times higher than its distractor each word ranks |
 | [exp10 `pass_at_10_by_model.png`](figures/exp10_lens_sanity/20261015-123717/pass_at_10_by_model.png) | Does each lens find the bridge at all (pass@10), 4B and 27B |
@@ -129,6 +132,9 @@ link can open it).
    the answer on the cue phrase (part B: 31% with J++) and hardly at -1 (9%) (exp12, exp02).
 6. The J-lens and J++ read the same bridge in the same questions (r = 0.92), yet swaps along J++'s directions change
    the answer more often (31% vs 19% on the cue phrase): J++'s advantage is in its directions, not in what it sees.
+7. On the cue phrase, swapping the answer's direction changes the answer only where it also moves the bridge (0-1
+   of about 35 questions otherwise), and less often than the bridge swap: no sign that the answer itself sits there.
+   The questions that separate the two are weak tests, though (exp14).
 
 ![exp12: where and how deep](figures/exp12_position_map/two_step.png)
 
@@ -328,7 +334,7 @@ positions -3..0). The ordering holds for the group of questions, not reliably fo
 readable, not what is computed. On the cue phrase, the best token per question (a search over about 5) reaches 80% for
 the bridge but also 19% for its distractor, which is why the figures use an average token. The cue words' own
 associations can be carried into the middle layers, so layers 0-4 bound them from below only. Whether the answer read
-there is used is exp14's question.
+there is used is exp14's question (it finds no sign of it apart from the bridge).
 
 <details><summary>Full numbers and checks</summary>
 
@@ -361,6 +367,68 @@ current; figures re-rendered in `analysis-20261015-125333-position-map/`, the cu
 
 *Reference: every position x layer for all three readers, colour = share of questions with the word ranked first; the
 box marks the best position over layers 32-48. The line figure above shows the J-lens rows that matter.*
+</details>
+
+### exp14_cue_answer_swaps: on the cue phrase, is it the bridge or already the answer?
+**What we measure.** Swapping the bridge changes the answer when the swap edits the cue phrase ("Amazon River ends"),
+and exp12 reads a little of the answer there too. If that phrase already held the answer (a shortcut: Amazon River ->
+Portuguese), swapping the answer's direction there should change the answer as often as swapping the bridge's. Both
+swaps exchange two words' coordinates along their lens vectors (J-lens or J++), as part B's lens-vector swap does:
+the bridge pair (Brazil -> Mexico) or the answer pair (Portuguese -> Spanish), on the cue phrase at layers 24-40. The
+answer swap's positive control is the same swap at the last token, where the answer is written (layers 24-40, and
+40-56 where exp12 reads it). Every swap has a random direction of the same edit size. Design: Danyil; the decision rule
+was fixed in the config before the run.
+
+**In short.**
+- **Both swaps change the answer on the cue phrase, the bridge's more often.** Bridge 30% [21, 41] of the questions
+  (J++) / 22% [14, 33] (J-lens), answer 17% [10, 27] / 11% [6, 20], random directions 0%; bridge minus answer +14
+  points [+3, +25] / +12 [+3, +22]. The answer swap's positive control works: at the last token, layers 40-56, it
+  flips 40% / 39%. By the rule fixed before the run that is "both", so the overlap between the two swaps decides.
+- **On the cue phrase the answer swap works only where it is also a bridge swap.** Split at the median overlap (the
+  cosine between the bridge pair's and the answer pair's difference vectors): where the two swaps overlap little,
+  the answer swap flips 0 of 35 questions (J++) / 1 of 36 (J-lens) on the cue phrase, the bridge swap 14% / 6%.
+  Almost every answer-swap flip is a question whose answer is tied to its bridge in J-space (Spain -> Madrid,
+  Japan -> Tokyo, Russia -> Russian; cosine 0.6-0.9). The lens data show no answer on the cue phrase apart from the
+  bridge.
+- **But the questions that separate the two are weak tests.** Where the overlap is low, the answer swap also rarely
+  works at the last token (14%), and the bridge swap rarely on the cue phrase. Most swap effects live in the place
+  questions, where bridge and answer cannot be pulled apart along their token directions.
+
+![exp14: bridge vs answer swaps](figures/exp14_cue_answer_swaps/flip_rates.png)
+
+*How to read it: one panel per lens; each pair of bars is the share of questions whose answer changes to the swap
+target's, when the bridge (blue) or the answer (orange) is swapped at the given positions and layers; the grey bars
+(right of each, mostly at 0%) are random directions of the same edit size. On the cue phrase blue is above orange; at
+the last token, layers 24-40, neither works; at layers 40-56 both do, the answer more.*
+
+![exp14: split by overlap](figures/exp14_cue_answer_swaps/flip_rates_by_overlap.png)
+
+*How to read it: the same swaps, for the questions whose bridge and answer swaps overlap little (left of each pair of
+groups) or much. On the cue phrase the orange bar is near 0 where the overlap is low: the answer swap only works where
+it moves the bridge too.*
+
+**What this does not show.** The median split was chosen after seeing the results. The swaps move only the two words'
+token directions, so an answer held in other directions on the cue phrase would be missed. The answer swap's edits
+are a little smaller than the bridge's (median 0.010 vs 0.012 of the residual norm, J++). One seed.
+
+<details><summary>Full numbers and checks</summary>
+
+Run `results/exp14_cue_answer_swaps/20261015-111137` (Qwen3.6-27B, part B's model loader, prompts and scoring as part
+B v4; the answer rows are the 72 questions with single-token answers); overlap split in
+`analysis-20261015-133725-overlap/`. Checks: the eligible questions equal part B's v4 ones (77 of 77); the bridge
+swaps reproduce part B's lens-vector swaps question by question (J++ 154 of 154 outcomes, J-lens 152 of 154).
+
+| Swap, flip rate [95% Wilson CI] | J-lens bridge | J-lens answer | J++ bridge | J++ answer |
+|---|---|---|---|---|
+| cue phrase, layers 24-40 | 22% [14, 33] | 11% [6, 20] | 30% [21, 41] | 17% [10, 27] |
+| last token, layers 24-40 | 1% [0, 7] | 1% [0, 7] | 1% [0, 7] | 4% [1, 12] |
+| last token, layers 40-56 | 29% [20, 39] | 39% [28, 50] | 27% [19, 38] | 40% [30, 52] |
+| random direction, any cell | 0% | 0% | 0% | 0% |
+
+- Overlap (median over questions of the mean cosine over layers 24-40): 0.26 (J-lens), 0.28 (J++); up to 0.93-0.97.
+  The share of the bridge swap's edit that lies in the answer pair's span: median 0.30.
+- At the last token, layers 40-56, the bridge swap's 27-29% is also mostly overlap: 44-49% where it is high, 9-11%
+  where it is low.
 </details>
 
 ### exp02_swaps (part B): does the bridge act through the J-space, and where?
@@ -595,12 +663,11 @@ recomputed by `scripts/verify_headlines.py`.
 
 ## Next steps (part A)
 In order; designs need human sign-off before GPU runs.
-1. **exp14: answer swap at the cue phrase** (design: Danyil; running). Part B's bridge swap acts on the cue phrase,
-   and exp12 reads part of the answer there too (17% of layers 32-48 at an average cue token). Is that phrase holding
-   the bridge, or already the answer (a shortcut)? On the cue phrase, layers 24-40, swap the answer's lens direction
-   (Portuguese -> Spanish) next to the bridge's (Brazil -> Mexico), for the J-lens and J++, with matched random
-   directions, the same answer swap at the last token as the positive control (layers 24-40 and 40-56), and how much
-   one swap leaks into the other. The decision rule is fixed in `scripts/exp14_cue_answer_swaps/config.yaml`.
+1. **Separate bridge and answer where their directions overlap** (follow-up to exp14). In the place questions the
+   bridge and answer swaps move nearly the same direction, so exp14 cannot tell them apart there. The swap clamp can
+   hold extra atoms fixed: swap the bridge pair while pinning the answer pair's coordinates, and the reverse. If the
+   bridge swap keeps working with the answer held, the cue phrase carries the bridge; if only the answer swap does,
+   it carries the answer. Same runner as exp14, about half an hour of GPU.
 2. **Readable but not used at -1?** The bridge reads about as well one word before the end as on the cue phrase
    (65% vs 56% of layers 32-48), yet swapping it at -1 changes the answer in 3-9% of questions against 19-31% on the
    cue phrase. A lens-free test, as exp04 does on brew: copy the residual at -1, or on the cue phrase, from a question
