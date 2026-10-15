@@ -403,8 +403,8 @@ the last token, layers 24-40, neither works; at layers 40-56 both do, the answer
 
 ![exp14: split by overlap](figures/exp14_cue_answer_swaps/flip_rates_by_overlap.png)
 
-*How to read it: the same swaps, for the questions whose bridge and answer swaps overlap little (left of each pair of
-groups) or much. On the cue phrase the orange bar is near 0 where the overlap is low: the answer swap only works where
+*How to read it: the same swaps, for the 72 questions where both swaps are possible (single-token answers), split
+in two halves of about 36: those whose bridge and answer swaps overlap little (left of each pair of groups) or much. On the cue phrase the orange bar is near 0 where the overlap is low: the answer swap only works where
 it moves the bridge too.*
 
 **What this does not show.** The median split was chosen after seeing the results. The swaps move only the two words'
@@ -415,7 +415,7 @@ are a little smaller than the bridge's (median 0.010 vs 0.012 of the residual no
 
 Run `results/exp14_cue_answer_swaps/20261015-111137` (Qwen3.6-27B, part B's model loader, prompts and scoring as part
 B v4; the answer rows are the 72 questions with single-token answers); overlap split in
-`analysis-20261015-133725-overlap/`. Checks: the eligible questions equal part B's v4 ones (77 of 77); the bridge
+`analysis-20261015-134641-overlap/`. Checks: the eligible questions equal part B's v4 ones (77 of 77); the bridge
 swaps reproduce part B's lens-vector swaps (`exp02_swaps/main_v4_*_pos-cue`, `_pos-last`) question by question:
 J++ 154 of 154 outcomes (cue phrase 23/77 = 29.9% in both, last token 1/77), J-lens 152 of 154 (cue phrase 17/77 =
 22.1% here vs 16/77 = 20.8%; last token 1/77 in both). The two J-lens differences are borderline greedy

@@ -94,6 +94,9 @@ def plot_overlap(path: Path, rows: list[dict], post_hoc: bool = False) -> Path:
     fig, axes = plt.subplots(1, len(lenses), figsize=(6 * len(lenses), 4.6), facecolor=SURFACE, sharey=True)
     kinds = _kinds(rows)
     width = 0.8 / len(kinds)
+    first = rows[0]
+    n_total = sum(r["n"] for r in rows if (r["lens"], r["positions"], r["band"], r["kind"]) ==
+                  (first["lens"], first["positions"], first["band"], first["kind"]))  # fmt: skip
     for ax, lens in zip(np.atleast_1d(axes), lenses, strict=True):
         ticks = []
         for ci, ((positions, band), half) in enumerate((c, h) for c in cells for h in ("low", "high")):
@@ -132,7 +135,8 @@ def plot_overlap(path: Path, rows: list[dict], post_hoc: bool = False) -> Path:
         fig,
         path,
         "Does swapping the answer change it only where that swap is also a bridge swap?",
-        "Qwen3.6-27B, the two-hop questions it answers correctly, split at the median overlap between the two swaps: "
+        f"Qwen3.6-27B, the {n_total} two-hop questions it answers correctly where both swaps are possible (single-token "
+        "answers), split in two halves at the median overlap between the two swaps: "
         "the cosine between the bridge pair's and the answer pair's lens-vector differences (e.g. high for "
         "Spain -> Madrid, low for elephant -> trunk), averaged over the swapped layers. Random-direction controls: 0-1% "
         "everywhere. Error bars: 95% Wilson CI."
