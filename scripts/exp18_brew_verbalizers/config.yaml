@@ -1,0 +1,56 @@
+# exp18_brew_verbalizers: do the oracle lens and the NLA read brew's intermediate from the model's state, or work it
+# out from the prompt? exp17's design (reading vs solving) on brew, where the state can be set against the text.
+#   make run CONFIG=scripts/exp18_brew_verbalizers/config.yaml                                   # 27B, one GPU
+#   make run CONFIG=scripts/exp18_brew_verbalizers/config.yaml ARGS="params.limit=3 results_dir=cache/smoke"  # smoke
+name: exp18_brew_verbalizers
+target: scripts.exp18_brew_verbalizers.experiment:BrewVerbalizers
+seed: 0
+model: configs/models/qwen3.6-27b.yaml  # loaded through part B's loader (pins.py; tests/test_pins.py syncs)
+params:
+  # exp04's eligible fresh items (B answers A, C answers c, O answers A, C and O token-aligned), as exp07 recorded them.
+  items_file: results/exp07_step_code/code_v1/items.jsonl
+  items_sha256: 1a565d98746bf400cbc08694699e6cb22171978e1cd591dccc1c4eef2d2d62d4
+  item_set: fresh
+  # The patch: C's block output copied into B at the four positions after the start line that carry the step
+  # (exp04 positions_window: " the", the newline after "assistant", the "\n\n" after "</think>", ":"; indices into
+  # the 21 positions after the start line), at layers 36-40, the start of exp04's window (36-50).
+  patch_positions: [4, 14, 18, 20]
+  patch_layers: [36, 38, 40]
+  # Read downstream of the patch: the newline after "assistant" and the last token, at the NLA's layer (42) and the
+  # oracle's trained layer 44 (its grid is 20-60, step 4).
+  read_positions: {nl_assistant: 14, last: 20}
+  oracle_layers: [44]
+  nla_layer: 42
+  max_new_tokens: {oracle: 64, nla: 160}  # as exp15 and exp16; greedy
+  batch_size: 16
+  off_path_seed: 0  # the null colour per item: a table colour off the path, not a role colour
+  sanity_oracle:  # exp15's gate
+    layers: [36, 44]
+    min_logit_change: 1.0
+    min_named: 4
+    max_random_named: 1
+    facts: &facts
+      - {prompt: "Fact: The capital of France is", targets: [Paris]}
+      - {prompt: "Fact: The largest planet in the solar system is", targets: [Jupiter]}
+      - {prompt: "Fact: The play Romeo and Juliet was written by William", targets: [Shakespeare]}
+      - {prompt: "Fact: The currency of Japan is the", targets: [yen]}
+      - {prompt: "Fact: The opposite of hot is", targets: [cold]}
+      - {prompt: "Fact: The Great Wall is in", targets: [China]}
+  sanity_nla:  # exp16's gate
+    min_logit_change: 1.0
+    min_named: 4
+    max_random_named: 1
+    facts: *facts
+  n_boot: 2000
+  boot_seed: 0
+  decision: >-
+    Fixed before the run. Per reader (the NLA at 42, the oracle at 44), an item counts as naming a colour if a reading
+    at either read position names it. Conditions: B clean (the text and the state say I), C clean (both say X), B with
+    C's state patched in at the four positions, layers 36-40 (the text says I, the state X), and B with O's state at
+    the same positions and layers (off-path control). The patch took on an item if the patched model's own greedy
+    answer is f(X). Positive control: on C clean the reader names X more often than on B clean (paired bootstrap 95%
+    CI above 0); otherwise it does not read brew's intermediate and the rest says nothing. Among items where the patch
+    took: "reads the state" if the patched readings name X at least 30 points more often than I (CI above 0) and O's
+    patch does not raise X over B clean (CI of off - clean not above 0); "solves from the text" if they name I more
+    often than X (CI above 0); otherwise mixed, reported by position. Beside every rate: the off-path null colour's.
+  limit: null  # first N items; smoke runs only
