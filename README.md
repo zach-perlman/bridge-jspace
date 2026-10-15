@@ -440,16 +440,33 @@ counterfactual and the control correctly); every second layer.
   25-atom signed decomposition over the lens's vectors) gives 0%, the rest 26% (J++) / 24% (J-lens). Paired
   difference, rest minus part: +31 [+24, +38] and +26 [+20, +32] pts with J++, alike with the J-lens; every part's
   random-direction null 0%. The J-space part holds 8% of δ's variance, what it holds of a random direction (7%).
+- **Both replicate on 154 held-out items** (`patch_map_fresh`, `parts_window_fresh`: exp03's fresh items, the same
+  seeds and decision rules; the rule lines patched at layer 0 only, as positive controls). The same rule again puts
+  the window after the start line at layers 36-50 (f(X) 10% at layer 36, 52% [44, 60] at layer 48; from layer 52 c,
+  68%, then 88-100% from layer 56) and at 44-50 for the last token; the control changes at most 6% of answers (layer
+  50). At that window the whole copy scores 31%; the I/X lens coordinates 0%, the rest 31% (+31 [+26, +36] pts with
+  both lenses); the J-space part 0%, the rest 28% (J++, +28 [+24, +33]) and 26% (J-lens, +26 [+22, +31]); every null
+  0%. The J-space part again holds about what it holds of a random direction (8% of δ's variance; chance 7%).
+- **Before the step shows, the copy often stops the model at the first lookup.** At layers 36-46 the copy after the
+  start line makes the model answer the original intermediate I (f(S), one lookup instead of two) for 20-29% of bank
+  items and 27-43% of fresh items; at layers 48-50, where f(X) peaks, for 16% and 6-7%. Neither decision rule counts
+  this; we saw it after the fact. It goes with the same part of δ as the step: on the fresh items the rest gives I in
+  28-30% of item x layer cells at the window, the J-space part in 1-2%, the I/X lens coordinates in under 1%, the
+  nulls in under 2%.
 
 ![exp04: patching map](figures/exp04_brew_patch/v1/patch_map.png)
 
 ![exp04: parts of the copy](figures/exp04_brew_patch/v2_parts/parts.png)
 
+![exp04: patching map, fresh items, with I](figures/exp04_brew_patch/v3_fresh_map/patch_map.png)
+
 **What this does not show.** Which direction carries the step, beyond "not the J-space": the copy replaces whole block
-outputs at about 21 positions. 48% is the best single-layer copy, not a ceiling: information held at several layers at
-once is missed by every single-layer copy. The J-space part is small (8% of δ's variance) and was not tried amplified;
-it is a decomposition of the difference δ, not of each activation. The window and the parts test use the same 82 items
-(no fresh-item replication yet). One seed for c and the control's colours.
+outputs at about 21 positions. 48-52% is the best single-layer copy, not a ceiling: information held at several layers
+at once is missed by every single-layer copy. The J-space part is small (8% of δ's variance) and was not tried
+amplified; it is a decomposition of the difference δ, not of each activation. Within each item set the window and the
+parts test use the same items; the fresh map found the bank's window, so the fresh parts test also runs at a window
+found on other items. One seed for c and the control's colours, the same in both sets. What the I answers mean is
+open.
 
 <details><summary>Full numbers and checks</summary>
 
@@ -459,6 +476,15 @@ human) and `parts_window` (the window read from `patch_map`'s decision; its full
 token's log-probabilities in `figures/exp04_brew_patch/v1/patch_logp.png`. Eligibility: 13 items fail on the
 counterfactual and 4 on the control prompt. 52 of the 82 items give f(X) at one window layer or more. Headlines are
 recomputed by `scripts/verify_headlines.py`.
+
+Fresh items: `patch_map_fresh` (manifest written before the run; after the start line and the last token at every
+second layer, the two rule-line positive controls at layer 0, chosen by the human) and `parts_window_fresh` (its
+manifest written from `patch_map_fresh`'s decision; its full copy reproduces the map in all 1232 item x layer cells).
+Of the 200 fresh items, 154 are eligible: they are not gated, so 25 fail on the original prompt, 18 on the
+counterfactual, 2 on the control, and 1 has no X. Positive controls at layer 0: the rule lines give c for 100% and the
+start colour's rule gives f(X) for 92%, the control changes at most 1%. 97 of the 154 give f(X) at one window layer or
+more. Figures: `figures/exp04_brew_patch/v3_fresh_map/` (the map figure draws I from this version on) and
+`v4_fresh_parts/parts.png`.
 </details>
 
 ### Pitfalls found so far
@@ -517,6 +543,6 @@ In order; designs need human sign-off before GPU runs.
 3. **Why "anything else" bridges rarely flip:** probe quality vs how those bridges are represented.
 4. **A control matched in total edit size** across layers.
 5. **Brew:** exp04 maps the lookup (the intermediate is carried after the start line at layers 36-50) and finds the
-   step outside the J-space. Next: the same map and parts on fresh items; what direction carries the step (e.g. a
-   difference-of-means step direction, decomposed like exp02's probes); and steering at the cue phrase in exp02 at the
-   same sizes, to compare the two settings at one dose.
+   step outside the J-space, on the bank items and again on 154 fresh ones. Next: what direction carries the step
+   (e.g. a difference-of-means step direction, decomposed like exp02's probes); what the I answers at layers 36-46
+   are; and steering at the cue phrase in exp02 at the same sizes, to compare the two settings at one dose.

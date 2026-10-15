@@ -39,7 +39,8 @@ Notes:
   layer and position group at a time). Run `patch_map` under `exp04_brew_patch/`; figures
   `../figures/exp04_brew_patch/v1/` (`uv run python scripts/exp04_figures.py <new folder> patch_map`). Then
   `parts_window` (`scripts/exp04_brew_parts.py`: the window's copy split into its J-space part and the rest);
-  figure `../figures/exp04_brew_patch/v2_parts/`.
+  figure `../figures/exp04_brew_patch/v2_parts/`. The same two on exp03's fresh items: `patch_map_fresh` and
+  `parts_window_fresh`; figures `../figures/exp04_brew_patch/v3_fresh_map/` and `v4_fresh_parts/`.
 - exp02 controls for "the J-space part flips more because it carries more of the probe": `exp02_swaps/
   matched_v4_{jpp,jlens}` (matched-alignment random directions) and `exp02_swaps/analysis/edit_size_v1/`
   (`scripts/exp02_edit_size.py`, no model).

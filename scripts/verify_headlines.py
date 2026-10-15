@@ -189,34 +189,72 @@ def exp03_changed(run, lens, kind, regime, null, amp=1, scale=None):
     return 1 - rate, n
 
 
-EXP04 = R / "exp04_brew_patch/patch_map"
+EXP04 = R / "exp04_brew_patch"  # runs: patch_map / parts_window (bank items), patch_map_fresh / parts_window_fresh
 
 
-def exp04_role_rate(source, group, layer, role):
+def exp04_role_rate(source, group, layer, role, run="patch_map"):
     """exp04 outcomes.jsonl: share of rows (one per eligible item) for one source (cf / off), position group and
-    layer whose answer has that role (b = f(X), c = the counterfactual's answer, A = the original answer)."""
-    rows = [o for o in jsonl(EXP04 / "outcomes.jsonl") if (o["source"], o["group"], o["layer"]) == (source, group, layer)]
+    layer whose answer has that role (b = f(X), c = the counterfactual's answer, A = the original answer, I = the
+    original intermediate)."""
+    rows = [
+        o
+        for o in jsonl(EXP04 / run / "outcomes.jsonl")
+        if (o["source"], o["group"], o["layer"]) == (source, group, layer)
+    ]
     return float(np.mean([o["role"] == role for o in rows])), len(rows)
 
 
-def exp04_max_off_changed():
+def exp04_max_off_changed(run="patch_map"):
     """The highest share of answers the off-path control's patch changes, over every group and layer."""
     cells = {}
-    for o in jsonl(EXP04 / "outcomes.jsonl"):
+    for o in jsonl(EXP04 / run / "outcomes.jsonl"):
         if o["source"] == "off":
             cells.setdefault((o["group"], o["layer"]), []).append(o["role"] != "A")
     return max(float(np.mean(v)) for v in cells.values())
 
 
-EXP04_PARTS = R / "exp04_brew_patch/parts_window"
+def wilson_bounds(k, n, z=1.959964):
+    p, d = k / n, 1 + z * z / n
+    centre, half = (p + z * z / (2 * n)) / d, z * np.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / d
+    return centre - half, centre + half
 
 
-def exp04_step_score(part, lens=None, null=False):
+def exp04_window(group, run="patch_map"):
+    """exp04 outcomes.jsonl: the manifest's window rule, recomputed. The layers where the counterfactual's copy (cf)
+    gives f(X) more often than c and more often than the off-path copy changes the answer at all, 95% Wilson
+    intervals not overlapping; "first-last" when every second layer in between is in it."""
+    cells = {}
+    for o in jsonl(EXP04 / run / "outcomes.jsonl"):
+        if o["group"] == group:
+            cells.setdefault((o["source"], o["layer"]), []).append(o["role"])
+    window = []
+    for layer in sorted({layer for _, layer in cells}):
+        cf, off = cells["cf", layer], cells["off", layer]
+        b_low = wilson_bounds(cf.count("b"), len(cf))[0]
+        c_high = wilson_bounds(cf.count("c"), len(cf))[1]
+        changed_high = wilson_bounds(sum(r != "A" for r in off), len(off))[1]
+        if b_low > c_high and b_low > changed_high:
+            window.append(layer)
+    if window and window == list(range(window[0], window[-1] + 1, 2)):
+        return f"{window[0]}-{window[-1]}"
+    return ",".join(map(str, window)) or "none"
+
+
+def exp04_items_with_step(run="patch_map", window=range(36, 51, 2)):
+    """exp04 outcomes.jsonl: items whose copy after the start line gives f(X) at one window layer or more."""
+    hit = {}
+    for o in jsonl(EXP04 / run / "outcomes.jsonl"):
+        if (o["source"], o["group"]) == ("cf", "after_start") and o["layer"] in window:
+            hit[o["name"]] = hit.get(o["name"], False) or o["role"] == "b"
+    return sum(hit.values())
+
+
+def exp04_step_score(part, lens=None, null=False, run="parts_window"):
     """exp04 parts_window outcomes.jsonl: per item, the share of window layers (36-50) at which copying that part of
     the counterfactual's difference gives f(X) (role "b"); then the mean over items. The full copy has lens None."""
     rows = [
         o
-        for o in jsonl(EXP04_PARTS / "outcomes.jsonl")
+        for o in jsonl(EXP04 / run / "outcomes.jsonl")
         if o["part"] == part and o["source"] == "cf" and o["lens"] == lens and o["null"] == null
     ]
     per_item = {}
@@ -225,9 +263,20 @@ def exp04_step_score(part, lens=None, null=False):
     return float(np.mean([np.mean(v) for v in per_item.values()])), len(per_item)
 
 
-def exp04_variance_share(lens, what):
+def exp04_parts_role_share(part, role, lens=None, null=False, run="parts_window_fresh"):
+    """exp04 parts outcomes.jsonl: the share of item x window-layer cells at which copying that part gives the role."""
+    rows = [
+        o
+        for o in jsonl(EXP04 / run / "outcomes.jsonl")
+        if o["part"] == part and o["source"] == "cf" and o["lens"] == lens and o["null"] == null
+    ]
+    return float(np.mean([o["role"] == role for o in rows]))
+
+
+def exp04_variance_share(lens, what, run="parts_window"):
     """exp04 parts_window fve.jsonl: the median share of δ's variance in the part (or of a random direction's, chance)."""
-    return float(np.median([f["share"] for f in jsonl(EXP04_PARTS / "fve.jsonl") if (f["lens"], f["what"]) == (lens, what)]))
+    shares = [f["share"] for f in jsonl(EXP04 / run / "fve.jsonl") if (f["lens"], f["what"]) == (lens, what)]
+    return float(np.median(shares))
 
 
 def main():
@@ -350,6 +399,95 @@ def main():
         ("exp04", "parts: J-lens all but the J-space part", exp04_step_score("not_jspace", "jlens")[0], 0.24),
         ("exp04", "parts: J++ J-space share of δ's variance", exp04_variance_share("jpp", "jspace"), 0.08),
         ("exp04", "parts: J++ J-space share of a random direction's", exp04_variance_share("jpp", "chance"), 0.07),
+        ("exp04", "window, after the start line", exp04_window("after_start"), "36-50"),
+        ("exp04", "window, the last token", exp04_window("last"), "46,50"),
+        ("exp04", "items giving f(X) at a window layer", exp04_items_with_step(), 52),
+        ("exp04", "after the start line, layer 40: I", exp04_role_rate("cf", "after_start", 40, "I")[0], 0.29),
+        ("exp04", "after the start line, layer 48: I", exp04_role_rate("cf", "after_start", 48, "I")[0], 0.16),
+        ("exp04", "fresh: window, after the start line", exp04_window("after_start", "patch_map_fresh"), "36-50"),
+        ("exp04", "fresh: window, the last token", exp04_window("last", "patch_map_fresh"), "44-50"),
+        ("exp04", "fresh: items giving f(X) at a window layer", exp04_items_with_step("patch_map_fresh"), 97),
+        (
+            "exp04",
+            "fresh: after the start line, layer 36: f(X)",
+            exp04_role_rate("cf", "after_start", 36, "b", "patch_map_fresh")[0],
+            0.10,
+        ),
+        (
+            "exp04",
+            "fresh: after the start line, layer 48: f(X)",
+            exp04_role_rate("cf", "after_start", 48, "b", "patch_map_fresh")[0],
+            0.52,
+        ),
+        (
+            "exp04",
+            "fresh: after the start line, layer 52: c",
+            exp04_role_rate("cf", "after_start", 52, "c", "patch_map_fresh")[0],
+            0.68,
+        ),
+        (
+            "exp04",
+            "fresh: after the start line, layer 38: I",
+            exp04_role_rate("cf", "after_start", 38, "I", "patch_map_fresh")[0],
+            0.43,
+        ),
+        (
+            "exp04",
+            "fresh: after the start line, layer 50: I",
+            exp04_role_rate("cf", "after_start", 50, "I", "patch_map_fresh")[0],
+            0.07,
+        ),
+        ("exp04", "fresh: off-path control, most answers changed", exp04_max_off_changed("patch_map_fresh"), 0.06),
+        ("exp04", "fresh parts: step score, whole copy", exp04_step_score("full", run="parts_window_fresh")[0], 0.31),
+        (
+            "exp04",
+            "fresh parts: J++ I/X lens coordinates",
+            exp04_step_score("lens2", "jpp", run="parts_window_fresh")[0],
+            0.0,
+        ),
+        (
+            "exp04",
+            "fresh parts: J++ all but those",
+            exp04_step_score("not_lens2", "jpp", run="parts_window_fresh")[0],
+            0.31,
+        ),
+        (
+            "exp04",
+            "fresh parts: J++ J-space part (25 atoms)",
+            exp04_step_score("jspace", "jpp", run="parts_window_fresh")[0],
+            0.0,
+        ),
+        (
+            "exp04",
+            "fresh parts: J++ all but the J-space part",
+            exp04_step_score("not_jspace", "jpp", run="parts_window_fresh")[0],
+            0.28,
+        ),
+        (
+            "exp04",
+            "fresh parts: J-lens all but the J-space part",
+            exp04_step_score("not_jspace", "jlens", run="parts_window_fresh")[0],
+            0.26,
+        ),
+        (
+            "exp04",
+            "fresh parts: J++ all but the J-space part, I",
+            exp04_parts_role_share("not_jspace", "I", "jpp"),
+            0.28,
+        ),
+        ("exp04", "fresh parts: J++ J-space part, I", exp04_parts_role_share("jspace", "I", "jpp"), 0.01),
+        (
+            "exp04",
+            "fresh parts: J++ J-space share of δ's variance",
+            exp04_variance_share("jpp", "jspace", "parts_window_fresh"),
+            0.08,
+        ),
+        (
+            "exp04",
+            "fresh parts: J++ J-space share of a random direction's",
+            exp04_variance_share("jpp", "chance", "parts_window_fresh"),
+            0.07,
+        ),
     ]
     width = max(len(c[1]) for c in checks)
     for exp, what, got, claimed in checks:
