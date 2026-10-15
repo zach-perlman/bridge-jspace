@@ -72,16 +72,7 @@ ignore = [
 
 [tool.pyright]
 include = ["src", "scripts", "tests"]
-exclude = [
-    "**/__pycache__",
-    ".venv",
-    # Part B files with pyright errors, mostly untyped HF module access (lint and format do cover them).
-    "scripts/check_setup.py",
-    "scripts/exp02_gate_debug.py",
-    "scripts/exp02_swaps.py",
-    "src/bridge_jspace/lens.py",
-    "src/bridge_jspace/model.py",
-]
+exclude = ["**/__pycache__", ".venv"]
 pythonVersion = "3.12"
 typeCheckingMode = "basic"
 venvPath = "."

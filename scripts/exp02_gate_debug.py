@@ -69,7 +69,7 @@ def stage_manifest(part: str) -> None:
     out.mkdir(parents=True, exist_ok=True)
     path = out / "manifest.json"
     assert not path.exists(), f"{path} exists; manifests are written once"
-    paragraphs = __doc__.split("\n\n")
+    paragraphs = (__doc__ or "").split("\n\n")
     inputs = {
         "probes": {"file": str(probes_path().relative_to(pins.REPO_ROOT)), "sha256": sha256_of(probes_path())},
         "kept_prompts": str(FILTER.relative_to(pins.REPO_ROOT)),

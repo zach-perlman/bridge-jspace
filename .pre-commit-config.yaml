@@ -7,8 +7,11 @@ repos:
         args: [--maxkb=2000]
       - id: check-yaml
       - id: check-toml
+      # Never on pinned inputs, raw results or rendered pages: a fixed newline changes a pinned sha256 or a run's file.
       - id: end-of-file-fixer
+        exclude: ^(data|results|examples)/
       - id: trailing-whitespace
+        exclude: ^(data|results|examples)/
       - id: detect-private-key
   # Local hooks use the locked tool versions from uv.lock (no version drift vs `make lint`).
   - repo: local
