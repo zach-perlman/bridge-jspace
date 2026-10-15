@@ -101,10 +101,10 @@ def exp12_first_layer_half(reader, role, offset):
     return layers[int(np.argmax(share >= 0.5))]
 
 
-def exp12_cue_share(reader, word, band=BAND):
+def exp12_cue_share(reader, word, band=BAND, best=False):
     """The cue phrase (data/cue_spans.json) located in the prompt the item's tokens spell (items.jsonl), minus
-    position 0 and the last two positions; per eligible item with that word's grid, the best share over those tokens
-    of `band` layers with `<word>_pool` == 1; then the mean over items."""
+    position 0 and the last two positions; per eligible item with that word's grid, the share of `band` layers with
+    `<word>_pool` == 1 at an average one of those tokens (or, with best=True, at the best one); mean over items."""
     meta, layers, _, z, eligible = exp12_load(reader)
     cues = json.loads((R.parent / "data" / "cue_spans.json").read_text())["cues"]
     rows = [i for i, layer in enumerate(layers) if band[0] <= layer <= band[1]]
@@ -120,7 +120,8 @@ def exp12_cue_share(reader, word, band=BAND):
             if pos < end and pos + len(t) > start and 1 <= i <= len(toks) - 3:
                 idx.append(i)
             pos += len(t)
-        vals.append(max(np.mean(z[key][rows, i] == 1) for i in idx))
+        shares = [np.mean(z[key][rows, i] == 1) for i in idx]
+        vals.append(max(shares) if best else np.mean(shares))
     return float(np.mean(vals)), len(vals)
 
 
@@ -282,12 +283,12 @@ def main():
         ("exp12", "... distractor on top earlier (control)", exp12_missed_rescued("jlens")[2], 0.33),
         ("exp12", "half of items: bridge at -1, first layer", exp12_first_layer_half("jlens", "bridge", -1), 23),
         ("exp12", "half of items: answer at 0, first layer", exp12_first_layer_half("jlens", "answer", 0), 44),
-        ("exp12", "cue phrase: bridge, J-lens", exp12_cue_share("jlens", "bridge")[0], 0.80),
-        ("exp12", "cue phrase: distractor (control)", exp12_cue_share("jlens", "distractor")[0], 0.19),
-        ("exp12", "cue phrase: bridge, layers 0-4 (lexical)", exp12_cue_share("jlens", "bridge", (0, 4))[0], 0.18),
-        ("exp12", "cue phrase: answer, J-lens", exp12_cue_share("jlens", "answer")[0], 0.35),
-        ("exp12", "cue phrase: swap answer (control)", exp12_cue_share("jlens", "swap_answer")[0], 0.07),
-        ("exp12", "cue phrase: answer, layers 0-4 (lexical)", exp12_cue_share("jlens", "answer", (0, 4))[0], 0.12),
+        ("exp12", "cue phrase, average token: bridge, J-lens", exp12_cue_share("jlens", "bridge")[0], 0.56),
+        ("exp12", "cue phrase, average token: distractor", exp12_cue_share("jlens", "distractor")[0], 0.07),
+        ("exp12", "cue phrase, average token: answer", exp12_cue_share("jlens", "answer")[0], 0.17),
+        ("exp12", "cue phrase, average token: swap answer", exp12_cue_share("jlens", "swap_answer")[0], 0.02),
+        ("exp12", "cue phrase, best token: bridge", exp12_cue_share("jlens", "bridge", best=True)[0], 0.80),
+        ("exp12", "cue phrase, best token: distractor", exp12_cue_share("jlens", "distractor", best=True)[0], 0.19),
         ("exp02", "J-part flips, J++ (main_v4_jpp)", exp02_rate("main_v4_jpp", "jpart")[0], 0.52),
         ("exp02", "J-part flips, J-lens (main_v4_jlens)", exp02_rate("main_v4_jlens", "jpart")[0], 0.35),
         ("exp02", "remainder flips, J++", exp02_rate("main_v4_jpp", "remainder")[0], 0.08),
