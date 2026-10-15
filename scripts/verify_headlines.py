@@ -537,6 +537,40 @@ def exp04_positions_step(item_set, group, source="cf"):
     return float(np.mean([np.mean(v) for v in per_item.values()]))
 
 
+EXP09 = R / "exp09_bind_recall"
+
+
+def exp09_map_rate(family, group, layer):
+    """exp09 map_v1 outcomes.jsonl: share of the counterfactual's copies (source cf) at a family, group and layer
+    whose answer is X's capital (role b)."""
+    rows = [
+        o
+        for o in jsonl(EXP09 / "map_v1" / "outcomes.jsonl")
+        if (o["family"], o["group"], o["layer"], o["source"]) == (family, group, layer, "cf")
+    ]
+    return float(np.mean([o["role"] == "b" for o in rows]))
+
+
+def exp09_part_score(family, part, null=False):
+    """exp09 parts_v1 outcomes.jsonl: per item, the share of the window's layers at which the part's copy (source cf)
+    gives X's capital; the mean over items."""
+    per_item = {}
+    for o in jsonl(EXP09 / "parts_v1" / "outcomes.jsonl"):
+        if (o["family"], o["part"], o["source"], o["null"]) == (family, part, "cf", null):
+            per_item.setdefault(o["name"], []).append(o["role"] == "b")
+    return float(np.mean([np.mean(v) for v in per_item.values()]))
+
+
+def exp09_swap_rate(family, condition, null=False):
+    """exp09 swaps_v1 outcomes.jsonl: share of items whose swapped answer is X's capital."""
+    rows = [
+        o
+        for o in jsonl(EXP09 / "swaps_v1" / "outcomes.jsonl")
+        if (o["family"], o["condition"], o["null"]) == (family, condition, null)
+    ]
+    return float(np.mean([o["role"] == "b" for o in rows]))
+
+
 EXP08 = R / "exp08_brew_read/read_v1"
 
 
@@ -992,6 +1026,20 @@ def main():
         ("exp04", "positions, fresh: '\\n\\n' after '</think>'", exp04_positions_step("fresh", "think_nl"), 0.0),
         ("exp04", "positions, bank: the 4 reading positions", exp04_positions_step("bank", "reading"), 0.31),
         ("exp04", "positions, bank: the other 17", exp04_positions_step("bank", "all_but_reading"), 0.0),
+        ("exp09", "map R, question, layer 40", exp09_map_rate("R", "question", 40), 0.60),
+        ("exp09", "map B, question, layer 36", exp09_map_rate("B", "question", 36), 0.05),
+        ("exp09", "map B, question, layer 40", exp09_map_rate("B", "question", 40), 0.70),
+        ("exp09", "parts R: the whole copy", exp09_part_score("R", "full"), 0.44),
+        ("exp09", "parts R: J-space part", exp09_part_score("R", "jspace"), 0.04),
+        ("exp09", "parts R: all but the J-space part", exp09_part_score("R", "not_jspace"), 0.07),
+        ("exp09", "parts B: the whole copy", exp09_part_score("B", "full"), 0.70),
+        ("exp09", "parts B: J-space part", exp09_part_score("B", "jspace"), 0.125),
+        ("exp09", "parts B: all but the J-space part", exp09_part_score("B", "not_jspace"), 0.0),
+        ("exp09", "parts B: I/X lens coordinates", exp09_part_score("B", "lens2"), 0.075),
+        ("exp09", "swaps R: J-part", exp09_swap_rate("R", "jpart"), 0.82),
+        ("exp09", "swaps R: matched control", exp09_swap_rate("R", "jpart_matched"), 0.03),
+        ("exp09", "swaps R: full probe", exp09_swap_rate("R", "full_probe"), 0.18),
+        ("exp09", "swaps B: full probe", exp09_swap_rate("B", "full_probe"), 0.0),
     ]
     width = max(len(c[1]) for c in checks)
     for exp, what, got, claimed in checks:

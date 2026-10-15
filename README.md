@@ -33,6 +33,7 @@ or tokenization artifact.
 | [exp06](#exp06_sigma_writes-part-b-read-with-the-lens-write-along-the-covariance) | Do edits shaped by the activation covariance (Σv) act more than the lens's own directions? |
 | [exp07](#exp07_step_code-part-b-a-code-for-brews-intermediate-fit-on-other-items-writes-the-step-the-lenss-direction-does-not) | Does a code for brew's intermediate, fit on other items, write the step where the lens direction does not? |
 | [exp08](#exp08_brew_read-part-b-the-lens-reads-brews-intermediate-at-a-few-positions-writing-along-its-direction-does-nothing) | Do the lenses read brew's intermediate where the step is carried? |
+| [exp09](#exp09_bind_recall-part-b-is-a-bridge-bound-in-context-outside-the-j-space-like-brews-no) | Holding the question fixed, is a bridge bound in context outside the J-space, as brew's intermediate is? |
 | [Pitfalls](#pitfalls-found-so-far) | What went wrong along the way, and how each is handled |
 | [Decisions](#decisions), [open decisions](#open-decisions-humans) | What was decided, and what is still for the humans to decide |
 | [Next steps, part A](#next-steps-part-a), [part B](#next-steps-part-b) | What comes next |
@@ -110,6 +111,8 @@ or tokenization artifact.
 7. `exp06_sigma_writes`: exp02's matched control with a covariance-shaped rest, and steering along Σ_λ v.
 8. `exp07_step_code`, `exp08_brew_read`: a code for brew's intermediate fit on other items and written at exp04's
    window; and whether the lenses read the intermediate there (part A's top-1 protocol with a distractor).
+9. `exp09_bind_recall`: the same question with its bridge recalled or bound in the prompt, through exp04's patching
+   and exp02's probe swaps.
 
 ## Status
 Draft, UNVERIFIED: nothing is in `VERIFIED.md` yet. The STATE block in `AGENTS.md` tracks what is in flight.
@@ -127,6 +130,8 @@ question; the next experiment (exp17, Next steps) is designed to settle it and h
 asks the original question with probe swaps; on brew, an in-context lookup, it finds the intermediate carried at four
 positions after the start line at layers 36-50 outside the J-space: the lenses read it there at a few positions,
 but writing along their direction does not take the step, while a code fit on other items does (exp04, exp07, exp08).
+A bridge bound in the prompt and used by a recalled fact stays inside the J-space (exp09), so it is not being in the
+context that moves brew's intermediate out.
 
 **Final figures (Qwen3.6-27B).**
 | Figure | What it shows |
@@ -1171,6 +1176,64 @@ tokens in every item (exp07's check). Figure: `uv run python scripts/exp08_figur
 tokenizer for the position labels). Headlines are recomputed by `scripts/verify_headlines.py`.
 </details>
 
+### exp09_bind_recall (part B): is a bridge bound in context outside the J-space, like brew's? No
+**What we measure.** Part B's two settings point opposite ways: the recalled bridge acts through its J-space part
+(exp02), brew's intermediate is carried outside the J-space (exp04, exp07). They differ in much more than where the
+bridge comes from, so this run holds the question, the countries and the second hop fixed and changes only that.
+Every prompt first binds three people to three countries; then R asks "The capital of the country where {city} is
+located is" (the bridge recalled from the city) and B "The capital of the country where {person} lives is" (the bridge
+bound in the prompt). 13 countries (those with exp01 probes), 760 items (`data/bind_recall.json`, made by
+`scripts/exp09_make_items.py`); 65 R and 80 B items are token-aligned, answered correctly and sampled. Both part B
+methods run on both families, with decision rules fixed in the manifests:
+- *exp04's pipeline, lens-free.* The counterfactual C sets the bridge to X while keeping every country in the prompt
+  (R: the city becomes a city of X; B: the queried person and X's holder swap countries); the control O swaps two
+  off-path holders. A map copies C's activation into the original, one layer at a time, at the question's tokens after
+  the change or at the last token; at the window it finds, below the layer where the last token alone carries the
+  answer, the copy is split into its J-space part and the rest (J++), and into its I/X lens coordinates and the rest.
+- *exp02's probe swaps.* exp01's J++ probes of I and X swapped at the cue phrase (the city to "located"; the person and
+  "lives"), layers 24-40: the J-part, the full probe, the remainder and the matched-alignment control.
+
+**In short.**
+- **A bound bridge is carried inside the J-space, so the pre-registered hypothesis (recalled inside, bound outside)
+  is refuted.** At B's window (layer 40) the copy of the question's tokens gives X's capital for 70% of items; its
+  J-space part alone for 12.5% and the rest for 0% (rest minus J-space part: -12.5 [-20, -6] pts); its I/X lens
+  coordinates 7.5%, the rest 0%. The J-space part holds 29% of the copied difference's variance (a random
+  direction's: 7%). Brew's intermediate, also in the prompt, gave the opposite (exp04).
+- **For the recalled bridge, exp02's swap replicates strongly; the split is inconclusive.** The J-part swap flips 82%
+  [70, 89] of R items, the matched-alignment control 3% (+78 [+68, +88] pts), the full probe 18%, the remainder 2%. At
+  R's window (layers 36-40) the copy gives 44%, but its J-space part 4% and the rest 7% ("both or neither").
+- **Where the bridge arrives.** Copying the question's tokens moves the answer from layer 36 in R (29%, 60% at 40)
+  and from layer 40 in B (5% at 36, 70% at 40); the last token alone from 44-48 in both. The off-path copy changes at
+  most 5% of answers anywhere (R, last token, layer 52).
+- **The probe swap does not move the bound bridge at all** (0% for every condition, the full probe included), so by
+  its rule B's swaps are not interpreted: the swap edits layers 24-40 at the cue phrase, while the map has B's bridge
+  arriving at the question only at layer 40.
+
+Read together with brew: being in the context is not what puts a variable outside the J-space. A bound bridge here is
+retrieved as a word of the prompt and then used by a recalled fact; brew's intermediate is the output of a lookup in
+an in-context table, read by a second in-context lookup. Which of those differences matters is open (Next steps).
+
+![exp09: recalled vs bound](figures/exp09_bind_recall/v1/bind_recall.png)
+
+**What this does not show.** The split recovers little of the copy in either family (12.5% of B's 70%, 4-7% of R's
+44%): pieces of the copied difference act much less than the whole, so "inside" rests on small effects, and B's window
+is one layer. In B the bridge is a word in the prompt, so its J-space part may be the copied word's identity. The
+second hop is a recalled fact in both families, so a copy can carry the bridge or its capital; the window stops where
+the last token alone carries the answer (from 48 in B, 52 in R, capped at exp12's 44). One seed for the counterfactual
+cities and the sample.
+
+<details><summary>Full numbers and checks</summary>
+
+Runs under `results/exp09_bind_recall/`: `map_v1` (layers 0-60 every 4th, the question's tokens and the last token,
+C and O), `parts_v1` (its window), `swaps_v1` (exp02's conditions and nulls), each with its manifest written before
+the run; parts and swaps reuse the map's eligibility and sample. Probes: `exp01_probes/v3_jpp_b200`, the `more_jpp`
+variant rebuilt on the B200 box (v3_jpp's cache stayed on the old box): 2261 of 2673 prompts kept as before, 7 filter
+decisions differ, the J-space share by layer within 0.001 of v3_jpp. Items are identified by family and file index:
+the item file's `name` field repeats (Pitfalls). Generation is batched per item (`Model.generate_batch`, checked
+against single runs: identical but for degenerate continuations). Figure: `uv run python scripts/exp09_figures.py
+<new folder>`. Headlines are recomputed by `scripts/verify_headlines.py`.
+</details>
+
 ### Pitfalls found so far
 1. **Trailing space.** Most original prompts end in a space (83/93), which Qwen's tokenizer leaves as a lone `" "`
    token. The model then answers far worse (27B: 21/93 correct vs 61/93 with the space removed) and the lens reads a
@@ -1199,6 +1262,11 @@ tokenizer for the position labels). Headlines are recomputed by `scripts/verify_
     distractor (exp15).
 11. **A verbalizer can solve instead of read.** The oracle re-tells the question with the bridge filled in, the NLA
     comments on it; naming the bridge is not by itself evidence that the state holds it (exp15, exp16).
+12. **Repeated item names.** `scripts/exp09_make_items.py` numbered each list comprehension from one length, so
+    `data/bind_recall.json` has 61 distinct names for 760 items; exp09 identifies items by family and file index, and
+    its map, which only counts outcomes per cell, was unaffected.
+13. **Kernel launches bound generation.** On the B200 box a greedy 8-token continuation spends 0.65 s of CPU against
+    0.15 s of GPU (~28k small kernels): batching an item's edited runs (`Model.generate_batch`) is 12-26x faster.
 
 ### Decisions
 - **Trailing space: removed in every experiment, part A and part B** (2026-10-13 for part A; part B followed in its
@@ -1227,6 +1295,8 @@ tokenizer for the position labels). Headlines are recomputed by `scripts/verify_
   decoding for determinism, checked against the reference code path's sampled texts.
 - **exp17 is brought as a design, not run** (2026-10-15): too few aligned pairs exist yet for a clean result, and the
   design is better reviewed first (the critic's recommendation).
+- **Torch on the CUDA 12.8 wheels** (2026-10-15): the B200 box has no kernels in the cu126 build; the same torch
+  2.11.0, its cu128 build and NVIDIA libraries (`uv.lock`), drivers >= 570.
 
 ### Open decisions (humans)
 - Which headline numbers go into `VERIFIED.md` after a human recomputes them (`verify_headlines.py` lists every
@@ -1298,5 +1368,8 @@ Parked: these were next steps; part A does not pursue them now.
    where the lens reads I carries the whole step (33%; the other 17: 0%). Next: split the code at those positions into
    the lens-read part and the rest; what the I answers at layers 36-46 are; and steering at the cue phrase in exp02
    at the same sizes.
+7. **What puts brew's intermediate outside the J-space** (exp09): a bound bridge used by a recalled fact stays inside.
+   A family that binds in the prompt and then looks up an in-context table ("Alice lives in France. ... France's
+   colour is red. What colour is the country where Alice lives?") separates a computed second step from the binding.
 6. **Σ-aware writes** (exp06, exp07): writing along Σv lost to writing along v at the start line, and did no better
    than v at exp04's window. Dropped unless a human wants a Mahalanobis-matched version.

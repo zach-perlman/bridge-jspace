@@ -1,0 +1,52 @@
+{
+  "exp": "exp09_bind_recall",
+  "run": "swaps_v1",
+  "kind": "bind_recall_swaps",
+  "written_utc": "2026-10-15T18:59:45Z",
+  "why": "Chosen by the human (2026-10-15): is the recalled-vs-in-context contrast general? exp04's patching and exp02's swaps on a recalled and a bound bridge.",
+  "model": {
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "items": {
+    "file": "data/bind_recall.json",
+    "sha256": "bbb1cfa8e95b6a83ec1c6003fc3a05c5c1fba195cff6a5cb7e3ea968dce59029",
+    "per_family": "80, a seeded sample (seed 0) of the eligible items"
+  },
+  "eligibility": "B, C and O each change one token against the original (token-aligned), and the greedy continuations' first capital of the set is the bridge's (B, O) and X's (C)",
+  "counterfactuals": {
+    "C": "the bridge set to X, every country still in the prompt. R: the city replaced by the first city of X, in a seeded order (9000 + index), whose prompt lines up token for token; B: the queried person and X's holder swap countries",
+    "O": "X's and Z's holders swap countries (off the path; the answer stays)"
+  },
+  "groups": {
+    "question": "the question's tokens after C's changed ones (R: after the city; B: the whole question)",
+    "last": "the last token",
+    "cue": "the cue phrase, from the cue word to the word before the final ' is' (the swaps' positions)"
+  },
+  "outcome": "the patched greedy continuation's first capital of the set: X's capital (b), the bridge's (A), other",
+  "generation": "greedy, 8 new tokens, an item's runs batched 32 at a time (Model.generate_batch: equal to single runs up to batched-kernel rounding, which changed only degenerate continuations in a check)",
+  "question": "Does swapping the bridge's J-space part (exp01's probe, exp02's method) change the answer when the bridge is recalled, and when it is bound in context?",
+  "probes": {
+    "file": "cache/exp01/v3_jpp_b200/probes.pt",
+    "sha256": "121fa94d80cf8af4ae696669bc5897b9f608af27e4b90ab61b8b062acc6e27ae"
+  },
+  "map": {
+    "run": "map_v1",
+    "items_sha256": "96a55d3b83516509665f25d38fb5cdf0cfc7a65f16644fdcd6fb05eb25656e31"
+  },
+  "eligibility_from": "the map run's items.jsonl (the same items and seeded sample, not regenerated)",
+  "swap": {
+    "positions": "the cue phrase (R: the city, 'is', 'located'; B: the person, 'lives'), as exp02's cue regime",
+    "layers": "24-40 at once (exp02's band); a layer is skipped if I's and X's atoms are near parallel",
+    "conditions": "exp02's: the J-part, the full probe, the remainder, the matched-alignment direction (the J-part's cosine to the probe, the rest random); atoms I and X swapped by the coordinate clamp",
+    "null": "each condition's edit along seeded random directions at the edit's own norm (exp02's null)"
+  },
+  "decision": {
+    "flip": "per item, the swapped greedy continuation's first capital is X's; paired bootstraps over items",
+    "positive_control": "per family, the full probe's swap flips more often than its null (CI above 0); otherwise the probes do not move that family's bridge and its swaps are not interpreted",
+    "j_space": "per family, the J-part flips more often than the matched-alignment control (CI above 0): the J-space part carries the bridge (exp02's result on recalled bridges)",
+    "hypothesis": "supported if j_space holds in R and not in B (both positive controls passing); refuted if it holds in B; otherwise inconclusive"
+  }
+}

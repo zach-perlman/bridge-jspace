@@ -1,0 +1,141 @@
+{
+  "families": {
+    "R": {
+      "window": [
+        36,
+        40
+      ],
+      "n": 65,
+      "step_scores": {
+        "lens2": 0.03076923076923077,
+        "lens2 null": 0.0,
+        "not_lens2": 0.1076923076923077,
+        "not_lens2 null": 0.0,
+        "jspace": 0.038461538461538464,
+        "jspace null": 0.0,
+        "not_jspace": 0.06923076923076923,
+        "not_jspace null": 0.0,
+        "full": 0.43846153846153846
+      },
+      "off_full": 0.0,
+      "decisions": {
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.07692307692307693,
+            0.03076923076923077,
+            0.13076923076923078
+          ],
+          "lens2 - its null": [
+            0.03076923076923077,
+            0.007692307692307693,
+            0.06153846153846154
+          ],
+          "not_lens2 - its null": [
+            0.1076923076923077,
+            0.046153846153846156,
+            0.18461538461538463
+          ],
+          "verdict": "both or neither"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.03076923076923077,
+            -0.007692307692307693,
+            0.07692307692307693
+          ],
+          "jspace - its null": [
+            0.038461538461538464,
+            0.007692307692307693,
+            0.07692307692307693
+          ],
+          "not_jspace - its null": [
+            0.06923076923076923,
+            0.023076923076923078,
+            0.13076923076923078
+          ],
+          "verdict": "both or neither"
+        }
+      },
+      "variance_share_median": {
+        "lens2": 0.049,
+        "jspace": 0.1352
+      }
+    },
+    "B": {
+      "window": [
+        40
+      ],
+      "n": 80,
+      "step_scores": {
+        "lens2": 0.075,
+        "lens2 null": 0.0,
+        "not_lens2": 0.0,
+        "not_lens2 null": 0.0,
+        "jspace": 0.125,
+        "jspace null": 0.0,
+        "not_jspace": 0.0,
+        "not_jspace null": 0.0,
+        "full": 0.7
+      },
+      "off_full": 0.0,
+      "decisions": {
+        "lens2": {
+          "not_lens2 - lens2": [
+            -0.075,
+            -0.1375,
+            -0.025
+          ],
+          "lens2 - its null": [
+            0.075,
+            0.025,
+            0.1375
+          ],
+          "not_lens2 - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "inside"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            -0.125,
+            -0.2,
+            -0.05
+          ],
+          "jspace - its null": [
+            0.125,
+            0.05,
+            0.2
+          ],
+          "not_jspace - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "inside"
+        }
+      },
+      "variance_share_median": {
+        "lens2": 0.19965,
+        "jspace": 0.28845
+      }
+    }
+  },
+  "hypothesis": "refuted",
+  "chance_share": 0.07100000000000001,
+  "items": {
+    "R": {
+      "unaligned": 235,
+      "eligible_not_sampled": 0,
+      "not_eligible": 60,
+      "eligible": 65
+    },
+    "B": {
+      "unaligned": 0,
+      "eligible_not_sampled": 265,
+      "not_eligible": 55,
+      "eligible": 80
+    }
+  }
+}
