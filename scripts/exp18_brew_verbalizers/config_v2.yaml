@@ -1,0 +1,64 @@
+# exp18_brew_verbalizers v2: do the oracle lens and the NLA read brew's intermediate from the model's state, or from
+# the prompt? v1 (config.yaml, run 20261015-192500) leaned to the state on 28 items with a miscalibrated rule; v2
+# compares each reader with itself (B clean the floor, C clean the ceiling), on more items and a stronger patch.
+#   make run CONFIG=scripts/exp18_brew_verbalizers/config_v2.yaml                                   # 27B, one GPU
+#   make run CONFIG=scripts/exp18_brew_verbalizers/config_v2.yaml ARGS="params.limit=3 results_dir=cache/smoke"
+name: exp18_brew_verbalizers
+target: scripts.exp18_brew_verbalizers.experiment_v2:BrewVerbalizersV2
+seed: 0
+model: configs/models/qwen3.6-27b.yaml  # loaded through part B's loader (pins.py; tests/test_pins.py syncs)
+params:
+  # Every brew item set in the bank's format: WorkspaceBench's bank, the fresh items and the fit items (exp07 fit its
+  # code on them; exp18 never has). Eligible as exp04: B answers A, C answers c, O answers A, C and O token-aligned.
+  item_sets: [bank, fresh, fit]
+  # C's state copied into B at the four positions after the start line that carry the step (exp04 positions_window:
+  # " the", the newline after "assistant", the "\n\n" after "</think>", ":"), at the layers of a regime.
+  patch_positions: [4, 14, 18, 20]
+  regimes:
+    early: {patch_layers: [36, 38, 40]}  # the start of exp04's window; below the NLA's layer
+    late: {patch_layers: [36, 38, 40, 42, 44, 46]}  # most of the window, where single-layer copies take most often
+  # Who reads what: the NLA at its layer 42 and the oracle at 44 after the early patch; the oracle at 48 after the late
+  # one (its trained grid is 20-60, step 4). Every reading is downstream of its patch.
+  cells:
+    - {reader: nla, regime: early, layer: 42}
+    - {reader: oracle, regime: early, layer: 44}
+    - {reader: oracle, regime: late, layer: 48}
+  read_positions: {nl_assistant: 14, last: 20}
+  control_n: 200  # B and C clean on a fixed sample of eligible items: the positive control
+  control_seed: 0
+  off_path_seed: 0  # the null colour per item: a table colour off the path, not a role colour
+  max_new_tokens: {oracle: 64, nla: 160}  # as exp15 and exp16; greedy
+  batch_size: 48
+  # Sensitivity only (the primary score is English whole words, exp15's `named`): the oracle sometimes names a colour
+  # in Chinese without the English word (60 of ~2750 mentions in v1).
+  chinese_colours: {black: "黑", blue: "蓝(?!绿)", brown: "棕|褐", gold: "金色|金黄", gray: "灰", green: "(?<!蓝)绿",
+                    orange: "橙|橘", pink: "粉", purple: "紫", red: "红", teal: "青色|蓝绿", white: "白色|白\\b"}
+  sanity_oracle:  # exp15's gate
+    layers: [36, 44]
+    min_logit_change: 1.0
+    min_named: 4
+    max_random_named: 1
+    facts: &facts
+      - {prompt: "Fact: The capital of France is", targets: [Paris]}
+      - {prompt: "Fact: The largest planet in the solar system is", targets: [Jupiter]}
+      - {prompt: "Fact: The play Romeo and Juliet was written by William", targets: [Shakespeare]}
+      - {prompt: "Fact: The currency of Japan is the", targets: [yen]}
+      - {prompt: "Fact: The opposite of hot is", targets: [cold]}
+      - {prompt: "Fact: The Great Wall is in", targets: [China]}
+  sanity_nla:  # exp16's gate
+    min_logit_change: 1.0
+    min_named: 4
+    max_random_named: 1
+    facts: *facts
+  n_boot: 2000
+  boot_seed: 0
+  decision: >-
+    Fixed before the run. Per cell (reader, regime, layer) and item, d = [names X] - [names I], a colour counted if a
+    reading at either read position names it (English whole word, exp15's rule). Positive control: on the fixed
+    sample, d on C clean exceeds d on B clean (paired bootstrap 95% CI above 0); otherwise the cell says nothing. On
+    the items where the cell's patch took (the patched model answers f(X)): "reads the state" if d(patched) - d(clean)
+    is above 0 (CI) and d(O patched) - d(clean) is not; "follows the text" if d(patched) - d(clean) is not above 0
+    and its upper bound is below half the lower bound of d(C) - d(clean); otherwise mixed. Reported beside it: how
+    much of the C - B difference the patch recovers, the same with the state colours (X, f(X)) against the text's
+    (I, A), with Chinese names counted, and J++'s top colour on the same vectors.
+  limit: null  # first N items per set; smoke runs only
