@@ -1,4 +1,4 @@
-# exp15_oracle_lens: does the oracle lens name the bridge where the J-lens and J++ both miss it? (design: Danyil)
+# exp15_oracle_lens: does the oracle lens name the bridge where the J-lens and J++ both miss it?
 #   make run CONFIG=scripts/exp15_oracle_lens/config.yaml                                    # 27B, one 80 GB GPU
 #   make run CONFIG=scripts/exp15_oracle_lens/config.yaml ARGS="params.limit=3 results_dir=cache/smoke"   # smoke
 name: exp15_oracle_lens
@@ -37,7 +37,7 @@ params:
   n_boot: 2000
   boot_seed: 0
   decision: >-
-    Fixed before the run (2026-10-15; design: Danyil). Positive control: on the cells where both lenses have the
+    Fixed before the run (2026-10-15). Positive control: on the cells where both lenses have the
     bridge first among the entities, the oracle names the bridge at least 15 points more often than its distractor
     (question-clustered paired bootstrap 95% CI above 0); otherwise it does not read bridges here and the rest says
     nothing. (a) On the cells where neither lens has the bridge first (layers 28/36/44, three positions), the oracle

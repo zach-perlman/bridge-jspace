@@ -1,4 +1,4 @@
-"""exp15_oracle_lens: does the oracle lens name the bridge where the J-lens and J++ both miss it? (design: Danyil)
+"""exp15_oracle_lens: does the oracle lens name the bridge where the J-lens and J++ both miss it?
 
 Reader: the oracle lens (bridge_jspace.oracle: a LoRA on Qwen3.6-27B, its published read contract, greedy decoding)
 on the residual at three prompt positions (the last word, -1, the last token of the cue phrase) and layers 28/36/44.

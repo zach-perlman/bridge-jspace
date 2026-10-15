@@ -1,5 +1,5 @@
 """exp14_cue_answer_swaps: at the cue phrase, does swapping the answer's lens direction change the answer as often as
-swapping the bridge's? (design: Danyil)
+swapping the bridge's?
 
 Part B (exp02 v4) found that the bridge's J-space swap acts at the cue phrase ("Amazon River ends"), not where part A
 reads the bridge (one word before the end). Two readings: the cue phrase holds the bridge and the last token computes

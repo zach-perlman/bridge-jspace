@@ -421,7 +421,7 @@ Portuguese), swapping the answer's direction there should change the answer as o
 swaps exchange two words' coordinates along their lens vectors (J-lens or J++), as part B's lens-vector swap does:
 the bridge pair (Brazil -> Mexico) or the answer pair (Portuguese -> Spanish), on the cue phrase at layers 24-40. The
 answer swap's positive control is the same swap at the last token, where the answer is written (layers 24-40, and
-40-56 where exp12 reads it). Every swap has a random direction of the same edit size. Design: Danyil; the decision rule
+40-56 where exp12 reads it). Every swap has a random direction of the same edit size. The decision rule
 was fixed in the config before the run.
 
 **In short.**
@@ -537,8 +537,8 @@ grouped by exp12's lens readings at the same question, position and layer: both 
 candidates, one does, or neither. A word counts as named if it appears in the oracle's bullets (whole word, case and
 a plural ending ignored). Controls: the word's distractor (Mexico for Brazil), other questions' bridges, the mean
 activation over questions read instead, and the activation after exp14's J++ bridge swap on the cue phrase (if the
-oracle re-solved the question from the activation instead of reading its state, it would keep naming Brazil). Design:
-Danyil; the decision rule was fixed in the config before the run. Greedy decoding, 64 tokens.
+oracle re-solved the question from the activation instead of reading its state, it would keep naming Brazil). The
+decision rule was fixed in the config before the run. Greedy decoding, 64 tokens.
 
 **In short.**
 - **The oracle is loaded and reads.** Before any reading it named the answer of 6 of 6 short facts ("The capital of
@@ -861,7 +861,7 @@ recomputed by `scripts/verify_headlines.py`.
   more often on the lone `" "` (4B: 0.62 vs 0.44), but that is confounded with the digit artifact and with the model
   mostly failing there.
 - **pass@k counts a bridge found if any of its listed forms is** ('5' or 'five'; 9 lens-eval questions list several),
-  not the paper's share of forms (2026-10-15, Danyil). The paper's rule is still reported (`pass_at_k_fraction`).
+  not the paper's share of forms (2026-10-15). The paper's rule is still reported (`pass_at_k_fraction`).
 - **Layer bands: 32-48 primary, 24-40 alongside**, both part B's swap bands, named by their range (2026-10-15).
 - **Keep the lens-eval question that names its bridge** ("the time of day ..." -> "day"; 2026-10-15): it is 1 of 93,
   moves no exp10 headline by more than a point, and the earlier count of 5 such questions came from a substring

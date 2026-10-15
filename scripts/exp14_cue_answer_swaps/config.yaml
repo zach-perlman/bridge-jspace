@@ -1,5 +1,5 @@
 # exp14_cue_answer_swaps: at the cue phrase, does swapping the answer's lens direction change the answer as often as
-# swapping the bridge's? (design: Danyil)
+# swapping the bridge's?
 #   make run CONFIG=scripts/exp14_cue_answer_swaps/config.yaml                       # 27B, GPU (part B's model loader)
 #   make run CONFIG=scripts/exp14_cue_answer_swaps/config.yaml ARGS="params.limit=3 results_dir=cache/smoke"   # smoke
 name: exp14_cue_answer_swaps
@@ -25,7 +25,7 @@ params:
     jlens: {cue/24-40: main_v4_jlens_pos-cue, last/24-40: main_v4_jlens_pos-last}
   control_min_flip: 0.30  # part B's go threshold
   decision: >-
-    Fixed before the run (design: Danyil). The answer swap's positive control works if it flips at least 30% of the
+    Fixed before the run. The answer swap's positive control works if it flips at least 30% of the
     questions at the last token in at least one band; otherwise a low answer-swap rate at the cue phrase says nothing.
     If it works, at the cue phrase (24-40), per lens: "two steps" if the bridge swap flips more than the answer swap
     (paired bootstrap 95% CI of bridge - answer above 0) and the answer swap stays near its null; "shortcut" if the
