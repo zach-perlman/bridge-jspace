@@ -214,7 +214,9 @@ def exp10_pass10(reader, kind=None, band=None):
     for r in jsonl(EXP10 / "multihop_ranks.jsonl"):
         if r["reader"] == reader and meta[r["name"]]["all_single_token"] and kind in (None, kind_of(r["name"])):
             if band:  # best layer only within the band: any rank < 10 at one of those layers
-                hit = any(rk < 10 for layer, rk in zip(r["layers"], r["ranks"]) if band[0] <= layer <= band[1])
+                hit = any(
+                    rk < 10 for layer, rk in zip(r["layers"], r["ranks"], strict=True) if band[0] <= layer <= band[1]
+                )
             else:
                 hit = r["min_rank"] < 10
             per_item.setdefault(r["name"], []).append(hit)

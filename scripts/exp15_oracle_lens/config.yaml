@@ -1,0 +1,52 @@
+# exp15_oracle_lens: does the oracle lens name the bridge where the J-lens and J++ both miss it? (design: Danyil)
+#   make run CONFIG=scripts/exp15_oracle_lens/config.yaml                                    # 27B, one 80 GB GPU
+#   make run CONFIG=scripts/exp15_oracle_lens/config.yaml ARGS="params.limit=3 results_dir=cache/smoke"   # smoke
+name: exp15_oracle_lens
+target: scripts.exp15_oracle_lens.experiment:OracleLens
+seed: 0
+model: configs/models/qwen3.6-27b.yaml  # loaded through part B's loader (pins.py; tests/test_pins.py syncs)
+params:
+  # The 77 questions 27B answers correctly: part B's v4 labels (as exp11 / exp12), trailing space stripped.
+  labels_file: results/exp02_swaps/main_v4_jlens/labels.csv
+  labels_sha256: 11da778146f1fb51c9a614929ce38be62ae11806a6c5df8ea02d81d7337a7a4c
+  read_layers: [28, 36, 44]  # on the oracle's trained grid (20-60, step 4); the bridge's band and the answer's onset
+  # Read positions: last = the last word ("is"), prev = -1 ("located"), cue_last = the cue phrase's last edited token.
+  exp12_run: results/exp12_position_map/20261015-100735  # lens ranks per question, position and layer
+  # After-swap condition: exp14's J++ bridge swap on the cue phrase (its primary cell); that run's outcomes say on
+  # which questions it flips the answer.
+  swap: {lens: jpp, positions: cue, band: "24-40"}
+  exp14_run: results/exp14_cue_answer_swaps/20261015-111137
+  after_swap: {layer: 44, positions: [last, prev, cue_last]}
+  max_new_tokens: 64  # greedy; the reference reader samples (T 0.8-1.0), we decode greedily for determinism
+  batch_size: 16
+  # The oracle's gate, before any capture (bridge_jspace.oracle.sanity_gate): the base model's logits unchanged once
+  # the adapter is off again; the adapter moves the oracle's logits; reading the last token of these facts at layer
+  # 36 or 44 it names the answer (not in the prompt) for >= 4 of 6; a random vector names <= 1 of the six answers.
+  sanity:
+    layers: [36, 44]
+    min_logit_change: 1.0
+    min_named: 4
+    max_random_named: 1
+    facts:
+      - {prompt: "Fact: The capital of France is", targets: [Paris]}
+      - {prompt: "Fact: The largest planet in the solar system is", targets: [Jupiter]}
+      - {prompt: "Fact: The play Romeo and Juliet was written by William", targets: [Shakespeare]}
+      - {prompt: "Fact: The currency of Japan is the", targets: [yen]}
+      - {prompt: "Fact: The opposite of hot is", targets: [cold]}
+      - {prompt: "Fact: The Great Wall is in", targets: [China]}
+  n_boot: 2000
+  boot_seed: 0
+  decision: >-
+    Fixed before the run (2026-10-15; design: Danyil). Positive control: on the cells where both lenses have the
+    bridge first among the entities, the oracle names the bridge at least 15 points more often than its distractor
+    (question-clustered paired bootstrap 95% CI above 0); otherwise it does not read bridges here and the rest says
+    nothing. (a) On the cells where neither lens has the bridge first (layers 28/36/44, three positions), the oracle
+    names the bridge at least 15 points more often than its distractor, CI above 0. (b) On the questions whose answer
+    flips under exp14's J++ bridge swap on the cue phrase, at layer 44 at the last word or -1, the oracle names the
+    swap target (the distractor) in at least 30% of the swapped reads and more often than in the clean reads (paired
+    CI above 0). Verdict: (a) and (b): "the oracle reads the bridge where the lenses miss it, and follows the state
+    the answer uses". (a) without (b): "the oracle names the bridge on lens-blind cells but does not follow the swap;
+    it may re-solve the hop from the question the activation encodes". Not (a): "no evidence the oracle sees the
+    bridge where the lenses miss it" (a null, if the positive control works). Reported beside every rate: the share
+    of other questions' bridges named, and the reads of the mean activation.
+  limit: null  # first N eligible questions; smoke runs only
