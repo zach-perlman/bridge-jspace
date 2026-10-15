@@ -11,6 +11,7 @@ import contextlib
 import re
 from collections.abc import Callable
 from dataclasses import dataclass
+from typing import Any
 
 import torch
 from huggingface_hub import snapshot_download
@@ -26,8 +27,8 @@ _HAS_LETTER = re.compile(r"[^\W\d_]")
 
 @dataclass
 class Model:
-    hf: torch.nn.Module
-    tokenizer: object
+    hf: Any  # transformers' Qwen3_5ForCausalLM: untyped submodule access (model.layers, lm_head, norm)
+    tokenizer: Any
     decoded: list[str]  # decode of every id in the lm_head's vocabulary
     special_ids: frozenset[int]  # special and added tokens
     formatting_mask: torch.Tensor  # [vocab] bool, cuda: True for formatting tokens

@@ -1,0 +1,85 @@
+{
+  "passed": true,
+  "failed": [],
+  "base_logit_drift": 0.0,
+  "adapter_max_logit_change": 16.59375,
+  "marker_slots": {
+    "36": 24,
+    "44": 24
+  },
+  "facts": [
+    {
+      "prompt": "Fact: The capital of France is",
+      "targets": [
+        "Paris"
+      ],
+      "named": true,
+      "reads": {
+        "36": "- London. This is a well-known fact. 2. The capital of France is\n- Paris (a well-known fact). 2. The capital of France is\n- Paris (this is a universally accepted fact). 2. The capital of France is Paris\n- London (or more accurately, the",
+        "44": "- Paris. (Fact 1: The capital of France is\n- Paris, and the currency of France is the Euro. (This is a well-known fact.)\n- Paris (not London, as some might mistakenly think). 2. The capital of France is Paris.\n- Paris, and the currency"
+      }
+    },
+    {
+      "prompt": "Fact: The largest planet in the solar system is",
+      "targets": [
+        "Jupiter"
+      ],
+      "named": true,
+      "reads": {
+        "36": "- Jupiter. The smallest planet in our solar system is\n- 木星 (Jupiter). 2. The largest planet in our solar system is\n- 木星 (Jupiter), which is the largest planet in our solar system. Premise 2: The largest planet in our solar system is\n- the",
+        "44": "- Jupiter. The smallest planet in our solar system is Mercury.\n- Jupiter, and the smallest is Mercury. Based on this fact, which planet is the largest?\n- 木星 (Jupiter). The smallest planet in our solar system is Mercury. Based on this fact, which planet is the largest?"
+      }
+    },
+    {
+      "prompt": "Fact: The play Romeo and Juliet was written by William",
+      "targets": [
+        "Shakespeare"
+      ],
+      "named": true,
+      "reads": {
+        "36": "- Shakespeare. The play *Hamlet* was written by William\n- Shakespeare was the author of *Hamlet*. Based on this fact, who wrote the plays of William\n- Shakespeare, who lived in the 16th century. Which of the following statements is true about William\n- Shakespeare (or William",
+        "44": "- Shakespeare. Who wrote the play *Hamlet*? The answer is William\n- Shakespeare, and he wrote many famous plays. The question asks who wrote *Hamlet*. William\n- Shakespeare (1564–1616). The question asks: \"Who wrote the play *Hamlet*"
+      }
+    },
+    {
+      "prompt": "Fact: The currency of Japan is the",
+      "targets": [
+        "yen"
+      ],
+      "named": true,
+      "reads": {
+        "36": "- Yen. The official currency of Japan is the\n- 円 (yen), and its economy is one of the largest in the world. Japan's currency is the\n- yen (¥), and its central bank is the Bank of Japan. What is the currency of Japan? The\n- yen (¥),",
+        "44": "- yen. What is the currency of Japan? The currency of Japan is the\n- 日元 (yen), which is the official currency of Japan. Other countries have different currencies, such as the\n- yen (¥), not the dollar. The currency of Japan is the yen. The question asks for the currency"
+      }
+    },
+    {
+      "prompt": "Fact: The opposite of hot is",
+      "targets": [
+        "cold"
+      ],
+      "named": true,
+      "reads": {
+        "36": "- cold, and the opposite of hot is\n- cold, and the opposite of hot is cold. If something is described as \"warm,\" what is its opposite\n- [opposite] to hot. If something is hot, it is not cold. Based on this definition, what is the opposite of cold",
+        "44": "- cold, and the opposite of hot is\n- cold, and the opposite of hot is warm. If something is not hot, it is cold. What is the opposite of\n- __________, and the opposite of hot is __________. What is the opposite of warm?\n- \"cold\" (or"
+      }
+    },
+    {
+      "prompt": "Fact: The Great Wall is in",
+      "targets": [
+        "China"
+      ],
+      "named": true,
+      "reads": {
+        "36": "- China, not in Africa. The Great Wall is in China. Based on this fact, where is\n- 中国 (China), not in Africa. A tourist is visiting it. Based on this fact, where is the Great Wall?\n- 某个 country (specifically, it is in China). We",
+        "44": "- China, not in the USA. (The Great Wall is in China\n- 中国 (China), not in the USA. (The Great Wall is in China\n- 中国 (China) and is very long. (True/False) The Great Wall is in China. (This is a fact,"
+      }
+    }
+  ],
+  "random_vector": {
+    "named": 0,
+    "reads": {
+      "36": "- 2, 3, ...` in `test2`. This suggests modular arithmetic.\n- B: 100, C: 101. This suggests modular arithmetic.\n- 右括号 `)`, and `100` as max speed. Your code uses `MOD",
+      "44": "- B) 25, C) 17. This suggests modular arithmetic or\n- 2: max speed. Your code has `100 mod 53`. This suggests modular\n- /left brace notation for gear ratios. Your test cases use `100 mod 53`."
+    }
+  }
+}

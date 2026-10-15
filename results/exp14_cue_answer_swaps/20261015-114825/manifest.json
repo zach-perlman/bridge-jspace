@@ -1,0 +1,101 @@
+{
+  "exp_id": "exp14_cue_answer_swaps",
+  "config": {
+    "name": "exp14_cue_answer_swaps",
+    "target": "scripts.exp14_cue_answer_swaps.experiment:CueAnswerSwaps",
+    "seed": 0,
+    "results_dir": "results",
+    "model": {
+      "name": "Qwen/Qwen3.6-27B",
+      "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+      "dtype": "bfloat16",
+      "device_map": "auto",
+      "lenses": {
+        "jlens": {
+          "repo": "neuronpedia/jacobian-lens",
+          "revision": "9fa267f841d62aa468dab5b9b38c3dc45a82d863",
+          "filename": "qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt"
+        },
+        "jpp": {
+          "repo": "neuronpedia/jacobian-lens",
+          "revision": "9fa267f841d62aa468dab5b9b38c3dc45a82d863",
+          "filename": "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt"
+        }
+      }
+    },
+    "params": {
+      "lenses": [
+        "jpp",
+        "jlens"
+      ],
+      "kinds": [
+        "bridge",
+        "answer",
+        "bridge_pinned",
+        "answer_pinned"
+      ],
+      "cells": [
+        {
+          "positions": "cue",
+          "band": "24-40"
+        },
+        {
+          "positions": "last",
+          "band": "40-56"
+        }
+      ],
+      "nulls": true,
+      "null_seed": 0,
+      "n_boot": 2000,
+      "boot_seed": 0,
+      "comparisons": [
+        [
+          "bridge_pinned",
+          "answer_pinned"
+        ],
+        [
+          "bridge",
+          "bridge_pinned"
+        ],
+        [
+          "answer",
+          "answer_pinned"
+        ]
+      ],
+      "part_b_labels": "results/exp02_swaps/main_v4_jlens/labels.csv",
+      "part_b_reference": {
+        "jpp": {
+          "cue/24-40": "main_v4_jpp_pos-cue"
+        },
+        "jlens": {
+          "cue/24-40": "main_v4_jlens_pos-cue"
+        }
+      },
+      "anchor_run": "results/exp14_cue_answer_swaps/20261015-111137",
+      "control_min_flip": 0.3,
+      "decision": "Fixed before the run (2026-10-15). Main comparison: on the cue phrase (layers 24-40), per lens, in the questions whose two swaps overlap at least the median (cosine of the pairs' difference vectors, as in run 20261015-111137's overlap split) and in all questions, the pinned bridge swap vs the pinned answer swap (paired bootstrap 95% CI). \"Bridge\" if the pinned bridge swap flips more (CI above 0) and stays well above its null: the cue phrase carries the bridge. \"Answer\" if the pinned answer swap flips more: it carries the answer. \"Not separable along these directions\" if both fall near their nulls. Conditions: the plain swaps reproduce the earlier run; the pinned answer swap's positive control (last token, layers 40-56) flips at least 30%, else a low pinned-answer rate on the cue phrase says nothing; and a pinned swap whose median edit is under half its plain swap's is read as weakened by dose, not by content.",
+      "limit": null
+    }
+  },
+  "git": {
+    "sha": "171691be8bc4f8234aaf9c8355901089d443dfbf",
+    "dirty": false
+  },
+  "packages": {
+    "torch": "2.11.0+cu126",
+    "transformers": "5.17.0",
+    "flash-linear-attention": "0.5.2",
+    "jlens": "0.1.0",
+    "numpy": "2.5.3",
+    "jlens_commit": "581d398613e5602a5af361e1c34d3a92ea82ba8e",
+    "torch_cuda": "12.6",
+    "gpu": "NVIDIA A100-SXM4-80GB"
+  },
+  "host": "shadecloud",
+  "python": "3.12.15",
+  "argv": [
+    "/home/sesterce/bridge-jspace/.venv/bin/bj-run",
+    "scripts/exp14_cue_answer_swaps/pinned.yaml"
+  ],
+  "started": "2026-10-15T11:48:26"
+}

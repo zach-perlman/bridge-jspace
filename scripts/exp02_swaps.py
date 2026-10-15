@@ -183,6 +183,7 @@ def stage_manifest(
                 "gate) failed; the same items are reused, so passing it is optimistic twice over."
             )
     else:
+        assert gate is not None  # main runs name their gate (checked above)
         decision = {
             "paired_bootstraps": [f"{a} - {b}" for a, b in COMPARISONS],
             "bootstrap": f"B={N_BOOT}, seed {BOOT_SEED}, resampling eligible items",
@@ -437,6 +438,7 @@ def stage_run(name: str) -> None:
         item_rows.append(row)
         if row["status"] != "eligible":
             continue
+        assert prepared is not None  # eligible rows come with their prepared inputs
         ids, clean_h, answer_ids, swap_ids = prepared
         cue = None
         if regime in ("cue", "earlier_noncue"):

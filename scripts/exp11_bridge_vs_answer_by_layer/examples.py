@@ -8,7 +8,7 @@ from typing import Any
 
 import numpy as np
 
-from bridge_jspace.examples import Example, Group, load_jsonl, sample
+from bridge_jspace.examples import Example, Group, load_jsonl, probe_swap_info, sample
 from bridge_jspace.items import load_labelled_items, word_ids
 
 
@@ -33,19 +33,19 @@ def select(source_run: Path, p: dict[str, Any], tok) -> tuple[list[Group], list[
     d = {n: share(n, "jlens", "distractor") or 0.0 for n in meta}
     defs = [
         ("seen_last", "Seen at the last token",
-         f"Eligible; the J-lens has the bridge top-1 in >= {seen:.0%} of layers {lo}-{hi} at the last token.",
+         f"Answered correctly; the J-lens has the bridge ranked first among the entities in >= {seen:.0%} of layers {lo}-{hi} at the last token.",
          [n for n in eligible if j[n] >= seen]),
         ("missed_last", "Missed at the last token",
-         f"Eligible; the J-lens has the bridge top-1 in < {seen:.0%} of layers {lo}-{hi} at the last token.",
+         f"Answered correctly; the J-lens has the bridge ranked first among the entities in < {seen:.0%} of layers {lo}-{hi} at the last token.",
          [n for n in eligible if j[n] < seen]),
         ("distractor_wins", "Distractor above the bridge",
-         "Eligible; the same-category distractor is top-1 in more band layers than the bridge.",
+         "Answered correctly; the same-category distractor is ranked first among the entities in more band layers than the bridge.",
          [n for n in eligible if d[n] > j[n]]),
         ("readers_disagree", "J-lens and J++ disagree",
-         "Eligible; the two lenses' band shares for the bridge differ by >= 0.5.",
+         "Answered correctly; the two lenses' band shares for the bridge differ by >= 0.5.",
          [n for n in eligible if (v := jp[n]) is not None and abs(j[n] - v) >= 0.5]),
         ("model_wrong", "Model answers wrong",
-         "Part B's clean_wrong: the model's top word is not the answer. Does the lens still see the bridge?",
+         "The model does not give the answer. Does the lens still see the bridge?",
          [n for n, m in meta.items() if m["status"] == "clean_wrong"]),
     ]  # fmt: skip
     groups, examples = [], []
@@ -66,8 +66,8 @@ def select(source_run: Path, p: dict[str, Any], tok) -> tuple[list[Group], list[
                         "swap_answer": it["swap_answer"],
                     },
                     word_ids=word_ids(tok, it),
-                    why=f"J-lens bridge top-1 in {j[n]:.0%} of band layers at the last token, distractor {d[n]:.0%}{jpp}.",
-                    info={"category": it["category"], "status (B)": it["status"], "label (B)": it["label"] or "-"},
+                    why=f"J-lens bridge ranked first among the entities in {j[n]:.0%} of band layers at the last token, distractor {d[n]:.0%}{jpp}.",
+                    info=probe_swap_info(it),
                 )
             )
     return groups, examples

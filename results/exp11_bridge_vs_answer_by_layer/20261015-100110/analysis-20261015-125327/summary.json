@@ -1,0 +1,1727 @@
+{
+  "source_run": "results/exp11_bridge_vs_answer_by_layer/20261015-100110",
+  "bands": {
+    "32-48": [
+      32,
+      48
+    ],
+    "24-40": [
+      24,
+      40
+    ]
+  },
+  "emerge_run": 3,
+  "subsets": {
+    "eligible": {
+      "n": 77,
+      "logit": {
+        "bands": {
+          "32-48": {
+            "bridge_pool_top1": {
+              "mean": 0.2513,
+              "lo": 0.1788,
+              "hi": 0.3285
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0397,
+              "lo": 0.0092,
+              "hi": 0.0802
+            },
+            "answer_pool_top1": {
+              "mean": 0.1397,
+              "lo": 0.0858,
+              "hi": 0.1985
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0245,
+              "lo": 0.0057,
+              "hi": 0.049
+            },
+            "bridge_above_distractor": {
+              "mean": 0.8037,
+              "lo": 0.7303,
+              "hi": 0.8694
+            }
+          },
+          "24-40": {
+            "bridge_pool_top1": {
+              "mean": 0.1505,
+              "lo": 0.0955,
+              "hi": 0.2101
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0336,
+              "lo": 0.0115,
+              "hi": 0.0604
+            },
+            "answer_pool_top1": {
+              "mean": 0.0948,
+              "lo": 0.0547,
+              "hi": 0.1413
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0245,
+              "lo": 0.0049,
+              "hi": 0.0547
+            },
+            "bridge_above_distractor": {
+              "mean": 0.699,
+              "lo": 0.6257,
+              "hi": 0.7685
+            }
+          }
+        },
+        "order": {
+          "emerge_run": 3,
+          "both": 50,
+          "bridge_only": 13,
+          "answer_only": 9,
+          "neither": 0,
+          "bridge_first": {
+            "mean": 0.54,
+            "lo": 0.4,
+            "hi": 0.68
+          },
+          "same_layer": 0.02,
+          "median_lag_layers": 1.5
+        },
+        "crossing": {
+          "0.3": {
+            "bridge_layer": 39.0,
+            "answer_layer": 51.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 10.0,
+              "lo": -8.0,
+              "hi": 14.0
+            }
+          },
+          "0.5": {
+            "bridge_layer": 50.0,
+            "answer_layer": 51.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 1.0,
+              "lo": -2.0,
+              "hi": 4.0
+            }
+          }
+        }
+      },
+      "jlens": {
+        "bands": {
+          "32-48": {
+            "bridge_pool_top1": {
+              "mean": 0.5722,
+              "lo": 0.4782,
+              "hi": 0.6646
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0519,
+              "lo": 0.016,
+              "hi": 0.0985
+            },
+            "answer_pool_top1": {
+              "mean": 0.4118,
+              "lo": 0.317,
+              "hi": 0.5041
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.085,
+              "lo": 0.0425,
+              "hi": 0.1348
+            },
+            "bridge_above_distractor": {
+              "mean": 0.835,
+              "lo": 0.7617,
+              "hi": 0.903
+            }
+          },
+          "24-40": {
+            "bridge_pool_top1": {
+              "mean": 0.4408,
+              "lo": 0.3522,
+              "hi": 0.5294
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0634,
+              "lo": 0.0229,
+              "hi": 0.1146
+            },
+            "answer_pool_top1": {
+              "mean": 0.2802,
+              "lo": 0.1985,
+              "hi": 0.3644
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0833,
+              "lo": 0.0376,
+              "hi": 0.1381
+            },
+            "bridge_above_distractor": {
+              "mean": 0.7838,
+              "lo": 0.7066,
+              "hi": 0.8556
+            }
+          }
+        },
+        "order": {
+          "emerge_run": 3,
+          "both": 56,
+          "bridge_only": 10,
+          "answer_only": 6,
+          "neither": 0,
+          "bridge_first": {
+            "mean": 0.5179,
+            "lo": 0.3929,
+            "hi": 0.6429
+          },
+          "same_layer": 0.0536,
+          "median_lag_layers": 1.0
+        },
+        "crossing": {
+          "0.3": {
+            "bridge_layer": 23.0,
+            "answer_layer": 34.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 8.0,
+              "lo": -3.0,
+              "hi": 17.0
+            }
+          },
+          "0.5": {
+            "bridge_layer": 35.0,
+            "answer_layer": 44.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 8.0,
+              "lo": 3.0,
+              "hi": 16.0
+            }
+          }
+        }
+      },
+      "jpp": {
+        "bands": {
+          "32-48": {
+            "bridge_pool_top1": {
+              "mean": 0.5554,
+              "lo": 0.4645,
+              "hi": 0.6432
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0535,
+              "lo": 0.0214,
+              "hi": 0.0932
+            },
+            "answer_pool_top1": {
+              "mean": 0.3824,
+              "lo": 0.2925,
+              "hi": 0.4698
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0825,
+              "lo": 0.0368,
+              "hi": 0.1373
+            },
+            "bridge_above_distractor": {
+              "mean": 0.8449,
+              "lo": 0.78,
+              "hi": 0.9045
+            }
+          },
+          "24-40": {
+            "bridge_pool_top1": {
+              "mean": 0.4492,
+              "lo": 0.3629,
+              "hi": 0.5348
+            },
+            "distractor_pool_top1": {
+              "mean": 0.068,
+              "lo": 0.0306,
+              "hi": 0.1123
+            },
+            "answer_pool_top1": {
+              "mean": 0.2778,
+              "lo": 0.1953,
+              "hi": 0.3627
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0776,
+              "lo": 0.0343,
+              "hi": 0.1291
+            },
+            "bridge_above_distractor": {
+              "mean": 0.7792,
+              "lo": 0.7005,
+              "hi": 0.8518
+            }
+          }
+        },
+        "order": {
+          "emerge_run": 3,
+          "both": 53,
+          "bridge_only": 9,
+          "answer_only": 8,
+          "neither": 2,
+          "bridge_first": {
+            "mean": 0.5849,
+            "lo": 0.4528,
+            "hi": 0.717
+          },
+          "same_layer": 0.1132,
+          "median_lag_layers": 2.0
+        },
+        "crossing": {
+          "0.3": {
+            "bridge_layer": 22.0,
+            "answer_layer": 28.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 7.0,
+              "lo": -4.0,
+              "hi": 21.0
+            }
+          },
+          "0.5": {
+            "bridge_layer": 36.0,
+            "answer_layer": 43.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 8.0,
+              "lo": 3.0,
+              "hi": 20.0
+            }
+          }
+        }
+      }
+    },
+    "eligible_j_mediated": {
+      "n": 25,
+      "logit": {
+        "bands": {
+          "32-48": {
+            "bridge_pool_top1": {
+              "mean": 0.2824,
+              "lo": 0.1529,
+              "hi": 0.4188
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0,
+              "lo": 0.0,
+              "hi": 0.0
+            },
+            "answer_pool_top1": {
+              "mean": 0.1765,
+              "lo": 0.0711,
+              "hi": 0.3015
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0049,
+              "lo": 0.0,
+              "hi": 0.0123
+            },
+            "bridge_above_distractor": {
+              "mean": 0.8776,
+              "lo": 0.7718,
+              "hi": 0.9576
+            }
+          },
+          "24-40": {
+            "bridge_pool_top1": {
+              "mean": 0.1529,
+              "lo": 0.0588,
+              "hi": 0.2682
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0,
+              "lo": 0.0,
+              "hi": 0.0
+            },
+            "answer_pool_top1": {
+              "mean": 0.125,
+              "lo": 0.0466,
+              "hi": 0.2255
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0074,
+              "lo": 0.0,
+              "hi": 0.0147
+            },
+            "bridge_above_distractor": {
+              "mean": 0.7412,
+              "lo": 0.64,
+              "hi": 0.84
+            }
+          }
+        },
+        "order": {
+          "emerge_run": 3,
+          "both": 21,
+          "bridge_only": 1,
+          "answer_only": 2,
+          "neither": 0,
+          "bridge_first": {
+            "mean": 0.4762,
+            "lo": 0.2857,
+            "hi": 0.7143
+          },
+          "same_layer": 0.0476,
+          "median_lag_layers": 0.0
+        },
+        "crossing": {
+          "0.3": {
+            "bridge_layer": 39.0,
+            "answer_layer": 40.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 1.0,
+              "lo": -10.0,
+              "hi": 14.0
+            }
+          },
+          "0.5": {
+            "bridge_layer": 49.0,
+            "answer_layer": 51.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 2.0,
+              "lo": -9.0,
+              "hi": 12.0
+            }
+          }
+        }
+      },
+      "jlens": {
+        "bands": {
+          "32-48": {
+            "bridge_pool_top1": {
+              "mean": 0.7318,
+              "lo": 0.5812,
+              "hi": 0.8636
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0,
+              "lo": 0.0,
+              "hi": 0.0
+            },
+            "answer_pool_top1": {
+              "mean": 0.5294,
+              "lo": 0.3676,
+              "hi": 0.6814
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0686,
+              "lo": 0.0074,
+              "hi": 0.1642
+            },
+            "bridge_above_distractor": {
+              "mean": 0.9694,
+              "lo": 0.9365,
+              "hi": 0.9953
+            }
+          },
+          "24-40": {
+            "bridge_pool_top1": {
+              "mean": 0.5294,
+              "lo": 0.3741,
+              "hi": 0.6847
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0,
+              "lo": 0.0,
+              "hi": 0.0
+            },
+            "answer_pool_top1": {
+              "mean": 0.3603,
+              "lo": 0.2279,
+              "hi": 0.4975
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0637,
+              "lo": 0.0025,
+              "hi": 0.1544
+            },
+            "bridge_above_distractor": {
+              "mean": 0.8918,
+              "lo": 0.8071,
+              "hi": 0.9624
+            }
+          }
+        },
+        "order": {
+          "emerge_run": 3,
+          "both": 22,
+          "bridge_only": 0,
+          "answer_only": 2,
+          "neither": 0,
+          "bridge_first": {
+            "mean": 0.5455,
+            "lo": 0.3182,
+            "hi": 0.7273
+          },
+          "same_layer": 0.0909,
+          "median_lag_layers": 1.0
+        },
+        "crossing": {
+          "0.3": {
+            "bridge_layer": 21.0,
+            "answer_layer": 26.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 2.0,
+              "lo": -8.0,
+              "hi": 17.0
+            }
+          },
+          "0.5": {
+            "bridge_layer": 34.0,
+            "answer_layer": 38.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 5.0,
+              "lo": -3.0,
+              "hi": 18.0
+            }
+          }
+        }
+      },
+      "jpp": {
+        "bands": {
+          "32-48": {
+            "bridge_pool_top1": {
+              "mean": 0.6871,
+              "lo": 0.5318,
+              "hi": 0.8259
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0,
+              "lo": 0.0,
+              "hi": 0.0
+            },
+            "answer_pool_top1": {
+              "mean": 0.5515,
+              "lo": 0.402,
+              "hi": 0.6912
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0637,
+              "lo": 0.0049,
+              "hi": 0.1446
+            },
+            "bridge_above_distractor": {
+              "mean": 0.9718,
+              "lo": 0.9341,
+              "hi": 1.0
+            }
+          },
+          "24-40": {
+            "bridge_pool_top1": {
+              "mean": 0.4988,
+              "lo": 0.3412,
+              "hi": 0.6588
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0,
+              "lo": 0.0,
+              "hi": 0.0
+            },
+            "answer_pool_top1": {
+              "mean": 0.3603,
+              "lo": 0.223,
+              "hi": 0.5074
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0539,
+              "lo": 0.0074,
+              "hi": 0.1127
+            },
+            "bridge_above_distractor": {
+              "mean": 0.9224,
+              "lo": 0.8353,
+              "hi": 0.9882
+            }
+          }
+        },
+        "order": {
+          "emerge_run": 3,
+          "both": 22,
+          "bridge_only": 0,
+          "answer_only": 2,
+          "neither": 0,
+          "bridge_first": {
+            "mean": 0.4091,
+            "lo": 0.2273,
+            "hi": 0.6364
+          },
+          "same_layer": 0.2273,
+          "median_lag_layers": 0.0
+        },
+        "crossing": {
+          "0.3": {
+            "bridge_layer": 25.0,
+            "answer_layer": 25.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": -1.0,
+              "lo": -19.0,
+              "hi": 15.0
+            }
+          },
+          "0.5": {
+            "bridge_layer": 34.0,
+            "answer_layer": 36.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 3.0,
+              "lo": -7.0,
+              "hi": 14.0
+            }
+          }
+        }
+      }
+    },
+    "eligible_neither": {
+      "n": 49,
+      "logit": {
+        "bands": {
+          "32-48": {
+            "bridge_pool_top1": {
+              "mean": 0.2473,
+              "lo": 0.1561,
+              "hi": 0.3458
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0624,
+              "lo": 0.0156,
+              "hi": 0.1236
+            },
+            "answer_pool_top1": {
+              "mean": 0.1294,
+              "lo": 0.0693,
+              "hi": 0.2013
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0366,
+              "lo": 0.0065,
+              "hi": 0.0758
+            },
+            "bridge_above_distractor": {
+              "mean": 0.7707,
+              "lo": 0.6723,
+              "hi": 0.8595
+            }
+          },
+          "24-40": {
+            "bridge_pool_top1": {
+              "mean": 0.1561,
+              "lo": 0.0888,
+              "hi": 0.2317
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0528,
+              "lo": 0.0192,
+              "hi": 0.0924
+            },
+            "answer_pool_top1": {
+              "mean": 0.085,
+              "lo": 0.0405,
+              "hi": 0.1412
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0353,
+              "lo": 0.0039,
+              "hi": 0.0824
+            },
+            "bridge_above_distractor": {
+              "mean": 0.6807,
+              "lo": 0.5858,
+              "hi": 0.7731
+            }
+          }
+        },
+        "order": {
+          "emerge_run": 3,
+          "both": 28,
+          "bridge_only": 11,
+          "answer_only": 6,
+          "neither": 0,
+          "bridge_first": {
+            "mean": 0.5714,
+            "lo": 0.3929,
+            "hi": 0.75
+          },
+          "same_layer": 0.0,
+          "median_lag_layers": 2.0
+        },
+        "crossing": {
+          "0.3": {
+            "bridge_layer": 39.0,
+            "answer_layer": 51.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 3.0,
+              "lo": -10.0,
+              "hi": 18.0
+            }
+          },
+          "0.5": {
+            "bridge_layer": 50.0,
+            "answer_layer": 53.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 2.0,
+              "lo": -4.0,
+              "hi": 12.0
+            }
+          }
+        }
+      },
+      "jlens": {
+        "bands": {
+          "32-48": {
+            "bridge_pool_top1": {
+              "mean": 0.5018,
+              "lo": 0.3829,
+              "hi": 0.6194
+            },
+            "distractor_pool_top1": {
+              "mean": 0.078,
+              "lo": 0.0228,
+              "hi": 0.1489
+            },
+            "answer_pool_top1": {
+              "mean": 0.3516,
+              "lo": 0.2392,
+              "hi": 0.468
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0941,
+              "lo": 0.0379,
+              "hi": 0.1595
+            },
+            "bridge_above_distractor": {
+              "mean": 0.7803,
+              "lo": 0.6747,
+              "hi": 0.8764
+            }
+          },
+          "24-40": {
+            "bridge_pool_top1": {
+              "mean": 0.413,
+              "lo": 0.3013,
+              "hi": 0.527
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0876,
+              "lo": 0.0276,
+              "hi": 0.1621
+            },
+            "answer_pool_top1": {
+              "mean": 0.2379,
+              "lo": 0.1359,
+              "hi": 0.349
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.098,
+              "lo": 0.0353,
+              "hi": 0.1739
+            },
+            "bridge_above_distractor": {
+              "mean": 0.7455,
+              "lo": 0.6386,
+              "hi": 0.8463
+            }
+          }
+        },
+        "order": {
+          "emerge_run": 3,
+          "both": 32,
+          "bridge_only": 9,
+          "answer_only": 4,
+          "neither": 0,
+          "bridge_first": {
+            "mean": 0.5312,
+            "lo": 0.375,
+            "hi": 0.7188
+          },
+          "same_layer": 0.0312,
+          "median_lag_layers": 2.0
+        },
+        "crossing": {
+          "0.3": {
+            "bridge_layer": 25.0,
+            "answer_layer": 40.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 11.0,
+              "lo": -6.0,
+              "hi": 20.0
+            }
+          },
+          "0.5": {
+            "bridge_layer": 36.0,
+            "answer_layer": 44.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 8.0,
+              "lo": -7.0,
+              "hi": 19.0
+            }
+          }
+        }
+      },
+      "jpp": {
+        "bands": {
+          "32-48": {
+            "bridge_pool_top1": {
+              "mean": 0.4994,
+              "lo": 0.3902,
+              "hi": 0.6086
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0768,
+              "lo": 0.0288,
+              "hi": 0.1357
+            },
+            "answer_pool_top1": {
+              "mean": 0.298,
+              "lo": 0.1948,
+              "hi": 0.4078
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.098,
+              "lo": 0.0366,
+              "hi": 0.1739
+            },
+            "bridge_above_distractor": {
+              "mean": 0.7887,
+              "lo": 0.6975,
+              "hi": 0.8727
+            }
+          },
+          "24-40": {
+            "bridge_pool_top1": {
+              "mean": 0.4382,
+              "lo": 0.3337,
+              "hi": 0.545
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0948,
+              "lo": 0.042,
+              "hi": 0.1585
+            },
+            "answer_pool_top1": {
+              "mean": 0.2431,
+              "lo": 0.1399,
+              "hi": 0.3542
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0954,
+              "lo": 0.034,
+              "hi": 0.1712
+            },
+            "bridge_above_distractor": {
+              "mean": 0.7191,
+              "lo": 0.6122,
+              "hi": 0.8175
+            }
+          }
+        },
+        "order": {
+          "emerge_run": 3,
+          "both": 29,
+          "bridge_only": 9,
+          "answer_only": 6,
+          "neither": 1,
+          "bridge_first": {
+            "mean": 0.6897,
+            "lo": 0.5172,
+            "hi": 0.8621
+          },
+          "same_layer": 0.0345,
+          "median_lag_layers": 4.0
+        },
+        "crossing": {
+          "0.3": {
+            "bridge_layer": 20.0,
+            "answer_layer": 28.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 9.0,
+              "lo": -3.0,
+              "hi": 36.0
+            }
+          },
+          "0.5": {
+            "bridge_layer": 38.0,
+            "answer_layer": 50.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 14.0,
+              "lo": -1.0,
+              "hi": 29.0
+            }
+          }
+        }
+      }
+    },
+    "eligible_ends_with_space": {
+      "n": 22,
+      "logit": {
+        "bands": {
+          "32-48": {
+            "bridge_pool_top1": {
+              "mean": 0.1979,
+              "lo": 0.1016,
+              "hi": 0.3048
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0455,
+              "lo": 0.0,
+              "hi": 0.1283
+            },
+            "answer_pool_top1": {
+              "mean": 0.0989,
+              "lo": 0.0374,
+              "hi": 0.1791
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0134,
+              "lo": 0.0,
+              "hi": 0.0401
+            },
+            "bridge_above_distractor": {
+              "mean": 0.7567,
+              "lo": 0.5989,
+              "hi": 0.8957
+            }
+          },
+          "24-40": {
+            "bridge_pool_top1": {
+              "mean": 0.0856,
+              "lo": 0.0348,
+              "hi": 0.1471
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0374,
+              "lo": 0.0,
+              "hi": 0.0909
+            },
+            "answer_pool_top1": {
+              "mean": 0.0695,
+              "lo": 0.0241,
+              "hi": 0.1257
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0134,
+              "lo": 0.0,
+              "hi": 0.0401
+            },
+            "bridge_above_distractor": {
+              "mean": 0.6658,
+              "lo": 0.5241,
+              "hi": 0.7968
+            }
+          }
+        },
+        "order": {
+          "emerge_run": 3,
+          "both": 7,
+          "bridge_only": 11,
+          "answer_only": 4,
+          "neither": 0,
+          "bridge_first": {
+            "mean": 0.5714,
+            "lo": 0.1429,
+            "hi": 0.8571
+          },
+          "same_layer": 0.0,
+          "median_lag_layers": 12.0
+        },
+        "crossing": {
+          "0.3": {
+            "bridge_layer": 39.0,
+            "answer_layer": 51.0,
+            "resamples_without_crossing": 0.004,
+            "lag_layers": {
+              "median": 12.0,
+              "lo": -19.0,
+              "hi": 16.0
+            }
+          },
+          "0.5": {
+            "bridge_layer": 54.0,
+            "answer_layer": 54.0,
+            "resamples_without_crossing": 0.2208,
+            "lag_layers": {
+              "median": 2.0,
+              "lo": -9.0,
+              "hi": 22.0
+            }
+          }
+        }
+      },
+      "jlens": {
+        "bands": {
+          "32-48": {
+            "bridge_pool_top1": {
+              "mean": 0.4037,
+              "lo": 0.2299,
+              "hi": 0.5909
+            },
+            "distractor_pool_top1": {
+              "mean": 0.115,
+              "lo": 0.0214,
+              "hi": 0.238
+            },
+            "answer_pool_top1": {
+              "mean": 0.2861,
+              "lo": 0.1283,
+              "hi": 0.4599
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0749,
+              "lo": 0.0187,
+              "hi": 0.1471
+            },
+            "bridge_above_distractor": {
+              "mean": 0.7193,
+              "lo": 0.5401,
+              "hi": 0.877
+            }
+          },
+          "24-40": {
+            "bridge_pool_top1": {
+              "mean": 0.2914,
+              "lo": 0.1444,
+              "hi": 0.4599
+            },
+            "distractor_pool_top1": {
+              "mean": 0.1471,
+              "lo": 0.0374,
+              "hi": 0.2754
+            },
+            "answer_pool_top1": {
+              "mean": 0.1952,
+              "lo": 0.0642,
+              "hi": 0.3529
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0455,
+              "lo": 0.0053,
+              "hi": 0.1043
+            },
+            "bridge_above_distractor": {
+              "mean": 0.6898,
+              "lo": 0.5321,
+              "hi": 0.8316
+            }
+          }
+        },
+        "order": {
+          "emerge_run": 3,
+          "both": 7,
+          "bridge_only": 10,
+          "answer_only": 5,
+          "neither": 0,
+          "bridge_first": {
+            "mean": 0.4286,
+            "lo": 0.1429,
+            "hi": 0.7143
+          },
+          "same_layer": 0.0,
+          "median_lag_layers": -5.0
+        },
+        "crossing": {
+          "0.3": {
+            "bridge_layer": 35.0,
+            "answer_layer": 41.0,
+            "resamples_without_crossing": 0.0137,
+            "lag_layers": {
+              "median": 8.0,
+              "lo": -31.0,
+              "hi": 30.0
+            }
+          },
+          "0.5": {
+            "bridge_layer": 44.0,
+            "answer_layer": 58.0,
+            "resamples_without_crossing": 0.3696,
+            "lag_layers": {
+              "median": 5.0,
+              "lo": -16.0,
+              "hi": 22.0
+            }
+          }
+        }
+      },
+      "jpp": {
+        "bands": {
+          "32-48": {
+            "bridge_pool_top1": {
+              "mean": 0.3957,
+              "lo": 0.2353,
+              "hi": 0.5695
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0882,
+              "lo": 0.0241,
+              "hi": 0.1658
+            },
+            "answer_pool_top1": {
+              "mean": 0.2433,
+              "lo": 0.107,
+              "hi": 0.393
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0481,
+              "lo": 0.0,
+              "hi": 0.1283
+            },
+            "bridge_above_distractor": {
+              "mean": 0.7246,
+              "lo": 0.5829,
+              "hi": 0.8529
+            }
+          },
+          "24-40": {
+            "bridge_pool_top1": {
+              "mean": 0.3369,
+              "lo": 0.1925,
+              "hi": 0.4973
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0882,
+              "lo": 0.0134,
+              "hi": 0.1765
+            },
+            "answer_pool_top1": {
+              "mean": 0.1578,
+              "lo": 0.0481,
+              "hi": 0.2968
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0294,
+              "lo": 0.0,
+              "hi": 0.0749
+            },
+            "bridge_above_distractor": {
+              "mean": 0.6872,
+              "lo": 0.5348,
+              "hi": 0.8289
+            }
+          }
+        },
+        "order": {
+          "emerge_run": 3,
+          "both": 6,
+          "bridge_only": 9,
+          "answer_only": 5,
+          "neither": 2,
+          "bridge_first": {
+            "mean": 0.6667,
+            "lo": 0.3333,
+            "hi": 1.0
+          },
+          "same_layer": 0.0,
+          "median_lag_layers": 5.5
+        },
+        "crossing": {
+          "0.3": {
+            "bridge_layer": 25.0,
+            "answer_layer": 40.0,
+            "resamples_without_crossing": 0.0215,
+            "lag_layers": {
+              "median": 17.0,
+              "lo": -28.0,
+              "hi": 43.0
+            }
+          },
+          "0.5": {
+            "bridge_layer": 48.0,
+            "answer_layer": 62.0,
+            "resamples_without_crossing": 0.4132,
+            "lag_layers": {
+              "median": 8.0,
+              "lo": -16.0,
+              "hi": 35.0
+            }
+          }
+        }
+      }
+    },
+    "eligible_no_trailing_space": {
+      "n": 55,
+      "logit": {
+        "bands": {
+          "32-48": {
+            "bridge_pool_top1": {
+              "mean": 0.2727,
+              "lo": 0.1765,
+              "hi": 0.3722
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0374,
+              "lo": 0.0064,
+              "hi": 0.0845
+            },
+            "answer_pool_top1": {
+              "mean": 0.1576,
+              "lo": 0.0859,
+              "hi": 0.2365
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0294,
+              "lo": 0.0047,
+              "hi": 0.0635
+            },
+            "bridge_above_distractor": {
+              "mean": 0.8225,
+              "lo": 0.7422,
+              "hi": 0.8909
+            }
+          },
+          "24-40": {
+            "bridge_pool_top1": {
+              "mean": 0.1765,
+              "lo": 0.1037,
+              "hi": 0.2588
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0321,
+              "lo": 0.0075,
+              "hi": 0.0631
+            },
+            "answer_pool_top1": {
+              "mean": 0.1059,
+              "lo": 0.0518,
+              "hi": 0.1729
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0294,
+              "lo": 0.0047,
+              "hi": 0.0706
+            },
+            "bridge_above_distractor": {
+              "mean": 0.7123,
+              "lo": 0.6289,
+              "hi": 0.7914
+            }
+          }
+        },
+        "order": {
+          "emerge_run": 3,
+          "both": 43,
+          "bridge_only": 2,
+          "answer_only": 5,
+          "neither": 0,
+          "bridge_first": {
+            "mean": 0.5349,
+            "lo": 0.3953,
+            "hi": 0.6744
+          },
+          "same_layer": 0.0233,
+          "median_lag_layers": 1.0
+        },
+        "crossing": {
+          "0.3": {
+            "bridge_layer": 39.0,
+            "answer_layer": 40.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 1.0,
+              "lo": -9.0,
+              "hi": 14.0
+            }
+          },
+          "0.5": {
+            "bridge_layer": 49.0,
+            "answer_layer": 51.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 2.0,
+              "lo": 1.0,
+              "hi": 12.0
+            }
+          }
+        }
+      },
+      "jlens": {
+        "bands": {
+          "32-48": {
+            "bridge_pool_top1": {
+              "mean": 0.6396,
+              "lo": 0.5337,
+              "hi": 0.7401
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0267,
+              "lo": 0.0032,
+              "hi": 0.0674
+            },
+            "answer_pool_top1": {
+              "mean": 0.4671,
+              "lo": 0.3553,
+              "hi": 0.5729
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0894,
+              "lo": 0.0341,
+              "hi": 0.1576
+            },
+            "bridge_above_distractor": {
+              "mean": 0.8813,
+              "lo": 0.8064,
+              "hi": 0.9444
+            }
+          },
+          "24-40": {
+            "bridge_pool_top1": {
+              "mean": 0.5005,
+              "lo": 0.3957,
+              "hi": 0.6053
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0299,
+              "lo": 0.0021,
+              "hi": 0.0738
+            },
+            "answer_pool_top1": {
+              "mean": 0.3176,
+              "lo": 0.22,
+              "hi": 0.4153
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.1,
+              "lo": 0.0353,
+              "hi": 0.1753
+            },
+            "bridge_above_distractor": {
+              "mean": 0.8214,
+              "lo": 0.7326,
+              "hi": 0.8995
+            }
+          }
+        },
+        "order": {
+          "emerge_run": 3,
+          "both": 49,
+          "bridge_only": 0,
+          "answer_only": 1,
+          "neither": 0,
+          "bridge_first": {
+            "mean": 0.5306,
+            "lo": 0.3878,
+            "hi": 0.6735
+          },
+          "same_layer": 0.0612,
+          "median_lag_layers": 1.0
+        },
+        "crossing": {
+          "0.3": {
+            "bridge_layer": 23.0,
+            "answer_layer": 25.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 1.0,
+              "lo": -3.0,
+              "hi": 16.0
+            }
+          },
+          "0.5": {
+            "bridge_layer": 34.0,
+            "answer_layer": 41.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 8.0,
+              "lo": 1.0,
+              "hi": 18.0
+            }
+          }
+        }
+      },
+      "jpp": {
+        "bands": {
+          "32-48": {
+            "bridge_pool_top1": {
+              "mean": 0.6193,
+              "lo": 0.5166,
+              "hi": 0.7155
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0396,
+              "lo": 0.0053,
+              "hi": 0.0856
+            },
+            "answer_pool_top1": {
+              "mean": 0.4435,
+              "lo": 0.3353,
+              "hi": 0.5494
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0976,
+              "lo": 0.0388,
+              "hi": 0.1706
+            },
+            "bridge_above_distractor": {
+              "mean": 0.893,
+              "lo": 0.8225,
+              "hi": 0.9508
+            }
+          },
+          "24-40": {
+            "bridge_pool_top1": {
+              "mean": 0.4941,
+              "lo": 0.3925,
+              "hi": 0.5947
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0599,
+              "lo": 0.0193,
+              "hi": 0.1112
+            },
+            "answer_pool_top1": {
+              "mean": 0.3306,
+              "lo": 0.2282,
+              "hi": 0.4353
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0988,
+              "lo": 0.0388,
+              "hi": 0.1718
+            },
+            "bridge_above_distractor": {
+              "mean": 0.816,
+              "lo": 0.7273,
+              "hi": 0.8952
+            }
+          }
+        },
+        "order": {
+          "emerge_run": 3,
+          "both": 47,
+          "bridge_only": 0,
+          "answer_only": 3,
+          "neither": 0,
+          "bridge_first": {
+            "mean": 0.5745,
+            "lo": 0.4255,
+            "hi": 0.7234
+          },
+          "same_layer": 0.1277,
+          "median_lag_layers": 2.0
+        },
+        "crossing": {
+          "0.3": {
+            "bridge_layer": 20.0,
+            "answer_layer": 21.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 1.0,
+              "lo": -4.0,
+              "hi": 19.0
+            }
+          },
+          "0.5": {
+            "bridge_layer": 34.0,
+            "answer_layer": 42.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 8.0,
+              "lo": -5.0,
+              "hi": 19.0
+            }
+          }
+        }
+      }
+    },
+    "all": {
+      "n": 90,
+      "logit": {
+        "bands": {
+          "32-48": {
+            "bridge_pool_top1": {
+              "mean": 0.2601,
+              "lo": 0.1895,
+              "hi": 0.3327
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0353,
+              "lo": 0.0098,
+              "hi": 0.0706
+            },
+            "answer_pool_top1": {
+              "mean": 0.1403,
+              "lo": 0.0907,
+              "hi": 0.1963
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0347,
+              "lo": 0.0128,
+              "hi": 0.0617
+            },
+            "bridge_above_distractor": {
+              "mean": 0.798,
+              "lo": 0.7301,
+              "hi": 0.8608
+            }
+          },
+          "24-40": {
+            "bridge_pool_top1": {
+              "mean": 0.1634,
+              "lo": 0.1105,
+              "hi": 0.2203
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0301,
+              "lo": 0.0118,
+              "hi": 0.0529
+            },
+            "answer_pool_top1": {
+              "mean": 0.0985,
+              "lo": 0.0617,
+              "hi": 0.1425
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0291,
+              "lo": 0.0085,
+              "hi": 0.0567
+            },
+            "bridge_above_distractor": {
+              "mean": 0.7072,
+              "lo": 0.6366,
+              "hi": 0.7732
+            }
+          }
+        },
+        "order": {
+          "emerge_run": 3,
+          "both": 55,
+          "bridge_only": 16,
+          "answer_only": 11,
+          "neither": 1,
+          "bridge_first": {
+            "mean": 0.5636,
+            "lo": 0.4364,
+            "hi": 0.6909
+          },
+          "same_layer": 0.0182,
+          "median_lag_layers": 2.0
+        },
+        "crossing": {
+          "0.3": {
+            "bridge_layer": 39.0,
+            "answer_layer": 51.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 9.0,
+              "lo": -8.0,
+              "hi": 14.0
+            }
+          },
+          "0.5": {
+            "bridge_layer": 50.0,
+            "answer_layer": 51.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 1.0,
+              "lo": -2.0,
+              "hi": 4.0
+            }
+          }
+        }
+      },
+      "jlens": {
+        "bands": {
+          "32-48": {
+            "bridge_pool_top1": {
+              "mean": 0.5549,
+              "lo": 0.468,
+              "hi": 0.6399
+            },
+            "distractor_pool_top1": {
+              "mean": 0.049,
+              "lo": 0.017,
+              "hi": 0.0902
+            },
+            "answer_pool_top1": {
+              "mean": 0.4061,
+              "lo": 0.321,
+              "hi": 0.4912
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.1006,
+              "lo": 0.0539,
+              "hi": 0.1538
+            },
+            "bridge_above_distractor": {
+              "mean": 0.8431,
+              "lo": 0.7745,
+              "hi": 0.9046
+            }
+          },
+          "24-40": {
+            "bridge_pool_top1": {
+              "mean": 0.4346,
+              "lo": 0.3529,
+              "hi": 0.517
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0575,
+              "lo": 0.0222,
+              "hi": 0.1013
+            },
+            "answer_pool_top1": {
+              "mean": 0.2814,
+              "lo": 0.2077,
+              "hi": 0.3586
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0978,
+              "lo": 0.0475,
+              "hi": 0.1552
+            },
+            "bridge_above_distractor": {
+              "mean": 0.7941,
+              "lo": 0.7229,
+              "hi": 0.8595
+            }
+          }
+        },
+        "order": {
+          "emerge_run": 3,
+          "both": 62,
+          "bridge_only": 12,
+          "answer_only": 8,
+          "neither": 1,
+          "bridge_first": {
+            "mean": 0.5484,
+            "lo": 0.4194,
+            "hi": 0.6774
+          },
+          "same_layer": 0.0484,
+          "median_lag_layers": 1.5
+        },
+        "crossing": {
+          "0.3": {
+            "bridge_layer": 23.0,
+            "answer_layer": 34.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 5.0,
+              "lo": -4.0,
+              "hi": 16.0
+            }
+          },
+          "0.5": {
+            "bridge_layer": 36.0,
+            "answer_layer": 44.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 8.0,
+              "lo": 2.0,
+              "hi": 16.0
+            }
+          }
+        }
+      },
+      "jpp": {
+        "bands": {
+          "32-48": {
+            "bridge_pool_top1": {
+              "mean": 0.5399,
+              "lo": 0.4562,
+              "hi": 0.6222
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0464,
+              "lo": 0.0183,
+              "hi": 0.0797
+            },
+            "answer_pool_top1": {
+              "mean": 0.3721,
+              "lo": 0.2906,
+              "hi": 0.4557
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0964,
+              "lo": 0.0503,
+              "hi": 0.1481
+            },
+            "bridge_above_distractor": {
+              "mean": 0.8471,
+              "lo": 0.7895,
+              "hi": 0.9
+            }
+          },
+          "24-40": {
+            "bridge_pool_top1": {
+              "mean": 0.4412,
+              "lo": 0.3614,
+              "hi": 0.5216
+            },
+            "distractor_pool_top1": {
+              "mean": 0.0582,
+              "lo": 0.0255,
+              "hi": 0.0967
+            },
+            "answer_pool_top1": {
+              "mean": 0.2729,
+              "lo": 0.1977,
+              "hi": 0.3529
+            },
+            "swap_answer_pool_top1": {
+              "mean": 0.0886,
+              "lo": 0.0446,
+              "hi": 0.1396
+            },
+            "bridge_above_distractor": {
+              "mean": 0.7843,
+              "lo": 0.7137,
+              "hi": 0.8516
+            }
+          }
+        },
+        "order": {
+          "emerge_run": 3,
+          "both": 59,
+          "bridge_only": 10,
+          "answer_only": 10,
+          "neither": 4,
+          "bridge_first": {
+            "mean": 0.5932,
+            "lo": 0.4742,
+            "hi": 0.7119
+          },
+          "same_layer": 0.1186,
+          "median_lag_layers": 2.0
+        },
+        "crossing": {
+          "0.3": {
+            "bridge_layer": 20.0,
+            "answer_layer": 36.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 7.0,
+              "lo": -1.0,
+              "hi": 20.0
+            }
+          },
+          "0.5": {
+            "bridge_layer": 37.0,
+            "answer_layer": 47.0,
+            "resamples_without_crossing": 0.0,
+            "lag_layers": {
+              "median": 8.0,
+              "lo": 3.0,
+              "hi": 21.0
+            }
+          }
+        }
+      }
+    }
+  },
+  "ci": "95% percentile bootstrap over items, n_boot=10000, seed=0"
+}

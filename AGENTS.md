@@ -22,6 +22,7 @@ In flight: exp01_probes (bridge probes and their J-space decomposition), exp02_s
 - Pinned inputs: model snapshot and lens files in `configs/models/*.yaml`; upstream data in
   `src/bridge_jspace/pins.py` (sha256-checked on load) and `data/SOURCES.md`. Change a pin only with a new manifest.
 - What data we work with: `data/README.md` (catalog, lens fitting data); `make data-report` recomputes its counts.
+- Repo layout, commands, re-analysis and publishing: `DEVELOPER.md`.
 
 ## Experiments
 - Every experiment: id expNN_name, directory results/expNN_name/<timestamp>/, manifest.json written BEFORE the run

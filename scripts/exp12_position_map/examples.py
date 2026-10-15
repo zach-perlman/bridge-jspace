@@ -1,6 +1,6 @@
 """Example selection for exp12: groups by where (and whether) the J-lens reads the bridge, from a run's saved grids.
 
-A word "is read" at a position when it is top-1 in its pool in at least `seen` (default half) of the band layers.
+A word "is read" at a position when it is ranked first in its pool in at least `seen` (default half) of the band layers.
 """
 
 from __future__ import annotations
@@ -11,7 +11,7 @@ from typing import Any
 
 import numpy as np
 
-from bridge_jspace.examples import Example, Group, load_jsonl, sample
+from bridge_jspace.examples import Example, Group, load_jsonl, probe_swap_info, sample
 from bridge_jspace.items import load_labelled_items, word_ids
 from scripts.exp12_position_map.experiment import load_grids
 
@@ -52,22 +52,22 @@ def select(source_run: Path, p: dict[str, Any], tok) -> tuple[list[Group], list[
 
     defs = [
         ("seen_last", "Seen at the last token",
-         f"Eligible; the J-lens has the bridge top-1 in >= {seen:.0%} of layers {lo}-{hi} at the last token.",
+         f"Answered correctly; the J-lens has the bridge ranked first among the entities in >= {seen:.0%} of layers {lo}-{hi} at the last token.",
          [n for n in eligible if js[n]["last"] >= seen]),
         ("seen_earlier", "Seen only earlier in the prompt",
-         f"Eligible; missed at the last token (< {seen:.0%}) but on top at some earlier token (>= {seen:.0%}).",
+         f"Answered correctly; missed at the last token (< {seen:.0%}) but on top at some earlier token (>= {seen:.0%}).",
          [n for n in eligible if js[n]["last"] < seen <= js[n]["earlier_best"]]),
         ("unseen", "Not seen anywhere",
-         f"Eligible; the J-lens never has the bridge top-1 in >= {seen:.0%} of layers {lo}-{hi} at any token.",
+         f"Answered correctly; the J-lens never has the bridge ranked first among the entities in >= {seen:.0%} of layers {lo}-{hi} at any token.",
          [n for n in eligible if max(js[n]["last"], js[n]["earlier_best"]) < seen]),
         ("distractor_wins", "Distractor above the bridge",
-         "Eligible; at the last token the same-category distractor is top-1 in more band layers than the bridge.",
+         "Answered correctly; at the last token the same-category distractor is ranked first among the entities in more band layers than the bridge.",
          [n for n in eligible if js[n]["distractor_last"] > js[n]["last"]]),
         ("readers_disagree", "J-lens and J++ disagree",
-         "Eligible; at the last token the two lenses' band shares for the bridge differ by >= 0.5.",
+         "Answered correctly; at the last token the two lenses' band shares for the bridge differ by >= 0.5.",
          [n for n in eligible if n in ps and abs(js[n]["last"] - ps[n]["last"]) >= 0.5]),
         ("model_wrong", "Model answers wrong",
-         "Part B's clean_wrong: the model's top word is not the answer. Does the lens still see the bridge?",
+         "The model does not give the answer. Does the lens still see the bridge?",
          [n for n in meta if meta[n]["status"] == "clean_wrong" and n in js]),
     ]  # fmt: skip
     groups, examples = [], []
@@ -76,7 +76,7 @@ def select(source_run: Path, p: dict[str, Any], tok) -> tuple[list[Group], list[
         for n in sample(names, p["per_group"], p["seed_examples"]):
             it, s = items[n], js[n]
             why = (
-                f"J-lens bridge top-1 in {s['last']:.0%} of band layers at the last token, best earlier "
+                f"J-lens bridge ranked first among the entities in {s['last']:.0%} of band layers at the last token, best earlier "
                 f"{s['earlier_best']:.0%} (at `{s['earlier_best_token'].strip()}`), distractor {s['distractor_last']:.0%}"
                 + (f"; J++ at the last token {ps[n]['last']:.0%}" if n in ps else "")
                 + "."
@@ -94,7 +94,7 @@ def select(source_run: Path, p: dict[str, Any], tok) -> tuple[list[Group], list[
                     },
                     word_ids=word_ids(tok, it),
                     why=why,
-                    info={"category": it["category"], "status (B)": it["status"], "label (B)": it["label"] or "-"},
+                    info=probe_swap_info(it),
                 )
             )
     return groups, examples

@@ -9,12 +9,17 @@ target: scripts.exp12_position_map.experiment:PositionMap
 seed: 0
 model: configs/models/qwen3.6-27b.yaml
 params:
-  labels_file: results/exp02_swaps/main/labels.csv
-  labels_sha256: 111adcad15cc4c05c94b236010d05c101f71b6fd5dbedac29ef073c5500ba407
-  strip_trailing_space: false  # as published, like part B's labels
+  # Part B's v4 labels (status: eligible = the greedy continuation contains the answer; label: which part of the
+  # bridge's probe flips the answer when swapped). The J-lens swaps; main_v4_jpp splits by the J++ swaps.
+  labels_file: results/exp02_swaps/main_v4_jlens/labels.csv
+  labels_sha256: 11da778146f1fb51c9a614929ce38be62ae11806a6c5df8ea02d81d7337a7a4c
+  # Prompts with the trailing space stripped, as in part B v4 (the published prompts end in a lone " " token).
+  strip_trailing_space: true
   bands:
-    part_b: [32, 48]  # primary (offsets are scored on this band)
-    wide: [28, 52]  # exploratory, reported by the exp11 analysis at the optimal offset
+    # Named by their range; the first is primary (offsets are scored on it). The others are reported by the exp11
+    # analysis at the optimal offset. 24-40: the band part B's gate picked for its main swaps (exp02 v4).
+    "32-48": [32, 48]
+    "24-40": [24, 40]
   emerge_run: 3
   # An offset is analysed only if at least this share of eligible prompts reach it (long offsets exist in few).
   min_item_share: 0.5

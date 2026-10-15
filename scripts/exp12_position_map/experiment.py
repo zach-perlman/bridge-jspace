@@ -1,7 +1,7 @@
 """exp12_position_map: at which prompt positions (and layers) is the bridge readable, and the answer?
 
 Items, labels, words and pools as exp11 (part B's probe-swap items; bridge vs its distractor among all entities,
-answer vs its distractor among all answers). Prompts as published.
+answer vs its distractor among all answers). Trailing space stripped, as in part B v4.
 
 Readout: every prompt position x every source layer x readers logit lens / J-lens / J++. Positions are aligned
 across prompts by their offset from the last content token (the last token that is not whitespace, e.g. " is"):
@@ -168,7 +168,7 @@ def best_offset(scores: dict[int, list[float]], min_items: int) -> int | None:
 def analyze_grids(
     grids: dict[str, Grids], meta: list[dict[str, Any]], layers: dict[str, list[int]], p: dict[str, Any], seed: int
 ) -> dict[str, Any]:
-    n_boot, lo, hi = p["n_boot"], *p["bands"]["part_b"]
+    n_boot, (lo, hi) = p["n_boot"], next(iter(p["bands"].values()))  # the first band is primary
     eligible = [m["name"] for m in meta if m["status"] == "eligible"]
     rng = np.random.default_rng(seed)
     half = set(rng.permutation(eligible)[: len(eligible) // 2].tolist())
@@ -351,13 +351,14 @@ def _stamp() -> str:
 
 
 def analyze(run_dir: str | Path, params: dict[str, Any]) -> Path:
-    """Re-run the analysis of a finished run from its saved grids into a new `<run_dir>/analysis-<timestamp>/`."""
+    """Re-run the analysis of a finished run from its saved grids into a new
+    `<run_dir>/analysis-<timestamp>-position-map/` (cue.py writes `-cue-phrase` analyses next to it)."""
     run_dir = Path(run_dir)
     manifest = json.loads((run_dir / "manifest.json").read_text())
     meta = [json.loads(x) for x in (run_dir / "items.jsonl").read_text().splitlines() if x.strip()]
     layers = json.loads((run_dir / "layers.json").read_text())
     grids = {r: load_grids(run_dir / f"grids_{r}.npz") for r in layers}
-    out = run_dir / f"analysis-{_stamp()}"
+    out = run_dir / f"analysis-{_stamp()}-position-map"
     out.mkdir()
     summary = {"source_run": str(run_dir), **analyze_grids(grids, meta, layers, params, manifest["config"]["seed"])}
     (out / "summary.json").write_text(json.dumps(summary, indent=2, default=str))

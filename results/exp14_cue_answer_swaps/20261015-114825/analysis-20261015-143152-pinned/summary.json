@@ -1,0 +1,663 @@
+{
+  "source_run": "results/exp14_cue_answer_swaps/20261015-114825",
+  "comparisons": [
+    {
+      "a": "bridge_pinned",
+      "b": "answer_pinned",
+      "overlap": "all",
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "n": 72,
+      "bridge_pinned": 0.18055555555555555,
+      "answer_pinned": 0.05555555555555555,
+      "diff": [
+        0.125,
+        0.027777777777777776,
+        0.2361111111111111
+      ]
+    },
+    {
+      "a": "bridge_pinned",
+      "b": "answer_pinned",
+      "overlap": "all",
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "n": 72,
+      "bridge_pinned": 0.1111111111111111,
+      "answer_pinned": 0.2638888888888889,
+      "diff": [
+        -0.1527777777777778,
+        -0.2777777777777778,
+        -0.027777777777777762
+      ]
+    },
+    {
+      "a": "bridge_pinned",
+      "b": "answer_pinned",
+      "overlap": "all",
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "n": 72,
+      "bridge_pinned": 0.18055555555555555,
+      "answer_pinned": 0.013888888888888888,
+      "diff": [
+        0.16666666666666666,
+        0.08333333333333333,
+        0.2638888888888889
+      ]
+    },
+    {
+      "a": "bridge_pinned",
+      "b": "answer_pinned",
+      "overlap": "all",
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "n": 72,
+      "bridge_pinned": 0.09722222222222222,
+      "answer_pinned": 0.16666666666666666,
+      "diff": [
+        -0.06944444444444443,
+        -0.18055555555555555,
+        0.04166666666666667
+      ]
+    },
+    {
+      "a": "bridge_pinned",
+      "b": "answer_pinned",
+      "overlap": "low",
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "n": 36,
+      "bridge_pinned": 0.08333333333333333,
+      "answer_pinned": 0.027777777777777776,
+      "diff": [
+        0.05555555555555555,
+        -0.027777777777777776,
+        0.16666666666666666
+      ]
+    },
+    {
+      "a": "bridge_pinned",
+      "b": "answer_pinned",
+      "overlap": "low",
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "n": 35,
+      "bridge_pinned": 0.08571428571428572,
+      "answer_pinned": 0.14285714285714285,
+      "diff": [
+        -0.057142857142857134,
+        -0.19999999999999998,
+        0.05714285714285716
+      ]
+    },
+    {
+      "a": "bridge_pinned",
+      "b": "answer_pinned",
+      "overlap": "low",
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "n": 35,
+      "bridge_pinned": 0.11428571428571428,
+      "answer_pinned": 0.0,
+      "diff": [
+        0.11428571428571428,
+        0.02857142857142857,
+        0.22857142857142856
+      ]
+    },
+    {
+      "a": "bridge_pinned",
+      "b": "answer_pinned",
+      "overlap": "low",
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "n": 36,
+      "bridge_pinned": 0.1111111111111111,
+      "answer_pinned": 0.08333333333333333,
+      "diff": [
+        0.027777777777777776,
+        -0.08333333333333334,
+        0.1388888888888889
+      ]
+    },
+    {
+      "a": "bridge_pinned",
+      "b": "answer_pinned",
+      "overlap": "high",
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "n": 36,
+      "bridge_pinned": 0.2777777777777778,
+      "answer_pinned": 0.08333333333333333,
+      "diff": [
+        0.19444444444444448,
+        0.0,
+        0.38888888888888884
+      ]
+    },
+    {
+      "a": "bridge_pinned",
+      "b": "answer_pinned",
+      "overlap": "high",
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "n": 37,
+      "bridge_pinned": 0.13513513513513514,
+      "answer_pinned": 0.3783783783783784,
+      "diff": [
+        -0.24324324324324326,
+        -0.45945945945945943,
+        -0.02702702702702703
+      ]
+    },
+    {
+      "a": "bridge_pinned",
+      "b": "answer_pinned",
+      "overlap": "high",
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "n": 37,
+      "bridge_pinned": 0.24324324324324326,
+      "answer_pinned": 0.02702702702702703,
+      "diff": [
+        0.21621621621621623,
+        0.05405405405405406,
+        0.3783783783783784
+      ]
+    },
+    {
+      "a": "bridge_pinned",
+      "b": "answer_pinned",
+      "overlap": "high",
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "n": 36,
+      "bridge_pinned": 0.08333333333333333,
+      "answer_pinned": 0.25,
+      "diff": [
+        -0.16666666666666669,
+        -0.3611111111111111,
+        0.0
+      ]
+    },
+    {
+      "a": "bridge",
+      "b": "bridge_pinned",
+      "overlap": "all",
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "n": 72,
+      "bridge": 0.2361111111111111,
+      "bridge_pinned": 0.18055555555555555,
+      "diff": [
+        0.05555555555555555,
+        -0.013888888888888895,
+        0.1388888888888889
+      ]
+    },
+    {
+      "a": "bridge",
+      "b": "bridge_pinned",
+      "overlap": "all",
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "n": 72,
+      "bridge": 0.2916666666666667,
+      "bridge_pinned": 0.1111111111111111,
+      "diff": [
+        0.18055555555555558,
+        0.09722222222222224,
+        0.26423611111110923
+      ]
+    },
+    {
+      "a": "bridge",
+      "b": "bridge_pinned",
+      "overlap": "all",
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "n": 72,
+      "bridge": 0.3055555555555556,
+      "bridge_pinned": 0.18055555555555555,
+      "diff": [
+        0.12500000000000003,
+        0.04166666666666666,
+        0.20833333333333334
+      ]
+    },
+    {
+      "a": "bridge",
+      "b": "bridge_pinned",
+      "overlap": "all",
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "n": 72,
+      "bridge": 0.2777777777777778,
+      "bridge_pinned": 0.09722222222222222,
+      "diff": [
+        0.18055555555555558,
+        0.08333333333333334,
+        0.2777777777777778
+      ]
+    },
+    {
+      "a": "bridge",
+      "b": "bridge_pinned",
+      "overlap": "low",
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "n": 36,
+      "bridge": 0.05555555555555555,
+      "bridge_pinned": 0.08333333333333333,
+      "diff": [
+        -0.027777777777777776,
+        -0.08333333333333334,
+        0.0
+      ]
+    },
+    {
+      "a": "bridge",
+      "b": "bridge_pinned",
+      "overlap": "low",
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "n": 35,
+      "bridge": 0.08571428571428572,
+      "bridge_pinned": 0.08571428571428572,
+      "diff": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "a": "bridge",
+      "b": "bridge_pinned",
+      "overlap": "low",
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "n": 35,
+      "bridge": 0.14285714285714285,
+      "bridge_pinned": 0.11428571428571428,
+      "diff": [
+        0.028571428571428567,
+        0.0,
+        0.08571428571428573
+      ]
+    },
+    {
+      "a": "bridge",
+      "b": "bridge_pinned",
+      "overlap": "low",
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "n": 36,
+      "bridge": 0.1111111111111111,
+      "bridge_pinned": 0.1111111111111111,
+      "diff": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "a": "bridge",
+      "b": "bridge_pinned",
+      "overlap": "high",
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "n": 36,
+      "bridge": 0.4166666666666667,
+      "bridge_pinned": 0.2777777777777778,
+      "diff": [
+        0.1388888888888889,
+        0.0,
+        0.2777777777777778
+      ]
+    },
+    {
+      "a": "bridge",
+      "b": "bridge_pinned",
+      "overlap": "high",
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "n": 37,
+      "bridge": 0.4864864864864865,
+      "bridge_pinned": 0.13513513513513514,
+      "diff": [
+        0.35135135135135137,
+        0.21554054054054053,
+        0.5135135135135136
+      ]
+    },
+    {
+      "a": "bridge",
+      "b": "bridge_pinned",
+      "overlap": "high",
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "n": 37,
+      "bridge": 0.4594594594594595,
+      "bridge_pinned": 0.24324324324324326,
+      "diff": [
+        0.21621621621621623,
+        0.08108108108108109,
+        0.37837837837837834
+      ]
+    },
+    {
+      "a": "bridge",
+      "b": "bridge_pinned",
+      "overlap": "high",
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "n": 36,
+      "bridge": 0.4444444444444444,
+      "bridge_pinned": 0.08333333333333333,
+      "diff": [
+        0.3611111111111111,
+        0.19444444444444445,
+        0.5277777777777778
+      ]
+    },
+    {
+      "a": "answer",
+      "b": "answer_pinned",
+      "overlap": "all",
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "n": 72,
+      "answer": 0.1111111111111111,
+      "answer_pinned": 0.05555555555555555,
+      "diff": [
+        0.05555555555555555,
+        0.013888888888888881,
+        0.11111111111111112
+      ]
+    },
+    {
+      "a": "answer",
+      "b": "answer_pinned",
+      "overlap": "all",
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "n": 72,
+      "answer": 0.3888888888888889,
+      "answer_pinned": 0.2638888888888889,
+      "diff": [
+        0.125,
+        0.04166666666666663,
+        0.2222222222222222
+      ]
+    },
+    {
+      "a": "answer",
+      "b": "answer_pinned",
+      "overlap": "all",
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "n": 72,
+      "answer": 0.16666666666666666,
+      "answer_pinned": 0.013888888888888888,
+      "diff": [
+        0.15277777777777776,
+        0.06944444444444445,
+        0.2361111111111111
+      ]
+    },
+    {
+      "a": "answer",
+      "b": "answer_pinned",
+      "overlap": "all",
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "n": 72,
+      "answer": 0.4027777777777778,
+      "answer_pinned": 0.16666666666666666,
+      "diff": [
+        0.23611111111111113,
+        0.1388888888888889,
+        0.3333333333333333
+      ]
+    },
+    {
+      "a": "answer",
+      "b": "answer_pinned",
+      "overlap": "low",
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "n": 36,
+      "answer": 0.027777777777777776,
+      "answer_pinned": 0.027777777777777776,
+      "diff": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "a": "answer",
+      "b": "answer_pinned",
+      "overlap": "low",
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "n": 35,
+      "answer": 0.14285714285714285,
+      "answer_pinned": 0.14285714285714285,
+      "diff": [
+        0.0,
+        -0.08571428571428572,
+        0.08571428571428572
+      ]
+    },
+    {
+      "a": "answer",
+      "b": "answer_pinned",
+      "overlap": "low",
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "n": 35,
+      "answer": 0.0,
+      "answer_pinned": 0.0,
+      "diff": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "a": "answer",
+      "b": "answer_pinned",
+      "overlap": "low",
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "n": 36,
+      "answer": 0.1388888888888889,
+      "answer_pinned": 0.08333333333333333,
+      "diff": [
+        0.055555555555555566,
+        0.0,
+        0.1388888888888889
+      ]
+    },
+    {
+      "a": "answer",
+      "b": "answer_pinned",
+      "overlap": "high",
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "n": 36,
+      "answer": 0.19444444444444445,
+      "answer_pinned": 0.08333333333333333,
+      "diff": [
+        0.11111111111111112,
+        0.027777777777777776,
+        0.22222222222222224
+      ]
+    },
+    {
+      "a": "answer",
+      "b": "answer_pinned",
+      "overlap": "high",
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "n": 37,
+      "answer": 0.6216216216216216,
+      "answer_pinned": 0.3783783783783784,
+      "diff": [
+        0.2432432432432432,
+        0.08108108108108114,
+        0.4054054054054054
+      ]
+    },
+    {
+      "a": "answer",
+      "b": "answer_pinned",
+      "overlap": "high",
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "n": 37,
+      "answer": 0.32432432432432434,
+      "answer_pinned": 0.02702702702702703,
+      "diff": [
+        0.2972972972972973,
+        0.16216216216216217,
+        0.4594594594594595
+      ]
+    },
+    {
+      "a": "answer",
+      "b": "answer_pinned",
+      "overlap": "high",
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "n": 36,
+      "answer": 0.6666666666666666,
+      "answer_pinned": 0.25,
+      "diff": [
+        0.41666666666666663,
+        0.25,
+        0.5833333333333334
+      ]
+    }
+  ],
+  "dose": [
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "bridge_pinned",
+      "n": 72,
+      "median_ratio": 1.0218354020233784,
+      "under_half": 0,
+      "under_30pct": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "bridge_pinned",
+      "n": 72,
+      "median_ratio": 0.9901610542022642,
+      "under_half": 0,
+      "under_30pct": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "bridge_pinned",
+      "n": 72,
+      "median_ratio": 1.0486355265808767,
+      "under_half": 0,
+      "under_30pct": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "bridge_pinned",
+      "n": 72,
+      "median_ratio": 0.9894380284579319,
+      "under_half": 0,
+      "under_30pct": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "answer_pinned",
+      "n": 72,
+      "median_ratio": 1.0055384199624353,
+      "under_half": 2,
+      "under_30pct": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "answer_pinned",
+      "n": 72,
+      "median_ratio": 0.9540211943421905,
+      "under_half": 0,
+      "under_30pct": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "answer_pinned",
+      "n": 72,
+      "median_ratio": 1.0192487686573448,
+      "under_half": 0,
+      "under_30pct": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "answer_pinned",
+      "n": 72,
+      "median_ratio": 0.993536707324679,
+      "under_half": 1,
+      "under_30pct": 0
+    }
+  ]
+}

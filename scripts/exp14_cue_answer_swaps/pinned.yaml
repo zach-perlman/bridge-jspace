@@ -1,0 +1,42 @@
+# exp14_cue_answer_swaps, pinned run: separate the bridge from the answer where their lens directions overlap.
+# Follow-up to run 20261015-111137, where the answer swap changed the answer on the cue phrase only in questions whose
+# answer pair's direction overlaps the bridge pair's (Spain -> Madrid). A pinned swap exchanges its own pair's
+# coordinates and holds the other pair's at their clean values (clamp.SwapClamp's extra atoms), so it moves only what
+# the two pairs do not share.
+#   make run CONFIG=scripts/exp14_cue_answer_swaps/pinned.yaml
+#   make run CONFIG=scripts/exp14_cue_answer_swaps/pinned.yaml ARGS="params.limit=3 results_dir=cache/smoke"   # smoke
+name: exp14_cue_answer_swaps
+target: scripts.exp14_cue_answer_swaps.experiment:CueAnswerSwaps
+seed: 0
+model: configs/models/qwen3.6-27b.yaml
+params:
+  lenses: [jpp, jlens]
+  kinds: [bridge, answer, bridge_pinned, answer_pinned]  # the plain swaps again, as the anchor
+  cells:
+    - {positions: cue, band: "24-40"}  # the comparison
+    - {positions: last, band: "40-56"}  # the answer swaps' positive control
+  nulls: true
+  null_seed: 0
+  n_boot: 2000
+  boot_seed: 0
+  comparisons:  # paired bootstrap, per lens and cell
+    - [bridge_pinned, answer_pinned]  # the main one
+    - [bridge, bridge_pinned]  # what holding the answer costs the bridge swap
+    - [answer, answer_pinned]  # what holding the bridge costs the answer swap
+  part_b_labels: results/exp02_swaps/main_v4_jlens/labels.csv
+  part_b_reference:
+    jpp: {cue/24-40: main_v4_jpp_pos-cue}
+    jlens: {cue/24-40: main_v4_jlens_pos-cue}
+  anchor_run: results/exp14_cue_answer_swaps/20261015-111137  # the plain swaps must reproduce it
+  control_min_flip: 0.30
+  decision: >-
+    Fixed before the run (2026-10-15). Main comparison: on the cue phrase (layers 24-40), per lens, in the questions
+    whose two swaps overlap at least the median (cosine of the pairs' difference vectors, as in run 20261015-111137's
+    overlap split) and in all questions, the pinned bridge swap vs the pinned answer swap (paired bootstrap 95% CI).
+    "Bridge" if the pinned bridge swap flips more (CI above 0) and stays well above its null: the cue phrase carries
+    the bridge. "Answer" if the pinned answer swap flips more: it carries the answer. "Not separable along these
+    directions" if both fall near their nulls. Conditions: the plain swaps reproduce the earlier run; the pinned answer
+    swap's positive control (last token, layers 40-56) flips at least 30%, else a low pinned-answer rate on the cue
+    phrase says nothing; and a pinned swap whose median edit is under half its plain swap's is read as weakened by
+    dose, not by content.
+  limit: null

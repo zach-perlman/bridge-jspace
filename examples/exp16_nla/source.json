@@ -1,0 +1,28 @@
+{
+  "examples_runs": [
+    "results/exp16_nla/20261015-144540"
+  ],
+  "entry": {
+    "title": "NLA vs J-lens / J++ (exp16_nla)",
+    "n_examples": 77,
+    "model": "Qwen/Qwen3.6-27B",
+    "groups": [
+      {
+        "title": "Lenses miss \u00b7 NLA sees",
+        "n_total": 27
+      },
+      {
+        "title": "Lenses miss \u00b7 NLA misses",
+        "n_total": 19
+      },
+      {
+        "title": "Lenses always see",
+        "n_total": 31
+      },
+      {
+        "title": "Swap changes the answer",
+        "n_total": 23
+      }
+    ]
+  }
+}

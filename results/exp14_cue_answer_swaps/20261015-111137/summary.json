@@ -1,0 +1,777 @@
+{
+  "model": "Qwen3.6-27B (part B's loader, pins.py)",
+  "items": {
+    "eligible": 77,
+    "clean_wrong": 13
+  },
+  "eligibility_check": {
+    "n_ours": 77,
+    "n_part_b": 77,
+    "same": true,
+    "only_ours": [],
+    "only_part_b": []
+  },
+  "replication_check": {
+    "jpp cue/24-40": {
+      "part_b_run": "main_v4_jpp_pos-cue",
+      "n": 77,
+      "agree": 154,
+      "of": 154,
+      "flip_ours": 0.2987012987012987,
+      "flip_part_b": 0.2987012987012987
+    },
+    "jpp last/24-40": {
+      "part_b_run": "main_v4_jpp_pos-last",
+      "n": 77,
+      "agree": 154,
+      "of": 154,
+      "flip_ours": 0.012987012987012988,
+      "flip_part_b": 0.012987012987012988
+    },
+    "jlens cue/24-40": {
+      "part_b_run": "main_v4_jlens_pos-cue",
+      "n": 77,
+      "agree": 152,
+      "of": 154,
+      "flip_ours": 0.22077922077922077,
+      "flip_part_b": 0.2077922077922078
+    },
+    "jlens last/24-40": {
+      "part_b_run": "main_v4_jlens_pos-last",
+      "n": 77,
+      "agree": 154,
+      "of": 154,
+      "flip_ours": 0.012987012987012988,
+      "flip_part_b": 0.012987012987012988
+    }
+  },
+  "rates": [
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "bridge",
+      "null": false,
+      "n": 77,
+      "flip": [
+        0.2987012987012987,
+        0.2080375145120104,
+        0.4084965471592084
+      ],
+      "kept_clean": [
+        0.6623376623376623,
+        0.5512443936389646,
+        0.7580023308197299
+      ],
+      "neither": 0.03896103896103896,
+      "edit_ratio_median": 0.012438433820053059,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "bridge",
+      "null": true,
+      "n": 77,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "kept_clean": [
+        0.987012987012987,
+        0.9300363315482386,
+        0.9977038418278451
+      ],
+      "neither": 0.012987012987012988,
+      "edit_ratio_median": 0.05942293979665812,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "answer",
+      "null": false,
+      "n": 72,
+      "flip": [
+        0.16666666666666666,
+        0.09799275085321624,
+        0.26910920902104796
+      ],
+      "kept_clean": [
+        0.8055555555555556,
+        0.6996702472161007,
+        0.8804862895658236
+      ],
+      "neither": 0.027777777777777776,
+      "edit_ratio_median": 0.010078262962291345,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "answer",
+      "null": true,
+      "n": 72,
+      "flip": [
+        0.0,
+        0.0,
+        0.05065293981139638
+      ],
+      "kept_clean": [
+        0.9861111111111112,
+        0.9254321971571302,
+        0.9975441113595678
+      ],
+      "neither": 0.013888888888888888,
+      "edit_ratio_median": 0.03576451342772035,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "24-40",
+      "kind": "bridge",
+      "null": false,
+      "n": 77,
+      "flip": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "kept_clean": [
+        0.974025974025974,
+        0.9101524452675265,
+        0.9928479901518616
+      ],
+      "neither": 0.012987012987012988,
+      "edit_ratio_median": 0.010224309107905035,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "24-40",
+      "kind": "bridge",
+      "null": true,
+      "n": 77,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "kept_clean": [
+        1.0,
+        0.9524799113327793,
+        1.0000000000000002
+      ],
+      "neither": 0.0,
+      "edit_ratio_median": 0.034762526201495135,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "24-40",
+      "kind": "answer",
+      "null": false,
+      "n": 72,
+      "flip": [
+        0.041666666666666664,
+        0.01427054877259009,
+        0.11549464605452325
+      ],
+      "kept_clean": [
+        0.9444444444444444,
+        0.865677916427906,
+        0.9781861370730749
+      ],
+      "neither": 0.013888888888888888,
+      "edit_ratio_median": 0.010080905458273585,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "24-40",
+      "kind": "answer",
+      "null": true,
+      "n": 72,
+      "flip": [
+        0.0,
+        0.0,
+        0.05065293981139638
+      ],
+      "kept_clean": [
+        1.0,
+        0.9493470601886036,
+        1.0
+      ],
+      "neither": 0.0,
+      "edit_ratio_median": 0.027888335050460338,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "bridge",
+      "null": false,
+      "n": 77,
+      "flip": [
+        0.2727272727272727,
+        0.1858435554011884,
+        0.3812110303566392
+      ],
+      "kept_clean": [
+        0.7012987012987013,
+        0.5915034528407916,
+        0.7919624854879896
+      ],
+      "neither": 0.025974025974025976,
+      "edit_ratio_median": 0.018571892051327536,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "bridge",
+      "null": true,
+      "n": 77,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "kept_clean": [
+        0.987012987012987,
+        0.9300363315482386,
+        0.9977038418278451
+      ],
+      "neither": 0.012987012987012988,
+      "edit_ratio_median": 0.07460576383506551,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "answer",
+      "null": false,
+      "n": 72,
+      "flip": [
+        0.4027777777777778,
+        0.2972093520095331,
+        0.5181953862871275
+      ],
+      "kept_clean": [
+        0.4861111111111111,
+        0.3743248074300839,
+        0.5993044408980104
+      ],
+      "neither": 0.1111111111111111,
+      "edit_ratio_median": 0.017470869788667187,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "answer",
+      "null": true,
+      "n": 72,
+      "flip": [
+        0.0,
+        0.0,
+        0.05065293981139638
+      ],
+      "kept_clean": [
+        1.0,
+        0.9493470601886036,
+        1.0
+      ],
+      "neither": 0.0,
+      "edit_ratio_median": 0.05057159079896177,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "bridge",
+      "null": false,
+      "n": 77,
+      "flip": [
+        0.22077922077922077,
+        0.14266286171984086,
+        0.3254327722112046
+      ],
+      "kept_clean": [
+        0.7402597402597403,
+        0.6325758169942757,
+        0.8251093352045924
+      ],
+      "neither": 0.03896103896103896,
+      "edit_ratio_median": 0.010091557633131742,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "bridge",
+      "null": true,
+      "n": 77,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "kept_clean": [
+        0.974025974025974,
+        0.9101524452675265,
+        0.9928479901518616
+      ],
+      "neither": 0.025974025974025976,
+      "edit_ratio_median": 0.05464628207332948,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "answer",
+      "null": false,
+      "n": 72,
+      "flip": [
+        0.1111111111111111,
+        0.05738751060073767,
+        0.20423144258590392
+      ],
+      "kept_clean": [
+        0.875,
+        0.7791873780725083,
+        0.9328229170689444
+      ],
+      "neither": 0.013888888888888888,
+      "edit_ratio_median": 0.008262638965628438,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "answer",
+      "null": true,
+      "n": 72,
+      "flip": [
+        0.0,
+        0.0,
+        0.05065293981139638
+      ],
+      "kept_clean": [
+        0.9861111111111112,
+        0.9254321971571302,
+        0.9975441113595678
+      ],
+      "neither": 0.013888888888888888,
+      "edit_ratio_median": 0.03566877664450337,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "24-40",
+      "kind": "bridge",
+      "null": false,
+      "n": 77,
+      "flip": [
+        0.012987012987012988,
+        0.0022961581721549496,
+        0.06996366845176145
+      ],
+      "kept_clean": [
+        0.974025974025974,
+        0.9101524452675265,
+        0.9928479901518616
+      ],
+      "neither": 0.012987012987012988,
+      "edit_ratio_median": 0.009575876862714616,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "24-40",
+      "kind": "bridge",
+      "null": true,
+      "n": 77,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "kept_clean": [
+        1.0,
+        0.9524799113327793,
+        1.0000000000000002
+      ],
+      "neither": 0.0,
+      "edit_ratio_median": 0.043910128886208814,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "24-40",
+      "kind": "answer",
+      "null": false,
+      "n": 72,
+      "flip": [
+        0.013888888888888888,
+        0.002455888640432169,
+        0.07456780284286987
+      ],
+      "kept_clean": [
+        0.9722222222222222,
+        0.9042564183109327,
+        0.9923491385338594
+      ],
+      "neither": 0.013888888888888888,
+      "edit_ratio_median": 0.00922592289348626,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "24-40",
+      "kind": "answer",
+      "null": true,
+      "n": 72,
+      "flip": [
+        0.0,
+        0.0,
+        0.05065293981139638
+      ],
+      "kept_clean": [
+        1.0,
+        0.9493470601886036,
+        1.0
+      ],
+      "neither": 0.0,
+      "edit_ratio_median": 0.03563339991823715,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "bridge",
+      "null": false,
+      "n": 77,
+      "flip": [
+        0.2857142857142857,
+        0.1968937869371719,
+        0.3949005367773513
+      ],
+      "kept_clean": [
+        0.6883116883116883,
+        0.5779975455912919,
+        0.7807286547807938
+      ],
+      "neither": 0.025974025974025976,
+      "edit_ratio_median": 0.01549128774101572,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "bridge",
+      "null": true,
+      "n": 77,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "kept_clean": [
+        0.974025974025974,
+        0.9101524452675265,
+        0.9928479901518616
+      ],
+      "neither": 0.025974025974025976,
+      "edit_ratio_median": 0.07577842353459667,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "answer",
+      "null": false,
+      "n": 72,
+      "flip": [
+        0.3888888888888889,
+        0.2846554187000152,
+        0.5043785679247396
+      ],
+      "kept_clean": [
+        0.5277777777777778,
+        0.41400469533452566,
+        0.6387368080092856
+      ],
+      "neither": 0.08333333333333333,
+      "edit_ratio_median": 0.013355744021657089,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "answer",
+      "null": true,
+      "n": 72,
+      "flip": [
+        0.0,
+        0.0,
+        0.05065293981139638
+      ],
+      "kept_clean": [
+        1.0,
+        0.9493470601886036,
+        1.0
+      ],
+      "neither": 0.0,
+      "edit_ratio_median": 0.0586349385078339,
+      "items_with_skipped_layers": 0
+    }
+  ],
+  "bridge_minus_answer": [
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "n": 72,
+      "bridge": 0.2361111111111111,
+      "answer": 0.1111111111111111,
+      "diff": [
+        0.125,
+        0.02777777777777779,
+        0.2222222222222222
+      ]
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "24-40",
+      "n": 72,
+      "bridge": 0.013888888888888888,
+      "answer": 0.013888888888888888,
+      "diff": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "n": 72,
+      "bridge": 0.2916666666666667,
+      "answer": 0.3888888888888889,
+      "diff": [
+        -0.09722222222222221,
+        -0.20833333333333331,
+        0.013888888888888895
+      ]
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "n": 72,
+      "bridge": 0.3055555555555556,
+      "answer": 0.16666666666666666,
+      "diff": [
+        0.13888888888888892,
+        0.02777777777777779,
+        0.25
+      ]
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "24-40",
+      "n": 72,
+      "bridge": 0.013888888888888888,
+      "answer": 0.041666666666666664,
+      "diff": [
+        -0.027777777777777776,
+        -0.06944444444444445,
+        0.0
+      ]
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "n": 72,
+      "bridge": 0.2777777777777778,
+      "answer": 0.4027777777777778,
+      "diff": [
+        -0.125,
+        -0.23611111111111113,
+        -0.013888888888888895
+      ]
+    }
+  ],
+  "leakage": [
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "diff_cosine": {
+        "median": 0.2584914381013197,
+        "max": 0.9323161384638619,
+        "n": 72
+      },
+      "bridge_edit_in_answer_span": {
+        "median": 0.30154373327252726,
+        "max": 0.9324564074370528,
+        "n": 72
+      },
+      "answer_edit_in_bridge_span": {
+        "median": 0.2903190159519814,
+        "max": 0.9329894087996042,
+        "n": 72
+      }
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "24-40",
+      "diff_cosine": {
+        "median": 0.2584914381013197,
+        "max": 0.9323161384638619,
+        "n": 72
+      },
+      "bridge_edit_in_answer_span": {
+        "median": 0.3015437488207888,
+        "max": 0.9324564070507091,
+        "n": 72
+      },
+      "answer_edit_in_bridge_span": {
+        "median": 0.2903190200021019,
+        "max": 0.9329894124691267,
+        "n": 72
+      }
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "diff_cosine": {
+        "median": 0.22935829399263158,
+        "max": 0.9270463901407578,
+        "n": 72
+      },
+      "bridge_edit_in_answer_span": {
+        "median": 0.23291787171376577,
+        "max": 0.9271868376887762,
+        "n": 72
+      },
+      "answer_edit_in_bridge_span": {
+        "median": 0.24238521695388587,
+        "max": 0.9271573574794567,
+        "n": 72
+      }
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "diff_cosine": {
+        "median": 0.2844715171000537,
+        "max": 0.9726063048138338,
+        "n": 72
+      },
+      "bridge_edit_in_answer_span": {
+        "median": 0.3010320841409127,
+        "max": 0.9726975252849819,
+        "n": 72
+      },
+      "answer_edit_in_bridge_span": {
+        "median": 0.30616139167755047,
+        "max": 0.9727119803748714,
+        "n": 72
+      }
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "24-40",
+      "diff_cosine": {
+        "median": 0.2844715171000537,
+        "max": 0.9726063048138338,
+        "n": 72
+      },
+      "bridge_edit_in_answer_span": {
+        "median": 0.3010320943156837,
+        "max": 0.9726975177962942,
+        "n": 72
+      },
+      "answer_edit_in_bridge_span": {
+        "median": 0.3061613867426104,
+        "max": 0.9727119869394272,
+        "n": 72
+      }
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "diff_cosine": {
+        "median": 0.22918537083794088,
+        "max": 0.9495067596435547,
+        "n": 72
+      },
+      "bridge_edit_in_answer_span": {
+        "median": 0.23641459833117334,
+        "max": 0.9495259387871103,
+        "n": 72
+      },
+      "answer_edit_in_bridge_span": {
+        "median": 0.2423181878626653,
+        "max": 0.9495946348523703,
+        "n": 72
+      }
+    }
+  ],
+  "positive_control": {
+    "jlens": {
+      "band": "40-56",
+      "flip": [
+        0.3888888888888889,
+        0.2846554187000152,
+        0.5043785679247396
+      ],
+      "works": true
+    },
+    "jpp": {
+      "band": "40-56",
+      "flip": [
+        0.4027777777777778,
+        0.2972093520095331,
+        0.5181953862871275
+      ],
+      "works": true
+    }
+  },
+  "decision_rule": "Fixed before the run (design: Danyil). The answer swap's positive control works if it flips at least 30% of the questions at the last token in at least one band; otherwise a low answer-swap rate at the cue phrase says nothing. If it works, at the cue phrase (24-40), per lens: \"two steps\" if the bridge swap flips more than the answer swap (paired bootstrap 95% CI of bridge - answer above 0) and the answer swap stays near its null; \"shortcut\" if the answer swap flips about as often as the bridge swap (that CI includes 0); \"both\" if both are well above their nulls, in which case the leakage (cosine of the two difference vectors, each edit's share in the other pair's span) decides whether the two swaps are different edits at all."
+}

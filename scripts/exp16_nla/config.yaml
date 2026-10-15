@@ -1,0 +1,48 @@
+# exp16_nla: does the NLA, a second verbalizer, name the bridge where the J-lens and J++ both miss it?
+#   make run CONFIG=scripts/exp16_nla/config.yaml                                    # 27B twice, one 80 GB GPU
+#   make run CONFIG=scripts/exp16_nla/config.yaml ARGS="params.limit=3 results_dir=cache/smoke"   # smoke
+# Analysis, figures and examples with exp15's tools (same params and outputs):
+#   uv run python -m scripts.exp15_oracle_lens.experiment analyze results/exp16_nla/<run>
+name: exp16_nla
+target: scripts.exp16_nla.experiment:NLAReads
+seed: 0
+model: configs/models/qwen3.6-27b.yaml  # Qwen is loaded through part B's loader (pins.py); the NLA through pins.NLA_*
+params:
+  # As exp15: the 77 questions 27B answers correctly (part B's v4 labels), trailing space stripped.
+  labels_file: results/exp02_swaps/main_v4_jlens/labels.csv
+  labels_sha256: 11da778146f1fb51c9a614929ce38be62ae11806a6c5df8ea02d81d7337a7a4c
+  read_layers: [42]  # the only layer the NLA was trained on
+  exp12_run: results/exp12_position_map/20261015-100735  # lens ranks per question, position and layer
+  swap: {lens: jpp, positions: cue, band: "24-40"}  # exp14's J++ bridge swap on the cue phrase
+  exp14_run: results/exp14_cue_answer_swaps/20261015-111137
+  after_swap: {layer: 42, positions: [last, prev, cue_last]}
+  max_new_tokens: 160  # greedy; an explanation is "2-3 text snippets" (~80-100 words); the reference samples
+  batch_size: 16
+  # The NLA's gate, after the capture and before any reading (bridge_jspace.nla.nla_sanity_gate): its logits
+  # unchanged once the adapter is off again; the adapter moves them; reading the layer-42 vector at the last token of
+  # these facts it names the answer for >= 4 of 6; a random vector names <= 1 of the six answers.
+  sanity:
+    min_logit_change: 1.0
+    min_named: 4
+    max_random_named: 1
+    facts:
+      - {prompt: "Fact: The capital of France is", targets: [Paris]}
+      - {prompt: "Fact: The largest planet in the solar system is", targets: [Jupiter]}
+      - {prompt: "Fact: The play Romeo and Juliet was written by William", targets: [Shakespeare]}
+      - {prompt: "Fact: The currency of Japan is the", targets: [yen]}
+      - {prompt: "Fact: The opposite of hot is", targets: [cold]}
+      - {prompt: "Fact: The Great Wall is in", targets: [China]}
+  n_boot: 2000
+  boot_seed: 0
+  decision: >-
+    Fixed before the run (2026-10-15). exp15's rule at layer 42, for the NLA. Positive control: on the readings where
+    both lenses have the bridge first, the NLA names the bridge at least 15 points more often than its distractor
+    (question-clustered paired bootstrap 95% CI above 0); otherwise it does not read bridges here and the rest says
+    nothing. (a) On the readings where neither lens has the bridge first, the NLA names the bridge at least 15 points
+    more often than its distractor, CI above 0. (b) On the questions whose answer flips under exp14's J++ bridge swap
+    on the cue phrase, at the last word or -1, the NLA names the swap target in at least 30% of the swapped readings
+    and more often than in the clean readings (paired CI above 0). Verdict as exp15's: (a) and (b): "the NLA reads
+    the bridge where the lenses miss it, and follows the state the answer uses"; (a) without (b): "names the bridge on
+    lens-blind readings but does not follow the swap"; not (a): "no evidence the NLA sees the bridge where the lenses
+    miss it". Read beside exp15 at layers 40 and 44, the oracle's nearest layers.
+  limit: null  # first N eligible questions; smoke runs only

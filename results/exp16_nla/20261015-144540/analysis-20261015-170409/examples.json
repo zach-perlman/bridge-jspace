@@ -1,0 +1,490 @@
+{
+  "bridge lens-blind, oracle names it": [
+    {
+      "name": "animal-cover-turtle",
+      "position": "cue_last",
+      "layer": 42,
+      "jlens_rank": 5,
+      "jpp_rank": 21,
+      "answer_jlens_rank": 7,
+      "answer_jpp_rank": 5,
+      "text": "Riddle/quiz format established by \"Which of the following animals\" signals a multiple-choice question requiring answer options or continuation of the question stem.\n\nThe descriptive clause \"an animal that has a tail and can pull its head into its body\" is building toward a specific animal identification, likely a snake or turtle, with the question still incomplete.\n\nFinal fragment \"its body\" ends a relative clause (\"an animal that has a tail and can pull its head into its body\"), requiring grammatical completion \u2014 likely a comma or continuation such as \"when threatened\" or \"its own body\" before the main question clause resolves.\n\"when a child is looking at an animal that has a tail and can pull its head into its body\" \u2014 the phrase \"into its body"
+    },
+    {
+      "name": "basketball-players",
+      "position": "prev",
+      "layer": 42,
+      "jlens_rank": 8,
+      "jpp_rank": 8,
+      "answer_jlens_rank": null,
+      "answer_jpp_rank": null,
+      "text": "Trivia/quiz format established by \"Multiple Choice Question\" header, expecting a question stem followed by answer options.\n\nThe phrase \"Which of the following sports is NOT played with the sport invented in Springfield, Massachusetts\" sets up a historical/geographical reference requiring completion \u2014 the sport invented there is basketball, so the question likely continues with a relative clause or comma.\n\nFinal token \"Massachusetts\" ends a prepositional phrase (\"the sport invented in Springfield, Massachusetts\"), immediately expecting a comma or continuation like \", Springfield\" or a relative clause specifying the inventor (James Naismith) or date.\n\"Which of the following is the name of a person associated with the sport invented in Springfield, Massachusetts\" \u2014 the sentence is incomplete, requiring a closing punctuation or continuation referencing"
+    },
+    {
+      "name": "basketball-players",
+      "position": "cue_last",
+      "layer": 42,
+      "jlens_rank": 7,
+      "jpp_rank": 26,
+      "answer_jlens_rank": null,
+      "answer_jpp_rank": null,
+      "text": "Trivia/quiz format established by \"The answer is 2\" signals a factual question requiring a specific numerical or categorical answer about a sport.\n\nThe phrase \"the sport invented in the city of Springfield\" is a well-known reference to basketball, constraining the answer toward basketball-related facts.\n\nThe final fragment \"the number of players on the team of the sport invented in Springfield,\" ends mid-clause after a comma, requiring completion of the relative clause identifying the city (e.g., \"USA\" or \"New York\") before the main clause continues.\n\"Which of the following is true? The number of players on the team of the sport invented in the city of Springfield,\" \u2014 a relative clause setup demanding a geographic or historical identifier like \"which is...\" or"
+    },
+    {
+      "name": "bird-color-swan",
+      "position": "cue_last",
+      "layer": 42,
+      "jlens_rank": 23,
+      "jpp_rank": 27,
+      "answer_jlens_rank": 22,
+      "answer_jpp_rank": 12,
+      "text": "Quiz/trivia format established by \"What's the Answer?\" header, expecting a factual identification question about a specific animal.\n\nThe phrase \"the bird featured in the famous Tchaikovsky\" strongly signals a cultural reference, likely to \"The Swan Lake\" or a similar classical work, constraining the answer toward a specific bird species.\n\nFinal token \"Tchaikovsky\" is part of an incomplete noun phrase (\"the species of bird featured in the famous Tchaikovsky\"), requiring a continuation such as \"ballet,\" \"swan,\" or a product name like \"Swan Lake\" toy/record.\n\"Identify the species of the bird featured in the famous Tchaikovsky\" \u2014 a quiz prompt mid-sentence, expecting a noun completing"
+    },
+    {
+      "name": "chem-organic-Z",
+      "position": "prev",
+      "layer": 42,
+      "jlens_rank": 2,
+      "jpp_rank": 5,
+      "answer_jlens_rank": null,
+      "answer_jpp_rank": null,
+      "text": "Multiple-choice chemistry question format signals that answer options (A, B, C, D) or a direct answer are expected next.\n\nThe phrase \"the most abundant element found in all organic compounds by definition\" sets up a factual chemistry question about carbon, the defining element of organic compounds.\n\nThe final word \"definition\" ends an incomplete question stem (\"Which of the following is the most abundant element found in any molecule that is organic by definition\"), requiring completion \u2014 likely a clause such as \"of organic chemistry\" or \"by definition\" followed by a question mark or continuation.\n\"by definition\" suggests a definitional/explanatory phrase is being constructed, possibly \"by definition\" referring to what makes something organic.\n\"the most abundant element found in any organic"
+    },
+    {
+      "name": "christmas-season",
+      "position": "last",
+      "layer": 42,
+      "jlens_rank": 2,
+      "jpp_rank": 2,
+      "answer_jlens_rank": 1,
+      "answer_jpp_rank": 1,
+      "text": "Trivia/clue format signals a factual answer is expected, likely a short declarative statement about a season or holiday.\n\nThe sentence structure \"The season in which the holiday that involves [X] occurs is\" sets up a direct factual completion, requiring a season name or descriptor (e.g., \"winter\").\n\nFinal token \"is\" is a linking verb completing a relative clause construction (\"The season in which the holiday that is Christmas occurs in a country is\"), demanding an immediate predicate complement \u2014 likely \"winter\" or a description of that season's characteristics in a Jeopardy-style clue chain.\n\"The season in which the holiday that involves Santa Claus and Christmas occurs is\" \u2014 a Jeopardy-style clue chain requiring a season name or descriptor about a broader category"
+    },
+    {
+      "name": "etym-wargod-month",
+      "position": "last",
+      "layer": 42,
+      "jlens_rank": 3,
+      "jpp_rank": 5,
+      "answer_jlens_rank": null,
+      "answer_jpp_rank": null,
+      "text": "Riddle format establishes a logical puzzle structure requiring a factual answer about a specific month, with \"March\" as the subject.\n\nThe phrase \"March is a month in the year and is month number\" sets up a numerical or ordinal fact, expecting a specific number or descriptor to complete the statement.\n\n\"month number\" is the final fragment, part of a relational clue construction (\"X is related to Y because...\"), immediately requiring a numeral or ordinal (e.g., \"three,\" \"3\") to complete the factual claim.\n\"\nIn a logical reasoning puzzle format, the sentence \"March is related to spring because March is month number\" demands a specific numeric value or descriptor completing the predicate.\nThe puzzle's phrasing \"month number\" signals an incomplete"
+    },
+    {
+      "name": "ex-element-state-26-80",
+      "position": "last",
+      "layer": 42,
+      "jlens_rank": 3,
+      "jpp_rank": 2,
+      "answer_jlens_rank": 2,
+      "answer_jpp_rank": 2,
+      "text": "Q&A format established by \"Answer the following question based on the given fact\" signals a factual, declarative response is expected.\n\nThe sentence structure \"The state of matter of the element with atomic number 26 (iron) at standard conditions is\" sets up a direct factual completion, likely \"solid\" or a similar state descriptor.\n\nFinal token \"is\" is a linking verb requiring a predicate complement \u2014 specifically the state of matter (e.g., \"solid,\" \"liquid,\" \"gas\") as the answer to the trivia-style prompt.\n\"In a trivia question format, the sentence 'The state of matter of the element with atomic number 26 in the periodic table at standard conditions is\" demands a concise factual answer completing the predicate, likely a"
+    },
+    {
+      "name": "holiday-month-christmas2",
+      "position": "last",
+      "layer": 42,
+      "jlens_rank": 2,
+      "jpp_rank": 5,
+      "answer_jlens_rank": 1,
+      "answer_jpp_rank": 1,
+      "text": "Riddle/trivia format signals a factual answer is expected, likely a month name or number. The prompt establishes a \"clue\" structure typical of trivia games.\n\nThe phrase \"The month of the year in which the holiday of Christmas, which is a Christian holiday celebrating the birth of Jesus, is\" sets up a definitional statement requiring completion \u2014 specifically naming the month (December).\n\nFinal token \"is\" ends an incomplete declarative sentence (\"The month of the year in which [holiday description] occurs is\"), demanding a predicate complement, likely \"December\" or a related descriptor.\n\"\nA clue: The month of the year in which the holiday that involves a large shopping event and a winter holiday in the US occurs is\" \u2014 a structured clue format"
+    },
+    {
+      "name": "mars-color",
+      "position": "cue_last",
+      "layer": 42,
+      "jlens_rank": 2,
+      "jpp_rank": 3,
+      "answer_jlens_rank": 2,
+      "answer_jpp_rank": 1,
+      "text": "Q&A format established by \"Question:\" label signals a factual answer is expected, likely a short declarative statement about a planet's properties.\n\nThe sentence structure \"The color of the planet in the solar system is the color of the\" sets up a specific factual claim about a planet's appearance, strongly implying a color name or descriptor follows (e.g., \"red,\" \"orange,\" \"blue\").\n\nFinal fragment \"the color of the [planet]\" is an incomplete noun phrase mid-sentence, requiring a color descriptor or characteristic noun (e.g., \"red star\" or \"reddish hue\" typical of astronomy trivia about Mars or Venus).\nThe question likely continues with a description of a planet's appearance, such as \"red\" or \"orange\" referring"
+    },
+    {
+      "name": "person-country-napoleon",
+      "position": "last",
+      "layer": 42,
+      "jlens_rank": 4,
+      "jpp_rank": 4,
+      "answer_jlens_rank": 1,
+      "answer_jpp_rank": 2,
+      "text": "Trivia/quiz format established by \"The answer is 4 words long\" \u2014 a factual answer of exactly four words is expected next.\n\nThe sentence structure \"The country whose ruler was defeated at the Battle of Waterloo is\" sets up a direct identification question requiring a country name (France, Napoleon's empire).\n\nFinal token \"is\" completes a relative clause construction (\"The country of the ruler who was defeated in the war in which Napoleon was defeated at Waterloo is\"), demanding an immediate predicate complement \u2014 likely \"France\" or a historical descriptor.\n\"\nThe country whose ruler was defeated in the war in which Napoleon was defeated at Waterloo is\" \u2014 a trivia clue requiring the named country, likely followed by a historical fact or continuation about that country's literature/history."
+    },
+    {
+      "name": "rhyme-spoon-orbit",
+      "position": "prev",
+      "layer": 42,
+      "jlens_rank": 6,
+      "jpp_rank": 6,
+      "answer_jlens_rank": 1,
+      "answer_jpp_rank": 1,
+      "text": "Riddle format established by title \"Riddle #1\" and \"Answer:\" structure, requiring a factual, declarative statement about a celestial body.\n\nThe sentence \"The moon orbits the planet\" sets up a factual astronomical clue, likely pointing toward a specific planet or moon relationship as the riddle's answer.\n\nFinal token \"planet\" ends an incomplete declarative sentence (\"This celestial body orbits the planet\"), requiring a specific planet name (e.g., \"Earth,\" \"Jupiter\") or a relative clause continuation like \"that...\" or \"of...\"\n\"\nIn the realm of simple declarative sentences, the next word must complete the astronomical relationship.\n\"\nThis celestial body is a moon. This celestial body orbits the planet\" \u2014 a parallel riddle"
+    }
+  ],
+  "bridge lens-blind, oracle does not": [
+    {
+      "name": "animal-nose-elephant",
+      "position": "prev",
+      "layer": 42,
+      "jlens_rank": 4,
+      "jpp_rank": 4,
+      "answer_jlens_rank": 25,
+      "answer_jpp_rank": 34,
+      "text": "Q&A format with \"Answer:\" signals a factual completion is expected, likely a short declarative statement.\n\nThe sentence structure \"The long, thin, flexible part used for catching prey that is on the head of an animal like a snake is called\" sets up a definition-style answer requiring a specific noun phrase naming the body part (e.g., \"a snout\").\n\nFinal token \"called\" is part of a fill-in-the-blank definition sentence (\"A true statement about a snake is that the long, thin, flexible part used for sensing things on the head of a snake is called\"), requiring the specific term/label as the immediate next token.\nThe prompt follows a simple reasoning dataset format, so the answer should be a basic, child-level factual statement"
+    },
+    {
+      "name": "bird-color-swan",
+      "position": "prev",
+      "layer": 42,
+      "jlens_rank": 30,
+      "jpp_rank": 17,
+      "answer_jlens_rank": 52,
+      "answer_jpp_rank": 51,
+      "text": "Trivia/quiz format established by \"A: 1\" signals a question-answer pair, expecting a factual answer about a specific animal or object.\n\nThe phrase \"the animal featured in the famous Tchaikovsky ballet\" sets up a cultural reference requiring identification of a specific ballet (likely \"The Nutcracker\") and its associated animal.\n\nFinal fragment \"The color of the mouse in the famous Russian composer Tchaikovsky ballet\" is an incomplete noun phrase mid-question, immediately requiring a verb or continuation like \"is\" or \"The Nutcracker.\"\n\"The animal featured in the famous Tchaikovsky ballet\" \u2014 this is a quiz clue format, expecting a named ballet title or descriptor to complete the reference, likely \"The Nutcracker\""
+    },
+    {
+      "name": "bird-time-owl",
+      "position": "cue_last",
+      "layer": 42,
+      "jlens_rank": 5,
+      "jpp_rank": 15,
+      "answer_jlens_rank": 75,
+      "answer_jpp_rank": 62,
+      "text": "Quiz format established (\"Answer and Explanation\" header) expects a question followed by an answer about a specific animal. The animal is clearly a snake (long neck, head rotation).\n\nThe sentence structure \"the animal that has a long neck and can turn its head almost all the way around\" is an incomplete relative clause describing a specific animal, requiring completion of the question's predicate (e.g., \"is found in...\").\n\nFinal fragment \"around\" ends the relative clause mid-sentence, immediately requiring the main clause verb phrase to complete the question, likely referencing the animal's name or a related fact.\n\"According to the United States Department of Agriculture, the place where you're most likely to find the bird that has a long neck and can turn its head almost"
+    },
+    {
+      "name": "birthstone-emerald-month",
+      "position": "cue_last",
+      "layer": 42,
+      "jlens_rank": 14,
+      "jpp_rank": 7,
+      "answer_jlens_rank": null,
+      "answer_jpp_rank": null,
+      "text": "Logical reasoning exercise format signals a structured argument with premises and conclusion, typical of educational logic problems.\n\nThe phrase \"Premise 1: Ruby is the birthstone\" establishes a declarative factual statement, expecting continuation with additional premises or a conclusion about ruby's properties or associations (e.g., \"for July\" or \"of birthstones\").\n\n\"birthstone\" is the final token, part of an incomplete declarative sentence (\"Ruby is the birthstone\"), strongly expecting a prepositional phrase specifying which month or category, such as \"for July\" or \"of the month.\"\n\"\n</br>\n</br>\nWrite a simple declarative sentence using the following example:\nPremise 1: Ruby is the birthstone\" \u2014 a classroom"
+    },
+    {
+      "name": "ex-element-state-26-8",
+      "position": "cue_last",
+      "layer": 42,
+      "jlens_rank": 81,
+      "jpp_rank": 26,
+      "answer_jlens_rank": 56,
+      "answer_jpp_rank": 32,
+      "text": "Multiple-choice exam format (A, B, C, D options) signals a question-answer structure typical of Indian competitive exams or homework platforms.\n\nThe question asks about a chemical element's properties, requiring identification of an element by atomic number, implying a factual chemistry answer follows.\n\n\"the element with atomic number 2\" is an incomplete noun phrase mid-sentence (\"The correct chemical formula of the atom of the element with atomic number 2\"), strongly expecting a specific number or element name (e.g., \"2\" likely refers to helium, so the next token completes this reference).\n\"atomic number 2\" ends the fragment, expecting continuation like \"is\" or a specific element name like \"helium\" or \"3\" (a different number)."
+    },
+    {
+      "name": "ex-element-symbol-26-79",
+      "position": "cue_last",
+      "layer": 42,
+      "jlens_rank": 67,
+      "jpp_rank": 19,
+      "answer_jlens_rank": 111,
+      "answer_jpp_rank": 79,
+      "text": "Educational Q&A format signals a factual answer is expected, likely a chemistry/element identification question.\n\nThe phrase \"the element with atomic number 2\" strongly implies the answer is helium, constraining next tokens to complete this factual statement.\n\nThe final token \"2\" ends an incomplete sentence (\"The symbol of the element with atomic number 2\"), requiring immediate continuation \u2014 likely a period, comma, or clause completing the question (e.g., \"is...\" or a specific number like \"10\" or \"6\").\n\"atomic number 2\" is a partial reference, suggesting the next tokens complete a specific number or element name in a Turkish or English educational context.\nThe pattern \"Let's see\" introduces a question, and \"the element with"
+    },
+    {
+      "name": "gem-color-ruby",
+      "position": "cue_last",
+      "layer": 42,
+      "jlens_rank": 29,
+      "jpp_rank": 51,
+      "answer_jlens_rank": 84,
+      "answer_jpp_rank": 52,
+      "text": "Trivia/quiz format established by \"Question 1\" signals a multiple-choice or factual answer is expected next, likely naming a gemstone.\n\nThe phrase \"birthstone traditionally associated for\" sets up a specific month or zodiac sign as the subject, requiring completion of the prepositional phrase (e.g., \"the month of January\" or \"people born in...\").\n\nFinal fragment \"the birthstone that is the traditional birthstone for\" is an incomplete relative clause mid-sentence, demanding a noun phrase specifying a month, person, or category before the question's main clause continues.\n\"Which of the following statements is true about the gemstone that is the traditional birthstone for\" \u2014 a SAT-style analogy or logic question structure, expecting a month name"
+    },
+    {
+      "name": "instr-hit-drums",
+      "position": "last",
+      "layer": 42,
+      "jlens_rank": 3,
+      "jpp_rank": 4,
+      "answer_jlens_rank": 1,
+      "answer_jpp_rank": 3,
+      "text": "Q&A or trivia format establishing a definitional statement about a specific object, expecting a factual completion.\n\nThe sentence structure \"The two wooden sticks used to strike the cymbals on a drum set that are attached together by a spring at the top is called\" sets up a naming/definition answer, requiring a noun phrase or term.\n\nFinal token \"called\" is part of a declarative sentence (\"The fact that... is called\"), demanding the specific name/term for the object described (e.g., \"tongs,\" \"mallets,\" or similar).\n\"According to the given fact, the pair of two long thin wooden sticks used to play a musical instrument on a drum set found on either side of a musician's hands is called\" \u2014 a"
+    },
+    {
+      "name": "paper-continent",
+      "position": "last",
+      "layer": 42,
+      "jlens_rank": 4,
+      "jpp_rank": 4,
+      "answer_jlens_rank": 3,
+      "answer_jpp_rank": 4,
+      "text": "Riddle/trivia chain format: a multi-step logical puzzle requiring sequential deduction, starting with \"Egypt\" as the answer to the first clue.\n\nThe sentence structure \"The continent that the country that [X] is located in is\" sets up a declarative statement requiring a continent name (e.g., \"Africa\") as the predicate complement.\n\nFinal token \"is\" closes a relative clause construction (\"The continent on which the country where the inventor of the computer was born is located on is\"), demanding an immediate noun phrase or adjective describing that continent's property, likely continuing the riddle's chain logic.\n\"The continent that the country that invented the computer is located in is\" \u2014 a declarative sentence requiring a continent name or descriptive phrase as the next token"
+    },
+    {
+      "name": "planet-rings-saturn2",
+      "position": "cue_last",
+      "layer": 42,
+      "jlens_rank": 3,
+      "jpp_rank": 3,
+      "answer_jlens_rank": 27,
+      "answer_jpp_rank": 37,
+      "text": "Quiz format established (\"True or False\") requires a factual statement to be completed, followed by a true/false answer.\n\nThe sentence \"The fifth planet from the Sun\" is a well-known astronomical reference (Jupiter), so the statement likely continues with a factual claim about it.\n\nThe final fragment \"The statement that the fifth planet from the Sun\" is an incomplete subordinate clause requiring a verb phrase or relative clause continuation, e.g., \"is...\" or \"in our solar system...\"\n\"\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n\"AI-generated\" content pattern suggests a simple educational sentence about planets."
+    },
+    {
+      "name": "rhyme-chair-flag",
+      "position": "last",
+      "layer": 42,
+      "jlens_rank": 37,
+      "jpp_rank": 14,
+      "answer_jlens_rank": 2,
+      "answer_jpp_rank": 1,
+      "text": "Riddle format established by \"I am a clue\" signals a puzzle answer is expected, likely a specific animal name or word.\n\nThe phrase \"This animal is a mammal and it is the animal on the state flag of\" sets up a geographic/political identification question, requiring a U.S. state or country name to complete the sentence.\n\nFinal token \"of\" is a preposition ending an incomplete noun phrase (\"the horse is a mammal and it is the animal on the state flag of\"), demanding an immediate proper noun (state name like \"Alaska,\" \"Kentucky,\" or similar).\n\"Let's solve this together!\" introduces a riddle-style educational prompt, suggesting a simple, recognizable answer follows.\n\"This animal is a mammal"
+    },
+    {
+      "name": "super-smallest-continent",
+      "position": "prev",
+      "layer": 42,
+      "jlens_rank": 22,
+      "jpp_rank": 23,
+      "answer_jlens_rank": 2,
+      "answer_jpp_rank": 2,
+      "text": "Trivia/quiz format established by \"Answer:\" prompt, expecting a factual declarative statement about a specific country or geographic fact.\n\nThe sentence structure \"The country of Egypt is located on the continent\" sets up a geographic fact pattern, likely continuing with a continent name or related geographic detail as part of a multi-clue puzzle.\n\nFinal token \"continent\" ends an incomplete prepositional phrase (\"is located on the continent\"), requiring a specific continent name (e.g., \"of Africa\") or a relative clause continuation like \"of...\" or \"where...\"\n\"\nIn this list of countries, there is a country called Monaco. Monaco is a country that is located on the continent\" \u2014 a simple declarative trivia sentence, expecting a continent name or descriptor next,"
+    }
+  ],
+  "answer lens-blind, oracle names it": [
+    {
+      "name": "ex-city-capital-Naples-Barcelona",
+      "position": "prev",
+      "layer": 42,
+      "jlens_rank": 1,
+      "jpp_rank": 1,
+      "answer_jlens_rank": 11,
+      "answer_jpp_rank": 12,
+      "text": "Trivia/quiz format established by \"Question:\" label, expecting a factual answer about a specific geographic/political entity.\n\nThe phrase \"The capital of the country where Rome is located\" sets up a multi-step reasoning chain: identify Rome's country (Italy), then name its capital (Rome itself), suggesting a trick or layered question structure.\n\nFinal fragment \"The capital of the country where Rome is located\" is an incomplete relative clause mid-question, immediately requiring a verb phrase continuation like \"is Italy\" or \"in Italy\" to complete the geographic identification before the actual trivia question about a sport, team, or entity associated with that country.\n\"Rome\" signals Italy as the country, so the next tokens likely name Italy explicitly.\n\"the country in"
+    },
+    {
+      "name": "ex-element-state-26-80",
+      "position": "last",
+      "layer": 42,
+      "jlens_rank": 3,
+      "jpp_rank": 2,
+      "answer_jlens_rank": 2,
+      "answer_jpp_rank": 2,
+      "text": "Q&A format established by \"Answer the following question based on the given fact\" signals a factual, declarative response is expected.\n\nThe sentence structure \"The state of matter of the element with atomic number 26 (iron) at standard conditions is\" sets up a direct factual completion, likely \"solid\" or a similar state descriptor.\n\nFinal token \"is\" is a linking verb requiring a predicate complement \u2014 specifically the state of matter (e.g., \"solid,\" \"liquid,\" \"gas\") as the answer to the trivia-style prompt.\n\"In a trivia question format, the sentence 'The state of matter of the element with atomic number 26 in the periodic table at standard conditions is\" demands a concise factual answer completing the predicate, likely a"
+    },
+    {
+      "name": "ex-element-state-8-26",
+      "position": "cue_last",
+      "layer": 42,
+      "jlens_rank": 6,
+      "jpp_rank": 15,
+      "answer_jlens_rank": 12,
+      "answer_jpp_rank": 26,
+      "text": "Q&A format established by \"The answer is:\" signals a factual, declarative response is expected next.\n\nThe sentence structure \"The physical state of the element with atomic number \" sets up a specific chemistry/periodic table fact, requiring a number and then a state (solid, liquid, gas).\n\nThe final token \"number \" ends an incomplete noun phrase (\"the element with atomic number \"), immediately requiring a specific integer (e.g., \"118\" or \"23\") to complete the factual claim.\n\"\n</br>\nThe physical state of the element with atomic number \" \u2014 this is a quiz or puzzle prompt format, likely continuing with a specific element number as part of a generated or templated question.\n\nThe pattern suggests a randomly"
+    },
+    {
+      "name": "ex-element-state-8-80",
+      "position": "last",
+      "layer": 42,
+      "jlens_rank": 1,
+      "jpp_rank": 1,
+      "answer_jlens_rank": 2,
+      "answer_jpp_rank": 3,
+      "text": "Quiz/trivia format established by \"Answer the following questions correctly\" demands a factual, precise response.\n\nThe sentence structure \"the state of matter of the element whose atomic number is 8 is\" sets up a direct factual completion \u2014 element 8 is oxygen, so the answer must describe its physical state (likely \"liquid\" or \"gas\" or \"a liquid\").\n\nFinal token \"is\" is a linking verb completing a relative clause, requiring a noun phrase or adjective describing the state of matter of element 8 (oxygen) in a specific context, e.g., \"liquid,\" \"gas,\" or \"a solid.\"\n\"In a certain chemical system, the state of matter of the element whose atomic number in the periodic table is\" \u2014 a fill"
+    },
+    {
+      "name": "ex-element-state-8-80",
+      "position": "cue_last",
+      "layer": 42,
+      "jlens_rank": 6,
+      "jpp_rank": 15,
+      "answer_jlens_rank": 12,
+      "answer_jpp_rank": 26,
+      "text": "Q&A format established by \"The answer is:\" signals a factual, declarative response is expected next.\n\nThe sentence structure \"The physical state of the element with atomic number \" sets up a specific chemistry/periodic table fact, requiring a number and then a state (solid, liquid, gas).\n\nThe final token \"number \" ends an incomplete noun phrase (\"the element with atomic number \"), immediately requiring a specific integer (e.g., \"118\" or \"23\") to complete the factual claim.\n\"\n</br>\nThe physical state of the element with atomic number \" \u2014 this is a quiz or puzzle prompt format, likely continuing with a specific element number as part of a generated or templated question.\n\nThe pattern suggests a randomly"
+    },
+    {
+      "name": "ex-element-symbol-26-79",
+      "position": "last",
+      "layer": 42,
+      "jlens_rank": 9,
+      "jpp_rank": 3,
+      "answer_jlens_rank": 39,
+      "answer_jpp_rank": 22,
+      "text": "Q&A format established by \"Answer the following question\" signals a factual, direct response is expected next.\n\nThe sentence structure \"The chemical symbol for the element with atomic number 26 is\" sets up a factual chemistry statement requiring the specific symbol (Fe) as completion.\n\nThe final word \"is\" ends an incomplete declarative sentence in a pattern of \"The following is an example of a correct sentence: The chemical symbol for the element with atomic number 26 is\" \u2014 immediately requiring the chemical symbol \"Fe\" or similar short answer token.\n</br>\nThe prompt appears to be a template or test case for a language model generating factual statements, so the next token likely continues a structured example sentence about atomic properties.\n\"In the periodic"
+    },
+    {
+      "name": "ex2-language-capital-Polish",
+      "position": "prev",
+      "layer": 42,
+      "jlens_rank": 1,
+      "jpp_rank": 1,
+      "answer_jlens_rank": 3,
+      "answer_jpp_rank": 11,
+      "text": "Quiz/trivia format established by \"Question 1 of 10\" signals a factual answer is expected, likely a short declarative statement.\n\nThe phrase \"The capital of the country where the most widely spoken language\" sets up a relative clause requiring completion, pointing toward Poland (Polish being the language).\n\nFinal fragment \"the country where the most widely spoken language\" is an incomplete relative clause mid-sentence, immediately requiring a verb phrase like \"is Poland\" or \"is Polish\" to complete the geographic/linguistic identification.\n\"\nThe capital of the country where the most widely spoken language\" \u2014 this is a fill-in or answer prompt, expecting the next tokens to name Poland or describe its capital Warsaw, referencing the country associated with Polish as"
+    },
+    {
+      "name": "fruit-grows-grape",
+      "position": "prev",
+      "layer": 42,
+      "jlens_rank": 9,
+      "jpp_rank": 81,
+      "answer_jlens_rank": 4,
+      "answer_jpp_rank": 64,
+      "text": "Q&A format with a \"Final Answer:\" field signals a factual, declarative sentence completing a riddle-style question about a specific plant/fruit relationship.\n\nThe sentence structure \"The kind of plant that the kind of thing that [fruit] grows on is\" sets up a multi-step logical chain requiring a noun phrase or category name (e.g., \"a tree,\" \"a vine,\" \"plants\").\n\nFinal fragment \"The kind of plant that the kind of thing that bananas are found on grows on is\" \u2014 a convoluted relative clause construction requiring a predicate complement (likely a category or descriptive noun phrase) to complete the trivia statement.\n\"\nA trivia statement about bananas:\nThe kind of plant that the kind of thing that the thing that bananas"
+    },
+    {
+      "name": "organ-count-kidney2",
+      "position": "last",
+      "layer": 42,
+      "jlens_rank": 1,
+      "jpp_rank": 21,
+      "answer_jlens_rank": 3,
+      "answer_jpp_rank": 2,
+      "text": "Q&A or trivia format established by \"The answer is:\" signals a factual statement requiring a specific numerical or descriptive answer about kidneys.\n\nThe sentence structure \"The number of [body part] in human body which is [description] is\" sets up a declarative factual claim, expecting a number or quantity (e.g., \"two\").\n\nFinal token \"is\" closes a relative clause construction (\"The number of kidneys, which are organs that filter blood and produce urine, in a human body is\"), immediately requiring a number, numeral, or quantifier as the predicate complement.\n\"\nThe number of the organ that filters blood and produces urine in the human body is\" \u2014 a puzzle/trivia prompt format, likely continuing with a specific count or a fill-in-the"
+    },
+    {
+      "name": "person-firstname-darwin",
+      "position": "prev",
+      "layer": 42,
+      "jlens_rank": 1,
+      "jpp_rank": 1,
+      "answer_jlens_rank": 3,
+      "answer_jpp_rank": 4,
+      "text": "Quiz format established (\"1 of 10\"), expecting a factual answer to a trivia question about a historical figure.\n\nThe phrase \"the person who proposed the theory of evolution by natural selection\" strongly signals the answer is Charles Darwin, constraining next tokens toward his name or related biographical detail.\n\nThe final fragment \"The first name of the scientist who proposed the theory of evolution by natural selection\" is an incomplete sentence/clue, immediately requiring a verb phrase continuation such as \"was\" or \"along with Alfred Russel Wallace.\"\n</br>\n\"natural selection\" is the key topic, so the next tokens likely name Darwin or Wallace, or describe their collaborative work on the theory.\n\"the scientist who proposed the theory of evolution by natural selection\""
+    },
+    {
+      "name": "person-firstname-mozart",
+      "position": "last",
+      "layer": 42,
+      "jlens_rank": 1,
+      "jpp_rank": 1,
+      "answer_jlens_rank": 3,
+      "answer_jpp_rank": 6,
+      "text": "Trivia/quiz format established by \"The answer is:\" signals a factual completion is expected, likely a name or short phrase.\n\nThe sentence structure \"The first name of the composer who wrote... and was also a painter and lived in Salzburg was\" demands the specific first name of Mozart as the answer.\n\nFinal word \"was\" closes a relative clause setup (\"The first name of the famous composer... who wrote symphonies and concertos and lived in Salzburg) was\"), requiring the actual first name \"Wolfgang\" or \"Amadeus\" to follow immediately.\n\"The first name of the famous composer who wrote symphonies and concertos and lived in Salzburg was\" \u2014 a fill-in-the-blank trivia sentence structure, expecting the answer to complete"
+    },
+    {
+      "name": "person-firstname-newton",
+      "position": "cue_last",
+      "layer": 42,
+      "jlens_rank": 1,
+      "jpp_rank": 1,
+      "answer_jlens_rank": 5,
+      "answer_jpp_rank": 31,
+      "text": "Trivia/quiz format established by \"Question of the Day\" header, expecting a factual answer about a historical figure.\n\nThe phrase \"the person on whom an apple is said to have\" strongly signals the famous Isaac Newton apple anecdote, constraining the answer toward Newton and the falling apple story.\n\nFinal fragment \"on whom an apple is said to have\" is an incomplete relative clause requiring a verb phrase completion, almost certainly \"fallen on his head\" or \"inspired him,\" referencing the legendary Newton story.\n\"\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>"
+    }
+  ],
+  "answer lens-blind, oracle does not": [
+    {
+      "name": "animal-nose-elephant",
+      "position": "prev",
+      "layer": 42,
+      "jlens_rank": 4,
+      "jpp_rank": 4,
+      "answer_jlens_rank": 25,
+      "answer_jpp_rank": 34,
+      "text": "Q&A format with \"Answer:\" signals a factual completion is expected, likely a short declarative statement.\n\nThe sentence structure \"The long, thin, flexible part used for catching prey that is on the head of an animal like a snake is called\" sets up a definition-style answer requiring a specific noun phrase naming the body part (e.g., \"a snout\").\n\nFinal token \"called\" is part of a fill-in-the-blank definition sentence (\"A true statement about a snake is that the long, thin, flexible part used for sensing things on the head of a snake is called\"), requiring the specific term/label as the immediate next token.\nThe prompt follows a simple reasoning dataset format, so the answer should be a basic, child-level factual statement"
+    },
+    {
+      "name": "ex-city-capital-Toronto-Lyon",
+      "position": "cue_last",
+      "layer": 42,
+      "jlens_rank": 1,
+      "jpp_rank": 1,
+      "answer_jlens_rank": 3,
+      "answer_jpp_rank": 3,
+      "text": "Quiz format established (\"Answer in 15 seconds or less\") expects a direct factual answer to a geography question.\n\nThe question structure \"What is the name of the country where Toronto\" signals a geographic identification question, with Toronto as the key reference point, strongly implying Canada as the answer.\n\nFinal token \"Toronto\" is mid-sentence within a relative clause (\"the country where Toronto\"), requiring completion \u2014 likely \"is located\" or \"is a major city in\" followed by a city/country name like \"Toronto\" (Canada's major city).\n\"\n</br>\n</br>\nWhat is the name of the country where Toronto\" \u2014 the sentence is incomplete, expecting a verb phrase or continuation referencing Toronto's location, likely naming a city or"
+    },
+    {
+      "name": "ex-element-state-26-8",
+      "position": "prev",
+      "layer": 42,
+      "jlens_rank": 1,
+      "jpp_rank": 1,
+      "answer_jlens_rank": 14,
+      "answer_jpp_rank": 41,
+      "text": "Multiple-choice chemistry question format requires answer options (A, B, C, D) to follow after the question stem.\n\nThe question asks for a specific atomic property (\"atomic number 26\"), strongly implying the answer involves identifying element iron (Fe), a common chemistry fact.\n\nThe final token \"26\" ends the question stem \"What is the electronic configuration of the element with atomic number 26\" \u2014 the next tokens must complete this sentence, likely with a period or continuation naming the element (iron/Fe), a classic Indian competitive exam question about iron's properties.\nThe phrase \"atomic number 26\" refers to iron, so the next tokens likely complete the question about this specific element's properties.\nThe number 26 is the"
+    },
+    {
+      "name": "ex-element-state-26-80",
+      "position": "prev",
+      "layer": 42,
+      "jlens_rank": 1,
+      "jpp_rank": 1,
+      "answer_jlens_rank": 14,
+      "answer_jpp_rank": 41,
+      "text": "Multiple-choice chemistry question format requires answer options (A, B, C, D) to follow after the question stem.\n\nThe question asks for a specific atomic property (\"atomic number 26\"), strongly implying the answer involves identifying element iron (Fe), a common chemistry fact.\n\nThe final token \"26\" ends the question stem \"What is the electronic configuration of the element with atomic number 26\" \u2014 the next tokens must complete this sentence, likely with a period or continuation naming the element (iron/Fe), a classic Indian competitive exam question about iron's properties.\nThe phrase \"atomic number 26\" refers to iron, so the next tokens likely complete the question about this specific element's properties.\nThe number 26 is the"
+    },
+    {
+      "name": "ex-element-state-26-80",
+      "position": "cue_last",
+      "layer": 42,
+      "jlens_rank": 81,
+      "jpp_rank": 26,
+      "answer_jlens_rank": 56,
+      "answer_jpp_rank": 32,
+      "text": "Multiple-choice exam format (A, B, C, D options) signals a question-answer structure typical of Indian competitive exams or homework platforms.\n\nThe question asks about a chemical element's properties, requiring identification of an element by atomic number, implying a factual chemistry answer follows.\n\n\"the element with atomic number 2\" is an incomplete noun phrase mid-sentence (\"The correct chemical formula of the atom of the element with atomic number 2\"), strongly expecting a specific number or element name (e.g., \"2\" likely refers to helium, so the next token completes this reference).\n\"atomic number 2\" ends the fragment, expecting continuation like \"is\" or a specific element name like \"helium\" or \"3\" (a different number)."
+    },
+    {
+      "name": "ex-element-symbol-26-79",
+      "position": "cue_last",
+      "layer": 42,
+      "jlens_rank": 67,
+      "jpp_rank": 19,
+      "answer_jlens_rank": 111,
+      "answer_jpp_rank": 79,
+      "text": "Educational Q&A format signals a factual answer is expected, likely a chemistry/element identification question.\n\nThe phrase \"the element with atomic number 2\" strongly implies the answer is helium, constraining next tokens to complete this factual statement.\n\nThe final token \"2\" ends an incomplete sentence (\"The symbol of the element with atomic number 2\"), requiring immediate continuation \u2014 likely a period, comma, or clause completing the question (e.g., \"is...\" or a specific number like \"10\" or \"6\").\n\"atomic number 2\" is a partial reference, suggesting the next tokens complete a specific number or element name in a Turkish or English educational context.\nThe pattern \"Let's see\" introduces a question, and \"the element with"
+    },
+    {
+      "name": "ex2-language-capital-Greek",
+      "position": "cue_last",
+      "layer": 42,
+      "jlens_rank": 12,
+      "jpp_rank": 35,
+      "answer_jlens_rank": 52,
+      "answer_jpp_rank": 100,
+      "text": "Q&A format established by \"Answer:\" prompt signals a factual response is expected, likely a short declarative sentence.\n\nThe question structure \"What is the capital of the country where French is the primary\" sets up a geographic/linguistic trivia question requiring a country name and capital city answer.\n\nFinal token \"primary\" is part of an incomplete noun phrase (\"the country where French is the primary ___\"), immediately requiring a noun like \"language\" to complete the phrase before the question continues.\n\"\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>\n</br>"
+    },
+    {
+      "name": "mars-color",
+      "position": "prev",
+      "layer": 42,
+      "jlens_rank": 5,
+      "jpp_rank": 5,
+      "answer_jlens_rank": 77,
+      "answer_jpp_rank": 33,
+      "text": "Educational Q&A format signals a factual answer is expected, likely naming a planet or characteristic.\n\nThe phrase \"The planet that is the fifth from the Sun\" sets up a factual astronomy question requiring identification of Jupiter (or similar answer).\n\nThe final fragment \"the fifth planet from the Sun\" is an incomplete sentence mid-clause, requiring completion \u2014 likely \"is\" or \"in our solar system\" followed by a predicate.\n\"Read the following sentence and answer the question. The statement below is true or false: The planet that is the fifth in order from the Sun\" \u2014 the sentence is building toward a question stem, expecting a continuation like \"is Mercury\" or \"the Sun\" referencing orbital position.\n\nThe phrase \"from the Sun\" ends the"
+    },
+    {
+      "name": "month-3-godof",
+      "position": "prev",
+      "layer": 42,
+      "jlens_rank": 4,
+      "jpp_rank": 2,
+      "answer_jlens_rank": 6,
+      "answer_jpp_rank": 5,
+      "text": "Quiz format established (\"10 questions,\" \"1 point per question\") expects factual trivia-style statements to follow.\n\nThe sentence \"The month of March was named after the Roman god\" is a factual claim requiring completion with a specific Roman deity's name (e.g., \"Mars\").\n\nFinal token \"god\" ends an incomplete declarative sentence (\"The name of the month 'March' was named after the Roman god\"), immediately requiring a proper noun \u2014 a specific Roman deity name \u2014 to complete the phrase.\n\"March\" or a related word likely follows, referencing the deity Mars or a similar figure.\n\"god\" is part of a trivia question stem, so the next token must be a name or descriptor completing \"named after the Roman god [X].\""
+    },
+    {
+      "name": "person-firstname-newton",
+      "position": "prev",
+      "layer": 42,
+      "jlens_rank": 1,
+      "jpp_rank": 1,
+      "answer_jlens_rank": 4,
+      "answer_jpp_rank": 41,
+      "text": "Quiz format established by \"Question 1 of 10\" signals a trivia/educational question requiring a factual answer about a specific person.\n\nThe phrase \"the person on whose head an apple is said to have fallen\" strongly implies Newton, referencing the famous anecdote about gravity and the falling apple.\n\nThe final fragment \"the name of the tree on which an apple is said to have fallen\" is an incomplete relative clause mid-question, requiring completion \u2014 likely \"on Newton\" or a continuation referencing the story's outcome or a related concept.\n\"According to a question on a quiz platform\" \u2014 the sentence structure \"The name of the person on whose head an apple is said to have fallen\" is a quiz question stem, expecting a question mark or continuation"
+    },
+    {
+      "name": "rhyme-chair-flag",
+      "position": "cue_last",
+      "layer": 42,
+      "jlens_rank": 3,
+      "jpp_rank": 2,
+      "answer_jlens_rank": 57,
+      "answer_jpp_rank": 15,
+      "text": "Riddle format established: a clue is being given, requiring a clever answer about an animal. The phrase \"rhymes with 'chair'\" signals a wordplay puzzle.\n\nThe sentence structure \"The animal whose name rhymes with 'chair'\" sets up a relative clause that must complete with a verb phrase describing the animal's habitat or characteristic, e.g., \"is found in...\" or \"refers to...\"\n\nFinal fragment \"The animal whose name rhymes with 'chair'\" is an incomplete relative clause mid-sentence, immediately requiring a verb or continuation identifying the animal (likely \"bear\").\n\"bear\" is the expected answer, so the next tokens likely complete the riddle's setup, e.g., \"is 'bear'\" or a similar animal name like"
+    },
+    {
+      "name": "season-next-winter",
+      "position": "prev",
+      "layer": 42,
+      "jlens_rank": 1,
+      "jpp_rank": 1,
+      "answer_jlens_rank": 4,
+      "answer_jpp_rank": 5,
+      "text": "Multiple-choice quiz format established, requiring answer options (A, B, C, etc.) to follow the question stem.\n\nThe question is building a logical/semantic puzzle about seasons, requiring completion of the conditional clause \"the season that follows the coldest month of the year\" \u2014 likely referencing winter or a specific month.\n\nFinal fragment \"the coldest season of the year\" is an incomplete relative clause mid-question, immediately requiring a verb phrase or continuation (e.g., \"is,\" \"refers to,\" \"in a calendar\") to complete the logical statement.\n\"Which of the following is true about the fact that the season that corresponds to the coldest month of the year\" \u2014 a relative clause setup demanding a predicate completing the factual claim about seasonal temperature"
+    }
+  ]
+}

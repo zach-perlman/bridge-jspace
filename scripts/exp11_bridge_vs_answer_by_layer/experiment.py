@@ -1,8 +1,8 @@
 """exp11_bridge_vs_answer_by_layer: at which layers is the bridge readable, and at which the answer?
 
-Items: the 90 probe-swap prompts. Part B's exp02_swaps/main labels.csv (pinned by sha256) gives each item's status
-(eligible = the model answers correctly, part B's definition) and label (J-mediated / non-J / both / neither).
-Prompts as published, since the labels were computed on them; `strip_trailing_space` switches.
+Items: the 90 probe-swap prompts, trailing space stripped (`strip_trailing_space`), as in part B v4. Part B's labels
+file (pinned by sha256; default exp02 v4's main_v4_jlens) gives each item's status (eligible = the greedy continuation
+contains the answer) and label (J-mediated / non-J / both / neither).
 
 Readout: the last prompt token (the position that predicts the answer), every source layer, readers logit lens /
 J-lens / J++. Four words per item, with part B's token conventions:

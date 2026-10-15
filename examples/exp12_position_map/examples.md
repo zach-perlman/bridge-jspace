@@ -1,27 +1,27 @@
-# Examples: exp12_position_map (prompt position x layer), Qwen3.6-27B
+# Examples: exp12_position_map (prompt position x layer, trailing space stripped), Qwen3.6-27B
 
-Source run `results/exp12_position_map/20261014-095358`, model Qwen/Qwen3.6-27B. Examples are drawn at random with seed 0, up to 3 per group; groups can overlap. Marks in the tables: **bridge**, *answer*, [distractor]. Ranks are word ranks (1 = top; spaces and punctuation removed) of the bridge (B) and the answer (A). Readers: logit lens (baseline), J-lens, J++.
+Source run `results/exp12_position_map/20261015-100735`, model Qwen/Qwen3.6-27B. Examples are drawn at random with seed 0, up to 3 per group; groups can overlap. Marks in the tables: **bridge**, *answer*, [distractor]. Ranks are word ranks (1 = top; spaces and punctuation removed) of the bridge (B) and the answer (A). Readers: logit lens (baseline), J-lens, J++.
 
 | Group | Definition | Items in group | Shown |
 |---|---|---|---|
-| [Seen at the last token](#seen_last) | Eligible; the J-lens has the bridge top-1 in >= 50% of layers 32-48 at the last token. | 41 | 3 |
-| [Seen only earlier in the prompt](#seen_earlier) | Eligible; missed at the last token (< 50%) but on top at some earlier token (>= 50%). | 19 | 3 |
-| [Not seen anywhere](#unseen) | Eligible; the J-lens never has the bridge top-1 in >= 50% of layers 32-48 at any token. | 7 | 3 |
-| [Distractor above the bridge](#distractor_wins) | Eligible; at the last token the same-category distractor is top-1 in more band layers than the bridge. | 5 | 3 |
-| [J-lens and J++ disagree](#readers_disagree) | Eligible; at the last token the two lenses' band shares for the bridge differ by >= 0.5. | 1 | 1 |
-| [Model answers wrong](#model_wrong) | Part B's clean_wrong: the model's top word is not the answer. Does the lens still see the bridge? | 16 | 3 |
+| [Seen at the last token](#seen_last) | Answered correctly; the J-lens has the bridge ranked first among the entities in >= 50% of layers 32-48 at the last token. | 47 | 3 |
+| [Seen only earlier in the prompt](#seen_earlier) | Answered correctly; missed at the last token (< 50%) but on top at some earlier token (>= 50%). | 22 | 3 |
+| [Not seen anywhere](#unseen) | Answered correctly; the J-lens never has the bridge ranked first among the entities in >= 50% of layers 32-48 at any token. | 8 | 3 |
+| [Distractor above the bridge](#distractor_wins) | Answered correctly; at the last token the same-category distractor is ranked first among the entities in more band layers than the bridge. | 6 | 3 |
+| [J-lens and J++ disagree](#readers_disagree) | Answered correctly; at the last token the two lenses' band shares for the bridge differ by >= 0.5. | 1 | 1 |
+| [Model answers wrong](#model_wrong) | The model does not give the answer. Does the lens still see the bridge? | 13 | 3 |
 
 <a id="seen_last"></a>
 ## Seen at the last token
 
-Eligible; the J-lens has the bridge top-1 in >= 50% of layers 32-48 at the last token.
+Answered correctly; the J-lens has the bridge ranked first among the entities in >= 50% of layers 32-48 at the last token.
 
 ### `ex2-city-language-Cairo`
 
 > Fact: The language spoken in the country where Cairo is located is
 
-Bridge **Egypt** -> answer *Arabic*; controls [Russia] / [Russian]. category: city-language, status (B): eligible, label (B): J-mediated, model's top word: Arabic.
-Why this group: J-lens bridge top-1 in 100% of band layers at the last token, best earlier 100% (at `Cairo`), distractor 0%; J++ at the last token 100%.
+Bridge **Egypt** -> answer *Arabic*; controls [Russia] / [Russian]. category: city-language, model answers correctly: yes, swapping flips the answer: the J-space part, model's top word: Arabic.
+Why this group: J-lens bridge ranked first among the entities in 100% of band layers at the last token, best earlier 100% (at `Cairo`), distractor 0%; J++ at the last token 100%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/ex2-city-language-Cairo__jlens.html) · [J++](slices/ex2-city-language-Cairo__jpp.html)
 
 **Last token** `is`: top-5 words per layer
@@ -63,8 +63,8 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 
 > Fact: The capital of the country where Swedish is the primary language is
 
-Bridge **Sweden** -> answer *Stockholm*; controls [Hungary] / [Budapest]. category: language-capital, status (B): eligible, label (B): J-mediated, model's top word: Stockholm.
-Why this group: J-lens bridge top-1 in 88% of band layers at the last token, best earlier 100% (at `Swedish`), distractor 0%; J++ at the last token 82%.
+Bridge **Sweden** -> answer *Stockholm*; controls [Hungary] / [Budapest]. category: language-capital, model answers correctly: yes, swapping flips the answer: the J-space part, model's top word: Stockholm.
+Why this group: J-lens bridge ranked first among the entities in 88% of band layers at the last token, best earlier 100% (at `Swedish`), distractor 0%; J++ at the last token 82%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/ex2-language-capital-Swedish__jlens.html) · [J++](slices/ex2-language-capital-Swedish__jpp.html)
 
 **Last token** `is`: top-5 words per layer
@@ -102,267 +102,225 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 | `language` | .L (4527) | in (3204) | Swedish (2) | 是什么意思 (19) | 瑞典 (3) | **Sweden** (1) | **Sweden** (1) | is (6) |
 | `is` | ustralian (176808) | also (7179) | cities (3772) | 什么意思 (1470) | **Sweden** (1) | **Sweden** (1) | *Stockholm* (2) | *Stockholm* (11) |
 
-### `person-firstname-mozart`
+### `person-firstname-shakespeare`
 
-> Fact: The first name of the child-prodigy composer from Salzburg who wrote The Magic Flute was
+> Fact: The first name of the playwright who wrote Romeo and Juliet was
 
-Bridge **Mozart** -> answer *Wolfgang*; controls [Darwin] / [Charles]. category: person-firstname, status (B): eligible, label (B): J-mediated, model's top word: Wolfgang.
-Why this group: J-lens bridge top-1 in 59% of band layers at the last token, best earlier 100% (at `dig`), distractor 0%; J++ at the last token 47%.
-Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/person-firstname-mozart__jlens.html) · [J++](slices/person-firstname-mozart__jpp.html)
+Bridge **Shakespeare** -> answer *William*; controls [Mozart] / [Wolfgang]. category: person-firstname, model answers correctly: yes, swapping flips the answer: neither part, model's top word: William.
+Why this group: J-lens bridge ranked first among the entities in 100% of band layers at the last token, best earlier 100% (at `playwright`), distractor 0%; J++ at the last token 100%.
+Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/person-firstname-shakespeare__jlens.html) · [J++](slices/person-firstname-shakespeare__jpp.html)
 
 **Last token** `was`: top-5 words per layer
 
 | layer | logit lens | J-lens | J++ | B / A rank: logit lens · J-lens · J++ |
 |---|---|---|---|---|
-| 0 | T, s, a, S, c | er, –and, en, u, o | <unk, 就像一个, Inglés, -toolbar, -www | 23547 / 80595 · 91102 / 4832 · 45412 / 237736 |
-| 4 | a, S, T, s, S | трёх, er, هى, жё, 砼 | _mysql, _php, tiful, 灵儿, 尤文 | 22560 / 73287 · 198890 / 16924 · 93735 / 34980 |
-| 8 | P, a, S, l, S | Colour, colour, ёл, ‘s, чёт | 苗木, 王菲, 成都市, 绵阳市, 绵阳 | 24981 / 74350 · 142510 / 7507 · 19671 / 18331 |
-| 12 | S, s, s, b, 1 | favourite, colour, colour, Whilst, whilst | WAS, fame, Fame, WM, FW | 18251 / 84280 · 3701 / 3435 · 241 / 18 |
-| 16 | s, b, B, M, l | amongst, whilst, Whilst, though, 其它 | GW, FW, WAS, FW, Wizard | 32065 / 39141 · 29590 / 9281 · 246 / 29 |
-| 20 | name, P, 姓, S, y | actually, Though, famously, amongst, 仅仅 | names, name, born, famous, fame | 86143 / 12587 · 58187 / 15865 · 36192 / 54197 |
-| 24 | name, S, b, Name, l | famously, actually, famed, though, quite | name, names, father, born, famous | 24622 / 24127 · 5706 / 6058 · 1117 / 3083 |
-| 28 | F, p, f, C, b | famously, famous, actually, whom, name | father, name, Father, names, famous | 40049 / 20665 · 430 / 3156 · 226 / 917 |
-| 32 | b, akes, indeed, X, 尽 | 什么, famous, famously, 叫什么, <u | name, names, surname, famous, Name | 68412 / 40213 · 645 / 3759 · 276 / 240 |
-| 36 | name, indeed, X, name, born | name, 原名, 名字, NAME, famously | name, names, famous, Name, name | 57409 / 6608 · 216 / 228 · 155 / 69 |
-| 40 | akes, name, indeed, in, born | 名字, name, name, Name, 姓名 | name, names, surname, Name, named | 52213 / 9445 · 155 / 136 · 274 / 193 |
-| 44 | G, indeed, nt, 1, u | Name, 名字, name, name, Name | surname, name, names, urname, born | 40657 / 16196 · 84 / 78 · 97 / 122 |
-| 48 | nt, 什么, indeed, NOT, 叫什么 | <u, 叫什么, 原名, 名字, NAME | surname, 原名, name, 姓氏, 姓 | 15067 / 5671 · 37 / 31 · 19 / 36 |
-| 52 | genius, actually, nt, odom, 什么 | **Mozart**, <u, *Wolfgang*, Johann, Rudolf | **Mozart**, Salzburg, 奥地利, Austrian, Austria | 6 / 132 · 1 / 3 · 1 / 13 |
-| 56 | **Mozart**, 奥地利, genius, Austrian, Austria | **Mozart**, Johann, *Wolfgang*, 奥地利, Austria | **Mozart**, 奥地利, Austrian, Austria, Salzburg | 1 / 42 · 1 / 3 · 1 / 12 |
-| 60 | **Mozart**, *Wolfgang*, wol, wolf, wolf | *Wolfgang*, **Mozart**, Wolf, Wol, 沃尔 | *Wolfgang*, **Mozart**, Austrian, Salzburg, 奥地利 | 1 / 2 · 2 / 1 · 2 / 1 |
-| 62 | *Wolfgang*, W, **Mozart**, Wol, Wolf | *Wolfgang*, **Mozart**, Wol, Wolf, W | *Wolfgang*, Wolf, Wol, **Mozart**, W | 3 / 1 · 2 / 1 · 4 / 1 |
+| 0 | S, a, s, T, S | er, –and, en, u, o | <unk, Inglés, 就像一个, -toolbar, -www | 21979 / 7857 · 31686 / 673 · 11449 / 117847 |
+| 4 | a, S, s, P, P | er, ’t, هى, трёх, 砼 | _php, _mysql, MySQL, 碧, 西班牙语 | 23182 / 9812 · 41564 / 36431 · 52154 / 65031 |
+| 8 | l, A, l, A, a | Colour, colour, 的, Colour, ёл | 威尼斯, 苗木, 状元, TPL, _sentence | 8962 / 13742 · 44298 / 14569 · 884 / 59823 |
+| 12 | A, s, S, l, B | colour, favourite, colour, favour, Colour | WAS, Alexandra, Australian, fame, famous | 16335 / 27960 · 566 / 282 · 109 / 280 |
+| 16 | B, b, a, un, s | amongst, 1, though, 2, l | History, WAS, FA, First, the | 46285 / 28350 · 701 / 346 · 85 / 90 |
+| 20 | name, P, udge, S, y | Actually, actually, <b, name, What | names, name, the, Alexandria, and | 22499 / 34159 · 924 / 131 · 63 / 3637 |
+| 24 | name, names, Name, 不详, s | name, famously, *William*, name, actually | names, name, Name, named, Names | 14006 / 21321 · 27 / 3 · 47 / 302 |
+| 28 | F, L, C, L, F | famous, famously, *William*, name, John | name, names, nickname, father, Name | 25862 / 10280 · 8 / 4 · 13 / 70 |
+| 32 | g, born, op, IP, X | famous, Famous, <u, famously, name | name, names, Name, surname, famous | 15862 / 43839 · 8 / 12 · 7 / 42 |
+| 36 | name, names, X, name, 名字 | Name, Famous, name, *William*, name | name, names, Name, famous, Names | 36196 / 28991 · 15 / 5 · 8 / 23 |
+| 40 | name, name, 名字, /name, names | name, 名字, Name, name, /name | name, names, surname, Name, named | 10376 / 7234 · 26 / 22 · 24 / 38 |
+| 44 | G, L, A, \n, b | /name, 名字, Name, 姓名, surname | name, surname, names, 姓氏, urname | 14291 / 7225 · 28 / 14 · 26 / 16 |
+| 48 | L, 什么, H, /is, <u | <u, 叫什么, *William*, 名字, 姓 | 姓氏, surname, 姓, 原名, name | 3814 / 9705 · 14 / 3 · 7 / 27 |
+| 52 | /is, **Shakespeare**, genius, actually, 什么 | **Shakespeare**, *William*, Richard, Christopher, Robert | **Shakespeare**, 莎士比亚, genius, poet, 才子 | 2 / 973 · 1 / 2 · 1 / 20 |
+| 56 | **Shakespeare**, playwright, 莎士比亚, 剧团, theatre | **Shakespeare**, Romeo, playwright, 莎士, *William* | **Shakespeare**, playwright, 莎士比亚, theatre, Romeo | 1 / 246 · 1 / 5 · 1 / 30 |
+| 60 | *William*, 威廉, *William*, **Shakespeare**, WILL | *William*, *William*, 威廉, **Shakespeare**, WILL | *William*, **Shakespeare**, *William*, 威廉, Shakespe | 4 / 1 · 4 / 1 · 2 / 1 |
+| 62 | *William*, W, Will, **Shakespeare**, *William* | *William*, **Shakespeare**, Will, WILL, Wil | *William*, *William*, **Shakespeare**, WILL, _W | 4 / 1 · 2 / 1 · 3 / 1 |
 
 **J-lens, last 8 tokens x layers**: top word (bridge rank)
 
 | token | L8 | L16 | L24 | L32 | L40 | L48 | L56 | L62 |
 |---|---|---|---|---|---|---|---|---|
-| `Salzburg` | s (264) | s (89) | Salzburg (2) | Salzburg (2) | Salzburg (2) | **Mozart** (1) | Austria (9) | is (7) |
-| `who` | ‘s (142757) | amongst (27776) | famed (1063) | famous (126) | **Mozart** (1) | famous (3) | wrote (21) | wrote (75) |
-| `wrote` | ся (51260) | many (1783) | **Mozart** (1) | famous (2) | **Mozart** (1) | **Mozart** (1) | **Mozart** (1) | Symphony (3) |
-| `The` | 的 (115074) | Whilst (10253) | **Mozart** (1) | 的 (8) | **Mozart** (1) | **Mozart** (1) | Salzburg (3) | Magic (13) |
-| `Magic` | Magic (3048) | Magic (505) | Magic (10) | Magic (6) | **Mozart** (1) | **Mozart** (1) | flute (4) | Fl (115) |
-| `Fl` | s (66) | a (42) | **Mozart** (1) | **Mozart** (1) | **Mozart** (1) | **Mozart** (1) | **Mozart** (1) | ute (2) |
-| `ute` | a (85) | a (11) | **Mozart** (1) | **Mozart** (1) | famous (2) | was (5) | was (3) | is (4) |
-| `was` | Colour (142518) | amongst (29140) | famously (5709) | 什么 (644) | 名字 (162) | <u (37) | **Mozart** (1) | *Wolfgang* (2) |
+| `the` | Them (4385) | of (2581) | people (489) | famous (225) | famous (22) | famous (100) | president (345) | person (658) |
+| `playwright` | s (1335) | s (175) | s (3) | playwright (2) | playwright (2) | playwright (2) | playwright (2) | Arthur (4) |
+| `who` | ‘s (2617) | ‘s (91) | whom (37) | Famous (2) | **Shakespeare** (1) | famous (2) | wrote (91) | wrote (272) |
+| `wrote` | ся (208) | Writer (27) | Writer (2) | books (2) | **Shakespeare** (1) | **Shakespeare** (1) | Ham (5) | The (9) |
+| `Romeo` | Romeo (29) | Romeo (5) | Romeo (3) | Romeo (2) | Romeo (2) | Romeo (2) | Romeo (8) | and (27) |
+| `and` | -old (314) | amongst (240) | **Shakespeare** (1) | **Shakespeare** (1) | **Shakespeare** (1) | **Shakespeare** (1) | Romeo (4) | Juliet (15) |
+| `Juliet` | an (57) | an (32) | **Shakespeare** (2) | **Shakespeare** (1) | **Shakespeare** (1) | **Shakespeare** (1) | was (3) | is (3) |
+| `was` | Colour (44296) | amongst (682) | name (27) | famous (8) | name (26) | <u (15) | **Shakespeare** (1) | *William* (2) |
 
 
 <a id="seen_earlier"></a>
 ## Seen only earlier in the prompt
 
-Eligible; missed at the last token (< 50%) but on top at some earlier token (>= 50%).
+Answered correctly; missed at the last token (< 50%) but on top at some earlier token (>= 50%).
 
-### `ex2-city-continent-Lima`
+### `holiday-month-christmas2`
 
-> Fact: The continent of the country where Lima is located is
+> Fact: The month of the holiday celebrated with a decorated evergreen tree and gift-giving is
 
-Bridge **Peru** -> answer *South*; controls [Egypt] / [Africa]. category: city-continent, status (B): eligible, label (B): J-mediated, model's top word: South.
-Why this group: J-lens bridge top-1 in 0% of band layers at the last token, best earlier 100% (at `Lima`), distractor 0%; J++ at the last token 0%.
-Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/ex2-city-continent-Lima__jlens.html) · [J++](slices/ex2-city-continent-Lima__jpp.html)
+Bridge **Christmas** -> answer *December*; controls [Easter] / [April]. category: holiday-month, model answers correctly: yes, swapping flips the answer: neither part, model's top word: December.
+Why this group: J-lens bridge ranked first among the entities in 29% of band layers at the last token, best earlier 100% (at `holiday`), distractor 0%; J++ at the last token 0%.
+Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/holiday-month-christmas2__jlens.html) · [J++](slices/holiday-month-christmas2__jpp.html)
 
 **Last token** `is`: top-5 words per layer
 
 | layer | logit lens | J-lens | J++ | B / A rank: logit lens · J-lens · J++ |
 |---|---|---|---|---|
-| 0 | S, a, s, S, P | –and, The, It, the, For | <unk, Connecticut, Counseling, \xc, -www | 47730 / 5718 · 116902 / 1260 · 3283 / 4221 |
-| 4 | a, S, T, S, s | 专栏收录该内容, 률은, 港币, 률, 农村商业银行 | _SDK, OpenGL, 仙人掌, _php, Airport | 70252 / 6487 · 19758 / 165784 · 222682 / 644 |
-| 8 | a, B, A, S, T | avian, ilian, 大金, rance, unea | continents, _countries, _SDK, countries, 陆地 | 78049 / 5227 · 209418 / 75482 · 190961 / 2820 |
-| 12 | B, F, b, a, A | nowadays, mainly, mostly, therefore, neighbouring | ocean, continent, oceans, Planet, continents | 55283 / 4620 · 33132 / 1891 · 1021 / 1108 |
-| 16 | B, G, B, S, F | also, basically, nowadays, mainly, actually | Atlantic, continents, Ocean, Planet, ocean | 34018 / 5845 · 5689 / 3274 · 1180 / 1410 |
-| 20 | land, 陆, 合, 纪, uto | continent, nowadays, continents, actually, which | continent, continents, continental, nations, countries | 41520 / 3272 · 1599 / 1049 · 175 / 39 |
-| 24 | uto, land, g, 纪, 洲 | continent, continents, Europe, Asia, [Africa] | continent, continents, [Africa], countries, Europe | 118983 / 511 · 494 / 254 · 200 / 15 |
-| 28 | (s, U, 同一, 际, B | continents, continent, countries, [Africa], Europe | continent, continents, [Africa], continental, Continent | 50714 / 358 · 736 / 392 · 720 / 39 |
-| 32 | iro, U, 洲, 摘编, ar | continents, continent, Antarctica, aurus, Countries | continent, continents, Continent, continental, Atlantic | 42606 / 133 · 1684 / 12836 · 645 / 88 |
-| 36 | X, known, B, uib, met | continents, continent, [Africa], countries, continent | continent, continents, countries, European, country | 34339 / 370 · 535 / 2155 · 323 / 59 |
-| 40 | 洲, 大陆, B, a, continents | continents, continent, [Africa], Americas, Asia | continent, European, Europe, continents, [Africa] | 59676 / 47 · 145 / 577 · 285 / 23 |
-| 44 | 洲, a, X, the, name | continents, continent, [Africa], Americas, Asia | continent, continents, Americas, [Africa], Asia | 24210 / 334 · 178 / 379 · 279 / 24 |
-| 48 | 叫做, nam, 叫, rove, called | continents, continent, Americas, Asia, [Africa] | continent, continents, continental, Americas, Asia | 27390 / 418 · 93 / 336 · 142 / 43 |
-| 52 | Americas, located, 洲, 的名称, 叫做 | Americas, Asia, [Africa], continent, continents | continent, Asia, Continent, [Africa], continents | 2660 / 43 · 9 / 71 · 7 / 73 |
-| 56 | called, 洲, Americas, Asia, 美洲 | Americas, Asia, continent, [Africa], Continent | continent, Americas, **Peru**, America, Continent | 43 / 45 · 7 / 49 · 3 / 21 |
-| 60 | *South*, 南, *South*, 在南, *south* | *South*, *South*, *south*, SOUTH, 南 | *South*, *South*, 在南, 南美, SOUTH | 44 / 1 · 12 / 1 · 11 / 1 |
-| 62 | *South*, called, *South*, *south*, named | *South*, America, *south*, Asia, called | *South*, *south*, *South*, named, called | 32 / 1 · 14 / 1 · 21 / 1 |
+| 0 | a, S, s, S, A | –and, The, It, For, the | <unk, \xc, Connecticut, <data, -www | 14980 / 10004 · 7105 / 21029 · 12733 / 59489 |
+| 4 | a, T, T, S, P | 률은, 专栏收录该内容, 률, 认认真, 률이 | OpenGL, Wichita, Birmingham, _php, _SDK | 19470 / 12117 · 205170 / 192540 · 2429 / 14055 |
+| 8 | P, H, B, H, M | 률은, uréat, ilian, 大金, quel | Wichita, 德州, Arizona, _SDK, Arkansas | 33901 / 16886 · 235247 / 129001 · 4316 / 127 |
+| 12 | B, B, u, b, M | surely, idencia, 广大的, presently, 清楚的 | Kais, Oz, AZ, Bris, 吉斯 | 23318 / 17045 · 208656 / 88094 · 1026 / 956 |
+| 16 | nam, R, M, R, B | Though, folks, neighbor, –and, truly | CIS, Wisconsin, Washington, 吉斯, Season | 10450 / 9992 · 118456 / 14342 · 635 / 1032 |
+| 20 | M, F, T, R, otope | 什么, 哪, —that, 那一, 哪一个 | months, year, month, season, Kansas | 34695 / 12946 · 124289 / 565 · 201 / 13 |
+| 24 | M, F, T, R, S | —that, 什么, —which, —even, 哪一个 | season, year, month, months, annually | 13017 / 5409 · 11777 / 79 · 57 / 6 |
+| 28 | M, M, anim, F, (s | —that, —but, —which, —and, —even | year, March, season, the, month | 12861 / 6024 · 79 / 88 · 120 / 8 |
+| 32 | M, U, enda, X, also | 什么, 什么意思, 是什么, 是什么意思, 请问 | year, season, Year, the, also | 1749 / 24802 · 378 / 475 · 20 / 11 |
+| 36 | also, calendar, M, ли, indeed | year, **Christmas**, month, winter, *December* | *December*, winter, year, November, month | 1578 / 698 · 2 / 5 · 16 / 1 |
+| 40 | also, M, indeed, calendar, 尽 | month, *December*, Month, winter, January | month, *December*, winter, November, January | 2773 / 128 · 10 / 2 · 17 / 2 |
+| 44 | M, not, 叫做, also, 1 | month, Month, *December*, winter, January | month, *December*, winter, months, year | 19842 / 1397 · 15 / 3 · 20 / 2 |
+| 48 | not, 叫做, NOT, nam, also | month, *December*, Month, November, January | month, *December*, calendar, winter, Month | 36482 / 491 · 13 / 2 · 16 / 2 |
+| 52 | typically, preceded, often, months, usually | *December*, month, January, October, November | month, Month, *December*, winter, November | 53253 / 31 · 23 / 1 · 16 / 3 |
+| 56 | *December*, *December*, January, typically, preceded | *December*, January, November, *December*, February | *December*, *December*, January, November, February | 710 / 1 · 17 / 1 · 19 / 1 |
+| 60 | *December*, *December*, Dec, .Dec, Dec | *December*, *December*, Dec, *december*, November | *December*, *December*, *december*, Dec, called | 77 / 1 · 9 / 1 · 8 / 1 |
+| 62 | *December*, *December*, Dec, the, typically | *December*, Dec, *december*, *December*, January | *December*, *December*, known, *december*, called | 52 / 1 · 13 / 1 · 111 / 1 |
 
 **J-lens, last 8 tokens x layers**: top word (bridge rank)
 
 | token | L8 | L16 | L24 | L32 | L40 | L48 | L56 | L62 |
 |---|---|---|---|---|---|---|---|---|
-| `of` | …and (95604) | a (12402) | [Africa] (2714) | [Africa] (728) | [Africa] (305) | [Africa] (205) | [Africa] (212) | [Africa] (143) |
-| `the` | 大金 (204299) | own (24942) | nations (13599) | continents (600) | [Africa] (304) | countries (326) | United (628) | United (1061) |
-| `country` | 's (39517) | countries (6516) | countries (743) | (country (504) | countries (330) | countries (207) | where (79) | where (50) |
-| `where` | 最新发布 (189040) | 最新发布 (20446) | 最新发布 (989) | Country (810) | Airport (1442) | National (2018) | Mount (1389) | Mount (1060) |
-| `Lima` | Lima (11) | Lima (4) | **Peru** (1) | **Peru** (1) | **Peru** (1) | **Peru** (1) | located (2) | is (2) |
-| `is` | ´s (112312) | ´t (15355) | city (1602) | 什么意思 (1173) | cities (1467) | is (2571) | located (2719) | located (51) |
-| `located` | .The (32307) | in (4303) | in (464) | 是什么意思 (897) | **Peru** (1) | is (11) | is (8) | is (31) |
-| `is` | avian (209422) | also (5688) | continent (508) | continents (1685) | continents (145) | continents (93) | Americas (7) | *South* (14) |
+| `ever` | 我 (210421) | l (177487) | trees (1183) | 树 (436) | trees (32) | trees (50) | tree (91) | green (208) |
+| `green` | pine (37) | hardwood (629) | trees (4) | **Christmas** (1) | **Christmas** (1) | **Christmas** (1) | tree (56) | tree (24) |
+| `tree` | famous (8) | Tree (18) | **Christmas** (1) | **Christmas** (1) | **Christmas** (1) | is (2) | is (4) | is (97) |
+| `and` | 大金 (142382) | well (7349) | **Christmas** (1) | 什么 (8) | **Christmas** (1) | **Christmas** (1) | gifts (10) | gifts (23) |
+| `gift` | gift (6600) | gift (5080) | gift (7) | gift (11) | gifts (9) | gifts (13) | gifts (145) | -g (1194) |
+| `-g` | ing (10637) | ing (9426) | ing (19) | gift (13) | Christmas (5) | gifts (18) | traditions (13) | iving (148) |
+| `iving` | gifts (2986) | toward (5665) | Christmas (2) | **Christmas** (1) | **Christmas** (1) | **Christmas** (1) | is (11) | is (78) |
+| `is` | 률은 (235251) | Though (118466) | —that (11770) | 什么 (379) | month (10) | month (13) | *December* (17) | *December* (13) |
 
-### `greatwall-ocean`
+### `organ-count-kidney2`
 
-> Fact: The ocean east of the country that built the Great Wall is the␣
+> Fact: The number of the bean-shaped organs that filter blood into urine in a human body is
 
-Bridge **China** -> answer *Pacific*; controls [Brazil] / [Atlantic]. category: multihop, status (B): eligible, label (B): J-mediated, model's top word: Pacific.
-Why this group: J-lens bridge top-1 in 35% of band layers at the last token, best earlier 100% (at `Great`), distractor 0%; J++ at the last token 0%.
-Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/greatwall-ocean__jlens.html) · [J++](slices/greatwall-ocean__jpp.html)
+Bridge **kidney** -> answer *two*; controls [heart] / [one]. category: organ-count, model answers correctly: yes, swapping flips the answer: neither part, model's top word: two.
+Why this group: J-lens bridge ranked first among the entities in 12% of band layers at the last token, best earlier 100% (at `bean`), distractor 0%; J++ at the last token 0%.
+Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/organ-count-kidney2__jlens.html) · [J++](slices/organ-count-kidney2__jpp.html)
 
-**Last token** `␣`: top-5 words per layer
+**Last token** `is`: top-5 words per layer
 
 | layer | logit lens | J-lens | J++ | B / A rank: logit lens · J-lens · J++ |
 |---|---|---|---|---|
-| 0 | I, a, s, A, S | –and, -C, -E, -H, -A | the, one, very, and, in | 8652 / 13037 · 25325 / 154602 · 7895 / 1884 |
-| 4 | I, P, A, s, 1 | plorer, maths, ropa, 典礼, otech | Ángeles, 优秀共产党员, ーブ, …the, egasus | 5218 / 21391 · 22201 / 163148 · 171659 / 88864 |
-| 8 | I, P, P, i, s | ilee, athon, urette, 典礼, ewater | shot, shots, Hollywood, Nevada, movie | 5070 / 7234 · 219068 / 204280 · 21515 / 64 |
-| 12 | ed, P, S, I, a | flix, milfs, ilee, pornstar, veggies | Century, Vegas, Colorado, franchise, Arizona | 4196 / 10666 · 222761 / 155180 · 3799 / 82 |
-| 16 | er, ed, w, F, W | veggies, /stats, biggest, -tech, milfs | Century, Arizona, Colorado, World, Vegas | 2609 / 21929 · 211528 / 5306 · 1347 / 125 |
-| 20 | ed, ug, 海, az, w | iha, utc, retti, 啥, biggest | ocean, sea, naval, seas, marine | 747 / 55083 · 62218 / 64 · 157 / 144 |
-| 24 | U, ed, T, V, U | biggest, Ranked, tallest, amongst, largest | largest, world, ocean, nations, ranking | 2286 / 9900 · 2518 / 222 · 68 / 59 |
-| 28 | M, T, I, A, U | 什么, 啥, biggest, 哪一个, -China | World, world, North, nations, Western | 14832 / 22972 · 273 / 59 · 206 / 19 |
-| 32 | I, U, A, M, T | 什么, 啥, 什么意思, whats, XXXX | Sea, *Pacific*, World, Western, countries | 3739 / 29922 · 168 / 340 · 65 / 2 |
-| 36 | uny, sea, 封, M, X | 什么, 啥, ocean, 世界, 的 | ocean, Sea, sea, marine, Ocean | 5142 / 61653 · 367 / 244 · 130 / 26 |
-| 40 | sea, ocean, tallest, major, 世界上最 | ocean, oceans, 海洋, Ocean, Ocean | water, ocean, sea, world, lake | 2788 / 33429 · 76 / 131 · 180 / 49 |
-| 44 | 拥有, 摩, igo, tallest, world | ocean, oceans, largest, global, tallest | world, largest, ocean, worldwide, national | 5945 / 6087 · 105 / 341 · 151 / 139 |
-| 48 | 世界上最, igo, orld, ikin, largest | ocean, largest, oceans, Largest, tallest | ocean, world, largest, oceans, sea | 4599 / 7859 · 101 / 324 · 133 / 173 |
-| 52 | largest, 第二大, ighest, widest, tallest | largest, Ocean, Largest, ocean, oceans | ocean, Ocean, sea, Sea, oceans | 1030 / 2322 · 35 / 63 · 46 / 85 |
-| 56 | second, 第二, 第二大, second, 第三 | 第二, second, second, Second, 第三 | second, sea, ocean, Ocean, third | 332 / 82 · 98 / 25 · 15 / 11 |
-| 60 | third, 第三, fourth, second, third | *Pacific*, third, fourth, second, Third | *Pacific*, *Pacific*, Chinese, **China**, Asian | 174 / 6 · 29 / 1 · 4 / 1 |
-| 62 | *Pacific*, Yellow, pac, yellow, largest | *Pacific*, 3, 4, Yellow, 2 | *Pacific*, Yellow, *Pacific*, East, Ocean | 24 / 1 · 22 / 1 · 10 / 1 |
+| 0 | S, a, s, S, T | –and, The, It, the, For | <unk, \xc, <data, <b, Connecticut | 35167 / 1360 · 46564 / 293 · 177548 / 5011 |
+| 4 | a, A, T, S, s | Hidal, 률은, Краси, 专栏收录该内容, 港币 | OpenGL, 优秀共产党员, _SDK, Opera, _php | 30642 / 554 · 147746 / 115663 · 40954 / 92241 |
+| 8 | a, G, A, s, T | colour, number, avourite, ilename, aldi | _SDK, **kidney**, _sdk, 肾脏, 湿地公园 | 12783 / 1392 · 144188 / 78449 · 2 / 12613 |
+| 12 | a, A, s, K, L | favour, avourite, amongst, whilst, only | Number, nis, Kaiser, AIS, IS | 7846 / 568 · 160687 / 1406 · 2299 / 1553 |
+| 16 | a, B, A, B, the | amongst, actually, though, just, even | Number, IS, is, the, in | 16461 / 1346 · 110739 / 210 · 20910 / 746 |
+| 20 | number, num, number, a, 数量 | number, actually, amongst, merely, quite | number, numbers, the, among, in | 26625 / 7435 · 166670 / 949 · 585 / 74 |
+| 24 | 数量, 的数量, number, in, count | amongst, 数目, merely, number, number | number, numbers, count, in, of | 45697 / 3629 · 154833 / 584 · 1138 / 23 |
+| 28 | in, N, number, M, a | number, number, 什么, <u, 数目 | number, Number, in, numbers, the | 32918 / 1146 · 45120 / 3513 · 1470 / 46 |
+| 32 | in, X, N, among, a | 什么, 是什么, <u, 怎么, 哪 | number, Number, number, in, numbers | 34770 / 2897 · 23982 / 6139 · 1298 / 48 |
+| 36 | number, A, \n, a, among | 什么, number, <u, NUMBER, number | number, Number, a, in, of | 40083 / 4678 · 14989 / 1570 · 4426 / 51 |
+| 40 | number, 是多少, count, 的数量, (s | number, number, NUMBER, Number, count | number, only, [one], numbers, the | 49119 / 1873 · 1805 / 261 · 3933 / 17 |
+| 44 | number, 合, 的数量, 数量, 是多少 | number, number, Number, count, NUMBER | number, count, [one], total, the | 58413 / 764 · 1896 / 68 · 2334 / 8 |
+| 48 | 的数量, number, exactly, usually, 数目 | number, number, Number, NUMBER, equals | number, Number, count, [one], numbers | 42644 / 172 · 4052 / 10 · 1361 / 7 |
+| 52 | typically, usually, *two*, 俩, 二 | number, *two*, TWO, usually, *Two* | number, *two*, pair, count, Number | 973 / 3 · 354 / 2 · 8 / 2 |
+| 56 | *two*, usually, typically, 通常为, *Two* | *two*, TWO, *Two*, usually, typically | *two*, number, pair, organ, **kidney** | 112 / 1 · 57 / 1 · 5 / 2 |
+| 60 | *two*, *Two*, *two*, _two, *Two* | *two*, *Two*, TWO, *two*, *Two* | pair, usually, *two*, kidneys, **kidney** | 74 / 1 · 34 / 1 · 5 / 3 |
+| 62 | *two*, *Two*, usually, greater, typically | *two*, *Two*, TWO, twenty, greater | *two*, usually, equal, always, [one] | 50 / 1 · 38 / 1 · 157 / 1 |
 
 **J-lens, last 8 tokens x layers**: top word (bridge rank)
 
 | token | L8 | L16 | L24 | L32 | L40 | L48 | L56 | L62 |
 |---|---|---|---|---|---|---|---|---|
-| `that` | aveled (128583) | bigger (232) | nations (12) | 什么 (57) | countries (7) | countries (4) | contains (132) | borders (91) |
-| `built` | rastructure (135201) | big (51) | Britain (7) | 造船 (122) | 建造 (25) | 建造 (31) | Statue (215) | the (153) |
-| `the` | .But (76340) | big (223) | America (3) | 什么意思 (12) | ships (21) | famous (23) | Statue (512) | Statue (597) |
-| `Great` | s (2130) | s (612) | Great (2) | civilizations (5) | **China** (1) | **China** (1) | Barrier (64) | Wall (62) |
-| `Wall` | a (385) | of (20) | of (2) | **China** (1) | **China** (1) | **China** (1) | is (2) | of (13) |
-| `is` | anyways (206270) | bigger (456) | China (3) | China (7) | **China** (1) | **China** (1) | **China** (1) | **China** (1) |
-| `the` | 大金 (213764) | biggest (4103) | Ocean (48) | ocean (74) | ocean (42) | Ocean (29) | *Pacific* (10) | Yellow (8) |
-| `␣` | ilee (219069) | veggies (211520) | biggest (2516) | 什么 (169) | ocean (77) | ocean (101) | 第二 (99) | *Pacific* (22) |
+| `blood` | s (9177) | s (3153) | -blood (107) | 和 (171) | 血液 (43) | blood (26) | 是人体 (33) | is (115) |
+| `into` | \xc (42432) | \xc (58878) | hado (10428) | drains (789) | urine (13) | urine (36) | urine (10) | urine (21) |
+| `urine` | —a (2912) | urine (1464) | urine (4) | urine (11) | urine (8) | urine (19) | is (8) | is (85) |
+| `in` | ighbour (184468) | basically (122754) | Britain (7880) | 什么 (6770) | kidneys (23) | humans (25) | humans (171) | humans (37) |
+| `a` | جدًا (21946) | s (22780) | &nbsp (41511) | whats (2028) | animals (9) | humans (16) | humans (38) | human (9) |
+| `human` | ly (9477) | ly (14488) | human (1168) | humans (784) | humans (134) | humans (156) | body (63) | body (3) |
+| `body` | ’s (15848) | which (18897) | which (6899) | what (2614) | body (159) | is (689) | is (562) | is (248) |
+| `is` | colour (144189) | amongst (110621) | amongst (154835) | 什么 (24168) | number (1804) | number (4054) | *two* (57) | *two* (38) |
 
-### `organ-location-heart`
+### `person-country-napoleon`
 
-> Fact: The part of the body that contains the organ that pumps blood is the
+> Fact: The country whose army was led by the emperor defeated at Waterloo is
 
-Bridge **heart** -> answer *chest*; controls [brain] / [head]. category: organ-location, status (B): eligible, label (B): neither, model's top word: chest.
-Why this group: J-lens bridge top-1 in 6% of band layers at the last token, best earlier 100% (at `blood`), distractor 0%; J++ at the last token 82%.
-Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/organ-location-heart__jlens.html) · [J++](slices/organ-location-heart__jpp.html)
+Bridge **Napoleon** -> answer *France*; controls [Lincoln] / [America]. category: person-country, model answers correctly: yes, swapping flips the answer: neither part, model's top word: France.
+Why this group: J-lens bridge ranked first among the entities in 0% of band layers at the last token, best earlier 100% (at `led`), distractor 0%; J++ at the last token 0%.
+Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/person-country-napoleon__jlens.html) · [J++](slices/person-country-napoleon__jpp.html)
 
-**Last token** `the`: top-5 words per layer
+**Last token** `is`: top-5 words per layer
 
 | layer | logit lens | J-lens | J++ | B / A rank: logit lens · J-lens · J++ |
 |---|---|---|---|---|
-| 0 | S, a, S, s, I | –and, The, o, It, a | many, New, the, several, some | 4389 / 5400 · 10380 / 21289 · 1294 / 299 |
-| 4 | a, s, a, I, in | 데미, CSL, セレ, 加拿大的, CIF | OpenGL, 泉水, Wichita, 翼, ResourceManager | 5660 / 7771 · 115921 / 6624 · 37324 / 66645 |
-| 8 | s, a, u, and, L | 大金, 旳, igan, 点击上方, .cat | parts, ワクチン, 颜料, افر, injured | 5437 / 10043 · 121767 / 23180 · 928 / 1737 |
-| 12 | is, K, L, c, s | er, organisation, neighbour, 部份, colour | and, The, the, of, in | 16778 / 13543 · 1935 / 1034 · 684 / 521 |
-| 16 | J, S, B, l, L | amongst, whilst, Whilst, 部份, Whilst | and, the, The, in, of | 7715 / 7383 · 11026 / 554 · 2823 / 498 |
-| 20 | X, 最, a, a, l | 什么地方, 哪一个, 哪儿, 全部的, actually | parts, Baptist, Kansas, Texas, Tex | 8119 / 40449 · 10696 / 47839 · 95 / 1901 |
-| 24 | B, X, B, G, J | 哪一个, 什么地方, 什么人, 哪儿, what | the, place, part, very, only | 14917 / 39048 · 22919 / 26895 · 282 / 436 |
-| 28 | C, M, B, A, G | 哪一个, 什么, 什么地方, what, 哪里 | the, The, part, and, body | 3070 / 19567 · 8679 / 12576 · 125 / 890 |
-| 32 | C, A, to, M, X | 什么, 什么意思, <u, 是什么, YOU | The, the, in, Medical, A | 885 / 37036 · 16438 / 5581 · 214 / 1301 |
-| 36 | X, body, M, <u, 间接 | 什么, 什么意思, 是什么, 是什么意思, 哪里 | medical, body, the, Medical, health | 144 / 38003 · 2351 / 3221 · 36 / 648 |
-| 40 | body, body, <u, organs, S | body, anatom, Body, 人体, anatomy | body, medical, health, human, **heart** | 23 / 10757 · 183 / 142 · 5 / 202 |
-| 44 | body, <u, body, 户, IT | body, torso, Body, humans, bodily | body, torso, human, center, area | 39 / 5347 · 159 / 73 · 10 / 52 |
-| 48 | body, 叫做, <u, called, umb | torso, body, abdomen, /body, Body | body, torso, **heart**, humans, human | 9 / 517 · 43 / 21 · 3 / 9 |
-| 52 | **heart**, torso, *chest*, body, lungs | torso, lungs, **heart**, body, abdomen | **heart**, body, *chest*, torso, Heart | 1 / 3 · 3 / 7 · 1 / 4 |
-| 56 | *chest*, 胸腔, torso, thor, 胸 | *chest*, torso, 胸腔, thor, *Chest* | *chest*, 胸腔, torso, *Chest*, **heart** | 14 / 1 · 12 / 1 · 5 / 1 |
-| 60 | *chest*, thor, 胸, 胸腔, 胸部 | *chest*, thor, torso, *Chest*, *chest* | *chest*, thor, *Chest*, Thor, 胸 | 18 / 1 · 16 / 1 · 14 / 1 |
-| 62 | *chest*, thor, torso, **heart**, Thor | *chest*, torso, thor, trunk, **heart** | *chest*, torso, thor, *chest*, trunk | 4 / 1 · 5 / 1 · 6 / 1 |
+| 0 | S, a, s, S, P | –and, The, It, For, the | <unk, \xc, <b, <data, ermen | 31272 / 9404 · 16083 / 4803 · 1099 / 3770 |
+| 4 | a, T, S, T, V | 专栏收录该内容, 률은, Hidal, 률, 港币 | OpenGL, ーブ, Opera, 文艺演出, jni | 74393 / 9942 · 174433 / 47442 · 77533 / 6617 |
+| 8 | a, H, u, B, f | avour, uréat, VERY, américa, ilename | 巴黎, 法国, ébastien, _countries, countries | 48713 / 5384 · 173009 / 1086 · 2239 / 55 |
+| 12 | a, b, the, f, v | 砼, ёл, avourite, avour, Whilst | *France*, country, Paris, Country, countries | 50837 / 7349 · 104362 / 3899 · 118 / 1 |
+| 16 | M, b, B, B, G | amongst, notably, –and, arguably, Whilst | London, Britann, Britain, British, Paris | 93254 / 5260 · 92662 / 824 · 21 / 18 |
+| 20 | erne, 邻, m, U, w | Britain, 什么, whose, chiefly, 同样 | country, *France*, countries, French, England | 40500 / 1506 · 83346 / 42 · 8 / 2 |
+| 24 | anim, 亡, erne, now, 的那个 | 什么, Britain, \uff, <u, <b | French, *France*, European, country, British | 50741 / 1402 · 13588 / 10 · 8 / 2 |
+| 28 | B, anim, 亡, \n, m | 什么, Britain, 哪一个, famously, 哪 | *France*, French, country, British, European | 67256 / 12988 · 203 / 10 · 9 / 1 |
+| 32 | A, U, B, 亡, 噜 | 什么, 什么意思, 是什么, 请问, 哪个 | British, French, *France*, country, England | 87818 / 23180 · 1225 / 186 · 7 / 3 |
+| 36 | 亡, U, ident, still, 陷 | *France*, Britain, 英国, 法国, French | French, *France*, **Napoleon**, British, 法国 | 23380 / 7849 · 11 / 1 · 3 / 2 |
+| 40 | still, 亡, also, U, so | *France*, French, *France*, 法国, Britain | French, *France*, British, European, **Napoleon** | 1781 / 187 · 8 / 1 · 5 / 2 |
+| 44 | a, U, G, \n, 1 | *France*, French, *France*, 法国, French | French, *France*, British, European, country | 10137 / 2062 · 9 / 1 · 11 / 2 |
+| 48 | NOT, amas, nam, hereby, ox | *France*, French, *France*, 法国, Germany | French, *France*, European, German, British | 27213 / 5259 · 13 / 1 · 12 / 2 |
+| 52 | located, 位于, also, /w, NOT | *France*, French, Belgium, Germany, *France* | *France*, French, 法国, Belgium, Germany | 5994 / 91 · 27 / 1 · 31 / 1 |
+| 56 | known, now, currently, *France*, located | *France*, Germany, Belgium, *France*, French | *France*, French, 法国, *France*, Germany | 120 / 4 · 33 / 1 · 66 / 1 |
+| 60 | *France*, known, *France*, located, 法国 | *France*, *France*, Belgium, Germany, French | *France*, *France*, French, 法国, *france* | 57 / 1 · 24 / 1 · 57 / 1 |
+| 62 | *France*, known, now, not, located | *France*, Belgium, Germany, known, Austria | *France*, known, *France*, Belgium, now | 97 / 1 · 22 / 1 · 66 / 1 |
 
 **J-lens, last 8 tokens x layers**: top word (bridge rank)
 
 | token | L8 | L16 | L24 | L32 | L40 | L48 | L56 | L62 |
 |---|---|---|---|---|---|---|---|---|
-| `contains` | жё (168137) | s (565) | parts (215) | 的 (4041) | organs (139) | organs (28) | organs (7) | blood (32) |
-| `the` | 大金 (137041) | s (202) | people (14) | what (87) | organs (4) | organs (3) | organs (3) | [brain] (2) |
-| `organ` | er (137896) | er (1646) | organs (243) | 的 (2082) | organs (28) | organs (6) | called (13) | that (6) |
-| `that` | raries (111087) | got (2322) | is (658) | 是什么 (62012) | humans (354) | humans (19) | organ (166) | pumps (581) |
-| `pumps` | Watts (13679) | big (319) | pumps (14) | <u (730) | pumps (21) | pumps (17) | blood (141) | blood (44) |
-| `blood` | s (12324) | s (336) | to (11) | \n (62) | blood (41) | blood (15) | throughout (28) | is (40) |
-| `is` | colour (176981) | basically (2024) | 什么 (1475) | 什么 (6841) | 心脏 (4) | located (5) | called (36) | the (20) |
-| `the` | 大金 (121865) | amongst (11030) | 哪一个 (22920) | 什么 (16440) | body (183) | torso (43) | *chest* (12) | *chest* (5) |
+| `led` | 莱德 (200829) | 专栏收录该内容 (34927) | commander (511) | commander (63) | commander (111) | commander (39) | by (8) | by (14) |
+| `by` | King (1323) | King (386) | military (47) | military (15) | military (8) | **Napoleon** (1) | **Napoleon** (1) | General (2) |
+| `the` | ­t (36339) | of (5480) | whom (1043) | famous (341) | President (13) | famous (6) | commander (16) | Duke (53) |
+| `emperor` | emperor (32) | emperor (13) | emperor (4) | emperor (3) | emperor (5) | emperor (3) | **Napoleon** (1) | **Napoleon** (1) |
+| `defeated` | 貅 (30835) | 貅 (7272) | ussia (1073) | 的 (646) | defeated (147) | defeated (41) | Germany (7) | the (5) |
+| `at` | ting (237099) | ting (128958) | Though (3559) | 失败 (439) | defeat (15) | Battle (4) | Battle (3) | least (66) |
+| `Waterloo` | Waterloo (18984) | Waterloo (440) | Waterloo (3) | Waterloo (2) | **Napoleon** (1) | **Napoleon** (1) | was (18) | was (12) |
+| `is` | avour (173005) | amongst (92667) | 什么 (13578) | 什么 (1227) | *France* (8) | *France* (13) | *France* (33) | *France* (22) |
 
 
 <a id="unseen"></a>
 ## Not seen anywhere
 
-Eligible; the J-lens never has the bridge top-1 in >= 50% of layers 32-48 at any token.
-
-### `etym-wargod-month`
-
-> Fact: The month named after the Roman god of war is month number␣
-
-Bridge **March** -> answer *3*; controls [June] / [6]. category: multihop, status (B): eligible, label (B): neither, model's top word: 3.
-Why this group: J-lens bridge top-1 in 18% of band layers at the last token, best earlier 0% (at `Fact`), distractor 0%; J++ at the last token 59%.
-Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/etym-wargod-month__jlens.html) · [J++](slices/etym-wargod-month__jpp.html)
-
-**Last token** `␣`: top-5 words per layer
-
-| layer | logit lens | J-lens | J++ | B / A rank: logit lens · J-lens · J++ |
-|---|---|---|---|---|
-| 0 | s, I, a, S, A | –and, -H, -C, -No, -E | the, and, one, very, in | 3483 / 89 · 48118 / 241427 · 909 / 242134 |
-| 4 | s, S, I, T, a | milfs, _AG, Hidal, pornstar, maths | 清泉, ーブ, 鹦, _angles, víde | 3651 / 98 · 188620 / 242150 · 162158 / 6043 |
-| 8 | S, B, m, A, 1 | ´s, Nº, nº, ´t, maths | only, number, numbers, thanks, December | 3961 / 78 · 153529 / 242127 · 450 / 11066 |
-| 12 | 1, S, I, B, ing | maths, Maths, neighbours, neighbour, ´s | and, in, the, Number, a | 2782 / 45 · 130889 / 216449 · 10 / 2061 |
-| 16 | s, B, S, B, I | whilst, amongst, favourite, ´s, maths | and, the, in, Number, Star | 822 / 74 · 111445 / 90954 · 27 / 9258 |
-| 20 | F, z, Ar, s, F | 1, *3*, 2, 4, 9 | month, months, monthly, lunar, -month | 7273 / 1756 · 5355 / 2 · 67 / 11514 |
-| 24 | F, F, P, ing, M | amongst, months, month, year, 7 | month, months, season, calendar, year | 15188 / 181 · 146 / 16 · 30 / 4155 |
-| 28 | ing, P, tw, inger, M | month, months, year, today, Month | calendar, Roman, Calendar, month, December | 4812 / 273 · 58 / 6582 · 7 / 542 |
-| 32 | ing, it, M, 注, ite | 什么, what, today, famous, year | calendar, Roman, Calendar, December, year | 42593 / 379 · 527 / 158 · 24 / 411 |
-| 36 | named, 之首, certain, 的名称, 干 | month, Month, months, 月份, month | month, Month, calendar, Calendar, months | 2657 / 5744 · 58 / 2511 · 26 / 530 |
-| 40 | M, 之首, clid, iki, calendar | month, Month, month, 月份, Month | month, Month, months, month, 月份 | 438 / 55726 · 38 / 95604 · 13 / 4167 |
-| 44 | 的名称, named, certain, M, M | month, Month, month, 月份, Month | month, Month, months, month, 月份 | 280 / 11809 · 35 / 100843 · 10 / 657 |
-| 48 | named, ality, itory, 天下, Conflict | Month, month, month, 月份, Month | month, month, Month, Month, 月份 | 7084 / 26435 · 120 / 162776 · 85 / 19452 |
-| 52 | ois, 这个名字, named, names, conflict | Month, October, October, month, February | Martian, Month, Mars, martial, month | 1733 / 100808 · 35 / 210688 · 30 / 186864 |
-| 56 | war, 战争, -war, 战, war | 战争, war, -war, War, **March** | war, 战争, War, -war, Mars | 15 / 8867 · 5 / 175623 · 10 / 127574 |
-| 60 | war, **March**, war, March, War | **March**, war, April, March, war | war, **March**, Mars, War, war | 2 / 29 · 1 / 46 · 2 / 212366 |
-| 62 | *3*, M, -m, m, MART | *3*, 7, 4, 2, 8 | March, m, -m, M, (m | 11 / 1 · 10 / 1 · 8 / 28 |
-
-**J-lens, last 8 tokens x layers**: top word (bridge rank)
-
-| token | L8 | L16 | L24 | L32 | L40 | L48 | L56 | L62 |
-|---|---|---|---|---|---|---|---|---|
-| `Roman` | Roman (46376) | Roman (103188) | Roman (9917) | Roman (30272) | Roman (8277) | Roman (24774) | goddess (4741) | god (2201) |
-| `god` | ness (134240) | god (18227) | Roman (11468) | god (31074) | gods (48810) | deity (105451) | Saturn (113) | Mars (61) |
-| `of` | …I (162775) | god (163260) | Roman (19123) | uranus (169577) | gods (11064) | gods (21907) | underworld (2504) | war (1159) |
-| `war` | er (20809) | the (6933) | warrior (1269) | warrior (702) | warrior (325) | warrior (835) | is (158) | is (34) |
-| `is` | name (123670) | though (51250) | 哪一个 (15130) | 什么 (15335) | month (54) | month (31) | February (5) | **March** (1) |
-| `month` | soever (166410) | ality (188095) | OfYear (1803) | 什么 (243) | month (68) | month (62) | number (159) | number (15) |
-| `number` | 数 (26378) | number (11183) | Number (400) | 什么 (597) | Number (320) | number (288) | 什么 (162) | seven (31) |
-| `␣` | ´s (153524) | whilst (111607) | months (145) | 什么 (528) | month (38) | Month (119) | 战争 (5) | *3* (10) |
+Answered correctly; the J-lens never has the bridge ranked first among the entities in >= 50% of layers 32-48 at any token.
 
 ### `mars-color`
 
-> Fact: The color of the planet fourth from the Sun is␣
+> Fact: The color of the planet fourth from the Sun is
 
-Bridge **Mars** -> answer *red*; controls [Earth] / [blue]. category: multihop, status (B): eligible, label (B): neither, model's top word: red.
-Why this group: J-lens bridge top-1 in 0% of band layers at the last token, best earlier 12% (at `the`), distractor 100%; J++ at the last token 0%.
+Bridge **Mars** -> answer *red*; controls [Earth] / [blue]. category: multihop, model answers correctly: yes, swapping flips the answer: neither part, model's top word: red.
+Why this group: J-lens bridge ranked first among the entities in 0% of band layers at the last token, best earlier 12% (at `the`), distractor 100%; J++ at the last token 0%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/mars-color__jlens.html) · [J++](slices/mars-color__jpp.html)
 
-**Last token** `␣`: top-5 words per layer
+**Last token** `is`: top-5 words per layer
 
 | layer | logit lens | J-lens | J++ | B / A rank: logit lens · J-lens · J++ |
 |---|---|---|---|---|
-| 0 | I, a, A, s, T | –and, -H, -E, -C, -No | the, one, very, and, in | 12990 / 636 · 125971 / 1567 · 8434 / 647 |
-| 4 | a, A, S, I, s | maths, 典礼, .nz, 港币, Maths | OpenGL, _angles, Pilar, víde, _SDK | 11148 / 562 · 172172 / 104482 · 164920 / 186315 |
-| 8 | a, A, B, M, b | 典礼, VERY, صيد, ilee, canadian | colors, color, colored, colors, planets | 1869 / 807 · 29656 / 177460 · 1609 / 636 |
-| 12 | a, A, S, S, B | odiac, ´t, lucky, iedo, pornstar | Colorado, Color, Arizona, stars, colors | 8654 / 466 · 125624 / 122975 · 445 / 572 |
-| 16 | S, S, a, A, T | whats, biggest, bigger, english, gotten | Color, Arizona, [Blue], Sky, a | 13405 / 777 · 218934 / 15560 · 792 / 370 |
-| 20 | a, ly, 亮, b, R | 啥, bigger, 0, 多少, whats | colors, color, colors, color, 颜色的 | 1449 / 92 · 186713 / 1289 · 652 / 73 |
-| 24 | M, H, R, M, etr | bigger, much, totally, biggest, color | planet, colors, color, planetary, NASA | 2404 / 227 · 6756 / 836 · 56 / 359 |
-| 28 | H, M, M, S, S | 什么, what, 0, 啥, 1 | planet, [Earth], Planet, NASA, color | 10305 / 84 · 5157 / 720 · 99 / 144 |
-| 32 | M, X, C, a, M | whats, blah, colors, 什么, color | 2, 0, 3, 1, 4 | 23725 / 248 · 3052 / 2036 · 221 / 115 |
-| 36 | X, M, ption, ict, A | 什么, 是, 什么意思, 是什么意思, 啥 | color, colored, 0, Color, X | 87701 / 528 · 43034 / 5043 · 4894 / 86 |
-| 40 | M, B, S, a, H | color, colors, color, colors, Color | color, colored, the, colors, a | 5983 / 28 · 14872 / 393 · 4369 / 31 |
-| 44 | ict, irt, H, 洲, ivo | color, colors, colors, color, orange | 1, 0, 2, 3, 4 | 9145 / 306 · 19228 / 129 · 6072 / 31 |
-| 48 | either, 喜, 团, just, 火 | <u, \n, <b, <strong, <br | color, 1, white, black, a | 22625 / 138 · 1997 / 78 · 812 / 6 |
-| 52 | redd, 红, 红色, 土, *red* | redd, color, Color, *red*, 红色 | *red*, redd, color, planet, orange | 398 / 5 · 62 / 4 · 21 / 1 |
-| 56 | redd, 黄色, yellow, 红色, 橘 | orange, redd, yellow, 红色, planet | yellow, planet, *red*, orange, color | 25 / 12 · 19 / 6 · 14 / 3 |
-| 60 | *red*, redd, orange, 橘, yellow | orange, *red*, redd, yellow, Orange | *red*, orange, yellow, redd, brown | 27 / 1 · 28 / 2 · 6 / 1 |
-| 62 | *red*, redd, orange, yellow, *Red* | *red*, redd, orange, *Red*, yellow | *red*, redd, *Red*, redd, orange | 7 / 1 · 12 / 1 · 36 / 1 |
+| 0 | S, a, s, S, A | –and, The, It, the, For | <unk, <b, \xc, <data, Connecticut | 16190 / 1010 · 12015 / 418 · 148466 / 53679 |
+| 4 | a, S, S, s, P | 률은, 认认真, きっ, 港币, 专栏收录该内容 | OpenGL, _SDK, 王菲, 优秀共产党员, Wichita | 14989 / 768 · 24409 / 46531 · 145097 / 143368 |
+| 8 | y, P, a, R, S | 大金, icate, 득, avian, amente | colors, colors, color, 颜色, Colors | 2739 / 813 · 256 / 12111 · 43152 / 14604 |
+| 12 | S, S, a, s, M | colors, color, coloring, favor, /colors | COLOR, Color, COLOR, Colors, /colors | 7678 / 1174 · 4355 / 3225 · 964 / 5919 |
+| 16 | S, M, S, R, B | actually, basically, just, even, also | Color, COLOR, Colors, COLOR, Color | 13611 / 2838 · 37278 / 634 · 257 / 11804 |
+| 20 | B, M, R, ly, b | just, though, much, actually, that | planet, colors, planets, 行星, 木星 | 170 / 136 · 11127 / 286 · 76 / 333 |
+| 24 | M, R, P, B, S | much, just, sometimes, farther, because | planet, colors, color, planets, Jupiter | 1490 / 345 · 802 / 205 · 17 / 183 |
+| 28 | M, S, (s, P, m | <u, \n, \u, 什么, color | planet, asteroid, color, [Earth], planets | 29939 / 319 · 916 / 1288 · 25 / 908 |
+| 32 | U, g, un, ano, S | 什么意思, 是什么意思, 什么, 是什么, <u | planet, [Earth], asteroid, planets, Planet | 55281 / 2790 · 1939 / 12882 · 31 / 1467 |
+| 36 | 寡, planets, ixo, orbits, photos | planet, 地球, planets, NASA, [Earth] | planet, planets, planetary, 行星, Planet | 8994 / 13442 · 36 / 6140 · 21 / 3921 |
+| 40 | 拥有丰富的, 如火, facts, ummer, สื่อ | planet, [Earth], 地球, Jupiter, Venus | planet, Planet, planetary, Jupiter, [Earth] | 7440 / 3884 · 16 / 311 · 10 / 41 |
+| 44 | 橘, aceous, gos, redd, nam | color, colors, planet, color, Color | [Earth], planet, color, orange, *red* | 3235 / 147 · 49 / 32 · 21 / 5 |
+| 48 | nam, 火, 橘, color, known | color, [Earth], planet, colors, earth | planet, color, [Earth], earth, planets | 1198 / 92 · 25 / 44 · 10 / 9 |
+| 52 | [Earth], 地球, redd, 橘, earth | [Earth], planet, Planet, redd, earth | planet, planets, 金星, Planet, Venus | 30 / 10 · 10 / 13 · 11 / 21 |
+| 56 | [Earth], 地球, planet, 火星, 红色 | planet, [Earth], Planet, redd, yellow | planet, planetary, planets, Planet, 金星 | 11 / 41 · 7 / 15 · 8 / 24 |
+| 60 | *red*, redd, 橘, orange, *Red* | *red*, redd, orange, *Red*, Orange | *red*, redd, orange, *Red*, -red | 34 / 1 · 22 / 1 · 8 / 1 |
+| 62 | *red*, orange, called, redd, yellow | *red*, orange, redd, yellow, [blue] | *red*, redd, orange, [blue], known | 11 / 1 · 9 / 1 · 53 / 1 |
 
 **J-lens, last 8 tokens x layers**: top word (bridge rank)
 
 | token | L8 | L16 | L24 | L32 | L40 | L48 | L56 | L62 |
 |---|---|---|---|---|---|---|---|---|
+| `of` | colors (7976) | colors (10772) | color (4621) | color (3264) | color (2207) | color (1355) | sky (150) | clouds (291) |
 | `the` | colors (194) | colors (4328) | color (1735) | color (816) | color (496) | color (229) | sky (314) | sky (806) |
 | `planet` | **Mars** (1) | Planet (8) | Planet (11) | planet (17) | planet (17) | planet (8) | Jupiter (2) | **Mars** (1) |
 | `fourth` | 了 (158972) | s (231194) | 了 (112036) | uranus (8239) | 地球 (344) | planet (148) | planet (80) | from (100) |
@@ -370,42 +328,85 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 | `the` | 旳 (91) | farther (57702) | colors (2042) | colors (1294) | color (79) | color (72) | stars (64) | sun (135) |
 | `Sun` | aries (64) | —not (134) | Saturn (35) | Earth (20) | [Earth] (28) | [Earth] (23) | is (7) | is (4) |
 | `is` | 大金 (255) | actually (37281) | much (802) | 什么意思 (1937) | planet (16) | color (25) | planet (7) | *red* (9) |
-| `␣` | 典礼 (29664) | whats (218942) | bigger (6751) | whats (3114) | color (14870) | <u (1993) | orange (19) | *red* (12) |
 
-### `rhyme-spoon-orbit`
+### `month-3-godof`
 
-> Fact: The celestial body whose name rhymes with 'spoon' orbits the planet called␣
+> Fact: The third month of the year is named after the Roman god of
 
-Bridge **moon** -> answer *Earth*; controls [Europa] / [Jupiter]. category: multihop, status (B): eligible, label (B): neither, model's top word: Earth.
-Why this group: J-lens bridge top-1 in 0% of band layers at the last token, best earlier 47% (at `with`), distractor 0%; J++ at the last token 0%.
-Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/rhyme-spoon-orbit__jlens.html) · [J++](slices/rhyme-spoon-orbit__jpp.html)
+Bridge **Mars** -> answer *war*; controls [Venus] / [love]. category: multihop, model answers correctly: yes, swapping flips the answer: neither part, model's top word: war.
+Why this group: J-lens bridge ranked first among the entities in 6% of band layers at the last token, best earlier 0% (at `Fact`), distractor 0%; J++ at the last token 18%.
+Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/month-3-godof__jlens.html) · [J++](slices/month-3-godof__jpp.html)
 
-**Last token** `␣`: top-5 words per layer
+**Last token** `of`: top-5 words per layer
 
 | layer | logit lens | J-lens | J++ | B / A rank: logit lens · J-lens · J++ |
 |---|---|---|---|---|
-| 0 | I, a, s, A, S | –and, -C, -E, -H, -cent | the, one, very, and, in | 34105 / 3981 · 61296 / 26985 · 8008 / 1809 |
-| 4 | a, P, s, M, I | Hidal, milfs, erez, ensored, icei | Android, _android, android, _angles, .Android | 36904 / 1927 · 96669 / 122160 · 95289 / 24062 |
-| 8 | M, M, 1, P, s | pornstar, pupper, 了, 金, ilee | planet, planets, stars, asteroid, 星球 | 16418 / 372 · 159449 / 99591 · 159 / 77 |
-| 12 | M, a, S, P, B | milfs, pornstar, uranus, Shemale, Blowjob | Texas, Stars, Planet, star, Star | 41115 / 555 · 185769 / 111764 · 634 / 17 |
-| 16 | s, R, S, P, a | milfs, pornstar, oggled, 啥, Lets | Texas, Tex, Planet, Stars, star | 44893 / 267 · 210231 / 47852 · 1587 / 15 |
-| 20 | *Earth*, b, facts, 着一颗, un | 啥, 跟, 本, 小, 高 | planet, Planet, planetary, planet, asteroid | 8564 / 1 · 119660 / 757 · 63 / 23 |
-| 24 | S, R, s, b, M | Whilst, Planet, planet, uminium, 跟 | planet, asteroid, 行星, Planet, planetary | 12875 / 11 · 58787 / 40 · 117 / 13 |
-| 28 | M, *Earth*, g, H, or | 什么, 啥, 哪, <u, planet | planet, Planet, *Earth*, asteroid, planetary | 39566 / 3 · 4155 / 21 · 272 / 3 |
-| 32 | idd, M, ue, osph, oma | 0, 什么, 3, 1, 2 | planet, Planet, *Earth*, asteroid, planet | 28959 / 228 · 2422 / 42 · 552 / 3 |
-| 36 | rome, planet, 行星, 番, 卫 | 地球, planet, 啥, 什么, planet | planet, Planet, planetary, *Earth*, planet | 2794 / 8 · 445 / 6 · 54 / 4 |
-| 40 | *Earth*, umpy, ication, 恒, Great | 地球, planet, planet, Planet, 行星 | planet, Planet, *Earth*, planetary, Saturn | 16240 / 1 · 228 / 7 · 172 / 3 |
-| 44 | 功, 喜, istic, ict, ropy | planet, planet, Planet, 地球, *Earth* | planet, *Earth*, 0, 1, 2 | 24817 / 27 · 177 / 5 · 394 / 2 |
-| 48 | ower, 呃, planet, istic, 旋 | <u, planet, Planet, *Earth*, XXXX | planet, *Earth*, Planet, 1, 2 | 2612 / 8 · 93 / 4 · 42 / 2 |
-| 52 | 行星, 地球, planet, *Earth*, planet | planet, Planet, <u, *Earth*, planet | planet, Planet, planet, planetary, Planet | 2912 / 4 · 65 / 4 · 32 / 7 |
-| 56 | *Earth*, 地球, planet, *Earth*, *earth* | *Earth*, Planet, planet, 地球, *Earth* | planet, planet, *Earth*, Planet, Planet | 3378 / 1 · 145 / 1 · 65 / 4 |
-| 60 | *Earth*, *earth*, *Earth*, 地球, *earth* | *Earth*, *earth*, *Earth*, 地球, *earth* | *Earth*, *earth*, planet, *Earth*, 地球的 | 1072 / 1 · 57 / 1 · 56 / 1 |
-| 62 | *Earth*, *earth*, 地球, after, *Earth* | *Earth*, Saturn, 8, Neptune, *earth* | 'E, *Earth*, *Earth*, *earth*, Saturn | 247 / 1 · 66 / 1 · 252 / 2 |
+| 0 | a, S, I, and, S | –and, a, the, The, or | people, niest, everyone, Truman, itian | 11500 / 3284 · 19404 / 271 · 78538 / 82346 |
+| 4 | 1, and, p, a, S | @g, Guta, 芷, bed, @d | goddess, 女神, _legend, gods, 神 | 3639 / 2894 · 93588 / 18664 · 132019 / 88508 |
+| 8 | p, c, P, M, C | -E, -W, …I, -g, -L | gods, goddess, mythology, 神话, 祭祀 | 1726 / 3310 · 406 / 1241 · 8130 / 61551 |
+| 12 | P, s, i, c, p | land, religion, ness, ding, gods | gods, goddess, Gods, mythology, Goddess | 2447 / 4996 · 664 / 56 · 1242 / 194 |
+| 16 | B, P, D, g, s | -esque, god, idol, gods, fighting | Gods, mythology, gods, God, and | 30333 / 4089 · 25605 / 20 · 3892 / 69 |
+| 20 | d, 示, g, Apollo, ose | god, d, gods, idol, God | Rome, Roman, gods, 罗马, goddess | 462 / 7559 · 1557 / 25 · 83 / 171 |
+| 24 | o, 三, g, P, 一手 | gods, god, Roman, Rome, worship | Roman, Rome, Latin, Romans, Saturn | 4517 / 85 · 240 / 58 · 49 / 88 |
+| 28 | c, P, g, 草, C | gods, mythology, god, deity, worship | Roman, Rome, Gods, deity, gods | 4618 / 1204 · 112 / 188 · 14 / 105 |
+| 32 | c, P, g, 性, M | gods, uranus, mythology, deity, god | Roman, Rome, Gods, mythology, gods | 5820 / 6898 · 335 / 1622 · 9 / 107 |
+| 36 | itos, g, 掌管, 监察, axy | Zeus, gods, Apollo, 罗马, Rome | Roman, Rome, 罗马, рим, Roman | 2539 / 727 · 30 / 404 · 13 / 102 |
+| 40 | 掌管, oso, sky, acia, yno | gods, Zeus, Apollo, goddess, deity | Roman, Jupiter, Saturn, Rome, [Venus] | 784 / 4179 · 24 / 620 · 14 / 36 |
+| 44 | T, g, 占, S, V | gods, earthly, underworld, deity, god | Roman, healing, weather, ancient, Earth | 155 / 1178 · 42 / 286 · 6 / 36 |
+| 48 | T, S, N, N, V | gods, /weather, deity, healing, earthly | healing, gods, deity, mythology, weather | 1051 / 259 · 68 / 460 · 20 / 127 |
+| 52 | 什么的, 瓮, 农业, g, 俊 | gods, agriculture, underworld, **Mars**, agriculture | Jupiter, **Mars**, [Venus], Saturn, Rome | 256 / 36 · 4 / 185 · 2 / 41 |
+| 56 | *war*, 地下, underworld, 什么的, 战争 | underworld, agriculture, *war*, warfare, underground | *war*, Rome, underworld, underground, 罗马 | 429 / 1 · 126 / 3 · 21 / 1 |
+| 60 | *war*, spring, *War*, springs, 战争 | *war*, agriculture, gates, wars, warfare | *war*, spring, *War*, *war*, gates | 152 / 1 · 80 / 1 · 12 / 1 |
+| 62 | *war*, the, *War*, spring, agriculture | *war*, agriculture, gates, doors, wars | *war*, agriculture, warfare, wars, gates | 56 / 1 · 119 / 1 · 401 / 1 |
 
 **J-lens, last 8 tokens x layers**: top word (bridge rank)
 
 | token | L8 | L16 | L24 | L32 | L40 | L48 | L56 | L62 |
 |---|---|---|---|---|---|---|---|---|
+| `year` | 's (461) | in (2556) | year (2258) | January (1331) | month (3654) | year (4441) | is (446) | is (82) |
+| `is` | therefore (22) | just (9243) | perhaps (2565) | <u (732) | month (820) | month (835) | March (229) | March (8) |
+| `named` | ighbor (37953) | –and (24653) | because (2401) | <u (1196) | 命名 (912) | named (692) | after (80) | March (3) |
+| `after` | ments (11351) | er (10557) | Roman (817) | 什么 (605) | Roman (74) | goddess (59) | March (2) | **Mars** (1) |
+| `the` | .L (259) | o (16557) | March (98) | 什么 (74) | Roman (58) | Latin (159) | Roman (13) | Roman (17) |
+| `Roman` | Roman (95) | Roman (2410) | Roman (427) | Roman (529) | Roman (176) | Roman (366) | goddess (63) | goddess (74) |
+| `god` | ness (583) | god (755) | god (151) | god (92) | gods (77) | <u (121) | **Mars** (2) | **Mars** (1) |
+| `of` | -E (416) | -esque (25605) | gods (240) | gods (335) | gods (24) | gods (69) | underworld (126) | *war* (119) |
+
+### `rhyme-spoon-orbit`
+
+> Fact: The celestial body whose name rhymes with 'spoon' orbits the planet called
+
+Bridge **moon** -> answer *Earth*; controls [Europa] / [Jupiter]. category: multihop, model answers correctly: yes, swapping flips the answer: neither part, model's top word: Earth.
+Why this group: J-lens bridge ranked first among the entities in 0% of band layers at the last token, best earlier 47% (at `with`), distractor 0%; J++ at the last token 0%.
+Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/rhyme-spoon-orbit__jlens.html) · [J++](slices/rhyme-spoon-orbit__jpp.html)
+
+**Last token** `called`: top-5 words per layer
+
+| layer | logit lens | J-lens | J++ | B / A rank: logit lens · J-lens · J++ |
+|---|---|---|---|---|
+| 0 | s, S, T, A, 1 | the, u, The, o, For | the, many, two, called, one | 60234 / 8989 · 23684 / 957 · 4128 / 1900 |
+| 4 | s, a, A, s, S | .hpp, ed, \xc, 祟, edel | called, called, 媛媛, ringing, Vatican | 58507 / 2243 · 23574 / 10864 · 203088 / 1404 |
+| 8 | s, a, A, b, S | .hpp, 可梦, 五颜六色的, ,www, 事半功倍 | called, *Earth*, called, Venus, 星球 | 43915 / 949 · 133447 / 4100 · 6604 / 2 |
+| 12 | s, ly, a, b, S | ed, ness, \xc, .hpp, &quot | Lass, *Earth*, Cairo, Ottawa, Called | 29186 / 560 · 55268 / 2219 · 4542 / 2 |
+| 16 | s, S, 2, 3, ly | ed, o, favourite, somebody, s | Castle, *Earth*, Called, Toronto, Ottawa | 30015 / 602 · 29931 / 647 · 9203 / 2 |
+| 20 | ly, named, b, name, s | somebody, 叫, 什么, &quot, 叫做 | planet, *Earth*, Planet, celestial, Solar | 7884 / 58 · 14391 / 205 · 117 / 2 |
+| 24 | b, ly, name, g, s | &quot, 叫做, 叫, 什么, somebody | planet, *Earth*, Planet, planetary, astronomical | 11444 / 91 · 7614 / 35 · 258 / 2 |
+| 28 | b, (s, 's, ly, k | 什么, 叫什么, 地球, 什么的, <u | *Earth*, planet, Planet, planetary, celestial | 19538 / 18 · 3026 / 10 · 901 / 1 |
+| 32 | \n, to, ta, b, 's | 什么, 的, 在, <u, 是什么意思 | *Earth*, Planet, planet, Name, name | 11466 / 114 · 2099 / 48 · 1231 / 1 |
+| 36 | named, 叫, whose, 叫做, name | 名称, 叫什么, 名字, Name, name | Planet, planet, *Earth*, Name, name | 21571 / 36 · 333 / 9 · 223 / 3 |
+| 40 | whose, ness, named, 's, X | 名称, 名字, Name, name, *Earth* | name, planet, Name, Planet, named | 47059 / 13 · 389 / 6 · 227 / 6 |
+| 44 | \n, ness, ada, whose, T | Name, name, 名称, named, *Earth* | *Earth*, planet, name, Planet, Name | 44641 / 53 · 476 / 5 · 653 / 1 |
+| 48 | 戏, by, \n, 俗, CN | Name, *Earth*, name, planet, Planet | planet, *Earth*, Planet, name, Name | 27631 / 27 · 251 / 2 · 113 / 2 |
+| 52 | *Earth*, 地球, planet, 一声, 的名称 | *Earth*, Planet, planet, Name, [Jupiter] | planet, Planet, *Earth*, [Jupiter], planets | 1356 / 1 · 117 / 1 · 24 / 3 |
+| 56 | *Earth*, 地球, *Earth*, planet, *earth* | *Earth*, Planet, planet, 地球, *Earth* | planet, *Earth*, Planet, planet, 地球 | 514 / 1 · 95 / 1 · 40 / 2 |
+| 60 | *Earth*, *Earth*, *earth*, 地球, *earth* | *Earth*, *earth*, *Earth*, Terra, Saturn | *Earth*, planet, *earth*, Saturn, 地球的 | 248 / 1 · 51 / 1 · 43 / 1 |
+| 62 | *Earth*, after, Saturn, *earth*, [Jupiter] | *Earth*, Saturn, [Jupiter], Terra, Neptune | *Earth*, Saturn, Neptune, [Jupiter], *Earth* | 68 / 1 · 78 / 1 · 139 / 1 |
+
+**J-lens, last 8 tokens x layers**: top word (bridge rank)
+
+| token | L8 | L16 | L24 | L32 | L40 | L48 | L56 | L62 |
+|---|---|---|---|---|---|---|---|---|
+| `'` | avour (129535) | whilst (37713) | whilst (16900) | maths (1284) | 发音 (568) | rhyme (70) | planet (3) | star (4) |
 | `sp` | ive (197964) | y (99292) | ive (83599) | *sp (20424) | fish (1380) | rhyme (29) | **moon** (1) | oon (92) |
 | `oon` | er (14168) | er (11596) | er (3528) | er (975) | er (1645) | rhyme (152) | spoon (20) | 'in (21) |
 | `'` | colourful (41334) | favourite (15415) | though (18037) | what (1383) | celestial (10) | is (17) | **moon** (1) | **moon** (1) |
@@ -413,20 +414,19 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 | `the` | 五颜六色的 (102400) | -esque (6373) | planet (88) | *Earth* (33) | planet (23) | *Earth* (10) | planet (30) | *Earth* (8) |
 | `planet` | Planet (2726) | Planet (2156) | Planet (201) | 地球 (144) | planet (54) | planet (47) | *Earth* (209) | whose (175) |
 | `called` | .hpp (133624) | ed (29831) | &quot (7611) | 什么 (2100) | 名称 (389) | Name (250) | *Earth* (95) | *Earth* (78) |
-| `␣` | pornstar (159461) | milfs (210223) | Whilst (58786) | 0 (2427) | 地球 (228) | <u (93) | *Earth* (145) | *Earth* (66) |
 
 
 <a id="distractor_wins"></a>
 ## Distractor above the bridge
 
-Eligible; at the last token the same-category distractor is top-1 in more band layers than the bridge.
+Answered correctly; at the last token the same-category distractor is ranked first among the entities in more band layers than the bridge.
 
 ### `ex-element-state-26-80`
 
 > Fact: The state of matter at room temperature of the element with atomic number 26 is
 
-Bridge **iron** -> answer *solid*; controls [mercury] / [liquid]. category: element-state, status (B): eligible, label (B): neither, model's top word: solid.
-Why this group: J-lens bridge top-1 in 0% of band layers at the last token, best earlier 100% (at `6`), distractor 18%; J++ at the last token 29%.
+Bridge **iron** -> answer *solid*; controls [mercury] / [liquid]. category: element-state, model answers correctly: yes, swapping flips the answer: neither part, model's top word: solid.
+Why this group: J-lens bridge ranked first among the entities in 0% of band layers at the last token, best earlier 100% (at `6`), distractor 18%; J++ at the last token 29%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/ex-element-state-26-80__jlens.html) · [J++](slices/ex-element-state-26-80__jpp.html)
 
 **Last token** `is`: top-5 words per layer
@@ -466,38 +466,39 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 
 ### `mars-color`
 
-> Fact: The color of the planet fourth from the Sun is␣
+> Fact: The color of the planet fourth from the Sun is
 
-Bridge **Mars** -> answer *red*; controls [Earth] / [blue]. category: multihop, status (B): eligible, label (B): neither, model's top word: red.
-Why this group: J-lens bridge top-1 in 0% of band layers at the last token, best earlier 12% (at `the`), distractor 100%; J++ at the last token 0%.
+Bridge **Mars** -> answer *red*; controls [Earth] / [blue]. category: multihop, model answers correctly: yes, swapping flips the answer: neither part, model's top word: red.
+Why this group: J-lens bridge ranked first among the entities in 0% of band layers at the last token, best earlier 12% (at `the`), distractor 100%; J++ at the last token 0%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/mars-color__jlens.html) · [J++](slices/mars-color__jpp.html)
 
-**Last token** `␣`: top-5 words per layer
+**Last token** `is`: top-5 words per layer
 
 | layer | logit lens | J-lens | J++ | B / A rank: logit lens · J-lens · J++ |
 |---|---|---|---|---|
-| 0 | I, a, A, s, T | –and, -H, -E, -C, -No | the, one, very, and, in | 12990 / 636 · 125971 / 1567 · 8434 / 647 |
-| 4 | a, A, S, I, s | maths, 典礼, .nz, 港币, Maths | OpenGL, _angles, Pilar, víde, _SDK | 11148 / 562 · 172172 / 104482 · 164920 / 186315 |
-| 8 | a, A, B, M, b | 典礼, VERY, صيد, ilee, canadian | colors, color, colored, colors, planets | 1869 / 807 · 29656 / 177460 · 1609 / 636 |
-| 12 | a, A, S, S, B | odiac, ´t, lucky, iedo, pornstar | Colorado, Color, Arizona, stars, colors | 8654 / 466 · 125624 / 122975 · 445 / 572 |
-| 16 | S, S, a, A, T | whats, biggest, bigger, english, gotten | Color, Arizona, [Blue], Sky, a | 13405 / 777 · 218934 / 15560 · 792 / 370 |
-| 20 | a, ly, 亮, b, R | 啥, bigger, 0, 多少, whats | colors, color, colors, color, 颜色的 | 1449 / 92 · 186713 / 1289 · 652 / 73 |
-| 24 | M, H, R, M, etr | bigger, much, totally, biggest, color | planet, colors, color, planetary, NASA | 2404 / 227 · 6756 / 836 · 56 / 359 |
-| 28 | H, M, M, S, S | 什么, what, 0, 啥, 1 | planet, [Earth], Planet, NASA, color | 10305 / 84 · 5157 / 720 · 99 / 144 |
-| 32 | M, X, C, a, M | whats, blah, colors, 什么, color | 2, 0, 3, 1, 4 | 23725 / 248 · 3052 / 2036 · 221 / 115 |
-| 36 | X, M, ption, ict, A | 什么, 是, 什么意思, 是什么意思, 啥 | color, colored, 0, Color, X | 87701 / 528 · 43034 / 5043 · 4894 / 86 |
-| 40 | M, B, S, a, H | color, colors, color, colors, Color | color, colored, the, colors, a | 5983 / 28 · 14872 / 393 · 4369 / 31 |
-| 44 | ict, irt, H, 洲, ivo | color, colors, colors, color, orange | 1, 0, 2, 3, 4 | 9145 / 306 · 19228 / 129 · 6072 / 31 |
-| 48 | either, 喜, 团, just, 火 | <u, \n, <b, <strong, <br | color, 1, white, black, a | 22625 / 138 · 1997 / 78 · 812 / 6 |
-| 52 | redd, 红, 红色, 土, *red* | redd, color, Color, *red*, 红色 | *red*, redd, color, planet, orange | 398 / 5 · 62 / 4 · 21 / 1 |
-| 56 | redd, 黄色, yellow, 红色, 橘 | orange, redd, yellow, 红色, planet | yellow, planet, *red*, orange, color | 25 / 12 · 19 / 6 · 14 / 3 |
-| 60 | *red*, redd, orange, 橘, yellow | orange, *red*, redd, yellow, Orange | *red*, orange, yellow, redd, brown | 27 / 1 · 28 / 2 · 6 / 1 |
-| 62 | *red*, redd, orange, yellow, *Red* | *red*, redd, orange, *Red*, yellow | *red*, redd, *Red*, redd, orange | 7 / 1 · 12 / 1 · 36 / 1 |
+| 0 | S, a, s, S, A | –and, The, It, the, For | <unk, <b, \xc, <data, Connecticut | 16190 / 1010 · 12015 / 418 · 148466 / 53679 |
+| 4 | a, S, S, s, P | 률은, 认认真, きっ, 港币, 专栏收录该内容 | OpenGL, _SDK, 王菲, 优秀共产党员, Wichita | 14989 / 768 · 24409 / 46531 · 145097 / 143368 |
+| 8 | y, P, a, R, S | 大金, icate, 득, avian, amente | colors, colors, color, 颜色, Colors | 2739 / 813 · 256 / 12111 · 43152 / 14604 |
+| 12 | S, S, a, s, M | colors, color, coloring, favor, /colors | COLOR, Color, COLOR, Colors, /colors | 7678 / 1174 · 4355 / 3225 · 964 / 5919 |
+| 16 | S, M, S, R, B | actually, basically, just, even, also | Color, COLOR, Colors, COLOR, Color | 13611 / 2838 · 37278 / 634 · 257 / 11804 |
+| 20 | B, M, R, ly, b | just, though, much, actually, that | planet, colors, planets, 行星, 木星 | 170 / 136 · 11127 / 286 · 76 / 333 |
+| 24 | M, R, P, B, S | much, just, sometimes, farther, because | planet, colors, color, planets, Jupiter | 1490 / 345 · 802 / 205 · 17 / 183 |
+| 28 | M, S, (s, P, m | <u, \n, \u, 什么, color | planet, asteroid, color, [Earth], planets | 29939 / 319 · 916 / 1288 · 25 / 908 |
+| 32 | U, g, un, ano, S | 什么意思, 是什么意思, 什么, 是什么, <u | planet, [Earth], asteroid, planets, Planet | 55281 / 2790 · 1939 / 12882 · 31 / 1467 |
+| 36 | 寡, planets, ixo, orbits, photos | planet, 地球, planets, NASA, [Earth] | planet, planets, planetary, 行星, Planet | 8994 / 13442 · 36 / 6140 · 21 / 3921 |
+| 40 | 拥有丰富的, 如火, facts, ummer, สื่อ | planet, [Earth], 地球, Jupiter, Venus | planet, Planet, planetary, Jupiter, [Earth] | 7440 / 3884 · 16 / 311 · 10 / 41 |
+| 44 | 橘, aceous, gos, redd, nam | color, colors, planet, color, Color | [Earth], planet, color, orange, *red* | 3235 / 147 · 49 / 32 · 21 / 5 |
+| 48 | nam, 火, 橘, color, known | color, [Earth], planet, colors, earth | planet, color, [Earth], earth, planets | 1198 / 92 · 25 / 44 · 10 / 9 |
+| 52 | [Earth], 地球, redd, 橘, earth | [Earth], planet, Planet, redd, earth | planet, planets, 金星, Planet, Venus | 30 / 10 · 10 / 13 · 11 / 21 |
+| 56 | [Earth], 地球, planet, 火星, 红色 | planet, [Earth], Planet, redd, yellow | planet, planetary, planets, Planet, 金星 | 11 / 41 · 7 / 15 · 8 / 24 |
+| 60 | *red*, redd, 橘, orange, *Red* | *red*, redd, orange, *Red*, Orange | *red*, redd, orange, *Red*, -red | 34 / 1 · 22 / 1 · 8 / 1 |
+| 62 | *red*, orange, called, redd, yellow | *red*, orange, redd, yellow, [blue] | *red*, redd, orange, [blue], known | 11 / 1 · 9 / 1 · 53 / 1 |
 
 **J-lens, last 8 tokens x layers**: top word (bridge rank)
 
 | token | L8 | L16 | L24 | L32 | L40 | L48 | L56 | L62 |
 |---|---|---|---|---|---|---|---|---|
+| `of` | colors (7976) | colors (10772) | color (4621) | color (3264) | color (2207) | color (1355) | sky (150) | clouds (291) |
 | `the` | colors (194) | colors (4328) | color (1735) | color (816) | color (496) | color (229) | sky (314) | sky (806) |
 | `planet` | **Mars** (1) | Planet (8) | Planet (11) | planet (17) | planet (17) | planet (8) | Jupiter (2) | **Mars** (1) |
 | `fourth` | 了 (158972) | s (231194) | 了 (112036) | uranus (8239) | 地球 (344) | planet (148) | planet (80) | from (100) |
@@ -505,14 +506,13 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 | `the` | 旳 (91) | farther (57702) | colors (2042) | colors (1294) | color (79) | color (72) | stars (64) | sun (135) |
 | `Sun` | aries (64) | —not (134) | Saturn (35) | Earth (20) | [Earth] (28) | [Earth] (23) | is (7) | is (4) |
 | `is` | 大金 (255) | actually (37281) | much (802) | 什么意思 (1937) | planet (16) | color (25) | planet (7) | *red* (9) |
-| `␣` | 典礼 (29664) | whats (218942) | bigger (6751) | whats (3114) | color (14870) | <u (1993) | orange (19) | *red* (12) |
 
 ### `person-firstname-newton`
 
 > Fact: The first name of the scientist on whose head an apple is said to have fallen was
 
-Bridge **Newton** -> answer *Isaac*; controls [Shakespeare] / [William]. category: person-firstname, status (B): eligible, label (B): neither, model's top word: Isaac.
-Why this group: J-lens bridge top-1 in 6% of band layers at the last token, best earlier 82% (at `to`), distractor 94%; J++ at the last token 12%.
+Bridge **Newton** -> answer *Isaac*; controls [Shakespeare] / [William]. category: person-firstname, model answers correctly: yes, swapping flips the answer: neither part, model's top word: Isaac.
+Why this group: J-lens bridge ranked first among the entities in 6% of band layers at the last token, best earlier 82% (at `to`), distractor 94%; J++ at the last token 12%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/person-firstname-newton__jlens.html) · [J++](slices/person-firstname-newton__jpp.html)
 
 **Last token** `was`: top-5 words per layer
@@ -554,14 +554,14 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 <a id="readers_disagree"></a>
 ## J-lens and J++ disagree
 
-Eligible; at the last token the two lenses' band shares for the bridge differ by >= 0.5.
+Answered correctly; at the last token the two lenses' band shares for the bridge differ by >= 0.5.
 
 ### `organ-location-heart`
 
 > Fact: The part of the body that contains the organ that pumps blood is the
 
-Bridge **heart** -> answer *chest*; controls [brain] / [head]. category: organ-location, status (B): eligible, label (B): neither, model's top word: chest.
-Why this group: J-lens bridge top-1 in 6% of band layers at the last token, best earlier 100% (at `blood`), distractor 0%; J++ at the last token 82%.
+Bridge **heart** -> answer *chest*; controls [brain] / [head]. category: organ-location, model answers correctly: yes, swapping flips the answer: neither part, model's top word: chest.
+Why this group: J-lens bridge ranked first among the entities in 6% of band layers at the last token, best earlier 100% (at `blood`), distractor 0%; J++ at the last token 82%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/organ-location-heart__jlens.html) · [J++](slices/organ-location-heart__jpp.html)
 
 **Last token** `the`: top-5 words per layer
@@ -603,134 +603,134 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 <a id="model_wrong"></a>
 ## Model answers wrong
 
-Part B's clean_wrong: the model's top word is not the answer. Does the lens still see the bridge?
+The model does not give the answer. Does the lens still see the bridge?
 
-### `instr-hit-drums`
+### `greatwall-ocean`
 
-> Fact: The pair of wooden objects used to strike the instrument that keeps the beat at the back of a rock band is called
+> Fact: The ocean east of the country that built the Great Wall is the
 
-Bridge **drums** -> answer *sticks*; controls [piano] / [keys]. category: instr-played, status (B): clean_wrong, label (B): -, model's top word: drum.
-Why this group: J-lens bridge top-1 in 12% of band layers at the last token, best earlier 88% (at `strike`), distractor 0%; J++ at the last token 0%.
-Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/instr-hit-drums__jlens.html) · [J++](slices/instr-hit-drums__jpp.html)
+Bridge **China** -> answer *Pacific*; controls [Brazil] / [Atlantic]. category: multihop, model answers correctly: no, swapping flips the answer: -, model's top word: Yellow.
+Why this group: J-lens bridge ranked first among the entities in 12% of band layers at the last token, best earlier 100% (at `Great`), distractor 0%; J++ at the last token 6%.
+Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/greatwall-ocean__jlens.html) · [J++](slices/greatwall-ocean__jpp.html)
 
-**Last token** `called`: top-5 words per layer
+**Last token** `the`: top-5 words per layer
 
 | layer | logit lens | J-lens | J++ | B / A rank: logit lens · J-lens · J++ |
 |---|---|---|---|---|
-| 0 | s, a, A, T, S | the, The, u, o, to | the, many, two, one, three | 78674 / 58053 · 8714 / 22147 · 3029 / 3717 |
-| 4 | s, a, S, J, A | ed, .hpp, \xc, .jpg, Called | called, called, 媛媛, Рим, _called | 94917 / 62049 · 43950 / 11185 · 35818 / 31232 |
-| 8 | s, a, A, A, S | .hpp, ness, everybody, .jpg, Called | called, aiss, 白鹭, famous, everybody | 73220 / 65482 · 10588 / 17277 · 38969 / 10538 |
-| 12 | s, a, A, A, 叫做 | &quot, somebody, .hpp, 什麽, everybody | Dallas, Lass, Texas, Cairo, Ludwig | 94922 / 68332 · 45253 / 34771 · 19047 / 40292 |
-| 16 | s, a, 叫做, a, B | ed, o, &quot, a, somebody | the, Call, a, Called, Cal | 97488 / 71413 · 42287 / 13172 · 16782 / 25959 |
-| 20 | 叫做, 叫, called, 称为, a | a, called, a, &quot, somebody | names, called, something, famous, Raleigh | 131194 / 36207 · 66048 / 37088 · 49063 / 6319 |
-| 24 | 叫做, a, called, a, 叫 | &quot, <b, called, a, a | called, the, a, name, an | 87156 / 45879 · 28148 / 29403 · 2574 / 1001 |
-| 28 | 叫做, a, called, A, a | <u, <b, <strong, 什么, \xc | the, a, called, named, The | 84731 / 79094 · 21695 / 12668 · 3868 / 3290 |
-| 32 | 叫做, called, a, IT, A | <u, 什么, 叫什么, \xc, <b | named, a, the, name, called | 44453 / 72220 · 15959 / 6778 · 9754 / 3597 |
-| 36 | 叫做, called, 称为, 叫, a | 叫做, 叫, 叫什么, 称为, 什么 | name, called, the, a, named | 14729 / 29894 · 11440 / 4121 · 1706 / 539 |
-| 40 | 叫做, a, called, 叫, a | 叫做, 称为, 叫, 叫什么, called | called, name, the, a, named | 30431 / 2970 · 881 / 1048 · 233 / 393 |
-| 44 | 叫做, called, a, a, 称为 | 叫什么, 叫做, 称为, called, 叫 | called, a, name, the, something | 23008 / 2827 · 448 / 698 · 348 / 117 |
-| 48 | 叫做, a, a, something, (s | <u, 叫什么, 叫做, <b, 叫 | something, name, called, the, a | 16295 / 3541 · 473 / 1901 · 82 / 348 |
-| 52 | 什么呢, 叫做, something, 什么, collectively | 叫什么, <u, percussion, **drums**, “The | drum, instrument, percussion, **drums**, instruments | 1138 / 76 · 4 / 39 · 4 / 11 |
-| 56 | 什么呢, percussion, rhythm, drum, what | drum, percussion, **drums**, 鼓, Drum | drum, **drums**, percussion, 鼓, drummer | 39 / 33 · 3 / 17 · 2 / 9 |
-| 60 | drum, 鼓, *sticks*, claves, *sticks* | drum, **drums**, *sticks*, Drum, 鼓 | drum, Drum, *sticks*, **drums**, sn | 8 / 3 · 2 / 3 · 4 / 3 |
-| 62 | drum, a, what, c, the | drum, **drums**, what, Drum, *sticks* | drum, **drums**, what, Drum, *sticks* | 6 / 7 · 2 / 5 · 2 / 5 |
+| 0 | a, S, S, A, in | The, –and, It, For, Or | New, many, Connecticut, the, Arkansas | 10181 / 14665 · 20180 / 24785 · 1634 / 3712 |
+| 4 | a, for, to, in, s | CSL, 데미, Celebrity, .Pro, セレ | egasus, 情人节, 碧, ensburg, _pcm | 5027 / 21869 · 4883 / 103281 · 194384 / 198790 |
+| 8 | a, s, s, c, M | 大金, Vorte, VERY, ustralian, igan | Colorado, Kans, color, Colorado, colors | 6102 / 14522 · 214205 / 202483 · 77906 / 328 |
+| 12 | A, a, M, to, M | biggest, chance, fame, ´s, asian | and, ocean, Ocean, *Pacific*, The | 3208 / 47196 · 38752 / 12585 · 551 / 4 |
+| 16 | w, H, c, Y, H | biggest, best, one, one, bigger | and, the, The, as, for | 16024 / 53363 · 4067 / 2018 · 1772 / 76 |
+| 20 | ough, enc, Enc, 陆, 海 | Ocean, Ocean, ocean, 海域, oceans | ocean, marine, maritime, sea, 海域 | 2272 / 1343 · 128 / 6 · 1276 / 193 |
+| 24 | g, 陆, ense, 海, sea | Ocean, ocean, oceans, Ocean, [Atlantic] | ocean, sea, marine, Ocean, maritime | 1469 / 5761 · 50 / 11 · 256 / 71 |
+| 28 | b, g, 陆, 怎, l | ocean, Ocean, coastal, oceans, [Atlantic] | ocean, Ocean, coastal, Sea, sea | 9138 / 4997 · 59 / 20 · 415 / 60 |
+| 32 | b, iro, 休, 限定, unge | ocean, Ocean, coastal, oceans, [Atlantic] | ocean, Ocean, coastal, Sea, marine | 4562 / 4679 · 79 / 16 · 421 / 50 |
+| 36 | 限定, 边的, -facing, 拉克, addy | ocean, Ocean, coastal, Ocean, oceans | ocean, coastal, Ocean, Sea, sea | 1298 / 33135 · 16 / 27 · 97 / 47 |
+| 40 | -facing, 边的, alis, 沿岸, 海洋 | ocean, Ocean, Ocean, oceans, 海洋 | ocean, sea, Ocean, marine, Sea | 385 / 2380 · 49 / 28 · 75 / 18 |
+| 44 | 边的, -facing, name, reeze, called | Ocean, ocean, oceans, Ocean, [Atlantic] | ocean, Ocean, sea, [Atlantic], Sea | 179 / 19967 · 22 / 7 · 26 / 8 |
+| 48 | ses, sea, called, 叫做, ocratic | Ocean, ocean, Ocean, oceans, Maritime | ocean, Ocean, Sea, sea, oceans | 645 / 9385 · 29 / 10 · 32 / 12 |
+| 52 | 太平洋, acific, Asian, 亚洲, 中国的 | Ocean, Asian, Asia, Sea, **China** | Ocean, Sea, ocean, sea, Asian | 30 / 48 · 6 / 6 · 17 / 12 |
+| 56 | 太平洋, 黄海, *Pacific*, 东海, *Pacific* | *Pacific*, 太平洋, *Pacific*, 东海, Asian | *Pacific*, 太平洋, Asian, Chinese, 东海 | 25 / 3 · 10 / 1 · 8 / 1 |
+| 60 | Yellow, Yellow, 黄海, yellow, 黄 | Yellow, *Pacific*, Sea, yellow, Yellow | Yellow, 黄海, yellow, Huang, *Pacific* | 59 / 7 · 23 / 2 · 8 / 5 |
+| 62 | Yellow, *Pacific*, East, yellow, Sea | Yellow, *Pacific*, Sea, East, yellow | *Pacific*, Yellow, East, Sea, yellow | 13 / 3 · 8 / 2 · 11 / 1 |
 
 **J-lens, last 8 tokens x layers**: top word (bridge rank)
 
 | token | L8 | L16 | L24 | L32 | L40 | L48 | L56 | L62 |
 |---|---|---|---|---|---|---|---|---|
-| `the` | ­t (716) | folks (1784) | percussion (9) | 什么 (34) | percussion (4) | percussion (7) | rhythm (8) | drum (2) |
-| `back` | ighbour (57930) | whilst (50303) | of (2458) | 的 (3930) | backstage (13) | behind (18) | of (34) | of (18) |
-| `of` | –and (23222) | the (10865) | much (1586) | 什么意思 (702) | music (28) | orchestra (81) | orchestra (30) | the (13) |
-| `a` | 网友评论 (22879) | Though (21973) | wooden (16) | 什么 (98) | 什么 (254) | 叫什么 (90) | orchestra (36) | marching (19) |
-| `rock` | stone (11515) | -rock (25957) | -rock (159) | 摇滚 (177) | guitar (77) | music (60) | 乐队 (89) | band (75) |
-| `band` | ster (294) | big (620) | music (96) | 什么 (81) | drummer (2) | drummer (2) | is (2) | are (7) |
-| `is` | Shemale (141878) | amongst (44702) | 什么 (13197) | 什么 (7076) | 什么 (859) | called (203) | called (28) | called (6) |
-| `called` | .hpp (10584) | ed (42292) | &quot (28151) | <u (15957) | 称为 (882) | <u (474) | drum (3) | drum (2) |
+| `country` | 's (6566) | 's (127) | country (25) | countries (32) | countries (16) | countries (14) | Canada (7) | of (4) |
+| `that` | aveled (130482) | bigger (228) | nations (12) | 什么 (60) | countries (7) | countries (3) | contains (128) | borders (79) |
+| `built` | rastructure (134120) | big (50) | Britain (7) | 造船 (113) | 建造 (25) | 建造 (31) | Statue (218) | the (156) |
+| `the` | .But (76595) | big (223) | Britain (3) | 什么意思 (13) | ships (21) | famous (23) | Statue (525) | Statue (592) |
+| `Great` | s (2145) | s (614) | Great (2) | civilizations (5) | **China** (1) | **China** (2) | Barrier (65) | Wall (68) |
+| `Wall` | a (386) | of (21) | of (2) | **China** (1) | **China** (1) | **China** (1) | is (2) | of (13) |
+| `is` | anyways (207146) | bigger (456) | China (3) | China (6) | **China** (1) | **China** (1) | **China** (1) | **China** (1) |
+| `the` | 大金 (214022) | biggest (4066) | Ocean (50) | ocean (79) | ocean (49) | Ocean (30) | *Pacific* (10) | Yellow (8) |
 
-### `organ-acid-stomach`
+### `instr-body-trumpet`
 
-> Fact: The strong liquid inside the organ that breaks down swallowed food is called
+> Fact: The part of the body a player buzzes to play the valved brass instrument heard in jazz solos is the
 
-Bridge **stomach** -> answer *acid*; controls [heart] / [blood]. category: organ-function, status (B): clean_wrong, label (B): -, model's top word: gastric.
-Why this group: J-lens bridge top-1 in 18% of band layers at the last token, best earlier 100% (at `down`), distractor 0%; J++ at the last token 53%.
-Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/organ-acid-stomach__jlens.html) · [J++](slices/organ-acid-stomach__jpp.html)
+Bridge **trumpet** -> answer *lips*; controls [drums] / [hands]. category: instr-played, model answers correctly: no, swapping flips the answer: -, model's top word: mouth.
+Why this group: J-lens bridge ranked first among the entities in 100% of band layers at the last token, best earlier 100% (at `ved`), distractor 0%; J++ at the last token 94%.
+Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/instr-body-trumpet__jlens.html) · [J++](slices/instr-body-trumpet__jpp.html)
 
-**Last token** `called`: top-5 words per layer
+**Last token** `the`: top-5 words per layer
 
 | layer | logit lens | J-lens | J++ | B / A rank: logit lens · J-lens · J++ |
 |---|---|---|---|---|
-| 0 | s, a, T, S, A | the, u, The, o, For | the, many, two, one, three | 27327 / 3660 · 58645 / 23648 · 6004 / 3032 |
-| 4 | s, a, s, S, S | ed, .jpg, .hpp, \xc, everybody | called, called, 媛媛, _called, -called | 43014 / 2713 · 36019 / 124485 · 108964 / 185700 |
-| 8 | s, a, A, p, A | .hpp, .jpg, \xc, Famous, Called | called, aiss, famous, everybody, called | 37082 / 9918 · 74655 / 89099 · 127738 / 111541 |
-| 12 | s, a, a, A, A | &quot, somebody, ed, everybody, .hpp | Dallas, Texas, the, Lass, Ludwig | 46318 / 7149 · 77339 / 95456 · 27978 / 25387 |
-| 16 | s, a, a, 叫做, A | a, ed, o, called, famous | the, Call, a, Called, Castle | 95685 / 13096 · 67013 / 50109 · 50650 / 46143 |
-| 20 | 叫做, 叫, called, a, a | a, called, called, o, &quot | medicine, called, Medicine, the, famous | 63397 / 16425 · 94450 / 35759 · 3300 / 103207 |
-| 24 | 叫做, a, called, A, a | <b, <strong, <u, &quot, <br | called, name, medicine, the, Medicine | 64014 / 21411 · 81164 / 29360 · 1323 / 23385 |
-| 28 | A, a, a, 叫做, R | <u, 什么, <b, <strong, \xc | the, Medicine, medicine, called, Name | 62098 / 18546 · 31116 / 17295 · 2280 / 11366 |
-| 32 | 叫做, A, a, called, B | <u, 叫, 叫什么, 什么, \xc | Name, Medicine, name, medicine, named | 52775 / 30032 · 26028 / 21456 · 4640 / 18926 |
-| 36 | 叫做, called, 称为, A, 叫 | 叫, 叫做, 称为, 叫什么, 简称 | name, Name, called, named, medical | 15940 / 8868 · 8712 / 6489 · 242 / 1342 |
-| 40 | a, 叫做, called, a, A | 叫, 叫做, 称为, 叫什么, called | name, called, the, named, medical | 12801 / 7729 · 660 / 1623 · 83 / 504 |
-| 44 | 叫做, called, a, a, 叫 | 叫做, 叫什么, 叫, 称为, called | called, the, name, a, named | 12322 / 6267 · 824 / 1124 · 59 / 411 |
-| 48 | 叫做, a, a, called, A | 叫做, 叫什么, 叫, <u, called | name, called, the, medicine, chemical | 12573 / 4978 · 259 / 218 · 30 / 105 |
-| 52 | 叫做, digestive, called, 什么呢, a | digestive, digestion, 胃酸, 叫做, saliva | 胃酸, digestive, digestion, *acid*, **stomach** | 21 / 24 · 18 / 16 · 5 / 4 |
-| 56 | 胃, gastric, 胃酸, digestive, saliva | saliva, 胃酸, gastric, digestive, digestion | 胃酸, gastric, 胃, *acid*, **stomach** | 6 / 8 · 7 / 9 · 5 / 4 |
-| 60 | gastric, digestive, **stomach**, 胃, 消化 | gastric, digestive, **stomach**, digestion, digest | **stomach**, gastric, digestive, 胃酸, 胃 | 3 / 13 · 3 / 13 · 1 / 14 |
-| 62 | gastric, **stomach**, *acid*, digestive, bile | gastric, **stomach**, digestive, *acid*, saliva | **stomach**, gastric, digestive, *acid*, 胃酸 | 2 / 3 · 2 / 4 · 1 / 4 |
+| 0 | S, a, A, I, in | The, –and, o, Or, a | New, many, Connecticut, Telegram, Arkansas | 80413 / 20628 · 19444 / 14738 · 60234 / 55372 |
+| 4 | a, A, I, to, s | 데미, セレ, 加拿大的, CSL, -CS | 碧, ーブ, 周杰伦, 小鸟, _pcm | 68593 / 21322 · 170523 / 102000 · 76391 / 6599 |
+| 8 | u, a, b, a, G | 旳, 大金, attery, quel, igan | musical, Wichita, music, 乐器, brass | 45214 / 26910 · 83432 / 20309 · 155 / 3773 |
+| 12 | K, G, c, k, u | er, 部份, -C, chance, u | and, The, Kansas, Wichita, Dallas | 61638 / 18226 · 47348 / 1200 · 26609 / 1702 |
+| 16 | B, A, N, A, G | amongst, Though, o, a, though | Wichita, Kansas, and, the, Bates | 52333 / 11948 · 73505 / 31579 · 57740 / 303 |
+| 20 | parts, 拢, 衔, 触, RequestBody | Though, Aside, though, Though, Something | **trumpet**, brass, musicians, musical, music | 1675 / 3385 · 7997 / 8755 · 1 / 69 |
+| 24 | 喉, soft, 虫, 触, 领 | Voice, Music, Though, Sound, What | **trumpet**, brass, vocal, musical, pipe | 3895 / 22058 · 109 / 725 · 1 / 28 |
+| 28 | \n, 附件, end, 吹, F | **trumpet**, vocal, brass, 乐器, Music | **trumpet**, brass, Brass, nipple, musicians | 15051 / 6221 · 1 / 18 · 1 / 26 |
+| 32 | \n, R, end, o, an | 什么, \n, What, <u, What | **trumpet**, brass, Brass, mouth, nipple | 5687 / 2223 · 30 / 42 · 1 / 35 |
+| 36 | 口, 吹, 口腔, 嘴巴, 嘴 | What, \n, 什么, **trumpet**, How | brass, **trumpet**, Brass, mouth, pipe | 88 / 763 · 4 / 41 · 2 / 29 |
+| 40 | 嘴巴, ToArray, 芦, 叫做, 嘴 | 嘴唇, **trumpet**, *lips*, 乐器, Mouth | **trumpet**, mouth, brass, *lips*, pipe | 251 / 147 · 2 / 3 · 1 / 4 |
+| 44 | iet, 直接与, \n, 人的, rim | 嘴唇, *lips*, mouth, Mouth, cheeks | mouth, brass, metal, *lips*, Mouth | 15681 / 503 · 17 / 2 · 17 / 4 |
+| 48 | ress, 直接接触, 接口, ses, interface | 嘴唇, Mouth, *lips*, mouth, brass | mouth, brass, *lips*, metal, 嘴唇 | 38573 / 938 · 10 / 3 · 10 / 4 |
+| 52 | 口腔, 嘴唇, mouth, 嘴巴, *lips* | *lips*, mouth, Mouth, 嘴唇, lungs | mouth, Mouth, *lips*, metal, 嘴唇 | 2494 / 5 · 22 / 1 · 6 / 3 |
+| 56 | mouth, mouth, Mouth, *lips*, 口 | mouth, *lips*, Mouth, mouth, 嘴唇 | mouth, Mouth, *lips*, mouth, 嘴唇 | 57 / 4 · 22 / 2 · 26 / 3 |
+| 60 | *lips*, mouth, 嘴唇, 唇, *Lips* | *lips*, mouth, *Lips*, 嘴唇, lip | mouth, *lips*, lip, 嘴唇, *Lips* | 69 / 1 · 19 / 1 · 31 / 2 |
+| 62 | *lips*, mouth, *Lips*, lip, player | *lips*, mouth, *Lips*, lip, player | mouth, *lips*, lip, *Lips*, *lips* | 47 / 1 · 13 / 1 · 25 / 2 |
 
 **J-lens, last 8 tokens x layers**: top word (bridge rank)
 
 | token | L8 | L16 | L24 | L32 | L40 | L48 | L56 | L62 |
 |---|---|---|---|---|---|---|---|---|
-| `organ` | er (48534) | er (8983) | ically (3866) | 的 (533) | organs (16) | organs (27) | called (66) | called (56) |
-| `that` | aveled (12681) | bigger (2391) | &amp (4736) | fluids (2005) | fluids (101) | brain (551) | protects (1527) | pumps (3261) |
-| `breaks` | s (29481) | s (14986) | havoc (14628) | 的 (5865) | digestion (41) | digestion (43) | food (279) | down (277) |
-| `down` | s (36306) | s (8092) | s (1026) | chemicals (660) | digestive (28) | foods (42) | food (188) | food (131) |
-| `swallowed` | 嚓 (14774) | swallowed (638) | swallowed (49) | eaten (54) | swallowed (28) | foods (27) | food (94) | food (119) |
-| `food` | er (21233) | a (7780) | -food (327) | 和 (204) | digestive (23) | digestive (24) | is (22) | is (128) |
-| `is` | colour (52594) | 1 (15140) | 什么 (49766) | 什么 (6425) | chemicals (132) | called (119) | called (31) | called (5) |
-| `called` | .hpp (74659) | a (67021) | <b (81166) | <u (26024) | 叫 (662) | 叫做 (255) | saliva (7) | gastric (2) |
+| `brass` | s (19) | s (24) | brass (4) | brass (3) | **trumpet** (1) | brass (3) | instruments (5) | instrument (3) |
+| `instrument` | —a (1142) | which (4447) | which (301) | 什么 (246) | instrument (39) | called (40) | called (2) | **trumpet** (1) |
+| `heard` | edly (6203) | edly (2397) | heard (1117) | 什么 (1012) | music (168) | music (119) | playing (3) | in (16) |
+| `in` | ners (61579) | popular (11883) | music (65) | music (46) | music (37) | music (36) | orchestra (3) | jazz (25) |
+| `jazz` | s (1192) | jazz (4234) | jazz (129) | jazz (126) | jazz (62) | jazz (110) | music (32) | bands (30) |
+| `solos` | 써 (5091) | and (3757) | jazz (180) | jazz (15) | jazz (14) | jazz (24) | is (28) | is (35) |
+| `is` | Shemale (157040) | notably (19150) | 什么 (61608) | 什么 (12926) | anatom (34) | anatom (557) | mouth (18) | *lips* (24) |
+| `the` | 旳 (83431) | amongst (73508) | Voice (108) | 什么 (24) | 嘴唇 (2) | 嘴唇 (10) | mouth (22) | *lips* (13) |
 
-### `planet-3-moons`
+### `osu-rival-mascot`
 
-> Fact: The number of natural moons orbiting the planet third from the Sun is␣
+> Fact: The mascot of the college football rival of Ohio State is a
 
-Bridge **Earth** -> answer *1*; controls [Mars] / [2]. category: multihop, status (B): clean_wrong, label (B): -, model's top word: 0.
-Why this group: J-lens bridge top-1 in 71% of band layers at the last token, best earlier 100% (at `natural`), distractor 0%; J++ at the last token 41%.
-Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/planet-3-moons__jlens.html) · [J++](slices/planet-3-moons__jpp.html)
+Bridge **Michigan** -> answer *wolverine*; controls [Wisconsin] / [badger]. category: multihop, model answers correctly: no, swapping flips the answer: -, model's top word: buck.
+Why this group: J-lens bridge ranked first among the entities in 71% of band layers at the last token, best earlier 100% (at `Ohio`), distractor 0%; J++ at the last token 94%.
+Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/osu-rival-mascot__jlens.html) · [J++](slices/osu-rival-mascot__jpp.html)
 
-**Last token** `␣`: top-5 words per layer
+**Last token** `a`: top-5 words per layer
 
 | layer | logit lens | J-lens | J++ | B / A rank: logit lens · J-lens · J++ |
 |---|---|---|---|---|
-| 0 | I, a, A, P, s | –and, -H, -E, -C, -A | the, very, one, and, in | 3911 / 14 · 37766 / 213578 · 2035 / 242145 |
-| 4 | a, A, S, s, I | maths, .nz, pornstar, Vinci, Maths | víde, ーブ, OpenGL, …the, _SDK | 3572 / 13 · 172815 / 242153 · 238307 / 27514 |
-| 8 | a, A, M, B, S | pornstar, avourite, صيد, maths, Busty | only, maths, stars, thanks, numbers | 866 / 9 · 169585 / 242150 · 1414 / 4096 |
-| 12 | a, A, S, M, to | avourite, pornstar, maths, .nr, Maths | stars, Stars, and, star, Number | 772 / 15 · 145649 / 241381 · 25 / 626 |
-| 16 | S, S, er, a, A | amongst, whilst, avourite, Whilst, anyways | and, the, in, as, a | 1132 / 12 · 118277 / 161 · 59 / 2115 |
-| 20 | b, orbit, ly, 枚, fewer | [2], 3, *1*, 6, 4 | planet, planets, Saturn, moon, lunar | 55 / 478 · 19461 / 3 · 35 / 17561 |
-| 24 | orbit, S, altogether, 枚, R | 数目, 6, 7, 3, [2] | asteroid, planet, Saturn, planets, asteroids | 1312 / 239 · 4513 / 12 · 30 / 5272 |
-| 28 | number, HD, HD, as, M | 什么, <u, 多少, 有多少, 9 | asteroid, Saturn, planet, Jupiter, planets | 3872 / 47 · 916 / 24 · 40 / 977 |
-| 32 | number, N, less, N, record | XXXX, 9, 7, [2], *1* | planet, asteroid, Saturn, Jupiter, planets | 16572 / 78 · 92 / 6 · 24 / 107 |
-| 36 | orbit, number, orbits, 继, currently | planet, 地球, 行星, planet, 月球 | planet, asteroid, planetary, planets, Jupiter | 612 / 4644 · 22 / 94 · 24 / 267 |
-| 40 | 已知, known, currently, orbit, number | planet, 月球, planet, planets, NASA | planet, planetary, Saturn, asteroid, planets | 592 / 6041 · 23 / 3492 · 15 / 459 |
-| 44 | zero, 零, currently, known, orbits | 地球, planet, planet, NASA, asteroid | asteroid, planet, zero, planetary, number | 215 / 504 · 28 / 456 · 13 / 79 |
-| 48 | zero, 零, zero, none, two | ZERO, NOTHING, 零, zero, NONE | zero, planet, planets, planetary, asteroid | 210 / 425 · 145 / 600 · 24 / 182 |
-| 52 | zero, orbits, orbit, zero, moons | planet, asteroid, planets, planet, asteroids | planet, planets, 月球, planetary, asteroid | 10 / 47770 · 15 / 169874 · 104 / 169020 |
-| 56 | moons, 卫星, moon, satellites, 衛星 | moons, 卫星, moon, Moon, Moon | moons, moon, Moon, Moon, 卫星 | 195 / 62105 · 64 / 199458 · 69 / 149237 |
-| 60 | zero, 零, zero, two, Zero | zero, zero, two, moons, Zero | moons, moon, zero, Moon, satellites | 142 / 545 · 34 / 44 · 20 / 212108 |
-| 62 | [2], 0, zero, two, 零 | [2], 0, *1*, 6, 3 | zero, two, 0, only, one | 32 / 16 · 38 / 3 · 42 / 85 |
+| 0 | S, s, 1, a, s | –and, The, the, It, a | <unk, Connecticut, children, <data, everyone | 27122 / 105045 · 16198 / 56318 · 16772 / 98318 |
+| 4 | to, S, a, T, s | 翡, جدًا, Academia, Counseling, Celebrity | 优秀共产党员, 雷诺, 灵儿, 周杰伦, 李克 | 26314 / 81912 · 1731 / 125090 · 5086 / 54035 |
+| 8 | S, S, H, T, p | جدًا, ilee, htar, ustralian, jewelry | Garland, famous, Colorado, hometown, flying | 38683 / 90896 · 86477 / 114363 · 5599 / 91193 |
+| 12 | H, H, T, p, 1 | big, lucky, favorite, nice, beautiful | mascot, Bea, ADA, Hollywood, AAA | 36882 / 79770 · 12264 / 13686 · 3472 / 90906 |
+| 16 | T, S, P, F, s | favorite, big, folks, famous, bigger | mascot, and, Fantasy, Bair, a | 52637 / 143516 · 888 / 6029 · 2856 / 98497 |
+| 20 | aw, mascot, 丑, T, 叫做 | mascot, favorite, goofy, Mickey, humor | mascot, Kentucky, college, animal, university | 104630 / 175732 · 596 / 1591 · 2138 / 4293 |
+| 24 | 廷, 系, 傍, 系的, ත | mascot, Mickey, college, sports, athletic | mascot, sports, college, athletic, university | 28589 / 188105 · 10 / 1604 · 43 / 3065 |
+| 28 | 系, 爪, 毛, associated, 殷 | mascot, sports, Mickey, masc, famous | mascot, masc, animal, 吉祥物, sports | 58619 / 157357 · 76 / 821 · 60 / 1031 |
+| 32 | 毛, 弄, 系, aug, 系的 | mascot, masc, famous, NASCAR, goofy | mascot, masc, 吉祥物, animal, animals | 98661 / 215474 · 73 / 1218 · 32 / 731 |
+| 36 | mascot, 年至今, ych, 毛, INU | mascot, NCAA, Ohio, NASCAR, Baseball | mascot, Ohio, **Michigan**, masc, Ohio | 31079 / 159897 · 9 / 255 · 3 / 207 |
+| 40 | emory, plies, mascot, 形象的, 爪 | mascot, Ohio, NCAA, Ohio, **Michigan** | mascot, Ohio, **Michigan**, college, university | 5037 / 145258 · 5 / 432 · 3 / 488 |
+| 44 | 叫做, mascot, 名叫, 芒, 帚 | mascot, 吉祥物, masc, symbol, Symbol | mascot, 吉祥物, masc, Ohio, **Michigan** | 5524 / 178048 · 49 / 998 · 5 / 3722 |
+| 48 | 叫做, 名叫, mascot, named, 叫 | mascot, 吉祥物, masc, symbol, warriors | mascot, 吉祥物, masc, symbol, university | 10512 / 217974 · 80 / 1639 · 27 / 6943 |
+| 52 | mascot, 吉祥物, spirit, 是一只, 加斯 | mascot, masc, 吉祥物, Masc, Ohio | mascot, 吉祥物, Ohio, Ohio, **Michigan** | 3272 / 198698 · 25 / 782 · 5 / 1380 |
+| 56 | buck, Buck, Ohio, mascot, Ohio | mascot, Buck, Ohio, Ohio, buck | Ohio, Buck, buck, Ohio, mascot | 3306 / 56476 · 163 / 136 · 10 / 375 |
+| 60 | Buck, buck, cardinal, eyes, Fighting | buck, Buck, bulld, mascot, hawk | Ohio, buck, Buck, Ohio, **Michigan** | 540 / 493 · 53 / 21 · 5 / 67 |
+| 62 | buck, Buck, block, Block, mean | buck, bulld, Buck, mascot, hawk | buck, bob, bulld, mascot, buzz | 184 / 345 · 419 / 46 · 2418 / 683 |
 
 **J-lens, last 8 tokens x layers**: top word (bridge rank)
 
 | token | L8 | L16 | L24 | L32 | L40 | L48 | L56 | L62 |
 |---|---|---|---|---|---|---|---|---|
-| `the` | 五颜六色的 (3317) | entirety (976) | \u (13) | **Earth** (1) | planet (2) | planet (3) | planet (4) | planet (2) |
-| `planet` | Planet (5) | Planet (11) | Planet (7) | planet (4) | planet (4) | planet (5) | Jupiter (2) | [Mars] (7) |
-| `third` | 了 (230420) | 了 (227473) | newcom (18129) | uranus (180) | 地球 (12) | planet (15) | planet (45) | from (32) |
-| `from` | s (137406) | s (90491) | planet (34) | 地球 (44) | 地球 (7) | **Earth** (1) | Sun (3) | the (4) |
-| `the` | 旳 (23879) | entirety (39199) | moons (64) | moons (45) | 月球 (75) | currently (56) | Sun (22) | Sun (4) |
-| `Sun` | aries (442) | a (319) | Saturn (2) | **Earth** (1) | **Earth** (1) | **Earth** (1) | planet (3) | is (23) |
-| `is` | colour (183112) | amongst (220157) | nearer (90061) | famously (671) | planet (4) | **Earth** (1) | zero (41) | zero (106) |
-| `␣` | pornstar (169637) | amongst (118276) | 数目 (4508) | XXXX (92) | planet (23) | ZERO (145) | moons (64) | [2] (39) |
+| `college` | college (13567) | college (2103) | college (556) | college (149) | college (192) | college (94) | basketball (181) | basketball (200) |
+| `football` | s (11584) | s (977) | football (315) | NCAA (98) | NCAA (141) | Football (88) | team (153) | team (234) |
+| `rival` | icious (219238) | ing (33699) | matchup (28275) | rivalry (688) | rivalry (242) | rivalry (131) | ry (232) | ry (85) |
+| `of` | iance (200350) | milfs (8715) | 对手的 (43827) | 什么意思 (11231) | 竞争对手 (231) | rival (34) | University (24) | University (15) |
+| `Ohio` | Ohio (170) | Ohio (15) | Ohio (6) | Ohio (10) | Ohio (5) | Ohio (7) | Ohio (26) | State (215) |
+| `State` | Ohio (3) | Ohio (4) | Ohio (7) | Ohio (6) | Ohio (6) | Ohio (5) | University (23) | University (167) |
+| `is` | mascot (117909) | actually (1882) | mascot (1392) | 什么意思 (1156) | mascot (41) | mascot (90) | Buck (36) | the (20) |
+| `a` | جدًا (86479) | favorite (885) | mascot (10) | mascot (76) | mascot (5) | mascot (80) | mascot (167) | buck (419) |
 

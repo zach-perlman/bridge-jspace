@@ -43,3 +43,12 @@ def test_grids_round_trip(tmp_path):
     save_grids(tmp_path / "g.npz", g)
     back = load_grids(tmp_path / "g.npz")
     assert back.keys() == g.keys() and all(np.array_equal(back["x"][k], g["x"][k]) for k in g["x"])
+
+
+def test_cue_positions_drop_the_read_sites():
+    from scripts.exp12_position_map.cue import cue_positions
+
+    tokens = ["Fact", ":", " The", " capital", " of", " the", " country", " where", " Munich", " is", " located", " is"]
+    assert cue_positions(tokens, "Munich") == [8]
+    assert cue_positions(tokens, "Munich is located") == [8, 9]  # " located" is -1, excluded with the last word
+    assert cue_positions(tokens, "Fact") == []  # position 0 is never a cue position

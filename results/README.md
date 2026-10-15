@@ -6,21 +6,31 @@ Where the final numbers, figures and examples of each experiment are. Everything
 
 ## Part A on Qwen3.6-27B (current)
 
+All runs follow the README's shared setup (trailing space removed; for exp11 and exp12 part B's v4 labels, 77
+eligible). A run's newest `analysis-*` folder is its current aggregation (current metrics and bands 32-48 / 24-40)
+and holds the figures as re-rendered with the current plotting code.
+
 | Experiment | Question | Final numbers | Final figures | Worked examples |
 |---|---|---|---|---|
-| exp10_lens_sanity | Does a lens read two-hop intermediates at all? (lens-eval multihop, last token) | `exp10_lens_sanity/20261013-205936/summary.json` (space stripped; `-205736` as published) | `../figures/exp10_lens_sanity/20261013-230247/pass_at_10_by_model.png`, `27b_by_layer.png` | `../examples/exp10_lens_sanity/index.html` (data: `exp10_lens_sanity/20261014-134942/examples.json`) |
-| exp11_bridge_vs_answer_by_layer | At the last token, at which layers are the bridge and the answer readable? | `exp11_bridge_vs_answer_by_layer/20261014-092835/analysis-20261014-113947/summary.json` | `../figures/exp11_bridge_vs_answer_by_layer/`: `pool_top1_by_layer.png`, `advantage_by_layer.png` | `../examples/exp11_bridge_vs_answer_by_layer/index.html` (data: `exp11_bridge_vs_answer_by_layer/20261014-134854/examples.json`) |
-| exp12_position_map | Where in the prompt, and how deep, are they readable? | `exp12_position_map/20261014-095358/analysis-20261014-121341/summary.json` | `../figures/exp12_position_map/`: **`two_step.png`** (headline), `position_layer_jlens.png`, `by_offset.png`, `position_layer.png` | `../examples/exp12_position_map/index.html` (data: `exp12_position_map/20261014-134702/examples.json`) (published: https://claude.ai/artifact/TXLZH6WxuxSQDhoK5YHTj9, private) |
+| exp10_lens_sanity | Does a lens read two-hop intermediates at all? (lens-eval multihop, last token) | `exp10_lens_sanity/20261013-205936/analysis-20261015-135103/summary.json` (27B; 4B: `20261013-205057/analysis-20261015-135101`) | `../figures/exp10_lens_sanity/20261015-135537/pass_at_10_by_model.png`, `27b_by_layer.png`, `pass_at_10_by_bridge_kind.png` | `../examples/exp10_lens_sanity/index.html` (data: `exp10_lens_sanity/20261014-134942/examples.json`) |
+| exp11_bridge_vs_answer_by_layer | At the last token, at which layers are the bridge and the answer readable? | `exp11_bridge_vs_answer_by_layer/20261015-100110/analysis-20261015-125327/summary.json` (J-lens swap labels; `20261015-100426`: J++ swap labels, same ranks) | `../figures/exp11_bridge_vs_answer_by_layer/`: `pool_top1_by_layer.png`, `advantage_by_layer.png` (from that analysis folder) | `../examples/exp11_bridge_vs_answer_by_layer/index.html` (data: `exp11_bridge_vs_answer_by_layer/20261015-105407/examples.json`) |
+| exp12_position_map | Where in the prompt, and how deep, are they readable? | `exp12_position_map/20261015-100735/analysis-20261015-125333-position-map/summary.json` (J-lens swap labels; `20261015-100947`: J++ swap labels, same grids) | `../figures/exp12_position_map/`: **`two_step.png`** (headline), `layers_at_positions_jlens.png`, `by_offset.png`, `position_layer.png` (from that analysis folder); `cue_phrase.png`, `cue_phrase_lenses.png` (from `20261015-100735/analysis-20261015-132744-cue-phrase/`, the cue-phrase add-on) | `../examples/exp12_position_map/index.html` (data: `exp12_position_map/20261015-105313/examples.json`) (published: https://claude.ai/artifact/TXLZH6WxuxSQDhoK5YHTj9, anyone with the link) |
+| exp14_cue_answer_swaps | On the cue phrase, does swapping the answer change it as often as swapping the bridge? And with the other pair held? | `exp14_cue_answer_swaps/20261015-111137/summary.json`; overlap split `analysis-20261015-134641-overlap/summary.json`; pinned run (`pinned.yaml`) `20261015-114825/summary.json` and `analysis-20261015-143152-pinned/summary.json` (paired differences per overlap half, edit-size ratios) | `../figures/exp14_cue_answer_swaps/`: `flip_rates.png` (from the run), `flip_rates_by_overlap.png` (from the overlap analysis), `flip_rates_pinned.png` (from the pinned analysis) | - |
+| exp15_oracle_lens | Where the J-lens and J++ miss the bridge (or the answer), does the oracle lens name it? Does it follow the bridge swap? | Layers 28/36/44 (the decision rule's run): `exp15_oracle_lens/20261015-123226/analysis-20261015-160336/summary.json`; 24/32/40/48: `20261015-134316`; 20/52/56/60: `20261015-140424`; all 11 layers pooled: `20261015-140424/analysis-20261015-171154-combined/summary.json` (monitoring split, mention types; `mention_sample.json` for a human check). Raw readings with the oracle's text: each run's `reads.jsonl`; gate: `sanity.json` | `../figures/exp15_oracle_lens/`: `readers_by_layer.png`, `oracle_vs_lenses.png`, `after_swap.png`, `by_layer.png` (from the pooled analysis) | `../examples/exp15_oracle_lens/index.html` (every question, all layers) and the oracle block under exp10-12 cards |
+| exp16_nla | Does the NLA, a second verbalizer, see the same at layer 42? Every reader at layer 42 | `exp16_nla/20261015-144540/analysis-20261015-171150/summary.json` (exp15's analysis, with the quote types and the answer by position; `quote_sample.json` for a human check); readers at layer 42: `analysis-20261015-170413-compare/summary.json`; by part B's swap labels: `analysis-20261015-173811-by-label/summary.json`; raw readings `reads.jsonl`, gate `sanity.json` | `../figures/exp16_nla/`: `methods_at_42.png` (compare folder), `by_swap_label.png` (by-label folder), `after_swap.png` (analysis folder) | `../examples/exp16_nla/index.html` and the NLA block under exp10-12 cards |
 
-Variants and side runs:
-- exp11 with the trailing space stripped: `exp11_bridge_vs_answer_by_layer/20261014-093050/analysis-20261014-113952/`.
-- exp10 on Qwen3.5-4B: runs `20261013-205029` (as published) and `20261013-205057` (stripped).
-- Per-run exp10 figures: `exp10_lens_sanity/<run>/figures-20261013-23014*/multihop_pass_at_k.png`.
+Variants and earlier runs:
+- Prompts as published with part B's earlier (v3) labels, 67 eligible: exp11 `20261014-092835/analysis-20261014-113947/`,
+  exp12 `20261014-095358/analysis-20261014-121341-position-map/` (their own `summary.json` predates later metrics; use the
+  `analysis-*` one). Examples from those: exp11 `20261014-134854`, exp12 `20261014-134702`.
+- exp11 stripped with the v3 labels: `exp11_bridge_vs_answer_by_layer/20261014-093050/analysis-20261014-113952/`.
+- exp10 on the prompts as published (a check): runs `20261013-205029` (4B) and `20261013-205736` (27B), each with its
+  `analysis-20261015-1351*`. exp10's summaries hold both pass@k rules: `pass_at_k` (a bridge found if any listed form
+  is) and `pass_at_k_fraction` (the paper's share of forms).
+- Per-run exp10 figures: `exp10_lens_sanity/<run>/figures-*/multihop_pass_at_k.png`.
 
 Notes:
 - `figures/exp11_*` and `figures/exp12_*` are copies of the PNGs in the analysis folders above (the source of record).
-- The exp11 and exp12 runs' own `summary.json` predate later metrics (named bands, emergence order, crossings, the
-  two-step lag); use the `analysis-*` one.
 - Examples runs keep the data (`examples.json`) and the interactive jlens pages (`slices/`, gitignored); the pages
   to read are rendered into `../examples/` by `make examples-render` (`make examples-serve` opens them).
 
