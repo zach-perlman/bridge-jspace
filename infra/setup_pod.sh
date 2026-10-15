@@ -4,7 +4,7 @@
 # Env knobs: PERSIST (cache root; auto-detected), MODEL_CONFIG (model + lenses to prefetch).
 set -euo pipefail
 
-MIN_DRIVER_CUDA="12.6"   # torch is pinned to the cu126 wheels, see pyproject
+MIN_DRIVER_CUDA="12.8"   # torch is pinned to the cu128 wheels, see pyproject
 
 die() { echo "!! $*" >&2; exit 1; }
 

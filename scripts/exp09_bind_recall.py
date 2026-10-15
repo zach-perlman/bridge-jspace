@@ -107,12 +107,17 @@ def prepare(item: dict, index: int, tokenizer) -> dict:
     changed = {s: changed_tokens(ids["clean"], ids[s]) for s in ("cf", "off")}
     out: dict[str, Any] = {"ids": ids, "changed": changed}
     expected = {"cf": 1 if item["family"] == "R" else 2, "off": 2}
-    if any(changed[s] is None or len(changed[s]) != n for s, n in expected.items()):
+    cf_changed, off_changed = changed["cf"], changed["off"]
+    if (
+        cf_changed is None
+        or off_changed is None
+        or (len(cf_changed), len(off_changed)) != (expected["cf"], expected["off"])
+    ):
         out["status"] = "unaligned"
         return out
     prompt, offsets = item["prompt"], enc["clean"].offset_mapping
     q_start, cue_start, cue_end = prompt.index("The capital"), prompt.rindex(item["cue"]), prompt.rindex(" is")
-    after = max(changed["cf"])
+    after = max(cf_changed)
     out["groups"] = {
         "question": [i for i, (_, e) in enumerate(offsets) if e > q_start and i > after],
         "last": [len(offsets) - 1],

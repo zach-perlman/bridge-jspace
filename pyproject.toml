@@ -43,14 +43,15 @@ build-backend = "setuptools.build_meta"
 where = ["src"]
 
 # PyPI's Linux torch wheels target the newest CUDA, which rented pods' drivers often don't
-# support. cu126 runs on any driver >= 560; macOS keeps PyPI wheels.
+# support. cu128 runs on any driver >= 570 and has Blackwell (B200) kernels, which cu126 lacks;
+# macOS keeps PyPI wheels.
 [[tool.uv.index]]
-name = "pytorch-cu126"
-url = "https://download.pytorch.org/whl/cu126"
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
 explicit = true
 
 [tool.uv.sources]
-torch = [{ index = "pytorch-cu126", marker = "sys_platform == 'linux'" }]
+torch = [{ index = "pytorch-cu128", marker = "sys_platform == 'linux'" }]
 # Not on PyPI; pinned to the same commit as data/probe_swap.json and data/lens_eval_multihop.json.
 jlens = { git = "https://github.com/anthropics/jacobian-lens", rev = "581d398613e5602a5af361e1c34d3a92ea82ba8e" }
 
