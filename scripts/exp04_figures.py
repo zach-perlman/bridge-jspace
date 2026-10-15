@@ -11,6 +11,9 @@ exp04_figures.py OUT_NAME RUN  -> figures/exp04_brew_patch/OUT_NAME/ (write-once
     parts.png       per lens: the step score (the share of window layers at which a copy gives f(X), averaged over
                     items, 95% bootstrap CI) of the full copy and of each part, next to each part's random-direction
                     null; and by layer, how often each part's copy gives f(X) and how often it gives X itself
+  exp04_figures.py OUT_NAME RUN  (a patch_positions run, exp04_brew_positions.py)
+    positions.png   per item set: the step score of the copy at each group of positions after the start line (and of
+                    the off-path control's copy there), and by layer how often each group's copy gives f(X)
 """
 
 from __future__ import annotations
@@ -235,12 +238,73 @@ def parts_figure(outcomes: list[dict], out: Path) -> None:
     plt.close(fig)
 
 
+POSITION_STYLE = {  # group -> (colour, label)
+    "all": (INK, "all 21 positions (exp04's copy)"),
+    "reading": ("#3d8c5a", "the 4 where the lens reads I"),
+    "all_but_reading": ("#9cc9a8", "the other 17"),
+    "assistant_nl": ("#3b6fb6", 'the newline after "assistant"'),
+    "think_nl": ("#c07a2c", 'the "\\n\\n" after "</think>"'),
+}
+
+
+def positions_figure(outcomes: list[dict], out: Path) -> None:
+    sets = [s for s in ("fresh", "bank") if any(o["set"] == s for o in outcomes)]
+    layers = sorted({o["layer"] for o in outcomes})
+    fig, axes = plt.subplots(
+        len(sets), 2, figsize=(13.5, 4.3 * len(sets)), facecolor=SURFACE, squeeze=False, width_ratios=(1.25, 1)
+    )
+    for row, set_name in enumerate(sets):
+        rows = [o for o in outcomes if o["set"] == set_name]
+        pick = lambda g, s, rows=rows: [o for o in rows if (o["group"], o["source"]) == (g, s)]  # noqa: E731
+        bars = []
+        for group, (colour, label) in POSITION_STYLE.items():
+            bars.append((pick(group, "cf"), colour, label, False))
+            if pick(group, "off"):
+                bars.append((pick(group, "off"), CONTROL, "off-path control", True))
+        ax = axes[row, 0]
+        style_axes(ax)
+        for x, (cells, colour, _, null) in enumerate(bars):
+            m, lo, hi = step_score_ci(cells)
+            ax.bar(x, 100 * m, width=0.8, color=colour, hatch="//" if null else None, edgecolor=SURFACE)
+            ax.errorbar(x, 100 * m, yerr=[[100 * max(m - lo, 0)], [100 * max(hi - m, 0)]], color=INK, lw=1, capsize=2)
+        ax.set_xticks(range(len(bars)))
+        ax.set_xticklabels([label for _, _, label, _ in bars], rotation=30, ha="right", fontsize=8)
+        ax.set_ylabel("step score (% of window layers giving f(X))", color=MUTED, fontsize=9)
+        n_items = len({o["name"] for o in rows})
+        ax.set_title(
+            f"{set_name} items (n={n_items}): copy C at some positions only", loc="left", fontsize=10, color=INK
+        )
+        ax = axes[row, 1]
+        style_axes(ax)
+        for group, (colour, label) in POSITION_STYLE.items():
+            cells = pick(group, "cf")
+            share = [100 * statistics.mean(o["role"] == "b" for o in cells if o["layer"] == L) for L in layers]
+            ax.plot(layers, share, color=colour, lw=1.8, label=label)
+        ax.set_ylim(-3, 103)
+        ax.set_xlabel("layer copied", color=MUTED, fontsize=9)
+        ax.set_ylabel("% of items giving f(X)", color=MUTED, fontsize=9)
+        ax.set_title(f"{set_name} items: by layer", loc="left", fontsize=10, color=INK)
+    fig.legend(*axes[0, 1].get_legend_handles_labels(), loc="lower center", ncol=5, frameon=False, fontsize=8.5)
+    fig.suptitle(
+        "Which positions after the start line carry the step? (hatched: the off-path counterfactual's copy there)",
+        x=0.01,
+        ha="left",
+        fontsize=11,
+        color=INK,
+    )
+    fig.tight_layout(rect=(0, 0.06, 1, 0.95))
+    fig.savefig(out / "positions.png", dpi=170, facecolor=SURFACE)
+    plt.close(fig)
+
+
 def main(out_name: str, run: str, out_root: Path, results_root: Path) -> None:
     out = out_root / out_name
     out.mkdir(parents=True, exist_ok=False)
     with open(results_root / EXP / run / "outcomes.jsonl") as f:
         outcomes = [json.loads(line) for line in f]
-    if "part" in outcomes[0]:
+    if "set" in outcomes[0]:
+        positions_figure(outcomes, out)
+    elif "part" in outcomes[0]:
         parts_figure(outcomes, out)
     else:
         cells = by_cell(outcomes)

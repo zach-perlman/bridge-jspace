@@ -453,12 +453,19 @@ counterfactual and the control correctly); every second layer.
   this; we saw it after the fact. It goes with the same part of δ as the step: on the fresh items the rest gives I in
   28-30% of item x layer cells at the window, the J-space part in 1-2%, the I/X lens coordinates in under 1%, the
   nulls in under 2%.
+- **The step is read from 4 of the 21 positions: the ones where the lens reads I** (`positions_window`, run after
+  exp08). Copying C's activations only at " the", the newline after "assistant", the "\n\n" after "</think>" and
+  the final ":" gives f(X) at 33% of window layers (fresh; bank 31%), as much as all 21 (31%, 31%); the other 17
+  give 0%, and O's copy at the 4 gives 0%. No single one does it alone: the newline after "assistant" 3%, the
+  "\n\n" 0% (the last token alone peaked at 36% at layer 50 in the map).
 
 ![exp04: patching map](figures/exp04_brew_patch/v1/patch_map.png)
 
 ![exp04: parts of the copy](figures/exp04_brew_patch/v2_parts/parts.png)
 
 ![exp04: patching map, fresh items, with I](figures/exp04_brew_patch/v3_fresh_map/patch_map.png)
+
+![exp04: which positions carry the step](figures/exp04_brew_patch/v5_positions/positions.png)
 
 **What this does not show.** Which direction carries the step, beyond "not the J-space": the copy replaces whole block
 outputs at about 21 positions. 48-52% is the best single-layer copy, not a ceiling: information held at several layers
@@ -485,6 +492,11 @@ counterfactual, 2 on the control, and 1 has no X. Positive controls at layer 0: 
 start colour's rule gives f(X) for 92%, the control changes at most 1%. 97 of the 154 give f(X) at one window layer or
 more. Figures: `figures/exp04_brew_patch/v3_fresh_map/` (the map figure draws I from this version on) and
 `v4_fresh_parts/parts.png`.
+
+Positions: `positions_window` (manifest written before the run; the human chose the run; bank and fresh items as
+exp04): C's copy at subsets of the 21 positions after the start line, O's copy at the same positions as the control.
+Its 'all' copy reproduces exp04's full copy item for item (1232/1232 fresh, 656/656 bank). The groups came from
+exp08's readouts on the same items. Figure: `figures/exp04_brew_patch/v5_positions/`.
 </details>
 
 ### exp06_sigma_writes (part B): read with the lens, write along the covariance?
@@ -598,8 +610,8 @@ direction (v_X - v_I) moves the step for 1% of window layers, while a fitted cod
 **What this does not show.** Top-1 among 12 colours, not among the vocabulary: in the window the median vocabulary
 rank of I is about 9,600 (J++), 25,000 (logit lens) and 182,000 (J-lens), so the lens ranks the colour above other
 colours without saying it. The best cells were found after the fact (a search over 168 cells), checked against the
-same search for X. Whether the model takes its second lookup from these positions is not tested (exp04 copied all 21
-positions together).
+same search for X. exp04's `positions_window`, run after this, finds that the second lookup reads the intermediate
+from these positions: copying C's activations at the 4 alone gives the whole copy's effect, at the other 17 nothing.
 
 <details><summary>Full numbers and checks</summary>
 
@@ -669,8 +681,9 @@ In order; designs need human sign-off before GPU runs.
    step outside the J-space, on the bank items and again on 154 fresh ones; exp07 finds a code for the intermediate,
    fit on other items, that writes the step as well as the copy, outside the J-space and orthogonal to the lens
    direction; exp08 finds the lens reads the intermediate there only at a few scaffold tokens (J++ 61% at the newline
-   after "assistant", layer 36), along a direction that does not write the step. Next: copy only those positions (is
-   the second lookup read from them?); split the code at those positions into the lens-read part and the rest; what
-   the I answers at layers 36-46 are; and steering at the cue phrase in exp02 at the same sizes.
+   after "assistant", layer 36), along a direction that does not write the step; and copying only the 4 positions
+   where the lens reads I carries the whole step (33%; the other 17: 0%). Next: split the code at those positions into
+   the lens-read part and the rest; what the I answers at layers 36-46 are; and steering at the cue phrase in exp02
+   at the same sizes.
 6. **Σ-aware writes** (exp06, exp07): writing along Σv lost to writing along v at the start line, and did no better
    than v at exp04's window. Dropped unless a human wants a Mahalanobis-matched version.

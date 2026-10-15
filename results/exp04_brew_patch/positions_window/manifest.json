@@ -1,0 +1,160 @@
+{
+  "exp": "exp04_brew_patch",
+  "run": "positions_window",
+  "kind": "patch_positions",
+  "written_utc": "2026-10-15T03:10:21Z",
+  "question": "Copying the counterfactual's activations at which positions after the start line makes the model take X as the step: the positions where exp08's lenses read the intermediate, or the others?",
+  "why": "Chosen by the human (Zach, 2026-10-15) after exp08: does the second lookup read the intermediate from the positions where the lens reads it?",
+  "model": {
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "items": {
+    "fresh": {
+      "file": "data/brew_fresh.json",
+      "sha256": "1e20ed25b3727842acba0806b346d91d991db1fa31f42f514e537fb3ab000d3c"
+    },
+    "bank": {
+      "file": "data/brew_intermediates.json",
+      "sha256": "183be95d4182c373674786b7610820520e56434fb0c15a75a62dad854bed9d83"
+    }
+  },
+  "eligibility": "as exp04 (B answers A, C answers c, O answers A; C and O token-aligned with B)",
+  "window": {
+    "layers": [
+      36,
+      38,
+      40,
+      42,
+      44,
+      46,
+      48,
+      50
+    ],
+    "maps": {
+      "patch_map": {
+        "summary_sha256": "d39692030044bf0bc34ac89077a85280dc4af1e43e36c69d8d5be3874cdb8227",
+        "window_after_start": [
+          36,
+          38,
+          40,
+          42,
+          44,
+          46,
+          48,
+          50
+        ]
+      },
+      "patch_map_fresh": {
+        "summary_sha256": "74931c1394d43b28e7510e812cf7746b511731d328f96186352e825c4201d8b4",
+        "window_after_start": [
+          36,
+          38,
+          40,
+          42,
+          44,
+          46,
+          48,
+          50
+        ]
+      }
+    }
+  },
+  "positions": {
+    "tokens after the start line": [
+      "\n",
+      "What",
+      " colour",
+      " is",
+      " the",
+      " potion",
+      " at",
+      " the",
+      " end",
+      "?",
+      "<|im_end|>",
+      "\n",
+      "<|im_start|>",
+      "assistant",
+      "\n",
+      "<think>",
+      "\n\n",
+      "</think>",
+      "\n\n",
+      "Answer",
+      ":"
+    ],
+    "groups": {
+      "all": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "reading": [
+        4,
+        14,
+        18,
+        20
+      ],
+      "all_but_reading": [
+        0,
+        1,
+        2,
+        3,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        15,
+        16,
+        17,
+        19
+      ],
+      "assistant_nl": [
+        14
+      ],
+      "think_nl": [
+        18
+      ]
+    }
+  },
+  "groups_from": "exp08_brew_read/read_v1: J++ and the J-lens rank I first of the 12 colours at positions 14 and 18 (and less at 4 and 20) from layer 36, on the same items",
+  "copy": "\u03b4 = h_C - h_B at the group's positions only, one window layer at a time (exp04's copy restricted)",
+  "controls": "the off-path counterfactual O's copy at the same positions, for reading, assistant_nl, think_nl",
+  "outcome": "the continuation's first palette colour as a role, as exp04 (b = f(X), c, X, I, A, ...)",
+  "decision": {
+    "step_score": "per item, the share of window layers at which the copy gives f(X); differences are paired bootstraps over items (95%)",
+    "carries": "fresh items primary, bank replication: a group alone carries the step if its C copy's step score exceeds its O copy's (CI above 0), for each of reading, assistant_nl, think_nl",
+    "needed": "the reading positions are needed if all - all_but_reading is above 0 (CI)",
+    "reproduce": "'all' must reproduce exp04's full-copy rows (parts_window_fresh, parts_window) item for item"
+  },
+  "deviations": [
+    "The groups were chosen from exp08's readouts on the same items; this run tests them causally.",
+    "Each window layer is copied on its own, as in exp04."
+  ]
+}

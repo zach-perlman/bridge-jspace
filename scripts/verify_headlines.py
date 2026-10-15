@@ -322,6 +322,16 @@ def exp07_read_accuracy(item_set, layer):
     return float(np.mean([r["decoded"] == r["I"] for r in rows]))
 
 
+def exp04_positions_step(item_set, group, source="cf"):
+    """exp04 positions_window outcomes.jsonl: per item of a set, the share of window layers at which copying C's (or
+    O's) activations at the group's positions after the start line gives f(X); then the mean over items."""
+    per_item = {}
+    for o in jsonl(EXP04 / "positions_window" / "outcomes.jsonl"):
+        if (o["set"], o["group"], o["source"]) == (item_set, group, source):
+            per_item.setdefault(o["name"], []).append(o["role"] == "b")
+    return float(np.mean([np.mean(v) for v in per_item.values()]))
+
+
 EXP08 = R / "exp08_brew_read/read_v1"
 
 
@@ -636,6 +646,14 @@ def main():
         ("exp08", "fresh L36, after 'assistant': J-lens I", exp08_cell("fresh", "jlens", "I", 36, 14), 0.47),
         ("exp08", "bank L36, after 'assistant': J++ I", exp08_cell("bank", "jpp", "I", 36, 14), 0.55),
         ("exp08", "fresh L62, last token: J++ reads A", exp08_cell("fresh", "jpp", "A", 62, 20), 0.95),
+        ("exp04", "positions, fresh: all 21", exp04_positions_step("fresh", "all"), 0.31),
+        ("exp04", "positions, fresh: the 4 reading positions", exp04_positions_step("fresh", "reading"), 0.33),
+        ("exp04", "positions, fresh: O at the 4", exp04_positions_step("fresh", "reading", "off"), 0.0),
+        ("exp04", "positions, fresh: the other 17", exp04_positions_step("fresh", "all_but_reading"), 0.0),
+        ("exp04", "positions, fresh: newline after 'assistant'", exp04_positions_step("fresh", "assistant_nl"), 0.03),
+        ("exp04", "positions, fresh: '\\n\\n' after '</think>'", exp04_positions_step("fresh", "think_nl"), 0.0),
+        ("exp04", "positions, bank: the 4 reading positions", exp04_positions_step("bank", "reading"), 0.31),
+        ("exp04", "positions, bank: the other 17", exp04_positions_step("bank", "all_but_reading"), 0.0),
     ]
     width = max(len(c[1]) for c in checks)
     for exp, what, got, claimed in checks:
