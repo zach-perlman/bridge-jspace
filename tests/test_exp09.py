@@ -36,7 +36,7 @@ def test_changed_tokens_and_roles():
 
 
 def test_lookup_variants_rebind_and_keep_the_table():
-    items = pins.bind_lookup_items()
+    items = pins.bind_lookup_items() + pins.bind_lookup_v2_items()
     for index, item in enumerate(items[:: len(items) // 20]):
         v = variants(item, index)
         for text in (v["cf"], v["off"]):

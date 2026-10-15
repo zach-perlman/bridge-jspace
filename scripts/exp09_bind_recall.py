@@ -63,6 +63,13 @@ ITEM_SETS = {  # set -> (file, sha256, loader, families, the answer words a cont
         tuple(c.lower() for c in CAPITALS.values()),
     ),
     "bind_lookup": (pins.BIND_LOOKUP_FILE, pins.BIND_LOOKUP_SHA256, pins.bind_lookup_items, ("L",), tuple(PALETTE)),
+    "bind_lookup_v2": (
+        pins.BIND_LOOKUP_V2_FILE,
+        pins.BIND_LOOKUP_V2_SHA256,
+        pins.bind_lookup_v2_items,
+        ("L",),
+        tuple(PALETTE),
+    ),
 }
 GROUPS = ("question", "last")
 MAP_LAYERS = tuple(range(0, 61, 4))
@@ -175,7 +182,7 @@ def stage_check() -> None:
     for family in ("R", "B", "L"):
         counts: dict[str, int] = {}
         sizes: dict[int, int] = {}
-        items = pins.bind_lookup_items() if family == "L" else pins.bind_recall_items()
+        items = pins.bind_lookup_v2_items() if family == "L" else pins.bind_recall_items()
         for index, item in enumerate(items):
             if item["family"] != family:
                 continue

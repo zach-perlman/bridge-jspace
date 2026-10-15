@@ -2,6 +2,7 @@
 
   exp09_make_items.py [--per-city N] [--n-bound N] [--seed S]  -> data/bind_recall.json (write-once; pin its sha256)
   exp09_make_items.py --lookup N [--seed S]  -> data/bind_lookup.json: family L (write-once; pin its sha256)
+  exp09_make_items.py --lookup N --seed S --lookup-version 2  -> data/bind_lookup_v2.json: L asked "... has the colour"
 
 Both families share the format, the countries (the 13 with exp01 probes) and the second hop (the country's capital).
 Three people and three countries come first; every prompt names the bridge I, the target X and a third country Z:
@@ -85,7 +86,8 @@ QUESTION = {
     "R": "The capital of the country where {city} is located is",
     "B": "The capital of the country where {q} lives is",
 }
-QUESTION_L = "The colour of the country where {q} lives is"
+QUESTION_L = "The colour of the country where {q} lives is"  # v1: the model continues it as a sentence (1/400)
+QUESTION_L2 = "The country where {q} lives has the colour"  # v2: answered for 40 of the first 40 items
 
 
 def make(rng: random.Random, family: str, index: int, city: str | None = None) -> dict:
@@ -119,7 +121,7 @@ def make(rng: random.Random, family: str, index: int, city: str | None = None) -
     }
 
 
-def make_lookup(rng: random.Random, index: int) -> dict:
+def make_lookup(rng: random.Random, index: int, question: str = QUESTION_L) -> dict:
     """Family L: B's bindings, then each country's colour in the prompt, and the colour of the queried person's
     country as the question (the answer is read off the prompt's table, as in brew's second lookup)."""
     from scripts.exp03_make_items import PALETTE
@@ -133,21 +135,23 @@ def make_lookup(rng: random.Random, index: int) -> dict:
         **item,
         "name": f"L-{index:04d}",
         "family": "L",
-        "prompt": f"{people} {table} {QUESTION_L.format(q=item['cue'])}",
+        "prompt": f"{people} {table} {question.format(q=item['cue'])}",
         "colours": colours,
         "answer": colours[item["bridge"]],
         "target_answer": colours[item["target"]],
     }
 
 
-def main_lookup(n: int, seed: int) -> None:
-    out = pins.DATA_DIR / "bind_lookup.json"
+def main_lookup(n: int, seed: int, version: int = 1) -> None:
+    out = pins.DATA_DIR / ("bind_lookup.json" if version == 1 else f"bind_lookup_v{version}.json")
+    question = QUESTION_L if version == 1 else QUESTION_L2
     assert not out.exists(), f"{out} exists; data files are written once"
     rng = random.Random(seed)
-    items = [make_lookup(rng, i) for i in range(n)]
+    items = [make_lookup(rng, i, question) for i in range(n)]
     blob = {
-        "family": "bind_lookup",
-        "generator": f"scripts/exp09_make_items.py --lookup {n} --seed {seed}",
+        "family": "bind_lookup" if version == 1 else f"bind_lookup_v{version}",
+        "generator": f"scripts/exp09_make_items.py --lookup {n} --seed {seed}"
+        + ("" if version == 1 else f" --lookup-version {version}"),
         "format": "L: B's bindings, then a colour per country in the prompt; the bridge bound, the second hop an "
         "in-context lookup; ungated",
         "items": items,
@@ -189,8 +193,11 @@ if __name__ == "__main__":
     parser.add_argument("--n-bound", type=int, default=400)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--lookup", type=int, default=0, help="write data/bind_lookup.json with this many L items")
+    parser.add_argument(
+        "--lookup-version", type=int, default=1, choices=[1, 2], help="2: the question ending '... has the colour'"
+    )
     args = parser.parse_args()
     if args.lookup:
-        main_lookup(args.lookup, args.seed)
+        main_lookup(args.lookup, args.seed, args.lookup_version)
     else:
         main(args.per_city, args.n_bound, args.seed)
