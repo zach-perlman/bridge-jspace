@@ -32,6 +32,7 @@ def _kinds(rows: list[dict]) -> list[str]:
 
 
 def plot_run(run_dir: str | Path, summary: dict[str, Any]) -> Path:
+    """flip_rates.png in `run_dir` (a run, or one of its analysis folders)."""
     out = Path(run_dir) / "flip_rates.png"
     rows = summary["rates"]
     lenses = sorted({r["lens"] for r in rows}, key=lambda name: list(READER_TITLE).index(name))
@@ -75,12 +76,15 @@ def plot_run(run_dir: str | Path, summary: dict[str, Any]) -> Path:
     finish(
         fig,
         out,
-        "Does swapping the bridge, or the answer, change the model's answer, and where?",
+        "With the other pair held, does the bridge swap or the answer swap still change the answer?"
+        if any(k in kinds for k in ("bridge_pinned", "answer_pinned"))
+        else "Does swapping the bridge, or the answer, change the model's answer, and where?",
         f"Qwen3.6-27B, up to {n} two-hop questions it answers correctly (the answer swap needs single-token answers). "
         "Each swap exchanges the two words' coordinates along their lens vectors at the given prompt positions and "
         "layers; a flip = the model's greedy continuation now has the swap target's answer and not its own. Error "
         "bars: 95% Wilson CI.",
         handles,
+        ncols=3 if len(handles) > 4 else None,  # the pinned run's five entries in two rows
     )
     return out
 

@@ -69,7 +69,8 @@ def finish(fig, path: Path, title: str, note: str, handles=None, ncols: int | No
     h, w = fig.get_figheight(), fig.get_figwidth()
     note_lines = textwrap.wrap(note, width=int(w * 15.5))
     head = 0.42 + 0.17 * len(note_lines)  # inches above the panels
-    foot = 0.45 if handles else 0.05
+    rows = -(-len(handles) // (ncols or len(handles))) if handles else 0
+    foot = 0.2 + 0.25 * rows if handles else 0.05
     fig.text(0.01, 1 - 0.1 / h, title, ha="left", va="top", fontsize=12, color=INK)
     fig.text(0.01, 1 - 0.36 / h, "\n".join(note_lines), ha="left", va="top", fontsize=8.5, color=MUTED, linespacing=1.4)
     if handles:

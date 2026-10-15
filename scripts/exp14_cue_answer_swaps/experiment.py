@@ -68,7 +68,7 @@ class CueAnswerSwaps(Experiment):
         cells = [(c["positions"], c["band"]) for c in p["cells"]]
         layers = sorted({layer for _, band in cells for layer in band_layers(band)})
 
-        tokenizer: Any = model.tokenizer  # typed `object` in part B's Model
+        tokenizer = model.tokenizer
         no_probes: Any = _NoProbes()  # stands in for exp02's Probes, whose only use in `prepare` is the index
         item_rows, outcomes, leaks = [], [], []
         items = load_items()
@@ -327,50 +327,96 @@ def replication_check(outcomes: list[dict], reference: dict[str, dict[str, str]]
     return out
 
 
-def by_overlap(outcomes: list[dict], leaks: list[dict]) -> list[dict]:
-    """Flip rates split at the median overlap between the two swaps (a question's mean over band layers of the
-    cosine between their difference vectors), per lens and cell: does a swap work only where it is also the other?"""
+def overlap_halves(leaks: list[dict]) -> dict[tuple, dict[str, str]]:
+    """Per lens and cell: each question's half ("low" / "high") at the median overlap between the two swaps (its mean
+    over band layers of the cosine between their difference vectors), and the cut."""
     cos: dict[tuple, list[float]] = {}
     for r in leaks:
         cos.setdefault((r["lens"], r["positions"], r["band"], r["name"]), []).append(r["diff_cosine"])
     mean_cos = {k: statistics.mean(v) for k, v in cos.items()}
-    out = []
-    for lens, positions, band in sorted({k[:3] for k in mean_cos}):
-        names = {k[3]: v for k, v in mean_cos.items() if k[:3] == (lens, positions, band)}
+    out: dict[tuple, dict[str, str]] = {}
+    for cell in sorted({k[:3] for k in mean_cos}):
+        names = {k[3]: v for k, v in mean_cos.items() if k[:3] == cell}
         cut = statistics.median(names.values())
-        for half, members in (("low", {n for n, c in names.items() if c < cut}),
-                              ("high", {n for n, c in names.items() if c >= cut})):  # fmt: skip
-            for kind in sorted({o["kind"] for o in outcomes}, key=_kind_order):
-                flips = [o["flip"] for o in outcomes if (o["lens"], o["positions"], o["band"], o["kind"]) ==
-                         (lens, positions, band, kind) and not o["null"] and o["name"] in members]  # fmt: skip
-                out.append({"lens": lens, "positions": positions, "band": band, "overlap": half, "cut": round(cut, 4),
-                            "kind": kind, "n": len(flips), "flip": wilson(sum(flips), len(flips))})  # fmt: skip
+        out[cell] = {n: "low" if c < cut else "high" for n, c in names.items()} | {"_cut": str(round(cut, 4))}
     return out
 
 
-def analyze(run_dir: str | Path) -> Path:
-    """The overlap split of a finished run, into `<run_dir>/analysis-<timestamp>-overlap/` with its figure."""
+def by_overlap(outcomes: list[dict], leaks: list[dict]) -> list[dict]:
+    """Flip rates split at the median overlap between the two swaps, per lens and cell: does a swap work only where
+    it is also the other?"""
+    out = []
+    for (lens, positions, band), halves in overlap_halves(leaks).items():
+        for half in ("low", "high"):
+            members = {n for n, h in halves.items() if h == half}
+            for kind in sorted({o["kind"] for o in outcomes}, key=_kind_order):
+                flips = [o["flip"] for o in outcomes if (o["lens"], o["positions"], o["band"], o["kind"]) ==
+                         (lens, positions, band, kind) and not o["null"] and o["name"] in members]  # fmt: skip
+                out.append({"lens": lens, "positions": positions, "band": band, "overlap": half,
+                            "cut": float(halves["_cut"]), "kind": kind, "n": len(flips),
+                            "flip": wilson(sum(flips), len(flips))})  # fmt: skip
+    return out
+
+
+def pinned_check(outcomes: list[dict], leaks: list[dict], comparisons: list, n_boot: int, seed: int) -> dict:
+    """The pinned run's decision inputs: each configured comparison (paired bootstrap) in all questions and in each
+    overlap half; and the dose, per question the pinned swap's edit size over its plain swap's (both |edit| / |h| at
+    the edited positions, mean over band layers)."""
+    halves = overlap_halves(leaks)
+    rows = []
+    for a, b in comparisons:
+        for half in ("all", "low", "high"):
+            sub = [o for o in outcomes if half == "all" or
+                   halves.get((o["lens"], o["positions"], o["band"]), {}).get(o["name"]) == half]  # fmt: skip
+            rows += [{"a": a, "b": b, "overlap": half, **r} for r in paired_difference(sub, a, b, n_boot, seed)]
+    edit = {(o["lens"], o["positions"], o["band"], o["kind"], o["name"]): o["edit_ratio"]
+            for o in outcomes if not o["null"]}  # fmt: skip
+    dose = []
+    for pinned, (plain, _) in PINNED.items():
+        for lens, positions, band in sorted({k[:3] for k in edit if k[3] == pinned}):
+            ratios = [edit[k] / edit[(*k[:3], plain, k[4])] for k in edit
+                      if k[:4] == (lens, positions, band, pinned) and edit.get((*k[:3], plain, k[4]))]  # fmt: skip
+            dose.append({"lens": lens, "positions": positions, "band": band, "kind": pinned, "n": len(ratios),
+                         "median_ratio": statistics.median(ratios), "under_half": sum(r < 0.5 for r in ratios),
+                         "under_30pct": sum(r < 0.3 for r in ratios)})  # fmt: skip
+    return {"comparisons": rows, "dose": dose}
+
+
+def analyze(run_dir: str | Path, kind: str = "overlap") -> Path:
+    """Re-analyse a finished run into `<run_dir>/analysis-<timestamp>-<kind>/`: "overlap" (the overlap split and its
+    figure) or "pinned" (pinned_check, and the run's figure re-rendered)."""
     from datetime import datetime
 
-    from .plot import plot_overlap
+    from .plot import plot_overlap, plot_run
 
     run_dir = Path(run_dir)
 
     def load(name: str) -> list[dict]:
         return [json.loads(x) for x in (run_dir / name).read_text().splitlines() if x.strip()]
 
-    rows = by_overlap(load("outcomes.jsonl"), load("leakage.jsonl"))
-    out = run_dir / f"analysis-{datetime.now().strftime('%Y%m%d-%H%M%S')}-overlap"
-    out.mkdir()
-    (out / "summary.json").write_text(json.dumps({"source_run": str(run_dir), "by_overlap": rows}, indent=2))
-    plot_overlap(out / "flip_rates_by_overlap.png", rows, post_hoc=True)  # the first run's split came afterwards
+    outcomes, leaks = load("outcomes.jsonl"), load("leakage.jsonl")
+    out = run_dir / f"analysis-{datetime.now().strftime('%Y%m%d-%H%M%S')}-{kind}"
+    if kind == "overlap":
+        out.mkdir()
+        rows = by_overlap(outcomes, leaks)
+        (out / "summary.json").write_text(json.dumps({"source_run": str(run_dir), "by_overlap": rows}, indent=2))
+        plot_overlap(out / "flip_rates_by_overlap.png", rows, post_hoc=True)  # the first run's split came afterwards
+    elif kind == "pinned":
+        out.mkdir()
+        params = json.loads((run_dir / "manifest.json").read_text())["config"]["params"]
+        summary = json.loads((run_dir / "summary.json").read_text())
+        check = pinned_check(outcomes, leaks, params["comparisons"], params["n_boot"], params["boot_seed"])
+        (out / "summary.json").write_text(json.dumps({"source_run": str(run_dir), **check}, indent=2))
+        plot_run(out, summary)
+    else:
+        raise SystemExit(f"unknown analysis {kind!r}")
     return out
 
 
 if __name__ == "__main__":
-    # uv run python -m scripts.exp14_cue_answer_swaps.experiment analyze <run_dir>
+    # uv run python -m scripts.exp14_cue_answer_swaps.experiment analyze <run_dir> [overlap|pinned]
     import sys
 
-    if sys.argv[1:2] != ["analyze"] or len(sys.argv) != 3:
+    if sys.argv[1:2] != ["analyze"] or len(sys.argv) not in (3, 4):
         raise SystemExit(__doc__)
-    print(analyze(sys.argv[2]))
+    print(analyze(sys.argv[2], *sys.argv[3:]))
