@@ -351,13 +351,14 @@ def _stamp() -> str:
 
 
 def analyze(run_dir: str | Path, params: dict[str, Any]) -> Path:
-    """Re-run the analysis of a finished run from its saved grids into a new `<run_dir>/analysis-<timestamp>/`."""
+    """Re-run the analysis of a finished run from its saved grids into a new
+    `<run_dir>/analysis-<timestamp>-position-map/` (cue.py writes `-cue-phrase` analyses next to it)."""
     run_dir = Path(run_dir)
     manifest = json.loads((run_dir / "manifest.json").read_text())
     meta = [json.loads(x) for x in (run_dir / "items.jsonl").read_text().splitlines() if x.strip()]
     layers = json.loads((run_dir / "layers.json").read_text())
     grids = {r: load_grids(run_dir / f"grids_{r}.npz") for r in layers}
-    out = run_dir / f"analysis-{_stamp()}"
+    out = run_dir / f"analysis-{_stamp()}-position-map"
     out.mkdir()
     summary = {"source_run": str(run_dir), **analyze_grids(grids, meta, layers, params, manifest["config"]["seed"])}
     (out / "summary.json").write_text(json.dumps(summary, indent=2, default=str))

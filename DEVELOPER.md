@@ -58,7 +58,8 @@ README: trailing space stripped, part B's v4 labels, bands 32-48 (primary) and 2
 
 ## Re-analysing a finished run (no GPU)
 Each part A experiment has an `analyze` command that re-aggregates a run's saved ranks with the current code into a
-new `<run>/analysis-<timestamp>/` (summary.json and, for exp11/exp12, figures):
+new `<run>/analysis-<timestamp>[-<kind>]/` (summary.json and, for exp11/exp12, figures; exp12's kinds: `-position-map`,
+and `-cue-phrase` from `scripts.exp12_position_map.cue`):
 ```bash
 uv run python -m scripts.exp10_lens_sanity.experiment analyze results/exp10_lens_sanity/<run>
 uv run python -m scripts.exp11_bridge_vs_answer_by_layer.experiment analyze results/exp11_bridge_vs_answer_by_layer/<run>

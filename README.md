@@ -99,6 +99,7 @@ is recomputed from the raw run files by `uv run python scripts/verify_headlines.
 |---|---|
 | [exp12 `two_step.png`](figures/exp12_position_map/two_step.png) | **Headline.** Where in the prompt each word is read (left) and from which layer (right): the bridge one word before the end from layer 23, the answer at the last word from layer 44 |
 | [exp12 `layers_at_positions_jlens.png`](figures/exp12_position_map/layers_at_positions_jlens.png) | The same, one line per position for the last four words: which positions carry the bridge, and the answer, at which layers |
+| [exp12 `cue_phrase.png`](figures/exp12_position_map/cue_phrase.png) | On the cue phrase (the words that point to the bridge): the bridge is read there most often, the answer partly |
 | [exp12 `by_offset.png`](figures/exp12_position_map/by_offset.png) | The "where in the prompt" panel for all three readers, logit lens included |
 | [exp12 `position_layer.png`](figures/exp12_position_map/position_layer.png) | Reference heatmaps: every position x layer, all three readers |
 | [exp11 `pool_top1_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/pool_top1_by_layer.png) | Last token only: bridge and answer ranked first, by layer, three readers |
@@ -259,6 +260,11 @@ alone gets.
   Read at a single token (exp11) the two overlapped; this is the step that one token hides.
 - **Most last-token misses are a read-site effect.** Of the 30 questions where the J-lens does not have the bridge
   first at the last word, 73% [57, 90] have it first at an earlier word (distractor, same search: 33% [17, 50]).
+- **On the cue phrase the bridge is read most often, and the answer partly.** On the words that point to the bridge
+  ("Amazon River ends"), where swapping the bridge changes the answer, the J-lens has the bridge first in 80% [72, 88]
+  of layers 32-48 at the best cue token (its distractor, same search: 19%; layers 0-4, the cue words' own
+  associations: 18%). The answer is first there in 35% [25, 44] (swap answer 7%; layers 0-4: 12%). The first hop is
+  done on the cue phrase; part of the answer is already there too.
 
 ![exp12: where and how deep](figures/exp12_position_map/two_step.png)
 
@@ -277,15 +283,27 @@ it at layers 24-25, the last word only at layer 35; earlier words (grey, average
 (right): the last word (thick) reaches half of the questions at layer 44, the word before it at layer 55; the two
 words before that stay at or below 25%, earlier words at or below 10%.*
 
+![exp12: the cue phrase](figures/exp12_position_map/cue_phrase.png)
+
+*How to read it. Left: for each place in the prompt, in what share of layers 32-48 the J-lens ranks the word first,
+averaged over the questions; on the cue phrase and the other earlier words, at their best token (the grey controls had
+the same search, so their height is the noise ceiling). Black ticks: the same share in layers 0-4, which is what the
+cue words' own associations give ("Munich" already points to Germany at layer 0). Right: by layer, the share of
+questions with the word first at some cue-phrase token: the bridge passes half of the questions by layer 8 and reaches
+about 80% in layers 32-48; the answer stays at 30-40% from layer 20, above its control (5-10%) but never near half.*
+
 **What this does not show.** Positions are aligned by distance from the end, not by meaning: in the 46 prompts that
 end in "is" the bridge peaks on the word before it (76% [64, 87]); in the 31 others it has no clear peak (46-59% over
 positions -3..0). The ordering holds for the group of questions, not reliably for each one. A lens shows what is
-readable, not what is computed.
+readable, not what is computed. On the cue phrase, "best token" searches about 5 tokens per question (the controls
+measure what that search gives by chance), and the cue words' associations can be carried into the middle layers, so
+layers 0-4 bound them from below only. Whether the answer read there is used is exp14's question.
 
 <details><summary>Full numbers and checks</summary>
 
 Run `20261015-100735` (Qwen3.6-27B, labels `exp02_swaps/main_v4_jlens`); its `summary.json` is
-current; figures re-rendered in `analysis-20261015-125333/`. Eligible n=77 (answer: 72); positions -14..0 analysed
+current; figures re-rendered in `analysis-20261015-125333-position-map/`, the cue phrase in
+`analysis-20261015-131721-cue-phrase/` (`uv run python -m scripts.exp12_position_map.cue <run>`). Eligible n=77 (answer: 72); positions -14..0 analysed
 (reached by at least half the questions; -11..0 by 76-77).
 
 | Reader | Bridge: best position | Share of layers 32-48 [95% CI] | Held-out halves (position: share) | Answer: best position | Share | Distractor ceiling |
