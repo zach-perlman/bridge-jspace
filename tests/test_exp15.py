@@ -97,3 +97,15 @@ def test_lens_lookup_reads_the_cell_and_handles_missing_answers():
     assert out[("q", "last", 36)]["lens_class"] == "neither"
     answer = lens_lookup(grids, meta, rows, [36], role="answer", prefix="answer_")
     assert answer[("q", "prev", 36)] == {"answer_jlens_rank": None, "answer_jpp_rank": None, "answer_lens_class": None}
+
+
+def test_oracle_words_html_marks_once_and_escapes():
+    from bridge_jspace.examples import oracle_words_html
+
+    words = {"bridge": "Brazil", "answer": "Portuguese", "distractor": "Mexico", "swap_answer": "Spanish"}
+    html = oracle_words_html("- brazil <b>\n- Mexicos, Brazilian", words)
+    assert "<span class='w bridge'>brazil</span>" in html and "<span class='w ctrl'>Mexicos</span>" in html
+    assert "&lt;b&gt;" in html and "<br>" in html and "Brazilian" in html and html.count("<span") == 2
+    # a word that is also part of the markup is not re-marked inside it
+    assert oracle_words_html("w class span", {"bridge": "class"}).count("<span") == 1
+    assert "span class='w answer'" not in oracle_words_html("- 4 legs", {"answer": "4"}, mark_answers=False)

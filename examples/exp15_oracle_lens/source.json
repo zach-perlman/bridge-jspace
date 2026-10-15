@@ -1,24 +1,26 @@
 {
-  "examples_run": "results/exp15_oracle_lens/20261015-123226",
+  "examples_runs": [
+    "results/exp15_oracle_lens/20261015-123226"
+  ],
   "entry": {
     "title": "Oracle lens vs J-lens / J++ (exp15)",
     "n_examples": 77,
     "model": "Qwen/Qwen3.6-27B",
     "groups": [
       {
-        "title": "Neither lens has the bridge first, the oracle names it",
+        "title": "Lenses miss \u00b7 oracle sees",
         "n_total": 36
       },
       {
-        "title": "Neither lens has the bridge first, the oracle does not name it either",
+        "title": "Lenses miss \u00b7 oracle misses",
         "n_total": 23
       },
       {
-        "title": "The lenses have the bridge first wherever we read",
+        "title": "Lenses always see",
         "n_total": 18
       },
       {
-        "title": "The bridge swap flips the answer: does the oracle follow?",
+        "title": "Swap changes the answer",
         "n_total": 23
       }
     ]

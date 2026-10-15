@@ -23,7 +23,7 @@ from __future__ import annotations
 
 import json
 import statistics
-from collections.abc import Iterable
+from collections.abc import Iterable, Sequence
 from pathlib import Path
 from typing import Any
 
@@ -412,10 +412,39 @@ def analyze(run_dir: str | Path) -> Path:
     return out
 
 
+def load_runs(run_dirs: Sequence[str | Path]) -> tuple[list[dict], list[dict], dict[str, Any], dict[str, dict]]:
+    """`load_scored` for runs on the same questions at different layers (e.g. 28/36/44 and 24/32/40/48), pooled;
+    params are the first run's with every run's layers."""
+    loaded = [load_scored(d) for d in run_dirs]
+    names = [sorted(r["name"] for r in item_rows) for _, item_rows, _, _ in loaded]
+    assert all(n == names[0] for n in names), "the runs read different questions"
+    layer_sets = [set(p["read_layers"]) for _, _, p, _ in loaded]
+    assert sum(map(len, layer_sets)) == len(set().union(*layer_sets)), "two runs read the same layer"
+    reads = [r for run_reads, _, _, _ in loaded for r in run_reads]
+    params = {**loaded[0][2], "read_layers": sorted(set().union(*layer_sets))}
+    return reads, loaded[0][1], params, loaded[0][3]
+
+
+def analyze_combined(run_dirs: Sequence[str | Path]) -> Path:
+    """Several runs pooled by `load_runs` into `<last run>/analysis-<timestamp>-combined/`: summary.json over all
+    their layers and the figures."""
+    from datetime import datetime
+
+    from .plot import plot_combined
+
+    reads, item_rows, params, _ = load_runs(run_dirs)
+    out = Path(run_dirs[-1]) / f"analysis-{datetime.now().strftime('%Y%m%d-%H%M%S')}-combined"
+    out.mkdir()
+    summary = {"source_runs": [str(d) for d in run_dirs], **summarize(reads, item_rows, params)}
+    (out / "summary.json").write_text(json.dumps(summary, indent=2))
+    plot_combined(out, reads, item_rows, params)
+    return out
+
+
 if __name__ == "__main__":
-    # uv run python -m scripts.exp15_oracle_lens.experiment analyze <run_dir>
+    # uv run python -m scripts.exp15_oracle_lens.experiment analyze <run_dir> [<run_dir> ...]   (several: pooled)
     import sys
 
-    if sys.argv[1:2] != ["analyze"] or len(sys.argv) != 3:
+    if sys.argv[1:2] != ["analyze"] or len(sys.argv) < 3:
         raise SystemExit(__doc__)
-    print(analyze(sys.argv[2]))
+    print(analyze(sys.argv[2]) if len(sys.argv) == 3 else analyze_combined(sys.argv[2:]))

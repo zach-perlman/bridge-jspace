@@ -12,6 +12,7 @@ J-lens, a position x layer table of the last tokens (top word, bridge rank).
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
@@ -329,6 +330,8 @@ td.heat{font-family:var(--mono);text-align:center;min-width:70px}
 td.heat small{color:var(--ink);opacity:.75;font-variant-numeric:tabular-nums}
 td.heat .w.bridge{background:none;color:var(--ink);text-decoration:underline 2px}
 h4.t{margin:12px 0 0;font-size:13px}
+td.o{white-space:normal;min-width:260px;max-width:420px;font:12px/1.45 var(--mono)}
+details.oracle{margin:12px 0 4px}details.oracle summary{cursor:pointer;font-weight:600;font-size:13px}
 @media (max-width:760px){.layout{flex-direction:column}nav{position:static;width:auto;max-height:none;
 border-right:0;border-bottom:1px solid var(--line)}header,main{padding-inline:16px}}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
@@ -377,6 +380,7 @@ def render_html(
     model: str,
     standalone: bool = True,
     slice_prefix: str = "",
+    oracle: dict[str, dict] | None = None,
 ) -> str:
     by_group: dict[str, list[dict[str, Any]]] = {}
     for r in records:
@@ -389,7 +393,7 @@ def render_html(
         nav += [f'<a href="#{g.key}-{_esc(r["name"])}">{_esc(r["name"])}</a>' for r in recs]
         body.append(f'<section class="group" data-g="{g.key}"><h2>{_esc(g.title)}</h2>')
         body.append(f'<p class="def">{_esc(g.definition)} {g.n_total} items; {len(recs)} shown.</p>')
-        body += [_card_html(r, g.key, p, slice_prefix) for r in recs]
+        body += [_card_html(r, g.key, p, slice_prefix, (oracle or {}).get(r["name"])) for r in recs]
         body.append("</section>")
     title = p.get("page_title") or f"Examples: {p['title']}"
     lead = (
@@ -404,6 +408,13 @@ def render_html(
         '<span class="w ctrl">distractor</span>. Under each cell, <b>B 3 · A 120</b> means: at that layer the bridge '
         "is the reader's 3rd most likely word and the answer its 120th (spaces and punctuation not counted); bold "
         "marks the top 10. The colour of the J-lens position table shows the bridge rank: darker is higher.</p>"
+        + (
+            "<p>Under a card, <b>Oracle lens (exp15)</b> opens what the oracle lens (a LoRA on the model that puts one "
+            "activation into words) says about the same question at the last word, -1 and the cue phrase's last "
+            "token, before and after exp14's J++ bridge swap.</p>"
+            if oracle and any(r["name"] in oracle for r in records)
+            else ""
+        )
     )
     head = (
         f"<title>{_esc(title)}</title>"
@@ -426,7 +437,9 @@ def render_html(
     )
 
 
-def _card_html(r: dict[str, Any], group: str, p: dict[str, Any], slice_prefix: str = "") -> str:
+def _card_html(
+    r: dict[str, Any], group: str, p: dict[str, Any], slice_prefix: str = "", oracle: dict | None = None
+) -> str:
     w = r["words"]
     prompt = r["prompt"][:-1] + "␣" if r["prompt"].endswith(" ") else r["prompt"]
     ctrl = f" · controls {_esc(w['distractor'])} / {_esc(w['swap_answer'])}" if "distractor" in w else ""
@@ -487,8 +500,62 @@ def _card_html(r: dict[str, Any], group: str, p: dict[str, Any], slice_prefix: s
                 )
             parts.append(f"<tr><td><code>{_esc(_show(t))}</code></td>{''.join(cells)}</tr>")
         parts.append("</table></div>")
+    if oracle:
+        parts.append(_oracle_html(oracle, w))
     parts.append("</div>")
     return "".join(parts)
+
+
+ORACLE_POSITION = {"last": "last word", "prev": "-1", "cue_last": "cue phrase, last token"}
+ORACLE_MARK = {"bridge": "bridge", "answer": "answer", "distractor": "ctrl", "swap_answer": "ctrl"}
+
+
+def oracle_words_html(text: str, words: dict[str, str], mark_answers: bool = True) -> str:
+    """The oracle lens's text, escaped, with the question's words marked in one pass (whole words, case and a plural
+    ending ignored). `mark_answers=False` for numeric answers, which the oracle's list numbering would match."""
+    roles = {r: w for r, w in words.items() if r in ORACLE_MARK and w and (mark_answers or "answer" not in r)}
+    if not roles:
+        return _esc(text).replace("\n", "<br>")
+    by_word = {w.lower(): r for r, w in roles.items()}
+    alternatives = "|".join(re.escape(w) for w in sorted(by_word, key=len, reverse=True))
+    pattern = re.compile(rf"(?<![^\W_])({alternatives})(e?s)?(?![^\W_])", flags=re.IGNORECASE)
+    out, last = [], 0
+    for m in pattern.finditer(text):
+        out += [_esc(text[last : m.start()]), f"<span class='w {ORACLE_MARK[by_word[m.group(1).lower()]]}'>",
+                _esc(m.group(0)), "</span>"]  # fmt: skip
+        last = m.end()
+    out.append(_esc(text[last:]))
+    return "".join(out).replace("\n", "<br>")
+
+
+def load_oracle_readings(results: Path | None = None) -> dict[str, dict[tuple[str, int], dict[str, str]]]:
+    """exp15's oracle lens texts by question: {(position, layer): {"clean": text, "swapped": text}}, every run pooled
+    (a later run replaces an earlier one's text at the same position and layer)."""
+    from bridge_jspace.pins import RESULTS_DIR
+
+    out: dict[str, dict[tuple[str, int], dict[str, str]]] = {}
+    for path in sorted((results or RESULTS_DIR).glob("exp15_oracle_lens/*/reads.jsonl")):
+        for line in path.read_text().splitlines():
+            r = json.loads(line)
+            if r["condition"] in ("clean", "swapped"):
+                out.setdefault(r["name"], {}).setdefault((r["position"], r["layer"]), {})[r["condition"]] = r["text"]
+    return out
+
+
+def _oracle_html(readings: dict[tuple[str, int], dict[str, str]], words: dict[str, str]) -> str:
+    mark = not any(ch.isdigit() for ch in words.get("answer", "") + words.get("swap_answer", ""))
+    rows = sorted(readings.items(), key=lambda kv: (list(ORACLE_POSITION).index(kv[0][0]), kv[0][1]))
+    body = "".join(
+        f"<tr><td class='l'>{ORACLE_POSITION[pos]}</td><td class='l'>{layer}</td>"
+        f"<td class='o'>{oracle_words_html(t.get('clean', ''), words, mark)}</td>"
+        f"<td class='o'>{oracle_words_html(t.get('swapped', ''), words, mark)}</td></tr>"
+        for (pos, layer), t in rows
+    )
+    return (
+        "<details class='oracle'><summary>Oracle lens (exp15): its words for this question's activation, by position "
+        "and layer</summary><div class='scroll'><table><tr><th>position</th><th>layer</th><th>oracle lens</th>"
+        "<th>after exp14's J++ bridge swap</th></tr>" + body + "</table></div></details>"
+    )
 
 
 EXAMPLES_DIR_NAME = "examples"
@@ -557,9 +624,10 @@ def export(run_dir: str | Path, root: Path | None = None) -> Path:
     if out.exists():
         shutil.rmtree(out)
     out.mkdir(parents=True)
-    (out / "index.html").write_text(render_html(groups, data["examples"], p, model))
+    oracle = load_oracle_readings()
+    (out / "index.html").write_text(render_html(groups, data["examples"], p, model, oracle=oracle))
     (out / "examples.md").write_text(render(groups, data["examples"], p, model))
-    (out / "artifact.html").write_text(render_html(groups, data["examples"], p, model, standalone=False))
+    (out / "artifact.html").write_text(render_html(groups, data["examples"], p, model, standalone=False, oracle=oracle))
     if (run_dir / "slices").exists():
         shutil.copytree(run_dir / "slices", out / "slices")
     (out / "source.json").write_text(
