@@ -60,6 +60,7 @@ N_ITEMS = 80  # per family, a seeded sample of the eligible items
 MAX_NEW_TOKENS = 8
 CF_SEED, OFF_SEED, SAMPLE_SEED, NULL_SEED = 9000, 9500, 0, 0
 N_BOOT, BOOT_SEED = 2000, 0
+BATCH = 32  # edited generations per batched call (Model.generate_batch)
 CHANCE_DRAWS = 20
 # exp01's J++ probes (variant more_jpp, as v3_jpp behind exp02's main_v4_jpp and exp06), rebuilt on the B200 box:
 # v3_jpp's cache stayed on the old box. The rebuild checks its kept prompts against v3 one by one.
@@ -200,6 +201,8 @@ def manifest_common(name: str, why: str, kind: str) -> dict:
             "cue": "the cue phrase, from the cue word to the word before the final ' is' (the swaps' positions)",
         },
         "outcome": "the patched greedy continuation's first capital of the set: X's capital (b), the bridge's (A), other",
+        "generation": f"greedy, {MAX_NEW_TOKENS} new tokens, an item's runs batched {BATCH} at a time (Model.generate_batch: "
+        "equal to single runs up to batched-kernel rounding, which changed only degenerate continuations in a check)",
     }
 
 
@@ -229,6 +232,17 @@ def uid(item: dict, index: int) -> str:
     return f"{item['family']}-{index:04d}"
 
 
+def run_jobs(model, c: dict, jobs: list[tuple[dict, dict]], capitals: list[str], outcomes: list[dict]) -> None:
+    """Run an item's edited generations (tags, edits) in batches and append their outcomes."""
+    ids = torch.tensor([c["ids"]["clean"]], device="cuda")
+    for start in range(0, len(jobs), BATCH):
+        chunk = jobs[start : start + BATCH]
+        texts = model.generate_batch(ids, MAX_NEW_TOKENS, [edits for _, edits in chunk])
+        for (tags, _), text in zip(chunk, texts, strict=True):
+            said = answer_colour(text, capitals)
+            outcomes.append({"family": c["family"], "name": c["name"], **tags, "said": said, "role": role_of(said, c)})
+
+
 def eligible_cases(
     model,
     tokenizer,
@@ -253,10 +267,11 @@ def eligible_cases(
         if before is not None:
             eligible = before[index]["status"] in ("eligible", "eligible_not_sampled")
         else:
-            said = {
-                k: answer_colour(model.generate(torch.tensor([v], device="cuda"), MAX_NEW_TOKENS)[1], capitals)
-                for k, v in prep["ids"].items()
-            }
+            keys = list(prep["ids"])  # clean, cf, off: aligned, so one batch
+            texts = model.generate_batch(
+                torch.tensor([prep["ids"][k] for k in keys], device="cuda"), MAX_NEW_TOKENS, [{}] * 3
+            )
+            said = {k: answer_colour(text, capitals) for k, text in zip(keys, texts, strict=True)}
             eligible = said == {"clean": roles(item)["A"], "cf": roles(item)["b"], "off": roles(item)["A"]}
         row["status"] = "eligible" if eligible else "not_eligible"
         if eligible:
@@ -294,24 +309,14 @@ def stage_run_map(name: str) -> None:
     print({f: sum(c["family"] == f for c in cases) for f in FAMILIES}, "items", flush=True)
     outcomes = []
     for c in cases:
-        ids = torch.tensor([c["ids"]["clean"]], device="cuda")
+        jobs = []
         for group in GROUPS:
             pos = c["groups"][group]
             for layer in MAP_LAYERS:
                 for source in ("cf", "off"):
                     delta = c["h"][source][layer][pos] - c["h"]["clean"][layer][pos]
-                    said = answer_colour(model.generate(ids, MAX_NEW_TOKENS, {layer: AddRows(delta, pos)})[1], capitals)
-                    outcomes.append(
-                        {
-                            "family": c["family"],
-                            "name": c["name"],
-                            "group": group,
-                            "layer": layer,
-                            "source": source,
-                            "said": said,
-                            "role": role_of(said, c),
-                        }
-                    )
+                    jobs.append(({"group": group, "layer": layer, "source": source}, {layer: AddRows(delta, pos)}))
+        run_jobs(model, c, jobs, capitals, outcomes)
         print(f"{c['name']}: done ({len(outcomes)} outcomes)", flush=True)
     write_jsonl(out_dir / "items.jsonl", rows)
     write_jsonl(out_dir / "outcomes.jsonl", outcomes)
@@ -448,22 +453,12 @@ def stage_run_parts(name: str) -> None:
         share = (signed_omp(dictionaries[layer], x, K_ATOMS).norm(dim=-1) ** 2 / x.norm(dim=-1) ** 2).mean()
         fve.append({"layer": layer, "what": "chance", "share": round(float(share), 4)})
     for c in cases:
-        ids = torch.tensor([c["ids"]["clean"]], device="cuda")
         pos = c["groups"]["question"]
         tok = torch.tensor([model.concept_token(c["bridge"]), model.concept_token(c["target"])], device="cuda")
+        jobs: list[tuple[dict, dict]] = []
 
-        def run(layer, delta, c=c, ids=ids, pos=pos, **tags):
-            said = answer_colour(model.generate(ids, MAX_NEW_TOKENS, {layer: AddRows(delta, pos)})[1], capitals)
-            outcomes.append(
-                {
-                    "family": c["family"],
-                    "name": c["name"],
-                    "layer": layer,
-                    **tags,
-                    "said": said,
-                    "role": role_of(said, c),
-                }
-            )
+        def run(layer, delta, jobs=jobs, pos=pos, **tags):
+            jobs.append(({"layer": layer, **tags}, {layer: AddRows(delta, pos)}))
 
         for layer in window[c["family"]]:
             delta = c["h"]["cf"][layer][pos] - c["h"]["clean"][layer][pos]
@@ -488,6 +483,7 @@ def stage_run_parts(name: str) -> None:
                 seed = NULL_SEED + 1000 * c["index"] + 10 * layer + pi
                 noise = null_rows(part, torch.Generator(device="cuda").manual_seed(seed))
                 run(layer, noise, part=part_name, source="cf", null=True)
+        run_jobs(model, c, jobs, capitals, outcomes)
         print(f"{c['name']}: done ({len(outcomes)} outcomes)", flush=True)
     write_jsonl(out_dir / "items.jsonl", rows)
     write_jsonl(out_dir / "outcomes.jsonl", outcomes)
@@ -647,8 +643,8 @@ def stage_run_swaps(name: str) -> None:
     cases, rows = eligible_cases(model, tokenizer, SWAP_LAYERS, sources=("clean",), map_items=map_items)
     outcomes = []
     for c in cases:
-        ids = torch.tensor([c["ids"]["clean"]], device="cuda")
         pair = {"intermediate": c["bridge"], "swap_to": c["target"]}
+        jobs: list[tuple[dict, dict]] = []
         for ci, condition in enumerate(SWAP_CONDITIONS):
             atoms = {layer: condition_atoms(condition, pair, layer, probes, None, model) for layer in SWAP_LAYERS}
             for null in (False, True):
@@ -664,18 +660,9 @@ def stage_run_swaps(name: str) -> None:
                         clamps[layer] = SwapClamp(
                             at, c["h"]["clean"][layer], null_direction=direction, positions=c["groups"]["cue"]
                         )
-                said = answer_colour(model.generate(ids, MAX_NEW_TOKENS, clamps)[1], capitals)
-                outcomes.append(
-                    {
-                        "family": c["family"],
-                        "name": c["name"],
-                        "condition": condition,
-                        "null": null,
-                        "said": said,
-                        "role": role_of(said, c),
-                        "layers_skipped": len(atoms) - len(clamps),
-                    }
-                )
+                tags = {"condition": condition, "null": null, "layers_skipped": len(atoms) - len(clamps)}
+                jobs.append((tags, clamps))
+        run_jobs(model, c, jobs, capitals, outcomes)
         print(f"{c['name']}: done ({len(outcomes)} outcomes)", flush=True)
     write_jsonl(out_dir / "items.jsonl", rows)
     write_jsonl(out_dir / "outcomes.jsonl", outcomes)

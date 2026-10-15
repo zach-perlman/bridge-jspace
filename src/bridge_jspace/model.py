@@ -116,6 +116,41 @@ class Model:
         new = out.sequences[0, prompt_len:]
         return out.logits[0][0].float(), self.tokenizer.decode(new, skip_special_tokens=True), int(new.shape[0])
 
+    @torch.no_grad()
+    def generate_batch(self, ids: torch.Tensor, max_new_tokens: int, edits: list[dict[int, Edit]]) -> list[str]:
+        """Greedy continuations under several edit sets at once, one batch row per set (a row without an edit at a layer
+        passes through): of one prompt [1, seq], or of as many prompts of one length [len(edits), seq]. Each row is
+        `generate(ids[row], max_new_tokens, edits[row])` up to batched-kernel rounding; one batched call pays the
+        per-kernel launch cost once instead of once per row, which is what bounds generation speed on this model
+        (thousands of small kernels per token). Returns the decoded continuations."""
+        prompt_len = ids.shape[1]
+
+        def hook_for(layer: int):
+            def hook(_module, _args, out):
+                h = out[0] if isinstance(out, tuple) else out
+                if h.shape[1] != prompt_len:  # a decoding step
+                    return None
+                h = h.clone()
+                for row, row_edits in enumerate(edits):
+                    if layer in row_edits:
+                        h[row] = row_edits[layer](h[row].float()).to(h.dtype)
+                return (h, *out[1:]) if isinstance(out, tuple) else h
+
+            return hook
+
+        layers = sorted({layer for row_edits in edits for layer in row_edits})
+        batch = ids if ids.shape[0] == len(edits) else ids.expand(len(edits), -1).contiguous()
+        with _forward_hooks([(self.layers[layer], hook_for(layer)) for layer in layers]):
+            out = self.hf.generate(
+                input_ids=batch,
+                attention_mask=torch.ones_like(batch),
+                max_new_tokens=max_new_tokens,
+                do_sample=False,
+                pad_token_id=self.tokenizer.eos_token_id,
+                return_dict_in_generate=True,
+            )
+        return [self.tokenizer.decode(seq[prompt_len:], skip_special_tokens=True) for seq in out.sequences]
+
     def surface_ids(self, word: str) -> list[int]:
         return tokens.surface_ids(self.tokenizer, word)
 
