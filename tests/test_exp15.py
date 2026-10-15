@@ -139,3 +139,13 @@ def test_mention_type():
     assert mention_type("- shell or carapace", "turtle") is None
     # a reading with a concept bullet counts as concept even if it also answers
     assert mention_type("- Brazil\n- the answer is Brazil", "Brazil") == "concept"
+
+
+def test_quote_type():
+    from scripts.exp15_oracle_lens.experiment import quote_type
+
+    assert quote_type('The sentence "the country where Brazil is" sets up', "Brazil") == "quoted"
+    assert quote_type("The phrase is a well-known reference to basketball.", "basketball") == "commentary"
+    assert quote_type("It quotes “Naples is in Italy” here", "Italy") == "quoted"
+    assert quote_type('"a quote" then Brazil outside', "Brazil") == "commentary"
+    assert quote_type("nothing here", "Brazil") is None

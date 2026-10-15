@@ -385,6 +385,78 @@ def mention_type(text: str, word: str) -> str | None:
     return next((k for k in MENTION_TYPES if k in kinds), None)
 
 
+_QUOTED = re.compile(r'"[^"\n]*"|“[^”\n]*”')
+
+
+def quote_type(text: str, word: str) -> str | None:
+    """Whether the reader names `word` inside a quotation ("..." or “...”, within one line): "quoted", the reader
+    re-telling the prompt with the word already in it (the real prompt never contains the bridge); else "commentary",
+    its own remark; None if it does not name it. Fixed before counting; a human checks a fixed-seed sample."""
+    pattern = re.compile(rf"(?<![^\W_]){re.escape(word)}(?:e?s)?(?![^\W_])", flags=re.IGNORECASE)
+    spans = [m.span() for m in _QUOTED.finditer(text)]
+    hits = [m.start() for m in pattern.finditer(text)]
+    if not hits:
+        return None
+    return "quoted" if any(a < h < b for h in hits for a, b in spans) else "commentary"
+
+
+def quote_summary(reads: list[dict], item_rows: list[dict], items: dict[str, dict]) -> dict[str, Any]:
+    """Quoted vs commentary namings of the bridge (where both lenses have it 1st, where neither does) and of the swap
+    target after the swap (answer changed; last word and -1)."""
+    clean = [r for r in reads if r["condition"] == "clean"]
+    flipped = {r["name"] for r in item_rows if r["exp14_flip"]}
+    groups = {
+        "bridge, both lenses 1st": ([r for r in clean if r["lens_class"] == "both"], "intermediate"),
+        "bridge, neither lens 1st": ([r for r in clean if r["lens_class"] == "neither"], "intermediate"),
+        "swap target after the swap, flipped, last word and -1": (
+            [r for r in reads if r["condition"] == "swapped" and r["name"] in flipped and r["position"] in ("last", "prev")],
+            "swap_to"),
+    }  # fmt: skip
+    out = {}
+    for label, (rows, field) in groups.items():
+        kinds = [k for r in rows if (k := quote_type(r["text"], items[r["name"]][field])) is not None]
+        out[label] = {"n_named": len(kinds), **{k: (kinds.count(k) / len(kinds) if kinds else None)
+                                                 for k in ("quoted", "commentary")}}  # fmt: skip
+    return out
+
+
+def answer_by_position(clean: list[dict], n_boot: int, seed: int) -> dict[str, Any]:
+    """The solving calibrator: per read position, how often the reader names the answer, how often either lens ranks
+    the answer 1st there, and how often the reader names the answer's distractor (questions with a single-token word
+    answer). Where the lenses rarely have the answer (the cue phrase), a reader naming it is most likely solving."""
+    rows = [r for r in clean if r.get("answer_lens_class") is not None]
+    out = {}
+    for pos in POSITIONS:
+        sub = [r for r in rows if r["position"] == pos]
+        lens = [{**r, "_lens": r["answer_lens_class"] in ("both", "one")} for r in sub]
+        out[pos] = {
+            "n_readings": len(sub),
+            "reader_names_answer": _clustered_mean(sub, "named_answer", n_boot, seed),
+            "a_lens_ranks_answer_1st": _clustered_mean(lens, "_lens", n_boot, seed),
+            "reader_names_answer_distractor": _clustered_mean(sub, "named_swap_answer", n_boot, seed),
+        }
+    return out
+
+
+def _clustered_mean(rows: list[dict], field: str, n_boot: int, seed: int) -> list[float] | None:
+    """Mean of `field` over questions (each question's mean over its readings) with a bootstrap CI over questions."""
+    from bridge_jspace.stats import bootstrap_mean
+
+    q = _per_question(rows, field)
+    return list(bootstrap_mean(list(q.values()), n_boot, seed)) if q else None
+
+
+def quote_sample(reads: list[dict], items: dict[str, dict], k: int, seed: int) -> list[dict]:
+    """k lens-blind readings that name the bridge, by a fixed seed, with their quote type, for a human check."""
+    rows = [r for r in reads if r["condition"] == "clean" and r["lens_class"] == "neither" and r["named_bridge"]]
+    rng = np.random.default_rng(seed)
+    picked = sorted(rng.choice(len(rows), size=min(k, len(rows)), replace=False).tolist())
+    return [{"name": rows[i]["name"], "position": rows[i]["position"], "layer": rows[i]["layer"],
+             "bridge": items[rows[i]["name"]]["intermediate"],
+             "type": quote_type(rows[i]["text"], items[rows[i]["name"]]["intermediate"]), "text": rows[i]["text"],
+             "type_by_human": None} for i in picked]  # fmt: skip
+
+
 def mention_types(rows: list[dict], items: dict[str, dict], field: str) -> dict[str, Any]:
     """For the readings in `rows` that name the item's `field` word: the share of each mention type, counted per
     reading (a reading with a concept bullet counts as concept even if it also answers)."""
@@ -539,11 +611,19 @@ def analyze(run_dir: str | Path) -> Path:
     from .plot import plot_run
 
     run_dir = Path(run_dir)
-    reads, item_rows, params, _ = load_scored(run_dir)
+    reads, item_rows, params, items = load_scored(run_dir)
     out = run_dir / f"analysis-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
     out.mkdir()
-    summary = {"source_run": str(run_dir), **summarize(reads, item_rows, params)}
+    clean = [r for r in reads if r["condition"] == "clean"]
+    summary = {
+        "source_run": str(run_dir),
+        **summarize(reads, item_rows, params),
+        "mention_types": mention_summary(reads, item_rows, items),
+        "quote_types": quote_summary(reads, item_rows, items),
+        "answer_by_position": answer_by_position(clean, params["n_boot"], params["boot_seed"]),
+    }
     (out / "summary.json").write_text(json.dumps(summary, indent=2))
+    (out / "quote_sample.json").write_text(json.dumps(quote_sample(reads, items, 30, params["boot_seed"]), indent=2))
     (out / "examples.json").write_text(json.dumps(pick_examples(reads, 12, params["boot_seed"]), indent=2))
     plot_run(out, reads, item_rows, params)
     return out
@@ -603,6 +683,10 @@ def analyze_combined(run_dirs: Sequence[str | Path]) -> Path:
         "source_runs": [str(d) for d in run_dirs],
         **summarize(reads, item_rows, params),
         "mention_types": mention_summary(reads, item_rows, items),
+        "quote_types": quote_summary(reads, item_rows, items),
+        "answer_by_position": answer_by_position(
+            [r for r in reads if r["condition"] == "clean"], params["n_boot"], params["boot_seed"]
+        ),
     }
     (out / "summary.json").write_text(json.dumps(summary, indent=2))
     (out / "mention_sample.json").write_text(

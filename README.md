@@ -26,7 +26,7 @@ or tokenization artifact.
 | [exp12](#exp12_position_map-where-in-the-prompt-and-how-deep) | Where in the prompt, and from which layer, are they readable? |
 | [exp14](#exp14_cue_answer_swaps-on-the-cue-phrase-is-it-the-bridge-or-already-the-answer) | On the cue phrase, does swapping the answer change it as often as swapping the bridge? |
 | [exp15](#exp15_oracle_lens-where-the-lenses-miss-the-bridge-does-the-oracle-lens-name-it) | Where the J-lens and J++ miss the bridge, does a reader that puts the activation into words name it? |
-| [exp16](#exp16_nla-does-a-second-independent-verbalizer-the-nla-see-the-same) | Does a second, independent verbalizer, the NLA, see the same? |
+| [exp16](#exp16_nla-does-a-second-verbalizer-the-nla-see-the-same) | Does a second verbalizer, the NLA, trained for another objective, see the same? |
 | [exp02](#exp02_swaps-part-b-does-the-bridge-act-through-the-j-space-and-where) | Does swapping the bridge's J-space part change the answer, and where in the prompt? |
 | [exp03](#exp03_brew_swaps-part-b-an-in-context-two-step-lookup) | Do the same swaps work on a two-step lookup whose answer is read off the prompt? |
 | [exp04](#exp04_brew_patch-part-b-where-brew-carries-its-intermediate-without-a-lens) | Where does that lookup carry its intermediate, found without a lens? |
@@ -80,8 +80,8 @@ or tokenization artifact.
    as swapping the bridge's?
 6. `exp15_oracle_lens`: where the J-lens and J++ miss the bridge (or the answer), does the oracle lens (a LoRA on the
    model that puts one activation into words) name it; and after the bridge swap, does it name the swap target?
-7. `exp16_nla`: the same with the NLA, a separate 27B verbalizer trained on layer 42, compared with every reader at
-   layer 42.
+7. `exp16_nla`: the same with the NLA, a second 27B verbalizer (another training objective, built on the same model)
+   trained on layer 42, compared with every reader at layer 42.
 
 ## Method, part B: is the bridge used outside the J-space? (exp01-09)
 1. `data/entity_prompts.json`: about 8 prompts per entity that imply the entity without naming it, for the 97
@@ -165,10 +165,11 @@ layer, before and after the bridge swap.
    swap it names the swap target where the model's answer changes (67% vs 10% where it does not), so it follows the
    state; but it mostly writes the question out with the bridge filled in, so on the lens-blind readings it may be
    solving the question rather than reading the state, which only a cleaner test can tell.
-9. A second, independent verbalizer, the NLA (exp16, layer 42), agrees: it names the bridge in 46% of the readings
+9. A second verbalizer with another training objective, the NLA (exp16, layer 42), agrees: it names the bridge in 46% of the readings
    where neither lens has it first (false alarms 10%), and the swap target where the swap changes the answer (59%
    vs 11%). At layer 42 both verbalizers have the bridge and the answer more often than either lens (bridge: NLA 75%,
-   oracle 65-70%, lenses 62-65%; answer: 57%, 54-55%, 34-38%).
+   oracle 65-70%, lenses 62-65%; answer: 57%, 54-55%, 34-38%). Both are built on Qwen3.6-27B, so agreeing does not
+   rule out that both solve the question; the NLA's own comments often do.
 
 ![exp12: where and how deep](figures/exp12_position_map/two_step.png)
 
@@ -647,7 +648,7 @@ exp11 and exp12 pages show the same oracle words under each card ("Oracle lens (
 Runs (Qwen3.6-27B, part B's model loader, the 77 questions of part B's v4 labels, trailing space stripped; oracle
 adapter pinned by sha256 in `pins.py`): `results/exp15_oracle_lens/20261015-123226` (layers 28/36/44, the decision
 rule's run; analysis `analysis-20261015-160336/`), `20261015-134316` (24/32/40/48) and `20261015-140424`
-(20/52/56/60); all three pooled in `20261015-140424/analysis-20261015-163420-combined/` (summary.json with the
+(20/52/56/60); all three pooled in `20261015-140424/analysis-20261015-171154-combined/` (summary.json with the
 monitoring split and the mention types, mention_sample.json, the README's figures). Checks, every run: the sanity gate
 (`sanity.json`: 6 of 6 facts, random vector 0 of 6, base-logit drift 0.0; 496 LoRA modules, r 16, scale 2); the
 swapped forward's top word equals exp14's for 77 of 77 questions.
@@ -664,12 +665,13 @@ since the oracle's numbered bullets "2. ..." would count as naming them): both l
 64% (7%), neither 34% (8%).
 </details>
 
-### exp16_nla: does a second, independent verbalizer, the NLA, see the same?
+### exp16_nla: does a second verbalizer, the NLA, see the same?
 **What we measure.** exp15 with another reader: the NLA (natural-language autoencoder), a separate 27B model trained
 to describe layer-42 activations of Qwen3.6-27B (`ceselder/qwen3.6-27b-nla-rl`: `av_base` plus the GRPO adapter
 `iter_000400`, WorkspaceBench's choice; its read contract: the vector added, norm-matched, after its block 1 at a
-marker token; the explanation between `<explanation>` tags). Unlike the oracle lens it is not the model itself, and
-its training objective differs. Same 77 questions, positions, controls and scoring as exp15, at layer 42 only, the
+marker token; the explanation between `<explanation>` tags). It has its own weights and another training objective
+than the oracle lens, but it is built on Qwen3.6-27B (`av_base` is the model fine-tuned) and so knows what the model
+knows: the two can agree by solving the question the same way. Same 77 questions, positions, controls and scoring as exp15, at layer 42 only, the
 NLA's one layer; 693 readings. Two phases on one GPU: Qwen3.6-27B captures every vector and unloads, then the NLA loads.
 Greedy, 160 tokens. The decision rule (exp15's, at layer 42) was fixed in the config before the run.
 
@@ -700,16 +702,34 @@ the bridge 1st (the lenses are at 0% there by definition, so only the verbalizer
 *How to read it: as exp15's: the share of questions whose NLA explanation names the swap target at the last word and
 -1, before and after the swap.*
 
-**What this does not show.** The same limits as exp15: the NLA writes about the text it decodes from the activation
-("The sentence structure 'The language spoken in the country where [geographic feature] is located is' sets up..."),
-so naming the bridge can still be solving rather than reading; the swap test covers the same 23 questions, 17 of them
-one country template. One layer, so the lens-blind groups are small (46 questions). Greedy decoding; the reference
-reader samples. One seed.
+**Reading or solving, in the NLA's own words.** The NLA quotes the text it decodes from the activation and comments on
+it, and its comments often solve the question outright: "The phrase 'the sport invented in the city of Springfield'
+is a well-known reference to basketball", "a multi-step reasoning chain: identify Rome's country (Italy)" (the prompt
+says Naples), and it invents context the prompt does not have ("Multiple Choice Question" headers, "The answer is
+2"). Two cheap measures, with rules fixed before counting:
+- *Quoted or commented.* No prompt contains its bridge, so a bridge inside the NLA's quotation of the prompt means it
+  recalls the prompt with the bridge already filled in ("The fruit that ... the drink wine is made from" for "the
+  alcoholic drink served at communion"), a hint that the bridge is in the state; a bridge only in its comments is more
+  likely its own solving. Of its lens-blind namings, 63% are quoted and 37% comments (35 namings); where the lenses
+  see the bridge, 54% / 46%; the swap target after the swap, 70% / 30%. The rule misfires on titles ("The Swan Lake"
+  counted as quoting the bird): a fixed-seed sample of 30 is in `quote_sample.json` for a human check. (The oracle
+  lens rarely quotes, 3%, so this split does not apply to it.)
+- *A solving calibrator: the answer by position.* Where the lenses rarely have the answer, a reader naming it is most
+  likely solving. On the cue phrase the readers name the answer no more often than a lens ranks it first there (NLA
+  23% vs 30%; oracle, all layers, 30% vs 27%): no sign of extra solving there. At the last word they name it far more
+  often (NLA 93% vs 62%; oracle 82% vs 59%), but that is where the model writes its answer, so they may be reading
+  its next-token prediction rather than solving.
+
+**What this does not show.** That the NLA reads the lens-blind bridge from the state: its texts show it solving, and
+the quoted share is a hint, not a test. Agreement with the oracle lens does not rule out solving either (both know
+the facts). Its false alarms are higher where the lenses miss the bridge (10% vs the oracle's 4-5%). The swap test
+covers the same 23 questions, 17 of them one country template. One layer, so the lens-blind groups are small (46
+questions, CI [+20, +50]). Greedy decoding; the reference reader samples. One seed.
 
 <details><summary>Full numbers and checks</summary>
 
 Run `results/exp16_nla/20261015-144540` (Qwen3.6-27B through part B's loader for the capture; the NLA pinned in
-`pins.py`: repo revision and the adapter's sha256); analysis with exp15's tools in `analysis-20261015-170409/`; every
+`pins.py`: repo revision and the adapter's sha256); analysis with exp15's tools in `analysis-20261015-171150/`; every
 reader at layer 42 in `analysis-20261015-170413-compare/` (`scripts/exp16_nla/compare.py`, with exp15's runs
 20261015-123226 and 20261015-134316 for the oracle at 44 and 40). Checks: the NLA's gate (`sanity.json`: 6 of 6
 facts, random vector 0 of 6, logit drift 0.0, the adapter moves its logits by up to 6.6; 496 LoRA modules, rsLoRA
