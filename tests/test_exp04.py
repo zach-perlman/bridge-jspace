@@ -64,3 +64,23 @@ def test_patch_from_replaces_only_its_positions():
     assert torch.equal(out[[1, 3]], source[[1, 3]])
     assert torch.equal(out[[0, 2, 4]], h[[0, 2, 4]])
     assert patch.patch_ratio > 0
+
+
+def test_decide_reads_only_the_groups_and_layers_run():
+    from scripts.exp04_brew_patch import decide
+
+    hit, miss = (0.9, 0.8, 0.95), (0.0, 0.0, 0.05)
+    rows = [
+        {"source": "cf", "group": "rules", "layer": 0, "b": miss, "c": hit, "changed": hit},
+        {"source": "off", "group": "rules", "layer": 0, "b": miss, "c": miss, "changed": miss},
+        {"source": "cf", "group": "rule_path", "layer": 0, "b": hit, "c": miss, "changed": hit},
+        {"source": "off", "group": "rule_path", "layer": 0, "b": miss, "c": miss, "changed": miss},
+    ]
+    for layer, b in ((0, miss), (40, hit)):
+        rows += [
+            {"source": "cf", "group": "after_start", "layer": layer, "b": b, "c": miss, "changed": b},
+            {"source": "off", "group": "after_start", "layer": layer, "b": miss, "c": miss, "changed": miss},
+        ]
+    d = decide(rows, {"rules": [0], "rule_path": [0], "after_start": [0, 40]})
+    assert d["interpreted"]
+    assert d["windows"] == {"after_start": [40]}

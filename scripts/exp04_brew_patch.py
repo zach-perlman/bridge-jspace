@@ -194,7 +194,17 @@ def stage_check(item_set: str) -> None:
     print(f"{item_set}: {counts} (ok = has C and O, both token-aligned with B; eligibility also needs the model)")
 
 
-def stage_manifest(name: str, item_set: str, layers: list[int], why: str | None = None) -> None:
+def stage_manifest(
+    name: str,
+    item_set: str,
+    layers: list[int],
+    why: str | None = None,
+    group_layers: dict[str, list[int]] | None = None,
+) -> None:
+    group_layers = group_layers or {group: layers for group in GROUPS}
+    assert set(group_layers) <= set(GROUPS), f"unknown groups in {sorted(group_layers)}"
+    for group in ("rule_path", "rules"):
+        assert 0 in group_layers.get(group, []), f"the positive control needs {group} at layer 0"
     path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
@@ -222,8 +232,9 @@ def stage_manifest(name: str, item_set: str, layers: list[int], why: str | None 
         "patch": "at one layer, B's block output at the group's positions replaced by the source's; generated tokens "
         "are not edited",
         "sources": list(SOURCES),
-        "groups": list(GROUPS),
-        "layers": layers,
+        "groups": [group for group in GROUPS if group in group_layers],
+        "layers": sorted({layer for g in group_layers.values() for layer in g}),
+        "group_layers": {group: group_layers[group] for group in GROUPS if group in group_layers},
         "outcome": "the patched continuation's first palette colour, as a role: A (B's answer), b (f(X) in B's table: "
         "X carried as the step), c (C's answer), X, I, S, other or none; plus the first generated step's "
         "log-probabilities of each role's colour",
@@ -231,7 +242,7 @@ def stage_manifest(name: str, item_set: str, layers: list[int], why: str | None 
             "positive_controls": "the map is interpreted only if, at layer 0, C patched at 'rules' gives c and C "
             "patched at 'rule_path' gives b more often than O patched at the same group changes the answer at all "
             "(Wilson intervals not overlapping)",
-            "window": f"per group in {list(WINDOW_GROUPS)}: the layers where C's patch gives b more often than c and "
+            "window": f"per group in {list(WINDOW_GROUPS)} that the run covers: the layers where C's patch gives b more often than c and "
             "more often than O's patch changes the answer (Wilson intervals not overlapping, both). An empty window: "
             "no single-layer patch of that group carries the intermediate as a step",
             "next": "lens swaps and steering inside a window are a separate manifest, set by the human after this run",
@@ -263,6 +274,7 @@ def stage_run(name: str) -> None:
     items = load_items()
     palette = sorted({c for it in items for c in it["table"]} | {it["answer"] for it in items})
     layers = manifest["layers"]
+    group_layers = manifest.get("group_layers") or {group: layers for group in GROUPS}
     assert max(layers) < len(cast(torch.nn.ModuleList, model.layers)) - 1, "the model's last layer is never patched"
     item_rows, outcomes = [], []
     for index, item in enumerate(items):
@@ -297,9 +309,9 @@ def stage_run(name: str) -> None:
         regions = spans(item, prep["text"])
         for source in SOURCES:
             lines = [line_span(prep["text"], colour) for colour in cfs[source]["lines"]]
-            for group in GROUPS:
+            for group, layers_here in group_layers.items():
                 positions = group_positions(group, prep["offsets"], regions, lines)
-                for layer in layers:
+                for layer in layers_here:
                     edit = PatchFrom(source_h[source][layer], positions)
                     logits, text, _ = model.generate(ids, MAX_NEW_TOKENS, {layer: edit})
                     logp = torch.log_softmax(logits, dim=-1)
@@ -323,7 +335,7 @@ def stage_run(name: str) -> None:
     write_jsonl(out_dir / "items.jsonl", item_rows)
     write_jsonl(out_dir / "outcomes.jsonl", outcomes)
     rates = summarize(outcomes)
-    summary = {"items": status_counts(item_rows), "rates": rates, "decision": decide(rates, layers)}
+    summary = {"items": status_counts(item_rows), "rates": rates, "decision": decide(rates, group_layers)}
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     write_summary_md(out_dir / "summary.md", name, summary)
     print((out_dir / "summary.md").read_text())
@@ -358,25 +370,25 @@ def summarize(outcomes: list[dict]) -> list[dict]:
     return rows
 
 
-def decide(rates: list[dict], layers: list[int]) -> dict:
-    """The manifest's decision rule: positive controls at layer 0, then each window group's layers."""
+def decide(rates: list[dict], group_layers: dict[str, list[int]]) -> dict:
+    """The manifest's decision rule: positive controls at layer 0, then each window group's layers (groups run)."""
     at = {(r["source"], r["group"], r["layer"]): r for r in rates}
     if not at:
         return {"positive_controls": None, "windows": None}
     above = lambda w, v: w[1] > v[2]  # noqa: E731 Wilson intervals not overlapping, w above v
-    first = layers[0]
     controls = {
-        "rules -> c": above(at["cf", "rules", first]["c"], at["off", "rules", first]["changed"]),
-        "rule_path -> b": above(at["cf", "rule_path", first]["b"], at["off", "rule_path", first]["changed"]),
+        "rules -> c": above(at["cf", "rules", 0]["c"], at["off", "rules", 0]["changed"]),
+        "rule_path -> b": above(at["cf", "rule_path", 0]["b"], at["off", "rule_path", 0]["changed"]),
     }
     windows = {
         group: [
             layer
-            for layer in layers
+            for layer in group_layers[group]
             if above(at["cf", group, layer]["b"], at["cf", group, layer]["c"])
             and above(at["cf", group, layer]["b"], at["off", group, layer]["changed"])
         ]
         for group in WINDOW_GROUPS
+        if group in group_layers
     }
     return {"positive_controls": controls, "interpreted": all(controls.values()), "windows": windows}
 
@@ -434,12 +446,19 @@ if __name__ == "__main__":
     parser.add_argument("--items", default="bank", choices=list(ITEM_SETS), help="bank (WorkspaceBench) or fresh")
     parser.add_argument("--layers", default="0-62", help="manifest: block outputs to patch: 0-62, 0-62:2 or 0,8,16")
     parser.add_argument("--why", help="manifest: who chose this run's settings and why (added to the deviations)")
+    parser.add_argument(
+        "--group-layers",
+        help="manifest: only these groups, each at its own layers, e.g. 'rules=0;rule_path=0;after_start=0-62:2'",
+    )
     args = parser.parse_args()
     if args.stage == "check":
         stage_check(args.items)
     elif args.stage == "manifest":
         assert args.name, "manifest needs --name"
-        stage_manifest(args.name, args.items, parse_layers(args.layers), args.why)
+        chosen = None
+        if args.group_layers:
+            chosen = {g: parse_layers(spec) for g, spec in (part.split("=") for part in args.group_layers.split(";"))}
+        stage_manifest(args.name, args.items, parse_layers(args.layers), args.why, chosen)
     else:
         assert args.target, "run needs the run's folder name"
         stage_run(args.target)

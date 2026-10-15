@@ -57,9 +57,18 @@ def by_cell(outcomes: list[dict]) -> dict[tuple[str, str, int], list[dict]]:
     return cells
 
 
+def drawn_groups(cells: dict) -> dict[str, str]:
+    """The groups patched at two layers or more (a run can patch the rule lines at layer 0 only)."""
+    return {g: t for g, t in GROUPS.items() if len({k[2] for k in cells if k[0] == "cf" and k[1] == g}) >= 2}
+
+
 def patch_map(cells: dict, layers: list[int], n_items: int, out: Path) -> None:
-    fig, axes = plt.subplots(1, len(GROUPS), figsize=(3.3 * len(GROUPS), 3.6), sharey=True, facecolor=SURFACE)
-    for ax, (group, title) in zip(axes, GROUPS.items(), strict=True):
+    groups = drawn_groups(cells)
+    fig, axes = plt.subplots(
+        1, len(groups), figsize=(3.3 * len(groups), 3.6), sharey=True, facecolor=SURFACE, squeeze=False
+    )
+    axes = axes[0]
+    for ax, (group, title) in zip(axes, groups.items(), strict=True):
         style_axes(ax)
         if group in ("start_line", "after_start", "last"):
             ax.axvspan(*SWAP_BAND, color="#f1efe8", lw=0, zorder=0)
@@ -97,8 +106,12 @@ def patch_map(cells: dict, layers: list[int], n_items: int, out: Path) -> None:
 
 
 def patch_logp(cells: dict, layers: list[int], n_items: int, out: Path) -> None:
-    fig, axes = plt.subplots(1, len(GROUPS), figsize=(3.3 * len(GROUPS), 3.4), sharey=True, facecolor=SURFACE)
-    for ax, (group, title) in zip(axes, GROUPS.items(), strict=True):
+    groups = drawn_groups(cells)
+    fig, axes = plt.subplots(
+        1, len(groups), figsize=(3.3 * len(groups), 3.4), sharey=True, facecolor=SURFACE, squeeze=False
+    )
+    axes = axes[0]
+    for ax, (group, title) in zip(axes, groups.items(), strict=True):
         style_axes(ax)
         for role, colour, label in ROLES[:2]:
             mean = [
