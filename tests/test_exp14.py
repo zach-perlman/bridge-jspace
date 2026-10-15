@@ -37,14 +37,14 @@ def test_rates_and_paired_difference_use_questions_with_both_swaps():
     r = {(x["kind"], x["null"]): x for x in exp14.rates(outcomes)}
     assert r[("bridge", False)]["n"] == 3 and r[("bridge", False)]["flip"][0] == pytest.approx(2 / 3)
     assert r[("answer", False)]["n"] == 2 and r[("bridge", True)]["n"] == 1
-    (d,) = exp14.bridge_minus_answer(outcomes, n_boot=200, seed=0)
+    (d,) = exp14.paired_difference(outcomes, "bridge", "answer", n_boot=200, seed=0)
     assert d["n"] == 2 and d["bridge"] == 1.0 and d["answer"] == 0.5 and d["diff"][0] == pytest.approx(0.5)
 
 
 def test_positive_control_takes_the_best_last_token_band():
     outcomes = [_o("a", "answer", f, positions="last", band=b) for b, f in (("24-40", False), ("40-56", True))]
     outcomes += [_o("b", "answer", True, positions="last", band="40-56"), _o("b", "answer", False, positions="last")]
-    pc = exp14.positive_control(outcomes, min_flip=0.3)["jpp"]
+    pc = exp14.positive_control(outcomes, min_flip=0.3)["jpp"]["answer"]
     assert pc["band"] == "40-56" and pc["flip"][0] == 1.0 and pc["works"]
 
 
@@ -69,3 +69,11 @@ def test_replication_check_reads_part_b_raw_jlens(tmp_path, monkeypatch):
     ours = [_o("a", "bridge", True), _o("a", "bridge", False, null=True), _o("a", "answer", False)]
     rep = exp14.replication_check(ours, {"jpp": {"cue/24-40": "ref"}})["jpp cue/24-40"]
     assert (rep["agree"], rep["of"], rep["flip_ours"], rep["flip_part_b"]) == (2, 2, 1.0, 1.0)
+
+
+def test_pinned_kinds_order_and_anchor_check(tmp_path):
+    assert [exp14._kind_order(k) for k in ("bridge", "answer", "bridge_pinned", "answer_pinned")] == [0, 1, 2, 3]
+    earlier = tmp_path / "outcomes.jsonl"
+    earlier.write_text("\n".join(json.dumps(o) for o in (_o("a", "bridge", True), _o("a", "answer", False))))
+    now = [_o("a", "bridge", True), _o("a", "answer", True), _o("a", "bridge_pinned", True)]
+    assert exp14.anchor_check(now, earlier) | {"run": ""} == {"run": "", "shared": 2, "agree": 1}

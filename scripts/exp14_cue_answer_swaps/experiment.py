@@ -37,6 +37,9 @@ from bridge_jspace.utils import progress
 
 KINDS = ("bridge", "answer")
 PAIR = {"bridge": ("intermediate", "swap_to"), "answer": ("answer", "swap_answer")}
+# A pinned swap exchanges its own pair's coordinates and holds the other pair's at their clean values (the clamp's
+# extra atoms), so it moves only what its pair does not share with the other.
+PINNED = {"bridge_pinned": ("bridge", "answer"), "answer_pinned": ("answer", "bridge")}
 
 
 class _Everything:
@@ -113,7 +116,7 @@ class CueAnswerSwaps(Experiment):
                                 {"name": item["name"], "lens": lens_name, "positions": regime, "band": band,
                                  "kind": kind, "null": null, **result}
                             )  # fmt: skip
-                    if set(atoms) == set(KINDS):
+                    if set(KINDS) <= set(atoms):
                         for layer in band_layers(band):
                             b, a = atoms["bridge"][layer], atoms["answer"][layer]
                             h = clean_h[layer]
@@ -123,7 +126,8 @@ class CueAnswerSwaps(Experiment):
                                 {"name": item["name"], "lens": lens_name, "positions": regime, "band": band,
                                  "layer": layer, "diff_cosine": diff_cosine(b, a),
                                  "bridge_edit_in_answer_span": share_in_span(d_b, a),
-                                 "answer_edit_in_bridge_span": share_in_span(d_a, b)}
+                                 "answer_edit_in_bridge_span": share_in_span(d_a, b),
+                                 "condition_number": float(torch.linalg.cond(torch.cat([b, a])))}
                             )  # fmt: skip
 
         self.save_jsonl("items.jsonl", item_rows)
@@ -136,19 +140,30 @@ class CueAnswerSwaps(Experiment):
             "eligibility_check": eligibility_check(eligible, REPO_ROOT / p["part_b_labels"], p.get("limit")),
             "replication_check": replication_check(outcomes, p["part_b_reference"]),
             "rates": rates(outcomes),
-            "bridge_minus_answer": bridge_minus_answer(outcomes, p["n_boot"], p["boot_seed"]),
+            "comparisons": [
+                {"a": a, "b": b, "rows": paired_difference(outcomes, a, b, p["n_boot"], p["boot_seed"])}
+                for a, b in p.get("comparisons", [KINDS])
+            ],
             "leakage": leakage_summary(leaks),
+            "by_overlap": by_overlap(outcomes, leaks),
             "positive_control": positive_control(outcomes, p["control_min_flip"]),
             "decision_rule": p["decision"],
         }
-        from .plot import plot_run
+        if p.get("anchor_run"):
+            summary["anchor_check"] = anchor_check(outcomes, REPO_ROOT / p["anchor_run"] / "outcomes.jsonl")
+        from .plot import plot_overlap, plot_run
 
         plot_run(self.run_dir, summary)
+        plot_overlap(self.path("flip_rates_by_overlap.png"), summary["by_overlap"])
         return summary
 
 
 def _pair_tokens(model, item: dict, kind: str) -> list[int] | None:
-    """The concept tokens of a swap's two words, or None when one has no single-token surface."""
+    """The concept tokens of a swap's atoms (its own pair, then for a pinned swap the held pair), or None when one
+    word has no single-token surface."""
+    if kind in PINNED:
+        own, held = (_pair_tokens(model, item, k) for k in PINNED[kind])
+        return own + held if own and held else None
     try:
         return [model.concept_token(item[field]) for field in PAIR[kind]]
     except ValueError:
@@ -180,6 +195,10 @@ def share_in_span(delta: torch.Tensor, atoms: torch.Tensor) -> float:
     return float(((delta @ torch.linalg.pinv(atoms)) @ atoms).norm()) / norm
 
 
+def _kind_order(kind: str) -> int:
+    return [*KINDS, *PINNED].index(kind)
+
+
 def _key(o: dict) -> tuple:
     return (o["lens"], o["positions"], o["band"], o["kind"], o["null"])
 
@@ -201,24 +220,33 @@ def rates(outcomes: list[dict]) -> list[dict]:
     return out
 
 
-def bridge_minus_answer(outcomes: list[dict], n_boot: int, seed: int) -> list[dict]:
-    """Per lens and cell, on the questions with both swaps: bridge - answer flip rate, paired bootstrap 95% CI."""
+def paired_difference(outcomes: list[dict], kind_a: str, kind_b: str, n_boot: int, seed: int) -> list[dict]:
+    """Per lens and cell, on the questions with both swaps: flip rate of `kind_a` minus `kind_b`, paired bootstrap."""
     real = [o for o in outcomes if not o["null"]]
     flips = {(o["lens"], o["positions"], o["band"], o["kind"], o["name"]): o["flip"] for o in real}
     out = []
     for lens, positions, band in sorted({(o["lens"], o["positions"], o["band"]) for o in real}):
         names = sorted({o["name"] for o in real if (o["lens"], o["positions"], o["band"]) == (lens, positions, band)})
-        both = [n for n in names if all((lens, positions, band, k, n) in flips for k in KINDS)]
+        both = [n for n in names if all((lens, positions, band, k, n) in flips for k in (kind_a, kind_b))]
         if not both:
             continue
-        b = [flips[(lens, positions, band, "bridge", n)] for n in both]
-        a = [flips[(lens, positions, band, "answer", n)] for n in both]
+        a = [flips[(lens, positions, band, kind_a, n)] for n in both]
+        b = [flips[(lens, positions, band, kind_b, n)] for n in both]
         out.append(
             {"lens": lens, "positions": positions, "band": band, "n": len(both),
-             "bridge": sum(b) / len(b), "answer": sum(a) / len(a),
-             "diff": paired_bootstrap_diff(b, a, n_boot=n_boot, seed=seed)}
+             kind_a: sum(a) / len(a), kind_b: sum(b) / len(b),
+             "diff": paired_bootstrap_diff(a, b, n_boot=n_boot, seed=seed)}
         )  # fmt: skip
     return out
+
+
+def anchor_check(outcomes: list[dict], anchor_outcomes: Path) -> dict[str, Any]:
+    """Outcomes shared with an earlier run (same lens, cell, kind, null and question): how many agree."""
+    key = ("lens", "positions", "band", "kind", "null", "name")
+    earlier = {tuple(o[k] for k in key): o["flip"] for o in map(json.loads, anchor_outcomes.read_text().splitlines())}
+    shared = [o for o in outcomes if tuple(o[k] for k in key) in earlier]
+    agree = sum(o["flip"] == earlier[tuple(o[k] for k in key)] for o in shared)
+    return {"run": str(anchor_outcomes.parent), "shared": len(shared), "agree": agree}
 
 
 def leakage_summary(leaks: list[dict]) -> list[dict]:
@@ -241,13 +269,17 @@ def leakage_summary(leaks: list[dict]) -> list[dict]:
 
 
 def positive_control(outcomes: list[dict], min_flip: float) -> dict[str, Any]:
-    """Per lens: the answer swap's best last-token flip rate, and whether it reaches `min_flip`."""
+    """Per lens and answer kind (plain or pinned): the best last-token flip rate, and whether it reaches `min_flip`."""
     out: dict[str, Any] = {}
     for lens in sorted({o["lens"] for o in outcomes}):
-        last = [r for r in rates([o for o in outcomes if o["lens"] == lens])
-                if r["positions"] == "last" and r["kind"] == "answer" and not r["null"]]  # fmt: skip
-        best = max(last, key=lambda r: r["flip"][0], default=None)
-        out[lens] = {"band": best["band"], "flip": best["flip"], "works": best["flip"][0] >= min_flip} if best else None
+        out[lens] = {}
+        for kind in sorted({o["kind"] for o in outcomes if o["kind"].startswith("answer")}):
+            last = [r for r in rates([o for o in outcomes if o["lens"] == lens])
+                    if r["positions"] == "last" and r["kind"] == kind and not r["null"]]  # fmt: skip
+            best = max(last, key=lambda r: r["flip"][0], default=None)
+            out[lens][kind] = (
+                {"band": best["band"], "flip": best["flip"], "works": best["flip"][0] >= min_flip} if best else None
+            )
     return out
 
 
@@ -308,7 +340,7 @@ def by_overlap(outcomes: list[dict], leaks: list[dict]) -> list[dict]:
         cut = statistics.median(names.values())
         for half, members in (("low", {n for n, c in names.items() if c < cut}),
                               ("high", {n for n, c in names.items() if c >= cut})):  # fmt: skip
-            for kind in KINDS:
+            for kind in sorted({o["kind"] for o in outcomes}, key=_kind_order):
                 flips = [o["flip"] for o in outcomes if (o["lens"], o["positions"], o["band"], o["kind"]) ==
                          (lens, positions, band, kind) and not o["null"] and o["name"] in members]  # fmt: skip
                 out.append({"lens": lens, "positions": positions, "band": band, "overlap": half, "cut": round(cut, 4),
@@ -331,7 +363,7 @@ def analyze(run_dir: str | Path) -> Path:
     out = run_dir / f"analysis-{datetime.now().strftime('%Y%m%d-%H%M%S')}-overlap"
     out.mkdir()
     (out / "summary.json").write_text(json.dumps({"source_run": str(run_dir), "by_overlap": rows}, indent=2))
-    plot_overlap(out / "flip_rates_by_overlap.png", rows)
+    plot_overlap(out / "flip_rates_by_overlap.png", rows, post_hoc=True)  # the first run's split came afterwards
     return out
 
 

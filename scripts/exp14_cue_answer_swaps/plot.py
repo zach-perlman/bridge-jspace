@@ -18,6 +18,17 @@ from bridge_jspace.plotting import INK, MUTED, READER_TITLE, SURFACE, finish, pe
 
 BRIDGE, ANSWER, CONTROL = "#2a78d6", "#eb6834", "#b4b2a9"
 CELL_LABEL = {"cue": "cue phrase", "last": "last token"}
+# Pinned swaps (the other pair held at its clean coordinates): the same hue, darker, hatched.
+KIND_STYLE = {
+    "bridge": {"color": BRIDGE, "hatch": None, "label": "bridge swapped (Brazil -> Mexico)"},
+    "answer": {"color": ANSWER, "hatch": None, "label": "answer swapped (Portuguese -> Spanish)"},
+    "bridge_pinned": {"color": "#104281", "hatch": "//", "label": "bridge swapped, answer held"},
+    "answer_pinned": {"color": "#8a3112", "hatch": "//", "label": "answer swapped, bridge held"},
+}
+
+
+def _kinds(rows: list[dict]) -> list[str]:
+    return [k for k in KIND_STYLE if any(r["kind"] == k for r in rows)]
 
 
 def plot_run(run_dir: str | Path, summary: dict[str, Any]) -> Path:
@@ -27,17 +38,20 @@ def plot_run(run_dir: str | Path, summary: dict[str, Any]) -> Path:
     cells = list(dict.fromkeys((r["positions"], r["band"]) for r in rows))
     rate = {(r["lens"], r["positions"], r["band"], r["kind"], r["null"]): r for r in rows}
     fig, axes = plt.subplots(1, len(lenses), figsize=(6 * len(lenses), 4.4), facecolor=SURFACE, sharey=True)
-    width = 0.2
+    kinds = _kinds(rows)
+    width = 0.8 / (2 * len(kinds))
     for ax, lens in zip(np.atleast_1d(axes), lenses, strict=True):
         for ci, (positions, band) in enumerate(cells):
-            for ki, (kind, color) in enumerate((("bridge", BRIDGE), ("answer", ANSWER))):
+            for ki, kind in enumerate(kinds):
+                style = KIND_STYLE[kind]
                 for null in (False, True):
                     r = rate.get((lens, positions, band, kind, null))
                     if r is None:
                         continue
-                    x = ci + (2 * ki + null - 1.5) * width
+                    x = ci + (2 * ki + null - (2 * len(kinds) - 1) / 2) * width
                     m, lo, hi = r["flip"]
-                    ax.bar(x, m, width * 0.9, color=CONTROL if null else color, zorder=2)
+                    ax.bar(x, m, width * 0.9, color=CONTROL if null else style["color"],
+                           hatch=None if null else style["hatch"], edgecolor=SURFACE, lw=0, zorder=2)  # fmt: skip
                     err = [[max(m - lo, 0.0)], [max(hi - m, 0.0)]]  # Wilson at 0 flips: float noise below 0
                     ax.errorbar(x, m, yerr=err, color=INK, lw=1, capsize=2.5, zorder=3)
         ax.set_xticks(range(len(cells)), [f"{CELL_LABEL.get(p, p)}\nlayers {b}" for p, b in cells], fontsize=9)
@@ -49,10 +63,15 @@ def plot_run(run_dir: str | Path, summary: dict[str, Any]) -> Path:
     np.atleast_1d(axes)[0].set_ylabel("% of questions whose answer\nflips to the swap target's", color=MUTED)
     n = max(r["n"] for r in rows)
     handles = [
-        Patch(color=BRIDGE, label="bridge swapped (Brazil -> Mexico)"),
-        Patch(color=ANSWER, label="answer swapped (Portuguese -> Spanish)"),
-        Patch(color=CONTROL, label="random direction, same edit size (right of each)"),
+        Patch(
+            facecolor=KIND_STYLE[k]["color"],
+            hatch=KIND_STYLE[k]["hatch"],
+            edgecolor=SURFACE,
+            label=KIND_STYLE[k]["label"],
+        )
+        for k in kinds
     ]
+    handles.append(Patch(color=CONTROL, label="random direction, same edit size (right of each)"))
     finish(
         fig,
         out,
@@ -66,26 +85,28 @@ def plot_run(run_dir: str | Path, summary: dict[str, Any]) -> Path:
     return out
 
 
-def plot_overlap(path: Path, rows: list[dict]) -> Path:
+def plot_overlap(path: Path, rows: list[dict], post_hoc: bool = False) -> Path:
     """Per lens: flip rates of the two swaps on the cue phrase and at the last token (40-56), for the questions whose
     two swaps overlap little (below the median cosine) and much."""
     cells = [("cue", "24-40"), ("last", "40-56")]
     lenses = sorted({r["lens"] for r in rows}, key=lambda name: list(READER_TITLE).index(name))
     rate = {(r["lens"], r["positions"], r["band"], r["overlap"], r["kind"]): r for r in rows}
     fig, axes = plt.subplots(1, len(lenses), figsize=(6 * len(lenses), 4.6), facecolor=SURFACE, sharey=True)
-    width = 0.36
+    kinds = _kinds(rows)
+    width = 0.8 / len(kinds)
     for ax, lens in zip(np.atleast_1d(axes), lenses, strict=True):
         ticks = []
         for ci, ((positions, band), half) in enumerate((c, h) for c in cells for h in ("low", "high")):
             n = 0
-            for ki, (kind, color) in enumerate((("bridge", BRIDGE), ("answer", ANSWER))):
+            for ki, kind in enumerate(kinds):
+                style = KIND_STYLE[kind]
                 r = rate.get((lens, positions, band, half, kind))
                 if r is None:
                     continue
                 n = max(n, r["n"])
                 m, lo, hi = r["flip"]
-                x = ci + (ki - 0.5) * width
-                ax.bar(x, m, width * 0.9, color=color, zorder=2)
+                x = ci + (ki - (len(kinds) - 1) / 2) * width
+                ax.bar(x, m, width * 0.9, color=style["color"], hatch=style["hatch"], edgecolor=SURFACE, lw=0, zorder=2)
                 ax.errorbar(x, m, yerr=[[max(m - lo, 0.0)], [max(hi - m, 0.0)]], color=INK, lw=1, capsize=2.5, zorder=3)
             ticks.append(f"{CELL_LABEL.get(positions, positions)}\n{band}, {half}\nn = {n}")
         ax.set_xticks(range(len(ticks)), ticks, fontsize=8.5)
@@ -99,8 +120,13 @@ def plot_overlap(path: Path, rows: list[dict]) -> Path:
         ax.grid(axis="x", visible=False)
     np.atleast_1d(axes)[0].set_ylabel("% of questions whose answer\nflips to the swap target's", color=MUTED)
     handles = [
-        Patch(color=BRIDGE, label="bridge swapped (Brazil -> Mexico)"),
-        Patch(color=ANSWER, label="answer swapped (Portuguese -> Spanish)"),
+        Patch(
+            facecolor=KIND_STYLE[k]["color"],
+            hatch=KIND_STYLE[k]["hatch"],
+            edgecolor=SURFACE,
+            label=KIND_STYLE[k]["label"],
+        )
+        for k in kinds
     ]
     finish(
         fig,
@@ -109,7 +135,8 @@ def plot_overlap(path: Path, rows: list[dict]) -> Path:
         "Qwen3.6-27B, the two-hop questions it answers correctly, split at the median overlap between the two swaps: "
         "the cosine between the bridge pair's and the answer pair's lens-vector differences (e.g. high for "
         "Spain -> Madrid, low for elephant -> trunk), averaged over the swapped layers. Random-direction controls: 0-1% "
-        "everywhere. Error bars: 95% Wilson CI. The split was chosen after seeing the results.",
+        "everywhere. Error bars: 95% Wilson CI."
+        + (" The split was chosen after seeing the results." if post_hoc else " The split was fixed before the run."),
         handles,
     )
     return path
