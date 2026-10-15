@@ -43,12 +43,11 @@ STYLE = {
 HIT_K = 10
 
 RUNS_DIR = RESULTS_DIR / "exp10_lens_sanity"
-# Summary inputs: the four valid runs (label, run id); 204427/204551 predate the token fix and are superseded.
+# Summary inputs (label, run id): the trailing-space-stripped runs, the setup every experiment uses. The runs on the
+# prompts as published (205029, 205736) are a sensitivity check reported in the README's details only.
 SUMMARY_RUNS = [
-    ("Qwen3.5-4B\nprompt as published\n(ends in a lone space)", "20261013-205029"),
-    ("Qwen3.5-4B\ntrailing space stripped", "20261013-205057"),
-    ("Qwen3.6-27B\nprompt as published\n(ends in a lone space)", "20261013-205736"),
-    ("Qwen3.6-27B\ntrailing space stripped", "20261013-205936"),
+    ("Qwen3.5-4B", "20261013-205057"),
+    ("Qwen3.6-27B", "20261013-205936"),
 ]
 SUMMARY_LAYER_RUN = "20261013-205936"  # 27B, stripped
 READERS = ["logit", "jlens", "jpp"]
@@ -61,6 +60,21 @@ def _load(path: Path) -> list[dict]:
 
 def _style(reader: str) -> dict:
     return STYLE.get(reader, {"color": INK, "ls": "-", "label": reader})
+
+
+def _item_hits(rows: list[dict]) -> np.ndarray:
+    """[items, layers] bool: any of the item's bridge forms ranked below HIT_K at that layer (rows of one reader)."""
+    by_item: dict[str, list[np.ndarray]] = {}
+    for r in rows:
+        by_item.setdefault(r["name"], []).append(np.array(r["ranks"]) < HIT_K)
+    return np.array([np.any(v, axis=0) for v in by_item.values()])
+
+
+def _summary(run_dir: Path) -> dict:
+    """The run's current aggregation: its newest `analysis-*/summary.json` (re-aggregated with the current rules by
+    `experiment analyze`), else the run's own `summary.json`."""
+    analyses = sorted(run_dir.glob("analysis-*/summary.json"))
+    return json.loads((analyses[-1] if analyses else run_dir / "summary.json").read_text())
 
 
 # ---- one run ---------------------------------------------------------------------------------
@@ -79,19 +93,19 @@ def plot_run(run_dir: str | Path) -> Path:
     for reader in readers:
         st = _style(reader)
         rr = [r for r in rows if r["reader"] == reader]
-        # pass@k: per item, fraction of intermediates with min rank < k; then mean over items.
+        # pass@k: per item, found if any of its intermediates (forms of one bridge) has min rank < k.
         by_item: dict[str, list[int]] = {}
         for r in rr:
             by_item.setdefault(r["name"], []).append(r["min_rank"])
         mins = list(by_item.values())
-        pass_k = [np.mean([np.mean(np.array(m) < k) for m in mins]) for k in ks]
+        pass_k = [np.mean([min(m) < k for m in mins]) for k in ks]
         # Legends, not end labels: curves converge at both ends (pass@1000 ~ 1, late-layer hits ~ 0)
         # and the labels collide.
         ax_k.plot(ks, pass_k, color=st["color"], ls=st["ls"], lw=2, label=st["label"])
 
-        # Per-layer hit rate: share of (item, intermediate) with rank < HIT_K at that layer.
+        # Per-layer hit rate: share of items with any form of the bridge at rank < HIT_K at that layer.
         layers = rr[0]["layers"]
-        hits = np.mean([np.array(r["ranks"]) < HIT_K for r in rr], axis=0)
+        hits = _item_hits(rr).mean(0)
         ax_l.plot(layers, hits, color=st["color"], ls=st["ls"], lw=2, label=st["label"])
 
     n_items = len({r["name"] for r in rows})
@@ -100,7 +114,7 @@ def plot_run(run_dir: str | Path) -> Path:
     ax_k.set_ylabel("bridge in the top k at its best layer\n(% of questions)", color=MUTED)
     ax_k.set_title("How deep in the ranking is the bridge?", color=INK, fontsize=11, loc="left")
     ax_l.set_xlabel("model layer (0 = first)", color=MUTED)
-    ax_l.set_ylabel(f"% of bridge words in the top {HIT_K}", color=MUTED)
+    ax_l.set_ylabel(f"bridge in the top {HIT_K}\n(% of questions)", color=MUTED)
     ax_l.set_title(f"At which layers is it in the top {HIT_K}?", color=INK, fontsize=11, loc="left")
     for ax in (ax_k, ax_l):
         ax.set_ylim(0, 1)
@@ -114,7 +128,8 @@ def plot_run(run_dir: str | Path) -> Path:
         path,
         f"{model}: does each reader find the two-hop bridge at the last prompt token?",
         f"Lens-eval multihop set (released with the J-lens), all {n_items} questions (answered correctly or not), read at the last prompt token. "
-        "Diagnostic for one run; the summary figures use the single-token bridges only.",
+        "A bridge listed in several forms ('5', 'five') counts as found if any form is. Diagnostic for one run; the "
+        "summary figures use the single-token bridges only.",
     )
     return path
 
@@ -123,12 +138,12 @@ def plot_run(run_dir: str | Path) -> Path:
 
 
 def _summary_bars(path: Path) -> None:
-    fig, ax = plt.subplots(figsize=(9.5, 4.8), facecolor=SURFACE)
+    fig, ax = plt.subplots(figsize=(8, 4.8), facecolor=SURFACE)
     width = 0.26
     pk: dict = {}
     n_boot = None
     for gi, (_, run) in enumerate(SUMMARY_RUNS):
-        pk = json.loads((RUNS_DIR / run / "summary.json").read_text())["pass_at_k"][SUBSET]
+        pk = _summary(RUNS_DIR / run)["pass_at_k"][SUBSET]
         n_boot = json.loads((RUNS_DIR / run / "manifest.json").read_text())["config"]["params"]["n_boot"]
         for ri, reader in enumerate(READERS):
             if reader not in pk:
@@ -151,9 +166,9 @@ def _summary_bars(path: Path) -> None:
         path,
         "How often does each reader find the bridge at the last prompt token?",
         f"The multihop question set released with the J-lens (lens-eval): the {pk['n']} two-hop questions whose bridge is a single token, all of them (answered "
-        "correctly or not; 9 questions list several forms of their bridge, such as '5' and 'five', and each form found "
-        "scores its share of the question). Read at the last prompt token at every "
-        f"layer; a bridge counts as found if it is in the reader's top {HIT_K} at its best layer (pass@{HIT_K}). "
+        "correctly or not). Read at the last prompt token at every "
+        f"layer; a bridge counts as found if it is in the reader's top {HIT_K} at its best layer (pass@{HIT_K}); a "
+        "bridge listed in several forms ('5', 'five') counts as found if any form is. "
         f"Error bars: {bootstrap_note(n_boot or 0)}. Qwen3.5-4B has no J++ lens.",
         handles,
     )
@@ -162,19 +177,19 @@ def _summary_bars(path: Path) -> None:
 def _summary_layers(path: Path) -> None:
     fig, ax = plt.subplots(figsize=(9.5, 4.6), facecolor=SURFACE)
     rows = _load(RUNS_DIR / SUMMARY_LAYER_RUN / "multihop_ranks.jsonl")
-    n_words = n_items = 0
+    n_items = 0
     for reader in READERS:
         rr = [r for r in rows if r["reader"] == reader and r["single_token"]]
-        n_words, n_items = len(rr), len({r["name"] for r in rr})
-        hits = np.array([np.array(r["ranks"]) < HIT_K for r in rr])
-        ci = np.array([wilson(int(k), len(rr)) for k in hits.sum(0)])
+        hits = _item_hits(rr)
+        n_items = hits.shape[0]
+        ci = np.array([wilson(int(k), n_items) for k in hits.sum(0)])
         st = STYLE[reader]
         ax.fill_between(rr[0]["layers"], ci[:, 1], ci[:, 2], color=st["color"], alpha=0.12, lw=0)
         ax.plot(rr[0]["layers"], hits.mean(0), color=st["color"], ls=st["ls"], lw=2, label=st["label"])
     shade_band(ax, 32, 48)
     ax.set_ylim(0, 0.55)
     ax.set_xlabel("model layer (0 = first)", color=MUTED)
-    ax.set_ylabel(f"% of bridge forms in the\nreader's top {HIT_K}", color=MUTED)
+    ax.set_ylabel(f"bridge in the reader's top {HIT_K}\n(% of questions)", color=MUTED)
     style_axes(ax)
     percent_axis(ax)
     handles: list[Artist] = [
@@ -185,9 +200,9 @@ def _summary_layers(path: Path) -> None:
         fig,
         path,
         f"Qwen3.6-27B: at which layers is the bridge in each reader's top {HIT_K}?",
-        f"Lens-eval multihop set, the {n_words} single-token bridge forms of the {n_items} questions above (a few list "
-        "several forms, such as '5' and 'five'), trailing "
-        "space stripped, read at the last prompt token. Shaded: 95% Wilson CI. The bar chart takes each bridge's "
+        f"Lens-eval multihop set, the {n_items} questions above, read at the last prompt "
+        "token; a bridge listed in several forms ('5', 'five') counts if any form is in the top 10. Shaded: 95% Wilson "
+        "CI. The bar chart takes each bridge's "
         "best layer, so the last layers, where the logit lens catches up, hide the middle-layer difference.",
         handles,
     )

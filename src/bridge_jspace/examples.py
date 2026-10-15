@@ -46,6 +46,20 @@ class Group:
     n_total: int  # items in the group before sampling
 
 
+ANSWERED = {"eligible": "yes", "clean_wrong": "no", "multi_token_answer": "not scored (multi-token answer)"}
+SWAP_FLIPS = {"J-mediated": "the J-space part", "non-J": "the rest", "both": "both parts", "neither": "neither part"}
+
+
+def probe_swap_info(item: dict[str, Any]) -> dict[str, str]:
+    """A probe-swap question's card badges in plain words: whether the model answers it, and which part of the
+    bridge's probe changes the answer when swapped for another entity's (part B's status and label)."""
+    return {
+        "category": str(item["category"]),
+        "model answers correctly": ANSWERED.get(item["status"], str(item["status"])),
+        "swapping flips the answer": SWAP_FLIPS.get(item["label"], "-"),
+    }
+
+
 class LensExamples(Experiment):
     def run(self) -> dict[str, Any]:
         from bridge_jspace.run import import_object

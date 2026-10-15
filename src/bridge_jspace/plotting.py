@@ -48,13 +48,14 @@ def shade_band(ax, lo: int, hi: int, label: bool = True) -> None:
 def run_note(manifest: dict[str, Any], n: int) -> str:
     """Which model and questions an exp11 / exp12 run is on, from its manifest, in words a reader outside the project
     can follow (no internal label names). Part B's v4 labels judge correctness on the greedy continuation, the
-    earlier ones on the first answer word."""
+    earlier ones on the first answer word. Prompt handling is the README's shared setup; only a run that departs from
+    it (prompts as published) says so."""
     cfg, p = manifest["config"], manifest["config"]["params"]
     model = cfg["model"]["name"].split("/")[-1]
     labels = Path(p.get("labels_file", "")).parent.name
     judged = "its greedy continuation contains the answer" if "v4" in labels else "its first word is the answer"
-    prompts = "trailing space stripped" if p.get("strip_trailing_space") else "prompts as published"
-    return f"{model}, the {n} two-hop questions it answers correctly ({judged}); {prompts}."
+    prompts = "" if p.get("strip_trailing_space") else " Prompts as published (ending in a lone space)."
+    return f"{model}, the {n} two-hop questions it answers correctly ({judged}).{prompts}"
 
 
 def bootstrap_note(n_boot: int) -> str:

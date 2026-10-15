@@ -143,7 +143,7 @@ def format_report(r: dict[str, Any]) -> str:
         f"status (part B): {_fmt(ps['status'])}",
         f"eligible {el['n']} in {el['n_categories']} categories ({el['multihop_category']} in 'multihop'; "
         f"{el['ending_in_space']} end in a space)",
-        f"eligible labels (part B exp02 main): {_fmt(el['labels'])}",
+        f"eligible labels (part B exp02 v4, J-lens swaps): {_fmt(el['labels'])}",
         f"J-mediated by category: {_fmt(el['j_mediated_by_category'])}",
         "",
         "== lens-eval multihop (data/lens_eval_multihop.json) — exp10",

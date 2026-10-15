@@ -19,13 +19,15 @@ is "), the bridge `intermediate` (Brazil) and `answer` (Portuguese), and a same-
 `swap_answer` (Spanish), plus a `category`.
 - **Composition:** 29 items in category `multihop`; the other 61 spread over 35 categories, 23 of them with a single
   item. 70 unique bridges (Canada appears 4 times; oxygen, iron, China 3 times). 29 prompts end in a space.
-- **Part B labels** (`labels.csv`): `status` = eligible (Qwen3.6-27B's top word is the answer, formatting tokens
-  removed) 67 / clean_wrong 16 / multi_token_answer 7; for eligible items `label` = J-mediated 25 / neither 40 /
-  non-J 1 / both 1 (from which swaps flip the answer). 21 of the 67 eligible items are `multihop`.
-- **What it supports:** headline rates over the 67 eligible items (95% CIs about +-0.1); comparisons between large
+- **Part B labels** (v4, `exp02_swaps/main_v4_jlens/labels.csv`; prompts with the trailing space stripped):
+  `status` = eligible (Qwen3.6-27B's greedy continuation contains the answer) 77 / clean_wrong 13; for eligible items
+  `label` = J-mediated 25 / neither 49 / both 2 / non-J 1 (from which swaps flip the answer; `main_v4_jpp` labels the
+  same items by the J++ swaps). 22 of the 77 eligible items are `multihop`. The earlier labels
+  (`exp02_swaps/main/labels.csv`, prompts as published, first-word correctness) had 67 eligible.
+- **What it supports:** headline rates over the 77 eligible items (95% CIs about +-0.1); comparisons between large
   groups. **Not:** per-category claims (most categories have one item), or non-J vs J-mediated (1 non-J item).
-  Items are not fully independent (shared categories and bridges): exp11's headline barely changes under a bootstrap
-  over categories or bridges instead of items (J-lens 0.59: [0.49, 0.68] vs [0.49, 0.71]).
+  Items are not fully independent (shared categories and bridges): on the earlier 67 items, exp11's headline barely
+  changed under a bootstrap over categories or bridges instead of items (J-lens 0.59: [0.49, 0.68] vs [0.49, 0.71]).
 
 ### Lens-eval multihop
 The paper's lens-quality set: `prompt`, `target` (the answer, which only fixes the readout position) and

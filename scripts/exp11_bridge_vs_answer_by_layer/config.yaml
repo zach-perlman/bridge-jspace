@@ -1,7 +1,7 @@
 # exp11_bridge_vs_answer_by_layer: at which layers is the bridge readable, and at which the answer?
-# Readers = logit lens (baseline) + every lens in the model YAML. Items and labels from part B's exp02_swaps/main.
+# Readers = logit lens (baseline) + every lens in the model YAML. Items and labels from part B's exp02 v4.
 #   make run CONFIG=scripts/exp11_bridge_vs_answer_by_layer/config.yaml                                   # 27B
-#   make run CONFIG=scripts/exp11_bridge_vs_answer_by_layer/config.yaml ARGS="params.strip_trailing_space=true"
+#   make run CONFIG=scripts/exp11_bridge_vs_answer_by_layer/config.yaml ARGS="params.labels_file=results/exp02_swaps/main_v4_jpp/labels.csv params.labels_sha256=bba45a33c49611d741b47e657050737a5689fe4bd1227acc9d747e39c29f4793"   # split by the J++ swaps
 #   uv run bj-run scripts/exp11_bridge_vs_answer_by_layer/config.yaml \
 #       model=configs/models/qwen3.5-0.8b.yaml params.limit=6 results_dir=cache/smoke                   # CPU smoke
 #   uv run python -m scripts.exp11_bridge_vs_answer_by_layer.experiment analyze <run_dir>   # re-aggregate a run
@@ -10,15 +10,17 @@ target: scripts.exp11_bridge_vs_answer_by_layer.experiment:BridgeVsAnswer
 seed: 0
 model: configs/models/qwen3.6-27b.yaml
 params:
-  # Part B's labels (status: eligible = model answers correctly; label: J-mediated / non-J / both / neither).
-  labels_file: results/exp02_swaps/main/labels.csv
-  labels_sha256: 111adcad15cc4c05c94b236010d05c101f71b6fd5dbedac29ef073c5500ba407
-  # false: prompts as published, like part B (its labels were computed on them). Trailing-space items are a subset
-  # in the summary. true: sensitivity check.
-  strip_trailing_space: false
+  # Part B's v4 labels (status: eligible = the greedy continuation contains the answer; label: which part of the
+  # bridge's probe flips the answer when swapped). The J-lens swaps; main_v4_jpp splits by the J++ swaps.
+  labels_file: results/exp02_swaps/main_v4_jlens/labels.csv
+  labels_sha256: 11da778146f1fb51c9a614929ce38be62ae11806a6c5df8ea02d81d7337a7a4c
+  # Prompts with the trailing space stripped, as in part B v4 (the published prompts end in a lone " " token).
+  strip_trailing_space: true
   bands:
-    part_b: [32, 48]  # primary: fixed before exp11 (part B's swap band)
-    wide: [28, 52]  # exploratory: chosen after seeing exp10/exp11 plots, so it is optimistic
+    # Named by their range; the first is primary. Both are part B's swap bands: 32-48 fixed before exp11, 24-40 the
+    # band part B's gate picked for its main swaps (exp02 v4).
+    "32-48": [32, 48]
+    "24-40": [24, 40]
   emerge_run: 3  # a word "emerges" at the first layer it is top-1 in its pool for this many layers in a row
   n_boot: 10000
   limit: null  # first N items; smoke runs only

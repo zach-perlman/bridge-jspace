@@ -1,15 +1,19 @@
 """exp10_lens_sanity: do the lenses read two-hop intermediates on this model at all?
 
 1. Sanity gate: known fact, HF parity, our readout == jlens's `apply`. Any failure stops the run.
-2. lens-eval-multihop pass@k (paper protocol): readout at the last prompt token (the token right
-   before `target`), min rank over the reader's layers; pass@k = mean over items of the fraction
-   of `intermediates` with rank < k. Baseline: the logit lens on the same layers.
+2. lens-eval-multihop pass@k: readout at the last prompt token (the token right before `target`), min rank over the
+   reader's layers; pass@k = share of items with any of their `intermediates` at rank < k (an item's several
+   intermediates are forms of one bridge, '5' / 'five'). The paper's rule (mean over items of the fraction of
+   `intermediates` with rank < k) is kept as `pass_at_k_fraction`. Baseline: the logit lens on the same layers.
 3. Positive control (probe-swap items, e.g. Hungary next to "Hungarian"): bridge vs same-category
    distractor (`swap_to`) ranks over every layer x position.
 """
 
 from __future__ import annotations
 
+import json
+from datetime import datetime
+from pathlib import Path
 from typing import Any
 
 from bridge_jspace.experiment import Experiment
@@ -116,51 +120,7 @@ class LensSanity(Experiment):
         return rows, meta
 
     def _aggregate(self, rows: list[dict[str, Any]], meta: list[dict[str, Any]], readers: list[str]) -> dict[str, Any]:
-        p = self.params
-        ks, n_boot, seed = p["ks"], p["n_boot"], self.cfg.seed
-        names = [m["name"] for m in meta]
-        subsets = {
-            "all": names,
-            "model_correct": [m["name"] for m in meta if m["model_correct"]],
-            "all_single_token": [m["name"] for m in meta if m["all_single_token"]],
-        }
-        # score[reader][k][item] = fraction of the item's intermediates with rank < k
-        score: dict[str, dict[int, dict[str, float]]] = {}
-        for r in readers:
-            score[r] = {}
-            for k in ks:
-                by_item: dict[str, list[bool]] = {}
-                for row in rows:
-                    if row["reader"] == r:
-                        by_item.setdefault(row["name"], []).append(row["min_rank"] < k)
-                score[r][k] = {n: sum(v) / len(v) for n, v in by_item.items()}
-
-        pass_at_k: dict[str, Any] = {}
-        diff_vs_logit: dict[str, Any] = {}
-        for subset, members in subsets.items():
-            if not members:
-                continue
-            pass_at_k[subset] = {"n": len(members)}
-            for r in readers:
-                pass_at_k[subset][r] = {
-                    k: _ci(bootstrap_mean([score[r][k][n] for n in members], n_boot, seed)) for k in ks
-                }
-            diff_vs_logit[subset] = {
-                r: {
-                    k: _ci(bootstrap_mean([score[r][k][n] - score["logit"][k][n] for n in members], n_boot, seed))
-                    for k in ks
-                }
-                for r in readers
-                if r != "logit"
-            }
-        return {
-            "n_items": len(meta),
-            "n_model_correct": len(subsets["model_correct"]),
-            "n_all_single_token": len(subsets["all_single_token"]),
-            "pass_at_k": pass_at_k,
-            "diff_vs_logit": diff_vs_logit,
-            "ci": f"95% percentile bootstrap over items, n_boot={n_boot}, seed={seed}",
-        }
+        return aggregate(rows, meta, readers, self.params["ks"], self.params["n_boot"], self.cfg.seed)
 
     # ---- 3. positive control --------------------------------------------------------------
 
@@ -200,6 +160,78 @@ class LensSanity(Experiment):
         return rows
 
 
+def item_scores(rows: list[dict[str, Any]], reader: str, k: int, rule: str) -> dict[str, float]:
+    """Per item, from its intermediates' min ranks: `any` = 1 if any of them is ranked below k, `fraction` = the share
+    that is (the paper's rule)."""
+    hits: dict[str, list[bool]] = {}
+    for row in rows:
+        if row["reader"] == reader:
+            hits.setdefault(row["name"], []).append(row["min_rank"] < k)
+    return {n: float(any(v)) if rule == "any" else sum(v) / len(v) for n, v in hits.items()}
+
+
+def aggregate(
+    rows: list[dict[str, Any]], meta: list[dict[str, Any]], readers: list[str], ks: list[int], n_boot: int, seed: int
+) -> dict[str, Any]:
+    """pass@k per subset and reader, with bootstrap CIs over items. Primary rule `any`: an item counts as found if any
+    of its `intermediates` is in the top k; in this set an item's several intermediates are forms of one bridge
+    ('5' / 'five'), so finding one form finds the bridge. `*_fraction` keeps the paper's rule (the fraction of an
+    item's intermediates found) for comparison with published numbers."""
+    names = [m["name"] for m in meta]
+    subsets = {
+        "all": names,
+        "model_correct": [m["name"] for m in meta if m["model_correct"]],
+        "all_single_token": [m["name"] for m in meta if m["all_single_token"]],
+    }
+    out: dict[str, Any] = {
+        "n_items": len(meta),
+        "n_model_correct": len(subsets["model_correct"]),
+        "n_all_single_token": len(subsets["all_single_token"]),
+    }
+    for rule, suffix in (("any", ""), ("fraction", "_fraction")):
+        score = {r: {k: item_scores(rows, r, k, rule) for k in ks} for r in readers}
+        pass_at_k: dict[str, Any] = {}
+        diff_vs_logit: dict[str, Any] = {}
+        for subset, members in subsets.items():
+            if not members:
+                continue
+            pass_at_k[subset] = {"n": len(members)}
+            for r in readers:
+                pass_at_k[subset][r] = {
+                    k: _ci(bootstrap_mean([score[r][k][n] for n in members], n_boot, seed)) for k in ks
+                }
+            diff_vs_logit[subset] = {
+                r: {
+                    k: _ci(bootstrap_mean([score[r][k][n] - score["logit"][k][n] for n in members], n_boot, seed))
+                    for k in ks
+                }
+                for r in readers
+                if r != "logit"
+            }
+        out[f"pass_at_k{suffix}"], out[f"diff_vs_logit{suffix}"] = pass_at_k, diff_vs_logit
+    out["ci"] = f"95% percentile bootstrap over items, n_boot={n_boot}, seed={seed}"
+    return out
+
+
+def analyze(run_dir: str | Path) -> Path:
+    """Re-aggregate a finished run's saved ranks with the current rules into a new `<run_dir>/analysis-<timestamp>/`
+    (the run's own files are not touched); ks, n_boot and seed from its manifest."""
+    run_dir = Path(run_dir)
+    cfg = json.loads((run_dir / "manifest.json").read_text())["config"]
+
+    def load(name: str) -> list[dict[str, Any]]:
+        return [json.loads(x) for x in (run_dir / name).read_text().splitlines() if x.strip()]
+
+    rows, meta = load("multihop_ranks.jsonl"), load("multihop_items.jsonl")
+    readers = list(dict.fromkeys(r["reader"] for r in rows))
+    out = run_dir / f"analysis-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
+    out.mkdir()
+    p = cfg["params"]
+    summary = {"source_run": str(run_dir), **aggregate(rows, meta, readers, p["ks"], p["n_boot"], cfg["seed"])}
+    (out / "summary.json").write_text(json.dumps(summary, indent=2))
+    return out
+
+
 def _ci(t: tuple[float, float, float]) -> dict[str, float]:
     return {"mean": round(t[0], 4), "lo": round(t[1], 4), "hi": round(t[2], 4)}
 
@@ -214,3 +246,12 @@ def _control_summary(rows: list[dict[str, Any]]) -> dict[str, Any]:
             "last_position_min_rank": r["last_position_min_rank"],
         }
     return out
+
+
+if __name__ == "__main__":
+    # uv run python -m scripts.exp10_lens_sanity.experiment analyze <run_dir>   (re-aggregate with the current rules)
+    import sys
+
+    if sys.argv[1:2] != ["analyze"] or len(sys.argv) != 3:
+        raise SystemExit(__doc__)
+    print(analyze(sys.argv[2]))
