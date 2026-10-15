@@ -603,7 +603,7 @@ filters: lens-blind and named, lens-blind and missed, seen by the lenses, flippe
 
 Run `results/exp15_oracle_lens/20261015-123226` (Qwen3.6-27B, part B's model loader, the 77 questions of part B's v4
 labels, trailing space stripped; oracle adapter pinned by sha256 in `pins.py`); analysis
-`analysis-20261015-153352/` (summary.json, examples.json with lens-blind readings drawn by a fixed seed, the figures).
+`analysis-20261015-153604/` (summary.json, examples.json with lens-blind readings drawn by a fixed seed, the figures).
 Checks: the sanity gate (`sanity.json`: 6 of 6 facts, random vector 0 of 6, base-logit drift 0.0, adapter changes
 the oracle's logits by up to 16.6; 496 LoRA modules, r 16, scale 2); the swapped forward's top word equals exp14's for
 77 of 77 questions.

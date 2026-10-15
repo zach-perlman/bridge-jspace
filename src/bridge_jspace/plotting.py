@@ -62,8 +62,11 @@ def bootstrap_note(n_boot: int) -> str:
     return f"95% bootstrap CI over questions ({n_boot:,} resamples)"
 
 
-def finish(fig, path: Path, title: str, note: str, handles=None, ncols: int | None = None) -> None:
-    """Title and note above the panels, legend below them; save at 150 dpi and close."""
+def finish(
+    fig, path: Path, title: str, note: str, handles=None, ncols: int | None = None, handlelength: float | None = None
+) -> None:
+    """Title and note above the panels, legend below them; save at 150 dpi and close. A longer `handlelength` keeps
+    dashed lines visible as dashes in the legend."""
     import matplotlib.pyplot as plt  # here, so importing this module never picks a backend before the caller's use()
 
     h, w = fig.get_figheight(), fig.get_figwidth()
@@ -75,6 +78,7 @@ def finish(fig, path: Path, title: str, note: str, handles=None, ncols: int | No
     fig.text(0.01, 1 - 0.36 / h, "\n".join(note_lines), ha="left", va="top", fontsize=8.5, color=MUTED, linespacing=1.4)
     if handles:
         fig.legend(handles=handles, loc="lower center", ncols=ncols or len(handles), frameon=False, fontsize=9,
+                   **({"handlelength": handlelength} if handlelength else {}),
                    labelcolor=INK, bbox_to_anchor=(0.5, 0.0))  # fmt: skip
     fig.tight_layout(rect=(0, foot / h, 1, 1 - head / h))
     fig.savefig(path, dpi=150, facecolor=SURFACE)

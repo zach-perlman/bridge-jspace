@@ -35,6 +35,7 @@ CLASS_LABEL = {
 }
 POSITION_LABEL = {"last": "last word", "prev": "-1", "cue_last": "cue phrase,\nlast token"}
 READER = {"jlens": "J-lens", "jpp": "J++"}
+DASH = (0, (4, 2.5))  # the distractors' lines, in the plot and the legend
 
 
 def _clustered(rows: list[dict], field: str, n_boot: int, seed: int) -> tuple[float, float, float]:
@@ -201,11 +202,11 @@ def plot_by_lens_rank(path: Path, reads: list[dict], params: dict[str, Any]) -> 
         counts: list[list[int]] = []  # readings per bucket: bridge, answer
         for _word, prefix, field, d_field, color, d_color in words:
             rows = [r for r in clean if r.get(f"{prefix}{lens}_rank") is not None]
-            for f, c, style in ((field, color, "-"), (d_field, d_color, "--")):
+            for f, c, style in ((field, color, "-"), (d_field, d_color, DASH)):
                 stats = [_clustered([r for r in rows if _bucket(r[f"{prefix}{lens}_rank"]) == b[2]], f, n_boot, seed)
                          for b in RANK_BUCKETS]  # fmt: skip
                 m = np.array([s[0] for s in stats])
-                ax.plot(xs, m, style, color=c, lw=2, marker="o", ms=5, zorder=3)
+                ax.plot(xs, m, ls=style, color=c, lw=2, marker="o", ms=5, zorder=3)
                 if f == field:
                     ax.fill_between(xs, [s[1] for s in stats], [s[2] for s in stats], color=c, alpha=0.15, lw=0)
             counts.append([sum(_bucket(r[f"{prefix}{lens}_rank"]) == b[2] for r in rows) for b in RANK_BUCKETS])
@@ -219,9 +220,9 @@ def plot_by_lens_rank(path: Path, reads: list[dict], params: dict[str, Any]) -> 
     axes[0].set_ylabel("% of readings whose bullets name the word", color=MUTED, fontsize=10)
     handles = [
         Line2D([], [], color=BRIDGE, lw=2, marker="o", label="the bridge named (shading: 95% CI)"),
-        Line2D([], [], color=BRIDGE_D, lw=2, ls="--", marker="o", label="its distractor named"),
+        Line2D([], [], color=BRIDGE_D, lw=2, ls=DASH, marker="o", label="its distractor named"),
         Line2D([], [], color=ANSWER, lw=2, marker="o", label="the answer named"),
-        Line2D([], [], color=ANSWER_D, lw=2, ls="--", marker="o", label="its distractor named"),
+        Line2D([], [], color=ANSWER_D, lw=2, ls=DASH, marker="o", label="its distractor named"),
     ]
     n = len({r["name"] for r in clean})
     finish(
@@ -236,6 +237,7 @@ def plot_by_lens_rank(path: Path, reads: list[dict], params: dict[str, Any]) -> 
         f"position and layer). {bootstrap_note(n_boot)}.",
         handles,
         ncols=4,
+        handlelength=4,
     )
     return path
 
