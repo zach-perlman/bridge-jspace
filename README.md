@@ -116,7 +116,9 @@ is recomputed from the raw run files by `uv run python scripts/verify_headlines.
 
 Worked examples with lens tables: `make examples-serve` opens [examples/index.html](examples/index.html) (all three
 experiments); the exp12 page is also published at https://claude.ai/artifact/TXLZH6WxuxSQDhoK5YHTj9 (anyone with the
-link can open it).
+link can open it). Each page groups sampled questions by what the readers do with them; exp10's also by what the bridge
+is: a number ('6', 'four'), a letter (a chemical symbol), or named in the prompt (`scripts/exp10_lens_sanity/examples.py`;
+a bridge counts as found if any of its listed forms is). The exp10 page shows these groups from its next examples run.
 
 **What we know so far (Qwen3.6-27B, the 77 two-hop questions it answers correctly).**
 1. The J-lens and J++ can read the bridge in the middle layers; the plain logit lens mostly only near the output
