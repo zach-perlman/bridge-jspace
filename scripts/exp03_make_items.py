@@ -3,6 +3,8 @@
   exp03_make_items.py [--n N] [--seed S]  -> data/brew_fresh.json (write-once; pin its sha256 in pins.py)
   exp03_make_items.py --name brew_fit --prefix brewfit --n 1000 --seed 2  -> data/brew_fit.json, exp07's fitting
       items (never a prompt of the bank or of brew_fresh)
+  exp03_make_items.py --name brew_test --prefix brewtest --n 600 --seed 3  -> data/brew_test.json, exp18 v3's held-out
+      items (never a bank, fresh or fit prompt)
 
 Each item is a ten-row colour table drawn from the bank's twelve-colour palette (every row turns into another row's
 colour, never itself), shuffled, then "You stir the potion twice." and the start line last, worded as in the bank. The
@@ -69,6 +71,8 @@ def main(n: int, seed: int, name: str = "brew_fresh", prefix: str = "brewfresh")
     taken = {(it["prompt"]) for it in pins.brew_items()}
     if name != "brew_fresh":
         taken |= {it["prompt"] for it in pins.brew_fresh_items()}
+    if name not in ("brew_fresh", "brew_fit"):  # later sets also avoid the fit items (exp07's code is fit on them)
+        taken |= {it["prompt"] for it in pins.brew_fit_items()}
     rng = random.Random(seed)
     items = []
     while len(items) < n:

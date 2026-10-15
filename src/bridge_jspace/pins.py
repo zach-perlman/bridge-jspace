@@ -55,6 +55,8 @@ BREW_FRESH_FILE = DATA_DIR / "brew_fresh.json"  # exp03_make_items.py: held-out 
 BREW_FRESH_SHA256 = "1e20ed25b3727842acba0806b346d91d991db1fa31f42f514e537fb3ab000d3c"
 BREW_FIT_FILE = DATA_DIR / "brew_fit.json"  # exp03_make_items.py: exp07's fitting items, never a bank or fresh prompt
 BREW_FIT_SHA256 = "b9ab169a50bf576d71c074b31516f283e3163366d8ce2aea0907addbdf0e2659"
+BREW_TEST_FILE = DATA_DIR / "brew_test.json"  # exp03_make_items.py: exp18 v3's held-out items (no bank/fresh/fit)
+BREW_TEST_SHA256 = "40f07001d080af30bbd6396c554f90e2b350108f7a0bfb7e7bae1a5fc1e250d0"
 BIND_RECALL_FILE = DATA_DIR / "bind_recall.json"  # exp09_make_items.py: recalled vs bound bridge countries
 BIND_RECALL_SHA256 = "bbb1cfa8e95b6a83ec1c6003fc3a05c5c1fba195cff6a5cb7e3ea968dce59029"
 BIND_LOOKUP_FILE = DATA_DIR / "bind_lookup.json"  # exp09_make_items.py --lookup: family L (bind, then a table)
@@ -111,6 +113,10 @@ def bind_lookup_v2_items() -> list[dict[str, Any]]:
 
 def recall_lookup_items() -> list[dict[str, Any]]:
     return load_pinned_items(RECALL_LOOKUP_FILE, RECALL_LOOKUP_SHA256)
+
+
+def brew_test_items() -> list[dict[str, Any]]:
+    return load_pinned_items(BREW_TEST_FILE, BREW_TEST_SHA256)
 
 
 def wikitext_rows() -> list[str]:

@@ -1,0 +1,56 @@
+# exp18_brew_verbalizers v3: do the oracle lens and the NLA read the intermediate the model computes with, a token
+# direction, or the text? v2 (config_v2.yaml, run 20261015-205549) read vectors that carried C's own context; v3 edits
+# B with exp07's code (no counterfactual text) against the J++ direction and a random one, at exp07's dose.
+# Needs exp07's code (cache/exp07/code.pt: `uv run python scripts/exp07_step_code.py fit`).
+#   make run CONFIG=scripts/exp18_brew_verbalizers/config_v3.yaml                                   # 27B, one GPU
+#   make run CONFIG=scripts/exp18_brew_verbalizers/config_v3.yaml ARGS="params.limit=3 results_dir=cache/smoke"
+name: exp18_brew_verbalizers
+target: scripts.exp18_brew_verbalizers.experiment_v3:BrewVerbalizersV3
+seed: 0
+model: configs/models/qwen3.6-27b.yaml  # loaded through part B's loader (pins.py; tests/test_pins.py syncs)
+params:
+  # Never the fit items (the code is fit on them). Eligible as exp07: B answers A, C answers c, O answers A, C and O
+  # token-aligned, the tokens after the start line and the role colours those the code was fit on.
+  item_sets: [bank, fresh, test]
+  # Every position after the start line (exp07's site), layers 36-40 together (v2's early regime); each edit at the norm
+  # of the copy h_C - h_B at its layer and position (exp07's "copy" dose): the code resized as a whole, the lens and
+  # random directions per position.
+  edit_layers: [36, 38, 40]
+  nla_layer: 42
+  oracle_layer: 44
+  read_positions: {nl_assistant: 14, last: 20}  # as v2 (indices into the positions after the start line)
+  not_took_n: 100  # a seeded sample of eligible items where the code did not take, read in every condition
+  control_seed: 0
+  null_seed: 0
+  off_path_seed: 0
+  max_new_tokens: {oracle: 64, nla: 160}  # as exp15, exp16 and v2; greedy
+  batch_size: 48
+  text_margin: 0.05
+  sanity_oracle:  # exp15's gate
+    layers: [36, 44]
+    min_logit_change: 1.0
+    min_named: 4
+    max_random_named: 1
+    facts: &facts
+      - {prompt: "Fact: The capital of France is", targets: [Paris]}
+      - {prompt: "Fact: The largest planet in the solar system is", targets: [Jupiter]}
+      - {prompt: "Fact: The play Romeo and Juliet was written by William", targets: [Shakespeare]}
+      - {prompt: "Fact: The currency of Japan is the", targets: [yen]}
+      - {prompt: "Fact: The opposite of hot is", targets: [cold]}
+      - {prompt: "Fact: The Great Wall is in", targets: [China]}
+  sanity_nla:  # exp16's gate
+    min_logit_change: 1.0
+    min_named: 4
+    max_random_named: 1
+    facts: *facts
+  n_boot: 2000
+  boot_seed: 0
+  decision: >-
+    Fixed before the run. Per reader and item, d = [names X] - [names I], a colour counted if a reading at either read
+    position names it (exp15's rule), on the items where the code edit took (the edited model answers f(X)); paired
+    bootstrap 95% CIs over items. "Reads the state the model computes with" if d(code) - d(clean) and d(code) - d(lens)
+    are both above 0 and d(random) - d(clean) is not; "reads token directions" if d(lens) - d(clean) is above 0 and
+    d(code) - d(lens) is not; "follows the text" if the upper bound of d(code) - d(clean) is at most text_margin;
+    otherwise mixed. Reported beside it: how often each edit makes the model answer f(X) and loses A on all eligible
+    items, the code edit's move on a sample where it did not take, and J++'s top colour on the same vectors.
+  limit: null  # first N items per set; smoke runs only
