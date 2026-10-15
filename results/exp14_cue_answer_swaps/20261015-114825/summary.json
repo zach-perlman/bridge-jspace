@@ -1,0 +1,1462 @@
+{
+  "model": "Qwen3.6-27B (part B's loader, pins.py)",
+  "items": {
+    "eligible": 77,
+    "clean_wrong": 13
+  },
+  "eligibility_check": {
+    "n_ours": 77,
+    "n_part_b": 77,
+    "same": true,
+    "only_ours": [],
+    "only_part_b": []
+  },
+  "replication_check": {
+    "jpp cue/24-40": {
+      "part_b_run": "main_v4_jpp_pos-cue",
+      "n": 77,
+      "agree": 154,
+      "of": 154,
+      "flip_ours": 0.2987012987012987,
+      "flip_part_b": 0.2987012987012987
+    },
+    "jlens cue/24-40": {
+      "part_b_run": "main_v4_jlens_pos-cue",
+      "n": 77,
+      "agree": 152,
+      "of": 154,
+      "flip_ours": 0.22077922077922077,
+      "flip_part_b": 0.2077922077922078
+    }
+  },
+  "rates": [
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "bridge",
+      "null": false,
+      "n": 77,
+      "flip": [
+        0.2987012987012987,
+        0.2080375145120104,
+        0.4084965471592084
+      ],
+      "kept_clean": [
+        0.6623376623376623,
+        0.5512443936389646,
+        0.7580023308197299
+      ],
+      "neither": 0.03896103896103896,
+      "edit_ratio_median": 0.012438433820053059,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "bridge",
+      "null": true,
+      "n": 77,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "kept_clean": [
+        0.987012987012987,
+        0.9300363315482386,
+        0.9977038418278451
+      ],
+      "neither": 0.012987012987012988,
+      "edit_ratio_median": 0.05942293979665812,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "answer",
+      "null": false,
+      "n": 72,
+      "flip": [
+        0.16666666666666666,
+        0.09799275085321624,
+        0.26910920902104796
+      ],
+      "kept_clean": [
+        0.8055555555555556,
+        0.6996702472161007,
+        0.8804862895658236
+      ],
+      "neither": 0.027777777777777776,
+      "edit_ratio_median": 0.010078262962291345,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "answer",
+      "null": true,
+      "n": 72,
+      "flip": [
+        0.0,
+        0.0,
+        0.05065293981139638
+      ],
+      "kept_clean": [
+        0.9861111111111112,
+        0.9254321971571302,
+        0.9975441113595678
+      ],
+      "neither": 0.013888888888888888,
+      "edit_ratio_median": 0.03576451342772035,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "bridge_pinned",
+      "null": false,
+      "n": 72,
+      "flip": [
+        0.18055555555555555,
+        0.10866714144495851,
+        0.2848055701012113
+      ],
+      "kept_clean": [
+        0.7777777777777778,
+        0.6690882726433144,
+        0.8583267607947987
+      ],
+      "neither": 0.041666666666666664,
+      "edit_ratio_median": 0.013125150402843514,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "bridge_pinned",
+      "null": true,
+      "n": 72,
+      "flip": [
+        0.0,
+        0.0,
+        0.05065293981139638
+      ],
+      "kept_clean": [
+        0.9861111111111112,
+        0.9254321971571302,
+        0.9975441113595678
+      ],
+      "neither": 0.013888888888888888,
+      "edit_ratio_median": 0.056677658439559096,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "answer_pinned",
+      "null": false,
+      "n": 72,
+      "flip": [
+        0.013888888888888888,
+        0.002455888640432169,
+        0.07456780284286987
+      ],
+      "kept_clean": [
+        0.9722222222222222,
+        0.9042564183109327,
+        0.9923491385338594
+      ],
+      "neither": 0.013888888888888888,
+      "edit_ratio_median": 0.010208927553749698,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "answer_pinned",
+      "null": true,
+      "n": 72,
+      "flip": [
+        0.0,
+        0.0,
+        0.05065293981139638
+      ],
+      "kept_clean": [
+        1.0,
+        0.9493470601886036,
+        1.0
+      ],
+      "neither": 0.0,
+      "edit_ratio_median": 0.030338306308669204,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "bridge",
+      "null": false,
+      "n": 77,
+      "flip": [
+        0.2727272727272727,
+        0.1858435554011884,
+        0.3812110303566392
+      ],
+      "kept_clean": [
+        0.7012987012987013,
+        0.5915034528407916,
+        0.7919624854879896
+      ],
+      "neither": 0.025974025974025976,
+      "edit_ratio_median": 0.018571892051327536,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "bridge",
+      "null": true,
+      "n": 77,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "kept_clean": [
+        0.987012987012987,
+        0.9300363315482386,
+        0.9977038418278451
+      ],
+      "neither": 0.012987012987012988,
+      "edit_ratio_median": 0.07460576383506551,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "answer",
+      "null": false,
+      "n": 72,
+      "flip": [
+        0.4027777777777778,
+        0.2972093520095331,
+        0.5181953862871275
+      ],
+      "kept_clean": [
+        0.4861111111111111,
+        0.3743248074300839,
+        0.5993044408980104
+      ],
+      "neither": 0.1111111111111111,
+      "edit_ratio_median": 0.017470869788667187,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "answer",
+      "null": true,
+      "n": 72,
+      "flip": [
+        0.0,
+        0.0,
+        0.05065293981139638
+      ],
+      "kept_clean": [
+        1.0,
+        0.9493470601886036,
+        1.0
+      ],
+      "neither": 0.0,
+      "edit_ratio_median": 0.05057159079896177,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "bridge_pinned",
+      "null": false,
+      "n": 72,
+      "flip": [
+        0.09722222222222222,
+        0.04789571126116793,
+        0.18735249025356804
+      ],
+      "kept_clean": [
+        0.875,
+        0.7791873780725083,
+        0.9328229170689444
+      ],
+      "neither": 0.027777777777777776,
+      "edit_ratio_median": 0.018412020290270448,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "bridge_pinned",
+      "null": true,
+      "n": 72,
+      "flip": [
+        0.0,
+        0.0,
+        0.05065293981139638
+      ],
+      "kept_clean": [
+        1.0,
+        0.9493470601886036,
+        1.0
+      ],
+      "neither": 0.0,
+      "edit_ratio_median": 0.05691561700009248,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "answer_pinned",
+      "null": false,
+      "n": 72,
+      "flip": [
+        0.16666666666666666,
+        0.09799275085321624,
+        0.26910920902104796
+      ],
+      "kept_clean": [
+        0.7222222222222222,
+        0.6095334868037199,
+        0.8123985399467706
+      ],
+      "neither": 0.1111111111111111,
+      "edit_ratio_median": 0.016815166026764715,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "answer_pinned",
+      "null": true,
+      "n": 72,
+      "flip": [
+        0.0,
+        0.0,
+        0.05065293981139638
+      ],
+      "kept_clean": [
+        0.9861111111111112,
+        0.9254321971571302,
+        0.9975441113595678
+      ],
+      "neither": 0.013888888888888888,
+      "edit_ratio_median": 0.03975107031189563,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "bridge",
+      "null": false,
+      "n": 77,
+      "flip": [
+        0.22077922077922077,
+        0.14266286171984086,
+        0.3254327722112046
+      ],
+      "kept_clean": [
+        0.7402597402597403,
+        0.6325758169942757,
+        0.8251093352045924
+      ],
+      "neither": 0.03896103896103896,
+      "edit_ratio_median": 0.010091557633131742,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "bridge",
+      "null": true,
+      "n": 77,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "kept_clean": [
+        0.974025974025974,
+        0.9101524452675265,
+        0.9928479901518616
+      ],
+      "neither": 0.025974025974025976,
+      "edit_ratio_median": 0.05464628207332948,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "answer",
+      "null": false,
+      "n": 72,
+      "flip": [
+        0.1111111111111111,
+        0.05738751060073767,
+        0.20423144258590392
+      ],
+      "kept_clean": [
+        0.875,
+        0.7791873780725083,
+        0.9328229170689444
+      ],
+      "neither": 0.013888888888888888,
+      "edit_ratio_median": 0.008262638965628438,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "answer",
+      "null": true,
+      "n": 72,
+      "flip": [
+        0.0,
+        0.0,
+        0.05065293981139638
+      ],
+      "kept_clean": [
+        0.9861111111111112,
+        0.9254321971571302,
+        0.9975441113595678
+      ],
+      "neither": 0.013888888888888888,
+      "edit_ratio_median": 0.03566877664450337,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "bridge_pinned",
+      "null": false,
+      "n": 72,
+      "flip": [
+        0.18055555555555555,
+        0.10866714144495851,
+        0.2848055701012113
+      ],
+      "kept_clean": [
+        0.7916666666666666,
+        0.6843051941004199,
+        0.8694805910095988
+      ],
+      "neither": 0.027777777777777776,
+      "edit_ratio_median": 0.010924298720269957,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "bridge_pinned",
+      "null": true,
+      "n": 72,
+      "flip": [
+        0.0,
+        0.0,
+        0.05065293981139638
+      ],
+      "kept_clean": [
+        0.9861111111111112,
+        0.9254321971571302,
+        0.9975441113595678
+      ],
+      "neither": 0.013888888888888888,
+      "edit_ratio_median": 0.054067027700297976,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "answer_pinned",
+      "null": false,
+      "n": 72,
+      "flip": [
+        0.05555555555555555,
+        0.02181386292692504,
+        0.13432208357209396
+      ],
+      "kept_clean": [
+        0.9444444444444444,
+        0.865677916427906,
+        0.9781861370730749
+      ],
+      "neither": 0.0,
+      "edit_ratio_median": 0.00832977325669216,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "kind": "answer_pinned",
+      "null": true,
+      "n": 72,
+      "flip": [
+        0.0,
+        0.0,
+        0.05065293981139638
+      ],
+      "kept_clean": [
+        1.0,
+        0.9493470601886036,
+        1.0
+      ],
+      "neither": 0.0,
+      "edit_ratio_median": 0.03412063496516031,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "bridge",
+      "null": false,
+      "n": 77,
+      "flip": [
+        0.2857142857142857,
+        0.1968937869371719,
+        0.3949005367773513
+      ],
+      "kept_clean": [
+        0.6883116883116883,
+        0.5779975455912919,
+        0.7807286547807938
+      ],
+      "neither": 0.025974025974025976,
+      "edit_ratio_median": 0.01549128774101572,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "bridge",
+      "null": true,
+      "n": 77,
+      "flip": [
+        0.0,
+        3.469446951953614e-18,
+        0.047520088667220836
+      ],
+      "kept_clean": [
+        0.974025974025974,
+        0.9101524452675265,
+        0.9928479901518616
+      ],
+      "neither": 0.025974025974025976,
+      "edit_ratio_median": 0.07577842353459667,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "answer",
+      "null": false,
+      "n": 72,
+      "flip": [
+        0.3888888888888889,
+        0.2846554187000152,
+        0.5043785679247396
+      ],
+      "kept_clean": [
+        0.5277777777777778,
+        0.41400469533452566,
+        0.6387368080092856
+      ],
+      "neither": 0.08333333333333333,
+      "edit_ratio_median": 0.013355744021657089,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "answer",
+      "null": true,
+      "n": 72,
+      "flip": [
+        0.0,
+        0.0,
+        0.05065293981139638
+      ],
+      "kept_clean": [
+        1.0,
+        0.9493470601886036,
+        1.0
+      ],
+      "neither": 0.0,
+      "edit_ratio_median": 0.0586349385078339,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "bridge_pinned",
+      "null": false,
+      "n": 72,
+      "flip": [
+        0.1111111111111111,
+        0.05738751060073767,
+        0.20423144258590392
+      ],
+      "kept_clean": [
+        0.875,
+        0.7791873780725083,
+        0.9328229170689444
+      ],
+      "neither": 0.013888888888888888,
+      "edit_ratio_median": 0.014569392575033228,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "bridge_pinned",
+      "null": true,
+      "n": 72,
+      "flip": [
+        0.0,
+        0.0,
+        0.05065293981139638
+      ],
+      "kept_clean": [
+        1.0,
+        0.9493470601886036,
+        1.0
+      ],
+      "neither": 0.0,
+      "edit_ratio_median": 0.06636862193836886,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "answer_pinned",
+      "null": false,
+      "n": 72,
+      "flip": [
+        0.2638888888888889,
+        0.17593641596552728,
+        0.37576080561207664
+      ],
+      "kept_clean": [
+        0.625,
+        0.5095268590406966,
+        0.7278099060064543
+      ],
+      "neither": 0.1111111111111111,
+      "edit_ratio_median": 0.013100224892910132,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "kind": "answer_pinned",
+      "null": true,
+      "n": 72,
+      "flip": [
+        0.0,
+        0.0,
+        0.05065293981139638
+      ],
+      "kept_clean": [
+        1.0,
+        0.9493470601886036,
+        1.0
+      ],
+      "neither": 0.0,
+      "edit_ratio_median": 0.04313426988322616,
+      "items_with_skipped_layers": 0
+    }
+  ],
+  "comparisons": [
+    {
+      "a": "bridge_pinned",
+      "b": "answer_pinned",
+      "rows": [
+        {
+          "lens": "jlens",
+          "positions": "cue",
+          "band": "24-40",
+          "n": 72,
+          "bridge_pinned": 0.18055555555555555,
+          "answer_pinned": 0.05555555555555555,
+          "diff": [
+            0.125,
+            0.027777777777777776,
+            0.2361111111111111
+          ]
+        },
+        {
+          "lens": "jlens",
+          "positions": "last",
+          "band": "40-56",
+          "n": 72,
+          "bridge_pinned": 0.1111111111111111,
+          "answer_pinned": 0.2638888888888889,
+          "diff": [
+            -0.1527777777777778,
+            -0.2777777777777778,
+            -0.027777777777777762
+          ]
+        },
+        {
+          "lens": "jpp",
+          "positions": "cue",
+          "band": "24-40",
+          "n": 72,
+          "bridge_pinned": 0.18055555555555555,
+          "answer_pinned": 0.013888888888888888,
+          "diff": [
+            0.16666666666666666,
+            0.08333333333333333,
+            0.2638888888888889
+          ]
+        },
+        {
+          "lens": "jpp",
+          "positions": "last",
+          "band": "40-56",
+          "n": 72,
+          "bridge_pinned": 0.09722222222222222,
+          "answer_pinned": 0.16666666666666666,
+          "diff": [
+            -0.06944444444444443,
+            -0.18055555555555555,
+            0.04166666666666667
+          ]
+        }
+      ]
+    },
+    {
+      "a": "bridge",
+      "b": "bridge_pinned",
+      "rows": [
+        {
+          "lens": "jlens",
+          "positions": "cue",
+          "band": "24-40",
+          "n": 72,
+          "bridge": 0.2361111111111111,
+          "bridge_pinned": 0.18055555555555555,
+          "diff": [
+            0.05555555555555555,
+            -0.013888888888888895,
+            0.1388888888888889
+          ]
+        },
+        {
+          "lens": "jlens",
+          "positions": "last",
+          "band": "40-56",
+          "n": 72,
+          "bridge": 0.2916666666666667,
+          "bridge_pinned": 0.1111111111111111,
+          "diff": [
+            0.18055555555555558,
+            0.09722222222222224,
+            0.26423611111110923
+          ]
+        },
+        {
+          "lens": "jpp",
+          "positions": "cue",
+          "band": "24-40",
+          "n": 72,
+          "bridge": 0.3055555555555556,
+          "bridge_pinned": 0.18055555555555555,
+          "diff": [
+            0.12500000000000003,
+            0.04166666666666666,
+            0.20833333333333334
+          ]
+        },
+        {
+          "lens": "jpp",
+          "positions": "last",
+          "band": "40-56",
+          "n": 72,
+          "bridge": 0.2777777777777778,
+          "bridge_pinned": 0.09722222222222222,
+          "diff": [
+            0.18055555555555558,
+            0.08333333333333334,
+            0.2777777777777778
+          ]
+        }
+      ]
+    },
+    {
+      "a": "answer",
+      "b": "answer_pinned",
+      "rows": [
+        {
+          "lens": "jlens",
+          "positions": "cue",
+          "band": "24-40",
+          "n": 72,
+          "answer": 0.1111111111111111,
+          "answer_pinned": 0.05555555555555555,
+          "diff": [
+            0.05555555555555555,
+            0.013888888888888881,
+            0.11111111111111112
+          ]
+        },
+        {
+          "lens": "jlens",
+          "positions": "last",
+          "band": "40-56",
+          "n": 72,
+          "answer": 0.3888888888888889,
+          "answer_pinned": 0.2638888888888889,
+          "diff": [
+            0.125,
+            0.04166666666666663,
+            0.2222222222222222
+          ]
+        },
+        {
+          "lens": "jpp",
+          "positions": "cue",
+          "band": "24-40",
+          "n": 72,
+          "answer": 0.16666666666666666,
+          "answer_pinned": 0.013888888888888888,
+          "diff": [
+            0.15277777777777776,
+            0.06944444444444445,
+            0.2361111111111111
+          ]
+        },
+        {
+          "lens": "jpp",
+          "positions": "last",
+          "band": "40-56",
+          "n": 72,
+          "answer": 0.4027777777777778,
+          "answer_pinned": 0.16666666666666666,
+          "diff": [
+            0.23611111111111113,
+            0.1388888888888889,
+            0.3333333333333333
+          ]
+        }
+      ]
+    }
+  ],
+  "leakage": [
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "diff_cosine": {
+        "median": 0.2584914381013197,
+        "max": 0.9323161384638619,
+        "n": 72
+      },
+      "bridge_edit_in_answer_span": {
+        "median": 0.30154373327252726,
+        "max": 0.9324564074370528,
+        "n": 72
+      },
+      "answer_edit_in_bridge_span": {
+        "median": 0.2903190159519814,
+        "max": 0.9329894087996042,
+        "n": 72
+      }
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "diff_cosine": {
+        "median": 0.22935829399263158,
+        "max": 0.9270463901407578,
+        "n": 72
+      },
+      "bridge_edit_in_answer_span": {
+        "median": 0.23291787171376577,
+        "max": 0.9271868376887762,
+        "n": 72
+      },
+      "answer_edit_in_bridge_span": {
+        "median": 0.24238521695388587,
+        "max": 0.9271573574794567,
+        "n": 72
+      }
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "diff_cosine": {
+        "median": 0.2844715171000537,
+        "max": 0.9726063048138338,
+        "n": 72
+      },
+      "bridge_edit_in_answer_span": {
+        "median": 0.3010320841409127,
+        "max": 0.9726975252849819,
+        "n": 72
+      },
+      "answer_edit_in_bridge_span": {
+        "median": 0.30616139167755047,
+        "max": 0.9727119803748714,
+        "n": 72
+      }
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "diff_cosine": {
+        "median": 0.22918537083794088,
+        "max": 0.9495067596435547,
+        "n": 72
+      },
+      "bridge_edit_in_answer_span": {
+        "median": 0.23641459833117334,
+        "max": 0.9495259387871103,
+        "n": 72
+      },
+      "answer_edit_in_bridge_span": {
+        "median": 0.2423181878626653,
+        "max": 0.9495946348523703,
+        "n": 72
+      }
+    }
+  ],
+  "by_overlap": [
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "overlap": "low",
+      "cut": 0.2585,
+      "kind": "bridge",
+      "n": 36,
+      "flip": [
+        0.05555555555555555,
+        0.015369663767066846,
+        0.18144974107611211
+      ]
+    },
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "overlap": "low",
+      "cut": 0.2585,
+      "kind": "answer",
+      "n": 36,
+      "flip": [
+        0.027777777777777776,
+        0.004920280295569679,
+        0.141700337350308
+      ]
+    },
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "overlap": "low",
+      "cut": 0.2585,
+      "kind": "bridge_pinned",
+      "n": 36,
+      "flip": [
+        0.08333333333333333,
+        0.0287480892712918,
+        0.21827010276918848
+      ]
+    },
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "overlap": "low",
+      "cut": 0.2585,
+      "kind": "answer_pinned",
+      "n": 36,
+      "flip": [
+        0.027777777777777776,
+        0.004920280295569679,
+        0.141700337350308
+      ]
+    },
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "overlap": "high",
+      "cut": 0.2585,
+      "kind": "bridge",
+      "n": 36,
+      "flip": [
+        0.4166666666666667,
+        0.2714033350508729,
+        0.5780003033572231
+      ]
+    },
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "overlap": "high",
+      "cut": 0.2585,
+      "kind": "answer",
+      "n": 36,
+      "flip": [
+        0.19444444444444445,
+        0.09752972019453349,
+        0.350283620635152
+      ]
+    },
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "overlap": "high",
+      "cut": 0.2585,
+      "kind": "bridge_pinned",
+      "n": 36,
+      "flip": [
+        0.2777777777777778,
+        0.15848170025813796,
+        0.43992800216345146
+      ]
+    },
+    {
+      "lens": "jlens",
+      "positions": "cue",
+      "band": "24-40",
+      "overlap": "high",
+      "cut": 0.2585,
+      "kind": "answer_pinned",
+      "n": 36,
+      "flip": [
+        0.08333333333333333,
+        0.0287480892712918,
+        0.21827010276918848
+      ]
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "overlap": "low",
+      "cut": 0.2294,
+      "kind": "bridge",
+      "n": 35,
+      "flip": [
+        0.08571428571428572,
+        0.029581831005296905,
+        0.22379599071162518
+      ]
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "overlap": "low",
+      "cut": 0.2294,
+      "kind": "answer",
+      "n": 35,
+      "flip": [
+        0.14285714285714285,
+        0.06260138804853496,
+        0.2937588030867426
+      ]
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "overlap": "low",
+      "cut": 0.2294,
+      "kind": "bridge_pinned",
+      "n": 35,
+      "flip": [
+        0.08571428571428572,
+        0.029581831005296905,
+        0.22379599071162518
+      ]
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "overlap": "low",
+      "cut": 0.2294,
+      "kind": "answer_pinned",
+      "n": 35,
+      "flip": [
+        0.14285714285714285,
+        0.06260138804853496,
+        0.2937588030867426
+      ]
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "overlap": "high",
+      "cut": 0.2294,
+      "kind": "bridge",
+      "n": 37,
+      "flip": [
+        0.4864864864864865,
+        0.33446153327211037,
+        0.6410536277401908
+      ]
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "overlap": "high",
+      "cut": 0.2294,
+      "kind": "answer",
+      "n": 37,
+      "flip": [
+        0.6216216216216216,
+        0.4610014255281996,
+        0.7593621253610898
+      ]
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "overlap": "high",
+      "cut": 0.2294,
+      "kind": "bridge_pinned",
+      "n": 37,
+      "flip": [
+        0.13513513513513514,
+        0.059132072625076235,
+        0.2797772747070557
+      ]
+    },
+    {
+      "lens": "jlens",
+      "positions": "last",
+      "band": "40-56",
+      "overlap": "high",
+      "cut": 0.2294,
+      "kind": "answer_pinned",
+      "n": 37,
+      "flip": [
+        0.3783783783783784,
+        0.2406378746389103,
+        0.5389985744718004
+      ]
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "overlap": "low",
+      "cut": 0.2845,
+      "kind": "bridge",
+      "n": 35,
+      "flip": [
+        0.14285714285714285,
+        0.06260138804853496,
+        0.2937588030867426
+      ]
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "overlap": "low",
+      "cut": 0.2845,
+      "kind": "answer",
+      "n": 35,
+      "flip": [
+        0.0,
+        0.0,
+        0.09890426758938868
+      ]
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "overlap": "low",
+      "cut": 0.2845,
+      "kind": "bridge_pinned",
+      "n": 35,
+      "flip": [
+        0.11428571428571428,
+        0.0453510585448975,
+        0.2595179478812023
+      ]
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "overlap": "low",
+      "cut": 0.2845,
+      "kind": "answer_pinned",
+      "n": 35,
+      "flip": [
+        0.0,
+        0.0,
+        0.09890426758938868
+      ]
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "overlap": "high",
+      "cut": 0.2845,
+      "kind": "bridge",
+      "n": 37,
+      "flip": [
+        0.4594594594594595,
+        0.31038327828457724,
+        0.6161622047523264
+      ]
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "overlap": "high",
+      "cut": 0.2845,
+      "kind": "answer",
+      "n": 37,
+      "flip": [
+        0.32432432432432434,
+        0.19633077820815478,
+        0.48536631495176064
+      ]
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "overlap": "high",
+      "cut": 0.2845,
+      "kind": "bridge_pinned",
+      "n": 37,
+      "flip": [
+        0.24324324324324326,
+        0.13361203432663304,
+        0.4011760249070895
+      ]
+    },
+    {
+      "lens": "jpp",
+      "positions": "cue",
+      "band": "24-40",
+      "overlap": "high",
+      "cut": 0.2845,
+      "kind": "answer_pinned",
+      "n": 37,
+      "flip": [
+        0.02702702702702703,
+        0.004786851054907726,
+        0.13824378437563367
+      ]
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "overlap": "low",
+      "cut": 0.2292,
+      "kind": "bridge",
+      "n": 36,
+      "flip": [
+        0.1111111111111111,
+        0.04406568908741834,
+        0.2531512901503632
+      ]
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "overlap": "low",
+      "cut": 0.2292,
+      "kind": "answer",
+      "n": 36,
+      "flip": [
+        0.1388888888888889,
+        0.060817253631150966,
+        0.2865985128039319
+      ]
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "overlap": "low",
+      "cut": 0.2292,
+      "kind": "bridge_pinned",
+      "n": 36,
+      "flip": [
+        0.1111111111111111,
+        0.04406568908741834,
+        0.2531512901503632
+      ]
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "overlap": "low",
+      "cut": 0.2292,
+      "kind": "answer_pinned",
+      "n": 36,
+      "flip": [
+        0.08333333333333333,
+        0.0287480892712918,
+        0.21827010276918848
+      ]
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "overlap": "high",
+      "cut": 0.2292,
+      "kind": "bridge",
+      "n": 36,
+      "flip": [
+        0.4444444444444444,
+        0.2954102987654314,
+        0.6041921268399659
+      ]
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "overlap": "high",
+      "cut": 0.2292,
+      "kind": "answer",
+      "n": 36,
+      "flip": [
+        0.6666666666666666,
+        0.5033369709296683,
+        0.7978557522541395
+      ]
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "overlap": "high",
+      "cut": 0.2292,
+      "kind": "bridge_pinned",
+      "n": 36,
+      "flip": [
+        0.08333333333333333,
+        0.0287480892712918,
+        0.21827010276918848
+      ]
+    },
+    {
+      "lens": "jpp",
+      "positions": "last",
+      "band": "40-56",
+      "overlap": "high",
+      "cut": 0.2292,
+      "kind": "answer_pinned",
+      "n": 36,
+      "flip": [
+        0.25,
+        0.13750323839225387,
+        0.41070767683203424
+      ]
+    }
+  ],
+  "positive_control": {
+    "jlens": {
+      "answer": {
+        "band": "40-56",
+        "flip": [
+          0.3888888888888889,
+          0.2846554187000152,
+          0.5043785679247396
+        ],
+        "works": true
+      },
+      "answer_pinned": {
+        "band": "40-56",
+        "flip": [
+          0.2638888888888889,
+          0.17593641596552728,
+          0.37576080561207664
+        ],
+        "works": false
+      }
+    },
+    "jpp": {
+      "answer": {
+        "band": "40-56",
+        "flip": [
+          0.4027777777777778,
+          0.2972093520095331,
+          0.5181953862871275
+        ],
+        "works": true
+      },
+      "answer_pinned": {
+        "band": "40-56",
+        "flip": [
+          0.16666666666666666,
+          0.09799275085321624,
+          0.26910920902104796
+        ],
+        "works": false
+      }
+    }
+  },
+  "decision_rule": "Fixed before the run (2026-10-15). Main comparison: on the cue phrase (layers 24-40), per lens, in the questions whose two swaps overlap at least the median (cosine of the pairs' difference vectors, as in run 20261015-111137's overlap split) and in all questions, the pinned bridge swap vs the pinned answer swap (paired bootstrap 95% CI). \"Bridge\" if the pinned bridge swap flips more (CI above 0) and stays well above its null: the cue phrase carries the bridge. \"Answer\" if the pinned answer swap flips more: it carries the answer. \"Not separable along these directions\" if both fall near their nulls. Conditions: the plain swaps reproduce the earlier run; the pinned answer swap's positive control (last token, layers 40-56) flips at least 30%, else a low pinned-answer rate on the cue phrase says nothing; and a pinned swap whose median edit is under half its plain swap's is read as weakened by dose, not by content.",
+  "anchor_check": {
+    "run": "/home/sesterce/bridge-jspace/results/exp14_cue_answer_swaps/20261015-111137",
+    "shared": 1192,
+    "agree": 1192
+  }
+}

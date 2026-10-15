@@ -702,41 +702,51 @@ recomputed by `scripts/verify_headlines.py`.
 
 ## Next steps (part A)
 In order. Each item: the question, why it matters now, the test, and its cost. Every GPU run needs human sign-off.
+The swap experiments end with item 1; from there part A asks whether a reader that puts an activation into words sees
+the bridge where the lenses do not.
 
 1. **On the cue phrase, is it the bridge or the answer, in the questions where the two overlap?** (running: exp14,
-   `pinned.yaml`)
+   `pinned.yaml`; the last swap experiment)
    - *Why:* exp14 found no answer on the cue phrase apart from the bridge, but in the place questions (Spain ->
      Madrid) the two swaps move nearly the same direction, so it could not tell them apart there.
    - *Test:* swap one pair while holding the other pair's coordinates at their clean values. The bridge swap still
      works with the answer held: the cue phrase carries the bridge. Only the answer swap does: it carries the
-     answer. Decision rule fixed in the config before the run.
+     answer. Decision rule fixed in the config before the run. Read with a power check: how much of the plain edit
+     is left once the other pair is held (a question where under 30% is left cannot tell), and the share of questions
+     where neither pinned swap flips.
    - *Cost:* about 40 minutes of GPU.
-2. **Is the bridge at -1 a copy that the answer does not use?**
-   - *Why:* the bridge is read at -1 about as well as on the cue phrase (65% vs 56% of layers 32-48), yet swapping it
-     at -1 changes the answer in 3-9% of questions against 19-31% on the cue phrase.
-   - *Test, without a lens* (as exp04 does on brew): copy the residual at -1, or on the cue phrase, from a question
-     with another bridge in the same template ("...where Cairo is located..." -> "...where Lima is located..."; about
-     30 questions in 9 templates). The -1 copy changes the answer: the lens directions miss what is used there. It
-     does not: -1 holds a read-out the answer does not depend on.
-   - *Cost:* about an hour of GPU; prompt pairs whose tokens line up must be built first (no GPU).
-3. **Why do J++'s swaps work better, when both lenses read the same bridge?**
-   - *Why:* the two lenses agree question by question (r = 0.92), yet on the cue phrase J++'s swap flips 31% and the
-     J-lens's 19%.
-   - *Test:* split each J++ token direction into the part it shares with the J-lens's and the rest, and swap along
-     each part: which carries the extra flips?
-   - *Cost:* about half an hour of GPU with exp14's runner.
-4. **Do readers that put an activation into words (Oracle lens, NLA) see more than the lenses?** (exp15 / exp16;
-   design proposed, awaiting sign-off)
-   - *Why:* the lenses read single tokens; the bridge may be held in a form no single token names.
-   - *Test:* read the same questions at -1 and on the cue phrase; score whether the bridge is named, against its
-     distractor. The oracle lens is a LoRA on Qwen3.6-27B (`neuronpedia/jacobian-lens`, `qwen3.6-27b/oracle`,
-     layers 20-60); the NLA a separate 27B reader trained on layer 42 (`ceselder/qwen3.6-27b-nla-rl`); reference read
-     code in WorkspaceBench's producer (github.com/camilablank/workspace-bench, MIT).
-   - *Risk:* the oracle is the model itself, so it may re-solve the hop from the question instead of reading the
-     bridge; probe directions (no question in them) are the cleaner test.
-   - *Cost:* one 80 GB GPU (the NLA in two phases: capture, then verbalize); a few hours.
-5. Optional: reproduce J++'s published Recall@10 (55.2% on Qwen3.6-27B) over all six lens-eval sets. Stretch: repeat
-   on Gemma 4 31B (J-lens and J++ exist on HF).
+2. **Does the oracle lens name the bridge where both lenses miss it?** (exp15_oracle_lens; next)
+   - *Why:* the lenses read one token direction at a time; the bridge may be held in a form no single token names.
+     Where the J-lens and J++ both miss the bridge (about 40% of questions at the last word, exp12), a reader that
+     puts the activation into words either finds it there or does not.
+   - *Test:* read the 77 questions at the last word, -1 and the last token of the cue phrase, layers 28 / 36 / 44, with
+     the oracle lens: a LoRA on Qwen3.6-27B that turns one activation into bullets of concepts
+     (`neuronpedia/jacobian-lens`, `qwen3.6-27b/oracle`, its published read contract). Each cell is classed by exp12's
+     lens readings (both lenses have the bridge first, one, neither). Scored: the bridge named in the bullets against
+     its distractor (Brazil vs Mexico) and against other questions' bridges, and the bridge's rank among the 97
+     entities as the first bullet. The control for re-solving: on the questions whose answer flips under exp14's J++
+     bridge swap on the cue phrase, read the activation after the swap. The oracle now names the swap target: it
+     reads the state the answer uses. It still names the clean bridge: it re-solves the hop from the question the
+     activation encodes, and its readings on lens-blind cells say nothing about what the model uses.
+   - *Cost:* about an hour of GPU (activations captured first, then the adapter merged for generation).
+3. **Is that specific to one verbalizer?** (exp16_nla)
+   - *Why:* the oracle lens is the model itself with an adapter; the NLA is a separate 27B reader with a different
+     training objective.
+   - *Test:* the cells of 2 at layer 42 (the only layer the NLA was trained on; `ceselder/qwen3.6-27b-nla-rl`, read
+     code in WorkspaceBench's producer, github.com/camilablank/workspace-bench, MIT), same scoring and controls.
+   - *Cost:* one to two hours of GPU, in two phases (capture with Qwen3.6-27B, unload, load the NLA).
+4. **Brew, where the bridge is never named in the prompt** (after 2 shows the oracle reads states, not questions)
+   - *Why:* in brew's in-context lookup the intermediate is not an entity of the question, so a reader cannot recall
+     it from world knowledge; exp04 locates it after the start line at layers 36-50.
+   - *Test:* read those positions with the lenses first (not done yet), then with the oracle on the lens-blind cells,
+     with a counterfactual context as the control.
+
+Parked: these were next steps; part A does not pursue them now.
+- *Is the bridge at -1 a copy the answer does not use?* Patching -1 from a question with another bridge needs prompt
+  pairs whose tokens line up: only 18 questions have one, nearly all places, so it would not separate copy from use.
+- *Why do J++'s swaps flip more than the J-lens's, when both read the same bridge?* A question about the lenses, not
+  about the bridge.
+- *Reproduce J++'s published Recall@10; repeat on Gemma 4 31B.*
 
 ## Next steps (part B)
 1. **Verify v4:** `scripts/verify_headlines.py` now recomputes exp02 v4's, exp03's and exp04's headlines from the raw
