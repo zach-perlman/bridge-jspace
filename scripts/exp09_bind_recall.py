@@ -223,26 +223,44 @@ def stage_manifest_map(name: str, why: str) -> None:
 
 
 @torch.no_grad()
+def uid(item: dict, index: int) -> str:
+    """An item's id: its family and its index in data/bind_recall.json. The file's own `name` field is not unique
+    (exp09_make_items.py numbered each list comprehension from the same length), so nothing keys on it."""
+    return f"{item['family']}-{index:04d}"
+
+
 def eligible_cases(
-    model, tokenizer, layers: tuple[int, ...] | None, sources: tuple[str, ...] = ("clean", "cf", "off")
+    model,
+    tokenizer,
+    layers: tuple[int, ...] | None,
+    sources: tuple[str, ...] = ("clean", "cf", "off"),
+    map_items: Path | None = None,
 ) -> tuple[list[dict], list[dict]]:
-    """Eligible items (as the manifest), a seeded sample of N_ITEMS per family, with their runs' block outputs."""
+    """Eligible items (as the manifest), a seeded sample of N_ITEMS per family, with their runs' block outputs.
+    With `map_items` (a map run's items.jsonl, one row per item in file order) the eligibility is read from that run
+    instead of regenerated, and the same seeded sample follows."""
     capitals = [c.lower() for c in CAPITALS.values()]
+    items = pins.bind_recall_items()
     rows, pool = [], []
-    for index, item in enumerate(pins.bind_recall_items()):
+    before = [json.loads(line) for line in map_items.read_text().splitlines()] if map_items else None
+    assert before is None or len(before) == len(items), "the map's items.jsonl does not cover the item file"
+    for index, item in enumerate(items):
         prep = prepare(item, index, tokenizer)
-        row = {"family": item["family"], "name": item["name"], "status": prep["status"]}
+        row = {"family": item["family"], "name": uid(item, index), "status": prep["status"]}
         rows.append(row)
         if prep["status"] != "ok":
             continue
-        said = {
-            k: answer_colour(model.generate(torch.tensor([v], device="cuda"), MAX_NEW_TOKENS)[1], capitals)
-            for k, v in prep["ids"].items()
-        }
-        want = {"clean": roles(item)["A"], "cf": roles(item)["b"], "off": roles(item)["A"]}
-        row["status"] = "eligible" if said == want else "not_eligible"
-        if row["status"] == "eligible":
-            pool.append({**item, "index": index, **prep})
+        if before is not None:
+            eligible = before[index]["status"] in ("eligible", "eligible_not_sampled")
+        else:
+            said = {
+                k: answer_colour(model.generate(torch.tensor([v], device="cuda"), MAX_NEW_TOKENS)[1], capitals)
+                for k, v in prep["ids"].items()
+            }
+            eligible = said == {"clean": roles(item)["A"], "cf": roles(item)["b"], "off": roles(item)["A"]}
+        row["status"] = "eligible" if eligible else "not_eligible"
+        if eligible:
+            pool.append({**item, "name": uid(item, index), "index": index, **prep})
     rng = random.Random(SAMPLE_SEED)
     cases = []
     for family in FAMILIES:
@@ -383,6 +401,7 @@ def stage_manifest_parts(name: str, map_run: str, why: str) -> None:
         "At each family's window, which part of the copy carries the bridge: its J-space part or the rest?"
     )
     manifest["map"] = {"run": map_run, "summary_sha256": sha256_of(map_summary), "cap": cap, "parts_window": window}
+    manifest["eligibility_from"] = "the map run's items.jsonl (the same items and seeded sample, not regenerated)"
     manifest["lens"] = {"jpp": pins.LENS_FILES["jpp"]}
     manifest["parts"] = {
         "full": "δ = h_C - h_B at the question group",
@@ -418,7 +437,8 @@ def stage_run_parts(name: str) -> None:
     model = load_model()
     tokenizer: Any = model.tokenizer
     capitals = [c.lower() for c in CAPITALS.values()]
-    cases, rows = eligible_cases(model, tokenizer, layers)
+    map_items = RESULTS / manifest["map"]["run"] / "items.jsonl"
+    cases, rows = eligible_cases(model, tokenizer, layers, map_items=map_items)
     lens = JLens(model, "jpp")
     dictionaries = {layer: lens.vectors(layer, model.letter_token_ids()) for layer in layers}
     outcomes, fve = [], []
@@ -583,6 +603,10 @@ def stage_manifest_swaps(name: str, why: str) -> None:
     )
     manifest["question"] += "the bridge is recalled, and when it is bound in context?"
     manifest["probes"] = {"file": str(PROBES.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(PROBES)}
+    maps = sorted(d.name for d in RESULTS.iterdir() if (d / "summary.json").exists() and d.name.startswith("map"))
+    assert maps, "run the map first: the swaps reuse its eligibility and sample"
+    manifest["map"] = {"run": maps[-1], "items_sha256": sha256_of(RESULTS / maps[-1] / "items.jsonl")}
+    manifest["eligibility_from"] = "the map run's items.jsonl (the same items and seeded sample, not regenerated)"
     manifest["swap"] = {
         "positions": "the cue phrase (R: the city, 'is', 'located'; B: the person, 'lives'), as exp02's cue regime",
         "layers": f"{SWAP_LAYERS[0]}-{SWAP_LAYERS[-1]} at once (exp02's band); a layer is skipped if I's and X's atoms "
@@ -618,7 +642,9 @@ def stage_run_swaps(name: str) -> None:
     tokenizer: Any = model.tokenizer
     capitals = [c.lower() for c in CAPITALS.values()]
     probes = Probes(PROBES)
-    cases, rows = eligible_cases(model, tokenizer, SWAP_LAYERS, sources=("clean",))
+    map_items = RESULTS / manifest["map"]["run"] / "items.jsonl"
+    assert sha256_of(map_items) == manifest["map"]["items_sha256"], "the map's items.jsonl changed"
+    cases, rows = eligible_cases(model, tokenizer, SWAP_LAYERS, sources=("clean",), map_items=map_items)
     outcomes = []
     for c in cases:
         ids = torch.tensor([c["ids"]["clean"]], device="cuda")
