@@ -160,9 +160,10 @@ each question.
    answer too stays open: the held answer swap is weak even at the last token (17-26%), so its low rate on the cue
    phrase is not evidence of absence (exp14).
 8. A reader that puts the activation into words, the oracle lens, sees a little more than the lenses at a given
-   position and layer, but nothing they miss in a question as a whole (exp15). Where neither the J-lens nor J++ ranks
-   the bridge 1st it names it in 37% of readings (false alarms 4%), mostly where the lenses nearly have it (54% at
-   2nd-3rd, 22% at 11th or lower); yet every question's bridge is ranked 1st by a lens somewhere. After the bridge
+   position and layer (exp15). Where neither the J-lens nor J++ ranks the bridge 1st it names it in 37% of readings
+   (false alarms 4%), mostly where the lenses nearly have it (54% at 2nd-3rd, 22% at 11th or lower). Read at all 11
+   layers both find the bridge somewhere in every question (the distractor in a third), so there it adds no question;
+   at one layer it adds a few. After the bridge
    swap it names the swap target where the model's answer changes (67% vs 10% where it does not), so it follows the
    state; but it mostly writes the question out with the bridge filled in, so on the lens-blind readings it may be
    solving the question rather than reading the state, which only a cleaner test can tell.
@@ -600,13 +601,16 @@ distractor (grey dashed), by layer. Right, the swap target named after the swap,
 swap edits.*
 
 **Is the oracle an extra monitor where the lenses miss the bridge?** At one position and layer, partly; for a
-question as a whole, no.
+question read at many layers, no, because both already find the bridge somewhere in every question.
 - Per reading (2541): the lenses (either one ranking it 1st) and the oracle both have the bridge in 54%, only the
   lenses in 12%, only the oracle in 14%, neither in 20%. Where the lenses miss it, the oracle names the distractor in
   5%. The answer: both 32%, lenses only 11%, oracle only 21%, neither 36%; distractor 9%.
-- Per question: the lenses rank the bridge 1st somewhere in every one of the 77 questions, and the oracle names it
-  somewhere in every one of them too; the same for the answer (61 of 61). Read across positions and layers, the
-  oracle finds no question the lenses miss.
+- Per question: across all 33 readings of a question (3 positions x 11 layers) both reach the ceiling: the lenses rank
+  the bridge 1st somewhere in all 77 questions and the oracle names it somewhere in all 77 (the answer: 61 of 61),
+  while the distractor is found somewhere in only 30 (lenses) and 24 (oracle). With one layer's 3 readings there is
+  room to differ, and the verbalizers add a few questions at equal false alarms: the bridge in 73 vs 69 questions
+  (oracle, layer 40; distractor 9 vs 12), 71 vs 71 (oracle, 44), 75 vs 71 (NLA, 42; distractor 10 vs 10); the answer
+  in 58 vs 44 (NLA, 42; distractor 11 vs 10).
 - What it adds is mostly a weaker version of the same signal (the lenses have the word 2nd-10th), not a different
   one: where the lenses have it 11th or lower it names the bridge in 22% of readings (38 questions), the case most open
   to re-solving (next point).
@@ -988,7 +992,7 @@ recomputed by `scripts/verify_headlines.py`.
 In order. Each item: the question, why it matters now, the test, and its cost. Every GPU run needs human sign-off.
 exp14's pinned run closed the swap experiments (on the cue phrase the bridge acts apart from the answer's direction).
 exp15 read all 11 of the oracle lens's layers: it names the bridge in about a third of the readings where the lenses
-miss it, mostly where they nearly have it, and finds no question the lenses miss altogether; exp16's NLA, a second
+miss it, mostly where they nearly have it, and across all layers adds no question the lenses miss; exp16's NLA, a second
 verbalizer, agrees at layer 42. What follows checks whether that is reading or solving.
 
 1. **On the lens-blind readings, do the verbalizers read the state or solve the question?** (exp17, design from the
