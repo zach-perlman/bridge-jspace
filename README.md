@@ -667,31 +667,44 @@ recomputed by `scripts/verify_headlines.py`.
 - Whether to drop the 5 questions whose bridge appears in the prompt.
 
 ## Next steps (part A)
-In order; designs need human sign-off before GPU runs.
-1. **Separate bridge and answer where their directions overlap** (follow-up to exp14). In the place questions the
-   bridge and answer swaps move nearly the same direction, so exp14 cannot tell them apart there. The swap clamp can
-   hold extra atoms fixed: swap the bridge pair while pinning the answer pair's coordinates, and the reverse. If the
-   bridge swap keeps working with the answer held, the cue phrase carries the bridge; if only the answer swap does,
-   it carries the answer. Same runner as exp14, about half an hour of GPU.
-2. **Readable but not used at -1?** The bridge reads about as well one word before the end as on the cue phrase
-   (65% vs 56% of layers 32-48), yet swapping it at -1 changes the answer in 3-9% of questions against 19-31% on the
-   cue phrase. A lens-free test, as exp04 does on brew: copy the residual at -1, or on the cue phrase, from a question
-   with another bridge in the same template ("...where Cairo is located..." -> "...where Lima is located..."; about 30
-   questions in 9 templates). If the -1 copy changes the answer, the lens directions miss what is used there; if not,
-   -1 holds a read-out the answer does not depend on.
-3. **Why J++'s swaps work better although both lenses read the same bridge** (r = 0.92 per question; cue-phrase
-   swaps 31% vs 19%). Split each J++ token direction into the part shared with the J-lens's direction and the rest,
-   and swap along each part: which one carries the extra flips?
-4. **exp15 / exp16: Oracle lens and NLA** on the same questions (design proposed, awaiting sign-off). Both are
-   public: the oracle lens is a LoRA on Qwen3.6-27B at our pinned `neuronpedia/jacobian-lens` revision
-   (`qwen3.6-27b/oracle`, layers 20-60); the NLA is a separate 27B reader trained on layer 42
-   (`ceselder/qwen3.6-27b-nla-rl`). Reference read code: WorkspaceBench's producer
-   (github.com/camilablank/workspace-bench, MIT). Both fit one 80 GB GPU (the NLA in two phases: capture, then
-   verbalize). Main risk: the oracle is the model itself, so it may re-solve the hop from the question instead of
-   reading the bridge; probe directions (no question in them) are the cleaner test. Read them on the cue phrase too.
-5. **The 5 lens-eval questions whose bridge appears in the prompt:** check whether they drive any exp10 headline.
-6. Optional: reproduce J++'s published Recall@10 (55.2% on Qwen3.6-27B) over all six lens-eval sets.
-7. Stretch: repeat on Gemma 4 31B (J-lens and J++ exist on HF).
+In order. Each item: the question, why it matters now, the test, and its cost. Every GPU run needs human sign-off.
+
+1. **On the cue phrase, is it the bridge or the answer, in the questions where the two overlap?** (running: exp14,
+   `pinned.yaml`)
+   - *Why:* exp14 found no answer on the cue phrase apart from the bridge, but in the place questions (Spain ->
+     Madrid) the two swaps move nearly the same direction, so it could not tell them apart there.
+   - *Test:* swap one pair while holding the other pair's coordinates at their clean values. The bridge swap still
+     works with the answer held: the cue phrase carries the bridge. Only the answer swap does: it carries the
+     answer. Decision rule fixed in the config before the run.
+   - *Cost:* about 40 minutes of GPU.
+2. **Is the bridge at -1 a copy that the answer does not use?**
+   - *Why:* the bridge is read at -1 about as well as on the cue phrase (65% vs 56% of layers 32-48), yet swapping it
+     at -1 changes the answer in 3-9% of questions against 19-31% on the cue phrase.
+   - *Test, without a lens* (as exp04 does on brew): copy the residual at -1, or on the cue phrase, from a question
+     with another bridge in the same template ("...where Cairo is located..." -> "...where Lima is located..."; about
+     30 questions in 9 templates). The -1 copy changes the answer: the lens directions miss what is used there. It
+     does not: -1 holds a read-out the answer does not depend on.
+   - *Cost:* about an hour of GPU; prompt pairs whose tokens line up must be built first (no GPU).
+3. **Why do J++'s swaps work better, when both lenses read the same bridge?**
+   - *Why:* the two lenses agree question by question (r = 0.92), yet on the cue phrase J++'s swap flips 31% and the
+     J-lens's 19%.
+   - *Test:* split each J++ token direction into the part it shares with the J-lens's and the rest, and swap along
+     each part: which carries the extra flips?
+   - *Cost:* about half an hour of GPU with exp14's runner.
+4. **Do readers that put an activation into words (Oracle lens, NLA) see more than the lenses?** (exp15 / exp16;
+   design proposed, awaiting sign-off)
+   - *Why:* the lenses read single tokens; the bridge may be held in a form no single token names.
+   - *Test:* read the same questions at -1 and on the cue phrase; score whether the bridge is named, against its
+     distractor. The oracle lens is a LoRA on Qwen3.6-27B (`neuronpedia/jacobian-lens`, `qwen3.6-27b/oracle`,
+     layers 20-60); the NLA a separate 27B reader trained on layer 42 (`ceselder/qwen3.6-27b-nla-rl`); reference read
+     code in WorkspaceBench's producer (github.com/camilablank/workspace-bench, MIT).
+   - *Risk:* the oracle is the model itself, so it may re-solve the hop from the question instead of reading the
+     bridge; probe directions (no question in them) are the cleaner test.
+   - *Cost:* one 80 GB GPU (the NLA in two phases: capture, then verbalize); a few hours.
+5. **Small checks:** whether the 5 lens-eval questions whose bridge appears in the prompt drive any exp10 headline
+   (no GPU).
+6. Optional: reproduce J++'s published Recall@10 (55.2% on Qwen3.6-27B) over all six lens-eval sets. Stretch: repeat
+   on Gemma 4 31B (J-lens and J++ exist on HF).
 
 ## Next steps (part B)
 1. **Verify v4:** `scripts/verify_headlines.py` now recomputes exp02 v4's, exp03's and exp04's headlines from the raw
