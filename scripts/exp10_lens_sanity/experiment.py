@@ -12,6 +12,7 @@
 from __future__ import annotations
 
 import json
+import re
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -45,6 +46,7 @@ class LensSanity(Experiment):
 
         items = lens_eval_multihop_items()[: p.get("limit")]
         rows, item_meta = self._multihop(items, readers, layers)
+        item_meta = label_items(item_meta, items)
         self.save_jsonl("multihop_ranks.jsonl", rows)
         self.save_jsonl("multihop_items.jsonl", item_meta)
 
@@ -160,6 +162,83 @@ class LensSanity(Experiment):
         return rows
 
 
+NUMBER_WORDS = frozenset(
+    [
+        "zero",
+        "one",
+        "two",
+        "three",
+        "four",
+        "five",
+        "six",
+        "seven",
+        "eight",
+        "nine",
+        "ten",
+        "eleven",
+        "twelve",
+        "thirteen",
+        "fourteen",
+        "fifteen",
+        "sixteen",
+        "seventeen",
+        "eighteen",
+        "nineteen",
+        "twenty",
+        "thirty",
+        "forty",
+        "fifty",
+        "sixty",
+        "seventy",
+        "eighty",
+        "ninety",
+        "hundred",
+        "first",
+        "second",
+        "third",
+        "fourth",
+        "fifth",
+        "sixth",
+        "seventh",
+        "eighth",
+        "ninth",
+        "tenth",
+        "eleventh",
+        "twelfth",
+    ]
+)
+
+
+def bridge_kind(intermediates: list[str]) -> str:
+    """'number' if any form is a numeral or a number word ('6', 'six', 'third'), 'letter' if every form is one
+    letter ('H', a chemical symbol), else 'word'."""
+    forms = [w.strip() for w in intermediates]
+    if any(f.isdigit() or f.lower() in NUMBER_WORDS for f in forms):
+        return "number"
+    if all(len(f) == 1 and f.isalpha() for f in forms):
+        return "letter"
+    return "word"
+
+
+def bridge_in_prompt(prompt: str, intermediates: list[str]) -> bool:
+    """Whether a form of the bridge is written in the prompt as a word of its own (not inside another word: 'H' in
+    'The' does not count)."""
+    return any(
+        re.search(rf"(?<![A-Za-z0-9]){re.escape(w.strip())}(?![A-Za-z0-9])", prompt, re.IGNORECASE)
+        for w in intermediates
+    )
+
+
+def label_items(meta: list[dict[str, Any]], items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """meta rows with each item's bridge kind and whether its bridge is named in the prompt."""
+    by_name = {it["name"]: it for it in items}
+    return [
+        m | {"bridge_kind": bridge_kind(by_name[m["name"]]["intermediates"]),
+             "bridge_in_prompt": bridge_in_prompt(by_name[m["name"]]["prompt"], by_name[m["name"]]["intermediates"])}
+        for m in meta
+    ]  # fmt: skip
+
+
 def item_scores(rows: list[dict[str, Any]], reader: str, k: int, rule: str) -> dict[str, float]:
     """Per item, from its intermediates' min ranks: `any` = 1 if any of them is ranked below k, `fraction` = the share
     that is (the paper's rule)."""
@@ -178,11 +257,17 @@ def aggregate(
     ('5' / 'five'), so finding one form finds the bridge. `*_fraction` keeps the paper's rule (the fraction of an
     item's intermediates found) for comparison with published numbers."""
     names = [m["name"] for m in meta]
+    single = [m for m in meta if m["all_single_token"]]
     subsets = {
         "all": names,
         "model_correct": [m["name"] for m in meta if m["model_correct"]],
-        "all_single_token": [m["name"] for m in meta if m["all_single_token"]],
-    }
+        "all_single_token": [m["name"] for m in single],
+        # by bridge kind and naming (label_items); absent from rows saved before the labels
+        **{f"{kind}_bridges": [m["name"] for m in single if m.get("bridge_kind") == kind]
+           for kind in ("word", "number", "letter")},
+        "bridge_named_in_prompt": [m["name"] for m in single if m.get("bridge_in_prompt")],
+        "bridge_not_in_prompt": [m["name"] for m in single if m.get("bridge_in_prompt") is False],
+    }  # fmt: skip
     out: dict[str, Any] = {
         "n_items": len(meta),
         "n_model_correct": len(subsets["model_correct"]),
@@ -222,7 +307,8 @@ def analyze(run_dir: str | Path) -> Path:
     def load(name: str) -> list[dict[str, Any]]:
         return [json.loads(x) for x in (run_dir / name).read_text().splitlines() if x.strip()]
 
-    rows, meta = load("multihop_ranks.jsonl"), load("multihop_items.jsonl")
+    rows = load("multihop_ranks.jsonl")
+    meta = label_items(load("multihop_items.jsonl"), lens_eval_multihop_items())
     readers = list(dict.fromkeys(r["reader"] for r in rows))
     out = run_dir / f"analysis-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
     out.mkdir()

@@ -110,8 +110,9 @@ is recomputed from the raw run files by `uv run python scripts/verify_headlines.
 | [exp14 `flip_rates.png`](figures/exp14_cue_answer_swaps/flip_rates.png) | Bridge vs answer swaps on the cue phrase and at the last token, with random-direction controls |
 | [exp11 `pool_top1_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/pool_top1_by_layer.png) | Last token only: bridge and answer ranked first, by layer, three readers |
 | [exp11 `advantage_by_layer.png`](figures/exp11_bridge_vs_answer_by_layer/advantage_by_layer.png) | Last token only: how many times higher than its distractor each word ranks |
-| [exp10 `pass_at_10_by_model.png`](figures/exp10_lens_sanity/20261015-123717/pass_at_10_by_model.png) | Does each lens find the bridge at all (pass@10), 4B and 27B |
-| [exp10 `27b_by_layer.png`](figures/exp10_lens_sanity/20261015-123717/27b_by_layer.png) | Why the J-lens looks no better than the logit lens on pass@10 |
+| [exp10 `pass_at_10_by_model.png`](figures/exp10_lens_sanity/20261015-135537/pass_at_10_by_model.png) | Does each lens find the bridge at all (pass@10), 4B and 27B |
+| [exp10 `pass_at_10_by_bridge_kind.png`](figures/exp10_lens_sanity/20261015-135537/pass_at_10_by_bridge_kind.png) | pass@10 by kind of bridge (27B), best layer anywhere and within 32-48: the logit lens's numbers come from the last layers |
+| [exp10 `27b_by_layer.png`](figures/exp10_lens_sanity/20261015-135537/27b_by_layer.png) | Why the J-lens looks no better than the logit lens on pass@10 |
 
 Worked examples with lens tables: `make examples-serve` opens [examples/index.html](examples/index.html) (all three
 experiments); the exp12 page is also published at https://claude.ai/artifact/TXLZH6WxuxSQDhoK5YHTj9 (anyone with the
@@ -152,11 +153,17 @@ list at every layer, and count how often the bridge is in the top 10 at some lay
 - **Qwen3.5-4B:** the J-lens finds the bridge more often than the baseline (44% vs 25% of questions).
 - **Qwen3.6-27B:** J++ clearly beats the baseline (77% vs 54%). The J-lens is only slightly ahead (58%), within the
   error bars.
+- **Number bridges and the last layers are what hide the J-lens's lead.** On the 63 questions whose bridge is a word
+  (Brazil, iron), the J-lens finds it in 67% against the logit lens's 52% (+14 points [+2, +27]) and J++ in 89%. On
+  the 17 whose bridge is a number ('6', 'four', 'third'), the logit lens does better (65%) than the J-lens (41%) and
+  J++ (53%), but only through the last layers: within layers 32-48 it finds 6% of the number bridges, the J-lens 18%
+  and J++ 41%, and 3% / 30% / 59% of the word bridges. The 4 single-letter bridges (chemical symbols) no lens
+  finds.
 - **The bridge is often invisible at the last token.** On the 61 questions where 27B's top next token is the answer,
   J++ misses the bridge in 1 of 3 and the J-lens in 1 of 2. This is Zach's observation. The next experiments check
   other ways of reading it.
 
-![pass@10 by model and reader](figures/exp10_lens_sanity/20261015-125342/pass_at_10_by_model.png)
+![pass@10 by model and reader](figures/exp10_lens_sanity/20261015-135537/pass_at_10_by_model.png)
 
 *How to read it: each bar is the share of the 84 questions whose bridge is in that reader's top 10 at its best layer,
 read at the last prompt token; a bridge listed in several forms ('5', 'five') counts as found if any form is. Error
@@ -167,17 +174,25 @@ J-lens (blue) is within its error bars.*
 bridge; near the output the logit lens catches up. pass@10 takes the *best* layer, so the late layers hide the
 difference.
 
-![27B by layer](figures/exp10_lens_sanity/20261015-125342/27b_by_layer.png)
+![27B by layer](figures/exp10_lens_sanity/20261015-135537/27b_by_layer.png)
 
 *How to read it: x is the layer, y the share of the 84 questions with the bridge in the reader's top 10 at that
 layer. Inside layers 32-48 (grey) J++ has it for up to 35% of the questions, the J-lens up to 18%, the logit lens at
 most 2%; only from about layer 55 does the logit lens join them.*
 
+![pass@10 by kind of bridge](figures/exp10_lens_sanity/20261015-135537/pass_at_10_by_bridge_kind.png)
+
+*How to read it: the bars of the first figure, split by what the bridge is (27B). Left, the best layer anywhere (as
+pass@10): for word bridges both lenses are above the logit lens and J++ finds almost all; for number bridges the
+logit lens is on top; letter bridges (n = 4) no lens finds. Right, the best layer only within layers 32-48: the logit
+lens finds almost nothing of any kind, and both lenses lead for words and numbers alike. So the logit lens's numbers
+come from the last layers (it finds them at layers 54-60), where the model is close to its output.*
+
 <details><summary>Full numbers</summary>
 
 pass@10 on the 84 questions with a single-token bridge, 95% percentile bootstrap CI over questions (n_boot=10000,
 seed 0); a bridge listed in several forms counts as found if any form is in the top 10. Runs under
-`results/exp10_lens_sanity/`, re-aggregated in each run's `analysis-20261015-1253*/`. All sanity checks pass on both
+`results/exp10_lens_sanity/`, re-aggregated in each run's `analysis-20261015-1351*/`. All sanity checks pass on both
 models (HF parity and our readout vs `jlens.apply`: max abs diff 0.0).
 
 | Model | Top next token = answer | Logit lens | J-lens | J++ | J-lens - logit | J++ - logit | Run |
@@ -186,6 +201,11 @@ models (HF parity and our readout vs `jlens.apply`: max abs diff 0.0).
 | Qwen3.6-27B | 61/93 | 0.54 [0.43, 0.64] | 0.58 [0.48, 0.69] | 0.77 [0.68, 0.86] | +0.05 [-0.06, +0.17] | +0.24 [+0.13, +0.36] | `20261013-205936` |
 
 - On the 61 questions where 27B's top next token is the answer: J++ 0.69 [0.57, 0.80], J-lens 0.51 [0.38, 0.64].
+- By kind of bridge, 27B: words (n = 63) logit lens 0.52 [0.40, 0.65], J-lens 0.67 [0.56, 0.78], J++ 0.89 [0.81,
+  0.95]; numbers (n = 17) 0.65 [0.41, 0.88], 0.41 [0.18, 0.65], 0.53 [0.29, 0.76]; letters (n = 4) 0.25, 0, 0. 4B,
+  words: logit lens 0.32, J-lens 0.54; numbers 0.06, 0.18.
+- One question names its bridge in the prompt ("the time of day ..." -> "day"); without it the headlines move by
+  under a point (27B: J++ 0.77, J-lens 0.59, logit lens 0.54).
 - With the paper's rule (each listed form scores its share of the question), 27B: J++ 0.75, J-lens 0.57, logit lens
   0.51 (`pass_at_k_fraction` in the same summaries).
 - Check on the prompts as published (lone trailing space): the model answers 18/93 (4B) and 21/93 (27B); 27B logit
@@ -644,7 +664,12 @@ recomputed by `scripts/verify_headlines.py`.
    middle-layer band 32-48 instead.
 5. **Token positions differ between prompts.** exp12 aligns them by distance from the last word, which mixes roles
    ("-1" is "ends" in one prompt, "is" in another); checked by splitting on the last word.
-6. **Not yet checked:** in 5/93 lens-eval questions the bridge word appears in the prompt itself.
+6. **The bridge named in the prompt.** Checked: one lens-eval question names its bridge ("the time of day ..." ->
+   "day"); an earlier substring count of 5 also matched single-letter bridges inside other words (H in "The"). It
+   does not move exp10's numbers.
+7. **Number bridges and best-of-all-layers.** Over all layers the logit lens finds number bridges ('6', 'four') more
+   often than the lenses, at layers 54-60; within layers 32-48 the lenses lead for numbers too. Mixing number and word
+   bridges, and taking the best of all layers, both hide the J-lens's lead (exp10 reports both splits).
 
 ### Decisions
 - **Trailing space: removed in every experiment, part A and part B** (2026-10-13 for part A; part B followed in its
@@ -664,7 +689,7 @@ recomputed by `scripts/verify_headlines.py`.
 - **Layer bands: 32-48 primary, 24-40 alongside**, both part B's swap bands, named by their range (2026-10-15).
 
 ### Open decisions (humans)
-- Whether to drop the 5 questions whose bridge appears in the prompt.
+- None at the moment.
 
 ## Next steps (part A)
 In order. Each item: the question, why it matters now, the test, and its cost. Every GPU run needs human sign-off.
@@ -701,9 +726,7 @@ In order. Each item: the question, why it matters now, the test, and its cost. E
    - *Risk:* the oracle is the model itself, so it may re-solve the hop from the question instead of reading the
      bridge; probe directions (no question in them) are the cleaner test.
    - *Cost:* one 80 GB GPU (the NLA in two phases: capture, then verbalize); a few hours.
-5. **Small checks:** whether the 5 lens-eval questions whose bridge appears in the prompt drive any exp10 headline
-   (no GPU).
-6. Optional: reproduce J++'s published Recall@10 (55.2% on Qwen3.6-27B) over all six lens-eval sets. Stretch: repeat
+5. Optional: reproduce J++'s published Recall@10 (55.2% on Qwen3.6-27B) over all six lens-eval sets. Stretch: repeat
    on Gemma 4 31B (J-lens and J++ exist on HF).
 
 ## Next steps (part B)

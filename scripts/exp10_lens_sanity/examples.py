@@ -1,5 +1,6 @@
-"""Example selection for exp10 (lens-eval multihop): groups by which readers have the intermediate in their top 10
-at the last token at some layer (exp10's pass@10), from multihop_ranks.jsonl. Single-token intermediates only."""
+"""Example selection for exp10 (lens-eval multihop): groups by which readers have the bridge in their top 10 at the last
+token at some layer (exp10's pass@10; a bridge listed in several forms counts if any form is), and by what the bridge
+is (a number, a letter, named in the prompt), from multihop_ranks.jsonl. Single-token bridges only."""
 
 from __future__ import annotations
 
@@ -10,16 +11,18 @@ from typing import Any
 from bridge_jspace.examples import Example, Group, load_jsonl, sample
 from bridge_jspace.pins import lens_eval_multihop_items
 from bridge_jspace.readout import word_tokens
+from scripts.exp10_lens_sanity.experiment import bridge_in_prompt, bridge_kind
 
 
 def select(source_run: Path, p: dict[str, Any], tok) -> tuple[list[Group], list[Example]]:
     sp = json.loads((source_run / "manifest.json").read_text())["config"]["params"]
     items = {it["name"]: it for it in lens_eval_multihop_items()}
     meta = {m["name"]: m for m in load_jsonl(source_run / "multihop_items.jsonl")}
-    best: dict[str, dict[str, int]] = {}  # name -> reader -> min rank of the first intermediate
+    best: dict[str, dict[str, int]] = {}  # name -> reader -> min rank over the bridge's forms
     for r in load_jsonl(source_run / "multihop_ranks.jsonl"):
-        if r["intermediate"] == items[r["name"]]["intermediates"][0] and meta[r["name"]]["all_single_token"]:
-            best.setdefault(r["name"], {})[r["reader"]] = r["min_rank"]
+        if meta[r["name"]]["all_single_token"]:
+            b = best.setdefault(r["name"], {})
+            b[r["reader"]] = min(b.get(r["reader"], r["min_rank"]), r["min_rank"])
     k = p.get("k", 10)
     hit = {n: {rd: v < k for rd, v in b.items()} for n, b in best.items()}
     names = sorted(hit)
@@ -34,6 +37,13 @@ def select(source_run: Path, p: dict[str, Any], tok) -> tuple[list[Group], list[
          [n for n in names if not any(hit[n].values())]),
         ("model_wrong", "Model answers wrong", "The model's greedy next token is not the target's first token.",
          [n for n in names if not meta[n]["model_correct"]]),
+        ("number_bridge", "The bridge is a number", "A form of the bridge is a numeral or a number word ('6', 'four', "
+         "'third'): the lenses read these worse than the logit lens.",
+         [n for n in names if bridge_kind(items[n]["intermediates"]) == "number"]),
+        ("letter_bridge", "The bridge is a letter", "Every form of the bridge is one letter (a chemical symbol).",
+         [n for n in names if bridge_kind(items[n]["intermediates"]) == "letter"]),
+        ("bridge_in_prompt", "The prompt names the bridge", "A form of the bridge is written in the prompt as a word.",
+         [n for n in names if bridge_in_prompt(items[n]["prompt"], items[n]["intermediates"])]),
     ]  # fmt: skip
     groups, examples = [], []
     for key, title, definition, members in defs:

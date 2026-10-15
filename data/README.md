@@ -8,8 +8,8 @@ sha256 pins are in [SOURCES.md](SOURCES.md) and `src/bridge_jspace/pins.py`.
 
 | Dataset | File | Origin | Size | Used by |
 |---|---|---|---|---|
-| Probe-swap two-hop items | `probe_swap.json` | paper, copied unchanged | 90 items, 36 categories | exp02 (B), exp11, exp12 |
-| Part B labels for those items | `../results/exp02_swaps/main/labels.csv` | derived: part B's exp02 main run | 90 rows | exp11, exp12 (pinned by sha256 in their configs) |
+| Probe-swap two-hop items | `probe_swap.json` | paper, copied unchanged | 90 items, 36 categories | exp02 (B), exp11, exp12, exp14 |
+| Part B labels for those items | `../results/exp02_swaps/main_v4_jlens/labels.csv` (and `main_v4_jpp`) | derived: part B's exp02 v4 runs | 90 rows | exp11, exp12, exp14 (pinned by sha256 in their configs) |
 | Lens-eval multihop | `lens_eval_multihop.json` | paper, copied unchanged | 93 items | exp10 |
 | Entity prompts | `entity_prompts.json`, `entity_prompts_topup.json`, `entity_prompts_more/part*.json` | generated for this repo (coding agents, 3 rounds) | 97 entities, 2673 prompts | exp01 (B): bridge probes |
 
@@ -17,8 +17,12 @@ sha256 pins are in [SOURCES.md](SOURCES.md) and `src/bridge_jspace/pins.py`.
 One two-hop question per item: `prompt` (e.g. "Fact: The language spoken in the country where the Amazon River ends
 is "), the bridge `intermediate` (Brazil) and `answer` (Portuguese), and a same-category `swap_to` (Mexico) with its
 `swap_answer` (Spanish), plus a `category`.
+- **Why this set:** it is the paper's probe-swap set, so part B's swap rates can be set against Claude's (61% / 28% /
+  6%); the uneven mix of questions below comes with it.
 - **Composition:** 29 items in category `multihop`; the other 61 spread over 35 categories, 23 of them with a single
-  item. 70 unique bridges (Canada appears 4 times; oxygen, iron, China 3 times). 29 prompts end in a space.
+  item. 70 unique bridges (Canada appears 4 times; oxygen, iron, China 3 times). 29 prompts end in a space. By bridge
+  type (part B's split of the 77 eligible items): 26 countries or places, 7 people, 44 other (elements, organs,
+  animals, dates); swap effects concentrate in the places (exp02, exp14).
 - **Part B labels** (v4, `exp02_swaps/main_v4_jlens/labels.csv`; prompts with the trailing space stripped):
   `status` = eligible (Qwen3.6-27B's greedy continuation contains the answer) 77 / clean_wrong 13; for eligible items
   `label` = J-mediated 25 / neither 49 / both 2 / non-J 1 (from which swaps flip the answer; `main_v4_jpp` labels the
@@ -31,8 +35,12 @@ is "), the bridge `intermediate` (Brazil) and `answer` (Portuguese), and a same-
 
 ### Lens-eval multihop
 The paper's lens-quality set: `prompt`, `target` (the answer, which only fixes the readout position) and
-`intermediates` (1 per item for 84 items, 2 for 8, 3 for 1). 83 prompts end in a space; 5 contain their intermediate
-word. **30 prompts are identical to probe-swap prompts**, so exp10 and exp11 are not independent samples.
+`intermediates` (1 per item for 84 items, 2 for 8, 3 for 1; several intermediates are forms of one bridge, '6' and
+'six'). 83 prompts end in a space. One prompt names its bridge ("the time of day ..." -> "day"); a substring search
+also flags four single-letter bridges (H, O, C, N) that only occur inside other words. By kind, the bridges are 63
+words, 26 numbers ('6', 'four', 'third') and 4 letters (chemical symbols); among the 84 single-token items, 63 / 17 /
+4 (exp10 reports pass@k per kind). **30 prompts are identical to probe-swap prompts**, so exp10 and exp11 are not
+independent samples.
 
 ### Entity prompts
 Prompts that imply one entity without naming it, ending before a one-word answer (e.g. "Fact: The dance at the heart

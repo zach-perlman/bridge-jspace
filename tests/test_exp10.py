@@ -26,3 +26,12 @@ def test_aggregate_reports_both_rules():
     assert out["pass_at_k"]["all"]["jlens"][10]["mean"] == round(2 / 3, 4)
     assert out["pass_at_k_fraction"]["all"]["jlens"][10]["mean"] == 0.5
     assert out["diff_vs_logit"]["all"]["jlens"][10]["mean"] == round(2 / 3, 4)
+
+
+def test_bridge_labels():
+    from scripts.exp10_lens_sanity.experiment import bridge_in_prompt, bridge_kind
+
+    assert bridge_kind(["6", "six"]) == "number" and bridge_kind(["3", "three", "third"]) == "number"
+    assert bridge_kind(["H"]) == "letter" and bridge_kind(["Brazil"]) == "word"
+    assert bridge_in_prompt("the time of day when plants photosynthesize", ["day"])
+    assert not bridge_in_prompt("The position in the alphabet of the chemical symbol", ["H", "C"])  # inside words

@@ -148,15 +148,76 @@ def exp14_flip(lens, positions, band, kind, null=False, overlap=None):
 # ---- exp10: lens-eval multihop, pass@10 -------------------------------------------------------------
 
 
-def exp10_pass10(reader):
+NUMBER_WORDS = set(
+    [
+        "zero",
+        "one",
+        "two",
+        "three",
+        "four",
+        "five",
+        "six",
+        "seven",
+        "eight",
+        "nine",
+        "ten",
+        "eleven",
+        "twelve",
+        "thirteen",
+        "fourteen",
+        "fifteen",
+        "sixteen",
+        "seventeen",
+        "eighteen",
+        "nineteen",
+        "twenty",
+        "thirty",
+        "forty",
+        "fifty",
+        "sixty",
+        "seventy",
+        "eighty",
+        "ninety",
+        "hundred",
+        "first",
+        "second",
+        "third",
+        "fourth",
+        "fifth",
+        "sixth",
+        "seventh",
+        "eighth",
+        "ninth",
+        "tenth",
+        "eleventh",
+        "twelfth",
+    ]
+)
+
+
+def exp10_pass10(reader, kind=None, band=None):
     """multihop_ranks.jsonl: per item, 1 if any of its intermediates (forms of one bridge, '5' / 'five') has
     min_rank < 10 (0-based rank, best over layers at the last token); mean over items whose intermediates are all
     single tokens (multihop_items.jsonl)."""
     meta = {m["name"]: m for m in jsonl(EXP10 / "multihop_items.jsonl")}
+    forms = {}
+    for it in json.loads((R.parent / "data" / "lens_eval_multihop.json").read_text())["items"]:
+        forms[it["name"]] = [w.strip() for w in it["intermediates"]]
+
+    def kind_of(name):  # number if any form is a numeral / number word; letter if every form is one letter
+        f = forms[name]
+        if any(w.isdigit() or w.lower() in NUMBER_WORDS for w in f):
+            return "number"
+        return "letter" if all(len(w) == 1 and w.isalpha() for w in f) else "word"
+
     per_item = {}
     for r in jsonl(EXP10 / "multihop_ranks.jsonl"):
-        if r["reader"] == reader and meta[r["name"]]["all_single_token"]:
-            per_item.setdefault(r["name"], []).append(r["min_rank"] < 10)
+        if r["reader"] == reader and meta[r["name"]]["all_single_token"] and kind in (None, kind_of(r["name"])):
+            if band:  # best layer only within the band: any rank < 10 at one of those layers
+                hit = any(rk < 10 for layer, rk in zip(r["layers"], r["ranks"]) if band[0] <= layer <= band[1])
+            else:
+                hit = r["min_rank"] < 10
+            per_item.setdefault(r["name"], []).append(hit)
     return float(np.mean([any(v) for v in per_item.values()])), len(per_item)
 
 
@@ -269,6 +330,15 @@ def main():
         ("exp10", "27B stripped, pass@10, J++", exp10_pass10("jpp")[0], 0.77),
         ("exp10", "27B stripped, pass@10, logit lens", exp10_pass10("logit")[0], 0.54),
         ("exp10", "27B stripped, pass@10, J-lens", exp10_pass10("jlens")[0], 0.58),
+        ("exp10", "word bridges, J-lens", exp10_pass10("jlens", "word")[0], 0.67),
+        ("exp10", "word bridges, logit lens", exp10_pass10("logit", "word")[0], 0.52),
+        ("exp10", "word bridges, J++", exp10_pass10("jpp", "word")[0], 0.89),
+        ("exp10", "number bridges, J-lens", exp10_pass10("jlens", "number")[0], 0.41),
+        ("exp10", "number bridges, logit lens", exp10_pass10("logit", "number")[0], 0.65),
+        ("exp10", "number bridges, layers 32-48, logit lens", exp10_pass10("logit", "number", (32, 48))[0], 0.06),
+        ("exp10", "number bridges, layers 32-48, J-lens", exp10_pass10("jlens", "number", (32, 48))[0], 0.18),
+        ("exp10", "number bridges, layers 32-48, J++", exp10_pass10("jpp", "number", (32, 48))[0], 0.41),
+        ("exp10", "word bridges, layers 32-48, J-lens", exp10_pass10("jlens", "word", (32, 48))[0], 0.30),
         ("exp11", "bridge top-1 among entities, L32-48, J-lens", exp11_band_share("jlens", "bridge")[0], 0.57),
         ("exp11", "bridge top-1, J++", exp11_band_share("jpp", "bridge")[0], 0.56),
         ("exp11", "bridge top-1, logit lens", exp11_band_share("logit", "bridge")[0], 0.25),

@@ -208,12 +208,97 @@ def _summary_layers(path: Path) -> None:
     )
 
 
+KIND_GROUPS = (
+    ("all_single_token", "all"),
+    ("word_bridges", "word bridges\n(Brazil, iron)"),
+    ("number_bridges", "number bridges\n('6', 'four', 'third')"),
+    ("letter_bridges", "letter bridges\n('H', 'O')"),
+)
+
+
+def _pass10_by_kind(rows: list[dict], kind: str, band: tuple[int, int]) -> dict[str, tuple[float, float, float, int]]:
+    """Per reader: (mean, lo, hi, n) of pass@10 with the best layer taken within `band` (a bridge found if any form is
+    in the top 10 at one of those layers) over the single-token questions of that kind; bootstrap 95% CI."""
+    from bridge_jspace.pins import lens_eval_multihop_items
+    from bridge_jspace.stats import bootstrap_mean
+
+    from .experiment import bridge_kind
+
+    items = {it["name"]: it for it in lens_eval_multihop_items()}
+    meta = {m["name"]: m for m in _load(RUNS_DIR / SUMMARY_LAYER_RUN / "multihop_items.jsonl")}
+    out = {}
+    for reader in READERS:
+        found: dict[str, bool] = {}
+        for r in rows:
+            name = r["name"]
+            if r["reader"] != reader or not meta[name]["all_single_token"]:
+                continue
+            if kind != "all" and bridge_kind(items[name]["intermediates"]) != kind:
+                continue
+            hit = any(
+                rank < HIT_K for layer, rank in zip(r["layers"], r["ranks"], strict=True) if band[0] <= layer <= band[1]
+            )
+            found[name] = found.get(name, False) or hit
+        if found:
+            out[reader] = (*bootstrap_mean([float(v) for v in found.values()], 10000, 0), len(found))
+    return out
+
+
+KIND_GROUPS = (
+    ("all", "all"),
+    ("word", "word bridges\n(Brazil, iron)"),
+    ("number", "number bridges\n('6', 'four', 'third')"),
+    ("letter", "letter bridges\n('H', 'O')"),
+)
+
+
+def _summary_by_kind(path: Path) -> None:
+    rows = _load(RUNS_DIR / SUMMARY_LAYER_RUN / "multihop_ranks.jsonl")
+    bands = (((0, 62), "Best layer anywhere (0-62), as pass@10"), ((32, 48), "Best layer within layers 32-48"))
+    fig, axes = plt.subplots(1, len(bands), figsize=(6 * len(bands), 4.8), facecolor=SURFACE, sharey=True)
+    width = 0.26
+    for ax, (band, title) in zip(np.atleast_1d(axes), bands, strict=True):
+        ticks = []
+        for gi, (kind, name) in enumerate(KIND_GROUPS):
+            res = _pass10_by_kind(rows, kind, band)
+            n = next(iter(res.values()))[3] if res else 0
+            ticks.append(f"{name}\nn = {n}")
+            for ri, reader in enumerate(READERS):
+                if reader not in res:
+                    continue
+                m, lo, hi, _ = res[reader]
+                x = gi + (ri - 1) * width
+                ax.bar(x, m, width * 0.92, color=STYLE[reader]["color"], zorder=2)
+                ax.errorbar(x, m, yerr=[[max(m - lo, 0)], [max(hi - m, 0)]], color=INK, lw=1, capsize=3, zorder=3)
+        ax.set_xticks(range(len(KIND_GROUPS)), ticks, fontsize=8.5, color=INK)
+        ax.set_ylim(0, 1)
+        ax.set_title(title, color=INK, fontsize=11, loc="left")
+        style_axes(ax)
+        percent_axis(ax)
+        ax.grid(axis="x", visible=False)
+    np.atleast_1d(axes)[0].set_ylabel(
+        f"bridge in the reader's top {HIT_K} at its\nbest layer (% of questions)", color=MUTED
+    )
+    handles = [Patch(color=STYLE[r]["color"], label=STYLE[r]["label"]) for r in READERS]
+    finish(
+        fig,
+        path,
+        "Qwen3.6-27B: which bridges does each reader find, over all layers and in the middle layers?",
+        "Lens-eval multihop, the questions whose bridge is a single token, read at the last prompt token; a bridge "
+        "listed in several forms counts as found if any form is in the top 10. Kind of bridge: a number if any form "
+        "is a numeral or a number word, a letter if every form is one letter. Error bars: 95% bootstrap CI over "
+        "questions (10,000 resamples).",
+        handles,
+    )
+
+
 def plot_summary() -> Path:
     """README figures across SUMMARY_RUNS, into `figures/exp10_lens_sanity/<timestamp>/`."""
     out = FIGURES_DIR / "exp10_lens_sanity" / datetime.now().strftime("%Y%m%d-%H%M%S")
     out.mkdir(parents=True)
     _summary_bars(out / "pass_at_10_by_model.png")
     _summary_layers(out / "27b_by_layer.png")
+    _summary_by_kind(out / "pass_at_10_by_bridge_kind.png")
     return out
 
 
