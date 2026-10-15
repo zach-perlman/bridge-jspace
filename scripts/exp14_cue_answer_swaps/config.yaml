@@ -1,0 +1,35 @@
+# exp14_cue_answer_swaps: at the cue phrase, does swapping the answer's lens direction change the answer as often as
+# swapping the bridge's? (design: Danyil)
+#   make run CONFIG=scripts/exp14_cue_answer_swaps/config.yaml                       # 27B, GPU (part B's model loader)
+#   make run CONFIG=scripts/exp14_cue_answer_swaps/config.yaml ARGS="params.limit=3 results_dir=cache/smoke"   # smoke
+name: exp14_cue_answer_swaps
+target: scripts.exp14_cue_answer_swaps.experiment:CueAnswerSwaps
+seed: 0
+model: configs/models/qwen3.6-27b.yaml  # the swaps load it through part B's loader (pins.py; tests/test_pins.py syncs)
+params:
+  lenses: [jpp, jlens]  # whose unit token vectors span each swap (part B's raw_jlens atoms)
+  kinds: [bridge, answer]  # bridge: Brazil -> Mexico (part B's raw_jlens); answer: Portuguese -> Spanish
+  cells:  # where and at which layers the swap edits
+    - {positions: cue, band: "24-40"}  # the comparison: part B's cue-phrase result, its main band
+    - {positions: last, band: "24-40"}  # last token, same band (part B's raw bridge swap: 1%)
+    - {positions: last, band: "40-56"}  # last token where part A reads the answer (from ~layer 44): positive control
+  nulls: true  # part B's matched-norm random direction for every swap
+  null_seed: 0  # part B's NULL_SEED; seeds per item as part B (item index * 1000 + kind index)
+  n_boot: 2000  # paired bootstrap, as part B
+  boot_seed: 0
+  # Checks before any result is read: our eligible set (exp13's criterion C on the stripped prompts) must equal part
+  # B's v4 one, and our bridge swaps must reproduce part B's raw_jlens outcomes for the same cells.
+  part_b_labels: results/exp02_swaps/main_v4_jlens/labels.csv
+  part_b_reference:
+    jpp: {cue/24-40: main_v4_jpp_pos-cue, last/24-40: main_v4_jpp_pos-last}
+    jlens: {cue/24-40: main_v4_jlens_pos-cue, last/24-40: main_v4_jlens_pos-last}
+  control_min_flip: 0.30  # part B's go threshold
+  decision: >-
+    Fixed before the run (design: Danyil). The answer swap's positive control works if it flips at least 30% of the
+    questions at the last token in at least one band; otherwise a low answer-swap rate at the cue phrase says nothing.
+    If it works, at the cue phrase (24-40), per lens: "two steps" if the bridge swap flips more than the answer swap
+    (paired bootstrap 95% CI of bridge - answer above 0) and the answer swap stays near its null; "shortcut" if the
+    answer swap flips about as often as the bridge swap (that CI includes 0); "both" if both are well above their
+    nulls, in which case the leakage (cosine of the two difference vectors, each edit's share in the other pair's
+    span) decides whether the two swaps are different edits at all.
+  limit: null  # first N items; smoke runs only
