@@ -120,7 +120,9 @@ link can open it).
 
 **What we know so far (Qwen3.6-27B, the 77 two-hop questions it answers correctly).**
 1. The J-lens and J++ can read the bridge in the middle layers; the plain logit lens mostly only near the output
-   (exp10, exp11).
+   (exp10, exp11). Over all layers the logit lens catches up, mostly on number bridges ('6', 'four') at layers 54-60;
+   within layers 32-48 the lenses lead for every kind of bridge (exp10). The one lens-eval question that names its
+   bridge in the prompt changes none of this (the earlier count of 5 such questions was a substring artifact).
 2. The bridge is readable earlier than the answer, both in the prompt and in depth: one word before the end from about
    layer 23, while the answer appears only at the last word from about layer 44, 19 layers later [15, 27] (exp12).
 3. Where the bridge is readable, part B's swaps tend to work: questions whose J-space swap flips the answer have the
@@ -687,6 +689,11 @@ recomputed by `scripts/verify_headlines.py`.
 - **pass@k counts a bridge found if any of its listed forms is** ('5' or 'five'; 9 lens-eval questions list several),
   not the paper's share of forms (2026-10-15, Danyil). The paper's rule is still reported (`pass_at_k_fraction`).
 - **Layer bands: 32-48 primary, 24-40 alongside**, both part B's swap bands, named by their range (2026-10-15).
+- **Keep the lens-eval question that names its bridge** ("the time of day ..." -> "day"; 2026-10-15): it is 1 of 93,
+  moves no exp10 headline by more than a point, and the earlier count of 5 such questions came from a substring
+  search that also matched single-letter bridges inside other words. This closes the open decision about them.
+- **Next steps are written as question, why, test, cost** (2026-10-15), so each says what it would settle before it
+  asks for GPU time.
 
 ### Open decisions (humans)
 - None at the moment.
