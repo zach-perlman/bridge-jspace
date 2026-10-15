@@ -215,7 +215,8 @@ def exp16_by_label(runs, layers, group, what):
     mean over questions."""
     import csv
 
-    label = {r["name"]: r["label"] for r in csv.DictReader(open(R / "exp02_swaps/main_v4_jlens/labels.csv"))}
+    rows = csv.DictReader((R / "exp02_swaps/main_v4_jlens/labels.csv").read_text().splitlines())
+    label = {r["name"]: r["label"] for r in rows}
     items = {it["name"]: it for it in json.loads((R.parent / "data/probe_swap.json").read_text())["items"]}
     per_q = {}
     for run in runs:

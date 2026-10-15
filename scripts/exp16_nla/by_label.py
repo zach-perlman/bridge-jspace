@@ -35,7 +35,8 @@ LABELS = {"J-lens": "results/exp02_swaps/main_v4_jlens/labels.csv", "J++": "resu
 
 
 def labels(path: str) -> dict[str, str]:
-    return {r["name"]: r["label"] for r in csv.DictReader(open(REPO_ROOT / path)) if r["status"] == "eligible"}
+    rows = csv.DictReader((REPO_ROOT / path).read_text().splitlines())
+    return {r["name"]: r["label"] for r in rows if r["status"] == "eligible"}
 
 
 def gap_difference(a: list[dict], b: list[dict], n_boot: int, seed: int) -> list[float]:
