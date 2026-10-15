@@ -45,6 +45,8 @@ BREW_FILE = DATA_DIR / "brew_intermediates.json"  # WorkspaceBench's brew_interm
 BREW_SHA256 = "183be95d4182c373674786b7610820520e56434fb0c15a75a62dad854bed9d83"
 BREW_FRESH_FILE = DATA_DIR / "brew_fresh.json"  # exp03_make_items.py: held-out items in the bank's format, ungated
 BREW_FRESH_SHA256 = "1e20ed25b3727842acba0806b346d91d991db1fa31f42f514e537fb3ab000d3c"
+BREW_FIT_FILE = DATA_DIR / "brew_fit.json"  # exp03_make_items.py: exp07's fitting items, never a bank or fresh prompt
+BREW_FIT_SHA256 = "b9ab169a50bf576d71c074b31516f283e3163366d8ce2aea0907addbdf0e2659"
 WIKITEXT_FILE = DATA_DIR / "wikitext103_test.json"  # generic text for part B's residual covariance (exp06)
 WIKITEXT_SHA256 = "a6b5b17a576932fbb570a96b0f5b6a65ced408690a2dce749a8c56f980bbcc0f"
 LENS_EVAL_MULTIHOP_FILE = DATA_DIR / "lens_eval_multihop.json"
@@ -73,6 +75,10 @@ def brew_items() -> list[dict[str, Any]]:
 
 def brew_fresh_items() -> list[dict[str, Any]]:
     return load_pinned_items(BREW_FRESH_FILE, BREW_FRESH_SHA256)
+
+
+def brew_fit_items() -> list[dict[str, Any]]:
+    return load_pinned_items(BREW_FIT_FILE, BREW_FIT_SHA256)
 
 
 def wikitext_rows() -> list[str]:

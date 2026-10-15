@@ -76,10 +76,11 @@ def read_jsonl(path: Path) -> list[dict]:
 
 
 @torch.no_grad()
-def stage_sigma() -> None:
+def stage_sigma(layers: tuple[int, ...] = SIGMA_LAYERS, path: Path = SIGMA_FILE) -> None:
+    """Σ_l at `layers`, cached at `path` (exp07 reuses this at its own layers)."""
     from bridge_jspace.model import load_model
 
-    assert not SIGMA_FILE.exists(), f"{SIGMA_FILE} exists; delete it to re-estimate"
+    assert not path.exists(), f"{path} exists; delete it to re-estimate"
     model = load_model()
     tokenizer: Any = model.tokenizer
     ids = tokenizer("\n".join(r for r in pins.wikitext_rows() if r.strip()), add_special_tokens=False).input_ids
@@ -90,8 +91,8 @@ def stage_sigma() -> None:
     outer: dict[int, torch.Tensor] = {}
     n = 0
     for w in windows[:n_windows]:
-        _, rec = model.run(torch.tensor([w], device="cuda"), record=SIGMA_LAYERS)
-        for layer in SIGMA_LAYERS:
+        _, rec = model.run(torch.tensor([w], device="cuda"), record=layers)
+        for layer in layers:
             x = rec[layer][1:].double()  # position 0 left out
             if layer not in sums:
                 sums[layer] = torch.zeros(x.shape[1], dtype=torch.float64, device="cuda")
@@ -99,29 +100,29 @@ def stage_sigma() -> None:
             sums[layer] += x.sum(0)
             outer[layer] += x.T @ x
         n += len(w) - 1
-    mean = {layer: sums[layer] / n for layer in SIGMA_LAYERS}
-    cov = {layer: (outer[layer] / n - torch.outer(mean[layer], mean[layer])).float().cpu() for layer in SIGMA_LAYERS}
-    SIGMA_FILE.parent.mkdir(parents=True, exist_ok=True)
+    mean = {layer: sums[layer] / n for layer in layers}
+    cov = {layer: (outer[layer] / n - torch.outer(mean[layer], mean[layer])).float().cpu() for layer in layers}
+    path.parent.mkdir(parents=True, exist_ok=True)
     torch.save(
         {
-            "layers": list(SIGMA_LAYERS),
+            "layers": list(layers),
             "n_positions": n,
             "window": WINDOW,
             "data": {"file": str(pins.WIKITEXT_FILE.relative_to(pins.REPO_ROOT)), "sha256": pins.WIKITEXT_SHA256},
             "mean": {layer: m.float().cpu() for layer, m in mean.items()},
             "cov": cov,
         },
-        SIGMA_FILE,
+        path,
     )
-    traces = [float(cov[layer].trace()) for layer in SIGMA_LAYERS]
-    print(f"wrote {SIGMA_FILE}: {n} positions, {len(SIGMA_LAYERS)} layers, trace {min(traces):.3g}-{max(traces):.3g}")
+    traces = [float(cov[layer].trace()) for layer in layers]
+    print(f"wrote {path}: {n} positions, {len(layers)} layers, trace {min(traces):.3g}-{max(traces):.3g}")
 
 
 class Sigma:
     """The cached covariances, on the GPU: Σ_λ products and N(0, Σ) draws per layer."""
 
-    def __init__(self):
-        blob = torch.load(SIGMA_FILE, map_location="cpu", weights_only=True)
+    def __init__(self, path: Path = SIGMA_FILE):
+        blob = torch.load(path, map_location="cpu", weights_only=True)
         self.n_positions = blob["n_positions"]
         self.cov = {layer: c.to("cuda", torch.float64) for layer, c in blob["cov"].items()}
         self._root: dict[int, torch.Tensor] = {}

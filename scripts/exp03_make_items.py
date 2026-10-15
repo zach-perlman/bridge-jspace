@@ -1,6 +1,8 @@
 """Fresh brew items for exp03's held-out replication, in the format of WorkspaceBench's brew_intermediates bank.
 
   exp03_make_items.py [--n N] [--seed S]  -> data/brew_fresh.json (write-once; pin its sha256 in pins.py)
+  exp03_make_items.py --name brew_fit --prefix brewfit --n 1000 --seed 2  -> data/brew_fit.json, exp07's fitting
+      items (never a prompt of the bank or of brew_fresh)
 
 Each item is a ten-row colour table drawn from the bank's twelve-colour palette (every row turns into another row's
 colour, never itself), shuffled, then "You stir the potion twice." and the start line last, worded as in the bank. The
@@ -32,7 +34,7 @@ def article(colour: str) -> str:
     return "An" if colour[0] in "aeiou" else "A"
 
 
-def make_item(rng: random.Random, index: int) -> dict:
+def make_item(rng: random.Random, index: int, prefix: str = "brewfresh") -> dict:
     rows = rng.sample(PALETTE, N_ROWS)
     while True:
         table = {c: rng.choice([d for d in rows if d != c]) for c in rows}
@@ -46,7 +48,7 @@ def make_item(rng: random.Random, index: int) -> dict:
         "What colour is the potion at the end?"
     )
     return {
-        "name": f"brewfresh-{index:04d}",
+        "name": f"{prefix}-{index:04d}",
         "mode": "single",
         "depth": 2,
         "n_rows": N_ROWS,
@@ -61,21 +63,24 @@ def make_item(rng: random.Random, index: int) -> dict:
     }
 
 
-def main(n: int, seed: int) -> None:
-    out = pins.DATA_DIR / "brew_fresh.json"
+def main(n: int, seed: int, name: str = "brew_fresh", prefix: str = "brewfresh") -> None:
+    out = pins.DATA_DIR / f"{name}.json"
     assert not out.exists(), f"{out} exists; data files are written once"
-    bank = {(it["prompt"]) for it in pins.brew_items()}
+    taken = {(it["prompt"]) for it in pins.brew_items()}
+    if name != "brew_fresh":
+        taken |= {it["prompt"] for it in pins.brew_fresh_items()}
     rng = random.Random(seed)
     items = []
     while len(items) < n:
-        item = make_item(rng, len(items))
-        if item["prompt"] not in bank:
+        item = make_item(rng, len(items), prefix)
+        if item["prompt"] not in taken:
             items.append(item)
+    flags = "" if name == "brew_fresh" else f" --name {name} --prefix {prefix}"
     out.write_text(
         json.dumps(
             {
-                "family": "brew_fresh",
-                "generator": f"scripts/exp03_make_items.py --n {n} --seed {seed}",
+                "family": name,
+                "generator": f"scripts/exp03_make_items.py{flags} --n {n} --seed {seed}",
                 "format": "WorkspaceBench brew_intermediates (single, depth 2, ten rows, start line last); ungated",
                 "items": items,
             },
@@ -90,5 +95,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--n", type=int, default=200)
     parser.add_argument("--seed", type=int, default=1)
+    parser.add_argument("--name", default="brew_fresh", help="data/<name>.json")
+    parser.add_argument("--prefix", default="brewfresh", help="item names <prefix>-NNNN")
     args = parser.parse_args()
-    main(args.n, args.seed)
+    main(args.n, args.seed, args.name, args.prefix)
