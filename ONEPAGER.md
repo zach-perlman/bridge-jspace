@@ -1,11 +1,13 @@
 # bridge-jspace — one-pager (draft, 2026-10-16)
 
 Dan Orel & Zach Perlman · Qwen3.6-27B · VERIFIED.md @ 8bc7a4f. **Verified** = in VERIFIED.md: a human recomputed it
-from the raw files and read the examples. Everything else is marked *unverified*.
+from the raw files and read the examples. Everything else is marked *unverified*. Part B in more detail:
+[ONEPAGER_partB.md](ONEPAGER_partB.md).
 
 **TL;DR.** On Qwen3.6-27B, a bridge recalled from memory acts on the answer through its J-space part, as in Claude
 (B1: J-part 52%, remainder with J held 1%). An intermediate looked up in the prompt does not: it acts along a
-direction nearly orthogonal to the lens's, which the lens can read but not write (B2-B3). The lenses do find the
+direction nearly orthogonal to the lens's, which the lens can read but not write; along the lens's direction the
+model does not take the step, and at large size says the word instead (B2-B3). The lenses do find the
 bridge, at the last word or at an earlier one (A2-A3), but neither their readings nor the verbalizers' show what the
 model uses (B3-B4).
 
@@ -89,7 +91,8 @@ that gives 70%; R's own split is inconclusive (4% vs 7%). Recomputes from the ra
    barely does (B1), and the bridge acts from the cue phrase apart from the answer's direction (A4). Both effects
    sit mostly on places and people.
 3. For an intermediate looked up in the prompt, the J-space account fails: the step is carried outside it (B2), and
-   readable is not writable (B3).
+   readable is not writable (B3): along the lens's direction the model does not take the step, and at large size it
+   says the word instead.
 4. Verbalizer readings, after an edit or on lens-blind cells, are not evidence of what the model uses (B4).
 
 ## Directions
@@ -101,7 +104,7 @@ that gives 70%; R's own split is inconclusive (4% vs 7%). Recomputes from the ra
 | | (b) Is the part outside the J-space a binding-ID-like pointer? Move exp07's code into a prompt whose table rows are permuted: a pointer follows the row, a colour code the colour | what the outside part is | new items + GPU, days |
 | | (c) A stronger lens-free bridge direction (in-context contrast or DAS 1-d on held-out items), then re-decompose | whether the remainder matters once the reference is strong | ~1 day |
 | Generality (after the core) | Verbalizers: exp17 (reading vs solving); downstream reads at matched edit size; Chinese-aware scoring; the rank > 10 subset with its distractor | whether verbalizers add anything the lenses cannot read | ~1 day + hours |
-| | A second model with a working positive control (Gemma 4 31B fails the gate), a second seed, categories beyond country templates, multi-token bridges, brew for part A | whether any of this is about Qwen and places only | days |
+| | A second model with a working positive control (Gemma 4 31B: lens-free results replicate; its lens-based measures are not yet trustworthy), a second seed, categories beyond country templates, multi-token bridges, brew for part A | whether any of this is about Qwen and places only | days |
 
 ## Questions for Neel
 - Which story to sharpen for the final presentation: (a) the lens miss is where we read, not absence (A1-A3); (b)
