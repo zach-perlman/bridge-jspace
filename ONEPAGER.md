@@ -12,7 +12,7 @@ bridge. Is the bridge acting outside the J-space there, or is the lens miss an a
 The lens miss is mostly how we read: the lenses do see the bridge, at the last word or at an earlier word. A bridge
 recalled from memory acts on the answer through its J-space part, as in Claude, mostly for places and people. An
 intermediate looked up in the prompt (brew) is carried outside the J-space: the lens reads it, but writing along the
-lens's direction does nothing. Verbalizers (oracle lens, NLA) cannot tell a direction the model uses from one it
+lens's direction does not take the step (at large size it makes the model say the word instead). Verbalizers (oracle lens, NLA) cannot tell a direction the model uses from one it
 ignores, so their readings are not evidence of use.
 
 ## What we checked and found (verified)
@@ -65,7 +65,7 @@ ignores, so their readings are not evidence of use.
 | 2 | B1 ablation: J-part minus the bridge's own-token atom; the atom alone; matched dose | whether "J-space" reduces to "the token direction" | GPU-hours |
 | 3 | A stronger lens-free bridge direction (in-context contrast or DAS 1-d on held-out items), then re-decompose | whether the remainder matters once the reference is strong | ~1 day |
 | 4 | Verbalizers: exp17 (two-hop patch, reading vs solving); downstream reads at matched edit size; Chinese-aware scoring; rank > 10 subset with its distractor | whether verbalizers add anything the lenses cannot read | ~1 day + hours |
-| 5 | Generality: a second model with a working positive control (Gemma 4 31B fails the gate), a second seed, categories balanced beyond country templates, multi-token bridges, brew for part A | whether any of this is about Qwen and places only | days |
+| 5 | Generality: a second model with a working positive control (Gemma 4 31B: lens-free results replicate; its lens-based measures are not yet trustworthy), a second seed, categories balanced beyond country templates, multi-token bridges, brew for part A | whether any of this is about Qwen and places only | days |
 
 ## Questions for Neel
 - Which story to sharpen for the final presentation: (a) the lens miss is reading, not absence (A1-A3, with
