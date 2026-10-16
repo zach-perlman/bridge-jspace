@@ -24,20 +24,34 @@ fails to show the bridge. Is the bridge acting outside the J-space there, or is 
 *B1: swapping only the J-space part flips the answer, the remainder barely does; Claude's numbers are the black
 dashed line.*
 
-## Where the line falls (unverified lead, exp09)
+## Where the line falls (unverified lead)
 | | used by a recalled fact | used by a lookup in the prompt |
 |---|---|---|
-| **recalled bridge** | inside the J-space | outside |
-| **bound in the prompt** | inside | outside (as brew) |
+| **recalled bridge** | J-space part acts (82% vs 3%) | rest acts (0% vs 20%) |
+| **bound in the prompt** | J-space part acts (12.5% vs 0%) | rest acts (0% vs 6%) |
 
-What uses the variable decides, not where it comes from. Caveat: "used by a lookup" also means "answer read from the
-prompt".
+*Each cell is a family of 65-80 prompts. Every prompt first says where three people live, then asks one question;
+only two things change. **Source**, where the bridge comes from: recalled from memory ("...the country where Lyon is
+located" → France) or bound in the prompt ("Emma lives in Egypt. ... the country where Emma lives" → Egypt). **User**,
+what turns the bridge into the answer: a recalled fact ("The capital of ..." → Paris) or a lookup in the prompt
+("France's colour is gray. ... has the colour" → gray). In each cell, the J-space part vs the rest of a lens-free copy
+on the same prompts: the share where each alone gives the new answer. The top-left cell shows B1's J-part swap vs its
+control instead, since the copy's split there is inconclusive (4% vs 7%). Brew (B2, verified), a separate task with a
+bound bridge used by a lookup, agrees with the bottom-right cell: J-space part 0%, rest 26-28%.*
 
-![exp09: which part of the lens-free copy acts, by family](figures/exp09_bind_recall/v2/source_use.png)
+What uses the variable decides, not where it comes from (but see the caveat below the figure).
 
-*Unverified (exp09): which part of the lens-free copy acts in each family. Used by a lookup (right column): the
-J-space part 0%, the rest acts. Used by a recalled fact (left): B's J-space part acts (12% vs 0%); R's split is small
-both ways (4% vs 7%), so R's "inside" above rests on exp02's swap (82% vs 3%), not on this panel.*
+![Which part of the lens-free copy acts, by family](figures/exp09_bind_recall/v2/source_use.png)
+
+*Unverified: which part of the lens-free copy acts in each family; the panels sit as the table's cells (the
+letters in their titles are the families' names in the README). Used by a lookup (right column): the J-space part 0%,
+the rest acts. Used by a recalled fact (left column): bottom-left, the J-space part acts (12% vs 0%); top-left, the
+split is small both ways (4% vs 7%), so that cell of the table rests on B1's swap (82% vs 3%), not on this panel.*
+
+**Caveat.** Here the user also fixes where the answer comes from: a recalled fact answers from memory, a lookup reads
+the answer from the prompt. So "the user decides" could be "the answer's source decides". Sprint direction (a) splits
+the two, e.g. a lookup uses the bridge but the answer is recalled ("Italy's animal is the elephant. ... the number of
+legs of the animal of the country where Jack lives" → 4).
 
 ## Limits
 - One model, one run; single-token bridges.
@@ -46,14 +60,15 @@ both ways (4% vs 7%), so R's "inside" above rests on exp02's swap (82% vs 3%), n
   lens-free brew copy about a third.
 
 ## Sprint: pick one core direction
-- **(a) Use vs answer source.** Families where a lookup uses the variable but the answer comes from memory.
-- **(b) What the outside part is.** Does brew's code follow the table row (a pointer, like binding IDs) or the colour?
+- **(a) Use vs answer source.** Split the two the caveat above confounds: a lookup uses the bridge but the answer is
+  recalled, and the reverse.
+- **(b) What the part outside the J-space is.** Does brew's code follow the table row (a pointer, like binding IDs) or the colour?
 - **(c) A stronger reference.** Re-decompose against a stronger lens-free bridge direction (contrastive pairs or DAS).
 
 Then generality: Gemma 4 31B (started), a balanced prompt set beyond places and people.
 
 ## Questions for Neel
 1. Which story is worth sharpening: (2) recalled bridges act through the J-space as in Claude, (3-4) lookup variables
-   live outside it and readers cannot tell used from written, or the exp09 line?
+   live outside it and readers cannot tell used from written, or where the line falls (the table above)?
 2. Does "lookup variables live outside the J-space" sound new, or like binding IDs (Feng & Steinhardt 2023) seen
    through a lens?
