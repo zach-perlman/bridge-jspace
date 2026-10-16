@@ -19,12 +19,10 @@ fails to show the bridge. Is the bridge acting outside the J-space there, or is 
 4. **Readers report what is written into the vector, not what the model uses.** The verbalizers (oracle lens, NLA)
    name a direction the model ignores on 99% of items. [B4]
 
-<img src="figures/exp02_swaps/v4b/jpart_vs_remainder.png" width="49%"> <img src="figures/exp09_bind_recall/v2/source_use.png" width="49%">
+![B1: J-space part vs remainder](figures/exp02_swaps/v4b/jpart_vs_remainder.png)
 
-*Left (B1): J-part vs remainder; Claude's numbers are the black dashed line. Right (unverified, exp09): which part of
-the lens-free copy acts in each family. Used by a lookup (right column): the J-space part 0%, the rest acts. Used by
-a recalled fact (left): B's J-space part acts (12% vs 0%); R's split is small both ways (4% vs 7%), so R's "inside"
-below rests on exp02's swap (82% vs 3%), not on this panel.*
+*B1: swapping only the J-space part flips the answer, the remainder barely does; Claude's numbers are the black
+dashed line.*
 
 ## Where the line falls (unverified lead, exp09)
 | | used by a recalled fact | used by a lookup in the prompt |
@@ -34,6 +32,12 @@ below rests on exp02's swap (82% vs 3%), not on this panel.*
 
 What uses the variable decides, not where it comes from. Caveat: "used by a lookup" also means "answer read from the
 prompt".
+
+![exp09: which part of the lens-free copy acts, by family](figures/exp09_bind_recall/v2/source_use.png)
+
+*Unverified (exp09): which part of the lens-free copy acts in each family. Used by a lookup (right column): the
+J-space part 0%, the rest acts. Used by a recalled fact (left): B's J-space part acts (12% vs 0%); R's split is small
+both ways (4% vs 7%), so R's "inside" above rests on exp02's swap (82% vs 3%), not on this panel.*
 
 ## Limits
 - One model, one run; single-token bridges.
