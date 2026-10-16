@@ -61,10 +61,18 @@ TARGETS: dict[str, dict[str, Any]] = {
         "norm_gain": "weight",  # Gemma4RMSNorm scales by weight
         "bos": True,  # Gemma needs <bos> first; the chat template writes it, raw text gets it prepended
         "run_prefix": "gemma4it_",
-        # Fit on this model with the published recipes (no published lens is fit on the instruction-tuned model):
-        # J++ with safety-research/jpp_lens as neuronpedia's fit-jpp-lens.sh, the J-lens with neuronpedia's fit_lens.py
-        # and the arguments of their gemma-4-31B fit. Filled in once each fit is done and checked.
-        "lenses": {},
+        # Fit on this model with the published recipe (no published lens is fit on the instruction-tuned model): J++
+        # with safety-research/jpp_lens@93f02cd as neuronpedia's fit-jpp-lens.sh (64 wikitext prompts, target layer 59),
+        # converted with their convert-jpp-lens.py. Recall@10 (macro, their evals on this model): 0.62, vs 0.40 for
+        # neuronpedia's base-model J-lens and 0.51 for the pooled lens; eval_ranks_pass_at_k.csv sits beside it. No
+        # J-lens: the human chose J++ only for this target, so stages that compare lenses run with J++ alone.
+        "lenses": {
+            "jpp": (
+                "local",
+                "cache/gemma-4-31b-it/lenses/jpp/gemma-4-31B-it_jpp_lens.pt",
+                "0b092e9371c3ce79c203e8f9a17ae10e956797d62a8fa0b29a46ab1311de0902",
+            ),
+        },
     },
 }
 TARGET = os.environ.get("BJ_TARGET", "qwen3.6-27b")

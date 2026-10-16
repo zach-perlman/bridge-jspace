@@ -41,7 +41,7 @@ EXP = "exp08_brew_read"
 RESULTS = pins.RESULTS_DIR / EXP
 EXP07_RUN = pins.RESULTS_DIR / "exp07_step_code" / (pins.RUN_PREFIX + "code_v1")
 LAYERS = tuple(range(0, pins.N_LAYERS - 1, 2))  # every second layer below the final block (Qwen: 0-62)
-LENSES = ("jpp", "jlens")
+LENSES = tuple(lens for lens in ("jpp", "jlens") if lens in pins.LENS_SOURCES)  # Gemma: J++ only (no J-lens fit)
 READERS = (*LENSES, "logit", "code")
 ROLES = ("I", "X", "S", "A")
 N_BOOT, BOOT_SEED = 2000, 0
@@ -91,8 +91,7 @@ def stage_manifest(name: str, why: str) -> None:
         "layers": list(LAYERS),
         "window": list(WINDOW),
         "readers": {
-            "jpp": list(pins.LENS_SOURCES["jpp"]),
-            "jlens": list(pins.LENS_SOURCES["jlens"]),
+            **{lens: list(pins.LENS_SOURCES[lens]) for lens in LENSES},
             "logit": "the final norm and unembedding applied to the block output (part A's baseline)",
             "code": "exp07's code (window layers only): colour k scores <h - w_0, E_I[k]> - |E_I[k]|^2 / 2 at each "
             "position, without the item's S and A",

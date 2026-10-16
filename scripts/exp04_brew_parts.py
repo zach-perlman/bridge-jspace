@@ -46,7 +46,7 @@ from scripts.exp03_brew_swaps import (
 )
 from scripts.exp04_brew_patch import EXP, RESULTS, SOURCES, category, prepare
 
-LENSES = ("jpp", "jlens")
+LENSES = tuple(lens for lens in ("jpp", "jlens") if lens in pins.LENS_SOURCES)  # Gemma: J++ only (no J-lens fit)
 PARTS = ("lens2", "not_lens2", "jspace", "not_jspace")
 K_ATOMS = 25
 NULL_SEED = 0
