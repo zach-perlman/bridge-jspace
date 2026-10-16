@@ -84,7 +84,11 @@ def stage_sigma(layers: tuple[int, ...] = SIGMA_LAYERS, path: Path = SIGMA_FILE)
     model = load_model()
     tokenizer: Any = model.tokenizer
     ids = tokenizer("\n".join(r for r in pins.wikitext_rows() if r.strip()), add_special_tokens=False).input_ids
-    windows = [ids[i : i + WINDOW] for i in range(0, len(ids) - WINDOW + 1, WINDOW)]
+    # A target that needs a BOS (Gemma) gets it first in every window, then WINDOW - 1 text tokens; position 0 (the BOS
+    # here, the first text token on Qwen, whose windows are unchanged) is left out below either way.
+    bos = [tokenizer.bos_token_id] if pins.TARGETS[pins.TARGET]["bos"] else []
+    step = WINDOW - len(bos)
+    windows = [bos + ids[i : i + step] for i in range(0, len(ids) - step + 1, step)]
     n_windows = -(-N_POSITIONS // (WINDOW - 1))
     assert len(windows) >= n_windows, f"{len(windows)} windows, need {n_windows}"
     sums: dict[int, torch.Tensor] = {}
@@ -168,8 +172,8 @@ def stage_manifest(name: str, why: str) -> None:
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "question": "Do edits shaped by the activation covariance (Σv) act more than the lens's own directions (v)?",
         "why": why,
-        "model": {"repo": pins.QWEN_REPO, "revision": pins.QWEN_REVISION, "dtype": "bfloat16", "attn": "sdpa"},
-        "lenses": {lens: pins.LENS_FILES[lens] for lens in LENSES},
+        "model": pins.model_pin(),
+        "lenses": {lens: list(pins.LENS_SOURCES[lens]) for lens in LENSES},
         "sigma": {
             "file": str(SIGMA_FILE.relative_to(pins.REPO_ROOT)),
             "sha256": sha256_of(SIGMA_FILE),

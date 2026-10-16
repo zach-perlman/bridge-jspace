@@ -68,9 +68,14 @@ RESULTS = pins.RESULTS_DIR / EXP
 CODE_FILE = pins.CACHE_DIR / "exp07" / "code.pt"
 SIGMA_FILE = pins.CACHE_DIR / "exp07" / "sigma.pt"
 EXP04 = pins.RESULTS_DIR / "exp04_brew_patch"
-WINDOW = tuple(range(36, 51, 2))  # exp04's window after the start line (patch_map and patch_map_fresh agree)
-MAPS = ("patch_map", "patch_map_fresh")
-PARTS_RUNS = {"fresh": "parts_window_fresh", "bank": "parts_window"}  # exp04's full copies, for the reproduction
+# exp04's window after the start line (patch_map and patch_map_fresh agree): 36-50 on Qwen3.6-27B. Another target's
+# comes from its own exp04 maps and is set here once they are run and read.
+WINDOW: tuple[int, ...] = {"qwen3.6-27b": tuple(range(36, 51, 2))}.get(pins.TARGET, ())
+MAPS = tuple(pins.RUN_PREFIX + m for m in ("patch_map", "patch_map_fresh"))
+PARTS_RUNS = {  # exp04's full copies, for the reproduction
+    "fresh": pins.RUN_PREFIX + "parts_window_fresh",
+    "bank": pins.RUN_PREFIX + "parts_window",
+}
 TEST_SETS = ("fresh", "bank")
 COLOURS = PALETTE
 RIDGE = 1.0
@@ -190,6 +195,8 @@ def stage_check() -> None:
 
 
 def stage_manifest(name: str, why: str) -> None:
+    pins.check_run_name(name)
+    assert WINDOW, f"no exp04 window for {pins.TARGET} yet: run its patch maps and set WINDOW"
     path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
@@ -208,7 +215,7 @@ def stage_manifest(name: str, why: str) -> None:
         "colour, fit on other items, make the model take X as the step (answer f(X)) where the lens direction v_X - v_I "
         "does not? Does reshaping the lens direction by the activation covariance (Σv) do it?",
         "why": why,
-        "model": {"repo": pins.QWEN_REPO, "revision": pins.QWEN_REVISION, "dtype": "bfloat16", "attn": "sdpa"},
+        "model": pins.model_pin(),
         "window": {"layers": list(WINDOW), "positions": "after_start (everything after the start line)", "maps": maps},
         "fit": {
             "items": {"file": str(pins.BREW_FIT_FILE.relative_to(pins.REPO_ROOT)), "sha256": pins.BREW_FIT_SHA256},
@@ -224,7 +231,7 @@ def stage_manifest(name: str, why: str) -> None:
         },
         "eligibility": "as exp04 (B answers A, C answers c, O answers A; C and O token-aligned with B), with the same "
         "tokens after the start line as the fit items",
-        "lenses": {lens: pins.LENS_FILES[lens] for lens in LENSES},
+        "lenses": {lens: list(pins.LENS_SOURCES[lens]) for lens in LENSES},
         "edits": {
             "copy": "δ = h_C - h_B (exp04's copy), at the copy dose by definition",
             "code": "E_I[X] - E_I[I], per position",

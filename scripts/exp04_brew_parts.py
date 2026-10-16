@@ -102,6 +102,7 @@ def null_rows(delta: torch.Tensor, generator: torch.Generator) -> torch.Tensor:
 
 
 def stage_manifest(name: str, map_run: str) -> None:
+    pins.check_run_name(name)
     path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
@@ -122,7 +123,7 @@ def stage_manifest(name: str, map_run: str) -> None:
         "counterfactuals": "patch_map's (C: S -> X, X -> c; O: two off-path rules changed), same seeds",
         "positions": "after_start (everything after the start line)",
         "layers": window,
-        "lenses": {lens: pins.LENS_FILES[lens] for lens in LENSES},
+        "lenses": {lens: list(pins.LENS_SOURCES[lens]) for lens in LENSES},
         "parts": {
             "full": "δ = h_C - h_B",
             "lens2": "δ's orthogonal projection onto span{v_I, v_X} (unit lens vectors of the colours' concept tokens)",
@@ -395,7 +396,9 @@ if __name__ == "__main__":
     parser.add_argument("stage", choices=["manifest", "run"])
     parser.add_argument("target", nargs="?", help="run: the run's folder name")
     parser.add_argument("--name", help="manifest: the run's folder name")
-    parser.add_argument("--map", dest="map_run", default="patch_map", help="manifest: the patch_map run")
+    parser.add_argument(
+        "--map", dest="map_run", default=pins.RUN_PREFIX + "patch_map", help="manifest: the patch_map run"
+    )
     args = parser.parse_args()
     if args.stage == "manifest":
         assert args.name, "manifest needs --name"

@@ -9,8 +9,21 @@ def load_tokenizer():
     from transformers import AutoTokenizer
 
     return AutoTokenizer.from_pretrained(
-        snapshot_download(pins.QWEN_REPO, revision=pins.QWEN_REVISION, local_files_only=True)
+        snapshot_download(pins.MODEL_REPO, revision=pins.MODEL_REVISION, local_files_only=True)
     )
+
+
+def raw_encoding(tokenizer, text: str, offsets: bool = False) -> dict:
+    """Raw (not chat-rendered) text as the target model reads it: its tokens, with the target's BOS first if it needs
+    one (Gemma; none for Qwen, whose ids are then exactly tokenizer(text, add_special_tokens=False)'s). With offsets,
+    each token's character span in `text` (the BOS gets (0, 0)), so span and position code works unchanged."""
+    enc = tokenizer(text, add_special_tokens=False, return_offsets_mapping=offsets)
+    ids = list(enc.input_ids)
+    spans = [tuple(o) for o in enc.offset_mapping] if offsets else None
+    if pins.TARGETS[pins.TARGET]["bos"]:
+        ids = [tokenizer.bos_token_id, *ids]
+        spans = [(0, 0), *spans] if spans is not None else None
+    return {"input_ids": ids, "offset_mapping": spans}
 
 
 def _single_token(tokenizer, surface: str) -> int | None:

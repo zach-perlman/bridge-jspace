@@ -1,8 +1,10 @@
-"""Qwen3.6-27B: loading, raw-text forwards with per-layer residual edits, word ranks, greedy continuations.
+"""Part B's target model (pins.TARGET: Qwen3.6-27B by default, or Gemma 4 31B-it): loading, raw-text forwards with
+per-layer residual edits, word ranks, greedy continuations.
 
 Conventions
-- "Layer l" is the output of decoder block l (the J-lens's source convention), for l in 0..62.
-- Prompts are raw text, no chat template, as in the jlens reference code.
+- "Layer l" is the output of decoder block l (the J-lens's source convention), for l in 0..n_layers - 2.
+- Prompts are raw text, no chat template, as in the jlens reference code; a target that needs a BOS gets it first
+  (tokens.raw_encoding).
 - Word rank: the rank of the best candidate id after formatting tokens (no letter or digit, special and added tokens)
   are removed from the distribution, as in the reference swap runner.
 """
@@ -27,26 +29,34 @@ _HAS_LETTER = re.compile(r"[^\W\d_]")
 
 @dataclass
 class Model:
-    hf: Any  # transformers' Qwen3_5ForCausalLM: untyped submodule access (model.layers, lm_head, norm)
+    hf: Any  # transformers' Qwen3_5ForCausalLM or Gemma4ForConditionalGeneration: untyped submodule access
     tokenizer: Any
     decoded: list[str]  # decode of every id in the lm_head's vocabulary
     special_ids: frozenset[int]  # special and added tokens
     formatting_mask: torch.Tensor  # [vocab] bool, cuda: True for formatting tokens
 
     @property
+    def text(self):
+        """The text decoder (its layers and final norm): hf.model, or a multimodal model's hf.model.language_model."""
+        return getattr(self.hf.model, "language_model", self.hf.model)
+
+    @property
     def layers(self):
-        return self.hf.model.layers
+        return self.text.layers
 
     def encode(self, text: str) -> torch.Tensor:
-        return torch.tensor([self.tokenizer(text, add_special_tokens=False).input_ids], device="cuda")
+        return torch.tensor([tokens.raw_encoding(self.tokenizer, text)["input_ids"]], device="cuda")
 
     def unembed(self, h: torch.Tensor) -> torch.Tensor:
-        """Final norm then lm_head, fp32 logits."""
-        return self.hf.lm_head(self.hf.model.norm(h.to(torch.bfloat16))).float()
+        """Final norm then lm_head, fp32 logits, softcapped as the model's own (Gemma: 30 tanh(x / 30); ranks unchanged)."""
+        logits = self.hf.lm_head(self.text.norm(h.to(torch.bfloat16))).float()
+        cap = getattr(self.hf.config.get_text_config(), "final_logit_softcapping", None)
+        return cap * torch.tanh(logits / cap) if cap else logits
 
     def norm_gain(self) -> torch.Tensor:
-        """The final RMSNorm's per-dimension gain (Qwen3.5-family norms scale by 1 + weight), fp32."""
-        return 1.0 + self.hf.model.norm.weight.float()
+        """The final RMSNorm's per-dimension gain, fp32: 1 + weight for Qwen3.5-family norms, weight for Gemma 4's."""
+        weight = self.text.norm.weight.float()
+        return 1.0 + weight if pins.TARGETS[pins.TARGET]["norm_gain"] == "one_plus_weight" else weight
 
     @torch.no_grad()
     def run(
@@ -117,12 +127,15 @@ class Model:
         return out.logits[0][0].float(), self.tokenizer.decode(new, skip_special_tokens=True), int(new.shape[0])
 
     @torch.no_grad()
-    def generate_batch(self, ids: torch.Tensor, max_new_tokens: int, edits: list[dict[int, Edit]]) -> list[str]:
+    def generate_batch(
+        self, ids: torch.Tensor, max_new_tokens: int, edits: list[dict[int, Edit]], first_logits: bool = False
+    ) -> Any:
         """Greedy continuations under several edit sets at once, one batch row per set (a row without an edit at a layer
         passes through): of one prompt [1, seq], or of as many prompts of one length [len(edits), seq]. Each row is
         `generate(ids[row], max_new_tokens, edits[row])` up to batched-kernel rounding; one batched call pays the
         per-kernel launch cost once instead of once per row, which is what bounds generation speed on this model
-        (thousands of small kernels per token). Returns the decoded continuations."""
+        (thousands of small kernels per token). Returns the decoded continuations, and with first_logits also the
+        first step's raw logits [len(edits), vocab] (fp32), as `generate` returns them."""
         prompt_len = ids.shape[1]
 
         def hook_for(layer: int):
@@ -147,9 +160,11 @@ class Model:
                 max_new_tokens=max_new_tokens,
                 do_sample=False,
                 pad_token_id=self.tokenizer.eos_token_id,
+                output_logits=first_logits,
                 return_dict_in_generate=True,
             )
-        return [self.tokenizer.decode(seq[prompt_len:], skip_special_tokens=True) for seq in out.sequences]
+        texts = [self.tokenizer.decode(seq[prompt_len:], skip_special_tokens=True) for seq in out.sequences]
+        return (texts, out.logits[0].float()) if first_logits else texts
 
     def surface_ids(self, word: str) -> list[int]:
         return tokens.surface_ids(self.tokenizer, word)
@@ -179,13 +194,16 @@ class Model:
 
 
 def load_model() -> Model:
-    from transformers import AutoModelForCausalLM
+    from transformers import AutoConfig, AutoModelForCausalLM, AutoModelForImageTextToText
 
-    path = snapshot_download(pins.QWEN_REPO, revision=pins.QWEN_REVISION, local_files_only=True)
+    path = snapshot_download(pins.MODEL_REPO, revision=pins.MODEL_REVISION, local_files_only=True)
     tokenizer = tokens.load_tokenizer()
-    hf = AutoModelForCausalLM.from_pretrained(
-        path, dtype=torch.bfloat16, device_map="cuda", attn_implementation="sdpa"
-    ).eval()
+    architectures = AutoConfig.from_pretrained(path).architectures or []
+    multimodal = any(a.endswith("ForConditionalGeneration") for a in architectures)
+    auto = AutoModelForImageTextToText if multimodal else AutoModelForCausalLM  # Gemma 4: the checkpoint's own class
+    hf = auto.from_pretrained(path, dtype=torch.bfloat16, device_map="cuda", attn_implementation="sdpa").eval()
+    n = hf.config.get_text_config().num_hidden_layers
+    assert n == pins.N_LAYERS, f"{pins.MODEL_REPO} has {n} blocks; pins.TARGETS says {pins.N_LAYERS}"
     vocab = hf.lm_head.weight.shape[0]
     decoded = tokenizer.batch_decode([[i] for i in range(vocab)])
     special = frozenset(tokenizer.all_special_ids) | frozenset(int(i) for i in tokenizer.added_tokens_decoder)

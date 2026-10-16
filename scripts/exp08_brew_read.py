@@ -39,8 +39,8 @@ from scripts.exp07_step_code import CODE_FILE, COLOURS, TEST_SETS, WINDOW, token
 
 EXP = "exp08_brew_read"
 RESULTS = pins.RESULTS_DIR / EXP
-EXP07_RUN = pins.RESULTS_DIR / "exp07_step_code" / "code_v1"
-LAYERS = tuple(range(0, 63, 2))
+EXP07_RUN = pins.RESULTS_DIR / "exp07_step_code" / (pins.RUN_PREFIX + "code_v1")
+LAYERS = tuple(range(0, pins.N_LAYERS - 1, 2))  # every second layer below the final block (Qwen: 0-62)
 LENSES = ("jpp", "jlens")
 READERS = (*LENSES, "logit", "code")
 ROLES = ("I", "X", "S", "A")
@@ -68,6 +68,7 @@ def code_scores(w: torch.Tensor, h: torch.Tensor) -> torch.Tensor:
 
 
 def stage_manifest(name: str, why: str) -> None:
+    pins.check_run_name(name)
     path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
@@ -80,7 +81,7 @@ def stage_manifest(name: str, why: str) -> None:
         "question": "After the start line, where brew's step is carried (layers 36-50), do the lenses read the "
         "intermediate I, against a distractor colour equally present in the prompt?",
         "why": why,
-        "model": {"repo": pins.QWEN_REPO, "revision": pins.QWEN_REVISION, "dtype": "bfloat16", "attn": "sdpa"},
+        "model": pins.model_pin(),
         "items": {
             "source": "exp07_step_code/code_v1 items.jsonl, status eligible (exp04's eligibility)",
             "sha256": sha256_of(EXP07_RUN / "items.jsonl"),
@@ -90,8 +91,8 @@ def stage_manifest(name: str, why: str) -> None:
         "layers": list(LAYERS),
         "window": list(WINDOW),
         "readers": {
-            "jpp": pins.LENS_FILES["jpp"],
-            "jlens": pins.LENS_FILES["jlens"],
+            "jpp": list(pins.LENS_SOURCES["jpp"]),
+            "jlens": list(pins.LENS_SOURCES["jlens"]),
             "logit": "the final norm and unembedding applied to the block output (part A's baseline)",
             "code": "exp07's code (window layers only): colour k scores <h - w_0, E_I[k]> - |E_I[k]|^2 / 2 at each "
             "position, without the item's S and A",
@@ -113,7 +114,7 @@ def stage_manifest(name: str, why: str) -> None:
             "differences are paired bootstraps over items (95%)",
             "reads": "a reader reads the intermediate at the window if I's read score exceeds X's (CI above 0), on the "
             "fresh items (J++ primary; the J-lens, the logit lens and the code secondary; the bank items replicate)",
-            "reader_works": "positive control: a lens reader is interpreted only if, at the last position at layer 62, A "
+            "reader_works": f"positive control: a lens reader is interpreted only if, at the last position at layer {LAYERS[-1]}, A "
             "is top-1 for more items than X (Wilson intervals not overlapping)",
         },
         "deviations": [
@@ -237,7 +238,10 @@ def summarize(rows: list[dict]) -> dict:
                 k_a = sum(r["colour_rank"]["A"][-1] == 0 for r in last)
                 k_x = sum(r["colour_rank"]["X"][-1] == 0 for r in last)
                 a_w, x_w = wilson(k_a, len(last)), wilson(k_x, len(last))
-                entry["positive_control"] = {"A last position L62": a_w, "X last position L62": x_w}
+                entry["positive_control"] = {
+                    f"A last position L{LAYERS[-1]}": a_w,
+                    f"X last position L{LAYERS[-1]}": x_w,
+                }
                 entry["works"] = a_w[1] > x_w[2]
                 vocab = [rank for r in mine if "vocab_rank_I" in r for rank in r["vocab_rank_I"]]
                 entry["I_vocab_rank_median_window"] = statistics.median(vocab)
@@ -250,7 +254,11 @@ def write_summary_md(path: Path, run: str, summary: dict) -> None:
     pts = lambda d: f"{100 * d[0]:+.0f} [{100 * d[1]:+.0f}, {100 * d[2]:+.0f}]"  # noqa: E731
     lines = [f"# {EXP} / {run}", "", "Items: " + ", ".join(f"{k} {v}" for k, v in summary["items"].items()), ""]
     for set_name, readers in summary["sets"].items():
-        lines += [f"## {set_name} items", "", "| reader | works (A at L62) | I | X | S | A | I - X (pts) | reads I |"]
+        lines += [
+            f"## {set_name} items",
+            "",
+            f"| reader | works (A at L{LAYERS[-1]}) | I | X | S | A | I - X (pts) | reads I |",
+        ]
         lines += ["|---|---|---|---|---|---|---|---|"]
         for reader, e in readers.items():
             s = e["window_read_score"]

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from pathlib import Path
 from typing import Any
 
@@ -38,6 +39,55 @@ LENS_SOURCES = {  # every J-format lens part B can load: name -> (repo, file, re
     "ws_jlens": (WS_LENS_REPO, "qwen3.6-27b/j-lens/lens.pt", WS_LENS_REVISION),
     "ws_rlens": (WS_LENS_REPO, "qwen3.6-27b/r-lens/lens.pt", WS_LENS_REVISION),
 }
+
+# Part B's target model. BJ_TARGET picks it; the default is Qwen3.6-27B, the model of every run before the Gemma port,
+# whose pins, paths and lenses above stay as they are. Another target loads its own model and lenses, keeps its caches
+# under cache/<target>/ and names its runs with its own prefix. A "local" lens is (path under the repo, sha256): a lens
+# we fit ourselves, not on the Hub.
+TARGETS: dict[str, dict[str, Any]] = {
+    "qwen3.6-27b": {
+        "repo": QWEN_REPO,
+        "revision": QWEN_REVISION,
+        "n_layers": 64,
+        "norm_gain": "one_plus_weight",  # Qwen3.5-family RMSNorm scales by 1 + weight
+        "bos": False,  # Qwen's tokenizer adds no BOS; raw text is tokenized as is
+        "run_prefix": "",
+        "lenses": LENS_SOURCES,
+    },
+    "gemma-4-31b-it": {
+        "repo": "google/gemma-4-31B-it",
+        "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+        "n_layers": 60,
+        "norm_gain": "weight",  # Gemma4RMSNorm scales by weight
+        "bos": True,  # Gemma needs <bos> first; the chat template writes it, raw text gets it prepended
+        "run_prefix": "gemma4it_",
+        # Fit on this model with the published recipes (no published lens is fit on the instruction-tuned model):
+        # J++ with safety-research/jpp_lens as neuronpedia's fit-jpp-lens.sh, the J-lens with neuronpedia's fit_lens.py
+        # and the arguments of their gemma-4-31B fit. Filled in once each fit is done and checked.
+        "lenses": {},
+    },
+}
+TARGET = os.environ.get("BJ_TARGET", "qwen3.6-27b")
+assert TARGET in TARGETS, f"BJ_TARGET={TARGET!r}: not one of {sorted(TARGETS)}"
+MODEL_REPO: str = TARGETS[TARGET]["repo"]
+MODEL_REVISION: str = TARGETS[TARGET]["revision"]
+N_LAYERS: int = TARGETS[TARGET]["n_layers"]
+RUN_PREFIX: str = TARGETS[TARGET]["run_prefix"]
+if TARGET != "qwen3.6-27b":
+    CACHE_DIR = REPO_ROOT / "cache" / TARGET
+    LENS_SOURCES = TARGETS[TARGET]["lenses"]
+
+
+def model_pin() -> dict[str, str]:
+    """The target model as manifests record it."""
+    return {"target": TARGET, "repo": MODEL_REPO, "revision": MODEL_REVISION, "dtype": "bfloat16", "attn": "sdpa"}
+
+
+def check_run_name(name: str) -> None:
+    """A run of a non-default target is named with its prefix, so its results never pass for Qwen's."""
+    assert name.startswith(RUN_PREFIX), f"BJ_TARGET={TARGET}: run names start with {RUN_PREFIX!r}, got {name!r}"
+
+
 # The oracle lens (exp15): a LoRA on Qwen3.6-27B, same repo and revision; run s3d.rl.ddp600.s0 (see its run.json).
 ORACLE_DIR = "qwen3.6-27b/oracle"
 ORACLE_ADAPTER_SHA256 = "7d4b301e002246af3c3f2bb6e768f8fa62f8aac2c231a0bd02a8d4f9ecafd9aa"
@@ -125,3 +175,12 @@ def wikitext_rows() -> list[str]:
 
 def lens_eval_multihop_items() -> list[dict[str, Any]]:
     return load_pinned_items(LENS_EVAL_MULTIHOP_FILE, LENS_EVAL_MULTIHOP_SHA256)
+
+
+def sha256_file(path: Path) -> str:
+    """sha256 of a file, streamed (lens files are several GB)."""
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for block in iter(lambda: f.read(1 << 24), b""):
+            h.update(block)
+    return h.hexdigest()

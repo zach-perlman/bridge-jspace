@@ -64,6 +64,7 @@ from scripts.exp03_brew_swaps import (
 EXP = "exp04_brew_patch"
 RESULTS = pins.RESULTS_DIR / EXP
 SOURCES = ("cf", "off")
+BATCH = 32  # edited generations per batched call (Model.generate_batch), as exp09
 GROUPS = ("rule_path", "rules", "start_line", "after_start", "last")
 WINDOW_GROUPS = ("start_line", "after_start", "last")
 ROLES = ("A", "b", "c", "X", "I", "S")
@@ -205,6 +206,7 @@ def stage_manifest(
     assert set(group_layers) <= set(GROUPS), f"unknown groups in {sorted(group_layers)}"
     for group in ("rule_path", "rules"):
         assert 0 in group_layers.get(group, []), f"the positive control needs {group} at layer 0"
+    pins.check_run_name(name)
     path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
@@ -215,7 +217,7 @@ def stage_manifest(
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "question": "In brew's two-step lookup, at which layers and prompt positions does the activation carry the "
         "intermediate as a step (patching it in redirects the second lookup), and where only the answer?",
-        "model": {"repo": pins.QWEN_REPO, "revision": pins.QWEN_REVISION, "dtype": "bfloat16", "attn": "sdpa"},
+        "model": pins.model_pin(),
         "items": {
             "set": item_set,
             "file": str(ITEM_SETS[item_set][0].relative_to(pins.REPO_ROOT)),
@@ -307,29 +309,33 @@ def stage_run(name: str) -> None:
         if row["status"] != "eligible":
             continue
         regions = spans(item, prep["text"])
+        jobs = []  # (source, group, layer, edit), generated BATCH at a time (Model.generate_batch)
         for source in SOURCES:
             lines = [line_span(prep["text"], colour) for colour in cfs[source]["lines"]]
             for group, layers_here in group_layers.items():
                 positions = group_positions(group, prep["offsets"], regions, lines)
                 for layer in layers_here:
-                    edit = PatchFrom(source_h[source][layer], positions)
-                    logits, text, _ = model.generate(ids, MAX_NEW_TOKENS, {layer: edit})
-                    logp = torch.log_softmax(logits, dim=-1)
-                    colour = answer_colour(text, palette)
-                    outcomes.append(
-                        {
-                            "name": item["name"],
-                            "source": source,
-                            "group": group,
-                            "layer": layer,
-                            "continuation": text,
-                            "colour": colour,
-                            "role": category(colour, roles),
-                            "logp": {role: round(float(logp[t]), 3) for role, t in tokens.items()},
-                            "patch_ratio": round(edit.patch_ratio, 4),
-                            "n_positions": len(positions),
-                        }
-                    )
+                    jobs.append((source, group, layer, PatchFrom(source_h[source][layer], positions), len(positions)))
+        for start in range(0, len(jobs), BATCH):
+            chunk = jobs[start : start + BATCH]
+            texts, first = model.generate_batch(ids, MAX_NEW_TOKENS, [{j[2]: j[3]} for j in chunk], first_logits=True)
+            for (source, group, layer, edit, n_positions), text, logits in zip(chunk, texts, first, strict=True):
+                logp = torch.log_softmax(logits, dim=-1)
+                colour = answer_colour(text, palette)
+                outcomes.append(
+                    {
+                        "name": item["name"],
+                        "source": source,
+                        "group": group,
+                        "layer": layer,
+                        "continuation": text,
+                        "colour": colour,
+                        "role": category(colour, roles),
+                        "logp": {role: round(float(logp[t]), 3) for role, t in tokens.items()},
+                        "patch_ratio": round(edit.patch_ratio, 4),
+                        "n_positions": n_positions,
+                    }
+                )
         print(f"{item['name']}: done ({len(outcomes)} outcomes)", flush=True)
 
     write_jsonl(out_dir / "items.jsonl", item_rows)
@@ -444,7 +450,9 @@ if __name__ == "__main__":
     parser.add_argument("target", nargs="?", help="run: the run's folder name")
     parser.add_argument("--name", help="manifest: the run's folder name")
     parser.add_argument("--items", default="bank", choices=list(ITEM_SETS), help="bank (WorkspaceBench) or fresh")
-    parser.add_argument("--layers", default="0-62", help="manifest: block outputs to patch: 0-62, 0-62:2 or 0,8,16")
+    parser.add_argument(
+        "--layers", default=f"0-{pins.N_LAYERS - 2}", help="manifest: block outputs to patch: 0-62, 0-62:2 or 0,8,16"
+    )
     parser.add_argument("--why", help="manifest: who chose this run's settings and why (added to the deviations)")
     parser.add_argument(
         "--group-layers",

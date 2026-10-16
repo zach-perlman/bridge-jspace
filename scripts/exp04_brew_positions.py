@@ -37,12 +37,12 @@ from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from scripts.exp03_brew_swaps import ITEM_SETS, MAX_NEW_TOKENS, answer_colour, regime_positions, spans, write_jsonl
 from scripts.exp04_brew_parts import AddRows
 from scripts.exp04_brew_patch import EXP, RESULTS, SOURCES, category, prepare
+from scripts.exp07_step_code import MAPS, PARTS_RUNS, WINDOW
 
-WINDOW = tuple(range(36, 51, 2))
-MAPS = ("patch_map", "patch_map_fresh")
-PARTS_RUNS = {"fresh": "parts_window_fresh", "bank": "parts_window"}
 TEST_SETS = ("fresh", "bank")
-READING = (4, 14, 18, 20)  # exp08: where the lenses read I (indices into the 21 positions after the start line)
+# exp08: where the lenses read I (indices into the 21 positions after the start line), on Qwen3.6-27B. Another
+# target's come from its own exp08 run.
+READING: tuple[int, ...] = {"qwen3.6-27b": (4, 14, 18, 20)}.get(pins.TARGET, ())
 GROUPS = {
     "all": tuple(range(21)),
     "reading": READING,
@@ -58,6 +58,8 @@ def stage_manifest(name: str, why: str) -> None:
     from bridge_jspace.tokens import load_tokenizer
     from scripts.exp07_step_code import tokenized
 
+    pins.check_run_name(name)
+    assert READING, f"no exp08 reading positions for {pins.TARGET} yet"
     path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
@@ -78,7 +80,7 @@ def stage_manifest(name: str, why: str) -> None:
         "question": "Copying the counterfactual's activations at which positions after the start line makes the model "
         "take X as the step: the positions where exp08's lenses read the intermediate, or the others?",
         "why": why,
-        "model": {"repo": pins.QWEN_REPO, "revision": pins.QWEN_REVISION, "dtype": "bfloat16", "attn": "sdpa"},
+        "model": pins.model_pin(),
         "items": {
             s: {"file": str(ITEM_SETS[s][0].relative_to(pins.REPO_ROOT)), "sha256": ITEM_SETS[s][1]} for s in TEST_SETS
         },

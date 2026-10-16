@@ -18,8 +18,14 @@ class JLens:
     and "ws_rlens" (same format: one J_l per layer)."""
 
     def __init__(self, model: Model, lens: str = "jlens"):
-        repo, file, revision = pins.LENS_SOURCES[lens]
-        path = hf_hub_download(repo, file, revision=revision)
+        source = pins.LENS_SOURCES[lens]
+        if source[0] == "local":  # a lens we fit (pins.TARGETS): a file under the repo, checked by sha256
+            _, file, sha256 = source
+            path = pins.REPO_ROOT / file
+            assert pins.sha256_file(path) == sha256, f"{path} changed"
+        else:
+            repo, file, revision = source
+            path = hf_hub_download(repo, file, revision=revision)
         blob = torch.load(path, map_location="cpu", weights_only=True, mmap=True)
         self.name, self.file_keys = lens, sorted(blob)
         self.source_layers: list[int] = list(blob["source_layers"])

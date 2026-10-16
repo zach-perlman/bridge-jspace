@@ -44,13 +44,19 @@ from bridge_jspace.stats import ledoit_wolf
 
 EXP = "exp01_probes"
 RESULTS = pins.RESULTS_DIR / EXP
-PROBE_LAYERS = tuple(range(16, 49))  # the union of the candidate bands that exp02 sweeps
+# The union of the candidate bands that exp02 sweeps: 16-48 of Qwen3.6-27B's 64 blocks; another target gets the same
+# quarter-to-three-quarters of its depth (Gemma 4 31B-it: 15-45 of 60).
+PROBE_LAYERS = (
+    tuple(range(16, 49))
+    if pins.TARGET == "qwen3.6-27b"
+    else tuple(range(pins.N_LAYERS // 4, 3 * pins.N_LAYERS // 4 + 1))
+)
 K_ATOMS = 25
 MIN_KEPT = 3
 GREEDY_TOKENS = 8
 REVIEW_SEED = 0
 REVIEW_SAMPLE = 25
-INSPECT_LAYER = 32
+INSPECT_LAYER = pins.N_LAYERS // 2  # 32 on Qwen3.6-27B
 RANDOM_SEED = 0
 TOPUP_AFTER = "v1"
 WHITEN_FROM = "v2"
@@ -61,11 +67,16 @@ VARIANTS = {  # which prompt rounds a run uses, whether its probes are whitened,
     "whiten": {"manifest": "manifest_whiten.json", "topup": True, "more": False, "whiten": True, "lens": "jlens"},
     "more": {"manifest": "manifest_more.json", "topup": True, "more": True, "whiten": False, "lens": "jlens"},
     "more_jpp": {"manifest": "manifest_more_jpp.json", "topup": True, "more": True, "whiten": False, "lens": "jpp"},
+    # Another target (pins.TARGET): every prompt round at once, self-contained (no cross-run references to Qwen's runs),
+    # over J++ (as more_jpp) or the J-lens.
+    "all_jpp": {"manifest": "manifest_all_jpp.json", "topup": True, "more": True, "whiten": False, "lens": "jpp"},
+    "all_jlens": {"manifest": "manifest_all_jlens.json", "topup": True, "more": True, "whiten": False, "lens": "jlens"},
 }
+QWEN_ONLY = ("base", "topup", "whiten", "more", "more_jpp")  # their manifests chain Qwen runs v1-v3
 
 
 def manifest_path(variant: str) -> Path:
-    return RESULTS / VARIANTS[variant]["manifest"]
+    return RESULTS / (pins.RUN_PREFIX + VARIANTS[variant]["manifest"])
 
 
 def variant_prompts(variant: str) -> dict[str, list[dict]]:
@@ -91,7 +102,7 @@ def stage_manifest() -> None:
         "exp": EXP,
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "question": "Build a bridge probe per entity and measure how much of it the J-lens dictionary explains.",
-        "model": {"repo": pins.QWEN_REPO, "revision": pins.QWEN_REVISION, "dtype": "bfloat16", "attn": "sdpa"},
+        "model": pins.model_pin(),
         "lens": {
             "repo": pins.LENS_REPO,
             "revision": pins.LENS_REVISION,
@@ -243,6 +254,60 @@ def stage_manifest_more_jpp() -> None:
         f"J++ decomposition: run {JPP_REPRODUCES}'s probes are rebuilt (its cache was not kept) and decomposed over "
         "J++ instead of the J-lens, so part B's J-space matches the second reader part A uses. Chosen by the human."
     )
+    path.write_text(json.dumps(manifest, indent=2) + "\n")
+    print("wrote", path)
+
+
+def stage_manifest_all(variant: str) -> None:
+    """One self-contained manifest for every prompt round (base, top-up, more) on the target model."""
+    path = manifest_path(variant)
+    assert not path.exists(), f"{path} exists; manifests are written once"
+    lens = VARIANTS[variant]["lens"]
+    manifest = {
+        "exp": EXP,
+        "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "variant": variant,
+        "question": "Build a bridge probe per entity and measure how much of it the lens dictionary explains.",
+        "model": pins.model_pin(),
+        "lens": {
+            "name": lens,
+            "source": list(pins.LENS_SOURCES[lens]),
+            "vector": "v_t = (g * W_U[t]) @ J_l, unit-normalised; g = the final norm's gain (pins.TARGETS)",
+        },
+        "data": {
+            "probe_swap": {"file": "data/probe_swap.json", "sha256": pins.PROBE_SWAP_SHA256},
+            "entity_prompts": {"file": "data/entity_prompts.json", "sha256": sha256_of(pins.ENTITY_PROMPTS_FILE)},
+            "entity_prompts_topup": {
+                "file": str(pins.ENTITY_PROMPTS_TOPUP_FILE.relative_to(pins.REPO_ROOT)),
+                "sha256": sha256_of(pins.ENTITY_PROMPTS_TOPUP_FILE),
+            },
+            "entity_prompts_more": more_files_pinned(),
+        },
+        "prompt_format": "raw text, no chat template; the target's BOS first if it needs one (tokens.raw_encoding)",
+        "filter": f"keep a prompt if the first word of the model's greedy continuation ({GREEDY_TOKENS} tokens) equals "
+        "an accepted answer, case-insensitively",
+        "min_kept_prompts_per_entity": MIN_KEPT,
+        "probe": "mean final-token residual (block output) over kept prompts minus the mean over entities",
+        "probe_layers": list(PROBE_LAYERS),
+        "decomposition": {
+            "method": "non-negative OMP, NNLS refit each step",
+            "k_atoms": K_ATOMS,
+            "dictionary": f"unit {lens} vectors of non-special tokens whose decode has a letter",
+        },
+        "metrics": [
+            "kept prompts per entity",
+            "fraction of probe variance in the J-part per layer",
+            f"chance level of that fraction: isotropic random directions (one per probed entity per layer, seed "
+            f"{RANDOM_SEED})",
+            "whether the entity's own token is among its J-part atoms",
+        ],
+        "review": {"seed": REVIEW_SEED, "sample_size": REVIEW_SAMPLE, "inspect_layer": INSPECT_LAYER},
+        "deviations": [
+            "All prompt rounds at once: on Qwen the top-up and more rounds were added after runs v1 and v2 (see "
+            "manifest_topup.json, manifest_more.json); here every round's prompts are filtered on this model in one run.",
+            f"Probe layers {PROBE_LAYERS[0]}-{PROBE_LAYERS[-1]}: the same share of the depth as Qwen's 16-48.",
+        ],
+    }
     path.write_text(json.dumps(manifest, indent=2) + "\n")
     print("wrote", path)
 
@@ -470,7 +535,7 @@ def stage_manifest_redecompose(tag: str, source: str, lens: str) -> None:
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "question": f"Run {source}'s probes, decomposed over the {lens} dictionary instead of its own lens.",
         "probes_from": {"run": source, "file": str(probes.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(probes)},
-        "lens": {"name": lens, "repo": pins.LENS_REPO, "revision": pins.LENS_REVISION, "file": pins.LENS_FILES[lens]},
+        "lens": {"name": lens, "source": list(pins.LENS_SOURCES[lens])},
         "decomposition": {
             "method": "non-negative OMP, NNLS refit each step",
             "k_atoms": K_ATOMS,
@@ -532,7 +597,12 @@ def stage_redecompose(tag: str) -> None:
         f"top_atoms_layer{INSPECT_LAYER}": top_atoms,
     }
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n")
-    print(json.dumps({layer: round(per_layer[layer]["fve_median"], 3) for layer in (32, 40, 48)}))
+    shown = [
+        layer
+        for layer in PROBE_LAYERS
+        if layer in (INSPECT_LAYER, PROBE_LAYERS[len(PROBE_LAYERS) * 3 // 4], PROBE_LAYERS[-1])
+    ]
+    print(json.dumps({layer: round(per_layer[layer]["fve_median"], 3) for layer in shown}))
 
 
 def write_review(out_dir, rows, n_kept, prompts, per_layer, top_atoms, fve_inspect) -> None:
@@ -598,7 +668,14 @@ if __name__ == "__main__":
         "whiten": stage_manifest_whiten,
         "more": stage_manifest_more,
         "more_jpp": stage_manifest_more_jpp,
+        "all_jpp": lambda: stage_manifest_all("all_jpp"),
+        "all_jlens": lambda: stage_manifest_all("all_jlens"),
     }
+    assert pins.TARGET == "qwen3.6-27b" or args.variant not in QWEN_ONLY, (
+        f"{args.variant} chains Qwen's runs; on {pins.TARGET} use all_jpp or all_jlens"
+    )
+    if args.tag:
+        pins.check_run_name(args.tag)
     if args.stage == "check":
         stage_check(args.variant)
     elif args.stage == "manifest-redecompose":

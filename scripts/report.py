@@ -84,7 +84,7 @@ def main(run: str) -> None:
     boots = summary["paired_bootstraps"]
     gate = manifest["gate"]
     lines = [
-        f"EXP {EXP}/{run} @ {commit} | model {pins.QWEN_REPO}@{pins.QWEN_REVISION[:8]} | n={n} eligible items "
+        f"EXP {EXP}/{run} @ {commit} | model {pins.MODEL_REPO}@{pins.MODEL_REVISION[:8]} | n={n} eligible items "
         f"(of 90: {summary['items']}) | band {manifest['bands'][0]} | seeds: null {manifest['null_seed']}, "
         "bootstrap 0",
         f"Gate {gate['run']}: full probe {100 * gate['full_probe_flip_rate']:.0f}% at band {gate['band']} vs the "

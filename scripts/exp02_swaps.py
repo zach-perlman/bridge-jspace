@@ -62,6 +62,7 @@ from bridge_jspace import pins
 from bridge_jspace.clamp import SwapClamp, near_parallel
 from bridge_jspace.data import load_items, sha256_of
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
+from bridge_jspace.tokens import raw_encoding
 from scripts.exp13_greedy_answers.experiment import ends_sentence, judge
 
 EXP = "exp02_swaps"
@@ -69,8 +70,12 @@ RESULTS = pins.RESULTS_DIR / EXP
 CONDITIONS = ("raw_jlens", "full_probe", "jpart", "remainder", "remainder_clamped")
 EXTRA_CONDITIONS = ("jpart_matched",)  # run only when a manifest asks for them (--conditions)
 GATE_CONDITIONS = ("raw_jlens", "full_probe")
-GATE_BANDS = ("16-32", "24-40", "32-48", "24-48")
+# Qwen3.6-27B's bands (of 64 blocks); another target sweeps the same shares of its depth (Gemma 4 31B-it, 60 blocks).
+GATE_BANDS = (
+    ("16-32", "24-40", "32-48", "24-48") if pins.TARGET == "qwen3.6-27b" else ("15-30", "22-37", "30-45", "22-45")
+)
 GO_FLIP_RATE = 0.30
+QWEN = pins.TARGET == "qwen3.6-27b"  # manifest notes about Qwen's own earlier runs are written for Qwen's runs only
 NULL_SEED = 0
 N_BOOT, BOOT_SEED = 2000, 0
 COMPARISONS = (("jpart", "remainder"), ("remainder", "remainder_clamped"), ("jpart", "jpart_matched"))
@@ -134,6 +139,7 @@ def stage_manifest(
     is_gate = kind == "gate"
     assert not (is_gate and conditions), "the gate runs its own conditions"
     assert is_gate == (band is None) == (gate is None), "the gate sweeps its own bands; main needs --band and --gate"
+    pins.check_run_name(name)
     path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
@@ -145,11 +151,13 @@ def stage_manifest(
         "item and reported as the median over items; the edit's downstream effect on later layers is not measured.",
         "Layers where the two swapped atoms are near-parallel (|cos| > 0.999) are skipped and counted.",
         "Word rank is strict: an exact logit tie with another word ranks a candidate 2nd, so a flip and a kept clean "
-        "answer exclude each other (gate and gate_w1 counted ties as rank 1 for both: 2 and 3 of 528 outcomes).",
+        "answer exclude each other"
+        + (" (gate and gate_w1 counted ties as rank 1 for both: 2 and 3 of 528 outcomes)." if QWEN else "."),
     ]
     if scoring == "rank":
         deviations.append(
-            "Items whose answer or swap answer has no single-token surface are dropped and counted (7 of 90 at setup)."
+            "Items whose answer or swap answer has no single-token surface are dropped and counted"
+            + (" (7 of 90 at setup)." if QWEN else ".")
         )
     else:
         deviations.append(
@@ -223,7 +231,9 @@ def stage_manifest(
         if not gate_record["go"]:
             deviations.append(
                 f"Gate {gate} failed (full probe {100 * gate_record['full_probe_flip_rate']:.0f}% < "
-                f"{100 * GO_FLIP_RATE:.0f}%), as did gate, gate_w1 and gate_v3. The plan says stop and debug; the "
+                f"{100 * GO_FLIP_RATE:.0f}%)"
+                + (", as did gate, gate_w1 and gate_v3" if QWEN else "")
+                + ". The plan says stop and debug; the "
                 "human chose to run main anyway."
             )
     manifest = {
@@ -233,8 +243,8 @@ def stage_manifest(
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "question": "Does the swap target's answer appear when the bridge's representation is swapped for the "
         "target's, and does that depend on the J-space part of the representation?",
-        "model": {"repo": pins.QWEN_REPO, "revision": pins.QWEN_REVISION, "dtype": "bfloat16", "attn": "sdpa"},
-        "lens": {"name": lens, "repo": pins.LENS_REPO, "revision": pins.LENS_REVISION, "file": pins.LENS_FILES[lens]},
+        "model": pins.model_pin(),
+        "lens": {"name": lens, "source": list(pins.LENS_SOURCES[lens])},
         "items": {"file": "data/probe_swap.json", "sha256": pins.PROBE_SWAP_SHA256},
         "scoring": scoring,
         "prompt_end": prompt_end,
@@ -444,9 +454,9 @@ def stage_run(name: str) -> None:
         if regime in ("cue", "earlier_noncue"):
             prompt = item["prompt"].rstrip() if prompt_end == "stripped" else item["prompt"]
             start = prompt.index(cues[item["name"]])
-            enc = model.tokenizer(prompt, add_special_tokens=False, return_offsets_mapping=True)
-            assert enc.input_ids == ids[0].tolist(), "offsets come from another tokenization"
-            cue = span_positions(enc.offset_mapping, start, start + len(cues[item["name"]]))
+            enc = raw_encoding(model.tokenizer, prompt, offsets=True)  # as model.encode, the target's BOS first
+            assert enc["input_ids"] == ids[0].tolist(), "offsets come from another tokenization"
+            cue = span_positions(enc["offset_mapping"], start, start + len(cues[item["name"]]))
         positions = regime_positions(regime, ids.shape[1], cue)
         row["positions"] = positions
         for band in bands:

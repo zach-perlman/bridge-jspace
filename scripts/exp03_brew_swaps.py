@@ -239,6 +239,7 @@ def stage_manifest(
         assert sweep is None, "the follow-up does not take a sweep"
     else:
         assert is_sweep == (band is None) == (sweep is None), "the sweep picks its band; main needs --band and --sweep"
+    pins.check_run_name(name)
     path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
@@ -249,8 +250,8 @@ def stage_manifest(
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "question": "In an in-context two-step lookup, does swapping the intermediate's lens direction move the answer "
         "to the one the table predicts for the swapped-in colour, and at which prompt positions?",
-        "model": {"repo": pins.QWEN_REPO, "revision": pins.QWEN_REVISION, "dtype": "bfloat16", "attn": "sdpa"},
-        "lenses": {lens: pins.LENS_FILES[lens] for lens in LENSES},
+        "model": pins.model_pin(),
+        "lenses": {lens: list(pins.LENS_SOURCES[lens]) for lens in LENSES},
         "items": {
             "set": item_set,
             "file": str(ITEM_SETS[item_set][0].relative_to(pins.REPO_ROOT)),

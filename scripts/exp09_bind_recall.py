@@ -46,6 +46,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
+from bridge_jspace.tokens import raw_encoding
 from scripts.exp03_brew_swaps import answer_colour, write_jsonl
 from scripts.exp03_make_items import PALETTE
 from scripts.exp04_brew_parts import K_ATOMS, AddRows, lens2_part, null_rows, signed_omp
@@ -79,8 +80,10 @@ ITEM_SETS = {  # set -> (file, sha256, loader, families, the answer words a cont
     ),
 }
 GROUPS = ("question", "last")
-MAP_LAYERS = tuple(range(0, 61, 4))
-ANSWER_ONSET = 44  # exp12: the answer is read at the last word from about layer 44; the parts stay below it
+MAP_LAYERS = tuple(range(0, pins.N_LAYERS - 3, 4))  # every 4th layer below the final block (Qwen: 0-60)
+# exp12 (Qwen3.6-27B): the answer is read at the last word from about layer 44; the parts stay below it. Other targets
+# have no exp12, so their parts window stops where the map's last token carries the answer.
+ANSWER_ONSET = {"qwen3.6-27b": 44}.get(pins.TARGET, pins.N_LAYERS - 1)
 N_ITEMS = 80  # per family, a seeded sample of the eligible items
 MAX_NEW_TOKENS = 8
 CF_SEED, OFF_SEED, SAMPLE_SEED, NULL_SEED = 9000, 9500, 0, 0
@@ -89,8 +92,9 @@ BATCH = 32  # edited generations per batched call (Model.generate_batch)
 CHANCE_DRAWS = 20
 # exp01's J++ probes (variant more_jpp, as v3_jpp behind exp02's main_v4_jpp and exp06), rebuilt on the B200 box:
 # v3_jpp's cache stayed on the old box. The rebuild checks its kept prompts against v3 one by one.
-PROBES = pins.CACHE_DIR / "exp01" / "v3_jpp_b200" / "probes.pt"
-SWAP_LAYERS = tuple(range(24, 41))  # exp02's band 24-40
+PROBES = pins.CACHE_DIR / "exp01" / {"qwen3.6-27b": "v3_jpp_b200"}.get(pins.TARGET, "none") / "probes.pt"
+# exp02's band 24-40 on Qwen3.6-27B; another target's band comes from its own exp02 gate (none yet).
+SWAP_LAYERS = {"qwen3.6-27b": tuple(range(24, 41))}.get(pins.TARGET, ())
 SWAP_CONDITIONS = ("jpart", "full_probe", "remainder", "jpart_matched")
 PARTS = ("lens2", "not_lens2", "jspace", "not_jspace")
 
@@ -139,15 +143,15 @@ def prepare(item: dict, index: int, tokenizer) -> dict:
     phrase (from the cue word to the word before the final ' is', as exp02's cue spans)."""
     texts = {"clean": item["prompt"], **variants(item, index)}
     if item["family"] in ("R", "RL"):  # the first city of X whose prompt lines up with the original token for token
-        n = len(tokenizer(item["prompt"], add_special_tokens=False).input_ids)
+        n = len(raw_encoding(tokenizer, item["prompt"])["input_ids"])
         fits = [
             c
             for c in x_cities(item, index)
-            if len(tokenizer(variants(item, index, c)["cf"], add_special_tokens=False).input_ids) == n
+            if len(raw_encoding(tokenizer, variants(item, index, c)["cf"])["input_ids"]) == n
         ]
         texts = {"clean": item["prompt"], **variants(item, index, fits[0] if fits else None)}
-    enc = {k: tokenizer(t, add_special_tokens=False, return_offsets_mapping=True) for k, t in texts.items()}
-    ids = {k: e.input_ids for k, e in enc.items()}
+    enc = {k: raw_encoding(tokenizer, t, offsets=True) for k, t in texts.items()}  # the target's BOS first, if any
+    ids = {k: e["input_ids"] for k, e in enc.items()}
     changed = {s: changed_tokens(ids["clean"], ids[s]) for s in ("cf", "off")}
     out: dict[str, Any] = {"ids": ids, "changed": changed}
     expected = {"cf": 1 if item["family"] in ("R", "RL") else 2, "off": 2}
@@ -159,7 +163,7 @@ def prepare(item: dict, index: int, tokenizer) -> dict:
     ):
         out["status"] = "unaligned"
         return out
-    prompt, offsets = item["prompt"], enc["clean"].offset_mapping
+    prompt, offsets = item["prompt"], enc["clean"]["offset_mapping"]
     q_start, cue_start, cue_end = prompt.rindex("The "), prompt.rindex(item["cue"]), prompt.rindex(" is")
     after = max(cf_changed)
     out["groups"] = {
@@ -202,6 +206,7 @@ def stage_check() -> None:
 
 
 def manifest_common(name: str, why: str, kind: str, item_set: str = "bind_recall") -> dict:
+    pins.check_run_name(name)
     path, sha = ITEM_SETS[item_set][:2]
     return {
         "exp": EXP,
@@ -209,7 +214,7 @@ def manifest_common(name: str, why: str, kind: str, item_set: str = "bind_recall
         "kind": kind,
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "why": why,
-        "model": {"repo": pins.QWEN_REPO, "revision": pins.QWEN_REVISION, "dtype": "bfloat16", "attn": "sdpa"},
+        "model": pins.model_pin(),
         "items": {
             "set": item_set,
             "file": str(path.relative_to(pins.REPO_ROOT)),
@@ -247,8 +252,9 @@ def stage_manifest_map(name: str, why: str, item_set: str = "bind_recall") -> No
         "the answer at all (Wilson 95% intervals not overlapping)",
         "answer_formed": "per family, the first layer at which copying the last token alone gives X's capital for at "
         "least half the items: from there the copy can carry the answer rather than the bridge",
-        "parts_window": f"the question group's window below min(answer_formed, {ANSWER_ONSET}) ({ANSWER_ONSET}: exp12's "
-        "answer onset at the last word); if it is empty, that family's parts are not interpreted",
+        "parts_window": f"the question group's window below min(answer_formed, {ANSWER_ONSET}) ("
+        + ("44: exp12's answer onset at the last word" if pins.TARGET == "qwen3.6-27b" else "no exp12 on this model")
+        + "); if it is empty, that family's parts are not interpreted",
     }
     path.write_text(json.dumps(manifest, indent=2) + "\n")
     print("wrote", path)
@@ -446,7 +452,7 @@ def stage_manifest_parts(name: str, map_run: str, why: str) -> None:
     )
     manifest["map"] = {"run": map_run, "summary_sha256": sha256_of(map_summary), "cap": cap, "parts_window": window}
     manifest["eligibility_from"] = "the map run's items.jsonl (the same items and seeded sample, not regenerated)"
-    manifest["lens"] = {"jpp": pins.LENS_FILES["jpp"]}
+    manifest["lens"] = {"jpp": list(pins.LENS_SOURCES["jpp"])}
     manifest["parts"] = {
         "full": "δ = h_C - h_B at the question group",
         "lens2": "δ's projection on span{v_I, v_X}, J++'s unit vectors of the two countries; not_lens2 the rest",
@@ -656,7 +662,12 @@ def stage_manifest_swaps(name: str, why: str) -> None:
     )
     manifest["question"] += "the bridge is recalled, and when it is bound in context?"
     manifest["probes"] = {"file": str(PROBES.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(PROBES)}
-    maps = sorted(d.name for d in RESULTS.iterdir() if (d / "summary.json").exists() and d.name.startswith("map"))
+    assert SWAP_LAYERS, f"no exp02 swap band for {pins.TARGET} yet"
+    maps = sorted(
+        d.name
+        for d in RESULTS.iterdir()
+        if (d / "summary.json").exists() and d.name.startswith(pins.RUN_PREFIX + "map")
+    )
     assert maps, "run the map first: the swaps reuse its eligibility and sample"
     manifest["map"] = {"run": maps[-1], "items_sha256": sha256_of(RESULTS / maps[-1] / "items.jsonl")}
     manifest["eligibility_from"] = "the map run's items.jsonl (the same items and seeded sample, not regenerated)"
