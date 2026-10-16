@@ -70,8 +70,11 @@ Then generality: Gemma 4 31B (started), a balanced prompt set beyond places and 
 ## Questions for Neel
 1. Which story is worth sharpening: (2) recalled bridges act through the J-space as in Claude, (3-4) lookup variables
    live outside it and readers cannot tell used from written, or where the line falls (the table above)?
-2. Does "lookup variables live outside the J-space" sound new, or like binding IDs (Feng & Steinhardt 2023) seen
-   through a lens?
+2. Is our lookup result new? A known mechanism could explain it: for facts stated in the prompt ("Emma lives in
+   Egypt"), the model tags the pair with an abstract "binding ID", a label that points to where in the prompt the
+   answer is, rather than carrying the word itself (Feng & Steinhardt 2023). A label is not a word, so a word lens
+   would miss it. Is our result just this seen through the J-lens, or does it add something? Direction (b) would test
+   it.
 3. The lenses' Jacobian is averaged over WikiText, which is rich in countries, cities, languages and people, the
    bridges where our effects sit. Do you expect that to limit the lenses on other kinds of bridges, and would you
    re-estimate it on other text, or first check whether lens-free swaps also fail there?
