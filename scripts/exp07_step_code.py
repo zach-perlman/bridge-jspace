@@ -68,10 +68,21 @@ RESULTS = pins.RESULTS_DIR / EXP
 CODE_FILE = pins.CACHE_DIR / "exp07" / "code.pt"
 SIGMA_FILE = pins.CACHE_DIR / "exp07" / "sigma.pt"
 EXP04 = pins.RESULTS_DIR / "exp04_brew_patch"
-# exp04's window after the start line (patch_map and patch_map_fresh agree): 36-50 on Qwen3.6-27B. Another target's
-# comes from its own exp04 maps and is set here once they are run and read.
-WINDOW: tuple[int, ...] = {"qwen3.6-27b": tuple(range(36, 51, 2))}.get(pins.TARGET, ())
 MAPS = tuple(pins.RUN_PREFIX + m for m in ("patch_map", "patch_map_fresh"))
+
+
+def maps_window() -> tuple[int, ...]:
+    """The after_start layers both exp04 maps put in their window (empty until both have run)."""
+    summaries = [EXP04 / m / "summary.json" for m in MAPS]
+    if not all(s.exists() for s in summaries):
+        return ()
+    windows = [set(json.loads(s.read_text())["decision"]["windows"]["after_start"] or ()) for s in summaries]
+    return tuple(sorted(set.intersection(*windows)))
+
+
+# exp04's window after the start line (patch_map and patch_map_fresh agree): 36-50 on Qwen3.6-27B. Another target's
+# is the same rule on its own exp04 maps: the layers both maps' windows hold.
+WINDOW: tuple[int, ...] = {"qwen3.6-27b": tuple(range(36, 51, 2))}.get(pins.TARGET) or maps_window()
 PARTS_RUNS = {  # exp04's full copies, for the reproduction
     "fresh": pins.RUN_PREFIX + "parts_window_fresh",
     "bank": pins.RUN_PREFIX + "parts_window",
@@ -211,7 +222,7 @@ def stage_manifest(name: str, why: str) -> None:
         "run": name,
         "kind": "step_code",
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "question": "At exp04's window (after the start line, layers 36-50), does a linear code for the intermediate "
+        "question": f"At exp04's window (after the start line, layers {WINDOW[0]}-{WINDOW[-1]}), does a linear code for the intermediate "
         "colour, fit on other items, make the model take X as the step (answer f(X)) where the lens direction v_X - v_I "
         "does not? Does reshaping the lens direction by the activation covariance (Σv) do it?",
         "why": why,

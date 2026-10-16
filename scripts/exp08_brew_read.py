@@ -78,7 +78,7 @@ def stage_manifest(name: str, why: str) -> None:
         "run": name,
         "kind": "brew_read",
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "question": "After the start line, where brew's step is carried (layers 36-50), do the lenses read the "
+        "question": f"After the start line, where brew's step is carried (layers {WINDOW[0]}-{WINDOW[-1]}), do the lenses read the "
         "intermediate I, against a distractor colour equally present in the prompt?",
         "why": why,
         "model": pins.model_pin(),
