@@ -124,12 +124,15 @@ Final figures, numbers and examples per experiment: [results/README.md](results/
 is recomputed from the raw run files by `uv run python scripts/verify_headlines.py`.
 
 **Where things stand (2026-10-15).** On Qwen3.6-27B, for bridges that are a single token, the J-lens and J++ do read
-the bridge, once read at the right place: one word before the end from about layer 23, 19 layers before the answer appears at the last word (exp12). It
+the bridge, once read at the right place: on the last two words, one word before the end from about layer 23, 19
+layers before the answer appears at the last word (exp12; -1 is not a better read site than the last word, Next
+steps 5). It
 acts on the answer from the cue phrase, the words that point to it, and does so apart from the answer's own direction
 (exp14). Readers that put an activation into words, the oracle lens and the NLA, see the bridge and the answer a
 little more often than the lenses at the same place and layer, including about a third to a half of the readings
-where neither lens has the bridge first, and they follow the model's state when a swap changes its answer (exp15,
-exp16). Whether, on those lens-blind readings, they read the state or solve the question themselves is the open
+where neither lens has the bridge first, and after a swap they name its target where it changes the answer (exp15,
+exp16; exp18 shows they report what is written into the vector, so this is not yet evidence of use, Next steps 4).
+Whether, on those lens-blind readings, they read the state or solve the question themselves is the open
 question; the next experiment (exp17, Next steps) is designed to settle it and has not been run. Part B (exp01-04)
 asks the original question with probe swaps; on brew, an in-context lookup, it finds the intermediate carried at four
 positions after the start line at layers 36-50 outside the J-space: the lenses read it there at a few positions,
@@ -181,6 +184,7 @@ each question.
    bridge in the prompt changes none of this (the earlier count of 5 such questions was a substring artifact).
 2. The bridge is readable earlier than the answer, both in the prompt and in depth: one word before the end from about
    layer 23, while the answer appears only at the last word from about layer 44, 19 layers later [15, 27] (exp12).
+   This compares two positions; -1 itself reads no better than the last word (Next steps 5).
 3. Where the bridge is readable, part B's swaps tend to work: questions whose J-space swap flips the answer have the
    bridge ranked first more often (J-lens 73% vs 50%, J++ 70% vs 41% of layers 32-48), but the groups are small and
    the intervals overlap.
@@ -203,7 +207,8 @@ each question.
    (false alarms 4%), mostly where the lenses nearly have it (54% at 2nd-3rd, 22% at 11th or lower). Read at all 11
    layers both find the bridge somewhere in every question (the distractor in a third), so there it adds no question;
    at one layer it adds a few. After the bridge swap it names the swap target where the model's answer changes (67% vs
-   10% where it does not), so it follows the state; but it mostly writes the question out with the bridge filled in,
+   10% where it does not), so the edit reaches the read position there (exp18: not yet evidence that the model uses
+   it, Next steps 4); but it mostly writes the question out with the bridge filled in,
    so on the lens-blind readings it may be solving the question rather than reading the state, which only a cleaner
    test can tell.
 9. A second verbalizer with another training objective, the NLA (exp16, layer 42), agrees: it names the bridge in
@@ -1448,7 +1453,8 @@ against single runs: identical but for degenerate continuations). Figure: `uv ru
 ## Next steps (part A)
 In order. Each item: the question, why it matters now, the test, and its cost. Every GPU run needs human sign-off.
 exp14's pinned run closed the swap experiments; exp15 and exp16 showed two verbalizers naming the bridge where the
-lenses miss it and following the model's state under a swap. What is left is whether that is reading or solving.
+lenses miss it, and the swap target after a swap. exp18 then showed they report what is written into the vector,
+used or not, so neither is in VERIFIED.md yet (item 4). What is left is whether that is reading or solving.
 
 1. **On the lens-blind readings, do the verbalizers read the state or solve the question?** (exp17; designed, not
    run; design from the critic)
@@ -1485,12 +1491,8 @@ lenses miss it and following the model's state under a swap. What is left is whe
      colour written into the vector (a patched state, or a J++ direction the model ignores), as J++ does.
 
 3. **Doubts an independent recount raised (2026-10-16; a fresh script over the raw files, not this repo's code).**
-   Each is a claim above that is weaker than written; none needs GPU to settle or restate.
-   - *"-1 is the read site" (exp12).* -1 beats the last word by +7 points [-3, +17] (J-lens; J++ +8 [-2, +18]): the
-     interval includes 0. Over 200 random half-splits both halves pick -1 in 149 (J-lens) but only 100 (J++, which
-     often picks -3). And it depends on how the prompt ends: the bridge is first at -1 in 76% of layers 32-48 when the
-     prompt ends in "is", 47-48% otherwise. Restate as "readable on the last two words"; align positions by role
-     (the cue phrase's end, the copula) rather than by distance from the end, and report the split by ending.
+   Each is a claim above that is weaker than written; none needs GPU to settle or restate. ("-1 is the read site"
+   is item 5.)
    - *"The trailing space halves what the model answers" (Setup).* That holds for the first-token criterion on the
      lens-eval set (21 vs 61 of 93); under the greedy-continuation criterion on the probe-swap set it barely matters
      (76 vs 77 of 90 correct). Say which criterion each number uses.
@@ -1506,6 +1508,43 @@ lenses miss it and following the model's state under a swap. What is left is whe
    - *One template dominates.* The lens-blind questions and exp15's swap test are mostly the country templates
      ("the capital / continent / language of the country where X is"); repeat the headline splits by category, or
      with the country questions left out.
+
+4. **The verbalizers (exp15, exp16): kept out of VERIFIED.md, and what would put them in.**
+   - *Why not yet:* exp18 (VERIFIED B4) shows both report the colour written into the vector even where the model
+     ignores it: along J++'s direction the model takes the step on 4% of items and the readers name X on 99%. So a
+     verbalizer naming a word shows the word is written there, not that the model uses it. That touches both
+     headlines:
+     - *After the swap* (the oracle names the swap target in 67% of the questions whose answer changes vs 10% where
+       it stays; the NLA 59% vs 11%): the edit is a J++ direction, the kind B4 shows the readers report as written.
+       Unlike B4 the read is downstream of the edit (cue phrase at layers 24-40, read at the last word and -1 at
+       layer 44), the test B4's limits ask for; but the split by answer change may only track how much of the edit
+       reached the read position.
+     - *Lens-blind readings* (oracle 37%, NLA 46%): the oracle's naming falls from 54% where the better lens ranks
+       the bridge 2nd-3rd to 22% at 11th or lower (exp15 above; the NLA alike). That fits a reader more sensitive to
+       the same token directions, not one that sees a part the lenses cannot.
+   - *Tests:*
+     - After the swap: the edit's size at the read position (projection on the swap target's direction, swapped
+       minus clean), then naming in answer-changed vs answer-kept questions at matched size. One capture pass on the
+       GPU (exp15 kept no residuals).
+     - Lens-blind: the Chinese-name rescore, the rank>10 subset with its distractor, and the split without the
+       country templates (all item 3; no GPU).
+     - Reading vs solving: exp17 (item 1).
+   - *Until then, the wording:* "names the bridge more often than the distractor where the lenses rank it 2nd or
+     lower; the effect shrinks as the lens rank drops", and after a swap "names the edit that reached the read
+     position", not "follows the model's state".
+
+5. **"-1 is the read site" (exp12): kept out of VERIFIED.md, and what would put it in.**
+   - *Why not yet:* -1 beats the last word by +7 points [-3, +17] (J-lens; J++ +8 [-2, +18]): the interval includes
+     0. Over 200 random half-splits both halves pick -1 in 149 (J-lens) but only 100 (J++, which often picks -3).
+   - *A hypothesis, found after the fact:* it depends on how the prompt ends. The bridge is first at -1 in 76% of
+     layers 32-48 when the prompt ends in "is" (46 questions), 47-48% otherwise (31). In "...where Lima is located is"
+     -1 is "located", a word the bridge carries over to from the cue word (A3's table of misses), so a high share at
+     -1 may only mean the cue phrase ends near the end of the prompt.
+   - *Tests:* align positions by role (the cue phrase's last word, the word before the copula, the copula) rather than
+     by distance from the end, on the 77 questions (no GPU); then the split by ending on new prompts, with the rule
+     written before the run.
+   - *Until then, the wording:* "readable on the last two words"; the -1 onset (layer 23, 19 layers before the
+     answer at the last word) compares two positions and stands as a description, not as a read site.
 
 Not measured yet, and worth a line in any write-up: **bridges of several tokens.** Every result above is on
 single-token bridges (Setup). A multi-token bridge has no single lens direction to rank, so the lenses would need a
