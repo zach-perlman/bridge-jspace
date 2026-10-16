@@ -72,3 +72,6 @@ Then generality: Gemma 4 31B (started), a balanced prompt set beyond places and 
    live outside it and readers cannot tell used from written, or where the line falls (the table above)?
 2. Does "lookup variables live outside the J-space" sound new, or like binding IDs (Feng & Steinhardt 2023) seen
    through a lens?
+3. The lenses' Jacobian is averaged over WikiText, which is rich in countries, cities, languages and people, the
+   bridges where our effects sit. Do you expect that to limit the lenses on other kinds of bridges, and would you
+   re-estimate it on other text, or first check whether lens-free swaps also fail there?
