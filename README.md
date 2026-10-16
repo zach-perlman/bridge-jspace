@@ -1484,6 +1484,29 @@ lenses miss it and following the model's state under a swap. What is left is whe
      lens-blind cells, with a counterfactual context as the control. Done as exp18: both verbalizers report the
      colour written into the vector (a patched state, or a J++ direction the model ignores), as J++ does.
 
+3. **Doubts an independent recount raised (2026-10-16; a fresh script over the raw files, not this repo's code).**
+   Each is a claim above that is weaker than written; none needs GPU to settle or restate.
+   - *"-1 is the read site" (exp12).* -1 beats the last word by +7 points [-3, +17] (J-lens; J++ +8 [-2, +18]): the
+     interval includes 0. Over 200 random half-splits both halves pick -1 in 149 (J-lens) but only 100 (J++, which
+     often picks -3). And it depends on how the prompt ends: the bridge is first at -1 in 76% of layers 32-48 when the
+     prompt ends in "is", 47-48% otherwise. Restate as "readable on the last two words"; align positions by role
+     (the cue phrase's end, the copula) rather than by distance from the end, and report the split by ending.
+   - *"The trailing space halves what the model answers" (Setup).* That holds for the first-token criterion on the
+     lens-eval set (21 vs 61 of 93); under the greedy-continuation criterion on the probe-swap set it barely matters
+     (76 vs 77 of 90 correct). Say which criterion each number uses.
+   - *The oracle's rates are a lower bound.* 442 of its 693 readings (64%) contain Chinese characters, which the
+     word match cannot see ("巴西" for Brazil without "(Brazil)"); the NLA's have none. Add a checked list of the 97
+     entities' Chinese names to the match and rescore (bridge and distractor alike).
+   - *exp14's pinned result for the J-lens.* Paired on the same questions (McNemar), the held bridge swap beats the
+     held answer swap 13 to 1 for J++ (p = 0.002) but 13 to 4 for the J-lens (p = 0.049): strong for J++, borderline
+     for the J-lens. Report McNemar next to the bootstrap.
+   - *"Where the lenses miss the bridge" is mostly "where they nearly have it".* In the lens-blind readings the better
+     lens ranks the bridge 4th-5th (median); only 27% (oracle) and 18% (NLA) are beyond 10th, 30 and 13 questions.
+     Claims about a part the lens cannot read should rest on that subset alone.
+   - *One template dominates.* The lens-blind questions and exp15's swap test are mostly the country templates
+     ("the capital / continent / language of the country where X is"); repeat the headline splits by category, or
+     with the country questions left out.
+
 Not measured yet, and worth a line in any write-up: **bridges of several tokens.** Every result above is on
 single-token bridges (Setup). A multi-token bridge has no single lens direction to rank, so the lenses would need a
 first-token or summed reading, while the verbalizers can name it as is; this is where they could differ most.
