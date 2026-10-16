@@ -92,9 +92,21 @@ BATCH = 32  # edited generations per batched call (Model.generate_batch)
 CHANCE_DRAWS = 20
 # exp01's J++ probes (variant more_jpp, as v3_jpp behind exp02's main_v4_jpp and exp06), rebuilt on the B200 box:
 # v3_jpp's cache stayed on the old box. The rebuild checks its kept prompts against v3 one by one.
-PROBES = pins.CACHE_DIR / "exp01" / {"qwen3.6-27b": "v3_jpp_b200"}.get(pins.TARGET, "none") / "probes.pt"
-# exp02's band 24-40 on Qwen3.6-27B; another target's band comes from its own exp02 gate (none yet).
-SWAP_LAYERS = {"qwen3.6-27b": tuple(range(24, 41))}.get(pins.TARGET, ())
+# Another target: its own exp01 all_jpp probes.
+PROBES = pins.CACHE_DIR / "exp01" / {"qwen3.6-27b": "v3_jpp_b200"}.get(pins.TARGET, "gemma4it_v3_jpp") / "probes.pt"
+
+
+def gate_band(run: str) -> tuple[int, ...]:
+    """The band an exp02 gate run picked, as layers (empty until the gate has run)."""
+    summary = pins.RESULTS_DIR / "exp02_swaps" / run / "summary.json"
+    if not summary.exists():
+        return ()
+    a, b = json.loads(summary.read_text())["decision"]["band"].split("-")
+    return tuple(range(int(a), int(b) + 1))
+
+
+# exp02's band 24-40 on Qwen3.6-27B; another target's band is the one its own exp02 gate (gate_v4's rule) picked.
+SWAP_LAYERS = {"qwen3.6-27b": tuple(range(24, 41))}.get(pins.TARGET) or gate_band(pins.RUN_PREFIX + "gate_v4")
 SWAP_CONDITIONS = ("jpart", "full_probe", "remainder", "jpart_matched")
 PARTS = ("lens2", "not_lens2", "jspace", "not_jspace")
 
@@ -673,7 +685,9 @@ def stage_manifest_swaps(name: str, why: str) -> None:
     manifest["eligibility_from"] = "the map run's items.jsonl (the same items and seeded sample, not regenerated)"
     manifest["swap"] = {
         "positions": "the cue phrase (R: the city, 'is', 'located'; B: the person, 'lives'), as exp02's cue regime",
-        "layers": f"{SWAP_LAYERS[0]}-{SWAP_LAYERS[-1]} at once (exp02's band); a layer is skipped if I's and X's atoms "
+        "layers": f"{SWAP_LAYERS[0]}-{SWAP_LAYERS[-1]} at once (exp02's band"
+        + ("" if pins.TARGET == "qwen3.6-27b" else f", picked by {pins.RUN_PREFIX}gate_v4")
+        + "); a layer is skipped if I's and X's atoms "
         "are near parallel",
         "conditions": "exp02's: the J-part, the full probe, the remainder, the matched-alignment direction (the J-part's "
         "cosine to the probe, the rest random); atoms I and X swapped by the coordinate clamp",
