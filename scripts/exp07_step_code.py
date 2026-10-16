@@ -215,7 +215,7 @@ def stage_manifest(name: str, why: str) -> None:
     for run in MAPS:
         summary = EXP04 / run / "summary.json"
         window = json.loads(summary.read_text())["decision"]["windows"]["after_start"]
-        assert tuple(window) == WINDOW, f"{run}'s window {window} is not {WINDOW}"
+        assert set(WINDOW) <= set(window), f"{run}'s window {window} does not hold {WINDOW}"
         maps[run] = {"summary_sha256": sha256_of(summary), "window_after_start": window}
     manifest = {
         "exp": EXP,
@@ -227,7 +227,16 @@ def stage_manifest(name: str, why: str) -> None:
         "does not? Does reshaping the lens direction by the activation covariance (Σv) do it?",
         "why": why,
         "model": pins.model_pin(),
-        "window": {"layers": list(WINDOW), "positions": "after_start (everything after the start line)", "maps": maps},
+        "window": {
+            "layers": list(WINDOW),
+            "positions": "after_start (everything after the start line)",
+            "maps": maps,
+            **(
+                {}
+                if len({tuple(m["window_after_start"]) for m in maps.values()}) == 1
+                else {"rule": "the maps' windows differ; the human chose the layers both hold (2026-10-16)"}
+            ),
+        },
         "fit": {
             "items": {"file": str(pins.BREW_FIT_FILE.relative_to(pins.REPO_ROOT)), "sha256": pins.BREW_FIT_SHA256},
             "gate": "the model's greedy answer is A (exp03's reading)",
