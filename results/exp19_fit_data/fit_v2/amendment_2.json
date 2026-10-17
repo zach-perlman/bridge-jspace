@@ -1,0 +1,7 @@
+{
+  "amends": "manifest.json of this run, which is left unchanged (see also amendment_1.json)",
+  "written_utc": "2026-10-17T01:28:12Z",
+  "change": "an early eval, asked for by the human (Zach) on 2026-10-17 to see wiki_a vs math before the run ends. Once chat lenses are saved, the run is stopped (before mix writes anything), the evaluate call of run_fits.sh is run on the lenses fitted so far (wiki_a, math, chat: J++ and pooled) with the same references (published J++, J-lens n1000, logit), and the run resumes with mix and the planned final eval.",
+  "outputs": "results/exp19_fit_data/fit_v2/early/eval_ranks.csv (+ _pass_at_k.csv, _stamp.json); logs log/exp19-fit_v2-early.log, log/exp19-fit_v2-early-eval.log, log/exp19-fit_v2-resume2.log",
+  "status": "interim: the decision rules are unchanged and are applied to the final eval; the final eval scores the same lenses again, so the two must agree (a determinism check)"
+}

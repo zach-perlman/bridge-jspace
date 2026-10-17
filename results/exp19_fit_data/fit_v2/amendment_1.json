@@ -1,0 +1,8 @@
+{
+  "amends": "manifest.json of this run, which is left unchanged",
+  "written_utc": "2026-10-16T22:56:49Z",
+  "change": "wiki_b is not fitted or scored: cancelled by the human (Zach) on 2026-10-16 while math was fitting. wiki_a and math were fitted first and are unaffected; chat and mix follow as planned.",
+  "how": "run_fits.sh is stopped right after math lenses are saved (before wiki_b writes anything) and restarted on the same run with CONDS=\"wiki_a math chat mix\"; finished stages are skipped because their files exist. Logs: log/exp19-fit_v2.log up to the stop, log/exp19-fit_v2-switch.log, log/exp19-fit_v2-resume.log after.",
+  "consequence": "decision.noise_floor (|wiki_b - wiki_a|) is not measured, so the clause \"larger in size than the noise floor\" of decision.domain_changes_family cannot be checked. Differences from wiki_a are reported with the paired bootstrap CI over items only, which does not include the variation between two fits on different WikiText draws.",
+  "unchanged": "pools, fit recipe, evals, H1-H3, seeds"
+}
