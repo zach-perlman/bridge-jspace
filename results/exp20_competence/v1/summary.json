@@ -1,0 +1,1562 @@
+{
+  "n_prompts": 33870,
+  "as_run": {
+    "probe_swap": "raw",
+    "R": "raw",
+    "B": "raw",
+    "L": "raw",
+    "RL": "raw",
+    "brew_bank": "chat_prefill",
+    "brew_fresh": "chat_prefill",
+    "brew_test": "chat_prefill"
+  },
+  "cells": {
+    "probe_swap": {
+      "raw": {
+        "clean": {
+          "n": 90,
+          "correct": 77,
+          "rate": 0.8555555555555555,
+          "ci": [
+            0.7683993769120605,
+            0.9136009299880774
+          ],
+          "reliable": false,
+          "median_p_answer": 0.6391129493713379,
+          "n_p_answer": 90,
+          "wrong_roles": {
+            "wrong": 13
+          }
+        }
+      },
+      "chat": {
+        "clean": {
+          "n": 90,
+          "correct": 77,
+          "rate": 0.8555555555555555,
+          "ci": [
+            0.7683993769120605,
+            0.9136009299880774
+          ],
+          "reliable": false,
+          "median_p_answer": 0.972266674041748,
+          "n_p_answer": 90,
+          "wrong_roles": {
+            "wrong": 13
+          }
+        }
+      },
+      "chat_prefill": {
+        "clean": {
+          "n": 90,
+          "correct": 76,
+          "rate": 0.8444444444444444,
+          "ci": [
+            0.755669687335892,
+            0.9050181099736166
+          ],
+          "reliable": false,
+          "median_p_answer": 0.8091714978218079,
+          "n_p_answer": 90,
+          "wrong_roles": {
+            "wrong": 14
+          }
+        }
+      }
+    },
+    "brew_bank": {
+      "chat": {
+        "clean": {
+          "n": 100,
+          "correct": 100,
+          "rate": 1.0,
+          "ci": [
+            0.9630051925239981,
+            0.9999999999999999
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9725325703620911,
+          "n_p_answer": 100,
+          "wrong_roles": {}
+        },
+        "hop1": {
+          "n": 100,
+          "correct": 100,
+          "rate": 1.0,
+          "ci": [
+            0.9630051925239981,
+            0.9999999999999999
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9998469948768616,
+          "n_p_answer": 100,
+          "wrong_roles": {}
+        },
+        "hop2": {
+          "n": 100,
+          "correct": 100,
+          "rate": 1.0,
+          "ci": [
+            0.9630051925239981,
+            0.9999999999999999
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9998347759246826,
+          "n_p_answer": 100,
+          "wrong_roles": {}
+        }
+      },
+      "chat_prefill": {
+        "clean": {
+          "n": 100,
+          "correct": 100,
+          "rate": 1.0,
+          "ci": [
+            0.9630051925239981,
+            0.9999999999999999
+          ],
+          "reliable": true,
+          "median_p_answer": 0.7907586991786957,
+          "n_p_answer": 100,
+          "wrong_roles": {}
+        },
+        "hop1": {
+          "n": 100,
+          "correct": 100,
+          "rate": 1.0,
+          "ci": [
+            0.9630051925239981,
+            0.9999999999999999
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9638012945652008,
+          "n_p_answer": 100,
+          "wrong_roles": {}
+        },
+        "hop2": {
+          "n": 100,
+          "correct": 100,
+          "rate": 1.0,
+          "ci": [
+            0.9630051925239981,
+            0.9999999999999999
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9677481949329376,
+          "n_p_answer": 100,
+          "wrong_roles": {}
+        }
+      }
+    },
+    "brew_fresh": {
+      "chat": {
+        "clean": {
+          "n": 200,
+          "correct": 178,
+          "rate": 0.89,
+          "ci": [
+            0.8390720169908702,
+            0.9262280983928396
+          ],
+          "reliable": false,
+          "median_p_answer": 0.88263139128685,
+          "n_p_answer": 200,
+          "wrong_roles": {
+            "intermediate": 13,
+            "other": 9
+          }
+        },
+        "hop1": {
+          "n": 200,
+          "correct": 200,
+          "rate": 1.0,
+          "ci": [
+            0.9811539940816791,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9998404085636139,
+          "n_p_answer": 200,
+          "wrong_roles": {}
+        },
+        "hop2": {
+          "n": 200,
+          "correct": 200,
+          "rate": 1.0,
+          "ci": [
+            0.9811539940816791,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9998274445533752,
+          "n_p_answer": 200,
+          "wrong_roles": {}
+        }
+      },
+      "chat_prefill": {
+        "clean": {
+          "n": 200,
+          "correct": 177,
+          "rate": 0.885,
+          "ci": [
+            0.8333517476611362,
+            0.9221368277817569
+          ],
+          "reliable": false,
+          "median_p_answer": 0.611221581697464,
+          "n_p_answer": 200,
+          "wrong_roles": {
+            "intermediate": 12,
+            "start": 1,
+            "other": 10
+          }
+        },
+        "hop1": {
+          "n": 200,
+          "correct": 200,
+          "rate": 1.0,
+          "ci": [
+            0.9811539940816791,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9629729390144348,
+          "n_p_answer": 200,
+          "wrong_roles": {}
+        },
+        "hop2": {
+          "n": 200,
+          "correct": 200,
+          "rate": 1.0,
+          "ci": [
+            0.9811539940816791,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9630183577537537,
+          "n_p_answer": 200,
+          "wrong_roles": {}
+        }
+      }
+    },
+    "brew_test": {
+      "chat": {
+        "clean": {
+          "n": 600,
+          "correct": 519,
+          "rate": 0.865,
+          "ci": [
+            0.8353226948455217,
+            0.8900330938248846
+          ],
+          "reliable": false,
+          "median_p_answer": 0.893051266670227,
+          "n_p_answer": 600,
+          "wrong_roles": {
+            "intermediate": 40,
+            "other": 37,
+            "start": 4
+          }
+        },
+        "hop1": {
+          "n": 600,
+          "correct": 600,
+          "rate": 1.0,
+          "ci": [
+            0.9936380666717896,
+            1.0000000000000002
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9998272955417633,
+          "n_p_answer": 600,
+          "wrong_roles": {}
+        },
+        "hop2": {
+          "n": 600,
+          "correct": 600,
+          "rate": 1.0,
+          "ci": [
+            0.9936380666717896,
+            1.0000000000000002
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9998244047164917,
+          "n_p_answer": 600,
+          "wrong_roles": {}
+        }
+      },
+      "chat_prefill": {
+        "clean": {
+          "n": 600,
+          "correct": 522,
+          "rate": 0.87,
+          "ci": [
+            0.8407188572433667,
+            0.8945733120937575
+          ],
+          "reliable": false,
+          "median_p_answer": 0.6106314957141876,
+          "n_p_answer": 600,
+          "wrong_roles": {
+            "intermediate": 43,
+            "other": 33,
+            "start": 2
+          }
+        },
+        "hop1": {
+          "n": 600,
+          "correct": 600,
+          "rate": 1.0,
+          "ci": [
+            0.9936380666717896,
+            1.0000000000000002
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9634158611297607,
+          "n_p_answer": 600,
+          "wrong_roles": {}
+        },
+        "hop2": {
+          "n": 600,
+          "correct": 600,
+          "rate": 1.0,
+          "ci": [
+            0.9936380666717896,
+            1.0000000000000002
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9620656073093414,
+          "n_p_answer": 600,
+          "wrong_roles": {}
+        }
+      }
+    },
+    "R": {
+      "raw": {
+        "clean": {
+          "n": 360,
+          "correct": 274,
+          "rate": 0.7611111111111111,
+          "ci": [
+            0.7144526270737506,
+            0.8022557427223365
+          ],
+          "reliable": false,
+          "median_p_answer": 0.20431366562843323,
+          "n_p_answer": 360,
+          "wrong_roles": {
+            "target": 19,
+            "none": 61,
+            "third": 6
+          }
+        },
+        "cf": {
+          "n": 360,
+          "correct": 277,
+          "rate": 0.7694444444444445,
+          "ci": [
+            0.7232272166309383,
+            0.8099718458182156
+          ],
+          "reliable": false,
+          "median_p_answer": 0.2157030627131462,
+          "n_p_answer": 360,
+          "wrong_roles": {
+            "none": 66,
+            "third": 9,
+            "bridge": 8
+          }
+        },
+        "off": {
+          "n": 360,
+          "correct": 271,
+          "rate": 0.7527777777777778,
+          "ci": [
+            0.7057006758206902,
+            0.7945170013223303
+          ],
+          "reliable": false,
+          "median_p_answer": 0.20709281414747238,
+          "n_p_answer": 360,
+          "wrong_roles": {
+            "none": 69,
+            "third": 15,
+            "target": 5
+          }
+        },
+        "hop1": {
+          "n": 360,
+          "correct": 359,
+          "rate": 0.9972222222222222,
+          "ci": [
+            0.9844351634050557,
+            0.9995094982279189
+          ],
+          "reliable": true,
+          "median_p_answer": 0.7731139361858368,
+          "n_p_answer": 360,
+          "wrong_roles": {
+            "none": 1
+          }
+        },
+        "hop2": {
+          "n": 360,
+          "correct": 360,
+          "rate": 1.0,
+          "ci": [
+            0.9894415591839967,
+            1.0000000000000002
+          ],
+          "reliable": true,
+          "median_p_answer": 0.8181968033313751,
+          "n_p_answer": 360,
+          "wrong_roles": {}
+        }
+      },
+      "chat": {
+        "clean": {
+          "n": 360,
+          "correct": 360,
+          "rate": 1.0,
+          "ci": [
+            0.9894415591839967,
+            1.0000000000000002
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9946950078010559,
+          "n_p_answer": 360,
+          "wrong_roles": {}
+        },
+        "cf": {
+          "n": 360,
+          "correct": 360,
+          "rate": 1.0,
+          "ci": [
+            0.9894415591839967,
+            1.0000000000000002
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9942305982112885,
+          "n_p_answer": 360,
+          "wrong_roles": {}
+        },
+        "off": {
+          "n": 360,
+          "correct": 360,
+          "rate": 1.0,
+          "ci": [
+            0.9894415591839967,
+            1.0000000000000002
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9946426451206207,
+          "n_p_answer": 360,
+          "wrong_roles": {}
+        },
+        "hop1": {
+          "n": 360,
+          "correct": 360,
+          "rate": 1.0,
+          "ci": [
+            0.9894415591839967,
+            1.0000000000000002
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9975965917110443,
+          "n_p_answer": 360,
+          "wrong_roles": {}
+        },
+        "hop2": {
+          "n": 360,
+          "correct": 360,
+          "rate": 1.0,
+          "ci": [
+            0.9894415591839967,
+            1.0000000000000002
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9947642683982849,
+          "n_p_answer": 360,
+          "wrong_roles": {}
+        }
+      },
+      "chat_prefill": {
+        "clean": {
+          "n": 360,
+          "correct": 360,
+          "rate": 1.0,
+          "ci": [
+            0.9894415591839967,
+            1.0000000000000002
+          ],
+          "reliable": true,
+          "median_p_answer": 0.8118706941604614,
+          "n_p_answer": 360,
+          "wrong_roles": {}
+        },
+        "cf": {
+          "n": 360,
+          "correct": 360,
+          "rate": 1.0,
+          "ci": [
+            0.9894415591839967,
+            1.0000000000000002
+          ],
+          "reliable": true,
+          "median_p_answer": 0.822871059179306,
+          "n_p_answer": 360,
+          "wrong_roles": {}
+        },
+        "off": {
+          "n": 360,
+          "correct": 360,
+          "rate": 1.0,
+          "ci": [
+            0.9894415591839967,
+            1.0000000000000002
+          ],
+          "reliable": true,
+          "median_p_answer": 0.8113004565238953,
+          "n_p_answer": 360,
+          "wrong_roles": {}
+        },
+        "hop1": {
+          "n": 360,
+          "correct": 360,
+          "rate": 1.0,
+          "ci": [
+            0.9894415591839967,
+            1.0000000000000002
+          ],
+          "reliable": true,
+          "median_p_answer": 0.8413665294647217,
+          "n_p_answer": 360,
+          "wrong_roles": {}
+        },
+        "hop2": {
+          "n": 360,
+          "correct": 360,
+          "rate": 1.0,
+          "ci": [
+            0.9894415591839967,
+            1.0000000000000002
+          ],
+          "reliable": true,
+          "median_p_answer": 0.8823434710502625,
+          "n_p_answer": 360,
+          "wrong_roles": {}
+        }
+      }
+    },
+    "B": {
+      "raw": {
+        "clean": {
+          "n": 400,
+          "correct": 378,
+          "rate": 0.945,
+          "ci": [
+            0.9181319717303434,
+            0.9634017781359406
+          ],
+          "reliable": true,
+          "median_p_answer": 0.3005433827638626,
+          "n_p_answer": 400,
+          "wrong_roles": {
+            "none": 12,
+            "target": 5,
+            "third": 5
+          }
+        },
+        "cf": {
+          "n": 400,
+          "correct": 377,
+          "rate": 0.9425,
+          "ci": [
+            0.9151985747985072,
+            0.9613827382707756
+          ],
+          "reliable": true,
+          "median_p_answer": 0.31111669540405273,
+          "n_p_answer": 400,
+          "wrong_roles": {
+            "none": 13,
+            "third": 2,
+            "bridge": 8
+          }
+        },
+        "off": {
+          "n": 400,
+          "correct": 369,
+          "rate": 0.9225,
+          "ci": [
+            0.8920944082797374,
+            0.9448674104135325
+          ],
+          "reliable": true,
+          "median_p_answer": 0.30050207674503326,
+          "n_p_answer": 400,
+          "wrong_roles": {
+            "none": 14,
+            "target": 10,
+            "third": 7
+          }
+        },
+        "hop1": {
+          "n": 400,
+          "correct": 78,
+          "rate": 0.195,
+          "ci": [
+            0.15915003771249597,
+            0.23665267305330928
+          ],
+          "reliable": false,
+          "median_p_answer": 0.14308910816907883,
+          "n_p_answer": 400,
+          "wrong_roles": {
+            "none": 159,
+            "third": 84,
+            "target": 71,
+            "other": 8
+          }
+        },
+        "hop2": {
+          "n": 400,
+          "correct": 400,
+          "rate": 1.0,
+          "ci": [
+            0.9904873594003194,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.8158961534500122,
+          "n_p_answer": 400,
+          "wrong_roles": {}
+        }
+      },
+      "chat": {
+        "clean": {
+          "n": 400,
+          "correct": 400,
+          "rate": 1.0,
+          "ci": [
+            0.9904873594003194,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9943466782569885,
+          "n_p_answer": 400,
+          "wrong_roles": {}
+        },
+        "cf": {
+          "n": 400,
+          "correct": 400,
+          "rate": 1.0,
+          "ci": [
+            0.9904873594003194,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9946897029876709,
+          "n_p_answer": 400,
+          "wrong_roles": {}
+        },
+        "off": {
+          "n": 400,
+          "correct": 400,
+          "rate": 1.0,
+          "ci": [
+            0.9904873594003194,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9944343268871307,
+          "n_p_answer": 400,
+          "wrong_roles": {}
+        },
+        "hop1": {
+          "n": 400,
+          "correct": 400,
+          "rate": 1.0,
+          "ci": [
+            0.9904873594003194,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9956020414829254,
+          "n_p_answer": 400,
+          "wrong_roles": {}
+        },
+        "hop2": {
+          "n": 400,
+          "correct": 400,
+          "rate": 1.0,
+          "ci": [
+            0.9904873594003194,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9949375092983246,
+          "n_p_answer": 400,
+          "wrong_roles": {}
+        }
+      },
+      "chat_prefill": {
+        "clean": {
+          "n": 400,
+          "correct": 400,
+          "rate": 1.0,
+          "ci": [
+            0.9904873594003194,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.8831733167171478,
+          "n_p_answer": 400,
+          "wrong_roles": {}
+        },
+        "cf": {
+          "n": 400,
+          "correct": 400,
+          "rate": 1.0,
+          "ci": [
+            0.9904873594003194,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.8822774589061737,
+          "n_p_answer": 400,
+          "wrong_roles": {}
+        },
+        "off": {
+          "n": 400,
+          "correct": 400,
+          "rate": 1.0,
+          "ci": [
+            0.9904873594003194,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.8842842876911163,
+          "n_p_answer": 400,
+          "wrong_roles": {}
+        },
+        "hop1": {
+          "n": 400,
+          "correct": 400,
+          "rate": 1.0,
+          "ci": [
+            0.9904873594003194,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.8909383416175842,
+          "n_p_answer": 400,
+          "wrong_roles": {}
+        },
+        "hop2": {
+          "n": 400,
+          "correct": 400,
+          "rate": 1.0,
+          "ci": [
+            0.9904873594003194,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.8786773681640625,
+          "n_p_answer": 400,
+          "wrong_roles": {}
+        }
+      }
+    },
+    "L": {
+      "raw": {
+        "clean": {
+          "n": 400,
+          "correct": 394,
+          "rate": 0.985,
+          "ci": [
+            0.9676649364884468,
+            0.993107802129863
+          ],
+          "reliable": true,
+          "median_p_answer": 0.48184649646282196,
+          "n_p_answer": 400,
+          "wrong_roles": {
+            "none": 6
+          }
+        },
+        "cf": {
+          "n": 400,
+          "correct": 394,
+          "rate": 0.985,
+          "ci": [
+            0.9676649364884468,
+            0.993107802129863
+          ],
+          "reliable": true,
+          "median_p_answer": 0.470196932554245,
+          "n_p_answer": 400,
+          "wrong_roles": {
+            "none": 6
+          }
+        },
+        "off": {
+          "n": 400,
+          "correct": 393,
+          "rate": 0.9825,
+          "ci": [
+            0.9643224844820973,
+            0.9914978173392109
+          ],
+          "reliable": true,
+          "median_p_answer": 0.47520096600055695,
+          "n_p_answer": 400,
+          "wrong_roles": {
+            "none": 7
+          }
+        },
+        "hop1": {
+          "n": 400,
+          "correct": 6,
+          "rate": 0.015,
+          "ci": [
+            0.006892197870136998,
+            0.03233506351155325
+          ],
+          "reliable": false,
+          "median_p_answer": 0.12436482310295105,
+          "n_p_answer": 400,
+          "wrong_roles": {
+            "none": 394
+          }
+        },
+        "hop2": {
+          "n": 400,
+          "correct": 275,
+          "rate": 0.6875,
+          "ci": [
+            0.6404735607938833,
+            0.7309591989812364
+          ],
+          "reliable": false,
+          "median_p_answer": 0.1979156956076622,
+          "n_p_answer": 400,
+          "wrong_roles": {
+            "other": 111,
+            "third": 6,
+            "target": 8
+          }
+        }
+      },
+      "chat": {
+        "clean": {
+          "n": 400,
+          "correct": 400,
+          "rate": 1.0,
+          "ci": [
+            0.9904873594003194,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9736463725566864,
+          "n_p_answer": 400,
+          "wrong_roles": {}
+        },
+        "cf": {
+          "n": 400,
+          "correct": 400,
+          "rate": 1.0,
+          "ci": [
+            0.9904873594003194,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9725604951381683,
+          "n_p_answer": 400,
+          "wrong_roles": {}
+        },
+        "off": {
+          "n": 400,
+          "correct": 400,
+          "rate": 1.0,
+          "ci": [
+            0.9904873594003194,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9736496806144714,
+          "n_p_answer": 400,
+          "wrong_roles": {}
+        },
+        "hop1": {
+          "n": 400,
+          "correct": 400,
+          "rate": 1.0,
+          "ci": [
+            0.9904873594003194,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9871009290218353,
+          "n_p_answer": 400,
+          "wrong_roles": {}
+        },
+        "hop2": {
+          "n": 400,
+          "correct": 400,
+          "rate": 1.0,
+          "ci": [
+            0.9904873594003194,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9881637096405029,
+          "n_p_answer": 400,
+          "wrong_roles": {}
+        }
+      },
+      "chat_prefill": {
+        "clean": {
+          "n": 400,
+          "correct": 400,
+          "rate": 1.0,
+          "ci": [
+            0.9904873594003194,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.8955655097961426,
+          "n_p_answer": 400,
+          "wrong_roles": {}
+        },
+        "cf": {
+          "n": 400,
+          "correct": 400,
+          "rate": 1.0,
+          "ci": [
+            0.9904873594003194,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.8949505388736725,
+          "n_p_answer": 400,
+          "wrong_roles": {}
+        },
+        "off": {
+          "n": 400,
+          "correct": 400,
+          "rate": 1.0,
+          "ci": [
+            0.9904873594003194,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.894485354423523,
+          "n_p_answer": 400,
+          "wrong_roles": {}
+        },
+        "hop1": {
+          "n": 400,
+          "correct": 400,
+          "rate": 1.0,
+          "ci": [
+            0.9904873594003194,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9244713187217712,
+          "n_p_answer": 400,
+          "wrong_roles": {}
+        },
+        "hop2": {
+          "n": 400,
+          "correct": 400,
+          "rate": 1.0,
+          "ci": [
+            0.9904873594003194,
+            1.0
+          ],
+          "reliable": true,
+          "median_p_answer": 0.8772645890712738,
+          "n_p_answer": 400,
+          "wrong_roles": {}
+        }
+      }
+    },
+    "RL": {
+      "raw": {
+        "clean": {
+          "n": 720,
+          "correct": 693,
+          "rate": 0.9625,
+          "ci": [
+            0.9459889734341695,
+            0.9741018309628144
+          ],
+          "reliable": true,
+          "median_p_answer": 0.4893146902322769,
+          "n_p_answer": 720,
+          "wrong_roles": {
+            "other": 24,
+            "third": 2,
+            "none": 1
+          }
+        },
+        "cf": {
+          "n": 720,
+          "correct": 705,
+          "rate": 0.9791666666666666,
+          "ci": [
+            0.9659123548362704,
+            0.9873348749443888
+          ],
+          "reliable": true,
+          "median_p_answer": 0.4770840257406235,
+          "n_p_answer": 720,
+          "wrong_roles": {
+            "other": 15
+          }
+        },
+        "off": {
+          "n": 720,
+          "correct": 698,
+          "rate": 0.9694444444444444,
+          "ci": [
+            0.9541694896934299,
+            0.9797364919467522
+          ],
+          "reliable": true,
+          "median_p_answer": 0.49136894941329956,
+          "n_p_answer": 720,
+          "wrong_roles": {
+            "other": 20,
+            "target": 2
+          }
+        },
+        "hop1": {
+          "n": 720,
+          "correct": 720,
+          "rate": 1.0,
+          "ci": [
+            0.9946927615102529,
+            0.9999999999999999
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9225998520851135,
+          "n_p_answer": 720,
+          "wrong_roles": {}
+        },
+        "hop2": {
+          "n": 720,
+          "correct": 492,
+          "rate": 0.6833333333333333,
+          "ci": [
+            0.6484579185071426,
+            0.7162627607132834
+          ],
+          "reliable": false,
+          "median_p_answer": 0.19135811179876328,
+          "n_p_answer": 720,
+          "wrong_roles": {
+            "other": 180,
+            "third": 23,
+            "none": 6,
+            "target": 19
+          }
+        }
+      },
+      "chat": {
+        "clean": {
+          "n": 720,
+          "correct": 718,
+          "rate": 0.9972222222222222,
+          "ci": [
+            0.9899287723292619,
+            0.999237918283712
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9697962701320648,
+          "n_p_answer": 720,
+          "wrong_roles": {
+            "third": 2
+          }
+        },
+        "cf": {
+          "n": 720,
+          "correct": 719,
+          "rate": 0.9986111111111111,
+          "ci": [
+            0.9921749348331965,
+            0.9997547912284166
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9668269455432892,
+          "n_p_answer": 720,
+          "wrong_roles": {
+            "third": 1
+          }
+        },
+        "off": {
+          "n": 720,
+          "correct": 718,
+          "rate": 0.9972222222222222,
+          "ci": [
+            0.9899287723292619,
+            0.999237918283712
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9704210460186005,
+          "n_p_answer": 720,
+          "wrong_roles": {
+            "target": 2
+          }
+        },
+        "hop1": {
+          "n": 720,
+          "correct": 720,
+          "rate": 1.0,
+          "ci": [
+            0.9946927615102529,
+            0.9999999999999999
+          ],
+          "reliable": true,
+          "median_p_answer": 0.994513750076294,
+          "n_p_answer": 720,
+          "wrong_roles": {}
+        },
+        "hop2": {
+          "n": 720,
+          "correct": 720,
+          "rate": 1.0,
+          "ci": [
+            0.9946927615102529,
+            0.9999999999999999
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9873610138893127,
+          "n_p_answer": 720,
+          "wrong_roles": {}
+        }
+      },
+      "chat_prefill": {
+        "clean": {
+          "n": 720,
+          "correct": 717,
+          "rate": 0.9958333333333333,
+          "ci": [
+            0.9878216624668026,
+            0.9985819926975317
+          ],
+          "reliable": true,
+          "median_p_answer": 0.8586876392364502,
+          "n_p_answer": 720,
+          "wrong_roles": {
+            "third": 2,
+            "target": 1
+          }
+        },
+        "cf": {
+          "n": 720,
+          "correct": 719,
+          "rate": 0.9986111111111111,
+          "ci": [
+            0.9921749348331965,
+            0.9997547912284166
+          ],
+          "reliable": true,
+          "median_p_answer": 0.856766551733017,
+          "n_p_answer": 720,
+          "wrong_roles": {
+            "third": 1
+          }
+        },
+        "off": {
+          "n": 720,
+          "correct": 717,
+          "rate": 0.9958333333333333,
+          "ci": [
+            0.9878216624668026,
+            0.9985819926975317
+          ],
+          "reliable": true,
+          "median_p_answer": 0.8567453622817993,
+          "n_p_answer": 720,
+          "wrong_roles": {
+            "target": 3
+          }
+        },
+        "hop1": {
+          "n": 720,
+          "correct": 720,
+          "rate": 1.0,
+          "ci": [
+            0.9946927615102529,
+            0.9999999999999999
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9015524387359619,
+          "n_p_answer": 720,
+          "wrong_roles": {}
+        },
+        "hop2": {
+          "n": 720,
+          "correct": 720,
+          "rate": 1.0,
+          "ci": [
+            0.9946927615102529,
+            0.9999999999999999
+          ],
+          "reliable": true,
+          "median_p_answer": 0.8760128617286682,
+          "n_p_answer": 720,
+          "wrong_roles": {}
+        }
+      }
+    }
+  },
+  "joint": {
+    "probe_swap": {
+      "raw": {},
+      "chat": {},
+      "chat_prefill": {}
+    },
+    "brew_bank": {
+      "chat": {
+        "both_hops": {
+          "n": 100,
+          "correct": 100
+        },
+        "clean_given_both_hops": {
+          "rate": 1.0,
+          "lo": 0.9630051925239981,
+          "hi": 0.9999999999999999,
+          "n": 100,
+          "correct": 100
+        }
+      },
+      "chat_prefill": {
+        "both_hops": {
+          "n": 100,
+          "correct": 100
+        },
+        "clean_given_both_hops": {
+          "rate": 1.0,
+          "lo": 0.9630051925239981,
+          "hi": 0.9999999999999999,
+          "n": 100,
+          "correct": 100
+        }
+      }
+    },
+    "brew_fresh": {
+      "chat": {
+        "both_hops": {
+          "n": 200,
+          "correct": 200
+        },
+        "clean_given_both_hops": {
+          "rate": 0.89,
+          "lo": 0.8390720169908702,
+          "hi": 0.9262280983928396,
+          "n": 200,
+          "correct": 178
+        }
+      },
+      "chat_prefill": {
+        "both_hops": {
+          "n": 200,
+          "correct": 200
+        },
+        "clean_given_both_hops": {
+          "rate": 0.885,
+          "lo": 0.8333517476611362,
+          "hi": 0.9221368277817569,
+          "n": 200,
+          "correct": 177
+        }
+      }
+    },
+    "brew_test": {
+      "chat": {
+        "both_hops": {
+          "n": 600,
+          "correct": 600
+        },
+        "clean_given_both_hops": {
+          "rate": 0.865,
+          "lo": 0.8353226948455217,
+          "hi": 0.8900330938248846,
+          "n": 600,
+          "correct": 519
+        }
+      },
+      "chat_prefill": {
+        "both_hops": {
+          "n": 600,
+          "correct": 600
+        },
+        "clean_given_both_hops": {
+          "rate": 0.87,
+          "lo": 0.8407188572433667,
+          "hi": 0.8945733120937575,
+          "n": 600,
+          "correct": 522
+        }
+      }
+    },
+    "R": {
+      "raw": {
+        "all_three": {
+          "rate": 0.525,
+          "lo": 0.4734224846892261,
+          "hi": 0.5760495932699738,
+          "n": 360,
+          "correct": 189
+        },
+        "both_hops": {
+          "n": 360,
+          "correct": 359
+        },
+        "clean_given_both_hops": {
+          "rate": 0.7604456824512534,
+          "lo": 0.7136846217410641,
+          "hi": 0.8016917849333635,
+          "n": 359,
+          "correct": 273
+        }
+      },
+      "chat": {
+        "all_three": {
+          "rate": 1.0,
+          "lo": 0.9894415591839967,
+          "hi": 1.0000000000000002,
+          "n": 360,
+          "correct": 360
+        },
+        "both_hops": {
+          "n": 360,
+          "correct": 360
+        },
+        "clean_given_both_hops": {
+          "rate": 1.0,
+          "lo": 0.9894415591839967,
+          "hi": 1.0000000000000002,
+          "n": 360,
+          "correct": 360
+        }
+      },
+      "chat_prefill": {
+        "all_three": {
+          "rate": 1.0,
+          "lo": 0.9894415591839967,
+          "hi": 1.0000000000000002,
+          "n": 360,
+          "correct": 360
+        },
+        "both_hops": {
+          "n": 360,
+          "correct": 360
+        },
+        "clean_given_both_hops": {
+          "rate": 1.0,
+          "lo": 0.9894415591839967,
+          "hi": 1.0000000000000002,
+          "n": 360,
+          "correct": 360
+        }
+      }
+    },
+    "B": {
+      "raw": {
+        "all_three": {
+          "rate": 0.8625,
+          "lo": 0.825287326885749,
+          "hi": 0.8928160086794825,
+          "n": 400,
+          "correct": 345
+        },
+        "both_hops": {
+          "n": 400,
+          "correct": 78
+        },
+        "clean_given_both_hops": {
+          "rate": 0.9102564102564102,
+          "lo": 0.8261508440896974,
+          "hi": 0.955847552813589,
+          "n": 78,
+          "correct": 71
+        }
+      },
+      "chat": {
+        "all_three": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "n": 400,
+          "correct": 400
+        },
+        "both_hops": {
+          "n": 400,
+          "correct": 400
+        },
+        "clean_given_both_hops": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "n": 400,
+          "correct": 400
+        }
+      },
+      "chat_prefill": {
+        "all_three": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "n": 400,
+          "correct": 400
+        },
+        "both_hops": {
+          "n": 400,
+          "correct": 400
+        },
+        "clean_given_both_hops": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "n": 400,
+          "correct": 400
+        }
+      }
+    },
+    "L": {
+      "raw": {
+        "all_three": {
+          "rate": 0.9625,
+          "lo": 0.9390556322866757,
+          "hi": 0.9771451751586198,
+          "n": 400,
+          "correct": 385
+        },
+        "both_hops": {
+          "n": 400,
+          "correct": 4
+        },
+        "clean_given_both_hops": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "n": 4,
+          "correct": 4
+        }
+      },
+      "chat": {
+        "all_three": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "n": 400,
+          "correct": 400
+        },
+        "both_hops": {
+          "n": 400,
+          "correct": 400
+        },
+        "clean_given_both_hops": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "n": 400,
+          "correct": 400
+        }
+      },
+      "chat_prefill": {
+        "all_three": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "n": 400,
+          "correct": 400
+        },
+        "both_hops": {
+          "n": 400,
+          "correct": 400
+        },
+        "clean_given_both_hops": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "n": 400,
+          "correct": 400
+        }
+      }
+    },
+    "RL": {
+      "raw": {
+        "all_three": {
+          "rate": 0.9388888888888889,
+          "lo": 0.9189545850902064,
+          "hi": 0.9541646166799046,
+          "n": 720,
+          "correct": 676
+        },
+        "both_hops": {
+          "n": 720,
+          "correct": 492
+        },
+        "clean_given_both_hops": {
+          "rate": 0.9512195121951219,
+          "lo": 0.9284436156698131,
+          "hi": 0.967003640066696,
+          "n": 492,
+          "correct": 468
+        }
+      },
+      "chat": {
+        "all_three": {
+          "rate": 0.9944444444444445,
+          "lo": 0.9858030898229927,
+          "hi": 0.9978375298927019,
+          "n": 720,
+          "correct": 716
+        },
+        "both_hops": {
+          "n": 720,
+          "correct": 720
+        },
+        "clean_given_both_hops": {
+          "rate": 0.9972222222222222,
+          "lo": 0.9899287723292619,
+          "hi": 0.999237918283712,
+          "n": 720,
+          "correct": 718
+        }
+      },
+      "chat_prefill": {
+        "all_three": {
+          "rate": 0.9944444444444445,
+          "lo": 0.9858030898229927,
+          "hi": 0.9978375298927019,
+          "n": 720,
+          "correct": 716
+        },
+        "both_hops": {
+          "n": 720,
+          "correct": 720
+        },
+        "clean_given_both_hops": {
+          "rate": 0.9958333333333333,
+          "lo": 0.9878216624668026,
+          "hi": 0.9985819926975317,
+          "n": 720,
+          "correct": 717
+        }
+      }
+    }
+  },
+  "seconds": 613,
+  "git": {
+    "sha": "89ff050a6dcc1f911fe50785152232fba40419ed",
+    "dirty": true
+  },
+  "command": "scripts/exp20_competence.py run --name v1"
+}

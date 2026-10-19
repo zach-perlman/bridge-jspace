@@ -28,6 +28,7 @@ or tokenization artifact.
 | [exp15](#exp15_oracle_lens-where-the-lenses-miss-the-bridge-does-the-oracle-lens-name-it) | Where the J-lens and J++ miss the bridge, does a reader that puts the activation into words name it? |
 | [exp16](#exp16_nla-does-a-second-verbalizer-the-nla-see-the-same) | Does a second verbalizer, the NLA, trained for another objective, see the same? |
 | [exp18](#exp18_brew_verbalizers-on-brew-do-the-verbalizers-read-the-state-the-model-computes-with-they-read-the-colour-written-in-the-vector) | On brew, do the verbalizers report the intermediate the model computes with, a colour direction it ignores, or the text? |
+| [exp20](#exp20_competence-parts-a-and-b-before-any-edit-can-the-model-do-the-tasks-and-in-which-format) | Before any edit, does the model do each task, and in which format: raw text, as B1 and exp09 ran, or its chat template? |
 | [exp02](#exp02_swaps-part-b-does-the-bridge-act-through-the-j-space-and-where) | Does swapping the bridge's J-space part change the answer, and where in the prompt? |
 | [exp03](#exp03_brew_swaps-part-b-an-in-context-two-step-lookup) | Do the same swaps work on a two-step lookup whose answer is read off the prompt? |
 | [exp04](#exp04_brew_patch-part-b-where-brew-carries-its-intermediate-without-a-lens) | Where does that lookup carry its intermediate, found without a lens? |
@@ -35,6 +36,12 @@ or tokenization artifact.
 | [exp07](#exp07_step_code-part-b-a-code-for-brews-intermediate-fit-on-other-items-writes-the-step-the-lenss-direction-does-not) | Does a code for brew's intermediate, fit on other items, write the step where the lens direction does not? |
 | [exp08](#exp08_brew_read-part-b-the-lens-reads-brews-intermediate-at-a-few-positions-writing-along-its-direction-does-nothing) | Do the lenses read brew's intermediate where the step is carried? |
 | [exp09](#exp09_bind_recall-part-b-which-bridges-leave-the-j-space-those-a-lookup-in-the-prompt-uses-recalled-or-bound) | Holding the question fixed, which bridges are carried outside the J-space, as brew's intermediate is? |
+| [Lens robustness (part B, 2026-10-19)](#lens-robustness-part-b-2026-10-19-do-b1-b3-and-exp09-hold-with-a-second-j-fit) | Do B1-B3 and exp09's verdicts hold with a second J++ fit (chat-fitted)? |
+| [Part B in the chat format (2026-10-19)](#part-b-in-the-chat-format-2026-10-19-b1-phase-2c-and-exp09-where-the-model-takes-the-prompt-as-a-question) | Do B1 and exp09 hold in the chat format, and is B1's J-part more than the entities' own words (Phase 2c)? |
+| [exp21_contrastive (Phase 2a, part B)](#exp21_contrastive-phase-2a-part-b-bridge-directions-from-contrasts-on-exp09s-own-question) | Do bridge directions from contrasts on exp09's question move the bound bridge, and through which part (Phase 2a)? |
+| [Phase 3 (part B, exp09 families LM, RM, BT, RT)](#phase-3-part-b-exp09-families-lm-rm-bt-rt-what-uses-the-bridge-or-where-the-answer-comes-from) | Does what uses the bridge, or where the answer comes from, put it outside the J-space (Phase 3)? |
+| [exp22_brew_misses (part B, competence as data)](#exp22_brew_misses-part-b-competence-as-data-when-brews-composed-answer-is-wrong-is-the-intermediate-formed) | When brew's composed answer is wrong with each step right, is the intermediate formed? |
+| [exp23_arith (part B, stretch)](#exp23_arith-part-b-stretch-an-intermediate-the-model-computes-by-arithmetic) | Is an intermediate computed by arithmetic carried in the J-space? |
 | [Pitfalls](#pitfalls-found-so-far) | What went wrong along the way, and how each is handled |
 | [Decisions](#decisions), [open decisions](#open-decisions-humans) | What was decided, and what is still for the humans to decide |
 | [Next steps, part A](#next-steps-part-a), [part B](#next-steps-part-b) | What comes next |
@@ -97,6 +104,9 @@ or tokenization artifact.
    against their own floor (B) and ceiling (C).
 
 ## Method, part B: is the bridge used outside the J-space? (exp01-09)
+0. `exp20_competence`: before any edit, does the model do each task, in the format its runs use and in its chat
+   format, as a whole and one step at a time (every item, unedited, greedy)? Every result below is read against it:
+   the task's base rate, the share of items its gate keeps, and the format (Decisions, 2026-10-19).
 1. `data/entity_prompts.json`: about 8 prompts per entity that imply the entity without naming it, for the 97
    entities in `data/probe_swap.json` (bridges and swap targets). Qwen keeps the ones it answers correctly.
 2. Probe per entity and layer: mean final-token residual over its kept prompts minus the mean over all entities.
@@ -124,12 +134,15 @@ Final figures, numbers and examples per experiment: [results/README.md](results/
 is recomputed from the raw run files by `uv run python scripts/verify_headlines.py`.
 
 **Where things stand (2026-10-15).** On Qwen3.6-27B, for bridges that are a single token, the J-lens and J++ do read
-the bridge, once read at the right place: one word before the end from about layer 23, 19 layers before the answer appears at the last word (exp12). It
+the bridge, once read at the right place: on the last two words, one word before the end from about layer 23, 19
+layers before the answer appears at the last word (exp12; -1 is not a better read site than the last word, Next
+steps 5). It
 acts on the answer from the cue phrase, the words that point to it, and does so apart from the answer's own direction
 (exp14). Readers that put an activation into words, the oracle lens and the NLA, see the bridge and the answer a
 little more often than the lenses at the same place and layer, including about a third to a half of the readings
-where neither lens has the bridge first, and they follow the model's state when a swap changes its answer (exp15,
-exp16). Whether, on those lens-blind readings, they read the state or solve the question themselves is the open
+where neither lens has the bridge first, and after a swap they name its target where it changes the answer (exp15,
+exp16; exp18 shows they report what is written into the vector, so this is not yet evidence of use, Next steps 4).
+Whether, on those lens-blind readings, they read the state or solve the question themselves is the open
 question; the next experiment (exp17, Next steps) is designed to settle it and has not been run. Part B (exp01-04)
 asks the original question with probe swaps; on brew, an in-context lookup, it finds the intermediate carried at four
 positions after the start line at layers 36-50 outside the J-space: the lenses read it there at a few positions,
@@ -137,6 +150,30 @@ but writing along their direction does not take the step, while a code fit on ot
 Across four families that hold the question's form fixed, what uses the bridge goes with the J-space, not where it
 comes from: used by a recalled fact, a bridge bound in the prompt acts through its J-space part; used by a lookup in
 the prompt, a bound or a recalled bridge acts through the rest, as brew's intermediate does (exp09).
+
+**Recovery note (2026-10-19, evening).** The B200 box that ran everything from Oct 18 on became unreachable before
+its commits were pushed. Branch `recovery-2026-10-19` restores the code and this write-up from the agent's working copies
+(on top of the VPS clone with VERIFIED B1-B4). Missing until re-run or recovered from the old disk: every results folder
+and figure from Oct 18 on (exp19 fits v4-v6, Phase 1, exp02/exp09 chat and own-word runs, exp21-23, Phase 3), except
+`results/exp20_competence/v1` and the figures exp20 v1, exp09 v3_chat and v4_use_source; all cache/ files (probes, codes,
+lenses). The numbers in the sections below are as recorded in the sprint's EXPERIMENTS.md and W&B; `verify_headlines.py`
+cannot recompute them until the runs are back. `data/use_source.json` was regenerated from its seed and matches its pin.
+
+**Overnight, 2026-10-19 (unverified; sections below).** In the chat format, with exp01's probes read inside the user
+turn, B1 replicates (J-part 54%, remainder 5%, held 3%, matched 14%). Phase 2c narrows it: without the two entities' own
+word atoms the J-part flips 0-1% in both formats, so B1's "J-space" is the bridge's own word directions. A second J++
+fit gives the same verdicts (Phase 1). In exp09's chat re-run, B stays inside and RL is far outside (1% vs 79%); new
+directions built from contrasts on B's own question move the bound bridge for the first time, through the part outside
+the J-space (10-11%, small). Splitting "what uses the bridge" from "where the answer comes from" (Phase 3) supports
+neither: no family with a lookup in the prompt comes out inside. On brew's composition misses the intermediate is
+mostly formed (78% vs 82% of hits); an arithmetic intermediate barely moves under the copy.
+
+**Task competence (2026-10-19, exp20, unverified).** Unedited, Qwen3.6-27B does every part B task in its chat
+format: exp09's four families on 99.7-100% of items (all three of exp09's prompts 99-100%, each step alone 100%), brew's
+steps 100% alone and 87-89% composed on ungated items, B1's 90 two-hop facts 86%. In the raw text B1 and exp09 ran on,
+it answers less often and less surely: exp09's R 76%, and half of R's items pass exp09's gate; the median probability
+of the answer is .20-.64 against .97-.99 in chat. So exp09's R column rests on the half of R the model answers in raw
+text, and no part B result has yet been run in the format the model takes as a question (exp20 below).
 
 **Final figures (Qwen3.6-27B).**
 | Figure | What it shows |
@@ -181,6 +218,7 @@ each question.
    bridge in the prompt changes none of this (the earlier count of 5 such questions was a substring artifact).
 2. The bridge is readable earlier than the answer, both in the prompt and in depth: one word before the end from about
    layer 23, while the answer appears only at the last word from about layer 44, 19 layers later [15, 27] (exp12).
+   This compares two positions; -1 itself reads no better than the last word (Next steps 5).
 3. Where the bridge is readable, part B's swaps tend to work: questions whose J-space swap flips the answer have the
    bridge ranked first more often (J-lens 73% vs 50%, J++ 70% vs 41% of layers 32-48), but the groups are small and
    the intervals overlap.
@@ -203,7 +241,8 @@ each question.
    (false alarms 4%), mostly where the lenses nearly have it (54% at 2nd-3rd, 22% at 11th or lower). Read at all 11
    layers both find the bridge somewhere in every question (the distractor in a third), so there it adds no question;
    at one layer it adds a few. After the bridge swap it names the swap target where the model's answer changes (67% vs
-   10% where it does not), so it follows the state; but it mostly writes the question out with the bridge filled in,
+   10% where it does not), so the edit reaches the read position there (exp18: not yet evidence that the model uses
+   it, Next steps 4); but it mostly writes the question out with the bridge filled in,
    so on the lens-blind readings it may be solving the question rather than reading the state, which only a cleaner
    test can tell.
 9. A second verbalizer with another training objective, the NLA (exp16, layer 42), agrees: it names the bridge in
@@ -916,6 +955,82 @@ the patched readings) is one C as written does not meet, as the readers recite c
 scripts.exp18_brew_verbalizers.plot <run> <new folder>`. Headlines are recomputed by `scripts/verify_headlines.py`.
 </details>
 
+### exp20_competence (parts A and B): before any edit, can the model do the tasks, and in which format?
+**What we measure.** Every part B result edits a model that is supposed to be doing a task, and part A reads the
+bridge on B1's questions. Each run gates on the items the model gets right (exp02: the clean answer; exp04/07: brew's
+answer; exp09: its clean, counterfactual and off-path prompts). That keeps each item right but hides the base rate: a
+task done on half its items is partly guessed, and the gated half can be the easy or the shortcut half. Qwen3.6-27B
+is a chat model; B1 and exp09 feed it raw text (no chat template), brew the chat template with thinking off and
+"Answer:" prefilled. exp20 runs every item of every task unedited and greedy (16 new tokens) in three formats:
+- *raw text*, as B1 and exp09 ran;
+- *the chat template*, thinking off: the statement to complete becomes a question after the same context ("... What
+  is the capital of the country where Lyon is located? Answer with a single word and nothing else."); B1, whose
+  endings are too varied for a question ("is called a", "border with"), as a fill-in-the-blank;
+- *the chat template with "Answer:" prefilled*, brew's format.
+
+exp09's items also get their counterfactual and off-path prompts, and exp09's and brew's items each step alone: the
+first ("<context> Lyon is located in" -> France; "<context> Emma lives in" -> Egypt; brew: "You stir the potion once."
+-> the intermediate) and the second given the first ("<context> The capital of France is"; brew: once, starting from
+the intermediate). Judged as the runs judge: exp13's judge for B1, otherwise the first word of the answer set in the
+first line. B1 (90 items), brew bank (100, gated when it was built), fresh (200) and test (600), exp09 R (360), B
+(400), L (400) and RL (720): 33,870 prompts.
+
+**In short.**
+- **In the chat format the model does every task, and surely.** exp09's families on the clean prompt: R 360/360, B
+  400/400, L 400/400, RL 718/720; all three of exp09's prompts 99-100%; each step alone 100%; median probability of
+  the answer's first token .97-.99. With "Answer:" prefilled: the same accuracy, probability .81-.90.
+- **In raw text, as exp09 ran, R is often not answered at all.** R: 274/360 = 76% [71, 80] on the clean prompt,
+  189/360 = 52% [47, 58] on all three of exp09's prompts; of the 125 token-aligned items exp09 uses, 65 pass its gate
+  in raw text, 125 in chat. The misses are format, not wrong capitals: 61 of the 86 start a thinking turn of their
+  own ("<think>\nHere's a thinking process", the text taken as a user's message), 25 write a multiple-choice list
+  ("A. Moscow / B. Paris / ..."). B, L and RL fare better (clean 94%, 98%, 96%; gate 86%, 96%, 94%), but the answer
+  is unsure even when greedy is right: median probability .20 (R) to .49 (RL).
+- **Raw text does not reliably repeat a fact stated just before.** After "Emma lives in Egypt.", the raw "... Emma
+  lives in" gives Egypt for 20% of B items and 2% of L's (it continues "the same country as Sam", "a teal house");
+  "France's colour is" after "France's colour is gray." gives gray for 68-69% (L, RL). In chat all of these are 100%.
+- **B1: the format changes the confidence, not the accuracy.** 77/90 = 86% [77, 91] in raw text and in chat (74
+  items right in both); 10 of the 13 misses are the same items in both formats (mercury "solid" twice, "the United
+  States" for "America", "gastric juice" for "acid", wrong numbers); median probability .64 raw, .97 chat.
+- **Brew: each step is perfect, composing them is not.** On the ungated items, fresh 177/200 = 88% [83, 92] and test
+  522/600 = 87% [84, 89] (chat + "Answer:", as brew ran; plain chat the same); each step alone 800/800. About half the
+  misses answer the intermediate, as if the potion were stirred once. The bank was gated when built (100/100).
+
+**What it means for the results.**
+- B1 (exp02) and part A ran in raw text, where the model answers 86% of the 90 questions but less surely than in chat.
+  74 of exp02's 77 eligible items are also answered in chat; whether the J-part effect holds there is untested.
+- exp09's R items are the half of R the model answers in raw text; the other half fails on format. B, L and RL keep
+  86-96% of theirs. The four-family table thus compares families gated at different rates, in a format the model does
+  not take as a question; in chat every item passes.
+- Brew (exp03-08, exp18) ran in the chat format, where its steps are perfect; its gate drops the 12% of items where
+  composing them fails.
+
+![exp20: competence by task and format](figures/exp20_competence/v1/competence.png)
+
+*How to read it: one row per task (n and the format its runs used under the name). Left: the share of items the
+unedited model answers, per format, with Wilson 95% intervals; the hollow diamonds are exp09's gate (all three of its
+prompts) in raw text. Middle: in the chat template with "Answer:", each step alone (gray) vs both in one answer
+(green). Right: how sure, the median probability of the answer's first token.*
+
+**What this does not show.** Greedy only, one run (the probability of the answer's first token stands in for
+reliability; brew's bank was built with 10 samples at T=0.8). The chat questions reword the statements, so raw vs chat
+is format and wording together. The step prompts are new wordings too: in raw text their low rates partly measure the
+wording ("Emma lives in" invites "the same country as"). B1 has no step prompts. Thinking is off throughout, since
+the tasks are meant to be done in one pass.
+
+<details><summary>Full numbers and checks</summary>
+
+Runs under `results/exp20_competence/`: `smoke_v1` (2 items per task; its first-step wording, "<context> The country
+where Lyon is located is", drew raw continuations such as "the same as the country where Bob lives" and was
+replaced), `smoke_v2` and `v1` (every item), each with its manifest written before the run; code
+`scripts/exp20_competence.py`. The table is `v1/summary.md`. `python3 verification/b0_exp20.py` re-judges every
+continuation without this repo's code (3 of 33,870 differ, all "drumsticks" for "sticks", which exp13's compound rule
+accepts) and recomputes the table. Against the runs it underlies, in raw text: exp02 main_v4b200_jpp's 77 eligible
+items are exactly exp20's 77 correct (76 under the script's simpler judge); exp09's gate agrees item by item on 121/125 R, 396/400
+B, 400/400 L and 250/250 RL; exp04 patch_map_fresh's 25 clean misses and exp20's 23 share 22. Figure: `uv run python
+scripts/exp20_figures.py <new folder>`. The run shared the GPU with another job (two models at once, against
+AGENTS.md); generation is deterministic per process, so only time was shared.
+</details>
+
 ### exp02_swaps (part B): does the bridge act through the J-space, and where?
 **What we measure.** In "The capital of the country where Naples is located is" the model answers Rome through the
 bridge Italy. We swap the bridge's representation for another entity's (Italy -> Spain) at layers 24-40 and count how
@@ -1357,7 +1472,9 @@ answer: a recalled fact answers a capital, a lookup a colour from the prompt, so
 from the prompt"; R's own split is inconclusive, so the recalled-fact column rests on B's split and R's swap. The
 second hop is a recalled fact in both families, so a copy can carry the bridge or its capital; the window stops where
 the last token alone carries the answer (from 48 in B, 52 in R, capped at exp12's 44). One seed for the counterfactual
-cities and the sample.
+cities and the sample. The R items are the half of R's aligned items the model answers in raw text: in exp20, 65
+of 125 pass exp09's gate in raw text and all 125 in the chat template; the misses are the model starting its own
+thinking turn or writing a multiple-choice list, not wrong capitals (Pitfalls 15).
 
 <details><summary>Full numbers and checks</summary>
 
@@ -1370,6 +1487,213 @@ decisions differ, the J-space share by layer within 0.001 of v3_jpp. Items are i
 the item file's `name` field repeats (Pitfalls). Generation is batched per item (`Model.generate_batch`, checked
 against single runs: identical but for degenerate continuations). Figure: `uv run python scripts/exp09_figures.py
 <new folder>`. Headlines are recomputed by `scripts/verify_headlines.py`.
+</details>
+
+### Lens robustness (part B, 2026-10-19): do B1-B3 and exp09 hold with a second J++ fit?
+**What we measure.** Every J-space part above is defined by one lens, the published J++ (fit on WikiText). exp19 fit
+J++ again on 64 chat transcripts (`jpp_chat64`; held-out macro pass@10 .716 vs the published .714, but multihop .769 vs
+.949). Phase 1 re-ran the lens-dependent steps with it, keeping every lens-free input (probes, copies, maps, items):
+B1's probe swaps (exp01's probes re-decomposed over `jpp_chat64`, paired with the published lens on the same B200
+probes), B2's split of the copy (exp04), B3's code against the lens direction (exp07), and exp09's parts and swaps. The
+prediction, written in each manifest: the same verdicts.
+
+**In short.** The verdicts hold under both lenses; B1's J-part effect is weaker with `jpp_chat64`.
+
+| | published J++ | `jpp_chat64` |
+|---|---|---|
+| B1 J-part swap (n=77, layers 24-40) | 52% [41, 63] | 42% [31, 53] |
+| B1 remainder / with the J-space held | 6% / 3% | 17% / 3% |
+| B1 matched-alignment control | 14% | 13% |
+| B1 J-part - remainder | +45 [+34, +57] | +25 [+13, +36] |
+| B1 J-part - matched control | +38 [+27, +49] | +29 [+18, +39] |
+| B2 brew copy's J-space part / rest (bank n=82; fresh n=154) | 0% / 26%; 0% / 28% | 0% / 25%; 0% / 29% |
+| B3 code / lens direction (fresh n=154) | 34% / 1% | 34% / 1% |
+| B3 code's J-space part / rest | 0% / 29% | 0% / 29% |
+| exp09 B (bound, then a recalled fact): J-space part / rest | 12% / 0%, inside | 11% / 0%, inside |
+| exp09 L, RL (a lookup in the prompt uses the bridge) | outside, outside | outside, outside |
+| exp09 R (recalled): split; J-part swap | both or neither; 82% | outside (+5 [+1, +11]); 82% |
+
+**What this does not show.** `jpp_chat64` shares the published lens's recipe and differs in its fitting text, so this
+tests the fit, not the method. With it, more of B1's swap sits in the remainder (17% vs 6%), and the remainder minus its
+held version is +14 [+6, +22]: its J-part misses some of what the published lens's catches. exp09's rows are on raw
+text, where the model takes half of R's items as a question (exp20); its chat re-run is below. Re-running exp04's
+full copies reproduced 638 of 656 (bank) and 1207 of 1232 (fresh) item-by-layer cells (batching; the first runs
+reproduced all).
+
+<details><summary>Runs</summary>
+
+`scripts/phase1_lens_chat64.sh` (code 78a48ee; results b4dc6d8): `exp01_probes/v3_jpp_chat64` (re-decomposition),
+`exp02_swaps/gate_v4_b200`, `main_v4b200_{jpp,jpp_chat64}`, `matched_v4b200_{jpp,jpp_chat64}`,
+`exp04_brew_patch/parts_window{,_fresh}_jpp_chat64`, `exp07_step_code/code_v2_jpp_chat64` (both lenses in one run),
+`exp09_bind_recall/{parts_v1,parts_lookup_v2,parts_rl_v1,swaps_v1}_jpp_chat64`. W&B: mats-sprint run
+bridge-cse_01EetL8PM7B9hLWZTfSi7urd-phase1-1019-0215.
+</details>
+
+### Part B in the chat format (2026-10-19): B1, Phase 2c and exp09 where the model takes the prompt as a question
+**What we measure.** exp20 found the model answers exp09's prompts reliably only in its chat template (Decisions,
+2026-10-19), so B1 and exp09 were re-run there: one user turn, thinking off, "Answer:" prefilled (bridge_jspace.chat).
+B1's 90 questions become fill-in-the-blanks ("Fill in the blank. ... The language spoken in the country where the
+Amazon River ends is ___"); exp09's statements become questions after the same context ("... What is the capital of
+the country where Lyon is located?"). exp01's probes were rebuilt in the same format (2446 of 2673 entity prompts kept,
+raw 2261), the published J++ throughout. Phase 2c's condition (`jpart_minus_own`: the J-part without the two entities'
+own word atoms, the concept token, its single-token surfaces and atoms with cosine >= 0.5 to it, which are held at
+their clean values) asks whether the J-part acts through more than the entities' own word directions.
+
+**In short.**
+- **Where the probe is read matters.** Probes read at the prefill's ":" (the assistant turn) fail exp02's gate: the
+  full probe flips 1-8% of B1's questions at every band, while the lens's own word vectors flip 45-62%. Read at the
+  statement's last token inside the user turn, the same prompts' probes pass it (33% at layers 24-48; the second gate
+  on the same items, so optimistic twice over).
+- **B1 replicates in the chat format** (n=76, layers 24-48, the user-turn probes): the J-part swap flips 54% [43, 65]
+  (raw: 52%), the remainder 5%, the remainder with the J-space held 3%, the matched-alignment control 14%;
+  J-part - remainder +49 [+37, +61], J-part - matched +39 [+28, +50].
+- **Phase 2c: the J-part acts through the entities' own word directions.** Without its own-word atoms (and with them
+  held), the J-part flips 0% [0, 5], below the matched control (-14 [-22, -7]); the lens vectors of the naming tokens
+  alone flip 62%. By the manifest's rule, "the bridge acts through the J-space" narrows to "through its own word's
+  lens directions". With the failing assistant-turn probes the same: 0% vs a J-part of 20%.
+- **exp09 in chat** (n=80 per family; every aligned item eligible): B stays inside (J-space part 15%, rest 0%; the
+  copy 86%), RL is outside and much stronger than in raw text (1% vs 79%, +78 [+69, +85]; the copy 99%), R's split is
+  outside by a small margin (2% vs 6%, +4 [+1, +9]; raw: both or neither), and L's window shrinks to layer 40 with a
+  weak copy (14%; J-space part 0%, rest 2%: both or neither; its I/X coordinates 0% vs the rest 9%: outside).
+
+![exp09 in the chat format](figures/exp09_bind_recall/v3_chat/source_use.png)
+
+**What this does not show.** The chat gate passed on its second probe position, chosen after the first failed, on the
+same 76 items. The own-word test holds the own-word coordinates, so it asks whether anything else carries the swap,
+not how much of the J-part's norm the own words are. exp09's chat probe swaps (R, B) with the assistant-turn probes
+failed their positive control and are not interpreted; the user-turn probes' swaps are in `swaps_chat_stmt_v1`.
+
+<details><summary>Runs</summary>
+
+`scripts/phase3_chat.sh` (code 1dded50; results 88a6e02): `exp01_probes/v4_chat_jpp`, `exp02_swaps/{gate,main,matched,
+own}_chat_v1`, `exp09_bind_recall/{map,parts}_chat_v1`, `{map,parts}_lookup_chat_v1`, `{map,parts}_rl_chat_v1`,
+`swaps_chat_v1`. The debug step in `scripts/phase4_chain.sh` (code 2be9991): `exp01_probes/v4_chat_stmt_jpp`,
+`exp02_swaps/{gate,main,matched,own}_chat_stmt_v1`, `exp09_bind_recall/swaps_chat_stmt_v1`. The `_chat_v1` main runs ran
+on a failed gate; their manifests say "the human chose to run main anyway", which is inaccurate: the chain ran them
+under Zach's overnight approval (exp02 now asks for --gate-reason). Figure: `uv run python scripts/exp09_figures.py
+<new folder> --source-use --preset chat`.
+</details>
+
+### exp21_contrastive (Phase 2a, part B): bridge directions from contrasts on exp09's own question
+**What we measure.** exp01's probe of a country is built far from exp09's question (the last token of ~25 prompts that
+imply it, minus the mean over entities), and it never moved B's bound bridge (every swap condition 0%), so B's swaps
+were never interpreted. exp21 builds, per country, the mean residual at the cue phrase of exp09's own question when
+its bridge is that country, minus the mean over countries, in the chat format: R's question with 3 cities per country
+that exp09's items never use ("... where Lille is located?"), and B's with people's names exp09 never uses ("... where
+Ella lives?"; the queried person lives in the country). 24 prompts per country, kept if answered (all 312 were, per
+family). Decomposed as exp01's probes (25-atom non-negative OMP over J++'s letter tokens) and swapped at the cue phrase
+with exp09's conditions, layers 24-48 (the chat gate's band), on the chat map's 80 R and 80 B items.
+
+**In short.**
+- **The contrastive directions are new directions.** Held-out decoding of the country from the cue phrase (leave one
+  city out): R 87-96% at layers 24-40, B 22-50% (chance 8%). Their cosine to exp01's chat probes of the same country is
+  0.01-0.13. The J-part holds 22-27% (R) and 11-25% (B) of their variance, a random direction's 4%.
+- **The B directions move the bound bridge, outside the J-space.** On B: the full direction flips 10% [5, 19] (its null
+  0%; the first probe swap that moves B), the remainder 11% [6, 20], the J-part 0%, the matched control 1%. On R the
+  same directions' J-part flips 74% (matched 28%; +46 [+36, +57]). exp09's pre-registered swap rule reads "supported":
+  the J-part carries the recalled bridge and not the bound one.
+- **The R directions move only R:** J-part 76%, matched control 54% (+22 [+12, +34]), remainder 36%; on B every
+  condition 0%.
+
+**What this does not show.** B's effect is small (10-11% of 80 items). It pulls against exp09's copy split, where B's
+J-space part acts (15% vs 0%): the swap edits the cue phrase at layers 24-48, the copy the question's later tokens at
+layer 40, so the two may see the bound bridge at different stages. The B directions decode the country only weakly
+before layer 40. One seed for the fit prompts.
+
+<details><summary>Runs</summary>
+
+`results/exp21_contrastive/{contrastR_v1,contrastB_v1}` (`scripts/exp21_contrastive.py`; cache
+`cache/exp21_contrastive/<tag>/probes.pt`, exp01's format), `results/exp09_bind_recall/swaps_contrast{R,B}_chat_v1`
+(`--probes exp21_contrastive/<tag>`, map `map_chat_v1`, band 24-48); chain `scripts/phase4_chain.sh` (code 2be9991).
+</details>
+
+### Phase 3 (part B, exp09 families LM, RM, BT, RT): what uses the bridge, or where the answer comes from?
+**What we measure.** In exp09 "a lookup in the prompt uses the bridge" (L, RL: outside) always came with "the answer is
+read off the prompt", and "a recalled fact uses it" (R, B) with "the answer is recalled". Four new families split the
+two, with B's or R's bindings and a table in the prompt (`data/use_source.json`, `scripts/exp09_make_items.py
+--use-source 400 --seed 5`), in the chat format:
+- *LM* (bound; a lookup uses the bridge; the answer recalled): "... Italy's landmark is the Taj Mahal. ... In which
+  city does the landmark of the country where Paul lives stand?" -> the landmark's city. Every landmark stands outside
+  the 13 countries, so no table entry contradicts them.
+- *RM*: as LM, the bridge recalled ("... the country where Lyon is located ...").
+- *BT* (bound; a recalled fact uses the bridge; the answer in the prompt): "... Warsaw's colour is gray. ... What colour
+  does the capital of the country where Henry lives have?"
+- *RT*: as BT, the bridge recalled.
+
+exp20's competence row came first (every item, unedited), then exp09's map and parts with the rule fixed in the
+manifest: "what uses the bridge decides" if LM and RM are outside and BT and RT inside; "where the answer comes from
+decides" if the reverse; otherwise mixed.
+
+**In short.**
+- **Competence (chat + "Answer:", every item):** LM 388/400 (97%), BT 400/400, RT 720/720, but RM 533/720 = 74% [71,
+  77]: not reliable, though each of its three steps alone is right on every item (the misses name another country's
+  landmark city). RM's verdict below is flagged. In raw text all four fail (10-59%).
+- **No family is inside; the rule reads "mixed".** At each family's window (layers 32-40 or 36-40; n=80): LM's copy
+  51%, its J-space part 4% and the rest 35% (both or neither: the part is above its null, +4 [+2, +7]); RM 66%, 3% vs
+  58% (outside; not reliable); BT 31%, 1% vs 12% (outside); RT 99%, 6% vs 56% (both or neither: +6 [+3, +10] over its
+  null). Their I/X lens coordinates carry 0-4% against 18-72% for the rest.
+
+![Phase 3: which part of the copy acts](figures/exp09_bind_recall/v4_use_source/source_use.png)
+
+*Which part of the bridge's copy acts in each new family (chat format, J++; RM is not reliable in exp20).*
+
+**What it means, and what it does not show.** Neither split explains the data: a bridge stays inside only in B (and
+R's swap), where a recalled fact uses it and the answer is recalled with no lookup in the prompt anywhere. Every family
+with a lookup in the prompt, before or after the recalled step, comes out outside or close to it. This reading is after
+the fact and needs its own test. The windows (layers 32-40) may already carry the next variable, the landmark (LM, RM)
+or the capital (BT, RT), rather than the country, and a copy of the question's tokens moves whatever they carry: the
+copy's split asks where that state lives, not where the country does. One item seed; n=80 per family.
+
+<details><summary>Runs</summary>
+
+`results/exp20_competence/use_source_v1` (the competence row), `results/exp09_bind_recall/map_use_source_chat_v1`,
+`parts_use_source_chat_v1`; chain `scripts/phase4_chain.sh` (code 2be9991, d978f1b; results 5335142). Figure: `uv run
+python scripts/exp09_figures.py <new folder> --source-use --preset use_source`.
+</details>
+
+### exp22_brew_misses (part B, competence as data): when brew's composed answer is wrong, is the intermediate formed?
+**What we measure.** exp20 found each of brew's lookups right alone on every ungated item but the two composed right on
+87-89%; part B's gates drop the misses. Here they are the data: brew's fresh and test items in brew's format (699 hits,
+101 misses with both steps right alone; 55 of the misses answer the intermediate I), unedited, read at exp04's window
+(layers 36-50, the positions after the start line) by exp07's linear code (fit on brew_fit; I and the answer A decoded
+jointly, the item's answer not given) and by J++ (I top-1 among the 12 colours at one or more positions, against a
+seeded distractor colour off the item's path).
+
+**In short.**
+- **The intermediate is mostly formed on the misses.** The code decodes I at 78% of the window's layers on misses and
+  82% on hits (-4 [-12, +2]); on the misses that answer I itself, 72% (-10 [-20, 0]). By the manifest's rule (formed if
+  the lower bound is above -10) the verdict is "partly", on the edge of "formed".
+- So most composition failures happen after the intermediate is formed: the second lookup does not use it.
+
+**What this does not show.** The code decodes the answer poorly at these layers (22-24% in both groups), so it cannot
+say what the misses' state holds as the answer. J++'s reading is not selective here: with "top-1 at any of ~21
+positions", the distractor is top-1 on 59-63% of items against I's 77%. One code fit.
+
+<details><summary>Runs</summary>
+
+`results/exp22_brew_misses/misses_v1` (`scripts/exp22_brew_misses.py`; labels from `exp20_competence/v1`, code
+`cache/exp07/code.pt`); chain `scripts/phase4_chain.sh`.
+</details>
+
+### exp23_arith (part B, stretch): an intermediate the model computes by arithmetic
+**What we measure.** brew's intermediate is looked up in a table; this one is computed: "Ignore 0. Start with 3. Add 5.
+Then subtract 1. What is the result?" (I = 8, A = 7; every number a single digit, one token), 400 items
+(`data/arith.json`, seed 23), chat format. C changes the first addend (I becomes X; C's answer differs from A, I, X and
+S), O the ignored number. exp04's map and split as exp09's, the J-space dictionary J++'s letter tokens plus the 10
+digit tokens.
+
+**In short.** The model does the task (clean 391/400, C 398, O 393, each step alone 400/400), but copying C's tokens
+after the changed addend hardly moves the answer: 0% up to layer 48, 10% at 56 and 8% at 60. At the one window layer
+(56) the copy's J-space part gives C's answer 0%, the rest 7.5% (6 of 80; +8 [+2, +14]): outside, on a weak, late copy.
+
+**What this does not show.** The intermediate may be computed at the tokens the copy leaves out (the changed addend
+itself), or only at the end; a copy of the later tokens then carries little before layer 56, so this run says little
+about where the sum lives. One item seed.
+
+<details><summary>Runs</summary>
+
+`results/exp23_arith/arith_v1` (`scripts/exp23_arith.py`, competence, map and parts in one run with the rules in its
+manifest); chain `scripts/phase4_chain.sh`.
 </details>
 
 ### Pitfalls found so far
@@ -1409,6 +1733,15 @@ against single runs: identical but for degenerate continuations). Figure: `uv ru
     Jack lives is", which the model continues as a sentence ("... is the same as the colour of the country where
     David lives."): 1 of 400 items eligible. Endings were compared on 40 items before any patching; "The country where
     Jack lives has the colour" is answered for all 40.
+15. **Raw text is not a question to a chat model.** Fed exp09's R prompts as raw text, Qwen3.6-27B misses 24% of
+    them, and the misses are not wrong capitals: 61 of 86 start a thinking turn of their own, the text taken as a
+    user's message, and 25 write a multiple-choice list. Half of R's items fail exp09's gate in raw text, none in the
+    chat template; raw continuations even fail to repeat a fact stated just before ("Emma lives in" -> "the same
+    country as Sam"). Item gates hide this: every run's items are right, but the gate's share was never reported
+    (exp20).
+16. **In the chat format, where a probe is read matters.** exp01's probes read at the prefill's ":" (the assistant
+    turn) failed exp02's gate (full probe 1-8%) while the lens's own vectors flipped 45-62%; read at the statement's
+    last token inside the user turn, where the swap edits, they pass (33%) and B1 replicates (Part B in the chat format).
 
 ### Decisions
 - **Trailing space: removed in every experiment, part A and part B** (2026-10-13 for part A; part B followed in its
@@ -1440,6 +1773,15 @@ against single runs: identical but for degenerate continuations). Figure: `uv ru
 - **Torch on the CUDA 12.8 wheels** (2026-10-15): the B200 box has no kernels in the cu126 build; the same torch
   2.11.0, its cu128 build and NVIDIA libraries (`uv.lock`), drivers >= 570.
 
+- **Task competence is part of the research, not a check before it** (Zach, 2026-10-19). Every task, and every new
+  family before its first edit, gets an exp20 row: unedited, greedy, every item, in the format its runs use and in the
+  chat format, whole and one step at a time. Every result states its task's competence and the share of items its
+  gate keeps; a task the model does not reliably do is reported as such, not gated into shape. A task is reliable in
+  a format if its Wilson 95% lower bound is at least 85% (adopted by Zach, 2026-10-19).
+- **New part B runs use the chat template with "Answer:" prefilled** (Zach, 2026-10-19): thinking off, the format
+  brew ran in, in which the model answers every exp09 item (exp20). exp09 (R, B, L, RL) and B1 (exp01's probes,
+  exp02's swaps) are re-run in it; the raw-text runs stay as the earlier record and are reported next to them.
+
 ### Open decisions (humans)
 - Which headline numbers go into `VERIFIED.md` after a human recomputes them (`verify_headlines.py` lists every
   one with its source file).
@@ -1448,7 +1790,8 @@ against single runs: identical but for degenerate continuations). Figure: `uv ru
 ## Next steps (part A)
 In order. Each item: the question, why it matters now, the test, and its cost. Every GPU run needs human sign-off.
 exp14's pinned run closed the swap experiments; exp15 and exp16 showed two verbalizers naming the bridge where the
-lenses miss it and following the model's state under a swap. What is left is whether that is reading or solving.
+lenses miss it, and the swap target after a swap. exp18 then showed they report what is written into the vector,
+used or not, so neither is in VERIFIED.md yet (item 4). What is left is whether that is reading or solving.
 
 1. **On the lens-blind readings, do the verbalizers read the state or solve the question?** (exp17; designed, not
    run; design from the critic)
@@ -1485,12 +1828,8 @@ lenses miss it and following the model's state under a swap. What is left is whe
      colour written into the vector (a patched state, or a J++ direction the model ignores), as J++ does.
 
 3. **Doubts an independent recount raised (2026-10-16; a fresh script over the raw files, not this repo's code).**
-   Each is a claim above that is weaker than written; none needs GPU to settle or restate.
-   - *"-1 is the read site" (exp12).* -1 beats the last word by +7 points [-3, +17] (J-lens; J++ +8 [-2, +18]): the
-     interval includes 0. Over 200 random half-splits both halves pick -1 in 149 (J-lens) but only 100 (J++, which
-     often picks -3). And it depends on how the prompt ends: the bridge is first at -1 in 76% of layers 32-48 when the
-     prompt ends in "is", 47-48% otherwise. Restate as "readable on the last two words"; align positions by role
-     (the cue phrase's end, the copula) rather than by distance from the end, and report the split by ending.
+   Each is a claim above that is weaker than written; none needs GPU to settle or restate. ("-1 is the read site"
+   is item 5.)
    - *"The trailing space halves what the model answers" (Setup).* That holds for the first-token criterion on the
      lens-eval set (21 vs 61 of 93); under the greedy-continuation criterion on the probe-swap set it barely matters
      (76 vs 77 of 90 correct). Say which criterion each number uses.
@@ -1506,6 +1845,43 @@ lenses miss it and following the model's state under a swap. What is left is whe
    - *One template dominates.* The lens-blind questions and exp15's swap test are mostly the country templates
      ("the capital / continent / language of the country where X is"); repeat the headline splits by category, or
      with the country questions left out.
+
+4. **The verbalizers (exp15, exp16): kept out of VERIFIED.md, and what would put them in.**
+   - *Why not yet:* exp18 (VERIFIED B4) shows both report the colour written into the vector even where the model
+     ignores it: along J++'s direction the model takes the step on 4% of items and the readers name X on 99%. So a
+     verbalizer naming a word shows the word is written there, not that the model uses it. That touches both
+     headlines:
+     - *After the swap* (the oracle names the swap target in 67% of the questions whose answer changes vs 10% where
+       it stays; the NLA 59% vs 11%): the edit is a J++ direction, the kind B4 shows the readers report as written.
+       Unlike B4 the read is downstream of the edit (cue phrase at layers 24-40, read at the last word and -1 at
+       layer 44), the test B4's limits ask for; but the split by answer change may only track how much of the edit
+       reached the read position.
+     - *Lens-blind readings* (oracle 37%, NLA 46%): the oracle's naming falls from 54% where the better lens ranks
+       the bridge 2nd-3rd to 22% at 11th or lower (exp15 above; the NLA alike). That fits a reader more sensitive to
+       the same token directions, not one that sees a part the lenses cannot.
+   - *Tests:*
+     - After the swap: the edit's size at the read position (projection on the swap target's direction, swapped
+       minus clean), then naming in answer-changed vs answer-kept questions at matched size. One capture pass on the
+       GPU (exp15 kept no residuals).
+     - Lens-blind: the Chinese-name rescore, the rank>10 subset with its distractor, and the split without the
+       country templates (all item 3; no GPU).
+     - Reading vs solving: exp17 (item 1).
+   - *Until then, the wording:* "names the bridge more often than the distractor where the lenses rank it 2nd or
+     lower; the effect shrinks as the lens rank drops", and after a swap "names the edit that reached the read
+     position", not "follows the model's state".
+
+5. **"-1 is the read site" (exp12): kept out of VERIFIED.md, and what would put it in.**
+   - *Why not yet:* -1 beats the last word by +7 points [-3, +17] (J-lens; J++ +8 [-2, +18]): the interval includes
+     0. Over 200 random half-splits both halves pick -1 in 149 (J-lens) but only 100 (J++, which often picks -3).
+   - *A hypothesis, found after the fact:* it depends on how the prompt ends. The bridge is first at -1 in 76% of
+     layers 32-48 when the prompt ends in "is" (46 questions), 47-48% otherwise (31). In "...where Lima is located is"
+     -1 is "located", a word the bridge carries over to from the cue word (A3's table of misses), so a high share at
+     -1 may only mean the cue phrase ends near the end of the prompt.
+   - *Tests:* align positions by role (the cue phrase's last word, the word before the copula, the copula) rather than
+     by distance from the end, on the 77 questions (no GPU); then the split by ending on new prompts, with the rule
+     written before the run.
+   - *Until then, the wording:* "readable on the last two words"; the -1 onset (layer 23, 19 layers before the
+     answer at the last word) compares two positions and stands as a description, not as a read site.
 
 Not measured yet, and worth a line in any write-up: **bridges of several tokens.** Every result above is on
 single-token bridges (Setup). A multi-token bridge has no single lens direction to rank, so the lenses would need a
@@ -1539,5 +1915,22 @@ Parked: these were next steps; part A does not pursue them now.
    Next: a lookup whose answer is recalled, not read from the prompt (e.g. a table of countries to cities, then the
    city's country's capital), to separate "a lookup uses it" from "the answer is in the prompt"; exp02's probe swap
    on RL, at its own window; a second model.
+8. **Competence as data** (exp20; each needs sign-off).
+   - *The format as a factor:* exp09's four families, and B1's swaps, in the chat template, where every item is
+     answered and none is gated out, against the raw-text runs.
+   - *Brew's composition misses:* 12% of ungated items fail with each step right alone, half of them answering the
+     intermediate. Is the intermediate formed there (exp04's copy, exp08's lens reading) and then not used, or never
+     formed? The gate now throws these items away; they test whether a formed intermediate is used.
+   - *New families* (use vs answer source, computed intermediates): an exp20 row before any edit. Done for Phase 3
+     (RM not reliable) and exp23.
+9. **After the overnight runs (2026-10-19; each needs sign-off).**
+   - *B1's J-space is the bridge's own word (Phase 2c).* Test it from the other side: swap only the own-word atoms
+     (the concept token and its near-synonyms) and see whether they reproduce the J-part's 52-54%; and check the
+     result against Claude's (61%), whose J-space part we have not split this way.
+   - *Bound bridges: copy split (inside) vs contrastive swap (outside).* Run the B directions' swap at the question's
+     later tokens at layer 40 (the copy's window), and the copy at the cue phrase, to see whether position explains it.
+   - *Phase 3's windows may carry the next variable.* Decode the window's state (the country vs the landmark or the
+     capital) with a linear code, as exp07 does for brew, before reading its split as the bridge's.
+   - *Arithmetic:* copy the changed addend's own token too, or patch the operands, to find where the sum is formed.
 6. **Σ-aware writes** (exp06, exp07): writing along Σv lost to writing along v at the start line, and did no better
    than v at exp04's window. Dropped unless a human wants a Mahalanobis-matched version.

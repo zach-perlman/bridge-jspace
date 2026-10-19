@@ -22,6 +22,7 @@ Stages (the manifest is written before the run and is write-once):
 
 import argparse
 import json
+import os
 import statistics
 import sys
 import time
@@ -46,7 +47,14 @@ from scripts.exp03_brew_swaps import (
 )
 from scripts.exp04_brew_patch import EXP, RESULTS, SOURCES, category, prepare
 
-LENSES = tuple(lens for lens in ("jpp", "jlens") if lens in pins.LENS_SOURCES)  # Gemma: J++ only (no J-lens fit)
+# BJ_LENSES (comma-separated pinned lens names) overrides the default lenses, for re-runs with another lens
+# (exp19 Phase 1); manifest and run must use the same value.
+LENSES = (
+    tuple(os.environ["BJ_LENSES"].split(","))
+    if os.environ.get("BJ_LENSES")
+    else tuple(lens for lens in ("jpp", "jlens") if lens in pins.LENS_SOURCES)  # Gemma: J++ only (no J-lens fit)
+)
+assert all(lens in pins.LENS_SOURCES for lens in LENSES), f"BJ_LENSES: unknown lens in {LENSES}"
 PARTS = ("lens2", "not_lens2", "jspace", "not_jspace")
 K_ATOMS = 25
 NULL_SEED = 0

@@ -38,6 +38,14 @@ LENS_SOURCES = {  # every J-format lens part B can load: name -> (repo, file, re
     "jpp": (LENS_REPO, JPP_FILE, LENS_REVISION),
     "ws_jlens": (WS_LENS_REPO, "qwen3.6-27b/j-lens/lens.pt", WS_LENS_REVISION),
     "ws_rlens": (WS_LENS_REPO, "qwen3.6-27b/r-lens/lens.pt", WS_LENS_REVISION),
+    # exp19's chat-fitted J++ (fit_v3 chat64: 64 UltraChat texts, the fit_v2 chat router, J++ recipe otherwise),
+    # exported to this format by scripts/exp19_fit_data/export_lens.py (fp16, max rel. err 4.4e-4). Held-out macro
+    # pass@10 .716 (published J++ .714). A "local" lens: (path under the repo, sha256).
+    "jpp_chat64": (
+        "local",
+        "cache/exp19/lenses/Qwen3.6-27B_jpp_chat64.pt",
+        "0b320ad5205a5c3a70dbdb8752a594dba76828e3ec02066c6786e5a98680d0dd",
+    ),
 }
 
 # Part B's target model. BJ_TARGET picks it; the default is Qwen3.6-27B, the model of every run before the Gemma port,
@@ -123,6 +131,8 @@ BIND_LOOKUP_V2_FILE = DATA_DIR / "bind_lookup_v2.json"  # the same L items asked
 BIND_LOOKUP_V2_SHA256 = "0883e3e5aa3dcecb41295a1324d6e366ba1bb766d6bd97b5b378a97cf4beae45"
 RECALL_LOOKUP_FILE = DATA_DIR / "recall_lookup.json"  # exp09 family RL: recalled bridge, in-context lookup
 RECALL_LOOKUP_SHA256 = "d6905b4445032dab8ca3a2e8fff74588750175e004af1c31b3a235f44d15703f"
+USE_SOURCE_FILE = DATA_DIR / "use_source.json"  # Phase 3: LM, RM, BT, RT (what uses the bridge vs the answer's source)
+USE_SOURCE_SHA256 = "cffddf8fc2995b9c221e518805e996fa32a861b114a2b50f06e1334f0d8acacf"
 WIKITEXT_FILE = DATA_DIR / "wikitext103_test.json"  # generic text for part B's residual covariance (exp06)
 WIKITEXT_SHA256 = "a6b5b17a576932fbb570a96b0f5b6a65ced408690a2dce749a8c56f980bbcc0f"
 LENS_EVAL_MULTIHOP_FILE = DATA_DIR / "lens_eval_multihop.json"
@@ -171,6 +181,10 @@ def bind_lookup_v2_items() -> list[dict[str, Any]]:
 
 def recall_lookup_items() -> list[dict[str, Any]]:
     return load_pinned_items(RECALL_LOOKUP_FILE, RECALL_LOOKUP_SHA256)
+
+
+def use_source_items() -> list[dict[str, Any]]:
+    return load_pinned_items(USE_SOURCE_FILE, USE_SOURCE_SHA256)
 
 
 def brew_test_items() -> list[dict[str, Any]]:

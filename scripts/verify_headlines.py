@@ -571,6 +571,58 @@ def exp09_swap_rate(family, condition, null=False):
     return float(np.mean([o["role"] == "b" for o in rows]))
 
 
+def exp09_swap_rate_run(run, family, condition, null=False):
+    """exp09 <run>/outcomes.jsonl (a swaps run): share of a family's items whose swapped answer is X's (role b)."""
+    rows = [
+        o
+        for o in jsonl(EXP09 / run / "outcomes.jsonl")
+        if (o["family"], o["condition"], o["null"]) == (family, condition, null)
+    ]
+    return float(np.mean([o["role"] == "b" for o in rows]))
+
+
+def exp22_group_mean(group, key):
+    """exp22 misses_v1 items.jsonl: per item, the share of window layers where the code decodes I (key code_I); the
+    mean over a group's items (hit, or miss = miss_I + miss_other)."""
+    rows = [r for r in jsonl(R / "exp22_brew_misses/misses_v1/items.jsonl") if r["group"].startswith(group)]
+    vals = [np.mean([v[key] == r["I"] for v in r["layers"].values()]) for r in rows]
+    return float(np.mean(vals))
+
+
+def exp23_step(part, null=False):
+    """exp23 arith_v1 parts_outcomes.jsonl: per item, the share of window layers giving C's answer; the mean."""
+    per_item = {}
+    for o in jsonl(R / "exp23_arith/arith_v1/parts_outcomes.jsonl"):
+        if (o["part"], o["null"]) == (part, null):
+            per_item.setdefault(o["name"], []).append(o["role"] == "b")
+    return float(np.mean([np.mean(v) for v in per_item.values()]))
+
+
+EXP20 = R / "exp20_competence" / "v1"
+
+
+def exp20_rate(task, fmt, kind="clean"):
+    """exp20 v1 items.jsonl: share of a task's prompts of one kind (clean, cf, off, hop1, hop2) answered correctly
+    (the run's judge) in one format (raw, chat, chat_prefill)."""
+    rows = [r for r in jsonl(EXP20 / "items.jsonl") if (r["task"], r["format"], r["kind"]) == (task, fmt, kind)]
+    return float(np.mean([r["correct"] for r in rows]))
+
+
+def exp20_gate(task, fmt, map_run=None):
+    """exp20 v1 items.jsonl: share of an exp09 family's items whose clean, cf and off prompts are all answered
+    (exp09's gate); with map_run, only the items that exp09 map run's items.jsonl does not mark unaligned."""
+    per_item = {}
+    for r in jsonl(EXP20 / "items.jsonl"):
+        if (r["task"], r["format"]) == (task, fmt) and r["kind"] in ("clean", "cf", "off"):
+            per_item.setdefault(r["index"], []).append(r["correct"])
+    keep = per_item
+    if map_run:
+        maps = jsonl(EXP09 / map_run / "items.jsonl")
+        aligned = {int(m["name"].split("-")[1]) for m in maps if m["family"] == task and m["status"] != "unaligned"}
+        keep = {i: v for i, v in per_item.items() if i in aligned}
+    return float(np.mean([all(v) for v in keep.values()]))
+
+
 EXP18 = R / "exp18_brew_verbalizers/20261015-205549"  # v2 (config_v2.yaml)
 
 
@@ -1119,6 +1171,59 @@ def main():
             exp09_part_score("RL", "not_lens2", run="parts_rl_v1"),
             0.29,
         ),
+        ("exp20", "R raw: clean", exp20_rate("R", "raw"), 0.76),
+        ("exp20", "R raw: exp09's gate, all items", exp20_gate("R", "raw"), 0.525),
+        ("exp20", "R raw: exp09's gate, aligned items", exp20_gate("R", "raw", "map_v1"), 0.52),
+        ("exp20", "R chat: exp09's gate, aligned items", exp20_gate("R", "chat", "map_v1"), 1.0),
+        ("exp20", "R chat: clean", exp20_rate("R", "chat"), 1.0),
+        ("exp20", "B raw: clean", exp20_rate("B", "raw"), 0.945),
+        ("exp20", "B raw: gate", exp20_gate("B", "raw"), 0.86),
+        ("exp20", "B raw: first step alone", exp20_rate("B", "raw", "hop1"), 0.195),
+        ("exp20", "RL chat: clean", exp20_rate("RL", "chat"), 0.997),
+        ("exp20", "B1 raw: clean", exp20_rate("probe_swap", "raw"), 0.86),
+        ("exp20", "B1 chat: clean", exp20_rate("probe_swap", "chat"), 0.86),
+        ("exp20", "brew fresh, chat + Answer:", exp20_rate("brew_fresh", "chat_prefill"), 0.885),
+        ("exp20", "brew test, chat + Answer:", exp20_rate("brew_test", "chat_prefill"), 0.87),
+        ("exp20", "brew test, first step alone", exp20_rate("brew_test", "chat_prefill", "hop1"), 1.0),
+        ("exp20", "brew test, second step alone", exp20_rate("brew_test", "chat_prefill", "hop2"), 1.0),
+        ("phase1", "B1 J-part, jpp_chat64", exp02_rate("main_v4b200_jpp_chat64", "jpart")[0], 0.42),
+        ("phase1", "B1 remainder, jpp_chat64", exp02_rate("main_v4b200_jpp_chat64", "remainder")[0], 0.17),
+        ("chat", "B1 chat J-part (user-turn probes)", exp02_rate("main_chat_stmt_v1", "jpart", band="24-48")[0], 0.54),
+        ("chat", "B1 chat remainder", exp02_rate("main_chat_stmt_v1", "remainder", band="24-48")[0], 0.05),
+        ("chat", "B1 chat remainder held", exp02_rate("main_chat_stmt_v1", "remainder_clamped", band="24-48")[0], 0.03),
+        ("chat", "B1 chat matched", exp02_rate("matched_chat_stmt_v1", "jpart_matched", band="24-48")[0], 0.14),
+        (
+            "chat",
+            "gate: full probe, prefill probes, 24-48",
+            exp02_rate("gate_chat_v1", "full_probe", band="24-48")[0],
+            0.08,
+        ),
+        (
+            "chat",
+            "gate: full probe, user-turn probes, 24-48",
+            exp02_rate("gate_chat_stmt_v1", "full_probe", band="24-48")[0],
+            0.33,
+        ),
+        ("2c", "raw: J-part minus own words", exp02_rate("own_v1", "jpart_minus_own")[0], 0.01),
+        ("2c", "raw: matched", exp02_rate("own_v1", "jpart_matched")[0], 0.14),
+        ("2c", "chat: J-part minus own words", exp02_rate("own_chat_stmt_v1", "jpart_minus_own", band="24-48")[0], 0.0),
+        ("chat", "exp09 RL chat: J-space part", exp09_part_score("RL", "jspace", run="parts_rl_chat_v1"), 0.01),
+        ("chat", "exp09 RL chat: rest", exp09_part_score("RL", "not_jspace", run="parts_rl_chat_v1"), 0.79),
+        ("chat", "exp09 B chat: J-space part", exp09_part_score("B", "jspace", run="parts_chat_v1"), 0.15),
+        ("2a", "B directions on B: full", exp09_swap_rate_run("swaps_contrastB_chat_v1", "B", "full_probe"), 0.10),
+        ("2a", "B directions on B: remainder", exp09_swap_rate_run("swaps_contrastB_chat_v1", "B", "remainder"), 0.11),
+        ("2a", "B directions on B: J-part", exp09_swap_rate_run("swaps_contrastB_chat_v1", "B", "jpart"), 0.0),
+        ("phase3", "LM: J-space part", exp09_part_score("LM", "jspace", run="parts_use_source_chat_v1"), 0.04),
+        ("phase3", "LM: rest", exp09_part_score("LM", "not_jspace", run="parts_use_source_chat_v1"), 0.35),
+        ("phase3", "BT: J-space part", exp09_part_score("BT", "jspace", run="parts_use_source_chat_v1"), 0.01),
+        ("phase3", "BT: rest", exp09_part_score("BT", "not_jspace", run="parts_use_source_chat_v1"), 0.12),
+        ("phase3", "RT: rest", exp09_part_score("RT", "not_jspace", run="parts_use_source_chat_v1"), 0.56),
+        ("phase3", "RM: rest", exp09_part_score("RM", "not_jspace", run="parts_use_source_chat_v1"), 0.58),
+        ("exp22", "code decodes I, hits", exp22_group_mean("hit", "code_I"), 0.82),
+        ("exp22", "code decodes I, misses", exp22_group_mean("miss", "code_I"), 0.78),
+        ("exp23", "full copy at the window", exp23_step("full"), 0.10),
+        ("exp23", "J-space part", exp23_step("jspace"), 0.0),
+        ("exp23", "rest", exp23_step("not_jspace"), 0.075),
         ("exp18", "v3: the code edit takes the step", exp18v3_rate("code"), 0.57),
         ("exp18", "v3: J++'s direction takes the step", exp18v3_rate("lens"), 0.04),
         ("exp18", "v3: the random direction takes the step", exp18v3_rate("random"), 0.006),

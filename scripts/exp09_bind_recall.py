@@ -22,6 +22,12 @@ the path; the answer stays). Both part B methods run on both families:
          each with its random-direction null
 Success everywhere: the answer becomes X's capital.
 
+Format (a map manifest's "format", inherited by the parts and swaps runs on that map): "raw" (raw text, the runs up to
+2026-10-18) or "chat_prefill" (the chat template, thinking off, "Answer:" prefilled; the statement becomes a question,
+bridge_jspace.chat; from 2026-10-19). In the chat format the question group runs from the question's tokens after the
+change to the end of the prompt (the instruction and the template's tokens included), and the cue phrase from the cue
+word to the end of its clause ("Lyon is located", "Emma lives").
+
 Stages (manifests are written before their runs and are write-once):
   check                                   tokenizer only: alignment per family
   manifest_map --name M --why "..."       run_map M
@@ -43,18 +49,20 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from bridge_jspace import pins
+from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from bridge_jspace.tokens import raw_encoding
 from scripts.exp03_brew_swaps import answer_colour, write_jsonl
 from scripts.exp03_make_items import PALETTE
 from scripts.exp04_brew_parts import K_ATOMS, AddRows, lens2_part, null_rows, signed_omp
-from scripts.exp09_make_items import CAPITALS, CITIES
+from scripts.exp09_make_items import CAPITALS, CITIES, LANDMARKS
 
 EXP = "exp09_bind_recall"
 RESULTS = pins.RESULTS_DIR / EXP
 FAMILIES = ("R", "B")  # bind_recall's families (the swaps run on them only)
+RECALLED = ("R", "RL", "RM", "RT")  # families whose bridge is recalled from a city (C changes the city)
+USE_SOURCE = ("LM", "RM", "BT", "RT")  # Phase 3: lookup then recall (LM, RM) vs recall then lookup (BT, RT)
 ITEM_SETS = {  # set -> (file, sha256, loader, families, the answer words a continuation is scored against)
     "bind_recall": (
         pins.BIND_RECALL_FILE,
@@ -78,6 +86,13 @@ ITEM_SETS = {  # set -> (file, sha256, loader, families, the answer words a cont
         ("L",),
         tuple(PALETTE),
     ),
+    "use_source": (  # answers: the landmarks' cities (LM, RM) and the colours (BT, RT); the two sets share no word
+        pins.USE_SOURCE_FILE,
+        pins.USE_SOURCE_SHA256,
+        pins.use_source_items,
+        USE_SOURCE,
+        tuple(c.lower() for c in LANDMARKS.values()) + tuple(PALETTE),
+    ),
 }
 GROUPS = ("question", "last")
 MAP_LAYERS = tuple(range(0, pins.N_LAYERS - 3, 4))  # every 4th layer below the final block (Qwen: 0-60)
@@ -94,6 +109,11 @@ CHANCE_DRAWS = 20
 # v3_jpp's cache stayed on the old box. The rebuild checks its kept prompts against v3 one by one.
 # Another target: its own exp01 all_jpp probes.
 PROBES = pins.CACHE_DIR / "exp01" / {"qwen3.6-27b": "v3_jpp_b200"}.get(pins.TARGET, "gemma4it_v3_jpp") / "probes.pt"
+
+
+def band_layers(band: str) -> tuple[int, ...]:
+    lo, hi = map(int, band.split("-"))
+    return tuple(range(lo, hi + 1))
 
 
 def gate_band(run: str) -> tuple[int, ...]:
@@ -127,7 +147,7 @@ def variants(item: dict, index: int, city2: str | None = None) -> dict[str, str]
         out[i], out[j] = out[j], out[i]
         return out
 
-    if item["family"] in ("R", "RL"):  # the bridge recalled from the city: C changes the city
+    if item["family"] in RECALLED:  # the bridge recalled from the city: C changes the city
         city2 = city2 or x_cities(item, index)[0]
         cf = f"{context(people, held)} {question.replace(f'where {item["cue"]} is', f'where {city2} is')}"
     else:
@@ -150,23 +170,30 @@ def changed_tokens(a: list[int], b: list[int]) -> list[int] | None:
     return diff or None
 
 
-def prepare(item: dict, index: int, tokenizer) -> dict:
+def render(text: str, fmt: str, tokenizer) -> str:
+    """A prompt as the run feeds it: raw text, or the chat template with the statement as a question (chat_prefill)."""
+    return text if fmt == "raw" else chat.chat_text(tokenizer, chat.question_content(text))
+
+
+def prepare(item: dict, index: int, tokenizer, fmt: str = "raw") -> dict:
     """Token ids of B, C and O, their changed positions, the position groups downstream of C's change, and the cue
-    phrase (from the cue word to the word before the final ' is', as exp02's cue spans)."""
+    phrase (raw: from the cue word to the word before the final ' is', as exp02's cue spans; chat: to the end of the
+    cue's clause)."""
     texts = {"clean": item["prompt"], **variants(item, index)}
-    if item["family"] in ("R", "RL"):  # the first city of X whose prompt lines up with the original token for token
-        n = len(raw_encoding(tokenizer, item["prompt"])["input_ids"])
+    if item["family"] in RECALLED:  # the first city of X whose prompt lines up with the original token for token
+        n = len(raw_encoding(tokenizer, render(item["prompt"], fmt, tokenizer))["input_ids"])
         fits = [
             c
             for c in x_cities(item, index)
-            if len(raw_encoding(tokenizer, variants(item, index, c)["cf"])["input_ids"]) == n
+            if len(raw_encoding(tokenizer, render(variants(item, index, c)["cf"], fmt, tokenizer))["input_ids"]) == n
         ]
         texts = {"clean": item["prompt"], **variants(item, index, fits[0] if fits else None)}
+    texts = {k: render(t, fmt, tokenizer) for k, t in texts.items()}
     enc = {k: raw_encoding(tokenizer, t, offsets=True) for k, t in texts.items()}  # the target's BOS first, if any
     ids = {k: e["input_ids"] for k, e in enc.items()}
     changed = {s: changed_tokens(ids["clean"], ids[s]) for s in ("cf", "off")}
     out: dict[str, Any] = {"ids": ids, "changed": changed}
-    expected = {"cf": 1 if item["family"] in ("R", "RL") else 2, "off": 2}
+    expected = {"cf": 1 if item["family"] in RECALLED else 2, "off": 2}
     cf_changed, off_changed = changed["cf"], changed["off"]
     if (
         cf_changed is None
@@ -175,8 +202,12 @@ def prepare(item: dict, index: int, tokenizer) -> dict:
     ):
         out["status"] = "unaligned"
         return out
-    prompt, offsets = item["prompt"], enc["clean"]["offset_mapping"]
-    q_start, cue_start, cue_end = prompt.rindex("The "), prompt.rindex(item["cue"]), prompt.rindex(" is")
+    prompt, offsets = texts["clean"], enc["clean"]["offset_mapping"]
+    if fmt == "raw":
+        q_start, cue_start, cue_end = prompt.rindex("The "), prompt.rindex(item["cue"]), prompt.rindex(" is")
+    else:
+        clause = " is located" if item["family"] in RECALLED else " lives"
+        q_start, cue_start, cue_end = chat.question_span(prompt, item["cue"], clause)
     after = max(cf_changed)
     out["groups"] = {
         "question": [i for i, (_, e) in enumerate(offsets) if e > q_start and i > after],
@@ -198,18 +229,19 @@ def role_of(said: str | None, item: dict) -> str:
     return next((r for r, c in roles(item).items() if c == said), "other")
 
 
-def stage_check() -> None:
+def stage_check(fmt: str = "raw") -> None:
     from bridge_jspace.tokens import load_tokenizer
 
     tokenizer = load_tokenizer()
-    for family in ("R", "B", "L", "RL"):
+    for family in ("R", "B", "L", "RL", *USE_SOURCE):
         counts: dict[str, int] = {}
         sizes: dict[int, int] = {}
-        items = {"L": pins.bind_lookup_v2_items, "RL": pins.recall_lookup_items}.get(family, pins.bind_recall_items)()
+        loaders = {"L": pins.bind_lookup_v2_items, "RL": pins.recall_lookup_items}
+        items = (pins.use_source_items if family in USE_SOURCE else loaders.get(family, pins.bind_recall_items))()
         for index, item in enumerate(items):
             if item["family"] != family:
                 continue
-            prep = prepare(item, index, tokenizer)
+            prep = prepare(item, index, tokenizer, fmt)
             counts[prep["status"]] = counts.get(prep["status"], 0) + 1
             if prep["status"] == "ok":
                 n = len(prep["groups"]["question"])
@@ -217,7 +249,7 @@ def stage_check() -> None:
         print(family, counts, "question-group sizes:", sizes)
 
 
-def manifest_common(name: str, why: str, kind: str, item_set: str = "bind_recall") -> dict:
+def manifest_common(name: str, why: str, kind: str, item_set: str = "bind_recall", fmt: str = "raw") -> dict:
     pins.check_run_name(name)
     path, sha = ITEM_SETS[item_set][:2]
     return {
@@ -227,6 +259,11 @@ def manifest_common(name: str, why: str, kind: str, item_set: str = "bind_recall
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "why": why,
         "model": pins.model_pin(),
+        "format": fmt,
+        "format_detail": "raw text, no chat template"
+        if fmt == "raw"
+        else "the chat template, one user turn, thinking off, assistant prefilled 'Answer:'; the statement becomes a "
+        f"question after the same context, then '{chat.QUESTION_INSTRUCTION}' (bridge_jspace.chat; exp20's chat_prefill)",
         "items": {
             "set": item_set,
             "file": str(path.relative_to(pins.REPO_ROOT)),
@@ -242,7 +279,13 @@ def manifest_common(name: str, why: str, kind: str, item_set: str = "bind_recall
             "O": "X's and Z's holders swap countries (off the path; the answer stays)",
         },
         "groups": {
-            "question": "the question's tokens after C's changed ones (R: after the city; B: the whole question)",
+            "question": "the question's tokens after C's changed ones (R: after the city; B: the whole question)"
+            + (
+                ""
+                if fmt == "raw"
+                else "; in the chat format through the end of the prompt (the instruction, the "
+                "template's tokens and 'Answer:' included)"
+            ),
             "last": "the last token",
             "cue": "the cue phrase, from the cue word to the word before the final ' is' (the swaps' positions)",
         },
@@ -252,11 +295,11 @@ def manifest_common(name: str, why: str, kind: str, item_set: str = "bind_recall
     }
 
 
-def stage_manifest_map(name: str, why: str, item_set: str = "bind_recall") -> None:
+def stage_manifest_map(name: str, why: str, item_set: str = "bind_recall", fmt: str = "raw") -> None:
     path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
-    manifest = manifest_common(name, why, "bind_recall_map", item_set)
+    manifest = manifest_common(name, why, "bind_recall_map", item_set, fmt)
     manifest["question"] = "Where, by layer and position group, does each family carry the bridge (lens-free)?"
     manifest["layers"] = list(MAP_LAYERS)
     manifest["decision"] = {
@@ -297,6 +340,7 @@ def eligible_cases(
     sources: tuple[str, ...] = ("clean", "cf", "off"),
     map_items: Path | None = None,
     item_set: str = "bind_recall",
+    fmt: str = "raw",
 ) -> tuple[list[dict], list[dict]]:
     """Eligible items (as the manifest), a seeded sample of N_ITEMS per family, with their runs' block outputs.
     With `map_items` (a map run's items.jsonl, one row per item in file order) the eligibility is read from that run
@@ -308,7 +352,7 @@ def eligible_cases(
     before = [json.loads(line) for line in map_items.read_text().splitlines()] if map_items else None
     assert before is None or len(before) == len(items), "the map's items.jsonl does not cover the item file"
     for index, item in enumerate(items):
-        prep = prepare(item, index, tokenizer)
+        prep = prepare(item, index, tokenizer, fmt)
         row = {"family": item["family"], "name": uid(item, index), "status": prep["status"]}
         rows.append(row)
         if prep["status"] != "ok":
@@ -356,7 +400,7 @@ def stage_run_map(name: str) -> None:
     model = load_model()
     tokenizer: Any = model.tokenizer
     capitals = list(answers)
-    cases, rows = eligible_cases(model, tokenizer, MAP_LAYERS, item_set=item_set)
+    cases, rows = eligible_cases(model, tokenizer, MAP_LAYERS, item_set=item_set, fmt=manifest.get("format", "raw"))
     print({f: sum(c["family"] == f for c in cases) for f in families}, "items", flush=True)
     outcomes = []
     for c in cases:
@@ -396,7 +440,7 @@ def stage_run_map(name: str) -> None:
 
 
 def families_in(rows: list[dict]) -> tuple[str, ...]:
-    return tuple(f for f in ("R", "B", "L", "RL") if any(r["family"] == f for r in rows))
+    return tuple(f for f in ("R", "B", "L", "RL", *USE_SOURCE) if any(r["family"] == f for r in rows))
 
 
 def status_counts(rows: list[dict]) -> dict:
@@ -446,7 +490,7 @@ def answer_formed(outcomes: list[dict]) -> dict[str, int]:
     return out
 
 
-def stage_manifest_parts(name: str, map_run: str, why: str) -> None:
+def stage_manifest_parts(name: str, map_run: str, why: str, lens: str = "jpp") -> None:
     path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
@@ -458,17 +502,18 @@ def stage_manifest_parts(name: str, map_run: str, why: str) -> None:
     window = {
         f: [layer for layer in blob["windows"].get(f, {}).get("question", []) if layer < cap[f]] for f in families
     }
-    manifest = manifest_common(name, why, "bind_recall_parts", item_set)
+    fmt = json.loads((RESULTS / map_run / "manifest.json").read_text()).get("format", "raw")
+    manifest = manifest_common(name, why, "bind_recall_parts", item_set, fmt)
     manifest["question"] = (
         "At each family's window, which part of the copy carries the bridge: its J-space part or the rest?"
     )
     manifest["map"] = {"run": map_run, "summary_sha256": sha256_of(map_summary), "cap": cap, "parts_window": window}
     manifest["eligibility_from"] = "the map run's items.jsonl (the same items and seeded sample, not regenerated)"
-    manifest["lens"] = {"jpp": list(pins.LENS_SOURCES["jpp"])}
+    manifest["lens"] = {lens: list(pins.LENS_SOURCES[lens])}
     manifest["parts"] = {
         "full": "δ = h_C - h_B at the question group",
-        "lens2": "δ's projection on span{v_I, v_X}, J++'s unit vectors of the two countries; not_lens2 the rest",
-        "jspace": f"δ's {K_ATOMS}-atom signed OMP part over J++'s unit letter-token vectors; not_jspace the rest",
+        "lens2": f"δ's projection on span{{v_I, v_X}}, {lens}'s unit vectors of the two countries; not_lens2 the rest",
+        "jspace": f"δ's {K_ATOMS}-atom signed OMP part over {lens}'s unit letter-token vectors; not_jspace the rest",
     }
     manifest["controls"] = "each part along a seeded random direction at the same per-position norm; O's full copy"
     manifest["decision"] = {
@@ -480,6 +525,10 @@ def stage_manifest_parts(name: str, map_run: str, why: str) -> None:
         "refuted if B's jspace is above its null; a family with an empty window is not interpreted",
         "RL": "recall_lookup only: RL 'outside': the in-context use decides (a recalled bridge leaves the J-space when "
         "a lookup in the prompt uses it); RL 'inside': the recalled source decides; otherwise inconclusive",
+        "use_source": "use_source only (Phase 3, fixed before the run): 'what uses the bridge decides' if LM and RM "
+        "(a lookup uses it, the answer recalled) are outside and BT and RT (a recalled fact uses it, the answer read "
+        "off the prompt) inside; 'where the answer comes from decides' if LM and RM are inside and BT and RT outside; "
+        "otherwise mixed, reported family by family",
         "L": "bind_lookup only: L 'outside' (as brew): an in-context second step moves the bound bridge out of the "
         "J-space; L 'inside' (as B): it does not, so brew's difference is its first step (a table lookup) or its "
         "format; otherwise inconclusive",
@@ -506,8 +555,9 @@ def stage_run_parts(name: str) -> None:
     tokenizer: Any = model.tokenizer
     capitals = list(ITEM_SETS[item_set][4])
     map_items = RESULTS / manifest["map"]["run"] / "items.jsonl"
-    cases, rows = eligible_cases(model, tokenizer, layers, map_items=map_items, item_set=item_set)
-    lens = JLens(model, "jpp")
+    fmt = manifest.get("format", "raw")
+    cases, rows = eligible_cases(model, tokenizer, layers, map_items=map_items, item_set=item_set, fmt=fmt)
+    lens = JLens(model, next(iter(manifest["lens"])))  # one lens per parts run (older manifests: jpp)
     dictionaries = {layer: lens.vectors(layer, model.letter_token_ids()) for layer in layers}
     outcomes, fve = [], []
     g = torch.Generator(device="cuda").manual_seed(BOOT_SEED)
@@ -606,7 +656,20 @@ def summarize_parts(outcomes: list[dict], fve: list[dict], window: dict) -> dict
             "variance_share_median": {k: statistics.median(v) for k, v in shares.items()},
         }
     fam = out["families"]
-    if "RL" in fam:
+    if any(f in fam for f in USE_SOURCE):
+        v = {
+            f: (fam[f]["decisions"]["jspace"]["verdict"] if isinstance(fam[f].get("decisions"), dict) else "empty")
+            for f in USE_SOURCE
+            if f in fam
+        }
+        lookup_uses, recall_uses = [v.get(f) for f in ("LM", "RM")], [v.get(f) for f in ("BT", "RT")]
+        if all(x == "outside" for x in lookup_uses) and all(x == "inside" for x in recall_uses):
+            out["hypothesis"] = "what uses the bridge decides (LM, RM outside; BT, RT inside)"
+        elif all(x == "inside" for x in lookup_uses) and all(x == "outside" for x in recall_uses):
+            out["hypothesis"] = "where the answer comes from decides (LM, RM inside; BT, RT outside)"
+        else:
+            out["hypothesis"] = "mixed: " + ", ".join(f"{f} {x}" for f, x in v.items())
+    elif "RL" in fam:
         v = fam["RL"]["decisions"]["jspace"]["verdict"] if isinstance(fam["RL"].get("decisions"), dict) else None
         out["hypothesis"] = {
             "outside": "RL outside: the in-context use, not the recalled source, puts the bridge outside the J-space",
@@ -639,7 +702,7 @@ def write_parts_md(path: Path, run: str, summary: dict) -> None:
         "",
         f"Items: {json.dumps(summary['items'])}",
         "",
-        f"Hypothesis (recalled in the J-space, bound not): {summary['hypothesis']}",
+        f"Hypothesis (the manifest's rule): {summary['hypothesis']}",
         "",
     ]
     for family, s in summary["families"].items():
@@ -664,16 +727,25 @@ def write_parts_md(path: Path, run: str, summary: dict) -> None:
     path.write_text("\n".join(lines) + "\n")
 
 
-def stage_manifest_swaps(name: str, why: str) -> None:
+def stage_manifest_swaps(
+    name: str, why: str, probes_tag: str | None = None, map_run: str | None = None, band: str | None = None
+) -> None:
     path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
-    manifest = manifest_common(name, why, "bind_recall_swaps")
+    fmt = json.loads((RESULTS / map_run / "manifest.json").read_text()).get("format", "raw") if map_run else "raw"
+    manifest = manifest_common(name, why, "bind_recall_swaps", "bind_recall", fmt)
     manifest["question"] = (
         "Does swapping the bridge's J-space part (exp01's probe, exp02's method) change the answer when "
     )
     manifest["question"] += "the bridge is recalled, and when it is bound in context?"
-    manifest["probes"] = {"file": str(PROBES.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(PROBES)}
+    # an exp01 tag, or "<exp>/<tag>" for another experiment's probes in exp01's format (exp21's contrastive directions)
+    probes_file = (
+        PROBES
+        if probes_tag is None
+        else pins.CACHE_DIR / (probes_tag if "/" in probes_tag else f"exp01/{probes_tag}") / "probes.pt"
+    )
+    manifest["probes"] = {"file": str(probes_file.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(probes_file)}
     assert SWAP_LAYERS, f"no exp02 swap band for {pins.TARGET} yet"
     maps = sorted(
         d.name
@@ -681,14 +753,21 @@ def stage_manifest_swaps(name: str, why: str) -> None:
         if (d / "summary.json").exists() and d.name.startswith(pins.RUN_PREFIX + "map")
     )
     assert maps, "run the map first: the swaps reuse its eligibility and sample"
-    manifest["map"] = {"run": maps[-1], "items_sha256": sha256_of(RESULTS / maps[-1] / "items.jsonl")}
+    map_run = map_run or maps[-1]  # older runs: the newest map by name
+    assert (RESULTS / map_run / "summary.json").exists(), f"map run {map_run} has no results"
+    manifest["map"] = {"run": map_run, "items_sha256": sha256_of(RESULTS / map_run / "items.jsonl")}
+    layers = band_layers(band) if band else SWAP_LAYERS
     manifest["eligibility_from"] = "the map run's items.jsonl (the same items and seeded sample, not regenerated)"
     manifest["swap"] = {
         "positions": "the cue phrase (R: the city, 'is', 'located'; B: the person, 'lives'), as exp02's cue regime",
-        "layers": f"{SWAP_LAYERS[0]}-{SWAP_LAYERS[-1]} at once (exp02's band"
-        + ("" if pins.TARGET == "qwen3.6-27b" else f", picked by {pins.RUN_PREFIX}gate_v4")
-        + "); a layer is skipped if I's and X's atoms "
-        "are near parallel",
+        "layers": f"{layers[0]}-{layers[-1]} at once ("
+        + (
+            f"given: {band}"
+            if band
+            else "exp02's band" + ("" if pins.TARGET == "qwen3.6-27b" else f", picked by {pins.RUN_PREFIX}gate_v4")
+        )
+        + "); a layer is skipped if I's and X's atoms are near parallel",
+        "layer_list": list(layers),
         "conditions": "exp02's: the J-part, the full probe, the remainder, the matched-alignment direction (the J-part's "
         "cosine to the probe, the rest random); atoms I and X swapped by the coordinate clamp",
         "null": "each condition's edit along seeded random directions at the edit's own norm (exp02's null)",
@@ -715,20 +794,24 @@ def stage_run_swaps(name: str) -> None:
     out_dir = RESULTS / name
     manifest = json.loads((out_dir / "manifest.json").read_text())
     assert not (out_dir / "outcomes.jsonl").exists(), f"{out_dir} already has results; results are write-once"
-    assert sha256_of(PROBES) == manifest["probes"]["sha256"], "probes.pt changed since the manifest"
+    probes_file = pins.REPO_ROOT / manifest["probes"]["file"]  # PROBES unless the manifest names other probes
+    assert sha256_of(probes_file) == manifest["probes"]["sha256"], "probes.pt changed since the manifest"
     model = load_model()
     tokenizer: Any = model.tokenizer
     capitals = [c.lower() for c in CAPITALS.values()]
-    probes = Probes(PROBES)
+    probes = Probes(probes_file)
     map_items = RESULTS / manifest["map"]["run"] / "items.jsonl"
     assert sha256_of(map_items) == manifest["map"]["items_sha256"], "the map's items.jsonl changed"
-    cases, rows = eligible_cases(model, tokenizer, SWAP_LAYERS, sources=("clean",), map_items=map_items)
+    swap_layers = tuple(manifest["swap"].get("layer_list", SWAP_LAYERS))
+    cases, rows = eligible_cases(
+        model, tokenizer, swap_layers, sources=("clean",), map_items=map_items, fmt=manifest.get("format", "raw")
+    )
     outcomes = []
     for c in cases:
         pair = {"intermediate": c["bridge"], "swap_to": c["target"]}
         jobs: list[tuple[dict, dict]] = []
         for ci, condition in enumerate(SWAP_CONDITIONS):
-            atoms = {layer: condition_atoms(condition, pair, layer, probes, None, model) for layer in SWAP_LAYERS}
+            atoms = {layer: condition_atoms(condition, pair, layer, probes, None, model) for layer in swap_layers}
             for null in (False, True):
                 g = torch.Generator(device="cuda").manual_seed(NULL_SEED + 1000 * c["index"] + ci) if null else None
                 clamps = {}
@@ -821,19 +904,24 @@ if __name__ == "__main__":
     parser.add_argument("--map", dest="map_run", help="manifest_parts: the map run")
     parser.add_argument("--why", help="manifest_*: who chose this run and why")
     parser.add_argument("--items", default="bind_recall", choices=list(ITEM_SETS), help="manifest_map: the item set")
+    parser.add_argument("--lens", default="jpp", choices=list(pins.LENS_SOURCES), help="manifest_parts: the lens")
+    parser.add_argument("--probes", default=None, help="manifest_swaps: an exp01 probes tag (default: PROBES)")
+    parser.add_argument("--format", default="raw", choices=chat.FORMATS, help="check / manifest_map: the prompt format")
+    parser.add_argument("--swap-map", default=None, help="manifest_swaps: the map run (default: the newest by name)")
+    parser.add_argument("--band", default=None, help="manifest_swaps: swap layers A-B (default: exp02's band)")
     args = parser.parse_args()
     if args.stage == "check":
-        stage_check()
+        stage_check(args.format)
     elif args.stage in ("manifest_map", "manifest_parts", "manifest_swaps"):
         assert args.name, "manifests need --name"
         assert args.why, "manifests need --why"
         if args.stage == "manifest_map":
-            stage_manifest_map(args.name, args.why, args.items)
+            stage_manifest_map(args.name, args.why, args.items, args.format)
         elif args.stage == "manifest_swaps":
-            stage_manifest_swaps(args.name, args.why)
+            stage_manifest_swaps(args.name, args.why, args.probes, args.swap_map, args.band)
         else:
             assert args.map_run, "manifest_parts needs --map"
-            stage_manifest_parts(args.name, args.map_run, args.why)
+            stage_manifest_parts(args.name, args.map_run, args.why, args.lens)
     elif args.stage == "run_map":
         assert args.target, "run_map needs the run's folder name"
         stage_run_map(args.target)

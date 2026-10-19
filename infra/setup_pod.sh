@@ -24,7 +24,7 @@ echo ">> caches under $PERSIST ($(df -h "$PERSIST" | awk 'NR==2 {print $4}') fre
 
 # Fail early on an old driver: CUDA wheels newer than the driver import fine but die on first use.
 nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv
-driver_cuda=$(nvidia-smi | grep -oP 'CUDA Version: \K[0-9.]+')
+driver_cuda=$(nvidia-smi | grep -oP 'CUDA (UMD )?Version: \K[0-9.]+')  # newer drivers print 'CUDA UMD Version'
 [ "$(printf '%s\n' "$MIN_DRIVER_CUDA" "$driver_cuda" | sort -V | head -1)" = "$MIN_DRIVER_CUDA" ] \
   || die "driver supports CUDA $driver_cuda < $MIN_DRIVER_CUDA: pick an image with a newer driver"
 

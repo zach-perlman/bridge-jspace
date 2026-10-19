@@ -9,7 +9,10 @@ Variants: base (data/entity_prompts.json); topup (+ data/entity_prompts_topup.js
 the entities left with fewer than MIN_KEPT kept prompts in run TOPUP_AFTER); whiten (the topup prompts as kept in
 run WHITEN_FROM, no re-filtering, whitened probes); more (+ data/entity_prompts_more/, a second round for every
 entity after two failed exp02 gates); more_jpp (more's prompts and probes, decomposed over J++ instead of the J-lens;
-the filter is re-run and compared prompt by prompt with run JPP_REPRODUCES).
+the filter is re-run and compared prompt by prompt with run JPP_REPRODUCES); more_jpp_chat (more_jpp's prompts, probe
+definition and dictionary in the chat format, README Decisions 2026-10-19: each entity prompt a fill-in-the-blank user
+turn, thinking off, "Answer:" prefilled, bridge_jspace.chat; the residual at the prefill's ":", where the model is about
+to name the answer, as the raw prompts' last token was).
 
 Probe of entity e at layer l: the mean final-token residual (output of block l) over e's kept prompts, minus the mean
 of those entity means over all entities. Whitened probe: that difference times the inverse of the pooled
@@ -30,7 +33,7 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from bridge_jspace import pins
+from bridge_jspace import chat, pins
 from bridge_jspace.data import (
     check_entity_prompts,
     entities_of,
@@ -67,12 +70,33 @@ VARIANTS = {  # which prompt rounds a run uses, whether its probes are whitened,
     "whiten": {"manifest": "manifest_whiten.json", "topup": True, "more": False, "whiten": True, "lens": "jlens"},
     "more": {"manifest": "manifest_more.json", "topup": True, "more": True, "whiten": False, "lens": "jlens"},
     "more_jpp": {"manifest": "manifest_more_jpp.json", "topup": True, "more": True, "whiten": False, "lens": "jpp"},
+    "more_jpp_chat": {
+        "manifest": "manifest_more_jpp_chat.json",
+        "topup": True,
+        "more": True,
+        "whiten": False,
+        "lens": "jpp",
+        "format": "chat_prefill",
+    },
+    # The same, the residual at the statement's last token inside the user turn (before " ___") instead of the
+    # prefill's ':': exp02's chat gate failed with more_jpp_chat's probes (full probe 8%) while the lens's own vectors
+    # flipped 59-62%, so the probe's position (the assistant turn vs the question's tokens) is the first suspect.
+    "more_jpp_chat_stmt": {
+        "manifest": "manifest_more_jpp_chat_stmt.json",
+        "topup": True,
+        "more": True,
+        "whiten": False,
+        "lens": "jpp",
+        "format": "chat_prefill",
+        "position": "statement_end",
+    },
     # Another target (pins.TARGET): every prompt round at once, self-contained (no cross-run references to Qwen's runs),
     # over J++ (as more_jpp) or the J-lens.
     "all_jpp": {"manifest": "manifest_all_jpp.json", "topup": True, "more": True, "whiten": False, "lens": "jpp"},
     "all_jlens": {"manifest": "manifest_all_jlens.json", "topup": True, "more": True, "whiten": False, "lens": "jlens"},
 }
-QWEN_ONLY = ("base", "topup", "whiten", "more", "more_jpp")  # their manifests chain Qwen runs v1-v3
+QWEN_ONLY = ("base", "topup", "whiten", "more", "more_jpp", "more_jpp_chat", "more_jpp_chat_stmt")
+CHAT_BATCH = 64  # more_jpp_chat: filter continuations generated for this many prompts of one token length at a time  # their manifests chain Qwen runs v1-v3
 
 
 def manifest_path(variant: str) -> Path:
@@ -258,6 +282,98 @@ def stage_manifest_more_jpp() -> None:
     print("wrote", path)
 
 
+def stage_manifest_more_jpp_chat(variant: str = "more_jpp_chat") -> None:
+    """more_jpp's prompts, probe definition and J++ dictionary, in the chat format."""
+    path = manifest_path(variant)
+    assert not path.exists(), f"{path} exists; manifests are written once"
+    manifest = json.loads(manifest_path("more_jpp").read_text())
+    manifest.pop("reproduces", None)
+    manifest["written_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    manifest["variant"] = variant
+    manifest["data"]["entity_prompts"]["sha256"] = sha256_of(pins.ENTITY_PROMPTS_FILE)
+    manifest["data"]["entity_prompts_topup"]["sha256"] = sha256_of(pins.ENTITY_PROMPTS_TOPUP_FILE)
+    manifest["data"]["entity_prompts_more"] = more_files_pinned()
+    manifest["prompt_format"] = (
+        "the chat template, one user turn, thinking off, assistant prefilled 'Answer:': "
+        f"'{chat.BLANK_INSTRUCTION}', a blank line, the prompt without 'Fact: ' and ' ___' (bridge_jspace.chat)"
+    )
+    manifest["filter"] = (
+        f"keep a prompt if the first word of the model's greedy continuation after 'Answer:' ({GREEDY_TOKENS} tokens) "
+        f"equals an accepted answer, case-insensitively; continuations generated {CHAT_BATCH} prompts of one token "
+        "length at a time (Model.generate_batch, no edits)"
+    )
+    manifest["probe"] = (
+        "mean residual (block output) at the prompt's last token, the prefill's ':' (where the model is about to name "
+        "the answer, as the raw prompts' last token was), over kept prompts, minus the mean over entities"
+    )
+    if VARIANTS[variant].get("position") == "statement_end":
+        manifest["probe"] = (
+            "mean residual (block output) at the statement's last token inside the user turn (the token before ' ___'), "
+            "over kept prompts, minus the mean over entities"
+        )
+        manifest["deviations"].append(
+            "Probe position: the statement's last token in the user turn, not the prefill's ':'. exp02's chat gate "
+            "(gate_chat_v1) failed with more_jpp_chat's probes (full probe 1-8% at every band) while the lens's own "
+            "vectors flipped 45-62%; the probe built in the assistant turn is the first suspect. Chosen by the agent "
+            "under Zach's overnight approval (2026-10-19), as the gate rule's 'debug' step."
+        )
+    manifest["deviations"].append(
+        "Chat format (Zach, 2026-10-19; README Decisions): new part B runs use the chat template with 'Answer:' "
+        "prefilled, so exp02 and exp09 re-run in it need probes from the same format. Same prompts, probe definition "
+        "and J++ dictionary as more_jpp; the filter is re-run in this format (kept prompts may differ)."
+    )
+    path.write_text(json.dumps(manifest, indent=2) + "\n")
+    print("wrote", path)
+
+
+def chat_filter(model, entities: list[str], prompts: dict, position: str = "prefill") -> tuple[list[dict], dict]:
+    """more_jpp_chat's filter: every entity prompt rendered in the chat format, continuations generated in batches of
+    one token length, and for each kept prompt the residual at its last token (the prefill's ':')."""
+    from bridge_jspace.tokens import raw_encoding
+
+    todo, where = [], []
+    for entity in entities:
+        for row in prompts[entity]:
+            text = chat.chat_text(model.tokenizer, chat.blank_content(row["prompt"]))
+            enc = raw_encoding(model.tokenizer, text, offsets=True)
+            todo.append((entity, row, torch.tensor([enc["input_ids"]], device="cuda")))
+            blank = text.index(" ___")  # statement_end: the last token that ends before the blank
+            where.append(
+                -1 if position == "prefill" else max(i for i, (_, e) in enumerate(enc["offset_mapping"]) if e <= blank)
+            )
+    by_len: dict[int, list[int]] = {}
+    for i, (_, _, ids) in enumerate(todo):
+        by_len.setdefault(ids.shape[1], []).append(i)
+    texts: list[str] = [""] * len(todo)
+    for group in by_len.values():
+        for start in range(0, len(group), CHAT_BATCH):
+            chunk = group[start : start + CHAT_BATCH]
+            batch = torch.cat([todo[i][2] for i in chunk])
+            for i, text in zip(chunk, model.generate_batch(batch, GREEDY_TOKENS, [{}] * len(chunk)), strict=True):
+                texts[i] = text
+    rows, kept_residuals = [], {e: [] for e in entities}
+    for (entity, row, ids), continuation, pos in zip(todo, texts, where, strict=True):
+        word = first_word(continuation)
+        kept = word is not None and word.lower() in {a.lower() for a in row["answers"]}
+        rows.append(
+            {
+                "entity": entity,
+                "round": row["round"],
+                "prompt": row["prompt"],
+                "answers": row["answers"],
+                "greedy": continuation,
+                "greedy_word": word,
+                "kept": kept,
+            }
+        )
+        if kept:
+            _, h = model.run(ids, record=PROBE_LAYERS)
+            kept_residuals[entity].append(torch.stack([h[layer][pos] for layer in PROBE_LAYERS]))  # [L, d]
+    for entity in entities:
+        print(f"{entity}: kept {len(kept_residuals[entity])}/{len(prompts[entity])}", flush=True)
+    return rows, kept_residuals
+
+
 def stage_manifest_all(variant: str) -> None:
     """One self-contained manifest for every prompt round (base, top-up, more) on the target model."""
     path = manifest_path(variant)
@@ -363,6 +479,8 @@ def stage_run(tag: str, variant: str) -> None:
             if r["kept"]:
                 _, h = model.run(model.encode(r["prompt"]), record=PROBE_LAYERS)
                 kept_residuals[r["entity"]].append(torch.stack([h[layer][-1] for layer in PROBE_LAYERS]))
+    elif v.get("format") == "chat_prefill":
+        rows, kept_residuals = chat_filter(model, entities, prompts, v.get("position", "prefill"))
     else:
         for entity in entities:
             for row in prompts[entity]:
@@ -524,7 +642,7 @@ def redecompose_manifest_path(tag: str) -> Path:
     return RESULTS / f"manifest_{tag}.json"
 
 
-def stage_manifest_redecompose(tag: str, source: str, lens: str) -> None:
+def stage_manifest_redecompose(tag: str, source: str, lens: str, deviation: str | None = None) -> None:
     """Manifest for re-decomposing run `source`'s cached probes over another lens (no new probes, no filter)."""
     path = redecompose_manifest_path(tag)
     assert not path.exists(), f"{path} exists; manifests are written once"
@@ -542,9 +660,12 @@ def stage_manifest_redecompose(tag: str, source: str, lens: str) -> None:
             "dictionary": f"unit {lens} vectors of non-special tokens whose decode has a letter",
         },
         "deviations": [
-            f"Probes are {source}'s, unchanged, so the two lenses' decompositions differ only in the lens. Run "
-            f"{source} did not reproduce v3's filter exactly on this box (see its summary), so v3 cannot be paired "
-            "with it. Chosen by the human.",
+            deviation
+            or (
+                f"Probes are {source}'s, unchanged, so the two lenses' decompositions differ only in the lens. Run "
+                f"{source} did not reproduce v3's filter exactly on this box (see its summary), so v3 cannot be "
+                "paired with it. Chosen by the human."
+            ),
         ],
     }
     path.write_text(json.dumps(manifest, indent=2) + "\n")
@@ -658,7 +779,10 @@ if __name__ == "__main__":
     parser.add_argument("--tag", default=None)
     parser.add_argument("--from", dest="source", help="manifest-redecompose: the exp01 run whose probes to reuse")
     parser.add_argument(
-        "--lens", choices=list(pins.LENS_FILES), help="manifest-redecompose: the lens to decompose over"
+        "--lens", choices=list(pins.LENS_SOURCES), help="manifest-redecompose: the lens to decompose over"
+    )
+    parser.add_argument(
+        "--deviation", default=None, help="manifest-redecompose: the deviation note (default: v3_jlens's)"
     )
     parser.add_argument("--variant", default="base", choices=list(VARIANTS))
     args = parser.parse_args()
@@ -668,6 +792,8 @@ if __name__ == "__main__":
         "whiten": stage_manifest_whiten,
         "more": stage_manifest_more,
         "more_jpp": stage_manifest_more_jpp,
+        "more_jpp_chat": stage_manifest_more_jpp_chat,
+        "more_jpp_chat_stmt": lambda: stage_manifest_more_jpp_chat("more_jpp_chat_stmt"),
         "all_jpp": lambda: stage_manifest_all("all_jpp"),
         "all_jlens": lambda: stage_manifest_all("all_jlens"),
     }
@@ -682,7 +808,7 @@ if __name__ == "__main__":
         assert args.tag, "manifest-redecompose needs --tag"
         assert args.source, "manifest-redecompose needs --from"
         assert args.lens, "manifest-redecompose needs --lens"
-        stage_manifest_redecompose(args.tag, args.source, args.lens)
+        stage_manifest_redecompose(args.tag, args.source, args.lens, args.deviation)
     elif args.stage == "redecompose":
         assert args.tag, "--tag is required for redecompose"
         stage_redecompose(args.tag)

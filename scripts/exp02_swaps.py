@@ -21,6 +21,10 @@ Rows 0 and 1 are the bridge's and the target's; any further rows are held at the
   jpart_matched      (only with --conditions) per entity and layer, a unit direction with the J-part's cosine to the
                      probe and the rest random (orthogonal to the probe, seeded by entity and layer): as aligned with
                      the probe as the J-part, but not built from the lens
+  jpart_minus_own    (only with --conditions) the J-part minus its own-word atoms, projected off every own-word
+                     vector of both entities, which are held: own = the entity's concept token and single-token
+                     surfaces, plus J-part atoms whose unit lens vector has cosine >= OWN_COS with the concept
+                     token's (near-synonyms, demonyms, translations). Phase 2c: is the J-part more than the word?
 Positions (the manifest's "positions"; earlier runs: all). Offsets count back from the prompt's last token (0):
   all       every position from 1 (position 0, the attention sink, is never edited)
   last      offset 0 only (" is" in most stripped prompts; where part A reads the answer)
@@ -41,7 +45,10 @@ Scoring (the manifest's "scoring"; runs before gate_v4 used "rank"):
   rank      eligible if answer and swap answer have single-token surfaces, both entities have probes, and the clean
             answer has word rank 1; a flip is the swap answer reaching word rank 1.
 Prompt end (the manifest's "prompt_end"): "stripped" removes the trailing space that most published prompts end in
-(Qwen tokenizes it as a lone " " and then answers far worse; part A's pitfall 1); "as_published" keeps it.
+(Qwen tokenizes it as a lone " " and then answers far worse; part A's pitfall 1); "as_published" keeps it;
+"chat_prefill" puts the question in the chat template (from 2026-10-19, README Decisions): one user turn, thinking off,
+the question as a fill-in-the-blank and the assistant turn prefilled "Answer:" (bridge_jspace.chat, exp20's format).
+There "all" also edits the template's and the instruction's tokens, and offsets count back from "Answer:"'s ":".
 """
 
 import argparse
@@ -58,7 +65,7 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # for exp13's judge
 
-from bridge_jspace import pins
+from bridge_jspace import chat, pins
 from bridge_jspace.clamp import SwapClamp, near_parallel
 from bridge_jspace.data import load_items, sha256_of
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
@@ -68,7 +75,10 @@ from scripts.exp13_greedy_answers.experiment import ends_sentence, judge
 EXP = "exp02_swaps"
 RESULTS = pins.RESULTS_DIR / EXP
 CONDITIONS = ("raw_jlens", "full_probe", "jpart", "remainder", "remainder_clamped")
-EXTRA_CONDITIONS = ("jpart_matched",)  # run only when a manifest asks for them (--conditions)
+EXTRA_CONDITIONS = ("jpart_matched", "jpart_minus_own")  # run only when a manifest asks for them (--conditions)
+OWN_COS = (
+    0.5  # jpart_minus_own: an atom counts as the entity's own word if its cosine with the concept token is >= this
+)
 GATE_CONDITIONS = ("raw_jlens", "full_probe")
 # Qwen3.6-27B's bands (of 64 blocks); another target sweeps the same shares of its depth (Gemma 4 31B-it, 60 blocks).
 GATE_BANDS = (
@@ -78,7 +88,14 @@ GO_FLIP_RATE = 0.30
 QWEN = pins.TARGET == "qwen3.6-27b"  # manifest notes about Qwen's own earlier runs are written for Qwen's runs only
 NULL_SEED = 0
 N_BOOT, BOOT_SEED = 2000, 0
-COMPARISONS = (("jpart", "remainder"), ("remainder", "remainder_clamped"), ("jpart", "jpart_matched"))
+COMPARISONS = (
+    ("jpart", "remainder"),
+    ("remainder", "remainder_clamped"),
+    ("jpart", "jpart_matched"),
+    ("jpart", "jpart_minus_own"),
+    ("jpart_minus_own", "jpart_matched"),
+    ("raw_jlens", "jpart_minus_own"),
+)
 MAX_NEW_TOKENS, MAX_NEW_TOKENS_RETRY = 8, 16  # exp13's: room for "a gas", "Port-ugu-ese"; retry if cut off
 POSITION_REGIMES = ("all", "last", "prev", "last_two", "earlier", "cue", "earlier_noncue")
 CUE_SPANS = pins.DATA_DIR / "cue_spans.json"
@@ -118,6 +135,13 @@ def regime_positions(regime: str, seq_len: int, cue: list[int] | None = None) ->
     }[regime]
 
 
+def prompt_text(tokenizer, prompt: str, prompt_end: str) -> str:
+    """The prompt as the run feeds it: as published, stripped of its trailing space, or in the chat template."""
+    if prompt_end == "chat_prefill":
+        return chat.chat_text(tokenizer, chat.blank_content(prompt))
+    return prompt.rstrip() if prompt_end == "stripped" else prompt
+
+
 def probes_origin(tag: str) -> str:
     """The exp01 run whose probes `tag` uses: itself, or the run it re-decomposed."""
     summary = json.loads((pins.RESULTS_DIR / "exp01_probes" / tag / "summary.json").read_text())
@@ -135,6 +159,7 @@ def stage_manifest(
     band_reason: str | None = None,
     positions: str = "all",
     conditions: list[str] | None = None,
+    gate_reason: str | None = None,
 ) -> None:
     is_gate = kind == "gate"
     assert not (is_gate and conditions), "the gate runs its own conditions"
@@ -161,9 +186,21 @@ def stage_manifest(
         )
     else:
         deviations.append(
-            "Scoring by greedy continuation (exp13's criterion C) instead of first-token rank, and prompts with the "
-            "trailing space stripped (part A's primary variant), after exp13 found 9 correct items that rank scoring "
-            "dropped. Chosen by the human. The edits apply to the prompt's forward only."
+            "Scoring by greedy continuation (exp13's criterion C) instead of first-token rank"
+            + (
+                ", and prompts with the trailing space stripped (part A's primary variant)"
+                if prompt_end == "stripped"
+                else ""
+            )
+            + ", after exp13 found 9 correct items that rank scoring dropped. Chosen by the human. The edits apply to "
+            "the prompt's forward only."
+        )
+    if prompt_end == "chat_prefill":
+        deviations.append(
+            "Chat format (Zach, 2026-10-19; README Decisions): the question in the chat template as a fill-in-the-blank, "
+            "thinking off, 'Answer:' prefilled (exp20's chat_prefill, where the model answers 76 of the 90 questions). "
+            "Every position from 1 is edited, the template's and the instruction's tokens included; the probes must "
+            "come from the same format (exp01's chat variant)."
         )
     if positions != "all":
         assert not is_gate, "the gate always edits every position"
@@ -172,7 +209,14 @@ def stage_manifest(
             "part A reads the bridge best at offset -1 and the answer at offset 0. Edit size is the mean |delta|/|h| "
             "over the edited positions when the last position is not edited. Chosen by the human."
         )
-    if conditions:
+    if conditions and "jpart_minus_own" in conditions:
+        deviations.append(
+            f"Conditions: only {conditions} (Phase 2c). jpart_minus_own removes the bridge's and target's own-word atoms from the J-part (concept token, single-token surfaces, and atoms with cosine >= {OWN_COS} to the concept "
+            "token) and holds those directions. Decided before the run: the J-part acts through more than its own word directions only if jpart_minus_own flips more than jpart_matched (paired bootstrap CI above 0); if it does "
+            "not, 'acts through the J-space' narrows to 'acts through its own word directions'. Chosen by the human "
+            "(Zach, 2026-10-19)."
+        )
+    elif conditions:
         deviations.append(
             f"Conditions: only {conditions}, to compare the J-part swap with jpart_matched, directions as aligned "
             "with each probe as its J-part but random otherwise (does the lens's direction matter, or only how much "
@@ -229,12 +273,16 @@ def stage_manifest(
                 f"The band was picked by gate {gate} on these same items, so full_probe's rate is optimistic."
             )
         if not gate_record["go"]:
+            # Runs up to v4 were run on a failed gate by the human's choice; later ones must say who chose and why.
+            assert gate_reason or gate in ("gate", "gate_w1", "gate_v3", "gate_v4", "gate_v4_b200"), (
+                f"gate {gate} failed; give --gate-reason (who chose to run main anyway, and why)"
+            )
             deviations.append(
                 f"Gate {gate} failed (full probe {100 * gate_record['full_probe_flip_rate']:.0f}% < "
                 f"{100 * GO_FLIP_RATE:.0f}%)"
                 + (", as did gate, gate_w1 and gate_v3" if QWEN else "")
-                + ". The plan says stop and debug; the "
-                "human chose to run main anyway."
+                + ". The plan says stop and debug; "
+                + (f"run anyway: {gate_reason}" if gate_reason else "the human chose to run main anyway.")
             )
     manifest = {
         "exp": EXP,
@@ -294,6 +342,7 @@ class Probes:
         self.parts = {"full_probe": blob["probe"].cuda(), "jpart": blob["jpart"].cuda()}
         self.parts["remainder"] = self.parts["full_probe"] - self.parts["jpart"]
         self.atom_ids = blob["atom_ids"]  # {layer: [entity index -> token ids]}
+        self.atom_coefs = blob.get("atom_coefs")  # {layer: [entity index -> coefficients]} (jpart_minus_own)
 
     def unit(self, part: str, entity: str, layer: int) -> torch.Tensor:
         v = self.parts[part][self.index[entity], self.layer_index[layer]]
@@ -319,6 +368,25 @@ def condition_atoms(condition: str, item: dict, layer: int, probes: Probes, lens
     naming = [model.concept_token(bridge), model.concept_token(target)]
     if condition == "raw_jlens":
         return lens.vectors(layer, torch.tensor(naming, device="cuda"))
+    if condition == "jpart_minus_own":
+        rows, held = [], set()
+        for entity in (bridge, target):
+            e, li = probes.index[entity], probes.layer_index[layer]
+            ids = probes.jpart_atoms(entity, layer)
+            own = set(model.surface_ids(entity)) | {model.concept_token(entity)}
+            concept = lens.vectors(layer, torch.tensor([model.concept_token(entity)], device="cuda"))[0]
+            vecs = lens.vectors(layer, torch.tensor(ids, device="cuda"))  # unit, as in exp01's decomposition
+            is_own = [t in own or float(v @ concept) >= OWN_COS for t, v in zip(ids, vecs, strict=True)]
+            coefs = torch.tensor(probes.atom_coefs[layer][e], device="cuda")
+            mask = torch.tensor(is_own, device="cuda")
+            u = probes.parts["jpart"][e, li] - (coefs[mask] @ vecs[mask] if bool(mask.any()) else 0.0)
+            rows.append(u)
+            held |= own | {t for t, o in zip(ids, is_own, strict=True) if o}
+        held_vecs = lens.vectors(layer, torch.tensor(sorted(held), device="cuda"))
+        basis, _ = torch.linalg.qr(held_vecs.T)  # [d, h] orthonormal basis of the own-word span
+        pair = torch.stack([u - basis @ (basis.T @ u) for u in rows])
+        assert bool((pair.norm(dim=1) > 1e-6).all()), f"{bridge}/{target} layer {layer}: J-part is all own words"
+        return torch.cat([pair / pair.norm(dim=1, keepdim=True), held_vecs])
     if condition == "jpart_matched":
         return torch.stack([probes.matched(bridge, layer), probes.matched(target, layer)])
     part = "remainder" if condition == "remainder_clamped" else condition
@@ -408,7 +476,7 @@ def prepare(model, probes: Probes, item: dict, layers: list[int], scoring: str, 
         return {**row, "status": "multi_token_answer"}, None
     if missing:
         return {**row, "status": "no_probe:" + "+".join(missing)}, None
-    ids = model.encode(item["prompt"].rstrip() if prompt_end == "stripped" else item["prompt"])
+    ids = model.encode(prompt_text(model.tokenizer, item["prompt"], prompt_end))
     logits, clean_h = model.run(ids, record=tuple(layers))
     clean_rank = model.word_rank(logits, answer_ids) if answer_ids else None
     row.update(clean_rank=clean_rank, clean_top_word=model.top_word(logits))
@@ -452,7 +520,7 @@ def stage_run(name: str) -> None:
         ids, clean_h, answer_ids, swap_ids = prepared
         cue = None
         if regime in ("cue", "earlier_noncue"):
-            prompt = item["prompt"].rstrip() if prompt_end == "stripped" else item["prompt"]
+            prompt = prompt_text(model.tokenizer, item["prompt"], prompt_end)
             start = prompt.index(cues[item["name"]])
             enc = raw_encoding(model.tokenizer, prompt, offsets=True)  # as model.encode, the target's BOS first
             assert enc["input_ids"] == ids[0].tolist(), "offsets come from another tokenization"
@@ -635,10 +703,13 @@ if __name__ == "__main__":
     parser.add_argument("--name", help="the run's folder name (manifest stage; default = the kind)")
     parser.add_argument("--positions", default="all", choices=POSITION_REGIMES, help="main manifest: edited positions")
     parser.add_argument("--band-reason", help="main manifest: why --band differs from the gate's pick")
+    parser.add_argument("--gate-reason", help="main manifest: who chose to run main on a failed gate, and why")
     parser.add_argument("--conditions", nargs="+", choices=CONDITIONS + EXTRA_CONDITIONS,
                         help="main manifest: a subset of the conditions (default: the five)")  # fmt: skip
     parser.add_argument("--scoring", default="greedy_c", choices=["greedy_c", "rank"], help="manifest stage")
-    parser.add_argument("--prompt-end", default="stripped", choices=["stripped", "as_published"], help="manifest stage")
+    parser.add_argument(
+        "--prompt-end", default="stripped", choices=["stripped", "as_published", "chat_prefill"], help="manifest stage"
+    )
     args = parser.parse_args()
     if args.stage == "manifest":
         assert args.target in ("gate", "main"), "manifest needs a kind (gate/main)"
@@ -654,6 +725,7 @@ if __name__ == "__main__":
             args.band_reason,
             args.positions,
             args.conditions,
+            args.gate_reason,
         )
     else:
         stage_run(args.target)
