@@ -1,0 +1,55 @@
+{
+  "exp": "suite_v1",
+  "run": "qwen35_9b_competence_b_v1",
+  "written_utc": "2026-10-19T22:45:09Z",
+  "why": "Zach (2026-10-19): wording B competence on Qwen3.5-9B before its split",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "set": "wording_b",
+  "items": {
+    "BL": {
+      "file": "data/suite_v1_b/BL.json",
+      "sha256": "97ab2e3360e78e6e4079203734bc1b6a34a7007227ac2048ed374d5f945830d5"
+    },
+    "BR": {
+      "file": "data/suite_v1_b/BR.json",
+      "sha256": "b33426905edfdd73b3bfc884b1c6459553ae3525963c1688b5697595b9104c09"
+    },
+    "RL": {
+      "file": "data/suite_v1_b/RL.json",
+      "sha256": "70c44484c3c9d93d32527c853461c814e0d516f05ef1528e2bccd354c9e2eb49"
+    },
+    "RR": {
+      "file": "data/suite_v1_b/RR.json",
+      "sha256": "8b04f920f1192df74e5839344a18f4a0117a73e73809f339fef5e4cc1cc4992d"
+    },
+    "NAMES": {
+      "file": "data/suite_v1_b/NAMES.json",
+      "sha256": "22de103f7d6e541680ca555e1b1bd3d74976b6ff1130fcbc1105e1ca4cd933e9"
+    },
+    "CODE": {
+      "file": "data/suite_v1_b/CODE.json",
+      "sha256": "ea934461ea1f506f56183345d7e698224812930f249db175f10b58eb9a7db1ab"
+    },
+    "BLR": {
+      "file": "data/suite_v1_b/BLR.json",
+      "sha256": "9112c0c1ecfca2d0cf150af2bf09225b82721cdbc8ca4165e6daaf647a431031"
+    },
+    "BRL": {
+      "file": "data/suite_v1_b/BRL.json",
+      "sha256": "2dda647ec1a4808c9b2f5a6d6863dacf9486d7b56d19d136cc5a235addfa4da2"
+    }
+  },
+  "limit": null,
+  "format": "chat template, thinking off, 'Answer:' prefilled; the context, a newline, the question and 'Answer with a single word and nothing else.' in one user turn",
+  "prompts": "clean, C (cf_context + cf_question), O (off_context + question), hop1-hop3 (each step alone, with the item's context or the hop's own code)",
+  "judge": "the first answer of the item's kind in the first non-empty line of the greedy continuation (digits and number words for digits; the family's name / animal / fruit vocabulary otherwise)",
+  "generation": "greedy, 8 new tokens, prompts of one token length batched 64 at a time",
+  "answer_read": "one more forward per prompt, a digit answer's space token appended (the greedy reply's first token): p of the answer's first token, its logit minus the best other token's, and whether that read's top token is the greedy judge's answer",
+  "eligibility": "clean, C and O all answered (as exp09); all_steps: every prompt of the item answered; reliable family: Wilson 95% lower bound of clean >= 0.85"
+}

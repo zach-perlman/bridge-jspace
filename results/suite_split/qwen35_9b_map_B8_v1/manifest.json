@@ -1,0 +1,125 @@
+{
+  "exp": "suite_split",
+  "run": "qwen35_9b_map_B8_v1",
+  "kind": "map",
+  "written_utc": "2026-10-19T23:14:21Z",
+  "why": "Zach (2026-10-19): the same split on Qwen3.5-9B (the paper leaves model size open), wording B",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "families": [
+    "BL",
+    "BR",
+    "RL",
+    "RR",
+    "BLR",
+    "BRL",
+    "NAMES",
+    "CODE"
+  ],
+  "wording": "B",
+  "items": {
+    "BL": {
+      "file": "data/suite_v1_b/BL.json",
+      "sha256": "97ab2e3360e78e6e4079203734bc1b6a34a7007227ac2048ed374d5f945830d5"
+    },
+    "BR": {
+      "file": "data/suite_v1_b/BR.json",
+      "sha256": "b33426905edfdd73b3bfc884b1c6459553ae3525963c1688b5697595b9104c09"
+    },
+    "RL": {
+      "file": "data/suite_v1_b/RL.json",
+      "sha256": "70c44484c3c9d93d32527c853461c814e0d516f05ef1528e2bccd354c9e2eb49"
+    },
+    "RR": {
+      "file": "data/suite_v1_b/RR.json",
+      "sha256": "8b04f920f1192df74e5839344a18f4a0117a73e73809f339fef5e4cc1cc4992d"
+    },
+    "BLR": {
+      "file": "data/suite_v1_b/BLR.json",
+      "sha256": "9112c0c1ecfca2d0cf150af2bf09225b82721cdbc8ca4165e6daaf647a431031"
+    },
+    "BRL": {
+      "file": "data/suite_v1_b/BRL.json",
+      "sha256": "2dda647ec1a4808c9b2f5a6d6863dacf9486d7b56d19d136cc5a235addfa4da2"
+    },
+    "NAMES": {
+      "file": "data/suite_v1_b/NAMES.json",
+      "sha256": "22de103f7d6e541680ca555e1b1bd3d74976b6ff1130fcbc1105e1ca4cd933e9"
+    },
+    "CODE": {
+      "file": "data/suite_v1_b/CODE.json",
+      "sha256": "ea934461ea1f506f56183345d7e698224812930f249db175f10b58eb9a7db1ab"
+    }
+  },
+  "eligibility": {
+    "BL": {
+      "competence": "results/suite_v1/qwen35_9b_competence_b_v1/items.jsonl",
+      "sha256": "076b5b610a1caf290ac65f0edc5d64bb0601e5619b45c82d6ca15505e54a7ccd"
+    },
+    "BR": {
+      "competence": "results/suite_v1/qwen35_9b_competence_b_v1/items.jsonl",
+      "sha256": "076b5b610a1caf290ac65f0edc5d64bb0601e5619b45c82d6ca15505e54a7ccd"
+    },
+    "RL": {
+      "competence": "results/suite_v1/qwen35_9b_competence_b_v1/items.jsonl",
+      "sha256": "076b5b610a1caf290ac65f0edc5d64bb0601e5619b45c82d6ca15505e54a7ccd"
+    },
+    "RR": {
+      "competence": "results/suite_v1/qwen35_9b_competence_b_v1/items.jsonl",
+      "sha256": "076b5b610a1caf290ac65f0edc5d64bb0601e5619b45c82d6ca15505e54a7ccd"
+    },
+    "BLR": {
+      "competence": "results/suite_v1/qwen35_9b_competence_b_v1/items.jsonl",
+      "sha256": "076b5b610a1caf290ac65f0edc5d64bb0601e5619b45c82d6ca15505e54a7ccd"
+    },
+    "BRL": {
+      "competence": "results/suite_v1/qwen35_9b_competence_b_v1/items.jsonl",
+      "sha256": "076b5b610a1caf290ac65f0edc5d64bb0601e5619b45c82d6ca15505e54a7ccd"
+    },
+    "NAMES": {
+      "competence": "results/suite_v1/qwen35_9b_competence_b_v1/items.jsonl",
+      "sha256": "076b5b610a1caf290ac65f0edc5d64bb0601e5619b45c82d6ca15505e54a7ccd"
+    },
+    "CODE": {
+      "competence": "results/suite_v1/qwen35_9b_competence_b_v1/items.jsonl",
+      "sha256": "076b5b610a1caf290ac65f0edc5d64bb0601e5619b45c82d6ca15505e54a7ccd"
+    }
+  },
+  "sample": "per scene group, up to 150 scenes eligible (every prompt right) in all of the run's families of the group, seed 0; BL/BR/RL/RR and BLR/BRL are scene groups, other families their own",
+  "format": "suite_v1's: chat template, thinking off, 'Answer:' prefilled",
+  "groups": {
+    "question": "the question's tokens after C's changed ones, through the end of the prompt (the instruction, the template's tokens and 'Answer:' included)",
+    "last": "the last prompt token"
+  },
+  "read": "one forward of the edited prompt, a digit answer's space token appended; role of the top token (b: X's answer, A: the bridge's, other); ld = logit(b) - logit(A); frac = (ld - ld_clean) / (ld_C - ld_clean), ld_clean and ld_C from the unedited clean and C runs",
+  "question": "Where, by layer and position group, does each family carry its bridge (lens-free)?",
+  "layers": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28
+  ],
+  "n_scenes": 150,
+  "validation": "8 greedy tokens for every edit of the first 20 cases per family; agreement of roles",
+  "decision": {
+    "window": "per family and group: the layers where C's copy moves the answer at least 0.1 of the way to C's (mean frac) and further than O's copy (paired bootstrap 95% lower bound of frac_C - frac_O above 0). Chosen after the smoke run (8 scenes), before any full run: exp09's flip rule (C's flips vs O's changes, Wilson intervals apart) found BL only at layers 52-60, above the answer onset, while the copy already moved BL's answer 11-17% of the way at 32-40; the flip rule's windows are reported as windows_flip",
+    "answer_formed": "per family, the first layer at which copying the last token alone gives X's answer for at least half the cases",
+    "parts_window": "the question group's window below min(answer_formed, 31)"
+  }
+}
