@@ -1,0 +1,65 @@
+{
+  "exp": "exp02_swaps",
+  "run": "gate_chat_stmt_h200",
+  "kind": "gate",
+  "written_utc": "2026-10-19T18:30:39Z",
+  "question": "Does the swap target's answer appear when the bridge's representation is swapped for the target's, and does that depend on the J-space part of the representation?",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "9fa267f841d62aa468dab5b9b38c3dc45a82d863"
+    ]
+  },
+  "items": {
+    "file": "data/probe_swap.json",
+    "sha256": "a0edd27ca23f7b4d0fbe90448c2ddcc7457a3d812121bf024ed12a032ff86796"
+  },
+  "scoring": "greedy_c",
+  "prompt_end": "chat_prefill",
+  "positions": "all",
+  "probes": {
+    "exp01_tag": "v4_chat_stmt_jpp_h200",
+    "file": "cache/exp01/v4_chat_stmt_jpp_h200/probes.pt",
+    "sha256": "1c19c3bfa72707a50b1de0367f1237f3a34822ec783dbec90986953efc91cb6c",
+    "definition": "mean_difference"
+  },
+  "bands": [
+    "16-32",
+    "24-40",
+    "32-48",
+    "24-48"
+  ],
+  "conditions": [
+    "raw_jlens",
+    "full_probe"
+  ],
+  "nulls": false,
+  "null_seed": 0,
+  "swap": "clamp.SwapClamp at every band layer, positions 1.. (not 0); atoms per condition as in the script docstring; unit atoms throughout",
+  "eligibility": "both entities have probes; the clean greedy continuation has the answer and not the swap answer (exp13 criterion C; 8 new tokens, 16 if cut off unmatched)",
+  "flip": "the swapped greedy continuation has the swap answer and not the clean answer (criterion C)",
+  "metrics": [
+    "flip rate, Wilson 95% CI",
+    "share keeping the clean answer, Wilson 95% CI",
+    "share with neither (collateral damage)",
+    "median edit ratio",
+    "items with skipped layers"
+  ],
+  "decision": "band = the one with the highest full_probe flip rate (first in ['16-32', '24-40', '32-48', '24-48'] on ties); go if that rate >= 0.3, else stop and debug before decomposing. The band is chosen on the same items, so its full_probe rate is optimistic.",
+  "deviations": [
+    "Edit size is the direct edit at the final position, |delta| / |h|, averaged over the edited band layers per item and reported as the median over items; the edit's downstream effect on later layers is not measured.",
+    "Layers where the two swapped atoms are near-parallel (|cos| > 0.999) are skipped and counted.",
+    "Word rank is strict: an exact logit tie with another word ranks a candidate 2nd, so a flip and a kept clean answer exclude each other (gate and gate_w1 counted ties as rank 1 for both: 2 and 3 of 528 outcomes).",
+    "Scoring by greedy continuation (exp13's criterion C) instead of first-token rank, after exp13 found 9 correct items that rank scoring dropped. Chosen by the human. The edits apply to the prompt's forward only.",
+    "Chat format (Zach, 2026-10-19; README Decisions): the question in the chat template as a fill-in-the-blank, thinking off, 'Answer:' prefilled (exp20's chat_prefill, where the model answers 76 of the 90 questions). Every position from 1 is edited, the template's and the instruction's tokens included; the probes must come from the same format (exp01's chat variant)."
+  ]
+}

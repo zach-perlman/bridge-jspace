@@ -1,0 +1,196 @@
+{
+  "items": {
+    "eligible": 76,
+    "clean_wrong": 14
+  },
+  "rates": [
+    {
+      "band": "32-48",
+      "condition": "raw_jlens",
+      "null": false,
+      "n": 76,
+      "flip": [
+        0.5921052631578947,
+        0.47978347984220315,
+        0.6955637075889103
+      ],
+      "kept_clean": [
+        0.34210526315789475,
+        0.2453616992261352,
+        0.4540431223205272
+      ],
+      "neither": 0.06578947368421052,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.007104555692742853,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "band": "32-48",
+      "condition": "raw_jlens",
+      "null": true,
+      "n": 76,
+      "flip": [
+        0.0,
+        0.0,
+        0.04811526823109757
+      ],
+      "kept_clean": [
+        1.0,
+        0.9518847317689024,
+        0.9999999999999999
+      ],
+      "neither": 0.0,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.015212966339758542,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "band": "32-48",
+      "condition": "jpart",
+      "null": false,
+      "n": 76,
+      "flip": [
+        0.5,
+        0.3903240360982663,
+        0.6096759639017337
+      ],
+      "kept_clean": [
+        0.42105263157894735,
+        0.3164844262757472,
+        0.533217984497584
+      ],
+      "neither": 0.07894736842105263,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.011372949788518086,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "band": "32-48",
+      "condition": "jpart",
+      "null": true,
+      "n": 76,
+      "flip": [
+        0.0,
+        0.0,
+        0.04811526823109757
+      ],
+      "kept_clean": [
+        1.0,
+        0.9518847317689024,
+        0.9999999999999999
+      ],
+      "neither": 0.0,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.018249629507087826,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "band": "32-48",
+      "condition": "jpart_minus_own",
+      "null": false,
+      "n": 76,
+      "flip": [
+        0.0,
+        0.0,
+        0.04811526823109757
+      ],
+      "kept_clean": [
+        1.0,
+        0.9518847317689024,
+        0.9999999999999999
+      ],
+      "neither": 0.0,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.013038600188926521,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "band": "32-48",
+      "condition": "jpart_minus_own",
+      "null": true,
+      "n": 76,
+      "flip": [
+        0.0,
+        0.0,
+        0.04811526823109757
+      ],
+      "kept_clean": [
+        1.0,
+        0.9518847317689024,
+        0.9999999999999999
+      ],
+      "neither": 0.0,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.01731235078563366,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "band": "32-48",
+      "condition": "jpart_matched",
+      "null": false,
+      "n": 76,
+      "flip": [
+        0.10526315789473684,
+        0.054310612607017986,
+        0.19420144125963795
+      ],
+      "kept_clean": [
+        0.8421052631578947,
+        0.7439836132582393,
+        0.9073059400573255
+      ],
+      "neither": 0.05263157894736842,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.043621435987434405,
+      "items_with_skipped_layers": 0
+    },
+    {
+      "band": "32-48",
+      "condition": "jpart_matched",
+      "null": true,
+      "n": 76,
+      "flip": [
+        0.0,
+        0.0,
+        0.04811526823109757
+      ],
+      "kept_clean": [
+        1.0,
+        0.9518847317689024,
+        0.9999999999999999
+      ],
+      "neither": 0.0,
+      "ambiguous": 0.0,
+      "edit_ratio_median": 0.05484586772645879,
+      "items_with_skipped_layers": 0
+    }
+  ],
+  "paired_bootstraps": {
+    "jpart - jpart_matched": [
+      0.39473684210526316,
+      0.2894736842105263,
+      0.5
+    ],
+    "jpart - jpart_minus_own": [
+      0.5,
+      0.3815789473684211,
+      0.6052631578947368
+    ],
+    "jpart_minus_own - jpart_matched": [
+      -0.10526315789473684,
+      -0.18421052631578946,
+      -0.039473684210526314
+    ],
+    "raw_jlens - jpart_minus_own": [
+      0.5921052631578947,
+      0.47368421052631576,
+      0.6973684210526315
+    ]
+  },
+  "labels": {
+    "J-mediated": 0,
+    "non-J": 0,
+    "both": 0,
+    "neither": 0
+  }
+}
