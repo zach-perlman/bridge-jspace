@@ -1,0 +1,462 @@
+{
+  "families": {
+    "BL": {
+      "window": [
+        32,
+        36,
+        40
+      ],
+      "n": 8,
+      "frac": {
+        "means": {
+          "lens2": 0.00020833333333333337,
+          "lens2 null": -0.0011333333333333334,
+          "not_lens2": 0.14205833333333334,
+          "not_lens2 null": 0.0012666666666666666,
+          "jspace": 0.0035583333333333335,
+          "jspace null": -0.0026083333333333336,
+          "not_jspace": 0.10275416666666666,
+          "not_jspace null": -0.0006583333333333335,
+          "full": 0.14629999999999999,
+          "O full": 0.0011749999999999998
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.14185,
+            0.060295416666666664,
+            0.235243125
+          ],
+          "lens2 - its null": [
+            0.0013416666666666668,
+            0.00043322916666666624,
+            0.0023667708333333327
+          ],
+          "not_lens2 - its null": [
+            0.14079166666666668,
+            0.057800312500000006,
+            0.23449135416666667
+          ],
+          "verdict": "both or neither"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.09919583333333333,
+            0.04104791666666667,
+            0.17352083333333332
+          ],
+          "jspace - its null": [
+            0.006166666666666667,
+            0.0033493750000000004,
+            0.009041770833333332
+          ],
+          "not_jspace - its null": [
+            0.10341249999999999,
+            0.04383729166666667,
+            0.17902604166666666
+          ],
+          "verdict": "both or neither"
+        }
+      },
+      "flip": {
+        "means": {
+          "lens2": 0.0,
+          "lens2 null": 0.0,
+          "not_lens2": 0.0,
+          "not_lens2 null": 0.0,
+          "jspace": 0.0,
+          "jspace null": 0.0,
+          "not_jspace": 0.0,
+          "not_jspace null": 0.0,
+          "full": 0.0,
+          "O full": 0.0
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lens2 - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_lens2 - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "both or neither"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "jspace - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_jspace - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "both or neither"
+        }
+      },
+      "variance_share_median": {
+        "lens2": 0.0022500000000000003,
+        "jspace": 0.0783
+      }
+    },
+    "BR": {
+      "window": [
+        32,
+        36,
+        40
+      ],
+      "n": 8,
+      "frac": {
+        "means": {
+          "lens2": 0.0092875,
+          "lens2 null": 0.0027833333333333334,
+          "not_lens2": 0.23842916666666666,
+          "not_lens2 null": 0.006445833333333333,
+          "jspace": 0.044075,
+          "jspace null": 0.0034874999999999997,
+          "not_jspace": 0.14016666666666666,
+          "not_jspace null": 0.003766666666666667,
+          "full": 0.2751458333333333,
+          "O full": -0.00027499999999999996
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.22914166666666666,
+            0.13144104166666667,
+            0.3332916666666665
+          ],
+          "lens2 - its null": [
+            0.006504166666666668,
+            0.0025833333333333333,
+            0.011654375
+          ],
+          "not_lens2 - its null": [
+            0.23198333333333332,
+            0.12925864583333335,
+            0.34114552083333305
+          ],
+          "verdict": "both or neither"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.09609166666666666,
+            0.0419625,
+            0.15581875
+          ],
+          "jspace - its null": [
+            0.040587500000000006,
+            0.024539583333333333,
+            0.05794447916666665
+          ],
+          "not_jspace - its null": [
+            0.1364,
+            0.06678572916666667,
+            0.2118354166666666
+          ],
+          "verdict": "both or neither"
+        }
+      },
+      "flip": {
+        "means": {
+          "lens2": 0.0,
+          "lens2 null": 0.0,
+          "not_lens2": 0.08333333333333333,
+          "not_lens2 null": 0.0,
+          "jspace": 0.0,
+          "jspace null": 0.0,
+          "not_jspace": 0.0,
+          "not_jspace null": 0.0,
+          "full": 0.125,
+          "O full": 0.0
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.08333333333333333,
+            0.0,
+            0.25
+          ],
+          "lens2 - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_lens2 - its null": [
+            0.08333333333333333,
+            0.0,
+            0.25
+          ],
+          "verdict": "both or neither"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "jspace - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_jspace - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "both or neither"
+        }
+      },
+      "variance_share_median": {
+        "lens2": 0.0251,
+        "jspace": 0.1295
+      }
+    },
+    "BLR": {
+      "window": [
+        32,
+        36,
+        40
+      ],
+      "n": 8,
+      "frac": {
+        "means": {
+          "lens2": -0.0003916666666666666,
+          "lens2 null": -0.0027624999999999998,
+          "not_lens2": 0.2742541666666667,
+          "not_lens2 null": 0.0041958333333333335,
+          "jspace": 0.024245833333333335,
+          "jspace null": -0.002075,
+          "not_jspace": 0.18784166666666666,
+          "not_jspace null": 0.0029083333333333335,
+          "full": 0.2854041666666667,
+          "O full": -0.007066666666666667
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.2746458333333333,
+            0.16696947916666666,
+            0.4201514583333332
+          ],
+          "lens2 - its null": [
+            0.0023708333333333333,
+            0.0006750000000000001,
+            0.004016770833333333
+          ],
+          "not_lens2 - its null": [
+            0.2700583333333333,
+            0.16948729166666665,
+            0.411168125
+          ],
+          "verdict": "both or neither"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.16359583333333336,
+            0.07171687500000001,
+            0.293264270833333
+          ],
+          "jspace - its null": [
+            0.026320833333333335,
+            0.019828541666666664,
+            0.03292520833333334
+          ],
+          "not_jspace - its null": [
+            0.18493333333333334,
+            0.09327302083333332,
+            0.31541864583333296
+          ],
+          "verdict": "both or neither"
+        }
+      },
+      "flip": {
+        "means": {
+          "lens2": 0.0,
+          "lens2 null": 0.0,
+          "not_lens2": 0.125,
+          "not_lens2 null": 0.0,
+          "jspace": 0.0,
+          "jspace null": 0.0,
+          "not_jspace": 0.125,
+          "not_jspace null": 0.0,
+          "full": 0.125,
+          "O full": 0.0
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.125,
+            0.0,
+            0.375
+          ],
+          "lens2 - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_lens2 - its null": [
+            0.125,
+            0.0,
+            0.375
+          ],
+          "verdict": "both or neither"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.125,
+            0.0,
+            0.375
+          ],
+          "jspace - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_jspace - its null": [
+            0.125,
+            0.0,
+            0.375
+          ],
+          "verdict": "both or neither"
+        }
+      },
+      "variance_share_median": {
+        "lens2": 0.00325,
+        "jspace": 0.08965000000000001
+      }
+    },
+    "BRL": {
+      "window": [
+        32,
+        36,
+        40
+      ],
+      "n": 8,
+      "frac": {
+        "means": {
+          "lens2": 0.00040833333333333346,
+          "lens2 null": -0.0029500000000000004,
+          "not_lens2": 0.30625833333333335,
+          "not_lens2 null": 0.00605,
+          "jspace": 0.04062916666666667,
+          "jspace null": -0.006466666666666667,
+          "not_jspace": 0.2224583333333333,
+          "not_jspace null": -0.005504166666666667,
+          "full": 0.328775,
+          "O full": 0.022233333333333334
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.30585,
+            0.19616854166666664,
+            0.4283089583333331
+          ],
+          "lens2 - its null": [
+            0.003358333333333334,
+            -0.0029467708333333316,
+            0.008991875
+          ],
+          "not_lens2 - its null": [
+            0.30020833333333335,
+            0.1888615625,
+            0.42279072916666643
+          ],
+          "verdict": "outside"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.18182916666666668,
+            0.1053,
+            0.2886781249999999
+          ],
+          "jspace - its null": [
+            0.04709583333333334,
+            0.02531083333333333,
+            0.07458947916666665
+          ],
+          "not_jspace - its null": [
+            0.2279625,
+            0.13517083333333335,
+            0.3363166666666667
+          ],
+          "verdict": "both or neither"
+        }
+      },
+      "flip": {
+        "means": {
+          "lens2": 0.0,
+          "lens2 null": 0.0,
+          "not_lens2": 0.25,
+          "not_lens2 null": 0.0,
+          "jspace": 0.0,
+          "jspace null": 0.0,
+          "not_jspace": 0.0,
+          "not_jspace null": 0.0,
+          "full": 0.29166666666666663,
+          "O full": 0.0
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.25,
+            0.041666666666666664,
+            0.5
+          ],
+          "lens2 - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_lens2 - its null": [
+            0.25,
+            0.041666666666666664,
+            0.5
+          ],
+          "verdict": "outside"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "jspace - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_jspace - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "both or neither"
+        }
+      },
+      "variance_share_median": {
+        "lens2": 0.01115,
+        "jspace": 0.1138
+      }
+    }
+  },
+  "claims": {
+    "claim_1": "refuted (BL's J-space part beats its null)",
+    "lookup_used": {
+      "BL": "both or neither",
+      "BLR": "both or neither"
+    },
+    "tie_break": "mixed: BLR both or neither, BRL both or neither"
+  },
+  "chance_share": 0.07,
+  "seconds": 42
+}

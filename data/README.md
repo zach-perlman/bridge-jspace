@@ -36,6 +36,12 @@ and C). BRL is the one family the 27B gets wrong without any step being wrong al
 misses are 4- and 6-legged pets answered with the 2-legs locker or with a leg count), so its eligible items are a
 selected 81% and any BLR vs BRL comparison has to allow for that.
 
+**Wording B** (`data/suite_v1_b/`, `make --set wording_b`, seeds 201 and 202): all eight families again in other
+words, same vocabulary, structure and token alignment, so no result rests on one template: "Jack owns a cow. ... The
+cow uses locker 5. ... Which locker does the animal that Jack owns use?"; "the animal famous for mooing"; "Alice is
+married to Ben. ... Ben's sister is called Grace."; CODE with `key`/`lookup`/`values` and a `result` line; BLR's
+"neighbour" for "friend"; BRL's "Locker 7 is for animals with 4 legs." (results/suite_v1/competence_b_v1).
+
 **Difficulty pilot** (`data/suite_v1_dev/`, `make --set dev`, seeds 90010-90013; never a headline run's items): every
 family at 3 or 5 entities per scene and 0 or 8 unrelated filler sentences, 100 items per cell
 (results/suite_v1/competence_dev_v1 and qwen35_9b_competence_dev_v1).

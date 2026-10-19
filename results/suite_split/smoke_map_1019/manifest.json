@@ -1,0 +1,89 @@
+{
+  "exp": "suite_split",
+  "run": "smoke_map_1019",
+  "kind": "map",
+  "written_utc": "2026-10-19T21:16:11Z",
+  "why": "smoke: 8 scenes per pair, new copy-and-split script with the answer read",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "families": [
+    "BL",
+    "BR",
+    "BLR",
+    "BRL"
+  ],
+  "items": {
+    "BL": {
+      "file": "data/suite_v1/BL.json",
+      "sha256": "1d6bc3264cb78a73cc175f7423923d553a6a1e6201a301a5757d5771cc7cc017"
+    },
+    "BR": {
+      "file": "data/suite_v1/BR.json",
+      "sha256": "b8aacfe7263aa2a81c0bd0e7b973a2057b61753f7470c22fe1119425facbc7fb"
+    },
+    "BLR": {
+      "file": "data/suite_v1/BLR.json",
+      "sha256": "147a395905a96f1a5d62fb45894a22cdf610d7af693a5a6a19a6117371722036"
+    },
+    "BRL": {
+      "file": "data/suite_v1/BRL.json",
+      "sha256": "9a53b7b8b659be955facac1923dbec7953d43afd714cb501308390a7da820d83"
+    }
+  },
+  "eligibility": {
+    "BL": {
+      "competence": "results/suite_v1/competence_v2/items.jsonl",
+      "sha256": "5dd24685e67a5ff2fb2a6462bce326904d1e153faa50f57ff15bd467d4380177"
+    },
+    "BR": {
+      "competence": "results/suite_v1/competence_v2/items.jsonl",
+      "sha256": "5dd24685e67a5ff2fb2a6462bce326904d1e153faa50f57ff15bd467d4380177"
+    },
+    "BLR": {
+      "competence": "results/suite_v1/competence_tiebreak_v1/items.jsonl",
+      "sha256": "30c4c669996aa8fa730abff29874b14018c7b731ef1314a1e3fbaf50e97fcedf"
+    },
+    "BRL": {
+      "competence": "results/suite_v1/competence_tiebreak_v1/items.jsonl",
+      "sha256": "30c4c669996aa8fa730abff29874b14018c7b731ef1314a1e3fbaf50e97fcedf"
+    }
+  },
+  "sample": "per scene group, up to 150 scenes eligible (every prompt right) in all of the run's families of the group, seed 0; BL/BR/RL/RR and BLR/BRL are scene groups, other families their own",
+  "format": "suite_v1's: chat template, thinking off, 'Answer:' prefilled",
+  "groups": {
+    "question": "the question's tokens after C's changed ones, through the end of the prompt (the instruction, the template's tokens and 'Answer:' included)",
+    "last": "the last prompt token"
+  },
+  "read": "one forward of the edited prompt, a digit answer's space token appended; role of the top token (b: X's answer, A: the bridge's, other); ld = logit(b) - logit(A); frac = (ld - ld_clean) / (ld_C - ld_clean), ld_clean and ld_C from the unedited clean and C runs",
+  "question": "Where, by layer and position group, does each family carry its bridge (lens-free)?",
+  "layers": [
+    0,
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    28,
+    32,
+    36,
+    40,
+    44,
+    48,
+    52,
+    56,
+    60
+  ],
+  "n_scenes": 8,
+  "validation": "8 greedy tokens for every edit of the first 20 cases per family; agreement of roles",
+  "decision": {
+    "window": "per family and group: the layers where C's copy gives X's answer (role b) more often than O's copy changes the answer at all (Wilson 95% intervals not overlapping; exp09's rule)",
+    "answer_formed": "per family, the first layer at which copying the last token alone gives X's answer for at least half the cases",
+    "parts_window": "the question group's window below min(answer_formed, 44)"
+  }
+}
