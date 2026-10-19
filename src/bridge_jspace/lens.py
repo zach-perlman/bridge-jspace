@@ -6,11 +6,27 @@ token's lens logit up to the shared 1/rms scale. (The reference runner omits g; 
 direction of the lens logit.)
 """
 
+import json
+from pathlib import Path
+
 import torch
 from huggingface_hub import hf_hub_download
 
 from . import pins
 from .model import Model
+
+
+def check_frozen(path: Path) -> None:
+    """Assert the J++ file is the frozen one. Hashing 3.3 GB takes a minute or two, so a passed check is remembered
+    (cache/frozen_lens_checked.json: the file's path, size and mtime) and redone only when the file changes."""
+    st = path.stat()
+    key = {"path": str(path.resolve()), "size": st.st_size, "mtime": st.st_mtime, "sha256": pins.FROZEN_LENS_SHA256}
+    marker = pins.CACHE_DIR / "frozen_lens_checked.json"
+    if marker.exists() and json.loads(marker.read_text()) == key:
+        return
+    assert pins.sha256_file(path) == pins.FROZEN_LENS_SHA256, f"{path} is not the frozen J++ file"
+    marker.parent.mkdir(parents=True, exist_ok=True)
+    marker.write_text(json.dumps(key) + "\n")
 
 
 class JLens:
@@ -26,6 +42,8 @@ class JLens:
         else:
             repo, file, revision = source
             path = hf_hub_download(repo, file, revision=revision)
+            if lens == pins.FROZEN_LENS:  # the frozen lens: the exact file (README Decisions, 2026-10-19)
+                check_frozen(Path(path))
         blob = torch.load(path, map_location="cpu", weights_only=True, mmap=True)
         self.name, self.file_keys = lens, sorted(blob)
         self.source_layers: list[int] = list(blob["source_layers"])

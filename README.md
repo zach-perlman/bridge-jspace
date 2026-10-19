@@ -1782,6 +1782,11 @@ manifest); chain `scripts/phase4_chain.sh`.
   brew ran in, in which the model answers every exp09 item (exp20). exp09 (R, B, L, RL) and B1 (exp01's probes,
   exp02's swaps) are re-run in it; the raw-text runs stay as the earlier record and are reported next to them.
 
+- **The lens is frozen: the published J++** (Zach, 2026-10-19): neuronpedia/jacobian-lens
+  `qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt` at revision 9fa267f8, sha256 bbef480b...b58f8f (checked
+  on load, `pins.FROZEN_LENS`). No more lens fitting (exp19 is closed) and no lens comparisons in headline runs; the
+  chat-fitted lens stays a one-off robustness check (Phase 1).
+
 ### Open decisions (humans)
 - Which headline numbers go into `VERIFIED.md` after a human recomputes them (`verify_headlines.py` lists every
   one with its source file).

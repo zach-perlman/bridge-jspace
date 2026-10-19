@@ -33,6 +33,11 @@ WS_LENS_REPO = "camilablank/workspace-lenses"
 WS_LENS_REVISION = "d740106d1e0f95456dc8718fba2895e9c8ffd6ef"
 TEMPLATE_LENS_FILE = "qwen3.6-27b/template-lens/templates.safetensors"
 TEMPLATE_WORDS_FILE = "qwen3.6-27b/template-lens/template_words.txt"
+# The lens is frozen (Zach, 2026-10-19; README Decisions): part B's runs use the published J++ (neuronpedia/jacobian-lens,
+# JPP_FILE at LENS_REVISION), no further lens fitting or lens comparisons in headline runs. Its file's sha256 is checked
+# on load (lens.py), so a changed upload cannot slip in under the same name.
+FROZEN_LENS = "jpp"
+FROZEN_LENS_SHA256 = "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
 LENS_SOURCES = {  # every J-format lens part B can load: name -> (repo, file, revision)
     "jlens": (LENS_REPO, LENS_FILE, LENS_REVISION),
     "jpp": (LENS_REPO, JPP_FILE, LENS_REVISION),
