@@ -1,0 +1,5107 @@
+{
+ "family": "BLR_e3f0",
+ "generator": "scripts/suite_v1.py make --set dev (seed 90010: 3 entities, 0 filler)",
+ "format": "Every family asks one question whose answer needs an intermediate variable (the bridge), in the chat format\n(bridge_jspace.chat: one user turn, thinking off, \"Answer:\" prefilled), with a counterfactual C that changes only the\nbridge (to X) and an off-path control O that changes something the answer does not depend on. C and O line up with the\nclean prompt token for token (checked here), so exp04/exp09's copy-and-split runs apply unchanged.",
+ "items": [
+  {
+   "id": "BLR-0000",
+   "family": "BLR",
+   "scene": "T-0000",
+   "bridge": "goose",
+   "cf_bridge": "spider",
+   "third": "cow",
+   "people": [
+    "Max",
+    "Lily",
+    "Dan"
+   ],
+   "pets": [
+    "goose",
+    "spider",
+    "cow"
+   ],
+   "holder": "Max",
+   "cue": "Max",
+   "answer_kind": "digit",
+   "friends": {
+    "goose": "chicken",
+    "spider": "bee",
+    "cow": "dog"
+   },
+   "context": "Max's pet is a goose. Lily's pet is a spider. Dan's pet is a cow. The cow's friend is a dog. The spider's friend is a bee. The goose's friend is a chicken.",
+   "cf_context": "Max's pet is a spider. Lily's pet is a goose. Dan's pet is a cow. The cow's friend is a dog. The spider's friend is a bee. The goose's friend is a chicken.",
+   "off_context": "Max's pet is a goose. Lily's pet is a spider. Dan's pet is a cow. The cow's friend is a bee. The spider's friend is a dog. The goose's friend is a chicken.",
+   "question": "How many legs does the friend of Max's pet have?",
+   "cf_question": "How many legs does the friend of Max's pet have?",
+   "mid": "chicken",
+   "cf_mid": "bee",
+   "answer": "2",
+   "cf_answer": "6",
+   "hop1": {
+    "question": "Which animal is Max's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the goose's friend?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0001",
+   "family": "BLR",
+   "scene": "T-0001",
+   "bridge": "chicken",
+   "cf_bridge": "mouse",
+   "third": "sheep",
+   "people": [
+    "Kate",
+    "Tom",
+    "Eve"
+   ],
+   "pets": [
+    "chicken",
+    "sheep",
+    "mouse"
+   ],
+   "holder": "Kate",
+   "cue": "Kate",
+   "answer_kind": "digit",
+   "friends": {
+    "chicken": "dog",
+    "mouse": "goose",
+    "sheep": "horse"
+   },
+   "context": "Kate's pet is a chicken. Tom's pet is a sheep. Eve's pet is a mouse. The mouse's friend is a goose. The sheep's friend is a horse. The chicken's friend is a dog.",
+   "cf_context": "Kate's pet is a mouse. Tom's pet is a sheep. Eve's pet is a chicken. The mouse's friend is a goose. The sheep's friend is a horse. The chicken's friend is a dog.",
+   "off_context": "Kate's pet is a chicken. Tom's pet is a sheep. Eve's pet is a mouse. The mouse's friend is a horse. The sheep's friend is a goose. The chicken's friend is a dog.",
+   "question": "How many legs does the friend of Kate's pet have?",
+   "cf_question": "How many legs does the friend of Kate's pet have?",
+   "mid": "dog",
+   "cf_mid": "goose",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Kate's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the chicken's friend?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0002",
+   "family": "BLR",
+   "scene": "T-0002",
+   "bridge": "chicken",
+   "cf_bridge": "wolf",
+   "third": "lion",
+   "people": [
+    "Eve",
+    "Hugo",
+    "Oscar"
+   ],
+   "pets": [
+    "wolf",
+    "lion",
+    "chicken"
+   ],
+   "holder": "Oscar",
+   "cue": "Oscar",
+   "answer_kind": "digit",
+   "friends": {
+    "chicken": "duck",
+    "wolf": "pig",
+    "lion": "mouse"
+   },
+   "context": "Eve's pet is a wolf. Hugo's pet is a lion. Oscar's pet is a chicken. The lion's friend is a mouse. The chicken's friend is a duck. The wolf's friend is a pig.",
+   "cf_context": "Eve's pet is a chicken. Hugo's pet is a lion. Oscar's pet is a wolf. The lion's friend is a mouse. The chicken's friend is a duck. The wolf's friend is a pig.",
+   "off_context": "Eve's pet is a wolf. Hugo's pet is a lion. Oscar's pet is a chicken. The lion's friend is a pig. The chicken's friend is a duck. The wolf's friend is a mouse.",
+   "question": "How many legs does the friend of Oscar's pet have?",
+   "cf_question": "How many legs does the friend of Oscar's pet have?",
+   "mid": "duck",
+   "cf_mid": "pig",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Oscar's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the chicken's friend?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0003",
+   "family": "BLR",
+   "scene": "T-0003",
+   "bridge": "chicken",
+   "cf_bridge": "wolf",
+   "third": "frog",
+   "people": [
+    "Grace",
+    "Victor",
+    "Noah"
+   ],
+   "pets": [
+    "frog",
+    "chicken",
+    "wolf"
+   ],
+   "holder": "Victor",
+   "cue": "Victor",
+   "answer_kind": "digit",
+   "friends": {
+    "chicken": "duck",
+    "wolf": "mouse",
+    "frog": "lion"
+   },
+   "context": "Grace's pet is a frog. Victor's pet is a chicken. Noah's pet is a wolf. The frog's friend is a lion. The wolf's friend is a mouse. The chicken's friend is a duck.",
+   "cf_context": "Grace's pet is a frog. Victor's pet is a wolf. Noah's pet is a chicken. The frog's friend is a lion. The wolf's friend is a mouse. The chicken's friend is a duck.",
+   "off_context": "Grace's pet is a frog. Victor's pet is a chicken. Noah's pet is a wolf. The frog's friend is a mouse. The wolf's friend is a lion. The chicken's friend is a duck.",
+   "question": "How many legs does the friend of Victor's pet have?",
+   "cf_question": "How many legs does the friend of Victor's pet have?",
+   "mid": "duck",
+   "cf_mid": "mouse",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Victor's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the chicken's friend?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0004",
+   "family": "BLR",
+   "scene": "T-0004",
+   "bridge": "horse",
+   "cf_bridge": "duck",
+   "third": "cow",
+   "people": [
+    "Carl",
+    "Adam",
+    "Eva"
+   ],
+   "pets": [
+    "cow",
+    "duck",
+    "horse"
+   ],
+   "holder": "Eva",
+   "cue": "Eva",
+   "answer_kind": "digit",
+   "friends": {
+    "horse": "mouse",
+    "duck": "goose",
+    "cow": "frog"
+   },
+   "context": "Carl's pet is a cow. Adam's pet is a duck. Eva's pet is a horse. The horse's friend is a mouse. The duck's friend is a goose. The cow's friend is a frog.",
+   "cf_context": "Carl's pet is a cow. Adam's pet is a horse. Eva's pet is a duck. The horse's friend is a mouse. The duck's friend is a goose. The cow's friend is a frog.",
+   "off_context": "Carl's pet is a cow. Adam's pet is a duck. Eva's pet is a horse. The horse's friend is a mouse. The duck's friend is a frog. The cow's friend is a goose.",
+   "question": "How many legs does the friend of Eva's pet have?",
+   "cf_question": "How many legs does the friend of Eva's pet have?",
+   "mid": "mouse",
+   "cf_mid": "goose",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Eva's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the horse's friend?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0005",
+   "family": "BLR",
+   "scene": "T-0005",
+   "bridge": "duck",
+   "cf_bridge": "bee",
+   "third": "mouse",
+   "people": [
+    "Eva",
+    "Ryan",
+    "Sean"
+   ],
+   "pets": [
+    "mouse",
+    "duck",
+    "bee"
+   ],
+   "holder": "Ryan",
+   "cue": "Ryan",
+   "answer_kind": "digit",
+   "friends": {
+    "duck": "turkey",
+    "bee": "spider",
+    "mouse": "chicken"
+   },
+   "context": "Eva's pet is a mouse. Ryan's pet is a duck. Sean's pet is a bee. The duck's friend is a turkey. The mouse's friend is a chicken. The bee's friend is a spider.",
+   "cf_context": "Eva's pet is a mouse. Ryan's pet is a bee. Sean's pet is a duck. The duck's friend is a turkey. The mouse's friend is a chicken. The bee's friend is a spider.",
+   "off_context": "Eva's pet is a mouse. Ryan's pet is a duck. Sean's pet is a bee. The duck's friend is a turkey. The mouse's friend is a spider. The bee's friend is a chicken.",
+   "question": "How many legs does the friend of Ryan's pet have?",
+   "cf_question": "How many legs does the friend of Ryan's pet have?",
+   "mid": "turkey",
+   "cf_mid": "spider",
+   "answer": "2",
+   "cf_answer": "8",
+   "hop1": {
+    "question": "Which animal is Ryan's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the duck's friend?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0006",
+   "family": "BLR",
+   "scene": "T-0006",
+   "bridge": "lion",
+   "cf_bridge": "duck",
+   "third": "pig",
+   "people": [
+    "Iris",
+    "James",
+    "Alice"
+   ],
+   "pets": [
+    "lion",
+    "duck",
+    "pig"
+   ],
+   "holder": "Iris",
+   "cue": "Iris",
+   "answer_kind": "digit",
+   "friends": {
+    "lion": "spider",
+    "duck": "dog",
+    "pig": "frog"
+   },
+   "context": "Iris's pet is a lion. James's pet is a duck. Alice's pet is a pig. The pig's friend is a frog. The duck's friend is a dog. The lion's friend is a spider.",
+   "cf_context": "Iris's pet is a duck. James's pet is a lion. Alice's pet is a pig. The pig's friend is a frog. The duck's friend is a dog. The lion's friend is a spider.",
+   "off_context": "Iris's pet is a lion. James's pet is a duck. Alice's pet is a pig. The pig's friend is a dog. The duck's friend is a frog. The lion's friend is a spider.",
+   "question": "How many legs does the friend of Iris's pet have?",
+   "cf_question": "How many legs does the friend of Iris's pet have?",
+   "mid": "spider",
+   "cf_mid": "dog",
+   "answer": "8",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Iris's pet?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the lion's friend?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0007",
+   "family": "BLR",
+   "scene": "T-0007",
+   "bridge": "goose",
+   "cf_bridge": "mouse",
+   "third": "spider",
+   "people": [
+    "Ben",
+    "Jack",
+    "Sam"
+   ],
+   "pets": [
+    "goose",
+    "spider",
+    "mouse"
+   ],
+   "holder": "Ben",
+   "cue": "Ben",
+   "answer_kind": "digit",
+   "friends": {
+    "goose": "pig",
+    "mouse": "chicken",
+    "spider": "duck"
+   },
+   "context": "Ben's pet is a goose. Jack's pet is a spider. Sam's pet is a mouse. The goose's friend is a pig. The spider's friend is a duck. The mouse's friend is a chicken.",
+   "cf_context": "Ben's pet is a mouse. Jack's pet is a spider. Sam's pet is a goose. The goose's friend is a pig. The spider's friend is a duck. The mouse's friend is a chicken.",
+   "off_context": "Ben's pet is a goose. Jack's pet is a spider. Sam's pet is a mouse. The goose's friend is a pig. The spider's friend is a chicken. The mouse's friend is a duck.",
+   "question": "How many legs does the friend of Ben's pet have?",
+   "cf_question": "How many legs does the friend of Ben's pet have?",
+   "mid": "pig",
+   "cf_mid": "chicken",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Ben's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the goose's friend?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0008",
+   "family": "BLR",
+   "scene": "T-0008",
+   "bridge": "duck",
+   "cf_bridge": "dog",
+   "third": "chicken",
+   "people": [
+    "Victor",
+    "Sara",
+    "Ivy"
+   ],
+   "pets": [
+    "dog",
+    "chicken",
+    "duck"
+   ],
+   "holder": "Ivy",
+   "cue": "Ivy",
+   "answer_kind": "digit",
+   "friends": {
+    "duck": "spider",
+    "dog": "mouse",
+    "chicken": "sheep"
+   },
+   "context": "Victor's pet is a dog. Sara's pet is a chicken. Ivy's pet is a duck. The duck's friend is a spider. The chicken's friend is a sheep. The dog's friend is a mouse.",
+   "cf_context": "Victor's pet is a duck. Sara's pet is a chicken. Ivy's pet is a dog. The duck's friend is a spider. The chicken's friend is a sheep. The dog's friend is a mouse.",
+   "off_context": "Victor's pet is a dog. Sara's pet is a chicken. Ivy's pet is a duck. The duck's friend is a spider. The chicken's friend is a mouse. The dog's friend is a sheep.",
+   "question": "How many legs does the friend of Ivy's pet have?",
+   "cf_question": "How many legs does the friend of Ivy's pet have?",
+   "mid": "spider",
+   "cf_mid": "mouse",
+   "answer": "8",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Ivy's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the duck's friend?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0009",
+   "family": "BLR",
+   "scene": "T-0009",
+   "bridge": "frog",
+   "cf_bridge": "spider",
+   "third": "cat",
+   "people": [
+    "Peter",
+    "Sean",
+    "Eva"
+   ],
+   "pets": [
+    "spider",
+    "cat",
+    "frog"
+   ],
+   "holder": "Eva",
+   "cue": "Eva",
+   "answer_kind": "digit",
+   "friends": {
+    "frog": "pig",
+    "spider": "chicken",
+    "cat": "dog"
+   },
+   "context": "Peter's pet is a spider. Sean's pet is a cat. Eva's pet is a frog. The frog's friend is a pig. The cat's friend is a dog. The spider's friend is a chicken.",
+   "cf_context": "Peter's pet is a frog. Sean's pet is a cat. Eva's pet is a spider. The frog's friend is a pig. The cat's friend is a dog. The spider's friend is a chicken.",
+   "off_context": "Peter's pet is a spider. Sean's pet is a cat. Eva's pet is a frog. The frog's friend is a pig. The cat's friend is a chicken. The spider's friend is a dog.",
+   "question": "How many legs does the friend of Eva's pet have?",
+   "cf_question": "How many legs does the friend of Eva's pet have?",
+   "mid": "pig",
+   "cf_mid": "chicken",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Eva's pet?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the frog's friend?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0010",
+   "family": "BLR",
+   "scene": "T-0010",
+   "bridge": "chicken",
+   "cf_bridge": "lion",
+   "third": "duck",
+   "people": [
+    "Max",
+    "Vera",
+    "Beth"
+   ],
+   "pets": [
+    "chicken",
+    "duck",
+    "lion"
+   ],
+   "holder": "Max",
+   "cue": "Max",
+   "answer_kind": "digit",
+   "friends": {
+    "chicken": "goose",
+    "lion": "horse",
+    "duck": "pig"
+   },
+   "context": "Max's pet is a chicken. Vera's pet is a duck. Beth's pet is a lion. The duck's friend is a pig. The lion's friend is a horse. The chicken's friend is a goose.",
+   "cf_context": "Max's pet is a lion. Vera's pet is a duck. Beth's pet is a chicken. The duck's friend is a pig. The lion's friend is a horse. The chicken's friend is a goose.",
+   "off_context": "Max's pet is a chicken. Vera's pet is a duck. Beth's pet is a lion. The duck's friend is a horse. The lion's friend is a pig. The chicken's friend is a goose.",
+   "question": "How many legs does the friend of Max's pet have?",
+   "cf_question": "How many legs does the friend of Max's pet have?",
+   "mid": "goose",
+   "cf_mid": "horse",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Max's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the chicken's friend?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0011",
+   "family": "BLR",
+   "scene": "T-0011",
+   "bridge": "pig",
+   "cf_bridge": "chicken",
+   "third": "goose",
+   "people": [
+    "Ivy",
+    "David",
+    "Eric"
+   ],
+   "pets": [
+    "pig",
+    "chicken",
+    "goose"
+   ],
+   "holder": "Ivy",
+   "cue": "Ivy",
+   "answer_kind": "digit",
+   "friends": {
+    "pig": "sheep",
+    "chicken": "spider",
+    "goose": "mouse"
+   },
+   "context": "Ivy's pet is a pig. David's pet is a chicken. Eric's pet is a goose. The goose's friend is a mouse. The chicken's friend is a spider. The pig's friend is a sheep.",
+   "cf_context": "Ivy's pet is a chicken. David's pet is a pig. Eric's pet is a goose. The goose's friend is a mouse. The chicken's friend is a spider. The pig's friend is a sheep.",
+   "off_context": "Ivy's pet is a pig. David's pet is a chicken. Eric's pet is a goose. The goose's friend is a spider. The chicken's friend is a mouse. The pig's friend is a sheep.",
+   "question": "How many legs does the friend of Ivy's pet have?",
+   "cf_question": "How many legs does the friend of Ivy's pet have?",
+   "mid": "sheep",
+   "cf_mid": "spider",
+   "answer": "4",
+   "cf_answer": "8",
+   "hop1": {
+    "question": "Which animal is Ivy's pet?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the pig's friend?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0012",
+   "family": "BLR",
+   "scene": "T-0012",
+   "bridge": "spider",
+   "cf_bridge": "chicken",
+   "third": "sheep",
+   "people": [
+    "Ivan",
+    "Tara",
+    "Dan"
+   ],
+   "pets": [
+    "sheep",
+    "spider",
+    "chicken"
+   ],
+   "holder": "Tara",
+   "cue": "Tara",
+   "answer_kind": "digit",
+   "friends": {
+    "spider": "wolf",
+    "chicken": "turkey",
+    "sheep": "cat"
+   },
+   "context": "Ivan's pet is a sheep. Tara's pet is a spider. Dan's pet is a chicken. The spider's friend is a wolf. The sheep's friend is a cat. The chicken's friend is a turkey.",
+   "cf_context": "Ivan's pet is a sheep. Tara's pet is a chicken. Dan's pet is a spider. The spider's friend is a wolf. The sheep's friend is a cat. The chicken's friend is a turkey.",
+   "off_context": "Ivan's pet is a sheep. Tara's pet is a spider. Dan's pet is a chicken. The spider's friend is a wolf. The sheep's friend is a turkey. The chicken's friend is a cat.",
+   "question": "How many legs does the friend of Tara's pet have?",
+   "cf_question": "How many legs does the friend of Tara's pet have?",
+   "mid": "wolf",
+   "cf_mid": "turkey",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Tara's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the spider's friend?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0013",
+   "family": "BLR",
+   "scene": "T-0013",
+   "bridge": "duck",
+   "cf_bridge": "dog",
+   "third": "pig",
+   "people": [
+    "Iris",
+    "Owen",
+    "Noah"
+   ],
+   "pets": [
+    "pig",
+    "duck",
+    "dog"
+   ],
+   "holder": "Owen",
+   "cue": "Owen",
+   "answer_kind": "digit",
+   "friends": {
+    "duck": "cat",
+    "dog": "bee",
+    "pig": "mouse"
+   },
+   "context": "Iris's pet is a pig. Owen's pet is a duck. Noah's pet is a dog. The dog's friend is a bee. The pig's friend is a mouse. The duck's friend is a cat.",
+   "cf_context": "Iris's pet is a pig. Owen's pet is a dog. Noah's pet is a duck. The dog's friend is a bee. The pig's friend is a mouse. The duck's friend is a cat.",
+   "off_context": "Iris's pet is a pig. Owen's pet is a duck. Noah's pet is a dog. The dog's friend is a mouse. The pig's friend is a bee. The duck's friend is a cat.",
+   "question": "How many legs does the friend of Owen's pet have?",
+   "cf_question": "How many legs does the friend of Owen's pet have?",
+   "mid": "cat",
+   "cf_mid": "bee",
+   "answer": "4",
+   "cf_answer": "6",
+   "hop1": {
+    "question": "Which animal is Owen's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the duck's friend?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0014",
+   "family": "BLR",
+   "scene": "T-0014",
+   "bridge": "spider",
+   "cf_bridge": "wolf",
+   "third": "cat",
+   "people": [
+    "Beth",
+    "Maria",
+    "Adam"
+   ],
+   "pets": [
+    "cat",
+    "wolf",
+    "spider"
+   ],
+   "holder": "Adam",
+   "cue": "Adam",
+   "answer_kind": "digit",
+   "friends": {
+    "spider": "duck",
+    "wolf": "frog",
+    "cat": "mouse"
+   },
+   "context": "Beth's pet is a cat. Maria's pet is a wolf. Adam's pet is a spider. The wolf's friend is a frog. The cat's friend is a mouse. The spider's friend is a duck.",
+   "cf_context": "Beth's pet is a cat. Maria's pet is a spider. Adam's pet is a wolf. The wolf's friend is a frog. The cat's friend is a mouse. The spider's friend is a duck.",
+   "off_context": "Beth's pet is a cat. Maria's pet is a wolf. Adam's pet is a spider. The wolf's friend is a mouse. The cat's friend is a frog. The spider's friend is a duck.",
+   "question": "How many legs does the friend of Adam's pet have?",
+   "cf_question": "How many legs does the friend of Adam's pet have?",
+   "mid": "duck",
+   "cf_mid": "frog",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Adam's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the spider's friend?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0015",
+   "family": "BLR",
+   "scene": "T-0015",
+   "bridge": "turkey",
+   "cf_bridge": "spider",
+   "third": "bee",
+   "people": [
+    "Ella",
+    "Ben",
+    "Julia"
+   ],
+   "pets": [
+    "spider",
+    "turkey",
+    "bee"
+   ],
+   "holder": "Ben",
+   "cue": "Ben",
+   "answer_kind": "digit",
+   "friends": {
+    "turkey": "horse",
+    "spider": "duck",
+    "bee": "cat"
+   },
+   "context": "Ella's pet is a spider. Ben's pet is a turkey. Julia's pet is a bee. The bee's friend is a cat. The spider's friend is a duck. The turkey's friend is a horse.",
+   "cf_context": "Ella's pet is a turkey. Ben's pet is a spider. Julia's pet is a bee. The bee's friend is a cat. The spider's friend is a duck. The turkey's friend is a horse.",
+   "off_context": "Ella's pet is a spider. Ben's pet is a turkey. Julia's pet is a bee. The bee's friend is a duck. The spider's friend is a cat. The turkey's friend is a horse.",
+   "question": "How many legs does the friend of Ben's pet have?",
+   "cf_question": "How many legs does the friend of Ben's pet have?",
+   "mid": "horse",
+   "cf_mid": "duck",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Ben's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the turkey's friend?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0016",
+   "family": "BLR",
+   "scene": "T-0016",
+   "bridge": "duck",
+   "cf_bridge": "cow",
+   "third": "chicken",
+   "people": [
+    "Oscar",
+    "Hugo",
+    "Peter"
+   ],
+   "pets": [
+    "chicken",
+    "duck",
+    "cow"
+   ],
+   "holder": "Hugo",
+   "cue": "Hugo",
+   "answer_kind": "digit",
+   "friends": {
+    "duck": "dog",
+    "cow": "bee",
+    "chicken": "turkey"
+   },
+   "context": "Oscar's pet is a chicken. Hugo's pet is a duck. Peter's pet is a cow. The chicken's friend is a turkey. The cow's friend is a bee. The duck's friend is a dog.",
+   "cf_context": "Oscar's pet is a chicken. Hugo's pet is a cow. Peter's pet is a duck. The chicken's friend is a turkey. The cow's friend is a bee. The duck's friend is a dog.",
+   "off_context": "Oscar's pet is a chicken. Hugo's pet is a duck. Peter's pet is a cow. The chicken's friend is a bee. The cow's friend is a turkey. The duck's friend is a dog.",
+   "question": "How many legs does the friend of Hugo's pet have?",
+   "cf_question": "How many legs does the friend of Hugo's pet have?",
+   "mid": "dog",
+   "cf_mid": "bee",
+   "answer": "4",
+   "cf_answer": "6",
+   "hop1": {
+    "question": "Which animal is Hugo's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the duck's friend?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0017",
+   "family": "BLR",
+   "scene": "T-0017",
+   "bridge": "frog",
+   "cf_bridge": "bee",
+   "third": "goose",
+   "people": [
+    "Liam",
+    "Paul",
+    "Ivan"
+   ],
+   "pets": [
+    "frog",
+    "bee",
+    "goose"
+   ],
+   "holder": "Liam",
+   "cue": "Liam",
+   "answer_kind": "digit",
+   "friends": {
+    "frog": "duck",
+    "bee": "lion",
+    "goose": "turkey"
+   },
+   "context": "Liam's pet is a frog. Paul's pet is a bee. Ivan's pet is a goose. The goose's friend is a turkey. The frog's friend is a duck. The bee's friend is a lion.",
+   "cf_context": "Liam's pet is a bee. Paul's pet is a frog. Ivan's pet is a goose. The goose's friend is a turkey. The frog's friend is a duck. The bee's friend is a lion.",
+   "off_context": "Liam's pet is a frog. Paul's pet is a bee. Ivan's pet is a goose. The goose's friend is a lion. The frog's friend is a duck. The bee's friend is a turkey.",
+   "question": "How many legs does the friend of Liam's pet have?",
+   "cf_question": "How many legs does the friend of Liam's pet have?",
+   "mid": "duck",
+   "cf_mid": "lion",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Liam's pet?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the frog's friend?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0018",
+   "family": "BLR",
+   "scene": "T-0018",
+   "bridge": "cat",
+   "cf_bridge": "duck",
+   "third": "turkey",
+   "people": [
+    "James",
+    "Grace",
+    "Fiona"
+   ],
+   "pets": [
+    "duck",
+    "cat",
+    "turkey"
+   ],
+   "holder": "Grace",
+   "cue": "Grace",
+   "answer_kind": "digit",
+   "friends": {
+    "cat": "chicken",
+    "duck": "bee",
+    "turkey": "sheep"
+   },
+   "context": "James's pet is a duck. Grace's pet is a cat. Fiona's pet is a turkey. The duck's friend is a bee. The turkey's friend is a sheep. The cat's friend is a chicken.",
+   "cf_context": "James's pet is a cat. Grace's pet is a duck. Fiona's pet is a turkey. The duck's friend is a bee. The turkey's friend is a sheep. The cat's friend is a chicken.",
+   "off_context": "James's pet is a duck. Grace's pet is a cat. Fiona's pet is a turkey. The duck's friend is a sheep. The turkey's friend is a bee. The cat's friend is a chicken.",
+   "question": "How many legs does the friend of Grace's pet have?",
+   "cf_question": "How many legs does the friend of Grace's pet have?",
+   "mid": "chicken",
+   "cf_mid": "bee",
+   "answer": "2",
+   "cf_answer": "6",
+   "hop1": {
+    "question": "Which animal is Grace's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the cat's friend?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0019",
+   "family": "BLR",
+   "scene": "T-0019",
+   "bridge": "cat",
+   "cf_bridge": "spider",
+   "third": "wolf",
+   "people": [
+    "Vera",
+    "Tara",
+    "Sean"
+   ],
+   "pets": [
+    "wolf",
+    "spider",
+    "cat"
+   ],
+   "holder": "Sean",
+   "cue": "Sean",
+   "answer_kind": "digit",
+   "friends": {
+    "cat": "mouse",
+    "spider": "goose",
+    "wolf": "pig"
+   },
+   "context": "Vera's pet is a wolf. Tara's pet is a spider. Sean's pet is a cat. The wolf's friend is a pig. The spider's friend is a goose. The cat's friend is a mouse.",
+   "cf_context": "Vera's pet is a wolf. Tara's pet is a cat. Sean's pet is a spider. The wolf's friend is a pig. The spider's friend is a goose. The cat's friend is a mouse.",
+   "off_context": "Vera's pet is a wolf. Tara's pet is a spider. Sean's pet is a cat. The wolf's friend is a goose. The spider's friend is a pig. The cat's friend is a mouse.",
+   "question": "How many legs does the friend of Sean's pet have?",
+   "cf_question": "How many legs does the friend of Sean's pet have?",
+   "mid": "mouse",
+   "cf_mid": "goose",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Sean's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the cat's friend?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0020",
+   "family": "BLR",
+   "scene": "T-0020",
+   "bridge": "horse",
+   "cf_bridge": "goose",
+   "third": "wolf",
+   "people": [
+    "Emma",
+    "Max",
+    "Zoe"
+   ],
+   "pets": [
+    "wolf",
+    "horse",
+    "goose"
+   ],
+   "holder": "Max",
+   "cue": "Max",
+   "answer_kind": "digit",
+   "friends": {
+    "horse": "spider",
+    "goose": "cat",
+    "wolf": "duck"
+   },
+   "context": "Emma's pet is a wolf. Max's pet is a horse. Zoe's pet is a goose. The wolf's friend is a duck. The goose's friend is a cat. The horse's friend is a spider.",
+   "cf_context": "Emma's pet is a wolf. Max's pet is a goose. Zoe's pet is a horse. The wolf's friend is a duck. The goose's friend is a cat. The horse's friend is a spider.",
+   "off_context": "Emma's pet is a wolf. Max's pet is a horse. Zoe's pet is a goose. The wolf's friend is a cat. The goose's friend is a duck. The horse's friend is a spider.",
+   "question": "How many legs does the friend of Max's pet have?",
+   "cf_question": "How many legs does the friend of Max's pet have?",
+   "mid": "spider",
+   "cf_mid": "cat",
+   "answer": "8",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Max's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the horse's friend?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0021",
+   "family": "BLR",
+   "scene": "T-0021",
+   "bridge": "horse",
+   "cf_bridge": "goose",
+   "third": "frog",
+   "people": [
+    "Eric",
+    "Carl",
+    "Peter"
+   ],
+   "pets": [
+    "goose",
+    "frog",
+    "horse"
+   ],
+   "holder": "Peter",
+   "cue": "Peter",
+   "answer_kind": "digit",
+   "friends": {
+    "horse": "spider",
+    "goose": "lion",
+    "frog": "sheep"
+   },
+   "context": "Eric's pet is a goose. Carl's pet is a frog. Peter's pet is a horse. The horse's friend is a spider. The goose's friend is a lion. The frog's friend is a sheep.",
+   "cf_context": "Eric's pet is a horse. Carl's pet is a frog. Peter's pet is a goose. The horse's friend is a spider. The goose's friend is a lion. The frog's friend is a sheep.",
+   "off_context": "Eric's pet is a goose. Carl's pet is a frog. Peter's pet is a horse. The horse's friend is a spider. The goose's friend is a sheep. The frog's friend is a lion.",
+   "question": "How many legs does the friend of Peter's pet have?",
+   "cf_question": "How many legs does the friend of Peter's pet have?",
+   "mid": "spider",
+   "cf_mid": "lion",
+   "answer": "8",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Peter's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the horse's friend?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0022",
+   "family": "BLR",
+   "scene": "T-0022",
+   "bridge": "chicken",
+   "cf_bridge": "wolf",
+   "third": "cat",
+   "people": [
+    "Ivy",
+    "Laura",
+    "Ben"
+   ],
+   "pets": [
+    "chicken",
+    "cat",
+    "wolf"
+   ],
+   "holder": "Ivy",
+   "cue": "Ivy",
+   "answer_kind": "digit",
+   "friends": {
+    "chicken": "turkey",
+    "wolf": "mouse",
+    "cat": "dog"
+   },
+   "context": "Ivy's pet is a chicken. Laura's pet is a cat. Ben's pet is a wolf. The cat's friend is a dog. The wolf's friend is a mouse. The chicken's friend is a turkey.",
+   "cf_context": "Ivy's pet is a wolf. Laura's pet is a cat. Ben's pet is a chicken. The cat's friend is a dog. The wolf's friend is a mouse. The chicken's friend is a turkey.",
+   "off_context": "Ivy's pet is a chicken. Laura's pet is a cat. Ben's pet is a wolf. The cat's friend is a mouse. The wolf's friend is a dog. The chicken's friend is a turkey.",
+   "question": "How many legs does the friend of Ivy's pet have?",
+   "cf_question": "How many legs does the friend of Ivy's pet have?",
+   "mid": "turkey",
+   "cf_mid": "mouse",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Ivy's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the chicken's friend?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0023",
+   "family": "BLR",
+   "scene": "T-0023",
+   "bridge": "duck",
+   "cf_bridge": "cow",
+   "third": "horse",
+   "people": [
+    "Will",
+    "Alice",
+    "Eva"
+   ],
+   "pets": [
+    "cow",
+    "horse",
+    "duck"
+   ],
+   "holder": "Eva",
+   "cue": "Eva",
+   "answer_kind": "digit",
+   "friends": {
+    "duck": "spider",
+    "cow": "lion",
+    "horse": "frog"
+   },
+   "context": "Will's pet is a cow. Alice's pet is a horse. Eva's pet is a duck. The horse's friend is a frog. The duck's friend is a spider. The cow's friend is a lion.",
+   "cf_context": "Will's pet is a duck. Alice's pet is a horse. Eva's pet is a cow. The horse's friend is a frog. The duck's friend is a spider. The cow's friend is a lion.",
+   "off_context": "Will's pet is a cow. Alice's pet is a horse. Eva's pet is a duck. The horse's friend is a lion. The duck's friend is a spider. The cow's friend is a frog.",
+   "question": "How many legs does the friend of Eva's pet have?",
+   "cf_question": "How many legs does the friend of Eva's pet have?",
+   "mid": "spider",
+   "cf_mid": "lion",
+   "answer": "8",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Eva's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the duck's friend?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0024",
+   "family": "BLR",
+   "scene": "T-0024",
+   "bridge": "bee",
+   "cf_bridge": "sheep",
+   "third": "spider",
+   "people": [
+    "Noah",
+    "Beth",
+    "Carl"
+   ],
+   "pets": [
+    "bee",
+    "sheep",
+    "spider"
+   ],
+   "holder": "Noah",
+   "cue": "Noah",
+   "answer_kind": "digit",
+   "friends": {
+    "bee": "goose",
+    "sheep": "cat",
+    "spider": "wolf"
+   },
+   "context": "Noah's pet is a bee. Beth's pet is a sheep. Carl's pet is a spider. The sheep's friend is a cat. The bee's friend is a goose. The spider's friend is a wolf.",
+   "cf_context": "Noah's pet is a sheep. Beth's pet is a bee. Carl's pet is a spider. The sheep's friend is a cat. The bee's friend is a goose. The spider's friend is a wolf.",
+   "off_context": "Noah's pet is a bee. Beth's pet is a sheep. Carl's pet is a spider. The sheep's friend is a wolf. The bee's friend is a goose. The spider's friend is a cat.",
+   "question": "How many legs does the friend of Noah's pet have?",
+   "cf_question": "How many legs does the friend of Noah's pet have?",
+   "mid": "goose",
+   "cf_mid": "cat",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Noah's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the bee's friend?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0025",
+   "family": "BLR",
+   "scene": "T-0025",
+   "bridge": "turkey",
+   "cf_bridge": "cat",
+   "third": "sheep",
+   "people": [
+    "Liam",
+    "James",
+    "Eva"
+   ],
+   "pets": [
+    "turkey",
+    "sheep",
+    "cat"
+   ],
+   "holder": "Liam",
+   "cue": "Liam",
+   "answer_kind": "digit",
+   "friends": {
+    "turkey": "lion",
+    "cat": "duck",
+    "sheep": "goose"
+   },
+   "context": "Liam's pet is a turkey. James's pet is a sheep. Eva's pet is a cat. The turkey's friend is a lion. The cat's friend is a duck. The sheep's friend is a goose.",
+   "cf_context": "Liam's pet is a cat. James's pet is a sheep. Eva's pet is a turkey. The turkey's friend is a lion. The cat's friend is a duck. The sheep's friend is a goose.",
+   "off_context": "Liam's pet is a turkey. James's pet is a sheep. Eva's pet is a cat. The turkey's friend is a lion. The cat's friend is a goose. The sheep's friend is a duck.",
+   "question": "How many legs does the friend of Liam's pet have?",
+   "cf_question": "How many legs does the friend of Liam's pet have?",
+   "mid": "lion",
+   "cf_mid": "duck",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Liam's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the turkey's friend?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0026",
+   "family": "BLR",
+   "scene": "T-0026",
+   "bridge": "spider",
+   "cf_bridge": "lion",
+   "third": "sheep",
+   "people": [
+    "Owen",
+    "Ivan",
+    "Eve"
+   ],
+   "pets": [
+    "sheep",
+    "spider",
+    "lion"
+   ],
+   "holder": "Ivan",
+   "cue": "Ivan",
+   "answer_kind": "digit",
+   "friends": {
+    "spider": "duck",
+    "lion": "bee",
+    "sheep": "goose"
+   },
+   "context": "Owen's pet is a sheep. Ivan's pet is a spider. Eve's pet is a lion. The lion's friend is a bee. The sheep's friend is a goose. The spider's friend is a duck.",
+   "cf_context": "Owen's pet is a sheep. Ivan's pet is a lion. Eve's pet is a spider. The lion's friend is a bee. The sheep's friend is a goose. The spider's friend is a duck.",
+   "off_context": "Owen's pet is a sheep. Ivan's pet is a spider. Eve's pet is a lion. The lion's friend is a goose. The sheep's friend is a bee. The spider's friend is a duck.",
+   "question": "How many legs does the friend of Ivan's pet have?",
+   "cf_question": "How many legs does the friend of Ivan's pet have?",
+   "mid": "duck",
+   "cf_mid": "bee",
+   "answer": "2",
+   "cf_answer": "6",
+   "hop1": {
+    "question": "Which animal is Ivan's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the spider's friend?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0027",
+   "family": "BLR",
+   "scene": "T-0027",
+   "bridge": "turkey",
+   "cf_bridge": "horse",
+   "third": "lion",
+   "people": [
+    "Frank",
+    "Eva",
+    "Lucy"
+   ],
+   "pets": [
+    "turkey",
+    "lion",
+    "horse"
+   ],
+   "holder": "Frank",
+   "cue": "Frank",
+   "answer_kind": "digit",
+   "friends": {
+    "turkey": "wolf",
+    "horse": "goose",
+    "lion": "sheep"
+   },
+   "context": "Frank's pet is a turkey. Eva's pet is a lion. Lucy's pet is a horse. The turkey's friend is a wolf. The lion's friend is a sheep. The horse's friend is a goose.",
+   "cf_context": "Frank's pet is a horse. Eva's pet is a lion. Lucy's pet is a turkey. The turkey's friend is a wolf. The lion's friend is a sheep. The horse's friend is a goose.",
+   "off_context": "Frank's pet is a turkey. Eva's pet is a lion. Lucy's pet is a horse. The turkey's friend is a wolf. The lion's friend is a goose. The horse's friend is a sheep.",
+   "question": "How many legs does the friend of Frank's pet have?",
+   "cf_question": "How many legs does the friend of Frank's pet have?",
+   "mid": "wolf",
+   "cf_mid": "goose",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Frank's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the turkey's friend?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0028",
+   "family": "BLR",
+   "scene": "T-0028",
+   "bridge": "mouse",
+   "cf_bridge": "spider",
+   "third": "horse",
+   "people": [
+    "Fiona",
+    "Tara",
+    "Hugo"
+   ],
+   "pets": [
+    "mouse",
+    "spider",
+    "horse"
+   ],
+   "holder": "Fiona",
+   "cue": "Fiona",
+   "answer_kind": "digit",
+   "friends": {
+    "mouse": "turkey",
+    "spider": "cat",
+    "horse": "sheep"
+   },
+   "context": "Fiona's pet is a mouse. Tara's pet is a spider. Hugo's pet is a horse. The horse's friend is a sheep. The mouse's friend is a turkey. The spider's friend is a cat.",
+   "cf_context": "Fiona's pet is a spider. Tara's pet is a mouse. Hugo's pet is a horse. The horse's friend is a sheep. The mouse's friend is a turkey. The spider's friend is a cat.",
+   "off_context": "Fiona's pet is a mouse. Tara's pet is a spider. Hugo's pet is a horse. The horse's friend is a cat. The mouse's friend is a turkey. The spider's friend is a sheep.",
+   "question": "How many legs does the friend of Fiona's pet have?",
+   "cf_question": "How many legs does the friend of Fiona's pet have?",
+   "mid": "turkey",
+   "cf_mid": "cat",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Fiona's pet?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the mouse's friend?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0029",
+   "family": "BLR",
+   "scene": "T-0029",
+   "bridge": "frog",
+   "cf_bridge": "turkey",
+   "third": "cat",
+   "people": [
+    "Maria",
+    "Will",
+    "Tara"
+   ],
+   "pets": [
+    "cat",
+    "turkey",
+    "frog"
+   ],
+   "holder": "Tara",
+   "cue": "Tara",
+   "answer_kind": "digit",
+   "friends": {
+    "frog": "chicken",
+    "turkey": "spider",
+    "cat": "pig"
+   },
+   "context": "Maria's pet is a cat. Will's pet is a turkey. Tara's pet is a frog. The frog's friend is a chicken. The turkey's friend is a spider. The cat's friend is a pig.",
+   "cf_context": "Maria's pet is a cat. Will's pet is a frog. Tara's pet is a turkey. The frog's friend is a chicken. The turkey's friend is a spider. The cat's friend is a pig.",
+   "off_context": "Maria's pet is a cat. Will's pet is a turkey. Tara's pet is a frog. The frog's friend is a chicken. The turkey's friend is a pig. The cat's friend is a spider.",
+   "question": "How many legs does the friend of Tara's pet have?",
+   "cf_question": "How many legs does the friend of Tara's pet have?",
+   "mid": "chicken",
+   "cf_mid": "spider",
+   "answer": "2",
+   "cf_answer": "8",
+   "hop1": {
+    "question": "Which animal is Tara's pet?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the frog's friend?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0030",
+   "family": "BLR",
+   "scene": "T-0030",
+   "bridge": "duck",
+   "cf_bridge": "frog",
+   "third": "goose",
+   "people": [
+    "Kyle",
+    "Beth",
+    "Ben"
+   ],
+   "pets": [
+    "frog",
+    "duck",
+    "goose"
+   ],
+   "holder": "Beth",
+   "cue": "Beth",
+   "answer_kind": "digit",
+   "friends": {
+    "duck": "dog",
+    "frog": "turkey",
+    "goose": "bee"
+   },
+   "context": "Kyle's pet is a frog. Beth's pet is a duck. Ben's pet is a goose. The duck's friend is a dog. The frog's friend is a turkey. The goose's friend is a bee.",
+   "cf_context": "Kyle's pet is a duck. Beth's pet is a frog. Ben's pet is a goose. The duck's friend is a dog. The frog's friend is a turkey. The goose's friend is a bee.",
+   "off_context": "Kyle's pet is a frog. Beth's pet is a duck. Ben's pet is a goose. The duck's friend is a dog. The frog's friend is a bee. The goose's friend is a turkey.",
+   "question": "How many legs does the friend of Beth's pet have?",
+   "cf_question": "How many legs does the friend of Beth's pet have?",
+   "mid": "dog",
+   "cf_mid": "turkey",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Beth's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the duck's friend?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0031",
+   "family": "BLR",
+   "scene": "T-0031",
+   "bridge": "mouse",
+   "cf_bridge": "duck",
+   "third": "horse",
+   "people": [
+    "Luke",
+    "Clara",
+    "Liam"
+   ],
+   "pets": [
+    "duck",
+    "horse",
+    "mouse"
+   ],
+   "holder": "Liam",
+   "cue": "Liam",
+   "answer_kind": "digit",
+   "friends": {
+    "mouse": "bee",
+    "duck": "goose",
+    "horse": "spider"
+   },
+   "context": "Luke's pet is a duck. Clara's pet is a horse. Liam's pet is a mouse. The duck's friend is a goose. The horse's friend is a spider. The mouse's friend is a bee.",
+   "cf_context": "Luke's pet is a mouse. Clara's pet is a horse. Liam's pet is a duck. The duck's friend is a goose. The horse's friend is a spider. The mouse's friend is a bee.",
+   "off_context": "Luke's pet is a duck. Clara's pet is a horse. Liam's pet is a mouse. The duck's friend is a spider. The horse's friend is a goose. The mouse's friend is a bee.",
+   "question": "How many legs does the friend of Liam's pet have?",
+   "cf_question": "How many legs does the friend of Liam's pet have?",
+   "mid": "bee",
+   "cf_mid": "goose",
+   "answer": "6",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Liam's pet?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the mouse's friend?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0032",
+   "family": "BLR",
+   "scene": "T-0032",
+   "bridge": "mouse",
+   "cf_bridge": "duck",
+   "third": "sheep",
+   "people": [
+    "Fiona",
+    "Carl",
+    "Emma"
+   ],
+   "pets": [
+    "duck",
+    "mouse",
+    "sheep"
+   ],
+   "holder": "Carl",
+   "cue": "Carl",
+   "answer_kind": "digit",
+   "friends": {
+    "mouse": "turkey",
+    "duck": "spider",
+    "sheep": "horse"
+   },
+   "context": "Fiona's pet is a duck. Carl's pet is a mouse. Emma's pet is a sheep. The duck's friend is a spider. The mouse's friend is a turkey. The sheep's friend is a horse.",
+   "cf_context": "Fiona's pet is a mouse. Carl's pet is a duck. Emma's pet is a sheep. The duck's friend is a spider. The mouse's friend is a turkey. The sheep's friend is a horse.",
+   "off_context": "Fiona's pet is a duck. Carl's pet is a mouse. Emma's pet is a sheep. The duck's friend is a horse. The mouse's friend is a turkey. The sheep's friend is a spider.",
+   "question": "How many legs does the friend of Carl's pet have?",
+   "cf_question": "How many legs does the friend of Carl's pet have?",
+   "mid": "turkey",
+   "cf_mid": "spider",
+   "answer": "2",
+   "cf_answer": "8",
+   "hop1": {
+    "question": "Which animal is Carl's pet?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the mouse's friend?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0033",
+   "family": "BLR",
+   "scene": "T-0033",
+   "bridge": "spider",
+   "cf_bridge": "chicken",
+   "third": "cow",
+   "people": [
+    "Paul",
+    "Amy",
+    "Beth"
+   ],
+   "pets": [
+    "cow",
+    "chicken",
+    "spider"
+   ],
+   "holder": "Beth",
+   "cue": "Beth",
+   "answer_kind": "digit",
+   "friends": {
+    "spider": "wolf",
+    "chicken": "goose",
+    "cow": "bee"
+   },
+   "context": "Paul's pet is a cow. Amy's pet is a chicken. Beth's pet is a spider. The cow's friend is a bee. The spider's friend is a wolf. The chicken's friend is a goose.",
+   "cf_context": "Paul's pet is a cow. Amy's pet is a spider. Beth's pet is a chicken. The cow's friend is a bee. The spider's friend is a wolf. The chicken's friend is a goose.",
+   "off_context": "Paul's pet is a cow. Amy's pet is a chicken. Beth's pet is a spider. The cow's friend is a goose. The spider's friend is a wolf. The chicken's friend is a bee.",
+   "question": "How many legs does the friend of Beth's pet have?",
+   "cf_question": "How many legs does the friend of Beth's pet have?",
+   "mid": "wolf",
+   "cf_mid": "goose",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Beth's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the spider's friend?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0034",
+   "family": "BLR",
+   "scene": "T-0034",
+   "bridge": "turkey",
+   "cf_bridge": "sheep",
+   "third": "spider",
+   "people": [
+    "Ivan",
+    "Ryan",
+    "Lily"
+   ],
+   "pets": [
+    "turkey",
+    "sheep",
+    "spider"
+   ],
+   "holder": "Ivan",
+   "cue": "Ivan",
+   "answer_kind": "digit",
+   "friends": {
+    "turkey": "chicken",
+    "sheep": "bee",
+    "spider": "frog"
+   },
+   "context": "Ivan's pet is a turkey. Ryan's pet is a sheep. Lily's pet is a spider. The spider's friend is a frog. The sheep's friend is a bee. The turkey's friend is a chicken.",
+   "cf_context": "Ivan's pet is a sheep. Ryan's pet is a turkey. Lily's pet is a spider. The spider's friend is a frog. The sheep's friend is a bee. The turkey's friend is a chicken.",
+   "off_context": "Ivan's pet is a turkey. Ryan's pet is a sheep. Lily's pet is a spider. The spider's friend is a bee. The sheep's friend is a frog. The turkey's friend is a chicken.",
+   "question": "How many legs does the friend of Ivan's pet have?",
+   "cf_question": "How many legs does the friend of Ivan's pet have?",
+   "mid": "chicken",
+   "cf_mid": "bee",
+   "answer": "2",
+   "cf_answer": "6",
+   "hop1": {
+    "question": "Which animal is Ivan's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the turkey's friend?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0035",
+   "family": "BLR",
+   "scene": "T-0035",
+   "bridge": "bee",
+   "cf_bridge": "goose",
+   "third": "cat",
+   "people": [
+    "Carl",
+    "Iris",
+    "Leo"
+   ],
+   "pets": [
+    "bee",
+    "goose",
+    "cat"
+   ],
+   "holder": "Carl",
+   "cue": "Carl",
+   "answer_kind": "digit",
+   "friends": {
+    "bee": "pig",
+    "goose": "turkey",
+    "cat": "sheep"
+   },
+   "context": "Carl's pet is a bee. Iris's pet is a goose. Leo's pet is a cat. The goose's friend is a turkey. The bee's friend is a pig. The cat's friend is a sheep.",
+   "cf_context": "Carl's pet is a goose. Iris's pet is a bee. Leo's pet is a cat. The goose's friend is a turkey. The bee's friend is a pig. The cat's friend is a sheep.",
+   "off_context": "Carl's pet is a bee. Iris's pet is a goose. Leo's pet is a cat. The goose's friend is a sheep. The bee's friend is a pig. The cat's friend is a turkey.",
+   "question": "How many legs does the friend of Carl's pet have?",
+   "cf_question": "How many legs does the friend of Carl's pet have?",
+   "mid": "pig",
+   "cf_mid": "turkey",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Carl's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the bee's friend?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0036",
+   "family": "BLR",
+   "scene": "T-0036",
+   "bridge": "cow",
+   "cf_bridge": "spider",
+   "third": "pig",
+   "people": [
+    "Eric",
+    "Noah",
+    "Finn"
+   ],
+   "pets": [
+    "spider",
+    "cow",
+    "pig"
+   ],
+   "holder": "Noah",
+   "cue": "Noah",
+   "answer_kind": "digit",
+   "friends": {
+    "cow": "horse",
+    "spider": "turkey",
+    "pig": "wolf"
+   },
+   "context": "Eric's pet is a spider. Noah's pet is a cow. Finn's pet is a pig. The cow's friend is a horse. The pig's friend is a wolf. The spider's friend is a turkey.",
+   "cf_context": "Eric's pet is a cow. Noah's pet is a spider. Finn's pet is a pig. The cow's friend is a horse. The pig's friend is a wolf. The spider's friend is a turkey.",
+   "off_context": "Eric's pet is a spider. Noah's pet is a cow. Finn's pet is a pig. The cow's friend is a horse. The pig's friend is a turkey. The spider's friend is a wolf.",
+   "question": "How many legs does the friend of Noah's pet have?",
+   "cf_question": "How many legs does the friend of Noah's pet have?",
+   "mid": "horse",
+   "cf_mid": "turkey",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Noah's pet?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the cow's friend?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0037",
+   "family": "BLR",
+   "scene": "T-0037",
+   "bridge": "pig",
+   "cf_bridge": "duck",
+   "third": "cow",
+   "people": [
+    "Owen",
+    "Kate",
+    "Ella"
+   ],
+   "pets": [
+    "cow",
+    "pig",
+    "duck"
+   ],
+   "holder": "Kate",
+   "cue": "Kate",
+   "answer_kind": "digit",
+   "friends": {
+    "pig": "goose",
+    "duck": "spider",
+    "cow": "sheep"
+   },
+   "context": "Owen's pet is a cow. Kate's pet is a pig. Ella's pet is a duck. The cow's friend is a sheep. The duck's friend is a spider. The pig's friend is a goose.",
+   "cf_context": "Owen's pet is a cow. Kate's pet is a duck. Ella's pet is a pig. The cow's friend is a sheep. The duck's friend is a spider. The pig's friend is a goose.",
+   "off_context": "Owen's pet is a cow. Kate's pet is a pig. Ella's pet is a duck. The cow's friend is a spider. The duck's friend is a sheep. The pig's friend is a goose.",
+   "question": "How many legs does the friend of Kate's pet have?",
+   "cf_question": "How many legs does the friend of Kate's pet have?",
+   "mid": "goose",
+   "cf_mid": "spider",
+   "answer": "2",
+   "cf_answer": "8",
+   "hop1": {
+    "question": "Which animal is Kate's pet?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the pig's friend?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0038",
+   "family": "BLR",
+   "scene": "T-0038",
+   "bridge": "lion",
+   "cf_bridge": "goose",
+   "third": "dog",
+   "people": [
+    "Mark",
+    "Lucy",
+    "Zoe"
+   ],
+   "pets": [
+    "lion",
+    "dog",
+    "goose"
+   ],
+   "holder": "Mark",
+   "cue": "Mark",
+   "answer_kind": "digit",
+   "friends": {
+    "lion": "duck",
+    "goose": "horse",
+    "dog": "cow"
+   },
+   "context": "Mark's pet is a lion. Lucy's pet is a dog. Zoe's pet is a goose. The goose's friend is a horse. The dog's friend is a cow. The lion's friend is a duck.",
+   "cf_context": "Mark's pet is a goose. Lucy's pet is a dog. Zoe's pet is a lion. The goose's friend is a horse. The dog's friend is a cow. The lion's friend is a duck.",
+   "off_context": "Mark's pet is a lion. Lucy's pet is a dog. Zoe's pet is a goose. The goose's friend is a cow. The dog's friend is a horse. The lion's friend is a duck.",
+   "question": "How many legs does the friend of Mark's pet have?",
+   "cf_question": "How many legs does the friend of Mark's pet have?",
+   "mid": "duck",
+   "cf_mid": "horse",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Mark's pet?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the lion's friend?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0039",
+   "family": "BLR",
+   "scene": "T-0039",
+   "bridge": "goose",
+   "cf_bridge": "cow",
+   "third": "frog",
+   "people": [
+    "Ruby",
+    "Ivy",
+    "Ella"
+   ],
+   "pets": [
+    "cow",
+    "goose",
+    "frog"
+   ],
+   "holder": "Ivy",
+   "cue": "Ivy",
+   "answer_kind": "digit",
+   "friends": {
+    "goose": "mouse",
+    "cow": "duck",
+    "frog": "dog"
+   },
+   "context": "Ruby's pet is a cow. Ivy's pet is a goose. Ella's pet is a frog. The frog's friend is a dog. The goose's friend is a mouse. The cow's friend is a duck.",
+   "cf_context": "Ruby's pet is a goose. Ivy's pet is a cow. Ella's pet is a frog. The frog's friend is a dog. The goose's friend is a mouse. The cow's friend is a duck.",
+   "off_context": "Ruby's pet is a cow. Ivy's pet is a goose. Ella's pet is a frog. The frog's friend is a duck. The goose's friend is a mouse. The cow's friend is a dog.",
+   "question": "How many legs does the friend of Ivy's pet have?",
+   "cf_question": "How many legs does the friend of Ivy's pet have?",
+   "mid": "mouse",
+   "cf_mid": "duck",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Ivy's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the goose's friend?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0040",
+   "family": "BLR",
+   "scene": "T-0040",
+   "bridge": "cow",
+   "cf_bridge": "turkey",
+   "third": "pig",
+   "people": [
+    "Carl",
+    "Owen",
+    "Ella"
+   ],
+   "pets": [
+    "turkey",
+    "cow",
+    "pig"
+   ],
+   "holder": "Owen",
+   "cue": "Owen",
+   "answer_kind": "digit",
+   "friends": {
+    "cow": "cat",
+    "turkey": "spider",
+    "pig": "sheep"
+   },
+   "context": "Carl's pet is a turkey. Owen's pet is a cow. Ella's pet is a pig. The pig's friend is a sheep. The turkey's friend is a spider. The cow's friend is a cat.",
+   "cf_context": "Carl's pet is a cow. Owen's pet is a turkey. Ella's pet is a pig. The pig's friend is a sheep. The turkey's friend is a spider. The cow's friend is a cat.",
+   "off_context": "Carl's pet is a turkey. Owen's pet is a cow. Ella's pet is a pig. The pig's friend is a spider. The turkey's friend is a sheep. The cow's friend is a cat.",
+   "question": "How many legs does the friend of Owen's pet have?",
+   "cf_question": "How many legs does the friend of Owen's pet have?",
+   "mid": "cat",
+   "cf_mid": "spider",
+   "answer": "4",
+   "cf_answer": "8",
+   "hop1": {
+    "question": "Which animal is Owen's pet?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the cow's friend?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0041",
+   "family": "BLR",
+   "scene": "T-0041",
+   "bridge": "cat",
+   "cf_bridge": "turkey",
+   "third": "goose",
+   "people": [
+    "Adam",
+    "Olivia",
+    "Maria"
+   ],
+   "pets": [
+    "cat",
+    "turkey",
+    "goose"
+   ],
+   "holder": "Adam",
+   "cue": "Adam",
+   "answer_kind": "digit",
+   "friends": {
+    "cat": "spider",
+    "turkey": "cow",
+    "goose": "duck"
+   },
+   "context": "Adam's pet is a cat. Olivia's pet is a turkey. Maria's pet is a goose. The cat's friend is a spider. The goose's friend is a duck. The turkey's friend is a cow.",
+   "cf_context": "Adam's pet is a turkey. Olivia's pet is a cat. Maria's pet is a goose. The cat's friend is a spider. The goose's friend is a duck. The turkey's friend is a cow.",
+   "off_context": "Adam's pet is a cat. Olivia's pet is a turkey. Maria's pet is a goose. The cat's friend is a spider. The goose's friend is a cow. The turkey's friend is a duck.",
+   "question": "How many legs does the friend of Adam's pet have?",
+   "cf_question": "How many legs does the friend of Adam's pet have?",
+   "mid": "spider",
+   "cf_mid": "cow",
+   "answer": "8",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Adam's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the cat's friend?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0042",
+   "family": "BLR",
+   "scene": "T-0042",
+   "bridge": "frog",
+   "cf_bridge": "turkey",
+   "third": "goose",
+   "people": [
+    "Iris",
+    "Diana",
+    "Amy"
+   ],
+   "pets": [
+    "frog",
+    "turkey",
+    "goose"
+   ],
+   "holder": "Iris",
+   "cue": "Iris",
+   "answer_kind": "digit",
+   "friends": {
+    "frog": "chicken",
+    "turkey": "sheep",
+    "goose": "cow"
+   },
+   "context": "Iris's pet is a frog. Diana's pet is a turkey. Amy's pet is a goose. The turkey's friend is a sheep. The frog's friend is a chicken. The goose's friend is a cow.",
+   "cf_context": "Iris's pet is a turkey. Diana's pet is a frog. Amy's pet is a goose. The turkey's friend is a sheep. The frog's friend is a chicken. The goose's friend is a cow.",
+   "off_context": "Iris's pet is a frog. Diana's pet is a turkey. Amy's pet is a goose. The turkey's friend is a cow. The frog's friend is a chicken. The goose's friend is a sheep.",
+   "question": "How many legs does the friend of Iris's pet have?",
+   "cf_question": "How many legs does the friend of Iris's pet have?",
+   "mid": "chicken",
+   "cf_mid": "sheep",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Iris's pet?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the frog's friend?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0043",
+   "family": "BLR",
+   "scene": "T-0043",
+   "bridge": "lion",
+   "cf_bridge": "bee",
+   "third": "spider",
+   "people": [
+    "Mark",
+    "Ivy",
+    "Olivia"
+   ],
+   "pets": [
+    "lion",
+    "spider",
+    "bee"
+   ],
+   "holder": "Mark",
+   "cue": "Mark",
+   "answer_kind": "digit",
+   "friends": {
+    "lion": "chicken",
+    "bee": "pig",
+    "spider": "horse"
+   },
+   "context": "Mark's pet is a lion. Ivy's pet is a spider. Olivia's pet is a bee. The spider's friend is a horse. The lion's friend is a chicken. The bee's friend is a pig.",
+   "cf_context": "Mark's pet is a bee. Ivy's pet is a spider. Olivia's pet is a lion. The spider's friend is a horse. The lion's friend is a chicken. The bee's friend is a pig.",
+   "off_context": "Mark's pet is a lion. Ivy's pet is a spider. Olivia's pet is a bee. The spider's friend is a pig. The lion's friend is a chicken. The bee's friend is a horse.",
+   "question": "How many legs does the friend of Mark's pet have?",
+   "cf_question": "How many legs does the friend of Mark's pet have?",
+   "mid": "chicken",
+   "cf_mid": "pig",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Mark's pet?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the lion's friend?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0044",
+   "family": "BLR",
+   "scene": "T-0044",
+   "bridge": "spider",
+   "cf_bridge": "frog",
+   "third": "wolf",
+   "people": [
+    "Tara",
+    "Sean",
+    "Jack"
+   ],
+   "pets": [
+    "wolf",
+    "spider",
+    "frog"
+   ],
+   "holder": "Sean",
+   "cue": "Sean",
+   "answer_kind": "digit",
+   "friends": {
+    "spider": "turkey",
+    "frog": "pig",
+    "wolf": "chicken"
+   },
+   "context": "Tara's pet is a wolf. Sean's pet is a spider. Jack's pet is a frog. The wolf's friend is a chicken. The frog's friend is a pig. The spider's friend is a turkey.",
+   "cf_context": "Tara's pet is a wolf. Sean's pet is a frog. Jack's pet is a spider. The wolf's friend is a chicken. The frog's friend is a pig. The spider's friend is a turkey.",
+   "off_context": "Tara's pet is a wolf. Sean's pet is a spider. Jack's pet is a frog. The wolf's friend is a pig. The frog's friend is a chicken. The spider's friend is a turkey.",
+   "question": "How many legs does the friend of Sean's pet have?",
+   "cf_question": "How many legs does the friend of Sean's pet have?",
+   "mid": "turkey",
+   "cf_mid": "pig",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Sean's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the spider's friend?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0045",
+   "family": "BLR",
+   "scene": "T-0045",
+   "bridge": "duck",
+   "cf_bridge": "spider",
+   "third": "mouse",
+   "people": [
+    "Sara",
+    "Oscar",
+    "Owen"
+   ],
+   "pets": [
+    "mouse",
+    "spider",
+    "duck"
+   ],
+   "holder": "Owen",
+   "cue": "Owen",
+   "answer_kind": "digit",
+   "friends": {
+    "duck": "cat",
+    "spider": "bee",
+    "mouse": "dog"
+   },
+   "context": "Sara's pet is a mouse. Oscar's pet is a spider. Owen's pet is a duck. The spider's friend is a bee. The duck's friend is a cat. The mouse's friend is a dog.",
+   "cf_context": "Sara's pet is a mouse. Oscar's pet is a duck. Owen's pet is a spider. The spider's friend is a bee. The duck's friend is a cat. The mouse's friend is a dog.",
+   "off_context": "Sara's pet is a mouse. Oscar's pet is a spider. Owen's pet is a duck. The spider's friend is a dog. The duck's friend is a cat. The mouse's friend is a bee.",
+   "question": "How many legs does the friend of Owen's pet have?",
+   "cf_question": "How many legs does the friend of Owen's pet have?",
+   "mid": "cat",
+   "cf_mid": "bee",
+   "answer": "4",
+   "cf_answer": "6",
+   "hop1": {
+    "question": "Which animal is Owen's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the duck's friend?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0046",
+   "family": "BLR",
+   "scene": "T-0046",
+   "bridge": "wolf",
+   "cf_bridge": "spider",
+   "third": "duck",
+   "people": [
+    "Lily",
+    "Anna",
+    "Sam"
+   ],
+   "pets": [
+    "spider",
+    "wolf",
+    "duck"
+   ],
+   "holder": "Anna",
+   "cue": "Anna",
+   "answer_kind": "digit",
+   "friends": {
+    "wolf": "cow",
+    "spider": "bee",
+    "duck": "lion"
+   },
+   "context": "Lily's pet is a spider. Anna's pet is a wolf. Sam's pet is a duck. The wolf's friend is a cow. The duck's friend is a lion. The spider's friend is a bee.",
+   "cf_context": "Lily's pet is a wolf. Anna's pet is a spider. Sam's pet is a duck. The wolf's friend is a cow. The duck's friend is a lion. The spider's friend is a bee.",
+   "off_context": "Lily's pet is a spider. Anna's pet is a wolf. Sam's pet is a duck. The wolf's friend is a cow. The duck's friend is a bee. The spider's friend is a lion.",
+   "question": "How many legs does the friend of Anna's pet have?",
+   "cf_question": "How many legs does the friend of Anna's pet have?",
+   "mid": "cow",
+   "cf_mid": "bee",
+   "answer": "4",
+   "cf_answer": "6",
+   "hop1": {
+    "question": "Which animal is Anna's pet?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the wolf's friend?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a cow have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0047",
+   "family": "BLR",
+   "scene": "T-0047",
+   "bridge": "spider",
+   "cf_bridge": "lion",
+   "third": "cow",
+   "people": [
+    "Carl",
+    "Peter",
+    "Luke"
+   ],
+   "pets": [
+    "spider",
+    "lion",
+    "cow"
+   ],
+   "holder": "Carl",
+   "cue": "Carl",
+   "answer_kind": "digit",
+   "friends": {
+    "spider": "pig",
+    "lion": "bee",
+    "cow": "dog"
+   },
+   "context": "Carl's pet is a spider. Peter's pet is a lion. Luke's pet is a cow. The lion's friend is a bee. The cow's friend is a dog. The spider's friend is a pig.",
+   "cf_context": "Carl's pet is a lion. Peter's pet is a spider. Luke's pet is a cow. The lion's friend is a bee. The cow's friend is a dog. The spider's friend is a pig.",
+   "off_context": "Carl's pet is a spider. Peter's pet is a lion. Luke's pet is a cow. The lion's friend is a dog. The cow's friend is a bee. The spider's friend is a pig.",
+   "question": "How many legs does the friend of Carl's pet have?",
+   "cf_question": "How many legs does the friend of Carl's pet have?",
+   "mid": "pig",
+   "cf_mid": "bee",
+   "answer": "4",
+   "cf_answer": "6",
+   "hop1": {
+    "question": "Which animal is Carl's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the spider's friend?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0048",
+   "family": "BLR",
+   "scene": "T-0048",
+   "bridge": "horse",
+   "cf_bridge": "goose",
+   "third": "mouse",
+   "people": [
+    "Max",
+    "Anna",
+    "Vera"
+   ],
+   "pets": [
+    "mouse",
+    "horse",
+    "goose"
+   ],
+   "holder": "Anna",
+   "cue": "Anna",
+   "answer_kind": "digit",
+   "friends": {
+    "horse": "frog",
+    "goose": "spider",
+    "mouse": "chicken"
+   },
+   "context": "Max's pet is a mouse. Anna's pet is a horse. Vera's pet is a goose. The mouse's friend is a chicken. The horse's friend is a frog. The goose's friend is a spider.",
+   "cf_context": "Max's pet is a mouse. Anna's pet is a goose. Vera's pet is a horse. The mouse's friend is a chicken. The horse's friend is a frog. The goose's friend is a spider.",
+   "off_context": "Max's pet is a mouse. Anna's pet is a horse. Vera's pet is a goose. The mouse's friend is a spider. The horse's friend is a frog. The goose's friend is a chicken.",
+   "question": "How many legs does the friend of Anna's pet have?",
+   "cf_question": "How many legs does the friend of Anna's pet have?",
+   "mid": "frog",
+   "cf_mid": "spider",
+   "answer": "4",
+   "cf_answer": "8",
+   "hop1": {
+    "question": "Which animal is Anna's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the horse's friend?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0049",
+   "family": "BLR",
+   "scene": "T-0049",
+   "bridge": "duck",
+   "cf_bridge": "cow",
+   "third": "lion",
+   "people": [
+    "Peter",
+    "Emma",
+    "Clara"
+   ],
+   "pets": [
+    "duck",
+    "cow",
+    "lion"
+   ],
+   "holder": "Peter",
+   "cue": "Peter",
+   "answer_kind": "digit",
+   "friends": {
+    "duck": "sheep",
+    "cow": "goose",
+    "lion": "horse"
+   },
+   "context": "Peter's pet is a duck. Emma's pet is a cow. Clara's pet is a lion. The cow's friend is a goose. The lion's friend is a horse. The duck's friend is a sheep.",
+   "cf_context": "Peter's pet is a cow. Emma's pet is a duck. Clara's pet is a lion. The cow's friend is a goose. The lion's friend is a horse. The duck's friend is a sheep.",
+   "off_context": "Peter's pet is a duck. Emma's pet is a cow. Clara's pet is a lion. The cow's friend is a horse. The lion's friend is a goose. The duck's friend is a sheep.",
+   "question": "How many legs does the friend of Peter's pet have?",
+   "cf_question": "How many legs does the friend of Peter's pet have?",
+   "mid": "sheep",
+   "cf_mid": "goose",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Peter's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the duck's friend?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0050",
+   "family": "BLR",
+   "scene": "T-0050",
+   "bridge": "duck",
+   "cf_bridge": "cat",
+   "third": "mouse",
+   "people": [
+    "Paul",
+    "Laura",
+    "Ben"
+   ],
+   "pets": [
+    "duck",
+    "cat",
+    "mouse"
+   ],
+   "holder": "Paul",
+   "cue": "Paul",
+   "answer_kind": "digit",
+   "friends": {
+    "duck": "spider",
+    "cat": "lion",
+    "mouse": "turkey"
+   },
+   "context": "Paul's pet is a duck. Laura's pet is a cat. Ben's pet is a mouse. The duck's friend is a spider. The cat's friend is a lion. The mouse's friend is a turkey.",
+   "cf_context": "Paul's pet is a cat. Laura's pet is a duck. Ben's pet is a mouse. The duck's friend is a spider. The cat's friend is a lion. The mouse's friend is a turkey.",
+   "off_context": "Paul's pet is a duck. Laura's pet is a cat. Ben's pet is a mouse. The duck's friend is a spider. The cat's friend is a turkey. The mouse's friend is a lion.",
+   "question": "How many legs does the friend of Paul's pet have?",
+   "cf_question": "How many legs does the friend of Paul's pet have?",
+   "mid": "spider",
+   "cf_mid": "lion",
+   "answer": "8",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Paul's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the duck's friend?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0051",
+   "family": "BLR",
+   "scene": "T-0051",
+   "bridge": "sheep",
+   "cf_bridge": "chicken",
+   "third": "wolf",
+   "people": [
+    "David",
+    "Anna",
+    "Mark"
+   ],
+   "pets": [
+    "wolf",
+    "sheep",
+    "chicken"
+   ],
+   "holder": "Anna",
+   "cue": "Anna",
+   "answer_kind": "digit",
+   "friends": {
+    "sheep": "cat",
+    "chicken": "bee",
+    "wolf": "lion"
+   },
+   "context": "David's pet is a wolf. Anna's pet is a sheep. Mark's pet is a chicken. The sheep's friend is a cat. The chicken's friend is a bee. The wolf's friend is a lion.",
+   "cf_context": "David's pet is a wolf. Anna's pet is a chicken. Mark's pet is a sheep. The sheep's friend is a cat. The chicken's friend is a bee. The wolf's friend is a lion.",
+   "off_context": "David's pet is a wolf. Anna's pet is a sheep. Mark's pet is a chicken. The sheep's friend is a cat. The chicken's friend is a lion. The wolf's friend is a bee.",
+   "question": "How many legs does the friend of Anna's pet have?",
+   "cf_question": "How many legs does the friend of Anna's pet have?",
+   "mid": "cat",
+   "cf_mid": "bee",
+   "answer": "4",
+   "cf_answer": "6",
+   "hop1": {
+    "question": "Which animal is Anna's pet?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the sheep's friend?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0052",
+   "family": "BLR",
+   "scene": "T-0052",
+   "bridge": "bee",
+   "cf_bridge": "dog",
+   "third": "cat",
+   "people": [
+    "Noah",
+    "Leo",
+    "Kate"
+   ],
+   "pets": [
+    "bee",
+    "cat",
+    "dog"
+   ],
+   "holder": "Noah",
+   "cue": "Noah",
+   "answer_kind": "digit",
+   "friends": {
+    "bee": "duck",
+    "dog": "frog",
+    "cat": "horse"
+   },
+   "context": "Noah's pet is a bee. Leo's pet is a cat. Kate's pet is a dog. The cat's friend is a horse. The dog's friend is a frog. The bee's friend is a duck.",
+   "cf_context": "Noah's pet is a dog. Leo's pet is a cat. Kate's pet is a bee. The cat's friend is a horse. The dog's friend is a frog. The bee's friend is a duck.",
+   "off_context": "Noah's pet is a bee. Leo's pet is a cat. Kate's pet is a dog. The cat's friend is a frog. The dog's friend is a horse. The bee's friend is a duck.",
+   "question": "How many legs does the friend of Noah's pet have?",
+   "cf_question": "How many legs does the friend of Noah's pet have?",
+   "mid": "duck",
+   "cf_mid": "frog",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Noah's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the bee's friend?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0053",
+   "family": "BLR",
+   "scene": "T-0053",
+   "bridge": "frog",
+   "cf_bridge": "chicken",
+   "third": "spider",
+   "people": [
+    "Eric",
+    "Ivan",
+    "Beth"
+   ],
+   "pets": [
+    "spider",
+    "chicken",
+    "frog"
+   ],
+   "holder": "Beth",
+   "cue": "Beth",
+   "answer_kind": "digit",
+   "friends": {
+    "frog": "horse",
+    "chicken": "duck",
+    "spider": "pig"
+   },
+   "context": "Eric's pet is a spider. Ivan's pet is a chicken. Beth's pet is a frog. The frog's friend is a horse. The spider's friend is a pig. The chicken's friend is a duck.",
+   "cf_context": "Eric's pet is a spider. Ivan's pet is a frog. Beth's pet is a chicken. The frog's friend is a horse. The spider's friend is a pig. The chicken's friend is a duck.",
+   "off_context": "Eric's pet is a spider. Ivan's pet is a chicken. Beth's pet is a frog. The frog's friend is a horse. The spider's friend is a duck. The chicken's friend is a pig.",
+   "question": "How many legs does the friend of Beth's pet have?",
+   "cf_question": "How many legs does the friend of Beth's pet have?",
+   "mid": "horse",
+   "cf_mid": "duck",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Beth's pet?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the frog's friend?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0054",
+   "family": "BLR",
+   "scene": "T-0054",
+   "bridge": "pig",
+   "cf_bridge": "spider",
+   "third": "mouse",
+   "people": [
+    "Max",
+    "Grace",
+    "Tom"
+   ],
+   "pets": [
+    "pig",
+    "spider",
+    "mouse"
+   ],
+   "holder": "Max",
+   "cue": "Max",
+   "answer_kind": "digit",
+   "friends": {
+    "pig": "chicken",
+    "spider": "cow",
+    "mouse": "horse"
+   },
+   "context": "Max's pet is a pig. Grace's pet is a spider. Tom's pet is a mouse. The pig's friend is a chicken. The mouse's friend is a horse. The spider's friend is a cow.",
+   "cf_context": "Max's pet is a spider. Grace's pet is a pig. Tom's pet is a mouse. The pig's friend is a chicken. The mouse's friend is a horse. The spider's friend is a cow.",
+   "off_context": "Max's pet is a pig. Grace's pet is a spider. Tom's pet is a mouse. The pig's friend is a chicken. The mouse's friend is a cow. The spider's friend is a horse.",
+   "question": "How many legs does the friend of Max's pet have?",
+   "cf_question": "How many legs does the friend of Max's pet have?",
+   "mid": "chicken",
+   "cf_mid": "cow",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Max's pet?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the pig's friend?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0055",
+   "family": "BLR",
+   "scene": "T-0055",
+   "bridge": "wolf",
+   "cf_bridge": "chicken",
+   "third": "pig",
+   "people": [
+    "Tara",
+    "Zoe",
+    "Ryan"
+   ],
+   "pets": [
+    "chicken",
+    "pig",
+    "wolf"
+   ],
+   "holder": "Ryan",
+   "cue": "Ryan",
+   "answer_kind": "digit",
+   "friends": {
+    "wolf": "bee",
+    "chicken": "mouse",
+    "pig": "cow"
+   },
+   "context": "Tara's pet is a chicken. Zoe's pet is a pig. Ryan's pet is a wolf. The pig's friend is a cow. The chicken's friend is a mouse. The wolf's friend is a bee.",
+   "cf_context": "Tara's pet is a wolf. Zoe's pet is a pig. Ryan's pet is a chicken. The pig's friend is a cow. The chicken's friend is a mouse. The wolf's friend is a bee.",
+   "off_context": "Tara's pet is a chicken. Zoe's pet is a pig. Ryan's pet is a wolf. The pig's friend is a mouse. The chicken's friend is a cow. The wolf's friend is a bee.",
+   "question": "How many legs does the friend of Ryan's pet have?",
+   "cf_question": "How many legs does the friend of Ryan's pet have?",
+   "mid": "bee",
+   "cf_mid": "mouse",
+   "answer": "6",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Ryan's pet?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the wolf's friend?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0056",
+   "family": "BLR",
+   "scene": "T-0056",
+   "bridge": "wolf",
+   "cf_bridge": "turkey",
+   "third": "duck",
+   "people": [
+    "Kyle",
+    "Rose",
+    "Sean"
+   ],
+   "pets": [
+    "turkey",
+    "wolf",
+    "duck"
+   ],
+   "holder": "Rose",
+   "cue": "Rose",
+   "answer_kind": "digit",
+   "friends": {
+    "wolf": "cow",
+    "turkey": "goose",
+    "duck": "cat"
+   },
+   "context": "Kyle's pet is a turkey. Rose's pet is a wolf. Sean's pet is a duck. The duck's friend is a cat. The wolf's friend is a cow. The turkey's friend is a goose.",
+   "cf_context": "Kyle's pet is a wolf. Rose's pet is a turkey. Sean's pet is a duck. The duck's friend is a cat. The wolf's friend is a cow. The turkey's friend is a goose.",
+   "off_context": "Kyle's pet is a turkey. Rose's pet is a wolf. Sean's pet is a duck. The duck's friend is a goose. The wolf's friend is a cow. The turkey's friend is a cat.",
+   "question": "How many legs does the friend of Rose's pet have?",
+   "cf_question": "How many legs does the friend of Rose's pet have?",
+   "mid": "cow",
+   "cf_mid": "goose",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Rose's pet?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the wolf's friend?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a cow have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0057",
+   "family": "BLR",
+   "scene": "T-0057",
+   "bridge": "cow",
+   "cf_bridge": "goose",
+   "third": "chicken",
+   "people": [
+    "Amy",
+    "Adam",
+    "Noah"
+   ],
+   "pets": [
+    "goose",
+    "cow",
+    "chicken"
+   ],
+   "holder": "Adam",
+   "cue": "Adam",
+   "answer_kind": "digit",
+   "friends": {
+    "cow": "spider",
+    "goose": "wolf",
+    "chicken": "lion"
+   },
+   "context": "Amy's pet is a goose. Adam's pet is a cow. Noah's pet is a chicken. The chicken's friend is a lion. The goose's friend is a wolf. The cow's friend is a spider.",
+   "cf_context": "Amy's pet is a cow. Adam's pet is a goose. Noah's pet is a chicken. The chicken's friend is a lion. The goose's friend is a wolf. The cow's friend is a spider.",
+   "off_context": "Amy's pet is a goose. Adam's pet is a cow. Noah's pet is a chicken. The chicken's friend is a wolf. The goose's friend is a lion. The cow's friend is a spider.",
+   "question": "How many legs does the friend of Adam's pet have?",
+   "cf_question": "How many legs does the friend of Adam's pet have?",
+   "mid": "spider",
+   "cf_mid": "wolf",
+   "answer": "8",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Adam's pet?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the cow's friend?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0058",
+   "family": "BLR",
+   "scene": "T-0058",
+   "bridge": "pig",
+   "cf_bridge": "duck",
+   "third": "mouse",
+   "people": [
+    "Sam",
+    "Owen",
+    "Noah"
+   ],
+   "pets": [
+    "mouse",
+    "duck",
+    "pig"
+   ],
+   "holder": "Noah",
+   "cue": "Noah",
+   "answer_kind": "digit",
+   "friends": {
+    "pig": "lion",
+    "duck": "goose",
+    "mouse": "dog"
+   },
+   "context": "Sam's pet is a mouse. Owen's pet is a duck. Noah's pet is a pig. The duck's friend is a goose. The mouse's friend is a dog. The pig's friend is a lion.",
+   "cf_context": "Sam's pet is a mouse. Owen's pet is a pig. Noah's pet is a duck. The duck's friend is a goose. The mouse's friend is a dog. The pig's friend is a lion.",
+   "off_context": "Sam's pet is a mouse. Owen's pet is a duck. Noah's pet is a pig. The duck's friend is a dog. The mouse's friend is a goose. The pig's friend is a lion.",
+   "question": "How many legs does the friend of Noah's pet have?",
+   "cf_question": "How many legs does the friend of Noah's pet have?",
+   "mid": "lion",
+   "cf_mid": "goose",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Noah's pet?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the pig's friend?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0059",
+   "family": "BLR",
+   "scene": "T-0059",
+   "bridge": "pig",
+   "cf_bridge": "spider",
+   "third": "wolf",
+   "people": [
+    "Eva",
+    "Dan",
+    "Leo"
+   ],
+   "pets": [
+    "spider",
+    "pig",
+    "wolf"
+   ],
+   "holder": "Dan",
+   "cue": "Dan",
+   "answer_kind": "digit",
+   "friends": {
+    "pig": "goose",
+    "spider": "horse",
+    "wolf": "bee"
+   },
+   "context": "Eva's pet is a spider. Dan's pet is a pig. Leo's pet is a wolf. The pig's friend is a goose. The wolf's friend is a bee. The spider's friend is a horse.",
+   "cf_context": "Eva's pet is a pig. Dan's pet is a spider. Leo's pet is a wolf. The pig's friend is a goose. The wolf's friend is a bee. The spider's friend is a horse.",
+   "off_context": "Eva's pet is a spider. Dan's pet is a pig. Leo's pet is a wolf. The pig's friend is a goose. The wolf's friend is a horse. The spider's friend is a bee.",
+   "question": "How many legs does the friend of Dan's pet have?",
+   "cf_question": "How many legs does the friend of Dan's pet have?",
+   "mid": "goose",
+   "cf_mid": "horse",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Dan's pet?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the pig's friend?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0060",
+   "family": "BLR",
+   "scene": "T-0060",
+   "bridge": "cow",
+   "cf_bridge": "duck",
+   "third": "pig",
+   "people": [
+    "Ella",
+    "Sean",
+    "Laura"
+   ],
+   "pets": [
+    "duck",
+    "cow",
+    "pig"
+   ],
+   "holder": "Sean",
+   "cue": "Sean",
+   "answer_kind": "digit",
+   "friends": {
+    "cow": "cat",
+    "duck": "bee",
+    "pig": "sheep"
+   },
+   "context": "Ella's pet is a duck. Sean's pet is a cow. Laura's pet is a pig. The pig's friend is a sheep. The duck's friend is a bee. The cow's friend is a cat.",
+   "cf_context": "Ella's pet is a cow. Sean's pet is a duck. Laura's pet is a pig. The pig's friend is a sheep. The duck's friend is a bee. The cow's friend is a cat.",
+   "off_context": "Ella's pet is a duck. Sean's pet is a cow. Laura's pet is a pig. The pig's friend is a bee. The duck's friend is a sheep. The cow's friend is a cat.",
+   "question": "How many legs does the friend of Sean's pet have?",
+   "cf_question": "How many legs does the friend of Sean's pet have?",
+   "mid": "cat",
+   "cf_mid": "bee",
+   "answer": "4",
+   "cf_answer": "6",
+   "hop1": {
+    "question": "Which animal is Sean's pet?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the cow's friend?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0061",
+   "family": "BLR",
+   "scene": "T-0061",
+   "bridge": "wolf",
+   "cf_bridge": "spider",
+   "third": "duck",
+   "people": [
+    "Mark",
+    "Henry",
+    "Ben"
+   ],
+   "pets": [
+    "wolf",
+    "spider",
+    "duck"
+   ],
+   "holder": "Mark",
+   "cue": "Mark",
+   "answer_kind": "digit",
+   "friends": {
+    "wolf": "horse",
+    "spider": "turkey",
+    "duck": "dog"
+   },
+   "context": "Mark's pet is a wolf. Henry's pet is a spider. Ben's pet is a duck. The spider's friend is a turkey. The wolf's friend is a horse. The duck's friend is a dog.",
+   "cf_context": "Mark's pet is a spider. Henry's pet is a wolf. Ben's pet is a duck. The spider's friend is a turkey. The wolf's friend is a horse. The duck's friend is a dog.",
+   "off_context": "Mark's pet is a wolf. Henry's pet is a spider. Ben's pet is a duck. The spider's friend is a dog. The wolf's friend is a horse. The duck's friend is a turkey.",
+   "question": "How many legs does the friend of Mark's pet have?",
+   "cf_question": "How many legs does the friend of Mark's pet have?",
+   "mid": "horse",
+   "cf_mid": "turkey",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Mark's pet?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the wolf's friend?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0062",
+   "family": "BLR",
+   "scene": "T-0062",
+   "bridge": "duck",
+   "cf_bridge": "wolf",
+   "third": "chicken",
+   "people": [
+    "Oscar",
+    "Ivy",
+    "Lily"
+   ],
+   "pets": [
+    "wolf",
+    "duck",
+    "chicken"
+   ],
+   "holder": "Ivy",
+   "cue": "Ivy",
+   "answer_kind": "digit",
+   "friends": {
+    "duck": "horse",
+    "wolf": "spider",
+    "chicken": "goose"
+   },
+   "context": "Oscar's pet is a wolf. Ivy's pet is a duck. Lily's pet is a chicken. The chicken's friend is a goose. The wolf's friend is a spider. The duck's friend is a horse.",
+   "cf_context": "Oscar's pet is a duck. Ivy's pet is a wolf. Lily's pet is a chicken. The chicken's friend is a goose. The wolf's friend is a spider. The duck's friend is a horse.",
+   "off_context": "Oscar's pet is a wolf. Ivy's pet is a duck. Lily's pet is a chicken. The chicken's friend is a spider. The wolf's friend is a goose. The duck's friend is a horse.",
+   "question": "How many legs does the friend of Ivy's pet have?",
+   "cf_question": "How many legs does the friend of Ivy's pet have?",
+   "mid": "horse",
+   "cf_mid": "spider",
+   "answer": "4",
+   "cf_answer": "8",
+   "hop1": {
+    "question": "Which animal is Ivy's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the duck's friend?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0063",
+   "family": "BLR",
+   "scene": "T-0063",
+   "bridge": "goose",
+   "cf_bridge": "sheep",
+   "third": "duck",
+   "people": [
+    "Paul",
+    "Dan",
+    "Jack"
+   ],
+   "pets": [
+    "goose",
+    "duck",
+    "sheep"
+   ],
+   "holder": "Paul",
+   "cue": "Paul",
+   "answer_kind": "digit",
+   "friends": {
+    "goose": "chicken",
+    "sheep": "frog",
+    "duck": "mouse"
+   },
+   "context": "Paul's pet is a goose. Dan's pet is a duck. Jack's pet is a sheep. The goose's friend is a chicken. The duck's friend is a mouse. The sheep's friend is a frog.",
+   "cf_context": "Paul's pet is a sheep. Dan's pet is a duck. Jack's pet is a goose. The goose's friend is a chicken. The duck's friend is a mouse. The sheep's friend is a frog.",
+   "off_context": "Paul's pet is a goose. Dan's pet is a duck. Jack's pet is a sheep. The goose's friend is a chicken. The duck's friend is a frog. The sheep's friend is a mouse.",
+   "question": "How many legs does the friend of Paul's pet have?",
+   "cf_question": "How many legs does the friend of Paul's pet have?",
+   "mid": "chicken",
+   "cf_mid": "frog",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Paul's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the goose's friend?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0064",
+   "family": "BLR",
+   "scene": "T-0064",
+   "bridge": "horse",
+   "cf_bridge": "chicken",
+   "third": "wolf",
+   "people": [
+    "Paul",
+    "Ben",
+    "Ryan"
+   ],
+   "pets": [
+    "wolf",
+    "chicken",
+    "horse"
+   ],
+   "holder": "Ryan",
+   "cue": "Ryan",
+   "answer_kind": "digit",
+   "friends": {
+    "horse": "frog",
+    "chicken": "duck",
+    "wolf": "sheep"
+   },
+   "context": "Paul's pet is a wolf. Ben's pet is a chicken. Ryan's pet is a horse. The horse's friend is a frog. The chicken's friend is a duck. The wolf's friend is a sheep.",
+   "cf_context": "Paul's pet is a wolf. Ben's pet is a horse. Ryan's pet is a chicken. The horse's friend is a frog. The chicken's friend is a duck. The wolf's friend is a sheep.",
+   "off_context": "Paul's pet is a wolf. Ben's pet is a chicken. Ryan's pet is a horse. The horse's friend is a frog. The chicken's friend is a sheep. The wolf's friend is a duck.",
+   "question": "How many legs does the friend of Ryan's pet have?",
+   "cf_question": "How many legs does the friend of Ryan's pet have?",
+   "mid": "frog",
+   "cf_mid": "duck",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Ryan's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the horse's friend?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0065",
+   "family": "BLR",
+   "scene": "T-0065",
+   "bridge": "cow",
+   "cf_bridge": "spider",
+   "third": "wolf",
+   "people": [
+    "Lily",
+    "Clara",
+    "Vera"
+   ],
+   "pets": [
+    "cow",
+    "wolf",
+    "spider"
+   ],
+   "holder": "Lily",
+   "cue": "Lily",
+   "answer_kind": "digit",
+   "friends": {
+    "cow": "mouse",
+    "spider": "bee",
+    "wolf": "frog"
+   },
+   "context": "Lily's pet is a cow. Clara's pet is a wolf. Vera's pet is a spider. The wolf's friend is a frog. The cow's friend is a mouse. The spider's friend is a bee.",
+   "cf_context": "Lily's pet is a spider. Clara's pet is a wolf. Vera's pet is a cow. The wolf's friend is a frog. The cow's friend is a mouse. The spider's friend is a bee.",
+   "off_context": "Lily's pet is a cow. Clara's pet is a wolf. Vera's pet is a spider. The wolf's friend is a bee. The cow's friend is a mouse. The spider's friend is a frog.",
+   "question": "How many legs does the friend of Lily's pet have?",
+   "cf_question": "How many legs does the friend of Lily's pet have?",
+   "mid": "mouse",
+   "cf_mid": "bee",
+   "answer": "4",
+   "cf_answer": "6",
+   "hop1": {
+    "question": "Which animal is Lily's pet?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the cow's friend?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0066",
+   "family": "BLR",
+   "scene": "T-0066",
+   "bridge": "mouse",
+   "cf_bridge": "turkey",
+   "third": "frog",
+   "people": [
+    "Hugo",
+    "Anna",
+    "Eva"
+   ],
+   "pets": [
+    "frog",
+    "turkey",
+    "mouse"
+   ],
+   "holder": "Eva",
+   "cue": "Eva",
+   "answer_kind": "digit",
+   "friends": {
+    "mouse": "wolf",
+    "turkey": "spider",
+    "frog": "cow"
+   },
+   "context": "Hugo's pet is a frog. Anna's pet is a turkey. Eva's pet is a mouse. The frog's friend is a cow. The mouse's friend is a wolf. The turkey's friend is a spider.",
+   "cf_context": "Hugo's pet is a frog. Anna's pet is a mouse. Eva's pet is a turkey. The frog's friend is a cow. The mouse's friend is a wolf. The turkey's friend is a spider.",
+   "off_context": "Hugo's pet is a frog. Anna's pet is a turkey. Eva's pet is a mouse. The frog's friend is a spider. The mouse's friend is a wolf. The turkey's friend is a cow.",
+   "question": "How many legs does the friend of Eva's pet have?",
+   "cf_question": "How many legs does the friend of Eva's pet have?",
+   "mid": "wolf",
+   "cf_mid": "spider",
+   "answer": "4",
+   "cf_answer": "8",
+   "hop1": {
+    "question": "Which animal is Eva's pet?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the mouse's friend?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0067",
+   "family": "BLR",
+   "scene": "T-0067",
+   "bridge": "mouse",
+   "cf_bridge": "turkey",
+   "third": "cat",
+   "people": [
+    "Jack",
+    "Tara",
+    "Max"
+   ],
+   "pets": [
+    "turkey",
+    "mouse",
+    "cat"
+   ],
+   "holder": "Tara",
+   "cue": "Tara",
+   "answer_kind": "digit",
+   "friends": {
+    "mouse": "dog",
+    "turkey": "duck",
+    "cat": "goose"
+   },
+   "context": "Jack's pet is a turkey. Tara's pet is a mouse. Max's pet is a cat. The cat's friend is a goose. The turkey's friend is a duck. The mouse's friend is a dog.",
+   "cf_context": "Jack's pet is a mouse. Tara's pet is a turkey. Max's pet is a cat. The cat's friend is a goose. The turkey's friend is a duck. The mouse's friend is a dog.",
+   "off_context": "Jack's pet is a turkey. Tara's pet is a mouse. Max's pet is a cat. The cat's friend is a duck. The turkey's friend is a goose. The mouse's friend is a dog.",
+   "question": "How many legs does the friend of Tara's pet have?",
+   "cf_question": "How many legs does the friend of Tara's pet have?",
+   "mid": "dog",
+   "cf_mid": "duck",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Tara's pet?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the mouse's friend?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0068",
+   "family": "BLR",
+   "scene": "T-0068",
+   "bridge": "bee",
+   "cf_bridge": "horse",
+   "third": "wolf",
+   "people": [
+    "Owen",
+    "Tara",
+    "Sam"
+   ],
+   "pets": [
+    "bee",
+    "horse",
+    "wolf"
+   ],
+   "holder": "Owen",
+   "cue": "Owen",
+   "answer_kind": "digit",
+   "friends": {
+    "bee": "duck",
+    "horse": "cow",
+    "wolf": "spider"
+   },
+   "context": "Owen's pet is a bee. Tara's pet is a horse. Sam's pet is a wolf. The bee's friend is a duck. The wolf's friend is a spider. The horse's friend is a cow.",
+   "cf_context": "Owen's pet is a horse. Tara's pet is a bee. Sam's pet is a wolf. The bee's friend is a duck. The wolf's friend is a spider. The horse's friend is a cow.",
+   "off_context": "Owen's pet is a bee. Tara's pet is a horse. Sam's pet is a wolf. The bee's friend is a duck. The wolf's friend is a cow. The horse's friend is a spider.",
+   "question": "How many legs does the friend of Owen's pet have?",
+   "cf_question": "How many legs does the friend of Owen's pet have?",
+   "mid": "duck",
+   "cf_mid": "cow",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Owen's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the bee's friend?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0069",
+   "family": "BLR",
+   "scene": "T-0069",
+   "bridge": "goose",
+   "cf_bridge": "spider",
+   "third": "pig",
+   "people": [
+    "Ella",
+    "Jack",
+    "Lily"
+   ],
+   "pets": [
+    "pig",
+    "goose",
+    "spider"
+   ],
+   "holder": "Jack",
+   "cue": "Jack",
+   "answer_kind": "digit",
+   "friends": {
+    "goose": "lion",
+    "spider": "turkey",
+    "pig": "cow"
+   },
+   "context": "Ella's pet is a pig. Jack's pet is a goose. Lily's pet is a spider. The pig's friend is a cow. The goose's friend is a lion. The spider's friend is a turkey.",
+   "cf_context": "Ella's pet is a pig. Jack's pet is a spider. Lily's pet is a goose. The pig's friend is a cow. The goose's friend is a lion. The spider's friend is a turkey.",
+   "off_context": "Ella's pet is a pig. Jack's pet is a goose. Lily's pet is a spider. The pig's friend is a turkey. The goose's friend is a lion. The spider's friend is a cow.",
+   "question": "How many legs does the friend of Jack's pet have?",
+   "cf_question": "How many legs does the friend of Jack's pet have?",
+   "mid": "lion",
+   "cf_mid": "turkey",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Jack's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the goose's friend?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0070",
+   "family": "BLR",
+   "scene": "T-0070",
+   "bridge": "sheep",
+   "cf_bridge": "goose",
+   "third": "chicken",
+   "people": [
+    "Diana",
+    "Lily",
+    "Owen"
+   ],
+   "pets": [
+    "chicken",
+    "sheep",
+    "goose"
+   ],
+   "holder": "Lily",
+   "cue": "Lily",
+   "answer_kind": "digit",
+   "friends": {
+    "sheep": "lion",
+    "goose": "turkey",
+    "chicken": "wolf"
+   },
+   "context": "Diana's pet is a chicken. Lily's pet is a sheep. Owen's pet is a goose. The sheep's friend is a lion. The chicken's friend is a wolf. The goose's friend is a turkey.",
+   "cf_context": "Diana's pet is a chicken. Lily's pet is a goose. Owen's pet is a sheep. The sheep's friend is a lion. The chicken's friend is a wolf. The goose's friend is a turkey.",
+   "off_context": "Diana's pet is a chicken. Lily's pet is a sheep. Owen's pet is a goose. The sheep's friend is a lion. The chicken's friend is a turkey. The goose's friend is a wolf.",
+   "question": "How many legs does the friend of Lily's pet have?",
+   "cf_question": "How many legs does the friend of Lily's pet have?",
+   "mid": "lion",
+   "cf_mid": "turkey",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Lily's pet?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the sheep's friend?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0071",
+   "family": "BLR",
+   "scene": "T-0071",
+   "bridge": "frog",
+   "cf_bridge": "duck",
+   "third": "mouse",
+   "people": [
+    "Alice",
+    "Paul",
+    "Luke"
+   ],
+   "pets": [
+    "duck",
+    "mouse",
+    "frog"
+   ],
+   "holder": "Luke",
+   "cue": "Luke",
+   "answer_kind": "digit",
+   "friends": {
+    "frog": "lion",
+    "duck": "goose",
+    "mouse": "spider"
+   },
+   "context": "Alice's pet is a duck. Paul's pet is a mouse. Luke's pet is a frog. The frog's friend is a lion. The duck's friend is a goose. The mouse's friend is a spider.",
+   "cf_context": "Alice's pet is a frog. Paul's pet is a mouse. Luke's pet is a duck. The frog's friend is a lion. The duck's friend is a goose. The mouse's friend is a spider.",
+   "off_context": "Alice's pet is a duck. Paul's pet is a mouse. Luke's pet is a frog. The frog's friend is a lion. The duck's friend is a spider. The mouse's friend is a goose.",
+   "question": "How many legs does the friend of Luke's pet have?",
+   "cf_question": "How many legs does the friend of Luke's pet have?",
+   "mid": "lion",
+   "cf_mid": "goose",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Luke's pet?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the frog's friend?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0072",
+   "family": "BLR",
+   "scene": "T-0072",
+   "bridge": "spider",
+   "cf_bridge": "wolf",
+   "third": "duck",
+   "people": [
+    "Sara",
+    "Tom",
+    "Peter"
+   ],
+   "pets": [
+    "spider",
+    "duck",
+    "wolf"
+   ],
+   "holder": "Sara",
+   "cue": "Sara",
+   "answer_kind": "digit",
+   "friends": {
+    "spider": "frog",
+    "wolf": "bee",
+    "duck": "cow"
+   },
+   "context": "Sara's pet is a spider. Tom's pet is a duck. Peter's pet is a wolf. The spider's friend is a frog. The duck's friend is a cow. The wolf's friend is a bee.",
+   "cf_context": "Sara's pet is a wolf. Tom's pet is a duck. Peter's pet is a spider. The spider's friend is a frog. The duck's friend is a cow. The wolf's friend is a bee.",
+   "off_context": "Sara's pet is a spider. Tom's pet is a duck. Peter's pet is a wolf. The spider's friend is a frog. The duck's friend is a bee. The wolf's friend is a cow.",
+   "question": "How many legs does the friend of Sara's pet have?",
+   "cf_question": "How many legs does the friend of Sara's pet have?",
+   "mid": "frog",
+   "cf_mid": "bee",
+   "answer": "4",
+   "cf_answer": "6",
+   "hop1": {
+    "question": "Which animal is Sara's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the spider's friend?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0073",
+   "family": "BLR",
+   "scene": "T-0073",
+   "bridge": "chicken",
+   "cf_bridge": "sheep",
+   "third": "dog",
+   "people": [
+    "Lily",
+    "Maria",
+    "Will"
+   ],
+   "pets": [
+    "chicken",
+    "sheep",
+    "dog"
+   ],
+   "holder": "Lily",
+   "cue": "Lily",
+   "answer_kind": "digit",
+   "friends": {
+    "chicken": "goose",
+    "sheep": "cat",
+    "dog": "horse"
+   },
+   "context": "Lily's pet is a chicken. Maria's pet is a sheep. Will's pet is a dog. The chicken's friend is a goose. The dog's friend is a horse. The sheep's friend is a cat.",
+   "cf_context": "Lily's pet is a sheep. Maria's pet is a chicken. Will's pet is a dog. The chicken's friend is a goose. The dog's friend is a horse. The sheep's friend is a cat.",
+   "off_context": "Lily's pet is a chicken. Maria's pet is a sheep. Will's pet is a dog. The chicken's friend is a goose. The dog's friend is a cat. The sheep's friend is a horse.",
+   "question": "How many legs does the friend of Lily's pet have?",
+   "cf_question": "How many legs does the friend of Lily's pet have?",
+   "mid": "goose",
+   "cf_mid": "cat",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Lily's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the chicken's friend?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0074",
+   "family": "BLR",
+   "scene": "T-0074",
+   "bridge": "mouse",
+   "cf_bridge": "bee",
+   "third": "dog",
+   "people": [
+    "Iris",
+    "Liam",
+    "Eva"
+   ],
+   "pets": [
+    "bee",
+    "dog",
+    "mouse"
+   ],
+   "holder": "Eva",
+   "cue": "Eva",
+   "answer_kind": "digit",
+   "friends": {
+    "mouse": "turkey",
+    "bee": "sheep",
+    "dog": "duck"
+   },
+   "context": "Iris's pet is a bee. Liam's pet is a dog. Eva's pet is a mouse. The mouse's friend is a turkey. The dog's friend is a duck. The bee's friend is a sheep.",
+   "cf_context": "Iris's pet is a mouse. Liam's pet is a dog. Eva's pet is a bee. The mouse's friend is a turkey. The dog's friend is a duck. The bee's friend is a sheep.",
+   "off_context": "Iris's pet is a bee. Liam's pet is a dog. Eva's pet is a mouse. The mouse's friend is a turkey. The dog's friend is a sheep. The bee's friend is a duck.",
+   "question": "How many legs does the friend of Eva's pet have?",
+   "cf_question": "How many legs does the friend of Eva's pet have?",
+   "mid": "turkey",
+   "cf_mid": "sheep",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Eva's pet?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the mouse's friend?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0075",
+   "family": "BLR",
+   "scene": "T-0075",
+   "bridge": "bee",
+   "cf_bridge": "chicken",
+   "third": "spider",
+   "people": [
+    "Dan",
+    "Maria",
+    "Tara"
+   ],
+   "pets": [
+    "chicken",
+    "spider",
+    "bee"
+   ],
+   "holder": "Tara",
+   "cue": "Tara",
+   "answer_kind": "digit",
+   "friends": {
+    "bee": "frog",
+    "chicken": "goose",
+    "spider": "sheep"
+   },
+   "context": "Dan's pet is a chicken. Maria's pet is a spider. Tara's pet is a bee. The bee's friend is a frog. The chicken's friend is a goose. The spider's friend is a sheep.",
+   "cf_context": "Dan's pet is a bee. Maria's pet is a spider. Tara's pet is a chicken. The bee's friend is a frog. The chicken's friend is a goose. The spider's friend is a sheep.",
+   "off_context": "Dan's pet is a chicken. Maria's pet is a spider. Tara's pet is a bee. The bee's friend is a frog. The chicken's friend is a sheep. The spider's friend is a goose.",
+   "question": "How many legs does the friend of Tara's pet have?",
+   "cf_question": "How many legs does the friend of Tara's pet have?",
+   "mid": "frog",
+   "cf_mid": "goose",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Tara's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the bee's friend?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0076",
+   "family": "BLR",
+   "scene": "T-0076",
+   "bridge": "spider",
+   "cf_bridge": "lion",
+   "third": "chicken",
+   "people": [
+    "Laura",
+    "Sara",
+    "Ruby"
+   ],
+   "pets": [
+    "chicken",
+    "lion",
+    "spider"
+   ],
+   "holder": "Ruby",
+   "cue": "Ruby",
+   "answer_kind": "digit",
+   "friends": {
+    "spider": "bee",
+    "lion": "cow",
+    "chicken": "horse"
+   },
+   "context": "Laura's pet is a chicken. Sara's pet is a lion. Ruby's pet is a spider. The spider's friend is a bee. The chicken's friend is a horse. The lion's friend is a cow.",
+   "cf_context": "Laura's pet is a chicken. Sara's pet is a spider. Ruby's pet is a lion. The spider's friend is a bee. The chicken's friend is a horse. The lion's friend is a cow.",
+   "off_context": "Laura's pet is a chicken. Sara's pet is a lion. Ruby's pet is a spider. The spider's friend is a bee. The chicken's friend is a cow. The lion's friend is a horse.",
+   "question": "How many legs does the friend of Ruby's pet have?",
+   "cf_question": "How many legs does the friend of Ruby's pet have?",
+   "mid": "bee",
+   "cf_mid": "cow",
+   "answer": "6",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Ruby's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the spider's friend?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0077",
+   "family": "BLR",
+   "scene": "T-0077",
+   "bridge": "wolf",
+   "cf_bridge": "turkey",
+   "third": "cat",
+   "people": [
+    "Sam",
+    "Ivy",
+    "Vera"
+   ],
+   "pets": [
+    "turkey",
+    "cat",
+    "wolf"
+   ],
+   "holder": "Vera",
+   "cue": "Vera",
+   "answer_kind": "digit",
+   "friends": {
+    "wolf": "duck",
+    "turkey": "cow",
+    "cat": "mouse"
+   },
+   "context": "Sam's pet is a turkey. Ivy's pet is a cat. Vera's pet is a wolf. The wolf's friend is a duck. The cat's friend is a mouse. The turkey's friend is a cow.",
+   "cf_context": "Sam's pet is a wolf. Ivy's pet is a cat. Vera's pet is a turkey. The wolf's friend is a duck. The cat's friend is a mouse. The turkey's friend is a cow.",
+   "off_context": "Sam's pet is a turkey. Ivy's pet is a cat. Vera's pet is a wolf. The wolf's friend is a duck. The cat's friend is a cow. The turkey's friend is a mouse.",
+   "question": "How many legs does the friend of Vera's pet have?",
+   "cf_question": "How many legs does the friend of Vera's pet have?",
+   "mid": "duck",
+   "cf_mid": "cow",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Vera's pet?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the wolf's friend?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0078",
+   "family": "BLR",
+   "scene": "T-0078",
+   "bridge": "horse",
+   "cf_bridge": "chicken",
+   "third": "bee",
+   "people": [
+    "Maria",
+    "Mark",
+    "David"
+   ],
+   "pets": [
+    "chicken",
+    "horse",
+    "bee"
+   ],
+   "holder": "Mark",
+   "cue": "Mark",
+   "answer_kind": "digit",
+   "friends": {
+    "horse": "goose",
+    "chicken": "lion",
+    "bee": "turkey"
+   },
+   "context": "Maria's pet is a chicken. Mark's pet is a horse. David's pet is a bee. The chicken's friend is a lion. The bee's friend is a turkey. The horse's friend is a goose.",
+   "cf_context": "Maria's pet is a horse. Mark's pet is a chicken. David's pet is a bee. The chicken's friend is a lion. The bee's friend is a turkey. The horse's friend is a goose.",
+   "off_context": "Maria's pet is a chicken. Mark's pet is a horse. David's pet is a bee. The chicken's friend is a turkey. The bee's friend is a lion. The horse's friend is a goose.",
+   "question": "How many legs does the friend of Mark's pet have?",
+   "cf_question": "How many legs does the friend of Mark's pet have?",
+   "mid": "goose",
+   "cf_mid": "lion",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Mark's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the horse's friend?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0079",
+   "family": "BLR",
+   "scene": "T-0079",
+   "bridge": "pig",
+   "cf_bridge": "spider",
+   "third": "sheep",
+   "people": [
+    "James",
+    "Olivia",
+    "Owen"
+   ],
+   "pets": [
+    "spider",
+    "sheep",
+    "pig"
+   ],
+   "holder": "Owen",
+   "cue": "Owen",
+   "answer_kind": "digit",
+   "friends": {
+    "pig": "wolf",
+    "spider": "bee",
+    "sheep": "cat"
+   },
+   "context": "James's pet is a spider. Olivia's pet is a sheep. Owen's pet is a pig. The pig's friend is a wolf. The sheep's friend is a cat. The spider's friend is a bee.",
+   "cf_context": "James's pet is a pig. Olivia's pet is a sheep. Owen's pet is a spider. The pig's friend is a wolf. The sheep's friend is a cat. The spider's friend is a bee.",
+   "off_context": "James's pet is a spider. Olivia's pet is a sheep. Owen's pet is a pig. The pig's friend is a wolf. The sheep's friend is a bee. The spider's friend is a cat.",
+   "question": "How many legs does the friend of Owen's pet have?",
+   "cf_question": "How many legs does the friend of Owen's pet have?",
+   "mid": "wolf",
+   "cf_mid": "bee",
+   "answer": "4",
+   "cf_answer": "6",
+   "hop1": {
+    "question": "Which animal is Owen's pet?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the pig's friend?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0080",
+   "family": "BLR",
+   "scene": "T-0080",
+   "bridge": "dog",
+   "cf_bridge": "duck",
+   "third": "wolf",
+   "people": [
+    "Eric",
+    "Hugo",
+    "Lily"
+   ],
+   "pets": [
+    "wolf",
+    "dog",
+    "duck"
+   ],
+   "holder": "Hugo",
+   "cue": "Hugo",
+   "answer_kind": "digit",
+   "friends": {
+    "dog": "pig",
+    "duck": "goose",
+    "wolf": "bee"
+   },
+   "context": "Eric's pet is a wolf. Hugo's pet is a dog. Lily's pet is a duck. The duck's friend is a goose. The wolf's friend is a bee. The dog's friend is a pig.",
+   "cf_context": "Eric's pet is a wolf. Hugo's pet is a duck. Lily's pet is a dog. The duck's friend is a goose. The wolf's friend is a bee. The dog's friend is a pig.",
+   "off_context": "Eric's pet is a wolf. Hugo's pet is a dog. Lily's pet is a duck. The duck's friend is a bee. The wolf's friend is a goose. The dog's friend is a pig.",
+   "question": "How many legs does the friend of Hugo's pet have?",
+   "cf_question": "How many legs does the friend of Hugo's pet have?",
+   "mid": "pig",
+   "cf_mid": "goose",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Hugo's pet?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the dog's friend?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0081",
+   "family": "BLR",
+   "scene": "T-0081",
+   "bridge": "spider",
+   "cf_bridge": "cat",
+   "third": "goose",
+   "people": [
+    "Beth",
+    "Tom",
+    "Hugo"
+   ],
+   "pets": [
+    "goose",
+    "spider",
+    "cat"
+   ],
+   "holder": "Tom",
+   "cue": "Tom",
+   "answer_kind": "digit",
+   "friends": {
+    "spider": "chicken",
+    "cat": "sheep",
+    "goose": "pig"
+   },
+   "context": "Beth's pet is a goose. Tom's pet is a spider. Hugo's pet is a cat. The goose's friend is a pig. The spider's friend is a chicken. The cat's friend is a sheep.",
+   "cf_context": "Beth's pet is a goose. Tom's pet is a cat. Hugo's pet is a spider. The goose's friend is a pig. The spider's friend is a chicken. The cat's friend is a sheep.",
+   "off_context": "Beth's pet is a goose. Tom's pet is a spider. Hugo's pet is a cat. The goose's friend is a sheep. The spider's friend is a chicken. The cat's friend is a pig.",
+   "question": "How many legs does the friend of Tom's pet have?",
+   "cf_question": "How many legs does the friend of Tom's pet have?",
+   "mid": "chicken",
+   "cf_mid": "sheep",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Tom's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the spider's friend?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0082",
+   "family": "BLR",
+   "scene": "T-0082",
+   "bridge": "dog",
+   "cf_bridge": "chicken",
+   "third": "pig",
+   "people": [
+    "Will",
+    "Dan",
+    "Beth"
+   ],
+   "pets": [
+    "chicken",
+    "dog",
+    "pig"
+   ],
+   "holder": "Dan",
+   "cue": "Dan",
+   "answer_kind": "digit",
+   "friends": {
+    "dog": "mouse",
+    "chicken": "spider",
+    "pig": "lion"
+   },
+   "context": "Will's pet is a chicken. Dan's pet is a dog. Beth's pet is a pig. The chicken's friend is a spider. The dog's friend is a mouse. The pig's friend is a lion.",
+   "cf_context": "Will's pet is a dog. Dan's pet is a chicken. Beth's pet is a pig. The chicken's friend is a spider. The dog's friend is a mouse. The pig's friend is a lion.",
+   "off_context": "Will's pet is a chicken. Dan's pet is a dog. Beth's pet is a pig. The chicken's friend is a lion. The dog's friend is a mouse. The pig's friend is a spider.",
+   "question": "How many legs does the friend of Dan's pet have?",
+   "cf_question": "How many legs does the friend of Dan's pet have?",
+   "mid": "mouse",
+   "cf_mid": "spider",
+   "answer": "4",
+   "cf_answer": "8",
+   "hop1": {
+    "question": "Which animal is Dan's pet?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the dog's friend?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0083",
+   "family": "BLR",
+   "scene": "T-0083",
+   "bridge": "dog",
+   "cf_bridge": "turkey",
+   "third": "horse",
+   "people": [
+    "Peter",
+    "Luke",
+    "Maria"
+   ],
+   "pets": [
+    "dog",
+    "turkey",
+    "horse"
+   ],
+   "holder": "Peter",
+   "cue": "Peter",
+   "answer_kind": "digit",
+   "friends": {
+    "dog": "bee",
+    "turkey": "sheep",
+    "horse": "mouse"
+   },
+   "context": "Peter's pet is a dog. Luke's pet is a turkey. Maria's pet is a horse. The dog's friend is a bee. The horse's friend is a mouse. The turkey's friend is a sheep.",
+   "cf_context": "Peter's pet is a turkey. Luke's pet is a dog. Maria's pet is a horse. The dog's friend is a bee. The horse's friend is a mouse. The turkey's friend is a sheep.",
+   "off_context": "Peter's pet is a dog. Luke's pet is a turkey. Maria's pet is a horse. The dog's friend is a bee. The horse's friend is a sheep. The turkey's friend is a mouse.",
+   "question": "How many legs does the friend of Peter's pet have?",
+   "cf_question": "How many legs does the friend of Peter's pet have?",
+   "mid": "bee",
+   "cf_mid": "sheep",
+   "answer": "6",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Peter's pet?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the dog's friend?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0084",
+   "family": "BLR",
+   "scene": "T-0084",
+   "bridge": "lion",
+   "cf_bridge": "bee",
+   "third": "duck",
+   "people": [
+    "Paul",
+    "Alice",
+    "Zoe"
+   ],
+   "pets": [
+    "bee",
+    "duck",
+    "lion"
+   ],
+   "holder": "Zoe",
+   "cue": "Zoe",
+   "answer_kind": "digit",
+   "friends": {
+    "lion": "frog",
+    "bee": "chicken",
+    "duck": "spider"
+   },
+   "context": "Paul's pet is a bee. Alice's pet is a duck. Zoe's pet is a lion. The duck's friend is a spider. The bee's friend is a chicken. The lion's friend is a frog.",
+   "cf_context": "Paul's pet is a lion. Alice's pet is a duck. Zoe's pet is a bee. The duck's friend is a spider. The bee's friend is a chicken. The lion's friend is a frog.",
+   "off_context": "Paul's pet is a bee. Alice's pet is a duck. Zoe's pet is a lion. The duck's friend is a chicken. The bee's friend is a spider. The lion's friend is a frog.",
+   "question": "How many legs does the friend of Zoe's pet have?",
+   "cf_question": "How many legs does the friend of Zoe's pet have?",
+   "mid": "frog",
+   "cf_mid": "chicken",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Zoe's pet?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the lion's friend?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0085",
+   "family": "BLR",
+   "scene": "T-0085",
+   "bridge": "turkey",
+   "cf_bridge": "dog",
+   "third": "pig",
+   "people": [
+    "Lucy",
+    "David",
+    "Anna"
+   ],
+   "pets": [
+    "dog",
+    "turkey",
+    "pig"
+   ],
+   "holder": "David",
+   "cue": "David",
+   "answer_kind": "digit",
+   "friends": {
+    "turkey": "duck",
+    "dog": "frog",
+    "pig": "spider"
+   },
+   "context": "Lucy's pet is a dog. David's pet is a turkey. Anna's pet is a pig. The turkey's friend is a duck. The dog's friend is a frog. The pig's friend is a spider.",
+   "cf_context": "Lucy's pet is a turkey. David's pet is a dog. Anna's pet is a pig. The turkey's friend is a duck. The dog's friend is a frog. The pig's friend is a spider.",
+   "off_context": "Lucy's pet is a dog. David's pet is a turkey. Anna's pet is a pig. The turkey's friend is a duck. The dog's friend is a spider. The pig's friend is a frog.",
+   "question": "How many legs does the friend of David's pet have?",
+   "cf_question": "How many legs does the friend of David's pet have?",
+   "mid": "duck",
+   "cf_mid": "frog",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is David's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the turkey's friend?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0086",
+   "family": "BLR",
+   "scene": "T-0086",
+   "bridge": "spider",
+   "cf_bridge": "dog",
+   "third": "pig",
+   "people": [
+    "Adam",
+    "Ryan",
+    "Jack"
+   ],
+   "pets": [
+    "spider",
+    "pig",
+    "dog"
+   ],
+   "holder": "Adam",
+   "cue": "Adam",
+   "answer_kind": "digit",
+   "friends": {
+    "spider": "duck",
+    "dog": "frog",
+    "pig": "chicken"
+   },
+   "context": "Adam's pet is a spider. Ryan's pet is a pig. Jack's pet is a dog. The pig's friend is a chicken. The spider's friend is a duck. The dog's friend is a frog.",
+   "cf_context": "Adam's pet is a dog. Ryan's pet is a pig. Jack's pet is a spider. The pig's friend is a chicken. The spider's friend is a duck. The dog's friend is a frog.",
+   "off_context": "Adam's pet is a spider. Ryan's pet is a pig. Jack's pet is a dog. The pig's friend is a frog. The spider's friend is a duck. The dog's friend is a chicken.",
+   "question": "How many legs does the friend of Adam's pet have?",
+   "cf_question": "How many legs does the friend of Adam's pet have?",
+   "mid": "duck",
+   "cf_mid": "frog",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Adam's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the spider's friend?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0087",
+   "family": "BLR",
+   "scene": "T-0087",
+   "bridge": "bee",
+   "cf_bridge": "lion",
+   "third": "duck",
+   "people": [
+    "David",
+    "Ivan",
+    "Leo"
+   ],
+   "pets": [
+    "duck",
+    "lion",
+    "bee"
+   ],
+   "holder": "Leo",
+   "cue": "Leo",
+   "answer_kind": "digit",
+   "friends": {
+    "bee": "spider",
+    "lion": "sheep",
+    "duck": "chicken"
+   },
+   "context": "David's pet is a duck. Ivan's pet is a lion. Leo's pet is a bee. The bee's friend is a spider. The duck's friend is a chicken. The lion's friend is a sheep.",
+   "cf_context": "David's pet is a duck. Ivan's pet is a bee. Leo's pet is a lion. The bee's friend is a spider. The duck's friend is a chicken. The lion's friend is a sheep.",
+   "off_context": "David's pet is a duck. Ivan's pet is a lion. Leo's pet is a bee. The bee's friend is a spider. The duck's friend is a sheep. The lion's friend is a chicken.",
+   "question": "How many legs does the friend of Leo's pet have?",
+   "cf_question": "How many legs does the friend of Leo's pet have?",
+   "mid": "spider",
+   "cf_mid": "sheep",
+   "answer": "8",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Leo's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the bee's friend?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0088",
+   "family": "BLR",
+   "scene": "T-0088",
+   "bridge": "cow",
+   "cf_bridge": "goose",
+   "third": "pig",
+   "people": [
+    "Sara",
+    "Nina",
+    "Victor"
+   ],
+   "pets": [
+    "goose",
+    "cow",
+    "pig"
+   ],
+   "holder": "Nina",
+   "cue": "Nina",
+   "answer_kind": "digit",
+   "friends": {
+    "cow": "turkey",
+    "goose": "spider",
+    "pig": "frog"
+   },
+   "context": "Sara's pet is a goose. Nina's pet is a cow. Victor's pet is a pig. The cow's friend is a turkey. The pig's friend is a frog. The goose's friend is a spider.",
+   "cf_context": "Sara's pet is a cow. Nina's pet is a goose. Victor's pet is a pig. The cow's friend is a turkey. The pig's friend is a frog. The goose's friend is a spider.",
+   "off_context": "Sara's pet is a goose. Nina's pet is a cow. Victor's pet is a pig. The cow's friend is a turkey. The pig's friend is a spider. The goose's friend is a frog.",
+   "question": "How many legs does the friend of Nina's pet have?",
+   "cf_question": "How many legs does the friend of Nina's pet have?",
+   "mid": "turkey",
+   "cf_mid": "spider",
+   "answer": "2",
+   "cf_answer": "8",
+   "hop1": {
+    "question": "Which animal is Nina's pet?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the cow's friend?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0089",
+   "family": "BLR",
+   "scene": "T-0089",
+   "bridge": "sheep",
+   "cf_bridge": "duck",
+   "third": "goose",
+   "people": [
+    "Iris",
+    "Hugo",
+    "Leo"
+   ],
+   "pets": [
+    "duck",
+    "sheep",
+    "goose"
+   ],
+   "holder": "Hugo",
+   "cue": "Hugo",
+   "answer_kind": "digit",
+   "friends": {
+    "sheep": "horse",
+    "duck": "chicken",
+    "goose": "frog"
+   },
+   "context": "Iris's pet is a duck. Hugo's pet is a sheep. Leo's pet is a goose. The goose's friend is a frog. The sheep's friend is a horse. The duck's friend is a chicken.",
+   "cf_context": "Iris's pet is a sheep. Hugo's pet is a duck. Leo's pet is a goose. The goose's friend is a frog. The sheep's friend is a horse. The duck's friend is a chicken.",
+   "off_context": "Iris's pet is a duck. Hugo's pet is a sheep. Leo's pet is a goose. The goose's friend is a chicken. The sheep's friend is a horse. The duck's friend is a frog.",
+   "question": "How many legs does the friend of Hugo's pet have?",
+   "cf_question": "How many legs does the friend of Hugo's pet have?",
+   "mid": "horse",
+   "cf_mid": "chicken",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Hugo's pet?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the sheep's friend?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0090",
+   "family": "BLR",
+   "scene": "T-0090",
+   "bridge": "chicken",
+   "cf_bridge": "pig",
+   "third": "cat",
+   "people": [
+    "Ben",
+    "Sara",
+    "Dan"
+   ],
+   "pets": [
+    "chicken",
+    "cat",
+    "pig"
+   ],
+   "holder": "Ben",
+   "cue": "Ben",
+   "answer_kind": "digit",
+   "friends": {
+    "chicken": "mouse",
+    "pig": "spider",
+    "cat": "bee"
+   },
+   "context": "Ben's pet is a chicken. Sara's pet is a cat. Dan's pet is a pig. The cat's friend is a bee. The chicken's friend is a mouse. The pig's friend is a spider.",
+   "cf_context": "Ben's pet is a pig. Sara's pet is a cat. Dan's pet is a chicken. The cat's friend is a bee. The chicken's friend is a mouse. The pig's friend is a spider.",
+   "off_context": "Ben's pet is a chicken. Sara's pet is a cat. Dan's pet is a pig. The cat's friend is a spider. The chicken's friend is a mouse. The pig's friend is a bee.",
+   "question": "How many legs does the friend of Ben's pet have?",
+   "cf_question": "How many legs does the friend of Ben's pet have?",
+   "mid": "mouse",
+   "cf_mid": "spider",
+   "answer": "4",
+   "cf_answer": "8",
+   "hop1": {
+    "question": "Which animal is Ben's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the chicken's friend?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0091",
+   "family": "BLR",
+   "scene": "T-0091",
+   "bridge": "dog",
+   "cf_bridge": "duck",
+   "third": "sheep",
+   "people": [
+    "Lucy",
+    "Alice",
+    "Eve"
+   ],
+   "pets": [
+    "duck",
+    "sheep",
+    "dog"
+   ],
+   "holder": "Eve",
+   "cue": "Eve",
+   "answer_kind": "digit",
+   "friends": {
+    "dog": "goose",
+    "duck": "cat",
+    "sheep": "horse"
+   },
+   "context": "Lucy's pet is a duck. Alice's pet is a sheep. Eve's pet is a dog. The dog's friend is a goose. The duck's friend is a cat. The sheep's friend is a horse.",
+   "cf_context": "Lucy's pet is a dog. Alice's pet is a sheep. Eve's pet is a duck. The dog's friend is a goose. The duck's friend is a cat. The sheep's friend is a horse.",
+   "off_context": "Lucy's pet is a duck. Alice's pet is a sheep. Eve's pet is a dog. The dog's friend is a goose. The duck's friend is a horse. The sheep's friend is a cat.",
+   "question": "How many legs does the friend of Eve's pet have?",
+   "cf_question": "How many legs does the friend of Eve's pet have?",
+   "mid": "goose",
+   "cf_mid": "cat",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Eve's pet?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the dog's friend?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0092",
+   "family": "BLR",
+   "scene": "T-0092",
+   "bridge": "dog",
+   "cf_bridge": "chicken",
+   "third": "duck",
+   "people": [
+    "Anna",
+    "Paul",
+    "Tom"
+   ],
+   "pets": [
+    "duck",
+    "chicken",
+    "dog"
+   ],
+   "holder": "Tom",
+   "cue": "Tom",
+   "answer_kind": "digit",
+   "friends": {
+    "dog": "mouse",
+    "chicken": "goose",
+    "duck": "turkey"
+   },
+   "context": "Anna's pet is a duck. Paul's pet is a chicken. Tom's pet is a dog. The dog's friend is a mouse. The chicken's friend is a goose. The duck's friend is a turkey.",
+   "cf_context": "Anna's pet is a duck. Paul's pet is a dog. Tom's pet is a chicken. The dog's friend is a mouse. The chicken's friend is a goose. The duck's friend is a turkey.",
+   "off_context": "Anna's pet is a duck. Paul's pet is a chicken. Tom's pet is a dog. The dog's friend is a mouse. The chicken's friend is a turkey. The duck's friend is a goose.",
+   "question": "How many legs does the friend of Tom's pet have?",
+   "cf_question": "How many legs does the friend of Tom's pet have?",
+   "mid": "mouse",
+   "cf_mid": "goose",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Tom's pet?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the dog's friend?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0093",
+   "family": "BLR",
+   "scene": "T-0093",
+   "bridge": "spider",
+   "cf_bridge": "frog",
+   "third": "dog",
+   "people": [
+    "Dan",
+    "Eva",
+    "Rose"
+   ],
+   "pets": [
+    "dog",
+    "spider",
+    "frog"
+   ],
+   "holder": "Eva",
+   "cue": "Eva",
+   "answer_kind": "digit",
+   "friends": {
+    "spider": "bee",
+    "frog": "sheep",
+    "dog": "turkey"
+   },
+   "context": "Dan's pet is a dog. Eva's pet is a spider. Rose's pet is a frog. The frog's friend is a sheep. The spider's friend is a bee. The dog's friend is a turkey.",
+   "cf_context": "Dan's pet is a dog. Eva's pet is a frog. Rose's pet is a spider. The frog's friend is a sheep. The spider's friend is a bee. The dog's friend is a turkey.",
+   "off_context": "Dan's pet is a dog. Eva's pet is a spider. Rose's pet is a frog. The frog's friend is a turkey. The spider's friend is a bee. The dog's friend is a sheep.",
+   "question": "How many legs does the friend of Eva's pet have?",
+   "cf_question": "How many legs does the friend of Eva's pet have?",
+   "mid": "bee",
+   "cf_mid": "sheep",
+   "answer": "6",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Eva's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the spider's friend?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0094",
+   "family": "BLR",
+   "scene": "T-0094",
+   "bridge": "horse",
+   "cf_bridge": "duck",
+   "third": "chicken",
+   "people": [
+    "Owen",
+    "Diana",
+    "Carl"
+   ],
+   "pets": [
+    "duck",
+    "chicken",
+    "horse"
+   ],
+   "holder": "Carl",
+   "cue": "Carl",
+   "answer_kind": "digit",
+   "friends": {
+    "horse": "spider",
+    "duck": "wolf",
+    "chicken": "cat"
+   },
+   "context": "Owen's pet is a duck. Diana's pet is a chicken. Carl's pet is a horse. The chicken's friend is a cat. The duck's friend is a wolf. The horse's friend is a spider.",
+   "cf_context": "Owen's pet is a horse. Diana's pet is a chicken. Carl's pet is a duck. The chicken's friend is a cat. The duck's friend is a wolf. The horse's friend is a spider.",
+   "off_context": "Owen's pet is a duck. Diana's pet is a chicken. Carl's pet is a horse. The chicken's friend is a wolf. The duck's friend is a cat. The horse's friend is a spider.",
+   "question": "How many legs does the friend of Carl's pet have?",
+   "cf_question": "How many legs does the friend of Carl's pet have?",
+   "mid": "spider",
+   "cf_mid": "wolf",
+   "answer": "8",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Carl's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the horse's friend?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0095",
+   "family": "BLR",
+   "scene": "T-0095",
+   "bridge": "pig",
+   "cf_bridge": "bee",
+   "third": "horse",
+   "people": [
+    "Ivan",
+    "Noah",
+    "Luke"
+   ],
+   "pets": [
+    "bee",
+    "horse",
+    "pig"
+   ],
+   "holder": "Luke",
+   "cue": "Luke",
+   "answer_kind": "digit",
+   "friends": {
+    "pig": "duck",
+    "bee": "cow",
+    "horse": "mouse"
+   },
+   "context": "Ivan's pet is a bee. Noah's pet is a horse. Luke's pet is a pig. The bee's friend is a cow. The pig's friend is a duck. The horse's friend is a mouse.",
+   "cf_context": "Ivan's pet is a pig. Noah's pet is a horse. Luke's pet is a bee. The bee's friend is a cow. The pig's friend is a duck. The horse's friend is a mouse.",
+   "off_context": "Ivan's pet is a bee. Noah's pet is a horse. Luke's pet is a pig. The bee's friend is a mouse. The pig's friend is a duck. The horse's friend is a cow.",
+   "question": "How many legs does the friend of Luke's pet have?",
+   "cf_question": "How many legs does the friend of Luke's pet have?",
+   "mid": "duck",
+   "cf_mid": "cow",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Luke's pet?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the pig's friend?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0096",
+   "family": "BLR",
+   "scene": "T-0096",
+   "bridge": "lion",
+   "cf_bridge": "spider",
+   "third": "frog",
+   "people": [
+    "Sam",
+    "James",
+    "Ivan"
+   ],
+   "pets": [
+    "lion",
+    "spider",
+    "frog"
+   ],
+   "holder": "Sam",
+   "cue": "Sam",
+   "answer_kind": "digit",
+   "friends": {
+    "lion": "horse",
+    "spider": "turkey",
+    "frog": "chicken"
+   },
+   "context": "Sam's pet is a lion. James's pet is a spider. Ivan's pet is a frog. The lion's friend is a horse. The frog's friend is a chicken. The spider's friend is a turkey.",
+   "cf_context": "Sam's pet is a spider. James's pet is a lion. Ivan's pet is a frog. The lion's friend is a horse. The frog's friend is a chicken. The spider's friend is a turkey.",
+   "off_context": "Sam's pet is a lion. James's pet is a spider. Ivan's pet is a frog. The lion's friend is a horse. The frog's friend is a turkey. The spider's friend is a chicken.",
+   "question": "How many legs does the friend of Sam's pet have?",
+   "cf_question": "How many legs does the friend of Sam's pet have?",
+   "mid": "horse",
+   "cf_mid": "turkey",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Sam's pet?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the lion's friend?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0097",
+   "family": "BLR",
+   "scene": "T-0097",
+   "bridge": "spider",
+   "cf_bridge": "wolf",
+   "third": "duck",
+   "people": [
+    "Amy",
+    "Tara",
+    "Owen"
+   ],
+   "pets": [
+    "duck",
+    "spider",
+    "wolf"
+   ],
+   "holder": "Tara",
+   "cue": "Tara",
+   "answer_kind": "digit",
+   "friends": {
+    "spider": "turkey",
+    "wolf": "pig",
+    "duck": "chicken"
+   },
+   "context": "Amy's pet is a duck. Tara's pet is a spider. Owen's pet is a wolf. The spider's friend is a turkey. The duck's friend is a chicken. The wolf's friend is a pig.",
+   "cf_context": "Amy's pet is a duck. Tara's pet is a wolf. Owen's pet is a spider. The spider's friend is a turkey. The duck's friend is a chicken. The wolf's friend is a pig.",
+   "off_context": "Amy's pet is a duck. Tara's pet is a spider. Owen's pet is a wolf. The spider's friend is a turkey. The duck's friend is a pig. The wolf's friend is a chicken.",
+   "question": "How many legs does the friend of Tara's pet have?",
+   "cf_question": "How many legs does the friend of Tara's pet have?",
+   "mid": "turkey",
+   "cf_mid": "pig",
+   "answer": "2",
+   "cf_answer": "4",
+   "hop1": {
+    "question": "Which animal is Tara's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the spider's friend?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0098",
+   "family": "BLR",
+   "scene": "T-0098",
+   "bridge": "chicken",
+   "cf_bridge": "wolf",
+   "third": "cow",
+   "people": [
+    "Ivan",
+    "Oscar",
+    "Jack"
+   ],
+   "pets": [
+    "wolf",
+    "chicken",
+    "cow"
+   ],
+   "holder": "Oscar",
+   "cue": "Oscar",
+   "answer_kind": "digit",
+   "friends": {
+    "chicken": "horse",
+    "wolf": "goose",
+    "cow": "frog"
+   },
+   "context": "Ivan's pet is a wolf. Oscar's pet is a chicken. Jack's pet is a cow. The wolf's friend is a goose. The cow's friend is a frog. The chicken's friend is a horse.",
+   "cf_context": "Ivan's pet is a chicken. Oscar's pet is a wolf. Jack's pet is a cow. The wolf's friend is a goose. The cow's friend is a frog. The chicken's friend is a horse.",
+   "off_context": "Ivan's pet is a wolf. Oscar's pet is a chicken. Jack's pet is a cow. The wolf's friend is a frog. The cow's friend is a goose. The chicken's friend is a horse.",
+   "question": "How many legs does the friend of Oscar's pet have?",
+   "cf_question": "How many legs does the friend of Oscar's pet have?",
+   "mid": "horse",
+   "cf_mid": "goose",
+   "answer": "4",
+   "cf_answer": "2",
+   "hop1": {
+    "question": "Which animal is Oscar's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the chicken's friend?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "BLR-0099",
+   "family": "BLR",
+   "scene": "T-0099",
+   "bridge": "lion",
+   "cf_bridge": "duck",
+   "third": "horse",
+   "people": [
+    "Grace",
+    "Laura",
+    "Owen"
+   ],
+   "pets": [
+    "lion",
+    "horse",
+    "duck"
+   ],
+   "holder": "Grace",
+   "cue": "Grace",
+   "answer_kind": "digit",
+   "friends": {
+    "lion": "sheep",
+    "duck": "spider",
+    "horse": "goose"
+   },
+   "context": "Grace's pet is a lion. Laura's pet is a horse. Owen's pet is a duck. The duck's friend is a spider. The horse's friend is a goose. The lion's friend is a sheep.",
+   "cf_context": "Grace's pet is a duck. Laura's pet is a horse. Owen's pet is a lion. The duck's friend is a spider. The horse's friend is a goose. The lion's friend is a sheep.",
+   "off_context": "Grace's pet is a lion. Laura's pet is a horse. Owen's pet is a duck. The duck's friend is a goose. The horse's friend is a spider. The lion's friend is a sheep.",
+   "question": "How many legs does the friend of Grace's pet have?",
+   "cf_question": "How many legs does the friend of Grace's pet have?",
+   "mid": "sheep",
+   "cf_mid": "spider",
+   "answer": "4",
+   "cf_answer": "8",
+   "hop1": {
+    "question": "Which animal is Grace's pet?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which animal is the lion's friend?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop3": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  }
+ ]
+}

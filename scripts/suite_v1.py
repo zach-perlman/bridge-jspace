@@ -15,13 +15,28 @@ The 2x2 core (one pool of 16 animals; the same context in all four families, onl
   animals have 4), so an answer cannot stand in for its bridge the way Paris stands in for France. C: the queried
   person's pet swapped with another's (B*), or the cue replaced by another animal's (R*); O: the lockers of the two
   animals off the path swapped. BL/BR and RL/RR items come in pairs with the same prompts up to the question.
+Tie-breakers (Zach, 2026-10-19; set "tiebreak", seed 102): in the 2x2, what uses the bridge also decides where the
+answer comes from (a lookup answers from the prompt, a recall from memory). Two three-step families pull them apart,
+built in pairs on one scene (same people and pets, same C):
+  BLR bound -> lookup -> recall: "Jack's pet is a cow. ... The cow's friend is a spider. ... How many legs does the
+      friend of Jack's pet have?" The pet is used by a lookup; the answer (8) comes from memory.
+  BRL bound -> recall -> lookup: "Jack's pet is a cow. ... Animals with 4 legs use locker 7. ... Which locker does
+      Jack's pet use?" The pet is used by a recall (4 legs); the answer (7) is read from the prompt.
+  C swaps the queried person's pet with another's, as in BL/BR; O swaps the friends (BLR) or the lockers of two leg
+  counts (BRL) off the pet's path. Each step alone is asked as hop1-hop3.
 Generality (both hops in the prompt):
   NAMES  "Alice's partner is Ben. ... Ben's sister is Grace. ... Who is the sister of Alice's partner?"
   CODE   a two-dictionary Python lookup, "What does this Python code print?"
   (BREW, brew's colour-table chain, keeps its own item files and pipeline: data/brew_test.json, brew_fresh.json.)
 
-Stages:  make (data/suite_v1/*.json, write-once; tokenizer only)   check (alignment, uniqueness, balance; tokenizer)
-         competence --name N (every item: clean, C, O and each hop alone, unedited; GPU)   report --name N
+Difficulty pilot (set "dev", seed 9001, data/suite_v1_dev/; never a headline run's items): every family at two knobs,
+entities per scene (3 or 5) and unrelated filler sentences woven among the facts (0 or 8), 100 items per cell, to see
+which knob moves accuracy before choosing harder levels on fresh items.
+
+Stages:  make --set S (write-once; tokenizer only)   verify (regenerates the main set, must equal its files)
+         check --set S (alignment, uniqueness, balance)
+         manifest --set S --name N --why W [--limit K]   competence --name N (every item: clean, C, O and each step
+         alone, unedited; greedy text and one forced forward reading the answer token's probability; GPU)
 """
 
 from __future__ import annotations
@@ -45,8 +60,14 @@ from bridge_jspace import chat, pins
 DATA = pins.DATA_DIR / "suite_v1"
 RESULTS = pins.RESULTS_DIR / "suite_v1"
 FAMILIES = ("BL", "BR", "RL", "RR", "NAMES", "CODE")
+TIEBREAK = ("BLR", "BRL")
 N_PER_FAMILY = 400  # competence on every item; mechanistic runs sample >= 150 eligible (README: interval widths)
 SEED = 101
+TIEBREAK_SEED = 102
+DEV = pins.DATA_DIR / "suite_v1_dev"
+DEV_SEED = 9001
+DEV_LEVELS = {"e3f0": (3, 0), "e5f0": (5, 0), "e3f8": (3, 8), "e5f8": (5, 8)}  # entities per scene, filler sentences
+N_DEV = 100
 INSTRUCTION = chat.QUESTION_INSTRUCTION
 # Animals: single tokens after a space, consonant-initial (so "a cow" / "a duck" keep the article and the alignment),
 # each with a 2-token cue naming it alone (bleating: sheep or goat; stripes: tiger or zebra; mane: lion or horse;
@@ -114,6 +135,18 @@ CODE_KEYS = ("cat", "dog", "cow", "fox", "owl", "pig", "bee", "ant", "rat", "bat
 CODE_VALUES = ("apple", "pear", "lime", "berry", "banana", "fig", "book", "lamp", "door", "tree", "ship", "coin", "key",
                "ring", "cup", "hat", "box", "pen", "car", "map", "star", "boat", "drum", "rose")  # fmt: skip
 DIGITS = tuple(range(1, 10))
+# Filler for the difficulty pilot: no digits, number words, names, animals or any word the questions use.
+FILLER = ("The weather was mild all week.", "The bus was late again.", "The kitchen smelled of fresh bread.",
+          "The garden gate needs new paint.", "The radio played old songs.", "The hallway lights were dim.",
+          "The river was calm that morning.", "The market was busy on Saturday.", "The window faced the hills.",
+          "The library closed early.", "The coffee was too strong.", "The road was wet after the rain.",
+          "The museum had a new exhibit.", "The wind picked up in the evening.", "The train left on time.",
+          "The bakery sold out of rolls.", "The park was quiet at dawn.", "The school held a concert.",
+          "The street was lined with trees.", "The office was cold.", "The festival drew a large crowd.",
+          "The sky turned grey by noon.", "The shop on the corner reopened.", "The tea had gone cold.")  # fmt: skip
+CODE_FILLER = ("mode = 'fast'", "title = 'notes'", "debug = False", "items = []", "label = 'draft'", "ready = True",
+               "status = 'open'", "color = 'blue'", "path = 'data'", "retries = None", "verbose = False",
+               "owner = 'admin'")  # fmt: skip
 
 
 def tokenizer():
@@ -132,6 +165,28 @@ def ids(tok, text: str) -> list[int]:
     return tok(text, add_special_tokens=False).input_ids
 
 
+def layout(rng: random.Random, n_facts: int, n_fill: int, pool: tuple[str, ...]) -> list[int | str]:
+    """Where filler goes among a scene's facts, fixed for all its prompts (clean, C, O, each step): fact indices in
+    order with filler strings between them. No filler: the facts in order, and no draw from rng."""
+    if not n_fill:
+        return list(range(n_facts))
+    fill = rng.sample(pool, n_fill)
+    slots = sorted(rng.choices(range(n_facts + 1), k=n_fill))  # filler goes before fact i (n_facts: after the last)
+    out: list[int | str] = []
+    j = 0
+    for i in range(n_facts + 1):
+        while j < n_fill and slots[j] == i:
+            out.append(fill[j])
+            j += 1
+        if i < n_facts:
+            out.append(i)
+    return out
+
+
+def weave(facts: list[str], lay: list[int | str]) -> list[str]:
+    return [facts[e] if isinstance(e, int) else e for e in lay]
+
+
 # ---- the 2x2 core ---------------------------------------------------------------------------------------------------
 
 
@@ -140,22 +195,27 @@ def pick_bridge(rng: random.Random) -> str:
     return rng.choice([a for a, (n, _) in ANIMALS.items() if n == legs])
 
 
-def core_scene(rng: random.Random) -> dict:
-    """Three people with three pets (the bridge I, the counterfactual X with other legs than I, a third Z), each pet's
-    locker (distinct odd digits), sentences in seeded orders; the clean, C (B and R versions) and O contexts."""
+def core_scene(rng: random.Random, n: int = 3, n_fill: int = 0) -> dict:
+    """n people with n pets (the bridge I, the counterfactual X with other legs than I, a third Z, n - 3 more), each
+    pet's locker (distinct odd digits), sentences in seeded orders, optional filler; the clean, C (B and R versions)
+    and O contexts. At n = 3 without filler it draws exactly what suite_v1's main set drew (make's verify stage)."""
+    assert 3 <= n <= len(LOCKERS)
     bridge = pick_bridge(rng)
     x = rng.choice([a for a in ANIMALS if ANIMALS[a][0] != ANIMALS[bridge][0]])
     z = rng.choice([a for a in ANIMALS if a not in (bridge, x)])
-    people = rng.sample(PEOPLE, 3)
-    pets = [bridge, x, z]
+    more = rng.sample([a for a in ANIMALS if a not in (bridge, x, z)], n - 3) if n > 3 else []
+    people = rng.sample(PEOPLE, n)
+    pets = [bridge, x, z, *more]
+    animals = list(pets)
     rng.shuffle(pets)  # who owns which, in sentence order
-    lockers = dict(zip([bridge, x, z], rng.sample(LOCKERS, 3), strict=True))
-    table_order = rng.sample([bridge, x, z], 3)
+    lockers = dict(zip(animals, rng.sample(LOCKERS, n), strict=True))
+    table_order = rng.sample(animals, n)
+    lay = layout(rng, 2 * n, n_fill, FILLER)
 
     def context(owner_pets: list[str], locks: dict[str, int]) -> str:
-        own = " ".join(f"{p}'s pet is a {a}." for p, a in zip(people, owner_pets, strict=True))
-        table = " ".join(f"The {a}'s locker is {locks[a]}." for a in table_order)
-        return f"{own} {table}"
+        own = [f"{p}'s pet is a {a}." for p, a in zip(people, owner_pets, strict=True)]
+        table = [f"The {a}'s locker is {locks[a]}." for a in table_order]
+        return " ".join(weave(own + table, lay))
 
     holder = people[pets.index(bridge)]
     swapped = list(pets)
@@ -177,12 +237,12 @@ def core_scene(rng: random.Random) -> dict:
     }
 
 
-def core_items(rng: random.Random, n: int) -> dict[str, list[dict]]:
+def core_items(rng: random.Random, n: int, n_ent: int = 3, n_fill: int = 0) -> dict[str, list[dict]]:
     out: dict[str, list[dict]] = {f: [] for f in ("BL", "BR", "RL", "RR")}
     seen = set()
     k = 0
     while len(out["BL"]) < n:
-        s = core_scene(rng)
+        s = core_scene(rng, n_ent, n_fill)
         if s["context"] in seen:
             continue
         seen.add(s["context"])
@@ -226,26 +286,113 @@ def core_items(rng: random.Random, n: int) -> dict[str, list[dict]]:
     return out
 
 
+# ---- tie-breakers: what uses the bridge vs where the answer comes from --------------------------------------------
+
+
+LEG_COUNTS: tuple[int, ...] = (2, 4, 6, 8)
+
+
+def tiebreak_items(rng: random.Random, n: int, n_ent: int = 3, n_fill: int = 0) -> dict[str, list[dict]]:
+    """BLR and BRL items in pairs: one scene (people, pets, holder, I and X with other legs, Z), then BLR's friends
+    table or BRL's legs-to-locker table. Both C's swap the holder's and X's owner's pets, so the pair shares its bridge
+    and its edit; BLR also needs I's and X's friends to differ in legs, so that C changes its answer."""
+    out: dict[str, list[dict]] = {f: [] for f in TIEBREAK}
+    seen = set()
+    while len(out["BLR"]) < n:
+        bridge = pick_bridge(rng)
+        x = rng.choice([a for a in ANIMALS if ANIMALS[a][0] != ANIMALS[bridge][0]])
+        z = rng.choice([a for a in ANIMALS if a not in (bridge, x)])
+        more = rng.sample([a for a in ANIMALS if a not in (bridge, x, z)], n_ent - 3) if n_ent > 3 else []
+        animals = [bridge, x, z, *more]
+        people = rng.sample(PEOPLE, n_ent)
+        pets = list(animals)
+        rng.shuffle(pets)
+        holder = people[pets.index(bridge)]
+        # BLR: friends are animals outside the scene's pets, so "the friend of X's pet" never names a pet
+        others = [a for a in ANIMALS if a not in animals]
+        f_i = pick_bridge(rng)
+        while f_i not in others:
+            f_i = pick_bridge(rng)
+        f_x = rng.choice([a for a in others if a != f_i and ANIMALS[a][0] != ANIMALS[f_i][0]])
+        rest = rng.sample([a for a in others if a not in (f_i, f_x)], n_ent - 2)
+        friend = dict(zip(animals, [f_i, f_x, *rest], strict=True))
+        friend_order = rng.sample(animals, n_ent)
+        # BRL: every leg count gets a locker, in a seeded order
+        table = dict(zip(LEG_COUNTS, rng.sample(LOCKERS, len(LEG_COUNTS)), strict=True))
+        table_order = rng.sample(LEG_COUNTS, len(LEG_COUNTS))
+        legs_i, legs_x = ANIMALS[bridge][0], ANIMALS[x][0]
+        k_off = rng.choice([k for k in LEG_COUNTS if k not in (legs_i, legs_x)])
+        lay_r = layout(rng, 2 * n_ent, n_fill, FILLER)
+        lay_l = layout(rng, n_ent + len(LEG_COUNTS), n_fill, FILLER)
+
+        def own(owner_pets, people=people):
+            return [f"{p}'s pet is a {a}." for p, a in zip(people, owner_pets, strict=True)]
+
+        def blr_context(owner_pets, fr, friend_order=friend_order, lay=lay_r):
+            return " ".join(weave(own(owner_pets) + [f"The {a}'s friend is a {fr[a]}." for a in friend_order], lay))
+
+        def brl_context(owner_pets, tab, table_order=table_order, lay=lay_l):
+            rows = [f"Animals with {k} legs use locker {tab[k]}." for k in table_order]
+            return " ".join(weave(own(owner_pets) + rows, lay))
+
+        swapped = list(pets)
+        i, j = pets.index(bridge), pets.index(x)
+        swapped[i], swapped[j] = swapped[j], swapped[i]
+        off_friend = dict(friend)
+        off_friend[x], off_friend[z] = friend[z], friend[x]
+        off_table = dict(table)
+        off_table[legs_x], off_table[k_off] = table[k_off], table[legs_x]  # X's row and another, both off I's path
+        ctx = blr_context(pets, friend)
+        if ctx in seen:
+            continue
+        seen.add(ctx)
+        base = {"scene": f"T-{len(out['BLR']):04d}", "bridge": bridge, "cf_bridge": x, "third": z, "people": people,
+                "pets": pets, "holder": holder, "cue": holder, "answer_kind": "digit"}  # fmt: skip
+        hop1 = {"question": f"Which animal is {holder}'s pet?", "answer": bridge, "kind": "animal"}
+        out["BLR"].append({
+            "id": f"BLR-{len(out['BLR']):04d}", "family": "BLR", **base, "friends": friend,
+            "context": ctx, "cf_context": blr_context(swapped, friend), "off_context": blr_context(pets, off_friend),
+            "question": (q := f"How many legs does the friend of {holder}'s pet have?"), "cf_question": q,
+            "mid": f_i, "cf_mid": f_x, "answer": str(ANIMALS[f_i][0]), "cf_answer": str(ANIMALS[f_x][0]),
+            "hop1": hop1,
+            "hop2": {"question": f"Which animal is the {bridge}'s friend?", "answer": f_i, "kind": "animal"},
+            "hop3": {"question": f"How many legs does a {f_i} have?", "answer": str(ANIMALS[f_i][0]), "kind": "digit"},
+        })  # fmt: skip
+        out["BRL"].append({
+            "id": f"BRL-{len(out['BRL']):04d}", "family": "BRL", **base, "leg_lockers": {str(k): v for k, v in table.items()},
+            "context": brl_context(pets, table), "cf_context": brl_context(swapped, table),
+            "off_context": brl_context(pets, off_table),
+            "question": (q := f"Which locker does {holder}'s pet use?"), "cf_question": q,
+            "mid": str(legs_i), "cf_mid": str(legs_x), "answer": str(table[legs_i]), "cf_answer": str(table[legs_x]),
+            "hop1": hop1,
+            "hop2": {"question": f"How many legs does a {bridge} have?", "answer": str(legs_i), "kind": "digit"},
+            "hop3": {"question": f"Which locker do animals with {legs_i} legs use?", "answer": str(table[legs_i]),
+                     "kind": "digit"},
+        })  # fmt: skip
+    return out
+
+
 # ---- generality families --------------------------------------------------------------------------------------------
 
 
-def names_items(rng: random.Random, n: int) -> list[dict]:
+def names_items(rng: random.Random, n: int, n_ent: int = 3, n_fill: int = 0) -> list[dict]:
     out, seen = [], set()
     while len(out) < n:
-        f = rng.sample(FEMALE, 6)
-        m = rng.sample(MALE, 3)
-        askers, sisters = f[:3], f[3:]
+        f = rng.sample(FEMALE, 2 * n_ent)
+        m = rng.sample(MALE, n_ent)
+        askers, sisters = f[:n_ent], f[n_ent:]
         partner = dict(zip(askers, m, strict=True))
         sister = dict(zip(m, sisters, strict=True))
-        q = rng.randrange(3)
-        o = rng.choice([i for i in range(3) if i != q])
-        z = next(i for i in range(3) if i not in (q, o))
-        a_order, s_order = rng.sample(range(3), 3), rng.sample(range(3), 3)
+        q = rng.randrange(n_ent)
+        o = rng.choice([i for i in range(n_ent) if i != q])
+        z = next(i for i in range(n_ent) if i not in (q, o))
+        a_order, s_order = rng.sample(range(n_ent), n_ent), rng.sample(range(n_ent), n_ent)
+        lay = layout(rng, 2 * n_ent, n_fill, FILLER)
 
-        def context(part, sis, askers=askers, m=m, a_order=a_order, s_order=s_order) -> str:
-            first = " ".join(f"{askers[i]}'s partner is {part[askers[i]]}." for i in a_order)
-            second = " ".join(f"{m[i]}'s sister is {sis[m[i]]}." for i in s_order)
-            return f"{first} {second}"
+        def context(part, sis, askers=askers, m=m, a_order=a_order, s_order=s_order, lay=lay) -> str:
+            first = [f"{askers[i]}'s partner is {part[askers[i]]}." for i in a_order]
+            second = [f"{m[i]}'s sister is {sis[m[i]]}." for i in s_order]
+            return " ".join(weave(first + second, lay))
 
         cf_part = dict(partner)
         cf_part[askers[q]], cf_part[askers[o]] = partner[askers[o]], partner[askers[q]]
@@ -279,23 +426,27 @@ def names_items(rng: random.Random, n: int) -> list[dict]:
     return out
 
 
-def code_items(rng: random.Random, n: int, keys: list[str], values: list[str]) -> list[dict]:
+def code_items(
+    rng: random.Random, n: int, keys: list[str], values: list[str], n_ent: int = 3, n_fill: int = 0
+) -> list[dict]:
     out, seen = [], set()
     while len(out) < n:
-        k = rng.sample(keys, 3)
-        v = rng.sample(values, 3)
-        d = rng.sample(DIGITS, 3)
+        k = rng.sample(keys, n_ent)
+        v = rng.sample(values, n_ent)
+        d = rng.sample(DIGITS, n_ent)
         first = dict(zip(k, v, strict=True))
         second = dict(zip(v, d, strict=True))
-        q = rng.randrange(3)
-        o = rng.choice([i for i in range(3) if i != q])
-        z = next(i for i in range(3) if i not in (q, o))
-        o1, o2 = rng.sample(range(3), 3), rng.sample(range(3), 3)
+        q = rng.randrange(n_ent)
+        o = rng.choice([i for i in range(n_ent) if i != q])
+        z = next(i for i in range(n_ent) if i not in (q, o))
+        o1, o2 = rng.sample(range(n_ent), n_ent), rng.sample(range(n_ent), n_ent)
+        lay = layout(rng, 3, n_fill, CODE_FILLER)
 
-        def code(x, sec, call="print(second[first[x]])", k=k, v=v, first=first, o1=o1, o2=o2) -> str:
+        def code(x, sec, call="print(second[first[x]])", k=k, v=v, first=first, o1=o1, o2=o2, lay=lay) -> str:
             f_txt = ", ".join(f"'{k[i]}': '{first[k[i]]}'" for i in o1)
             s_txt = ", ".join(f"'{v[i]}': {sec[v[i]]}" for i in o2)
-            return f"```python\nx = '{x}'\nfirst = {{{f_txt}}}\nsecond = {{{s_txt}}}\n{call}\n```"
+            lines = weave([f"x = '{x}'", f"first = {{{f_txt}}}", f"second = {{{s_txt}}}"], lay)
+            return "```python\n" + "\n".join(lines) + f"\n{call}\n```"
 
         off_sec = dict(second)
         off_sec[v[o]], off_sec[v[z]] = second[v[z]], second[v[o]]
@@ -331,29 +482,71 @@ def code_items(rng: random.Random, n: int, keys: list[str], values: list[str]) -
 # ---- stages ---------------------------------------------------------------------------------------------------------
 
 
-def stage_make() -> None:
-    DATA.mkdir(parents=True, exist_ok=True)
-    tok = tokenizer()
+def generate(which: str, tok) -> dict[str, tuple[Path, list[dict], str]]:
+    """label -> (file, items, generator note) for a set. Each set has its own seed, so adding one never changes
+    another's items."""
     assert all(len(ids(tok, " " + a)) == 1 for a in ANIMALS), "an animal is not one token"
     assert all(len(ids(tok, " " + c)) == 2 for _, c in ANIMALS.values()), "a cue is not two tokens"
     assert all(len(ids(tok, " " + p)) == 1 for p in PEOPLE), "a name is not one token"
     keys = [w for w in CODE_KEYS if len(ids(tok, w)) == 1]  # inside quotes: no leading space
     values = [w for w in CODE_VALUES if len(ids(tok, w)) == 1]
-    print("code keys", keys, "values", values)
-    rng = random.Random(SEED)
-    families = {**core_items(rng, N_PER_FAMILY), "NAMES": names_items(rng, N_PER_FAMILY),
+    if which == "main":
+        rng = random.Random(SEED)
+        fams = {**core_items(rng, N_PER_FAMILY), "NAMES": names_items(rng, N_PER_FAMILY),
                 "CODE": code_items(rng, N_PER_FAMILY, keys, values)}  # fmt: skip
-    for fam, items in families.items():
-        path = DATA / f"{fam}.json"
+        return {f: (DATA / f"{f}.json", it, f"scripts/suite_v1.py make (seed {SEED})") for f, it in fams.items()}
+    if which == "tiebreak":
+        fams = tiebreak_items(random.Random(TIEBREAK_SEED), N_PER_FAMILY)
+        note = f"scripts/suite_v1.py make --set tiebreak (seed {TIEBREAK_SEED})"
+        return {f: (DATA / f"{f}.json", it, note) for f, it in fams.items()}
+    assert which == "dev"
+    out = {}
+    for k, (level, (n_ent, n_fill)) in enumerate(DEV_LEVELS.items()):
+        rng = random.Random(DEV_SEED * 10 + k)
+        fams = {**core_items(rng, N_DEV, n_ent, n_fill), "NAMES": names_items(rng, N_DEV, n_ent, n_fill),
+                "CODE": code_items(rng, N_DEV, keys, values, n_ent, n_fill), **tiebreak_items(rng, N_DEV, n_ent, n_fill)}  # fmt: skip
+        note = f"scripts/suite_v1.py make --set dev (seed {DEV_SEED * 10 + k}: {n_ent} entities, {n_fill} filler)"
+        for f, it in fams.items():
+            for item in it:
+                item["level"] = level
+            out[f"{f}_{level}"] = (DEV / f"{f}_{level}.json", it, note)
+    return out
+
+
+def set_files(which: str) -> dict[str, Path]:
+    if which == "main":
+        return {f: DATA / f"{f}.json" for f in FAMILIES}
+    if which == "tiebreak":
+        return {f: DATA / f"{f}.json" for f in TIEBREAK}
+    return {f"{f}_{lv}": DEV / f"{f}_{lv}.json" for lv in DEV_LEVELS for f in FAMILIES + TIEBREAK}
+
+
+def stage_make(which: str) -> None:
+    tok = tokenizer()
+    for label, (path, items, note) in generate(which, tok).items():
+        path.parent.mkdir(parents=True, exist_ok=True)
         assert not path.exists(), f"{path} exists; data files are written once"
-        blob = {"family": fam, "generator": f"scripts/suite_v1.py make (seed {SEED})", "format": (__doc__ or "").split("\n\n")[1],
-                "items": items}  # fmt: skip
+        blob = {"family": label, "generator": note, "format": (__doc__ or "").split("\n\n")[1], "items": items}
         path.write_text(json.dumps(blob, indent=1) + "\n")
         print("wrote", path, len(items))
 
 
+def stage_verify() -> None:
+    """The main set regenerated from this code equals its files (the generators changed for the tie-breakers and the
+    pilot; at the main set's settings they must draw exactly as before)."""
+    tok = tokenizer()
+    for label, (path, items, _) in generate("main", tok).items():
+        same = json.loads(path.read_text())["items"] == items
+        print(label, "same" if same else "DIFFERENT")
+        assert same, f"{label}: the generator no longer reproduces {path}"
+
+
+def load_file(path: Path) -> list[dict]:
+    return json.loads(path.read_text())["items"]
+
+
 def load(fam: str) -> list[dict]:
-    return json.loads((DATA / f"{fam}.json").read_text())["items"]
+    return load_file(DATA / f"{fam}.json")
 
 
 def changed(a: list[int], b: list[int]) -> list[int] | None:
@@ -362,20 +555,15 @@ def changed(a: list[int], b: list[int]) -> list[int] | None:
     return [i for i, (p, q) in enumerate(zip(a, b, strict=True)) if p != q]
 
 
-def stage_check() -> None:
+def stage_check(which: str) -> None:
     """Alignment of C and O with the clean prompt, uniqueness, answer sanity and balance, per family."""
     tok = tokenizer()
     report: dict[str, Any] = {}
-    for fam in FAMILIES:
-        items = load(fam)
+    for label, path in set_files(which).items():
+        items = load_file(path)
         stats = collections.Counter()
-        answers, cf_answers, bridges, changed_n = (
-            collections.Counter(),
-            collections.Counter(),
-            collections.Counter(),
-            collections.Counter(),
-        )
-        prompts = set()
+        answers, bridges, changed_n = collections.Counter(), collections.Counter(), collections.Counter()
+        prompts, lengths = set(), []
         for it in items:
             clean = ids(tok, render(tok, it["context"], it["question"]))
             cf = ids(tok, render(tok, it["cf_context"], it["cf_question"]))
@@ -385,15 +573,18 @@ def stage_check() -> None:
             stats["cf_differs"] += it["answer"] != it["cf_answer"]
             changed_n[(len(c) if c else None, len(o) if o else None)] += 1
             prompts.add(render(tok, it["context"], it["question"]))
+            lengths.append(len(clean))
             answers[it["answer"]] += 1
-            cf_answers[it["cf_answer"]] += 1
             bridges[it["bridge"]] += 1
         stats["unique_prompts"] = len(prompts)
-        report[fam] = {"n": len(items), **stats, "changed_tokens(cf,off)": {str(k): v for k, v in changed_n.items()},
-                       "answers": dict(sorted(answers.items())), "bridges": dict(bridges.most_common()),
-                       "distinct_bridges": len(bridges)}  # fmt: skip
-        print(fam, json.dumps(report[fam]))
-    (DATA / "check.json").write_text(json.dumps(report, indent=1) + "\n")
+        report[label] = {"n": len(items), **stats, "changed_tokens(cf,off)": {str(k): v for k, v in changed_n.items()},
+                         "prompt_tokens(min,median,max)": (min(lengths), statistics.median(lengths), max(lengths)),
+                         "answers": dict(sorted(answers.items())), "bridges": dict(bridges.most_common()),
+                         "distinct_bridges": len(bridges)}  # fmt: skip
+        print(label, json.dumps(report[label]))
+        assert stats["aligned"] == stats["cf_differs"] == stats["unique_prompts"] == len(items), label
+    out = (DATA if which != "dev" else DEV) / ("check.json" if which == "main" else f"check_{which}.json")
+    out.write_text(json.dumps(report, indent=1) + "\n")
 
 
 WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
@@ -417,7 +608,7 @@ def said(text: str, kind: str) -> str | None:
     return next((lower[t] for t in re.findall(r"[a-z]+", line) if t in lower), None)
 
 
-def stage_manifest(name: str, why: str) -> None:
+def stage_manifest(name: str, why: str, which: str, limit: int | None) -> None:
     pins.check_run_name(name)
     path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -430,18 +621,60 @@ def stage_manifest(name: str, why: str) -> None:
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "why": why,
         "model": pins.model_pin(),
-        "items": {f: {"file": str((DATA / f"{f}.json").relative_to(pins.REPO_ROOT)), "sha256": sha256_of(DATA / f"{f}.json")} for f in FAMILIES},
+        "set": which,
+        "items": {label: {"file": str(f.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(f)} for label, f in set_files(which).items()},
+        "limit": limit,
         "format": "chat template, thinking off, 'Answer:' prefilled; the context, a newline, the question and "
         f"'{INSTRUCTION}' in one user turn",
-        "prompts": "clean, C (cf_context + cf_question), O (off_context + question), hop1 and hop2 (each step alone, "
+        "prompts": "clean, C (cf_context + cf_question), O (off_context + question), hop1-hop3 (each step alone, "
         "with the item's context or the hop's own code)",
         "judge": "the first answer of the item's kind in the first non-empty line of the greedy continuation (digits "
         "and number words for digits; the family's name / animal / fruit vocabulary otherwise)",
         "generation": "greedy, 8 new tokens, prompts of one token length batched 64 at a time",
-        "eligibility": "clean, C and O all answered (as exp09); reliable family: Wilson 95% lower bound of clean >= 0.85",
+        "answer_read": "one more forward per prompt, a digit answer's space token appended (the greedy reply's first "
+        "token): p of the answer's first token, its logit minus the best other token's, and whether that read's top "
+        "token is the greedy judge's answer",
+        "eligibility": "clean, C and O all answered (as exp09); all_steps: every prompt of the item answered; reliable "
+        "family: Wilson 95% lower bound of clean >= 0.85",
     }  # fmt: skip
     path.write_text(json.dumps(manifest, indent=2) + "\n")
     print("wrote", path)
+
+
+HOPS = ("hop1", "hop2", "hop3")
+
+
+def answer_token(tok, answer: str, kind: str) -> int:
+    """The answer's first token where the read happens: after 'Answer:' plus the space token for a digit, right after
+    'Answer:' (with its leading space) otherwise."""
+    return ids(tok, answer)[0] if kind == "digit" else ids(tok, " " + answer)[0]
+
+
+def read_answers(model, tok, prompts: list[dict]) -> None:
+    """One forward per prompt (digit prompts with the space token appended), batched by length: p(answer's first
+    token), its logit margin over the best other token, and the top token."""
+    import torch
+
+    space = ids(tok, " ")
+    assert len(space) == 1
+    by_len: dict[int, list[dict]] = {}
+    for p in prompts:
+        p["forced"] = p["ids"] + (space if p["answer_kind"] == "digit" else [])
+        by_len.setdefault(len(p["forced"]), []).append(p)
+    with torch.inference_mode():
+        for group in by_len.values():
+            for start in range(0, len(group), 64):
+                chunk = group[start : start + 64]
+                x = torch.tensor([p["forced"] for p in chunk], device="cuda")
+                logits = model.hf(input_ids=x, logits_to_keep=1).logits[:, -1].float()
+                logp = logits.log_softmax(-1)
+                for row, p in enumerate(chunk):
+                    t = answer_token(tok, p["expected"], p["answer_kind"])
+                    other = logits[row].clone()
+                    other[t] = -float("inf")
+                    p["p_answer"] = round(float(logp[row, t].exp()), 5)
+                    p["margin"] = round(float(logits[row, t] - other.max()), 3)
+                    p["read_top"] = tok.decode([int(logits[row].argmax())]).strip()
 
 
 def stage_competence(name: str) -> None:
@@ -461,18 +694,21 @@ def stage_competence(name: str) -> None:
     tok = model.tokenizer
     t0 = time.time()
     prompts = []
-    for fam in FAMILIES:
-        for it in load(fam):
+    labels = list(manifest["items"])
+    for label in labels:
+        items = load_file(pins.REPO_ROOT / manifest["items"][label]["file"])[: manifest.get("limit")]
+        for it in items:
             spec = {
                 "clean": (it["context"], it["question"], it["answer"], it["answer_kind"]),
                 "cf": (it["cf_context"], it["cf_question"], it["cf_answer"], it["answer_kind"]),
                 "off": (it["off_context"], it["question"], it["answer"], it["answer_kind"]),
-                "hop1": (it["hop1"].get("context", it["context"]), it["hop1"]["question"], it["hop1"]["answer"], it["hop1"]["kind"]),
-                "hop2": (it["hop2"].get("context", it["context"]), it["hop2"]["question"], it["hop2"]["answer"], it["hop2"]["kind"]),
-            }  # fmt: skip
+            }
+            for h in HOPS:
+                if h in it:
+                    spec[h] = (it[h].get("context", it["context"]), it[h]["question"], it[h]["answer"], it[h]["kind"])
             for kind, (ctx, q, ans, akind) in spec.items():
-                prompts.append({"family": fam, "id": it["id"], "kind": kind, "expected": ans, "answer_kind": akind,
-                                "bridge": it["bridge"], "ids": ids(tok, render(tok, ctx, q))})  # fmt: skip
+                prompts.append({"label": label, "family": it["family"], "id": it["id"], "kind": kind, "expected": ans,
+                                "answer_kind": akind, "bridge": it["bridge"], "ids": ids(tok, render(tok, ctx, q))})  # fmt: skip
     print(len(prompts), "prompts", flush=True)
     by_len: dict[int, list[dict]] = {}
     for p in prompts:
@@ -485,67 +721,82 @@ def stage_competence(name: str) -> None:
                 p["continuation"] = text
                 p["said"] = said(text, p["answer_kind"])
                 p["correct"] = p["said"] == p["expected"]
-    print(f"generated in {time.time() - t0:.0f}s", flush=True)
-    rows = [{k: v for k, v in p.items() if k != "ids"} for p in prompts]
+    t_gen = time.time() - t0
+    read_answers(model, tok, prompts)
+    t_read = time.time() - t0 - t_gen
+    print(f"generated in {t_gen:.0f}s, read in {t_read:.0f}s", flush=True)
+    rows = [{k: v for k, v in p.items() if k not in ("ids", "forced")} for p in prompts]
     write_jsonl(out_dir / "items.jsonl", rows)
-    summary: dict[str, Any] = {"families": {}}
-    for fam in FAMILIES:
-        fr = [r for r in rows if r["family"] == fam]
+    summary: dict[str, Any] = {"families": {}, "seconds_generate": round(t_gen), "seconds_read": round(t_read)}
+    for label in labels:
+        fr = [r for r in rows if r["label"] == label]
         per_item: dict[str, dict[str, bool]] = collections.defaultdict(dict)
         for r in fr:
             per_item[r["id"]][r["kind"]] = r["correct"]
+        kinds = [k for k in ("clean", "cf", "off", *HOPS) if any(k in v for v in per_item.values())]
         cells = {}
-        for kind in ("clean", "cf", "off", "hop1", "hop2"):
+        for kind in kinds:
             k = sum(v[kind] for v in per_item.values())
             cells[kind] = dict(zip(("rate", "lo", "hi"), wilson(k, len(per_item)), strict=True)) | {"k": k}
         elig = [i for i, v in per_item.items() if v["clean"] and v["cf"] and v["off"]]
-        both = [v for v in per_item.values() if v["hop1"] and v["hop2"]]
+        all_steps = [i for i, v in per_item.items() if all(v.values())]
+        hops_ok = [v for v in per_item.values() if all(v[h] for h in HOPS if h in v)]
+        clean_rows = [r for r in fr if r["kind"] == "clean"]
         by_bridge = collections.defaultdict(list)
         for r in fr:
-            if r["kind"] in ("hop1", "hop2"):
+            if r["kind"] in HOPS:
                 by_bridge[r["bridge"]].append(r["correct"])
-        summary["families"][fam] = {
+        summary["families"][label] = {
             "n": len(per_item),
             "cells": cells,
             "eligible": len(elig),
-            "clean_given_both_hops": (sum(v["clean"] for v in both), len(both)),
+            "all_steps": len(all_steps),
+            "clean_given_all_hops": (sum(v["clean"] for v in hops_ok), len(hops_ok)),
             "reliable": cells["clean"]["lo"] >= 0.85,
+            "clean_median_p_answer": statistics.median(r["p_answer"] for r in clean_rows),
+            "clean_median_margin": statistics.median(r["margin"] for r in clean_rows),
+            "read_agrees_with_greedy": statistics.mean((r["read_top"].lower() == (r["said"] or "").lower()) for r in fr),
             "hop_accuracy_by_bridge": {b: round(statistics.mean(v), 3) for b, v in sorted(by_bridge.items())},
-        }
+        }  # fmt: skip
     summary["seconds"] = round(time.time() - t0)
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     lines = [
-        "| family | n | clean | C | O | hop1 | hop2 | eligible | reliable |",
-        "|---|---|---|---|---|---|---|---|---|",
-    ]
-    for fam, s in summary["families"].items():
+        "| family | n | clean | C | O | hop1 | hop2 | hop3 | eligible | all steps | median p(answer) | median margin | read = greedy |",
+        "|---|---|---|---|---|---|---|---|---|---|---|---|---|",
+    ]  # fmt: skip
+    for label, s in summary["families"].items():
         c = s["cells"]
 
-        def fmt(x, n=s["n"]):
-            return f"{x['k']}/{n} {100 * x['rate']:.0f}% [{100 * x['lo']:.0f},{100 * x['hi']:.0f}]"
+        def fmt(kind, c=c, n=s["n"]):
+            x = c.get(kind)
+            return f"{x['k']}/{n} {100 * x['rate']:.0f}% [{100 * x['lo']:.0f},{100 * x['hi']:.0f}]" if x else "-"
 
-        lines.append(f"| {fam} | {s['n']} | {fmt(c['clean'])} | {fmt(c['cf'])} | {fmt(c['off'])} | {fmt(c['hop1'])} | "
-                     f"{fmt(c['hop2'])} | {s['eligible']} | {s['reliable']} |")  # fmt: skip
-    lines += ["", "Hop accuracy by bridge (both hops alone):"]
-    lines += [f"- {fam}: {json.dumps(s['hop_accuracy_by_bridge'])}" for fam, s in summary["families"].items()]
+        lines.append(f"| {label} | {s['n']} | {fmt('clean')} | {fmt('cf')} | {fmt('off')} | {fmt('hop1')} | "
+                     f"{fmt('hop2')} | {fmt('hop3')} | {s['eligible']} | {s['all_steps']} | "
+                     f"{s['clean_median_p_answer']:.3f} | {s['clean_median_margin']:.1f} | "
+                     f"{100 * s['read_agrees_with_greedy']:.1f}% |")  # fmt: skip
     (out_dir / "summary.md").write_text("\n".join(lines) + "\n")
     print((out_dir / "summary.md").read_text())
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("stage", choices=["make", "check", "manifest", "competence"])
+    ap.add_argument("stage", choices=["make", "verify", "check", "manifest", "competence"])
+    ap.add_argument("--set", dest="which", choices=["main", "tiebreak", "dev"], default="main")
     ap.add_argument("--name")
     ap.add_argument("--why")
+    ap.add_argument("--limit", type=int, default=None, help="manifest: the first K items per family (a smoke run)")
     args = ap.parse_args()
     if args.stage == "make":
-        stage_make()
+        stage_make(args.which)
+    elif args.stage == "verify":
+        stage_verify()
     elif args.stage == "check":
-        stage_check()
+        stage_check(args.which)
     elif args.stage == "manifest":
         assert args.name, "manifest needs --name"
         assert args.why, "manifest needs --why"
-        stage_manifest(args.name, args.why)
+        stage_manifest(args.name, args.why, args.which, args.limit)
     else:
         assert args.name, "competence needs --name"
         stage_competence(args.name)

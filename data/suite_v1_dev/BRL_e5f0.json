@@ -1,0 +1,5607 @@
+{
+ "family": "BRL_e5f0",
+ "generator": "scripts/suite_v1.py make --set dev (seed 90011: 5 entities, 0 filler)",
+ "format": "Every family asks one question whose answer needs an intermediate variable (the bridge), in the chat format\n(bridge_jspace.chat: one user turn, thinking off, \"Answer:\" prefilled), with a counterfactual C that changes only the\nbridge (to X) and an off-path control O that changes something the answer does not depend on. C and O line up with the\nclean prompt token for token (checked here), so exp04/exp09's copy-and-split runs apply unchanged.",
+ "items": [
+  {
+   "id": "BRL-0000",
+   "family": "BRL",
+   "scene": "T-0000",
+   "bridge": "turkey",
+   "cf_bridge": "spider",
+   "third": "duck",
+   "people": [
+    "Victor",
+    "Owen",
+    "Rose",
+    "Anna",
+    "Finn"
+   ],
+   "pets": [
+    "turkey",
+    "spider",
+    "mouse",
+    "duck",
+    "cow"
+   ],
+   "holder": "Victor",
+   "cue": "Victor",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 1,
+    "4": 5,
+    "6": 9,
+    "8": 7
+   },
+   "context": "Victor's pet is a turkey. Owen's pet is a spider. Rose's pet is a mouse. Anna's pet is a duck. Finn's pet is a cow. Animals with 4 legs use locker 5. Animals with 6 legs use locker 9. Animals with 2 legs use locker 1. Animals with 8 legs use locker 7.",
+   "cf_context": "Victor's pet is a spider. Owen's pet is a turkey. Rose's pet is a mouse. Anna's pet is a duck. Finn's pet is a cow. Animals with 4 legs use locker 5. Animals with 6 legs use locker 9. Animals with 2 legs use locker 1. Animals with 8 legs use locker 7.",
+   "off_context": "Victor's pet is a turkey. Owen's pet is a spider. Rose's pet is a mouse. Anna's pet is a duck. Finn's pet is a cow. Animals with 4 legs use locker 5. Animals with 6 legs use locker 7. Animals with 2 legs use locker 1. Animals with 8 legs use locker 9.",
+   "question": "Which locker does Victor's pet use?",
+   "cf_question": "Which locker does Victor's pet use?",
+   "mid": "2",
+   "cf_mid": "8",
+   "answer": "1",
+   "cf_answer": "7",
+   "hop1": {
+    "question": "Which animal is Victor's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0001",
+   "family": "BRL",
+   "scene": "T-0001",
+   "bridge": "dog",
+   "cf_bridge": "duck",
+   "third": "sheep",
+   "people": [
+    "Sean",
+    "Mia",
+    "Jack",
+    "Max",
+    "Eva"
+   ],
+   "pets": [
+    "sheep",
+    "duck",
+    "dog",
+    "mouse",
+    "cat"
+   ],
+   "holder": "Jack",
+   "cue": "Jack",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 9,
+    "4": 7,
+    "6": 3,
+    "8": 1
+   },
+   "context": "Sean's pet is a sheep. Mia's pet is a duck. Jack's pet is a dog. Max's pet is a mouse. Eva's pet is a cat. Animals with 8 legs use locker 1. Animals with 6 legs use locker 3. Animals with 2 legs use locker 9. Animals with 4 legs use locker 7.",
+   "cf_context": "Sean's pet is a sheep. Mia's pet is a dog. Jack's pet is a duck. Max's pet is a mouse. Eva's pet is a cat. Animals with 8 legs use locker 1. Animals with 6 legs use locker 3. Animals with 2 legs use locker 9. Animals with 4 legs use locker 7.",
+   "off_context": "Sean's pet is a sheep. Mia's pet is a duck. Jack's pet is a dog. Max's pet is a mouse. Eva's pet is a cat. Animals with 8 legs use locker 9. Animals with 6 legs use locker 3. Animals with 2 legs use locker 1. Animals with 4 legs use locker 7.",
+   "question": "Which locker does Jack's pet use?",
+   "cf_question": "Which locker does Jack's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "7",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Jack's pet?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0002",
+   "family": "BRL",
+   "scene": "T-0002",
+   "bridge": "duck",
+   "cf_bridge": "mouse",
+   "third": "cow",
+   "people": [
+    "Laura",
+    "Clara",
+    "Julia",
+    "Finn",
+    "Tara"
+   ],
+   "pets": [
+    "pig",
+    "mouse",
+    "cow",
+    "duck",
+    "wolf"
+   ],
+   "holder": "Finn",
+   "cue": "Finn",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 5,
+    "6": 1,
+    "8": 3
+   },
+   "context": "Laura's pet is a pig. Clara's pet is a mouse. Julia's pet is a cow. Finn's pet is a duck. Tara's pet is a wolf. Animals with 8 legs use locker 3. Animals with 6 legs use locker 1. Animals with 4 legs use locker 5. Animals with 2 legs use locker 7.",
+   "cf_context": "Laura's pet is a pig. Clara's pet is a duck. Julia's pet is a cow. Finn's pet is a mouse. Tara's pet is a wolf. Animals with 8 legs use locker 3. Animals with 6 legs use locker 1. Animals with 4 legs use locker 5. Animals with 2 legs use locker 7.",
+   "off_context": "Laura's pet is a pig. Clara's pet is a mouse. Julia's pet is a cow. Finn's pet is a duck. Tara's pet is a wolf. Animals with 8 legs use locker 3. Animals with 6 legs use locker 5. Animals with 4 legs use locker 1. Animals with 2 legs use locker 7.",
+   "question": "Which locker does Finn's pet use?",
+   "cf_question": "Which locker does Finn's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "7",
+   "cf_answer": "5",
+   "hop1": {
+    "question": "Which animal is Finn's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0003",
+   "family": "BRL",
+   "scene": "T-0003",
+   "bridge": "frog",
+   "cf_bridge": "spider",
+   "third": "sheep",
+   "people": [
+    "James",
+    "Luke",
+    "Zoe",
+    "Grace",
+    "Laura"
+   ],
+   "pets": [
+    "wolf",
+    "sheep",
+    "frog",
+    "spider",
+    "cat"
+   ],
+   "holder": "Zoe",
+   "cue": "Zoe",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 9,
+    "4": 1,
+    "6": 7,
+    "8": 5
+   },
+   "context": "James's pet is a wolf. Luke's pet is a sheep. Zoe's pet is a frog. Grace's pet is a spider. Laura's pet is a cat. Animals with 6 legs use locker 7. Animals with 2 legs use locker 9. Animals with 4 legs use locker 1. Animals with 8 legs use locker 5.",
+   "cf_context": "James's pet is a wolf. Luke's pet is a sheep. Zoe's pet is a spider. Grace's pet is a frog. Laura's pet is a cat. Animals with 6 legs use locker 7. Animals with 2 legs use locker 9. Animals with 4 legs use locker 1. Animals with 8 legs use locker 5.",
+   "off_context": "James's pet is a wolf. Luke's pet is a sheep. Zoe's pet is a frog. Grace's pet is a spider. Laura's pet is a cat. Animals with 6 legs use locker 5. Animals with 2 legs use locker 9. Animals with 4 legs use locker 1. Animals with 8 legs use locker 7.",
+   "question": "Which locker does Zoe's pet use?",
+   "cf_question": "Which locker does Zoe's pet use?",
+   "mid": "4",
+   "cf_mid": "8",
+   "answer": "1",
+   "cf_answer": "5",
+   "hop1": {
+    "question": "Which animal is Zoe's pet?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0004",
+   "family": "BRL",
+   "scene": "T-0004",
+   "bridge": "bee",
+   "cf_bridge": "mouse",
+   "third": "sheep",
+   "people": [
+    "Lucy",
+    "Kyle",
+    "Ruby",
+    "Julia",
+    "Iris"
+   ],
+   "pets": [
+    "dog",
+    "sheep",
+    "bee",
+    "goose",
+    "mouse"
+   ],
+   "holder": "Ruby",
+   "cue": "Ruby",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 5,
+    "4": 9,
+    "6": 7,
+    "8": 3
+   },
+   "context": "Lucy's pet is a dog. Kyle's pet is a sheep. Ruby's pet is a bee. Julia's pet is a goose. Iris's pet is a mouse. Animals with 2 legs use locker 5. Animals with 8 legs use locker 3. Animals with 4 legs use locker 9. Animals with 6 legs use locker 7.",
+   "cf_context": "Lucy's pet is a dog. Kyle's pet is a sheep. Ruby's pet is a mouse. Julia's pet is a goose. Iris's pet is a bee. Animals with 2 legs use locker 5. Animals with 8 legs use locker 3. Animals with 4 legs use locker 9. Animals with 6 legs use locker 7.",
+   "off_context": "Lucy's pet is a dog. Kyle's pet is a sheep. Ruby's pet is a bee. Julia's pet is a goose. Iris's pet is a mouse. Animals with 2 legs use locker 5. Animals with 8 legs use locker 9. Animals with 4 legs use locker 3. Animals with 6 legs use locker 7.",
+   "question": "Which locker does Ruby's pet use?",
+   "cf_question": "Which locker does Ruby's pet use?",
+   "mid": "6",
+   "cf_mid": "4",
+   "answer": "7",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Ruby's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 6 legs use?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0005",
+   "family": "BRL",
+   "scene": "T-0005",
+   "bridge": "duck",
+   "cf_bridge": "frog",
+   "third": "spider",
+   "people": [
+    "Alice",
+    "Ben",
+    "Lily",
+    "Kyle",
+    "Amy"
+   ],
+   "pets": [
+    "turkey",
+    "sheep",
+    "duck",
+    "frog",
+    "spider"
+   ],
+   "holder": "Lily",
+   "cue": "Lily",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 3,
+    "6": 9,
+    "8": 1
+   },
+   "context": "Alice's pet is a turkey. Ben's pet is a sheep. Lily's pet is a duck. Kyle's pet is a frog. Amy's pet is a spider. Animals with 2 legs use locker 7. Animals with 4 legs use locker 3. Animals with 6 legs use locker 9. Animals with 8 legs use locker 1.",
+   "cf_context": "Alice's pet is a turkey. Ben's pet is a sheep. Lily's pet is a frog. Kyle's pet is a duck. Amy's pet is a spider. Animals with 2 legs use locker 7. Animals with 4 legs use locker 3. Animals with 6 legs use locker 9. Animals with 8 legs use locker 1.",
+   "off_context": "Alice's pet is a turkey. Ben's pet is a sheep. Lily's pet is a duck. Kyle's pet is a frog. Amy's pet is a spider. Animals with 2 legs use locker 7. Animals with 4 legs use locker 1. Animals with 6 legs use locker 9. Animals with 8 legs use locker 3.",
+   "question": "Which locker does Lily's pet use?",
+   "cf_question": "Which locker does Lily's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "7",
+   "cf_answer": "3",
+   "hop1": {
+    "question": "Which animal is Lily's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0006",
+   "family": "BRL",
+   "scene": "T-0006",
+   "bridge": "spider",
+   "cf_bridge": "wolf",
+   "third": "cow",
+   "people": [
+    "Mark",
+    "Liam",
+    "Clara",
+    "Henry",
+    "Lily"
+   ],
+   "pets": [
+    "wolf",
+    "cat",
+    "spider",
+    "duck",
+    "cow"
+   ],
+   "holder": "Clara",
+   "cue": "Clara",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 7,
+    "6": 5,
+    "8": 1
+   },
+   "context": "Mark's pet is a wolf. Liam's pet is a cat. Clara's pet is a spider. Henry's pet is a duck. Lily's pet is a cow. Animals with 2 legs use locker 3. Animals with 4 legs use locker 7. Animals with 6 legs use locker 5. Animals with 8 legs use locker 1.",
+   "cf_context": "Mark's pet is a spider. Liam's pet is a cat. Clara's pet is a wolf. Henry's pet is a duck. Lily's pet is a cow. Animals with 2 legs use locker 3. Animals with 4 legs use locker 7. Animals with 6 legs use locker 5. Animals with 8 legs use locker 1.",
+   "off_context": "Mark's pet is a wolf. Liam's pet is a cat. Clara's pet is a spider. Henry's pet is a duck. Lily's pet is a cow. Animals with 2 legs use locker 7. Animals with 4 legs use locker 3. Animals with 6 legs use locker 5. Animals with 8 legs use locker 1.",
+   "question": "Which locker does Clara's pet use?",
+   "cf_question": "Which locker does Clara's pet use?",
+   "mid": "8",
+   "cf_mid": "4",
+   "answer": "1",
+   "cf_answer": "7",
+   "hop1": {
+    "question": "Which animal is Clara's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 8 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0007",
+   "family": "BRL",
+   "scene": "T-0007",
+   "bridge": "pig",
+   "cf_bridge": "goose",
+   "third": "horse",
+   "people": [
+    "Oscar",
+    "Rose",
+    "Mark",
+    "Zoe",
+    "Owen"
+   ],
+   "pets": [
+    "frog",
+    "goose",
+    "horse",
+    "pig",
+    "dog"
+   ],
+   "holder": "Zoe",
+   "cue": "Zoe",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 1,
+    "4": 3,
+    "6": 9,
+    "8": 7
+   },
+   "context": "Oscar's pet is a frog. Rose's pet is a goose. Mark's pet is a horse. Zoe's pet is a pig. Owen's pet is a dog. Animals with 4 legs use locker 3. Animals with 6 legs use locker 9. Animals with 2 legs use locker 1. Animals with 8 legs use locker 7.",
+   "cf_context": "Oscar's pet is a frog. Rose's pet is a pig. Mark's pet is a horse. Zoe's pet is a goose. Owen's pet is a dog. Animals with 4 legs use locker 3. Animals with 6 legs use locker 9. Animals with 2 legs use locker 1. Animals with 8 legs use locker 7.",
+   "off_context": "Oscar's pet is a frog. Rose's pet is a goose. Mark's pet is a horse. Zoe's pet is a pig. Owen's pet is a dog. Animals with 4 legs use locker 3. Animals with 6 legs use locker 9. Animals with 2 legs use locker 7. Animals with 8 legs use locker 1.",
+   "question": "Which locker does Zoe's pet use?",
+   "cf_question": "Which locker does Zoe's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "3",
+   "cf_answer": "1",
+   "hop1": {
+    "question": "Which animal is Zoe's pet?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0008",
+   "family": "BRL",
+   "scene": "T-0008",
+   "bridge": "bee",
+   "cf_bridge": "wolf",
+   "third": "sheep",
+   "people": [
+    "Diana",
+    "Nina",
+    "James",
+    "Sean",
+    "Beth"
+   ],
+   "pets": [
+    "sheep",
+    "wolf",
+    "chicken",
+    "lion",
+    "bee"
+   ],
+   "holder": "Beth",
+   "cue": "Beth",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 5,
+    "4": 3,
+    "6": 7,
+    "8": 1
+   },
+   "context": "Diana's pet is a sheep. Nina's pet is a wolf. James's pet is a chicken. Sean's pet is a lion. Beth's pet is a bee. Animals with 4 legs use locker 3. Animals with 6 legs use locker 7. Animals with 8 legs use locker 1. Animals with 2 legs use locker 5.",
+   "cf_context": "Diana's pet is a sheep. Nina's pet is a bee. James's pet is a chicken. Sean's pet is a lion. Beth's pet is a wolf. Animals with 4 legs use locker 3. Animals with 6 legs use locker 7. Animals with 8 legs use locker 1. Animals with 2 legs use locker 5.",
+   "off_context": "Diana's pet is a sheep. Nina's pet is a wolf. James's pet is a chicken. Sean's pet is a lion. Beth's pet is a bee. Animals with 4 legs use locker 1. Animals with 6 legs use locker 7. Animals with 8 legs use locker 3. Animals with 2 legs use locker 5.",
+   "question": "Which locker does Beth's pet use?",
+   "cf_question": "Which locker does Beth's pet use?",
+   "mid": "6",
+   "cf_mid": "4",
+   "answer": "7",
+   "cf_answer": "3",
+   "hop1": {
+    "question": "Which animal is Beth's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 6 legs use?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0009",
+   "family": "BRL",
+   "scene": "T-0009",
+   "bridge": "cat",
+   "cf_bridge": "duck",
+   "third": "cow",
+   "people": [
+    "Dan",
+    "Lucy",
+    "Diana",
+    "Tom",
+    "James"
+   ],
+   "pets": [
+    "cow",
+    "cat",
+    "duck",
+    "dog",
+    "frog"
+   ],
+   "holder": "Lucy",
+   "cue": "Lucy",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 5,
+    "6": 9,
+    "8": 7
+   },
+   "context": "Dan's pet is a cow. Lucy's pet is a cat. Diana's pet is a duck. Tom's pet is a dog. James's pet is a frog. Animals with 6 legs use locker 9. Animals with 4 legs use locker 5. Animals with 8 legs use locker 7. Animals with 2 legs use locker 3.",
+   "cf_context": "Dan's pet is a cow. Lucy's pet is a duck. Diana's pet is a cat. Tom's pet is a dog. James's pet is a frog. Animals with 6 legs use locker 9. Animals with 4 legs use locker 5. Animals with 8 legs use locker 7. Animals with 2 legs use locker 3.",
+   "off_context": "Dan's pet is a cow. Lucy's pet is a cat. Diana's pet is a duck. Tom's pet is a dog. James's pet is a frog. Animals with 6 legs use locker 3. Animals with 4 legs use locker 5. Animals with 8 legs use locker 7. Animals with 2 legs use locker 9.",
+   "question": "Which locker does Lucy's pet use?",
+   "cf_question": "Which locker does Lucy's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "5",
+   "cf_answer": "3",
+   "hop1": {
+    "question": "Which animal is Lucy's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0010",
+   "family": "BRL",
+   "scene": "T-0010",
+   "bridge": "goose",
+   "cf_bridge": "horse",
+   "third": "bee",
+   "people": [
+    "Diana",
+    "Ruby",
+    "Anna",
+    "Nina",
+    "Carl"
+   ],
+   "pets": [
+    "goose",
+    "chicken",
+    "horse",
+    "bee",
+    "spider"
+   ],
+   "holder": "Diana",
+   "cue": "Diana",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 5,
+    "6": 9,
+    "8": 1
+   },
+   "context": "Diana's pet is a goose. Ruby's pet is a chicken. Anna's pet is a horse. Nina's pet is a bee. Carl's pet is a spider. Animals with 6 legs use locker 9. Animals with 8 legs use locker 1. Animals with 4 legs use locker 5. Animals with 2 legs use locker 7.",
+   "cf_context": "Diana's pet is a horse. Ruby's pet is a chicken. Anna's pet is a goose. Nina's pet is a bee. Carl's pet is a spider. Animals with 6 legs use locker 9. Animals with 8 legs use locker 1. Animals with 4 legs use locker 5. Animals with 2 legs use locker 7.",
+   "off_context": "Diana's pet is a goose. Ruby's pet is a chicken. Anna's pet is a horse. Nina's pet is a bee. Carl's pet is a spider. Animals with 6 legs use locker 9. Animals with 8 legs use locker 5. Animals with 4 legs use locker 1. Animals with 2 legs use locker 7.",
+   "question": "Which locker does Diana's pet use?",
+   "cf_question": "Which locker does Diana's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "7",
+   "cf_answer": "5",
+   "hop1": {
+    "question": "Which animal is Diana's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0011",
+   "family": "BRL",
+   "scene": "T-0011",
+   "bridge": "turkey",
+   "cf_bridge": "sheep",
+   "third": "spider",
+   "people": [
+    "Ella",
+    "Peter",
+    "Carl",
+    "Olivia",
+    "Jack"
+   ],
+   "pets": [
+    "spider",
+    "frog",
+    "sheep",
+    "cow",
+    "turkey"
+   ],
+   "holder": "Jack",
+   "cue": "Jack",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 9,
+    "4": 1,
+    "6": 3,
+    "8": 5
+   },
+   "context": "Ella's pet is a spider. Peter's pet is a frog. Carl's pet is a sheep. Olivia's pet is a cow. Jack's pet is a turkey. Animals with 4 legs use locker 1. Animals with 2 legs use locker 9. Animals with 8 legs use locker 5. Animals with 6 legs use locker 3.",
+   "cf_context": "Ella's pet is a spider. Peter's pet is a frog. Carl's pet is a turkey. Olivia's pet is a cow. Jack's pet is a sheep. Animals with 4 legs use locker 1. Animals with 2 legs use locker 9. Animals with 8 legs use locker 5. Animals with 6 legs use locker 3.",
+   "off_context": "Ella's pet is a spider. Peter's pet is a frog. Carl's pet is a sheep. Olivia's pet is a cow. Jack's pet is a turkey. Animals with 4 legs use locker 3. Animals with 2 legs use locker 9. Animals with 8 legs use locker 5. Animals with 6 legs use locker 1.",
+   "question": "Which locker does Jack's pet use?",
+   "cf_question": "Which locker does Jack's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "9",
+   "cf_answer": "1",
+   "hop1": {
+    "question": "Which animal is Jack's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0012",
+   "family": "BRL",
+   "scene": "T-0012",
+   "bridge": "horse",
+   "cf_bridge": "chicken",
+   "third": "wolf",
+   "people": [
+    "Oscar",
+    "Kate",
+    "Eric",
+    "Leo",
+    "Zoe"
+   ],
+   "pets": [
+    "chicken",
+    "cow",
+    "horse",
+    "pig",
+    "wolf"
+   ],
+   "holder": "Eric",
+   "cue": "Eric",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 1,
+    "6": 3,
+    "8": 5
+   },
+   "context": "Oscar's pet is a chicken. Kate's pet is a cow. Eric's pet is a horse. Leo's pet is a pig. Zoe's pet is a wolf. Animals with 6 legs use locker 3. Animals with 8 legs use locker 5. Animals with 4 legs use locker 1. Animals with 2 legs use locker 7.",
+   "cf_context": "Oscar's pet is a horse. Kate's pet is a cow. Eric's pet is a chicken. Leo's pet is a pig. Zoe's pet is a wolf. Animals with 6 legs use locker 3. Animals with 8 legs use locker 5. Animals with 4 legs use locker 1. Animals with 2 legs use locker 7.",
+   "off_context": "Oscar's pet is a chicken. Kate's pet is a cow. Eric's pet is a horse. Leo's pet is a pig. Zoe's pet is a wolf. Animals with 6 legs use locker 3. Animals with 8 legs use locker 7. Animals with 4 legs use locker 1. Animals with 2 legs use locker 5.",
+   "question": "Which locker does Eric's pet use?",
+   "cf_question": "Which locker does Eric's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "1",
+   "cf_answer": "7",
+   "hop1": {
+    "question": "Which animal is Eric's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0013",
+   "family": "BRL",
+   "scene": "T-0013",
+   "bridge": "turkey",
+   "cf_bridge": "horse",
+   "third": "lion",
+   "people": [
+    "Ivan",
+    "Amy",
+    "Max",
+    "Ruby",
+    "Lucy"
+   ],
+   "pets": [
+    "lion",
+    "horse",
+    "dog",
+    "turkey",
+    "cat"
+   ],
+   "holder": "Ruby",
+   "cue": "Ruby",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 9,
+    "4": 7,
+    "6": 1,
+    "8": 5
+   },
+   "context": "Ivan's pet is a lion. Amy's pet is a horse. Max's pet is a dog. Ruby's pet is a turkey. Lucy's pet is a cat. Animals with 2 legs use locker 9. Animals with 4 legs use locker 7. Animals with 6 legs use locker 1. Animals with 8 legs use locker 5.",
+   "cf_context": "Ivan's pet is a lion. Amy's pet is a turkey. Max's pet is a dog. Ruby's pet is a horse. Lucy's pet is a cat. Animals with 2 legs use locker 9. Animals with 4 legs use locker 7. Animals with 6 legs use locker 1. Animals with 8 legs use locker 5.",
+   "off_context": "Ivan's pet is a lion. Amy's pet is a horse. Max's pet is a dog. Ruby's pet is a turkey. Lucy's pet is a cat. Animals with 2 legs use locker 9. Animals with 4 legs use locker 5. Animals with 6 legs use locker 1. Animals with 8 legs use locker 7.",
+   "question": "Which locker does Ruby's pet use?",
+   "cf_question": "Which locker does Ruby's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "9",
+   "cf_answer": "7",
+   "hop1": {
+    "question": "Which animal is Ruby's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0014",
+   "family": "BRL",
+   "scene": "T-0014",
+   "bridge": "turkey",
+   "cf_bridge": "lion",
+   "third": "pig",
+   "people": [
+    "Eva",
+    "James",
+    "Victor",
+    "Grace",
+    "Ivan"
+   ],
+   "pets": [
+    "dog",
+    "pig",
+    "lion",
+    "turkey",
+    "frog"
+   ],
+   "holder": "Grace",
+   "cue": "Grace",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 5,
+    "4": 9,
+    "6": 7,
+    "8": 1
+   },
+   "context": "Eva's pet is a dog. James's pet is a pig. Victor's pet is a lion. Grace's pet is a turkey. Ivan's pet is a frog. Animals with 8 legs use locker 1. Animals with 6 legs use locker 7. Animals with 4 legs use locker 9. Animals with 2 legs use locker 5.",
+   "cf_context": "Eva's pet is a dog. James's pet is a pig. Victor's pet is a turkey. Grace's pet is a lion. Ivan's pet is a frog. Animals with 8 legs use locker 1. Animals with 6 legs use locker 7. Animals with 4 legs use locker 9. Animals with 2 legs use locker 5.",
+   "off_context": "Eva's pet is a dog. James's pet is a pig. Victor's pet is a lion. Grace's pet is a turkey. Ivan's pet is a frog. Animals with 8 legs use locker 9. Animals with 6 legs use locker 7. Animals with 4 legs use locker 1. Animals with 2 legs use locker 5.",
+   "question": "Which locker does Grace's pet use?",
+   "cf_question": "Which locker does Grace's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "5",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Grace's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0015",
+   "family": "BRL",
+   "scene": "T-0015",
+   "bridge": "spider",
+   "cf_bridge": "duck",
+   "third": "bee",
+   "people": [
+    "Adam",
+    "Owen",
+    "Carl",
+    "Frank",
+    "Mia"
+   ],
+   "pets": [
+    "bee",
+    "duck",
+    "chicken",
+    "spider",
+    "lion"
+   ],
+   "holder": "Frank",
+   "cue": "Frank",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 1,
+    "4": 3,
+    "6": 5,
+    "8": 9
+   },
+   "context": "Adam's pet is a bee. Owen's pet is a duck. Carl's pet is a chicken. Frank's pet is a spider. Mia's pet is a lion. Animals with 8 legs use locker 9. Animals with 2 legs use locker 1. Animals with 4 legs use locker 3. Animals with 6 legs use locker 5.",
+   "cf_context": "Adam's pet is a bee. Owen's pet is a spider. Carl's pet is a chicken. Frank's pet is a duck. Mia's pet is a lion. Animals with 8 legs use locker 9. Animals with 2 legs use locker 1. Animals with 4 legs use locker 3. Animals with 6 legs use locker 5.",
+   "off_context": "Adam's pet is a bee. Owen's pet is a duck. Carl's pet is a chicken. Frank's pet is a spider. Mia's pet is a lion. Animals with 8 legs use locker 9. Animals with 2 legs use locker 3. Animals with 4 legs use locker 1. Animals with 6 legs use locker 5.",
+   "question": "Which locker does Frank's pet use?",
+   "cf_question": "Which locker does Frank's pet use?",
+   "mid": "8",
+   "cf_mid": "2",
+   "answer": "9",
+   "cf_answer": "1",
+   "hop1": {
+    "question": "Which animal is Frank's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 8 legs use?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0016",
+   "family": "BRL",
+   "scene": "T-0016",
+   "bridge": "frog",
+   "cf_bridge": "chicken",
+   "third": "cat",
+   "people": [
+    "Eva",
+    "David",
+    "Ivan",
+    "Owen",
+    "Anna"
+   ],
+   "pets": [
+    "sheep",
+    "cat",
+    "chicken",
+    "frog",
+    "duck"
+   ],
+   "holder": "Owen",
+   "cue": "Owen",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 9,
+    "4": 3,
+    "6": 7,
+    "8": 5
+   },
+   "context": "Eva's pet is a sheep. David's pet is a cat. Ivan's pet is a chicken. Owen's pet is a frog. Anna's pet is a duck. Animals with 4 legs use locker 3. Animals with 2 legs use locker 9. Animals with 6 legs use locker 7. Animals with 8 legs use locker 5.",
+   "cf_context": "Eva's pet is a sheep. David's pet is a cat. Ivan's pet is a frog. Owen's pet is a chicken. Anna's pet is a duck. Animals with 4 legs use locker 3. Animals with 2 legs use locker 9. Animals with 6 legs use locker 7. Animals with 8 legs use locker 5.",
+   "off_context": "Eva's pet is a sheep. David's pet is a cat. Ivan's pet is a chicken. Owen's pet is a frog. Anna's pet is a duck. Animals with 4 legs use locker 3. Animals with 2 legs use locker 5. Animals with 6 legs use locker 7. Animals with 8 legs use locker 9.",
+   "question": "Which locker does Owen's pet use?",
+   "cf_question": "Which locker does Owen's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "3",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Owen's pet?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0017",
+   "family": "BRL",
+   "scene": "T-0017",
+   "bridge": "mouse",
+   "cf_bridge": "turkey",
+   "third": "chicken",
+   "people": [
+    "Dan",
+    "Zoe",
+    "Diana",
+    "Sara",
+    "Beth"
+   ],
+   "pets": [
+    "turkey",
+    "mouse",
+    "chicken",
+    "lion",
+    "pig"
+   ],
+   "holder": "Zoe",
+   "cue": "Zoe",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 1,
+    "4": 3,
+    "6": 7,
+    "8": 5
+   },
+   "context": "Dan's pet is a turkey. Zoe's pet is a mouse. Diana's pet is a chicken. Sara's pet is a lion. Beth's pet is a pig. Animals with 8 legs use locker 5. Animals with 2 legs use locker 1. Animals with 6 legs use locker 7. Animals with 4 legs use locker 3.",
+   "cf_context": "Dan's pet is a mouse. Zoe's pet is a turkey. Diana's pet is a chicken. Sara's pet is a lion. Beth's pet is a pig. Animals with 8 legs use locker 5. Animals with 2 legs use locker 1. Animals with 6 legs use locker 7. Animals with 4 legs use locker 3.",
+   "off_context": "Dan's pet is a turkey. Zoe's pet is a mouse. Diana's pet is a chicken. Sara's pet is a lion. Beth's pet is a pig. Animals with 8 legs use locker 1. Animals with 2 legs use locker 5. Animals with 6 legs use locker 7. Animals with 4 legs use locker 3.",
+   "question": "Which locker does Zoe's pet use?",
+   "cf_question": "Which locker does Zoe's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "3",
+   "cf_answer": "1",
+   "hop1": {
+    "question": "Which animal is Zoe's pet?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0018",
+   "family": "BRL",
+   "scene": "T-0018",
+   "bridge": "frog",
+   "cf_bridge": "turkey",
+   "third": "horse",
+   "people": [
+    "Victor",
+    "Ella",
+    "Amy",
+    "Kate",
+    "Iris"
+   ],
+   "pets": [
+    "frog",
+    "horse",
+    "chicken",
+    "turkey",
+    "dog"
+   ],
+   "holder": "Victor",
+   "cue": "Victor",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 1,
+    "4": 3,
+    "6": 5,
+    "8": 7
+   },
+   "context": "Victor's pet is a frog. Ella's pet is a horse. Amy's pet is a chicken. Kate's pet is a turkey. Iris's pet is a dog. Animals with 6 legs use locker 5. Animals with 4 legs use locker 3. Animals with 8 legs use locker 7. Animals with 2 legs use locker 1.",
+   "cf_context": "Victor's pet is a turkey. Ella's pet is a horse. Amy's pet is a chicken. Kate's pet is a frog. Iris's pet is a dog. Animals with 6 legs use locker 5. Animals with 4 legs use locker 3. Animals with 8 legs use locker 7. Animals with 2 legs use locker 1.",
+   "off_context": "Victor's pet is a frog. Ella's pet is a horse. Amy's pet is a chicken. Kate's pet is a turkey. Iris's pet is a dog. Animals with 6 legs use locker 1. Animals with 4 legs use locker 3. Animals with 8 legs use locker 7. Animals with 2 legs use locker 5.",
+   "question": "Which locker does Victor's pet use?",
+   "cf_question": "Which locker does Victor's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "3",
+   "cf_answer": "1",
+   "hop1": {
+    "question": "Which animal is Victor's pet?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0019",
+   "family": "BRL",
+   "scene": "T-0019",
+   "bridge": "frog",
+   "cf_bridge": "chicken",
+   "third": "horse",
+   "people": [
+    "Vera",
+    "Emma",
+    "Ivy",
+    "Ben",
+    "Laura"
+   ],
+   "pets": [
+    "chicken",
+    "cow",
+    "dog",
+    "horse",
+    "frog"
+   ],
+   "holder": "Laura",
+   "cue": "Laura",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 9,
+    "4": 1,
+    "6": 5,
+    "8": 3
+   },
+   "context": "Vera's pet is a chicken. Emma's pet is a cow. Ivy's pet is a dog. Ben's pet is a horse. Laura's pet is a frog. Animals with 4 legs use locker 1. Animals with 8 legs use locker 3. Animals with 6 legs use locker 5. Animals with 2 legs use locker 9.",
+   "cf_context": "Vera's pet is a frog. Emma's pet is a cow. Ivy's pet is a dog. Ben's pet is a horse. Laura's pet is a chicken. Animals with 4 legs use locker 1. Animals with 8 legs use locker 3. Animals with 6 legs use locker 5. Animals with 2 legs use locker 9.",
+   "off_context": "Vera's pet is a chicken. Emma's pet is a cow. Ivy's pet is a dog. Ben's pet is a horse. Laura's pet is a frog. Animals with 4 legs use locker 1. Animals with 8 legs use locker 3. Animals with 6 legs use locker 9. Animals with 2 legs use locker 5.",
+   "question": "Which locker does Laura's pet use?",
+   "cf_question": "Which locker does Laura's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "1",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Laura's pet?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0020",
+   "family": "BRL",
+   "scene": "T-0020",
+   "bridge": "wolf",
+   "cf_bridge": "goose",
+   "third": "frog",
+   "people": [
+    "Kate",
+    "Jack",
+    "Beth",
+    "Victor",
+    "Mia"
+   ],
+   "pets": [
+    "goose",
+    "dog",
+    "duck",
+    "frog",
+    "wolf"
+   ],
+   "holder": "Mia",
+   "cue": "Mia",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 9,
+    "4": 3,
+    "6": 1,
+    "8": 5
+   },
+   "context": "Kate's pet is a goose. Jack's pet is a dog. Beth's pet is a duck. Victor's pet is a frog. Mia's pet is a wolf. Animals with 2 legs use locker 9. Animals with 8 legs use locker 5. Animals with 4 legs use locker 3. Animals with 6 legs use locker 1.",
+   "cf_context": "Kate's pet is a wolf. Jack's pet is a dog. Beth's pet is a duck. Victor's pet is a frog. Mia's pet is a goose. Animals with 2 legs use locker 9. Animals with 8 legs use locker 5. Animals with 4 legs use locker 3. Animals with 6 legs use locker 1.",
+   "off_context": "Kate's pet is a goose. Jack's pet is a dog. Beth's pet is a duck. Victor's pet is a frog. Mia's pet is a wolf. Animals with 2 legs use locker 5. Animals with 8 legs use locker 9. Animals with 4 legs use locker 3. Animals with 6 legs use locker 1.",
+   "question": "Which locker does Mia's pet use?",
+   "cf_question": "Which locker does Mia's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "3",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Mia's pet?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0021",
+   "family": "BRL",
+   "scene": "T-0021",
+   "bridge": "wolf",
+   "cf_bridge": "spider",
+   "third": "frog",
+   "people": [
+    "Vera",
+    "Noah",
+    "Mark",
+    "Iris",
+    "Henry"
+   ],
+   "pets": [
+    "cat",
+    "spider",
+    "chicken",
+    "wolf",
+    "frog"
+   ],
+   "holder": "Iris",
+   "cue": "Iris",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 1,
+    "6": 9,
+    "8": 5
+   },
+   "context": "Vera's pet is a cat. Noah's pet is a spider. Mark's pet is a chicken. Iris's pet is a wolf. Henry's pet is a frog. Animals with 8 legs use locker 5. Animals with 4 legs use locker 1. Animals with 6 legs use locker 9. Animals with 2 legs use locker 3.",
+   "cf_context": "Vera's pet is a cat. Noah's pet is a wolf. Mark's pet is a chicken. Iris's pet is a spider. Henry's pet is a frog. Animals with 8 legs use locker 5. Animals with 4 legs use locker 1. Animals with 6 legs use locker 9. Animals with 2 legs use locker 3.",
+   "off_context": "Vera's pet is a cat. Noah's pet is a spider. Mark's pet is a chicken. Iris's pet is a wolf. Henry's pet is a frog. Animals with 8 legs use locker 3. Animals with 4 legs use locker 1. Animals with 6 legs use locker 9. Animals with 2 legs use locker 5.",
+   "question": "Which locker does Iris's pet use?",
+   "cf_question": "Which locker does Iris's pet use?",
+   "mid": "4",
+   "cf_mid": "8",
+   "answer": "1",
+   "cf_answer": "5",
+   "hop1": {
+    "question": "Which animal is Iris's pet?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0022",
+   "family": "BRL",
+   "scene": "T-0022",
+   "bridge": "bee",
+   "cf_bridge": "mouse",
+   "third": "dog",
+   "people": [
+    "David",
+    "Lily",
+    "Max",
+    "Sam",
+    "Sean"
+   ],
+   "pets": [
+    "turkey",
+    "dog",
+    "chicken",
+    "bee",
+    "mouse"
+   ],
+   "holder": "Sam",
+   "cue": "Sam",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 7,
+    "6": 1,
+    "8": 9
+   },
+   "context": "David's pet is a turkey. Lily's pet is a dog. Max's pet is a chicken. Sam's pet is a bee. Sean's pet is a mouse. Animals with 8 legs use locker 9. Animals with 6 legs use locker 1. Animals with 4 legs use locker 7. Animals with 2 legs use locker 3.",
+   "cf_context": "David's pet is a turkey. Lily's pet is a dog. Max's pet is a chicken. Sam's pet is a mouse. Sean's pet is a bee. Animals with 8 legs use locker 9. Animals with 6 legs use locker 1. Animals with 4 legs use locker 7. Animals with 2 legs use locker 3.",
+   "off_context": "David's pet is a turkey. Lily's pet is a dog. Max's pet is a chicken. Sam's pet is a bee. Sean's pet is a mouse. Animals with 8 legs use locker 7. Animals with 6 legs use locker 1. Animals with 4 legs use locker 9. Animals with 2 legs use locker 3.",
+   "question": "Which locker does Sam's pet use?",
+   "cf_question": "Which locker does Sam's pet use?",
+   "mid": "6",
+   "cf_mid": "4",
+   "answer": "1",
+   "cf_answer": "7",
+   "hop1": {
+    "question": "Which animal is Sam's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 6 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0023",
+   "family": "BRL",
+   "scene": "T-0023",
+   "bridge": "duck",
+   "cf_bridge": "sheep",
+   "third": "lion",
+   "people": [
+    "Max",
+    "Dan",
+    "Kyle",
+    "Sara",
+    "Tara"
+   ],
+   "pets": [
+    "duck",
+    "mouse",
+    "sheep",
+    "lion",
+    "dog"
+   ],
+   "holder": "Max",
+   "cue": "Max",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 5,
+    "6": 9,
+    "8": 7
+   },
+   "context": "Max's pet is a duck. Dan's pet is a mouse. Kyle's pet is a sheep. Sara's pet is a lion. Tara's pet is a dog. Animals with 2 legs use locker 3. Animals with 6 legs use locker 9. Animals with 8 legs use locker 7. Animals with 4 legs use locker 5.",
+   "cf_context": "Max's pet is a sheep. Dan's pet is a mouse. Kyle's pet is a duck. Sara's pet is a lion. Tara's pet is a dog. Animals with 2 legs use locker 3. Animals with 6 legs use locker 9. Animals with 8 legs use locker 7. Animals with 4 legs use locker 5.",
+   "off_context": "Max's pet is a duck. Dan's pet is a mouse. Kyle's pet is a sheep. Sara's pet is a lion. Tara's pet is a dog. Animals with 2 legs use locker 3. Animals with 6 legs use locker 5. Animals with 8 legs use locker 7. Animals with 4 legs use locker 9.",
+   "question": "Which locker does Max's pet use?",
+   "cf_question": "Which locker does Max's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "3",
+   "cf_answer": "5",
+   "hop1": {
+    "question": "Which animal is Max's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0024",
+   "family": "BRL",
+   "scene": "T-0024",
+   "bridge": "bee",
+   "cf_bridge": "dog",
+   "third": "spider",
+   "people": [
+    "Laura",
+    "Max",
+    "Peter",
+    "Victor",
+    "Dan"
+   ],
+   "pets": [
+    "spider",
+    "bee",
+    "lion",
+    "dog",
+    "mouse"
+   ],
+   "holder": "Max",
+   "cue": "Max",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 1,
+    "6": 9,
+    "8": 7
+   },
+   "context": "Laura's pet is a spider. Max's pet is a bee. Peter's pet is a lion. Victor's pet is a dog. Dan's pet is a mouse. Animals with 6 legs use locker 9. Animals with 8 legs use locker 7. Animals with 4 legs use locker 1. Animals with 2 legs use locker 3.",
+   "cf_context": "Laura's pet is a spider. Max's pet is a dog. Peter's pet is a lion. Victor's pet is a bee. Dan's pet is a mouse. Animals with 6 legs use locker 9. Animals with 8 legs use locker 7. Animals with 4 legs use locker 1. Animals with 2 legs use locker 3.",
+   "off_context": "Laura's pet is a spider. Max's pet is a bee. Peter's pet is a lion. Victor's pet is a dog. Dan's pet is a mouse. Animals with 6 legs use locker 9. Animals with 8 legs use locker 7. Animals with 4 legs use locker 3. Animals with 2 legs use locker 1.",
+   "question": "Which locker does Max's pet use?",
+   "cf_question": "Which locker does Max's pet use?",
+   "mid": "6",
+   "cf_mid": "4",
+   "answer": "9",
+   "cf_answer": "1",
+   "hop1": {
+    "question": "Which animal is Max's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 6 legs use?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0025",
+   "family": "BRL",
+   "scene": "T-0025",
+   "bridge": "horse",
+   "cf_bridge": "chicken",
+   "third": "spider",
+   "people": [
+    "Kate",
+    "Eva",
+    "Victor",
+    "Ruby",
+    "Rose"
+   ],
+   "pets": [
+    "chicken",
+    "spider",
+    "lion",
+    "horse",
+    "goose"
+   ],
+   "holder": "Ruby",
+   "cue": "Ruby",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 5,
+    "4": 3,
+    "6": 9,
+    "8": 7
+   },
+   "context": "Kate's pet is a chicken. Eva's pet is a spider. Victor's pet is a lion. Ruby's pet is a horse. Rose's pet is a goose. Animals with 8 legs use locker 7. Animals with 6 legs use locker 9. Animals with 2 legs use locker 5. Animals with 4 legs use locker 3.",
+   "cf_context": "Kate's pet is a horse. Eva's pet is a spider. Victor's pet is a lion. Ruby's pet is a chicken. Rose's pet is a goose. Animals with 8 legs use locker 7. Animals with 6 legs use locker 9. Animals with 2 legs use locker 5. Animals with 4 legs use locker 3.",
+   "off_context": "Kate's pet is a chicken. Eva's pet is a spider. Victor's pet is a lion. Ruby's pet is a horse. Rose's pet is a goose. Animals with 8 legs use locker 7. Animals with 6 legs use locker 5. Animals with 2 legs use locker 9. Animals with 4 legs use locker 3.",
+   "question": "Which locker does Ruby's pet use?",
+   "cf_question": "Which locker does Ruby's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "3",
+   "cf_answer": "5",
+   "hop1": {
+    "question": "Which animal is Ruby's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0026",
+   "family": "BRL",
+   "scene": "T-0026",
+   "bridge": "cat",
+   "cf_bridge": "chicken",
+   "third": "wolf",
+   "people": [
+    "Clara",
+    "Ella",
+    "Mia",
+    "Ryan",
+    "Fiona"
+   ],
+   "pets": [
+    "wolf",
+    "cat",
+    "chicken",
+    "duck",
+    "spider"
+   ],
+   "holder": "Ella",
+   "cue": "Ella",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 1,
+    "4": 5,
+    "6": 9,
+    "8": 7
+   },
+   "context": "Clara's pet is a wolf. Ella's pet is a cat. Mia's pet is a chicken. Ryan's pet is a duck. Fiona's pet is a spider. Animals with 6 legs use locker 9. Animals with 8 legs use locker 7. Animals with 4 legs use locker 5. Animals with 2 legs use locker 1.",
+   "cf_context": "Clara's pet is a wolf. Ella's pet is a chicken. Mia's pet is a cat. Ryan's pet is a duck. Fiona's pet is a spider. Animals with 6 legs use locker 9. Animals with 8 legs use locker 7. Animals with 4 legs use locker 5. Animals with 2 legs use locker 1.",
+   "off_context": "Clara's pet is a wolf. Ella's pet is a cat. Mia's pet is a chicken. Ryan's pet is a duck. Fiona's pet is a spider. Animals with 6 legs use locker 9. Animals with 8 legs use locker 1. Animals with 4 legs use locker 5. Animals with 2 legs use locker 7.",
+   "question": "Which locker does Ella's pet use?",
+   "cf_question": "Which locker does Ella's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "5",
+   "cf_answer": "1",
+   "hop1": {
+    "question": "Which animal is Ella's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0027",
+   "family": "BRL",
+   "scene": "T-0027",
+   "bridge": "spider",
+   "cf_bridge": "cow",
+   "third": "frog",
+   "people": [
+    "Carl",
+    "Beth",
+    "Sean",
+    "Liam",
+    "Julia"
+   ],
+   "pets": [
+    "spider",
+    "cow",
+    "frog",
+    "wolf",
+    "lion"
+   ],
+   "holder": "Carl",
+   "cue": "Carl",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 5,
+    "4": 9,
+    "6": 1,
+    "8": 3
+   },
+   "context": "Carl's pet is a spider. Beth's pet is a cow. Sean's pet is a frog. Liam's pet is a wolf. Julia's pet is a lion. Animals with 4 legs use locker 9. Animals with 6 legs use locker 1. Animals with 2 legs use locker 5. Animals with 8 legs use locker 3.",
+   "cf_context": "Carl's pet is a cow. Beth's pet is a spider. Sean's pet is a frog. Liam's pet is a wolf. Julia's pet is a lion. Animals with 4 legs use locker 9. Animals with 6 legs use locker 1. Animals with 2 legs use locker 5. Animals with 8 legs use locker 3.",
+   "off_context": "Carl's pet is a spider. Beth's pet is a cow. Sean's pet is a frog. Liam's pet is a wolf. Julia's pet is a lion. Animals with 4 legs use locker 5. Animals with 6 legs use locker 1. Animals with 2 legs use locker 9. Animals with 8 legs use locker 3.",
+   "question": "Which locker does Carl's pet use?",
+   "cf_question": "Which locker does Carl's pet use?",
+   "mid": "8",
+   "cf_mid": "4",
+   "answer": "3",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Carl's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 8 legs use?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0028",
+   "family": "BRL",
+   "scene": "T-0028",
+   "bridge": "cat",
+   "cf_bridge": "bee",
+   "third": "horse",
+   "people": [
+    "Zoe",
+    "Henry",
+    "Tara",
+    "Ivy",
+    "Paul"
+   ],
+   "pets": [
+    "cat",
+    "goose",
+    "lion",
+    "horse",
+    "bee"
+   ],
+   "holder": "Zoe",
+   "cue": "Zoe",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 9,
+    "4": 1,
+    "6": 7,
+    "8": 3
+   },
+   "context": "Zoe's pet is a cat. Henry's pet is a goose. Tara's pet is a lion. Ivy's pet is a horse. Paul's pet is a bee. Animals with 4 legs use locker 1. Animals with 8 legs use locker 3. Animals with 6 legs use locker 7. Animals with 2 legs use locker 9.",
+   "cf_context": "Zoe's pet is a bee. Henry's pet is a goose. Tara's pet is a lion. Ivy's pet is a horse. Paul's pet is a cat. Animals with 4 legs use locker 1. Animals with 8 legs use locker 3. Animals with 6 legs use locker 7. Animals with 2 legs use locker 9.",
+   "off_context": "Zoe's pet is a cat. Henry's pet is a goose. Tara's pet is a lion. Ivy's pet is a horse. Paul's pet is a bee. Animals with 4 legs use locker 1. Animals with 8 legs use locker 3. Animals with 6 legs use locker 9. Animals with 2 legs use locker 7.",
+   "question": "Which locker does Zoe's pet use?",
+   "cf_question": "Which locker does Zoe's pet use?",
+   "mid": "4",
+   "cf_mid": "6",
+   "answer": "1",
+   "cf_answer": "7",
+   "hop1": {
+    "question": "Which animal is Zoe's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0029",
+   "family": "BRL",
+   "scene": "T-0029",
+   "bridge": "mouse",
+   "cf_bridge": "goose",
+   "third": "frog",
+   "people": [
+    "Anna",
+    "Luke",
+    "Peter",
+    "Will",
+    "Paul"
+   ],
+   "pets": [
+    "duck",
+    "goose",
+    "mouse",
+    "lion",
+    "frog"
+   ],
+   "holder": "Peter",
+   "cue": "Peter",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 1,
+    "4": 5,
+    "6": 7,
+    "8": 9
+   },
+   "context": "Anna's pet is a duck. Luke's pet is a goose. Peter's pet is a mouse. Will's pet is a lion. Paul's pet is a frog. Animals with 8 legs use locker 9. Animals with 2 legs use locker 1. Animals with 4 legs use locker 5. Animals with 6 legs use locker 7.",
+   "cf_context": "Anna's pet is a duck. Luke's pet is a mouse. Peter's pet is a goose. Will's pet is a lion. Paul's pet is a frog. Animals with 8 legs use locker 9. Animals with 2 legs use locker 1. Animals with 4 legs use locker 5. Animals with 6 legs use locker 7.",
+   "off_context": "Anna's pet is a duck. Luke's pet is a goose. Peter's pet is a mouse. Will's pet is a lion. Paul's pet is a frog. Animals with 8 legs use locker 1. Animals with 2 legs use locker 9. Animals with 4 legs use locker 5. Animals with 6 legs use locker 7.",
+   "question": "Which locker does Peter's pet use?",
+   "cf_question": "Which locker does Peter's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "5",
+   "cf_answer": "1",
+   "hop1": {
+    "question": "Which animal is Peter's pet?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0030",
+   "family": "BRL",
+   "scene": "T-0030",
+   "bridge": "sheep",
+   "cf_bridge": "duck",
+   "third": "mouse",
+   "people": [
+    "Emma",
+    "Liam",
+    "Adam",
+    "Mark",
+    "James"
+   ],
+   "pets": [
+    "mouse",
+    "goose",
+    "frog",
+    "sheep",
+    "duck"
+   ],
+   "holder": "Mark",
+   "cue": "Mark",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 9,
+    "4": 5,
+    "6": 7,
+    "8": 3
+   },
+   "context": "Emma's pet is a mouse. Liam's pet is a goose. Adam's pet is a frog. Mark's pet is a sheep. James's pet is a duck. Animals with 6 legs use locker 7. Animals with 4 legs use locker 5. Animals with 8 legs use locker 3. Animals with 2 legs use locker 9.",
+   "cf_context": "Emma's pet is a mouse. Liam's pet is a goose. Adam's pet is a frog. Mark's pet is a duck. James's pet is a sheep. Animals with 6 legs use locker 7. Animals with 4 legs use locker 5. Animals with 8 legs use locker 3. Animals with 2 legs use locker 9.",
+   "off_context": "Emma's pet is a mouse. Liam's pet is a goose. Adam's pet is a frog. Mark's pet is a sheep. James's pet is a duck. Animals with 6 legs use locker 7. Animals with 4 legs use locker 5. Animals with 8 legs use locker 9. Animals with 2 legs use locker 3.",
+   "question": "Which locker does Mark's pet use?",
+   "cf_question": "Which locker does Mark's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "5",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Mark's pet?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0031",
+   "family": "BRL",
+   "scene": "T-0031",
+   "bridge": "wolf",
+   "cf_bridge": "turkey",
+   "third": "chicken",
+   "people": [
+    "Kyle",
+    "Emma",
+    "Zoe",
+    "Laura",
+    "Henry"
+   ],
+   "pets": [
+    "lion",
+    "dog",
+    "turkey",
+    "wolf",
+    "chicken"
+   ],
+   "holder": "Laura",
+   "cue": "Laura",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 7,
+    "6": 5,
+    "8": 9
+   },
+   "context": "Kyle's pet is a lion. Emma's pet is a dog. Zoe's pet is a turkey. Laura's pet is a wolf. Henry's pet is a chicken. Animals with 2 legs use locker 3. Animals with 8 legs use locker 9. Animals with 6 legs use locker 5. Animals with 4 legs use locker 7.",
+   "cf_context": "Kyle's pet is a lion. Emma's pet is a dog. Zoe's pet is a wolf. Laura's pet is a turkey. Henry's pet is a chicken. Animals with 2 legs use locker 3. Animals with 8 legs use locker 9. Animals with 6 legs use locker 5. Animals with 4 legs use locker 7.",
+   "off_context": "Kyle's pet is a lion. Emma's pet is a dog. Zoe's pet is a turkey. Laura's pet is a wolf. Henry's pet is a chicken. Animals with 2 legs use locker 5. Animals with 8 legs use locker 9. Animals with 6 legs use locker 3. Animals with 4 legs use locker 7.",
+   "question": "Which locker does Laura's pet use?",
+   "cf_question": "Which locker does Laura's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "7",
+   "cf_answer": "3",
+   "hop1": {
+    "question": "Which animal is Laura's pet?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0032",
+   "family": "BRL",
+   "scene": "T-0032",
+   "bridge": "horse",
+   "cf_bridge": "bee",
+   "third": "wolf",
+   "people": [
+    "Clara",
+    "Sean",
+    "Peter",
+    "Ivan",
+    "Henry"
+   ],
+   "pets": [
+    "sheep",
+    "bee",
+    "spider",
+    "horse",
+    "wolf"
+   ],
+   "holder": "Ivan",
+   "cue": "Ivan",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 9,
+    "4": 5,
+    "6": 7,
+    "8": 3
+   },
+   "context": "Clara's pet is a sheep. Sean's pet is a bee. Peter's pet is a spider. Ivan's pet is a horse. Henry's pet is a wolf. Animals with 8 legs use locker 3. Animals with 4 legs use locker 5. Animals with 6 legs use locker 7. Animals with 2 legs use locker 9.",
+   "cf_context": "Clara's pet is a sheep. Sean's pet is a horse. Peter's pet is a spider. Ivan's pet is a bee. Henry's pet is a wolf. Animals with 8 legs use locker 3. Animals with 4 legs use locker 5. Animals with 6 legs use locker 7. Animals with 2 legs use locker 9.",
+   "off_context": "Clara's pet is a sheep. Sean's pet is a bee. Peter's pet is a spider. Ivan's pet is a horse. Henry's pet is a wolf. Animals with 8 legs use locker 7. Animals with 4 legs use locker 5. Animals with 6 legs use locker 3. Animals with 2 legs use locker 9.",
+   "question": "Which locker does Ivan's pet use?",
+   "cf_question": "Which locker does Ivan's pet use?",
+   "mid": "4",
+   "cf_mid": "6",
+   "answer": "5",
+   "cf_answer": "7",
+   "hop1": {
+    "question": "Which animal is Ivan's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0033",
+   "family": "BRL",
+   "scene": "T-0033",
+   "bridge": "goose",
+   "cf_bridge": "frog",
+   "third": "chicken",
+   "people": [
+    "Eric",
+    "Iris",
+    "Leo",
+    "Nina",
+    "James"
+   ],
+   "pets": [
+    "goose",
+    "cat",
+    "chicken",
+    "lion",
+    "frog"
+   ],
+   "holder": "Eric",
+   "cue": "Eric",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 9,
+    "4": 3,
+    "6": 1,
+    "8": 5
+   },
+   "context": "Eric's pet is a goose. Iris's pet is a cat. Leo's pet is a chicken. Nina's pet is a lion. James's pet is a frog. Animals with 4 legs use locker 3. Animals with 2 legs use locker 9. Animals with 8 legs use locker 5. Animals with 6 legs use locker 1.",
+   "cf_context": "Eric's pet is a frog. Iris's pet is a cat. Leo's pet is a chicken. Nina's pet is a lion. James's pet is a goose. Animals with 4 legs use locker 3. Animals with 2 legs use locker 9. Animals with 8 legs use locker 5. Animals with 6 legs use locker 1.",
+   "off_context": "Eric's pet is a goose. Iris's pet is a cat. Leo's pet is a chicken. Nina's pet is a lion. James's pet is a frog. Animals with 4 legs use locker 5. Animals with 2 legs use locker 9. Animals with 8 legs use locker 3. Animals with 6 legs use locker 1.",
+   "question": "Which locker does Eric's pet use?",
+   "cf_question": "Which locker does Eric's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "9",
+   "cf_answer": "3",
+   "hop1": {
+    "question": "Which animal is Eric's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0034",
+   "family": "BRL",
+   "scene": "T-0034",
+   "bridge": "pig",
+   "cf_bridge": "goose",
+   "third": "cat",
+   "people": [
+    "Nina",
+    "Fiona",
+    "Finn",
+    "Ivy",
+    "Luke"
+   ],
+   "pets": [
+    "pig",
+    "dog",
+    "chicken",
+    "cat",
+    "goose"
+   ],
+   "holder": "Nina",
+   "cue": "Nina",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 1,
+    "6": 3,
+    "8": 5
+   },
+   "context": "Nina's pet is a pig. Fiona's pet is a dog. Finn's pet is a chicken. Ivy's pet is a cat. Luke's pet is a goose. Animals with 4 legs use locker 1. Animals with 8 legs use locker 5. Animals with 2 legs use locker 7. Animals with 6 legs use locker 3.",
+   "cf_context": "Nina's pet is a goose. Fiona's pet is a dog. Finn's pet is a chicken. Ivy's pet is a cat. Luke's pet is a pig. Animals with 4 legs use locker 1. Animals with 8 legs use locker 5. Animals with 2 legs use locker 7. Animals with 6 legs use locker 3.",
+   "off_context": "Nina's pet is a pig. Fiona's pet is a dog. Finn's pet is a chicken. Ivy's pet is a cat. Luke's pet is a goose. Animals with 4 legs use locker 1. Animals with 8 legs use locker 5. Animals with 2 legs use locker 3. Animals with 6 legs use locker 7.",
+   "question": "Which locker does Nina's pet use?",
+   "cf_question": "Which locker does Nina's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "1",
+   "cf_answer": "7",
+   "hop1": {
+    "question": "Which animal is Nina's pet?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0035",
+   "family": "BRL",
+   "scene": "T-0035",
+   "bridge": "spider",
+   "cf_bridge": "sheep",
+   "third": "bee",
+   "people": [
+    "Emma",
+    "Kyle",
+    "Adam",
+    "Noah",
+    "Anna"
+   ],
+   "pets": [
+    "dog",
+    "horse",
+    "bee",
+    "sheep",
+    "spider"
+   ],
+   "holder": "Anna",
+   "cue": "Anna",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 7,
+    "6": 9,
+    "8": 1
+   },
+   "context": "Emma's pet is a dog. Kyle's pet is a horse. Adam's pet is a bee. Noah's pet is a sheep. Anna's pet is a spider. Animals with 2 legs use locker 3. Animals with 4 legs use locker 7. Animals with 8 legs use locker 1. Animals with 6 legs use locker 9.",
+   "cf_context": "Emma's pet is a dog. Kyle's pet is a horse. Adam's pet is a bee. Noah's pet is a spider. Anna's pet is a sheep. Animals with 2 legs use locker 3. Animals with 4 legs use locker 7. Animals with 8 legs use locker 1. Animals with 6 legs use locker 9.",
+   "off_context": "Emma's pet is a dog. Kyle's pet is a horse. Adam's pet is a bee. Noah's pet is a sheep. Anna's pet is a spider. Animals with 2 legs use locker 7. Animals with 4 legs use locker 3. Animals with 8 legs use locker 1. Animals with 6 legs use locker 9.",
+   "question": "Which locker does Anna's pet use?",
+   "cf_question": "Which locker does Anna's pet use?",
+   "mid": "8",
+   "cf_mid": "4",
+   "answer": "1",
+   "cf_answer": "7",
+   "hop1": {
+    "question": "Which animal is Anna's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 8 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0036",
+   "family": "BRL",
+   "scene": "T-0036",
+   "bridge": "goose",
+   "cf_bridge": "spider",
+   "third": "sheep",
+   "people": [
+    "Jack",
+    "Ben",
+    "Ivan",
+    "Beth",
+    "Will"
+   ],
+   "pets": [
+    "spider",
+    "goose",
+    "pig",
+    "sheep",
+    "horse"
+   ],
+   "holder": "Ben",
+   "cue": "Ben",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 5,
+    "6": 1,
+    "8": 9
+   },
+   "context": "Jack's pet is a spider. Ben's pet is a goose. Ivan's pet is a pig. Beth's pet is a sheep. Will's pet is a horse. Animals with 2 legs use locker 3. Animals with 4 legs use locker 5. Animals with 6 legs use locker 1. Animals with 8 legs use locker 9.",
+   "cf_context": "Jack's pet is a goose. Ben's pet is a spider. Ivan's pet is a pig. Beth's pet is a sheep. Will's pet is a horse. Animals with 2 legs use locker 3. Animals with 4 legs use locker 5. Animals with 6 legs use locker 1. Animals with 8 legs use locker 9.",
+   "off_context": "Jack's pet is a spider. Ben's pet is a goose. Ivan's pet is a pig. Beth's pet is a sheep. Will's pet is a horse. Animals with 2 legs use locker 3. Animals with 4 legs use locker 9. Animals with 6 legs use locker 1. Animals with 8 legs use locker 5.",
+   "question": "Which locker does Ben's pet use?",
+   "cf_question": "Which locker does Ben's pet use?",
+   "mid": "2",
+   "cf_mid": "8",
+   "answer": "3",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Ben's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0037",
+   "family": "BRL",
+   "scene": "T-0037",
+   "bridge": "spider",
+   "cf_bridge": "turkey",
+   "third": "horse",
+   "people": [
+    "Eva",
+    "Lily",
+    "Liam",
+    "Frank",
+    "Ella"
+   ],
+   "pets": [
+    "spider",
+    "bee",
+    "turkey",
+    "horse",
+    "pig"
+   ],
+   "holder": "Eva",
+   "cue": "Eva",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 5,
+    "6": 3,
+    "8": 9
+   },
+   "context": "Eva's pet is a spider. Lily's pet is a bee. Liam's pet is a turkey. Frank's pet is a horse. Ella's pet is a pig. Animals with 2 legs use locker 7. Animals with 8 legs use locker 9. Animals with 4 legs use locker 5. Animals with 6 legs use locker 3.",
+   "cf_context": "Eva's pet is a turkey. Lily's pet is a bee. Liam's pet is a spider. Frank's pet is a horse. Ella's pet is a pig. Animals with 2 legs use locker 7. Animals with 8 legs use locker 9. Animals with 4 legs use locker 5. Animals with 6 legs use locker 3.",
+   "off_context": "Eva's pet is a spider. Lily's pet is a bee. Liam's pet is a turkey. Frank's pet is a horse. Ella's pet is a pig. Animals with 2 legs use locker 5. Animals with 8 legs use locker 9. Animals with 4 legs use locker 7. Animals with 6 legs use locker 3.",
+   "question": "Which locker does Eva's pet use?",
+   "cf_question": "Which locker does Eva's pet use?",
+   "mid": "8",
+   "cf_mid": "2",
+   "answer": "9",
+   "cf_answer": "7",
+   "hop1": {
+    "question": "Which animal is Eva's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 8 legs use?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0038",
+   "family": "BRL",
+   "scene": "T-0038",
+   "bridge": "mouse",
+   "cf_bridge": "goose",
+   "third": "chicken",
+   "people": [
+    "Grace",
+    "Will",
+    "Sam",
+    "Hugo",
+    "Ben"
+   ],
+   "pets": [
+    "goose",
+    "lion",
+    "bee",
+    "mouse",
+    "chicken"
+   ],
+   "holder": "Hugo",
+   "cue": "Hugo",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 5,
+    "6": 1,
+    "8": 9
+   },
+   "context": "Grace's pet is a goose. Will's pet is a lion. Sam's pet is a bee. Hugo's pet is a mouse. Ben's pet is a chicken. Animals with 4 legs use locker 5. Animals with 2 legs use locker 3. Animals with 6 legs use locker 1. Animals with 8 legs use locker 9.",
+   "cf_context": "Grace's pet is a mouse. Will's pet is a lion. Sam's pet is a bee. Hugo's pet is a goose. Ben's pet is a chicken. Animals with 4 legs use locker 5. Animals with 2 legs use locker 3. Animals with 6 legs use locker 1. Animals with 8 legs use locker 9.",
+   "off_context": "Grace's pet is a goose. Will's pet is a lion. Sam's pet is a bee. Hugo's pet is a mouse. Ben's pet is a chicken. Animals with 4 legs use locker 5. Animals with 2 legs use locker 9. Animals with 6 legs use locker 1. Animals with 8 legs use locker 3.",
+   "question": "Which locker does Hugo's pet use?",
+   "cf_question": "Which locker does Hugo's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "5",
+   "cf_answer": "3",
+   "hop1": {
+    "question": "Which animal is Hugo's pet?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0039",
+   "family": "BRL",
+   "scene": "T-0039",
+   "bridge": "chicken",
+   "cf_bridge": "pig",
+   "third": "dog",
+   "people": [
+    "Rose",
+    "Diana",
+    "Grace",
+    "Eve",
+    "Tom"
+   ],
+   "pets": [
+    "cat",
+    "dog",
+    "chicken",
+    "duck",
+    "pig"
+   ],
+   "holder": "Grace",
+   "cue": "Grace",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 1,
+    "4": 7,
+    "6": 9,
+    "8": 3
+   },
+   "context": "Rose's pet is a cat. Diana's pet is a dog. Grace's pet is a chicken. Eve's pet is a duck. Tom's pet is a pig. Animals with 2 legs use locker 1. Animals with 4 legs use locker 7. Animals with 8 legs use locker 3. Animals with 6 legs use locker 9.",
+   "cf_context": "Rose's pet is a cat. Diana's pet is a dog. Grace's pet is a pig. Eve's pet is a duck. Tom's pet is a chicken. Animals with 2 legs use locker 1. Animals with 4 legs use locker 7. Animals with 8 legs use locker 3. Animals with 6 legs use locker 9.",
+   "off_context": "Rose's pet is a cat. Diana's pet is a dog. Grace's pet is a chicken. Eve's pet is a duck. Tom's pet is a pig. Animals with 2 legs use locker 1. Animals with 4 legs use locker 3. Animals with 8 legs use locker 7. Animals with 6 legs use locker 9.",
+   "question": "Which locker does Grace's pet use?",
+   "cf_question": "Which locker does Grace's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "1",
+   "cf_answer": "7",
+   "hop1": {
+    "question": "Which animal is Grace's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0040",
+   "family": "BRL",
+   "scene": "T-0040",
+   "bridge": "goose",
+   "cf_bridge": "frog",
+   "third": "horse",
+   "people": [
+    "Mark",
+    "Owen",
+    "Liam",
+    "Anna",
+    "Amy"
+   ],
+   "pets": [
+    "goose",
+    "frog",
+    "lion",
+    "horse",
+    "bee"
+   ],
+   "holder": "Mark",
+   "cue": "Mark",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 3,
+    "6": 9,
+    "8": 5
+   },
+   "context": "Mark's pet is a goose. Owen's pet is a frog. Liam's pet is a lion. Anna's pet is a horse. Amy's pet is a bee. Animals with 2 legs use locker 7. Animals with 6 legs use locker 9. Animals with 4 legs use locker 3. Animals with 8 legs use locker 5.",
+   "cf_context": "Mark's pet is a frog. Owen's pet is a goose. Liam's pet is a lion. Anna's pet is a horse. Amy's pet is a bee. Animals with 2 legs use locker 7. Animals with 6 legs use locker 9. Animals with 4 legs use locker 3. Animals with 8 legs use locker 5.",
+   "off_context": "Mark's pet is a goose. Owen's pet is a frog. Liam's pet is a lion. Anna's pet is a horse. Amy's pet is a bee. Animals with 2 legs use locker 7. Animals with 6 legs use locker 3. Animals with 4 legs use locker 9. Animals with 8 legs use locker 5.",
+   "question": "Which locker does Mark's pet use?",
+   "cf_question": "Which locker does Mark's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "7",
+   "cf_answer": "3",
+   "hop1": {
+    "question": "Which animal is Mark's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0041",
+   "family": "BRL",
+   "scene": "T-0041",
+   "bridge": "duck",
+   "cf_bridge": "wolf",
+   "third": "turkey",
+   "people": [
+    "Amy",
+    "Sean",
+    "Diana",
+    "Emma",
+    "Mark"
+   ],
+   "pets": [
+    "lion",
+    "duck",
+    "wolf",
+    "turkey",
+    "sheep"
+   ],
+   "holder": "Sean",
+   "cue": "Sean",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 1,
+    "6": 5,
+    "8": 3
+   },
+   "context": "Amy's pet is a lion. Sean's pet is a duck. Diana's pet is a wolf. Emma's pet is a turkey. Mark's pet is a sheep. Animals with 4 legs use locker 1. Animals with 8 legs use locker 3. Animals with 2 legs use locker 7. Animals with 6 legs use locker 5.",
+   "cf_context": "Amy's pet is a lion. Sean's pet is a wolf. Diana's pet is a duck. Emma's pet is a turkey. Mark's pet is a sheep. Animals with 4 legs use locker 1. Animals with 8 legs use locker 3. Animals with 2 legs use locker 7. Animals with 6 legs use locker 5.",
+   "off_context": "Amy's pet is a lion. Sean's pet is a duck. Diana's pet is a wolf. Emma's pet is a turkey. Mark's pet is a sheep. Animals with 4 legs use locker 5. Animals with 8 legs use locker 3. Animals with 2 legs use locker 7. Animals with 6 legs use locker 1.",
+   "question": "Which locker does Sean's pet use?",
+   "cf_question": "Which locker does Sean's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "7",
+   "cf_answer": "1",
+   "hop1": {
+    "question": "Which animal is Sean's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0042",
+   "family": "BRL",
+   "scene": "T-0042",
+   "bridge": "sheep",
+   "cf_bridge": "bee",
+   "third": "cat",
+   "people": [
+    "Eric",
+    "Sam",
+    "Ivan",
+    "Ryan",
+    "Peter"
+   ],
+   "pets": [
+    "lion",
+    "horse",
+    "sheep",
+    "cat",
+    "bee"
+   ],
+   "holder": "Ivan",
+   "cue": "Ivan",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 5,
+    "6": 9,
+    "8": 1
+   },
+   "context": "Eric's pet is a lion. Sam's pet is a horse. Ivan's pet is a sheep. Ryan's pet is a cat. Peter's pet is a bee. Animals with 6 legs use locker 9. Animals with 2 legs use locker 3. Animals with 8 legs use locker 1. Animals with 4 legs use locker 5.",
+   "cf_context": "Eric's pet is a lion. Sam's pet is a horse. Ivan's pet is a bee. Ryan's pet is a cat. Peter's pet is a sheep. Animals with 6 legs use locker 9. Animals with 2 legs use locker 3. Animals with 8 legs use locker 1. Animals with 4 legs use locker 5.",
+   "off_context": "Eric's pet is a lion. Sam's pet is a horse. Ivan's pet is a sheep. Ryan's pet is a cat. Peter's pet is a bee. Animals with 6 legs use locker 3. Animals with 2 legs use locker 9. Animals with 8 legs use locker 1. Animals with 4 legs use locker 5.",
+   "question": "Which locker does Ivan's pet use?",
+   "cf_question": "Which locker does Ivan's pet use?",
+   "mid": "4",
+   "cf_mid": "6",
+   "answer": "5",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Ivan's pet?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0043",
+   "family": "BRL",
+   "scene": "T-0043",
+   "bridge": "duck",
+   "cf_bridge": "horse",
+   "third": "frog",
+   "people": [
+    "Eve",
+    "Lily",
+    "Will",
+    "Eric",
+    "Leo"
+   ],
+   "pets": [
+    "frog",
+    "lion",
+    "duck",
+    "horse",
+    "chicken"
+   ],
+   "holder": "Will",
+   "cue": "Will",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 9,
+    "6": 3,
+    "8": 5
+   },
+   "context": "Eve's pet is a frog. Lily's pet is a lion. Will's pet is a duck. Eric's pet is a horse. Leo's pet is a chicken. Animals with 4 legs use locker 9. Animals with 2 legs use locker 7. Animals with 8 legs use locker 5. Animals with 6 legs use locker 3.",
+   "cf_context": "Eve's pet is a frog. Lily's pet is a lion. Will's pet is a horse. Eric's pet is a duck. Leo's pet is a chicken. Animals with 4 legs use locker 9. Animals with 2 legs use locker 7. Animals with 8 legs use locker 5. Animals with 6 legs use locker 3.",
+   "off_context": "Eve's pet is a frog. Lily's pet is a lion. Will's pet is a duck. Eric's pet is a horse. Leo's pet is a chicken. Animals with 4 legs use locker 5. Animals with 2 legs use locker 7. Animals with 8 legs use locker 9. Animals with 6 legs use locker 3.",
+   "question": "Which locker does Will's pet use?",
+   "cf_question": "Which locker does Will's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "7",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Will's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0044",
+   "family": "BRL",
+   "scene": "T-0044",
+   "bridge": "mouse",
+   "cf_bridge": "spider",
+   "third": "horse",
+   "people": [
+    "Henry",
+    "Emma",
+    "Laura",
+    "David",
+    "Ivy"
+   ],
+   "pets": [
+    "horse",
+    "mouse",
+    "turkey",
+    "bee",
+    "spider"
+   ],
+   "holder": "Emma",
+   "cue": "Emma",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 9,
+    "4": 3,
+    "6": 1,
+    "8": 5
+   },
+   "context": "Henry's pet is a horse. Emma's pet is a mouse. Laura's pet is a turkey. David's pet is a bee. Ivy's pet is a spider. Animals with 2 legs use locker 9. Animals with 6 legs use locker 1. Animals with 8 legs use locker 5. Animals with 4 legs use locker 3.",
+   "cf_context": "Henry's pet is a horse. Emma's pet is a spider. Laura's pet is a turkey. David's pet is a bee. Ivy's pet is a mouse. Animals with 2 legs use locker 9. Animals with 6 legs use locker 1. Animals with 8 legs use locker 5. Animals with 4 legs use locker 3.",
+   "off_context": "Henry's pet is a horse. Emma's pet is a mouse. Laura's pet is a turkey. David's pet is a bee. Ivy's pet is a spider. Animals with 2 legs use locker 5. Animals with 6 legs use locker 1. Animals with 8 legs use locker 9. Animals with 4 legs use locker 3.",
+   "question": "Which locker does Emma's pet use?",
+   "cf_question": "Which locker does Emma's pet use?",
+   "mid": "4",
+   "cf_mid": "8",
+   "answer": "3",
+   "cf_answer": "5",
+   "hop1": {
+    "question": "Which animal is Emma's pet?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0045",
+   "family": "BRL",
+   "scene": "T-0045",
+   "bridge": "pig",
+   "cf_bridge": "spider",
+   "third": "chicken",
+   "people": [
+    "Dan",
+    "Ella",
+    "Clara",
+    "Luke",
+    "Will"
+   ],
+   "pets": [
+    "lion",
+    "chicken",
+    "pig",
+    "goose",
+    "spider"
+   ],
+   "holder": "Clara",
+   "cue": "Clara",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 1,
+    "6": 5,
+    "8": 9
+   },
+   "context": "Dan's pet is a lion. Ella's pet is a chicken. Clara's pet is a pig. Luke's pet is a goose. Will's pet is a spider. Animals with 2 legs use locker 3. Animals with 4 legs use locker 1. Animals with 6 legs use locker 5. Animals with 8 legs use locker 9.",
+   "cf_context": "Dan's pet is a lion. Ella's pet is a chicken. Clara's pet is a spider. Luke's pet is a goose. Will's pet is a pig. Animals with 2 legs use locker 3. Animals with 4 legs use locker 1. Animals with 6 legs use locker 5. Animals with 8 legs use locker 9.",
+   "off_context": "Dan's pet is a lion. Ella's pet is a chicken. Clara's pet is a pig. Luke's pet is a goose. Will's pet is a spider. Animals with 2 legs use locker 9. Animals with 4 legs use locker 1. Animals with 6 legs use locker 5. Animals with 8 legs use locker 3.",
+   "question": "Which locker does Clara's pet use?",
+   "cf_question": "Which locker does Clara's pet use?",
+   "mid": "4",
+   "cf_mid": "8",
+   "answer": "1",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Clara's pet?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0046",
+   "family": "BRL",
+   "scene": "T-0046",
+   "bridge": "lion",
+   "cf_bridge": "turkey",
+   "third": "bee",
+   "people": [
+    "Dan",
+    "Laura",
+    "Nina",
+    "Luke",
+    "Ruby"
+   ],
+   "pets": [
+    "goose",
+    "turkey",
+    "bee",
+    "horse",
+    "lion"
+   ],
+   "holder": "Ruby",
+   "cue": "Ruby",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 5,
+    "6": 3,
+    "8": 9
+   },
+   "context": "Dan's pet is a goose. Laura's pet is a turkey. Nina's pet is a bee. Luke's pet is a horse. Ruby's pet is a lion. Animals with 8 legs use locker 9. Animals with 4 legs use locker 5. Animals with 2 legs use locker 7. Animals with 6 legs use locker 3.",
+   "cf_context": "Dan's pet is a goose. Laura's pet is a lion. Nina's pet is a bee. Luke's pet is a horse. Ruby's pet is a turkey. Animals with 8 legs use locker 9. Animals with 4 legs use locker 5. Animals with 2 legs use locker 7. Animals with 6 legs use locker 3.",
+   "off_context": "Dan's pet is a goose. Laura's pet is a turkey. Nina's pet is a bee. Luke's pet is a horse. Ruby's pet is a lion. Animals with 8 legs use locker 9. Animals with 4 legs use locker 5. Animals with 2 legs use locker 3. Animals with 6 legs use locker 7.",
+   "question": "Which locker does Ruby's pet use?",
+   "cf_question": "Which locker does Ruby's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "5",
+   "cf_answer": "7",
+   "hop1": {
+    "question": "Which animal is Ruby's pet?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0047",
+   "family": "BRL",
+   "scene": "T-0047",
+   "bridge": "spider",
+   "cf_bridge": "turkey",
+   "third": "pig",
+   "people": [
+    "Dan",
+    "Grace",
+    "Tara",
+    "Sara",
+    "Noah"
+   ],
+   "pets": [
+    "chicken",
+    "turkey",
+    "sheep",
+    "spider",
+    "pig"
+   ],
+   "holder": "Sara",
+   "cue": "Sara",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 5,
+    "4": 3,
+    "6": 9,
+    "8": 1
+   },
+   "context": "Dan's pet is a chicken. Grace's pet is a turkey. Tara's pet is a sheep. Sara's pet is a spider. Noah's pet is a pig. Animals with 8 legs use locker 1. Animals with 4 legs use locker 3. Animals with 6 legs use locker 9. Animals with 2 legs use locker 5.",
+   "cf_context": "Dan's pet is a chicken. Grace's pet is a spider. Tara's pet is a sheep. Sara's pet is a turkey. Noah's pet is a pig. Animals with 8 legs use locker 1. Animals with 4 legs use locker 3. Animals with 6 legs use locker 9. Animals with 2 legs use locker 5.",
+   "off_context": "Dan's pet is a chicken. Grace's pet is a turkey. Tara's pet is a sheep. Sara's pet is a spider. Noah's pet is a pig. Animals with 8 legs use locker 1. Animals with 4 legs use locker 3. Animals with 6 legs use locker 5. Animals with 2 legs use locker 9.",
+   "question": "Which locker does Sara's pet use?",
+   "cf_question": "Which locker does Sara's pet use?",
+   "mid": "8",
+   "cf_mid": "2",
+   "answer": "1",
+   "cf_answer": "5",
+   "hop1": {
+    "question": "Which animal is Sara's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 8 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0048",
+   "family": "BRL",
+   "scene": "T-0048",
+   "bridge": "turkey",
+   "cf_bridge": "cow",
+   "third": "goose",
+   "people": [
+    "Maria",
+    "Diana",
+    "Julia",
+    "Sara",
+    "Owen"
+   ],
+   "pets": [
+    "cow",
+    "duck",
+    "turkey",
+    "wolf",
+    "goose"
+   ],
+   "holder": "Julia",
+   "cue": "Julia",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 9,
+    "4": 3,
+    "6": 1,
+    "8": 5
+   },
+   "context": "Maria's pet is a cow. Diana's pet is a duck. Julia's pet is a turkey. Sara's pet is a wolf. Owen's pet is a goose. Animals with 2 legs use locker 9. Animals with 6 legs use locker 1. Animals with 4 legs use locker 3. Animals with 8 legs use locker 5.",
+   "cf_context": "Maria's pet is a turkey. Diana's pet is a duck. Julia's pet is a cow. Sara's pet is a wolf. Owen's pet is a goose. Animals with 2 legs use locker 9. Animals with 6 legs use locker 1. Animals with 4 legs use locker 3. Animals with 8 legs use locker 5.",
+   "off_context": "Maria's pet is a cow. Diana's pet is a duck. Julia's pet is a turkey. Sara's pet is a wolf. Owen's pet is a goose. Animals with 2 legs use locker 9. Animals with 6 legs use locker 1. Animals with 4 legs use locker 5. Animals with 8 legs use locker 3.",
+   "question": "Which locker does Julia's pet use?",
+   "cf_question": "Which locker does Julia's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "9",
+   "cf_answer": "3",
+   "hop1": {
+    "question": "Which animal is Julia's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0049",
+   "family": "BRL",
+   "scene": "T-0049",
+   "bridge": "duck",
+   "cf_bridge": "pig",
+   "third": "bee",
+   "people": [
+    "Owen",
+    "Anna",
+    "Zoe",
+    "Sara",
+    "Ivan"
+   ],
+   "pets": [
+    "bee",
+    "horse",
+    "lion",
+    "pig",
+    "duck"
+   ],
+   "holder": "Ivan",
+   "cue": "Ivan",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 5,
+    "6": 3,
+    "8": 1
+   },
+   "context": "Owen's pet is a bee. Anna's pet is a horse. Zoe's pet is a lion. Sara's pet is a pig. Ivan's pet is a duck. Animals with 4 legs use locker 5. Animals with 2 legs use locker 7. Animals with 6 legs use locker 3. Animals with 8 legs use locker 1.",
+   "cf_context": "Owen's pet is a bee. Anna's pet is a horse. Zoe's pet is a lion. Sara's pet is a duck. Ivan's pet is a pig. Animals with 4 legs use locker 5. Animals with 2 legs use locker 7. Animals with 6 legs use locker 3. Animals with 8 legs use locker 1.",
+   "off_context": "Owen's pet is a bee. Anna's pet is a horse. Zoe's pet is a lion. Sara's pet is a pig. Ivan's pet is a duck. Animals with 4 legs use locker 1. Animals with 2 legs use locker 7. Animals with 6 legs use locker 3. Animals with 8 legs use locker 5.",
+   "question": "Which locker does Ivan's pet use?",
+   "cf_question": "Which locker does Ivan's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "7",
+   "cf_answer": "5",
+   "hop1": {
+    "question": "Which animal is Ivan's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0050",
+   "family": "BRL",
+   "scene": "T-0050",
+   "bridge": "turkey",
+   "cf_bridge": "horse",
+   "third": "sheep",
+   "people": [
+    "Nina",
+    "Kate",
+    "Mia",
+    "Sara",
+    "Tara"
+   ],
+   "pets": [
+    "wolf",
+    "horse",
+    "turkey",
+    "dog",
+    "sheep"
+   ],
+   "holder": "Mia",
+   "cue": "Mia",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 9,
+    "6": 7,
+    "8": 1
+   },
+   "context": "Nina's pet is a wolf. Kate's pet is a horse. Mia's pet is a turkey. Sara's pet is a dog. Tara's pet is a sheep. Animals with 4 legs use locker 9. Animals with 2 legs use locker 3. Animals with 8 legs use locker 1. Animals with 6 legs use locker 7.",
+   "cf_context": "Nina's pet is a wolf. Kate's pet is a turkey. Mia's pet is a horse. Sara's pet is a dog. Tara's pet is a sheep. Animals with 4 legs use locker 9. Animals with 2 legs use locker 3. Animals with 8 legs use locker 1. Animals with 6 legs use locker 7.",
+   "off_context": "Nina's pet is a wolf. Kate's pet is a horse. Mia's pet is a turkey. Sara's pet is a dog. Tara's pet is a sheep. Animals with 4 legs use locker 7. Animals with 2 legs use locker 3. Animals with 8 legs use locker 1. Animals with 6 legs use locker 9.",
+   "question": "Which locker does Mia's pet use?",
+   "cf_question": "Which locker does Mia's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "3",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Mia's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0051",
+   "family": "BRL",
+   "scene": "T-0051",
+   "bridge": "spider",
+   "cf_bridge": "goose",
+   "third": "sheep",
+   "people": [
+    "Ben",
+    "Ivy",
+    "Eve",
+    "James",
+    "Leo"
+   ],
+   "pets": [
+    "goose",
+    "dog",
+    "frog",
+    "spider",
+    "sheep"
+   ],
+   "holder": "James",
+   "cue": "James",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 7,
+    "6": 5,
+    "8": 1
+   },
+   "context": "Ben's pet is a goose. Ivy's pet is a dog. Eve's pet is a frog. James's pet is a spider. Leo's pet is a sheep. Animals with 8 legs use locker 1. Animals with 2 legs use locker 3. Animals with 4 legs use locker 7. Animals with 6 legs use locker 5.",
+   "cf_context": "Ben's pet is a spider. Ivy's pet is a dog. Eve's pet is a frog. James's pet is a goose. Leo's pet is a sheep. Animals with 8 legs use locker 1. Animals with 2 legs use locker 3. Animals with 4 legs use locker 7. Animals with 6 legs use locker 5.",
+   "off_context": "Ben's pet is a goose. Ivy's pet is a dog. Eve's pet is a frog. James's pet is a spider. Leo's pet is a sheep. Animals with 8 legs use locker 1. Animals with 2 legs use locker 7. Animals with 4 legs use locker 3. Animals with 6 legs use locker 5.",
+   "question": "Which locker does James's pet use?",
+   "cf_question": "Which locker does James's pet use?",
+   "mid": "8",
+   "cf_mid": "2",
+   "answer": "1",
+   "cf_answer": "3",
+   "hop1": {
+    "question": "Which animal is James's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 8 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0052",
+   "family": "BRL",
+   "scene": "T-0052",
+   "bridge": "cat",
+   "cf_bridge": "chicken",
+   "third": "turkey",
+   "people": [
+    "Sam",
+    "Rose",
+    "Emma",
+    "Fiona",
+    "Will"
+   ],
+   "pets": [
+    "wolf",
+    "chicken",
+    "turkey",
+    "cat",
+    "pig"
+   ],
+   "holder": "Fiona",
+   "cue": "Fiona",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 9,
+    "6": 1,
+    "8": 5
+   },
+   "context": "Sam's pet is a wolf. Rose's pet is a chicken. Emma's pet is a turkey. Fiona's pet is a cat. Will's pet is a pig. Animals with 6 legs use locker 1. Animals with 2 legs use locker 3. Animals with 8 legs use locker 5. Animals with 4 legs use locker 9.",
+   "cf_context": "Sam's pet is a wolf. Rose's pet is a cat. Emma's pet is a turkey. Fiona's pet is a chicken. Will's pet is a pig. Animals with 6 legs use locker 1. Animals with 2 legs use locker 3. Animals with 8 legs use locker 5. Animals with 4 legs use locker 9.",
+   "off_context": "Sam's pet is a wolf. Rose's pet is a chicken. Emma's pet is a turkey. Fiona's pet is a cat. Will's pet is a pig. Animals with 6 legs use locker 3. Animals with 2 legs use locker 1. Animals with 8 legs use locker 5. Animals with 4 legs use locker 9.",
+   "question": "Which locker does Fiona's pet use?",
+   "cf_question": "Which locker does Fiona's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "9",
+   "cf_answer": "3",
+   "hop1": {
+    "question": "Which animal is Fiona's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0053",
+   "family": "BRL",
+   "scene": "T-0053",
+   "bridge": "chicken",
+   "cf_bridge": "sheep",
+   "third": "cat",
+   "people": [
+    "Fiona",
+    "Iris",
+    "Henry",
+    "Paul",
+    "Laura"
+   ],
+   "pets": [
+    "cat",
+    "duck",
+    "sheep",
+    "bee",
+    "chicken"
+   ],
+   "holder": "Laura",
+   "cue": "Laura",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 1,
+    "4": 9,
+    "6": 7,
+    "8": 5
+   },
+   "context": "Fiona's pet is a cat. Iris's pet is a duck. Henry's pet is a sheep. Paul's pet is a bee. Laura's pet is a chicken. Animals with 8 legs use locker 5. Animals with 6 legs use locker 7. Animals with 2 legs use locker 1. Animals with 4 legs use locker 9.",
+   "cf_context": "Fiona's pet is a cat. Iris's pet is a duck. Henry's pet is a chicken. Paul's pet is a bee. Laura's pet is a sheep. Animals with 8 legs use locker 5. Animals with 6 legs use locker 7. Animals with 2 legs use locker 1. Animals with 4 legs use locker 9.",
+   "off_context": "Fiona's pet is a cat. Iris's pet is a duck. Henry's pet is a sheep. Paul's pet is a bee. Laura's pet is a chicken. Animals with 8 legs use locker 9. Animals with 6 legs use locker 7. Animals with 2 legs use locker 1. Animals with 4 legs use locker 5.",
+   "question": "Which locker does Laura's pet use?",
+   "cf_question": "Which locker does Laura's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "1",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Laura's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0054",
+   "family": "BRL",
+   "scene": "T-0054",
+   "bridge": "horse",
+   "cf_bridge": "bee",
+   "third": "spider",
+   "people": [
+    "Grace",
+    "Paul",
+    "Ella",
+    "Sam",
+    "Anna"
+   ],
+   "pets": [
+    "frog",
+    "horse",
+    "bee",
+    "spider",
+    "lion"
+   ],
+   "holder": "Paul",
+   "cue": "Paul",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 9,
+    "4": 3,
+    "6": 1,
+    "8": 5
+   },
+   "context": "Grace's pet is a frog. Paul's pet is a horse. Ella's pet is a bee. Sam's pet is a spider. Anna's pet is a lion. Animals with 8 legs use locker 5. Animals with 4 legs use locker 3. Animals with 2 legs use locker 9. Animals with 6 legs use locker 1.",
+   "cf_context": "Grace's pet is a frog. Paul's pet is a bee. Ella's pet is a horse. Sam's pet is a spider. Anna's pet is a lion. Animals with 8 legs use locker 5. Animals with 4 legs use locker 3. Animals with 2 legs use locker 9. Animals with 6 legs use locker 1.",
+   "off_context": "Grace's pet is a frog. Paul's pet is a horse. Ella's pet is a bee. Sam's pet is a spider. Anna's pet is a lion. Animals with 8 legs use locker 5. Animals with 4 legs use locker 3. Animals with 2 legs use locker 1. Animals with 6 legs use locker 9.",
+   "question": "Which locker does Paul's pet use?",
+   "cf_question": "Which locker does Paul's pet use?",
+   "mid": "4",
+   "cf_mid": "6",
+   "answer": "3",
+   "cf_answer": "1",
+   "hop1": {
+    "question": "Which animal is Paul's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0055",
+   "family": "BRL",
+   "scene": "T-0055",
+   "bridge": "turkey",
+   "cf_bridge": "cat",
+   "third": "lion",
+   "people": [
+    "Will",
+    "Adam",
+    "Eva",
+    "Henry",
+    "Owen"
+   ],
+   "pets": [
+    "duck",
+    "lion",
+    "turkey",
+    "cat",
+    "horse"
+   ],
+   "holder": "Eva",
+   "cue": "Eva",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 7,
+    "6": 5,
+    "8": 9
+   },
+   "context": "Will's pet is a duck. Adam's pet is a lion. Eva's pet is a turkey. Henry's pet is a cat. Owen's pet is a horse. Animals with 4 legs use locker 7. Animals with 2 legs use locker 3. Animals with 6 legs use locker 5. Animals with 8 legs use locker 9.",
+   "cf_context": "Will's pet is a duck. Adam's pet is a lion. Eva's pet is a cat. Henry's pet is a turkey. Owen's pet is a horse. Animals with 4 legs use locker 7. Animals with 2 legs use locker 3. Animals with 6 legs use locker 5. Animals with 8 legs use locker 9.",
+   "off_context": "Will's pet is a duck. Adam's pet is a lion. Eva's pet is a turkey. Henry's pet is a cat. Owen's pet is a horse. Animals with 4 legs use locker 5. Animals with 2 legs use locker 3. Animals with 6 legs use locker 7. Animals with 8 legs use locker 9.",
+   "question": "Which locker does Eva's pet use?",
+   "cf_question": "Which locker does Eva's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "3",
+   "cf_answer": "7",
+   "hop1": {
+    "question": "Which animal is Eva's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0056",
+   "family": "BRL",
+   "scene": "T-0056",
+   "bridge": "spider",
+   "cf_bridge": "goose",
+   "third": "wolf",
+   "people": [
+    "Ivy",
+    "Grace",
+    "Luke",
+    "Julia",
+    "Tom"
+   ],
+   "pets": [
+    "spider",
+    "goose",
+    "mouse",
+    "wolf",
+    "dog"
+   ],
+   "holder": "Ivy",
+   "cue": "Ivy",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 9,
+    "4": 3,
+    "6": 1,
+    "8": 7
+   },
+   "context": "Ivy's pet is a spider. Grace's pet is a goose. Luke's pet is a mouse. Julia's pet is a wolf. Tom's pet is a dog. Animals with 4 legs use locker 3. Animals with 6 legs use locker 1. Animals with 2 legs use locker 9. Animals with 8 legs use locker 7.",
+   "cf_context": "Ivy's pet is a goose. Grace's pet is a spider. Luke's pet is a mouse. Julia's pet is a wolf. Tom's pet is a dog. Animals with 4 legs use locker 3. Animals with 6 legs use locker 1. Animals with 2 legs use locker 9. Animals with 8 legs use locker 7.",
+   "off_context": "Ivy's pet is a spider. Grace's pet is a goose. Luke's pet is a mouse. Julia's pet is a wolf. Tom's pet is a dog. Animals with 4 legs use locker 9. Animals with 6 legs use locker 1. Animals with 2 legs use locker 3. Animals with 8 legs use locker 7.",
+   "question": "Which locker does Ivy's pet use?",
+   "cf_question": "Which locker does Ivy's pet use?",
+   "mid": "8",
+   "cf_mid": "2",
+   "answer": "7",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Ivy's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 8 legs use?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0057",
+   "family": "BRL",
+   "scene": "T-0057",
+   "bridge": "duck",
+   "cf_bridge": "spider",
+   "third": "cow",
+   "people": [
+    "Amy",
+    "Kyle",
+    "Beth",
+    "Eva",
+    "Oscar"
+   ],
+   "pets": [
+    "cow",
+    "dog",
+    "bee",
+    "spider",
+    "duck"
+   ],
+   "holder": "Oscar",
+   "cue": "Oscar",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 9,
+    "4": 7,
+    "6": 5,
+    "8": 3
+   },
+   "context": "Amy's pet is a cow. Kyle's pet is a dog. Beth's pet is a bee. Eva's pet is a spider. Oscar's pet is a duck. Animals with 2 legs use locker 9. Animals with 6 legs use locker 5. Animals with 4 legs use locker 7. Animals with 8 legs use locker 3.",
+   "cf_context": "Amy's pet is a cow. Kyle's pet is a dog. Beth's pet is a bee. Eva's pet is a duck. Oscar's pet is a spider. Animals with 2 legs use locker 9. Animals with 6 legs use locker 5. Animals with 4 legs use locker 7. Animals with 8 legs use locker 3.",
+   "off_context": "Amy's pet is a cow. Kyle's pet is a dog. Beth's pet is a bee. Eva's pet is a spider. Oscar's pet is a duck. Animals with 2 legs use locker 9. Animals with 6 legs use locker 3. Animals with 4 legs use locker 7. Animals with 8 legs use locker 5.",
+   "question": "Which locker does Oscar's pet use?",
+   "cf_question": "Which locker does Oscar's pet use?",
+   "mid": "2",
+   "cf_mid": "8",
+   "answer": "9",
+   "cf_answer": "3",
+   "hop1": {
+    "question": "Which animal is Oscar's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0058",
+   "family": "BRL",
+   "scene": "T-0058",
+   "bridge": "goose",
+   "cf_bridge": "lion",
+   "third": "cat",
+   "people": [
+    "Rose",
+    "Emma",
+    "Tom",
+    "Kyle",
+    "Ryan"
+   ],
+   "pets": [
+    "horse",
+    "lion",
+    "goose",
+    "bee",
+    "cat"
+   ],
+   "holder": "Tom",
+   "cue": "Tom",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 5,
+    "4": 9,
+    "6": 3,
+    "8": 1
+   },
+   "context": "Rose's pet is a horse. Emma's pet is a lion. Tom's pet is a goose. Kyle's pet is a bee. Ryan's pet is a cat. Animals with 8 legs use locker 1. Animals with 6 legs use locker 3. Animals with 4 legs use locker 9. Animals with 2 legs use locker 5.",
+   "cf_context": "Rose's pet is a horse. Emma's pet is a goose. Tom's pet is a lion. Kyle's pet is a bee. Ryan's pet is a cat. Animals with 8 legs use locker 1. Animals with 6 legs use locker 3. Animals with 4 legs use locker 9. Animals with 2 legs use locker 5.",
+   "off_context": "Rose's pet is a horse. Emma's pet is a lion. Tom's pet is a goose. Kyle's pet is a bee. Ryan's pet is a cat. Animals with 8 legs use locker 9. Animals with 6 legs use locker 3. Animals with 4 legs use locker 1. Animals with 2 legs use locker 5.",
+   "question": "Which locker does Tom's pet use?",
+   "cf_question": "Which locker does Tom's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "5",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Tom's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0059",
+   "family": "BRL",
+   "scene": "T-0059",
+   "bridge": "goose",
+   "cf_bridge": "bee",
+   "third": "mouse",
+   "people": [
+    "Eva",
+    "Eric",
+    "Amy",
+    "Max",
+    "Lily"
+   ],
+   "pets": [
+    "bee",
+    "spider",
+    "frog",
+    "mouse",
+    "goose"
+   ],
+   "holder": "Lily",
+   "cue": "Lily",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 5,
+    "4": 9,
+    "6": 7,
+    "8": 3
+   },
+   "context": "Eva's pet is a bee. Eric's pet is a spider. Amy's pet is a frog. Max's pet is a mouse. Lily's pet is a goose. Animals with 6 legs use locker 7. Animals with 4 legs use locker 9. Animals with 2 legs use locker 5. Animals with 8 legs use locker 3.",
+   "cf_context": "Eva's pet is a goose. Eric's pet is a spider. Amy's pet is a frog. Max's pet is a mouse. Lily's pet is a bee. Animals with 6 legs use locker 7. Animals with 4 legs use locker 9. Animals with 2 legs use locker 5. Animals with 8 legs use locker 3.",
+   "off_context": "Eva's pet is a bee. Eric's pet is a spider. Amy's pet is a frog. Max's pet is a mouse. Lily's pet is a goose. Animals with 6 legs use locker 9. Animals with 4 legs use locker 7. Animals with 2 legs use locker 5. Animals with 8 legs use locker 3.",
+   "question": "Which locker does Lily's pet use?",
+   "cf_question": "Which locker does Lily's pet use?",
+   "mid": "2",
+   "cf_mid": "6",
+   "answer": "5",
+   "cf_answer": "7",
+   "hop1": {
+    "question": "Which animal is Lily's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0060",
+   "family": "BRL",
+   "scene": "T-0060",
+   "bridge": "spider",
+   "cf_bridge": "bee",
+   "third": "goose",
+   "people": [
+    "Beth",
+    "Rose",
+    "Carl",
+    "Ryan",
+    "Eric"
+   ],
+   "pets": [
+    "goose",
+    "bee",
+    "cow",
+    "frog",
+    "spider"
+   ],
+   "holder": "Eric",
+   "cue": "Eric",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 1,
+    "4": 7,
+    "6": 9,
+    "8": 3
+   },
+   "context": "Beth's pet is a goose. Rose's pet is a bee. Carl's pet is a cow. Ryan's pet is a frog. Eric's pet is a spider. Animals with 8 legs use locker 3. Animals with 6 legs use locker 9. Animals with 4 legs use locker 7. Animals with 2 legs use locker 1.",
+   "cf_context": "Beth's pet is a goose. Rose's pet is a spider. Carl's pet is a cow. Ryan's pet is a frog. Eric's pet is a bee. Animals with 8 legs use locker 3. Animals with 6 legs use locker 9. Animals with 4 legs use locker 7. Animals with 2 legs use locker 1.",
+   "off_context": "Beth's pet is a goose. Rose's pet is a bee. Carl's pet is a cow. Ryan's pet is a frog. Eric's pet is a spider. Animals with 8 legs use locker 3. Animals with 6 legs use locker 1. Animals with 4 legs use locker 7. Animals with 2 legs use locker 9.",
+   "question": "Which locker does Eric's pet use?",
+   "cf_question": "Which locker does Eric's pet use?",
+   "mid": "8",
+   "cf_mid": "6",
+   "answer": "3",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Eric's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 8 legs use?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0061",
+   "family": "BRL",
+   "scene": "T-0061",
+   "bridge": "turkey",
+   "cf_bridge": "cat",
+   "third": "sheep",
+   "people": [
+    "Mark",
+    "Ella",
+    "Max",
+    "Iris",
+    "Jack"
+   ],
+   "pets": [
+    "cat",
+    "sheep",
+    "horse",
+    "turkey",
+    "pig"
+   ],
+   "holder": "Iris",
+   "cue": "Iris",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 1,
+    "6": 3,
+    "8": 9
+   },
+   "context": "Mark's pet is a cat. Ella's pet is a sheep. Max's pet is a horse. Iris's pet is a turkey. Jack's pet is a pig. Animals with 6 legs use locker 3. Animals with 8 legs use locker 9. Animals with 2 legs use locker 7. Animals with 4 legs use locker 1.",
+   "cf_context": "Mark's pet is a turkey. Ella's pet is a sheep. Max's pet is a horse. Iris's pet is a cat. Jack's pet is a pig. Animals with 6 legs use locker 3. Animals with 8 legs use locker 9. Animals with 2 legs use locker 7. Animals with 4 legs use locker 1.",
+   "off_context": "Mark's pet is a cat. Ella's pet is a sheep. Max's pet is a horse. Iris's pet is a turkey. Jack's pet is a pig. Animals with 6 legs use locker 1. Animals with 8 legs use locker 9. Animals with 2 legs use locker 7. Animals with 4 legs use locker 3.",
+   "question": "Which locker does Iris's pet use?",
+   "cf_question": "Which locker does Iris's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "7",
+   "cf_answer": "1",
+   "hop1": {
+    "question": "Which animal is Iris's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0062",
+   "family": "BRL",
+   "scene": "T-0062",
+   "bridge": "frog",
+   "cf_bridge": "goose",
+   "third": "wolf",
+   "people": [
+    "Owen",
+    "Max",
+    "Dan",
+    "Jack",
+    "Nina"
+   ],
+   "pets": [
+    "goose",
+    "wolf",
+    "chicken",
+    "turkey",
+    "frog"
+   ],
+   "holder": "Nina",
+   "cue": "Nina",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 5,
+    "6": 1,
+    "8": 3
+   },
+   "context": "Owen's pet is a goose. Max's pet is a wolf. Dan's pet is a chicken. Jack's pet is a turkey. Nina's pet is a frog. Animals with 2 legs use locker 7. Animals with 4 legs use locker 5. Animals with 6 legs use locker 1. Animals with 8 legs use locker 3.",
+   "cf_context": "Owen's pet is a frog. Max's pet is a wolf. Dan's pet is a chicken. Jack's pet is a turkey. Nina's pet is a goose. Animals with 2 legs use locker 7. Animals with 4 legs use locker 5. Animals with 6 legs use locker 1. Animals with 8 legs use locker 3.",
+   "off_context": "Owen's pet is a goose. Max's pet is a wolf. Dan's pet is a chicken. Jack's pet is a turkey. Nina's pet is a frog. Animals with 2 legs use locker 3. Animals with 4 legs use locker 5. Animals with 6 legs use locker 1. Animals with 8 legs use locker 7.",
+   "question": "Which locker does Nina's pet use?",
+   "cf_question": "Which locker does Nina's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "5",
+   "cf_answer": "7",
+   "hop1": {
+    "question": "Which animal is Nina's pet?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0063",
+   "family": "BRL",
+   "scene": "T-0063",
+   "bridge": "goose",
+   "cf_bridge": "mouse",
+   "third": "lion",
+   "people": [
+    "Anna",
+    "Eve",
+    "David",
+    "Frank",
+    "Lily"
+   ],
+   "pets": [
+    "mouse",
+    "turkey",
+    "lion",
+    "chicken",
+    "goose"
+   ],
+   "holder": "Lily",
+   "cue": "Lily",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 1,
+    "4": 7,
+    "6": 3,
+    "8": 9
+   },
+   "context": "Anna's pet is a mouse. Eve's pet is a turkey. David's pet is a lion. Frank's pet is a chicken. Lily's pet is a goose. Animals with 4 legs use locker 7. Animals with 8 legs use locker 9. Animals with 2 legs use locker 1. Animals with 6 legs use locker 3.",
+   "cf_context": "Anna's pet is a goose. Eve's pet is a turkey. David's pet is a lion. Frank's pet is a chicken. Lily's pet is a mouse. Animals with 4 legs use locker 7. Animals with 8 legs use locker 9. Animals with 2 legs use locker 1. Animals with 6 legs use locker 3.",
+   "off_context": "Anna's pet is a mouse. Eve's pet is a turkey. David's pet is a lion. Frank's pet is a chicken. Lily's pet is a goose. Animals with 4 legs use locker 3. Animals with 8 legs use locker 9. Animals with 2 legs use locker 1. Animals with 6 legs use locker 7.",
+   "question": "Which locker does Lily's pet use?",
+   "cf_question": "Which locker does Lily's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "1",
+   "cf_answer": "7",
+   "hop1": {
+    "question": "Which animal is Lily's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0064",
+   "family": "BRL",
+   "scene": "T-0064",
+   "bridge": "bee",
+   "cf_bridge": "chicken",
+   "third": "turkey",
+   "people": [
+    "Kyle",
+    "Clara",
+    "Lily",
+    "Carl",
+    "Grace"
+   ],
+   "pets": [
+    "duck",
+    "chicken",
+    "turkey",
+    "frog",
+    "bee"
+   ],
+   "holder": "Grace",
+   "cue": "Grace",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 1,
+    "6": 5,
+    "8": 9
+   },
+   "context": "Kyle's pet is a duck. Clara's pet is a chicken. Lily's pet is a turkey. Carl's pet is a frog. Grace's pet is a bee. Animals with 6 legs use locker 5. Animals with 2 legs use locker 3. Animals with 8 legs use locker 9. Animals with 4 legs use locker 1.",
+   "cf_context": "Kyle's pet is a duck. Clara's pet is a bee. Lily's pet is a turkey. Carl's pet is a frog. Grace's pet is a chicken. Animals with 6 legs use locker 5. Animals with 2 legs use locker 3. Animals with 8 legs use locker 9. Animals with 4 legs use locker 1.",
+   "off_context": "Kyle's pet is a duck. Clara's pet is a chicken. Lily's pet is a turkey. Carl's pet is a frog. Grace's pet is a bee. Animals with 6 legs use locker 5. Animals with 2 legs use locker 1. Animals with 8 legs use locker 9. Animals with 4 legs use locker 3.",
+   "question": "Which locker does Grace's pet use?",
+   "cf_question": "Which locker does Grace's pet use?",
+   "mid": "6",
+   "cf_mid": "2",
+   "answer": "5",
+   "cf_answer": "3",
+   "hop1": {
+    "question": "Which animal is Grace's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 6 legs use?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0065",
+   "family": "BRL",
+   "scene": "T-0065",
+   "bridge": "horse",
+   "cf_bridge": "spider",
+   "third": "duck",
+   "people": [
+    "Sara",
+    "Fiona",
+    "David",
+    "Leo",
+    "Ella"
+   ],
+   "pets": [
+    "duck",
+    "chicken",
+    "horse",
+    "cat",
+    "spider"
+   ],
+   "holder": "David",
+   "cue": "David",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 5,
+    "6": 3,
+    "8": 1
+   },
+   "context": "Sara's pet is a duck. Fiona's pet is a chicken. David's pet is a horse. Leo's pet is a cat. Ella's pet is a spider. Animals with 8 legs use locker 1. Animals with 4 legs use locker 5. Animals with 6 legs use locker 3. Animals with 2 legs use locker 7.",
+   "cf_context": "Sara's pet is a duck. Fiona's pet is a chicken. David's pet is a spider. Leo's pet is a cat. Ella's pet is a horse. Animals with 8 legs use locker 1. Animals with 4 legs use locker 5. Animals with 6 legs use locker 3. Animals with 2 legs use locker 7.",
+   "off_context": "Sara's pet is a duck. Fiona's pet is a chicken. David's pet is a horse. Leo's pet is a cat. Ella's pet is a spider. Animals with 8 legs use locker 7. Animals with 4 legs use locker 5. Animals with 6 legs use locker 3. Animals with 2 legs use locker 1.",
+   "question": "Which locker does David's pet use?",
+   "cf_question": "Which locker does David's pet use?",
+   "mid": "4",
+   "cf_mid": "8",
+   "answer": "5",
+   "cf_answer": "1",
+   "hop1": {
+    "question": "Which animal is David's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0066",
+   "family": "BRL",
+   "scene": "T-0066",
+   "bridge": "turkey",
+   "cf_bridge": "wolf",
+   "third": "chicken",
+   "people": [
+    "Beth",
+    "Kate",
+    "Vera",
+    "Mark",
+    "Ryan"
+   ],
+   "pets": [
+    "chicken",
+    "turkey",
+    "wolf",
+    "sheep",
+    "frog"
+   ],
+   "holder": "Kate",
+   "cue": "Kate",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 5,
+    "6": 7,
+    "8": 1
+   },
+   "context": "Beth's pet is a chicken. Kate's pet is a turkey. Vera's pet is a wolf. Mark's pet is a sheep. Ryan's pet is a frog. Animals with 4 legs use locker 5. Animals with 2 legs use locker 3. Animals with 8 legs use locker 1. Animals with 6 legs use locker 7.",
+   "cf_context": "Beth's pet is a chicken. Kate's pet is a wolf. Vera's pet is a turkey. Mark's pet is a sheep. Ryan's pet is a frog. Animals with 4 legs use locker 5. Animals with 2 legs use locker 3. Animals with 8 legs use locker 1. Animals with 6 legs use locker 7.",
+   "off_context": "Beth's pet is a chicken. Kate's pet is a turkey. Vera's pet is a wolf. Mark's pet is a sheep. Ryan's pet is a frog. Animals with 4 legs use locker 1. Animals with 2 legs use locker 3. Animals with 8 legs use locker 5. Animals with 6 legs use locker 7.",
+   "question": "Which locker does Kate's pet use?",
+   "cf_question": "Which locker does Kate's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "3",
+   "cf_answer": "5",
+   "hop1": {
+    "question": "Which animal is Kate's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0067",
+   "family": "BRL",
+   "scene": "T-0067",
+   "bridge": "spider",
+   "cf_bridge": "wolf",
+   "third": "mouse",
+   "people": [
+    "James",
+    "Amy",
+    "Lucy",
+    "Anna",
+    "Eve"
+   ],
+   "pets": [
+    "mouse",
+    "goose",
+    "wolf",
+    "spider",
+    "lion"
+   ],
+   "holder": "Anna",
+   "cue": "Anna",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 1,
+    "4": 9,
+    "6": 7,
+    "8": 3
+   },
+   "context": "James's pet is a mouse. Amy's pet is a goose. Lucy's pet is a wolf. Anna's pet is a spider. Eve's pet is a lion. Animals with 8 legs use locker 3. Animals with 6 legs use locker 7. Animals with 4 legs use locker 9. Animals with 2 legs use locker 1.",
+   "cf_context": "James's pet is a mouse. Amy's pet is a goose. Lucy's pet is a spider. Anna's pet is a wolf. Eve's pet is a lion. Animals with 8 legs use locker 3. Animals with 6 legs use locker 7. Animals with 4 legs use locker 9. Animals with 2 legs use locker 1.",
+   "off_context": "James's pet is a mouse. Amy's pet is a goose. Lucy's pet is a wolf. Anna's pet is a spider. Eve's pet is a lion. Animals with 8 legs use locker 3. Animals with 6 legs use locker 7. Animals with 4 legs use locker 1. Animals with 2 legs use locker 9.",
+   "question": "Which locker does Anna's pet use?",
+   "cf_question": "Which locker does Anna's pet use?",
+   "mid": "8",
+   "cf_mid": "4",
+   "answer": "3",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Anna's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 8 legs use?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0068",
+   "family": "BRL",
+   "scene": "T-0068",
+   "bridge": "frog",
+   "cf_bridge": "chicken",
+   "third": "wolf",
+   "people": [
+    "Noah",
+    "Ben",
+    "Grace",
+    "Fiona",
+    "Peter"
+   ],
+   "pets": [
+    "dog",
+    "sheep",
+    "chicken",
+    "wolf",
+    "frog"
+   ],
+   "holder": "Peter",
+   "cue": "Peter",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 9,
+    "6": 1,
+    "8": 3
+   },
+   "context": "Noah's pet is a dog. Ben's pet is a sheep. Grace's pet is a chicken. Fiona's pet is a wolf. Peter's pet is a frog. Animals with 4 legs use locker 9. Animals with 8 legs use locker 3. Animals with 6 legs use locker 1. Animals with 2 legs use locker 7.",
+   "cf_context": "Noah's pet is a dog. Ben's pet is a sheep. Grace's pet is a frog. Fiona's pet is a wolf. Peter's pet is a chicken. Animals with 4 legs use locker 9. Animals with 8 legs use locker 3. Animals with 6 legs use locker 1. Animals with 2 legs use locker 7.",
+   "off_context": "Noah's pet is a dog. Ben's pet is a sheep. Grace's pet is a chicken. Fiona's pet is a wolf. Peter's pet is a frog. Animals with 4 legs use locker 9. Animals with 8 legs use locker 3. Animals with 6 legs use locker 7. Animals with 2 legs use locker 1.",
+   "question": "Which locker does Peter's pet use?",
+   "cf_question": "Which locker does Peter's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "9",
+   "cf_answer": "7",
+   "hop1": {
+    "question": "Which animal is Peter's pet?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0069",
+   "family": "BRL",
+   "scene": "T-0069",
+   "bridge": "bee",
+   "cf_bridge": "spider",
+   "third": "wolf",
+   "people": [
+    "David",
+    "Paul",
+    "Rose",
+    "Julia",
+    "Finn"
+   ],
+   "pets": [
+    "pig",
+    "spider",
+    "bee",
+    "duck",
+    "wolf"
+   ],
+   "holder": "Rose",
+   "cue": "Rose",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 3,
+    "6": 9,
+    "8": 5
+   },
+   "context": "David's pet is a pig. Paul's pet is a spider. Rose's pet is a bee. Julia's pet is a duck. Finn's pet is a wolf. Animals with 6 legs use locker 9. Animals with 4 legs use locker 3. Animals with 2 legs use locker 7. Animals with 8 legs use locker 5.",
+   "cf_context": "David's pet is a pig. Paul's pet is a bee. Rose's pet is a spider. Julia's pet is a duck. Finn's pet is a wolf. Animals with 6 legs use locker 9. Animals with 4 legs use locker 3. Animals with 2 legs use locker 7. Animals with 8 legs use locker 5.",
+   "off_context": "David's pet is a pig. Paul's pet is a spider. Rose's pet is a bee. Julia's pet is a duck. Finn's pet is a wolf. Animals with 6 legs use locker 9. Animals with 4 legs use locker 3. Animals with 2 legs use locker 5. Animals with 8 legs use locker 7.",
+   "question": "Which locker does Rose's pet use?",
+   "cf_question": "Which locker does Rose's pet use?",
+   "mid": "6",
+   "cf_mid": "8",
+   "answer": "9",
+   "cf_answer": "5",
+   "hop1": {
+    "question": "Which animal is Rose's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 6 legs use?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0070",
+   "family": "BRL",
+   "scene": "T-0070",
+   "bridge": "mouse",
+   "cf_bridge": "duck",
+   "third": "chicken",
+   "people": [
+    "Noah",
+    "Grace",
+    "Frank",
+    "Fiona",
+    "Diana"
+   ],
+   "pets": [
+    "mouse",
+    "horse",
+    "chicken",
+    "lion",
+    "duck"
+   ],
+   "holder": "Noah",
+   "cue": "Noah",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 1,
+    "4": 7,
+    "6": 5,
+    "8": 3
+   },
+   "context": "Noah's pet is a mouse. Grace's pet is a horse. Frank's pet is a chicken. Fiona's pet is a lion. Diana's pet is a duck. Animals with 2 legs use locker 1. Animals with 6 legs use locker 5. Animals with 4 legs use locker 7. Animals with 8 legs use locker 3.",
+   "cf_context": "Noah's pet is a duck. Grace's pet is a horse. Frank's pet is a chicken. Fiona's pet is a lion. Diana's pet is a mouse. Animals with 2 legs use locker 1. Animals with 6 legs use locker 5. Animals with 4 legs use locker 7. Animals with 8 legs use locker 3.",
+   "off_context": "Noah's pet is a mouse. Grace's pet is a horse. Frank's pet is a chicken. Fiona's pet is a lion. Diana's pet is a duck. Animals with 2 legs use locker 5. Animals with 6 legs use locker 1. Animals with 4 legs use locker 7. Animals with 8 legs use locker 3.",
+   "question": "Which locker does Noah's pet use?",
+   "cf_question": "Which locker does Noah's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "7",
+   "cf_answer": "1",
+   "hop1": {
+    "question": "Which animal is Noah's pet?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0071",
+   "family": "BRL",
+   "scene": "T-0071",
+   "bridge": "duck",
+   "cf_bridge": "spider",
+   "third": "wolf",
+   "people": [
+    "Will",
+    "Eric",
+    "Peter",
+    "Adam",
+    "Lily"
+   ],
+   "pets": [
+    "spider",
+    "wolf",
+    "duck",
+    "pig",
+    "dog"
+   ],
+   "holder": "Peter",
+   "cue": "Peter",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 5,
+    "6": 1,
+    "8": 3
+   },
+   "context": "Will's pet is a spider. Eric's pet is a wolf. Peter's pet is a duck. Adam's pet is a pig. Lily's pet is a dog. Animals with 2 legs use locker 7. Animals with 6 legs use locker 1. Animals with 4 legs use locker 5. Animals with 8 legs use locker 3.",
+   "cf_context": "Will's pet is a duck. Eric's pet is a wolf. Peter's pet is a spider. Adam's pet is a pig. Lily's pet is a dog. Animals with 2 legs use locker 7. Animals with 6 legs use locker 1. Animals with 4 legs use locker 5. Animals with 8 legs use locker 3.",
+   "off_context": "Will's pet is a spider. Eric's pet is a wolf. Peter's pet is a duck. Adam's pet is a pig. Lily's pet is a dog. Animals with 2 legs use locker 7. Animals with 6 legs use locker 3. Animals with 4 legs use locker 5. Animals with 8 legs use locker 1.",
+   "question": "Which locker does Peter's pet use?",
+   "cf_question": "Which locker does Peter's pet use?",
+   "mid": "2",
+   "cf_mid": "8",
+   "answer": "7",
+   "cf_answer": "3",
+   "hop1": {
+    "question": "Which animal is Peter's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0072",
+   "family": "BRL",
+   "scene": "T-0072",
+   "bridge": "turkey",
+   "cf_bridge": "pig",
+   "third": "mouse",
+   "people": [
+    "Ryan",
+    "Tom",
+    "Mia",
+    "Paul",
+    "Olivia"
+   ],
+   "pets": [
+    "mouse",
+    "chicken",
+    "turkey",
+    "duck",
+    "pig"
+   ],
+   "holder": "Mia",
+   "cue": "Mia",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 5,
+    "6": 1,
+    "8": 9
+   },
+   "context": "Ryan's pet is a mouse. Tom's pet is a chicken. Mia's pet is a turkey. Paul's pet is a duck. Olivia's pet is a pig. Animals with 6 legs use locker 1. Animals with 2 legs use locker 3. Animals with 4 legs use locker 5. Animals with 8 legs use locker 9.",
+   "cf_context": "Ryan's pet is a mouse. Tom's pet is a chicken. Mia's pet is a pig. Paul's pet is a duck. Olivia's pet is a turkey. Animals with 6 legs use locker 1. Animals with 2 legs use locker 3. Animals with 4 legs use locker 5. Animals with 8 legs use locker 9.",
+   "off_context": "Ryan's pet is a mouse. Tom's pet is a chicken. Mia's pet is a turkey. Paul's pet is a duck. Olivia's pet is a pig. Animals with 6 legs use locker 5. Animals with 2 legs use locker 3. Animals with 4 legs use locker 1. Animals with 8 legs use locker 9.",
+   "question": "Which locker does Mia's pet use?",
+   "cf_question": "Which locker does Mia's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "3",
+   "cf_answer": "5",
+   "hop1": {
+    "question": "Which animal is Mia's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0073",
+   "family": "BRL",
+   "scene": "T-0073",
+   "bridge": "horse",
+   "cf_bridge": "chicken",
+   "third": "pig",
+   "people": [
+    "Oscar",
+    "Tara",
+    "Clara",
+    "Adam",
+    "Mia"
+   ],
+   "pets": [
+    "chicken",
+    "goose",
+    "horse",
+    "frog",
+    "pig"
+   ],
+   "holder": "Clara",
+   "cue": "Clara",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 5,
+    "4": 7,
+    "6": 1,
+    "8": 9
+   },
+   "context": "Oscar's pet is a chicken. Tara's pet is a goose. Clara's pet is a horse. Adam's pet is a frog. Mia's pet is a pig. Animals with 8 legs use locker 9. Animals with 6 legs use locker 1. Animals with 4 legs use locker 7. Animals with 2 legs use locker 5.",
+   "cf_context": "Oscar's pet is a horse. Tara's pet is a goose. Clara's pet is a chicken. Adam's pet is a frog. Mia's pet is a pig. Animals with 8 legs use locker 9. Animals with 6 legs use locker 1. Animals with 4 legs use locker 7. Animals with 2 legs use locker 5.",
+   "off_context": "Oscar's pet is a chicken. Tara's pet is a goose. Clara's pet is a horse. Adam's pet is a frog. Mia's pet is a pig. Animals with 8 legs use locker 9. Animals with 6 legs use locker 5. Animals with 4 legs use locker 7. Animals with 2 legs use locker 1.",
+   "question": "Which locker does Clara's pet use?",
+   "cf_question": "Which locker does Clara's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "7",
+   "cf_answer": "5",
+   "hop1": {
+    "question": "Which animal is Clara's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0074",
+   "family": "BRL",
+   "scene": "T-0074",
+   "bridge": "mouse",
+   "cf_bridge": "spider",
+   "third": "wolf",
+   "people": [
+    "Tom",
+    "Anna",
+    "Mark",
+    "David",
+    "Ryan"
+   ],
+   "pets": [
+    "spider",
+    "wolf",
+    "bee",
+    "mouse",
+    "chicken"
+   ],
+   "holder": "David",
+   "cue": "David",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 9,
+    "6": 5,
+    "8": 7
+   },
+   "context": "Tom's pet is a spider. Anna's pet is a wolf. Mark's pet is a bee. David's pet is a mouse. Ryan's pet is a chicken. Animals with 6 legs use locker 5. Animals with 4 legs use locker 9. Animals with 8 legs use locker 7. Animals with 2 legs use locker 3.",
+   "cf_context": "Tom's pet is a mouse. Anna's pet is a wolf. Mark's pet is a bee. David's pet is a spider. Ryan's pet is a chicken. Animals with 6 legs use locker 5. Animals with 4 legs use locker 9. Animals with 8 legs use locker 7. Animals with 2 legs use locker 3.",
+   "off_context": "Tom's pet is a spider. Anna's pet is a wolf. Mark's pet is a bee. David's pet is a mouse. Ryan's pet is a chicken. Animals with 6 legs use locker 5. Animals with 4 legs use locker 9. Animals with 8 legs use locker 3. Animals with 2 legs use locker 7.",
+   "question": "Which locker does David's pet use?",
+   "cf_question": "Which locker does David's pet use?",
+   "mid": "4",
+   "cf_mid": "8",
+   "answer": "9",
+   "cf_answer": "7",
+   "hop1": {
+    "question": "Which animal is David's pet?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0075",
+   "family": "BRL",
+   "scene": "T-0075",
+   "bridge": "bee",
+   "cf_bridge": "goose",
+   "third": "frog",
+   "people": [
+    "Mark",
+    "Clara",
+    "Sam",
+    "Tara",
+    "Emma"
+   ],
+   "pets": [
+    "frog",
+    "sheep",
+    "bee",
+    "goose",
+    "wolf"
+   ],
+   "holder": "Sam",
+   "cue": "Sam",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 9,
+    "4": 3,
+    "6": 1,
+    "8": 7
+   },
+   "context": "Mark's pet is a frog. Clara's pet is a sheep. Sam's pet is a bee. Tara's pet is a goose. Emma's pet is a wolf. Animals with 6 legs use locker 1. Animals with 2 legs use locker 9. Animals with 4 legs use locker 3. Animals with 8 legs use locker 7.",
+   "cf_context": "Mark's pet is a frog. Clara's pet is a sheep. Sam's pet is a goose. Tara's pet is a bee. Emma's pet is a wolf. Animals with 6 legs use locker 1. Animals with 2 legs use locker 9. Animals with 4 legs use locker 3. Animals with 8 legs use locker 7.",
+   "off_context": "Mark's pet is a frog. Clara's pet is a sheep. Sam's pet is a bee. Tara's pet is a goose. Emma's pet is a wolf. Animals with 6 legs use locker 1. Animals with 2 legs use locker 3. Animals with 4 legs use locker 9. Animals with 8 legs use locker 7.",
+   "question": "Which locker does Sam's pet use?",
+   "cf_question": "Which locker does Sam's pet use?",
+   "mid": "6",
+   "cf_mid": "2",
+   "answer": "1",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Sam's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 6 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0076",
+   "family": "BRL",
+   "scene": "T-0076",
+   "bridge": "chicken",
+   "cf_bridge": "pig",
+   "third": "spider",
+   "people": [
+    "Ruby",
+    "Lily",
+    "Beth",
+    "Sam",
+    "Tara"
+   ],
+   "pets": [
+    "spider",
+    "chicken",
+    "dog",
+    "cow",
+    "pig"
+   ],
+   "holder": "Lily",
+   "cue": "Lily",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 7,
+    "6": 9,
+    "8": 5
+   },
+   "context": "Ruby's pet is a spider. Lily's pet is a chicken. Beth's pet is a dog. Sam's pet is a cow. Tara's pet is a pig. Animals with 4 legs use locker 7. Animals with 6 legs use locker 9. Animals with 8 legs use locker 5. Animals with 2 legs use locker 3.",
+   "cf_context": "Ruby's pet is a spider. Lily's pet is a pig. Beth's pet is a dog. Sam's pet is a cow. Tara's pet is a chicken. Animals with 4 legs use locker 7. Animals with 6 legs use locker 9. Animals with 8 legs use locker 5. Animals with 2 legs use locker 3.",
+   "off_context": "Ruby's pet is a spider. Lily's pet is a chicken. Beth's pet is a dog. Sam's pet is a cow. Tara's pet is a pig. Animals with 4 legs use locker 5. Animals with 6 legs use locker 9. Animals with 8 legs use locker 7. Animals with 2 legs use locker 3.",
+   "question": "Which locker does Lily's pet use?",
+   "cf_question": "Which locker does Lily's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "3",
+   "cf_answer": "7",
+   "hop1": {
+    "question": "Which animal is Lily's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0077",
+   "family": "BRL",
+   "scene": "T-0077",
+   "bridge": "sheep",
+   "cf_bridge": "chicken",
+   "third": "goose",
+   "people": [
+    "Sean",
+    "Rose",
+    "Frank",
+    "Carl",
+    "Alice"
+   ],
+   "pets": [
+    "goose",
+    "bee",
+    "dog",
+    "sheep",
+    "chicken"
+   ],
+   "holder": "Carl",
+   "cue": "Carl",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 1,
+    "4": 9,
+    "6": 3,
+    "8": 7
+   },
+   "context": "Sean's pet is a goose. Rose's pet is a bee. Frank's pet is a dog. Carl's pet is a sheep. Alice's pet is a chicken. Animals with 6 legs use locker 3. Animals with 4 legs use locker 9. Animals with 8 legs use locker 7. Animals with 2 legs use locker 1.",
+   "cf_context": "Sean's pet is a goose. Rose's pet is a bee. Frank's pet is a dog. Carl's pet is a chicken. Alice's pet is a sheep. Animals with 6 legs use locker 3. Animals with 4 legs use locker 9. Animals with 8 legs use locker 7. Animals with 2 legs use locker 1.",
+   "off_context": "Sean's pet is a goose. Rose's pet is a bee. Frank's pet is a dog. Carl's pet is a sheep. Alice's pet is a chicken. Animals with 6 legs use locker 3. Animals with 4 legs use locker 9. Animals with 8 legs use locker 1. Animals with 2 legs use locker 7.",
+   "question": "Which locker does Carl's pet use?",
+   "cf_question": "Which locker does Carl's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "9",
+   "cf_answer": "1",
+   "hop1": {
+    "question": "Which animal is Carl's pet?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0078",
+   "family": "BRL",
+   "scene": "T-0078",
+   "bridge": "chicken",
+   "cf_bridge": "cat",
+   "third": "bee",
+   "people": [
+    "Dan",
+    "Ryan",
+    "Will",
+    "Zoe",
+    "Diana"
+   ],
+   "pets": [
+    "sheep",
+    "bee",
+    "spider",
+    "chicken",
+    "cat"
+   ],
+   "holder": "Zoe",
+   "cue": "Zoe",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 5,
+    "4": 1,
+    "6": 9,
+    "8": 7
+   },
+   "context": "Dan's pet is a sheep. Ryan's pet is a bee. Will's pet is a spider. Zoe's pet is a chicken. Diana's pet is a cat. Animals with 6 legs use locker 9. Animals with 4 legs use locker 1. Animals with 2 legs use locker 5. Animals with 8 legs use locker 7.",
+   "cf_context": "Dan's pet is a sheep. Ryan's pet is a bee. Will's pet is a spider. Zoe's pet is a cat. Diana's pet is a chicken. Animals with 6 legs use locker 9. Animals with 4 legs use locker 1. Animals with 2 legs use locker 5. Animals with 8 legs use locker 7.",
+   "off_context": "Dan's pet is a sheep. Ryan's pet is a bee. Will's pet is a spider. Zoe's pet is a chicken. Diana's pet is a cat. Animals with 6 legs use locker 9. Animals with 4 legs use locker 7. Animals with 2 legs use locker 5. Animals with 8 legs use locker 1.",
+   "question": "Which locker does Zoe's pet use?",
+   "cf_question": "Which locker does Zoe's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "5",
+   "cf_answer": "1",
+   "hop1": {
+    "question": "Which animal is Zoe's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0079",
+   "family": "BRL",
+   "scene": "T-0079",
+   "bridge": "bee",
+   "cf_bridge": "horse",
+   "third": "mouse",
+   "people": [
+    "Oscar",
+    "Will",
+    "Carl",
+    "Nina",
+    "Olivia"
+   ],
+   "pets": [
+    "goose",
+    "pig",
+    "horse",
+    "mouse",
+    "bee"
+   ],
+   "holder": "Olivia",
+   "cue": "Olivia",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 5,
+    "4": 1,
+    "6": 9,
+    "8": 3
+   },
+   "context": "Oscar's pet is a goose. Will's pet is a pig. Carl's pet is a horse. Nina's pet is a mouse. Olivia's pet is a bee. Animals with 2 legs use locker 5. Animals with 6 legs use locker 9. Animals with 8 legs use locker 3. Animals with 4 legs use locker 1.",
+   "cf_context": "Oscar's pet is a goose. Will's pet is a pig. Carl's pet is a bee. Nina's pet is a mouse. Olivia's pet is a horse. Animals with 2 legs use locker 5. Animals with 6 legs use locker 9. Animals with 8 legs use locker 3. Animals with 4 legs use locker 1.",
+   "off_context": "Oscar's pet is a goose. Will's pet is a pig. Carl's pet is a horse. Nina's pet is a mouse. Olivia's pet is a bee. Animals with 2 legs use locker 5. Animals with 6 legs use locker 9. Animals with 8 legs use locker 1. Animals with 4 legs use locker 3.",
+   "question": "Which locker does Olivia's pet use?",
+   "cf_question": "Which locker does Olivia's pet use?",
+   "mid": "6",
+   "cf_mid": "4",
+   "answer": "9",
+   "cf_answer": "1",
+   "hop1": {
+    "question": "Which animal is Olivia's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 6 legs use?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0080",
+   "family": "BRL",
+   "scene": "T-0080",
+   "bridge": "wolf",
+   "cf_bridge": "bee",
+   "third": "lion",
+   "people": [
+    "Sam",
+    "Nina",
+    "Grace",
+    "Clara",
+    "Olivia"
+   ],
+   "pets": [
+    "wolf",
+    "frog",
+    "lion",
+    "sheep",
+    "bee"
+   ],
+   "holder": "Sam",
+   "cue": "Sam",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 7,
+    "6": 9,
+    "8": 1
+   },
+   "context": "Sam's pet is a wolf. Nina's pet is a frog. Grace's pet is a lion. Clara's pet is a sheep. Olivia's pet is a bee. Animals with 8 legs use locker 1. Animals with 2 legs use locker 3. Animals with 6 legs use locker 9. Animals with 4 legs use locker 7.",
+   "cf_context": "Sam's pet is a bee. Nina's pet is a frog. Grace's pet is a lion. Clara's pet is a sheep. Olivia's pet is a wolf. Animals with 8 legs use locker 1. Animals with 2 legs use locker 3. Animals with 6 legs use locker 9. Animals with 4 legs use locker 7.",
+   "off_context": "Sam's pet is a wolf. Nina's pet is a frog. Grace's pet is a lion. Clara's pet is a sheep. Olivia's pet is a bee. Animals with 8 legs use locker 1. Animals with 2 legs use locker 9. Animals with 6 legs use locker 3. Animals with 4 legs use locker 7.",
+   "question": "Which locker does Sam's pet use?",
+   "cf_question": "Which locker does Sam's pet use?",
+   "mid": "4",
+   "cf_mid": "6",
+   "answer": "7",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Sam's pet?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0081",
+   "family": "BRL",
+   "scene": "T-0081",
+   "bridge": "wolf",
+   "cf_bridge": "bee",
+   "third": "sheep",
+   "people": [
+    "Sam",
+    "Olivia",
+    "Henry",
+    "Lily",
+    "Noah"
+   ],
+   "pets": [
+    "bee",
+    "horse",
+    "frog",
+    "sheep",
+    "wolf"
+   ],
+   "holder": "Noah",
+   "cue": "Noah",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 3,
+    "6": 5,
+    "8": 1
+   },
+   "context": "Sam's pet is a bee. Olivia's pet is a horse. Henry's pet is a frog. Lily's pet is a sheep. Noah's pet is a wolf. Animals with 2 legs use locker 7. Animals with 6 legs use locker 5. Animals with 4 legs use locker 3. Animals with 8 legs use locker 1.",
+   "cf_context": "Sam's pet is a wolf. Olivia's pet is a horse. Henry's pet is a frog. Lily's pet is a sheep. Noah's pet is a bee. Animals with 2 legs use locker 7. Animals with 6 legs use locker 5. Animals with 4 legs use locker 3. Animals with 8 legs use locker 1.",
+   "off_context": "Sam's pet is a bee. Olivia's pet is a horse. Henry's pet is a frog. Lily's pet is a sheep. Noah's pet is a wolf. Animals with 2 legs use locker 5. Animals with 6 legs use locker 7. Animals with 4 legs use locker 3. Animals with 8 legs use locker 1.",
+   "question": "Which locker does Noah's pet use?",
+   "cf_question": "Which locker does Noah's pet use?",
+   "mid": "4",
+   "cf_mid": "6",
+   "answer": "3",
+   "cf_answer": "5",
+   "hop1": {
+    "question": "Which animal is Noah's pet?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0082",
+   "family": "BRL",
+   "scene": "T-0082",
+   "bridge": "cat",
+   "cf_bridge": "goose",
+   "third": "turkey",
+   "people": [
+    "David",
+    "Emma",
+    "Lucy",
+    "Leo",
+    "Rose"
+   ],
+   "pets": [
+    "bee",
+    "cat",
+    "goose",
+    "lion",
+    "turkey"
+   ],
+   "holder": "Emma",
+   "cue": "Emma",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 9,
+    "4": 7,
+    "6": 1,
+    "8": 5
+   },
+   "context": "David's pet is a bee. Emma's pet is a cat. Lucy's pet is a goose. Leo's pet is a lion. Rose's pet is a turkey. Animals with 6 legs use locker 1. Animals with 8 legs use locker 5. Animals with 4 legs use locker 7. Animals with 2 legs use locker 9.",
+   "cf_context": "David's pet is a bee. Emma's pet is a goose. Lucy's pet is a cat. Leo's pet is a lion. Rose's pet is a turkey. Animals with 6 legs use locker 1. Animals with 8 legs use locker 5. Animals with 4 legs use locker 7. Animals with 2 legs use locker 9.",
+   "off_context": "David's pet is a bee. Emma's pet is a cat. Lucy's pet is a goose. Leo's pet is a lion. Rose's pet is a turkey. Animals with 6 legs use locker 1. Animals with 8 legs use locker 9. Animals with 4 legs use locker 7. Animals with 2 legs use locker 5.",
+   "question": "Which locker does Emma's pet use?",
+   "cf_question": "Which locker does Emma's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "7",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Emma's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0083",
+   "family": "BRL",
+   "scene": "T-0083",
+   "bridge": "turkey",
+   "cf_bridge": "cow",
+   "third": "horse",
+   "people": [
+    "Ella",
+    "Fiona",
+    "Nina",
+    "Rose",
+    "Victor"
+   ],
+   "pets": [
+    "turkey",
+    "frog",
+    "duck",
+    "cow",
+    "horse"
+   ],
+   "holder": "Ella",
+   "cue": "Ella",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 1,
+    "4": 3,
+    "6": 9,
+    "8": 7
+   },
+   "context": "Ella's pet is a turkey. Fiona's pet is a frog. Nina's pet is a duck. Rose's pet is a cow. Victor's pet is a horse. Animals with 8 legs use locker 7. Animals with 6 legs use locker 9. Animals with 2 legs use locker 1. Animals with 4 legs use locker 3.",
+   "cf_context": "Ella's pet is a cow. Fiona's pet is a frog. Nina's pet is a duck. Rose's pet is a turkey. Victor's pet is a horse. Animals with 8 legs use locker 7. Animals with 6 legs use locker 9. Animals with 2 legs use locker 1. Animals with 4 legs use locker 3.",
+   "off_context": "Ella's pet is a turkey. Fiona's pet is a frog. Nina's pet is a duck. Rose's pet is a cow. Victor's pet is a horse. Animals with 8 legs use locker 7. Animals with 6 legs use locker 3. Animals with 2 legs use locker 1. Animals with 4 legs use locker 9.",
+   "question": "Which locker does Ella's pet use?",
+   "cf_question": "Which locker does Ella's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "1",
+   "cf_answer": "3",
+   "hop1": {
+    "question": "Which animal is Ella's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0084",
+   "family": "BRL",
+   "scene": "T-0084",
+   "bridge": "spider",
+   "cf_bridge": "lion",
+   "third": "dog",
+   "people": [
+    "Beth",
+    "Finn",
+    "Kyle",
+    "Leo",
+    "Luke"
+   ],
+   "pets": [
+    "cow",
+    "dog",
+    "cat",
+    "lion",
+    "spider"
+   ],
+   "holder": "Luke",
+   "cue": "Luke",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 1,
+    "4": 3,
+    "6": 5,
+    "8": 9
+   },
+   "context": "Beth's pet is a cow. Finn's pet is a dog. Kyle's pet is a cat. Leo's pet is a lion. Luke's pet is a spider. Animals with 4 legs use locker 3. Animals with 6 legs use locker 5. Animals with 2 legs use locker 1. Animals with 8 legs use locker 9.",
+   "cf_context": "Beth's pet is a cow. Finn's pet is a dog. Kyle's pet is a cat. Leo's pet is a spider. Luke's pet is a lion. Animals with 4 legs use locker 3. Animals with 6 legs use locker 5. Animals with 2 legs use locker 1. Animals with 8 legs use locker 9.",
+   "off_context": "Beth's pet is a cow. Finn's pet is a dog. Kyle's pet is a cat. Leo's pet is a lion. Luke's pet is a spider. Animals with 4 legs use locker 5. Animals with 6 legs use locker 3. Animals with 2 legs use locker 1. Animals with 8 legs use locker 9.",
+   "question": "Which locker does Luke's pet use?",
+   "cf_question": "Which locker does Luke's pet use?",
+   "mid": "8",
+   "cf_mid": "4",
+   "answer": "9",
+   "cf_answer": "3",
+   "hop1": {
+    "question": "Which animal is Luke's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 8 legs use?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0085",
+   "family": "BRL",
+   "scene": "T-0085",
+   "bridge": "spider",
+   "cf_bridge": "dog",
+   "third": "horse",
+   "people": [
+    "Olivia",
+    "Eva",
+    "Ivan",
+    "Kate",
+    "Carl"
+   ],
+   "pets": [
+    "dog",
+    "horse",
+    "spider",
+    "bee",
+    "pig"
+   ],
+   "holder": "Ivan",
+   "cue": "Ivan",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 5,
+    "6": 1,
+    "8": 9
+   },
+   "context": "Olivia's pet is a dog. Eva's pet is a horse. Ivan's pet is a spider. Kate's pet is a bee. Carl's pet is a pig. Animals with 8 legs use locker 9. Animals with 4 legs use locker 5. Animals with 2 legs use locker 3. Animals with 6 legs use locker 1.",
+   "cf_context": "Olivia's pet is a spider. Eva's pet is a horse. Ivan's pet is a dog. Kate's pet is a bee. Carl's pet is a pig. Animals with 8 legs use locker 9. Animals with 4 legs use locker 5. Animals with 2 legs use locker 3. Animals with 6 legs use locker 1.",
+   "off_context": "Olivia's pet is a dog. Eva's pet is a horse. Ivan's pet is a spider. Kate's pet is a bee. Carl's pet is a pig. Animals with 8 legs use locker 9. Animals with 4 legs use locker 1. Animals with 2 legs use locker 3. Animals with 6 legs use locker 5.",
+   "question": "Which locker does Ivan's pet use?",
+   "cf_question": "Which locker does Ivan's pet use?",
+   "mid": "8",
+   "cf_mid": "4",
+   "answer": "9",
+   "cf_answer": "5",
+   "hop1": {
+    "question": "Which animal is Ivan's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 8 legs use?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0086",
+   "family": "BRL",
+   "scene": "T-0086",
+   "bridge": "mouse",
+   "cf_bridge": "bee",
+   "third": "goose",
+   "people": [
+    "Sam",
+    "Iris",
+    "Zoe",
+    "Maria",
+    "Henry"
+   ],
+   "pets": [
+    "frog",
+    "goose",
+    "bee",
+    "cat",
+    "mouse"
+   ],
+   "holder": "Henry",
+   "cue": "Henry",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 1,
+    "6": 9,
+    "8": 3
+   },
+   "context": "Sam's pet is a frog. Iris's pet is a goose. Zoe's pet is a bee. Maria's pet is a cat. Henry's pet is a mouse. Animals with 4 legs use locker 1. Animals with 8 legs use locker 3. Animals with 2 legs use locker 7. Animals with 6 legs use locker 9.",
+   "cf_context": "Sam's pet is a frog. Iris's pet is a goose. Zoe's pet is a mouse. Maria's pet is a cat. Henry's pet is a bee. Animals with 4 legs use locker 1. Animals with 8 legs use locker 3. Animals with 2 legs use locker 7. Animals with 6 legs use locker 9.",
+   "off_context": "Sam's pet is a frog. Iris's pet is a goose. Zoe's pet is a bee. Maria's pet is a cat. Henry's pet is a mouse. Animals with 4 legs use locker 1. Animals with 8 legs use locker 3. Animals with 2 legs use locker 9. Animals with 6 legs use locker 7.",
+   "question": "Which locker does Henry's pet use?",
+   "cf_question": "Which locker does Henry's pet use?",
+   "mid": "4",
+   "cf_mid": "6",
+   "answer": "1",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Henry's pet?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0087",
+   "family": "BRL",
+   "scene": "T-0087",
+   "bridge": "spider",
+   "cf_bridge": "wolf",
+   "third": "chicken",
+   "people": [
+    "Noah",
+    "Jack",
+    "Victor",
+    "Grace",
+    "James"
+   ],
+   "pets": [
+    "spider",
+    "wolf",
+    "lion",
+    "goose",
+    "chicken"
+   ],
+   "holder": "Noah",
+   "cue": "Noah",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 9,
+    "6": 7,
+    "8": 1
+   },
+   "context": "Noah's pet is a spider. Jack's pet is a wolf. Victor's pet is a lion. Grace's pet is a goose. James's pet is a chicken. Animals with 8 legs use locker 1. Animals with 6 legs use locker 7. Animals with 4 legs use locker 9. Animals with 2 legs use locker 3.",
+   "cf_context": "Noah's pet is a wolf. Jack's pet is a spider. Victor's pet is a lion. Grace's pet is a goose. James's pet is a chicken. Animals with 8 legs use locker 1. Animals with 6 legs use locker 7. Animals with 4 legs use locker 9. Animals with 2 legs use locker 3.",
+   "off_context": "Noah's pet is a spider. Jack's pet is a wolf. Victor's pet is a lion. Grace's pet is a goose. James's pet is a chicken. Animals with 8 legs use locker 1. Animals with 6 legs use locker 7. Animals with 4 legs use locker 3. Animals with 2 legs use locker 9.",
+   "question": "Which locker does Noah's pet use?",
+   "cf_question": "Which locker does Noah's pet use?",
+   "mid": "8",
+   "cf_mid": "4",
+   "answer": "1",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Noah's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 8 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0088",
+   "family": "BRL",
+   "scene": "T-0088",
+   "bridge": "turkey",
+   "cf_bridge": "lion",
+   "third": "cow",
+   "people": [
+    "David",
+    "Henry",
+    "Carl",
+    "Leo",
+    "Owen"
+   ],
+   "pets": [
+    "lion",
+    "cow",
+    "bee",
+    "turkey",
+    "frog"
+   ],
+   "holder": "Leo",
+   "cue": "Leo",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 1,
+    "4": 5,
+    "6": 3,
+    "8": 7
+   },
+   "context": "David's pet is a lion. Henry's pet is a cow. Carl's pet is a bee. Leo's pet is a turkey. Owen's pet is a frog. Animals with 6 legs use locker 3. Animals with 4 legs use locker 5. Animals with 2 legs use locker 1. Animals with 8 legs use locker 7.",
+   "cf_context": "David's pet is a turkey. Henry's pet is a cow. Carl's pet is a bee. Leo's pet is a lion. Owen's pet is a frog. Animals with 6 legs use locker 3. Animals with 4 legs use locker 5. Animals with 2 legs use locker 1. Animals with 8 legs use locker 7.",
+   "off_context": "David's pet is a lion. Henry's pet is a cow. Carl's pet is a bee. Leo's pet is a turkey. Owen's pet is a frog. Animals with 6 legs use locker 5. Animals with 4 legs use locker 3. Animals with 2 legs use locker 1. Animals with 8 legs use locker 7.",
+   "question": "Which locker does Leo's pet use?",
+   "cf_question": "Which locker does Leo's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "1",
+   "cf_answer": "5",
+   "hop1": {
+    "question": "Which animal is Leo's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0089",
+   "family": "BRL",
+   "scene": "T-0089",
+   "bridge": "bee",
+   "cf_bridge": "duck",
+   "third": "pig",
+   "people": [
+    "Tara",
+    "Olivia",
+    "Maria",
+    "Nina",
+    "Ben"
+   ],
+   "pets": [
+    "duck",
+    "wolf",
+    "horse",
+    "bee",
+    "pig"
+   ],
+   "holder": "Nina",
+   "cue": "Nina",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 7,
+    "6": 9,
+    "8": 1
+   },
+   "context": "Tara's pet is a duck. Olivia's pet is a wolf. Maria's pet is a horse. Nina's pet is a bee. Ben's pet is a pig. Animals with 6 legs use locker 9. Animals with 4 legs use locker 7. Animals with 8 legs use locker 1. Animals with 2 legs use locker 3.",
+   "cf_context": "Tara's pet is a bee. Olivia's pet is a wolf. Maria's pet is a horse. Nina's pet is a duck. Ben's pet is a pig. Animals with 6 legs use locker 9. Animals with 4 legs use locker 7. Animals with 8 legs use locker 1. Animals with 2 legs use locker 3.",
+   "off_context": "Tara's pet is a duck. Olivia's pet is a wolf. Maria's pet is a horse. Nina's pet is a bee. Ben's pet is a pig. Animals with 6 legs use locker 9. Animals with 4 legs use locker 3. Animals with 8 legs use locker 1. Animals with 2 legs use locker 7.",
+   "question": "Which locker does Nina's pet use?",
+   "cf_question": "Which locker does Nina's pet use?",
+   "mid": "6",
+   "cf_mid": "2",
+   "answer": "9",
+   "cf_answer": "3",
+   "hop1": {
+    "question": "Which animal is Nina's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 6 legs use?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0090",
+   "family": "BRL",
+   "scene": "T-0090",
+   "bridge": "turkey",
+   "cf_bridge": "cow",
+   "third": "dog",
+   "people": [
+    "Iris",
+    "Tara",
+    "Tom",
+    "Emma",
+    "Sam"
+   ],
+   "pets": [
+    "duck",
+    "dog",
+    "cow",
+    "pig",
+    "turkey"
+   ],
+   "holder": "Sam",
+   "cue": "Sam",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 5,
+    "4": 7,
+    "6": 1,
+    "8": 9
+   },
+   "context": "Iris's pet is a duck. Tara's pet is a dog. Tom's pet is a cow. Emma's pet is a pig. Sam's pet is a turkey. Animals with 8 legs use locker 9. Animals with 2 legs use locker 5. Animals with 6 legs use locker 1. Animals with 4 legs use locker 7.",
+   "cf_context": "Iris's pet is a duck. Tara's pet is a dog. Tom's pet is a turkey. Emma's pet is a pig. Sam's pet is a cow. Animals with 8 legs use locker 9. Animals with 2 legs use locker 5. Animals with 6 legs use locker 1. Animals with 4 legs use locker 7.",
+   "off_context": "Iris's pet is a duck. Tara's pet is a dog. Tom's pet is a cow. Emma's pet is a pig. Sam's pet is a turkey. Animals with 8 legs use locker 7. Animals with 2 legs use locker 5. Animals with 6 legs use locker 1. Animals with 4 legs use locker 9.",
+   "question": "Which locker does Sam's pet use?",
+   "cf_question": "Which locker does Sam's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "5",
+   "cf_answer": "7",
+   "hop1": {
+    "question": "Which animal is Sam's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0091",
+   "family": "BRL",
+   "scene": "T-0091",
+   "bridge": "turkey",
+   "cf_bridge": "bee",
+   "third": "cat",
+   "people": [
+    "Iris",
+    "Ruby",
+    "Henry",
+    "Olivia",
+    "Max"
+   ],
+   "pets": [
+    "cat",
+    "turkey",
+    "bee",
+    "pig",
+    "horse"
+   ],
+   "holder": "Ruby",
+   "cue": "Ruby",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 1,
+    "6": 5,
+    "8": 7
+   },
+   "context": "Iris's pet is a cat. Ruby's pet is a turkey. Henry's pet is a bee. Olivia's pet is a pig. Max's pet is a horse. Animals with 4 legs use locker 1. Animals with 6 legs use locker 5. Animals with 8 legs use locker 7. Animals with 2 legs use locker 3.",
+   "cf_context": "Iris's pet is a cat. Ruby's pet is a bee. Henry's pet is a turkey. Olivia's pet is a pig. Max's pet is a horse. Animals with 4 legs use locker 1. Animals with 6 legs use locker 5. Animals with 8 legs use locker 7. Animals with 2 legs use locker 3.",
+   "off_context": "Iris's pet is a cat. Ruby's pet is a turkey. Henry's pet is a bee. Olivia's pet is a pig. Max's pet is a horse. Animals with 4 legs use locker 5. Animals with 6 legs use locker 1. Animals with 8 legs use locker 7. Animals with 2 legs use locker 3.",
+   "question": "Which locker does Ruby's pet use?",
+   "cf_question": "Which locker does Ruby's pet use?",
+   "mid": "2",
+   "cf_mid": "6",
+   "answer": "3",
+   "cf_answer": "5",
+   "hop1": {
+    "question": "Which animal is Ruby's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0092",
+   "family": "BRL",
+   "scene": "T-0092",
+   "bridge": "bee",
+   "cf_bridge": "dog",
+   "third": "cow",
+   "people": [
+    "Lucy",
+    "Ryan",
+    "Adam",
+    "Paul",
+    "Will"
+   ],
+   "pets": [
+    "spider",
+    "frog",
+    "bee",
+    "dog",
+    "cow"
+   ],
+   "holder": "Adam",
+   "cue": "Adam",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 9,
+    "6": 1,
+    "8": 3
+   },
+   "context": "Lucy's pet is a spider. Ryan's pet is a frog. Adam's pet is a bee. Paul's pet is a dog. Will's pet is a cow. Animals with 8 legs use locker 3. Animals with 4 legs use locker 9. Animals with 2 legs use locker 7. Animals with 6 legs use locker 1.",
+   "cf_context": "Lucy's pet is a spider. Ryan's pet is a frog. Adam's pet is a dog. Paul's pet is a bee. Will's pet is a cow. Animals with 8 legs use locker 3. Animals with 4 legs use locker 9. Animals with 2 legs use locker 7. Animals with 6 legs use locker 1.",
+   "off_context": "Lucy's pet is a spider. Ryan's pet is a frog. Adam's pet is a bee. Paul's pet is a dog. Will's pet is a cow. Animals with 8 legs use locker 3. Animals with 4 legs use locker 7. Animals with 2 legs use locker 9. Animals with 6 legs use locker 1.",
+   "question": "Which locker does Adam's pet use?",
+   "cf_question": "Which locker does Adam's pet use?",
+   "mid": "6",
+   "cf_mid": "4",
+   "answer": "1",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Adam's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 6 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0093",
+   "family": "BRL",
+   "scene": "T-0093",
+   "bridge": "goose",
+   "cf_bridge": "sheep",
+   "third": "lion",
+   "people": [
+    "Clara",
+    "Finn",
+    "Ivy",
+    "Ivan",
+    "Victor"
+   ],
+   "pets": [
+    "sheep",
+    "lion",
+    "chicken",
+    "duck",
+    "goose"
+   ],
+   "holder": "Victor",
+   "cue": "Victor",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 1,
+    "6": 3,
+    "8": 5
+   },
+   "context": "Clara's pet is a sheep. Finn's pet is a lion. Ivy's pet is a chicken. Ivan's pet is a duck. Victor's pet is a goose. Animals with 6 legs use locker 3. Animals with 2 legs use locker 7. Animals with 4 legs use locker 1. Animals with 8 legs use locker 5.",
+   "cf_context": "Clara's pet is a goose. Finn's pet is a lion. Ivy's pet is a chicken. Ivan's pet is a duck. Victor's pet is a sheep. Animals with 6 legs use locker 3. Animals with 2 legs use locker 7. Animals with 4 legs use locker 1. Animals with 8 legs use locker 5.",
+   "off_context": "Clara's pet is a sheep. Finn's pet is a lion. Ivy's pet is a chicken. Ivan's pet is a duck. Victor's pet is a goose. Animals with 6 legs use locker 1. Animals with 2 legs use locker 7. Animals with 4 legs use locker 3. Animals with 8 legs use locker 5.",
+   "question": "Which locker does Victor's pet use?",
+   "cf_question": "Which locker does Victor's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "7",
+   "cf_answer": "1",
+   "hop1": {
+    "question": "Which animal is Victor's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0094",
+   "family": "BRL",
+   "scene": "T-0094",
+   "bridge": "chicken",
+   "cf_bridge": "mouse",
+   "third": "sheep",
+   "people": [
+    "Emma",
+    "Julia",
+    "Tom",
+    "Olivia",
+    "Eva"
+   ],
+   "pets": [
+    "lion",
+    "sheep",
+    "mouse",
+    "chicken",
+    "duck"
+   ],
+   "holder": "Olivia",
+   "cue": "Olivia",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 1,
+    "6": 5,
+    "8": 3
+   },
+   "context": "Emma's pet is a lion. Julia's pet is a sheep. Tom's pet is a mouse. Olivia's pet is a chicken. Eva's pet is a duck. Animals with 8 legs use locker 3. Animals with 4 legs use locker 1. Animals with 6 legs use locker 5. Animals with 2 legs use locker 7.",
+   "cf_context": "Emma's pet is a lion. Julia's pet is a sheep. Tom's pet is a chicken. Olivia's pet is a mouse. Eva's pet is a duck. Animals with 8 legs use locker 3. Animals with 4 legs use locker 1. Animals with 6 legs use locker 5. Animals with 2 legs use locker 7.",
+   "off_context": "Emma's pet is a lion. Julia's pet is a sheep. Tom's pet is a mouse. Olivia's pet is a chicken. Eva's pet is a duck. Animals with 8 legs use locker 1. Animals with 4 legs use locker 3. Animals with 6 legs use locker 5. Animals with 2 legs use locker 7.",
+   "question": "Which locker does Olivia's pet use?",
+   "cf_question": "Which locker does Olivia's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "7",
+   "cf_answer": "1",
+   "hop1": {
+    "question": "Which animal is Olivia's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0095",
+   "family": "BRL",
+   "scene": "T-0095",
+   "bridge": "turkey",
+   "cf_bridge": "pig",
+   "third": "cow",
+   "people": [
+    "Zoe",
+    "Ryan",
+    "Alice",
+    "Emma",
+    "Clara"
+   ],
+   "pets": [
+    "sheep",
+    "turkey",
+    "pig",
+    "cow",
+    "lion"
+   ],
+   "holder": "Ryan",
+   "cue": "Ryan",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 3,
+    "4": 9,
+    "6": 1,
+    "8": 7
+   },
+   "context": "Zoe's pet is a sheep. Ryan's pet is a turkey. Alice's pet is a pig. Emma's pet is a cow. Clara's pet is a lion. Animals with 6 legs use locker 1. Animals with 4 legs use locker 9. Animals with 2 legs use locker 3. Animals with 8 legs use locker 7.",
+   "cf_context": "Zoe's pet is a sheep. Ryan's pet is a pig. Alice's pet is a turkey. Emma's pet is a cow. Clara's pet is a lion. Animals with 6 legs use locker 1. Animals with 4 legs use locker 9. Animals with 2 legs use locker 3. Animals with 8 legs use locker 7.",
+   "off_context": "Zoe's pet is a sheep. Ryan's pet is a turkey. Alice's pet is a pig. Emma's pet is a cow. Clara's pet is a lion. Animals with 6 legs use locker 9. Animals with 4 legs use locker 1. Animals with 2 legs use locker 3. Animals with 8 legs use locker 7.",
+   "question": "Which locker does Ryan's pet use?",
+   "cf_question": "Which locker does Ryan's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "3",
+   "cf_answer": "9",
+   "hop1": {
+    "question": "Which animal is Ryan's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0096",
+   "family": "BRL",
+   "scene": "T-0096",
+   "bridge": "duck",
+   "cf_bridge": "pig",
+   "third": "cow",
+   "people": [
+    "Ivy",
+    "Mark",
+    "Iris",
+    "Liam",
+    "Jack"
+   ],
+   "pets": [
+    "turkey",
+    "duck",
+    "wolf",
+    "cow",
+    "pig"
+   ],
+   "holder": "Mark",
+   "cue": "Mark",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 3,
+    "6": 5,
+    "8": 1
+   },
+   "context": "Ivy's pet is a turkey. Mark's pet is a duck. Iris's pet is a wolf. Liam's pet is a cow. Jack's pet is a pig. Animals with 6 legs use locker 5. Animals with 4 legs use locker 3. Animals with 8 legs use locker 1. Animals with 2 legs use locker 7.",
+   "cf_context": "Ivy's pet is a turkey. Mark's pet is a pig. Iris's pet is a wolf. Liam's pet is a cow. Jack's pet is a duck. Animals with 6 legs use locker 5. Animals with 4 legs use locker 3. Animals with 8 legs use locker 1. Animals with 2 legs use locker 7.",
+   "off_context": "Ivy's pet is a turkey. Mark's pet is a duck. Iris's pet is a wolf. Liam's pet is a cow. Jack's pet is a pig. Animals with 6 legs use locker 5. Animals with 4 legs use locker 1. Animals with 8 legs use locker 3. Animals with 2 legs use locker 7.",
+   "question": "Which locker does Mark's pet use?",
+   "cf_question": "Which locker does Mark's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "7",
+   "cf_answer": "3",
+   "hop1": {
+    "question": "Which animal is Mark's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0097",
+   "family": "BRL",
+   "scene": "T-0097",
+   "bridge": "dog",
+   "cf_bridge": "spider",
+   "third": "mouse",
+   "people": [
+    "Henry",
+    "Hugo",
+    "Grace",
+    "Lily",
+    "James"
+   ],
+   "pets": [
+    "spider",
+    "dog",
+    "horse",
+    "cat",
+    "mouse"
+   ],
+   "holder": "Hugo",
+   "cue": "Hugo",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 7,
+    "4": 1,
+    "6": 9,
+    "8": 5
+   },
+   "context": "Henry's pet is a spider. Hugo's pet is a dog. Grace's pet is a horse. Lily's pet is a cat. James's pet is a mouse. Animals with 2 legs use locker 7. Animals with 6 legs use locker 9. Animals with 8 legs use locker 5. Animals with 4 legs use locker 1.",
+   "cf_context": "Henry's pet is a dog. Hugo's pet is a spider. Grace's pet is a horse. Lily's pet is a cat. James's pet is a mouse. Animals with 2 legs use locker 7. Animals with 6 legs use locker 9. Animals with 8 legs use locker 5. Animals with 4 legs use locker 1.",
+   "off_context": "Henry's pet is a spider. Hugo's pet is a dog. Grace's pet is a horse. Lily's pet is a cat. James's pet is a mouse. Animals with 2 legs use locker 5. Animals with 6 legs use locker 9. Animals with 8 legs use locker 7. Animals with 4 legs use locker 1.",
+   "question": "Which locker does Hugo's pet use?",
+   "cf_question": "Which locker does Hugo's pet use?",
+   "mid": "4",
+   "cf_mid": "8",
+   "answer": "1",
+   "cf_answer": "5",
+   "hop1": {
+    "question": "Which animal is Hugo's pet?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0098",
+   "family": "BRL",
+   "scene": "T-0098",
+   "bridge": "mouse",
+   "cf_bridge": "turkey",
+   "third": "wolf",
+   "people": [
+    "Zoe",
+    "Adam",
+    "Hugo",
+    "Paul",
+    "Henry"
+   ],
+   "pets": [
+    "turkey",
+    "mouse",
+    "frog",
+    "wolf",
+    "duck"
+   ],
+   "holder": "Adam",
+   "cue": "Adam",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 1,
+    "4": 9,
+    "6": 3,
+    "8": 5
+   },
+   "context": "Zoe's pet is a turkey. Adam's pet is a mouse. Hugo's pet is a frog. Paul's pet is a wolf. Henry's pet is a duck. Animals with 4 legs use locker 9. Animals with 6 legs use locker 3. Animals with 8 legs use locker 5. Animals with 2 legs use locker 1.",
+   "cf_context": "Zoe's pet is a mouse. Adam's pet is a turkey. Hugo's pet is a frog. Paul's pet is a wolf. Henry's pet is a duck. Animals with 4 legs use locker 9. Animals with 6 legs use locker 3. Animals with 8 legs use locker 5. Animals with 2 legs use locker 1.",
+   "off_context": "Zoe's pet is a turkey. Adam's pet is a mouse. Hugo's pet is a frog. Paul's pet is a wolf. Henry's pet is a duck. Animals with 4 legs use locker 9. Animals with 6 legs use locker 1. Animals with 8 legs use locker 5. Animals with 2 legs use locker 3.",
+   "question": "Which locker does Adam's pet use?",
+   "cf_question": "Which locker does Adam's pet use?",
+   "mid": "4",
+   "cf_mid": "2",
+   "answer": "9",
+   "cf_answer": "1",
+   "hop1": {
+    "question": "Which animal is Adam's pet?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 4 legs use?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BRL-0099",
+   "family": "BRL",
+   "scene": "T-0099",
+   "bridge": "chicken",
+   "cf_bridge": "dog",
+   "third": "turkey",
+   "people": [
+    "Nina",
+    "Eric",
+    "Eve",
+    "Julia",
+    "Adam"
+   ],
+   "pets": [
+    "goose",
+    "dog",
+    "chicken",
+    "duck",
+    "turkey"
+   ],
+   "holder": "Eve",
+   "cue": "Eve",
+   "answer_kind": "digit",
+   "leg_lockers": {
+    "2": 5,
+    "4": 7,
+    "6": 1,
+    "8": 3
+   },
+   "context": "Nina's pet is a goose. Eric's pet is a dog. Eve's pet is a chicken. Julia's pet is a duck. Adam's pet is a turkey. Animals with 4 legs use locker 7. Animals with 6 legs use locker 1. Animals with 2 legs use locker 5. Animals with 8 legs use locker 3.",
+   "cf_context": "Nina's pet is a goose. Eric's pet is a chicken. Eve's pet is a dog. Julia's pet is a duck. Adam's pet is a turkey. Animals with 4 legs use locker 7. Animals with 6 legs use locker 1. Animals with 2 legs use locker 5. Animals with 8 legs use locker 3.",
+   "off_context": "Nina's pet is a goose. Eric's pet is a dog. Eve's pet is a chicken. Julia's pet is a duck. Adam's pet is a turkey. Animals with 4 legs use locker 3. Animals with 6 legs use locker 1. Animals with 2 legs use locker 5. Animals with 8 legs use locker 7.",
+   "question": "Which locker does Eve's pet use?",
+   "cf_question": "Which locker does Eve's pet use?",
+   "mid": "2",
+   "cf_mid": "4",
+   "answer": "5",
+   "cf_answer": "7",
+   "hop1": {
+    "question": "Which animal is Eve's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop3": {
+    "question": "Which locker do animals with 2 legs use?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  }
+ ]
+}

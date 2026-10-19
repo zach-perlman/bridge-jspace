@@ -1,0 +1,2707 @@
+{
+ "family": "NAMES_e3f8",
+ "generator": "scripts/suite_v1.py make --set dev (seed 90012: 3 entities, 8 filler)",
+ "format": "Every family asks one question whose answer needs an intermediate variable (the bridge), in the chat format\n(bridge_jspace.chat: one user turn, thinking off, \"Answer:\" prefilled), with a counterfactual C that changes only the\nbridge (to X) and an off-path control O that changes something the answer does not depend on. C and O line up with the\nclean prompt token for token (checked here), so exp04/exp09's copy-and-split runs apply unchanged.",
+ "items": [
+  {
+   "id": "NAMES-0000",
+   "family": "NAMES",
+   "context": "Diana's partner is Jack. Rose's partner is Luke. The river was calm that morning. The kitchen smelled of fresh bread. Julia's partner is Henry. The bus was late again. The tea had gone cold. The radio played old songs. The hallway lights were dim. Jack's sister is Ivy. Henry's sister is Amy. The garden gate needs new paint. Luke's sister is Emma. The street was lined with trees.",
+   "cf_context": "Diana's partner is Henry. Rose's partner is Luke. The river was calm that morning. The kitchen smelled of fresh bread. Julia's partner is Jack. The bus was late again. The tea had gone cold. The radio played old songs. The hallway lights were dim. Jack's sister is Ivy. Henry's sister is Amy. The garden gate needs new paint. Luke's sister is Emma. The street was lined with trees.",
+   "off_context": "Diana's partner is Jack. Rose's partner is Luke. The river was calm that morning. The kitchen smelled of fresh bread. Julia's partner is Henry. The bus was late again. The tea had gone cold. The radio played old songs. The hallway lights were dim. Jack's sister is Ivy. Henry's sister is Emma. The garden gate needs new paint. Luke's sister is Amy. The street was lined with trees.",
+   "question": "Who is the sister of Diana's partner?",
+   "cf_question": "Who is the sister of Diana's partner?",
+   "cue": "Diana",
+   "bridge": "Jack",
+   "cf_bridge": "Henry",
+   "third": "Luke",
+   "answer": "Ivy",
+   "cf_answer": "Amy",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Diana's partner?",
+    "answer": "Jack",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Jack's sister?",
+    "answer": "Ivy",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0001",
+   "family": "NAMES",
+   "context": "Ivy's partner is Ivan. The library closed early. Zoe's partner is Leo. The office was cold. The garden gate needs new paint. Eva's partner is David. The hallway lights were dim. David's sister is Ruby. The school held a concert. The tea had gone cold. Leo's sister is Lucy. The radio played old songs. Ivan's sister is Clara. The market was busy on Saturday.",
+   "cf_context": "Ivy's partner is Leo. The library closed early. Zoe's partner is Ivan. The office was cold. The garden gate needs new paint. Eva's partner is David. The hallway lights were dim. David's sister is Ruby. The school held a concert. The tea had gone cold. Leo's sister is Lucy. The radio played old songs. Ivan's sister is Clara. The market was busy on Saturday.",
+   "off_context": "Ivy's partner is Ivan. The library closed early. Zoe's partner is Leo. The office was cold. The garden gate needs new paint. Eva's partner is David. The hallway lights were dim. David's sister is Clara. The school held a concert. The tea had gone cold. Leo's sister is Lucy. The radio played old songs. Ivan's sister is Ruby. The market was busy on Saturday.",
+   "question": "Who is the sister of Zoe's partner?",
+   "cf_question": "Who is the sister of Zoe's partner?",
+   "cue": "Zoe",
+   "bridge": "Leo",
+   "cf_bridge": "Ivan",
+   "third": "David",
+   "answer": "Lucy",
+   "cf_answer": "Clara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Zoe's partner?",
+    "answer": "Leo",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Leo's sister?",
+    "answer": "Lucy",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0002",
+   "family": "NAMES",
+   "context": "Grace's partner is Owen. The kitchen smelled of fresh bread. Eve's partner is Sam. The library closed early. The park was quiet at dawn. Anna's partner is Victor. The school held a concert. The street was lined with trees. Victor's sister is Fiona. Owen's sister is Lily. The window faced the hills. Sam's sister is Nina. The market was busy on Saturday. The bus was late again.",
+   "cf_context": "Grace's partner is Sam. The kitchen smelled of fresh bread. Eve's partner is Owen. The library closed early. The park was quiet at dawn. Anna's partner is Victor. The school held a concert. The street was lined with trees. Victor's sister is Fiona. Owen's sister is Lily. The window faced the hills. Sam's sister is Nina. The market was busy on Saturday. The bus was late again.",
+   "off_context": "Grace's partner is Owen. The kitchen smelled of fresh bread. Eve's partner is Sam. The library closed early. The park was quiet at dawn. Anna's partner is Victor. The school held a concert. The street was lined with trees. Victor's sister is Lily. Owen's sister is Fiona. The window faced the hills. Sam's sister is Nina. The market was busy on Saturday. The bus was late again.",
+   "question": "Who is the sister of Eve's partner?",
+   "cf_question": "Who is the sister of Eve's partner?",
+   "cue": "Eve",
+   "bridge": "Sam",
+   "cf_bridge": "Owen",
+   "third": "Victor",
+   "answer": "Nina",
+   "cf_answer": "Lily",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Eve's partner?",
+    "answer": "Sam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Sam's sister?",
+    "answer": "Nina",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0003",
+   "family": "NAMES",
+   "context": "Anna's partner is Will. Beth's partner is Sean. The park was quiet at dawn. The tea had gone cold. Clara's partner is Noah. The library closed early. Will's sister is Laura. The sky turned grey by noon. The road was wet after the rain. Noah's sister is Nina. The festival drew a large crowd. The market was busy on Saturday. Sean's sister is Ruby. The coffee was too strong.",
+   "cf_context": "Anna's partner is Will. Beth's partner is Noah. The park was quiet at dawn. The tea had gone cold. Clara's partner is Sean. The library closed early. Will's sister is Laura. The sky turned grey by noon. The road was wet after the rain. Noah's sister is Nina. The festival drew a large crowd. The market was busy on Saturday. Sean's sister is Ruby. The coffee was too strong.",
+   "off_context": "Anna's partner is Will. Beth's partner is Sean. The park was quiet at dawn. The tea had gone cold. Clara's partner is Noah. The library closed early. Will's sister is Nina. The sky turned grey by noon. The road was wet after the rain. Noah's sister is Laura. The festival drew a large crowd. The market was busy on Saturday. Sean's sister is Ruby. The coffee was too strong.",
+   "question": "Who is the sister of Beth's partner?",
+   "cf_question": "Who is the sister of Beth's partner?",
+   "cue": "Beth",
+   "bridge": "Sean",
+   "cf_bridge": "Noah",
+   "third": "Will",
+   "answer": "Ruby",
+   "cf_answer": "Nina",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Beth's partner?",
+    "answer": "Sean",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Sean's sister?",
+    "answer": "Ruby",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0004",
+   "family": "NAMES",
+   "context": "The street was lined with trees. The weather was mild all week. Laura's partner is Leo. The hallway lights were dim. Grace's partner is Kyle. Olivia's partner is Max. Max's sister is Vera. The market was busy on Saturday. The bakery sold out of rolls. Leo's sister is Ruby. The train left on time. The kitchen smelled of fresh bread. The garden gate needs new paint. Kyle's sister is Mia.",
+   "cf_context": "The street was lined with trees. The weather was mild all week. Laura's partner is Kyle. The hallway lights were dim. Grace's partner is Leo. Olivia's partner is Max. Max's sister is Vera. The market was busy on Saturday. The bakery sold out of rolls. Leo's sister is Ruby. The train left on time. The kitchen smelled of fresh bread. The garden gate needs new paint. Kyle's sister is Mia.",
+   "off_context": "The street was lined with trees. The weather was mild all week. Laura's partner is Leo. The hallway lights were dim. Grace's partner is Kyle. Olivia's partner is Max. Max's sister is Mia. The market was busy on Saturday. The bakery sold out of rolls. Leo's sister is Ruby. The train left on time. The kitchen smelled of fresh bread. The garden gate needs new paint. Kyle's sister is Vera.",
+   "question": "Who is the sister of Laura's partner?",
+   "cf_question": "Who is the sister of Laura's partner?",
+   "cue": "Laura",
+   "bridge": "Leo",
+   "cf_bridge": "Kyle",
+   "third": "Max",
+   "answer": "Ruby",
+   "cf_answer": "Mia",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Laura's partner?",
+    "answer": "Leo",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Leo's sister?",
+    "answer": "Ruby",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0005",
+   "family": "NAMES",
+   "context": "The street was lined with trees. The road was wet after the rain. Diana's partner is Henry. The park was quiet at dawn. Olivia's partner is Mark. The bakery sold out of rolls. The radio played old songs. Emma's partner is Noah. The train left on time. The shop on the corner reopened. Mark's sister is Nina. Henry's sister is Sara. Noah's sister is Zoe. The garden gate needs new paint.",
+   "cf_context": "The street was lined with trees. The road was wet after the rain. Diana's partner is Noah. The park was quiet at dawn. Olivia's partner is Mark. The bakery sold out of rolls. The radio played old songs. Emma's partner is Henry. The train left on time. The shop on the corner reopened. Mark's sister is Nina. Henry's sister is Sara. Noah's sister is Zoe. The garden gate needs new paint.",
+   "off_context": "The street was lined with trees. The road was wet after the rain. Diana's partner is Henry. The park was quiet at dawn. Olivia's partner is Mark. The bakery sold out of rolls. The radio played old songs. Emma's partner is Noah. The train left on time. The shop on the corner reopened. Mark's sister is Sara. Henry's sister is Nina. Noah's sister is Zoe. The garden gate needs new paint.",
+   "question": "Who is the sister of Emma's partner?",
+   "cf_question": "Who is the sister of Emma's partner?",
+   "cue": "Emma",
+   "bridge": "Noah",
+   "cf_bridge": "Henry",
+   "third": "Mark",
+   "answer": "Zoe",
+   "cf_answer": "Sara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Emma's partner?",
+    "answer": "Noah",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Noah's sister?",
+    "answer": "Zoe",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0006",
+   "family": "NAMES",
+   "context": "The library closed early. Olivia's partner is Sean. The bakery sold out of rolls. The museum had a new exhibit. Eva's partner is Ben. The street was lined with trees. Kate's partner is Victor. The weather was mild all week. The garden gate needs new paint. Sean's sister is Mia. The hallway lights were dim. Ben's sister is Zoe. Victor's sister is Tara. The festival drew a large crowd.",
+   "cf_context": "The library closed early. Olivia's partner is Ben. The bakery sold out of rolls. The museum had a new exhibit. Eva's partner is Sean. The street was lined with trees. Kate's partner is Victor. The weather was mild all week. The garden gate needs new paint. Sean's sister is Mia. The hallway lights were dim. Ben's sister is Zoe. Victor's sister is Tara. The festival drew a large crowd.",
+   "off_context": "The library closed early. Olivia's partner is Sean. The bakery sold out of rolls. The museum had a new exhibit. Eva's partner is Ben. The street was lined with trees. Kate's partner is Victor. The weather was mild all week. The garden gate needs new paint. Sean's sister is Mia. The hallway lights were dim. Ben's sister is Tara. Victor's sister is Zoe. The festival drew a large crowd.",
+   "question": "Who is the sister of Olivia's partner?",
+   "cf_question": "Who is the sister of Olivia's partner?",
+   "cue": "Olivia",
+   "bridge": "Sean",
+   "cf_bridge": "Ben",
+   "third": "Victor",
+   "answer": "Mia",
+   "cf_answer": "Zoe",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Olivia's partner?",
+    "answer": "Sean",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Sean's sister?",
+    "answer": "Mia",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0007",
+   "family": "NAMES",
+   "context": "The festival drew a large crowd. The hallway lights were dim. Alice's partner is Henry. Zoe's partner is Dan. The window faced the hills. Amy's partner is Kyle. Henry's sister is Mia. The park was quiet at dawn. The sky turned grey by noon. The market was busy on Saturday. Dan's sister is Ruby. The kitchen smelled of fresh bread. Kyle's sister is Ella. The street was lined with trees.",
+   "cf_context": "The festival drew a large crowd. The hallway lights were dim. Alice's partner is Kyle. Zoe's partner is Dan. The window faced the hills. Amy's partner is Henry. Henry's sister is Mia. The park was quiet at dawn. The sky turned grey by noon. The market was busy on Saturday. Dan's sister is Ruby. The kitchen smelled of fresh bread. Kyle's sister is Ella. The street was lined with trees.",
+   "off_context": "The festival drew a large crowd. The hallway lights were dim. Alice's partner is Henry. Zoe's partner is Dan. The window faced the hills. Amy's partner is Kyle. Henry's sister is Ruby. The park was quiet at dawn. The sky turned grey by noon. The market was busy on Saturday. Dan's sister is Mia. The kitchen smelled of fresh bread. Kyle's sister is Ella. The street was lined with trees.",
+   "question": "Who is the sister of Amy's partner?",
+   "cf_question": "Who is the sister of Amy's partner?",
+   "cue": "Amy",
+   "bridge": "Kyle",
+   "cf_bridge": "Henry",
+   "third": "Dan",
+   "answer": "Ella",
+   "cf_answer": "Mia",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Amy's partner?",
+    "answer": "Kyle",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Kyle's sister?",
+    "answer": "Ella",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0008",
+   "family": "NAMES",
+   "context": "The street was lined with trees. Emma's partner is Frank. The sky turned grey by noon. Fiona's partner is Max. Tara's partner is David. The radio played old songs. The museum had a new exhibit. David's sister is Mia. The festival drew a large crowd. The road was wet after the rain. The window faced the hills. Frank's sister is Sara. The hallway lights were dim. Max's sister is Laura.",
+   "cf_context": "The street was lined with trees. Emma's partner is Frank. The sky turned grey by noon. Fiona's partner is David. Tara's partner is Max. The radio played old songs. The museum had a new exhibit. David's sister is Mia. The festival drew a large crowd. The road was wet after the rain. The window faced the hills. Frank's sister is Sara. The hallway lights were dim. Max's sister is Laura.",
+   "off_context": "The street was lined with trees. Emma's partner is Frank. The sky turned grey by noon. Fiona's partner is Max. Tara's partner is David. The radio played old songs. The museum had a new exhibit. David's sister is Mia. The festival drew a large crowd. The road was wet after the rain. The window faced the hills. Frank's sister is Laura. The hallway lights were dim. Max's sister is Sara.",
+   "question": "Who is the sister of Tara's partner?",
+   "cf_question": "Who is the sister of Tara's partner?",
+   "cue": "Tara",
+   "bridge": "David",
+   "cf_bridge": "Max",
+   "third": "Frank",
+   "answer": "Mia",
+   "cf_answer": "Laura",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Tara's partner?",
+    "answer": "David",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is David's sister?",
+    "answer": "Mia",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0009",
+   "family": "NAMES",
+   "context": "The sky turned grey by noon. Iris's partner is Paul. The kitchen smelled of fresh bread. Diana's partner is Max. The office was cold. Kate's partner is David. Max's sister is Amy. David's sister is Nina. The radio played old songs. The street was lined with trees. The river was calm that morning. Paul's sister is Lucy. The market was busy on Saturday. The window faced the hills.",
+   "cf_context": "The sky turned grey by noon. Iris's partner is Paul. The kitchen smelled of fresh bread. Diana's partner is David. The office was cold. Kate's partner is Max. Max's sister is Amy. David's sister is Nina. The radio played old songs. The street was lined with trees. The river was calm that morning. Paul's sister is Lucy. The market was busy on Saturday. The window faced the hills.",
+   "off_context": "The sky turned grey by noon. Iris's partner is Paul. The kitchen smelled of fresh bread. Diana's partner is Max. The office was cold. Kate's partner is David. Max's sister is Amy. David's sister is Lucy. The radio played old songs. The street was lined with trees. The river was calm that morning. Paul's sister is Nina. The market was busy on Saturday. The window faced the hills.",
+   "question": "Who is the sister of Diana's partner?",
+   "cf_question": "Who is the sister of Diana's partner?",
+   "cue": "Diana",
+   "bridge": "Max",
+   "cf_bridge": "David",
+   "third": "Paul",
+   "answer": "Amy",
+   "cf_answer": "Nina",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Diana's partner?",
+    "answer": "Max",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Max's sister?",
+    "answer": "Amy",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0010",
+   "family": "NAMES",
+   "context": "Eve's partner is Jack. The market was busy on Saturday. The river was calm that morning. Diana's partner is Carl. The road was wet after the rain. The bus was late again. Grace's partner is Paul. The weather was mild all week. Carl's sister is Nina. The office was cold. The sky turned grey by noon. The train left on time. Paul's sister is Olivia. Jack's sister is Tara.",
+   "cf_context": "Eve's partner is Jack. The market was busy on Saturday. The river was calm that morning. Diana's partner is Paul. The road was wet after the rain. The bus was late again. Grace's partner is Carl. The weather was mild all week. Carl's sister is Nina. The office was cold. The sky turned grey by noon. The train left on time. Paul's sister is Olivia. Jack's sister is Tara.",
+   "off_context": "Eve's partner is Jack. The market was busy on Saturday. The river was calm that morning. Diana's partner is Carl. The road was wet after the rain. The bus was late again. Grace's partner is Paul. The weather was mild all week. Carl's sister is Tara. The office was cold. The sky turned grey by noon. The train left on time. Paul's sister is Olivia. Jack's sister is Nina.",
+   "question": "Who is the sister of Grace's partner?",
+   "cf_question": "Who is the sister of Grace's partner?",
+   "cue": "Grace",
+   "bridge": "Paul",
+   "cf_bridge": "Carl",
+   "third": "Jack",
+   "answer": "Olivia",
+   "cf_answer": "Nina",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Grace's partner?",
+    "answer": "Paul",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Paul's sister?",
+    "answer": "Olivia",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0011",
+   "family": "NAMES",
+   "context": "Zoe's partner is Hugo. The shop on the corner reopened. The garden gate needs new paint. Eva's partner is Ryan. Diana's partner is Jack. The road was wet after the rain. Hugo's sister is Eve. The weather was mild all week. Ryan's sister is Tara. The sky turned grey by noon. The radio played old songs. Jack's sister is Mia. The hallway lights were dim. The kitchen smelled of fresh bread.",
+   "cf_context": "Zoe's partner is Jack. The shop on the corner reopened. The garden gate needs new paint. Eva's partner is Ryan. Diana's partner is Hugo. The road was wet after the rain. Hugo's sister is Eve. The weather was mild all week. Ryan's sister is Tara. The sky turned grey by noon. The radio played old songs. Jack's sister is Mia. The hallway lights were dim. The kitchen smelled of fresh bread.",
+   "off_context": "Zoe's partner is Hugo. The shop on the corner reopened. The garden gate needs new paint. Eva's partner is Ryan. Diana's partner is Jack. The road was wet after the rain. Hugo's sister is Eve. The weather was mild all week. Ryan's sister is Mia. The sky turned grey by noon. The radio played old songs. Jack's sister is Tara. The hallway lights were dim. The kitchen smelled of fresh bread.",
+   "question": "Who is the sister of Zoe's partner?",
+   "cf_question": "Who is the sister of Zoe's partner?",
+   "cue": "Zoe",
+   "bridge": "Hugo",
+   "cf_bridge": "Jack",
+   "third": "Ryan",
+   "answer": "Eve",
+   "cf_answer": "Mia",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Zoe's partner?",
+    "answer": "Hugo",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Hugo's sister?",
+    "answer": "Eve",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0012",
+   "family": "NAMES",
+   "context": "Mia's partner is James. The street was lined with trees. The market was busy on Saturday. Ruby's partner is Luke. The road was wet after the rain. Zoe's partner is Owen. The kitchen smelled of fresh bread. The park was quiet at dawn. Luke's sister is Lily. The weather was mild all week. The garden gate needs new paint. Owen's sister is Beth. James's sister is Iris. The school held a concert.",
+   "cf_context": "Mia's partner is Owen. The street was lined with trees. The market was busy on Saturday. Ruby's partner is Luke. The road was wet after the rain. Zoe's partner is James. The kitchen smelled of fresh bread. The park was quiet at dawn. Luke's sister is Lily. The weather was mild all week. The garden gate needs new paint. Owen's sister is Beth. James's sister is Iris. The school held a concert.",
+   "off_context": "Mia's partner is James. The street was lined with trees. The market was busy on Saturday. Ruby's partner is Luke. The road was wet after the rain. Zoe's partner is Owen. The kitchen smelled of fresh bread. The park was quiet at dawn. Luke's sister is Beth. The weather was mild all week. The garden gate needs new paint. Owen's sister is Lily. James's sister is Iris. The school held a concert.",
+   "question": "Who is the sister of Mia's partner?",
+   "cf_question": "Who is the sister of Mia's partner?",
+   "cue": "Mia",
+   "bridge": "James",
+   "cf_bridge": "Owen",
+   "third": "Luke",
+   "answer": "Iris",
+   "cf_answer": "Beth",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Mia's partner?",
+    "answer": "James",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is James's sister?",
+    "answer": "Iris",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0013",
+   "family": "NAMES",
+   "context": "The radio played old songs. The market was busy on Saturday. Zoe's partner is Sam. The museum had a new exhibit. Maria's partner is Dan. The school held a concert. The river was calm that morning. The shop on the corner reopened. Mia's partner is Adam. Dan's sister is Laura. The wind picked up in the evening. Adam's sister is Eve. The train left on time. Sam's sister is Lily.",
+   "cf_context": "The radio played old songs. The market was busy on Saturday. Zoe's partner is Sam. The museum had a new exhibit. Maria's partner is Adam. The school held a concert. The river was calm that morning. The shop on the corner reopened. Mia's partner is Dan. Dan's sister is Laura. The wind picked up in the evening. Adam's sister is Eve. The train left on time. Sam's sister is Lily.",
+   "off_context": "The radio played old songs. The market was busy on Saturday. Zoe's partner is Sam. The museum had a new exhibit. Maria's partner is Dan. The school held a concert. The river was calm that morning. The shop on the corner reopened. Mia's partner is Adam. Dan's sister is Lily. The wind picked up in the evening. Adam's sister is Eve. The train left on time. Sam's sister is Laura.",
+   "question": "Who is the sister of Mia's partner?",
+   "cf_question": "Who is the sister of Mia's partner?",
+   "cue": "Mia",
+   "bridge": "Adam",
+   "cf_bridge": "Dan",
+   "third": "Sam",
+   "answer": "Eve",
+   "cf_answer": "Laura",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Mia's partner?",
+    "answer": "Adam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Adam's sister?",
+    "answer": "Eve",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0014",
+   "family": "NAMES",
+   "context": "The library closed early. The kitchen smelled of fresh bread. The park was quiet at dawn. Eve's partner is Paul. The window faced the hills. Kate's partner is Finn. Ella's partner is Tom. The school held a concert. The road was wet after the rain. Paul's sister is Sara. The weather was mild all week. Finn's sister is Tara. The river was calm that morning. Tom's sister is Vera.",
+   "cf_context": "The library closed early. The kitchen smelled of fresh bread. The park was quiet at dawn. Eve's partner is Paul. The window faced the hills. Kate's partner is Tom. Ella's partner is Finn. The school held a concert. The road was wet after the rain. Paul's sister is Sara. The weather was mild all week. Finn's sister is Tara. The river was calm that morning. Tom's sister is Vera.",
+   "off_context": "The library closed early. The kitchen smelled of fresh bread. The park was quiet at dawn. Eve's partner is Paul. The window faced the hills. Kate's partner is Finn. Ella's partner is Tom. The school held a concert. The road was wet after the rain. Paul's sister is Vera. The weather was mild all week. Finn's sister is Tara. The river was calm that morning. Tom's sister is Sara.",
+   "question": "Who is the sister of Kate's partner?",
+   "cf_question": "Who is the sister of Kate's partner?",
+   "cue": "Kate",
+   "bridge": "Finn",
+   "cf_bridge": "Tom",
+   "third": "Paul",
+   "answer": "Tara",
+   "cf_answer": "Vera",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Kate's partner?",
+    "answer": "Finn",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Finn's sister?",
+    "answer": "Tara",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0015",
+   "family": "NAMES",
+   "context": "The radio played old songs. The museum had a new exhibit. The kitchen smelled of fresh bread. Julia's partner is Carl. The bakery sold out of rolls. Tara's partner is Will. Clara's partner is Luke. The tea had gone cold. The market was busy on Saturday. Will's sister is Diana. The sky turned grey by noon. Luke's sister is Eva. Carl's sister is Rose. The coffee was too strong.",
+   "cf_context": "The radio played old songs. The museum had a new exhibit. The kitchen smelled of fresh bread. Julia's partner is Luke. The bakery sold out of rolls. Tara's partner is Will. Clara's partner is Carl. The tea had gone cold. The market was busy on Saturday. Will's sister is Diana. The sky turned grey by noon. Luke's sister is Eva. Carl's sister is Rose. The coffee was too strong.",
+   "off_context": "The radio played old songs. The museum had a new exhibit. The kitchen smelled of fresh bread. Julia's partner is Carl. The bakery sold out of rolls. Tara's partner is Will. Clara's partner is Luke. The tea had gone cold. The market was busy on Saturday. Will's sister is Rose. The sky turned grey by noon. Luke's sister is Eva. Carl's sister is Diana. The coffee was too strong.",
+   "question": "Who is the sister of Clara's partner?",
+   "cf_question": "Who is the sister of Clara's partner?",
+   "cue": "Clara",
+   "bridge": "Luke",
+   "cf_bridge": "Carl",
+   "third": "Will",
+   "answer": "Eva",
+   "cf_answer": "Rose",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Clara's partner?",
+    "answer": "Luke",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Luke's sister?",
+    "answer": "Eva",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0016",
+   "family": "NAMES",
+   "context": "The market was busy on Saturday. Mia's partner is Luke. Maria's partner is Sam. The road was wet after the rain. The office was cold. Emma's partner is Jack. Luke's sister is Amy. The library closed early. The river was calm that morning. The school held a concert. Sam's sister is Vera. The wind picked up in the evening. The bus was late again. Jack's sister is Laura.",
+   "cf_context": "The market was busy on Saturday. Mia's partner is Jack. Maria's partner is Sam. The road was wet after the rain. The office was cold. Emma's partner is Luke. Luke's sister is Amy. The library closed early. The river was calm that morning. The school held a concert. Sam's sister is Vera. The wind picked up in the evening. The bus was late again. Jack's sister is Laura.",
+   "off_context": "The market was busy on Saturday. Mia's partner is Luke. Maria's partner is Sam. The road was wet after the rain. The office was cold. Emma's partner is Jack. Luke's sister is Amy. The library closed early. The river was calm that morning. The school held a concert. Sam's sister is Laura. The wind picked up in the evening. The bus was late again. Jack's sister is Vera.",
+   "question": "Who is the sister of Mia's partner?",
+   "cf_question": "Who is the sister of Mia's partner?",
+   "cue": "Mia",
+   "bridge": "Luke",
+   "cf_bridge": "Jack",
+   "third": "Sam",
+   "answer": "Amy",
+   "cf_answer": "Laura",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Mia's partner?",
+    "answer": "Luke",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Luke's sister?",
+    "answer": "Amy",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0017",
+   "family": "NAMES",
+   "context": "The garden gate needs new paint. Beth's partner is Dan. The weather was mild all week. Nina's partner is Mark. The radio played old songs. Sara's partner is Leo. Mark's sister is Ella. The river was calm that morning. Leo's sister is Fiona. The park was quiet at dawn. The market was busy on Saturday. Dan's sister is Maria. The sky turned grey by noon. The bakery sold out of rolls.",
+   "cf_context": "The garden gate needs new paint. Beth's partner is Dan. The weather was mild all week. Nina's partner is Leo. The radio played old songs. Sara's partner is Mark. Mark's sister is Ella. The river was calm that morning. Leo's sister is Fiona. The park was quiet at dawn. The market was busy on Saturday. Dan's sister is Maria. The sky turned grey by noon. The bakery sold out of rolls.",
+   "off_context": "The garden gate needs new paint. Beth's partner is Dan. The weather was mild all week. Nina's partner is Mark. The radio played old songs. Sara's partner is Leo. Mark's sister is Maria. The river was calm that morning. Leo's sister is Fiona. The park was quiet at dawn. The market was busy on Saturday. Dan's sister is Ella. The sky turned grey by noon. The bakery sold out of rolls.",
+   "question": "Who is the sister of Sara's partner?",
+   "cf_question": "Who is the sister of Sara's partner?",
+   "cue": "Sara",
+   "bridge": "Leo",
+   "cf_bridge": "Mark",
+   "third": "Dan",
+   "answer": "Fiona",
+   "cf_answer": "Ella",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Sara's partner?",
+    "answer": "Leo",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Leo's sister?",
+    "answer": "Fiona",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0018",
+   "family": "NAMES",
+   "context": "Lily's partner is Kyle. The library closed early. The wind picked up in the evening. Anna's partner is Dan. Sara's partner is Sam. The hallway lights were dim. The street was lined with trees. The bus was late again. Sam's sister is Iris. Kyle's sister is Rose. Dan's sister is Olivia. The garden gate needs new paint. The museum had a new exhibit. The window faced the hills.",
+   "cf_context": "Lily's partner is Kyle. The library closed early. The wind picked up in the evening. Anna's partner is Sam. Sara's partner is Dan. The hallway lights were dim. The street was lined with trees. The bus was late again. Sam's sister is Iris. Kyle's sister is Rose. Dan's sister is Olivia. The garden gate needs new paint. The museum had a new exhibit. The window faced the hills.",
+   "off_context": "Lily's partner is Kyle. The library closed early. The wind picked up in the evening. Anna's partner is Dan. Sara's partner is Sam. The hallway lights were dim. The street was lined with trees. The bus was late again. Sam's sister is Rose. Kyle's sister is Iris. Dan's sister is Olivia. The garden gate needs new paint. The museum had a new exhibit. The window faced the hills.",
+   "question": "Who is the sister of Anna's partner?",
+   "cf_question": "Who is the sister of Anna's partner?",
+   "cue": "Anna",
+   "bridge": "Dan",
+   "cf_bridge": "Sam",
+   "third": "Kyle",
+   "answer": "Olivia",
+   "cf_answer": "Iris",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Anna's partner?",
+    "answer": "Dan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Dan's sister?",
+    "answer": "Olivia",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0019",
+   "family": "NAMES",
+   "context": "The window faced the hills. Mia's partner is Adam. The kitchen smelled of fresh bread. The festival drew a large crowd. Ruby's partner is Owen. The road was wet after the rain. Fiona's partner is Henry. The river was calm that morning. The radio played old songs. Adam's sister is Laura. The market was busy on Saturday. Henry's sister is Ivy. Owen's sister is Alice. The sky turned grey by noon.",
+   "cf_context": "The window faced the hills. Mia's partner is Henry. The kitchen smelled of fresh bread. The festival drew a large crowd. Ruby's partner is Owen. The road was wet after the rain. Fiona's partner is Adam. The river was calm that morning. The radio played old songs. Adam's sister is Laura. The market was busy on Saturday. Henry's sister is Ivy. Owen's sister is Alice. The sky turned grey by noon.",
+   "off_context": "The window faced the hills. Mia's partner is Adam. The kitchen smelled of fresh bread. The festival drew a large crowd. Ruby's partner is Owen. The road was wet after the rain. Fiona's partner is Henry. The river was calm that morning. The radio played old songs. Adam's sister is Laura. The market was busy on Saturday. Henry's sister is Alice. Owen's sister is Ivy. The sky turned grey by noon.",
+   "question": "Who is the sister of Mia's partner?",
+   "cf_question": "Who is the sister of Mia's partner?",
+   "cue": "Mia",
+   "bridge": "Adam",
+   "cf_bridge": "Henry",
+   "third": "Owen",
+   "answer": "Laura",
+   "cf_answer": "Ivy",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Mia's partner?",
+    "answer": "Adam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Adam's sister?",
+    "answer": "Laura",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0020",
+   "family": "NAMES",
+   "context": "The shop on the corner reopened. The river was calm that morning. Emma's partner is Ivan. The road was wet after the rain. Clara's partner is Ryan. The window faced the hills. The train left on time. Nina's partner is Carl. The radio played old songs. Ryan's sister is Beth. Ivan's sister is Fiona. Carl's sister is Anna. The street was lined with trees. The wind picked up in the evening.",
+   "cf_context": "The shop on the corner reopened. The river was calm that morning. Emma's partner is Carl. The road was wet after the rain. Clara's partner is Ryan. The window faced the hills. The train left on time. Nina's partner is Ivan. The radio played old songs. Ryan's sister is Beth. Ivan's sister is Fiona. Carl's sister is Anna. The street was lined with trees. The wind picked up in the evening.",
+   "off_context": "The shop on the corner reopened. The river was calm that morning. Emma's partner is Ivan. The road was wet after the rain. Clara's partner is Ryan. The window faced the hills. The train left on time. Nina's partner is Carl. The radio played old songs. Ryan's sister is Anna. Ivan's sister is Fiona. Carl's sister is Beth. The street was lined with trees. The wind picked up in the evening.",
+   "question": "Who is the sister of Emma's partner?",
+   "cf_question": "Who is the sister of Emma's partner?",
+   "cue": "Emma",
+   "bridge": "Ivan",
+   "cf_bridge": "Carl",
+   "third": "Ryan",
+   "answer": "Fiona",
+   "cf_answer": "Anna",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Emma's partner?",
+    "answer": "Ivan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Ivan's sister?",
+    "answer": "Fiona",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0021",
+   "family": "NAMES",
+   "context": "Vera's partner is Finn. The garden gate needs new paint. The shop on the corner reopened. Grace's partner is David. Nina's partner is Noah. The radio played old songs. The street was lined with trees. David's sister is Laura. The tea had gone cold. Finn's sister is Fiona. The weather was mild all week. The office was cold. Noah's sister is Mia. The road was wet after the rain.",
+   "cf_context": "Vera's partner is Noah. The garden gate needs new paint. The shop on the corner reopened. Grace's partner is David. Nina's partner is Finn. The radio played old songs. The street was lined with trees. David's sister is Laura. The tea had gone cold. Finn's sister is Fiona. The weather was mild all week. The office was cold. Noah's sister is Mia. The road was wet after the rain.",
+   "off_context": "Vera's partner is Finn. The garden gate needs new paint. The shop on the corner reopened. Grace's partner is David. Nina's partner is Noah. The radio played old songs. The street was lined with trees. David's sister is Fiona. The tea had gone cold. Finn's sister is Laura. The weather was mild all week. The office was cold. Noah's sister is Mia. The road was wet after the rain.",
+   "question": "Who is the sister of Nina's partner?",
+   "cf_question": "Who is the sister of Nina's partner?",
+   "cue": "Nina",
+   "bridge": "Noah",
+   "cf_bridge": "Finn",
+   "third": "David",
+   "answer": "Mia",
+   "cf_answer": "Fiona",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Nina's partner?",
+    "answer": "Noah",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Noah's sister?",
+    "answer": "Mia",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0022",
+   "family": "NAMES",
+   "context": "Mia's partner is Ivan. The museum had a new exhibit. Vera's partner is Max. The sky turned grey by noon. The hallway lights were dim. Lily's partner is Eric. Max's sister is Laura. The train left on time. The shop on the corner reopened. The kitchen smelled of fresh bread. Ivan's sister is Clara. The bakery sold out of rolls. Eric's sister is Olivia. The office was cold.",
+   "cf_context": "Mia's partner is Max. The museum had a new exhibit. Vera's partner is Ivan. The sky turned grey by noon. The hallway lights were dim. Lily's partner is Eric. Max's sister is Laura. The train left on time. The shop on the corner reopened. The kitchen smelled of fresh bread. Ivan's sister is Clara. The bakery sold out of rolls. Eric's sister is Olivia. The office was cold.",
+   "off_context": "Mia's partner is Ivan. The museum had a new exhibit. Vera's partner is Max. The sky turned grey by noon. The hallway lights were dim. Lily's partner is Eric. Max's sister is Laura. The train left on time. The shop on the corner reopened. The kitchen smelled of fresh bread. Ivan's sister is Olivia. The bakery sold out of rolls. Eric's sister is Clara. The office was cold.",
+   "question": "Who is the sister of Vera's partner?",
+   "cf_question": "Who is the sister of Vera's partner?",
+   "cue": "Vera",
+   "bridge": "Max",
+   "cf_bridge": "Ivan",
+   "third": "Eric",
+   "answer": "Laura",
+   "cf_answer": "Clara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Vera's partner?",
+    "answer": "Max",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Max's sister?",
+    "answer": "Laura",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0023",
+   "family": "NAMES",
+   "context": "The weather was mild all week. The tea had gone cold. The office was cold. Eva's partner is Kyle. Grace's partner is Frank. Lucy's partner is Jack. Frank's sister is Vera. The school held a concert. The kitchen smelled of fresh bread. Jack's sister is Ella. The bakery sold out of rolls. The market was busy on Saturday. Kyle's sister is Laura. The window faced the hills.",
+   "cf_context": "The weather was mild all week. The tea had gone cold. The office was cold. Eva's partner is Frank. Grace's partner is Kyle. Lucy's partner is Jack. Frank's sister is Vera. The school held a concert. The kitchen smelled of fresh bread. Jack's sister is Ella. The bakery sold out of rolls. The market was busy on Saturday. Kyle's sister is Laura. The window faced the hills.",
+   "off_context": "The weather was mild all week. The tea had gone cold. The office was cold. Eva's partner is Kyle. Grace's partner is Frank. Lucy's partner is Jack. Frank's sister is Ella. The school held a concert. The kitchen smelled of fresh bread. Jack's sister is Vera. The bakery sold out of rolls. The market was busy on Saturday. Kyle's sister is Laura. The window faced the hills.",
+   "question": "Who is the sister of Eva's partner?",
+   "cf_question": "Who is the sister of Eva's partner?",
+   "cue": "Eva",
+   "bridge": "Kyle",
+   "cf_bridge": "Frank",
+   "third": "Jack",
+   "answer": "Laura",
+   "cf_answer": "Vera",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Eva's partner?",
+    "answer": "Kyle",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Kyle's sister?",
+    "answer": "Laura",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0024",
+   "family": "NAMES",
+   "context": "The bus was late again. The festival drew a large crowd. Mia's partner is Owen. The tea had gone cold. Sara's partner is Kyle. The coffee was too strong. Tara's partner is Dan. Owen's sister is Kate. The wind picked up in the evening. Kyle's sister is Alice. The sky turned grey by noon. The park was quiet at dawn. Dan's sister is Grace. The museum had a new exhibit.",
+   "cf_context": "The bus was late again. The festival drew a large crowd. Mia's partner is Owen. The tea had gone cold. Sara's partner is Dan. The coffee was too strong. Tara's partner is Kyle. Owen's sister is Kate. The wind picked up in the evening. Kyle's sister is Alice. The sky turned grey by noon. The park was quiet at dawn. Dan's sister is Grace. The museum had a new exhibit.",
+   "off_context": "The bus was late again. The festival drew a large crowd. Mia's partner is Owen. The tea had gone cold. Sara's partner is Kyle. The coffee was too strong. Tara's partner is Dan. Owen's sister is Grace. The wind picked up in the evening. Kyle's sister is Alice. The sky turned grey by noon. The park was quiet at dawn. Dan's sister is Kate. The museum had a new exhibit.",
+   "question": "Who is the sister of Sara's partner?",
+   "cf_question": "Who is the sister of Sara's partner?",
+   "cue": "Sara",
+   "bridge": "Kyle",
+   "cf_bridge": "Dan",
+   "third": "Owen",
+   "answer": "Alice",
+   "cf_answer": "Grace",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Sara's partner?",
+    "answer": "Kyle",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Kyle's sister?",
+    "answer": "Alice",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0025",
+   "family": "NAMES",
+   "context": "The river was calm that morning. Ruby's partner is Finn. Laura's partner is Hugo. The park was quiet at dawn. The wind picked up in the evening. The bus was late again. Mia's partner is Henry. Hugo's sister is Eva. The radio played old songs. Finn's sister is Amy. The coffee was too strong. The office was cold. Henry's sister is Olivia. The festival drew a large crowd.",
+   "cf_context": "The river was calm that morning. Ruby's partner is Hugo. Laura's partner is Finn. The park was quiet at dawn. The wind picked up in the evening. The bus was late again. Mia's partner is Henry. Hugo's sister is Eva. The radio played old songs. Finn's sister is Amy. The coffee was too strong. The office was cold. Henry's sister is Olivia. The festival drew a large crowd.",
+   "off_context": "The river was calm that morning. Ruby's partner is Finn. Laura's partner is Hugo. The park was quiet at dawn. The wind picked up in the evening. The bus was late again. Mia's partner is Henry. Hugo's sister is Eva. The radio played old songs. Finn's sister is Olivia. The coffee was too strong. The office was cold. Henry's sister is Amy. The festival drew a large crowd.",
+   "question": "Who is the sister of Laura's partner?",
+   "cf_question": "Who is the sister of Laura's partner?",
+   "cue": "Laura",
+   "bridge": "Hugo",
+   "cf_bridge": "Finn",
+   "third": "Henry",
+   "answer": "Eva",
+   "cf_answer": "Amy",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Laura's partner?",
+    "answer": "Hugo",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Hugo's sister?",
+    "answer": "Eva",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0026",
+   "family": "NAMES",
+   "context": "The museum had a new exhibit. Vera's partner is Eric. Lily's partner is Kyle. Lucy's partner is James. Eric's sister is Tara. The coffee was too strong. The weather was mild all week. The festival drew a large crowd. James's sister is Maria. The park was quiet at dawn. The radio played old songs. Kyle's sister is Iris. The school held a concert. The shop on the corner reopened.",
+   "cf_context": "The museum had a new exhibit. Vera's partner is Eric. Lily's partner is James. Lucy's partner is Kyle. Eric's sister is Tara. The coffee was too strong. The weather was mild all week. The festival drew a large crowd. James's sister is Maria. The park was quiet at dawn. The radio played old songs. Kyle's sister is Iris. The school held a concert. The shop on the corner reopened.",
+   "off_context": "The museum had a new exhibit. Vera's partner is Eric. Lily's partner is Kyle. Lucy's partner is James. Eric's sister is Maria. The coffee was too strong. The weather was mild all week. The festival drew a large crowd. James's sister is Tara. The park was quiet at dawn. The radio played old songs. Kyle's sister is Iris. The school held a concert. The shop on the corner reopened.",
+   "question": "Who is the sister of Lily's partner?",
+   "cf_question": "Who is the sister of Lily's partner?",
+   "cue": "Lily",
+   "bridge": "Kyle",
+   "cf_bridge": "James",
+   "third": "Eric",
+   "answer": "Iris",
+   "cf_answer": "Maria",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Lily's partner?",
+    "answer": "Kyle",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Kyle's sister?",
+    "answer": "Iris",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0027",
+   "family": "NAMES",
+   "context": "The radio played old songs. Amy's partner is Eric. The shop on the corner reopened. The tea had gone cold. Lucy's partner is Paul. The garden gate needs new paint. Maria's partner is Leo. The coffee was too strong. Leo's sister is Beth. The museum had a new exhibit. Eric's sister is Eva. The school held a concert. Paul's sister is Vera. The kitchen smelled of fresh bread.",
+   "cf_context": "The radio played old songs. Amy's partner is Eric. The shop on the corner reopened. The tea had gone cold. Lucy's partner is Leo. The garden gate needs new paint. Maria's partner is Paul. The coffee was too strong. Leo's sister is Beth. The museum had a new exhibit. Eric's sister is Eva. The school held a concert. Paul's sister is Vera. The kitchen smelled of fresh bread.",
+   "off_context": "The radio played old songs. Amy's partner is Eric. The shop on the corner reopened. The tea had gone cold. Lucy's partner is Paul. The garden gate needs new paint. Maria's partner is Leo. The coffee was too strong. Leo's sister is Eva. The museum had a new exhibit. Eric's sister is Beth. The school held a concert. Paul's sister is Vera. The kitchen smelled of fresh bread.",
+   "question": "Who is the sister of Lucy's partner?",
+   "cf_question": "Who is the sister of Lucy's partner?",
+   "cue": "Lucy",
+   "bridge": "Paul",
+   "cf_bridge": "Leo",
+   "third": "Eric",
+   "answer": "Vera",
+   "cf_answer": "Beth",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Lucy's partner?",
+    "answer": "Paul",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Paul's sister?",
+    "answer": "Vera",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0028",
+   "family": "NAMES",
+   "context": "The wind picked up in the evening. Nina's partner is Dan. The bakery sold out of rolls. The hallway lights were dim. The weather was mild all week. Diana's partner is James. The market was busy on Saturday. The river was calm that morning. The bus was late again. Clara's partner is Adam. Adam's sister is Iris. Dan's sister is Maria. James's sister is Vera. The library closed early.",
+   "cf_context": "The wind picked up in the evening. Nina's partner is James. The bakery sold out of rolls. The hallway lights were dim. The weather was mild all week. Diana's partner is Dan. The market was busy on Saturday. The river was calm that morning. The bus was late again. Clara's partner is Adam. Adam's sister is Iris. Dan's sister is Maria. James's sister is Vera. The library closed early.",
+   "off_context": "The wind picked up in the evening. Nina's partner is Dan. The bakery sold out of rolls. The hallway lights were dim. The weather was mild all week. Diana's partner is James. The market was busy on Saturday. The river was calm that morning. The bus was late again. Clara's partner is Adam. Adam's sister is Maria. Dan's sister is Iris. James's sister is Vera. The library closed early.",
+   "question": "Who is the sister of Diana's partner?",
+   "cf_question": "Who is the sister of Diana's partner?",
+   "cue": "Diana",
+   "bridge": "James",
+   "cf_bridge": "Dan",
+   "third": "Adam",
+   "answer": "Vera",
+   "cf_answer": "Maria",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Diana's partner?",
+    "answer": "James",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is James's sister?",
+    "answer": "Vera",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0029",
+   "family": "NAMES",
+   "context": "The street was lined with trees. The park was quiet at dawn. The kitchen smelled of fresh bread. Mia's partner is Sean. Tara's partner is Sam. Rose's partner is Liam. The museum had a new exhibit. Sam's sister is Iris. The weather was mild all week. The garden gate needs new paint. Liam's sister is Sara. The office was cold. Sean's sister is Vera. The school held a concert.",
+   "cf_context": "The street was lined with trees. The park was quiet at dawn. The kitchen smelled of fresh bread. Mia's partner is Sam. Tara's partner is Sean. Rose's partner is Liam. The museum had a new exhibit. Sam's sister is Iris. The weather was mild all week. The garden gate needs new paint. Liam's sister is Sara. The office was cold. Sean's sister is Vera. The school held a concert.",
+   "off_context": "The street was lined with trees. The park was quiet at dawn. The kitchen smelled of fresh bread. Mia's partner is Sean. Tara's partner is Sam. Rose's partner is Liam. The museum had a new exhibit. Sam's sister is Iris. The weather was mild all week. The garden gate needs new paint. Liam's sister is Vera. The office was cold. Sean's sister is Sara. The school held a concert.",
+   "question": "Who is the sister of Tara's partner?",
+   "cf_question": "Who is the sister of Tara's partner?",
+   "cue": "Tara",
+   "bridge": "Sam",
+   "cf_bridge": "Sean",
+   "third": "Liam",
+   "answer": "Iris",
+   "cf_answer": "Vera",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Tara's partner?",
+    "answer": "Sam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Sam's sister?",
+    "answer": "Iris",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0030",
+   "family": "NAMES",
+   "context": "The radio played old songs. The library closed early. The hallway lights were dim. Diana's partner is Luke. The river was calm that morning. The window faced the hills. Fiona's partner is Owen. Vera's partner is Sam. The kitchen smelled of fresh bread. Owen's sister is Eve. Sam's sister is Ruby. The shop on the corner reopened. Luke's sister is Clara. The sky turned grey by noon.",
+   "cf_context": "The radio played old songs. The library closed early. The hallway lights were dim. Diana's partner is Sam. The river was calm that morning. The window faced the hills. Fiona's partner is Owen. Vera's partner is Luke. The kitchen smelled of fresh bread. Owen's sister is Eve. Sam's sister is Ruby. The shop on the corner reopened. Luke's sister is Clara. The sky turned grey by noon.",
+   "off_context": "The radio played old songs. The library closed early. The hallway lights were dim. Diana's partner is Luke. The river was calm that morning. The window faced the hills. Fiona's partner is Owen. Vera's partner is Sam. The kitchen smelled of fresh bread. Owen's sister is Ruby. Sam's sister is Eve. The shop on the corner reopened. Luke's sister is Clara. The sky turned grey by noon.",
+   "question": "Who is the sister of Diana's partner?",
+   "cf_question": "Who is the sister of Diana's partner?",
+   "cue": "Diana",
+   "bridge": "Luke",
+   "cf_bridge": "Sam",
+   "third": "Owen",
+   "answer": "Clara",
+   "cf_answer": "Ruby",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Diana's partner?",
+    "answer": "Luke",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Luke's sister?",
+    "answer": "Clara",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0031",
+   "family": "NAMES",
+   "context": "Eva's partner is Carl. The tea had gone cold. The radio played old songs. The wind picked up in the evening. Julia's partner is Hugo. The hallway lights were dim. The park was quiet at dawn. Tara's partner is Jack. The train left on time. Jack's sister is Ella. Carl's sister is Zoe. The garden gate needs new paint. The weather was mild all week. Hugo's sister is Eve.",
+   "cf_context": "Eva's partner is Carl. The tea had gone cold. The radio played old songs. The wind picked up in the evening. Julia's partner is Jack. The hallway lights were dim. The park was quiet at dawn. Tara's partner is Hugo. The train left on time. Jack's sister is Ella. Carl's sister is Zoe. The garden gate needs new paint. The weather was mild all week. Hugo's sister is Eve.",
+   "off_context": "Eva's partner is Carl. The tea had gone cold. The radio played old songs. The wind picked up in the evening. Julia's partner is Hugo. The hallway lights were dim. The park was quiet at dawn. Tara's partner is Jack. The train left on time. Jack's sister is Zoe. Carl's sister is Ella. The garden gate needs new paint. The weather was mild all week. Hugo's sister is Eve.",
+   "question": "Who is the sister of Julia's partner?",
+   "cf_question": "Who is the sister of Julia's partner?",
+   "cue": "Julia",
+   "bridge": "Hugo",
+   "cf_bridge": "Jack",
+   "third": "Carl",
+   "answer": "Eve",
+   "cf_answer": "Ella",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Julia's partner?",
+    "answer": "Hugo",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Hugo's sister?",
+    "answer": "Eve",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0032",
+   "family": "NAMES",
+   "context": "The school held a concert. The museum had a new exhibit. Laura's partner is Carl. The bakery sold out of rolls. The radio played old songs. The hallway lights were dim. Alice's partner is Eric. Maria's partner is Tom. The festival drew a large crowd. Eric's sister is Ruby. The window faced the hills. Carl's sister is Vera. Tom's sister is Clara. The street was lined with trees.",
+   "cf_context": "The school held a concert. The museum had a new exhibit. Laura's partner is Carl. The bakery sold out of rolls. The radio played old songs. The hallway lights were dim. Alice's partner is Tom. Maria's partner is Eric. The festival drew a large crowd. Eric's sister is Ruby. The window faced the hills. Carl's sister is Vera. Tom's sister is Clara. The street was lined with trees.",
+   "off_context": "The school held a concert. The museum had a new exhibit. Laura's partner is Carl. The bakery sold out of rolls. The radio played old songs. The hallway lights were dim. Alice's partner is Eric. Maria's partner is Tom. The festival drew a large crowd. Eric's sister is Ruby. The window faced the hills. Carl's sister is Clara. Tom's sister is Vera. The street was lined with trees.",
+   "question": "Who is the sister of Alice's partner?",
+   "cf_question": "Who is the sister of Alice's partner?",
+   "cue": "Alice",
+   "bridge": "Eric",
+   "cf_bridge": "Tom",
+   "third": "Carl",
+   "answer": "Ruby",
+   "cf_answer": "Clara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Alice's partner?",
+    "answer": "Eric",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Eric's sister?",
+    "answer": "Ruby",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0033",
+   "family": "NAMES",
+   "context": "The hallway lights were dim. Grace's partner is Will. The park was quiet at dawn. The museum had a new exhibit. The library closed early. Olivia's partner is Oscar. The sky turned grey by noon. The coffee was too strong. Ruby's partner is Dan. The tea had gone cold. Will's sister is Iris. Dan's sister is Eva. The window faced the hills. Oscar's sister is Sara.",
+   "cf_context": "The hallway lights were dim. Grace's partner is Will. The park was quiet at dawn. The museum had a new exhibit. The library closed early. Olivia's partner is Dan. The sky turned grey by noon. The coffee was too strong. Ruby's partner is Oscar. The tea had gone cold. Will's sister is Iris. Dan's sister is Eva. The window faced the hills. Oscar's sister is Sara.",
+   "off_context": "The hallway lights were dim. Grace's partner is Will. The park was quiet at dawn. The museum had a new exhibit. The library closed early. Olivia's partner is Oscar. The sky turned grey by noon. The coffee was too strong. Ruby's partner is Dan. The tea had gone cold. Will's sister is Eva. Dan's sister is Iris. The window faced the hills. Oscar's sister is Sara.",
+   "question": "Who is the sister of Olivia's partner?",
+   "cf_question": "Who is the sister of Olivia's partner?",
+   "cue": "Olivia",
+   "bridge": "Oscar",
+   "cf_bridge": "Dan",
+   "third": "Will",
+   "answer": "Sara",
+   "cf_answer": "Eva",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Olivia's partner?",
+    "answer": "Oscar",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Oscar's sister?",
+    "answer": "Sara",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0034",
+   "family": "NAMES",
+   "context": "The kitchen smelled of fresh bread. The river was calm that morning. The park was quiet at dawn. Ivy's partner is Owen. The coffee was too strong. The market was busy on Saturday. Eve's partner is Finn. Kate's partner is Mark. The road was wet after the rain. Mark's sister is Julia. The office was cold. Finn's sister is Iris. Owen's sister is Laura. The train left on time.",
+   "cf_context": "The kitchen smelled of fresh bread. The river was calm that morning. The park was quiet at dawn. Ivy's partner is Finn. The coffee was too strong. The market was busy on Saturday. Eve's partner is Owen. Kate's partner is Mark. The road was wet after the rain. Mark's sister is Julia. The office was cold. Finn's sister is Iris. Owen's sister is Laura. The train left on time.",
+   "off_context": "The kitchen smelled of fresh bread. The river was calm that morning. The park was quiet at dawn. Ivy's partner is Owen. The coffee was too strong. The market was busy on Saturday. Eve's partner is Finn. Kate's partner is Mark. The road was wet after the rain. Mark's sister is Laura. The office was cold. Finn's sister is Iris. Owen's sister is Julia. The train left on time.",
+   "question": "Who is the sister of Eve's partner?",
+   "cf_question": "Who is the sister of Eve's partner?",
+   "cue": "Eve",
+   "bridge": "Finn",
+   "cf_bridge": "Owen",
+   "third": "Mark",
+   "answer": "Iris",
+   "cf_answer": "Laura",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Eve's partner?",
+    "answer": "Finn",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Finn's sister?",
+    "answer": "Iris",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0035",
+   "family": "NAMES",
+   "context": "Diana's partner is Tom. Mia's partner is Kyle. The road was wet after the rain. Lily's partner is Max. The wind picked up in the evening. The coffee was too strong. Tom's sister is Ruby. The office was cold. The library closed early. The bakery sold out of rolls. Max's sister is Iris. The river was calm that morning. Kyle's sister is Clara. The bus was late again.",
+   "cf_context": "Diana's partner is Tom. Mia's partner is Max. The road was wet after the rain. Lily's partner is Kyle. The wind picked up in the evening. The coffee was too strong. Tom's sister is Ruby. The office was cold. The library closed early. The bakery sold out of rolls. Max's sister is Iris. The river was calm that morning. Kyle's sister is Clara. The bus was late again.",
+   "off_context": "Diana's partner is Tom. Mia's partner is Kyle. The road was wet after the rain. Lily's partner is Max. The wind picked up in the evening. The coffee was too strong. Tom's sister is Clara. The office was cold. The library closed early. The bakery sold out of rolls. Max's sister is Iris. The river was calm that morning. Kyle's sister is Ruby. The bus was late again.",
+   "question": "Who is the sister of Lily's partner?",
+   "cf_question": "Who is the sister of Lily's partner?",
+   "cue": "Lily",
+   "bridge": "Max",
+   "cf_bridge": "Kyle",
+   "third": "Tom",
+   "answer": "Iris",
+   "cf_answer": "Clara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Lily's partner?",
+    "answer": "Max",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Max's sister?",
+    "answer": "Iris",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0036",
+   "family": "NAMES",
+   "context": "The school held a concert. The kitchen smelled of fresh bread. The bus was late again. Lily's partner is Jack. The park was quiet at dawn. Maria's partner is Ivan. Diana's partner is Noah. The river was calm that morning. Jack's sister is Grace. Noah's sister is Julia. The window faced the hills. The museum had a new exhibit. The radio played old songs. Ivan's sister is Ivy.",
+   "cf_context": "The school held a concert. The kitchen smelled of fresh bread. The bus was late again. Lily's partner is Noah. The park was quiet at dawn. Maria's partner is Ivan. Diana's partner is Jack. The river was calm that morning. Jack's sister is Grace. Noah's sister is Julia. The window faced the hills. The museum had a new exhibit. The radio played old songs. Ivan's sister is Ivy.",
+   "off_context": "The school held a concert. The kitchen smelled of fresh bread. The bus was late again. Lily's partner is Jack. The park was quiet at dawn. Maria's partner is Ivan. Diana's partner is Noah. The river was calm that morning. Jack's sister is Grace. Noah's sister is Ivy. The window faced the hills. The museum had a new exhibit. The radio played old songs. Ivan's sister is Julia.",
+   "question": "Who is the sister of Lily's partner?",
+   "cf_question": "Who is the sister of Lily's partner?",
+   "cue": "Lily",
+   "bridge": "Jack",
+   "cf_bridge": "Noah",
+   "third": "Ivan",
+   "answer": "Grace",
+   "cf_answer": "Julia",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Lily's partner?",
+    "answer": "Jack",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Jack's sister?",
+    "answer": "Grace",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0037",
+   "family": "NAMES",
+   "context": "Ruby's partner is Dan. The festival drew a large crowd. The kitchen smelled of fresh bread. Ella's partner is Victor. The garden gate needs new paint. The bakery sold out of rolls. Lily's partner is Noah. The road was wet after the rain. The sky turned grey by noon. Victor's sister is Laura. Dan's sister is Eve. The street was lined with trees. Noah's sister is Vera. The weather was mild all week.",
+   "cf_context": "Ruby's partner is Noah. The festival drew a large crowd. The kitchen smelled of fresh bread. Ella's partner is Victor. The garden gate needs new paint. The bakery sold out of rolls. Lily's partner is Dan. The road was wet after the rain. The sky turned grey by noon. Victor's sister is Laura. Dan's sister is Eve. The street was lined with trees. Noah's sister is Vera. The weather was mild all week.",
+   "off_context": "Ruby's partner is Dan. The festival drew a large crowd. The kitchen smelled of fresh bread. Ella's partner is Victor. The garden gate needs new paint. The bakery sold out of rolls. Lily's partner is Noah. The road was wet after the rain. The sky turned grey by noon. Victor's sister is Eve. Dan's sister is Laura. The street was lined with trees. Noah's sister is Vera. The weather was mild all week.",
+   "question": "Who is the sister of Lily's partner?",
+   "cf_question": "Who is the sister of Lily's partner?",
+   "cue": "Lily",
+   "bridge": "Noah",
+   "cf_bridge": "Dan",
+   "third": "Victor",
+   "answer": "Vera",
+   "cf_answer": "Eve",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Lily's partner?",
+    "answer": "Noah",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Noah's sister?",
+    "answer": "Vera",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0038",
+   "family": "NAMES",
+   "context": "The market was busy on Saturday. Grace's partner is Leo. The kitchen smelled of fresh bread. The office was cold. The park was quiet at dawn. Emma's partner is Dan. The street was lined with trees. The sky turned grey by noon. Tara's partner is Henry. Henry's sister is Julia. The library closed early. The coffee was too strong. Leo's sister is Clara. Dan's sister is Laura.",
+   "cf_context": "The market was busy on Saturday. Grace's partner is Leo. The kitchen smelled of fresh bread. The office was cold. The park was quiet at dawn. Emma's partner is Henry. The street was lined with trees. The sky turned grey by noon. Tara's partner is Dan. Henry's sister is Julia. The library closed early. The coffee was too strong. Leo's sister is Clara. Dan's sister is Laura.",
+   "off_context": "The market was busy on Saturday. Grace's partner is Leo. The kitchen smelled of fresh bread. The office was cold. The park was quiet at dawn. Emma's partner is Dan. The street was lined with trees. The sky turned grey by noon. Tara's partner is Henry. Henry's sister is Julia. The library closed early. The coffee was too strong. Leo's sister is Laura. Dan's sister is Clara.",
+   "question": "Who is the sister of Tara's partner?",
+   "cf_question": "Who is the sister of Tara's partner?",
+   "cue": "Tara",
+   "bridge": "Henry",
+   "cf_bridge": "Dan",
+   "third": "Leo",
+   "answer": "Julia",
+   "cf_answer": "Laura",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Tara's partner?",
+    "answer": "Henry",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Henry's sister?",
+    "answer": "Julia",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0039",
+   "family": "NAMES",
+   "context": "Anna's partner is Frank. The sky turned grey by noon. The window faced the hills. Julia's partner is Jack. The park was quiet at dawn. Emma's partner is Henry. The museum had a new exhibit. Henry's sister is Olivia. Jack's sister is Beth. The office was cold. Frank's sister is Iris. The radio played old songs. The river was calm that morning. The street was lined with trees.",
+   "cf_context": "Anna's partner is Jack. The sky turned grey by noon. The window faced the hills. Julia's partner is Frank. The park was quiet at dawn. Emma's partner is Henry. The museum had a new exhibit. Henry's sister is Olivia. Jack's sister is Beth. The office was cold. Frank's sister is Iris. The radio played old songs. The river was calm that morning. The street was lined with trees.",
+   "off_context": "Anna's partner is Frank. The sky turned grey by noon. The window faced the hills. Julia's partner is Jack. The park was quiet at dawn. Emma's partner is Henry. The museum had a new exhibit. Henry's sister is Beth. Jack's sister is Olivia. The office was cold. Frank's sister is Iris. The radio played old songs. The river was calm that morning. The street was lined with trees.",
+   "question": "Who is the sister of Anna's partner?",
+   "cf_question": "Who is the sister of Anna's partner?",
+   "cue": "Anna",
+   "bridge": "Frank",
+   "cf_bridge": "Jack",
+   "third": "Henry",
+   "answer": "Iris",
+   "cf_answer": "Beth",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Anna's partner?",
+    "answer": "Frank",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Frank's sister?",
+    "answer": "Iris",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0040",
+   "family": "NAMES",
+   "context": "The weather was mild all week. Eva's partner is Ryan. The shop on the corner reopened. The road was wet after the rain. Alice's partner is Oscar. Nina's partner is Hugo. The train left on time. The office was cold. Oscar's sister is Fiona. The bakery sold out of rolls. The market was busy on Saturday. Hugo's sister is Iris. The coffee was too strong. Ryan's sister is Lucy.",
+   "cf_context": "The weather was mild all week. Eva's partner is Hugo. The shop on the corner reopened. The road was wet after the rain. Alice's partner is Oscar. Nina's partner is Ryan. The train left on time. The office was cold. Oscar's sister is Fiona. The bakery sold out of rolls. The market was busy on Saturday. Hugo's sister is Iris. The coffee was too strong. Ryan's sister is Lucy.",
+   "off_context": "The weather was mild all week. Eva's partner is Ryan. The shop on the corner reopened. The road was wet after the rain. Alice's partner is Oscar. Nina's partner is Hugo. The train left on time. The office was cold. Oscar's sister is Lucy. The bakery sold out of rolls. The market was busy on Saturday. Hugo's sister is Iris. The coffee was too strong. Ryan's sister is Fiona.",
+   "question": "Who is the sister of Nina's partner?",
+   "cf_question": "Who is the sister of Nina's partner?",
+   "cue": "Nina",
+   "bridge": "Hugo",
+   "cf_bridge": "Ryan",
+   "third": "Oscar",
+   "answer": "Iris",
+   "cf_answer": "Lucy",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Nina's partner?",
+    "answer": "Hugo",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Hugo's sister?",
+    "answer": "Iris",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0041",
+   "family": "NAMES",
+   "context": "The museum had a new exhibit. The coffee was too strong. Julia's partner is Dan. The tea had gone cold. Olivia's partner is Finn. The weather was mild all week. Ivy's partner is Oscar. The radio played old songs. Oscar's sister is Eva. Finn's sister is Sara. The hallway lights were dim. Dan's sister is Maria. The bakery sold out of rolls. The sky turned grey by noon.",
+   "cf_context": "The museum had a new exhibit. The coffee was too strong. Julia's partner is Oscar. The tea had gone cold. Olivia's partner is Finn. The weather was mild all week. Ivy's partner is Dan. The radio played old songs. Oscar's sister is Eva. Finn's sister is Sara. The hallway lights were dim. Dan's sister is Maria. The bakery sold out of rolls. The sky turned grey by noon.",
+   "off_context": "The museum had a new exhibit. The coffee was too strong. Julia's partner is Dan. The tea had gone cold. Olivia's partner is Finn. The weather was mild all week. Ivy's partner is Oscar. The radio played old songs. Oscar's sister is Sara. Finn's sister is Eva. The hallway lights were dim. Dan's sister is Maria. The bakery sold out of rolls. The sky turned grey by noon.",
+   "question": "Who is the sister of Julia's partner?",
+   "cf_question": "Who is the sister of Julia's partner?",
+   "cue": "Julia",
+   "bridge": "Dan",
+   "cf_bridge": "Oscar",
+   "third": "Finn",
+   "answer": "Maria",
+   "cf_answer": "Eva",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Julia's partner?",
+    "answer": "Dan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Dan's sister?",
+    "answer": "Maria",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0042",
+   "family": "NAMES",
+   "context": "The garden gate needs new paint. Laura's partner is Tom. The bakery sold out of rolls. Nina's partner is Mark. The train left on time. Vera's partner is Finn. The window faced the hills. The office was cold. Mark's sister is Diana. The hallway lights were dim. Tom's sister is Beth. Finn's sister is Grace. The park was quiet at dawn. The radio played old songs.",
+   "cf_context": "The garden gate needs new paint. Laura's partner is Tom. The bakery sold out of rolls. Nina's partner is Finn. The train left on time. Vera's partner is Mark. The window faced the hills. The office was cold. Mark's sister is Diana. The hallway lights were dim. Tom's sister is Beth. Finn's sister is Grace. The park was quiet at dawn. The radio played old songs.",
+   "off_context": "The garden gate needs new paint. Laura's partner is Tom. The bakery sold out of rolls. Nina's partner is Mark. The train left on time. Vera's partner is Finn. The window faced the hills. The office was cold. Mark's sister is Diana. The hallway lights were dim. Tom's sister is Grace. Finn's sister is Beth. The park was quiet at dawn. The radio played old songs.",
+   "question": "Who is the sister of Nina's partner?",
+   "cf_question": "Who is the sister of Nina's partner?",
+   "cue": "Nina",
+   "bridge": "Mark",
+   "cf_bridge": "Finn",
+   "third": "Tom",
+   "answer": "Diana",
+   "cf_answer": "Grace",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Nina's partner?",
+    "answer": "Mark",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Mark's sister?",
+    "answer": "Diana",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0043",
+   "family": "NAMES",
+   "context": "The library closed early. Amy's partner is Oscar. The weather was mild all week. Eva's partner is Eric. Iris's partner is David. The tea had gone cold. Oscar's sister is Anna. The park was quiet at dawn. David's sister is Zoe. The sky turned grey by noon. The bakery sold out of rolls. Eric's sister is Ella. The office was cold. The street was lined with trees.",
+   "cf_context": "The library closed early. Amy's partner is David. The weather was mild all week. Eva's partner is Eric. Iris's partner is Oscar. The tea had gone cold. Oscar's sister is Anna. The park was quiet at dawn. David's sister is Zoe. The sky turned grey by noon. The bakery sold out of rolls. Eric's sister is Ella. The office was cold. The street was lined with trees.",
+   "off_context": "The library closed early. Amy's partner is Oscar. The weather was mild all week. Eva's partner is Eric. Iris's partner is David. The tea had gone cold. Oscar's sister is Anna. The park was quiet at dawn. David's sister is Ella. The sky turned grey by noon. The bakery sold out of rolls. Eric's sister is Zoe. The office was cold. The street was lined with trees.",
+   "question": "Who is the sister of Amy's partner?",
+   "cf_question": "Who is the sister of Amy's partner?",
+   "cue": "Amy",
+   "bridge": "Oscar",
+   "cf_bridge": "David",
+   "third": "Eric",
+   "answer": "Anna",
+   "cf_answer": "Zoe",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Amy's partner?",
+    "answer": "Oscar",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Oscar's sister?",
+    "answer": "Anna",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0044",
+   "family": "NAMES",
+   "context": "Ruby's partner is Eric. The kitchen smelled of fresh bread. The tea had gone cold. Rose's partner is Finn. The river was calm that morning. The sky turned grey by noon. Tara's partner is Hugo. The school held a concert. Eric's sister is Eva. The library closed early. Hugo's sister is Anna. The museum had a new exhibit. The window faced the hills. Finn's sister is Laura.",
+   "cf_context": "Ruby's partner is Finn. The kitchen smelled of fresh bread. The tea had gone cold. Rose's partner is Eric. The river was calm that morning. The sky turned grey by noon. Tara's partner is Hugo. The school held a concert. Eric's sister is Eva. The library closed early. Hugo's sister is Anna. The museum had a new exhibit. The window faced the hills. Finn's sister is Laura.",
+   "off_context": "Ruby's partner is Eric. The kitchen smelled of fresh bread. The tea had gone cold. Rose's partner is Finn. The river was calm that morning. The sky turned grey by noon. Tara's partner is Hugo. The school held a concert. Eric's sister is Eva. The library closed early. Hugo's sister is Laura. The museum had a new exhibit. The window faced the hills. Finn's sister is Anna.",
+   "question": "Who is the sister of Ruby's partner?",
+   "cf_question": "Who is the sister of Ruby's partner?",
+   "cue": "Ruby",
+   "bridge": "Eric",
+   "cf_bridge": "Finn",
+   "third": "Hugo",
+   "answer": "Eva",
+   "cf_answer": "Laura",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Ruby's partner?",
+    "answer": "Eric",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Eric's sister?",
+    "answer": "Eva",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0045",
+   "family": "NAMES",
+   "context": "The bus was late again. The window faced the hills. Vera's partner is Sam. Nina's partner is Eric. The bakery sold out of rolls. Kate's partner is Liam. The office was cold. The school held a concert. Eric's sister is Sara. The wind picked up in the evening. Liam's sister is Julia. The sky turned grey by noon. The garden gate needs new paint. Sam's sister is Clara.",
+   "cf_context": "The bus was late again. The window faced the hills. Vera's partner is Liam. Nina's partner is Eric. The bakery sold out of rolls. Kate's partner is Sam. The office was cold. The school held a concert. Eric's sister is Sara. The wind picked up in the evening. Liam's sister is Julia. The sky turned grey by noon. The garden gate needs new paint. Sam's sister is Clara.",
+   "off_context": "The bus was late again. The window faced the hills. Vera's partner is Sam. Nina's partner is Eric. The bakery sold out of rolls. Kate's partner is Liam. The office was cold. The school held a concert. Eric's sister is Clara. The wind picked up in the evening. Liam's sister is Julia. The sky turned grey by noon. The garden gate needs new paint. Sam's sister is Sara.",
+   "question": "Who is the sister of Kate's partner?",
+   "cf_question": "Who is the sister of Kate's partner?",
+   "cue": "Kate",
+   "bridge": "Liam",
+   "cf_bridge": "Sam",
+   "third": "Eric",
+   "answer": "Julia",
+   "cf_answer": "Clara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Kate's partner?",
+    "answer": "Liam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Liam's sister?",
+    "answer": "Julia",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0046",
+   "family": "NAMES",
+   "context": "The park was quiet at dawn. The garden gate needs new paint. The festival drew a large crowd. Kate's partner is Adam. The hallway lights were dim. Grace's partner is Liam. Lily's partner is Victor. The river was calm that morning. Liam's sister is Anna. The bakery sold out of rolls. Adam's sister is Mia. Victor's sister is Amy. The window faced the hills. The train left on time.",
+   "cf_context": "The park was quiet at dawn. The garden gate needs new paint. The festival drew a large crowd. Kate's partner is Adam. The hallway lights were dim. Grace's partner is Victor. Lily's partner is Liam. The river was calm that morning. Liam's sister is Anna. The bakery sold out of rolls. Adam's sister is Mia. Victor's sister is Amy. The window faced the hills. The train left on time.",
+   "off_context": "The park was quiet at dawn. The garden gate needs new paint. The festival drew a large crowd. Kate's partner is Adam. The hallway lights were dim. Grace's partner is Liam. Lily's partner is Victor. The river was calm that morning. Liam's sister is Mia. The bakery sold out of rolls. Adam's sister is Anna. Victor's sister is Amy. The window faced the hills. The train left on time.",
+   "question": "Who is the sister of Lily's partner?",
+   "cf_question": "Who is the sister of Lily's partner?",
+   "cue": "Lily",
+   "bridge": "Victor",
+   "cf_bridge": "Liam",
+   "third": "Adam",
+   "answer": "Amy",
+   "cf_answer": "Anna",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Lily's partner?",
+    "answer": "Victor",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Victor's sister?",
+    "answer": "Amy",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0047",
+   "family": "NAMES",
+   "context": "The bus was late again. The weather was mild all week. Emma's partner is Jack. Lily's partner is Oscar. Rose's partner is Sam. The train left on time. The library closed early. Oscar's sister is Iris. The hallway lights were dim. The kitchen smelled of fresh bread. Sam's sister is Kate. The tea had gone cold. The window faced the hills. Jack's sister is Eva.",
+   "cf_context": "The bus was late again. The weather was mild all week. Emma's partner is Oscar. Lily's partner is Jack. Rose's partner is Sam. The train left on time. The library closed early. Oscar's sister is Iris. The hallway lights were dim. The kitchen smelled of fresh bread. Sam's sister is Kate. The tea had gone cold. The window faced the hills. Jack's sister is Eva.",
+   "off_context": "The bus was late again. The weather was mild all week. Emma's partner is Jack. Lily's partner is Oscar. Rose's partner is Sam. The train left on time. The library closed early. Oscar's sister is Kate. The hallway lights were dim. The kitchen smelled of fresh bread. Sam's sister is Iris. The tea had gone cold. The window faced the hills. Jack's sister is Eva.",
+   "question": "Who is the sister of Emma's partner?",
+   "cf_question": "Who is the sister of Emma's partner?",
+   "cue": "Emma",
+   "bridge": "Jack",
+   "cf_bridge": "Oscar",
+   "third": "Sam",
+   "answer": "Eva",
+   "cf_answer": "Iris",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Emma's partner?",
+    "answer": "Jack",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Jack's sister?",
+    "answer": "Eva",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0048",
+   "family": "NAMES",
+   "context": "The tea had gone cold. Clara's partner is Owen. The radio played old songs. Zoe's partner is Sam. Mia's partner is Ben. The road was wet after the rain. Ben's sister is Amy. The coffee was too strong. The library closed early. The market was busy on Saturday. Sam's sister is Rose. The bakery sold out of rolls. The train left on time. Owen's sister is Kate.",
+   "cf_context": "The tea had gone cold. Clara's partner is Ben. The radio played old songs. Zoe's partner is Sam. Mia's partner is Owen. The road was wet after the rain. Ben's sister is Amy. The coffee was too strong. The library closed early. The market was busy on Saturday. Sam's sister is Rose. The bakery sold out of rolls. The train left on time. Owen's sister is Kate.",
+   "off_context": "The tea had gone cold. Clara's partner is Owen. The radio played old songs. Zoe's partner is Sam. Mia's partner is Ben. The road was wet after the rain. Ben's sister is Amy. The coffee was too strong. The library closed early. The market was busy on Saturday. Sam's sister is Kate. The bakery sold out of rolls. The train left on time. Owen's sister is Rose.",
+   "question": "Who is the sister of Mia's partner?",
+   "cf_question": "Who is the sister of Mia's partner?",
+   "cue": "Mia",
+   "bridge": "Ben",
+   "cf_bridge": "Owen",
+   "third": "Sam",
+   "answer": "Amy",
+   "cf_answer": "Kate",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Mia's partner?",
+    "answer": "Ben",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Ben's sister?",
+    "answer": "Amy",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0049",
+   "family": "NAMES",
+   "context": "The road was wet after the rain. Alice's partner is Ben. The hallway lights were dim. The shop on the corner reopened. Eve's partner is Hugo. The train left on time. The garden gate needs new paint. Iris's partner is Sean. The bus was late again. Ben's sister is Ella. Sean's sister is Lucy. The weather was mild all week. Hugo's sister is Grace. The school held a concert.",
+   "cf_context": "The road was wet after the rain. Alice's partner is Ben. The hallway lights were dim. The shop on the corner reopened. Eve's partner is Sean. The train left on time. The garden gate needs new paint. Iris's partner is Hugo. The bus was late again. Ben's sister is Ella. Sean's sister is Lucy. The weather was mild all week. Hugo's sister is Grace. The school held a concert.",
+   "off_context": "The road was wet after the rain. Alice's partner is Ben. The hallway lights were dim. The shop on the corner reopened. Eve's partner is Hugo. The train left on time. The garden gate needs new paint. Iris's partner is Sean. The bus was late again. Ben's sister is Lucy. Sean's sister is Ella. The weather was mild all week. Hugo's sister is Grace. The school held a concert.",
+   "question": "Who is the sister of Eve's partner?",
+   "cf_question": "Who is the sister of Eve's partner?",
+   "cue": "Eve",
+   "bridge": "Hugo",
+   "cf_bridge": "Sean",
+   "third": "Ben",
+   "answer": "Grace",
+   "cf_answer": "Lucy",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Eve's partner?",
+    "answer": "Hugo",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Hugo's sister?",
+    "answer": "Grace",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0050",
+   "family": "NAMES",
+   "context": "The hallway lights were dim. Fiona's partner is Paul. Alice's partner is Hugo. Nina's partner is Frank. The museum had a new exhibit. The street was lined with trees. The library closed early. Frank's sister is Tara. The park was quiet at dawn. The kitchen smelled of fresh bread. Paul's sister is Olivia. The weather was mild all week. The market was busy on Saturday. Hugo's sister is Kate.",
+   "cf_context": "The hallway lights were dim. Fiona's partner is Frank. Alice's partner is Hugo. Nina's partner is Paul. The museum had a new exhibit. The street was lined with trees. The library closed early. Frank's sister is Tara. The park was quiet at dawn. The kitchen smelled of fresh bread. Paul's sister is Olivia. The weather was mild all week. The market was busy on Saturday. Hugo's sister is Kate.",
+   "off_context": "The hallway lights were dim. Fiona's partner is Paul. Alice's partner is Hugo. Nina's partner is Frank. The museum had a new exhibit. The street was lined with trees. The library closed early. Frank's sister is Kate. The park was quiet at dawn. The kitchen smelled of fresh bread. Paul's sister is Olivia. The weather was mild all week. The market was busy on Saturday. Hugo's sister is Tara.",
+   "question": "Who is the sister of Fiona's partner?",
+   "cf_question": "Who is the sister of Fiona's partner?",
+   "cue": "Fiona",
+   "bridge": "Paul",
+   "cf_bridge": "Frank",
+   "third": "Hugo",
+   "answer": "Olivia",
+   "cf_answer": "Tara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Fiona's partner?",
+    "answer": "Paul",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Paul's sister?",
+    "answer": "Olivia",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0051",
+   "family": "NAMES",
+   "context": "The school held a concert. Ruby's partner is Carl. The tea had gone cold. The coffee was too strong. Ivy's partner is Victor. Olivia's partner is David. The bus was late again. The river was calm that morning. Victor's sister is Julia. The festival drew a large crowd. The train left on time. David's sister is Emma. The garden gate needs new paint. Carl's sister is Iris.",
+   "cf_context": "The school held a concert. Ruby's partner is Carl. The tea had gone cold. The coffee was too strong. Ivy's partner is David. Olivia's partner is Victor. The bus was late again. The river was calm that morning. Victor's sister is Julia. The festival drew a large crowd. The train left on time. David's sister is Emma. The garden gate needs new paint. Carl's sister is Iris.",
+   "off_context": "The school held a concert. Ruby's partner is Carl. The tea had gone cold. The coffee was too strong. Ivy's partner is Victor. Olivia's partner is David. The bus was late again. The river was calm that morning. Victor's sister is Iris. The festival drew a large crowd. The train left on time. David's sister is Emma. The garden gate needs new paint. Carl's sister is Julia.",
+   "question": "Who is the sister of Olivia's partner?",
+   "cf_question": "Who is the sister of Olivia's partner?",
+   "cue": "Olivia",
+   "bridge": "David",
+   "cf_bridge": "Victor",
+   "third": "Carl",
+   "answer": "Emma",
+   "cf_answer": "Julia",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Olivia's partner?",
+    "answer": "David",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is David's sister?",
+    "answer": "Emma",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0052",
+   "family": "NAMES",
+   "context": "Clara's partner is Ben. Nina's partner is Noah. The office was cold. Maria's partner is Dan. Noah's sister is Grace. The wind picked up in the evening. The sky turned grey by noon. Ben's sister is Rose. The park was quiet at dawn. The tea had gone cold. The festival drew a large crowd. The market was busy on Saturday. Dan's sister is Lily. The train left on time.",
+   "cf_context": "Clara's partner is Noah. Nina's partner is Ben. The office was cold. Maria's partner is Dan. Noah's sister is Grace. The wind picked up in the evening. The sky turned grey by noon. Ben's sister is Rose. The park was quiet at dawn. The tea had gone cold. The festival drew a large crowd. The market was busy on Saturday. Dan's sister is Lily. The train left on time.",
+   "off_context": "Clara's partner is Ben. Nina's partner is Noah. The office was cold. Maria's partner is Dan. Noah's sister is Grace. The wind picked up in the evening. The sky turned grey by noon. Ben's sister is Lily. The park was quiet at dawn. The tea had gone cold. The festival drew a large crowd. The market was busy on Saturday. Dan's sister is Rose. The train left on time.",
+   "question": "Who is the sister of Nina's partner?",
+   "cf_question": "Who is the sister of Nina's partner?",
+   "cue": "Nina",
+   "bridge": "Noah",
+   "cf_bridge": "Ben",
+   "third": "Dan",
+   "answer": "Grace",
+   "cf_answer": "Rose",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Nina's partner?",
+    "answer": "Noah",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Noah's sister?",
+    "answer": "Grace",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0053",
+   "family": "NAMES",
+   "context": "The kitchen smelled of fresh bread. The radio played old songs. Diana's partner is Sean. Eve's partner is Mark. The weather was mild all week. The office was cold. The sky turned grey by noon. The hallway lights were dim. Mia's partner is Liam. The market was busy on Saturday. Liam's sister is Olivia. Mark's sister is Lucy. Sean's sister is Nina. The river was calm that morning.",
+   "cf_context": "The kitchen smelled of fresh bread. The radio played old songs. Diana's partner is Liam. Eve's partner is Mark. The weather was mild all week. The office was cold. The sky turned grey by noon. The hallway lights were dim. Mia's partner is Sean. The market was busy on Saturday. Liam's sister is Olivia. Mark's sister is Lucy. Sean's sister is Nina. The river was calm that morning.",
+   "off_context": "The kitchen smelled of fresh bread. The radio played old songs. Diana's partner is Sean. Eve's partner is Mark. The weather was mild all week. The office was cold. The sky turned grey by noon. The hallway lights were dim. Mia's partner is Liam. The market was busy on Saturday. Liam's sister is Olivia. Mark's sister is Nina. Sean's sister is Lucy. The river was calm that morning.",
+   "question": "Who is the sister of Mia's partner?",
+   "cf_question": "Who is the sister of Mia's partner?",
+   "cue": "Mia",
+   "bridge": "Liam",
+   "cf_bridge": "Sean",
+   "third": "Mark",
+   "answer": "Olivia",
+   "cf_answer": "Nina",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Mia's partner?",
+    "answer": "Liam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Liam's sister?",
+    "answer": "Olivia",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0054",
+   "family": "NAMES",
+   "context": "The museum had a new exhibit. Vera's partner is Dan. Kate's partner is Ivan. The school held a concert. Lucy's partner is Kyle. Ivan's sister is Tara. The road was wet after the rain. Kyle's sister is Lily. The hallway lights were dim. The river was calm that morning. The weather was mild all week. Dan's sister is Grace. The park was quiet at dawn. The street was lined with trees.",
+   "cf_context": "The museum had a new exhibit. Vera's partner is Dan. Kate's partner is Kyle. The school held a concert. Lucy's partner is Ivan. Ivan's sister is Tara. The road was wet after the rain. Kyle's sister is Lily. The hallway lights were dim. The river was calm that morning. The weather was mild all week. Dan's sister is Grace. The park was quiet at dawn. The street was lined with trees.",
+   "off_context": "The museum had a new exhibit. Vera's partner is Dan. Kate's partner is Ivan. The school held a concert. Lucy's partner is Kyle. Ivan's sister is Grace. The road was wet after the rain. Kyle's sister is Lily. The hallway lights were dim. The river was calm that morning. The weather was mild all week. Dan's sister is Tara. The park was quiet at dawn. The street was lined with trees.",
+   "question": "Who is the sister of Lucy's partner?",
+   "cf_question": "Who is the sister of Lucy's partner?",
+   "cue": "Lucy",
+   "bridge": "Kyle",
+   "cf_bridge": "Ivan",
+   "third": "Dan",
+   "answer": "Lily",
+   "cf_answer": "Tara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Lucy's partner?",
+    "answer": "Kyle",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Kyle's sister?",
+    "answer": "Lily",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0055",
+   "family": "NAMES",
+   "context": "Maria's partner is Max. The train left on time. Beth's partner is Eric. The shop on the corner reopened. Alice's partner is Luke. The radio played old songs. The garden gate needs new paint. Eric's sister is Grace. The hallway lights were dim. Luke's sister is Rose. Max's sister is Fiona. The road was wet after the rain. The weather was mild all week. The wind picked up in the evening.",
+   "cf_context": "Maria's partner is Eric. The train left on time. Beth's partner is Max. The shop on the corner reopened. Alice's partner is Luke. The radio played old songs. The garden gate needs new paint. Eric's sister is Grace. The hallway lights were dim. Luke's sister is Rose. Max's sister is Fiona. The road was wet after the rain. The weather was mild all week. The wind picked up in the evening.",
+   "off_context": "Maria's partner is Max. The train left on time. Beth's partner is Eric. The shop on the corner reopened. Alice's partner is Luke. The radio played old songs. The garden gate needs new paint. Eric's sister is Rose. The hallway lights were dim. Luke's sister is Grace. Max's sister is Fiona. The road was wet after the rain. The weather was mild all week. The wind picked up in the evening.",
+   "question": "Who is the sister of Maria's partner?",
+   "cf_question": "Who is the sister of Maria's partner?",
+   "cue": "Maria",
+   "bridge": "Max",
+   "cf_bridge": "Eric",
+   "third": "Luke",
+   "answer": "Fiona",
+   "cf_answer": "Grace",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Maria's partner?",
+    "answer": "Max",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Max's sister?",
+    "answer": "Fiona",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0056",
+   "family": "NAMES",
+   "context": "The library closed early. Clara's partner is Paul. The wind picked up in the evening. Mia's partner is Carl. The office was cold. Ivy's partner is Frank. Carl's sister is Maria. Paul's sister is Kate. The tea had gone cold. The park was quiet at dawn. The school held a concert. Frank's sister is Vera. The radio played old songs. The hallway lights were dim.",
+   "cf_context": "The library closed early. Clara's partner is Frank. The wind picked up in the evening. Mia's partner is Carl. The office was cold. Ivy's partner is Paul. Carl's sister is Maria. Paul's sister is Kate. The tea had gone cold. The park was quiet at dawn. The school held a concert. Frank's sister is Vera. The radio played old songs. The hallway lights were dim.",
+   "off_context": "The library closed early. Clara's partner is Paul. The wind picked up in the evening. Mia's partner is Carl. The office was cold. Ivy's partner is Frank. Carl's sister is Vera. Paul's sister is Kate. The tea had gone cold. The park was quiet at dawn. The school held a concert. Frank's sister is Maria. The radio played old songs. The hallway lights were dim.",
+   "question": "Who is the sister of Clara's partner?",
+   "cf_question": "Who is the sister of Clara's partner?",
+   "cue": "Clara",
+   "bridge": "Paul",
+   "cf_bridge": "Frank",
+   "third": "Carl",
+   "answer": "Kate",
+   "cf_answer": "Vera",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Clara's partner?",
+    "answer": "Paul",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Paul's sister?",
+    "answer": "Kate",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0057",
+   "family": "NAMES",
+   "context": "The tea had gone cold. The window faced the hills. Laura's partner is Tom. The river was calm that morning. Grace's partner is Peter. Sara's partner is Noah. The radio played old songs. Peter's sister is Ruby. The museum had a new exhibit. Noah's sister is Emma. The wind picked up in the evening. Tom's sister is Eve. The shop on the corner reopened. The hallway lights were dim.",
+   "cf_context": "The tea had gone cold. The window faced the hills. Laura's partner is Noah. The river was calm that morning. Grace's partner is Peter. Sara's partner is Tom. The radio played old songs. Peter's sister is Ruby. The museum had a new exhibit. Noah's sister is Emma. The wind picked up in the evening. Tom's sister is Eve. The shop on the corner reopened. The hallway lights were dim.",
+   "off_context": "The tea had gone cold. The window faced the hills. Laura's partner is Tom. The river was calm that morning. Grace's partner is Peter. Sara's partner is Noah. The radio played old songs. Peter's sister is Eve. The museum had a new exhibit. Noah's sister is Emma. The wind picked up in the evening. Tom's sister is Ruby. The shop on the corner reopened. The hallway lights were dim.",
+   "question": "Who is the sister of Sara's partner?",
+   "cf_question": "Who is the sister of Sara's partner?",
+   "cue": "Sara",
+   "bridge": "Noah",
+   "cf_bridge": "Tom",
+   "third": "Peter",
+   "answer": "Emma",
+   "cf_answer": "Eve",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Sara's partner?",
+    "answer": "Noah",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Noah's sister?",
+    "answer": "Emma",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0058",
+   "family": "NAMES",
+   "context": "Laura's partner is Finn. The bus was late again. The bakery sold out of rolls. Iris's partner is Ben. The radio played old songs. The festival drew a large crowd. Eva's partner is Carl. The weather was mild all week. Carl's sister is Ella. The library closed early. The coffee was too strong. Finn's sister is Kate. Ben's sister is Julia. The window faced the hills.",
+   "cf_context": "Laura's partner is Carl. The bus was late again. The bakery sold out of rolls. Iris's partner is Ben. The radio played old songs. The festival drew a large crowd. Eva's partner is Finn. The weather was mild all week. Carl's sister is Ella. The library closed early. The coffee was too strong. Finn's sister is Kate. Ben's sister is Julia. The window faced the hills.",
+   "off_context": "Laura's partner is Finn. The bus was late again. The bakery sold out of rolls. Iris's partner is Ben. The radio played old songs. The festival drew a large crowd. Eva's partner is Carl. The weather was mild all week. Carl's sister is Julia. The library closed early. The coffee was too strong. Finn's sister is Kate. Ben's sister is Ella. The window faced the hills.",
+   "question": "Who is the sister of Laura's partner?",
+   "cf_question": "Who is the sister of Laura's partner?",
+   "cue": "Laura",
+   "bridge": "Finn",
+   "cf_bridge": "Carl",
+   "third": "Ben",
+   "answer": "Kate",
+   "cf_answer": "Ella",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Laura's partner?",
+    "answer": "Finn",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Finn's sister?",
+    "answer": "Kate",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0059",
+   "family": "NAMES",
+   "context": "The radio played old songs. The window faced the hills. The park was quiet at dawn. Laura's partner is Sam. The river was calm that morning. The shop on the corner reopened. Nina's partner is Finn. Eva's partner is Dan. The library closed early. The weather was mild all week. Finn's sister is Julia. Sam's sister is Beth. Dan's sister is Fiona. The road was wet after the rain.",
+   "cf_context": "The radio played old songs. The window faced the hills. The park was quiet at dawn. Laura's partner is Dan. The river was calm that morning. The shop on the corner reopened. Nina's partner is Finn. Eva's partner is Sam. The library closed early. The weather was mild all week. Finn's sister is Julia. Sam's sister is Beth. Dan's sister is Fiona. The road was wet after the rain.",
+   "off_context": "The radio played old songs. The window faced the hills. The park was quiet at dawn. Laura's partner is Sam. The river was calm that morning. The shop on the corner reopened. Nina's partner is Finn. Eva's partner is Dan. The library closed early. The weather was mild all week. Finn's sister is Fiona. Sam's sister is Beth. Dan's sister is Julia. The road was wet after the rain.",
+   "question": "Who is the sister of Laura's partner?",
+   "cf_question": "Who is the sister of Laura's partner?",
+   "cue": "Laura",
+   "bridge": "Sam",
+   "cf_bridge": "Dan",
+   "third": "Finn",
+   "answer": "Beth",
+   "cf_answer": "Fiona",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Laura's partner?",
+    "answer": "Sam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Sam's sister?",
+    "answer": "Beth",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0060",
+   "family": "NAMES",
+   "context": "The park was quiet at dawn. The garden gate needs new paint. The street was lined with trees. Mia's partner is Victor. The river was calm that morning. Eva's partner is Sean. Diana's partner is Jack. The museum had a new exhibit. Victor's sister is Alice. The radio played old songs. Jack's sister is Julia. The road was wet after the rain. Sean's sister is Kate. The kitchen smelled of fresh bread.",
+   "cf_context": "The park was quiet at dawn. The garden gate needs new paint. The street was lined with trees. Mia's partner is Sean. The river was calm that morning. Eva's partner is Victor. Diana's partner is Jack. The museum had a new exhibit. Victor's sister is Alice. The radio played old songs. Jack's sister is Julia. The road was wet after the rain. Sean's sister is Kate. The kitchen smelled of fresh bread.",
+   "off_context": "The park was quiet at dawn. The garden gate needs new paint. The street was lined with trees. Mia's partner is Victor. The river was calm that morning. Eva's partner is Sean. Diana's partner is Jack. The museum had a new exhibit. Victor's sister is Julia. The radio played old songs. Jack's sister is Alice. The road was wet after the rain. Sean's sister is Kate. The kitchen smelled of fresh bread.",
+   "question": "Who is the sister of Eva's partner?",
+   "cf_question": "Who is the sister of Eva's partner?",
+   "cue": "Eva",
+   "bridge": "Sean",
+   "cf_bridge": "Victor",
+   "third": "Jack",
+   "answer": "Kate",
+   "cf_answer": "Alice",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Eva's partner?",
+    "answer": "Sean",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Sean's sister?",
+    "answer": "Kate",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0061",
+   "family": "NAMES",
+   "context": "The bakery sold out of rolls. Zoe's partner is Finn. The library closed early. Clara's partner is Ryan. The museum had a new exhibit. The radio played old songs. The coffee was too strong. Grace's partner is David. The sky turned grey by noon. Finn's sister is Ella. Ryan's sister is Fiona. David's sister is Alice. The river was calm that morning. The weather was mild all week.",
+   "cf_context": "The bakery sold out of rolls. Zoe's partner is David. The library closed early. Clara's partner is Ryan. The museum had a new exhibit. The radio played old songs. The coffee was too strong. Grace's partner is Finn. The sky turned grey by noon. Finn's sister is Ella. Ryan's sister is Fiona. David's sister is Alice. The river was calm that morning. The weather was mild all week.",
+   "off_context": "The bakery sold out of rolls. Zoe's partner is Finn. The library closed early. Clara's partner is Ryan. The museum had a new exhibit. The radio played old songs. The coffee was too strong. Grace's partner is David. The sky turned grey by noon. Finn's sister is Ella. Ryan's sister is Alice. David's sister is Fiona. The river was calm that morning. The weather was mild all week.",
+   "question": "Who is the sister of Zoe's partner?",
+   "cf_question": "Who is the sister of Zoe's partner?",
+   "cue": "Zoe",
+   "bridge": "Finn",
+   "cf_bridge": "David",
+   "third": "Ryan",
+   "answer": "Ella",
+   "cf_answer": "Alice",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Zoe's partner?",
+    "answer": "Finn",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Finn's sister?",
+    "answer": "Ella",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0062",
+   "family": "NAMES",
+   "context": "The school held a concert. Tara's partner is Henry. The bus was late again. The bakery sold out of rolls. The market was busy on Saturday. The kitchen smelled of fresh bread. Olivia's partner is David. Ella's partner is Paul. The sky turned grey by noon. David's sister is Lucy. The tea had gone cold. Paul's sister is Beth. Henry's sister is Rose. The river was calm that morning.",
+   "cf_context": "The school held a concert. Tara's partner is Paul. The bus was late again. The bakery sold out of rolls. The market was busy on Saturday. The kitchen smelled of fresh bread. Olivia's partner is David. Ella's partner is Henry. The sky turned grey by noon. David's sister is Lucy. The tea had gone cold. Paul's sister is Beth. Henry's sister is Rose. The river was calm that morning.",
+   "off_context": "The school held a concert. Tara's partner is Henry. The bus was late again. The bakery sold out of rolls. The market was busy on Saturday. The kitchen smelled of fresh bread. Olivia's partner is David. Ella's partner is Paul. The sky turned grey by noon. David's sister is Rose. The tea had gone cold. Paul's sister is Beth. Henry's sister is Lucy. The river was calm that morning.",
+   "question": "Who is the sister of Ella's partner?",
+   "cf_question": "Who is the sister of Ella's partner?",
+   "cue": "Ella",
+   "bridge": "Paul",
+   "cf_bridge": "Henry",
+   "third": "David",
+   "answer": "Beth",
+   "cf_answer": "Rose",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Ella's partner?",
+    "answer": "Paul",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Paul's sister?",
+    "answer": "Beth",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0063",
+   "family": "NAMES",
+   "context": "Ivy's partner is Max. Olivia's partner is Carl. Sara's partner is Ben. The river was calm that morning. The library closed early. The shop on the corner reopened. Ben's sister is Iris. The wind picked up in the evening. Carl's sister is Zoe. The festival drew a large crowd. The school held a concert. Max's sister is Lucy. The train left on time. The market was busy on Saturday.",
+   "cf_context": "Ivy's partner is Ben. Olivia's partner is Carl. Sara's partner is Max. The river was calm that morning. The library closed early. The shop on the corner reopened. Ben's sister is Iris. The wind picked up in the evening. Carl's sister is Zoe. The festival drew a large crowd. The school held a concert. Max's sister is Lucy. The train left on time. The market was busy on Saturday.",
+   "off_context": "Ivy's partner is Max. Olivia's partner is Carl. Sara's partner is Ben. The river was calm that morning. The library closed early. The shop on the corner reopened. Ben's sister is Iris. The wind picked up in the evening. Carl's sister is Lucy. The festival drew a large crowd. The school held a concert. Max's sister is Zoe. The train left on time. The market was busy on Saturday.",
+   "question": "Who is the sister of Sara's partner?",
+   "cf_question": "Who is the sister of Sara's partner?",
+   "cue": "Sara",
+   "bridge": "Ben",
+   "cf_bridge": "Max",
+   "third": "Carl",
+   "answer": "Iris",
+   "cf_answer": "Lucy",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Sara's partner?",
+    "answer": "Ben",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Ben's sister?",
+    "answer": "Iris",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0064",
+   "family": "NAMES",
+   "context": "Mia's partner is Frank. Eve's partner is Eric. The window faced the hills. Grace's partner is Carl. The wind picked up in the evening. The park was quiet at dawn. Eric's sister is Vera. The garden gate needs new paint. The coffee was too strong. Frank's sister is Amy. Carl's sister is Ella. The tea had gone cold. The museum had a new exhibit. The sky turned grey by noon.",
+   "cf_context": "Mia's partner is Frank. Eve's partner is Carl. The window faced the hills. Grace's partner is Eric. The wind picked up in the evening. The park was quiet at dawn. Eric's sister is Vera. The garden gate needs new paint. The coffee was too strong. Frank's sister is Amy. Carl's sister is Ella. The tea had gone cold. The museum had a new exhibit. The sky turned grey by noon.",
+   "off_context": "Mia's partner is Frank. Eve's partner is Eric. The window faced the hills. Grace's partner is Carl. The wind picked up in the evening. The park was quiet at dawn. Eric's sister is Amy. The garden gate needs new paint. The coffee was too strong. Frank's sister is Vera. Carl's sister is Ella. The tea had gone cold. The museum had a new exhibit. The sky turned grey by noon.",
+   "question": "Who is the sister of Grace's partner?",
+   "cf_question": "Who is the sister of Grace's partner?",
+   "cue": "Grace",
+   "bridge": "Carl",
+   "cf_bridge": "Eric",
+   "third": "Frank",
+   "answer": "Ella",
+   "cf_answer": "Vera",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Grace's partner?",
+    "answer": "Carl",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Carl's sister?",
+    "answer": "Ella",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0065",
+   "family": "NAMES",
+   "context": "Laura's partner is Dan. The shop on the corner reopened. The garden gate needs new paint. The festival drew a large crowd. Julia's partner is Sam. The museum had a new exhibit. The bus was late again. Sara's partner is Will. Dan's sister is Olivia. The train left on time. The radio played old songs. The office was cold. Will's sister is Maria. Sam's sister is Beth.",
+   "cf_context": "Laura's partner is Sam. The shop on the corner reopened. The garden gate needs new paint. The festival drew a large crowd. Julia's partner is Dan. The museum had a new exhibit. The bus was late again. Sara's partner is Will. Dan's sister is Olivia. The train left on time. The radio played old songs. The office was cold. Will's sister is Maria. Sam's sister is Beth.",
+   "off_context": "Laura's partner is Dan. The shop on the corner reopened. The garden gate needs new paint. The festival drew a large crowd. Julia's partner is Sam. The museum had a new exhibit. The bus was late again. Sara's partner is Will. Dan's sister is Olivia. The train left on time. The radio played old songs. The office was cold. Will's sister is Beth. Sam's sister is Maria.",
+   "question": "Who is the sister of Laura's partner?",
+   "cf_question": "Who is the sister of Laura's partner?",
+   "cue": "Laura",
+   "bridge": "Dan",
+   "cf_bridge": "Sam",
+   "third": "Will",
+   "answer": "Olivia",
+   "cf_answer": "Beth",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Laura's partner?",
+    "answer": "Dan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Dan's sister?",
+    "answer": "Olivia",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0066",
+   "family": "NAMES",
+   "context": "The school held a concert. The wind picked up in the evening. Eve's partner is Hugo. The river was calm that morning. Amy's partner is Paul. The museum had a new exhibit. Nina's partner is Mark. The market was busy on Saturday. Paul's sister is Ella. Hugo's sister is Maria. The street was lined with trees. Mark's sister is Fiona. The shop on the corner reopened. The garden gate needs new paint.",
+   "cf_context": "The school held a concert. The wind picked up in the evening. Eve's partner is Hugo. The river was calm that morning. Amy's partner is Mark. The museum had a new exhibit. Nina's partner is Paul. The market was busy on Saturday. Paul's sister is Ella. Hugo's sister is Maria. The street was lined with trees. Mark's sister is Fiona. The shop on the corner reopened. The garden gate needs new paint.",
+   "off_context": "The school held a concert. The wind picked up in the evening. Eve's partner is Hugo. The river was calm that morning. Amy's partner is Paul. The museum had a new exhibit. Nina's partner is Mark. The market was busy on Saturday. Paul's sister is Maria. Hugo's sister is Ella. The street was lined with trees. Mark's sister is Fiona. The shop on the corner reopened. The garden gate needs new paint.",
+   "question": "Who is the sister of Nina's partner?",
+   "cf_question": "Who is the sister of Nina's partner?",
+   "cue": "Nina",
+   "bridge": "Mark",
+   "cf_bridge": "Paul",
+   "third": "Hugo",
+   "answer": "Fiona",
+   "cf_answer": "Ella",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Nina's partner?",
+    "answer": "Mark",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Mark's sister?",
+    "answer": "Fiona",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0067",
+   "family": "NAMES",
+   "context": "The coffee was too strong. The river was calm that morning. Lily's partner is Eric. The hallway lights were dim. Olivia's partner is Mark. The park was quiet at dawn. Beth's partner is Peter. The kitchen smelled of fresh bread. Eric's sister is Alice. Mark's sister is Laura. The museum had a new exhibit. Peter's sister is Kate. The sky turned grey by noon. The tea had gone cold.",
+   "cf_context": "The coffee was too strong. The river was calm that morning. Lily's partner is Mark. The hallway lights were dim. Olivia's partner is Eric. The park was quiet at dawn. Beth's partner is Peter. The kitchen smelled of fresh bread. Eric's sister is Alice. Mark's sister is Laura. The museum had a new exhibit. Peter's sister is Kate. The sky turned grey by noon. The tea had gone cold.",
+   "off_context": "The coffee was too strong. The river was calm that morning. Lily's partner is Eric. The hallway lights were dim. Olivia's partner is Mark. The park was quiet at dawn. Beth's partner is Peter. The kitchen smelled of fresh bread. Eric's sister is Alice. Mark's sister is Kate. The museum had a new exhibit. Peter's sister is Laura. The sky turned grey by noon. The tea had gone cold.",
+   "question": "Who is the sister of Lily's partner?",
+   "cf_question": "Who is the sister of Lily's partner?",
+   "cue": "Lily",
+   "bridge": "Eric",
+   "cf_bridge": "Mark",
+   "third": "Peter",
+   "answer": "Alice",
+   "cf_answer": "Laura",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Lily's partner?",
+    "answer": "Eric",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Eric's sister?",
+    "answer": "Alice",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0068",
+   "family": "NAMES",
+   "context": "The library closed early. Grace's partner is Hugo. The tea had gone cold. The river was calm that morning. Lucy's partner is Ryan. The garden gate needs new paint. Lily's partner is Finn. The wind picked up in the evening. The bakery sold out of rolls. Ryan's sister is Fiona. Hugo's sister is Amy. The market was busy on Saturday. The museum had a new exhibit. Finn's sister is Rose.",
+   "cf_context": "The library closed early. Grace's partner is Hugo. The tea had gone cold. The river was calm that morning. Lucy's partner is Finn. The garden gate needs new paint. Lily's partner is Ryan. The wind picked up in the evening. The bakery sold out of rolls. Ryan's sister is Fiona. Hugo's sister is Amy. The market was busy on Saturday. The museum had a new exhibit. Finn's sister is Rose.",
+   "off_context": "The library closed early. Grace's partner is Hugo. The tea had gone cold. The river was calm that morning. Lucy's partner is Ryan. The garden gate needs new paint. Lily's partner is Finn. The wind picked up in the evening. The bakery sold out of rolls. Ryan's sister is Fiona. Hugo's sister is Rose. The market was busy on Saturday. The museum had a new exhibit. Finn's sister is Amy.",
+   "question": "Who is the sister of Lucy's partner?",
+   "cf_question": "Who is the sister of Lucy's partner?",
+   "cue": "Lucy",
+   "bridge": "Ryan",
+   "cf_bridge": "Finn",
+   "third": "Hugo",
+   "answer": "Fiona",
+   "cf_answer": "Rose",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Lucy's partner?",
+    "answer": "Ryan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Ryan's sister?",
+    "answer": "Fiona",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0069",
+   "family": "NAMES",
+   "context": "The wind picked up in the evening. The street was lined with trees. Diana's partner is Jack. Julia's partner is Frank. The shop on the corner reopened. Rose's partner is Kyle. The bakery sold out of rolls. The window faced the hills. The train left on time. Kyle's sister is Lily. The tea had gone cold. Jack's sister is Ruby. The weather was mild all week. Frank's sister is Ella.",
+   "cf_context": "The wind picked up in the evening. The street was lined with trees. Diana's partner is Frank. Julia's partner is Jack. The shop on the corner reopened. Rose's partner is Kyle. The bakery sold out of rolls. The window faced the hills. The train left on time. Kyle's sister is Lily. The tea had gone cold. Jack's sister is Ruby. The weather was mild all week. Frank's sister is Ella.",
+   "off_context": "The wind picked up in the evening. The street was lined with trees. Diana's partner is Jack. Julia's partner is Frank. The shop on the corner reopened. Rose's partner is Kyle. The bakery sold out of rolls. The window faced the hills. The train left on time. Kyle's sister is Ruby. The tea had gone cold. Jack's sister is Lily. The weather was mild all week. Frank's sister is Ella.",
+   "question": "Who is the sister of Julia's partner?",
+   "cf_question": "Who is the sister of Julia's partner?",
+   "cue": "Julia",
+   "bridge": "Frank",
+   "cf_bridge": "Jack",
+   "third": "Kyle",
+   "answer": "Ella",
+   "cf_answer": "Ruby",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Julia's partner?",
+    "answer": "Frank",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Frank's sister?",
+    "answer": "Ella",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0070",
+   "family": "NAMES",
+   "context": "Ruby's partner is James. The radio played old songs. Lily's partner is Henry. The window faced the hills. The garden gate needs new paint. The park was quiet at dawn. Vera's partner is Noah. The school held a concert. The office was cold. Henry's sister is Eva. The museum had a new exhibit. Noah's sister is Rose. James's sister is Ivy. The shop on the corner reopened.",
+   "cf_context": "Ruby's partner is Henry. The radio played old songs. Lily's partner is James. The window faced the hills. The garden gate needs new paint. The park was quiet at dawn. Vera's partner is Noah. The school held a concert. The office was cold. Henry's sister is Eva. The museum had a new exhibit. Noah's sister is Rose. James's sister is Ivy. The shop on the corner reopened.",
+   "off_context": "Ruby's partner is James. The radio played old songs. Lily's partner is Henry. The window faced the hills. The garden gate needs new paint. The park was quiet at dawn. Vera's partner is Noah. The school held a concert. The office was cold. Henry's sister is Rose. The museum had a new exhibit. Noah's sister is Eva. James's sister is Ivy. The shop on the corner reopened.",
+   "question": "Who is the sister of Ruby's partner?",
+   "cf_question": "Who is the sister of Ruby's partner?",
+   "cue": "Ruby",
+   "bridge": "James",
+   "cf_bridge": "Henry",
+   "third": "Noah",
+   "answer": "Ivy",
+   "cf_answer": "Eva",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Ruby's partner?",
+    "answer": "James",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is James's sister?",
+    "answer": "Ivy",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0071",
+   "family": "NAMES",
+   "context": "The hallway lights were dim. Ruby's partner is Adam. The museum had a new exhibit. The wind picked up in the evening. Tara's partner is Jack. The road was wet after the rain. Julia's partner is Henry. The street was lined with trees. Adam's sister is Grace. Jack's sister is Ivy. The tea had gone cold. Henry's sister is Rose. The window faced the hills. The bakery sold out of rolls.",
+   "cf_context": "The hallway lights were dim. Ruby's partner is Jack. The museum had a new exhibit. The wind picked up in the evening. Tara's partner is Adam. The road was wet after the rain. Julia's partner is Henry. The street was lined with trees. Adam's sister is Grace. Jack's sister is Ivy. The tea had gone cold. Henry's sister is Rose. The window faced the hills. The bakery sold out of rolls.",
+   "off_context": "The hallway lights were dim. Ruby's partner is Adam. The museum had a new exhibit. The wind picked up in the evening. Tara's partner is Jack. The road was wet after the rain. Julia's partner is Henry. The street was lined with trees. Adam's sister is Grace. Jack's sister is Rose. The tea had gone cold. Henry's sister is Ivy. The window faced the hills. The bakery sold out of rolls.",
+   "question": "Who is the sister of Ruby's partner?",
+   "cf_question": "Who is the sister of Ruby's partner?",
+   "cue": "Ruby",
+   "bridge": "Adam",
+   "cf_bridge": "Jack",
+   "third": "Henry",
+   "answer": "Grace",
+   "cf_answer": "Ivy",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Ruby's partner?",
+    "answer": "Adam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Adam's sister?",
+    "answer": "Grace",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0072",
+   "family": "NAMES",
+   "context": "The school held a concert. The library closed early. Laura's partner is Noah. The tea had gone cold. Iris's partner is Mark. Eva's partner is Kyle. The coffee was too strong. Kyle's sister is Olivia. The garden gate needs new paint. The radio played old songs. Noah's sister is Ruby. Mark's sister is Fiona. The museum had a new exhibit. The park was quiet at dawn.",
+   "cf_context": "The school held a concert. The library closed early. Laura's partner is Mark. The tea had gone cold. Iris's partner is Noah. Eva's partner is Kyle. The coffee was too strong. Kyle's sister is Olivia. The garden gate needs new paint. The radio played old songs. Noah's sister is Ruby. Mark's sister is Fiona. The museum had a new exhibit. The park was quiet at dawn.",
+   "off_context": "The school held a concert. The library closed early. Laura's partner is Noah. The tea had gone cold. Iris's partner is Mark. Eva's partner is Kyle. The coffee was too strong. Kyle's sister is Ruby. The garden gate needs new paint. The radio played old songs. Noah's sister is Olivia. Mark's sister is Fiona. The museum had a new exhibit. The park was quiet at dawn.",
+   "question": "Who is the sister of Iris's partner?",
+   "cf_question": "Who is the sister of Iris's partner?",
+   "cue": "Iris",
+   "bridge": "Mark",
+   "cf_bridge": "Noah",
+   "third": "Kyle",
+   "answer": "Fiona",
+   "cf_answer": "Ruby",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Iris's partner?",
+    "answer": "Mark",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Mark's sister?",
+    "answer": "Fiona",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0073",
+   "family": "NAMES",
+   "context": "The bakery sold out of rolls. Kate's partner is Kyle. Vera's partner is Dan. Amy's partner is Ben. The tea had gone cold. The garden gate needs new paint. Ben's sister is Fiona. The library closed early. Dan's sister is Eve. The kitchen smelled of fresh bread. The coffee was too strong. The wind picked up in the evening. Kyle's sister is Lily. The weather was mild all week.",
+   "cf_context": "The bakery sold out of rolls. Kate's partner is Kyle. Vera's partner is Ben. Amy's partner is Dan. The tea had gone cold. The garden gate needs new paint. Ben's sister is Fiona. The library closed early. Dan's sister is Eve. The kitchen smelled of fresh bread. The coffee was too strong. The wind picked up in the evening. Kyle's sister is Lily. The weather was mild all week.",
+   "off_context": "The bakery sold out of rolls. Kate's partner is Kyle. Vera's partner is Dan. Amy's partner is Ben. The tea had gone cold. The garden gate needs new paint. Ben's sister is Fiona. The library closed early. Dan's sister is Lily. The kitchen smelled of fresh bread. The coffee was too strong. The wind picked up in the evening. Kyle's sister is Eve. The weather was mild all week.",
+   "question": "Who is the sister of Amy's partner?",
+   "cf_question": "Who is the sister of Amy's partner?",
+   "cue": "Amy",
+   "bridge": "Ben",
+   "cf_bridge": "Dan",
+   "third": "Kyle",
+   "answer": "Fiona",
+   "cf_answer": "Eve",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Amy's partner?",
+    "answer": "Ben",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Ben's sister?",
+    "answer": "Fiona",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0074",
+   "family": "NAMES",
+   "context": "The train left on time. The park was quiet at dawn. Amy's partner is Tom. Beth's partner is James. Laura's partner is Henry. The garden gate needs new paint. The office was cold. James's sister is Julia. The school held a concert. Henry's sister is Lily. The festival drew a large crowd. Tom's sister is Sara. The library closed early. The weather was mild all week.",
+   "cf_context": "The train left on time. The park was quiet at dawn. Amy's partner is Henry. Beth's partner is James. Laura's partner is Tom. The garden gate needs new paint. The office was cold. James's sister is Julia. The school held a concert. Henry's sister is Lily. The festival drew a large crowd. Tom's sister is Sara. The library closed early. The weather was mild all week.",
+   "off_context": "The train left on time. The park was quiet at dawn. Amy's partner is Tom. Beth's partner is James. Laura's partner is Henry. The garden gate needs new paint. The office was cold. James's sister is Sara. The school held a concert. Henry's sister is Lily. The festival drew a large crowd. Tom's sister is Julia. The library closed early. The weather was mild all week.",
+   "question": "Who is the sister of Laura's partner?",
+   "cf_question": "Who is the sister of Laura's partner?",
+   "cue": "Laura",
+   "bridge": "Henry",
+   "cf_bridge": "Tom",
+   "third": "James",
+   "answer": "Lily",
+   "cf_answer": "Sara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Laura's partner?",
+    "answer": "Henry",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Henry's sister?",
+    "answer": "Lily",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0075",
+   "family": "NAMES",
+   "context": "The train left on time. The radio played old songs. Laura's partner is Sean. The park was quiet at dawn. The wind picked up in the evening. Kate's partner is Jack. The tea had gone cold. Vera's partner is Noah. Sean's sister is Rose. Noah's sister is Emma. The hallway lights were dim. The school held a concert. Jack's sister is Fiona. The bus was late again.",
+   "cf_context": "The train left on time. The radio played old songs. Laura's partner is Noah. The park was quiet at dawn. The wind picked up in the evening. Kate's partner is Jack. The tea had gone cold. Vera's partner is Sean. Sean's sister is Rose. Noah's sister is Emma. The hallway lights were dim. The school held a concert. Jack's sister is Fiona. The bus was late again.",
+   "off_context": "The train left on time. The radio played old songs. Laura's partner is Sean. The park was quiet at dawn. The wind picked up in the evening. Kate's partner is Jack. The tea had gone cold. Vera's partner is Noah. Sean's sister is Fiona. Noah's sister is Emma. The hallway lights were dim. The school held a concert. Jack's sister is Rose. The bus was late again.",
+   "question": "Who is the sister of Vera's partner?",
+   "cf_question": "Who is the sister of Vera's partner?",
+   "cue": "Vera",
+   "bridge": "Noah",
+   "cf_bridge": "Sean",
+   "third": "Jack",
+   "answer": "Emma",
+   "cf_answer": "Rose",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Vera's partner?",
+    "answer": "Noah",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Noah's sister?",
+    "answer": "Emma",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0076",
+   "family": "NAMES",
+   "context": "Anna's partner is Jack. The window faced the hills. The festival drew a large crowd. The bakery sold out of rolls. Fiona's partner is Sean. The road was wet after the rain. The park was quiet at dawn. Eve's partner is Carl. The tea had gone cold. Carl's sister is Iris. Sean's sister is Julia. The library closed early. Jack's sister is Maria. The hallway lights were dim.",
+   "cf_context": "Anna's partner is Jack. The window faced the hills. The festival drew a large crowd. The bakery sold out of rolls. Fiona's partner is Carl. The road was wet after the rain. The park was quiet at dawn. Eve's partner is Sean. The tea had gone cold. Carl's sister is Iris. Sean's sister is Julia. The library closed early. Jack's sister is Maria. The hallway lights were dim.",
+   "off_context": "Anna's partner is Jack. The window faced the hills. The festival drew a large crowd. The bakery sold out of rolls. Fiona's partner is Sean. The road was wet after the rain. The park was quiet at dawn. Eve's partner is Carl. The tea had gone cold. Carl's sister is Iris. Sean's sister is Maria. The library closed early. Jack's sister is Julia. The hallway lights were dim.",
+   "question": "Who is the sister of Eve's partner?",
+   "cf_question": "Who is the sister of Eve's partner?",
+   "cue": "Eve",
+   "bridge": "Carl",
+   "cf_bridge": "Sean",
+   "third": "Jack",
+   "answer": "Iris",
+   "cf_answer": "Julia",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Eve's partner?",
+    "answer": "Carl",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Carl's sister?",
+    "answer": "Iris",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0077",
+   "family": "NAMES",
+   "context": "The river was calm that morning. Olivia's partner is Liam. The window faced the hills. Emma's partner is Jack. Eve's partner is Paul. The weather was mild all week. Paul's sister is Lily. Liam's sister is Nina. The school held a concert. The festival drew a large crowd. The hallway lights were dim. Jack's sister is Ruby. The market was busy on Saturday. The library closed early.",
+   "cf_context": "The river was calm that morning. Olivia's partner is Paul. The window faced the hills. Emma's partner is Jack. Eve's partner is Liam. The weather was mild all week. Paul's sister is Lily. Liam's sister is Nina. The school held a concert. The festival drew a large crowd. The hallway lights were dim. Jack's sister is Ruby. The market was busy on Saturday. The library closed early.",
+   "off_context": "The river was calm that morning. Olivia's partner is Liam. The window faced the hills. Emma's partner is Jack. Eve's partner is Paul. The weather was mild all week. Paul's sister is Ruby. Liam's sister is Nina. The school held a concert. The festival drew a large crowd. The hallway lights were dim. Jack's sister is Lily. The market was busy on Saturday. The library closed early.",
+   "question": "Who is the sister of Olivia's partner?",
+   "cf_question": "Who is the sister of Olivia's partner?",
+   "cue": "Olivia",
+   "bridge": "Liam",
+   "cf_bridge": "Paul",
+   "third": "Jack",
+   "answer": "Nina",
+   "cf_answer": "Lily",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Olivia's partner?",
+    "answer": "Liam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Liam's sister?",
+    "answer": "Nina",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0078",
+   "family": "NAMES",
+   "context": "The hallway lights were dim. Emma's partner is Hugo. The road was wet after the rain. The bakery sold out of rolls. Fiona's partner is Paul. The museum had a new exhibit. Lucy's partner is David. The office was cold. Hugo's sister is Beth. Paul's sister is Alice. The weather was mild all week. David's sister is Sara. The tea had gone cold. The shop on the corner reopened.",
+   "cf_context": "The hallway lights were dim. Emma's partner is Hugo. The road was wet after the rain. The bakery sold out of rolls. Fiona's partner is David. The museum had a new exhibit. Lucy's partner is Paul. The office was cold. Hugo's sister is Beth. Paul's sister is Alice. The weather was mild all week. David's sister is Sara. The tea had gone cold. The shop on the corner reopened.",
+   "off_context": "The hallway lights were dim. Emma's partner is Hugo. The road was wet after the rain. The bakery sold out of rolls. Fiona's partner is Paul. The museum had a new exhibit. Lucy's partner is David. The office was cold. Hugo's sister is Alice. Paul's sister is Beth. The weather was mild all week. David's sister is Sara. The tea had gone cold. The shop on the corner reopened.",
+   "question": "Who is the sister of Lucy's partner?",
+   "cf_question": "Who is the sister of Lucy's partner?",
+   "cue": "Lucy",
+   "bridge": "David",
+   "cf_bridge": "Paul",
+   "third": "Hugo",
+   "answer": "Sara",
+   "cf_answer": "Alice",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Lucy's partner?",
+    "answer": "David",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is David's sister?",
+    "answer": "Sara",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0079",
+   "family": "NAMES",
+   "context": "Zoe's partner is James. The coffee was too strong. The street was lined with trees. Sara's partner is Dan. The office was cold. The weather was mild all week. Ivy's partner is Finn. The market was busy on Saturday. Finn's sister is Beth. The shop on the corner reopened. The window faced the hills. James's sister is Amy. The radio played old songs. Dan's sister is Nina.",
+   "cf_context": "Zoe's partner is Dan. The coffee was too strong. The street was lined with trees. Sara's partner is James. The office was cold. The weather was mild all week. Ivy's partner is Finn. The market was busy on Saturday. Finn's sister is Beth. The shop on the corner reopened. The window faced the hills. James's sister is Amy. The radio played old songs. Dan's sister is Nina.",
+   "off_context": "Zoe's partner is James. The coffee was too strong. The street was lined with trees. Sara's partner is Dan. The office was cold. The weather was mild all week. Ivy's partner is Finn. The market was busy on Saturday. Finn's sister is Nina. The shop on the corner reopened. The window faced the hills. James's sister is Amy. The radio played old songs. Dan's sister is Beth.",
+   "question": "Who is the sister of Zoe's partner?",
+   "cf_question": "Who is the sister of Zoe's partner?",
+   "cue": "Zoe",
+   "bridge": "James",
+   "cf_bridge": "Dan",
+   "third": "Finn",
+   "answer": "Amy",
+   "cf_answer": "Nina",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Zoe's partner?",
+    "answer": "James",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is James's sister?",
+    "answer": "Amy",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0080",
+   "family": "NAMES",
+   "context": "The park was quiet at dawn. Amy's partner is Ben. The window faced the hills. Alice's partner is Oscar. The sky turned grey by noon. Nina's partner is Dan. Ben's sister is Diana. The street was lined with trees. Dan's sister is Ruby. The weather was mild all week. The shop on the corner reopened. Oscar's sister is Clara. The museum had a new exhibit. The office was cold.",
+   "cf_context": "The park was quiet at dawn. Amy's partner is Dan. The window faced the hills. Alice's partner is Oscar. The sky turned grey by noon. Nina's partner is Ben. Ben's sister is Diana. The street was lined with trees. Dan's sister is Ruby. The weather was mild all week. The shop on the corner reopened. Oscar's sister is Clara. The museum had a new exhibit. The office was cold.",
+   "off_context": "The park was quiet at dawn. Amy's partner is Ben. The window faced the hills. Alice's partner is Oscar. The sky turned grey by noon. Nina's partner is Dan. Ben's sister is Clara. The street was lined with trees. Dan's sister is Ruby. The weather was mild all week. The shop on the corner reopened. Oscar's sister is Diana. The museum had a new exhibit. The office was cold.",
+   "question": "Who is the sister of Nina's partner?",
+   "cf_question": "Who is the sister of Nina's partner?",
+   "cue": "Nina",
+   "bridge": "Dan",
+   "cf_bridge": "Ben",
+   "third": "Oscar",
+   "answer": "Ruby",
+   "cf_answer": "Diana",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Nina's partner?",
+    "answer": "Dan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Dan's sister?",
+    "answer": "Ruby",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0081",
+   "family": "NAMES",
+   "context": "Eva's partner is Carl. Lily's partner is Owen. The road was wet after the rain. The park was quiet at dawn. The river was calm that morning. Kate's partner is Tom. The bakery sold out of rolls. The window faced the hills. Owen's sister is Clara. The street was lined with trees. Carl's sister is Mia. The museum had a new exhibit. Tom's sister is Diana. The garden gate needs new paint.",
+   "cf_context": "Eva's partner is Owen. Lily's partner is Carl. The road was wet after the rain. The park was quiet at dawn. The river was calm that morning. Kate's partner is Tom. The bakery sold out of rolls. The window faced the hills. Owen's sister is Clara. The street was lined with trees. Carl's sister is Mia. The museum had a new exhibit. Tom's sister is Diana. The garden gate needs new paint.",
+   "off_context": "Eva's partner is Carl. Lily's partner is Owen. The road was wet after the rain. The park was quiet at dawn. The river was calm that morning. Kate's partner is Tom. The bakery sold out of rolls. The window faced the hills. Owen's sister is Diana. The street was lined with trees. Carl's sister is Mia. The museum had a new exhibit. Tom's sister is Clara. The garden gate needs new paint.",
+   "question": "Who is the sister of Eva's partner?",
+   "cf_question": "Who is the sister of Eva's partner?",
+   "cue": "Eva",
+   "bridge": "Carl",
+   "cf_bridge": "Owen",
+   "third": "Tom",
+   "answer": "Mia",
+   "cf_answer": "Clara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Eva's partner?",
+    "answer": "Carl",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Carl's sister?",
+    "answer": "Mia",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0082",
+   "family": "NAMES",
+   "context": "The hallway lights were dim. The weather was mild all week. Rose's partner is Henry. The window faced the hills. Clara's partner is Sam. The park was quiet at dawn. Mia's partner is Victor. Victor's sister is Sara. The school held a concert. Sam's sister is Julia. Henry's sister is Maria. The bus was late again. The radio played old songs. The tea had gone cold.",
+   "cf_context": "The hallway lights were dim. The weather was mild all week. Rose's partner is Sam. The window faced the hills. Clara's partner is Henry. The park was quiet at dawn. Mia's partner is Victor. Victor's sister is Sara. The school held a concert. Sam's sister is Julia. Henry's sister is Maria. The bus was late again. The radio played old songs. The tea had gone cold.",
+   "off_context": "The hallway lights were dim. The weather was mild all week. Rose's partner is Henry. The window faced the hills. Clara's partner is Sam. The park was quiet at dawn. Mia's partner is Victor. Victor's sister is Julia. The school held a concert. Sam's sister is Sara. Henry's sister is Maria. The bus was late again. The radio played old songs. The tea had gone cold.",
+   "question": "Who is the sister of Rose's partner?",
+   "cf_question": "Who is the sister of Rose's partner?",
+   "cue": "Rose",
+   "bridge": "Henry",
+   "cf_bridge": "Sam",
+   "third": "Victor",
+   "answer": "Maria",
+   "cf_answer": "Julia",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Rose's partner?",
+    "answer": "Henry",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Henry's sister?",
+    "answer": "Maria",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0083",
+   "family": "NAMES",
+   "context": "Julia's partner is Leo. The market was busy on Saturday. The garden gate needs new paint. Vera's partner is Jack. The bakery sold out of rolls. Olivia's partner is Owen. The bus was late again. The train left on time. Jack's sister is Laura. The shop on the corner reopened. The window faced the hills. Leo's sister is Beth. The road was wet after the rain. Owen's sister is Clara.",
+   "cf_context": "Julia's partner is Owen. The market was busy on Saturday. The garden gate needs new paint. Vera's partner is Jack. The bakery sold out of rolls. Olivia's partner is Leo. The bus was late again. The train left on time. Jack's sister is Laura. The shop on the corner reopened. The window faced the hills. Leo's sister is Beth. The road was wet after the rain. Owen's sister is Clara.",
+   "off_context": "Julia's partner is Leo. The market was busy on Saturday. The garden gate needs new paint. Vera's partner is Jack. The bakery sold out of rolls. Olivia's partner is Owen. The bus was late again. The train left on time. Jack's sister is Beth. The shop on the corner reopened. The window faced the hills. Leo's sister is Laura. The road was wet after the rain. Owen's sister is Clara.",
+   "question": "Who is the sister of Olivia's partner?",
+   "cf_question": "Who is the sister of Olivia's partner?",
+   "cue": "Olivia",
+   "bridge": "Owen",
+   "cf_bridge": "Leo",
+   "third": "Jack",
+   "answer": "Clara",
+   "cf_answer": "Beth",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Olivia's partner?",
+    "answer": "Owen",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Owen's sister?",
+    "answer": "Clara",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0084",
+   "family": "NAMES",
+   "context": "The shop on the corner reopened. The bus was late again. Ivy's partner is Mark. The sky turned grey by noon. Eve's partner is Frank. The window faced the hills. Kate's partner is Leo. The museum had a new exhibit. The park was quiet at dawn. Leo's sister is Anna. The library closed early. Frank's sister is Rose. The road was wet after the rain. Mark's sister is Amy.",
+   "cf_context": "The shop on the corner reopened. The bus was late again. Ivy's partner is Frank. The sky turned grey by noon. Eve's partner is Mark. The window faced the hills. Kate's partner is Leo. The museum had a new exhibit. The park was quiet at dawn. Leo's sister is Anna. The library closed early. Frank's sister is Rose. The road was wet after the rain. Mark's sister is Amy.",
+   "off_context": "The shop on the corner reopened. The bus was late again. Ivy's partner is Mark. The sky turned grey by noon. Eve's partner is Frank. The window faced the hills. Kate's partner is Leo. The museum had a new exhibit. The park was quiet at dawn. Leo's sister is Amy. The library closed early. Frank's sister is Rose. The road was wet after the rain. Mark's sister is Anna.",
+   "question": "Who is the sister of Eve's partner?",
+   "cf_question": "Who is the sister of Eve's partner?",
+   "cue": "Eve",
+   "bridge": "Frank",
+   "cf_bridge": "Mark",
+   "third": "Leo",
+   "answer": "Rose",
+   "cf_answer": "Amy",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Eve's partner?",
+    "answer": "Frank",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Frank's sister?",
+    "answer": "Rose",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0085",
+   "family": "NAMES",
+   "context": "The garden gate needs new paint. The wind picked up in the evening. Ivy's partner is Ivan. The festival drew a large crowd. The weather was mild all week. Maria's partner is Ryan. Alice's partner is Frank. The office was cold. Ryan's sister is Ruby. The kitchen smelled of fresh bread. The river was calm that morning. Ivan's sister is Anna. The tea had gone cold. Frank's sister is Clara.",
+   "cf_context": "The garden gate needs new paint. The wind picked up in the evening. Ivy's partner is Ryan. The festival drew a large crowd. The weather was mild all week. Maria's partner is Ivan. Alice's partner is Frank. The office was cold. Ryan's sister is Ruby. The kitchen smelled of fresh bread. The river was calm that morning. Ivan's sister is Anna. The tea had gone cold. Frank's sister is Clara.",
+   "off_context": "The garden gate needs new paint. The wind picked up in the evening. Ivy's partner is Ivan. The festival drew a large crowd. The weather was mild all week. Maria's partner is Ryan. Alice's partner is Frank. The office was cold. Ryan's sister is Clara. The kitchen smelled of fresh bread. The river was calm that morning. Ivan's sister is Anna. The tea had gone cold. Frank's sister is Ruby.",
+   "question": "Who is the sister of Ivy's partner?",
+   "cf_question": "Who is the sister of Ivy's partner?",
+   "cue": "Ivy",
+   "bridge": "Ivan",
+   "cf_bridge": "Ryan",
+   "third": "Frank",
+   "answer": "Anna",
+   "cf_answer": "Ruby",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Ivy's partner?",
+    "answer": "Ivan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Ivan's sister?",
+    "answer": "Anna",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0086",
+   "family": "NAMES",
+   "context": "The hallway lights were dim. Fiona's partner is Sam. Anna's partner is Adam. The river was calm that morning. The weather was mild all week. Lucy's partner is David. The sky turned grey by noon. The coffee was too strong. Adam's sister is Vera. The museum had a new exhibit. The street was lined with trees. Sam's sister is Nina. David's sister is Kate. The park was quiet at dawn.",
+   "cf_context": "The hallway lights were dim. Fiona's partner is David. Anna's partner is Adam. The river was calm that morning. The weather was mild all week. Lucy's partner is Sam. The sky turned grey by noon. The coffee was too strong. Adam's sister is Vera. The museum had a new exhibit. The street was lined with trees. Sam's sister is Nina. David's sister is Kate. The park was quiet at dawn.",
+   "off_context": "The hallway lights were dim. Fiona's partner is Sam. Anna's partner is Adam. The river was calm that morning. The weather was mild all week. Lucy's partner is David. The sky turned grey by noon. The coffee was too strong. Adam's sister is Nina. The museum had a new exhibit. The street was lined with trees. Sam's sister is Vera. David's sister is Kate. The park was quiet at dawn.",
+   "question": "Who is the sister of Lucy's partner?",
+   "cf_question": "Who is the sister of Lucy's partner?",
+   "cue": "Lucy",
+   "bridge": "David",
+   "cf_bridge": "Sam",
+   "third": "Adam",
+   "answer": "Kate",
+   "cf_answer": "Nina",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Lucy's partner?",
+    "answer": "David",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is David's sister?",
+    "answer": "Kate",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0087",
+   "family": "NAMES",
+   "context": "The school held a concert. Ella's partner is Max. The tea had gone cold. Nina's partner is Ben. The kitchen smelled of fresh bread. The bakery sold out of rolls. Emma's partner is Mark. The library closed early. The office was cold. Max's sister is Kate. Mark's sister is Eve. The bus was late again. Ben's sister is Zoe. The market was busy on Saturday.",
+   "cf_context": "The school held a concert. Ella's partner is Ben. The tea had gone cold. Nina's partner is Max. The kitchen smelled of fresh bread. The bakery sold out of rolls. Emma's partner is Mark. The library closed early. The office was cold. Max's sister is Kate. Mark's sister is Eve. The bus was late again. Ben's sister is Zoe. The market was busy on Saturday.",
+   "off_context": "The school held a concert. Ella's partner is Max. The tea had gone cold. Nina's partner is Ben. The kitchen smelled of fresh bread. The bakery sold out of rolls. Emma's partner is Mark. The library closed early. The office was cold. Max's sister is Eve. Mark's sister is Kate. The bus was late again. Ben's sister is Zoe. The market was busy on Saturday.",
+   "question": "Who is the sister of Nina's partner?",
+   "cf_question": "Who is the sister of Nina's partner?",
+   "cue": "Nina",
+   "bridge": "Ben",
+   "cf_bridge": "Max",
+   "third": "Mark",
+   "answer": "Zoe",
+   "cf_answer": "Kate",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Nina's partner?",
+    "answer": "Ben",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Ben's sister?",
+    "answer": "Zoe",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0088",
+   "family": "NAMES",
+   "context": "The market was busy on Saturday. Vera's partner is Liam. Laura's partner is Luke. The park was quiet at dawn. The river was calm that morning. Sara's partner is Sean. Luke's sister is Mia. The wind picked up in the evening. The tea had gone cold. The street was lined with trees. Liam's sister is Lucy. The radio played old songs. Sean's sister is Iris. The kitchen smelled of fresh bread.",
+   "cf_context": "The market was busy on Saturday. Vera's partner is Liam. Laura's partner is Sean. The park was quiet at dawn. The river was calm that morning. Sara's partner is Luke. Luke's sister is Mia. The wind picked up in the evening. The tea had gone cold. The street was lined with trees. Liam's sister is Lucy. The radio played old songs. Sean's sister is Iris. The kitchen smelled of fresh bread.",
+   "off_context": "The market was busy on Saturday. Vera's partner is Liam. Laura's partner is Luke. The park was quiet at dawn. The river was calm that morning. Sara's partner is Sean. Luke's sister is Mia. The wind picked up in the evening. The tea had gone cold. The street was lined with trees. Liam's sister is Iris. The radio played old songs. Sean's sister is Lucy. The kitchen smelled of fresh bread.",
+   "question": "Who is the sister of Laura's partner?",
+   "cf_question": "Who is the sister of Laura's partner?",
+   "cue": "Laura",
+   "bridge": "Luke",
+   "cf_bridge": "Sean",
+   "third": "Liam",
+   "answer": "Mia",
+   "cf_answer": "Iris",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Laura's partner?",
+    "answer": "Luke",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Luke's sister?",
+    "answer": "Mia",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0089",
+   "family": "NAMES",
+   "context": "The weather was mild all week. Mia's partner is Kyle. The train left on time. The festival drew a large crowd. The bus was late again. Emma's partner is Noah. Amy's partner is Max. Noah's sister is Kate. The wind picked up in the evening. The kitchen smelled of fresh bread. Kyle's sister is Eva. The school held a concert. The sky turned grey by noon. Max's sister is Maria.",
+   "cf_context": "The weather was mild all week. Mia's partner is Noah. The train left on time. The festival drew a large crowd. The bus was late again. Emma's partner is Kyle. Amy's partner is Max. Noah's sister is Kate. The wind picked up in the evening. The kitchen smelled of fresh bread. Kyle's sister is Eva. The school held a concert. The sky turned grey by noon. Max's sister is Maria.",
+   "off_context": "The weather was mild all week. Mia's partner is Kyle. The train left on time. The festival drew a large crowd. The bus was late again. Emma's partner is Noah. Amy's partner is Max. Noah's sister is Kate. The wind picked up in the evening. The kitchen smelled of fresh bread. Kyle's sister is Maria. The school held a concert. The sky turned grey by noon. Max's sister is Eva.",
+   "question": "Who is the sister of Emma's partner?",
+   "cf_question": "Who is the sister of Emma's partner?",
+   "cue": "Emma",
+   "bridge": "Noah",
+   "cf_bridge": "Kyle",
+   "third": "Max",
+   "answer": "Kate",
+   "cf_answer": "Eva",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Emma's partner?",
+    "answer": "Noah",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Noah's sister?",
+    "answer": "Kate",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0090",
+   "family": "NAMES",
+   "context": "The kitchen smelled of fresh bread. Amy's partner is Tom. The wind picked up in the evening. The school held a concert. The coffee was too strong. Emma's partner is Sean. Lily's partner is Liam. Tom's sister is Sara. The tea had gone cold. The library closed early. Liam's sister is Alice. Sean's sister is Ivy. The river was calm that morning. The shop on the corner reopened.",
+   "cf_context": "The kitchen smelled of fresh bread. Amy's partner is Liam. The wind picked up in the evening. The school held a concert. The coffee was too strong. Emma's partner is Sean. Lily's partner is Tom. Tom's sister is Sara. The tea had gone cold. The library closed early. Liam's sister is Alice. Sean's sister is Ivy. The river was calm that morning. The shop on the corner reopened.",
+   "off_context": "The kitchen smelled of fresh bread. Amy's partner is Tom. The wind picked up in the evening. The school held a concert. The coffee was too strong. Emma's partner is Sean. Lily's partner is Liam. Tom's sister is Sara. The tea had gone cold. The library closed early. Liam's sister is Ivy. Sean's sister is Alice. The river was calm that morning. The shop on the corner reopened.",
+   "question": "Who is the sister of Amy's partner?",
+   "cf_question": "Who is the sister of Amy's partner?",
+   "cue": "Amy",
+   "bridge": "Tom",
+   "cf_bridge": "Liam",
+   "third": "Sean",
+   "answer": "Sara",
+   "cf_answer": "Alice",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Amy's partner?",
+    "answer": "Tom",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Tom's sister?",
+    "answer": "Sara",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0091",
+   "family": "NAMES",
+   "context": "The window faced the hills. Ivy's partner is Sam. The park was quiet at dawn. The school held a concert. Maria's partner is Ivan. The festival drew a large crowd. The garden gate needs new paint. Sara's partner is Max. The bus was late again. The office was cold. Sam's sister is Amy. Max's sister is Olivia. Ivan's sister is Emma. The weather was mild all week.",
+   "cf_context": "The window faced the hills. Ivy's partner is Max. The park was quiet at dawn. The school held a concert. Maria's partner is Ivan. The festival drew a large crowd. The garden gate needs new paint. Sara's partner is Sam. The bus was late again. The office was cold. Sam's sister is Amy. Max's sister is Olivia. Ivan's sister is Emma. The weather was mild all week.",
+   "off_context": "The window faced the hills. Ivy's partner is Sam. The park was quiet at dawn. The school held a concert. Maria's partner is Ivan. The festival drew a large crowd. The garden gate needs new paint. Sara's partner is Max. The bus was late again. The office was cold. Sam's sister is Amy. Max's sister is Emma. Ivan's sister is Olivia. The weather was mild all week.",
+   "question": "Who is the sister of Ivy's partner?",
+   "cf_question": "Who is the sister of Ivy's partner?",
+   "cue": "Ivy",
+   "bridge": "Sam",
+   "cf_bridge": "Max",
+   "third": "Ivan",
+   "answer": "Amy",
+   "cf_answer": "Olivia",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Ivy's partner?",
+    "answer": "Sam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Sam's sister?",
+    "answer": "Amy",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0092",
+   "family": "NAMES",
+   "context": "The wind picked up in the evening. The library closed early. The kitchen smelled of fresh bread. The school held a concert. Zoe's partner is Ryan. The park was quiet at dawn. Amy's partner is Mark. Nina's partner is Leo. Mark's sister is Julia. Leo's sister is Emma. The weather was mild all week. Ryan's sister is Ella. The coffee was too strong. The bakery sold out of rolls.",
+   "cf_context": "The wind picked up in the evening. The library closed early. The kitchen smelled of fresh bread. The school held a concert. Zoe's partner is Ryan. The park was quiet at dawn. Amy's partner is Leo. Nina's partner is Mark. Mark's sister is Julia. Leo's sister is Emma. The weather was mild all week. Ryan's sister is Ella. The coffee was too strong. The bakery sold out of rolls.",
+   "off_context": "The wind picked up in the evening. The library closed early. The kitchen smelled of fresh bread. The school held a concert. Zoe's partner is Ryan. The park was quiet at dawn. Amy's partner is Mark. Nina's partner is Leo. Mark's sister is Julia. Leo's sister is Ella. The weather was mild all week. Ryan's sister is Emma. The coffee was too strong. The bakery sold out of rolls.",
+   "question": "Who is the sister of Amy's partner?",
+   "cf_question": "Who is the sister of Amy's partner?",
+   "cue": "Amy",
+   "bridge": "Mark",
+   "cf_bridge": "Leo",
+   "third": "Ryan",
+   "answer": "Julia",
+   "cf_answer": "Emma",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Amy's partner?",
+    "answer": "Mark",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Mark's sister?",
+    "answer": "Julia",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0093",
+   "family": "NAMES",
+   "context": "The library closed early. Iris's partner is Henry. The museum had a new exhibit. Diana's partner is Eric. The office was cold. The bakery sold out of rolls. Sara's partner is Ivan. The tea had gone cold. Ivan's sister is Lucy. The road was wet after the rain. The hallway lights were dim. Eric's sister is Olivia. Henry's sister is Zoe. The radio played old songs.",
+   "cf_context": "The library closed early. Iris's partner is Henry. The museum had a new exhibit. Diana's partner is Ivan. The office was cold. The bakery sold out of rolls. Sara's partner is Eric. The tea had gone cold. Ivan's sister is Lucy. The road was wet after the rain. The hallway lights were dim. Eric's sister is Olivia. Henry's sister is Zoe. The radio played old songs.",
+   "off_context": "The library closed early. Iris's partner is Henry. The museum had a new exhibit. Diana's partner is Eric. The office was cold. The bakery sold out of rolls. Sara's partner is Ivan. The tea had gone cold. Ivan's sister is Lucy. The road was wet after the rain. The hallway lights were dim. Eric's sister is Zoe. Henry's sister is Olivia. The radio played old songs.",
+   "question": "Who is the sister of Sara's partner?",
+   "cf_question": "Who is the sister of Sara's partner?",
+   "cue": "Sara",
+   "bridge": "Ivan",
+   "cf_bridge": "Eric",
+   "third": "Henry",
+   "answer": "Lucy",
+   "cf_answer": "Olivia",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Sara's partner?",
+    "answer": "Ivan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Ivan's sister?",
+    "answer": "Lucy",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0094",
+   "family": "NAMES",
+   "context": "Kate's partner is Owen. The market was busy on Saturday. Clara's partner is Oscar. The museum had a new exhibit. The radio played old songs. The road was wet after the rain. Ella's partner is Adam. The coffee was too strong. The office was cold. Adam's sister is Nina. Oscar's sister is Mia. The train left on time. The shop on the corner reopened. Owen's sister is Vera.",
+   "cf_context": "Kate's partner is Owen. The market was busy on Saturday. Clara's partner is Adam. The museum had a new exhibit. The radio played old songs. The road was wet after the rain. Ella's partner is Oscar. The coffee was too strong. The office was cold. Adam's sister is Nina. Oscar's sister is Mia. The train left on time. The shop on the corner reopened. Owen's sister is Vera.",
+   "off_context": "Kate's partner is Owen. The market was busy on Saturday. Clara's partner is Oscar. The museum had a new exhibit. The radio played old songs. The road was wet after the rain. Ella's partner is Adam. The coffee was too strong. The office was cold. Adam's sister is Vera. Oscar's sister is Mia. The train left on time. The shop on the corner reopened. Owen's sister is Nina.",
+   "question": "Who is the sister of Clara's partner?",
+   "cf_question": "Who is the sister of Clara's partner?",
+   "cue": "Clara",
+   "bridge": "Oscar",
+   "cf_bridge": "Adam",
+   "third": "Owen",
+   "answer": "Mia",
+   "cf_answer": "Nina",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Clara's partner?",
+    "answer": "Oscar",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Oscar's sister?",
+    "answer": "Mia",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0095",
+   "family": "NAMES",
+   "context": "The office was cold. The hallway lights were dim. Kate's partner is Luke. The train left on time. Lily's partner is Kyle. The shop on the corner reopened. The window faced the hills. Beth's partner is Ivan. The library closed early. Ivan's sister is Eva. The street was lined with trees. Luke's sister is Diana. The coffee was too strong. Kyle's sister is Sara.",
+   "cf_context": "The office was cold. The hallway lights were dim. Kate's partner is Ivan. The train left on time. Lily's partner is Kyle. The shop on the corner reopened. The window faced the hills. Beth's partner is Luke. The library closed early. Ivan's sister is Eva. The street was lined with trees. Luke's sister is Diana. The coffee was too strong. Kyle's sister is Sara.",
+   "off_context": "The office was cold. The hallway lights were dim. Kate's partner is Luke. The train left on time. Lily's partner is Kyle. The shop on the corner reopened. The window faced the hills. Beth's partner is Ivan. The library closed early. Ivan's sister is Sara. The street was lined with trees. Luke's sister is Diana. The coffee was too strong. Kyle's sister is Eva.",
+   "question": "Who is the sister of Kate's partner?",
+   "cf_question": "Who is the sister of Kate's partner?",
+   "cue": "Kate",
+   "bridge": "Luke",
+   "cf_bridge": "Ivan",
+   "third": "Kyle",
+   "answer": "Diana",
+   "cf_answer": "Eva",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Kate's partner?",
+    "answer": "Luke",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Luke's sister?",
+    "answer": "Diana",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0096",
+   "family": "NAMES",
+   "context": "The coffee was too strong. Ivy's partner is Oscar. The train left on time. Vera's partner is Ivan. The street was lined with trees. The window faced the hills. The sky turned grey by noon. Eve's partner is Leo. Leo's sister is Clara. Oscar's sister is Alice. The school held a concert. The tea had gone cold. The garden gate needs new paint. Ivan's sister is Grace.",
+   "cf_context": "The coffee was too strong. Ivy's partner is Ivan. The train left on time. Vera's partner is Oscar. The street was lined with trees. The window faced the hills. The sky turned grey by noon. Eve's partner is Leo. Leo's sister is Clara. Oscar's sister is Alice. The school held a concert. The tea had gone cold. The garden gate needs new paint. Ivan's sister is Grace.",
+   "off_context": "The coffee was too strong. Ivy's partner is Oscar. The train left on time. Vera's partner is Ivan. The street was lined with trees. The window faced the hills. The sky turned grey by noon. Eve's partner is Leo. Leo's sister is Alice. Oscar's sister is Clara. The school held a concert. The tea had gone cold. The garden gate needs new paint. Ivan's sister is Grace.",
+   "question": "Who is the sister of Vera's partner?",
+   "cf_question": "Who is the sister of Vera's partner?",
+   "cue": "Vera",
+   "bridge": "Ivan",
+   "cf_bridge": "Oscar",
+   "third": "Leo",
+   "answer": "Grace",
+   "cf_answer": "Alice",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Vera's partner?",
+    "answer": "Ivan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Ivan's sister?",
+    "answer": "Grace",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0097",
+   "family": "NAMES",
+   "context": "Alice's partner is Sam. Ruby's partner is Dan. The sky turned grey by noon. Anna's partner is Paul. The train left on time. The coffee was too strong. The hallway lights were dim. Sam's sister is Laura. Paul's sister is Eve. The shop on the corner reopened. The weather was mild all week. The bakery sold out of rolls. Dan's sister is Olivia. The festival drew a large crowd.",
+   "cf_context": "Alice's partner is Sam. Ruby's partner is Paul. The sky turned grey by noon. Anna's partner is Dan. The train left on time. The coffee was too strong. The hallway lights were dim. Sam's sister is Laura. Paul's sister is Eve. The shop on the corner reopened. The weather was mild all week. The bakery sold out of rolls. Dan's sister is Olivia. The festival drew a large crowd.",
+   "off_context": "Alice's partner is Sam. Ruby's partner is Dan. The sky turned grey by noon. Anna's partner is Paul. The train left on time. The coffee was too strong. The hallway lights were dim. Sam's sister is Eve. Paul's sister is Laura. The shop on the corner reopened. The weather was mild all week. The bakery sold out of rolls. Dan's sister is Olivia. The festival drew a large crowd.",
+   "question": "Who is the sister of Ruby's partner?",
+   "cf_question": "Who is the sister of Ruby's partner?",
+   "cue": "Ruby",
+   "bridge": "Dan",
+   "cf_bridge": "Paul",
+   "third": "Sam",
+   "answer": "Olivia",
+   "cf_answer": "Eve",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Ruby's partner?",
+    "answer": "Dan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Dan's sister?",
+    "answer": "Olivia",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0098",
+   "family": "NAMES",
+   "context": "The train left on time. Sara's partner is Henry. Anna's partner is Tom. The shop on the corner reopened. Beth's partner is Jack. Jack's sister is Tara. The sky turned grey by noon. Henry's sister is Amy. The bakery sold out of rolls. The museum had a new exhibit. The hallway lights were dim. The tea had gone cold. Tom's sister is Mia. The garden gate needs new paint.",
+   "cf_context": "The train left on time. Sara's partner is Jack. Anna's partner is Tom. The shop on the corner reopened. Beth's partner is Henry. Jack's sister is Tara. The sky turned grey by noon. Henry's sister is Amy. The bakery sold out of rolls. The museum had a new exhibit. The hallway lights were dim. The tea had gone cold. Tom's sister is Mia. The garden gate needs new paint.",
+   "off_context": "The train left on time. Sara's partner is Henry. Anna's partner is Tom. The shop on the corner reopened. Beth's partner is Jack. Jack's sister is Tara. The sky turned grey by noon. Henry's sister is Mia. The bakery sold out of rolls. The museum had a new exhibit. The hallway lights were dim. The tea had gone cold. Tom's sister is Amy. The garden gate needs new paint.",
+   "question": "Who is the sister of Beth's partner?",
+   "cf_question": "Who is the sister of Beth's partner?",
+   "cue": "Beth",
+   "bridge": "Jack",
+   "cf_bridge": "Henry",
+   "third": "Tom",
+   "answer": "Tara",
+   "cf_answer": "Amy",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Beth's partner?",
+    "answer": "Jack",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Jack's sister?",
+    "answer": "Tara",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "NAMES-0099",
+   "family": "NAMES",
+   "context": "Eva's partner is Max. The hallway lights were dim. The train left on time. Vera's partner is Finn. The garden gate needs new paint. Clara's partner is Oscar. The road was wet after the rain. The tea had gone cold. Max's sister is Alice. The school held a concert. The weather was mild all week. Oscar's sister is Eve. Finn's sister is Sara. The park was quiet at dawn.",
+   "cf_context": "Eva's partner is Max. The hallway lights were dim. The train left on time. Vera's partner is Oscar. The garden gate needs new paint. Clara's partner is Finn. The road was wet after the rain. The tea had gone cold. Max's sister is Alice. The school held a concert. The weather was mild all week. Oscar's sister is Eve. Finn's sister is Sara. The park was quiet at dawn.",
+   "off_context": "Eva's partner is Max. The hallway lights were dim. The train left on time. Vera's partner is Finn. The garden gate needs new paint. Clara's partner is Oscar. The road was wet after the rain. The tea had gone cold. Max's sister is Sara. The school held a concert. The weather was mild all week. Oscar's sister is Eve. Finn's sister is Alice. The park was quiet at dawn.",
+   "question": "Who is the sister of Clara's partner?",
+   "cf_question": "Who is the sister of Clara's partner?",
+   "cue": "Clara",
+   "bridge": "Oscar",
+   "cf_bridge": "Finn",
+   "third": "Max",
+   "answer": "Eve",
+   "cf_answer": "Sara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Clara's partner?",
+    "answer": "Oscar",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Oscar's sister?",
+    "answer": "Eve",
+    "kind": "name"
+   },
+   "level": "e3f8"
+  }
+ ]
+}

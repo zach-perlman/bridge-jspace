@@ -1,0 +1,4907 @@
+{
+ "family": "BL_e5f0",
+ "generator": "scripts/suite_v1.py make --set dev (seed 90011: 5 entities, 0 filler)",
+ "format": "Every family asks one question whose answer needs an intermediate variable (the bridge), in the chat format\n(bridge_jspace.chat: one user turn, thinking off, \"Answer:\" prefilled), with a counterfactual C that changes only the\nbridge (to X) and an off-path control O that changes something the answer does not depend on. C and O line up with the\nclean prompt token for token (checked here), so exp04/exp09's copy-and-split runs apply unchanged.",
+ "items": [
+  {
+   "id": "BL-0000",
+   "family": "BL",
+   "scene": "S-0000",
+   "bridge": "sheep",
+   "cf_bridge": "goose",
+   "third": "duck",
+   "context": "Noah's pet is a goose. Owen's pet is a sheep. Diana's pet is a cow. Julia's pet is a duck. Max's pet is a turkey. The duck's locker is 1. The cow's locker is 5. The turkey's locker is 7. The goose's locker is 3. The sheep's locker is 9.",
+   "off_context": "Noah's pet is a goose. Owen's pet is a sheep. Diana's pet is a cow. Julia's pet is a duck. Max's pet is a turkey. The duck's locker is 3. The cow's locker is 5. The turkey's locker is 7. The goose's locker is 1. The sheep's locker is 9.",
+   "people": [
+    "Noah",
+    "Owen",
+    "Diana",
+    "Julia",
+    "Max"
+   ],
+   "pets": [
+    "goose",
+    "sheep",
+    "cow",
+    "duck",
+    "turkey"
+   ],
+   "lockers": {
+    "sheep": 9,
+    "goose": 3,
+    "duck": 1,
+    "turkey": 7,
+    "cow": 5
+   },
+   "cue": "Owen",
+   "question": "Which locker belongs to Owen's pet?",
+   "cf_context": "Noah's pet is a sheep. Owen's pet is a goose. Diana's pet is a cow. Julia's pet is a duck. Max's pet is a turkey. The duck's locker is 1. The cow's locker is 5. The turkey's locker is 7. The goose's locker is 3. The sheep's locker is 9.",
+   "cf_question": "Which locker belongs to Owen's pet?",
+   "answer": "9",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Owen's pet?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the sheep?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0001",
+   "family": "BL",
+   "scene": "S-0001",
+   "bridge": "chicken",
+   "cf_bridge": "spider",
+   "third": "mouse",
+   "context": "Kyle's pet is a bee. Amy's pet is a chicken. Mark's pet is a mouse. Eric's pet is a spider. Luke's pet is a duck. The mouse's locker is 7. The bee's locker is 1. The duck's locker is 5. The chicken's locker is 9. The spider's locker is 3.",
+   "off_context": "Kyle's pet is a bee. Amy's pet is a chicken. Mark's pet is a mouse. Eric's pet is a spider. Luke's pet is a duck. The mouse's locker is 3. The bee's locker is 1. The duck's locker is 5. The chicken's locker is 9. The spider's locker is 7.",
+   "people": [
+    "Kyle",
+    "Amy",
+    "Mark",
+    "Eric",
+    "Luke"
+   ],
+   "pets": [
+    "bee",
+    "chicken",
+    "mouse",
+    "spider",
+    "duck"
+   ],
+   "lockers": {
+    "chicken": 9,
+    "spider": 3,
+    "mouse": 7,
+    "duck": 5,
+    "bee": 1
+   },
+   "cue": "Amy",
+   "question": "Which locker belongs to Amy's pet?",
+   "cf_context": "Kyle's pet is a bee. Amy's pet is a spider. Mark's pet is a mouse. Eric's pet is a chicken. Luke's pet is a duck. The mouse's locker is 7. The bee's locker is 1. The duck's locker is 5. The chicken's locker is 9. The spider's locker is 3.",
+   "cf_question": "Which locker belongs to Amy's pet?",
+   "answer": "9",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Amy's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0002",
+   "family": "BL",
+   "scene": "S-0002",
+   "bridge": "cat",
+   "cf_bridge": "goose",
+   "third": "mouse",
+   "context": "Diana's pet is a horse. Sam's pet is a mouse. Eva's pet is a cat. Nina's pet is a goose. Liam's pet is a sheep. The mouse's locker is 1. The cat's locker is 3. The sheep's locker is 7. The goose's locker is 5. The horse's locker is 9.",
+   "off_context": "Diana's pet is a horse. Sam's pet is a mouse. Eva's pet is a cat. Nina's pet is a goose. Liam's pet is a sheep. The mouse's locker is 5. The cat's locker is 3. The sheep's locker is 7. The goose's locker is 1. The horse's locker is 9.",
+   "people": [
+    "Diana",
+    "Sam",
+    "Eva",
+    "Nina",
+    "Liam"
+   ],
+   "pets": [
+    "horse",
+    "mouse",
+    "cat",
+    "goose",
+    "sheep"
+   ],
+   "lockers": {
+    "cat": 3,
+    "goose": 5,
+    "mouse": 1,
+    "sheep": 7,
+    "horse": 9
+   },
+   "cue": "Eva",
+   "question": "Which locker belongs to Eva's pet?",
+   "cf_context": "Diana's pet is a horse. Sam's pet is a mouse. Eva's pet is a goose. Nina's pet is a cat. Liam's pet is a sheep. The mouse's locker is 1. The cat's locker is 3. The sheep's locker is 7. The goose's locker is 5. The horse's locker is 9.",
+   "cf_question": "Which locker belongs to Eva's pet?",
+   "answer": "3",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Eva's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the cat?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0003",
+   "family": "BL",
+   "scene": "S-0003",
+   "bridge": "cat",
+   "cf_bridge": "duck",
+   "third": "chicken",
+   "context": "Paul's pet is a sheep. Eva's pet is a duck. Liam's pet is a frog. Sara's pet is a chicken. Kyle's pet is a cat. The cat's locker is 9. The frog's locker is 7. The chicken's locker is 5. The sheep's locker is 3. The duck's locker is 1.",
+   "off_context": "Paul's pet is a sheep. Eva's pet is a duck. Liam's pet is a frog. Sara's pet is a chicken. Kyle's pet is a cat. The cat's locker is 9. The frog's locker is 7. The chicken's locker is 1. The sheep's locker is 3. The duck's locker is 5.",
+   "people": [
+    "Paul",
+    "Eva",
+    "Liam",
+    "Sara",
+    "Kyle"
+   ],
+   "pets": [
+    "sheep",
+    "duck",
+    "frog",
+    "chicken",
+    "cat"
+   ],
+   "lockers": {
+    "cat": 9,
+    "duck": 1,
+    "chicken": 5,
+    "frog": 7,
+    "sheep": 3
+   },
+   "cue": "Kyle",
+   "question": "Which locker belongs to Kyle's pet?",
+   "cf_context": "Paul's pet is a sheep. Eva's pet is a cat. Liam's pet is a frog. Sara's pet is a chicken. Kyle's pet is a duck. The cat's locker is 9. The frog's locker is 7. The chicken's locker is 5. The sheep's locker is 3. The duck's locker is 1.",
+   "cf_question": "Which locker belongs to Kyle's pet?",
+   "answer": "9",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Kyle's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the cat?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0004",
+   "family": "BL",
+   "scene": "S-0004",
+   "bridge": "chicken",
+   "cf_bridge": "frog",
+   "third": "sheep",
+   "context": "Lucy's pet is a sheep. Fiona's pet is a frog. Carl's pet is a cat. Ivan's pet is a chicken. Rose's pet is a cow. The frog's locker is 1. The cow's locker is 7. The sheep's locker is 9. The cat's locker is 5. The chicken's locker is 3.",
+   "off_context": "Lucy's pet is a sheep. Fiona's pet is a frog. Carl's pet is a cat. Ivan's pet is a chicken. Rose's pet is a cow. The frog's locker is 9. The cow's locker is 7. The sheep's locker is 1. The cat's locker is 5. The chicken's locker is 3.",
+   "people": [
+    "Lucy",
+    "Fiona",
+    "Carl",
+    "Ivan",
+    "Rose"
+   ],
+   "pets": [
+    "sheep",
+    "frog",
+    "cat",
+    "chicken",
+    "cow"
+   ],
+   "lockers": {
+    "chicken": 3,
+    "frog": 1,
+    "sheep": 9,
+    "cat": 5,
+    "cow": 7
+   },
+   "cue": "Ivan",
+   "question": "Which locker belongs to Ivan's pet?",
+   "cf_context": "Lucy's pet is a sheep. Fiona's pet is a chicken. Carl's pet is a cat. Ivan's pet is a frog. Rose's pet is a cow. The frog's locker is 1. The cow's locker is 7. The sheep's locker is 9. The cat's locker is 5. The chicken's locker is 3.",
+   "cf_question": "Which locker belongs to Ivan's pet?",
+   "answer": "3",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Ivan's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0005",
+   "family": "BL",
+   "scene": "S-0005",
+   "bridge": "dog",
+   "cf_bridge": "turkey",
+   "third": "sheep",
+   "context": "David's pet is a dog. Olivia's pet is a sheep. Peter's pet is a horse. Clara's pet is a bee. Lucy's pet is a turkey. The horse's locker is 1. The dog's locker is 3. The sheep's locker is 7. The bee's locker is 9. The turkey's locker is 5.",
+   "off_context": "David's pet is a dog. Olivia's pet is a sheep. Peter's pet is a horse. Clara's pet is a bee. Lucy's pet is a turkey. The horse's locker is 1. The dog's locker is 3. The sheep's locker is 5. The bee's locker is 9. The turkey's locker is 7.",
+   "people": [
+    "David",
+    "Olivia",
+    "Peter",
+    "Clara",
+    "Lucy"
+   ],
+   "pets": [
+    "dog",
+    "sheep",
+    "horse",
+    "bee",
+    "turkey"
+   ],
+   "lockers": {
+    "dog": 3,
+    "turkey": 5,
+    "sheep": 7,
+    "bee": 9,
+    "horse": 1
+   },
+   "cue": "David",
+   "question": "Which locker belongs to David's pet?",
+   "cf_context": "David's pet is a turkey. Olivia's pet is a sheep. Peter's pet is a horse. Clara's pet is a bee. Lucy's pet is a dog. The horse's locker is 1. The dog's locker is 3. The sheep's locker is 7. The bee's locker is 9. The turkey's locker is 5.",
+   "cf_question": "Which locker belongs to David's pet?",
+   "answer": "3",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is David's pet?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the dog?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0006",
+   "family": "BL",
+   "scene": "S-0006",
+   "bridge": "chicken",
+   "cf_bridge": "sheep",
+   "third": "lion",
+   "context": "David's pet is a lion. Sara's pet is a chicken. Lucy's pet is a sheep. Olivia's pet is a cow. Noah's pet is a frog. The lion's locker is 1. The chicken's locker is 5. The frog's locker is 9. The cow's locker is 3. The sheep's locker is 7.",
+   "off_context": "David's pet is a lion. Sara's pet is a chicken. Lucy's pet is a sheep. Olivia's pet is a cow. Noah's pet is a frog. The lion's locker is 7. The chicken's locker is 5. The frog's locker is 9. The cow's locker is 3. The sheep's locker is 1.",
+   "people": [
+    "David",
+    "Sara",
+    "Lucy",
+    "Olivia",
+    "Noah"
+   ],
+   "pets": [
+    "lion",
+    "chicken",
+    "sheep",
+    "cow",
+    "frog"
+   ],
+   "lockers": {
+    "chicken": 5,
+    "sheep": 7,
+    "lion": 1,
+    "cow": 3,
+    "frog": 9
+   },
+   "cue": "Sara",
+   "question": "Which locker belongs to Sara's pet?",
+   "cf_context": "David's pet is a lion. Sara's pet is a sheep. Lucy's pet is a chicken. Olivia's pet is a cow. Noah's pet is a frog. The lion's locker is 1. The chicken's locker is 5. The frog's locker is 9. The cow's locker is 3. The sheep's locker is 7.",
+   "cf_question": "Which locker belongs to Sara's pet?",
+   "answer": "5",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Sara's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0007",
+   "family": "BL",
+   "scene": "S-0007",
+   "bridge": "spider",
+   "cf_bridge": "lion",
+   "third": "chicken",
+   "context": "Eve's pet is a lion. Mia's pet is a bee. Diana's pet is a chicken. Peter's pet is a cow. Julia's pet is a spider. The spider's locker is 1. The chicken's locker is 5. The lion's locker is 3. The cow's locker is 9. The bee's locker is 7.",
+   "off_context": "Eve's pet is a lion. Mia's pet is a bee. Diana's pet is a chicken. Peter's pet is a cow. Julia's pet is a spider. The spider's locker is 1. The chicken's locker is 3. The lion's locker is 5. The cow's locker is 9. The bee's locker is 7.",
+   "people": [
+    "Eve",
+    "Mia",
+    "Diana",
+    "Peter",
+    "Julia"
+   ],
+   "pets": [
+    "lion",
+    "bee",
+    "chicken",
+    "cow",
+    "spider"
+   ],
+   "lockers": {
+    "spider": 1,
+    "lion": 3,
+    "chicken": 5,
+    "cow": 9,
+    "bee": 7
+   },
+   "cue": "Julia",
+   "question": "Which locker belongs to Julia's pet?",
+   "cf_context": "Eve's pet is a spider. Mia's pet is a bee. Diana's pet is a chicken. Peter's pet is a cow. Julia's pet is a lion. The spider's locker is 1. The chicken's locker is 5. The lion's locker is 3. The cow's locker is 9. The bee's locker is 7.",
+   "cf_question": "Which locker belongs to Julia's pet?",
+   "answer": "1",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Julia's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the spider?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0008",
+   "family": "BL",
+   "scene": "S-0008",
+   "bridge": "chicken",
+   "cf_bridge": "dog",
+   "third": "horse",
+   "context": "Ruby's pet is a dog. David's pet is a goose. Diana's pet is a bee. Leo's pet is a chicken. Lucy's pet is a horse. The dog's locker is 5. The bee's locker is 3. The goose's locker is 1. The horse's locker is 7. The chicken's locker is 9.",
+   "off_context": "Ruby's pet is a dog. David's pet is a goose. Diana's pet is a bee. Leo's pet is a chicken. Lucy's pet is a horse. The dog's locker is 7. The bee's locker is 3. The goose's locker is 1. The horse's locker is 5. The chicken's locker is 9.",
+   "people": [
+    "Ruby",
+    "David",
+    "Diana",
+    "Leo",
+    "Lucy"
+   ],
+   "pets": [
+    "dog",
+    "goose",
+    "bee",
+    "chicken",
+    "horse"
+   ],
+   "lockers": {
+    "chicken": 9,
+    "dog": 5,
+    "horse": 7,
+    "bee": 3,
+    "goose": 1
+   },
+   "cue": "Leo",
+   "question": "Which locker belongs to Leo's pet?",
+   "cf_context": "Ruby's pet is a chicken. David's pet is a goose. Diana's pet is a bee. Leo's pet is a dog. Lucy's pet is a horse. The dog's locker is 5. The bee's locker is 3. The goose's locker is 1. The horse's locker is 7. The chicken's locker is 9.",
+   "cf_question": "Which locker belongs to Leo's pet?",
+   "answer": "9",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Leo's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0009",
+   "family": "BL",
+   "scene": "S-0009",
+   "bridge": "goose",
+   "cf_bridge": "lion",
+   "third": "bee",
+   "context": "Leo's pet is a dog. Diana's pet is a bee. Fiona's pet is a horse. Tara's pet is a goose. Will's pet is a lion. The dog's locker is 9. The horse's locker is 5. The goose's locker is 3. The lion's locker is 7. The bee's locker is 1.",
+   "off_context": "Leo's pet is a dog. Diana's pet is a bee. Fiona's pet is a horse. Tara's pet is a goose. Will's pet is a lion. The dog's locker is 9. The horse's locker is 5. The goose's locker is 3. The lion's locker is 1. The bee's locker is 7.",
+   "people": [
+    "Leo",
+    "Diana",
+    "Fiona",
+    "Tara",
+    "Will"
+   ],
+   "pets": [
+    "dog",
+    "bee",
+    "horse",
+    "goose",
+    "lion"
+   ],
+   "lockers": {
+    "goose": 3,
+    "lion": 7,
+    "bee": 1,
+    "horse": 5,
+    "dog": 9
+   },
+   "cue": "Tara",
+   "question": "Which locker belongs to Tara's pet?",
+   "cf_context": "Leo's pet is a dog. Diana's pet is a bee. Fiona's pet is a horse. Tara's pet is a lion. Will's pet is a goose. The dog's locker is 9. The horse's locker is 5. The goose's locker is 3. The lion's locker is 7. The bee's locker is 1.",
+   "cf_question": "Which locker belongs to Tara's pet?",
+   "answer": "3",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Tara's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the goose?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0010",
+   "family": "BL",
+   "scene": "S-0010",
+   "bridge": "bee",
+   "cf_bridge": "goose",
+   "third": "dog",
+   "context": "Owen's pet is a goose. Leo's pet is a mouse. Kyle's pet is a spider. Peter's pet is a dog. Liam's pet is a bee. The mouse's locker is 1. The goose's locker is 3. The bee's locker is 9. The dog's locker is 5. The spider's locker is 7.",
+   "off_context": "Owen's pet is a goose. Leo's pet is a mouse. Kyle's pet is a spider. Peter's pet is a dog. Liam's pet is a bee. The mouse's locker is 1. The goose's locker is 5. The bee's locker is 9. The dog's locker is 3. The spider's locker is 7.",
+   "people": [
+    "Owen",
+    "Leo",
+    "Kyle",
+    "Peter",
+    "Liam"
+   ],
+   "pets": [
+    "goose",
+    "mouse",
+    "spider",
+    "dog",
+    "bee"
+   ],
+   "lockers": {
+    "bee": 9,
+    "goose": 3,
+    "dog": 5,
+    "mouse": 1,
+    "spider": 7
+   },
+   "cue": "Liam",
+   "question": "Which locker belongs to Liam's pet?",
+   "cf_context": "Owen's pet is a bee. Leo's pet is a mouse. Kyle's pet is a spider. Peter's pet is a dog. Liam's pet is a goose. The mouse's locker is 1. The goose's locker is 3. The bee's locker is 9. The dog's locker is 5. The spider's locker is 7.",
+   "cf_question": "Which locker belongs to Liam's pet?",
+   "answer": "9",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Liam's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the bee?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0011",
+   "family": "BL",
+   "scene": "S-0011",
+   "bridge": "duck",
+   "cf_bridge": "frog",
+   "third": "wolf",
+   "context": "Tom's pet is a duck. Ivan's pet is a wolf. Mark's pet is a horse. Ivy's pet is a frog. James's pet is a pig. The wolf's locker is 9. The horse's locker is 3. The pig's locker is 5. The frog's locker is 1. The duck's locker is 7.",
+   "off_context": "Tom's pet is a duck. Ivan's pet is a wolf. Mark's pet is a horse. Ivy's pet is a frog. James's pet is a pig. The wolf's locker is 1. The horse's locker is 3. The pig's locker is 5. The frog's locker is 9. The duck's locker is 7.",
+   "people": [
+    "Tom",
+    "Ivan",
+    "Mark",
+    "Ivy",
+    "James"
+   ],
+   "pets": [
+    "duck",
+    "wolf",
+    "horse",
+    "frog",
+    "pig"
+   ],
+   "lockers": {
+    "duck": 7,
+    "frog": 1,
+    "wolf": 9,
+    "horse": 3,
+    "pig": 5
+   },
+   "cue": "Tom",
+   "question": "Which locker belongs to Tom's pet?",
+   "cf_context": "Tom's pet is a frog. Ivan's pet is a wolf. Mark's pet is a horse. Ivy's pet is a duck. James's pet is a pig. The wolf's locker is 9. The horse's locker is 3. The pig's locker is 5. The frog's locker is 1. The duck's locker is 7.",
+   "cf_question": "Which locker belongs to Tom's pet?",
+   "answer": "7",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Tom's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the duck?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0012",
+   "family": "BL",
+   "scene": "S-0012",
+   "bridge": "cat",
+   "cf_bridge": "spider",
+   "third": "dog",
+   "context": "Fiona's pet is a chicken. Finn's pet is a cow. Ryan's pet is a dog. Rose's pet is a spider. Adam's pet is a cat. The dog's locker is 5. The spider's locker is 3. The chicken's locker is 1. The cat's locker is 7. The cow's locker is 9.",
+   "off_context": "Fiona's pet is a chicken. Finn's pet is a cow. Ryan's pet is a dog. Rose's pet is a spider. Adam's pet is a cat. The dog's locker is 3. The spider's locker is 5. The chicken's locker is 1. The cat's locker is 7. The cow's locker is 9.",
+   "people": [
+    "Fiona",
+    "Finn",
+    "Ryan",
+    "Rose",
+    "Adam"
+   ],
+   "pets": [
+    "chicken",
+    "cow",
+    "dog",
+    "spider",
+    "cat"
+   ],
+   "lockers": {
+    "cat": 7,
+    "spider": 3,
+    "dog": 5,
+    "cow": 9,
+    "chicken": 1
+   },
+   "cue": "Adam",
+   "question": "Which locker belongs to Adam's pet?",
+   "cf_context": "Fiona's pet is a chicken. Finn's pet is a cow. Ryan's pet is a dog. Rose's pet is a cat. Adam's pet is a spider. The dog's locker is 5. The spider's locker is 3. The chicken's locker is 1. The cat's locker is 7. The cow's locker is 9.",
+   "cf_question": "Which locker belongs to Adam's pet?",
+   "answer": "7",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Adam's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the cat?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0013",
+   "family": "BL",
+   "scene": "S-0013",
+   "bridge": "cow",
+   "cf_bridge": "duck",
+   "third": "wolf",
+   "context": "Paul's pet is a frog. Maria's pet is a cow. Ella's pet is a duck. Lucy's pet is a wolf. Owen's pet is a lion. The frog's locker is 9. The lion's locker is 1. The wolf's locker is 3. The cow's locker is 5. The duck's locker is 7.",
+   "off_context": "Paul's pet is a frog. Maria's pet is a cow. Ella's pet is a duck. Lucy's pet is a wolf. Owen's pet is a lion. The frog's locker is 9. The lion's locker is 1. The wolf's locker is 7. The cow's locker is 5. The duck's locker is 3.",
+   "people": [
+    "Paul",
+    "Maria",
+    "Ella",
+    "Lucy",
+    "Owen"
+   ],
+   "pets": [
+    "frog",
+    "cow",
+    "duck",
+    "wolf",
+    "lion"
+   ],
+   "lockers": {
+    "cow": 5,
+    "duck": 7,
+    "wolf": 3,
+    "frog": 9,
+    "lion": 1
+   },
+   "cue": "Maria",
+   "question": "Which locker belongs to Maria's pet?",
+   "cf_context": "Paul's pet is a frog. Maria's pet is a duck. Ella's pet is a cow. Lucy's pet is a wolf. Owen's pet is a lion. The frog's locker is 9. The lion's locker is 1. The wolf's locker is 3. The cow's locker is 5. The duck's locker is 7.",
+   "cf_question": "Which locker belongs to Maria's pet?",
+   "answer": "5",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Maria's pet?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the cow?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0014",
+   "family": "BL",
+   "scene": "S-0014",
+   "bridge": "bee",
+   "cf_bridge": "lion",
+   "third": "duck",
+   "context": "James's pet is a goose. Jack's pet is a lion. Fiona's pet is a duck. Kate's pet is a bee. Carl's pet is a mouse. The goose's locker is 7. The mouse's locker is 1. The lion's locker is 9. The bee's locker is 3. The duck's locker is 5.",
+   "off_context": "James's pet is a goose. Jack's pet is a lion. Fiona's pet is a duck. Kate's pet is a bee. Carl's pet is a mouse. The goose's locker is 7. The mouse's locker is 1. The lion's locker is 5. The bee's locker is 3. The duck's locker is 9.",
+   "people": [
+    "James",
+    "Jack",
+    "Fiona",
+    "Kate",
+    "Carl"
+   ],
+   "pets": [
+    "goose",
+    "lion",
+    "duck",
+    "bee",
+    "mouse"
+   ],
+   "lockers": {
+    "bee": 3,
+    "lion": 9,
+    "duck": 5,
+    "mouse": 1,
+    "goose": 7
+   },
+   "cue": "Kate",
+   "question": "Which locker belongs to Kate's pet?",
+   "cf_context": "James's pet is a goose. Jack's pet is a bee. Fiona's pet is a duck. Kate's pet is a lion. Carl's pet is a mouse. The goose's locker is 7. The mouse's locker is 1. The lion's locker is 9. The bee's locker is 3. The duck's locker is 5.",
+   "cf_question": "Which locker belongs to Kate's pet?",
+   "answer": "3",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Kate's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the bee?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0015",
+   "family": "BL",
+   "scene": "S-0015",
+   "bridge": "sheep",
+   "cf_bridge": "bee",
+   "third": "pig",
+   "context": "Oscar's pet is a pig. Laura's pet is a bee. Fiona's pet is a lion. Mia's pet is a goose. Adam's pet is a sheep. The goose's locker is 9. The bee's locker is 5. The pig's locker is 7. The sheep's locker is 3. The lion's locker is 1.",
+   "off_context": "Oscar's pet is a pig. Laura's pet is a bee. Fiona's pet is a lion. Mia's pet is a goose. Adam's pet is a sheep. The goose's locker is 9. The bee's locker is 7. The pig's locker is 5. The sheep's locker is 3. The lion's locker is 1.",
+   "people": [
+    "Oscar",
+    "Laura",
+    "Fiona",
+    "Mia",
+    "Adam"
+   ],
+   "pets": [
+    "pig",
+    "bee",
+    "lion",
+    "goose",
+    "sheep"
+   ],
+   "lockers": {
+    "sheep": 3,
+    "bee": 5,
+    "pig": 7,
+    "goose": 9,
+    "lion": 1
+   },
+   "cue": "Adam",
+   "question": "Which locker belongs to Adam's pet?",
+   "cf_context": "Oscar's pet is a pig. Laura's pet is a sheep. Fiona's pet is a lion. Mia's pet is a goose. Adam's pet is a bee. The goose's locker is 9. The bee's locker is 5. The pig's locker is 7. The sheep's locker is 3. The lion's locker is 1.",
+   "cf_question": "Which locker belongs to Adam's pet?",
+   "answer": "3",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Adam's pet?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the sheep?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0016",
+   "family": "BL",
+   "scene": "S-0016",
+   "bridge": "chicken",
+   "cf_bridge": "dog",
+   "third": "wolf",
+   "context": "Mia's pet is a wolf. Fiona's pet is a dog. Vera's pet is a pig. David's pet is a chicken. Ben's pet is a cow. The wolf's locker is 1. The chicken's locker is 3. The dog's locker is 5. The cow's locker is 9. The pig's locker is 7.",
+   "off_context": "Mia's pet is a wolf. Fiona's pet is a dog. Vera's pet is a pig. David's pet is a chicken. Ben's pet is a cow. The wolf's locker is 5. The chicken's locker is 3. The dog's locker is 1. The cow's locker is 9. The pig's locker is 7.",
+   "people": [
+    "Mia",
+    "Fiona",
+    "Vera",
+    "David",
+    "Ben"
+   ],
+   "pets": [
+    "wolf",
+    "dog",
+    "pig",
+    "chicken",
+    "cow"
+   ],
+   "lockers": {
+    "chicken": 3,
+    "dog": 5,
+    "wolf": 1,
+    "cow": 9,
+    "pig": 7
+   },
+   "cue": "David",
+   "question": "Which locker belongs to David's pet?",
+   "cf_context": "Mia's pet is a wolf. Fiona's pet is a chicken. Vera's pet is a pig. David's pet is a dog. Ben's pet is a cow. The wolf's locker is 1. The chicken's locker is 3. The dog's locker is 5. The cow's locker is 9. The pig's locker is 7.",
+   "cf_question": "Which locker belongs to David's pet?",
+   "answer": "3",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is David's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0017",
+   "family": "BL",
+   "scene": "S-0017",
+   "bridge": "chicken",
+   "cf_bridge": "cow",
+   "third": "frog",
+   "context": "Ben's pet is a cow. Jack's pet is a frog. Kyle's pet is a turkey. Frank's pet is a spider. Sean's pet is a chicken. The spider's locker is 1. The cow's locker is 9. The frog's locker is 3. The turkey's locker is 5. The chicken's locker is 7.",
+   "off_context": "Ben's pet is a cow. Jack's pet is a frog. Kyle's pet is a turkey. Frank's pet is a spider. Sean's pet is a chicken. The spider's locker is 1. The cow's locker is 3. The frog's locker is 9. The turkey's locker is 5. The chicken's locker is 7.",
+   "people": [
+    "Ben",
+    "Jack",
+    "Kyle",
+    "Frank",
+    "Sean"
+   ],
+   "pets": [
+    "cow",
+    "frog",
+    "turkey",
+    "spider",
+    "chicken"
+   ],
+   "lockers": {
+    "chicken": 7,
+    "cow": 9,
+    "frog": 3,
+    "spider": 1,
+    "turkey": 5
+   },
+   "cue": "Sean",
+   "question": "Which locker belongs to Sean's pet?",
+   "cf_context": "Ben's pet is a chicken. Jack's pet is a frog. Kyle's pet is a turkey. Frank's pet is a spider. Sean's pet is a cow. The spider's locker is 1. The cow's locker is 9. The frog's locker is 3. The turkey's locker is 5. The chicken's locker is 7.",
+   "cf_question": "Which locker belongs to Sean's pet?",
+   "answer": "7",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Sean's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0018",
+   "family": "BL",
+   "scene": "S-0018",
+   "bridge": "goose",
+   "cf_bridge": "cat",
+   "third": "chicken",
+   "context": "Mark's pet is a goose. David's pet is a cat. Max's pet is a sheep. Diana's pet is a chicken. Sean's pet is a wolf. The cat's locker is 7. The sheep's locker is 5. The wolf's locker is 1. The goose's locker is 3. The chicken's locker is 9.",
+   "off_context": "Mark's pet is a goose. David's pet is a cat. Max's pet is a sheep. Diana's pet is a chicken. Sean's pet is a wolf. The cat's locker is 9. The sheep's locker is 5. The wolf's locker is 1. The goose's locker is 3. The chicken's locker is 7.",
+   "people": [
+    "Mark",
+    "David",
+    "Max",
+    "Diana",
+    "Sean"
+   ],
+   "pets": [
+    "goose",
+    "cat",
+    "sheep",
+    "chicken",
+    "wolf"
+   ],
+   "lockers": {
+    "goose": 3,
+    "cat": 7,
+    "chicken": 9,
+    "sheep": 5,
+    "wolf": 1
+   },
+   "cue": "Mark",
+   "question": "Which locker belongs to Mark's pet?",
+   "cf_context": "Mark's pet is a cat. David's pet is a goose. Max's pet is a sheep. Diana's pet is a chicken. Sean's pet is a wolf. The cat's locker is 7. The sheep's locker is 5. The wolf's locker is 1. The goose's locker is 3. The chicken's locker is 9.",
+   "cf_question": "Which locker belongs to Mark's pet?",
+   "answer": "3",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Mark's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the goose?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0019",
+   "family": "BL",
+   "scene": "S-0019",
+   "bridge": "bee",
+   "cf_bridge": "frog",
+   "third": "cat",
+   "context": "Beth's pet is a cow. Zoe's pet is a cat. Frank's pet is a frog. Alice's pet is a bee. Noah's pet is a chicken. The frog's locker is 5. The cow's locker is 1. The chicken's locker is 9. The cat's locker is 3. The bee's locker is 7.",
+   "off_context": "Beth's pet is a cow. Zoe's pet is a cat. Frank's pet is a frog. Alice's pet is a bee. Noah's pet is a chicken. The frog's locker is 3. The cow's locker is 1. The chicken's locker is 9. The cat's locker is 5. The bee's locker is 7.",
+   "people": [
+    "Beth",
+    "Zoe",
+    "Frank",
+    "Alice",
+    "Noah"
+   ],
+   "pets": [
+    "cow",
+    "cat",
+    "frog",
+    "bee",
+    "chicken"
+   ],
+   "lockers": {
+    "bee": 7,
+    "frog": 5,
+    "cat": 3,
+    "chicken": 9,
+    "cow": 1
+   },
+   "cue": "Alice",
+   "question": "Which locker belongs to Alice's pet?",
+   "cf_context": "Beth's pet is a cow. Zoe's pet is a cat. Frank's pet is a bee. Alice's pet is a frog. Noah's pet is a chicken. The frog's locker is 5. The cow's locker is 1. The chicken's locker is 9. The cat's locker is 3. The bee's locker is 7.",
+   "cf_question": "Which locker belongs to Alice's pet?",
+   "answer": "7",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Alice's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the bee?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0020",
+   "family": "BL",
+   "scene": "S-0020",
+   "bridge": "lion",
+   "cf_bridge": "goose",
+   "third": "frog",
+   "context": "Lucy's pet is a goose. Ivan's pet is a wolf. Kyle's pet is a bee. Beth's pet is a lion. Julia's pet is a frog. The wolf's locker is 3. The bee's locker is 9. The goose's locker is 7. The lion's locker is 5. The frog's locker is 1.",
+   "off_context": "Lucy's pet is a goose. Ivan's pet is a wolf. Kyle's pet is a bee. Beth's pet is a lion. Julia's pet is a frog. The wolf's locker is 3. The bee's locker is 9. The goose's locker is 1. The lion's locker is 5. The frog's locker is 7.",
+   "people": [
+    "Lucy",
+    "Ivan",
+    "Kyle",
+    "Beth",
+    "Julia"
+   ],
+   "pets": [
+    "goose",
+    "wolf",
+    "bee",
+    "lion",
+    "frog"
+   ],
+   "lockers": {
+    "lion": 5,
+    "goose": 7,
+    "frog": 1,
+    "wolf": 3,
+    "bee": 9
+   },
+   "cue": "Beth",
+   "question": "Which locker belongs to Beth's pet?",
+   "cf_context": "Lucy's pet is a lion. Ivan's pet is a wolf. Kyle's pet is a bee. Beth's pet is a goose. Julia's pet is a frog. The wolf's locker is 3. The bee's locker is 9. The goose's locker is 7. The lion's locker is 5. The frog's locker is 1.",
+   "cf_question": "Which locker belongs to Beth's pet?",
+   "answer": "5",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Beth's pet?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the lion?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0021",
+   "family": "BL",
+   "scene": "S-0021",
+   "bridge": "chicken",
+   "cf_bridge": "dog",
+   "third": "spider",
+   "context": "Ella's pet is a chicken. Ivy's pet is a spider. Kyle's pet is a lion. Noah's pet is a dog. Jack's pet is a turkey. The turkey's locker is 5. The spider's locker is 9. The dog's locker is 3. The lion's locker is 1. The chicken's locker is 7.",
+   "off_context": "Ella's pet is a chicken. Ivy's pet is a spider. Kyle's pet is a lion. Noah's pet is a dog. Jack's pet is a turkey. The turkey's locker is 5. The spider's locker is 3. The dog's locker is 9. The lion's locker is 1. The chicken's locker is 7.",
+   "people": [
+    "Ella",
+    "Ivy",
+    "Kyle",
+    "Noah",
+    "Jack"
+   ],
+   "pets": [
+    "chicken",
+    "spider",
+    "lion",
+    "dog",
+    "turkey"
+   ],
+   "lockers": {
+    "chicken": 7,
+    "dog": 3,
+    "spider": 9,
+    "lion": 1,
+    "turkey": 5
+   },
+   "cue": "Ella",
+   "question": "Which locker belongs to Ella's pet?",
+   "cf_context": "Ella's pet is a dog. Ivy's pet is a spider. Kyle's pet is a lion. Noah's pet is a chicken. Jack's pet is a turkey. The turkey's locker is 5. The spider's locker is 9. The dog's locker is 3. The lion's locker is 1. The chicken's locker is 7.",
+   "cf_question": "Which locker belongs to Ella's pet?",
+   "answer": "7",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Ella's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0022",
+   "family": "BL",
+   "scene": "S-0022",
+   "bridge": "chicken",
+   "cf_bridge": "dog",
+   "third": "bee",
+   "context": "David's pet is a cow. Ella's pet is a bee. James's pet is a dog. Fiona's pet is a chicken. Ryan's pet is a frog. The bee's locker is 7. The cow's locker is 9. The dog's locker is 5. The chicken's locker is 3. The frog's locker is 1.",
+   "off_context": "David's pet is a cow. Ella's pet is a bee. James's pet is a dog. Fiona's pet is a chicken. Ryan's pet is a frog. The bee's locker is 5. The cow's locker is 9. The dog's locker is 7. The chicken's locker is 3. The frog's locker is 1.",
+   "people": [
+    "David",
+    "Ella",
+    "James",
+    "Fiona",
+    "Ryan"
+   ],
+   "pets": [
+    "cow",
+    "bee",
+    "dog",
+    "chicken",
+    "frog"
+   ],
+   "lockers": {
+    "chicken": 3,
+    "dog": 5,
+    "bee": 7,
+    "cow": 9,
+    "frog": 1
+   },
+   "cue": "Fiona",
+   "question": "Which locker belongs to Fiona's pet?",
+   "cf_context": "David's pet is a cow. Ella's pet is a bee. James's pet is a chicken. Fiona's pet is a dog. Ryan's pet is a frog. The bee's locker is 7. The cow's locker is 9. The dog's locker is 5. The chicken's locker is 3. The frog's locker is 1.",
+   "cf_question": "Which locker belongs to Fiona's pet?",
+   "answer": "3",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Fiona's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0023",
+   "family": "BL",
+   "scene": "S-0023",
+   "bridge": "bee",
+   "cf_bridge": "sheep",
+   "third": "wolf",
+   "context": "Liam's pet is a pig. Amy's pet is a sheep. Eric's pet is a frog. Clara's pet is a wolf. Oscar's pet is a bee. The pig's locker is 9. The bee's locker is 1. The frog's locker is 5. The sheep's locker is 7. The wolf's locker is 3.",
+   "off_context": "Liam's pet is a pig. Amy's pet is a sheep. Eric's pet is a frog. Clara's pet is a wolf. Oscar's pet is a bee. The pig's locker is 9. The bee's locker is 1. The frog's locker is 5. The sheep's locker is 3. The wolf's locker is 7.",
+   "people": [
+    "Liam",
+    "Amy",
+    "Eric",
+    "Clara",
+    "Oscar"
+   ],
+   "pets": [
+    "pig",
+    "sheep",
+    "frog",
+    "wolf",
+    "bee"
+   ],
+   "lockers": {
+    "bee": 1,
+    "sheep": 7,
+    "wolf": 3,
+    "frog": 5,
+    "pig": 9
+   },
+   "cue": "Oscar",
+   "question": "Which locker belongs to Oscar's pet?",
+   "cf_context": "Liam's pet is a pig. Amy's pet is a bee. Eric's pet is a frog. Clara's pet is a wolf. Oscar's pet is a sheep. The pig's locker is 9. The bee's locker is 1. The frog's locker is 5. The sheep's locker is 7. The wolf's locker is 3.",
+   "cf_question": "Which locker belongs to Oscar's pet?",
+   "answer": "1",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Oscar's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the bee?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0024",
+   "family": "BL",
+   "scene": "S-0024",
+   "bridge": "cat",
+   "cf_bridge": "chicken",
+   "third": "turkey",
+   "context": "Beth's pet is a cow. Lucy's pet is a duck. Eva's pet is a cat. Vera's pet is a chicken. Paul's pet is a turkey. The chicken's locker is 7. The duck's locker is 9. The turkey's locker is 1. The cat's locker is 3. The cow's locker is 5.",
+   "off_context": "Beth's pet is a cow. Lucy's pet is a duck. Eva's pet is a cat. Vera's pet is a chicken. Paul's pet is a turkey. The chicken's locker is 1. The duck's locker is 9. The turkey's locker is 7. The cat's locker is 3. The cow's locker is 5.",
+   "people": [
+    "Beth",
+    "Lucy",
+    "Eva",
+    "Vera",
+    "Paul"
+   ],
+   "pets": [
+    "cow",
+    "duck",
+    "cat",
+    "chicken",
+    "turkey"
+   ],
+   "lockers": {
+    "cat": 3,
+    "chicken": 7,
+    "turkey": 1,
+    "duck": 9,
+    "cow": 5
+   },
+   "cue": "Eva",
+   "question": "Which locker belongs to Eva's pet?",
+   "cf_context": "Beth's pet is a cow. Lucy's pet is a duck. Eva's pet is a chicken. Vera's pet is a cat. Paul's pet is a turkey. The chicken's locker is 7. The duck's locker is 9. The turkey's locker is 1. The cat's locker is 3. The cow's locker is 5.",
+   "cf_question": "Which locker belongs to Eva's pet?",
+   "answer": "3",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Eva's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the cat?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0025",
+   "family": "BL",
+   "scene": "S-0025",
+   "bridge": "goose",
+   "cf_bridge": "horse",
+   "third": "lion",
+   "context": "Carl's pet is a goose. Hugo's pet is a chicken. Sean's pet is a horse. Dan's pet is a dog. Max's pet is a lion. The chicken's locker is 9. The goose's locker is 7. The lion's locker is 1. The horse's locker is 5. The dog's locker is 3.",
+   "off_context": "Carl's pet is a goose. Hugo's pet is a chicken. Sean's pet is a horse. Dan's pet is a dog. Max's pet is a lion. The chicken's locker is 9. The goose's locker is 7. The lion's locker is 5. The horse's locker is 1. The dog's locker is 3.",
+   "people": [
+    "Carl",
+    "Hugo",
+    "Sean",
+    "Dan",
+    "Max"
+   ],
+   "pets": [
+    "goose",
+    "chicken",
+    "horse",
+    "dog",
+    "lion"
+   ],
+   "lockers": {
+    "goose": 7,
+    "horse": 5,
+    "lion": 1,
+    "chicken": 9,
+    "dog": 3
+   },
+   "cue": "Carl",
+   "question": "Which locker belongs to Carl's pet?",
+   "cf_context": "Carl's pet is a horse. Hugo's pet is a chicken. Sean's pet is a goose. Dan's pet is a dog. Max's pet is a lion. The chicken's locker is 9. The goose's locker is 7. The lion's locker is 1. The horse's locker is 5. The dog's locker is 3.",
+   "cf_question": "Which locker belongs to Carl's pet?",
+   "answer": "7",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Carl's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the goose?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0026",
+   "family": "BL",
+   "scene": "S-0026",
+   "bridge": "cat",
+   "cf_bridge": "chicken",
+   "third": "horse",
+   "context": "Victor's pet is a horse. Clara's pet is a goose. Liam's pet is a cat. Paul's pet is a spider. Finn's pet is a chicken. The chicken's locker is 7. The cat's locker is 3. The horse's locker is 1. The spider's locker is 5. The goose's locker is 9.",
+   "off_context": "Victor's pet is a horse. Clara's pet is a goose. Liam's pet is a cat. Paul's pet is a spider. Finn's pet is a chicken. The chicken's locker is 1. The cat's locker is 3. The horse's locker is 7. The spider's locker is 5. The goose's locker is 9.",
+   "people": [
+    "Victor",
+    "Clara",
+    "Liam",
+    "Paul",
+    "Finn"
+   ],
+   "pets": [
+    "horse",
+    "goose",
+    "cat",
+    "spider",
+    "chicken"
+   ],
+   "lockers": {
+    "cat": 3,
+    "chicken": 7,
+    "horse": 1,
+    "goose": 9,
+    "spider": 5
+   },
+   "cue": "Liam",
+   "question": "Which locker belongs to Liam's pet?",
+   "cf_context": "Victor's pet is a horse. Clara's pet is a goose. Liam's pet is a chicken. Paul's pet is a spider. Finn's pet is a cat. The chicken's locker is 7. The cat's locker is 3. The horse's locker is 1. The spider's locker is 5. The goose's locker is 9.",
+   "cf_question": "Which locker belongs to Liam's pet?",
+   "answer": "3",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Liam's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the cat?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0027",
+   "family": "BL",
+   "scene": "S-0027",
+   "bridge": "dog",
+   "cf_bridge": "goose",
+   "third": "sheep",
+   "context": "Dan's pet is a sheep. David's pet is a bee. Frank's pet is a dog. Olivia's pet is a turkey. Ivan's pet is a goose. The bee's locker is 3. The sheep's locker is 7. The turkey's locker is 1. The dog's locker is 5. The goose's locker is 9.",
+   "off_context": "Dan's pet is a sheep. David's pet is a bee. Frank's pet is a dog. Olivia's pet is a turkey. Ivan's pet is a goose. The bee's locker is 3. The sheep's locker is 9. The turkey's locker is 1. The dog's locker is 5. The goose's locker is 7.",
+   "people": [
+    "Dan",
+    "David",
+    "Frank",
+    "Olivia",
+    "Ivan"
+   ],
+   "pets": [
+    "sheep",
+    "bee",
+    "dog",
+    "turkey",
+    "goose"
+   ],
+   "lockers": {
+    "dog": 5,
+    "goose": 9,
+    "sheep": 7,
+    "bee": 3,
+    "turkey": 1
+   },
+   "cue": "Frank",
+   "question": "Which locker belongs to Frank's pet?",
+   "cf_context": "Dan's pet is a sheep. David's pet is a bee. Frank's pet is a goose. Olivia's pet is a turkey. Ivan's pet is a dog. The bee's locker is 3. The sheep's locker is 7. The turkey's locker is 1. The dog's locker is 5. The goose's locker is 9.",
+   "cf_question": "Which locker belongs to Frank's pet?",
+   "answer": "5",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Frank's pet?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the dog?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0028",
+   "family": "BL",
+   "scene": "S-0028",
+   "bridge": "pig",
+   "cf_bridge": "bee",
+   "third": "cow",
+   "context": "Henry's pet is a pig. Lily's pet is a horse. Tara's pet is a sheep. Eric's pet is a bee. Laura's pet is a cow. The sheep's locker is 7. The pig's locker is 9. The bee's locker is 3. The horse's locker is 5. The cow's locker is 1.",
+   "off_context": "Henry's pet is a pig. Lily's pet is a horse. Tara's pet is a sheep. Eric's pet is a bee. Laura's pet is a cow. The sheep's locker is 7. The pig's locker is 9. The bee's locker is 1. The horse's locker is 5. The cow's locker is 3.",
+   "people": [
+    "Henry",
+    "Lily",
+    "Tara",
+    "Eric",
+    "Laura"
+   ],
+   "pets": [
+    "pig",
+    "horse",
+    "sheep",
+    "bee",
+    "cow"
+   ],
+   "lockers": {
+    "pig": 9,
+    "bee": 3,
+    "cow": 1,
+    "horse": 5,
+    "sheep": 7
+   },
+   "cue": "Henry",
+   "question": "Which locker belongs to Henry's pet?",
+   "cf_context": "Henry's pet is a bee. Lily's pet is a horse. Tara's pet is a sheep. Eric's pet is a pig. Laura's pet is a cow. The sheep's locker is 7. The pig's locker is 9. The bee's locker is 3. The horse's locker is 5. The cow's locker is 1.",
+   "cf_question": "Which locker belongs to Henry's pet?",
+   "answer": "9",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Henry's pet?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the pig?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0029",
+   "family": "BL",
+   "scene": "S-0029",
+   "bridge": "chicken",
+   "cf_bridge": "sheep",
+   "third": "cat",
+   "context": "Emma's pet is a cat. Ben's pet is a sheep. Maria's pet is a wolf. Grace's pet is a cow. Rose's pet is a chicken. The sheep's locker is 5. The cow's locker is 9. The cat's locker is 3. The wolf's locker is 1. The chicken's locker is 7.",
+   "off_context": "Emma's pet is a cat. Ben's pet is a sheep. Maria's pet is a wolf. Grace's pet is a cow. Rose's pet is a chicken. The sheep's locker is 3. The cow's locker is 9. The cat's locker is 5. The wolf's locker is 1. The chicken's locker is 7.",
+   "people": [
+    "Emma",
+    "Ben",
+    "Maria",
+    "Grace",
+    "Rose"
+   ],
+   "pets": [
+    "cat",
+    "sheep",
+    "wolf",
+    "cow",
+    "chicken"
+   ],
+   "lockers": {
+    "chicken": 7,
+    "sheep": 5,
+    "cat": 3,
+    "wolf": 1,
+    "cow": 9
+   },
+   "cue": "Rose",
+   "question": "Which locker belongs to Rose's pet?",
+   "cf_context": "Emma's pet is a cat. Ben's pet is a chicken. Maria's pet is a wolf. Grace's pet is a cow. Rose's pet is a sheep. The sheep's locker is 5. The cow's locker is 9. The cat's locker is 3. The wolf's locker is 1. The chicken's locker is 7.",
+   "cf_question": "Which locker belongs to Rose's pet?",
+   "answer": "7",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Rose's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0030",
+   "family": "BL",
+   "scene": "S-0030",
+   "bridge": "goose",
+   "cf_bridge": "spider",
+   "third": "dog",
+   "context": "Nina's pet is a spider. Amy's pet is a dog. Laura's pet is a goose. Luke's pet is a bee. Rose's pet is a chicken. The spider's locker is 9. The dog's locker is 1. The bee's locker is 7. The goose's locker is 3. The chicken's locker is 5.",
+   "off_context": "Nina's pet is a spider. Amy's pet is a dog. Laura's pet is a goose. Luke's pet is a bee. Rose's pet is a chicken. The spider's locker is 1. The dog's locker is 9. The bee's locker is 7. The goose's locker is 3. The chicken's locker is 5.",
+   "people": [
+    "Nina",
+    "Amy",
+    "Laura",
+    "Luke",
+    "Rose"
+   ],
+   "pets": [
+    "spider",
+    "dog",
+    "goose",
+    "bee",
+    "chicken"
+   ],
+   "lockers": {
+    "goose": 3,
+    "spider": 9,
+    "dog": 1,
+    "bee": 7,
+    "chicken": 5
+   },
+   "cue": "Laura",
+   "question": "Which locker belongs to Laura's pet?",
+   "cf_context": "Nina's pet is a goose. Amy's pet is a dog. Laura's pet is a spider. Luke's pet is a bee. Rose's pet is a chicken. The spider's locker is 9. The dog's locker is 1. The bee's locker is 7. The goose's locker is 3. The chicken's locker is 5.",
+   "cf_question": "Which locker belongs to Laura's pet?",
+   "answer": "3",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Laura's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the goose?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0031",
+   "family": "BL",
+   "scene": "S-0031",
+   "bridge": "wolf",
+   "cf_bridge": "chicken",
+   "third": "turkey",
+   "context": "Sam's pet is a lion. Mark's pet is a chicken. Luke's pet is a turkey. Emma's pet is a goose. Adam's pet is a wolf. The chicken's locker is 1. The turkey's locker is 3. The goose's locker is 5. The lion's locker is 7. The wolf's locker is 9.",
+   "off_context": "Sam's pet is a lion. Mark's pet is a chicken. Luke's pet is a turkey. Emma's pet is a goose. Adam's pet is a wolf. The chicken's locker is 3. The turkey's locker is 1. The goose's locker is 5. The lion's locker is 7. The wolf's locker is 9.",
+   "people": [
+    "Sam",
+    "Mark",
+    "Luke",
+    "Emma",
+    "Adam"
+   ],
+   "pets": [
+    "lion",
+    "chicken",
+    "turkey",
+    "goose",
+    "wolf"
+   ],
+   "lockers": {
+    "wolf": 9,
+    "chicken": 1,
+    "turkey": 3,
+    "lion": 7,
+    "goose": 5
+   },
+   "cue": "Adam",
+   "question": "Which locker belongs to Adam's pet?",
+   "cf_context": "Sam's pet is a lion. Mark's pet is a wolf. Luke's pet is a turkey. Emma's pet is a goose. Adam's pet is a chicken. The chicken's locker is 1. The turkey's locker is 3. The goose's locker is 5. The lion's locker is 7. The wolf's locker is 9.",
+   "cf_question": "Which locker belongs to Adam's pet?",
+   "answer": "9",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Adam's pet?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the wolf?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0032",
+   "family": "BL",
+   "scene": "S-0032",
+   "bridge": "horse",
+   "cf_bridge": "chicken",
+   "third": "mouse",
+   "context": "Zoe's pet is a goose. Olivia's pet is a wolf. Sean's pet is a mouse. Dan's pet is a horse. Will's pet is a chicken. The chicken's locker is 9. The goose's locker is 1. The horse's locker is 7. The mouse's locker is 5. The wolf's locker is 3.",
+   "off_context": "Zoe's pet is a goose. Olivia's pet is a wolf. Sean's pet is a mouse. Dan's pet is a horse. Will's pet is a chicken. The chicken's locker is 5. The goose's locker is 1. The horse's locker is 7. The mouse's locker is 9. The wolf's locker is 3.",
+   "people": [
+    "Zoe",
+    "Olivia",
+    "Sean",
+    "Dan",
+    "Will"
+   ],
+   "pets": [
+    "goose",
+    "wolf",
+    "mouse",
+    "horse",
+    "chicken"
+   ],
+   "lockers": {
+    "horse": 7,
+    "chicken": 9,
+    "mouse": 5,
+    "goose": 1,
+    "wolf": 3
+   },
+   "cue": "Dan",
+   "question": "Which locker belongs to Dan's pet?",
+   "cf_context": "Zoe's pet is a goose. Olivia's pet is a wolf. Sean's pet is a mouse. Dan's pet is a chicken. Will's pet is a horse. The chicken's locker is 9. The goose's locker is 1. The horse's locker is 7. The mouse's locker is 5. The wolf's locker is 3.",
+   "cf_question": "Which locker belongs to Dan's pet?",
+   "answer": "7",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Dan's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the horse?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0033",
+   "family": "BL",
+   "scene": "S-0033",
+   "bridge": "spider",
+   "cf_bridge": "cow",
+   "third": "duck",
+   "context": "Sam's pet is a cow. Grace's pet is a spider. Eric's pet is a sheep. Henry's pet is a goose. Ruby's pet is a duck. The spider's locker is 3. The sheep's locker is 1. The cow's locker is 7. The goose's locker is 5. The duck's locker is 9.",
+   "off_context": "Sam's pet is a cow. Grace's pet is a spider. Eric's pet is a sheep. Henry's pet is a goose. Ruby's pet is a duck. The spider's locker is 3. The sheep's locker is 1. The cow's locker is 9. The goose's locker is 5. The duck's locker is 7.",
+   "people": [
+    "Sam",
+    "Grace",
+    "Eric",
+    "Henry",
+    "Ruby"
+   ],
+   "pets": [
+    "cow",
+    "spider",
+    "sheep",
+    "goose",
+    "duck"
+   ],
+   "lockers": {
+    "spider": 3,
+    "cow": 7,
+    "duck": 9,
+    "sheep": 1,
+    "goose": 5
+   },
+   "cue": "Grace",
+   "question": "Which locker belongs to Grace's pet?",
+   "cf_context": "Sam's pet is a spider. Grace's pet is a cow. Eric's pet is a sheep. Henry's pet is a goose. Ruby's pet is a duck. The spider's locker is 3. The sheep's locker is 1. The cow's locker is 7. The goose's locker is 5. The duck's locker is 9.",
+   "cf_question": "Which locker belongs to Grace's pet?",
+   "answer": "3",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Grace's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the spider?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0034",
+   "family": "BL",
+   "scene": "S-0034",
+   "bridge": "spider",
+   "cf_bridge": "cat",
+   "third": "chicken",
+   "context": "Eve's pet is a sheep. Tara's pet is a chicken. Ruby's pet is a dog. Frank's pet is a cat. Jack's pet is a spider. The spider's locker is 3. The sheep's locker is 5. The dog's locker is 9. The cat's locker is 1. The chicken's locker is 7.",
+   "off_context": "Eve's pet is a sheep. Tara's pet is a chicken. Ruby's pet is a dog. Frank's pet is a cat. Jack's pet is a spider. The spider's locker is 3. The sheep's locker is 5. The dog's locker is 9. The cat's locker is 7. The chicken's locker is 1.",
+   "people": [
+    "Eve",
+    "Tara",
+    "Ruby",
+    "Frank",
+    "Jack"
+   ],
+   "pets": [
+    "sheep",
+    "chicken",
+    "dog",
+    "cat",
+    "spider"
+   ],
+   "lockers": {
+    "spider": 3,
+    "cat": 1,
+    "chicken": 7,
+    "sheep": 5,
+    "dog": 9
+   },
+   "cue": "Jack",
+   "question": "Which locker belongs to Jack's pet?",
+   "cf_context": "Eve's pet is a sheep. Tara's pet is a chicken. Ruby's pet is a dog. Frank's pet is a spider. Jack's pet is a cat. The spider's locker is 3. The sheep's locker is 5. The dog's locker is 9. The cat's locker is 1. The chicken's locker is 7.",
+   "cf_question": "Which locker belongs to Jack's pet?",
+   "answer": "3",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Jack's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the spider?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0035",
+   "family": "BL",
+   "scene": "S-0035",
+   "bridge": "duck",
+   "cf_bridge": "mouse",
+   "third": "turkey",
+   "context": "Nina's pet is a duck. Mark's pet is a frog. Victor's pet is a mouse. Eva's pet is a goose. Ivan's pet is a turkey. The frog's locker is 5. The duck's locker is 9. The mouse's locker is 1. The goose's locker is 3. The turkey's locker is 7.",
+   "off_context": "Nina's pet is a duck. Mark's pet is a frog. Victor's pet is a mouse. Eva's pet is a goose. Ivan's pet is a turkey. The frog's locker is 5. The duck's locker is 9. The mouse's locker is 7. The goose's locker is 3. The turkey's locker is 1.",
+   "people": [
+    "Nina",
+    "Mark",
+    "Victor",
+    "Eva",
+    "Ivan"
+   ],
+   "pets": [
+    "duck",
+    "frog",
+    "mouse",
+    "goose",
+    "turkey"
+   ],
+   "lockers": {
+    "duck": 9,
+    "mouse": 1,
+    "turkey": 7,
+    "goose": 3,
+    "frog": 5
+   },
+   "cue": "Nina",
+   "question": "Which locker belongs to Nina's pet?",
+   "cf_context": "Nina's pet is a mouse. Mark's pet is a frog. Victor's pet is a duck. Eva's pet is a goose. Ivan's pet is a turkey. The frog's locker is 5. The duck's locker is 9. The mouse's locker is 1. The goose's locker is 3. The turkey's locker is 7.",
+   "cf_question": "Which locker belongs to Nina's pet?",
+   "answer": "9",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Nina's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the duck?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0036",
+   "family": "BL",
+   "scene": "S-0036",
+   "bridge": "bee",
+   "cf_bridge": "sheep",
+   "third": "cow",
+   "context": "Will's pet is a cat. Eva's pet is a goose. Jack's pet is a cow. Carl's pet is a bee. Noah's pet is a sheep. The cow's locker is 1. The cat's locker is 5. The bee's locker is 9. The sheep's locker is 7. The goose's locker is 3.",
+   "off_context": "Will's pet is a cat. Eva's pet is a goose. Jack's pet is a cow. Carl's pet is a bee. Noah's pet is a sheep. The cow's locker is 7. The cat's locker is 5. The bee's locker is 9. The sheep's locker is 1. The goose's locker is 3.",
+   "people": [
+    "Will",
+    "Eva",
+    "Jack",
+    "Carl",
+    "Noah"
+   ],
+   "pets": [
+    "cat",
+    "goose",
+    "cow",
+    "bee",
+    "sheep"
+   ],
+   "lockers": {
+    "bee": 9,
+    "sheep": 7,
+    "cow": 1,
+    "goose": 3,
+    "cat": 5
+   },
+   "cue": "Carl",
+   "question": "Which locker belongs to Carl's pet?",
+   "cf_context": "Will's pet is a cat. Eva's pet is a goose. Jack's pet is a cow. Carl's pet is a sheep. Noah's pet is a bee. The cow's locker is 1. The cat's locker is 5. The bee's locker is 9. The sheep's locker is 7. The goose's locker is 3.",
+   "cf_question": "Which locker belongs to Carl's pet?",
+   "answer": "9",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Carl's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the bee?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0037",
+   "family": "BL",
+   "scene": "S-0037",
+   "bridge": "horse",
+   "cf_bridge": "spider",
+   "third": "pig",
+   "context": "Maria's pet is a duck. Adam's pet is a cat. Eve's pet is a pig. Diana's pet is a horse. Amy's pet is a spider. The spider's locker is 7. The cat's locker is 3. The duck's locker is 9. The pig's locker is 5. The horse's locker is 1.",
+   "off_context": "Maria's pet is a duck. Adam's pet is a cat. Eve's pet is a pig. Diana's pet is a horse. Amy's pet is a spider. The spider's locker is 5. The cat's locker is 3. The duck's locker is 9. The pig's locker is 7. The horse's locker is 1.",
+   "people": [
+    "Maria",
+    "Adam",
+    "Eve",
+    "Diana",
+    "Amy"
+   ],
+   "pets": [
+    "duck",
+    "cat",
+    "pig",
+    "horse",
+    "spider"
+   ],
+   "lockers": {
+    "horse": 1,
+    "spider": 7,
+    "pig": 5,
+    "duck": 9,
+    "cat": 3
+   },
+   "cue": "Diana",
+   "question": "Which locker belongs to Diana's pet?",
+   "cf_context": "Maria's pet is a duck. Adam's pet is a cat. Eve's pet is a pig. Diana's pet is a spider. Amy's pet is a horse. The spider's locker is 7. The cat's locker is 3. The duck's locker is 9. The pig's locker is 5. The horse's locker is 1.",
+   "cf_question": "Which locker belongs to Diana's pet?",
+   "answer": "1",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Diana's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the horse?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0038",
+   "family": "BL",
+   "scene": "S-0038",
+   "bridge": "cow",
+   "cf_bridge": "goose",
+   "third": "spider",
+   "context": "Ruby's pet is a cow. Tom's pet is a goose. Frank's pet is a lion. Ben's pet is a turkey. Dan's pet is a spider. The spider's locker is 7. The goose's locker is 5. The cow's locker is 9. The turkey's locker is 1. The lion's locker is 3.",
+   "off_context": "Ruby's pet is a cow. Tom's pet is a goose. Frank's pet is a lion. Ben's pet is a turkey. Dan's pet is a spider. The spider's locker is 5. The goose's locker is 7. The cow's locker is 9. The turkey's locker is 1. The lion's locker is 3.",
+   "people": [
+    "Ruby",
+    "Tom",
+    "Frank",
+    "Ben",
+    "Dan"
+   ],
+   "pets": [
+    "cow",
+    "goose",
+    "lion",
+    "turkey",
+    "spider"
+   ],
+   "lockers": {
+    "cow": 9,
+    "goose": 5,
+    "spider": 7,
+    "lion": 3,
+    "turkey": 1
+   },
+   "cue": "Ruby",
+   "question": "Which locker belongs to Ruby's pet?",
+   "cf_context": "Ruby's pet is a goose. Tom's pet is a cow. Frank's pet is a lion. Ben's pet is a turkey. Dan's pet is a spider. The spider's locker is 7. The goose's locker is 5. The cow's locker is 9. The turkey's locker is 1. The lion's locker is 3.",
+   "cf_question": "Which locker belongs to Ruby's pet?",
+   "answer": "9",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Ruby's pet?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the cow?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0039",
+   "family": "BL",
+   "scene": "S-0039",
+   "bridge": "chicken",
+   "cf_bridge": "pig",
+   "third": "dog",
+   "context": "Luke's pet is a duck. Iris's pet is a dog. Olivia's pet is a pig. Noah's pet is a chicken. Ella's pet is a turkey. The duck's locker is 7. The chicken's locker is 1. The dog's locker is 3. The pig's locker is 5. The turkey's locker is 9.",
+   "off_context": "Luke's pet is a duck. Iris's pet is a dog. Olivia's pet is a pig. Noah's pet is a chicken. Ella's pet is a turkey. The duck's locker is 7. The chicken's locker is 1. The dog's locker is 5. The pig's locker is 3. The turkey's locker is 9.",
+   "people": [
+    "Luke",
+    "Iris",
+    "Olivia",
+    "Noah",
+    "Ella"
+   ],
+   "pets": [
+    "duck",
+    "dog",
+    "pig",
+    "chicken",
+    "turkey"
+   ],
+   "lockers": {
+    "chicken": 1,
+    "pig": 5,
+    "dog": 3,
+    "turkey": 9,
+    "duck": 7
+   },
+   "cue": "Noah",
+   "question": "Which locker belongs to Noah's pet?",
+   "cf_context": "Luke's pet is a duck. Iris's pet is a dog. Olivia's pet is a chicken. Noah's pet is a pig. Ella's pet is a turkey. The duck's locker is 7. The chicken's locker is 1. The dog's locker is 3. The pig's locker is 5. The turkey's locker is 9.",
+   "cf_question": "Which locker belongs to Noah's pet?",
+   "answer": "1",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Noah's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0040",
+   "family": "BL",
+   "scene": "S-0040",
+   "bridge": "turkey",
+   "cf_bridge": "spider",
+   "third": "pig",
+   "context": "Mia's pet is a dog. Clara's pet is a pig. Ryan's pet is a spider. Beth's pet is a turkey. Dan's pet is a goose. The turkey's locker is 1. The pig's locker is 7. The spider's locker is 9. The dog's locker is 3. The goose's locker is 5.",
+   "off_context": "Mia's pet is a dog. Clara's pet is a pig. Ryan's pet is a spider. Beth's pet is a turkey. Dan's pet is a goose. The turkey's locker is 1. The pig's locker is 9. The spider's locker is 7. The dog's locker is 3. The goose's locker is 5.",
+   "people": [
+    "Mia",
+    "Clara",
+    "Ryan",
+    "Beth",
+    "Dan"
+   ],
+   "pets": [
+    "dog",
+    "pig",
+    "spider",
+    "turkey",
+    "goose"
+   ],
+   "lockers": {
+    "turkey": 1,
+    "spider": 9,
+    "pig": 7,
+    "goose": 5,
+    "dog": 3
+   },
+   "cue": "Beth",
+   "question": "Which locker belongs to Beth's pet?",
+   "cf_context": "Mia's pet is a dog. Clara's pet is a pig. Ryan's pet is a turkey. Beth's pet is a spider. Dan's pet is a goose. The turkey's locker is 1. The pig's locker is 7. The spider's locker is 9. The dog's locker is 3. The goose's locker is 5.",
+   "cf_question": "Which locker belongs to Beth's pet?",
+   "answer": "1",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Beth's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the turkey?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0041",
+   "family": "BL",
+   "scene": "S-0041",
+   "bridge": "bee",
+   "cf_bridge": "pig",
+   "third": "horse",
+   "context": "Lucy's pet is a cat. Kate's pet is a bee. Mia's pet is a horse. Diana's pet is a pig. Fiona's pet is a lion. The lion's locker is 7. The bee's locker is 5. The pig's locker is 1. The cat's locker is 9. The horse's locker is 3.",
+   "off_context": "Lucy's pet is a cat. Kate's pet is a bee. Mia's pet is a horse. Diana's pet is a pig. Fiona's pet is a lion. The lion's locker is 7. The bee's locker is 5. The pig's locker is 3. The cat's locker is 9. The horse's locker is 1.",
+   "people": [
+    "Lucy",
+    "Kate",
+    "Mia",
+    "Diana",
+    "Fiona"
+   ],
+   "pets": [
+    "cat",
+    "bee",
+    "horse",
+    "pig",
+    "lion"
+   ],
+   "lockers": {
+    "bee": 5,
+    "pig": 1,
+    "horse": 3,
+    "cat": 9,
+    "lion": 7
+   },
+   "cue": "Kate",
+   "question": "Which locker belongs to Kate's pet?",
+   "cf_context": "Lucy's pet is a cat. Kate's pet is a pig. Mia's pet is a horse. Diana's pet is a bee. Fiona's pet is a lion. The lion's locker is 7. The bee's locker is 5. The pig's locker is 1. The cat's locker is 9. The horse's locker is 3.",
+   "cf_question": "Which locker belongs to Kate's pet?",
+   "answer": "5",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Kate's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the bee?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0042",
+   "family": "BL",
+   "scene": "S-0042",
+   "bridge": "mouse",
+   "cf_bridge": "chicken",
+   "third": "horse",
+   "context": "Clara's pet is a horse. Anna's pet is a duck. Beth's pet is a pig. Oscar's pet is a chicken. Vera's pet is a mouse. The horse's locker is 9. The chicken's locker is 3. The duck's locker is 7. The pig's locker is 1. The mouse's locker is 5.",
+   "off_context": "Clara's pet is a horse. Anna's pet is a duck. Beth's pet is a pig. Oscar's pet is a chicken. Vera's pet is a mouse. The horse's locker is 3. The chicken's locker is 9. The duck's locker is 7. The pig's locker is 1. The mouse's locker is 5.",
+   "people": [
+    "Clara",
+    "Anna",
+    "Beth",
+    "Oscar",
+    "Vera"
+   ],
+   "pets": [
+    "horse",
+    "duck",
+    "pig",
+    "chicken",
+    "mouse"
+   ],
+   "lockers": {
+    "mouse": 5,
+    "chicken": 3,
+    "horse": 9,
+    "pig": 1,
+    "duck": 7
+   },
+   "cue": "Vera",
+   "question": "Which locker belongs to Vera's pet?",
+   "cf_context": "Clara's pet is a horse. Anna's pet is a duck. Beth's pet is a pig. Oscar's pet is a mouse. Vera's pet is a chicken. The horse's locker is 9. The chicken's locker is 3. The duck's locker is 7. The pig's locker is 1. The mouse's locker is 5.",
+   "cf_question": "Which locker belongs to Vera's pet?",
+   "answer": "5",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Vera's pet?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the mouse?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0043",
+   "family": "BL",
+   "scene": "S-0043",
+   "bridge": "bee",
+   "cf_bridge": "spider",
+   "third": "lion",
+   "context": "Sara's pet is a sheep. Ben's pet is a bee. Diana's pet is a dog. Nina's pet is a spider. Vera's pet is a lion. The lion's locker is 5. The sheep's locker is 9. The spider's locker is 3. The dog's locker is 7. The bee's locker is 1.",
+   "off_context": "Sara's pet is a sheep. Ben's pet is a bee. Diana's pet is a dog. Nina's pet is a spider. Vera's pet is a lion. The lion's locker is 3. The sheep's locker is 9. The spider's locker is 5. The dog's locker is 7. The bee's locker is 1.",
+   "people": [
+    "Sara",
+    "Ben",
+    "Diana",
+    "Nina",
+    "Vera"
+   ],
+   "pets": [
+    "sheep",
+    "bee",
+    "dog",
+    "spider",
+    "lion"
+   ],
+   "lockers": {
+    "bee": 1,
+    "spider": 3,
+    "lion": 5,
+    "sheep": 9,
+    "dog": 7
+   },
+   "cue": "Ben",
+   "question": "Which locker belongs to Ben's pet?",
+   "cf_context": "Sara's pet is a sheep. Ben's pet is a spider. Diana's pet is a dog. Nina's pet is a bee. Vera's pet is a lion. The lion's locker is 5. The sheep's locker is 9. The spider's locker is 3. The dog's locker is 7. The bee's locker is 1.",
+   "cf_question": "Which locker belongs to Ben's pet?",
+   "answer": "1",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Ben's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the bee?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0044",
+   "family": "BL",
+   "scene": "S-0044",
+   "bridge": "horse",
+   "cf_bridge": "turkey",
+   "third": "wolf",
+   "context": "Sara's pet is a bee. Sean's pet is a lion. Eric's pet is a wolf. Clara's pet is a turkey. Max's pet is a horse. The horse's locker is 9. The bee's locker is 7. The turkey's locker is 5. The lion's locker is 1. The wolf's locker is 3.",
+   "off_context": "Sara's pet is a bee. Sean's pet is a lion. Eric's pet is a wolf. Clara's pet is a turkey. Max's pet is a horse. The horse's locker is 9. The bee's locker is 7. The turkey's locker is 3. The lion's locker is 1. The wolf's locker is 5.",
+   "people": [
+    "Sara",
+    "Sean",
+    "Eric",
+    "Clara",
+    "Max"
+   ],
+   "pets": [
+    "bee",
+    "lion",
+    "wolf",
+    "turkey",
+    "horse"
+   ],
+   "lockers": {
+    "horse": 9,
+    "turkey": 5,
+    "wolf": 3,
+    "bee": 7,
+    "lion": 1
+   },
+   "cue": "Max",
+   "question": "Which locker belongs to Max's pet?",
+   "cf_context": "Sara's pet is a bee. Sean's pet is a lion. Eric's pet is a wolf. Clara's pet is a horse. Max's pet is a turkey. The horse's locker is 9. The bee's locker is 7. The turkey's locker is 5. The lion's locker is 1. The wolf's locker is 3.",
+   "cf_question": "Which locker belongs to Max's pet?",
+   "answer": "9",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Max's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the horse?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0045",
+   "family": "BL",
+   "scene": "S-0045",
+   "bridge": "cat",
+   "cf_bridge": "duck",
+   "third": "bee",
+   "context": "Clara's pet is a horse. Leo's pet is a cat. Eva's pet is a duck. Jack's pet is a bee. Lucy's pet is a wolf. The wolf's locker is 7. The cat's locker is 5. The horse's locker is 1. The duck's locker is 3. The bee's locker is 9.",
+   "off_context": "Clara's pet is a horse. Leo's pet is a cat. Eva's pet is a duck. Jack's pet is a bee. Lucy's pet is a wolf. The wolf's locker is 7. The cat's locker is 5. The horse's locker is 1. The duck's locker is 9. The bee's locker is 3.",
+   "people": [
+    "Clara",
+    "Leo",
+    "Eva",
+    "Jack",
+    "Lucy"
+   ],
+   "pets": [
+    "horse",
+    "cat",
+    "duck",
+    "bee",
+    "wolf"
+   ],
+   "lockers": {
+    "cat": 5,
+    "duck": 3,
+    "bee": 9,
+    "wolf": 7,
+    "horse": 1
+   },
+   "cue": "Leo",
+   "question": "Which locker belongs to Leo's pet?",
+   "cf_context": "Clara's pet is a horse. Leo's pet is a duck. Eva's pet is a cat. Jack's pet is a bee. Lucy's pet is a wolf. The wolf's locker is 7. The cat's locker is 5. The horse's locker is 1. The duck's locker is 3. The bee's locker is 9.",
+   "cf_question": "Which locker belongs to Leo's pet?",
+   "answer": "5",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Leo's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the cat?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0046",
+   "family": "BL",
+   "scene": "S-0046",
+   "bridge": "turkey",
+   "cf_bridge": "pig",
+   "third": "horse",
+   "context": "Rose's pet is a pig. Grace's pet is a dog. Kyle's pet is a turkey. Ruby's pet is a horse. Finn's pet is a cat. The pig's locker is 9. The dog's locker is 3. The cat's locker is 5. The turkey's locker is 7. The horse's locker is 1.",
+   "off_context": "Rose's pet is a pig. Grace's pet is a dog. Kyle's pet is a turkey. Ruby's pet is a horse. Finn's pet is a cat. The pig's locker is 1. The dog's locker is 3. The cat's locker is 5. The turkey's locker is 7. The horse's locker is 9.",
+   "people": [
+    "Rose",
+    "Grace",
+    "Kyle",
+    "Ruby",
+    "Finn"
+   ],
+   "pets": [
+    "pig",
+    "dog",
+    "turkey",
+    "horse",
+    "cat"
+   ],
+   "lockers": {
+    "turkey": 7,
+    "pig": 9,
+    "horse": 1,
+    "cat": 5,
+    "dog": 3
+   },
+   "cue": "Kyle",
+   "question": "Which locker belongs to Kyle's pet?",
+   "cf_context": "Rose's pet is a turkey. Grace's pet is a dog. Kyle's pet is a pig. Ruby's pet is a horse. Finn's pet is a cat. The pig's locker is 9. The dog's locker is 3. The cat's locker is 5. The turkey's locker is 7. The horse's locker is 1.",
+   "cf_question": "Which locker belongs to Kyle's pet?",
+   "answer": "7",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Kyle's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the turkey?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0047",
+   "family": "BL",
+   "scene": "S-0047",
+   "bridge": "bee",
+   "cf_bridge": "frog",
+   "third": "sheep",
+   "context": "Jack's pet is a frog. Ivan's pet is a bee. Rose's pet is a sheep. Iris's pet is a mouse. Victor's pet is a pig. The sheep's locker is 3. The frog's locker is 7. The bee's locker is 9. The pig's locker is 1. The mouse's locker is 5.",
+   "off_context": "Jack's pet is a frog. Ivan's pet is a bee. Rose's pet is a sheep. Iris's pet is a mouse. Victor's pet is a pig. The sheep's locker is 7. The frog's locker is 3. The bee's locker is 9. The pig's locker is 1. The mouse's locker is 5.",
+   "people": [
+    "Jack",
+    "Ivan",
+    "Rose",
+    "Iris",
+    "Victor"
+   ],
+   "pets": [
+    "frog",
+    "bee",
+    "sheep",
+    "mouse",
+    "pig"
+   ],
+   "lockers": {
+    "bee": 9,
+    "frog": 7,
+    "sheep": 3,
+    "pig": 1,
+    "mouse": 5
+   },
+   "cue": "Ivan",
+   "question": "Which locker belongs to Ivan's pet?",
+   "cf_context": "Jack's pet is a bee. Ivan's pet is a frog. Rose's pet is a sheep. Iris's pet is a mouse. Victor's pet is a pig. The sheep's locker is 3. The frog's locker is 7. The bee's locker is 9. The pig's locker is 1. The mouse's locker is 5.",
+   "cf_question": "Which locker belongs to Ivan's pet?",
+   "answer": "9",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Ivan's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the bee?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0048",
+   "family": "BL",
+   "scene": "S-0048",
+   "bridge": "duck",
+   "cf_bridge": "sheep",
+   "third": "mouse",
+   "context": "Diana's pet is a duck. Max's pet is a sheep. Beth's pet is a wolf. Oscar's pet is a bee. Amy's pet is a mouse. The duck's locker is 5. The wolf's locker is 9. The bee's locker is 1. The sheep's locker is 3. The mouse's locker is 7.",
+   "off_context": "Diana's pet is a duck. Max's pet is a sheep. Beth's pet is a wolf. Oscar's pet is a bee. Amy's pet is a mouse. The duck's locker is 5. The wolf's locker is 9. The bee's locker is 1. The sheep's locker is 7. The mouse's locker is 3.",
+   "people": [
+    "Diana",
+    "Max",
+    "Beth",
+    "Oscar",
+    "Amy"
+   ],
+   "pets": [
+    "duck",
+    "sheep",
+    "wolf",
+    "bee",
+    "mouse"
+   ],
+   "lockers": {
+    "duck": 5,
+    "sheep": 3,
+    "mouse": 7,
+    "bee": 1,
+    "wolf": 9
+   },
+   "cue": "Diana",
+   "question": "Which locker belongs to Diana's pet?",
+   "cf_context": "Diana's pet is a sheep. Max's pet is a duck. Beth's pet is a wolf. Oscar's pet is a bee. Amy's pet is a mouse. The duck's locker is 5. The wolf's locker is 9. The bee's locker is 1. The sheep's locker is 3. The mouse's locker is 7.",
+   "cf_question": "Which locker belongs to Diana's pet?",
+   "answer": "5",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Diana's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the duck?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0049",
+   "family": "BL",
+   "scene": "S-0049",
+   "bridge": "chicken",
+   "cf_bridge": "dog",
+   "third": "duck",
+   "context": "Finn's pet is a wolf. Eric's pet is a chicken. Fiona's pet is a duck. Dan's pet is a lion. Adam's pet is a dog. The chicken's locker is 9. The duck's locker is 3. The wolf's locker is 7. The dog's locker is 5. The lion's locker is 1.",
+   "off_context": "Finn's pet is a wolf. Eric's pet is a chicken. Fiona's pet is a duck. Dan's pet is a lion. Adam's pet is a dog. The chicken's locker is 9. The duck's locker is 5. The wolf's locker is 7. The dog's locker is 3. The lion's locker is 1.",
+   "people": [
+    "Finn",
+    "Eric",
+    "Fiona",
+    "Dan",
+    "Adam"
+   ],
+   "pets": [
+    "wolf",
+    "chicken",
+    "duck",
+    "lion",
+    "dog"
+   ],
+   "lockers": {
+    "chicken": 9,
+    "dog": 5,
+    "duck": 3,
+    "wolf": 7,
+    "lion": 1
+   },
+   "cue": "Eric",
+   "question": "Which locker belongs to Eric's pet?",
+   "cf_context": "Finn's pet is a wolf. Eric's pet is a dog. Fiona's pet is a duck. Dan's pet is a lion. Adam's pet is a chicken. The chicken's locker is 9. The duck's locker is 3. The wolf's locker is 7. The dog's locker is 5. The lion's locker is 1.",
+   "cf_question": "Which locker belongs to Eric's pet?",
+   "answer": "9",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Eric's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0050",
+   "family": "BL",
+   "scene": "S-0050",
+   "bridge": "bee",
+   "cf_bridge": "chicken",
+   "third": "pig",
+   "context": "Ben's pet is a pig. Eric's pet is a bee. Oscar's pet is a frog. Nina's pet is a lion. Alice's pet is a chicken. The chicken's locker is 1. The frog's locker is 9. The pig's locker is 7. The bee's locker is 3. The lion's locker is 5.",
+   "off_context": "Ben's pet is a pig. Eric's pet is a bee. Oscar's pet is a frog. Nina's pet is a lion. Alice's pet is a chicken. The chicken's locker is 7. The frog's locker is 9. The pig's locker is 1. The bee's locker is 3. The lion's locker is 5.",
+   "people": [
+    "Ben",
+    "Eric",
+    "Oscar",
+    "Nina",
+    "Alice"
+   ],
+   "pets": [
+    "pig",
+    "bee",
+    "frog",
+    "lion",
+    "chicken"
+   ],
+   "lockers": {
+    "bee": 3,
+    "chicken": 1,
+    "pig": 7,
+    "frog": 9,
+    "lion": 5
+   },
+   "cue": "Eric",
+   "question": "Which locker belongs to Eric's pet?",
+   "cf_context": "Ben's pet is a pig. Eric's pet is a chicken. Oscar's pet is a frog. Nina's pet is a lion. Alice's pet is a bee. The chicken's locker is 1. The frog's locker is 9. The pig's locker is 7. The bee's locker is 3. The lion's locker is 5.",
+   "cf_question": "Which locker belongs to Eric's pet?",
+   "answer": "3",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Eric's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the bee?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0051",
+   "family": "BL",
+   "scene": "S-0051",
+   "bridge": "duck",
+   "cf_bridge": "wolf",
+   "third": "lion",
+   "context": "Vera's pet is a duck. Mia's pet is a dog. Rose's pet is a lion. Alice's pet is a pig. Dan's pet is a wolf. The dog's locker is 3. The pig's locker is 7. The wolf's locker is 9. The lion's locker is 5. The duck's locker is 1.",
+   "off_context": "Vera's pet is a duck. Mia's pet is a dog. Rose's pet is a lion. Alice's pet is a pig. Dan's pet is a wolf. The dog's locker is 3. The pig's locker is 7. The wolf's locker is 5. The lion's locker is 9. The duck's locker is 1.",
+   "people": [
+    "Vera",
+    "Mia",
+    "Rose",
+    "Alice",
+    "Dan"
+   ],
+   "pets": [
+    "duck",
+    "dog",
+    "lion",
+    "pig",
+    "wolf"
+   ],
+   "lockers": {
+    "duck": 1,
+    "wolf": 9,
+    "lion": 5,
+    "dog": 3,
+    "pig": 7
+   },
+   "cue": "Vera",
+   "question": "Which locker belongs to Vera's pet?",
+   "cf_context": "Vera's pet is a wolf. Mia's pet is a dog. Rose's pet is a lion. Alice's pet is a pig. Dan's pet is a duck. The dog's locker is 3. The pig's locker is 7. The wolf's locker is 9. The lion's locker is 5. The duck's locker is 1.",
+   "cf_question": "Which locker belongs to Vera's pet?",
+   "answer": "1",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Vera's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the duck?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0052",
+   "family": "BL",
+   "scene": "S-0052",
+   "bridge": "turkey",
+   "cf_bridge": "cow",
+   "third": "chicken",
+   "context": "David's pet is a turkey. Hugo's pet is a pig. Ryan's pet is a cow. Laura's pet is a chicken. Sean's pet is a horse. The cow's locker is 1. The horse's locker is 5. The chicken's locker is 9. The turkey's locker is 3. The pig's locker is 7.",
+   "off_context": "David's pet is a turkey. Hugo's pet is a pig. Ryan's pet is a cow. Laura's pet is a chicken. Sean's pet is a horse. The cow's locker is 9. The horse's locker is 5. The chicken's locker is 1. The turkey's locker is 3. The pig's locker is 7.",
+   "people": [
+    "David",
+    "Hugo",
+    "Ryan",
+    "Laura",
+    "Sean"
+   ],
+   "pets": [
+    "turkey",
+    "pig",
+    "cow",
+    "chicken",
+    "horse"
+   ],
+   "lockers": {
+    "turkey": 3,
+    "cow": 1,
+    "chicken": 9,
+    "horse": 5,
+    "pig": 7
+   },
+   "cue": "David",
+   "question": "Which locker belongs to David's pet?",
+   "cf_context": "David's pet is a cow. Hugo's pet is a pig. Ryan's pet is a turkey. Laura's pet is a chicken. Sean's pet is a horse. The cow's locker is 1. The horse's locker is 5. The chicken's locker is 9. The turkey's locker is 3. The pig's locker is 7.",
+   "cf_question": "Which locker belongs to David's pet?",
+   "answer": "3",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is David's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the turkey?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0053",
+   "family": "BL",
+   "scene": "S-0053",
+   "bridge": "cat",
+   "cf_bridge": "chicken",
+   "third": "goose",
+   "context": "Sara's pet is a goose. Kyle's pet is a cat. Mark's pet is a turkey. Tara's pet is a horse. Laura's pet is a chicken. The turkey's locker is 5. The chicken's locker is 3. The goose's locker is 9. The horse's locker is 1. The cat's locker is 7.",
+   "off_context": "Sara's pet is a goose. Kyle's pet is a cat. Mark's pet is a turkey. Tara's pet is a horse. Laura's pet is a chicken. The turkey's locker is 5. The chicken's locker is 9. The goose's locker is 3. The horse's locker is 1. The cat's locker is 7.",
+   "people": [
+    "Sara",
+    "Kyle",
+    "Mark",
+    "Tara",
+    "Laura"
+   ],
+   "pets": [
+    "goose",
+    "cat",
+    "turkey",
+    "horse",
+    "chicken"
+   ],
+   "lockers": {
+    "cat": 7,
+    "chicken": 3,
+    "goose": 9,
+    "horse": 1,
+    "turkey": 5
+   },
+   "cue": "Kyle",
+   "question": "Which locker belongs to Kyle's pet?",
+   "cf_context": "Sara's pet is a goose. Kyle's pet is a chicken. Mark's pet is a turkey. Tara's pet is a horse. Laura's pet is a cat. The turkey's locker is 5. The chicken's locker is 3. The goose's locker is 9. The horse's locker is 1. The cat's locker is 7.",
+   "cf_question": "Which locker belongs to Kyle's pet?",
+   "answer": "7",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Kyle's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the cat?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0054",
+   "family": "BL",
+   "scene": "S-0054",
+   "bridge": "chicken",
+   "cf_bridge": "wolf",
+   "third": "duck",
+   "context": "Kyle's pet is a duck. Eve's pet is a dog. Sam's pet is a turkey. Frank's pet is a chicken. Mark's pet is a wolf. The duck's locker is 9. The wolf's locker is 3. The chicken's locker is 7. The dog's locker is 1. The turkey's locker is 5.",
+   "off_context": "Kyle's pet is a duck. Eve's pet is a dog. Sam's pet is a turkey. Frank's pet is a chicken. Mark's pet is a wolf. The duck's locker is 3. The wolf's locker is 9. The chicken's locker is 7. The dog's locker is 1. The turkey's locker is 5.",
+   "people": [
+    "Kyle",
+    "Eve",
+    "Sam",
+    "Frank",
+    "Mark"
+   ],
+   "pets": [
+    "duck",
+    "dog",
+    "turkey",
+    "chicken",
+    "wolf"
+   ],
+   "lockers": {
+    "chicken": 7,
+    "wolf": 3,
+    "duck": 9,
+    "dog": 1,
+    "turkey": 5
+   },
+   "cue": "Frank",
+   "question": "Which locker belongs to Frank's pet?",
+   "cf_context": "Kyle's pet is a duck. Eve's pet is a dog. Sam's pet is a turkey. Frank's pet is a wolf. Mark's pet is a chicken. The duck's locker is 9. The wolf's locker is 3. The chicken's locker is 7. The dog's locker is 1. The turkey's locker is 5.",
+   "cf_question": "Which locker belongs to Frank's pet?",
+   "answer": "7",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Frank's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0055",
+   "family": "BL",
+   "scene": "S-0055",
+   "bridge": "horse",
+   "cf_bridge": "chicken",
+   "third": "sheep",
+   "context": "Julia's pet is a chicken. Peter's pet is a sheep. Grace's pet is a spider. Fiona's pet is a duck. Sara's pet is a horse. The horse's locker is 5. The chicken's locker is 3. The duck's locker is 9. The spider's locker is 7. The sheep's locker is 1.",
+   "off_context": "Julia's pet is a chicken. Peter's pet is a sheep. Grace's pet is a spider. Fiona's pet is a duck. Sara's pet is a horse. The horse's locker is 5. The chicken's locker is 1. The duck's locker is 9. The spider's locker is 7. The sheep's locker is 3.",
+   "people": [
+    "Julia",
+    "Peter",
+    "Grace",
+    "Fiona",
+    "Sara"
+   ],
+   "pets": [
+    "chicken",
+    "sheep",
+    "spider",
+    "duck",
+    "horse"
+   ],
+   "lockers": {
+    "horse": 5,
+    "chicken": 3,
+    "sheep": 1,
+    "duck": 9,
+    "spider": 7
+   },
+   "cue": "Sara",
+   "question": "Which locker belongs to Sara's pet?",
+   "cf_context": "Julia's pet is a horse. Peter's pet is a sheep. Grace's pet is a spider. Fiona's pet is a duck. Sara's pet is a chicken. The horse's locker is 5. The chicken's locker is 3. The duck's locker is 9. The spider's locker is 7. The sheep's locker is 1.",
+   "cf_question": "Which locker belongs to Sara's pet?",
+   "answer": "5",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Sara's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the horse?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0056",
+   "family": "BL",
+   "scene": "S-0056",
+   "bridge": "cow",
+   "cf_bridge": "spider",
+   "third": "goose",
+   "context": "Ivan's pet is a dog. Eve's pet is a cow. Ivy's pet is a spider. Nina's pet is a duck. Peter's pet is a goose. The spider's locker is 9. The duck's locker is 5. The cow's locker is 3. The goose's locker is 7. The dog's locker is 1.",
+   "off_context": "Ivan's pet is a dog. Eve's pet is a cow. Ivy's pet is a spider. Nina's pet is a duck. Peter's pet is a goose. The spider's locker is 7. The duck's locker is 5. The cow's locker is 3. The goose's locker is 9. The dog's locker is 1.",
+   "people": [
+    "Ivan",
+    "Eve",
+    "Ivy",
+    "Nina",
+    "Peter"
+   ],
+   "pets": [
+    "dog",
+    "cow",
+    "spider",
+    "duck",
+    "goose"
+   ],
+   "lockers": {
+    "cow": 3,
+    "spider": 9,
+    "goose": 7,
+    "duck": 5,
+    "dog": 1
+   },
+   "cue": "Eve",
+   "question": "Which locker belongs to Eve's pet?",
+   "cf_context": "Ivan's pet is a dog. Eve's pet is a spider. Ivy's pet is a cow. Nina's pet is a duck. Peter's pet is a goose. The spider's locker is 9. The duck's locker is 5. The cow's locker is 3. The goose's locker is 7. The dog's locker is 1.",
+   "cf_question": "Which locker belongs to Eve's pet?",
+   "answer": "3",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Eve's pet?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the cow?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0057",
+   "family": "BL",
+   "scene": "S-0057",
+   "bridge": "sheep",
+   "cf_bridge": "bee",
+   "third": "frog",
+   "context": "Owen's pet is a chicken. Carl's pet is a frog. Julia's pet is a bee. Finn's pet is a lion. Nina's pet is a sheep. The sheep's locker is 9. The lion's locker is 7. The frog's locker is 1. The chicken's locker is 5. The bee's locker is 3.",
+   "off_context": "Owen's pet is a chicken. Carl's pet is a frog. Julia's pet is a bee. Finn's pet is a lion. Nina's pet is a sheep. The sheep's locker is 9. The lion's locker is 7. The frog's locker is 3. The chicken's locker is 5. The bee's locker is 1.",
+   "people": [
+    "Owen",
+    "Carl",
+    "Julia",
+    "Finn",
+    "Nina"
+   ],
+   "pets": [
+    "chicken",
+    "frog",
+    "bee",
+    "lion",
+    "sheep"
+   ],
+   "lockers": {
+    "sheep": 9,
+    "bee": 3,
+    "frog": 1,
+    "lion": 7,
+    "chicken": 5
+   },
+   "cue": "Nina",
+   "question": "Which locker belongs to Nina's pet?",
+   "cf_context": "Owen's pet is a chicken. Carl's pet is a frog. Julia's pet is a sheep. Finn's pet is a lion. Nina's pet is a bee. The sheep's locker is 9. The lion's locker is 7. The frog's locker is 1. The chicken's locker is 5. The bee's locker is 3.",
+   "cf_question": "Which locker belongs to Nina's pet?",
+   "answer": "9",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Nina's pet?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the sheep?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0058",
+   "family": "BL",
+   "scene": "S-0058",
+   "bridge": "chicken",
+   "cf_bridge": "frog",
+   "third": "cow",
+   "context": "Henry's pet is a mouse. Zoe's pet is a frog. Iris's pet is a chicken. Olivia's pet is a cow. Mark's pet is a dog. The cow's locker is 7. The chicken's locker is 9. The frog's locker is 5. The mouse's locker is 1. The dog's locker is 3.",
+   "off_context": "Henry's pet is a mouse. Zoe's pet is a frog. Iris's pet is a chicken. Olivia's pet is a cow. Mark's pet is a dog. The cow's locker is 5. The chicken's locker is 9. The frog's locker is 7. The mouse's locker is 1. The dog's locker is 3.",
+   "people": [
+    "Henry",
+    "Zoe",
+    "Iris",
+    "Olivia",
+    "Mark"
+   ],
+   "pets": [
+    "mouse",
+    "frog",
+    "chicken",
+    "cow",
+    "dog"
+   ],
+   "lockers": {
+    "chicken": 9,
+    "frog": 5,
+    "cow": 7,
+    "dog": 3,
+    "mouse": 1
+   },
+   "cue": "Iris",
+   "question": "Which locker belongs to Iris's pet?",
+   "cf_context": "Henry's pet is a mouse. Zoe's pet is a chicken. Iris's pet is a frog. Olivia's pet is a cow. Mark's pet is a dog. The cow's locker is 7. The chicken's locker is 9. The frog's locker is 5. The mouse's locker is 1. The dog's locker is 3.",
+   "cf_question": "Which locker belongs to Iris's pet?",
+   "answer": "9",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Iris's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0059",
+   "family": "BL",
+   "scene": "S-0059",
+   "bridge": "frog",
+   "cf_bridge": "duck",
+   "third": "bee",
+   "context": "Eve's pet is a goose. Vera's pet is a duck. Paul's pet is a bee. Carl's pet is a frog. Eva's pet is a lion. The bee's locker is 9. The frog's locker is 1. The duck's locker is 5. The lion's locker is 7. The goose's locker is 3.",
+   "off_context": "Eve's pet is a goose. Vera's pet is a duck. Paul's pet is a bee. Carl's pet is a frog. Eva's pet is a lion. The bee's locker is 5. The frog's locker is 1. The duck's locker is 9. The lion's locker is 7. The goose's locker is 3.",
+   "people": [
+    "Eve",
+    "Vera",
+    "Paul",
+    "Carl",
+    "Eva"
+   ],
+   "pets": [
+    "goose",
+    "duck",
+    "bee",
+    "frog",
+    "lion"
+   ],
+   "lockers": {
+    "frog": 1,
+    "duck": 5,
+    "bee": 9,
+    "goose": 3,
+    "lion": 7
+   },
+   "cue": "Carl",
+   "question": "Which locker belongs to Carl's pet?",
+   "cf_context": "Eve's pet is a goose. Vera's pet is a frog. Paul's pet is a bee. Carl's pet is a duck. Eva's pet is a lion. The bee's locker is 9. The frog's locker is 1. The duck's locker is 5. The lion's locker is 7. The goose's locker is 3.",
+   "cf_question": "Which locker belongs to Carl's pet?",
+   "answer": "1",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Carl's pet?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the frog?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0060",
+   "family": "BL",
+   "scene": "S-0060",
+   "bridge": "bee",
+   "cf_bridge": "cat",
+   "third": "sheep",
+   "context": "Luke's pet is a chicken. Sean's pet is a sheep. Paul's pet is a cat. Nina's pet is a bee. Leo's pet is a lion. The chicken's locker is 9. The sheep's locker is 5. The lion's locker is 3. The bee's locker is 7. The cat's locker is 1.",
+   "off_context": "Luke's pet is a chicken. Sean's pet is a sheep. Paul's pet is a cat. Nina's pet is a bee. Leo's pet is a lion. The chicken's locker is 9. The sheep's locker is 1. The lion's locker is 3. The bee's locker is 7. The cat's locker is 5.",
+   "people": [
+    "Luke",
+    "Sean",
+    "Paul",
+    "Nina",
+    "Leo"
+   ],
+   "pets": [
+    "chicken",
+    "sheep",
+    "cat",
+    "bee",
+    "lion"
+   ],
+   "lockers": {
+    "bee": 7,
+    "cat": 1,
+    "sheep": 5,
+    "lion": 3,
+    "chicken": 9
+   },
+   "cue": "Nina",
+   "question": "Which locker belongs to Nina's pet?",
+   "cf_context": "Luke's pet is a chicken. Sean's pet is a sheep. Paul's pet is a bee. Nina's pet is a cat. Leo's pet is a lion. The chicken's locker is 9. The sheep's locker is 5. The lion's locker is 3. The bee's locker is 7. The cat's locker is 1.",
+   "cf_question": "Which locker belongs to Nina's pet?",
+   "answer": "7",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Nina's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the bee?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0061",
+   "family": "BL",
+   "scene": "S-0061",
+   "bridge": "cat",
+   "cf_bridge": "spider",
+   "third": "goose",
+   "context": "Maria's pet is a goose. Finn's pet is a chicken. Tom's pet is a cat. Mia's pet is a turkey. Max's pet is a spider. The spider's locker is 7. The goose's locker is 3. The turkey's locker is 1. The chicken's locker is 9. The cat's locker is 5.",
+   "off_context": "Maria's pet is a goose. Finn's pet is a chicken. Tom's pet is a cat. Mia's pet is a turkey. Max's pet is a spider. The spider's locker is 3. The goose's locker is 7. The turkey's locker is 1. The chicken's locker is 9. The cat's locker is 5.",
+   "people": [
+    "Maria",
+    "Finn",
+    "Tom",
+    "Mia",
+    "Max"
+   ],
+   "pets": [
+    "goose",
+    "chicken",
+    "cat",
+    "turkey",
+    "spider"
+   ],
+   "lockers": {
+    "cat": 5,
+    "spider": 7,
+    "goose": 3,
+    "turkey": 1,
+    "chicken": 9
+   },
+   "cue": "Tom",
+   "question": "Which locker belongs to Tom's pet?",
+   "cf_context": "Maria's pet is a goose. Finn's pet is a chicken. Tom's pet is a spider. Mia's pet is a turkey. Max's pet is a cat. The spider's locker is 7. The goose's locker is 3. The turkey's locker is 1. The chicken's locker is 9. The cat's locker is 5.",
+   "cf_question": "Which locker belongs to Tom's pet?",
+   "answer": "5",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Tom's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the cat?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0062",
+   "family": "BL",
+   "scene": "S-0062",
+   "bridge": "spider",
+   "cf_bridge": "cow",
+   "third": "mouse",
+   "context": "Rose's pet is a spider. Kate's pet is a pig. Kyle's pet is a cow. Diana's pet is a mouse. Peter's pet is a goose. The mouse's locker is 9. The pig's locker is 5. The goose's locker is 7. The cow's locker is 3. The spider's locker is 1.",
+   "off_context": "Rose's pet is a spider. Kate's pet is a pig. Kyle's pet is a cow. Diana's pet is a mouse. Peter's pet is a goose. The mouse's locker is 3. The pig's locker is 5. The goose's locker is 7. The cow's locker is 9. The spider's locker is 1.",
+   "people": [
+    "Rose",
+    "Kate",
+    "Kyle",
+    "Diana",
+    "Peter"
+   ],
+   "pets": [
+    "spider",
+    "pig",
+    "cow",
+    "mouse",
+    "goose"
+   ],
+   "lockers": {
+    "spider": 1,
+    "cow": 3,
+    "mouse": 9,
+    "pig": 5,
+    "goose": 7
+   },
+   "cue": "Rose",
+   "question": "Which locker belongs to Rose's pet?",
+   "cf_context": "Rose's pet is a cow. Kate's pet is a pig. Kyle's pet is a spider. Diana's pet is a mouse. Peter's pet is a goose. The mouse's locker is 9. The pig's locker is 5. The goose's locker is 7. The cow's locker is 3. The spider's locker is 1.",
+   "cf_question": "Which locker belongs to Rose's pet?",
+   "answer": "1",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Rose's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the spider?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0063",
+   "family": "BL",
+   "scene": "S-0063",
+   "bridge": "spider",
+   "cf_bridge": "bee",
+   "third": "sheep",
+   "context": "Mia's pet is a sheep. Sara's pet is a chicken. Diana's pet is a cat. Sean's pet is a spider. Anna's pet is a bee. The chicken's locker is 5. The spider's locker is 7. The bee's locker is 1. The sheep's locker is 9. The cat's locker is 3.",
+   "off_context": "Mia's pet is a sheep. Sara's pet is a chicken. Diana's pet is a cat. Sean's pet is a spider. Anna's pet is a bee. The chicken's locker is 5. The spider's locker is 7. The bee's locker is 9. The sheep's locker is 1. The cat's locker is 3.",
+   "people": [
+    "Mia",
+    "Sara",
+    "Diana",
+    "Sean",
+    "Anna"
+   ],
+   "pets": [
+    "sheep",
+    "chicken",
+    "cat",
+    "spider",
+    "bee"
+   ],
+   "lockers": {
+    "spider": 7,
+    "bee": 1,
+    "sheep": 9,
+    "cat": 3,
+    "chicken": 5
+   },
+   "cue": "Sean",
+   "question": "Which locker belongs to Sean's pet?",
+   "cf_context": "Mia's pet is a sheep. Sara's pet is a chicken. Diana's pet is a cat. Sean's pet is a bee. Anna's pet is a spider. The chicken's locker is 5. The spider's locker is 7. The bee's locker is 1. The sheep's locker is 9. The cat's locker is 3.",
+   "cf_question": "Which locker belongs to Sean's pet?",
+   "answer": "7",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Sean's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the spider?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0064",
+   "family": "BL",
+   "scene": "S-0064",
+   "bridge": "cat",
+   "cf_bridge": "chicken",
+   "third": "lion",
+   "context": "David's pet is a cat. Vera's pet is a frog. Emma's pet is a chicken. Zoe's pet is a lion. Diana's pet is a horse. The horse's locker is 5. The chicken's locker is 3. The cat's locker is 7. The frog's locker is 1. The lion's locker is 9.",
+   "off_context": "David's pet is a cat. Vera's pet is a frog. Emma's pet is a chicken. Zoe's pet is a lion. Diana's pet is a horse. The horse's locker is 5. The chicken's locker is 9. The cat's locker is 7. The frog's locker is 1. The lion's locker is 3.",
+   "people": [
+    "David",
+    "Vera",
+    "Emma",
+    "Zoe",
+    "Diana"
+   ],
+   "pets": [
+    "cat",
+    "frog",
+    "chicken",
+    "lion",
+    "horse"
+   ],
+   "lockers": {
+    "cat": 7,
+    "chicken": 3,
+    "lion": 9,
+    "frog": 1,
+    "horse": 5
+   },
+   "cue": "David",
+   "question": "Which locker belongs to David's pet?",
+   "cf_context": "David's pet is a chicken. Vera's pet is a frog. Emma's pet is a cat. Zoe's pet is a lion. Diana's pet is a horse. The horse's locker is 5. The chicken's locker is 3. The cat's locker is 7. The frog's locker is 1. The lion's locker is 9.",
+   "cf_question": "Which locker belongs to David's pet?",
+   "answer": "7",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is David's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the cat?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0065",
+   "family": "BL",
+   "scene": "S-0065",
+   "bridge": "lion",
+   "cf_bridge": "turkey",
+   "third": "pig",
+   "context": "Kate's pet is a dog. Henry's pet is a pig. Hugo's pet is a lion. Peter's pet is a mouse. Tara's pet is a turkey. The dog's locker is 7. The mouse's locker is 3. The pig's locker is 1. The lion's locker is 9. The turkey's locker is 5.",
+   "off_context": "Kate's pet is a dog. Henry's pet is a pig. Hugo's pet is a lion. Peter's pet is a mouse. Tara's pet is a turkey. The dog's locker is 7. The mouse's locker is 3. The pig's locker is 5. The lion's locker is 9. The turkey's locker is 1.",
+   "people": [
+    "Kate",
+    "Henry",
+    "Hugo",
+    "Peter",
+    "Tara"
+   ],
+   "pets": [
+    "dog",
+    "pig",
+    "lion",
+    "mouse",
+    "turkey"
+   ],
+   "lockers": {
+    "lion": 9,
+    "turkey": 5,
+    "pig": 1,
+    "dog": 7,
+    "mouse": 3
+   },
+   "cue": "Hugo",
+   "question": "Which locker belongs to Hugo's pet?",
+   "cf_context": "Kate's pet is a dog. Henry's pet is a pig. Hugo's pet is a turkey. Peter's pet is a mouse. Tara's pet is a lion. The dog's locker is 7. The mouse's locker is 3. The pig's locker is 1. The lion's locker is 9. The turkey's locker is 5.",
+   "cf_question": "Which locker belongs to Hugo's pet?",
+   "answer": "9",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Hugo's pet?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the lion?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0066",
+   "family": "BL",
+   "scene": "S-0066",
+   "bridge": "mouse",
+   "cf_bridge": "goose",
+   "third": "dog",
+   "context": "Tara's pet is a mouse. Liam's pet is a cow. Emma's pet is a dog. Vera's pet is a cat. Owen's pet is a goose. The mouse's locker is 1. The goose's locker is 3. The dog's locker is 5. The cat's locker is 7. The cow's locker is 9.",
+   "off_context": "Tara's pet is a mouse. Liam's pet is a cow. Emma's pet is a dog. Vera's pet is a cat. Owen's pet is a goose. The mouse's locker is 1. The goose's locker is 5. The dog's locker is 3. The cat's locker is 7. The cow's locker is 9.",
+   "people": [
+    "Tara",
+    "Liam",
+    "Emma",
+    "Vera",
+    "Owen"
+   ],
+   "pets": [
+    "mouse",
+    "cow",
+    "dog",
+    "cat",
+    "goose"
+   ],
+   "lockers": {
+    "mouse": 1,
+    "goose": 3,
+    "dog": 5,
+    "cat": 7,
+    "cow": 9
+   },
+   "cue": "Tara",
+   "question": "Which locker belongs to Tara's pet?",
+   "cf_context": "Tara's pet is a goose. Liam's pet is a cow. Emma's pet is a dog. Vera's pet is a cat. Owen's pet is a mouse. The mouse's locker is 1. The goose's locker is 3. The dog's locker is 5. The cat's locker is 7. The cow's locker is 9.",
+   "cf_question": "Which locker belongs to Tara's pet?",
+   "answer": "1",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Tara's pet?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the mouse?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0067",
+   "family": "BL",
+   "scene": "S-0067",
+   "bridge": "sheep",
+   "cf_bridge": "bee",
+   "third": "pig",
+   "context": "Adam's pet is a lion. Liam's pet is a bee. Alice's pet is a sheep. Ella's pet is a pig. Sara's pet is a frog. The bee's locker is 5. The pig's locker is 7. The lion's locker is 3. The frog's locker is 1. The sheep's locker is 9.",
+   "off_context": "Adam's pet is a lion. Liam's pet is a bee. Alice's pet is a sheep. Ella's pet is a pig. Sara's pet is a frog. The bee's locker is 7. The pig's locker is 5. The lion's locker is 3. The frog's locker is 1. The sheep's locker is 9.",
+   "people": [
+    "Adam",
+    "Liam",
+    "Alice",
+    "Ella",
+    "Sara"
+   ],
+   "pets": [
+    "lion",
+    "bee",
+    "sheep",
+    "pig",
+    "frog"
+   ],
+   "lockers": {
+    "sheep": 9,
+    "bee": 5,
+    "pig": 7,
+    "frog": 1,
+    "lion": 3
+   },
+   "cue": "Alice",
+   "question": "Which locker belongs to Alice's pet?",
+   "cf_context": "Adam's pet is a lion. Liam's pet is a sheep. Alice's pet is a bee. Ella's pet is a pig. Sara's pet is a frog. The bee's locker is 5. The pig's locker is 7. The lion's locker is 3. The frog's locker is 1. The sheep's locker is 9.",
+   "cf_question": "Which locker belongs to Alice's pet?",
+   "answer": "9",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Alice's pet?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the sheep?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0068",
+   "family": "BL",
+   "scene": "S-0068",
+   "bridge": "lion",
+   "cf_bridge": "duck",
+   "third": "spider",
+   "context": "Sam's pet is a cat. Clara's pet is a duck. Alice's pet is a lion. Sara's pet is a pig. Mia's pet is a spider. The pig's locker is 3. The cat's locker is 9. The duck's locker is 7. The spider's locker is 1. The lion's locker is 5.",
+   "off_context": "Sam's pet is a cat. Clara's pet is a duck. Alice's pet is a lion. Sara's pet is a pig. Mia's pet is a spider. The pig's locker is 3. The cat's locker is 9. The duck's locker is 1. The spider's locker is 7. The lion's locker is 5.",
+   "people": [
+    "Sam",
+    "Clara",
+    "Alice",
+    "Sara",
+    "Mia"
+   ],
+   "pets": [
+    "cat",
+    "duck",
+    "lion",
+    "pig",
+    "spider"
+   ],
+   "lockers": {
+    "lion": 5,
+    "duck": 7,
+    "spider": 1,
+    "cat": 9,
+    "pig": 3
+   },
+   "cue": "Alice",
+   "question": "Which locker belongs to Alice's pet?",
+   "cf_context": "Sam's pet is a cat. Clara's pet is a lion. Alice's pet is a duck. Sara's pet is a pig. Mia's pet is a spider. The pig's locker is 3. The cat's locker is 9. The duck's locker is 7. The spider's locker is 1. The lion's locker is 5.",
+   "cf_question": "Which locker belongs to Alice's pet?",
+   "answer": "5",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Alice's pet?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the lion?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0069",
+   "family": "BL",
+   "scene": "S-0069",
+   "bridge": "turkey",
+   "cf_bridge": "cow",
+   "third": "goose",
+   "context": "Ivan's pet is a bee. Laura's pet is a turkey. Sara's pet is a goose. Emma's pet is a cow. Nina's pet is a mouse. The turkey's locker is 9. The bee's locker is 7. The cow's locker is 5. The goose's locker is 1. The mouse's locker is 3.",
+   "off_context": "Ivan's pet is a bee. Laura's pet is a turkey. Sara's pet is a goose. Emma's pet is a cow. Nina's pet is a mouse. The turkey's locker is 9. The bee's locker is 7. The cow's locker is 1. The goose's locker is 5. The mouse's locker is 3.",
+   "people": [
+    "Ivan",
+    "Laura",
+    "Sara",
+    "Emma",
+    "Nina"
+   ],
+   "pets": [
+    "bee",
+    "turkey",
+    "goose",
+    "cow",
+    "mouse"
+   ],
+   "lockers": {
+    "turkey": 9,
+    "cow": 5,
+    "goose": 1,
+    "bee": 7,
+    "mouse": 3
+   },
+   "cue": "Laura",
+   "question": "Which locker belongs to Laura's pet?",
+   "cf_context": "Ivan's pet is a bee. Laura's pet is a cow. Sara's pet is a goose. Emma's pet is a turkey. Nina's pet is a mouse. The turkey's locker is 9. The bee's locker is 7. The cow's locker is 5. The goose's locker is 1. The mouse's locker is 3.",
+   "cf_question": "Which locker belongs to Laura's pet?",
+   "answer": "9",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Laura's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the turkey?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0070",
+   "family": "BL",
+   "scene": "S-0070",
+   "bridge": "bee",
+   "cf_bridge": "dog",
+   "third": "turkey",
+   "context": "Mark's pet is a turkey. Eva's pet is a spider. Emma's pet is a bee. Nina's pet is a dog. Anna's pet is a chicken. The dog's locker is 5. The turkey's locker is 9. The bee's locker is 1. The chicken's locker is 3. The spider's locker is 7.",
+   "off_context": "Mark's pet is a turkey. Eva's pet is a spider. Emma's pet is a bee. Nina's pet is a dog. Anna's pet is a chicken. The dog's locker is 9. The turkey's locker is 5. The bee's locker is 1. The chicken's locker is 3. The spider's locker is 7.",
+   "people": [
+    "Mark",
+    "Eva",
+    "Emma",
+    "Nina",
+    "Anna"
+   ],
+   "pets": [
+    "turkey",
+    "spider",
+    "bee",
+    "dog",
+    "chicken"
+   ],
+   "lockers": {
+    "bee": 1,
+    "dog": 5,
+    "turkey": 9,
+    "spider": 7,
+    "chicken": 3
+   },
+   "cue": "Emma",
+   "question": "Which locker belongs to Emma's pet?",
+   "cf_context": "Mark's pet is a turkey. Eva's pet is a spider. Emma's pet is a dog. Nina's pet is a bee. Anna's pet is a chicken. The dog's locker is 5. The turkey's locker is 9. The bee's locker is 1. The chicken's locker is 3. The spider's locker is 7.",
+   "cf_question": "Which locker belongs to Emma's pet?",
+   "answer": "1",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Emma's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the bee?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0071",
+   "family": "BL",
+   "scene": "S-0071",
+   "bridge": "chicken",
+   "cf_bridge": "frog",
+   "third": "duck",
+   "context": "Henry's pet is a chicken. Leo's pet is a frog. Noah's pet is a wolf. Ruby's pet is a duck. Iris's pet is a bee. The bee's locker is 9. The wolf's locker is 7. The duck's locker is 5. The chicken's locker is 1. The frog's locker is 3.",
+   "off_context": "Henry's pet is a chicken. Leo's pet is a frog. Noah's pet is a wolf. Ruby's pet is a duck. Iris's pet is a bee. The bee's locker is 9. The wolf's locker is 7. The duck's locker is 3. The chicken's locker is 1. The frog's locker is 5.",
+   "people": [
+    "Henry",
+    "Leo",
+    "Noah",
+    "Ruby",
+    "Iris"
+   ],
+   "pets": [
+    "chicken",
+    "frog",
+    "wolf",
+    "duck",
+    "bee"
+   ],
+   "lockers": {
+    "chicken": 1,
+    "frog": 3,
+    "duck": 5,
+    "wolf": 7,
+    "bee": 9
+   },
+   "cue": "Henry",
+   "question": "Which locker belongs to Henry's pet?",
+   "cf_context": "Henry's pet is a frog. Leo's pet is a chicken. Noah's pet is a wolf. Ruby's pet is a duck. Iris's pet is a bee. The bee's locker is 9. The wolf's locker is 7. The duck's locker is 5. The chicken's locker is 1. The frog's locker is 3.",
+   "cf_question": "Which locker belongs to Henry's pet?",
+   "answer": "1",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Henry's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0072",
+   "family": "BL",
+   "scene": "S-0072",
+   "bridge": "goose",
+   "cf_bridge": "pig",
+   "third": "dog",
+   "context": "Diana's pet is a pig. Emma's pet is a dog. Noah's pet is a goose. Lily's pet is a horse. Ryan's pet is a spider. The goose's locker is 9. The pig's locker is 5. The horse's locker is 1. The dog's locker is 3. The spider's locker is 7.",
+   "off_context": "Diana's pet is a pig. Emma's pet is a dog. Noah's pet is a goose. Lily's pet is a horse. Ryan's pet is a spider. The goose's locker is 9. The pig's locker is 3. The horse's locker is 1. The dog's locker is 5. The spider's locker is 7.",
+   "people": [
+    "Diana",
+    "Emma",
+    "Noah",
+    "Lily",
+    "Ryan"
+   ],
+   "pets": [
+    "pig",
+    "dog",
+    "goose",
+    "horse",
+    "spider"
+   ],
+   "lockers": {
+    "goose": 9,
+    "pig": 5,
+    "dog": 3,
+    "spider": 7,
+    "horse": 1
+   },
+   "cue": "Noah",
+   "question": "Which locker belongs to Noah's pet?",
+   "cf_context": "Diana's pet is a goose. Emma's pet is a dog. Noah's pet is a pig. Lily's pet is a horse. Ryan's pet is a spider. The goose's locker is 9. The pig's locker is 5. The horse's locker is 1. The dog's locker is 3. The spider's locker is 7.",
+   "cf_question": "Which locker belongs to Noah's pet?",
+   "answer": "9",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Noah's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the goose?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0073",
+   "family": "BL",
+   "scene": "S-0073",
+   "bridge": "cat",
+   "cf_bridge": "spider",
+   "third": "sheep",
+   "context": "Ella's pet is a dog. Adam's pet is a wolf. Vera's pet is a spider. Ben's pet is a cat. Frank's pet is a sheep. The dog's locker is 9. The spider's locker is 7. The cat's locker is 5. The sheep's locker is 3. The wolf's locker is 1.",
+   "off_context": "Ella's pet is a dog. Adam's pet is a wolf. Vera's pet is a spider. Ben's pet is a cat. Frank's pet is a sheep. The dog's locker is 9. The spider's locker is 3. The cat's locker is 5. The sheep's locker is 7. The wolf's locker is 1.",
+   "people": [
+    "Ella",
+    "Adam",
+    "Vera",
+    "Ben",
+    "Frank"
+   ],
+   "pets": [
+    "dog",
+    "wolf",
+    "spider",
+    "cat",
+    "sheep"
+   ],
+   "lockers": {
+    "cat": 5,
+    "spider": 7,
+    "sheep": 3,
+    "wolf": 1,
+    "dog": 9
+   },
+   "cue": "Ben",
+   "question": "Which locker belongs to Ben's pet?",
+   "cf_context": "Ella's pet is a dog. Adam's pet is a wolf. Vera's pet is a cat. Ben's pet is a spider. Frank's pet is a sheep. The dog's locker is 9. The spider's locker is 7. The cat's locker is 5. The sheep's locker is 3. The wolf's locker is 1.",
+   "cf_question": "Which locker belongs to Ben's pet?",
+   "answer": "5",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Ben's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the cat?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0074",
+   "family": "BL",
+   "scene": "S-0074",
+   "bridge": "turkey",
+   "cf_bridge": "wolf",
+   "third": "horse",
+   "context": "Beth's pet is a spider. Noah's pet is a horse. Iris's pet is a turkey. Tom's pet is a bee. Olivia's pet is a wolf. The wolf's locker is 3. The horse's locker is 5. The turkey's locker is 1. The bee's locker is 9. The spider's locker is 7.",
+   "off_context": "Beth's pet is a spider. Noah's pet is a horse. Iris's pet is a turkey. Tom's pet is a bee. Olivia's pet is a wolf. The wolf's locker is 5. The horse's locker is 3. The turkey's locker is 1. The bee's locker is 9. The spider's locker is 7.",
+   "people": [
+    "Beth",
+    "Noah",
+    "Iris",
+    "Tom",
+    "Olivia"
+   ],
+   "pets": [
+    "spider",
+    "horse",
+    "turkey",
+    "bee",
+    "wolf"
+   ],
+   "lockers": {
+    "turkey": 1,
+    "wolf": 3,
+    "horse": 5,
+    "bee": 9,
+    "spider": 7
+   },
+   "cue": "Iris",
+   "question": "Which locker belongs to Iris's pet?",
+   "cf_context": "Beth's pet is a spider. Noah's pet is a horse. Iris's pet is a wolf. Tom's pet is a bee. Olivia's pet is a turkey. The wolf's locker is 3. The horse's locker is 5. The turkey's locker is 1. The bee's locker is 9. The spider's locker is 7.",
+   "cf_question": "Which locker belongs to Iris's pet?",
+   "answer": "1",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Iris's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the turkey?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0075",
+   "family": "BL",
+   "scene": "S-0075",
+   "bridge": "goose",
+   "cf_bridge": "sheep",
+   "third": "bee",
+   "context": "Ryan's pet is a bee. Emma's pet is a lion. Max's pet is a turkey. Finn's pet is a goose. Ivy's pet is a sheep. The lion's locker is 3. The bee's locker is 1. The sheep's locker is 5. The goose's locker is 7. The turkey's locker is 9.",
+   "off_context": "Ryan's pet is a bee. Emma's pet is a lion. Max's pet is a turkey. Finn's pet is a goose. Ivy's pet is a sheep. The lion's locker is 3. The bee's locker is 5. The sheep's locker is 1. The goose's locker is 7. The turkey's locker is 9.",
+   "people": [
+    "Ryan",
+    "Emma",
+    "Max",
+    "Finn",
+    "Ivy"
+   ],
+   "pets": [
+    "bee",
+    "lion",
+    "turkey",
+    "goose",
+    "sheep"
+   ],
+   "lockers": {
+    "goose": 7,
+    "sheep": 5,
+    "bee": 1,
+    "turkey": 9,
+    "lion": 3
+   },
+   "cue": "Finn",
+   "question": "Which locker belongs to Finn's pet?",
+   "cf_context": "Ryan's pet is a bee. Emma's pet is a lion. Max's pet is a turkey. Finn's pet is a sheep. Ivy's pet is a goose. The lion's locker is 3. The bee's locker is 1. The sheep's locker is 5. The goose's locker is 7. The turkey's locker is 9.",
+   "cf_question": "Which locker belongs to Finn's pet?",
+   "answer": "7",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Finn's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the goose?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0076",
+   "family": "BL",
+   "scene": "S-0076",
+   "bridge": "turkey",
+   "cf_bridge": "dog",
+   "third": "cow",
+   "context": "Maria's pet is a duck. Eve's pet is a frog. Beth's pet is a turkey. Dan's pet is a dog. Eva's pet is a cow. The duck's locker is 7. The cow's locker is 1. The turkey's locker is 3. The dog's locker is 5. The frog's locker is 9.",
+   "off_context": "Maria's pet is a duck. Eve's pet is a frog. Beth's pet is a turkey. Dan's pet is a dog. Eva's pet is a cow. The duck's locker is 7. The cow's locker is 5. The turkey's locker is 3. The dog's locker is 1. The frog's locker is 9.",
+   "people": [
+    "Maria",
+    "Eve",
+    "Beth",
+    "Dan",
+    "Eva"
+   ],
+   "pets": [
+    "duck",
+    "frog",
+    "turkey",
+    "dog",
+    "cow"
+   ],
+   "lockers": {
+    "turkey": 3,
+    "dog": 5,
+    "cow": 1,
+    "duck": 7,
+    "frog": 9
+   },
+   "cue": "Beth",
+   "question": "Which locker belongs to Beth's pet?",
+   "cf_context": "Maria's pet is a duck. Eve's pet is a frog. Beth's pet is a dog. Dan's pet is a turkey. Eva's pet is a cow. The duck's locker is 7. The cow's locker is 1. The turkey's locker is 3. The dog's locker is 5. The frog's locker is 9.",
+   "cf_question": "Which locker belongs to Beth's pet?",
+   "answer": "3",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Beth's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the turkey?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0077",
+   "family": "BL",
+   "scene": "S-0077",
+   "bridge": "sheep",
+   "cf_bridge": "turkey",
+   "third": "lion",
+   "context": "Mark's pet is a sheep. Lucy's pet is a duck. Henry's pet is a turkey. Fiona's pet is a cat. Alice's pet is a lion. The cat's locker is 3. The sheep's locker is 5. The lion's locker is 1. The duck's locker is 9. The turkey's locker is 7.",
+   "off_context": "Mark's pet is a sheep. Lucy's pet is a duck. Henry's pet is a turkey. Fiona's pet is a cat. Alice's pet is a lion. The cat's locker is 3. The sheep's locker is 5. The lion's locker is 7. The duck's locker is 9. The turkey's locker is 1.",
+   "people": [
+    "Mark",
+    "Lucy",
+    "Henry",
+    "Fiona",
+    "Alice"
+   ],
+   "pets": [
+    "sheep",
+    "duck",
+    "turkey",
+    "cat",
+    "lion"
+   ],
+   "lockers": {
+    "sheep": 5,
+    "turkey": 7,
+    "lion": 1,
+    "duck": 9,
+    "cat": 3
+   },
+   "cue": "Mark",
+   "question": "Which locker belongs to Mark's pet?",
+   "cf_context": "Mark's pet is a turkey. Lucy's pet is a duck. Henry's pet is a sheep. Fiona's pet is a cat. Alice's pet is a lion. The cat's locker is 3. The sheep's locker is 5. The lion's locker is 1. The duck's locker is 9. The turkey's locker is 7.",
+   "cf_question": "Which locker belongs to Mark's pet?",
+   "answer": "5",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Mark's pet?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the sheep?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0078",
+   "family": "BL",
+   "scene": "S-0078",
+   "bridge": "turkey",
+   "cf_bridge": "frog",
+   "third": "duck",
+   "context": "Ivy's pet is a sheep. Vera's pet is a duck. Nina's pet is a frog. Oscar's pet is a pig. James's pet is a turkey. The frog's locker is 1. The turkey's locker is 9. The pig's locker is 7. The duck's locker is 5. The sheep's locker is 3.",
+   "off_context": "Ivy's pet is a sheep. Vera's pet is a duck. Nina's pet is a frog. Oscar's pet is a pig. James's pet is a turkey. The frog's locker is 5. The turkey's locker is 9. The pig's locker is 7. The duck's locker is 1. The sheep's locker is 3.",
+   "people": [
+    "Ivy",
+    "Vera",
+    "Nina",
+    "Oscar",
+    "James"
+   ],
+   "pets": [
+    "sheep",
+    "duck",
+    "frog",
+    "pig",
+    "turkey"
+   ],
+   "lockers": {
+    "turkey": 9,
+    "frog": 1,
+    "duck": 5,
+    "sheep": 3,
+    "pig": 7
+   },
+   "cue": "James",
+   "question": "Which locker belongs to James's pet?",
+   "cf_context": "Ivy's pet is a sheep. Vera's pet is a duck. Nina's pet is a turkey. Oscar's pet is a pig. James's pet is a frog. The frog's locker is 1. The turkey's locker is 9. The pig's locker is 7. The duck's locker is 5. The sheep's locker is 3.",
+   "cf_question": "Which locker belongs to James's pet?",
+   "answer": "9",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is James's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the turkey?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0079",
+   "family": "BL",
+   "scene": "S-0079",
+   "bridge": "horse",
+   "cf_bridge": "goose",
+   "third": "wolf",
+   "context": "James's pet is a cat. Henry's pet is a goose. Alice's pet is a horse. Liam's pet is a wolf. Julia's pet is a cow. The wolf's locker is 3. The cat's locker is 1. The horse's locker is 9. The goose's locker is 5. The cow's locker is 7.",
+   "off_context": "James's pet is a cat. Henry's pet is a goose. Alice's pet is a horse. Liam's pet is a wolf. Julia's pet is a cow. The wolf's locker is 5. The cat's locker is 1. The horse's locker is 9. The goose's locker is 3. The cow's locker is 7.",
+   "people": [
+    "James",
+    "Henry",
+    "Alice",
+    "Liam",
+    "Julia"
+   ],
+   "pets": [
+    "cat",
+    "goose",
+    "horse",
+    "wolf",
+    "cow"
+   ],
+   "lockers": {
+    "horse": 9,
+    "goose": 5,
+    "wolf": 3,
+    "cat": 1,
+    "cow": 7
+   },
+   "cue": "Alice",
+   "question": "Which locker belongs to Alice's pet?",
+   "cf_context": "James's pet is a cat. Henry's pet is a horse. Alice's pet is a goose. Liam's pet is a wolf. Julia's pet is a cow. The wolf's locker is 3. The cat's locker is 1. The horse's locker is 9. The goose's locker is 5. The cow's locker is 7.",
+   "cf_question": "Which locker belongs to Alice's pet?",
+   "answer": "9",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Alice's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the horse?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0080",
+   "family": "BL",
+   "scene": "S-0080",
+   "bridge": "horse",
+   "cf_bridge": "bee",
+   "third": "cat",
+   "context": "Tara's pet is a turkey. Dan's pet is a cat. Kyle's pet is a mouse. Ben's pet is a horse. Emma's pet is a bee. The cat's locker is 3. The bee's locker is 7. The horse's locker is 9. The turkey's locker is 1. The mouse's locker is 5.",
+   "off_context": "Tara's pet is a turkey. Dan's pet is a cat. Kyle's pet is a mouse. Ben's pet is a horse. Emma's pet is a bee. The cat's locker is 7. The bee's locker is 3. The horse's locker is 9. The turkey's locker is 1. The mouse's locker is 5.",
+   "people": [
+    "Tara",
+    "Dan",
+    "Kyle",
+    "Ben",
+    "Emma"
+   ],
+   "pets": [
+    "turkey",
+    "cat",
+    "mouse",
+    "horse",
+    "bee"
+   ],
+   "lockers": {
+    "horse": 9,
+    "bee": 7,
+    "cat": 3,
+    "mouse": 5,
+    "turkey": 1
+   },
+   "cue": "Ben",
+   "question": "Which locker belongs to Ben's pet?",
+   "cf_context": "Tara's pet is a turkey. Dan's pet is a cat. Kyle's pet is a mouse. Ben's pet is a bee. Emma's pet is a horse. The cat's locker is 3. The bee's locker is 7. The horse's locker is 9. The turkey's locker is 1. The mouse's locker is 5.",
+   "cf_question": "Which locker belongs to Ben's pet?",
+   "answer": "9",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Ben's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the horse?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0081",
+   "family": "BL",
+   "scene": "S-0081",
+   "bridge": "dog",
+   "cf_bridge": "spider",
+   "third": "horse",
+   "context": "Carl's pet is a horse. Clara's pet is a dog. Frank's pet is a spider. Eva's pet is a pig. Henry's pet is a goose. The goose's locker is 3. The spider's locker is 7. The pig's locker is 1. The horse's locker is 5. The dog's locker is 9.",
+   "off_context": "Carl's pet is a horse. Clara's pet is a dog. Frank's pet is a spider. Eva's pet is a pig. Henry's pet is a goose. The goose's locker is 3. The spider's locker is 5. The pig's locker is 1. The horse's locker is 7. The dog's locker is 9.",
+   "people": [
+    "Carl",
+    "Clara",
+    "Frank",
+    "Eva",
+    "Henry"
+   ],
+   "pets": [
+    "horse",
+    "dog",
+    "spider",
+    "pig",
+    "goose"
+   ],
+   "lockers": {
+    "dog": 9,
+    "spider": 7,
+    "horse": 5,
+    "goose": 3,
+    "pig": 1
+   },
+   "cue": "Clara",
+   "question": "Which locker belongs to Clara's pet?",
+   "cf_context": "Carl's pet is a horse. Clara's pet is a spider. Frank's pet is a dog. Eva's pet is a pig. Henry's pet is a goose. The goose's locker is 3. The spider's locker is 7. The pig's locker is 1. The horse's locker is 5. The dog's locker is 9.",
+   "cf_question": "Which locker belongs to Clara's pet?",
+   "answer": "9",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Clara's pet?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the dog?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0082",
+   "family": "BL",
+   "scene": "S-0082",
+   "bridge": "goose",
+   "cf_bridge": "frog",
+   "third": "cat",
+   "context": "Vera's pet is a cat. Olivia's pet is a frog. Owen's pet is a goose. Diana's pet is a lion. Lucy's pet is a bee. The cat's locker is 7. The frog's locker is 5. The bee's locker is 1. The lion's locker is 3. The goose's locker is 9.",
+   "off_context": "Vera's pet is a cat. Olivia's pet is a frog. Owen's pet is a goose. Diana's pet is a lion. Lucy's pet is a bee. The cat's locker is 5. The frog's locker is 7. The bee's locker is 1. The lion's locker is 3. The goose's locker is 9.",
+   "people": [
+    "Vera",
+    "Olivia",
+    "Owen",
+    "Diana",
+    "Lucy"
+   ],
+   "pets": [
+    "cat",
+    "frog",
+    "goose",
+    "lion",
+    "bee"
+   ],
+   "lockers": {
+    "goose": 9,
+    "frog": 5,
+    "cat": 7,
+    "bee": 1,
+    "lion": 3
+   },
+   "cue": "Owen",
+   "question": "Which locker belongs to Owen's pet?",
+   "cf_context": "Vera's pet is a cat. Olivia's pet is a goose. Owen's pet is a frog. Diana's pet is a lion. Lucy's pet is a bee. The cat's locker is 7. The frog's locker is 5. The bee's locker is 1. The lion's locker is 3. The goose's locker is 9.",
+   "cf_question": "Which locker belongs to Owen's pet?",
+   "answer": "9",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Owen's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the goose?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0083",
+   "family": "BL",
+   "scene": "S-0083",
+   "bridge": "chicken",
+   "cf_bridge": "sheep",
+   "third": "horse",
+   "context": "Sara's pet is a goose. David's pet is a turkey. Sean's pet is a sheep. Max's pet is a chicken. Beth's pet is a horse. The sheep's locker is 1. The turkey's locker is 9. The goose's locker is 3. The chicken's locker is 5. The horse's locker is 7.",
+   "off_context": "Sara's pet is a goose. David's pet is a turkey. Sean's pet is a sheep. Max's pet is a chicken. Beth's pet is a horse. The sheep's locker is 7. The turkey's locker is 9. The goose's locker is 3. The chicken's locker is 5. The horse's locker is 1.",
+   "people": [
+    "Sara",
+    "David",
+    "Sean",
+    "Max",
+    "Beth"
+   ],
+   "pets": [
+    "goose",
+    "turkey",
+    "sheep",
+    "chicken",
+    "horse"
+   ],
+   "lockers": {
+    "chicken": 5,
+    "sheep": 1,
+    "horse": 7,
+    "goose": 3,
+    "turkey": 9
+   },
+   "cue": "Max",
+   "question": "Which locker belongs to Max's pet?",
+   "cf_context": "Sara's pet is a goose. David's pet is a turkey. Sean's pet is a chicken. Max's pet is a sheep. Beth's pet is a horse. The sheep's locker is 1. The turkey's locker is 9. The goose's locker is 3. The chicken's locker is 5. The horse's locker is 7.",
+   "cf_question": "Which locker belongs to Max's pet?",
+   "answer": "5",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Max's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0084",
+   "family": "BL",
+   "scene": "S-0084",
+   "bridge": "chicken",
+   "cf_bridge": "spider",
+   "third": "mouse",
+   "context": "James's pet is a horse. Eve's pet is a chicken. Kyle's pet is a dog. Victor's pet is a spider. Fiona's pet is a mouse. The horse's locker is 9. The spider's locker is 5. The mouse's locker is 3. The dog's locker is 1. The chicken's locker is 7.",
+   "off_context": "James's pet is a horse. Eve's pet is a chicken. Kyle's pet is a dog. Victor's pet is a spider. Fiona's pet is a mouse. The horse's locker is 9. The spider's locker is 3. The mouse's locker is 5. The dog's locker is 1. The chicken's locker is 7.",
+   "people": [
+    "James",
+    "Eve",
+    "Kyle",
+    "Victor",
+    "Fiona"
+   ],
+   "pets": [
+    "horse",
+    "chicken",
+    "dog",
+    "spider",
+    "mouse"
+   ],
+   "lockers": {
+    "chicken": 7,
+    "spider": 5,
+    "mouse": 3,
+    "dog": 1,
+    "horse": 9
+   },
+   "cue": "Eve",
+   "question": "Which locker belongs to Eve's pet?",
+   "cf_context": "James's pet is a horse. Eve's pet is a spider. Kyle's pet is a dog. Victor's pet is a chicken. Fiona's pet is a mouse. The horse's locker is 9. The spider's locker is 5. The mouse's locker is 3. The dog's locker is 1. The chicken's locker is 7.",
+   "cf_question": "Which locker belongs to Eve's pet?",
+   "answer": "7",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Eve's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0085",
+   "family": "BL",
+   "scene": "S-0085",
+   "bridge": "turkey",
+   "cf_bridge": "dog",
+   "third": "sheep",
+   "context": "Amy's pet is a sheep. Diana's pet is a goose. Mark's pet is a chicken. Adam's pet is a dog. Peter's pet is a turkey. The dog's locker is 5. The goose's locker is 7. The turkey's locker is 3. The sheep's locker is 9. The chicken's locker is 1.",
+   "off_context": "Amy's pet is a sheep. Diana's pet is a goose. Mark's pet is a chicken. Adam's pet is a dog. Peter's pet is a turkey. The dog's locker is 9. The goose's locker is 7. The turkey's locker is 3. The sheep's locker is 5. The chicken's locker is 1.",
+   "people": [
+    "Amy",
+    "Diana",
+    "Mark",
+    "Adam",
+    "Peter"
+   ],
+   "pets": [
+    "sheep",
+    "goose",
+    "chicken",
+    "dog",
+    "turkey"
+   ],
+   "lockers": {
+    "turkey": 3,
+    "dog": 5,
+    "sheep": 9,
+    "chicken": 1,
+    "goose": 7
+   },
+   "cue": "Peter",
+   "question": "Which locker belongs to Peter's pet?",
+   "cf_context": "Amy's pet is a sheep. Diana's pet is a goose. Mark's pet is a chicken. Adam's pet is a turkey. Peter's pet is a dog. The dog's locker is 5. The goose's locker is 7. The turkey's locker is 3. The sheep's locker is 9. The chicken's locker is 1.",
+   "cf_question": "Which locker belongs to Peter's pet?",
+   "answer": "3",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Peter's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the turkey?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0086",
+   "family": "BL",
+   "scene": "S-0086",
+   "bridge": "duck",
+   "cf_bridge": "cow",
+   "third": "horse",
+   "context": "Diana's pet is a lion. Will's pet is a horse. Eve's pet is a sheep. Iris's pet is a duck. Eva's pet is a cow. The sheep's locker is 3. The lion's locker is 9. The horse's locker is 1. The cow's locker is 5. The duck's locker is 7.",
+   "off_context": "Diana's pet is a lion. Will's pet is a horse. Eve's pet is a sheep. Iris's pet is a duck. Eva's pet is a cow. The sheep's locker is 3. The lion's locker is 9. The horse's locker is 5. The cow's locker is 1. The duck's locker is 7.",
+   "people": [
+    "Diana",
+    "Will",
+    "Eve",
+    "Iris",
+    "Eva"
+   ],
+   "pets": [
+    "lion",
+    "horse",
+    "sheep",
+    "duck",
+    "cow"
+   ],
+   "lockers": {
+    "duck": 7,
+    "cow": 5,
+    "horse": 1,
+    "sheep": 3,
+    "lion": 9
+   },
+   "cue": "Iris",
+   "question": "Which locker belongs to Iris's pet?",
+   "cf_context": "Diana's pet is a lion. Will's pet is a horse. Eve's pet is a sheep. Iris's pet is a cow. Eva's pet is a duck. The sheep's locker is 3. The lion's locker is 9. The horse's locker is 1. The cow's locker is 5. The duck's locker is 7.",
+   "cf_question": "Which locker belongs to Iris's pet?",
+   "answer": "7",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Iris's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the duck?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0087",
+   "family": "BL",
+   "scene": "S-0087",
+   "bridge": "goose",
+   "cf_bridge": "cow",
+   "third": "cat",
+   "context": "Ben's pet is a goose. Iris's pet is a cow. Henry's pet is a cat. Frank's pet is a frog. Laura's pet is a bee. The cat's locker is 9. The cow's locker is 1. The frog's locker is 3. The goose's locker is 5. The bee's locker is 7.",
+   "off_context": "Ben's pet is a goose. Iris's pet is a cow. Henry's pet is a cat. Frank's pet is a frog. Laura's pet is a bee. The cat's locker is 1. The cow's locker is 9. The frog's locker is 3. The goose's locker is 5. The bee's locker is 7.",
+   "people": [
+    "Ben",
+    "Iris",
+    "Henry",
+    "Frank",
+    "Laura"
+   ],
+   "pets": [
+    "goose",
+    "cow",
+    "cat",
+    "frog",
+    "bee"
+   ],
+   "lockers": {
+    "goose": 5,
+    "cow": 1,
+    "cat": 9,
+    "bee": 7,
+    "frog": 3
+   },
+   "cue": "Ben",
+   "question": "Which locker belongs to Ben's pet?",
+   "cf_context": "Ben's pet is a cow. Iris's pet is a goose. Henry's pet is a cat. Frank's pet is a frog. Laura's pet is a bee. The cat's locker is 9. The cow's locker is 1. The frog's locker is 3. The goose's locker is 5. The bee's locker is 7.",
+   "cf_question": "Which locker belongs to Ben's pet?",
+   "answer": "5",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Ben's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the goose?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0088",
+   "family": "BL",
+   "scene": "S-0088",
+   "bridge": "chicken",
+   "cf_bridge": "horse",
+   "third": "mouse",
+   "context": "Anna's pet is a chicken. Ruby's pet is a sheep. Noah's pet is a lion. Victor's pet is a horse. Henry's pet is a mouse. The sheep's locker is 1. The horse's locker is 3. The lion's locker is 5. The chicken's locker is 7. The mouse's locker is 9.",
+   "off_context": "Anna's pet is a chicken. Ruby's pet is a sheep. Noah's pet is a lion. Victor's pet is a horse. Henry's pet is a mouse. The sheep's locker is 1. The horse's locker is 9. The lion's locker is 5. The chicken's locker is 7. The mouse's locker is 3.",
+   "people": [
+    "Anna",
+    "Ruby",
+    "Noah",
+    "Victor",
+    "Henry"
+   ],
+   "pets": [
+    "chicken",
+    "sheep",
+    "lion",
+    "horse",
+    "mouse"
+   ],
+   "lockers": {
+    "chicken": 7,
+    "horse": 3,
+    "mouse": 9,
+    "sheep": 1,
+    "lion": 5
+   },
+   "cue": "Anna",
+   "question": "Which locker belongs to Anna's pet?",
+   "cf_context": "Anna's pet is a horse. Ruby's pet is a sheep. Noah's pet is a lion. Victor's pet is a chicken. Henry's pet is a mouse. The sheep's locker is 1. The horse's locker is 3. The lion's locker is 5. The chicken's locker is 7. The mouse's locker is 9.",
+   "cf_question": "Which locker belongs to Anna's pet?",
+   "answer": "7",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Anna's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0089",
+   "family": "BL",
+   "scene": "S-0089",
+   "bridge": "duck",
+   "cf_bridge": "spider",
+   "third": "sheep",
+   "context": "Sara's pet is a goose. Leo's pet is a sheep. Sean's pet is a duck. Mia's pet is a spider. Maria's pet is a wolf. The wolf's locker is 5. The sheep's locker is 7. The duck's locker is 3. The spider's locker is 9. The goose's locker is 1.",
+   "off_context": "Sara's pet is a goose. Leo's pet is a sheep. Sean's pet is a duck. Mia's pet is a spider. Maria's pet is a wolf. The wolf's locker is 5. The sheep's locker is 9. The duck's locker is 3. The spider's locker is 7. The goose's locker is 1.",
+   "people": [
+    "Sara",
+    "Leo",
+    "Sean",
+    "Mia",
+    "Maria"
+   ],
+   "pets": [
+    "goose",
+    "sheep",
+    "duck",
+    "spider",
+    "wolf"
+   ],
+   "lockers": {
+    "duck": 3,
+    "spider": 9,
+    "sheep": 7,
+    "goose": 1,
+    "wolf": 5
+   },
+   "cue": "Sean",
+   "question": "Which locker belongs to Sean's pet?",
+   "cf_context": "Sara's pet is a goose. Leo's pet is a sheep. Sean's pet is a spider. Mia's pet is a duck. Maria's pet is a wolf. The wolf's locker is 5. The sheep's locker is 7. The duck's locker is 3. The spider's locker is 9. The goose's locker is 1.",
+   "cf_question": "Which locker belongs to Sean's pet?",
+   "answer": "3",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Sean's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the duck?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0090",
+   "family": "BL",
+   "scene": "S-0090",
+   "bridge": "dog",
+   "cf_bridge": "goose",
+   "third": "bee",
+   "context": "David's pet is a sheep. Max's pet is a dog. Grace's pet is a goose. Eric's pet is a bee. Adam's pet is a lion. The bee's locker is 5. The dog's locker is 9. The goose's locker is 1. The lion's locker is 7. The sheep's locker is 3.",
+   "off_context": "David's pet is a sheep. Max's pet is a dog. Grace's pet is a goose. Eric's pet is a bee. Adam's pet is a lion. The bee's locker is 1. The dog's locker is 9. The goose's locker is 5. The lion's locker is 7. The sheep's locker is 3.",
+   "people": [
+    "David",
+    "Max",
+    "Grace",
+    "Eric",
+    "Adam"
+   ],
+   "pets": [
+    "sheep",
+    "dog",
+    "goose",
+    "bee",
+    "lion"
+   ],
+   "lockers": {
+    "dog": 9,
+    "goose": 1,
+    "bee": 5,
+    "sheep": 3,
+    "lion": 7
+   },
+   "cue": "Max",
+   "question": "Which locker belongs to Max's pet?",
+   "cf_context": "David's pet is a sheep. Max's pet is a goose. Grace's pet is a dog. Eric's pet is a bee. Adam's pet is a lion. The bee's locker is 5. The dog's locker is 9. The goose's locker is 1. The lion's locker is 7. The sheep's locker is 3.",
+   "cf_question": "Which locker belongs to Max's pet?",
+   "answer": "9",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Max's pet?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the dog?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0091",
+   "family": "BL",
+   "scene": "S-0091",
+   "bridge": "spider",
+   "cf_bridge": "horse",
+   "third": "goose",
+   "context": "Kate's pet is a goose. Lucy's pet is a cat. Iris's pet is a horse. Peter's pet is a spider. Mia's pet is a bee. The bee's locker is 3. The horse's locker is 5. The spider's locker is 9. The cat's locker is 7. The goose's locker is 1.",
+   "off_context": "Kate's pet is a goose. Lucy's pet is a cat. Iris's pet is a horse. Peter's pet is a spider. Mia's pet is a bee. The bee's locker is 3. The horse's locker is 1. The spider's locker is 9. The cat's locker is 7. The goose's locker is 5.",
+   "people": [
+    "Kate",
+    "Lucy",
+    "Iris",
+    "Peter",
+    "Mia"
+   ],
+   "pets": [
+    "goose",
+    "cat",
+    "horse",
+    "spider",
+    "bee"
+   ],
+   "lockers": {
+    "spider": 9,
+    "horse": 5,
+    "goose": 1,
+    "bee": 3,
+    "cat": 7
+   },
+   "cue": "Peter",
+   "question": "Which locker belongs to Peter's pet?",
+   "cf_context": "Kate's pet is a goose. Lucy's pet is a cat. Iris's pet is a spider. Peter's pet is a horse. Mia's pet is a bee. The bee's locker is 3. The horse's locker is 5. The spider's locker is 9. The cat's locker is 7. The goose's locker is 1.",
+   "cf_question": "Which locker belongs to Peter's pet?",
+   "answer": "9",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Peter's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the spider?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0092",
+   "family": "BL",
+   "scene": "S-0092",
+   "bridge": "wolf",
+   "cf_bridge": "chicken",
+   "third": "spider",
+   "context": "Vera's pet is a spider. Sean's pet is a goose. Carl's pet is a chicken. Frank's pet is a wolf. Finn's pet is a lion. The goose's locker is 1. The wolf's locker is 3. The chicken's locker is 5. The spider's locker is 7. The lion's locker is 9.",
+   "off_context": "Vera's pet is a spider. Sean's pet is a goose. Carl's pet is a chicken. Frank's pet is a wolf. Finn's pet is a lion. The goose's locker is 1. The wolf's locker is 3. The chicken's locker is 7. The spider's locker is 5. The lion's locker is 9.",
+   "people": [
+    "Vera",
+    "Sean",
+    "Carl",
+    "Frank",
+    "Finn"
+   ],
+   "pets": [
+    "spider",
+    "goose",
+    "chicken",
+    "wolf",
+    "lion"
+   ],
+   "lockers": {
+    "wolf": 3,
+    "chicken": 5,
+    "spider": 7,
+    "lion": 9,
+    "goose": 1
+   },
+   "cue": "Frank",
+   "question": "Which locker belongs to Frank's pet?",
+   "cf_context": "Vera's pet is a spider. Sean's pet is a goose. Carl's pet is a wolf. Frank's pet is a chicken. Finn's pet is a lion. The goose's locker is 1. The wolf's locker is 3. The chicken's locker is 5. The spider's locker is 7. The lion's locker is 9.",
+   "cf_question": "Which locker belongs to Frank's pet?",
+   "answer": "3",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Frank's pet?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the wolf?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0093",
+   "family": "BL",
+   "scene": "S-0093",
+   "bridge": "spider",
+   "cf_bridge": "wolf",
+   "third": "turkey",
+   "context": "Vera's pet is a cow. Alice's pet is a spider. Grace's pet is a wolf. Mark's pet is a turkey. Victor's pet is a dog. The turkey's locker is 7. The wolf's locker is 9. The dog's locker is 1. The spider's locker is 5. The cow's locker is 3.",
+   "off_context": "Vera's pet is a cow. Alice's pet is a spider. Grace's pet is a wolf. Mark's pet is a turkey. Victor's pet is a dog. The turkey's locker is 9. The wolf's locker is 7. The dog's locker is 1. The spider's locker is 5. The cow's locker is 3.",
+   "people": [
+    "Vera",
+    "Alice",
+    "Grace",
+    "Mark",
+    "Victor"
+   ],
+   "pets": [
+    "cow",
+    "spider",
+    "wolf",
+    "turkey",
+    "dog"
+   ],
+   "lockers": {
+    "spider": 5,
+    "wolf": 9,
+    "turkey": 7,
+    "cow": 3,
+    "dog": 1
+   },
+   "cue": "Alice",
+   "question": "Which locker belongs to Alice's pet?",
+   "cf_context": "Vera's pet is a cow. Alice's pet is a wolf. Grace's pet is a spider. Mark's pet is a turkey. Victor's pet is a dog. The turkey's locker is 7. The wolf's locker is 9. The dog's locker is 1. The spider's locker is 5. The cow's locker is 3.",
+   "cf_question": "Which locker belongs to Alice's pet?",
+   "answer": "5",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Alice's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the spider?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0094",
+   "family": "BL",
+   "scene": "S-0094",
+   "bridge": "frog",
+   "cf_bridge": "duck",
+   "third": "spider",
+   "context": "Dan's pet is a cow. Grace's pet is a spider. Victor's pet is a frog. Paul's pet is a turkey. Frank's pet is a duck. The turkey's locker is 7. The frog's locker is 3. The spider's locker is 5. The cow's locker is 1. The duck's locker is 9.",
+   "off_context": "Dan's pet is a cow. Grace's pet is a spider. Victor's pet is a frog. Paul's pet is a turkey. Frank's pet is a duck. The turkey's locker is 7. The frog's locker is 3. The spider's locker is 9. The cow's locker is 1. The duck's locker is 5.",
+   "people": [
+    "Dan",
+    "Grace",
+    "Victor",
+    "Paul",
+    "Frank"
+   ],
+   "pets": [
+    "cow",
+    "spider",
+    "frog",
+    "turkey",
+    "duck"
+   ],
+   "lockers": {
+    "frog": 3,
+    "duck": 9,
+    "spider": 5,
+    "cow": 1,
+    "turkey": 7
+   },
+   "cue": "Victor",
+   "question": "Which locker belongs to Victor's pet?",
+   "cf_context": "Dan's pet is a cow. Grace's pet is a spider. Victor's pet is a duck. Paul's pet is a turkey. Frank's pet is a frog. The turkey's locker is 7. The frog's locker is 3. The spider's locker is 5. The cow's locker is 1. The duck's locker is 9.",
+   "cf_question": "Which locker belongs to Victor's pet?",
+   "answer": "3",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Victor's pet?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the frog?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0095",
+   "family": "BL",
+   "scene": "S-0095",
+   "bridge": "turkey",
+   "cf_bridge": "wolf",
+   "third": "horse",
+   "context": "David's pet is a wolf. Eve's pet is a turkey. Ella's pet is a duck. Laura's pet is a horse. Finn's pet is a sheep. The wolf's locker is 9. The duck's locker is 5. The turkey's locker is 1. The sheep's locker is 3. The horse's locker is 7.",
+   "off_context": "David's pet is a wolf. Eve's pet is a turkey. Ella's pet is a duck. Laura's pet is a horse. Finn's pet is a sheep. The wolf's locker is 7. The duck's locker is 5. The turkey's locker is 1. The sheep's locker is 3. The horse's locker is 9.",
+   "people": [
+    "David",
+    "Eve",
+    "Ella",
+    "Laura",
+    "Finn"
+   ],
+   "pets": [
+    "wolf",
+    "turkey",
+    "duck",
+    "horse",
+    "sheep"
+   ],
+   "lockers": {
+    "turkey": 1,
+    "wolf": 9,
+    "horse": 7,
+    "duck": 5,
+    "sheep": 3
+   },
+   "cue": "Eve",
+   "question": "Which locker belongs to Eve's pet?",
+   "cf_context": "David's pet is a turkey. Eve's pet is a wolf. Ella's pet is a duck. Laura's pet is a horse. Finn's pet is a sheep. The wolf's locker is 9. The duck's locker is 5. The turkey's locker is 1. The sheep's locker is 3. The horse's locker is 7.",
+   "cf_question": "Which locker belongs to Eve's pet?",
+   "answer": "1",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Eve's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the turkey?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0096",
+   "family": "BL",
+   "scene": "S-0096",
+   "bridge": "goose",
+   "cf_bridge": "mouse",
+   "third": "cow",
+   "context": "Ivy's pet is a goose. Mark's pet is a cow. Leo's pet is a mouse. Liam's pet is a wolf. Nina's pet is a sheep. The cow's locker is 7. The wolf's locker is 9. The mouse's locker is 5. The goose's locker is 3. The sheep's locker is 1.",
+   "off_context": "Ivy's pet is a goose. Mark's pet is a cow. Leo's pet is a mouse. Liam's pet is a wolf. Nina's pet is a sheep. The cow's locker is 5. The wolf's locker is 9. The mouse's locker is 7. The goose's locker is 3. The sheep's locker is 1.",
+   "people": [
+    "Ivy",
+    "Mark",
+    "Leo",
+    "Liam",
+    "Nina"
+   ],
+   "pets": [
+    "goose",
+    "cow",
+    "mouse",
+    "wolf",
+    "sheep"
+   ],
+   "lockers": {
+    "goose": 3,
+    "mouse": 5,
+    "cow": 7,
+    "wolf": 9,
+    "sheep": 1
+   },
+   "cue": "Ivy",
+   "question": "Which locker belongs to Ivy's pet?",
+   "cf_context": "Ivy's pet is a mouse. Mark's pet is a cow. Leo's pet is a goose. Liam's pet is a wolf. Nina's pet is a sheep. The cow's locker is 7. The wolf's locker is 9. The mouse's locker is 5. The goose's locker is 3. The sheep's locker is 1.",
+   "cf_question": "Which locker belongs to Ivy's pet?",
+   "answer": "3",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Ivy's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the goose?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0097",
+   "family": "BL",
+   "scene": "S-0097",
+   "bridge": "goose",
+   "cf_bridge": "sheep",
+   "third": "pig",
+   "context": "Luke's pet is a pig. Will's pet is a goose. Tara's pet is a mouse. James's pet is a turkey. Noah's pet is a sheep. The sheep's locker is 1. The turkey's locker is 3. The mouse's locker is 9. The pig's locker is 7. The goose's locker is 5.",
+   "off_context": "Luke's pet is a pig. Will's pet is a goose. Tara's pet is a mouse. James's pet is a turkey. Noah's pet is a sheep. The sheep's locker is 7. The turkey's locker is 3. The mouse's locker is 9. The pig's locker is 1. The goose's locker is 5.",
+   "people": [
+    "Luke",
+    "Will",
+    "Tara",
+    "James",
+    "Noah"
+   ],
+   "pets": [
+    "pig",
+    "goose",
+    "mouse",
+    "turkey",
+    "sheep"
+   ],
+   "lockers": {
+    "goose": 5,
+    "sheep": 1,
+    "pig": 7,
+    "turkey": 3,
+    "mouse": 9
+   },
+   "cue": "Will",
+   "question": "Which locker belongs to Will's pet?",
+   "cf_context": "Luke's pet is a pig. Will's pet is a sheep. Tara's pet is a mouse. James's pet is a turkey. Noah's pet is a goose. The sheep's locker is 1. The turkey's locker is 3. The mouse's locker is 9. The pig's locker is 7. The goose's locker is 5.",
+   "cf_question": "Which locker belongs to Will's pet?",
+   "answer": "5",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Will's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the goose?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0098",
+   "family": "BL",
+   "scene": "S-0098",
+   "bridge": "sheep",
+   "cf_bridge": "goose",
+   "third": "duck",
+   "context": "Beth's pet is a sheep. Anna's pet is a duck. Victor's pet is a goose. Ryan's pet is a cat. Kyle's pet is a pig. The cat's locker is 7. The goose's locker is 5. The duck's locker is 1. The pig's locker is 9. The sheep's locker is 3.",
+   "off_context": "Beth's pet is a sheep. Anna's pet is a duck. Victor's pet is a goose. Ryan's pet is a cat. Kyle's pet is a pig. The cat's locker is 7. The goose's locker is 1. The duck's locker is 5. The pig's locker is 9. The sheep's locker is 3.",
+   "people": [
+    "Beth",
+    "Anna",
+    "Victor",
+    "Ryan",
+    "Kyle"
+   ],
+   "pets": [
+    "sheep",
+    "duck",
+    "goose",
+    "cat",
+    "pig"
+   ],
+   "lockers": {
+    "sheep": 3,
+    "goose": 5,
+    "duck": 1,
+    "cat": 7,
+    "pig": 9
+   },
+   "cue": "Beth",
+   "question": "Which locker belongs to Beth's pet?",
+   "cf_context": "Beth's pet is a goose. Anna's pet is a duck. Victor's pet is a sheep. Ryan's pet is a cat. Kyle's pet is a pig. The cat's locker is 7. The goose's locker is 5. The duck's locker is 1. The pig's locker is 9. The sheep's locker is 3.",
+   "cf_question": "Which locker belongs to Beth's pet?",
+   "answer": "3",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Beth's pet?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the sheep?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  },
+  {
+   "id": "BL-0099",
+   "family": "BL",
+   "scene": "S-0099",
+   "bridge": "turkey",
+   "cf_bridge": "spider",
+   "third": "sheep",
+   "context": "Hugo's pet is a sheep. Lily's pet is a spider. Liam's pet is a bee. Ruby's pet is a cat. Nina's pet is a turkey. The bee's locker is 9. The sheep's locker is 3. The cat's locker is 5. The turkey's locker is 1. The spider's locker is 7.",
+   "off_context": "Hugo's pet is a sheep. Lily's pet is a spider. Liam's pet is a bee. Ruby's pet is a cat. Nina's pet is a turkey. The bee's locker is 9. The sheep's locker is 7. The cat's locker is 5. The turkey's locker is 1. The spider's locker is 3.",
+   "people": [
+    "Hugo",
+    "Lily",
+    "Liam",
+    "Ruby",
+    "Nina"
+   ],
+   "pets": [
+    "sheep",
+    "spider",
+    "bee",
+    "cat",
+    "turkey"
+   ],
+   "lockers": {
+    "turkey": 1,
+    "spider": 7,
+    "sheep": 3,
+    "bee": 9,
+    "cat": 5
+   },
+   "cue": "Nina",
+   "question": "Which locker belongs to Nina's pet?",
+   "cf_context": "Hugo's pet is a sheep. Lily's pet is a turkey. Liam's pet is a bee. Ruby's pet is a cat. Nina's pet is a spider. The bee's locker is 9. The sheep's locker is 3. The cat's locker is 5. The turkey's locker is 1. The spider's locker is 7.",
+   "cf_question": "Which locker belongs to Nina's pet?",
+   "answer": "1",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Nina's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the turkey?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e5f0"
+  }
+ ]
+}

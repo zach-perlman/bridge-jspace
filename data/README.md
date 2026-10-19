@@ -19,6 +19,8 @@ token (2,400 of 2,400). No place relations and no answer tied one-to-one to its 
 | RR | recalled from a cue → a recalled fact → memory | legs (2/4/6/8) | 400 | 400 | 398 | 16 animals |
 | NAMES | bound → a lookup → prompt ("Who is the sister of Alice's partner?") | a name | 400 | 400 | 400 | 30 names |
 | CODE | bound in code → a lookup in code → code | digit 1-9 | 400 | 400 | 399 | 23 words |
+| BLR | bound → a lookup (the pet's friend) → a recalled fact → memory | legs (2/4/6/8) | 400 | 395 | 390 | 16 animals |
+| BRL | bound → a recalled fact (legs) → a lookup by legs → prompt | locker (odd digit) | 400 | 359 | 324 | 16 animals |
 | BREW | prompt → a lookup → a lookup → prompt (kept: `brew_test.json`, `brew_fresh.json`) | 12 colours | 800 | 87-88% | exp04's rule | 12 colours |
 
 \* clean, C, O and both steps alone answered (results/suite_v1/competence_v1). BL/BR/RL/RR share one context per scene
@@ -26,6 +28,17 @@ token (2,400 of 2,400). No place relations and no answer tied one-to-one to its 
 digits and legs even (the answers never collide); legs is many-to-one, so an answer cannot stand in for its bridge. The
 recall cues each name one animal ("known for mooing"; bleating, stripes, mane and buzzing were dropped as ambiguous);
 "squeaking" is answered "pig" on 2 items with a pig present, which the eligibility rule removes.
+
+**Tie-breakers BLR and BRL** (`make --set tiebreak`, seed 102; results/suite_v1/competence_tiebreak_v1). In the 2x2,
+what uses the bridge also decides where the answer comes from; BLR (used by a lookup, answer from memory) and BRL (used
+by a recall, answer from the prompt) separate the two at equal depth. Built in pairs on one scene (same people, pets
+and C). BRL is the one family the 27B gets wrong without any step being wrong alone (90% clean, every step 100%; the
+misses are 4- and 6-legged pets answered with the 2-legs locker or with a leg count), so its eligible items are a
+selected 81% and any BLR vs BRL comparison has to allow for that.
+
+**Difficulty pilot** (`data/suite_v1_dev/`, `make --set dev`, seeds 90010-90013; never a headline run's items): every
+family at 3 or 5 entities per scene and 0 or 8 unrelated filler sentences, 100 items per cell
+(results/suite_v1/competence_dev_v1 and qwen35_9b_competence_dev_v1).
 
 **How many items:** every item for competence; patching runs sample at least 150 eligible items per family (a 95%
 interval of at most ±8 points on a rate; ±4 on a paired part-vs-rest difference; ±11 between two families).

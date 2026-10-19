@@ -1,0 +1,4307 @@
+{
+ "family": "RR_e3f0",
+ "generator": "scripts/suite_v1.py make --set dev (seed 90010: 3 entities, 0 filler)",
+ "format": "Every family asks one question whose answer needs an intermediate variable (the bridge), in the chat format\n(bridge_jspace.chat: one user turn, thinking off, \"Answer:\" prefilled), with a counterfactual C that changes only the\nbridge (to X) and an off-path control O that changes something the answer does not depend on. C and O line up with the\nclean prompt token for token (checked here), so exp04/exp09's copy-and-split runs apply unchanged.",
+ "items": [
+  {
+   "id": "RR-0000",
+   "family": "RR",
+   "scene": "S-0000",
+   "bridge": "sheep",
+   "cf_bridge": "chicken",
+   "third": "goose",
+   "context": "Frank's pet is a chicken. Olivia's pet is a goose. Henry's pet is a sheep. The chicken's locker is 3. The goose's locker is 9. The sheep's locker is 1.",
+   "off_context": "Frank's pet is a chicken. Olivia's pet is a goose. Henry's pet is a sheep. The chicken's locker is 9. The goose's locker is 3. The sheep's locker is 1.",
+   "people": [
+    "Frank",
+    "Olivia",
+    "Henry"
+   ],
+   "pets": [
+    "chicken",
+    "goose",
+    "sheep"
+   ],
+   "lockers": {
+    "sheep": 1,
+    "chicken": 3,
+    "goose": 9
+   },
+   "cue": "its wool",
+   "question": "How many legs does the animal known for its wool have?",
+   "cf_context": "Frank's pet is a chicken. Olivia's pet is a goose. Henry's pet is a sheep. The chicken's locker is 3. The goose's locker is 9. The sheep's locker is 1.",
+   "cf_question": "How many legs does the animal known for clucking have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for its wool?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0001",
+   "family": "RR",
+   "scene": "S-0001",
+   "bridge": "mouse",
+   "cf_bridge": "spider",
+   "third": "goose",
+   "context": "Eric's pet is a spider. Eve's pet is a goose. Noah's pet is a mouse. The goose's locker is 1. The spider's locker is 3. The mouse's locker is 9.",
+   "off_context": "Eric's pet is a spider. Eve's pet is a goose. Noah's pet is a mouse. The goose's locker is 3. The spider's locker is 1. The mouse's locker is 9.",
+   "people": [
+    "Eric",
+    "Eve",
+    "Noah"
+   ],
+   "pets": [
+    "spider",
+    "goose",
+    "mouse"
+   ],
+   "lockers": {
+    "mouse": 9,
+    "spider": 3,
+    "goose": 1
+   },
+   "cue": "squeaking",
+   "question": "How many legs does the animal known for squeaking have?",
+   "cf_context": "Eric's pet is a spider. Eve's pet is a goose. Noah's pet is a mouse. The goose's locker is 1. The spider's locker is 3. The mouse's locker is 9.",
+   "cf_question": "How many legs does the animal known for spinning webs have?",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for squeaking?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0002",
+   "family": "RR",
+   "scene": "S-0002",
+   "bridge": "frog",
+   "cf_bridge": "spider",
+   "third": "dog",
+   "context": "Sara's pet is a frog. Nina's pet is a dog. Kate's pet is a spider. The frog's locker is 9. The spider's locker is 3. The dog's locker is 1.",
+   "off_context": "Sara's pet is a frog. Nina's pet is a dog. Kate's pet is a spider. The frog's locker is 9. The spider's locker is 1. The dog's locker is 3.",
+   "people": [
+    "Sara",
+    "Nina",
+    "Kate"
+   ],
+   "pets": [
+    "frog",
+    "dog",
+    "spider"
+   ],
+   "lockers": {
+    "frog": 9,
+    "spider": 3,
+    "dog": 1
+   },
+   "cue": "croaking",
+   "question": "How many legs does the animal known for croaking have?",
+   "cf_context": "Sara's pet is a frog. Nina's pet is a dog. Kate's pet is a spider. The frog's locker is 9. The spider's locker is 3. The dog's locker is 1.",
+   "cf_question": "How many legs does the animal known for spinning webs have?",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for croaking?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0003",
+   "family": "RR",
+   "scene": "S-0003",
+   "bridge": "dog",
+   "cf_bridge": "spider",
+   "third": "lion",
+   "context": "Emma's pet is a dog. Vera's pet is a spider. Diana's pet is a lion. The dog's locker is 1. The spider's locker is 9. The lion's locker is 7.",
+   "off_context": "Emma's pet is a dog. Vera's pet is a spider. Diana's pet is a lion. The dog's locker is 1. The spider's locker is 7. The lion's locker is 9.",
+   "people": [
+    "Emma",
+    "Vera",
+    "Diana"
+   ],
+   "pets": [
+    "dog",
+    "spider",
+    "lion"
+   ],
+   "lockers": {
+    "dog": 1,
+    "spider": 9,
+    "lion": 7
+   },
+   "cue": "barking",
+   "question": "How many legs does the animal known for barking have?",
+   "cf_context": "Emma's pet is a dog. Vera's pet is a spider. Diana's pet is a lion. The dog's locker is 1. The spider's locker is 9. The lion's locker is 7.",
+   "cf_question": "How many legs does the animal known for spinning webs have?",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for barking?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0004",
+   "family": "RR",
+   "scene": "S-0004",
+   "bridge": "lion",
+   "cf_bridge": "spider",
+   "third": "chicken",
+   "context": "Ruby's pet is a lion. Diana's pet is a chicken. Henry's pet is a spider. The chicken's locker is 3. The lion's locker is 1. The spider's locker is 9.",
+   "off_context": "Ruby's pet is a lion. Diana's pet is a chicken. Henry's pet is a spider. The chicken's locker is 9. The lion's locker is 1. The spider's locker is 3.",
+   "people": [
+    "Ruby",
+    "Diana",
+    "Henry"
+   ],
+   "pets": [
+    "lion",
+    "chicken",
+    "spider"
+   ],
+   "lockers": {
+    "lion": 1,
+    "spider": 9,
+    "chicken": 3
+   },
+   "cue": "its roar",
+   "question": "How many legs does the animal known for its roar have?",
+   "cf_context": "Ruby's pet is a lion. Diana's pet is a chicken. Henry's pet is a spider. The chicken's locker is 3. The lion's locker is 1. The spider's locker is 9.",
+   "cf_question": "How many legs does the animal known for spinning webs have?",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for its roar?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0005",
+   "family": "RR",
+   "scene": "S-0005",
+   "bridge": "chicken",
+   "cf_bridge": "frog",
+   "third": "spider",
+   "context": "Grace's pet is a frog. Laura's pet is a spider. Max's pet is a chicken. The spider's locker is 5. The frog's locker is 1. The chicken's locker is 9.",
+   "off_context": "Grace's pet is a frog. Laura's pet is a spider. Max's pet is a chicken. The spider's locker is 1. The frog's locker is 5. The chicken's locker is 9.",
+   "people": [
+    "Grace",
+    "Laura",
+    "Max"
+   ],
+   "pets": [
+    "frog",
+    "spider",
+    "chicken"
+   ],
+   "lockers": {
+    "chicken": 9,
+    "frog": 1,
+    "spider": 5
+   },
+   "cue": "clucking",
+   "question": "How many legs does the animal known for clucking have?",
+   "cf_context": "Grace's pet is a frog. Laura's pet is a spider. Max's pet is a chicken. The spider's locker is 5. The frog's locker is 1. The chicken's locker is 9.",
+   "cf_question": "How many legs does the animal known for croaking have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for clucking?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0006",
+   "family": "RR",
+   "scene": "S-0006",
+   "bridge": "dog",
+   "cf_bridge": "bee",
+   "third": "frog",
+   "context": "Beth's pet is a frog. Paul's pet is a dog. Liam's pet is a bee. The bee's locker is 1. The frog's locker is 3. The dog's locker is 9.",
+   "off_context": "Beth's pet is a frog. Paul's pet is a dog. Liam's pet is a bee. The bee's locker is 3. The frog's locker is 1. The dog's locker is 9.",
+   "people": [
+    "Beth",
+    "Paul",
+    "Liam"
+   ],
+   "pets": [
+    "frog",
+    "dog",
+    "bee"
+   ],
+   "lockers": {
+    "dog": 9,
+    "bee": 1,
+    "frog": 3
+   },
+   "cue": "barking",
+   "question": "How many legs does the animal known for barking have?",
+   "cf_context": "Beth's pet is a frog. Paul's pet is a dog. Liam's pet is a bee. The bee's locker is 1. The frog's locker is 3. The dog's locker is 9.",
+   "cf_question": "How many legs does the animal known for making honey have?",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for barking?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0007",
+   "family": "RR",
+   "scene": "S-0007",
+   "bridge": "turkey",
+   "cf_bridge": "cat",
+   "third": "horse",
+   "context": "Maria's pet is a turkey. Alice's pet is a cat. Ruby's pet is a horse. The cat's locker is 7. The turkey's locker is 9. The horse's locker is 3.",
+   "off_context": "Maria's pet is a turkey. Alice's pet is a cat. Ruby's pet is a horse. The cat's locker is 3. The turkey's locker is 9. The horse's locker is 7.",
+   "people": [
+    "Maria",
+    "Alice",
+    "Ruby"
+   ],
+   "pets": [
+    "turkey",
+    "cat",
+    "horse"
+   ],
+   "lockers": {
+    "turkey": 9,
+    "cat": 7,
+    "horse": 3
+   },
+   "cue": "gobbling",
+   "question": "How many legs does the animal known for gobbling have?",
+   "cf_context": "Maria's pet is a turkey. Alice's pet is a cat. Ruby's pet is a horse. The cat's locker is 7. The turkey's locker is 9. The horse's locker is 3.",
+   "cf_question": "How many legs does the animal known for purring have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for gobbling?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0008",
+   "family": "RR",
+   "scene": "S-0008",
+   "bridge": "goose",
+   "cf_bridge": "horse",
+   "third": "frog",
+   "context": "Leo's pet is a goose. Henry's pet is a frog. Carl's pet is a horse. The goose's locker is 3. The horse's locker is 1. The frog's locker is 9.",
+   "off_context": "Leo's pet is a goose. Henry's pet is a frog. Carl's pet is a horse. The goose's locker is 3. The horse's locker is 9. The frog's locker is 1.",
+   "people": [
+    "Leo",
+    "Henry",
+    "Carl"
+   ],
+   "pets": [
+    "goose",
+    "frog",
+    "horse"
+   ],
+   "lockers": {
+    "goose": 3,
+    "horse": 1,
+    "frog": 9
+   },
+   "cue": "honking",
+   "question": "How many legs does the animal known for honking have?",
+   "cf_context": "Leo's pet is a goose. Henry's pet is a frog. Carl's pet is a horse. The goose's locker is 3. The horse's locker is 1. The frog's locker is 9.",
+   "cf_question": "How many legs does the animal known for neighing have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for honking?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0009",
+   "family": "RR",
+   "scene": "S-0009",
+   "bridge": "dog",
+   "cf_bridge": "spider",
+   "third": "wolf",
+   "context": "Kyle's pet is a spider. Olivia's pet is a wolf. Ivy's pet is a dog. The spider's locker is 5. The wolf's locker is 3. The dog's locker is 7.",
+   "off_context": "Kyle's pet is a spider. Olivia's pet is a wolf. Ivy's pet is a dog. The spider's locker is 3. The wolf's locker is 5. The dog's locker is 7.",
+   "people": [
+    "Kyle",
+    "Olivia",
+    "Ivy"
+   ],
+   "pets": [
+    "spider",
+    "wolf",
+    "dog"
+   ],
+   "lockers": {
+    "dog": 7,
+    "spider": 5,
+    "wolf": 3
+   },
+   "cue": "barking",
+   "question": "How many legs does the animal known for barking have?",
+   "cf_context": "Kyle's pet is a spider. Olivia's pet is a wolf. Ivy's pet is a dog. The spider's locker is 5. The wolf's locker is 3. The dog's locker is 7.",
+   "cf_question": "How many legs does the animal known for spinning webs have?",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for barking?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0010",
+   "family": "RR",
+   "scene": "S-0010",
+   "bridge": "turkey",
+   "cf_bridge": "dog",
+   "third": "chicken",
+   "context": "Clara's pet is a dog. Nina's pet is a turkey. Henry's pet is a chicken. The turkey's locker is 5. The chicken's locker is 9. The dog's locker is 1.",
+   "off_context": "Clara's pet is a dog. Nina's pet is a turkey. Henry's pet is a chicken. The turkey's locker is 5. The chicken's locker is 1. The dog's locker is 9.",
+   "people": [
+    "Clara",
+    "Nina",
+    "Henry"
+   ],
+   "pets": [
+    "dog",
+    "turkey",
+    "chicken"
+   ],
+   "lockers": {
+    "turkey": 5,
+    "dog": 1,
+    "chicken": 9
+   },
+   "cue": "gobbling",
+   "question": "How many legs does the animal known for gobbling have?",
+   "cf_context": "Clara's pet is a dog. Nina's pet is a turkey. Henry's pet is a chicken. The turkey's locker is 5. The chicken's locker is 9. The dog's locker is 1.",
+   "cf_question": "How many legs does the animal known for barking have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for gobbling?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0011",
+   "family": "RR",
+   "scene": "S-0011",
+   "bridge": "mouse",
+   "cf_bridge": "turkey",
+   "third": "wolf",
+   "context": "Will's pet is a turkey. Oscar's pet is a wolf. Sam's pet is a mouse. The mouse's locker is 7. The turkey's locker is 3. The wolf's locker is 1.",
+   "off_context": "Will's pet is a turkey. Oscar's pet is a wolf. Sam's pet is a mouse. The mouse's locker is 7. The turkey's locker is 1. The wolf's locker is 3.",
+   "people": [
+    "Will",
+    "Oscar",
+    "Sam"
+   ],
+   "pets": [
+    "turkey",
+    "wolf",
+    "mouse"
+   ],
+   "lockers": {
+    "mouse": 7,
+    "turkey": 3,
+    "wolf": 1
+   },
+   "cue": "squeaking",
+   "question": "How many legs does the animal known for squeaking have?",
+   "cf_context": "Will's pet is a turkey. Oscar's pet is a wolf. Sam's pet is a mouse. The mouse's locker is 7. The turkey's locker is 3. The wolf's locker is 1.",
+   "cf_question": "How many legs does the animal known for gobbling have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for squeaking?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0012",
+   "family": "RR",
+   "scene": "S-0012",
+   "bridge": "chicken",
+   "cf_bridge": "cow",
+   "third": "cat",
+   "context": "Luke's pet is a cat. Vera's pet is a chicken. Paul's pet is a cow. The cow's locker is 7. The cat's locker is 1. The chicken's locker is 5.",
+   "off_context": "Luke's pet is a cat. Vera's pet is a chicken. Paul's pet is a cow. The cow's locker is 1. The cat's locker is 7. The chicken's locker is 5.",
+   "people": [
+    "Luke",
+    "Vera",
+    "Paul"
+   ],
+   "pets": [
+    "cat",
+    "chicken",
+    "cow"
+   ],
+   "lockers": {
+    "chicken": 5,
+    "cow": 7,
+    "cat": 1
+   },
+   "cue": "clucking",
+   "question": "How many legs does the animal known for clucking have?",
+   "cf_context": "Luke's pet is a cat. Vera's pet is a chicken. Paul's pet is a cow. The cow's locker is 7. The cat's locker is 1. The chicken's locker is 5.",
+   "cf_question": "How many legs does the animal known for mooing have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for clucking?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0013",
+   "family": "RR",
+   "scene": "S-0013",
+   "bridge": "wolf",
+   "cf_bridge": "duck",
+   "third": "goose",
+   "context": "Carl's pet is a wolf. Tara's pet is a duck. Maria's pet is a goose. The wolf's locker is 9. The duck's locker is 3. The goose's locker is 5.",
+   "off_context": "Carl's pet is a wolf. Tara's pet is a duck. Maria's pet is a goose. The wolf's locker is 9. The duck's locker is 5. The goose's locker is 3.",
+   "people": [
+    "Carl",
+    "Tara",
+    "Maria"
+   ],
+   "pets": [
+    "wolf",
+    "duck",
+    "goose"
+   ],
+   "lockers": {
+    "wolf": 9,
+    "duck": 3,
+    "goose": 5
+   },
+   "cue": "howling",
+   "question": "How many legs does the animal known for howling have?",
+   "cf_context": "Carl's pet is a wolf. Tara's pet is a duck. Maria's pet is a goose. The wolf's locker is 9. The duck's locker is 3. The goose's locker is 5.",
+   "cf_question": "How many legs does the animal known for quacking have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for howling?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0014",
+   "family": "RR",
+   "scene": "S-0014",
+   "bridge": "turkey",
+   "cf_bridge": "lion",
+   "third": "dog",
+   "context": "Will's pet is a lion. Ella's pet is a turkey. Grace's pet is a dog. The lion's locker is 1. The dog's locker is 5. The turkey's locker is 3.",
+   "off_context": "Will's pet is a lion. Ella's pet is a turkey. Grace's pet is a dog. The lion's locker is 5. The dog's locker is 1. The turkey's locker is 3.",
+   "people": [
+    "Will",
+    "Ella",
+    "Grace"
+   ],
+   "pets": [
+    "lion",
+    "turkey",
+    "dog"
+   ],
+   "lockers": {
+    "turkey": 3,
+    "lion": 1,
+    "dog": 5
+   },
+   "cue": "gobbling",
+   "question": "How many legs does the animal known for gobbling have?",
+   "cf_context": "Will's pet is a lion. Ella's pet is a turkey. Grace's pet is a dog. The lion's locker is 1. The dog's locker is 5. The turkey's locker is 3.",
+   "cf_question": "How many legs does the animal known for its roar have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for gobbling?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0015",
+   "family": "RR",
+   "scene": "S-0015",
+   "bridge": "duck",
+   "cf_bridge": "cat",
+   "third": "bee",
+   "context": "Will's pet is a cat. Sara's pet is a bee. Hugo's pet is a duck. The cat's locker is 1. The duck's locker is 3. The bee's locker is 5.",
+   "off_context": "Will's pet is a cat. Sara's pet is a bee. Hugo's pet is a duck. The cat's locker is 5. The duck's locker is 3. The bee's locker is 1.",
+   "people": [
+    "Will",
+    "Sara",
+    "Hugo"
+   ],
+   "pets": [
+    "cat",
+    "bee",
+    "duck"
+   ],
+   "lockers": {
+    "duck": 3,
+    "cat": 1,
+    "bee": 5
+   },
+   "cue": "quacking",
+   "question": "How many legs does the animal known for quacking have?",
+   "cf_context": "Will's pet is a cat. Sara's pet is a bee. Hugo's pet is a duck. The cat's locker is 1. The duck's locker is 3. The bee's locker is 5.",
+   "cf_question": "How many legs does the animal known for purring have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for quacking?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0016",
+   "family": "RR",
+   "scene": "S-0016",
+   "bridge": "dog",
+   "cf_bridge": "bee",
+   "third": "horse",
+   "context": "Ivy's pet is a bee. Ben's pet is a horse. Adam's pet is a dog. The dog's locker is 1. The horse's locker is 7. The bee's locker is 5.",
+   "off_context": "Ivy's pet is a bee. Ben's pet is a horse. Adam's pet is a dog. The dog's locker is 1. The horse's locker is 5. The bee's locker is 7.",
+   "people": [
+    "Ivy",
+    "Ben",
+    "Adam"
+   ],
+   "pets": [
+    "bee",
+    "horse",
+    "dog"
+   ],
+   "lockers": {
+    "dog": 1,
+    "bee": 5,
+    "horse": 7
+   },
+   "cue": "barking",
+   "question": "How many legs does the animal known for barking have?",
+   "cf_context": "Ivy's pet is a bee. Ben's pet is a horse. Adam's pet is a dog. The dog's locker is 1. The horse's locker is 7. The bee's locker is 5.",
+   "cf_question": "How many legs does the animal known for making honey have?",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for barking?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0017",
+   "family": "RR",
+   "scene": "S-0017",
+   "bridge": "duck",
+   "cf_bridge": "spider",
+   "third": "lion",
+   "context": "Julia's pet is a spider. Noah's pet is a duck. Jack's pet is a lion. The spider's locker is 7. The duck's locker is 3. The lion's locker is 9.",
+   "off_context": "Julia's pet is a spider. Noah's pet is a duck. Jack's pet is a lion. The spider's locker is 9. The duck's locker is 3. The lion's locker is 7.",
+   "people": [
+    "Julia",
+    "Noah",
+    "Jack"
+   ],
+   "pets": [
+    "spider",
+    "duck",
+    "lion"
+   ],
+   "lockers": {
+    "duck": 3,
+    "spider": 7,
+    "lion": 9
+   },
+   "cue": "quacking",
+   "question": "How many legs does the animal known for quacking have?",
+   "cf_context": "Julia's pet is a spider. Noah's pet is a duck. Jack's pet is a lion. The spider's locker is 7. The duck's locker is 3. The lion's locker is 9.",
+   "cf_question": "How many legs does the animal known for spinning webs have?",
+   "answer": "2",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for quacking?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0018",
+   "family": "RR",
+   "scene": "S-0018",
+   "bridge": "duck",
+   "cf_bridge": "dog",
+   "third": "mouse",
+   "context": "Tara's pet is a duck. Olivia's pet is a mouse. Dan's pet is a dog. The dog's locker is 1. The duck's locker is 7. The mouse's locker is 3.",
+   "off_context": "Tara's pet is a duck. Olivia's pet is a mouse. Dan's pet is a dog. The dog's locker is 3. The duck's locker is 7. The mouse's locker is 1.",
+   "people": [
+    "Tara",
+    "Olivia",
+    "Dan"
+   ],
+   "pets": [
+    "duck",
+    "mouse",
+    "dog"
+   ],
+   "lockers": {
+    "duck": 7,
+    "dog": 1,
+    "mouse": 3
+   },
+   "cue": "quacking",
+   "question": "How many legs does the animal known for quacking have?",
+   "cf_context": "Tara's pet is a duck. Olivia's pet is a mouse. Dan's pet is a dog. The dog's locker is 1. The duck's locker is 7. The mouse's locker is 3.",
+   "cf_question": "How many legs does the animal known for barking have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for quacking?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0019",
+   "family": "RR",
+   "scene": "S-0019",
+   "bridge": "frog",
+   "cf_bridge": "goose",
+   "third": "pig",
+   "context": "Laura's pet is a pig. Anna's pet is a goose. Mia's pet is a frog. The pig's locker is 9. The goose's locker is 5. The frog's locker is 3.",
+   "off_context": "Laura's pet is a pig. Anna's pet is a goose. Mia's pet is a frog. The pig's locker is 5. The goose's locker is 9. The frog's locker is 3.",
+   "people": [
+    "Laura",
+    "Anna",
+    "Mia"
+   ],
+   "pets": [
+    "pig",
+    "goose",
+    "frog"
+   ],
+   "lockers": {
+    "frog": 3,
+    "goose": 5,
+    "pig": 9
+   },
+   "cue": "croaking",
+   "question": "How many legs does the animal known for croaking have?",
+   "cf_context": "Laura's pet is a pig. Anna's pet is a goose. Mia's pet is a frog. The pig's locker is 9. The goose's locker is 5. The frog's locker is 3.",
+   "cf_question": "How many legs does the animal known for honking have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for croaking?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0020",
+   "family": "RR",
+   "scene": "S-0020",
+   "bridge": "turkey",
+   "cf_bridge": "cow",
+   "third": "duck",
+   "context": "Hugo's pet is a turkey. Iris's pet is a cow. Ivan's pet is a duck. The turkey's locker is 9. The duck's locker is 1. The cow's locker is 5.",
+   "off_context": "Hugo's pet is a turkey. Iris's pet is a cow. Ivan's pet is a duck. The turkey's locker is 9. The duck's locker is 5. The cow's locker is 1.",
+   "people": [
+    "Hugo",
+    "Iris",
+    "Ivan"
+   ],
+   "pets": [
+    "turkey",
+    "cow",
+    "duck"
+   ],
+   "lockers": {
+    "turkey": 9,
+    "cow": 5,
+    "duck": 1
+   },
+   "cue": "gobbling",
+   "question": "How many legs does the animal known for gobbling have?",
+   "cf_context": "Hugo's pet is a turkey. Iris's pet is a cow. Ivan's pet is a duck. The turkey's locker is 9. The duck's locker is 1. The cow's locker is 5.",
+   "cf_question": "How many legs does the animal known for mooing have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for gobbling?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0021",
+   "family": "RR",
+   "scene": "S-0021",
+   "bridge": "chicken",
+   "cf_bridge": "wolf",
+   "third": "horse",
+   "context": "Liam's pet is a horse. Lily's pet is a wolf. Paul's pet is a chicken. The wolf's locker is 9. The horse's locker is 5. The chicken's locker is 1.",
+   "off_context": "Liam's pet is a horse. Lily's pet is a wolf. Paul's pet is a chicken. The wolf's locker is 5. The horse's locker is 9. The chicken's locker is 1.",
+   "people": [
+    "Liam",
+    "Lily",
+    "Paul"
+   ],
+   "pets": [
+    "horse",
+    "wolf",
+    "chicken"
+   ],
+   "lockers": {
+    "chicken": 1,
+    "wolf": 9,
+    "horse": 5
+   },
+   "cue": "clucking",
+   "question": "How many legs does the animal known for clucking have?",
+   "cf_context": "Liam's pet is a horse. Lily's pet is a wolf. Paul's pet is a chicken. The wolf's locker is 9. The horse's locker is 5. The chicken's locker is 1.",
+   "cf_question": "How many legs does the animal known for howling have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for clucking?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0022",
+   "family": "RR",
+   "scene": "S-0022",
+   "bridge": "cat",
+   "cf_bridge": "duck",
+   "third": "chicken",
+   "context": "Vera's pet is a cat. Laura's pet is a duck. Dan's pet is a chicken. The cat's locker is 7. The chicken's locker is 1. The duck's locker is 3.",
+   "off_context": "Vera's pet is a cat. Laura's pet is a duck. Dan's pet is a chicken. The cat's locker is 7. The chicken's locker is 3. The duck's locker is 1.",
+   "people": [
+    "Vera",
+    "Laura",
+    "Dan"
+   ],
+   "pets": [
+    "cat",
+    "duck",
+    "chicken"
+   ],
+   "lockers": {
+    "cat": 7,
+    "duck": 3,
+    "chicken": 1
+   },
+   "cue": "purring",
+   "question": "How many legs does the animal known for purring have?",
+   "cf_context": "Vera's pet is a cat. Laura's pet is a duck. Dan's pet is a chicken. The cat's locker is 7. The chicken's locker is 1. The duck's locker is 3.",
+   "cf_question": "How many legs does the animal known for quacking have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for purring?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0023",
+   "family": "RR",
+   "scene": "S-0023",
+   "bridge": "bee",
+   "cf_bridge": "mouse",
+   "third": "dog",
+   "context": "Sean's pet is a dog. Will's pet is a mouse. Lily's pet is a bee. The mouse's locker is 3. The bee's locker is 1. The dog's locker is 9.",
+   "off_context": "Sean's pet is a dog. Will's pet is a mouse. Lily's pet is a bee. The mouse's locker is 9. The bee's locker is 1. The dog's locker is 3.",
+   "people": [
+    "Sean",
+    "Will",
+    "Lily"
+   ],
+   "pets": [
+    "dog",
+    "mouse",
+    "bee"
+   ],
+   "lockers": {
+    "bee": 1,
+    "mouse": 3,
+    "dog": 9
+   },
+   "cue": "making honey",
+   "question": "How many legs does the animal known for making honey have?",
+   "cf_context": "Sean's pet is a dog. Will's pet is a mouse. Lily's pet is a bee. The mouse's locker is 3. The bee's locker is 1. The dog's locker is 9.",
+   "cf_question": "How many legs does the animal known for squeaking have?",
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for making honey?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0024",
+   "family": "RR",
+   "scene": "S-0024",
+   "bridge": "lion",
+   "cf_bridge": "chicken",
+   "third": "turkey",
+   "context": "Olivia's pet is a chicken. Tara's pet is a lion. Clara's pet is a turkey. The chicken's locker is 9. The lion's locker is 5. The turkey's locker is 3.",
+   "off_context": "Olivia's pet is a chicken. Tara's pet is a lion. Clara's pet is a turkey. The chicken's locker is 3. The lion's locker is 5. The turkey's locker is 9.",
+   "people": [
+    "Olivia",
+    "Tara",
+    "Clara"
+   ],
+   "pets": [
+    "chicken",
+    "lion",
+    "turkey"
+   ],
+   "lockers": {
+    "lion": 5,
+    "chicken": 9,
+    "turkey": 3
+   },
+   "cue": "its roar",
+   "question": "How many legs does the animal known for its roar have?",
+   "cf_context": "Olivia's pet is a chicken. Tara's pet is a lion. Clara's pet is a turkey. The chicken's locker is 9. The lion's locker is 5. The turkey's locker is 3.",
+   "cf_question": "How many legs does the animal known for clucking have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for its roar?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0025",
+   "family": "RR",
+   "scene": "S-0025",
+   "bridge": "spider",
+   "cf_bridge": "cat",
+   "third": "sheep",
+   "context": "Fiona's pet is a spider. Maria's pet is a sheep. Eva's pet is a cat. The cat's locker is 9. The spider's locker is 1. The sheep's locker is 7.",
+   "off_context": "Fiona's pet is a spider. Maria's pet is a sheep. Eva's pet is a cat. The cat's locker is 7. The spider's locker is 1. The sheep's locker is 9.",
+   "people": [
+    "Fiona",
+    "Maria",
+    "Eva"
+   ],
+   "pets": [
+    "spider",
+    "sheep",
+    "cat"
+   ],
+   "lockers": {
+    "spider": 1,
+    "cat": 9,
+    "sheep": 7
+   },
+   "cue": "spinning webs",
+   "question": "How many legs does the animal known for spinning webs have?",
+   "cf_context": "Fiona's pet is a spider. Maria's pet is a sheep. Eva's pet is a cat. The cat's locker is 9. The spider's locker is 1. The sheep's locker is 7.",
+   "cf_question": "How many legs does the animal known for purring have?",
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for spinning webs?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0026",
+   "family": "RR",
+   "scene": "S-0026",
+   "bridge": "spider",
+   "cf_bridge": "lion",
+   "third": "pig",
+   "context": "Zoe's pet is a lion. Diana's pet is a pig. James's pet is a spider. The lion's locker is 7. The spider's locker is 5. The pig's locker is 9.",
+   "off_context": "Zoe's pet is a lion. Diana's pet is a pig. James's pet is a spider. The lion's locker is 9. The spider's locker is 5. The pig's locker is 7.",
+   "people": [
+    "Zoe",
+    "Diana",
+    "James"
+   ],
+   "pets": [
+    "lion",
+    "pig",
+    "spider"
+   ],
+   "lockers": {
+    "spider": 5,
+    "lion": 7,
+    "pig": 9
+   },
+   "cue": "spinning webs",
+   "question": "How many legs does the animal known for spinning webs have?",
+   "cf_context": "Zoe's pet is a lion. Diana's pet is a pig. James's pet is a spider. The lion's locker is 7. The spider's locker is 5. The pig's locker is 9.",
+   "cf_question": "How many legs does the animal known for its roar have?",
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for spinning webs?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0027",
+   "family": "RR",
+   "scene": "S-0027",
+   "bridge": "cat",
+   "cf_bridge": "turkey",
+   "third": "cow",
+   "context": "Lily's pet is a turkey. Eve's pet is a cat. Kyle's pet is a cow. The cat's locker is 1. The cow's locker is 9. The turkey's locker is 7.",
+   "off_context": "Lily's pet is a turkey. Eve's pet is a cat. Kyle's pet is a cow. The cat's locker is 1. The cow's locker is 7. The turkey's locker is 9.",
+   "people": [
+    "Lily",
+    "Eve",
+    "Kyle"
+   ],
+   "pets": [
+    "turkey",
+    "cat",
+    "cow"
+   ],
+   "lockers": {
+    "cat": 1,
+    "turkey": 7,
+    "cow": 9
+   },
+   "cue": "purring",
+   "question": "How many legs does the animal known for purring have?",
+   "cf_context": "Lily's pet is a turkey. Eve's pet is a cat. Kyle's pet is a cow. The cat's locker is 1. The cow's locker is 9. The turkey's locker is 7.",
+   "cf_question": "How many legs does the animal known for gobbling have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for purring?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0028",
+   "family": "RR",
+   "scene": "S-0028",
+   "bridge": "bee",
+   "cf_bridge": "cow",
+   "third": "duck",
+   "context": "Sean's pet is a bee. Kyle's pet is a duck. Jack's pet is a cow. The cow's locker is 1. The bee's locker is 3. The duck's locker is 5.",
+   "off_context": "Sean's pet is a bee. Kyle's pet is a duck. Jack's pet is a cow. The cow's locker is 5. The bee's locker is 3. The duck's locker is 1.",
+   "people": [
+    "Sean",
+    "Kyle",
+    "Jack"
+   ],
+   "pets": [
+    "bee",
+    "duck",
+    "cow"
+   ],
+   "lockers": {
+    "bee": 3,
+    "cow": 1,
+    "duck": 5
+   },
+   "cue": "making honey",
+   "question": "How many legs does the animal known for making honey have?",
+   "cf_context": "Sean's pet is a bee. Kyle's pet is a duck. Jack's pet is a cow. The cow's locker is 1. The bee's locker is 3. The duck's locker is 5.",
+   "cf_question": "How many legs does the animal known for mooing have?",
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for making honey?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0029",
+   "family": "RR",
+   "scene": "S-0029",
+   "bridge": "duck",
+   "cf_bridge": "sheep",
+   "third": "cow",
+   "context": "Amy's pet is a cow. Tom's pet is a sheep. Finn's pet is a duck. The cow's locker is 3. The duck's locker is 9. The sheep's locker is 5.",
+   "off_context": "Amy's pet is a cow. Tom's pet is a sheep. Finn's pet is a duck. The cow's locker is 5. The duck's locker is 9. The sheep's locker is 3.",
+   "people": [
+    "Amy",
+    "Tom",
+    "Finn"
+   ],
+   "pets": [
+    "cow",
+    "sheep",
+    "duck"
+   ],
+   "lockers": {
+    "duck": 9,
+    "sheep": 5,
+    "cow": 3
+   },
+   "cue": "quacking",
+   "question": "How many legs does the animal known for quacking have?",
+   "cf_context": "Amy's pet is a cow. Tom's pet is a sheep. Finn's pet is a duck. The cow's locker is 3. The duck's locker is 9. The sheep's locker is 5.",
+   "cf_question": "How many legs does the animal known for its wool have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for quacking?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0030",
+   "family": "RR",
+   "scene": "S-0030",
+   "bridge": "duck",
+   "cf_bridge": "lion",
+   "third": "pig",
+   "context": "Liam's pet is a lion. Ivy's pet is a pig. Sean's pet is a duck. The duck's locker is 3. The lion's locker is 7. The pig's locker is 9.",
+   "off_context": "Liam's pet is a lion. Ivy's pet is a pig. Sean's pet is a duck. The duck's locker is 3. The lion's locker is 9. The pig's locker is 7.",
+   "people": [
+    "Liam",
+    "Ivy",
+    "Sean"
+   ],
+   "pets": [
+    "lion",
+    "pig",
+    "duck"
+   ],
+   "lockers": {
+    "duck": 3,
+    "lion": 7,
+    "pig": 9
+   },
+   "cue": "quacking",
+   "question": "How many legs does the animal known for quacking have?",
+   "cf_context": "Liam's pet is a lion. Ivy's pet is a pig. Sean's pet is a duck. The duck's locker is 3. The lion's locker is 7. The pig's locker is 9.",
+   "cf_question": "How many legs does the animal known for its roar have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for quacking?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0031",
+   "family": "RR",
+   "scene": "S-0031",
+   "bridge": "goose",
+   "cf_bridge": "pig",
+   "third": "cat",
+   "context": "Oscar's pet is a cat. Beth's pet is a pig. Leo's pet is a goose. The goose's locker is 7. The pig's locker is 1. The cat's locker is 3.",
+   "off_context": "Oscar's pet is a cat. Beth's pet is a pig. Leo's pet is a goose. The goose's locker is 7. The pig's locker is 3. The cat's locker is 1.",
+   "people": [
+    "Oscar",
+    "Beth",
+    "Leo"
+   ],
+   "pets": [
+    "cat",
+    "pig",
+    "goose"
+   ],
+   "lockers": {
+    "goose": 7,
+    "pig": 1,
+    "cat": 3
+   },
+   "cue": "honking",
+   "question": "How many legs does the animal known for honking have?",
+   "cf_context": "Oscar's pet is a cat. Beth's pet is a pig. Leo's pet is a goose. The goose's locker is 7. The pig's locker is 1. The cat's locker is 3.",
+   "cf_question": "How many legs does the animal known for oinking have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for honking?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0032",
+   "family": "RR",
+   "scene": "S-0032",
+   "bridge": "spider",
+   "cf_bridge": "sheep",
+   "third": "duck",
+   "context": "Maria's pet is a sheep. Vera's pet is a spider. Ivan's pet is a duck. The spider's locker is 5. The duck's locker is 3. The sheep's locker is 9.",
+   "off_context": "Maria's pet is a sheep. Vera's pet is a spider. Ivan's pet is a duck. The spider's locker is 5. The duck's locker is 9. The sheep's locker is 3.",
+   "people": [
+    "Maria",
+    "Vera",
+    "Ivan"
+   ],
+   "pets": [
+    "sheep",
+    "spider",
+    "duck"
+   ],
+   "lockers": {
+    "spider": 5,
+    "sheep": 9,
+    "duck": 3
+   },
+   "cue": "spinning webs",
+   "question": "How many legs does the animal known for spinning webs have?",
+   "cf_context": "Maria's pet is a sheep. Vera's pet is a spider. Ivan's pet is a duck. The spider's locker is 5. The duck's locker is 3. The sheep's locker is 9.",
+   "cf_question": "How many legs does the animal known for its wool have?",
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for spinning webs?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0033",
+   "family": "RR",
+   "scene": "S-0033",
+   "bridge": "duck",
+   "cf_bridge": "spider",
+   "third": "turkey",
+   "context": "Luke's pet is a spider. Grace's pet is a turkey. James's pet is a duck. The spider's locker is 1. The turkey's locker is 3. The duck's locker is 5.",
+   "off_context": "Luke's pet is a spider. Grace's pet is a turkey. James's pet is a duck. The spider's locker is 3. The turkey's locker is 1. The duck's locker is 5.",
+   "people": [
+    "Luke",
+    "Grace",
+    "James"
+   ],
+   "pets": [
+    "spider",
+    "turkey",
+    "duck"
+   ],
+   "lockers": {
+    "duck": 5,
+    "spider": 1,
+    "turkey": 3
+   },
+   "cue": "quacking",
+   "question": "How many legs does the animal known for quacking have?",
+   "cf_context": "Luke's pet is a spider. Grace's pet is a turkey. James's pet is a duck. The spider's locker is 1. The turkey's locker is 3. The duck's locker is 5.",
+   "cf_question": "How many legs does the animal known for spinning webs have?",
+   "answer": "2",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for quacking?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0034",
+   "family": "RR",
+   "scene": "S-0034",
+   "bridge": "cow",
+   "cf_bridge": "turkey",
+   "third": "mouse",
+   "context": "Adam's pet is a mouse. Eve's pet is a turkey. Lily's pet is a cow. The cow's locker is 5. The turkey's locker is 3. The mouse's locker is 1.",
+   "off_context": "Adam's pet is a mouse. Eve's pet is a turkey. Lily's pet is a cow. The cow's locker is 5. The turkey's locker is 1. The mouse's locker is 3.",
+   "people": [
+    "Adam",
+    "Eve",
+    "Lily"
+   ],
+   "pets": [
+    "mouse",
+    "turkey",
+    "cow"
+   ],
+   "lockers": {
+    "cow": 5,
+    "turkey": 3,
+    "mouse": 1
+   },
+   "cue": "mooing",
+   "question": "How many legs does the animal known for mooing have?",
+   "cf_context": "Adam's pet is a mouse. Eve's pet is a turkey. Lily's pet is a cow. The cow's locker is 5. The turkey's locker is 3. The mouse's locker is 1.",
+   "cf_question": "How many legs does the animal known for gobbling have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for mooing?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cow have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0035",
+   "family": "RR",
+   "scene": "S-0035",
+   "bridge": "bee",
+   "cf_bridge": "cat",
+   "third": "horse",
+   "context": "Oscar's pet is a bee. Frank's pet is a horse. Zoe's pet is a cat. The bee's locker is 7. The cat's locker is 1. The horse's locker is 3.",
+   "off_context": "Oscar's pet is a bee. Frank's pet is a horse. Zoe's pet is a cat. The bee's locker is 7. The cat's locker is 3. The horse's locker is 1.",
+   "people": [
+    "Oscar",
+    "Frank",
+    "Zoe"
+   ],
+   "pets": [
+    "bee",
+    "horse",
+    "cat"
+   ],
+   "lockers": {
+    "bee": 7,
+    "cat": 1,
+    "horse": 3
+   },
+   "cue": "making honey",
+   "question": "How many legs does the animal known for making honey have?",
+   "cf_context": "Oscar's pet is a bee. Frank's pet is a horse. Zoe's pet is a cat. The bee's locker is 7. The cat's locker is 1. The horse's locker is 3.",
+   "cf_question": "How many legs does the animal known for purring have?",
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for making honey?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0036",
+   "family": "RR",
+   "scene": "S-0036",
+   "bridge": "sheep",
+   "cf_bridge": "spider",
+   "third": "bee",
+   "context": "Tom's pet is a sheep. Fiona's pet is a spider. Will's pet is a bee. The sheep's locker is 3. The spider's locker is 7. The bee's locker is 9.",
+   "off_context": "Tom's pet is a sheep. Fiona's pet is a spider. Will's pet is a bee. The sheep's locker is 3. The spider's locker is 9. The bee's locker is 7.",
+   "people": [
+    "Tom",
+    "Fiona",
+    "Will"
+   ],
+   "pets": [
+    "sheep",
+    "spider",
+    "bee"
+   ],
+   "lockers": {
+    "sheep": 3,
+    "spider": 7,
+    "bee": 9
+   },
+   "cue": "its wool",
+   "question": "How many legs does the animal known for its wool have?",
+   "cf_context": "Tom's pet is a sheep. Fiona's pet is a spider. Will's pet is a bee. The sheep's locker is 3. The spider's locker is 7. The bee's locker is 9.",
+   "cf_question": "How many legs does the animal known for spinning webs have?",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for its wool?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0037",
+   "family": "RR",
+   "scene": "S-0037",
+   "bridge": "wolf",
+   "cf_bridge": "spider",
+   "third": "duck",
+   "context": "Liam's pet is a duck. Henry's pet is a wolf. Victor's pet is a spider. The spider's locker is 5. The duck's locker is 7. The wolf's locker is 3.",
+   "off_context": "Liam's pet is a duck. Henry's pet is a wolf. Victor's pet is a spider. The spider's locker is 7. The duck's locker is 5. The wolf's locker is 3.",
+   "people": [
+    "Liam",
+    "Henry",
+    "Victor"
+   ],
+   "pets": [
+    "duck",
+    "wolf",
+    "spider"
+   ],
+   "lockers": {
+    "wolf": 3,
+    "spider": 5,
+    "duck": 7
+   },
+   "cue": "howling",
+   "question": "How many legs does the animal known for howling have?",
+   "cf_context": "Liam's pet is a duck. Henry's pet is a wolf. Victor's pet is a spider. The spider's locker is 5. The duck's locker is 7. The wolf's locker is 3.",
+   "cf_question": "How many legs does the animal known for spinning webs have?",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for howling?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0038",
+   "family": "RR",
+   "scene": "S-0038",
+   "bridge": "goose",
+   "cf_bridge": "pig",
+   "third": "cat",
+   "context": "Will's pet is a cat. Luke's pet is a pig. Diana's pet is a goose. The pig's locker is 3. The goose's locker is 5. The cat's locker is 1.",
+   "off_context": "Will's pet is a cat. Luke's pet is a pig. Diana's pet is a goose. The pig's locker is 1. The goose's locker is 5. The cat's locker is 3.",
+   "people": [
+    "Will",
+    "Luke",
+    "Diana"
+   ],
+   "pets": [
+    "cat",
+    "pig",
+    "goose"
+   ],
+   "lockers": {
+    "goose": 5,
+    "pig": 3,
+    "cat": 1
+   },
+   "cue": "honking",
+   "question": "How many legs does the animal known for honking have?",
+   "cf_context": "Will's pet is a cat. Luke's pet is a pig. Diana's pet is a goose. The pig's locker is 3. The goose's locker is 5. The cat's locker is 1.",
+   "cf_question": "How many legs does the animal known for oinking have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for honking?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0039",
+   "family": "RR",
+   "scene": "S-0039",
+   "bridge": "frog",
+   "cf_bridge": "duck",
+   "third": "horse",
+   "context": "Ben's pet is a frog. Ruby's pet is a horse. Max's pet is a duck. The horse's locker is 3. The duck's locker is 7. The frog's locker is 5.",
+   "off_context": "Ben's pet is a frog. Ruby's pet is a horse. Max's pet is a duck. The horse's locker is 7. The duck's locker is 3. The frog's locker is 5.",
+   "people": [
+    "Ben",
+    "Ruby",
+    "Max"
+   ],
+   "pets": [
+    "frog",
+    "horse",
+    "duck"
+   ],
+   "lockers": {
+    "frog": 5,
+    "duck": 7,
+    "horse": 3
+   },
+   "cue": "croaking",
+   "question": "How many legs does the animal known for croaking have?",
+   "cf_context": "Ben's pet is a frog. Ruby's pet is a horse. Max's pet is a duck. The horse's locker is 3. The duck's locker is 7. The frog's locker is 5.",
+   "cf_question": "How many legs does the animal known for quacking have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for croaking?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0040",
+   "family": "RR",
+   "scene": "S-0040",
+   "bridge": "sheep",
+   "cf_bridge": "turkey",
+   "third": "duck",
+   "context": "Luke's pet is a duck. Tom's pet is a sheep. Dan's pet is a turkey. The sheep's locker is 5. The turkey's locker is 9. The duck's locker is 3.",
+   "off_context": "Luke's pet is a duck. Tom's pet is a sheep. Dan's pet is a turkey. The sheep's locker is 5. The turkey's locker is 3. The duck's locker is 9.",
+   "people": [
+    "Luke",
+    "Tom",
+    "Dan"
+   ],
+   "pets": [
+    "duck",
+    "sheep",
+    "turkey"
+   ],
+   "lockers": {
+    "sheep": 5,
+    "turkey": 9,
+    "duck": 3
+   },
+   "cue": "its wool",
+   "question": "How many legs does the animal known for its wool have?",
+   "cf_context": "Luke's pet is a duck. Tom's pet is a sheep. Dan's pet is a turkey. The sheep's locker is 5. The turkey's locker is 9. The duck's locker is 3.",
+   "cf_question": "How many legs does the animal known for gobbling have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for its wool?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0041",
+   "family": "RR",
+   "scene": "S-0041",
+   "bridge": "turkey",
+   "cf_bridge": "frog",
+   "third": "cat",
+   "context": "Will's pet is a cat. Rose's pet is a turkey. Leo's pet is a frog. The cat's locker is 1. The frog's locker is 7. The turkey's locker is 9.",
+   "off_context": "Will's pet is a cat. Rose's pet is a turkey. Leo's pet is a frog. The cat's locker is 7. The frog's locker is 1. The turkey's locker is 9.",
+   "people": [
+    "Will",
+    "Rose",
+    "Leo"
+   ],
+   "pets": [
+    "cat",
+    "turkey",
+    "frog"
+   ],
+   "lockers": {
+    "turkey": 9,
+    "frog": 7,
+    "cat": 1
+   },
+   "cue": "gobbling",
+   "question": "How many legs does the animal known for gobbling have?",
+   "cf_context": "Will's pet is a cat. Rose's pet is a turkey. Leo's pet is a frog. The cat's locker is 1. The frog's locker is 7. The turkey's locker is 9.",
+   "cf_question": "How many legs does the animal known for croaking have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for gobbling?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0042",
+   "family": "RR",
+   "scene": "S-0042",
+   "bridge": "duck",
+   "cf_bridge": "pig",
+   "third": "mouse",
+   "context": "Diana's pet is a mouse. Liam's pet is a duck. Tara's pet is a pig. The mouse's locker is 7. The pig's locker is 3. The duck's locker is 9.",
+   "off_context": "Diana's pet is a mouse. Liam's pet is a duck. Tara's pet is a pig. The mouse's locker is 3. The pig's locker is 7. The duck's locker is 9.",
+   "people": [
+    "Diana",
+    "Liam",
+    "Tara"
+   ],
+   "pets": [
+    "mouse",
+    "duck",
+    "pig"
+   ],
+   "lockers": {
+    "duck": 9,
+    "pig": 3,
+    "mouse": 7
+   },
+   "cue": "quacking",
+   "question": "How many legs does the animal known for quacking have?",
+   "cf_context": "Diana's pet is a mouse. Liam's pet is a duck. Tara's pet is a pig. The mouse's locker is 7. The pig's locker is 3. The duck's locker is 9.",
+   "cf_question": "How many legs does the animal known for oinking have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for quacking?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0043",
+   "family": "RR",
+   "scene": "S-0043",
+   "bridge": "duck",
+   "cf_bridge": "mouse",
+   "third": "sheep",
+   "context": "James's pet is a duck. Frank's pet is a mouse. Peter's pet is a sheep. The mouse's locker is 1. The sheep's locker is 3. The duck's locker is 9.",
+   "off_context": "James's pet is a duck. Frank's pet is a mouse. Peter's pet is a sheep. The mouse's locker is 3. The sheep's locker is 1. The duck's locker is 9.",
+   "people": [
+    "James",
+    "Frank",
+    "Peter"
+   ],
+   "pets": [
+    "duck",
+    "mouse",
+    "sheep"
+   ],
+   "lockers": {
+    "duck": 9,
+    "mouse": 1,
+    "sheep": 3
+   },
+   "cue": "quacking",
+   "question": "How many legs does the animal known for quacking have?",
+   "cf_context": "James's pet is a duck. Frank's pet is a mouse. Peter's pet is a sheep. The mouse's locker is 1. The sheep's locker is 3. The duck's locker is 9.",
+   "cf_question": "How many legs does the animal known for squeaking have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for quacking?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0044",
+   "family": "RR",
+   "scene": "S-0044",
+   "bridge": "turkey",
+   "cf_bridge": "mouse",
+   "third": "cow",
+   "context": "Tara's pet is a turkey. Luke's pet is a mouse. Ryan's pet is a cow. The turkey's locker is 1. The mouse's locker is 7. The cow's locker is 3.",
+   "off_context": "Tara's pet is a turkey. Luke's pet is a mouse. Ryan's pet is a cow. The turkey's locker is 1. The mouse's locker is 3. The cow's locker is 7.",
+   "people": [
+    "Tara",
+    "Luke",
+    "Ryan"
+   ],
+   "pets": [
+    "turkey",
+    "mouse",
+    "cow"
+   ],
+   "lockers": {
+    "turkey": 1,
+    "mouse": 7,
+    "cow": 3
+   },
+   "cue": "gobbling",
+   "question": "How many legs does the animal known for gobbling have?",
+   "cf_context": "Tara's pet is a turkey. Luke's pet is a mouse. Ryan's pet is a cow. The turkey's locker is 1. The mouse's locker is 7. The cow's locker is 3.",
+   "cf_question": "How many legs does the animal known for squeaking have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for gobbling?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0045",
+   "family": "RR",
+   "scene": "S-0045",
+   "bridge": "sheep",
+   "cf_bridge": "turkey",
+   "third": "chicken",
+   "context": "Luke's pet is a sheep. Peter's pet is a turkey. David's pet is a chicken. The sheep's locker is 9. The turkey's locker is 1. The chicken's locker is 5.",
+   "off_context": "Luke's pet is a sheep. Peter's pet is a turkey. David's pet is a chicken. The sheep's locker is 9. The turkey's locker is 5. The chicken's locker is 1.",
+   "people": [
+    "Luke",
+    "Peter",
+    "David"
+   ],
+   "pets": [
+    "sheep",
+    "turkey",
+    "chicken"
+   ],
+   "lockers": {
+    "sheep": 9,
+    "turkey": 1,
+    "chicken": 5
+   },
+   "cue": "its wool",
+   "question": "How many legs does the animal known for its wool have?",
+   "cf_context": "Luke's pet is a sheep. Peter's pet is a turkey. David's pet is a chicken. The sheep's locker is 9. The turkey's locker is 1. The chicken's locker is 5.",
+   "cf_question": "How many legs does the animal known for gobbling have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for its wool?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0046",
+   "family": "RR",
+   "scene": "S-0046",
+   "bridge": "cow",
+   "cf_bridge": "bee",
+   "third": "pig",
+   "context": "Ella's pet is a cow. Clara's pet is a pig. Sara's pet is a bee. The bee's locker is 5. The cow's locker is 3. The pig's locker is 1.",
+   "off_context": "Ella's pet is a cow. Clara's pet is a pig. Sara's pet is a bee. The bee's locker is 1. The cow's locker is 3. The pig's locker is 5.",
+   "people": [
+    "Ella",
+    "Clara",
+    "Sara"
+   ],
+   "pets": [
+    "cow",
+    "pig",
+    "bee"
+   ],
+   "lockers": {
+    "cow": 3,
+    "bee": 5,
+    "pig": 1
+   },
+   "cue": "mooing",
+   "question": "How many legs does the animal known for mooing have?",
+   "cf_context": "Ella's pet is a cow. Clara's pet is a pig. Sara's pet is a bee. The bee's locker is 5. The cow's locker is 3. The pig's locker is 1.",
+   "cf_question": "How many legs does the animal known for making honey have?",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for mooing?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cow have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0047",
+   "family": "RR",
+   "scene": "S-0047",
+   "bridge": "turkey",
+   "cf_bridge": "horse",
+   "third": "mouse",
+   "context": "Kyle's pet is a turkey. Laura's pet is a mouse. Sara's pet is a horse. The horse's locker is 3. The mouse's locker is 1. The turkey's locker is 9.",
+   "off_context": "Kyle's pet is a turkey. Laura's pet is a mouse. Sara's pet is a horse. The horse's locker is 1. The mouse's locker is 3. The turkey's locker is 9.",
+   "people": [
+    "Kyle",
+    "Laura",
+    "Sara"
+   ],
+   "pets": [
+    "turkey",
+    "mouse",
+    "horse"
+   ],
+   "lockers": {
+    "turkey": 9,
+    "horse": 3,
+    "mouse": 1
+   },
+   "cue": "gobbling",
+   "question": "How many legs does the animal known for gobbling have?",
+   "cf_context": "Kyle's pet is a turkey. Laura's pet is a mouse. Sara's pet is a horse. The horse's locker is 3. The mouse's locker is 1. The turkey's locker is 9.",
+   "cf_question": "How many legs does the animal known for neighing have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for gobbling?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0048",
+   "family": "RR",
+   "scene": "S-0048",
+   "bridge": "cow",
+   "cf_bridge": "bee",
+   "third": "pig",
+   "context": "Noah's pet is a cow. Olivia's pet is a pig. Laura's pet is a bee. The bee's locker is 3. The cow's locker is 9. The pig's locker is 7.",
+   "off_context": "Noah's pet is a cow. Olivia's pet is a pig. Laura's pet is a bee. The bee's locker is 7. The cow's locker is 9. The pig's locker is 3.",
+   "people": [
+    "Noah",
+    "Olivia",
+    "Laura"
+   ],
+   "pets": [
+    "cow",
+    "pig",
+    "bee"
+   ],
+   "lockers": {
+    "cow": 9,
+    "bee": 3,
+    "pig": 7
+   },
+   "cue": "mooing",
+   "question": "How many legs does the animal known for mooing have?",
+   "cf_context": "Noah's pet is a cow. Olivia's pet is a pig. Laura's pet is a bee. The bee's locker is 3. The cow's locker is 9. The pig's locker is 7.",
+   "cf_question": "How many legs does the animal known for making honey have?",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for mooing?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cow have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0049",
+   "family": "RR",
+   "scene": "S-0049",
+   "bridge": "chicken",
+   "cf_bridge": "frog",
+   "third": "mouse",
+   "context": "Ivy's pet is a chicken. Victor's pet is a mouse. Peter's pet is a frog. The chicken's locker is 7. The frog's locker is 5. The mouse's locker is 9.",
+   "off_context": "Ivy's pet is a chicken. Victor's pet is a mouse. Peter's pet is a frog. The chicken's locker is 7. The frog's locker is 9. The mouse's locker is 5.",
+   "people": [
+    "Ivy",
+    "Victor",
+    "Peter"
+   ],
+   "pets": [
+    "chicken",
+    "mouse",
+    "frog"
+   ],
+   "lockers": {
+    "chicken": 7,
+    "frog": 5,
+    "mouse": 9
+   },
+   "cue": "clucking",
+   "question": "How many legs does the animal known for clucking have?",
+   "cf_context": "Ivy's pet is a chicken. Victor's pet is a mouse. Peter's pet is a frog. The chicken's locker is 7. The frog's locker is 5. The mouse's locker is 9.",
+   "cf_question": "How many legs does the animal known for croaking have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for clucking?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0050",
+   "family": "RR",
+   "scene": "S-0050",
+   "bridge": "spider",
+   "cf_bridge": "chicken",
+   "third": "turkey",
+   "context": "Sara's pet is a spider. Will's pet is a turkey. Rose's pet is a chicken. The spider's locker is 9. The turkey's locker is 5. The chicken's locker is 7.",
+   "off_context": "Sara's pet is a spider. Will's pet is a turkey. Rose's pet is a chicken. The spider's locker is 9. The turkey's locker is 7. The chicken's locker is 5.",
+   "people": [
+    "Sara",
+    "Will",
+    "Rose"
+   ],
+   "pets": [
+    "spider",
+    "turkey",
+    "chicken"
+   ],
+   "lockers": {
+    "spider": 9,
+    "chicken": 7,
+    "turkey": 5
+   },
+   "cue": "spinning webs",
+   "question": "How many legs does the animal known for spinning webs have?",
+   "cf_context": "Sara's pet is a spider. Will's pet is a turkey. Rose's pet is a chicken. The spider's locker is 9. The turkey's locker is 5. The chicken's locker is 7.",
+   "cf_question": "How many legs does the animal known for clucking have?",
+   "answer": "8",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for spinning webs?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0051",
+   "family": "RR",
+   "scene": "S-0051",
+   "bridge": "wolf",
+   "cf_bridge": "spider",
+   "third": "goose",
+   "context": "Clara's pet is a wolf. Ivan's pet is a spider. Tara's pet is a goose. The goose's locker is 1. The wolf's locker is 7. The spider's locker is 9.",
+   "off_context": "Clara's pet is a wolf. Ivan's pet is a spider. Tara's pet is a goose. The goose's locker is 9. The wolf's locker is 7. The spider's locker is 1.",
+   "people": [
+    "Clara",
+    "Ivan",
+    "Tara"
+   ],
+   "pets": [
+    "wolf",
+    "spider",
+    "goose"
+   ],
+   "lockers": {
+    "wolf": 7,
+    "spider": 9,
+    "goose": 1
+   },
+   "cue": "howling",
+   "question": "How many legs does the animal known for howling have?",
+   "cf_context": "Clara's pet is a wolf. Ivan's pet is a spider. Tara's pet is a goose. The goose's locker is 1. The wolf's locker is 7. The spider's locker is 9.",
+   "cf_question": "How many legs does the animal known for spinning webs have?",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for howling?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0052",
+   "family": "RR",
+   "scene": "S-0052",
+   "bridge": "lion",
+   "cf_bridge": "chicken",
+   "third": "cat",
+   "context": "Oscar's pet is a chicken. Amy's pet is a lion. Adam's pet is a cat. The chicken's locker is 7. The cat's locker is 9. The lion's locker is 1.",
+   "off_context": "Oscar's pet is a chicken. Amy's pet is a lion. Adam's pet is a cat. The chicken's locker is 9. The cat's locker is 7. The lion's locker is 1.",
+   "people": [
+    "Oscar",
+    "Amy",
+    "Adam"
+   ],
+   "pets": [
+    "chicken",
+    "lion",
+    "cat"
+   ],
+   "lockers": {
+    "lion": 1,
+    "chicken": 7,
+    "cat": 9
+   },
+   "cue": "its roar",
+   "question": "How many legs does the animal known for its roar have?",
+   "cf_context": "Oscar's pet is a chicken. Amy's pet is a lion. Adam's pet is a cat. The chicken's locker is 7. The cat's locker is 9. The lion's locker is 1.",
+   "cf_question": "How many legs does the animal known for clucking have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for its roar?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0053",
+   "family": "RR",
+   "scene": "S-0053",
+   "bridge": "cat",
+   "cf_bridge": "goose",
+   "third": "wolf",
+   "context": "Kyle's pet is a wolf. Peter's pet is a goose. Tara's pet is a cat. The cat's locker is 5. The goose's locker is 3. The wolf's locker is 1.",
+   "off_context": "Kyle's pet is a wolf. Peter's pet is a goose. Tara's pet is a cat. The cat's locker is 5. The goose's locker is 1. The wolf's locker is 3.",
+   "people": [
+    "Kyle",
+    "Peter",
+    "Tara"
+   ],
+   "pets": [
+    "wolf",
+    "goose",
+    "cat"
+   ],
+   "lockers": {
+    "cat": 5,
+    "goose": 3,
+    "wolf": 1
+   },
+   "cue": "purring",
+   "question": "How many legs does the animal known for purring have?",
+   "cf_context": "Kyle's pet is a wolf. Peter's pet is a goose. Tara's pet is a cat. The cat's locker is 5. The goose's locker is 3. The wolf's locker is 1.",
+   "cf_question": "How many legs does the animal known for honking have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for purring?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0054",
+   "family": "RR",
+   "scene": "S-0054",
+   "bridge": "chicken",
+   "cf_bridge": "cat",
+   "third": "duck",
+   "context": "Olivia's pet is a cat. Julia's pet is a chicken. Max's pet is a duck. The chicken's locker is 1. The cat's locker is 3. The duck's locker is 5.",
+   "off_context": "Olivia's pet is a cat. Julia's pet is a chicken. Max's pet is a duck. The chicken's locker is 1. The cat's locker is 5. The duck's locker is 3.",
+   "people": [
+    "Olivia",
+    "Julia",
+    "Max"
+   ],
+   "pets": [
+    "cat",
+    "chicken",
+    "duck"
+   ],
+   "lockers": {
+    "chicken": 1,
+    "cat": 3,
+    "duck": 5
+   },
+   "cue": "clucking",
+   "question": "How many legs does the animal known for clucking have?",
+   "cf_context": "Olivia's pet is a cat. Julia's pet is a chicken. Max's pet is a duck. The chicken's locker is 1. The cat's locker is 3. The duck's locker is 5.",
+   "cf_question": "How many legs does the animal known for purring have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for clucking?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0055",
+   "family": "RR",
+   "scene": "S-0055",
+   "bridge": "pig",
+   "cf_bridge": "bee",
+   "third": "cow",
+   "context": "Lucy's pet is a pig. Olivia's pet is a bee. Tom's pet is a cow. The cow's locker is 5. The pig's locker is 1. The bee's locker is 3.",
+   "off_context": "Lucy's pet is a pig. Olivia's pet is a bee. Tom's pet is a cow. The cow's locker is 3. The pig's locker is 1. The bee's locker is 5.",
+   "people": [
+    "Lucy",
+    "Olivia",
+    "Tom"
+   ],
+   "pets": [
+    "pig",
+    "bee",
+    "cow"
+   ],
+   "lockers": {
+    "pig": 1,
+    "bee": 3,
+    "cow": 5
+   },
+   "cue": "oinking",
+   "question": "How many legs does the animal known for oinking have?",
+   "cf_context": "Lucy's pet is a pig. Olivia's pet is a bee. Tom's pet is a cow. The cow's locker is 5. The pig's locker is 1. The bee's locker is 3.",
+   "cf_question": "How many legs does the animal known for making honey have?",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for oinking?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0056",
+   "family": "RR",
+   "scene": "S-0056",
+   "bridge": "duck",
+   "cf_bridge": "wolf",
+   "third": "bee",
+   "context": "Sean's pet is a duck. Eva's pet is a wolf. Ivan's pet is a bee. The duck's locker is 1. The bee's locker is 5. The wolf's locker is 3.",
+   "off_context": "Sean's pet is a duck. Eva's pet is a wolf. Ivan's pet is a bee. The duck's locker is 1. The bee's locker is 3. The wolf's locker is 5.",
+   "people": [
+    "Sean",
+    "Eva",
+    "Ivan"
+   ],
+   "pets": [
+    "duck",
+    "wolf",
+    "bee"
+   ],
+   "lockers": {
+    "duck": 1,
+    "wolf": 3,
+    "bee": 5
+   },
+   "cue": "quacking",
+   "question": "How many legs does the animal known for quacking have?",
+   "cf_context": "Sean's pet is a duck. Eva's pet is a wolf. Ivan's pet is a bee. The duck's locker is 1. The bee's locker is 5. The wolf's locker is 3.",
+   "cf_question": "How many legs does the animal known for howling have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for quacking?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0057",
+   "family": "RR",
+   "scene": "S-0057",
+   "bridge": "duck",
+   "cf_bridge": "pig",
+   "third": "horse",
+   "context": "Eva's pet is a horse. Sean's pet is a pig. Ruby's pet is a duck. The duck's locker is 9. The horse's locker is 3. The pig's locker is 5.",
+   "off_context": "Eva's pet is a horse. Sean's pet is a pig. Ruby's pet is a duck. The duck's locker is 9. The horse's locker is 5. The pig's locker is 3.",
+   "people": [
+    "Eva",
+    "Sean",
+    "Ruby"
+   ],
+   "pets": [
+    "horse",
+    "pig",
+    "duck"
+   ],
+   "lockers": {
+    "duck": 9,
+    "pig": 5,
+    "horse": 3
+   },
+   "cue": "quacking",
+   "question": "How many legs does the animal known for quacking have?",
+   "cf_context": "Eva's pet is a horse. Sean's pet is a pig. Ruby's pet is a duck. The duck's locker is 9. The horse's locker is 3. The pig's locker is 5.",
+   "cf_question": "How many legs does the animal known for oinking have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for quacking?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0058",
+   "family": "RR",
+   "scene": "S-0058",
+   "bridge": "turkey",
+   "cf_bridge": "dog",
+   "third": "mouse",
+   "context": "Tara's pet is a turkey. Ella's pet is a dog. Ivy's pet is a mouse. The mouse's locker is 5. The dog's locker is 9. The turkey's locker is 3.",
+   "off_context": "Tara's pet is a turkey. Ella's pet is a dog. Ivy's pet is a mouse. The mouse's locker is 9. The dog's locker is 5. The turkey's locker is 3.",
+   "people": [
+    "Tara",
+    "Ella",
+    "Ivy"
+   ],
+   "pets": [
+    "turkey",
+    "dog",
+    "mouse"
+   ],
+   "lockers": {
+    "turkey": 3,
+    "dog": 9,
+    "mouse": 5
+   },
+   "cue": "gobbling",
+   "question": "How many legs does the animal known for gobbling have?",
+   "cf_context": "Tara's pet is a turkey. Ella's pet is a dog. Ivy's pet is a mouse. The mouse's locker is 5. The dog's locker is 9. The turkey's locker is 3.",
+   "cf_question": "How many legs does the animal known for barking have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for gobbling?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0059",
+   "family": "RR",
+   "scene": "S-0059",
+   "bridge": "frog",
+   "cf_bridge": "duck",
+   "third": "turkey",
+   "context": "Oscar's pet is a duck. Hugo's pet is a frog. Emma's pet is a turkey. The frog's locker is 9. The turkey's locker is 3. The duck's locker is 7.",
+   "off_context": "Oscar's pet is a duck. Hugo's pet is a frog. Emma's pet is a turkey. The frog's locker is 9. The turkey's locker is 7. The duck's locker is 3.",
+   "people": [
+    "Oscar",
+    "Hugo",
+    "Emma"
+   ],
+   "pets": [
+    "duck",
+    "frog",
+    "turkey"
+   ],
+   "lockers": {
+    "frog": 9,
+    "duck": 7,
+    "turkey": 3
+   },
+   "cue": "croaking",
+   "question": "How many legs does the animal known for croaking have?",
+   "cf_context": "Oscar's pet is a duck. Hugo's pet is a frog. Emma's pet is a turkey. The frog's locker is 9. The turkey's locker is 3. The duck's locker is 7.",
+   "cf_question": "How many legs does the animal known for quacking have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for croaking?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0060",
+   "family": "RR",
+   "scene": "S-0060",
+   "bridge": "sheep",
+   "cf_bridge": "chicken",
+   "third": "pig",
+   "context": "Sean's pet is a sheep. Vera's pet is a pig. Henry's pet is a chicken. The pig's locker is 3. The chicken's locker is 1. The sheep's locker is 7.",
+   "off_context": "Sean's pet is a sheep. Vera's pet is a pig. Henry's pet is a chicken. The pig's locker is 1. The chicken's locker is 3. The sheep's locker is 7.",
+   "people": [
+    "Sean",
+    "Vera",
+    "Henry"
+   ],
+   "pets": [
+    "sheep",
+    "pig",
+    "chicken"
+   ],
+   "lockers": {
+    "sheep": 7,
+    "chicken": 1,
+    "pig": 3
+   },
+   "cue": "its wool",
+   "question": "How many legs does the animal known for its wool have?",
+   "cf_context": "Sean's pet is a sheep. Vera's pet is a pig. Henry's pet is a chicken. The pig's locker is 3. The chicken's locker is 1. The sheep's locker is 7.",
+   "cf_question": "How many legs does the animal known for clucking have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for its wool?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0061",
+   "family": "RR",
+   "scene": "S-0061",
+   "bridge": "duck",
+   "cf_bridge": "wolf",
+   "third": "goose",
+   "context": "Noah's pet is a goose. Luke's pet is a duck. David's pet is a wolf. The wolf's locker is 3. The goose's locker is 5. The duck's locker is 1.",
+   "off_context": "Noah's pet is a goose. Luke's pet is a duck. David's pet is a wolf. The wolf's locker is 5. The goose's locker is 3. The duck's locker is 1.",
+   "people": [
+    "Noah",
+    "Luke",
+    "David"
+   ],
+   "pets": [
+    "goose",
+    "duck",
+    "wolf"
+   ],
+   "lockers": {
+    "duck": 1,
+    "wolf": 3,
+    "goose": 5
+   },
+   "cue": "quacking",
+   "question": "How many legs does the animal known for quacking have?",
+   "cf_context": "Noah's pet is a goose. Luke's pet is a duck. David's pet is a wolf. The wolf's locker is 3. The goose's locker is 5. The duck's locker is 1.",
+   "cf_question": "How many legs does the animal known for howling have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for quacking?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0062",
+   "family": "RR",
+   "scene": "S-0062",
+   "bridge": "lion",
+   "cf_bridge": "duck",
+   "third": "pig",
+   "context": "Grace's pet is a duck. Zoe's pet is a pig. Maria's pet is a lion. The pig's locker is 1. The lion's locker is 5. The duck's locker is 9.",
+   "off_context": "Grace's pet is a duck. Zoe's pet is a pig. Maria's pet is a lion. The pig's locker is 9. The lion's locker is 5. The duck's locker is 1.",
+   "people": [
+    "Grace",
+    "Zoe",
+    "Maria"
+   ],
+   "pets": [
+    "duck",
+    "pig",
+    "lion"
+   ],
+   "lockers": {
+    "lion": 5,
+    "duck": 9,
+    "pig": 1
+   },
+   "cue": "its roar",
+   "question": "How many legs does the animal known for its roar have?",
+   "cf_context": "Grace's pet is a duck. Zoe's pet is a pig. Maria's pet is a lion. The pig's locker is 1. The lion's locker is 5. The duck's locker is 9.",
+   "cf_question": "How many legs does the animal known for quacking have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for its roar?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0063",
+   "family": "RR",
+   "scene": "S-0063",
+   "bridge": "spider",
+   "cf_bridge": "mouse",
+   "third": "pig",
+   "context": "Alice's pet is a pig. Eva's pet is a mouse. Ivy's pet is a spider. The spider's locker is 1. The mouse's locker is 3. The pig's locker is 7.",
+   "off_context": "Alice's pet is a pig. Eva's pet is a mouse. Ivy's pet is a spider. The spider's locker is 1. The mouse's locker is 7. The pig's locker is 3.",
+   "people": [
+    "Alice",
+    "Eva",
+    "Ivy"
+   ],
+   "pets": [
+    "pig",
+    "mouse",
+    "spider"
+   ],
+   "lockers": {
+    "spider": 1,
+    "mouse": 3,
+    "pig": 7
+   },
+   "cue": "spinning webs",
+   "question": "How many legs does the animal known for spinning webs have?",
+   "cf_context": "Alice's pet is a pig. Eva's pet is a mouse. Ivy's pet is a spider. The spider's locker is 1. The mouse's locker is 3. The pig's locker is 7.",
+   "cf_question": "How many legs does the animal known for squeaking have?",
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for spinning webs?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0064",
+   "family": "RR",
+   "scene": "S-0064",
+   "bridge": "spider",
+   "cf_bridge": "goose",
+   "third": "horse",
+   "context": "Carl's pet is a horse. Grace's pet is a goose. Finn's pet is a spider. The horse's locker is 5. The goose's locker is 1. The spider's locker is 3.",
+   "off_context": "Carl's pet is a horse. Grace's pet is a goose. Finn's pet is a spider. The horse's locker is 1. The goose's locker is 5. The spider's locker is 3.",
+   "people": [
+    "Carl",
+    "Grace",
+    "Finn"
+   ],
+   "pets": [
+    "horse",
+    "goose",
+    "spider"
+   ],
+   "lockers": {
+    "spider": 3,
+    "goose": 1,
+    "horse": 5
+   },
+   "cue": "spinning webs",
+   "question": "How many legs does the animal known for spinning webs have?",
+   "cf_context": "Carl's pet is a horse. Grace's pet is a goose. Finn's pet is a spider. The horse's locker is 5. The goose's locker is 1. The spider's locker is 3.",
+   "cf_question": "How many legs does the animal known for honking have?",
+   "answer": "8",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for spinning webs?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0065",
+   "family": "RR",
+   "scene": "S-0065",
+   "bridge": "mouse",
+   "cf_bridge": "chicken",
+   "third": "sheep",
+   "context": "Ivan's pet is a chicken. Anna's pet is a mouse. Alice's pet is a sheep. The chicken's locker is 3. The sheep's locker is 5. The mouse's locker is 1.",
+   "off_context": "Ivan's pet is a chicken. Anna's pet is a mouse. Alice's pet is a sheep. The chicken's locker is 5. The sheep's locker is 3. The mouse's locker is 1.",
+   "people": [
+    "Ivan",
+    "Anna",
+    "Alice"
+   ],
+   "pets": [
+    "chicken",
+    "mouse",
+    "sheep"
+   ],
+   "lockers": {
+    "mouse": 1,
+    "chicken": 3,
+    "sheep": 5
+   },
+   "cue": "squeaking",
+   "question": "How many legs does the animal known for squeaking have?",
+   "cf_context": "Ivan's pet is a chicken. Anna's pet is a mouse. Alice's pet is a sheep. The chicken's locker is 3. The sheep's locker is 5. The mouse's locker is 1.",
+   "cf_question": "How many legs does the animal known for clucking have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for squeaking?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0066",
+   "family": "RR",
+   "scene": "S-0066",
+   "bridge": "bee",
+   "cf_bridge": "mouse",
+   "third": "spider",
+   "context": "Eva's pet is a spider. Mia's pet is a mouse. Beth's pet is a bee. The mouse's locker is 7. The spider's locker is 1. The bee's locker is 9.",
+   "off_context": "Eva's pet is a spider. Mia's pet is a mouse. Beth's pet is a bee. The mouse's locker is 1. The spider's locker is 7. The bee's locker is 9.",
+   "people": [
+    "Eva",
+    "Mia",
+    "Beth"
+   ],
+   "pets": [
+    "spider",
+    "mouse",
+    "bee"
+   ],
+   "lockers": {
+    "bee": 9,
+    "mouse": 7,
+    "spider": 1
+   },
+   "cue": "making honey",
+   "question": "How many legs does the animal known for making honey have?",
+   "cf_context": "Eva's pet is a spider. Mia's pet is a mouse. Beth's pet is a bee. The mouse's locker is 7. The spider's locker is 1. The bee's locker is 9.",
+   "cf_question": "How many legs does the animal known for squeaking have?",
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for making honey?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0067",
+   "family": "RR",
+   "scene": "S-0067",
+   "bridge": "chicken",
+   "cf_bridge": "cow",
+   "third": "dog",
+   "context": "Olivia's pet is a chicken. Alice's pet is a dog. Eva's pet is a cow. The cow's locker is 5. The chicken's locker is 1. The dog's locker is 9.",
+   "off_context": "Olivia's pet is a chicken. Alice's pet is a dog. Eva's pet is a cow. The cow's locker is 9. The chicken's locker is 1. The dog's locker is 5.",
+   "people": [
+    "Olivia",
+    "Alice",
+    "Eva"
+   ],
+   "pets": [
+    "chicken",
+    "dog",
+    "cow"
+   ],
+   "lockers": {
+    "chicken": 1,
+    "cow": 5,
+    "dog": 9
+   },
+   "cue": "clucking",
+   "question": "How many legs does the animal known for clucking have?",
+   "cf_context": "Olivia's pet is a chicken. Alice's pet is a dog. Eva's pet is a cow. The cow's locker is 5. The chicken's locker is 1. The dog's locker is 9.",
+   "cf_question": "How many legs does the animal known for mooing have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for clucking?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0068",
+   "family": "RR",
+   "scene": "S-0068",
+   "bridge": "bee",
+   "cf_bridge": "wolf",
+   "third": "horse",
+   "context": "Beth's pet is a bee. James's pet is a wolf. Diana's pet is a horse. The horse's locker is 7. The bee's locker is 1. The wolf's locker is 9.",
+   "off_context": "Beth's pet is a bee. James's pet is a wolf. Diana's pet is a horse. The horse's locker is 9. The bee's locker is 1. The wolf's locker is 7.",
+   "people": [
+    "Beth",
+    "James",
+    "Diana"
+   ],
+   "pets": [
+    "bee",
+    "wolf",
+    "horse"
+   ],
+   "lockers": {
+    "bee": 1,
+    "wolf": 9,
+    "horse": 7
+   },
+   "cue": "making honey",
+   "question": "How many legs does the animal known for making honey have?",
+   "cf_context": "Beth's pet is a bee. James's pet is a wolf. Diana's pet is a horse. The horse's locker is 7. The bee's locker is 1. The wolf's locker is 9.",
+   "cf_question": "How many legs does the animal known for howling have?",
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for making honey?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0069",
+   "family": "RR",
+   "scene": "S-0069",
+   "bridge": "mouse",
+   "cf_bridge": "spider",
+   "third": "horse",
+   "context": "Zoe's pet is a mouse. Tom's pet is a spider. Hugo's pet is a horse. The horse's locker is 1. The mouse's locker is 9. The spider's locker is 3.",
+   "off_context": "Zoe's pet is a mouse. Tom's pet is a spider. Hugo's pet is a horse. The horse's locker is 3. The mouse's locker is 9. The spider's locker is 1.",
+   "people": [
+    "Zoe",
+    "Tom",
+    "Hugo"
+   ],
+   "pets": [
+    "mouse",
+    "spider",
+    "horse"
+   ],
+   "lockers": {
+    "mouse": 9,
+    "spider": 3,
+    "horse": 1
+   },
+   "cue": "squeaking",
+   "question": "How many legs does the animal known for squeaking have?",
+   "cf_context": "Zoe's pet is a mouse. Tom's pet is a spider. Hugo's pet is a horse. The horse's locker is 1. The mouse's locker is 9. The spider's locker is 3.",
+   "cf_question": "How many legs does the animal known for spinning webs have?",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for squeaking?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0070",
+   "family": "RR",
+   "scene": "S-0070",
+   "bridge": "cat",
+   "cf_bridge": "goose",
+   "third": "chicken",
+   "context": "Nina's pet is a chicken. Carl's pet is a cat. Sara's pet is a goose. The chicken's locker is 5. The cat's locker is 9. The goose's locker is 7.",
+   "off_context": "Nina's pet is a chicken. Carl's pet is a cat. Sara's pet is a goose. The chicken's locker is 7. The cat's locker is 9. The goose's locker is 5.",
+   "people": [
+    "Nina",
+    "Carl",
+    "Sara"
+   ],
+   "pets": [
+    "chicken",
+    "cat",
+    "goose"
+   ],
+   "lockers": {
+    "cat": 9,
+    "goose": 7,
+    "chicken": 5
+   },
+   "cue": "purring",
+   "question": "How many legs does the animal known for purring have?",
+   "cf_context": "Nina's pet is a chicken. Carl's pet is a cat. Sara's pet is a goose. The chicken's locker is 5. The cat's locker is 9. The goose's locker is 7.",
+   "cf_question": "How many legs does the animal known for honking have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for purring?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0071",
+   "family": "RR",
+   "scene": "S-0071",
+   "bridge": "chicken",
+   "cf_bridge": "frog",
+   "third": "turkey",
+   "context": "Olivia's pet is a frog. Iris's pet is a turkey. Mark's pet is a chicken. The chicken's locker is 7. The turkey's locker is 9. The frog's locker is 1.",
+   "off_context": "Olivia's pet is a frog. Iris's pet is a turkey. Mark's pet is a chicken. The chicken's locker is 7. The turkey's locker is 1. The frog's locker is 9.",
+   "people": [
+    "Olivia",
+    "Iris",
+    "Mark"
+   ],
+   "pets": [
+    "frog",
+    "turkey",
+    "chicken"
+   ],
+   "lockers": {
+    "chicken": 7,
+    "frog": 1,
+    "turkey": 9
+   },
+   "cue": "clucking",
+   "question": "How many legs does the animal known for clucking have?",
+   "cf_context": "Olivia's pet is a frog. Iris's pet is a turkey. Mark's pet is a chicken. The chicken's locker is 7. The turkey's locker is 9. The frog's locker is 1.",
+   "cf_question": "How many legs does the animal known for croaking have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for clucking?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0072",
+   "family": "RR",
+   "scene": "S-0072",
+   "bridge": "bee",
+   "cf_bridge": "pig",
+   "third": "cow",
+   "context": "Tom's pet is a cow. Max's pet is a bee. Finn's pet is a pig. The bee's locker is 3. The pig's locker is 1. The cow's locker is 7.",
+   "off_context": "Tom's pet is a cow. Max's pet is a bee. Finn's pet is a pig. The bee's locker is 3. The pig's locker is 7. The cow's locker is 1.",
+   "people": [
+    "Tom",
+    "Max",
+    "Finn"
+   ],
+   "pets": [
+    "cow",
+    "bee",
+    "pig"
+   ],
+   "lockers": {
+    "bee": 3,
+    "pig": 1,
+    "cow": 7
+   },
+   "cue": "making honey",
+   "question": "How many legs does the animal known for making honey have?",
+   "cf_context": "Tom's pet is a cow. Max's pet is a bee. Finn's pet is a pig. The bee's locker is 3. The pig's locker is 1. The cow's locker is 7.",
+   "cf_question": "How many legs does the animal known for oinking have?",
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for making honey?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0073",
+   "family": "RR",
+   "scene": "S-0073",
+   "bridge": "duck",
+   "cf_bridge": "spider",
+   "third": "wolf",
+   "context": "Mark's pet is a spider. David's pet is a duck. Sean's pet is a wolf. The wolf's locker is 1. The spider's locker is 9. The duck's locker is 7.",
+   "off_context": "Mark's pet is a spider. David's pet is a duck. Sean's pet is a wolf. The wolf's locker is 9. The spider's locker is 1. The duck's locker is 7.",
+   "people": [
+    "Mark",
+    "David",
+    "Sean"
+   ],
+   "pets": [
+    "spider",
+    "duck",
+    "wolf"
+   ],
+   "lockers": {
+    "duck": 7,
+    "spider": 9,
+    "wolf": 1
+   },
+   "cue": "quacking",
+   "question": "How many legs does the animal known for quacking have?",
+   "cf_context": "Mark's pet is a spider. David's pet is a duck. Sean's pet is a wolf. The wolf's locker is 1. The spider's locker is 9. The duck's locker is 7.",
+   "cf_question": "How many legs does the animal known for spinning webs have?",
+   "answer": "2",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for quacking?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0074",
+   "family": "RR",
+   "scene": "S-0074",
+   "bridge": "chicken",
+   "cf_bridge": "cow",
+   "third": "frog",
+   "context": "Eve's pet is a frog. Liam's pet is a cow. Diana's pet is a chicken. The frog's locker is 1. The cow's locker is 5. The chicken's locker is 9.",
+   "off_context": "Eve's pet is a frog. Liam's pet is a cow. Diana's pet is a chicken. The frog's locker is 5. The cow's locker is 1. The chicken's locker is 9.",
+   "people": [
+    "Eve",
+    "Liam",
+    "Diana"
+   ],
+   "pets": [
+    "frog",
+    "cow",
+    "chicken"
+   ],
+   "lockers": {
+    "chicken": 9,
+    "cow": 5,
+    "frog": 1
+   },
+   "cue": "clucking",
+   "question": "How many legs does the animal known for clucking have?",
+   "cf_context": "Eve's pet is a frog. Liam's pet is a cow. Diana's pet is a chicken. The frog's locker is 1. The cow's locker is 5. The chicken's locker is 9.",
+   "cf_question": "How many legs does the animal known for mooing have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for clucking?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0075",
+   "family": "RR",
+   "scene": "S-0075",
+   "bridge": "pig",
+   "cf_bridge": "spider",
+   "third": "lion",
+   "context": "Ivy's pet is a pig. Max's pet is a spider. Vera's pet is a lion. The spider's locker is 3. The lion's locker is 7. The pig's locker is 9.",
+   "off_context": "Ivy's pet is a pig. Max's pet is a spider. Vera's pet is a lion. The spider's locker is 7. The lion's locker is 3. The pig's locker is 9.",
+   "people": [
+    "Ivy",
+    "Max",
+    "Vera"
+   ],
+   "pets": [
+    "pig",
+    "spider",
+    "lion"
+   ],
+   "lockers": {
+    "pig": 9,
+    "spider": 3,
+    "lion": 7
+   },
+   "cue": "oinking",
+   "question": "How many legs does the animal known for oinking have?",
+   "cf_context": "Ivy's pet is a pig. Max's pet is a spider. Vera's pet is a lion. The spider's locker is 3. The lion's locker is 7. The pig's locker is 9.",
+   "cf_question": "How many legs does the animal known for spinning webs have?",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for oinking?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0076",
+   "family": "RR",
+   "scene": "S-0076",
+   "bridge": "frog",
+   "cf_bridge": "turkey",
+   "third": "chicken",
+   "context": "Kate's pet is a chicken. Liam's pet is a turkey. Mark's pet is a frog. The turkey's locker is 5. The frog's locker is 7. The chicken's locker is 1.",
+   "off_context": "Kate's pet is a chicken. Liam's pet is a turkey. Mark's pet is a frog. The turkey's locker is 1. The frog's locker is 7. The chicken's locker is 5.",
+   "people": [
+    "Kate",
+    "Liam",
+    "Mark"
+   ],
+   "pets": [
+    "chicken",
+    "turkey",
+    "frog"
+   ],
+   "lockers": {
+    "frog": 7,
+    "turkey": 5,
+    "chicken": 1
+   },
+   "cue": "croaking",
+   "question": "How many legs does the animal known for croaking have?",
+   "cf_context": "Kate's pet is a chicken. Liam's pet is a turkey. Mark's pet is a frog. The turkey's locker is 5. The frog's locker is 7. The chicken's locker is 1.",
+   "cf_question": "How many legs does the animal known for gobbling have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for croaking?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0077",
+   "family": "RR",
+   "scene": "S-0077",
+   "bridge": "wolf",
+   "cf_bridge": "turkey",
+   "third": "spider",
+   "context": "Adam's pet is a turkey. Victor's pet is a wolf. Henry's pet is a spider. The spider's locker is 3. The turkey's locker is 9. The wolf's locker is 1.",
+   "off_context": "Adam's pet is a turkey. Victor's pet is a wolf. Henry's pet is a spider. The spider's locker is 9. The turkey's locker is 3. The wolf's locker is 1.",
+   "people": [
+    "Adam",
+    "Victor",
+    "Henry"
+   ],
+   "pets": [
+    "turkey",
+    "wolf",
+    "spider"
+   ],
+   "lockers": {
+    "wolf": 1,
+    "turkey": 9,
+    "spider": 3
+   },
+   "cue": "howling",
+   "question": "How many legs does the animal known for howling have?",
+   "cf_context": "Adam's pet is a turkey. Victor's pet is a wolf. Henry's pet is a spider. The spider's locker is 3. The turkey's locker is 9. The wolf's locker is 1.",
+   "cf_question": "How many legs does the animal known for gobbling have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for howling?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0078",
+   "family": "RR",
+   "scene": "S-0078",
+   "bridge": "turkey",
+   "cf_bridge": "frog",
+   "third": "lion",
+   "context": "Julia's pet is a lion. Alice's pet is a frog. Sean's pet is a turkey. The frog's locker is 3. The turkey's locker is 9. The lion's locker is 5.",
+   "off_context": "Julia's pet is a lion. Alice's pet is a frog. Sean's pet is a turkey. The frog's locker is 5. The turkey's locker is 9. The lion's locker is 3.",
+   "people": [
+    "Julia",
+    "Alice",
+    "Sean"
+   ],
+   "pets": [
+    "lion",
+    "frog",
+    "turkey"
+   ],
+   "lockers": {
+    "turkey": 9,
+    "frog": 3,
+    "lion": 5
+   },
+   "cue": "gobbling",
+   "question": "How many legs does the animal known for gobbling have?",
+   "cf_context": "Julia's pet is a lion. Alice's pet is a frog. Sean's pet is a turkey. The frog's locker is 3. The turkey's locker is 9. The lion's locker is 5.",
+   "cf_question": "How many legs does the animal known for croaking have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for gobbling?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0079",
+   "family": "RR",
+   "scene": "S-0079",
+   "bridge": "wolf",
+   "cf_bridge": "goose",
+   "third": "cow",
+   "context": "Henry's pet is a wolf. Finn's pet is a goose. Paul's pet is a cow. The goose's locker is 1. The cow's locker is 5. The wolf's locker is 9.",
+   "off_context": "Henry's pet is a wolf. Finn's pet is a goose. Paul's pet is a cow. The goose's locker is 5. The cow's locker is 1. The wolf's locker is 9.",
+   "people": [
+    "Henry",
+    "Finn",
+    "Paul"
+   ],
+   "pets": [
+    "wolf",
+    "goose",
+    "cow"
+   ],
+   "lockers": {
+    "wolf": 9,
+    "goose": 1,
+    "cow": 5
+   },
+   "cue": "howling",
+   "question": "How many legs does the animal known for howling have?",
+   "cf_context": "Henry's pet is a wolf. Finn's pet is a goose. Paul's pet is a cow. The goose's locker is 1. The cow's locker is 5. The wolf's locker is 9.",
+   "cf_question": "How many legs does the animal known for honking have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for howling?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0080",
+   "family": "RR",
+   "scene": "S-0080",
+   "bridge": "goose",
+   "cf_bridge": "mouse",
+   "third": "spider",
+   "context": "Rose's pet is a goose. Anna's pet is a spider. Max's pet is a mouse. The spider's locker is 7. The mouse's locker is 3. The goose's locker is 9.",
+   "off_context": "Rose's pet is a goose. Anna's pet is a spider. Max's pet is a mouse. The spider's locker is 3. The mouse's locker is 7. The goose's locker is 9.",
+   "people": [
+    "Rose",
+    "Anna",
+    "Max"
+   ],
+   "pets": [
+    "goose",
+    "spider",
+    "mouse"
+   ],
+   "lockers": {
+    "goose": 9,
+    "mouse": 3,
+    "spider": 7
+   },
+   "cue": "honking",
+   "question": "How many legs does the animal known for honking have?",
+   "cf_context": "Rose's pet is a goose. Anna's pet is a spider. Max's pet is a mouse. The spider's locker is 7. The mouse's locker is 3. The goose's locker is 9.",
+   "cf_question": "How many legs does the animal known for squeaking have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for honking?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0081",
+   "family": "RR",
+   "scene": "S-0081",
+   "bridge": "duck",
+   "cf_bridge": "sheep",
+   "third": "horse",
+   "context": "Tom's pet is a horse. Grace's pet is a duck. Rose's pet is a sheep. The sheep's locker is 3. The horse's locker is 1. The duck's locker is 7.",
+   "off_context": "Tom's pet is a horse. Grace's pet is a duck. Rose's pet is a sheep. The sheep's locker is 1. The horse's locker is 3. The duck's locker is 7.",
+   "people": [
+    "Tom",
+    "Grace",
+    "Rose"
+   ],
+   "pets": [
+    "horse",
+    "duck",
+    "sheep"
+   ],
+   "lockers": {
+    "duck": 7,
+    "sheep": 3,
+    "horse": 1
+   },
+   "cue": "quacking",
+   "question": "How many legs does the animal known for quacking have?",
+   "cf_context": "Tom's pet is a horse. Grace's pet is a duck. Rose's pet is a sheep. The sheep's locker is 3. The horse's locker is 1. The duck's locker is 7.",
+   "cf_question": "How many legs does the animal known for its wool have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for quacking?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0082",
+   "family": "RR",
+   "scene": "S-0082",
+   "bridge": "duck",
+   "cf_bridge": "pig",
+   "third": "bee",
+   "context": "Nina's pet is a duck. Sean's pet is a bee. Lucy's pet is a pig. The duck's locker is 3. The pig's locker is 7. The bee's locker is 9.",
+   "off_context": "Nina's pet is a duck. Sean's pet is a bee. Lucy's pet is a pig. The duck's locker is 3. The pig's locker is 9. The bee's locker is 7.",
+   "people": [
+    "Nina",
+    "Sean",
+    "Lucy"
+   ],
+   "pets": [
+    "duck",
+    "bee",
+    "pig"
+   ],
+   "lockers": {
+    "duck": 3,
+    "pig": 7,
+    "bee": 9
+   },
+   "cue": "quacking",
+   "question": "How many legs does the animal known for quacking have?",
+   "cf_context": "Nina's pet is a duck. Sean's pet is a bee. Lucy's pet is a pig. The duck's locker is 3. The pig's locker is 7. The bee's locker is 9.",
+   "cf_question": "How many legs does the animal known for oinking have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for quacking?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0083",
+   "family": "RR",
+   "scene": "S-0083",
+   "bridge": "goose",
+   "cf_bridge": "cow",
+   "third": "chicken",
+   "context": "Anna's pet is a chicken. Amy's pet is a cow. Kate's pet is a goose. The goose's locker is 9. The chicken's locker is 1. The cow's locker is 7.",
+   "off_context": "Anna's pet is a chicken. Amy's pet is a cow. Kate's pet is a goose. The goose's locker is 9. The chicken's locker is 7. The cow's locker is 1.",
+   "people": [
+    "Anna",
+    "Amy",
+    "Kate"
+   ],
+   "pets": [
+    "chicken",
+    "cow",
+    "goose"
+   ],
+   "lockers": {
+    "goose": 9,
+    "cow": 7,
+    "chicken": 1
+   },
+   "cue": "honking",
+   "question": "How many legs does the animal known for honking have?",
+   "cf_context": "Anna's pet is a chicken. Amy's pet is a cow. Kate's pet is a goose. The goose's locker is 9. The chicken's locker is 1. The cow's locker is 7.",
+   "cf_question": "How many legs does the animal known for mooing have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for honking?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0084",
+   "family": "RR",
+   "scene": "S-0084",
+   "bridge": "wolf",
+   "cf_bridge": "spider",
+   "third": "chicken",
+   "context": "Will's pet is a chicken. Luke's pet is a spider. Leo's pet is a wolf. The spider's locker is 3. The chicken's locker is 9. The wolf's locker is 1.",
+   "off_context": "Will's pet is a chicken. Luke's pet is a spider. Leo's pet is a wolf. The spider's locker is 9. The chicken's locker is 3. The wolf's locker is 1.",
+   "people": [
+    "Will",
+    "Luke",
+    "Leo"
+   ],
+   "pets": [
+    "chicken",
+    "spider",
+    "wolf"
+   ],
+   "lockers": {
+    "wolf": 1,
+    "spider": 3,
+    "chicken": 9
+   },
+   "cue": "howling",
+   "question": "How many legs does the animal known for howling have?",
+   "cf_context": "Will's pet is a chicken. Luke's pet is a spider. Leo's pet is a wolf. The spider's locker is 3. The chicken's locker is 9. The wolf's locker is 1.",
+   "cf_question": "How many legs does the animal known for spinning webs have?",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for howling?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0085",
+   "family": "RR",
+   "scene": "S-0085",
+   "bridge": "lion",
+   "cf_bridge": "spider",
+   "third": "frog",
+   "context": "Noah's pet is a frog. Ruby's pet is a spider. Olivia's pet is a lion. The lion's locker is 3. The spider's locker is 1. The frog's locker is 7.",
+   "off_context": "Noah's pet is a frog. Ruby's pet is a spider. Olivia's pet is a lion. The lion's locker is 3. The spider's locker is 7. The frog's locker is 1.",
+   "people": [
+    "Noah",
+    "Ruby",
+    "Olivia"
+   ],
+   "pets": [
+    "frog",
+    "spider",
+    "lion"
+   ],
+   "lockers": {
+    "lion": 3,
+    "spider": 1,
+    "frog": 7
+   },
+   "cue": "its roar",
+   "question": "How many legs does the animal known for its roar have?",
+   "cf_context": "Noah's pet is a frog. Ruby's pet is a spider. Olivia's pet is a lion. The lion's locker is 3. The spider's locker is 1. The frog's locker is 7.",
+   "cf_question": "How many legs does the animal known for spinning webs have?",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for its roar?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0086",
+   "family": "RR",
+   "scene": "S-0086",
+   "bridge": "bee",
+   "cf_bridge": "lion",
+   "third": "wolf",
+   "context": "Mark's pet is a wolf. Ella's pet is a bee. Eve's pet is a lion. The lion's locker is 7. The bee's locker is 3. The wolf's locker is 9.",
+   "off_context": "Mark's pet is a wolf. Ella's pet is a bee. Eve's pet is a lion. The lion's locker is 9. The bee's locker is 3. The wolf's locker is 7.",
+   "people": [
+    "Mark",
+    "Ella",
+    "Eve"
+   ],
+   "pets": [
+    "wolf",
+    "bee",
+    "lion"
+   ],
+   "lockers": {
+    "bee": 3,
+    "lion": 7,
+    "wolf": 9
+   },
+   "cue": "making honey",
+   "question": "How many legs does the animal known for making honey have?",
+   "cf_context": "Mark's pet is a wolf. Ella's pet is a bee. Eve's pet is a lion. The lion's locker is 7. The bee's locker is 3. The wolf's locker is 9.",
+   "cf_question": "How many legs does the animal known for its roar have?",
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for making honey?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0087",
+   "family": "RR",
+   "scene": "S-0087",
+   "bridge": "horse",
+   "cf_bridge": "duck",
+   "third": "sheep",
+   "context": "Alice's pet is a sheep. Victor's pet is a horse. David's pet is a duck. The sheep's locker is 9. The duck's locker is 7. The horse's locker is 3.",
+   "off_context": "Alice's pet is a sheep. Victor's pet is a horse. David's pet is a duck. The sheep's locker is 7. The duck's locker is 9. The horse's locker is 3.",
+   "people": [
+    "Alice",
+    "Victor",
+    "David"
+   ],
+   "pets": [
+    "sheep",
+    "horse",
+    "duck"
+   ],
+   "lockers": {
+    "horse": 3,
+    "duck": 7,
+    "sheep": 9
+   },
+   "cue": "neighing",
+   "question": "How many legs does the animal known for neighing have?",
+   "cf_context": "Alice's pet is a sheep. Victor's pet is a horse. David's pet is a duck. The sheep's locker is 9. The duck's locker is 7. The horse's locker is 3.",
+   "cf_question": "How many legs does the animal known for quacking have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for neighing?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0088",
+   "family": "RR",
+   "scene": "S-0088",
+   "bridge": "cat",
+   "cf_bridge": "spider",
+   "third": "frog",
+   "context": "Oscar's pet is a frog. Lily's pet is a spider. Emma's pet is a cat. The cat's locker is 3. The frog's locker is 9. The spider's locker is 5.",
+   "off_context": "Oscar's pet is a frog. Lily's pet is a spider. Emma's pet is a cat. The cat's locker is 3. The frog's locker is 5. The spider's locker is 9.",
+   "people": [
+    "Oscar",
+    "Lily",
+    "Emma"
+   ],
+   "pets": [
+    "frog",
+    "spider",
+    "cat"
+   ],
+   "lockers": {
+    "cat": 3,
+    "spider": 5,
+    "frog": 9
+   },
+   "cue": "purring",
+   "question": "How many legs does the animal known for purring have?",
+   "cf_context": "Oscar's pet is a frog. Lily's pet is a spider. Emma's pet is a cat. The cat's locker is 3. The frog's locker is 9. The spider's locker is 5.",
+   "cf_question": "How many legs does the animal known for spinning webs have?",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for purring?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0089",
+   "family": "RR",
+   "scene": "S-0089",
+   "bridge": "spider",
+   "cf_bridge": "pig",
+   "third": "goose",
+   "context": "Julia's pet is a goose. Jack's pet is a spider. Noah's pet is a pig. The goose's locker is 7. The pig's locker is 9. The spider's locker is 5.",
+   "off_context": "Julia's pet is a goose. Jack's pet is a spider. Noah's pet is a pig. The goose's locker is 9. The pig's locker is 7. The spider's locker is 5.",
+   "people": [
+    "Julia",
+    "Jack",
+    "Noah"
+   ],
+   "pets": [
+    "goose",
+    "spider",
+    "pig"
+   ],
+   "lockers": {
+    "spider": 5,
+    "pig": 9,
+    "goose": 7
+   },
+   "cue": "spinning webs",
+   "question": "How many legs does the animal known for spinning webs have?",
+   "cf_context": "Julia's pet is a goose. Jack's pet is a spider. Noah's pet is a pig. The goose's locker is 7. The pig's locker is 9. The spider's locker is 5.",
+   "cf_question": "How many legs does the animal known for oinking have?",
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for spinning webs?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0090",
+   "family": "RR",
+   "scene": "S-0090",
+   "bridge": "cow",
+   "cf_bridge": "turkey",
+   "third": "wolf",
+   "context": "Leo's pet is a wolf. Hugo's pet is a turkey. Amy's pet is a cow. The wolf's locker is 1. The cow's locker is 7. The turkey's locker is 3.",
+   "off_context": "Leo's pet is a wolf. Hugo's pet is a turkey. Amy's pet is a cow. The wolf's locker is 3. The cow's locker is 7. The turkey's locker is 1.",
+   "people": [
+    "Leo",
+    "Hugo",
+    "Amy"
+   ],
+   "pets": [
+    "wolf",
+    "turkey",
+    "cow"
+   ],
+   "lockers": {
+    "cow": 7,
+    "turkey": 3,
+    "wolf": 1
+   },
+   "cue": "mooing",
+   "question": "How many legs does the animal known for mooing have?",
+   "cf_context": "Leo's pet is a wolf. Hugo's pet is a turkey. Amy's pet is a cow. The wolf's locker is 1. The cow's locker is 7. The turkey's locker is 3.",
+   "cf_question": "How many legs does the animal known for gobbling have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for mooing?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cow have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0091",
+   "family": "RR",
+   "scene": "S-0091",
+   "bridge": "goose",
+   "cf_bridge": "horse",
+   "third": "pig",
+   "context": "Liam's pet is a pig. Finn's pet is a goose. Anna's pet is a horse. The horse's locker is 5. The pig's locker is 9. The goose's locker is 7.",
+   "off_context": "Liam's pet is a pig. Finn's pet is a goose. Anna's pet is a horse. The horse's locker is 9. The pig's locker is 5. The goose's locker is 7.",
+   "people": [
+    "Liam",
+    "Finn",
+    "Anna"
+   ],
+   "pets": [
+    "pig",
+    "goose",
+    "horse"
+   ],
+   "lockers": {
+    "goose": 7,
+    "horse": 5,
+    "pig": 9
+   },
+   "cue": "honking",
+   "question": "How many legs does the animal known for honking have?",
+   "cf_context": "Liam's pet is a pig. Finn's pet is a goose. Anna's pet is a horse. The horse's locker is 5. The pig's locker is 9. The goose's locker is 7.",
+   "cf_question": "How many legs does the animal known for neighing have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for honking?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0092",
+   "family": "RR",
+   "scene": "S-0092",
+   "bridge": "bee",
+   "cf_bridge": "turkey",
+   "third": "dog",
+   "context": "Emma's pet is a bee. Alice's pet is a dog. David's pet is a turkey. The turkey's locker is 1. The bee's locker is 3. The dog's locker is 5.",
+   "off_context": "Emma's pet is a bee. Alice's pet is a dog. David's pet is a turkey. The turkey's locker is 5. The bee's locker is 3. The dog's locker is 1.",
+   "people": [
+    "Emma",
+    "Alice",
+    "David"
+   ],
+   "pets": [
+    "bee",
+    "dog",
+    "turkey"
+   ],
+   "lockers": {
+    "bee": 3,
+    "turkey": 1,
+    "dog": 5
+   },
+   "cue": "making honey",
+   "question": "How many legs does the animal known for making honey have?",
+   "cf_context": "Emma's pet is a bee. Alice's pet is a dog. David's pet is a turkey. The turkey's locker is 1. The bee's locker is 3. The dog's locker is 5.",
+   "cf_question": "How many legs does the animal known for gobbling have?",
+   "answer": "6",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for making honey?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0093",
+   "family": "RR",
+   "scene": "S-0093",
+   "bridge": "frog",
+   "cf_bridge": "duck",
+   "third": "mouse",
+   "context": "Henry's pet is a duck. Tom's pet is a mouse. Ivan's pet is a frog. The mouse's locker is 1. The frog's locker is 7. The duck's locker is 5.",
+   "off_context": "Henry's pet is a duck. Tom's pet is a mouse. Ivan's pet is a frog. The mouse's locker is 5. The frog's locker is 7. The duck's locker is 1.",
+   "people": [
+    "Henry",
+    "Tom",
+    "Ivan"
+   ],
+   "pets": [
+    "duck",
+    "mouse",
+    "frog"
+   ],
+   "lockers": {
+    "frog": 7,
+    "duck": 5,
+    "mouse": 1
+   },
+   "cue": "croaking",
+   "question": "How many legs does the animal known for croaking have?",
+   "cf_context": "Henry's pet is a duck. Tom's pet is a mouse. Ivan's pet is a frog. The mouse's locker is 1. The frog's locker is 7. The duck's locker is 5.",
+   "cf_question": "How many legs does the animal known for quacking have?",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for croaking?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0094",
+   "family": "RR",
+   "scene": "S-0094",
+   "bridge": "pig",
+   "cf_bridge": "bee",
+   "third": "spider",
+   "context": "Fiona's pet is a pig. Peter's pet is a bee. Eve's pet is a spider. The spider's locker is 9. The pig's locker is 5. The bee's locker is 1.",
+   "off_context": "Fiona's pet is a pig. Peter's pet is a bee. Eve's pet is a spider. The spider's locker is 1. The pig's locker is 5. The bee's locker is 9.",
+   "people": [
+    "Fiona",
+    "Peter",
+    "Eve"
+   ],
+   "pets": [
+    "pig",
+    "bee",
+    "spider"
+   ],
+   "lockers": {
+    "pig": 5,
+    "bee": 1,
+    "spider": 9
+   },
+   "cue": "oinking",
+   "question": "How many legs does the animal known for oinking have?",
+   "cf_context": "Fiona's pet is a pig. Peter's pet is a bee. Eve's pet is a spider. The spider's locker is 9. The pig's locker is 5. The bee's locker is 1.",
+   "cf_question": "How many legs does the animal known for making honey have?",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for oinking?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0095",
+   "family": "RR",
+   "scene": "S-0095",
+   "bridge": "spider",
+   "cf_bridge": "pig",
+   "third": "sheep",
+   "context": "Eva's pet is a spider. Laura's pet is a sheep. Amy's pet is a pig. The spider's locker is 9. The pig's locker is 3. The sheep's locker is 5.",
+   "off_context": "Eva's pet is a spider. Laura's pet is a sheep. Amy's pet is a pig. The spider's locker is 9. The pig's locker is 5. The sheep's locker is 3.",
+   "people": [
+    "Eva",
+    "Laura",
+    "Amy"
+   ],
+   "pets": [
+    "spider",
+    "sheep",
+    "pig"
+   ],
+   "lockers": {
+    "spider": 9,
+    "pig": 3,
+    "sheep": 5
+   },
+   "cue": "spinning webs",
+   "question": "How many legs does the animal known for spinning webs have?",
+   "cf_context": "Eva's pet is a spider. Laura's pet is a sheep. Amy's pet is a pig. The spider's locker is 9. The pig's locker is 3. The sheep's locker is 5.",
+   "cf_question": "How many legs does the animal known for oinking have?",
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for spinning webs?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0096",
+   "family": "RR",
+   "scene": "S-0096",
+   "bridge": "mouse",
+   "cf_bridge": "spider",
+   "third": "cat",
+   "context": "Mia's pet is a cat. Vera's pet is a spider. Jack's pet is a mouse. The mouse's locker is 5. The spider's locker is 3. The cat's locker is 7.",
+   "off_context": "Mia's pet is a cat. Vera's pet is a spider. Jack's pet is a mouse. The mouse's locker is 5. The spider's locker is 7. The cat's locker is 3.",
+   "people": [
+    "Mia",
+    "Vera",
+    "Jack"
+   ],
+   "pets": [
+    "cat",
+    "spider",
+    "mouse"
+   ],
+   "lockers": {
+    "mouse": 5,
+    "spider": 3,
+    "cat": 7
+   },
+   "cue": "squeaking",
+   "question": "How many legs does the animal known for squeaking have?",
+   "cf_context": "Mia's pet is a cat. Vera's pet is a spider. Jack's pet is a mouse. The mouse's locker is 5. The spider's locker is 3. The cat's locker is 7.",
+   "cf_question": "How many legs does the animal known for spinning webs have?",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for squeaking?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0097",
+   "family": "RR",
+   "scene": "S-0097",
+   "bridge": "duck",
+   "cf_bridge": "bee",
+   "third": "frog",
+   "context": "Eve's pet is a frog. Carl's pet is a bee. Peter's pet is a duck. The duck's locker is 3. The frog's locker is 7. The bee's locker is 5.",
+   "off_context": "Eve's pet is a frog. Carl's pet is a bee. Peter's pet is a duck. The duck's locker is 3. The frog's locker is 5. The bee's locker is 7.",
+   "people": [
+    "Eve",
+    "Carl",
+    "Peter"
+   ],
+   "pets": [
+    "frog",
+    "bee",
+    "duck"
+   ],
+   "lockers": {
+    "duck": 3,
+    "bee": 5,
+    "frog": 7
+   },
+   "cue": "quacking",
+   "question": "How many legs does the animal known for quacking have?",
+   "cf_context": "Eve's pet is a frog. Carl's pet is a bee. Peter's pet is a duck. The duck's locker is 3. The frog's locker is 7. The bee's locker is 5.",
+   "cf_question": "How many legs does the animal known for making honey have?",
+   "answer": "2",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for quacking?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0098",
+   "family": "RR",
+   "scene": "S-0098",
+   "bridge": "chicken",
+   "cf_bridge": "frog",
+   "third": "wolf",
+   "context": "Grace's pet is a frog. Henry's pet is a chicken. Luke's pet is a wolf. The chicken's locker is 7. The frog's locker is 3. The wolf's locker is 9.",
+   "off_context": "Grace's pet is a frog. Henry's pet is a chicken. Luke's pet is a wolf. The chicken's locker is 7. The frog's locker is 9. The wolf's locker is 3.",
+   "people": [
+    "Grace",
+    "Henry",
+    "Luke"
+   ],
+   "pets": [
+    "frog",
+    "chicken",
+    "wolf"
+   ],
+   "lockers": {
+    "chicken": 7,
+    "frog": 3,
+    "wolf": 9
+   },
+   "cue": "clucking",
+   "question": "How many legs does the animal known for clucking have?",
+   "cf_context": "Grace's pet is a frog. Henry's pet is a chicken. Luke's pet is a wolf. The chicken's locker is 7. The frog's locker is 3. The wolf's locker is 9.",
+   "cf_question": "How many legs does the animal known for croaking have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for clucking?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "RR-0099",
+   "family": "RR",
+   "scene": "S-0099",
+   "bridge": "chicken",
+   "cf_bridge": "lion",
+   "third": "bee",
+   "context": "Luke's pet is a bee. Beth's pet is a lion. Iris's pet is a chicken. The chicken's locker is 7. The lion's locker is 1. The bee's locker is 3.",
+   "off_context": "Luke's pet is a bee. Beth's pet is a lion. Iris's pet is a chicken. The chicken's locker is 7. The lion's locker is 3. The bee's locker is 1.",
+   "people": [
+    "Luke",
+    "Beth",
+    "Iris"
+   ],
+   "pets": [
+    "bee",
+    "lion",
+    "chicken"
+   ],
+   "lockers": {
+    "chicken": 7,
+    "lion": 1,
+    "bee": 3
+   },
+   "cue": "clucking",
+   "question": "How many legs does the animal known for clucking have?",
+   "cf_context": "Luke's pet is a bee. Beth's pet is a lion. Iris's pet is a chicken. The chicken's locker is 7. The lion's locker is 1. The bee's locker is 3.",
+   "cf_question": "How many legs does the animal known for its roar have?",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is known for clucking?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "level": "e3f0"
+  }
+ ]
+}

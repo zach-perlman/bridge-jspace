@@ -87,6 +87,25 @@ TARGETS: dict[str, dict[str, Any]] = {
             ),
         },
     },
+    # Qwen3.5-9B (post-trained; same tokenizer file as Qwen3.6-27B, chat templates equal for one user turn): a
+    # smaller-model comparison (Zach, 2026-10-19). Its published J++ (neuronpedia, converted from koayon/jpp-lenses,
+    # 64 wikitext prompts, target layer 31) is its frozen lens, sha256-checked on load like the 27B's.
+    "qwen3.5-9b": {
+        "repo": "Qwen/Qwen3.5-9B",
+        "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+        "n_layers": 32,
+        "norm_gain": "one_plus_weight",
+        "bos": False,
+        "run_prefix": "qwen35_9b_",
+        "lenses": {
+            "jpp": (
+                LENS_REPO,
+                "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+                "e166deb5ad540932100ef803c8c9bcc2a5453694",
+            ),
+        },
+        "frozen_lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5",
+    },
 }
 TARGET = os.environ.get("BJ_TARGET", "qwen3.6-27b")
 assert TARGET in TARGETS, f"BJ_TARGET={TARGET!r}: not one of {sorted(TARGETS)}"
@@ -97,6 +116,7 @@ RUN_PREFIX: str = TARGETS[TARGET]["run_prefix"]
 if TARGET != "qwen3.6-27b":
     CACHE_DIR = REPO_ROOT / "cache" / TARGET
     LENS_SOURCES = TARGETS[TARGET]["lenses"]
+    FROZEN_LENS_SHA256 = TARGETS[TARGET].get("frozen_lens_sha256", FROZEN_LENS_SHA256)
 
 
 def model_pin() -> dict[str, str]:

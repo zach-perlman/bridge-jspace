@@ -1,0 +1,2707 @@
+{
+ "family": "NAMES_e3f0",
+ "generator": "scripts/suite_v1.py make --set dev (seed 90010: 3 entities, 0 filler)",
+ "format": "Every family asks one question whose answer needs an intermediate variable (the bridge), in the chat format\n(bridge_jspace.chat: one user turn, thinking off, \"Answer:\" prefilled), with a counterfactual C that changes only the\nbridge (to X) and an off-path control O that changes something the answer does not depend on. C and O line up with the\nclean prompt token for token (checked here), so exp04/exp09's copy-and-split runs apply unchanged.",
+ "items": [
+  {
+   "id": "NAMES-0000",
+   "family": "NAMES",
+   "context": "Grace's partner is Eric. Clara's partner is Finn. Kate's partner is Ryan. Eric's sister is Fiona. Finn's sister is Mia. Ryan's sister is Lily.",
+   "cf_context": "Grace's partner is Ryan. Clara's partner is Finn. Kate's partner is Eric. Eric's sister is Fiona. Finn's sister is Mia. Ryan's sister is Lily.",
+   "off_context": "Grace's partner is Eric. Clara's partner is Finn. Kate's partner is Ryan. Eric's sister is Mia. Finn's sister is Fiona. Ryan's sister is Lily.",
+   "question": "Who is the sister of Kate's partner?",
+   "cf_question": "Who is the sister of Kate's partner?",
+   "cue": "Kate",
+   "bridge": "Ryan",
+   "cf_bridge": "Eric",
+   "third": "Finn",
+   "answer": "Lily",
+   "cf_answer": "Fiona",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Kate's partner?",
+    "answer": "Ryan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Ryan's sister?",
+    "answer": "Lily",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0001",
+   "family": "NAMES",
+   "context": "Olivia's partner is Leo. Grace's partner is Ivan. Eva's partner is Will. Leo's sister is Diana. Ivan's sister is Lily. Will's sister is Sara.",
+   "cf_context": "Olivia's partner is Will. Grace's partner is Ivan. Eva's partner is Leo. Leo's sister is Diana. Ivan's sister is Lily. Will's sister is Sara.",
+   "off_context": "Olivia's partner is Leo. Grace's partner is Ivan. Eva's partner is Will. Leo's sister is Lily. Ivan's sister is Diana. Will's sister is Sara.",
+   "question": "Who is the sister of Eva's partner?",
+   "cf_question": "Who is the sister of Eva's partner?",
+   "cue": "Eva",
+   "bridge": "Will",
+   "cf_bridge": "Leo",
+   "third": "Ivan",
+   "answer": "Sara",
+   "cf_answer": "Diana",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Eva's partner?",
+    "answer": "Will",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Will's sister?",
+    "answer": "Sara",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0002",
+   "family": "NAMES",
+   "context": "Clara's partner is Paul. Alice's partner is Eric. Ruby's partner is Will. Paul's sister is Zoe. Will's sister is Tara. Eric's sister is Beth.",
+   "cf_context": "Clara's partner is Eric. Alice's partner is Paul. Ruby's partner is Will. Paul's sister is Zoe. Will's sister is Tara. Eric's sister is Beth.",
+   "off_context": "Clara's partner is Paul. Alice's partner is Eric. Ruby's partner is Will. Paul's sister is Tara. Will's sister is Zoe. Eric's sister is Beth.",
+   "question": "Who is the sister of Alice's partner?",
+   "cf_question": "Who is the sister of Alice's partner?",
+   "cue": "Alice",
+   "bridge": "Eric",
+   "cf_bridge": "Paul",
+   "third": "Will",
+   "answer": "Beth",
+   "cf_answer": "Zoe",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Alice's partner?",
+    "answer": "Eric",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Eric's sister?",
+    "answer": "Beth",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0003",
+   "family": "NAMES",
+   "context": "Julia's partner is Luke. Clara's partner is Sean. Vera's partner is Carl. Carl's sister is Nina. Sean's sister is Diana. Luke's sister is Lily.",
+   "cf_context": "Julia's partner is Sean. Clara's partner is Luke. Vera's partner is Carl. Carl's sister is Nina. Sean's sister is Diana. Luke's sister is Lily.",
+   "off_context": "Julia's partner is Luke. Clara's partner is Sean. Vera's partner is Carl. Carl's sister is Diana. Sean's sister is Nina. Luke's sister is Lily.",
+   "question": "Who is the sister of Julia's partner?",
+   "cf_question": "Who is the sister of Julia's partner?",
+   "cue": "Julia",
+   "bridge": "Luke",
+   "cf_bridge": "Sean",
+   "third": "Carl",
+   "answer": "Lily",
+   "cf_answer": "Diana",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Julia's partner?",
+    "answer": "Luke",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Luke's sister?",
+    "answer": "Lily",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0004",
+   "family": "NAMES",
+   "context": "Eve's partner is Tom. Vera's partner is Luke. Eva's partner is Henry. Luke's sister is Diana. Tom's sister is Fiona. Henry's sister is Olivia.",
+   "cf_context": "Eve's partner is Luke. Vera's partner is Tom. Eva's partner is Henry. Luke's sister is Diana. Tom's sister is Fiona. Henry's sister is Olivia.",
+   "off_context": "Eve's partner is Tom. Vera's partner is Luke. Eva's partner is Henry. Luke's sister is Olivia. Tom's sister is Fiona. Henry's sister is Diana.",
+   "question": "Who is the sister of Eve's partner?",
+   "cf_question": "Who is the sister of Eve's partner?",
+   "cue": "Eve",
+   "bridge": "Tom",
+   "cf_bridge": "Luke",
+   "third": "Henry",
+   "answer": "Fiona",
+   "cf_answer": "Diana",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Eve's partner?",
+    "answer": "Tom",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Tom's sister?",
+    "answer": "Fiona",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0005",
+   "family": "NAMES",
+   "context": "Fiona's partner is Paul. Olivia's partner is Tom. Julia's partner is Frank. Frank's sister is Nina. Paul's sister is Iris. Tom's sister is Lucy.",
+   "cf_context": "Fiona's partner is Paul. Olivia's partner is Frank. Julia's partner is Tom. Frank's sister is Nina. Paul's sister is Iris. Tom's sister is Lucy.",
+   "off_context": "Fiona's partner is Paul. Olivia's partner is Tom. Julia's partner is Frank. Frank's sister is Nina. Paul's sister is Lucy. Tom's sister is Iris.",
+   "question": "Who is the sister of Julia's partner?",
+   "cf_question": "Who is the sister of Julia's partner?",
+   "cue": "Julia",
+   "bridge": "Frank",
+   "cf_bridge": "Tom",
+   "third": "Paul",
+   "answer": "Nina",
+   "cf_answer": "Lucy",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Julia's partner?",
+    "answer": "Frank",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Frank's sister?",
+    "answer": "Nina",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0006",
+   "family": "NAMES",
+   "context": "Emma's partner is Carl. Mia's partner is Sam. Lily's partner is Jack. Carl's sister is Anna. Sam's sister is Julia. Jack's sister is Lucy.",
+   "cf_context": "Emma's partner is Sam. Mia's partner is Carl. Lily's partner is Jack. Carl's sister is Anna. Sam's sister is Julia. Jack's sister is Lucy.",
+   "off_context": "Emma's partner is Carl. Mia's partner is Sam. Lily's partner is Jack. Carl's sister is Lucy. Sam's sister is Julia. Jack's sister is Anna.",
+   "question": "Who is the sister of Mia's partner?",
+   "cf_question": "Who is the sister of Mia's partner?",
+   "cue": "Mia",
+   "bridge": "Sam",
+   "cf_bridge": "Carl",
+   "third": "Jack",
+   "answer": "Julia",
+   "cf_answer": "Anna",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Mia's partner?",
+    "answer": "Sam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Sam's sister?",
+    "answer": "Julia",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0007",
+   "family": "NAMES",
+   "context": "Anna's partner is Owen. Amy's partner is Tom. Alice's partner is Mark. Owen's sister is Fiona. Tom's sister is Julia. Mark's sister is Diana.",
+   "cf_context": "Anna's partner is Mark. Amy's partner is Tom. Alice's partner is Owen. Owen's sister is Fiona. Tom's sister is Julia. Mark's sister is Diana.",
+   "off_context": "Anna's partner is Owen. Amy's partner is Tom. Alice's partner is Mark. Owen's sister is Julia. Tom's sister is Fiona. Mark's sister is Diana.",
+   "question": "Who is the sister of Alice's partner?",
+   "cf_question": "Who is the sister of Alice's partner?",
+   "cue": "Alice",
+   "bridge": "Mark",
+   "cf_bridge": "Owen",
+   "third": "Tom",
+   "answer": "Diana",
+   "cf_answer": "Fiona",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Alice's partner?",
+    "answer": "Mark",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Mark's sister?",
+    "answer": "Diana",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0008",
+   "family": "NAMES",
+   "context": "Ella's partner is Ryan. Julia's partner is David. Vera's partner is Victor. Victor's sister is Emma. Ryan's sister is Alice. David's sister is Rose.",
+   "cf_context": "Ella's partner is David. Julia's partner is Ryan. Vera's partner is Victor. Victor's sister is Emma. Ryan's sister is Alice. David's sister is Rose.",
+   "off_context": "Ella's partner is Ryan. Julia's partner is David. Vera's partner is Victor. Victor's sister is Rose. Ryan's sister is Alice. David's sister is Emma.",
+   "question": "Who is the sister of Ella's partner?",
+   "cf_question": "Who is the sister of Ella's partner?",
+   "cue": "Ella",
+   "bridge": "Ryan",
+   "cf_bridge": "David",
+   "third": "Victor",
+   "answer": "Alice",
+   "cf_answer": "Rose",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Ella's partner?",
+    "answer": "Ryan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Ryan's sister?",
+    "answer": "Alice",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0009",
+   "family": "NAMES",
+   "context": "Grace's partner is Carl. Tara's partner is Frank. Maria's partner is Noah. Frank's sister is Rose. Carl's sister is Lucy. Noah's sister is Ivy.",
+   "cf_context": "Grace's partner is Noah. Tara's partner is Frank. Maria's partner is Carl. Frank's sister is Rose. Carl's sister is Lucy. Noah's sister is Ivy.",
+   "off_context": "Grace's partner is Carl. Tara's partner is Frank. Maria's partner is Noah. Frank's sister is Lucy. Carl's sister is Rose. Noah's sister is Ivy.",
+   "question": "Who is the sister of Maria's partner?",
+   "cf_question": "Who is the sister of Maria's partner?",
+   "cue": "Maria",
+   "bridge": "Noah",
+   "cf_bridge": "Carl",
+   "third": "Frank",
+   "answer": "Ivy",
+   "cf_answer": "Lucy",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Maria's partner?",
+    "answer": "Noah",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Noah's sister?",
+    "answer": "Ivy",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0010",
+   "family": "NAMES",
+   "context": "Iris's partner is Henry. Tara's partner is Max. Julia's partner is Ryan. Max's sister is Lucy. Ryan's sister is Alice. Henry's sister is Nina.",
+   "cf_context": "Iris's partner is Ryan. Tara's partner is Max. Julia's partner is Henry. Max's sister is Lucy. Ryan's sister is Alice. Henry's sister is Nina.",
+   "off_context": "Iris's partner is Henry. Tara's partner is Max. Julia's partner is Ryan. Max's sister is Alice. Ryan's sister is Lucy. Henry's sister is Nina.",
+   "question": "Who is the sister of Iris's partner?",
+   "cf_question": "Who is the sister of Iris's partner?",
+   "cue": "Iris",
+   "bridge": "Henry",
+   "cf_bridge": "Ryan",
+   "third": "Max",
+   "answer": "Nina",
+   "cf_answer": "Alice",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Iris's partner?",
+    "answer": "Henry",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Henry's sister?",
+    "answer": "Nina",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0011",
+   "family": "NAMES",
+   "context": "Ruby's partner is Tom. Eve's partner is Sean. Sara's partner is Henry. Sean's sister is Vera. Tom's sister is Ivy. Henry's sister is Emma.",
+   "cf_context": "Ruby's partner is Henry. Eve's partner is Sean. Sara's partner is Tom. Sean's sister is Vera. Tom's sister is Ivy. Henry's sister is Emma.",
+   "off_context": "Ruby's partner is Tom. Eve's partner is Sean. Sara's partner is Henry. Sean's sister is Ivy. Tom's sister is Vera. Henry's sister is Emma.",
+   "question": "Who is the sister of Sara's partner?",
+   "cf_question": "Who is the sister of Sara's partner?",
+   "cue": "Sara",
+   "bridge": "Henry",
+   "cf_bridge": "Tom",
+   "third": "Sean",
+   "answer": "Emma",
+   "cf_answer": "Ivy",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Sara's partner?",
+    "answer": "Henry",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Henry's sister?",
+    "answer": "Emma",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0012",
+   "family": "NAMES",
+   "context": "Anna's partner is Ivan. Olivia's partner is Sam. Grace's partner is Will. Sam's sister is Maria. Ivan's sister is Beth. Will's sister is Vera.",
+   "cf_context": "Anna's partner is Sam. Olivia's partner is Ivan. Grace's partner is Will. Sam's sister is Maria. Ivan's sister is Beth. Will's sister is Vera.",
+   "off_context": "Anna's partner is Ivan. Olivia's partner is Sam. Grace's partner is Will. Sam's sister is Maria. Ivan's sister is Vera. Will's sister is Beth.",
+   "question": "Who is the sister of Olivia's partner?",
+   "cf_question": "Who is the sister of Olivia's partner?",
+   "cue": "Olivia",
+   "bridge": "Sam",
+   "cf_bridge": "Ivan",
+   "third": "Will",
+   "answer": "Maria",
+   "cf_answer": "Beth",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Olivia's partner?",
+    "answer": "Sam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Sam's sister?",
+    "answer": "Maria",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0013",
+   "family": "NAMES",
+   "context": "Beth's partner is Carl. Clara's partner is Finn. Diana's partner is Paul. Carl's sister is Lily. Paul's sister is Alice. Finn's sister is Anna.",
+   "cf_context": "Beth's partner is Finn. Clara's partner is Carl. Diana's partner is Paul. Carl's sister is Lily. Paul's sister is Alice. Finn's sister is Anna.",
+   "off_context": "Beth's partner is Carl. Clara's partner is Finn. Diana's partner is Paul. Carl's sister is Lily. Paul's sister is Anna. Finn's sister is Alice.",
+   "question": "Who is the sister of Beth's partner?",
+   "cf_question": "Who is the sister of Beth's partner?",
+   "cue": "Beth",
+   "bridge": "Carl",
+   "cf_bridge": "Finn",
+   "third": "Paul",
+   "answer": "Lily",
+   "cf_answer": "Anna",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Beth's partner?",
+    "answer": "Carl",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Carl's sister?",
+    "answer": "Lily",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0014",
+   "family": "NAMES",
+   "context": "Grace's partner is Ryan. Mia's partner is Henry. Clara's partner is Mark. Henry's sister is Nina. Mark's sister is Diana. Ryan's sister is Lucy.",
+   "cf_context": "Grace's partner is Ryan. Mia's partner is Mark. Clara's partner is Henry. Henry's sister is Nina. Mark's sister is Diana. Ryan's sister is Lucy.",
+   "off_context": "Grace's partner is Ryan. Mia's partner is Henry. Clara's partner is Mark. Henry's sister is Nina. Mark's sister is Lucy. Ryan's sister is Diana.",
+   "question": "Who is the sister of Mia's partner?",
+   "cf_question": "Who is the sister of Mia's partner?",
+   "cue": "Mia",
+   "bridge": "Henry",
+   "cf_bridge": "Mark",
+   "third": "Ryan",
+   "answer": "Nina",
+   "cf_answer": "Diana",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Mia's partner?",
+    "answer": "Henry",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Henry's sister?",
+    "answer": "Nina",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0015",
+   "family": "NAMES",
+   "context": "Eve's partner is Will. Mia's partner is Liam. Kate's partner is Noah. Liam's sister is Clara. Noah's sister is Sara. Will's sister is Diana.",
+   "cf_context": "Eve's partner is Noah. Mia's partner is Liam. Kate's partner is Will. Liam's sister is Clara. Noah's sister is Sara. Will's sister is Diana.",
+   "off_context": "Eve's partner is Will. Mia's partner is Liam. Kate's partner is Noah. Liam's sister is Diana. Noah's sister is Sara. Will's sister is Clara.",
+   "question": "Who is the sister of Kate's partner?",
+   "cf_question": "Who is the sister of Kate's partner?",
+   "cue": "Kate",
+   "bridge": "Noah",
+   "cf_bridge": "Will",
+   "third": "Liam",
+   "answer": "Sara",
+   "cf_answer": "Diana",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Kate's partner?",
+    "answer": "Noah",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Noah's sister?",
+    "answer": "Sara",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0016",
+   "family": "NAMES",
+   "context": "Laura's partner is Victor. Kate's partner is Peter. Vera's partner is Eric. Eric's sister is Ella. Peter's sister is Amy. Victor's sister is Olivia.",
+   "cf_context": "Laura's partner is Eric. Kate's partner is Peter. Vera's partner is Victor. Eric's sister is Ella. Peter's sister is Amy. Victor's sister is Olivia.",
+   "off_context": "Laura's partner is Victor. Kate's partner is Peter. Vera's partner is Eric. Eric's sister is Amy. Peter's sister is Ella. Victor's sister is Olivia.",
+   "question": "Who is the sister of Laura's partner?",
+   "cf_question": "Who is the sister of Laura's partner?",
+   "cue": "Laura",
+   "bridge": "Victor",
+   "cf_bridge": "Eric",
+   "third": "Peter",
+   "answer": "Olivia",
+   "cf_answer": "Ella",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Laura's partner?",
+    "answer": "Victor",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Victor's sister?",
+    "answer": "Olivia",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0017",
+   "family": "NAMES",
+   "context": "Diana's partner is Oscar. Lily's partner is Liam. Laura's partner is Henry. Henry's sister is Alice. Oscar's sister is Tara. Liam's sister is Olivia.",
+   "cf_context": "Diana's partner is Liam. Lily's partner is Oscar. Laura's partner is Henry. Henry's sister is Alice. Oscar's sister is Tara. Liam's sister is Olivia.",
+   "off_context": "Diana's partner is Oscar. Lily's partner is Liam. Laura's partner is Henry. Henry's sister is Tara. Oscar's sister is Alice. Liam's sister is Olivia.",
+   "question": "Who is the sister of Lily's partner?",
+   "cf_question": "Who is the sister of Lily's partner?",
+   "cue": "Lily",
+   "bridge": "Liam",
+   "cf_bridge": "Oscar",
+   "third": "Henry",
+   "answer": "Olivia",
+   "cf_answer": "Tara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Lily's partner?",
+    "answer": "Liam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Liam's sister?",
+    "answer": "Olivia",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0018",
+   "family": "NAMES",
+   "context": "Laura's partner is Dan. Anna's partner is Luke. Julia's partner is Victor. Victor's sister is Clara. Dan's sister is Ivy. Luke's sister is Grace.",
+   "cf_context": "Laura's partner is Dan. Anna's partner is Victor. Julia's partner is Luke. Victor's sister is Clara. Dan's sister is Ivy. Luke's sister is Grace.",
+   "off_context": "Laura's partner is Dan. Anna's partner is Luke. Julia's partner is Victor. Victor's sister is Ivy. Dan's sister is Clara. Luke's sister is Grace.",
+   "question": "Who is the sister of Anna's partner?",
+   "cf_question": "Who is the sister of Anna's partner?",
+   "cue": "Anna",
+   "bridge": "Luke",
+   "cf_bridge": "Victor",
+   "third": "Dan",
+   "answer": "Grace",
+   "cf_answer": "Clara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Anna's partner?",
+    "answer": "Luke",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Luke's sister?",
+    "answer": "Grace",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0019",
+   "family": "NAMES",
+   "context": "Julia's partner is Owen. Sara's partner is Jack. Diana's partner is Adam. Owen's sister is Lucy. Adam's sister is Fiona. Jack's sister is Clara.",
+   "cf_context": "Julia's partner is Jack. Sara's partner is Owen. Diana's partner is Adam. Owen's sister is Lucy. Adam's sister is Fiona. Jack's sister is Clara.",
+   "off_context": "Julia's partner is Owen. Sara's partner is Jack. Diana's partner is Adam. Owen's sister is Lucy. Adam's sister is Clara. Jack's sister is Fiona.",
+   "question": "Who is the sister of Julia's partner?",
+   "cf_question": "Who is the sister of Julia's partner?",
+   "cue": "Julia",
+   "bridge": "Owen",
+   "cf_bridge": "Jack",
+   "third": "Adam",
+   "answer": "Lucy",
+   "cf_answer": "Clara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Julia's partner?",
+    "answer": "Owen",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Owen's sister?",
+    "answer": "Lucy",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0020",
+   "family": "NAMES",
+   "context": "Vera's partner is Paul. Tara's partner is Eric. Rose's partner is Ivan. Paul's sister is Ivy. Eric's sister is Laura. Ivan's sister is Lucy.",
+   "cf_context": "Vera's partner is Ivan. Tara's partner is Eric. Rose's partner is Paul. Paul's sister is Ivy. Eric's sister is Laura. Ivan's sister is Lucy.",
+   "off_context": "Vera's partner is Paul. Tara's partner is Eric. Rose's partner is Ivan. Paul's sister is Laura. Eric's sister is Ivy. Ivan's sister is Lucy.",
+   "question": "Who is the sister of Rose's partner?",
+   "cf_question": "Who is the sister of Rose's partner?",
+   "cue": "Rose",
+   "bridge": "Ivan",
+   "cf_bridge": "Paul",
+   "third": "Eric",
+   "answer": "Lucy",
+   "cf_answer": "Ivy",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Rose's partner?",
+    "answer": "Ivan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Ivan's sister?",
+    "answer": "Lucy",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0021",
+   "family": "NAMES",
+   "context": "Diana's partner is Kyle. Grace's partner is Jack. Kate's partner is Sam. Sam's sister is Julia. Kyle's sister is Ivy. Jack's sister is Sara.",
+   "cf_context": "Diana's partner is Jack. Grace's partner is Kyle. Kate's partner is Sam. Sam's sister is Julia. Kyle's sister is Ivy. Jack's sister is Sara.",
+   "off_context": "Diana's partner is Kyle. Grace's partner is Jack. Kate's partner is Sam. Sam's sister is Sara. Kyle's sister is Ivy. Jack's sister is Julia.",
+   "question": "Who is the sister of Diana's partner?",
+   "cf_question": "Who is the sister of Diana's partner?",
+   "cue": "Diana",
+   "bridge": "Kyle",
+   "cf_bridge": "Jack",
+   "third": "Sam",
+   "answer": "Ivy",
+   "cf_answer": "Sara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Diana's partner?",
+    "answer": "Kyle",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Kyle's sister?",
+    "answer": "Ivy",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0022",
+   "family": "NAMES",
+   "context": "Ella's partner is Dan. Beth's partner is Adam. Vera's partner is Kyle. Dan's sister is Clara. Kyle's sister is Alice. Adam's sister is Eve.",
+   "cf_context": "Ella's partner is Kyle. Beth's partner is Adam. Vera's partner is Dan. Dan's sister is Clara. Kyle's sister is Alice. Adam's sister is Eve.",
+   "off_context": "Ella's partner is Dan. Beth's partner is Adam. Vera's partner is Kyle. Dan's sister is Clara. Kyle's sister is Eve. Adam's sister is Alice.",
+   "question": "Who is the sister of Ella's partner?",
+   "cf_question": "Who is the sister of Ella's partner?",
+   "cue": "Ella",
+   "bridge": "Dan",
+   "cf_bridge": "Kyle",
+   "third": "Adam",
+   "answer": "Clara",
+   "cf_answer": "Alice",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Ella's partner?",
+    "answer": "Dan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Dan's sister?",
+    "answer": "Clara",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0023",
+   "family": "NAMES",
+   "context": "Mia's partner is Frank. Iris's partner is Leo. Laura's partner is Adam. Adam's sister is Diana. Frank's sister is Eve. Leo's sister is Amy.",
+   "cf_context": "Mia's partner is Leo. Iris's partner is Frank. Laura's partner is Adam. Adam's sister is Diana. Frank's sister is Eve. Leo's sister is Amy.",
+   "off_context": "Mia's partner is Frank. Iris's partner is Leo. Laura's partner is Adam. Adam's sister is Eve. Frank's sister is Diana. Leo's sister is Amy.",
+   "question": "Who is the sister of Iris's partner?",
+   "cf_question": "Who is the sister of Iris's partner?",
+   "cue": "Iris",
+   "bridge": "Leo",
+   "cf_bridge": "Frank",
+   "third": "Adam",
+   "answer": "Amy",
+   "cf_answer": "Eve",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Iris's partner?",
+    "answer": "Leo",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Leo's sister?",
+    "answer": "Amy",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0024",
+   "family": "NAMES",
+   "context": "Emma's partner is Ben. Julia's partner is Jack. Kate's partner is Sam. Sam's sister is Laura. Ben's sister is Nina. Jack's sister is Ivy.",
+   "cf_context": "Emma's partner is Jack. Julia's partner is Ben. Kate's partner is Sam. Sam's sister is Laura. Ben's sister is Nina. Jack's sister is Ivy.",
+   "off_context": "Emma's partner is Ben. Julia's partner is Jack. Kate's partner is Sam. Sam's sister is Ivy. Ben's sister is Nina. Jack's sister is Laura.",
+   "question": "Who is the sister of Emma's partner?",
+   "cf_question": "Who is the sister of Emma's partner?",
+   "cue": "Emma",
+   "bridge": "Ben",
+   "cf_bridge": "Jack",
+   "third": "Sam",
+   "answer": "Nina",
+   "cf_answer": "Ivy",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Emma's partner?",
+    "answer": "Ben",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Ben's sister?",
+    "answer": "Nina",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0025",
+   "family": "NAMES",
+   "context": "Emma's partner is Ben. Lily's partner is Adam. Maria's partner is James. Adam's sister is Fiona. Ben's sister is Nina. James's sister is Diana.",
+   "cf_context": "Emma's partner is Ben. Lily's partner is James. Maria's partner is Adam. Adam's sister is Fiona. Ben's sister is Nina. James's sister is Diana.",
+   "off_context": "Emma's partner is Ben. Lily's partner is Adam. Maria's partner is James. Adam's sister is Fiona. Ben's sister is Diana. James's sister is Nina.",
+   "question": "Who is the sister of Lily's partner?",
+   "cf_question": "Who is the sister of Lily's partner?",
+   "cue": "Lily",
+   "bridge": "Adam",
+   "cf_bridge": "James",
+   "third": "Ben",
+   "answer": "Fiona",
+   "cf_answer": "Diana",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Lily's partner?",
+    "answer": "Adam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Adam's sister?",
+    "answer": "Fiona",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0026",
+   "family": "NAMES",
+   "context": "Diana's partner is Noah. Vera's partner is Owen. Sara's partner is Hugo. Hugo's sister is Beth. Noah's sister is Clara. Owen's sister is Alice.",
+   "cf_context": "Diana's partner is Noah. Vera's partner is Hugo. Sara's partner is Owen. Hugo's sister is Beth. Noah's sister is Clara. Owen's sister is Alice.",
+   "off_context": "Diana's partner is Noah. Vera's partner is Owen. Sara's partner is Hugo. Hugo's sister is Clara. Noah's sister is Beth. Owen's sister is Alice.",
+   "question": "Who is the sister of Vera's partner?",
+   "cf_question": "Who is the sister of Vera's partner?",
+   "cue": "Vera",
+   "bridge": "Owen",
+   "cf_bridge": "Hugo",
+   "third": "Noah",
+   "answer": "Alice",
+   "cf_answer": "Beth",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Vera's partner?",
+    "answer": "Owen",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Owen's sister?",
+    "answer": "Alice",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0027",
+   "family": "NAMES",
+   "context": "Olivia's partner is Liam. Sara's partner is Carl. Eva's partner is Sean. Carl's sister is Zoe. Liam's sister is Vera. Sean's sister is Nina.",
+   "cf_context": "Olivia's partner is Sean. Sara's partner is Carl. Eva's partner is Liam. Carl's sister is Zoe. Liam's sister is Vera. Sean's sister is Nina.",
+   "off_context": "Olivia's partner is Liam. Sara's partner is Carl. Eva's partner is Sean. Carl's sister is Vera. Liam's sister is Zoe. Sean's sister is Nina.",
+   "question": "Who is the sister of Eva's partner?",
+   "cf_question": "Who is the sister of Eva's partner?",
+   "cue": "Eva",
+   "bridge": "Sean",
+   "cf_bridge": "Liam",
+   "third": "Carl",
+   "answer": "Nina",
+   "cf_answer": "Vera",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Eva's partner?",
+    "answer": "Sean",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Sean's sister?",
+    "answer": "Nina",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0028",
+   "family": "NAMES",
+   "context": "Eva's partner is Finn. Alice's partner is Sean. Ella's partner is Luke. Luke's sister is Ruby. Finn's sister is Fiona. Sean's sister is Olivia.",
+   "cf_context": "Eva's partner is Luke. Alice's partner is Sean. Ella's partner is Finn. Luke's sister is Ruby. Finn's sister is Fiona. Sean's sister is Olivia.",
+   "off_context": "Eva's partner is Finn. Alice's partner is Sean. Ella's partner is Luke. Luke's sister is Olivia. Finn's sister is Fiona. Sean's sister is Ruby.",
+   "question": "Who is the sister of Eva's partner?",
+   "cf_question": "Who is the sister of Eva's partner?",
+   "cue": "Eva",
+   "bridge": "Finn",
+   "cf_bridge": "Luke",
+   "third": "Sean",
+   "answer": "Fiona",
+   "cf_answer": "Ruby",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Eva's partner?",
+    "answer": "Finn",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Finn's sister?",
+    "answer": "Fiona",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0029",
+   "family": "NAMES",
+   "context": "Beth's partner is James. Emma's partner is David. Fiona's partner is Liam. David's sister is Grace. James's sister is Zoe. Liam's sister is Iris.",
+   "cf_context": "Beth's partner is David. Emma's partner is James. Fiona's partner is Liam. David's sister is Grace. James's sister is Zoe. Liam's sister is Iris.",
+   "off_context": "Beth's partner is James. Emma's partner is David. Fiona's partner is Liam. David's sister is Grace. James's sister is Iris. Liam's sister is Zoe.",
+   "question": "Who is the sister of Emma's partner?",
+   "cf_question": "Who is the sister of Emma's partner?",
+   "cue": "Emma",
+   "bridge": "David",
+   "cf_bridge": "James",
+   "third": "Liam",
+   "answer": "Grace",
+   "cf_answer": "Zoe",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Emma's partner?",
+    "answer": "David",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is David's sister?",
+    "answer": "Grace",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0030",
+   "family": "NAMES",
+   "context": "Diana's partner is Frank. Laura's partner is Luke. Eve's partner is Max. Frank's sister is Olivia. Max's sister is Beth. Luke's sister is Fiona.",
+   "cf_context": "Diana's partner is Max. Laura's partner is Luke. Eve's partner is Frank. Frank's sister is Olivia. Max's sister is Beth. Luke's sister is Fiona.",
+   "off_context": "Diana's partner is Frank. Laura's partner is Luke. Eve's partner is Max. Frank's sister is Fiona. Max's sister is Beth. Luke's sister is Olivia.",
+   "question": "Who is the sister of Eve's partner?",
+   "cf_question": "Who is the sister of Eve's partner?",
+   "cue": "Eve",
+   "bridge": "Max",
+   "cf_bridge": "Frank",
+   "third": "Luke",
+   "answer": "Beth",
+   "cf_answer": "Olivia",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Eve's partner?",
+    "answer": "Max",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Max's sister?",
+    "answer": "Beth",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0031",
+   "family": "NAMES",
+   "context": "Iris's partner is Will. Maria's partner is Peter. Rose's partner is Luke. Peter's sister is Fiona. Luke's sister is Beth. Will's sister is Eve.",
+   "cf_context": "Iris's partner is Peter. Maria's partner is Will. Rose's partner is Luke. Peter's sister is Fiona. Luke's sister is Beth. Will's sister is Eve.",
+   "off_context": "Iris's partner is Will. Maria's partner is Peter. Rose's partner is Luke. Peter's sister is Beth. Luke's sister is Fiona. Will's sister is Eve.",
+   "question": "Who is the sister of Iris's partner?",
+   "cf_question": "Who is the sister of Iris's partner?",
+   "cue": "Iris",
+   "bridge": "Will",
+   "cf_bridge": "Peter",
+   "third": "Luke",
+   "answer": "Eve",
+   "cf_answer": "Fiona",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Iris's partner?",
+    "answer": "Will",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Will's sister?",
+    "answer": "Eve",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0032",
+   "family": "NAMES",
+   "context": "Clara's partner is Kyle. Ella's partner is Victor. Lucy's partner is Oscar. Victor's sister is Eve. Kyle's sister is Amy. Oscar's sister is Sara.",
+   "cf_context": "Clara's partner is Kyle. Ella's partner is Oscar. Lucy's partner is Victor. Victor's sister is Eve. Kyle's sister is Amy. Oscar's sister is Sara.",
+   "off_context": "Clara's partner is Kyle. Ella's partner is Victor. Lucy's partner is Oscar. Victor's sister is Amy. Kyle's sister is Eve. Oscar's sister is Sara.",
+   "question": "Who is the sister of Lucy's partner?",
+   "cf_question": "Who is the sister of Lucy's partner?",
+   "cue": "Lucy",
+   "bridge": "Oscar",
+   "cf_bridge": "Victor",
+   "third": "Kyle",
+   "answer": "Sara",
+   "cf_answer": "Eve",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Lucy's partner?",
+    "answer": "Oscar",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Oscar's sister?",
+    "answer": "Sara",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0033",
+   "family": "NAMES",
+   "context": "Fiona's partner is Tom. Diana's partner is Dan. Amy's partner is Kyle. Kyle's sister is Nina. Dan's sister is Mia. Tom's sister is Vera.",
+   "cf_context": "Fiona's partner is Dan. Diana's partner is Tom. Amy's partner is Kyle. Kyle's sister is Nina. Dan's sister is Mia. Tom's sister is Vera.",
+   "off_context": "Fiona's partner is Tom. Diana's partner is Dan. Amy's partner is Kyle. Kyle's sister is Vera. Dan's sister is Mia. Tom's sister is Nina.",
+   "question": "Who is the sister of Diana's partner?",
+   "cf_question": "Who is the sister of Diana's partner?",
+   "cue": "Diana",
+   "bridge": "Dan",
+   "cf_bridge": "Tom",
+   "third": "Kyle",
+   "answer": "Mia",
+   "cf_answer": "Vera",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Diana's partner?",
+    "answer": "Dan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Dan's sister?",
+    "answer": "Mia",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0034",
+   "family": "NAMES",
+   "context": "Lily's partner is Ryan. Diana's partner is Liam. Sara's partner is Eric. Liam's sister is Beth. Ryan's sister is Clara. Eric's sister is Amy.",
+   "cf_context": "Lily's partner is Eric. Diana's partner is Liam. Sara's partner is Ryan. Liam's sister is Beth. Ryan's sister is Clara. Eric's sister is Amy.",
+   "off_context": "Lily's partner is Ryan. Diana's partner is Liam. Sara's partner is Eric. Liam's sister is Amy. Ryan's sister is Clara. Eric's sister is Beth.",
+   "question": "Who is the sister of Lily's partner?",
+   "cf_question": "Who is the sister of Lily's partner?",
+   "cue": "Lily",
+   "bridge": "Ryan",
+   "cf_bridge": "Eric",
+   "third": "Liam",
+   "answer": "Clara",
+   "cf_answer": "Amy",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Lily's partner?",
+    "answer": "Ryan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Ryan's sister?",
+    "answer": "Clara",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0035",
+   "family": "NAMES",
+   "context": "Emma's partner is Oscar. Maria's partner is Sam. Zoe's partner is Frank. Frank's sister is Lily. Oscar's sister is Eve. Sam's sister is Olivia.",
+   "cf_context": "Emma's partner is Frank. Maria's partner is Sam. Zoe's partner is Oscar. Frank's sister is Lily. Oscar's sister is Eve. Sam's sister is Olivia.",
+   "off_context": "Emma's partner is Oscar. Maria's partner is Sam. Zoe's partner is Frank. Frank's sister is Lily. Oscar's sister is Olivia. Sam's sister is Eve.",
+   "question": "Who is the sister of Zoe's partner?",
+   "cf_question": "Who is the sister of Zoe's partner?",
+   "cue": "Zoe",
+   "bridge": "Frank",
+   "cf_bridge": "Oscar",
+   "third": "Sam",
+   "answer": "Lily",
+   "cf_answer": "Eve",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Zoe's partner?",
+    "answer": "Frank",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Frank's sister?",
+    "answer": "Lily",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0036",
+   "family": "NAMES",
+   "context": "Beth's partner is Mark. Ruby's partner is Finn. Maria's partner is Peter. Finn's sister is Clara. Mark's sister is Fiona. Peter's sister is Nina.",
+   "cf_context": "Beth's partner is Peter. Ruby's partner is Finn. Maria's partner is Mark. Finn's sister is Clara. Mark's sister is Fiona. Peter's sister is Nina.",
+   "off_context": "Beth's partner is Mark. Ruby's partner is Finn. Maria's partner is Peter. Finn's sister is Fiona. Mark's sister is Clara. Peter's sister is Nina.",
+   "question": "Who is the sister of Maria's partner?",
+   "cf_question": "Who is the sister of Maria's partner?",
+   "cue": "Maria",
+   "bridge": "Peter",
+   "cf_bridge": "Mark",
+   "third": "Finn",
+   "answer": "Nina",
+   "cf_answer": "Fiona",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Maria's partner?",
+    "answer": "Peter",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Peter's sister?",
+    "answer": "Nina",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0037",
+   "family": "NAMES",
+   "context": "Anna's partner is Mark. Olivia's partner is Peter. Nina's partner is Dan. Peter's sister is Tara. Mark's sister is Kate. Dan's sister is Ella.",
+   "cf_context": "Anna's partner is Peter. Olivia's partner is Mark. Nina's partner is Dan. Peter's sister is Tara. Mark's sister is Kate. Dan's sister is Ella.",
+   "off_context": "Anna's partner is Mark. Olivia's partner is Peter. Nina's partner is Dan. Peter's sister is Ella. Mark's sister is Kate. Dan's sister is Tara.",
+   "question": "Who is the sister of Anna's partner?",
+   "cf_question": "Who is the sister of Anna's partner?",
+   "cue": "Anna",
+   "bridge": "Mark",
+   "cf_bridge": "Peter",
+   "third": "Dan",
+   "answer": "Kate",
+   "cf_answer": "Tara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Anna's partner?",
+    "answer": "Mark",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Mark's sister?",
+    "answer": "Kate",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0038",
+   "family": "NAMES",
+   "context": "Amy's partner is Luke. Nina's partner is Kyle. Diana's partner is Owen. Owen's sister is Zoe. Luke's sister is Clara. Kyle's sister is Eva.",
+   "cf_context": "Amy's partner is Kyle. Nina's partner is Luke. Diana's partner is Owen. Owen's sister is Zoe. Luke's sister is Clara. Kyle's sister is Eva.",
+   "off_context": "Amy's partner is Luke. Nina's partner is Kyle. Diana's partner is Owen. Owen's sister is Clara. Luke's sister is Zoe. Kyle's sister is Eva.",
+   "question": "Who is the sister of Nina's partner?",
+   "cf_question": "Who is the sister of Nina's partner?",
+   "cue": "Nina",
+   "bridge": "Kyle",
+   "cf_bridge": "Luke",
+   "third": "Owen",
+   "answer": "Eva",
+   "cf_answer": "Clara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Nina's partner?",
+    "answer": "Kyle",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Kyle's sister?",
+    "answer": "Eva",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0039",
+   "family": "NAMES",
+   "context": "Rose's partner is Mark. Fiona's partner is Owen. Zoe's partner is James. James's sister is Grace. Owen's sister is Kate. Mark's sister is Lucy.",
+   "cf_context": "Rose's partner is Owen. Fiona's partner is Mark. Zoe's partner is James. James's sister is Grace. Owen's sister is Kate. Mark's sister is Lucy.",
+   "off_context": "Rose's partner is Mark. Fiona's partner is Owen. Zoe's partner is James. James's sister is Kate. Owen's sister is Grace. Mark's sister is Lucy.",
+   "question": "Who is the sister of Rose's partner?",
+   "cf_question": "Who is the sister of Rose's partner?",
+   "cue": "Rose",
+   "bridge": "Mark",
+   "cf_bridge": "Owen",
+   "third": "James",
+   "answer": "Lucy",
+   "cf_answer": "Kate",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Rose's partner?",
+    "answer": "Mark",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Mark's sister?",
+    "answer": "Lucy",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0040",
+   "family": "NAMES",
+   "context": "Amy's partner is Will. Ivy's partner is David. Nina's partner is Sean. Sean's sister is Laura. David's sister is Eve. Will's sister is Vera.",
+   "cf_context": "Amy's partner is Sean. Ivy's partner is David. Nina's partner is Will. Sean's sister is Laura. David's sister is Eve. Will's sister is Vera.",
+   "off_context": "Amy's partner is Will. Ivy's partner is David. Nina's partner is Sean. Sean's sister is Laura. David's sister is Vera. Will's sister is Eve.",
+   "question": "Who is the sister of Nina's partner?",
+   "cf_question": "Who is the sister of Nina's partner?",
+   "cue": "Nina",
+   "bridge": "Sean",
+   "cf_bridge": "Will",
+   "third": "David",
+   "answer": "Laura",
+   "cf_answer": "Vera",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Nina's partner?",
+    "answer": "Sean",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Sean's sister?",
+    "answer": "Laura",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0041",
+   "family": "NAMES",
+   "context": "Fiona's partner is Sean. Alice's partner is Ivan. Tara's partner is Sam. Sam's sister is Ruby. Sean's sister is Clara. Ivan's sister is Nina.",
+   "cf_context": "Fiona's partner is Sean. Alice's partner is Sam. Tara's partner is Ivan. Sam's sister is Ruby. Sean's sister is Clara. Ivan's sister is Nina.",
+   "off_context": "Fiona's partner is Sean. Alice's partner is Ivan. Tara's partner is Sam. Sam's sister is Ruby. Sean's sister is Nina. Ivan's sister is Clara.",
+   "question": "Who is the sister of Tara's partner?",
+   "cf_question": "Who is the sister of Tara's partner?",
+   "cue": "Tara",
+   "bridge": "Sam",
+   "cf_bridge": "Ivan",
+   "third": "Sean",
+   "answer": "Ruby",
+   "cf_answer": "Nina",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Tara's partner?",
+    "answer": "Sam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Sam's sister?",
+    "answer": "Ruby",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0042",
+   "family": "NAMES",
+   "context": "Ivy's partner is Leo. Vera's partner is Henry. Nina's partner is Jack. Leo's sister is Lily. Henry's sister is Lucy. Jack's sister is Iris.",
+   "cf_context": "Ivy's partner is Leo. Vera's partner is Jack. Nina's partner is Henry. Leo's sister is Lily. Henry's sister is Lucy. Jack's sister is Iris.",
+   "off_context": "Ivy's partner is Leo. Vera's partner is Henry. Nina's partner is Jack. Leo's sister is Iris. Henry's sister is Lucy. Jack's sister is Lily.",
+   "question": "Who is the sister of Vera's partner?",
+   "cf_question": "Who is the sister of Vera's partner?",
+   "cue": "Vera",
+   "bridge": "Henry",
+   "cf_bridge": "Jack",
+   "third": "Leo",
+   "answer": "Lucy",
+   "cf_answer": "Iris",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Vera's partner?",
+    "answer": "Henry",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Henry's sister?",
+    "answer": "Lucy",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0043",
+   "family": "NAMES",
+   "context": "Tara's partner is Hugo. Maria's partner is Ben. Rose's partner is Mark. Mark's sister is Amy. Hugo's sister is Lucy. Ben's sister is Ruby.",
+   "cf_context": "Tara's partner is Ben. Maria's partner is Hugo. Rose's partner is Mark. Mark's sister is Amy. Hugo's sister is Lucy. Ben's sister is Ruby.",
+   "off_context": "Tara's partner is Hugo. Maria's partner is Ben. Rose's partner is Mark. Mark's sister is Lucy. Hugo's sister is Amy. Ben's sister is Ruby.",
+   "question": "Who is the sister of Maria's partner?",
+   "cf_question": "Who is the sister of Maria's partner?",
+   "cue": "Maria",
+   "bridge": "Ben",
+   "cf_bridge": "Hugo",
+   "third": "Mark",
+   "answer": "Ruby",
+   "cf_answer": "Lucy",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Maria's partner?",
+    "answer": "Ben",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Ben's sister?",
+    "answer": "Ruby",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0044",
+   "family": "NAMES",
+   "context": "Alice's partner is Ben. Julia's partner is Tom. Diana's partner is Victor. Tom's sister is Vera. Victor's sister is Eve. Ben's sister is Maria.",
+   "cf_context": "Alice's partner is Ben. Julia's partner is Victor. Diana's partner is Tom. Tom's sister is Vera. Victor's sister is Eve. Ben's sister is Maria.",
+   "off_context": "Alice's partner is Ben. Julia's partner is Tom. Diana's partner is Victor. Tom's sister is Vera. Victor's sister is Maria. Ben's sister is Eve.",
+   "question": "Who is the sister of Julia's partner?",
+   "cf_question": "Who is the sister of Julia's partner?",
+   "cue": "Julia",
+   "bridge": "Tom",
+   "cf_bridge": "Victor",
+   "third": "Ben",
+   "answer": "Vera",
+   "cf_answer": "Eve",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Julia's partner?",
+    "answer": "Tom",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Tom's sister?",
+    "answer": "Vera",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0045",
+   "family": "NAMES",
+   "context": "Clara's partner is Carl. Maria's partner is Sam. Tara's partner is Leo. Carl's sister is Julia. Leo's sister is Grace. Sam's sister is Alice.",
+   "cf_context": "Clara's partner is Carl. Maria's partner is Leo. Tara's partner is Sam. Carl's sister is Julia. Leo's sister is Grace. Sam's sister is Alice.",
+   "off_context": "Clara's partner is Carl. Maria's partner is Sam. Tara's partner is Leo. Carl's sister is Alice. Leo's sister is Grace. Sam's sister is Julia.",
+   "question": "Who is the sister of Tara's partner?",
+   "cf_question": "Who is the sister of Tara's partner?",
+   "cue": "Tara",
+   "bridge": "Leo",
+   "cf_bridge": "Sam",
+   "third": "Carl",
+   "answer": "Grace",
+   "cf_answer": "Alice",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Tara's partner?",
+    "answer": "Leo",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Leo's sister?",
+    "answer": "Grace",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0046",
+   "family": "NAMES",
+   "context": "Anna's partner is Eric. Ivy's partner is Liam. Nina's partner is James. James's sister is Mia. Liam's sister is Ruby. Eric's sister is Clara.",
+   "cf_context": "Anna's partner is Eric. Ivy's partner is James. Nina's partner is Liam. James's sister is Mia. Liam's sister is Ruby. Eric's sister is Clara.",
+   "off_context": "Anna's partner is Eric. Ivy's partner is Liam. Nina's partner is James. James's sister is Clara. Liam's sister is Ruby. Eric's sister is Mia.",
+   "question": "Who is the sister of Ivy's partner?",
+   "cf_question": "Who is the sister of Ivy's partner?",
+   "cue": "Ivy",
+   "bridge": "Liam",
+   "cf_bridge": "James",
+   "third": "Eric",
+   "answer": "Ruby",
+   "cf_answer": "Mia",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Ivy's partner?",
+    "answer": "Liam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Liam's sister?",
+    "answer": "Ruby",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0047",
+   "family": "NAMES",
+   "context": "Iris's partner is Will. Alice's partner is Sam. Clara's partner is Victor. Sam's sister is Diana. Will's sister is Zoe. Victor's sister is Eva.",
+   "cf_context": "Iris's partner is Will. Alice's partner is Victor. Clara's partner is Sam. Sam's sister is Diana. Will's sister is Zoe. Victor's sister is Eva.",
+   "off_context": "Iris's partner is Will. Alice's partner is Sam. Clara's partner is Victor. Sam's sister is Zoe. Will's sister is Diana. Victor's sister is Eva.",
+   "question": "Who is the sister of Clara's partner?",
+   "cf_question": "Who is the sister of Clara's partner?",
+   "cue": "Clara",
+   "bridge": "Victor",
+   "cf_bridge": "Sam",
+   "third": "Will",
+   "answer": "Eva",
+   "cf_answer": "Diana",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Clara's partner?",
+    "answer": "Victor",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Victor's sister?",
+    "answer": "Eva",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0048",
+   "family": "NAMES",
+   "context": "Ruby's partner is Sam. Lucy's partner is Henry. Iris's partner is Ivan. Ivan's sister is Mia. Sam's sister is Beth. Henry's sister is Grace.",
+   "cf_context": "Ruby's partner is Henry. Lucy's partner is Sam. Iris's partner is Ivan. Ivan's sister is Mia. Sam's sister is Beth. Henry's sister is Grace.",
+   "off_context": "Ruby's partner is Sam. Lucy's partner is Henry. Iris's partner is Ivan. Ivan's sister is Grace. Sam's sister is Beth. Henry's sister is Mia.",
+   "question": "Who is the sister of Ruby's partner?",
+   "cf_question": "Who is the sister of Ruby's partner?",
+   "cue": "Ruby",
+   "bridge": "Sam",
+   "cf_bridge": "Henry",
+   "third": "Ivan",
+   "answer": "Beth",
+   "cf_answer": "Grace",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Ruby's partner?",
+    "answer": "Sam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Sam's sister?",
+    "answer": "Beth",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0049",
+   "family": "NAMES",
+   "context": "Diana's partner is Mark. Emma's partner is Paul. Anna's partner is Jack. Paul's sister is Beth. Jack's sister is Sara. Mark's sister is Zoe.",
+   "cf_context": "Diana's partner is Paul. Emma's partner is Mark. Anna's partner is Jack. Paul's sister is Beth. Jack's sister is Sara. Mark's sister is Zoe.",
+   "off_context": "Diana's partner is Mark. Emma's partner is Paul. Anna's partner is Jack. Paul's sister is Beth. Jack's sister is Zoe. Mark's sister is Sara.",
+   "question": "Who is the sister of Emma's partner?",
+   "cf_question": "Who is the sister of Emma's partner?",
+   "cue": "Emma",
+   "bridge": "Paul",
+   "cf_bridge": "Mark",
+   "third": "Jack",
+   "answer": "Beth",
+   "cf_answer": "Zoe",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Emma's partner?",
+    "answer": "Paul",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Paul's sister?",
+    "answer": "Beth",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0050",
+   "family": "NAMES",
+   "context": "Sara's partner is Paul. Eve's partner is Liam. Grace's partner is Sam. Paul's sister is Alice. Liam's sister is Emma. Sam's sister is Rose.",
+   "cf_context": "Sara's partner is Paul. Eve's partner is Sam. Grace's partner is Liam. Paul's sister is Alice. Liam's sister is Emma. Sam's sister is Rose.",
+   "off_context": "Sara's partner is Paul. Eve's partner is Liam. Grace's partner is Sam. Paul's sister is Rose. Liam's sister is Emma. Sam's sister is Alice.",
+   "question": "Who is the sister of Eve's partner?",
+   "cf_question": "Who is the sister of Eve's partner?",
+   "cue": "Eve",
+   "bridge": "Liam",
+   "cf_bridge": "Sam",
+   "third": "Paul",
+   "answer": "Emma",
+   "cf_answer": "Rose",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Eve's partner?",
+    "answer": "Liam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Liam's sister?",
+    "answer": "Emma",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0051",
+   "family": "NAMES",
+   "context": "Grace's partner is Hugo. Nina's partner is Paul. Vera's partner is Peter. Hugo's sister is Clara. Paul's sister is Lily. Peter's sister is Fiona.",
+   "cf_context": "Grace's partner is Paul. Nina's partner is Hugo. Vera's partner is Peter. Hugo's sister is Clara. Paul's sister is Lily. Peter's sister is Fiona.",
+   "off_context": "Grace's partner is Hugo. Nina's partner is Paul. Vera's partner is Peter. Hugo's sister is Clara. Paul's sister is Fiona. Peter's sister is Lily.",
+   "question": "Who is the sister of Grace's partner?",
+   "cf_question": "Who is the sister of Grace's partner?",
+   "cue": "Grace",
+   "bridge": "Hugo",
+   "cf_bridge": "Paul",
+   "third": "Peter",
+   "answer": "Clara",
+   "cf_answer": "Lily",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Grace's partner?",
+    "answer": "Hugo",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Hugo's sister?",
+    "answer": "Clara",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0052",
+   "family": "NAMES",
+   "context": "Mia's partner is Paul. Lucy's partner is Frank. Ruby's partner is Max. Paul's sister is Sara. Max's sister is Kate. Frank's sister is Diana.",
+   "cf_context": "Mia's partner is Paul. Lucy's partner is Max. Ruby's partner is Frank. Paul's sister is Sara. Max's sister is Kate. Frank's sister is Diana.",
+   "off_context": "Mia's partner is Paul. Lucy's partner is Frank. Ruby's partner is Max. Paul's sister is Kate. Max's sister is Sara. Frank's sister is Diana.",
+   "question": "Who is the sister of Lucy's partner?",
+   "cf_question": "Who is the sister of Lucy's partner?",
+   "cue": "Lucy",
+   "bridge": "Frank",
+   "cf_bridge": "Max",
+   "third": "Paul",
+   "answer": "Diana",
+   "cf_answer": "Kate",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Lucy's partner?",
+    "answer": "Frank",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Frank's sister?",
+    "answer": "Diana",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0053",
+   "family": "NAMES",
+   "context": "Julia's partner is Dan. Emma's partner is Ivan. Lily's partner is Leo. Leo's sister is Clara. Dan's sister is Fiona. Ivan's sister is Olivia.",
+   "cf_context": "Julia's partner is Dan. Emma's partner is Leo. Lily's partner is Ivan. Leo's sister is Clara. Dan's sister is Fiona. Ivan's sister is Olivia.",
+   "off_context": "Julia's partner is Dan. Emma's partner is Ivan. Lily's partner is Leo. Leo's sister is Fiona. Dan's sister is Clara. Ivan's sister is Olivia.",
+   "question": "Who is the sister of Emma's partner?",
+   "cf_question": "Who is the sister of Emma's partner?",
+   "cue": "Emma",
+   "bridge": "Ivan",
+   "cf_bridge": "Leo",
+   "third": "Dan",
+   "answer": "Olivia",
+   "cf_answer": "Clara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Emma's partner?",
+    "answer": "Ivan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Ivan's sister?",
+    "answer": "Olivia",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0054",
+   "family": "NAMES",
+   "context": "Ella's partner is Tom. Beth's partner is Sam. Julia's partner is Noah. Tom's sister is Anna. Sam's sister is Lucy. Noah's sister is Ruby.",
+   "cf_context": "Ella's partner is Sam. Beth's partner is Tom. Julia's partner is Noah. Tom's sister is Anna. Sam's sister is Lucy. Noah's sister is Ruby.",
+   "off_context": "Ella's partner is Tom. Beth's partner is Sam. Julia's partner is Noah. Tom's sister is Ruby. Sam's sister is Lucy. Noah's sister is Anna.",
+   "question": "Who is the sister of Beth's partner?",
+   "cf_question": "Who is the sister of Beth's partner?",
+   "cue": "Beth",
+   "bridge": "Sam",
+   "cf_bridge": "Tom",
+   "third": "Noah",
+   "answer": "Lucy",
+   "cf_answer": "Anna",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Beth's partner?",
+    "answer": "Sam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Sam's sister?",
+    "answer": "Lucy",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0055",
+   "family": "NAMES",
+   "context": "Fiona's partner is Frank. Clara's partner is Victor. Olivia's partner is Adam. Victor's sister is Emma. Frank's sister is Ella. Adam's sister is Iris.",
+   "cf_context": "Fiona's partner is Adam. Clara's partner is Victor. Olivia's partner is Frank. Victor's sister is Emma. Frank's sister is Ella. Adam's sister is Iris.",
+   "off_context": "Fiona's partner is Frank. Clara's partner is Victor. Olivia's partner is Adam. Victor's sister is Ella. Frank's sister is Emma. Adam's sister is Iris.",
+   "question": "Who is the sister of Olivia's partner?",
+   "cf_question": "Who is the sister of Olivia's partner?",
+   "cue": "Olivia",
+   "bridge": "Adam",
+   "cf_bridge": "Frank",
+   "third": "Victor",
+   "answer": "Iris",
+   "cf_answer": "Ella",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Olivia's partner?",
+    "answer": "Adam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Adam's sister?",
+    "answer": "Iris",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0056",
+   "family": "NAMES",
+   "context": "Lily's partner is Sean. Eve's partner is Henry. Eva's partner is Hugo. Sean's sister is Beth. Hugo's sister is Maria. Henry's sister is Alice.",
+   "cf_context": "Lily's partner is Hugo. Eve's partner is Henry. Eva's partner is Sean. Sean's sister is Beth. Hugo's sister is Maria. Henry's sister is Alice.",
+   "off_context": "Lily's partner is Sean. Eve's partner is Henry. Eva's partner is Hugo. Sean's sister is Alice. Hugo's sister is Maria. Henry's sister is Beth.",
+   "question": "Who is the sister of Eva's partner?",
+   "cf_question": "Who is the sister of Eva's partner?",
+   "cue": "Eva",
+   "bridge": "Hugo",
+   "cf_bridge": "Sean",
+   "third": "Henry",
+   "answer": "Maria",
+   "cf_answer": "Beth",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Eva's partner?",
+    "answer": "Hugo",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Hugo's sister?",
+    "answer": "Maria",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0057",
+   "family": "NAMES",
+   "context": "Maria's partner is Peter. Vera's partner is Luke. Amy's partner is Finn. Luke's sister is Eve. Peter's sister is Sara. Finn's sister is Fiona.",
+   "cf_context": "Maria's partner is Finn. Vera's partner is Luke. Amy's partner is Peter. Luke's sister is Eve. Peter's sister is Sara. Finn's sister is Fiona.",
+   "off_context": "Maria's partner is Peter. Vera's partner is Luke. Amy's partner is Finn. Luke's sister is Fiona. Peter's sister is Sara. Finn's sister is Eve.",
+   "question": "Who is the sister of Maria's partner?",
+   "cf_question": "Who is the sister of Maria's partner?",
+   "cue": "Maria",
+   "bridge": "Peter",
+   "cf_bridge": "Finn",
+   "third": "Luke",
+   "answer": "Sara",
+   "cf_answer": "Fiona",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Maria's partner?",
+    "answer": "Peter",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Peter's sister?",
+    "answer": "Sara",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0058",
+   "family": "NAMES",
+   "context": "Mia's partner is Kyle. Grace's partner is Ben. Fiona's partner is Liam. Ben's sister is Laura. Kyle's sister is Beth. Liam's sister is Amy.",
+   "cf_context": "Mia's partner is Kyle. Grace's partner is Liam. Fiona's partner is Ben. Ben's sister is Laura. Kyle's sister is Beth. Liam's sister is Amy.",
+   "off_context": "Mia's partner is Kyle. Grace's partner is Ben. Fiona's partner is Liam. Ben's sister is Laura. Kyle's sister is Amy. Liam's sister is Beth.",
+   "question": "Who is the sister of Grace's partner?",
+   "cf_question": "Who is the sister of Grace's partner?",
+   "cue": "Grace",
+   "bridge": "Ben",
+   "cf_bridge": "Liam",
+   "third": "Kyle",
+   "answer": "Laura",
+   "cf_answer": "Amy",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Grace's partner?",
+    "answer": "Ben",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Ben's sister?",
+    "answer": "Laura",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0059",
+   "family": "NAMES",
+   "context": "Beth's partner is Dan. Diana's partner is Owen. Nina's partner is Sam. Owen's sister is Lily. Sam's sister is Maria. Dan's sister is Iris.",
+   "cf_context": "Beth's partner is Owen. Diana's partner is Dan. Nina's partner is Sam. Owen's sister is Lily. Sam's sister is Maria. Dan's sister is Iris.",
+   "off_context": "Beth's partner is Dan. Diana's partner is Owen. Nina's partner is Sam. Owen's sister is Lily. Sam's sister is Iris. Dan's sister is Maria.",
+   "question": "Who is the sister of Diana's partner?",
+   "cf_question": "Who is the sister of Diana's partner?",
+   "cue": "Diana",
+   "bridge": "Owen",
+   "cf_bridge": "Dan",
+   "third": "Sam",
+   "answer": "Lily",
+   "cf_answer": "Iris",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Diana's partner?",
+    "answer": "Owen",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Owen's sister?",
+    "answer": "Lily",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0060",
+   "family": "NAMES",
+   "context": "Clara's partner is Ryan. Zoe's partner is Tom. Fiona's partner is Victor. Victor's sister is Ella. Ryan's sister is Beth. Tom's sister is Eva.",
+   "cf_context": "Clara's partner is Tom. Zoe's partner is Ryan. Fiona's partner is Victor. Victor's sister is Ella. Ryan's sister is Beth. Tom's sister is Eva.",
+   "off_context": "Clara's partner is Ryan. Zoe's partner is Tom. Fiona's partner is Victor. Victor's sister is Eva. Ryan's sister is Beth. Tom's sister is Ella.",
+   "question": "Who is the sister of Clara's partner?",
+   "cf_question": "Who is the sister of Clara's partner?",
+   "cue": "Clara",
+   "bridge": "Ryan",
+   "cf_bridge": "Tom",
+   "third": "Victor",
+   "answer": "Beth",
+   "cf_answer": "Eva",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Clara's partner?",
+    "answer": "Ryan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Ryan's sister?",
+    "answer": "Beth",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0061",
+   "family": "NAMES",
+   "context": "Julia's partner is Jack. Mia's partner is Adam. Beth's partner is Sean. Jack's sister is Amy. Adam's sister is Emma. Sean's sister is Eva.",
+   "cf_context": "Julia's partner is Jack. Mia's partner is Sean. Beth's partner is Adam. Jack's sister is Amy. Adam's sister is Emma. Sean's sister is Eva.",
+   "off_context": "Julia's partner is Jack. Mia's partner is Adam. Beth's partner is Sean. Jack's sister is Emma. Adam's sister is Amy. Sean's sister is Eva.",
+   "question": "Who is the sister of Beth's partner?",
+   "cf_question": "Who is the sister of Beth's partner?",
+   "cue": "Beth",
+   "bridge": "Sean",
+   "cf_bridge": "Adam",
+   "third": "Jack",
+   "answer": "Eva",
+   "cf_answer": "Emma",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Beth's partner?",
+    "answer": "Sean",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Sean's sister?",
+    "answer": "Eva",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0062",
+   "family": "NAMES",
+   "context": "Zoe's partner is Leo. Amy's partner is Dan. Mia's partner is Eric. Leo's sister is Kate. Eric's sister is Diana. Dan's sister is Eve.",
+   "cf_context": "Zoe's partner is Dan. Amy's partner is Leo. Mia's partner is Eric. Leo's sister is Kate. Eric's sister is Diana. Dan's sister is Eve.",
+   "off_context": "Zoe's partner is Leo. Amy's partner is Dan. Mia's partner is Eric. Leo's sister is Diana. Eric's sister is Kate. Dan's sister is Eve.",
+   "question": "Who is the sister of Amy's partner?",
+   "cf_question": "Who is the sister of Amy's partner?",
+   "cue": "Amy",
+   "bridge": "Dan",
+   "cf_bridge": "Leo",
+   "third": "Eric",
+   "answer": "Eve",
+   "cf_answer": "Kate",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Amy's partner?",
+    "answer": "Dan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Dan's sister?",
+    "answer": "Eve",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0063",
+   "family": "NAMES",
+   "context": "Amy's partner is Finn. Zoe's partner is Ryan. Maria's partner is Frank. Frank's sister is Lucy. Finn's sister is Fiona. Ryan's sister is Sara.",
+   "cf_context": "Amy's partner is Ryan. Zoe's partner is Finn. Maria's partner is Frank. Frank's sister is Lucy. Finn's sister is Fiona. Ryan's sister is Sara.",
+   "off_context": "Amy's partner is Finn. Zoe's partner is Ryan. Maria's partner is Frank. Frank's sister is Sara. Finn's sister is Fiona. Ryan's sister is Lucy.",
+   "question": "Who is the sister of Amy's partner?",
+   "cf_question": "Who is the sister of Amy's partner?",
+   "cue": "Amy",
+   "bridge": "Finn",
+   "cf_bridge": "Ryan",
+   "third": "Frank",
+   "answer": "Fiona",
+   "cf_answer": "Sara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Amy's partner?",
+    "answer": "Finn",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Finn's sister?",
+    "answer": "Fiona",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0064",
+   "family": "NAMES",
+   "context": "Kate's partner is Frank. Vera's partner is Paul. Maria's partner is Will. Paul's sister is Olivia. Frank's sister is Ruby. Will's sister is Tara.",
+   "cf_context": "Kate's partner is Will. Vera's partner is Paul. Maria's partner is Frank. Paul's sister is Olivia. Frank's sister is Ruby. Will's sister is Tara.",
+   "off_context": "Kate's partner is Frank. Vera's partner is Paul. Maria's partner is Will. Paul's sister is Tara. Frank's sister is Ruby. Will's sister is Olivia.",
+   "question": "Who is the sister of Kate's partner?",
+   "cf_question": "Who is the sister of Kate's partner?",
+   "cue": "Kate",
+   "bridge": "Frank",
+   "cf_bridge": "Will",
+   "third": "Paul",
+   "answer": "Ruby",
+   "cf_answer": "Tara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Kate's partner?",
+    "answer": "Frank",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Frank's sister?",
+    "answer": "Ruby",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0065",
+   "family": "NAMES",
+   "context": "Julia's partner is Oscar. Amy's partner is Carl. Laura's partner is Jack. Carl's sister is Ruby. Oscar's sister is Zoe. Jack's sister is Kate.",
+   "cf_context": "Julia's partner is Oscar. Amy's partner is Jack. Laura's partner is Carl. Carl's sister is Ruby. Oscar's sister is Zoe. Jack's sister is Kate.",
+   "off_context": "Julia's partner is Oscar. Amy's partner is Carl. Laura's partner is Jack. Carl's sister is Zoe. Oscar's sister is Ruby. Jack's sister is Kate.",
+   "question": "Who is the sister of Laura's partner?",
+   "cf_question": "Who is the sister of Laura's partner?",
+   "cue": "Laura",
+   "bridge": "Jack",
+   "cf_bridge": "Carl",
+   "third": "Oscar",
+   "answer": "Kate",
+   "cf_answer": "Ruby",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Laura's partner?",
+    "answer": "Jack",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Jack's sister?",
+    "answer": "Kate",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0066",
+   "family": "NAMES",
+   "context": "Grace's partner is Leo. Ivy's partner is Sam. Laura's partner is Eric. Eric's sister is Sara. Leo's sister is Ella. Sam's sister is Kate.",
+   "cf_context": "Grace's partner is Leo. Ivy's partner is Eric. Laura's partner is Sam. Eric's sister is Sara. Leo's sister is Ella. Sam's sister is Kate.",
+   "off_context": "Grace's partner is Leo. Ivy's partner is Sam. Laura's partner is Eric. Eric's sister is Sara. Leo's sister is Kate. Sam's sister is Ella.",
+   "question": "Who is the sister of Laura's partner?",
+   "cf_question": "Who is the sister of Laura's partner?",
+   "cue": "Laura",
+   "bridge": "Eric",
+   "cf_bridge": "Sam",
+   "third": "Leo",
+   "answer": "Sara",
+   "cf_answer": "Kate",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Laura's partner?",
+    "answer": "Eric",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Eric's sister?",
+    "answer": "Sara",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0067",
+   "family": "NAMES",
+   "context": "Eve's partner is Peter. Julia's partner is Kyle. Amy's partner is Dan. Peter's sister is Alice. Kyle's sister is Iris. Dan's sister is Olivia.",
+   "cf_context": "Eve's partner is Dan. Julia's partner is Kyle. Amy's partner is Peter. Peter's sister is Alice. Kyle's sister is Iris. Dan's sister is Olivia.",
+   "off_context": "Eve's partner is Peter. Julia's partner is Kyle. Amy's partner is Dan. Peter's sister is Iris. Kyle's sister is Alice. Dan's sister is Olivia.",
+   "question": "Who is the sister of Amy's partner?",
+   "cf_question": "Who is the sister of Amy's partner?",
+   "cue": "Amy",
+   "bridge": "Dan",
+   "cf_bridge": "Peter",
+   "third": "Kyle",
+   "answer": "Olivia",
+   "cf_answer": "Alice",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Amy's partner?",
+    "answer": "Dan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Dan's sister?",
+    "answer": "Olivia",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0068",
+   "family": "NAMES",
+   "context": "Zoe's partner is Owen. Eve's partner is Mark. Anna's partner is Luke. Luke's sister is Amy. Mark's sister is Emma. Owen's sister is Mia.",
+   "cf_context": "Zoe's partner is Owen. Eve's partner is Luke. Anna's partner is Mark. Luke's sister is Amy. Mark's sister is Emma. Owen's sister is Mia.",
+   "off_context": "Zoe's partner is Owen. Eve's partner is Mark. Anna's partner is Luke. Luke's sister is Amy. Mark's sister is Mia. Owen's sister is Emma.",
+   "question": "Who is the sister of Anna's partner?",
+   "cf_question": "Who is the sister of Anna's partner?",
+   "cue": "Anna",
+   "bridge": "Luke",
+   "cf_bridge": "Mark",
+   "third": "Owen",
+   "answer": "Amy",
+   "cf_answer": "Emma",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Anna's partner?",
+    "answer": "Luke",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Luke's sister?",
+    "answer": "Amy",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0069",
+   "family": "NAMES",
+   "context": "Tara's partner is Sean. Diana's partner is Max. Sara's partner is Tom. Sean's sister is Grace. Tom's sister is Mia. Max's sister is Nina.",
+   "cf_context": "Tara's partner is Sean. Diana's partner is Tom. Sara's partner is Max. Sean's sister is Grace. Tom's sister is Mia. Max's sister is Nina.",
+   "off_context": "Tara's partner is Sean. Diana's partner is Max. Sara's partner is Tom. Sean's sister is Mia. Tom's sister is Grace. Max's sister is Nina.",
+   "question": "Who is the sister of Diana's partner?",
+   "cf_question": "Who is the sister of Diana's partner?",
+   "cue": "Diana",
+   "bridge": "Max",
+   "cf_bridge": "Tom",
+   "third": "Sean",
+   "answer": "Nina",
+   "cf_answer": "Mia",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Diana's partner?",
+    "answer": "Max",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Max's sister?",
+    "answer": "Nina",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0070",
+   "family": "NAMES",
+   "context": "Lily's partner is Peter. Nina's partner is James. Laura's partner is Dan. Peter's sister is Amy. James's sister is Kate. Dan's sister is Beth.",
+   "cf_context": "Lily's partner is Dan. Nina's partner is James. Laura's partner is Peter. Peter's sister is Amy. James's sister is Kate. Dan's sister is Beth.",
+   "off_context": "Lily's partner is Peter. Nina's partner is James. Laura's partner is Dan. Peter's sister is Kate. James's sister is Amy. Dan's sister is Beth.",
+   "question": "Who is the sister of Laura's partner?",
+   "cf_question": "Who is the sister of Laura's partner?",
+   "cue": "Laura",
+   "bridge": "Dan",
+   "cf_bridge": "Peter",
+   "third": "James",
+   "answer": "Beth",
+   "cf_answer": "Amy",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Laura's partner?",
+    "answer": "Dan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Dan's sister?",
+    "answer": "Beth",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0071",
+   "family": "NAMES",
+   "context": "Nina's partner is Luke. Clara's partner is Eric. Kate's partner is Sam. Luke's sister is Tara. Sam's sister is Diana. Eric's sister is Maria.",
+   "cf_context": "Nina's partner is Luke. Clara's partner is Sam. Kate's partner is Eric. Luke's sister is Tara. Sam's sister is Diana. Eric's sister is Maria.",
+   "off_context": "Nina's partner is Luke. Clara's partner is Eric. Kate's partner is Sam. Luke's sister is Maria. Sam's sister is Diana. Eric's sister is Tara.",
+   "question": "Who is the sister of Kate's partner?",
+   "cf_question": "Who is the sister of Kate's partner?",
+   "cue": "Kate",
+   "bridge": "Sam",
+   "cf_bridge": "Eric",
+   "third": "Luke",
+   "answer": "Diana",
+   "cf_answer": "Maria",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Kate's partner?",
+    "answer": "Sam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Sam's sister?",
+    "answer": "Diana",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0072",
+   "family": "NAMES",
+   "context": "Ella's partner is Liam. Lucy's partner is Luke. Clara's partner is Adam. Liam's sister is Diana. Adam's sister is Anna. Luke's sister is Amy.",
+   "cf_context": "Ella's partner is Adam. Lucy's partner is Luke. Clara's partner is Liam. Liam's sister is Diana. Adam's sister is Anna. Luke's sister is Amy.",
+   "off_context": "Ella's partner is Liam. Lucy's partner is Luke. Clara's partner is Adam. Liam's sister is Diana. Adam's sister is Amy. Luke's sister is Anna.",
+   "question": "Who is the sister of Ella's partner?",
+   "cf_question": "Who is the sister of Ella's partner?",
+   "cue": "Ella",
+   "bridge": "Liam",
+   "cf_bridge": "Adam",
+   "third": "Luke",
+   "answer": "Diana",
+   "cf_answer": "Anna",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Ella's partner?",
+    "answer": "Liam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Liam's sister?",
+    "answer": "Diana",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0073",
+   "family": "NAMES",
+   "context": "Lily's partner is Jack. Julia's partner is Mark. Eve's partner is Frank. Jack's sister is Nina. Frank's sister is Fiona. Mark's sister is Anna.",
+   "cf_context": "Lily's partner is Jack. Julia's partner is Frank. Eve's partner is Mark. Jack's sister is Nina. Frank's sister is Fiona. Mark's sister is Anna.",
+   "off_context": "Lily's partner is Jack. Julia's partner is Mark. Eve's partner is Frank. Jack's sister is Anna. Frank's sister is Fiona. Mark's sister is Nina.",
+   "question": "Who is the sister of Eve's partner?",
+   "cf_question": "Who is the sister of Eve's partner?",
+   "cue": "Eve",
+   "bridge": "Frank",
+   "cf_bridge": "Mark",
+   "third": "Jack",
+   "answer": "Fiona",
+   "cf_answer": "Anna",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Eve's partner?",
+    "answer": "Frank",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Frank's sister?",
+    "answer": "Fiona",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0074",
+   "family": "NAMES",
+   "context": "Eva's partner is Luke. Kate's partner is Sean. Lucy's partner is Owen. Luke's sister is Sara. Sean's sister is Beth. Owen's sister is Nina.",
+   "cf_context": "Eva's partner is Sean. Kate's partner is Luke. Lucy's partner is Owen. Luke's sister is Sara. Sean's sister is Beth. Owen's sister is Nina.",
+   "off_context": "Eva's partner is Luke. Kate's partner is Sean. Lucy's partner is Owen. Luke's sister is Sara. Sean's sister is Nina. Owen's sister is Beth.",
+   "question": "Who is the sister of Eva's partner?",
+   "cf_question": "Who is the sister of Eva's partner?",
+   "cue": "Eva",
+   "bridge": "Luke",
+   "cf_bridge": "Sean",
+   "third": "Owen",
+   "answer": "Sara",
+   "cf_answer": "Beth",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Eva's partner?",
+    "answer": "Luke",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Luke's sister?",
+    "answer": "Sara",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0075",
+   "family": "NAMES",
+   "context": "Grace's partner is Paul. Mia's partner is Finn. Ella's partner is Noah. Finn's sister is Lucy. Noah's sister is Tara. Paul's sister is Vera.",
+   "cf_context": "Grace's partner is Paul. Mia's partner is Noah. Ella's partner is Finn. Finn's sister is Lucy. Noah's sister is Tara. Paul's sister is Vera.",
+   "off_context": "Grace's partner is Paul. Mia's partner is Finn. Ella's partner is Noah. Finn's sister is Vera. Noah's sister is Tara. Paul's sister is Lucy.",
+   "question": "Who is the sister of Ella's partner?",
+   "cf_question": "Who is the sister of Ella's partner?",
+   "cue": "Ella",
+   "bridge": "Noah",
+   "cf_bridge": "Finn",
+   "third": "Paul",
+   "answer": "Tara",
+   "cf_answer": "Lucy",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Ella's partner?",
+    "answer": "Noah",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Noah's sister?",
+    "answer": "Tara",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0076",
+   "family": "NAMES",
+   "context": "Beth's partner is Victor. Vera's partner is Frank. Ella's partner is Hugo. Hugo's sister is Nina. Frank's sister is Clara. Victor's sister is Ivy.",
+   "cf_context": "Beth's partner is Hugo. Vera's partner is Frank. Ella's partner is Victor. Hugo's sister is Nina. Frank's sister is Clara. Victor's sister is Ivy.",
+   "off_context": "Beth's partner is Victor. Vera's partner is Frank. Ella's partner is Hugo. Hugo's sister is Nina. Frank's sister is Ivy. Victor's sister is Clara.",
+   "question": "Who is the sister of Ella's partner?",
+   "cf_question": "Who is the sister of Ella's partner?",
+   "cue": "Ella",
+   "bridge": "Hugo",
+   "cf_bridge": "Victor",
+   "third": "Frank",
+   "answer": "Nina",
+   "cf_answer": "Ivy",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Ella's partner?",
+    "answer": "Hugo",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Hugo's sister?",
+    "answer": "Nina",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0077",
+   "family": "NAMES",
+   "context": "Ivy's partner is Kyle. Maria's partner is Ryan. Nina's partner is Hugo. Kyle's sister is Lily. Ryan's sister is Laura. Hugo's sister is Vera.",
+   "cf_context": "Ivy's partner is Kyle. Maria's partner is Hugo. Nina's partner is Ryan. Kyle's sister is Lily. Ryan's sister is Laura. Hugo's sister is Vera.",
+   "off_context": "Ivy's partner is Kyle. Maria's partner is Ryan. Nina's partner is Hugo. Kyle's sister is Laura. Ryan's sister is Lily. Hugo's sister is Vera.",
+   "question": "Who is the sister of Nina's partner?",
+   "cf_question": "Who is the sister of Nina's partner?",
+   "cue": "Nina",
+   "bridge": "Hugo",
+   "cf_bridge": "Ryan",
+   "third": "Kyle",
+   "answer": "Vera",
+   "cf_answer": "Laura",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Nina's partner?",
+    "answer": "Hugo",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Hugo's sister?",
+    "answer": "Vera",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0078",
+   "family": "NAMES",
+   "context": "Diana's partner is Peter. Grace's partner is Henry. Zoe's partner is Liam. Peter's sister is Laura. Liam's sister is Iris. Henry's sister is Clara.",
+   "cf_context": "Diana's partner is Liam. Grace's partner is Henry. Zoe's partner is Peter. Peter's sister is Laura. Liam's sister is Iris. Henry's sister is Clara.",
+   "off_context": "Diana's partner is Peter. Grace's partner is Henry. Zoe's partner is Liam. Peter's sister is Clara. Liam's sister is Iris. Henry's sister is Laura.",
+   "question": "Who is the sister of Zoe's partner?",
+   "cf_question": "Who is the sister of Zoe's partner?",
+   "cue": "Zoe",
+   "bridge": "Liam",
+   "cf_bridge": "Peter",
+   "third": "Henry",
+   "answer": "Iris",
+   "cf_answer": "Laura",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Zoe's partner?",
+    "answer": "Liam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Liam's sister?",
+    "answer": "Iris",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0079",
+   "family": "NAMES",
+   "context": "Alice's partner is Adam. Emma's partner is Ryan. Eve's partner is Luke. Adam's sister is Olivia. Luke's sister is Lily. Ryan's sister is Mia.",
+   "cf_context": "Alice's partner is Ryan. Emma's partner is Adam. Eve's partner is Luke. Adam's sister is Olivia. Luke's sister is Lily. Ryan's sister is Mia.",
+   "off_context": "Alice's partner is Adam. Emma's partner is Ryan. Eve's partner is Luke. Adam's sister is Olivia. Luke's sister is Mia. Ryan's sister is Lily.",
+   "question": "Who is the sister of Alice's partner?",
+   "cf_question": "Who is the sister of Alice's partner?",
+   "cue": "Alice",
+   "bridge": "Adam",
+   "cf_bridge": "Ryan",
+   "third": "Luke",
+   "answer": "Olivia",
+   "cf_answer": "Mia",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Alice's partner?",
+    "answer": "Adam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Adam's sister?",
+    "answer": "Olivia",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0080",
+   "family": "NAMES",
+   "context": "Ella's partner is Paul. Ruby's partner is Adam. Grace's partner is Oscar. Paul's sister is Mia. Adam's sister is Lucy. Oscar's sister is Laura.",
+   "cf_context": "Ella's partner is Oscar. Ruby's partner is Adam. Grace's partner is Paul. Paul's sister is Mia. Adam's sister is Lucy. Oscar's sister is Laura.",
+   "off_context": "Ella's partner is Paul. Ruby's partner is Adam. Grace's partner is Oscar. Paul's sister is Lucy. Adam's sister is Mia. Oscar's sister is Laura.",
+   "question": "Who is the sister of Grace's partner?",
+   "cf_question": "Who is the sister of Grace's partner?",
+   "cue": "Grace",
+   "bridge": "Oscar",
+   "cf_bridge": "Paul",
+   "third": "Adam",
+   "answer": "Laura",
+   "cf_answer": "Mia",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Grace's partner?",
+    "answer": "Oscar",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Oscar's sister?",
+    "answer": "Laura",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0081",
+   "family": "NAMES",
+   "context": "Beth's partner is Eric. Kate's partner is Noah. Ella's partner is Kyle. Kyle's sister is Vera. Eric's sister is Amy. Noah's sister is Eve.",
+   "cf_context": "Beth's partner is Eric. Kate's partner is Kyle. Ella's partner is Noah. Kyle's sister is Vera. Eric's sister is Amy. Noah's sister is Eve.",
+   "off_context": "Beth's partner is Eric. Kate's partner is Noah. Ella's partner is Kyle. Kyle's sister is Vera. Eric's sister is Eve. Noah's sister is Amy.",
+   "question": "Who is the sister of Ella's partner?",
+   "cf_question": "Who is the sister of Ella's partner?",
+   "cue": "Ella",
+   "bridge": "Kyle",
+   "cf_bridge": "Noah",
+   "third": "Eric",
+   "answer": "Vera",
+   "cf_answer": "Eve",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Ella's partner?",
+    "answer": "Kyle",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Kyle's sister?",
+    "answer": "Vera",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0082",
+   "family": "NAMES",
+   "context": "Anna's partner is Noah. Maria's partner is Peter. Sara's partner is Max. Peter's sister is Julia. Max's sister is Diana. Noah's sister is Laura.",
+   "cf_context": "Anna's partner is Noah. Maria's partner is Max. Sara's partner is Peter. Peter's sister is Julia. Max's sister is Diana. Noah's sister is Laura.",
+   "off_context": "Anna's partner is Noah. Maria's partner is Peter. Sara's partner is Max. Peter's sister is Julia. Max's sister is Laura. Noah's sister is Diana.",
+   "question": "Who is the sister of Maria's partner?",
+   "cf_question": "Who is the sister of Maria's partner?",
+   "cue": "Maria",
+   "bridge": "Peter",
+   "cf_bridge": "Max",
+   "third": "Noah",
+   "answer": "Julia",
+   "cf_answer": "Diana",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Maria's partner?",
+    "answer": "Peter",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Peter's sister?",
+    "answer": "Julia",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0083",
+   "family": "NAMES",
+   "context": "Clara's partner is Jack. Ivy's partner is Ben. Lucy's partner is Noah. Ben's sister is Iris. Jack's sister is Tara. Noah's sister is Nina.",
+   "cf_context": "Clara's partner is Jack. Ivy's partner is Noah. Lucy's partner is Ben. Ben's sister is Iris. Jack's sister is Tara. Noah's sister is Nina.",
+   "off_context": "Clara's partner is Jack. Ivy's partner is Ben. Lucy's partner is Noah. Ben's sister is Tara. Jack's sister is Iris. Noah's sister is Nina.",
+   "question": "Who is the sister of Lucy's partner?",
+   "cf_question": "Who is the sister of Lucy's partner?",
+   "cue": "Lucy",
+   "bridge": "Noah",
+   "cf_bridge": "Ben",
+   "third": "Jack",
+   "answer": "Nina",
+   "cf_answer": "Iris",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Lucy's partner?",
+    "answer": "Noah",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Noah's sister?",
+    "answer": "Nina",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0084",
+   "family": "NAMES",
+   "context": "Nina's partner is Noah. Ruby's partner is David. Diana's partner is Luke. Noah's sister is Laura. David's sister is Sara. Luke's sister is Grace.",
+   "cf_context": "Nina's partner is Luke. Ruby's partner is David. Diana's partner is Noah. Noah's sister is Laura. David's sister is Sara. Luke's sister is Grace.",
+   "off_context": "Nina's partner is Noah. Ruby's partner is David. Diana's partner is Luke. Noah's sister is Sara. David's sister is Laura. Luke's sister is Grace.",
+   "question": "Who is the sister of Diana's partner?",
+   "cf_question": "Who is the sister of Diana's partner?",
+   "cue": "Diana",
+   "bridge": "Luke",
+   "cf_bridge": "Noah",
+   "third": "David",
+   "answer": "Grace",
+   "cf_answer": "Laura",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Diana's partner?",
+    "answer": "Luke",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Luke's sister?",
+    "answer": "Grace",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0085",
+   "family": "NAMES",
+   "context": "Olivia's partner is Jack. Nina's partner is Carl. Julia's partner is Dan. Dan's sister is Kate. Jack's sister is Alice. Carl's sister is Mia.",
+   "cf_context": "Olivia's partner is Dan. Nina's partner is Carl. Julia's partner is Jack. Dan's sister is Kate. Jack's sister is Alice. Carl's sister is Mia.",
+   "off_context": "Olivia's partner is Jack. Nina's partner is Carl. Julia's partner is Dan. Dan's sister is Kate. Jack's sister is Mia. Carl's sister is Alice.",
+   "question": "Who is the sister of Julia's partner?",
+   "cf_question": "Who is the sister of Julia's partner?",
+   "cue": "Julia",
+   "bridge": "Dan",
+   "cf_bridge": "Jack",
+   "third": "Carl",
+   "answer": "Kate",
+   "cf_answer": "Alice",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Julia's partner?",
+    "answer": "Dan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Dan's sister?",
+    "answer": "Kate",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0086",
+   "family": "NAMES",
+   "context": "Eve's partner is Oscar. Ivy's partner is Finn. Ruby's partner is Tom. Oscar's sister is Eva. Finn's sister is Olivia. Tom's sister is Iris.",
+   "cf_context": "Eve's partner is Finn. Ivy's partner is Oscar. Ruby's partner is Tom. Oscar's sister is Eva. Finn's sister is Olivia. Tom's sister is Iris.",
+   "off_context": "Eve's partner is Oscar. Ivy's partner is Finn. Ruby's partner is Tom. Oscar's sister is Eva. Finn's sister is Iris. Tom's sister is Olivia.",
+   "question": "Who is the sister of Eve's partner?",
+   "cf_question": "Who is the sister of Eve's partner?",
+   "cue": "Eve",
+   "bridge": "Oscar",
+   "cf_bridge": "Finn",
+   "third": "Tom",
+   "answer": "Eva",
+   "cf_answer": "Olivia",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Eve's partner?",
+    "answer": "Oscar",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Oscar's sister?",
+    "answer": "Eva",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0087",
+   "family": "NAMES",
+   "context": "Ruby's partner is Peter. Ivy's partner is Victor. Diana's partner is Sean. Victor's sister is Tara. Peter's sister is Ella. Sean's sister is Alice.",
+   "cf_context": "Ruby's partner is Peter. Ivy's partner is Sean. Diana's partner is Victor. Victor's sister is Tara. Peter's sister is Ella. Sean's sister is Alice.",
+   "off_context": "Ruby's partner is Peter. Ivy's partner is Victor. Diana's partner is Sean. Victor's sister is Tara. Peter's sister is Alice. Sean's sister is Ella.",
+   "question": "Who is the sister of Ivy's partner?",
+   "cf_question": "Who is the sister of Ivy's partner?",
+   "cue": "Ivy",
+   "bridge": "Victor",
+   "cf_bridge": "Sean",
+   "third": "Peter",
+   "answer": "Tara",
+   "cf_answer": "Alice",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Ivy's partner?",
+    "answer": "Victor",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Victor's sister?",
+    "answer": "Tara",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0088",
+   "family": "NAMES",
+   "context": "Nina's partner is Leo. Emma's partner is Ivan. Diana's partner is Luke. Ivan's sister is Lily. Luke's sister is Sara. Leo's sister is Grace.",
+   "cf_context": "Nina's partner is Luke. Emma's partner is Ivan. Diana's partner is Leo. Ivan's sister is Lily. Luke's sister is Sara. Leo's sister is Grace.",
+   "off_context": "Nina's partner is Leo. Emma's partner is Ivan. Diana's partner is Luke. Ivan's sister is Sara. Luke's sister is Lily. Leo's sister is Grace.",
+   "question": "Who is the sister of Nina's partner?",
+   "cf_question": "Who is the sister of Nina's partner?",
+   "cue": "Nina",
+   "bridge": "Leo",
+   "cf_bridge": "Luke",
+   "third": "Ivan",
+   "answer": "Grace",
+   "cf_answer": "Sara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Nina's partner?",
+    "answer": "Leo",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Leo's sister?",
+    "answer": "Grace",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0089",
+   "family": "NAMES",
+   "context": "Rose's partner is Max. Amy's partner is Jack. Lucy's partner is Victor. Victor's sister is Ella. Max's sister is Maria. Jack's sister is Lily.",
+   "cf_context": "Rose's partner is Max. Amy's partner is Victor. Lucy's partner is Jack. Victor's sister is Ella. Max's sister is Maria. Jack's sister is Lily.",
+   "off_context": "Rose's partner is Max. Amy's partner is Jack. Lucy's partner is Victor. Victor's sister is Ella. Max's sister is Lily. Jack's sister is Maria.",
+   "question": "Who is the sister of Lucy's partner?",
+   "cf_question": "Who is the sister of Lucy's partner?",
+   "cue": "Lucy",
+   "bridge": "Victor",
+   "cf_bridge": "Jack",
+   "third": "Max",
+   "answer": "Ella",
+   "cf_answer": "Lily",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Lucy's partner?",
+    "answer": "Victor",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Victor's sister?",
+    "answer": "Ella",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0090",
+   "family": "NAMES",
+   "context": "Fiona's partner is James. Zoe's partner is Ryan. Nina's partner is Liam. James's sister is Ella. Ryan's sister is Beth. Liam's sister is Tara.",
+   "cf_context": "Fiona's partner is Ryan. Zoe's partner is James. Nina's partner is Liam. James's sister is Ella. Ryan's sister is Beth. Liam's sister is Tara.",
+   "off_context": "Fiona's partner is James. Zoe's partner is Ryan. Nina's partner is Liam. James's sister is Ella. Ryan's sister is Tara. Liam's sister is Beth.",
+   "question": "Who is the sister of Fiona's partner?",
+   "cf_question": "Who is the sister of Fiona's partner?",
+   "cue": "Fiona",
+   "bridge": "James",
+   "cf_bridge": "Ryan",
+   "third": "Liam",
+   "answer": "Ella",
+   "cf_answer": "Beth",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Fiona's partner?",
+    "answer": "James",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is James's sister?",
+    "answer": "Ella",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0091",
+   "family": "NAMES",
+   "context": "Laura's partner is Tom. Tara's partner is Ivan. Lucy's partner is David. Ivan's sister is Maria. Tom's sister is Ella. David's sister is Iris.",
+   "cf_context": "Laura's partner is Ivan. Tara's partner is Tom. Lucy's partner is David. Ivan's sister is Maria. Tom's sister is Ella. David's sister is Iris.",
+   "off_context": "Laura's partner is Tom. Tara's partner is Ivan. Lucy's partner is David. Ivan's sister is Maria. Tom's sister is Iris. David's sister is Ella.",
+   "question": "Who is the sister of Tara's partner?",
+   "cf_question": "Who is the sister of Tara's partner?",
+   "cue": "Tara",
+   "bridge": "Ivan",
+   "cf_bridge": "Tom",
+   "third": "David",
+   "answer": "Maria",
+   "cf_answer": "Ella",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Tara's partner?",
+    "answer": "Ivan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Ivan's sister?",
+    "answer": "Maria",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0092",
+   "family": "NAMES",
+   "context": "Zoe's partner is James. Olivia's partner is Hugo. Anna's partner is Sean. Sean's sister is Julia. Hugo's sister is Sara. James's sister is Ella.",
+   "cf_context": "Zoe's partner is James. Olivia's partner is Sean. Anna's partner is Hugo. Sean's sister is Julia. Hugo's sister is Sara. James's sister is Ella.",
+   "off_context": "Zoe's partner is James. Olivia's partner is Hugo. Anna's partner is Sean. Sean's sister is Julia. Hugo's sister is Ella. James's sister is Sara.",
+   "question": "Who is the sister of Anna's partner?",
+   "cf_question": "Who is the sister of Anna's partner?",
+   "cue": "Anna",
+   "bridge": "Sean",
+   "cf_bridge": "Hugo",
+   "third": "James",
+   "answer": "Julia",
+   "cf_answer": "Sara",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Anna's partner?",
+    "answer": "Sean",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Sean's sister?",
+    "answer": "Julia",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0093",
+   "family": "NAMES",
+   "context": "Emma's partner is Ivan. Iris's partner is Finn. Beth's partner is Noah. Noah's sister is Ella. Finn's sister is Maria. Ivan's sister is Nina.",
+   "cf_context": "Emma's partner is Finn. Iris's partner is Ivan. Beth's partner is Noah. Noah's sister is Ella. Finn's sister is Maria. Ivan's sister is Nina.",
+   "off_context": "Emma's partner is Ivan. Iris's partner is Finn. Beth's partner is Noah. Noah's sister is Maria. Finn's sister is Ella. Ivan's sister is Nina.",
+   "question": "Who is the sister of Emma's partner?",
+   "cf_question": "Who is the sister of Emma's partner?",
+   "cue": "Emma",
+   "bridge": "Ivan",
+   "cf_bridge": "Finn",
+   "third": "Noah",
+   "answer": "Nina",
+   "cf_answer": "Maria",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Emma's partner?",
+    "answer": "Ivan",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Ivan's sister?",
+    "answer": "Nina",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0094",
+   "family": "NAMES",
+   "context": "Maria's partner is James. Beth's partner is Tom. Grace's partner is Leo. James's sister is Vera. Leo's sister is Ruby. Tom's sister is Julia.",
+   "cf_context": "Maria's partner is Leo. Beth's partner is Tom. Grace's partner is James. James's sister is Vera. Leo's sister is Ruby. Tom's sister is Julia.",
+   "off_context": "Maria's partner is James. Beth's partner is Tom. Grace's partner is Leo. James's sister is Vera. Leo's sister is Julia. Tom's sister is Ruby.",
+   "question": "Who is the sister of Maria's partner?",
+   "cf_question": "Who is the sister of Maria's partner?",
+   "cue": "Maria",
+   "bridge": "James",
+   "cf_bridge": "Leo",
+   "third": "Tom",
+   "answer": "Vera",
+   "cf_answer": "Ruby",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Maria's partner?",
+    "answer": "James",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is James's sister?",
+    "answer": "Vera",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0095",
+   "family": "NAMES",
+   "context": "Sara's partner is Max. Julia's partner is Jack. Kate's partner is Ben. Ben's sister is Amy. Max's sister is Maria. Jack's sister is Lily.",
+   "cf_context": "Sara's partner is Jack. Julia's partner is Max. Kate's partner is Ben. Ben's sister is Amy. Max's sister is Maria. Jack's sister is Lily.",
+   "off_context": "Sara's partner is Max. Julia's partner is Jack. Kate's partner is Ben. Ben's sister is Maria. Max's sister is Amy. Jack's sister is Lily.",
+   "question": "Who is the sister of Julia's partner?",
+   "cf_question": "Who is the sister of Julia's partner?",
+   "cue": "Julia",
+   "bridge": "Jack",
+   "cf_bridge": "Max",
+   "third": "Ben",
+   "answer": "Lily",
+   "cf_answer": "Maria",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Julia's partner?",
+    "answer": "Jack",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Jack's sister?",
+    "answer": "Lily",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0096",
+   "family": "NAMES",
+   "context": "Maria's partner is Ben. Laura's partner is Adam. Lily's partner is Peter. Ben's sister is Ruby. Adam's sister is Amy. Peter's sister is Fiona.",
+   "cf_context": "Maria's partner is Ben. Laura's partner is Peter. Lily's partner is Adam. Ben's sister is Ruby. Adam's sister is Amy. Peter's sister is Fiona.",
+   "off_context": "Maria's partner is Ben. Laura's partner is Adam. Lily's partner is Peter. Ben's sister is Fiona. Adam's sister is Amy. Peter's sister is Ruby.",
+   "question": "Who is the sister of Laura's partner?",
+   "cf_question": "Who is the sister of Laura's partner?",
+   "cue": "Laura",
+   "bridge": "Adam",
+   "cf_bridge": "Peter",
+   "third": "Ben",
+   "answer": "Amy",
+   "cf_answer": "Fiona",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Laura's partner?",
+    "answer": "Adam",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Adam's sister?",
+    "answer": "Amy",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0097",
+   "family": "NAMES",
+   "context": "Lucy's partner is Hugo. Tara's partner is Max. Anna's partner is Carl. Carl's sister is Lily. Hugo's sister is Clara. Max's sister is Laura.",
+   "cf_context": "Lucy's partner is Hugo. Tara's partner is Carl. Anna's partner is Max. Carl's sister is Lily. Hugo's sister is Clara. Max's sister is Laura.",
+   "off_context": "Lucy's partner is Hugo. Tara's partner is Max. Anna's partner is Carl. Carl's sister is Lily. Hugo's sister is Laura. Max's sister is Clara.",
+   "question": "Who is the sister of Anna's partner?",
+   "cf_question": "Who is the sister of Anna's partner?",
+   "cue": "Anna",
+   "bridge": "Carl",
+   "cf_bridge": "Max",
+   "third": "Hugo",
+   "answer": "Lily",
+   "cf_answer": "Laura",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Anna's partner?",
+    "answer": "Carl",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Carl's sister?",
+    "answer": "Lily",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0098",
+   "family": "NAMES",
+   "context": "Eve's partner is Henry. Tara's partner is Oscar. Julia's partner is Noah. Henry's sister is Mia. Noah's sister is Beth. Oscar's sister is Kate.",
+   "cf_context": "Eve's partner is Noah. Tara's partner is Oscar. Julia's partner is Henry. Henry's sister is Mia. Noah's sister is Beth. Oscar's sister is Kate.",
+   "off_context": "Eve's partner is Henry. Tara's partner is Oscar. Julia's partner is Noah. Henry's sister is Mia. Noah's sister is Kate. Oscar's sister is Beth.",
+   "question": "Who is the sister of Eve's partner?",
+   "cf_question": "Who is the sister of Eve's partner?",
+   "cue": "Eve",
+   "bridge": "Henry",
+   "cf_bridge": "Noah",
+   "third": "Oscar",
+   "answer": "Mia",
+   "cf_answer": "Beth",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Eve's partner?",
+    "answer": "Henry",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Henry's sister?",
+    "answer": "Mia",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "NAMES-0099",
+   "family": "NAMES",
+   "context": "Olivia's partner is Jack. Eva's partner is Victor. Kate's partner is Will. Victor's sister is Nina. Jack's sister is Zoe. Will's sister is Vera.",
+   "cf_context": "Olivia's partner is Will. Eva's partner is Victor. Kate's partner is Jack. Victor's sister is Nina. Jack's sister is Zoe. Will's sister is Vera.",
+   "off_context": "Olivia's partner is Jack. Eva's partner is Victor. Kate's partner is Will. Victor's sister is Vera. Jack's sister is Zoe. Will's sister is Nina.",
+   "question": "Who is the sister of Olivia's partner?",
+   "cf_question": "Who is the sister of Olivia's partner?",
+   "cue": "Olivia",
+   "bridge": "Jack",
+   "cf_bridge": "Will",
+   "third": "Victor",
+   "answer": "Zoe",
+   "cf_answer": "Vera",
+   "answer_kind": "name",
+   "hop1": {
+    "question": "Who is Olivia's partner?",
+    "answer": "Jack",
+    "kind": "name"
+   },
+   "hop2": {
+    "question": "Who is Jack's sister?",
+    "answer": "Zoe",
+    "kind": "name"
+   },
+   "level": "e3f0"
+  }
+ ]
+}

@@ -1,0 +1,4307 @@
+{
+ "family": "BL_e3f8",
+ "generator": "scripts/suite_v1.py make --set dev (seed 90012: 3 entities, 8 filler)",
+ "format": "Every family asks one question whose answer needs an intermediate variable (the bridge), in the chat format\n(bridge_jspace.chat: one user turn, thinking off, \"Answer:\" prefilled), with a counterfactual C that changes only the\nbridge (to X) and an off-path control O that changes something the answer does not depend on. C and O line up with the\nclean prompt token for token (checked here), so exp04/exp09's copy-and-split runs apply unchanged.",
+ "items": [
+  {
+   "id": "BL-0000",
+   "family": "BL",
+   "scene": "S-0000",
+   "bridge": "duck",
+   "cf_bridge": "pig",
+   "third": "lion",
+   "context": "The garden gate needs new paint. Sam's pet is a duck. The kitchen smelled of fresh bread. The bus was late again. Amy's pet is a pig. Eric's pet is a lion. The weather was mild all week. The duck's locker is 5. The train left on time. The library closed early. The lion's locker is 7. The pig's locker is 3. The wind picked up in the evening. The park was quiet at dawn.",
+   "off_context": "The garden gate needs new paint. Sam's pet is a duck. The kitchen smelled of fresh bread. The bus was late again. Amy's pet is a pig. Eric's pet is a lion. The weather was mild all week. The duck's locker is 5. The train left on time. The library closed early. The lion's locker is 3. The pig's locker is 7. The wind picked up in the evening. The park was quiet at dawn.",
+   "people": [
+    "Sam",
+    "Amy",
+    "Eric"
+   ],
+   "pets": [
+    "duck",
+    "pig",
+    "lion"
+   ],
+   "lockers": {
+    "duck": 5,
+    "pig": 3,
+    "lion": 7
+   },
+   "cue": "Sam",
+   "question": "Which locker belongs to Sam's pet?",
+   "cf_context": "The garden gate needs new paint. Sam's pet is a pig. The kitchen smelled of fresh bread. The bus was late again. Amy's pet is a duck. Eric's pet is a lion. The weather was mild all week. The duck's locker is 5. The train left on time. The library closed early. The lion's locker is 7. The pig's locker is 3. The wind picked up in the evening. The park was quiet at dawn.",
+   "cf_question": "Which locker belongs to Sam's pet?",
+   "answer": "5",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Sam's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the duck?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0001",
+   "family": "BL",
+   "scene": "S-0001",
+   "bridge": "bee",
+   "cf_bridge": "turkey",
+   "third": "cow",
+   "context": "The window faced the hills. The park was quiet at dawn. Noah's pet is a bee. The festival drew a large crowd. Ben's pet is a turkey. The street was lined with trees. Peter's pet is a cow. The coffee was too strong. The cow's locker is 1. The river was calm that morning. The turkey's locker is 3. The wind picked up in the evening. The bee's locker is 9. The kitchen smelled of fresh bread.",
+   "off_context": "The window faced the hills. The park was quiet at dawn. Noah's pet is a bee. The festival drew a large crowd. Ben's pet is a turkey. The street was lined with trees. Peter's pet is a cow. The coffee was too strong. The cow's locker is 3. The river was calm that morning. The turkey's locker is 1. The wind picked up in the evening. The bee's locker is 9. The kitchen smelled of fresh bread.",
+   "people": [
+    "Noah",
+    "Ben",
+    "Peter"
+   ],
+   "pets": [
+    "bee",
+    "turkey",
+    "cow"
+   ],
+   "lockers": {
+    "bee": 9,
+    "turkey": 3,
+    "cow": 1
+   },
+   "cue": "Noah",
+   "question": "Which locker belongs to Noah's pet?",
+   "cf_context": "The window faced the hills. The park was quiet at dawn. Noah's pet is a turkey. The festival drew a large crowd. Ben's pet is a bee. The street was lined with trees. Peter's pet is a cow. The coffee was too strong. The cow's locker is 1. The river was calm that morning. The turkey's locker is 3. The wind picked up in the evening. The bee's locker is 9. The kitchen smelled of fresh bread.",
+   "cf_question": "Which locker belongs to Noah's pet?",
+   "answer": "9",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Noah's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the bee?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0002",
+   "family": "BL",
+   "scene": "S-0002",
+   "bridge": "duck",
+   "cf_bridge": "frog",
+   "third": "lion",
+   "context": "The kitchen smelled of fresh bread. The museum had a new exhibit. The sky turned grey by noon. Max's pet is a lion. Iris's pet is a duck. The bus was late again. Eve's pet is a frog. The hallway lights were dim. The weather was mild all week. The lion's locker is 1. The garden gate needs new paint. The duck's locker is 3. The frog's locker is 9. The river was calm that morning.",
+   "off_context": "The kitchen smelled of fresh bread. The museum had a new exhibit. The sky turned grey by noon. Max's pet is a lion. Iris's pet is a duck. The bus was late again. Eve's pet is a frog. The hallway lights were dim. The weather was mild all week. The lion's locker is 9. The garden gate needs new paint. The duck's locker is 3. The frog's locker is 1. The river was calm that morning.",
+   "people": [
+    "Max",
+    "Iris",
+    "Eve"
+   ],
+   "pets": [
+    "lion",
+    "duck",
+    "frog"
+   ],
+   "lockers": {
+    "duck": 3,
+    "frog": 9,
+    "lion": 1
+   },
+   "cue": "Iris",
+   "question": "Which locker belongs to Iris's pet?",
+   "cf_context": "The kitchen smelled of fresh bread. The museum had a new exhibit. The sky turned grey by noon. Max's pet is a lion. Iris's pet is a frog. The bus was late again. Eve's pet is a duck. The hallway lights were dim. The weather was mild all week. The lion's locker is 1. The garden gate needs new paint. The duck's locker is 3. The frog's locker is 9. The river was calm that morning.",
+   "cf_question": "Which locker belongs to Iris's pet?",
+   "answer": "3",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Iris's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the duck?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0003",
+   "family": "BL",
+   "scene": "S-0003",
+   "bridge": "turkey",
+   "cf_bridge": "cow",
+   "third": "spider",
+   "context": "The train left on time. The park was quiet at dawn. The river was calm that morning. Ivan's pet is a cow. Peter's pet is a spider. The sky turned grey by noon. The weather was mild all week. Frank's pet is a turkey. The street was lined with trees. The wind picked up in the evening. The spider's locker is 5. The turkey's locker is 3. The cow's locker is 9. The tea had gone cold.",
+   "off_context": "The train left on time. The park was quiet at dawn. The river was calm that morning. Ivan's pet is a cow. Peter's pet is a spider. The sky turned grey by noon. The weather was mild all week. Frank's pet is a turkey. The street was lined with trees. The wind picked up in the evening. The spider's locker is 9. The turkey's locker is 3. The cow's locker is 5. The tea had gone cold.",
+   "people": [
+    "Ivan",
+    "Peter",
+    "Frank"
+   ],
+   "pets": [
+    "cow",
+    "spider",
+    "turkey"
+   ],
+   "lockers": {
+    "turkey": 3,
+    "cow": 9,
+    "spider": 5
+   },
+   "cue": "Frank",
+   "question": "Which locker belongs to Frank's pet?",
+   "cf_context": "The train left on time. The park was quiet at dawn. The river was calm that morning. Ivan's pet is a turkey. Peter's pet is a spider. The sky turned grey by noon. The weather was mild all week. Frank's pet is a cow. The street was lined with trees. The wind picked up in the evening. The spider's locker is 5. The turkey's locker is 3. The cow's locker is 9. The tea had gone cold.",
+   "cf_question": "Which locker belongs to Frank's pet?",
+   "answer": "3",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Frank's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the turkey?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0004",
+   "family": "BL",
+   "scene": "S-0004",
+   "bridge": "goose",
+   "cf_bridge": "wolf",
+   "third": "dog",
+   "context": "Ella's pet is a wolf. The train left on time. Paul's pet is a goose. The window faced the hills. The shop on the corner reopened. Zoe's pet is a dog. The tea had gone cold. The dog's locker is 5. The goose's locker is 7. The festival drew a large crowd. The wolf's locker is 3. The radio played old songs. The museum had a new exhibit. The park was quiet at dawn.",
+   "off_context": "Ella's pet is a wolf. The train left on time. Paul's pet is a goose. The window faced the hills. The shop on the corner reopened. Zoe's pet is a dog. The tea had gone cold. The dog's locker is 3. The goose's locker is 7. The festival drew a large crowd. The wolf's locker is 5. The radio played old songs. The museum had a new exhibit. The park was quiet at dawn.",
+   "people": [
+    "Ella",
+    "Paul",
+    "Zoe"
+   ],
+   "pets": [
+    "wolf",
+    "goose",
+    "dog"
+   ],
+   "lockers": {
+    "goose": 7,
+    "wolf": 3,
+    "dog": 5
+   },
+   "cue": "Paul",
+   "question": "Which locker belongs to Paul's pet?",
+   "cf_context": "Ella's pet is a goose. The train left on time. Paul's pet is a wolf. The window faced the hills. The shop on the corner reopened. Zoe's pet is a dog. The tea had gone cold. The dog's locker is 5. The goose's locker is 7. The festival drew a large crowd. The wolf's locker is 3. The radio played old songs. The museum had a new exhibit. The park was quiet at dawn.",
+   "cf_question": "Which locker belongs to Paul's pet?",
+   "answer": "7",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Paul's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the goose?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0005",
+   "family": "BL",
+   "scene": "S-0005",
+   "bridge": "bee",
+   "cf_bridge": "spider",
+   "third": "cat",
+   "context": "Henry's pet is a bee. Paul's pet is a cat. Rose's pet is a spider. The sky turned grey by noon. The tea had gone cold. The office was cold. The bee's locker is 7. The library closed early. The cat's locker is 5. The park was quiet at dawn. The festival drew a large crowd. The spider's locker is 9. The radio played old songs. The market was busy on Saturday.",
+   "off_context": "Henry's pet is a bee. Paul's pet is a cat. Rose's pet is a spider. The sky turned grey by noon. The tea had gone cold. The office was cold. The bee's locker is 7. The library closed early. The cat's locker is 9. The park was quiet at dawn. The festival drew a large crowd. The spider's locker is 5. The radio played old songs. The market was busy on Saturday.",
+   "people": [
+    "Henry",
+    "Paul",
+    "Rose"
+   ],
+   "pets": [
+    "bee",
+    "cat",
+    "spider"
+   ],
+   "lockers": {
+    "bee": 7,
+    "spider": 9,
+    "cat": 5
+   },
+   "cue": "Henry",
+   "question": "Which locker belongs to Henry's pet?",
+   "cf_context": "Henry's pet is a spider. Paul's pet is a cat. Rose's pet is a bee. The sky turned grey by noon. The tea had gone cold. The office was cold. The bee's locker is 7. The library closed early. The cat's locker is 5. The park was quiet at dawn. The festival drew a large crowd. The spider's locker is 9. The radio played old songs. The market was busy on Saturday.",
+   "cf_question": "Which locker belongs to Henry's pet?",
+   "answer": "7",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Henry's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the bee?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0006",
+   "family": "BL",
+   "scene": "S-0006",
+   "bridge": "chicken",
+   "cf_bridge": "frog",
+   "third": "horse",
+   "context": "The hallway lights were dim. The tea had gone cold. James's pet is a chicken. Finn's pet is a frog. The office was cold. The museum had a new exhibit. Sean's pet is a horse. The coffee was too strong. The park was quiet at dawn. The chicken's locker is 7. The wind picked up in the evening. The horse's locker is 3. The frog's locker is 9. The bakery sold out of rolls.",
+   "off_context": "The hallway lights were dim. The tea had gone cold. James's pet is a chicken. Finn's pet is a frog. The office was cold. The museum had a new exhibit. Sean's pet is a horse. The coffee was too strong. The park was quiet at dawn. The chicken's locker is 7. The wind picked up in the evening. The horse's locker is 9. The frog's locker is 3. The bakery sold out of rolls.",
+   "people": [
+    "James",
+    "Finn",
+    "Sean"
+   ],
+   "pets": [
+    "chicken",
+    "frog",
+    "horse"
+   ],
+   "lockers": {
+    "chicken": 7,
+    "frog": 9,
+    "horse": 3
+   },
+   "cue": "James",
+   "question": "Which locker belongs to James's pet?",
+   "cf_context": "The hallway lights were dim. The tea had gone cold. James's pet is a frog. Finn's pet is a chicken. The office was cold. The museum had a new exhibit. Sean's pet is a horse. The coffee was too strong. The park was quiet at dawn. The chicken's locker is 7. The wind picked up in the evening. The horse's locker is 3. The frog's locker is 9. The bakery sold out of rolls.",
+   "cf_question": "Which locker belongs to James's pet?",
+   "answer": "7",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is James's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0007",
+   "family": "BL",
+   "scene": "S-0007",
+   "bridge": "horse",
+   "cf_bridge": "goose",
+   "third": "mouse",
+   "context": "The street was lined with trees. The train left on time. Beth's pet is a horse. The park was quiet at dawn. The school held a concert. Ruby's pet is a mouse. Ryan's pet is a goose. The garden gate needs new paint. The market was busy on Saturday. The mouse's locker is 9. The goose's locker is 3. The horse's locker is 7. The wind picked up in the evening. The tea had gone cold.",
+   "off_context": "The street was lined with trees. The train left on time. Beth's pet is a horse. The park was quiet at dawn. The school held a concert. Ruby's pet is a mouse. Ryan's pet is a goose. The garden gate needs new paint. The market was busy on Saturday. The mouse's locker is 3. The goose's locker is 9. The horse's locker is 7. The wind picked up in the evening. The tea had gone cold.",
+   "people": [
+    "Beth",
+    "Ruby",
+    "Ryan"
+   ],
+   "pets": [
+    "horse",
+    "mouse",
+    "goose"
+   ],
+   "lockers": {
+    "horse": 7,
+    "goose": 3,
+    "mouse": 9
+   },
+   "cue": "Beth",
+   "question": "Which locker belongs to Beth's pet?",
+   "cf_context": "The street was lined with trees. The train left on time. Beth's pet is a goose. The park was quiet at dawn. The school held a concert. Ruby's pet is a mouse. Ryan's pet is a horse. The garden gate needs new paint. The market was busy on Saturday. The mouse's locker is 9. The goose's locker is 3. The horse's locker is 7. The wind picked up in the evening. The tea had gone cold.",
+   "cf_question": "Which locker belongs to Beth's pet?",
+   "answer": "7",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Beth's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the horse?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0008",
+   "family": "BL",
+   "scene": "S-0008",
+   "bridge": "frog",
+   "cf_bridge": "bee",
+   "third": "horse",
+   "context": "The coffee was too strong. The garden gate needs new paint. Finn's pet is a frog. Sam's pet is a bee. The hallway lights were dim. The tea had gone cold. Zoe's pet is a horse. The frog's locker is 3. The bakery sold out of rolls. The bee's locker is 1. The library closed early. The horse's locker is 7. The market was busy on Saturday. The sky turned grey by noon.",
+   "off_context": "The coffee was too strong. The garden gate needs new paint. Finn's pet is a frog. Sam's pet is a bee. The hallway lights were dim. The tea had gone cold. Zoe's pet is a horse. The frog's locker is 3. The bakery sold out of rolls. The bee's locker is 7. The library closed early. The horse's locker is 1. The market was busy on Saturday. The sky turned grey by noon.",
+   "people": [
+    "Finn",
+    "Sam",
+    "Zoe"
+   ],
+   "pets": [
+    "frog",
+    "bee",
+    "horse"
+   ],
+   "lockers": {
+    "frog": 3,
+    "bee": 1,
+    "horse": 7
+   },
+   "cue": "Finn",
+   "question": "Which locker belongs to Finn's pet?",
+   "cf_context": "The coffee was too strong. The garden gate needs new paint. Finn's pet is a bee. Sam's pet is a frog. The hallway lights were dim. The tea had gone cold. Zoe's pet is a horse. The frog's locker is 3. The bakery sold out of rolls. The bee's locker is 1. The library closed early. The horse's locker is 7. The market was busy on Saturday. The sky turned grey by noon.",
+   "cf_question": "Which locker belongs to Finn's pet?",
+   "answer": "3",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Finn's pet?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the frog?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0009",
+   "family": "BL",
+   "scene": "S-0009",
+   "bridge": "wolf",
+   "cf_bridge": "bee",
+   "third": "dog",
+   "context": "The wind picked up in the evening. Emma's pet is a dog. The school held a concert. The tea had gone cold. Laura's pet is a wolf. Kyle's pet is a bee. The river was calm that morning. The wolf's locker is 5. The garden gate needs new paint. The bee's locker is 1. The window faced the hills. The dog's locker is 9. The weather was mild all week. The office was cold.",
+   "off_context": "The wind picked up in the evening. Emma's pet is a dog. The school held a concert. The tea had gone cold. Laura's pet is a wolf. Kyle's pet is a bee. The river was calm that morning. The wolf's locker is 5. The garden gate needs new paint. The bee's locker is 9. The window faced the hills. The dog's locker is 1. The weather was mild all week. The office was cold.",
+   "people": [
+    "Emma",
+    "Laura",
+    "Kyle"
+   ],
+   "pets": [
+    "dog",
+    "wolf",
+    "bee"
+   ],
+   "lockers": {
+    "wolf": 5,
+    "bee": 1,
+    "dog": 9
+   },
+   "cue": "Laura",
+   "question": "Which locker belongs to Laura's pet?",
+   "cf_context": "The wind picked up in the evening. Emma's pet is a dog. The school held a concert. The tea had gone cold. Laura's pet is a bee. Kyle's pet is a wolf. The river was calm that morning. The wolf's locker is 5. The garden gate needs new paint. The bee's locker is 1. The window faced the hills. The dog's locker is 9. The weather was mild all week. The office was cold.",
+   "cf_question": "Which locker belongs to Laura's pet?",
+   "answer": "5",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Laura's pet?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the wolf?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0010",
+   "family": "BL",
+   "scene": "S-0010",
+   "bridge": "spider",
+   "cf_bridge": "frog",
+   "third": "sheep",
+   "context": "The library closed early. The road was wet after the rain. Dan's pet is a sheep. Lucy's pet is a spider. The street was lined with trees. The hallway lights were dim. The wind picked up in the evening. Sara's pet is a frog. The frog's locker is 5. The spider's locker is 1. The tea had gone cold. The sheep's locker is 7. The office was cold. The garden gate needs new paint.",
+   "off_context": "The library closed early. The road was wet after the rain. Dan's pet is a sheep. Lucy's pet is a spider. The street was lined with trees. The hallway lights were dim. The wind picked up in the evening. Sara's pet is a frog. The frog's locker is 7. The spider's locker is 1. The tea had gone cold. The sheep's locker is 5. The office was cold. The garden gate needs new paint.",
+   "people": [
+    "Dan",
+    "Lucy",
+    "Sara"
+   ],
+   "pets": [
+    "sheep",
+    "spider",
+    "frog"
+   ],
+   "lockers": {
+    "spider": 1,
+    "frog": 5,
+    "sheep": 7
+   },
+   "cue": "Lucy",
+   "question": "Which locker belongs to Lucy's pet?",
+   "cf_context": "The library closed early. The road was wet after the rain. Dan's pet is a sheep. Lucy's pet is a frog. The street was lined with trees. The hallway lights were dim. The wind picked up in the evening. Sara's pet is a spider. The frog's locker is 5. The spider's locker is 1. The tea had gone cold. The sheep's locker is 7. The office was cold. The garden gate needs new paint.",
+   "cf_question": "Which locker belongs to Lucy's pet?",
+   "answer": "1",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Lucy's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the spider?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0011",
+   "family": "BL",
+   "scene": "S-0011",
+   "bridge": "turkey",
+   "cf_bridge": "wolf",
+   "third": "sheep",
+   "context": "The weather was mild all week. The road was wet after the rain. Clara's pet is a turkey. The train left on time. Maria's pet is a sheep. The bakery sold out of rolls. The window faced the hills. Jack's pet is a wolf. The hallway lights were dim. The sheep's locker is 7. The river was calm that morning. The turkey's locker is 3. The street was lined with trees. The wolf's locker is 1.",
+   "off_context": "The weather was mild all week. The road was wet after the rain. Clara's pet is a turkey. The train left on time. Maria's pet is a sheep. The bakery sold out of rolls. The window faced the hills. Jack's pet is a wolf. The hallway lights were dim. The sheep's locker is 1. The river was calm that morning. The turkey's locker is 3. The street was lined with trees. The wolf's locker is 7.",
+   "people": [
+    "Clara",
+    "Maria",
+    "Jack"
+   ],
+   "pets": [
+    "turkey",
+    "sheep",
+    "wolf"
+   ],
+   "lockers": {
+    "turkey": 3,
+    "wolf": 1,
+    "sheep": 7
+   },
+   "cue": "Clara",
+   "question": "Which locker belongs to Clara's pet?",
+   "cf_context": "The weather was mild all week. The road was wet after the rain. Clara's pet is a wolf. The train left on time. Maria's pet is a sheep. The bakery sold out of rolls. The window faced the hills. Jack's pet is a turkey. The hallway lights were dim. The sheep's locker is 7. The river was calm that morning. The turkey's locker is 3. The street was lined with trees. The wolf's locker is 1.",
+   "cf_question": "Which locker belongs to Clara's pet?",
+   "answer": "3",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Clara's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the turkey?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0012",
+   "family": "BL",
+   "scene": "S-0012",
+   "bridge": "lion",
+   "cf_bridge": "bee",
+   "third": "horse",
+   "context": "Lily's pet is a lion. The library closed early. Luke's pet is a horse. The weather was mild all week. Zoe's pet is a bee. The bee's locker is 1. The school held a concert. The street was lined with trees. The horse's locker is 3. The office was cold. The shop on the corner reopened. The train left on time. The lion's locker is 7. The wind picked up in the evening.",
+   "off_context": "Lily's pet is a lion. The library closed early. Luke's pet is a horse. The weather was mild all week. Zoe's pet is a bee. The bee's locker is 3. The school held a concert. The street was lined with trees. The horse's locker is 1. The office was cold. The shop on the corner reopened. The train left on time. The lion's locker is 7. The wind picked up in the evening.",
+   "people": [
+    "Lily",
+    "Luke",
+    "Zoe"
+   ],
+   "pets": [
+    "lion",
+    "horse",
+    "bee"
+   ],
+   "lockers": {
+    "lion": 7,
+    "bee": 1,
+    "horse": 3
+   },
+   "cue": "Lily",
+   "question": "Which locker belongs to Lily's pet?",
+   "cf_context": "Lily's pet is a bee. The library closed early. Luke's pet is a horse. The weather was mild all week. Zoe's pet is a lion. The bee's locker is 1. The school held a concert. The street was lined with trees. The horse's locker is 3. The office was cold. The shop on the corner reopened. The train left on time. The lion's locker is 7. The wind picked up in the evening.",
+   "cf_question": "Which locker belongs to Lily's pet?",
+   "answer": "7",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Lily's pet?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the lion?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0013",
+   "family": "BL",
+   "scene": "S-0013",
+   "bridge": "chicken",
+   "cf_bridge": "mouse",
+   "third": "turkey",
+   "context": "Ruby's pet is a chicken. The weather was mild all week. Vera's pet is a mouse. Ryan's pet is a turkey. The office was cold. The market was busy on Saturday. The park was quiet at dawn. The turkey's locker is 3. The garden gate needs new paint. The bakery sold out of rolls. The mouse's locker is 5. The radio played old songs. The chicken's locker is 7. The street was lined with trees.",
+   "off_context": "Ruby's pet is a chicken. The weather was mild all week. Vera's pet is a mouse. Ryan's pet is a turkey. The office was cold. The market was busy on Saturday. The park was quiet at dawn. The turkey's locker is 5. The garden gate needs new paint. The bakery sold out of rolls. The mouse's locker is 3. The radio played old songs. The chicken's locker is 7. The street was lined with trees.",
+   "people": [
+    "Ruby",
+    "Vera",
+    "Ryan"
+   ],
+   "pets": [
+    "chicken",
+    "mouse",
+    "turkey"
+   ],
+   "lockers": {
+    "chicken": 7,
+    "mouse": 5,
+    "turkey": 3
+   },
+   "cue": "Ruby",
+   "question": "Which locker belongs to Ruby's pet?",
+   "cf_context": "Ruby's pet is a mouse. The weather was mild all week. Vera's pet is a chicken. Ryan's pet is a turkey. The office was cold. The market was busy on Saturday. The park was quiet at dawn. The turkey's locker is 3. The garden gate needs new paint. The bakery sold out of rolls. The mouse's locker is 5. The radio played old songs. The chicken's locker is 7. The street was lined with trees.",
+   "cf_question": "Which locker belongs to Ruby's pet?",
+   "answer": "7",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Ruby's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0014",
+   "family": "BL",
+   "scene": "S-0014",
+   "bridge": "pig",
+   "cf_bridge": "turkey",
+   "third": "chicken",
+   "context": "The office was cold. Olivia's pet is a pig. The river was calm that morning. Luke's pet is a chicken. Hugo's pet is a turkey. The tea had gone cold. The chicken's locker is 7. The street was lined with trees. The turkey's locker is 9. The pig's locker is 5. The bus was late again. The window faced the hills. The bakery sold out of rolls. The weather was mild all week.",
+   "off_context": "The office was cold. Olivia's pet is a pig. The river was calm that morning. Luke's pet is a chicken. Hugo's pet is a turkey. The tea had gone cold. The chicken's locker is 9. The street was lined with trees. The turkey's locker is 7. The pig's locker is 5. The bus was late again. The window faced the hills. The bakery sold out of rolls. The weather was mild all week.",
+   "people": [
+    "Olivia",
+    "Luke",
+    "Hugo"
+   ],
+   "pets": [
+    "pig",
+    "chicken",
+    "turkey"
+   ],
+   "lockers": {
+    "pig": 5,
+    "turkey": 9,
+    "chicken": 7
+   },
+   "cue": "Olivia",
+   "question": "Which locker belongs to Olivia's pet?",
+   "cf_context": "The office was cold. Olivia's pet is a turkey. The river was calm that morning. Luke's pet is a chicken. Hugo's pet is a pig. The tea had gone cold. The chicken's locker is 7. The street was lined with trees. The turkey's locker is 9. The pig's locker is 5. The bus was late again. The window faced the hills. The bakery sold out of rolls. The weather was mild all week.",
+   "cf_question": "Which locker belongs to Olivia's pet?",
+   "answer": "5",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Olivia's pet?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the pig?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0015",
+   "family": "BL",
+   "scene": "S-0015",
+   "bridge": "sheep",
+   "cf_bridge": "bee",
+   "third": "duck",
+   "context": "Ben's pet is a bee. Peter's pet is a sheep. The festival drew a large crowd. The shop on the corner reopened. The radio played old songs. Grace's pet is a duck. The kitchen smelled of fresh bread. The garden gate needs new paint. The duck's locker is 7. The library closed early. The sheep's locker is 1. The window faced the hills. The bee's locker is 5. The school held a concert.",
+   "off_context": "Ben's pet is a bee. Peter's pet is a sheep. The festival drew a large crowd. The shop on the corner reopened. The radio played old songs. Grace's pet is a duck. The kitchen smelled of fresh bread. The garden gate needs new paint. The duck's locker is 5. The library closed early. The sheep's locker is 1. The window faced the hills. The bee's locker is 7. The school held a concert.",
+   "people": [
+    "Ben",
+    "Peter",
+    "Grace"
+   ],
+   "pets": [
+    "bee",
+    "sheep",
+    "duck"
+   ],
+   "lockers": {
+    "sheep": 1,
+    "bee": 5,
+    "duck": 7
+   },
+   "cue": "Peter",
+   "question": "Which locker belongs to Peter's pet?",
+   "cf_context": "Ben's pet is a sheep. Peter's pet is a bee. The festival drew a large crowd. The shop on the corner reopened. The radio played old songs. Grace's pet is a duck. The kitchen smelled of fresh bread. The garden gate needs new paint. The duck's locker is 7. The library closed early. The sheep's locker is 1. The window faced the hills. The bee's locker is 5. The school held a concert.",
+   "cf_question": "Which locker belongs to Peter's pet?",
+   "answer": "1",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Peter's pet?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the sheep?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0016",
+   "family": "BL",
+   "scene": "S-0016",
+   "bridge": "turkey",
+   "cf_bridge": "wolf",
+   "third": "bee",
+   "context": "The bakery sold out of rolls. Emma's pet is a turkey. The library closed early. The river was calm that morning. David's pet is a wolf. The radio played old songs. Owen's pet is a bee. The market was busy on Saturday. The wolf's locker is 3. The wind picked up in the evening. The turkey's locker is 9. The road was wet after the rain. The museum had a new exhibit. The bee's locker is 1.",
+   "off_context": "The bakery sold out of rolls. Emma's pet is a turkey. The library closed early. The river was calm that morning. David's pet is a wolf. The radio played old songs. Owen's pet is a bee. The market was busy on Saturday. The wolf's locker is 1. The wind picked up in the evening. The turkey's locker is 9. The road was wet after the rain. The museum had a new exhibit. The bee's locker is 3.",
+   "people": [
+    "Emma",
+    "David",
+    "Owen"
+   ],
+   "pets": [
+    "turkey",
+    "wolf",
+    "bee"
+   ],
+   "lockers": {
+    "turkey": 9,
+    "wolf": 3,
+    "bee": 1
+   },
+   "cue": "Emma",
+   "question": "Which locker belongs to Emma's pet?",
+   "cf_context": "The bakery sold out of rolls. Emma's pet is a wolf. The library closed early. The river was calm that morning. David's pet is a turkey. The radio played old songs. Owen's pet is a bee. The market was busy on Saturday. The wolf's locker is 3. The wind picked up in the evening. The turkey's locker is 9. The road was wet after the rain. The museum had a new exhibit. The bee's locker is 1.",
+   "cf_question": "Which locker belongs to Emma's pet?",
+   "answer": "9",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Emma's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the turkey?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0017",
+   "family": "BL",
+   "scene": "S-0017",
+   "bridge": "bee",
+   "cf_bridge": "wolf",
+   "third": "pig",
+   "context": "The hallway lights were dim. The wind picked up in the evening. The window faced the hills. Emma's pet is a wolf. The market was busy on Saturday. Eva's pet is a bee. Laura's pet is a pig. The bakery sold out of rolls. The bee's locker is 3. The coffee was too strong. The kitchen smelled of fresh bread. The wolf's locker is 5. The festival drew a large crowd. The pig's locker is 7.",
+   "off_context": "The hallway lights were dim. The wind picked up in the evening. The window faced the hills. Emma's pet is a wolf. The market was busy on Saturday. Eva's pet is a bee. Laura's pet is a pig. The bakery sold out of rolls. The bee's locker is 3. The coffee was too strong. The kitchen smelled of fresh bread. The wolf's locker is 7. The festival drew a large crowd. The pig's locker is 5.",
+   "people": [
+    "Emma",
+    "Eva",
+    "Laura"
+   ],
+   "pets": [
+    "wolf",
+    "bee",
+    "pig"
+   ],
+   "lockers": {
+    "bee": 3,
+    "wolf": 5,
+    "pig": 7
+   },
+   "cue": "Eva",
+   "question": "Which locker belongs to Eva's pet?",
+   "cf_context": "The hallway lights were dim. The wind picked up in the evening. The window faced the hills. Emma's pet is a bee. The market was busy on Saturday. Eva's pet is a wolf. Laura's pet is a pig. The bakery sold out of rolls. The bee's locker is 3. The coffee was too strong. The kitchen smelled of fresh bread. The wolf's locker is 5. The festival drew a large crowd. The pig's locker is 7.",
+   "cf_question": "Which locker belongs to Eva's pet?",
+   "answer": "3",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Eva's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the bee?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0018",
+   "family": "BL",
+   "scene": "S-0018",
+   "bridge": "wolf",
+   "cf_bridge": "duck",
+   "third": "lion",
+   "context": "Laura's pet is a duck. The school held a concert. Henry's pet is a lion. The garden gate needs new paint. Kyle's pet is a wolf. The wolf's locker is 1. The train left on time. The lion's locker is 7. The hallway lights were dim. The wind picked up in the evening. The tea had gone cold. The duck's locker is 3. The sky turned grey by noon. The shop on the corner reopened.",
+   "off_context": "Laura's pet is a duck. The school held a concert. Henry's pet is a lion. The garden gate needs new paint. Kyle's pet is a wolf. The wolf's locker is 1. The train left on time. The lion's locker is 3. The hallway lights were dim. The wind picked up in the evening. The tea had gone cold. The duck's locker is 7. The sky turned grey by noon. The shop on the corner reopened.",
+   "people": [
+    "Laura",
+    "Henry",
+    "Kyle"
+   ],
+   "pets": [
+    "duck",
+    "lion",
+    "wolf"
+   ],
+   "lockers": {
+    "wolf": 1,
+    "duck": 3,
+    "lion": 7
+   },
+   "cue": "Kyle",
+   "question": "Which locker belongs to Kyle's pet?",
+   "cf_context": "Laura's pet is a wolf. The school held a concert. Henry's pet is a lion. The garden gate needs new paint. Kyle's pet is a duck. The wolf's locker is 1. The train left on time. The lion's locker is 7. The hallway lights were dim. The wind picked up in the evening. The tea had gone cold. The duck's locker is 3. The sky turned grey by noon. The shop on the corner reopened.",
+   "cf_question": "Which locker belongs to Kyle's pet?",
+   "answer": "1",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Kyle's pet?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the wolf?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0019",
+   "family": "BL",
+   "scene": "S-0019",
+   "bridge": "sheep",
+   "cf_bridge": "bee",
+   "third": "chicken",
+   "context": "The radio played old songs. Emma's pet is a chicken. The street was lined with trees. The kitchen smelled of fresh bread. Dan's pet is a bee. Laura's pet is a sheep. The bee's locker is 9. The wind picked up in the evening. The festival drew a large crowd. The museum had a new exhibit. The chicken's locker is 7. The park was quiet at dawn. The sheep's locker is 3. The school held a concert.",
+   "off_context": "The radio played old songs. Emma's pet is a chicken. The street was lined with trees. The kitchen smelled of fresh bread. Dan's pet is a bee. Laura's pet is a sheep. The bee's locker is 7. The wind picked up in the evening. The festival drew a large crowd. The museum had a new exhibit. The chicken's locker is 9. The park was quiet at dawn. The sheep's locker is 3. The school held a concert.",
+   "people": [
+    "Emma",
+    "Dan",
+    "Laura"
+   ],
+   "pets": [
+    "chicken",
+    "bee",
+    "sheep"
+   ],
+   "lockers": {
+    "sheep": 3,
+    "bee": 9,
+    "chicken": 7
+   },
+   "cue": "Laura",
+   "question": "Which locker belongs to Laura's pet?",
+   "cf_context": "The radio played old songs. Emma's pet is a chicken. The street was lined with trees. The kitchen smelled of fresh bread. Dan's pet is a sheep. Laura's pet is a bee. The bee's locker is 9. The wind picked up in the evening. The festival drew a large crowd. The museum had a new exhibit. The chicken's locker is 7. The park was quiet at dawn. The sheep's locker is 3. The school held a concert.",
+   "cf_question": "Which locker belongs to Laura's pet?",
+   "answer": "3",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Laura's pet?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the sheep?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0020",
+   "family": "BL",
+   "scene": "S-0020",
+   "bridge": "duck",
+   "cf_bridge": "cow",
+   "third": "chicken",
+   "context": "The garden gate needs new paint. Victor's pet is a chicken. The road was wet after the rain. The coffee was too strong. Ryan's pet is a duck. Laura's pet is a cow. The duck's locker is 7. The radio played old songs. The chicken's locker is 1. The tea had gone cold. The museum had a new exhibit. The wind picked up in the evening. The cow's locker is 9. The bakery sold out of rolls.",
+   "off_context": "The garden gate needs new paint. Victor's pet is a chicken. The road was wet after the rain. The coffee was too strong. Ryan's pet is a duck. Laura's pet is a cow. The duck's locker is 7. The radio played old songs. The chicken's locker is 9. The tea had gone cold. The museum had a new exhibit. The wind picked up in the evening. The cow's locker is 1. The bakery sold out of rolls.",
+   "people": [
+    "Victor",
+    "Ryan",
+    "Laura"
+   ],
+   "pets": [
+    "chicken",
+    "duck",
+    "cow"
+   ],
+   "lockers": {
+    "duck": 7,
+    "cow": 9,
+    "chicken": 1
+   },
+   "cue": "Ryan",
+   "question": "Which locker belongs to Ryan's pet?",
+   "cf_context": "The garden gate needs new paint. Victor's pet is a chicken. The road was wet after the rain. The coffee was too strong. Ryan's pet is a cow. Laura's pet is a duck. The duck's locker is 7. The radio played old songs. The chicken's locker is 1. The tea had gone cold. The museum had a new exhibit. The wind picked up in the evening. The cow's locker is 9. The bakery sold out of rolls.",
+   "cf_question": "Which locker belongs to Ryan's pet?",
+   "answer": "7",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Ryan's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the duck?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0021",
+   "family": "BL",
+   "scene": "S-0021",
+   "bridge": "mouse",
+   "cf_bridge": "goose",
+   "third": "frog",
+   "context": "The tea had gone cold. The festival drew a large crowd. The park was quiet at dawn. The kitchen smelled of fresh bread. Sara's pet is a frog. Kate's pet is a goose. The hallway lights were dim. The window faced the hills. Leo's pet is a mouse. The river was calm that morning. The goose's locker is 7. The garden gate needs new paint. The mouse's locker is 1. The frog's locker is 3.",
+   "off_context": "The tea had gone cold. The festival drew a large crowd. The park was quiet at dawn. The kitchen smelled of fresh bread. Sara's pet is a frog. Kate's pet is a goose. The hallway lights were dim. The window faced the hills. Leo's pet is a mouse. The river was calm that morning. The goose's locker is 3. The garden gate needs new paint. The mouse's locker is 1. The frog's locker is 7.",
+   "people": [
+    "Sara",
+    "Kate",
+    "Leo"
+   ],
+   "pets": [
+    "frog",
+    "goose",
+    "mouse"
+   ],
+   "lockers": {
+    "mouse": 1,
+    "goose": 7,
+    "frog": 3
+   },
+   "cue": "Leo",
+   "question": "Which locker belongs to Leo's pet?",
+   "cf_context": "The tea had gone cold. The festival drew a large crowd. The park was quiet at dawn. The kitchen smelled of fresh bread. Sara's pet is a frog. Kate's pet is a mouse. The hallway lights were dim. The window faced the hills. Leo's pet is a goose. The river was calm that morning. The goose's locker is 7. The garden gate needs new paint. The mouse's locker is 1. The frog's locker is 3.",
+   "cf_question": "Which locker belongs to Leo's pet?",
+   "answer": "1",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Leo's pet?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the mouse?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0022",
+   "family": "BL",
+   "scene": "S-0022",
+   "bridge": "mouse",
+   "cf_bridge": "goose",
+   "third": "chicken",
+   "context": "The festival drew a large crowd. Peter's pet is a mouse. The train left on time. Sara's pet is a goose. The museum had a new exhibit. Ivy's pet is a chicken. The mouse's locker is 1. The road was wet after the rain. The kitchen smelled of fresh bread. The chicken's locker is 3. The street was lined with trees. The goose's locker is 7. The window faced the hills. The wind picked up in the evening.",
+   "off_context": "The festival drew a large crowd. Peter's pet is a mouse. The train left on time. Sara's pet is a goose. The museum had a new exhibit. Ivy's pet is a chicken. The mouse's locker is 1. The road was wet after the rain. The kitchen smelled of fresh bread. The chicken's locker is 7. The street was lined with trees. The goose's locker is 3. The window faced the hills. The wind picked up in the evening.",
+   "people": [
+    "Peter",
+    "Sara",
+    "Ivy"
+   ],
+   "pets": [
+    "mouse",
+    "goose",
+    "chicken"
+   ],
+   "lockers": {
+    "mouse": 1,
+    "goose": 7,
+    "chicken": 3
+   },
+   "cue": "Peter",
+   "question": "Which locker belongs to Peter's pet?",
+   "cf_context": "The festival drew a large crowd. Peter's pet is a goose. The train left on time. Sara's pet is a mouse. The museum had a new exhibit. Ivy's pet is a chicken. The mouse's locker is 1. The road was wet after the rain. The kitchen smelled of fresh bread. The chicken's locker is 3. The street was lined with trees. The goose's locker is 7. The window faced the hills. The wind picked up in the evening.",
+   "cf_question": "Which locker belongs to Peter's pet?",
+   "answer": "1",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Peter's pet?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the mouse?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0023",
+   "family": "BL",
+   "scene": "S-0023",
+   "bridge": "spider",
+   "cf_bridge": "turkey",
+   "third": "pig",
+   "context": "The coffee was too strong. Ivan's pet is a spider. Ben's pet is a turkey. The kitchen smelled of fresh bread. The office was cold. The wind picked up in the evening. Peter's pet is a pig. The market was busy on Saturday. The spider's locker is 5. The bus was late again. The turkey's locker is 1. The shop on the corner reopened. The pig's locker is 9. The sky turned grey by noon.",
+   "off_context": "The coffee was too strong. Ivan's pet is a spider. Ben's pet is a turkey. The kitchen smelled of fresh bread. The office was cold. The wind picked up in the evening. Peter's pet is a pig. The market was busy on Saturday. The spider's locker is 5. The bus was late again. The turkey's locker is 9. The shop on the corner reopened. The pig's locker is 1. The sky turned grey by noon.",
+   "people": [
+    "Ivan",
+    "Ben",
+    "Peter"
+   ],
+   "pets": [
+    "spider",
+    "turkey",
+    "pig"
+   ],
+   "lockers": {
+    "spider": 5,
+    "turkey": 1,
+    "pig": 9
+   },
+   "cue": "Ivan",
+   "question": "Which locker belongs to Ivan's pet?",
+   "cf_context": "The coffee was too strong. Ivan's pet is a turkey. Ben's pet is a spider. The kitchen smelled of fresh bread. The office was cold. The wind picked up in the evening. Peter's pet is a pig. The market was busy on Saturday. The spider's locker is 5. The bus was late again. The turkey's locker is 1. The shop on the corner reopened. The pig's locker is 9. The sky turned grey by noon.",
+   "cf_question": "Which locker belongs to Ivan's pet?",
+   "answer": "5",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Ivan's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the spider?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0024",
+   "family": "BL",
+   "scene": "S-0024",
+   "bridge": "chicken",
+   "cf_bridge": "wolf",
+   "third": "sheep",
+   "context": "The road was wet after the rain. The office was cold. Carl's pet is a wolf. The bakery sold out of rolls. Sam's pet is a sheep. The weather was mild all week. Lily's pet is a chicken. The chicken's locker is 5. The train left on time. The hallway lights were dim. The garden gate needs new paint. The sheep's locker is 3. The shop on the corner reopened. The wolf's locker is 1.",
+   "off_context": "The road was wet after the rain. The office was cold. Carl's pet is a wolf. The bakery sold out of rolls. Sam's pet is a sheep. The weather was mild all week. Lily's pet is a chicken. The chicken's locker is 5. The train left on time. The hallway lights were dim. The garden gate needs new paint. The sheep's locker is 1. The shop on the corner reopened. The wolf's locker is 3.",
+   "people": [
+    "Carl",
+    "Sam",
+    "Lily"
+   ],
+   "pets": [
+    "wolf",
+    "sheep",
+    "chicken"
+   ],
+   "lockers": {
+    "chicken": 5,
+    "wolf": 1,
+    "sheep": 3
+   },
+   "cue": "Lily",
+   "question": "Which locker belongs to Lily's pet?",
+   "cf_context": "The road was wet after the rain. The office was cold. Carl's pet is a chicken. The bakery sold out of rolls. Sam's pet is a sheep. The weather was mild all week. Lily's pet is a wolf. The chicken's locker is 5. The train left on time. The hallway lights were dim. The garden gate needs new paint. The sheep's locker is 3. The shop on the corner reopened. The wolf's locker is 1.",
+   "cf_question": "Which locker belongs to Lily's pet?",
+   "answer": "5",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Lily's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0025",
+   "family": "BL",
+   "scene": "S-0025",
+   "bridge": "pig",
+   "cf_bridge": "goose",
+   "third": "frog",
+   "context": "Zoe's pet is a goose. The museum had a new exhibit. Will's pet is a frog. The window faced the hills. The library closed early. Hugo's pet is a pig. The festival drew a large crowd. The frog's locker is 5. The street was lined with trees. The goose's locker is 3. The train left on time. The bakery sold out of rolls. The pig's locker is 9. The shop on the corner reopened.",
+   "off_context": "Zoe's pet is a goose. The museum had a new exhibit. Will's pet is a frog. The window faced the hills. The library closed early. Hugo's pet is a pig. The festival drew a large crowd. The frog's locker is 3. The street was lined with trees. The goose's locker is 5. The train left on time. The bakery sold out of rolls. The pig's locker is 9. The shop on the corner reopened.",
+   "people": [
+    "Zoe",
+    "Will",
+    "Hugo"
+   ],
+   "pets": [
+    "goose",
+    "frog",
+    "pig"
+   ],
+   "lockers": {
+    "pig": 9,
+    "goose": 3,
+    "frog": 5
+   },
+   "cue": "Hugo",
+   "question": "Which locker belongs to Hugo's pet?",
+   "cf_context": "Zoe's pet is a pig. The museum had a new exhibit. Will's pet is a frog. The window faced the hills. The library closed early. Hugo's pet is a goose. The festival drew a large crowd. The frog's locker is 5. The street was lined with trees. The goose's locker is 3. The train left on time. The bakery sold out of rolls. The pig's locker is 9. The shop on the corner reopened.",
+   "cf_question": "Which locker belongs to Hugo's pet?",
+   "answer": "9",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Hugo's pet?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the pig?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0026",
+   "family": "BL",
+   "scene": "S-0026",
+   "bridge": "mouse",
+   "cf_bridge": "spider",
+   "third": "turkey",
+   "context": "The museum had a new exhibit. The library closed early. The market was busy on Saturday. Ivan's pet is a spider. The hallway lights were dim. Sara's pet is a turkey. Finn's pet is a mouse. The shop on the corner reopened. The weather was mild all week. The mouse's locker is 7. The turkey's locker is 5. The school held a concert. The spider's locker is 1. The office was cold.",
+   "off_context": "The museum had a new exhibit. The library closed early. The market was busy on Saturday. Ivan's pet is a spider. The hallway lights were dim. Sara's pet is a turkey. Finn's pet is a mouse. The shop on the corner reopened. The weather was mild all week. The mouse's locker is 7. The turkey's locker is 1. The school held a concert. The spider's locker is 5. The office was cold.",
+   "people": [
+    "Ivan",
+    "Sara",
+    "Finn"
+   ],
+   "pets": [
+    "spider",
+    "turkey",
+    "mouse"
+   ],
+   "lockers": {
+    "mouse": 7,
+    "spider": 1,
+    "turkey": 5
+   },
+   "cue": "Finn",
+   "question": "Which locker belongs to Finn's pet?",
+   "cf_context": "The museum had a new exhibit. The library closed early. The market was busy on Saturday. Ivan's pet is a mouse. The hallway lights were dim. Sara's pet is a turkey. Finn's pet is a spider. The shop on the corner reopened. The weather was mild all week. The mouse's locker is 7. The turkey's locker is 5. The school held a concert. The spider's locker is 1. The office was cold.",
+   "cf_question": "Which locker belongs to Finn's pet?",
+   "answer": "7",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Finn's pet?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the mouse?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0027",
+   "family": "BL",
+   "scene": "S-0027",
+   "bridge": "turkey",
+   "cf_bridge": "cow",
+   "third": "frog",
+   "context": "Eve's pet is a cow. Eric's pet is a frog. The sky turned grey by noon. Tom's pet is a turkey. The park was quiet at dawn. The frog's locker is 9. The hallway lights were dim. The cow's locker is 1. The market was busy on Saturday. The bus was late again. The school held a concert. The wind picked up in the evening. The turkey's locker is 3. The festival drew a large crowd.",
+   "off_context": "Eve's pet is a cow. Eric's pet is a frog. The sky turned grey by noon. Tom's pet is a turkey. The park was quiet at dawn. The frog's locker is 1. The hallway lights were dim. The cow's locker is 9. The market was busy on Saturday. The bus was late again. The school held a concert. The wind picked up in the evening. The turkey's locker is 3. The festival drew a large crowd.",
+   "people": [
+    "Eve",
+    "Eric",
+    "Tom"
+   ],
+   "pets": [
+    "cow",
+    "frog",
+    "turkey"
+   ],
+   "lockers": {
+    "turkey": 3,
+    "cow": 1,
+    "frog": 9
+   },
+   "cue": "Tom",
+   "question": "Which locker belongs to Tom's pet?",
+   "cf_context": "Eve's pet is a turkey. Eric's pet is a frog. The sky turned grey by noon. Tom's pet is a cow. The park was quiet at dawn. The frog's locker is 9. The hallway lights were dim. The cow's locker is 1. The market was busy on Saturday. The bus was late again. The school held a concert. The wind picked up in the evening. The turkey's locker is 3. The festival drew a large crowd.",
+   "cf_question": "Which locker belongs to Tom's pet?",
+   "answer": "3",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Tom's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the turkey?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0028",
+   "family": "BL",
+   "scene": "S-0028",
+   "bridge": "turkey",
+   "cf_bridge": "lion",
+   "third": "duck",
+   "context": "Oscar's pet is a lion. Beth's pet is a duck. The train left on time. The road was wet after the rain. Max's pet is a turkey. The sky turned grey by noon. The kitchen smelled of fresh bread. The turkey's locker is 5. The office was cold. The duck's locker is 9. The park was quiet at dawn. The lion's locker is 3. The weather was mild all week. The coffee was too strong.",
+   "off_context": "Oscar's pet is a lion. Beth's pet is a duck. The train left on time. The road was wet after the rain. Max's pet is a turkey. The sky turned grey by noon. The kitchen smelled of fresh bread. The turkey's locker is 5. The office was cold. The duck's locker is 3. The park was quiet at dawn. The lion's locker is 9. The weather was mild all week. The coffee was too strong.",
+   "people": [
+    "Oscar",
+    "Beth",
+    "Max"
+   ],
+   "pets": [
+    "lion",
+    "duck",
+    "turkey"
+   ],
+   "lockers": {
+    "turkey": 5,
+    "lion": 3,
+    "duck": 9
+   },
+   "cue": "Max",
+   "question": "Which locker belongs to Max's pet?",
+   "cf_context": "Oscar's pet is a turkey. Beth's pet is a duck. The train left on time. The road was wet after the rain. Max's pet is a lion. The sky turned grey by noon. The kitchen smelled of fresh bread. The turkey's locker is 5. The office was cold. The duck's locker is 9. The park was quiet at dawn. The lion's locker is 3. The weather was mild all week. The coffee was too strong.",
+   "cf_question": "Which locker belongs to Max's pet?",
+   "answer": "5",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Max's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the turkey?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0029",
+   "family": "BL",
+   "scene": "S-0029",
+   "bridge": "chicken",
+   "cf_bridge": "dog",
+   "third": "duck",
+   "context": "David's pet is a duck. The river was calm that morning. Nina's pet is a chicken. The train left on time. The window faced the hills. The park was quiet at dawn. The street was lined with trees. Tom's pet is a dog. The chicken's locker is 7. The school held a concert. The dog's locker is 1. The duck's locker is 5. The kitchen smelled of fresh bread. The tea had gone cold.",
+   "off_context": "David's pet is a duck. The river was calm that morning. Nina's pet is a chicken. The train left on time. The window faced the hills. The park was quiet at dawn. The street was lined with trees. Tom's pet is a dog. The chicken's locker is 7. The school held a concert. The dog's locker is 5. The duck's locker is 1. The kitchen smelled of fresh bread. The tea had gone cold.",
+   "people": [
+    "David",
+    "Nina",
+    "Tom"
+   ],
+   "pets": [
+    "duck",
+    "chicken",
+    "dog"
+   ],
+   "lockers": {
+    "chicken": 7,
+    "dog": 1,
+    "duck": 5
+   },
+   "cue": "Nina",
+   "question": "Which locker belongs to Nina's pet?",
+   "cf_context": "David's pet is a duck. The river was calm that morning. Nina's pet is a dog. The train left on time. The window faced the hills. The park was quiet at dawn. The street was lined with trees. Tom's pet is a chicken. The chicken's locker is 7. The school held a concert. The dog's locker is 1. The duck's locker is 5. The kitchen smelled of fresh bread. The tea had gone cold.",
+   "cf_question": "Which locker belongs to Nina's pet?",
+   "answer": "7",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Nina's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0030",
+   "family": "BL",
+   "scene": "S-0030",
+   "bridge": "turkey",
+   "cf_bridge": "wolf",
+   "third": "sheep",
+   "context": "The kitchen smelled of fresh bread. Diana's pet is a turkey. Liam's pet is a wolf. The wind picked up in the evening. The weather was mild all week. Kyle's pet is a sheep. The market was busy on Saturday. The wolf's locker is 7. The office was cold. The museum had a new exhibit. The turkey's locker is 3. The library closed early. The sheep's locker is 9. The park was quiet at dawn.",
+   "off_context": "The kitchen smelled of fresh bread. Diana's pet is a turkey. Liam's pet is a wolf. The wind picked up in the evening. The weather was mild all week. Kyle's pet is a sheep. The market was busy on Saturday. The wolf's locker is 9. The office was cold. The museum had a new exhibit. The turkey's locker is 3. The library closed early. The sheep's locker is 7. The park was quiet at dawn.",
+   "people": [
+    "Diana",
+    "Liam",
+    "Kyle"
+   ],
+   "pets": [
+    "turkey",
+    "wolf",
+    "sheep"
+   ],
+   "lockers": {
+    "turkey": 3,
+    "wolf": 7,
+    "sheep": 9
+   },
+   "cue": "Diana",
+   "question": "Which locker belongs to Diana's pet?",
+   "cf_context": "The kitchen smelled of fresh bread. Diana's pet is a wolf. Liam's pet is a turkey. The wind picked up in the evening. The weather was mild all week. Kyle's pet is a sheep. The market was busy on Saturday. The wolf's locker is 7. The office was cold. The museum had a new exhibit. The turkey's locker is 3. The library closed early. The sheep's locker is 9. The park was quiet at dawn.",
+   "cf_question": "Which locker belongs to Diana's pet?",
+   "answer": "3",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Diana's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the turkey?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0031",
+   "family": "BL",
+   "scene": "S-0031",
+   "bridge": "lion",
+   "cf_bridge": "bee",
+   "third": "dog",
+   "context": "Laura's pet is a bee. The garden gate needs new paint. The festival drew a large crowd. The window faced the hills. The shop on the corner reopened. Rose's pet is a dog. Beth's pet is a lion. The office was cold. The dog's locker is 7. The lion's locker is 5. The kitchen smelled of fresh bread. The museum had a new exhibit. The street was lined with trees. The bee's locker is 9.",
+   "off_context": "Laura's pet is a bee. The garden gate needs new paint. The festival drew a large crowd. The window faced the hills. The shop on the corner reopened. Rose's pet is a dog. Beth's pet is a lion. The office was cold. The dog's locker is 9. The lion's locker is 5. The kitchen smelled of fresh bread. The museum had a new exhibit. The street was lined with trees. The bee's locker is 7.",
+   "people": [
+    "Laura",
+    "Rose",
+    "Beth"
+   ],
+   "pets": [
+    "bee",
+    "dog",
+    "lion"
+   ],
+   "lockers": {
+    "lion": 5,
+    "bee": 9,
+    "dog": 7
+   },
+   "cue": "Beth",
+   "question": "Which locker belongs to Beth's pet?",
+   "cf_context": "Laura's pet is a lion. The garden gate needs new paint. The festival drew a large crowd. The window faced the hills. The shop on the corner reopened. Rose's pet is a dog. Beth's pet is a bee. The office was cold. The dog's locker is 7. The lion's locker is 5. The kitchen smelled of fresh bread. The museum had a new exhibit. The street was lined with trees. The bee's locker is 9.",
+   "cf_question": "Which locker belongs to Beth's pet?",
+   "answer": "5",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Beth's pet?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the lion?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0032",
+   "family": "BL",
+   "scene": "S-0032",
+   "bridge": "turkey",
+   "cf_bridge": "spider",
+   "third": "duck",
+   "context": "The train left on time. Emma's pet is a duck. The hallway lights were dim. Grace's pet is a turkey. Amy's pet is a spider. The window faced the hills. The duck's locker is 5. The spider's locker is 1. The coffee was too strong. The market was busy on Saturday. The turkey's locker is 3. The office was cold. The weather was mild all week. The school held a concert.",
+   "off_context": "The train left on time. Emma's pet is a duck. The hallway lights were dim. Grace's pet is a turkey. Amy's pet is a spider. The window faced the hills. The duck's locker is 1. The spider's locker is 5. The coffee was too strong. The market was busy on Saturday. The turkey's locker is 3. The office was cold. The weather was mild all week. The school held a concert.",
+   "people": [
+    "Emma",
+    "Grace",
+    "Amy"
+   ],
+   "pets": [
+    "duck",
+    "turkey",
+    "spider"
+   ],
+   "lockers": {
+    "turkey": 3,
+    "spider": 1,
+    "duck": 5
+   },
+   "cue": "Grace",
+   "question": "Which locker belongs to Grace's pet?",
+   "cf_context": "The train left on time. Emma's pet is a duck. The hallway lights were dim. Grace's pet is a spider. Amy's pet is a turkey. The window faced the hills. The duck's locker is 5. The spider's locker is 1. The coffee was too strong. The market was busy on Saturday. The turkey's locker is 3. The office was cold. The weather was mild all week. The school held a concert.",
+   "cf_question": "Which locker belongs to Grace's pet?",
+   "answer": "3",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Grace's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the turkey?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0033",
+   "family": "BL",
+   "scene": "S-0033",
+   "bridge": "duck",
+   "cf_bridge": "dog",
+   "third": "horse",
+   "context": "The street was lined with trees. Amy's pet is a horse. The weather was mild all week. The wind picked up in the evening. Alice's pet is a duck. The radio played old songs. The park was quiet at dawn. Hugo's pet is a dog. The duck's locker is 7. The river was calm that morning. The dog's locker is 3. The horse's locker is 5. The road was wet after the rain. The hallway lights were dim.",
+   "off_context": "The street was lined with trees. Amy's pet is a horse. The weather was mild all week. The wind picked up in the evening. Alice's pet is a duck. The radio played old songs. The park was quiet at dawn. Hugo's pet is a dog. The duck's locker is 7. The river was calm that morning. The dog's locker is 5. The horse's locker is 3. The road was wet after the rain. The hallway lights were dim.",
+   "people": [
+    "Amy",
+    "Alice",
+    "Hugo"
+   ],
+   "pets": [
+    "horse",
+    "duck",
+    "dog"
+   ],
+   "lockers": {
+    "duck": 7,
+    "dog": 3,
+    "horse": 5
+   },
+   "cue": "Alice",
+   "question": "Which locker belongs to Alice's pet?",
+   "cf_context": "The street was lined with trees. Amy's pet is a horse. The weather was mild all week. The wind picked up in the evening. Alice's pet is a dog. The radio played old songs. The park was quiet at dawn. Hugo's pet is a duck. The duck's locker is 7. The river was calm that morning. The dog's locker is 3. The horse's locker is 5. The road was wet after the rain. The hallway lights were dim.",
+   "cf_question": "Which locker belongs to Alice's pet?",
+   "answer": "7",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Alice's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the duck?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0034",
+   "family": "BL",
+   "scene": "S-0034",
+   "bridge": "frog",
+   "cf_bridge": "goose",
+   "third": "cat",
+   "context": "Zoe's pet is a frog. Eve's pet is a cat. The tea had gone cold. The kitchen smelled of fresh bread. Leo's pet is a goose. The bakery sold out of rolls. The river was calm that morning. The frog's locker is 5. The road was wet after the rain. The cat's locker is 7. The goose's locker is 3. The market was busy on Saturday. The garden gate needs new paint. The radio played old songs.",
+   "off_context": "Zoe's pet is a frog. Eve's pet is a cat. The tea had gone cold. The kitchen smelled of fresh bread. Leo's pet is a goose. The bakery sold out of rolls. The river was calm that morning. The frog's locker is 5. The road was wet after the rain. The cat's locker is 3. The goose's locker is 7. The market was busy on Saturday. The garden gate needs new paint. The radio played old songs.",
+   "people": [
+    "Zoe",
+    "Eve",
+    "Leo"
+   ],
+   "pets": [
+    "frog",
+    "cat",
+    "goose"
+   ],
+   "lockers": {
+    "frog": 5,
+    "goose": 3,
+    "cat": 7
+   },
+   "cue": "Zoe",
+   "question": "Which locker belongs to Zoe's pet?",
+   "cf_context": "Zoe's pet is a goose. Eve's pet is a cat. The tea had gone cold. The kitchen smelled of fresh bread. Leo's pet is a frog. The bakery sold out of rolls. The river was calm that morning. The frog's locker is 5. The road was wet after the rain. The cat's locker is 7. The goose's locker is 3. The market was busy on Saturday. The garden gate needs new paint. The radio played old songs.",
+   "cf_question": "Which locker belongs to Zoe's pet?",
+   "answer": "5",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Zoe's pet?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the frog?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0035",
+   "family": "BL",
+   "scene": "S-0035",
+   "bridge": "lion",
+   "cf_bridge": "goose",
+   "third": "duck",
+   "context": "Tom's pet is a lion. The school held a concert. The coffee was too strong. Ryan's pet is a goose. The shop on the corner reopened. The street was lined with trees. Ruby's pet is a duck. The wind picked up in the evening. The lion's locker is 5. The goose's locker is 7. The window faced the hills. The radio played old songs. The duck's locker is 3. The office was cold.",
+   "off_context": "Tom's pet is a lion. The school held a concert. The coffee was too strong. Ryan's pet is a goose. The shop on the corner reopened. The street was lined with trees. Ruby's pet is a duck. The wind picked up in the evening. The lion's locker is 5. The goose's locker is 3. The window faced the hills. The radio played old songs. The duck's locker is 7. The office was cold.",
+   "people": [
+    "Tom",
+    "Ryan",
+    "Ruby"
+   ],
+   "pets": [
+    "lion",
+    "goose",
+    "duck"
+   ],
+   "lockers": {
+    "lion": 5,
+    "goose": 7,
+    "duck": 3
+   },
+   "cue": "Tom",
+   "question": "Which locker belongs to Tom's pet?",
+   "cf_context": "Tom's pet is a goose. The school held a concert. The coffee was too strong. Ryan's pet is a lion. The shop on the corner reopened. The street was lined with trees. Ruby's pet is a duck. The wind picked up in the evening. The lion's locker is 5. The goose's locker is 7. The window faced the hills. The radio played old songs. The duck's locker is 3. The office was cold.",
+   "cf_question": "Which locker belongs to Tom's pet?",
+   "answer": "5",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Tom's pet?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the lion?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0036",
+   "family": "BL",
+   "scene": "S-0036",
+   "bridge": "lion",
+   "cf_bridge": "goose",
+   "third": "horse",
+   "context": "The tea had gone cold. The bus was late again. The wind picked up in the evening. Julia's pet is a lion. Nina's pet is a horse. The river was calm that morning. The park was quiet at dawn. Dan's pet is a goose. The office was cold. The horse's locker is 3. The goose's locker is 9. The hallway lights were dim. The lion's locker is 1. The sky turned grey by noon.",
+   "off_context": "The tea had gone cold. The bus was late again. The wind picked up in the evening. Julia's pet is a lion. Nina's pet is a horse. The river was calm that morning. The park was quiet at dawn. Dan's pet is a goose. The office was cold. The horse's locker is 9. The goose's locker is 3. The hallway lights were dim. The lion's locker is 1. The sky turned grey by noon.",
+   "people": [
+    "Julia",
+    "Nina",
+    "Dan"
+   ],
+   "pets": [
+    "lion",
+    "horse",
+    "goose"
+   ],
+   "lockers": {
+    "lion": 1,
+    "goose": 9,
+    "horse": 3
+   },
+   "cue": "Julia",
+   "question": "Which locker belongs to Julia's pet?",
+   "cf_context": "The tea had gone cold. The bus was late again. The wind picked up in the evening. Julia's pet is a goose. Nina's pet is a horse. The river was calm that morning. The park was quiet at dawn. Dan's pet is a lion. The office was cold. The horse's locker is 3. The goose's locker is 9. The hallway lights were dim. The lion's locker is 1. The sky turned grey by noon.",
+   "cf_question": "Which locker belongs to Julia's pet?",
+   "answer": "1",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Julia's pet?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the lion?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0037",
+   "family": "BL",
+   "scene": "S-0037",
+   "bridge": "bee",
+   "cf_bridge": "pig",
+   "third": "chicken",
+   "context": "The market was busy on Saturday. The bakery sold out of rolls. Will's pet is a pig. Luke's pet is a chicken. Paul's pet is a bee. The street was lined with trees. The office was cold. The road was wet after the rain. The pig's locker is 7. The radio played old songs. The chicken's locker is 3. The bee's locker is 5. The wind picked up in the evening. The school held a concert.",
+   "off_context": "The market was busy on Saturday. The bakery sold out of rolls. Will's pet is a pig. Luke's pet is a chicken. Paul's pet is a bee. The street was lined with trees. The office was cold. The road was wet after the rain. The pig's locker is 3. The radio played old songs. The chicken's locker is 7. The bee's locker is 5. The wind picked up in the evening. The school held a concert.",
+   "people": [
+    "Will",
+    "Luke",
+    "Paul"
+   ],
+   "pets": [
+    "pig",
+    "chicken",
+    "bee"
+   ],
+   "lockers": {
+    "bee": 5,
+    "pig": 7,
+    "chicken": 3
+   },
+   "cue": "Paul",
+   "question": "Which locker belongs to Paul's pet?",
+   "cf_context": "The market was busy on Saturday. The bakery sold out of rolls. Will's pet is a bee. Luke's pet is a chicken. Paul's pet is a pig. The street was lined with trees. The office was cold. The road was wet after the rain. The pig's locker is 7. The radio played old songs. The chicken's locker is 3. The bee's locker is 5. The wind picked up in the evening. The school held a concert.",
+   "cf_question": "Which locker belongs to Paul's pet?",
+   "answer": "5",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Paul's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the bee?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0038",
+   "family": "BL",
+   "scene": "S-0038",
+   "bridge": "sheep",
+   "cf_bridge": "chicken",
+   "third": "lion",
+   "context": "The market was busy on Saturday. Dan's pet is a sheep. The street was lined with trees. The road was wet after the rain. Mia's pet is a lion. The bus was late again. Owen's pet is a chicken. The chicken's locker is 1. The park was quiet at dawn. The festival drew a large crowd. The lion's locker is 7. The train left on time. The sheep's locker is 5. The hallway lights were dim.",
+   "off_context": "The market was busy on Saturday. Dan's pet is a sheep. The street was lined with trees. The road was wet after the rain. Mia's pet is a lion. The bus was late again. Owen's pet is a chicken. The chicken's locker is 7. The park was quiet at dawn. The festival drew a large crowd. The lion's locker is 1. The train left on time. The sheep's locker is 5. The hallway lights were dim.",
+   "people": [
+    "Dan",
+    "Mia",
+    "Owen"
+   ],
+   "pets": [
+    "sheep",
+    "lion",
+    "chicken"
+   ],
+   "lockers": {
+    "sheep": 5,
+    "chicken": 1,
+    "lion": 7
+   },
+   "cue": "Dan",
+   "question": "Which locker belongs to Dan's pet?",
+   "cf_context": "The market was busy on Saturday. Dan's pet is a chicken. The street was lined with trees. The road was wet after the rain. Mia's pet is a lion. The bus was late again. Owen's pet is a sheep. The chicken's locker is 1. The park was quiet at dawn. The festival drew a large crowd. The lion's locker is 7. The train left on time. The sheep's locker is 5. The hallway lights were dim.",
+   "cf_question": "Which locker belongs to Dan's pet?",
+   "answer": "5",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Dan's pet?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the sheep?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0039",
+   "family": "BL",
+   "scene": "S-0039",
+   "bridge": "lion",
+   "cf_bridge": "spider",
+   "third": "cow",
+   "context": "The garden gate needs new paint. The office was cold. Leo's pet is a cow. The road was wet after the rain. Sean's pet is a lion. The market was busy on Saturday. Liam's pet is a spider. The coffee was too strong. The cow's locker is 7. The sky turned grey by noon. The wind picked up in the evening. The lion's locker is 5. The spider's locker is 3. The shop on the corner reopened.",
+   "off_context": "The garden gate needs new paint. The office was cold. Leo's pet is a cow. The road was wet after the rain. Sean's pet is a lion. The market was busy on Saturday. Liam's pet is a spider. The coffee was too strong. The cow's locker is 3. The sky turned grey by noon. The wind picked up in the evening. The lion's locker is 5. The spider's locker is 7. The shop on the corner reopened.",
+   "people": [
+    "Leo",
+    "Sean",
+    "Liam"
+   ],
+   "pets": [
+    "cow",
+    "lion",
+    "spider"
+   ],
+   "lockers": {
+    "lion": 5,
+    "spider": 3,
+    "cow": 7
+   },
+   "cue": "Sean",
+   "question": "Which locker belongs to Sean's pet?",
+   "cf_context": "The garden gate needs new paint. The office was cold. Leo's pet is a cow. The road was wet after the rain. Sean's pet is a spider. The market was busy on Saturday. Liam's pet is a lion. The coffee was too strong. The cow's locker is 7. The sky turned grey by noon. The wind picked up in the evening. The lion's locker is 5. The spider's locker is 3. The shop on the corner reopened.",
+   "cf_question": "Which locker belongs to Sean's pet?",
+   "answer": "5",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Sean's pet?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the lion?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0040",
+   "family": "BL",
+   "scene": "S-0040",
+   "bridge": "frog",
+   "cf_bridge": "turkey",
+   "third": "dog",
+   "context": "The bus was late again. Iris's pet is a frog. The park was quiet at dawn. Vera's pet is a turkey. The office was cold. The bakery sold out of rolls. Adam's pet is a dog. The garden gate needs new paint. The train left on time. The turkey's locker is 7. The shop on the corner reopened. The frog's locker is 9. The dog's locker is 5. The school held a concert.",
+   "off_context": "The bus was late again. Iris's pet is a frog. The park was quiet at dawn. Vera's pet is a turkey. The office was cold. The bakery sold out of rolls. Adam's pet is a dog. The garden gate needs new paint. The train left on time. The turkey's locker is 5. The shop on the corner reopened. The frog's locker is 9. The dog's locker is 7. The school held a concert.",
+   "people": [
+    "Iris",
+    "Vera",
+    "Adam"
+   ],
+   "pets": [
+    "frog",
+    "turkey",
+    "dog"
+   ],
+   "lockers": {
+    "frog": 9,
+    "turkey": 7,
+    "dog": 5
+   },
+   "cue": "Iris",
+   "question": "Which locker belongs to Iris's pet?",
+   "cf_context": "The bus was late again. Iris's pet is a turkey. The park was quiet at dawn. Vera's pet is a frog. The office was cold. The bakery sold out of rolls. Adam's pet is a dog. The garden gate needs new paint. The train left on time. The turkey's locker is 7. The shop on the corner reopened. The frog's locker is 9. The dog's locker is 5. The school held a concert.",
+   "cf_question": "Which locker belongs to Iris's pet?",
+   "answer": "9",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Iris's pet?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the frog?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0041",
+   "family": "BL",
+   "scene": "S-0041",
+   "bridge": "sheep",
+   "cf_bridge": "duck",
+   "third": "goose",
+   "context": "The library closed early. Kate's pet is a goose. The school held a concert. The wind picked up in the evening. Sam's pet is a sheep. The radio played old songs. Oscar's pet is a duck. The goose's locker is 3. The window faced the hills. The coffee was too strong. The museum had a new exhibit. The duck's locker is 1. The bus was late again. The sheep's locker is 7.",
+   "off_context": "The library closed early. Kate's pet is a goose. The school held a concert. The wind picked up in the evening. Sam's pet is a sheep. The radio played old songs. Oscar's pet is a duck. The goose's locker is 1. The window faced the hills. The coffee was too strong. The museum had a new exhibit. The duck's locker is 3. The bus was late again. The sheep's locker is 7.",
+   "people": [
+    "Kate",
+    "Sam",
+    "Oscar"
+   ],
+   "pets": [
+    "goose",
+    "sheep",
+    "duck"
+   ],
+   "lockers": {
+    "sheep": 7,
+    "duck": 1,
+    "goose": 3
+   },
+   "cue": "Sam",
+   "question": "Which locker belongs to Sam's pet?",
+   "cf_context": "The library closed early. Kate's pet is a goose. The school held a concert. The wind picked up in the evening. Sam's pet is a duck. The radio played old songs. Oscar's pet is a sheep. The goose's locker is 3. The window faced the hills. The coffee was too strong. The museum had a new exhibit. The duck's locker is 1. The bus was late again. The sheep's locker is 7.",
+   "cf_question": "Which locker belongs to Sam's pet?",
+   "answer": "7",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Sam's pet?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the sheep?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0042",
+   "family": "BL",
+   "scene": "S-0042",
+   "bridge": "spider",
+   "cf_bridge": "cow",
+   "third": "wolf",
+   "context": "The sky turned grey by noon. Maria's pet is a spider. The street was lined with trees. Rose's pet is a cow. The museum had a new exhibit. Sean's pet is a wolf. The office was cold. The spider's locker is 5. The radio played old songs. The garden gate needs new paint. The cow's locker is 9. The wolf's locker is 1. The market was busy on Saturday. The wind picked up in the evening.",
+   "off_context": "The sky turned grey by noon. Maria's pet is a spider. The street was lined with trees. Rose's pet is a cow. The museum had a new exhibit. Sean's pet is a wolf. The office was cold. The spider's locker is 5. The radio played old songs. The garden gate needs new paint. The cow's locker is 1. The wolf's locker is 9. The market was busy on Saturday. The wind picked up in the evening.",
+   "people": [
+    "Maria",
+    "Rose",
+    "Sean"
+   ],
+   "pets": [
+    "spider",
+    "cow",
+    "wolf"
+   ],
+   "lockers": {
+    "spider": 5,
+    "cow": 9,
+    "wolf": 1
+   },
+   "cue": "Maria",
+   "question": "Which locker belongs to Maria's pet?",
+   "cf_context": "The sky turned grey by noon. Maria's pet is a cow. The street was lined with trees. Rose's pet is a spider. The museum had a new exhibit. Sean's pet is a wolf. The office was cold. The spider's locker is 5. The radio played old songs. The garden gate needs new paint. The cow's locker is 9. The wolf's locker is 1. The market was busy on Saturday. The wind picked up in the evening.",
+   "cf_question": "Which locker belongs to Maria's pet?",
+   "answer": "5",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Maria's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the spider?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0043",
+   "family": "BL",
+   "scene": "S-0043",
+   "bridge": "pig",
+   "cf_bridge": "duck",
+   "third": "cat",
+   "context": "The office was cold. Paul's pet is a duck. The shop on the corner reopened. The festival drew a large crowd. Grace's pet is a cat. The school held a concert. The bus was late again. Owen's pet is a pig. The weather was mild all week. The duck's locker is 5. The cat's locker is 9. The pig's locker is 7. The coffee was too strong. The garden gate needs new paint.",
+   "off_context": "The office was cold. Paul's pet is a duck. The shop on the corner reopened. The festival drew a large crowd. Grace's pet is a cat. The school held a concert. The bus was late again. Owen's pet is a pig. The weather was mild all week. The duck's locker is 9. The cat's locker is 5. The pig's locker is 7. The coffee was too strong. The garden gate needs new paint.",
+   "people": [
+    "Paul",
+    "Grace",
+    "Owen"
+   ],
+   "pets": [
+    "duck",
+    "cat",
+    "pig"
+   ],
+   "lockers": {
+    "pig": 7,
+    "duck": 5,
+    "cat": 9
+   },
+   "cue": "Owen",
+   "question": "Which locker belongs to Owen's pet?",
+   "cf_context": "The office was cold. Paul's pet is a pig. The shop on the corner reopened. The festival drew a large crowd. Grace's pet is a cat. The school held a concert. The bus was late again. Owen's pet is a duck. The weather was mild all week. The duck's locker is 5. The cat's locker is 9. The pig's locker is 7. The coffee was too strong. The garden gate needs new paint.",
+   "cf_question": "Which locker belongs to Owen's pet?",
+   "answer": "7",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Owen's pet?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the pig?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0044",
+   "family": "BL",
+   "scene": "S-0044",
+   "bridge": "goose",
+   "cf_bridge": "spider",
+   "third": "cow",
+   "context": "The river was calm that morning. Carl's pet is a spider. The market was busy on Saturday. The bakery sold out of rolls. Owen's pet is a cow. The street was lined with trees. The bus was late again. Alice's pet is a goose. The library closed early. The goose's locker is 3. The spider's locker is 7. The shop on the corner reopened. The cow's locker is 9. The coffee was too strong.",
+   "off_context": "The river was calm that morning. Carl's pet is a spider. The market was busy on Saturday. The bakery sold out of rolls. Owen's pet is a cow. The street was lined with trees. The bus was late again. Alice's pet is a goose. The library closed early. The goose's locker is 3. The spider's locker is 9. The shop on the corner reopened. The cow's locker is 7. The coffee was too strong.",
+   "people": [
+    "Carl",
+    "Owen",
+    "Alice"
+   ],
+   "pets": [
+    "spider",
+    "cow",
+    "goose"
+   ],
+   "lockers": {
+    "goose": 3,
+    "spider": 7,
+    "cow": 9
+   },
+   "cue": "Alice",
+   "question": "Which locker belongs to Alice's pet?",
+   "cf_context": "The river was calm that morning. Carl's pet is a goose. The market was busy on Saturday. The bakery sold out of rolls. Owen's pet is a cow. The street was lined with trees. The bus was late again. Alice's pet is a spider. The library closed early. The goose's locker is 3. The spider's locker is 7. The shop on the corner reopened. The cow's locker is 9. The coffee was too strong.",
+   "cf_question": "Which locker belongs to Alice's pet?",
+   "answer": "3",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Alice's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the goose?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0045",
+   "family": "BL",
+   "scene": "S-0045",
+   "bridge": "lion",
+   "cf_bridge": "duck",
+   "third": "spider",
+   "context": "The park was quiet at dawn. The radio played old songs. Ben's pet is a duck. The hallway lights were dim. The window faced the hills. Ruby's pet is a spider. Laura's pet is a lion. The market was busy on Saturday. The duck's locker is 9. The sky turned grey by noon. The lion's locker is 3. The museum had a new exhibit. The street was lined with trees. The spider's locker is 7.",
+   "off_context": "The park was quiet at dawn. The radio played old songs. Ben's pet is a duck. The hallway lights were dim. The window faced the hills. Ruby's pet is a spider. Laura's pet is a lion. The market was busy on Saturday. The duck's locker is 7. The sky turned grey by noon. The lion's locker is 3. The museum had a new exhibit. The street was lined with trees. The spider's locker is 9.",
+   "people": [
+    "Ben",
+    "Ruby",
+    "Laura"
+   ],
+   "pets": [
+    "duck",
+    "spider",
+    "lion"
+   ],
+   "lockers": {
+    "lion": 3,
+    "duck": 9,
+    "spider": 7
+   },
+   "cue": "Laura",
+   "question": "Which locker belongs to Laura's pet?",
+   "cf_context": "The park was quiet at dawn. The radio played old songs. Ben's pet is a lion. The hallway lights were dim. The window faced the hills. Ruby's pet is a spider. Laura's pet is a duck. The market was busy on Saturday. The duck's locker is 9. The sky turned grey by noon. The lion's locker is 3. The museum had a new exhibit. The street was lined with trees. The spider's locker is 7.",
+   "cf_question": "Which locker belongs to Laura's pet?",
+   "answer": "3",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Laura's pet?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the lion?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0046",
+   "family": "BL",
+   "scene": "S-0046",
+   "bridge": "cat",
+   "cf_bridge": "spider",
+   "third": "frog",
+   "context": "The hallway lights were dim. Lucy's pet is a cat. The river was calm that morning. The festival drew a large crowd. Amy's pet is a spider. The weather was mild all week. Grace's pet is a frog. The spider's locker is 1. The park was quiet at dawn. The market was busy on Saturday. The frog's locker is 7. The museum had a new exhibit. The cat's locker is 3. The library closed early.",
+   "off_context": "The hallway lights were dim. Lucy's pet is a cat. The river was calm that morning. The festival drew a large crowd. Amy's pet is a spider. The weather was mild all week. Grace's pet is a frog. The spider's locker is 7. The park was quiet at dawn. The market was busy on Saturday. The frog's locker is 1. The museum had a new exhibit. The cat's locker is 3. The library closed early.",
+   "people": [
+    "Lucy",
+    "Amy",
+    "Grace"
+   ],
+   "pets": [
+    "cat",
+    "spider",
+    "frog"
+   ],
+   "lockers": {
+    "cat": 3,
+    "spider": 1,
+    "frog": 7
+   },
+   "cue": "Lucy",
+   "question": "Which locker belongs to Lucy's pet?",
+   "cf_context": "The hallway lights were dim. Lucy's pet is a spider. The river was calm that morning. The festival drew a large crowd. Amy's pet is a cat. The weather was mild all week. Grace's pet is a frog. The spider's locker is 1. The park was quiet at dawn. The market was busy on Saturday. The frog's locker is 7. The museum had a new exhibit. The cat's locker is 3. The library closed early.",
+   "cf_question": "Which locker belongs to Lucy's pet?",
+   "answer": "3",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Lucy's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the cat?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0047",
+   "family": "BL",
+   "scene": "S-0047",
+   "bridge": "goose",
+   "cf_bridge": "sheep",
+   "third": "mouse",
+   "context": "Eve's pet is a mouse. The library closed early. Ryan's pet is a sheep. The museum had a new exhibit. Mark's pet is a goose. The window faced the hills. The mouse's locker is 5. The sky turned grey by noon. The street was lined with trees. The train left on time. The sheep's locker is 3. The goose's locker is 9. The radio played old songs. The road was wet after the rain.",
+   "off_context": "Eve's pet is a mouse. The library closed early. Ryan's pet is a sheep. The museum had a new exhibit. Mark's pet is a goose. The window faced the hills. The mouse's locker is 3. The sky turned grey by noon. The street was lined with trees. The train left on time. The sheep's locker is 5. The goose's locker is 9. The radio played old songs. The road was wet after the rain.",
+   "people": [
+    "Eve",
+    "Ryan",
+    "Mark"
+   ],
+   "pets": [
+    "mouse",
+    "sheep",
+    "goose"
+   ],
+   "lockers": {
+    "goose": 9,
+    "sheep": 3,
+    "mouse": 5
+   },
+   "cue": "Mark",
+   "question": "Which locker belongs to Mark's pet?",
+   "cf_context": "Eve's pet is a mouse. The library closed early. Ryan's pet is a goose. The museum had a new exhibit. Mark's pet is a sheep. The window faced the hills. The mouse's locker is 5. The sky turned grey by noon. The street was lined with trees. The train left on time. The sheep's locker is 3. The goose's locker is 9. The radio played old songs. The road was wet after the rain.",
+   "cf_question": "Which locker belongs to Mark's pet?",
+   "answer": "9",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Mark's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the goose?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0048",
+   "family": "BL",
+   "scene": "S-0048",
+   "bridge": "bee",
+   "cf_bridge": "duck",
+   "third": "turkey",
+   "context": "The park was quiet at dawn. Iris's pet is a turkey. The window faced the hills. The bakery sold out of rolls. The road was wet after the rain. Adam's pet is a bee. Julia's pet is a duck. The bee's locker is 9. The turkey's locker is 1. The coffee was too strong. The office was cold. The shop on the corner reopened. The duck's locker is 7. The school held a concert.",
+   "off_context": "The park was quiet at dawn. Iris's pet is a turkey. The window faced the hills. The bakery sold out of rolls. The road was wet after the rain. Adam's pet is a bee. Julia's pet is a duck. The bee's locker is 9. The turkey's locker is 7. The coffee was too strong. The office was cold. The shop on the corner reopened. The duck's locker is 1. The school held a concert.",
+   "people": [
+    "Iris",
+    "Adam",
+    "Julia"
+   ],
+   "pets": [
+    "turkey",
+    "bee",
+    "duck"
+   ],
+   "lockers": {
+    "bee": 9,
+    "duck": 7,
+    "turkey": 1
+   },
+   "cue": "Adam",
+   "question": "Which locker belongs to Adam's pet?",
+   "cf_context": "The park was quiet at dawn. Iris's pet is a turkey. The window faced the hills. The bakery sold out of rolls. The road was wet after the rain. Adam's pet is a duck. Julia's pet is a bee. The bee's locker is 9. The turkey's locker is 1. The coffee was too strong. The office was cold. The shop on the corner reopened. The duck's locker is 7. The school held a concert.",
+   "cf_question": "Which locker belongs to Adam's pet?",
+   "answer": "9",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Adam's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the bee?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0049",
+   "family": "BL",
+   "scene": "S-0049",
+   "bridge": "pig",
+   "cf_bridge": "goose",
+   "third": "duck",
+   "context": "Tara's pet is a duck. The coffee was too strong. Jack's pet is a goose. The road was wet after the rain. The train left on time. The festival drew a large crowd. Nina's pet is a pig. The goose's locker is 3. The radio played old songs. The duck's locker is 9. The pig's locker is 5. The hallway lights were dim. The market was busy on Saturday. The bakery sold out of rolls.",
+   "off_context": "Tara's pet is a duck. The coffee was too strong. Jack's pet is a goose. The road was wet after the rain. The train left on time. The festival drew a large crowd. Nina's pet is a pig. The goose's locker is 9. The radio played old songs. The duck's locker is 3. The pig's locker is 5. The hallway lights were dim. The market was busy on Saturday. The bakery sold out of rolls.",
+   "people": [
+    "Tara",
+    "Jack",
+    "Nina"
+   ],
+   "pets": [
+    "duck",
+    "goose",
+    "pig"
+   ],
+   "lockers": {
+    "pig": 5,
+    "goose": 3,
+    "duck": 9
+   },
+   "cue": "Nina",
+   "question": "Which locker belongs to Nina's pet?",
+   "cf_context": "Tara's pet is a duck. The coffee was too strong. Jack's pet is a pig. The road was wet after the rain. The train left on time. The festival drew a large crowd. Nina's pet is a goose. The goose's locker is 3. The radio played old songs. The duck's locker is 9. The pig's locker is 5. The hallway lights were dim. The market was busy on Saturday. The bakery sold out of rolls.",
+   "cf_question": "Which locker belongs to Nina's pet?",
+   "answer": "5",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Nina's pet?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the pig?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0050",
+   "family": "BL",
+   "scene": "S-0050",
+   "bridge": "duck",
+   "cf_bridge": "dog",
+   "third": "sheep",
+   "context": "Dan's pet is a sheep. The train left on time. Amy's pet is a dog. The festival drew a large crowd. The kitchen smelled of fresh bread. The street was lined with trees. Leo's pet is a duck. The market was busy on Saturday. The shop on the corner reopened. The sheep's locker is 5. The dog's locker is 3. The sky turned grey by noon. The bus was late again. The duck's locker is 7.",
+   "off_context": "Dan's pet is a sheep. The train left on time. Amy's pet is a dog. The festival drew a large crowd. The kitchen smelled of fresh bread. The street was lined with trees. Leo's pet is a duck. The market was busy on Saturday. The shop on the corner reopened. The sheep's locker is 3. The dog's locker is 5. The sky turned grey by noon. The bus was late again. The duck's locker is 7.",
+   "people": [
+    "Dan",
+    "Amy",
+    "Leo"
+   ],
+   "pets": [
+    "sheep",
+    "dog",
+    "duck"
+   ],
+   "lockers": {
+    "duck": 7,
+    "dog": 3,
+    "sheep": 5
+   },
+   "cue": "Leo",
+   "question": "Which locker belongs to Leo's pet?",
+   "cf_context": "Dan's pet is a sheep. The train left on time. Amy's pet is a duck. The festival drew a large crowd. The kitchen smelled of fresh bread. The street was lined with trees. Leo's pet is a dog. The market was busy on Saturday. The shop on the corner reopened. The sheep's locker is 5. The dog's locker is 3. The sky turned grey by noon. The bus was late again. The duck's locker is 7.",
+   "cf_question": "Which locker belongs to Leo's pet?",
+   "answer": "7",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Leo's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the duck?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0051",
+   "family": "BL",
+   "scene": "S-0051",
+   "bridge": "goose",
+   "cf_bridge": "cow",
+   "third": "duck",
+   "context": "The school held a concert. The radio played old songs. Sara's pet is a duck. The festival drew a large crowd. The street was lined with trees. Anna's pet is a cow. Ivy's pet is a goose. The cow's locker is 1. The coffee was too strong. The shop on the corner reopened. The hallway lights were dim. The goose's locker is 3. The garden gate needs new paint. The duck's locker is 9.",
+   "off_context": "The school held a concert. The radio played old songs. Sara's pet is a duck. The festival drew a large crowd. The street was lined with trees. Anna's pet is a cow. Ivy's pet is a goose. The cow's locker is 9. The coffee was too strong. The shop on the corner reopened. The hallway lights were dim. The goose's locker is 3. The garden gate needs new paint. The duck's locker is 1.",
+   "people": [
+    "Sara",
+    "Anna",
+    "Ivy"
+   ],
+   "pets": [
+    "duck",
+    "cow",
+    "goose"
+   ],
+   "lockers": {
+    "goose": 3,
+    "cow": 1,
+    "duck": 9
+   },
+   "cue": "Ivy",
+   "question": "Which locker belongs to Ivy's pet?",
+   "cf_context": "The school held a concert. The radio played old songs. Sara's pet is a duck. The festival drew a large crowd. The street was lined with trees. Anna's pet is a goose. Ivy's pet is a cow. The cow's locker is 1. The coffee was too strong. The shop on the corner reopened. The hallway lights were dim. The goose's locker is 3. The garden gate needs new paint. The duck's locker is 9.",
+   "cf_question": "Which locker belongs to Ivy's pet?",
+   "answer": "3",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Ivy's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the goose?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0052",
+   "family": "BL",
+   "scene": "S-0052",
+   "bridge": "cat",
+   "cf_bridge": "chicken",
+   "third": "cow",
+   "context": "Eric's pet is a chicken. Beth's pet is a cow. Alice's pet is a cat. The museum had a new exhibit. The cat's locker is 1. The library closed early. The festival drew a large crowd. The shop on the corner reopened. The cow's locker is 7. The sky turned grey by noon. The kitchen smelled of fresh bread. The chicken's locker is 3. The hallway lights were dim. The bakery sold out of rolls.",
+   "off_context": "Eric's pet is a chicken. Beth's pet is a cow. Alice's pet is a cat. The museum had a new exhibit. The cat's locker is 1. The library closed early. The festival drew a large crowd. The shop on the corner reopened. The cow's locker is 3. The sky turned grey by noon. The kitchen smelled of fresh bread. The chicken's locker is 7. The hallway lights were dim. The bakery sold out of rolls.",
+   "people": [
+    "Eric",
+    "Beth",
+    "Alice"
+   ],
+   "pets": [
+    "chicken",
+    "cow",
+    "cat"
+   ],
+   "lockers": {
+    "cat": 1,
+    "chicken": 3,
+    "cow": 7
+   },
+   "cue": "Alice",
+   "question": "Which locker belongs to Alice's pet?",
+   "cf_context": "Eric's pet is a cat. Beth's pet is a cow. Alice's pet is a chicken. The museum had a new exhibit. The cat's locker is 1. The library closed early. The festival drew a large crowd. The shop on the corner reopened. The cow's locker is 7. The sky turned grey by noon. The kitchen smelled of fresh bread. The chicken's locker is 3. The hallway lights were dim. The bakery sold out of rolls.",
+   "cf_question": "Which locker belongs to Alice's pet?",
+   "answer": "1",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Alice's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the cat?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0053",
+   "family": "BL",
+   "scene": "S-0053",
+   "bridge": "spider",
+   "cf_bridge": "duck",
+   "third": "dog",
+   "context": "The coffee was too strong. Mia's pet is a duck. The tea had gone cold. The shop on the corner reopened. The school held a concert. Max's pet is a dog. The festival drew a large crowd. Ryan's pet is a spider. The dog's locker is 7. The road was wet after the rain. The office was cold. The spider's locker is 5. The duck's locker is 9. The bus was late again.",
+   "off_context": "The coffee was too strong. Mia's pet is a duck. The tea had gone cold. The shop on the corner reopened. The school held a concert. Max's pet is a dog. The festival drew a large crowd. Ryan's pet is a spider. The dog's locker is 9. The road was wet after the rain. The office was cold. The spider's locker is 5. The duck's locker is 7. The bus was late again.",
+   "people": [
+    "Mia",
+    "Max",
+    "Ryan"
+   ],
+   "pets": [
+    "duck",
+    "dog",
+    "spider"
+   ],
+   "lockers": {
+    "spider": 5,
+    "duck": 9,
+    "dog": 7
+   },
+   "cue": "Ryan",
+   "question": "Which locker belongs to Ryan's pet?",
+   "cf_context": "The coffee was too strong. Mia's pet is a spider. The tea had gone cold. The shop on the corner reopened. The school held a concert. Max's pet is a dog. The festival drew a large crowd. Ryan's pet is a duck. The dog's locker is 7. The road was wet after the rain. The office was cold. The spider's locker is 5. The duck's locker is 9. The bus was late again.",
+   "cf_question": "Which locker belongs to Ryan's pet?",
+   "answer": "5",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Ryan's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the spider?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0054",
+   "family": "BL",
+   "scene": "S-0054",
+   "bridge": "spider",
+   "cf_bridge": "pig",
+   "third": "goose",
+   "context": "The office was cold. The window faced the hills. Eric's pet is a spider. James's pet is a pig. Eva's pet is a goose. The road was wet after the rain. The spider's locker is 9. The library closed early. The street was lined with trees. The goose's locker is 1. The sky turned grey by noon. The school held a concert. The bus was late again. The pig's locker is 3.",
+   "off_context": "The office was cold. The window faced the hills. Eric's pet is a spider. James's pet is a pig. Eva's pet is a goose. The road was wet after the rain. The spider's locker is 9. The library closed early. The street was lined with trees. The goose's locker is 3. The sky turned grey by noon. The school held a concert. The bus was late again. The pig's locker is 1.",
+   "people": [
+    "Eric",
+    "James",
+    "Eva"
+   ],
+   "pets": [
+    "spider",
+    "pig",
+    "goose"
+   ],
+   "lockers": {
+    "spider": 9,
+    "pig": 3,
+    "goose": 1
+   },
+   "cue": "Eric",
+   "question": "Which locker belongs to Eric's pet?",
+   "cf_context": "The office was cold. The window faced the hills. Eric's pet is a pig. James's pet is a spider. Eva's pet is a goose. The road was wet after the rain. The spider's locker is 9. The library closed early. The street was lined with trees. The goose's locker is 1. The sky turned grey by noon. The school held a concert. The bus was late again. The pig's locker is 3.",
+   "cf_question": "Which locker belongs to Eric's pet?",
+   "answer": "9",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Eric's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the spider?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0055",
+   "family": "BL",
+   "scene": "S-0055",
+   "bridge": "duck",
+   "cf_bridge": "horse",
+   "third": "goose",
+   "context": "The hallway lights were dim. Kate's pet is a goose. Mark's pet is a duck. The train left on time. The bus was late again. The market was busy on Saturday. Maria's pet is a horse. The school held a concert. The goose's locker is 5. The duck's locker is 3. The radio played old songs. The street was lined with trees. The horse's locker is 7. The window faced the hills.",
+   "off_context": "The hallway lights were dim. Kate's pet is a goose. Mark's pet is a duck. The train left on time. The bus was late again. The market was busy on Saturday. Maria's pet is a horse. The school held a concert. The goose's locker is 7. The duck's locker is 3. The radio played old songs. The street was lined with trees. The horse's locker is 5. The window faced the hills.",
+   "people": [
+    "Kate",
+    "Mark",
+    "Maria"
+   ],
+   "pets": [
+    "goose",
+    "duck",
+    "horse"
+   ],
+   "lockers": {
+    "duck": 3,
+    "horse": 7,
+    "goose": 5
+   },
+   "cue": "Mark",
+   "question": "Which locker belongs to Mark's pet?",
+   "cf_context": "The hallway lights were dim. Kate's pet is a goose. Mark's pet is a horse. The train left on time. The bus was late again. The market was busy on Saturday. Maria's pet is a duck. The school held a concert. The goose's locker is 5. The duck's locker is 3. The radio played old songs. The street was lined with trees. The horse's locker is 7. The window faced the hills.",
+   "cf_question": "Which locker belongs to Mark's pet?",
+   "answer": "3",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Mark's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the duck?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0056",
+   "family": "BL",
+   "scene": "S-0056",
+   "bridge": "chicken",
+   "cf_bridge": "dog",
+   "third": "bee",
+   "context": "The sky turned grey by noon. Victor's pet is a chicken. David's pet is a bee. The school held a concert. Sam's pet is a dog. The window faced the hills. The market was busy on Saturday. The bee's locker is 7. The dog's locker is 9. The train left on time. The street was lined with trees. The festival drew a large crowd. The chicken's locker is 1. The garden gate needs new paint.",
+   "off_context": "The sky turned grey by noon. Victor's pet is a chicken. David's pet is a bee. The school held a concert. Sam's pet is a dog. The window faced the hills. The market was busy on Saturday. The bee's locker is 9. The dog's locker is 7. The train left on time. The street was lined with trees. The festival drew a large crowd. The chicken's locker is 1. The garden gate needs new paint.",
+   "people": [
+    "Victor",
+    "David",
+    "Sam"
+   ],
+   "pets": [
+    "chicken",
+    "bee",
+    "dog"
+   ],
+   "lockers": {
+    "chicken": 1,
+    "dog": 9,
+    "bee": 7
+   },
+   "cue": "Victor",
+   "question": "Which locker belongs to Victor's pet?",
+   "cf_context": "The sky turned grey by noon. Victor's pet is a dog. David's pet is a bee. The school held a concert. Sam's pet is a chicken. The window faced the hills. The market was busy on Saturday. The bee's locker is 7. The dog's locker is 9. The train left on time. The street was lined with trees. The festival drew a large crowd. The chicken's locker is 1. The garden gate needs new paint.",
+   "cf_question": "Which locker belongs to Victor's pet?",
+   "answer": "1",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Victor's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0057",
+   "family": "BL",
+   "scene": "S-0057",
+   "bridge": "dog",
+   "cf_bridge": "spider",
+   "third": "duck",
+   "context": "Henry's pet is a dog. The shop on the corner reopened. The market was busy on Saturday. Nina's pet is a duck. Ruby's pet is a spider. The library closed early. The kitchen smelled of fresh bread. The hallway lights were dim. The museum had a new exhibit. The duck's locker is 3. The dog's locker is 9. The garden gate needs new paint. The festival drew a large crowd. The spider's locker is 1.",
+   "off_context": "Henry's pet is a dog. The shop on the corner reopened. The market was busy on Saturday. Nina's pet is a duck. Ruby's pet is a spider. The library closed early. The kitchen smelled of fresh bread. The hallway lights were dim. The museum had a new exhibit. The duck's locker is 1. The dog's locker is 9. The garden gate needs new paint. The festival drew a large crowd. The spider's locker is 3.",
+   "people": [
+    "Henry",
+    "Nina",
+    "Ruby"
+   ],
+   "pets": [
+    "dog",
+    "duck",
+    "spider"
+   ],
+   "lockers": {
+    "dog": 9,
+    "spider": 1,
+    "duck": 3
+   },
+   "cue": "Henry",
+   "question": "Which locker belongs to Henry's pet?",
+   "cf_context": "Henry's pet is a spider. The shop on the corner reopened. The market was busy on Saturday. Nina's pet is a duck. Ruby's pet is a dog. The library closed early. The kitchen smelled of fresh bread. The hallway lights were dim. The museum had a new exhibit. The duck's locker is 3. The dog's locker is 9. The garden gate needs new paint. The festival drew a large crowd. The spider's locker is 1.",
+   "cf_question": "Which locker belongs to Henry's pet?",
+   "answer": "9",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Henry's pet?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the dog?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0058",
+   "family": "BL",
+   "scene": "S-0058",
+   "bridge": "chicken",
+   "cf_bridge": "bee",
+   "third": "cow",
+   "context": "The river was calm that morning. The museum had a new exhibit. The kitchen smelled of fresh bread. The market was busy on Saturday. Hugo's pet is a chicken. Zoe's pet is a bee. Sam's pet is a cow. The bee's locker is 5. The chicken's locker is 1. The hallway lights were dim. The cow's locker is 9. The wind picked up in the evening. The weather was mild all week. The coffee was too strong.",
+   "off_context": "The river was calm that morning. The museum had a new exhibit. The kitchen smelled of fresh bread. The market was busy on Saturday. Hugo's pet is a chicken. Zoe's pet is a bee. Sam's pet is a cow. The bee's locker is 9. The chicken's locker is 1. The hallway lights were dim. The cow's locker is 5. The wind picked up in the evening. The weather was mild all week. The coffee was too strong.",
+   "people": [
+    "Hugo",
+    "Zoe",
+    "Sam"
+   ],
+   "pets": [
+    "chicken",
+    "bee",
+    "cow"
+   ],
+   "lockers": {
+    "chicken": 1,
+    "bee": 5,
+    "cow": 9
+   },
+   "cue": "Hugo",
+   "question": "Which locker belongs to Hugo's pet?",
+   "cf_context": "The river was calm that morning. The museum had a new exhibit. The kitchen smelled of fresh bread. The market was busy on Saturday. Hugo's pet is a bee. Zoe's pet is a chicken. Sam's pet is a cow. The bee's locker is 5. The chicken's locker is 1. The hallway lights were dim. The cow's locker is 9. The wind picked up in the evening. The weather was mild all week. The coffee was too strong.",
+   "cf_question": "Which locker belongs to Hugo's pet?",
+   "answer": "1",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Hugo's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0059",
+   "family": "BL",
+   "scene": "S-0059",
+   "bridge": "goose",
+   "cf_bridge": "wolf",
+   "third": "lion",
+   "context": "Jack's pet is a wolf. Lily's pet is a goose. Kyle's pet is a lion. The goose's locker is 7. The street was lined with trees. The weather was mild all week. The river was calm that morning. The museum had a new exhibit. The bus was late again. The lion's locker is 5. The wind picked up in the evening. The festival drew a large crowd. The wolf's locker is 3. The coffee was too strong.",
+   "off_context": "Jack's pet is a wolf. Lily's pet is a goose. Kyle's pet is a lion. The goose's locker is 7. The street was lined with trees. The weather was mild all week. The river was calm that morning. The museum had a new exhibit. The bus was late again. The lion's locker is 3. The wind picked up in the evening. The festival drew a large crowd. The wolf's locker is 5. The coffee was too strong.",
+   "people": [
+    "Jack",
+    "Lily",
+    "Kyle"
+   ],
+   "pets": [
+    "wolf",
+    "goose",
+    "lion"
+   ],
+   "lockers": {
+    "goose": 7,
+    "wolf": 3,
+    "lion": 5
+   },
+   "cue": "Lily",
+   "question": "Which locker belongs to Lily's pet?",
+   "cf_context": "Jack's pet is a goose. Lily's pet is a wolf. Kyle's pet is a lion. The goose's locker is 7. The street was lined with trees. The weather was mild all week. The river was calm that morning. The museum had a new exhibit. The bus was late again. The lion's locker is 5. The wind picked up in the evening. The festival drew a large crowd. The wolf's locker is 3. The coffee was too strong.",
+   "cf_question": "Which locker belongs to Lily's pet?",
+   "answer": "7",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Lily's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the goose?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0060",
+   "family": "BL",
+   "scene": "S-0060",
+   "bridge": "duck",
+   "cf_bridge": "cow",
+   "third": "wolf",
+   "context": "The bus was late again. Sam's pet is a cow. The office was cold. Ella's pet is a wolf. The tea had gone cold. Eva's pet is a duck. The museum had a new exhibit. The wolf's locker is 3. The cow's locker is 5. The library closed early. The hallway lights were dim. The duck's locker is 9. The kitchen smelled of fresh bread. The weather was mild all week.",
+   "off_context": "The bus was late again. Sam's pet is a cow. The office was cold. Ella's pet is a wolf. The tea had gone cold. Eva's pet is a duck. The museum had a new exhibit. The wolf's locker is 5. The cow's locker is 3. The library closed early. The hallway lights were dim. The duck's locker is 9. The kitchen smelled of fresh bread. The weather was mild all week.",
+   "people": [
+    "Sam",
+    "Ella",
+    "Eva"
+   ],
+   "pets": [
+    "cow",
+    "wolf",
+    "duck"
+   ],
+   "lockers": {
+    "duck": 9,
+    "cow": 5,
+    "wolf": 3
+   },
+   "cue": "Eva",
+   "question": "Which locker belongs to Eva's pet?",
+   "cf_context": "The bus was late again. Sam's pet is a duck. The office was cold. Ella's pet is a wolf. The tea had gone cold. Eva's pet is a cow. The museum had a new exhibit. The wolf's locker is 3. The cow's locker is 5. The library closed early. The hallway lights were dim. The duck's locker is 9. The kitchen smelled of fresh bread. The weather was mild all week.",
+   "cf_question": "Which locker belongs to Eva's pet?",
+   "answer": "9",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Eva's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the duck?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0061",
+   "family": "BL",
+   "scene": "S-0061",
+   "bridge": "lion",
+   "cf_bridge": "goose",
+   "third": "dog",
+   "context": "Mark's pet is a dog. The weather was mild all week. The kitchen smelled of fresh bread. The shop on the corner reopened. Eva's pet is a lion. Clara's pet is a goose. The goose's locker is 7. The river was calm that morning. The tea had gone cold. The bakery sold out of rolls. The dog's locker is 5. The lion's locker is 3. The garden gate needs new paint. The street was lined with trees.",
+   "off_context": "Mark's pet is a dog. The weather was mild all week. The kitchen smelled of fresh bread. The shop on the corner reopened. Eva's pet is a lion. Clara's pet is a goose. The goose's locker is 5. The river was calm that morning. The tea had gone cold. The bakery sold out of rolls. The dog's locker is 7. The lion's locker is 3. The garden gate needs new paint. The street was lined with trees.",
+   "people": [
+    "Mark",
+    "Eva",
+    "Clara"
+   ],
+   "pets": [
+    "dog",
+    "lion",
+    "goose"
+   ],
+   "lockers": {
+    "lion": 3,
+    "goose": 7,
+    "dog": 5
+   },
+   "cue": "Eva",
+   "question": "Which locker belongs to Eva's pet?",
+   "cf_context": "Mark's pet is a dog. The weather was mild all week. The kitchen smelled of fresh bread. The shop on the corner reopened. Eva's pet is a goose. Clara's pet is a lion. The goose's locker is 7. The river was calm that morning. The tea had gone cold. The bakery sold out of rolls. The dog's locker is 5. The lion's locker is 3. The garden gate needs new paint. The street was lined with trees.",
+   "cf_question": "Which locker belongs to Eva's pet?",
+   "answer": "3",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Eva's pet?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the lion?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0062",
+   "family": "BL",
+   "scene": "S-0062",
+   "bridge": "frog",
+   "cf_bridge": "duck",
+   "third": "turkey",
+   "context": "The market was busy on Saturday. Paul's pet is a duck. Lily's pet is a frog. The train left on time. Luke's pet is a turkey. The road was wet after the rain. The window faced the hills. The bus was late again. The frog's locker is 5. The coffee was too strong. The duck's locker is 3. The bakery sold out of rolls. The museum had a new exhibit. The turkey's locker is 7.",
+   "off_context": "The market was busy on Saturday. Paul's pet is a duck. Lily's pet is a frog. The train left on time. Luke's pet is a turkey. The road was wet after the rain. The window faced the hills. The bus was late again. The frog's locker is 5. The coffee was too strong. The duck's locker is 7. The bakery sold out of rolls. The museum had a new exhibit. The turkey's locker is 3.",
+   "people": [
+    "Paul",
+    "Lily",
+    "Luke"
+   ],
+   "pets": [
+    "duck",
+    "frog",
+    "turkey"
+   ],
+   "lockers": {
+    "frog": 5,
+    "duck": 3,
+    "turkey": 7
+   },
+   "cue": "Lily",
+   "question": "Which locker belongs to Lily's pet?",
+   "cf_context": "The market was busy on Saturday. Paul's pet is a frog. Lily's pet is a duck. The train left on time. Luke's pet is a turkey. The road was wet after the rain. The window faced the hills. The bus was late again. The frog's locker is 5. The coffee was too strong. The duck's locker is 3. The bakery sold out of rolls. The museum had a new exhibit. The turkey's locker is 7.",
+   "cf_question": "Which locker belongs to Lily's pet?",
+   "answer": "5",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Lily's pet?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the frog?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0063",
+   "family": "BL",
+   "scene": "S-0063",
+   "bridge": "mouse",
+   "cf_bridge": "chicken",
+   "third": "horse",
+   "context": "The museum had a new exhibit. The street was lined with trees. The weather was mild all week. Sean's pet is a chicken. The garden gate needs new paint. Jack's pet is a horse. Carl's pet is a mouse. The mouse's locker is 9. The chicken's locker is 1. The train left on time. The bus was late again. The horse's locker is 3. The road was wet after the rain. The hallway lights were dim.",
+   "off_context": "The museum had a new exhibit. The street was lined with trees. The weather was mild all week. Sean's pet is a chicken. The garden gate needs new paint. Jack's pet is a horse. Carl's pet is a mouse. The mouse's locker is 9. The chicken's locker is 3. The train left on time. The bus was late again. The horse's locker is 1. The road was wet after the rain. The hallway lights were dim.",
+   "people": [
+    "Sean",
+    "Jack",
+    "Carl"
+   ],
+   "pets": [
+    "chicken",
+    "horse",
+    "mouse"
+   ],
+   "lockers": {
+    "mouse": 9,
+    "chicken": 1,
+    "horse": 3
+   },
+   "cue": "Carl",
+   "question": "Which locker belongs to Carl's pet?",
+   "cf_context": "The museum had a new exhibit. The street was lined with trees. The weather was mild all week. Sean's pet is a mouse. The garden gate needs new paint. Jack's pet is a horse. Carl's pet is a chicken. The mouse's locker is 9. The chicken's locker is 1. The train left on time. The bus was late again. The horse's locker is 3. The road was wet after the rain. The hallway lights were dim.",
+   "cf_question": "Which locker belongs to Carl's pet?",
+   "answer": "9",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Carl's pet?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the mouse?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0064",
+   "family": "BL",
+   "scene": "S-0064",
+   "bridge": "bee",
+   "cf_bridge": "duck",
+   "third": "cow",
+   "context": "The festival drew a large crowd. The shop on the corner reopened. The weather was mild all week. The office was cold. The kitchen smelled of fresh bread. Eve's pet is a duck. The bakery sold out of rolls. Iris's pet is a bee. Alice's pet is a cow. The bus was late again. The cow's locker is 5. The window faced the hills. The bee's locker is 1. The duck's locker is 9.",
+   "off_context": "The festival drew a large crowd. The shop on the corner reopened. The weather was mild all week. The office was cold. The kitchen smelled of fresh bread. Eve's pet is a duck. The bakery sold out of rolls. Iris's pet is a bee. Alice's pet is a cow. The bus was late again. The cow's locker is 9. The window faced the hills. The bee's locker is 1. The duck's locker is 5.",
+   "people": [
+    "Eve",
+    "Iris",
+    "Alice"
+   ],
+   "pets": [
+    "duck",
+    "bee",
+    "cow"
+   ],
+   "lockers": {
+    "bee": 1,
+    "duck": 9,
+    "cow": 5
+   },
+   "cue": "Iris",
+   "question": "Which locker belongs to Iris's pet?",
+   "cf_context": "The festival drew a large crowd. The shop on the corner reopened. The weather was mild all week. The office was cold. The kitchen smelled of fresh bread. Eve's pet is a bee. The bakery sold out of rolls. Iris's pet is a duck. Alice's pet is a cow. The bus was late again. The cow's locker is 5. The window faced the hills. The bee's locker is 1. The duck's locker is 9.",
+   "cf_question": "Which locker belongs to Iris's pet?",
+   "answer": "1",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Iris's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the bee?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0065",
+   "family": "BL",
+   "scene": "S-0065",
+   "bridge": "bee",
+   "cf_bridge": "duck",
+   "third": "mouse",
+   "context": "Fiona's pet is a duck. The school held a concert. Ruby's pet is a mouse. The tea had gone cold. Emma's pet is a bee. The kitchen smelled of fresh bread. The office was cold. The mouse's locker is 5. The road was wet after the rain. The library closed early. The bee's locker is 3. The duck's locker is 1. The train left on time. The wind picked up in the evening.",
+   "off_context": "Fiona's pet is a duck. The school held a concert. Ruby's pet is a mouse. The tea had gone cold. Emma's pet is a bee. The kitchen smelled of fresh bread. The office was cold. The mouse's locker is 1. The road was wet after the rain. The library closed early. The bee's locker is 3. The duck's locker is 5. The train left on time. The wind picked up in the evening.",
+   "people": [
+    "Fiona",
+    "Ruby",
+    "Emma"
+   ],
+   "pets": [
+    "duck",
+    "mouse",
+    "bee"
+   ],
+   "lockers": {
+    "bee": 3,
+    "duck": 1,
+    "mouse": 5
+   },
+   "cue": "Emma",
+   "question": "Which locker belongs to Emma's pet?",
+   "cf_context": "Fiona's pet is a bee. The school held a concert. Ruby's pet is a mouse. The tea had gone cold. Emma's pet is a duck. The kitchen smelled of fresh bread. The office was cold. The mouse's locker is 5. The road was wet after the rain. The library closed early. The bee's locker is 3. The duck's locker is 1. The train left on time. The wind picked up in the evening.",
+   "cf_question": "Which locker belongs to Emma's pet?",
+   "answer": "3",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Emma's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the bee?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0066",
+   "family": "BL",
+   "scene": "S-0066",
+   "bridge": "goose",
+   "cf_bridge": "wolf",
+   "third": "frog",
+   "context": "Max's pet is a wolf. The road was wet after the rain. Luke's pet is a frog. The shop on the corner reopened. Carl's pet is a goose. The tea had gone cold. The frog's locker is 5. The school held a concert. The coffee was too strong. The goose's locker is 9. The bus was late again. The library closed early. The wolf's locker is 1. The radio played old songs.",
+   "off_context": "Max's pet is a wolf. The road was wet after the rain. Luke's pet is a frog. The shop on the corner reopened. Carl's pet is a goose. The tea had gone cold. The frog's locker is 1. The school held a concert. The coffee was too strong. The goose's locker is 9. The bus was late again. The library closed early. The wolf's locker is 5. The radio played old songs.",
+   "people": [
+    "Max",
+    "Luke",
+    "Carl"
+   ],
+   "pets": [
+    "wolf",
+    "frog",
+    "goose"
+   ],
+   "lockers": {
+    "goose": 9,
+    "wolf": 1,
+    "frog": 5
+   },
+   "cue": "Carl",
+   "question": "Which locker belongs to Carl's pet?",
+   "cf_context": "Max's pet is a goose. The road was wet after the rain. Luke's pet is a frog. The shop on the corner reopened. Carl's pet is a wolf. The tea had gone cold. The frog's locker is 5. The school held a concert. The coffee was too strong. The goose's locker is 9. The bus was late again. The library closed early. The wolf's locker is 1. The radio played old songs.",
+   "cf_question": "Which locker belongs to Carl's pet?",
+   "answer": "9",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Carl's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the goose?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0067",
+   "family": "BL",
+   "scene": "S-0067",
+   "bridge": "sheep",
+   "cf_bridge": "goose",
+   "third": "bee",
+   "context": "The radio played old songs. Dan's pet is a bee. The museum had a new exhibit. The garden gate needs new paint. Henry's pet is a goose. The road was wet after the rain. Vera's pet is a sheep. The river was calm that morning. The sheep's locker is 3. The goose's locker is 5. The school held a concert. The tea had gone cold. The bee's locker is 9. The window faced the hills.",
+   "off_context": "The radio played old songs. Dan's pet is a bee. The museum had a new exhibit. The garden gate needs new paint. Henry's pet is a goose. The road was wet after the rain. Vera's pet is a sheep. The river was calm that morning. The sheep's locker is 3. The goose's locker is 9. The school held a concert. The tea had gone cold. The bee's locker is 5. The window faced the hills.",
+   "people": [
+    "Dan",
+    "Henry",
+    "Vera"
+   ],
+   "pets": [
+    "bee",
+    "goose",
+    "sheep"
+   ],
+   "lockers": {
+    "sheep": 3,
+    "goose": 5,
+    "bee": 9
+   },
+   "cue": "Vera",
+   "question": "Which locker belongs to Vera's pet?",
+   "cf_context": "The radio played old songs. Dan's pet is a bee. The museum had a new exhibit. The garden gate needs new paint. Henry's pet is a sheep. The road was wet after the rain. Vera's pet is a goose. The river was calm that morning. The sheep's locker is 3. The goose's locker is 5. The school held a concert. The tea had gone cold. The bee's locker is 9. The window faced the hills.",
+   "cf_question": "Which locker belongs to Vera's pet?",
+   "answer": "3",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Vera's pet?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the sheep?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0068",
+   "family": "BL",
+   "scene": "S-0068",
+   "bridge": "horse",
+   "cf_bridge": "spider",
+   "third": "chicken",
+   "context": "Eric's pet is a horse. The bakery sold out of rolls. The wind picked up in the evening. The weather was mild all week. Alice's pet is a chicken. Owen's pet is a spider. The festival drew a large crowd. The school held a concert. The chicken's locker is 3. The horse's locker is 7. The radio played old songs. The garden gate needs new paint. The spider's locker is 9. The museum had a new exhibit.",
+   "off_context": "Eric's pet is a horse. The bakery sold out of rolls. The wind picked up in the evening. The weather was mild all week. Alice's pet is a chicken. Owen's pet is a spider. The festival drew a large crowd. The school held a concert. The chicken's locker is 9. The horse's locker is 7. The radio played old songs. The garden gate needs new paint. The spider's locker is 3. The museum had a new exhibit.",
+   "people": [
+    "Eric",
+    "Alice",
+    "Owen"
+   ],
+   "pets": [
+    "horse",
+    "chicken",
+    "spider"
+   ],
+   "lockers": {
+    "horse": 7,
+    "spider": 9,
+    "chicken": 3
+   },
+   "cue": "Eric",
+   "question": "Which locker belongs to Eric's pet?",
+   "cf_context": "Eric's pet is a spider. The bakery sold out of rolls. The wind picked up in the evening. The weather was mild all week. Alice's pet is a chicken. Owen's pet is a horse. The festival drew a large crowd. The school held a concert. The chicken's locker is 3. The horse's locker is 7. The radio played old songs. The garden gate needs new paint. The spider's locker is 9. The museum had a new exhibit.",
+   "cf_question": "Which locker belongs to Eric's pet?",
+   "answer": "7",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Eric's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the horse?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0069",
+   "family": "BL",
+   "scene": "S-0069",
+   "bridge": "cow",
+   "cf_bridge": "goose",
+   "third": "frog",
+   "context": "The sky turned grey by noon. The bus was late again. Eva's pet is a goose. Will's pet is a cow. The street was lined with trees. The window faced the hills. Alice's pet is a frog. The park was quiet at dawn. The frog's locker is 3. The goose's locker is 7. The library closed early. The river was calm that morning. The cow's locker is 5. The garden gate needs new paint.",
+   "off_context": "The sky turned grey by noon. The bus was late again. Eva's pet is a goose. Will's pet is a cow. The street was lined with trees. The window faced the hills. Alice's pet is a frog. The park was quiet at dawn. The frog's locker is 7. The goose's locker is 3. The library closed early. The river was calm that morning. The cow's locker is 5. The garden gate needs new paint.",
+   "people": [
+    "Eva",
+    "Will",
+    "Alice"
+   ],
+   "pets": [
+    "goose",
+    "cow",
+    "frog"
+   ],
+   "lockers": {
+    "cow": 5,
+    "goose": 7,
+    "frog": 3
+   },
+   "cue": "Will",
+   "question": "Which locker belongs to Will's pet?",
+   "cf_context": "The sky turned grey by noon. The bus was late again. Eva's pet is a cow. Will's pet is a goose. The street was lined with trees. The window faced the hills. Alice's pet is a frog. The park was quiet at dawn. The frog's locker is 3. The goose's locker is 7. The library closed early. The river was calm that morning. The cow's locker is 5. The garden gate needs new paint.",
+   "cf_question": "Which locker belongs to Will's pet?",
+   "answer": "5",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Will's pet?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the cow?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0070",
+   "family": "BL",
+   "scene": "S-0070",
+   "bridge": "dog",
+   "cf_bridge": "spider",
+   "third": "frog",
+   "context": "Will's pet is a dog. The window faced the hills. Clara's pet is a spider. Mia's pet is a frog. The bus was late again. The museum had a new exhibit. The garden gate needs new paint. The school held a concert. The dog's locker is 1. The radio played old songs. The frog's locker is 7. The spider's locker is 3. The weather was mild all week. The road was wet after the rain.",
+   "off_context": "Will's pet is a dog. The window faced the hills. Clara's pet is a spider. Mia's pet is a frog. The bus was late again. The museum had a new exhibit. The garden gate needs new paint. The school held a concert. The dog's locker is 1. The radio played old songs. The frog's locker is 3. The spider's locker is 7. The weather was mild all week. The road was wet after the rain.",
+   "people": [
+    "Will",
+    "Clara",
+    "Mia"
+   ],
+   "pets": [
+    "dog",
+    "spider",
+    "frog"
+   ],
+   "lockers": {
+    "dog": 1,
+    "spider": 3,
+    "frog": 7
+   },
+   "cue": "Will",
+   "question": "Which locker belongs to Will's pet?",
+   "cf_context": "Will's pet is a spider. The window faced the hills. Clara's pet is a dog. Mia's pet is a frog. The bus was late again. The museum had a new exhibit. The garden gate needs new paint. The school held a concert. The dog's locker is 1. The radio played old songs. The frog's locker is 7. The spider's locker is 3. The weather was mild all week. The road was wet after the rain.",
+   "cf_question": "Which locker belongs to Will's pet?",
+   "answer": "1",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Will's pet?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the dog?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0071",
+   "family": "BL",
+   "scene": "S-0071",
+   "bridge": "duck",
+   "cf_bridge": "wolf",
+   "third": "bee",
+   "context": "The bus was late again. The road was wet after the rain. Julia's pet is a bee. The tea had gone cold. Oscar's pet is a wolf. The museum had a new exhibit. Vera's pet is a duck. The shop on the corner reopened. The bee's locker is 1. The radio played old songs. The wolf's locker is 5. The street was lined with trees. The duck's locker is 3. The kitchen smelled of fresh bread.",
+   "off_context": "The bus was late again. The road was wet after the rain. Julia's pet is a bee. The tea had gone cold. Oscar's pet is a wolf. The museum had a new exhibit. Vera's pet is a duck. The shop on the corner reopened. The bee's locker is 5. The radio played old songs. The wolf's locker is 1. The street was lined with trees. The duck's locker is 3. The kitchen smelled of fresh bread.",
+   "people": [
+    "Julia",
+    "Oscar",
+    "Vera"
+   ],
+   "pets": [
+    "bee",
+    "wolf",
+    "duck"
+   ],
+   "lockers": {
+    "duck": 3,
+    "wolf": 5,
+    "bee": 1
+   },
+   "cue": "Vera",
+   "question": "Which locker belongs to Vera's pet?",
+   "cf_context": "The bus was late again. The road was wet after the rain. Julia's pet is a bee. The tea had gone cold. Oscar's pet is a duck. The museum had a new exhibit. Vera's pet is a wolf. The shop on the corner reopened. The bee's locker is 1. The radio played old songs. The wolf's locker is 5. The street was lined with trees. The duck's locker is 3. The kitchen smelled of fresh bread.",
+   "cf_question": "Which locker belongs to Vera's pet?",
+   "answer": "3",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Vera's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the duck?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0072",
+   "family": "BL",
+   "scene": "S-0072",
+   "bridge": "goose",
+   "cf_bridge": "bee",
+   "third": "wolf",
+   "context": "The school held a concert. The park was quiet at dawn. The bus was late again. Tom's pet is a bee. Tara's pet is a wolf. Nina's pet is a goose. The bakery sold out of rolls. The goose's locker is 9. The shop on the corner reopened. The wind picked up in the evening. The bee's locker is 1. The office was cold. The wolf's locker is 3. The kitchen smelled of fresh bread.",
+   "off_context": "The school held a concert. The park was quiet at dawn. The bus was late again. Tom's pet is a bee. Tara's pet is a wolf. Nina's pet is a goose. The bakery sold out of rolls. The goose's locker is 9. The shop on the corner reopened. The wind picked up in the evening. The bee's locker is 3. The office was cold. The wolf's locker is 1. The kitchen smelled of fresh bread.",
+   "people": [
+    "Tom",
+    "Tara",
+    "Nina"
+   ],
+   "pets": [
+    "bee",
+    "wolf",
+    "goose"
+   ],
+   "lockers": {
+    "goose": 9,
+    "bee": 1,
+    "wolf": 3
+   },
+   "cue": "Nina",
+   "question": "Which locker belongs to Nina's pet?",
+   "cf_context": "The school held a concert. The park was quiet at dawn. The bus was late again. Tom's pet is a goose. Tara's pet is a wolf. Nina's pet is a bee. The bakery sold out of rolls. The goose's locker is 9. The shop on the corner reopened. The wind picked up in the evening. The bee's locker is 1. The office was cold. The wolf's locker is 3. The kitchen smelled of fresh bread.",
+   "cf_question": "Which locker belongs to Nina's pet?",
+   "answer": "9",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Nina's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the goose?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0073",
+   "family": "BL",
+   "scene": "S-0073",
+   "bridge": "spider",
+   "cf_bridge": "lion",
+   "third": "chicken",
+   "context": "The street was lined with trees. James's pet is a lion. The park was quiet at dawn. Adam's pet is a chicken. Max's pet is a spider. The bakery sold out of rolls. The road was wet after the rain. The lion's locker is 9. The tea had gone cold. The chicken's locker is 1. The river was calm that morning. The market was busy on Saturday. The spider's locker is 3. The hallway lights were dim.",
+   "off_context": "The street was lined with trees. James's pet is a lion. The park was quiet at dawn. Adam's pet is a chicken. Max's pet is a spider. The bakery sold out of rolls. The road was wet after the rain. The lion's locker is 1. The tea had gone cold. The chicken's locker is 9. The river was calm that morning. The market was busy on Saturday. The spider's locker is 3. The hallway lights were dim.",
+   "people": [
+    "James",
+    "Adam",
+    "Max"
+   ],
+   "pets": [
+    "lion",
+    "chicken",
+    "spider"
+   ],
+   "lockers": {
+    "spider": 3,
+    "lion": 9,
+    "chicken": 1
+   },
+   "cue": "Max",
+   "question": "Which locker belongs to Max's pet?",
+   "cf_context": "The street was lined with trees. James's pet is a spider. The park was quiet at dawn. Adam's pet is a chicken. Max's pet is a lion. The bakery sold out of rolls. The road was wet after the rain. The lion's locker is 9. The tea had gone cold. The chicken's locker is 1. The river was calm that morning. The market was busy on Saturday. The spider's locker is 3. The hallway lights were dim.",
+   "cf_question": "Which locker belongs to Max's pet?",
+   "answer": "3",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Max's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the spider?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0074",
+   "family": "BL",
+   "scene": "S-0074",
+   "bridge": "chicken",
+   "cf_bridge": "bee",
+   "third": "turkey",
+   "context": "The market was busy on Saturday. The window faced the hills. Frank's pet is a bee. The weather was mild all week. The sky turned grey by noon. Amy's pet is a chicken. The shop on the corner reopened. The museum had a new exhibit. The park was quiet at dawn. Clara's pet is a turkey. The bee's locker is 5. The chicken's locker is 1. The train left on time. The turkey's locker is 9.",
+   "off_context": "The market was busy on Saturday. The window faced the hills. Frank's pet is a bee. The weather was mild all week. The sky turned grey by noon. Amy's pet is a chicken. The shop on the corner reopened. The museum had a new exhibit. The park was quiet at dawn. Clara's pet is a turkey. The bee's locker is 9. The chicken's locker is 1. The train left on time. The turkey's locker is 5.",
+   "people": [
+    "Frank",
+    "Amy",
+    "Clara"
+   ],
+   "pets": [
+    "bee",
+    "chicken",
+    "turkey"
+   ],
+   "lockers": {
+    "chicken": 1,
+    "bee": 5,
+    "turkey": 9
+   },
+   "cue": "Amy",
+   "question": "Which locker belongs to Amy's pet?",
+   "cf_context": "The market was busy on Saturday. The window faced the hills. Frank's pet is a chicken. The weather was mild all week. The sky turned grey by noon. Amy's pet is a bee. The shop on the corner reopened. The museum had a new exhibit. The park was quiet at dawn. Clara's pet is a turkey. The bee's locker is 5. The chicken's locker is 1. The train left on time. The turkey's locker is 9.",
+   "cf_question": "Which locker belongs to Amy's pet?",
+   "answer": "1",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Amy's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0075",
+   "family": "BL",
+   "scene": "S-0075",
+   "bridge": "spider",
+   "cf_bridge": "chicken",
+   "third": "cow",
+   "context": "The radio played old songs. Oscar's pet is a chicken. The tea had gone cold. Mia's pet is a cow. The river was calm that morning. The school held a concert. The weather was mild all week. Ruby's pet is a spider. The cow's locker is 7. The office was cold. The street was lined with trees. The spider's locker is 3. The chicken's locker is 9. The shop on the corner reopened.",
+   "off_context": "The radio played old songs. Oscar's pet is a chicken. The tea had gone cold. Mia's pet is a cow. The river was calm that morning. The school held a concert. The weather was mild all week. Ruby's pet is a spider. The cow's locker is 9. The office was cold. The street was lined with trees. The spider's locker is 3. The chicken's locker is 7. The shop on the corner reopened.",
+   "people": [
+    "Oscar",
+    "Mia",
+    "Ruby"
+   ],
+   "pets": [
+    "chicken",
+    "cow",
+    "spider"
+   ],
+   "lockers": {
+    "spider": 3,
+    "chicken": 9,
+    "cow": 7
+   },
+   "cue": "Ruby",
+   "question": "Which locker belongs to Ruby's pet?",
+   "cf_context": "The radio played old songs. Oscar's pet is a spider. The tea had gone cold. Mia's pet is a cow. The river was calm that morning. The school held a concert. The weather was mild all week. Ruby's pet is a chicken. The cow's locker is 7. The office was cold. The street was lined with trees. The spider's locker is 3. The chicken's locker is 9. The shop on the corner reopened.",
+   "cf_question": "Which locker belongs to Ruby's pet?",
+   "answer": "3",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Ruby's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the spider?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0076",
+   "family": "BL",
+   "scene": "S-0076",
+   "bridge": "chicken",
+   "cf_bridge": "frog",
+   "third": "turkey",
+   "context": "Finn's pet is a chicken. The river was calm that morning. The street was lined with trees. Peter's pet is a frog. The park was quiet at dawn. The garden gate needs new paint. The market was busy on Saturday. The shop on the corner reopened. Leo's pet is a turkey. The turkey's locker is 5. The hallway lights were dim. The frog's locker is 3. The tea had gone cold. The chicken's locker is 9.",
+   "off_context": "Finn's pet is a chicken. The river was calm that morning. The street was lined with trees. Peter's pet is a frog. The park was quiet at dawn. The garden gate needs new paint. The market was busy on Saturday. The shop on the corner reopened. Leo's pet is a turkey. The turkey's locker is 3. The hallway lights were dim. The frog's locker is 5. The tea had gone cold. The chicken's locker is 9.",
+   "people": [
+    "Finn",
+    "Peter",
+    "Leo"
+   ],
+   "pets": [
+    "chicken",
+    "frog",
+    "turkey"
+   ],
+   "lockers": {
+    "chicken": 9,
+    "frog": 3,
+    "turkey": 5
+   },
+   "cue": "Finn",
+   "question": "Which locker belongs to Finn's pet?",
+   "cf_context": "Finn's pet is a frog. The river was calm that morning. The street was lined with trees. Peter's pet is a chicken. The park was quiet at dawn. The garden gate needs new paint. The market was busy on Saturday. The shop on the corner reopened. Leo's pet is a turkey. The turkey's locker is 5. The hallway lights were dim. The frog's locker is 3. The tea had gone cold. The chicken's locker is 9.",
+   "cf_question": "Which locker belongs to Finn's pet?",
+   "answer": "9",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Finn's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0077",
+   "family": "BL",
+   "scene": "S-0077",
+   "bridge": "horse",
+   "cf_bridge": "turkey",
+   "third": "wolf",
+   "context": "Sean's pet is a wolf. Maria's pet is a horse. Adam's pet is a turkey. The hallway lights were dim. The bakery sold out of rolls. The horse's locker is 3. The market was busy on Saturday. The wind picked up in the evening. The office was cold. The turkey's locker is 7. The wolf's locker is 1. The coffee was too strong. The museum had a new exhibit. The street was lined with trees.",
+   "off_context": "Sean's pet is a wolf. Maria's pet is a horse. Adam's pet is a turkey. The hallway lights were dim. The bakery sold out of rolls. The horse's locker is 3. The market was busy on Saturday. The wind picked up in the evening. The office was cold. The turkey's locker is 1. The wolf's locker is 7. The coffee was too strong. The museum had a new exhibit. The street was lined with trees.",
+   "people": [
+    "Sean",
+    "Maria",
+    "Adam"
+   ],
+   "pets": [
+    "wolf",
+    "horse",
+    "turkey"
+   ],
+   "lockers": {
+    "horse": 3,
+    "turkey": 7,
+    "wolf": 1
+   },
+   "cue": "Maria",
+   "question": "Which locker belongs to Maria's pet?",
+   "cf_context": "Sean's pet is a wolf. Maria's pet is a turkey. Adam's pet is a horse. The hallway lights were dim. The bakery sold out of rolls. The horse's locker is 3. The market was busy on Saturday. The wind picked up in the evening. The office was cold. The turkey's locker is 7. The wolf's locker is 1. The coffee was too strong. The museum had a new exhibit. The street was lined with trees.",
+   "cf_question": "Which locker belongs to Maria's pet?",
+   "answer": "3",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Maria's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the horse?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0078",
+   "family": "BL",
+   "scene": "S-0078",
+   "bridge": "cat",
+   "cf_bridge": "goose",
+   "third": "turkey",
+   "context": "The park was quiet at dawn. Zoe's pet is a turkey. Finn's pet is a cat. The kitchen smelled of fresh bread. Emma's pet is a goose. The goose's locker is 5. The bakery sold out of rolls. The market was busy on Saturday. The radio played old songs. The cat's locker is 9. The office was cold. The sky turned grey by noon. The weather was mild all week. The turkey's locker is 7.",
+   "off_context": "The park was quiet at dawn. Zoe's pet is a turkey. Finn's pet is a cat. The kitchen smelled of fresh bread. Emma's pet is a goose. The goose's locker is 7. The bakery sold out of rolls. The market was busy on Saturday. The radio played old songs. The cat's locker is 9. The office was cold. The sky turned grey by noon. The weather was mild all week. The turkey's locker is 5.",
+   "people": [
+    "Zoe",
+    "Finn",
+    "Emma"
+   ],
+   "pets": [
+    "turkey",
+    "cat",
+    "goose"
+   ],
+   "lockers": {
+    "cat": 9,
+    "goose": 5,
+    "turkey": 7
+   },
+   "cue": "Finn",
+   "question": "Which locker belongs to Finn's pet?",
+   "cf_context": "The park was quiet at dawn. Zoe's pet is a turkey. Finn's pet is a goose. The kitchen smelled of fresh bread. Emma's pet is a cat. The goose's locker is 5. The bakery sold out of rolls. The market was busy on Saturday. The radio played old songs. The cat's locker is 9. The office was cold. The sky turned grey by noon. The weather was mild all week. The turkey's locker is 7.",
+   "cf_question": "Which locker belongs to Finn's pet?",
+   "answer": "9",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Finn's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the cat?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0079",
+   "family": "BL",
+   "scene": "S-0079",
+   "bridge": "dog",
+   "cf_bridge": "spider",
+   "third": "duck",
+   "context": "Henry's pet is a duck. The road was wet after the rain. The festival drew a large crowd. The museum had a new exhibit. Iris's pet is a spider. The wind picked up in the evening. Amy's pet is a dog. The tea had gone cold. The market was busy on Saturday. The duck's locker is 3. The dog's locker is 9. The sky turned grey by noon. The spider's locker is 7. The train left on time.",
+   "off_context": "Henry's pet is a duck. The road was wet after the rain. The festival drew a large crowd. The museum had a new exhibit. Iris's pet is a spider. The wind picked up in the evening. Amy's pet is a dog. The tea had gone cold. The market was busy on Saturday. The duck's locker is 7. The dog's locker is 9. The sky turned grey by noon. The spider's locker is 3. The train left on time.",
+   "people": [
+    "Henry",
+    "Iris",
+    "Amy"
+   ],
+   "pets": [
+    "duck",
+    "spider",
+    "dog"
+   ],
+   "lockers": {
+    "dog": 9,
+    "spider": 7,
+    "duck": 3
+   },
+   "cue": "Amy",
+   "question": "Which locker belongs to Amy's pet?",
+   "cf_context": "Henry's pet is a duck. The road was wet after the rain. The festival drew a large crowd. The museum had a new exhibit. Iris's pet is a dog. The wind picked up in the evening. Amy's pet is a spider. The tea had gone cold. The market was busy on Saturday. The duck's locker is 3. The dog's locker is 9. The sky turned grey by noon. The spider's locker is 7. The train left on time.",
+   "cf_question": "Which locker belongs to Amy's pet?",
+   "answer": "9",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Amy's pet?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the dog?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0080",
+   "family": "BL",
+   "scene": "S-0080",
+   "bridge": "lion",
+   "cf_bridge": "turkey",
+   "third": "goose",
+   "context": "The wind picked up in the evening. Henry's pet is a turkey. The kitchen smelled of fresh bread. The sky turned grey by noon. Zoe's pet is a goose. Emma's pet is a lion. The hallway lights were dim. The tea had gone cold. The park was quiet at dawn. The turkey's locker is 1. The lion's locker is 7. The school held a concert. The bus was late again. The goose's locker is 9.",
+   "off_context": "The wind picked up in the evening. Henry's pet is a turkey. The kitchen smelled of fresh bread. The sky turned grey by noon. Zoe's pet is a goose. Emma's pet is a lion. The hallway lights were dim. The tea had gone cold. The park was quiet at dawn. The turkey's locker is 9. The lion's locker is 7. The school held a concert. The bus was late again. The goose's locker is 1.",
+   "people": [
+    "Henry",
+    "Zoe",
+    "Emma"
+   ],
+   "pets": [
+    "turkey",
+    "goose",
+    "lion"
+   ],
+   "lockers": {
+    "lion": 7,
+    "turkey": 1,
+    "goose": 9
+   },
+   "cue": "Emma",
+   "question": "Which locker belongs to Emma's pet?",
+   "cf_context": "The wind picked up in the evening. Henry's pet is a lion. The kitchen smelled of fresh bread. The sky turned grey by noon. Zoe's pet is a goose. Emma's pet is a turkey. The hallway lights were dim. The tea had gone cold. The park was quiet at dawn. The turkey's locker is 1. The lion's locker is 7. The school held a concert. The bus was late again. The goose's locker is 9.",
+   "cf_question": "Which locker belongs to Emma's pet?",
+   "answer": "7",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Emma's pet?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the lion?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0081",
+   "family": "BL",
+   "scene": "S-0081",
+   "bridge": "bee",
+   "cf_bridge": "goose",
+   "third": "cat",
+   "context": "The school held a concert. The window faced the hills. The shop on the corner reopened. Luke's pet is a goose. Zoe's pet is a bee. The bus was late again. The park was quiet at dawn. Lily's pet is a cat. The kitchen smelled of fresh bread. The cat's locker is 1. The sky turned grey by noon. The bee's locker is 3. The goose's locker is 9. The road was wet after the rain.",
+   "off_context": "The school held a concert. The window faced the hills. The shop on the corner reopened. Luke's pet is a goose. Zoe's pet is a bee. The bus was late again. The park was quiet at dawn. Lily's pet is a cat. The kitchen smelled of fresh bread. The cat's locker is 9. The sky turned grey by noon. The bee's locker is 3. The goose's locker is 1. The road was wet after the rain.",
+   "people": [
+    "Luke",
+    "Zoe",
+    "Lily"
+   ],
+   "pets": [
+    "goose",
+    "bee",
+    "cat"
+   ],
+   "lockers": {
+    "bee": 3,
+    "goose": 9,
+    "cat": 1
+   },
+   "cue": "Zoe",
+   "question": "Which locker belongs to Zoe's pet?",
+   "cf_context": "The school held a concert. The window faced the hills. The shop on the corner reopened. Luke's pet is a bee. Zoe's pet is a goose. The bus was late again. The park was quiet at dawn. Lily's pet is a cat. The kitchen smelled of fresh bread. The cat's locker is 1. The sky turned grey by noon. The bee's locker is 3. The goose's locker is 9. The road was wet after the rain.",
+   "cf_question": "Which locker belongs to Zoe's pet?",
+   "answer": "3",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Zoe's pet?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the bee?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0082",
+   "family": "BL",
+   "scene": "S-0082",
+   "bridge": "spider",
+   "cf_bridge": "frog",
+   "third": "duck",
+   "context": "The river was calm that morning. Hugo's pet is a spider. The bus was late again. Amy's pet is a duck. The school held a concert. Diana's pet is a frog. The kitchen smelled of fresh bread. The spider's locker is 9. The tea had gone cold. The frog's locker is 1. The library closed early. The shop on the corner reopened. The duck's locker is 5. The museum had a new exhibit.",
+   "off_context": "The river was calm that morning. Hugo's pet is a spider. The bus was late again. Amy's pet is a duck. The school held a concert. Diana's pet is a frog. The kitchen smelled of fresh bread. The spider's locker is 9. The tea had gone cold. The frog's locker is 5. The library closed early. The shop on the corner reopened. The duck's locker is 1. The museum had a new exhibit.",
+   "people": [
+    "Hugo",
+    "Amy",
+    "Diana"
+   ],
+   "pets": [
+    "spider",
+    "duck",
+    "frog"
+   ],
+   "lockers": {
+    "spider": 9,
+    "frog": 1,
+    "duck": 5
+   },
+   "cue": "Hugo",
+   "question": "Which locker belongs to Hugo's pet?",
+   "cf_context": "The river was calm that morning. Hugo's pet is a frog. The bus was late again. Amy's pet is a duck. The school held a concert. Diana's pet is a spider. The kitchen smelled of fresh bread. The spider's locker is 9. The tea had gone cold. The frog's locker is 1. The library closed early. The shop on the corner reopened. The duck's locker is 5. The museum had a new exhibit.",
+   "cf_question": "Which locker belongs to Hugo's pet?",
+   "answer": "9",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Hugo's pet?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the spider?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0083",
+   "family": "BL",
+   "scene": "S-0083",
+   "bridge": "sheep",
+   "cf_bridge": "spider",
+   "third": "mouse",
+   "context": "Kate's pet is a spider. The market was busy on Saturday. The kitchen smelled of fresh bread. Liam's pet is a sheep. Tara's pet is a mouse. The library closed early. The mouse's locker is 9. The river was calm that morning. The weather was mild all week. The sheep's locker is 1. The park was quiet at dawn. The window faced the hills. The hallway lights were dim. The spider's locker is 5.",
+   "off_context": "Kate's pet is a spider. The market was busy on Saturday. The kitchen smelled of fresh bread. Liam's pet is a sheep. Tara's pet is a mouse. The library closed early. The mouse's locker is 5. The river was calm that morning. The weather was mild all week. The sheep's locker is 1. The park was quiet at dawn. The window faced the hills. The hallway lights were dim. The spider's locker is 9.",
+   "people": [
+    "Kate",
+    "Liam",
+    "Tara"
+   ],
+   "pets": [
+    "spider",
+    "sheep",
+    "mouse"
+   ],
+   "lockers": {
+    "sheep": 1,
+    "spider": 5,
+    "mouse": 9
+   },
+   "cue": "Liam",
+   "question": "Which locker belongs to Liam's pet?",
+   "cf_context": "Kate's pet is a sheep. The market was busy on Saturday. The kitchen smelled of fresh bread. Liam's pet is a spider. Tara's pet is a mouse. The library closed early. The mouse's locker is 9. The river was calm that morning. The weather was mild all week. The sheep's locker is 1. The park was quiet at dawn. The window faced the hills. The hallway lights were dim. The spider's locker is 5.",
+   "cf_question": "Which locker belongs to Liam's pet?",
+   "answer": "1",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Liam's pet?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the sheep?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0084",
+   "family": "BL",
+   "scene": "S-0084",
+   "bridge": "pig",
+   "cf_bridge": "bee",
+   "third": "turkey",
+   "context": "Lucy's pet is a bee. The weather was mild all week. The tea had gone cold. Diana's pet is a turkey. The sky turned grey by noon. The train left on time. Owen's pet is a pig. The bee's locker is 9. The kitchen smelled of fresh bread. The pig's locker is 5. The office was cold. The library closed early. The turkey's locker is 1. The market was busy on Saturday.",
+   "off_context": "Lucy's pet is a bee. The weather was mild all week. The tea had gone cold. Diana's pet is a turkey. The sky turned grey by noon. The train left on time. Owen's pet is a pig. The bee's locker is 1. The kitchen smelled of fresh bread. The pig's locker is 5. The office was cold. The library closed early. The turkey's locker is 9. The market was busy on Saturday.",
+   "people": [
+    "Lucy",
+    "Diana",
+    "Owen"
+   ],
+   "pets": [
+    "bee",
+    "turkey",
+    "pig"
+   ],
+   "lockers": {
+    "pig": 5,
+    "bee": 9,
+    "turkey": 1
+   },
+   "cue": "Owen",
+   "question": "Which locker belongs to Owen's pet?",
+   "cf_context": "Lucy's pet is a pig. The weather was mild all week. The tea had gone cold. Diana's pet is a turkey. The sky turned grey by noon. The train left on time. Owen's pet is a bee. The bee's locker is 9. The kitchen smelled of fresh bread. The pig's locker is 5. The office was cold. The library closed early. The turkey's locker is 1. The market was busy on Saturday.",
+   "cf_question": "Which locker belongs to Owen's pet?",
+   "answer": "5",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Owen's pet?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the pig?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0085",
+   "family": "BL",
+   "scene": "S-0085",
+   "bridge": "chicken",
+   "cf_bridge": "frog",
+   "third": "goose",
+   "context": "The wind picked up in the evening. Max's pet is a frog. David's pet is a goose. The library closed early. Frank's pet is a chicken. The bus was late again. The frog's locker is 7. The festival drew a large crowd. The kitchen smelled of fresh bread. The chicken's locker is 1. The market was busy on Saturday. The goose's locker is 3. The shop on the corner reopened. The road was wet after the rain.",
+   "off_context": "The wind picked up in the evening. Max's pet is a frog. David's pet is a goose. The library closed early. Frank's pet is a chicken. The bus was late again. The frog's locker is 3. The festival drew a large crowd. The kitchen smelled of fresh bread. The chicken's locker is 1. The market was busy on Saturday. The goose's locker is 7. The shop on the corner reopened. The road was wet after the rain.",
+   "people": [
+    "Max",
+    "David",
+    "Frank"
+   ],
+   "pets": [
+    "frog",
+    "goose",
+    "chicken"
+   ],
+   "lockers": {
+    "chicken": 1,
+    "frog": 7,
+    "goose": 3
+   },
+   "cue": "Frank",
+   "question": "Which locker belongs to Frank's pet?",
+   "cf_context": "The wind picked up in the evening. Max's pet is a chicken. David's pet is a goose. The library closed early. Frank's pet is a frog. The bus was late again. The frog's locker is 7. The festival drew a large crowd. The kitchen smelled of fresh bread. The chicken's locker is 1. The market was busy on Saturday. The goose's locker is 3. The shop on the corner reopened. The road was wet after the rain.",
+   "cf_question": "Which locker belongs to Frank's pet?",
+   "answer": "1",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Frank's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0086",
+   "family": "BL",
+   "scene": "S-0086",
+   "bridge": "cat",
+   "cf_bridge": "goose",
+   "third": "mouse",
+   "context": "The window faced the hills. Carl's pet is a cat. The weather was mild all week. Noah's pet is a mouse. Frank's pet is a goose. The mouse's locker is 5. The wind picked up in the evening. The library closed early. The bakery sold out of rolls. The cat's locker is 1. The river was calm that morning. The shop on the corner reopened. The market was busy on Saturday. The goose's locker is 7.",
+   "off_context": "The window faced the hills. Carl's pet is a cat. The weather was mild all week. Noah's pet is a mouse. Frank's pet is a goose. The mouse's locker is 7. The wind picked up in the evening. The library closed early. The bakery sold out of rolls. The cat's locker is 1. The river was calm that morning. The shop on the corner reopened. The market was busy on Saturday. The goose's locker is 5.",
+   "people": [
+    "Carl",
+    "Noah",
+    "Frank"
+   ],
+   "pets": [
+    "cat",
+    "mouse",
+    "goose"
+   ],
+   "lockers": {
+    "cat": 1,
+    "goose": 7,
+    "mouse": 5
+   },
+   "cue": "Carl",
+   "question": "Which locker belongs to Carl's pet?",
+   "cf_context": "The window faced the hills. Carl's pet is a goose. The weather was mild all week. Noah's pet is a mouse. Frank's pet is a cat. The mouse's locker is 5. The wind picked up in the evening. The library closed early. The bakery sold out of rolls. The cat's locker is 1. The river was calm that morning. The shop on the corner reopened. The market was busy on Saturday. The goose's locker is 7.",
+   "cf_question": "Which locker belongs to Carl's pet?",
+   "answer": "1",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Carl's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the cat?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0087",
+   "family": "BL",
+   "scene": "S-0087",
+   "bridge": "turkey",
+   "cf_bridge": "dog",
+   "third": "wolf",
+   "context": "The train left on time. Amy's pet is a turkey. Ben's pet is a dog. The market was busy on Saturday. The tea had gone cold. Rose's pet is a wolf. The office was cold. The sky turned grey by noon. The wolf's locker is 5. The dog's locker is 9. The coffee was too strong. The turkey's locker is 1. The hallway lights were dim. The road was wet after the rain.",
+   "off_context": "The train left on time. Amy's pet is a turkey. Ben's pet is a dog. The market was busy on Saturday. The tea had gone cold. Rose's pet is a wolf. The office was cold. The sky turned grey by noon. The wolf's locker is 9. The dog's locker is 5. The coffee was too strong. The turkey's locker is 1. The hallway lights were dim. The road was wet after the rain.",
+   "people": [
+    "Amy",
+    "Ben",
+    "Rose"
+   ],
+   "pets": [
+    "turkey",
+    "dog",
+    "wolf"
+   ],
+   "lockers": {
+    "turkey": 1,
+    "dog": 9,
+    "wolf": 5
+   },
+   "cue": "Amy",
+   "question": "Which locker belongs to Amy's pet?",
+   "cf_context": "The train left on time. Amy's pet is a dog. Ben's pet is a turkey. The market was busy on Saturday. The tea had gone cold. Rose's pet is a wolf. The office was cold. The sky turned grey by noon. The wolf's locker is 5. The dog's locker is 9. The coffee was too strong. The turkey's locker is 1. The hallway lights were dim. The road was wet after the rain.",
+   "cf_question": "Which locker belongs to Amy's pet?",
+   "answer": "1",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Amy's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the turkey?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0088",
+   "family": "BL",
+   "scene": "S-0088",
+   "bridge": "cow",
+   "cf_bridge": "chicken",
+   "third": "sheep",
+   "context": "The museum had a new exhibit. Maria's pet is a cow. The office was cold. The bakery sold out of rolls. The train left on time. The kitchen smelled of fresh bread. Paul's pet is a chicken. The coffee was too strong. The hallway lights were dim. Zoe's pet is a sheep. The market was busy on Saturday. The cow's locker is 1. The chicken's locker is 5. The sheep's locker is 3.",
+   "off_context": "The museum had a new exhibit. Maria's pet is a cow. The office was cold. The bakery sold out of rolls. The train left on time. The kitchen smelled of fresh bread. Paul's pet is a chicken. The coffee was too strong. The hallway lights were dim. Zoe's pet is a sheep. The market was busy on Saturday. The cow's locker is 1. The chicken's locker is 3. The sheep's locker is 5.",
+   "people": [
+    "Maria",
+    "Paul",
+    "Zoe"
+   ],
+   "pets": [
+    "cow",
+    "chicken",
+    "sheep"
+   ],
+   "lockers": {
+    "cow": 1,
+    "chicken": 5,
+    "sheep": 3
+   },
+   "cue": "Maria",
+   "question": "Which locker belongs to Maria's pet?",
+   "cf_context": "The museum had a new exhibit. Maria's pet is a chicken. The office was cold. The bakery sold out of rolls. The train left on time. The kitchen smelled of fresh bread. Paul's pet is a cow. The coffee was too strong. The hallway lights were dim. Zoe's pet is a sheep. The market was busy on Saturday. The cow's locker is 1. The chicken's locker is 5. The sheep's locker is 3.",
+   "cf_question": "Which locker belongs to Maria's pet?",
+   "answer": "1",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Maria's pet?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the cow?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0089",
+   "family": "BL",
+   "scene": "S-0089",
+   "bridge": "cat",
+   "cf_bridge": "duck",
+   "third": "goose",
+   "context": "The radio played old songs. Beth's pet is a goose. The festival drew a large crowd. The library closed early. Kate's pet is a duck. The road was wet after the rain. The shop on the corner reopened. Noah's pet is a cat. The cat's locker is 9. The wind picked up in the evening. The duck's locker is 7. The bakery sold out of rolls. The goose's locker is 1. The hallway lights were dim.",
+   "off_context": "The radio played old songs. Beth's pet is a goose. The festival drew a large crowd. The library closed early. Kate's pet is a duck. The road was wet after the rain. The shop on the corner reopened. Noah's pet is a cat. The cat's locker is 9. The wind picked up in the evening. The duck's locker is 1. The bakery sold out of rolls. The goose's locker is 7. The hallway lights were dim.",
+   "people": [
+    "Beth",
+    "Kate",
+    "Noah"
+   ],
+   "pets": [
+    "goose",
+    "duck",
+    "cat"
+   ],
+   "lockers": {
+    "cat": 9,
+    "duck": 7,
+    "goose": 1
+   },
+   "cue": "Noah",
+   "question": "Which locker belongs to Noah's pet?",
+   "cf_context": "The radio played old songs. Beth's pet is a goose. The festival drew a large crowd. The library closed early. Kate's pet is a cat. The road was wet after the rain. The shop on the corner reopened. Noah's pet is a duck. The cat's locker is 9. The wind picked up in the evening. The duck's locker is 7. The bakery sold out of rolls. The goose's locker is 1. The hallway lights were dim.",
+   "cf_question": "Which locker belongs to Noah's pet?",
+   "answer": "9",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Noah's pet?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the cat?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0090",
+   "family": "BL",
+   "scene": "S-0090",
+   "bridge": "turkey",
+   "cf_bridge": "dog",
+   "third": "bee",
+   "context": "Victor's pet is a dog. The street was lined with trees. Luke's pet is a bee. The road was wet after the rain. Laura's pet is a turkey. The river was calm that morning. The dog's locker is 7. The tea had gone cold. The bus was late again. The bee's locker is 9. The weather was mild all week. The library closed early. The turkey's locker is 1. The kitchen smelled of fresh bread.",
+   "off_context": "Victor's pet is a dog. The street was lined with trees. Luke's pet is a bee. The road was wet after the rain. Laura's pet is a turkey. The river was calm that morning. The dog's locker is 9. The tea had gone cold. The bus was late again. The bee's locker is 7. The weather was mild all week. The library closed early. The turkey's locker is 1. The kitchen smelled of fresh bread.",
+   "people": [
+    "Victor",
+    "Luke",
+    "Laura"
+   ],
+   "pets": [
+    "dog",
+    "bee",
+    "turkey"
+   ],
+   "lockers": {
+    "turkey": 1,
+    "dog": 7,
+    "bee": 9
+   },
+   "cue": "Laura",
+   "question": "Which locker belongs to Laura's pet?",
+   "cf_context": "Victor's pet is a turkey. The street was lined with trees. Luke's pet is a bee. The road was wet after the rain. Laura's pet is a dog. The river was calm that morning. The dog's locker is 7. The tea had gone cold. The bus was late again. The bee's locker is 9. The weather was mild all week. The library closed early. The turkey's locker is 1. The kitchen smelled of fresh bread.",
+   "cf_question": "Which locker belongs to Laura's pet?",
+   "answer": "1",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Laura's pet?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the turkey?",
+    "answer": "1",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0091",
+   "family": "BL",
+   "scene": "S-0091",
+   "bridge": "goose",
+   "cf_bridge": "sheep",
+   "third": "pig",
+   "context": "The bus was late again. The sky turned grey by noon. Kate's pet is a pig. The festival drew a large crowd. The weather was mild all week. The radio played old songs. Victor's pet is a sheep. Mia's pet is a goose. The library closed early. The sheep's locker is 3. The goose's locker is 5. The museum had a new exhibit. The pig's locker is 9. The street was lined with trees.",
+   "off_context": "The bus was late again. The sky turned grey by noon. Kate's pet is a pig. The festival drew a large crowd. The weather was mild all week. The radio played old songs. Victor's pet is a sheep. Mia's pet is a goose. The library closed early. The sheep's locker is 9. The goose's locker is 5. The museum had a new exhibit. The pig's locker is 3. The street was lined with trees.",
+   "people": [
+    "Kate",
+    "Victor",
+    "Mia"
+   ],
+   "pets": [
+    "pig",
+    "sheep",
+    "goose"
+   ],
+   "lockers": {
+    "goose": 5,
+    "sheep": 3,
+    "pig": 9
+   },
+   "cue": "Mia",
+   "question": "Which locker belongs to Mia's pet?",
+   "cf_context": "The bus was late again. The sky turned grey by noon. Kate's pet is a pig. The festival drew a large crowd. The weather was mild all week. The radio played old songs. Victor's pet is a goose. Mia's pet is a sheep. The library closed early. The sheep's locker is 3. The goose's locker is 5. The museum had a new exhibit. The pig's locker is 9. The street was lined with trees.",
+   "cf_question": "Which locker belongs to Mia's pet?",
+   "answer": "5",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Mia's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the goose?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0092",
+   "family": "BL",
+   "scene": "S-0092",
+   "bridge": "goose",
+   "cf_bridge": "cat",
+   "third": "mouse",
+   "context": "Anna's pet is a cat. The school held a concert. Ivan's pet is a mouse. The garden gate needs new paint. The street was lined with trees. Kyle's pet is a goose. The cat's locker is 3. The wind picked up in the evening. The train left on time. The mouse's locker is 1. The road was wet after the rain. The park was quiet at dawn. The goose's locker is 5. The shop on the corner reopened.",
+   "off_context": "Anna's pet is a cat. The school held a concert. Ivan's pet is a mouse. The garden gate needs new paint. The street was lined with trees. Kyle's pet is a goose. The cat's locker is 1. The wind picked up in the evening. The train left on time. The mouse's locker is 3. The road was wet after the rain. The park was quiet at dawn. The goose's locker is 5. The shop on the corner reopened.",
+   "people": [
+    "Anna",
+    "Ivan",
+    "Kyle"
+   ],
+   "pets": [
+    "cat",
+    "mouse",
+    "goose"
+   ],
+   "lockers": {
+    "goose": 5,
+    "cat": 3,
+    "mouse": 1
+   },
+   "cue": "Kyle",
+   "question": "Which locker belongs to Kyle's pet?",
+   "cf_context": "Anna's pet is a goose. The school held a concert. Ivan's pet is a mouse. The garden gate needs new paint. The street was lined with trees. Kyle's pet is a cat. The cat's locker is 3. The wind picked up in the evening. The train left on time. The mouse's locker is 1. The road was wet after the rain. The park was quiet at dawn. The goose's locker is 5. The shop on the corner reopened.",
+   "cf_question": "Which locker belongs to Kyle's pet?",
+   "answer": "5",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Kyle's pet?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the goose?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0093",
+   "family": "BL",
+   "scene": "S-0093",
+   "bridge": "horse",
+   "cf_bridge": "duck",
+   "third": "cat",
+   "context": "Ruby's pet is a cat. The festival drew a large crowd. The radio played old songs. The market was busy on Saturday. The wind picked up in the evening. Alice's pet is a duck. The coffee was too strong. The road was wet after the rain. Ivan's pet is a horse. The weather was mild all week. The horse's locker is 7. The kitchen smelled of fresh bread. The duck's locker is 9. The cat's locker is 1.",
+   "off_context": "Ruby's pet is a cat. The festival drew a large crowd. The radio played old songs. The market was busy on Saturday. The wind picked up in the evening. Alice's pet is a duck. The coffee was too strong. The road was wet after the rain. Ivan's pet is a horse. The weather was mild all week. The horse's locker is 7. The kitchen smelled of fresh bread. The duck's locker is 1. The cat's locker is 9.",
+   "people": [
+    "Ruby",
+    "Alice",
+    "Ivan"
+   ],
+   "pets": [
+    "cat",
+    "duck",
+    "horse"
+   ],
+   "lockers": {
+    "horse": 7,
+    "duck": 9,
+    "cat": 1
+   },
+   "cue": "Ivan",
+   "question": "Which locker belongs to Ivan's pet?",
+   "cf_context": "Ruby's pet is a cat. The festival drew a large crowd. The radio played old songs. The market was busy on Saturday. The wind picked up in the evening. Alice's pet is a horse. The coffee was too strong. The road was wet after the rain. Ivan's pet is a duck. The weather was mild all week. The horse's locker is 7. The kitchen smelled of fresh bread. The duck's locker is 9. The cat's locker is 1.",
+   "cf_question": "Which locker belongs to Ivan's pet?",
+   "answer": "7",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Ivan's pet?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the horse?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0094",
+   "family": "BL",
+   "scene": "S-0094",
+   "bridge": "frog",
+   "cf_bridge": "bee",
+   "third": "chicken",
+   "context": "The garden gate needs new paint. Rose's pet is a frog. The market was busy on Saturday. Grace's pet is a bee. Sam's pet is a chicken. The shop on the corner reopened. The office was cold. The chicken's locker is 3. The train left on time. The bee's locker is 1. The museum had a new exhibit. The kitchen smelled of fresh bread. The frog's locker is 7. The wind picked up in the evening.",
+   "off_context": "The garden gate needs new paint. Rose's pet is a frog. The market was busy on Saturday. Grace's pet is a bee. Sam's pet is a chicken. The shop on the corner reopened. The office was cold. The chicken's locker is 1. The train left on time. The bee's locker is 3. The museum had a new exhibit. The kitchen smelled of fresh bread. The frog's locker is 7. The wind picked up in the evening.",
+   "people": [
+    "Rose",
+    "Grace",
+    "Sam"
+   ],
+   "pets": [
+    "frog",
+    "bee",
+    "chicken"
+   ],
+   "lockers": {
+    "frog": 7,
+    "bee": 1,
+    "chicken": 3
+   },
+   "cue": "Rose",
+   "question": "Which locker belongs to Rose's pet?",
+   "cf_context": "The garden gate needs new paint. Rose's pet is a bee. The market was busy on Saturday. Grace's pet is a frog. Sam's pet is a chicken. The shop on the corner reopened. The office was cold. The chicken's locker is 3. The train left on time. The bee's locker is 1. The museum had a new exhibit. The kitchen smelled of fresh bread. The frog's locker is 7. The wind picked up in the evening.",
+   "cf_question": "Which locker belongs to Rose's pet?",
+   "answer": "7",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Rose's pet?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the frog?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0095",
+   "family": "BL",
+   "scene": "S-0095",
+   "bridge": "mouse",
+   "cf_bridge": "duck",
+   "third": "spider",
+   "context": "The wind picked up in the evening. Maria's pet is a mouse. Ben's pet is a spider. Ruby's pet is a duck. The hallway lights were dim. The spider's locker is 5. The kitchen smelled of fresh bread. The festival drew a large crowd. The mouse's locker is 7. The train left on time. The museum had a new exhibit. The tea had gone cold. The duck's locker is 9. The school held a concert.",
+   "off_context": "The wind picked up in the evening. Maria's pet is a mouse. Ben's pet is a spider. Ruby's pet is a duck. The hallway lights were dim. The spider's locker is 9. The kitchen smelled of fresh bread. The festival drew a large crowd. The mouse's locker is 7. The train left on time. The museum had a new exhibit. The tea had gone cold. The duck's locker is 5. The school held a concert.",
+   "people": [
+    "Maria",
+    "Ben",
+    "Ruby"
+   ],
+   "pets": [
+    "mouse",
+    "spider",
+    "duck"
+   ],
+   "lockers": {
+    "mouse": 7,
+    "duck": 9,
+    "spider": 5
+   },
+   "cue": "Maria",
+   "question": "Which locker belongs to Maria's pet?",
+   "cf_context": "The wind picked up in the evening. Maria's pet is a duck. Ben's pet is a spider. Ruby's pet is a mouse. The hallway lights were dim. The spider's locker is 5. The kitchen smelled of fresh bread. The festival drew a large crowd. The mouse's locker is 7. The train left on time. The museum had a new exhibit. The tea had gone cold. The duck's locker is 9. The school held a concert.",
+   "cf_question": "Which locker belongs to Maria's pet?",
+   "answer": "7",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Maria's pet?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the mouse?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0096",
+   "family": "BL",
+   "scene": "S-0096",
+   "bridge": "cow",
+   "cf_bridge": "chicken",
+   "third": "goose",
+   "context": "The hallway lights were dim. Anna's pet is a cow. The radio played old songs. Olivia's pet is a chicken. The bakery sold out of rolls. The shop on the corner reopened. Maria's pet is a goose. The garden gate needs new paint. The coffee was too strong. The goose's locker is 7. The chicken's locker is 1. The market was busy on Saturday. The road was wet after the rain. The cow's locker is 9.",
+   "off_context": "The hallway lights were dim. Anna's pet is a cow. The radio played old songs. Olivia's pet is a chicken. The bakery sold out of rolls. The shop on the corner reopened. Maria's pet is a goose. The garden gate needs new paint. The coffee was too strong. The goose's locker is 1. The chicken's locker is 7. The market was busy on Saturday. The road was wet after the rain. The cow's locker is 9.",
+   "people": [
+    "Anna",
+    "Olivia",
+    "Maria"
+   ],
+   "pets": [
+    "cow",
+    "chicken",
+    "goose"
+   ],
+   "lockers": {
+    "cow": 9,
+    "chicken": 1,
+    "goose": 7
+   },
+   "cue": "Anna",
+   "question": "Which locker belongs to Anna's pet?",
+   "cf_context": "The hallway lights were dim. Anna's pet is a chicken. The radio played old songs. Olivia's pet is a cow. The bakery sold out of rolls. The shop on the corner reopened. Maria's pet is a goose. The garden gate needs new paint. The coffee was too strong. The goose's locker is 7. The chicken's locker is 1. The market was busy on Saturday. The road was wet after the rain. The cow's locker is 9.",
+   "cf_question": "Which locker belongs to Anna's pet?",
+   "answer": "9",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Anna's pet?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the cow?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0097",
+   "family": "BL",
+   "scene": "S-0097",
+   "bridge": "chicken",
+   "cf_bridge": "bee",
+   "third": "dog",
+   "context": "The street was lined with trees. Paul's pet is a dog. The train left on time. The school held a concert. Will's pet is a bee. The bus was late again. Rose's pet is a chicken. The shop on the corner reopened. The kitchen smelled of fresh bread. The bee's locker is 1. The library closed early. The dog's locker is 9. The museum had a new exhibit. The chicken's locker is 3.",
+   "off_context": "The street was lined with trees. Paul's pet is a dog. The train left on time. The school held a concert. Will's pet is a bee. The bus was late again. Rose's pet is a chicken. The shop on the corner reopened. The kitchen smelled of fresh bread. The bee's locker is 9. The library closed early. The dog's locker is 1. The museum had a new exhibit. The chicken's locker is 3.",
+   "people": [
+    "Paul",
+    "Will",
+    "Rose"
+   ],
+   "pets": [
+    "dog",
+    "bee",
+    "chicken"
+   ],
+   "lockers": {
+    "chicken": 3,
+    "bee": 1,
+    "dog": 9
+   },
+   "cue": "Rose",
+   "question": "Which locker belongs to Rose's pet?",
+   "cf_context": "The street was lined with trees. Paul's pet is a dog. The train left on time. The school held a concert. Will's pet is a chicken. The bus was late again. Rose's pet is a bee. The shop on the corner reopened. The kitchen smelled of fresh bread. The bee's locker is 1. The library closed early. The dog's locker is 9. The museum had a new exhibit. The chicken's locker is 3.",
+   "cf_question": "Which locker belongs to Rose's pet?",
+   "answer": "3",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Rose's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0098",
+   "family": "BL",
+   "scene": "S-0098",
+   "bridge": "duck",
+   "cf_bridge": "cow",
+   "third": "wolf",
+   "context": "Tom's pet is a duck. Emma's pet is a cow. The window faced the hills. Ivy's pet is a wolf. The library closed early. The office was cold. The cow's locker is 3. The street was lined with trees. The wolf's locker is 7. The wind picked up in the evening. The bakery sold out of rolls. The duck's locker is 9. The hallway lights were dim. The sky turned grey by noon.",
+   "off_context": "Tom's pet is a duck. Emma's pet is a cow. The window faced the hills. Ivy's pet is a wolf. The library closed early. The office was cold. The cow's locker is 7. The street was lined with trees. The wolf's locker is 3. The wind picked up in the evening. The bakery sold out of rolls. The duck's locker is 9. The hallway lights were dim. The sky turned grey by noon.",
+   "people": [
+    "Tom",
+    "Emma",
+    "Ivy"
+   ],
+   "pets": [
+    "duck",
+    "cow",
+    "wolf"
+   ],
+   "lockers": {
+    "duck": 9,
+    "cow": 3,
+    "wolf": 7
+   },
+   "cue": "Tom",
+   "question": "Which locker belongs to Tom's pet?",
+   "cf_context": "Tom's pet is a cow. Emma's pet is a duck. The window faced the hills. Ivy's pet is a wolf. The library closed early. The office was cold. The cow's locker is 3. The street was lined with trees. The wolf's locker is 7. The wind picked up in the evening. The bakery sold out of rolls. The duck's locker is 9. The hallway lights were dim. The sky turned grey by noon.",
+   "cf_question": "Which locker belongs to Tom's pet?",
+   "answer": "9",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Tom's pet?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the duck?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  },
+  {
+   "id": "BL-0099",
+   "family": "BL",
+   "scene": "S-0099",
+   "bridge": "chicken",
+   "cf_bridge": "cow",
+   "third": "spider",
+   "context": "The kitchen smelled of fresh bread. Ben's pet is a chicken. The weather was mild all week. Owen's pet is a spider. Julia's pet is a cow. The river was calm that morning. The spider's locker is 1. The office was cold. The street was lined with trees. The window faced the hills. The chicken's locker is 3. The museum had a new exhibit. The road was wet after the rain. The cow's locker is 5.",
+   "off_context": "The kitchen smelled of fresh bread. Ben's pet is a chicken. The weather was mild all week. Owen's pet is a spider. Julia's pet is a cow. The river was calm that morning. The spider's locker is 5. The office was cold. The street was lined with trees. The window faced the hills. The chicken's locker is 3. The museum had a new exhibit. The road was wet after the rain. The cow's locker is 1.",
+   "people": [
+    "Ben",
+    "Owen",
+    "Julia"
+   ],
+   "pets": [
+    "chicken",
+    "spider",
+    "cow"
+   ],
+   "lockers": {
+    "chicken": 3,
+    "cow": 5,
+    "spider": 1
+   },
+   "cue": "Ben",
+   "question": "Which locker belongs to Ben's pet?",
+   "cf_context": "The kitchen smelled of fresh bread. Ben's pet is a cow. The weather was mild all week. Owen's pet is a spider. Julia's pet is a chicken. The river was calm that morning. The spider's locker is 1. The office was cold. The street was lined with trees. The window faced the hills. The chicken's locker is 3. The museum had a new exhibit. The road was wet after the rain. The cow's locker is 5.",
+   "cf_question": "Which locker belongs to Ben's pet?",
+   "answer": "3",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is Ben's pet?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "Which locker belongs to the chicken?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "level": "e3f8"
+  }
+ ]
+}

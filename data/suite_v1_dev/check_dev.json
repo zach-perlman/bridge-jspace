@@ -1,0 +1,1454 @@
+{
+ "BL_e3f0": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   77,
+   77.0,
+   78
+  ],
+  "answers": {
+   "1": 20,
+   "3": 20,
+   "5": 15,
+   "7": 18,
+   "9": 27
+  },
+  "bridges": {
+   "duck": 15,
+   "chicken": 10,
+   "turkey": 9,
+   "bee": 8,
+   "spider": 8,
+   "frog": 6,
+   "goose": 6,
+   "wolf": 6,
+   "sheep": 5,
+   "mouse": 5,
+   "lion": 5,
+   "cat": 5,
+   "dog": 4,
+   "cow": 4,
+   "pig": 3,
+   "horse": 1
+  },
+  "distinct_bridges": 16
+ },
+ "BR_e3f0": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   78,
+   78.0,
+   79
+  ],
+  "answers": {
+   "2": 40,
+   "4": 44,
+   "6": 8,
+   "8": 8
+  },
+  "bridges": {
+   "duck": 15,
+   "chicken": 10,
+   "turkey": 9,
+   "bee": 8,
+   "spider": 8,
+   "frog": 6,
+   "goose": 6,
+   "wolf": 6,
+   "sheep": 5,
+   "mouse": 5,
+   "lion": 5,
+   "cat": 5,
+   "dog": 4,
+   "cow": 4,
+   "pig": 3,
+   "horse": 1
+  },
+  "distinct_bridges": 16
+ },
+ "RL_e3f0": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   80,
+   80.0,
+   81
+  ],
+  "answers": {
+   "1": 20,
+   "3": 20,
+   "5": 15,
+   "7": 18,
+   "9": 27
+  },
+  "bridges": {
+   "duck": 15,
+   "chicken": 10,
+   "turkey": 9,
+   "bee": 8,
+   "spider": 8,
+   "frog": 6,
+   "goose": 6,
+   "wolf": 6,
+   "sheep": 5,
+   "mouse": 5,
+   "lion": 5,
+   "cat": 5,
+   "dog": 4,
+   "cow": 4,
+   "pig": 3,
+   "horse": 1
+  },
+  "distinct_bridges": 16
+ },
+ "RR_e3f0": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   81,
+   81.0,
+   82
+  ],
+  "answers": {
+   "2": 40,
+   "4": 44,
+   "6": 8,
+   "8": 8
+  },
+  "bridges": {
+   "duck": 15,
+   "chicken": 10,
+   "turkey": 9,
+   "bee": 8,
+   "spider": 8,
+   "frog": 6,
+   "goose": 6,
+   "wolf": 6,
+   "sheep": 5,
+   "mouse": 5,
+   "lion": 5,
+   "cat": 5,
+   "dog": 4,
+   "cow": 4,
+   "pig": 3,
+   "horse": 1
+  },
+  "distinct_bridges": 16
+ },
+ "NAMES_e3f0": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   69,
+   70.0,
+   70
+  ],
+  "answers": {
+   "Alice": 2,
+   "Amy": 3,
+   "Beth": 6,
+   "Clara": 3,
+   "Diana": 4,
+   "Ella": 2,
+   "Emma": 2,
+   "Eva": 4,
+   "Eve": 2,
+   "Fiona": 5,
+   "Grace": 5,
+   "Iris": 2,
+   "Ivy": 2,
+   "Julia": 3,
+   "Kate": 3,
+   "Laura": 3,
+   "Lily": 7,
+   "Lucy": 5,
+   "Maria": 3,
+   "Mia": 2,
+   "Nina": 10,
+   "Olivia": 5,
+   "Ruby": 4,
+   "Sara": 6,
+   "Tara": 2,
+   "Vera": 4,
+   "Zoe": 1
+  },
+  "bridges": {
+   "Sam": 6,
+   "Dan": 6,
+   "Luke": 5,
+   "Frank": 5,
+   "Henry": 5,
+   "Liam": 5,
+   "Ryan": 4,
+   "Noah": 4,
+   "Victor": 4,
+   "Ivan": 4,
+   "Adam": 4,
+   "Sean": 4,
+   "Hugo": 4,
+   "Mark": 3,
+   "Owen": 3,
+   "Kyle": 3,
+   "Leo": 3,
+   "Ben": 3,
+   "Oscar": 3,
+   "Peter": 3,
+   "Jack": 3,
+   "Will": 2,
+   "Eric": 2,
+   "Tom": 2,
+   "Carl": 2,
+   "Finn": 2,
+   "Max": 2,
+   "James": 2,
+   "David": 1,
+   "Paul": 1
+  },
+  "distinct_bridges": 30
+ },
+ "CODE_e3f0": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(1, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   89,
+   89.0,
+   89
+  ],
+  "answers": {
+   "1": 11,
+   "2": 12,
+   "3": 4,
+   "4": 17,
+   "5": 10,
+   "6": 13,
+   "7": 10,
+   "8": 13,
+   "9": 10
+  },
+  "bridges": {
+   "box": 8,
+   "pen": 7,
+   "door": 6,
+   "fig": 6,
+   "coin": 6,
+   "car": 6,
+   "pear": 5,
+   "hat": 5,
+   "apple": 5,
+   "ship": 5,
+   "map": 5,
+   "berry": 5,
+   "ring": 5,
+   "tree": 4,
+   "cup": 4,
+   "rose": 4,
+   "lime": 3,
+   "star": 3,
+   "key": 2,
+   "boat": 2,
+   "lamp": 2,
+   "banana": 2
+  },
+  "distinct_bridges": 22
+ },
+ "BLR_e3f0": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   81,
+   81.0,
+   82
+  ],
+  "answers": {
+   "2": 36,
+   "4": 49,
+   "6": 5,
+   "8": 10
+  },
+  "bridges": {
+   "spider": 12,
+   "duck": 10,
+   "chicken": 8,
+   "horse": 7,
+   "pig": 7,
+   "lion": 6,
+   "frog": 6,
+   "bee": 6,
+   "mouse": 6,
+   "cow": 6,
+   "goose": 5,
+   "turkey": 5,
+   "wolf": 5,
+   "dog": 5,
+   "cat": 3,
+   "sheep": 3
+  },
+  "distinct_bridges": 16
+ },
+ "BRL_e3f0": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   93,
+   93.0,
+   94
+  ],
+  "answers": {
+   "1": 23,
+   "3": 25,
+   "5": 13,
+   "7": 14,
+   "9": 25
+  },
+  "bridges": {
+   "spider": 12,
+   "duck": 10,
+   "chicken": 8,
+   "horse": 7,
+   "pig": 7,
+   "lion": 6,
+   "frog": 6,
+   "bee": 6,
+   "mouse": 6,
+   "cow": 6,
+   "goose": 5,
+   "turkey": 5,
+   "wolf": 5,
+   "dog": 5,
+   "cat": 3,
+   "sheep": 3
+  },
+  "distinct_bridges": 16
+ },
+ "BL_e5f0": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   107,
+   107.0,
+   108
+  ],
+  "answers": {
+   "1": 15,
+   "3": 24,
+   "5": 17,
+   "7": 18,
+   "9": 26
+  },
+  "bridges": {
+   "chicken": 17,
+   "bee": 11,
+   "cat": 10,
+   "goose": 10,
+   "turkey": 10,
+   "spider": 7,
+   "sheep": 6,
+   "duck": 6,
+   "horse": 6,
+   "dog": 4,
+   "cow": 3,
+   "lion": 3,
+   "wolf": 2,
+   "mouse": 2,
+   "frog": 2,
+   "pig": 1
+  },
+  "distinct_bridges": 16
+ },
+ "BR_e5f0": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   108,
+   108.0,
+   109
+  ],
+  "answers": {
+   "2": 43,
+   "4": 39,
+   "6": 11,
+   "8": 7
+  },
+  "bridges": {
+   "chicken": 17,
+   "bee": 11,
+   "cat": 10,
+   "goose": 10,
+   "turkey": 10,
+   "spider": 7,
+   "sheep": 6,
+   "duck": 6,
+   "horse": 6,
+   "dog": 4,
+   "cow": 3,
+   "lion": 3,
+   "wolf": 2,
+   "mouse": 2,
+   "frog": 2,
+   "pig": 1
+  },
+  "distinct_bridges": 16
+ },
+ "RL_e5f0": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   110,
+   110.0,
+   111
+  ],
+  "answers": {
+   "1": 15,
+   "3": 24,
+   "5": 17,
+   "7": 18,
+   "9": 26
+  },
+  "bridges": {
+   "chicken": 17,
+   "bee": 11,
+   "cat": 10,
+   "goose": 10,
+   "turkey": 10,
+   "spider": 7,
+   "sheep": 6,
+   "duck": 6,
+   "horse": 6,
+   "dog": 4,
+   "cow": 3,
+   "lion": 3,
+   "wolf": 2,
+   "mouse": 2,
+   "frog": 2,
+   "pig": 1
+  },
+  "distinct_bridges": 16
+ },
+ "RR_e5f0": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   111,
+   111.0,
+   112
+  ],
+  "answers": {
+   "2": 43,
+   "4": 39,
+   "6": 11,
+   "8": 7
+  },
+  "bridges": {
+   "chicken": 17,
+   "bee": 11,
+   "cat": 10,
+   "goose": 10,
+   "turkey": 10,
+   "spider": 7,
+   "sheep": 6,
+   "duck": 6,
+   "horse": 6,
+   "dog": 4,
+   "cow": 3,
+   "lion": 3,
+   "wolf": 2,
+   "mouse": 2,
+   "frog": 2,
+   "pig": 1
+  },
+  "distinct_bridges": 16
+ },
+ "NAMES_e5f0": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   93,
+   94.0,
+   94
+  ],
+  "answers": {
+   "Alice": 4,
+   "Amy": 2,
+   "Anna": 3,
+   "Beth": 3,
+   "Clara": 1,
+   "Diana": 5,
+   "Emma": 2,
+   "Eva": 3,
+   "Eve": 3,
+   "Fiona": 3,
+   "Grace": 3,
+   "Iris": 6,
+   "Ivy": 3,
+   "Julia": 6,
+   "Laura": 2,
+   "Lily": 7,
+   "Lucy": 5,
+   "Maria": 6,
+   "Mia": 3,
+   "Nina": 2,
+   "Olivia": 1,
+   "Rose": 5,
+   "Ruby": 2,
+   "Sara": 7,
+   "Tara": 5,
+   "Vera": 4,
+   "Zoe": 4
+  },
+  "bridges": {
+   "Leo": 7,
+   "Kyle": 6,
+   "Finn": 6,
+   "Carl": 5,
+   "Adam": 5,
+   "Sean": 5,
+   "Paul": 5,
+   "Eric": 4,
+   "Noah": 4,
+   "Liam": 4,
+   "Ben": 4,
+   "Oscar": 3,
+   "Max": 3,
+   "Ryan": 3,
+   "Jack": 3,
+   "Dan": 3,
+   "David": 3,
+   "Owen": 3,
+   "Henry": 3,
+   "Sam": 3,
+   "Ivan": 3,
+   "James": 3,
+   "Will": 2,
+   "Mark": 2,
+   "Frank": 2,
+   "Peter": 2,
+   "Hugo": 1,
+   "Luke": 1,
+   "Tom": 1,
+   "Victor": 1
+  },
+  "distinct_bridges": 30
+ },
+ "CODE_e5f0": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(1, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   113,
+   113.0,
+   113
+  ],
+  "answers": {
+   "1": 11,
+   "2": 12,
+   "3": 19,
+   "4": 8,
+   "5": 8,
+   "6": 11,
+   "7": 6,
+   "8": 8,
+   "9": 17
+  },
+  "bridges": {
+   "ship": 11,
+   "pear": 6,
+   "boat": 6,
+   "rose": 6,
+   "tree": 5,
+   "berry": 5,
+   "car": 5,
+   "fig": 5,
+   "banana": 5,
+   "map": 5,
+   "cup": 5,
+   "pen": 5,
+   "star": 4,
+   "box": 4,
+   "lamp": 4,
+   "book": 3,
+   "coin": 3,
+   "apple": 3,
+   "hat": 3,
+   "key": 3,
+   "ring": 2,
+   "lime": 2
+  },
+  "distinct_bridges": 22
+ },
+ "BLR_e5f0": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   111,
+   111.0,
+   112
+  ],
+  "answers": {
+   "2": 36,
+   "4": 50,
+   "6": 8,
+   "8": 6
+  },
+  "bridges": {
+   "turkey": 15,
+   "spider": 13,
+   "bee": 10,
+   "duck": 9,
+   "goose": 8,
+   "mouse": 8,
+   "frog": 6,
+   "horse": 6,
+   "chicken": 6,
+   "cat": 5,
+   "wolf": 5,
+   "pig": 3,
+   "sheep": 3,
+   "dog": 2,
+   "lion": 1
+  },
+  "distinct_bridges": 15
+ },
+ "BRL_e5f0": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   107,
+   107.0,
+   108
+  ],
+  "answers": {
+   "1": 23,
+   "3": 21,
+   "5": 17,
+   "7": 21,
+   "9": 18
+  },
+  "bridges": {
+   "turkey": 15,
+   "spider": 13,
+   "bee": 10,
+   "duck": 9,
+   "goose": 8,
+   "mouse": 8,
+   "frog": 6,
+   "horse": 6,
+   "chicken": 6,
+   "cat": 5,
+   "wolf": 5,
+   "pig": 3,
+   "sheep": 3,
+   "dog": 2,
+   "lion": 1
+  },
+  "distinct_bridges": 15
+ },
+ "BL_e3f8": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   126,
+   130.0,
+   133
+  ],
+  "answers": {
+   "1": 18,
+   "3": 24,
+   "5": 20,
+   "7": 19,
+   "9": 19
+  },
+  "bridges": {
+   "chicken": 11,
+   "duck": 9,
+   "turkey": 9,
+   "goose": 9,
+   "bee": 8,
+   "spider": 8,
+   "lion": 8,
+   "sheep": 6,
+   "frog": 5,
+   "pig": 5,
+   "mouse": 5,
+   "cat": 5,
+   "horse": 4,
+   "dog": 3,
+   "cow": 3,
+   "wolf": 2
+  },
+  "distinct_bridges": 16
+ },
+ "BR_e3f8": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   127,
+   131.0,
+   134
+  ],
+  "answers": {
+   "2": 38,
+   "4": 46,
+   "6": 8,
+   "8": 8
+  },
+  "bridges": {
+   "chicken": 11,
+   "duck": 9,
+   "turkey": 9,
+   "goose": 9,
+   "bee": 8,
+   "spider": 8,
+   "lion": 8,
+   "sheep": 6,
+   "frog": 5,
+   "pig": 5,
+   "mouse": 5,
+   "cat": 5,
+   "horse": 4,
+   "dog": 3,
+   "cow": 3,
+   "wolf": 2
+  },
+  "distinct_bridges": 16
+ },
+ "RL_e3f8": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   129,
+   133.0,
+   136
+  ],
+  "answers": {
+   "1": 18,
+   "3": 24,
+   "5": 20,
+   "7": 19,
+   "9": 19
+  },
+  "bridges": {
+   "chicken": 11,
+   "duck": 9,
+   "turkey": 9,
+   "goose": 9,
+   "bee": 8,
+   "spider": 8,
+   "lion": 8,
+   "sheep": 6,
+   "frog": 5,
+   "pig": 5,
+   "mouse": 5,
+   "cat": 5,
+   "horse": 4,
+   "dog": 3,
+   "cow": 3,
+   "wolf": 2
+  },
+  "distinct_bridges": 16
+ },
+ "RR_e3f8": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   130,
+   134.0,
+   137
+  ],
+  "answers": {
+   "2": 38,
+   "4": 46,
+   "6": 8,
+   "8": 8
+  },
+  "bridges": {
+   "chicken": 11,
+   "duck": 9,
+   "turkey": 9,
+   "goose": 9,
+   "bee": 8,
+   "spider": 8,
+   "lion": 8,
+   "sheep": 6,
+   "frog": 5,
+   "pig": 5,
+   "mouse": 5,
+   "cat": 5,
+   "horse": 4,
+   "dog": 3,
+   "cow": 3,
+   "wolf": 2
+  },
+  "distinct_bridges": 16
+ },
+ "NAMES_e3f8": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   117,
+   122.0,
+   126
+  ],
+  "answers": {
+   "Alice": 2,
+   "Amy": 6,
+   "Anna": 2,
+   "Beth": 2,
+   "Clara": 2,
+   "Diana": 2,
+   "Ella": 4,
+   "Emma": 3,
+   "Eva": 4,
+   "Eve": 4,
+   "Fiona": 7,
+   "Grace": 5,
+   "Iris": 9,
+   "Ivy": 2,
+   "Julia": 3,
+   "Kate": 5,
+   "Laura": 3,
+   "Lily": 2,
+   "Lucy": 2,
+   "Maria": 2,
+   "Mia": 6,
+   "Nina": 2,
+   "Olivia": 6,
+   "Rose": 1,
+   "Ruby": 4,
+   "Sara": 3,
+   "Tara": 2,
+   "Vera": 3,
+   "Zoe": 2
+  },
+  "bridges": {
+   "Noah": 7,
+   "Kyle": 5,
+   "Paul": 5,
+   "Hugo": 5,
+   "Luke": 5,
+   "Dan": 5,
+   "Jack": 4,
+   "Sam": 4,
+   "David": 4,
+   "Max": 4,
+   "James": 4,
+   "Finn": 4,
+   "Ivan": 4,
+   "Oscar": 4,
+   "Mark": 4,
+   "Ben": 4,
+   "Leo": 3,
+   "Sean": 3,
+   "Adam": 3,
+   "Eric": 3,
+   "Henry": 3,
+   "Frank": 3,
+   "Liam": 3,
+   "Carl": 3,
+   "Victor": 1,
+   "Ryan": 1,
+   "Owen": 1,
+   "Tom": 1
+  },
+  "distinct_bridges": 28
+ },
+ "CODE_e3f8": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(1, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   128,
+   130.0,
+   135
+  ],
+  "answers": {
+   "1": 12,
+   "2": 10,
+   "3": 12,
+   "4": 5,
+   "5": 12,
+   "6": 14,
+   "7": 10,
+   "8": 13,
+   "9": 12
+  },
+  "bridges": {
+   "book": 9,
+   "cup": 8,
+   "berry": 7,
+   "hat": 7,
+   "key": 6,
+   "rose": 6,
+   "tree": 6,
+   "lamp": 6,
+   "pen": 6,
+   "door": 5,
+   "boat": 4,
+   "star": 4,
+   "box": 4,
+   "fig": 3,
+   "apple": 3,
+   "map": 3,
+   "banana": 3,
+   "ring": 2,
+   "car": 2,
+   "ship": 2,
+   "lime": 2,
+   "coin": 1,
+   "pear": 1
+  },
+  "distinct_bridges": 23
+ },
+ "BLR_e3f8": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   130,
+   134.0,
+   138
+  ],
+  "answers": {
+   "2": 27,
+   "4": 57,
+   "6": 9,
+   "8": 7
+  },
+  "bridges": {
+   "cow": 12,
+   "duck": 12,
+   "goose": 9,
+   "bee": 8,
+   "wolf": 8,
+   "turkey": 7,
+   "chicken": 6,
+   "lion": 6,
+   "sheep": 6,
+   "cat": 5,
+   "mouse": 5,
+   "horse": 4,
+   "spider": 4,
+   "frog": 3,
+   "dog": 3,
+   "pig": 2
+  },
+  "distinct_bridges": 16
+ },
+ "BRL_e3f8": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   142,
+   145.5,
+   151
+  ],
+  "answers": {
+   "1": 20,
+   "3": 14,
+   "5": 19,
+   "7": 23,
+   "9": 24
+  },
+  "bridges": {
+   "cow": 12,
+   "duck": 12,
+   "goose": 9,
+   "bee": 8,
+   "wolf": 8,
+   "turkey": 7,
+   "chicken": 6,
+   "lion": 6,
+   "sheep": 6,
+   "cat": 5,
+   "mouse": 5,
+   "horse": 4,
+   "spider": 4,
+   "frog": 3,
+   "dog": 3,
+   "pig": 2
+  },
+  "distinct_bridges": 16
+ },
+ "BL_e5f8": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   155,
+   160.0,
+   165
+  ],
+  "answers": {
+   "1": 22,
+   "3": 19,
+   "5": 19,
+   "7": 17,
+   "9": 23
+  },
+  "bridges": {
+   "spider": 18,
+   "duck": 11,
+   "turkey": 11,
+   "chicken": 9,
+   "bee": 8,
+   "goose": 6,
+   "horse": 5,
+   "dog": 5,
+   "wolf": 5,
+   "sheep": 4,
+   "cat": 4,
+   "mouse": 4,
+   "cow": 3,
+   "frog": 3,
+   "pig": 2,
+   "lion": 2
+  },
+  "distinct_bridges": 16
+ },
+ "BR_e5f8": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   156,
+   161.0,
+   166
+  ],
+  "answers": {
+   "2": 37,
+   "4": 37,
+   "6": 8,
+   "8": 18
+  },
+  "bridges": {
+   "spider": 18,
+   "duck": 11,
+   "turkey": 11,
+   "chicken": 9,
+   "bee": 8,
+   "goose": 6,
+   "horse": 5,
+   "dog": 5,
+   "wolf": 5,
+   "sheep": 4,
+   "cat": 4,
+   "mouse": 4,
+   "cow": 3,
+   "frog": 3,
+   "pig": 2,
+   "lion": 2
+  },
+  "distinct_bridges": 16
+ },
+ "RL_e5f8": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   158,
+   163.0,
+   168
+  ],
+  "answers": {
+   "1": 22,
+   "3": 19,
+   "5": 19,
+   "7": 17,
+   "9": 23
+  },
+  "bridges": {
+   "spider": 18,
+   "duck": 11,
+   "turkey": 11,
+   "chicken": 9,
+   "bee": 8,
+   "goose": 6,
+   "horse": 5,
+   "dog": 5,
+   "wolf": 5,
+   "sheep": 4,
+   "cat": 4,
+   "mouse": 4,
+   "cow": 3,
+   "frog": 3,
+   "pig": 2,
+   "lion": 2
+  },
+  "distinct_bridges": 16
+ },
+ "RR_e5f8": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   159,
+   164.0,
+   169
+  ],
+  "answers": {
+   "2": 37,
+   "4": 37,
+   "6": 8,
+   "8": 18
+  },
+  "bridges": {
+   "spider": 18,
+   "duck": 11,
+   "turkey": 11,
+   "chicken": 9,
+   "bee": 8,
+   "goose": 6,
+   "horse": 5,
+   "dog": 5,
+   "wolf": 5,
+   "sheep": 4,
+   "cat": 4,
+   "mouse": 4,
+   "cow": 3,
+   "frog": 3,
+   "pig": 2,
+   "lion": 2
+  },
+  "distinct_bridges": 16
+ },
+ "NAMES_e5f8": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   141,
+   146.0,
+   150
+  ],
+  "answers": {
+   "Alice": 2,
+   "Amy": 3,
+   "Anna": 7,
+   "Beth": 3,
+   "Clara": 2,
+   "Diana": 2,
+   "Ella": 3,
+   "Emma": 3,
+   "Eva": 4,
+   "Eve": 6,
+   "Fiona": 1,
+   "Iris": 3,
+   "Ivy": 5,
+   "Julia": 4,
+   "Kate": 4,
+   "Laura": 2,
+   "Lily": 4,
+   "Lucy": 4,
+   "Maria": 11,
+   "Mia": 4,
+   "Nina": 2,
+   "Olivia": 4,
+   "Rose": 6,
+   "Ruby": 1,
+   "Sara": 3,
+   "Vera": 3,
+   "Zoe": 4
+  },
+  "bridges": {
+   "Luke": 5,
+   "Paul": 5,
+   "James": 5,
+   "Max": 5,
+   "David": 5,
+   "Eric": 5,
+   "Carl": 4,
+   "Tom": 4,
+   "Hugo": 4,
+   "Oscar": 4,
+   "Sean": 4,
+   "Liam": 4,
+   "Finn": 3,
+   "Frank": 3,
+   "Peter": 3,
+   "Owen": 3,
+   "Ben": 3,
+   "Noah": 3,
+   "Leo": 3,
+   "Kyle": 3,
+   "Adam": 3,
+   "Dan": 3,
+   "Henry": 3,
+   "Victor": 2,
+   "Jack": 2,
+   "Mark": 2,
+   "Sam": 2,
+   "Ivan": 2,
+   "Ryan": 2,
+   "Will": 1
+  },
+  "distinct_bridges": 30
+ },
+ "CODE_e5f8": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(1, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   152,
+   155.0,
+   158
+  ],
+  "answers": {
+   "1": 13,
+   "2": 10,
+   "3": 13,
+   "4": 8,
+   "5": 12,
+   "6": 14,
+   "7": 8,
+   "8": 9,
+   "9": 13
+  },
+  "bridges": {
+   "hat": 11,
+   "banana": 7,
+   "lime": 6,
+   "ship": 6,
+   "star": 6,
+   "berry": 6,
+   "map": 5,
+   "box": 4,
+   "tree": 4,
+   "rose": 4,
+   "ring": 4,
+   "apple": 4,
+   "coin": 4,
+   "cup": 4,
+   "boat": 4,
+   "pen": 3,
+   "key": 3,
+   "car": 3,
+   "fig": 3,
+   "book": 3,
+   "door": 3,
+   "pear": 2,
+   "lamp": 1
+  },
+  "distinct_bridges": 23
+ },
+ "BLR_e5f8": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   158,
+   164.0,
+   168
+  ],
+  "answers": {
+   "2": 43,
+   "4": 43,
+   "6": 8,
+   "8": 6
+  },
+  "bridges": {
+   "turkey": 13,
+   "duck": 12,
+   "spider": 10,
+   "goose": 9,
+   "sheep": 8,
+   "chicken": 8,
+   "bee": 7,
+   "dog": 6,
+   "horse": 5,
+   "mouse": 4,
+   "lion": 4,
+   "pig": 4,
+   "wolf": 3,
+   "frog": 3,
+   "cow": 3,
+   "cat": 1
+  },
+  "distinct_bridges": 16
+ },
+ "BRL_e5f8": {
+  "n": 100,
+  "aligned": 100,
+  "cf_differs": 100,
+  "unique_prompts": 100,
+  "changed_tokens(cf,off)": {
+   "(2, 2)": 100
+  },
+  "prompt_tokens(min,median,max)": [
+   156,
+   160.0,
+   164
+  ],
+  "answers": {
+   "1": 17,
+   "3": 28,
+   "5": 13,
+   "7": 18,
+   "9": 24
+  },
+  "bridges": {
+   "turkey": 13,
+   "duck": 12,
+   "spider": 10,
+   "goose": 9,
+   "sheep": 8,
+   "chicken": 8,
+   "bee": 7,
+   "dog": 6,
+   "horse": 5,
+   "mouse": 4,
+   "lion": 4,
+   "pig": 4,
+   "wolf": 3,
+   "frog": 3,
+   "cow": 3,
+   "cat": 1
+  },
+  "distinct_bridges": 16
+ }
+}

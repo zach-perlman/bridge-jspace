@@ -1,0 +1,2907 @@
+{
+ "family": "CODE_e3f0",
+ "generator": "scripts/suite_v1.py make --set dev (seed 90010: 3 entities, 0 filler)",
+ "format": "Every family asks one question whose answer needs an intermediate variable (the bridge), in the chat format\n(bridge_jspace.chat: one user turn, thinking off, \"Answer:\" prefilled), with a counterfactual C that changes only the\nbridge (to X) and an off-path control O that changes something the answer does not depend on. C and O line up with the\nclean prompt token for token (checked here), so exp04/exp09's copy-and-split runs apply unchanged.",
+ "items": [
+  {
+   "id": "CODE-0000",
+   "family": "CODE",
+   "context": "```python\nx = 'owl'\nfirst = {'hen': 'apple', 'owl': 'door', 'cow': 'berry'}\nsecond = {'berry': 4, 'apple': 6, 'door': 8}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cow'\nfirst = {'hen': 'apple', 'owl': 'door', 'cow': 'berry'}\nsecond = {'berry': 4, 'apple': 6, 'door': 8}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'owl'\nfirst = {'hen': 'apple', 'owl': 'door', 'cow': 'berry'}\nsecond = {'berry': 6, 'apple': 4, 'door': 8}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "owl",
+   "bridge": "door",
+   "cf_bridge": "berry",
+   "third": "apple",
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "door",
+    "kind": "fruit",
+    "context": "```python\nx = 'owl'\nfirst = {'hen': 'apple', 'owl': 'door', 'cow': 'berry'}\nsecond = {'berry': 4, 'apple': 6, 'door': 8}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "8",
+    "kind": "digit",
+    "context": "```python\nx = 'owl'\nfirst = {'hen': 'apple', 'owl': 'door', 'cow': 'berry'}\nsecond = {'berry': 4, 'apple': 6, 'door': 8}\nprint(second['door'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0001",
+   "family": "CODE",
+   "context": "```python\nx = 'bee'\nfirst = {'ant': 'ring', 'hen': 'book', 'bee': 'lime'}\nsecond = {'book': 8, 'ring': 7, 'lime': 4}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'ant'\nfirst = {'ant': 'ring', 'hen': 'book', 'bee': 'lime'}\nsecond = {'book': 8, 'ring': 7, 'lime': 4}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bee'\nfirst = {'ant': 'ring', 'hen': 'book', 'bee': 'lime'}\nsecond = {'book': 7, 'ring': 8, 'lime': 4}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bee",
+   "bridge": "lime",
+   "cf_bridge": "ring",
+   "third": "book",
+   "answer": "4",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "lime",
+    "kind": "fruit",
+    "context": "```python\nx = 'bee'\nfirst = {'ant': 'ring', 'hen': 'book', 'bee': 'lime'}\nsecond = {'book': 8, 'ring': 7, 'lime': 4}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "4",
+    "kind": "digit",
+    "context": "```python\nx = 'bee'\nfirst = {'ant': 'ring', 'hen': 'book', 'bee': 'lime'}\nsecond = {'book': 8, 'ring': 7, 'lime': 4}\nprint(second['lime'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0002",
+   "family": "CODE",
+   "context": "```python\nx = 'owl'\nfirst = {'owl': 'door', 'cow': 'apple', 'ant': 'car'}\nsecond = {'apple': 3, 'car': 2, 'door': 5}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cow'\nfirst = {'owl': 'door', 'cow': 'apple', 'ant': 'car'}\nsecond = {'apple': 3, 'car': 2, 'door': 5}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'owl'\nfirst = {'owl': 'door', 'cow': 'apple', 'ant': 'car'}\nsecond = {'apple': 2, 'car': 3, 'door': 5}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "owl",
+   "bridge": "door",
+   "cf_bridge": "apple",
+   "third": "car",
+   "answer": "5",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "door",
+    "kind": "fruit",
+    "context": "```python\nx = 'owl'\nfirst = {'owl': 'door', 'cow': 'apple', 'ant': 'car'}\nsecond = {'apple': 3, 'car': 2, 'door': 5}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "5",
+    "kind": "digit",
+    "context": "```python\nx = 'owl'\nfirst = {'owl': 'door', 'cow': 'apple', 'ant': 'car'}\nsecond = {'apple': 3, 'car': 2, 'door': 5}\nprint(second['door'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0003",
+   "family": "CODE",
+   "context": "```python\nx = 'bat'\nfirst = {'dog': 'pen', 'bat': 'pear', 'fox': 'hat'}\nsecond = {'hat': 8, 'pear': 7, 'pen': 6}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'dog'\nfirst = {'dog': 'pen', 'bat': 'pear', 'fox': 'hat'}\nsecond = {'hat': 8, 'pear': 7, 'pen': 6}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bat'\nfirst = {'dog': 'pen', 'bat': 'pear', 'fox': 'hat'}\nsecond = {'hat': 6, 'pear': 7, 'pen': 8}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bat",
+   "bridge": "pear",
+   "cf_bridge": "pen",
+   "third": "hat",
+   "answer": "7",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "pear",
+    "kind": "fruit",
+    "context": "```python\nx = 'bat'\nfirst = {'dog': 'pen', 'bat': 'pear', 'fox': 'hat'}\nsecond = {'hat': 8, 'pear': 7, 'pen': 6}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "7",
+    "kind": "digit",
+    "context": "```python\nx = 'bat'\nfirst = {'dog': 'pen', 'bat': 'pear', 'fox': 'hat'}\nsecond = {'hat': 8, 'pear': 7, 'pen': 6}\nprint(second['pear'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0004",
+   "family": "CODE",
+   "context": "```python\nx = 'owl'\nfirst = {'owl': 'tree', 'bee': 'pear', 'cat': 'map'}\nsecond = {'map': 8, 'pear': 7, 'tree': 1}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cat'\nfirst = {'owl': 'tree', 'bee': 'pear', 'cat': 'map'}\nsecond = {'map': 8, 'pear': 7, 'tree': 1}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'owl'\nfirst = {'owl': 'tree', 'bee': 'pear', 'cat': 'map'}\nsecond = {'map': 7, 'pear': 8, 'tree': 1}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "owl",
+   "bridge": "tree",
+   "cf_bridge": "map",
+   "third": "pear",
+   "answer": "1",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "tree",
+    "kind": "fruit",
+    "context": "```python\nx = 'owl'\nfirst = {'owl': 'tree', 'bee': 'pear', 'cat': 'map'}\nsecond = {'map': 8, 'pear': 7, 'tree': 1}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "1",
+    "kind": "digit",
+    "context": "```python\nx = 'owl'\nfirst = {'owl': 'tree', 'bee': 'pear', 'cat': 'map'}\nsecond = {'map': 8, 'pear': 7, 'tree': 1}\nprint(second['tree'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0005",
+   "family": "CODE",
+   "context": "```python\nx = 'rat'\nfirst = {'hen': 'car', 'rat': 'hat', 'fox': 'banana'}\nsecond = {'car': 8, 'hat': 4, 'banana': 7}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'hen'\nfirst = {'hen': 'car', 'rat': 'hat', 'fox': 'banana'}\nsecond = {'car': 8, 'hat': 4, 'banana': 7}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'rat'\nfirst = {'hen': 'car', 'rat': 'hat', 'fox': 'banana'}\nsecond = {'car': 7, 'hat': 4, 'banana': 8}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "rat",
+   "bridge": "hat",
+   "cf_bridge": "car",
+   "third": "banana",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "hat",
+    "kind": "fruit",
+    "context": "```python\nx = 'rat'\nfirst = {'hen': 'car', 'rat': 'hat', 'fox': 'banana'}\nsecond = {'car': 8, 'hat': 4, 'banana': 7}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "4",
+    "kind": "digit",
+    "context": "```python\nx = 'rat'\nfirst = {'hen': 'car', 'rat': 'hat', 'fox': 'banana'}\nsecond = {'car': 8, 'hat': 4, 'banana': 7}\nprint(second['hat'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0006",
+   "family": "CODE",
+   "context": "```python\nx = 'cow'\nfirst = {'dog': 'fig', 'bee': 'lime', 'cow': 'apple'}\nsecond = {'fig': 6, 'apple': 5, 'lime': 9}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'dog'\nfirst = {'dog': 'fig', 'bee': 'lime', 'cow': 'apple'}\nsecond = {'fig': 6, 'apple': 5, 'lime': 9}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'cow'\nfirst = {'dog': 'fig', 'bee': 'lime', 'cow': 'apple'}\nsecond = {'fig': 9, 'apple': 5, 'lime': 6}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "cow",
+   "bridge": "apple",
+   "cf_bridge": "fig",
+   "third": "lime",
+   "answer": "5",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "apple",
+    "kind": "fruit",
+    "context": "```python\nx = 'cow'\nfirst = {'dog': 'fig', 'bee': 'lime', 'cow': 'apple'}\nsecond = {'fig': 6, 'apple': 5, 'lime': 9}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "5",
+    "kind": "digit",
+    "context": "```python\nx = 'cow'\nfirst = {'dog': 'fig', 'bee': 'lime', 'cow': 'apple'}\nsecond = {'fig': 6, 'apple': 5, 'lime': 9}\nprint(second['apple'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0007",
+   "family": "CODE",
+   "context": "```python\nx = 'fox'\nfirst = {'fox': 'apple', 'hen': 'book', 'owl': 'map'}\nsecond = {'map': 8, 'book': 5, 'apple': 4}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'owl'\nfirst = {'fox': 'apple', 'hen': 'book', 'owl': 'map'}\nsecond = {'map': 8, 'book': 5, 'apple': 4}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'fox'\nfirst = {'fox': 'apple', 'hen': 'book', 'owl': 'map'}\nsecond = {'map': 5, 'book': 8, 'apple': 4}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "fox",
+   "bridge": "apple",
+   "cf_bridge": "map",
+   "third": "book",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "apple",
+    "kind": "fruit",
+    "context": "```python\nx = 'fox'\nfirst = {'fox': 'apple', 'hen': 'book', 'owl': 'map'}\nsecond = {'map': 8, 'book': 5, 'apple': 4}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "4",
+    "kind": "digit",
+    "context": "```python\nx = 'fox'\nfirst = {'fox': 'apple', 'hen': 'book', 'owl': 'map'}\nsecond = {'map': 8, 'book': 5, 'apple': 4}\nprint(second['apple'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0008",
+   "family": "CODE",
+   "context": "```python\nx = 'fox'\nfirst = {'bat': 'car', 'ant': 'tree', 'fox': 'fig'}\nsecond = {'fig': 2, 'tree': 8, 'car': 9}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'bat'\nfirst = {'bat': 'car', 'ant': 'tree', 'fox': 'fig'}\nsecond = {'fig': 2, 'tree': 8, 'car': 9}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'fox'\nfirst = {'bat': 'car', 'ant': 'tree', 'fox': 'fig'}\nsecond = {'fig': 2, 'tree': 9, 'car': 8}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "fox",
+   "bridge": "fig",
+   "cf_bridge": "car",
+   "third": "tree",
+   "answer": "2",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "fig",
+    "kind": "fruit",
+    "context": "```python\nx = 'fox'\nfirst = {'bat': 'car', 'ant': 'tree', 'fox': 'fig'}\nsecond = {'fig': 2, 'tree': 8, 'car': 9}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "2",
+    "kind": "digit",
+    "context": "```python\nx = 'fox'\nfirst = {'bat': 'car', 'ant': 'tree', 'fox': 'fig'}\nsecond = {'fig': 2, 'tree': 8, 'car': 9}\nprint(second['fig'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0009",
+   "family": "CODE",
+   "context": "```python\nx = 'bat'\nfirst = {'bat': 'ship', 'cow': 'fig', 'rat': 'book'}\nsecond = {'fig': 6, 'book': 2, 'ship': 5}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cow'\nfirst = {'bat': 'ship', 'cow': 'fig', 'rat': 'book'}\nsecond = {'fig': 6, 'book': 2, 'ship': 5}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bat'\nfirst = {'bat': 'ship', 'cow': 'fig', 'rat': 'book'}\nsecond = {'fig': 2, 'book': 6, 'ship': 5}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bat",
+   "bridge": "ship",
+   "cf_bridge": "fig",
+   "third": "book",
+   "answer": "5",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "ship",
+    "kind": "fruit",
+    "context": "```python\nx = 'bat'\nfirst = {'bat': 'ship', 'cow': 'fig', 'rat': 'book'}\nsecond = {'fig': 6, 'book': 2, 'ship': 5}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "5",
+    "kind": "digit",
+    "context": "```python\nx = 'bat'\nfirst = {'bat': 'ship', 'cow': 'fig', 'rat': 'book'}\nsecond = {'fig': 6, 'book': 2, 'ship': 5}\nprint(second['ship'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0010",
+   "family": "CODE",
+   "context": "```python\nx = 'bee'\nfirst = {'bat': 'ring', 'dog': 'pear', 'bee': 'map'}\nsecond = {'pear': 5, 'map': 3, 'ring': 8}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'bat'\nfirst = {'bat': 'ring', 'dog': 'pear', 'bee': 'map'}\nsecond = {'pear': 5, 'map': 3, 'ring': 8}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bee'\nfirst = {'bat': 'ring', 'dog': 'pear', 'bee': 'map'}\nsecond = {'pear': 8, 'map': 3, 'ring': 5}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bee",
+   "bridge": "map",
+   "cf_bridge": "ring",
+   "third": "pear",
+   "answer": "3",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "map",
+    "kind": "fruit",
+    "context": "```python\nx = 'bee'\nfirst = {'bat': 'ring', 'dog': 'pear', 'bee': 'map'}\nsecond = {'pear': 5, 'map': 3, 'ring': 8}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "3",
+    "kind": "digit",
+    "context": "```python\nx = 'bee'\nfirst = {'bat': 'ring', 'dog': 'pear', 'bee': 'map'}\nsecond = {'pear': 5, 'map': 3, 'ring': 8}\nprint(second['map'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0011",
+   "family": "CODE",
+   "context": "```python\nx = 'cat'\nfirst = {'rat': 'ship', 'bee': 'hat', 'cat': 'coin'}\nsecond = {'ship': 5, 'hat': 8, 'coin': 2}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'bee'\nfirst = {'rat': 'ship', 'bee': 'hat', 'cat': 'coin'}\nsecond = {'ship': 5, 'hat': 8, 'coin': 2}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'cat'\nfirst = {'rat': 'ship', 'bee': 'hat', 'cat': 'coin'}\nsecond = {'ship': 8, 'hat': 5, 'coin': 2}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "cat",
+   "bridge": "coin",
+   "cf_bridge": "hat",
+   "third": "ship",
+   "answer": "2",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "coin",
+    "kind": "fruit",
+    "context": "```python\nx = 'cat'\nfirst = {'rat': 'ship', 'bee': 'hat', 'cat': 'coin'}\nsecond = {'ship': 5, 'hat': 8, 'coin': 2}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "2",
+    "kind": "digit",
+    "context": "```python\nx = 'cat'\nfirst = {'rat': 'ship', 'bee': 'hat', 'cat': 'coin'}\nsecond = {'ship': 5, 'hat': 8, 'coin': 2}\nprint(second['coin'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0012",
+   "family": "CODE",
+   "context": "```python\nx = 'rat'\nfirst = {'rat': 'cup', 'hen': 'box', 'owl': 'apple'}\nsecond = {'apple': 9, 'cup': 6, 'box': 7}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'hen'\nfirst = {'rat': 'cup', 'hen': 'box', 'owl': 'apple'}\nsecond = {'apple': 9, 'cup': 6, 'box': 7}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'rat'\nfirst = {'rat': 'cup', 'hen': 'box', 'owl': 'apple'}\nsecond = {'apple': 7, 'cup': 6, 'box': 9}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "rat",
+   "bridge": "cup",
+   "cf_bridge": "box",
+   "third": "apple",
+   "answer": "6",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "cup",
+    "kind": "fruit",
+    "context": "```python\nx = 'rat'\nfirst = {'rat': 'cup', 'hen': 'box', 'owl': 'apple'}\nsecond = {'apple': 9, 'cup': 6, 'box': 7}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "6",
+    "kind": "digit",
+    "context": "```python\nx = 'rat'\nfirst = {'rat': 'cup', 'hen': 'box', 'owl': 'apple'}\nsecond = {'apple': 9, 'cup': 6, 'box': 7}\nprint(second['cup'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0013",
+   "family": "CODE",
+   "context": "```python\nx = 'fox'\nfirst = {'bat': 'fig', 'cow': 'ship', 'fox': 'key'}\nsecond = {'fig': 4, 'ship': 1, 'key': 2}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cow'\nfirst = {'bat': 'fig', 'cow': 'ship', 'fox': 'key'}\nsecond = {'fig': 4, 'ship': 1, 'key': 2}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'fox'\nfirst = {'bat': 'fig', 'cow': 'ship', 'fox': 'key'}\nsecond = {'fig': 1, 'ship': 4, 'key': 2}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "fox",
+   "bridge": "key",
+   "cf_bridge": "ship",
+   "third": "fig",
+   "answer": "2",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "key",
+    "kind": "fruit",
+    "context": "```python\nx = 'fox'\nfirst = {'bat': 'fig', 'cow': 'ship', 'fox': 'key'}\nsecond = {'fig': 4, 'ship': 1, 'key': 2}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "2",
+    "kind": "digit",
+    "context": "```python\nx = 'fox'\nfirst = {'bat': 'fig', 'cow': 'ship', 'fox': 'key'}\nsecond = {'fig': 4, 'ship': 1, 'key': 2}\nprint(second['key'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0014",
+   "family": "CODE",
+   "context": "```python\nx = 'bee'\nfirst = {'bee': 'fig', 'owl': 'ring', 'rat': 'pen'}\nsecond = {'fig': 9, 'ring': 5, 'pen': 8}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'owl'\nfirst = {'bee': 'fig', 'owl': 'ring', 'rat': 'pen'}\nsecond = {'fig': 9, 'ring': 5, 'pen': 8}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bee'\nfirst = {'bee': 'fig', 'owl': 'ring', 'rat': 'pen'}\nsecond = {'fig': 9, 'ring': 8, 'pen': 5}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bee",
+   "bridge": "fig",
+   "cf_bridge": "ring",
+   "third": "pen",
+   "answer": "9",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "fig",
+    "kind": "fruit",
+    "context": "```python\nx = 'bee'\nfirst = {'bee': 'fig', 'owl': 'ring', 'rat': 'pen'}\nsecond = {'fig': 9, 'ring': 5, 'pen': 8}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "9",
+    "kind": "digit",
+    "context": "```python\nx = 'bee'\nfirst = {'bee': 'fig', 'owl': 'ring', 'rat': 'pen'}\nsecond = {'fig': 9, 'ring': 5, 'pen': 8}\nprint(second['fig'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0015",
+   "family": "CODE",
+   "context": "```python\nx = 'fox'\nfirst = {'cat': 'pen', 'hen': 'ship', 'fox': 'map'}\nsecond = {'map': 6, 'pen': 3, 'ship': 1}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'hen'\nfirst = {'cat': 'pen', 'hen': 'ship', 'fox': 'map'}\nsecond = {'map': 6, 'pen': 3, 'ship': 1}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'fox'\nfirst = {'cat': 'pen', 'hen': 'ship', 'fox': 'map'}\nsecond = {'map': 6, 'pen': 1, 'ship': 3}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "fox",
+   "bridge": "map",
+   "cf_bridge": "ship",
+   "third": "pen",
+   "answer": "6",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "map",
+    "kind": "fruit",
+    "context": "```python\nx = 'fox'\nfirst = {'cat': 'pen', 'hen': 'ship', 'fox': 'map'}\nsecond = {'map': 6, 'pen': 3, 'ship': 1}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "6",
+    "kind": "digit",
+    "context": "```python\nx = 'fox'\nfirst = {'cat': 'pen', 'hen': 'ship', 'fox': 'map'}\nsecond = {'map': 6, 'pen': 3, 'ship': 1}\nprint(second['map'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0016",
+   "family": "CODE",
+   "context": "```python\nx = 'cat'\nfirst = {'hen': 'rose', 'cow': 'banana', 'cat': 'coin'}\nsecond = {'banana': 3, 'rose': 1, 'coin': 4}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'hen'\nfirst = {'hen': 'rose', 'cow': 'banana', 'cat': 'coin'}\nsecond = {'banana': 3, 'rose': 1, 'coin': 4}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'cat'\nfirst = {'hen': 'rose', 'cow': 'banana', 'cat': 'coin'}\nsecond = {'banana': 1, 'rose': 3, 'coin': 4}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "cat",
+   "bridge": "coin",
+   "cf_bridge": "rose",
+   "third": "banana",
+   "answer": "4",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "coin",
+    "kind": "fruit",
+    "context": "```python\nx = 'cat'\nfirst = {'hen': 'rose', 'cow': 'banana', 'cat': 'coin'}\nsecond = {'banana': 3, 'rose': 1, 'coin': 4}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "4",
+    "kind": "digit",
+    "context": "```python\nx = 'cat'\nfirst = {'hen': 'rose', 'cow': 'banana', 'cat': 'coin'}\nsecond = {'banana': 3, 'rose': 1, 'coin': 4}\nprint(second['coin'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0017",
+   "family": "CODE",
+   "context": "```python\nx = 'bat'\nfirst = {'bee': 'map', 'bat': 'lime', 'cow': 'ship'}\nsecond = {'map': 7, 'ship': 5, 'lime': 4}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'bee'\nfirst = {'bee': 'map', 'bat': 'lime', 'cow': 'ship'}\nsecond = {'map': 7, 'ship': 5, 'lime': 4}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bat'\nfirst = {'bee': 'map', 'bat': 'lime', 'cow': 'ship'}\nsecond = {'map': 5, 'ship': 7, 'lime': 4}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bat",
+   "bridge": "lime",
+   "cf_bridge": "map",
+   "third": "ship",
+   "answer": "4",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "lime",
+    "kind": "fruit",
+    "context": "```python\nx = 'bat'\nfirst = {'bee': 'map', 'bat': 'lime', 'cow': 'ship'}\nsecond = {'map': 7, 'ship': 5, 'lime': 4}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "4",
+    "kind": "digit",
+    "context": "```python\nx = 'bat'\nfirst = {'bee': 'map', 'bat': 'lime', 'cow': 'ship'}\nsecond = {'map': 7, 'ship': 5, 'lime': 4}\nprint(second['lime'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0018",
+   "family": "CODE",
+   "context": "```python\nx = 'fox'\nfirst = {'pig': 'cup', 'fox': 'car', 'cow': 'key'}\nsecond = {'car': 8, 'key': 7, 'cup': 1}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cow'\nfirst = {'pig': 'cup', 'fox': 'car', 'cow': 'key'}\nsecond = {'car': 8, 'key': 7, 'cup': 1}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'fox'\nfirst = {'pig': 'cup', 'fox': 'car', 'cow': 'key'}\nsecond = {'car': 8, 'key': 1, 'cup': 7}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "fox",
+   "bridge": "car",
+   "cf_bridge": "key",
+   "third": "cup",
+   "answer": "8",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "car",
+    "kind": "fruit",
+    "context": "```python\nx = 'fox'\nfirst = {'pig': 'cup', 'fox': 'car', 'cow': 'key'}\nsecond = {'car': 8, 'key': 7, 'cup': 1}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "8",
+    "kind": "digit",
+    "context": "```python\nx = 'fox'\nfirst = {'pig': 'cup', 'fox': 'car', 'cow': 'key'}\nsecond = {'car': 8, 'key': 7, 'cup': 1}\nprint(second['car'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0019",
+   "family": "CODE",
+   "context": "```python\nx = 'pig'\nfirst = {'rat': 'hat', 'owl': 'book', 'pig': 'fig'}\nsecond = {'fig': 4, 'book': 6, 'hat': 5}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'owl'\nfirst = {'rat': 'hat', 'owl': 'book', 'pig': 'fig'}\nsecond = {'fig': 4, 'book': 6, 'hat': 5}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'pig'\nfirst = {'rat': 'hat', 'owl': 'book', 'pig': 'fig'}\nsecond = {'fig': 4, 'book': 5, 'hat': 6}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "pig",
+   "bridge": "fig",
+   "cf_bridge": "book",
+   "third": "hat",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "fig",
+    "kind": "fruit",
+    "context": "```python\nx = 'pig'\nfirst = {'rat': 'hat', 'owl': 'book', 'pig': 'fig'}\nsecond = {'fig': 4, 'book': 6, 'hat': 5}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "4",
+    "kind": "digit",
+    "context": "```python\nx = 'pig'\nfirst = {'rat': 'hat', 'owl': 'book', 'pig': 'fig'}\nsecond = {'fig': 4, 'book': 6, 'hat': 5}\nprint(second['fig'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0020",
+   "family": "CODE",
+   "context": "```python\nx = 'owl'\nfirst = {'owl': 'boat', 'pig': 'map', 'cat': 'lamp'}\nsecond = {'map': 1, 'boat': 6, 'lamp': 5}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'pig'\nfirst = {'owl': 'boat', 'pig': 'map', 'cat': 'lamp'}\nsecond = {'map': 1, 'boat': 6, 'lamp': 5}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'owl'\nfirst = {'owl': 'boat', 'pig': 'map', 'cat': 'lamp'}\nsecond = {'map': 5, 'boat': 6, 'lamp': 1}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "owl",
+   "bridge": "boat",
+   "cf_bridge": "map",
+   "third": "lamp",
+   "answer": "6",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "boat",
+    "kind": "fruit",
+    "context": "```python\nx = 'owl'\nfirst = {'owl': 'boat', 'pig': 'map', 'cat': 'lamp'}\nsecond = {'map': 1, 'boat': 6, 'lamp': 5}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "6",
+    "kind": "digit",
+    "context": "```python\nx = 'owl'\nfirst = {'owl': 'boat', 'pig': 'map', 'cat': 'lamp'}\nsecond = {'map': 1, 'boat': 6, 'lamp': 5}\nprint(second['boat'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0021",
+   "family": "CODE",
+   "context": "```python\nx = 'pig'\nfirst = {'ant': 'key', 'owl': 'pen', 'pig': 'door'}\nsecond = {'pen': 5, 'key': 3, 'door': 9}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'ant'\nfirst = {'ant': 'key', 'owl': 'pen', 'pig': 'door'}\nsecond = {'pen': 5, 'key': 3, 'door': 9}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'pig'\nfirst = {'ant': 'key', 'owl': 'pen', 'pig': 'door'}\nsecond = {'pen': 3, 'key': 5, 'door': 9}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "pig",
+   "bridge": "door",
+   "cf_bridge": "key",
+   "third": "pen",
+   "answer": "9",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "door",
+    "kind": "fruit",
+    "context": "```python\nx = 'pig'\nfirst = {'ant': 'key', 'owl': 'pen', 'pig': 'door'}\nsecond = {'pen': 5, 'key': 3, 'door': 9}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "9",
+    "kind": "digit",
+    "context": "```python\nx = 'pig'\nfirst = {'ant': 'key', 'owl': 'pen', 'pig': 'door'}\nsecond = {'pen': 5, 'key': 3, 'door': 9}\nprint(second['door'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0022",
+   "family": "CODE",
+   "context": "```python\nx = 'bat'\nfirst = {'dog': 'ring', 'hen': 'apple', 'bat': 'berry'}\nsecond = {'ring': 5, 'berry': 7, 'apple': 9}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'dog'\nfirst = {'dog': 'ring', 'hen': 'apple', 'bat': 'berry'}\nsecond = {'ring': 5, 'berry': 7, 'apple': 9}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bat'\nfirst = {'dog': 'ring', 'hen': 'apple', 'bat': 'berry'}\nsecond = {'ring': 9, 'berry': 7, 'apple': 5}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bat",
+   "bridge": "berry",
+   "cf_bridge": "ring",
+   "third": "apple",
+   "answer": "7",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "berry",
+    "kind": "fruit",
+    "context": "```python\nx = 'bat'\nfirst = {'dog': 'ring', 'hen': 'apple', 'bat': 'berry'}\nsecond = {'ring': 5, 'berry': 7, 'apple': 9}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "7",
+    "kind": "digit",
+    "context": "```python\nx = 'bat'\nfirst = {'dog': 'ring', 'hen': 'apple', 'bat': 'berry'}\nsecond = {'ring': 5, 'berry': 7, 'apple': 9}\nprint(second['berry'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0023",
+   "family": "CODE",
+   "context": "```python\nx = 'bee'\nfirst = {'fox': 'cup', 'bee': 'box', 'cat': 'car'}\nsecond = {'box': 1, 'cup': 6, 'car': 9}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cat'\nfirst = {'fox': 'cup', 'bee': 'box', 'cat': 'car'}\nsecond = {'box': 1, 'cup': 6, 'car': 9}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bee'\nfirst = {'fox': 'cup', 'bee': 'box', 'cat': 'car'}\nsecond = {'box': 1, 'cup': 9, 'car': 6}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bee",
+   "bridge": "box",
+   "cf_bridge": "car",
+   "third": "cup",
+   "answer": "1",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "box",
+    "kind": "fruit",
+    "context": "```python\nx = 'bee'\nfirst = {'fox': 'cup', 'bee': 'box', 'cat': 'car'}\nsecond = {'box': 1, 'cup': 6, 'car': 9}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "1",
+    "kind": "digit",
+    "context": "```python\nx = 'bee'\nfirst = {'fox': 'cup', 'bee': 'box', 'cat': 'car'}\nsecond = {'box': 1, 'cup': 6, 'car': 9}\nprint(second['box'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0024",
+   "family": "CODE",
+   "context": "```python\nx = 'hen'\nfirst = {'hen': 'berry', 'bat': 'lime', 'cow': 'fig'}\nsecond = {'fig': 9, 'lime': 8, 'berry': 7}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'bat'\nfirst = {'hen': 'berry', 'bat': 'lime', 'cow': 'fig'}\nsecond = {'fig': 9, 'lime': 8, 'berry': 7}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'hen'\nfirst = {'hen': 'berry', 'bat': 'lime', 'cow': 'fig'}\nsecond = {'fig': 8, 'lime': 9, 'berry': 7}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "hen",
+   "bridge": "berry",
+   "cf_bridge": "lime",
+   "third": "fig",
+   "answer": "7",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "berry",
+    "kind": "fruit",
+    "context": "```python\nx = 'hen'\nfirst = {'hen': 'berry', 'bat': 'lime', 'cow': 'fig'}\nsecond = {'fig': 9, 'lime': 8, 'berry': 7}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "7",
+    "kind": "digit",
+    "context": "```python\nx = 'hen'\nfirst = {'hen': 'berry', 'bat': 'lime', 'cow': 'fig'}\nsecond = {'fig': 9, 'lime': 8, 'berry': 7}\nprint(second['berry'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0025",
+   "family": "CODE",
+   "context": "```python\nx = 'rat'\nfirst = {'bat': 'lime', 'rat': 'pen', 'hen': 'box'}\nsecond = {'lime': 6, 'pen': 2, 'box': 3}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'hen'\nfirst = {'bat': 'lime', 'rat': 'pen', 'hen': 'box'}\nsecond = {'lime': 6, 'pen': 2, 'box': 3}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'rat'\nfirst = {'bat': 'lime', 'rat': 'pen', 'hen': 'box'}\nsecond = {'lime': 3, 'pen': 2, 'box': 6}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "rat",
+   "bridge": "pen",
+   "cf_bridge": "box",
+   "third": "lime",
+   "answer": "2",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "pen",
+    "kind": "fruit",
+    "context": "```python\nx = 'rat'\nfirst = {'bat': 'lime', 'rat': 'pen', 'hen': 'box'}\nsecond = {'lime': 6, 'pen': 2, 'box': 3}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "2",
+    "kind": "digit",
+    "context": "```python\nx = 'rat'\nfirst = {'bat': 'lime', 'rat': 'pen', 'hen': 'box'}\nsecond = {'lime': 6, 'pen': 2, 'box': 3}\nprint(second['pen'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0026",
+   "family": "CODE",
+   "context": "```python\nx = 'pig'\nfirst = {'pig': 'rose', 'ant': 'lime', 'bee': 'berry'}\nsecond = {'rose': 6, 'berry': 4, 'lime': 5}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'bee'\nfirst = {'pig': 'rose', 'ant': 'lime', 'bee': 'berry'}\nsecond = {'rose': 6, 'berry': 4, 'lime': 5}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'pig'\nfirst = {'pig': 'rose', 'ant': 'lime', 'bee': 'berry'}\nsecond = {'rose': 6, 'berry': 5, 'lime': 4}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "pig",
+   "bridge": "rose",
+   "cf_bridge": "berry",
+   "third": "lime",
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "rose",
+    "kind": "fruit",
+    "context": "```python\nx = 'pig'\nfirst = {'pig': 'rose', 'ant': 'lime', 'bee': 'berry'}\nsecond = {'rose': 6, 'berry': 4, 'lime': 5}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "6",
+    "kind": "digit",
+    "context": "```python\nx = 'pig'\nfirst = {'pig': 'rose', 'ant': 'lime', 'bee': 'berry'}\nsecond = {'rose': 6, 'berry': 4, 'lime': 5}\nprint(second['rose'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0027",
+   "family": "CODE",
+   "context": "```python\nx = 'bee'\nfirst = {'hen': 'boat', 'owl': 'book', 'bee': 'lamp'}\nsecond = {'boat': 2, 'lamp': 5, 'book': 3}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'hen'\nfirst = {'hen': 'boat', 'owl': 'book', 'bee': 'lamp'}\nsecond = {'boat': 2, 'lamp': 5, 'book': 3}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bee'\nfirst = {'hen': 'boat', 'owl': 'book', 'bee': 'lamp'}\nsecond = {'boat': 3, 'lamp': 5, 'book': 2}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bee",
+   "bridge": "lamp",
+   "cf_bridge": "boat",
+   "third": "book",
+   "answer": "5",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "lamp",
+    "kind": "fruit",
+    "context": "```python\nx = 'bee'\nfirst = {'hen': 'boat', 'owl': 'book', 'bee': 'lamp'}\nsecond = {'boat': 2, 'lamp': 5, 'book': 3}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "5",
+    "kind": "digit",
+    "context": "```python\nx = 'bee'\nfirst = {'hen': 'boat', 'owl': 'book', 'bee': 'lamp'}\nsecond = {'boat': 2, 'lamp': 5, 'book': 3}\nprint(second['lamp'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0028",
+   "family": "CODE",
+   "context": "```python\nx = 'ant'\nfirst = {'ant': 'car', 'bee': 'lime', 'fox': 'star'}\nsecond = {'lime': 6, 'star': 2, 'car': 9}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'fox'\nfirst = {'ant': 'car', 'bee': 'lime', 'fox': 'star'}\nsecond = {'lime': 6, 'star': 2, 'car': 9}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'ant'\nfirst = {'ant': 'car', 'bee': 'lime', 'fox': 'star'}\nsecond = {'lime': 2, 'star': 6, 'car': 9}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "ant",
+   "bridge": "car",
+   "cf_bridge": "star",
+   "third": "lime",
+   "answer": "9",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "car",
+    "kind": "fruit",
+    "context": "```python\nx = 'ant'\nfirst = {'ant': 'car', 'bee': 'lime', 'fox': 'star'}\nsecond = {'lime': 6, 'star': 2, 'car': 9}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "9",
+    "kind": "digit",
+    "context": "```python\nx = 'ant'\nfirst = {'ant': 'car', 'bee': 'lime', 'fox': 'star'}\nsecond = {'lime': 6, 'star': 2, 'car': 9}\nprint(second['car'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0029",
+   "family": "CODE",
+   "context": "```python\nx = 'bee'\nfirst = {'bee': 'key', 'fox': 'pen', 'cow': 'cup'}\nsecond = {'cup': 4, 'key': 5, 'pen': 3}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cow'\nfirst = {'bee': 'key', 'fox': 'pen', 'cow': 'cup'}\nsecond = {'cup': 4, 'key': 5, 'pen': 3}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bee'\nfirst = {'bee': 'key', 'fox': 'pen', 'cow': 'cup'}\nsecond = {'cup': 3, 'key': 5, 'pen': 4}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bee",
+   "bridge": "key",
+   "cf_bridge": "cup",
+   "third": "pen",
+   "answer": "5",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "key",
+    "kind": "fruit",
+    "context": "```python\nx = 'bee'\nfirst = {'bee': 'key', 'fox': 'pen', 'cow': 'cup'}\nsecond = {'cup': 4, 'key': 5, 'pen': 3}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "5",
+    "kind": "digit",
+    "context": "```python\nx = 'bee'\nfirst = {'bee': 'key', 'fox': 'pen', 'cow': 'cup'}\nsecond = {'cup': 4, 'key': 5, 'pen': 3}\nprint(second['key'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0030",
+   "family": "CODE",
+   "context": "```python\nx = 'pig'\nfirst = {'pig': 'rose', 'dog': 'key', 'fox': 'pen'}\nsecond = {'rose': 7, 'key': 5, 'pen': 3}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'fox'\nfirst = {'pig': 'rose', 'dog': 'key', 'fox': 'pen'}\nsecond = {'rose': 7, 'key': 5, 'pen': 3}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'pig'\nfirst = {'pig': 'rose', 'dog': 'key', 'fox': 'pen'}\nsecond = {'rose': 7, 'key': 3, 'pen': 5}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "pig",
+   "bridge": "rose",
+   "cf_bridge": "pen",
+   "third": "key",
+   "answer": "7",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "rose",
+    "kind": "fruit",
+    "context": "```python\nx = 'pig'\nfirst = {'pig': 'rose', 'dog': 'key', 'fox': 'pen'}\nsecond = {'rose': 7, 'key': 5, 'pen': 3}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "7",
+    "kind": "digit",
+    "context": "```python\nx = 'pig'\nfirst = {'pig': 'rose', 'dog': 'key', 'fox': 'pen'}\nsecond = {'rose': 7, 'key': 5, 'pen': 3}\nprint(second['rose'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0031",
+   "family": "CODE",
+   "context": "```python\nx = 'bee'\nfirst = {'bee': 'hat', 'dog': 'berry', 'cow': 'lime'}\nsecond = {'lime': 5, 'hat': 6, 'berry': 3}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cow'\nfirst = {'bee': 'hat', 'dog': 'berry', 'cow': 'lime'}\nsecond = {'lime': 5, 'hat': 6, 'berry': 3}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bee'\nfirst = {'bee': 'hat', 'dog': 'berry', 'cow': 'lime'}\nsecond = {'lime': 3, 'hat': 6, 'berry': 5}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bee",
+   "bridge": "hat",
+   "cf_bridge": "lime",
+   "third": "berry",
+   "answer": "6",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "hat",
+    "kind": "fruit",
+    "context": "```python\nx = 'bee'\nfirst = {'bee': 'hat', 'dog': 'berry', 'cow': 'lime'}\nsecond = {'lime': 5, 'hat': 6, 'berry': 3}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "6",
+    "kind": "digit",
+    "context": "```python\nx = 'bee'\nfirst = {'bee': 'hat', 'dog': 'berry', 'cow': 'lime'}\nsecond = {'lime': 5, 'hat': 6, 'berry': 3}\nprint(second['hat'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0032",
+   "family": "CODE",
+   "context": "```python\nx = 'fox'\nfirst = {'cat': 'key', 'fox': 'car', 'dog': 'coin'}\nsecond = {'key': 5, 'coin': 2, 'car': 1}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cat'\nfirst = {'cat': 'key', 'fox': 'car', 'dog': 'coin'}\nsecond = {'key': 5, 'coin': 2, 'car': 1}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'fox'\nfirst = {'cat': 'key', 'fox': 'car', 'dog': 'coin'}\nsecond = {'key': 2, 'coin': 5, 'car': 1}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "fox",
+   "bridge": "car",
+   "cf_bridge": "key",
+   "third": "coin",
+   "answer": "1",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "car",
+    "kind": "fruit",
+    "context": "```python\nx = 'fox'\nfirst = {'cat': 'key', 'fox': 'car', 'dog': 'coin'}\nsecond = {'key': 5, 'coin': 2, 'car': 1}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "1",
+    "kind": "digit",
+    "context": "```python\nx = 'fox'\nfirst = {'cat': 'key', 'fox': 'car', 'dog': 'coin'}\nsecond = {'key': 5, 'coin': 2, 'car': 1}\nprint(second['car'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0033",
+   "family": "CODE",
+   "context": "```python\nx = 'hen'\nfirst = {'cow': 'star', 'hen': 'pen', 'cat': 'key'}\nsecond = {'star': 1, 'pen': 7, 'key': 4}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cow'\nfirst = {'cow': 'star', 'hen': 'pen', 'cat': 'key'}\nsecond = {'star': 1, 'pen': 7, 'key': 4}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'hen'\nfirst = {'cow': 'star', 'hen': 'pen', 'cat': 'key'}\nsecond = {'star': 4, 'pen': 7, 'key': 1}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "hen",
+   "bridge": "pen",
+   "cf_bridge": "star",
+   "third": "key",
+   "answer": "7",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "pen",
+    "kind": "fruit",
+    "context": "```python\nx = 'hen'\nfirst = {'cow': 'star', 'hen': 'pen', 'cat': 'key'}\nsecond = {'star': 1, 'pen': 7, 'key': 4}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "7",
+    "kind": "digit",
+    "context": "```python\nx = 'hen'\nfirst = {'cow': 'star', 'hen': 'pen', 'cat': 'key'}\nsecond = {'star': 1, 'pen': 7, 'key': 4}\nprint(second['pen'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0034",
+   "family": "CODE",
+   "context": "```python\nx = 'hen'\nfirst = {'hen': 'berry', 'bee': 'book', 'owl': 'hat'}\nsecond = {'berry': 1, 'book': 3, 'hat': 4}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'bee'\nfirst = {'hen': 'berry', 'bee': 'book', 'owl': 'hat'}\nsecond = {'berry': 1, 'book': 3, 'hat': 4}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'hen'\nfirst = {'hen': 'berry', 'bee': 'book', 'owl': 'hat'}\nsecond = {'berry': 1, 'book': 4, 'hat': 3}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "hen",
+   "bridge": "berry",
+   "cf_bridge": "book",
+   "third": "hat",
+   "answer": "1",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "berry",
+    "kind": "fruit",
+    "context": "```python\nx = 'hen'\nfirst = {'hen': 'berry', 'bee': 'book', 'owl': 'hat'}\nsecond = {'berry': 1, 'book': 3, 'hat': 4}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "1",
+    "kind": "digit",
+    "context": "```python\nx = 'hen'\nfirst = {'hen': 'berry', 'bee': 'book', 'owl': 'hat'}\nsecond = {'berry': 1, 'book': 3, 'hat': 4}\nprint(second['berry'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0035",
+   "family": "CODE",
+   "context": "```python\nx = 'cat'\nfirst = {'pig': 'coin', 'cow': 'map', 'cat': 'pear'}\nsecond = {'map': 1, 'pear': 2, 'coin': 8}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'pig'\nfirst = {'pig': 'coin', 'cow': 'map', 'cat': 'pear'}\nsecond = {'map': 1, 'pear': 2, 'coin': 8}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'cat'\nfirst = {'pig': 'coin', 'cow': 'map', 'cat': 'pear'}\nsecond = {'map': 8, 'pear': 2, 'coin': 1}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "cat",
+   "bridge": "pear",
+   "cf_bridge": "coin",
+   "third": "map",
+   "answer": "2",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "pear",
+    "kind": "fruit",
+    "context": "```python\nx = 'cat'\nfirst = {'pig': 'coin', 'cow': 'map', 'cat': 'pear'}\nsecond = {'map': 1, 'pear': 2, 'coin': 8}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "2",
+    "kind": "digit",
+    "context": "```python\nx = 'cat'\nfirst = {'pig': 'coin', 'cow': 'map', 'cat': 'pear'}\nsecond = {'map': 1, 'pear': 2, 'coin': 8}\nprint(second['pear'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0036",
+   "family": "CODE",
+   "context": "```python\nx = 'bat'\nfirst = {'hen': 'berry', 'bat': 'ring', 'dog': 'door'}\nsecond = {'door': 8, 'ring': 7, 'berry': 9}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'dog'\nfirst = {'hen': 'berry', 'bat': 'ring', 'dog': 'door'}\nsecond = {'door': 8, 'ring': 7, 'berry': 9}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bat'\nfirst = {'hen': 'berry', 'bat': 'ring', 'dog': 'door'}\nsecond = {'door': 9, 'ring': 7, 'berry': 8}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bat",
+   "bridge": "ring",
+   "cf_bridge": "door",
+   "third": "berry",
+   "answer": "7",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "ring",
+    "kind": "fruit",
+    "context": "```python\nx = 'bat'\nfirst = {'hen': 'berry', 'bat': 'ring', 'dog': 'door'}\nsecond = {'door': 8, 'ring': 7, 'berry': 9}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "7",
+    "kind": "digit",
+    "context": "```python\nx = 'bat'\nfirst = {'hen': 'berry', 'bat': 'ring', 'dog': 'door'}\nsecond = {'door': 8, 'ring': 7, 'berry': 9}\nprint(second['ring'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0037",
+   "family": "CODE",
+   "context": "```python\nx = 'bat'\nfirst = {'cow': 'tree', 'bat': 'cup', 'bee': 'map'}\nsecond = {'map': 4, 'tree': 6, 'cup': 1}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cow'\nfirst = {'cow': 'tree', 'bat': 'cup', 'bee': 'map'}\nsecond = {'map': 4, 'tree': 6, 'cup': 1}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bat'\nfirst = {'cow': 'tree', 'bat': 'cup', 'bee': 'map'}\nsecond = {'map': 6, 'tree': 4, 'cup': 1}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bat",
+   "bridge": "cup",
+   "cf_bridge": "tree",
+   "third": "map",
+   "answer": "1",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "cup",
+    "kind": "fruit",
+    "context": "```python\nx = 'bat'\nfirst = {'cow': 'tree', 'bat': 'cup', 'bee': 'map'}\nsecond = {'map': 4, 'tree': 6, 'cup': 1}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "1",
+    "kind": "digit",
+    "context": "```python\nx = 'bat'\nfirst = {'cow': 'tree', 'bat': 'cup', 'bee': 'map'}\nsecond = {'map': 4, 'tree': 6, 'cup': 1}\nprint(second['cup'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0038",
+   "family": "CODE",
+   "context": "```python\nx = 'pig'\nfirst = {'rat': 'berry', 'ant': 'ring', 'pig': 'coin'}\nsecond = {'coin': 5, 'ring': 6, 'berry': 9}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'rat'\nfirst = {'rat': 'berry', 'ant': 'ring', 'pig': 'coin'}\nsecond = {'coin': 5, 'ring': 6, 'berry': 9}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'pig'\nfirst = {'rat': 'berry', 'ant': 'ring', 'pig': 'coin'}\nsecond = {'coin': 5, 'ring': 9, 'berry': 6}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "pig",
+   "bridge": "coin",
+   "cf_bridge": "berry",
+   "third": "ring",
+   "answer": "5",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "coin",
+    "kind": "fruit",
+    "context": "```python\nx = 'pig'\nfirst = {'rat': 'berry', 'ant': 'ring', 'pig': 'coin'}\nsecond = {'coin': 5, 'ring': 6, 'berry': 9}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "5",
+    "kind": "digit",
+    "context": "```python\nx = 'pig'\nfirst = {'rat': 'berry', 'ant': 'ring', 'pig': 'coin'}\nsecond = {'coin': 5, 'ring': 6, 'berry': 9}\nprint(second['coin'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0039",
+   "family": "CODE",
+   "context": "```python\nx = 'fox'\nfirst = {'cow': 'car', 'bat': 'tree', 'fox': 'pen'}\nsecond = {'tree': 4, 'pen': 8, 'car': 9}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cow'\nfirst = {'cow': 'car', 'bat': 'tree', 'fox': 'pen'}\nsecond = {'tree': 4, 'pen': 8, 'car': 9}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'fox'\nfirst = {'cow': 'car', 'bat': 'tree', 'fox': 'pen'}\nsecond = {'tree': 9, 'pen': 8, 'car': 4}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "fox",
+   "bridge": "pen",
+   "cf_bridge": "car",
+   "third": "tree",
+   "answer": "8",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "pen",
+    "kind": "fruit",
+    "context": "```python\nx = 'fox'\nfirst = {'cow': 'car', 'bat': 'tree', 'fox': 'pen'}\nsecond = {'tree': 4, 'pen': 8, 'car': 9}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "8",
+    "kind": "digit",
+    "context": "```python\nx = 'fox'\nfirst = {'cow': 'car', 'bat': 'tree', 'fox': 'pen'}\nsecond = {'tree': 4, 'pen': 8, 'car': 9}\nprint(second['pen'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0040",
+   "family": "CODE",
+   "context": "```python\nx = 'bee'\nfirst = {'cow': 'ship', 'dog': 'banana', 'bee': 'rose'}\nsecond = {'banana': 6, 'rose': 8, 'ship': 5}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'dog'\nfirst = {'cow': 'ship', 'dog': 'banana', 'bee': 'rose'}\nsecond = {'banana': 6, 'rose': 8, 'ship': 5}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bee'\nfirst = {'cow': 'ship', 'dog': 'banana', 'bee': 'rose'}\nsecond = {'banana': 5, 'rose': 8, 'ship': 6}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bee",
+   "bridge": "rose",
+   "cf_bridge": "banana",
+   "third": "ship",
+   "answer": "8",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "rose",
+    "kind": "fruit",
+    "context": "```python\nx = 'bee'\nfirst = {'cow': 'ship', 'dog': 'banana', 'bee': 'rose'}\nsecond = {'banana': 6, 'rose': 8, 'ship': 5}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "8",
+    "kind": "digit",
+    "context": "```python\nx = 'bee'\nfirst = {'cow': 'ship', 'dog': 'banana', 'bee': 'rose'}\nsecond = {'banana': 6, 'rose': 8, 'ship': 5}\nprint(second['rose'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0041",
+   "family": "CODE",
+   "context": "```python\nx = 'ant'\nfirst = {'ant': 'tree', 'fox': 'lamp', 'owl': 'berry'}\nsecond = {'tree': 8, 'berry': 3, 'lamp': 1}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'fox'\nfirst = {'ant': 'tree', 'fox': 'lamp', 'owl': 'berry'}\nsecond = {'tree': 8, 'berry': 3, 'lamp': 1}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'ant'\nfirst = {'ant': 'tree', 'fox': 'lamp', 'owl': 'berry'}\nsecond = {'tree': 8, 'berry': 1, 'lamp': 3}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "ant",
+   "bridge": "tree",
+   "cf_bridge": "lamp",
+   "third": "berry",
+   "answer": "8",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "tree",
+    "kind": "fruit",
+    "context": "```python\nx = 'ant'\nfirst = {'ant': 'tree', 'fox': 'lamp', 'owl': 'berry'}\nsecond = {'tree': 8, 'berry': 3, 'lamp': 1}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "8",
+    "kind": "digit",
+    "context": "```python\nx = 'ant'\nfirst = {'ant': 'tree', 'fox': 'lamp', 'owl': 'berry'}\nsecond = {'tree': 8, 'berry': 3, 'lamp': 1}\nprint(second['tree'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0042",
+   "family": "CODE",
+   "context": "```python\nx = 'owl'\nfirst = {'ant': 'book', 'owl': 'coin', 'dog': 'box'}\nsecond = {'book': 2, 'box': 8, 'coin': 9}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'ant'\nfirst = {'ant': 'book', 'owl': 'coin', 'dog': 'box'}\nsecond = {'book': 2, 'box': 8, 'coin': 9}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'owl'\nfirst = {'ant': 'book', 'owl': 'coin', 'dog': 'box'}\nsecond = {'book': 8, 'box': 2, 'coin': 9}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "owl",
+   "bridge": "coin",
+   "cf_bridge": "book",
+   "third": "box",
+   "answer": "9",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "coin",
+    "kind": "fruit",
+    "context": "```python\nx = 'owl'\nfirst = {'ant': 'book', 'owl': 'coin', 'dog': 'box'}\nsecond = {'book': 2, 'box': 8, 'coin': 9}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "9",
+    "kind": "digit",
+    "context": "```python\nx = 'owl'\nfirst = {'ant': 'book', 'owl': 'coin', 'dog': 'box'}\nsecond = {'book': 2, 'box': 8, 'coin': 9}\nprint(second['coin'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0043",
+   "family": "CODE",
+   "context": "```python\nx = 'rat'\nfirst = {'rat': 'box', 'pig': 'coin', 'bat': 'rose'}\nsecond = {'rose': 3, 'coin': 1, 'box': 9}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'pig'\nfirst = {'rat': 'box', 'pig': 'coin', 'bat': 'rose'}\nsecond = {'rose': 3, 'coin': 1, 'box': 9}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'rat'\nfirst = {'rat': 'box', 'pig': 'coin', 'bat': 'rose'}\nsecond = {'rose': 1, 'coin': 3, 'box': 9}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "rat",
+   "bridge": "box",
+   "cf_bridge": "coin",
+   "third": "rose",
+   "answer": "9",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "box",
+    "kind": "fruit",
+    "context": "```python\nx = 'rat'\nfirst = {'rat': 'box', 'pig': 'coin', 'bat': 'rose'}\nsecond = {'rose': 3, 'coin': 1, 'box': 9}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "9",
+    "kind": "digit",
+    "context": "```python\nx = 'rat'\nfirst = {'rat': 'box', 'pig': 'coin', 'bat': 'rose'}\nsecond = {'rose': 3, 'coin': 1, 'box': 9}\nprint(second['box'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0044",
+   "family": "CODE",
+   "context": "```python\nx = 'cow'\nfirst = {'cow': 'apple', 'rat': 'berry', 'dog': 'banana'}\nsecond = {'apple': 3, 'banana': 8, 'berry': 5}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'rat'\nfirst = {'cow': 'apple', 'rat': 'berry', 'dog': 'banana'}\nsecond = {'apple': 3, 'banana': 8, 'berry': 5}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'cow'\nfirst = {'cow': 'apple', 'rat': 'berry', 'dog': 'banana'}\nsecond = {'apple': 3, 'banana': 5, 'berry': 8}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "cow",
+   "bridge": "apple",
+   "cf_bridge": "berry",
+   "third": "banana",
+   "answer": "3",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "apple",
+    "kind": "fruit",
+    "context": "```python\nx = 'cow'\nfirst = {'cow': 'apple', 'rat': 'berry', 'dog': 'banana'}\nsecond = {'apple': 3, 'banana': 8, 'berry': 5}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "3",
+    "kind": "digit",
+    "context": "```python\nx = 'cow'\nfirst = {'cow': 'apple', 'rat': 'berry', 'dog': 'banana'}\nsecond = {'apple': 3, 'banana': 8, 'berry': 5}\nprint(second['apple'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0045",
+   "family": "CODE",
+   "context": "```python\nx = 'dog'\nfirst = {'dog': 'hat', 'fox': 'box', 'pig': 'ship'}\nsecond = {'ship': 3, 'hat': 4, 'box': 5}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'pig'\nfirst = {'dog': 'hat', 'fox': 'box', 'pig': 'ship'}\nsecond = {'ship': 3, 'hat': 4, 'box': 5}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'dog'\nfirst = {'dog': 'hat', 'fox': 'box', 'pig': 'ship'}\nsecond = {'ship': 5, 'hat': 4, 'box': 3}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "dog",
+   "bridge": "hat",
+   "cf_bridge": "ship",
+   "third": "box",
+   "answer": "4",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "hat",
+    "kind": "fruit",
+    "context": "```python\nx = 'dog'\nfirst = {'dog': 'hat', 'fox': 'box', 'pig': 'ship'}\nsecond = {'ship': 3, 'hat': 4, 'box': 5}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "4",
+    "kind": "digit",
+    "context": "```python\nx = 'dog'\nfirst = {'dog': 'hat', 'fox': 'box', 'pig': 'ship'}\nsecond = {'ship': 3, 'hat': 4, 'box': 5}\nprint(second['hat'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0046",
+   "family": "CODE",
+   "context": "```python\nx = 'bat'\nfirst = {'bat': 'ship', 'cat': 'car', 'hen': 'apple'}\nsecond = {'apple': 9, 'ship': 6, 'car': 1}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cat'\nfirst = {'bat': 'ship', 'cat': 'car', 'hen': 'apple'}\nsecond = {'apple': 9, 'ship': 6, 'car': 1}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bat'\nfirst = {'bat': 'ship', 'cat': 'car', 'hen': 'apple'}\nsecond = {'apple': 1, 'ship': 6, 'car': 9}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bat",
+   "bridge": "ship",
+   "cf_bridge": "car",
+   "third": "apple",
+   "answer": "6",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "ship",
+    "kind": "fruit",
+    "context": "```python\nx = 'bat'\nfirst = {'bat': 'ship', 'cat': 'car', 'hen': 'apple'}\nsecond = {'apple': 9, 'ship': 6, 'car': 1}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "6",
+    "kind": "digit",
+    "context": "```python\nx = 'bat'\nfirst = {'bat': 'ship', 'cat': 'car', 'hen': 'apple'}\nsecond = {'apple': 9, 'ship': 6, 'car': 1}\nprint(second['ship'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0047",
+   "family": "CODE",
+   "context": "```python\nx = 'hen'\nfirst = {'ant': 'fig', 'hen': 'ring', 'fox': 'pear'}\nsecond = {'pear': 4, 'ring': 7, 'fig': 1}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'fox'\nfirst = {'ant': 'fig', 'hen': 'ring', 'fox': 'pear'}\nsecond = {'pear': 4, 'ring': 7, 'fig': 1}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'hen'\nfirst = {'ant': 'fig', 'hen': 'ring', 'fox': 'pear'}\nsecond = {'pear': 1, 'ring': 7, 'fig': 4}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "hen",
+   "bridge": "ring",
+   "cf_bridge": "pear",
+   "third": "fig",
+   "answer": "7",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "ring",
+    "kind": "fruit",
+    "context": "```python\nx = 'hen'\nfirst = {'ant': 'fig', 'hen': 'ring', 'fox': 'pear'}\nsecond = {'pear': 4, 'ring': 7, 'fig': 1}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "7",
+    "kind": "digit",
+    "context": "```python\nx = 'hen'\nfirst = {'ant': 'fig', 'hen': 'ring', 'fox': 'pear'}\nsecond = {'pear': 4, 'ring': 7, 'fig': 1}\nprint(second['ring'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0048",
+   "family": "CODE",
+   "context": "```python\nx = 'hen'\nfirst = {'ant': 'door', 'hen': 'map', 'cow': 'lamp'}\nsecond = {'lamp': 7, 'map': 3, 'door': 5}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cow'\nfirst = {'ant': 'door', 'hen': 'map', 'cow': 'lamp'}\nsecond = {'lamp': 7, 'map': 3, 'door': 5}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'hen'\nfirst = {'ant': 'door', 'hen': 'map', 'cow': 'lamp'}\nsecond = {'lamp': 5, 'map': 3, 'door': 7}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "hen",
+   "bridge": "map",
+   "cf_bridge": "lamp",
+   "third": "door",
+   "answer": "3",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "map",
+    "kind": "fruit",
+    "context": "```python\nx = 'hen'\nfirst = {'ant': 'door', 'hen': 'map', 'cow': 'lamp'}\nsecond = {'lamp': 7, 'map': 3, 'door': 5}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "3",
+    "kind": "digit",
+    "context": "```python\nx = 'hen'\nfirst = {'ant': 'door', 'hen': 'map', 'cow': 'lamp'}\nsecond = {'lamp': 7, 'map': 3, 'door': 5}\nprint(second['map'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0049",
+   "family": "CODE",
+   "context": "```python\nx = 'fox'\nfirst = {'owl': 'boat', 'fox': 'pen', 'ant': 'berry'}\nsecond = {'berry': 5, 'pen': 4, 'boat': 7}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'ant'\nfirst = {'owl': 'boat', 'fox': 'pen', 'ant': 'berry'}\nsecond = {'berry': 5, 'pen': 4, 'boat': 7}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'fox'\nfirst = {'owl': 'boat', 'fox': 'pen', 'ant': 'berry'}\nsecond = {'berry': 7, 'pen': 4, 'boat': 5}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "fox",
+   "bridge": "pen",
+   "cf_bridge": "berry",
+   "third": "boat",
+   "answer": "4",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "pen",
+    "kind": "fruit",
+    "context": "```python\nx = 'fox'\nfirst = {'owl': 'boat', 'fox': 'pen', 'ant': 'berry'}\nsecond = {'berry': 5, 'pen': 4, 'boat': 7}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "4",
+    "kind": "digit",
+    "context": "```python\nx = 'fox'\nfirst = {'owl': 'boat', 'fox': 'pen', 'ant': 'berry'}\nsecond = {'berry': 5, 'pen': 4, 'boat': 7}\nprint(second['pen'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0050",
+   "family": "CODE",
+   "context": "```python\nx = 'pig'\nfirst = {'pig': 'banana', 'ant': 'car', 'cow': 'hat'}\nsecond = {'car': 4, 'hat': 8, 'banana': 2}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'ant'\nfirst = {'pig': 'banana', 'ant': 'car', 'cow': 'hat'}\nsecond = {'car': 4, 'hat': 8, 'banana': 2}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'pig'\nfirst = {'pig': 'banana', 'ant': 'car', 'cow': 'hat'}\nsecond = {'car': 8, 'hat': 4, 'banana': 2}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "pig",
+   "bridge": "banana",
+   "cf_bridge": "car",
+   "third": "hat",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "banana",
+    "kind": "fruit",
+    "context": "```python\nx = 'pig'\nfirst = {'pig': 'banana', 'ant': 'car', 'cow': 'hat'}\nsecond = {'car': 4, 'hat': 8, 'banana': 2}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "2",
+    "kind": "digit",
+    "context": "```python\nx = 'pig'\nfirst = {'pig': 'banana', 'ant': 'car', 'cow': 'hat'}\nsecond = {'car': 4, 'hat': 8, 'banana': 2}\nprint(second['banana'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0051",
+   "family": "CODE",
+   "context": "```python\nx = 'ant'\nfirst = {'hen': 'boat', 'ant': 'ring', 'rat': 'apple'}\nsecond = {'apple': 5, 'boat': 1, 'ring': 8}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'rat'\nfirst = {'hen': 'boat', 'ant': 'ring', 'rat': 'apple'}\nsecond = {'apple': 5, 'boat': 1, 'ring': 8}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'ant'\nfirst = {'hen': 'boat', 'ant': 'ring', 'rat': 'apple'}\nsecond = {'apple': 1, 'boat': 5, 'ring': 8}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "ant",
+   "bridge": "ring",
+   "cf_bridge": "apple",
+   "third": "boat",
+   "answer": "8",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "ring",
+    "kind": "fruit",
+    "context": "```python\nx = 'ant'\nfirst = {'hen': 'boat', 'ant': 'ring', 'rat': 'apple'}\nsecond = {'apple': 5, 'boat': 1, 'ring': 8}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "8",
+    "kind": "digit",
+    "context": "```python\nx = 'ant'\nfirst = {'hen': 'boat', 'ant': 'ring', 'rat': 'apple'}\nsecond = {'apple': 5, 'boat': 1, 'ring': 8}\nprint(second['ring'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0052",
+   "family": "CODE",
+   "context": "```python\nx = 'fox'\nfirst = {'pig': 'pen', 'ant': 'banana', 'fox': 'pear'}\nsecond = {'pear': 5, 'pen': 1, 'banana': 4}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'ant'\nfirst = {'pig': 'pen', 'ant': 'banana', 'fox': 'pear'}\nsecond = {'pear': 5, 'pen': 1, 'banana': 4}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'fox'\nfirst = {'pig': 'pen', 'ant': 'banana', 'fox': 'pear'}\nsecond = {'pear': 5, 'pen': 4, 'banana': 1}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "fox",
+   "bridge": "pear",
+   "cf_bridge": "banana",
+   "third": "pen",
+   "answer": "5",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "pear",
+    "kind": "fruit",
+    "context": "```python\nx = 'fox'\nfirst = {'pig': 'pen', 'ant': 'banana', 'fox': 'pear'}\nsecond = {'pear': 5, 'pen': 1, 'banana': 4}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "5",
+    "kind": "digit",
+    "context": "```python\nx = 'fox'\nfirst = {'pig': 'pen', 'ant': 'banana', 'fox': 'pear'}\nsecond = {'pear': 5, 'pen': 1, 'banana': 4}\nprint(second['pear'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0053",
+   "family": "CODE",
+   "context": "```python\nx = 'rat'\nfirst = {'cow': 'rose', 'owl': 'coin', 'rat': 'door'}\nsecond = {'door': 1, 'coin': 7, 'rose': 6}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cow'\nfirst = {'cow': 'rose', 'owl': 'coin', 'rat': 'door'}\nsecond = {'door': 1, 'coin': 7, 'rose': 6}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'rat'\nfirst = {'cow': 'rose', 'owl': 'coin', 'rat': 'door'}\nsecond = {'door': 1, 'coin': 6, 'rose': 7}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "rat",
+   "bridge": "door",
+   "cf_bridge": "rose",
+   "third": "coin",
+   "answer": "1",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "door",
+    "kind": "fruit",
+    "context": "```python\nx = 'rat'\nfirst = {'cow': 'rose', 'owl': 'coin', 'rat': 'door'}\nsecond = {'door': 1, 'coin': 7, 'rose': 6}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "1",
+    "kind": "digit",
+    "context": "```python\nx = 'rat'\nfirst = {'cow': 'rose', 'owl': 'coin', 'rat': 'door'}\nsecond = {'door': 1, 'coin': 7, 'rose': 6}\nprint(second['door'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0054",
+   "family": "CODE",
+   "context": "```python\nx = 'cow'\nfirst = {'rat': 'ring', 'cow': 'pen', 'fox': 'lamp'}\nsecond = {'lamp': 3, 'ring': 8, 'pen': 7}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'rat'\nfirst = {'rat': 'ring', 'cow': 'pen', 'fox': 'lamp'}\nsecond = {'lamp': 3, 'ring': 8, 'pen': 7}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'cow'\nfirst = {'rat': 'ring', 'cow': 'pen', 'fox': 'lamp'}\nsecond = {'lamp': 8, 'ring': 3, 'pen': 7}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "cow",
+   "bridge": "pen",
+   "cf_bridge": "ring",
+   "third": "lamp",
+   "answer": "7",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "pen",
+    "kind": "fruit",
+    "context": "```python\nx = 'cow'\nfirst = {'rat': 'ring', 'cow': 'pen', 'fox': 'lamp'}\nsecond = {'lamp': 3, 'ring': 8, 'pen': 7}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "7",
+    "kind": "digit",
+    "context": "```python\nx = 'cow'\nfirst = {'rat': 'ring', 'cow': 'pen', 'fox': 'lamp'}\nsecond = {'lamp': 3, 'ring': 8, 'pen': 7}\nprint(second['pen'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0055",
+   "family": "CODE",
+   "context": "```python\nx = 'dog'\nfirst = {'pig': 'fig', 'bee': 'apple', 'dog': 'ship'}\nsecond = {'fig': 3, 'apple': 1, 'ship': 9}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'pig'\nfirst = {'pig': 'fig', 'bee': 'apple', 'dog': 'ship'}\nsecond = {'fig': 3, 'apple': 1, 'ship': 9}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'dog'\nfirst = {'pig': 'fig', 'bee': 'apple', 'dog': 'ship'}\nsecond = {'fig': 1, 'apple': 3, 'ship': 9}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "dog",
+   "bridge": "ship",
+   "cf_bridge": "fig",
+   "third": "apple",
+   "answer": "9",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "ship",
+    "kind": "fruit",
+    "context": "```python\nx = 'dog'\nfirst = {'pig': 'fig', 'bee': 'apple', 'dog': 'ship'}\nsecond = {'fig': 3, 'apple': 1, 'ship': 9}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "9",
+    "kind": "digit",
+    "context": "```python\nx = 'dog'\nfirst = {'pig': 'fig', 'bee': 'apple', 'dog': 'ship'}\nsecond = {'fig': 3, 'apple': 1, 'ship': 9}\nprint(second['ship'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0056",
+   "family": "CODE",
+   "context": "```python\nx = 'cow'\nfirst = {'bee': 'pen', 'bat': 'key', 'cow': 'car'}\nsecond = {'car': 6, 'pen': 3, 'key': 2}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'bat'\nfirst = {'bee': 'pen', 'bat': 'key', 'cow': 'car'}\nsecond = {'car': 6, 'pen': 3, 'key': 2}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'cow'\nfirst = {'bee': 'pen', 'bat': 'key', 'cow': 'car'}\nsecond = {'car': 6, 'pen': 2, 'key': 3}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "cow",
+   "bridge": "car",
+   "cf_bridge": "key",
+   "third": "pen",
+   "answer": "6",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "car",
+    "kind": "fruit",
+    "context": "```python\nx = 'cow'\nfirst = {'bee': 'pen', 'bat': 'key', 'cow': 'car'}\nsecond = {'car': 6, 'pen': 3, 'key': 2}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "6",
+    "kind": "digit",
+    "context": "```python\nx = 'cow'\nfirst = {'bee': 'pen', 'bat': 'key', 'cow': 'car'}\nsecond = {'car': 6, 'pen': 3, 'key': 2}\nprint(second['car'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0057",
+   "family": "CODE",
+   "context": "```python\nx = 'fox'\nfirst = {'fox': 'ring', 'dog': 'cup', 'hen': 'fig'}\nsecond = {'cup': 5, 'ring': 4, 'fig': 2}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'hen'\nfirst = {'fox': 'ring', 'dog': 'cup', 'hen': 'fig'}\nsecond = {'cup': 5, 'ring': 4, 'fig': 2}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'fox'\nfirst = {'fox': 'ring', 'dog': 'cup', 'hen': 'fig'}\nsecond = {'cup': 2, 'ring': 4, 'fig': 5}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "fox",
+   "bridge": "ring",
+   "cf_bridge": "fig",
+   "third": "cup",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "ring",
+    "kind": "fruit",
+    "context": "```python\nx = 'fox'\nfirst = {'fox': 'ring', 'dog': 'cup', 'hen': 'fig'}\nsecond = {'cup': 5, 'ring': 4, 'fig': 2}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "4",
+    "kind": "digit",
+    "context": "```python\nx = 'fox'\nfirst = {'fox': 'ring', 'dog': 'cup', 'hen': 'fig'}\nsecond = {'cup': 5, 'ring': 4, 'fig': 2}\nprint(second['ring'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0058",
+   "family": "CODE",
+   "context": "```python\nx = 'bee'\nfirst = {'owl': 'lamp', 'bee': 'star', 'hen': 'apple'}\nsecond = {'apple': 9, 'star': 6, 'lamp': 7}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'hen'\nfirst = {'owl': 'lamp', 'bee': 'star', 'hen': 'apple'}\nsecond = {'apple': 9, 'star': 6, 'lamp': 7}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bee'\nfirst = {'owl': 'lamp', 'bee': 'star', 'hen': 'apple'}\nsecond = {'apple': 7, 'star': 6, 'lamp': 9}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bee",
+   "bridge": "star",
+   "cf_bridge": "apple",
+   "third": "lamp",
+   "answer": "6",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "star",
+    "kind": "fruit",
+    "context": "```python\nx = 'bee'\nfirst = {'owl': 'lamp', 'bee': 'star', 'hen': 'apple'}\nsecond = {'apple': 9, 'star': 6, 'lamp': 7}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "6",
+    "kind": "digit",
+    "context": "```python\nx = 'bee'\nfirst = {'owl': 'lamp', 'bee': 'star', 'hen': 'apple'}\nsecond = {'apple': 9, 'star': 6, 'lamp': 7}\nprint(second['star'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0059",
+   "family": "CODE",
+   "context": "```python\nx = 'fox'\nfirst = {'fox': 'map', 'cat': 'star', 'hen': 'car'}\nsecond = {'car': 2, 'star': 5, 'map': 6}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'hen'\nfirst = {'fox': 'map', 'cat': 'star', 'hen': 'car'}\nsecond = {'car': 2, 'star': 5, 'map': 6}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'fox'\nfirst = {'fox': 'map', 'cat': 'star', 'hen': 'car'}\nsecond = {'car': 5, 'star': 2, 'map': 6}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "fox",
+   "bridge": "map",
+   "cf_bridge": "car",
+   "third": "star",
+   "answer": "6",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "map",
+    "kind": "fruit",
+    "context": "```python\nx = 'fox'\nfirst = {'fox': 'map', 'cat': 'star', 'hen': 'car'}\nsecond = {'car': 2, 'star': 5, 'map': 6}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "6",
+    "kind": "digit",
+    "context": "```python\nx = 'fox'\nfirst = {'fox': 'map', 'cat': 'star', 'hen': 'car'}\nsecond = {'car': 2, 'star': 5, 'map': 6}\nprint(second['map'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0060",
+   "family": "CODE",
+   "context": "```python\nx = 'pig'\nfirst = {'dog': 'door', 'pig': 'coin', 'owl': 'lime'}\nsecond = {'lime': 7, 'coin': 2, 'door': 1}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'owl'\nfirst = {'dog': 'door', 'pig': 'coin', 'owl': 'lime'}\nsecond = {'lime': 7, 'coin': 2, 'door': 1}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'pig'\nfirst = {'dog': 'door', 'pig': 'coin', 'owl': 'lime'}\nsecond = {'lime': 1, 'coin': 2, 'door': 7}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "pig",
+   "bridge": "coin",
+   "cf_bridge": "lime",
+   "third": "door",
+   "answer": "2",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "coin",
+    "kind": "fruit",
+    "context": "```python\nx = 'pig'\nfirst = {'dog': 'door', 'pig': 'coin', 'owl': 'lime'}\nsecond = {'lime': 7, 'coin': 2, 'door': 1}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "2",
+    "kind": "digit",
+    "context": "```python\nx = 'pig'\nfirst = {'dog': 'door', 'pig': 'coin', 'owl': 'lime'}\nsecond = {'lime': 7, 'coin': 2, 'door': 1}\nprint(second['coin'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0061",
+   "family": "CODE",
+   "context": "```python\nx = 'pig'\nfirst = {'pig': 'box', 'bat': 'fig', 'bee': 'lamp'}\nsecond = {'box': 1, 'fig': 5, 'lamp': 9}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'bat'\nfirst = {'pig': 'box', 'bat': 'fig', 'bee': 'lamp'}\nsecond = {'box': 1, 'fig': 5, 'lamp': 9}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'pig'\nfirst = {'pig': 'box', 'bat': 'fig', 'bee': 'lamp'}\nsecond = {'box': 1, 'fig': 9, 'lamp': 5}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "pig",
+   "bridge": "box",
+   "cf_bridge": "fig",
+   "third": "lamp",
+   "answer": "1",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "box",
+    "kind": "fruit",
+    "context": "```python\nx = 'pig'\nfirst = {'pig': 'box', 'bat': 'fig', 'bee': 'lamp'}\nsecond = {'box': 1, 'fig': 5, 'lamp': 9}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "1",
+    "kind": "digit",
+    "context": "```python\nx = 'pig'\nfirst = {'pig': 'box', 'bat': 'fig', 'bee': 'lamp'}\nsecond = {'box': 1, 'fig': 5, 'lamp': 9}\nprint(second['box'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0062",
+   "family": "CODE",
+   "context": "```python\nx = 'cow'\nfirst = {'bee': 'tree', 'cow': 'star', 'pig': 'boat'}\nsecond = {'star': 4, 'tree': 2, 'boat': 5}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'bee'\nfirst = {'bee': 'tree', 'cow': 'star', 'pig': 'boat'}\nsecond = {'star': 4, 'tree': 2, 'boat': 5}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'cow'\nfirst = {'bee': 'tree', 'cow': 'star', 'pig': 'boat'}\nsecond = {'star': 4, 'tree': 5, 'boat': 2}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "cow",
+   "bridge": "star",
+   "cf_bridge": "tree",
+   "third": "boat",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "star",
+    "kind": "fruit",
+    "context": "```python\nx = 'cow'\nfirst = {'bee': 'tree', 'cow': 'star', 'pig': 'boat'}\nsecond = {'star': 4, 'tree': 2, 'boat': 5}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "4",
+    "kind": "digit",
+    "context": "```python\nx = 'cow'\nfirst = {'bee': 'tree', 'cow': 'star', 'pig': 'boat'}\nsecond = {'star': 4, 'tree': 2, 'boat': 5}\nprint(second['star'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0063",
+   "family": "CODE",
+   "context": "```python\nx = 'ant'\nfirst = {'rat': 'boat', 'hen': 'hat', 'ant': 'map'}\nsecond = {'map': 9, 'hat': 5, 'boat': 1}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'rat'\nfirst = {'rat': 'boat', 'hen': 'hat', 'ant': 'map'}\nsecond = {'map': 9, 'hat': 5, 'boat': 1}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'ant'\nfirst = {'rat': 'boat', 'hen': 'hat', 'ant': 'map'}\nsecond = {'map': 9, 'hat': 1, 'boat': 5}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "ant",
+   "bridge": "map",
+   "cf_bridge": "boat",
+   "third": "hat",
+   "answer": "9",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "map",
+    "kind": "fruit",
+    "context": "```python\nx = 'ant'\nfirst = {'rat': 'boat', 'hen': 'hat', 'ant': 'map'}\nsecond = {'map': 9, 'hat': 5, 'boat': 1}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "9",
+    "kind": "digit",
+    "context": "```python\nx = 'ant'\nfirst = {'rat': 'boat', 'hen': 'hat', 'ant': 'map'}\nsecond = {'map': 9, 'hat': 5, 'boat': 1}\nprint(second['map'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0064",
+   "family": "CODE",
+   "context": "```python\nx = 'bat'\nfirst = {'ant': 'box', 'bat': 'cup', 'dog': 'coin'}\nsecond = {'cup': 8, 'box': 4, 'coin': 3}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'dog'\nfirst = {'ant': 'box', 'bat': 'cup', 'dog': 'coin'}\nsecond = {'cup': 8, 'box': 4, 'coin': 3}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bat'\nfirst = {'ant': 'box', 'bat': 'cup', 'dog': 'coin'}\nsecond = {'cup': 8, 'box': 3, 'coin': 4}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bat",
+   "bridge": "cup",
+   "cf_bridge": "coin",
+   "third": "box",
+   "answer": "8",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "cup",
+    "kind": "fruit",
+    "context": "```python\nx = 'bat'\nfirst = {'ant': 'box', 'bat': 'cup', 'dog': 'coin'}\nsecond = {'cup': 8, 'box': 4, 'coin': 3}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "8",
+    "kind": "digit",
+    "context": "```python\nx = 'bat'\nfirst = {'ant': 'box', 'bat': 'cup', 'dog': 'coin'}\nsecond = {'cup': 8, 'box': 4, 'coin': 3}\nprint(second['cup'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0065",
+   "family": "CODE",
+   "context": "```python\nx = 'rat'\nfirst = {'rat': 'box', 'owl': 'ring', 'pig': 'tree'}\nsecond = {'ring': 8, 'box': 9, 'tree': 4}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'pig'\nfirst = {'rat': 'box', 'owl': 'ring', 'pig': 'tree'}\nsecond = {'ring': 8, 'box': 9, 'tree': 4}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'rat'\nfirst = {'rat': 'box', 'owl': 'ring', 'pig': 'tree'}\nsecond = {'ring': 4, 'box': 9, 'tree': 8}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "rat",
+   "bridge": "box",
+   "cf_bridge": "tree",
+   "third": "ring",
+   "answer": "9",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "box",
+    "kind": "fruit",
+    "context": "```python\nx = 'rat'\nfirst = {'rat': 'box', 'owl': 'ring', 'pig': 'tree'}\nsecond = {'ring': 8, 'box': 9, 'tree': 4}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "9",
+    "kind": "digit",
+    "context": "```python\nx = 'rat'\nfirst = {'rat': 'box', 'owl': 'ring', 'pig': 'tree'}\nsecond = {'ring': 8, 'box': 9, 'tree': 4}\nprint(second['box'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0066",
+   "family": "CODE",
+   "context": "```python\nx = 'ant'\nfirst = {'ant': 'apple', 'owl': 'door', 'fox': 'boat'}\nsecond = {'apple': 2, 'boat': 7, 'door': 6}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'fox'\nfirst = {'ant': 'apple', 'owl': 'door', 'fox': 'boat'}\nsecond = {'apple': 2, 'boat': 7, 'door': 6}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'ant'\nfirst = {'ant': 'apple', 'owl': 'door', 'fox': 'boat'}\nsecond = {'apple': 2, 'boat': 6, 'door': 7}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "ant",
+   "bridge": "apple",
+   "cf_bridge": "boat",
+   "third": "door",
+   "answer": "2",
+   "cf_answer": "7",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "apple",
+    "kind": "fruit",
+    "context": "```python\nx = 'ant'\nfirst = {'ant': 'apple', 'owl': 'door', 'fox': 'boat'}\nsecond = {'apple': 2, 'boat': 7, 'door': 6}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "2",
+    "kind": "digit",
+    "context": "```python\nx = 'ant'\nfirst = {'ant': 'apple', 'owl': 'door', 'fox': 'boat'}\nsecond = {'apple': 2, 'boat': 7, 'door': 6}\nprint(second['apple'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0067",
+   "family": "CODE",
+   "context": "```python\nx = 'hen'\nfirst = {'dog': 'pen', 'fox': 'boat', 'hen': 'box'}\nsecond = {'box': 8, 'pen': 4, 'boat': 2}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'fox'\nfirst = {'dog': 'pen', 'fox': 'boat', 'hen': 'box'}\nsecond = {'box': 8, 'pen': 4, 'boat': 2}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'hen'\nfirst = {'dog': 'pen', 'fox': 'boat', 'hen': 'box'}\nsecond = {'box': 8, 'pen': 2, 'boat': 4}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "hen",
+   "bridge": "box",
+   "cf_bridge": "boat",
+   "third": "pen",
+   "answer": "8",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "box",
+    "kind": "fruit",
+    "context": "```python\nx = 'hen'\nfirst = {'dog': 'pen', 'fox': 'boat', 'hen': 'box'}\nsecond = {'box': 8, 'pen': 4, 'boat': 2}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "8",
+    "kind": "digit",
+    "context": "```python\nx = 'hen'\nfirst = {'dog': 'pen', 'fox': 'boat', 'hen': 'box'}\nsecond = {'box': 8, 'pen': 4, 'boat': 2}\nprint(second['box'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0068",
+   "family": "CODE",
+   "context": "```python\nx = 'rat'\nfirst = {'cow': 'book', 'dog': 'key', 'rat': 'pen'}\nsecond = {'pen': 5, 'book': 4, 'key': 2}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cow'\nfirst = {'cow': 'book', 'dog': 'key', 'rat': 'pen'}\nsecond = {'pen': 5, 'book': 4, 'key': 2}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'rat'\nfirst = {'cow': 'book', 'dog': 'key', 'rat': 'pen'}\nsecond = {'pen': 5, 'book': 2, 'key': 4}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "rat",
+   "bridge": "pen",
+   "cf_bridge": "book",
+   "third": "key",
+   "answer": "5",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "pen",
+    "kind": "fruit",
+    "context": "```python\nx = 'rat'\nfirst = {'cow': 'book', 'dog': 'key', 'rat': 'pen'}\nsecond = {'pen': 5, 'book': 4, 'key': 2}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "5",
+    "kind": "digit",
+    "context": "```python\nx = 'rat'\nfirst = {'cow': 'book', 'dog': 'key', 'rat': 'pen'}\nsecond = {'pen': 5, 'book': 4, 'key': 2}\nprint(second['pen'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0069",
+   "family": "CODE",
+   "context": "```python\nx = 'hen'\nfirst = {'hen': 'pear', 'cow': 'boat', 'cat': 'star'}\nsecond = {'star': 1, 'boat': 9, 'pear': 2}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cat'\nfirst = {'hen': 'pear', 'cow': 'boat', 'cat': 'star'}\nsecond = {'star': 1, 'boat': 9, 'pear': 2}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'hen'\nfirst = {'hen': 'pear', 'cow': 'boat', 'cat': 'star'}\nsecond = {'star': 9, 'boat': 1, 'pear': 2}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "hen",
+   "bridge": "pear",
+   "cf_bridge": "star",
+   "third": "boat",
+   "answer": "2",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "pear",
+    "kind": "fruit",
+    "context": "```python\nx = 'hen'\nfirst = {'hen': 'pear', 'cow': 'boat', 'cat': 'star'}\nsecond = {'star': 1, 'boat': 9, 'pear': 2}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "2",
+    "kind": "digit",
+    "context": "```python\nx = 'hen'\nfirst = {'hen': 'pear', 'cow': 'boat', 'cat': 'star'}\nsecond = {'star': 1, 'boat': 9, 'pear': 2}\nprint(second['pear'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0070",
+   "family": "CODE",
+   "context": "```python\nx = 'owl'\nfirst = {'owl': 'hat', 'fox': 'tree', 'bat': 'coin'}\nsecond = {'hat': 5, 'tree': 3, 'coin': 8}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'fox'\nfirst = {'owl': 'hat', 'fox': 'tree', 'bat': 'coin'}\nsecond = {'hat': 5, 'tree': 3, 'coin': 8}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'owl'\nfirst = {'owl': 'hat', 'fox': 'tree', 'bat': 'coin'}\nsecond = {'hat': 5, 'tree': 8, 'coin': 3}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "owl",
+   "bridge": "hat",
+   "cf_bridge": "tree",
+   "third": "coin",
+   "answer": "5",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "hat",
+    "kind": "fruit",
+    "context": "```python\nx = 'owl'\nfirst = {'owl': 'hat', 'fox': 'tree', 'bat': 'coin'}\nsecond = {'hat': 5, 'tree': 3, 'coin': 8}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "5",
+    "kind": "digit",
+    "context": "```python\nx = 'owl'\nfirst = {'owl': 'hat', 'fox': 'tree', 'bat': 'coin'}\nsecond = {'hat': 5, 'tree': 3, 'coin': 8}\nprint(second['hat'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0071",
+   "family": "CODE",
+   "context": "```python\nx = 'bee'\nfirst = {'bee': 'ring', 'cow': 'car', 'cat': 'box'}\nsecond = {'car': 1, 'box': 3, 'ring': 2}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cow'\nfirst = {'bee': 'ring', 'cow': 'car', 'cat': 'box'}\nsecond = {'car': 1, 'box': 3, 'ring': 2}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bee'\nfirst = {'bee': 'ring', 'cow': 'car', 'cat': 'box'}\nsecond = {'car': 3, 'box': 1, 'ring': 2}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bee",
+   "bridge": "ring",
+   "cf_bridge": "car",
+   "third": "box",
+   "answer": "2",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "ring",
+    "kind": "fruit",
+    "context": "```python\nx = 'bee'\nfirst = {'bee': 'ring', 'cow': 'car', 'cat': 'box'}\nsecond = {'car': 1, 'box': 3, 'ring': 2}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "2",
+    "kind": "digit",
+    "context": "```python\nx = 'bee'\nfirst = {'bee': 'ring', 'cow': 'car', 'cat': 'box'}\nsecond = {'car': 1, 'box': 3, 'ring': 2}\nprint(second['ring'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0072",
+   "family": "CODE",
+   "context": "```python\nx = 'bee'\nfirst = {'rat': 'lime', 'bee': 'door', 'ant': 'pen'}\nsecond = {'lime': 2, 'door': 4, 'pen': 1}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'ant'\nfirst = {'rat': 'lime', 'bee': 'door', 'ant': 'pen'}\nsecond = {'lime': 2, 'door': 4, 'pen': 1}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bee'\nfirst = {'rat': 'lime', 'bee': 'door', 'ant': 'pen'}\nsecond = {'lime': 1, 'door': 4, 'pen': 2}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bee",
+   "bridge": "door",
+   "cf_bridge": "pen",
+   "third": "lime",
+   "answer": "4",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "door",
+    "kind": "fruit",
+    "context": "```python\nx = 'bee'\nfirst = {'rat': 'lime', 'bee': 'door', 'ant': 'pen'}\nsecond = {'lime': 2, 'door': 4, 'pen': 1}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "4",
+    "kind": "digit",
+    "context": "```python\nx = 'bee'\nfirst = {'rat': 'lime', 'bee': 'door', 'ant': 'pen'}\nsecond = {'lime': 2, 'door': 4, 'pen': 1}\nprint(second['door'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0073",
+   "family": "CODE",
+   "context": "```python\nx = 'rat'\nfirst = {'fox': 'car', 'dog': 'rose', 'rat': 'berry'}\nsecond = {'rose': 6, 'car': 9, 'berry': 4}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'dog'\nfirst = {'fox': 'car', 'dog': 'rose', 'rat': 'berry'}\nsecond = {'rose': 6, 'car': 9, 'berry': 4}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'rat'\nfirst = {'fox': 'car', 'dog': 'rose', 'rat': 'berry'}\nsecond = {'rose': 9, 'car': 6, 'berry': 4}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "rat",
+   "bridge": "berry",
+   "cf_bridge": "rose",
+   "third": "car",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "berry",
+    "kind": "fruit",
+    "context": "```python\nx = 'rat'\nfirst = {'fox': 'car', 'dog': 'rose', 'rat': 'berry'}\nsecond = {'rose': 6, 'car': 9, 'berry': 4}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "4",
+    "kind": "digit",
+    "context": "```python\nx = 'rat'\nfirst = {'fox': 'car', 'dog': 'rose', 'rat': 'berry'}\nsecond = {'rose': 6, 'car': 9, 'berry': 4}\nprint(second['berry'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0074",
+   "family": "CODE",
+   "context": "```python\nx = 'pig'\nfirst = {'pig': 'star', 'dog': 'book', 'rat': 'car'}\nsecond = {'car': 6, 'book': 3, 'star': 4}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'rat'\nfirst = {'pig': 'star', 'dog': 'book', 'rat': 'car'}\nsecond = {'car': 6, 'book': 3, 'star': 4}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'pig'\nfirst = {'pig': 'star', 'dog': 'book', 'rat': 'car'}\nsecond = {'car': 3, 'book': 6, 'star': 4}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "pig",
+   "bridge": "star",
+   "cf_bridge": "car",
+   "third": "book",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "star",
+    "kind": "fruit",
+    "context": "```python\nx = 'pig'\nfirst = {'pig': 'star', 'dog': 'book', 'rat': 'car'}\nsecond = {'car': 6, 'book': 3, 'star': 4}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "4",
+    "kind": "digit",
+    "context": "```python\nx = 'pig'\nfirst = {'pig': 'star', 'dog': 'book', 'rat': 'car'}\nsecond = {'car': 6, 'book': 3, 'star': 4}\nprint(second['star'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0075",
+   "family": "CODE",
+   "context": "```python\nx = 'bee'\nfirst = {'bee': 'lime', 'fox': 'door', 'bat': 'book'}\nsecond = {'lime': 8, 'door': 5, 'book': 3}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'fox'\nfirst = {'bee': 'lime', 'fox': 'door', 'bat': 'book'}\nsecond = {'lime': 8, 'door': 5, 'book': 3}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bee'\nfirst = {'bee': 'lime', 'fox': 'door', 'bat': 'book'}\nsecond = {'lime': 8, 'door': 3, 'book': 5}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bee",
+   "bridge": "lime",
+   "cf_bridge": "door",
+   "third": "book",
+   "answer": "8",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "lime",
+    "kind": "fruit",
+    "context": "```python\nx = 'bee'\nfirst = {'bee': 'lime', 'fox': 'door', 'bat': 'book'}\nsecond = {'lime': 8, 'door': 5, 'book': 3}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "8",
+    "kind": "digit",
+    "context": "```python\nx = 'bee'\nfirst = {'bee': 'lime', 'fox': 'door', 'bat': 'book'}\nsecond = {'lime': 8, 'door': 5, 'book': 3}\nprint(second['lime'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0076",
+   "family": "CODE",
+   "context": "```python\nx = 'ant'\nfirst = {'owl': 'cup', 'ant': 'fig', 'pig': 'rose'}\nsecond = {'cup': 5, 'fig': 6, 'rose': 3}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'owl'\nfirst = {'owl': 'cup', 'ant': 'fig', 'pig': 'rose'}\nsecond = {'cup': 5, 'fig': 6, 'rose': 3}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'ant'\nfirst = {'owl': 'cup', 'ant': 'fig', 'pig': 'rose'}\nsecond = {'cup': 3, 'fig': 6, 'rose': 5}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "ant",
+   "bridge": "fig",
+   "cf_bridge": "cup",
+   "third": "rose",
+   "answer": "6",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "fig",
+    "kind": "fruit",
+    "context": "```python\nx = 'ant'\nfirst = {'owl': 'cup', 'ant': 'fig', 'pig': 'rose'}\nsecond = {'cup': 5, 'fig': 6, 'rose': 3}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "6",
+    "kind": "digit",
+    "context": "```python\nx = 'ant'\nfirst = {'owl': 'cup', 'ant': 'fig', 'pig': 'rose'}\nsecond = {'cup': 5, 'fig': 6, 'rose': 3}\nprint(second['fig'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0077",
+   "family": "CODE",
+   "context": "```python\nx = 'bat'\nfirst = {'bat': 'car', 'ant': 'banana', 'hen': 'box'}\nsecond = {'box': 5, 'car': 8, 'banana': 2}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'hen'\nfirst = {'bat': 'car', 'ant': 'banana', 'hen': 'box'}\nsecond = {'box': 5, 'car': 8, 'banana': 2}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bat'\nfirst = {'bat': 'car', 'ant': 'banana', 'hen': 'box'}\nsecond = {'box': 2, 'car': 8, 'banana': 5}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bat",
+   "bridge": "car",
+   "cf_bridge": "box",
+   "third": "banana",
+   "answer": "8",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "car",
+    "kind": "fruit",
+    "context": "```python\nx = 'bat'\nfirst = {'bat': 'car', 'ant': 'banana', 'hen': 'box'}\nsecond = {'box': 5, 'car': 8, 'banana': 2}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "8",
+    "kind": "digit",
+    "context": "```python\nx = 'bat'\nfirst = {'bat': 'car', 'ant': 'banana', 'hen': 'box'}\nsecond = {'box': 5, 'car': 8, 'banana': 2}\nprint(second['car'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0078",
+   "family": "CODE",
+   "context": "```python\nx = 'fox'\nfirst = {'fox': 'door', 'hen': 'fig', 'rat': 'tree'}\nsecond = {'door': 4, 'fig': 1, 'tree': 2}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'rat'\nfirst = {'fox': 'door', 'hen': 'fig', 'rat': 'tree'}\nsecond = {'door': 4, 'fig': 1, 'tree': 2}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'fox'\nfirst = {'fox': 'door', 'hen': 'fig', 'rat': 'tree'}\nsecond = {'door': 4, 'fig': 2, 'tree': 1}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "fox",
+   "bridge": "door",
+   "cf_bridge": "tree",
+   "third": "fig",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "door",
+    "kind": "fruit",
+    "context": "```python\nx = 'fox'\nfirst = {'fox': 'door', 'hen': 'fig', 'rat': 'tree'}\nsecond = {'door': 4, 'fig': 1, 'tree': 2}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "4",
+    "kind": "digit",
+    "context": "```python\nx = 'fox'\nfirst = {'fox': 'door', 'hen': 'fig', 'rat': 'tree'}\nsecond = {'door': 4, 'fig': 1, 'tree': 2}\nprint(second['door'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0079",
+   "family": "CODE",
+   "context": "```python\nx = 'ant'\nfirst = {'ant': 'apple', 'dog': 'boat', 'fox': 'cup'}\nsecond = {'cup': 6, 'apple': 4, 'boat': 2}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'fox'\nfirst = {'ant': 'apple', 'dog': 'boat', 'fox': 'cup'}\nsecond = {'cup': 6, 'apple': 4, 'boat': 2}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'ant'\nfirst = {'ant': 'apple', 'dog': 'boat', 'fox': 'cup'}\nsecond = {'cup': 2, 'apple': 4, 'boat': 6}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "ant",
+   "bridge": "apple",
+   "cf_bridge": "cup",
+   "third": "boat",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "apple",
+    "kind": "fruit",
+    "context": "```python\nx = 'ant'\nfirst = {'ant': 'apple', 'dog': 'boat', 'fox': 'cup'}\nsecond = {'cup': 6, 'apple': 4, 'boat': 2}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "4",
+    "kind": "digit",
+    "context": "```python\nx = 'ant'\nfirst = {'ant': 'apple', 'dog': 'boat', 'fox': 'cup'}\nsecond = {'cup': 6, 'apple': 4, 'boat': 2}\nprint(second['apple'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0080",
+   "family": "CODE",
+   "context": "```python\nx = 'cat'\nfirst = {'ant': 'apple', 'cat': 'ship', 'owl': 'pear'}\nsecond = {'pear': 5, 'apple': 9, 'ship': 1}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'owl'\nfirst = {'ant': 'apple', 'cat': 'ship', 'owl': 'pear'}\nsecond = {'pear': 5, 'apple': 9, 'ship': 1}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'cat'\nfirst = {'ant': 'apple', 'cat': 'ship', 'owl': 'pear'}\nsecond = {'pear': 9, 'apple': 5, 'ship': 1}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "cat",
+   "bridge": "ship",
+   "cf_bridge": "pear",
+   "third": "apple",
+   "answer": "1",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "ship",
+    "kind": "fruit",
+    "context": "```python\nx = 'cat'\nfirst = {'ant': 'apple', 'cat': 'ship', 'owl': 'pear'}\nsecond = {'pear': 5, 'apple': 9, 'ship': 1}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "1",
+    "kind": "digit",
+    "context": "```python\nx = 'cat'\nfirst = {'ant': 'apple', 'cat': 'ship', 'owl': 'pear'}\nsecond = {'pear': 5, 'apple': 9, 'ship': 1}\nprint(second['ship'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0081",
+   "family": "CODE",
+   "context": "```python\nx = 'pig'\nfirst = {'fox': 'banana', 'pig': 'rose', 'cow': 'tree'}\nsecond = {'banana': 4, 'rose': 7, 'tree': 1}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cow'\nfirst = {'fox': 'banana', 'pig': 'rose', 'cow': 'tree'}\nsecond = {'banana': 4, 'rose': 7, 'tree': 1}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'pig'\nfirst = {'fox': 'banana', 'pig': 'rose', 'cow': 'tree'}\nsecond = {'banana': 1, 'rose': 7, 'tree': 4}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "pig",
+   "bridge": "rose",
+   "cf_bridge": "tree",
+   "third": "banana",
+   "answer": "7",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "rose",
+    "kind": "fruit",
+    "context": "```python\nx = 'pig'\nfirst = {'fox': 'banana', 'pig': 'rose', 'cow': 'tree'}\nsecond = {'banana': 4, 'rose': 7, 'tree': 1}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "7",
+    "kind": "digit",
+    "context": "```python\nx = 'pig'\nfirst = {'fox': 'banana', 'pig': 'rose', 'cow': 'tree'}\nsecond = {'banana': 4, 'rose': 7, 'tree': 1}\nprint(second['rose'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0082",
+   "family": "CODE",
+   "context": "```python\nx = 'ant'\nfirst = {'owl': 'ship', 'ant': 'lamp', 'cow': 'door'}\nsecond = {'ship': 6, 'lamp': 1, 'door': 3}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'owl'\nfirst = {'owl': 'ship', 'ant': 'lamp', 'cow': 'door'}\nsecond = {'ship': 6, 'lamp': 1, 'door': 3}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'ant'\nfirst = {'owl': 'ship', 'ant': 'lamp', 'cow': 'door'}\nsecond = {'ship': 3, 'lamp': 1, 'door': 6}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "ant",
+   "bridge": "lamp",
+   "cf_bridge": "ship",
+   "third": "door",
+   "answer": "1",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "lamp",
+    "kind": "fruit",
+    "context": "```python\nx = 'ant'\nfirst = {'owl': 'ship', 'ant': 'lamp', 'cow': 'door'}\nsecond = {'ship': 6, 'lamp': 1, 'door': 3}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "1",
+    "kind": "digit",
+    "context": "```python\nx = 'ant'\nfirst = {'owl': 'ship', 'ant': 'lamp', 'cow': 'door'}\nsecond = {'ship': 6, 'lamp': 1, 'door': 3}\nprint(second['lamp'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0083",
+   "family": "CODE",
+   "context": "```python\nx = 'cat'\nfirst = {'cat': 'berry', 'rat': 'ship', 'dog': 'map'}\nsecond = {'map': 5, 'berry': 7, 'ship': 3}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'dog'\nfirst = {'cat': 'berry', 'rat': 'ship', 'dog': 'map'}\nsecond = {'map': 5, 'berry': 7, 'ship': 3}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'cat'\nfirst = {'cat': 'berry', 'rat': 'ship', 'dog': 'map'}\nsecond = {'map': 3, 'berry': 7, 'ship': 5}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "cat",
+   "bridge": "berry",
+   "cf_bridge": "map",
+   "third": "ship",
+   "answer": "7",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "berry",
+    "kind": "fruit",
+    "context": "```python\nx = 'cat'\nfirst = {'cat': 'berry', 'rat': 'ship', 'dog': 'map'}\nsecond = {'map': 5, 'berry': 7, 'ship': 3}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "7",
+    "kind": "digit",
+    "context": "```python\nx = 'cat'\nfirst = {'cat': 'berry', 'rat': 'ship', 'dog': 'map'}\nsecond = {'map': 5, 'berry': 7, 'ship': 3}\nprint(second['berry'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0084",
+   "family": "CODE",
+   "context": "```python\nx = 'ant'\nfirst = {'cat': 'ship', 'ant': 'tree', 'rat': 'coin'}\nsecond = {'tree': 8, 'ship': 1, 'coin': 5}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cat'\nfirst = {'cat': 'ship', 'ant': 'tree', 'rat': 'coin'}\nsecond = {'tree': 8, 'ship': 1, 'coin': 5}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'ant'\nfirst = {'cat': 'ship', 'ant': 'tree', 'rat': 'coin'}\nsecond = {'tree': 8, 'ship': 5, 'coin': 1}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "ant",
+   "bridge": "tree",
+   "cf_bridge": "ship",
+   "third": "coin",
+   "answer": "8",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "tree",
+    "kind": "fruit",
+    "context": "```python\nx = 'ant'\nfirst = {'cat': 'ship', 'ant': 'tree', 'rat': 'coin'}\nsecond = {'tree': 8, 'ship': 1, 'coin': 5}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "8",
+    "kind": "digit",
+    "context": "```python\nx = 'ant'\nfirst = {'cat': 'ship', 'ant': 'tree', 'rat': 'coin'}\nsecond = {'tree': 8, 'ship': 1, 'coin': 5}\nprint(second['tree'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0085",
+   "family": "CODE",
+   "context": "```python\nx = 'cow'\nfirst = {'cow': 'boat', 'bee': 'key', 'rat': 'apple'}\nsecond = {'key': 1, 'boat': 8, 'apple': 9}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'bee'\nfirst = {'cow': 'boat', 'bee': 'key', 'rat': 'apple'}\nsecond = {'key': 1, 'boat': 8, 'apple': 9}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'cow'\nfirst = {'cow': 'boat', 'bee': 'key', 'rat': 'apple'}\nsecond = {'key': 9, 'boat': 8, 'apple': 1}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "cow",
+   "bridge": "boat",
+   "cf_bridge": "key",
+   "third": "apple",
+   "answer": "8",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "boat",
+    "kind": "fruit",
+    "context": "```python\nx = 'cow'\nfirst = {'cow': 'boat', 'bee': 'key', 'rat': 'apple'}\nsecond = {'key': 1, 'boat': 8, 'apple': 9}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "8",
+    "kind": "digit",
+    "context": "```python\nx = 'cow'\nfirst = {'cow': 'boat', 'bee': 'key', 'rat': 'apple'}\nsecond = {'key': 1, 'boat': 8, 'apple': 9}\nprint(second['boat'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0086",
+   "family": "CODE",
+   "context": "```python\nx = 'cat'\nfirst = {'rat': 'rose', 'cat': 'pear', 'owl': 'ship'}\nsecond = {'ship': 9, 'pear': 4, 'rose': 8}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'rat'\nfirst = {'rat': 'rose', 'cat': 'pear', 'owl': 'ship'}\nsecond = {'ship': 9, 'pear': 4, 'rose': 8}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'cat'\nfirst = {'rat': 'rose', 'cat': 'pear', 'owl': 'ship'}\nsecond = {'ship': 8, 'pear': 4, 'rose': 9}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "cat",
+   "bridge": "pear",
+   "cf_bridge": "rose",
+   "third": "ship",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "pear",
+    "kind": "fruit",
+    "context": "```python\nx = 'cat'\nfirst = {'rat': 'rose', 'cat': 'pear', 'owl': 'ship'}\nsecond = {'ship': 9, 'pear': 4, 'rose': 8}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "4",
+    "kind": "digit",
+    "context": "```python\nx = 'cat'\nfirst = {'rat': 'rose', 'cat': 'pear', 'owl': 'ship'}\nsecond = {'ship': 9, 'pear': 4, 'rose': 8}\nprint(second['pear'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0087",
+   "family": "CODE",
+   "context": "```python\nx = 'bat'\nfirst = {'owl': 'apple', 'bat': 'coin', 'cat': 'fig'}\nsecond = {'fig': 9, 'apple': 5, 'coin': 3}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cat'\nfirst = {'owl': 'apple', 'bat': 'coin', 'cat': 'fig'}\nsecond = {'fig': 9, 'apple': 5, 'coin': 3}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'bat'\nfirst = {'owl': 'apple', 'bat': 'coin', 'cat': 'fig'}\nsecond = {'fig': 5, 'apple': 9, 'coin': 3}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "bat",
+   "bridge": "coin",
+   "cf_bridge": "fig",
+   "third": "apple",
+   "answer": "3",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "coin",
+    "kind": "fruit",
+    "context": "```python\nx = 'bat'\nfirst = {'owl': 'apple', 'bat': 'coin', 'cat': 'fig'}\nsecond = {'fig': 9, 'apple': 5, 'coin': 3}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "3",
+    "kind": "digit",
+    "context": "```python\nx = 'bat'\nfirst = {'owl': 'apple', 'bat': 'coin', 'cat': 'fig'}\nsecond = {'fig': 9, 'apple': 5, 'coin': 3}\nprint(second['coin'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0088",
+   "family": "CODE",
+   "context": "```python\nx = 'cow'\nfirst = {'cat': 'book', 'rat': 'pear', 'cow': 'box'}\nsecond = {'box': 6, 'pear': 1, 'book': 8}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cat'\nfirst = {'cat': 'book', 'rat': 'pear', 'cow': 'box'}\nsecond = {'box': 6, 'pear': 1, 'book': 8}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'cow'\nfirst = {'cat': 'book', 'rat': 'pear', 'cow': 'box'}\nsecond = {'box': 6, 'pear': 8, 'book': 1}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "cow",
+   "bridge": "box",
+   "cf_bridge": "book",
+   "third": "pear",
+   "answer": "6",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "box",
+    "kind": "fruit",
+    "context": "```python\nx = 'cow'\nfirst = {'cat': 'book', 'rat': 'pear', 'cow': 'box'}\nsecond = {'box': 6, 'pear': 1, 'book': 8}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "6",
+    "kind": "digit",
+    "context": "```python\nx = 'cow'\nfirst = {'cat': 'book', 'rat': 'pear', 'cow': 'box'}\nsecond = {'box': 6, 'pear': 1, 'book': 8}\nprint(second['box'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0089",
+   "family": "CODE",
+   "context": "```python\nx = 'fox'\nfirst = {'cat': 'boat', 'bee': 'map', 'fox': 'ship'}\nsecond = {'map': 8, 'ship': 2, 'boat': 1}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cat'\nfirst = {'cat': 'boat', 'bee': 'map', 'fox': 'ship'}\nsecond = {'map': 8, 'ship': 2, 'boat': 1}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'fox'\nfirst = {'cat': 'boat', 'bee': 'map', 'fox': 'ship'}\nsecond = {'map': 1, 'ship': 2, 'boat': 8}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "fox",
+   "bridge": "ship",
+   "cf_bridge": "boat",
+   "third": "map",
+   "answer": "2",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "ship",
+    "kind": "fruit",
+    "context": "```python\nx = 'fox'\nfirst = {'cat': 'boat', 'bee': 'map', 'fox': 'ship'}\nsecond = {'map': 8, 'ship': 2, 'boat': 1}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "2",
+    "kind": "digit",
+    "context": "```python\nx = 'fox'\nfirst = {'cat': 'boat', 'bee': 'map', 'fox': 'ship'}\nsecond = {'map': 8, 'ship': 2, 'boat': 1}\nprint(second['ship'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0090",
+   "family": "CODE",
+   "context": "```python\nx = 'cow'\nfirst = {'cow': 'banana', 'bat': 'pear', 'owl': 'apple'}\nsecond = {'apple': 9, 'pear': 8, 'banana': 2}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'bat'\nfirst = {'cow': 'banana', 'bat': 'pear', 'owl': 'apple'}\nsecond = {'apple': 9, 'pear': 8, 'banana': 2}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'cow'\nfirst = {'cow': 'banana', 'bat': 'pear', 'owl': 'apple'}\nsecond = {'apple': 8, 'pear': 9, 'banana': 2}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "cow",
+   "bridge": "banana",
+   "cf_bridge": "pear",
+   "third": "apple",
+   "answer": "2",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "banana",
+    "kind": "fruit",
+    "context": "```python\nx = 'cow'\nfirst = {'cow': 'banana', 'bat': 'pear', 'owl': 'apple'}\nsecond = {'apple': 9, 'pear': 8, 'banana': 2}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "2",
+    "kind": "digit",
+    "context": "```python\nx = 'cow'\nfirst = {'cow': 'banana', 'bat': 'pear', 'owl': 'apple'}\nsecond = {'apple': 9, 'pear': 8, 'banana': 2}\nprint(second['banana'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0091",
+   "family": "CODE",
+   "context": "```python\nx = 'owl'\nfirst = {'dog': 'lime', 'cat': 'ring', 'owl': 'pen'}\nsecond = {'ring': 6, 'lime': 2, 'pen': 9}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'dog'\nfirst = {'dog': 'lime', 'cat': 'ring', 'owl': 'pen'}\nsecond = {'ring': 6, 'lime': 2, 'pen': 9}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'owl'\nfirst = {'dog': 'lime', 'cat': 'ring', 'owl': 'pen'}\nsecond = {'ring': 2, 'lime': 6, 'pen': 9}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "owl",
+   "bridge": "pen",
+   "cf_bridge": "lime",
+   "third": "ring",
+   "answer": "9",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "pen",
+    "kind": "fruit",
+    "context": "```python\nx = 'owl'\nfirst = {'dog': 'lime', 'cat': 'ring', 'owl': 'pen'}\nsecond = {'ring': 6, 'lime': 2, 'pen': 9}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "9",
+    "kind": "digit",
+    "context": "```python\nx = 'owl'\nfirst = {'dog': 'lime', 'cat': 'ring', 'owl': 'pen'}\nsecond = {'ring': 6, 'lime': 2, 'pen': 9}\nprint(second['pen'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0092",
+   "family": "CODE",
+   "context": "```python\nx = 'dog'\nfirst = {'dog': 'fig', 'owl': 'hat', 'ant': 'pear'}\nsecond = {'hat': 2, 'pear': 6, 'fig': 1}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'owl'\nfirst = {'dog': 'fig', 'owl': 'hat', 'ant': 'pear'}\nsecond = {'hat': 2, 'pear': 6, 'fig': 1}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'dog'\nfirst = {'dog': 'fig', 'owl': 'hat', 'ant': 'pear'}\nsecond = {'hat': 6, 'pear': 2, 'fig': 1}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "dog",
+   "bridge": "fig",
+   "cf_bridge": "hat",
+   "third": "pear",
+   "answer": "1",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "fig",
+    "kind": "fruit",
+    "context": "```python\nx = 'dog'\nfirst = {'dog': 'fig', 'owl': 'hat', 'ant': 'pear'}\nsecond = {'hat': 2, 'pear': 6, 'fig': 1}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "1",
+    "kind": "digit",
+    "context": "```python\nx = 'dog'\nfirst = {'dog': 'fig', 'owl': 'hat', 'ant': 'pear'}\nsecond = {'hat': 2, 'pear': 6, 'fig': 1}\nprint(second['fig'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0093",
+   "family": "CODE",
+   "context": "```python\nx = 'rat'\nfirst = {'owl': 'pen', 'rat': 'tree', 'bee': 'lamp'}\nsecond = {'lamp': 8, 'tree': 5, 'pen': 3}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'owl'\nfirst = {'owl': 'pen', 'rat': 'tree', 'bee': 'lamp'}\nsecond = {'lamp': 8, 'tree': 5, 'pen': 3}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'rat'\nfirst = {'owl': 'pen', 'rat': 'tree', 'bee': 'lamp'}\nsecond = {'lamp': 3, 'tree': 5, 'pen': 8}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "rat",
+   "bridge": "tree",
+   "cf_bridge": "pen",
+   "third": "lamp",
+   "answer": "5",
+   "cf_answer": "3",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "tree",
+    "kind": "fruit",
+    "context": "```python\nx = 'rat'\nfirst = {'owl': 'pen', 'rat': 'tree', 'bee': 'lamp'}\nsecond = {'lamp': 8, 'tree': 5, 'pen': 3}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "5",
+    "kind": "digit",
+    "context": "```python\nx = 'rat'\nfirst = {'owl': 'pen', 'rat': 'tree', 'bee': 'lamp'}\nsecond = {'lamp': 8, 'tree': 5, 'pen': 3}\nprint(second['tree'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0094",
+   "family": "CODE",
+   "context": "```python\nx = 'rat'\nfirst = {'rat': 'cup', 'hen': 'boat', 'bat': 'box'}\nsecond = {'boat': 8, 'cup': 6, 'box': 5}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'hen'\nfirst = {'rat': 'cup', 'hen': 'boat', 'bat': 'box'}\nsecond = {'boat': 8, 'cup': 6, 'box': 5}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'rat'\nfirst = {'rat': 'cup', 'hen': 'boat', 'bat': 'box'}\nsecond = {'boat': 5, 'cup': 6, 'box': 8}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "rat",
+   "bridge": "cup",
+   "cf_bridge": "boat",
+   "third": "box",
+   "answer": "6",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "cup",
+    "kind": "fruit",
+    "context": "```python\nx = 'rat'\nfirst = {'rat': 'cup', 'hen': 'boat', 'bat': 'box'}\nsecond = {'boat': 8, 'cup': 6, 'box': 5}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "6",
+    "kind": "digit",
+    "context": "```python\nx = 'rat'\nfirst = {'rat': 'cup', 'hen': 'boat', 'bat': 'box'}\nsecond = {'boat': 8, 'cup': 6, 'box': 5}\nprint(second['cup'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0095",
+   "family": "CODE",
+   "context": "```python\nx = 'ant'\nfirst = {'cow': 'coin', 'ant': 'hat', 'bat': 'cup'}\nsecond = {'coin': 7, 'hat': 8, 'cup': 1}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'bat'\nfirst = {'cow': 'coin', 'ant': 'hat', 'bat': 'cup'}\nsecond = {'coin': 7, 'hat': 8, 'cup': 1}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'ant'\nfirst = {'cow': 'coin', 'ant': 'hat', 'bat': 'cup'}\nsecond = {'coin': 1, 'hat': 8, 'cup': 7}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "ant",
+   "bridge": "hat",
+   "cf_bridge": "cup",
+   "third": "coin",
+   "answer": "8",
+   "cf_answer": "1",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "hat",
+    "kind": "fruit",
+    "context": "```python\nx = 'ant'\nfirst = {'cow': 'coin', 'ant': 'hat', 'bat': 'cup'}\nsecond = {'coin': 7, 'hat': 8, 'cup': 1}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "8",
+    "kind": "digit",
+    "context": "```python\nx = 'ant'\nfirst = {'cow': 'coin', 'ant': 'hat', 'bat': 'cup'}\nsecond = {'coin': 7, 'hat': 8, 'cup': 1}\nprint(second['hat'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0096",
+   "family": "CODE",
+   "context": "```python\nx = 'owl'\nfirst = {'cat': 'lamp', 'owl': 'box', 'bee': 'coin'}\nsecond = {'coin': 2, 'lamp': 1, 'box': 4}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'bee'\nfirst = {'cat': 'lamp', 'owl': 'box', 'bee': 'coin'}\nsecond = {'coin': 2, 'lamp': 1, 'box': 4}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'owl'\nfirst = {'cat': 'lamp', 'owl': 'box', 'bee': 'coin'}\nsecond = {'coin': 1, 'lamp': 2, 'box': 4}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "owl",
+   "bridge": "box",
+   "cf_bridge": "coin",
+   "third": "lamp",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "box",
+    "kind": "fruit",
+    "context": "```python\nx = 'owl'\nfirst = {'cat': 'lamp', 'owl': 'box', 'bee': 'coin'}\nsecond = {'coin': 2, 'lamp': 1, 'box': 4}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "4",
+    "kind": "digit",
+    "context": "```python\nx = 'owl'\nfirst = {'cat': 'lamp', 'owl': 'box', 'bee': 'coin'}\nsecond = {'coin': 2, 'lamp': 1, 'box': 4}\nprint(second['box'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0097",
+   "family": "CODE",
+   "context": "```python\nx = 'rat'\nfirst = {'cow': 'cup', 'bee': 'pen', 'rat': 'box'}\nsecond = {'cup': 4, 'pen': 1, 'box': 6}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'cow'\nfirst = {'cow': 'cup', 'bee': 'pen', 'rat': 'box'}\nsecond = {'cup': 4, 'pen': 1, 'box': 6}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'rat'\nfirst = {'cow': 'cup', 'bee': 'pen', 'rat': 'box'}\nsecond = {'cup': 1, 'pen': 4, 'box': 6}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "rat",
+   "bridge": "box",
+   "cf_bridge": "cup",
+   "third": "pen",
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "box",
+    "kind": "fruit",
+    "context": "```python\nx = 'rat'\nfirst = {'cow': 'cup', 'bee': 'pen', 'rat': 'box'}\nsecond = {'cup': 4, 'pen': 1, 'box': 6}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "6",
+    "kind": "digit",
+    "context": "```python\nx = 'rat'\nfirst = {'cow': 'cup', 'bee': 'pen', 'rat': 'box'}\nsecond = {'cup': 4, 'pen': 1, 'box': 6}\nprint(second['box'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0098",
+   "family": "CODE",
+   "context": "```python\nx = 'owl'\nfirst = {'rat': 'key', 'owl': 'car', 'ant': 'ship'}\nsecond = {'ship': 2, 'car': 1, 'key': 6}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'rat'\nfirst = {'rat': 'key', 'owl': 'car', 'ant': 'ship'}\nsecond = {'ship': 2, 'car': 1, 'key': 6}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'owl'\nfirst = {'rat': 'key', 'owl': 'car', 'ant': 'ship'}\nsecond = {'ship': 6, 'car': 1, 'key': 2}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "owl",
+   "bridge": "car",
+   "cf_bridge": "key",
+   "third": "ship",
+   "answer": "1",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "car",
+    "kind": "fruit",
+    "context": "```python\nx = 'owl'\nfirst = {'rat': 'key', 'owl': 'car', 'ant': 'ship'}\nsecond = {'ship': 2, 'car': 1, 'key': 6}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "1",
+    "kind": "digit",
+    "context": "```python\nx = 'owl'\nfirst = {'rat': 'key', 'owl': 'car', 'ant': 'ship'}\nsecond = {'ship': 2, 'car': 1, 'key': 6}\nprint(second['car'])\n```"
+   },
+   "level": "e3f0"
+  },
+  {
+   "id": "CODE-0099",
+   "family": "CODE",
+   "context": "```python\nx = 'hen'\nfirst = {'bat': 'cup', 'hen': 'fig', 'dog': 'book'}\nsecond = {'cup': 2, 'fig': 9, 'book': 5}\nprint(second[first[x]])\n```",
+   "cf_context": "```python\nx = 'dog'\nfirst = {'bat': 'cup', 'hen': 'fig', 'dog': 'book'}\nsecond = {'cup': 2, 'fig': 9, 'book': 5}\nprint(second[first[x]])\n```",
+   "off_context": "```python\nx = 'hen'\nfirst = {'bat': 'cup', 'hen': 'fig', 'dog': 'book'}\nsecond = {'cup': 5, 'fig': 9, 'book': 2}\nprint(second[first[x]])\n```",
+   "question": "What does this Python code print?",
+   "cf_question": "What does this Python code print?",
+   "cue": "hen",
+   "bridge": "fig",
+   "cf_bridge": "book",
+   "third": "cup",
+   "answer": "9",
+   "cf_answer": "5",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What does this Python code print?",
+    "answer": "fig",
+    "kind": "fruit",
+    "context": "```python\nx = 'hen'\nfirst = {'bat': 'cup', 'hen': 'fig', 'dog': 'book'}\nsecond = {'cup': 2, 'fig': 9, 'book': 5}\nprint(first[x])\n```"
+   },
+   "hop2": {
+    "question": "What does this Python code print?",
+    "answer": "9",
+    "kind": "digit",
+    "context": "```python\nx = 'hen'\nfirst = {'bat': 'cup', 'hen': 'fig', 'dog': 'book'}\nsecond = {'cup': 2, 'fig': 9, 'book': 5}\nprint(second['fig'])\n```"
+   },
+   "level": "e3f0"
+  }
+ ]
+}
