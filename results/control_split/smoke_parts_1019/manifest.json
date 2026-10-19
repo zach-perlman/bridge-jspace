@@ -1,0 +1,69 @@
+{
+  "exp": "control_split",
+  "run": "smoke_parts_1019",
+  "kind": "parts",
+  "written_utc": "2026-10-19T23:42:06Z",
+  "why": "smoke",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "items": {
+    "file": "data/bind_recall.json",
+    "sha256": "bbb1cfa8e95b6a83ec1c6003fc3a05c5c1fba195cff6a5cb7e3ea968dce59029",
+    "families": [
+      "R",
+      "B"
+    ]
+  },
+  "format": "chat template, thinking off, 'Answer:' prefilled (exp09's chat_prefill: the statement as a question)",
+  "eligibility": "exp09's: clean, C and O each answered (greedy, 8 tokens, the capitals judge); a seeded sample (seed 0) per family; cases whose two capitals share a first token dropped",
+  "read": "suite_split's: one forward, read at the capital's first token; frac of the way from clean to C",
+  "doc": "suite_split called every suite family 'outside' the J-space, recall-used ones included, and exp09's raw-text copy split\non countries gave the J-space part 4% of R's flips against 44% for the full copy. The proposal's 'inside' evidence is\nexp02's probe swaps (B1: J-part 52% vs rest 8%), a different intervention: J++ probe directions of the two entities,\nswapped at the cue phrase over layers 24-40 at once. Can suite_split's copy-and-split see 'inside' at all? This runs it\non the paper-style place items, in the variants that move it toward exp02's setting:",
+  "map": {
+    "run": "smoke_map_1019",
+    "summary_sha256": "88df07e12ac15d0ba590e8b6887bb72b1e2dade5c98892081aea30d3fdfde7cc",
+    "cap": {
+      "R": 44,
+      "B": 44
+    },
+    "parts_window": {
+      "R": {
+        "question": [
+          36,
+          40
+        ],
+        "cue": [
+          24,
+          28,
+          32,
+          36,
+          40
+        ]
+      },
+      "B": {
+        "question": [
+          36,
+          40
+        ],
+        "cue": []
+      }
+    }
+  },
+  "lens": {
+    "jpp": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "9fa267f841d62aa468dab5b9b38c3dc45a82d863"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "variants": "group (question, cue) x mode (single: each window layer alone; band: all window layers at once)",
+  "decision": {
+    "verdict": "suite_split's: concentration (case bootstrap) lower bound above 2 -> inside; upper bound below 2 and not_jspace - jspace above 0 -> outside; else inconclusive; per family and variant, frac primary",
+    "control": "the method can see 'inside' if R is inside in at least one variant; else exp02's 'inside' needs the probe directions, not the model's own counterfactual difference"
+  }
+}

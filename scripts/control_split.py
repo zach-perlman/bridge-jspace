@@ -60,6 +60,31 @@ N_ITEMS = 150
 CAPITALS = list(E.ITEM_SETS["bind_recall"][4])
 
 
+@torch.no_grad()
+def omp_without(dictionary: torch.Tensor, x: torch.Tensor, k: int, banned: torch.Tensor) -> torch.Tensor:
+    """exp04's signed OMP with some dictionary rows never chosen (the J-space part without given words)."""
+    m = x.shape[0]
+    x = x.float()
+    chosen = torch.empty(m, 0, dtype=torch.long, device=x.device)
+    approx = torch.zeros_like(x)
+    rows = torch.arange(m, device=x.device)
+    for _ in range(k):
+        scores = ((x - approx) @ dictionary.T).abs()
+        scores[:, banned] = -1.0
+        scores[rows[:, None], chosen] = -1.0
+        chosen = torch.cat([chosen, scores.argmax(dim=1, keepdim=True)], dim=1)
+        atoms = dictionary[chosen].double()
+        gram = atoms @ atoms.transpose(1, 2)
+        rhs = (atoms @ x.double().unsqueeze(2)).squeeze(2)
+        eye = torch.eye(gram.shape[1], dtype=gram.dtype, device=gram.device)
+        coefs = torch.linalg.solve(gram + 1e-8 * eye, rhs)
+        approx = (coefs.unsqueeze(1) @ atoms).squeeze(1).float()
+    return approx
+
+
+EXTRA = ("answer2", "words4", "jspace_minus_words")  # parts_v2's diagnostic parts (each with its random null)
+
+
 def judge(text: str) -> str | None:
     return answer_colour(text, CAPITALS)
 
@@ -160,7 +185,7 @@ def stage_run_map(name: str) -> None:
     print((out_dir / "summary.md").read_text())
 
 
-def stage_manifest_parts(name: str, map_run: str, why: str) -> None:
+def stage_manifest_parts(name: str, map_run: str, why: str, extra: bool = False) -> None:
     path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
@@ -178,6 +203,16 @@ def stage_manifest_parts(name: str, map_run: str, why: str) -> None:
     m["map"] = {"run": map_run, "summary_sha256": sha256_of(map_summary), "cap": cap, "parts_window": window}
     m["lens"] = {pins.FROZEN_LENS: list(pins.LENS_SOURCES[pins.FROZEN_LENS]), "sha256": pins.FROZEN_LENS_SHA256}
     m["variants"] = "group (question, cue) x mode (single: each window layer alone; band: all window layers at once)"
+    m["extra_parts"] = extra
+    if extra:
+        m["extra"] = {
+            "parts": "answer2: delta's projection on the lens vectors of the two answers (capitals); words4: on the "
+            "span of the bridge's, X's and both answers' vectors; jspace_minus_words: the 25-atom J-space part with "
+            "every single-token surface of those four words barred from the dictionary",
+            "decision": "fixed before the run: the J-space effect is the words' if jspace_minus_words moves the answer "
+            "less than a quarter as far as jspace (frac, single and band); it is the answer's (Neel's linear-relation "
+            "objection) if answer2 moves it further than lens2 (the bridge's own words); reported per variant",
+        }
     m["decision"] = {
         "verdict": "suite_split's: concentration (case bootstrap) lower bound above 2 -> inside; upper bound below 2 "
         "and not_jspace - jspace above 0 -> outside; else inconclusive; per family and variant, frac primary",
@@ -220,7 +255,9 @@ def stage_run_parts(name: str) -> None:
         cases.append(c)
     lens = JLens(model, pins.FROZEN_LENS)
     letters = model.letter_token_ids()
+    row_of = {int(t): i for i, t in enumerate(letters.tolist())}
     dictionaries = {la: lens.vectors(la, letters) for la in layers}
+    extra = m.get("extra_parts", False)
     outcomes: list[dict] = []
     fve: list[dict] = []
     for k, c in enumerate(cases):
@@ -231,6 +268,10 @@ def stage_run_parts(name: str) -> None:
             continue
         h = {s: model.run(torch.tensor([c["ids"][s]], device="cuda"), record=rec)[1] for s in ("clean", "cf", "off")}
         pair = torch.tensor([model.concept_token(c["bridge"]), model.concept_token(c["cf_bridge"])], device="cuda")
+        answers = torch.tensor([c["tok_A"], c["tok_b"]], device="cuda")
+        words = {i for w in (c["bridge"], c["cf_bridge"], c["answer"], c["cf_answer"]) for i in model.surface_ids(w)}
+        words |= {int(t) for t in pair.tolist() + answers.tolist()}
+        banned = torch.tensor(sorted(row_of[i] for i in words if i in row_of), dtype=torch.long, device="cuda")
         jobs: list[tuple[dict, dict]] = []
         for gi, group in enumerate(PART_GROUPS):
             win = mine[group]
@@ -248,6 +289,13 @@ def stage_run_parts(name: str) -> None:
                                 "share": round(float(part.norm() ** 2) / total, 4)})  # fmt: skip
                 parts = {"full": delta, "lens2": lens2, "not_lens2": delta - lens2, "jspace": jspace,
                          "not_jspace": delta - jspace}  # fmt: skip
+                if extra:
+                    parts["answer2"] = lens2_part(delta, lens.vectors(la, answers))
+                    parts["words4"] = lens2_part(delta, lens.vectors(la, torch.cat([pair, answers])))
+                    parts["jspace_minus_words"] = omp_without(dictionaries[la], delta, K_ATOMS, banned)
+                    for what in EXTRA:
+                        fve.append({"family": c["family"], "name": c["id"], "group": group, "layer": la, "what": what,
+                                    "share": round(float(parts[what].norm() ** 2) / total, 4)})  # fmt: skip
                 for pi, (pname, part) in enumerate(parts.items()):
                     seed = P.NULL_SEED + 1_000_000 * gi + 1000 * k + 10 * la + pi
                     noise = null_rows(part, torch.Generator(device="cuda").manual_seed(seed))
@@ -289,6 +337,11 @@ def stage_run_parts(name: str) -> None:
         lines.append(f"| {fam} | {group} | {mode} | {v['n']} | {100 * mm['full']:.0f}% | {100 * mm['not_jspace']:.0f}% | "
                      f"{100 * mm['jspace']:.1f}% | {100 * mm['jspace_matched']:.1f}% | {c[0]:.2f} [{c[1]:.2f}, {c[2]:.2f}] | "
                      f"{v['frac']['jspace']['verdict']} |")  # fmt: skip
+    for key, v in summary["variants"].items():
+        if v.get("extra_frac_means"):
+            em, sh = v["extra_frac_means"], v["extra_share_median"]
+            lines.append(f"- {key}: " + ", ".join(f"{k} {100 * x:.1f}%" for k, x in em.items())
+                         + " | variance shares: " + ", ".join(f"{k} {x:.3f}" for k, x in sh.items()))  # fmt: skip
     (out_dir / "summary.md").write_text("\n".join(lines) + "\n")
     print((out_dir / "summary.md").read_text())
 
@@ -303,7 +356,19 @@ def summarize(outcomes: list[dict], fve: list[dict], window: dict) -> dict:
                 rows = [o for o in outcomes if o["family"] == fam and o["group"] == group
                         and ((o["layer"] == "band") == (mode == "band"))]  # fmt: skip
                 shares = [f for f in fve if f.get("family") == fam and f.get("group") == group]
+                means = {
+                    f"{p}{' null' if nl else ''}": statistics.mean(v.values())
+                    for p in EXTRA
+                    for nl in (False, True)
+                    if (v := P.scores(rows, "frac", part=p, null=nl, source="cf"))
+                }
                 out["variants"][f"{fam}/{group}/{mode}"] = {
+                    "extra_frac_means": means,
+                    "extra_share_median": {
+                        w: statistics.median(f["share"] for f in shares if f["what"] == w)
+                        for w in EXTRA
+                        if any(f["what"] == w for f in shares)
+                    },
                     "window": window[fam][group],
                     "n": len({o["name"] for o in rows}),
                     "frac": P.verdicts(rows, "frac", shares),
@@ -324,6 +389,7 @@ if __name__ == "__main__":
     ap.add_argument("--why")
     ap.add_argument("--map")
     ap.add_argument("--n", type=int, default=N_ITEMS, help="manifest_map: items per family (a smoke run: few)")
+    ap.add_argument("--extra", action="store_true", help="manifest_parts: add the answer-word and words-removed parts")
     args = ap.parse_args()
     if args.stage == "manifest_map":
         assert args.why, "manifest_map needs --why"
@@ -333,6 +399,6 @@ if __name__ == "__main__":
     elif args.stage == "manifest_parts":
         assert args.why, "manifest_parts needs --why"
         assert args.map, "manifest_parts needs --map"
-        stage_manifest_parts(args.name, args.map, args.why)
+        stage_manifest_parts(args.name, args.map, args.why, args.extra)
     else:
         stage_run_parts(args.name)
