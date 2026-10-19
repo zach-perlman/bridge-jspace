@@ -2,6 +2,7 @@
 
 import json
 import sys
+from pathlib import Path
 
 import matplotlib
 
@@ -23,7 +24,7 @@ INK, MUTED, GRID = "#0b0b0b", "#52514e", "#e4e3df"
 fig, ax = plt.subplots(figsize=(6, 7.5))
 n = len(ORDER)
 for run, label, colour, off in runs:
-    s = json.load(open(f"{R}/{run}/summary.json"))["families"]
+    s = json.loads(Path(f"{R}/{run}/summary.json").read_text())["families"]
     first = True
     for i, (f, _) in enumerate(ORDER):
         y = n - 1 - i + off
