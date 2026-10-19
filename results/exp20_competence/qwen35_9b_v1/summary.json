@@ -1,0 +1,215 @@
+{
+  "n_prompts": 3870,
+  "as_run": {
+    "probe_swap": "raw",
+    "R": "raw",
+    "B": "raw",
+    "L": "raw",
+    "RL": "raw",
+    "LM": "chat_prefill",
+    "RM": "chat_prefill",
+    "BT": "chat_prefill",
+    "RT": "chat_prefill",
+    "brew_bank": "chat_prefill",
+    "brew_fresh": "chat_prefill",
+    "brew_test": "chat_prefill"
+  },
+  "cells": {
+    "probe_swap": {
+      "raw": {
+        "clean": {
+          "n": 90,
+          "correct": 68,
+          "rate": 0.7555555555555555,
+          "ci": [
+            0.6575143545381369,
+            0.8326733660463373
+          ],
+          "reliable": false,
+          "median_p_answer": 0.42961615324020386,
+          "n_p_answer": 90,
+          "wrong_roles": {
+            "wrong": 22
+          }
+        }
+      },
+      "chat": {
+        "clean": {
+          "n": 90,
+          "correct": 68,
+          "rate": 0.7555555555555555,
+          "ci": [
+            0.6575143545381369,
+            0.8326733660463373
+          ],
+          "reliable": false,
+          "median_p_answer": 0.6751492321491241,
+          "n_p_answer": 90,
+          "wrong_roles": {
+            "wrong": 22
+          }
+        }
+      },
+      "chat_prefill": {
+        "clean": {
+          "n": 90,
+          "correct": 70,
+          "rate": 0.7777777777777778,
+          "ci": [
+            0.6815249725824009,
+            0.8512877671833321
+          ],
+          "reliable": false,
+          "median_p_answer": 0.6628831923007965,
+          "n_p_answer": 90,
+          "wrong_roles": {
+            "wrong": 20
+          }
+        }
+      }
+    },
+    "brew_test": {
+      "chat": {
+        "clean": {
+          "n": 600,
+          "correct": 163,
+          "rate": 0.27166666666666667,
+          "ci": [
+            0.2376100552829064,
+            0.3086285609369765
+          ],
+          "reliable": false,
+          "median_p_answer": 0.19926250725984573,
+          "n_p_answer": 600,
+          "wrong_roles": {
+            "intermediate": 290,
+            "other": 141,
+            "start": 6
+          }
+        },
+        "hop1": {
+          "n": 600,
+          "correct": 598,
+          "rate": 0.9966666666666667,
+          "ci": [
+            0.9879283904323899,
+            0.9990854224615877
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9856939911842346,
+          "n_p_answer": 600,
+          "wrong_roles": {
+            "answer": 2
+          }
+        },
+        "hop2": {
+          "n": 600,
+          "correct": 598,
+          "rate": 0.9966666666666667,
+          "ci": [
+            0.9879283904323899,
+            0.9990854224615877
+          ],
+          "reliable": true,
+          "median_p_answer": 0.9787096977233887,
+          "n_p_answer": 600,
+          "wrong_roles": {
+            "other": 2
+          }
+        }
+      },
+      "chat_prefill": {
+        "clean": {
+          "n": 600,
+          "correct": 225,
+          "rate": 0.375,
+          "ci": [
+            0.3371725730230294,
+            0.4144179103090233
+          ],
+          "reliable": false,
+          "median_p_answer": 0.19384180754423141,
+          "n_p_answer": 600,
+          "wrong_roles": {
+            "other": 200,
+            "start": 9,
+            "intermediate": 166
+          }
+        },
+        "hop1": {
+          "n": 600,
+          "correct": 590,
+          "rate": 0.9833333333333333,
+          "ci": [
+            0.9695944296370503,
+            0.9909223681456795
+          ],
+          "reliable": true,
+          "median_p_answer": 0.808981865644455,
+          "n_p_answer": 600,
+          "wrong_roles": {
+            "answer": 9,
+            "other": 1
+          }
+        },
+        "hop2": {
+          "n": 600,
+          "correct": 593,
+          "rate": 0.9883333333333333,
+          "ci": [
+            0.9761156900024707,
+            0.994337488446977
+          ],
+          "reliable": true,
+          "median_p_answer": 0.7963258028030396,
+          "n_p_answer": 600,
+          "wrong_roles": {
+            "other": 6,
+            "start": 1
+          }
+        }
+      }
+    }
+  },
+  "joint": {
+    "probe_swap": {
+      "raw": {},
+      "chat": {},
+      "chat_prefill": {}
+    },
+    "brew_test": {
+      "chat": {
+        "both_hops": {
+          "n": 600,
+          "correct": 596
+        },
+        "clean_given_both_hops": {
+          "rate": 0.27348993288590606,
+          "lo": 0.23923895141844603,
+          "hi": 0.31064221721007196,
+          "n": 596,
+          "correct": 163
+        }
+      },
+      "chat_prefill": {
+        "both_hops": {
+          "n": 600,
+          "correct": 583
+        },
+        "clean_given_both_hops": {
+          "rate": 0.37392795883361923,
+          "lo": 0.33559726280590657,
+          "hi": 0.41390924797996814,
+          "n": 583,
+          "correct": 218
+        }
+      }
+    }
+  },
+  "seconds": 101,
+  "git": {
+    "sha": "866d8c1ec398ef0837d669d607aaea1a601ec5d8",
+    "dirty": true
+  },
+  "command": "scripts/exp20_competence.py run --name qwen35_9b_v1"
+}

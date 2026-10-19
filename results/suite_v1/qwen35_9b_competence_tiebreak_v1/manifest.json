@@ -1,0 +1,31 @@
+{
+  "exp": "suite_v1",
+  "run": "qwen35_9b_competence_tiebreak_v1",
+  "written_utc": "2026-10-19T20:51:56Z",
+  "why": "Zach (2026-10-19): report Qwen3.5-9B competence on everything; is a smaller model that errs sometimes a better study candidate?",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "set": "tiebreak",
+  "items": {
+    "BLR": {
+      "file": "data/suite_v1/BLR.json",
+      "sha256": "147a395905a96f1a5d62fb45894a22cdf610d7af693a5a6a19a6117371722036"
+    },
+    "BRL": {
+      "file": "data/suite_v1/BRL.json",
+      "sha256": "9a53b7b8b659be955facac1923dbec7953d43afd714cb501308390a7da820d83"
+    }
+  },
+  "limit": null,
+  "format": "chat template, thinking off, 'Answer:' prefilled; the context, a newline, the question and 'Answer with a single word and nothing else.' in one user turn",
+  "prompts": "clean, C (cf_context + cf_question), O (off_context + question), hop1-hop3 (each step alone, with the item's context or the hop's own code)",
+  "judge": "the first answer of the item's kind in the first non-empty line of the greedy continuation (digits and number words for digits; the family's name / animal / fruit vocabulary otherwise)",
+  "generation": "greedy, 8 new tokens, prompts of one token length batched 64 at a time",
+  "answer_read": "one more forward per prompt, a digit answer's space token appended (the greedy reply's first token): p of the answer's first token, its logit minus the best other token's, and whether that read's top token is the greedy judge's answer",
+  "eligibility": "clean, C and O all answered (as exp09); all_steps: every prompt of the item answered; reliable family: Wilson 95% lower bound of clean >= 0.85"
+}

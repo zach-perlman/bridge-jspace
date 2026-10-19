@@ -1,0 +1,406 @@
+{
+  "families": {
+    "BL": {
+      "n": 400,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "cf": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "off": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        }
+      },
+      "eligible": 400,
+      "all_steps": 400,
+      "clean_given_all_hops": [
+        400,
+        400
+      ],
+      "reliable": true,
+      "clean_median_p_answer": 0.980915,
+      "clean_median_margin": 4.875,
+      "read_agrees_with_greedy": 1,
+      "hop_accuracy_by_bridge": {
+        "bee": 1,
+        "cat": 1,
+        "chicken": 1,
+        "cow": 1,
+        "dog": 1,
+        "duck": 1,
+        "frog": 1,
+        "goose": 1,
+        "horse": 1,
+        "lion": 1,
+        "mouse": 1,
+        "pig": 1,
+        "sheep": 1,
+        "spider": 1,
+        "turkey": 1,
+        "wolf": 1
+      }
+    },
+    "BR": {
+      "n": 400,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "cf": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "off": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        }
+      },
+      "eligible": 400,
+      "all_steps": 400,
+      "clean_given_all_hops": [
+        400,
+        400
+      ],
+      "reliable": true,
+      "clean_median_p_answer": 0.94616,
+      "clean_median_margin": 3.875,
+      "read_agrees_with_greedy": 1,
+      "hop_accuracy_by_bridge": {
+        "bee": 1,
+        "cat": 1,
+        "chicken": 1,
+        "cow": 1,
+        "dog": 1,
+        "duck": 1,
+        "frog": 1,
+        "goose": 1,
+        "horse": 1,
+        "lion": 1,
+        "mouse": 1,
+        "pig": 1,
+        "sheep": 1,
+        "spider": 1,
+        "turkey": 1,
+        "wolf": 1
+      }
+    },
+    "RL": {
+      "n": 400,
+      "cells": {
+        "clean": {
+          "rate": 0.9925,
+          "lo": 0.9781838919722998,
+          "hi": 0.9974461570370148,
+          "k": 397
+        },
+        "cf": {
+          "rate": 0.995,
+          "lo": 0.9819547100278873,
+          "hi": 0.9986277757784289,
+          "k": 398
+        },
+        "off": {
+          "rate": 0.9925,
+          "lo": 0.9781838919722998,
+          "hi": 0.9974461570370148,
+          "k": 397
+        },
+        "hop1": {
+          "rate": 0.995,
+          "lo": 0.9819547100278873,
+          "hi": 0.9986277757784289,
+          "k": 398
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        }
+      },
+      "eligible": 395,
+      "all_steps": 394,
+      "clean_given_all_hops": [
+        396,
+        398
+      ],
+      "reliable": true,
+      "clean_median_p_answer": 0.980535,
+      "clean_median_margin": 4.625,
+      "read_agrees_with_greedy": 0.9995,
+      "hop_accuracy_by_bridge": {
+        "bee": 1,
+        "cat": 1,
+        "chicken": 1,
+        "cow": 1,
+        "dog": 1,
+        "duck": 1,
+        "frog": 1,
+        "goose": 1,
+        "horse": 1,
+        "lion": 1,
+        "mouse": 0.958,
+        "pig": 1,
+        "sheep": 1,
+        "spider": 1,
+        "turkey": 1,
+        "wolf": 1
+      }
+    },
+    "RR": {
+      "n": 400,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "cf": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "off": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "hop1": {
+          "rate": 0.995,
+          "lo": 0.9819547100278873,
+          "hi": 0.9986277757784289,
+          "k": 398
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        }
+      },
+      "eligible": 400,
+      "all_steps": 398,
+      "clean_given_all_hops": [
+        398,
+        398
+      ],
+      "reliable": true,
+      "clean_median_p_answer": 0.94989,
+      "clean_median_margin": 3.938,
+      "read_agrees_with_greedy": 1,
+      "hop_accuracy_by_bridge": {
+        "bee": 1,
+        "cat": 1,
+        "chicken": 1,
+        "cow": 1,
+        "dog": 1,
+        "duck": 1,
+        "frog": 1,
+        "goose": 1,
+        "horse": 1,
+        "lion": 1,
+        "mouse": 0.958,
+        "pig": 1,
+        "sheep": 1,
+        "spider": 1,
+        "turkey": 1,
+        "wolf": 1
+      }
+    },
+    "NAMES": {
+      "n": 400,
+      "cells": {
+        "clean": {
+          "rate": 0.9925,
+          "lo": 0.9781838919722998,
+          "hi": 0.9974461570370148,
+          "k": 397
+        },
+        "cf": {
+          "rate": 0.9925,
+          "lo": 0.9781838919722998,
+          "hi": 0.9974461570370148,
+          "k": 397
+        },
+        "off": {
+          "rate": 0.9925,
+          "lo": 0.9781838919722998,
+          "hi": 0.9974461570370148,
+          "k": 397
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        }
+      },
+      "eligible": 394,
+      "all_steps": 394,
+      "clean_given_all_hops": [
+        397,
+        400
+      ],
+      "reliable": true,
+      "clean_median_p_answer": 0.8454550000000001,
+      "clean_median_margin": 3.0,
+      "read_agrees_with_greedy": 1,
+      "hop_accuracy_by_bridge": {
+        "Adam": 1,
+        "Ben": 1,
+        "Carl": 1,
+        "Dan": 1,
+        "David": 1,
+        "Eric": 1,
+        "Finn": 1,
+        "Frank": 1,
+        "Henry": 1,
+        "Hugo": 1,
+        "Ivan": 1,
+        "Jack": 1,
+        "James": 1,
+        "Kyle": 1,
+        "Leo": 1,
+        "Liam": 1,
+        "Luke": 1,
+        "Mark": 1,
+        "Max": 1,
+        "Noah": 1,
+        "Oscar": 1,
+        "Owen": 1,
+        "Paul": 1,
+        "Peter": 1,
+        "Ryan": 1,
+        "Sam": 1,
+        "Sean": 1,
+        "Tom": 1,
+        "Victor": 1,
+        "Will": 1
+      }
+    },
+    "CODE": {
+      "n": 400,
+      "cells": {
+        "clean": {
+          "rate": 0.9175,
+          "lo": 0.8864024616066086,
+          "hi": 0.940654483492658,
+          "k": 367
+        },
+        "cf": {
+          "rate": 0.95,
+          "lo": 0.9240357990869275,
+          "hi": 0.9674028243733599,
+          "k": 380
+        },
+        "off": {
+          "rate": 0.895,
+          "lo": 0.861108321155689,
+          "hi": 0.9213766927705632,
+          "k": 358
+        },
+        "hop1": {
+          "rate": 0.1125,
+          "lo": 0.0851480200886654,
+          "hi": 0.14722427637608715,
+          "k": 45
+        },
+        "hop2": {
+          "rate": 0.9975,
+          "lo": 0.9859763590327523,
+          "hi": 0.9995585635705656,
+          "k": 399
+        }
+      },
+      "eligible": 328,
+      "all_steps": 36,
+      "clean_given_all_hops": [
+        40,
+        44
+      ],
+      "reliable": true,
+      "clean_median_p_answer": 0.6721699999999999,
+      "clean_median_margin": 1.125,
+      "read_agrees_with_greedy": 0.9945,
+      "hop_accuracy_by_bridge": {
+        "apple": 0.636,
+        "banana": 0.714,
+        "berry": 0.536,
+        "boat": 0.562,
+        "book": 0.605,
+        "box": 0.5,
+        "car": 0.524,
+        "coin": 0.538,
+        "cup": 0.5,
+        "door": 0.5,
+        "fig": 0.562,
+        "hat": 0.66,
+        "key": 0.54,
+        "lamp": 0.55,
+        "lime": 0.559,
+        "map": 0.525,
+        "pear": 0.5,
+        "pen": 0.56,
+        "ring": 0.591,
+        "rose": 0.5,
+        "ship": 0.5,
+        "star": 0.526,
+        "tree": 0.562
+      }
+    }
+  },
+  "seconds_generate": 89,
+  "seconds_read": 45,
+  "seconds": 134
+}

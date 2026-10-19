@@ -1,0 +1,62 @@
+{
+  "exp": "exp20_competence",
+  "run": "qwen35_9b_v1",
+  "kind": "competence",
+  "written_utc": "2026-10-19T21:02:46Z",
+  "question": "Unedited and greedy, how often does the model answer each part B task correctly, in the format the runs feed it (raw text; brew: chat with 'Answer:') and in the chat format, whole and hop by hop?",
+  "why": "Zach (2026-10-19): report Qwen3.5-9B competence on everything; is a smaller model that errs sometimes a better study candidate? (B1 and BREW items, all three formats)",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "tasks": {
+    "probe_swap": {
+      "file": "data/probe_swap.json",
+      "sha256": "a0edd27ca23f7b4d0fbe90448c2ddcc7457a3d812121bf024ed12a032ff86796",
+      "family": null
+    },
+    "brew_test": {
+      "file": "data/brew_test.json",
+      "sha256": "40f07001d080af30bbd6396c554f90e2b350108f7a0bfb7e7bae1a5fc1e250d0",
+      "family": null
+    }
+  },
+  "limit": "every item",
+  "formats": {
+    "raw": "raw text, no chat template, as the part B runs (probe_swap stripped of its trailing space, as exp02's main runs); none for brew",
+    "chat": "chat template, enable_thinking=False, generation prompt, nothing prefilled. The statement becomes a question after the same context, then ' Answer with a single word and nothing else.' (brew: its own prompt, unchanged; probe_swap: 'Fill in the blank. Answer with only the missing word or words and nothing else.', a blank line, the sentence without 'Fact: ' and ' ___')",
+    "chat_prefill": "as chat, with the assistant turn prefilled 'Answer:' (brew's format, exp03's render)"
+  },
+  "as_run": {
+    "probe_swap": "raw",
+    "R": "raw",
+    "B": "raw",
+    "L": "raw",
+    "RL": "raw",
+    "LM": "chat_prefill",
+    "RM": "chat_prefill",
+    "BT": "chat_prefill",
+    "RT": "chat_prefill",
+    "brew_bank": "chat_prefill",
+    "brew_fresh": "chat_prefill",
+    "brew_test": "chat_prefill"
+  },
+  "kinds": {
+    "clean": "the item's prompt",
+    "cf": "exp09 only: its C prompt (the bridge set to X; answer X's capital or colour), as its eligibility",
+    "off": "exp09 only: its O prompt (X's and Z's holders swap; the answer stays)",
+    "hop1": "exp09: '<context> <city> is located in' (R, RL) or '<context> <person> lives in' (B, L) -> the bridge (chat: 'In which country is <city> located?' / 'In which country does <person> live?'); brew: 'You stir the potion once.' -> the intermediate. (smoke_v1's wording, '<context> The country where <city> is located is', drew raw continuations such as 'the same as the country where Bob lives' and was replaced)",
+    "hop2": "exp09: '<context> The capital of <bridge> is' (R, B) or '<context> <bridge>'s colour is' (L, RL) -> the answer; brew: once, starting from the intermediate -> the answer. probe_swap: no hop prompts"
+  },
+  "judge": {
+    "probe_swap": "exp13's judge on the continuation: C (the answer as a word sequence in the first clause) and not ambiguous (the swap answer not there too)",
+    "others": "exp03's answer_colour: the first word of the set in the first non-empty line (capitals: R, B; countries: exp09's hop1; colours: brew, L, RL), equal to the expected answer"
+  },
+  "generation": "greedy, 16 new tokens, prompts of one token length batched 64 at a time (Model.generate_batch, no edits)",
+  "reported": "per task, format and kind: n, correct, Wilson 95% interval; the first step's probability of the answer's first token (as written, capitalised or lowercase; after a space except at the start of a chat reply); wrong answers by role (the bridge's, X's or Z's, other). exp09: all three of clean, cf and off (its eligibility) and the share of clean-correct items among those with both hops right",
+  "reading_aid": "a cell is called reliable if its Wilson lower bound is at least 0.85 (a reading aid proposed by the agent, not a decision rule fixed by a human)",
+  "baselines": "chance among the three in-context options (exp09: 1/3); brew: 1/12 palette colours, or the answer of a one-stir shortcut (the intermediate) and the start, reported as roles"
+}

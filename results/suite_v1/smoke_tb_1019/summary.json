@@ -1,0 +1,121 @@
+{
+  "families": {
+    "BLR": {
+      "n": 4,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "cf": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "off": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "hop3": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        }
+      },
+      "eligible": 4,
+      "all_steps": 4,
+      "clean_given_all_hops": [
+        4,
+        4
+      ],
+      "reliable": false,
+      "clean_median_p_answer": 0.9378150000000001,
+      "clean_median_margin": 2.875,
+      "read_agrees_with_greedy": 1,
+      "hop_accuracy_by_bridge": {
+        "chicken": 1,
+        "sheep": 1,
+        "spider": 1,
+        "wolf": 1
+      }
+    },
+    "BRL": {
+      "n": 4,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "cf": {
+          "rate": 0.75,
+          "lo": 0.3006360524426366,
+          "hi": 0.9544139373553637,
+          "k": 3
+        },
+        "off": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "hop3": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        }
+      },
+      "eligible": 3,
+      "all_steps": 3,
+      "clean_given_all_hops": [
+        4,
+        4
+      ],
+      "reliable": false,
+      "clean_median_p_answer": 0.95302,
+      "clean_median_margin": 3.875,
+      "read_agrees_with_greedy": 1,
+      "hop_accuracy_by_bridge": {
+        "chicken": 1,
+        "sheep": 1,
+        "spider": 1,
+        "wolf": 1
+      }
+    }
+  },
+  "seconds_generate": 13,
+  "seconds_read": 7,
+  "seconds": 20
+}

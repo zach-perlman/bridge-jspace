@@ -1,0 +1,151 @@
+{
+  "exp": "suite_v1",
+  "run": "competence_dev_v1",
+  "written_utc": "2026-10-19T20:30:33Z",
+  "why": "Zach (2026-10-19): can the prompts be made harder? difficulty pilot on dev items only (entities 3/5, filler 0/8), to see which knob moves accuracy and margins",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "set": "dev",
+  "items": {
+    "BL_e3f0": {
+      "file": "data/suite_v1_dev/BL_e3f0.json",
+      "sha256": "ef5dadae3a148690d7dae278a8775235ffa1ffa68c5b467b8e5849d68642dec3"
+    },
+    "BR_e3f0": {
+      "file": "data/suite_v1_dev/BR_e3f0.json",
+      "sha256": "11c5e909f70975345a6c6fdf3573352d407ace28abb1f314813ed5444c0e8a8e"
+    },
+    "RL_e3f0": {
+      "file": "data/suite_v1_dev/RL_e3f0.json",
+      "sha256": "48d63552eea4d377ebe19b77b6cf296735f10a9173f3622f01bdd5e7d931d7a0"
+    },
+    "RR_e3f0": {
+      "file": "data/suite_v1_dev/RR_e3f0.json",
+      "sha256": "48fb54bc5d05b56b06442d41a903626b46558106b0ba45bff515597c0fd6e934"
+    },
+    "NAMES_e3f0": {
+      "file": "data/suite_v1_dev/NAMES_e3f0.json",
+      "sha256": "9b0a09d4b21aa83eb5c179693c73e3414ea26345bc195376beeb944f6af22bb9"
+    },
+    "CODE_e3f0": {
+      "file": "data/suite_v1_dev/CODE_e3f0.json",
+      "sha256": "971a1bd93ad430ad763468a13d843589a5ccd2e98a5dd2bfd7445d6566e2c73a"
+    },
+    "BLR_e3f0": {
+      "file": "data/suite_v1_dev/BLR_e3f0.json",
+      "sha256": "1d6234eb64d141c1ef871d4ecb67e56e29228147aedb16d254f837a7649e56db"
+    },
+    "BRL_e3f0": {
+      "file": "data/suite_v1_dev/BRL_e3f0.json",
+      "sha256": "dc60b21a120fd18c35b903bc44a22af8f33f34cf5937c396d63b4287ba7a4b1a"
+    },
+    "BL_e5f0": {
+      "file": "data/suite_v1_dev/BL_e5f0.json",
+      "sha256": "0eb74a7ffd284df98022eeaffcc914c1aa37ba86966a147f7cb90bce720fc48d"
+    },
+    "BR_e5f0": {
+      "file": "data/suite_v1_dev/BR_e5f0.json",
+      "sha256": "c8e620d9aa93cd28394227f993e3be6be048e3b7464ca36febb732b8a510a97d"
+    },
+    "RL_e5f0": {
+      "file": "data/suite_v1_dev/RL_e5f0.json",
+      "sha256": "7b3aa4dfcded43bc35a558d54c38201eab1b4e57a8c682ec6e31f5816ff3c12c"
+    },
+    "RR_e5f0": {
+      "file": "data/suite_v1_dev/RR_e5f0.json",
+      "sha256": "ae2e297f1e2b39c2136511dd97caba22d0e205bd120dea97ef2bbe9bfe176a58"
+    },
+    "NAMES_e5f0": {
+      "file": "data/suite_v1_dev/NAMES_e5f0.json",
+      "sha256": "734f59f7bd4cb8eb34010d4f5dfdebfe102a04a17bd30db17b2303541c666d68"
+    },
+    "CODE_e5f0": {
+      "file": "data/suite_v1_dev/CODE_e5f0.json",
+      "sha256": "e27a37049e8c684a121f32d70d83646fbf93634766c3ac779909d7f0eb365bd9"
+    },
+    "BLR_e5f0": {
+      "file": "data/suite_v1_dev/BLR_e5f0.json",
+      "sha256": "be01b68c8443803924d6fb159bf3d5d6f596d1a07f88b977f51a0baf3fd7c59d"
+    },
+    "BRL_e5f0": {
+      "file": "data/suite_v1_dev/BRL_e5f0.json",
+      "sha256": "cdab78e6f67e4e194a4b11d93b205b7a6911b7ec5c00389b21c5bf80400f563a"
+    },
+    "BL_e3f8": {
+      "file": "data/suite_v1_dev/BL_e3f8.json",
+      "sha256": "b652c71871d6c7765ee82e7d1168c040611d243db5ce9d32ca9297aad3314dad"
+    },
+    "BR_e3f8": {
+      "file": "data/suite_v1_dev/BR_e3f8.json",
+      "sha256": "44515be55ad59a3c2554fbcbe50b255c36522067f98e2269fc10b826f86b15ba"
+    },
+    "RL_e3f8": {
+      "file": "data/suite_v1_dev/RL_e3f8.json",
+      "sha256": "a41d7a82cf2d6a79c92ce9a78a9cb537b8fc02acc5ade7f70ed33b4d6ca54aa4"
+    },
+    "RR_e3f8": {
+      "file": "data/suite_v1_dev/RR_e3f8.json",
+      "sha256": "92ab542160c3bff1bfb550d388c2051b2d82fb87cb5c0154248b1f8313bf3aae"
+    },
+    "NAMES_e3f8": {
+      "file": "data/suite_v1_dev/NAMES_e3f8.json",
+      "sha256": "f930ea7b11b2a6f0735de650bc85fb26ce64a5a9b4d36b7a1eecf57898f3e9b9"
+    },
+    "CODE_e3f8": {
+      "file": "data/suite_v1_dev/CODE_e3f8.json",
+      "sha256": "3479dca33279a0ff8907e9a499e48ec001e306f959b772fb0c72fee704ea2b30"
+    },
+    "BLR_e3f8": {
+      "file": "data/suite_v1_dev/BLR_e3f8.json",
+      "sha256": "e13b0ee5e3b9a0185cb74bbdc76f0e099b76dc7acc715f29e2c792e356231075"
+    },
+    "BRL_e3f8": {
+      "file": "data/suite_v1_dev/BRL_e3f8.json",
+      "sha256": "c36fdba11899aef484da76e23bf2aff6c2e7d4e8e1844f42cfaeec46230c8e02"
+    },
+    "BL_e5f8": {
+      "file": "data/suite_v1_dev/BL_e5f8.json",
+      "sha256": "36dfac9d6b52f73697e1bbac6de19d1e5454f5356f947be17127ec34cf12222d"
+    },
+    "BR_e5f8": {
+      "file": "data/suite_v1_dev/BR_e5f8.json",
+      "sha256": "1cc539dc83a863154fd65a25724d033ef4d8428018b86f46630b6aa38da4cebb"
+    },
+    "RL_e5f8": {
+      "file": "data/suite_v1_dev/RL_e5f8.json",
+      "sha256": "4c93f26fc2dcb619a64edd4c61e93a3ef8fec2cd4660dcfe0db58b38218f04b2"
+    },
+    "RR_e5f8": {
+      "file": "data/suite_v1_dev/RR_e5f8.json",
+      "sha256": "841f19e414d979f4deb5bba25dccdb55fd4e8783ab284d2b17f2a6293fe1948e"
+    },
+    "NAMES_e5f8": {
+      "file": "data/suite_v1_dev/NAMES_e5f8.json",
+      "sha256": "c56d9ed25164fd4a482739afb90449336a341828f80efc5bfaa5c286130448bc"
+    },
+    "CODE_e5f8": {
+      "file": "data/suite_v1_dev/CODE_e5f8.json",
+      "sha256": "fa501fc1a475db94a96f115e3f7a1ce9ed9b8e4de8addde7df5cd5051f263970"
+    },
+    "BLR_e5f8": {
+      "file": "data/suite_v1_dev/BLR_e5f8.json",
+      "sha256": "a5a150ba4e2a637d067a64f888641fde3bd4ff683684608e5595f9806d915c3d"
+    },
+    "BRL_e5f8": {
+      "file": "data/suite_v1_dev/BRL_e5f8.json",
+      "sha256": "2c55eec08fe69c91b024305d604c31f4340f922817c5831e80d57272ec8c9662"
+    }
+  },
+  "limit": null,
+  "format": "chat template, thinking off, 'Answer:' prefilled; the context, a newline, the question and 'Answer with a single word and nothing else.' in one user turn",
+  "prompts": "clean, C (cf_context + cf_question), O (off_context + question), hop1-hop3 (each step alone, with the item's context or the hop's own code)",
+  "judge": "the first answer of the item's kind in the first non-empty line of the greedy continuation (digits and number words for digits; the family's name / animal / fruit vocabulary otherwise)",
+  "generation": "greedy, 8 new tokens, prompts of one token length batched 64 at a time",
+  "answer_read": "one more forward per prompt, a digit answer's space token appended (the greedy reply's first token): p of the answer's first token, its logit minus the best other token's, and whether that read's top token is the greedy judge's answer",
+  "eligibility": "clean, C and O all answered (as exp09); all_steps: every prompt of the item answered; reliable family: Wilson 95% lower bound of clean >= 0.85"
+}
