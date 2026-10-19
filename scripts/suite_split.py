@@ -38,6 +38,7 @@ import time
 from pathlib import Path
 from typing import Any
 
+import numpy as np
 import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
@@ -71,6 +72,7 @@ COMPETENCE = {  # (target, wording) -> the suite_v1 competence runs whose items.
     ("qwen3.5-9b", "A"): {"main": "qwen35_9b_competence_v2", "tiebreak": "qwen35_9b_competence_tiebreak_v1"},
     ("qwen3.5-9b", "B"): {"main": "qwen35_9b_competence_b_v1", "tiebreak": "qwen35_9b_competence_b_v1"},
 }
+CONCENTRATED = 2.0  # a part "carries" the bridge if it moves the answer at least this many times its share of the copy
 MIN_FRAC = 0.10  # a window layer's copy moves the answer at least this far toward C's, on average
 SCENE_GROUP = {"BL": "core", "BR": "core", "RL": "core", "RR": "core", "BLR": "tie", "BRL": "tie"}
 LOOKUP_USED = ("BL", "RL", "BLR", "NAMES", "CODE")  # families whose bridge is used by a lookup in the prompt
@@ -384,19 +386,21 @@ def stage_manifest_parts(name: str, map_run: str, why: str) -> None:
     m["decision"] = {
         "measures": "primary: frac (the logit difference moved, as a fraction of the way to C); secondary: flips (top "
         "token X's answer). Per case, each averaged over the window's layers; paired bootstraps over cases",
-        "parts": "per family and measure (paired bootstrap 95% intervals): J-specific if jspace - jspace_matched is "
-        "above 0 (the J-space part moves the answer more than an equal-sized, equally aligned piece of the copy); rest "
-        "larger if not_jspace - jspace is above 0. Verdict: inside (J-specific, rest not larger), both (J-specific, "
-        "rest larger), outside (not J-specific, rest larger), neither. exp09's rule (against the random null only) is "
-        "reported as verdict_exp09. Chosen after the smoke run, before any full run: with the continuous measure the "
-        "J-space part beat its random null by 2-5 points in every family at n=8 while carrying about its share of the "
-        "copy's variance, so 'beats its null' no longer separates a J-space-carried bridge from any piece of the copy",
-        "claim_1": "variables used by a lookup in the prompt are carried outside the J-space: refuted if BL is inside "
-        "or both (primary measure); supported if BL is outside; the other lookup-used families (RL, BLR, NAMES, CODE) "
-        "reported the same way",
-        "tie_break": "BLR and BRL: 'what uses the bridge decides' if BLR is outside and BRL inside or both; 'where the "
-        "answer comes from decides' if BLR is inside or both and BRL outside; otherwise mixed, reported family by "
-        "family",
+        "parts": "per family and measure: the J-space part's concentration = sum over cases of its effect / sum of "
+        "(its share of the copy's variance x the full copy's effect), with a case-bootstrap 95% interval (1: it does "
+        f"what its size predicts). Verdict: inside if the lower bound is above {CONCENTRATED} (it carries at least "
+        f"{CONCENTRATED:g}x its share); outside if the upper bound is below {CONCENTRATED} and not_jspace - jspace is "
+        "above 0 (paired bootstrap); otherwise inconclusive. The same for lens2 (the bridge's and X's own word "
+        "vectors). Reported, not decisive: jspace - jspace_matched (an equal-sized, equally aligned piece of the copy) "
+        "and exp09's rule against the random null (verdict_exp09). Chosen after the smoke runs (8 scenes), before any "
+        "full run: with the continuous measure, the J-space part beat its random null (2-5 points) and the matched "
+        "piece (0.3-2 points) in every family while moving the answer about its share of the copy's variance (8-13%), "
+        "so a significance test alone would call any small piece of the copy 'inside' at n=150",
+        "claim_1": "variables used by a lookup in the prompt are carried outside the J-space: refuted if BL is inside; "
+        "supported if BL is outside; the other lookup-used families (RL, BLR, NAMES, CODE) reported the same way; BR, "
+        "RR and BRL (recall-used) are the comparison",
+        "tie_break": "BLR and BRL: 'what uses the bridge decides' if BLR is outside and BRL inside; 'where the answer "
+        "comes from decides' if BLR is inside and BRL outside; otherwise mixed, reported family by family",
         "empty_window": "a family with an empty window is not interpreted",
     }  # fmt: skip
     path.write_text(json.dumps(m, indent=2) + "\n")
@@ -487,7 +491,19 @@ def scores(outcomes: list[dict], measure: str, **where) -> dict[str, float]:
     return {n: statistics.mean(v) for n, v in vals.items()}
 
 
-def verdicts(outcomes: list[dict], measure: str) -> dict:
+def concentration(part: dict[str, float], full: dict[str, float], share: dict[str, float]) -> tuple[float, ...]:
+    """sum(part) / sum(share x full) over cases, with a case-bootstrap 95% interval."""
+    names = sorted(set(part) & set(full) & set(share))
+    p = np.array([part[n] for n in names])
+    expect = np.array([share[n] * full[n] for n in names])
+    if not names or expect.sum() <= 0:
+        return (float("nan"), float("nan"), float("nan"))
+    idx = np.random.default_rng(BOOT_SEED).integers(0, len(names), size=(N_BOOT, len(names)))
+    boots = p[idx].sum(1) / np.maximum(expect[idx].sum(1), 1e-12)
+    return (float(p.sum() / expect.sum()), float(np.percentile(boots, 2.5)), float(np.percentile(boots, 97.5)))
+
+
+def verdicts(outcomes: list[dict], measure: str, fve: list[dict]) -> dict:
     s = {
         (p, n): scores(outcomes, measure, part=p, null=n, source="cf")
         for p in (*PARTS, *MATCHED, "full")
@@ -504,21 +520,27 @@ def verdicts(outcomes: list[dict], measure: str) -> dict:
     off = scores(outcomes, measure, part="full", source="off")
     out["means"]["O full"] = statistics.mean(off.values()) if off else None
     for inside, outside in (("lens2", "not_lens2"), ("jspace", "not_jspace")):
+        per_case: dict[str, list[float]] = collections.defaultdict(list)
+        for f in fve:
+            if f["what"] == inside:
+                per_case[f["name"]].append(f["share"])
+        share = {n: statistics.mean(v) for n, v in per_case.items()}
         d = {f"{outside} - {inside}": diff((outside, False), (inside, False)),
              f"{inside} - {inside}_matched": diff((inside, False), (f"{inside}_matched", False)),
              f"{inside} - its null": diff((inside, False), (inside, True)),
              f"{outside} - its null": diff((outside, False), (outside, True))}  # fmt: skip
-        specific = d[f"{inside} - {inside}_matched"][1] > 0
-        rest_larger = d[f"{outside} - {inside}"][1] > 0
-        verdict = {(True, False): "inside", (True, True): "both", (False, True): "outside"}.get(
-            (specific, rest_larger), "neither"
-        )
+        conc = concentration(s[inside, False], s["full", False], share)
+        verdict = "inconclusive"
+        if conc[1] > CONCENTRATED:
+            verdict = "inside"
+        elif conc[2] < CONCENTRATED and d[f"{outside} - {inside}"][1] > 0:
+            verdict = "outside"
         old = "both or neither"
         if d[f"{outside} - {inside}"][1] > 0 and d[f"{inside} - its null"][1] <= 0:
             old = "outside"
         elif d[f"{outside} - {inside}"][2] < 0 and d[f"{outside} - its null"][1] <= 0:
             old = "inside"
-        out[inside] = {**d, "verdict": verdict, "verdict_exp09": old}
+        out[inside] = {**d, "concentration": conc, "verdict": verdict, "verdict_exp09": old}
     return out
 
 
@@ -529,15 +551,15 @@ def summarize_parts(outcomes: list[dict], fve: list[dict], window: dict) -> dict
             out["families"][fam] = {"window": [], "verdicts": "not interpreted (empty window)"}
             continue
         rows = [o for o in outcomes if o["family"] == fam]
+        mine = [f for f in fve if f.get("family") == fam]
         shares: dict[str, list[float]] = collections.defaultdict(list)
-        for f in fve:
-            if f.get("family") == fam:
-                shares[f["what"]].append(f["share"])
+        for f in mine:
+            shares[f["what"]].append(f["share"])
         out["families"][fam] = {
             "window": win,
             "n": len({o["name"] for o in rows}),
-            "frac": verdicts(rows, "frac"),
-            "flip": verdicts(rows, "flip"),
+            "frac": verdicts(rows, "frac", mine),
+            "flip": verdicts(rows, "flip", mine),
             "variance_share_median": {k: statistics.median(v) for k, v in shares.items()},
         }
     fam = out["families"]
@@ -550,13 +572,14 @@ def summarize_parts(outcomes: list[dict], fve: list[dict], window: dict) -> dict
         if v("BL") is None:
             claims["claim_1"] = "BL not interpreted (empty window)"
         else:
-            claims["claim_1"] = {"outside": "supported (BL outside)", "inside": "refuted (BL inside)",
-                                 "both": "refuted (BL both)"}.get(v("BL") or "", f"not refuted, not supported (BL {v('BL')})")  # fmt: skip
-        claims["lookup_used"] = {f: v(f) for f in LOOKUP_USED if f in fam}
+            claims["claim_1"] = {"outside": "supported (BL outside)", "inside": "refuted (BL inside)"}.get(
+                v("BL") or "", f"not refuted, not supported (BL {v('BL')})"
+            )
+        claims["by_family"] = {f: v(f) for f in fam}
     if "BLR" in fam and "BRL" in fam:
         a, b = v("BLR"), v("BRL")
-        claims["tie_break"] = ("what uses the bridge decides" if a == "outside" and b in ("inside", "both") else
-                               "where the answer comes from decides" if a in ("inside", "both") and b == "outside" else
+        claims["tie_break"] = ("what uses the bridge decides" if (a, b) == ("outside", "inside") else
+                               "where the answer comes from decides" if (a, b) == ("inside", "outside") else
                                f"mixed: BLR {a}, BRL {b}")  # fmt: skip
     out["claims"] = claims
     out["chance_share"] = statistics.median(f["share"] for f in fve if f["what"] == "chance")
@@ -585,8 +608,10 @@ def write_parts_md(path: Path, run: str, summary: dict) -> None:
                 + ", ".join(f"{k} {100 * x:.0f}%" for k, x in d["means"].items() if x is not None)
             )
             for part in ("jspace", "lens2"):
-                lines.append(f"- {part}: " + "; ".join(f"{k} {pts(x)}" for k, x in d[part].items() if not k.startswith("verdict"))
-                             + f"; verdict: {d[part]['verdict']} (exp09's rule: {d[part]['verdict_exp09']})")  # fmt: skip
+                c = d[part]["concentration"]
+                diffs = "; ".join(f"{k} {pts(x)}" for k, x in d[part].items() if " - " in k)
+                lines.append(f"- {part}: concentration {c[0]:.2f} [{c[1]:.2f}, {c[2]:.2f}]; {diffs}; verdict: "
+                             f"{d[part]['verdict']} (exp09's rule: {d[part]['verdict_exp09']})")  # fmt: skip
             lines.append("")
         lines += [
             "Median share of delta's variance: "
