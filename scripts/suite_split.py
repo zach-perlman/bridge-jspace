@@ -162,8 +162,11 @@ def unedited_ld(model, c: dict) -> None:
     c["ld_clean"], c["ld_cf"] = (float(lg[c["tok_b"]] - lg[c["tok_A"]]) for lg in logits)
 
 
-def read_jobs(model, c: dict, jobs: list[tuple[dict, dict]], outcomes: list[dict], validate: bool = False) -> None:
-    """An item's edited runs (tags, edits) in batches: the answer read, and with `validate` 8 greedy tokens too."""
+def read_jobs(
+    model, c: dict, jobs: list[tuple[dict, dict]], outcomes: list[dict], validate: bool = False, judge=None
+) -> None:
+    """An item's edited runs (tags, edits) in batches: the answer read, and with `validate` 8 greedy tokens too
+    (judged by `judge(text)`, default suite_v1's judge for the item's answer kind)."""
     read_ids = torch.tensor([c["read_ids"]["clean"]], device="cuda")
     gen_ids = torch.tensor([c["ids"]["clean"]], device="cuda")
     span = c["ld_cf"] - c["ld_clean"]
@@ -178,9 +181,12 @@ def read_jobs(model, c: dict, jobs: list[tuple[dict, dict]], outcomes: list[dict
             o = {"family": c["family"], "name": c["id"], **tags, "role": role(int(lg.argmax()), c),
                  "ld": round(ld, 3), "frac": round((ld - c["ld_clean"]) / span, 4)}  # fmt: skip
             if texts is not None:
-                said = S.said(texts[row], c["answer_kind"])
+                said = judge(texts[row]) if judge else S.said(texts[row], c["answer_kind"])
+                said = said.lower() if said else None
                 o["greedy"] = texts[row]
-                o["greedy_role"] = "b" if said == c["cf_answer"] else "A" if said == c["answer"] else "other"
+                o["greedy_role"] = (
+                    "b" if said == c["cf_answer"].lower() else "A" if said == c["answer"].lower() else "other"
+                )
             outcomes.append(o)
 
 
@@ -304,13 +310,17 @@ def families_in(outcomes: list[dict]) -> list[str]:
     return list(dict.fromkeys(o["family"] for o in outcomes))
 
 
+def groups_in(outcomes: list[dict]) -> list[str]:
+    return list(dict.fromkeys(o["group"] for o in outcomes if "group" in o))
+
+
 def map_rates(outcomes: list[dict]) -> list[dict]:
     cells: dict[tuple, list[dict]] = collections.defaultdict(list)
     for o in outcomes:
         cells[(o["family"], o["group"], o["layer"], o["source"])].append(o)
     rates = []
     for fam in families_in(outcomes):
-        for group in GROUPS:
+        for group in groups_in(outcomes):
             for layer in MAP_LAYERS:
                 cf, off = cells.get((fam, group, layer, "cf"), []), cells.get((fam, group, layer, "off"), [])
                 if not cf:
@@ -330,7 +340,7 @@ def frac_windows(outcomes: list[dict]) -> dict:
         cells[(o["family"], o["group"], o["layer"], o["source"])][o["name"]] = o["frac"]
     out: dict[str, dict[str, list[int]]] = {}
     for fam in families_in(outcomes):
-        for group in GROUPS:
+        for group in groups_in(outcomes):
             for layer in MAP_LAYERS:
                 cf, off = cells.get((fam, group, layer, "cf"), {}), cells.get((fam, group, layer, "off"), {})
                 names = sorted(set(cf) & set(off))
