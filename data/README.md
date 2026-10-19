@@ -4,6 +4,40 @@ What every experiment reads, where it comes from, and how much of it there is. C
 `make data-report` (`scripts/data_report.py`, checked by `tests/test_data_report.py`); provenance, licences and
 sha256 pins are in [SOURCES.md](SOURCES.md) and `src/bridge_jspace/pins.py`.
 
+## Part B's prompt suite v1 (from 2026-10-19; the headline data)
+
+`data/suite_v1/` (generator and checks: `scripts/suite_v1.py`; page with examples: `figures/suite_v1/index.html`).
+Chat format (one user turn, thinking off, "Answer:" prefilled). Every item has a clean prompt, a counterfactual C that
+changes only the bridge, an off-path control O, and each step alone; C and O line up with the clean prompt token for
+token (2,400 of 2,400). No place relations and no answer tied one-to-one to its bridge (the France -> Paris problem).
+
+| Family | Bridge from → used by → answer from | Answer | Items | Clean right | Eligible* | Bridges |
+|---|---|---|---|---|---|---|
+| BL | bound in the prompt → a lookup in the prompt → prompt | locker (odd digit) | 400 | 400 | 400 | 16 animals |
+| BR | bound in the prompt → a recalled fact → memory | legs (2/4/6/8) | 400 | 400 | 400 | 16 animals |
+| RL | recalled from a cue → a lookup in the prompt → prompt | locker (odd digit) | 400 | 398 | 398 | 16 animals |
+| RR | recalled from a cue → a recalled fact → memory | legs (2/4/6/8) | 400 | 400 | 398 | 16 animals |
+| NAMES | bound → a lookup → prompt ("Who is the sister of Alice's partner?") | a name | 400 | 400 | 400 | 30 names |
+| CODE | bound in code → a lookup in code → code | digit 1-9 | 400 | 400 | 399 | 23 words |
+| BREW | prompt → a lookup → a lookup → prompt (kept: `brew_test.json`, `brew_fresh.json`) | 12 colours | 800 | 87-88% | exp04's rule | 12 colours |
+
+\* clean, C, O and both steps alone answered (results/suite_v1/competence_v1). BL/BR/RL/RR share one context per scene
+(people's pets and the pets' lockers) and differ only in the question, so they are paired item by item. Lockers are odd
+digits and legs even (the answers never collide); legs is many-to-one, so an answer cannot stand in for its bridge. The
+recall cues each name one animal ("known for mooing"; bleating, stripes, mane and buzzing were dropped as ambiguous);
+"squeaking" is answered "pig" on 2 items with a pig present, which the eligibility rule removes.
+
+**How many items:** every item for competence; patching runs sample at least 150 eligible items per family (a 95%
+interval of at most ±8 points on a rate; ±4 on a paired part-vs-rest difference; ±11 between two families).
+
+**B1 (the paper's 90) is kept unchanged as a reference**, annotated in `data/suite_v1/B1_annotations.json`
+(`scripts/suite_v1_b1_annotations.py`): 28 places, 8 people and 25 other items have an answer tied one-to-one to the
+bridge; 29 are clean (non-place, answer shared by many bridges; 25 eligible in the verified run).
+
+**Retired from headline runs** (files kept, results stand as earlier evidence): `bind_recall.json` R and B
+(country -> capital), `bind_lookup*.json` and `recall_lookup.json` (countries; cities recalled to countries),
+`use_source.json` (capitals and landmark cities; RM not reliable), `arith.json` (the copy carries too little).
+
 ## Datasets
 
 | Dataset | File | Origin | Size | Used by |

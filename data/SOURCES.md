@@ -16,6 +16,8 @@ Provenance, revisions, checksums and licences. What each dataset is and how much
 | `lens_eval_multihop.json` | [anthropics/jacobian-lens](https://github.com/anthropics/jacobian-lens) `data/evaluations/lens-eval-multihop.json` | `581d398613e5602a5af361e1c34d3a92ea82ba8e` | `50b7e4c9255291c0ca2a8e94615be9f44531fa57bb1a844e4f9616056d987416` | Apache-2.0 |
 | `wikitext103_test.json` | [Salesforce/wikitext](https://huggingface.co/datasets/Salesforce/wikitext) `wikitext-103-raw-v1/test-00000-of-00001.parquet` (sha256 `5f1bea067869d04849c0f975a2b29c4ff47d867f484f5010ea5e861eab246d91`), its `text` column in order, converted to JSON (see the file's `meta`) | `b08601e04326c79dfdd32d625aee71d232d685c3` | `a6b5b17a576932fbb570a96b0f5b6a65ced408690a2dce749a8c56f980bbcc0f` | CC BY-SA 3.0 |
 | `entity_prompts.json` | Written for this repo by the coding agent (Claude, in a Cursor session); see the file's `meta` block | - | - | - |
+| `suite_v1/*.json` (BL, BR, RL, RR, NAMES, CODE) | Generated for this repo: `scripts/suite_v1.py make` (seed 101; facts and cues written in the script, checked by the model's competence on each step alone) | - | see `results/suite_v1/competence_v1/manifest.json` | - |
+| `suite_v1/B1_annotations.json` | Derived: `scripts/suite_v1_b1_annotations.py` over `probe_swap.json` | - | - | - |
 | `entity_prompts_topup.json`, `entity_prompts_more/part*.json` | Written for this repo (rounds 2 and 3, coding agents in Cursor sessions); see each file's `meta` block | - | - | - |
 
 `probe_swap.json` is the 90 two-hop prompts of the probe-swap experiment in Gurnee et al. (2026),

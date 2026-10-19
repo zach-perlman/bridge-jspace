@@ -1,0 +1,816 @@
+{
+ "about": "B1 (the paper's 90 two-hop items, data/probe_swap.json, unchanged) annotated for part B's analyses: the bridge's kind,\nand whether the answer is tied one-to-one to the bridge (the France -> Paris risk: capitals, languages, first names,\nsymbols, ordinals, unique parts) or shared by many bridges (states of matter, colours, counts, seasons).",
+ "source": "data/probe_swap.json (unchanged)",
+ "items": [
+  {
+   "name": "amazon-language",
+   "category": "multihop",
+   "bridge": "Brazil",
+   "answer": "Portuguese",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "animal-cover-turtle",
+   "category": "animal-cover",
+   "bridge": "turtle",
+   "answer": "shell",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "animal-legs-buffalo2",
+   "category": "animal-legs",
+   "bridge": "buffalo",
+   "answer": "four",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "animal-nose-elephant",
+   "category": "animal-nose",
+   "bridge": "elephant",
+   "answer": "trunk",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "atomic-80-state",
+   "category": "multihop",
+   "bridge": "mercury",
+   "answer": "liquid",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "basketball-players",
+   "category": "multihop",
+   "bridge": "basketball",
+   "answer": "5",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "beverage-source-wine",
+   "category": "beverage-source",
+   "bridge": "wine",
+   "answer": "grape",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "bird-color-swan",
+   "category": "bird-color",
+   "bridge": "swan",
+   "answer": "white",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "bird-country-eagle",
+   "category": "bird-country",
+   "bridge": "eagle",
+   "answer": "America",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "bird-time-owl",
+   "category": "bird-time",
+   "bridge": "owl",
+   "answer": "night",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "birthstone-emerald-month",
+   "category": "multihop",
+   "bridge": "May",
+   "answer": "5",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "chem-atmosphere-Z",
+   "category": "multihop",
+   "bridge": "nitrogen",
+   "answer": "7",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "chem-bones-Z",
+   "category": "multihop",
+   "bridge": "calcium",
+   "answer": "20",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "chem-organic-Z",
+   "category": "multihop",
+   "bridge": "carbon",
+   "answer": "6",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "chem-photosynthesis-Z",
+   "category": "multihop",
+   "bridge": "oxygen",
+   "answer": "8",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "christmas-season",
+   "category": "multihop",
+   "bridge": "Christmas",
+   "answer": "winter",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "city-state-Philadelphia",
+   "category": "city-state",
+   "bridge": "Philadelphia",
+   "answer": "Pennsylvania",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "colosseum-currency",
+   "category": "multihop",
+   "bridge": "Italy",
+   "answer": "Euro",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "element-color-gold2",
+   "category": "element-color",
+   "bridge": "gold",
+   "answer": "yellow",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "etym-frigg-position",
+   "category": "multihop",
+   "bridge": "Friday",
+   "answer": "5",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "etym-saturn-position",
+   "category": "multihop",
+   "bridge": "Saturn",
+   "answer": "6",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "etym-wargod-month",
+   "category": "multihop",
+   "bridge": "March",
+   "answer": "3",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "ex-city-capital-Barcelona-Toronto",
+   "category": "city-capital",
+   "bridge": "Spain",
+   "answer": "Madrid",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "ex-city-capital-Lyon-Naples",
+   "category": "city-capital",
+   "bridge": "France",
+   "answer": "Paris",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "ex-city-capital-Naples-Barcelona",
+   "category": "city-capital",
+   "bridge": "Italy",
+   "answer": "Rome",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "ex-city-capital-Toronto-Lyon",
+   "category": "city-capital",
+   "bridge": "Canada",
+   "answer": "Ottawa",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "ex-city-continent-Toronto-Lyon",
+   "category": "city-continent",
+   "bridge": "Canada",
+   "answer": "North",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "ex-city-currency-Toronto-Beijing",
+   "category": "city-currency",
+   "bridge": "Canada",
+   "answer": "Canadian",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "ex-city-currency-Toronto-Mumbai",
+   "category": "city-currency",
+   "bridge": "Canada",
+   "answer": "Canadian",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "ex-city-language-Lyon-Naples",
+   "category": "city-language",
+   "bridge": "France",
+   "answer": "French",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "ex-element-state-26-8",
+   "category": "element-state",
+   "bridge": "iron",
+   "answer": "solid",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "ex-element-state-26-80",
+   "category": "element-state",
+   "bridge": "iron",
+   "answer": "solid",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "ex-element-state-8-26",
+   "category": "element-state",
+   "bridge": "oxygen",
+   "answer": "gas",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "ex-element-state-8-80",
+   "category": "element-state",
+   "bridge": "oxygen",
+   "answer": "gas",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "ex-element-state-80-8",
+   "category": "element-state",
+   "bridge": "mercury",
+   "answer": "liquid",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "ex-element-symbol-11-26",
+   "category": "element-symbol",
+   "bridge": "sodium",
+   "answer": "Na",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "ex-element-symbol-26-79",
+   "category": "element-symbol",
+   "bridge": "iron",
+   "answer": "Fe",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "ex-planet-color-third-fourth",
+   "category": "planet-color",
+   "bridge": "Earth",
+   "answer": "blue",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "ex2-city-capital-Munich",
+   "category": "city-capital",
+   "bridge": "Germany",
+   "answer": "Berlin",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "ex2-city-capital-Osaka",
+   "category": "city-capital",
+   "bridge": "Japan",
+   "answer": "Tokyo",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "ex2-city-continent-Lima",
+   "category": "city-continent",
+   "bridge": "Peru",
+   "answer": "South",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "ex2-city-continent-Sydney",
+   "category": "city-continent",
+   "bridge": "Australia",
+   "answer": "Australia",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "ex2-city-language-Cairo",
+   "category": "city-language",
+   "bridge": "Egypt",
+   "answer": "Arabic",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "ex2-city-language-Moscow",
+   "category": "city-language",
+   "bridge": "Russia",
+   "answer": "Russian",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "ex2-language-capital-Greek",
+   "category": "language-capital",
+   "bridge": "Greece",
+   "answer": "Athens",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "ex2-language-capital-Hungarian",
+   "category": "language-capital",
+   "bridge": "Hungary",
+   "answer": "Budapest",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "ex2-language-capital-Polish",
+   "category": "language-capital",
+   "bridge": "Poland",
+   "answer": "Warsaw",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "ex2-language-capital-Swedish",
+   "category": "language-capital",
+   "bridge": "Sweden",
+   "answer": "Stockholm",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "ex2-river-capital-Thames",
+   "category": "river-capital",
+   "bridge": "England",
+   "answer": "London",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "food-animal-butter",
+   "category": "food-animal",
+   "bridge": "butter",
+   "answer": "cow",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "food-animal-honey",
+   "category": "food-animal",
+   "bridge": "honey",
+   "answer": "bee",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "fruit-grows-grape",
+   "category": "fruit-grows",
+   "bridge": "grape",
+   "answer": "vine",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "func-filters-count",
+   "category": "multihop",
+   "bridge": "kidney",
+   "answer": "2",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "func-pumps-chambers",
+   "category": "multihop",
+   "bridge": "heart",
+   "answer": "4",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "gem-color-ruby",
+   "category": "gem-color",
+   "bridge": "ruby",
+   "answer": "red",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "gem-source-pearl",
+   "category": "gem-source",
+   "bridge": "pearl",
+   "answer": "oyster",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "greatwall-ocean",
+   "category": "multihop",
+   "bridge": "China",
+   "answer": "Pacific",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "holiday-month-christmas2",
+   "category": "holiday-month",
+   "bridge": "Christmas",
+   "answer": "December",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "instr-body-trumpet",
+   "category": "instr-played",
+   "bridge": "trumpet",
+   "answer": "lips",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "instr-hit-drums",
+   "category": "instr-played",
+   "bridge": "drums",
+   "answer": "sticks",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "mars-color",
+   "category": "multihop",
+   "bridge": "Mars",
+   "answer": "red",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "month-3-godof",
+   "category": "multihop",
+   "bridge": "Mars",
+   "answer": "war",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "organ-acid-stomach",
+   "category": "organ-function",
+   "bridge": "stomach",
+   "answer": "acid",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "organ-count-kidney2",
+   "category": "organ-count",
+   "bridge": "kidney",
+   "answer": "two",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "organ-location-brain",
+   "category": "organ-location",
+   "bridge": "brain",
+   "answer": "skull",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "organ-location-heart",
+   "category": "organ-location",
+   "bridge": "heart",
+   "answer": "chest",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "osu-rival-mascot",
+   "category": "multihop",
+   "bridge": "Michigan",
+   "answer": "wolverine",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "paper-continent",
+   "category": "multihop",
+   "bridge": "China",
+   "answer": "Asia",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "person-century-lincoln",
+   "category": "person-century",
+   "bridge": "Lincoln",
+   "answer": "Civil",
+   "bridge_kind": "person",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "person-country-napoleon",
+   "category": "person-country",
+   "bridge": "Napoleon",
+   "answer": "France",
+   "bridge_kind": "person",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "person-country-shakespeare",
+   "category": "person-country",
+   "bridge": "Shakespeare",
+   "answer": "England",
+   "bridge_kind": "person",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "person-firstname-darwin",
+   "category": "person-firstname",
+   "bridge": "Darwin",
+   "answer": "Charles",
+   "bridge_kind": "person",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "person-firstname-einstein",
+   "category": "person-firstname",
+   "bridge": "Einstein",
+   "answer": "Albert",
+   "bridge_kind": "person",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "person-firstname-mozart",
+   "category": "person-firstname",
+   "bridge": "Mozart",
+   "answer": "Wolfgang",
+   "bridge_kind": "person",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "person-firstname-newton",
+   "category": "person-firstname",
+   "bridge": "Newton",
+   "answer": "Isaac",
+   "bridge_kind": "person",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "person-firstname-shakespeare",
+   "category": "person-firstname",
+   "bridge": "Shakespeare",
+   "answer": "William",
+   "bridge_kind": "person",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "planet-3-moons",
+   "category": "multihop",
+   "bridge": "Earth",
+   "answer": "1",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "planet-rings-saturn2",
+   "category": "planet-feature",
+   "bridge": "Saturn",
+   "answer": "rings",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "rhyme-chair-flag",
+   "category": "multihop",
+   "bridge": "bear",
+   "answer": "California",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "rhyme-rain-neighbor",
+   "category": "multihop",
+   "bridge": "Spain",
+   "answer": "Portugal",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "rhyme-spoon-orbit",
+   "category": "multihop",
+   "bridge": "moon",
+   "answer": "Earth",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "season-next-winter",
+   "category": "season-next",
+   "bridge": "winter",
+   "answer": "spring",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "spaceneedle-border",
+   "category": "multihop",
+   "bridge": "Seattle",
+   "answer": "Canada",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "spider-legs",
+   "category": "multihop",
+   "bridge": "spider",
+   "answer": "8",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "sport-equip-tennis",
+   "category": "sport-equip",
+   "bridge": "tennis",
+   "answer": "racket",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "super-populous-capital",
+   "category": "multihop",
+   "bridge": "China",
+   "answer": "Beijing",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "super-smallest-continent",
+   "category": "multihop",
+   "bridge": "Vatican",
+   "answer": "Europe",
+   "bridge_kind": "place",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "tree-product-oak",
+   "category": "tree-product",
+   "bridge": "oak",
+   "answer": "acorn",
+   "bridge_kind": "other",
+   "relation": "one_to_one",
+   "clean": false
+  },
+  {
+   "name": "vehicle-power-bicycle",
+   "category": "vehicle-power",
+   "bridge": "bicycle",
+   "answer": "legs",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  },
+  {
+   "name": "violin-strings",
+   "category": "multihop",
+   "bridge": "violin",
+   "answer": "4",
+   "bridge_kind": "other",
+   "relation": "many_to_one",
+   "clean": true
+  }
+ ]
+}

@@ -1787,6 +1787,11 @@ manifest); chain `scripts/phase4_chain.sh`.
   on load, `pins.FROZEN_LENS`). No more lens fitting (exp19 is closed) and no lens comparisons in headline runs; the
   chat-fitted lens stays a one-off robustness check (Phase 1).
 
+- **Part B's data is consolidated into suite_v1** (Zach, 2026-10-19; `data/README.md`): no place relations and no
+  answer tied one-to-one to its bridge (Neel's France -> Paris point), balanced families of 400 items, every C and O
+  token-aligned, competence on every item, patching on >= 150 eligible items per family. The country and capital
+  families are retired from headline runs; B1 stays as the paper's reference, analysed by its annotations.
+
 ### Open decisions (humans)
 - Which headline numbers go into `VERIFIED.md` after a human recomputes them (`verify_headlines.py` lists every
   one with its source file).
