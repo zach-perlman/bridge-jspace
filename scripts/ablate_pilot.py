@@ -59,6 +59,31 @@ class Remove:
         return out
 
 
+class Rotated(Remove):
+    """Control with the J-space removal's exact size: each position loses its J-space fit turned by a fixed random
+    rotation `q` [d, d] (orthogonal), so the norm removed matches the J-space removal position by position. (On Gemma
+    the random-dictionary fit removes ~30x more than the J-space fit; removal_norms.)"""
+
+    def __init__(
+        self, dictionary: torch.Tensor, q: torch.Tensor, skip_first: int = 0, mean: torch.Tensor | None = None
+    ):
+        super().__init__(dictionary, skip_first, mean)
+        self.q = q
+
+    def __call__(self, h: torch.Tensor) -> torch.Tensor:
+        x = h[self.skip_first :]
+        target = x - self.mean.to(x.dtype) if self.mean is not None else x
+        out = h.clone()
+        out[self.skip_first :] = x - (signed_omp(self.dictionary, target, K_ATOMS) @ self.q.T).to(h.dtype)
+        return out
+
+
+def rotation(d: int, seed: int) -> torch.Tensor:
+    g = torch.Generator(device="cuda").manual_seed(seed)
+    q, r = torch.linalg.qr(torch.randn(d, d, device="cuda", generator=g))
+    return q * torch.sign(torch.diagonal(r))  # Haar-uniform
+
+
 @torch.no_grad()
 def layer_means(model, layers: tuple[int, ...], n_texts: int = 32, skip_first: int = 4) -> dict[int, torch.Tensor]:
     """Each layer's mean residual over pinned WikiText texts (first 128 tokens, positions from skip_first on)."""
@@ -68,6 +93,8 @@ def layer_means(model, layers: tuple[int, ...], n_texts: int = 32, skip_first: i
     count = 0
     for text in pins.wikitext_rows()[:n_texts]:
         ids = raw_encoding(model.tokenizer, text)["input_ids"][:128]
+        if len(ids) <= skip_first:  # an empty row (no BOS on Qwen): no positions to average
+            continue
         _, rec = model.run(torch.tensor([ids], device="cuda"), record=layers)
         for la in layers:
             v = rec[la][skip_first:].sum(0)
@@ -147,6 +174,7 @@ def main(
     skip_first: int = 0,
     center: bool = False,
     comp_tool: str | None = None,
+    rotated: bool = False,
 ) -> None:
     from bridge_jspace.lens import JLens
     from bridge_jspace.model import load_model
@@ -156,7 +184,7 @@ def main(
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
     manifest = {"run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "layers": list(LAYERS),
-                "k_atoms": K_ATOMS, "n_per_family": n, "skip_first": skip_first, "center": center,
+                "k_atoms": K_ATOMS, "n_per_family": n, "skip_first": skip_first, "center": center, "rotated": rotated,
                 "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     model = load_model()
@@ -174,6 +202,10 @@ def main(
         "jspace": {la: Remove(jdict[la], skip_first, means.get(la)) for la in LAYERS},
         "random": {la: Remove(rdict[la], skip_first, means.get(la)) for la in LAYERS},
     }
+    if rotated:  # the J-space removal's size, a random direction
+        conditions["rotated"] = {
+            la: Rotated(jdict[la], rotation(jdict[la].shape[1], 888 + la), skip_first, means.get(la)) for la in LAYERS
+        }
     t0 = time.time()
     ps = prompts(tok, n, comp_main, comp_computed, model if countries_build else None, comp_tool)
     print(len(ps), "prompts", flush=True)
@@ -207,8 +239,9 @@ def main(
             acc = {c: statistics.mean(r["correct"] for r in v) for c, v in sel.items()}
             dlp = {c: statistics.mean(r["logp"] - base[r["id"]] for r in v) for c, v in sel.items() if c != "none"}
             summary["families"][f"{fam}/{kind}"] = {"n": len(sel["none"]), "accuracy": acc, "dlogp": dlp}
+            rot = f" (rotated {100 * acc['rotated']:.0f}%, {dlp['rotated']:+.2f})" if "rotated" in acc else ""
             lines.append(f"| {fam} | {kind} | {len(sel['none'])} | {100 * acc['none']:.0f}% / {100 * acc['jspace']:.0f}% / "
-                         f"{100 * acc['random']:.0f}% | {dlp['jspace']:+.2f} / {dlp['random']:+.2f} |")  # fmt: skip
+                         f"{100 * acc['random']:.0f}%{rot} | {dlp['jspace']:+.2f} / {dlp['random']:+.2f} |")  # fmt: skip
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     (out_dir / "summary.md").write_text("\n".join(lines) + "\n")
     print((out_dir / "summary.md").read_text())
@@ -226,6 +259,9 @@ if __name__ == "__main__":
     ap.add_argument("--skip-first", type=int, default=0, help="leave the first N positions unedited")
     ap.add_argument("--comp-tool", default=None, help="competence run of the tool-output set (TBL, TBR)")
     ap.add_argument("--center", action="store_true", help="fit the removal to the residual minus its WikiText mean")
+    ap.add_argument(
+        "--rotated", action="store_true", help="add the control: the J-space removal turned by a random rotation"
+    )
     args = ap.parse_args()
     LAYERS = tuple(args.layers)
     main(
@@ -238,4 +274,5 @@ if __name__ == "__main__":
         args.skip_first,
         args.center,
         args.comp_tool,
+        args.rotated,
     )

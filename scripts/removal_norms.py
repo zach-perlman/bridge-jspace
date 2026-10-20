@@ -1,6 +1,6 @@
 """removal_norms: why does removing the J-space (or a random dictionary's fit) break Gemma 4 31B-it but not Qwen? A
 diagnostic, no verdict rule (Zach, 2026-10-20, overnight; after every gentle-removal setting failed its random control
-on Gemma). For residuals at the removal layers on 8 WikiText texts (first 128 tokens) and 8 suite prompts (BL's lookup step alone),
+on Gemma). For residuals at the removal layers on the first 8 WikiText rows of 32+ tokens (first 128 tokens) and 8 suite prompts (BL's lookup step alone),
 per position group (first, 1-3, 4 on), the median of:
   norm          ||h||, and ||h - mean|| (mean: the layer's WikiText mean, ablate_pilot.layer_means)
   removed       ||fit(h)|| / ||h|| for the 25-atom signed OMP over the J-space and over the random dictionary
@@ -57,7 +57,8 @@ def main(name: str, why: str, layers: tuple[int, ...]) -> None:
         g = torch.Generator(device="cuda").manual_seed(777 + la)
         rdict[la] = torch.nn.functional.normalize(torch.randn(jdict[la].shape, device="cuda", generator=g), dim=-1)
     means = layer_means(model, layers)
-    prompts = {"wikitext": [raw_encoding(tok, t)["input_ids"][:128] for t in pins.wikitext_rows()[:8]]}
+    texts = [ids for t in pins.wikitext_rows() if len(ids := raw_encoding(tok, t)["input_ids"][:128]) >= 32]
+    prompts = {"wikitext": texts[:8]}  # the first 8 rows of 32+ tokens (many rows are empty)
     items = S.load("BL")[:8]
     prompts["suite_BL_hop"] = [S.ids(tok, S.render(tok, it["context"], it["hop2"]["question"])) for it in items]
     stats: dict = {}
