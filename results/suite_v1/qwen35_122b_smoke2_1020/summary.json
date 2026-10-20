@@ -1,0 +1,313 @@
+{
+  "families": {
+    "BL": {
+      "n": 4,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "cf": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "off": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        }
+      },
+      "eligible": 4,
+      "all_steps": 4,
+      "clean_given_all_hops": [
+        4,
+        4
+      ],
+      "reliable": false,
+      "clean_median_p_answer": 0.994435,
+      "clean_median_margin": 6.4375,
+      "read_agrees_with_greedy": 1,
+      "hop_accuracy_by_bridge": {
+        "cow": 1,
+        "spider": 1,
+        "turkey": 1,
+        "wolf": 1
+      }
+    },
+    "BR": {
+      "n": 4,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "cf": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "off": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        }
+      },
+      "eligible": 4,
+      "all_steps": 4,
+      "clean_given_all_hops": [
+        4,
+        4
+      ],
+      "reliable": false,
+      "clean_median_p_answer": 0.984795,
+      "clean_median_margin": 5.718500000000001,
+      "read_agrees_with_greedy": 1,
+      "hop_accuracy_by_bridge": {
+        "cow": 1,
+        "spider": 1,
+        "turkey": 1,
+        "wolf": 1
+      }
+    },
+    "RL": {
+      "n": 4,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "cf": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "off": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        }
+      },
+      "eligible": 4,
+      "all_steps": 4,
+      "clean_given_all_hops": [
+        4,
+        4
+      ],
+      "reliable": false,
+      "clean_median_p_answer": 0.995495,
+      "clean_median_margin": 6.531499999999999,
+      "read_agrees_with_greedy": 1,
+      "hop_accuracy_by_bridge": {
+        "cow": 1,
+        "spider": 1,
+        "turkey": 1,
+        "wolf": 1
+      }
+    },
+    "RR": {
+      "n": 4,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "cf": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "off": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        }
+      },
+      "eligible": 4,
+      "all_steps": 4,
+      "clean_given_all_hops": [
+        4,
+        4
+      ],
+      "reliable": false,
+      "clean_median_p_answer": 0.99033,
+      "clean_median_margin": 5.9375,
+      "read_agrees_with_greedy": 1,
+      "hop_accuracy_by_bridge": {
+        "cow": 1,
+        "spider": 1,
+        "turkey": 1,
+        "wolf": 1
+      }
+    },
+    "NAMES": {
+      "n": 4,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "cf": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "off": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        }
+      },
+      "eligible": 4,
+      "all_steps": 4,
+      "clean_given_all_hops": [
+        4,
+        4
+      ],
+      "reliable": false,
+      "clean_median_p_answer": 0.82823,
+      "clean_median_margin": 1.75,
+      "read_agrees_with_greedy": 1,
+      "hop_accuracy_by_bridge": {
+        "Ivan": 1,
+        "Liam": 1,
+        "Oscar": 1,
+        "Owen": 1
+      }
+    },
+    "CODE": {
+      "n": 4,
+      "cells": {
+        "clean": {
+          "rate": 0.75,
+          "lo": 0.3006360524426366,
+          "hi": 0.9544139373553637,
+          "k": 3
+        },
+        "cf": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "off": {
+          "rate": 0.75,
+          "lo": 0.3006360524426366,
+          "hi": 0.9544139373553637,
+          "k": 3
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        }
+      },
+      "eligible": 3,
+      "all_steps": 3,
+      "clean_given_all_hops": [
+        3,
+        4
+      ],
+      "reliable": false,
+      "clean_median_p_answer": 0.969605,
+      "clean_median_margin": 4.625,
+      "read_agrees_with_greedy": 1,
+      "hop_accuracy_by_bridge": {
+        "map": 1,
+        "pear": 1,
+        "pen": 1,
+        "rose": 1
+      }
+    }
+  },
+  "seconds_generate": 289,
+  "seconds_read": 19,
+  "seconds": 308
+}
