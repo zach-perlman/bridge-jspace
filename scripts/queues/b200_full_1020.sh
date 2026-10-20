@@ -3,7 +3,7 @@
 # H200's calibration was lost mid-run, nothing else). Order as approved: gate, calibration, the Phase 1a follow-ups
 # (dose curve, position split, name vs digit), ctrl_v5 competence, write_max v2, the Phase 1a replication, the
 # Qwen3-32B J++ fit. The coarse depth sweep ran on the H200; the gate measures the machines' item agreement.
-SETUP=/workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd-b200setup-1020-2324.log
+SETUP=${1:-/workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd-b200setup-1020-2324.log}
 while ! grep -q "^EXIT" "$SETUP"; do sleep 20; done
 grep -q "^EXIT 0" "$SETUP" || { echo "setup failed"; exit 1; }
 set -uo pipefail

@@ -23,7 +23,10 @@ QWEN_REPO = "Qwen/Qwen3.6-27B"
 QWEN_REVISION = "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9"
 
 LENS_REPO = "neuronpedia/jacobian-lens"
-LENS_REVISION = "9fa267f841d62aa468dab5b9b38c3dc45a82d863"
+# 9fa267f841d62aa468dab5b9b38c3dc45a82d863 until 2026-10-20: a history rewrite of neuronpedia/jacobian-lens removed it
+# (404 from a fresh machine). e166deb serves the byte-identical files: LFS sha256 of the J++ file bbef480b... =
+# FROZEN_LENS_SHA256 and of the oracle adapter 7d4b301e... = ORACLE_ADAPTER_SHA256 (checked on load, as before).
+LENS_REVISION = "e166deb5ad540932100ef803c8c9bcc2a5453694"
 LENS_FILE = "qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt"
 JPP_FILE = "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt"  # same repo, revision and format
 LENS_FILES = {"jlens": LENS_FILE, "jpp": JPP_FILE}  # part B's lens choice (exp01 variant, exp02 from its probes)
