@@ -1,0 +1,19 @@
+{
+  "run": "competence_v1",
+  "why": "Zach (2026-10-20), quick experiment L2 (Neel: too toy): can the 27B chain natural two-hop facts without chain of thought, from memory and with either fact in the prompt?",
+  "written_utc": "2026-10-20T01:27:28Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "items": {
+    "file": "data/twohop_pilot/items.json",
+    "sha256": "e3571adab0ab79c9a9d429afa50736463b1528921be930637010e5a087da444c"
+  },
+  "format": "chat, thinking off, 'Answer:' prefilled, blank statement",
+  "generation": "greedy, 12 new tokens, batched by length",
+  "judge": "an alias in the first line"
+}
