@@ -1,0 +1,20 @@
+diff --git a/src/workspace_lens/lrp/lrp.py b/src/workspace_lens/lrp/lrp.py
+index d310df3..4385dff 100644
+--- a/src/workspace_lens/lrp/lrp.py
++++ b/src/workspace_lens/lrp/lrp.py
+@@ -91,6 +91,7 @@ _KNOWN_GATED_MLPS = (
+     "Qwen3_5MLP",
+     "Qwen2MLP",
+     "Qwen3MLP",
++    "MistralMLP",  # down(act(gate(x)) * up(x)), as Qwen's (bridge-jspace patch, 2026-10-20)
+     "Qwen3_5MoeMLP",
+     "Qwen3MoeMLP",
+     "Olmo3MLP",  # SiLU; forward byte-identical to Qwen3_5MLP's (transformers 5.14.1)
+@@ -326,6 +327,7 @@ _RMSNORM_LRP_FORWARDS = {
+     "Qwen3_5MoeRMSNorm": _qwen3_5_rmsnorm_lrp_forward,
+     "Qwen2RMSNorm": _qwen2_rmsnorm_lrp_forward,
+     "Qwen3RMSNorm": _qwen2_rmsnorm_lrp_forward,  # same forward as Qwen2's
++    "MistralRMSNorm": _qwen2_rmsnorm_lrp_forward,  # byte-identical to Qwen2's (bridge-jspace patch, 2026-10-20)
+     "Qwen3MoeRMSNorm": _qwen2_rmsnorm_lrp_forward,  # byte-identical to Qwen2's
+     "DeepseekV4RMSNorm": _qwen2_rmsnorm_lrp_forward,  # byte-identical to Qwen2's
+     "Olmo3RMSNorm": _olmo3_rmsnorm_lrp_forward,
