@@ -1,0 +1,26 @@
+{
+  "run": "gemma4itr_abl_cal_s4",
+  "why": "Zach (2026-10-20): does the memory-vs-prompt pattern hold on Gemma 4 31B-it with a J++ fit on the chat model itself (the base-model lens failed the positive control)? (calibration of a gentler removal: chosen by the random control alone, the first of s1, s4, s1c, s4c (skip the first 1 or 4 positions; c = fit to the residual minus its WikiText mean) whose random-dictionary removal keeps every family/step's accuracy within 10 points of unedited; n=20)",
+  "written_utc": "2026-10-20T07:19:00Z",
+  "model": {
+    "target": "gemma-4-31b-it-refit",
+    "repo": "google/gemma-4-31B-it",
+    "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "323733a9bec124c7a037a6839191bd545eb00d1d47bfffde6b92e1e638117408"
+  ],
+  "layers": [
+    30,
+    33,
+    36
+  ],
+  "k_atoms": 25,
+  "n_per_family": 20,
+  "skip_first": 4,
+  "center": false,
+  "doc": "At layers 32, 36 and 40 at once, at every position, each residual loses its 25-atom J-space part (signed OMP over the\nfrozen J++'s letter-token vectors, the split's J-space part, here of the state itself); the control loses the same\nfit over a random dictionary of the same size (seeded per layer). On unedited-correct items, read at the answer's\nfirst token (suite_split's read):\n  clean   the whole question                      hop     the last step alone (suite_v1's hop2 / hop3: a lookup in the\n                                                          prompt for BL, RL; a recalled fact for BR, RR, TYPO, TRANS)\nReported per family: accuracy (top token = the answer's) and the mean change in the answer token's log-probability.\nFamilies: BL, BR, RL, RR (suite main set), TYPO, TRANS (computed set), countries R, B (bind_recall, clean only).\nPrediction from the read/write results (not a decision rule): removing the J-space hurts the recall chains more than\nthe lookup chains, beyond what the step alone loses."
+}
