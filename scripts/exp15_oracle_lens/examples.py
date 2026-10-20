@@ -15,11 +15,14 @@ from typing import Any
 
 from bridge_jspace.examples import (
     _CSS,
+    CUE_LEGEND,
     _esc,
     _examples_root,
     _repo_rel,
     export_index,
+    load_cues,
     oracle_words_html,
+    prompt_html,
 )
 from bridge_jspace.pins import REPO_ROOT
 
@@ -113,13 +116,14 @@ def card(
     numeric: bool,
     said: dict[str, Any] | None = None,
     reader: tuple[str, str] = ("oracle lens", "oracle"),
+    cue: str | None = None,
 ) -> str:
     badges = f"<span class='badge'>{_esc(item['category'])}</span>"
     if flip is not None:
         badges += f"<span class='badge'>bridge swap {'flips' if flip else 'keeps'} the answer</span>"
     head = (
         f"<h3 id='{_esc(item['name'])}'>{_esc(item['name'])}{badges}</h3>"
-        f"<div class='prompt'>{_esc(item['prompt'].rstrip())}</div>"
+        f"<div class='prompt'>{prompt_html(item['prompt'].rstrip(), cue)}</div>"
         f"<p class='meta'>bridge <span class='w bridge'>{_esc(item['intermediate'])}</span> (distractor "
         f"<span class='w ctrl'>{_esc(item['swap_to'])}</span>) · answer <span class='w answer'>{_esc(item['answer'])}"
         f"</span> (distractor <span class='w ctrl'>{_esc(item['swap_answer'])}</span>)</p>"
@@ -180,6 +184,7 @@ def render(run_dirs: Sequence[str | Path]) -> str:
     numeric = {n for n, it in items.items() if any(ch.isdigit() for ch in it["answer"] + it["swap_answer"])}
     members = {g: [n for n in clean if group_of(clean[n]) == g] for g, _, _ in page_groups[:3]}
     members["flipped"] = [n for n in clean if flips.get(n)]
+    cues = load_cues()
 
     chips = "<button class='on' data-g='all'>All</button>" + "".join(
         f"<button data-g='{g}'>{_esc(title)} ({len(members[g])})</button>" for g, title, _ in page_groups
@@ -192,7 +197,16 @@ def render(run_dirs: Sequence[str | Path]) -> str:
         names = sorted(members[g])
         nav.append(f"<h4>{_esc(title)}</h4>" + "".join(f"<a href='#{_esc(n)}'>{_esc(n)}</a>" for n in names))
         cards = "".join(
-            card(items[n], clean[n], swapped.get(n, {}), flips.get(n), n in numeric, said.get(n), (full, short))
+            card(
+                items[n],
+                clean[n],
+                swapped.get(n, {}),
+                flips.get(n),
+                n in numeric,
+                said.get(n),
+                (full, short),
+                cues.get(n),
+            )
             for n in names
         )
         sections.append(
@@ -209,6 +223,7 @@ def render(run_dirs: Sequence[str | Path]) -> str:
         'Mexico; "changed, but to neither answer" = something else (e.g. 11 instead of 5 or 9).</li>'
         f"<li><b>Rows:</b> where the {full} reads (the last word, -1, the cue phrase's last token) and at which "
         "layer. Filter the layers with the second row of buttons.</li>"
+        f"<li><b>Prompt:</b> {CUE_LEGEND}</li>"
         "<li><b>Rank columns:</b> where the J-lens and J++ rank the bridge among the 97 entities, and the answer "
         "among the 112 answers, at that position and layer (exp12); <span class='hit'>1</span> = first. The two "
         "lists are separate, so the bridge and the answer can both be 1st in one row.</li>"

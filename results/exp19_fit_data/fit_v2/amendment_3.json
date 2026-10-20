@@ -1,0 +1,5 @@
+{
+  "amends": "amendment_2.json (left unchanged)",
+  "written_utc": "2026-10-17T02:07:30Z",
+  "correction": "the early eval ran without the published J++ and J-lens references: run_fits.sh looked up their revision with grep \"LENS_REVISION = \", which also matched WS_LENS_REVISION in pins.py, and the lookup failed (log/exp19-fit_v2-early-eval.log, SyntaxError). It scored the six fitted lenses and the logit lens. The same bug would stop the final eval: run_fits.sh now greps ^LENS_REVISION, and /workspace/exp19_final.sh reruns it (only the evaluate stage is left) once the mix run exits."
+}

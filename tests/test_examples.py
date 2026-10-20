@@ -4,7 +4,18 @@ from pathlib import Path
 
 import pytest
 
-from bridge_jspace.examples import Group, export, export_index, latest_examples_run, render, render_html, sample
+from bridge_jspace.examples import (
+    Group,
+    _with_cue,
+    cue_token_indices,
+    export,
+    export_index,
+    latest_examples_run,
+    prompt_html,
+    render,
+    render_html,
+    sample,
+)
 from bridge_jspace.pins import RESULTS_DIR
 
 P = {"per_group": 3, "seed_examples": 0, "band": [32, 48], "top_k": 2, "title": "t", "source_run": "r"}
@@ -95,6 +106,36 @@ def test_render_marks_words():
     html = render_html([Group("seen_last", "Seen", "def", 41)], [rec], P, "m")
     assert html.startswith("<!doctype html>") and 'class="w bridge">Brazil<' in html
     assert 'id="seen_last-amazon-language"' in html and "<script>" in html
+
+
+def test_cue_phrase_is_marked_in_prompt_and_position_table():
+    tokens = ["Fact", ":", " where", " the", " Amazon", " River", " ends", " is"]
+    rec = {
+        "name": "amazon-language",
+        "group": "g",
+        "prompt": "".join(tokens),
+        "words": {"bridge": "Brazil", "answer": "Portuguese"},
+        "word_ids": {"bridge": [1], "answer": [2]},
+        "why": "w",
+        "info": {},
+        "tokens": tokens,
+        "last_token": {},
+        "positions": {"jlens": {"32": [{"top": [" x"], "top_ids": [9], "ranks": {"bridge": 4}}] * 5}},
+    }
+    assert cue_token_indices(tokens, "Amazon River ends") == {4, 5, 6}
+    assert cue_token_indices(tokens, "zon Riv") == {4, 5}  # a span that cuts tokens marks every token it touches
+    assert cue_token_indices(tokens, "Nile") == set() == cue_token_indices(tokens, None)
+    assert prompt_html("a <b> c ", "<b>") == "a <span class='cue'>&lt;b&gt;</span> c␣"
+    assert prompt_html("a b", "zz") == "a b"
+
+    cued = _with_cue(rec, {"amazon-language": "Amazon River ends"})
+    assert _with_cue(rec, {"amazon-language": "not in this prompt"}) is rec  # another set reusing the name
+    html = render_html([Group("g", "G", "d", 1)], [cued], P, "m")
+    assert "<span class='cue'>Amazon River ends</span>" in html and "Dotted underline" in html
+    assert html.count("class='cuetok'") == 3  # the last 5 tokens are shown; three are in the cue
+    md = render([Group("g", "G", "d", 1)], [cued], P, "m")
+    assert 'Cue phrase: "Amazon River ends"' in md and md.count("(cue)") == 3
+    assert "Dotted underline" not in render_html([Group("g", "G", "d", 1)], [rec], P, "m")
 
 
 def _fake_run(root, exp, stamp, target="bridge_jspace.examples:LensExamples"):

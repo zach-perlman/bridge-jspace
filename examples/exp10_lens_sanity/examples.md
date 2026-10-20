@@ -240,6 +240,8 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 
 > Fact: The number of legs on the animal that spins webs is
 
+Cue phrase: "animal that spins webs"
+
 Bridge **spider** -> answer *8*. other intermediates: -, model's top word: greater.
 Why this group: best rank over layers at the last token: logit 32, jlens 2, jpp 0 (0 = top).
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/spider-legs__jlens.html) · [J++](slices/spider-legs__jpp.html)
@@ -273,10 +275,10 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 | `legs` | Legs (71681) | s (16521) | in (3499) | animals (192) | legs (105) | legs (119) | humans (13) | of (15) |
 | `on` | &nbsp (131445) | though (21264) | &nbsp (7259) | kids (321) | animals (153) | animals (36) | spiders (2) | a (8) |
 | `the` | &nbsp (73277) | s (17650) | amongst (5166) | kids (917) | animals (227) | animals (80) | legs (4) | **spider** (1) |
-| `animal` | ’s (35427) | animal (17608) | Animal (3067) | animals (851) | animals (699) | animals (310) | is (237) | is (34) |
-| `that` | raries (146401) | got (28001) | nearer (67989) | 什么 (8788) | animals (451) | animals (2075) | humans (485) | eats (410) |
-| `spins` | spinning (238) | just (421) | **spider** (1) | spiders (2) | spiders (2) | spiders (2) | webs (2) | webs (3) |
-| `webs` | ing (377) | ing (65) | **spider** (1) | spiders (2) | spiders (2) | spiders (2) | **spider** (1) | is (16) |
+| `animal` (cue) | ’s (35427) | animal (17608) | Animal (3067) | animals (851) | animals (699) | animals (310) | is (237) | is (34) |
+| `that` (cue) | raries (146401) | got (28001) | nearer (67989) | 什么 (8788) | animals (451) | animals (2075) | humans (485) | eats (410) |
+| `spins` (cue) | spinning (238) | just (421) | **spider** (1) | spiders (2) | spiders (2) | spiders (2) | webs (2) | webs (3) |
+| `webs` (cue) | ing (377) | ing (65) | **spider** (1) | spiders (2) | spiders (2) | spiders (2) | **spider** (1) | is (16) |
 | `is` | ner (32765) | though (15943) | \uff (2798) | 什么 (296) | spiders (5) | compared (4) | greater (45) | eight (177) |
 
 
@@ -288,6 +290,8 @@ J++ in its top 10, the J-lens not.
 ### `func-filters-count`
 
 > Fact: In humans, the number of organs that filter blood to make urine is
+
+Cue phrase: "organs that filter blood to make urine"
 
 Bridge **kidney** -> answer *2*. other intermediates: -, model's top word: two.
 Why this group: best rank over layers at the last token: logit 192, jlens 25, jpp 0 (0 = top).
@@ -319,13 +323,13 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 
 | token | L8 | L16 | L24 | L32 | L40 | L48 | L56 | L62 |
 |---|---|---|---|---|---|---|---|---|
-| `organs` | ة (8019) | o (2003) | organs (87) | organs (170) | organs (18) | organs (98) | organs (141) | is (1451) |
-| `that` | raries (71427) | people (11058) | people (10795) | is (3360) | organs (40) | organs (184) | organs (130) | produce (308) |
-| `filter` | er (11058) | er (3712) | /filter (86) | 什么 (275) | 过滤 (55) | /filter (56) | blood (77) | toxins (41) |
-| `blood` | s (22736) | s (8223) | -blood (860) | blood (571) | 血液 (44) | blood (42) | is (119) | is (240) |
-| `to` | verage (194501) | dicip (164084) | cleanse (34824) | 什么 (6952) | 过滤 (16) | cleanse (37) | remove (64) | remove (114) |
-| `make` | sure (132093) | bigger (54362) | bigger (9563) | 什么 (7410) | urine (20) | urine (9) | urine (13) | urine (9) |
-| `urine` | urine (3781) | urine (1216) | urine (9) | urine (55) | urine (5) | urine (5) | is (5) | is (48) |
+| `organs` (cue) | ة (8019) | o (2003) | organs (87) | organs (170) | organs (18) | organs (98) | organs (141) | is (1451) |
+| `that` (cue) | raries (71427) | people (11058) | people (10795) | is (3360) | organs (40) | organs (184) | organs (130) | produce (308) |
+| `filter` (cue) | er (11058) | er (3712) | /filter (86) | 什么 (275) | 过滤 (55) | /filter (56) | blood (77) | toxins (41) |
+| `blood` (cue) | s (22736) | s (8223) | -blood (860) | blood (571) | 血液 (44) | blood (42) | is (119) | is (240) |
+| `to` (cue) | verage (194501) | dicip (164084) | cleanse (34824) | 什么 (6952) | 过滤 (16) | cleanse (37) | remove (64) | remove (114) |
+| `make` (cue) | sure (132093) | bigger (54362) | bigger (9563) | 什么 (7410) | urine (20) | urine (9) | urine (13) | urine (9) |
+| `urine` (cue) | urine (3781) | urine (1216) | urine (9) | urine (55) | urine (5) | urine (5) | is (5) | is (48) |
 | `is` | colour (129222) | just (74590) | 哪一个 (2217) | 什么 (4534) | kidneys (9) | number (190) | two (382) | two (200) |
 
 ### `inv-balloon-opposite`

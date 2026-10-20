@@ -20,6 +20,8 @@ Answered correctly; the J-lens has the bridge ranked first among the entities in
 
 > Fact: The language spoken in the country where Cairo is located is
 
+Cue phrase: "Cairo"
+
 Bridge **Egypt** -> answer *Arabic*; controls [Russia] / [Russian]. category: city-language, model answers correctly: yes, swapping flips the answer: the J-space part, model's top word: Arabic.
 Why this group: J-lens bridge ranked first among the entities in 100% of band layers at the last token, best earlier 100% (at `Cairo`), distractor 0%; J++ at the last token 100%.
 Interactive layer x position view (jlens, pinned words; open locally): [J-lens](slices/ex2-city-language-Cairo__jlens.html) · [J++](slices/ex2-city-language-Cairo__jpp.html)
@@ -54,7 +56,7 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 | `the` | 五颜六色的 (161440) | of (11189) | many (2557) | British (418) | countries (194) | countries (262) | country (521) | United (2360) |
 | `country` | 's (616) | 's (185) | countries (90) | countries (94) | countries (85) | countries (54) | Argentina (56) | of (67) |
 | `where` | 最新发布 (143456) | 最新发布 (12179) | countries (381) | Country (182) | Country (174) | countries (120) | Barack (802) | the (756) |
-| `Cairo` | Cairo (2) | Cairo (2) | Cairo (2) | Cairo (3) | Cairo (3) | Cairo (2) | Cairo (2) | is (21) |
+| `Cairo` (cue) | Cairo (2) | Cairo (2) | Cairo (2) | Cairo (3) | Cairo (3) | Cairo (2) | Cairo (2) | is (21) |
 | `is` | ´s (100320) | ´s (20222) | city (13) | <u (116) | cities (290) | located (110) | located (344) | located (38) |
 | `located` | .The (10079) | in (2837) | **Egypt** (1) | 是什么意思 (6) | **Egypt** (1) | is (2) | is (2) | is (4) |
 | `is` | ´t (186491) | basically (10329) | *Arabic* (9) | 什么 (86) | *Arabic* (11) | *Arabic* (22) | *Arabic* (8) | *Arabic* (14) |
@@ -62,6 +64,8 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 ### `ex2-language-capital-Swedish`
 
 > Fact: The capital of the country where Swedish is the primary language is
+
+Cue phrase: "Swedish is the primary language"
 
 Bridge **Sweden** -> answer *Stockholm*; controls [Hungary] / [Budapest]. category: language-capital, model answers correctly: yes, swapping flips the answer: the J-space part, model's top word: Stockholm.
 Why this group: J-lens bridge ranked first among the entities in 88% of band layers at the last token, best earlier 100% (at `Swedish`), distractor 0%; J++ at the last token 82%.
@@ -95,16 +99,18 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 |---|---|---|---|---|---|---|---|---|
 | `country` | 's (4609) | countries (2634) | countries (145) | countries (133) | countries (81) | countries (89) | where (22) | is (51) |
 | `where` | 最新发布 (120911) | 最新发布 (33934) | countries (238) | Country (216) | Country (134) | Country (169) | Mount (3981) | Mount (2674) |
-| `Swedish` | 瑞典 (22) | Swedish (7) | Swedish (3) | Swedish (3) | Swedish (7) | Swedish (4) | Swedish (3) | is (66) |
-| `is` | colour (73665) | really (3872) | Swedish (4) | 瑞典 (10) | languages (130) | language (69) | spoken (938) | spoken (301) |
-| `the` | ighbour (161188) | ´t (50873) | lingua (2051) | 什么 (16202) | 语言 (1416) | primary (1756) | official (5013) | official (4221) |
-| `primary` | ulatory (237895) | utilizing (225492) | language (14023) | language (11700) | language (1494) | language (1503) | language (46631) | language (9329) |
-| `language` | .L (4527) | in (3204) | Swedish (2) | 是什么意思 (19) | 瑞典 (3) | **Sweden** (1) | **Sweden** (1) | is (6) |
+| `Swedish` (cue) | 瑞典 (22) | Swedish (7) | Swedish (3) | Swedish (3) | Swedish (7) | Swedish (4) | Swedish (3) | is (66) |
+| `is` (cue) | colour (73665) | really (3872) | Swedish (4) | 瑞典 (10) | languages (130) | language (69) | spoken (938) | spoken (301) |
+| `the` (cue) | ighbour (161188) | ´t (50873) | lingua (2051) | 什么 (16202) | 语言 (1416) | primary (1756) | official (5013) | official (4221) |
+| `primary` (cue) | ulatory (237895) | utilizing (225492) | language (14023) | language (11700) | language (1494) | language (1503) | language (46631) | language (9329) |
+| `language` (cue) | .L (4527) | in (3204) | Swedish (2) | 是什么意思 (19) | 瑞典 (3) | **Sweden** (1) | **Sweden** (1) | is (6) |
 | `is` | ustralian (176808) | also (7179) | cities (3772) | 什么意思 (1470) | **Sweden** (1) | **Sweden** (1) | *Stockholm* (2) | *Stockholm* (11) |
 
 ### `person-firstname-shakespeare`
 
 > Fact: The first name of the playwright who wrote Romeo and Juliet was
+
+Cue phrase: "playwright who wrote Romeo and Juliet"
 
 Bridge **Shakespeare** -> answer *William*; controls [Mozart] / [Wolfgang]. category: person-firstname, model answers correctly: yes, swapping flips the answer: neither part, model's top word: William.
 Why this group: J-lens bridge ranked first among the entities in 100% of band layers at the last token, best earlier 100% (at `playwright`), distractor 0%; J++ at the last token 100%.
@@ -137,12 +143,12 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 | token | L8 | L16 | L24 | L32 | L40 | L48 | L56 | L62 |
 |---|---|---|---|---|---|---|---|---|
 | `the` | Them (4385) | of (2581) | people (489) | famous (225) | famous (22) | famous (100) | president (345) | person (658) |
-| `playwright` | s (1335) | s (175) | s (3) | playwright (2) | playwright (2) | playwright (2) | playwright (2) | Arthur (4) |
-| `who` | ‘s (2617) | ‘s (91) | whom (37) | Famous (2) | **Shakespeare** (1) | famous (2) | wrote (91) | wrote (272) |
-| `wrote` | ся (208) | Writer (27) | Writer (2) | books (2) | **Shakespeare** (1) | **Shakespeare** (1) | Ham (5) | The (9) |
-| `Romeo` | Romeo (29) | Romeo (5) | Romeo (3) | Romeo (2) | Romeo (2) | Romeo (2) | Romeo (8) | and (27) |
-| `and` | -old (314) | amongst (240) | **Shakespeare** (1) | **Shakespeare** (1) | **Shakespeare** (1) | **Shakespeare** (1) | Romeo (4) | Juliet (15) |
-| `Juliet` | an (57) | an (32) | **Shakespeare** (2) | **Shakespeare** (1) | **Shakespeare** (1) | **Shakespeare** (1) | was (3) | is (3) |
+| `playwright` (cue) | s (1335) | s (175) | s (3) | playwright (2) | playwright (2) | playwright (2) | playwright (2) | Arthur (4) |
+| `who` (cue) | ‘s (2617) | ‘s (91) | whom (37) | Famous (2) | **Shakespeare** (1) | famous (2) | wrote (91) | wrote (272) |
+| `wrote` (cue) | ся (208) | Writer (27) | Writer (2) | books (2) | **Shakespeare** (1) | **Shakespeare** (1) | Ham (5) | The (9) |
+| `Romeo` (cue) | Romeo (29) | Romeo (5) | Romeo (3) | Romeo (2) | Romeo (2) | Romeo (2) | Romeo (8) | and (27) |
+| `and` (cue) | -old (314) | amongst (240) | **Shakespeare** (1) | **Shakespeare** (1) | **Shakespeare** (1) | **Shakespeare** (1) | Romeo (4) | Juliet (15) |
+| `Juliet` (cue) | an (57) | an (32) | **Shakespeare** (2) | **Shakespeare** (1) | **Shakespeare** (1) | **Shakespeare** (1) | was (3) | is (3) |
 | `was` | Colour (44296) | amongst (682) | name (27) | famous (8) | name (26) | <u (15) | **Shakespeare** (1) | *William* (2) |
 
 
@@ -154,6 +160,8 @@ Answered correctly; missed at the last token (< 50%) but on top at some earlier 
 ### `holiday-month-christmas2`
 
 > Fact: The month of the holiday celebrated with a decorated evergreen tree and gift-giving is
+
+Cue phrase: "holiday celebrated with a decorated evergreen tree and gift-giving"
 
 Bridge **Christmas** -> answer *December*; controls [Easter] / [April]. category: holiday-month, model answers correctly: yes, swapping flips the answer: neither part, model's top word: December.
 Why this group: J-lens bridge ranked first among the entities in 29% of band layers at the last token, best earlier 100% (at `holiday`), distractor 0%; J++ at the last token 0%.
@@ -185,18 +193,20 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 
 | token | L8 | L16 | L24 | L32 | L40 | L48 | L56 | L62 |
 |---|---|---|---|---|---|---|---|---|
-| `ever` | 我 (210421) | l (177487) | trees (1183) | 树 (436) | trees (32) | trees (50) | tree (91) | green (208) |
-| `green` | pine (37) | hardwood (629) | trees (4) | **Christmas** (1) | **Christmas** (1) | **Christmas** (1) | tree (56) | tree (24) |
-| `tree` | famous (8) | Tree (18) | **Christmas** (1) | **Christmas** (1) | **Christmas** (1) | is (2) | is (4) | is (97) |
-| `and` | 大金 (142382) | well (7349) | **Christmas** (1) | 什么 (8) | **Christmas** (1) | **Christmas** (1) | gifts (10) | gifts (23) |
-| `gift` | gift (6600) | gift (5080) | gift (7) | gift (11) | gifts (9) | gifts (13) | gifts (145) | -g (1194) |
-| `-g` | ing (10637) | ing (9426) | ing (19) | gift (13) | Christmas (5) | gifts (18) | traditions (13) | iving (148) |
-| `iving` | gifts (2986) | toward (5665) | Christmas (2) | **Christmas** (1) | **Christmas** (1) | **Christmas** (1) | is (11) | is (78) |
+| `ever` (cue) | 我 (210421) | l (177487) | trees (1183) | 树 (436) | trees (32) | trees (50) | tree (91) | green (208) |
+| `green` (cue) | pine (37) | hardwood (629) | trees (4) | **Christmas** (1) | **Christmas** (1) | **Christmas** (1) | tree (56) | tree (24) |
+| `tree` (cue) | famous (8) | Tree (18) | **Christmas** (1) | **Christmas** (1) | **Christmas** (1) | is (2) | is (4) | is (97) |
+| `and` (cue) | 大金 (142382) | well (7349) | **Christmas** (1) | 什么 (8) | **Christmas** (1) | **Christmas** (1) | gifts (10) | gifts (23) |
+| `gift` (cue) | gift (6600) | gift (5080) | gift (7) | gift (11) | gifts (9) | gifts (13) | gifts (145) | -g (1194) |
+| `-g` (cue) | ing (10637) | ing (9426) | ing (19) | gift (13) | Christmas (5) | gifts (18) | traditions (13) | iving (148) |
+| `iving` (cue) | gifts (2986) | toward (5665) | Christmas (2) | **Christmas** (1) | **Christmas** (1) | **Christmas** (1) | is (11) | is (78) |
 | `is` | 률은 (235251) | Though (118466) | —that (11770) | 什么 (379) | month (10) | month (13) | *December* (17) | *December* (13) |
 
 ### `organ-count-kidney2`
 
 > Fact: The number of the bean-shaped organs that filter blood into urine in a human body is
+
+Cue phrase: "bean-shaped organs that filter blood into urine"
 
 Bridge **kidney** -> answer *two*; controls [heart] / [one]. category: organ-count, model answers correctly: yes, swapping flips the answer: neither part, model's top word: two.
 Why this group: J-lens bridge ranked first among the entities in 12% of band layers at the last token, best earlier 100% (at `bean`), distractor 0%; J++ at the last token 0%.
@@ -228,9 +238,9 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 
 | token | L8 | L16 | L24 | L32 | L40 | L48 | L56 | L62 |
 |---|---|---|---|---|---|---|---|---|
-| `blood` | s (9177) | s (3153) | -blood (107) | 和 (171) | 血液 (43) | blood (26) | 是人体 (33) | is (115) |
-| `into` | \xc (42432) | \xc (58878) | hado (10428) | drains (789) | urine (13) | urine (36) | urine (10) | urine (21) |
-| `urine` | —a (2912) | urine (1464) | urine (4) | urine (11) | urine (8) | urine (19) | is (8) | is (85) |
+| `blood` (cue) | s (9177) | s (3153) | -blood (107) | 和 (171) | 血液 (43) | blood (26) | 是人体 (33) | is (115) |
+| `into` (cue) | \xc (42432) | \xc (58878) | hado (10428) | drains (789) | urine (13) | urine (36) | urine (10) | urine (21) |
+| `urine` (cue) | —a (2912) | urine (1464) | urine (4) | urine (11) | urine (8) | urine (19) | is (8) | is (85) |
 | `in` | ighbour (184468) | basically (122754) | Britain (7880) | 什么 (6770) | kidneys (23) | humans (25) | humans (171) | humans (37) |
 | `a` | جدًا (21946) | s (22780) | &nbsp (41511) | whats (2028) | animals (9) | humans (16) | humans (38) | human (9) |
 | `human` | ly (9477) | ly (14488) | human (1168) | humans (784) | humans (134) | humans (156) | body (63) | body (3) |
@@ -240,6 +250,8 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 ### `person-country-napoleon`
 
 > Fact: The country whose army was led by the emperor defeated at Waterloo is
+
+Cue phrase: "emperor defeated at Waterloo"
 
 Bridge **Napoleon** -> answer *France*; controls [Lincoln] / [America]. category: person-country, model answers correctly: yes, swapping flips the answer: neither part, model's top word: France.
 Why this group: J-lens bridge ranked first among the entities in 0% of band layers at the last token, best earlier 100% (at `led`), distractor 0%; J++ at the last token 0%.
@@ -274,10 +286,10 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 | `led` | 莱德 (200829) | 专栏收录该内容 (34927) | commander (511) | commander (63) | commander (111) | commander (39) | by (8) | by (14) |
 | `by` | King (1323) | King (386) | military (47) | military (15) | military (8) | **Napoleon** (1) | **Napoleon** (1) | General (2) |
 | `the` | ­t (36339) | of (5480) | whom (1043) | famous (341) | President (13) | famous (6) | commander (16) | Duke (53) |
-| `emperor` | emperor (32) | emperor (13) | emperor (4) | emperor (3) | emperor (5) | emperor (3) | **Napoleon** (1) | **Napoleon** (1) |
-| `defeated` | 貅 (30835) | 貅 (7272) | ussia (1073) | 的 (646) | defeated (147) | defeated (41) | Germany (7) | the (5) |
-| `at` | ting (237099) | ting (128958) | Though (3559) | 失败 (439) | defeat (15) | Battle (4) | Battle (3) | least (66) |
-| `Waterloo` | Waterloo (18984) | Waterloo (440) | Waterloo (3) | Waterloo (2) | **Napoleon** (1) | **Napoleon** (1) | was (18) | was (12) |
+| `emperor` (cue) | emperor (32) | emperor (13) | emperor (4) | emperor (3) | emperor (5) | emperor (3) | **Napoleon** (1) | **Napoleon** (1) |
+| `defeated` (cue) | 貅 (30835) | 貅 (7272) | ussia (1073) | 的 (646) | defeated (147) | defeated (41) | Germany (7) | the (5) |
+| `at` (cue) | ting (237099) | ting (128958) | Though (3559) | 失败 (439) | defeat (15) | Battle (4) | Battle (3) | least (66) |
+| `Waterloo` (cue) | Waterloo (18984) | Waterloo (440) | Waterloo (3) | Waterloo (2) | **Napoleon** (1) | **Napoleon** (1) | was (18) | was (12) |
 | `is` | avour (173005) | amongst (92667) | 什么 (13578) | 什么 (1227) | *France* (8) | *France* (13) | *France* (33) | *France* (22) |
 
 
@@ -289,6 +301,8 @@ Answered correctly; the J-lens never has the bridge ranked first among the entit
 ### `mars-color`
 
 > Fact: The color of the planet fourth from the Sun is
+
+Cue phrase: "planet fourth from the Sun"
 
 Bridge **Mars** -> answer *red*; controls [Earth] / [blue]. category: multihop, model answers correctly: yes, swapping flips the answer: neither part, model's top word: red.
 Why this group: J-lens bridge ranked first among the entities in 0% of band layers at the last token, best earlier 12% (at `the`), distractor 100%; J++ at the last token 0%.
@@ -322,16 +336,18 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 |---|---|---|---|---|---|---|---|---|
 | `of` | colors (7976) | colors (10772) | color (4621) | color (3264) | color (2207) | color (1355) | sky (150) | clouds (291) |
 | `the` | colors (194) | colors (4328) | color (1735) | color (816) | color (496) | color (229) | sky (314) | sky (806) |
-| `planet` | **Mars** (1) | Planet (8) | Planet (11) | planet (17) | planet (17) | planet (8) | Jupiter (2) | **Mars** (1) |
-| `fourth` | 了 (158972) | s (231194) | 了 (112036) | uranus (8239) | 地球 (344) | planet (148) | planet (80) | from (100) |
-| `from` | ς (12934) | s (27565) | planet (53) | 地球 (352) | 地球 (57) | NASA (60) | Sun (37) | the (20) |
-| `the` | 旳 (91) | farther (57702) | colors (2042) | colors (1294) | color (79) | color (72) | stars (64) | sun (135) |
-| `Sun` | aries (64) | —not (134) | Saturn (35) | Earth (20) | [Earth] (28) | [Earth] (23) | is (7) | is (4) |
+| `planet` (cue) | **Mars** (1) | Planet (8) | Planet (11) | planet (17) | planet (17) | planet (8) | Jupiter (2) | **Mars** (1) |
+| `fourth` (cue) | 了 (158972) | s (231194) | 了 (112036) | uranus (8239) | 地球 (344) | planet (148) | planet (80) | from (100) |
+| `from` (cue) | ς (12934) | s (27565) | planet (53) | 地球 (352) | 地球 (57) | NASA (60) | Sun (37) | the (20) |
+| `the` (cue) | 旳 (91) | farther (57702) | colors (2042) | colors (1294) | color (79) | color (72) | stars (64) | sun (135) |
+| `Sun` (cue) | aries (64) | —not (134) | Saturn (35) | Earth (20) | [Earth] (28) | [Earth] (23) | is (7) | is (4) |
 | `is` | 大金 (255) | actually (37281) | much (802) | 什么意思 (1937) | planet (16) | color (25) | planet (7) | *red* (9) |
 
 ### `month-3-godof`
 
 > Fact: The third month of the year is named after the Roman god of
+
+Cue phrase: "third month of the year"
 
 Bridge **Mars** -> answer *war*; controls [Venus] / [love]. category: multihop, model answers correctly: yes, swapping flips the answer: neither part, model's top word: war.
 Why this group: J-lens bridge ranked first among the entities in 6% of band layers at the last token, best earlier 0% (at `Fact`), distractor 0%; J++ at the last token 18%.
@@ -363,7 +379,7 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 
 | token | L8 | L16 | L24 | L32 | L40 | L48 | L56 | L62 |
 |---|---|---|---|---|---|---|---|---|
-| `year` | 's (461) | in (2556) | year (2258) | January (1331) | month (3654) | year (4441) | is (446) | is (82) |
+| `year` (cue) | 's (461) | in (2556) | year (2258) | January (1331) | month (3654) | year (4441) | is (446) | is (82) |
 | `is` | therefore (22) | just (9243) | perhaps (2565) | <u (732) | month (820) | month (835) | March (229) | March (8) |
 | `named` | ighbor (37953) | –and (24653) | because (2401) | <u (1196) | 命名 (912) | named (692) | after (80) | March (3) |
 | `after` | ments (11351) | er (10557) | Roman (817) | 什么 (605) | Roman (74) | goddess (59) | March (2) | **Mars** (1) |
@@ -375,6 +391,8 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 ### `rhyme-spoon-orbit`
 
 > Fact: The celestial body whose name rhymes with 'spoon' orbits the planet called
+
+Cue phrase: "celestial body whose name rhymes with 'spoon'"
 
 Bridge **moon** -> answer *Earth*; controls [Europa] / [Jupiter]. category: multihop, model answers correctly: yes, swapping flips the answer: neither part, model's top word: Earth.
 Why this group: J-lens bridge ranked first among the entities in 0% of band layers at the last token, best earlier 47% (at `with`), distractor 0%; J++ at the last token 0%.
@@ -406,10 +424,10 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 
 | token | L8 | L16 | L24 | L32 | L40 | L48 | L56 | L62 |
 |---|---|---|---|---|---|---|---|---|
-| `'` | avour (129535) | whilst (37713) | whilst (16900) | maths (1284) | 发音 (568) | rhyme (70) | planet (3) | star (4) |
-| `sp` | ive (197964) | y (99292) | ive (83599) | *sp (20424) | fish (1380) | rhyme (29) | **moon** (1) | oon (92) |
-| `oon` | er (14168) | er (11596) | er (3528) | er (975) | er (1645) | rhyme (152) | spoon (20) | 'in (21) |
-| `'` | colourful (41334) | favourite (15415) | though (18037) | what (1383) | celestial (10) | is (17) | **moon** (1) | **moon** (1) |
+| `'` (cue) | avour (129535) | whilst (37713) | whilst (16900) | maths (1284) | 发音 (568) | rhyme (70) | planet (3) | star (4) |
+| `sp` (cue) | ive (197964) | y (99292) | ive (83599) | *sp (20424) | fish (1380) | rhyme (29) | **moon** (1) | oon (92) |
+| `oon` (cue) | er (14168) | er (11596) | er (3528) | er (975) | er (1645) | rhyme (152) | spoon (20) | 'in (21) |
+| `'` (cue) | colourful (41334) | favourite (15415) | though (18037) | what (1383) | celestial (10) | is (17) | **moon** (1) | **moon** (1) |
 | `orbits` | ally (53808) | orbit (12338) | orbit (601) | orbit (119) | orbit (58) | orbit (55) | around (166) | around (110) |
 | `the` | 五颜六色的 (102400) | -esque (6373) | planet (88) | *Earth* (33) | planet (23) | *Earth* (10) | planet (30) | *Earth* (8) |
 | `planet` | Planet (2726) | Planet (2156) | Planet (201) | 地球 (144) | planet (54) | planet (47) | *Earth* (209) | whose (175) |
@@ -424,6 +442,8 @@ Answered correctly; at the last token the same-category distractor is ranked fir
 ### `ex-element-state-26-80`
 
 > Fact: The state of matter at room temperature of the element with atomic number 26 is
+
+Cue phrase: "element with atomic number 26"
 
 Bridge **iron** -> answer *solid*; controls [mercury] / [liquid]. category: element-state, model answers correctly: yes, swapping flips the answer: neither part, model's top word: solid.
 Why this group: J-lens bridge ranked first among the entities in 0% of band layers at the last token, best earlier 100% (at `6`), distractor 18%; J++ at the last token 29%.
@@ -455,18 +475,20 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 
 | token | L8 | L16 | L24 | L32 | L40 | L48 | L56 | L62 |
 |---|---|---|---|---|---|---|---|---|
-| `element` | ally (67712) | which (37628) | which (1088) | sulfur (381) | chemistry (94) | Chemical (142) | chlorine (62) | chlorine (40) |
-| `with` | ness (112398) | dicip (88525) | hium (24477) | <u (5637) | atomic (202) | name (872) | atomic (8065) | atomic (802) |
-| `atomic` | ity (105569) | ity (11896) | atomic (17167) | atomic (8215) | atomic (1243) | atomic (5378) | number (10624) | number (1433) |
-| `number` | 's (35385) | of (9818) | number (2791) | number (2655) | number (1321) | number (1053) | Atomic (299) | eighty (468) |
-| `␣` | ´s (9649) | ´s (1272) | amongst (218) | XXXX (1284) | 1 (158) | \n (677) | 元素 (218) | 8 (231) |
-| `2` | -old (119593) | o (6006) | 2 (17362) | 原子 (82514) | 原子 (23475) | 2 (109038) | is (324) | 6 (360) |
-| `6` | aveled (35039) | in (3280) | in (3) | 6 (16) | **iron** (1) | 钢铁 (2) | is (2) | is (2) |
+| `element` (cue) | ally (67712) | which (37628) | which (1088) | sulfur (381) | chemistry (94) | Chemical (142) | chlorine (62) | chlorine (40) |
+| `with` (cue) | ness (112398) | dicip (88525) | hium (24477) | <u (5637) | atomic (202) | name (872) | atomic (8065) | atomic (802) |
+| `atomic` (cue) | ity (105569) | ity (11896) | atomic (17167) | atomic (8215) | atomic (1243) | atomic (5378) | number (10624) | number (1433) |
+| `number` (cue) | 's (35385) | of (9818) | number (2791) | number (2655) | number (1321) | number (1053) | Atomic (299) | eighty (468) |
+| `␣` (cue) | ´s (9649) | ´s (1272) | amongst (218) | XXXX (1284) | 1 (158) | \n (677) | 元素 (218) | 8 (231) |
+| `2` (cue) | -old (119593) | o (6006) | 2 (17362) | 原子 (82514) | 原子 (23475) | 2 (109038) | is (324) | 6 (360) |
+| `6` (cue) | aveled (35039) | in (3280) | in (3) | 6 (16) | **iron** (1) | 钢铁 (2) | is (2) | is (2) |
 | `is` | avour (188597) | also (72015) | presently (65862) | 什么意思 (114660) | 液态 (168) | \n (1912) | 固态 (459) | *solid* (21) |
 
 ### `mars-color`
 
 > Fact: The color of the planet fourth from the Sun is
+
+Cue phrase: "planet fourth from the Sun"
 
 Bridge **Mars** -> answer *red*; controls [Earth] / [blue]. category: multihop, model answers correctly: yes, swapping flips the answer: neither part, model's top word: red.
 Why this group: J-lens bridge ranked first among the entities in 0% of band layers at the last token, best earlier 12% (at `the`), distractor 100%; J++ at the last token 0%.
@@ -500,16 +522,18 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 |---|---|---|---|---|---|---|---|---|
 | `of` | colors (7976) | colors (10772) | color (4621) | color (3264) | color (2207) | color (1355) | sky (150) | clouds (291) |
 | `the` | colors (194) | colors (4328) | color (1735) | color (816) | color (496) | color (229) | sky (314) | sky (806) |
-| `planet` | **Mars** (1) | Planet (8) | Planet (11) | planet (17) | planet (17) | planet (8) | Jupiter (2) | **Mars** (1) |
-| `fourth` | 了 (158972) | s (231194) | 了 (112036) | uranus (8239) | 地球 (344) | planet (148) | planet (80) | from (100) |
-| `from` | ς (12934) | s (27565) | planet (53) | 地球 (352) | 地球 (57) | NASA (60) | Sun (37) | the (20) |
-| `the` | 旳 (91) | farther (57702) | colors (2042) | colors (1294) | color (79) | color (72) | stars (64) | sun (135) |
-| `Sun` | aries (64) | —not (134) | Saturn (35) | Earth (20) | [Earth] (28) | [Earth] (23) | is (7) | is (4) |
+| `planet` (cue) | **Mars** (1) | Planet (8) | Planet (11) | planet (17) | planet (17) | planet (8) | Jupiter (2) | **Mars** (1) |
+| `fourth` (cue) | 了 (158972) | s (231194) | 了 (112036) | uranus (8239) | 地球 (344) | planet (148) | planet (80) | from (100) |
+| `from` (cue) | ς (12934) | s (27565) | planet (53) | 地球 (352) | 地球 (57) | NASA (60) | Sun (37) | the (20) |
+| `the` (cue) | 旳 (91) | farther (57702) | colors (2042) | colors (1294) | color (79) | color (72) | stars (64) | sun (135) |
+| `Sun` (cue) | aries (64) | —not (134) | Saturn (35) | Earth (20) | [Earth] (28) | [Earth] (23) | is (7) | is (4) |
 | `is` | 大金 (255) | actually (37281) | much (802) | 什么意思 (1937) | planet (16) | color (25) | planet (7) | *red* (9) |
 
 ### `person-firstname-newton`
 
 > Fact: The first name of the scientist on whose head an apple is said to have fallen was
+
+Cue phrase: "scientist on whose head an apple is said to have fallen"
 
 Bridge **Newton** -> answer *Isaac*; controls [Shakespeare] / [William]. category: person-firstname, model answers correctly: yes, swapping flips the answer: neither part, model's top word: Isaac.
 Why this group: J-lens bridge ranked first among the entities in 6% of band layers at the last token, best earlier 82% (at `to`), distractor 94%; J++ at the last token 12%.
@@ -541,13 +565,13 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 
 | token | L8 | L16 | L24 | L32 | L40 | L48 | L56 | L62 |
 |---|---|---|---|---|---|---|---|---|
-| `an` | uminium (233755) | ely (83784) | supposedly (1520) | xxxxxxxx (583) | Einstein (3) | supposedly (27) | supposedly (42) | apple (221) |
-| `apple` | apple (6858) | apple (2286) | apple (23) | apple (4) | apple (6) | supposedly (36) | supposedly (352) | fell (330) |
-| `is` | colour (169507) | colour (37137) | supposedly (14380) | 什么 (5657) | famous (405) | supposedly (2275) | supposed (3229) | said (2052) |
-| `said` | edly (138691) | edly (122949) | reputed (46356) | 什么 (38215) | 传说 (2252) | allegedly (1552) | have (1197) | to (55) |
-| `to` | ‘s (128623) | er (45390) | \u (10) | famously (4) | 牛顿 (3) | 牛顿 (3) | discovered (4) | have (4) |
-| `have` | recognised (27174) | favoured (9153) | reputed (3063) | 的 (518) | 砸 (12) | \n (114) | fallen (729) | fallen (310) |
-| `fallen` | avourite (40110) | avourite (1151) | —or (70) | supposedly (4) | 据说 (37) | was (158) | was (159) | is (48) |
+| `an` (cue) | uminium (233755) | ely (83784) | supposedly (1520) | xxxxxxxx (583) | Einstein (3) | supposedly (27) | supposedly (42) | apple (221) |
+| `apple` (cue) | apple (6858) | apple (2286) | apple (23) | apple (4) | apple (6) | supposedly (36) | supposedly (352) | fell (330) |
+| `is` (cue) | colour (169507) | colour (37137) | supposedly (14380) | 什么 (5657) | famous (405) | supposedly (2275) | supposed (3229) | said (2052) |
+| `said` (cue) | edly (138691) | edly (122949) | reputed (46356) | 什么 (38215) | 传说 (2252) | allegedly (1552) | have (1197) | to (55) |
+| `to` (cue) | ‘s (128623) | er (45390) | \u (10) | famously (4) | 牛顿 (3) | 牛顿 (3) | discovered (4) | have (4) |
+| `have` (cue) | recognised (27174) | favoured (9153) | reputed (3063) | 的 (518) | 砸 (12) | \n (114) | fallen (729) | fallen (310) |
+| `fallen` (cue) | avourite (40110) | avourite (1151) | —or (70) | supposedly (4) | 据说 (37) | was (158) | was (159) | is (48) |
 | `was` | 的 (204502) | indeed (134749) | chiefly (96279) | 什么 (4392) | name (107) | <u (23) | **Newton** (1) | *Isaac* (4) |
 
 
@@ -559,6 +583,8 @@ Answered correctly; at the last token the two lenses' band shares for the bridge
 ### `organ-location-heart`
 
 > Fact: The part of the body that contains the organ that pumps blood is the
+
+Cue phrase: "organ that pumps blood"
 
 Bridge **heart** -> answer *chest*; controls [brain] / [head]. category: organ-location, model answers correctly: yes, swapping flips the answer: neither part, model's top word: chest.
 Why this group: J-lens bridge ranked first among the entities in 6% of band layers at the last token, best earlier 100% (at `blood`), distractor 0%; J++ at the last token 82%.
@@ -592,10 +618,10 @@ Interactive layer x position view (jlens, pinned words; open locally): [J-lens](
 |---|---|---|---|---|---|---|---|---|
 | `contains` | жё (168137) | s (565) | parts (215) | 的 (4041) | organs (139) | organs (28) | organs (7) | blood (32) |
 | `the` | 大金 (137041) | s (202) | people (14) | what (87) | organs (4) | organs (3) | organs (3) | [brain] (2) |
-| `organ` | er (137896) | er (1646) | organs (243) | 的 (2082) | organs (28) | organs (6) | called (13) | that (6) |
-| `that` | raries (111087) | got (2322) | is (658) | 是什么 (62012) | humans (354) | humans (19) | organ (166) | pumps (581) |
-| `pumps` | Watts (13679) | big (319) | pumps (14) | <u (730) | pumps (21) | pumps (17) | blood (141) | blood (44) |
-| `blood` | s (12324) | s (336) | to (11) | \n (62) | blood (41) | blood (15) | throughout (28) | is (40) |
+| `organ` (cue) | er (137896) | er (1646) | organs (243) | 的 (2082) | organs (28) | organs (6) | called (13) | that (6) |
+| `that` (cue) | raries (111087) | got (2322) | is (658) | 是什么 (62012) | humans (354) | humans (19) | organ (166) | pumps (581) |
+| `pumps` (cue) | Watts (13679) | big (319) | pumps (14) | <u (730) | pumps (21) | pumps (17) | blood (141) | blood (44) |
+| `blood` (cue) | s (12324) | s (336) | to (11) | \n (62) | blood (41) | blood (15) | throughout (28) | is (40) |
 | `is` | colour (176981) | basically (2024) | 什么 (1475) | 什么 (6841) | 心脏 (4) | located (5) | called (36) | the (20) |
 | `the` | 大金 (121865) | amongst (11030) | 哪一个 (22920) | 什么 (16440) | body (183) | torso (43) | *chest* (12) | *chest* (5) |
 

@@ -176,6 +176,39 @@ def _marked(token_id: int, token: str, ex_ids: dict[str, list[int]]) -> str:
     return _show(token)
 
 
+def load_cues() -> dict[str, str]:
+    """Each probe-swap question's cue phrase, the words that point to the bridge (data/cue_spans.json)."""
+    from bridge_jspace.pins import DATA_DIR
+
+    path = DATA_DIR / "cue_spans.json"
+    return json.loads(path.read_text())["cues"] if path.exists() else {}
+
+
+def _with_cue(r: dict[str, Any], cues: dict[str, str]) -> dict[str, Any]:
+    """The record with its cue phrase, if it has one and the phrase is in its prompt (another set can reuse a name)."""
+    cue = cues.get(r["name"])
+    return {**r, "cue": cue} if cue and cue in r["prompt"] else r
+
+
+def cue_token_indices(tokens: list[str], cue: str | None) -> set[int]:
+    """Indices of the tokens that overlap the cue phrase in the text they spell (empty if it is not there)."""
+    text = "".join(tokens)
+    start = text.find(cue) if cue else -1
+    if cue is None or start < 0:
+        return set()
+    ends = np.cumsum([len(t) for t in tokens])
+    return {i for i, end in enumerate(ends) if end - len(tokens[i]) < start + len(cue) and end > start}
+
+
+def prompt_html(prompt: str, cue: str | None = None) -> str:
+    """The prompt, escaped (a trailing space shown as ␣), with its cue phrase underlined when given and present."""
+    shown = prompt[:-1] + "␣" if prompt.endswith(" ") else prompt
+    i = shown.find(cue) if cue else -1
+    if cue is None or i < 0:
+        return _esc(shown)
+    return f"{_esc(shown[:i])}<span class='cue'>{_esc(cue)}</span>{_esc(shown[i + len(cue) :])}"
+
+
 def render(groups: list[Group], records: list[dict[str, Any]], p: dict[str, Any], model: str) -> str:
     lines = [
         f"# Examples: {p['title']}",
@@ -209,6 +242,7 @@ def _render_example(r: dict[str, Any], p: dict[str, Any]) -> list[str]:
         "",
         "> " + (r["prompt"][:-1] + "␣" if r["prompt"].endswith(" ") else r["prompt"]),
         "",
+        *([f'Cue phrase: "{r["cue"]}"', ""] if r.get("cue") else []),
         f"Bridge **{w['bridge']}** -> answer *{w['answer']}*{ctrl}. {info}.",
         f"Why this group: {r['why']}",
         *(
@@ -241,6 +275,7 @@ def _render_example(r: dict[str, Any], p: dict[str, Any]) -> list[str]:
             cells.append(", ".join(_marked(i, t, r["word_ids"]) for i, t in zip(c["top_ids"], c["top"], strict=True)))
             ranks.append(f"{c['ranks'].get('bridge', '-')} / {c['ranks'].get('answer', '-')}")
         out.append(f"| {layer} | " + " | ".join(cells) + " | " + " · ".join(ranks) + " |")
+    cue = cue_token_indices(r["tokens"], r.get("cue"))
     for rname, by_layer in r["positions"].items():
         n = len(next(iter(by_layer.values())))
         toks = r["tokens"][-n:]
@@ -258,7 +293,8 @@ def _render_example(r: dict[str, Any], p: dict[str, Any]) -> list[str]:
                 row.append(
                     f"{_marked(cell['top_ids'][0], cell['top'][0], r['word_ids'])} ({cell['ranks'].get('bridge', '-')})"
                 )
-            out.append(f"| `{_show(t)}` | " + " | ".join(row) + " |")
+            mark = " (cue)" if len(r["tokens"]) - n + i in cue else ""
+            out.append(f"| `{_show(t)}`{mark} | " + " | ".join(row) + " |")
     out.append("")
     return out
 
@@ -329,6 +365,7 @@ th{color:var(--faint);font-weight:500}td.l{color:var(--faint);font-variant-numer
 td.heat{font-family:var(--mono);text-align:center;min-width:70px}
 td.heat small{color:var(--ink);opacity:.75;font-variant-numeric:tabular-nums}
 td.heat .w.bridge{background:none;color:var(--ink);text-decoration:underline 2px}
+.cue,td.cuetok code{text-decoration:underline dotted 2px;text-underline-offset:3px}
 h4.t{margin:12px 0 0;font-size:13px}
 td.o{white-space:normal;min-width:260px;max-width:420px;font:12px/1.45 var(--mono)}
 details.oracle{margin:12px 0 4px}details.oracle summary{cursor:pointer;font-weight:600;font-size:13px}
@@ -409,6 +446,11 @@ def render_html(
         "is the reader's 3rd most likely word and the answer its 120th (spaces and punctuation not counted); bold "
         "marks the top 10. The colour of the J-lens position table shows the bridge rank: darker is higher.</p>"
         + (
+            f"<p>{CUE_LEGEND} In the position table its tokens are underlined too.</p>"
+            if any(r.get("cue") for r in records)
+            else ""
+        )
+        + (
             "<p>Under a card, "
             + " and ".join(f"<b>{_esc(t)}</b>" for t in (verbalizers or {}))
             + " open what each verbalizer (a model that puts one activation into words: the oracle lens, a LoRA on the "
@@ -443,12 +485,12 @@ def _card_html(
     r: dict[str, Any], group: str, p: dict[str, Any], slice_prefix: str = "", verbalizers: dict | None = None
 ) -> str:
     w = r["words"]
-    prompt = r["prompt"][:-1] + "␣" if r["prompt"].endswith(" ") else r["prompt"]
     ctrl = f" · controls {_esc(w['distractor'])} / {_esc(w['swap_answer'])}" if "distractor" in w else ""
     badges = "".join(f"<span class='badge'>{_esc(k)}: {_esc(str(v))}</span>" for k, v in r["info"].items())
+    cue = cue_token_indices(r["tokens"], r.get("cue"))
     parts = [
         f'<div class="card" id="{group}-{_esc(r["name"])}"><h3>{_esc(r["name"])}{badges}</h3>',
-        f'<div class="prompt">{_esc(prompt)}</div>',
+        f'<div class="prompt">{prompt_html(r["prompt"], r.get("cue"))}</div>',
         f'<p class="meta">bridge <span class="b">{_esc(w["bridge"])}</span> → answer '
         f'<span class="a">{_esc(w["answer"])}</span>{ctrl}</p>',
         f'<p class="meta">{_esc(r["why"])}</p>',
@@ -500,7 +542,8 @@ def _card_html(
                     f"<td class='heat'{_heat(rank)}>{_word_html(cell['top_ids'][0], cell['top'][0], r['word_ids'])}"
                     f"<br><small>{rank}</small></td>"
                 )
-            parts.append(f"<tr><td><code>{_esc(_show(t))}</code></td>{''.join(cells)}</tr>")
+            in_cue = " class='cuetok'" if len(r["tokens"]) - n + i in cue else ""
+            parts.append(f"<tr><td{in_cue}><code>{_esc(_show(t))}</code></td>{''.join(cells)}</tr>")
         parts.append("</table></div>")
     for title, readings in (verbalizers or {}).items():  # title -> this question's readings
         parts.append(_oracle_html(readings, w, title))
@@ -508,6 +551,10 @@ def _card_html(
     return "".join(parts)
 
 
+CUE_LEGEND = (
+    "<span class='cue'>Dotted underline</span>: the cue phrase, the words of the prompt that point to the bridge "
+    "(<code>data/cue_spans.json</code>; written by the coding agent, not yet human-reviewed)."
+)
 ORACLE_POSITION = {"last": "last word", "prev": "-1", "cue_last": "cue phrase, last token"}
 ORACLE_MARK = {"bridge": "bridge", "answer": "answer", "distractor": "ctrl", "swap_answer": "ctrl"}
 
@@ -641,10 +688,12 @@ def export(run_dir: str | Path, root: Path | None = None) -> Path:
         shutil.rmtree(out)
     out.mkdir(parents=True)
     verbalizers = {title: load_oracle_readings(exp=exp) for title, exp in VERBALIZERS.items()}
-    (out / "index.html").write_text(render_html(groups, data["examples"], p, model, verbalizers=verbalizers))
-    (out / "examples.md").write_text(render(groups, data["examples"], p, model))
+    cues = load_cues()
+    records = [_with_cue(r, cues) for r in data["examples"]]
+    (out / "index.html").write_text(render_html(groups, records, p, model, verbalizers=verbalizers))
+    (out / "examples.md").write_text(render(groups, records, p, model))
     (out / "artifact.html").write_text(
-        render_html(groups, data["examples"], p, model, standalone=False, verbalizers=verbalizers)
+        render_html(groups, records, p, model, standalone=False, verbalizers=verbalizers)
     )
     if (run_dir / "slices").exists():
         shutil.copytree(run_dir / "slices", out / "slices")
