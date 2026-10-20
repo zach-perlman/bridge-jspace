@@ -20,7 +20,9 @@ def raw_encoding(tokenizer, text: str, offsets: bool = False) -> dict:
     enc = tokenizer(text, add_special_tokens=False, return_offsets_mapping=offsets)
     ids = list(enc.input_ids)
     spans = [tuple(o) for o in enc.offset_mapping] if offsets else None
-    if pins.TARGETS[pins.TARGET]["bos"]:
+    if pins.TARGETS[pins.TARGET]["bos"] and (
+        not ids or ids[0] != tokenizer.bos_token_id
+    ):  # a chat template writes its own
         ids = [tokenizer.bos_token_id, *ids]
         spans = [(0, 0), *spans] if spans is not None else None
     return {"input_ids": ids, "offset_mapping": spans}

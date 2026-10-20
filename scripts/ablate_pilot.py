@@ -62,15 +62,24 @@ def eligible_ids(run: str, wording_set_families: tuple[str, ...]) -> dict[str, s
     return {f: {i for i, v in d.items() if all(v)} for f, d in ok.items()}
 
 
-def prompts(tok, n: int) -> list[dict]:
+def prompts(
+    tok, n: int, comp_main: str = "competence_v2", comp_computed: str | None = "competence_computed_v1", model=None
+) -> list[dict]:
     out = []
-    sets = (("A", "competence_v2", ("BL", "BR", "RL", "RR")), ("C", "competence_computed_v1", ("TYPO", "TRANS")))
+    sets = [("A", comp_main, ("BL", "BR", "RL", "RR"))]
+    sets += [("C", comp_computed, ("TYPO", "TRANS"))] if comp_computed else []
     for wording, run, fams in sets:
         good = eligible_ids(run, fams)
         for fam in fams:
-            items = [it for it in S.load(fam, wording) if it["id"] in good[fam]][:n]
-            for it in items:
-                prep = P.prepare(it, tok)
+            got = 0
+            for it in S.load(fam, wording):
+                if got >= n or it["id"] not in good.get(fam, set()):
+                    continue
+                try:
+                    prep = P.prepare(it, tok)
+                except AssertionError:  # C or O not aligned in this tokenizer
+                    continue
+                got += 1
                 out.append({"family": fam, "id": it["id"], "kind": "clean", "ids": prep["read_ids"]["clean"],
                             "tok": prep["tok_A"]})  # fmt: skip
                 hop = it.get("hop3") or it["hop2"]
@@ -78,6 +87,11 @@ def prompts(tok, n: int) -> list[dict]:
                 ids = S.ids(tok, text) + (S.ids(tok, " ") if hop["kind"] == "digit" else [])
                 out.append({"family": fam, "id": it["id"], "kind": "hop", "ids": ids,
                             "tok": S.answer_token(tok, hop["answer"], hop["kind"])})  # fmt: skip
+    if model is not None:  # a new target: countries from exp09's eligibility, generated now
+        for c in C.build_cases(model, tok, n)[0]:
+            out.append({"family": f"country-{c['family']}", "id": c["id"], "kind": "clean", "ids": c["ids"]["clean"],
+                        "tok": c["tok_A"]})  # fmt: skip
+        return out
     picked = [json.loads(line)["id"] for line in (C.RESULTS / "map_v1" / "cases.jsonl").read_text().splitlines()]
     items = E.ITEM_SETS["bind_recall"][2]()
     by_uid = {E.uid(it, i): (i, it) for i, it in enumerate(items)}
@@ -94,7 +108,14 @@ def prompts(tok, n: int) -> list[dict]:
 
 
 @torch.no_grad()
-def main(name: str, why: str, n: int) -> None:
+def main(
+    name: str,
+    why: str,
+    n: int,
+    comp_main: str = "competence_v2",
+    comp_computed: str | None = "competence_computed_v1",
+    countries_build: bool = False,
+) -> None:
     from bridge_jspace.lens import JLens
     from bridge_jspace.model import load_model
 
@@ -117,7 +138,7 @@ def main(name: str, why: str, n: int) -> None:
     conditions = {"none": {}, "jspace": {la: Remove(jdict[la]) for la in LAYERS},
                   "random": {la: Remove(rdict[la]) for la in LAYERS}}  # fmt: skip
     t0 = time.time()
-    ps = prompts(tok, n)
+    ps = prompts(tok, n, comp_main, comp_computed, model if countries_build else None)
     print(len(ps), "prompts", flush=True)
     rows = []
     by_len: dict[int, list[dict]] = collections.defaultdict(list)
@@ -161,5 +182,17 @@ if __name__ == "__main__":
     ap.add_argument("--name", required=True)
     ap.add_argument("--why", required=True)
     ap.add_argument("--n", type=int, default=100)
+    ap.add_argument("--layers", nargs="+", type=int, default=list(LAYERS))
+    ap.add_argument("--comp-main", default="competence_v2")
+    ap.add_argument("--comp-computed", default="competence_computed_v1", help="'none' to skip TYPO and TRANS")
+    ap.add_argument("--countries-build", action="store_true", help="build the country cases now (a target with no map)")
     args = ap.parse_args()
-    main(args.name, args.why, args.n)
+    LAYERS = tuple(args.layers)
+    main(
+        args.name,
+        args.why,
+        args.n,
+        args.comp_main,
+        None if args.comp_computed == "none" else args.comp_computed,
+        args.countries_build,
+    )

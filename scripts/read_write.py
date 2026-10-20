@@ -62,6 +62,27 @@ def suite_cases(
     return out
 
 
+def suite_cases_from_competence(tok, n: int, comp_run: str, families: list[str]) -> list[dict]:
+    """The first n items per family with every prompt right in a suite_v1 competence run (no map run needed: a new
+    target); items whose C or O does not line up token for token in this tokenizer are skipped."""
+    ok: dict[str, list[bool]] = collections.defaultdict(list)
+    for line in (S.RESULTS / comp_run / "items.jsonl").read_text().splitlines():
+        r = json.loads(line)
+        ok[r["id"]].append(r["correct"])
+    out = []
+    for fam in families:
+        got = 0
+        for it in S.load(fam):
+            if got >= n or not ok.get(it["id"]) or not all(ok[it["id"]]):
+                continue
+            try:
+                out.append({**it, **P.prepare(it, tok)})
+                got += 1
+            except AssertionError:
+                continue
+    return out
+
+
 def country_cases(tok, n: int, map_run: str = "map_v1") -> list[dict]:
     picked = [json.loads(line)["id"] for line in (C.RESULTS / map_run / "cases.jsonl").read_text().splitlines()]
     items = E.ITEM_SETS["bind_recall"][2]()
@@ -92,6 +113,7 @@ def main(
     countries: bool = True,
     country_map: str = "map_v1",
     families: list[str] | None = None,
+    comp_run: str | None = None,
 ) -> None:
     from bridge_jspace.lens import JLens
     from bridge_jspace.model import load_model
@@ -99,7 +121,12 @@ def main(
     out_dir = RESULTS / name
     out_dir.mkdir(parents=True, exist_ok=True)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
-    inputs = {p: sha256_of(p) for p in (P.RESULTS / map_run / "cases.jsonl", C.RESULTS / country_map / "cases.jsonl")}
+    sources = (
+        [S.RESULTS / comp_run / "items.jsonl"]
+        if comp_run
+        else [P.RESULTS / map_run / "cases.jsonl", C.RESULTS / country_map / "cases.jsonl"]
+    )
+    inputs = {p: sha256_of(p) for p in sources}
     manifest = {"run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "layers": list(LAYERS),
                 "scales": list(SCALES), "n_per_family": n, "doc": (__doc__ or "").split("\n\n")[1],
@@ -109,7 +136,13 @@ def main(
     tok = model.tokenizer
     lens = JLens(model, pins.FROZEN_LENS)
     t0 = time.time()
-    cases = suite_cases(tok, n, map_run, wording, families) + (country_cases(tok, n, country_map) if countries else [])
+    if comp_run:  # a new target: cases from its competence run; countries from exp09's eligibility (generated here)
+        cases = suite_cases_from_competence(tok, n, comp_run, families or ["BL", "BR", "RL", "RR"])
+        cases += C.build_cases(model, tok, n)[0] if countries else []
+    else:
+        cases = suite_cases(tok, n, map_run, wording, families) + (
+            country_cases(tok, n, country_map) if countries else []
+        )
     print(len(cases), "cases", flush=True)
     reads, outcomes = [], []
     for k, c in enumerate(cases):
@@ -208,6 +241,17 @@ if __name__ == "__main__":
     ap.add_argument("--families", nargs="+", default=None, help="suite families to include (default: all in the map)")
     ap.add_argument("--layers", nargs="+", type=int, default=list(LAYERS))
     ap.add_argument("--scales", nargs="+", type=float, default=list(SCALES))
+    ap.add_argument("--from-competence", default=None, help="suite_v1 competence run to take cases from (no map run)")
     args = ap.parse_args()
     LAYERS, SCALES = tuple(args.layers), tuple(args.scales)
-    main(args.name, args.why, args.n, args.map, args.wording, not args.no_countries, args.country_map, args.families)
+    main(
+        args.name,
+        args.why,
+        args.n,
+        args.map,
+        args.wording,
+        not args.no_countries,
+        args.country_map,
+        args.families,
+        args.from_competence,
+    )
