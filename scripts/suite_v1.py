@@ -946,7 +946,12 @@ def stage_competence(name: str) -> None:
             "reliable": cells["clean"]["lo"] >= 0.85,
             "clean_median_p_answer": statistics.median(r["p_answer"] for r in clean_rows),
             "clean_median_margin": statistics.median(r["margin"] for r in clean_rows),
-            "read_agrees_with_greedy": statistics.mean((r["read_top"].lower() == (r["said"] or "").lower()) for r in fr),
+            # the read sees the answer's first token: a multi-digit answer agrees if the greedy answer starts with it
+            "read_agrees_with_greedy": statistics.mean(
+                (r["said"] or "").lower().startswith(r["read_top"].lower()) if r["answer_kind"] == "digit" and r["read_top"]
+                else r["read_top"].lower() == (r["said"] or "").lower()
+                for r in fr
+            ),
             "hop_accuracy_by_bridge": {b: round(statistics.mean(v), 3) for b, v in sorted(by_bridge.items())},
         }  # fmt: skip
     summary["seconds"] = round(time.time() - t0)
