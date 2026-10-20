@@ -12,8 +12,11 @@ X is the birth city of another known row whose country differs (and whose first 
          position (alpha 0.05-0.8), and a random direction at the same norms; measured on the answer's first token:
          flips (top token = X's country) and the share of the clean margin closed, (ld - ld_clean) / -ld_clean with
          ld = logit(X's country) - logit(the bridge's country)
-Cases: rows answered correctly unedited in both versions, cities with a single-token lens vector. Descriptive; no
-verdict rule.
+  MX  conflict (v2): the three facts give each city another known row's country (never its own), so the answer is
+      the prompt's country for the bridge city and a lookup in the prompt is the only way to it; steering toward X
+      counts a flip to X's prompt country (the lookup written) and, separately, to X's real country (memory written)
+Cases: rows answered correctly unedited in every version run, cities with a single-token lens vector. Descriptive; no
+verdict rule. (v1's MC turned out not to force a lookup: the model knows every fact, so it can answer from memory.)
 
 python scripts/natural_rw.py --name N --why W [--n K]
 """
@@ -50,7 +53,7 @@ SEED = 501
 BATCH = 32
 
 
-def build(tok, model) -> list[dict]:
+def build(tok, model, versions: tuple[str, ...] = ("MM", "MC")) -> list[dict]:
     items = [it for it in json.loads((T.DATA / "screen.json").read_text())["items"] if it["type"] == TYPE]
     ok: dict[str, dict[str, bool]] = collections.defaultdict(dict)
     for line in (T.RESULTS / "screen_v1" / "items.jsonl").read_text().splitlines():
@@ -77,20 +80,43 @@ def build(tok, model) -> list[dict]:
         facts = [f"{c['e2']} is in the country of {c['e3']}." for c in (it, x, k)]
         rng.shuffle(facts)
         statement = it["prompts"]["MM"]
-        for version, text in (("MM", statement), ("MC", " ".join(facts) + " " + statement)):
+        # conflict: three other rows' countries, all distinct from each other and from the three cities' real ones
+        real = {it["e3"], x["e3"], k["e3"]}
+        donors = [o for o in known if o["e3"] not in real]
+        rng.shuffle(donors)
+        chosen: list[dict] = []
+        for o in donors:
+            used = {S.answer_token(tok, d["e3"], "word") for d in chosen}
+            used |= {S.answer_token(tok, c["e3"], "word") for c in (it, x)}
+            if o["e3"] not in {d["e3"] for d in chosen} and S.answer_token(tok, o["e3"], "word") not in used:
+                chosen.append(o)
+            if len(chosen) == 3:
+                break
+        if len(chosen) < 3:
+            continue
+        fake = dict(zip((it["e2"], x["e2"], k["e2"]), chosen, strict=True))
+        conflict = [f"{c} is in the country of {d['e3']}." for c, d in fake.items()]
+        rng.shuffle(conflict)
+        texts = {"MM": statement, "MC": " ".join(facts) + " " + statement, "MX": " ".join(conflict) + " " + statement}
+        for version in versions:
+            text = texts[version]
             rendered = chat.chat_text(tok, chat.blank_content(text))
             enc = raw_encoding(tok, rendered, offsets=True)
             start = rendered.rindex(it["e1"]) + len(it["e1"])
             pos = [i for i, (s, _) in enumerate(enc["offset_mapping"]) if s >= start]
+            mx = version == "MX"
+            ans, x_ans = (fake[it["e2"]], fake[x["e2"]]) if mx else (it, x)
             cases.append({"id": it["id"], "version": version, "e1": it["e1"], "bridge": it["e2"], "x": x["e2"],
-                          "answer": it["e3"], "x_answer": x["e3"], "aliases": it["aliases"], "ids": list(enc["input_ids"]),
-                          "pos": pos, "tok_A": a_tok, "tok_b": S.answer_token(tok, x["e3"], "word"),
+                          "answer": ans["e3"], "x_answer": x_ans["e3"], "aliases": ans["aliases"], "ids": list(enc["input_ids"]),
+                          "pos": pos, "tok_A": S.answer_token(tok, ans["e3"], "word"),
+                          "tok_b": S.answer_token(tok, x_ans["e3"], "word"),
+                          "tok_mem": S.answer_token(tok, x["e3"], "word"), "real_answer": it["e3"],
                           "i_tok": single(it["e2"]), "x_tok": single(x["e2"])})  # fmt: skip
     return cases
 
 
 @torch.no_grad()
-def main(name: str, why: str, n: int) -> None:
+def main(name: str, why: str, n: int, versions: tuple[str, ...] = ("MM", "MC")) -> None:
     from bridge_jspace.lens import JLens
     from bridge_jspace.model import load_model
 
@@ -107,13 +133,14 @@ def main(name: str, why: str, n: int) -> None:
     tok = model.tokenizer
     lens = JLens(model, pins.FROZEN_LENS)
     t0 = time.time()
-    cases = build(tok, model)
+    cases = build(tok, model, versions)
     # eligibility: both versions answered correctly, unedited
     for c in cases:
         text = model.generate_batch(torch.tensor([c["ids"]], device="cuda"), 12, [{}])[0]
         c["clean_text"], c["clean_ok"] = text, T.judge(text, c["aliases"])
     good = {c["id"] for c in cases if c["clean_ok"]}
-    both = [i for i in dict.fromkeys(c["id"] for c in cases) if sum(c["id"] == i and c["clean_ok"] for c in cases) == 2]
+    both = [i for i in dict.fromkeys(c["id"] for c in cases)
+            if sum(c["id"] == i and c["clean_ok"] for c in cases) == len(versions)]  # fmt: skip
     keep = set(both[:n])
     cases = [c for c in cases if c["id"] in keep]
     print(len(good), "answered,", len(keep), "items with both versions right", flush=True)
@@ -141,7 +168,9 @@ def main(name: str, why: str, n: int) -> None:
             _, logits = model.generate_batch(ids, 1, [e for _, e in chunk], first_logits=True)
             for row, (tags, _) in enumerate(chunk):
                 ld = float(logits[row, c["tok_b"]] - logits[row, c["tok_A"]])
-                outcomes.append({"id": c["id"], "version": c["version"], **tags, "flip": int(logits[row].argmax()) == c["tok_b"],
+                top = int(logits[row].argmax())
+                outcomes.append({"id": c["id"], "version": c["version"], **tags, "flip": top == c["tok_b"],
+                                 "flip_mem": top == c["tok_mem"] and c["tok_mem"] != c["tok_b"],
                                  "closed": (ld - ld0) / max(-ld0, 1e-6)})  # fmt: skip
         if (k + 1) % 50 == 0:
             print(f"{k + 1}/{len(cases)} cases, {time.time() - t0:.0f}s", flush=True)
@@ -152,7 +181,7 @@ def main(name: str, why: str, n: int) -> None:
     write_jsonl(out_dir / "reads.jsonl", reads)
     write_jsonl(out_dir / "outcomes.jsonl", outcomes)
     summary: dict = {"n_items": len(keep), "seconds": round(time.time() - t0), "versions": {}}
-    for ver in ("MM", "MC"):
+    for ver in versions:
         best: dict[str, int] = {}
         for r in reads:
             if r["version"] == ver:
@@ -162,6 +191,7 @@ def main(name: str, why: str, n: int) -> None:
             for kind in ("lens", "random"):
                 sel = [o for o in outcomes if o["version"] == ver and o["alpha"] == a and o["kind"] == kind]
                 write[f"{kind}_{a:g}"] = {"flips": statistics.mean(o["flip"] for o in sel),
+                                          "flips_to_memory": statistics.mean(o["flip_mem"] for o in sel),
                                           "closed": statistics.mean(o["closed"] for o in sel)}  # fmt: skip
         summary["versions"][ver] = {"read_top10": statistics.mean(v <= 10 for v in best.values()),
                                     "read_top1": statistics.mean(v <= 1 for v in best.values()),
@@ -180,6 +210,16 @@ def main(name: str, why: str, n: int) -> None:
     lines += [
         "",
         "Write cells: lens | random direction: flips (share of the clean margin closed), single layers averaged.",
+        "MX flips go to X's country as the prompt gives it; the lens's flips to X's real country, per alpha: "
+        + json.dumps(
+            {
+                f"{a:g}": round(
+                    summary["versions"].get("MX", {}).get("write", {}).get(f"lens_{a:g}", {}).get("flips_to_memory", 0),
+                    3,
+                )
+                for a in ALPHAS
+            }
+        ),
     ]
     (out_dir / "summary.md").write_text("\n".join(lines) + "\n")
     print((out_dir / "summary.md").read_text())
@@ -191,6 +231,7 @@ if __name__ == "__main__":
     ap.add_argument("--why", required=True)
     ap.add_argument("--n", type=int, default=150)
     ap.add_argument("--layers", nargs="+", type=int, default=list(LAYERS))
+    ap.add_argument("--versions", nargs="+", default=["MM", "MC"], choices=["MM", "MC", "MX"])
     args = ap.parse_args()
     LAYERS = tuple(args.layers)
-    main(args.name, args.why, args.n)
+    main(args.name, args.why, args.n, tuple(args.versions))
