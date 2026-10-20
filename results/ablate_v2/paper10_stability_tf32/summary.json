@@ -1,0 +1,124 @@
+{
+  "seconds": 82,
+  "band_seconds": {
+    "L32,36,40": 52
+  },
+  "unedited_accuracy": {
+    "BL/clean": 1,
+    "BL/hop": 1,
+    "BR/hop": 1,
+    "RL/hop": 1,
+    "RR/hop": 1,
+    "BR/clean": 1,
+    "RL/clean": 1,
+    "RR/clean": 1,
+    "TYPO/clean": 1,
+    "TYPO/hop": 1,
+    "TRANS/clean": 1,
+    "TRANS/hop": 1,
+    "country-R/clean": 1,
+    "country-B/clean": 1
+  },
+  "cells": {
+    "L32,36,40": {
+      "BL/clean": {
+        "paper10": {
+          "n": 100,
+          "accuracy": 1,
+          "dlogp": -0.0013609717192593963
+        }
+      },
+      "BL/hop": {
+        "paper10": {
+          "n": 100,
+          "accuracy": 1,
+          "dlogp": -0.0004488663421943784
+        }
+      },
+      "BR/hop": {
+        "paper10": {
+          "n": 100,
+          "accuracy": 0.25,
+          "dlogp": -1.2596713907353114
+        }
+      },
+      "RL/hop": {
+        "paper10": {
+          "n": 100,
+          "accuracy": 1,
+          "dlogp": -0.0004488663421943784
+        }
+      },
+      "RR/hop": {
+        "paper10": {
+          "n": 100,
+          "accuracy": 0.25,
+          "dlogp": -1.2704605633520987
+        }
+      },
+      "BR/clean": {
+        "paper10": {
+          "n": 100,
+          "accuracy": 0.21,
+          "dlogp": -1.6447161501867231
+        }
+      },
+      "RL/clean": {
+        "paper10": {
+          "n": 100,
+          "accuracy": 1,
+          "dlogp": -0.006228442147839814
+        }
+      },
+      "RR/clean": {
+        "paper10": {
+          "n": 100,
+          "accuracy": 0.41,
+          "dlogp": -1.129591406667605
+        }
+      },
+      "TYPO/clean": {
+        "paper10": {
+          "n": 100,
+          "accuracy": 0.15,
+          "dlogp": -1.1565316508896648
+        }
+      },
+      "TYPO/hop": {
+        "paper10": {
+          "n": 100,
+          "accuracy": 1,
+          "dlogp": -0.26956951154163106
+        }
+      },
+      "TRANS/clean": {
+        "paper10": {
+          "n": 100,
+          "accuracy": 0.08,
+          "dlogp": -1.469851651545614
+        }
+      },
+      "TRANS/hop": {
+        "paper10": {
+          "n": 100,
+          "accuracy": 0.99,
+          "dlogp": -0.20248027480207384
+        }
+      },
+      "country-R/clean": {
+        "paper10": {
+          "n": 100,
+          "accuracy": 0.94,
+          "dlogp": -0.18757126189768314
+        }
+      },
+      "country-B/clean": {
+        "paper10": {
+          "n": 100,
+          "accuracy": 0.88,
+          "dlogp": -0.5854529523476958
+        }
+      }
+    }
+  }
+}

@@ -48,7 +48,6 @@ from scripts import control_split as C
 from scripts import exp09_bind_recall as E
 from scripts import suite_split as P
 from scripts import suite_v1 as S
-from scripts.exp03_brew_swaps import write_jsonl
 
 RESULTS = pins.RESULTS_DIR / "ablate_v2"
 COMPETENCE = {  # the 27B's competence runs per suite family (eligibility: every check right)
@@ -128,6 +127,11 @@ def bridge_positions(tok, ids: list[int], word: str) -> list[int]:
 def make_bands(plan: str, n_layers: int, spec: list[str], workspace: int | None = None) -> list[tuple[int, ...]]:
     if plan == "v1check":
         return [(32, 36, 40)]
+    if (
+        plan == "coarse"
+    ):  # 9 contiguous layers sliding by 4, and every layer (Zach, 2026-10-20: coarse first, then zoom)
+        top = n_layers - 2
+        return [tuple(range(s, s + 9)) for s in range(0, top - 7, 4)] + [tuple(range(0, top + 1))]
     if plan == "depth":
         top = n_layers - 2  # the last edited layer; the final block is the lens's target
         bands = [tuple(range(s, s + 3)) for s in range(0, top - 1, 2)]  # 3 contiguous layers, sliding by 2
@@ -230,6 +234,9 @@ def main(args) -> None:
 
     t0 = time.time()
     rows_out, band_seconds = [], collections.Counter()
+    rows_path = out_dir / "rows.jsonl"
+    assert not rows_path.exists(), f"{rows_path} exists"
+    written = 0
     by_len: dict[int, list[dict]] = collections.defaultdict(list)
     for p in prompts:
         by_len[len(p["ids"])].append(p)
@@ -270,8 +277,10 @@ def main(args) -> None:
                                          "condition": cond, "correct": int(logits[row].argmax()) == p["tok"],
                                          "logp": float(logp[row]), "bridge_protected": shields[row]})  # fmt: skip
                 band_seconds[label(band)] += time.time() - tb
+            with rows_path.open("a") as fh:  # this batch's rows, so partial results are readable during the run
+                fh.writelines(json.dumps(r) + "\n" for r in rows_out[written:])
+            written = len(rows_out)
             print(f"{len(rows_out)} rows, {time.time() - t0:.0f}s", flush=True)
-    write_jsonl(out_dir / "rows.jsonl", rows_out)
 
     base = {(r["family"], r["id"], r["kind"]): r for r in rows_out if r["condition"] == "none"}
     cells: dict = collections.defaultdict(lambda: collections.defaultdict(dict))
@@ -341,7 +350,7 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--name", required=True)
     ap.add_argument("--why", required=True)
-    ap.add_argument("--plan", choices=["v1check", "depth", "bands"], required=True)
+    ap.add_argument("--plan", choices=["v1check", "coarse", "depth", "bands"], required=True)
     ap.add_argument("--bands", nargs="*", default=[], help='with --plan bands: "32,36,40" or "16-28"')
     ap.add_argument("--conditions", nargs="+", default=["omp25", "omp25_rot", "omp25_rdict", "paper10", "paper10_rot",
                                                         "paper10_rdict"], choices=CONDITIONS)  # fmt: skip
