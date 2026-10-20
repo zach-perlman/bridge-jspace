@@ -1,0 +1,217 @@
+{
+  "seconds": 216,
+  "band_seconds": {
+    "L32,36,40": 188
+  },
+  "unedited_accuracy": {
+    "BL/clean": 1,
+    "BL/hop": 1,
+    "BR/hop": 1,
+    "RL/hop": 1,
+    "RR/hop": 1,
+    "BR/clean": 1,
+    "RL/clean": 1,
+    "RR/clean": 1,
+    "TYPO/clean": 1,
+    "TYPO/hop": 1,
+    "TRANS/clean": 1,
+    "TRANS/hop": 1,
+    "country-R/clean": 1,
+    "country-B/clean": 1
+  },
+  "cells": {
+    "L32,36,40": {
+      "BL/clean": {
+        "omp25": {
+          "n": 100,
+          "accuracy": 0.99,
+          "dlogp": -0.05947069137007929
+        },
+        "gauss": {
+          "n": 100,
+          "accuracy": 1,
+          "dlogp": -0.011130059749120846
+        }
+      },
+      "BL/hop": {
+        "omp25": {
+          "n": 100,
+          "accuracy": 0.99,
+          "dlogp": -0.03495784036349505
+        },
+        "gauss": {
+          "n": 100,
+          "accuracy": 1,
+          "dlogp": -0.008922130244318396
+        }
+      },
+      "BR/hop": {
+        "omp25": {
+          "n": 100,
+          "accuracy": 0.14,
+          "dlogp": -2.265291557841701
+        },
+        "gauss": {
+          "n": 100,
+          "accuracy": 1,
+          "dlogp": -0.006394870972726494
+        }
+      },
+      "RL/hop": {
+        "omp25": {
+          "n": 100,
+          "accuracy": 0.99,
+          "dlogp": -0.03495784036349505
+        },
+        "gauss": {
+          "n": 100,
+          "accuracy": 1,
+          "dlogp": -0.008922130244318396
+        }
+      },
+      "RR/hop": {
+        "omp25": {
+          "n": 100,
+          "accuracy": 0.13,
+          "dlogp": -2.1972612701856997
+        },
+        "gauss": {
+          "n": 100,
+          "accuracy": 1,
+          "dlogp": -0.006287934228312224
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 100,
+          "accuracy": 0.17,
+          "dlogp": -2.1635340779495893
+        },
+        "gauss": {
+          "n": 100,
+          "accuracy": 0.99,
+          "dlogp": -0.025338822833728045
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 100,
+          "accuracy": 0.98,
+          "dlogp": -0.07377512363716959
+        },
+        "gauss": {
+          "n": 100,
+          "accuracy": 1,
+          "dlogp": -0.015534086932893843
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 100,
+          "accuracy": 0.24,
+          "dlogp": -1.9650088466051967
+        },
+        "gauss": {
+          "n": 100,
+          "accuracy": 1,
+          "dlogp": -0.022638974380097352
+        }
+      },
+      "TYPO/clean": {
+        "omp25": {
+          "n": 100,
+          "accuracy": 0.1,
+          "dlogp": -2.1040623755566776
+        },
+        "gauss": {
+          "n": 100,
+          "accuracy": 0.98,
+          "dlogp": -0.060123352096416054
+        }
+      },
+      "TYPO/hop": {
+        "omp25": {
+          "n": 100,
+          "accuracy": 0.48,
+          "dlogp": -1.4248664913116955
+        },
+        "gauss": {
+          "n": 100,
+          "accuracy": 1,
+          "dlogp": -0.011291531233582645
+        }
+      },
+      "TRANS/clean": {
+        "omp25": {
+          "n": 100,
+          "accuracy": 0.1,
+          "dlogp": -2.1370366293750704
+        },
+        "gauss": {
+          "n": 100,
+          "accuracy": 1,
+          "dlogp": -0.035442483774386344
+        }
+      },
+      "TRANS/hop": {
+        "omp25": {
+          "n": 100,
+          "accuracy": 0.58,
+          "dlogp": -1.0738743659388275
+        },
+        "gauss": {
+          "n": 100,
+          "accuracy": 1,
+          "dlogp": -0.05252700747922063
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 100,
+          "accuracy": 0.38,
+          "dlogp": -2.595783654525876
+        },
+        "gauss": {
+          "n": 100,
+          "accuracy": 1,
+          "dlogp": 0.09065335869789123
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 100,
+          "accuracy": 0.36,
+          "dlogp": -3.214464077576995
+        },
+        "gauss": {
+          "n": 100,
+          "accuracy": 1,
+          "dlogp": 0.05597164794569835
+        }
+      }
+    }
+  },
+  "v1_agreement": {
+    "none": {
+      "n": 1400,
+      "same_correct": 1,
+      "median_abs_dlogp": 0.0,
+      "accuracy_ours": 1,
+      "accuracy_v1": 1
+    },
+    "omp25": {
+      "n": 1400,
+      "same_correct": 0.8978571428571429,
+      "median_abs_dlogp": 0.27324193716049194,
+      "accuracy_ours": 0.4735714285714286,
+      "accuracy_v1": 0.47
+    },
+    "gauss": {
+      "n": 1400,
+      "same_correct": 0.9971428571428571,
+      "median_abs_dlogp": 0.007535961223766208,
+      "accuracy_ours": 0.9978571428571429,
+      "accuracy_v1": 0.9992857142857143
+    }
+  }
+}

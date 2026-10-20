@@ -125,12 +125,17 @@ def bridge_positions(tok, ids: list[int], word: str) -> list[int]:
     ]
 
 
-def make_bands(plan: str, n_layers: int, spec: list[str]) -> list[tuple[int, ...]]:
+def make_bands(plan: str, n_layers: int, spec: list[str], workspace: int | None = None) -> list[tuple[int, ...]]:
     if plan == "v1check":
         return [(32, 36, 40)]
     if plan == "depth":
         top = n_layers - 2  # the last edited layer; the final block is the lens's target
-        return [tuple(range(s, s + 3)) for s in range(0, top - 1, 2)] + [tuple(range(0, top + 1))]
+        bands = [tuple(range(s, s + 3)) for s in range(0, top - 1, 2)]  # 3 contiguous layers, sliding by 2
+        bands += [tuple(range(s, s + 9)) for s in range(0, top - 7, 4)]  # 9 contiguous layers, sliding by 4
+        bands.append(tuple(range(0, top + 1)))  # every layer
+        if workspace is not None:  # every layer from the first where the lens mostly stops reading the input token
+            bands.append(tuple(range(workspace, top + 1)))
+        return bands
     bands = []
     for b in spec:
         if "-" in b:
@@ -139,6 +144,14 @@ def make_bands(plan: str, n_layers: int, spec: list[str]) -> list[tuple[int, ...
         else:
             bands.append(tuple(int(x) for x in b.split(",")))
     return bands
+
+
+WIDE = 9  # bands wider than this run paper10 and its controls only (Zach, 2026-10-20: OMP at whole depth breaks
+#           everything, its random controls too, so it says nothing there)
+
+
+def conditions_for(band: tuple[int, ...], conditions: list[str]) -> list[str]:
+    return [c for c in conditions if len(band) <= WIDE or c.startswith("paper10")]
 
 
 def label(band: tuple[int, ...]) -> str:
@@ -155,16 +168,16 @@ def main(args) -> None:
     out_dir = RESULTS / args.name
     out_dir.mkdir(parents=True, exist_ok=True)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
-    torch.backends.cuda.matmul.allow_tf32 = True
+    torch.backends.cuda.matmul.allow_tf32 = not args.no_tf32
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     model = load_model()
     tok = model.tokenizer
-    bands = make_bands(args.plan, pins.N_LAYERS, args.bands)
+    bands = make_bands(args.plan, pins.N_LAYERS, args.bands, args.workspace)
     manifest = {"run": args.name, "why": args.why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "git_commit": commit, "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
                 "plan": args.plan, "bands": [label(b) for b in bands], "conditions": args.conditions,
                 "families": args.families, "kinds": args.kinds, "n_per_family": args.n, "batch": args.batch,
-                "tf32": True, "seeds": {"rotation": f"{SEED_ROT}+layer", "rotated_dictionary": f"{SEED_DICT}+layer",
+                "tf32": not args.no_tf32, "workspace_start": args.workspace, "wide": WIDE, "seeds": {"rotation": f"{SEED_ROT}+layer", "rotated_dictionary": f"{SEED_DICT}+layer",
                 "gauss": f"{SEED_GAUSS}+layer"}, "own_cos": OWN_COS, "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 
@@ -233,7 +246,7 @@ def main(args) -> None:
             protected = [row_of[t][row_of[t] >= 0] for t in clean.topk(10, dim=1).indices]
             for band in bands:
                 tb = time.time()
-                for cond in args.conditions:
+                for cond in conditions_for(band, args.conditions):
                     edits = {}
                     for la in band:
                         if cond.startswith("paper10"):
@@ -333,4 +346,6 @@ if __name__ == "__main__":
     ap.add_argument("--kinds", nargs="+", default=["clean"], choices=["clean", "hop", "step1", "step2", "step3"])
     ap.add_argument("--n", type=int, default=100)
     ap.add_argument("--batch", type=int, default=32)
+    ap.add_argument("--no-tf32", action="store_true", help="full fp32 matmuls (the v1 numerics check)")
+    ap.add_argument("--workspace", type=int, default=None, help="depth plan: first layer of the workspace range")
     main(ap.parse_args())

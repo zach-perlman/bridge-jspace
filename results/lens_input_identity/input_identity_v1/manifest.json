@@ -1,0 +1,17 @@
+{
+  "run": "input_identity_v1",
+  "why": "Zach (2026-10-20): decisions before the ablate_v2 depth sweep: the workspace range",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  ],
+  "n_per_family": 25,
+  "written_utc": "2026-10-20T19:12:23Z"
+}
