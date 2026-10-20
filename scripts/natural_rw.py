@@ -48,6 +48,7 @@ from scripts.exp04_brew_parts import AddRows, null_rows
 RESULTS = pins.RESULTS_DIR / "natural_rw"
 TYPE = "cntry of person's birthcity"
 LAYERS = (32, 36, 40)
+SCREEN_RUN = "screen_v1"  # twohop_pilot screening run of this model (--screen-run; another target screens its own)
 ALPHAS = (0.05, 0.1, 0.2, 0.4, 0.8)
 # v3 (natural lookup): invented "team colours" for the cities, the same context in both versions
 COLOURS = ("red", "blue", "green", "yellow", "purple", "orange", "black", "white", "pink", "brown")
@@ -58,7 +59,7 @@ BATCH = 32
 def build(tok, model, versions: tuple[str, ...] = ("MM", "MC")) -> list[dict]:
     items = [it for it in json.loads((T.DATA / "screen.json").read_text())["items"] if it["type"] == TYPE]
     ok: dict[str, dict[str, bool]] = collections.defaultdict(dict)
-    for line in (T.RESULTS / "screen_v1" / "items.jsonl").read_text().splitlines():
+    for line in (T.RESULTS / SCREEN_RUN / "items.jsonl").read_text().splitlines():
         r = json.loads(line)
         ok[r["id"]][r["version"]] = r["correct"]
     known = [it for it in items if ok[it["id"]].get("hop1") and ok[it["id"]].get("hop2")]
@@ -139,7 +140,7 @@ def main(name: str, why: str, n: int, versions: tuple[str, ...] = ("MM", "MC"), 
     out_dir = RESULTS / name
     out_dir.mkdir(parents=True, exist_ok=True)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
-    inputs = [T.DATA / "screen.json", T.RESULTS / "screen_v1" / "items.jsonl"]
+    inputs = [T.DATA / "screen.json", T.RESULTS / SCREEN_RUN / "items.jsonl"]
     manifest = {"run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "layers": list(LAYERS),
                 "alphas": list(ALPHAS), "seed": SEED, "n": n, "doc": (__doc__ or "").split("\n\n")[1],
@@ -279,8 +280,10 @@ if __name__ == "__main__":
     ap.add_argument("--why", required=True)
     ap.add_argument("--n", type=int, default=150)
     ap.add_argument("--layers", nargs="+", type=int, default=list(LAYERS))
+    ap.add_argument("--screen-run", default=SCREEN_RUN, help="twohop_pilot screening run of this model")
     ap.add_argument("--versions", nargs="+", default=["MM", "MC"], choices=["MM", "MC", "MX", "NM", "NL"])
     ap.add_argument("--ablate", action="store_true", help="also remove the J-space at the layers (ablate_pilot)")
     args = ap.parse_args()
     LAYERS = tuple(args.layers)
+    SCREEN_RUN = args.screen_run
     main(args.name, args.why, args.n, tuple(args.versions), args.ablate)
