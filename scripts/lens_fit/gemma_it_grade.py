@@ -11,7 +11,8 @@ from workspace_lens import get_hf_model
 name, out = "google/gemma-4-31B-it", sys.argv[1]
 model = get_hf_model(name, attn_implementation="sdpa")
 items = load_readout_eval_items()
-df = ReadoutEvalRunner(model, {}).grade_model_correctness(items, hf_model_name=name)
+layers = [24, 27, 30, 33, 36, 39, 42, 45]  # the runner needs layers when given no lens; grading uses none
+df = ReadoutEvalRunner(model, {}, layers=layers).grade_model_correctness(items, hf_model_name=name)
 merged = pd.read_csv(MODEL_CORRECTNESS_CSV).merge(df, on=["eval", "item"], how="outer")
 merged.to_csv(out, index=False)
 print(df[name].value_counts(dropna=False).to_dict(), "of", len(df))
