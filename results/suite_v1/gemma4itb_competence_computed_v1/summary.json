@@ -1,0 +1,188 @@
+{
+  "families": {
+    "ARITH": {
+      "n": 150,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "cf": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "off": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        }
+      },
+      "eligible": 150,
+      "all_steps": 150,
+      "clean_given_all_hops": [
+        150,
+        150
+      ],
+      "reliable": true,
+      "clean_median_p_answer": 1.0,
+      "clean_median_margin": 16.125,
+      "read_agrees_with_greedy": 1,
+      "hop_accuracy_by_bridge": {
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1
+      }
+    },
+    "TYPO": {
+      "n": 150,
+      "cells": {
+        "clean": {
+          "rate": 0.98,
+          "lo": 0.9428523341357583,
+          "hi": 0.9931753722843516,
+          "k": 147
+        },
+        "cf": {
+          "rate": 0.9666666666666667,
+          "lo": 0.9243471574929044,
+          "hi": 0.9856797793044249,
+          "k": 145
+        },
+        "off": {
+          "rate": 0.98,
+          "lo": 0.9428523341357583,
+          "hi": 0.9931753722843516,
+          "k": 147
+        },
+        "hop1": {
+          "rate": 0.9933333333333333,
+          "lo": 0.9632062470660241,
+          "hi": 0.9988222289768665,
+          "k": 149
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        }
+      },
+      "eligible": 142,
+      "all_steps": 141,
+      "clean_given_all_hops": [
+        146,
+        149
+      ],
+      "reliable": true,
+      "clean_median_p_answer": 0.99985,
+      "clean_median_margin": 8.875,
+      "read_agrees_with_greedy": 0.9933333333333333,
+      "hop_accuracy_by_bridge": {
+        "bee": 1,
+        "cat": 1,
+        "chicken": 1,
+        "cow": 1,
+        "dog": 1,
+        "duck": 1,
+        "frog": 1,
+        "goose": 1,
+        "horse": 1,
+        "lion": 1,
+        "mouse": 0.958,
+        "pig": 1,
+        "sheep": 1,
+        "spider": 1,
+        "turkey": 1,
+        "wolf": 1
+      }
+    },
+    "TRANS": {
+      "n": 150,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "cf": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "off": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        }
+      },
+      "eligible": 150,
+      "all_steps": 150,
+      "clean_given_all_hops": [
+        150,
+        150
+      ],
+      "reliable": true,
+      "clean_median_p_answer": 0.99999,
+      "clean_median_margin": 11.688,
+      "read_agrees_with_greedy": 1,
+      "hop_accuracy_by_bridge": {
+        "bee": 1,
+        "cat": 1,
+        "chicken": 1,
+        "cow": 1,
+        "dog": 1,
+        "duck": 1,
+        "frog": 1,
+        "goose": 1,
+        "horse": 1,
+        "lion": 1,
+        "mouse": 1,
+        "pig": 1,
+        "sheep": 1,
+        "spider": 1,
+        "turkey": 1,
+        "wolf": 1
+      }
+    }
+  },
+  "seconds_generate": 35,
+  "seconds_read": 22,
+  "seconds": 57
+}

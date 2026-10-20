@@ -1,0 +1,24 @@
+{
+  "run": "gemma4itb_abl_v1",
+  "why": "Zach (2026-10-20): does the memory-vs-prompt pattern hold on Gemma 4 31B-it (another family), with the base model's published J++? (J-space removal)",
+  "written_utc": "2026-10-20T05:11:30Z",
+  "model": {
+    "target": "gemma-4-31b-it-baselens",
+    "repo": "google/gemma-4-31B-it",
+    "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "ef50bc54b04738e558b7d86847889bb5d60437e45276b1952e73da91b4e9f5fc"
+  ],
+  "layers": [
+    30,
+    33,
+    36
+  ],
+  "k_atoms": 25,
+  "n_per_family": 100,
+  "doc": "At layers 32, 36 and 40 at once, at every position, each residual loses its 25-atom J-space part (signed OMP over the\nfrozen J++'s letter-token vectors, the split's J-space part, here of the state itself); the control loses the same\nfit over a random dictionary of the same size (seeded per layer). On unedited-correct items, read at the answer's\nfirst token (suite_split's read):\n  clean   the whole question                      hop     the last step alone (suite_v1's hop2 / hop3: a lookup in the\n                                                          prompt for BL, RL; a recalled fact for BR, RR, TYPO, TRANS)\nReported per family: accuracy (top token = the answer's) and the mean change in the answer token's log-probability.\nFamilies: BL, BR, RL, RR (suite main set), TYPO, TRANS (computed set), countries R, B (bind_recall, clean only).\nPrediction from the read/write results (not a decision rule): removing the J-space hurts the recall chains more than\nthe lookup chains, beyond what the step alone loses."
+}

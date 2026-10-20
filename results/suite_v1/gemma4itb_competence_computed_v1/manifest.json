@@ -1,0 +1,35 @@
+{
+  "exp": "suite_v1",
+  "run": "gemma4itb_competence_computed_v1",
+  "written_utc": "2026-10-20T05:01:14Z",
+  "why": "Zach (2026-10-20): does the memory-vs-prompt pattern hold on Gemma 4 31B-it (another family), with the base model's published J++? (computed bridges)",
+  "model": {
+    "target": "gemma-4-31b-it-baselens",
+    "repo": "google/gemma-4-31B-it",
+    "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "set": "computed",
+  "items": {
+    "ARITH": {
+      "file": "data/computed_v1/ARITH.json",
+      "sha256": "53ac3857a693a5ef667bf22f785bf77fe6b833195f5d3b1f193cb9193e6c02db"
+    },
+    "TYPO": {
+      "file": "data/computed_v1/TYPO.json",
+      "sha256": "1bf164d9a71b6349d3bd488ca866f82c60e1f3dcd72f93449086216ae534651d"
+    },
+    "TRANS": {
+      "file": "data/computed_v1/TRANS.json",
+      "sha256": "e0c5e241288c2b84848ad40ff7559fdffc7bc1051cd1a68741466951002832eb"
+    }
+  },
+  "limit": 150,
+  "format": "chat template, thinking off, 'Answer:' prefilled; the context, a newline, the question and 'Answer with a single word and nothing else.' in one user turn",
+  "prompts": "clean, C (cf_context + cf_question), O (off_context + question), hop1-hop3 (each step alone, with the item's context or the hop's own code)",
+  "judge": "the first answer of the item's kind in the first non-empty line of the greedy continuation (digits and number words for digits; the family's name / animal / fruit vocabulary otherwise)",
+  "generation": "greedy, 8 new tokens, prompts of one token length batched 64 at a time",
+  "answer_read": "one more forward per prompt, a digit answer's space token appended (the greedy reply's first token): p of the answer's first token, its logit minus the best other token's, and whether that read's top token is the greedy judge's answer",
+  "eligibility": "clean, C and O all answered (as exp09); all_steps: every prompt of the item answered; reliable family: Wilson 95% lower bound of clean >= 0.85"
+}
