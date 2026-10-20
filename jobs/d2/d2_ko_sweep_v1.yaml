@@ -1,0 +1,48 @@
+id: d2_ko_sweep_v1
+thread: D2
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.5
+depends_on:
+- d2_smoke_27b
+command: >-
+  uv run python scripts/attn_knockout.py manifest --name d2_ko_sweep_v1
+  --why "D2 fine layer sweep: stride-4 8-layer windows and prefix/suffix cuts every 8 layers, path statements and
+  their same-kind controls, BL/BR/RL/RR"
+  --families BL BR RL RR --n 30 --layers all win4 pre suf --sweep path --absent
+  && uv run python scripts/attn_knockout.py run --name d2_ko_sweep_v1
+  && uv run python scripts/attn_knockout.py summarise --name d2_ko_sweep_v1
+examples_command: uv run python scripts/attn_knockout.py examples --name d2_ko_sweep_v1 --k 3
+question: Over which layers must the lookup statement stay readable from the final positions (and the binding
+  statement from the question tokens) for BL and RL to keep their answer, compared with the copy's transit band
+  (44-52) and the lens's write failure (32-52)?
+why_it_matters: 'Localises the C1 read in depth with redundancy handled: suffix cuts [L, 64) give the last layer the
+  read can still happen at (suf_max_needed); prefix cuts [0, L) the first layer by which it must have happened
+  (pre_min_needed). A late band overlapping 44-52 puts the lookup''s read where the bridge is in transit and the lens
+  cannot write: the around route acts there. An early band (< 32) would mean the statement is read before the J-space
+  layers we measured.'
+hypotheses:
+  H_late_band: 'RL and BL lookup->final: suf_max_needed >= 40 and pre_min_needed >= 48 (blocking [0, 40) does not
+    matter, blocking [40, 64) does): the band lies in 40-56. Prior 0.5'
+  H_early_band: 'RL lookup->final or ->question: pre_min_needed <= 32 and suf_max_needed <= 32. Prior 0.25'
+  H_spread: 'no single prefix or suffix cut below the full set is NEEDED (redundant reads across depth). Prior 0.25'
+  H_binding_band: 'BL and BR binding->question: needed before layer 32 (pre_min_needed <= 32 or a stride-4 window
+    below 32 NEEDED). BL vs BR the same band (prior 0.6); BL later than BR (the lookup dereferences a pointer late,
+    prior 0.4)'
+  RR_null: 'RR and BR: every lookup cell >= 95% at every layer set'
+decision_rule: 'As d2_ko_core_v1 (NEEDED / NOT NEEDED / PARTIAL per cell, matched controls lookup_off and binding_off
+  at the same destination and layer set). Band per family x source x destination: suf_max_needed = the largest L with
+  suf L NEEDED; pre_min_needed = the smallest L with pre L NEEDED; windows_needed listed. H_late_band holds for a
+  family if suf_max_needed >= 40 and pre_min_needed >= 48 (or no pre cut below 64 is NEEDED while suf40 is).'
+controls:
+- 'lookup_off / binding_off at the same destination and layer set (same kind, same token length)'
+- 'RR (same scenes, recall) under the same lookup cuts: rules out generic damage from cutting the final positions off a
+  statement over a band of layers'
+- 'positive control and check gate as d2_ko_core_v1'
+n: '30 scenes per family (the first 30 of suite_split map_A8_v1''s seed-0 sample, a subset of d2_ko_core_v1''s)'
+seeds:
+- 0
+notes: 'Rows: 30,420 knocked reads (per item: BL 384, BR/RL/RR 210; 29 layer sets = 15 stride-4 windows + 7 prefix +
+  7 suffix cuts, x 3 destinations x path sources and their controls; plus the all-layer cells). At an assumed 20
+  rows/s: 25 min + load/check ~5 min. n=30 is a localisation profile (Wilson half-width ~15 points at 70%), not a
+  headline; a NEEDED band is then confirmed at n >= 100 in a follow-up.'

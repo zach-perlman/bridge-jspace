@@ -1,0 +1,49 @@
+id: d2_ko_tie_country_v1
+thread: D2
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.6
+depends_on:
+- d2_smoke_27b
+command: >-
+  uv run python scripts/attn_knockout.py manifest --name d2_ko_tie_country_v1
+  --why "D2 on the tie-breakers (BLR lookup->recall, BRL recall->lookup) and countries R/B: which statements must be
+  visible from which positions, at which layers"
+  --families BLR BRL country-R country-B --n 25 --layers all win8k pre suf --sweep path --absent
+  && uv run python scripts/attn_knockout.py run --name d2_ko_tie_country_v1
+  && uv run python scripts/attn_knockout.py summarise --name d2_ko_tie_country_v1
+examples_command: uv run python scripts/attn_knockout.py examples --name d2_ko_tie_country_v1 --k 3
+question: In the three-step families, where the use of the bridge and the source of the answer come apart, and in the
+  paper-style countries (B bound, R recalled), which statements must the question and final positions read directly,
+  and when?
+why_it_matters: 'Separates "what uses the bridge" from "where the answer comes from" for the direct-read route. BLR
+  (bound -> lookup -> recall): if its lookup must also be read at the answer site, the recall that follows has to run
+  in the last layers; if it is read earlier (from the question tokens), the lookup feeds a recall like a recalled
+  bridge (C1 vs C2 boundary). BRL (bound -> recall -> lookup) should need its row statement late at the final
+  positions like BL. Countries B is the J-space-inside case (copy split 2.5, lens writes it): its binding statement
+  should be read into the question tokens, not at the answer site.'
+hypotheses:
+  H_BLR_early: 'BLR (lookup, question, all) NEEDED and its lookup->final pre_min_needed <= 40 (read earlier than BL''s,
+    to leave depth for the recall). Prior 0.5'
+  H_BRL_like_BL: 'BRL (lookup, final, all) NEEDED and (lookup, question, all) not NEEDED (the row read at the answer
+    site). Prior 0.55'
+  H_country_B: 'country-B (binding, question, all) NEEDED; (binding, final, all) >= 90%. Prior 0.6'
+  H_country_R_null: 'country-R (binding: the statement only naming the bridge) >= 95% in every cell (the recall does not
+    read it). Prior 0.8'
+  positive_control: 'path sources at (after, all, mode absent) <= 30% (country-B <= 40%: capitals of 3 countries
+    guessable from the prompt''s countries)'
+decision_rule: 'As d2_ko_core_v1 (per-cell NEEDED / NOT NEEDED / PARTIAL against lookup_off / binding_off at the same
+  destination, layers and mode; positive control per family). Bands as d2_ko_sweep_v1 (stride-8 windows here, each
+  also split into its attention-only and DeltaNet-only layers).'
+controls:
+- 'lookup_off / binding_off (same kind, same token length; for countries another "X lives in Y." of the same length
+  where one exists, else flagged length_mismatch in cases.jsonl)'
+- 'random and trailing spans (all layers)'
+- 'country-R vs country-B: same statement form, used only by B'
+- 'positive control and check gate as d2_ko_core_v1'
+n: '25 per family (BLR, BRL on the same scenes, suite_split map_A8_v1''s first 25 tie scenes; countries, control_split
+  map_v1''s first 25 per family)'
+seeds:
+- 0
+notes: 'Rows: ~37,100 knocked reads (per item: BLR/BRL ~492, countries ~250; counted with conditions() on a 64-layer
+  hybrid). At an assumed 20 rows/s: 31 min + load/check ~5 min. Lowest priority of the D2 jobs: queue last.'

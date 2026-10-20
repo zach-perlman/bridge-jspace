@@ -1,0 +1,44 @@
+id: d2_smoke_27b
+thread: D2
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.17
+depends_on: []
+command: >-
+  uv run python scripts/attn_knockout.py manifest --name d2_smoke_27b
+  --why "D2 27B smoke: every condition type of the attention/DeltaNet edge knock-out, n=4 per family, before the main runs"
+  --n 4 --layers all win8k pre suf kind --sweep path+random --sweep-dests both --absent
+  && uv run python scripts/attn_knockout.py run --name d2_smoke_27b
+  && uv run python scripts/attn_knockout.py summarise --name d2_smoke_27b
+examples_command: uv run python scripts/attn_knockout.py examples --name d2_smoke_27b --k 2
+question: Does the exact edge knock-out (bridge_jspace.knockout) run on Qwen3.6-27B for every condition type, with an
+  exact no-op, a passing positive control, and a throughput that fits tonight's D2 budget?
+why_it_matters: Gate for d2_ko_core_v1, d2_ko_sweep_v1 and d2_ko_tie_country_v1. The knock-out is new code (masked
+  full-attention logits; a second Gated DeltaNet run with the source's values zeroed); tested exactly against fp64
+  references on a tiny model and on Qwen3.5-0.8B (fp32, CPU and fla), but never on the 27B's bf16 forward.
+hypotheses:
+  H-noop: 'check.json noop_empty_source_max_abs == 0 (an empty source span leaves the answer read bit-for-bit
+    unchanged; 0.8B smoke: 0.0)'
+  H-posctl: 'check.json posctl_last_reads_nothing_max_abs and posctl_context_erased_absent_max_abs < 0.1 logits with
+    the same top token (0.8B smoke: 0.0 and 0.0, vs 2.4 unhooked)'
+  H-throughput: 'timing.json rows_per_second >= 15 (assumed 20; 0.8B smoke 106 rows/s, overhead of a batch knocked at
+    every layer 1.8x on the 0.8B, expected <= 1.3x on the 27B where the DeltaNet mixer is ~27% of a layer)'
+decision_rule: 'The main D2 jobs are interpreted only if this job exits 0 with check.json passed = true (no-op exact,
+  positive controls within 0.1 logits, same top token). If rows_per_second < 15, the human shrinks n of the main jobs
+  before they start (their est_gpu_hours assume 20). No scientific claim from this run (n=4).'
+controls:
+- 'no-op: an empty source span at every layer (must be bit-exact)'
+- 'positive control 1: every token but the first and the last blocked from the last at every layer, DeltaNet mode
+  absent, on the prompt and on the same prompt with its context tokens rolled: the last logits must not differ'
+- 'positive control 2: the whole context blocked from every later position at every layer (mode absent): same'
+- 'kernel path: one DeltaNet layer''s real inputs through fla and through transformers'' torch reference, with and
+  without the values zeroed at the source (recorded, not gated)'
+- 'unedited row in every batch (the baseline of its batch''s knocked rows; its drift from a plain forward recorded)'
+n: 4 per family (BL, BR, RL, RR, BLR, BRL from suite_split map_A8_v1's case list; countries R, B from control_split
+  map_v1's)
+seeds:
+- 0
+notes: 'Rows: 5,838 knocked reads (rows per item counted with the script''s own conditions() on a 64-layer
+  hybrid: BL/BLR/BRL 236, BR/RL/RR 156, countries ~142). At an assumed 20 rows/s on the A100 PCIe (D1''s 22 reads/s
+  from the H200 runs in EXPERIMENTS.md divided by ~3, minus ~8% knock-out overhead): ~5 min, plus load and the
+  check stage ~4-5 min.'
