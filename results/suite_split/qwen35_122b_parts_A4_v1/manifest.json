@@ -1,0 +1,104 @@
+{
+  "exp": "suite_split",
+  "run": "qwen35_122b_parts_A4_v1",
+  "kind": "parts",
+  "written_utc": "2026-10-20T02:05:38Z",
+  "why": "Zach (2026-10-20), quick experiment L5 (Neel: try a larger model early): does the 27B picture hold on Qwen3.5-122B-A10B? (the 2x2 core)",
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "families": [
+    "BL",
+    "BR",
+    "RL",
+    "RR"
+  ],
+  "wording": "A",
+  "items": {
+    "BL": {
+      "file": "data/suite_v1/BL.json",
+      "sha256": "1d6bc3264cb78a73cc175f7423923d553a6a1e6201a301a5757d5771cc7cc017"
+    },
+    "BR": {
+      "file": "data/suite_v1/BR.json",
+      "sha256": "b8aacfe7263aa2a81c0bd0e7b973a2057b61753f7470c22fe1119425facbc7fb"
+    },
+    "RL": {
+      "file": "data/suite_v1/RL.json",
+      "sha256": "305f5e5b6679ff83466800cd05c019e62ab4d374dd0d3f916e968c8a733cd045"
+    },
+    "RR": {
+      "file": "data/suite_v1/RR.json",
+      "sha256": "1cedcc460789ba2fee5c2b6f7a0d2302d2e81a9c73acb7853843f54a807fca07"
+    }
+  },
+  "eligibility": {
+    "BL": {
+      "competence": "results/suite_v1/qwen35_122b_competence_v1/items.jsonl",
+      "sha256": "42f160b3576e03b1adaedd7eb1d550f03dfa31fac440fd5dbe19e496c3fb3a50"
+    },
+    "BR": {
+      "competence": "results/suite_v1/qwen35_122b_competence_v1/items.jsonl",
+      "sha256": "42f160b3576e03b1adaedd7eb1d550f03dfa31fac440fd5dbe19e496c3fb3a50"
+    },
+    "RL": {
+      "competence": "results/suite_v1/qwen35_122b_competence_v1/items.jsonl",
+      "sha256": "42f160b3576e03b1adaedd7eb1d550f03dfa31fac440fd5dbe19e496c3fb3a50"
+    },
+    "RR": {
+      "competence": "results/suite_v1/qwen35_122b_competence_v1/items.jsonl",
+      "sha256": "42f160b3576e03b1adaedd7eb1d550f03dfa31fac440fd5dbe19e496c3fb3a50"
+    }
+  },
+  "sample": "the map run's cases (cases.jsonl), not resampled",
+  "format": "suite_v1's: chat template, thinking off, 'Answer:' prefilled",
+  "groups": {
+    "question": "the question's tokens after C's changed ones, through the end of the prompt (the instruction, the template's tokens and 'Answer:' included)",
+    "last": "the last prompt token"
+  },
+  "read": "one forward of the edited prompt, a digit answer's space token appended; role of the top token (b: X's answer, A: the bridge's, other); ld = logit(b) - logit(A); frac = (ld - ld_clean) / (ld_C - ld_clean), ld_clean and ld_C from the unedited clean and C runs",
+  "question": "At each family's window, which part of the copy carries the bridge: its J-space part or the rest?",
+  "map": {
+    "run": "qwen35_122b_map_A4_v1",
+    "summary_sha256": "fcc33d50e9f9716735a2462d0526cbe9752fce259ab1eae84e0e9049aa393417",
+    "cap": {
+      "BL": 33,
+      "BR": 33,
+      "RL": 33,
+      "RR": 33
+    },
+    "parts_window": {
+      "BL": [],
+      "BR": [],
+      "RL": [],
+      "RR": []
+    },
+    "cap_override": null
+  },
+  "lens": {
+    "jpp": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-122b-a10b/jpp/Salesforce-wikitext/Qwen3.5-122B-A10B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  },
+  "parts": {
+    "full": "delta = h_C - h_clean at the question group",
+    "lens2": "delta's projection on span{v_I, v_X}, the lens's unit vectors of the bridge and X; not_lens2 the rest",
+    "jspace": "delta's 25-atom signed OMP part over the lens's unit letter-token vectors; not_jspace the rest"
+  },
+  "controls": "each part along a seeded random direction at the same per-position norm (its null); lens2_matched and jspace_matched: per position the part's norm and cosine with delta, the rest a random direction orthogonal to delta (an equal-sized, equally aligned piece of the copy); O's full copy",
+  "decision": {
+    "measures": "primary: frac (the logit difference moved, as a fraction of the way to C); secondary: flips (top token X's answer). Per case, each averaged over the window's layers; paired bootstraps over cases",
+    "parts": "per family and measure: the J-space part's concentration = sum over cases of its effect / sum of (its share of the copy's variance x the full copy's effect), with a case-bootstrap 95% interval (1: it does what its size predicts). Verdict: inside if the lower bound is above 2.0 (it carries at least 2x its share); outside if the upper bound is below 2.0 and not_jspace - jspace is above 0 (paired bootstrap); otherwise inconclusive. The same for lens2 (the bridge's and X's own word vectors). Reported, not decisive: jspace - jspace_matched (an equal-sized, equally aligned piece of the copy) and exp09's rule against the random null (verdict_exp09). Chosen after the smoke runs (8 scenes), before any full run: with the continuous measure, the J-space part beat its random null (2-5 points) and the matched piece (0.3-2 points) in every family while moving the answer about its share of the copy's variance (8-13%), so a significance test alone would call any small piece of the copy 'inside' at n=150",
+    "claim_1": "variables used by a lookup in the prompt are carried outside the J-space: refuted if BL is inside; supported if BL is outside; the other lookup-used families (RL, BLR, NAMES, CODE) reported the same way; BR, RR and BRL (recall-used) are the comparison",
+    "tie_break": "BLR and BRL: 'what uses the bridge decides' if BLR is outside and BRL inside; 'where the answer comes from decides' if BLR is inside and BRL outside; otherwise mixed, reported family by family",
+    "empty_window": "a family with an empty window is not interpreted"
+  },
+  "calibrate": false
+}

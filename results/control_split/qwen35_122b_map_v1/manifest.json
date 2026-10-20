@@ -1,0 +1,53 @@
+{
+  "exp": "control_split",
+  "run": "qwen35_122b_map_v1",
+  "kind": "map",
+  "written_utc": "2026-10-20T01:45:58Z",
+  "why": "Zach (2026-10-20), quick experiment L5 (Neel: try a larger model early): does the 27B picture hold on Qwen3.5-122B-A10B? (countries: the positive control)",
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "items": {
+    "file": "data/bind_recall.json",
+    "sha256": "bbb1cfa8e95b6a83ec1c6003fc3a05c5c1fba195cff6a5cb7e3ea968dce59029",
+    "families": [
+      "R",
+      "B"
+    ]
+  },
+  "format": "chat template, thinking off, 'Answer:' prefilled (exp09's chat_prefill: the statement as a question)",
+  "eligibility": "exp09's: clean, C and O each answered (greedy, 8 tokens, the capitals judge); a seeded sample (seed 0) per family; cases whose two capitals share a first token dropped",
+  "read": "suite_split's: one forward, read at the capital's first token; frac of the way from clean to C",
+  "doc": "suite_split called every suite family 'outside' the J-space, recall-used ones included, and exp09's raw-text copy split\non countries gave the J-space part 4% of R's flips against 44% for the full copy. The proposal's 'inside' evidence is\nexp02's probe swaps (B1: J-part 52% vs rest 8%), a different intervention: J++ probe directions of the two entities,\nswapped at the cue phrase over layers 24-40 at once. Can suite_split's copy-and-split see 'inside' at all? This runs it\non the paper-style place items, in the variants that move it toward exp02's setting:",
+  "n_items": 100,
+  "layers": [
+    0,
+    3,
+    6,
+    9,
+    12,
+    15,
+    18,
+    21,
+    24,
+    27,
+    30,
+    33,
+    36,
+    39,
+    42
+  ],
+  "groups": [
+    "question",
+    "cue",
+    "last"
+  ],
+  "decision": {
+    "window": "suite_split's frac rule per group",
+    "answer_formed": "suite_split's rule"
+  }
+}
