@@ -79,7 +79,7 @@ def main(args) -> None:
     wg = model.hf.lm_head.weight[letters].float() * model.norm_gain()
     dic = {la: LensDictionary(wg, lens.J(la)) for la in layers}
     if args.tasks:
-        cases = RW.tasks_cases(tok, args.n, args.tasks, args.tasks_competence, args.families)
+        cases = RW.tasks_cases(tok, args.n, args.tasks, args.tasks_competence, args.families, args.tasks_level)
     else:
         cases = RW.suite_cases(tok, args.n, "map_A8_v1", "A", args.families)
         cases += RW.country_cases(tok, args.n) if args.countries else []
@@ -181,4 +181,5 @@ if __name__ == "__main__":
         "--families are then its words, e.g. PP PM MP MM",
     )
     ap.add_argument("--tasks-competence", help="the set's competence run (items right on every prompt are used)")
+    ap.add_argument("--tasks-level", default="pick", help='tasks_v2 level: "pick" (calibrated), "all" or a number')
     main(ap.parse_args())
