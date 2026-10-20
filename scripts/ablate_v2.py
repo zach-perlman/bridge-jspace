@@ -219,7 +219,7 @@ def main(args) -> None:
                 "git_commit": commit, "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
                 "plan": args.plan, "bands": [label(b) for b in bands], "conditions": args.conditions,
                 "families": args.families, "kinds": args.kinds, "n_per_family": args.n, "batch": args.batch,
-                "tf32": not args.no_tf32, "workspace_start": args.workspace, "positions": args.positions, "wide": WIDE, "seeds": {"rotation": f"{SEED_ROT}+layer", "rotated_dictionary": f"{SEED_DICT}+layer",
+                "tf32": not args.no_tf32, "workspace_start": args.workspace, "positions": args.positions, "wide": WIDE, "seed_offset": args.seed_offset, "seeds": {"rotation": f"{SEED_ROT + args.seed_offset}+layer", "rotated_dictionary": f"{SEED_DICT + args.seed_offset}+layer",
                 "gauss": f"{SEED_GAUSS}+layer"}, "own_cos": OWN_COS, "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 
@@ -255,8 +255,8 @@ def main(args) -> None:
     row_of[letters] = torch.arange(letters.numel(), device="cuda")
     layers = sorted({la for b in bands for la in b})
     dic = {la: LensDictionary(wg, lens.J(la)) for la in layers}
-    rot = {la: rotation(wg.shape[1], SEED_ROT + la) for la in layers}
-    rdict = {la: RotatedDictionary(dic[la], rotation(wg.shape[1], SEED_DICT + la)) for la in layers}
+    rot = {la: rotation(wg.shape[1], SEED_ROT + args.seed_offset + la) for la in layers}
+    rdict = {la: RotatedDictionary(dic[la], rotation(wg.shape[1], SEED_DICT + args.seed_offset + la)) for la in layers}
     gauss = {}
     if "gauss" in args.conditions:
         for la in layers:  # v1's control, drawn exactly as ablate_pilot did
@@ -322,7 +322,7 @@ def main(args) -> None:
                     for row, p in enumerate(chunk):
                         rows_out.append({"family": p["family"], "id": p["id"], "kind": p["kind"], "band": label(band),
                                          "condition": cond, "correct": int(logits[row].argmax()) == p["tok"],
-                                         "logp": float(logp[row]), "bridge_protected": shields[row]})  # fmt: skip
+                                         "logp": float(logp[row]), "bridge_protected": shields[row], "bridge": p["bridge"]})  # fmt: skip
                 band_seconds[label(band)] += time.time() - tb
             with rows_path.open("a") as fh:  # this batch's rows, so partial results are readable during the run
                 fh.writelines(json.dumps(r) + "\n" for r in rows_out[written:])
@@ -409,6 +409,12 @@ if __name__ == "__main__":
     ap.add_argument("--tasks", default=None, help="a tasks_v2 set to draw prompts from instead of the suite")
     ap.add_argument("--tasks-competence", default=None, help="its competence run (eligibility: every part right)")
     ap.add_argument("--tasks-words", nargs="*", default=None, help="tasks_v2 words to include (default: all)")
+    ap.add_argument(
+        "--seed-offset",
+        type=int,
+        default=0,
+        help="added to the rotation and rotated-dictionary seeds (another draw of the random controls)",
+    )
     ap.add_argument("--tasks-level", default="pick", help='tasks_v2 level: "pick" (calibrated), "all" or a number')
     ap.add_argument("--workspace", type=int, default=None, help="depth plan: first layer of the workspace range")
     ap.add_argument("--positions", default="all", choices=["all", "context", "question"],
