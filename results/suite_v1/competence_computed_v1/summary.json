@@ -1,0 +1,188 @@
+{
+  "families": {
+    "ARITH": {
+      "n": 200,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9811539940816791,
+          "hi": 1.0,
+          "k": 200
+        },
+        "cf": {
+          "rate": 1.0,
+          "lo": 0.9811539940816791,
+          "hi": 1.0,
+          "k": 200
+        },
+        "off": {
+          "rate": 1.0,
+          "lo": 0.9811539940816791,
+          "hi": 1.0,
+          "k": 200
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9811539940816791,
+          "hi": 1.0,
+          "k": 200
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9811539940816791,
+          "hi": 1.0,
+          "k": 200
+        }
+      },
+      "eligible": 200,
+      "all_steps": 200,
+      "clean_given_all_hops": [
+        200,
+        200
+      ],
+      "reliable": true,
+      "clean_median_p_answer": 0.998005,
+      "clean_median_margin": 7.375,
+      "read_agrees_with_greedy": 0.253,
+      "hop_accuracy_by_bridge": {
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1
+      }
+    },
+    "TYPO": {
+      "n": 200,
+      "cells": {
+        "clean": {
+          "rate": 0.825,
+          "lo": 0.7663545078991807,
+          "hi": 0.8713955882539106,
+          "k": 165
+        },
+        "cf": {
+          "rate": 0.84,
+          "lo": 0.7828581380609876,
+          "hi": 0.8843265779145542,
+          "k": 168
+        },
+        "off": {
+          "rate": 0.82,
+          "lo": 0.7608840628376157,
+          "hi": 0.8670544933746589,
+          "k": 164
+        },
+        "hop1": {
+          "rate": 0.975,
+          "lo": 0.9428208558483829,
+          "hi": 0.9892754385292123,
+          "k": 195
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9811539940816791,
+          "hi": 1.0,
+          "k": 200
+        }
+      },
+      "eligible": 135,
+      "all_steps": 133,
+      "clean_given_all_hops": [
+        163,
+        195
+      ],
+      "reliable": false,
+      "clean_median_p_answer": 0.958405,
+      "clean_median_margin": 3.625,
+      "read_agrees_with_greedy": 0.994,
+      "hop_accuracy_by_bridge": {
+        "bee": 1,
+        "cat": 1,
+        "chicken": 1,
+        "cow": 1,
+        "dog": 1,
+        "duck": 1,
+        "frog": 1,
+        "goose": 1,
+        "horse": 1,
+        "lion": 1,
+        "mouse": 0.808,
+        "pig": 1,
+        "sheep": 1,
+        "spider": 1,
+        "turkey": 1,
+        "wolf": 1
+      }
+    },
+    "TRANS": {
+      "n": 200,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9811539940816791,
+          "hi": 1.0,
+          "k": 200
+        },
+        "cf": {
+          "rate": 1.0,
+          "lo": 0.9811539940816791,
+          "hi": 1.0,
+          "k": 200
+        },
+        "off": {
+          "rate": 1.0,
+          "lo": 0.9811539940816791,
+          "hi": 1.0,
+          "k": 200
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9811539940816791,
+          "hi": 1.0,
+          "k": 200
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9811539940816791,
+          "hi": 1.0,
+          "k": 200
+        }
+      },
+      "eligible": 200,
+      "all_steps": 200,
+      "clean_given_all_hops": [
+        200,
+        200
+      ],
+      "reliable": true,
+      "clean_median_p_answer": 0.98779,
+      "clean_median_margin": 5.125,
+      "read_agrees_with_greedy": 1,
+      "hop_accuracy_by_bridge": {
+        "bee": 1,
+        "cat": 1,
+        "chicken": 1,
+        "cow": 1,
+        "dog": 1,
+        "duck": 1,
+        "frog": 1,
+        "goose": 1,
+        "horse": 1,
+        "lion": 1,
+        "mouse": 1,
+        "pig": 1,
+        "sheep": 1,
+        "spider": 1,
+        "turkey": 1,
+        "wolf": 1
+      }
+    }
+  },
+  "seconds_generate": 44,
+  "seconds_read": 25,
+  "seconds": 69
+}

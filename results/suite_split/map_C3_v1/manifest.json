@@ -1,0 +1,81 @@
+{
+  "exp": "suite_split",
+  "run": "map_C3_v1",
+  "kind": "map",
+  "written_utc": "2026-10-20T01:11:44Z",
+  "why": "Zach (2026-10-20), quick experiment L3 after Neel's feedback: is a computed bridge (never written, not a recalled entity) carried in the J-space, and as its own word?",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "families": [
+    "ARITH",
+    "TYPO",
+    "TRANS"
+  ],
+  "wording": "C",
+  "items": {
+    "ARITH": {
+      "file": "data/computed_v1/ARITH.json",
+      "sha256": "53ac3857a693a5ef667bf22f785bf77fe6b833195f5d3b1f193cb9193e6c02db"
+    },
+    "TYPO": {
+      "file": "data/computed_v1/TYPO.json",
+      "sha256": "1bf164d9a71b6349d3bd488ca866f82c60e1f3dcd72f93449086216ae534651d"
+    },
+    "TRANS": {
+      "file": "data/computed_v1/TRANS.json",
+      "sha256": "e0c5e241288c2b84848ad40ff7559fdffc7bc1051cd1a68741466951002832eb"
+    }
+  },
+  "eligibility": {
+    "ARITH": {
+      "competence": "results/suite_v1/competence_computed_v1/items.jsonl",
+      "sha256": "45f2f959c119614b15e92c081f4a116a4534d34a211b216bbe4246e1826c18b8"
+    },
+    "TYPO": {
+      "competence": "results/suite_v1/competence_computed_v1/items.jsonl",
+      "sha256": "45f2f959c119614b15e92c081f4a116a4534d34a211b216bbe4246e1826c18b8"
+    },
+    "TRANS": {
+      "competence": "results/suite_v1/competence_computed_v1/items.jsonl",
+      "sha256": "45f2f959c119614b15e92c081f4a116a4534d34a211b216bbe4246e1826c18b8"
+    }
+  },
+  "sample": "per scene group, up to 150 scenes eligible (every prompt right) in all of the run's families of the group, seed 0; BL/BR/RL/RR and BLR/BRL are scene groups, other families their own",
+  "format": "suite_v1's: chat template, thinking off, 'Answer:' prefilled",
+  "groups": {
+    "question": "the question's tokens after C's changed ones, through the end of the prompt (the instruction, the template's tokens and 'Answer:' included)",
+    "last": "the last prompt token"
+  },
+  "read": "one forward of the edited prompt, a digit answer's space token appended; role of the top token (b: X's answer, A: the bridge's, other); ld = logit(b) - logit(A); frac = (ld - ld_clean) / (ld_C - ld_clean), ld_clean and ld_C from the unedited clean and C runs",
+  "question": "Where, by layer and position group, does each family carry its bridge (lens-free)?",
+  "layers": [
+    0,
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    28,
+    32,
+    36,
+    40,
+    44,
+    48,
+    52,
+    56,
+    60
+  ],
+  "n_scenes": 150,
+  "validation": "8 greedy tokens for every edit of the first 20 cases per family; agreement of roles",
+  "decision": {
+    "window": "per family and group: the layers where C's copy moves the answer at least 0.1 of the way to C's (mean frac) and further than O's copy (paired bootstrap 95% lower bound of frac_C - frac_O above 0). Chosen after the smoke run (8 scenes), before any full run: exp09's flip rule (C's flips vs O's changes, Wilson intervals apart) found BL only at layers 52-60, above the answer onset, while the copy already moved BL's answer 11-17% of the way at 32-40; the flip rule's windows are reported as windows_flip",
+    "answer_formed": "per family, the first layer at which copying the last token alone gives X's answer for at least half the cases",
+    "parts_window": "the question group's window below min(answer_formed, 44)"
+  }
+}
