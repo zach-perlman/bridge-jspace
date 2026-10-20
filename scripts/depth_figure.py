@@ -70,6 +70,6 @@ axes[0].set_ylabel("accuracy with the J-space removed (%)")
 h, lab = axes[0].get_legend_handles_labels()
 fig.legend(h, lab, loc="lower left", ncol=4, frameon=False, bbox_to_anchor=(0.005, 0.95), fontsize=8)
 fig.suptitle(f"Qwen3.6-27B: where in depth does removing the J-space break each family? ({n_items} items)", x=0.01,
-             ha="left", fontsize=11, fontweight="bold", y=1.06)  # fmt: skip
+             ha="left", fontsize=11, fontweight="bold", y=1.13)  # fmt: skip
 fig.savefig(out, dpi=170, facecolor=SURF, bbox_inches="tight")
 print("ok", len(rows), "rows")
