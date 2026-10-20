@@ -1,0 +1,201 @@
+{
+  "seconds": 2065,
+  "families": {
+    "BL/clean": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.99,
+        "random": 1,
+        "rotated": 1
+      },
+      "dlogp": {
+        "jspace": -0.10554597281385213,
+        "random": -0.013514906357740983,
+        "rotated": -0.004313187022344209
+      }
+    },
+    "BL/hop": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.99,
+        "random": 1,
+        "rotated": 1
+      },
+      "dlogp": {
+        "jspace": -0.08885923356050625,
+        "random": -0.010374558499315754,
+        "rotated": -0.0043305590841919185
+      }
+    },
+    "BR/clean": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.19,
+        "random": 1,
+        "rotated": 1
+      },
+      "dlogp": {
+        "jspace": -2.282413423828548,
+        "random": -0.014993528692284598,
+        "rotated": -0.007854618101846426
+      }
+    },
+    "BR/hop": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.14,
+        "random": 1,
+        "rotated": 1
+      },
+      "dlogp": {
+        "jspace": -2.40501094021718,
+        "random": -0.007522173366742209,
+        "rotated": -0.0038644061412196604
+      }
+    },
+    "RL/clean": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.99,
+        "random": 1,
+        "rotated": 1
+      },
+      "dlogp": {
+        "jspace": -0.12124991744756698,
+        "random": -0.01920273053459823,
+        "rotated": -0.0019115926034282893
+      }
+    },
+    "RL/hop": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.99,
+        "random": 1,
+        "rotated": 1
+      },
+      "dlogp": {
+        "jspace": -0.08885923356050625,
+        "random": -0.010374558499315754,
+        "rotated": -0.0043305590841919185
+      }
+    },
+    "RR/clean": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.22,
+        "random": 1,
+        "rotated": 1
+      },
+      "dlogp": {
+        "jspace": -1.9381204023305327,
+        "random": -0.022251729350537063,
+        "rotated": -0.00440084190107882
+      }
+    },
+    "RR/hop": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.14,
+        "random": 1,
+        "rotated": 1
+      },
+      "dlogp": {
+        "jspace": -2.40501094021718,
+        "random": -0.007522173366742209,
+        "rotated": -0.0038644061412196604
+      }
+    },
+    "TYPO/clean": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.1,
+        "random": 1,
+        "rotated": 0.98
+      },
+      "dlogp": {
+        "jspace": -2.190240721385926,
+        "random": -0.04776845138054341,
+        "rotated": -0.062469133648555726
+      }
+    },
+    "TYPO/hop": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.47,
+        "random": 1,
+        "rotated": 1
+      },
+      "dlogp": {
+        "jspace": -1.505095282846596,
+        "random": -0.014264794031623751,
+        "rotated": -0.0030688521557021885
+      }
+    },
+    "TRANS/clean": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.09,
+        "random": 1,
+        "rotated": 0.98
+      },
+      "dlogp": {
+        "jspace": -2.1550541648827495,
+        "random": -0.04289082154165953,
+        "rotated": -0.06518209615722298
+      }
+    },
+    "TRANS/hop": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.67,
+        "random": 1,
+        "rotated": 1
+      },
+      "dlogp": {
+        "jspace": -0.9849208135437221,
+        "random": -0.03450020022690296,
+        "rotated": -0.004605802134610712
+      }
+    },
+    "country-R/clean": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.26,
+        "random": 0.99,
+        "rotated": 0.71
+      },
+      "dlogp": {
+        "jspace": -3.182627528831363,
+        "random": 0.0762015570141375,
+        "rotated": -0.30586481679230926
+      }
+    },
+    "country-B/clean": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.34,
+        "random": 1,
+        "rotated": 0.98
+      },
+      "dlogp": {
+        "jspace": -3.072683336883783,
+        "random": 0.05059302093461156,
+        "rotated": -0.06708333550021052
+      }
+    }
+  }
+}
