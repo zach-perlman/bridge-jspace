@@ -86,11 +86,17 @@ def eligible_ids(run: str, wording_set_families: tuple[str, ...]) -> dict[str, s
 
 
 def prompts(
-    tok, n: int, comp_main: str = "competence_v2", comp_computed: str | None = "competence_computed_v1", model=None
+    tok,
+    n: int,
+    comp_main: str = "competence_v2",
+    comp_computed: str | None = "competence_computed_v1",
+    model=None,
+    comp_tool: str | None = None,
 ) -> list[dict]:
     out = []
     sets = [("A", comp_main, ("BL", "BR", "RL", "RR"))]
     sets += [("C", comp_computed, ("TYPO", "TRANS"))] if comp_computed else []
+    sets += [("T", comp_tool, ("TBL", "TBR"))] if comp_tool else []
     for wording, run, fams in sets:
         good = eligible_ids(run, fams)
         for fam in fams:
@@ -140,6 +146,7 @@ def main(
     countries_build: bool = False,
     skip_first: int = 0,
     center: bool = False,
+    comp_tool: str | None = None,
 ) -> None:
     from bridge_jspace.lens import JLens
     from bridge_jspace.model import load_model
@@ -168,7 +175,7 @@ def main(
         "random": {la: Remove(rdict[la], skip_first, means.get(la)) for la in LAYERS},
     }
     t0 = time.time()
-    ps = prompts(tok, n, comp_main, comp_computed, model if countries_build else None)
+    ps = prompts(tok, n, comp_main, comp_computed, model if countries_build else None, comp_tool)
     print(len(ps), "prompts", flush=True)
     rows = []
     by_len: dict[int, list[dict]] = collections.defaultdict(list)
@@ -217,6 +224,7 @@ if __name__ == "__main__":
     ap.add_argument("--comp-computed", default="competence_computed_v1", help="'none' to skip TYPO and TRANS")
     ap.add_argument("--countries-build", action="store_true", help="build the country cases now (a target with no map)")
     ap.add_argument("--skip-first", type=int, default=0, help="leave the first N positions unedited")
+    ap.add_argument("--comp-tool", default=None, help="competence run of the tool-output set (TBL, TBR)")
     ap.add_argument("--center", action="store_true", help="fit the removal to the residual minus its WikiText mean")
     args = ap.parse_args()
     LAYERS = tuple(args.layers)
@@ -229,4 +237,5 @@ if __name__ == "__main__":
         args.countries_build,
         args.skip_first,
         args.center,
+        args.comp_tool,
     )

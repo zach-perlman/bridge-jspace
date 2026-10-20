@@ -78,6 +78,10 @@ WORDING_B_SEEDS = (201, 202)  # the 2x2, NAMES and CODE; the tie-breakers
 # Computed bridges (Zach, 2026-10-20, quick experiment L3 after Neel's feedback: is a computed intermediate, never
 # written in the prompt and not a recalled entity, carried in the J-space?): set "computed", data/computed_v1/.
 COMPUTED = ("ARITH", "TYPO", "TRANS")
+# Tool outputs (Zach, 2026-10-20, after Neel's "too toy"): BL and BR as an agent sees them, two JSON tool results
+TOOL = ("TBL", "TBR")
+DATA_T = pins.DATA_DIR / "suite_v1_tool"
+TOOL_SEED = 601
 DATA_C = pins.DATA_DIR / "computed_v1"
 COMPUTED_SEED = 301
 N_COMPUTED = 200
@@ -645,6 +649,62 @@ def computed_items(rng: random.Random, tok, n: int) -> dict[str, list[dict]]:
     return out
 
 
+# ---- tool outputs -------------------------------------------------------------------------------------------------------
+
+
+def tool_items(rng: random.Random, tok, n: int) -> dict[str, list[dict]]:
+    """TBL / TBR on one context: get_profiles (three people's pets) and get_vets (each pet's vet) as JSON. TBL asks
+    which vet looks after a person's pet (a lookup in the second result), TBR how many legs it has (a recalled fact).
+    C swaps the person's and X's owner's pets in get_profiles; O swaps X's and Z's vets in get_vets."""
+    animals = [a for a in ANIMALS if len(ids(tok, a)) == 1]  # inside JSON quotes: no leading space
+    out: dict[str, list[dict]] = {f: [] for f in TOOL}
+    seen: set[str] = set()
+    while len(out["TBL"]) < n:
+        bridge = pick_bridge(rng)
+        if bridge not in animals:
+            continue
+        x = rng.choice([a for a in animals if ANIMALS[a][0] != ANIMALS[bridge][0]])
+        z = rng.choice([a for a in animals if a not in (bridge, x)])
+        names = rng.sample(PEOPLE, 6)
+        people, vets = names[:3], names[3:]
+        pets = [bridge, x, z]
+        rng.shuffle(pets)
+        vet_of = dict(zip([bridge, x, z], vets, strict=True))
+        vet_order = rng.sample([bridge, x, z], 3)
+        holder = people[pets.index(bridge)]
+
+        def context(owner_pets, vet_map, people=people, vet_order=vet_order) -> str:
+            prof = ", ".join(f'{{"name": "{p}", "pet": "{a}"}}' for p, a in zip(people, owner_pets, strict=True))
+            vt = ", ".join(f'{{"pet": "{a}", "vet": "{vet_map[a]}"}}' for a in vet_order)
+            return f"Tool output from get_profiles:\n[{prof}]\nTool output from get_vets:\n[{vt}]"
+
+        swapped = list(pets)
+        i, j = pets.index(bridge), pets.index(x)
+        swapped[i], swapped[j] = swapped[j], swapped[i]
+        off_vets = dict(vet_of)
+        off_vets[x], off_vets[z] = vet_of[z], vet_of[x]
+        ctx = context(pets, vet_of)
+        if ctx in seen:
+            continue
+        seen.add(ctx)
+        base = {"scene": f"TOOL-{len(out['TBL']):04d}", "bridge": bridge, "cf_bridge": x, "third": z, "people": people,
+                "pets": pets, "vets": vet_of, "cue": holder, "context": ctx, "cf_context": context(swapped, vet_of)}  # fmt: skip
+        hop1 = {"question": f"Which animal is {holder}'s pet?", "answer": bridge, "kind": "animal"}
+        out["TBL"].append({
+            "id": f"TBL-{len(out['TBL']):04d}", "family": "TBL", **base, "off_context": context(pets, off_vets),
+            "question": (q := f"Which vet looks after {holder}'s pet?"), "cf_question": q,
+            "answer": vet_of[bridge], "cf_answer": vet_of[x], "answer_kind": "name", "hop1": hop1,
+            "hop2": {"question": f"Which vet looks after the {bridge}?", "answer": vet_of[bridge], "kind": "name"},
+        })  # fmt: skip
+        out["TBR"].append({
+            "id": f"TBR-{len(out['TBR']):04d}", "family": "TBR", **base, "off_context": context(pets, off_vets),
+            "question": (q := f"How many legs does {holder}'s pet have?"), "cf_question": q,
+            "answer": str(ANIMALS[bridge][0]), "cf_answer": str(ANIMALS[x][0]), "answer_kind": "digit", "hop1": hop1,
+            "hop2": {"question": f"How many legs does a {bridge} have?", "answer": str(ANIMALS[bridge][0]), "kind": "digit"},
+        })  # fmt: skip
+    return out
+
+
 # ---- stages ---------------------------------------------------------------------------------------------------------
 
 
@@ -665,6 +725,10 @@ def generate(which: str, tok) -> dict[str, tuple[Path, list[dict], str]]:
         fams = tiebreak_items(random.Random(TIEBREAK_SEED), N_PER_FAMILY)
         note = f"scripts/suite_v1.py make --set tiebreak (seed {TIEBREAK_SEED})"
         return {f: (DATA / f"{f}.json", it, note) for f, it in fams.items()}
+    if which == "tool":
+        fams = tool_items(random.Random(TOOL_SEED), tok, N_PER_FAMILY)
+        note = f"scripts/suite_v1.py make --set tool (seed {TOOL_SEED})"
+        return {f: (DATA_T / f"{f}.json", it, note) for f, it in fams.items()}
     if which == "computed":
         fams = computed_items(random.Random(COMPUTED_SEED), tok, N_COMPUTED)
         note = f"scripts/suite_v1.py make --set computed (seed {COMPUTED_SEED})"
@@ -700,6 +764,8 @@ def set_files(which: str) -> dict[str, Path]:
         return {f: DATA_B / f"{f}.json" for f in FAMILIES + TIEBREAK}
     if which == "computed":
         return {f: DATA_C / f"{f}.json" for f in COMPUTED}
+    if which == "tool":
+        return {f: DATA_T / f"{f}.json" for f in TOOL}
     return {f"{f}_{lv}": DEV / f"{f}_{lv}.json" for lv in DEV_LEVELS for f in FAMILIES + TIEBREAK}
 
 
@@ -717,7 +783,7 @@ def stage_verify() -> None:
     """Every set regenerated from this code equals its files (the generators gained knobs and wordings; at each set's
     settings they must draw exactly as before)."""
     tok = tokenizer()
-    for which in ("main", "tiebreak", "dev", "wording_b", "computed"):
+    for which in ("main", "tiebreak", "dev", "wording_b", "computed", "tool"):
         for label, (path, items, _) in generate(which, tok).items():
             if not path.exists():
                 print(which, label, "no file yet")
@@ -732,10 +798,12 @@ def load_file(path: Path) -> list[dict]:
 
 
 def data_dir(wording: str) -> Path:
-    return {"A": DATA, "B": DATA_B, "C": DATA_C}[wording]
+    return {"A": DATA, "B": DATA_B, "C": DATA_C, "T": DATA_T}[wording]
 
 
 def load(fam: str, wording: str = "A") -> list[dict]:
+    if wording == "A" and fam in TOOL + COMPUTED:  # these families live only in their own sets
+        wording = "T" if fam in TOOL else "C"
     return load_file(data_dir(wording) / f"{fam}.json")
 
 
@@ -773,8 +841,8 @@ def stage_check(which: str) -> None:
                          "distinct_bridges": len(bridges)}  # fmt: skip
         print(label, json.dumps(report[label]))
         assert stats["aligned"] == stats["cf_differs"] == stats["unique_prompts"] == len(items), label
-    folder = {"dev": DEV, "wording_b": DATA_B, "computed": DATA_C}.get(which, DATA)
-    out = folder / ("check.json" if which in ("main", "wording_b", "computed") else f"check_{which}.json")
+    folder = {"dev": DEV, "wording_b": DATA_B, "computed": DATA_C, "tool": DATA_T}.get(which, DATA)
+    out = folder / ("check.json" if which in ("main", "wording_b", "computed", "tool") else f"check_{which}.json")
     out.write_text(json.dumps(report, indent=1) + "\n")
 
 
@@ -978,7 +1046,9 @@ def stage_competence(name: str) -> None:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("stage", choices=["make", "verify", "check", "manifest", "competence"])
-    ap.add_argument("--set", dest="which", choices=["main", "tiebreak", "dev", "wording_b", "computed"], default="main")
+    ap.add_argument(
+        "--set", dest="which", choices=["main", "tiebreak", "dev", "wording_b", "computed", "tool"], default="main"
+    )
     ap.add_argument("--name")
     ap.add_argument("--why")
     ap.add_argument("--limit", type=int, default=None, help="manifest: the first K items per family (a smoke run)")
