@@ -119,7 +119,8 @@ def build(tok, model, versions: tuple[str, ...] = ("MM", "MC")) -> list[dict]:
                               "ids": list(enc["input_ids"]), "pos": pos,
                               "tok_A": S.answer_token(tok, colours[it["e2"]], "word"),
                               "tok_b": S.answer_token(tok, colours[x["e2"]], "word"), "tok_mem": -1,
-                              "real_answer": it["e3"], "i_tok": single(it["e2"]), "x_tok": single(x["e2"])})  # fmt: skip
+                              "real_answer": it["e3"], "i_tok": single(it["e2"]), "x_tok": single(x["e2"]),
+                              "context": ctx})  # fmt: skip
                 continue
             mx = version == "MX"
             ans, x_ans = (fake[it["e2"]], fake[x["e2"]]) if mx else (it, x)
