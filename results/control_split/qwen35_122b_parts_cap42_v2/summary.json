@@ -1,0 +1,710 @@
+{
+  "variants": {
+    "R/question/single": {
+      "extra_frac_means": {
+        "answer2": 0.0285755,
+        "answer2 null": 0.0010172500000000001,
+        "words4": 0.05105825,
+        "words4 null": 0.001105,
+        "jspace_minus_words": 0.06400775,
+        "jspace_minus_words null": 0.00226725,
+        "jspace_wo_own": 0.012395,
+        "jspace_wo_own null": 0.0016710000000000004,
+        "jspace_wo_words4": 0.01173375,
+        "jspace_wo_words4 null": 0.00153
+      },
+      "extra_share_median": {
+        "answer2": 0.0124,
+        "words4": 0.027,
+        "jspace_minus_words": 0.1225,
+        "jspace_wo_own": 0.09975,
+        "jspace_wo_words4": 0.0985
+      },
+      "window": [
+        30,
+        33,
+        36,
+        39
+      ],
+      "n": 100,
+      "frac": {
+        "means": {
+          "lens2": 0.045807,
+          "lens2 null": 0.0016825000000000002,
+          "not_lens2": 0.2222965,
+          "not_lens2 null": 0.00887725,
+          "jspace": 0.06256250000000001,
+          "jspace null": 0.0027557500000000004,
+          "not_jspace": 0.1918135,
+          "not_jspace null": 0.0079365,
+          "lens2_matched": 0.0055065,
+          "jspace_matched": 0.0166135,
+          "full": 0.312592,
+          "O full": 0.00032699999999999976
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.17648950000000005,
+            0.16446188750000001,
+            0.18809241249999997
+          ],
+          "lens2 - lens2_matched": [
+            0.040300499999999996,
+            0.03471205625,
+            0.04623928749999998
+          ],
+          "lens2 - its null": [
+            0.04412449999999999,
+            0.03864203125000001,
+            0.05017080625
+          ],
+          "not_lens2 - its null": [
+            0.21341925000000003,
+            0.20046665625,
+            0.22613695624999997
+          ],
+          "concentration": [
+            4.9728104083993,
+            4.316891379610828,
+            5.753062121166469
+          ],
+          "verdict": "inside",
+          "verdict_exp09": "both or neither"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.12925100000000003,
+            0.11823822499999999,
+            0.13979126249999993
+          ],
+          "jspace - jspace_matched": [
+            0.04594899999999999,
+            0.03992519375,
+            0.052593375
+          ],
+          "jspace - its null": [
+            0.05980674999999999,
+            0.05205056874999998,
+            0.068444775
+          ],
+          "not_jspace - its null": [
+            0.183877,
+            0.17207143749999998,
+            0.19581931249999998
+          ],
+          "concentration": [
+            1.5625256290885838,
+            1.3962631648114543,
+            1.730493082968199
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "both or neither"
+        }
+      },
+      "flip": {
+        "means": {
+          "lens2": 0.0,
+          "lens2 null": 0.0,
+          "not_lens2": 0.1875,
+          "not_lens2 null": 0.0,
+          "jspace": 0.0,
+          "jspace null": 0.0,
+          "not_jspace": 0.135,
+          "not_jspace null": 0.0,
+          "lens2_matched": 0.0,
+          "jspace_matched": 0.0,
+          "full": 0.255,
+          "O full": 0.0
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.1875,
+            0.165,
+            0.21
+          ],
+          "lens2 - lens2_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lens2 - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_lens2 - its null": [
+            0.1875,
+            0.165,
+            0.21
+          ],
+          "concentration": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.135,
+            0.11,
+            0.16
+          ],
+          "jspace - jspace_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "jspace - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_jspace - its null": [
+            0.135,
+            0.11,
+            0.16
+          ],
+          "concentration": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        }
+      },
+      "share_median": 0.12240000000000001
+    },
+    "R/question/band": {
+      "extra_frac_means": {
+        "answer2": 0.164855,
+        "answer2 null": 0.00388,
+        "words4": 0.321358,
+        "words4 null": 0.004731,
+        "jspace_minus_words": 0.36708,
+        "jspace_minus_words null": 0.008199,
+        "jspace_wo_own": 0.062175,
+        "jspace_wo_own null": 0.00026999999999999995,
+        "jspace_wo_words4": 0.054057,
+        "jspace_wo_words4 null": -0.0002170000000000001
+      },
+      "extra_share_median": {
+        "answer2": 0.0124,
+        "words4": 0.027,
+        "jspace_minus_words": 0.1225,
+        "jspace_wo_own": 0.09975,
+        "jspace_wo_words4": 0.0985
+      },
+      "window": [
+        30,
+        33,
+        36,
+        39
+      ],
+      "n": 100,
+      "frac": {
+        "means": {
+          "lens2": 0.30274,
+          "lens2 null": 0.0004380000000000001,
+          "not_lens2": 0.746485,
+          "not_lens2 null": 0.032681,
+          "jspace": 0.361035,
+          "jspace null": 0.00979,
+          "not_jspace": 0.710476,
+          "not_jspace null": 0.026907,
+          "lens2_matched": 0.014619,
+          "jspace_matched": 0.090666,
+          "full": 0.860526,
+          "O full": 0.023962
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.443745,
+            0.4043704,
+            0.48615185
+          ],
+          "lens2 - lens2_matched": [
+            0.28812099999999996,
+            0.25840835000000006,
+            0.316558925
+          ],
+          "lens2 - its null": [
+            0.30230199999999996,
+            0.27181835000000004,
+            0.33247605
+          ],
+          "not_lens2 - its null": [
+            0.713804,
+            0.68554625,
+            0.74293565
+          ],
+          "concentration": [
+            12.27437877256269,
+            10.922054761526221,
+            13.629680534421201
+          ],
+          "verdict": "inside",
+          "verdict_exp09": "both or neither"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.34944099999999995,
+            0.30803097500000004,
+            0.39001717500000005
+          ],
+          "jspace - jspace_matched": [
+            0.270369,
+            0.24647772500000004,
+            0.29370442500000005
+          ],
+          "jspace - its null": [
+            0.35124500000000003,
+            0.3226073750000001,
+            0.38116427499999994
+          ],
+          "not_jspace - its null": [
+            0.683569,
+            0.655105575,
+            0.7132533500000001
+          ],
+          "concentration": [
+            3.3017281483680447,
+            3.0446836637159005,
+            3.5582639145917327
+          ],
+          "verdict": "inside",
+          "verdict_exp09": "both or neither"
+        }
+      },
+      "flip": {
+        "means": {
+          "lens2": 0.14,
+          "lens2 null": 0.0,
+          "not_lens2": 0.94,
+          "not_lens2 null": 0.0,
+          "jspace": 0.19,
+          "jspace null": 0.0,
+          "not_jspace": 0.93,
+          "not_jspace null": 0.0,
+          "lens2_matched": 0.0,
+          "jspace_matched": 0.0,
+          "full": 0.97,
+          "O full": 0.01
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.7999999999999999,
+            0.73,
+            0.87
+          ],
+          "lens2 - lens2_matched": [
+            0.14,
+            0.07,
+            0.21
+          ],
+          "lens2 - its null": [
+            0.14,
+            0.07,
+            0.21
+          ],
+          "not_lens2 - its null": [
+            0.94,
+            0.89,
+            0.98
+          ],
+          "concentration": [
+            5.011679001959925,
+            2.642651303150194,
+            7.472520695186435
+          ],
+          "verdict": "inside",
+          "verdict_exp09": "both or neither"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.74,
+            0.65,
+            0.82
+          ],
+          "jspace - jspace_matched": [
+            0.19,
+            0.12,
+            0.27
+          ],
+          "jspace - its null": [
+            0.19,
+            0.12,
+            0.27
+          ],
+          "not_jspace - its null": [
+            0.93,
+            0.87,
+            0.97
+          ],
+          "concentration": [
+            1.5353845532232975,
+            0.9536397088329145,
+            2.1829057175889863
+          ],
+          "verdict": "inconclusive",
+          "verdict_exp09": "both or neither"
+        }
+      },
+      "share_median": 0.12240000000000001
+    },
+    "B/question/single": {
+      "extra_frac_means": {
+        "answer2": 0.038347,
+        "answer2 null": -0.0013050000000000002,
+        "words4": 0.055721,
+        "words4 null": -0.0004275,
+        "jspace_minus_words": 0.0690155,
+        "jspace_minus_words null": 0.0003190000000000001,
+        "jspace_wo_own": 0.013575,
+        "jspace_wo_own null": -0.00041200000000000015,
+        "jspace_wo_words4": 0.011911,
+        "jspace_wo_words4 null": -0.0007949999999999999
+      },
+      "extra_share_median": {
+        "answer2": 0.0177,
+        "words4": 0.03415,
+        "jspace_minus_words": 0.1345,
+        "jspace_wo_own": 0.10715,
+        "jspace_wo_words4": 0.106
+      },
+      "window": [
+        36,
+        39
+      ],
+      "n": 100,
+      "frac": {
+        "means": {
+          "lens2": 0.0490245,
+          "lens2 null": 0.0002155,
+          "not_lens2": 0.171541,
+          "not_lens2 null": -0.0005449999999999999,
+          "jspace": 0.0693995,
+          "jspace null": -0.0019115,
+          "not_jspace": 0.1207675,
+          "not_jspace null": -0.0008015000000000001,
+          "lens2_matched": 0.004321,
+          "jspace_matched": 0.015951,
+          "full": 0.3240615,
+          "O full": 0.002913
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.1225165,
+            0.094902075,
+            0.15332189999999998
+          ],
+          "lens2 - lens2_matched": [
+            0.04470350000000001,
+            0.0397067375,
+            0.04974928749999999
+          ],
+          "lens2 - its null": [
+            0.048809000000000005,
+            0.04385514999999999,
+            0.05397833750000001
+          ],
+          "not_lens2 - its null": [
+            0.172086,
+            0.14537046250000002,
+            0.20119947499999993
+          ],
+          "concentration": [
+            4.818140503171677,
+            4.156426682781795,
+            5.5088526689915875
+          ],
+          "verdict": "inside",
+          "verdict_exp09": "both or neither"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.05136799999999998,
+            0.03082541250000002,
+            0.07361565000000002
+          ],
+          "jspace - jspace_matched": [
+            0.0534485,
+            0.04795066249999999,
+            0.058974099999999995
+          ],
+          "jspace - its null": [
+            0.071311,
+            0.06500562499999998,
+            0.0777048125
+          ],
+          "not_jspace - its null": [
+            0.12156899999999998,
+            0.10193293750000001,
+            0.14374385
+          ],
+          "concentration": [
+            1.5933016308716785,
+            1.4234532303491638,
+            1.7629647779436206
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "both or neither"
+        }
+      },
+      "flip": {
+        "means": {
+          "lens2": 0.0,
+          "lens2 null": 0.0,
+          "not_lens2": 0.06,
+          "not_lens2 null": 0.0,
+          "jspace": 0.0,
+          "jspace null": 0.0,
+          "not_jspace": 0.015,
+          "not_jspace null": 0.0,
+          "lens2_matched": 0.0,
+          "jspace_matched": 0.0,
+          "full": 0.19,
+          "O full": 0.0
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.06,
+            0.025,
+            0.1
+          ],
+          "lens2 - lens2_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lens2 - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_lens2 - its null": [
+            0.06,
+            0.025,
+            0.1
+          ],
+          "concentration": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.015,
+            0.0,
+            0.035
+          ],
+          "jspace - jspace_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "jspace - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_jspace - its null": [
+            0.015,
+            0.0,
+            0.035
+          ],
+          "concentration": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "inconclusive",
+          "verdict_exp09": "both or neither"
+        }
+      },
+      "share_median": 0.1345
+    },
+    "B/question/band": {
+      "extra_frac_means": {
+        "answer2": 0.093245,
+        "answer2 null": 6.8e-05,
+        "words4": 0.16431199999999999,
+        "words4 null": -0.0004609999999999999,
+        "jspace_minus_words": 0.220667,
+        "jspace_minus_words null": -6.900000000000002e-05,
+        "jspace_wo_own": 0.033357,
+        "jspace_wo_own null": -0.000689,
+        "jspace_wo_words4": 0.025196,
+        "jspace_wo_words4 null": 0.001057
+      },
+      "extra_share_median": {
+        "answer2": 0.0177,
+        "words4": 0.03415,
+        "jspace_minus_words": 0.1345,
+        "jspace_wo_own": 0.10715,
+        "jspace_wo_words4": 0.106
+      },
+      "window": [
+        36,
+        39
+      ],
+      "n": 100,
+      "frac": {
+        "means": {
+          "lens2": 0.143976,
+          "lens2 null": -0.002112,
+          "not_lens2": 0.516876,
+          "not_lens2 null": -0.0009720000000000002,
+          "jspace": 0.220422,
+          "jspace null": 1.2999999999999869e-05,
+          "not_jspace": 0.393596,
+          "not_jspace null": -0.00129,
+          "lens2_matched": 0.010356,
+          "jspace_matched": 0.035265,
+          "full": 0.810432,
+          "O full": 0.008731
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.3729,
+            0.3157837500000001,
+            0.43283622499999996
+          ],
+          "lens2 - lens2_matched": [
+            0.13362,
+            0.1171618,
+            0.1510949
+          ],
+          "lens2 - its null": [
+            0.146088,
+            0.129592375,
+            0.16421370000000002
+          ],
+          "not_lens2 - its null": [
+            0.517848,
+            0.46597332499999994,
+            0.5735901
+          ],
+          "concentration": [
+            5.352512231985499,
+            4.688421633711214,
+            6.055867891065804
+          ],
+          "verdict": "inside",
+          "verdict_exp09": "both or neither"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.17317400000000002,
+            0.11667707499999996,
+            0.23308964999999993
+          ],
+          "jspace - jspace_matched": [
+            0.18515700000000004,
+            0.16448054999999998,
+            0.20781742499999994
+          ],
+          "jspace - its null": [
+            0.22040900000000002,
+            0.19708520000000002,
+            0.2443875
+          ],
+          "not_jspace - its null": [
+            0.39488600000000007,
+            0.3456716,
+            0.44845155
+          ],
+          "concentration": [
+            1.993538057746904,
+            1.7912103590944564,
+            2.1992835248805473
+          ],
+          "verdict": "inconclusive",
+          "verdict_exp09": "both or neither"
+        }
+      },
+      "flip": {
+        "means": {
+          "lens2": 0.01,
+          "lens2 null": 0.0,
+          "not_lens2": 0.46,
+          "not_lens2 null": 0.0,
+          "jspace": 0.06,
+          "jspace null": 0.0,
+          "not_jspace": 0.32,
+          "not_jspace null": 0.0,
+          "lens2_matched": 0.0,
+          "jspace_matched": 0.0,
+          "full": 0.93,
+          "O full": 0.0
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.45,
+            0.35,
+            0.55
+          ],
+          "lens2 - lens2_matched": [
+            0.01,
+            0.0,
+            0.03
+          ],
+          "lens2 - its null": [
+            0.01,
+            0.0,
+            0.03
+          ],
+          "not_lens2 - its null": [
+            0.46,
+            0.36,
+            0.56
+          ],
+          "concentration": [
+            0.32065156397800326,
+            0.0,
+            1.0398250930391608
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.26,
+            0.16,
+            0.37
+          ],
+          "jspace - jspace_matched": [
+            0.06,
+            0.02,
+            0.11
+          ],
+          "jspace - its null": [
+            0.06,
+            0.02,
+            0.11
+          ],
+          "not_jspace - its null": [
+            0.32,
+            0.23,
+            0.41
+          ],
+          "concentration": [
+            0.47119247034432393,
+            0.15712016029877374,
+            0.8572461393796966
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "both or neither"
+        }
+      },
+      "share_median": 0.1345
+    }
+  },
+  "control": "passes: R inside in ['R/question/band']",
+  "seconds": 453
+}
