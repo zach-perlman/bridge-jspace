@@ -1,5 +1,7 @@
 # bridge-jspace
 
+**Latest status (20 Oct 2026):** [STATUS.md](STATUS.md) · plan: [Google Doc](https://docs.google.com/document/d/1bqqdXePTUXQGlowVjk73sPfJkbV_tsu0RNNX-BiTYUc/edit?usp=drivesdk) · run log: [EXPERIMENTS.md](EXPERIMENTS.md)
+
 **Question.** In a two-hop question ("the language spoken in the country where the Amazon River ends is ..."), the
 model has to compute a bridge entity (Brazil) before it can answer (Portuguese). On Qwen3.6-27B and Gemma 4 31B the
 J-lens often cannot read that bridge. Does the bridge still act on the answer through the J-space, or through a part
