@@ -132,6 +132,22 @@ def tasks_prompts(tok, set_name: str, comp_run: str, words: list[str] | None, n:
     return out
 
 
+def answertype_prompts(tok, n: int) -> list[dict]:
+    """tool_answer_type's JSON scenes (seed 602): one context, asked for the pet's vet (a name: AT-name) and its
+    locker (a digit: AT-digit), the whole question only; not filtered by competence (read accuracy on the items right
+    unedited, from the rows' 'none' condition)."""
+    from scripts import tool_answer_type as TA
+
+    out = []
+    for sc in TA.scenes(tok, n):
+        for q, fam in (("name_clean", "AT-name"), ("digit_clean", "AT-digit")):
+            text, ans, kind = sc["questions"][q]
+            ids = S.ids(tok, S.render(tok, sc["context"], text)) + (S.ids(tok, " ") if kind == "digit" else [])
+            out.append({"family": fam, "id": sc["scene"], "kind": "clean", "ids": ids,
+                        "tok": S.answer_token(tok, ans, kind), "bridge": sc["bridge"]})  # fmt: skip
+    return out
+
+
 def bridge_positions(tok, ids: list[int], word: str) -> list[int]:
     """Token positions overlapping a mention of the word (case-insensitive, any suffix: cow, cows, Cow)."""
     pieces = [tok.decode([i]) for i in ids]
@@ -249,6 +265,8 @@ def main(args) -> None:
     else:
         prompts = suite_prompts(tok, suite_fams, args.kinds, args.n, COMPETENCE)
         prompts += country_prompts(tok, [f for f in args.families if f in ("R", "B")], args.n)
+    if args.answertype:
+        prompts += answertype_prompts(tok, args.answertype)
     for p in prompts:
         p["skip"] = bridge_positions(tok, p["ids"], p["bridge"]) if p["bridge"] else []
         q0 = question_start(tok, p["ids"])
@@ -421,6 +439,7 @@ if __name__ == "__main__":
     ap.add_argument("--tasks", default=None, help="a tasks_v2 set to draw prompts from instead of the suite")
     ap.add_argument("--tasks-competence", default=None, help="its competence run (eligibility: every part right)")
     ap.add_argument("--tasks-words", nargs="*", default=None, help="tasks_v2 words to include (default: all)")
+    ap.add_argument("--answertype", type=int, default=0, help="add N tool_answer_type scenes (AT-name, AT-digit)")
     ap.add_argument(
         "--seed-offset",
         type=int,
