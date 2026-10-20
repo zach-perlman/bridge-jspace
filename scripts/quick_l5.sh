@@ -10,8 +10,8 @@ S="uv run --no-sync python scripts/suite_v1.py"
 C="uv run --no-sync python scripts/control_split.py"
 P="uv run --no-sync python scripts/suite_split.py"
 W="Zach (2026-10-20), quick experiment L5 (Neel: try a larger model early): does the 27B picture hold on Qwen3.5-122B-A10B?"
-$S manifest --set main --name qwen35_122b_smoke_1020 --limit 4 --why "smoke: load, generate, read"
-$S competence --name qwen35_122b_smoke_1020
+$S manifest --set main --name qwen35_122b_smoke2_1020 --limit 4 --why "smoke: load, generate, read"
+$S competence --name qwen35_122b_smoke2_1020
 $S manifest --set main --name qwen35_122b_competence_v1 --limit 150 --why "$W (competence on the first 150 items per family)"
 $S competence --name qwen35_122b_competence_v1
 $C manifest_map --name qwen35_122b_map_v1 --n 100 --why "$W (countries: the positive control)"

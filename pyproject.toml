@@ -21,6 +21,7 @@ dependencies = [
     "python-dotenv>=1.0",
     "tqdm>=4.66",
     "accelerate>=1.14",
+    "kernels==0.16.2",
 ]
 
 [dependency-groups]
