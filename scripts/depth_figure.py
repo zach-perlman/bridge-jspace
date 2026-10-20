@@ -64,8 +64,8 @@ for ax, method in zip(axes, ("paper10", "omp25"), strict=True):
     for s in ("top", "right"):
         ax.spines[s].set_visible(False)
     ax.set_xlabel("centre of the 9-layer band removed (layer); 'all' = every layer")
-    ax.set_title({"paper10": "paper10: top-10 lens directions projected out (answer protected)",
-                  "omp25": "omp25: 25-direction OMP fit removed"}[method], loc="left", fontsize=9.5, fontweight="bold")  # fmt: skip
+    ax.set_title({"paper10": "paper10: top-10 lens directions (answer kept)",
+                  "omp25": "omp25: 25-atom OMP fit"}[method], loc="left", fontsize=9.5, fontweight="bold")  # fmt: skip
 axes[0].set_ylabel("accuracy with the J-space removed (%)")
 h, lab = axes[0].get_legend_handles_labels()
 fig.legend(h, lab, loc="lower left", ncol=4, frameon=False, bbox_to_anchor=(0.005, 0.95), fontsize=8)
