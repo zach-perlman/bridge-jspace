@@ -1,0 +1,19 @@
+{
+  "run": "screen_v1",
+  "why": "Zach (2026-10-20): screen TwoHopFact (5 types, 2,479 rows) for facts the 27B knows, for Day 1's natural memory-vs-prompt set",
+  "written_utc": "2026-10-20T03:04:29Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "items": {
+    "file": "data/twohop_pilot/screen.json",
+    "sha256": "bbcc290c82dc49f91c5b81107dfc214e017912a4bf4d065b9077e8b971c16cdf"
+  },
+  "format": "chat, thinking off, 'Answer:' prefilled, blank statement",
+  "generation": "greedy, 12 new tokens, batched by length",
+  "judge": "an alias in the first line"
+}

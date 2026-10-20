@@ -1,0 +1,35 @@
+{
+  "run": "dose_v1",
+  "why": "Zach (2026-10-20), test 1: steering strength sweep; is RL unwritable at any strength, or only at the ones tried?",
+  "written_utc": "2026-10-20T02:58:53Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  ],
+  "layers": [
+    32,
+    36,
+    40
+  ],
+  "scales": [
+    0.5,
+    1.0,
+    2.0,
+    4.0,
+    8.0,
+    16.0
+  ],
+  "n_per_family": 80,
+  "doc": "On the cases of suite_split's map_A8_v1 (animal suite, wording A) and control_split's map_v1 (countries R, B), at\nQwen3.6-27B's window (layers 32, 36, 40) on the question tokens:\n  read   the J-lens readout (frozen J++) of the clean run: the bridge's best rank among word tokens over the question\n         positions (formatting tokens removed; any single-token surface of the bridge counts), per layer; the same\n         for X (the counterfactual bridge, absent from the clean prompt) as the floor\n  write  add the lens direction v_X - v_I (unit lens vectors of X and the bridge I, their difference rescaled per\n         position to the norm of C's copy delta there, times 1 or 4) at the question tokens, one layer at a time and\n         at all three at once; controls: a random direction at the same norms, and C's full copy itself\nScored by suite_split's answer read (frac of the way to C; flips). n per family: up to 60 cases (the first in each\nmap's case order). Descriptive: no verdict rule; it decides whether read-vs-write enters the sprint plan.",
+  "inputs": {
+    "results/suite_split/map_A8_v1/cases.jsonl": "b3570104d9f99240f6b3103c0e57648137d017f3fc58044b26281bdc8992d734",
+    "results/control_split/map_v1/cases.jsonl": "d2a6c4cd77ba1db3edfd6f03085c9370540da312a4e205bdc1727cec1c733ca6"
+  }
+}
