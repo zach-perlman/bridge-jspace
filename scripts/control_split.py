@@ -186,13 +186,17 @@ def stage_run_map(name: str) -> None:
     print((out_dir / "summary.md").read_text())
 
 
-def stage_manifest_parts(name: str, map_run: str, why: str, extra: bool | str = False) -> None:
+def stage_manifest_parts(
+    name: str, map_run: str, why: str, extra: bool | str = False, cap_override: int | None = None
+) -> None:
     path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
     map_summary = RESULTS / map_run / "summary.json"
     blob = json.loads(map_summary.read_text())
     cap = {f: min(blob["answer_formed"].get(f, P.ANSWER_ONSET), P.ANSWER_ONSET) for f in FAMILIES}
+    if cap_override is not None:  # a sensitivity run: the window's upper layer set by hand (the manifest records it)
+        cap = {f: cap_override for f in cap}
     window = {
         f: {
             "question": [la for la in blob["windows"].get(f, {}).get("question", []) if la < cap[f]],
@@ -204,7 +208,13 @@ def stage_manifest_parts(name: str, map_run: str, why: str, extra: bool | str = 
         for f in FAMILIES
     }
     m = manifest(name, why, "parts")
-    m["map"] = {"run": map_run, "summary_sha256": sha256_of(map_summary), "cap": cap, "parts_window": window}
+    m["map"] = {
+        "run": map_run,
+        "summary_sha256": sha256_of(map_summary),
+        "cap": cap,
+        "parts_window": window,
+        "cap_override": cap_override,
+    }
     m["lens"] = {pins.FROZEN_LENS: list(pins.LENS_SOURCES[pins.FROZEN_LENS]), "sha256": pins.FROZEN_LENS_SHA256}
     m["variants"] = "group (question, cue) x mode (single: each window layer alone; band: all window layers at once)"
     m["extra_parts"] = extra
@@ -407,6 +417,7 @@ if __name__ == "__main__":
     ap.add_argument("--map")
     ap.add_argument("--n", type=int, default=N_ITEMS, help="manifest_map: items per family (a smoke run: few)")
     ap.add_argument("--extra", action="store_true", help="manifest_parts: add the answer-word and words-removed parts")
+    ap.add_argument("--cap", type=int, default=None, help="manifest_parts: override the window's upper layer")
     ap.add_argument("--v3", action="store_true", help="manifest_parts: --extra plus the J-space part after the words")
     args = ap.parse_args()
     if args.stage == "manifest_map":
@@ -417,6 +428,6 @@ if __name__ == "__main__":
     elif args.stage == "manifest_parts":
         assert args.why, "manifest_parts needs --why"
         assert args.map, "manifest_parts needs --map"
-        stage_manifest_parts(args.name, args.map, args.why, "v3" if args.v3 else args.extra)
+        stage_manifest_parts(args.name, args.map, args.why, "v3" if args.v3 else args.extra, args.cap)
     else:
         stage_run_parts(args.name)

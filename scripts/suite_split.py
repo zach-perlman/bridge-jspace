@@ -375,7 +375,9 @@ def answer_formed(outcomes: list[dict]) -> dict[str, int]:
 CALIBRATION = ("jspace_wo_own", "rand_omp")  # parts with --calibrate (each with its random null)
 
 
-def stage_manifest_parts(name: str, map_run: str, why: str, calibrate: bool = False) -> None:
+def stage_manifest_parts(
+    name: str, map_run: str, why: str, calibrate: bool = False, cap_override: int | None = None
+) -> None:
     path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
@@ -384,10 +386,18 @@ def stage_manifest_parts(name: str, map_run: str, why: str, calibrate: bool = Fa
     blob = json.loads(map_summary.read_text())
     families = map_m["families"]
     cap = {f: min(blob["answer_formed"].get(f, ANSWER_ONSET), ANSWER_ONSET) for f in families}
+    if cap_override is not None:  # a sensitivity run: the window's upper layer set by hand (the manifest records it)
+        cap = {f: cap_override for f in cap}
     window = {f: [la for la in blob["windows"].get(f, {}).get("question", []) if la < cap[f]] for f in families}
     m = manifest_common(name, why, "parts", families, map_m["wording"])
     m["question"] = "At each family's window, which part of the copy carries the bridge: its J-space part or the rest?"
-    m["map"] = {"run": map_run, "summary_sha256": sha256_of(map_summary), "cap": cap, "parts_window": window}
+    m["map"] = {
+        "run": map_run,
+        "summary_sha256": sha256_of(map_summary),
+        "cap": cap,
+        "parts_window": window,
+        "cap_override": cap_override,
+    }
     m["sample"] = "the map run's cases (cases.jsonl), not resampled"
     m["lens"] = {pins.FROZEN_LENS: list(pins.LENS_SOURCES[pins.FROZEN_LENS]), "sha256": pins.FROZEN_LENS_SHA256}
     m["parts"] = {
@@ -685,6 +695,7 @@ if __name__ == "__main__":
     ap.add_argument("--why")
     ap.add_argument("--map")
     ap.add_argument("--families", nargs="+", choices=list(S.FAMILIES + S.TIEBREAK + S.COMPUTED))
+    ap.add_argument("--cap", type=int, default=None, help="manifest_parts: override the window upper layer")
     ap.add_argument(
         "--wording", choices=["A", "B", "C"], default="A", help="manifest_map: wording A or B, or C (computed)"
     )
@@ -704,6 +715,6 @@ if __name__ == "__main__":
     elif args.stage == "manifest_parts":
         assert args.why, "manifest_parts needs --why"
         assert args.map, "manifest_parts needs --map"
-        stage_manifest_parts(args.name, args.map, args.why, args.calibrate)
+        stage_manifest_parts(args.name, args.map, args.why, args.calibrate, args.cap)
     else:
         stage_run_parts(args.name)
