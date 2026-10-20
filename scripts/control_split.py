@@ -196,7 +196,10 @@ def stage_manifest_parts(name: str, map_run: str, why: str, extra: bool | str = 
     window = {
         f: {
             "question": [la for la in blob["windows"].get(f, {}).get("question", []) if la < cap[f]],
-            "cue": [la for la in blob["windows"].get(f, {}).get("cue", []) if la < cap[f] and la in CUE_BAND],
+            # the cue band is exp02's on the 27B; other targets run the question group only (memory on one H200)
+            "cue": [la for la in blob["windows"].get(f, {}).get("cue", []) if la < cap[f] and la in CUE_BAND]
+            if pins.TARGET == "qwen3.6-27b"
+            else [],
         }
         for f in FAMILIES
     }

@@ -57,7 +57,9 @@ RESULTS = pins.RESULTS_DIR / EXP
 MAP_LAYERS = tuple(range(0, pins.N_LAYERS - 3, max(1, pins.N_LAYERS // 16)))
 # exp12 (Qwen3.6-27B): the answer is read at the last word from about layer 44 (exp09's cap); other targets: the map's
 # own answer_formed only.
-ANSWER_ONSET = {"qwen3.6-27b": 44}.get(pins.TARGET, pins.N_LAYERS - 1)
+# Qwen3.5-122B-A10B: no exp12 either; capped at the 27B's relative depth (44/64 -> 33/48), so its windows stay in the
+# same part of the network (the 9B's runs, uncapped, reached 88% depth).
+ANSWER_ONSET = {"qwen3.6-27b": 44, "qwen3.5-122b-a10b": 33}.get(pins.TARGET, pins.N_LAYERS - 1)
 GROUPS = ("question", "last")
 N_SCENES = 150
 N_VALIDATE = 20
@@ -72,6 +74,7 @@ COMPETENCE = {  # (target, wording) -> the suite_v1 competence runs whose items.
     ("qwen3.5-9b", "A"): {"main": "qwen35_9b_competence_v2", "tiebreak": "qwen35_9b_competence_tiebreak_v1"},
     ("qwen3.5-9b", "B"): {"main": "qwen35_9b_competence_b_v1", "tiebreak": "qwen35_9b_competence_b_v1"},
     ("qwen3.6-27b", "C"): {"main": "competence_computed_v1", "tiebreak": "competence_computed_v1"},
+    ("qwen3.5-122b-a10b", "A"): {"main": "qwen35_122b_competence_v1", "tiebreak": "qwen35_122b_competence_v1"},
 }
 CONCENTRATED = 2.0  # a part "carries" the bridge if it moves the answer at least this many times its share of the copy
 MIN_FRAC = 0.10  # a window layer's copy moves the answer at least this far toward C's, on average

@@ -106,6 +106,26 @@ TARGETS: dict[str, dict[str, Any]] = {
         },
         "frozen_lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5",
     },
+    # Qwen3.5-122B-A10B (MoE, 10B active) in Qwen's official FP8 release: the largest model with a published J++ that
+    # fits one H200 (Zach, 2026-10-20, quick experiment L5; Neel: try a larger model early). Same tokenizer file as
+    # Qwen3.6-27B; its J++ (neuronpedia, target layer 47) was fit on the bf16 weights, so FP8 activations differ
+    # slightly from the lens's fitting runs.
+    "qwen3.5-122b-a10b": {
+        "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+        "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+        "n_layers": 48,
+        "norm_gain": "one_plus_weight",
+        "bos": False,
+        "run_prefix": "qwen35_122b_",
+        "lenses": {
+            "jpp": (
+                LENS_REPO,
+                "qwen3.5-122b-a10b/jpp/Salesforce-wikitext/Qwen3.5-122B-A10B_jpp_lens.pt",
+                "e166deb5ad540932100ef803c8c9bcc2a5453694",
+            ),
+        },
+        "frozen_lens_sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53",
+    },
 }
 TARGET = os.environ.get("BJ_TARGET", "qwen3.6-27b")
 assert TARGET in TARGETS, f"BJ_TARGET={TARGET!r}: not one of {sorted(TARGETS)}"
