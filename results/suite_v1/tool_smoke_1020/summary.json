@@ -1,0 +1,109 @@
+{
+  "families": {
+    "TBL": {
+      "n": 4,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "cf": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "off": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        }
+      },
+      "eligible": 4,
+      "all_steps": 4,
+      "clean_given_all_hops": [
+        4,
+        4
+      ],
+      "reliable": false,
+      "clean_median_p_answer": 0.966515,
+      "clean_median_margin": 4.375,
+      "read_agrees_with_greedy": 1,
+      "hop_accuracy_by_bridge": {
+        "bee": 1,
+        "cow": 1,
+        "duck": 1,
+        "wolf": 1
+      }
+    },
+    "TBR": {
+      "n": 4,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "cf": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "off": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.5100999795960008,
+          "hi": 1.0,
+          "k": 4
+        }
+      },
+      "eligible": 4,
+      "all_steps": 4,
+      "clean_given_all_hops": [
+        4,
+        4
+      ],
+      "reliable": false,
+      "clean_median_p_answer": 0.99203,
+      "clean_median_margin": 5.6875,
+      "read_agrees_with_greedy": 1,
+      "hop_accuracy_by_bridge": {
+        "bee": 1,
+        "cow": 1,
+        "duck": 1,
+        "wolf": 1
+      }
+    }
+  },
+  "seconds_generate": 6,
+  "seconds_read": 3,
+  "seconds": 9
+}

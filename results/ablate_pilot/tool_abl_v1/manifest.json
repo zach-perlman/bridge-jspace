@@ -1,0 +1,26 @@
+{
+  "run": "tool_abl_v1",
+  "why": "Zach (2026-10-20, overnight): tool-output set (TBL, TBR: BL and BR as two JSON tool results), a less toy context (J-space removal, the v1 setting; BL-RR rerun alongside)",
+  "written_utc": "2026-10-20T08:02:16Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  ],
+  "layers": [
+    32,
+    36,
+    40
+  ],
+  "k_atoms": 25,
+  "n_per_family": 100,
+  "skip_first": 0,
+  "center": false,
+  "doc": "At layers 32, 36 and 40 at once, at every position, each residual loses its 25-atom J-space part (signed OMP over the\nfrozen J++'s letter-token vectors, the split's J-space part, here of the state itself); the control loses the same\nfit over a random dictionary of the same size (seeded per layer). On unedited-correct items, read at the answer's\nfirst token (suite_split's read):\n  clean   the whole question                      hop     the last step alone (suite_v1's hop2 / hop3: a lookup in the\n                                                          prompt for BL, RL; a recalled fact for BR, RR, TYPO, TRANS)\nReported per family: accuracy (top token = the answer's) and the mean change in the answer token's log-probability.\nFamilies: BL, BR, RL, RR (suite main set), TYPO, TRANS (computed set), countries R, B (bind_recall, clean only).\nPrediction from the read/write results (not a decision rule): removing the J-space hurts the recall chains more than\nthe lookup chains, beyond what the step alone loses."
+}
