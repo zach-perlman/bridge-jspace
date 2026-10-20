@@ -45,9 +45,9 @@ N_PER_FAMILY = 60
 SCALES = (1.0, 4.0)
 
 
-def suite_cases(tok, n: int) -> list[dict]:
-    rows = [json.loads(line) for line in (P.RESULTS / "map_A8_v1" / "cases.jsonl").read_text().splitlines()]
-    items = {f: {it["id"]: it for it in S.load(f)} for f in {r["family"] for r in rows}}
+def suite_cases(tok, n: int, map_run: str = "map_A8_v1", wording: str = "A") -> list[dict]:
+    rows = [json.loads(line) for line in (P.RESULTS / map_run / "cases.jsonl").read_text().splitlines()]
+    items = {f: {it["id"]: it for it in S.load(f, wording)} for f in {r["family"] for r in rows}}
     seen: collections.Counter = collections.Counter()
     out = []
     for r in rows:
@@ -80,14 +80,14 @@ def country_cases(tok, n: int) -> list[dict]:
 
 
 @torch.no_grad()
-def main(name: str, why: str, n: int) -> None:
+def main(name: str, why: str, n: int, map_run: str = "map_A8_v1", wording: str = "A", countries: bool = True) -> None:
     from bridge_jspace.lens import JLens
     from bridge_jspace.model import load_model
 
     out_dir = RESULTS / name
     out_dir.mkdir(parents=True, exist_ok=True)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
-    inputs = {p: sha256_of(p) for p in (P.RESULTS / "map_A8_v1" / "cases.jsonl", C.RESULTS / "map_v1" / "cases.jsonl")}
+    inputs = {p: sha256_of(p) for p in (P.RESULTS / map_run / "cases.jsonl", C.RESULTS / "map_v1" / "cases.jsonl")}
     manifest = {"run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "layers": list(LAYERS),
                 "scales": list(SCALES), "n_per_family": n, "doc": (__doc__ or "").split("\n\n")[1],
@@ -97,7 +97,7 @@ def main(name: str, why: str, n: int) -> None:
     tok = model.tokenizer
     lens = JLens(model, pins.FROZEN_LENS)
     t0 = time.time()
-    cases = suite_cases(tok, n) + country_cases(tok, n)
+    cases = suite_cases(tok, n, map_run, wording) + (country_cases(tok, n) if countries else [])
     print(len(cases), "cases", flush=True)
     reads, outcomes = [], []
     for k, c in enumerate(cases):
@@ -179,5 +179,8 @@ if __name__ == "__main__":
     ap.add_argument("--name", required=True)
     ap.add_argument("--why", required=True)
     ap.add_argument("--n", type=int, default=N_PER_FAMILY, help="cases per family (a smoke run: few)")
+    ap.add_argument("--map", default="map_A8_v1", help="suite_split map run whose cases to use")
+    ap.add_argument("--wording", default="A", choices=["A", "B", "C"])
+    ap.add_argument("--no-countries", action="store_true")
     args = ap.parse_args()
-    main(args.name, args.why, args.n)
+    main(args.name, args.why, args.n, args.map, args.wording, not args.no_countries)
