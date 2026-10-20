@@ -1,0 +1,5807 @@
+{
+ "family": "TRANS",
+ "generator": "scripts/suite_v1.py make --set computed (seed 301)",
+ "format": "Every family asks one question whose answer needs an intermediate variable (the bridge), in the chat format\n(bridge_jspace.chat: one user turn, thinking off, \"Answer:\" prefilled), with a counterfactual C that changes only the\nbridge (to X) and an off-path control O that changes something the answer does not depend on. C and O line up with the\nclean prompt token for token (checked here), so exp04/exp09's copy-and-split runs apply unchanged.",
+ "items": [
+  {
+   "id": "TRANS-0000",
+   "family": "TRANS",
+   "scene": "T-0000",
+   "context": "Here is a question from Ben, who is reading a French book.",
+   "cf_context": "Here is a question from Ben, who is reading a French book.",
+   "off_context": "Here is a question from Paul, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab abeille \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab araign\u00e9e \u00bb in French have?",
+   "bridge": "bee",
+   "cf_bridge": "spider",
+   "cue": "abeille",
+   "shown": "abeille",
+   "cf_shown": "araign\u00e9e",
+   "lang": "fr",
+   "answer": "6",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab abeille \u00bb in French? Answer in English.",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0001",
+   "family": "TRANS",
+   "scene": "T-0001",
+   "context": "Here is a question from Ben, who is reading a French book.",
+   "cf_context": "Here is a question from Ben, who is reading a French book.",
+   "off_context": "Here is a question from Ruby, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab canard \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab vache \u00bb in French have?",
+   "bridge": "duck",
+   "cf_bridge": "cow",
+   "cue": "canard",
+   "shown": "canard",
+   "cf_shown": "vache",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab canard \u00bb in French? Answer in English.",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0002",
+   "family": "TRANS",
+   "scene": "T-0002",
+   "context": "Here is a question from Clara, who is reading a German book.",
+   "cf_context": "Here is a question from Clara, who is reading a German book.",
+   "off_context": "Here is a question from Ryan, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "bridge": "turkey",
+   "cf_bridge": "bee",
+   "cue": "Truthahn",
+   "shown": "Truthahn",
+   "cf_shown": "Biene",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Truthahn \u00bb in German? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0003",
+   "family": "TRANS",
+   "scene": "T-0003",
+   "context": "Here is a question from Laura, who is reading a German book.",
+   "cf_context": "Here is a question from Laura, who is reading a German book.",
+   "off_context": "Here is a question from Ivy, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Ente \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Hund \u00bb in German have?",
+   "bridge": "duck",
+   "cf_bridge": "dog",
+   "cue": "Ente",
+   "shown": "Ente",
+   "cf_shown": "Hund",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Ente \u00bb in German? Answer in English.",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0004",
+   "family": "TRANS",
+   "scene": "T-0004",
+   "context": "Here is a question from Frank, who is reading a German book.",
+   "cf_context": "Here is a question from Frank, who is reading a German book.",
+   "off_context": "Here is a question from Emma, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "bridge": "goose",
+   "cf_bridge": "bee",
+   "cue": "Gans",
+   "shown": "Gans",
+   "cf_shown": "Biene",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Gans \u00bb in German? Answer in English.",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0005",
+   "family": "TRANS",
+   "scene": "T-0005",
+   "context": "Here is a question from Noah, who is reading a German book.",
+   "cf_context": "Here is a question from Noah, who is reading a German book.",
+   "off_context": "Here is a question from Leo, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "bridge": "spider",
+   "cf_bridge": "goose",
+   "cue": "Spinne",
+   "shown": "Spinne",
+   "cf_shown": "Gans",
+   "lang": "de",
+   "answer": "8",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Spinne \u00bb in German? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0006",
+   "family": "TRANS",
+   "scene": "T-0006",
+   "context": "Here is a question from Amy, who is reading a German book.",
+   "cf_context": "Here is a question from Amy, who is reading a German book.",
+   "off_context": "Here is a question from Max, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "bridge": "bee",
+   "cf_bridge": "turkey",
+   "cue": "Biene",
+   "shown": "Biene",
+   "cf_shown": "Truthahn",
+   "lang": "de",
+   "answer": "6",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Biene \u00bb in German? Answer in English.",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0007",
+   "family": "TRANS",
+   "scene": "T-0007",
+   "context": "Here is a question from Jack, who is reading a French book.",
+   "cf_context": "Here is a question from Jack, who is reading a French book.",
+   "off_context": "Here is a question from Adam, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab canard \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab cochon \u00bb in French have?",
+   "bridge": "duck",
+   "cf_bridge": "pig",
+   "cue": "canard",
+   "shown": "canard",
+   "cf_shown": "cochon",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab canard \u00bb in French? Answer in English.",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0008",
+   "family": "TRANS",
+   "scene": "T-0008",
+   "context": "Here is a question from Peter, who is reading a German book.",
+   "cf_context": "Here is a question from Peter, who is reading a German book.",
+   "off_context": "Here is a question from Lily, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "bridge": "turkey",
+   "cf_bridge": "lion",
+   "cue": "Truthahn",
+   "shown": "Truthahn",
+   "cf_shown": "L\u00f6we",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Truthahn \u00bb in German? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0009",
+   "family": "TRANS",
+   "scene": "T-0009",
+   "context": "Here is a question from Hugo, who is reading a German book.",
+   "cf_context": "Here is a question from Hugo, who is reading a German book.",
+   "off_context": "Here is a question from Carl, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Katze \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "bridge": "cat",
+   "cf_bridge": "goose",
+   "cue": "Katze",
+   "shown": "Katze",
+   "cf_shown": "Gans",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Katze \u00bb in German? Answer in English.",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0010",
+   "family": "TRANS",
+   "scene": "T-0010",
+   "context": "Here is a question from Lily, who is reading a French book.",
+   "cf_context": "Here is a question from Lily, who is reading a French book.",
+   "off_context": "Here is a question from Iris, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab mouton \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab araign\u00e9e \u00bb in French have?",
+   "bridge": "sheep",
+   "cf_bridge": "spider",
+   "cue": "mouton",
+   "shown": "mouton",
+   "cf_shown": "araign\u00e9e",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab mouton \u00bb in French? Answer in English.",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0011",
+   "family": "TRANS",
+   "scene": "T-0011",
+   "context": "Here is a question from Owen, who is reading a German book.",
+   "cf_context": "Here is a question from Owen, who is reading a German book.",
+   "off_context": "Here is a question from Laura, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "bridge": "goose",
+   "cf_bridge": "pig",
+   "cue": "Gans",
+   "shown": "Gans",
+   "cf_shown": "Schwein",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Gans \u00bb in German? Answer in English.",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0012",
+   "family": "TRANS",
+   "scene": "T-0012",
+   "context": "Here is a question from Eric, who is reading a German book.",
+   "cf_context": "Here is a question from Eric, who is reading a German book.",
+   "off_context": "Here is a question from Grace, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "bridge": "spider",
+   "cf_bridge": "turkey",
+   "cue": "Spinne",
+   "shown": "Spinne",
+   "cf_shown": "Truthahn",
+   "lang": "de",
+   "answer": "8",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Spinne \u00bb in German? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0013",
+   "family": "TRANS",
+   "scene": "T-0013",
+   "context": "Here is a question from Victor, who is reading a French book.",
+   "cf_context": "Here is a question from Victor, who is reading a French book.",
+   "off_context": "Here is a question from Sean, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab poulet \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab souris \u00bb in French have?",
+   "bridge": "chicken",
+   "cf_bridge": "mouse",
+   "cue": "poulet",
+   "shown": "poulet",
+   "cf_shown": "souris",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab poulet \u00bb in French? Answer in English.",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0014",
+   "family": "TRANS",
+   "scene": "T-0014",
+   "context": "Here is a question from Victor, who is reading a German book.",
+   "cf_context": "Here is a question from Victor, who is reading a German book.",
+   "off_context": "Here is a question from Amy, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "bridge": "bee",
+   "cf_bridge": "pig",
+   "cue": "Biene",
+   "shown": "Biene",
+   "cf_shown": "Schwein",
+   "lang": "de",
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Biene \u00bb in German? Answer in English.",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0015",
+   "family": "TRANS",
+   "scene": "T-0015",
+   "context": "Here is a question from Diana, who is reading a German book.",
+   "cf_context": "Here is a question from Diana, who is reading a German book.",
+   "off_context": "Here is a question from Julia, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "bridge": "sheep",
+   "cf_bridge": "turkey",
+   "cue": "Schaf",
+   "shown": "Schaf",
+   "cf_shown": "Truthahn",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schaf \u00bb in German? Answer in English.",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0016",
+   "family": "TRANS",
+   "scene": "T-0016",
+   "context": "Here is a question from James, who is reading a French book.",
+   "cf_context": "Here is a question from James, who is reading a French book.",
+   "off_context": "Here is a question from Paul, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab dinde \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab vache \u00bb in French have?",
+   "bridge": "turkey",
+   "cf_bridge": "cow",
+   "cue": "dinde",
+   "shown": "dinde",
+   "cf_shown": "vache",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab dinde \u00bb in French? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0017",
+   "family": "TRANS",
+   "scene": "T-0017",
+   "context": "Here is a question from Mark, who is reading a German book.",
+   "cf_context": "Here is a question from Mark, who is reading a German book.",
+   "off_context": "Here is a question from Zoe, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "bridge": "spider",
+   "cf_bridge": "bee",
+   "cue": "Spinne",
+   "shown": "Spinne",
+   "cf_shown": "Biene",
+   "lang": "de",
+   "answer": "8",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Spinne \u00bb in German? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0018",
+   "family": "TRANS",
+   "scene": "T-0018",
+   "context": "Here is a question from Oscar, who is reading a French book.",
+   "cf_context": "Here is a question from Oscar, who is reading a French book.",
+   "off_context": "Here is a question from Ivan, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab grenouille \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab araign\u00e9e \u00bb in French have?",
+   "bridge": "frog",
+   "cf_bridge": "spider",
+   "cue": "grenouille",
+   "shown": "grenouille",
+   "cf_shown": "araign\u00e9e",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab grenouille \u00bb in French? Answer in English.",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0019",
+   "family": "TRANS",
+   "scene": "T-0019",
+   "context": "Here is a question from Emma, who is reading a German book.",
+   "cf_context": "Here is a question from Emma, who is reading a German book.",
+   "off_context": "Here is a question from Vera, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "bridge": "pig",
+   "cf_bridge": "spider",
+   "cue": "Schwein",
+   "shown": "Schwein",
+   "cf_shown": "Spinne",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schwein \u00bb in German? Answer in English.",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0020",
+   "family": "TRANS",
+   "scene": "T-0020",
+   "context": "Here is a question from James, who is reading a German book.",
+   "cf_context": "Here is a question from James, who is reading a German book.",
+   "off_context": "Here is a question from Max, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Katze \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "bridge": "cat",
+   "cf_bridge": "spider",
+   "cue": "Katze",
+   "shown": "Katze",
+   "cf_shown": "Spinne",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Katze \u00bb in German? Answer in English.",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0021",
+   "family": "TRANS",
+   "scene": "T-0021",
+   "context": "Here is a question from James, who is reading a French book.",
+   "cf_context": "Here is a question from James, who is reading a French book.",
+   "off_context": "Here is a question from Zoe, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab oie \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab vache \u00bb in French have?",
+   "bridge": "goose",
+   "cf_bridge": "cow",
+   "cue": "oie",
+   "shown": "oie",
+   "cf_shown": "vache",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab oie \u00bb in French? Answer in English.",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0022",
+   "family": "TRANS",
+   "scene": "T-0022",
+   "context": "Here is a question from Kyle, who is reading a German book.",
+   "cf_context": "Here is a question from Kyle, who is reading a German book.",
+   "off_context": "Here is a question from Oscar, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Ente \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Pferd \u00bb in German have?",
+   "bridge": "duck",
+   "cf_bridge": "horse",
+   "cue": "Ente",
+   "shown": "Ente",
+   "cf_shown": "Pferd",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Ente \u00bb in German? Answer in English.",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0023",
+   "family": "TRANS",
+   "scene": "T-0023",
+   "context": "Here is a question from Ryan, who is reading a German book.",
+   "cf_context": "Here is a question from Ryan, who is reading a German book.",
+   "off_context": "Here is a question from Adam, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "bridge": "lion",
+   "cf_bridge": "bee",
+   "cue": "L\u00f6we",
+   "shown": "L\u00f6we",
+   "cf_shown": "Biene",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab L\u00f6we \u00bb in German? Answer in English.",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0024",
+   "family": "TRANS",
+   "scene": "T-0024",
+   "context": "Here is a question from Leo, who is reading a German book.",
+   "cf_context": "Here is a question from Leo, who is reading a German book.",
+   "off_context": "Here is a question from Eve, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "bridge": "turkey",
+   "cf_bridge": "sheep",
+   "cue": "Truthahn",
+   "shown": "Truthahn",
+   "cf_shown": "Schaf",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Truthahn \u00bb in German? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0025",
+   "family": "TRANS",
+   "scene": "T-0025",
+   "context": "Here is a question from Ivy, who is reading a French book.",
+   "cf_context": "Here is a question from Ivy, who is reading a French book.",
+   "off_context": "Here is a question from Finn, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab canard \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab vache \u00bb in French have?",
+   "bridge": "duck",
+   "cf_bridge": "cow",
+   "cue": "canard",
+   "shown": "canard",
+   "cf_shown": "vache",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab canard \u00bb in French? Answer in English.",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0026",
+   "family": "TRANS",
+   "scene": "T-0026",
+   "context": "Here is a question from Liam, who is reading a French book.",
+   "cf_context": "Here is a question from Liam, who is reading a French book.",
+   "off_context": "Here is a question from Fiona, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab vache \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab canard \u00bb in French have?",
+   "bridge": "cow",
+   "cf_bridge": "duck",
+   "cue": "vache",
+   "shown": "vache",
+   "cf_shown": "canard",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab vache \u00bb in French? Answer in English.",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cow have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0027",
+   "family": "TRANS",
+   "scene": "T-0027",
+   "context": "Here is a question from Rose, who is reading a German book.",
+   "cf_context": "Here is a question from Rose, who is reading a German book.",
+   "off_context": "Here is a question from Noah, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "bridge": "sheep",
+   "cf_bridge": "bee",
+   "cue": "Schaf",
+   "shown": "Schaf",
+   "cf_shown": "Biene",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schaf \u00bb in German? Answer in English.",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0028",
+   "family": "TRANS",
+   "scene": "T-0028",
+   "context": "Here is a question from Hugo, who is reading a German book.",
+   "cf_context": "Here is a question from Hugo, who is reading a German book.",
+   "off_context": "Here is a question from Olivia, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "bridge": "turkey",
+   "cf_bridge": "bee",
+   "cue": "Truthahn",
+   "shown": "Truthahn",
+   "cf_shown": "Biene",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Truthahn \u00bb in German? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0029",
+   "family": "TRANS",
+   "scene": "T-0029",
+   "context": "Here is a question from Adam, who is reading a German book.",
+   "cf_context": "Here is a question from Adam, who is reading a German book.",
+   "off_context": "Here is a question from Tom, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "bridge": "goose",
+   "cf_bridge": "pig",
+   "cue": "Gans",
+   "shown": "Gans",
+   "cf_shown": "Schwein",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Gans \u00bb in German? Answer in English.",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0030",
+   "family": "TRANS",
+   "scene": "T-0030",
+   "context": "Here is a question from Henry, who is reading a German book.",
+   "cf_context": "Here is a question from Henry, who is reading a German book.",
+   "off_context": "Here is a question from Zoe, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Katze \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "bridge": "cat",
+   "cf_bridge": "spider",
+   "cue": "Katze",
+   "shown": "Katze",
+   "cf_shown": "Spinne",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Katze \u00bb in German? Answer in English.",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0031",
+   "family": "TRANS",
+   "scene": "T-0031",
+   "context": "Here is a question from Eve, who is reading a German book.",
+   "cf_context": "Here is a question from Eve, who is reading a German book.",
+   "off_context": "Here is a question from Alice, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "bridge": "bee",
+   "cf_bridge": "pig",
+   "cue": "Biene",
+   "shown": "Biene",
+   "cf_shown": "Schwein",
+   "lang": "de",
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Biene \u00bb in German? Answer in English.",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0032",
+   "family": "TRANS",
+   "scene": "T-0032",
+   "context": "Here is a question from Paul, who is reading a German book.",
+   "cf_context": "Here is a question from Paul, who is reading a German book.",
+   "off_context": "Here is a question from Ruby, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "bridge": "pig",
+   "cf_bridge": "goose",
+   "cue": "Schwein",
+   "shown": "Schwein",
+   "cf_shown": "Gans",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schwein \u00bb in German? Answer in English.",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0033",
+   "family": "TRANS",
+   "scene": "T-0033",
+   "context": "Here is a question from Oscar, who is reading a French book.",
+   "cf_context": "Here is a question from Oscar, who is reading a French book.",
+   "off_context": "Here is a question from Owen, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab abeille \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab araign\u00e9e \u00bb in French have?",
+   "bridge": "bee",
+   "cf_bridge": "spider",
+   "cue": "abeille",
+   "shown": "abeille",
+   "cf_shown": "araign\u00e9e",
+   "lang": "fr",
+   "answer": "6",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab abeille \u00bb in French? Answer in English.",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0034",
+   "family": "TRANS",
+   "scene": "T-0034",
+   "context": "Here is a question from Lily, who is reading a French book.",
+   "cf_context": "Here is a question from Lily, who is reading a French book.",
+   "off_context": "Here is a question from Oscar, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab dinde \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab cochon \u00bb in French have?",
+   "bridge": "turkey",
+   "cf_bridge": "pig",
+   "cue": "dinde",
+   "shown": "dinde",
+   "cf_shown": "cochon",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab dinde \u00bb in French? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0035",
+   "family": "TRANS",
+   "scene": "T-0035",
+   "context": "Here is a question from Rose, who is reading a German book.",
+   "cf_context": "Here is a question from Rose, who is reading a German book.",
+   "off_context": "Here is a question from Adam, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "bridge": "spider",
+   "cf_bridge": "lion",
+   "cue": "Spinne",
+   "shown": "Spinne",
+   "cf_shown": "L\u00f6we",
+   "lang": "de",
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Spinne \u00bb in German? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0036",
+   "family": "TRANS",
+   "scene": "T-0036",
+   "context": "Here is a question from Eve, who is reading a German book.",
+   "cf_context": "Here is a question from Eve, who is reading a German book.",
+   "off_context": "Here is a question from Julia, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Hund \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Ente \u00bb in German have?",
+   "bridge": "dog",
+   "cf_bridge": "duck",
+   "cue": "Hund",
+   "shown": "Hund",
+   "cf_shown": "Ente",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Hund \u00bb in German? Answer in English.",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0037",
+   "family": "TRANS",
+   "scene": "T-0037",
+   "context": "Here is a question from Dan, who is reading a German book.",
+   "cf_context": "Here is a question from Dan, who is reading a German book.",
+   "off_context": "Here is a question from Kate, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "bridge": "turkey",
+   "cf_bridge": "lion",
+   "cue": "Truthahn",
+   "shown": "Truthahn",
+   "cf_shown": "L\u00f6we",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Truthahn \u00bb in German? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0038",
+   "family": "TRANS",
+   "scene": "T-0038",
+   "context": "Here is a question from Max, who is reading a French book.",
+   "cf_context": "Here is a question from Max, who is reading a French book.",
+   "off_context": "Here is a question from Peter, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab canard \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab vache \u00bb in French have?",
+   "bridge": "duck",
+   "cf_bridge": "cow",
+   "cue": "canard",
+   "shown": "canard",
+   "cf_shown": "vache",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab canard \u00bb in French? Answer in English.",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0039",
+   "family": "TRANS",
+   "scene": "T-0039",
+   "context": "Here is a question from Ben, who is reading a German book.",
+   "cf_context": "Here is a question from Ben, who is reading a German book.",
+   "off_context": "Here is a question from Clara, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "bridge": "bee",
+   "cf_bridge": "lion",
+   "cue": "Biene",
+   "shown": "Biene",
+   "cf_shown": "L\u00f6we",
+   "lang": "de",
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Biene \u00bb in German? Answer in English.",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0040",
+   "family": "TRANS",
+   "scene": "T-0040",
+   "context": "Here is a question from Lucy, who is reading a German book.",
+   "cf_context": "Here is a question from Lucy, who is reading a German book.",
+   "off_context": "Here is a question from Beth, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "bridge": "goose",
+   "cf_bridge": "pig",
+   "cue": "Gans",
+   "shown": "Gans",
+   "cf_shown": "Schwein",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Gans \u00bb in German? Answer in English.",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0041",
+   "family": "TRANS",
+   "scene": "T-0041",
+   "context": "Here is a question from Dan, who is reading a French book.",
+   "cf_context": "Here is a question from Dan, who is reading a French book.",
+   "off_context": "Here is a question from Amy, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab araign\u00e9e \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab mouton \u00bb in French have?",
+   "bridge": "spider",
+   "cf_bridge": "sheep",
+   "cue": "araign\u00e9e",
+   "shown": "araign\u00e9e",
+   "cf_shown": "mouton",
+   "lang": "fr",
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab araign\u00e9e \u00bb in French? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0042",
+   "family": "TRANS",
+   "scene": "T-0042",
+   "context": "Here is a question from Luke, who is reading a German book.",
+   "cf_context": "Here is a question from Luke, who is reading a German book.",
+   "off_context": "Here is a question from Peter, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "bridge": "bee",
+   "cf_bridge": "turkey",
+   "cue": "Biene",
+   "shown": "Biene",
+   "cf_shown": "Truthahn",
+   "lang": "de",
+   "answer": "6",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Biene \u00bb in German? Answer in English.",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0043",
+   "family": "TRANS",
+   "scene": "T-0043",
+   "context": "Here is a question from Dan, who is reading a French book.",
+   "cf_context": "Here is a question from Dan, who is reading a French book.",
+   "off_context": "Here is a question from Victor, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab canard \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab vache \u00bb in French have?",
+   "bridge": "duck",
+   "cf_bridge": "cow",
+   "cue": "canard",
+   "shown": "canard",
+   "cf_shown": "vache",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab canard \u00bb in French? Answer in English.",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0044",
+   "family": "TRANS",
+   "scene": "T-0044",
+   "context": "Here is a question from Diana, who is reading a French book.",
+   "cf_context": "Here is a question from Diana, who is reading a French book.",
+   "off_context": "Here is a question from Maria, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab cheval \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab poulet \u00bb in French have?",
+   "bridge": "horse",
+   "cf_bridge": "chicken",
+   "cue": "cheval",
+   "shown": "cheval",
+   "cf_shown": "poulet",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab cheval \u00bb in French? Answer in English.",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0045",
+   "family": "TRANS",
+   "scene": "T-0045",
+   "context": "Here is a question from Mia, who is reading a French book.",
+   "cf_context": "Here is a question from Mia, who is reading a French book.",
+   "off_context": "Here is a question from Frank, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab cochon \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab canard \u00bb in French have?",
+   "bridge": "pig",
+   "cf_bridge": "duck",
+   "cue": "cochon",
+   "shown": "cochon",
+   "cf_shown": "canard",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab cochon \u00bb in French? Answer in English.",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0046",
+   "family": "TRANS",
+   "scene": "T-0046",
+   "context": "Here is a question from Sara, who is reading a French book.",
+   "cf_context": "Here is a question from Sara, who is reading a French book.",
+   "off_context": "Here is a question from Hugo, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab chien \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab poulet \u00bb in French have?",
+   "bridge": "dog",
+   "cf_bridge": "chicken",
+   "cue": "chien",
+   "shown": "chien",
+   "cf_shown": "poulet",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab chien \u00bb in French? Answer in English.",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0047",
+   "family": "TRANS",
+   "scene": "T-0047",
+   "context": "Here is a question from Anna, who is reading a German book.",
+   "cf_context": "Here is a question from Anna, who is reading a German book.",
+   "off_context": "Here is a question from Hugo, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "bridge": "sheep",
+   "cf_bridge": "turkey",
+   "cue": "Schaf",
+   "shown": "Schaf",
+   "cf_shown": "Truthahn",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schaf \u00bb in German? Answer in English.",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0048",
+   "family": "TRANS",
+   "scene": "T-0048",
+   "context": "Here is a question from Sean, who is reading a German book.",
+   "cf_context": "Here is a question from Sean, who is reading a German book.",
+   "off_context": "Here is a question from Sara, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "bridge": "turkey",
+   "cf_bridge": "spider",
+   "cue": "Truthahn",
+   "shown": "Truthahn",
+   "cf_shown": "Spinne",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Truthahn \u00bb in German? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0049",
+   "family": "TRANS",
+   "scene": "T-0049",
+   "context": "Here is a question from Will, who is reading a German book.",
+   "cf_context": "Here is a question from Will, who is reading a German book.",
+   "off_context": "Here is a question from Dan, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "bridge": "turkey",
+   "cf_bridge": "bee",
+   "cue": "Truthahn",
+   "shown": "Truthahn",
+   "cf_shown": "Biene",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Truthahn \u00bb in German? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0050",
+   "family": "TRANS",
+   "scene": "T-0050",
+   "context": "Here is a question from Tara, who is reading a German book.",
+   "cf_context": "Here is a question from Tara, who is reading a German book.",
+   "off_context": "Here is a question from Peter, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "bridge": "chicken",
+   "cf_bridge": "sheep",
+   "cue": "Huhn",
+   "shown": "Huhn",
+   "cf_shown": "Schaf",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Huhn \u00bb in German? Answer in English.",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0051",
+   "family": "TRANS",
+   "scene": "T-0051",
+   "context": "Here is a question from Dan, who is reading a German book.",
+   "cf_context": "Here is a question from Dan, who is reading a German book.",
+   "off_context": "Here is a question from Eve, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "bridge": "lion",
+   "cf_bridge": "goose",
+   "cue": "L\u00f6we",
+   "shown": "L\u00f6we",
+   "cf_shown": "Gans",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab L\u00f6we \u00bb in German? Answer in English.",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0052",
+   "family": "TRANS",
+   "scene": "T-0052",
+   "context": "Here is a question from Hugo, who is reading a German book.",
+   "cf_context": "Here is a question from Hugo, who is reading a German book.",
+   "off_context": "Here is a question from Tara, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Hund \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Ente \u00bb in German have?",
+   "bridge": "dog",
+   "cf_bridge": "duck",
+   "cue": "Hund",
+   "shown": "Hund",
+   "cf_shown": "Ente",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Hund \u00bb in German? Answer in English.",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0053",
+   "family": "TRANS",
+   "scene": "T-0053",
+   "context": "Here is a question from Julia, who is reading a German book.",
+   "cf_context": "Here is a question from Julia, who is reading a German book.",
+   "off_context": "Here is a question from Ivan, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "bridge": "bee",
+   "cf_bridge": "chicken",
+   "cue": "Biene",
+   "shown": "Biene",
+   "cf_shown": "Huhn",
+   "lang": "de",
+   "answer": "6",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Biene \u00bb in German? Answer in English.",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0054",
+   "family": "TRANS",
+   "scene": "T-0054",
+   "context": "Here is a question from Vera, who is reading a German book.",
+   "cf_context": "Here is a question from Vera, who is reading a German book.",
+   "off_context": "Here is a question from Leo, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "bridge": "turkey",
+   "cf_bridge": "pig",
+   "cue": "Truthahn",
+   "shown": "Truthahn",
+   "cf_shown": "Schwein",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Truthahn \u00bb in German? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0055",
+   "family": "TRANS",
+   "scene": "T-0055",
+   "context": "Here is a question from Laura, who is reading a German book.",
+   "cf_context": "Here is a question from Laura, who is reading a German book.",
+   "off_context": "Here is a question from Mark, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Kuh \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Ente \u00bb in German have?",
+   "bridge": "cow",
+   "cf_bridge": "duck",
+   "cue": "Kuh",
+   "shown": "Kuh",
+   "cf_shown": "Ente",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Kuh \u00bb in German? Answer in English.",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cow have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0056",
+   "family": "TRANS",
+   "scene": "T-0056",
+   "context": "Here is a question from Sam, who is reading a German book.",
+   "cf_context": "Here is a question from Sam, who is reading a German book.",
+   "off_context": "Here is a question from Carl, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "bridge": "turkey",
+   "cf_bridge": "lion",
+   "cue": "Truthahn",
+   "shown": "Truthahn",
+   "cf_shown": "L\u00f6we",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Truthahn \u00bb in German? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0057",
+   "family": "TRANS",
+   "scene": "T-0057",
+   "context": "Here is a question from Frank, who is reading a German book.",
+   "cf_context": "Here is a question from Frank, who is reading a German book.",
+   "off_context": "Here is a question from Vera, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "bridge": "bee",
+   "cf_bridge": "turkey",
+   "cue": "Biene",
+   "shown": "Biene",
+   "cf_shown": "Truthahn",
+   "lang": "de",
+   "answer": "6",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Biene \u00bb in German? Answer in English.",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0058",
+   "family": "TRANS",
+   "scene": "T-0058",
+   "context": "Here is a question from Olivia, who is reading a German book.",
+   "cf_context": "Here is a question from Olivia, who is reading a German book.",
+   "off_context": "Here is a question from Leo, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "bridge": "turkey",
+   "cf_bridge": "spider",
+   "cue": "Truthahn",
+   "shown": "Truthahn",
+   "cf_shown": "Spinne",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Truthahn \u00bb in German? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0059",
+   "family": "TRANS",
+   "scene": "T-0059",
+   "context": "Here is a question from Lucy, who is reading a French book.",
+   "cf_context": "Here is a question from Lucy, who is reading a French book.",
+   "off_context": "Here is a question from Grace, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab araign\u00e9e \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab abeille \u00bb in French have?",
+   "bridge": "spider",
+   "cf_bridge": "bee",
+   "cue": "araign\u00e9e",
+   "shown": "araign\u00e9e",
+   "cf_shown": "abeille",
+   "lang": "fr",
+   "answer": "8",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab araign\u00e9e \u00bb in French? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0060",
+   "family": "TRANS",
+   "scene": "T-0060",
+   "context": "Here is a question from Ivy, who is reading a German book.",
+   "cf_context": "Here is a question from Ivy, who is reading a German book.",
+   "off_context": "Here is a question from Grace, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "bridge": "spider",
+   "cf_bridge": "pig",
+   "cue": "Spinne",
+   "shown": "Spinne",
+   "cf_shown": "Schwein",
+   "lang": "de",
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Spinne \u00bb in German? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0061",
+   "family": "TRANS",
+   "scene": "T-0061",
+   "context": "Here is a question from James, who is reading a German book.",
+   "cf_context": "Here is a question from James, who is reading a German book.",
+   "off_context": "Here is a question from Sara, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "bridge": "pig",
+   "cf_bridge": "spider",
+   "cue": "Schwein",
+   "shown": "Schwein",
+   "cf_shown": "Spinne",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schwein \u00bb in German? Answer in English.",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0062",
+   "family": "TRANS",
+   "scene": "T-0062",
+   "context": "Here is a question from Jack, who is reading a German book.",
+   "cf_context": "Here is a question from Jack, who is reading a German book.",
+   "off_context": "Here is a question from Adam, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "bridge": "sheep",
+   "cf_bridge": "bee",
+   "cue": "Schaf",
+   "shown": "Schaf",
+   "cf_shown": "Biene",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schaf \u00bb in German? Answer in English.",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0063",
+   "family": "TRANS",
+   "scene": "T-0063",
+   "context": "Here is a question from Luke, who is reading a German book.",
+   "cf_context": "Here is a question from Luke, who is reading a German book.",
+   "off_context": "Here is a question from Noah, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "bridge": "spider",
+   "cf_bridge": "bee",
+   "cue": "Spinne",
+   "shown": "Spinne",
+   "cf_shown": "Biene",
+   "lang": "de",
+   "answer": "8",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Spinne \u00bb in German? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0064",
+   "family": "TRANS",
+   "scene": "T-0064",
+   "context": "Here is a question from Kate, who is reading a German book.",
+   "cf_context": "Here is a question from Kate, who is reading a German book.",
+   "off_context": "Here is a question from Nina, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "bridge": "spider",
+   "cf_bridge": "lion",
+   "cue": "Spinne",
+   "shown": "Spinne",
+   "cf_shown": "L\u00f6we",
+   "lang": "de",
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Spinne \u00bb in German? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0065",
+   "family": "TRANS",
+   "scene": "T-0065",
+   "context": "Here is a question from Hugo, who is reading a German book.",
+   "cf_context": "Here is a question from Hugo, who is reading a German book.",
+   "off_context": "Here is a question from Sean, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "bridge": "lion",
+   "cf_bridge": "bee",
+   "cue": "L\u00f6we",
+   "shown": "L\u00f6we",
+   "cf_shown": "Biene",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab L\u00f6we \u00bb in German? Answer in English.",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0066",
+   "family": "TRANS",
+   "scene": "T-0066",
+   "context": "Here is a question from Clara, who is reading a German book.",
+   "cf_context": "Here is a question from Clara, who is reading a German book.",
+   "off_context": "Here is a question from Maria, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Katze \u00bb in German have?",
+   "bridge": "bee",
+   "cf_bridge": "cat",
+   "cue": "Biene",
+   "shown": "Biene",
+   "cf_shown": "Katze",
+   "lang": "de",
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Biene \u00bb in German? Answer in English.",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0067",
+   "family": "TRANS",
+   "scene": "T-0067",
+   "context": "Here is a question from Rose, who is reading a German book.",
+   "cf_context": "Here is a question from Rose, who is reading a German book.",
+   "off_context": "Here is a question from Mia, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "bridge": "goose",
+   "cf_bridge": "spider",
+   "cue": "Gans",
+   "shown": "Gans",
+   "cf_shown": "Spinne",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Gans \u00bb in German? Answer in English.",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0068",
+   "family": "TRANS",
+   "scene": "T-0068",
+   "context": "Here is a question from Peter, who is reading a German book.",
+   "cf_context": "Here is a question from Peter, who is reading a German book.",
+   "off_context": "Here is a question from Ella, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "bridge": "bee",
+   "cf_bridge": "chicken",
+   "cue": "Biene",
+   "shown": "Biene",
+   "cf_shown": "Huhn",
+   "lang": "de",
+   "answer": "6",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Biene \u00bb in German? Answer in English.",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0069",
+   "family": "TRANS",
+   "scene": "T-0069",
+   "context": "Here is a question from Noah, who is reading a German book.",
+   "cf_context": "Here is a question from Noah, who is reading a German book.",
+   "off_context": "Here is a question from Oscar, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "bridge": "turkey",
+   "cf_bridge": "spider",
+   "cue": "Truthahn",
+   "shown": "Truthahn",
+   "cf_shown": "Spinne",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Truthahn \u00bb in German? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0070",
+   "family": "TRANS",
+   "scene": "T-0070",
+   "context": "Here is a question from Owen, who is reading a French book.",
+   "cf_context": "Here is a question from Owen, who is reading a French book.",
+   "off_context": "Here is a question from Frank, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab poulet \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab souris \u00bb in French have?",
+   "bridge": "chicken",
+   "cf_bridge": "mouse",
+   "cue": "poulet",
+   "shown": "poulet",
+   "cf_shown": "souris",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab poulet \u00bb in French? Answer in English.",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0071",
+   "family": "TRANS",
+   "scene": "T-0071",
+   "context": "Here is a question from David, who is reading a German book.",
+   "cf_context": "Here is a question from David, who is reading a German book.",
+   "off_context": "Here is a question from Leo, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Katze \u00bb in German have?",
+   "bridge": "spider",
+   "cf_bridge": "cat",
+   "cue": "Spinne",
+   "shown": "Spinne",
+   "cf_shown": "Katze",
+   "lang": "de",
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Spinne \u00bb in German? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0072",
+   "family": "TRANS",
+   "scene": "T-0072",
+   "context": "Here is a question from Alice, who is reading a German book.",
+   "cf_context": "Here is a question from Alice, who is reading a German book.",
+   "off_context": "Here is a question from Julia, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "bridge": "lion",
+   "cf_bridge": "goose",
+   "cue": "L\u00f6we",
+   "shown": "L\u00f6we",
+   "cf_shown": "Gans",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab L\u00f6we \u00bb in German? Answer in English.",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0073",
+   "family": "TRANS",
+   "scene": "T-0073",
+   "context": "Here is a question from Paul, who is reading a German book.",
+   "cf_context": "Here is a question from Paul, who is reading a German book.",
+   "off_context": "Here is a question from Beth, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Katze \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "bridge": "cat",
+   "cf_bridge": "goose",
+   "cue": "Katze",
+   "shown": "Katze",
+   "cf_shown": "Gans",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Katze \u00bb in German? Answer in English.",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0074",
+   "family": "TRANS",
+   "scene": "T-0074",
+   "context": "Here is a question from Fiona, who is reading a German book.",
+   "cf_context": "Here is a question from Fiona, who is reading a German book.",
+   "off_context": "Here is a question from Carl, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "bridge": "lion",
+   "cf_bridge": "spider",
+   "cue": "L\u00f6we",
+   "shown": "L\u00f6we",
+   "cf_shown": "Spinne",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab L\u00f6we \u00bb in German? Answer in English.",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0075",
+   "family": "TRANS",
+   "scene": "T-0075",
+   "context": "Here is a question from Noah, who is reading a German book.",
+   "cf_context": "Here is a question from Noah, who is reading a German book.",
+   "off_context": "Here is a question from Paul, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Kuh \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Ente \u00bb in German have?",
+   "bridge": "cow",
+   "cf_bridge": "duck",
+   "cue": "Kuh",
+   "shown": "Kuh",
+   "cf_shown": "Ente",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Kuh \u00bb in German? Answer in English.",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cow have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0076",
+   "family": "TRANS",
+   "scene": "T-0076",
+   "context": "Here is a question from Ivan, who is reading a German book.",
+   "cf_context": "Here is a question from Ivan, who is reading a German book.",
+   "off_context": "Here is a question from Clara, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "bridge": "goose",
+   "cf_bridge": "pig",
+   "cue": "Gans",
+   "shown": "Gans",
+   "cf_shown": "Schwein",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Gans \u00bb in German? Answer in English.",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0077",
+   "family": "TRANS",
+   "scene": "T-0077",
+   "context": "Here is a question from Jack, who is reading a French book.",
+   "cf_context": "Here is a question from Jack, who is reading a French book.",
+   "off_context": "Here is a question from Sara, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab poulet \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab souris \u00bb in French have?",
+   "bridge": "chicken",
+   "cf_bridge": "mouse",
+   "cue": "poulet",
+   "shown": "poulet",
+   "cf_shown": "souris",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab poulet \u00bb in French? Answer in English.",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0078",
+   "family": "TRANS",
+   "scene": "T-0078",
+   "context": "Here is a question from Henry, who is reading a German book.",
+   "cf_context": "Here is a question from Henry, who is reading a German book.",
+   "off_context": "Here is a question from Liam, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Katze \u00bb in German have?",
+   "bridge": "goose",
+   "cf_bridge": "cat",
+   "cue": "Gans",
+   "shown": "Gans",
+   "cf_shown": "Katze",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Gans \u00bb in German? Answer in English.",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0079",
+   "family": "TRANS",
+   "scene": "T-0079",
+   "context": "Here is a question from Lily, who is reading a German book.",
+   "cf_context": "Here is a question from Lily, who is reading a German book.",
+   "off_context": "Here is a question from James, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "bridge": "sheep",
+   "cf_bridge": "spider",
+   "cue": "Schaf",
+   "shown": "Schaf",
+   "cf_shown": "Spinne",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schaf \u00bb in German? Answer in English.",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0080",
+   "family": "TRANS",
+   "scene": "T-0080",
+   "context": "Here is a question from Alice, who is reading a French book.",
+   "cf_context": "Here is a question from Alice, who is reading a French book.",
+   "off_context": "Here is a question from Diana, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab chat \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab poulet \u00bb in French have?",
+   "bridge": "cat",
+   "cf_bridge": "chicken",
+   "cue": "chat",
+   "shown": "chat",
+   "cf_shown": "poulet",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab chat \u00bb in French? Answer in English.",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0081",
+   "family": "TRANS",
+   "scene": "T-0081",
+   "context": "Here is a question from Ben, who is reading a German book.",
+   "cf_context": "Here is a question from Ben, who is reading a German book.",
+   "off_context": "Here is a question from Sara, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "bridge": "chicken",
+   "cf_bridge": "pig",
+   "cue": "Huhn",
+   "shown": "Huhn",
+   "cf_shown": "Schwein",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Huhn \u00bb in German? Answer in English.",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0082",
+   "family": "TRANS",
+   "scene": "T-0082",
+   "context": "Here is a question from Fiona, who is reading a German book.",
+   "cf_context": "Here is a question from Fiona, who is reading a German book.",
+   "off_context": "Here is a question from Clara, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Ente \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Kuh \u00bb in German have?",
+   "bridge": "duck",
+   "cf_bridge": "cow",
+   "cue": "Ente",
+   "shown": "Ente",
+   "cf_shown": "Kuh",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Ente \u00bb in German? Answer in English.",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0083",
+   "family": "TRANS",
+   "scene": "T-0083",
+   "context": "Here is a question from Adam, who is reading a French book.",
+   "cf_context": "Here is a question from Adam, who is reading a French book.",
+   "off_context": "Here is a question from Ella, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab dinde \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab vache \u00bb in French have?",
+   "bridge": "turkey",
+   "cf_bridge": "cow",
+   "cue": "dinde",
+   "shown": "dinde",
+   "cf_shown": "vache",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab dinde \u00bb in French? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0084",
+   "family": "TRANS",
+   "scene": "T-0084",
+   "context": "Here is a question from Anna, who is reading a French book.",
+   "cf_context": "Here is a question from Anna, who is reading a French book.",
+   "off_context": "Here is a question from Maria, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab dinde \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab vache \u00bb in French have?",
+   "bridge": "turkey",
+   "cf_bridge": "cow",
+   "cue": "dinde",
+   "shown": "dinde",
+   "cf_shown": "vache",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab dinde \u00bb in French? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0085",
+   "family": "TRANS",
+   "scene": "T-0085",
+   "context": "Here is a question from Fiona, who is reading a German book.",
+   "cf_context": "Here is a question from Fiona, who is reading a German book.",
+   "off_context": "Here is a question from Laura, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "bridge": "pig",
+   "cf_bridge": "chicken",
+   "cue": "Schwein",
+   "shown": "Schwein",
+   "cf_shown": "Huhn",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schwein \u00bb in German? Answer in English.",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0086",
+   "family": "TRANS",
+   "scene": "T-0086",
+   "context": "Here is a question from Hugo, who is reading a German book.",
+   "cf_context": "Here is a question from Hugo, who is reading a German book.",
+   "off_context": "Here is a question from Paul, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "bridge": "pig",
+   "cf_bridge": "chicken",
+   "cue": "Schwein",
+   "shown": "Schwein",
+   "cf_shown": "Huhn",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schwein \u00bb in German? Answer in English.",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0087",
+   "family": "TRANS",
+   "scene": "T-0087",
+   "context": "Here is a question from Victor, who is reading a French book.",
+   "cf_context": "Here is a question from Victor, who is reading a French book.",
+   "off_context": "Here is a question from Mark, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab cheval \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab poulet \u00bb in French have?",
+   "bridge": "horse",
+   "cf_bridge": "chicken",
+   "cue": "cheval",
+   "shown": "cheval",
+   "cf_shown": "poulet",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab cheval \u00bb in French? Answer in English.",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0088",
+   "family": "TRANS",
+   "scene": "T-0088",
+   "context": "Here is a question from Eve, who is reading a German book.",
+   "cf_context": "Here is a question from Eve, who is reading a German book.",
+   "off_context": "Here is a question from Noah, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "bridge": "spider",
+   "cf_bridge": "chicken",
+   "cue": "Spinne",
+   "shown": "Spinne",
+   "cf_shown": "Huhn",
+   "lang": "de",
+   "answer": "8",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Spinne \u00bb in German? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0089",
+   "family": "TRANS",
+   "scene": "T-0089",
+   "context": "Here is a question from Ella, who is reading a German book.",
+   "cf_context": "Here is a question from Ella, who is reading a German book.",
+   "off_context": "Here is a question from Leo, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Pferd \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Ente \u00bb in German have?",
+   "bridge": "horse",
+   "cf_bridge": "duck",
+   "cue": "Pferd",
+   "shown": "Pferd",
+   "cf_shown": "Ente",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Pferd \u00bb in German? Answer in English.",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0090",
+   "family": "TRANS",
+   "scene": "T-0090",
+   "context": "Here is a question from Mia, who is reading a German book.",
+   "cf_context": "Here is a question from Mia, who is reading a German book.",
+   "off_context": "Here is a question from Tara, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "bridge": "sheep",
+   "cf_bridge": "bee",
+   "cue": "Schaf",
+   "shown": "Schaf",
+   "cf_shown": "Biene",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schaf \u00bb in German? Answer in English.",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0091",
+   "family": "TRANS",
+   "scene": "T-0091",
+   "context": "Here is a question from Eve, who is reading a French book.",
+   "cf_context": "Here is a question from Eve, who is reading a French book.",
+   "off_context": "Here is a question from Mia, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab poulet \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab chat \u00bb in French have?",
+   "bridge": "chicken",
+   "cf_bridge": "cat",
+   "cue": "poulet",
+   "shown": "poulet",
+   "cf_shown": "chat",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab poulet \u00bb in French? Answer in English.",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0092",
+   "family": "TRANS",
+   "scene": "T-0092",
+   "context": "Here is a question from Olivia, who is reading a German book.",
+   "cf_context": "Here is a question from Olivia, who is reading a German book.",
+   "off_context": "Here is a question from Sara, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "bridge": "spider",
+   "cf_bridge": "goose",
+   "cue": "Spinne",
+   "shown": "Spinne",
+   "cf_shown": "Gans",
+   "lang": "de",
+   "answer": "8",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Spinne \u00bb in German? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0093",
+   "family": "TRANS",
+   "scene": "T-0093",
+   "context": "Here is a question from Zoe, who is reading a German book.",
+   "cf_context": "Here is a question from Zoe, who is reading a German book.",
+   "off_context": "Here is a question from Diana, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "bridge": "spider",
+   "cf_bridge": "sheep",
+   "cue": "Spinne",
+   "shown": "Spinne",
+   "cf_shown": "Schaf",
+   "lang": "de",
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Spinne \u00bb in German? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0094",
+   "family": "TRANS",
+   "scene": "T-0094",
+   "context": "Here is a question from Victor, who is reading a German book.",
+   "cf_context": "Here is a question from Victor, who is reading a German book.",
+   "off_context": "Here is a question from Diana, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "bridge": "turkey",
+   "cf_bridge": "sheep",
+   "cue": "Truthahn",
+   "shown": "Truthahn",
+   "cf_shown": "Schaf",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Truthahn \u00bb in German? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0095",
+   "family": "TRANS",
+   "scene": "T-0095",
+   "context": "Here is a question from Tom, who is reading a German book.",
+   "cf_context": "Here is a question from Tom, who is reading a German book.",
+   "off_context": "Here is a question from Lucy, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "bridge": "goose",
+   "cf_bridge": "sheep",
+   "cue": "Gans",
+   "shown": "Gans",
+   "cf_shown": "Schaf",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Gans \u00bb in German? Answer in English.",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0096",
+   "family": "TRANS",
+   "scene": "T-0096",
+   "context": "Here is a question from Alice, who is reading a German book.",
+   "cf_context": "Here is a question from Alice, who is reading a German book.",
+   "off_context": "Here is a question from Ryan, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "bridge": "sheep",
+   "cf_bridge": "chicken",
+   "cue": "Schaf",
+   "shown": "Schaf",
+   "cf_shown": "Huhn",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schaf \u00bb in German? Answer in English.",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0097",
+   "family": "TRANS",
+   "scene": "T-0097",
+   "context": "Here is a question from Kate, who is reading a German book.",
+   "cf_context": "Here is a question from Kate, who is reading a German book.",
+   "off_context": "Here is a question from Maria, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "bridge": "turkey",
+   "cf_bridge": "bee",
+   "cue": "Truthahn",
+   "shown": "Truthahn",
+   "cf_shown": "Biene",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Truthahn \u00bb in German? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0098",
+   "family": "TRANS",
+   "scene": "T-0098",
+   "context": "Here is a question from Sara, who is reading a German book.",
+   "cf_context": "Here is a question from Sara, who is reading a German book.",
+   "off_context": "Here is a question from Leo, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "bridge": "spider",
+   "cf_bridge": "sheep",
+   "cue": "Spinne",
+   "shown": "Spinne",
+   "cf_shown": "Schaf",
+   "lang": "de",
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Spinne \u00bb in German? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0099",
+   "family": "TRANS",
+   "scene": "T-0099",
+   "context": "Here is a question from Will, who is reading a German book.",
+   "cf_context": "Here is a question from Will, who is reading a German book.",
+   "off_context": "Here is a question from Zoe, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "bridge": "pig",
+   "cf_bridge": "turkey",
+   "cue": "Schwein",
+   "shown": "Schwein",
+   "cf_shown": "Truthahn",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schwein \u00bb in German? Answer in English.",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0100",
+   "family": "TRANS",
+   "scene": "T-0100",
+   "context": "Here is a question from Frank, who is reading a German book.",
+   "cf_context": "Here is a question from Frank, who is reading a German book.",
+   "off_context": "Here is a question from Kyle, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "bridge": "chicken",
+   "cf_bridge": "bee",
+   "cue": "Huhn",
+   "shown": "Huhn",
+   "cf_shown": "Biene",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Huhn \u00bb in German? Answer in English.",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0101",
+   "family": "TRANS",
+   "scene": "T-0101",
+   "context": "Here is a question from Adam, who is reading a German book.",
+   "cf_context": "Here is a question from Adam, who is reading a German book.",
+   "off_context": "Here is a question from Finn, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "bridge": "bee",
+   "cf_bridge": "pig",
+   "cue": "Biene",
+   "shown": "Biene",
+   "cf_shown": "Schwein",
+   "lang": "de",
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Biene \u00bb in German? Answer in English.",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0102",
+   "family": "TRANS",
+   "scene": "T-0102",
+   "context": "Here is a question from Leo, who is reading a German book.",
+   "cf_context": "Here is a question from Leo, who is reading a German book.",
+   "off_context": "Here is a question from Ella, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "bridge": "sheep",
+   "cf_bridge": "bee",
+   "cue": "Schaf",
+   "shown": "Schaf",
+   "cf_shown": "Biene",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schaf \u00bb in German? Answer in English.",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0103",
+   "family": "TRANS",
+   "scene": "T-0103",
+   "context": "Here is a question from Ryan, who is reading a German book.",
+   "cf_context": "Here is a question from Ryan, who is reading a German book.",
+   "off_context": "Here is a question from Hugo, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "bridge": "sheep",
+   "cf_bridge": "chicken",
+   "cue": "Schaf",
+   "shown": "Schaf",
+   "cf_shown": "Huhn",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schaf \u00bb in German? Answer in English.",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0104",
+   "family": "TRANS",
+   "scene": "T-0104",
+   "context": "Here is a question from Hugo, who is reading a French book.",
+   "cf_context": "Here is a question from Hugo, who is reading a French book.",
+   "off_context": "Here is a question from Mia, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab dinde \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab cochon \u00bb in French have?",
+   "bridge": "turkey",
+   "cf_bridge": "pig",
+   "cue": "dinde",
+   "shown": "dinde",
+   "cf_shown": "cochon",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab dinde \u00bb in French? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0105",
+   "family": "TRANS",
+   "scene": "T-0105",
+   "context": "Here is a question from Diana, who is reading a French book.",
+   "cf_context": "Here is a question from Diana, who is reading a French book.",
+   "off_context": "Here is a question from Olivia, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab mouton \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab abeille \u00bb in French have?",
+   "bridge": "sheep",
+   "cf_bridge": "bee",
+   "cue": "mouton",
+   "shown": "mouton",
+   "cf_shown": "abeille",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab mouton \u00bb in French? Answer in English.",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0106",
+   "family": "TRANS",
+   "scene": "T-0106",
+   "context": "Here is a question from Sam, who is reading a French book.",
+   "cf_context": "Here is a question from Sam, who is reading a French book.",
+   "off_context": "Here is a question from Nina, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab canard \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab vache \u00bb in French have?",
+   "bridge": "duck",
+   "cf_bridge": "cow",
+   "cue": "canard",
+   "shown": "canard",
+   "cf_shown": "vache",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab canard \u00bb in French? Answer in English.",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0107",
+   "family": "TRANS",
+   "scene": "T-0107",
+   "context": "Here is a question from Ivan, who is reading a German book.",
+   "cf_context": "Here is a question from Ivan, who is reading a German book.",
+   "off_context": "Here is a question from Kyle, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "bridge": "bee",
+   "cf_bridge": "chicken",
+   "cue": "Biene",
+   "shown": "Biene",
+   "cf_shown": "Huhn",
+   "lang": "de",
+   "answer": "6",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Biene \u00bb in German? Answer in English.",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0108",
+   "family": "TRANS",
+   "scene": "T-0108",
+   "context": "Here is a question from Paul, who is reading a German book.",
+   "cf_context": "Here is a question from Paul, who is reading a German book.",
+   "off_context": "Here is a question from Leo, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "bridge": "chicken",
+   "cf_bridge": "lion",
+   "cue": "Huhn",
+   "shown": "Huhn",
+   "cf_shown": "L\u00f6we",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Huhn \u00bb in German? Answer in English.",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0109",
+   "family": "TRANS",
+   "scene": "T-0109",
+   "context": "Here is a question from Nina, who is reading a German book.",
+   "cf_context": "Here is a question from Nina, who is reading a German book.",
+   "off_context": "Here is a question from Lucy, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "bridge": "sheep",
+   "cf_bridge": "goose",
+   "cue": "Schaf",
+   "shown": "Schaf",
+   "cf_shown": "Gans",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schaf \u00bb in German? Answer in English.",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0110",
+   "family": "TRANS",
+   "scene": "T-0110",
+   "context": "Here is a question from Will, who is reading a French book.",
+   "cf_context": "Here is a question from Will, who is reading a French book.",
+   "off_context": "Here is a question from Julia, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab araign\u00e9e \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab mouton \u00bb in French have?",
+   "bridge": "spider",
+   "cf_bridge": "sheep",
+   "cue": "araign\u00e9e",
+   "shown": "araign\u00e9e",
+   "cf_shown": "mouton",
+   "lang": "fr",
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab araign\u00e9e \u00bb in French? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0111",
+   "family": "TRANS",
+   "scene": "T-0111",
+   "context": "Here is a question from Clara, who is reading a French book.",
+   "cf_context": "Here is a question from Clara, who is reading a French book.",
+   "off_context": "Here is a question from Eve, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab loup \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab canard \u00bb in French have?",
+   "bridge": "wolf",
+   "cf_bridge": "duck",
+   "cue": "loup",
+   "shown": "loup",
+   "cf_shown": "canard",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab loup \u00bb in French? Answer in English.",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0112",
+   "family": "TRANS",
+   "scene": "T-0112",
+   "context": "Here is a question from Grace, who is reading a German book.",
+   "cf_context": "Here is a question from Grace, who is reading a German book.",
+   "off_context": "Here is a question from Maria, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Katze \u00bb in German have?",
+   "bridge": "chicken",
+   "cf_bridge": "cat",
+   "cue": "Huhn",
+   "shown": "Huhn",
+   "cf_shown": "Katze",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Huhn \u00bb in German? Answer in English.",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0113",
+   "family": "TRANS",
+   "scene": "T-0113",
+   "context": "Here is a question from Leo, who is reading a German book.",
+   "cf_context": "Here is a question from Leo, who is reading a German book.",
+   "off_context": "Here is a question from Hugo, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "bridge": "goose",
+   "cf_bridge": "sheep",
+   "cue": "Gans",
+   "shown": "Gans",
+   "cf_shown": "Schaf",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Gans \u00bb in German? Answer in English.",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0114",
+   "family": "TRANS",
+   "scene": "T-0114",
+   "context": "Here is a question from Adam, who is reading a German book.",
+   "cf_context": "Here is a question from Adam, who is reading a German book.",
+   "off_context": "Here is a question from Mark, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "bridge": "chicken",
+   "cf_bridge": "bee",
+   "cue": "Huhn",
+   "shown": "Huhn",
+   "cf_shown": "Biene",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Huhn \u00bb in German? Answer in English.",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0115",
+   "family": "TRANS",
+   "scene": "T-0115",
+   "context": "Here is a question from Eva, who is reading a German book.",
+   "cf_context": "Here is a question from Eva, who is reading a German book.",
+   "off_context": "Here is a question from Eve, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "bridge": "chicken",
+   "cf_bridge": "spider",
+   "cue": "Huhn",
+   "shown": "Huhn",
+   "cf_shown": "Spinne",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Huhn \u00bb in German? Answer in English.",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0116",
+   "family": "TRANS",
+   "scene": "T-0116",
+   "context": "Here is a question from Emma, who is reading a German book.",
+   "cf_context": "Here is a question from Emma, who is reading a German book.",
+   "off_context": "Here is a question from Zoe, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "bridge": "goose",
+   "cf_bridge": "bee",
+   "cue": "Gans",
+   "shown": "Gans",
+   "cf_shown": "Biene",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Gans \u00bb in German? Answer in English.",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0117",
+   "family": "TRANS",
+   "scene": "T-0117",
+   "context": "Here is a question from Oscar, who is reading a German book.",
+   "cf_context": "Here is a question from Oscar, who is reading a German book.",
+   "off_context": "Here is a question from Leo, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "bridge": "pig",
+   "cf_bridge": "turkey",
+   "cue": "Schwein",
+   "shown": "Schwein",
+   "cf_shown": "Truthahn",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schwein \u00bb in German? Answer in English.",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0118",
+   "family": "TRANS",
+   "scene": "T-0118",
+   "context": "Here is a question from Sara, who is reading a German book.",
+   "cf_context": "Here is a question from Sara, who is reading a German book.",
+   "off_context": "Here is a question from Ella, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "bridge": "lion",
+   "cf_bridge": "goose",
+   "cue": "L\u00f6we",
+   "shown": "L\u00f6we",
+   "cf_shown": "Gans",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab L\u00f6we \u00bb in German? Answer in English.",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0119",
+   "family": "TRANS",
+   "scene": "T-0119",
+   "context": "Here is a question from Alice, who is reading a German book.",
+   "cf_context": "Here is a question from Alice, who is reading a German book.",
+   "off_context": "Here is a question from Sean, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Pferd \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Ente \u00bb in German have?",
+   "bridge": "horse",
+   "cf_bridge": "duck",
+   "cue": "Pferd",
+   "shown": "Pferd",
+   "cf_shown": "Ente",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Pferd \u00bb in German? Answer in English.",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0120",
+   "family": "TRANS",
+   "scene": "T-0120",
+   "context": "Here is a question from Tom, who is reading a German book.",
+   "cf_context": "Here is a question from Tom, who is reading a German book.",
+   "off_context": "Here is a question from Grace, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "bridge": "sheep",
+   "cf_bridge": "turkey",
+   "cue": "Schaf",
+   "shown": "Schaf",
+   "cf_shown": "Truthahn",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schaf \u00bb in German? Answer in English.",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0121",
+   "family": "TRANS",
+   "scene": "T-0121",
+   "context": "Here is a question from Julia, who is reading a German book.",
+   "cf_context": "Here is a question from Julia, who is reading a German book.",
+   "off_context": "Here is a question from Emma, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "bridge": "turkey",
+   "cf_bridge": "spider",
+   "cue": "Truthahn",
+   "shown": "Truthahn",
+   "cf_shown": "Spinne",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Truthahn \u00bb in German? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0122",
+   "family": "TRANS",
+   "scene": "T-0122",
+   "context": "Here is a question from Sam, who is reading a German book.",
+   "cf_context": "Here is a question from Sam, who is reading a German book.",
+   "off_context": "Here is a question from Eve, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Maus \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Ente \u00bb in German have?",
+   "bridge": "mouse",
+   "cf_bridge": "duck",
+   "cue": "Maus",
+   "shown": "Maus",
+   "cf_shown": "Ente",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Maus \u00bb in German? Answer in English.",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0123",
+   "family": "TRANS",
+   "scene": "T-0123",
+   "context": "Here is a question from Anna, who is reading a German book.",
+   "cf_context": "Here is a question from Anna, who is reading a German book.",
+   "off_context": "Here is a question from Ella, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "bridge": "goose",
+   "cf_bridge": "lion",
+   "cue": "Gans",
+   "shown": "Gans",
+   "cf_shown": "L\u00f6we",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Gans \u00bb in German? Answer in English.",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0124",
+   "family": "TRANS",
+   "scene": "T-0124",
+   "context": "Here is a question from Rose, who is reading a German book.",
+   "cf_context": "Here is a question from Rose, who is reading a German book.",
+   "off_context": "Here is a question from Sam, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "bridge": "lion",
+   "cf_bridge": "spider",
+   "cue": "L\u00f6we",
+   "shown": "L\u00f6we",
+   "cf_shown": "Spinne",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab L\u00f6we \u00bb in German? Answer in English.",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0125",
+   "family": "TRANS",
+   "scene": "T-0125",
+   "context": "Here is a question from Luke, who is reading a German book.",
+   "cf_context": "Here is a question from Luke, who is reading a German book.",
+   "off_context": "Here is a question from Tara, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "bridge": "lion",
+   "cf_bridge": "chicken",
+   "cue": "L\u00f6we",
+   "shown": "L\u00f6we",
+   "cf_shown": "Huhn",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab L\u00f6we \u00bb in German? Answer in English.",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0126",
+   "family": "TRANS",
+   "scene": "T-0126",
+   "context": "Here is a question from Will, who is reading a German book.",
+   "cf_context": "Here is a question from Will, who is reading a German book.",
+   "off_context": "Here is a question from James, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Katze \u00bb in German have?",
+   "bridge": "chicken",
+   "cf_bridge": "cat",
+   "cue": "Huhn",
+   "shown": "Huhn",
+   "cf_shown": "Katze",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Huhn \u00bb in German? Answer in English.",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0127",
+   "family": "TRANS",
+   "scene": "T-0127",
+   "context": "Here is a question from Eve, who is reading a German book.",
+   "cf_context": "Here is a question from Eve, who is reading a German book.",
+   "off_context": "Here is a question from Ryan, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Ente \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Hund \u00bb in German have?",
+   "bridge": "duck",
+   "cf_bridge": "dog",
+   "cue": "Ente",
+   "shown": "Ente",
+   "cf_shown": "Hund",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Ente \u00bb in German? Answer in English.",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0128",
+   "family": "TRANS",
+   "scene": "T-0128",
+   "context": "Here is a question from Laura, who is reading a French book.",
+   "cf_context": "Here is a question from Laura, who is reading a French book.",
+   "off_context": "Here is a question from Maria, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab grenouille \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab abeille \u00bb in French have?",
+   "bridge": "frog",
+   "cf_bridge": "bee",
+   "cue": "grenouille",
+   "shown": "grenouille",
+   "cf_shown": "abeille",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab grenouille \u00bb in French? Answer in English.",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0129",
+   "family": "TRANS",
+   "scene": "T-0129",
+   "context": "Here is a question from Clara, who is reading a German book.",
+   "cf_context": "Here is a question from Clara, who is reading a German book.",
+   "off_context": "Here is a question from Peter, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Ente \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Pferd \u00bb in German have?",
+   "bridge": "duck",
+   "cf_bridge": "horse",
+   "cue": "Ente",
+   "shown": "Ente",
+   "cf_shown": "Pferd",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Ente \u00bb in German? Answer in English.",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0130",
+   "family": "TRANS",
+   "scene": "T-0130",
+   "context": "Here is a question from Carl, who is reading a French book.",
+   "cf_context": "Here is a question from Carl, who is reading a French book.",
+   "off_context": "Here is a question from Henry, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab loup \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab dinde \u00bb in French have?",
+   "bridge": "wolf",
+   "cf_bridge": "turkey",
+   "cue": "loup",
+   "shown": "loup",
+   "cf_shown": "dinde",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab loup \u00bb in French? Answer in English.",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0131",
+   "family": "TRANS",
+   "scene": "T-0131",
+   "context": "Here is a question from Eve, who is reading a German book.",
+   "cf_context": "Here is a question from Eve, who is reading a German book.",
+   "off_context": "Here is a question from Ivan, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "bridge": "lion",
+   "cf_bridge": "goose",
+   "cue": "L\u00f6we",
+   "shown": "L\u00f6we",
+   "cf_shown": "Gans",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab L\u00f6we \u00bb in German? Answer in English.",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0132",
+   "family": "TRANS",
+   "scene": "T-0132",
+   "context": "Here is a question from Amy, who is reading a German book.",
+   "cf_context": "Here is a question from Amy, who is reading a German book.",
+   "off_context": "Here is a question from Mark, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "bridge": "pig",
+   "cf_bridge": "chicken",
+   "cue": "Schwein",
+   "shown": "Schwein",
+   "cf_shown": "Huhn",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schwein \u00bb in German? Answer in English.",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0133",
+   "family": "TRANS",
+   "scene": "T-0133",
+   "context": "Here is a question from Eric, who is reading a German book.",
+   "cf_context": "Here is a question from Eric, who is reading a German book.",
+   "off_context": "Here is a question from Lily, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "bridge": "bee",
+   "cf_bridge": "lion",
+   "cue": "Biene",
+   "shown": "Biene",
+   "cf_shown": "L\u00f6we",
+   "lang": "de",
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Biene \u00bb in German? Answer in English.",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0134",
+   "family": "TRANS",
+   "scene": "T-0134",
+   "context": "Here is a question from Liam, who is reading a French book.",
+   "cf_context": "Here is a question from Liam, who is reading a French book.",
+   "off_context": "Here is a question from Paul, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab chien \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab poulet \u00bb in French have?",
+   "bridge": "dog",
+   "cf_bridge": "chicken",
+   "cue": "chien",
+   "shown": "chien",
+   "cf_shown": "poulet",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab chien \u00bb in French? Answer in English.",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0135",
+   "family": "TRANS",
+   "scene": "T-0135",
+   "context": "Here is a question from Dan, who is reading a German book.",
+   "cf_context": "Here is a question from Dan, who is reading a German book.",
+   "off_context": "Here is a question from Nina, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Katze \u00bb in German have?",
+   "bridge": "spider",
+   "cf_bridge": "cat",
+   "cue": "Spinne",
+   "shown": "Spinne",
+   "cf_shown": "Katze",
+   "lang": "de",
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Spinne \u00bb in German? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0136",
+   "family": "TRANS",
+   "scene": "T-0136",
+   "context": "Here is a question from Lucy, who is reading a French book.",
+   "cf_context": "Here is a question from Lucy, who is reading a French book.",
+   "off_context": "Here is a question from Luke, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab canard \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab cochon \u00bb in French have?",
+   "bridge": "duck",
+   "cf_bridge": "pig",
+   "cue": "canard",
+   "shown": "canard",
+   "cf_shown": "cochon",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab canard \u00bb in French? Answer in English.",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0137",
+   "family": "TRANS",
+   "scene": "T-0137",
+   "context": "Here is a question from Frank, who is reading a German book.",
+   "cf_context": "Here is a question from Frank, who is reading a German book.",
+   "off_context": "Here is a question from Emma, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "bridge": "spider",
+   "cf_bridge": "sheep",
+   "cue": "Spinne",
+   "shown": "Spinne",
+   "cf_shown": "Schaf",
+   "lang": "de",
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Spinne \u00bb in German? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0138",
+   "family": "TRANS",
+   "scene": "T-0138",
+   "context": "Here is a question from Ivy, who is reading a German book.",
+   "cf_context": "Here is a question from Ivy, who is reading a German book.",
+   "off_context": "Here is a question from Lily, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "bridge": "lion",
+   "cf_bridge": "goose",
+   "cue": "L\u00f6we",
+   "shown": "L\u00f6we",
+   "cf_shown": "Gans",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab L\u00f6we \u00bb in German? Answer in English.",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0139",
+   "family": "TRANS",
+   "scene": "T-0139",
+   "context": "Here is a question from Grace, who is reading a German book.",
+   "cf_context": "Here is a question from Grace, who is reading a German book.",
+   "off_context": "Here is a question from Ryan, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "bridge": "lion",
+   "cf_bridge": "spider",
+   "cue": "L\u00f6we",
+   "shown": "L\u00f6we",
+   "cf_shown": "Spinne",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab L\u00f6we \u00bb in German? Answer in English.",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0140",
+   "family": "TRANS",
+   "scene": "T-0140",
+   "context": "Here is a question from Lucy, who is reading a German book.",
+   "cf_context": "Here is a question from Lucy, who is reading a German book.",
+   "off_context": "Here is a question from Leo, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "bridge": "lion",
+   "cf_bridge": "spider",
+   "cue": "L\u00f6we",
+   "shown": "L\u00f6we",
+   "cf_shown": "Spinne",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab L\u00f6we \u00bb in German? Answer in English.",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0141",
+   "family": "TRANS",
+   "scene": "T-0141",
+   "context": "Here is a question from Vera, who is reading a German book.",
+   "cf_context": "Here is a question from Vera, who is reading a German book.",
+   "off_context": "Here is a question from Iris, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "bridge": "goose",
+   "cf_bridge": "sheep",
+   "cue": "Gans",
+   "shown": "Gans",
+   "cf_shown": "Schaf",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Gans \u00bb in German? Answer in English.",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0142",
+   "family": "TRANS",
+   "scene": "T-0142",
+   "context": "Here is a question from Vera, who is reading a German book.",
+   "cf_context": "Here is a question from Vera, who is reading a German book.",
+   "off_context": "Here is a question from Amy, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "bridge": "lion",
+   "cf_bridge": "goose",
+   "cue": "L\u00f6we",
+   "shown": "L\u00f6we",
+   "cf_shown": "Gans",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab L\u00f6we \u00bb in German? Answer in English.",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0143",
+   "family": "TRANS",
+   "scene": "T-0143",
+   "context": "Here is a question from Eva, who is reading a French book.",
+   "cf_context": "Here is a question from Eva, who is reading a French book.",
+   "off_context": "Here is a question from Owen, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab araign\u00e9e \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab abeille \u00bb in French have?",
+   "bridge": "spider",
+   "cf_bridge": "bee",
+   "cue": "araign\u00e9e",
+   "shown": "araign\u00e9e",
+   "cf_shown": "abeille",
+   "lang": "fr",
+   "answer": "8",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab araign\u00e9e \u00bb in French? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0144",
+   "family": "TRANS",
+   "scene": "T-0144",
+   "context": "Here is a question from Mia, who is reading a French book.",
+   "cf_context": "Here is a question from Mia, who is reading a French book.",
+   "off_context": "Here is a question from Eve, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab oie \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab loup \u00bb in French have?",
+   "bridge": "goose",
+   "cf_bridge": "wolf",
+   "cue": "oie",
+   "shown": "oie",
+   "cf_shown": "loup",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab oie \u00bb in French? Answer in English.",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0145",
+   "family": "TRANS",
+   "scene": "T-0145",
+   "context": "Here is a question from Alice, who is reading a German book.",
+   "cf_context": "Here is a question from Alice, who is reading a German book.",
+   "off_context": "Here is a question from Carl, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "bridge": "bee",
+   "cf_bridge": "chicken",
+   "cue": "Biene",
+   "shown": "Biene",
+   "cf_shown": "Huhn",
+   "lang": "de",
+   "answer": "6",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Biene \u00bb in German? Answer in English.",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0146",
+   "family": "TRANS",
+   "scene": "T-0146",
+   "context": "Here is a question from Paul, who is reading a German book.",
+   "cf_context": "Here is a question from Paul, who is reading a German book.",
+   "off_context": "Here is a question from Owen, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "bridge": "turkey",
+   "cf_bridge": "sheep",
+   "cue": "Truthahn",
+   "shown": "Truthahn",
+   "cf_shown": "Schaf",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Truthahn \u00bb in German? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0147",
+   "family": "TRANS",
+   "scene": "T-0147",
+   "context": "Here is a question from Sam, who is reading a French book.",
+   "cf_context": "Here is a question from Sam, who is reading a French book.",
+   "off_context": "Here is a question from Emma, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab oie \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab cochon \u00bb in French have?",
+   "bridge": "goose",
+   "cf_bridge": "pig",
+   "cue": "oie",
+   "shown": "oie",
+   "cf_shown": "cochon",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab oie \u00bb in French? Answer in English.",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0148",
+   "family": "TRANS",
+   "scene": "T-0148",
+   "context": "Here is a question from Mia, who is reading a German book.",
+   "cf_context": "Here is a question from Mia, who is reading a German book.",
+   "off_context": "Here is a question from Ella, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "bridge": "turkey",
+   "cf_bridge": "pig",
+   "cue": "Truthahn",
+   "shown": "Truthahn",
+   "cf_shown": "Schwein",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Truthahn \u00bb in German? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0149",
+   "family": "TRANS",
+   "scene": "T-0149",
+   "context": "Here is a question from Owen, who is reading a French book.",
+   "cf_context": "Here is a question from Owen, who is reading a French book.",
+   "off_context": "Here is a question from Ella, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab cochon \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab oie \u00bb in French have?",
+   "bridge": "pig",
+   "cf_bridge": "goose",
+   "cue": "cochon",
+   "shown": "cochon",
+   "cf_shown": "oie",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab cochon \u00bb in French? Answer in English.",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0150",
+   "family": "TRANS",
+   "scene": "T-0150",
+   "context": "Here is a question from David, who is reading a German book.",
+   "cf_context": "Here is a question from David, who is reading a German book.",
+   "off_context": "Here is a question from Vera, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "bridge": "goose",
+   "cf_bridge": "sheep",
+   "cue": "Gans",
+   "shown": "Gans",
+   "cf_shown": "Schaf",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Gans \u00bb in German? Answer in English.",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0151",
+   "family": "TRANS",
+   "scene": "T-0151",
+   "context": "Here is a question from Noah, who is reading a German book.",
+   "cf_context": "Here is a question from Noah, who is reading a German book.",
+   "off_context": "Here is a question from Laura, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "bridge": "pig",
+   "cf_bridge": "goose",
+   "cue": "Schwein",
+   "shown": "Schwein",
+   "cf_shown": "Gans",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schwein \u00bb in German? Answer in English.",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0152",
+   "family": "TRANS",
+   "scene": "T-0152",
+   "context": "Here is a question from Paul, who is reading a German book.",
+   "cf_context": "Here is a question from Paul, who is reading a German book.",
+   "off_context": "Here is a question from Ivy, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "bridge": "goose",
+   "cf_bridge": "lion",
+   "cue": "Gans",
+   "shown": "Gans",
+   "cf_shown": "L\u00f6we",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Gans \u00bb in German? Answer in English.",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0153",
+   "family": "TRANS",
+   "scene": "T-0153",
+   "context": "Here is a question from Will, who is reading a French book.",
+   "cf_context": "Here is a question from Will, who is reading a French book.",
+   "off_context": "Here is a question from Kate, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab loup \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab dinde \u00bb in French have?",
+   "bridge": "wolf",
+   "cf_bridge": "turkey",
+   "cue": "loup",
+   "shown": "loup",
+   "cf_shown": "dinde",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab loup \u00bb in French? Answer in English.",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0154",
+   "family": "TRANS",
+   "scene": "T-0154",
+   "context": "Here is a question from Tom, who is reading a French book.",
+   "cf_context": "Here is a question from Tom, who is reading a French book.",
+   "off_context": "Here is a question from Vera, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab dinde \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab loup \u00bb in French have?",
+   "bridge": "turkey",
+   "cf_bridge": "wolf",
+   "cue": "dinde",
+   "shown": "dinde",
+   "cf_shown": "loup",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab dinde \u00bb in French? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0155",
+   "family": "TRANS",
+   "scene": "T-0155",
+   "context": "Here is a question from Finn, who is reading a German book.",
+   "cf_context": "Here is a question from Finn, who is reading a German book.",
+   "off_context": "Here is a question from Zoe, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Katze \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "bridge": "cat",
+   "cf_bridge": "bee",
+   "cue": "Katze",
+   "shown": "Katze",
+   "cf_shown": "Biene",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Katze \u00bb in German? Answer in English.",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0156",
+   "family": "TRANS",
+   "scene": "T-0156",
+   "context": "Here is a question from Anna, who is reading a German book.",
+   "cf_context": "Here is a question from Anna, who is reading a German book.",
+   "off_context": "Here is a question from Hugo, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "bridge": "lion",
+   "cf_bridge": "chicken",
+   "cue": "L\u00f6we",
+   "shown": "L\u00f6we",
+   "cf_shown": "Huhn",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab L\u00f6we \u00bb in German? Answer in English.",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0157",
+   "family": "TRANS",
+   "scene": "T-0157",
+   "context": "Here is a question from Adam, who is reading a German book.",
+   "cf_context": "Here is a question from Adam, who is reading a German book.",
+   "off_context": "Here is a question from Nina, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Maus \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Ente \u00bb in German have?",
+   "bridge": "mouse",
+   "cf_bridge": "duck",
+   "cue": "Maus",
+   "shown": "Maus",
+   "cf_shown": "Ente",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Maus \u00bb in German? Answer in English.",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0158",
+   "family": "TRANS",
+   "scene": "T-0158",
+   "context": "Here is a question from Peter, who is reading a German book.",
+   "cf_context": "Here is a question from Peter, who is reading a German book.",
+   "off_context": "Here is a question from Lucy, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "bridge": "sheep",
+   "cf_bridge": "spider",
+   "cue": "Schaf",
+   "shown": "Schaf",
+   "cf_shown": "Spinne",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schaf \u00bb in German? Answer in English.",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0159",
+   "family": "TRANS",
+   "scene": "T-0159",
+   "context": "Here is a question from Julia, who is reading a French book.",
+   "cf_context": "Here is a question from Julia, who is reading a French book.",
+   "off_context": "Here is a question from Luke, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab loup \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab oie \u00bb in French have?",
+   "bridge": "wolf",
+   "cf_bridge": "goose",
+   "cue": "loup",
+   "shown": "loup",
+   "cf_shown": "oie",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab loup \u00bb in French? Answer in English.",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0160",
+   "family": "TRANS",
+   "scene": "T-0160",
+   "context": "Here is a question from Mark, who is reading a French book.",
+   "cf_context": "Here is a question from Mark, who is reading a French book.",
+   "off_context": "Here is a question from Dan, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab araign\u00e9e \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab mouton \u00bb in French have?",
+   "bridge": "spider",
+   "cf_bridge": "sheep",
+   "cue": "araign\u00e9e",
+   "shown": "araign\u00e9e",
+   "cf_shown": "mouton",
+   "lang": "fr",
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab araign\u00e9e \u00bb in French? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0161",
+   "family": "TRANS",
+   "scene": "T-0161",
+   "context": "Here is a question from Noah, who is reading a German book.",
+   "cf_context": "Here is a question from Noah, who is reading a German book.",
+   "off_context": "Here is a question from Mia, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "bridge": "lion",
+   "cf_bridge": "bee",
+   "cue": "L\u00f6we",
+   "shown": "L\u00f6we",
+   "cf_shown": "Biene",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab L\u00f6we \u00bb in German? Answer in English.",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0162",
+   "family": "TRANS",
+   "scene": "T-0162",
+   "context": "Here is a question from Beth, who is reading a German book.",
+   "cf_context": "Here is a question from Beth, who is reading a German book.",
+   "off_context": "Here is a question from Maria, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "bridge": "goose",
+   "cf_bridge": "spider",
+   "cue": "Gans",
+   "shown": "Gans",
+   "cf_shown": "Spinne",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Gans \u00bb in German? Answer in English.",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0163",
+   "family": "TRANS",
+   "scene": "T-0163",
+   "context": "Here is a question from Iris, who is reading a German book.",
+   "cf_context": "Here is a question from Iris, who is reading a German book.",
+   "off_context": "Here is a question from Noah, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "bridge": "pig",
+   "cf_bridge": "chicken",
+   "cue": "Schwein",
+   "shown": "Schwein",
+   "cf_shown": "Huhn",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schwein \u00bb in German? Answer in English.",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0164",
+   "family": "TRANS",
+   "scene": "T-0164",
+   "context": "Here is a question from Eva, who is reading a French book.",
+   "cf_context": "Here is a question from Eva, who is reading a French book.",
+   "off_context": "Here is a question from Ivy, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab dinde \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab cochon \u00bb in French have?",
+   "bridge": "turkey",
+   "cf_bridge": "pig",
+   "cue": "dinde",
+   "shown": "dinde",
+   "cf_shown": "cochon",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab dinde \u00bb in French? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0165",
+   "family": "TRANS",
+   "scene": "T-0165",
+   "context": "Here is a question from Julia, who is reading a French book.",
+   "cf_context": "Here is a question from Julia, who is reading a French book.",
+   "off_context": "Here is a question from Peter, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab oie \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab vache \u00bb in French have?",
+   "bridge": "goose",
+   "cf_bridge": "cow",
+   "cue": "oie",
+   "shown": "oie",
+   "cf_shown": "vache",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab oie \u00bb in French? Answer in English.",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0166",
+   "family": "TRANS",
+   "scene": "T-0166",
+   "context": "Here is a question from Frank, who is reading a French book.",
+   "cf_context": "Here is a question from Frank, who is reading a French book.",
+   "off_context": "Here is a question from Liam, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab vache \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab canard \u00bb in French have?",
+   "bridge": "cow",
+   "cf_bridge": "duck",
+   "cue": "vache",
+   "shown": "vache",
+   "cf_shown": "canard",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab vache \u00bb in French? Answer in English.",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cow have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0167",
+   "family": "TRANS",
+   "scene": "T-0167",
+   "context": "Here is a question from Olivia, who is reading a German book.",
+   "cf_context": "Here is a question from Olivia, who is reading a German book.",
+   "off_context": "Here is a question from David, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "bridge": "pig",
+   "cf_bridge": "goose",
+   "cue": "Schwein",
+   "shown": "Schwein",
+   "cf_shown": "Gans",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schwein \u00bb in German? Answer in English.",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0168",
+   "family": "TRANS",
+   "scene": "T-0168",
+   "context": "Here is a question from Sean, who is reading a German book.",
+   "cf_context": "Here is a question from Sean, who is reading a German book.",
+   "off_context": "Here is a question from Liam, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "bridge": "pig",
+   "cf_bridge": "spider",
+   "cue": "Schwein",
+   "shown": "Schwein",
+   "cf_shown": "Spinne",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schwein \u00bb in German? Answer in English.",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0169",
+   "family": "TRANS",
+   "scene": "T-0169",
+   "context": "Here is a question from Lily, who is reading a German book.",
+   "cf_context": "Here is a question from Lily, who is reading a German book.",
+   "off_context": "Here is a question from Diana, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Katze \u00bb in German have?",
+   "bridge": "bee",
+   "cf_bridge": "cat",
+   "cue": "Biene",
+   "shown": "Biene",
+   "cf_shown": "Katze",
+   "lang": "de",
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Biene \u00bb in German? Answer in English.",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0170",
+   "family": "TRANS",
+   "scene": "T-0170",
+   "context": "Here is a question from Sam, who is reading a French book.",
+   "cf_context": "Here is a question from Sam, who is reading a French book.",
+   "off_context": "Here is a question from Lucy, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab araign\u00e9e \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab grenouille \u00bb in French have?",
+   "bridge": "spider",
+   "cf_bridge": "frog",
+   "cue": "araign\u00e9e",
+   "shown": "araign\u00e9e",
+   "cf_shown": "grenouille",
+   "lang": "fr",
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab araign\u00e9e \u00bb in French? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0171",
+   "family": "TRANS",
+   "scene": "T-0171",
+   "context": "Here is a question from Anna, who is reading a German book.",
+   "cf_context": "Here is a question from Anna, who is reading a German book.",
+   "off_context": "Here is a question from Eric, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "bridge": "spider",
+   "cf_bridge": "goose",
+   "cue": "Spinne",
+   "shown": "Spinne",
+   "cf_shown": "Gans",
+   "lang": "de",
+   "answer": "8",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Spinne \u00bb in German? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0172",
+   "family": "TRANS",
+   "scene": "T-0172",
+   "context": "Here is a question from Vera, who is reading a German book.",
+   "cf_context": "Here is a question from Vera, who is reading a German book.",
+   "off_context": "Here is a question from Rose, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schwein \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "bridge": "pig",
+   "cf_bridge": "spider",
+   "cue": "Schwein",
+   "shown": "Schwein",
+   "cf_shown": "Spinne",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schwein \u00bb in German? Answer in English.",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0173",
+   "family": "TRANS",
+   "scene": "T-0173",
+   "context": "Here is a question from Clara, who is reading a German book.",
+   "cf_context": "Here is a question from Clara, who is reading a German book.",
+   "off_context": "Here is a question from Victor, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "bridge": "chicken",
+   "cf_bridge": "lion",
+   "cue": "Huhn",
+   "shown": "Huhn",
+   "cf_shown": "L\u00f6we",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Huhn \u00bb in German? Answer in English.",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0174",
+   "family": "TRANS",
+   "scene": "T-0174",
+   "context": "Here is a question from Adam, who is reading a French book.",
+   "cf_context": "Here is a question from Adam, who is reading a French book.",
+   "off_context": "Here is a question from Zoe, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab canard \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab cochon \u00bb in French have?",
+   "bridge": "duck",
+   "cf_bridge": "pig",
+   "cue": "canard",
+   "shown": "canard",
+   "cf_shown": "cochon",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab canard \u00bb in French? Answer in English.",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0175",
+   "family": "TRANS",
+   "scene": "T-0175",
+   "context": "Here is a question from Hugo, who is reading a German book.",
+   "cf_context": "Here is a question from Hugo, who is reading a German book.",
+   "off_context": "Here is a question from Finn, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "bridge": "bee",
+   "cf_bridge": "lion",
+   "cue": "Biene",
+   "shown": "Biene",
+   "cf_shown": "L\u00f6we",
+   "lang": "de",
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Biene \u00bb in German? Answer in English.",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0176",
+   "family": "TRANS",
+   "scene": "T-0176",
+   "context": "Here is a question from Grace, who is reading a French book.",
+   "cf_context": "Here is a question from Grace, who is reading a French book.",
+   "off_context": "Here is a question from Paul, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab loup \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab oie \u00bb in French have?",
+   "bridge": "wolf",
+   "cf_bridge": "goose",
+   "cue": "loup",
+   "shown": "loup",
+   "cf_shown": "oie",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab loup \u00bb in French? Answer in English.",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0177",
+   "family": "TRANS",
+   "scene": "T-0177",
+   "context": "Here is a question from Maria, who is reading a German book.",
+   "cf_context": "Here is a question from Maria, who is reading a German book.",
+   "off_context": "Here is a question from Ryan, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "bridge": "goose",
+   "cf_bridge": "lion",
+   "cue": "Gans",
+   "shown": "Gans",
+   "cf_shown": "L\u00f6we",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Gans \u00bb in German? Answer in English.",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0178",
+   "family": "TRANS",
+   "scene": "T-0178",
+   "context": "Here is a question from Ella, who is reading a French book.",
+   "cf_context": "Here is a question from Ella, who is reading a French book.",
+   "off_context": "Here is a question from Peter, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab dinde \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab cochon \u00bb in French have?",
+   "bridge": "turkey",
+   "cf_bridge": "pig",
+   "cue": "dinde",
+   "shown": "dinde",
+   "cf_shown": "cochon",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab dinde \u00bb in French? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0179",
+   "family": "TRANS",
+   "scene": "T-0179",
+   "context": "Here is a question from Grace, who is reading a French book.",
+   "cf_context": "Here is a question from Grace, who is reading a French book.",
+   "off_context": "Here is a question from Lily, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab grenouille \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab abeille \u00bb in French have?",
+   "bridge": "frog",
+   "cf_bridge": "bee",
+   "cue": "grenouille",
+   "shown": "grenouille",
+   "cf_shown": "abeille",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab grenouille \u00bb in French? Answer in English.",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0180",
+   "family": "TRANS",
+   "scene": "T-0180",
+   "context": "Here is a question from Lily, who is reading a French book.",
+   "cf_context": "Here is a question from Lily, who is reading a French book.",
+   "off_context": "Here is a question from Beth, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab grenouille \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab abeille \u00bb in French have?",
+   "bridge": "frog",
+   "cf_bridge": "bee",
+   "cue": "grenouille",
+   "shown": "grenouille",
+   "cf_shown": "abeille",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab grenouille \u00bb in French? Answer in English.",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0181",
+   "family": "TRANS",
+   "scene": "T-0181",
+   "context": "Here is a question from Max, who is reading a German book.",
+   "cf_context": "Here is a question from Max, who is reading a German book.",
+   "off_context": "Here is a question from Kyle, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Ente \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Maus \u00bb in German have?",
+   "bridge": "duck",
+   "cf_bridge": "mouse",
+   "cue": "Ente",
+   "shown": "Ente",
+   "cf_shown": "Maus",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Ente \u00bb in German? Answer in English.",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0182",
+   "family": "TRANS",
+   "scene": "T-0182",
+   "context": "Here is a question from Zoe, who is reading a French book.",
+   "cf_context": "Here is a question from Zoe, who is reading a French book.",
+   "off_context": "Here is a question from Rose, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab mouton \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab araign\u00e9e \u00bb in French have?",
+   "bridge": "sheep",
+   "cf_bridge": "spider",
+   "cue": "mouton",
+   "shown": "mouton",
+   "cf_shown": "araign\u00e9e",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab mouton \u00bb in French? Answer in English.",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0183",
+   "family": "TRANS",
+   "scene": "T-0183",
+   "context": "Here is a question from Liam, who is reading a German book.",
+   "cf_context": "Here is a question from Liam, who is reading a German book.",
+   "off_context": "Here is a question from David, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "bridge": "chicken",
+   "cf_bridge": "sheep",
+   "cue": "Huhn",
+   "shown": "Huhn",
+   "cf_shown": "Schaf",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Huhn \u00bb in German? Answer in English.",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0184",
+   "family": "TRANS",
+   "scene": "T-0184",
+   "context": "Here is a question from Will, who is reading a French book.",
+   "cf_context": "Here is a question from Will, who is reading a French book.",
+   "off_context": "Here is a question from Fiona, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab cochon \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab oie \u00bb in French have?",
+   "bridge": "pig",
+   "cf_bridge": "goose",
+   "cue": "cochon",
+   "shown": "cochon",
+   "cf_shown": "oie",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab cochon \u00bb in French? Answer in English.",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0185",
+   "family": "TRANS",
+   "scene": "T-0185",
+   "context": "Here is a question from Ella, who is reading a French book.",
+   "cf_context": "Here is a question from Ella, who is reading a French book.",
+   "off_context": "Here is a question from Owen, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab oie \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab cochon \u00bb in French have?",
+   "bridge": "goose",
+   "cf_bridge": "pig",
+   "cue": "oie",
+   "shown": "oie",
+   "cf_shown": "cochon",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab oie \u00bb in French? Answer in English.",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0186",
+   "family": "TRANS",
+   "scene": "T-0186",
+   "context": "Here is a question from Jack, who is reading a German book.",
+   "cf_context": "Here is a question from Jack, who is reading a German book.",
+   "off_context": "Here is a question from Ben, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "bridge": "lion",
+   "cf_bridge": "bee",
+   "cue": "L\u00f6we",
+   "shown": "L\u00f6we",
+   "cf_shown": "Biene",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab L\u00f6we \u00bb in German? Answer in English.",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0187",
+   "family": "TRANS",
+   "scene": "T-0187",
+   "context": "Here is a question from Alice, who is reading a French book.",
+   "cf_context": "Here is a question from Alice, who is reading a French book.",
+   "off_context": "Here is a question from Ben, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab canard \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab loup \u00bb in French have?",
+   "bridge": "duck",
+   "cf_bridge": "wolf",
+   "cue": "canard",
+   "shown": "canard",
+   "cf_shown": "loup",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab canard \u00bb in French? Answer in English.",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0188",
+   "family": "TRANS",
+   "scene": "T-0188",
+   "context": "Here is a question from Mark, who is reading a German book.",
+   "cf_context": "Here is a question from Mark, who is reading a German book.",
+   "off_context": "Here is a question from Max, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Pferd \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Ente \u00bb in German have?",
+   "bridge": "horse",
+   "cf_bridge": "duck",
+   "cue": "Pferd",
+   "shown": "Pferd",
+   "cf_shown": "Ente",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Pferd \u00bb in German? Answer in English.",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0189",
+   "family": "TRANS",
+   "scene": "T-0189",
+   "context": "Here is a question from Sean, who is reading a German book.",
+   "cf_context": "Here is a question from Sean, who is reading a German book.",
+   "off_context": "Here is a question from Max, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Gans \u00bb in German have?",
+   "bridge": "spider",
+   "cf_bridge": "goose",
+   "cue": "Spinne",
+   "shown": "Spinne",
+   "cf_shown": "Gans",
+   "lang": "de",
+   "answer": "8",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Spinne \u00bb in German? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0190",
+   "family": "TRANS",
+   "scene": "T-0190",
+   "context": "Here is a question from Sam, who is reading a German book.",
+   "cf_context": "Here is a question from Sam, who is reading a German book.",
+   "off_context": "Here is a question from Paul, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Katze \u00bb in German have?",
+   "bridge": "chicken",
+   "cf_bridge": "cat",
+   "cue": "Huhn",
+   "shown": "Huhn",
+   "cf_shown": "Katze",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Huhn \u00bb in German? Answer in English.",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0191",
+   "family": "TRANS",
+   "scene": "T-0191",
+   "context": "Here is a question from Ruby, who is reading a French book.",
+   "cf_context": "Here is a question from Ruby, who is reading a French book.",
+   "off_context": "Here is a question from Finn, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab poulet \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab cheval \u00bb in French have?",
+   "bridge": "chicken",
+   "cf_bridge": "horse",
+   "cue": "poulet",
+   "shown": "poulet",
+   "cf_shown": "cheval",
+   "lang": "fr",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab poulet \u00bb in French? Answer in English.",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0192",
+   "family": "TRANS",
+   "scene": "T-0192",
+   "context": "Here is a question from Ruby, who is reading a French book.",
+   "cf_context": "Here is a question from Ruby, who is reading a French book.",
+   "off_context": "Here is a question from Sara, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab vache \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab dinde \u00bb in French have?",
+   "bridge": "cow",
+   "cf_bridge": "turkey",
+   "cue": "vache",
+   "shown": "vache",
+   "cf_shown": "dinde",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab vache \u00bb in French? Answer in English.",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cow have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0193",
+   "family": "TRANS",
+   "scene": "T-0193",
+   "context": "Here is a question from Noah, who is reading a French book.",
+   "cf_context": "Here is a question from Noah, who is reading a French book.",
+   "off_context": "Here is a question from Owen, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab mouton \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab araign\u00e9e \u00bb in French have?",
+   "bridge": "sheep",
+   "cf_bridge": "spider",
+   "cue": "mouton",
+   "shown": "mouton",
+   "cf_shown": "araign\u00e9e",
+   "lang": "fr",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab mouton \u00bb in French? Answer in English.",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0194",
+   "family": "TRANS",
+   "scene": "T-0194",
+   "context": "Here is a question from Zoe, who is reading a German book.",
+   "cf_context": "Here is a question from Zoe, who is reading a German book.",
+   "off_context": "Here is a question from Kyle, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab L\u00f6we \u00bb in German have?",
+   "bridge": "turkey",
+   "cf_bridge": "lion",
+   "cue": "Truthahn",
+   "shown": "Truthahn",
+   "cf_shown": "L\u00f6we",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Truthahn \u00bb in German? Answer in English.",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0195",
+   "family": "TRANS",
+   "scene": "T-0195",
+   "context": "Here is a question from Vera, who is reading a German book.",
+   "cf_context": "Here is a question from Vera, who is reading a German book.",
+   "off_context": "Here is a question from Noah, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Truthahn \u00bb in German have?",
+   "bridge": "bee",
+   "cf_bridge": "turkey",
+   "cue": "Biene",
+   "shown": "Biene",
+   "cf_shown": "Truthahn",
+   "lang": "de",
+   "answer": "6",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Biene \u00bb in German? Answer in English.",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0196",
+   "family": "TRANS",
+   "scene": "T-0196",
+   "context": "Here is a question from Zoe, who is reading a German book.",
+   "cf_context": "Here is a question from Zoe, who is reading a German book.",
+   "off_context": "Here is a question from Fiona, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Ente \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Pferd \u00bb in German have?",
+   "bridge": "duck",
+   "cf_bridge": "horse",
+   "cue": "Ente",
+   "shown": "Ente",
+   "cf_shown": "Pferd",
+   "lang": "de",
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Ente \u00bb in German? Answer in English.",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0197",
+   "family": "TRANS",
+   "scene": "T-0197",
+   "context": "Here is a question from Anna, who is reading a French book.",
+   "cf_context": "Here is a question from Anna, who is reading a French book.",
+   "off_context": "Here is a question from Dan, who is reading a French book.",
+   "question": "How many legs does the animal called \u00ab araign\u00e9e \u00bb in French have?",
+   "cf_question": "How many legs does the animal called \u00ab grenouille \u00bb in French have?",
+   "bridge": "spider",
+   "cf_bridge": "frog",
+   "cue": "araign\u00e9e",
+   "shown": "araign\u00e9e",
+   "cf_shown": "grenouille",
+   "lang": "fr",
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab araign\u00e9e \u00bb in French? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0198",
+   "family": "TRANS",
+   "scene": "T-0198",
+   "context": "Here is a question from Adam, who is reading a German book.",
+   "cf_context": "Here is a question from Adam, who is reading a German book.",
+   "off_context": "Here is a question from Clara, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Spinne \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Huhn \u00bb in German have?",
+   "bridge": "spider",
+   "cf_bridge": "chicken",
+   "cue": "Spinne",
+   "shown": "Spinne",
+   "cf_shown": "Huhn",
+   "lang": "de",
+   "answer": "8",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Spinne \u00bb in German? Answer in English.",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TRANS-0199",
+   "family": "TRANS",
+   "scene": "T-0199",
+   "context": "Here is a question from Luke, who is reading a German book.",
+   "cf_context": "Here is a question from Luke, who is reading a German book.",
+   "off_context": "Here is a question from Hugo, who is reading a German book.",
+   "question": "How many legs does the animal called \u00ab Schaf \u00bb in German have?",
+   "cf_question": "How many legs does the animal called \u00ab Biene \u00bb in German have?",
+   "bridge": "sheep",
+   "cf_bridge": "bee",
+   "cue": "Schaf",
+   "shown": "Schaf",
+   "cf_shown": "Biene",
+   "lang": "de",
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is called \u00ab Schaf \u00bb in German? Answer in English.",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  }
+ ]
+}

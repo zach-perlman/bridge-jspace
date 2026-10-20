@@ -1,0 +1,5207 @@
+{
+ "family": "ARITH",
+ "generator": "scripts/suite_v1.py make --set computed (seed 301)",
+ "format": "Every family asks one question whose answer needs an intermediate variable (the bridge), in the chat format\n(bridge_jspace.chat: one user turn, thinking off, \"Answer:\" prefilled), with a counterfactual C that changes only the\nbridge (to X) and an off-path control O that changes something the answer does not depend on. C and O line up with the\nclean prompt token for token (checked here), so exp04/exp09's copy-and-split runs apply unchanged.",
+ "items": [
+  {
+   "id": "ARITH-0000",
+   "family": "ARITH",
+   "scene": "A-0000",
+   "context": "Here is a sum for Eva.",
+   "cf_context": "Here is a sum for Eva.",
+   "off_context": "Here is a sum for Will.",
+   "question": "What is (5 + 2) \u00d7 5?",
+   "cf_question": "What is (5 + 3) \u00d7 5?",
+   "bridge": "7",
+   "cf_bridge": "8",
+   "cue": "5 + 2",
+   "answer": "35",
+   "cf_answer": "40",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 5 + 2?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 5?",
+    "answer": "35",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0001",
+   "family": "ARITH",
+   "scene": "A-0001",
+   "context": "Here is a sum for Peter.",
+   "cf_context": "Here is a sum for Peter.",
+   "off_context": "Here is a sum for Kyle.",
+   "question": "What is (2 + 1) \u00d7 9?",
+   "cf_question": "What is (2 + 5) \u00d7 9?",
+   "bridge": "3",
+   "cf_bridge": "7",
+   "cue": "2 + 1",
+   "answer": "27",
+   "cf_answer": "63",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 1?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 3 \u00d7 9?",
+    "answer": "27",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0002",
+   "family": "ARITH",
+   "scene": "A-0002",
+   "context": "Here is a sum for Kyle.",
+   "cf_context": "Here is a sum for Kyle.",
+   "off_context": "Here is a sum for Eve.",
+   "question": "What is (1 + 7) \u00d7 5?",
+   "cf_question": "What is (1 + 5) \u00d7 5?",
+   "bridge": "8",
+   "cf_bridge": "6",
+   "cue": "1 + 7",
+   "answer": "40",
+   "cf_answer": "30",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 7?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 5?",
+    "answer": "40",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0003",
+   "family": "ARITH",
+   "scene": "A-0003",
+   "context": "Here is a sum for Dan.",
+   "cf_context": "Here is a sum for Dan.",
+   "off_context": "Here is a sum for Henry.",
+   "question": "What is (2 + 7) \u00d7 6?",
+   "cf_question": "What is (2 + 2) \u00d7 6?",
+   "bridge": "9",
+   "cf_bridge": "4",
+   "cue": "2 + 7",
+   "answer": "54",
+   "cf_answer": "24",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 7?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 6?",
+    "answer": "54",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0004",
+   "family": "ARITH",
+   "scene": "A-0004",
+   "context": "Here is a sum for Jack.",
+   "cf_context": "Here is a sum for Jack.",
+   "off_context": "Here is a sum for Adam.",
+   "question": "What is (1 + 4) \u00d7 6?",
+   "cf_question": "What is (1 + 3) \u00d7 6?",
+   "bridge": "5",
+   "cf_bridge": "4",
+   "cue": "1 + 4",
+   "answer": "30",
+   "cf_answer": "24",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 4?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 6?",
+    "answer": "30",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0005",
+   "family": "ARITH",
+   "scene": "A-0005",
+   "context": "Here is a sum for Ben.",
+   "cf_context": "Here is a sum for Ben.",
+   "off_context": "Here is a sum for Clara.",
+   "question": "What is (1 + 4) \u00d7 9?",
+   "cf_question": "What is (1 + 2) \u00d7 9?",
+   "bridge": "5",
+   "cf_bridge": "3",
+   "cue": "1 + 4",
+   "answer": "45",
+   "cf_answer": "27",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 4?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 9?",
+    "answer": "45",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0006",
+   "family": "ARITH",
+   "scene": "A-0006",
+   "context": "Here is a sum for Ryan.",
+   "cf_context": "Here is a sum for Ryan.",
+   "off_context": "Here is a sum for Zoe.",
+   "question": "What is (5 + 4) \u00d7 8?",
+   "cf_question": "What is (5 + 1) \u00d7 8?",
+   "bridge": "9",
+   "cf_bridge": "6",
+   "cue": "5 + 4",
+   "answer": "72",
+   "cf_answer": "48",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 5 + 4?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 8?",
+    "answer": "72",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0007",
+   "family": "ARITH",
+   "scene": "A-0007",
+   "context": "Here is a sum for Victor.",
+   "cf_context": "Here is a sum for Victor.",
+   "off_context": "Here is a sum for Eve.",
+   "question": "What is (3 + 3) \u00d7 7?",
+   "cf_question": "What is (3 + 6) \u00d7 7?",
+   "bridge": "6",
+   "cf_bridge": "9",
+   "cue": "3 + 3",
+   "answer": "42",
+   "cf_answer": "63",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 3?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 7?",
+    "answer": "42",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0008",
+   "family": "ARITH",
+   "scene": "A-0008",
+   "context": "Here is a sum for Carl.",
+   "cf_context": "Here is a sum for Carl.",
+   "off_context": "Here is a sum for Julia.",
+   "question": "What is (1 + 1) \u00d7 4?",
+   "cf_question": "What is (1 + 7) \u00d7 4?",
+   "bridge": "2",
+   "cf_bridge": "8",
+   "cue": "1 + 1",
+   "answer": "8",
+   "cf_answer": "32",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 1?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 2 \u00d7 4?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0009",
+   "family": "ARITH",
+   "scene": "A-0009",
+   "context": "Here is a sum for Fiona.",
+   "cf_context": "Here is a sum for Fiona.",
+   "off_context": "Here is a sum for Eva.",
+   "question": "What is (4 + 4) \u00d7 7?",
+   "cf_question": "What is (4 + 3) \u00d7 7?",
+   "bridge": "8",
+   "cf_bridge": "7",
+   "cue": "4 + 4",
+   "answer": "56",
+   "cf_answer": "49",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 4?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 7?",
+    "answer": "56",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0010",
+   "family": "ARITH",
+   "scene": "A-0010",
+   "context": "Here is a sum for Eric.",
+   "cf_context": "Here is a sum for Eric.",
+   "off_context": "Here is a sum for Mark.",
+   "question": "What is (2 + 5) \u00d7 4?",
+   "cf_question": "What is (2 + 1) \u00d7 4?",
+   "bridge": "7",
+   "cf_bridge": "3",
+   "cue": "2 + 5",
+   "answer": "28",
+   "cf_answer": "12",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 5?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 4?",
+    "answer": "28",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0011",
+   "family": "ARITH",
+   "scene": "A-0011",
+   "context": "Here is a sum for Peter.",
+   "cf_context": "Here is a sum for Peter.",
+   "off_context": "Here is a sum for Kate.",
+   "question": "What is (3 + 1) \u00d7 6?",
+   "cf_question": "What is (3 + 3) \u00d7 6?",
+   "bridge": "4",
+   "cf_bridge": "6",
+   "cue": "3 + 1",
+   "answer": "24",
+   "cf_answer": "36",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 1?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 4 \u00d7 6?",
+    "answer": "24",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0012",
+   "family": "ARITH",
+   "scene": "A-0012",
+   "context": "Here is a sum for Henry.",
+   "cf_context": "Here is a sum for Henry.",
+   "off_context": "Here is a sum for Mia.",
+   "question": "What is (3 + 5) \u00d7 6?",
+   "cf_question": "What is (3 + 1) \u00d7 6?",
+   "bridge": "8",
+   "cf_bridge": "4",
+   "cue": "3 + 5",
+   "answer": "48",
+   "cf_answer": "24",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 5?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 6?",
+    "answer": "48",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0013",
+   "family": "ARITH",
+   "scene": "A-0013",
+   "context": "Here is a sum for Zoe.",
+   "cf_context": "Here is a sum for Zoe.",
+   "off_context": "Here is a sum for Emma.",
+   "question": "What is (1 + 2) \u00d7 2?",
+   "cf_question": "What is (1 + 4) \u00d7 2?",
+   "bridge": "3",
+   "cf_bridge": "5",
+   "cue": "1 + 2",
+   "answer": "6",
+   "cf_answer": "10",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 2?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 3 \u00d7 2?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0014",
+   "family": "ARITH",
+   "scene": "A-0014",
+   "context": "Here is a sum for Finn.",
+   "cf_context": "Here is a sum for Finn.",
+   "off_context": "Here is a sum for Henry.",
+   "question": "What is (5 + 3) \u00d7 4?",
+   "cf_question": "What is (5 + 1) \u00d7 4?",
+   "bridge": "8",
+   "cf_bridge": "6",
+   "cue": "5 + 3",
+   "answer": "32",
+   "cf_answer": "24",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 5 + 3?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 4?",
+    "answer": "32",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0015",
+   "family": "ARITH",
+   "scene": "A-0015",
+   "context": "Here is a sum for Lucy.",
+   "cf_context": "Here is a sum for Lucy.",
+   "off_context": "Here is a sum for Lily.",
+   "question": "What is (3 + 1) \u00d7 8?",
+   "cf_question": "What is (3 + 3) \u00d7 8?",
+   "bridge": "4",
+   "cf_bridge": "6",
+   "cue": "3 + 1",
+   "answer": "32",
+   "cf_answer": "48",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 1?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 4 \u00d7 8?",
+    "answer": "32",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0016",
+   "family": "ARITH",
+   "scene": "A-0016",
+   "context": "Here is a sum for Ella.",
+   "cf_context": "Here is a sum for Ella.",
+   "off_context": "Here is a sum for Ryan.",
+   "question": "What is (1 + 8) \u00d7 2?",
+   "cf_question": "What is (1 + 1) \u00d7 2?",
+   "bridge": "9",
+   "cf_bridge": "2",
+   "cue": "1 + 8",
+   "answer": "18",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 8?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 2?",
+    "answer": "18",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0017",
+   "family": "ARITH",
+   "scene": "A-0017",
+   "context": "Here is a sum for James.",
+   "cf_context": "Here is a sum for James.",
+   "off_context": "Here is a sum for Leo.",
+   "question": "What is (3 + 1) \u00d7 3?",
+   "cf_question": "What is (3 + 4) \u00d7 3?",
+   "bridge": "4",
+   "cf_bridge": "7",
+   "cue": "3 + 1",
+   "answer": "12",
+   "cf_answer": "21",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 1?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 4 \u00d7 3?",
+    "answer": "12",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0018",
+   "family": "ARITH",
+   "scene": "A-0018",
+   "context": "Here is a sum for Mia.",
+   "cf_context": "Here is a sum for Mia.",
+   "off_context": "Here is a sum for Victor.",
+   "question": "What is (1 + 4) \u00d7 9?",
+   "cf_question": "What is (1 + 3) \u00d7 9?",
+   "bridge": "5",
+   "cf_bridge": "4",
+   "cue": "1 + 4",
+   "answer": "45",
+   "cf_answer": "36",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 4?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 9?",
+    "answer": "45",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0019",
+   "family": "ARITH",
+   "scene": "A-0019",
+   "context": "Here is a sum for Adam.",
+   "cf_context": "Here is a sum for Adam.",
+   "off_context": "Here is a sum for Grace.",
+   "question": "What is (2 + 1) \u00d7 4?",
+   "cf_question": "What is (2 + 3) \u00d7 4?",
+   "bridge": "3",
+   "cf_bridge": "5",
+   "cue": "2 + 1",
+   "answer": "12",
+   "cf_answer": "20",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 1?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 3 \u00d7 4?",
+    "answer": "12",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0020",
+   "family": "ARITH",
+   "scene": "A-0020",
+   "context": "Here is a sum for Laura.",
+   "cf_context": "Here is a sum for Laura.",
+   "off_context": "Here is a sum for James.",
+   "question": "What is (2 + 1) \u00d7 8?",
+   "cf_question": "What is (2 + 2) \u00d7 8?",
+   "bridge": "3",
+   "cf_bridge": "4",
+   "cue": "2 + 1",
+   "answer": "24",
+   "cf_answer": "32",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 1?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 3 \u00d7 8?",
+    "answer": "24",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0021",
+   "family": "ARITH",
+   "scene": "A-0021",
+   "context": "Here is a sum for Rose.",
+   "cf_context": "Here is a sum for Rose.",
+   "off_context": "Here is a sum for Tom.",
+   "question": "What is (1 + 4) \u00d7 4?",
+   "cf_question": "What is (1 + 7) \u00d7 4?",
+   "bridge": "5",
+   "cf_bridge": "8",
+   "cue": "1 + 4",
+   "answer": "20",
+   "cf_answer": "32",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 4?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 4?",
+    "answer": "20",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0022",
+   "family": "ARITH",
+   "scene": "A-0022",
+   "context": "Here is a sum for Emma.",
+   "cf_context": "Here is a sum for Emma.",
+   "off_context": "Here is a sum for Maria.",
+   "question": "What is (1 + 1) \u00d7 9?",
+   "cf_question": "What is (1 + 4) \u00d7 9?",
+   "bridge": "2",
+   "cf_bridge": "5",
+   "cue": "1 + 1",
+   "answer": "18",
+   "cf_answer": "45",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 1?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 2 \u00d7 9?",
+    "answer": "18",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0023",
+   "family": "ARITH",
+   "scene": "A-0023",
+   "context": "Here is a sum for Leo.",
+   "cf_context": "Here is a sum for Leo.",
+   "off_context": "Here is a sum for Eve.",
+   "question": "What is (4 + 1) \u00d7 7?",
+   "cf_question": "What is (4 + 5) \u00d7 7?",
+   "bridge": "5",
+   "cf_bridge": "9",
+   "cue": "4 + 1",
+   "answer": "35",
+   "cf_answer": "63",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 1?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 7?",
+    "answer": "35",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0024",
+   "family": "ARITH",
+   "scene": "A-0024",
+   "context": "Here is a sum for Dan.",
+   "cf_context": "Here is a sum for Dan.",
+   "off_context": "Here is a sum for Sean.",
+   "question": "What is (4 + 4) \u00d7 5?",
+   "cf_question": "What is (4 + 1) \u00d7 5?",
+   "bridge": "8",
+   "cf_bridge": "5",
+   "cue": "4 + 4",
+   "answer": "40",
+   "cf_answer": "25",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 4?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 5?",
+    "answer": "40",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0025",
+   "family": "ARITH",
+   "scene": "A-0025",
+   "context": "Here is a sum for David.",
+   "cf_context": "Here is a sum for David.",
+   "off_context": "Here is a sum for Ben.",
+   "question": "What is (4 + 2) \u00d7 3?",
+   "cf_question": "What is (4 + 4) \u00d7 3?",
+   "bridge": "6",
+   "cf_bridge": "8",
+   "cue": "4 + 2",
+   "answer": "18",
+   "cf_answer": "24",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 2?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 3?",
+    "answer": "18",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0026",
+   "family": "ARITH",
+   "scene": "A-0026",
+   "context": "Here is a sum for Nina.",
+   "cf_context": "Here is a sum for Nina.",
+   "off_context": "Here is a sum for Zoe.",
+   "question": "What is (1 + 5) \u00d7 4?",
+   "cf_question": "What is (1 + 7) \u00d7 4?",
+   "bridge": "6",
+   "cf_bridge": "8",
+   "cue": "1 + 5",
+   "answer": "24",
+   "cf_answer": "32",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 5?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 4?",
+    "answer": "24",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0027",
+   "family": "ARITH",
+   "scene": "A-0027",
+   "context": "Here is a sum for Tara.",
+   "cf_context": "Here is a sum for Tara.",
+   "off_context": "Here is a sum for Clara.",
+   "question": "What is (2 + 5) \u00d7 4?",
+   "cf_question": "What is (2 + 7) \u00d7 4?",
+   "bridge": "7",
+   "cf_bridge": "9",
+   "cue": "2 + 5",
+   "answer": "28",
+   "cf_answer": "36",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 5?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 4?",
+    "answer": "28",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0028",
+   "family": "ARITH",
+   "scene": "A-0028",
+   "context": "Here is a sum for Mark.",
+   "cf_context": "Here is a sum for Mark.",
+   "off_context": "Here is a sum for Julia.",
+   "question": "What is (1 + 8) \u00d7 4?",
+   "cf_question": "What is (1 + 2) \u00d7 4?",
+   "bridge": "9",
+   "cf_bridge": "3",
+   "cue": "1 + 8",
+   "answer": "36",
+   "cf_answer": "12",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 8?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 4?",
+    "answer": "36",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0029",
+   "family": "ARITH",
+   "scene": "A-0029",
+   "context": "Here is a sum for Ella.",
+   "cf_context": "Here is a sum for Ella.",
+   "off_context": "Here is a sum for Alice.",
+   "question": "What is (1 + 1) \u00d7 4?",
+   "cf_question": "What is (1 + 7) \u00d7 4?",
+   "bridge": "2",
+   "cf_bridge": "8",
+   "cue": "1 + 1",
+   "answer": "8",
+   "cf_answer": "32",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 1?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 2 \u00d7 4?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0030",
+   "family": "ARITH",
+   "scene": "A-0030",
+   "context": "Here is a sum for Julia.",
+   "cf_context": "Here is a sum for Julia.",
+   "off_context": "Here is a sum for Will.",
+   "question": "What is (1 + 5) \u00d7 6?",
+   "cf_question": "What is (1 + 3) \u00d7 6?",
+   "bridge": "6",
+   "cf_bridge": "4",
+   "cue": "1 + 5",
+   "answer": "36",
+   "cf_answer": "24",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 5?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 6?",
+    "answer": "36",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0031",
+   "family": "ARITH",
+   "scene": "A-0031",
+   "context": "Here is a sum for Beth.",
+   "cf_context": "Here is a sum for Beth.",
+   "off_context": "Here is a sum for Tom.",
+   "question": "What is (3 + 1) \u00d7 4?",
+   "cf_question": "What is (3 + 4) \u00d7 4?",
+   "bridge": "4",
+   "cf_bridge": "7",
+   "cue": "3 + 1",
+   "answer": "16",
+   "cf_answer": "28",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 1?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 4 \u00d7 4?",
+    "answer": "16",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0032",
+   "family": "ARITH",
+   "scene": "A-0032",
+   "context": "Here is a sum for Clara.",
+   "cf_context": "Here is a sum for Clara.",
+   "off_context": "Here is a sum for Kate.",
+   "question": "What is (4 + 5) \u00d7 9?",
+   "cf_question": "What is (4 + 1) \u00d7 9?",
+   "bridge": "9",
+   "cf_bridge": "5",
+   "cue": "4 + 5",
+   "answer": "81",
+   "cf_answer": "45",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 5?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 9?",
+    "answer": "81",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0033",
+   "family": "ARITH",
+   "scene": "A-0033",
+   "context": "Here is a sum for Tom.",
+   "cf_context": "Here is a sum for Tom.",
+   "off_context": "Here is a sum for David.",
+   "question": "What is (4 + 4) \u00d7 3?",
+   "cf_question": "What is (4 + 2) \u00d7 3?",
+   "bridge": "8",
+   "cf_bridge": "6",
+   "cue": "4 + 4",
+   "answer": "24",
+   "cf_answer": "18",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 4?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 3?",
+    "answer": "24",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0034",
+   "family": "ARITH",
+   "scene": "A-0034",
+   "context": "Here is a sum for Owen.",
+   "cf_context": "Here is a sum for Owen.",
+   "off_context": "Here is a sum for Mia.",
+   "question": "What is (1 + 6) \u00d7 4?",
+   "cf_question": "What is (1 + 1) \u00d7 4?",
+   "bridge": "7",
+   "cf_bridge": "2",
+   "cue": "1 + 6",
+   "answer": "28",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 6?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 4?",
+    "answer": "28",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0035",
+   "family": "ARITH",
+   "scene": "A-0035",
+   "context": "Here is a sum for Hugo.",
+   "cf_context": "Here is a sum for Hugo.",
+   "off_context": "Here is a sum for Finn.",
+   "question": "What is (1 + 8) \u00d7 9?",
+   "cf_question": "What is (1 + 3) \u00d7 9?",
+   "bridge": "9",
+   "cf_bridge": "4",
+   "cue": "1 + 8",
+   "answer": "81",
+   "cf_answer": "36",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 8?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 9?",
+    "answer": "81",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0036",
+   "family": "ARITH",
+   "scene": "A-0036",
+   "context": "Here is a sum for Clara.",
+   "cf_context": "Here is a sum for Clara.",
+   "off_context": "Here is a sum for Sam.",
+   "question": "What is (4 + 2) \u00d7 4?",
+   "cf_question": "What is (4 + 5) \u00d7 4?",
+   "bridge": "6",
+   "cf_bridge": "9",
+   "cue": "4 + 2",
+   "answer": "24",
+   "cf_answer": "36",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 2?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 4?",
+    "answer": "24",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0037",
+   "family": "ARITH",
+   "scene": "A-0037",
+   "context": "Here is a sum for Luke.",
+   "cf_context": "Here is a sum for Luke.",
+   "off_context": "Here is a sum for Leo.",
+   "question": "What is (2 + 7) \u00d7 5?",
+   "cf_question": "What is (2 + 4) \u00d7 5?",
+   "bridge": "9",
+   "cf_bridge": "6",
+   "cue": "2 + 7",
+   "answer": "45",
+   "cf_answer": "30",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 7?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 5?",
+    "answer": "45",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0038",
+   "family": "ARITH",
+   "scene": "A-0038",
+   "context": "Here is a sum for Julia.",
+   "cf_context": "Here is a sum for Julia.",
+   "off_context": "Here is a sum for Ben.",
+   "question": "What is (1 + 2) \u00d7 7?",
+   "cf_question": "What is (1 + 5) \u00d7 7?",
+   "bridge": "3",
+   "cf_bridge": "6",
+   "cue": "1 + 2",
+   "answer": "21",
+   "cf_answer": "42",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 2?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 3 \u00d7 7?",
+    "answer": "21",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0039",
+   "family": "ARITH",
+   "scene": "A-0039",
+   "context": "Here is a sum for Laura.",
+   "cf_context": "Here is a sum for Laura.",
+   "off_context": "Here is a sum for Diana.",
+   "question": "What is (3 + 3) \u00d7 4?",
+   "cf_question": "What is (3 + 6) \u00d7 4?",
+   "bridge": "6",
+   "cf_bridge": "9",
+   "cue": "3 + 3",
+   "answer": "24",
+   "cf_answer": "36",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 3?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 4?",
+    "answer": "24",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0040",
+   "family": "ARITH",
+   "scene": "A-0040",
+   "context": "Here is a sum for Sean.",
+   "cf_context": "Here is a sum for Sean.",
+   "off_context": "Here is a sum for Laura.",
+   "question": "What is (3 + 1) \u00d7 4?",
+   "cf_question": "What is (3 + 2) \u00d7 4?",
+   "bridge": "4",
+   "cf_bridge": "5",
+   "cue": "3 + 1",
+   "answer": "16",
+   "cf_answer": "20",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 1?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 4 \u00d7 4?",
+    "answer": "16",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0041",
+   "family": "ARITH",
+   "scene": "A-0041",
+   "context": "Here is a sum for Max.",
+   "cf_context": "Here is a sum for Max.",
+   "off_context": "Here is a sum for Liam.",
+   "question": "What is (5 + 4) \u00d7 8?",
+   "cf_question": "What is (5 + 1) \u00d7 8?",
+   "bridge": "9",
+   "cf_bridge": "6",
+   "cue": "5 + 4",
+   "answer": "72",
+   "cf_answer": "48",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 5 + 4?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 8?",
+    "answer": "72",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0042",
+   "family": "ARITH",
+   "scene": "A-0042",
+   "context": "Here is a sum for Sam.",
+   "cf_context": "Here is a sum for Sam.",
+   "off_context": "Here is a sum for Zoe.",
+   "question": "What is (1 + 2) \u00d7 7?",
+   "cf_question": "What is (1 + 5) \u00d7 7?",
+   "bridge": "3",
+   "cf_bridge": "6",
+   "cue": "1 + 2",
+   "answer": "21",
+   "cf_answer": "42",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 2?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 3 \u00d7 7?",
+    "answer": "21",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0043",
+   "family": "ARITH",
+   "scene": "A-0043",
+   "context": "Here is a sum for Mia.",
+   "cf_context": "Here is a sum for Mia.",
+   "off_context": "Here is a sum for Liam.",
+   "question": "What is (3 + 1) \u00d7 9?",
+   "cf_question": "What is (3 + 2) \u00d7 9?",
+   "bridge": "4",
+   "cf_bridge": "5",
+   "cue": "3 + 1",
+   "answer": "36",
+   "cf_answer": "45",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 1?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 4 \u00d7 9?",
+    "answer": "36",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0044",
+   "family": "ARITH",
+   "scene": "A-0044",
+   "context": "Here is a sum for Ella.",
+   "cf_context": "Here is a sum for Ella.",
+   "off_context": "Here is a sum for Liam.",
+   "question": "What is (1 + 2) \u00d7 8?",
+   "cf_question": "What is (1 + 5) \u00d7 8?",
+   "bridge": "3",
+   "cf_bridge": "6",
+   "cue": "1 + 2",
+   "answer": "24",
+   "cf_answer": "48",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 2?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 3 \u00d7 8?",
+    "answer": "24",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0045",
+   "family": "ARITH",
+   "scene": "A-0045",
+   "context": "Here is a sum for Mark.",
+   "cf_context": "Here is a sum for Mark.",
+   "off_context": "Here is a sum for Maria.",
+   "question": "What is (2 + 4) \u00d7 3?",
+   "cf_question": "What is (2 + 1) \u00d7 3?",
+   "bridge": "6",
+   "cf_bridge": "3",
+   "cue": "2 + 4",
+   "answer": "18",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 4?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 3?",
+    "answer": "18",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0046",
+   "family": "ARITH",
+   "scene": "A-0046",
+   "context": "Here is a sum for Fiona.",
+   "cf_context": "Here is a sum for Fiona.",
+   "off_context": "Here is a sum for Kyle.",
+   "question": "What is (1 + 7) \u00d7 6?",
+   "cf_question": "What is (1 + 2) \u00d7 6?",
+   "bridge": "8",
+   "cf_bridge": "3",
+   "cue": "1 + 7",
+   "answer": "48",
+   "cf_answer": "18",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 7?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 6?",
+    "answer": "48",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0047",
+   "family": "ARITH",
+   "scene": "A-0047",
+   "context": "Here is a sum for Fiona.",
+   "cf_context": "Here is a sum for Fiona.",
+   "off_context": "Here is a sum for Iris.",
+   "question": "What is (3 + 3) \u00d7 6?",
+   "cf_question": "What is (3 + 1) \u00d7 6?",
+   "bridge": "6",
+   "cf_bridge": "4",
+   "cue": "3 + 3",
+   "answer": "36",
+   "cf_answer": "24",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 3?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 6?",
+    "answer": "36",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0048",
+   "family": "ARITH",
+   "scene": "A-0048",
+   "context": "Here is a sum for Rose.",
+   "cf_context": "Here is a sum for Rose.",
+   "off_context": "Here is a sum for Ryan.",
+   "question": "What is (6 + 1) \u00d7 8?",
+   "cf_question": "What is (6 + 3) \u00d7 8?",
+   "bridge": "7",
+   "cf_bridge": "9",
+   "cue": "6 + 1",
+   "answer": "56",
+   "cf_answer": "72",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 6 + 1?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 8?",
+    "answer": "56",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0049",
+   "family": "ARITH",
+   "scene": "A-0049",
+   "context": "Here is a sum for Olivia.",
+   "cf_context": "Here is a sum for Olivia.",
+   "off_context": "Here is a sum for Tara.",
+   "question": "What is (5 + 2) \u00d7 9?",
+   "cf_question": "What is (5 + 4) \u00d7 9?",
+   "bridge": "7",
+   "cf_bridge": "9",
+   "cue": "5 + 2",
+   "answer": "63",
+   "cf_answer": "81",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 5 + 2?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 9?",
+    "answer": "63",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0050",
+   "family": "ARITH",
+   "scene": "A-0050",
+   "context": "Here is a sum for Mark.",
+   "cf_context": "Here is a sum for Mark.",
+   "off_context": "Here is a sum for Victor.",
+   "question": "What is (3 + 2) \u00d7 5?",
+   "cf_question": "What is (3 + 4) \u00d7 5?",
+   "bridge": "5",
+   "cf_bridge": "7",
+   "cue": "3 + 2",
+   "answer": "25",
+   "cf_answer": "35",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 2?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 5?",
+    "answer": "25",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0051",
+   "family": "ARITH",
+   "scene": "A-0051",
+   "context": "Here is a sum for Diana.",
+   "cf_context": "Here is a sum for Diana.",
+   "off_context": "Here is a sum for Laura.",
+   "question": "What is (4 + 2) \u00d7 9?",
+   "cf_question": "What is (4 + 1) \u00d7 9?",
+   "bridge": "6",
+   "cf_bridge": "5",
+   "cue": "4 + 2",
+   "answer": "54",
+   "cf_answer": "45",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 2?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 9?",
+    "answer": "54",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0052",
+   "family": "ARITH",
+   "scene": "A-0052",
+   "context": "Here is a sum for David.",
+   "cf_context": "Here is a sum for David.",
+   "off_context": "Here is a sum for Rose.",
+   "question": "What is (3 + 1) \u00d7 7?",
+   "cf_question": "What is (3 + 2) \u00d7 7?",
+   "bridge": "4",
+   "cf_bridge": "5",
+   "cue": "3 + 1",
+   "answer": "28",
+   "cf_answer": "35",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 1?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 4 \u00d7 7?",
+    "answer": "28",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0053",
+   "family": "ARITH",
+   "scene": "A-0053",
+   "context": "Here is a sum for Kate.",
+   "cf_context": "Here is a sum for Kate.",
+   "off_context": "Here is a sum for Luke.",
+   "question": "What is (1 + 5) \u00d7 3?",
+   "cf_question": "What is (1 + 2) \u00d7 3?",
+   "bridge": "6",
+   "cf_bridge": "3",
+   "cue": "1 + 5",
+   "answer": "18",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 5?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 3?",
+    "answer": "18",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0054",
+   "family": "ARITH",
+   "scene": "A-0054",
+   "context": "Here is a sum for Sara.",
+   "cf_context": "Here is a sum for Sara.",
+   "off_context": "Here is a sum for Eric.",
+   "question": "What is (2 + 4) \u00d7 5?",
+   "cf_question": "What is (2 + 2) \u00d7 5?",
+   "bridge": "6",
+   "cf_bridge": "4",
+   "cue": "2 + 4",
+   "answer": "30",
+   "cf_answer": "20",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 4?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 5?",
+    "answer": "30",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0055",
+   "family": "ARITH",
+   "scene": "A-0055",
+   "context": "Here is a sum for Hugo.",
+   "cf_context": "Here is a sum for Hugo.",
+   "off_context": "Here is a sum for Peter.",
+   "question": "What is (5 + 4) \u00d7 7?",
+   "cf_question": "What is (5 + 2) \u00d7 7?",
+   "bridge": "9",
+   "cf_bridge": "7",
+   "cue": "5 + 4",
+   "answer": "63",
+   "cf_answer": "49",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 5 + 4?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 7?",
+    "answer": "63",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0056",
+   "family": "ARITH",
+   "scene": "A-0056",
+   "context": "Here is a sum for Liam.",
+   "cf_context": "Here is a sum for Liam.",
+   "off_context": "Here is a sum for Ella.",
+   "question": "What is (4 + 5) \u00d7 9?",
+   "cf_question": "What is (4 + 2) \u00d7 9?",
+   "bridge": "9",
+   "cf_bridge": "6",
+   "cue": "4 + 5",
+   "answer": "81",
+   "cf_answer": "54",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 5?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 9?",
+    "answer": "81",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0057",
+   "family": "ARITH",
+   "scene": "A-0057",
+   "context": "Here is a sum for Sean.",
+   "cf_context": "Here is a sum for Sean.",
+   "off_context": "Here is a sum for Ruby.",
+   "question": "What is (1 + 4) \u00d7 9?",
+   "cf_question": "What is (1 + 7) \u00d7 9?",
+   "bridge": "5",
+   "cf_bridge": "8",
+   "cue": "1 + 4",
+   "answer": "45",
+   "cf_answer": "72",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 4?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 9?",
+    "answer": "45",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0058",
+   "family": "ARITH",
+   "scene": "A-0058",
+   "context": "Here is a sum for David.",
+   "cf_context": "Here is a sum for David.",
+   "off_context": "Here is a sum for Grace.",
+   "question": "What is (4 + 3) \u00d7 8?",
+   "cf_question": "What is (4 + 4) \u00d7 8?",
+   "bridge": "7",
+   "cf_bridge": "8",
+   "cue": "4 + 3",
+   "answer": "56",
+   "cf_answer": "64",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 3?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 8?",
+    "answer": "56",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0059",
+   "family": "ARITH",
+   "scene": "A-0059",
+   "context": "Here is a sum for Oscar.",
+   "cf_context": "Here is a sum for Oscar.",
+   "off_context": "Here is a sum for Ruby.",
+   "question": "What is (2 + 2) \u00d7 4?",
+   "cf_question": "What is (2 + 6) \u00d7 4?",
+   "bridge": "4",
+   "cf_bridge": "8",
+   "cue": "2 + 2",
+   "answer": "16",
+   "cf_answer": "32",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 2?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 4 \u00d7 4?",
+    "answer": "16",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0060",
+   "family": "ARITH",
+   "scene": "A-0060",
+   "context": "Here is a sum for Emma.",
+   "cf_context": "Here is a sum for Emma.",
+   "off_context": "Here is a sum for Hugo.",
+   "question": "What is (4 + 2) \u00d7 8?",
+   "cf_question": "What is (4 + 3) \u00d7 8?",
+   "bridge": "6",
+   "cf_bridge": "7",
+   "cue": "4 + 2",
+   "answer": "48",
+   "cf_answer": "56",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 2?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 8?",
+    "answer": "48",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0061",
+   "family": "ARITH",
+   "scene": "A-0061",
+   "context": "Here is a sum for Noah.",
+   "cf_context": "Here is a sum for Noah.",
+   "off_context": "Here is a sum for Luke.",
+   "question": "What is (1 + 6) \u00d7 3?",
+   "cf_question": "What is (1 + 2) \u00d7 3?",
+   "bridge": "7",
+   "cf_bridge": "3",
+   "cue": "1 + 6",
+   "answer": "21",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 6?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 3?",
+    "answer": "21",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0062",
+   "family": "ARITH",
+   "scene": "A-0062",
+   "context": "Here is a sum for Oscar.",
+   "cf_context": "Here is a sum for Oscar.",
+   "off_context": "Here is a sum for Amy.",
+   "question": "What is (2 + 6) \u00d7 6?",
+   "cf_question": "What is (2 + 3) \u00d7 6?",
+   "bridge": "8",
+   "cf_bridge": "5",
+   "cue": "2 + 6",
+   "answer": "48",
+   "cf_answer": "30",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 6?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 6?",
+    "answer": "48",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0063",
+   "family": "ARITH",
+   "scene": "A-0063",
+   "context": "Here is a sum for Julia.",
+   "cf_context": "Here is a sum for Julia.",
+   "off_context": "Here is a sum for Laura.",
+   "question": "What is (1 + 4) \u00d7 7?",
+   "cf_question": "What is (1 + 6) \u00d7 7?",
+   "bridge": "5",
+   "cf_bridge": "7",
+   "cue": "1 + 4",
+   "answer": "35",
+   "cf_answer": "49",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 4?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 7?",
+    "answer": "35",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0064",
+   "family": "ARITH",
+   "scene": "A-0064",
+   "context": "Here is a sum for Emma.",
+   "cf_context": "Here is a sum for Emma.",
+   "off_context": "Here is a sum for Luke.",
+   "question": "What is (2 + 3) \u00d7 2?",
+   "cf_question": "What is (2 + 1) \u00d7 2?",
+   "bridge": "5",
+   "cf_bridge": "3",
+   "cue": "2 + 3",
+   "answer": "10",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 3?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 2?",
+    "answer": "10",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0065",
+   "family": "ARITH",
+   "scene": "A-0065",
+   "context": "Here is a sum for Kyle.",
+   "cf_context": "Here is a sum for Kyle.",
+   "off_context": "Here is a sum for Henry.",
+   "question": "What is (3 + 6) \u00d7 6?",
+   "cf_question": "What is (3 + 4) \u00d7 6?",
+   "bridge": "9",
+   "cf_bridge": "7",
+   "cue": "3 + 6",
+   "answer": "54",
+   "cf_answer": "42",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 6?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 6?",
+    "answer": "54",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0066",
+   "family": "ARITH",
+   "scene": "A-0066",
+   "context": "Here is a sum for Peter.",
+   "cf_context": "Here is a sum for Peter.",
+   "off_context": "Here is a sum for Rose.",
+   "question": "What is (4 + 5) \u00d7 3?",
+   "cf_question": "What is (4 + 1) \u00d7 3?",
+   "bridge": "9",
+   "cf_bridge": "5",
+   "cue": "4 + 5",
+   "answer": "27",
+   "cf_answer": "15",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 5?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 3?",
+    "answer": "27",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0067",
+   "family": "ARITH",
+   "scene": "A-0067",
+   "context": "Here is a sum for Ella.",
+   "cf_context": "Here is a sum for Ella.",
+   "off_context": "Here is a sum for Kyle.",
+   "question": "What is (2 + 1) \u00d7 6?",
+   "cf_question": "What is (2 + 7) \u00d7 6?",
+   "bridge": "3",
+   "cf_bridge": "9",
+   "cue": "2 + 1",
+   "answer": "18",
+   "cf_answer": "54",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 1?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 3 \u00d7 6?",
+    "answer": "18",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0068",
+   "family": "ARITH",
+   "scene": "A-0068",
+   "context": "Here is a sum for Ivy.",
+   "cf_context": "Here is a sum for Ivy.",
+   "off_context": "Here is a sum for Sam.",
+   "question": "What is (3 + 5) \u00d7 5?",
+   "cf_question": "What is (3 + 1) \u00d7 5?",
+   "bridge": "8",
+   "cf_bridge": "4",
+   "cue": "3 + 5",
+   "answer": "40",
+   "cf_answer": "20",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 5?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 5?",
+    "answer": "40",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0069",
+   "family": "ARITH",
+   "scene": "A-0069",
+   "context": "Here is a sum for Ruby.",
+   "cf_context": "Here is a sum for Ruby.",
+   "off_context": "Here is a sum for Diana.",
+   "question": "What is (1 + 8) \u00d7 5?",
+   "cf_question": "What is (1 + 6) \u00d7 5?",
+   "bridge": "9",
+   "cf_bridge": "7",
+   "cue": "1 + 8",
+   "answer": "45",
+   "cf_answer": "35",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 8?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 5?",
+    "answer": "45",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0070",
+   "family": "ARITH",
+   "scene": "A-0070",
+   "context": "Here is a sum for Zoe.",
+   "cf_context": "Here is a sum for Zoe.",
+   "off_context": "Here is a sum for Maria.",
+   "question": "What is (3 + 4) \u00d7 9?",
+   "cf_question": "What is (3 + 5) \u00d7 9?",
+   "bridge": "7",
+   "cf_bridge": "8",
+   "cue": "3 + 4",
+   "answer": "63",
+   "cf_answer": "72",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 4?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 9?",
+    "answer": "63",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0071",
+   "family": "ARITH",
+   "scene": "A-0071",
+   "context": "Here is a sum for Ivy.",
+   "cf_context": "Here is a sum for Ivy.",
+   "off_context": "Here is a sum for Laura.",
+   "question": "What is (1 + 2) \u00d7 3?",
+   "cf_question": "What is (1 + 5) \u00d7 3?",
+   "bridge": "3",
+   "cf_bridge": "6",
+   "cue": "1 + 2",
+   "answer": "9",
+   "cf_answer": "18",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 2?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 3 \u00d7 3?",
+    "answer": "9",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0072",
+   "family": "ARITH",
+   "scene": "A-0072",
+   "context": "Here is a sum for Iris.",
+   "cf_context": "Here is a sum for Iris.",
+   "off_context": "Here is a sum for Luke.",
+   "question": "What is (1 + 3) \u00d7 3?",
+   "cf_question": "What is (1 + 2) \u00d7 3?",
+   "bridge": "4",
+   "cf_bridge": "3",
+   "cue": "1 + 3",
+   "answer": "12",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 3?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 4 \u00d7 3?",
+    "answer": "12",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0073",
+   "family": "ARITH",
+   "scene": "A-0073",
+   "context": "Here is a sum for Finn.",
+   "cf_context": "Here is a sum for Finn.",
+   "off_context": "Here is a sum for Eric.",
+   "question": "What is (2 + 1) \u00d7 7?",
+   "cf_question": "What is (2 + 7) \u00d7 7?",
+   "bridge": "3",
+   "cf_bridge": "9",
+   "cue": "2 + 1",
+   "answer": "21",
+   "cf_answer": "63",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 1?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 3 \u00d7 7?",
+    "answer": "21",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0074",
+   "family": "ARITH",
+   "scene": "A-0074",
+   "context": "Here is a sum for Clara.",
+   "cf_context": "Here is a sum for Clara.",
+   "off_context": "Here is a sum for Mia.",
+   "question": "What is (2 + 3) \u00d7 7?",
+   "cf_question": "What is (2 + 6) \u00d7 7?",
+   "bridge": "5",
+   "cf_bridge": "8",
+   "cue": "2 + 3",
+   "answer": "35",
+   "cf_answer": "56",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 3?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 7?",
+    "answer": "35",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0075",
+   "family": "ARITH",
+   "scene": "A-0075",
+   "context": "Here is a sum for Ryan.",
+   "cf_context": "Here is a sum for Ryan.",
+   "off_context": "Here is a sum for Kyle.",
+   "question": "What is (4 + 1) \u00d7 7?",
+   "cf_question": "What is (4 + 5) \u00d7 7?",
+   "bridge": "5",
+   "cf_bridge": "9",
+   "cue": "4 + 1",
+   "answer": "35",
+   "cf_answer": "63",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 1?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 7?",
+    "answer": "35",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0076",
+   "family": "ARITH",
+   "scene": "A-0076",
+   "context": "Here is a sum for Victor.",
+   "cf_context": "Here is a sum for Victor.",
+   "off_context": "Here is a sum for Anna.",
+   "question": "What is (1 + 5) \u00d7 8?",
+   "cf_question": "What is (1 + 3) \u00d7 8?",
+   "bridge": "6",
+   "cf_bridge": "4",
+   "cue": "1 + 5",
+   "answer": "48",
+   "cf_answer": "32",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 5?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 8?",
+    "answer": "48",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0077",
+   "family": "ARITH",
+   "scene": "A-0077",
+   "context": "Here is a sum for Henry.",
+   "cf_context": "Here is a sum for Henry.",
+   "off_context": "Here is a sum for Eve.",
+   "question": "What is (3 + 2) \u00d7 9?",
+   "cf_question": "What is (3 + 1) \u00d7 9?",
+   "bridge": "5",
+   "cf_bridge": "4",
+   "cue": "3 + 2",
+   "answer": "45",
+   "cf_answer": "36",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 2?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 9?",
+    "answer": "45",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0078",
+   "family": "ARITH",
+   "scene": "A-0078",
+   "context": "Here is a sum for Eva.",
+   "cf_context": "Here is a sum for Eva.",
+   "off_context": "Here is a sum for Liam.",
+   "question": "What is (2 + 1) \u00d7 5?",
+   "cf_question": "What is (2 + 5) \u00d7 5?",
+   "bridge": "3",
+   "cf_bridge": "7",
+   "cue": "2 + 1",
+   "answer": "15",
+   "cf_answer": "35",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 1?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 3 \u00d7 5?",
+    "answer": "15",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0079",
+   "family": "ARITH",
+   "scene": "A-0079",
+   "context": "Here is a sum for Carl.",
+   "cf_context": "Here is a sum for Carl.",
+   "off_context": "Here is a sum for Oscar.",
+   "question": "What is (3 + 2) \u00d7 3?",
+   "cf_question": "What is (3 + 5) \u00d7 3?",
+   "bridge": "5",
+   "cf_bridge": "8",
+   "cue": "3 + 2",
+   "answer": "15",
+   "cf_answer": "24",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 2?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 3?",
+    "answer": "15",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0080",
+   "family": "ARITH",
+   "scene": "A-0080",
+   "context": "Here is a sum for Ivy.",
+   "cf_context": "Here is a sum for Ivy.",
+   "off_context": "Here is a sum for Tara.",
+   "question": "What is (1 + 7) \u00d7 8?",
+   "cf_question": "What is (1 + 3) \u00d7 8?",
+   "bridge": "8",
+   "cf_bridge": "4",
+   "cue": "1 + 7",
+   "answer": "64",
+   "cf_answer": "32",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 7?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 8?",
+    "answer": "64",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0081",
+   "family": "ARITH",
+   "scene": "A-0081",
+   "context": "Here is a sum for David.",
+   "cf_context": "Here is a sum for David.",
+   "off_context": "Here is a sum for Dan.",
+   "question": "What is (4 + 4) \u00d7 8?",
+   "cf_question": "What is (4 + 5) \u00d7 8?",
+   "bridge": "8",
+   "cf_bridge": "9",
+   "cue": "4 + 4",
+   "answer": "64",
+   "cf_answer": "72",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 4?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 8?",
+    "answer": "64",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0082",
+   "family": "ARITH",
+   "scene": "A-0082",
+   "context": "Here is a sum for Victor.",
+   "cf_context": "Here is a sum for Victor.",
+   "off_context": "Here is a sum for Rose.",
+   "question": "What is (2 + 5) \u00d7 4?",
+   "cf_question": "What is (2 + 2) \u00d7 4?",
+   "bridge": "7",
+   "cf_bridge": "4",
+   "cue": "2 + 5",
+   "answer": "28",
+   "cf_answer": "16",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 5?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 4?",
+    "answer": "28",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0083",
+   "family": "ARITH",
+   "scene": "A-0083",
+   "context": "Here is a sum for Ruby.",
+   "cf_context": "Here is a sum for Ruby.",
+   "off_context": "Here is a sum for Liam.",
+   "question": "What is (3 + 6) \u00d7 9?",
+   "cf_question": "What is (3 + 5) \u00d7 9?",
+   "bridge": "9",
+   "cf_bridge": "8",
+   "cue": "3 + 6",
+   "answer": "81",
+   "cf_answer": "72",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 6?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 9?",
+    "answer": "81",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0084",
+   "family": "ARITH",
+   "scene": "A-0084",
+   "context": "Here is a sum for Nina.",
+   "cf_context": "Here is a sum for Nina.",
+   "off_context": "Here is a sum for Eva.",
+   "question": "What is (4 + 4) \u00d7 9?",
+   "cf_question": "What is (4 + 2) \u00d7 9?",
+   "bridge": "8",
+   "cf_bridge": "6",
+   "cue": "4 + 4",
+   "answer": "72",
+   "cf_answer": "54",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 4?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 9?",
+    "answer": "72",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0085",
+   "family": "ARITH",
+   "scene": "A-0085",
+   "context": "Here is a sum for Ivy.",
+   "cf_context": "Here is a sum for Ivy.",
+   "off_context": "Here is a sum for Lily.",
+   "question": "What is (3 + 4) \u00d7 3?",
+   "cf_question": "What is (3 + 3) \u00d7 3?",
+   "bridge": "7",
+   "cf_bridge": "6",
+   "cue": "3 + 4",
+   "answer": "21",
+   "cf_answer": "18",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 4?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 3?",
+    "answer": "21",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0086",
+   "family": "ARITH",
+   "scene": "A-0086",
+   "context": "Here is a sum for Nina.",
+   "cf_context": "Here is a sum for Nina.",
+   "off_context": "Here is a sum for Maria.",
+   "question": "What is (2 + 5) \u00d7 8?",
+   "cf_question": "What is (2 + 4) \u00d7 8?",
+   "bridge": "7",
+   "cf_bridge": "6",
+   "cue": "2 + 5",
+   "answer": "56",
+   "cf_answer": "48",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 5?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 8?",
+    "answer": "56",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0087",
+   "family": "ARITH",
+   "scene": "A-0087",
+   "context": "Here is a sum for Frank.",
+   "cf_context": "Here is a sum for Frank.",
+   "off_context": "Here is a sum for Sam.",
+   "question": "What is (4 + 2) \u00d7 9?",
+   "cf_question": "What is (4 + 3) \u00d7 9?",
+   "bridge": "6",
+   "cf_bridge": "7",
+   "cue": "4 + 2",
+   "answer": "54",
+   "cf_answer": "63",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 2?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 9?",
+    "answer": "54",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0088",
+   "family": "ARITH",
+   "scene": "A-0088",
+   "context": "Here is a sum for Sean.",
+   "cf_context": "Here is a sum for Sean.",
+   "off_context": "Here is a sum for Zoe.",
+   "question": "What is (1 + 8) \u00d7 8?",
+   "cf_question": "What is (1 + 4) \u00d7 8?",
+   "bridge": "9",
+   "cf_bridge": "5",
+   "cue": "1 + 8",
+   "answer": "72",
+   "cf_answer": "40",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 8?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 8?",
+    "answer": "72",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0089",
+   "family": "ARITH",
+   "scene": "A-0089",
+   "context": "Here is a sum for Victor.",
+   "cf_context": "Here is a sum for Victor.",
+   "off_context": "Here is a sum for Owen.",
+   "question": "What is (1 + 1) \u00d7 2?",
+   "cf_question": "What is (1 + 7) \u00d7 2?",
+   "bridge": "2",
+   "cf_bridge": "8",
+   "cue": "1 + 1",
+   "answer": "4",
+   "cf_answer": "16",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 1?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 2 \u00d7 2?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0090",
+   "family": "ARITH",
+   "scene": "A-0090",
+   "context": "Here is a sum for Ivy.",
+   "cf_context": "Here is a sum for Ivy.",
+   "off_context": "Here is a sum for Eva.",
+   "question": "What is (1 + 6) \u00d7 6?",
+   "cf_question": "What is (1 + 8) \u00d7 6?",
+   "bridge": "7",
+   "cf_bridge": "9",
+   "cue": "1 + 6",
+   "answer": "42",
+   "cf_answer": "54",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 6?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 6?",
+    "answer": "42",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0091",
+   "family": "ARITH",
+   "scene": "A-0091",
+   "context": "Here is a sum for James.",
+   "cf_context": "Here is a sum for James.",
+   "off_context": "Here is a sum for Diana.",
+   "question": "What is (3 + 1) \u00d7 2?",
+   "cf_question": "What is (3 + 2) \u00d7 2?",
+   "bridge": "4",
+   "cf_bridge": "5",
+   "cue": "3 + 1",
+   "answer": "8",
+   "cf_answer": "10",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 1?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 4 \u00d7 2?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0092",
+   "family": "ARITH",
+   "scene": "A-0092",
+   "context": "Here is a sum for Alice.",
+   "cf_context": "Here is a sum for Alice.",
+   "off_context": "Here is a sum for Fiona.",
+   "question": "What is (2 + 4) \u00d7 7?",
+   "cf_question": "What is (2 + 6) \u00d7 7?",
+   "bridge": "6",
+   "cf_bridge": "8",
+   "cue": "2 + 4",
+   "answer": "42",
+   "cf_answer": "56",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 4?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 7?",
+    "answer": "42",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0093",
+   "family": "ARITH",
+   "scene": "A-0093",
+   "context": "Here is a sum for Paul.",
+   "cf_context": "Here is a sum for Paul.",
+   "off_context": "Here is a sum for Iris.",
+   "question": "What is (3 + 1) \u00d7 6?",
+   "cf_question": "What is (3 + 6) \u00d7 6?",
+   "bridge": "4",
+   "cf_bridge": "9",
+   "cue": "3 + 1",
+   "answer": "24",
+   "cf_answer": "54",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 1?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 4 \u00d7 6?",
+    "answer": "24",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0094",
+   "family": "ARITH",
+   "scene": "A-0094",
+   "context": "Here is a sum for Max.",
+   "cf_context": "Here is a sum for Max.",
+   "off_context": "Here is a sum for Laura.",
+   "question": "What is (2 + 1) \u00d7 2?",
+   "cf_question": "What is (2 + 7) \u00d7 2?",
+   "bridge": "3",
+   "cf_bridge": "9",
+   "cue": "2 + 1",
+   "answer": "6",
+   "cf_answer": "18",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 1?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 3 \u00d7 2?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0095",
+   "family": "ARITH",
+   "scene": "A-0095",
+   "context": "Here is a sum for Sara.",
+   "cf_context": "Here is a sum for Sara.",
+   "off_context": "Here is a sum for Victor.",
+   "question": "What is (1 + 2) \u00d7 5?",
+   "cf_question": "What is (1 + 7) \u00d7 5?",
+   "bridge": "3",
+   "cf_bridge": "8",
+   "cue": "1 + 2",
+   "answer": "15",
+   "cf_answer": "40",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 2?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 3 \u00d7 5?",
+    "answer": "15",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0096",
+   "family": "ARITH",
+   "scene": "A-0096",
+   "context": "Here is a sum for Eve.",
+   "cf_context": "Here is a sum for Eve.",
+   "off_context": "Here is a sum for Liam.",
+   "question": "What is (3 + 3) \u00d7 5?",
+   "cf_question": "What is (3 + 2) \u00d7 5?",
+   "bridge": "6",
+   "cf_bridge": "5",
+   "cue": "3 + 3",
+   "answer": "30",
+   "cf_answer": "25",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 3?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 5?",
+    "answer": "30",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0097",
+   "family": "ARITH",
+   "scene": "A-0097",
+   "context": "Here is a sum for Will.",
+   "cf_context": "Here is a sum for Will.",
+   "off_context": "Here is a sum for Ella.",
+   "question": "What is (5 + 3) \u00d7 9?",
+   "cf_question": "What is (5 + 2) \u00d7 9?",
+   "bridge": "8",
+   "cf_bridge": "7",
+   "cue": "5 + 3",
+   "answer": "72",
+   "cf_answer": "63",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 5 + 3?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 9?",
+    "answer": "72",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0098",
+   "family": "ARITH",
+   "scene": "A-0098",
+   "context": "Here is a sum for Will.",
+   "cf_context": "Here is a sum for Will.",
+   "off_context": "Here is a sum for Maria.",
+   "question": "What is (1 + 3) \u00d7 6?",
+   "cf_question": "What is (1 + 4) \u00d7 6?",
+   "bridge": "4",
+   "cf_bridge": "5",
+   "cue": "1 + 3",
+   "answer": "24",
+   "cf_answer": "30",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 3?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 4 \u00d7 6?",
+    "answer": "24",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0099",
+   "family": "ARITH",
+   "scene": "A-0099",
+   "context": "Here is a sum for Frank.",
+   "cf_context": "Here is a sum for Frank.",
+   "off_context": "Here is a sum for Nina.",
+   "question": "What is (3 + 4) \u00d7 5?",
+   "cf_question": "What is (3 + 6) \u00d7 5?",
+   "bridge": "7",
+   "cf_bridge": "9",
+   "cue": "3 + 4",
+   "answer": "35",
+   "cf_answer": "45",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 4?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 5?",
+    "answer": "35",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0100",
+   "family": "ARITH",
+   "scene": "A-0100",
+   "context": "Here is a sum for Tara.",
+   "cf_context": "Here is a sum for Tara.",
+   "off_context": "Here is a sum for Beth.",
+   "question": "What is (3 + 4) \u00d7 6?",
+   "cf_question": "What is (3 + 2) \u00d7 6?",
+   "bridge": "7",
+   "cf_bridge": "5",
+   "cue": "3 + 4",
+   "answer": "42",
+   "cf_answer": "30",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 4?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 6?",
+    "answer": "42",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0101",
+   "family": "ARITH",
+   "scene": "A-0101",
+   "context": "Here is a sum for Max.",
+   "cf_context": "Here is a sum for Max.",
+   "off_context": "Here is a sum for Leo.",
+   "question": "What is (6 + 2) \u00d7 8?",
+   "cf_question": "What is (6 + 1) \u00d7 8?",
+   "bridge": "8",
+   "cf_bridge": "7",
+   "cue": "6 + 2",
+   "answer": "64",
+   "cf_answer": "56",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 6 + 2?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 8?",
+    "answer": "64",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0102",
+   "family": "ARITH",
+   "scene": "A-0102",
+   "context": "Here is a sum for Sean.",
+   "cf_context": "Here is a sum for Sean.",
+   "off_context": "Here is a sum for Sam.",
+   "question": "What is (4 + 3) \u00d7 6?",
+   "cf_question": "What is (4 + 5) \u00d7 6?",
+   "bridge": "7",
+   "cf_bridge": "9",
+   "cue": "4 + 3",
+   "answer": "42",
+   "cf_answer": "54",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 3?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 6?",
+    "answer": "42",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0103",
+   "family": "ARITH",
+   "scene": "A-0103",
+   "context": "Here is a sum for Liam.",
+   "cf_context": "Here is a sum for Liam.",
+   "off_context": "Here is a sum for Iris.",
+   "question": "What is (4 + 2) \u00d7 3?",
+   "cf_question": "What is (4 + 4) \u00d7 3?",
+   "bridge": "6",
+   "cf_bridge": "8",
+   "cue": "4 + 2",
+   "answer": "18",
+   "cf_answer": "24",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 2?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 3?",
+    "answer": "18",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0104",
+   "family": "ARITH",
+   "scene": "A-0104",
+   "context": "Here is a sum for Sean.",
+   "cf_context": "Here is a sum for Sean.",
+   "off_context": "Here is a sum for Lily.",
+   "question": "What is (5 + 2) \u00d7 5?",
+   "cf_question": "What is (5 + 3) \u00d7 5?",
+   "bridge": "7",
+   "cf_bridge": "8",
+   "cue": "5 + 2",
+   "answer": "35",
+   "cf_answer": "40",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 5 + 2?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 5?",
+    "answer": "35",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0105",
+   "family": "ARITH",
+   "scene": "A-0105",
+   "context": "Here is a sum for Lily.",
+   "cf_context": "Here is a sum for Lily.",
+   "off_context": "Here is a sum for Jack.",
+   "question": "What is (2 + 1) \u00d7 2?",
+   "cf_question": "What is (2 + 2) \u00d7 2?",
+   "bridge": "3",
+   "cf_bridge": "4",
+   "cue": "2 + 1",
+   "answer": "6",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 1?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 3 \u00d7 2?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0106",
+   "family": "ARITH",
+   "scene": "A-0106",
+   "context": "Here is a sum for Will.",
+   "cf_context": "Here is a sum for Will.",
+   "off_context": "Here is a sum for Eric.",
+   "question": "What is (1 + 4) \u00d7 9?",
+   "cf_question": "What is (1 + 1) \u00d7 9?",
+   "bridge": "5",
+   "cf_bridge": "2",
+   "cue": "1 + 4",
+   "answer": "45",
+   "cf_answer": "18",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 4?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 9?",
+    "answer": "45",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0107",
+   "family": "ARITH",
+   "scene": "A-0107",
+   "context": "Here is a sum for Eve.",
+   "cf_context": "Here is a sum for Eve.",
+   "off_context": "Here is a sum for Carl.",
+   "question": "What is (1 + 8) \u00d7 6?",
+   "cf_question": "What is (1 + 2) \u00d7 6?",
+   "bridge": "9",
+   "cf_bridge": "3",
+   "cue": "1 + 8",
+   "answer": "54",
+   "cf_answer": "18",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 8?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 6?",
+    "answer": "54",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0108",
+   "family": "ARITH",
+   "scene": "A-0108",
+   "context": "Here is a sum for Ben.",
+   "cf_context": "Here is a sum for Ben.",
+   "off_context": "Here is a sum for Nina.",
+   "question": "What is (3 + 2) \u00d7 3?",
+   "cf_question": "What is (3 + 4) \u00d7 3?",
+   "bridge": "5",
+   "cf_bridge": "7",
+   "cue": "3 + 2",
+   "answer": "15",
+   "cf_answer": "21",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 2?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 3?",
+    "answer": "15",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0109",
+   "family": "ARITH",
+   "scene": "A-0109",
+   "context": "Here is a sum for Ivan.",
+   "cf_context": "Here is a sum for Ivan.",
+   "off_context": "Here is a sum for Vera.",
+   "question": "What is (1 + 4) \u00d7 7?",
+   "cf_question": "What is (1 + 2) \u00d7 7?",
+   "bridge": "5",
+   "cf_bridge": "3",
+   "cue": "1 + 4",
+   "answer": "35",
+   "cf_answer": "21",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 4?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 7?",
+    "answer": "35",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0110",
+   "family": "ARITH",
+   "scene": "A-0110",
+   "context": "Here is a sum for Alice.",
+   "cf_context": "Here is a sum for Alice.",
+   "off_context": "Here is a sum for Paul.",
+   "question": "What is (2 + 6) \u00d7 7?",
+   "cf_question": "What is (2 + 3) \u00d7 7?",
+   "bridge": "8",
+   "cf_bridge": "5",
+   "cue": "2 + 6",
+   "answer": "56",
+   "cf_answer": "35",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 6?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 7?",
+    "answer": "56",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0111",
+   "family": "ARITH",
+   "scene": "A-0111",
+   "context": "Here is a sum for Rose.",
+   "cf_context": "Here is a sum for Rose.",
+   "off_context": "Here is a sum for Amy.",
+   "question": "What is (1 + 6) \u00d7 7?",
+   "cf_question": "What is (1 + 7) \u00d7 7?",
+   "bridge": "7",
+   "cf_bridge": "8",
+   "cue": "1 + 6",
+   "answer": "49",
+   "cf_answer": "56",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 6?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 7?",
+    "answer": "49",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0112",
+   "family": "ARITH",
+   "scene": "A-0112",
+   "context": "Here is a sum for Tom.",
+   "cf_context": "Here is a sum for Tom.",
+   "off_context": "Here is a sum for Henry.",
+   "question": "What is (1 + 1) \u00d7 6?",
+   "cf_question": "What is (1 + 4) \u00d7 6?",
+   "bridge": "2",
+   "cf_bridge": "5",
+   "cue": "1 + 1",
+   "answer": "12",
+   "cf_answer": "30",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 1?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 2 \u00d7 6?",
+    "answer": "12",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0113",
+   "family": "ARITH",
+   "scene": "A-0113",
+   "context": "Here is a sum for Kyle.",
+   "cf_context": "Here is a sum for Kyle.",
+   "off_context": "Here is a sum for Kate.",
+   "question": "What is (4 + 1) \u00d7 3?",
+   "cf_question": "What is (4 + 4) \u00d7 3?",
+   "bridge": "5",
+   "cf_bridge": "8",
+   "cue": "4 + 1",
+   "answer": "15",
+   "cf_answer": "24",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 1?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 3?",
+    "answer": "15",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0114",
+   "family": "ARITH",
+   "scene": "A-0114",
+   "context": "Here is a sum for Ivy.",
+   "cf_context": "Here is a sum for Ivy.",
+   "off_context": "Here is a sum for Beth.",
+   "question": "What is (1 + 1) \u00d7 5?",
+   "cf_question": "What is (1 + 5) \u00d7 5?",
+   "bridge": "2",
+   "cf_bridge": "6",
+   "cue": "1 + 1",
+   "answer": "10",
+   "cf_answer": "30",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 1?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 2 \u00d7 5?",
+    "answer": "10",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0115",
+   "family": "ARITH",
+   "scene": "A-0115",
+   "context": "Here is a sum for Eric.",
+   "cf_context": "Here is a sum for Eric.",
+   "off_context": "Here is a sum for Sean.",
+   "question": "What is (4 + 1) \u00d7 7?",
+   "cf_question": "What is (4 + 5) \u00d7 7?",
+   "bridge": "5",
+   "cf_bridge": "9",
+   "cue": "4 + 1",
+   "answer": "35",
+   "cf_answer": "63",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 1?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 7?",
+    "answer": "35",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0116",
+   "family": "ARITH",
+   "scene": "A-0116",
+   "context": "Here is a sum for Sara.",
+   "cf_context": "Here is a sum for Sara.",
+   "off_context": "Here is a sum for Ivy.",
+   "question": "What is (3 + 1) \u00d7 7?",
+   "cf_question": "What is (3 + 2) \u00d7 7?",
+   "bridge": "4",
+   "cf_bridge": "5",
+   "cue": "3 + 1",
+   "answer": "28",
+   "cf_answer": "35",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 1?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 4 \u00d7 7?",
+    "answer": "28",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0117",
+   "family": "ARITH",
+   "scene": "A-0117",
+   "context": "Here is a sum for Victor.",
+   "cf_context": "Here is a sum for Victor.",
+   "off_context": "Here is a sum for David.",
+   "question": "What is (4 + 4) \u00d7 7?",
+   "cf_question": "What is (4 + 5) \u00d7 7?",
+   "bridge": "8",
+   "cf_bridge": "9",
+   "cue": "4 + 4",
+   "answer": "56",
+   "cf_answer": "63",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 4?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 7?",
+    "answer": "56",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0118",
+   "family": "ARITH",
+   "scene": "A-0118",
+   "context": "Here is a sum for Amy.",
+   "cf_context": "Here is a sum for Amy.",
+   "off_context": "Here is a sum for Ruby.",
+   "question": "What is (5 + 1) \u00d7 3?",
+   "cf_question": "What is (5 + 3) \u00d7 3?",
+   "bridge": "6",
+   "cf_bridge": "8",
+   "cue": "5 + 1",
+   "answer": "18",
+   "cf_answer": "24",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 5 + 1?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 3?",
+    "answer": "18",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0119",
+   "family": "ARITH",
+   "scene": "A-0119",
+   "context": "Here is a sum for Paul.",
+   "cf_context": "Here is a sum for Paul.",
+   "off_context": "Here is a sum for Nina.",
+   "question": "What is (2 + 7) \u00d7 9?",
+   "cf_question": "What is (2 + 5) \u00d7 9?",
+   "bridge": "9",
+   "cf_bridge": "7",
+   "cue": "2 + 7",
+   "answer": "81",
+   "cf_answer": "63",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 7?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 9?",
+    "answer": "81",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0120",
+   "family": "ARITH",
+   "scene": "A-0120",
+   "context": "Here is a sum for Olivia.",
+   "cf_context": "Here is a sum for Olivia.",
+   "off_context": "Here is a sum for Alice.",
+   "question": "What is (2 + 2) \u00d7 8?",
+   "cf_question": "What is (2 + 3) \u00d7 8?",
+   "bridge": "4",
+   "cf_bridge": "5",
+   "cue": "2 + 2",
+   "answer": "32",
+   "cf_answer": "40",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 2?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 4 \u00d7 8?",
+    "answer": "32",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0121",
+   "family": "ARITH",
+   "scene": "A-0121",
+   "context": "Here is a sum for Ella.",
+   "cf_context": "Here is a sum for Ella.",
+   "off_context": "Here is a sum for James.",
+   "question": "What is (1 + 6) \u00d7 2?",
+   "cf_question": "What is (1 + 3) \u00d7 2?",
+   "bridge": "7",
+   "cf_bridge": "4",
+   "cue": "1 + 6",
+   "answer": "14",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 6?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 2?",
+    "answer": "14",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0122",
+   "family": "ARITH",
+   "scene": "A-0122",
+   "context": "Here is a sum for Tom.",
+   "cf_context": "Here is a sum for Tom.",
+   "off_context": "Here is a sum for Beth.",
+   "question": "What is (1 + 7) \u00d7 5?",
+   "cf_question": "What is (1 + 3) \u00d7 5?",
+   "bridge": "8",
+   "cf_bridge": "4",
+   "cue": "1 + 7",
+   "answer": "40",
+   "cf_answer": "20",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 7?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 5?",
+    "answer": "40",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0123",
+   "family": "ARITH",
+   "scene": "A-0123",
+   "context": "Here is a sum for Max.",
+   "cf_context": "Here is a sum for Max.",
+   "off_context": "Here is a sum for Mia.",
+   "question": "What is (1 + 1) \u00d7 2?",
+   "cf_question": "What is (1 + 3) \u00d7 2?",
+   "bridge": "2",
+   "cf_bridge": "4",
+   "cue": "1 + 1",
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 1?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 2 \u00d7 2?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0124",
+   "family": "ARITH",
+   "scene": "A-0124",
+   "context": "Here is a sum for Eric.",
+   "cf_context": "Here is a sum for Eric.",
+   "off_context": "Here is a sum for Paul.",
+   "question": "What is (6 + 2) \u00d7 9?",
+   "cf_question": "What is (6 + 3) \u00d7 9?",
+   "bridge": "8",
+   "cf_bridge": "9",
+   "cue": "6 + 2",
+   "answer": "72",
+   "cf_answer": "81",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 6 + 2?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 9?",
+    "answer": "72",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0125",
+   "family": "ARITH",
+   "scene": "A-0125",
+   "context": "Here is a sum for Iris.",
+   "cf_context": "Here is a sum for Iris.",
+   "off_context": "Here is a sum for Ruby.",
+   "question": "What is (5 + 1) \u00d7 7?",
+   "cf_question": "What is (5 + 4) \u00d7 7?",
+   "bridge": "6",
+   "cf_bridge": "9",
+   "cue": "5 + 1",
+   "answer": "42",
+   "cf_answer": "63",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 5 + 1?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 7?",
+    "answer": "42",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0126",
+   "family": "ARITH",
+   "scene": "A-0126",
+   "context": "Here is a sum for Noah.",
+   "cf_context": "Here is a sum for Noah.",
+   "off_context": "Here is a sum for Dan.",
+   "question": "What is (2 + 5) \u00d7 8?",
+   "cf_question": "What is (2 + 2) \u00d7 8?",
+   "bridge": "7",
+   "cf_bridge": "4",
+   "cue": "2 + 5",
+   "answer": "56",
+   "cf_answer": "32",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 5?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 8?",
+    "answer": "56",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0127",
+   "family": "ARITH",
+   "scene": "A-0127",
+   "context": "Here is a sum for Tom.",
+   "cf_context": "Here is a sum for Tom.",
+   "off_context": "Here is a sum for Julia.",
+   "question": "What is (2 + 3) \u00d7 3?",
+   "cf_question": "What is (2 + 1) \u00d7 3?",
+   "bridge": "5",
+   "cf_bridge": "3",
+   "cue": "2 + 3",
+   "answer": "15",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 3?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 3?",
+    "answer": "15",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0128",
+   "family": "ARITH",
+   "scene": "A-0128",
+   "context": "Here is a sum for Maria.",
+   "cf_context": "Here is a sum for Maria.",
+   "off_context": "Here is a sum for Nina.",
+   "question": "What is (1 + 1) \u00d7 5?",
+   "cf_question": "What is (1 + 5) \u00d7 5?",
+   "bridge": "2",
+   "cf_bridge": "6",
+   "cue": "1 + 1",
+   "answer": "10",
+   "cf_answer": "30",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 1?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 2 \u00d7 5?",
+    "answer": "10",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0129",
+   "family": "ARITH",
+   "scene": "A-0129",
+   "context": "Here is a sum for Mia.",
+   "cf_context": "Here is a sum for Mia.",
+   "off_context": "Here is a sum for Diana.",
+   "question": "What is (5 + 1) \u00d7 9?",
+   "cf_question": "What is (5 + 2) \u00d7 9?",
+   "bridge": "6",
+   "cf_bridge": "7",
+   "cue": "5 + 1",
+   "answer": "54",
+   "cf_answer": "63",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 5 + 1?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 9?",
+    "answer": "54",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0130",
+   "family": "ARITH",
+   "scene": "A-0130",
+   "context": "Here is a sum for Tom.",
+   "cf_context": "Here is a sum for Tom.",
+   "off_context": "Here is a sum for Dan.",
+   "question": "What is (5 + 1) \u00d7 7?",
+   "cf_question": "What is (5 + 3) \u00d7 7?",
+   "bridge": "6",
+   "cf_bridge": "8",
+   "cue": "5 + 1",
+   "answer": "42",
+   "cf_answer": "56",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 5 + 1?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 7?",
+    "answer": "42",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0131",
+   "family": "ARITH",
+   "scene": "A-0131",
+   "context": "Here is a sum for Sean.",
+   "cf_context": "Here is a sum for Sean.",
+   "off_context": "Here is a sum for Finn.",
+   "question": "What is (1 + 6) \u00d7 5?",
+   "cf_question": "What is (1 + 1) \u00d7 5?",
+   "bridge": "7",
+   "cf_bridge": "2",
+   "cue": "1 + 6",
+   "answer": "35",
+   "cf_answer": "10",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 6?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 5?",
+    "answer": "35",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0132",
+   "family": "ARITH",
+   "scene": "A-0132",
+   "context": "Here is a sum for Henry.",
+   "cf_context": "Here is a sum for Henry.",
+   "off_context": "Here is a sum for Ben.",
+   "question": "What is (1 + 3) \u00d7 2?",
+   "cf_question": "What is (1 + 7) \u00d7 2?",
+   "bridge": "4",
+   "cf_bridge": "8",
+   "cue": "1 + 3",
+   "answer": "8",
+   "cf_answer": "16",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 3?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 4 \u00d7 2?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0133",
+   "family": "ARITH",
+   "scene": "A-0133",
+   "context": "Here is a sum for Lucy.",
+   "cf_context": "Here is a sum for Lucy.",
+   "off_context": "Here is a sum for Ben.",
+   "question": "What is (3 + 6) \u00d7 9?",
+   "cf_question": "What is (3 + 1) \u00d7 9?",
+   "bridge": "9",
+   "cf_bridge": "4",
+   "cue": "3 + 6",
+   "answer": "81",
+   "cf_answer": "36",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 6?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 9?",
+    "answer": "81",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0134",
+   "family": "ARITH",
+   "scene": "A-0134",
+   "context": "Here is a sum for Liam.",
+   "cf_context": "Here is a sum for Liam.",
+   "off_context": "Here is a sum for Max.",
+   "question": "What is (5 + 2) \u00d7 7?",
+   "cf_question": "What is (5 + 3) \u00d7 7?",
+   "bridge": "7",
+   "cf_bridge": "8",
+   "cue": "5 + 2",
+   "answer": "49",
+   "cf_answer": "56",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 5 + 2?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 7?",
+    "answer": "49",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0135",
+   "family": "ARITH",
+   "scene": "A-0135",
+   "context": "Here is a sum for Carl.",
+   "cf_context": "Here is a sum for Carl.",
+   "off_context": "Here is a sum for Vera.",
+   "question": "What is (6 + 3) \u00d7 7?",
+   "cf_question": "What is (6 + 1) \u00d7 7?",
+   "bridge": "9",
+   "cf_bridge": "7",
+   "cue": "6 + 3",
+   "answer": "63",
+   "cf_answer": "49",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 6 + 3?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 7?",
+    "answer": "63",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0136",
+   "family": "ARITH",
+   "scene": "A-0136",
+   "context": "Here is a sum for Owen.",
+   "cf_context": "Here is a sum for Owen.",
+   "off_context": "Here is a sum for Grace.",
+   "question": "What is (2 + 3) \u00d7 6?",
+   "cf_question": "What is (2 + 7) \u00d7 6?",
+   "bridge": "5",
+   "cf_bridge": "9",
+   "cue": "2 + 3",
+   "answer": "30",
+   "cf_answer": "54",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 3?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 6?",
+    "answer": "30",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0137",
+   "family": "ARITH",
+   "scene": "A-0137",
+   "context": "Here is a sum for Lily.",
+   "cf_context": "Here is a sum for Lily.",
+   "off_context": "Here is a sum for Amy.",
+   "question": "What is (1 + 7) \u00d7 3?",
+   "cf_question": "What is (1 + 1) \u00d7 3?",
+   "bridge": "8",
+   "cf_bridge": "2",
+   "cue": "1 + 7",
+   "answer": "24",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 7?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 3?",
+    "answer": "24",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0138",
+   "family": "ARITH",
+   "scene": "A-0138",
+   "context": "Here is a sum for Fiona.",
+   "cf_context": "Here is a sum for Fiona.",
+   "off_context": "Here is a sum for Julia.",
+   "question": "What is (2 + 2) \u00d7 9?",
+   "cf_question": "What is (2 + 6) \u00d7 9?",
+   "bridge": "4",
+   "cf_bridge": "8",
+   "cue": "2 + 2",
+   "answer": "36",
+   "cf_answer": "72",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 2?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 4 \u00d7 9?",
+    "answer": "36",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0139",
+   "family": "ARITH",
+   "scene": "A-0139",
+   "context": "Here is a sum for Kate.",
+   "cf_context": "Here is a sum for Kate.",
+   "off_context": "Here is a sum for Sara.",
+   "question": "What is (3 + 3) \u00d7 7?",
+   "cf_question": "What is (3 + 5) \u00d7 7?",
+   "bridge": "6",
+   "cf_bridge": "8",
+   "cue": "3 + 3",
+   "answer": "42",
+   "cf_answer": "56",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 3?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 7?",
+    "answer": "42",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0140",
+   "family": "ARITH",
+   "scene": "A-0140",
+   "context": "Here is a sum for Lily.",
+   "cf_context": "Here is a sum for Lily.",
+   "off_context": "Here is a sum for Maria.",
+   "question": "What is (5 + 1) \u00d7 9?",
+   "cf_question": "What is (5 + 3) \u00d7 9?",
+   "bridge": "6",
+   "cf_bridge": "8",
+   "cue": "5 + 1",
+   "answer": "54",
+   "cf_answer": "72",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 5 + 1?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 9?",
+    "answer": "54",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0141",
+   "family": "ARITH",
+   "scene": "A-0141",
+   "context": "Here is a sum for Olivia.",
+   "cf_context": "Here is a sum for Olivia.",
+   "off_context": "Here is a sum for Fiona.",
+   "question": "What is (3 + 6) \u00d7 6?",
+   "cf_question": "What is (3 + 4) \u00d7 6?",
+   "bridge": "9",
+   "cf_bridge": "7",
+   "cue": "3 + 6",
+   "answer": "54",
+   "cf_answer": "42",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 6?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 6?",
+    "answer": "54",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0142",
+   "family": "ARITH",
+   "scene": "A-0142",
+   "context": "Here is a sum for Iris.",
+   "cf_context": "Here is a sum for Iris.",
+   "off_context": "Here is a sum for Ruby.",
+   "question": "What is (3 + 6) \u00d7 3?",
+   "cf_question": "What is (3 + 3) \u00d7 3?",
+   "bridge": "9",
+   "cf_bridge": "6",
+   "cue": "3 + 6",
+   "answer": "27",
+   "cf_answer": "18",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 6?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 3?",
+    "answer": "27",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0143",
+   "family": "ARITH",
+   "scene": "A-0143",
+   "context": "Here is a sum for Amy.",
+   "cf_context": "Here is a sum for Amy.",
+   "off_context": "Here is a sum for Carl.",
+   "question": "What is (1 + 4) \u00d7 8?",
+   "cf_question": "What is (1 + 6) \u00d7 8?",
+   "bridge": "5",
+   "cf_bridge": "7",
+   "cue": "1 + 4",
+   "answer": "40",
+   "cf_answer": "56",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 4?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 8?",
+    "answer": "40",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0144",
+   "family": "ARITH",
+   "scene": "A-0144",
+   "context": "Here is a sum for Dan.",
+   "cf_context": "Here is a sum for Dan.",
+   "off_context": "Here is a sum for Laura.",
+   "question": "What is (1 + 3) \u00d7 8?",
+   "cf_question": "What is (1 + 1) \u00d7 8?",
+   "bridge": "4",
+   "cf_bridge": "2",
+   "cue": "1 + 3",
+   "answer": "32",
+   "cf_answer": "16",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 3?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 4 \u00d7 8?",
+    "answer": "32",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0145",
+   "family": "ARITH",
+   "scene": "A-0145",
+   "context": "Here is a sum for Ruby.",
+   "cf_context": "Here is a sum for Ruby.",
+   "off_context": "Here is a sum for Will.",
+   "question": "What is (1 + 7) \u00d7 4?",
+   "cf_question": "What is (1 + 4) \u00d7 4?",
+   "bridge": "8",
+   "cf_bridge": "5",
+   "cue": "1 + 7",
+   "answer": "32",
+   "cf_answer": "20",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 7?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 4?",
+    "answer": "32",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0146",
+   "family": "ARITH",
+   "scene": "A-0146",
+   "context": "Here is a sum for Hugo.",
+   "cf_context": "Here is a sum for Hugo.",
+   "off_context": "Here is a sum for Diana.",
+   "question": "What is (3 + 1) \u00d7 8?",
+   "cf_question": "What is (3 + 6) \u00d7 8?",
+   "bridge": "4",
+   "cf_bridge": "9",
+   "cue": "3 + 1",
+   "answer": "32",
+   "cf_answer": "72",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 1?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 4 \u00d7 8?",
+    "answer": "32",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0147",
+   "family": "ARITH",
+   "scene": "A-0147",
+   "context": "Here is a sum for Frank.",
+   "cf_context": "Here is a sum for Frank.",
+   "off_context": "Here is a sum for Ruby.",
+   "question": "What is (2 + 3) \u00d7 9?",
+   "cf_question": "What is (2 + 7) \u00d7 9?",
+   "bridge": "5",
+   "cf_bridge": "9",
+   "cue": "2 + 3",
+   "answer": "45",
+   "cf_answer": "81",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 3?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 9?",
+    "answer": "45",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0148",
+   "family": "ARITH",
+   "scene": "A-0148",
+   "context": "Here is a sum for Sean.",
+   "cf_context": "Here is a sum for Sean.",
+   "off_context": "Here is a sum for Alice.",
+   "question": "What is (4 + 3) \u00d7 8?",
+   "cf_question": "What is (4 + 5) \u00d7 8?",
+   "bridge": "7",
+   "cf_bridge": "9",
+   "cue": "4 + 3",
+   "answer": "56",
+   "cf_answer": "72",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 3?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 8?",
+    "answer": "56",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0149",
+   "family": "ARITH",
+   "scene": "A-0149",
+   "context": "Here is a sum for Amy.",
+   "cf_context": "Here is a sum for Amy.",
+   "off_context": "Here is a sum for Frank.",
+   "question": "What is (1 + 7) \u00d7 4?",
+   "cf_question": "What is (1 + 2) \u00d7 4?",
+   "bridge": "8",
+   "cf_bridge": "3",
+   "cue": "1 + 7",
+   "answer": "32",
+   "cf_answer": "12",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 7?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 4?",
+    "answer": "32",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0150",
+   "family": "ARITH",
+   "scene": "A-0150",
+   "context": "Here is a sum for Rose.",
+   "cf_context": "Here is a sum for Rose.",
+   "off_context": "Here is a sum for David.",
+   "question": "What is (3 + 4) \u00d7 5?",
+   "cf_question": "What is (3 + 6) \u00d7 5?",
+   "bridge": "7",
+   "cf_bridge": "9",
+   "cue": "3 + 4",
+   "answer": "35",
+   "cf_answer": "45",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 4?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 5?",
+    "answer": "35",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0151",
+   "family": "ARITH",
+   "scene": "A-0151",
+   "context": "Here is a sum for Owen.",
+   "cf_context": "Here is a sum for Owen.",
+   "off_context": "Here is a sum for Luke.",
+   "question": "What is (3 + 5) \u00d7 7?",
+   "cf_question": "What is (3 + 2) \u00d7 7?",
+   "bridge": "8",
+   "cf_bridge": "5",
+   "cue": "3 + 5",
+   "answer": "56",
+   "cf_answer": "35",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 5?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 7?",
+    "answer": "56",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0152",
+   "family": "ARITH",
+   "scene": "A-0152",
+   "context": "Here is a sum for Ella.",
+   "cf_context": "Here is a sum for Ella.",
+   "off_context": "Here is a sum for Carl.",
+   "question": "What is (3 + 6) \u00d7 7?",
+   "cf_question": "What is (3 + 5) \u00d7 7?",
+   "bridge": "9",
+   "cf_bridge": "8",
+   "cue": "3 + 6",
+   "answer": "63",
+   "cf_answer": "56",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 6?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 7?",
+    "answer": "63",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0153",
+   "family": "ARITH",
+   "scene": "A-0153",
+   "context": "Here is a sum for Alice.",
+   "cf_context": "Here is a sum for Alice.",
+   "off_context": "Here is a sum for Liam.",
+   "question": "What is (3 + 2) \u00d7 3?",
+   "cf_question": "What is (3 + 4) \u00d7 3?",
+   "bridge": "5",
+   "cf_bridge": "7",
+   "cue": "3 + 2",
+   "answer": "15",
+   "cf_answer": "21",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 2?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 3?",
+    "answer": "15",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0154",
+   "family": "ARITH",
+   "scene": "A-0154",
+   "context": "Here is a sum for Tara.",
+   "cf_context": "Here is a sum for Tara.",
+   "off_context": "Here is a sum for Kate.",
+   "question": "What is (2 + 1) \u00d7 4?",
+   "cf_question": "What is (2 + 7) \u00d7 4?",
+   "bridge": "3",
+   "cf_bridge": "9",
+   "cue": "2 + 1",
+   "answer": "12",
+   "cf_answer": "36",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 1?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 3 \u00d7 4?",
+    "answer": "12",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0155",
+   "family": "ARITH",
+   "scene": "A-0155",
+   "context": "Here is a sum for Leo.",
+   "cf_context": "Here is a sum for Leo.",
+   "off_context": "Here is a sum for Sean.",
+   "question": "What is (2 + 4) \u00d7 3?",
+   "cf_question": "What is (2 + 6) \u00d7 3?",
+   "bridge": "6",
+   "cf_bridge": "8",
+   "cue": "2 + 4",
+   "answer": "18",
+   "cf_answer": "24",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 4?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 3?",
+    "answer": "18",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0156",
+   "family": "ARITH",
+   "scene": "A-0156",
+   "context": "Here is a sum for Sam.",
+   "cf_context": "Here is a sum for Sam.",
+   "off_context": "Here is a sum for Oscar.",
+   "question": "What is (2 + 6) \u00d7 5?",
+   "cf_question": "What is (2 + 4) \u00d7 5?",
+   "bridge": "8",
+   "cf_bridge": "6",
+   "cue": "2 + 6",
+   "answer": "40",
+   "cf_answer": "30",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 6?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 5?",
+    "answer": "40",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0157",
+   "family": "ARITH",
+   "scene": "A-0157",
+   "context": "Here is a sum for Carl.",
+   "cf_context": "Here is a sum for Carl.",
+   "off_context": "Here is a sum for Tom.",
+   "question": "What is (2 + 4) \u00d7 6?",
+   "cf_question": "What is (2 + 2) \u00d7 6?",
+   "bridge": "6",
+   "cf_bridge": "4",
+   "cue": "2 + 4",
+   "answer": "36",
+   "cf_answer": "24",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 4?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 6?",
+    "answer": "36",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0158",
+   "family": "ARITH",
+   "scene": "A-0158",
+   "context": "Here is a sum for Eric.",
+   "cf_context": "Here is a sum for Eric.",
+   "off_context": "Here is a sum for Max.",
+   "question": "What is (2 + 2) \u00d7 2?",
+   "cf_question": "What is (2 + 4) \u00d7 2?",
+   "bridge": "4",
+   "cf_bridge": "6",
+   "cue": "2 + 2",
+   "answer": "8",
+   "cf_answer": "12",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 2?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 4 \u00d7 2?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0159",
+   "family": "ARITH",
+   "scene": "A-0159",
+   "context": "Here is a sum for Oscar.",
+   "cf_context": "Here is a sum for Oscar.",
+   "off_context": "Here is a sum for Luke.",
+   "question": "What is (2 + 4) \u00d7 3?",
+   "cf_question": "What is (2 + 1) \u00d7 3?",
+   "bridge": "6",
+   "cf_bridge": "3",
+   "cue": "2 + 4",
+   "answer": "18",
+   "cf_answer": "9",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 4?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 3?",
+    "answer": "18",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0160",
+   "family": "ARITH",
+   "scene": "A-0160",
+   "context": "Here is a sum for Fiona.",
+   "cf_context": "Here is a sum for Fiona.",
+   "off_context": "Here is a sum for Adam.",
+   "question": "What is (1 + 5) \u00d7 9?",
+   "cf_question": "What is (1 + 7) \u00d7 9?",
+   "bridge": "6",
+   "cf_bridge": "8",
+   "cue": "1 + 5",
+   "answer": "54",
+   "cf_answer": "72",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 5?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 9?",
+    "answer": "54",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0161",
+   "family": "ARITH",
+   "scene": "A-0161",
+   "context": "Here is a sum for Adam.",
+   "cf_context": "Here is a sum for Adam.",
+   "off_context": "Here is a sum for Lily.",
+   "question": "What is (3 + 2) \u00d7 7?",
+   "cf_question": "What is (3 + 3) \u00d7 7?",
+   "bridge": "5",
+   "cf_bridge": "6",
+   "cue": "3 + 2",
+   "answer": "35",
+   "cf_answer": "42",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 2?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 7?",
+    "answer": "35",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0162",
+   "family": "ARITH",
+   "scene": "A-0162",
+   "context": "Here is a sum for Beth.",
+   "cf_context": "Here is a sum for Beth.",
+   "off_context": "Here is a sum for Fiona.",
+   "question": "What is (5 + 3) \u00d7 4?",
+   "cf_question": "What is (5 + 2) \u00d7 4?",
+   "bridge": "8",
+   "cf_bridge": "7",
+   "cue": "5 + 3",
+   "answer": "32",
+   "cf_answer": "28",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 5 + 3?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 4?",
+    "answer": "32",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0163",
+   "family": "ARITH",
+   "scene": "A-0163",
+   "context": "Here is a sum for Anna.",
+   "cf_context": "Here is a sum for Anna.",
+   "off_context": "Here is a sum for Clara.",
+   "question": "What is (1 + 6) \u00d7 8?",
+   "cf_question": "What is (1 + 4) \u00d7 8?",
+   "bridge": "7",
+   "cf_bridge": "5",
+   "cue": "1 + 6",
+   "answer": "56",
+   "cf_answer": "40",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 6?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 8?",
+    "answer": "56",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0164",
+   "family": "ARITH",
+   "scene": "A-0164",
+   "context": "Here is a sum for Mia.",
+   "cf_context": "Here is a sum for Mia.",
+   "off_context": "Here is a sum for Carl.",
+   "question": "What is (1 + 6) \u00d7 6?",
+   "cf_question": "What is (1 + 4) \u00d7 6?",
+   "bridge": "7",
+   "cf_bridge": "5",
+   "cue": "1 + 6",
+   "answer": "42",
+   "cf_answer": "30",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 6?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 6?",
+    "answer": "42",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0165",
+   "family": "ARITH",
+   "scene": "A-0165",
+   "context": "Here is a sum for Tom.",
+   "cf_context": "Here is a sum for Tom.",
+   "off_context": "Here is a sum for Luke.",
+   "question": "What is (1 + 1) \u00d7 8?",
+   "cf_question": "What is (1 + 6) \u00d7 8?",
+   "bridge": "2",
+   "cf_bridge": "7",
+   "cue": "1 + 1",
+   "answer": "16",
+   "cf_answer": "56",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 1?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 2 \u00d7 8?",
+    "answer": "16",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0166",
+   "family": "ARITH",
+   "scene": "A-0166",
+   "context": "Here is a sum for Sam.",
+   "cf_context": "Here is a sum for Sam.",
+   "off_context": "Here is a sum for Vera.",
+   "question": "What is (2 + 1) \u00d7 5?",
+   "cf_question": "What is (2 + 7) \u00d7 5?",
+   "bridge": "3",
+   "cf_bridge": "9",
+   "cue": "2 + 1",
+   "answer": "15",
+   "cf_answer": "45",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 1?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 3 \u00d7 5?",
+    "answer": "15",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0167",
+   "family": "ARITH",
+   "scene": "A-0167",
+   "context": "Here is a sum for Ivan.",
+   "cf_context": "Here is a sum for Ivan.",
+   "off_context": "Here is a sum for Sam.",
+   "question": "What is (2 + 4) \u00d7 6?",
+   "cf_question": "What is (2 + 2) \u00d7 6?",
+   "bridge": "6",
+   "cf_bridge": "4",
+   "cue": "2 + 4",
+   "answer": "36",
+   "cf_answer": "24",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 4?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 6?",
+    "answer": "36",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0168",
+   "family": "ARITH",
+   "scene": "A-0168",
+   "context": "Here is a sum for Mia.",
+   "cf_context": "Here is a sum for Mia.",
+   "off_context": "Here is a sum for Ivy.",
+   "question": "What is (4 + 5) \u00d7 8?",
+   "cf_question": "What is (4 + 3) \u00d7 8?",
+   "bridge": "9",
+   "cf_bridge": "7",
+   "cue": "4 + 5",
+   "answer": "72",
+   "cf_answer": "56",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 5?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 8?",
+    "answer": "72",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0169",
+   "family": "ARITH",
+   "scene": "A-0169",
+   "context": "Here is a sum for Liam.",
+   "cf_context": "Here is a sum for Liam.",
+   "off_context": "Here is a sum for Alice.",
+   "question": "What is (6 + 2) \u00d7 8?",
+   "cf_question": "What is (6 + 1) \u00d7 8?",
+   "bridge": "8",
+   "cf_bridge": "7",
+   "cue": "6 + 2",
+   "answer": "64",
+   "cf_answer": "56",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 6 + 2?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 8?",
+    "answer": "64",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0170",
+   "family": "ARITH",
+   "scene": "A-0170",
+   "context": "Here is a sum for Finn.",
+   "cf_context": "Here is a sum for Finn.",
+   "off_context": "Here is a sum for Kyle.",
+   "question": "What is (2 + 1) \u00d7 5?",
+   "cf_question": "What is (2 + 5) \u00d7 5?",
+   "bridge": "3",
+   "cf_bridge": "7",
+   "cue": "2 + 1",
+   "answer": "15",
+   "cf_answer": "35",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 1?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 3 \u00d7 5?",
+    "answer": "15",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0171",
+   "family": "ARITH",
+   "scene": "A-0171",
+   "context": "Here is a sum for Lucy.",
+   "cf_context": "Here is a sum for Lucy.",
+   "off_context": "Here is a sum for Laura.",
+   "question": "What is (6 + 3) \u00d7 6?",
+   "cf_question": "What is (6 + 1) \u00d7 6?",
+   "bridge": "9",
+   "cf_bridge": "7",
+   "cue": "6 + 3",
+   "answer": "54",
+   "cf_answer": "42",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 6 + 3?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 6?",
+    "answer": "54",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0172",
+   "family": "ARITH",
+   "scene": "A-0172",
+   "context": "Here is a sum for Sara.",
+   "cf_context": "Here is a sum for Sara.",
+   "off_context": "Here is a sum for Anna.",
+   "question": "What is (3 + 3) \u00d7 6?",
+   "cf_question": "What is (3 + 5) \u00d7 6?",
+   "bridge": "6",
+   "cf_bridge": "8",
+   "cue": "3 + 3",
+   "answer": "36",
+   "cf_answer": "48",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 3?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 6?",
+    "answer": "36",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0173",
+   "family": "ARITH",
+   "scene": "A-0173",
+   "context": "Here is a sum for Vera.",
+   "cf_context": "Here is a sum for Vera.",
+   "off_context": "Here is a sum for Diana.",
+   "question": "What is (1 + 5) \u00d7 7?",
+   "cf_question": "What is (1 + 3) \u00d7 7?",
+   "bridge": "6",
+   "cf_bridge": "4",
+   "cue": "1 + 5",
+   "answer": "42",
+   "cf_answer": "28",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 5?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 7?",
+    "answer": "42",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0174",
+   "family": "ARITH",
+   "scene": "A-0174",
+   "context": "Here is a sum for Eric.",
+   "cf_context": "Here is a sum for Eric.",
+   "off_context": "Here is a sum for Diana.",
+   "question": "What is (3 + 3) \u00d7 6?",
+   "cf_question": "What is (3 + 1) \u00d7 6?",
+   "bridge": "6",
+   "cf_bridge": "4",
+   "cue": "3 + 3",
+   "answer": "36",
+   "cf_answer": "24",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 3?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 6?",
+    "answer": "36",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0175",
+   "family": "ARITH",
+   "scene": "A-0175",
+   "context": "Here is a sum for Sara.",
+   "cf_context": "Here is a sum for Sara.",
+   "off_context": "Here is a sum for Carl.",
+   "question": "What is (1 + 2) \u00d7 2?",
+   "cf_question": "What is (1 + 4) \u00d7 2?",
+   "bridge": "3",
+   "cf_bridge": "5",
+   "cue": "1 + 2",
+   "answer": "6",
+   "cf_answer": "10",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 2?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 3 \u00d7 2?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0176",
+   "family": "ARITH",
+   "scene": "A-0176",
+   "context": "Here is a sum for Finn.",
+   "cf_context": "Here is a sum for Finn.",
+   "off_context": "Here is a sum for Carl.",
+   "question": "What is (2 + 1) \u00d7 3?",
+   "cf_question": "What is (2 + 3) \u00d7 3?",
+   "bridge": "3",
+   "cf_bridge": "5",
+   "cue": "2 + 1",
+   "answer": "9",
+   "cf_answer": "15",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 1?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 3 \u00d7 3?",
+    "answer": "9",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0177",
+   "family": "ARITH",
+   "scene": "A-0177",
+   "context": "Here is a sum for Henry.",
+   "cf_context": "Here is a sum for Henry.",
+   "off_context": "Here is a sum for Mark.",
+   "question": "What is (2 + 2) \u00d7 4?",
+   "cf_question": "What is (2 + 3) \u00d7 4?",
+   "bridge": "4",
+   "cf_bridge": "5",
+   "cue": "2 + 2",
+   "answer": "16",
+   "cf_answer": "20",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 2?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 4 \u00d7 4?",
+    "answer": "16",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0178",
+   "family": "ARITH",
+   "scene": "A-0178",
+   "context": "Here is a sum for Sean.",
+   "cf_context": "Here is a sum for Sean.",
+   "off_context": "Here is a sum for Adam.",
+   "question": "What is (2 + 3) \u00d7 3?",
+   "cf_question": "What is (2 + 7) \u00d7 3?",
+   "bridge": "5",
+   "cf_bridge": "9",
+   "cue": "2 + 3",
+   "answer": "15",
+   "cf_answer": "27",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 3?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 3?",
+    "answer": "15",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0179",
+   "family": "ARITH",
+   "scene": "A-0179",
+   "context": "Here is a sum for Rose.",
+   "cf_context": "Here is a sum for Rose.",
+   "off_context": "Here is a sum for Liam.",
+   "question": "What is (6 + 1) \u00d7 6?",
+   "cf_question": "What is (6 + 3) \u00d7 6?",
+   "bridge": "7",
+   "cf_bridge": "9",
+   "cue": "6 + 1",
+   "answer": "42",
+   "cf_answer": "54",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 6 + 1?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 6?",
+    "answer": "42",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0180",
+   "family": "ARITH",
+   "scene": "A-0180",
+   "context": "Here is a sum for Hugo.",
+   "cf_context": "Here is a sum for Hugo.",
+   "off_context": "Here is a sum for Jack.",
+   "question": "What is (1 + 7) \u00d7 6?",
+   "cf_question": "What is (1 + 4) \u00d7 6?",
+   "bridge": "8",
+   "cf_bridge": "5",
+   "cue": "1 + 7",
+   "answer": "48",
+   "cf_answer": "30",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 7?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 6?",
+    "answer": "48",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0181",
+   "family": "ARITH",
+   "scene": "A-0181",
+   "context": "Here is a sum for Rose.",
+   "cf_context": "Here is a sum for Rose.",
+   "off_context": "Here is a sum for Diana.",
+   "question": "What is (1 + 1) \u00d7 9?",
+   "cf_question": "What is (1 + 3) \u00d7 9?",
+   "bridge": "2",
+   "cf_bridge": "4",
+   "cue": "1 + 1",
+   "answer": "18",
+   "cf_answer": "36",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 1?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 2 \u00d7 9?",
+    "answer": "18",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0182",
+   "family": "ARITH",
+   "scene": "A-0182",
+   "context": "Here is a sum for Victor.",
+   "cf_context": "Here is a sum for Victor.",
+   "off_context": "Here is a sum for Carl.",
+   "question": "What is (1 + 4) \u00d7 8?",
+   "cf_question": "What is (1 + 2) \u00d7 8?",
+   "bridge": "5",
+   "cf_bridge": "3",
+   "cue": "1 + 4",
+   "answer": "40",
+   "cf_answer": "24",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 4?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 8?",
+    "answer": "40",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0183",
+   "family": "ARITH",
+   "scene": "A-0183",
+   "context": "Here is a sum for Amy.",
+   "cf_context": "Here is a sum for Amy.",
+   "off_context": "Here is a sum for Luke.",
+   "question": "What is (1 + 1) \u00d7 6?",
+   "cf_question": "What is (1 + 5) \u00d7 6?",
+   "bridge": "2",
+   "cf_bridge": "6",
+   "cue": "1 + 1",
+   "answer": "12",
+   "cf_answer": "36",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 1?",
+    "answer": "2",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 2 \u00d7 6?",
+    "answer": "12",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0184",
+   "family": "ARITH",
+   "scene": "A-0184",
+   "context": "Here is a sum for Sam.",
+   "cf_context": "Here is a sum for Sam.",
+   "off_context": "Here is a sum for Max.",
+   "question": "What is (4 + 2) \u00d7 8?",
+   "cf_question": "What is (4 + 3) \u00d7 8?",
+   "bridge": "6",
+   "cf_bridge": "7",
+   "cue": "4 + 2",
+   "answer": "48",
+   "cf_answer": "56",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 2?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 8?",
+    "answer": "48",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0185",
+   "family": "ARITH",
+   "scene": "A-0185",
+   "context": "Here is a sum for Zoe.",
+   "cf_context": "Here is a sum for Zoe.",
+   "off_context": "Here is a sum for Owen.",
+   "question": "What is (2 + 5) \u00d7 5?",
+   "cf_question": "What is (2 + 2) \u00d7 5?",
+   "bridge": "7",
+   "cf_bridge": "4",
+   "cue": "2 + 5",
+   "answer": "35",
+   "cf_answer": "20",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 5?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 5?",
+    "answer": "35",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0186",
+   "family": "ARITH",
+   "scene": "A-0186",
+   "context": "Here is a sum for Mark.",
+   "cf_context": "Here is a sum for Mark.",
+   "off_context": "Here is a sum for Liam.",
+   "question": "What is (3 + 1) \u00d7 9?",
+   "cf_question": "What is (3 + 5) \u00d7 9?",
+   "bridge": "4",
+   "cf_bridge": "8",
+   "cue": "3 + 1",
+   "answer": "36",
+   "cf_answer": "72",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 1?",
+    "answer": "4",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 4 \u00d7 9?",
+    "answer": "36",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0187",
+   "family": "ARITH",
+   "scene": "A-0187",
+   "context": "Here is a sum for Amy.",
+   "cf_context": "Here is a sum for Amy.",
+   "off_context": "Here is a sum for Mia.",
+   "question": "What is (3 + 5) \u00d7 6?",
+   "cf_question": "What is (3 + 2) \u00d7 6?",
+   "bridge": "8",
+   "cf_bridge": "5",
+   "cue": "3 + 5",
+   "answer": "48",
+   "cf_answer": "30",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 5?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 6?",
+    "answer": "48",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0188",
+   "family": "ARITH",
+   "scene": "A-0188",
+   "context": "Here is a sum for Adam.",
+   "cf_context": "Here is a sum for Adam.",
+   "off_context": "Here is a sum for Frank.",
+   "question": "What is (3 + 5) \u00d7 8?",
+   "cf_question": "What is (3 + 2) \u00d7 8?",
+   "bridge": "8",
+   "cf_bridge": "5",
+   "cue": "3 + 5",
+   "answer": "64",
+   "cf_answer": "40",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 5?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 8?",
+    "answer": "64",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0189",
+   "family": "ARITH",
+   "scene": "A-0189",
+   "context": "Here is a sum for Rose.",
+   "cf_context": "Here is a sum for Rose.",
+   "off_context": "Here is a sum for Alice.",
+   "question": "What is (1 + 8) \u00d7 9?",
+   "cf_question": "What is (1 + 5) \u00d7 9?",
+   "bridge": "9",
+   "cf_bridge": "6",
+   "cue": "1 + 8",
+   "answer": "81",
+   "cf_answer": "54",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 8?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 9?",
+    "answer": "81",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0190",
+   "family": "ARITH",
+   "scene": "A-0190",
+   "context": "Here is a sum for Ruby.",
+   "cf_context": "Here is a sum for Ruby.",
+   "off_context": "Here is a sum for Emma.",
+   "question": "What is (1 + 4) \u00d7 9?",
+   "cf_question": "What is (1 + 1) \u00d7 9?",
+   "bridge": "5",
+   "cf_bridge": "2",
+   "cue": "1 + 4",
+   "answer": "45",
+   "cf_answer": "18",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 4?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 9?",
+    "answer": "45",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0191",
+   "family": "ARITH",
+   "scene": "A-0191",
+   "context": "Here is a sum for Grace.",
+   "cf_context": "Here is a sum for Grace.",
+   "off_context": "Here is a sum for Julia.",
+   "question": "What is (4 + 4) \u00d7 5?",
+   "cf_question": "What is (4 + 2) \u00d7 5?",
+   "bridge": "8",
+   "cf_bridge": "6",
+   "cue": "4 + 4",
+   "answer": "40",
+   "cf_answer": "30",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 4 + 4?",
+    "answer": "8",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 8 \u00d7 5?",
+    "answer": "40",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0192",
+   "family": "ARITH",
+   "scene": "A-0192",
+   "context": "Here is a sum for Kate.",
+   "cf_context": "Here is a sum for Kate.",
+   "off_context": "Here is a sum for Diana.",
+   "question": "What is (1 + 2) \u00d7 7?",
+   "cf_question": "What is (1 + 5) \u00d7 7?",
+   "bridge": "3",
+   "cf_bridge": "6",
+   "cue": "1 + 2",
+   "answer": "21",
+   "cf_answer": "42",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 2?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 3 \u00d7 7?",
+    "answer": "21",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0193",
+   "family": "ARITH",
+   "scene": "A-0193",
+   "context": "Here is a sum for Anna.",
+   "cf_context": "Here is a sum for Anna.",
+   "off_context": "Here is a sum for Paul.",
+   "question": "What is (2 + 4) \u00d7 2?",
+   "cf_question": "What is (2 + 1) \u00d7 2?",
+   "bridge": "6",
+   "cf_bridge": "3",
+   "cue": "2 + 4",
+   "answer": "12",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 4?",
+    "answer": "6",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 6 \u00d7 2?",
+    "answer": "12",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0194",
+   "family": "ARITH",
+   "scene": "A-0194",
+   "context": "Here is a sum for Adam.",
+   "cf_context": "Here is a sum for Adam.",
+   "off_context": "Here is a sum for Hugo.",
+   "question": "What is (3 + 2) \u00d7 6?",
+   "cf_question": "What is (3 + 1) \u00d7 6?",
+   "bridge": "5",
+   "cf_bridge": "4",
+   "cue": "3 + 2",
+   "answer": "30",
+   "cf_answer": "24",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 2?",
+    "answer": "5",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 5 \u00d7 6?",
+    "answer": "30",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0195",
+   "family": "ARITH",
+   "scene": "A-0195",
+   "context": "Here is a sum for Oscar.",
+   "cf_context": "Here is a sum for Oscar.",
+   "off_context": "Here is a sum for Amy.",
+   "question": "What is (1 + 8) \u00d7 9?",
+   "cf_question": "What is (1 + 4) \u00d7 9?",
+   "bridge": "9",
+   "cf_bridge": "5",
+   "cue": "1 + 8",
+   "answer": "81",
+   "cf_answer": "45",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 8?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 9?",
+    "answer": "81",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0196",
+   "family": "ARITH",
+   "scene": "A-0196",
+   "context": "Here is a sum for Ryan.",
+   "cf_context": "Here is a sum for Ryan.",
+   "off_context": "Here is a sum for Adam.",
+   "question": "What is (2 + 5) \u00d7 5?",
+   "cf_question": "What is (2 + 2) \u00d7 5?",
+   "bridge": "7",
+   "cf_bridge": "4",
+   "cue": "2 + 5",
+   "answer": "35",
+   "cf_answer": "20",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 5?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 5?",
+    "answer": "35",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0197",
+   "family": "ARITH",
+   "scene": "A-0197",
+   "context": "Here is a sum for Grace.",
+   "cf_context": "Here is a sum for Grace.",
+   "off_context": "Here is a sum for Adam.",
+   "question": "What is (2 + 1) \u00d7 5?",
+   "cf_question": "What is (2 + 4) \u00d7 5?",
+   "bridge": "3",
+   "cf_bridge": "6",
+   "cue": "2 + 1",
+   "answer": "15",
+   "cf_answer": "30",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 2 + 1?",
+    "answer": "3",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 3 \u00d7 5?",
+    "answer": "15",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0198",
+   "family": "ARITH",
+   "scene": "A-0198",
+   "context": "Here is a sum for Max.",
+   "cf_context": "Here is a sum for Max.",
+   "off_context": "Here is a sum for Fiona.",
+   "question": "What is (3 + 6) \u00d7 4?",
+   "cf_question": "What is (3 + 3) \u00d7 4?",
+   "bridge": "9",
+   "cf_bridge": "6",
+   "cue": "3 + 6",
+   "answer": "36",
+   "cf_answer": "24",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 3 + 6?",
+    "answer": "9",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 9 \u00d7 4?",
+    "answer": "36",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "ARITH-0199",
+   "family": "ARITH",
+   "scene": "A-0199",
+   "context": "Here is a sum for Mark.",
+   "cf_context": "Here is a sum for Mark.",
+   "off_context": "Here is a sum for Clara.",
+   "question": "What is (1 + 6) \u00d7 8?",
+   "cf_question": "What is (1 + 1) \u00d7 8?",
+   "bridge": "7",
+   "cf_bridge": "2",
+   "cue": "1 + 6",
+   "answer": "56",
+   "cf_answer": "16",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "What is 1 + 6?",
+    "answer": "7",
+    "kind": "digit"
+   },
+   "hop2": {
+    "question": "What is 7 \u00d7 8?",
+    "answer": "56",
+    "kind": "digit"
+   }
+  }
+ ]
+}

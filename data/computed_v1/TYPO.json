@@ -1,0 +1,5807 @@
+{
+ "family": "TYPO",
+ "generator": "scripts/suite_v1.py make --set computed (seed 301)",
+ "format": "Every family asks one question whose answer needs an intermediate variable (the bridge), in the chat format\n(bridge_jspace.chat: one user turn, thinking off, \"Answer:\" prefilled), with a counterfactual C that changes only the\nbridge (to X) and an off-path control O that changes something the answer does not depend on. C and O line up with the\nclean prompt token for token (checked here), so exp04/exp09's copy-and-split runs apply unchanged.",
+ "items": [
+  {
+   "id": "TYPO-0000",
+   "family": "TYPO",
+   "scene": "T-0000",
+   "context": "Here is a quick question from Fiona.",
+   "cf_context": "Here is a quick question from Fiona.",
+   "off_context": "Here is a quick question from Frank.",
+   "question": "How many legs does a doog have?",
+   "cf_question": "How many legs does a duuck have?",
+   "bridge": "dog",
+   "cf_bridge": "duck",
+   "cue": "doog",
+   "shown": "doog",
+   "cf_shown": "duuck",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'doog' a misspelling of?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0001",
+   "family": "TYPO",
+   "scene": "T-0001",
+   "context": "Here is a quick question from Ruby.",
+   "cf_context": "Here is a quick question from Ruby.",
+   "off_context": "Here is a quick question from Carl.",
+   "question": "How many legs does a beee have?",
+   "cf_question": "How many legs does a doog have?",
+   "bridge": "bee",
+   "cf_bridge": "dog",
+   "cue": "beee",
+   "shown": "beee",
+   "cf_shown": "doog",
+   "lang": null,
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'beee' a misspelling of?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0002",
+   "family": "TYPO",
+   "scene": "T-0002",
+   "context": "Here is a quick question from Sara.",
+   "cf_context": "Here is a quick question from Sara.",
+   "off_context": "Here is a quick question from Noah.",
+   "question": "How many legs does a coow have?",
+   "cf_question": "How many legs does a dcuk have?",
+   "bridge": "cow",
+   "cf_bridge": "duck",
+   "cue": "coow",
+   "shown": "coow",
+   "cf_shown": "dcuk",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'coow' a misspelling of?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cow have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0003",
+   "family": "TYPO",
+   "scene": "T-0003",
+   "context": "Here is a quick question from Grace.",
+   "cf_context": "Here is a quick question from Grace.",
+   "off_context": "Here is a quick question from David.",
+   "question": "How many legs does a coow have?",
+   "cf_question": "How many legs does a chicen have?",
+   "bridge": "cow",
+   "cf_bridge": "chicken",
+   "cue": "coow",
+   "shown": "coow",
+   "cf_shown": "chicen",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'coow' a misspelling of?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cow have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0004",
+   "family": "TYPO",
+   "scene": "T-0004",
+   "context": "Here is a quick question from Eric.",
+   "cf_context": "Here is a quick question from Eric.",
+   "off_context": "Here is a quick question from Amy.",
+   "question": "How many legs does a shep have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "sheep",
+   "cf_bridge": "bee",
+   "cue": "shep",
+   "shown": "shep",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'shep' a misspelling of?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0005",
+   "family": "TYPO",
+   "scene": "T-0005",
+   "context": "Here is a quick question from Lucy.",
+   "cf_context": "Here is a quick question from Lucy.",
+   "off_context": "Here is a quick question from Ivy.",
+   "question": "How many legs does a doog have?",
+   "cf_question": "How many legs does a dck have?",
+   "bridge": "dog",
+   "cf_bridge": "duck",
+   "cue": "doog",
+   "shown": "doog",
+   "cf_shown": "dck",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'doog' a misspelling of?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0006",
+   "family": "TYPO",
+   "scene": "T-0006",
+   "context": "Here is a quick question from Mark.",
+   "cf_context": "Here is a quick question from Mark.",
+   "off_context": "Here is a quick question from Emma.",
+   "question": "How many legs does a chickeen have?",
+   "cf_question": "How many legs does a doog have?",
+   "bridge": "chicken",
+   "cf_bridge": "dog",
+   "cue": "chickeen",
+   "shown": "chickeen",
+   "cf_shown": "doog",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'chickeen' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0007",
+   "family": "TYPO",
+   "scene": "T-0007",
+   "context": "Here is a quick question from Beth.",
+   "cf_context": "Here is a quick question from Beth.",
+   "off_context": "Here is a quick question from Max.",
+   "question": "How many legs does a chicen have?",
+   "cf_question": "How many legs does a caat have?",
+   "bridge": "chicken",
+   "cf_bridge": "cat",
+   "cue": "chicen",
+   "shown": "chicen",
+   "cf_shown": "caat",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'chicen' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0008",
+   "family": "TYPO",
+   "scene": "T-0008",
+   "context": "Here is a quick question from Dan.",
+   "cf_context": "Here is a quick question from Dan.",
+   "off_context": "Here is a quick question from Eve.",
+   "question": "How many legs does a wollf have?",
+   "cf_question": "How many legs does a sppider have?",
+   "bridge": "wolf",
+   "cf_bridge": "spider",
+   "cue": "wollf",
+   "shown": "wollf",
+   "cf_shown": "sppider",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'wollf' a misspelling of?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0009",
+   "family": "TYPO",
+   "scene": "T-0009",
+   "context": "Here is a quick question from Sean.",
+   "cf_context": "Here is a quick question from Sean.",
+   "off_context": "Here is a quick question from Vera.",
+   "question": "How many legs does a frgo have?",
+   "cf_question": "How many legs does a gooes have?",
+   "bridge": "frog",
+   "cf_bridge": "goose",
+   "cue": "frgo",
+   "shown": "frgo",
+   "cf_shown": "gooes",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'frgo' a misspelling of?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0010",
+   "family": "TYPO",
+   "scene": "T-0010",
+   "context": "Here is a quick question from Luke.",
+   "cf_context": "Here is a quick question from Luke.",
+   "off_context": "Here is a quick question from Ben.",
+   "question": "How many legs does a liion have?",
+   "cf_question": "How many legs does a gooose have?",
+   "bridge": "lion",
+   "cf_bridge": "goose",
+   "cue": "liion",
+   "shown": "liion",
+   "cf_shown": "gooose",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'liion' a misspelling of?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0011",
+   "family": "TYPO",
+   "scene": "T-0011",
+   "context": "Here is a quick question from Alice.",
+   "cf_context": "Here is a quick question from Alice.",
+   "off_context": "Here is a quick question from Ella.",
+   "question": "How many legs does a hores have?",
+   "cf_question": "How many legs does a chiken have?",
+   "bridge": "horse",
+   "cf_bridge": "chicken",
+   "cue": "hores",
+   "shown": "hores",
+   "cf_shown": "chiken",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'hores' a misspelling of?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0012",
+   "family": "TYPO",
+   "scene": "T-0012",
+   "context": "Here is a quick question from Luke.",
+   "cf_context": "Here is a quick question from Luke.",
+   "off_context": "Here is a quick question from Paul.",
+   "question": "How many legs does a chiicken have?",
+   "cf_question": "How many legs does a horrse have?",
+   "bridge": "chicken",
+   "cf_bridge": "horse",
+   "cue": "chiicken",
+   "shown": "chiicken",
+   "cf_shown": "horrse",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'chiicken' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0013",
+   "family": "TYPO",
+   "scene": "T-0013",
+   "context": "Here is a quick question from Ivan.",
+   "cf_context": "Here is a quick question from Ivan.",
+   "off_context": "Here is a quick question from Leo.",
+   "question": "How many legs does a coow have?",
+   "cf_question": "How many legs does a spier have?",
+   "bridge": "cow",
+   "cf_bridge": "spider",
+   "cue": "coow",
+   "shown": "coow",
+   "cf_shown": "spier",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'coow' a misspelling of?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cow have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0014",
+   "family": "TYPO",
+   "scene": "T-0014",
+   "context": "Here is a quick question from Jack.",
+   "cf_context": "Here is a quick question from Jack.",
+   "off_context": "Here is a quick question from Diana.",
+   "question": "How many legs does a chciken have?",
+   "cf_question": "How many legs does a doog have?",
+   "bridge": "chicken",
+   "cf_bridge": "dog",
+   "cue": "chciken",
+   "shown": "chciken",
+   "cf_shown": "doog",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'chciken' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0015",
+   "family": "TYPO",
+   "scene": "T-0015",
+   "context": "Here is a quick question from Ben.",
+   "cf_context": "Here is a quick question from Ben.",
+   "off_context": "Here is a quick question from Olivia.",
+   "question": "How many legs does a gooose have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "goose",
+   "cf_bridge": "bee",
+   "cue": "gooose",
+   "shown": "gooose",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'gooose' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0016",
+   "family": "TYPO",
+   "scene": "T-0016",
+   "context": "Here is a quick question from Zoe.",
+   "cf_context": "Here is a quick question from Zoe.",
+   "off_context": "Here is a quick question from Lily.",
+   "question": "How many legs does a sppider have?",
+   "cf_question": "How many legs does a horrse have?",
+   "bridge": "spider",
+   "cf_bridge": "horse",
+   "cue": "sppider",
+   "shown": "sppider",
+   "cf_shown": "horrse",
+   "lang": null,
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'sppider' a misspelling of?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0017",
+   "family": "TYPO",
+   "scene": "T-0017",
+   "context": "Here is a quick question from Hugo.",
+   "cf_context": "Here is a quick question from Hugo.",
+   "off_context": "Here is a quick question from Jack.",
+   "question": "How many legs does a piig have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "pig",
+   "cf_bridge": "bee",
+   "cue": "piig",
+   "shown": "piig",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'piig' a misspelling of?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0018",
+   "family": "TYPO",
+   "scene": "T-0018",
+   "context": "Here is a quick question from Sean.",
+   "cf_context": "Here is a quick question from Sean.",
+   "off_context": "Here is a quick question from Mark.",
+   "question": "How many legs does a chiicken have?",
+   "cf_question": "How many legs does a horrse have?",
+   "bridge": "chicken",
+   "cf_bridge": "horse",
+   "cue": "chiicken",
+   "shown": "chiicken",
+   "cf_shown": "horrse",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'chiicken' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0019",
+   "family": "TYPO",
+   "scene": "T-0019",
+   "context": "Here is a quick question from Sam.",
+   "cf_context": "Here is a quick question from Sam.",
+   "off_context": "Here is a quick question from Hugo.",
+   "question": "How many legs does a mosue have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "mouse",
+   "cf_bridge": "bee",
+   "cue": "mosue",
+   "shown": "mosue",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'mosue' a misspelling of?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0020",
+   "family": "TYPO",
+   "scene": "T-0020",
+   "context": "Here is a quick question from Ben.",
+   "cf_context": "Here is a quick question from Ben.",
+   "off_context": "Here is a quick question from Hugo.",
+   "question": "How many legs does a coow have?",
+   "cf_question": "How many legs does a gosoe have?",
+   "bridge": "cow",
+   "cf_bridge": "goose",
+   "cue": "coow",
+   "shown": "coow",
+   "cf_shown": "gosoe",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'coow' a misspelling of?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cow have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0021",
+   "family": "TYPO",
+   "scene": "T-0021",
+   "context": "Here is a quick question from Rose.",
+   "cf_context": "Here is a quick question from Rose.",
+   "off_context": "Here is a quick question from Finn.",
+   "question": "How many legs does a chhicken have?",
+   "cf_question": "How many legs does a wofl have?",
+   "bridge": "chicken",
+   "cf_bridge": "wolf",
+   "cue": "chhicken",
+   "shown": "chhicken",
+   "cf_shown": "wofl",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'chhicken' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0022",
+   "family": "TYPO",
+   "scene": "T-0022",
+   "context": "Here is a quick question from Dan.",
+   "cf_context": "Here is a quick question from Dan.",
+   "off_context": "Here is a quick question from Anna.",
+   "question": "How many legs does a dcuk have?",
+   "cf_question": "How many legs does a woolf have?",
+   "bridge": "duck",
+   "cf_bridge": "wolf",
+   "cue": "dcuk",
+   "shown": "dcuk",
+   "cf_shown": "woolf",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'dcuk' a misspelling of?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0023",
+   "family": "TYPO",
+   "scene": "T-0023",
+   "context": "Here is a quick question from Paul.",
+   "cf_context": "Here is a quick question from Paul.",
+   "off_context": "Here is a quick question from Lucy.",
+   "question": "How many legs does a mouuse have?",
+   "cf_question": "How many legs does a dcuk have?",
+   "bridge": "mouse",
+   "cf_bridge": "duck",
+   "cue": "mouuse",
+   "shown": "mouuse",
+   "cf_shown": "dcuk",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'mouuse' a misspelling of?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0024",
+   "family": "TYPO",
+   "scene": "T-0024",
+   "context": "Here is a quick question from Dan.",
+   "cf_context": "Here is a quick question from Dan.",
+   "off_context": "Here is a quick question from Hugo.",
+   "question": "How many legs does a piig have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "pig",
+   "cf_bridge": "bee",
+   "cue": "piig",
+   "shown": "piig",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'piig' a misspelling of?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0025",
+   "family": "TYPO",
+   "scene": "T-0025",
+   "context": "Here is a quick question from Lily.",
+   "cf_context": "Here is a quick question from Lily.",
+   "off_context": "Here is a quick question from Tara.",
+   "question": "How many legs does a frrog have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "frog",
+   "cf_bridge": "bee",
+   "cue": "frrog",
+   "shown": "frrog",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'frrog' a misspelling of?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0026",
+   "family": "TYPO",
+   "scene": "T-0026",
+   "context": "Here is a quick question from Leo.",
+   "cf_context": "Here is a quick question from Leo.",
+   "off_context": "Here is a quick question from Ivan.",
+   "question": "How many legs does a piig have?",
+   "cf_question": "How many legs does a gooes have?",
+   "bridge": "pig",
+   "cf_bridge": "goose",
+   "cue": "piig",
+   "shown": "piig",
+   "cf_shown": "gooes",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'piig' a misspelling of?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0027",
+   "family": "TYPO",
+   "scene": "T-0027",
+   "context": "Here is a quick question from Victor.",
+   "cf_context": "Here is a quick question from Victor.",
+   "off_context": "Here is a quick question from Diana.",
+   "question": "How many legs does a wlf have?",
+   "cf_question": "How many legs does a chiicken have?",
+   "bridge": "wolf",
+   "cf_bridge": "chicken",
+   "cue": "wlf",
+   "shown": "wlf",
+   "cf_shown": "chiicken",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'wlf' a misspelling of?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0028",
+   "family": "TYPO",
+   "scene": "T-0028",
+   "context": "Here is a quick question from Laura.",
+   "cf_context": "Here is a quick question from Laura.",
+   "off_context": "Here is a quick question from Iris.",
+   "question": "How many legs does a trkey have?",
+   "cf_question": "How many legs does a horrse have?",
+   "bridge": "turkey",
+   "cf_bridge": "horse",
+   "cue": "trkey",
+   "shown": "trkey",
+   "cf_shown": "horrse",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'trkey' a misspelling of?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0029",
+   "family": "TYPO",
+   "scene": "T-0029",
+   "context": "Here is a quick question from Amy.",
+   "cf_context": "Here is a quick question from Amy.",
+   "off_context": "Here is a quick question from Kate.",
+   "question": "How many legs does a beee have?",
+   "cf_question": "How many legs does a piig have?",
+   "bridge": "bee",
+   "cf_bridge": "pig",
+   "cue": "beee",
+   "shown": "beee",
+   "cf_shown": "piig",
+   "lang": null,
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'beee' a misspelling of?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0030",
+   "family": "TYPO",
+   "scene": "T-0030",
+   "context": "Here is a quick question from James.",
+   "cf_context": "Here is a quick question from James.",
+   "off_context": "Here is a quick question from Lucy.",
+   "question": "How many legs does a trukey have?",
+   "cf_question": "How many legs does a spiider have?",
+   "bridge": "turkey",
+   "cf_bridge": "spider",
+   "cue": "trukey",
+   "shown": "trukey",
+   "cf_shown": "spiider",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'trukey' a misspelling of?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0031",
+   "family": "TYPO",
+   "scene": "T-0031",
+   "context": "Here is a quick question from Laura.",
+   "cf_context": "Here is a quick question from Laura.",
+   "off_context": "Here is a quick question from Anna.",
+   "question": "How many legs does a gooe have?",
+   "cf_question": "How many legs does a doog have?",
+   "bridge": "goose",
+   "cf_bridge": "dog",
+   "cue": "gooe",
+   "shown": "gooe",
+   "cf_shown": "doog",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'gooe' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0032",
+   "family": "TYPO",
+   "scene": "T-0032",
+   "context": "Here is a quick question from Julia.",
+   "cf_context": "Here is a quick question from Julia.",
+   "off_context": "Here is a quick question from Ella.",
+   "question": "How many legs does a frgo have?",
+   "cf_question": "How many legs does a sppider have?",
+   "bridge": "frog",
+   "cf_bridge": "spider",
+   "cue": "frgo",
+   "shown": "frgo",
+   "cf_shown": "sppider",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'frgo' a misspelling of?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0033",
+   "family": "TYPO",
+   "scene": "T-0033",
+   "context": "Here is a quick question from Eric.",
+   "cf_context": "Here is a quick question from Eric.",
+   "off_context": "Here is a quick question from Kyle.",
+   "question": "How many legs does a lioon have?",
+   "cf_question": "How many legs does a gooose have?",
+   "bridge": "lion",
+   "cf_bridge": "goose",
+   "cue": "lioon",
+   "shown": "lioon",
+   "cf_shown": "gooose",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'lioon' a misspelling of?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0034",
+   "family": "TYPO",
+   "scene": "T-0034",
+   "context": "Here is a quick question from Sam.",
+   "cf_context": "Here is a quick question from Sam.",
+   "off_context": "Here is a quick question from Ryan.",
+   "question": "How many legs does a trkey have?",
+   "cf_question": "How many legs does a coow have?",
+   "bridge": "turkey",
+   "cf_bridge": "cow",
+   "cue": "trkey",
+   "shown": "trkey",
+   "cf_shown": "coow",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'trkey' a misspelling of?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0035",
+   "family": "TYPO",
+   "scene": "T-0035",
+   "context": "Here is a quick question from Noah.",
+   "cf_context": "Here is a quick question from Noah.",
+   "off_context": "Here is a quick question from Hugo.",
+   "question": "How many legs does a dcuk have?",
+   "cf_question": "How many legs does a sehep have?",
+   "bridge": "duck",
+   "cf_bridge": "sheep",
+   "cue": "dcuk",
+   "shown": "dcuk",
+   "cf_shown": "sehep",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'dcuk' a misspelling of?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0036",
+   "family": "TYPO",
+   "scene": "T-0036",
+   "context": "Here is a quick question from Emma.",
+   "cf_context": "Here is a quick question from Emma.",
+   "off_context": "Here is a quick question from Grace.",
+   "question": "How many legs does a froog have?",
+   "cf_question": "How many legs does a dck have?",
+   "bridge": "frog",
+   "cf_bridge": "duck",
+   "cue": "froog",
+   "shown": "froog",
+   "cf_shown": "dck",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'froog' a misspelling of?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0037",
+   "family": "TYPO",
+   "scene": "T-0037",
+   "context": "Here is a quick question from James.",
+   "cf_context": "Here is a quick question from James.",
+   "off_context": "Here is a quick question from Kate.",
+   "question": "How many legs does a caat have?",
+   "cf_question": "How many legs does a duuck have?",
+   "bridge": "cat",
+   "cf_bridge": "duck",
+   "cue": "caat",
+   "shown": "caat",
+   "cf_shown": "duuck",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'caat' a misspelling of?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0038",
+   "family": "TYPO",
+   "scene": "T-0038",
+   "context": "Here is a quick question from Eve.",
+   "cf_context": "Here is a quick question from Eve.",
+   "off_context": "Here is a quick question from Mark.",
+   "question": "How many legs does a trkey have?",
+   "cf_question": "How many legs does a wlf have?",
+   "bridge": "turkey",
+   "cf_bridge": "wolf",
+   "cue": "trkey",
+   "shown": "trkey",
+   "cf_shown": "wlf",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'trkey' a misspelling of?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0039",
+   "family": "TYPO",
+   "scene": "T-0039",
+   "context": "Here is a quick question from Noah.",
+   "cf_context": "Here is a quick question from Noah.",
+   "off_context": "Here is a quick question from Ivy.",
+   "question": "How many legs does a beee have?",
+   "cf_question": "How many legs does a seep have?",
+   "bridge": "bee",
+   "cf_bridge": "sheep",
+   "cue": "beee",
+   "shown": "beee",
+   "cf_shown": "seep",
+   "lang": null,
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'beee' a misspelling of?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0040",
+   "family": "TYPO",
+   "scene": "T-0040",
+   "context": "Here is a quick question from Fiona.",
+   "cf_context": "Here is a quick question from Fiona.",
+   "off_context": "Here is a quick question from James.",
+   "question": "How many legs does a spder have?",
+   "cf_question": "How many legs does a lino have?",
+   "bridge": "spider",
+   "cf_bridge": "lion",
+   "cue": "spder",
+   "shown": "spder",
+   "cf_shown": "lino",
+   "lang": null,
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'spder' a misspelling of?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0041",
+   "family": "TYPO",
+   "scene": "T-0041",
+   "context": "Here is a quick question from Emma.",
+   "cf_context": "Here is a quick question from Emma.",
+   "off_context": "Here is a quick question from Sam.",
+   "question": "How many legs does a tukey have?",
+   "cf_question": "How many legs does a shep have?",
+   "bridge": "turkey",
+   "cf_bridge": "sheep",
+   "cue": "tukey",
+   "shown": "tukey",
+   "cf_shown": "shep",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'tukey' a misspelling of?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0042",
+   "family": "TYPO",
+   "scene": "T-0042",
+   "context": "Here is a quick question from Amy.",
+   "cf_context": "Here is a quick question from Amy.",
+   "off_context": "Here is a quick question from Beth.",
+   "question": "How many legs does a liion have?",
+   "cf_question": "How many legs does a chickne have?",
+   "bridge": "lion",
+   "cf_bridge": "chicken",
+   "cue": "liion",
+   "shown": "liion",
+   "cf_shown": "chickne",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'liion' a misspelling of?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0043",
+   "family": "TYPO",
+   "scene": "T-0043",
+   "context": "Here is a quick question from Dan.",
+   "cf_context": "Here is a quick question from Dan.",
+   "off_context": "Here is a quick question from Beth.",
+   "question": "How many legs does a mosue have?",
+   "cf_question": "How many legs does a gose have?",
+   "bridge": "mouse",
+   "cf_bridge": "goose",
+   "cue": "mosue",
+   "shown": "mosue",
+   "cf_shown": "gose",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'mosue' a misspelling of?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0044",
+   "family": "TYPO",
+   "scene": "T-0044",
+   "context": "Here is a quick question from Henry.",
+   "cf_context": "Here is a quick question from Henry.",
+   "off_context": "Here is a quick question from Hugo.",
+   "question": "How many legs does a tukrey have?",
+   "cf_question": "How many legs does a moues have?",
+   "bridge": "turkey",
+   "cf_bridge": "mouse",
+   "cue": "tukrey",
+   "shown": "tukrey",
+   "cf_shown": "moues",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'tukrey' a misspelling of?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0045",
+   "family": "TYPO",
+   "scene": "T-0045",
+   "context": "Here is a quick question from Kyle.",
+   "cf_context": "Here is a quick question from Kyle.",
+   "off_context": "Here is a quick question from Clara.",
+   "question": "How many legs does a doog have?",
+   "cf_question": "How many legs does a chiken have?",
+   "bridge": "dog",
+   "cf_bridge": "chicken",
+   "cue": "doog",
+   "shown": "doog",
+   "cf_shown": "chiken",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'doog' a misspelling of?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0046",
+   "family": "TYPO",
+   "scene": "T-0046",
+   "context": "Here is a quick question from Sam.",
+   "cf_context": "Here is a quick question from Sam.",
+   "off_context": "Here is a quick question from Kate.",
+   "question": "How many legs does a goosse have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "goose",
+   "cf_bridge": "bee",
+   "cue": "goosse",
+   "shown": "goosse",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'goosse' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0047",
+   "family": "TYPO",
+   "scene": "T-0047",
+   "context": "Here is a quick question from Max.",
+   "cf_context": "Here is a quick question from Max.",
+   "off_context": "Here is a quick question from Ruby.",
+   "question": "How many legs does a beee have?",
+   "cf_question": "How many legs does a hore have?",
+   "bridge": "bee",
+   "cf_bridge": "horse",
+   "cue": "beee",
+   "shown": "beee",
+   "cf_shown": "hore",
+   "lang": null,
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'beee' a misspelling of?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0048",
+   "family": "TYPO",
+   "scene": "T-0048",
+   "context": "Here is a quick question from Alice.",
+   "cf_context": "Here is a quick question from Alice.",
+   "off_context": "Here is a quick question from Ruby.",
+   "question": "How many legs does a chiken have?",
+   "cf_question": "How many legs does a hoorse have?",
+   "bridge": "chicken",
+   "cf_bridge": "horse",
+   "cue": "chiken",
+   "shown": "chiken",
+   "cf_shown": "hoorse",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'chiken' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0049",
+   "family": "TYPO",
+   "scene": "T-0049",
+   "context": "Here is a quick question from Finn.",
+   "cf_context": "Here is a quick question from Finn.",
+   "off_context": "Here is a quick question from Mia.",
+   "question": "How many legs does a mose have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "mouse",
+   "cf_bridge": "bee",
+   "cue": "mose",
+   "shown": "mose",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'mose' a misspelling of?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0050",
+   "family": "TYPO",
+   "scene": "T-0050",
+   "context": "Here is a quick question from Kyle.",
+   "cf_context": "Here is a quick question from Kyle.",
+   "off_context": "Here is a quick question from Laura.",
+   "question": "How many legs does a chiken have?",
+   "cf_question": "How many legs does a wlf have?",
+   "bridge": "chicken",
+   "cf_bridge": "wolf",
+   "cue": "chiken",
+   "shown": "chiken",
+   "cf_shown": "wlf",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'chiken' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0051",
+   "family": "TYPO",
+   "scene": "T-0051",
+   "context": "Here is a quick question from Lily.",
+   "cf_context": "Here is a quick question from Lily.",
+   "off_context": "Here is a quick question from Eve.",
+   "question": "How many legs does a mouuse have?",
+   "cf_question": "How many legs does a chcken have?",
+   "bridge": "mouse",
+   "cf_bridge": "chicken",
+   "cue": "mouuse",
+   "shown": "mouuse",
+   "cf_shown": "chcken",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'mouuse' a misspelling of?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0052",
+   "family": "TYPO",
+   "scene": "T-0052",
+   "context": "Here is a quick question from Emma.",
+   "cf_context": "Here is a quick question from Emma.",
+   "off_context": "Here is a quick question from Oscar.",
+   "question": "How many legs does a spdier have?",
+   "cf_question": "How many legs does a hore have?",
+   "bridge": "spider",
+   "cf_bridge": "horse",
+   "cue": "spdier",
+   "shown": "spdier",
+   "cf_shown": "hore",
+   "lang": null,
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'spdier' a misspelling of?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0053",
+   "family": "TYPO",
+   "scene": "T-0053",
+   "context": "Here is a quick question from Anna.",
+   "cf_context": "Here is a quick question from Anna.",
+   "off_context": "Here is a quick question from Ivy.",
+   "question": "How many legs does a beee have?",
+   "cf_question": "How many legs does a trukey have?",
+   "bridge": "bee",
+   "cf_bridge": "turkey",
+   "cue": "beee",
+   "shown": "beee",
+   "cf_shown": "trukey",
+   "lang": null,
+   "answer": "6",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'beee' a misspelling of?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0054",
+   "family": "TYPO",
+   "scene": "T-0054",
+   "context": "Here is a quick question from Mark.",
+   "cf_context": "Here is a quick question from Mark.",
+   "off_context": "Here is a quick question from Henry.",
+   "question": "How many legs does a wlf have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "wolf",
+   "cf_bridge": "bee",
+   "cue": "wlf",
+   "shown": "wlf",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'wlf' a misspelling of?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0055",
+   "family": "TYPO",
+   "scene": "T-0055",
+   "context": "Here is a quick question from Finn.",
+   "cf_context": "Here is a quick question from Finn.",
+   "off_context": "Here is a quick question from David.",
+   "question": "How many legs does a beee have?",
+   "cf_question": "How many legs does a gooe have?",
+   "bridge": "bee",
+   "cf_bridge": "goose",
+   "cue": "beee",
+   "shown": "beee",
+   "cf_shown": "gooe",
+   "lang": null,
+   "answer": "6",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'beee' a misspelling of?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0056",
+   "family": "TYPO",
+   "scene": "T-0056",
+   "context": "Here is a quick question from Peter.",
+   "cf_context": "Here is a quick question from Peter.",
+   "off_context": "Here is a quick question from Ryan.",
+   "question": "How many legs does a shepe have?",
+   "cf_question": "How many legs does a gooose have?",
+   "bridge": "sheep",
+   "cf_bridge": "goose",
+   "cue": "shepe",
+   "shown": "shepe",
+   "cf_shown": "gooose",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'shepe' a misspelling of?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0057",
+   "family": "TYPO",
+   "scene": "T-0057",
+   "context": "Here is a quick question from Finn.",
+   "cf_context": "Here is a quick question from Finn.",
+   "off_context": "Here is a quick question from Iris.",
+   "question": "How many legs does a gooe have?",
+   "cf_question": "How many legs does a froog have?",
+   "bridge": "goose",
+   "cf_bridge": "frog",
+   "cue": "gooe",
+   "shown": "gooe",
+   "cf_shown": "froog",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'gooe' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0058",
+   "family": "TYPO",
+   "scene": "T-0058",
+   "context": "Here is a quick question from Will.",
+   "cf_context": "Here is a quick question from Will.",
+   "off_context": "Here is a quick question from James.",
+   "question": "How many legs does a spidr have?",
+   "cf_question": "How many legs does a chicen have?",
+   "bridge": "spider",
+   "cf_bridge": "chicken",
+   "cue": "spidr",
+   "shown": "spidr",
+   "cf_shown": "chicen",
+   "lang": null,
+   "answer": "8",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'spidr' a misspelling of?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0059",
+   "family": "TYPO",
+   "scene": "T-0059",
+   "context": "Here is a quick question from Hugo.",
+   "cf_context": "Here is a quick question from Hugo.",
+   "off_context": "Here is a quick question from Zoe.",
+   "question": "How many legs does a duuck have?",
+   "cf_question": "How many legs does a wollf have?",
+   "bridge": "duck",
+   "cf_bridge": "wolf",
+   "cue": "duuck",
+   "shown": "duuck",
+   "cf_shown": "wollf",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'duuck' a misspelling of?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0060",
+   "family": "TYPO",
+   "scene": "T-0060",
+   "context": "Here is a quick question from Adam.",
+   "cf_context": "Here is a quick question from Adam.",
+   "off_context": "Here is a quick question from Kyle.",
+   "question": "How many legs does a sheeep have?",
+   "cf_question": "How many legs does a turkkey have?",
+   "bridge": "sheep",
+   "cf_bridge": "turkey",
+   "cue": "sheeep",
+   "shown": "sheeep",
+   "cf_shown": "turkkey",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'sheeep' a misspelling of?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0061",
+   "family": "TYPO",
+   "scene": "T-0061",
+   "context": "Here is a quick question from Clara.",
+   "cf_context": "Here is a quick question from Clara.",
+   "off_context": "Here is a quick question from Anna.",
+   "question": "How many legs does a dck have?",
+   "cf_question": "How many legs does a doog have?",
+   "bridge": "duck",
+   "cf_bridge": "dog",
+   "cue": "dck",
+   "shown": "dck",
+   "cf_shown": "doog",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'dck' a misspelling of?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0062",
+   "family": "TYPO",
+   "scene": "T-0062",
+   "context": "Here is a quick question from Julia.",
+   "cf_context": "Here is a quick question from Julia.",
+   "off_context": "Here is a quick question from Ivy.",
+   "question": "How many legs does a frrog have?",
+   "cf_question": "How many legs does a dukc have?",
+   "bridge": "frog",
+   "cf_bridge": "duck",
+   "cue": "frrog",
+   "shown": "frrog",
+   "cf_shown": "dukc",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'frrog' a misspelling of?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0063",
+   "family": "TYPO",
+   "scene": "T-0063",
+   "context": "Here is a quick question from Eva.",
+   "cf_context": "Here is a quick question from Eva.",
+   "off_context": "Here is a quick question from Olivia.",
+   "question": "How many legs does a chiicken have?",
+   "cf_question": "How many legs does a frg have?",
+   "bridge": "chicken",
+   "cf_bridge": "frog",
+   "cue": "chiicken",
+   "shown": "chiicken",
+   "cf_shown": "frg",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'chiicken' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0064",
+   "family": "TYPO",
+   "scene": "T-0064",
+   "context": "Here is a quick question from Sam.",
+   "cf_context": "Here is a quick question from Sam.",
+   "off_context": "Here is a quick question from Vera.",
+   "question": "How many legs does a coow have?",
+   "cf_question": "How many legs does a duuck have?",
+   "bridge": "cow",
+   "cf_bridge": "duck",
+   "cue": "coow",
+   "shown": "coow",
+   "cf_shown": "duuck",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'coow' a misspelling of?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cow have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0065",
+   "family": "TYPO",
+   "scene": "T-0065",
+   "context": "Here is a quick question from Beth.",
+   "cf_context": "Here is a quick question from Beth.",
+   "off_context": "Here is a quick question from Finn.",
+   "question": "How many legs does a turrkey have?",
+   "cf_question": "How many legs does a sheeep have?",
+   "bridge": "turkey",
+   "cf_bridge": "sheep",
+   "cue": "turrkey",
+   "shown": "turrkey",
+   "cf_shown": "sheeep",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'turrkey' a misspelling of?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0066",
+   "family": "TYPO",
+   "scene": "T-0066",
+   "context": "Here is a quick question from Ivan.",
+   "cf_context": "Here is a quick question from Ivan.",
+   "off_context": "Here is a quick question from Paul.",
+   "question": "How many legs does a wollf have?",
+   "cf_question": "How many legs does a spder have?",
+   "bridge": "wolf",
+   "cf_bridge": "spider",
+   "cue": "wollf",
+   "shown": "wollf",
+   "cf_shown": "spder",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'wollf' a misspelling of?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0067",
+   "family": "TYPO",
+   "scene": "T-0067",
+   "context": "Here is a quick question from Oscar.",
+   "cf_context": "Here is a quick question from Oscar.",
+   "off_context": "Here is a quick question from Sam.",
+   "question": "How many legs does a caat have?",
+   "cf_question": "How many legs does a chickne have?",
+   "bridge": "cat",
+   "cf_bridge": "chicken",
+   "cue": "caat",
+   "shown": "caat",
+   "cf_shown": "chickne",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'caat' a misspelling of?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0068",
+   "family": "TYPO",
+   "scene": "T-0068",
+   "context": "Here is a quick question from David.",
+   "cf_context": "Here is a quick question from David.",
+   "off_context": "Here is a quick question from Ella.",
+   "question": "How many legs does a coow have?",
+   "cf_question": "How many legs does a spidr have?",
+   "bridge": "cow",
+   "cf_bridge": "spider",
+   "cue": "coow",
+   "shown": "coow",
+   "cf_shown": "spidr",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'coow' a misspelling of?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cow have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0069",
+   "family": "TYPO",
+   "scene": "T-0069",
+   "context": "Here is a quick question from Lily.",
+   "cf_context": "Here is a quick question from Lily.",
+   "off_context": "Here is a quick question from Liam.",
+   "question": "How many legs does a moouse have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "mouse",
+   "cf_bridge": "bee",
+   "cue": "moouse",
+   "shown": "moouse",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'moouse' a misspelling of?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0070",
+   "family": "TYPO",
+   "scene": "T-0070",
+   "context": "Here is a quick question from Eric.",
+   "cf_context": "Here is a quick question from Eric.",
+   "off_context": "Here is a quick question from Frank.",
+   "question": "How many legs does a caat have?",
+   "cf_question": "How many legs does a gooose have?",
+   "bridge": "cat",
+   "cf_bridge": "goose",
+   "cue": "caat",
+   "shown": "caat",
+   "cf_shown": "gooose",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'caat' a misspelling of?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0071",
+   "family": "TYPO",
+   "scene": "T-0071",
+   "context": "Here is a quick question from Anna.",
+   "cf_context": "Here is a quick question from Anna.",
+   "off_context": "Here is a quick question from Beth.",
+   "question": "How many legs does a dck have?",
+   "cf_question": "How many legs does a coow have?",
+   "bridge": "duck",
+   "cf_bridge": "cow",
+   "cue": "dck",
+   "shown": "dck",
+   "cf_shown": "coow",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'dck' a misspelling of?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0072",
+   "family": "TYPO",
+   "scene": "T-0072",
+   "context": "Here is a quick question from Luke.",
+   "cf_context": "Here is a quick question from Luke.",
+   "off_context": "Here is a quick question from Henry.",
+   "question": "How many legs does a dcuk have?",
+   "cf_question": "How many legs does a piig have?",
+   "bridge": "duck",
+   "cf_bridge": "pig",
+   "cue": "dcuk",
+   "shown": "dcuk",
+   "cf_shown": "piig",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'dcuk' a misspelling of?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0073",
+   "family": "TYPO",
+   "scene": "T-0073",
+   "context": "Here is a quick question from David.",
+   "cf_context": "Here is a quick question from David.",
+   "off_context": "Here is a quick question from James.",
+   "question": "How many legs does a froog have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "frog",
+   "cf_bridge": "bee",
+   "cue": "froog",
+   "shown": "froog",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'froog' a misspelling of?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0074",
+   "family": "TYPO",
+   "scene": "T-0074",
+   "context": "Here is a quick question from Will.",
+   "cf_context": "Here is a quick question from Will.",
+   "off_context": "Here is a quick question from Max.",
+   "question": "How many legs does a beee have?",
+   "cf_question": "How many legs does a hrose have?",
+   "bridge": "bee",
+   "cf_bridge": "horse",
+   "cue": "beee",
+   "shown": "beee",
+   "cf_shown": "hrose",
+   "lang": null,
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'beee' a misspelling of?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0075",
+   "family": "TYPO",
+   "scene": "T-0075",
+   "context": "Here is a quick question from Hugo.",
+   "cf_context": "Here is a quick question from Hugo.",
+   "off_context": "Here is a quick question from Sara.",
+   "question": "How many legs does a gosoe have?",
+   "cf_question": "How many legs does a doog have?",
+   "bridge": "goose",
+   "cf_bridge": "dog",
+   "cue": "gosoe",
+   "shown": "gosoe",
+   "cf_shown": "doog",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'gosoe' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0076",
+   "family": "TYPO",
+   "scene": "T-0076",
+   "context": "Here is a quick question from Hugo.",
+   "cf_context": "Here is a quick question from Hugo.",
+   "off_context": "Here is a quick question from Will.",
+   "question": "How many legs does a moues have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "mouse",
+   "cf_bridge": "bee",
+   "cue": "moues",
+   "shown": "moues",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'moues' a misspelling of?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0077",
+   "family": "TYPO",
+   "scene": "T-0077",
+   "context": "Here is a quick question from Jack.",
+   "cf_context": "Here is a quick question from Jack.",
+   "off_context": "Here is a quick question from Ruby.",
+   "question": "How many legs does a chiken have?",
+   "cf_question": "How many legs does a lioon have?",
+   "bridge": "chicken",
+   "cf_bridge": "lion",
+   "cue": "chiken",
+   "shown": "chiken",
+   "cf_shown": "lioon",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'chiken' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0078",
+   "family": "TYPO",
+   "scene": "T-0078",
+   "context": "Here is a quick question from Amy.",
+   "cf_context": "Here is a quick question from Amy.",
+   "off_context": "Here is a quick question from Vera.",
+   "question": "How many legs does a sehep have?",
+   "cf_question": "How many legs does a chiken have?",
+   "bridge": "sheep",
+   "cf_bridge": "chicken",
+   "cue": "sehep",
+   "shown": "sehep",
+   "cf_shown": "chiken",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'sehep' a misspelling of?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0079",
+   "family": "TYPO",
+   "scene": "T-0079",
+   "context": "Here is a quick question from Nina.",
+   "cf_context": "Here is a quick question from Nina.",
+   "off_context": "Here is a quick question from Max.",
+   "question": "How many legs does a turky have?",
+   "cf_question": "How many legs does a spdier have?",
+   "bridge": "turkey",
+   "cf_bridge": "spider",
+   "cue": "turky",
+   "shown": "turky",
+   "cf_shown": "spdier",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'turky' a misspelling of?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0080",
+   "family": "TYPO",
+   "scene": "T-0080",
+   "context": "Here is a quick question from Rose.",
+   "cf_context": "Here is a quick question from Rose.",
+   "off_context": "Here is a quick question from Eve.",
+   "question": "How many legs does a beee have?",
+   "cf_question": "How many legs does a hrse have?",
+   "bridge": "bee",
+   "cf_bridge": "horse",
+   "cue": "beee",
+   "shown": "beee",
+   "cf_shown": "hrse",
+   "lang": null,
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'beee' a misspelling of?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0081",
+   "family": "TYPO",
+   "scene": "T-0081",
+   "context": "Here is a quick question from Dan.",
+   "cf_context": "Here is a quick question from Dan.",
+   "off_context": "Here is a quick question from Henry.",
+   "question": "How many legs does a gooose have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "goose",
+   "cf_bridge": "bee",
+   "cue": "gooose",
+   "shown": "gooose",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'gooose' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0082",
+   "family": "TYPO",
+   "scene": "T-0082",
+   "context": "Here is a quick question from Sean.",
+   "cf_context": "Here is a quick question from Sean.",
+   "off_context": "Here is a quick question from Nina.",
+   "question": "How many legs does a dck have?",
+   "cf_question": "How many legs does a piig have?",
+   "bridge": "duck",
+   "cf_bridge": "pig",
+   "cue": "dck",
+   "shown": "dck",
+   "cf_shown": "piig",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'dck' a misspelling of?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0083",
+   "family": "TYPO",
+   "scene": "T-0083",
+   "context": "Here is a quick question from Eve.",
+   "cf_context": "Here is a quick question from Eve.",
+   "off_context": "Here is a quick question from Hugo.",
+   "question": "How many legs does a hoorse have?",
+   "cf_question": "How many legs does a gooose have?",
+   "bridge": "horse",
+   "cf_bridge": "goose",
+   "cue": "hoorse",
+   "shown": "hoorse",
+   "cf_shown": "gooose",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'hoorse' a misspelling of?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0084",
+   "family": "TYPO",
+   "scene": "T-0084",
+   "context": "Here is a quick question from Maria.",
+   "cf_context": "Here is a quick question from Maria.",
+   "off_context": "Here is a quick question from Eva.",
+   "question": "How many legs does a frrog have?",
+   "cf_question": "How many legs does a turky have?",
+   "bridge": "frog",
+   "cf_bridge": "turkey",
+   "cue": "frrog",
+   "shown": "frrog",
+   "cf_shown": "turky",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'frrog' a misspelling of?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0085",
+   "family": "TYPO",
+   "scene": "T-0085",
+   "context": "Here is a quick question from Ben.",
+   "cf_context": "Here is a quick question from Ben.",
+   "off_context": "Here is a quick question from Paul.",
+   "question": "How many legs does a turky have?",
+   "cf_question": "How many legs does a hoorse have?",
+   "bridge": "turkey",
+   "cf_bridge": "horse",
+   "cue": "turky",
+   "shown": "turky",
+   "cf_shown": "hoorse",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'turky' a misspelling of?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0086",
+   "family": "TYPO",
+   "scene": "T-0086",
+   "context": "Here is a quick question from Mark.",
+   "cf_context": "Here is a quick question from Mark.",
+   "off_context": "Here is a quick question from Eve.",
+   "question": "How many legs does a dukc have?",
+   "cf_question": "How many legs does a woolf have?",
+   "bridge": "duck",
+   "cf_bridge": "wolf",
+   "cue": "dukc",
+   "shown": "dukc",
+   "cf_shown": "woolf",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'dukc' a misspelling of?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0087",
+   "family": "TYPO",
+   "scene": "T-0087",
+   "context": "Here is a quick question from Peter.",
+   "cf_context": "Here is a quick question from Peter.",
+   "off_context": "Here is a quick question from Maria.",
+   "question": "How many legs does a chickn have?",
+   "cf_question": "How many legs does a coow have?",
+   "bridge": "chicken",
+   "cf_bridge": "cow",
+   "cue": "chickn",
+   "shown": "chickn",
+   "cf_shown": "coow",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'chickn' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0088",
+   "family": "TYPO",
+   "scene": "T-0088",
+   "context": "Here is a quick question from Lily.",
+   "cf_context": "Here is a quick question from Lily.",
+   "off_context": "Here is a quick question from Fiona.",
+   "question": "How many legs does a sppider have?",
+   "cf_question": "How many legs does a coow have?",
+   "bridge": "spider",
+   "cf_bridge": "cow",
+   "cue": "sppider",
+   "shown": "sppider",
+   "cf_shown": "coow",
+   "lang": null,
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'sppider' a misspelling of?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0089",
+   "family": "TYPO",
+   "scene": "T-0089",
+   "context": "Here is a quick question from Ryan.",
+   "cf_context": "Here is a quick question from Ryan.",
+   "off_context": "Here is a quick question from Henry.",
+   "question": "How many legs does a beee have?",
+   "cf_question": "How many legs does a caat have?",
+   "bridge": "bee",
+   "cf_bridge": "cat",
+   "cue": "beee",
+   "shown": "beee",
+   "cf_shown": "caat",
+   "lang": null,
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'beee' a misspelling of?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0090",
+   "family": "TYPO",
+   "scene": "T-0090",
+   "context": "Here is a quick question from Iris.",
+   "cf_context": "Here is a quick question from Iris.",
+   "off_context": "Here is a quick question from Zoe.",
+   "question": "How many legs does a spder have?",
+   "cf_question": "How many legs does a moues have?",
+   "bridge": "spider",
+   "cf_bridge": "mouse",
+   "cue": "spder",
+   "shown": "spder",
+   "cf_shown": "moues",
+   "lang": null,
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'spder' a misspelling of?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0091",
+   "family": "TYPO",
+   "scene": "T-0091",
+   "context": "Here is a quick question from Hugo.",
+   "cf_context": "Here is a quick question from Hugo.",
+   "off_context": "Here is a quick question from Oscar.",
+   "question": "How many legs does a liion have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "lion",
+   "cf_bridge": "bee",
+   "cue": "liion",
+   "shown": "liion",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'liion' a misspelling of?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0092",
+   "family": "TYPO",
+   "scene": "T-0092",
+   "context": "Here is a quick question from Vera.",
+   "cf_context": "Here is a quick question from Vera.",
+   "off_context": "Here is a quick question from Mark.",
+   "question": "How many legs does a beee have?",
+   "cf_question": "How many legs does a horrse have?",
+   "bridge": "bee",
+   "cf_bridge": "horse",
+   "cue": "beee",
+   "shown": "beee",
+   "cf_shown": "horrse",
+   "lang": null,
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'beee' a misspelling of?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0093",
+   "family": "TYPO",
+   "scene": "T-0093",
+   "context": "Here is a quick question from Liam.",
+   "cf_context": "Here is a quick question from Liam.",
+   "off_context": "Here is a quick question from Laura.",
+   "question": "How many legs does a spdier have?",
+   "cf_question": "How many legs does a hores have?",
+   "bridge": "spider",
+   "cf_bridge": "horse",
+   "cue": "spdier",
+   "shown": "spdier",
+   "cf_shown": "hores",
+   "lang": null,
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'spdier' a misspelling of?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0094",
+   "family": "TYPO",
+   "scene": "T-0094",
+   "context": "Here is a quick question from Carl.",
+   "cf_context": "Here is a quick question from Carl.",
+   "off_context": "Here is a quick question from Kate.",
+   "question": "How many legs does a shep have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "sheep",
+   "cf_bridge": "bee",
+   "cue": "shep",
+   "shown": "shep",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'shep' a misspelling of?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0095",
+   "family": "TYPO",
+   "scene": "T-0095",
+   "context": "Here is a quick question from Emma.",
+   "cf_context": "Here is a quick question from Emma.",
+   "off_context": "Here is a quick question from Grace.",
+   "question": "How many legs does a doog have?",
+   "cf_question": "How many legs does a gooose have?",
+   "bridge": "dog",
+   "cf_bridge": "goose",
+   "cue": "doog",
+   "shown": "doog",
+   "cf_shown": "gooose",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'doog' a misspelling of?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0096",
+   "family": "TYPO",
+   "scene": "T-0096",
+   "context": "Here is a quick question from Adam.",
+   "cf_context": "Here is a quick question from Adam.",
+   "off_context": "Here is a quick question from David.",
+   "question": "How many legs does a hores have?",
+   "cf_question": "How many legs does a dcuk have?",
+   "bridge": "horse",
+   "cf_bridge": "duck",
+   "cue": "hores",
+   "shown": "hores",
+   "cf_shown": "dcuk",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'hores' a misspelling of?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0097",
+   "family": "TYPO",
+   "scene": "T-0097",
+   "context": "Here is a quick question from Mia.",
+   "cf_context": "Here is a quick question from Mia.",
+   "off_context": "Here is a quick question from Maria.",
+   "question": "How many legs does a gosoe have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "goose",
+   "cf_bridge": "bee",
+   "cue": "gosoe",
+   "shown": "gosoe",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'gosoe' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0098",
+   "family": "TYPO",
+   "scene": "T-0098",
+   "context": "Here is a quick question from Ivan.",
+   "cf_context": "Here is a quick question from Ivan.",
+   "off_context": "Here is a quick question from Emma.",
+   "question": "How many legs does a gooose have?",
+   "cf_question": "How many legs does a horsse have?",
+   "bridge": "goose",
+   "cf_bridge": "horse",
+   "cue": "gooose",
+   "shown": "gooose",
+   "cf_shown": "horsse",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'gooose' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0099",
+   "family": "TYPO",
+   "scene": "T-0099",
+   "context": "Here is a quick question from Grace.",
+   "cf_context": "Here is a quick question from Grace.",
+   "off_context": "Here is a quick question from Max.",
+   "question": "How many legs does a chickeen have?",
+   "cf_question": "How many legs does a lioon have?",
+   "bridge": "chicken",
+   "cf_bridge": "lion",
+   "cue": "chickeen",
+   "shown": "chickeen",
+   "cf_shown": "lioon",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'chickeen' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0100",
+   "family": "TYPO",
+   "scene": "T-0100",
+   "context": "Here is a quick question from Ivan.",
+   "cf_context": "Here is a quick question from Ivan.",
+   "off_context": "Here is a quick question from Nina.",
+   "question": "How many legs does a caat have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "cat",
+   "cf_bridge": "bee",
+   "cue": "caat",
+   "shown": "caat",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'caat' a misspelling of?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0101",
+   "family": "TYPO",
+   "scene": "T-0101",
+   "context": "Here is a quick question from Victor.",
+   "cf_context": "Here is a quick question from Victor.",
+   "off_context": "Here is a quick question from Leo.",
+   "question": "How many legs does a chickeen have?",
+   "cf_question": "How many legs does a frgo have?",
+   "bridge": "chicken",
+   "cf_bridge": "frog",
+   "cue": "chickeen",
+   "shown": "chickeen",
+   "cf_shown": "frgo",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'chickeen' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0102",
+   "family": "TYPO",
+   "scene": "T-0102",
+   "context": "Here is a quick question from Nina.",
+   "cf_context": "Here is a quick question from Nina.",
+   "off_context": "Here is a quick question from Laura.",
+   "question": "How many legs does a mosue have?",
+   "cf_question": "How many legs does a goosse have?",
+   "bridge": "mouse",
+   "cf_bridge": "goose",
+   "cue": "mosue",
+   "shown": "mosue",
+   "cf_shown": "goosse",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'mosue' a misspelling of?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0103",
+   "family": "TYPO",
+   "scene": "T-0103",
+   "context": "Here is a quick question from Ella.",
+   "cf_context": "Here is a quick question from Ella.",
+   "off_context": "Here is a quick question from Owen.",
+   "question": "How many legs does a piig have?",
+   "cf_question": "How many legs does a dcuk have?",
+   "bridge": "pig",
+   "cf_bridge": "duck",
+   "cue": "piig",
+   "shown": "piig",
+   "cf_shown": "dcuk",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'piig' a misspelling of?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0104",
+   "family": "TYPO",
+   "scene": "T-0104",
+   "context": "Here is a quick question from Carl.",
+   "cf_context": "Here is a quick question from Carl.",
+   "off_context": "Here is a quick question from Paul.",
+   "question": "How many legs does a beee have?",
+   "cf_question": "How many legs does a gosoe have?",
+   "bridge": "bee",
+   "cf_bridge": "goose",
+   "cue": "beee",
+   "shown": "beee",
+   "cf_shown": "gosoe",
+   "lang": null,
+   "answer": "6",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'beee' a misspelling of?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0105",
+   "family": "TYPO",
+   "scene": "T-0105",
+   "context": "Here is a quick question from Lily.",
+   "cf_context": "Here is a quick question from Lily.",
+   "off_context": "Here is a quick question from Liam.",
+   "question": "How many legs does a chiccken have?",
+   "cf_question": "How many legs does a horrse have?",
+   "bridge": "chicken",
+   "cf_bridge": "horse",
+   "cue": "chiccken",
+   "shown": "chiccken",
+   "cf_shown": "horrse",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'chiccken' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0106",
+   "family": "TYPO",
+   "scene": "T-0106",
+   "context": "Here is a quick question from Maria.",
+   "cf_context": "Here is a quick question from Maria.",
+   "off_context": "Here is a quick question from Will.",
+   "question": "How many legs does a spidre have?",
+   "cf_question": "How many legs does a tureky have?",
+   "bridge": "spider",
+   "cf_bridge": "turkey",
+   "cue": "spidre",
+   "shown": "spidre",
+   "cf_shown": "tureky",
+   "lang": null,
+   "answer": "8",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'spidre' a misspelling of?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0107",
+   "family": "TYPO",
+   "scene": "T-0107",
+   "context": "Here is a quick question from Julia.",
+   "cf_context": "Here is a quick question from Julia.",
+   "off_context": "Here is a quick question from Eva.",
+   "question": "How many legs does a trkey have?",
+   "cf_question": "How many legs does a lino have?",
+   "bridge": "turkey",
+   "cf_bridge": "lion",
+   "cue": "trkey",
+   "shown": "trkey",
+   "cf_shown": "lino",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'trkey' a misspelling of?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0108",
+   "family": "TYPO",
+   "scene": "T-0108",
+   "context": "Here is a quick question from Frank.",
+   "cf_context": "Here is a quick question from Frank.",
+   "off_context": "Here is a quick question from Olivia.",
+   "question": "How many legs does a lino have?",
+   "cf_question": "How many legs does a spder have?",
+   "bridge": "lion",
+   "cf_bridge": "spider",
+   "cue": "lino",
+   "shown": "lino",
+   "cf_shown": "spder",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'lino' a misspelling of?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0109",
+   "family": "TYPO",
+   "scene": "T-0109",
+   "context": "Here is a quick question from Noah.",
+   "cf_context": "Here is a quick question from Noah.",
+   "off_context": "Here is a quick question from James.",
+   "question": "How many legs does a cicken have?",
+   "cf_question": "How many legs does a hrse have?",
+   "bridge": "chicken",
+   "cf_bridge": "horse",
+   "cue": "cicken",
+   "shown": "cicken",
+   "cf_shown": "hrse",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'cicken' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0110",
+   "family": "TYPO",
+   "scene": "T-0110",
+   "context": "Here is a quick question from Julia.",
+   "cf_context": "Here is a quick question from Julia.",
+   "off_context": "Here is a quick question from Max.",
+   "question": "How many legs does a doog have?",
+   "cf_question": "How many legs does a gooes have?",
+   "bridge": "dog",
+   "cf_bridge": "goose",
+   "cue": "doog",
+   "shown": "doog",
+   "cf_shown": "gooes",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'doog' a misspelling of?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0111",
+   "family": "TYPO",
+   "scene": "T-0111",
+   "context": "Here is a quick question from Finn.",
+   "cf_context": "Here is a quick question from Finn.",
+   "off_context": "Here is a quick question from Luke.",
+   "question": "How many legs does a sppider have?",
+   "cf_question": "How many legs does a caat have?",
+   "bridge": "spider",
+   "cf_bridge": "cat",
+   "cue": "sppider",
+   "shown": "sppider",
+   "cf_shown": "caat",
+   "lang": null,
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'sppider' a misspelling of?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0112",
+   "family": "TYPO",
+   "scene": "T-0112",
+   "context": "Here is a quick question from Liam.",
+   "cf_context": "Here is a quick question from Liam.",
+   "off_context": "Here is a quick question from Olivia.",
+   "question": "How many legs does a dck have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "duck",
+   "cf_bridge": "bee",
+   "cue": "dck",
+   "shown": "dck",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'dck' a misspelling of?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0113",
+   "family": "TYPO",
+   "scene": "T-0113",
+   "context": "Here is a quick question from Peter.",
+   "cf_context": "Here is a quick question from Peter.",
+   "off_context": "Here is a quick question from Fiona.",
+   "question": "How many legs does a hore have?",
+   "cf_question": "How many legs does a chcken have?",
+   "bridge": "horse",
+   "cf_bridge": "chicken",
+   "cue": "hore",
+   "shown": "hore",
+   "cf_shown": "chcken",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'hore' a misspelling of?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0114",
+   "family": "TYPO",
+   "scene": "T-0114",
+   "context": "Here is a quick question from Frank.",
+   "cf_context": "Here is a quick question from Frank.",
+   "off_context": "Here is a quick question from Hugo.",
+   "question": "How many legs does a doog have?",
+   "cf_question": "How many legs does a chcken have?",
+   "bridge": "dog",
+   "cf_bridge": "chicken",
+   "cue": "doog",
+   "shown": "doog",
+   "cf_shown": "chcken",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'doog' a misspelling of?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0115",
+   "family": "TYPO",
+   "scene": "T-0115",
+   "context": "Here is a quick question from Victor.",
+   "cf_context": "Here is a quick question from Victor.",
+   "off_context": "Here is a quick question from Olivia.",
+   "question": "How many legs does a wof have?",
+   "cf_question": "How many legs does a turky have?",
+   "bridge": "wolf",
+   "cf_bridge": "turkey",
+   "cue": "wof",
+   "shown": "wof",
+   "cf_shown": "turky",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'wof' a misspelling of?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0116",
+   "family": "TYPO",
+   "scene": "T-0116",
+   "context": "Here is a quick question from Will.",
+   "cf_context": "Here is a quick question from Will.",
+   "off_context": "Here is a quick question from Kate.",
+   "question": "How many legs does a chcken have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "chicken",
+   "cf_bridge": "bee",
+   "cue": "chcken",
+   "shown": "chcken",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'chcken' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0117",
+   "family": "TYPO",
+   "scene": "T-0117",
+   "context": "Here is a quick question from Iris.",
+   "cf_context": "Here is a quick question from Iris.",
+   "off_context": "Here is a quick question from Tara.",
+   "question": "How many legs does a goosse have?",
+   "cf_question": "How many legs does a mosue have?",
+   "bridge": "goose",
+   "cf_bridge": "mouse",
+   "cue": "goosse",
+   "shown": "goosse",
+   "cf_shown": "mosue",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'goosse' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0118",
+   "family": "TYPO",
+   "scene": "T-0118",
+   "context": "Here is a quick question from Rose.",
+   "cf_context": "Here is a quick question from Rose.",
+   "off_context": "Here is a quick question from Dan.",
+   "question": "How many legs does a doog have?",
+   "cf_question": "How many legs does a sppider have?",
+   "bridge": "dog",
+   "cf_bridge": "spider",
+   "cue": "doog",
+   "shown": "doog",
+   "cf_shown": "sppider",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'doog' a misspelling of?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0119",
+   "family": "TYPO",
+   "scene": "T-0119",
+   "context": "Here is a quick question from Victor.",
+   "cf_context": "Here is a quick question from Victor.",
+   "off_context": "Here is a quick question from Jack.",
+   "question": "How many legs does a moues have?",
+   "cf_question": "How many legs does a trukey have?",
+   "bridge": "mouse",
+   "cf_bridge": "turkey",
+   "cue": "moues",
+   "shown": "moues",
+   "cf_shown": "trukey",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'moues' a misspelling of?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0120",
+   "family": "TYPO",
+   "scene": "T-0120",
+   "context": "Here is a quick question from Fiona.",
+   "cf_context": "Here is a quick question from Fiona.",
+   "off_context": "Here is a quick question from Tom.",
+   "question": "How many legs does a goosse have?",
+   "cf_question": "How many legs does a sehep have?",
+   "bridge": "goose",
+   "cf_bridge": "sheep",
+   "cue": "goosse",
+   "shown": "goosse",
+   "cf_shown": "sehep",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'goosse' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0121",
+   "family": "TYPO",
+   "scene": "T-0121",
+   "context": "Here is a quick question from Anna.",
+   "cf_context": "Here is a quick question from Anna.",
+   "off_context": "Here is a quick question from Lucy.",
+   "question": "How many legs does a coow have?",
+   "cf_question": "How many legs does a turky have?",
+   "bridge": "cow",
+   "cf_bridge": "turkey",
+   "cue": "coow",
+   "shown": "coow",
+   "cf_shown": "turky",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'coow' a misspelling of?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cow have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0122",
+   "family": "TYPO",
+   "scene": "T-0122",
+   "context": "Here is a quick question from Diana.",
+   "cf_context": "Here is a quick question from Diana.",
+   "off_context": "Here is a quick question from Finn.",
+   "question": "How many legs does a liion have?",
+   "cf_question": "How many legs does a dcuk have?",
+   "bridge": "lion",
+   "cf_bridge": "duck",
+   "cue": "liion",
+   "shown": "liion",
+   "cf_shown": "dcuk",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'liion' a misspelling of?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0123",
+   "family": "TYPO",
+   "scene": "T-0123",
+   "context": "Here is a quick question from Peter.",
+   "cf_context": "Here is a quick question from Peter.",
+   "off_context": "Here is a quick question from Kate.",
+   "question": "How many legs does a chicen have?",
+   "cf_question": "How many legs does a mosue have?",
+   "bridge": "chicken",
+   "cf_bridge": "mouse",
+   "cue": "chicen",
+   "shown": "chicen",
+   "cf_shown": "mosue",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'chicen' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0124",
+   "family": "TYPO",
+   "scene": "T-0124",
+   "context": "Here is a quick question from Owen.",
+   "cf_context": "Here is a quick question from Owen.",
+   "off_context": "Here is a quick question from Laura.",
+   "question": "How many legs does a trukey have?",
+   "cf_question": "How many legs does a hores have?",
+   "bridge": "turkey",
+   "cf_bridge": "horse",
+   "cue": "trukey",
+   "shown": "trukey",
+   "cf_shown": "hores",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'trukey' a misspelling of?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0125",
+   "family": "TYPO",
+   "scene": "T-0125",
+   "context": "Here is a quick question from Henry.",
+   "cf_context": "Here is a quick question from Henry.",
+   "off_context": "Here is a quick question from Laura.",
+   "question": "How many legs does a hoorse have?",
+   "cf_question": "How many legs does a dck have?",
+   "bridge": "horse",
+   "cf_bridge": "duck",
+   "cue": "hoorse",
+   "shown": "hoorse",
+   "cf_shown": "dck",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'hoorse' a misspelling of?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0126",
+   "family": "TYPO",
+   "scene": "T-0126",
+   "context": "Here is a quick question from Grace.",
+   "cf_context": "Here is a quick question from Grace.",
+   "off_context": "Here is a quick question from Laura.",
+   "question": "How many legs does a froog have?",
+   "cf_question": "How many legs does a chciken have?",
+   "bridge": "frog",
+   "cf_bridge": "chicken",
+   "cue": "froog",
+   "shown": "froog",
+   "cf_shown": "chciken",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'froog' a misspelling of?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0127",
+   "family": "TYPO",
+   "scene": "T-0127",
+   "context": "Here is a quick question from Eric.",
+   "cf_context": "Here is a quick question from Eric.",
+   "off_context": "Here is a quick question from Ivy.",
+   "question": "How many legs does a dukc have?",
+   "cf_question": "How many legs does a woolf have?",
+   "bridge": "duck",
+   "cf_bridge": "wolf",
+   "cue": "dukc",
+   "shown": "dukc",
+   "cf_shown": "woolf",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'dukc' a misspelling of?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0128",
+   "family": "TYPO",
+   "scene": "T-0128",
+   "context": "Here is a quick question from Mark.",
+   "cf_context": "Here is a quick question from Mark.",
+   "off_context": "Here is a quick question from Mia.",
+   "question": "How many legs does a dcuk have?",
+   "cf_question": "How many legs does a coow have?",
+   "bridge": "duck",
+   "cf_bridge": "cow",
+   "cue": "dcuk",
+   "shown": "dcuk",
+   "cf_shown": "coow",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'dcuk' a misspelling of?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0129",
+   "family": "TYPO",
+   "scene": "T-0129",
+   "context": "Here is a quick question from Ryan.",
+   "cf_context": "Here is a quick question from Ryan.",
+   "off_context": "Here is a quick question from Ivy.",
+   "question": "How many legs does a gose have?",
+   "cf_question": "How many legs does a spdier have?",
+   "bridge": "goose",
+   "cf_bridge": "spider",
+   "cue": "gose",
+   "shown": "gose",
+   "cf_shown": "spdier",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'gose' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0130",
+   "family": "TYPO",
+   "scene": "T-0130",
+   "context": "Here is a quick question from Carl.",
+   "cf_context": "Here is a quick question from Carl.",
+   "off_context": "Here is a quick question from Tom.",
+   "question": "How many legs does a duuck have?",
+   "cf_question": "How many legs does a caat have?",
+   "bridge": "duck",
+   "cf_bridge": "cat",
+   "cue": "duuck",
+   "shown": "duuck",
+   "cf_shown": "caat",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'duuck' a misspelling of?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0131",
+   "family": "TYPO",
+   "scene": "T-0131",
+   "context": "Here is a quick question from Rose.",
+   "cf_context": "Here is a quick question from Rose.",
+   "off_context": "Here is a quick question from Julia.",
+   "question": "How many legs does a gooose have?",
+   "cf_question": "How many legs does a wollf have?",
+   "bridge": "goose",
+   "cf_bridge": "wolf",
+   "cue": "gooose",
+   "shown": "gooose",
+   "cf_shown": "wollf",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'gooose' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0132",
+   "family": "TYPO",
+   "scene": "T-0132",
+   "context": "Here is a quick question from Beth.",
+   "cf_context": "Here is a quick question from Beth.",
+   "off_context": "Here is a quick question from Sean.",
+   "question": "How many legs does a doog have?",
+   "cf_question": "How many legs does a dukc have?",
+   "bridge": "dog",
+   "cf_bridge": "duck",
+   "cue": "doog",
+   "shown": "doog",
+   "cf_shown": "dukc",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'doog' a misspelling of?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0133",
+   "family": "TYPO",
+   "scene": "T-0133",
+   "context": "Here is a quick question from Olivia.",
+   "cf_context": "Here is a quick question from Olivia.",
+   "off_context": "Here is a quick question from Dan.",
+   "question": "How many legs does a beee have?",
+   "cf_question": "How many legs does a doog have?",
+   "bridge": "bee",
+   "cf_bridge": "dog",
+   "cue": "beee",
+   "shown": "beee",
+   "cf_shown": "doog",
+   "lang": null,
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'beee' a misspelling of?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0134",
+   "family": "TYPO",
+   "scene": "T-0134",
+   "context": "Here is a quick question from Iris.",
+   "cf_context": "Here is a quick question from Iris.",
+   "off_context": "Here is a quick question from Jack.",
+   "question": "How many legs does a spier have?",
+   "cf_question": "How many legs does a coow have?",
+   "bridge": "spider",
+   "cf_bridge": "cow",
+   "cue": "spier",
+   "shown": "spier",
+   "cf_shown": "coow",
+   "lang": null,
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'spier' a misspelling of?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0135",
+   "family": "TYPO",
+   "scene": "T-0135",
+   "context": "Here is a quick question from Kate.",
+   "cf_context": "Here is a quick question from Kate.",
+   "off_context": "Here is a quick question from Tom.",
+   "question": "How many legs does a frrog have?",
+   "cf_question": "How many legs does a sppider have?",
+   "bridge": "frog",
+   "cf_bridge": "spider",
+   "cue": "frrog",
+   "shown": "frrog",
+   "cf_shown": "sppider",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'frrog' a misspelling of?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0136",
+   "family": "TYPO",
+   "scene": "T-0136",
+   "context": "Here is a quick question from Ruby.",
+   "cf_context": "Here is a quick question from Ruby.",
+   "off_context": "Here is a quick question from Victor.",
+   "question": "How many legs does a doog have?",
+   "cf_question": "How many legs does a sppider have?",
+   "bridge": "dog",
+   "cf_bridge": "spider",
+   "cue": "doog",
+   "shown": "doog",
+   "cf_shown": "sppider",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'doog' a misspelling of?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0137",
+   "family": "TYPO",
+   "scene": "T-0137",
+   "context": "Here is a quick question from Adam.",
+   "cf_context": "Here is a quick question from Adam.",
+   "off_context": "Here is a quick question from Emma.",
+   "question": "How many legs does a mosue have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "mouse",
+   "cf_bridge": "bee",
+   "cue": "mosue",
+   "shown": "mosue",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'mosue' a misspelling of?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0138",
+   "family": "TYPO",
+   "scene": "T-0138",
+   "context": "Here is a quick question from Carl.",
+   "cf_context": "Here is a quick question from Carl.",
+   "off_context": "Here is a quick question from Tara.",
+   "question": "How many legs does a gooe have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "goose",
+   "cf_bridge": "bee",
+   "cue": "gooe",
+   "shown": "gooe",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'gooe' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0139",
+   "family": "TYPO",
+   "scene": "T-0139",
+   "context": "Here is a quick question from Olivia.",
+   "cf_context": "Here is a quick question from Olivia.",
+   "off_context": "Here is a quick question from Max.",
+   "question": "How many legs does a caat have?",
+   "cf_question": "How many legs does a trukey have?",
+   "bridge": "cat",
+   "cf_bridge": "turkey",
+   "cue": "caat",
+   "shown": "caat",
+   "cf_shown": "trukey",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'caat' a misspelling of?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0140",
+   "family": "TYPO",
+   "scene": "T-0140",
+   "context": "Here is a quick question from Vera.",
+   "cf_context": "Here is a quick question from Vera.",
+   "off_context": "Here is a quick question from Paul.",
+   "question": "How many legs does a mose have?",
+   "cf_question": "How many legs does a chcken have?",
+   "bridge": "mouse",
+   "cf_bridge": "chicken",
+   "cue": "mose",
+   "shown": "mose",
+   "cf_shown": "chcken",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'mose' a misspelling of?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0141",
+   "family": "TYPO",
+   "scene": "T-0141",
+   "context": "Here is a quick question from Ben.",
+   "cf_context": "Here is a quick question from Ben.",
+   "off_context": "Here is a quick question from Zoe.",
+   "question": "How many legs does a chickken have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "chicken",
+   "cf_bridge": "bee",
+   "cue": "chickken",
+   "shown": "chickken",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'chickken' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0142",
+   "family": "TYPO",
+   "scene": "T-0142",
+   "context": "Here is a quick question from Maria.",
+   "cf_context": "Here is a quick question from Maria.",
+   "off_context": "Here is a quick question from Julia.",
+   "question": "How many legs does a shepe have?",
+   "cf_question": "How many legs does a gooe have?",
+   "bridge": "sheep",
+   "cf_bridge": "goose",
+   "cue": "shepe",
+   "shown": "shepe",
+   "cf_shown": "gooe",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'shepe' a misspelling of?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0143",
+   "family": "TYPO",
+   "scene": "T-0143",
+   "context": "Here is a quick question from Vera.",
+   "cf_context": "Here is a quick question from Vera.",
+   "off_context": "Here is a quick question from Eve.",
+   "question": "How many legs does a lino have?",
+   "cf_question": "How many legs does a spier have?",
+   "bridge": "lion",
+   "cf_bridge": "spider",
+   "cue": "lino",
+   "shown": "lino",
+   "cf_shown": "spier",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'lino' a misspelling of?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0144",
+   "family": "TYPO",
+   "scene": "T-0144",
+   "context": "Here is a quick question from Liam.",
+   "cf_context": "Here is a quick question from Liam.",
+   "off_context": "Here is a quick question from Vera.",
+   "question": "How many legs does a muose have?",
+   "cf_question": "How many legs does a trkey have?",
+   "bridge": "mouse",
+   "cf_bridge": "turkey",
+   "cue": "muose",
+   "shown": "muose",
+   "cf_shown": "trkey",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'muose' a misspelling of?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0145",
+   "family": "TYPO",
+   "scene": "T-0145",
+   "context": "Here is a quick question from Tom.",
+   "cf_context": "Here is a quick question from Tom.",
+   "off_context": "Here is a quick question from Jack.",
+   "question": "How many legs does a beee have?",
+   "cf_question": "How many legs does a wof have?",
+   "bridge": "bee",
+   "cf_bridge": "wolf",
+   "cue": "beee",
+   "shown": "beee",
+   "cf_shown": "wof",
+   "lang": null,
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'beee' a misspelling of?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0146",
+   "family": "TYPO",
+   "scene": "T-0146",
+   "context": "Here is a quick question from Fiona.",
+   "cf_context": "Here is a quick question from Fiona.",
+   "off_context": "Here is a quick question from Ivy.",
+   "question": "How many legs does a gooose have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "goose",
+   "cf_bridge": "bee",
+   "cue": "gooose",
+   "shown": "gooose",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'gooose' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0147",
+   "family": "TYPO",
+   "scene": "T-0147",
+   "context": "Here is a quick question from Adam.",
+   "cf_context": "Here is a quick question from Adam.",
+   "off_context": "Here is a quick question from Olivia.",
+   "question": "How many legs does a piig have?",
+   "cf_question": "How many legs does a cicken have?",
+   "bridge": "pig",
+   "cf_bridge": "chicken",
+   "cue": "piig",
+   "shown": "piig",
+   "cf_shown": "cicken",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'piig' a misspelling of?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0148",
+   "family": "TYPO",
+   "scene": "T-0148",
+   "context": "Here is a quick question from Max.",
+   "cf_context": "Here is a quick question from Max.",
+   "off_context": "Here is a quick question from Fiona.",
+   "question": "How many legs does a doog have?",
+   "cf_question": "How many legs does a dck have?",
+   "bridge": "dog",
+   "cf_bridge": "duck",
+   "cue": "doog",
+   "shown": "doog",
+   "cf_shown": "dck",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'doog' a misspelling of?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0149",
+   "family": "TYPO",
+   "scene": "T-0149",
+   "context": "Here is a quick question from Tara.",
+   "cf_context": "Here is a quick question from Tara.",
+   "off_context": "Here is a quick question from Liam.",
+   "question": "How many legs does a tukey have?",
+   "cf_question": "How many legs does a caat have?",
+   "bridge": "turkey",
+   "cf_bridge": "cat",
+   "cue": "tukey",
+   "shown": "tukey",
+   "cf_shown": "caat",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'tukey' a misspelling of?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0150",
+   "family": "TYPO",
+   "scene": "T-0150",
+   "context": "Here is a quick question from Oscar.",
+   "cf_context": "Here is a quick question from Oscar.",
+   "off_context": "Here is a quick question from James.",
+   "question": "How many legs does a beee have?",
+   "cf_question": "How many legs does a dcuk have?",
+   "bridge": "bee",
+   "cf_bridge": "duck",
+   "cue": "beee",
+   "shown": "beee",
+   "cf_shown": "dcuk",
+   "lang": null,
+   "answer": "6",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'beee' a misspelling of?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0151",
+   "family": "TYPO",
+   "scene": "T-0151",
+   "context": "Here is a quick question from Tom.",
+   "cf_context": "Here is a quick question from Tom.",
+   "off_context": "Here is a quick question from Clara.",
+   "question": "How many legs does a gosoe have?",
+   "cf_question": "How many legs does a wof have?",
+   "bridge": "goose",
+   "cf_bridge": "wolf",
+   "cue": "gosoe",
+   "shown": "gosoe",
+   "cf_shown": "wof",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'gosoe' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0152",
+   "family": "TYPO",
+   "scene": "T-0152",
+   "context": "Here is a quick question from Carl.",
+   "cf_context": "Here is a quick question from Carl.",
+   "off_context": "Here is a quick question from Paul.",
+   "question": "How many legs does a trukey have?",
+   "cf_question": "How many legs does a lioon have?",
+   "bridge": "turkey",
+   "cf_bridge": "lion",
+   "cue": "trukey",
+   "shown": "trukey",
+   "cf_shown": "lioon",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'trukey' a misspelling of?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0153",
+   "family": "TYPO",
+   "scene": "T-0153",
+   "context": "Here is a quick question from Laura.",
+   "cf_context": "Here is a quick question from Laura.",
+   "off_context": "Here is a quick question from Tara.",
+   "question": "How many legs does a gooes have?",
+   "cf_question": "How many legs does a coow have?",
+   "bridge": "goose",
+   "cf_bridge": "cow",
+   "cue": "gooes",
+   "shown": "gooes",
+   "cf_shown": "coow",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'gooes' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0154",
+   "family": "TYPO",
+   "scene": "T-0154",
+   "context": "Here is a quick question from Alice.",
+   "cf_context": "Here is a quick question from Alice.",
+   "off_context": "Here is a quick question from Jack.",
+   "question": "How many legs does a piig have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "pig",
+   "cf_bridge": "bee",
+   "cue": "piig",
+   "shown": "piig",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'piig' a misspelling of?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0155",
+   "family": "TYPO",
+   "scene": "T-0155",
+   "context": "Here is a quick question from Diana.",
+   "cf_context": "Here is a quick question from Diana.",
+   "off_context": "Here is a quick question from Beth.",
+   "question": "How many legs does a doog have?",
+   "cf_question": "How many legs does a sppider have?",
+   "bridge": "dog",
+   "cf_bridge": "spider",
+   "cue": "doog",
+   "shown": "doog",
+   "cf_shown": "sppider",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'doog' a misspelling of?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0156",
+   "family": "TYPO",
+   "scene": "T-0156",
+   "context": "Here is a quick question from Sara.",
+   "cf_context": "Here is a quick question from Sara.",
+   "off_context": "Here is a quick question from Eva.",
+   "question": "How many legs does a beee have?",
+   "cf_question": "How many legs does a wlf have?",
+   "bridge": "bee",
+   "cf_bridge": "wolf",
+   "cue": "beee",
+   "shown": "beee",
+   "cf_shown": "wlf",
+   "lang": null,
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'beee' a misspelling of?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0157",
+   "family": "TYPO",
+   "scene": "T-0157",
+   "context": "Here is a quick question from Oscar.",
+   "cf_context": "Here is a quick question from Oscar.",
+   "off_context": "Here is a quick question from Tom.",
+   "question": "How many legs does a trukey have?",
+   "cf_question": "How many legs does a coow have?",
+   "bridge": "turkey",
+   "cf_bridge": "cow",
+   "cue": "trukey",
+   "shown": "trukey",
+   "cf_shown": "coow",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'trukey' a misspelling of?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0158",
+   "family": "TYPO",
+   "scene": "T-0158",
+   "context": "Here is a quick question from Dan.",
+   "cf_context": "Here is a quick question from Dan.",
+   "off_context": "Here is a quick question from David.",
+   "question": "How many legs does a doog have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "dog",
+   "cf_bridge": "bee",
+   "cue": "doog",
+   "shown": "doog",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'doog' a misspelling of?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0159",
+   "family": "TYPO",
+   "scene": "T-0159",
+   "context": "Here is a quick question from Owen.",
+   "cf_context": "Here is a quick question from Owen.",
+   "off_context": "Here is a quick question from Adam.",
+   "question": "How many legs does a gooe have?",
+   "cf_question": "How many legs does a hrse have?",
+   "bridge": "goose",
+   "cf_bridge": "horse",
+   "cue": "gooe",
+   "shown": "gooe",
+   "cf_shown": "hrse",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'gooe' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0160",
+   "family": "TYPO",
+   "scene": "T-0160",
+   "context": "Here is a quick question from James.",
+   "cf_context": "Here is a quick question from James.",
+   "off_context": "Here is a quick question from Hugo.",
+   "question": "How many legs does a doog have?",
+   "cf_question": "How many legs does a spdier have?",
+   "bridge": "dog",
+   "cf_bridge": "spider",
+   "cue": "doog",
+   "shown": "doog",
+   "cf_shown": "spdier",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'doog' a misspelling of?",
+    "answer": "dog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a dog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0161",
+   "family": "TYPO",
+   "scene": "T-0161",
+   "context": "Here is a quick question from Max.",
+   "cf_context": "Here is a quick question from Max.",
+   "off_context": "Here is a quick question from Adam.",
+   "question": "How many legs does a spier have?",
+   "cf_question": "How many legs does a wollf have?",
+   "bridge": "spider",
+   "cf_bridge": "wolf",
+   "cue": "spier",
+   "shown": "spier",
+   "cf_shown": "wollf",
+   "lang": null,
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'spier' a misspelling of?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0162",
+   "family": "TYPO",
+   "scene": "T-0162",
+   "context": "Here is a quick question from Eve.",
+   "cf_context": "Here is a quick question from Eve.",
+   "off_context": "Here is a quick question from Carl.",
+   "question": "How many legs does a coow have?",
+   "cf_question": "How many legs does a spier have?",
+   "bridge": "cow",
+   "cf_bridge": "spider",
+   "cue": "coow",
+   "shown": "coow",
+   "cf_shown": "spier",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'coow' a misspelling of?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cow have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0163",
+   "family": "TYPO",
+   "scene": "T-0163",
+   "context": "Here is a quick question from Tom.",
+   "cf_context": "Here is a quick question from Tom.",
+   "off_context": "Here is a quick question from Dan.",
+   "question": "How many legs does a lino have?",
+   "cf_question": "How many legs does a sppider have?",
+   "bridge": "lion",
+   "cf_bridge": "spider",
+   "cue": "lino",
+   "shown": "lino",
+   "cf_shown": "sppider",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'lino' a misspelling of?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0164",
+   "family": "TYPO",
+   "scene": "T-0164",
+   "context": "Here is a quick question from Anna.",
+   "cf_context": "Here is a quick question from Anna.",
+   "off_context": "Here is a quick question from Mark.",
+   "question": "How many legs does a gosoe have?",
+   "cf_question": "How many legs does a piig have?",
+   "bridge": "goose",
+   "cf_bridge": "pig",
+   "cue": "gosoe",
+   "shown": "gosoe",
+   "cf_shown": "piig",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'gosoe' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0165",
+   "family": "TYPO",
+   "scene": "T-0165",
+   "context": "Here is a quick question from Peter.",
+   "cf_context": "Here is a quick question from Peter.",
+   "off_context": "Here is a quick question from Henry.",
+   "question": "How many legs does a trkey have?",
+   "cf_question": "How many legs does a coow have?",
+   "bridge": "turkey",
+   "cf_bridge": "cow",
+   "cue": "trkey",
+   "shown": "trkey",
+   "cf_shown": "coow",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'trkey' a misspelling of?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0166",
+   "family": "TYPO",
+   "scene": "T-0166",
+   "context": "Here is a quick question from Finn.",
+   "cf_context": "Here is a quick question from Finn.",
+   "off_context": "Here is a quick question from Henry.",
+   "question": "How many legs does a gooose have?",
+   "cf_question": "How many legs does a piig have?",
+   "bridge": "goose",
+   "cf_bridge": "pig",
+   "cue": "gooose",
+   "shown": "gooose",
+   "cf_shown": "piig",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'gooose' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0167",
+   "family": "TYPO",
+   "scene": "T-0167",
+   "context": "Here is a quick question from Dan.",
+   "cf_context": "Here is a quick question from Dan.",
+   "off_context": "Here is a quick question from Henry.",
+   "question": "How many legs does a wof have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "wolf",
+   "cf_bridge": "bee",
+   "cue": "wof",
+   "shown": "wof",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'wof' a misspelling of?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0168",
+   "family": "TYPO",
+   "scene": "T-0168",
+   "context": "Here is a quick question from Tara.",
+   "cf_context": "Here is a quick question from Tara.",
+   "off_context": "Here is a quick question from Sean.",
+   "question": "How many legs does a piig have?",
+   "cf_question": "How many legs does a sppider have?",
+   "bridge": "pig",
+   "cf_bridge": "spider",
+   "cue": "piig",
+   "shown": "piig",
+   "cf_shown": "sppider",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'piig' a misspelling of?",
+    "answer": "pig",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a pig have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0169",
+   "family": "TYPO",
+   "scene": "T-0169",
+   "context": "Here is a quick question from Eve.",
+   "cf_context": "Here is a quick question from Eve.",
+   "off_context": "Here is a quick question from Carl.",
+   "question": "How many legs does a beee have?",
+   "cf_question": "How many legs does a frgo have?",
+   "bridge": "bee",
+   "cf_bridge": "frog",
+   "cue": "beee",
+   "shown": "beee",
+   "cf_shown": "frgo",
+   "lang": null,
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'beee' a misspelling of?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0170",
+   "family": "TYPO",
+   "scene": "T-0170",
+   "context": "Here is a quick question from Kyle.",
+   "cf_context": "Here is a quick question from Kyle.",
+   "off_context": "Here is a quick question from Amy.",
+   "question": "How many legs does a cicken have?",
+   "cf_question": "How many legs does a wollf have?",
+   "bridge": "chicken",
+   "cf_bridge": "wolf",
+   "cue": "cicken",
+   "shown": "cicken",
+   "cf_shown": "wollf",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'cicken' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0171",
+   "family": "TYPO",
+   "scene": "T-0171",
+   "context": "Here is a quick question from Dan.",
+   "cf_context": "Here is a quick question from Dan.",
+   "off_context": "Here is a quick question from Noah.",
+   "question": "How many legs does a liion have?",
+   "cf_question": "How many legs does a sipder have?",
+   "bridge": "lion",
+   "cf_bridge": "spider",
+   "cue": "liion",
+   "shown": "liion",
+   "cf_shown": "sipder",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'liion' a misspelling of?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0172",
+   "family": "TYPO",
+   "scene": "T-0172",
+   "context": "Here is a quick question from David.",
+   "cf_context": "Here is a quick question from David.",
+   "off_context": "Here is a quick question from Adam.",
+   "question": "How many legs does a shep have?",
+   "cf_question": "How many legs does a gooose have?",
+   "bridge": "sheep",
+   "cf_bridge": "goose",
+   "cue": "shep",
+   "shown": "shep",
+   "cf_shown": "gooose",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'shep' a misspelling of?",
+    "answer": "sheep",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a sheep have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0173",
+   "family": "TYPO",
+   "scene": "T-0173",
+   "context": "Here is a quick question from Lucy.",
+   "cf_context": "Here is a quick question from Lucy.",
+   "off_context": "Here is a quick question from Peter.",
+   "question": "How many legs does a spidr have?",
+   "cf_question": "How many legs does a caat have?",
+   "bridge": "spider",
+   "cf_bridge": "cat",
+   "cue": "spidr",
+   "shown": "spidr",
+   "cf_shown": "caat",
+   "lang": null,
+   "answer": "8",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'spidr' a misspelling of?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0174",
+   "family": "TYPO",
+   "scene": "T-0174",
+   "context": "Here is a quick question from Kyle.",
+   "cf_context": "Here is a quick question from Kyle.",
+   "off_context": "Here is a quick question from Lucy.",
+   "question": "How many legs does a dcuk have?",
+   "cf_question": "How many legs does a piig have?",
+   "bridge": "duck",
+   "cf_bridge": "pig",
+   "cue": "dcuk",
+   "shown": "dcuk",
+   "cf_shown": "piig",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'dcuk' a misspelling of?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0175",
+   "family": "TYPO",
+   "scene": "T-0175",
+   "context": "Here is a quick question from Will.",
+   "cf_context": "Here is a quick question from Will.",
+   "off_context": "Here is a quick question from Anna.",
+   "question": "How many legs does a chickne have?",
+   "cf_question": "How many legs does a spder have?",
+   "bridge": "chicken",
+   "cf_bridge": "spider",
+   "cue": "chickne",
+   "shown": "chickne",
+   "cf_shown": "spder",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'chickne' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0176",
+   "family": "TYPO",
+   "scene": "T-0176",
+   "context": "Here is a quick question from Paul.",
+   "cf_context": "Here is a quick question from Paul.",
+   "off_context": "Here is a quick question from Zoe.",
+   "question": "How many legs does a beee have?",
+   "cf_question": "How many legs does a dck have?",
+   "bridge": "bee",
+   "cf_bridge": "duck",
+   "cue": "beee",
+   "shown": "beee",
+   "cf_shown": "dck",
+   "lang": null,
+   "answer": "6",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'beee' a misspelling of?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0177",
+   "family": "TYPO",
+   "scene": "T-0177",
+   "context": "Here is a quick question from Julia.",
+   "cf_context": "Here is a quick question from Julia.",
+   "off_context": "Here is a quick question from Ivan.",
+   "question": "How many legs does a gooose have?",
+   "cf_question": "How many legs does a moues have?",
+   "bridge": "goose",
+   "cf_bridge": "mouse",
+   "cue": "gooose",
+   "shown": "gooose",
+   "cf_shown": "moues",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'gooose' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0178",
+   "family": "TYPO",
+   "scene": "T-0178",
+   "context": "Here is a quick question from Max.",
+   "cf_context": "Here is a quick question from Max.",
+   "off_context": "Here is a quick question from Alice.",
+   "question": "How many legs does a lino have?",
+   "cf_question": "How many legs does a gooe have?",
+   "bridge": "lion",
+   "cf_bridge": "goose",
+   "cue": "lino",
+   "shown": "lino",
+   "cf_shown": "gooe",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'lino' a misspelling of?",
+    "answer": "lion",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a lion have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0179",
+   "family": "TYPO",
+   "scene": "T-0179",
+   "context": "Here is a quick question from Frank.",
+   "cf_context": "Here is a quick question from Frank.",
+   "off_context": "Here is a quick question from Eve.",
+   "question": "How many legs does a caat have?",
+   "cf_question": "How many legs does a spiider have?",
+   "bridge": "cat",
+   "cf_bridge": "spider",
+   "cue": "caat",
+   "shown": "caat",
+   "cf_shown": "spiider",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'caat' a misspelling of?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0180",
+   "family": "TYPO",
+   "scene": "T-0180",
+   "context": "Here is a quick question from Olivia.",
+   "cf_context": "Here is a quick question from Olivia.",
+   "off_context": "Here is a quick question from Vera.",
+   "question": "How many legs does a coow have?",
+   "cf_question": "How many legs does a tukrey have?",
+   "bridge": "cow",
+   "cf_bridge": "turkey",
+   "cue": "coow",
+   "shown": "coow",
+   "cf_shown": "tukrey",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'coow' a misspelling of?",
+    "answer": "cow",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cow have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0181",
+   "family": "TYPO",
+   "scene": "T-0181",
+   "context": "Here is a quick question from David.",
+   "cf_context": "Here is a quick question from David.",
+   "off_context": "Here is a quick question from Victor.",
+   "question": "How many legs does a caat have?",
+   "cf_question": "How many legs does a spdier have?",
+   "bridge": "cat",
+   "cf_bridge": "spider",
+   "cue": "caat",
+   "shown": "caat",
+   "cf_shown": "spdier",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'caat' a misspelling of?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0182",
+   "family": "TYPO",
+   "scene": "T-0182",
+   "context": "Here is a quick question from Finn.",
+   "cf_context": "Here is a quick question from Finn.",
+   "off_context": "Here is a quick question from Ivan.",
+   "question": "How many legs does a dukc have?",
+   "cf_question": "How many legs does a coow have?",
+   "bridge": "duck",
+   "cf_bridge": "cow",
+   "cue": "dukc",
+   "shown": "dukc",
+   "cf_shown": "coow",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'dukc' a misspelling of?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0183",
+   "family": "TYPO",
+   "scene": "T-0183",
+   "context": "Here is a quick question from Anna.",
+   "cf_context": "Here is a quick question from Anna.",
+   "off_context": "Here is a quick question from Adam.",
+   "question": "How many legs does a wollf have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "wolf",
+   "cf_bridge": "bee",
+   "cue": "wollf",
+   "shown": "wollf",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'wollf' a misspelling of?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0184",
+   "family": "TYPO",
+   "scene": "T-0184",
+   "context": "Here is a quick question from Will.",
+   "cf_context": "Here is a quick question from Will.",
+   "off_context": "Here is a quick question from Noah.",
+   "question": "How many legs does a tukrey have?",
+   "cf_question": "How many legs does a piig have?",
+   "bridge": "turkey",
+   "cf_bridge": "pig",
+   "cue": "tukrey",
+   "shown": "tukrey",
+   "cf_shown": "piig",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'tukrey' a misspelling of?",
+    "answer": "turkey",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a turkey have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0185",
+   "family": "TYPO",
+   "scene": "T-0185",
+   "context": "Here is a quick question from Julia.",
+   "cf_context": "Here is a quick question from Julia.",
+   "off_context": "Here is a quick question from Ivan.",
+   "question": "How many legs does a caat have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "cat",
+   "cf_bridge": "bee",
+   "cue": "caat",
+   "shown": "caat",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'caat' a misspelling of?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0186",
+   "family": "TYPO",
+   "scene": "T-0186",
+   "context": "Here is a quick question from Laura.",
+   "cf_context": "Here is a quick question from Laura.",
+   "off_context": "Here is a quick question from Fiona.",
+   "question": "How many legs does a moue have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "mouse",
+   "cf_bridge": "bee",
+   "cue": "moue",
+   "shown": "moue",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'moue' a misspelling of?",
+    "answer": "mouse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a mouse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0187",
+   "family": "TYPO",
+   "scene": "T-0187",
+   "context": "Here is a quick question from Leo.",
+   "cf_context": "Here is a quick question from Leo.",
+   "off_context": "Here is a quick question from Sean.",
+   "question": "How many legs does a beee have?",
+   "cf_question": "How many legs does a wlf have?",
+   "bridge": "bee",
+   "cf_bridge": "wolf",
+   "cue": "beee",
+   "shown": "beee",
+   "cf_shown": "wlf",
+   "lang": null,
+   "answer": "6",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'beee' a misspelling of?",
+    "answer": "bee",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a bee have?",
+    "answer": "6",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0188",
+   "family": "TYPO",
+   "scene": "T-0188",
+   "context": "Here is a quick question from Julia.",
+   "cf_context": "Here is a quick question from Julia.",
+   "off_context": "Here is a quick question from Sean.",
+   "question": "How many legs does a sipder have?",
+   "cf_question": "How many legs does a dck have?",
+   "bridge": "spider",
+   "cf_bridge": "duck",
+   "cue": "sipder",
+   "shown": "sipder",
+   "cf_shown": "dck",
+   "lang": null,
+   "answer": "8",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'sipder' a misspelling of?",
+    "answer": "spider",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a spider have?",
+    "answer": "8",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0189",
+   "family": "TYPO",
+   "scene": "T-0189",
+   "context": "Here is a quick question from Kyle.",
+   "cf_context": "Here is a quick question from Kyle.",
+   "off_context": "Here is a quick question from James.",
+   "question": "How many legs does a dukc have?",
+   "cf_question": "How many legs does a muose have?",
+   "bridge": "duck",
+   "cf_bridge": "mouse",
+   "cue": "dukc",
+   "shown": "dukc",
+   "cf_shown": "muose",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'dukc' a misspelling of?",
+    "answer": "duck",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a duck have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0190",
+   "family": "TYPO",
+   "scene": "T-0190",
+   "context": "Here is a quick question from Emma.",
+   "cf_context": "Here is a quick question from Emma.",
+   "off_context": "Here is a quick question from Carl.",
+   "question": "How many legs does a horsse have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "horse",
+   "cf_bridge": "bee",
+   "cue": "horsse",
+   "shown": "horsse",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'horsse' a misspelling of?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0191",
+   "family": "TYPO",
+   "scene": "T-0191",
+   "context": "Here is a quick question from Vera.",
+   "cf_context": "Here is a quick question from Vera.",
+   "off_context": "Here is a quick question from Finn.",
+   "question": "How many legs does a woolf have?",
+   "cf_question": "How many legs does a spdier have?",
+   "bridge": "wolf",
+   "cf_bridge": "spider",
+   "cue": "woolf",
+   "shown": "woolf",
+   "cf_shown": "spdier",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "8",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'woolf' a misspelling of?",
+    "answer": "wolf",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a wolf have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0192",
+   "family": "TYPO",
+   "scene": "T-0192",
+   "context": "Here is a quick question from Sean.",
+   "cf_context": "Here is a quick question from Sean.",
+   "off_context": "Here is a quick question from Diana.",
+   "question": "How many legs does a frrog have?",
+   "cf_question": "How many legs does a chiicken have?",
+   "bridge": "frog",
+   "cf_bridge": "chicken",
+   "cue": "frrog",
+   "shown": "frrog",
+   "cf_shown": "chiicken",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'frrog' a misspelling of?",
+    "answer": "frog",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a frog have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0193",
+   "family": "TYPO",
+   "scene": "T-0193",
+   "context": "Here is a quick question from Peter.",
+   "cf_context": "Here is a quick question from Peter.",
+   "off_context": "Here is a quick question from Julia.",
+   "question": "How many legs does a chiken have?",
+   "cf_question": "How many legs does a caat have?",
+   "bridge": "chicken",
+   "cf_bridge": "cat",
+   "cue": "chiken",
+   "shown": "chiken",
+   "cf_shown": "caat",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'chiken' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0194",
+   "family": "TYPO",
+   "scene": "T-0194",
+   "context": "Here is a quick question from Hugo.",
+   "cf_context": "Here is a quick question from Hugo.",
+   "off_context": "Here is a quick question from Peter.",
+   "question": "How many legs does a caat have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "cat",
+   "cf_bridge": "bee",
+   "cue": "caat",
+   "shown": "caat",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'caat' a misspelling of?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0195",
+   "family": "TYPO",
+   "scene": "T-0195",
+   "context": "Here is a quick question from Mark.",
+   "cf_context": "Here is a quick question from Mark.",
+   "off_context": "Here is a quick question from Oscar.",
+   "question": "How many legs does a chickn have?",
+   "cf_question": "How many legs does a coow have?",
+   "bridge": "chicken",
+   "cf_bridge": "cow",
+   "cue": "chickn",
+   "shown": "chickn",
+   "cf_shown": "coow",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'chickn' a misspelling of?",
+    "answer": "chicken",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a chicken have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0196",
+   "family": "TYPO",
+   "scene": "T-0196",
+   "context": "Here is a quick question from Vera.",
+   "cf_context": "Here is a quick question from Vera.",
+   "off_context": "Here is a quick question from Eva.",
+   "question": "How many legs does a gooose have?",
+   "cf_question": "How many legs does a doog have?",
+   "bridge": "goose",
+   "cf_bridge": "dog",
+   "cue": "gooose",
+   "shown": "gooose",
+   "cf_shown": "doog",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'gooose' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0197",
+   "family": "TYPO",
+   "scene": "T-0197",
+   "context": "Here is a quick question from David.",
+   "cf_context": "Here is a quick question from David.",
+   "off_context": "Here is a quick question from Max.",
+   "question": "How many legs does a horrse have?",
+   "cf_question": "How many legs does a beee have?",
+   "bridge": "horse",
+   "cf_bridge": "bee",
+   "cue": "horrse",
+   "shown": "horrse",
+   "cf_shown": "beee",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "6",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'horrse' a misspelling of?",
+    "answer": "horse",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a horse have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0198",
+   "family": "TYPO",
+   "scene": "T-0198",
+   "context": "Here is a quick question from Tara.",
+   "cf_context": "Here is a quick question from Tara.",
+   "off_context": "Here is a quick question from Dan.",
+   "question": "How many legs does a caat have?",
+   "cf_question": "How many legs does a duuck have?",
+   "bridge": "cat",
+   "cf_bridge": "duck",
+   "cue": "caat",
+   "shown": "caat",
+   "cf_shown": "duuck",
+   "lang": null,
+   "answer": "4",
+   "cf_answer": "2",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'caat' a misspelling of?",
+    "answer": "cat",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a cat have?",
+    "answer": "4",
+    "kind": "digit"
+   }
+  },
+  {
+   "id": "TYPO-0199",
+   "family": "TYPO",
+   "scene": "T-0199",
+   "context": "Here is a quick question from Mia.",
+   "cf_context": "Here is a quick question from Mia.",
+   "off_context": "Here is a quick question from Emma.",
+   "question": "How many legs does a gooe have?",
+   "cf_question": "How many legs does a doog have?",
+   "bridge": "goose",
+   "cf_bridge": "dog",
+   "cue": "gooe",
+   "shown": "gooe",
+   "cf_shown": "doog",
+   "lang": null,
+   "answer": "2",
+   "cf_answer": "4",
+   "answer_kind": "digit",
+   "hop1": {
+    "question": "Which animal is 'gooe' a misspelling of?",
+    "answer": "goose",
+    "kind": "animal"
+   },
+   "hop2": {
+    "question": "How many legs does a goose have?",
+    "answer": "2",
+    "kind": "digit"
+   }
+  }
+ ]
+}

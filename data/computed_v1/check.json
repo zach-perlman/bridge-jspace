@@ -1,0 +1,141 @@
+{
+ "ARITH": {
+  "n": 200,
+  "aligned": 200,
+  "cf_differs": 200,
+  "unique_prompts": 200,
+  "changed_tokens(cf,off)": {
+   "(1, 1)": 200
+  },
+  "prompt_tokens(min,median,max)": [
+   43,
+   43.0,
+   43
+  ],
+  "answers": {
+   "10": 3,
+   "12": 7,
+   "14": 1,
+   "15": 11,
+   "16": 5,
+   "18": 11,
+   "20": 1,
+   "21": 6,
+   "24": 10,
+   "25": 1,
+   "27": 3,
+   "28": 6,
+   "30": 5,
+   "32": 8,
+   "35": 14,
+   "36": 11,
+   "4": 2,
+   "40": 8,
+   "42": 11,
+   "45": 9,
+   "48": 8,
+   "49": 2,
+   "54": 10,
+   "56": 11,
+   "6": 4,
+   "63": 5,
+   "64": 5,
+   "72": 7,
+   "8": 5,
+   "81": 8,
+   "9": 2
+  },
+  "bridges": {
+   "6": 33,
+   "7": 30,
+   "8": 29,
+   "5": 28,
+   "9": 27,
+   "3": 21,
+   "4": 21,
+   "2": 11
+  },
+  "distinct_bridges": 8
+ },
+ "TYPO": {
+  "n": 200,
+  "aligned": 200,
+  "cf_differs": 200,
+  "unique_prompts": 200,
+  "changed_tokens(cf,off)": {
+   "(2, 1)": 196,
+   "(3, 1)": 4
+  },
+  "prompt_tokens(min,median,max)": [
+   41,
+   41.0,
+   42
+  ],
+  "answers": {
+   "2": 75,
+   "4": 94,
+   "6": 18,
+   "8": 13
+  },
+  "bridges": {
+   "chicken": 22,
+   "goose": 22,
+   "bee": 18,
+   "turkey": 16,
+   "duck": 15,
+   "dog": 13,
+   "spider": 13,
+   "mouse": 13,
+   "frog": 10,
+   "lion": 10,
+   "cat": 10,
+   "cow": 9,
+   "wolf": 8,
+   "sheep": 7,
+   "horse": 7,
+   "pig": 7
+  },
+  "distinct_bridges": 16
+ },
+ "TRANS": {
+  "n": 200,
+  "aligned": 200,
+  "cf_differs": 200,
+  "unique_prompts": 200,
+  "changed_tokens(cf,off)": {
+   "(3, 1)": 14,
+   "(2, 1)": 160,
+   "(1, 1)": 26
+  },
+  "prompt_tokens(min,median,max)": [
+   52,
+   53.0,
+   54
+  ],
+  "answers": {
+   "2": 78,
+   "4": 80,
+   "6": 18,
+   "8": 24
+  },
+  "bridges": {
+   "turkey": 25,
+   "spider": 24,
+   "goose": 21,
+   "bee": 18,
+   "sheep": 17,
+   "duck": 16,
+   "chicken": 16,
+   "pig": 16,
+   "lion": 16,
+   "cat": 6,
+   "cow": 5,
+   "horse": 5,
+   "wolf": 5,
+   "frog": 4,
+   "dog": 4,
+   "mouse": 2
+  },
+  "distinct_bridges": 16
+ }
+}

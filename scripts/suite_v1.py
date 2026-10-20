@@ -75,6 +75,22 @@ DEV_LEVELS = {"e3f0": (3, 0), "e5f0": (5, 0), "e3f8": (3, 8), "e5f8": (5, 8)}  #
 N_DEV = 100
 DATA_B = pins.DATA_DIR / "suite_v1_b"  # wording B of every family (WORDINGS), its own seeds
 WORDING_B_SEEDS = (201, 202)  # the 2x2, NAMES and CODE; the tie-breakers
+# Computed bridges (Zach, 2026-10-20, quick experiment L3 after Neel's feedback: is a computed intermediate, never
+# written in the prompt and not a recalled entity, carried in the J-space?): set "computed", data/computed_v1/.
+COMPUTED = ("ARITH", "TYPO", "TRANS")
+DATA_C = pins.DATA_DIR / "computed_v1"
+COMPUTED_SEED = 301
+N_COMPUTED = 200
+# Animal names in German and French (single words; the generator keeps those whose counterfactual lines up)
+FOREIGN = {
+    "de": {"dog": "Hund", "cat": "Katze", "frog": "Frosch", "cow": "Kuh", "horse": "Pferd", "mouse": "Maus",
+           "wolf": "Wolf", "pig": "Schwein", "sheep": "Schaf", "lion": "Löwe", "duck": "Ente", "goose": "Gans",
+           "chicken": "Huhn", "turkey": "Truthahn", "bee": "Biene", "spider": "Spinne"},
+    "fr": {"dog": "chien", "cat": "chat", "frog": "grenouille", "cow": "vache", "horse": "cheval", "mouse": "souris",
+           "wolf": "loup", "pig": "cochon", "sheep": "mouton", "lion": "lion", "duck": "canard", "goose": "oie",
+           "chicken": "poulet", "turkey": "dinde", "bee": "abeille", "spider": "araignée"},
+}  # fmt: skip
+LANG_NAME = {"de": "German", "fr": "French"}
 INSTRUCTION = chat.QUESTION_INSTRUCTION
 # Animals: single tokens after a space, consonant-initial (so "a cow" / "a duck" keep the article and the alignment),
 # each with a 2-token cue naming it alone (bleating: sheep or goat; stripes: tiger or zebra; mane: lion or horse;
@@ -538,6 +554,97 @@ def code_items(
     return out
 
 
+# ---- computed bridges ------------------------------------------------------------------------------------------------
+
+
+def typo(word: str, rng: random.Random) -> str:
+    """A one-edit misspelling: two inner letters swapped, or one inner letter dropped or doubled."""
+    i = rng.randrange(1, max(2, len(word) - 1))
+    kind = rng.choice(("swap", "drop", "double")) if len(word) > 3 else "double"
+    if kind == "swap" and i + 1 < len(word) and word[i] != word[i + 1]:
+        return word[:i] + word[i + 1] + word[i] + word[i + 2 :]
+    if kind == "drop":
+        return word[:i] + word[i + 1 :]
+    return word[:i] + word[i] + word[i:]
+
+
+def computed_items(rng: random.Random, tok, n: int) -> dict[str, list[dict]]:
+    """ARITH: (a + b) x c, the bridge a + b (one digit) never written; TYPO and TRANS: a misspelled or German/French
+    animal name, the bridge the English animal (never written), then its legs. C changes the bridge (aligned token for
+    token, a different answer); O changes the asker's name in the context (off the path)."""
+    out: dict[str, list[dict]] = {f: [] for f in COMPUTED}
+
+    def n_tok(text: str) -> int:
+        return len(ids(tok, text))
+
+    seen: set[str] = set()
+    while len(out["ARITH"]) < n:
+        a, b, c = rng.randint(1, 8), rng.randint(1, 8), rng.randint(2, 9)
+        s_ = a + b
+        b2 = rng.randint(1, 8)
+        s2 = a + b2
+        if s_ > 9 or s2 > 9 or s2 == s_ or str(s_ * c)[0] == str(s2 * c)[0]:
+            continue
+        p, p2 = rng.sample(PEOPLE, 2)
+        key = f"{a}+{b}x{c}{p}"
+        if key in seen:
+            continue
+        seen.add(key)
+        q, q2 = f"What is ({a} + {b}) × {c}?", f"What is ({a} + {b2}) × {c}?"
+        out["ARITH"].append({
+            "id": f"ARITH-{len(out['ARITH']):04d}", "family": "ARITH", "scene": f"A-{len(out['ARITH']):04d}",
+            "context": f"Here is a sum for {p}.", "cf_context": f"Here is a sum for {p}.",
+            "off_context": f"Here is a sum for {p2}.", "question": q, "cf_question": q2,
+            "bridge": str(s_), "cf_bridge": str(s2), "cue": f"{a} + {b}", "answer": str(s_ * c), "cf_answer": str(s2 * c),
+            "answer_kind": "digit",
+            "hop1": {"question": f"What is {a} + {b}?", "answer": str(s_), "kind": "digit"},
+            "hop2": {"question": f"What is {s_} × {c}?", "answer": str(s_ * c), "kind": "digit"},
+        })  # fmt: skip
+    for fam in ("TYPO", "TRANS"):
+        tries = 0
+        while len(out[fam]) < n and tries < 200_000:
+            tries += 1
+            bridge = pick_bridge(rng)
+            x = rng.choice([a for a in ANIMALS if ANIMALS[a][0] != ANIMALS[bridge][0]])
+            p, p2 = rng.sample(PEOPLE, 2)
+            if fam == "TYPO":
+                w, w2 = typo(bridge, rng), typo(x, rng)
+                if w in ANIMALS or w2 in ANIMALS or w == bridge or w2 == x:
+                    continue
+                shown, shown2, lang = w, w2, None
+                q = f"How many legs does a {w} have?"
+                q2 = f"How many legs does a {w2} have?"
+                h1 = f"Which animal is '{w}' a misspelling of?"
+                ctx = f"Here is a quick question from {p}."
+                off = f"Here is a quick question from {p2}."
+            else:
+                lang = rng.choice(("de", "fr"))
+                shown, shown2 = FOREIGN[lang][bridge], FOREIGN[lang][x]
+                if shown.lower() == bridge or shown2.lower() == x:  # 'lion', 'wolf': the English word itself
+                    continue
+                q = f"How many legs does the animal called « {shown} » in {LANG_NAME[lang]} have?"
+                q2 = f"How many legs does the animal called « {shown2} » in {LANG_NAME[lang]} have?"
+                h1 = f"Which animal is called « {shown} » in {LANG_NAME[lang]}? Answer in English."
+                ctx = f"Here is a question from {p}, who is reading a {LANG_NAME[lang]} book."
+                off = f"Here is a question from {p2}, who is reading a {LANG_NAME[lang]} book."
+            if n_tok(" " + shown) != n_tok(" " + shown2) or n_tok(q) != n_tok(q2):
+                continue
+            key = f"{fam}{q}{p}"
+            if key in seen:
+                continue
+            seen.add(key)
+            out[fam].append({
+                "id": f"{fam}-{len(out[fam]):04d}", "family": fam, "scene": f"{fam[0]}-{len(out[fam]):04d}",
+                "context": ctx, "cf_context": ctx, "off_context": off, "question": q, "cf_question": q2,
+                "bridge": bridge, "cf_bridge": x, "cue": shown, "shown": shown, "cf_shown": shown2, "lang": lang,
+                "answer": str(ANIMALS[bridge][0]), "cf_answer": str(ANIMALS[x][0]), "answer_kind": "digit",
+                "hop1": {"question": h1, "answer": bridge, "kind": "animal"},
+                "hop2": {"question": f"How many legs does a {bridge} have?", "answer": str(ANIMALS[bridge][0]),
+                         "kind": "digit"},
+            })  # fmt: skip
+    return out
+
+
 # ---- stages ---------------------------------------------------------------------------------------------------------
 
 
@@ -558,6 +665,10 @@ def generate(which: str, tok) -> dict[str, tuple[Path, list[dict], str]]:
         fams = tiebreak_items(random.Random(TIEBREAK_SEED), N_PER_FAMILY)
         note = f"scripts/suite_v1.py make --set tiebreak (seed {TIEBREAK_SEED})"
         return {f: (DATA / f"{f}.json", it, note) for f, it in fams.items()}
+    if which == "computed":
+        fams = computed_items(random.Random(COMPUTED_SEED), tok, N_COMPUTED)
+        note = f"scripts/suite_v1.py make --set computed (seed {COMPUTED_SEED})"
+        return {f: (DATA_C / f"{f}.json", it, note) for f, it in fams.items()}
     if which == "wording_b":
         w = WORDINGS["B"]
         rng = random.Random(WORDING_B_SEEDS[0])
@@ -587,6 +698,8 @@ def set_files(which: str) -> dict[str, Path]:
         return {f: DATA / f"{f}.json" for f in TIEBREAK}
     if which == "wording_b":
         return {f: DATA_B / f"{f}.json" for f in FAMILIES + TIEBREAK}
+    if which == "computed":
+        return {f: DATA_C / f"{f}.json" for f in COMPUTED}
     return {f"{f}_{lv}": DEV / f"{f}_{lv}.json" for lv in DEV_LEVELS for f in FAMILIES + TIEBREAK}
 
 
@@ -604,7 +717,7 @@ def stage_verify() -> None:
     """Every set regenerated from this code equals its files (the generators gained knobs and wordings; at each set's
     settings they must draw exactly as before)."""
     tok = tokenizer()
-    for which in ("main", "tiebreak", "dev", "wording_b"):
+    for which in ("main", "tiebreak", "dev", "wording_b", "computed"):
         for label, (path, items, _) in generate(which, tok).items():
             if not path.exists():
                 print(which, label, "no file yet")
@@ -618,8 +731,12 @@ def load_file(path: Path) -> list[dict]:
     return json.loads(path.read_text())["items"]
 
 
+def data_dir(wording: str) -> Path:
+    return {"A": DATA, "B": DATA_B, "C": DATA_C}[wording]
+
+
 def load(fam: str, wording: str = "A") -> list[dict]:
-    return load_file((DATA if wording == "A" else DATA_B) / f"{fam}.json")
+    return load_file(data_dir(wording) / f"{fam}.json")
 
 
 def changed(a: list[int], b: list[int]) -> list[int] | None:
@@ -656,8 +773,8 @@ def stage_check(which: str) -> None:
                          "distinct_bridges": len(bridges)}  # fmt: skip
         print(label, json.dumps(report[label]))
         assert stats["aligned"] == stats["cf_differs"] == stats["unique_prompts"] == len(items), label
-    folder = {"dev": DEV, "wording_b": DATA_B}.get(which, DATA)
-    out = folder / ("check.json" if which in ("main", "wording_b") else f"check_{which}.json")
+    folder = {"dev": DEV, "wording_b": DATA_B, "computed": DATA_C}.get(which, DATA)
+    out = folder / ("check.json" if which in ("main", "wording_b", "computed") else f"check_{which}.json")
     out.write_text(json.dumps(report, indent=1) + "\n")
 
 
@@ -856,7 +973,7 @@ def stage_competence(name: str) -> None:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("stage", choices=["make", "verify", "check", "manifest", "competence"])
-    ap.add_argument("--set", dest="which", choices=["main", "tiebreak", "dev", "wording_b"], default="main")
+    ap.add_argument("--set", dest="which", choices=["main", "tiebreak", "dev", "wording_b", "computed"], default="main")
     ap.add_argument("--name")
     ap.add_argument("--why")
     ap.add_argument("--limit", type=int, default=None, help="manifest: the first K items per family (a smoke run)")

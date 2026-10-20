@@ -71,6 +71,7 @@ COMPETENCE = {  # (target, wording) -> the suite_v1 competence runs whose items.
     ("qwen3.6-27b", "B"): {"main": "competence_b_v1", "tiebreak": "competence_b_v1"},
     ("qwen3.5-9b", "A"): {"main": "qwen35_9b_competence_v2", "tiebreak": "qwen35_9b_competence_tiebreak_v1"},
     ("qwen3.5-9b", "B"): {"main": "qwen35_9b_competence_b_v1", "tiebreak": "qwen35_9b_competence_b_v1"},
+    ("qwen3.6-27b", "C"): {"main": "competence_computed_v1", "tiebreak": "competence_computed_v1"},
 }
 CONCENTRATED = 2.0  # a part "carries" the bridge if it moves the answer at least this many times its share of the copy
 MIN_FRAC = 0.10  # a window layer's copy moves the answer at least this far toward C's, on average
@@ -192,7 +193,7 @@ def read_jobs(
 
 def manifest_common(name: str, why: str, kind: str, families: list[str], wording: str) -> dict:
     pins.check_run_name(name)
-    files = {f: (S.DATA if wording == "A" else S.DATA_B) / f"{f}.json" for f in families}
+    files = {f: S.data_dir(wording) / f"{f}.json" for f in families}
     comp = {f: competence_file(f, wording) for f in families}
     return {
         "exp": EXP,
@@ -680,8 +681,10 @@ if __name__ == "__main__":
     ap.add_argument("--name", required=True)
     ap.add_argument("--why")
     ap.add_argument("--map")
-    ap.add_argument("--families", nargs="+", choices=list(S.FAMILIES + S.TIEBREAK))
-    ap.add_argument("--wording", choices=["A", "B"], default="A", help="manifest_map: suite_v1's wording A or B")
+    ap.add_argument("--families", nargs="+", choices=list(S.FAMILIES + S.TIEBREAK + S.COMPUTED))
+    ap.add_argument(
+        "--wording", choices=["A", "B", "C"], default="A", help="manifest_map: wording A or B, or C (computed)"
+    )
     ap.add_argument(
         "--calibrate", action="store_true", help="manifest_parts: add the random-dictionary and own-word parts"
     )
