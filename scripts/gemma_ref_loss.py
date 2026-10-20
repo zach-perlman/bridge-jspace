@@ -10,9 +10,10 @@ from pathlib import Path
 import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+from transformers import AutoModelForCausalLM, AutoModelForImageTextToText, AutoTokenizer
+
 from bridge_jspace import pins
 from bridge_jspace.tokens import raw_encoding
-from transformers import AutoModelForCausalLM, AutoModelForImageTextToText, AutoTokenizer
 
 assert pins.TARGET.startswith("gemma"), "run with BJ_TARGET set to a Gemma target"
 path = pins.MODEL_REPO
@@ -29,7 +30,7 @@ for label, cls, attn in (
         m = cls.from_pretrained(
             path, revision=pins.MODEL_REVISION, dtype=torch.bfloat16, device_map="cuda", attn_implementation=attn
         ).eval()
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         out[label] = f"load failed: {type(e).__name__}: {str(e)[:160]}"
         print(label, out[label], flush=True)
         continue
