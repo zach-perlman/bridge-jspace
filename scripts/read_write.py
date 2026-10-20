@@ -85,17 +85,27 @@ def suite_cases_from_competence(tok, n: int, comp_run: str, families: list[str])
 
 def tasks_cases(tok, n: int, set_name: str, comp_run: str, words: list[str], level: str = "pick") -> list[dict]:
     """The first n items per word of a tasks_v2 set made with counterfactuals, from scenes its competence run got
-    right on every prompt of the compared words, at one level for the comparison (tasks_v2.eligible); items whose C or
-    O does not line up in this tokenizer are skipped and counted."""
+    right on every prompt of the compared words, at one level for the comparison (tasks_v2.eligible). A scene with an
+    item whose C or O does not line up in this tokenizer is dropped whole (its words stay paired) and the next scene
+    takes its place; generation checks alignment with the same tokenizer, so any drop is reported."""
     from scripts import tasks_v2 as T
 
-    out, skipped = [], 0
-    for it in T.eligible(set_name, comp_run, words, n, level):
+    scenes: dict[str, list[dict]] = collections.defaultdict(list)
+    for it in T.eligible(set_name, comp_run, words, 10**9, level):
+        scenes[it["scene"]].append(it)
+    out, got, dropped = [], collections.Counter(), 0
+    for its in scenes.values():
+        if any(got[it["word"]] >= n for it in its):
+            continue
         try:
-            out.append({**it, **T.prepare(it, tok)})
+            prepped = [{**it, **T.prepare(it, tok)} for it in its]
         except AssertionError:
-            skipped += 1
-    print(f"tasks_cases: {len(out)} cases, {skipped} skipped (C/O alignment)", flush=True)
+            dropped += 1
+            continue
+        out += prepped
+        got.update(it["word"] for it in its)
+    print(f"tasks_cases: {len(out)} cases from {len(out) and len({c['scene'] for c in out})} scenes; {dropped} scenes "
+          "dropped (C/O alignment or first tokens)", flush=True)  # fmt: skip
     return out
 
 

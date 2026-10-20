@@ -114,7 +114,7 @@ ANIMALS = _table({
     "elephant": (4, "the animal known for its trunk", "the animal whose tusks are ivory"),
     "giraffe": (4, "the animal known for its long neck", "the tallest animal on land"),
     "camel": (4, "the animal known for its humps", "the animal called the ship of the desert"),
-    "duck": (2, "the animal known for quacking", "the animal eiderdown comes from"),
+    "duck": (2, "the animal known for quacking", "the animal roasted in the famous Peking dish"),
     "goose": (2, "the animal known for honking", "the animal whose male is called a gander"),
     "chicken": (2, "the animal known for clucking", "the animal that lays most of the eggs we eat"),
     "turkey": (2, "the animal known for gobbling", "the animal eaten at Thanksgiving"),
@@ -149,7 +149,7 @@ ELEMENTS = _table({
     "lithium": (3, "the light metal in rechargeable phone batteries", "the element in mood-stabilising drugs"),
     "beryllium": (4, None, None),
     "boron": (5, None, None),
-    "carbon": (6, "the element diamonds are made of", "the element all known life is based on"),
+    "carbon": (6, "the element diamonds are made of", "the element every organic compound contains"),
     "nitrogen": (7, "the gas that makes up most of the air", "the element bacteria in bean roots take from the air"),
     "oxygen": (8, "the gas we need to breathe", "the element ozone is made of"),
     "fluorine": (9, "the element added to toothpaste to protect teeth", "the most electronegative element"),
@@ -359,6 +359,13 @@ def scene(rng: random.Random, dom: Domain, group: str, knobs: dict, style: str) 
             "bin": dict(zip(range(1, 10), b, strict=True)), "lookalike_picks": lookalike_picks, "numbers": style}  # fmt: skip
 
 
+def confusable_picks(sc: dict) -> list[str]:
+    """Picks of look-alike rows that could pass for the queried person: their own look-alike, and any other look-alike
+    whose name starts with the same two letters (Owen's look-alike Oliver next to Olivia)."""
+    p = sc["person"]
+    return [t for name, t in sc["lookalike_picks"] if name == NEAR[p] or name[:2] == p[:2]]
+
+
 def start_desc(group: str, dom: Domain, sc: dict, x: str, knobs: dict, c_op: str | None, rng) -> str | None:
     if group == "P":
         return f"{sc['person']}'s pick"
@@ -439,9 +446,7 @@ def wrong_routes(word: str, dom: Domain, sc: dict, x: str, dom2: Domain | None) 
     if x is not None:
         alts.append(str(dom.values[x] if rest == "P" else sc["locker"][x]))  # the other relation
     if word[0] == "P":
-        for name, t in sc["lookalike_picks"]:
-            if name == NEAR[sc["person"]] and t != start:
-                alts.append(follow(word, dom, sc, t, dom2)[0])
+        alts += [follow(word, dom, sc, t, dom2)[0] for t in confusable_picks(sc) if t != start]
     return [a for a in alts if a is not None]
 
 
@@ -593,7 +598,7 @@ def counterfactuals(tok, items: list[dict], group: str, dom: Domain, sc: dict, d
 
     others = [p for p in sc["people"] if p != person]
     cues = dom.hard_cues if items[0]["knobs"]["hard_cues"] else dom.cues
-    la = [t for name, t in sc["lookalike_picks"] if name == NEAR[person]]
+    la = confusable_picks(sc)
     for X in weighted_order(rng, [t for t in sc["things"] if t != x], dom):
         if not _single(tok, X) or X in la:
             continue
@@ -770,17 +775,27 @@ ORDINALS = {"first": 1, "second": 2, "third": 3, "fourth": 4, "fifth": 5, "sixth
 ALL_THINGS = {t.lower() for dom in DOMAINS.values() for t in dom.values}
 
 
-def _is(token: str, thing: str) -> bool:
-    """token names thing: itself, a plural (bees, foxes), or a compound ending in it that is not itself a thing
-    (honeybee, housefly; but butterfly is not a fly)."""
-    if token in (thing, thing + "s", thing + "es"):
-        return True
-    return len(thing) >= 3 and token.endswith(thing) and token not in ALL_THINGS and token.rstrip("s") not in ALL_THINGS
+PLURALS = {"mice": "mouse", "geese": "goose", "oxen": "ox"}
+COMPOUNDS = {"honeybee": "bee", "bumblebee": "bee", "housefly": "fly", "bullfrog": "frog", "warthog": "pig"}
+NAMES = {n.lower() for n in [*S.PEOPLE, *NEAR.values(), *ABSENT]}
+
+
+def thing_of(token: str) -> str | None:
+    """The thing a word names: itself, its plural (bees, foxes, mice), or a listed compound (honeybee); names of
+    people never count (Oscar is not a car, Greta is not eta)."""
+    if token in NAMES:
+        return None
+    for t in (token, PLURALS.get(token), COMPOUNDS.get(token), token[:-1] if token.endswith("s") else None,
+              token[:-2] if token.endswith("es") else None):  # fmt: skip
+        if t in ALL_THINGS:
+            return t
+    return None
 
 
 def judge(text: str, answer: str, kind: str) -> bool:
-    """Digit: the first number in the first line (digits, number words or ordinals). Word: the first line names the
-    answer, and no other thing of any domain before it except as a modifier of it ("deer tick" is a tick)."""
+    """Digit: the first number in the first line (digits, number words or ordinals). Word: the first thing named in
+    the first line is the answer, reading a run of thing words as one name with its last word as the head ("deer
+    tick" is a tick, "eagle owl" an owl)."""
     line = S.first_line(text)
     if kind == "digit":
         for t in re.findall(r"[a-z]+|\d+", line):
@@ -791,14 +806,13 @@ def judge(text: str, answer: str, kind: str) -> bool:
             if t in ORDINALS:
                 return str(ORDINALS[t]) == answer
         return False
-    a = answer.lower()
-    toks = re.findall(r"[a-z]+", line)
-    for k, t in enumerate(toks):
-        if _is(t, a):
-            return True
-        other = next((th for th in ALL_THINGS if th != a and _is(t, th)), None)
-        if other and not (k + 1 < len(toks) and _is(toks[k + 1], a)):
-            return False
+    named = [thing_of(t) for t in re.findall(r"[a-z]+", line)]
+    for k, th in enumerate(named):
+        if th is None:
+            continue
+        while k + 1 < len(named) and named[k + 1] is not None:
+            k += 1
+        return named[k] == answer.lower()
     return False
 
 
