@@ -1,0 +1,76 @@
+{
+  "exp": "control_split",
+  "run": "qwen35_122b_parts_cap42_v1",
+  "kind": "parts",
+  "written_utc": "2026-10-20T02:05:40Z",
+  "why": "Zach (2026-10-20), L5 sensitivity (chosen after the 122B map): windows up to layer 41, below the 122B's last-token answer layer (42), instead of the 27B's relative depth (33)",
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "items": {
+    "file": "data/bind_recall.json",
+    "sha256": "bbb1cfa8e95b6a83ec1c6003fc3a05c5c1fba195cff6a5cb7e3ea968dce59029",
+    "families": [
+      "R",
+      "B"
+    ]
+  },
+  "format": "chat template, thinking off, 'Answer:' prefilled (exp09's chat_prefill: the statement as a question)",
+  "eligibility": "exp09's: clean, C and O each answered (greedy, 8 tokens, the capitals judge); a seeded sample (seed 0) per family; cases whose two capitals share a first token dropped",
+  "read": "suite_split's: one forward, read at the capital's first token; frac of the way from clean to C",
+  "doc": "suite_split called every suite family 'outside' the J-space, recall-used ones included, and exp09's raw-text copy split\non countries gave the J-space part 4% of R's flips against 44% for the full copy. The proposal's 'inside' evidence is\nexp02's probe swaps (B1: J-part 52% vs rest 8%), a different intervention: J++ probe directions of the two entities,\nswapped at the cue phrase over layers 24-40 at once. Can suite_split's copy-and-split see 'inside' at all? This runs it\non the paper-style place items, in the variants that move it toward exp02's setting:",
+  "map": {
+    "run": "qwen35_122b_map_v1",
+    "summary_sha256": "e5efe3f8e25f2791ada51e3940bf10dbd290d5e86cc0b45afddf0b5aaff7f2b6",
+    "cap": {
+      "R": 42,
+      "B": 42
+    },
+    "parts_window": {
+      "R": {
+        "question": [
+          30,
+          33,
+          36,
+          39
+        ],
+        "cue": []
+      },
+      "B": {
+        "question": [
+          36,
+          39
+        ],
+        "cue": []
+      }
+    },
+    "cap_override": 42
+  },
+  "lens": {
+    "jpp": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-122b-a10b/jpp/Salesforce-wikitext/Qwen3.5-122B-A10B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  },
+  "variants": "group (question, cue) x mode (single: each window layer alone; band: all window layers at once)",
+  "extra_parts": "v3",
+  "extra_v3": {
+    "parts": "jspace_wo_own: the 25-atom J-space part of delta minus its projection on the bridge's and X's lens vectors; jspace_wo_words4: the same after projecting out all four words (bridge, X, both answers)",
+    "why": "parts_v2's bar test turned out uninformative: the 25 atoms are mostly unrelated tokens (a debug on 3 R cases at layer 36 found the bridge words among them once), so barring exact surface forms leaves the J-space part unchanged while the two own-word directions alone carry about 80% of its effect",
+    "decision": "fixed before the run: the J-space effect is the bridge words' (H0's own-word clause) if jspace_wo_own moves the answer less than a quarter as far as jspace (frac; question group, single layer)"
+  },
+  "extra": {
+    "parts": "answer2: delta's projection on the lens vectors of the two answers (capitals); words4: on the span of the bridge's, X's and both answers' vectors; jspace_minus_words: the 25-atom J-space part with every single-token surface of those four words barred from the dictionary",
+    "decision": "fixed before the run: the J-space effect is the words' if jspace_minus_words moves the answer less than a quarter as far as jspace (frac, single and band); it is the answer's (Neel's linear-relation objection) if answer2 moves it further than lens2 (the bridge's own words); reported per variant"
+  },
+  "decision": {
+    "verdict": "suite_split's: concentration (case bootstrap) lower bound above 2 -> inside; upper bound below 2 and not_jspace - jspace above 0 -> outside; else inconclusive; per family and variant, frac primary",
+    "control": "the method can see 'inside' if R is inside in at least one variant; else exp02's 'inside' needs the probe directions, not the model's own counterfactual difference"
+  }
+}

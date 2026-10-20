@@ -31,6 +31,7 @@ from __future__ import annotations
 import argparse
 import collections
 import json
+import os
 import random
 import statistics
 import sys
@@ -64,7 +65,7 @@ GROUPS = ("question", "last")
 N_SCENES = 150
 N_VALIDATE = 20
 SAMPLE_SEED, NULL_SEED, BOOT_SEED, N_BOOT = 0, 0, 0, 2000
-BATCH = 64
+BATCH = int(os.environ.get("BJ_BATCH", "64"))  # edited runs per batched call; smaller for a model that fills the GPU
 CHANCE_DRAWS = 20
 PARTS = ("lens2", "not_lens2", "jspace", "not_jspace")
 MATCHED = ("lens2_matched", "jspace_matched")
