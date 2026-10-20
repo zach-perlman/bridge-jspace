@@ -83,6 +83,7 @@ def omp_without(dictionary: torch.Tensor, x: torch.Tensor, k: int, banned: torch
 
 
 EXTRA = ("answer2", "words4", "jspace_minus_words")  # parts_v2's diagnostic parts (each with its random null)
+EXTRA_V3 = ("jspace_wo_own", "jspace_wo_words4")  # parts_v3: the J-space part of delta after projecting out the words
 
 
 def judge(text: str) -> str | None:
@@ -185,7 +186,7 @@ def stage_run_map(name: str) -> None:
     print((out_dir / "summary.md").read_text())
 
 
-def stage_manifest_parts(name: str, map_run: str, why: str, extra: bool = False) -> None:
+def stage_manifest_parts(name: str, map_run: str, why: str, extra: bool | str = False) -> None:
     path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
@@ -204,6 +205,16 @@ def stage_manifest_parts(name: str, map_run: str, why: str, extra: bool = False)
     m["lens"] = {pins.FROZEN_LENS: list(pins.LENS_SOURCES[pins.FROZEN_LENS]), "sha256": pins.FROZEN_LENS_SHA256}
     m["variants"] = "group (question, cue) x mode (single: each window layer alone; band: all window layers at once)"
     m["extra_parts"] = extra
+    if extra == "v3":
+        m["extra_v3"] = {
+            "parts": "jspace_wo_own: the 25-atom J-space part of delta minus its projection on the bridge's and X's "
+            "lens vectors; jspace_wo_words4: the same after projecting out all four words (bridge, X, both answers)",
+            "why": "parts_v2's bar test turned out uninformative: the 25 atoms are mostly unrelated tokens (a debug on 3 "
+            "R cases at layer 36 found the bridge words among them once), so barring exact surface forms leaves the "
+            "J-space part unchanged while the two own-word directions alone carry about 80% of its effect",
+            "decision": "fixed before the run: the J-space effect is the bridge words' (H0's own-word clause) if "
+            "jspace_wo_own moves the answer less than a quarter as far as jspace (frac; question group, single layer)",
+        }
     if extra:
         m["extra"] = {
             "parts": "answer2: delta's projection on the lens vectors of the two answers (capitals); words4: on the "
@@ -293,7 +304,10 @@ def stage_run_parts(name: str) -> None:
                     parts["answer2"] = lens2_part(delta, lens.vectors(la, answers))
                     parts["words4"] = lens2_part(delta, lens.vectors(la, torch.cat([pair, answers])))
                     parts["jspace_minus_words"] = omp_without(dictionaries[la], delta, K_ATOMS, banned)
-                    for what in EXTRA:
+                    if extra == "v3":
+                        parts["jspace_wo_own"] = signed_omp(dictionaries[la], delta - lens2, K_ATOMS)
+                        parts["jspace_wo_words4"] = signed_omp(dictionaries[la], delta - parts["words4"], K_ATOMS)
+                    for what in EXTRA + (EXTRA_V3 if extra == "v3" else ()):
                         fve.append({"family": c["family"], "name": c["id"], "group": group, "layer": la, "what": what,
                                     "share": round(float(parts[what].norm() ** 2) / total, 4)})  # fmt: skip
                 for pi, (pname, part) in enumerate(parts.items()):
@@ -358,7 +372,7 @@ def summarize(outcomes: list[dict], fve: list[dict], window: dict) -> dict:
                 shares = [f for f in fve if f.get("family") == fam and f.get("group") == group]
                 means = {
                     f"{p}{' null' if nl else ''}": statistics.mean(v.values())
-                    for p in EXTRA
+                    for p in EXTRA + EXTRA_V3
                     for nl in (False, True)
                     if (v := P.scores(rows, "frac", part=p, null=nl, source="cf"))
                 }
@@ -366,7 +380,7 @@ def summarize(outcomes: list[dict], fve: list[dict], window: dict) -> dict:
                     "extra_frac_means": means,
                     "extra_share_median": {
                         w: statistics.median(f["share"] for f in shares if f["what"] == w)
-                        for w in EXTRA
+                        for w in EXTRA + EXTRA_V3
                         if any(f["what"] == w for f in shares)
                     },
                     "window": window[fam][group],
@@ -390,6 +404,7 @@ if __name__ == "__main__":
     ap.add_argument("--map")
     ap.add_argument("--n", type=int, default=N_ITEMS, help="manifest_map: items per family (a smoke run: few)")
     ap.add_argument("--extra", action="store_true", help="manifest_parts: add the answer-word and words-removed parts")
+    ap.add_argument("--v3", action="store_true", help="manifest_parts: --extra plus the J-space part after the words")
     args = ap.parse_args()
     if args.stage == "manifest_map":
         assert args.why, "manifest_map needs --why"
@@ -399,6 +414,6 @@ if __name__ == "__main__":
     elif args.stage == "manifest_parts":
         assert args.why, "manifest_parts needs --why"
         assert args.map, "manifest_parts needs --map"
-        stage_manifest_parts(args.name, args.map, args.why, args.extra)
+        stage_manifest_parts(args.name, args.map, args.why, "v3" if args.v3 else args.extra)
     else:
         stage_run_parts(args.name)
