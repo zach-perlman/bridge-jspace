@@ -108,6 +108,31 @@ def country_prompts(tok, fams: list[str], n: int) -> list[dict]:
     return out
 
 
+def tasks_prompts(tok, set_name: str, comp_run: str, words: list[str] | None, n: int, kinds: list[str]) -> list[dict]:
+    """tasks_v2 items the model gets right as a whole and step by step (its competence run), first n per word; the
+    whole question ('clean') and each step alone ('stepN'), read as the suite reads them (a digit after 'Answer: ')."""
+    from scripts import tasks_v2 as T
+
+    ok: dict[str, list[bool]] = collections.defaultdict(list)
+    for line in (pins.RESULTS_DIR / "tasks_v2" / comp_run / "items.jsonl").read_text().splitlines():
+        r = json.loads(line)
+        ok[r["id"]].append(r["correct"])
+    out, got = [], collections.Counter()
+    for it in T.load(set_name):
+        if (words and it["word"] not in words) or got[it["word"]] >= n or not ok.get(it["id"]) or not all(ok[it["id"]]):
+            continue
+        got[it["word"]] += 1
+        parts = [("clean", it["question"], it["answer"], it["kind"])]
+        parts += [(f"step{i}", st["question"], st["answer"], st["kind"]) for i, st in enumerate(it["steps"], 1)]
+        for kind, q, a, k in parts:
+            if kind not in kinds:
+                continue
+            ids = S.ids(tok, T.render(tok, {**it, "_question": q})) + (S.ids(tok, " ") if k == "digit" else [])
+            out.append({"family": it["word"], "id": it["id"], "kind": kind, "ids": ids, "tok": S.answer_token(tok, a, k),
+                        "bridge": it["steps"][0]["answer"], "domain": it["domain"], "format": it["format"]})  # fmt: skip
+    return out
+
+
 def bridge_positions(tok, ids: list[int], word: str) -> list[int]:
     """Token positions overlapping a mention of the word (case-insensitive, any suffix: cow, cows, Cow)."""
     pieces = [tok.decode([i]) for i in ids]
@@ -195,6 +220,8 @@ def main(args) -> None:
         bridge_of = {it["id"]: it["bridge"] for f in suite_fams for it in S.load(f)}
         for p in prompts:
             p["bridge"] = bridge_of.get(p["id"], "")
+    elif args.tasks:
+        prompts = tasks_prompts(tok, args.tasks, args.tasks_competence, args.tasks_words, args.n, args.kinds)
     else:
         prompts = suite_prompts(tok, suite_fams, args.kinds, args.n, COMPETENCE)
         prompts += country_prompts(tok, [f for f in args.families if f in ("R", "B")], args.n)
@@ -359,5 +386,8 @@ if __name__ == "__main__":
     ap.add_argument("--n", type=int, default=100)
     ap.add_argument("--batch", type=int, default=32)
     ap.add_argument("--no-tf32", action="store_true", help="full fp32 matmuls (the v1 numerics check)")
+    ap.add_argument("--tasks", default=None, help="a tasks_v2 set to draw prompts from instead of the suite")
+    ap.add_argument("--tasks-competence", default=None, help="its competence run (eligibility: every part right)")
+    ap.add_argument("--tasks-words", nargs="*", default=None, help="tasks_v2 words to include (default: all)")
     ap.add_argument("--workspace", type=int, default=None, help="depth plan: first layer of the workspace range")
     main(ap.parse_args())
