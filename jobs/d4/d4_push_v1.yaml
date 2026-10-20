@@ -1,0 +1,57 @@
+id: d4_push_v1
+thread: D4
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 1.2
+depends_on:
+- d4_smoke_27b
+command: >-
+  uv run python scripts/early_push.py run --name d4_push_v1
+  --why "D4: is a hard early lens push (layers 16-28, 4-16x the copy's norm) the same as editing the input word, or a write of the intermediate? Decides whether layers_v1's early RL flips contradict C2"
+  --n 60
+examples_command: uv run python scripts/early_push.py examples --name d4_push_v1
+question: On Qwen3.6-27B at layers 16-28, does the lens push v_X - v_I that flips RL 35-61% and BL 24-44% act like
+  putting X's word into the question (agreeing item by item with the text edits, not depending on the cue positions,
+  moving BL as much as RL) or like writing the intermediate variable (agreeing with C's own in-transit state)?
+why_it_matters: 'C2 says the lens cannot write a lookup-used bridge where the model carries it. layers_v1 found early
+  pushes that flip RL (and BL, whose bridge the lens barely reads). H-inject keeps C2 (the early flips are input edits,
+  upstream of where the bridge is carried); H-write kills C2 as stated (RL is writable, just early). It also tells the
+  "around" route story whether early lens directions act on words or on variables.'
+hypotheses:
+  H-inject: 'K1 dk = kappa(P*, E-insert) - kappa(P*, W-copy*) > 0 with CI above 0 (e.g. +0.2 to +0.4); flips(nb) >=
+    flips(a)/2 (pushing everything but the subject phrase keeps >= half the effect; layers_v1''s r-push, a subset of
+    nb for RL, already flips RL 35-61%); BL within 15 points of RL at P* (e.g. 40% vs 50%); K4 cos(P*_b, E-name) -
+    cos(P*_b, E-cue) > 0 at the final positions (layers 32-40); E-unrelated flips < 10%'
+  H-write: 'dk < 0 with CI below 0; flips(b) >> flips(nb) and flips(nb) < flips(a)/2; BL < RL - 15 points (BL''s bridge
+    is not lens-readable at the question, so a lens write lands less); K4 < 0; P*_b''s transit projection on C''s copy
+    delta at 44-52 >= E-name''s'
+decision_rule: 'Fixed in scripts/early_push.py''s docstring and manifest before the run. P* = the lens push at subset a
+  (whole question region + template) whose RL flip rate is nearest 50% over layers 16/20/24/28/band x scales 4/8/16;
+  W-copy* per family = C''s copy at 32-48 nearest 50%; emb* = the embedding push nearest 50% on RL. K1 (RL): CI of dk
+  above 0 inject-like, below 0 write-like; counts only if the gate passes (kappa(emb*, E-insert) - kappa(emb*, W-copy*)
+  CI above 0 on RL). K2 (RL, P*''s layer and scale): inject-like if flips(nb) - flips(a)/2 has CI above 0; write-like
+  if that CI is below 0 and flips(b) - flips(nb) has CI above 0. K3: flips(BL) - flips(RL) at P*, paired by scene:
+  inject-like if CI lower bound > -0.15, write-like if upper bound < -0.15. Verdict: "push behaves like an input-word
+  edit" if >= 2 of K1-K3 inject-like and none write-like; "push writes the intermediate" if >= 2 write-like and none
+  inject-like; otherwise mixed. K4/K5, countries, BR/RR, O, text loss reported, not decisive. Item bootstrap, 2000
+  resamples, seed 0.'
+controls:
+- 'random direction at the same per-position norm for every lens push and embedding push (rules out any big push)'
+- 'r-subset push = layers_v1''s push on the same items (replication anchor; summary.json replication)'
+- 'C''s copy at r at 16-28 (the 0% anchor) and at 32-48 (W-copy*: the model''s own in-transit variable, graded)'
+- 'edited-input activation patch (Biran et al. 2024 back-patching): the C run''s residual at a, at 16-28, raw and at the push''s per-token norm'
+- 'embedding push e_X - e_I and e_X at the subject phrase: the "edit the input word" limit; its kappa pattern is the gate for K1'
+- 'E-unrelated: X named in an unrelated context sentence (does merely mentioning X move the answer?)'
+- 'O (off-path prompt) under the push and WikiText next-token loss under the push vs random: collateral damage'
+- 'countries R/B (bridge read and written by the lens at 44-52): the same measures where a lens write is known to work'
+n: 60 per family (BL, BR, RL, RR on the same 60 scenes, the first 60 of map_A8_v1 = a subset of layers_v1's 80; countries R, B 60 each)
+seeds:
+- 0
+notes: 'Timing: ~200 edited reads per item (150 lens/random pushes, 16 patches, 9 copies, 8 embedding pushes, 15 O
+  pushes, 4 text edits) x 360 items = ~72k reads; at ~22 reads/s (A100 assumption shared by the D-jobs: 1/3 of the
+  H200''s 64/s; layers_v1 itself did 49,920 reads in 571 s = 87/s on the sprint box) ~55 min, + 27B load ~3 min,
+  + per-item state metrics and Python overhead ~2 s/item ~12 min, + plain-text loss (4 pairs, 16 rows, 121 conditions,
+  full sequences) ~3 min: ~1.2 h. Outputs are appended scene by scene (suite scenes first, countries last), so a stopped
+  run keeps every finished scene. If tonight''s budget is tight, --n 50 saves ~10 min. Layers 16 and 20 fall before the
+  first third of depth (21.3 of 64: the paper''s pre-workspace band), 24 and 28 after it. Results:
+  results/early_push/d4_push_v1/.'

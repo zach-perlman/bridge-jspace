@@ -1,0 +1,58 @@
+id: d1_map_v1
+thread: D1
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.95
+depends_on:
+- d1_smoke_27b
+command: >-
+  uv run python scripts/statement_positions.py map --name d1_map_v1
+  --why "D1: where the lookup reads the bridge, statement positions vs question tokens (position-set x layer copy map)"
+  --n 32 --layers 0 8 16 24 28 32 34 36 38 40 44 48 52 60
+examples_command: uv run python scripts/statement_positions.py examples --name d1_map_v1
+question: Where, by position set (the bridge's binding statement, its word, the other bindings, the lookup rows, the
+  whole context, the question, its words, the template tail) and layer, does each family carry its bridge, i.e. where
+  does copying C's residual into the clean run give X's answer?
+why_it_matters: 'Every "around" measure (copy split, lens read/write) was taken at the question tokens only. For bound
+  bridges the bridge is stated in the context and only referred to in the question (lens reads BL there 7%; question
+  copy moves BL only 10-17% at 32-40). If BL''s bridge is still in transit at the statement positions at layers 32-40,
+  the "around" result for lookups (claim C2: memory through the J-space, prompt lookups around it) may be a
+  location artefact; d1_parts_v1 / d1_rw_v1 then test the J-space there. If BL has left the statements by 32, H-loc''s
+  location premise fails at the question-token layers.'
+hypotheses:
+  H-loc: 'BL (and BLR): a statement set (bind_bridge, bridge_word, lookup_x or context) is in transit (C copy flips
+    >= 50%, above controls) at >= 1 of layers 32-40, while the question set flips <= 20% there (map_A8_v1: 5-10%)'
+  H-early-handoff: 'BL''s statement sets stop being in transit before layer 32 (last transit layer <= 28) and no set
+    flips >= 50% at 32-40 except context (the bridge is spread over the lookup rows / question words)'
+  prior: 'Prior (Dan''s agent, before any run): H-loc 0.55 (the question copy only takes over BL at 48-52, so the
+    bridge must sit somewhere upstream at 32-40), H-early-handoff 0.45. Sanity expectations: every B family''s
+    bridge_word copy flips >= 90% at layer 0; RL/RR/R statement copies exact no-ops; countries B question set in
+    transit by layer 40 (control_split map_v1: 81% at 40).'
+decision_rule: 'Fixed before the run (module docstring of scripts/statement_positions.py). Transit cell: C''s copy
+  gives X''s answer in >= 50% of cases and its Wilson 95% lower bound exceeds the upper bound of every control''s
+  change rate (O''s copy where non-zero; the random-direction copy at the same per-position norms); zero-delta cases
+  count as unchanged. Handoff per family and statement set = the last transit layer. H-loc''s location premise holds
+  for BL if any statement set is in transit at a layer in [32, 44); it fails if none is. Run invalid if: identity
+  changes the top token in any case, all0 misses C''s top token in > 2% of cases, any causality violation (a
+  predicted-zero cell with a non-zero delta), or read-vs-greedy agreement < 99%.'
+controls:
+- 'O (off-path counterfactual: X''s and Z''s lockers / friends / rows / holders swapped) copied at the same cell, where
+  its delta is non-zero: rules out "any change to these positions moves the answer"'
+- 'random direction per position at the C copy''s norm (same cell): rules out a norm / disruption effect, and is the
+  only control at the binding statements (O is exactly zero there)'
+- 'cue-only families (RL, RR, countries R): C''s statement copies are exact no-ops by construction (verified
+  numerically on every case and layer; read on the first 5 cases)'
+- 'identity copy and C-at-every-position-at-layer-0 per case (hook checks); read vs greedy on the first 10 cases per
+  family'
+- 'paired readers: BL/BR (BLR/BRL) share scenes, so their statement-position patches are identical'
+n: 32 per family (BL, BR, RL, RR, BLR, BRL from suite_split map_A8_v1's case list; countries R, B from control_split
+  map_v1's), i.e. read_write's case selection (first n per family)
+seeds:
+- 0
+notes: 'Time: 67,996 edited reads (plan stage on the 27B tokenizer: 14 layers x 9 sets x C / O / random, zero cells
+  skipped). Throughput on the A100 PCIe assumed 22 reads/s = the H200 runs in EXPERIMENTS.md (map_A8_v1 76,800 reads
+  in 1,205 s = 64/s; read_write layers_v1 87/s) divided by ~3 (bf16 312 vs 989 TFLOPs, 1.9 vs 4.8 TB/s) -> 0.86 h +
+  3 recording forwards per case + load ~ 0.95 h; d1_smoke_27b''s ledger time recalibrates it. Layers: every 8th
+  outside the handoff window, every 2nd in 28-40 (the question-token measures sit at 32-40; the question copy takes
+  over BL at 44-52), the coarse grid''s 32/36/40 for the parts / readwrite cells. n=32 sized to the night''s 2.5 h
+  D1 budget (Wilson half-width ~0.17 at 50%); a full run (n=80, every layer 32-52) is 4.2 h.'

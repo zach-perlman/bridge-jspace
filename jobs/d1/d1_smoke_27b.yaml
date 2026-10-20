@@ -1,0 +1,42 @@
+id: d1_smoke_27b
+thread: D1
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.25
+command: >-
+  S="uv run python scripts/statement_positions.py" &&
+  $S map --name d1_smoke_27b --why "D1 27B smoke: every stage end to end on n=4 per family before the main runs"
+  --n 4 --layers 0 16 32 36 40 &&
+  $S parts --name d1_smoke_27b_parts --map d1_smoke_27b --why "D1 27B smoke (forced cells)"
+  --force bind_bridge:36 bridge_word:36 question:36 &&
+  $S readwrite --name d1_smoke_27b_rw --map d1_smoke_27b --parts d1_smoke_27b_parts --why "D1 27B smoke (forced cells)"
+  --force bind_bridge:36 bridge_word:36 question:36
+examples_command: >-
+  S="uv run python scripts/statement_positions.py" &&
+  $S examples --name d1_smoke_27b && $S examples --name d1_smoke_27b_parts && $S examples --name d1_smoke_27b_rw
+question: Does every D1 stage (map, parts, readwrite, examples) run end to end on Qwen3.6-27B, with the hook checks
+  passing, before the main runs spend the night's budget?
+why_it_matters: 'Fail-fast gate for d1_map_v1 / d1_parts_v1 / d1_rw_v1 (the D1 test of whether "lookup-used bridges
+  go around the J-space" is a measurement-location artefact). Not a result: n=4, forced cells.'
+hypotheses:
+  H-code-ok: 'map sanity: identity copies keep the clean top token in 100% of cases and equal the unedited read in the
+    same batch exactly (|ld difference| = 0; against the separate unedited read only bf16 batch rounding, 0.41 logit
+    on the 0.8B smoke); C copied at every position at layer 0 gives C''s top token in >= 31/32 cases; RL/RR/countries-R
+    statement copies have exactly zero delta in every case and layer (zero causality violations) and their reads equal
+    the identity''s exactly; read vs greedy >= 99%; BL/BR bridge_word copy at layer 0 flips >= 3/4 cases'
+  H-bug: any of the above fails, or a stage crashes
+decision_rule: 'Proceed with the main D1 jobs only if every H-code-ok check holds (map summary.json "sanity",
+  "n_causality_violations" == 0, "validation".agree >= 0.99) and all three runs and their examples.json exist.
+  Otherwise cancel d1_map_v1 and its dependents and inspect the log.'
+controls:
+- 'identity: AddRows of zero at every position (hook path changes nothing)'
+- 'all0: C''s delta at every position at layer 0 (the copy reproduces C: positive control of the hook)'
+- 'cue-only families: C''s statement copies are exactly zero by causality (checked numerically) and read anyway'
+- 'O''s copy and a random direction at the copy''s per-position norms at every map cell'
+n: 4 per family (BL, BR, RL, RR, BLR, BRL, countries R, B)
+seeds:
+- 0
+notes: 'Timing: the map reads 3,126 edited prompts (plan stage, 27B tokenizer); parts and readwrite ~1.5k and ~1.3k
+  reads on forced cells; plus three 27B loads (~3 min each from local disk). At an assumed ~22 reads/s on the A100
+  PCIe (1/3 of the H200 throughput in EXPERIMENTS.md: map_A8_v1 64 reads/s) about 15 min. The ledger''s run time
+  calibrates the main jobs'' estimates.'

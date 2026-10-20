@@ -1,0 +1,36 @@
+id: d4_smoke_27b
+thread: D4
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.2
+command: >-
+  uv run python scripts/early_push.py run --name d4_smoke_27b
+  --why "D4 27B smoke: every early_push condition end to end on n=4 per family (zero-scale no-op included) before the main run"
+  --n 4 --scales 0 4 8 16 --embed-scales 0 1 4 --textloss-pairs 1
+examples_command: uv run python scripts/early_push.py examples --name d4_smoke_27b
+question: Does every early_push condition (lens / random pushes at r, a, b, nb, d; embedding pushes; C copies; the
+  edited-input patch; the five text edits; O pushes; plain-text loss) run on Qwen3.6-27B with the hook checks passing?
+why_it_matters: 'Fail-fast gate for d4_push_v1 (D4: is the early lens push that flips RL/BL at layers 16-28 an input-word
+  injection or a write of the intermediate? It decides whether layers_v1''s "RL is writable early" contradicts C2).
+  Not a result: n=4.'
+hypotheses:
+  H-code-ok: 'summary.json diag.max_zero_scale_vs_none_logit == 0.0 over every zero-scale row (the 0.8B smoke gave 0.0
+    over 1,134 rows); E-cue (the C prompt) gives X''s answer on >= 23/24 items and E-name on >= 20/24; the r-subset lens
+    push reproduces read_write layers_v1''s role on >= 95% of the shared (item, layer, scale) cells (summary.json
+    replication.role_agreement); examples.json written with 4 groups'
+  H-bug: any check fails or a stage crashes
+decision_rule: 'Run d4_push_v1 only if every H-code-ok check holds. If replication.role_agreement < 0.95, compare the
+  disagreeing rows (bf16 batch-composition noise: the 0.8B none-vs-clean logit diff was up to 0.375) before deciding;
+  otherwise cancel d4_push_v1 and inspect the log.'
+controls:
+- 'zero-scale pushes (scale 0, every layer and subset): must leave the logits bit-identical to the unedited row of the same batch'
+- 'E-cue = the C prompt (eligible items: X''s answer by construction): positive control of the edit path'
+- 'r-subset lens push = read_write layers_v1''s exact push on the same items: replication of 35-61% RL flips'
+- 'random direction at the same per-position norm for every push'
+n: 4 per family (BL, BR, RL, RR on 4 shared scenes; countries R, B)
+seeds:
+- 0
+notes: 'Timing: ~270 edited reads per item (zero scale and three embedding scales added) x 24 items = ~6.5k reads; at the
+  ~22 reads/s the other D-jobs assume for the A100 (1/3 of the H200''s 64/s in map_A8_v1) ~5 min, + one 27B load (~3 min),
+  + per-item Python/state overhead (~3.6 s/item on the 0.8B smoke, mostly fixed cost) ~1.5 min, + 16 WikiText rows x
+  31 full-sequence conditions ~1 min. Results: results/early_push/d4_smoke_27b/.'
