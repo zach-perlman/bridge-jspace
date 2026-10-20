@@ -1,0 +1,45 @@
+{
+  "n_items": 91,
+  "seconds": 227,
+  "steps": {
+    "hop1": {
+      "n_right_unedited": 86,
+      "accuracy_all": {
+        "none": 0.945054945054945,
+        "jspace": 0.23076923076923078,
+        "random": 0.9230769230769231
+      },
+      "accuracy_right_unedited": {
+        "none": 1,
+        "jspace": 0.2441860465116279,
+        "random": 0.9418604651162791
+      }
+    },
+    "hop2_recall": {
+      "n_right_unedited": 90,
+      "accuracy_all": {
+        "none": 0.989010989010989,
+        "jspace": 0.3516483516483517,
+        "random": 0.8351648351648352
+      },
+      "accuracy_right_unedited": {
+        "none": 1,
+        "jspace": 0.35555555555555557,
+        "random": 0.8444444444444444
+      }
+    },
+    "hop2_lookup": {
+      "n_right_unedited": 91,
+      "accuracy_all": {
+        "none": 1,
+        "jspace": 0.8021978021978022,
+        "random": 1
+      },
+      "accuracy_right_unedited": {
+        "none": 1,
+        "jspace": 0.8021978021978022,
+        "random": 1
+      }
+    }
+  }
+}

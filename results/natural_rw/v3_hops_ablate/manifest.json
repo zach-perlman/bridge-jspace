@@ -1,0 +1,24 @@
+{
+  "run": "v3_hops_ablate",
+  "why": "Zach (2026-10-20, overnight): J-space removal hurt both natural v3 versions (NM 45%, NL 55%), unlike the suite's RL (99%); does recalling the birth city itself need the J-space?",
+  "written_utc": "2026-10-20T09:27:17Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  ],
+  "layers": [
+    32,
+    36,
+    40
+  ],
+  "items_from": "v3_lookup",
+  "screen_run": "screen_v1",
+  "doc": "python scripts/natural_hops_ablate.py --name N --why W --from RUN\n"
+}
