@@ -62,17 +62,22 @@ CONDITIONS = ("omp25", "omp25_rot", "omp25_rdict", "paper10", "paper10_rot", "pa
 SEED_ROT, SEED_DICT, SEED_GAUSS = 888, 999, 777  # + layer (888 and 777 as ablate_pilot)
 
 
-def suite_prompts(tok, fams: list[str], kinds: list[str], n: int, competence: dict[str, str]) -> list[dict]:
+def suite_prompts(tok, fams: list[str], kinds: list[str], n: int, competence: dict[str, str], skip: int = 0,
+                  wording: str = "A") -> list[dict]:  # fmt: skip
+    """The first n eligible items per family after the first `skip` (a fresh sample of the same set), in a wording."""
     out = []
     for fam in fams:
         good = A.eligible_ids(competence[fam], (fam,)).get(fam, set())
-        got = 0
-        for it in S.load(fam):
+        got, skipped = 0, 0
+        for it in S.load(fam, wording):
             if got >= n or it["id"] not in good:
                 continue
             try:
                 prep = P.prepare(it, tok)
             except AssertionError:  # C or O not aligned in this tokenizer (as v1)
+                continue
+            if skipped < skip:
+                skipped += 1
                 continue
             got += 1
             for kind in kinds:
@@ -91,7 +96,7 @@ def suite_prompts(tok, fams: list[str], kinds: list[str], n: int, competence: di
     return out
 
 
-def country_prompts(tok, fams: list[str], n: int) -> list[dict]:
+def country_prompts(tok, fams: list[str], n: int, skip: int = 0) -> list[dict]:
     """ablate_pilot v1's country prompts (map_v1's cases, chat_prefill), whole question only."""
     picked = [json.loads(line)["id"] for line in (C.RESULTS / "map_v1" / "cases.jsonl").read_text().splitlines()]
     items = E.ITEM_SETS["bind_recall"][2]()
@@ -100,9 +105,11 @@ def country_prompts(tok, fams: list[str], n: int) -> list[dict]:
     out = []
     for uid in picked:
         index, item = by_uid[uid]
-        if item["family"] not in fams or seen[item["family"]] >= n:
+        if item["family"] not in fams or seen[item["family"]] >= n + skip:
             continue
         seen[item["family"]] += 1
+        if seen[item["family"]] <= skip:
+            continue
         prep = E.prepare(item, index, tok, "chat_prefill")
         out.append({"family": f"country-{item['family']}", "id": uid, "kind": "clean", "ids": prep["ids"]["clean"],
                     "tok": S.answer_token(tok, item["answer"], "word"), "bridge": item["bridge"]})  # fmt: skip
@@ -243,7 +250,7 @@ def main(args) -> None:
     manifest = {"run": args.name, "why": args.why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "git_commit": commit, "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
                 "plan": args.plan, "bands": [label(b) for b in bands], "conditions": args.conditions,
-                "families": args.families, "kinds": args.kinds, "n_per_family": args.n, "batch": args.batch,
+                "families": args.families, "kinds": args.kinds, "skip": args.skip, "wording": args.wording, "n_per_family": args.n, "batch": args.batch,
                 "tf32": not args.no_tf32, "workspace_start": args.workspace, "positions": args.positions, "wide": WIDE, "seed_offset": args.seed_offset, "seeds": {"rotation": f"{SEED_ROT + args.seed_offset}+layer", "rotated_dictionary": f"{SEED_DICT + args.seed_offset}+layer",
                 "gauss": f"{SEED_GAUSS}+layer"}, "own_cos": OWN_COS, "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
@@ -263,8 +270,9 @@ def main(args) -> None:
             tok, args.tasks, args.tasks_competence, args.tasks_words, args.n, args.kinds, args.tasks_level
         )
     else:
-        prompts = suite_prompts(tok, suite_fams, args.kinds, args.n, COMPETENCE)
-        prompts += country_prompts(tok, [f for f in args.families if f in ("R", "B")], args.n)
+        competence = COMPETENCE if args.wording == "A" else {f: "competence_b_v1" for f in ("BL", "BR", "RL", "RR")}
+        prompts = suite_prompts(tok, suite_fams, args.kinds, args.n, competence, args.skip, args.wording)
+        prompts += country_prompts(tok, [f for f in args.families if f in ("R", "B")], args.n, args.skip)
     if args.answertype:
         prompts += answertype_prompts(tok, args.answertype)
     for p in prompts:
@@ -439,6 +447,8 @@ if __name__ == "__main__":
     ap.add_argument("--tasks", default=None, help="a tasks_v2 set to draw prompts from instead of the suite")
     ap.add_argument("--tasks-competence", default=None, help="its competence run (eligibility: every part right)")
     ap.add_argument("--tasks-words", nargs="*", default=None, help="tasks_v2 words to include (default: all)")
+    ap.add_argument("--skip", type=int, default=0, help="skip the first K eligible items per family (a fresh sample)")
+    ap.add_argument("--wording", default="A", choices=["A", "B"], help="the suite's wording (B: data/suite_v1_b)")
     ap.add_argument("--answertype", type=int, default=0, help="add N tool_answer_type scenes (AT-name, AT-digit)")
     ap.add_argument(
         "--seed-offset",

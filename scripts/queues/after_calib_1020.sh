@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # The queue after tasks calibration (Zach, 2026-10-20, after the coarse depth check-in: the dose curve, the position
-# split and name vs digit right after calibration, then the rest of after_coarse_1020.sh in its order). Launched by a
+# split and name vs digit right after calibration, then the rest of after_coarse_1020.sh in its order; then the
+# Phase 1a replication: fresh items, wording B, two more control seeds; then the 32B fit). Launched by a
 # watcher that stops after_coarse_1020.sh once calib_v5's competence is written (a running script cannot be edited).
 set -uo pipefail
 cd /workspace/bridge-jspace
@@ -26,10 +27,20 @@ $PY scripts/write_max.py --name smoke_wm2_1020 --why smoke --n 2 --band 34-36 --
   && $PY scripts/write_max.py --name wm2_suite_v1 --why "$WM, suite and countries" --n 60 \
   && $PY scripts/write_max.py --name wm2_ctrl_v1 --why "$WM, tasks_v2 ctrl_v5" --n 40 --tasks ctrl_v5 \
        --tasks-competence ctrl_v5_competence_v1; f=$?
+RW="Zach (2026-10-20), Phase 1a replication (before the 32B fit)"
+B="12-20 20-28 32-40 0-62"
+$PY scripts/ablate_v2.py --name rep_items_v1 --plan bands --bands $B --conditions paper10 paper10_rot --families $F \
+  --n 200 --skip 100 --why "$RW: fresh items 101-300 (countries: what is left of map_v1)"; h=$?
+$PY scripts/ablate_v2.py --name rep_wordingB_v1 --plan bands --bands $B --conditions paper10 paper10_rot \
+  --families BL BR RL RR --n 100 --wording B --why "$RW: the suite's wording B"; i=$?
+for s in 1 2; do
+  $PY scripts/ablate_v2.py --name rep_seed${s}_v1 --plan bands --bands $B --conditions paper10_rot --families $F \
+    --n 100 --seed-offset $s --why "$RW: another draw of the rotated control (seed offset $s)" || i=1
+done
 SMOKE=/workspace/scratch/q32_fit_smoke
 bash scripts/lens_fit/fit_jpp.sh Qwen/Qwen3-32B 30,31 "$SMOKE" 1 \
   && $PY scripts/lens_fit/export_jpp_lens.py "$SMOKE/Qwen3-32B_jpp_lens.pt" "$SMOKE/export_check.pt" --note smoke \
   && rm -rf "$SMOKE" && echo "=== fit smoke ok" \
   && bash scripts/queues/qwen3_32b_fit_1020.sh; g=$?
 df -h /workspace | tail -1
-exit $((a + b + c + d + e + f + g))
+exit $((a + b + c + d + e + f + g + h + i))
