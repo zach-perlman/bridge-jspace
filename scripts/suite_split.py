@@ -368,7 +368,10 @@ def answer_formed(outcomes: list[dict]) -> dict[str, int]:
     return out
 
 
-def stage_manifest_parts(name: str, map_run: str, why: str) -> None:
+CALIBRATION = ("jspace_wo_own", "rand_omp")  # parts with --calibrate (each with its random null)
+
+
+def stage_manifest_parts(name: str, map_run: str, why: str, calibrate: bool = False) -> None:
     path = RESULTS / name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
@@ -413,6 +416,18 @@ def stage_manifest_parts(name: str, map_run: str, why: str) -> None:
         "comes from decides' if BLR is inside and BRL outside; otherwise mixed, reported family by family",
         "empty_window": "a family with an empty window is not interpreted",
     }  # fmt: skip
+    m["calibrate"] = calibrate
+    if calibrate:
+        m["calibration"] = {
+            "parts": "rand_omp: the same 25-atom signed OMP over a random dictionary (as many unit rows as the "
+            "letter-token dictionary, seeded per layer), the null for the concentration statistic; jspace_wo_own: the "
+            "J-space part of delta minus its projection on the bridge's and X's lens vectors (control_split's v3)",
+            "why": "Zach (2026-10-20) asked for 1.2x as the inside threshold; rand_omp says what concentration the "
+            "fitting procedure alone gives, so a threshold can be set against it",
+            "decision": "fixed before the run: the J-space part is above the fitting null in a family if its "
+            "concentration's lower bound exceeds rand_omp's upper bound; its effect is the bridge's own words if "
+            "jspace_wo_own moves the answer less than a quarter as far as jspace",
+        }  # fmt: skip
     path.write_text(json.dumps(m, indent=2) + "\n")
     print("wrote", path)
 
@@ -440,6 +455,13 @@ def stage_run_parts(name: str) -> None:
     lens = JLens(model, pins.FROZEN_LENS)
     letters = model.letter_token_ids()
     dictionaries = {la: lens.vectors(la, letters) for la in layers}
+    calibrate = m.get("calibrate", False)
+    random_dicts = {}
+    if calibrate:
+        for la in layers:
+            gen = torch.Generator(device="cuda").manual_seed(777 + la)
+            r = torch.randn(dictionaries[la].shape, device="cuda", generator=gen)
+            random_dicts[la] = torch.nn.functional.normalize(r, dim=-1)
     outcomes: list[dict] = []
     fve: list[dict] = []
     g = torch.Generator(device="cuda").manual_seed(BOOT_SEED)
@@ -471,6 +493,12 @@ def stage_run_parts(name: str) -> None:
                 fve.append({"family": c["family"], "name": c["id"], "layer": la, "what": what,
                             "share": round(float(part.norm() ** 2) / total, 4)})  # fmt: skip
             parts = {"lens2": lens2, "not_lens2": delta - lens2, "jspace": jspace, "not_jspace": delta - jspace}
+            if calibrate:
+                parts["jspace_wo_own"] = signed_omp(dictionaries[la], delta - lens2, K_ATOMS)
+                parts["rand_omp"] = signed_omp(random_dicts[la], delta, K_ATOMS)
+                for what in CALIBRATION:
+                    fve.append({"family": c["family"], "name": c["id"], "layer": la, "what": what,
+                                "share": round(float(parts[what].norm() ** 2) / total, 4)})  # fmt: skip
             for pi, (pname, part) in enumerate(parts.items()):
                 jobs.append(({"layer": la, "part": pname, "source": "cf", "null": False}, {la: AddRows(part, pos)}))
                 seed = NULL_SEED + 100000 * k + 10 * la + pi
@@ -565,7 +593,21 @@ def summarize_parts(outcomes: list[dict], fve: list[dict], window: dict) -> dict
         shares: dict[str, list[float]] = collections.defaultdict(list)
         for f in mine:
             shares[f["what"]].append(f["share"])
+        calib = {}
+        full = scores(rows, "frac", part="full", null=False, source="cf")
+        for p in CALIBRATION:
+            eff = scores(rows, "frac", part=p, null=False, source="cf")
+            if not eff:
+                continue
+            per_case: dict[str, list[float]] = collections.defaultdict(list)
+            for f in mine:
+                if f["what"] == p:
+                    per_case[f["name"]].append(f["share"])
+            calib[p] = {"mean": statistics.mean(eff.values()),
+                        "null": statistics.mean(scores(rows, "frac", part=p, null=True, source="cf").values()),
+                        "concentration": concentration(eff, full, {n: statistics.mean(v) for n, v in per_case.items()})}  # fmt: skip
         out["families"][fam] = {
+            "calibration": calib,
             "window": win,
             "n": len({o["name"] for o in rows}),
             "frac": verdicts(rows, "frac", mine),
@@ -641,6 +683,9 @@ if __name__ == "__main__":
     ap.add_argument("--families", nargs="+", choices=list(S.FAMILIES + S.TIEBREAK))
     ap.add_argument("--wording", choices=["A", "B"], default="A", help="manifest_map: suite_v1's wording A or B")
     ap.add_argument(
+        "--calibrate", action="store_true", help="manifest_parts: add the random-dictionary and own-word parts"
+    )
+    ap.add_argument(
         "--scenes", type=int, default=N_SCENES, help="manifest_map: scenes per scene group (a smoke run: few)"
     )
     args = ap.parse_args()
@@ -653,6 +698,6 @@ if __name__ == "__main__":
     elif args.stage == "manifest_parts":
         assert args.why, "manifest_parts needs --why"
         assert args.map, "manifest_parts needs --map"
-        stage_manifest_parts(args.name, args.map, args.why)
+        stage_manifest_parts(args.name, args.map, args.why, args.calibrate)
     else:
         stage_run_parts(args.name)
