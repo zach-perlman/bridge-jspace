@@ -1,0 +1,45 @@
+id: d3_pilot_levels_27b
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 1.1
+depends_on:
+- d3_competence_27b
+- d3_pilot_27b
+command: 'uv run python scripts/pointer_swap.py manifest --name d3_pilot_levels_27b --set dev --levels e3f0 e5f4 --n 15
+  --layer-step 4 --competence d3_competence_27b --why "D3 levels: does the identity/position/value split change with 3 statements,
+  or with filler sentences between the statements?" && uv run python scripts/pointer_swap.py run --name d3_pilot_levels_27b'
+examples_command: uv run python scripts/pointer_swap.py examples --name d3_pilot_levels_27b
+question: 'Same patch as d3_pilot_27b (dev items, every 4th layer, question / final / last / question+final, plus the early/mid/transit
+  windows), on the two other dev levels: N=3 statements (e3f0) and N=5 statements with 4 filler sentences woven in (e5f4;
+  the filler layout is the same in base and source). Does the RL split between identity, position and value change against
+  the pilot''s e5f0?'
+why_it_matters: 'Tests whether the pilot''s outcome is specific to 5 adjacent statements. Mixing Mechanisms (Gur-Arieh et
+  al. 2025) predicts the positional route dominates more with fewer entities (N=3). Filler between the statements moves
+  them to other token positions and breaks their adjacency: a pointer that survives it indexes statements, not a fixed neighbourhood.
+  Limitation: the filler layout is shared by base and source, so this does not separate statement order from absolute token
+  offset (that needs an offset-shift variant, not built).'
+hypotheses:
+  H-robust: 'RL final/last at the transit window: the pilot''s winning outcome keeps its share at e5f4 within 0.15'
+  H-contiguity: the winning outcome's share drops by more than 0.15 with filler (e5f4 vs e5f0)
+  H-fewer-entities: position share at e3f0 above e5f0 by more than 0.15 (positional route dominates at N=3)
+  prior: 'Coordinator prior: H-robust 0.65; H-fewer-entities 0.4.'
+decision_rule: 'Per level, the pilot''s rule (scripts/pointer_swap.py docstring) on the primary cell (RL, final, transit,
+  pooled over domains). Level effects: difference in each outcome''s share against d3_pilot_27b''s e5f0 cell with a 95%
+  Newcombe interval; ''same'' if the interval lies within +-0.15, ''differs'' if it excludes 0 and exceeds 0.15 in magnitude,
+  else ''unclear''. Interpreted only if both levels pass the interpretability condition (patch changes the answer >= 20%
+  lower bound, ''same'' control <= 10% upper bound).'
+controls:
+- 'same source (q_s = q_b at the same slot, same digit, rest of the context reshuffled and redigited): every hypothesis
+  predicts the base answer; rules out damage from patching a residual computed on another context'
+- 'rand: seeded random direction at the dissoc patch''s per-position norm: rules out generic disruption picking a context
+  digit (chance bar for identity/position)'
+- 'other: another domain''s item (same family), its residual at the same distance from the prompt end, rescaled to the dissoc
+  norm: realistic-activation null; also probes a domain-general positional code'
+- 'context digits predicted by no hypothesis (N=5: 2 per item): the per-digit chance rate inside the same runs'
+- 'base into base at the middle layer (no-op) and layer-0 all-position patch (reproduces the source): hook checks'
+n: 15 scenes per domain x 4 domains = 60 per family per level (e3f0, e5f4), dev items
+seeds:
+- 0
+notes: 'Two levels x d3_pilot_27b''s per-level cost (0.55 h est): 1.1 h est; d3_smoke_27b measured 31 edited reads/s on
+  this A100 (1476 reads in 48 s), so likely ~0.8 h. Dev items are never headline items.'
