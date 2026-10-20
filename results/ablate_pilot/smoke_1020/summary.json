@@ -1,0 +1,173 @@
+{
+  "seconds": 38,
+  "families": {
+    "BL/clean": {
+      "n": 2,
+      "accuracy": {
+        "none": 1,
+        "jspace": 1,
+        "random": 1
+      },
+      "dlogp": {
+        "jspace": -0.009854491450823843,
+        "random": -0.001362947397865355
+      }
+    },
+    "BL/hop": {
+      "n": 2,
+      "accuracy": {
+        "none": 1,
+        "jspace": 1,
+        "random": 1
+      },
+      "dlogp": {
+        "jspace": -0.00827260670484975,
+        "random": -0.008252355793956667
+      }
+    },
+    "BR/clean": {
+      "n": 2,
+      "accuracy": {
+        "none": 1,
+        "jspace": 1,
+        "random": 1
+      },
+      "dlogp": {
+        "jspace": -0.626416576327756,
+        "random": -0.0009697198402136564
+      }
+    },
+    "BR/hop": {
+      "n": 2,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.5,
+        "random": 1
+      },
+      "dlogp": {
+        "jspace": -1.6105820152442902,
+        "random": -0.009925221325829625
+      }
+    },
+    "RL/clean": {
+      "n": 2,
+      "accuracy": {
+        "none": 1,
+        "jspace": 1,
+        "random": 1
+      },
+      "dlogp": {
+        "jspace": -0.011241546017117798,
+        "random": -0.00352214218582958
+      }
+    },
+    "RL/hop": {
+      "n": 2,
+      "accuracy": {
+        "none": 1,
+        "jspace": 1,
+        "random": 1
+      },
+      "dlogp": {
+        "jspace": -0.00827260670484975,
+        "random": -0.008252355793956667
+      }
+    },
+    "RR/clean": {
+      "n": 2,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.5,
+        "random": 1
+      },
+      "dlogp": {
+        "jspace": -1.1447528511052951,
+        "random": -0.0032291318057104945
+      }
+    },
+    "RR/hop": {
+      "n": 2,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.5,
+        "random": 1
+      },
+      "dlogp": {
+        "jspace": -1.6105820152442902,
+        "random": -0.009925221325829625
+      }
+    },
+    "TYPO/clean": {
+      "n": 2,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0,
+        "random": 1
+      },
+      "dlogp": {
+        "jspace": -2.41724362783134,
+        "random": -0.05215194821357727
+      }
+    },
+    "TYPO/hop": {
+      "n": 2,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0,
+        "random": 1
+      },
+      "dlogp": {
+        "jspace": -1.2714020188432187,
+        "random": -0.022679632296785712
+      }
+    },
+    "TRANS/clean": {
+      "n": 2,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0,
+        "random": 1
+      },
+      "dlogp": {
+        "jspace": -2.418869919143617,
+        "random": -0.1311874119564891
+      }
+    },
+    "TRANS/hop": {
+      "n": 2,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.5,
+        "random": 1
+      },
+      "dlogp": {
+        "jspace": -0.8603515620343387,
+        "random": -0.029435900505632162
+      }
+    },
+    "country-R/clean": {
+      "n": 2,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.5,
+        "random": 1
+      },
+      "dlogp": {
+        "jspace": -1.915533721446991,
+        "random": 0.13237286359071732
+      }
+    },
+    "country-B/clean": {
+      "n": 2,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0,
+        "random": 1
+      },
+      "dlogp": {
+        "jspace": -6.367582956328988,
+        "random": -0.0482113491743803
+      }
+    }
+  }
+}
