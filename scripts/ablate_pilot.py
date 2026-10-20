@@ -20,6 +20,7 @@ from __future__ import annotations
 import argparse
 import collections
 import json
+import os
 import statistics
 import sys
 import time
@@ -40,7 +41,7 @@ from scripts.exp04_brew_parts import K_ATOMS, signed_omp
 
 RESULTS = pins.RESULTS_DIR / "ablate_pilot"
 LAYERS = (32, 36, 40)
-BATCH = 16
+BATCH = int(os.environ.get("BJ_ABL_BATCH", "16"))  # smaller for the 122B with three layers (OOM at 16)
 
 
 class Remove:
