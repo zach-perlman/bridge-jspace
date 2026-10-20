@@ -1,0 +1,34 @@
+{
+  "run": "qwen35_122b_v3_lookup",
+  "why": "Zach (2026-10-20, overnight): the 27B's new settings on Qwen3.5-122B-A10B (does it generalise to a larger model?) (natural lookup v3: read, write and removal)",
+  "written_utc": "2026-10-20T09:14:16Z",
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  ],
+  "layers": [
+    36,
+    39
+  ],
+  "alphas": [
+    0.05,
+    0.1,
+    0.2,
+    0.4,
+    0.8
+  ],
+  "seed": 501,
+  "n": 150,
+  "doc": "TwoHopFact's \"country of person's birth city\" rows the 27B knows (both facts right alone in twohop_pilot screen_v1),\nin two versions that differ only in where the second fact comes from:\n  MM  both facts recalled:  \"The city where Bill Gates was born is in the country of ___\"     (like the suite's RR)\n  MC  the second fact in the prompt: three \"<city> is in the country of <country>.\" facts (the bridge's, the\n      counterfactual city X's, and a third known row's, shuffled), then the same statement     (like RL)\nX is the birth city of another known row whose country differs (and whose first answer token differs). At layers\n32/36/40, on the statement's tokens after the person's name:\n  read   the J-lens's best rank of the bridge city (any single-token surface) among word tokens\n  write  add the lens direction v_X - v_I (unit lens vectors of the two cities) at alpha x the residual's norm per\n         position (alpha 0.05-0.8), and a random direction at the same norms; measured on the answer's first token:\n         flips (top token = X's country) and the share of the clean margin closed, (ld - ld_clean) / -ld_clean with\n         ld = logit(X's country) - logit(the bridge's country)\n  MX  conflict (v2): the three facts give each city another known row's country (never its own), so the answer is\n      the prompt's country for the bridge city and a lookup in the prompt is the only way to it; steering toward X\n      counts a flip to X's prompt country (the lookup written) and, separately, to X's real country (memory written)\nCases: rows answered correctly unedited in every version run, cities with a single-token lens vector. Descriptive; no\nverdict rule. (v1's MC turned out not to force a lookup: the model knows every fact, so it can answer from memory.)",
+  "inputs": {
+    "data/twohop_pilot/screen.json": "bbcc290c82dc49f91c5b81107dfc214e017912a4bf4d065b9077e8b971c16cdf",
+    "results/twohop_pilot/qwen35_122b_screen_v1/items.jsonl": "b2884c75993f7ea73c133ed156bcec85b04e0853c26e74c114e66121ba4e97f5"
+  }
+}
