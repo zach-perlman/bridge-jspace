@@ -1,0 +1,24 @@
+{
+  "run": "gemma4itr_norms_v1",
+  "why": "Zach (2026-10-20, overnight): why does J-space (and random-dictionary) removal break Gemma 4 31B-it but not Qwen3.6-27B?",
+  "written_utc": "2026-10-20T09:19:34Z",
+  "model": {
+    "target": "gemma-4-31b-it-refit",
+    "repo": "google/gemma-4-31B-it",
+    "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "323733a9bec124c7a037a6839191bd545eb00d1d47bfffde6b92e1e638117408"
+  ],
+  "layers": [
+    30,
+    33,
+    36
+  ],
+  "k_atoms": 25,
+  "random_seed": "777 + layer (ablate_pilot)",
+  "doc": "python scripts/removal_norms.py --name N --why W --layers L [L ...]\n"
+}
