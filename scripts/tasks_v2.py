@@ -27,6 +27,7 @@ import argparse
 import itertools
 import json
 import random
+import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -366,9 +367,148 @@ def examples(seed: int) -> None:
         )
 
 
+# ---- datasets, competence, calibration ---------------------------------------------------------------------------
+LEVELS = {  # one difficulty ladder, all knobs up together (Zach, 2026-10-20: calibrate per word on this ladder)
+    0: {"entities": 3, "distractors": False, "filler": 0, "paraphrase": False},
+    1: {"entities": 6, "distractors": True, "filler": 5, "paraphrase": False},
+    2: {"entities": 9, "distractors": True, "filler": 10, "paraphrase": True},
+    3: {"entities": 12, "distractors": True, "filler": 20, "paraphrase": True},
+}
+BAND = (0.85, 0.95)
+
+
+def make(
+    name: str, n: int, words: list[str], domains: list[str], formats: list[str], levels: list[int], seed: int
+) -> None:
+    """n items per word x level, cycling through domain x format so every combination appears (write-once)."""
+    out = DATA / name
+    out.mkdir(parents=True, exist_ok=True)
+    assert not (out / "items.jsonl").exists(), f"{out} exists; data sets are written once"
+    rng = random.Random(seed)
+    combos = [(d, f) for d in domains for f in formats]
+    items, seen = [], set()
+    for word in words:
+        for level in levels:
+            got, k = 0, 0
+            while got < n and k < 50 * n:
+                d, f = combos[(got + k) % len(combos)]
+                k += 1
+                it = make_item(rng, word, d, f, LEVELS[level], got)
+                if it is None or (it["context"], it["question"]) in seen:
+                    continue
+                seen.add((it["context"], it["question"]))
+                it["level"] = level
+                it["id"] = f"{word}-L{level}-{got:04d}"
+                items.append(it)
+                got += 1
+    (out / "items.jsonl").write_text("".join(json.dumps(it) + "\n" for it in items))
+    (out / "manifest.json").write_text(json.dumps({"set": name, "n_per_word_level": n, "words": words, "domains": domains,
+                                                   "formats": formats, "levels": {k: LEVELS[k] for k in levels}, "seed": seed,
+                                                   "generator": "scripts/tasks_v2.py make", "n_items": len(items)}, indent=2) + "\n")  # fmt: skip
+    print("wrote", out / "items.jsonl", len(items), "items")
+
+
+def load(name: str) -> list[dict]:
+    return [json.loads(line) for line in (DATA / name / "items.jsonl").read_text().splitlines()]
+
+
+def judge(text: str, answer: str, kind: str) -> bool:
+    if kind == "digit":
+        return S.said(text, "digit") == answer
+    line = S.first_line(text)
+    return re.search(r"(?<![a-z])" + re.escape(answer.lower()) + r"(?![a-z])", line) is not None
+
+
+def prompts_for(tok, it: dict) -> list[dict]:
+    """The whole question and every step alone, as token ids, with their answers."""
+    out = [{"part": "whole", "question": it["question"], "answer": it["answer"], "kind": it["kind"]}]
+    out += [{"part": f"step{i}", **{k: s[k] for k in ("question", "answer", "kind")}, "source": s["source"]}
+            for i, s in enumerate(it["steps"], 1)]  # fmt: skip
+    for p in out:
+        p["ids"] = S.ids(tok, render(tok, {**it, "_question": p["question"]}))
+    return out
+
+
+def competence(set_name: str, run: str, why: str) -> None:
+    import collections
+    import statistics
+    import time
+
+    import torch
+
+    from bridge_jspace.model import load_model
+
+    pins.check_run_name(run)
+    out = pins.RESULTS_DIR / "tasks_v2" / run
+    out.mkdir(parents=True, exist_ok=True)
+    assert not (out / "summary.json").exists(), f"{out} has results; runs are written once"
+    (out / "manifest.json").write_text(json.dumps({"run": run, "why": why, "set": set_name, "model": pins.model_pin(),
+                                                   "generation": "greedy, 8 new tokens, batched by length",
+                                                   "judge": "digit: suite_v1.said; word: the answer as a whole word in the first line",
+                                                   "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, indent=2) + "\n")  # fmt: skip
+    model = load_model()
+    tok = model.tokenizer
+    jobs = []
+    for it in load(set_name):
+        for p in prompts_for(tok, it):
+            jobs.append({**p, "id": it["id"], "word": it["word"], "domain": it["domain"], "format": it["format"],
+                         "level": it["level"], "c_op": it["c_op"]})  # fmt: skip
+    by_len = collections.defaultdict(list)
+    for j in jobs:
+        by_len[len(j["ids"])].append(j)
+    t0 = time.time()
+    for group in by_len.values():
+        for start in range(0, len(group), 64):
+            chunk = group[start : start + 64]
+            texts = model.generate_batch(torch.tensor([j["ids"] for j in chunk], device="cuda"), 8, [{}] * len(chunk))
+            for j, text in zip(chunk, texts, strict=True):
+                j["text"], j["correct"] = text, judge(text, j["answer"], j["kind"])
+    rows = [{k: v for k, v in j.items() if k != "ids"} for j in jobs]
+    (out / "items.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+    acc = lambda sel: round(statistics.mean(r["correct"] for r in sel), 3) if sel else None  # noqa: E731
+    summary: dict = {
+        "seconds": round(time.time() - t0),
+        "by_word_level": {},
+        "by_domain": {},
+        "by_format": {},
+        "pick": {},
+    }
+    whole = [r for r in rows if r["part"] == "whole"]
+    for word in dict.fromkeys(r["word"] for r in whole):
+        for level in sorted({r["level"] for r in whole}):
+            sel = [r for r in whole if r["word"] == word and r["level"] == level]
+            steps_ok = collections.defaultdict(list)
+            for r in rows:
+                if r["word"] == word and r["level"] == level and r["part"] != "whole":
+                    steps_ok[r["id"]].append(r["correct"])
+            summary["by_word_level"][f"{word}/L{level}"] = {"n": len(sel), "whole": acc(sel),
+                                                            "all_steps": acc([{"correct": all(v)} for v in steps_ok.values()])}  # fmt: skip
+        in_band = [lv for lv in sorted({r["level"] for r in whole})
+                   if BAND[0] <= summary["by_word_level"][f"{word}/L{lv}"]["whole"] <= BAND[1]]  # fmt: skip
+        summary["pick"][word] = in_band[-1] if in_band else None  # the hardest level inside 85-95%
+    for key in ("domain", "format"):
+        for v in dict.fromkeys(r[key] for r in whole):
+            summary[f"by_{key}"][v] = acc([r for r in whole if r[key] == v])
+    (out / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
+    print(json.dumps(summary, indent=1)[:4000])
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("stage", choices=["examples"])
+    ap.add_argument("stage", choices=["examples", "make", "competence"])
     ap.add_argument("--seed", type=int, default=701)
+    ap.add_argument("--set", dest="set_name")
+    ap.add_argument("--n", type=int, default=48)
+    ap.add_argument("--words", nargs="+", default=list(WORDS2 + WORDS3))
+    ap.add_argument("--domains", nargs="+", default=list(DOMAINS))
+    ap.add_argument("--formats", nargs="+", default=list(FORMATS))
+    ap.add_argument("--levels", nargs="+", type=int, default=list(LEVELS))
+    ap.add_argument("--name")
+    ap.add_argument("--why")
     args = ap.parse_args()
-    examples(args.seed)
+    if args.stage == "examples":
+        examples(args.seed)
+    elif args.stage == "make":
+        make(args.set_name, args.n, args.words, args.domains, args.formats, args.levels, args.seed)
+    else:
+        competence(args.set_name, args.name, args.why)
