@@ -193,8 +193,16 @@ WIDE = 9  # bands wider than this run paper10 and its controls only (Zach, 2026-
 #           everything, its random controls too, so it says nothing there)
 
 
+def top_k(cond: str) -> int | None:
+    """K of a top-K condition: paper10 (K = 10) or topK, with any control suffix; None for OMP and others."""
+    if cond.startswith("paper10"):
+        return 10
+    m = re.fullmatch(r"top(\d+)(_rot|_rdict)?", cond)
+    return int(m[1]) if m else None
+
+
 def conditions_for(band: tuple[int, ...], conditions: list[str]) -> list[str]:
-    return [c for c in conditions if len(band) <= WIDE or c.startswith("paper10")]
+    return [c for c in conditions if len(band) <= WIDE or top_k(c) is not None]
 
 
 def label(band: tuple[int, ...]) -> str:
@@ -306,7 +314,7 @@ def main(args) -> None:
                 for cond in conditions_for(band, args.conditions):
                     edits = {}
                     for la in band:
-                        if cond.startswith("paper10"):
+                        if top_k(cond) is not None:
                             rs = [RowSettings(skip=p["outside"], protected=protected[i]) for i, p in enumerate(chunk)]
                         elif cond == "keep_own":
                             rs = [RowSettings(skip=p["outside"], banned=own_rows(p["bridge"], la) if p["bridge"] else None)
@@ -315,9 +323,11 @@ def main(args) -> None:
                             rs = [RowSettings(skip=sorted(set(p["skip"]) | set(p["outside"]))) for p in chunk]
                         else:
                             rs = [RowSettings(skip=p["outside"]) for p in chunk]
-                        method = "top" if cond.startswith("paper10") else "omp"
+                        method = "top" if top_k(cond) is not None else "omp"
                         d = rdict[la] if cond.endswith("_rdict") else gauss[la] if cond == "gauss" else dic[la]
-                        edits[la] = removal_edit(method, d, rs, rotation=rot[la] if cond.endswith("_rot") else None)
+                        edits[la] = removal_edit(
+                            method, d, rs, rotation=rot[la] if cond.endswith("_rot") else None, k=top_k(cond)
+                        )
                     logits = first_token_logits(model, ids, edits)
                     logp = logits.log_softmax(-1).gather(1, answer[:, None]).squeeze(1)
                     for row, p in enumerate(chunk):
@@ -401,7 +411,8 @@ if __name__ == "__main__":
     ap.add_argument("--plan", choices=["v1check", "coarse", "depth", "bands"], required=True)
     ap.add_argument("--bands", nargs="*", default=[], help='with --plan bands: "32,36,40" or "16-28"')
     ap.add_argument("--conditions", nargs="+", default=["omp25", "omp25_rot", "omp25_rdict", "paper10", "paper10_rot",
-                                                        "paper10_rdict"], choices=CONDITIONS)  # fmt: skip
+                                                        "paper10_rdict"],
+                    help=f"{', '.join(CONDITIONS)}, or topK[_rot|_rdict] (the top K lens directions, answer kept)")  # fmt: skip
     ap.add_argument("--families", nargs="+", default=["BL", "BR", "RL", "RR", "R", "B"])
     ap.add_argument("--kinds", nargs="+", default=["clean"], choices=["clean", "hop", "step1", "step2", "step3"])
     ap.add_argument("--n", type=int, default=100)
@@ -421,4 +432,7 @@ if __name__ == "__main__":
     ap.add_argument("--positions", default="all", choices=["all", "context", "question"],
                     help="where to remove: every position, only before the question (the facts), or only from the "
                          "question on (question, instruction, 'Answer:'); see question_start")  # fmt: skip
-    main(ap.parse_args())
+    a = ap.parse_args()
+    bad = [c for c in a.conditions if c not in CONDITIONS and top_k(c) is None]
+    assert not bad, f"unknown conditions {bad}"
+    main(a)
