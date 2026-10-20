@@ -83,14 +83,20 @@ def suite_cases_from_competence(tok, n: int, comp_run: str, families: list[str])
     return out
 
 
-def tasks_cases(
-    tok, n: int, set_name: str, comp_run: str, words: list[str] | None = None, level: str = "pick"
-) -> list[dict]:
+def tasks_cases(tok, n: int, set_name: str, comp_run: str, words: list[str], level: str = "pick") -> list[dict]:
     """The first n items per word of a tasks_v2 set made with counterfactuals, from scenes its competence run got
-    right on every prompt (whole, each step alone, C and O), at the calibrated level (tasks_v2.eligible)."""
+    right on every prompt of the compared words, at one level for the comparison (tasks_v2.eligible); items whose C or
+    O does not line up in this tokenizer are skipped and counted."""
     from scripts import tasks_v2 as T
 
-    return [{**it, **T.prepare(it, tok)} for it in T.eligible(set_name, comp_run, words, n, level)]
+    out, skipped = [], 0
+    for it in T.eligible(set_name, comp_run, words, n, level):
+        try:
+            out.append({**it, **T.prepare(it, tok)})
+        except AssertionError:
+            skipped += 1
+    print(f"tasks_cases: {len(out)} cases, {skipped} skipped (C/O alignment)", flush=True)
+    return out
 
 
 def country_cases(tok, n: int, map_run: str = "map_v1") -> list[dict]:

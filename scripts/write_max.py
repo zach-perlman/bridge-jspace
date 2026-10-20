@@ -80,6 +80,7 @@ def main(args) -> None:
     dic = {la: LensDictionary(wg, lens.J(la)) for la in layers}
     if args.tasks:
         cases = RW.tasks_cases(tok, args.n, args.tasks, args.tasks_competence, args.families, args.tasks_level)
+        assert cases, "no tasks_v2 cases"
     else:
         cases = RW.suite_cases(tok, args.n, "map_A8_v1", "A", args.families)
         cases += RW.country_cases(tok, args.n) if args.countries else []
@@ -172,7 +173,7 @@ if __name__ == "__main__":
     ap.add_argument("--name", required=True)
     ap.add_argument("--why", required=True)
     ap.add_argument("--n", type=int, default=60)
-    ap.add_argument("--families", nargs="+", default=["BL", "BR", "RL", "RR"])
+    ap.add_argument("--families", nargs="+", default=None, help="default: BL BR RL RR (suite) or PP PM MP MM (--tasks)")
     ap.add_argument("--layers", nargs="+", type=int, default=[32, 34, 36, 38, 40])
     ap.add_argument("--no-countries", dest="countries", action="store_false")
     ap.add_argument(
@@ -182,4 +183,6 @@ if __name__ == "__main__":
     )
     ap.add_argument("--tasks-competence", help="the set's competence run (items right on every prompt are used)")
     ap.add_argument("--tasks-level", default="pick", help='tasks_v2 level: "pick" (calibrated), "all" or a number')
-    main(ap.parse_args())
+    a = ap.parse_args()
+    a.families = a.families or (["PP", "PM", "MP", "MM"] if a.tasks else ["BL", "BR", "RL", "RR"])
+    main(a)

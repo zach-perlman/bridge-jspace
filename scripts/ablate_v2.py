@@ -111,11 +111,12 @@ def country_prompts(tok, fams: list[str], n: int) -> list[dict]:
 
 def tasks_prompts(tok, set_name: str, comp_run: str, words: list[str] | None, n: int, kinds: list[str],
                   level: str = "pick") -> list[dict]:  # fmt: skip
-    """tasks_v2 items from scenes the model gets right throughout (tasks_v2.eligible: its competence run, the
-    calibrated level), first n per word; the whole question ('clean') and each step alone ('stepN'), each with its own
-    instruction, read as the suite reads them (a digit after 'Answer: ')."""
+    """tasks_v2 items of the compared words (--tasks-words) from scenes the model gets right on them throughout, at
+    one level for the comparison (tasks_v2.eligible), first n per word; the whole question ('clean') and each step
+    alone ('stepN'), each with its own instruction, read as the suite reads them (a digit after 'Answer: ')."""
     from scripts import tasks_v2 as T
 
+    assert words, "--tasks-words: name the compared words (they set the level and the eligibility)"
     out = []
     for it in T.eligible(set_name, comp_run, words, n, level):
         parts = [("clean", it["question"], it["answer"], it["kind"])]

@@ -13,8 +13,12 @@ Every task is a chain of steps; each step retrieves from the Prompt (P), from Me
             M  the thing with that number in another domain (memory; the answer is then a word: P-M-M, M-M-M)
 Shared scenes (as suite_v1's 2x2): the words that start the same way (P-, M- or C-start) are asked on one scene, one
 person and one start thing, so P->P and P->M differ only in the question's last step; item["scene"] names the scene.
-Number style (copy vs transform): each scene states its lockers and bins as digits ("is 7") or as number words ("is
-seven"); digit answers are always asked for as a digit, so with number words a prompt lookup cannot copy its answer.
+Number style: each scene states its lockers and bins as digits ("is 7") or as number words ("is seven"); digit answers
+are always asked for as a digit, so with number words a prompt lookup cannot copy its answer token verbatim (it still
+copies the value and converts it: this removes token copying, not lookup by copying).
+Entities: the start thing, its partner and C's bridge are drawn with sqrt_weights (between uniform answers and uniform
+things); each item records chance_same_answer, the share of the scene's other things whose chain gives its answer.
+Downstream runs compare words at one level (eligible(): the hardest level where all compared words score >= 85%).
 Domains: controlled tier (single-token names; with --counterfactuals each scene also gets suite_v1-style C and O,
 token-aligned: C changes only the first bridge, and so every word's answer, O swaps two other people's picks) animals,
 planets, elements, Greek letters; knock-out tier adds shapes, vehicles, instruments (multi-token names allowed).
@@ -85,45 +89,47 @@ def _table(rows: dict) -> tuple[dict, dict, dict]:
             {t: h for t, (_, _, h) in rows.items() if h})  # fmt: skip
 
 
-# Cues name one thing of the domain alone and never state or imply its number (no "closest to the Sun", "lightest",
-# "first"); facts with more than one common answer are left out (wagon wheels, banjo strings).
+# Cues name one thing of the domain alone and never state or imply its number: every animal cue says "the animal" (no
+# "insect", "bird" or "big cat", which imply 6, 2 or 4 legs), no rank words ("closest", "lightest", "first", alpha's
+# "leader"), no cartoon characters (drawn on two legs), no other thing of the domain; facts with more than one common
+# answer are left out (wagon wheels, banjo strings). Second review, 2026-10-20.
 ANIMALS = _table({
     "dog": (4, "the animal known for barking", "the animal people call man's best friend"),
     "cat": (4, "the animal known for purring", "the animal ancient Egyptians worshipped as the goddess Bastet"),
     "cow": (4, "the animal known for mooing", "the animal that gives us most of our milk"),
-    "horse": (4, "the animal known for neighing", "the animal whose young is called a foal"),
-    "mouse": (4, "the animal known for squeaking", "the kind of animal Mickey is"),
-    "wolf": (4, "the wild ancestor of the dog", "the animal that raised Romulus and Remus"),
+    "horse": (4, "the animal known for neighing", "the animal ridden in the Kentucky Derby"),
+    "mouse": (4, "the animal known for squeaking", "the animal that cheese-baited traps are set for"),
+    "wolf": (4, "the wild animal that hunts in packs and howls at the moon", "the animal that raised Romulus and Remus"),
     "pig": (4, "the animal known for oinking", "the animal bacon comes from"),
     "sheep": (4, "the animal known for its wool", "the animal whose young is called a lamb"),
-    "lion": (4, "the animal called the king of the jungle", "the big cat that lives in prides"),
+    "lion": (4, "the animal called the king of the jungle", "the animal that lives in prides"),
     "frog": (4, "the animal known for croaking", "the animal that starts life as a tadpole"),
-    "tiger": (4, "the big cat with orange and black stripes", "the national animal of India"),
-    "bear": (4, "the kind of animal Winnie-the-Pooh is", "the animal whose polar kind lives in the Arctic"),
+    "tiger": (4, "the animal with orange and black stripes", "the animal whose Bengal and Siberian kinds are endangered"),
+    "bear": (4, "the animal that hibernates in a den and loves honey", "the animal whose polar kind lives in the Arctic"),
     "fox": (4, "the animal known for its bushy red tail", "the animal whose female is called a vixen"),
-    "rabbit": (4, "the kind of animal Bugs Bunny is", "the animal that lives in a warren"),
+    "rabbit": (4, "the animal known for its long ears and hopping", "the animal that lives in a warren"),
     "goat": (4, "the animal known for climbing cliffs and bleating", "the animal whose young is called a kid"),
-    "deer": (4, "the kind of animal Bambi is", "the animal whose male is called a stag"),
+    "deer": (4, "the animal whose males grow antlers", "the animal venison comes from"),
     "zebra": (4, "the animal known for its black and white stripes", None),
     "elephant": (4, "the animal known for its trunk", "the animal whose tusks are ivory"),
     "giraffe": (4, "the animal known for its long neck", "the tallest animal on land"),
     "camel": (4, "the animal known for its humps", "the animal called the ship of the desert"),
-    "duck": (2, "the animal known for quacking", "the kind of animal Donald is"),
-    "goose": (2, "the animal known for honking", "the bird whose male is called a gander"),
-    "chicken": (2, "the animal known for clucking", "the bird that lays most of the eggs we eat"),
-    "turkey": (2, "the animal known for gobbling", "the bird eaten at Thanksgiving"),
-    "owl": (2, "the animal known for hooting", "the bird that can turn its head almost all the way around"),
-    "parrot": (2, "the bird known for imitating human speech", "the bird a pirate keeps on his shoulder"),
-    "penguin": (2, "the bird that cannot fly and lives in Antarctica", "the bird that huddles through the polar winter"),
-    "eagle": (2, "the bird of prey on the Great Seal of the United States", None),
+    "duck": (2, "the animal known for quacking", "the animal eiderdown comes from"),
+    "goose": (2, "the animal known for honking", "the animal whose male is called a gander"),
+    "chicken": (2, "the animal known for clucking", "the animal that lays most of the eggs we eat"),
+    "turkey": (2, "the animal known for gobbling", "the animal eaten at Thanksgiving"),
+    "owl": (2, "the animal known for hooting", "the animal that can turn its head almost all the way around"),
+    "parrot": (2, "the animal known for imitating human speech", "the animal a pirate keeps on his shoulder"),
+    "penguin": (2, "the animal that waddles across the Antarctic ice", "the animal that huddles through the polar winter"),
+    "eagle": (2, "the animal on the Great Seal of the United States", None),
     "swan": (2, None, None),
     "crow": (2, None, None),
-    "bee": (6, "the insect known for making honey", "the insect that dances to show where flowers are"),
-    "ant": (6, "the insect known for living in colonies and carrying crumbs", "the insect that farms aphids"),
-    "butterfly": (6, "the insect that starts life as a caterpillar", "the insect monarch migrations are made of"),
-    "fly": (6, "the insect known for buzzing around food", "the insect that maggots grow into"),
+    "bee": (6, "the animal known for making honey", "the animal that dances to show where flowers are"),
+    "ant": (6, "the animal known for living in colonies and carrying crumbs", "the animal that farms aphids"),
+    "butterfly": (6, "the animal that starts life as a caterpillar", None),
+    "fly": (6, "the animal people swat in the kitchen", "the animal that maggots grow into"),
     "beetle": (6, None, None),
-    "spider": (8, "the animal known for spinning webs", "the kind of animal a tarantula is"),
+    "spider": (8, "the animal known for spinning webs", "the animal Charlotte is in Charlotte's Web"),
     "scorpion": (8, "the animal known for the stinger on its tail", "the animal that glows under ultraviolet light"),
     "tick": (8, "the tiny animal that spreads Lyme disease", None),
 })  # fmt: skip
@@ -141,19 +147,19 @@ ELEMENTS = _table({
     "hydrogen": (1, "the element that makes up most of the Sun", "the element whose isotopes are deuterium and tritium"),
     "helium": (2, "the gas that makes party balloons float", "the gas that makes your voice squeaky"),
     "lithium": (3, "the light metal in rechargeable phone batteries", "the element in mood-stabilising drugs"),
-    "beryllium": (4, "the element in emeralds", None),
+    "beryllium": (4, None, None),
     "boron": (5, None, None),
-    "carbon": (6, "the element diamonds are made of", "the element used to date ancient bones"),
+    "carbon": (6, "the element diamonds are made of", "the element all known life is based on"),
     "nitrogen": (7, "the gas that makes up most of the air", "the element bacteria in bean roots take from the air"),
     "oxygen": (8, "the gas we need to breathe", "the element ozone is made of"),
     "fluorine": (9, "the element added to toothpaste to protect teeth", "the most electronegative element"),
 })  # fmt: skip
-GREEK = _table({
-    "alpha": (1, "the Greek letter for the leader of a wolf pack", "the Greek letter that names the brightest star of a constellation"),
-    "beta": (2, "the Greek letter of the radioactive decay that emits electrons", "the Greek letter in the name of heart drugs called blockers"),
-    "gamma": (3, "the Greek letter that names the most energetic rays", "the Greek letter of the rays that turned Bruce Banner into the Hulk"),
-    "delta": (4, "the Greek letter that names a river mouth", "the Greek letter mathematicians use for a change in a quantity"),
-    "epsilon": (5, "the Greek letter mathematicians use for a tiny positive amount", None),
+GREEK = _table({  # no hard cues (the few there were all named letters 2-4); alpha and epsilon have no clean cue
+    "alpha": (1, None, None),
+    "beta": (2, "the Greek letter of the radioactive decay that emits electrons", None),
+    "gamma": (3, "the Greek letter that names the most energetic rays", None),
+    "delta": (4, "the Greek letter that names a river mouth", None),
+    "epsilon": (5, None, None),
     "zeta": (6, "the Greek letter of the Riemann function", None),
     "eta": (7, None, None),
     "theta": (8, "the Greek letter most used for angles", None),
@@ -224,19 +230,20 @@ PAINTS = ("blue", "green", "white", "yellow", "grey", "red", "cream", "teal")
 
 # A look-alike for every name in S.PEOPLE: a real name one or two letters away (never itself in S.PEOPLE).
 NEAR = {
-    "Alice": "Alicia", "Anna": "Hanna", "Beth": "Bess", "Clara": "Clare", "Diana": "Dina", "Emma": "Emmy", "Eva": "Ava",
-    "Fiona": "Fenna", "Grace": "Gracie", "Iris": "Irina", "Julia": "Julie", "Kate": "Katie", "Laura": "Lauren",
-    "Lily": "Lila", "Lucy": "Lucie", "Maria": "Marie", "Mia": "Mira", "Nina": "Nita", "Olivia": "Olive", "Rose": "Rosa",
-    "Sara": "Sarah", "Tara": "Tyra", "Vera": "Verna", "Zoe": "Zoey", "Ella": "Ellie", "Ruby": "Rudy", "Amy": "Amie",
-    "Eve": "Evie", "Ivy": "Ivey", "Adam": "Aden", "Ben": "Len", "Carl": "Karl", "Dan": "Don", "David": "Davis",
-    "Eric": "Erik", "Finn": "Fynn", "Frank": "Franz", "Henry": "Henri", "Ivan": "Evan", "Jack": "Jake", "James": "Jamie",
-    "Leo": "Lea", "Luke": "Luka", "Mark": "Marc", "Max": "Mac", "Noah": "Noam", "Oscar": "Oskar", "Paul": "Saul",
-    "Peter": "Pieter", "Sam": "Pam", "Tom": "Tim", "Victor": "Viktor", "Will": "Bill", "Hugo": "Hugh", "Owen": "Oren",
-    "Liam": "Lian", "Ryan": "Bryan", "Sean": "Shaun", "Kyle": "Kyla",
+    "Alice": "Alina", "Anna": "Anita", "Beth": "Bertha", "Clara": "Claudia", "Diana": "Dinah", "Emma": "Emily",
+    "Eva": "Evelyn", "Fiona": "Flora", "Grace": "Greta", "Iris": "Isla", "Julia": "June", "Kate": "Karen",
+    "Laura": "Layla", "Lily": "Lisa", "Lucy": "Luna", "Maria": "Marta", "Mia": "Mina", "Nina": "Nora", "Olivia": "Olga",
+    "Rose": "Ruth", "Sara": "Sandra", "Tara": "Talia", "Vera": "Velma", "Zoe": "Zelda", "Ella": "Elsa", "Ruby": "Rhea",
+    "Amy": "Ada", "Eve": "Edna", "Ivy": "Ida", "Adam": "Aaron", "Ben": "Bert", "Carl": "Cole", "Dan": "Dean",
+    "David": "Darren", "Eric": "Ernest", "Finn": "Fred", "Frank": "Floyd", "Henry": "Herbert", "Ivan": "Igor",
+    "Jack": "Jason", "James": "Jared", "Leo": "Levi", "Luke": "Lance", "Mark": "Martin", "Max": "Mason", "Noah": "Nolan",
+    "Oscar": "Otto", "Paul": "Percy", "Peter": "Philip", "Sam": "Seth", "Tom": "Ted", "Victor": "Vincent", "Will": "Wade",
+    "Hugo": "Hank", "Owen": "Oliver", "Liam": "Lloyd", "Ryan": "Rex", "Sean": "Simon", "Kyle": "Keith",
 }  # fmt: skip
 assert set(NEAR) == set(S.PEOPLE), "NEAR must cover PEOPLE"
 assert not set(NEAR.values()) & set(S.PEOPLE), "look-alikes must not be real people"
-ABSENT = ("Zara", "Quinn", "Yusuf", "Wanda", "Xavier", "Odette")  # never in a scene: the guess prompt's person
+assert len(set(NEAR.values())) == len(NEAR), "look-alikes must be distinct"
+ABSENT = ("Quinn", "Yusuf", "Wanda", "Xavier", "Odette", "Bartholomew")  # never in a scene (guess prompts)
 
 
 def ref(dom: Domain, x: str) -> str:
@@ -267,7 +274,9 @@ ACROSTIC = {  # no thing of any domain, and no element or animal lure
 
 def c_description(op: str, dom: Domain, x: str, rng: random.Random) -> str | None:
     """A description of x that needs a string computation on the input; None if not unique in the domain."""
-    if op == "typo":  # two neighbouring letters swapped: never contains x, never another thing's name
+    if op == "typo":  # two neighbouring letters swapped: never contains x, never another thing's name; names of 5+
+        if len(x) < 5:  # letters only (short ones make real words: cat -> act, eta -> tea, lion -> loin)
+            return None
         i = rng.randrange(0, len(x) - 1)
         typo = x[:i] + x[i + 1] + x[i] + x[i + 2 :]
         if typo.lower() == x.lower() or any(typo.lower() == t.lower() for t in dom.values):
@@ -296,26 +305,42 @@ def start_ok(group: str, dom: Domain, knobs: dict):
     return lambda t: True
 
 
+def sqrt_weights(things: list[str], dom: Domain) -> list[float]:
+    """1/sqrt(how many of these things share the thing's number): between uniform numbers (balanced answers, the few
+    6- and 8-legged animals recur) and uniform things (diverse bridges, answers skewed to 4 legs). Zach, 2026-10-20."""
+    per_value = collections.Counter(dom.values[t] for t in things)
+    return [per_value[dom.values[t]] ** -0.5 for t in things]
+
+
+def weighted_order(rng: random.Random, things: list[str], dom: Domain) -> list[str]:
+    """A random order of the things, drawn without replacement with sqrt_weights (Efraimidis-Spirakis keys)."""
+    keys = [rng.random() ** (1 / w) for w in sqrt_weights(things, dom)]
+    return [t for _, t in sorted(zip(keys, things, strict=True), reverse=True)]
+
+
 def scene(rng: random.Random, dom: Domain, group: str, knobs: dict, style: str) -> dict | None:
     """People, their picks (the start thing x is the queried person's), pairs of partners, lockers (never a thing's
-    memory number), bins (no bin holds its own number) and look-alikes. x is drawn so that its number is uniform over
-    the numbers the domain's eligible things have (bee and spider as often as the 4-legged animals' total)."""
+    memory number), bins (no bin holds its own number) and look-alikes. x and its partner are drawn with sqrt_weights."""
     ok = start_ok(group, dom, knobs)
     cands = [t for t in dom.values if ok(t)]
     if not cands:  # e.g. hard cues asked of a domain that has none
         return None
-    per_value = collections.Counter(dom.values[t] for t in cands)
-    x = rng.choices(cands, weights=[1 / per_value[dom.values[t]] for t in cands])[0]
+    x = rng.choices(cands, weights=sqrt_weights(cands, dom))[0]
     n_ent = min(knobs["entities"], len(dom.values))
-    things = [x, *rng.sample([t for t in dom.values if t != x], n_ent - 1)]
+    rest = [t for t in dom.values if t != x]
+    y = rng.choices(rest, weights=sqrt_weights(rest, dom))[0]
+    others = rng.sample([t for t in rest if t != y], n_ent - 2)
+    things = [x, y, *others]
     rng.shuffle(things)
     people = rng.sample(S.PEOPLE, len(things))
     pick = dict(zip(people, things, strict=True))
     person = people[things.index(x)]
-    single = rng.choice([t for t in things if t != x]) if len(things) % 2 else None
-    pairable = [t for t in things if t != single]
+    single = rng.choice(others) if len(others) % 2 else None
+    pairable = [t for t in others if t != single]
     rng.shuffle(pairable)
-    pairs = list(zip(pairable[0::2], pairable[1::2], strict=True))
+    pairs = [(x, y), *zip(pairable[0::2], pairable[1::2], strict=True)]
+    rng.shuffle(pairs)
+    pairs = [(a, b) if rng.random() < 0.5 else (b, a) for a, b in pairs]
     partner = {a: b for a, b in pairs} | {b: a for a, b in pairs}
     while True:  # lockers: distinct while there are digits enough, never the thing's own number
         lockers = rng.sample(range(1, 10), len(things)) if len(things) <= 9 else [rng.randrange(1, 10) for _ in things]
@@ -515,7 +540,9 @@ def make_scene(rng: random.Random, group: str, words: list[str], domain: str, fm
         ch = chain(word, dom, sc, x, desc, d2, para)
         if ch is None or ch["answer"] in wrong_routes(word, dom, sc, x, d2):
             return None
-        items.append({"word": word, "domain": domain, "format": fmt, "knobs": knobs, "c_op": c_op,
+        others = [t for t in sc["things"] if t != x]
+        chance = sum(follow(word, dom, sc, t, d2)[0] == ch["answer"] for t in others) / len(others)
+        items.append({"chance_same_answer": round(chance, 3), "word": word, "domain": domain, "format": fmt, "knobs": knobs, "c_op": c_op,
                       "domain2": dom2_name if d2 else None, "numbers": style, "n_things": len(sc["things"]),
                       "context": context, "question": ch["question"], "answer": ch["answer"], "kind": ch["kind"],
                       "steps": [first, *ch["steps"]], "tier": dom.tier, "start_desc": desc})  # fmt: skip
@@ -566,8 +593,9 @@ def counterfactuals(tok, items: list[dict], group: str, dom: Domain, sc: dict, d
 
     others = [p for p in sc["people"] if p != person]
     cues = dom.hard_cues if items[0]["knobs"]["hard_cues"] else dom.cues
-    for X in rng.sample([t for t in sc["things"] if t != x], len(sc["things"]) - 1):
-        if not _single(tok, X):
+    la = [t for name, t in sc["lookalike_picks"] if name == NEAR[person]]
+    for X in weighted_order(rng, [t for t in sc["things"] if t != x], dom):
+        if not _single(tok, X) or X in la:
             continue
         if group == "P":
             q = next(p for p in others if sc["pick"][p] == X)
@@ -583,7 +611,11 @@ def counterfactuals(tok, items: list[dict], group: str, dom: Domain, sc: dict, d
             assert it["question"].count(desc) == 1, it["question"]
             cf_q = it["question"].replace(desc, new_desc)
             cf_answer, cf_bridges = follow(it["word"], dom, cf_sc, X, d2[it["word"]])
-            changed = aligned(i, cf_context, cf_q, limit) if cf_answer not in (None, it["answer"]) else None
+            ok = cf_answer not in (None, it["answer"]) and all(
+                follow(it["word"], dom, sc, t, d2[it["word"]])[0] != cf_answer for t in la
+            )  # no look-alike route to the C answer
+            ok = ok and S.answer_token(tok, cf_answer, it["kind"]) != S.answer_token(tok, it["answer"], it["kind"])
+            changed = aligned(i, cf_context, cf_q, limit) if ok else None
             if not changed:
                 break
             out.append({"cf_context": cf_context, "cf_question": cf_q, "cf_answer": cf_answer, "cf_bridge": X,
@@ -738,9 +770,17 @@ ORDINALS = {"first": 1, "second": 2, "third": 3, "fourth": 4, "fifth": 5, "sixth
 ALL_THINGS = {t.lower() for dom in DOMAINS.values() for t in dom.values}
 
 
+def _is(token: str, thing: str) -> bool:
+    """token names thing: itself, a plural (bees, foxes), or a compound ending in it that is not itself a thing
+    (honeybee, housefly; but butterfly is not a fly)."""
+    if token in (thing, thing + "s", thing + "es"):
+        return True
+    return len(thing) >= 3 and token.endswith(thing) and token not in ALL_THINGS and token.rstrip("s") not in ALL_THINGS
+
+
 def judge(text: str, answer: str, kind: str) -> bool:
-    """Digit: the first number in the first line (digits, number words or ordinals). Word: the first thing of any
-    domain named in the first line is the answer (so a list of candidates or a different first guess is wrong)."""
+    """Digit: the first number in the first line (digits, number words or ordinals). Word: the first line names the
+    answer, and no other thing of any domain before it except as a modifier of it ("deer tick" is a tick)."""
     line = S.first_line(text)
     if kind == "digit":
         for t in re.findall(r"[a-z]+|\d+", line):
@@ -751,15 +791,23 @@ def judge(text: str, answer: str, kind: str) -> bool:
             if t in ORDINALS:
                 return str(ORDINALS[t]) == answer
         return False
-    named = [m for m in re.findall(r"[a-z]+", line) if m in ALL_THINGS]
-    return bool(named) and named[0] == answer.lower()
+    a = answer.lower()
+    toks = re.findall(r"[a-z]+", line)
+    for k, t in enumerate(toks):
+        if _is(t, a):
+            return True
+        other = next((th for th in ALL_THINGS if th != a and _is(t, th)), None)
+        if other and not (k + 1 < len(toks) and _is(toks[k + 1], a)):
+            return False
+    return False
 
 
-def eligible(set_name: str, comp_run: str, words: list[str] | None, n: int, level: str = "pick") -> list[dict]:
-    """The items downstream runs use: from scenes whose every item the competence run got right on every prompt
-    (whole, each step, C and O; the guess prompt excluded), at the calibrated level (level "pick": the competence
-    summary's pick per word; "all"; or a level number), the first n per word in file order. Each item gets
-    "guessable": whether the model answered its guess prompt right (None if the run had none)."""
+def eligible(set_name: str, comp_run: str, words: list[str], n: int, level: str = "pick") -> list[dict]:
+    """The items a downstream run compares: from scenes whose items of the compared words the competence run got right
+    on every prompt (whole, each step, C and O; the guess prompt excluded), at one level for the whole comparison
+    (level "pick": the hardest level where every compared word scores >= 85% whole; "all"; or a level number; Zach,
+    2026-10-20: per compared words), the first n per word in file order. Each item gets "guessable": whether the model
+    answered its guess prompt right (None if the run had none). Every compared word must get items."""
     run_dir = pins.RESULTS_DIR / "tasks_v2" / comp_run
     ok: dict[str, list[bool]] = collections.defaultdict(list)
     guessed: dict[str, bool] = {}
@@ -769,21 +817,26 @@ def eligible(set_name: str, comp_run: str, words: list[str] | None, n: int, leve
             guessed[r["id"]] = r["correct"]
         else:
             ok[r["id"]].append(r["correct"])
-    items = load(set_name)
+    items = [it for it in load(set_name) if it["word"] in words]
+    if level == "pick":
+        cells = json.loads((run_dir / "summary.json").read_text())["by_word_level"]
+        levels = sorted({it["level"] for it in items})
+        good = [lv for lv in levels if all(cells.get(f"{w}/L{lv}", {}).get("whole", 0) >= BAND[0] for w in words)]
+        assert good, f"no level has every one of {words} at >= {BAND[0]:.0%}"
+        want = good[-1]
+    else:
+        want = None if level == "all" else int(level)
     scene_ok: dict[str, bool] = collections.defaultdict(lambda: True)
     for it in items:
         scene_ok[it["scene"]] &= bool(ok.get(it["id"])) and all(ok[it["id"]])
-    pick = json.loads((run_dir / "summary.json").read_text())["pick"] if level == "pick" else {}
     out, got = [], collections.Counter()
     for it in items:
-        w = it["word"]
-        want = pick.get(w) if level == "pick" else (None if level == "all" else int(level))
-        if (words and w not in words) or got[w] >= n or not scene_ok[it["scene"]]:
+        if got[it["word"]] >= n or not scene_ok[it["scene"]] or (want is not None and it["level"] != want):
             continue
-        if level != "all" and it["level"] != want:
-            continue
-        got[w] += 1
-        out.append({**it, "guessable": guessed.get(it["id"])})
+        got[it["word"]] += 1
+        out.append({**it, "guessable": guessed.get(it["id"]), "compared_level": want})
+    missing = [w for w in words if not got[w]]
+    assert not missing, f"no eligible items for {missing} at level {want}"
     return out
 
 

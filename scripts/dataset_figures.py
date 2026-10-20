@@ -1,4 +1,4 @@
-"""Dataset figures (Zach, 2026-10-20): what is in tasks_v2's calibration set (calib_v3, generator v3) and how it
+"""Dataset figures (Zach, 2026-10-20): what is in tasks_v2's calibration set (calib_v4, generator v4) and how it
 compares with calib_v2 (the generator before the audit, rebuilt from git at 93e11f5) on the audit's checks, measured
 with the same code; plus the per-entity spread of the existing knock-out results (suite_v1, countries).
 
@@ -101,7 +101,7 @@ T2 = importlib.util.module_from_spec(spec)
 sys.modules["tasks_v2_v2gen"] = T2
 spec.loader.exec_module(T2)
 v2 = with_scenes(T2, "calib_v2", (48, WORDS, list(T2.DOMAINS), list(T2.FORMATS), list(T2.LEVELS), 702))
-v3 = with_scenes(T, "calib_v3", (48, WORDS, list(T.DOMAINS), list(T.FORMATS), list(T.LEVELS), 703))
+v3 = with_scenes(T, "calib_v4", (48, WORDS, list(T.DOMAINS), list(T.FORMATS), list(T.LEVELS), 704))
 tok = load_tokenizer()
 for it in v3:
     it["_tokens"] = len(S.ids(tok, T.render(tok, it)))
@@ -200,9 +200,9 @@ for gen, items in ((2, v2), (3, v3)):
         "Most common answer, memory-\nfinal words, many-to-one domains": majority,
     }  # fmt: skip
     audit[gen]["distinct"] = mean(len({start(it) for it in items if it["word"] == w}) for w in WORDS)
-(OUT / "audit_v2_v3.json").write_text(json.dumps(audit, indent=2) + "\n")
+(OUT / "audit_v2_v4.json").write_text(json.dumps(audit, indent=2) + "\n")
 
-# ---- figure 1: what is in calib_v3 ----
+# ---- figure 1: what is in calib_v4 ----
 fig, axes = plt.subplots(1, 3, figsize=(15, 4.6), gridspec_kw={"width_ratios": [7, 6, 4.2], "wspace": 0.45})
 rows = [f"{g}-start L{lv}" for g in "PMC" for lv in T.LEVELS]
 for ax, key, cols, title in ((axes[0], "domain", list(T.DOMAINS), "Scenes by domain"),
@@ -231,10 +231,11 @@ ax.set_xlabel("% of items")
 ax.set_title("How each word's context\nstates numbers", loc="left", fontsize=10, fontweight="bold")
 ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.13), frameon=False, ncol=1, fontsize=8)
 style(ax)
-fig.suptitle(f"calib_v3: {len(v3):,} items = 14 words x 4 levels x 48 scenes; each scene is asked with every word that "
+fig.suptitle(f"calib_v4: {len(v3):,} items = 14 words x 4 levels x 48 scenes; each scene is asked with every word that "
              "starts like it (P-, M- or C-start)", x=0.01, ha="left", fontsize=11.5, fontweight="bold", y=1.04)  # fmt: skip
-fig.text(0.01, -0.12, "Memory-start scenes at levels 2-3 come from 4 domains only: shapes, vehicles and instruments have no "
-         "hard (indirect) cues.", fontsize=8.5, color=INK2)  # fmt: skip
+m_hi = sorted({it["domain"] for it in v3 if it["word"][0] == "M" and it["level"] >= 2})
+fig.text(0.01, -0.12, f"Memory-start scenes at levels 2-3 come from {len(m_hi)} domains ({', '.join(m_hi)}): the others "
+         "have no clean hard (indirect) cues.", fontsize=8.5, color=INK2)  # fmt: skip
 save(fig, "d1_composition.png")
 
 # ---- figure 2: answers ----
@@ -257,7 +258,7 @@ for s in ax.spines.values():
 ax.set_title("Digit answers: % of each word's items (uniform = 11%)", loc="left", fontsize=10, fontweight="bold")
 ax = axes[1]
 y = range(len(WORDS))
-for gen, items, col, lab in ((2, v2, GREY, "calib_v2"), (3, v3, BLUE, "calib_v3")):
+for gen, items, col, lab in ((2, v2, GREY, "calib_v2"), (3, v3, BLUE, "calib_v4")):
     vals = []
     for w in WORDS:
         sel = [it for it in items if it["word"] == w and it["domain"] in M2O]
@@ -277,7 +278,7 @@ save(fig, "d2_answers.png")
 # ---- figure 3: entities ----
 fig, axes = plt.subplots(1, 2, figsize=(14, 6.2), gridspec_kw={"width_ratios": [4, 9], "wspace": 0.25})
 ax = axes[0]
-for gen, items, col, lab in ((2, v2, GREY, "calib_v2"), (3, v3, BLUE, "calib_v3")):
+for gen, items, col, lab in ((2, v2, GREY, "calib_v2"), (3, v3, BLUE, "calib_v4")):
     vals = [len({start(it) for it in items if it["word"] == w}) for w in WORDS]
     ax.barh([i + (0.2 if gen == 3 else -0.2) for i in range(len(WORDS))], vals, height=0.38, color=col, label=lab)
 ax.set_yticks(range(len(WORDS)), WORDS)
@@ -300,12 +301,13 @@ ax.legend(frameon=False, ncol=2, loc="upper left")
 eight = sum(anim[a] for a in order if T.DOMAINS["animals"].values[a] == 8)
 ax.set_title("Scenes per start animal (animals domain; P-, M-, C-start; all levels)", loc="left", fontsize=10,
              fontweight="bold")  # fmt: skip
-ax.text(0.99, 0.97, f"the start's number is drawn uniformly over the domain's numbers,\nso the 3 eight-legged animals start "
+ax.text(0.99, 0.97, f"starts are drawn with square-root weighting (between uniform numbers\nand uniform animals): the 3 eight-legged animals start "
         f"{eight} of {sum(anim.values())} animal scenes", transform=ax.transAxes, ha="right", va="top", fontsize=8.5,
         color=INK2)  # fmt: skip
 style(ax, "y")
-fig.suptitle("Entities: 52-62 bridges per word in calib_v3 (16 animals in the suite behind today's results)", x=0.01,
-             ha="left", fontsize=11.5, fontweight="bold", y=1.0)  # fmt: skip
+per_word = [len({start(it) for it in v3 if it["word"] == w}) for w in WORDS]
+fig.suptitle(f"Entities: {min(per_word)}-{max(per_word)} bridges per word in calib_v4 (16 animals in the suite behind "
+             "today's results)", x=0.01, ha="left", fontsize=11.5, fontweight="bold", y=1.0)  # fmt: skip
 save(fig, "d3_entities.png")
 
 # ---- figure 4: the difficulty ladder ----
@@ -352,7 +354,7 @@ for (r, _), cell in tb.get_celld().items():
     cell.set_edgecolor(GRID)
     cell.set_facecolor(SURF if r else "#f0efec")
 ax.set_title("The ladder (all knobs up together)", loc="left", fontsize=10, fontweight="bold")
-fig.suptitle("Difficulty: one ladder; each word is calibrated to the hardest level where the 27B scores 85-95%", x=0.01,
+fig.suptitle("Difficulty: one ladder; a comparison runs at the hardest level where all its words score >= 85% on the 27B", x=0.01,
              ha="left", fontsize=11.5, fontweight="bold", y=1.04)  # fmt: skip
 save(fig, "d4_difficulty.png")
 
@@ -364,13 +366,13 @@ for ax, k in zip(axes, keys, strict=True):
     ax.bar([0, 1], vals, color=[GREY, BLUE], width=0.62)
     for x, v in zip([0, 1], vals, strict=True):
         ax.text(x, v + 2, f"{v:.0f}%", ha="center", fontsize=9, color=INK)
-    ax.set_xticks([0, 1], ["v2", "v3"])
+    ax.set_xticks([0, 1], ["v2", "v4"])
     ax.set_ylim(0, 112)
     ax.set_yticks([])
     ax.set_title(k, fontsize=8.5, loc="left")
     for s in ("top", "right", "left"):
         ax.spines[s].set_visible(False)
-fig.suptitle("Audit checks, calib_v2 (grey) vs calib_v3 (blue), same measurement code on both sets", x=0.01, ha="left",
+fig.suptitle("Audit checks, calib_v2 (grey) vs calib_v4 (blue), same measurement code on both sets", x=0.01, ha="left",
              fontsize=11.5, fontweight="bold", y=1.12)  # fmt: skip
 fig.text(0.01, -0.1, "Row position: share of table P->P items where the queried person's row in the picks table is the same "
          "row as their pick's locker (chance ~1/entities). Look-alike: the queried person has a look-alike name with a different pick.",
