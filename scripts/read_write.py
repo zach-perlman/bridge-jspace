@@ -83,6 +83,24 @@ def suite_cases_from_competence(tok, n: int, comp_run: str, families: list[str])
     return out
 
 
+def tasks_cases(tok, n: int, set_name: str, comp_run: str, words: list[str] | None = None) -> list[dict]:
+    """The first n items per word of a tasks_v2 set made with counterfactuals that its competence run got right on
+    every prompt (whole, each step alone, C and O)."""
+    from scripts import tasks_v2 as T
+
+    ok: dict[str, list[bool]] = collections.defaultdict(list)
+    for line in (pins.RESULTS_DIR / "tasks_v2" / comp_run / "items.jsonl").read_text().splitlines():
+        r = json.loads(line)
+        ok[r["id"]].append(r["correct"])
+    out, got = [], collections.Counter()
+    for it in T.load(set_name):
+        if (words and it["word"] not in words) or got[it["word"]] >= n or not ok.get(it["id"]) or not all(ok[it["id"]]):
+            continue
+        got[it["word"]] += 1
+        out.append({**it, **T.prepare(it, tok)})
+    return out
+
+
 def country_cases(tok, n: int, map_run: str = "map_v1") -> list[dict]:
     picked = [json.loads(line)["id"] for line in (C.RESULTS / map_run / "cases.jsonl").read_text().splitlines()]
     items = E.ITEM_SETS["bind_recall"][2]()

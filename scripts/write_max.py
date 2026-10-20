@@ -69,6 +69,7 @@ def main(args) -> None:
                 "git_commit": commit, "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
                 "layers": list(layers), "alphas": list(ALPHAS), "swaps": list(SWAPS), "transplants": list(TRANSPLANTS),
                 "families": args.families, "countries": args.countries, "n_per_family": args.n, "tf32": True,
+                "tasks": [args.tasks, args.tasks_competence],
                 "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     model = load_model()
@@ -77,8 +78,11 @@ def main(args) -> None:
     letters = model.letter_token_ids()
     wg = model.hf.lm_head.weight[letters].float() * model.norm_gain()
     dic = {la: LensDictionary(wg, lens.J(la)) for la in layers}
-    cases = RW.suite_cases(tok, args.n, "map_A8_v1", "A", args.families)
-    cases += RW.country_cases(tok, args.n) if args.countries else []
+    if args.tasks:
+        cases = RW.tasks_cases(tok, args.n, args.tasks, args.tasks_competence, args.families)
+    else:
+        cases = RW.suite_cases(tok, args.n, "map_A8_v1", "A", args.families)
+        cases += RW.country_cases(tok, args.n) if args.countries else []
     print(len(cases), "cases", flush=True)
     t0 = time.time()
     outcomes: list[dict] = []
@@ -152,7 +156,8 @@ def main(args) -> None:
         lines += ["", f"max over everything: lens {100 * fam_sum['max_lens']:.0f}%, control {100 * fam_sum['max_control']:.0f}%, "
                   f"copy {100 * fam_sum['max_copy']:.0f}%", ""]  # fmt: skip
         summary["families"][fam] = fam_sum
-    rl, rr = summary["families"].get("RL"), summary["families"].get("RR")
+    fams = summary["families"]
+    rl, rr = fams.get("RL", fams.get("MP")), fams.get("RR", fams.get("MM"))  # M->P and M->M (suite or tasks_v2 names)
     if rl and rr:
         summary["rule"] = {"RL_lens_le_control_plus_5": rl["max_lens"] <= rl["max_control"] + 0.05,
                            "RR_lens_ge_4x_control": rr["max_lens"] >= 4 * max(rr["max_control"], 0.01)}  # fmt: skip
@@ -170,4 +175,10 @@ if __name__ == "__main__":
     ap.add_argument("--families", nargs="+", default=["BL", "BR", "RL", "RR"])
     ap.add_argument("--layers", nargs="+", type=int, default=[32, 34, 36, 38, 40])
     ap.add_argument("--no-countries", dest="countries", action="store_false")
+    ap.add_argument(
+        "--tasks",
+        help="a tasks_v2 set made with --counterfactuals (instead of the suite and countries); "
+        "--families are then its words, e.g. PP PM MP MM",
+    )
+    ap.add_argument("--tasks-competence", help="the set's competence run (items right on every prompt are used)")
     main(ap.parse_args())

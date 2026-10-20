@@ -9,8 +9,9 @@ Every task is a chain of steps; each step retrieves from the Prompt (P), from Me
             M  its number (memory: legs, position from the Sun, atomic number, alphabet position, sides, ...)
   number -> P  the bin for that number (prompt, a digit)
             M  the thing with that number in another domain (memory; the answer is then a word: P-M-M, M-M-M)
-Domains: controlled tier (single-token names; later also aligned counterfactuals) animals, planets, elements, Greek
-letters; knock-out tier adds shapes, vehicles, instruments (multi-token names allowed).
+Domains: controlled tier (single-token names; with --counterfactuals each item also gets suite_v1-style C and O,
+token-aligned: C changes only the first bridge and so the answer, O swaps two other people's picks) animals, planets,
+elements, Greek letters; knock-out tier adds shapes, vehicles, instruments (multi-token names allowed).
 Formats (only the facts change; the question is the same): prose, json (tool outputs), table (markdown), code (Python
 dicts), chat (facts in an earlier user turn), document (facts inside a short record among filler).
 Knobs (for calibrating each family to 85-95% on the target model): entities 3/6/12, distractors (look-alike names and
@@ -18,7 +19,7 @@ facts nobody asks about), filler 0/5/20, surface paraphrase of the question.
 Each item also carries every step alone (same context) for per-step knock-outs.
 
 python scripts/tasks_v2.py examples [--seed S]          one item per word x format, printed
-python scripts/tasks_v2.py make --set NAME --n N ...    write data/tasks_v2/NAME/items.jsonl (write-once)
+python scripts/tasks_v2.py make --set NAME --n N ... [--counterfactuals]    write data/tasks_v2/NAME/items.jsonl (write-once)
 """
 
 from __future__ import annotations
@@ -202,6 +203,12 @@ def chain(word: str, dom: Domain, sc: dict, rng: random.Random, c_op: str | None
             return None
         desc = cdesc
         steps.append({"question": f"What is {cdesc}?", "answer": x, "kind": "word", "source": "C"})
+    start = {"person": person, "x": x, "desc": desc}
+    out = _rest(word, dom, sc, x, desc, steps, dom2)
+    return None if out is None else {**out, "start": start}
+
+
+def _rest(word: str, dom: Domain, sc: dict, x: str, desc: str, steps: list, dom2: Domain | None) -> dict | None:
     rest = word[1:]
     # a 3-step word's middle step: P = the thing's partner, M = the thing's number
     if len(rest) == 2:
@@ -242,6 +249,23 @@ def _finish_thing(source: str, dom: Domain, sc: dict, x: str, desc: str, steps: 
     n = dom.values[x]
     steps.append({"question": dom.prop_q.format(x=ref(dom, x)), "answer": str(n), "kind": "digit", "source": "M"})
     return {"question": dom.prop_q.format(x=desc), "answer": str(n), "kind": "digit", "steps": steps}
+
+
+def follow(word: str, dom: Domain, sc: dict, x: str, dom2: Domain | None) -> tuple[str | None, list[str]]:
+    """The answer of the word's chain from start thing x in scene sc, and its bridges (the thing, then a 3-step
+    word's middle value); None if the chain has no answer from x."""
+    bridges, rest = [x], word[1:]
+    if len(rest) == 2 and rest[0] == "P":
+        x = sc["partner"][x]
+        bridges.append(x)
+        rest = rest[1:]
+    elif len(rest) == 2:
+        n = dom.values[x]
+        bridges.append(str(n))
+        if rest[1] == "P":
+            return str(sc["bin"][n]), bridges
+        return next((t for t, v in dom2.values.items() if v == n), None), bridges
+    return str(sc["locker"][x] if rest == "P" else dom.values[x]), bridges
 
 
 # ---- formats ------------------------------------------------------------------------------------------------------
@@ -325,8 +349,119 @@ def render(tok, item: dict) -> str:
     )
 
 
+# ---- counterfactuals (controlled tier) ----------------------------------------------------------------------------
+MAX_SWAP_CHANGED = 4  # a swap of two single-token names changes 2 tokens; 4 allows a name split in two in some format
+
+
+def _single(tok, word: str) -> bool:
+    return len(S.ids(tok, " " + word)) == 1
+
+
+def _swap_picks(sc: dict, a: str, b: str) -> dict:
+    pick = dict(sc["pick"])
+    pick[a], pick[b] = pick[b], pick[a]
+    return {**sc, "pick": pick}
+
+
+def counterfactuals(tok, item: dict, word: str, dom: Domain, sc: dict, ch: dict, dom2: Domain | None, render_state,
+                    n_filler: int) -> dict | None:  # fmt: skip
+    """C and O for one item, token-aligned with it (suite_v1's convention), or None if this item has none.
+    C changes only the first bridge (the start thing x, to X) and so the answer: P swaps the queried person's pick with
+    another person's; M puts X's cue in the question in place of x's; C computes the description from X instead.
+    O swaps the picks of two other people (off every word's path). Bridges are single-token names; C and O render with
+    the clean prompt's layout (the same draws for order and filler)."""
+    rng = random.Random(f"cf|{item['context']}|{item['question']}")
+    x, person, desc = ch["start"]["x"], ch["start"]["person"], ch["start"]["desc"]
+    answer, bridges = follow(word, dom, sc, x, dom2)
+    assert answer == ch["answer"], (item["id"], answer, ch["answer"])
+    if not _single(tok, x):
+        return None
+
+    def context_of(scene: dict) -> str:
+        gen = random.Random()
+        gen.setstate(render_state)
+        return render_facts(item["format"], dom, facts(word, dom, scene), gen, n_filler)
+
+    clean_ids = S.ids(tok, render(tok, item))
+
+    def aligned(context: str, question: str, limit: int) -> list[int] | None:
+        got = S.changed(clean_ids, S.ids(tok, render(tok, {**item, "context": context, "question": question})))
+        return got if got and len(got) <= limit else None
+
+    others = [p for p in sc["people"] if p != person]
+    cf = None
+    for X in rng.sample([t for t in sc["things"] if t != x], len(sc["things"]) - 1):
+        if not _single(tok, X):
+            continue
+        if word[0] == "P":
+            q = next(p for p in others if sc["pick"][p] == X)
+            cf_sc, cf_q = _swap_picks(sc, person, q), item["question"]
+            cf_context, limit = context_of(cf_sc), MAX_SWAP_CHANGED
+        else:
+            if word[0] == "M":
+                if X not in dom.cues:
+                    continue
+                new_desc = dom.cues[X]
+            else:
+                new_desc = c_description(item["c_op"], dom, X, rng)
+                if new_desc is None:
+                    continue
+            assert item["question"].count(desc) == 1, item["question"]
+            cf_sc, cf_q, cf_context, limit = sc, item["question"].replace(desc, new_desc), item["context"], 10**6
+        cf_answer, cf_bridges = follow(word, dom, cf_sc, X, dom2)
+        if cf_answer is None or cf_answer == answer:
+            continue
+        changed = aligned(cf_context, cf_q, limit)
+        if changed:
+            cf = {"cf_context": cf_context, "cf_question": cf_q, "cf_answer": cf_answer, "cf_bridge": X,
+                  "cf_bridges": cf_bridges, "cf_changed_tokens": len(changed)}  # fmt: skip
+            break
+    if cf is None:
+        return None
+    for a, b in rng.sample(list(itertools.combinations(others, 2)), len(others) * (len(others) - 1) // 2):
+        off_context = context_of(_swap_picks(sc, a, b))
+        changed = aligned(off_context, item["question"], MAX_SWAP_CHANGED)
+        if changed:
+            return {**cf, "off_context": off_context, "off_changed_tokens": len(changed), "bridge": x, "bridges": bridges,
+                    "answer_kind": item["kind"], "scene": {k: sc[k] for k in ("pick", "partner", "locker")}}  # fmt: skip
+    return None
+
+
+def prepare(item: dict, tok) -> dict:
+    """suite_split.prepare for a tasks_v2 item with C and O: token ids of clean, C and O (a digit answer's space
+    appended for the read), the changed positions, the position groups and the two answers' first tokens."""
+    from bridge_jspace.tokens import raw_encoding
+
+    variants = {"clean": item, "cf": {**item, "context": item["cf_context"], "question": item["cf_question"]},
+                "off": {**item, "context": item["off_context"]}}  # fmt: skip
+    rendered = {k: render(tok, v) for k, v in variants.items()}
+    enc = {k: raw_encoding(tok, t, offsets=True) for k, t in rendered.items()}
+    ids = {k: list(e["input_ids"]) for k, e in enc.items()}
+    cf_changed, off_changed = S.changed(ids["clean"], ids["cf"]), S.changed(ids["clean"], ids["off"])
+    assert cf_changed, f"{item['id']}: C not token-aligned"
+    assert off_changed, f"{item['id']}: O not token-aligned"
+    q_start = rendered["clean"].rindex("\n" + item["question"]) + 1
+    after = max(cf_changed)
+    offsets = enc["clean"]["offset_mapping"]
+    space = S.ids(tok, " ") if item["answer_kind"] == "digit" else []
+    return {
+        "ids": ids,
+        "read_ids": {k: v + space for k, v in ids.items()},
+        "changed": {"cf": cf_changed, "off": off_changed},
+        "groups": {
+            "question": [i for i, (_, e) in enumerate(offsets) if e > q_start and i > after],
+            "last": [len(ids["clean"]) - 1],
+        },
+        "tok_A": S.answer_token(tok, item["answer"], item["answer_kind"]),
+        "tok_b": S.answer_token(tok, item["cf_answer"], item["answer_kind"]),
+        "family": item["word"],
+        "name": item["id"],
+    }
+
+
 # ---- making items -------------------------------------------------------------------------------------------------
-def make_item(rng: random.Random, word: str, domain: str, fmt: str, knobs: dict, idx: int) -> dict | None:
+def make_item(rng: random.Random, word: str, domain: str, fmt: str, knobs: dict, idx: int, tok=None) -> dict | None:
+    """One item; with a tokenizer (controlled tier only) also its C and O, or None if it has no aligned pair."""
     dom = DOMAINS[domain]
     sc = scene(rng, dom, knobs["entities"], knobs["distractors"])
     c_op = rng.choice(C_OPS) if word[0] == "C" else None
@@ -338,11 +473,17 @@ def make_item(rng: random.Random, word: str, domain: str, fmt: str, knobs: dict,
     if ch is None:
         return None
     q = paraphrase(ch["question"], rng) if knobs["paraphrase"] else ch["question"]
+    render_state = rng.getstate()
     context = render_facts(fmt, dom, facts(word, dom, sc), rng, knobs["filler"])
-    return {"id": f"{word}-{domain}-{fmt}-{idx:04d}", "word": word, "domain": domain, "format": fmt, "knobs": knobs,
+    item = {"id": f"{word}-{domain}-{fmt}-{idx:04d}", "word": word, "domain": domain, "format": fmt, "knobs": knobs,
             "c_op": c_op, "domain2": next((k for k, v in DOMAINS.items() if v is dom2), None), "context": context,
             "question": q, "answer": ch["answer"], "kind": ch["kind"], "steps": ch["steps"],
             "tier": dom.tier}  # fmt: skip
+    if tok is None:
+        return item
+    assert dom.tier == "controlled", domain
+    cf = counterfactuals(tok, item, word, dom, sc, ch, dom2, render_state, knobs["filler"])
+    return None if cf is None else {**item, **cf}
 
 
 def examples(seed: int) -> None:
@@ -378,10 +519,18 @@ BAND = (0.85, 0.95)
 
 
 def make(
-    name: str, n: int, words: list[str], domains: list[str], formats: list[str], levels: list[int], seed: int
+    name: str,
+    n: int,
+    words: list[str],
+    domains: list[str],
+    formats: list[str],
+    levels: list[int],
+    seed: int,
+    counterfactuals: bool = False,
 ) -> None:
     """n items per word x level, spread evenly over the domain x format combinations that can carry the word, with
-    each digit answer capped at twice its uniform share (write-once)."""
+    each digit answer capped at twice its uniform share (write-once). With counterfactuals (controlled-tier domains
+    only), every item also has its token-aligned C and O."""
     import collections
     import math
 
@@ -389,6 +538,12 @@ def make(
     out.mkdir(parents=True, exist_ok=True)
     assert not (out / "items.jsonl").exists(), f"{out} exists; data sets are written once"
     rng = random.Random(seed)
+    tok = None
+    if counterfactuals:
+        from bridge_jspace.tokens import load_tokenizer
+
+        assert all(DOMAINS[d].tier == "controlled" for d in domains), "counterfactuals need controlled-tier domains"
+        tok = load_tokenizer()
     items, seen = [], set()
     for word in words:
         for level in levels:
@@ -402,7 +557,7 @@ def make(
                     if got >= n or (d, f) in dead:
                         continue
                     for _ in range(30):  # a combination that yields nothing in 30 draws cannot carry this word
-                        it = make_item(rng, word, d, f, LEVELS[level], got)
+                        it = make_item(rng, word, d, f, LEVELS[level], got, tok)
                         if it is None or (it["context"], it["question"]) in seen:
                             continue
                         if it["kind"] == "digit" and answers[it["answer"]] >= cap:
@@ -420,7 +575,7 @@ def make(
     (out / "items.jsonl").write_text("".join(json.dumps(it) + "\n" for it in items))
     meta = {"set": name, "n_per_word_level": n, "words": words, "domains": domains, "formats": formats,
             "levels": {k: LEVELS[k] for k in levels}, "seed": seed, "generator": "scripts/tasks_v2.py make",
-            "n_items": len(items)}  # fmt: skip
+            "counterfactuals": counterfactuals, "n_items": len(items)}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(meta, indent=2) + "\n")
     print("wrote", out / "items.jsonl", len(items), "items")
 
@@ -437,12 +592,19 @@ def judge(text: str, answer: str, kind: str) -> bool:
 
 
 def prompts_for(tok, it: dict) -> list[dict]:
-    """The whole question and every step alone, as token ids, with their answers."""
+    """The whole question and every step alone (and C and O, if the item has them), as token ids, with answers."""
     out = [{"part": "whole", "question": it["question"], "answer": it["answer"], "kind": it["kind"]}]
     out += [{"part": f"step{i}", **{k: s[k] for k in ("question", "answer", "kind")}, "source": s["source"]}
             for i, s in enumerate(it["steps"], 1)]  # fmt: skip
+    if "cf_context" in it:
+        out += [{"part": "cf", "question": it["cf_question"], "answer": it["cf_answer"], "kind": it["kind"],
+                 "_context": it["cf_context"]},
+                {"part": "off", "question": it["question"], "answer": it["answer"], "kind": it["kind"],
+                 "_context": it["off_context"]}]  # fmt: skip
     for p in out:
-        p["ids"] = S.ids(tok, render(tok, {**it, "_question": p["question"]}))
+        p["ids"] = S.ids(
+            tok, render(tok, {**it, "context": p.pop("_context", it["context"]), "_question": p["question"]})
+        )
     return out
 
 
@@ -496,10 +658,14 @@ def competence(set_name: str, run: str, why: str) -> None:
             sel = [r for r in whole if r["word"] == word and r["level"] == level]
             steps_ok = collections.defaultdict(list)
             for r in rows:
-                if r["word"] == word and r["level"] == level and r["part"] != "whole":
+                if r["word"] == word and r["level"] == level and r["part"].startswith("step"):
                     steps_ok[r["id"]].append(r["correct"])
             summary["by_word_level"][f"{word}/L{level}"] = {"n": len(sel), "whole": acc(sel),
                                                             "all_steps": acc([{"correct": all(v)} for v in steps_ok.values()])}  # fmt: skip
+            for part in ("cf", "off"):
+                got = [r for r in rows if r["word"] == word and r["level"] == level and r["part"] == part]
+                if got:
+                    summary["by_word_level"][f"{word}/L{level}"][part] = acc(got)
         in_band = [lv for lv in sorted({r["level"] for r in whole})
                    if BAND[0] <= summary["by_word_level"][f"{word}/L{lv}"]["whole"] <= BAND[1]]  # fmt: skip
         summary["pick"][word] = in_band[-1] if in_band else None  # the hardest level inside 85-95%
@@ -522,10 +688,13 @@ if __name__ == "__main__":
     ap.add_argument("--levels", nargs="+", type=int, default=list(LEVELS))
     ap.add_argument("--name")
     ap.add_argument("--why")
+    ap.add_argument("--counterfactuals", action="store_true", help="make: token-aligned C and O (controlled tier)")
     args = ap.parse_args()
     if args.stage == "examples":
         examples(args.seed)
     elif args.stage == "make":
-        make(args.set_name, args.n, args.words, args.domains, args.formats, args.levels, args.seed)
+        make(
+            args.set_name, args.n, args.words, args.domains, args.formats, args.levels, args.seed, args.counterfactuals
+        )
     else:
         competence(args.set_name, args.name, args.why)
