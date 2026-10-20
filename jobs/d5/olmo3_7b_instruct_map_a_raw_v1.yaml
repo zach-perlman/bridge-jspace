@@ -1,0 +1,31 @@
+id: olmo3_7b_instruct_map_a_raw_v1
+thread: D5
+gpus: 1
+est_gpu_hours: 0.3
+mem_gb: 25
+depends_on:
+- olmo3_7b_instruct_competence_raw_v1
+command: BJ_TARGET=olmo-3-7b-instruct BJ_FORMAT=raw uv run python scripts/suite_split.py manifest_map --name olmo3_7b_instruct_map_a_raw_v1
+  --why "D5b ladder E3 map on olmo-3-7b-instruct (raw)" --families BL BR RL RR && BJ_TARGET=olmo-3-7b-instruct BJ_FORMAT=raw
+  uv run python scripts/suite_split.py run_map --name olmo3_7b_instruct_map_a_raw_v1
+question: At which lens layers does copying C's question-token residual move olmo-3-7b-instruct's answer (the window)?
+why_it_matters: 'Defines the copy-split window per checkpoint, the same way on each, so depth is matched. D5b /
+  claim C2 (memory vs prompt: recall needs the J-space, prompt lookups go around it). If the split is present in
+  the base model, post-training is not what creates it (the ''around'' route is a pretraining mechanism, e.g. binding/lookback
+  pointers); if it first appears at SFT/DPO/RLVR, the split is a property of post-trained chat models. A null on
+  Instruct with a passing gate says the Qwen result does not generalise to OLMo.'
+hypotheses:
+  H_window: a window exists for the 2x2 within lens layers 15-24 (frac >= 0.10, above O)
+  H_late: the window starts only at 21-24 (the smoke read the bridge from layer 21)
+decision_rule: suite_split's frac rule (mean frac >= 0.10 and above O's by paired bootstrap); no window -> no parts
+  run
+controls:
+- O's copy (off-path) at every layer
+n: 150 scenes per family group
+seeds:
+- 0
+notes: 'DRAFT for a later night (not enqueued). Needs the D5b port diff applied first (pins: frozen lens per target
+  and BJ_FORMAT; chat.chat_text raw branch; suite_split MAP_LAYERS = lens layers and COMPETENCE fallback). Disk:
+  model snapshots in the box''s HF cache (/ephemeral/hf). Map layers = the 11 lens layers (diff). 9B map took 406
+  s. No examples_command: suite_split.py has no examples stage yet (none of suite_v1, ablate_pilot, read_write,
+  suite_split has one).'

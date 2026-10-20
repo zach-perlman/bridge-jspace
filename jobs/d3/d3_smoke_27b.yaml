@@ -1,0 +1,32 @@
+id: d3_smoke_27b
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.1
+depends_on: []
+command: >-
+  uv run python scripts/pointer_v1.py manifest --set dev --name d3_smoke_27b_comp --limit 2
+  --why "D3 smoke: competence code path on the 27B"
+  && uv run python scripts/pointer_v1.py competence --name d3_smoke_27b_comp
+  && uv run python scripts/pointer_swap.py manifest --name d3_smoke_27b --set dev --levels e5f0 --n 1 --layer-step 8
+  --no-eligibility --why "D3 smoke: every stage on the 27B, hooks, no-op and positive controls, timing"
+  && uv run python scripts/pointer_swap.py run --name d3_smoke_27b
+  && uv run python scripts/pointer_swap.py summarise --name d3_smoke_27b
+examples_command: uv run python scripts/pointer_swap.py examples --name d3_smoke_27b
+question: Do pointer_v1's competence and pointer_swap's run / summarise / examples stages run end to end on the 27B,
+  with the base-into-base patch a no-op and the layer-0 all-position patch reproducing the source, and how many edited
+  reads per second does the A100 give?
+why_it_matters: Code-path check and the throughput that sizes d3_pilot_27b and d3_main_27b (estimates below assume ~22
+  reads/s); no claim.
+hypotheses:
+  H-ok: 'self_noop same top 12/12 (max |dlogit| <= 0.5, bf16 batching); layer0_all_reproduces_source 12/12; >= 15
+    edited reads/s'
+  H-broken: 'any self_noop or layer-0 mismatch: hook placement wrong; stop the queue'
+decision_rule: 'Pilot proceeds only if self_noop and layer0_all_reproduces_source are 12/12 (summary.json checks).'
+controls:
+- 'base patched into base at the middle layer (must be a no-op)'
+- 'dissoc source patched at every position at layer 0 (must give the source run''s own answer)'
+n: 1 scene per domain at dev e5f0 (12 cases), layers every 8th; competence 2 items per dev file
+seeds: [0]
+notes: 0.8B smoke (same commands, BJ_TARGET=qwen3.5-0.8b, n=2 per domain, 6 layers) passed 24/24 on both checks,
+  2376 edited reads in ~26 s.

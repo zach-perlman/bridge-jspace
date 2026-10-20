@@ -1,0 +1,32 @@
+id: olmo3_7b_instruct_parts_a_chat_v1
+thread: D5
+gpus: 1
+est_gpu_hours: 0.5
+mem_gb: 30
+depends_on:
+- olmo3_7b_instruct_map_a_chat_v1
+command: BJ_TARGET=olmo-3-7b-instruct BJ_FORMAT=chat uv run python scripts/suite_split.py manifest_parts --name
+  olmo3_7b_instruct_parts_a_chat_v1 --map olmo3_7b_instruct_map_a_chat_v1 --why "D5b ladder E3 parts on olmo-3-7b-instruct
+  (chat)" --calibrate && BJ_TARGET=olmo-3-7b-instruct BJ_FORMAT=chat uv run python scripts/suite_split.py run_parts
+  --name olmo3_7b_instruct_parts_a_chat_v1
+question: In olmo-3-7b-instruct, is the J-space part of the copy concentrated for recall-used bridges and not for
+  lookup-used ones?
+why_it_matters: 'Third, lens-free-copy measure of the split (27B: lookups 0.3-0.4, recalls 1.4-1.9, null 0.15-0.4).
+  D5b / claim C2 (memory vs prompt: recall needs the J-space, prompt lookups go around it). If the split is present
+  in the base model, post-training is not what creates it (the ''around'' route is a pretraining mechanism, e.g.
+  binding/lookback pointers); if it first appears at SFT/DPO/RLVR, the split is a property of post-trained chat
+  models. A null on Instruct with a passing gate says the Qwen result does not generalise to OLMo.'
+hypotheses:
+  H_split: concentration RR, BR >= 2x RL, BL with non-overlapping CIs
+  H_depth: every family rises with depth, no family difference at matched depth (the 9B pattern)
+decision_rule: suite_split's concentration rule, plus the random-dictionary null (--calibrate) per family
+controls:
+- random-dictionary OMP of the same size (null)
+- equal-sized matched piece
+n: 150 scenes per family group
+seeds:
+- 0
+notes: 'DRAFT for a later night (not enqueued). Needs the D5b port diff applied first (pins: frozen lens per target
+  and BJ_FORMAT; chat.chat_text raw branch; suite_split MAP_LAYERS = lens layers and COMPETENCE fallback). Disk:
+  model snapshots in the box''s HF cache (/ephemeral/hf). 9B parts took 1141 s. No examples_command: suite_split.py
+  has no examples stage yet (none of suite_v1, ablate_pilot, read_write, suite_split has one).'

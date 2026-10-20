@@ -1,0 +1,47 @@
+id: d3_main_27b
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 1.2
+depends_on:
+- d3_competence_27b
+- d3_pilot_27b
+command: >-
+  uv run python scripts/pointer_swap.py manifest --name d3_main_27b --set main --n 25
+  --layers 16 18 20 22 24 26 28 30 32 34 36 38 40 42 44 46 48 50 52 54 56 58 60
+  --competence d3_competence_27b
+  --why "D3 main: the three-way dissociation patch (identity / position / value) on main items, every 2nd layer 16-60"
+  && uv run python scripts/pointer_swap.py run --name d3_main_27b
+examples_command: uv run python scripts/pointer_swap.py examples --name d3_main_27b
+question: >-
+  On held-out main items (N=5, four domains, RL/DL/RR on the same scenes), what does patching the dissoc
+  source's residual (question / final / last / both; every 2nd layer 16-60 and the early, mid and transit windows)
+  carry into the base - the bridge's identity, a pointer to its statement's position, or the answer value?
+why_it_matters: 'The headline D3 test of the "around" route (C2). position at 44-52 => read-without-write is explained
+  by a pointer the lens cannot express (H-pointer, the longshot); identity => a non-lens identity code (fit it, D3
+  fit stage); value => the lookup is finished before 44, so the "around" result at 44-52 is about timing and the
+  write test belongs earlier (the 27B''s 16-28 pushes, D4); none => the bridge is carried elsewhere (statements, D1).'
+hypotheses:
+  H-pointer: 'RL final/last transit (44-52): position >= 50% [Wilson lower bound > identity and value upper bounds],
+    RR position <= 10%, DL position >= 50%; by slot: position strongest for first/last, weaker in the middle'
+  H-word: 'RL final/last transit: identity >= 50%, position <= 20%, value <= 20%'
+  H-value: 'RL final/last transit: value >= 50%; last group value earlier (lower layer) than final'
+  H-none: 'RL final transit changes < 20%'
+  prior: 'Agent prior: value 0.4, position 0.3, identity 0.3 (to be updated by the pilot before enqueuing).'
+decision_rule: 'As d3_pilot_27b (scripts/pointer_swap.py docstring), applied to main items: primary cell RL x final x
+  transit window (44-52) x dissoc, pooled over domains; supported hypothesis = the verdict (position -> H-pointer,
+  identity -> H-word, value -> H-value; none/damage/mixed -> inconclusive). Secondary, reported not decisive: the same
+  rule for group last and both, per layer, per domain, per queried slot (first/middle/last), DL and RR. A verdict that
+  holds in fewer than 3 of 4 domains is reported as domain-dependent.'
+controls:
+- 'same source (no-op under every hypothesis): damage'
+- 'rand (matched-norm random direction): chance bar'
+- 'other (another domain''s item at matched norm): realistic null / domain-general positional code'
+- 'context digits predicted by no hypothesis: per-digit chance inside the runs'
+- 'self no-op and layer-0 all-position reproduction: hook checks (run invalid if either < 100% top agreement)'
+n: 25 scenes per domain x 4 domains = 100 per family (300 cases); Wilson half-width ~10 points at 50%
+seeds: [0]
+notes: 'Reads per case: 3 + 23 layers x 4 groups x 2 + 12 x 4 x 2 + 3 windows x 4 x 2 = 307 -> 92k reads; at ~22/s
+  (A100 estimate, see d3_pilot_27b) ~70 min + load -> 1.2 h. Enqueue only after a human has read the pilot (the queue
+  would run it as soon as the pilot is done). If the pilot shows the action is all above 44, drop layers 16-30 and
+  raise n to 40 per domain at the same cost.'

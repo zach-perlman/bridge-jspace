@@ -1,0 +1,33 @@
+id: d3_competence_27b
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.6
+depends_on: []
+command: >-
+  uv run python scripts/pointer_v1.py manifest --set main dev --name d3_competence_27b --limit 100
+  --why "D3 gate: can the 27B do pointer_v1's RL/DL/RR, every source and each step alone, in chat format?"
+  && uv run python scripts/pointer_v1.py competence --name d3_competence_27b
+question: Can Qwen3.6-27B answer pointer_v1's base prompts, the three source prompts (dissoc, same, redigit) and each
+  step alone (cue -> entity; lookup with the entity named / recalled fact), per domain (animals, planets, elements,
+  months), family (RL, DL, RR) and level (main N=5 first 100 per file; dev N=3, N=5, N=5 + 4 filler, 60 per file)?
+why_it_matters: Gate for d3_pilot_27b / d3_main_27b. The patching verdicts are only interpretable on items where the
+  model does the lookup and the recall unedited; new domains (planets order, atomic numbers, month numbers) and the
+  card-in-locker wording are untested on the 27B.
+hypotheses:
+  H-competent: 'clean, sources and steps >= 95% in every animals cell (suite_v1 2x2: 99.5-100%); >= 85% (Wilson lower
+    bound) in every other domain x family cell'
+  H-new-domain-fails: 'some planets/elements/months RR cell < 85%: the recalled fact (order, atomic number, month
+    number) is answered as a word or wrongly; that domain is then dropped from the patching runs'
+  prior: 'Agent prior: H-competent 0.7; most likely failure RR on months (answers a month name) or planets (ordinal).'
+decision_rule: 'A (domain, family) cell enters the patching runs iff its clean Wilson 95% lower bound >= 0.85
+  (suite_v1 rule); eligibility per item = every prompt of the item right (base, dissoc, same, redigit, hop1, hop2).
+  The pilot/main sample scenes eligible in all three families. Report answer read vs greedy agreement (must be >= 99%).'
+controls:
+- 'each step alone (hop1 cue -> entity, hop2 lookup / recall): separates composition failures from missing facts'
+- 'answer read vs 8-token greedy: validates the one-forward read the patching runs use'
+n: 100 per (domain, family) in main (1200 items) + 60 per (domain, family, level) in dev (2160 items); ~18k prompts
+seeds: [701, 702]
+notes: Greedy, no sampling seeds; item seeds are pointer_v1's (main 701, dev 702). Estimate from the 0.8B smoke (1024
+  prompts, 34 s generate on the A100) does not scale (launch-bound); used suite_v1/exp20-sized runs on the 27B
+  (~2-4 s per batch of 64 x 8 tokens on an A100) -> ~300 batches + reads ~0.5-0.6 h.
