@@ -1,6 +1,7 @@
-"""ablate_v2: the J-space knock-out, version 2 (Zach, 2026-10-21). Removals and controls are in
-src/bridge_jspace/ablate.py (decided with Zach on 2026-10-21); one model load runs every band x condition on every
-prompt, sharing the unedited forward. TF32 is on for the OMP's matmuls (benchmark 2026-10-21: 5.1x, same atoms).
+"""ablate_v2: the J-space knock-out, version 2 (Zach, 2026-10-20). Removals and controls are in
+src/bridge_jspace/ablate.py (decided with Zach on 2026-10-20); one model load runs every band x condition on every
+prompt, sharing the unedited forward. TF32 is on for the OMP's matmuls (benchmark 2026-10-20: 5.1x, same atoms).
+--positions restricts every condition to the facts (context) or to the question and after (question).
 
 Plans (--plan):
   v1check   ablate_pilot v1's configuration (layers 32/36/40, the lens dictionary and v1's Gaussian random dictionary,
@@ -149,6 +150,21 @@ def bridge_positions(tok, ids: list[int], word: str) -> list[int]:
     ]
 
 
+def question_start(tok, ids: list[int]) -> int:
+    """The first token of the prompt's question: the sentence ending in the user turn's last '?' (it starts after the
+    last '. ' or line break before it). Positions from here on (question, instruction, template, 'Answer:') are the
+    'question' set of --positions; earlier ones (template prefix, the facts) are 'context'."""
+    pieces = [tok.decode([i]) for i in ids]
+    starts, pos = [], 0
+    for piece in pieces:
+        starts.append(pos)
+        pos += len(piece)
+    text = "".join(pieces)
+    q_end = text.rindex("?", 0, text.rindex("<|im_end|>"))
+    q_start = max(text.rfind(". ", 0, q_end) + 2, text.rfind("\n", 0, q_end) + 1)
+    return next(i for i, s in enumerate(starts) if s + len(pieces[i]) > q_start)
+
+
 def make_bands(plan: str, n_layers: int, spec: list[str], workspace: int | None = None) -> list[tuple[int, ...]]:
     if plan == "v1check":
         return [(32, 36, 40)]
@@ -206,7 +222,7 @@ def main(args) -> None:
                 "git_commit": commit, "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
                 "plan": args.plan, "bands": [label(b) for b in bands], "conditions": args.conditions,
                 "families": args.families, "kinds": args.kinds, "n_per_family": args.n, "batch": args.batch,
-                "tf32": not args.no_tf32, "workspace_start": args.workspace, "wide": WIDE, "seeds": {"rotation": f"{SEED_ROT}+layer", "rotated_dictionary": f"{SEED_DICT}+layer",
+                "tf32": not args.no_tf32, "workspace_start": args.workspace, "positions": args.positions, "wide": WIDE, "seeds": {"rotation": f"{SEED_ROT}+layer", "rotated_dictionary": f"{SEED_DICT}+layer",
                 "gauss": f"{SEED_GAUSS}+layer"}, "own_cos": OWN_COS, "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 
@@ -227,6 +243,10 @@ def main(args) -> None:
         prompts += country_prompts(tok, [f for f in args.families if f in ("R", "B")], args.n)
     for p in prompts:
         p["skip"] = bridge_positions(tok, p["ids"], p["bridge"]) if p["bridge"] else []
+        q0 = question_start(tok, p["ids"])
+        p["outside"] = {"all": [], "context": list(range(q0, len(p["ids"]))), "question": list(range(q0))}[
+            args.positions
+        ]
     print(len(prompts), "prompts;", len(bands), "bands;", len(args.conditions), "conditions", flush=True)
 
     lens = JLens(model, pins.FROZEN_LENS)
@@ -287,13 +307,14 @@ def main(args) -> None:
                     edits = {}
                     for la in band:
                         if cond.startswith("paper10"):
-                            rs = [RowSettings(protected=protected[i]) for i in range(len(chunk))]
+                            rs = [RowSettings(skip=p["outside"], protected=protected[i]) for i, p in enumerate(chunk)]
                         elif cond == "keep_own":
-                            rs = [RowSettings(banned=own_rows(p["bridge"], la) if p["bridge"] else None) for p in chunk]
+                            rs = [RowSettings(skip=p["outside"], banned=own_rows(p["bridge"], la) if p["bridge"] else None)
+                                  for p in chunk]  # fmt: skip
                         elif cond == "skip_subject":
-                            rs = [RowSettings(skip=p["skip"]) for p in chunk]
+                            rs = [RowSettings(skip=sorted(set(p["skip"]) | set(p["outside"]))) for p in chunk]
                         else:
-                            rs = [RowSettings() for _ in chunk]
+                            rs = [RowSettings(skip=p["outside"]) for p in chunk]
                         method = "top" if cond.startswith("paper10") else "omp"
                         d = rdict[la] if cond.endswith("_rdict") else gauss[la] if cond == "gauss" else dic[la]
                         edits[la] = removal_edit(method, d, rs, rotation=rot[la] if cond.endswith("_rot") else None)
@@ -390,4 +411,7 @@ if __name__ == "__main__":
     ap.add_argument("--tasks-competence", default=None, help="its competence run (eligibility: every part right)")
     ap.add_argument("--tasks-words", nargs="*", default=None, help="tasks_v2 words to include (default: all)")
     ap.add_argument("--workspace", type=int, default=None, help="depth plan: first layer of the workspace range")
+    ap.add_argument("--positions", default="all", choices=["all", "context", "question"],
+                    help="where to remove: every position, only before the question (the facts), or only from the "
+                         "question on (question, instruction, 'Answer:'); see question_start")  # fmt: skip
     main(ap.parse_args())
