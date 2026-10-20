@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Quick experiment L5: Qwen3.5-122B-A10B (FP8) after the 27B quick runs (L3) finish.
 set -euo pipefail
-PREV=$(ls /workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd-computed-*.log)
+PREV=$(ls /workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd-twohop-*.log)
 while ! grep -q '^EXIT' "$PREV"; do sleep 20; done
 cd /workspace/bridge-jspace
 set -a; . ./.env; set +a
