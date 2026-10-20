@@ -1,0 +1,56 @@
+{
+  "lens_sha256": "323733a9bec124c7a037a6839191bd545eb00d1d47bfffde6b92e1e638117408",
+  "lens_file": "cache/gemma-4-31b-it-refit/lenses/jpp/gemma-4-31B-it_jpp_lens.pt",
+  "recipe": "safety-research/jpp_lens@93f02cd: router (64 prompts), fit-shard (64 wikitext texts x 128 tokens, skip 16, target offset -1, LRP rlens, 8 experts, 16 rows per pass), merge-experts, fit-weights (fit:0, items graded on google/gemma-4-31B-it), evaluate (held-out:0); source layers 24-45 every 3rd",
+  "commands": [
+    "scripts/lens_fit/gemma_it_router.sh",
+    "scripts/lens_fit/gemma_it_fit_full.sh (failed at grading, after fit-shard and merge-experts)",
+    "scripts/lens_fit/gemma_it_fit_rest.sh"
+  ],
+  "seed": 0,
+  "fit_items_kept": "304/496 (correctness filter)",
+  "held_out": {
+    "refit": {
+      "association/pass@1": 0.0122,
+      "multihop/pass@1": 0.1,
+      "multilingual/pass@1": 0.0721,
+      "poetry/pass@1": 0.375,
+      "typo/pass@1": 0.7792,
+      "association/pass@10": 0.061,
+      "multihop/pass@10": 0.44,
+      "multilingual/pass@10": 0.2788,
+      "poetry/pass@10": 0.875,
+      "typo/pass@10": 0.987,
+      "macro/pass@1": 0.2677,
+      "macro/pass@10": 0.5284
+    },
+    "pooled": {
+      "association/pass@1": 0.0,
+      "multihop/pass@1": 0.06,
+      "multilingual/pass@1": 0.0433,
+      "poetry/pass@1": 0.0,
+      "typo/pass@1": 0.2208,
+      "association/pass@10": 0.0244,
+      "multihop/pass@10": 0.3,
+      "multilingual/pass@10": 0.1875,
+      "poetry/pass@10": 0.5,
+      "typo/pass@10": 0.6364,
+      "macro/pass@1": 0.0648,
+      "macro/pass@10": 0.3297
+    },
+    "base_model_jpp": {
+      "association/pass@1": 0.0,
+      "multihop/pass@1": 0.0,
+      "multilingual/pass@1": 0.0,
+      "poetry/pass@1": 0.0,
+      "typo/pass@1": 0.026,
+      "association/pass@10": 0.1098,
+      "multihop/pass@10": 0.46,
+      "multilingual/pass@10": 0.2356,
+      "poetry/pass@10": 0.375,
+      "typo/pass@10": 0.7013,
+      "macro/pass@1": 0.0052,
+      "macro/pass@10": 0.3763
+    }
+  }
+}
