@@ -244,6 +244,9 @@ def main(args) -> None:
                 rows_out.append({"family": p["family"], "id": p["id"], "kind": p["kind"], "band": "-", "condition": "none",
                                  "correct": int(clean[row].argmax()) == p["tok"], "logp": float(base_logp[row])})  # fmt: skip
             protected = [row_of[t][row_of[t] >= 0] for t in clean.topk(10, dim=1).indices]
+            # does the protected set (clean top-10 at the answer position) shield the bridge itself? (logged per row)
+            shields = [bool(p["bridge"]) and bool(set(model.surface_ids(p["bridge"])) & set(t.tolist()))
+                       for p, t in zip(chunk, clean.topk(10, dim=1).indices, strict=True)]  # fmt: skip
             for band in bands:
                 tb = time.time()
                 for cond in conditions_for(band, args.conditions):
@@ -265,7 +268,7 @@ def main(args) -> None:
                     for row, p in enumerate(chunk):
                         rows_out.append({"family": p["family"], "id": p["id"], "kind": p["kind"], "band": label(band),
                                          "condition": cond, "correct": int(logits[row].argmax()) == p["tok"],
-                                         "logp": float(logp[row])})  # fmt: skip
+                                         "logp": float(logp[row]), "bridge_protected": shields[row]})  # fmt: skip
                 band_seconds[label(band)] += time.time() - tb
             print(f"{len(rows_out)} rows, {time.time() - t0:.0f}s", flush=True)
     write_jsonl(out_dir / "rows.jsonl", rows_out)
