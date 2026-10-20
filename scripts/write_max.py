@@ -1,20 +1,38 @@
-"""write_max: the strongest lens-based write we can make, before any "the lens cannot write X" claim (Zach, 2026-10-20;
-Phase 1d of the breadth plan). On read_write's cases (suite map_A8_v1, countries map_v1), at the transit layers one at
-a time and all at once, on three position sets, with three ways to write X's lens direction in place of the bridge I's:
+"""write_max v2: the strongest fair write we can make, before any "the lens cannot write X" claim (Zach, 2026-10-20;
+Phase 1d of the breadth plan; v2 after the steering review the same evening, decided with Zach: a non-lens direction,
+breakage gating, a contiguous band, an injection control and entity-clustered intervals).
 
-  positions   question (the question's tokens after C's changed ones, through the end: read_write's set), final (the
-              answer-reading position only), all (every position of the prompt, the context statements included)
-  additive    alpha x the residual's norm x unit(v_X - v_I), alpha in {0.05, 0.1, 0.2, 0.4, 0.8} (natural_rw's scale)
-  swap        swap the residual's coefficients on v_I and v_X (least squares in their span), times 1, 2, 4
-  transplant  the J-space part of C's residual in place of the clean one's (25-atom OMP over the lens dictionary,
-              ablate's omp_fit, TF32), times 1, 2
-  copy        C's whole residual difference (the lens-free reference: how much the position set can move the answer)
-Controls: every lens-based write with each row replaced by a random direction of the same norm (null_rows).
-Scored by suite_split's answer read: flips (top token = X's answer) and frac (share of the way to C).
-Rule (fixed before the run, breadth plan v2): C2 holds if M->P's (RL) maximum lens flips over every position set x
-write x layer x strength is <= its control's maximum + 5 points, while M->M's (RR) is >= 4x its control's maximum.
+Cases: suite map_A8_v1 (BL BR RL RR) and countries map_v1, or a tasks_v2 set made with counterfactuals (--tasks: PP PM
+MP MM by default, compared at one level). Each case: the clean prompt with bridge I, its C prompt with bridge X.
 
-python scripts/write_max.py --name N --why W [--n 60] [--families BL BR RL RR] [--layers 32 34 36 38 40]
+Sites: position sets question (the question's tokens after C's changed ones, through the end), final (the answer-
+reading position only), all (every position); layers: every --single-step-th layer of the band --band (28-40 by
+default: where memory-final families break under the depth sweep), and every layer of the band at once ("joint").
+Writes (each at every site, each with a matched-norm random control: every row replaced by a random direction of the
+same norm):
+  copy         C's whole residual difference (lens-free positive control: can this site move the answer at all?)
+  lens_add     alpha x |h| x unit(v_X - v_I), alpha in ALPHAS (v = unit J-lens vectors)
+  lens_swap    swap the residual's least-squares coefficients on v_I and v_X, times SWAPS
+  lens_transpl the J-space part of C's residual in place of the clean one's (25-atom OMP over the lens dictionary)
+  dom_add      alpha x |h| x unit(mu_X - mu_I): mu_e = the mean clean residual (over the site's positions) of other
+               cases whose bridge is e, from other scenes only (cross-fitted: the case's own scene is never used)
+  dom_natural  (mu_X - mu_I) itself, times 1 and 2 (an in-distribution size)
+Injection control (layers --early, question positions): lens_add and embed_add (alpha x |h| x unit(E_X - E_I), the
+input-embedding difference: planting the token) at ALPHAS_EARLY. If embed_add flips as often as lens_add there, an
+early "write" is the model re-reading an injected token, not a written bridge.
+Scored by suite_split's answer read: role b (top token = C's answer), A (the clean answer), other.
+Breakage gate: a cell (write x site x strength) counts only if its random control keeps the clean answer on >= 95% of
+cases; every reported cell carries its "other" rate. Intervals: 95% bootstrap over bridge entities.
+
+Rules (fixed before the run, 2026-10-20):
+  C2 holds at the band if M->P's (RL / MP) best gated lens write (lens_add, lens_swap, lens_transpl; single or joint)
+  flips <= its control + 5 points, while M->M's (RR / MM) flips >= 4x its control (and >= 10%).
+  Reading of M->P's dom writes (only if C2 holds): dom flips >= its control + 20 points -> "linearly writable at these
+  sites, but not along the lens"; dom within control + 5 and copy >= 50% -> "no single direction found here writes it
+  (the copy does)"; copy < 50% -> "these sites do not carry M->P's bridge; look elsewhere".
+  Injection: early lens_add's best flips within 10 points of embed_add's -> early lens writes are token injection.
+
+python scripts/write_max.py --name N --why W [--n 60] [--families ...] [--band 28-40] [--tasks SET --tasks-competence RUN]
 """
 
 from __future__ import annotations
@@ -22,6 +40,7 @@ from __future__ import annotations
 import argparse
 import collections
 import json
+import random
 import statistics
 import subprocess
 import sys
@@ -42,8 +61,12 @@ from scripts.exp04_brew_parts import AddRows, null_rows
 
 RESULTS = pins.RESULTS_DIR / "write_max"
 ALPHAS = (0.05, 0.1, 0.2, 0.4, 0.8)
+ALPHAS_EARLY = (0.2, 0.4, 0.8, 1.6)
 SWAPS = (1.0, 2.0, 4.0)
 TRANSPLANTS = (1.0, 2.0)
+NATURAL = (1.0, 2.0)
+KEEP_GATE = 0.95
+LENS_WRITES = ("lens_add", "lens_swap", "lens_transpl")
 
 
 def swap_delta(h: torch.Tensor, vi: torch.Tensor, vx: torch.Tensor) -> torch.Tensor:
@@ -51,6 +74,24 @@ def swap_delta(h: torch.Tensor, vi: torch.Tensor, vx: torch.Tensor) -> torch.Ten
     V = torch.stack([vi, vx]).double()  # [2, d]
     coefs = torch.linalg.solve(V @ V.T, V @ h.double().T).T  # [P, 2]
     return ((coefs[:, :1] - coefs[:, 1:]) * (vx - vi).double()).float()
+
+
+def entity_ci(flags: list[tuple[str, bool]], reps: int = 1000, seed: int = 0) -> tuple[float, float]:
+    """95% bootstrap interval of a rate, resampling bridge entities (items sharing a bridge are not independent)."""
+    by = collections.defaultdict(list)
+    for e, f in flags:
+        by[e].append(f)
+    groups = list(by.values())
+    rng = random.Random(seed)
+    stats = sorted(
+        sum(sum(g) for g in d) / sum(len(g) for g in d)
+        for d in ([groups[rng.randrange(len(groups))] for _ in groups] for _ in range(reps))
+    )
+    return stats[int(0.025 * reps)], stats[int(0.975 * reps) - 1]
+
+
+def pool_of(c: dict) -> str:
+    return c.get("domain") or ("countries" if c["family"].startswith("country") else "suite")
 
 
 @torch.no_grad()
@@ -64,20 +105,27 @@ def main(args) -> None:
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
     torch.backends.cuda.matmul.allow_tf32 = True
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
-    layers = tuple(args.layers)
+    lo, hi = (int(x) for x in args.band.split("-"))
+    band = tuple(range(lo, hi + 1))
+    singles = band[:: args.single_step]
+    early = tuple(args.early)
+    rec_layers = tuple(sorted(set(band) | set(early)))
     manifest = {"run": args.name, "why": args.why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "git_commit": commit, "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
-                "layers": list(layers), "alphas": list(ALPHAS), "swaps": list(SWAPS), "transplants": list(TRANSPLANTS),
+                "band": list(band), "single_layers": list(singles), "early_layers": list(early), "possets": args.possets,
+                "alphas": list(ALPHAS), "alphas_early": list(ALPHAS_EARLY), "swaps": list(SWAPS),
+                "transplants": list(TRANSPLANTS), "natural": list(NATURAL), "keep_gate": KEEP_GATE,
                 "families": args.families, "countries": args.countries, "n_per_family": args.n, "tf32": True,
-                "tasks": [args.tasks, args.tasks_competence],
-                "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
+                "tasks": [args.tasks, args.tasks_competence, args.tasks_level],
+                "doc": (__doc__ or "").split("\n\n", 1)[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     model = load_model()
     tok = model.tokenizer
     lens = JLens(model, pins.FROZEN_LENS)
     letters = model.letter_token_ids()
     wg = model.hf.lm_head.weight[letters].float() * model.norm_gain()
-    dic = {la: LensDictionary(wg, lens.J(la)) for la in layers}
+    dic = {la: LensDictionary(wg, lens.J(la)) for la in band}
+    emb = model.hf.get_input_embeddings().weight
     if args.tasks:
         cases = RW.tasks_cases(tok, args.n, args.tasks, args.tasks_competence, args.families, args.tasks_level)
         assert cases, "no tasks_v2 cases"
@@ -86,83 +134,192 @@ def main(args) -> None:
         cases += RW.country_cases(tok, args.n) if args.countries else []
     print(len(cases), "cases", flush=True)
     t0 = time.time()
+
+    def possets_of(c: dict) -> dict[str, list[int]]:
+        n_tok = len(c["read_ids"]["clean"])
+        sets = {"question": c["groups"]["question"], "final": [n_tok - 1], "all": list(range(n_tok))}
+        return {k: v for k, v in sets.items() if k in args.possets}
+
+    # pass 1: each case's clean residual, averaged over each site's positions, for the cross-fitted means mu_e
+    site_mean: list[dict] = []
+    for c in cases:
+        h = model.run(torch.tensor([c["read_ids"]["clean"]], device="cuda"), record=rec_layers)[1]
+        site_mean.append({(la, ps): h[la][pos].mean(0).cpu() for la in rec_layers for ps, pos in possets_of(c).items()})
+    sums: dict = {}
+    counts: collections.Counter = collections.Counter()
+    for c, m in zip(cases, site_mean, strict=True):
+        counts[(pool_of(c), c["bridge"])] += 1
+        for key, v in m.items():
+            k3 = (pool_of(c), c["bridge"], key)
+            sums[k3] = sums[k3] + v if k3 in sums else v.clone()
+    by_scene = collections.defaultdict(list)
+    for i, c in enumerate(cases):
+        by_scene[c.get("scene", c["id"])].append(i)
+
+    def mu(e: str, key: tuple, c: dict) -> torch.Tensor | None:
+        """Mean clean site residual of cases with bridge e in c's pool, c's own scene left out (None if < 2 left)."""
+        pool = pool_of(c)
+        own = [i for i in by_scene[c.get("scene", c["id"])] if cases[i]["bridge"] == e and pool_of(cases[i]) == pool]
+        n = counts[(pool, e)] - len(own)
+        if n < 2 or (pool, e, key) not in sums:
+            return None
+        s = sums[(pool, e, key)].clone()
+        for i in own:
+            s -= site_mean[i][key]
+        return (s / n).cuda()
+
     outcomes: list[dict] = []
+    dom_missing = 0
     for k, c in enumerate(cases):
         P.unedited_ld(model, c)
-        n_tok = len(c["read_ids"]["clean"])
-        possets = {"question": c["groups"]["question"], "final": [n_tok - 1], "all": list(range(n_tok))}
-        h = {s: model.run(torch.tensor([c["read_ids"][s]], device="cuda"), record=layers)[1] for s in ("clean", "cf")}
-        vecs = {la: lens.vectors(la, torch.tensor([model.concept_token(c["bridge"]), model.concept_token(c["cf_bridge"])],
-                                                  device="cuda")) for la in layers}  # fmt: skip
+        hs = {
+            s: model.run(torch.tensor([c["read_ids"][s]], device="cuda"), record=rec_layers)[1] for s in ("clean", "cf")
+        }
+        ti, tx = model.concept_token(c["bridge"]), model.concept_token(c["cf_bridge"])
+        vecs = {la: lens.vectors(la, torch.tensor([ti, tx], device="cuda")) for la in rec_layers}
+        e_dir = torch.nn.functional.normalize((emb[tx] - emb[ti]).float(), dim=-1)
         jobs: list[tuple[dict, dict]] = []
         joint: dict[tuple, dict[int, AddRows]] = collections.defaultdict(dict)
         gen = torch.Generator(device="cuda").manual_seed(20_000 + k)
 
-        def add(tags: dict, la: int, pos: list[int], delta: torch.Tensor, jobs=jobs, joint=joint) -> None:
-            jobs.append(({**tags, "layer": la}, {la: AddRows(delta, pos)}))
-            joint[tuple(sorted(tags.items()))][la] = AddRows(delta, pos)
+        def add(tags: dict, la: int, pos: list[int], delta: torch.Tensor, in_band: bool = True, jobs=jobs,
+                joint=joint, gen=gen) -> None:  # fmt: skip
+            """The write and its matched-norm random control at one layer (single-layer jobs at the band's single
+            layers and at early layers); band layers also go into the joint (every band layer at once) edit."""
+            for control, d in ((False, delta), (True, null_rows(delta, gen))):
+                t = {**tags, "control": control}
+                if not in_band or la in singles:
+                    jobs.append(({**t, "layer": la}, {la: AddRows(d, pos)}))
+                if in_band:
+                    joint[tuple(sorted(t.items()))][la] = AddRows(d, pos)
 
-        for pset, pos in possets.items():
-            for la in layers:
-                hc, hx = h["clean"][la][pos], h["cf"][la][pos]
+        missing = False
+        for pset, pos in possets_of(c).items():
+            for la in band:
+                hc, hx = hs["clean"][la][pos], hs["cf"][la][pos]
                 vi, vx = vecs[la][0], vecs[la][1]
-                add({"pos": pset, "write": "copy", "strength": 1.0, "control": False}, la, pos, hx - hc)
-                writes = {}
-                direction = torch.nn.functional.normalize(vx - vi, dim=-1)
+                norm = hc.norm(dim=-1, keepdim=True)
+                tags = {"pos": pset}
+                if la in singles:  # copy: single layers only (its joint version is C's whole run)
+                    jobs.append(({**tags, "write": "copy", "strength": 1.0, "control": False, "layer": la},
+                                 {la: AddRows(hx - hc, pos)}))  # fmt: skip
+                lens_dir = torch.nn.functional.normalize(vx - vi, dim=-1)
                 for a in ALPHAS:
-                    writes[("additive", a)] = a * hc.norm(dim=-1, keepdim=True) * direction
+                    add({**tags, "write": "lens_add", "strength": a}, la, pos, a * norm * lens_dir)
                 sd = swap_delta(hc, vi, vx)
                 for b in SWAPS:
-                    writes[("swap", b)] = b * sd
+                    add({**tags, "write": "lens_swap", "strength": b}, la, pos, b * sd)
                 td = omp_fit(dic[la], hx, 25) - omp_fit(dic[la], hc, 25)
                 for b in TRANSPLANTS:
-                    writes[("transplant", b)] = b * td
-                for (name, s), delta in writes.items():
-                    add({"pos": pset, "write": name, "strength": s, "control": False}, la, pos, delta)
-                    add({"pos": pset, "write": name, "strength": s, "control": True}, la, pos, null_rows(delta, gen))
+                    add({**tags, "write": "lens_transpl", "strength": b}, la, pos, b * td)
+                mx, mi = mu(c["cf_bridge"], (la, pset), c), mu(c["bridge"], (la, pset), c)
+                if mx is None or mi is None:
+                    missing = True
+                    continue
+                dom = (mx - mi).expand_as(hc)
+                dom_dir = torch.nn.functional.normalize(dom, dim=-1)
+                for a in ALPHAS:
+                    add({**tags, "write": "dom_add", "strength": a}, la, pos, a * norm * dom_dir)
+                for b in NATURAL:
+                    add({**tags, "write": "dom_natural", "strength": b}, la, pos, b * dom)
+        dom_missing += missing
+        if "question" in possets_of(c):
+            pos = possets_of(c)["question"]
+            for la in early:
+                hc = hs["clean"][la][pos]
+                norm = hc.norm(dim=-1, keepdim=True)
+                lens_dir = torch.nn.functional.normalize(vecs[la][1] - vecs[la][0], dim=-1)
+                for a in ALPHAS_EARLY:
+                    add({"pos": "question", "write": "early_lens_add", "strength": a}, la, pos, a * norm * lens_dir,
+                        in_band=False)  # fmt: skip
+                    add({"pos": "question", "write": "early_embed_add", "strength": a}, la, pos,
+                        a * norm * e_dir.expand_as(hc), in_band=False)  # fmt: skip
         for key, edits in joint.items():
             jobs.append(({**dict(key), "layer": "joint"}, dict(edits)))
+        start = len(outcomes)
         P.read_jobs(model, c, jobs, outcomes)
+        for o in outcomes[start:]:
+            o["bridge"] = c["bridge"]
         if (k + 1) % 20 == 0:
             print(f"{k + 1}/{len(cases)} cases, {time.time() - t0:.0f}s", flush=True)
     write_jsonl(out_dir / "outcomes.jsonl", outcomes)
+    summarize(out_dir, args, cases, outcomes, dom_missing, time.time() - t0)
 
-    summary: dict = {"seconds": round(time.time() - t0), "families": {}}
-    lines = [f"# write_max / {args.name}: {len(cases)} cases, layers {list(layers)} and all at once", "",
-             "Best flips (%) over layers x strengths: lens write / its random control; copy = the lens-free reference.", ""]  # fmt: skip
+
+def summarize(out_dir: Path, args, cases: list[dict], outcomes: list[dict], dom_missing: int, seconds: float) -> None:
+    """Per family and write: the best gated cell (over site, layer and strength), its control, other rate and an
+    entity-clustered interval; then the pre-set rules."""
+    summary: dict = {"seconds": round(seconds), "dom_missing_cases": dom_missing, "families": {}}
+    lines = [f"# write_max v2 / {args.name}: {len(cases)} cases ({dom_missing} without a dom direction)", "",
+             f"Best flips to C's answer (%) per write, over sites x layers x strengths, among cells whose random control "
+             f"keeps the clean answer on >= {KEEP_GATE:.0%} of cases. [95% CI over bridge entities]", ""]  # fmt: skip
     for fam in dict.fromkeys(c["family"] for c in cases):
         rows = [o for o in outcomes if o["family"] == fam]
-        cell = collections.defaultdict(list)
+        cell: dict = collections.defaultdict(list)
         for o in rows:
-            cell[(o["pos"], o["write"], o["strength"], o["layer"], o["control"])].append(o["role"] == "b")
-        rate = {k: statistics.mean(v) for k, v in cell.items()}
-        fam_sum: dict = {"n": len({o["name"] for o in rows}), "best": {}}
-        lines += [
-            f"## {fam} (n={fam_sum['n']})",
-            "",
-            "| positions | copy | additive | swap | transplant |",
-            "|---|---|---|---|---|",
-        ]
-        for pset in ("question", "final", "all"):
-            cells = [f"{100 * max(v for k, v in rate.items() if k[0] == pset and k[1] == 'copy'):.0f}"]
-            for w in ("additive", "swap", "transplant"):
-                lens_best = max(v for k, v in rate.items() if k[0] == pset and k[1] == w and not k[4])
-                ctrl_best = max(v for k, v in rate.items() if k[0] == pset and k[1] == w and k[4])
-                fam_sum["best"][f"{pset}/{w}"] = {"lens": lens_best, "control": ctrl_best}
-                cells.append(f"{100 * lens_best:.0f} / {100 * ctrl_best:.0f}")
-            lines.append(f"| {pset} | " + " | ".join(cells) + " |")
-        fam_sum["max_lens"] = max(v for k, v in rate.items() if k[1] != "copy" and not k[4])
-        fam_sum["max_control"] = max(v for k, v in rate.items() if k[1] != "copy" and k[4])
-        fam_sum["max_copy"] = max(v for k, v in rate.items() if k[1] == "copy")
-        lines += ["", f"max over everything: lens {100 * fam_sum['max_lens']:.0f}%, control {100 * fam_sum['max_control']:.0f}%, "
-                  f"copy {100 * fam_sum['max_copy']:.0f}%", ""]  # fmt: skip
+            cell[(o["write"], o["pos"], str(o["layer"]), o["strength"], o["control"])].append(o)
+        fam_sum: dict = {"n": len({o["name"] for o in rows}), "entities": len({o["bridge"] for o in rows}), "best": {}}
+        lines += [f"## {fam} (n={fam_sum['n']}, {fam_sum['entities']} bridges)", "",
+                  "| write | best flips [CI] | its control | other | site (pos, layer, strength) | gated cells |",
+                  "|---|---|---|---|---|---|"]  # fmt: skip
+        for write in dict.fromkeys(k[0] for k in cell):
+            best, n_cells = None, 0
+            for (w, pos, la, s, control), os_ in cell.items():
+                if w != write or control:
+                    continue
+                ctrl = cell.get((w, pos, la, s, True))
+                if write != "copy" and (not ctrl or statistics.mean(o["role"] == "A" for o in ctrl) < KEEP_GATE):
+                    continue
+                n_cells += 1
+                flips = statistics.mean(o["role"] == "b" for o in os_)
+                if best is None or flips > best[0]:
+                    best = (flips, pos, la, s, os_, ctrl)
+            if best is None:
+                fam_sum["best"][write] = None
+                lines.append(f"| {write} | - (no cell passes the gate) | | | | 0 |")
+                continue
+            flips, pos, la, s, os_, ctrl = best
+            ci = entity_ci([(o["bridge"], o["role"] == "b") for o in os_])
+            c_rate = statistics.mean(o["role"] == "b" for o in ctrl) if ctrl else None
+            other = statistics.mean(o["role"] == "other" for o in os_)
+            fam_sum["best"][write] = {"flips": flips, "ci": ci, "control": c_rate, "other": other, "pos": pos,
+                                      "layer": la, "strength": s, "gated_cells": n_cells}  # fmt: skip
+            lines.append(f"| {write} | {100 * flips:.0f} [{100 * ci[0]:.0f}-{100 * ci[1]:.0f}] | "
+                         f"{'-' if c_rate is None else f'{100 * c_rate:.0f}'} | {100 * other:.0f} | {pos}, {la}, {s:g} | "
+                         f"{n_cells} |")  # fmt: skip
+        lines.append("")
         summary["families"][fam] = fam_sum
     fams = summary["families"]
-    rl, rr = fams.get("RL", fams.get("MP")), fams.get("RR", fams.get("MM"))  # M->P and M->M (suite or tasks_v2 names)
-    if rl and rr:
-        summary["rule"] = {"RL_lens_le_control_plus_5": rl["max_lens"] <= rl["max_control"] + 0.05,
-                           "RR_lens_ge_4x_control": rr["max_lens"] >= 4 * max(rr["max_control"], 0.01)}  # fmt: skip
-        lines += [f"Rule: {json.dumps(summary['rule'])}"]
+
+    def best_of(fam: str, writes: tuple) -> tuple[float, float] | None:
+        got = [fams[fam]["best"][w] for w in writes if fams.get(fam, {}).get("best", {}).get(w)]
+        if not got:
+            return None
+        b = max(got, key=lambda x: x["flips"])
+        return b["flips"], b["control"] or 0.0
+
+    mp = "RL" if "RL" in fams else "MP" if "MP" in fams else None
+    mm = "RR" if "RR" in fams else "MM" if "MM" in fams else None
+    if mp and mm:
+        lp, lm = best_of(mp, LENS_WRITES), best_of(mm, LENS_WRITES)
+        rule = {"MP_lens_le_control_plus_5": bool(lp and lp[0] <= lp[1] + 0.05),
+                "MM_lens_ge_4x_control_and_10pct": bool(lm and lm[0] >= max(4 * lm[1], 0.10))}  # fmt: skip
+        rule["C2_holds"] = rule["MP_lens_le_control_plus_5"] and rule["MM_lens_ge_4x_control_and_10pct"]
+        dom, copy = best_of(mp, ("dom_add", "dom_natural")), best_of(mp, ("copy",))
+        if rule["C2_holds"] and dom and copy:
+            if dom[0] >= dom[1] + 0.20:
+                rule["MP_dom_reading"] = "linearly writable at these sites, but not along the lens"
+            elif dom[0] <= dom[1] + 0.05 and copy[0] >= 0.5:
+                rule["MP_dom_reading"] = "no single direction found here writes it (the copy does)"
+            elif copy[0] < 0.5:
+                rule["MP_dom_reading"] = "these sites do not carry the bridge; look elsewhere"
+            else:
+                rule["MP_dom_reading"] = "dom between the thresholds: inconclusive"
+        el, ee = best_of(mp, ("early_lens_add",)), best_of(mp, ("early_embed_add",))
+        if el and ee:
+            rule["MP_early_lens_is_injection"] = abs(el[0] - ee[0]) <= 0.10
+        summary["rule"] = rule
+        lines += [f"Rules ({mp} vs {mm}): {json.dumps(rule)}"]
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     (out_dir / "summary.md").write_text("\n".join(lines) + "\n")
     print((out_dir / "summary.md").read_text())
@@ -174,15 +331,14 @@ if __name__ == "__main__":
     ap.add_argument("--why", required=True)
     ap.add_argument("--n", type=int, default=60)
     ap.add_argument("--families", nargs="+", default=None, help="default: BL BR RL RR (suite) or PP PM MP MM (--tasks)")
-    ap.add_argument("--layers", nargs="+", type=int, default=[32, 34, 36, 38, 40])
+    ap.add_argument("--band", default="28-40", help="contiguous layers written jointly; singles every --single-step")
+    ap.add_argument("--single-step", type=int, default=2)
+    ap.add_argument("--early", nargs="+", type=int, default=[16, 20, 24], help="layers of the injection control")
+    ap.add_argument("--possets", nargs="+", default=["question", "final", "all"], choices=["question", "final", "all"])
     ap.add_argument("--no-countries", dest="countries", action="store_false")
-    ap.add_argument(
-        "--tasks",
-        help="a tasks_v2 set made with --counterfactuals (instead of the suite and countries); "
-        "--families are then its words, e.g. PP PM MP MM",
-    )
-    ap.add_argument("--tasks-competence", help="the set's competence run (items right on every prompt are used)")
-    ap.add_argument("--tasks-level", default="pick", help='tasks_v2 level: "pick" (calibrated), "all" or a number')
+    ap.add_argument("--tasks", help="a tasks_v2 set made with --counterfactuals (instead of the suite and countries)")
+    ap.add_argument("--tasks-competence", help="the set's competence run (scenes right on every prompt are used)")
+    ap.add_argument("--tasks-level", default="pick", help='tasks_v2 level: "pick" (per comparison), "all" or a number')
     a = ap.parse_args()
     a.families = a.families or (["PP", "PM", "MP", "MM"] if a.tasks else ["BL", "BR", "RL", "RR"])
     main(a)
