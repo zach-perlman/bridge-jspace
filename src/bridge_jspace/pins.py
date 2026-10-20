@@ -126,6 +126,27 @@ TARGETS: dict[str, dict[str, Any]] = {
         },
         "frozen_lens_sha256": "ef50bc54b04738e558b7d86847889bb5d60437e45276b1952e73da91b4e9f5fc",
     },
+    # Gemma 4 31B-it with a J++ we fit on it (Zach asked, 2026-10-20 overnight; the base-model lens above failed the
+    # positive control, and the old local fit was lost): the published recipe (safety-research/jpp_lens@93f02cd; 64
+    # wikitext texts x 128 tokens, skip 16, target = the final block, LRP rlens, 8 experts, readout weights on the fit:0
+    # items graded on this model) at source layers 24-45, every 3rd, only; scripts/lens_fit/gemma_it_fit_full.sh, exported
+    # by scripts/lens_fit/export_jpp_lens.py. Readout pass@10 on the fit items, per layer, 0.35-0.53; held-out numbers in results/lens_fit/gemma_it_refit/.
+    "gemma-4-31b-it-refit": {
+        "repo": "google/gemma-4-31B-it",
+        "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+        "n_layers": 60,
+        "norm_gain": "weight",
+        "bos": True,
+        "run_prefix": "gemma4itr_",
+        "lenses": {
+            "jpp": (
+                "local",
+                "cache/gemma-4-31b-it-refit/lenses/jpp/gemma-4-31B-it_jpp_lens.pt",
+                "323733a9bec124c7a037a6839191bd545eb00d1d47bfffde6b92e1e638117408",
+            ),
+        },
+        "frozen_lens_sha256": "323733a9bec124c7a037a6839191bd545eb00d1d47bfffde6b92e1e638117408",
+    },
     # Qwen3.5-122B-A10B (MoE, 10B active) in Qwen's official FP8 release: the largest model with a published J++ that
     # fits one H200 (Zach, 2026-10-20, quick experiment L5; Neel: try a larger model early). Same tokenizer file as
     # Qwen3.6-27B; its J++ (neuronpedia, target layer 47) was fit on the bf16 weights, so FP8 activations differ
