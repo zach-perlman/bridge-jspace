@@ -1,0 +1,31 @@
+{
+  "git_hash": "93f02cd6c27db765abb127f20eff656bb5d27340",
+  "timestamp": "2026-10-20T05:46:15+00:00",
+  "library_version": "0.1.0",
+  "stage": "fit-router",
+  "args": {
+    "stage": "fit-router",
+    "hf_model_name": "google/gemma-4-31B-it",
+    "device_map": null,
+    "attn_implementation": "sdpa",
+    "experts_implementation": null,
+    "dequantize_fp8": false,
+    "layers": [
+      24,
+      27,
+      30,
+      33,
+      36,
+      39,
+      42,
+      45
+    ],
+    "num_prompts": 64,
+    "num_clusters": 8,
+    "projection_dim": 64,
+    "skip_first_n_positions": 16,
+    "max_seq_len": 128,
+    "seed": 0,
+    "out": "/workspace/ext/gemma_it_fit/router.pt"
+  }
+}

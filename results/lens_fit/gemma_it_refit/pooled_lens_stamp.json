@@ -1,0 +1,30 @@
+{
+  "git_hash": "93f02cd6c27db765abb127f20eff656bb5d27340",
+  "timestamp": "2026-10-20T07:06:33+00:00",
+  "library_version": "0.1.0",
+  "stage": "merge-experts",
+  "args": {
+    "stage": "merge-experts",
+    "checkpoint_dirs": [
+      "/workspace/ext/gemma_it_fit/artifacts/2026-10-20/fit64/shard0of1"
+    ],
+    "num_clusters": 8,
+    "min_kept_positions": 50,
+    "checkpoint_name": "recipe_experts",
+    "device": "cuda",
+    "out": "/workspace/ext/gemma_it_fit/experts.pt",
+    "pooled_lens_out": "/workspace/ext/gemma_it_fit/pooled_lens.pt"
+  },
+  "num_prompts_trained_on": 64,
+  "layers": [
+    24,
+    27,
+    30,
+    33,
+    36,
+    39,
+    42,
+    45
+  ],
+  "pooled_from": "in-memory fp32 sums"
+}
