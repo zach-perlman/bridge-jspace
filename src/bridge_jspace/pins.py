@@ -167,6 +167,107 @@ TARGETS: dict[str, dict[str, Any]] = {
         },
         "frozen_lens_sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53",
     },
+    # Qwen3.5-0.8B: smoke tests only (same qwen3_5 hybrid architecture as Qwen3.6-27B, 24 layers, full attention at
+    # every 4th), so new part B scripts run end to end on a spare GPU before a 27B run. Never a headline target.
+    "qwen3.5-0.8b": {
+        "repo": "Qwen/Qwen3.5-0.8B",
+        "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+        "n_layers": 24,
+        "norm_gain": "one_plus_weight",
+        "bos": False,
+        "run_prefix": "qwen35_08b_",
+        "lenses": {
+            "jpp": (LENS_REPO, "qwen3.5-0.8b/jpp/Salesforce-wikitext/Qwen3.5-0.8B_jpp_lens.pt", LENS_REVISION),
+        },
+        "frozen_lens_sha256": "39bf7690b7e1d917ccff9c0fd7418abeaa02fe334691edfb7e814ee890b99c06",
+    },
+    # OLMo-3-7B post-training ladder, base -> SFT -> DPO -> Instruct (Dan's D5b, 2026-10-20: does the memory/prompt split
+    # exist before post-training?). Olmo3ForCausalLM, 32 layers, d 4096, untied lm_head; sliding-window attention
+    # (4096) except full attention at 3, 7, ..., 31. Post-sublayer norms (OLMo 2 style: block l outputs h + norm(attn(h)),
+    # then + norm(mlp(.)); no input norms): the block output is the raw residual stream, as the lens hooks it, and the
+    # final norm (Olmo3RMSNorm) scales by weight. One tokenizer for plain text (cl100k-style, 100278 ids); the base
+    # tokenizer has no BOS and no chat template, the post-trained ones name <|endoftext|> as BOS but neither their chat
+    # template nor tokenizer(text) writes it, so no BOS anywhere.
+    # Lenses: mhough/olmo3-jacobian-lenses, plain J-lenses (NOT J++) in jlens's save format (J, source_layers,
+    # n_prompts, d_model; fp16), one per checkpoint, fit with the same recipe on the same 616 wikitext-103 train prompts
+    # (128 tokens, skip 16, target = block 31) at source layers 0, 3, ..., 30 only ("lens_layers"). JLens reads them as
+    # they are (no conversion). Their key is "jlens": the part B scripts load pins.FROZEN_LENS ("jpp") and fail on these
+    # targets until pins picks a target's frozen lens (the port plan's diff), so no run can label a J-lens as J++.
+    "olmo-3-7b-base": {
+        "repo": "allenai/Olmo-3-1025-7B",
+        "revision": "a81bae42db3975be1671e27b9c9a56da1a9f980f",
+        "n_layers": 32,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "olmo3_7b_base_",
+        "lens_layers": list(range(0, 31, 3)),
+        "lenses": {
+            "jlens": (
+                "mhough/olmo3-jacobian-lenses",
+                "lenses/olmo-3-1025-7b.pt",
+                "d15b6af0058e89e78d40847c945b6e4dc7fbfe82",
+            ),
+            # neuronpedia's independent fit of the base model at every layer 0-30 (568 wikitext prompts, sha256
+            # 0683d9725bc9c09881c56784ee1371956ad5793b41731ea1213f025757073183): a cross-check, never the ladder's lens
+            "np_jlens": (
+                LENS_REPO,
+                "olmo-3-1025-7b/jlens/Salesforce-wikitext/Olmo-3-1025-7B_jacobian_lens.pt",
+                "e166deb5ad540932100ef803c8c9bcc2a5453694",
+            ),
+        },
+        "frozen_lens_sha256": "afa868bc9b4456fc2827fbc0e7c03e92d51843aea89bb76d273cd3525035602e",
+    },
+    "olmo-3-7b-sft": {
+        "repo": "allenai/Olmo-3-7B-Instruct-SFT",
+        "revision": "e1452fc572d51966ff4aaeb25118b891eb93e549",
+        "n_layers": 32,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "olmo3_7b_sft_",
+        "lens_layers": list(range(0, 31, 3)),
+        "lenses": {
+            "jlens": (
+                "mhough/olmo3-jacobian-lenses",
+                "lenses/olmo-3-7b-instruct-sft.pt",
+                "d15b6af0058e89e78d40847c945b6e4dc7fbfe82",
+            ),
+        },
+        "frozen_lens_sha256": "f215ecf21b6558252d936dc37d22a1ceca356ebe29608aab6026965c05052899",
+    },
+    "olmo-3-7b-dpo": {
+        "repo": "allenai/Olmo-3-7B-Instruct-DPO",
+        "revision": "b33130b7de49f0c2553b5c2b3bc8409ff3e627d1",
+        "n_layers": 32,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "olmo3_7b_dpo_",
+        "lens_layers": list(range(0, 31, 3)),
+        "lenses": {
+            "jlens": (
+                "mhough/olmo3-jacobian-lenses",
+                "lenses/olmo-3-7b-instruct-dpo.pt",
+                "d15b6af0058e89e78d40847c945b6e4dc7fbfe82",
+            ),
+        },
+        "frozen_lens_sha256": "0b407ba5b0d9efdd4cfce979a2b2e26d33b4b0bfc60a8025f2a4308f02ccd6fb",
+    },
+    "olmo-3-7b-instruct": {
+        "repo": "allenai/Olmo-3-7B-Instruct",
+        "revision": "6e5971d9eba42665f5bd5a0fcf047f299ce1dccc",
+        "n_layers": 32,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "olmo3_7b_instruct_",
+        "lens_layers": list(range(0, 31, 3)),
+        "lenses": {
+            "jlens": (
+                "mhough/olmo3-jacobian-lenses",
+                "lenses/olmo-3-7b-instruct.pt",
+                "d15b6af0058e89e78d40847c945b6e4dc7fbfe82",
+            ),
+        },
+        "frozen_lens_sha256": "b847dbba1406dc019adaeec09d971c60574c18dc28f031a93e8b43fa028b2774",
+    },
 }
 TARGET = os.environ.get("BJ_TARGET", "qwen3.6-27b")
 assert TARGET in TARGETS, f"BJ_TARGET={TARGET!r}: not one of {sorted(TARGETS)}"
