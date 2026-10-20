@@ -1,0 +1,17 @@
+{
+  "job": "bridge-cse_01EetL8PM7B9hLWZTfSi7urd-gemmaref-1020-1138",
+  "command": "BJ_TARGET=gemma-4-31b-it-refit uv run --no-sync python scripts/gemma_ref_loss.py",
+  "code_commit": "be70198",
+  "n_texts": 16,
+  "seed": "none (deterministic forward passes)",
+  "mean_nll_nats": {
+    "image_text_sdpa": 7.659563899040222,
+    "image_text_eager": 7.629275172948837,
+    "causal_lm_sdpa": 7.659563899040222
+  },
+  "harness_value_for_comparison": {
+    "removal_textloss gemma4itr_textloss_v1 none": 7.6596
+  },
+  "qwen3.6-27b_same_texts": 2.3306,
+  "note": "plain HF loads reproduce the harness value; AutoModelForCausalLM resolves to Gemma4ForConditionalGeneration"
+}
