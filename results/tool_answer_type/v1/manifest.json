@@ -1,0 +1,24 @@
+{
+  "run": "v1",
+  "why": "Zach (2026-10-20, overnight): tool_abl_v1's TBL (name answer) lost 30% under J-space removal, the suite's digit-answer lookups 1%: same JSON scenes, name vs digit answer",
+  "written_utc": "2026-10-20T09:41:57Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  ],
+  "layers": [
+    32,
+    36,
+    40
+  ],
+  "seed": 602,
+  "n_scenes": 150,
+  "doc": "Each scene is one context of three JSON tool results, get_profiles (three people's pets), get_vets (each pet's vet)\nand get_lockers (each pet's locker, a digit 1-9), and gets four questions on that same context:\n  name_clean   \"Which vet looks after <person>'s pet?\"       a lookup, name answer   (as TBL)\n  digit_clean  \"Which locker belongs to <person>'s pet?\"     a lookup, digit answer  (as the suite's BL)\n  name_hop / digit_hop   the same about \"the <animal>\" (the lookup step alone)\nRemoval as ablate_pilot v1 (25-atom J-space OMP at every position, layers all at once; control: the random dictionary).\nAccuracy on the scenes each question gets right unedited. Prediction (not a decision rule): if the hit is the answer\ntype, digit_clean stays near 100% while name_clean drops as TBL did; if it is the JSON lookup, both drop."
+}

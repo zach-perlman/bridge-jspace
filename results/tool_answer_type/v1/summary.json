@@ -1,0 +1,37 @@
+{
+  "seconds": 1038,
+  "questions": {
+    "name_clean": {
+      "n": 150,
+      "n_right_unedited": 150,
+      "accuracy": {
+        "jspace": 0.6533333333333333,
+        "random": 0.9933333333333333
+      }
+    },
+    "digit_clean": {
+      "n": 150,
+      "n_right_unedited": 150,
+      "accuracy": {
+        "jspace": 0.9933333333333333,
+        "random": 1
+      }
+    },
+    "name_hop": {
+      "n": 150,
+      "n_right_unedited": 150,
+      "accuracy": {
+        "jspace": 0.6333333333333333,
+        "random": 1
+      }
+    },
+    "digit_hop": {
+      "n": 150,
+      "n_right_unedited": 150,
+      "accuracy": {
+        "jspace": 1,
+        "random": 1
+      }
+    }
+  }
+}
