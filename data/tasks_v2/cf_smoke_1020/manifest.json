@@ -1,0 +1,48 @@
+{
+  "set": "cf_smoke_1020",
+  "n_per_word_level": 12,
+  "words": [
+    "PP",
+    "PM",
+    "MP",
+    "MM",
+    "CP",
+    "CM",
+    "PPM",
+    "PMP",
+    "MPP",
+    "MMM"
+  ],
+  "domains": [
+    "animals",
+    "planets",
+    "elements",
+    "greek"
+  ],
+  "formats": [
+    "prose",
+    "json",
+    "table",
+    "code",
+    "chat",
+    "document"
+  ],
+  "levels": {
+    "0": {
+      "entities": 3,
+      "distractors": false,
+      "filler": 0,
+      "paraphrase": false
+    },
+    "2": {
+      "entities": 9,
+      "distractors": true,
+      "filler": 10,
+      "paraphrase": true
+    }
+  },
+  "seed": 900,
+  "generator": "scripts/tasks_v2.py make",
+  "counterfactuals": true,
+  "n_items": 240
+}

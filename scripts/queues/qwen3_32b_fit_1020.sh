@@ -14,9 +14,11 @@ uv run --no-sync python scripts/lens_fit/export_jpp_lens.py "$OUT/Qwen3-32B_jpp_
   cache/qwen3-32b/lenses/jpp/Qwen3-32B_jpp_lens.pt \
   --note "J++ on Qwen/Qwen3-32B@9216db5, safety-research/jpp_lens@93f02cd recipe, 32 wikitext prompts, layers 16-51"
 uv run --no-sync python - <<'PY'
-import pandas as pd
-df = pd.read_csv("/workspace/ext/qwen3_32b_fit/eval_ranks_pass_at_k.csv")
-df = df[(df.k == 10) & (df.weighting == "item")]
-print(df.pivot(index="eval", columns="lens", values="pass_at_k").round(3).to_string())
-print("macro recall@10:", df.groupby("lens").pass_at_k.mean().round(3).to_dict(), "(gate: J++ >= 0.45)")
+import collections, csv
+rows = [r for r in csv.DictReader(open("/workspace/ext/qwen3_32b_fit/eval_ranks_pass_at_k.csv")) if r["k"] == "10" and r["weighting"] == "item"]
+by = collections.defaultdict(list)
+for r in rows:
+    print(r["eval"], r["lens"], round(float(r["pass_at_k"]), 3))
+    by[r["lens"]].append(float(r["pass_at_k"]))
+print("macro recall@10:", {k: round(sum(v) / len(v), 3) for k, v in by.items()}, "(gate: J++ >= 0.45)")
 PY
