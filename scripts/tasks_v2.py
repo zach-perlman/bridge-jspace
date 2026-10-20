@@ -380,31 +380,48 @@ BAND = (0.85, 0.95)
 def make(
     name: str, n: int, words: list[str], domains: list[str], formats: list[str], levels: list[int], seed: int
 ) -> None:
-    """n items per word x level, cycling through domain x format so every combination appears (write-once)."""
+    """n items per word x level, spread evenly over the domain x format combinations that can carry the word, with
+    each digit answer capped at twice its uniform share (write-once)."""
+    import collections
+    import math
+
     out = DATA / name
     out.mkdir(parents=True, exist_ok=True)
     assert not (out / "items.jsonl").exists(), f"{out} exists; data sets are written once"
     rng = random.Random(seed)
-    combos = [(d, f) for d in domains for f in formats]
     items, seen = [], set()
     for word in words:
         for level in levels:
-            got, k = 0, 0
-            while got < n and k < 50 * n:
-                d, f = combos[(got + k) % len(combos)]
-                k += 1
-                it = make_item(rng, word, d, f, LEVELS[level], got)
-                if it is None or (it["context"], it["question"]) in seen:
-                    continue
-                seen.add((it["context"], it["question"]))
-                it["level"] = level
-                it["id"] = f"{word}-L{level}-{got:04d}"
-                items.append(it)
-                got += 1
+            combos = [(d, f) for d in domains for f in formats]
+            rng.shuffle(combos)
+            cap = math.ceil(2 * n / 9)
+            answers: collections.Counter = collections.Counter()
+            got, dead = 0, set()
+            while got < n and len(dead) < len(combos):
+                for d, f in combos:
+                    if got >= n or (d, f) in dead:
+                        continue
+                    for _ in range(30):  # a combination that yields nothing in 30 draws cannot carry this word
+                        it = make_item(rng, word, d, f, LEVELS[level], got)
+                        if it is None or (it["context"], it["question"]) in seen:
+                            continue
+                        if it["kind"] == "digit" and answers[it["answer"]] >= cap:
+                            continue
+                        break
+                    else:
+                        dead.add((d, f))
+                        continue
+                    seen.add((it["context"], it["question"]))
+                    answers[it["answer"]] += 1
+                    it["level"] = level
+                    it["id"] = f"{word}-L{level}-{got:04d}"
+                    items.append(it)
+                    got += 1
     (out / "items.jsonl").write_text("".join(json.dumps(it) + "\n" for it in items))
-    (out / "manifest.json").write_text(json.dumps({"set": name, "n_per_word_level": n, "words": words, "domains": domains,
-                                                   "formats": formats, "levels": {k: LEVELS[k] for k in levels}, "seed": seed,
-                                                   "generator": "scripts/tasks_v2.py make", "n_items": len(items)}, indent=2) + "\n")  # fmt: skip
+    meta = {"set": name, "n_per_word_level": n, "words": words, "domains": domains, "formats": formats,
+            "levels": {k: LEVELS[k] for k in levels}, "seed": seed, "generator": "scripts/tasks_v2.py make",
+            "n_items": len(items)}  # fmt: skip
+    (out / "manifest.json").write_text(json.dumps(meta, indent=2) + "\n")
     print("wrote", out / "items.jsonl", len(items), "items")
 
 

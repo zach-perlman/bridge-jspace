@@ -1,0 +1,66 @@
+{
+  "set": "calib_v2",
+  "n_per_word_level": 48,
+  "words": [
+    "PP",
+    "PM",
+    "MP",
+    "MM",
+    "CP",
+    "CM",
+    "PPP",
+    "PPM",
+    "PMP",
+    "PMM",
+    "MPP",
+    "MPM",
+    "MMP",
+    "MMM"
+  ],
+  "domains": [
+    "animals",
+    "planets",
+    "elements",
+    "greek",
+    "shapes",
+    "vehicles",
+    "instruments"
+  ],
+  "formats": [
+    "prose",
+    "json",
+    "table",
+    "code",
+    "chat",
+    "document"
+  ],
+  "levels": {
+    "0": {
+      "entities": 3,
+      "distractors": false,
+      "filler": 0,
+      "paraphrase": false
+    },
+    "1": {
+      "entities": 6,
+      "distractors": true,
+      "filler": 5,
+      "paraphrase": false
+    },
+    "2": {
+      "entities": 9,
+      "distractors": true,
+      "filler": 10,
+      "paraphrase": true
+    },
+    "3": {
+      "entities": 12,
+      "distractors": true,
+      "filler": 20,
+      "paraphrase": true
+    }
+  },
+  "seed": 702,
+  "generator": "scripts/tasks_v2.py make",
+  "n_items": 2688
+}
