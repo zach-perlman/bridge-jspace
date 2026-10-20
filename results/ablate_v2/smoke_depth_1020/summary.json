@@ -1,0 +1,6255 @@
+{
+  "seconds": 366,
+  "band_seconds": {
+    "L0-2": 8,
+    "L2-4": 8,
+    "L4-6": 8,
+    "L6-8": 8,
+    "L8-10": 8,
+    "L10-12": 8,
+    "L12-14": 8,
+    "L14-16": 8,
+    "L16-18": 8,
+    "L18-20": 8,
+    "L20-22": 8,
+    "L22-24": 8,
+    "L24-26": 8,
+    "L26-28": 8,
+    "L28-30": 8,
+    "L30-32": 8,
+    "L32-34": 8,
+    "L34-36": 8,
+    "L36-38": 8,
+    "L38-40": 8,
+    "L40-42": 8,
+    "L42-44": 8,
+    "L44-46": 8,
+    "L46-48": 8,
+    "L48-50": 8,
+    "L50-52": 8,
+    "L52-54": 8,
+    "L54-56": 8,
+    "L56-58": 8,
+    "L58-60": 8,
+    "L60-62": 8,
+    "L0-62": 119
+  },
+  "unedited_accuracy": {
+    "BL/clean": 1,
+    "BR/clean": 1,
+    "RL/clean": 1,
+    "RR/clean": 1,
+    "country-R/clean": 1,
+    "country-B/clean": 1
+  },
+  "cells": {
+    "L0-2": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.5589322408777662
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0007769760559312999
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00965698465006426
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -7.735565304756165e-06
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00010082212975248694
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00035356817534193397
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.5008482525008731
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0006167845567688346
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.046919556509237736
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00010531034786254168
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00012018834240734577
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0004830333637073636
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.40014357038307935
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0018081070156767964
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.017908712034113705
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00029399374034255743
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0008439101511612535
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 7.782026659697294e-05
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.031941157882101834
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0005531742936000228
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.06506185827311128
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0001366755459457636
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0002447867300361395
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0007288834312930703
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.01592990756034851
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.04353842884302139
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0502256378531456
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.004037678241729736
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.02147500216960907
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0031588152050971985
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.06754287891089916
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.013358213007450104
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.04143830947577953
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0010614041239023209
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.006682373583316803
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00547448918223381
+        }
+      }
+    },
+    "L2-4": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.6384896645904519
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00011296063894405961
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.006852387974504381
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0007931577856652439
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00013779557775706053
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0008509141043759882
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.876700697641354
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.000902001338545233
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.010430797643493861
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0002783770323731005
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0002447894657962024
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0006668770511168987
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0052844773745164275
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0007463719230145216
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.004980850382708013
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0022344953613355756
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 3.851985093206167e-05
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.001907182508148253
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0035723656183108687
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0015601346967741847
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.017160442075692117
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0011117554968222976
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0008285393705591559
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0011710318503901362
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.09480985626578331
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.012392684817314148
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.032991088926792145
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.06342408061027527
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.01148911565542221
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.09086614847183228
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.3239902202039957
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.01887907274067402
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.04342545382678509
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.011687997728586197
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.010788986459374428
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.005432358011603355
+        }
+      }
+    },
+    "L4-6": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.45475735218496993
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00027011637575924397
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.014213197224307805
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0010384220513515174
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 1.3675016816705465e-05
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0012781565892510116
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.6165713501977734
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0014217990101315081
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.014023906260263175
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0016053859726525843
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.000755519897211343
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00016102020163089037
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.005075891851447523
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00036223873030394316
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.01329715654719621
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0018284014659002423
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0003334219800308347
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0006803659489378333
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0020600579446181655
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0004949229769408703
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.005534753319807351
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002351714880205691
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0009368418250232935
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00022881769109517336
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.13069739192724228
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.024475984275341034
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.06546984612941742
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.06646385043859482
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.019522570073604584
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.06061109900474548
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -1.6990888509899378
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.007815970107913017
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.087967025116086
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.023626938462257385
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.013714935630559921
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.03074991051107645
+        }
+      }
+    },
+    "L6-8": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.004506699333433062
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003994375059846789
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.011638355266768485
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.000692253524903208
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.000541925837751478
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0037368294433690608
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0028921078774146736
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0020296977018006146
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.009587671083863825
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0012063495232723653
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0008748373365961015
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0027478389092721045
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0047645276645198464
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0036225604126229882
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.019806743715889752
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0009739609668031335
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0004661796847358346
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0031562402145937085
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.005450442782603204
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.004453048459254205
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.019100403762422502
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.000598522718064487
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0010998024372383952
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0036218425957486033
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.11424988880753517
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0018244236707687378
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.2799273431301117
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.07762071490287781
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.031963884830474854
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.05014853924512863
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.3655298799276352
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.004307117313146591
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.3939793650060892
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.008614793419837952
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.03179256059229374
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0181636530905962
+        }
+      }
+    },
+    "L8-10": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.7783414542791434
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0017520117689855397
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.005662420589942485
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0016457299352623522
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00206462835194543
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.001335887995082885
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -1.1163825587718748
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0005833497853018343
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003311902459245175
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003306686005089432
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.000631272851023823
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0005228184745647013
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.02231935423333198
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0015759301604703069
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0021864388836547732
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003259135060943663
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0023004323011264205
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0010631814366206527
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.010211264598183334
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0005574548849835992
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.000809768564067781
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0015593396965414286
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0003964129136875272
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00018499535508453846
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.24911298416554928
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.08133962377905846
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.014801017940044403
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.07315792515873909
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.07921399921178818
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.08802846074104309
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -1.0922886151820421
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.03650821465998888
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.2376056294888258
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.007394773885607719
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.015303138643503189
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.02829683292657137
+        }
+      }
+    },
+    "L10-12": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.2096337273833342
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002162448887247592
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.005110817088279873
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.001787601679097861
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.001888102327939123
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0010140473605133593
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.020120047207456082
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.009024456318002194
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.007985656789969653
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.008140927355270833
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0022452371777035296
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0015937253483571112
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.01872710429597646
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003248305176384747
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0015074253315106034
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.005553109222091734
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.006485932623036206
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0017502076225355268
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.004522257600910962
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002597144222818315
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0013376526767387986
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0030486766481772065
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0013452166458591819
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0014802507357671857
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.054469890892505646
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.046213299036026
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.013098195195198059
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.030805721879005432
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.04210986942052841
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.05243920534849167
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -1.1559655833989382
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.02869579754769802
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.04713589511811733
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.002110358327627182
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.02395508624613285
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.028580081649124622
+        }
+      }
+    },
+    "L12-14": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.17150143237086013
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003959417867008597
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.010901264671701938
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0014103405992500484
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0018854010268114507
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00011945702135562897
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.04254760890034959
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.010214605077635497
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.018483891792129725
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00570942327613011
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.000498028879519552
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0016752638039179146
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.08117257535923272
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.006143976585008204
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.017410307307727635
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003953949664719403
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0020197153789922595
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 1.2488802894949913e-05
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.018715180340223014
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.010104797896929085
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.04023261123802513
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0027951975353062153
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00018325448036193848
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0019246205920353532
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.5658939480781555
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.008774526417255402
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.043477170169353485
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.09828484430909157
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.027448661625385284
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.03311922401189804
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -2.089507022872567
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0051551274955272675
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.01872815378010273
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.04158145282417536
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.006068918853998184
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.008314607664942741
+        }
+      }
+    },
+    "L14-16": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.4335358224925585
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002484755648765713
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00028530467534437776
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0016255002119578421
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0008493958157487214
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0022551557631231844
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.6771325619774871
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.009906953375320882
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.007376156689133495
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.004621306958142668
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.001461621664930135
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0008679788443259895
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.036253095720894635
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0005495684454217553
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0008159980643540621
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.005649792379699647
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0008305954979732633
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.001045430195517838
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.02570524567272514
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.005365621182136238
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0008577695116400719
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0028789249481633306
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002040707622654736
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -4.811282269656658e-05
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -1.2520165145397186
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.06633942946791649
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.044831618666648865
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.032027602195739746
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0028517618775367737
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.03956840932369232
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.4559755679219961
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00442112423479557
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.007524505257606506
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.021833650767803192
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.006416741758584976
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0057657863944768906
+        }
+      }
+    },
+    "L16-18": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.19255222455831245
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0024250230635516346
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.001932429673615843
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.001170677540358156
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0004966891719959676
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.001335830835159868
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.2083491442608647
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0012201247154735029
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003184643283020705
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0027389259194023907
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00020785146625712514
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003970271849539131
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.21171943575609475
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0005782028893008828
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0004998765652999282
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.008988619432784617
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0017093975329771638
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0013695565285161138
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.09262246114667505
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0010404614149592817
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00011686480138450861
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003984849201515317
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0001019547926262021
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003615058842115104
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -3.668224722146988
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.09879341535270214
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.017895735800266266
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.004196852445602417
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.03022833913564682
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0023707300424575806
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.29733859188854694
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.03846170287579298
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.036594963166862726
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.02840979676693678
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.005731871351599693
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.003027966246008873
+        }
+      }
+    },
+    "L18-20": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.1340043924865313
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0011031050235033035
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.012793276517186314
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.001762263069394976
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -6.252026651054621e-06
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0021898430422879755
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.1373761763679795
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0002620012382976711
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0021995908464305103
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00983743293909356
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0001398579915985465
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00035475793993100524
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.17542220384348184
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0011277598096057773
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0029753054259344935
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.007231439114548266
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.001344625954516232
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0002791498554870486
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0655171520775184
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0009877367410808802
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0008275225991383195
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.01783779717516154
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0010077661136165261
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0010709376074373722
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -3.4450599253177643
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.017278768122196198
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.12406238354742527
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.03338044136762619
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0006002262234687805
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.05091049522161484
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.609541105106473
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.041677774861454964
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.07817703299224377
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0003622043877840042
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.016548560932278633
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.04166617803275585
+        }
+      }
+    },
+    "L20-22": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.059459029987920076
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0007899274933151901
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.006910045223776251
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0031182310194708407
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0012146214139647782
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00020856567425653338
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.05976293998537585
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0008417636272497475
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.006966858811210841
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.014065062801819295
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00034129928098991513
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0005815498880110681
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.07341572374571115
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0009174719452857971
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002142767305485904
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0361072892555967
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0023685208871029317
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0005882014520466328
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.11748173309024423
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0006950880633667111
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.007791702053509653
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.15259736811276525
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.001072247454430908
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0005533797666430473
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -1.0943979620933533
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.09005075320601463
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.10515638999640942
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.27516213059425354
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.02920694649219513
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.05696112662553787
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.14441662468016148
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.03274128958582878
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.02986089140176773
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.07966545410454273
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.039650983177125454
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.02906501106917858
+        }
+      }
+    },
+    "L22-24": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.02269389742286876
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0018704275717027485
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.005904707650188357
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0032118214876390994
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00033952901139855385
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00020015466725453734
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.15633547137258574
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0023423975217156112
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.004467295191716403
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.01019107986940071
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0004960009246133268
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0005188030190765858
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.27244430512655526
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0034319114638492465
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00815483380574733
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.20050362136680633
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0015354232164099813
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0013952945591881871
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.5654249101644382
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0010494854068383574
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00040376896504312754
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.22725504206027836
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -7.06017017364502e-05
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0005580822471529245
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.847464919090271
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.1036393977701664
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0194142647087574
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.2116994708776474
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.07371129095554352
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.012321151793003082
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.5073927138000727
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.030661579221487045
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.037254528142511845
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.09320454485714436
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0174986831843853
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.041631611995399
+        }
+      }
+    },
+    "L24-26": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.025993468065280467
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0002116227406077087
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0022095408639870584
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0005985895404592156
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 6.388837937265635e-05
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0030264477827586234
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.17896479199407622
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0047821676707826555
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.004693711118306965
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.1605497972923331
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0016084120725281537
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00044175051152706146
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.6005047830985859
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0006007375195622444
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.004036733764223754
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.017588912858627737
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.001419049222022295
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0034837258281186223
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -1.464741414762102
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0015646378742530942
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.004299745080061257
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.6729176103835925
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002149412059225142
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0002032131887972355
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.4751168489456177
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.11272328719496727
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.01585046947002411
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.3590583950281143
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.11139433085918427
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.08818940818309784
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.4007264766842127
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0051966700702905655
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.056375762447714806
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.03350052796304226
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.012150244787335396
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.048083631321787834
+        }
+      }
+    },
+    "L26-28": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0362490460393019
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.007565382693428546
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0036477563553489745
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -2.9258488211780787e-05
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -9.356910595670342e-05
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0014608448254875839
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.798928527336102
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0022420231252908707
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.008599677530582994
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0927863551187329
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0015005369787104428
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0010807565995492041
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.3982856023358181
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0005175684345886111
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00301070895511657
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.004391776514239609
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.001232311362400651
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.004993735929019749
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.7588371991878375
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0034100303892046213
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.006856174091808498
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.2104153245454654
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0007951917359605432
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0007463012589141726
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.1268565058708191
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.11183324828743935
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.22146783769130707
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.12157894670963287
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.002369500696659088
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.05960593372583389
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -2.7364664170891047
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.024371747858822346
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.007881613448262215
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -2.266226213425398
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.014689041301608086
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.045650264248251915
+        }
+      }
+    },
+    "L28-30": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.020370686252135783
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.006279046938288957
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.008388020505663007
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0006959017482586205
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002709249092731625
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0018077983404509723
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.6611691212165169
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0027432506321929395
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.008102263032924384
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.36891317198751494
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.009941480297129601
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0003823558217845857
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.047174177248962224
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0008306837407872081
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0006195326568558812
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0014254386769607663
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0013075527967885137
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0003393507795408368
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.8180049419170246
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.013653551577590406
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0028870333917438984
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.48950403777416795
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00939245882909745
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -4.950212314724922e-05
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -2.526527911424637
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.022756531834602356
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.03079567849636078
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.1587166041135788
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.06433533132076263
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.027395471930503845
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -3.196032026782632
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.03789736237376928
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0031204968690872192
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -2.0426448825746775
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.028789950534701347
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.044115642085671425
+        }
+      }
+    },
+    "L30-32": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.20022248273016885
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00378737022401765
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.007947624486405402
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00021111458772793412
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0009513910044915974
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.000745245604775846
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -1.0748160762595944
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00423839915310964
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.009226275084074587
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.7540489492821507
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.001437112980056554
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00013145513366907835
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.29261019092518836
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0003634135937318206
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.010202411678619683
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00045984331518411636
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0006546890363097191
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0008662206819280982
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.45217446086462587
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00024163734633475542
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.005569422501139343
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.6734534039860591
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.001306563033722341
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0014056033687666059
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -1.3486323058605194
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.1420134138315916
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.02637285739183426
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.1231808066368103
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.08449701592326164
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.24497607350349426
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -4.707419002428651
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0249545406550169
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.02512676641345024
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -1.9608362782746553
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.017193490639328957
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.04486953280866146
+        }
+      }
+    },
+    "L32-34": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.04143990279408172
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.004081452789250761
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0030257613980211318
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0008457442163489759
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00012580369366332889
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0035847274702973664
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.3081349043059163
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.01010183891048655
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.015428177721332759
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.3278390450286679
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -6.16869074292481e-05
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002156131959054619
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.035926818032749
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002260679961182177
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.009151370846666396
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003977729589678347
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0017709782114252448
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.005069998209364712
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.35307524201925844
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.005058574373833835
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0015016411198303103
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.20418487337883562
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0009320538956671953
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.005222396343015134
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -3.816060096025467
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.05181746929883957
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.07892220094799995
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.21281996369361877
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.09143466874957085
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.13205409049987793
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -4.70722977258265
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.014367729425430298
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.03185731964185834
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -2.584558540955186
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.03197500854730606
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.07692750729620457
+        }
+      }
+    },
+    "L34-36": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.029803132929373533
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 6.27047847956419e-05
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.004991449706722051
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0018396321102045476
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0004794299602508545
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0009377840324304998
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.13072588125942275
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0002721461933106184
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.005725361930672079
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.341711962770205
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.000373511400539428
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0002279343898408115
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.019548620213754475
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.002310822019353509
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 5.828088615089655e-05
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002543444628827274
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0016705658053979278
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0008683826308697462
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.08669023436959833
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0016564681427553296
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0051687267841771245
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.10170649958308786
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0012502120225690305
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -4.767836071550846e-05
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -1.987837702035904
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.12266385927796364
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.5493843927979469
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.08042420446872711
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.08734205737709999
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.03207091614603996
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.7239441368728876
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.056019351817667484
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.03565734066069126
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.26050937734544277
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.032967064529657364
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.013353757560253143
+        }
+      }
+    },
+    "L36-38": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.015185444441158324
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0038389312685467303
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002577875682618469
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0009240734216291457
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0011842571839224547
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 1.4507968444377184e-05
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.03807636693818495
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00048481387784704566
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.004573528829496354
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0236204398679547
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.000715669768396765
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -6.090319948270917e-05
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.03862233378458768
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.009521847241558135
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.000203863310161978
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.001730560790747404
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.001899164286442101
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.001798266195692122
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.09905892459210008
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.006249137572012842
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0036175987916067243
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.041087560704909265
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0018536053830757737
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0006000514258630574
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.8216554373502731
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.16119569912552834
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0027837269008159637
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.06683320552110672
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.14463998563587666
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.09482553228735924
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -1.1199493277817965
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.03783060424029827
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.026780378073453903
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.023536620661616325
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.05167817696928978
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00838085450232029
+        }
+      }
+    },
+    "L38-40": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003090379585046321
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 4.437164170667529e-05
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0015495356055907905
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00048758386401459575
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0010971194424200803
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0015350476023741066
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.4805813936400227
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0006548353121615946
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.007613592490088195
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.13631011376855895
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0008737028110772371
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0002886038855649531
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0019081468344666064
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0028107505931984633
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0006375653902068734
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0010262707946822047
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0020579552510753274
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0017892193282023072
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.19494544563349336
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0019158190698362887
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.007592198788188398
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.5135410077637061
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0009222225053235888
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0002721583005040884
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.37009596824645996
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.11402703821659088
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.04993048310279846
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.05485747009515762
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.10806407779455185
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.04129558056592941
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.13734704069793224
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0003465898334980011
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.019394466653466225
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.16056487895548344
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0431515546515584
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.06601748801767826
+        }
+      }
+    },
+    "L40-42": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0014229509397409856
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.000814403232652694
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0005705528892576694
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00022631417959928513
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0015492415404878557
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 7.769872900098562e-05
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.018995865422766656
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0001008383696898818
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0010384291526861489
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002542405913118273
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0003033376415260136
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0005186822381801903
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0009258415084332228
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0010972927557304502
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0004251248901709914
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0006580105982720852
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0002999906428158283
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0014136660029180348
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.027752674533985555
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0001948810531757772
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0009347920422442257
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.009612029767595232
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00024779478553682566
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0009660361101850867
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -1.2557053864002228
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.02295684814453125
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.01571659743785858
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.09352345019578934
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.02515476942062378
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.06371277570724487
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -3.3119378741830587
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.021380014717578888
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.09770889114588499
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -2.8177554924041033
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.02463720738887787
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.03276517614722252
+        }
+      }
+    },
+    "L42-44": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003669307508971542
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0020203927415423095
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.01726085861446336
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0004788024816662073
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0026173529331572354
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0011769573320634663
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.012225705140735954
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 1.916143810376525e-05
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.004470608837436885
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0018873276421800256
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0010222410201095045
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0010965915280394256
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00653180677909404
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0016550752334296703
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0005909512983635068
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00142846314702183
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0030911763897165656
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0008846464334055781
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.06708251556847245
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00031787273474037647
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0013363828184083104
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0037455871934071183
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.001455326215364039
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.004818479879759252
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -1.7347578406333923
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.07895878329873085
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.35639989376068115
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.17888116836547852
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.012055329978466034
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.05867704749107361
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.03195934556424618
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.05493419710546732
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.015696837101131678
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.09078707732260227
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.013751966878771782
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.032268717885017395
+        }
+      }
+    },
+    "L44-46": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.007255510019604117
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.001431056356523186
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0027199613978154957
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0011714735883288085
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0009344483842141926
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0016680221888236701
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.001142525754403323
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0018911855877377093
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0009514490957371891
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002615210774820298
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00016774632968008518
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0004196923109702766
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.005246298736892641
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0013233317295089364
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0045372165041044354
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0018842018907889724
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0011493709171190858
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0018571267137303948
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00010043487418442965
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0037549416301772
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0025215622736141086
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0009843879379332066
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00012664298992604017
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0015411883359774947
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -2.2038130462169647
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.03721639886498451
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.11780672520399094
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.5585701763629913
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.012839272618293762
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.010298453271389008
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.1020787414163351
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.04261897690594196
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.062074290588498116
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.21957149542868137
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.010987605899572372
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00364544615149498
+        }
+      }
+    },
+    "L46-48": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.020043701690156013
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0004592836485244334
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002818219654727727
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0022348608472384512
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0008945814915932715
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0012566994992084801
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.007656266854610294
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0026686747441999614
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.006104083207901567
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003307406965177506
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0015056433039717376
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0013441863120533526
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.01684427459258586
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0007185564609244466
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0018183611682616174
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0032552751945331693
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0011862952960655093
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0004497029585763812
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.013419384020380676
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0007612176705151796
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.005151970428414643
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003950090031139553
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0015386267332360148
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0022590443259105086
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.23624418675899506
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.06481463834643364
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.46614552289247513
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.040844373404979706
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.07789711654186249
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.12594962120056152
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0427728109061718
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.017749963328242302
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.04598028399050236
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.014538416638970375
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.05711915157735348
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.026628373190760612
+        }
+      }
+    },
+    "L48-50": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0133145175059326
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0023322441265918314
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.006370975344907492
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0010516357724554837
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0006697385688312352
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0007240987033583224
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00270898878807202
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.000666097563225776
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003340836090501398
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0032484239782206714
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0005793968448415399
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0010987843270413578
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.02135941677261144
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0009676088811829686
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.002412229892797768
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0011882897233590484
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0015706244157627225
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.000506150652654469
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0302935786312446
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -5.51929697394371e-05
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.005638533621095121
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0029998020036146045
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0009518446167930961
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0012456689728423953
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -1.4402791559696198
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.15776830166578293
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.05475660413503647
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.12604084610939026
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.12244106829166412
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0035383403301239014
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -1.5632956642657518
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00516589917242527
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.07982838712632656
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.09546803869307041
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.05516478605568409
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.015564091503620148
+        }
+      }
+    },
+    "L50-52": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.009190933604259044
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0032289079972542822
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0019440559553913772
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0007468879339285195
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0007031390559859574
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0011571954819373786
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0006470117950811982
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0031524942605756223
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -1.5882367733865976e-05
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0013306545442901552
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0009195545571856201
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00023282266920432448
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0038271037628874183
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.000622005551122129
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003226468455977738
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.001252735615707934
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0016771109076216817
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.000556986196897924
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002554984181188047
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0001182283740490675
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0003595337038859725
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.001986757037229836
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0014027097495272756
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00018049334175884724
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.4395286813378334
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.3092008978128433
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.3589134216308594
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.01311328262090683
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.10106097161769867
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.07742390036582947
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.07428931258618832
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0865680743008852
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.17535069026052952
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.1249352041631937
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.06899780593812466
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.05237598530948162
+        }
+      }
+    },
+    "L52-54": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003197214857209474
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0004500906798057258
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.006044636538717896
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0014417964848689735
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0005587096675299108
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0010507292463444173
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0006680058722849935
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0007669925689697266
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0018841898418031633
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.001161845459137112
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 9.01363673619926e-05
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0006169321131892502
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0008752462454140186
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0007533876923844218
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003922117757610977
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0024723532842472196
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0009398009860888124
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002695774775929749
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0022432348632719368
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -8.96527199074626e-05
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0014758334727957845
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0011775923194363713
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.000518075074069202
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0007834150455892086
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.05516637861728668
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.09619474783539772
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.25283943116664886
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00889294221997261
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.061554476618766785
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0653282105922699
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.011064423248171806
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.030605386942625046
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.056902190670371056
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.10766868479549885
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0029647648334503174
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0259097907692194
+        }
+      }
+    },
+    "L54-56": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.001743145658110734
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0003678356879390776
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.001981880108360201
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00108516396721825
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0011235724377911538
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0010462403879500926
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.001337914218311198
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0007911878055892885
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0023206150508485734
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0023002755478955805
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00035251048393547535
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0008294304716400802
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0030348915024660528
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0025801482843235135
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0019347192137502134
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0021586419316008687
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.002295533660799265
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0020285859936848283
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0027070772302977275
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0013265696470625699
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0014373227022588253
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002943738945759833
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00040155439637601376
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.001697987667284906
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.022061742842197418
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.028535954654216766
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0036977827548980713
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0771237164735794
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.011748462915420532
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.023988798260688782
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.9248584220185876
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.04404231905937195
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.019580435007810593
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.18037319369614124
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.007944004610180855
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.010008614510297775
+        }
+      }
+    },
+    "L56-58": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.001968820764886914
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00017310789553448558
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0009118856396526098
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.000468784652184695
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00022868550149723887
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -4.859355976805091e-05
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0015881450235610828
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0003584774676710367
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.001042403921019286
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00033291755244135857
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0007283760933205485
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 6.652227602899075e-05
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.004219374583044555
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0016127073904499412
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0007248906185850501
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00058061967138201
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0012306561693549156
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0019662095000967383
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.003145970855257474
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0014894387568347156
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003123633679933846
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00045845319982618093
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0011039506644010544
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0002379936631768942
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -1.874480277299881
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.11155242472887039
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.045969441533088684
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.9694523811340332
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.056467700749635696
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.059345588088035583
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -5.07172922231257
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.017076829448342323
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.017123324796557426
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.4128400180488825
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0002857483923435211
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.01182585395872593
+        }
+      }
+    },
+    "L58-60": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0017932598129846156
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0008775459136813879
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0003587405662983656
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00047361565520986915
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0005640165763907135
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -6.63141836412251e-05
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.11658443092164816
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 3.9948790799826384e-05
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002137056377250701
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00024603825295343995
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -4.468706902116537e-05
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 4.7835230361670256e-05
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0035699324071174487
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.005657233879901469
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0034918718738481402
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0007882666541263461
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00125113723333925
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 8.950347546488047e-05
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0011789366835728288
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0002035560319200158
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0036631643306463957
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0003779061371460557
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -6.69197179377079e-05
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0005188429495319724
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -3.2715941965579987
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.22174277529120445
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.07278498262166977
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -3.137227088212967
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.13546495884656906
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.07633893191814423
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -6.3219144735485315
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.13740395568311214
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.05058152973651886
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -3.2842281255871058
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.06268982775509357
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.019826417788863182
+        }
+      }
+    },
+    "L60-62": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00020404247334226966
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.001715357240755111
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002965711581055075
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0003065671189688146
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0003377691609784961
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.00018009712221100926
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.005883547768462449
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.004036705649923533
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003811683680396527
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00028250517789274454
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0010481258505024016
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00023986550513654947
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0006781406700611115
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003564519342035055
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002830668701790273
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0006043380126357079
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0006907556671649218
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0007526451954618096
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.007075904621160589
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.003501458908431232
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0010878208559006453
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.0006507005309686065
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0023836466716602445
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.00026301038451492786
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -13.077858358621597
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.6628245860338211
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.01165519654750824
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -5.977004438638687
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.05243438482284546
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.058300286531448364
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -14.438015261664987
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -0.6571152750402689
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.03462291695177555
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -5.395038167014718
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.05539074167609215
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.01439286582171917
+        }
+      }
+    },
+    "L0-62": {
+      "BL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -8.803506594907958
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -1.6378393590566702
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -3.8663562357542105
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -3.905769687902648
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0020485094864852726
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.01764993864344433
+        }
+      },
+      "BR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -11.123369274835568
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -2.4073112590122037
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -6.6023862941074185
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -1.6500704867648892
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.020913633692543954
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.030774490151088685
+        }
+      },
+      "RL/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -11.097895440761931
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -2.6507361504482105
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -5.7951639267848805
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -3.463345584576018
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.008443719358183444
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.014433017582632601
+        }
+      },
+      "RR/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -11.454142695642076
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -2.828189855790697
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -2.712207204080187
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0.5,
+          "dlogp": -1.8016017138725147
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.06679184001404792
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.014033710467629135
+        }
+      },
+      "country-R/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -13.91730585694313
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -10.362290769815445
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -18.189953714609146
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -13.609139829874039
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.3577982857823372
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": 0.09116353467106819
+        }
+      },
+      "country-B/clean": {
+        "omp25": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -18.95392827130854
+        },
+        "omp25_rot": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -14.737767020240426
+        },
+        "omp25_rdict": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -17.2296593580395
+        },
+        "paper10": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -13.579027930274606
+        },
+        "paper10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.06796500459313393
+        },
+        "paper10_rdict": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.13304264284670353
+        }
+      }
+    }
+  }
+}
