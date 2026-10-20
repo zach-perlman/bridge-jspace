@@ -44,13 +44,36 @@ BATCH = 16
 
 
 class Remove:
-    """Edit: every position loses its K_ATOMS-atom OMP fit over `dictionary`."""
+    """Edit: every position (from `skip_first` on) loses its K_ATOMS-atom OMP fit over `dictionary`, fitted to the
+    residual minus `mean` when given (so a few huge fixed components, e.g. Gemma's first-position activations, are not
+    what the fit removes). Defaults (no skip, no mean) are the v1 pilot's removal."""
 
-    def __init__(self, dictionary: torch.Tensor):
-        self.dictionary = dictionary
+    def __init__(self, dictionary: torch.Tensor, skip_first: int = 0, mean: torch.Tensor | None = None):
+        self.dictionary, self.skip_first, self.mean = dictionary, skip_first, mean
 
     def __call__(self, h: torch.Tensor) -> torch.Tensor:
-        return h - signed_omp(self.dictionary, h, K_ATOMS).to(h.dtype)
+        x = h[self.skip_first :]
+        target = x - self.mean.to(x.dtype) if self.mean is not None else x
+        out = h.clone()
+        out[self.skip_first :] = x - signed_omp(self.dictionary, target, K_ATOMS).to(h.dtype)
+        return out
+
+
+@torch.no_grad()
+def layer_means(model, layers: tuple[int, ...], n_texts: int = 32, skip_first: int = 4) -> dict[int, torch.Tensor]:
+    """Each layer's mean residual over pinned WikiText texts (first 128 tokens, positions from skip_first on)."""
+    from bridge_jspace.tokens import raw_encoding
+
+    sums: dict[int, torch.Tensor] = {}
+    count = 0
+    for text in pins.wikitext_rows()[:n_texts]:
+        ids = raw_encoding(model.tokenizer, text)["input_ids"][:128]
+        _, rec = model.run(torch.tensor([ids], device="cuda"), record=layers)
+        for la in layers:
+            v = rec[la][skip_first:].sum(0)
+            sums[la] = sums[la] + v if la in sums else v
+        count += max(len(ids) - skip_first, 0)
+    return {la: v / count for la, v in sums.items()}
 
 
 def eligible_ids(run: str, wording_set_families: tuple[str, ...]) -> dict[str, set[str]]:
@@ -115,6 +138,8 @@ def main(
     comp_main: str = "competence_v2",
     comp_computed: str | None = "competence_computed_v1",
     countries_build: bool = False,
+    skip_first: int = 0,
+    center: bool = False,
 ) -> None:
     from bridge_jspace.lens import JLens
     from bridge_jspace.model import load_model
@@ -124,7 +149,8 @@ def main(
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
     manifest = {"run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "layers": list(LAYERS),
-                "k_atoms": K_ATOMS, "n_per_family": n, "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
+                "k_atoms": K_ATOMS, "n_per_family": n, "skip_first": skip_first, "center": center,
+                "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     model = load_model()
     tok = model.tokenizer
@@ -135,8 +161,12 @@ def main(
     for la in LAYERS:
         g = torch.Generator(device="cuda").manual_seed(777 + la)
         rdict[la] = torch.nn.functional.normalize(torch.randn(jdict[la].shape, device="cuda", generator=g), dim=-1)
-    conditions = {"none": {}, "jspace": {la: Remove(jdict[la]) for la in LAYERS},
-                  "random": {la: Remove(rdict[la]) for la in LAYERS}}  # fmt: skip
+    means = layer_means(model, LAYERS) if center else {}
+    conditions = {
+        "none": {},
+        "jspace": {la: Remove(jdict[la], skip_first, means.get(la)) for la in LAYERS},
+        "random": {la: Remove(rdict[la], skip_first, means.get(la)) for la in LAYERS},
+    }
     t0 = time.time()
     ps = prompts(tok, n, comp_main, comp_computed, model if countries_build else None)
     print(len(ps), "prompts", flush=True)
@@ -186,6 +216,8 @@ if __name__ == "__main__":
     ap.add_argument("--comp-main", default="competence_v2")
     ap.add_argument("--comp-computed", default="competence_computed_v1", help="'none' to skip TYPO and TRANS")
     ap.add_argument("--countries-build", action="store_true", help="build the country cases now (a target with no map)")
+    ap.add_argument("--skip-first", type=int, default=0, help="leave the first N positions unedited")
+    ap.add_argument("--center", action="store_true", help="fit the removal to the residual minus its WikiText mean")
     args = ap.parse_args()
     LAYERS = tuple(args.layers)
     main(
@@ -195,4 +227,6 @@ if __name__ == "__main__":
         args.comp_main,
         None if args.comp_computed == "none" else args.comp_computed,
         args.countries_build,
+        args.skip_first,
+        args.center,
     )

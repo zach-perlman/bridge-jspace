@@ -49,6 +49,8 @@ RESULTS = pins.RESULTS_DIR / "natural_rw"
 TYPE = "cntry of person's birthcity"
 LAYERS = (32, 36, 40)
 ALPHAS = (0.05, 0.1, 0.2, 0.4, 0.8)
+# v3 (natural lookup): invented "team colours" for the cities, the same context in both versions
+COLOURS = ("red", "blue", "green", "yellow", "purple", "orange", "black", "white", "pink", "brown")
 SEED = 501
 BATCH = 32
 
@@ -97,13 +99,27 @@ def build(tok, model, versions: tuple[str, ...] = ("MM", "MC")) -> list[dict]:
         fake = dict(zip((it["e2"], x["e2"], k["e2"]), chosen, strict=True))
         conflict = [f"{c} is in the country of {d['e3']}." for c, d in fake.items()]
         rng.shuffle(conflict)
-        texts = {"MM": statement, "MC": " ".join(facts) + " " + statement, "MX": " ".join(conflict) + " " + statement}
+        colours = dict(zip((it["e2"], x["e2"], k["e2"]), rng.sample(COLOURS, 3), strict=True))
+        colour_facts = [f"{c}'s team colour is {col}." for c, col in colours.items()]
+        rng.shuffle(colour_facts)
+        ctx = " ".join(colour_facts)
+        nl = f"The team colour of the city where {it['e1']} was born is"
+        texts = {"MM": statement, "MC": " ".join(facts) + " " + statement, "MX": " ".join(conflict) + " " + statement,
+                 "NM": ctx + " " + statement, "NL": ctx + " " + nl}  # fmt: skip
         for version in versions:
             text = texts[version]
             rendered = chat.chat_text(tok, chat.blank_content(text))
             enc = raw_encoding(tok, rendered, offsets=True)
             start = rendered.rindex(it["e1"]) + len(it["e1"])
             pos = [i for i, (s, _) in enumerate(enc["offset_mapping"]) if s >= start]
+            if version == "NL":  # the colour, only in the prompt
+                cases.append({"id": it["id"], "version": version, "e1": it["e1"], "bridge": it["e2"], "x": x["e2"],
+                              "answer": colours[it["e2"]], "x_answer": colours[x["e2"]], "aliases": [colours[it["e2"]]],
+                              "ids": list(enc["input_ids"]), "pos": pos,
+                              "tok_A": S.answer_token(tok, colours[it["e2"]], "word"),
+                              "tok_b": S.answer_token(tok, colours[x["e2"]], "word"), "tok_mem": -1,
+                              "real_answer": it["e3"], "i_tok": single(it["e2"]), "x_tok": single(x["e2"])})  # fmt: skip
+                continue
             mx = version == "MX"
             ans, x_ans = (fake[it["e2"]], fake[x["e2"]]) if mx else (it, x)
             cases.append({"id": it["id"], "version": version, "e1": it["e1"], "bridge": it["e2"], "x": x["e2"],
@@ -116,7 +132,7 @@ def build(tok, model, versions: tuple[str, ...] = ("MM", "MC")) -> list[dict]:
 
 
 @torch.no_grad()
-def main(name: str, why: str, n: int, versions: tuple[str, ...] = ("MM", "MC")) -> None:
+def main(name: str, why: str, n: int, versions: tuple[str, ...] = ("MM", "MC"), ablate: bool = False) -> None:
     from bridge_jspace.lens import JLens
     from bridge_jspace.model import load_model
 
@@ -178,6 +194,28 @@ def main(name: str, why: str, n: int, versions: tuple[str, ...] = ("MM", "MC")) 
         out_dir / "cases.jsonl",
         [{x: c[x] for x in ("id", "version", "e1", "bridge", "x", "answer", "x_answer", "clean_text")} for c in cases],
     )
+    abl_rows = []
+    if ablate:  # remove the J-space (ablate_pilot's Remove) at the layers, all at once; control: a random dictionary
+        from scripts.ablate_pilot import Remove
+
+        letters = model.letter_token_ids()
+        jd = {la: lens.vectors(la, letters) for la in LAYERS}
+        rd = {}
+        for la in LAYERS:
+            g = torch.Generator(device="cuda").manual_seed(777 + la)
+            rd[la] = torch.nn.functional.normalize(torch.randn(jd[la].shape, device="cuda", generator=g), dim=-1)
+        conds = {
+            "none": {},
+            "jspace": {la: Remove(jd[la]) for la in LAYERS},
+            "random": {la: Remove(rd[la]) for la in LAYERS},
+        }
+        for c in cases:
+            ids = torch.tensor([c["ids"]], device="cuda")
+            for cname, edits in conds.items():
+                _, lg = model.generate_batch(ids, 1, [edits], first_logits=True)
+                abl_rows.append({"id": c["id"], "version": c["version"], "condition": cname,
+                                 "correct": int(lg[0].argmax()) == c["tok_A"]})  # fmt: skip
+        write_jsonl(out_dir / "ablation.jsonl", abl_rows)
     write_jsonl(out_dir / "reads.jsonl", reads)
     write_jsonl(out_dir / "outcomes.jsonl", outcomes)
     summary: dict = {"n_items": len(keep), "seconds": round(time.time() - t0), "versions": {}}
@@ -193,6 +231,16 @@ def main(name: str, why: str, n: int, versions: tuple[str, ...] = ("MM", "MC")) 
                 write[f"{kind}_{a:g}"] = {"flips": statistics.mean(o["flip"] for o in sel),
                                           "flips_to_memory": statistics.mean(o["flip_mem"] for o in sel),
                                           "closed": statistics.mean(o["closed"] for o in sel)}  # fmt: skip
+        summary.setdefault("ablation", {})[ver] = (
+            {
+                cname: statistics.mean(
+                    r["correct"] for r in abl_rows if r["version"] == ver and r["condition"] == cname
+                )
+                for cname in ("none", "jspace", "random")
+            }
+            if abl_rows
+            else None
+        )
         summary["versions"][ver] = {"read_top10": statistics.mean(v <= 10 for v in best.values()),
                                     "read_top1": statistics.mean(v <= 1 for v in best.values()),
                                     "median_rank": statistics.median(best.values()), "write": write}  # fmt: skip
@@ -231,7 +279,8 @@ if __name__ == "__main__":
     ap.add_argument("--why", required=True)
     ap.add_argument("--n", type=int, default=150)
     ap.add_argument("--layers", nargs="+", type=int, default=list(LAYERS))
-    ap.add_argument("--versions", nargs="+", default=["MM", "MC"], choices=["MM", "MC", "MX"])
+    ap.add_argument("--versions", nargs="+", default=["MM", "MC"], choices=["MM", "MC", "MX", "NM", "NL"])
+    ap.add_argument("--ablate", action="store_true", help="also remove the J-space at the layers (ablate_pilot)")
     args = ap.parse_args()
     LAYERS = tuple(args.layers)
-    main(args.name, args.why, args.n, tuple(args.versions))
+    main(args.name, args.why, args.n, tuple(args.versions), args.ablate)
