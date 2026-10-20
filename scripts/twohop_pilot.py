@@ -65,15 +65,22 @@ def sentence(template: str, subject: str, obj: str) -> str:
     return template.replace("{}", subject) + f" {obj}."
 
 
-def make(csv_path: str) -> None:
+SCREEN_TYPES = (*TYPES, "birthcntry of person's spouse")  # the screening set adds a fifth person-centred type
+SCREEN_SEED, N_SCREEN = 402, 500
+
+
+def make(csv_path: str, screen: bool = False) -> None:
+    """The pilot set (items.json), or with `screen` the screening set (screen.json: 500 rows per type over five types,
+    its own seed, for picking facts the model knows on Day 1)."""
     DATA.mkdir(parents=True, exist_ok=True)
-    out_path = DATA / "items.json"
+    out_path = DATA / ("screen.json" if screen else "items.json")
+    types, n_per_type, seed = (SCREEN_TYPES, N_SCREEN, SCREEN_SEED) if screen else (TYPES, N_PER_TYPE, SEED)
     assert not out_path.exists(), f"{out_path} exists; data files are written once"
     raw = Path(csv_path).read_bytes()
     rows = list(csv.DictReader(raw.decode().splitlines()))
-    rng = random.Random(SEED)
+    rng = random.Random(seed)
     items = []
-    for t in TYPES:
+    for t in types:
         pool = [r for r in rows if r["fact_comp_type"] == t]
         rng.shuffle(pool)
         picked, seen_e1, per_answer = [], set(), collections.Counter()
@@ -83,7 +90,7 @@ def make(csv_path: str) -> None:
             seen_e1.add(r["e1.value"])
             per_answer[r["e3.value"]] += 1
             picked.append(r)
-            if len(picked) == N_PER_TYPE:
+            if len(picked) == n_per_type:
                 break
         for k, r in enumerate(picked):
             others = [o for o in pool if o["e2.value"] != r["e2.value"] and o["e3.value"] != r["e3.value"]]
@@ -95,7 +102,7 @@ def make(csv_path: str) -> None:
             ctx2 = " ".join(hop2[i] for i in order2)
             two = r["r2(r1(e1)).prompt"]
             items.append({
-                "id": f"T{TYPES.index(t)}-{k:03d}", "type": t, "e1": r["e1.value"], "e2": r["e2.value"],
+                "id": f"T{types.index(t)}-{k:03d}", "type": t, "e1": r["e1.value"], "e2": r["e2.value"],
                 "e3": r["e3.value"], "aliases": aliases(r), "uid": r["uid"],
                 "prompts": {
                     "MM": two, "CM": f"{ctx1} {two}", "MC": f"{ctx2} {two}", "CC": f"{ctx1} {ctx2} {two}",
@@ -108,7 +115,7 @@ def make(csv_path: str) -> None:
             })  # fmt: skip
     blob = {"source": {"file": "TwoHopFact.csv (huggingface.co/datasets/soheeyang/TwoHopFact)",
                        "sha256": hashlib.sha256(raw).hexdigest()},
-            "generator": f"scripts/twohop_pilot.py make (seed {SEED})", "doc": (__doc__ or "").split("\n\n")[1],
+            "generator": f"scripts/twohop_pilot.py make{' --screen' if screen else ''} (seed {seed})", "doc": (__doc__ or "").split("\n\n")[1],
             "items": items}  # fmt: skip
     out_path.write_text(json.dumps(blob, indent=1, ensure_ascii=False) + "\n")
     print("wrote", out_path, len(items), collections.Counter(it["type"] for it in items))
@@ -119,7 +126,7 @@ def judge(text: str, names: list[str]) -> bool:
     return any(re.search(r"(?<![A-Za-z])" + re.escape(a) + r"(?![A-Za-z])", line) for a in names)
 
 
-def competence(name: str, why: str) -> None:
+def competence(name: str, why: str, items_file: str = "items.json") -> None:
     import torch
 
     from bridge_jspace.data import sha256_of
@@ -130,7 +137,7 @@ def competence(name: str, why: str) -> None:
     out_dir = RESULTS / name
     out_dir.mkdir(parents=True, exist_ok=True)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
-    items_path = DATA / "items.json"
+    items_path = DATA / items_file
     manifest = {"run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "model": pins.model_pin(), "items": {"file": str(items_path.relative_to(pins.REPO_ROOT)),
                 "sha256": sha256_of(items_path)}, "format": "chat, thinking off, 'Answer:' prefilled, blank statement",
@@ -161,7 +168,7 @@ def competence(name: str, why: str) -> None:
     write_jsonl(out_dir / "items.jsonl", rows)
     summary: dict = {"seconds": round(time.time() - t0), "types": {}}
     lines = ["| type | n | " + " | ".join(VERSIONS) + " | MM given both hops |", "|---" * (len(VERSIONS) + 3) + "|"]
-    for t in (*TYPES, "all"):
+    for t in (*dict.fromkeys(it["type"] for it in items), "all"):
         per: dict[str, dict[str, bool]] = collections.defaultdict(dict)
         for r in rows:
             if t in ("all", r["type"]):
@@ -187,11 +194,12 @@ if __name__ == "__main__":
     ap.add_argument("--csv")
     ap.add_argument("--name")
     ap.add_argument("--why")
+    ap.add_argument("--screen", action="store_true", help="make: the screening set; competence: run on it")
     args = ap.parse_args()
     if args.stage == "make":
         assert args.csv, "make needs --csv"
-        make(args.csv)
+        make(args.csv, args.screen)
     else:
         assert args.name, "competence needs --name"
         assert args.why, "competence needs --why"
-        competence(args.name, args.why)
+        competence(args.name, args.why, "screen.json" if args.screen else "items.json")

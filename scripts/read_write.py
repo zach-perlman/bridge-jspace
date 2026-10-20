@@ -45,8 +45,11 @@ N_PER_FAMILY = 60
 SCALES = (1.0, 4.0)
 
 
-def suite_cases(tok, n: int, map_run: str = "map_A8_v1", wording: str = "A") -> list[dict]:
+def suite_cases(
+    tok, n: int, map_run: str = "map_A8_v1", wording: str = "A", families: list[str] | None = None
+) -> list[dict]:
     rows = [json.loads(line) for line in (P.RESULTS / map_run / "cases.jsonl").read_text().splitlines()]
+    rows = [r for r in rows if families is None or r["family"] in families]
     items = {f: {it["id"]: it for it in S.load(f, wording)} for f in {r["family"] for r in rows}}
     seen: collections.Counter = collections.Counter()
     out = []
@@ -59,8 +62,8 @@ def suite_cases(tok, n: int, map_run: str = "map_A8_v1", wording: str = "A") -> 
     return out
 
 
-def country_cases(tok, n: int) -> list[dict]:
-    picked = [json.loads(line)["id"] for line in (C.RESULTS / "map_v1" / "cases.jsonl").read_text().splitlines()]
+def country_cases(tok, n: int, map_run: str = "map_v1") -> list[dict]:
+    picked = [json.loads(line)["id"] for line in (C.RESULTS / map_run / "cases.jsonl").read_text().splitlines()]
     items = E.ITEM_SETS["bind_recall"][2]()
     by_uid = {E.uid(it, i): (i, it) for i, it in enumerate(items)}
     seen: collections.Counter = collections.Counter()
@@ -80,14 +83,23 @@ def country_cases(tok, n: int) -> list[dict]:
 
 
 @torch.no_grad()
-def main(name: str, why: str, n: int, map_run: str = "map_A8_v1", wording: str = "A", countries: bool = True) -> None:
+def main(
+    name: str,
+    why: str,
+    n: int,
+    map_run: str = "map_A8_v1",
+    wording: str = "A",
+    countries: bool = True,
+    country_map: str = "map_v1",
+    families: list[str] | None = None,
+) -> None:
     from bridge_jspace.lens import JLens
     from bridge_jspace.model import load_model
 
     out_dir = RESULTS / name
     out_dir.mkdir(parents=True, exist_ok=True)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
-    inputs = {p: sha256_of(p) for p in (P.RESULTS / map_run / "cases.jsonl", C.RESULTS / "map_v1" / "cases.jsonl")}
+    inputs = {p: sha256_of(p) for p in (P.RESULTS / map_run / "cases.jsonl", C.RESULTS / country_map / "cases.jsonl")}
     manifest = {"run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "layers": list(LAYERS),
                 "scales": list(SCALES), "n_per_family": n, "doc": (__doc__ or "").split("\n\n")[1],
@@ -97,7 +109,7 @@ def main(name: str, why: str, n: int, map_run: str = "map_A8_v1", wording: str =
     tok = model.tokenizer
     lens = JLens(model, pins.FROZEN_LENS)
     t0 = time.time()
-    cases = suite_cases(tok, n, map_run, wording) + (country_cases(tok, n) if countries else [])
+    cases = suite_cases(tok, n, map_run, wording, families) + (country_cases(tok, n, country_map) if countries else [])
     print(len(cases), "cases", flush=True)
     reads, outcomes = [], []
     for k, c in enumerate(cases):
@@ -169,7 +181,17 @@ def main(name: str, why: str, n: int, map_run: str = "map_A8_v1", wording: str =
         lines.append(f"| {fam} | {s['n']} | {100 * s['read_top10']:.0f}% / {100 * s['read_top1']:.0f}% | "
                      f"{100 * s['x_top10']:.0f}% | {f('single/copy')} | {f('single/lens_x1')} | {f('single/lens_x4')} | "
                      f"{f('single/random_x4')} | {f('band/lens_x4')} | {f('band/copy')} |")  # fmt: skip
-    lines += ["", "Write cells: mean frac of the way to C (flips), single layers averaged over 32/36/40."]
+    lines += ["", f"Write cells: mean frac of the way to C (flips), single layers averaged over {list(LAYERS)}.", "",
+              "Strength sweep (single layers): lens direction | random direction, frac (flips), per scale", "",
+              "| family | " + " | ".join(f"x{sc:g}" for sc in SCALES) + " |", "|---" * (len(SCALES) + 1) + "|"]  # fmt: skip
+    for fam, s in summary["families"].items():
+        w = s["write"]
+        cells = []
+        for sc in SCALES:
+            lw, rw = w.get(f"single/lens_x{sc:g}"), w.get(f"single/random_x{sc:g}")
+            cells.append(f"{100 * lw['frac']:.0f}% ({100 * lw['flips']:.0f}%) / {100 * rw['frac']:.0f}% ({100 * rw['flips']:.0f}%)"
+                         if lw and rw else "-")  # fmt: skip
+        lines.append(f"| {fam} | " + " | ".join(cells) + " |")
     (out_dir / "summary.md").write_text("\n".join(lines) + "\n")
     print((out_dir / "summary.md").read_text())
 
@@ -182,5 +204,10 @@ if __name__ == "__main__":
     ap.add_argument("--map", default="map_A8_v1", help="suite_split map run whose cases to use")
     ap.add_argument("--wording", default="A", choices=["A", "B", "C"])
     ap.add_argument("--no-countries", action="store_true")
+    ap.add_argument("--country-map", default="map_v1", help="control_split map run whose country cases to use")
+    ap.add_argument("--families", nargs="+", default=None, help="suite families to include (default: all in the map)")
+    ap.add_argument("--layers", nargs="+", type=int, default=list(LAYERS))
+    ap.add_argument("--scales", nargs="+", type=float, default=list(SCALES))
     args = ap.parse_args()
-    main(args.name, args.why, args.n, args.map, args.wording, not args.no_countries)
+    LAYERS, SCALES = tuple(args.layers), tuple(args.scales)
+    main(args.name, args.why, args.n, args.map, args.wording, not args.no_countries, args.country_map, args.families)
