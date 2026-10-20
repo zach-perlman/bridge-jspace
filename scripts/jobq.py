@@ -147,8 +147,8 @@ def cmd_enqueue(paths: list[Path]) -> int:
         specs.append((p.resolve(), spec))
     # Prediction forms (jobs/predictions/) are human notes no job reads: being filled in must not block a queue.
     status = _git("status", "--porcelain", "--untracked-files=no").splitlines()
-    paths = [(line, line.split(maxsplit=1)[-1]) for line in status]  # _git strips the first line's leading space
-    if dirty := "\n".join(line for line, path in paths if not path.startswith("jobs/predictions/")):
+    changed = [(line, line.split(maxsplit=1)[-1]) for line in status]  # _git strips the first line's leading space
+    if dirty := "\n".join(line for line, path in changed if not path.startswith("jobs/predictions/")):
         raise SystemExit(f"commit first: a job runs the committed tree only\n{dirty}")
     for p, _ in specs:
         try:
