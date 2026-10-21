@@ -1,6 +1,9 @@
 # bridge-jspace
 
 **Latest status (20 Oct 2026):** [STATUS.md](STATUS.md) · plan: [Google Doc](https://docs.google.com/document/d/1bqqdXePTUXQGlowVjk73sPfJkbV_tsu0RNNX-BiTYUc/edit?usp=drivesdk) · run log: [EXPERIMENTS.md](EXPERIMENTS.md)
+· **new (21 Oct, unverified):** [depth track D1-D4](#depth-track-d1-d4-2026-10-21-what-is-the-around-route) ·
+family names used there: "where the bridge comes from → where the answer comes from" (RL = memory → prompt, BL =
+prompt → prompt, ...)
 
 **Question.** In a two-hop question ("the language spoken in the country where the Amazon River ends is ..."), the
 model has to compute a bridge entity (Brazil) before it can answer (Portuguese). On Qwen3.6-27B and Gemma 4 31B the
@@ -45,6 +48,7 @@ or tokenization artifact.
 | [exp22_brew_misses (part B, competence as data)](#exp22_brew_misses-part-b-competence-as-data-when-brews-composed-answer-is-wrong-is-the-intermediate-formed) | When brew's composed answer is wrong with each step right, is the intermediate formed? |
 | [exp23_arith (part B, stretch)](#exp23_arith-part-b-stretch-an-intermediate-the-model-computes-by-arithmetic) | Is an intermediate computed by arithmetic carried in the J-space? |
 | [Pitfalls](#pitfalls-found-so-far) | What went wrong along the way, and how each is handled |
+| [Depth track (D1-D4, 2026-10-21)](#depth-track-d1-d4-2026-10-21-what-is-the-around-route) | What does a lookup in the prompt use instead of the lens-readable word, where and when? Names, results at a glance, methods and datasets compared, D1-D4 with figures, predictions vs results, what is not tested, next ideas |
 | [Decisions](#decisions), [open decisions](#open-decisions-humans) | What was decided, and what is still for the humans to decide |
 | [Next steps, part A](#next-steps-part-a), [part B](#next-steps-part-b) | What comes next |
 | [DEVELOPER.md](DEVELOPER.md) | How to run, re-analyse and publish: layout, commands, GPU box, figures, examples |
@@ -1798,6 +1802,256 @@ manifest); chain `scripts/phase4_chain.sh`.
 - Which headline numbers go into `VERIFIED.md` after a human recomputes them (`verify_headlines.py` lists every
   one with its source file).
 - exp17: run it as designed below, change it, or drop it.
+
+## Depth track (D1-D4, 2026-10-21): what is the "around" route?
+*Draft, UNVERIFIED: nothing in this section is in `VERIFIED.md`. Qwen3.6-27B, chat format, one overnight queue
+(2026-10-20/21, `scripts/jobq.py`). Each headline number below was recounted by the coordinator from the run's raw
+file (named under "To recompute"); the rest come from the run reports in `results/<exp>/<run>/analysis-*-figures/`.
+Dan wrote his predictions before any result was pulled: `jobs/predictions/2026-10-21_dan.md` (commit `18a0104`).*
+
+**The question.** Earlier runs (rows 32-59 of EXPERIMENTS.md) found that when the bridge is recalled from memory and
+then used to look something up in the prompt, the J-lens can **read** the bridge (95% of items) but pushing along its
+direction does **not** change the answer (<= 3%), while for recall from memory the push works. So the lookup uses
+something the lens can read but not steer. These four experiments ask what that thing is, where it sits, and when it
+is used.
+
+### Names used in this section
+Every family is named **"where the bridge comes from → where the answer comes from"**: *prompt* = stated in the
+prompt, *memory* = recalled by the model. One scene, four questions:
+```
+Jack's pet is a cow. Mia's pet is a dog. Tom's pet is a pig.
+The cow's locker is 5. The dog's locker is 3. The pig's locker is 7.
+```
+| Name (old code) | Question | Bridge | Answer |
+|---|---|---|---|
+| prompt → prompt (BL) | Which locker belongs to Jack's pet? | cow, read from the prompt | 5, looked up in the prompt |
+| prompt → memory (BR) | How many legs does Jack's pet have? | cow, read from the prompt | 4, recalled |
+| memory → prompt (RL) | Which locker belongs to the animal known for mooing? | cow, recalled | 5, looked up in the prompt |
+| memory → memory (RR) | How many legs does the animal known for mooing have? | cow, recalled | 4, recalled |
+| prompt → prompt → memory (BLR), prompt → memory → prompt (BRL) | three-step versions | | |
+| named → prompt (DL, new) | Which locker belongs to the cow? | named in the question | looked up in the prompt |
+| countries: memory → memory / prompt → memory (R / B) | "... the country where Lyon is located" / "Emma lives in Egypt ..." → capital | | |
+
+Every edit compares an **org prompt** with an **alt prompt**, the same prompt with another bridge: **bridge org** (cow)
+vs **bridge alt** (dog), **answer org** (5) vs **answer alt** (3). "% of original answers that become the alternative
+answer" is the share of items the edit switches from answer org to answer alt. The **lens-readable part** of a change
+is its piece made of J-lens word directions (25-atom sparse fit), the **rest** is everything else. Plain names of all
+runs: `jobs/titles.yaml`.
+
+### Results at a glance
+| | Question | Headline (n; control) | Verdict by the pre-registered rule | Dan's prediction |
+|---|---|---|---|---|
+| **D1** | For a bridge stated in the prompt, is "lookups go around the lens" just an artefact of measuring only at the question? | prompt → prompt, layer 36: pasting the alt prompt into **the whole context** switches 86% [77, 92] (69/80); the sentence that states the bridge 0/80; the question 5/80; random push 0/80. The lens-readable part of that paste switches 0% (concentration 0.14 [0.10, 0.19] vs random-dictionary null 0.07); the same paste's lens-readable part does move prompt → memory (5.0, "inside") | "around" for the split, positive control "inside"; lens push inconclusive (3/32 vs 1/32 random at 16x) → **neither** formally; **not a location artefact** | lens-readable part 0% at the statement (right); 40-50% at the question (not testable) |
+| **D2** | From where, and in which layers, does the answer read "The cow's locker is 5."? | memory → prompt, that statement hidden from **the last tokens before the answer** in all 64 layers: 7% [3, 16] still answered right (4/60); 3 controls 60/60; hidden from the question words only: 100%; attention layers only: 8%; DeltaNet layers only: 100%; memory → memory 60/60 | lookup breaks, recall survives (holds); the last tokens read the statement themselves (holds); the question words relay it (fails) | 5% (right); 85% from the question words (wrong: 100%); attention (right); 48-56 (right place) |
+| **D3** | At the moment of the lookup, do the last tokens carry the **word** (cow), a **pointer** to a statement slot, or the **answer** itself? | memory → prompt, alt-prompt patch after the question, layers 44-52 (animals + elements, 100 scenes): same statement slot 29% [21, 39], bridge alt's statement 9% [5, 16], alt prompt's own answer 12% [7, 20], answer org kept 49%; control (same entity, statements reshuffled) 0/100 | pooled: **pointer (slot)**; each domain alone "mixed"; levels run "mixed" | the word dominates (contradicted at 44-52) |
+| **D4** | Is the strong early lens push that switched memory → prompt (layers 16-28) just typing bridge alt into the question? | memory → prompt, whole question, layer 24, 4x: 37% [26, 49] switch (22/60); random push 0%; only the subject phrase matters (33%; rest of the question 0%); prompt → prompt 0/60 | rule says "writes the intermediate", but both of its tests fail controls made of input edits → **not established** | real write (not established) |
+
+### What the four together suggest (interpretation, UNVERIFIED, one model)
+For memory → prompt, the runs line up into one timeline:
+1. **Layers up to ~40: the question words carry the recalled word.** Patching only the question words moves the answer
+   to bridge alt's statement (95% at layer 18); from layer 40 on, patching them does nothing (D3).
+2. **Layers 48-63: the last tokens before the answer read the statement, through attention.** Blocking that read in
+   layers 48-63 leaves 17% right; blocking it in layers 0-47 leaves 100%; DeltaNet layers are not needed (D2).
+3. **Layers 44-50: what those last tokens carry is more often *which slot* than *which entity*.** The patch gives the
+   answer at the same statement slot 29% vs bridge alt's statement 9% (memory → prompt), 53% at layer 50 for
+   named → prompt, 73% at layer 48 with 3 statements (D3).
+4. **Layers 52-60: they carry the fetched digit.** The alt prompt's own answer wins at the last 2 tokens from layer
+   56 (98-100%) (D3).
+
+The lens fails to steer exactly in steps 2-3 (layers 44-52), where the model works with a pointer and not with the
+word. That fits "the around route is a pointer". For a bridge stated in the prompt, D1 shows the same thing from the
+other side: where the bridge actually sits (the whole context, layers 28-44), the lens-readable part carries none of
+it, while the identical paste's lens-readable part does carry it for the recall question.
+
+**Why this is not settled yet:** the pointer result holds only pooled (animals 34% slot vs 24% answer; elements
+mostly "kept"); in these prompts the statement slot is also a fixed token offset, so "pointer to the 3rd statement"
+and "pointer to token 47" are not separated; D4 cannot tell injection from writing because for memory → prompt the
+push and the word sit on the same tokens.
+
+### Methods compared
+Each method changes one thing in the model (or its input) and reads the answer; they differ in what they change.
+
+| Method (script) | What is changed | What is read | Control | Can show | Cannot show |
+|---|---|---|---|---|---|
+| Probe swap (exp02, B1) | a probe for the bridge (mean hidden state over prompts that imply it) swapped for another entity's: whole, lens-readable part, or rest | does the answer become the swap target's | random direction, same size; matched-size piece | which part of a fixed bridge direction acts | where the model itself carries the bridge (the probe is ours) |
+| Copy split (suite_split) | the question tokens' hidden state replaced by the alt prompt's, at one layer; the patch split into lens-readable part and rest | % of original answers that become the alternative answer | random-dictionary fit of the same size (null) | how much of the model's own bridge change at the question is lens-readable | other positions; whether the part is used |
+| Lens read / write (read_write) | write: the lens direction (bridge alt − bridge org) added at matched size | read: the bridge's rank in the lens; write: % switched | random push, same size | read without write | why it cannot write |
+| J-space knock-out (ablate_pilot) | the lens-readable part of every hidden state removed at layers 32/36/40 | accuracy | the same removal over a rotated, size-matched space | which tasks need the J-space | which step needs it (word answers are hurt anyway) |
+| **Patch at one place (D1, statement_positions)** | the alt prompt's hidden state pasted at ONE place (the sentence stating the bridge, the bridge word, the locker rows, the whole context, the question, the last tokens), layer by layer; then split and lens push there | % switched | off-path control prompt, random push, random-dictionary null | where the bridge is carried, and whether it is lens-readable there | whether that place is read by the answer (D2) |
+| **Blocking reads (D2, attn_knockout)** | some positions (question words, last tokens, both) forbidden to read one statement in a set of layers: attention to it masked; in DeltaNet layers its values removed in a second pass used only at those positions | accuracy; whether the wrong answer is another locker in the prompt | same-kind statement off the path, a random span, the 3 tokens after the statement; statement fully removed (positive control) | from where and when the answer reads each statement; attention vs DeltaNet | indirect routes through other positions |
+| **Word, slot or answer (D3, pointer_swap)** | the alt prompt (statements reordered, another entity asked) pasted at the question words, after the question, or at the last 2 tokens, one layer at a time | which of four predicted answers comes out | same entity with statements reshuffled; random push; another topic's prompt; digits no hypothesis predicts | whether the lookup follows the word, a statement slot, or the fetched answer, and when | slot vs token offset; a pointer to the answer token |
+| **Early push vs editing (D4, early_push)** | the lens push (bridge alt − bridge org) at layers 16-28 on parts of the question; compared with text edits, an embedding push and the alt-prompt patch | % switched; item-by-item agreement (Cohen's kappa) | random push; zero-size push; off-path prompt; text loss | where an early push works, what it resembles | injection vs writing for memory → prompt |
+
+### Datasets compared
+| Dataset | Bridge comes from | What uses it | Answer | Format | Items (eligible) | Used in |
+|---|---|---|---|---|---|---|
+| Probe-swap two-hop (`probe_swap.json`) | memory (real facts, places, people) | a recalled fact | memory, word | raw text | 90 (77) | exp02, exp11-16 |
+| Countries (`bind_recall.json`) | memory (Lyon → France) or prompt (Emma lives in Egypt) | a recalled fact (capital) | memory, word | chat | 125-400 per family | positive control in D1, D2, D4 |
+| Brew (`brew_*.json`) | prompt (a colour table) | a second lookup in the table | prompt, colour word | chat | 800 (87-88%) | exp03-08 |
+| Animal suite (`data/suite_v1`, wording B in `suite_v1_b`) | prompt (Jack's pet is a cow) or memory (known for mooing) | a locker lookup or a recalled leg count | prompt odd digit or memory even digit | chat | 400 per family (398-400) | D1, D2, D4 |
+| Three-step suite (tie-breakers) | prompt | a lookup then a recall, or a recall then a lookup | memory / prompt digit | chat | 400 (390 / 324) | D1, D2 |
+| Computed bridges (`computed_v1`) | computed (typo fixed, word translated, sum) | a recalled fact | memory digit | chat | 200 per family | earlier runs |
+| JSON tool outputs (`suite_v1_tool`) | JSON tool result | a recall or a JSON lookup | memory digit / name | chat + JSON | 400 per family | earlier runs |
+| Natural two-hop (TwoHopFact) | memory (a person's birth city) | its country, or an invented colour in the prompt | memory / prompt word | chat | 91 eligible | earlier runs |
+| **Pointer scenes (`data/pointer_v1`, new)** | memory (cue), named in the question, or memory with a recalled fact | a lookup among 3 or 5 statements, or a recall | prompt digit / memory digit | chat | 400 scenes per topic (main, 5 statements); dev: 3, 5, 5 + filler, 60 each | D3 |
+
+How the pointer scenes differ from the animal suite: every org prompt has an alt prompt with the statements reordered
+and another entity asked, built so that "word", "slot", "answer" and "no change" predict four different digits; four
+topics (animals by legs, planets by order from the Sun, elements by atomic number, months by number), each entity one
+token; 3 or 5 statements, with or without filler sentences between them. The model passed the competence gate only on
+animals (98%) and elements (94%) for memory → prompt; months (46%) and planets (memory → memory 55%) failed and are
+excluded from the main D3 numbers.
+
+### D1. For a bridge stated in the prompt, is "around the lens" an artefact of where we measured?
+**What we did.** In prompt → prompt the bridge is stated ("Jack's pet is a cow") and the question only says "Jack's
+pet"; all earlier measures looked at the question, where the lens sees this bridge on 7% of items. Here the alt
+prompt (Jack's and Mia's pets swapped) is pasted at one place at a time, layer by layer; where that switches the
+answer, the paste is split into its lens-readable part and the rest, and a lens push is tried there.
+**Example.** "Leo's pet is a duck. ... The duck's locker is 3. ... Which locker belongs to Leo's pet?" → answer org 3;
+alt prompt (pets swapped) → answer alt 1. Pasting only into "Leo's pet is a duck." gives 3; only into the question 3;
+into the whole context 1; the lens-readable part of that context paste alone 3, the rest 1.
+
+![Where the stated bridge is carried, and whether that is lens-readable](figures/depth_1021/d1_where_the_bridge_is_carried.png)
+
+- The sentence that states the bridge carries it only up to layer 24 (100% at 0-16, 81% at 24, 0% from 28); between
+  layers 28 and 44 it is spread over the whole context (88-94%); the question takes over only at 52 (88%).
+- A second, larger map (80 per family, layers 32-52) confirms every cell the rule uses: of 416 shared cells, 54
+  carry the bridge in both maps, 353 in neither, 9 differ (all at 34-56%): `figures/depth_1021/d1_map_confirmation.png`.
+- At the whole context (layers 32-40) the lens-readable part flips 0% vs 90% for the full paste; the countries
+  positive control is "inside" there (2.66 [2.51, 2.83]); prompt → prompt → memory behaves like prompt → prompt.
+- Gates: identity paste exactly 0.0 change (1,280/1,280); alt prompt pasted everywhere gives answer alt 640/640;
+  pastes at statements for memory-bridge families exactly zero; read agrees with greedy 99.9%.
+- **To recompute:** `results/statement_positions/d1_map_n80_v1/outcomes.jsonl`, family BL, set context, layer 36,
+  source cf: 69/80 role b. Split: `results/statement_positions/d1_parts_v1/summary.md`, row BL/context/primary.
+
+### D2. From where, and in which layers, does the answer read the statement?
+**What we did.** Forbade one group of positions to read one statement, in some layers, and asked again. In attention
+layers the read is masked; in DeltaNet layers the statement's values are removed in a second pass used only at the
+blocked positions (exactly the statement's contribution; tested against an fp64 reference).
+**Example.** "... The lion's locker is 5. The turkey's locker is 7. ... Which locker belongs to the animal known for
+its roar? Answer:" → answer org 5. With "The lion's locker is 5." hidden from the question words and the last tokens
+in every layer, it answers 9, another locker in the prompt.
+
+![Which positions must read the statement](figures/depth_1021/d2_which_positions_must_read.png)
+![From which layer on the statement must stay readable](figures/depth_1021/d2_from_which_layer.png)
+
+- memory → prompt and prompt → prompt break when the last tokens cannot read the statement giving the answer (7%, 3%)
+  and do not care about the question words (100%); in memory → prompt 67% of the original answers become another
+  locker named in the prompt. memory → memory and prompt → memory: 100% wherever the locker statement is hidden.
+- The read happens in the attention layers (attention only 8%, DeltaNet only 100%) and late: layers 48-63 are needed
+  together (17%), 56-63 alone are not (100%), 0-47 are not (100%). No single 8-layer window breaks it
+  (`figures/depth_1021/d2_windows_attention_vs_deltanet.png`).
+- The statement giving a stated bridge ("Jack's pet is a cow.") is read by the question words before layer 32
+  (prompt → memory: blocking 0-31 leaves 30%); countries: prompt → memory reads it early (16-23).
+- Gates: empty block exactly 0.0; positive controls exact; controls lost answer org in 11 of 47,880 rows; DeltaNet
+  output size at blocked positions 0.970 vs 0.972 for controls (rescaling explains nothing).
+- **To recompute:** `results/attn_knockout/d2_ko_core_v1/rows.jsonl`, family RL, source lookup, dest final, layers
+  all, mode value: 4/60 correct; source lookup_off / random / trailing: 60/60.
+
+### D3. Does the lookup follow the word, a pointer to a statement slot, or the fetched answer?
+**What we did.** Each org prompt lists 5 statements; its alt prompt reorders them and asks about another entity
+(bridge alt), so four outcomes predict four different digits. The alt prompt's hidden states were pasted at the
+question words, after the question, or at the last 2 tokens, one layer at a time.
+**Example.** "... The turkey's locker is 9. ... The bee's locker is 3. ... The lion's locker is 8. ... Which locker
+belongs to the animal known for its roar?" → answer org 8. The alt prompt asks about the turkey, stated 3rd there.
+Pasting after the question at layer 48 gives **3**, the bee's locker: the bee is 3rd in the org prompt (slot), not
+9 (the turkey's statement, word) and not 5 (the alt prompt's own answer).
+
+![Word, slot or answer, by layer](figures/depth_1021/d3_word_slot_or_answer_by_layer.png)
+
+- Question words carry the word up to ~layer 40 in every family, then stop mattering. After the question and at the
+  last 2 tokens, the slot answer peaks at layers 44-50 (memory → prompt 31% at 48; named → prompt 53% at 50), then
+  the alt prompt's own answer takes over (last 2 tokens 98-100% from layer 56). memory → memory never shows a slot
+  answer (~0%): the pointer appears only where a lookup is used.
+- By slot of the asked statement: first 13%, middle 28%, last 42% slot answers
+  (`figures/depth_1021/d3_by_statement_slot.png`; each slot cut is below the n the rule needs).
+- With 3 statements the slot answer is stronger (73% at layer 48; on the last tokens +22 [+4, +37] points vs 5
+  statements); filler sentences between the statements: "unclear" for every outcome
+  (`figures/depth_1021/d3_levels.png`).
+- Gates: base patched into itself 300/300 unchanged; layer-0 paste of the whole alt prompt reproduces it 300/300;
+  digits no hypothesis predicts 1%. Superseded runs (pilot, first main, first levels) used too few items or
+  gate-failing topics; they are kept and flagged in their reports.
+- **To recompute:** `results/pointer_swap/d3_main_ae_27b/outcomes.jsonl`, family RL, group final, layer transit,
+  source dissoc: position 29, identity 9, value 12, none 49, context 1 (of 100); source same: none 100/100.
+
+### D4. Is the strong early lens push just typing bridge alt into the question?
+**What we did.** Pushed along the lens direction (bridge alt − bridge org) at layers 16-28 on parts of the question,
+and compared the result item by item with text edits (name bridge alt, add it next to the cue, swap the noun, change
+the cue, mention it elsewhere), an embedding push and the alt-prompt patch.
+**Example.** "... The wolf's locker is 1. ... Which locker belongs to the animal known for howling?" → answer org 1;
+bridge alt goose → answer alt 7. Naming the goose, adding it next to the cue, swapping the noun and the alt prompt
+all give 7; the tested push, the embedding push and mentioning the goose elsewhere keep 1.
+
+![Where an early push works, next to prompt edits](figures/depth_1021/d4_early_push_vs_edits.png)
+
+- The push only works on the subject phrase ("the animal known for howling"): up to 100% [94, 100] at layer 16,
+  16x; the rest of the question and the last tokens: 0% at every layer and size; random push <= 10%.
+- prompt → prompt barely moves (0% at the tested push, 47% vs 100% at 16x) — but input edits (the embedding of bridge
+  alt, the text "add bridge alt next to the cue") show the same gap, so this gap cannot tell injection from writing
+  (`figures/depth_1021/d4_decision_tests.png`).
+- Item by item the push agrees best with the alt-prompt patch at the same layer (Cohen's kappa +0.34 [+0.12, +0.55]),
+  not with any text edit.
+- Gates: zero-size push exactly 0.0 change; the earlier run's push reproduced on 97.6% of 4,320 cells.
+- **To recompute:** `results/early_push/d4_push_v1/outcomes.jsonl`, kind push, dir lens, layer 24, scale 4, no
+  "prompt" key: subset a RL 22/60, BL 0/60; subset nb RL 0/60; subset b RL 20/60.
+
+### Dan's predictions vs results
+| | Prediction | Result |
+|---|---|---|
+| Q3.1 gate | >= 95% | animals 98%, elements 94%, planets 91%, months 46% |
+| Q3.2 question words: word / slot / answer / none | 60 / 10 / 10 / 20 | 95 / 1 / 0 / 0 (layer 18) |
+| Q3.3 last tokens | 80 / 10 / 5 / 5 | layer 50: 25 / 53 / 0 / 14; layer 60: answer 100 |
+| Q3.4 depends on the slot | no | first 13%, middle 28%, last 42% (cuts too small for the rule) |
+| Q3.5 memory → memory / named → prompt | word-dominated | memory → memory: word 100%, slot 0%; named → prompt: slot 42-53% |
+| Q3.6 the thing the lens reads but cannot steer | the word | at 44-52 a slot pointer more than the word, then the answer |
+| Q2.1 / Q2.2 | 5% / 85% | 7% / 100% |
+| Q2.3 window | 48-56 | 48-63 together; no single window |
+| Q2.4 memory → memory | 95% | 100% |
+| Q2.5 bridge statement hidden from the question: which breaks more | prompt → prompt | prompt → memory (18% vs 58%) |
+| Q2.6 layer kind | attention | attention |
+| Q1.1 where BL's bridge is carried | sentence / word at 20-36, question / last tokens at 36-56 | sentence to 24-28, whole context 28-44, question from 52 |
+| Q1.2 lens-readable part | 0% at the sentence, 40-50% at the question | 0% wherever testable |
+| Q1.3 lens push | works at 20-36 | no effect at 32-40 (20-28 not run) |
+| Q1.4 memory-bridge statement pastes | do nothing | confirmed: exactly zero |
+| Q4.2 clue words matter | yes | yes (subject phrase only) |
+| Q4.3 prompt → prompt vs memory → prompt | memory → prompt slower | the opposite |
+| Q4.4 verdict | real write | not established |
+
+### Not tested yet
+- **Slot vs token offset.** In every prompt so far the n-th statement also sits at a fixed token position; a variant
+  that shifts offsets while keeping the order is needed before "pointer to a statement" is a claim.
+- **A pointer to the answer token** (the "reflexive" route of Gur-Arieh, Geva & Geiger 2025, "Mixing Mechanisms",
+  arXiv 2510.06182): the alt prompt's answer never
+  appears in the org prompt, so this route cannot show up.
+- **A fitted pointer direction.** No code that writes the lookup (slot direction, difference of means or a low-rank
+  subspace with the controls of Makelov et al. 2023) and its cosine with the lens directions.
+- **Per-topic and per-slot power.** Pooled cells pass the rule; per-topic and per-slot cuts are too small (n < 35
+  makes the control bound unreachable).
+- **D1 lens push** only at n=32 and layers 32-40 (one 16x cell keeps it "inconclusive"); layers 20-28 not run.
+- **D4:** lens readouts at layers 32-56 not built; injection vs writing not separable for memory → prompt.
+- **D2:** indirect routes stay open; individual heads not identified.
+- **Generality:** one model (Qwen3.6-27B, hybrid attention); the animal domain; months and planets failed the gate.
+  Harder datasets are being built (code with pointers, statements in another language). The OLMo-3-7B ladder is
+  ported (pins, lenses verified) but not run. Qwen3-32B (full attention in every layer) would make D2 a pure
+  attention test.
+
+### Next ideas (in order)
+1. **Make the pointer claim decisive (D3 v2).** Add an offset-shift variant (same order, different token positions),
+   a variant where the alt prompt's answer appears in the org prompt (pointer to the answer token), and >= 35 items
+   per slot and topic. Cost: one dataset pass + ~1.5 GPU-h.
+2. **Run D2 and D3 on the harder datasets** being built: Python code where the pointer is literal (dict keys, list
+   indices, variable chains) and statements written in another language than the question (a lookup that matches
+   by meaning, not by token). If the slot answer survives there, the pointer is not a quirk of the animal template.
+3. **Fit the pointer and steer with it** (D3 `fit`): a slot direction from difference of means and a rank-k
+   subspace, with held-out entities and slots, matched size, the dormant-subspace control; report its cosine with
+   the lens directions. Success = it switches the lookup where the lens push fails.
+4. **A pointer readout.** D2 says the read happens in attention layers 48-63 from the last tokens: score each
+   statement by the attention those heads pay to it and read off which statement the lookup will fetch; compare
+   with the J-lens as a second, pointer lens.
+5. **Close D1 and D4 gaps:** D1 lens push at n=80 and layers 20-28; D4 downstream lens readouts, and a push on a
+   question whose subject phrase does not name the bridge.
+6. **Generality:** Qwen3-32B (clean attention test), the OLMo-3-7B post-training ladder (does the pointer exist
+   before post-training?), then other families when Zach's ports pass their gates.
 
 ## Next steps (part A)
 In order. Each item: the question, why it matters now, the test, and its cost. Every GPU run needs human sign-off.

@@ -1,0 +1,824 @@
+{
+ "exp": "attn_knockout",
+ "run": "d2_ko_tie_country_v1",
+ "seed": 0,
+ "k": 3,
+ "groups": [
+  {
+   "key": "path_breaks",
+   "title": "A path statement blocked, the answer lost",
+   "definition": "source on the family's path, all layers, unedited read right, edited read wrong",
+   "n_total": 532
+  },
+  {
+   "key": "path_confusion",
+   "title": "Lost to another statement's answer",
+   "definition": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)",
+   "n_total": 1297
+  },
+  {
+   "key": "path_survives",
+   "title": "A path statement blocked from the answer site, the answer kept",
+   "definition": "source on the path, destination final or both, all layers, edited read still right",
+   "n_total": 117
+  },
+  {
+   "key": "control_breaks",
+   "title": "A control span blocked, the answer lost (collateral damage)",
+   "definition": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong",
+   "n_total": 35
+  },
+  {
+   "key": "positive_control",
+   "title": "Path statement invisible to everything after it",
+   "definition": "source on the path, destination after, all layers, DeltaNet mode absent (no write, erase or decay at S): any outcome",
+   "n_total": 125
+  }
+ ],
+ "examples": [
+  {
+   "group": "path_breaks",
+   "family": "BRL",
+   "item_id": "BRL-0228",
+   "prompt": "<|im_start|>user\nTara's pet is a sheep. Laura's pet is a spider. Ivy's pet is a chicken. Animals with 6 legs use locker 9. Animals with 8 legs use locker 5. Animals with 4 legs use locker 3. Animals with 2 legs use locker 7.\nWhich locker does Tara's pet use? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 156,
+     "end": 190,
+     "role": "source"
+    },
+    {
+     "start": 225,
+     "end": 362,
+     "role": "destination"
+    },
+    {
+     "start": 243,
+     "end": 247,
+     "role": "cue"
+    },
+    {
+     "start": 33,
+     "end": 38,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question and final positions cannot read the lookup span ('Animals with 4 legs use locker 3.') directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "3",
+    "edited": "4",
+    "expected": {
+     "H_answer_site": "not 3",
+     "H_relay": "not 3"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.3271,
+    "logp_answer_edited": -7.2493,
+    "dlogp": -6.9421,
+    "correct": false,
+    "kept": false,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9924,
+    "answer": "3",
+    "other_answers_in_prompt": [
+     "5",
+     "7",
+     "9"
+    ]
+   },
+   "why": "source on the family's path, all layers, unedited read right, edited read wrong"
+  },
+  {
+   "group": "path_breaks",
+   "family": "country-B",
+   "item_id": "B-0368",
+   "prompt": "<|im_start|>user\nEmma lives in Russia. Carol lives in France. Nina lives in Greece. What is the capital of the country where Carol lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 61,
+     "role": "source"
+    },
+    {
+     "start": 61,
+     "end": 240,
+     "role": "destination"
+    },
+    {
+     "start": 125,
+     "end": 130,
+     "role": "cue"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "bridge"
+    }
+   ],
+   "condition": "every position after it cannot read the binding span ('Carol lives in France.') directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": " Paris",
+    "edited": "<|im_end|>",
+    "expected": {
+     "H_answer_site": "not Paris",
+     "H_relay": "not Paris"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0765,
+    "logp_answer_edited": -4.1453,
+    "dlogp": -4.0676,
+    "correct": false,
+    "kept": false,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9755,
+    "answer": "Paris",
+    "other_answers_in_prompt": [
+     "Moscow",
+     "Athens"
+    ]
+   },
+   "why": "source on the family's path, all layers, unedited read right, edited read wrong"
+  },
+  {
+   "group": "path_breaks",
+   "family": "BLR",
+   "item_id": "BLR-0354",
+   "prompt": "<|im_start|>user\nHugo's pet is a cow. Ruby's pet is a frog. Noah's pet is a goose. The cow's friend is a turkey. The frog's friend is a sheep. The goose's friend is a pig.\nHow many legs does the friend of Hugo's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 82,
+     "end": 112,
+     "role": "source"
+    },
+    {
+     "start": 172,
+     "end": 325,
+     "role": "destination"
+    },
+    {
+     "start": 205,
+     "end": 209,
+     "role": "cue"
+    },
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 87,
+     "end": 90,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question and final positions cannot read the lookup span (\"The cow's friend is a turkey.\") directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "2",
+    "edited": "4",
+    "expected": {
+     "H_answer_site": "not 2",
+     "H_relay": "not 2"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.027,
+    "logp_answer_edited": -5.2202,
+    "dlogp": -5.1932,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9752,
+    "answer": "2",
+    "other_answers_in_prompt": [
+     "4"
+    ]
+   },
+   "why": "source on the family's path, all layers, unedited read right, edited read wrong"
+  },
+  {
+   "group": "path_confusion",
+   "family": "BRL",
+   "item_id": "BRL-0311",
+   "prompt": "<|im_start|>user\nRyan's pet is a lion. Rose's pet is a chicken. Kyle's pet is a mouse. Animals with 4 legs use locker 3. Animals with 8 legs use locker 9. Animals with 2 legs use locker 5. Animals with 6 legs use locker 1.\nWhich locker does Ryan's pet use? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 86,
+     "end": 120,
+     "role": "source"
+    },
+    {
+     "start": 223,
+     "end": 360,
+     "role": "destination"
+    },
+    {
+     "start": 241,
+     "end": 245,
+     "role": "cue"
+    },
+    {
+     "start": 33,
+     "end": 37,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question and final positions cannot read the lookup span ('Animals with 4 legs use locker 3.') directly at layers suf40 (24 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "3",
+    "edited": "5",
+    "expected": {}
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0165,
+    "logp_answer_edited": -6.9065,
+    "dlogp": -6.8903,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9757,
+    "answer": "3",
+    "other_answers_in_prompt": [
+     "1",
+     "5",
+     "9"
+    ]
+   },
+   "why": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)"
+  },
+  {
+   "group": "path_confusion",
+   "family": "BRL",
+   "item_id": "BRL-0303",
+   "prompt": "<|im_start|>user\nSean's pet is a turkey. Luke's pet is a sheep. Dan's pet is a bee. Animals with 6 legs use locker 7. Animals with 8 legs use locker 9. Animals with 2 legs use locker 3. Animals with 4 legs use locker 1.\nWhich locker does Sean's pet use? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 151,
+     "end": 185,
+     "role": "source"
+    },
+    {
+     "start": 220,
+     "end": 357,
+     "role": "destination"
+    },
+    {
+     "start": 238,
+     "end": 242,
+     "role": "cue"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question and final positions cannot read the lookup span ('Animals with 2 legs use locker 3.') directly at layers suf24 (40 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "3",
+    "edited": "1",
+    "expected": {}
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0093,
+    "logp_answer_edited": -7.2267,
+    "dlogp": -7.2174,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9663,
+    "answer": "3",
+    "other_answers_in_prompt": [
+     "1",
+     "7",
+     "9"
+    ]
+   },
+   "why": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)"
+  },
+  {
+   "group": "path_confusion",
+   "family": "BRL",
+   "item_id": "BRL-0328",
+   "prompt": "<|im_start|>user\nOwen's pet is a cow. Max's pet is a horse. Ella's pet is a chicken. Animals with 6 legs use locker 7. Animals with 2 legs use locker 5. Animals with 8 legs use locker 3. Animals with 4 legs use locker 1.\nWhich locker does Ella's pet use? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 118,
+     "end": 152,
+     "role": "source"
+    },
+    {
+     "start": 298,
+     "end": 358,
+     "role": "destination"
+    },
+    {
+     "start": 239,
+     "end": 243,
+     "role": "cue"
+    },
+    {
+     "start": 76,
+     "end": 83,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('Animals with 2 legs use locker 5.') directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "5",
+    "edited": "1",
+    "expected": {
+     "H_answer_site": "not 5",
+     "H_relay": "5"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0045,
+    "logp_answer_edited": -5.97,
+    "dlogp": -5.9655,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9808,
+    "answer": "5",
+    "other_answers_in_prompt": [
+     "1",
+     "3",
+     "7"
+    ]
+   },
+   "why": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)"
+  },
+  {
+   "group": "path_survives",
+   "family": "BRL",
+   "item_id": "BRL-0311",
+   "prompt": "<|im_start|>user\nRyan's pet is a lion. Rose's pet is a chicken. Kyle's pet is a mouse. Animals with 4 legs use locker 3. Animals with 8 legs use locker 9. Animals with 2 legs use locker 5. Animals with 6 legs use locker 1.\nWhich locker does Ryan's pet use? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 38,
+     "role": "source"
+    },
+    {
+     "start": 300,
+     "end": 360,
+     "role": "destination"
+    },
+    {
+     "start": 241,
+     "end": 245,
+     "role": "cue"
+    },
+    {
+     "start": 33,
+     "end": 37,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the binding span (\"Ryan's pet is a lion.\") directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "H_answer_site": "3",
+     "H_relay": "3"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0165,
+    "logp_answer_edited": -0.0724,
+    "dlogp": -0.0559,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9821,
+    "answer": "3",
+    "other_answers_in_prompt": [
+     "1",
+     "5",
+     "9"
+    ]
+   },
+   "why": "source on the path, destination final or both, all layers, edited read still right"
+  },
+  {
+   "group": "path_survives",
+   "family": "BRL",
+   "item_id": "BRL-0388",
+   "prompt": "<|im_start|>user\nIvan's pet is a goose. Mark's pet is a cat. Olivia's pet is a cow. Animals with 2 legs use locker 1. Animals with 8 legs use locker 9. Animals with 6 legs use locker 7. Animals with 4 legs use locker 3.\nWhich locker does Mark's pet use? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 39,
+     "end": 60,
+     "role": "source"
+    },
+    {
+     "start": 297,
+     "end": 357,
+     "role": "destination"
+    },
+    {
+     "start": 238,
+     "end": 242,
+     "role": "cue"
+    },
+    {
+     "start": 56,
+     "end": 59,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the binding span (\"Mark's pet is a cat.\") directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "H_answer_site": "3",
+     "H_relay": "3"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0147,
+    "logp_answer_edited": -0.0334,
+    "dlogp": -0.0187,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9924,
+    "answer": "3",
+    "other_answers_in_prompt": [
+     "1",
+     "7",
+     "9"
+    ]
+   },
+   "why": "source on the path, destination final or both, all layers, edited read still right"
+  },
+  {
+   "group": "path_survives",
+   "family": "country-B",
+   "item_id": "B-0368",
+   "prompt": "<|im_start|>user\nEmma lives in Russia. Carol lives in France. Nina lives in Greece. What is the capital of the country where Carol lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 61,
+     "role": "source"
+    },
+    {
+     "start": 181,
+     "end": 240,
+     "role": "destination"
+    },
+    {
+     "start": 125,
+     "end": 130,
+     "role": "cue"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the binding span ('Carol lives in France.') directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": " Paris",
+    "edited": " Paris",
+    "expected": {
+     "H_answer_site": "Paris",
+     "H_relay": "Paris"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0765,
+    "logp_answer_edited": -0.3889,
+    "dlogp": -0.3125,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9842,
+    "answer": "Paris",
+    "other_answers_in_prompt": [
+     "Moscow",
+     "Athens"
+    ]
+   },
+   "why": "source on the path, destination final or both, all layers, edited read still right"
+  },
+  {
+   "group": "control_breaks",
+   "family": "BRL",
+   "item_id": "BRL-0223",
+   "prompt": "<|im_start|>user\nOwen's pet is a bee. Grace's pet is a spider. Anna's pet is a sheep. Animals with 4 legs use locker 7. Animals with 2 legs use locker 5. Animals with 6 legs use locker 9. Animals with 8 legs use locker 1.\nWhich locker does Owen's pet use? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 85,
+     "end": 119,
+     "role": "source"
+    },
+    {
+     "start": 222,
+     "end": 359,
+     "role": "destination"
+    },
+    {
+     "start": 240,
+     "end": 244,
+     "role": "cue"
+    },
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question and final positions cannot read the lookup_off span ('Animals with 4 legs use locker 7.') directly at layers suf16 (48 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "9",
+    "edited": "6",
+    "expected": {}
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.3106,
+    "logp_answer_edited": -1.0052,
+    "dlogp": -0.6946,
+    "correct": false,
+    "kept": false,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.973,
+    "answer": "9",
+    "other_answers_in_prompt": [
+     "1",
+     "5",
+     "7"
+    ]
+   },
+   "why": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong"
+  },
+  {
+   "group": "control_breaks",
+   "family": "country-B",
+   "item_id": "B-0419",
+   "prompt": "<|im_start|>user\nVictor lives in Canada. Sam lives in Germany. Oscar lives in China. What is the capital of the country where Victor lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 40,
+     "end": 53,
+     "role": "source"
+    },
+    {
+     "start": 53,
+     "end": 242,
+     "role": "destination"
+    },
+    {
+     "start": 126,
+     "end": 132,
+     "role": "cue"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "bridge"
+    }
+   ],
+   "condition": "every position after it cannot read the trailing span (' Sam lives in') directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": " Ottawa",
+    "edited": "<|im_end|>",
+    "expected": {
+     "H_answer_site": "Ottawa",
+     "H_relay": "Ottawa"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.3835,
+    "logp_answer_edited": -1.545,
+    "dlogp": -1.1739,
+    "correct": false,
+    "kept": false,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9829,
+    "answer": "Ottawa",
+    "other_answers_in_prompt": [
+     "Berlin",
+     "Beijing"
+    ]
+   },
+   "why": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong"
+  },
+  {
+   "group": "control_breaks",
+   "family": "BRL",
+   "item_id": "BRL-0228",
+   "prompt": "<|im_start|>user\nTara's pet is a sheep. Laura's pet is a spider. Ivy's pet is a chicken. Animals with 6 legs use locker 9. Animals with 8 legs use locker 5. Animals with 4 legs use locker 3. Animals with 2 legs use locker 7.\nWhich locker does Tara's pet use? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 39,
+     "end": 64,
+     "role": "source"
+    },
+    {
+     "start": 225,
+     "end": 362,
+     "role": "destination"
+    },
+    {
+     "start": 243,
+     "end": 247,
+     "role": "cue"
+    },
+    {
+     "start": 33,
+     "end": 38,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question and final positions cannot read the binding_off span (\"Laura's pet is a spider.\") directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "3",
+    "edited": "4",
+    "expected": {
+     "H_answer_site": "3",
+     "H_relay": "3"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.3271,
+    "logp_answer_edited": -1.1215,
+    "dlogp": -0.8143,
+    "correct": false,
+    "kept": false,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9947,
+    "answer": "3",
+    "other_answers_in_prompt": [
+     "5",
+     "7",
+     "9"
+    ]
+   },
+   "why": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong"
+  },
+  {
+   "group": "positive_control",
+   "family": "BRL",
+   "item_id": "BRL-0193",
+   "prompt": "<|im_start|>user\nMia's pet is a bee. Kyle's pet is a wolf. Diana's pet is a lion. Animals with 2 legs use locker 9. Animals with 6 legs use locker 3. Animals with 4 legs use locker 1. Animals with 8 legs use locker 5.\nWhich locker does Kyle's pet use? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 149,
+     "end": 183,
+     "role": "source"
+    },
+    {
+     "start": 183,
+     "end": 355,
+     "role": "destination"
+    },
+    {
+     "start": 236,
+     "end": 240,
+     "role": "cue"
+    },
+    {
+     "start": 53,
+     "end": 57,
+     "role": "bridge"
+    }
+   ],
+   "condition": "every position after it cannot read the lookup span ('Animals with 4 legs use locker 1.') directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "9",
+    "expected": {
+     "H_answer_site": "not 1",
+     "H_relay": "not 1"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0026,
+    "logp_answer_edited": -3.2334,
+    "dlogp": -3.2305,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9846,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "3",
+     "5",
+     "9"
+    ]
+   },
+   "why": "source on the path, destination after, all layers, DeltaNet mode absent (no write, erase or decay at S): any outcome"
+  },
+  {
+   "group": "positive_control",
+   "family": "country-B",
+   "item_id": "B-0578",
+   "prompt": "<|im_start|>user\nHenry lives in Canada. Tom lives in Greece. Carol lives in Spain. What is the capital of the country where Carol lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 60,
+     "end": 82,
+     "role": "source"
+    },
+    {
+     "start": 82,
+     "end": 239,
+     "role": "destination"
+    },
+    {
+     "start": 124,
+     "end": 129,
+     "role": "cue"
+    },
+    {
+     "start": 76,
+     "end": 81,
+     "role": "bridge"
+    }
+   ],
+   "condition": "every position after it cannot read the binding span ('Carol lives in Spain.') directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": " Madrid",
+    "edited": "<|im_end|>",
+    "expected": {
+     "H_answer_site": "not Madrid",
+     "H_relay": "not Madrid"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.1521,
+    "logp_answer_edited": -8.5157,
+    "dlogp": -8.3672,
+    "correct": false,
+    "kept": false,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9775,
+    "answer": "Madrid",
+    "other_answers_in_prompt": [
+     "Athens",
+     "Ottawa"
+    ]
+   },
+   "why": "source on the path, destination after, all layers, DeltaNet mode absent (no write, erase or decay at S): any outcome"
+  },
+  {
+   "group": "positive_control",
+   "family": "country-B",
+   "item_id": "B-0411",
+   "prompt": "<|im_start|>user\nOscar lives in Peru. Jack lives in Italy. Tom lives in Australia. What is the capital of the country where Tom lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 58,
+     "end": 82,
+     "role": "source"
+    },
+    {
+     "start": 82,
+     "end": 237,
+     "role": "destination"
+    },
+    {
+     "start": 124,
+     "end": 127,
+     "role": "cue"
+    },
+    {
+     "start": 72,
+     "end": 81,
+     "role": "bridge"
+    }
+   ],
+   "condition": "every position after it cannot read the binding span ('Tom lives in Australia.') directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": " Canberra",
+    "edited": "<|im_end|>",
+    "expected": {
+     "H_answer_site": "not Canberra",
+     "H_relay": "not Canberra"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.1168,
+    "logp_answer_edited": -8.7764,
+    "dlogp": -8.6555,
+    "correct": false,
+    "kept": false,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9784,
+    "answer": "Canberra",
+    "other_answers_in_prompt": [
+     "Lima",
+     "Rome"
+    ]
+   },
+   "why": "source on the path, destination after, all layers, DeltaNet mode absent (no write, erase or decay at S): any outcome"
+  }
+ ]
+}

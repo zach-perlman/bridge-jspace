@@ -1,0 +1,1292 @@
+{
+ "exp": "statement_positions",
+ "run": "d1_map_n80_v1",
+ "kind": "map",
+ "k": 3,
+ "seed": 0,
+ "groups": [
+  {
+   "key": "stmt_flip",
+   "title": "Statement copy gives X's answer",
+   "definition": "C's copy at a statement set, at a primary-window layer, makes the top token X's answer",
+   "n_total": 2771
+  },
+  {
+   "key": "stmt_hold",
+   "title": "Statement copy leaves the answer",
+   "definition": "C's copy at a statement set, at a primary-window layer, keeps the bridge's answer",
+   "n_total": 8212
+  },
+  {
+   "key": "question_flip",
+   "title": "Question copy gives X's answer",
+   "definition": "C's copy at question, q_words or final, at a primary-window layer, gives X's answer",
+   "n_total": 1011
+  },
+  {
+   "key": "control_changed",
+   "title": "A control changed the answer",
+   "definition": "O's copy or the random-direction copy moved the top token off the bridge's answer",
+   "n_total": 15
+  },
+  {
+   "key": "noop",
+   "title": "Exact no-op (cue-only family, statement set)",
+   "definition": "RL, RR or countries R: C's copy at a statement set is exactly zero; read anyway",
+   "n_total": 640
+  },
+  {
+   "key": "sanity",
+   "title": "Hook checks",
+   "definition": "identity copy (no change) and C at every position at the first layer (reproduces C)",
+   "n_total": 1920
+  }
+ ],
+ "examples": [
+  {
+   "group": "stmt_flip",
+   "family": "BRL",
+   "item_id": "BRL-0199",
+   "prompt": "<|im_start|>user\nAlice's pet is a wolf. Paul's pet is a pig. Lucy's pet is a goose. Animals with 4 legs use locker 7. Animals with 6 legs use locker 1. Animals with 8 legs use locker 5. Animals with 2 legs use locker 9.\nWhich locker does Paul's pet use? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 40,
+     "end": 60,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 56,
+     "end": 59,
+     "role": "bridge_word"
+    },
+    {
+     "start": 84,
+     "end": 117,
+     "role": "lookup_bridge"
+    },
+    {
+     "start": 186,
+     "end": 219,
+     "role": "lookup_x"
+    },
+    {
+     "start": 220,
+     "end": 356,
+     "role": "question"
+    },
+    {
+     "start": 297,
+     "end": 356,
+     "role": "final"
+    },
+    {
+     "start": 17,
+     "end": 219,
+     "role": "patched"
+    },
+    {
+     "start": 55,
+     "end": 59,
+     "role": "cf_changed"
+    },
+    {
+     "start": 76,
+     "end": 82,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's residual copied into the clean run at context (61 tokens), block output of layer 36",
+   "answers": {
+    "clean": "7",
+    "edited": "9",
+    "edited_role": "b",
+    "bridge_answer": "7",
+    "x_answer": "9",
+    "expected": {
+     "H-loc": null,
+     "H-around": null
+    }
+   },
+   "numbers": {
+    "ld": 2.875,
+    "frac": 0.7174,
+    "role": "b",
+    "ld_clean": -1.25,
+    "ld_C": 4.5,
+    "flip": true
+   },
+   "why": "Statement copy gives X's answer: context, layer 36, read role b"
+  },
+  {
+   "group": "stmt_flip",
+   "family": "BRL",
+   "item_id": "BRL-0147",
+   "prompt": "<|im_start|>user\nEmma's pet is a turkey. Noah's pet is a cow. Ben's pet is a mouse. Animals with 2 legs use locker 7. Animals with 6 legs use locker 5. Animals with 8 legs use locker 9. Animals with 4 legs use locker 1.\nWhich locker does Emma's pet use? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 40,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "bridge_word"
+    },
+    {
+     "start": 84,
+     "end": 117,
+     "role": "lookup_bridge"
+    },
+    {
+     "start": 186,
+     "end": 219,
+     "role": "lookup_x"
+    },
+    {
+     "start": 220,
+     "end": 356,
+     "role": "question"
+    },
+    {
+     "start": 297,
+     "end": 356,
+     "role": "final"
+    },
+    {
+     "start": 17,
+     "end": 219,
+     "role": "patched"
+    },
+    {
+     "start": 32,
+     "end": 39,
+     "role": "cf_changed"
+    },
+    {
+     "start": 56,
+     "end": 60,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's residual copied into the clean run at context (61 tokens), block output of layer 36",
+   "answers": {
+    "clean": "7",
+    "edited": "1",
+    "edited_role": "b",
+    "bridge_answer": "7",
+    "x_answer": "1",
+    "expected": {
+     "H-loc": null,
+     "H-around": null
+    }
+   },
+   "numbers": {
+    "ld": 4.375,
+    "frac": 0.6714,
+    "role": "b",
+    "ld_clean": -1.5,
+    "ld_C": 7.25,
+    "flip": true
+   },
+   "why": "Statement copy gives X's answer: context, layer 36, read role b"
+  },
+  {
+   "group": "stmt_flip",
+   "family": "BL",
+   "item_id": "BL-0182",
+   "prompt": "<|im_start|>user\nHugo's pet is a cat. Alice's pet is a duck. Noah's pet is a spider. The duck's locker is 3. The cat's locker is 9. The spider's locker is 7.\nWhich locker belongs to Hugo's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 37,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge_word"
+    },
+    {
+     "start": 109,
+     "end": 131,
+     "role": "lookup_bridge"
+    },
+    {
+     "start": 132,
+     "end": 157,
+     "role": "lookup_x"
+    },
+    {
+     "start": 158,
+     "end": 296,
+     "role": "question"
+    },
+    {
+     "start": 237,
+     "end": 296,
+     "role": "final"
+    },
+    {
+     "start": 131,
+     "end": 157,
+     "role": "patched"
+    },
+    {
+     "start": 32,
+     "end": 36,
+     "role": "cf_changed"
+    },
+    {
+     "start": 76,
+     "end": 83,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's residual copied into the clean run at lookup_x (8 tokens), block output of layer 32",
+   "answers": {
+    "clean": "9",
+    "edited": "7",
+    "edited_role": "b",
+    "bridge_answer": "9",
+    "x_answer": "7",
+    "expected": {
+     "H-loc": "7",
+     "H-around": null
+    }
+   },
+   "numbers": {
+    "ld": 1.0,
+    "frac": 0.5424,
+    "role": "b",
+    "ld_clean": -10.1875,
+    "ld_C": 10.4375,
+    "flip": true
+   },
+   "why": "Statement copy gives X's answer: lookup_x, layer 32, read role b"
+  },
+  {
+   "group": "stmt_hold",
+   "family": "BLR",
+   "item_id": "BLR-0130",
+   "prompt": "<|im_start|>user\nLuke's pet is a frog. Tara's pet is a turkey. Laura's pet is a spider. The spider's friend is a bee. The turkey's friend is a sheep. The frog's friend is a cat.\nHow many legs does the friend of Tara's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 39,
+     "end": 62,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 55,
+     "end": 61,
+     "role": "bridge_word"
+    },
+    {
+     "start": 118,
+     "end": 149,
+     "role": "lookup_bridge"
+    },
+    {
+     "start": 88,
+     "end": 117,
+     "role": "lookup_x"
+    },
+    {
+     "start": 178,
+     "end": 330,
+     "role": "question"
+    },
+    {
+     "start": 271,
+     "end": 330,
+     "role": "final"
+    },
+    {
+     "start": 87,
+     "end": 117,
+     "role": "patched"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "cf_changed"
+    },
+    {
+     "start": 79,
+     "end": 86,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's residual copied into the clean run at lookup_x (8 tokens), block output of layer 32",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "edited_role": "A",
+    "bridge_answer": "4",
+    "x_answer": "6",
+    "expected": {
+     "H-loc": "6",
+     "H-around": null
+    }
+   },
+   "numbers": {
+    "ld": -6.625,
+    "frac": 0.0558,
+    "role": "A",
+    "ld_clean": -7.375,
+    "ld_C": 6.0625,
+    "flip": false
+   },
+   "why": "Statement copy leaves the answer: lookup_x, layer 32, read role A"
+  },
+  {
+   "group": "stmt_hold",
+   "family": "B",
+   "item_id": "B-0719",
+   "prompt": "<|im_start|>user\nVictor lives in France. Rachel lives in Japan. Paul lives in Egypt. What is the capital of the country where Victor lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 40,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "bridge_word"
+    },
+    {
+     "start": 84,
+     "end": 242,
+     "role": "question"
+    },
+    {
+     "start": 183,
+     "end": 242,
+     "role": "final"
+    },
+    {
+     "start": 17,
+     "end": 40,
+     "role": "patched"
+    },
+    {
+     "start": 32,
+     "end": 39,
+     "role": "cf_changed"
+    },
+    {
+     "start": 56,
+     "end": 62,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's residual copied into the clean run at bind_bridge (6 tokens), block output of layer 40",
+   "answers": {
+    "clean": " Paris",
+    "edited": " Paris",
+    "edited_role": "A",
+    "bridge_answer": "Paris",
+    "x_answer": "Tokyo",
+    "expected": {
+     "H-loc": null,
+     "H-around": null
+    }
+   },
+   "numbers": {
+    "ld": -7.062,
+    "frac": 0.2269,
+    "role": "A",
+    "ld_clean": -12.125,
+    "ld_C": 10.1875,
+    "flip": false
+   },
+   "why": "Statement copy leaves the answer: bind_bridge, layer 40, read role A"
+  },
+  {
+   "group": "stmt_hold",
+   "family": "BRL",
+   "item_id": "BRL-0305",
+   "prompt": "<|im_start|>user\nRose's pet is a spider. Ivan's pet is a lion. Iris's pet is a pig. Animals with 2 legs use locker 7. Animals with 4 legs use locker 1. Animals with 6 legs use locker 5. Animals with 8 legs use locker 9.\nWhich locker does Ivan's pet use? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 41,
+     "end": 62,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 57,
+     "end": 61,
+     "role": "bridge_word"
+    },
+    {
+     "start": 118,
+     "end": 151,
+     "role": "lookup_bridge"
+    },
+    {
+     "start": 186,
+     "end": 219,
+     "role": "lookup_x"
+    },
+    {
+     "start": 220,
+     "end": 356,
+     "role": "question"
+    },
+    {
+     "start": 297,
+     "end": 356,
+     "role": "final"
+    },
+    {
+     "start": 117,
+     "end": 151,
+     "role": "patched"
+    },
+    {
+     "start": 32,
+     "end": 39,
+     "role": "cf_changed"
+    },
+    {
+     "start": 56,
+     "end": 61,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's residual copied into the clean run at lookup_bridge (10 tokens), block output of layer 40",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "edited_role": "A",
+    "bridge_answer": "1",
+    "x_answer": "9",
+    "expected": {
+     "H-loc": null,
+     "H-around": null
+    }
+   },
+   "numbers": {
+    "ld": -5.0,
+    "frac": 0.0204,
+    "role": "A",
+    "ld_clean": -5.25,
+    "ld_C": 7.0,
+    "flip": false
+   },
+   "why": "Statement copy leaves the answer: lookup_bridge, layer 40, read role A"
+  },
+  {
+   "group": "question_flip",
+   "family": "B",
+   "item_id": "B-0749",
+   "prompt": "<|im_start|>user\nTom lives in Japan. Grace lives in Germany. Jack lives in Australia. What is the capital of the country where Jack lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 61,
+     "end": 85,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 75,
+     "end": 84,
+     "role": "bridge_word"
+    },
+    {
+     "start": 85,
+     "end": 241,
+     "role": "question"
+    },
+    {
+     "start": 182,
+     "end": 241,
+     "role": "final"
+    },
+    {
+     "start": 85,
+     "end": 241,
+     "role": "patched"
+    },
+    {
+     "start": 51,
+     "end": 59,
+     "role": "cf_changed"
+    },
+    {
+     "start": 74,
+     "end": 84,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's residual copied into the clean run at question (31 tokens), block output of layer 40",
+   "answers": {
+    "clean": " Canberra",
+    "edited": " Berlin",
+    "edited_role": "b",
+    "bridge_answer": "Canberra",
+    "x_answer": "Berlin",
+    "expected": {
+     "H-loc": null,
+     "H-around": null
+    }
+   },
+   "numbers": {
+    "ld": 7.812,
+    "frac": 0.8049,
+    "role": "b",
+    "ld_clean": -10.75,
+    "ld_C": 12.3125,
+    "flip": true
+   },
+   "why": "Question copy gives X's answer: question, layer 40, read role b"
+  },
+  {
+   "group": "question_flip",
+   "family": "R",
+   "item_id": "R-0181",
+   "prompt": "<|im_start|>user\nFrank lives in Italy. Carol lives in Egypt. Will lives in Canada. What is the capital of the country where Alexandria is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 39,
+     "end": 60,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 54,
+     "end": 59,
+     "role": "bridge_word"
+    },
+    {
+     "start": 134,
+     "end": 249,
+     "role": "question"
+    },
+    {
+     "start": 190,
+     "end": 249,
+     "role": "final"
+    },
+    {
+     "start": 134,
+     "end": 190,
+     "role": "patched"
+    },
+    {
+     "start": 123,
+     "end": 134,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's residual copied into the clean run at q_words (12 tokens), block output of layer 40",
+   "answers": {
+    "clean": " Cairo",
+    "edited": " Rome",
+    "edited_role": "b",
+    "bridge_answer": "Cairo",
+    "x_answer": "Rome",
+    "expected": {
+     "H-loc": null,
+     "H-around": null
+    }
+   },
+   "numbers": {
+    "ld": 3.938,
+    "frac": 0.557,
+    "role": "b",
+    "ld_clean": -6.75,
+    "ld_C": 12.4375,
+    "flip": true
+   },
+   "why": "Question copy gives X's answer: q_words, layer 40, read role b"
+  },
+  {
+   "group": "question_flip",
+   "family": "R",
+   "item_id": "R-0051",
+   "prompt": "<|im_start|>user\nLaura lives in Egypt. David lives in China. Rachel lives in Spain. What is the capital of the country where Bilbao is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 61,
+     "end": 83,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 77,
+     "end": 82,
+     "role": "bridge_word"
+    },
+    {
+     "start": 131,
+     "end": 246,
+     "role": "question"
+    },
+    {
+     "start": 187,
+     "end": 246,
+     "role": "final"
+    },
+    {
+     "start": 131,
+     "end": 187,
+     "role": "patched"
+    },
+    {
+     "start": 124,
+     "end": 131,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's residual copied into the clean run at q_words (12 tokens), block output of layer 40",
+   "answers": {
+    "clean": " Madrid",
+    "edited": " Beijing",
+    "edited_role": "b",
+    "bridge_answer": "Madrid",
+    "x_answer": "Beijing",
+    "expected": {
+     "H-loc": null,
+     "H-around": null
+    }
+   },
+   "numbers": {
+    "ld": 0.25,
+    "frac": 0.5016,
+    "role": "b",
+    "ld_clean": -9.375,
+    "ld_C": 9.8125,
+    "flip": true
+   },
+   "why": "Question copy gives X's answer: q_words, layer 40, read role b"
+  },
+  {
+   "group": "control_changed",
+   "family": "BRL",
+   "item_id": "BRL-0228",
+   "prompt": "<|im_start|>user\nTara's pet is a sheep. Laura's pet is a spider. Ivy's pet is a chicken. Animals with 6 legs use locker 9. Animals with 8 legs use locker 5. Animals with 4 legs use locker 3. Animals with 2 legs use locker 7.\nWhich locker does Tara's pet use? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 39,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 33,
+     "end": 38,
+     "role": "bridge_word"
+    },
+    {
+     "start": 157,
+     "end": 190,
+     "role": "lookup_bridge"
+    },
+    {
+     "start": 191,
+     "end": 224,
+     "role": "lookup_x"
+    },
+    {
+     "start": 225,
+     "end": 361,
+     "role": "question"
+    },
+    {
+     "start": 302,
+     "end": 361,
+     "role": "final"
+    },
+    {
+     "start": 32,
+     "end": 38,
+     "role": "patched"
+    },
+    {
+     "start": 32,
+     "end": 38,
+     "role": "cf_changed"
+    },
+    {
+     "start": 79,
+     "end": 87,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's copy with each row replaced by a random direction at its norm at bridge_word (1 tokens), block output of layer 34",
+   "answers": {
+    "clean": "3",
+    "edited": "4",
+    "edited_role": "other",
+    "bridge_answer": "3",
+    "x_answer": "7",
+    "expected": {
+     "H-loc": "3",
+     "H-around": "3"
+    }
+   },
+   "numbers": {
+    "ld": -2.5,
+    "frac": 0.0795,
+    "role": "other",
+    "ld_clean": -3.25,
+    "ld_C": 6.1875,
+    "flip": false
+   },
+   "why": "A control changed the answer: bridge_word, layer 34, read role other"
+  },
+  {
+   "group": "control_changed",
+   "family": "BRL",
+   "item_id": "BRL-0228",
+   "prompt": "<|im_start|>user\nTara's pet is a sheep. Laura's pet is a spider. Ivy's pet is a chicken. Animals with 6 legs use locker 9. Animals with 8 legs use locker 5. Animals with 4 legs use locker 3. Animals with 2 legs use locker 7.\nWhich locker does Tara's pet use? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 39,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 33,
+     "end": 38,
+     "role": "bridge_word"
+    },
+    {
+     "start": 157,
+     "end": 190,
+     "role": "lookup_bridge"
+    },
+    {
+     "start": 191,
+     "end": 224,
+     "role": "lookup_x"
+    },
+    {
+     "start": 225,
+     "end": 361,
+     "role": "question"
+    },
+    {
+     "start": 302,
+     "end": 361,
+     "role": "final"
+    },
+    {
+     "start": 17,
+     "end": 224,
+     "role": "patched"
+    },
+    {
+     "start": 32,
+     "end": 38,
+     "role": "cf_changed"
+    },
+    {
+     "start": 79,
+     "end": 87,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's copy with each row replaced by a random direction at its norm at context (62 tokens), block output of layer 34",
+   "answers": {
+    "clean": "3",
+    "edited": "4",
+    "edited_role": "other",
+    "bridge_answer": "3",
+    "x_answer": "7",
+    "expected": {
+     "H-loc": "3",
+     "H-around": "3"
+    }
+   },
+   "numbers": {
+    "ld": -2.625,
+    "frac": 0.0662,
+    "role": "other",
+    "ld_clean": -3.25,
+    "ld_C": 6.1875,
+    "flip": false
+   },
+   "why": "A control changed the answer: context, layer 34, read role other"
+  },
+  {
+   "group": "control_changed",
+   "family": "BRL",
+   "item_id": "BRL-0228",
+   "prompt": "<|im_start|>user\nTara's pet is a sheep. Laura's pet is a spider. Ivy's pet is a chicken. Animals with 6 legs use locker 9. Animals with 8 legs use locker 5. Animals with 4 legs use locker 3. Animals with 2 legs use locker 7.\nWhich locker does Tara's pet use? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 39,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 33,
+     "end": 38,
+     "role": "bridge_word"
+    },
+    {
+     "start": 157,
+     "end": 190,
+     "role": "lookup_bridge"
+    },
+    {
+     "start": 191,
+     "end": 224,
+     "role": "lookup_x"
+    },
+    {
+     "start": 225,
+     "end": 361,
+     "role": "question"
+    },
+    {
+     "start": 302,
+     "end": 361,
+     "role": "final"
+    },
+    {
+     "start": 32,
+     "end": 38,
+     "role": "patched"
+    },
+    {
+     "start": 32,
+     "end": 38,
+     "role": "cf_changed"
+    },
+    {
+     "start": 79,
+     "end": 87,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's copy with each row replaced by a random direction at its norm at bridge_word (1 tokens), block output of layer 36",
+   "answers": {
+    "clean": "3",
+    "edited": "4",
+    "edited_role": "other",
+    "bridge_answer": "3",
+    "x_answer": "7",
+    "expected": {
+     "H-loc": "3",
+     "H-around": "3"
+    }
+   },
+   "numbers": {
+    "ld": -3.0,
+    "frac": 0.0265,
+    "role": "other",
+    "ld_clean": -3.25,
+    "ld_C": 6.1875,
+    "flip": false
+   },
+   "why": "A control changed the answer: bridge_word, layer 36, read role other"
+  },
+  {
+   "group": "noop",
+   "family": "R",
+   "item_id": "R-0322",
+   "prompt": "<|im_start|>user\nGrace lives in Australia. Sam lives in Japan. Tom lives in Italy. What is the capital of the country where Brisbane is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 42,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 32,
+     "end": 41,
+     "role": "bridge_word"
+    },
+    {
+     "start": 132,
+     "end": 247,
+     "role": "question"
+    },
+    {
+     "start": 188,
+     "end": 247,
+     "role": "final"
+    },
+    {
+     "start": 42,
+     "end": 82,
+     "role": "patched"
+    },
+    {
+     "start": 123,
+     "end": 132,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's residual copied into the clean run at bind_other (10 tokens), block output of layer 44 (zero delta: an exact no-op)",
+   "answers": {
+    "clean": " Canberra",
+    "edited": " Canberra",
+    "edited_role": "A",
+    "bridge_answer": "Canberra",
+    "x_answer": "Rome",
+    "expected": {
+     "H-loc": "Canberra",
+     "H-around": "Canberra"
+    }
+   },
+   "numbers": {
+    "ld": -11.188,
+    "frac": 0.0,
+    "role": "A",
+    "ld_clean": -11.1875,
+    "ld_C": 12.65625,
+    "flip": false,
+    "greedy": " Canberra"
+   },
+   "why": "Exact no-op (cue-only family, statement set): bind_other, layer 44, read role A"
+  },
+  {
+   "group": "noop",
+   "family": "RL",
+   "item_id": "RL-0132",
+   "prompt": "<|im_start|>user\nMaria's pet is a goose. Clara's pet is a bee. Sara's pet is a cow. The bee's locker is 7. The goose's locker is 5. The cow's locker is 1.\nWhich locker belongs to the animal known for mooing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 63,
+     "end": 83,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 79,
+     "end": 82,
+     "role": "bridge_word"
+    },
+    {
+     "start": 132,
+     "end": 154,
+     "role": "lookup_bridge"
+    },
+    {
+     "start": 107,
+     "end": 131,
+     "role": "lookup_x"
+    },
+    {
+     "start": 206,
+     "end": 310,
+     "role": "question"
+    },
+    {
+     "start": 251,
+     "end": 310,
+     "role": "final"
+    },
+    {
+     "start": 131,
+     "end": 154,
+     "role": "patched"
+    },
+    {
+     "start": 199,
+     "end": 206,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's residual copied into the clean run at lookup_bridge (8 tokens), block output of layer 52 (zero delta: an exact no-op)",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "edited_role": "A",
+    "bridge_answer": "1",
+    "x_answer": "5",
+    "expected": {
+     "H-loc": "1",
+     "H-around": "1"
+    }
+   },
+   "numbers": {
+    "ld": -10.438,
+    "frac": -0.0101,
+    "role": "A",
+    "ld_clean": -10.25,
+    "ld_C": 8.375,
+    "flip": false,
+    "greedy": " 1"
+   },
+   "why": "Exact no-op (cue-only family, statement set): lookup_bridge, layer 52, read role A"
+  },
+  {
+   "group": "noop",
+   "family": "R",
+   "item_id": "R-0098",
+   "prompt": "<|im_start|>user\nSam lives in Egypt. Bob lives in Germany. Nina lives in Australia. What is the capital of the country where Hamburg is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 37,
+     "end": 58,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 50,
+     "end": 57,
+     "role": "bridge_word"
+    },
+    {
+     "start": 132,
+     "end": 247,
+     "role": "question"
+    },
+    {
+     "start": 188,
+     "end": 247,
+     "role": "final"
+    },
+    {
+     "start": 36,
+     "end": 58,
+     "role": "patched"
+    },
+    {
+     "start": 124,
+     "end": 132,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's residual copied into the clean run at bind_bridge (5 tokens), block output of layer 40 (zero delta: an exact no-op)",
+   "answers": {
+    "clean": " Berlin",
+    "edited": " Berlin",
+    "edited_role": "A",
+    "bridge_answer": "Berlin",
+    "x_answer": "Canberra",
+    "expected": {
+     "H-loc": "Berlin",
+     "H-around": "Berlin"
+    }
+   },
+   "numbers": {
+    "ld": -11.438,
+    "frac": 0.003,
+    "role": "A",
+    "ld_clean": -11.5,
+    "ld_C": 9.125,
+    "flip": false,
+    "greedy": " Berlin"
+   },
+   "why": "Exact no-op (cue-only family, statement set): bind_bridge, layer 40, read role A"
+  },
+  {
+   "group": "sanity",
+   "family": "BR",
+   "item_id": "BR-0144",
+   "prompt": "<|im_start|>user\nTara's pet is a wolf. Eric's pet is a dog. Kyle's pet is a spider. The dog's locker is 9. The spider's locker is 7. The wolf's locker is 3.\nHow many legs does Eric's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 39,
+     "end": 59,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 55,
+     "end": 58,
+     "role": "bridge_word"
+    },
+    {
+     "start": 84,
+     "end": 106,
+     "role": "lookup_bridge"
+    },
+    {
+     "start": 107,
+     "end": 132,
+     "role": "lookup_x"
+    },
+    {
+     "start": 157,
+     "end": 295,
+     "role": "question"
+    },
+    {
+     "start": 236,
+     "end": 295,
+     "role": "final"
+    },
+    {
+     "start": 0,
+     "end": 295,
+     "role": "patched"
+    },
+    {
+     "start": 54,
+     "end": 58,
+     "role": "cf_changed"
+    },
+    {
+     "start": 75,
+     "end": 82,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "the clean run's own block-32 output copied at every position (identity)",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "edited_role": "A",
+    "bridge_answer": "4",
+    "x_answer": "8",
+    "expected": {
+     "H-loc": "4",
+     "H-around": "4"
+    }
+   },
+   "numbers": {
+    "ld": -8.875,
+    "frac": -0.0034,
+    "role": "A",
+    "ld_clean": -8.8125,
+    "ld_C": 9.4375,
+    "flip": false
+   },
+   "why": "Hook checks: all positions, layer 32, read role A"
+  },
+  {
+   "group": "sanity",
+   "family": "RL",
+   "item_id": "RL-0182",
+   "prompt": "<|im_start|>user\nHugo's pet is a cat. Alice's pet is a duck. Noah's pet is a spider. The duck's locker is 3. The cat's locker is 9. The spider's locker is 7.\nWhich locker belongs to the animal known for purring? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 37,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge_word"
+    },
+    {
+     "start": 109,
+     "end": 131,
+     "role": "lookup_bridge"
+    },
+    {
+     "start": 132,
+     "end": 157,
+     "role": "lookup_x"
+    },
+    {
+     "start": 210,
+     "end": 314,
+     "role": "question"
+    },
+    {
+     "start": 255,
+     "end": 314,
+     "role": "final"
+    },
+    {
+     "start": 0,
+     "end": 314,
+     "role": "patched"
+    },
+    {
+     "start": 202,
+     "end": 210,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "the clean run's own block-52 output copied at every position (identity)",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "edited_role": "A",
+    "bridge_answer": "9",
+    "x_answer": "7",
+    "expected": {
+     "H-loc": "9",
+     "H-around": "9"
+    }
+   },
+   "numbers": {
+    "ld": -9.75,
+    "frac": -0.0035,
+    "role": "A",
+    "ld_clean": -9.6875,
+    "ld_C": 8.25,
+    "flip": false
+   },
+   "why": "Hook checks: all positions, layer 52, read role A"
+  },
+  {
+   "group": "sanity",
+   "family": "BR",
+   "item_id": "BR-0144",
+   "prompt": "<|im_start|>user\nTara's pet is a wolf. Eric's pet is a dog. Kyle's pet is a spider. The dog's locker is 9. The spider's locker is 7. The wolf's locker is 3.\nHow many legs does Eric's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 39,
+     "end": 59,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 55,
+     "end": 58,
+     "role": "bridge_word"
+    },
+    {
+     "start": 84,
+     "end": 106,
+     "role": "lookup_bridge"
+    },
+    {
+     "start": 107,
+     "end": 132,
+     "role": "lookup_x"
+    },
+    {
+     "start": 157,
+     "end": 295,
+     "role": "question"
+    },
+    {
+     "start": 236,
+     "end": 295,
+     "role": "final"
+    },
+    {
+     "start": 0,
+     "end": 295,
+     "role": "patched"
+    },
+    {
+     "start": 54,
+     "end": 58,
+     "role": "cf_changed"
+    },
+    {
+     "start": 75,
+     "end": 82,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "the clean run's own block-52 output copied at every position (identity)",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "edited_role": "A",
+    "bridge_answer": "4",
+    "x_answer": "8",
+    "expected": {
+     "H-loc": "4",
+     "H-around": "4"
+    }
+   },
+   "numbers": {
+    "ld": -8.875,
+    "frac": -0.0034,
+    "role": "A",
+    "ld_clean": -8.8125,
+    "ld_C": 9.4375,
+    "flip": false
+   },
+   "why": "Hook checks: all positions, layer 52, read role A"
+  }
+ ]
+}

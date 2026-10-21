@@ -1,0 +1,21 @@
+# statement_positions / d1_map_v1: analysis
+
+EXP statement_positions/d1_map_v1 @ 96c9ec2 (dirty tree) | model Qwen/Qwen3.6-27B | n=32 per family (prompt → prompt; prompt → memory; memory → prompt; memory → memory; prompt → prompt → memory; prompt → memory → prompt; countries: memory → memory; countries: prompt → memory) | seeds=[0]
+Claim tested: Where in the prompt (which positions) and up to which layer does a patch from the alt prompt change the answer to answer alt?
+
+Headline (prompt → prompt): % of original answers that become the alternative answer (answer org → answer alt) after a patch from the alt prompt at the whole context, layer 36 = 91% [76%, 97%]   Baseline (the same patch at the question and all after it): 6% [2%, 20%]   Control (random push, same size): 0% [0%, 11%]
+
+Transit cells (rule: % of original answers that become the alternative answer (answer org → answer alt) >= 50%, Wilson lower bound above every control): {"prompt → prompt": {"sentence stating bridge org": [0, 8, 16, 24], "the bridge org word": [0, 8, 16, 24], "the whole context": [0, 8, 16, 24, 28, 32, 34, 36, 38, 40, 44], "question and all after it": [52, 60], "last tokens before the answer": [52, 60]}, "prompt → memory": {"sentence stating bridge org": [0, 8, 16, 24, 28, 32, 34], "the bridge org word": [0, 8, 16, 24, 28, 32, 34], "the whole context": [0, 8, 16, 24, 28, 32, 34, 36, 38]}, "memory → prompt": {"question and all after it": [36, 38, 40, 44, 48, 52, 60], "last tokens before the answer": [48, 52]}, "prompt → prompt → memory": {"sentence stating bridge org": [0, 8, 16], "the bridge org word": [0, 8, 16], "the whole context": [0, 8, 16, 24, 28, 32, 34]}, "prompt → memory → prompt": {"sentence stating bridge org": [0, 8, 16, 24, 28], "the bridge org word": [0, 8, 16, 24, 28], "the whole context": [0, 8, 16, 24, 28, 32, 34]}, "countries: memory → memory": {"question and all after it": [36, 38, 40, 44, 48, 52, 60], "last tokens before the answer": [48, 52, 60]}, "countries: prompt → memory": {"sentence stating bridge org": [0, 8, 16, 24, 28, 32, 34, 36, 38, 40, 44], "the bridge org word": [0, 8, 16, 24, 28, 32, 34, 36, 38, 40, 44], "the whole context": [0, 8, 16, 24, 28, 32, 34, 36, 38], "question and all after it": [40, 44, 48, 52, 60], "last tokens before the answer": [48, 52, 60]}}
+Handoff: {"prompt → prompt": {"last_statement_transit": {"sentence stating bridge org": 24, "the bridge org word": 24, "the whole context": 44}, "first_question_transit": 52}, "prompt → memory": {"last_statement_transit": {"sentence stating bridge org": 34, "the bridge org word": 34, "the whole context": 38}, "first_question_transit": null}, "memory → prompt": {"last_statement_transit": {}, "first_question_transit": 36}, "prompt → prompt → memory": {"last_statement_transit": {"sentence stating bridge org": 16, "the bridge org word": 16, "the whole context": 34}, "first_question_transit": null}, "prompt → memory → prompt": {"last_statement_transit": {"sentence stating bridge org": 28, "the bridge org word": 28, "the whole context": 34}, "first_question_transit": null}, "countries: memory → memory": {"last_statement_transit": {}, "first_question_transit": 36}, "countries: prompt → memory": {"last_statement_transit": {"sentence stating bridge org": 44, "the bridge org word": 44, "the whole context": 38}, "first_question_transit": 40}}
+
+Figures: results/statement_positions/d1_map_v1/analysis-20261021-133144-figures/heatmap_copy_flips.png, results/statement_positions/d1_map_v1/analysis-20261021-133144-figures/copy_flips_by_layer.png
+
+Gates:
+- identity (the org prompt's own states patched back in) keeps the org prompt's top token: 100% of 512; logit-margin difference from an unedited read in the same batch: max 0.0
+- the alt prompt's states patched at every position at the first map layer give the alt prompt's top token: 100% of 256 (logit-margin difference max 0.3125, bf16 batch rounding)
+- memory-bridge families (alt prompt differs only in the question): patches at the statements are exactly zero (causality violations: 0); 1120 of them read anyway: difference from the identity max 0.0
+- read vs greedy agreement: 99.95% of 22510 edited runs (rule: >= 99%)
+
+Recomputed from the saved outputs == the run's summary.json: {"transit": true, "handoff": true, "sanity": true, "validation": true}
+
+Status: UNVERIFIED

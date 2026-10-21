@@ -1,0 +1,225 @@
+{
+  "exp": "statement_positions",
+  "run": "d1_map_n80_v1",
+  "kind": "map",
+  "written_utc": "2026-10-21T11:31:52Z",
+  "recomputed_equals_saved": {
+    "transit": true,
+    "handoff": true,
+    "sanity": true,
+    "validation": true
+  },
+  "figures": [
+    "heatmap_copy_flips.png",
+    "copy_flips_by_layer.png",
+    "map_confirmation.png"
+  ],
+  "agreement": {
+    "both": 54,
+    "only_old": 4,
+    "only_new": 5,
+    "neither": 353
+  },
+  "disagreements": {
+    "only_old": [
+      "countries: prompt \u2192 memory: sentence stating bridge org, layer 40: 56% -> 45%",
+      "countries: prompt \u2192 memory: sentence stating bridge org, layer 44: 53% -> 40%",
+      "countries: prompt \u2192 memory: the bridge org word, layer 40: 56% -> 45%",
+      "countries: prompt \u2192 memory: the bridge org word, layer 44: 53% -> 42%"
+    ],
+    "only_new": [
+      "prompt \u2192 memory: sentence stating bridge org, layer 36: 34% -> 50%",
+      "prompt \u2192 memory: sentence stating bridge org, layer 38: 38% -> 50%",
+      "prompt \u2192 memory: the bridge org word, layer 36: 38% -> 50%",
+      "prompt \u2192 memory: the bridge org word, layer 38: 38% -> 50%",
+      "prompt \u2192 prompt \u2192 memory: the whole context, layer 38: 44% -> 50%"
+    ]
+  },
+  "transit": {
+    "BL": {
+      "context": [
+        32,
+        34,
+        36,
+        38,
+        40,
+        44
+      ],
+      "question": [
+        52
+      ],
+      "final": [
+        52
+      ]
+    },
+    "BR": {
+      "bind_bridge": [
+        32,
+        34,
+        36,
+        38
+      ],
+      "bridge_word": [
+        32,
+        34,
+        36,
+        38
+      ],
+      "context": [
+        32,
+        34,
+        36,
+        38
+      ]
+    },
+    "RL": {
+      "question": [
+        36,
+        38,
+        40,
+        44,
+        48,
+        52
+      ],
+      "final": [
+        48,
+        52
+      ]
+    },
+    "BLR": {
+      "context": [
+        32,
+        34,
+        38
+      ]
+    },
+    "BRL": {
+      "context": [
+        32,
+        34
+      ]
+    },
+    "R": {
+      "question": [
+        36,
+        38,
+        40,
+        44,
+        48,
+        52
+      ],
+      "final": [
+        48,
+        52
+      ]
+    },
+    "B": {
+      "bind_bridge": [
+        32,
+        34,
+        36,
+        38
+      ],
+      "bridge_word": [
+        32,
+        34,
+        36,
+        38
+      ],
+      "context": [
+        32,
+        34,
+        36,
+        38
+      ],
+      "question": [
+        40,
+        44,
+        48,
+        52
+      ],
+      "final": [
+        48,
+        52
+      ]
+    }
+  },
+  "handoff": {
+    "BL": {
+      "last_statement_transit": {
+        "context": 44
+      },
+      "first_question_transit": 52
+    },
+    "BR": {
+      "last_statement_transit": {
+        "bind_bridge": 38,
+        "bridge_word": 38,
+        "context": 38
+      },
+      "first_question_transit": null
+    },
+    "RL": {
+      "last_statement_transit": {},
+      "first_question_transit": 36
+    },
+    "BLR": {
+      "last_statement_transit": {
+        "context": 38
+      },
+      "first_question_transit": null
+    },
+    "BRL": {
+      "last_statement_transit": {
+        "context": 34
+      },
+      "first_question_transit": null
+    },
+    "R": {
+      "last_statement_transit": {},
+      "first_question_transit": 36
+    },
+    "B": {
+      "last_statement_transit": {
+        "bind_bridge": 38,
+        "bridge_word": 38,
+        "context": 38
+      },
+      "first_question_transit": 40
+    }
+  },
+  "sanity": {
+    "identity": {
+      "n": 1280,
+      "max_abs_ld_minus_clean": 0.5,
+      "max_abs_ld_minus_unedited_same_batch": 0.0,
+      "top_is_clean_top": 1
+    },
+    "all0": {
+      "n": 640,
+      "max_abs_ld_minus_C": 2.0,
+      "top_is_C_top": 1
+    },
+    "noop_statements": {
+      "n": 640,
+      "families": [
+        "R",
+        "RL",
+        "RR"
+      ],
+      "max_abs_ld_minus_identity": 0.0,
+      "top_is_clean_top": 1
+    }
+  },
+  "validation": {
+    "n": 13000,
+    "agree": 0.9993,
+    "read/greedy": {
+      "A/A": 12135,
+      "b/b": 838,
+      "other/other": 18,
+      "A/b": 6,
+      "b/A": 3
+    }
+  }
+}

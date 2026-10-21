@@ -1,0 +1,296 @@
+{
+  "exp": "statement_positions",
+  "run": "d1_map_v1",
+  "kind": "map",
+  "written_utc": "2026-10-21T11:31:46Z",
+  "recomputed_equals_saved": {
+    "transit": true,
+    "handoff": true,
+    "sanity": true,
+    "validation": true
+  },
+  "figures": [
+    "heatmap_copy_flips.png",
+    "copy_flips_by_layer.png"
+  ],
+  "transit": {
+    "BL": {
+      "bind_bridge": [
+        0,
+        8,
+        16,
+        24
+      ],
+      "bridge_word": [
+        0,
+        8,
+        16,
+        24
+      ],
+      "context": [
+        0,
+        8,
+        16,
+        24,
+        28,
+        32,
+        34,
+        36,
+        38,
+        40,
+        44
+      ],
+      "question": [
+        52,
+        60
+      ],
+      "final": [
+        52,
+        60
+      ]
+    },
+    "BR": {
+      "bind_bridge": [
+        0,
+        8,
+        16,
+        24,
+        28,
+        32,
+        34
+      ],
+      "bridge_word": [
+        0,
+        8,
+        16,
+        24,
+        28,
+        32,
+        34
+      ],
+      "context": [
+        0,
+        8,
+        16,
+        24,
+        28,
+        32,
+        34,
+        36,
+        38
+      ]
+    },
+    "RL": {
+      "question": [
+        36,
+        38,
+        40,
+        44,
+        48,
+        52,
+        60
+      ],
+      "final": [
+        48,
+        52
+      ]
+    },
+    "BLR": {
+      "bind_bridge": [
+        0,
+        8,
+        16
+      ],
+      "bridge_word": [
+        0,
+        8,
+        16
+      ],
+      "context": [
+        0,
+        8,
+        16,
+        24,
+        28,
+        32,
+        34
+      ]
+    },
+    "BRL": {
+      "bind_bridge": [
+        0,
+        8,
+        16,
+        24,
+        28
+      ],
+      "bridge_word": [
+        0,
+        8,
+        16,
+        24,
+        28
+      ],
+      "context": [
+        0,
+        8,
+        16,
+        24,
+        28,
+        32,
+        34
+      ]
+    },
+    "R": {
+      "question": [
+        36,
+        38,
+        40,
+        44,
+        48,
+        52,
+        60
+      ],
+      "final": [
+        48,
+        52,
+        60
+      ]
+    },
+    "B": {
+      "bind_bridge": [
+        0,
+        8,
+        16,
+        24,
+        28,
+        32,
+        34,
+        36,
+        38,
+        40,
+        44
+      ],
+      "bridge_word": [
+        0,
+        8,
+        16,
+        24,
+        28,
+        32,
+        34,
+        36,
+        38,
+        40,
+        44
+      ],
+      "context": [
+        0,
+        8,
+        16,
+        24,
+        28,
+        32,
+        34,
+        36,
+        38
+      ],
+      "question": [
+        40,
+        44,
+        48,
+        52,
+        60
+      ],
+      "final": [
+        48,
+        52,
+        60
+      ]
+    }
+  },
+  "handoff": {
+    "BL": {
+      "last_statement_transit": {
+        "bind_bridge": 24,
+        "bridge_word": 24,
+        "context": 44
+      },
+      "first_question_transit": 52
+    },
+    "BR": {
+      "last_statement_transit": {
+        "bind_bridge": 34,
+        "bridge_word": 34,
+        "context": 38
+      },
+      "first_question_transit": null
+    },
+    "RL": {
+      "last_statement_transit": {},
+      "first_question_transit": 36
+    },
+    "BLR": {
+      "last_statement_transit": {
+        "bind_bridge": 16,
+        "bridge_word": 16,
+        "context": 34
+      },
+      "first_question_transit": null
+    },
+    "BRL": {
+      "last_statement_transit": {
+        "bind_bridge": 28,
+        "bridge_word": 28,
+        "context": 34
+      },
+      "first_question_transit": null
+    },
+    "R": {
+      "last_statement_transit": {},
+      "first_question_transit": 36
+    },
+    "B": {
+      "last_statement_transit": {
+        "bind_bridge": 44,
+        "bridge_word": 44,
+        "context": 38
+      },
+      "first_question_transit": 40
+    }
+  },
+  "sanity": {
+    "identity": {
+      "n": 512,
+      "max_abs_ld_minus_clean": 0.3745000000000003,
+      "max_abs_ld_minus_unedited_same_batch": 0.0,
+      "top_is_clean_top": 1
+    },
+    "all0": {
+      "n": 256,
+      "max_abs_ld_minus_C": 0.3125,
+      "top_is_C_top": 1
+    },
+    "noop_statements": {
+      "n": 1120,
+      "families": [
+        "R",
+        "RL",
+        "RR"
+      ],
+      "max_abs_ld_minus_identity": 0.0,
+      "top_is_clean_top": 1
+    }
+  },
+  "validation": {
+    "n": 22510,
+    "agree": 0.9995,
+    "read/greedy": {
+      "A/A": 20861,
+      "b/b": 1605,
+      "other/other": 32,
+      "A/b": 7,
+      "b/A": 5
+    }
+  }
+}

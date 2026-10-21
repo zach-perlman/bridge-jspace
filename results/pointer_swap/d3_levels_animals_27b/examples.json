@@ -1,0 +1,1022 @@
+{
+ "exp": "pointer_swap",
+ "run": "d3_levels_animals_27b",
+ "seed": 0,
+ "k": 3,
+ "selection": "source dissoc, group final, layers [44, 48, 52] and the transit window",
+ "groups": [
+  {
+   "key": "none",
+   "title": "none",
+   "definition": "the patch left the base answer",
+   "n_total": 1184
+  },
+  {
+   "key": "position",
+   "title": "position",
+   "definition": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction)",
+   "n_total": 388
+  },
+  {
+   "key": "value",
+   "title": "value",
+   "definition": "the patched base answered the source's own answer, absent from the base context (H-value)",
+   "n_total": 313
+  },
+  {
+   "key": "identity",
+   "title": "identity",
+   "definition": "the patched base answered the base's digit for the source's entity (H-word / lexical key)",
+   "n_total": 212
+  },
+  {
+   "key": "context",
+   "title": "context",
+   "definition": "another digit of the base context, predicted by no hypothesis",
+   "n_total": 15
+  },
+  {
+   "key": "same_changed",
+   "title": "same changed",
+   "definition": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer",
+   "n_total": 0
+  }
+ ],
+ "examples": [
+  {
+   "group": "none",
+   "family": "DL",
+   "item_id": "animals-DL-e5f4-0022",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe office was cold. The duck's locker is 5. The hallway lights were dim. The cow's locker is 3. The festival drew a large crowd. The bee's locker is 6. The bakery sold out of rolls. The spider's locker is 7. The wolf's locker is 9.\nWhich locker belongs to the spider? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 285,
+     "end": 388,
+     "role": "patched (final)"
+    },
+    {
+     "start": 200,
+     "end": 225,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 226,
+     "end": 249,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 38,
+     "end": 61,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 278,
+     "end": 284,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe office was cold. The wolf's locker is 1. The hallway lights were dim. The spider's locker is 9. The festival drew a large crowd. The bee's locker is 5. The bakery sold out of rolls. The duck's locker is 6. The cow's locker is 7.\nWhich locker belongs to the wolf? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 38,
+     "end": 61,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 44 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "none": "7",
+     "identity": "9",
+     "position": "5",
+     "value": "1"
+    },
+    "unedited_read": "7"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.9462,
+     "identity": 0.0001,
+     "position": 0.0471,
+     "value": 0.0003
+    },
+    "layer": 44,
+    "role": "none"
+   },
+   "why": "the patch left the base answer ('7')"
+  },
+  {
+   "group": "none",
+   "family": "RR",
+   "item_id": "animals-RR-e5f4-0015",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe school held a concert. The horse's locker is 9. The shop on the corner reopened. The wolf's locker is 1. The bakery sold out of rolls. The goose's locker is 3. The sheep's locker is 7. The street was lined with trees. The spider's locker is 6.\nHow many legs does the animal known for spinning webs have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 324,
+     "end": 427,
+     "role": "patched (final)"
+    },
+    {
+     "start": 239,
+     "end": 264,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 156,
+     "end": 180,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 102,
+     "end": 125,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 305,
+     "end": 318,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe school held a concert. The spider's locker is 7. The shop on the corner reopened. The goose's locker is 5. The bakery sold out of rolls. The sheep's locker is 9. The horse's locker is 1. The street was lined with trees. The wolf's locker is 6.\nHow many legs does the animal known for honking have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 103,
+     "end": 127,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "8",
+    "edited": "8",
+    "expected": {
+     "none": "8",
+     "identity": "2",
+     "position": "4",
+     "value": "2"
+    },
+    "unedited_read": "8"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.8515,
+     "identity": 0.1306,
+     "position": 0.0074,
+     "value": 0.1306
+    },
+    "layer": "transit",
+    "role": "none"
+   },
+   "why": "the patch left the base answer ('8')"
+  },
+  {
+   "group": "none",
+   "family": "RL",
+   "item_id": "animals-RL-e3f0-0022",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe horse's locker is 3. The bee's locker is 1. The turkey's locker is 7.\nWhich locker belongs to the animal known for gobbling? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 145,
+     "end": 248,
+     "role": "patched (final)"
+    },
+    {
+     "start": 65,
+     "end": 90,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 17,
+     "end": 41,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 42,
+     "end": 64,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 136,
+     "end": 144,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe bee's locker is 1. The horse's locker is 8. The turkey's locker is 7.\nWhich locker belongs to the animal known for neighing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 40,
+     "end": 64,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "none": "7",
+     "identity": "3",
+     "position": "1",
+     "value": "8"
+    },
+    "unedited_read": "7"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.73,
+     "identity": 0.0016,
+     "position": 0.0283,
+     "value": 0.2091
+    },
+    "layer": "transit",
+    "role": "none"
+   },
+   "why": "the patch left the base answer ('7')"
+  },
+  {
+   "group": "position",
+   "family": "DL",
+   "item_id": "animals-DL-e3f0-0010",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe horse's locker is 5. The bee's locker is 9. The turkey's locker is 1.\nWhich locker belongs to the horse? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 125,
+     "end": 228,
+     "role": "patched (final)"
+    },
+    {
+     "start": 17,
+     "end": 41,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 65,
+     "end": 90,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 42,
+     "end": 64,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 119,
+     "end": 124,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe bee's locker is 9. The turkey's locker is 3. The horse's locker is 8.\nWhich locker belongs to the turkey? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 40,
+     "end": 65,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "5",
+    "edited": "9",
+    "expected": {
+     "none": "5",
+     "identity": "1",
+     "position": "9",
+     "value": "3"
+    },
+    "unedited_read": "5"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0008,
+     "identity": 0.0005,
+     "position": 0.9968,
+     "value": 0.0
+    },
+    "layer": 48,
+    "role": "position"
+   },
+   "why": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction) ('9')"
+  },
+  {
+   "group": "position",
+   "family": "DL",
+   "item_id": "animals-DL-e5f0-0048",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe cat's locker is 9. The spider's locker is 6. The sheep's locker is 1. The cow's locker is 7. The goose's locker is 3.\nWhich locker belongs to the goose? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 173,
+     "end": 276,
+     "role": "patched (final)"
+    },
+    {
+     "start": 114,
+     "end": 138,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 91,
+     "end": 113,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 40,
+     "end": 65,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 167,
+     "end": 172,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe goose's locker is 7. The cow's locker is 5. The sheep's locker is 6. The cat's locker is 3. The spider's locker is 9.\nWhich locker belongs to the cow? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 42,
+     "end": 64,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 52 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "3",
+    "edited": "6",
+    "expected": {
+     "none": "3",
+     "identity": "7",
+     "position": "6",
+     "value": "5"
+    },
+    "unedited_read": "3"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0172,
+     "identity": 0.0032,
+     "position": 0.7313,
+     "value": 0.2374
+    },
+    "layer": 52,
+    "role": "position"
+   },
+   "why": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction) ('6')"
+  },
+  {
+   "group": "position",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0057",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe bee's locker is 7. The goose's locker is 9. The duck's locker is 8. The mouse's locker is 3. The horse's locker is 5.\nWhich locker belongs to the animal known for neighing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 193,
+     "end": 296,
+     "role": "patched (final)"
+    },
+    {
+     "start": 114,
+     "end": 138,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 40,
+     "end": 64,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 17,
+     "end": 39,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 184,
+     "end": 192,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe goose's locker is 1. The duck's locker is 3. The bee's locker is 7. The mouse's locker is 5. The horse's locker is 8.\nWhich locker belongs to the animal known for honking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 17,
+     "end": 41,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "5",
+    "edited": "7",
+    "expected": {
+     "none": "5",
+     "identity": "9",
+     "position": "7",
+     "value": "1"
+    },
+    "unedited_read": "5"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0036,
+     "identity": 0.0002,
+     "position": 0.9885,
+     "value": 0.001
+    },
+    "layer": 48,
+    "role": "position"
+   },
+   "why": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction) ('7')"
+  },
+  {
+   "group": "value",
+   "family": "RL",
+   "item_id": "animals-RL-e5f4-0022",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe office was cold. The duck's locker is 5. The hallway lights were dim. The cow's locker is 3. The festival drew a large crowd. The bee's locker is 6. The bakery sold out of rolls. The spider's locker is 7. The wolf's locker is 9.\nWhich locker belongs to the animal known for spinning webs? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 309,
+     "end": 412,
+     "role": "patched (final)"
+    },
+    {
+     "start": 200,
+     "end": 225,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 226,
+     "end": 249,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 38,
+     "end": 61,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 295,
+     "end": 308,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe office was cold. The wolf's locker is 1. The hallway lights were dim. The spider's locker is 9. The festival drew a large crowd. The bee's locker is 5. The bakery sold out of rolls. The duck's locker is 6. The cow's locker is 7.\nWhich locker belongs to the animal known for howling? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 38,
+     "end": 61,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 52 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "7",
+    "edited": "1",
+    "expected": {
+     "none": "7",
+     "identity": "9",
+     "position": "5",
+     "value": "1"
+    },
+    "unedited_read": "7"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0187,
+     "identity": 0.0001,
+     "position": 0.1774,
+     "value": 0.795
+    },
+    "layer": 52,
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('1')"
+  },
+  {
+   "group": "value",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0039",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe spider's locker is 5. The turkey's locker is 7. The sheep's locker is 1. The lion's locker is 9. The pig's locker is 6.\nWhich locker belongs to the animal known for spinning webs? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 200,
+     "end": 303,
+     "role": "patched (final)"
+    },
+    {
+     "start": 17,
+     "end": 42,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 43,
+     "end": 68,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 118,
+     "end": 140,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 186,
+     "end": 199,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe spider's locker is 9. The pig's locker is 6. The lion's locker is 5. The sheep's locker is 7. The turkey's locker is 3.\nWhich locker belongs to the animal known for gobbling? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 115,
+     "end": 140,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 52 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "5",
+    "edited": "3",
+    "expected": {
+     "none": "5",
+     "identity": "7",
+     "position": "6",
+     "value": "3"
+    },
+    "unedited_read": "5"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0639,
+     "identity": 0.0004,
+     "position": 0.0439,
+     "value": 0.8824
+    },
+    "layer": 52,
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('3')"
+  },
+  {
+   "group": "value",
+   "family": "RL",
+   "item_id": "animals-RL-e5f4-0055",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe park was quiet at dawn. The cat's locker is 5. The mouse's locker is 8. The goose's locker is 9. The river was calm that morning. The lion's locker is 3. The bus was late again. The bee's locker is 7. The tea had gone cold.\nWhich locker belongs to the animal known for honking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 298,
+     "end": 401,
+     "role": "patched (final)"
+    },
+    {
+     "start": 93,
+     "end": 117,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 45,
+     "end": 67,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 199,
+     "end": 221,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 290,
+     "end": 297,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe park was quiet at dawn. The mouse's locker is 9. The bee's locker is 3. The lion's locker is 7. The river was calm that morning. The goose's locker is 8. The bus was late again. The cat's locker is 1. The tea had gone cold.\nWhich locker belongs to the animal known for purring? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 199,
+     "end": 221,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "9",
+    "edited": "1",
+    "expected": {
+     "none": "9",
+     "identity": "5",
+     "position": "7",
+     "value": "1"
+    },
+    "unedited_read": "9"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.1431,
+     "identity": 0.0007,
+     "position": 0.0028,
+     "value": 0.8233
+    },
+    "layer": "transit",
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('1')"
+  },
+  {
+   "group": "identity",
+   "family": "RR",
+   "item_id": "animals-RR-e5f0-0005",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe frog's locker is 9. The sheep's locker is 7. The bee's locker is 3. The turkey's locker is 5. The dog's locker is 1.\nHow many legs does the animal known for its wool have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 192,
+     "end": 295,
+     "role": "patched (final)"
+    },
+    {
+     "start": 41,
+     "end": 65,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 66,
+     "end": 88,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 89,
+     "end": 114,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 178,
+     "end": 186,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe turkey's locker is 7. The frog's locker is 9. The dog's locker is 5. The bee's locker is 8. The sheep's locker is 1.\nHow many legs does the animal known for making honey have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 90,
+     "end": 112,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "4",
+    "edited": "6",
+    "expected": {
+     "none": "4",
+     "identity": "6",
+     "position": "2",
+     "value": "6"
+    },
+    "unedited_read": "4"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.461,
+     "identity": 0.5224,
+     "position": 0.0007,
+     "value": 0.5224
+    },
+    "layer": "transit",
+    "role": "identity"
+   },
+   "why": "the patched base answered the base's digit for the source's entity (H-word / lexical key) ('6')"
+  },
+  {
+   "group": "identity",
+   "family": "RL",
+   "item_id": "animals-RL-e5f4-0010",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe kitchen smelled of fresh bread. The mouse's locker is 9. The bee's locker is 8. The shop on the corner reopened. The frog's locker is 7. The chicken's locker is 1. The duck's locker is 5. The sky turned grey by noon. The museum had a new exhibit.\nWhich locker belongs to the animal known for squeaking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 323,
+     "end": 426,
+     "role": "patched (final)"
+    },
+    {
+     "start": 53,
+     "end": 77,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 158,
+     "end": 184,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 78,
+     "end": 100,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 313,
+     "end": 322,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe kitchen smelled of fresh bread. The duck's locker is 8. The chicken's locker is 3. The shop on the corner reopened. The bee's locker is 1. The mouse's locker is 9. The frog's locker is 7. The sky turned grey by noon. The museum had a new exhibit.\nWhich locker belongs to the animal known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 77,
+     "end": 103,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 44 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "9",
+    "edited": "1",
+    "expected": {
+     "none": "9",
+     "identity": "1",
+     "position": "8",
+     "value": "3"
+    },
+    "unedited_read": "9"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0385,
+     "identity": 0.8758,
+     "position": 0.0436,
+     "value": 0.0007
+    },
+    "layer": 44,
+    "role": "identity"
+   },
+   "why": "the patched base answered the base's digit for the source's entity (H-word / lexical key) ('1')"
+  },
+  {
+   "group": "identity",
+   "family": "DL",
+   "item_id": "animals-DL-e5f0-0034",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe lion's locker is 3. The horse's locker is 1. The goose's locker is 8. The bee's locker is 9. The wolf's locker is 5.\nWhich locker belongs to the lion? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 171,
+     "end": 274,
+     "role": "patched (final)"
+    },
+    {
+     "start": 17,
+     "end": 40,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 66,
+     "end": 90,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 91,
+     "end": 113,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 166,
+     "end": 170,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe lion's locker is 5. The wolf's locker is 8. The horse's locker is 9. The goose's locker is 7. The bee's locker is 1.\nWhich locker belongs to the goose? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 90,
+     "end": 114,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "3",
+    "edited": "8",
+    "expected": {
+     "none": "3",
+     "identity": "8",
+     "position": "9",
+     "value": "7"
+    },
+    "unedited_read": "3"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0001,
+     "identity": 0.9983,
+     "position": 0.0002,
+     "value": 0.0
+    },
+    "layer": 48,
+    "role": "identity"
+   },
+   "why": "the patched base answered the base's digit for the source's entity (H-word / lexical key) ('8')"
+  },
+  {
+   "group": "context",
+   "family": "DL",
+   "item_id": "animals-DL-e5f4-0021",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe lion's locker is 9. The window faced the hills. The train left on time. The cow's locker is 6. The festival drew a large crowd. The radio played old songs. The horse's locker is 5. The spider's locker is 1. The duck's locker is 7.\nWhich locker belongs to the cow? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 284,
+     "end": 387,
+     "role": "patched (final)"
+    },
+    {
+     "start": 93,
+     "end": 115,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 202,
+     "end": 227,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 228,
+     "end": 251,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 280,
+     "end": 283,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe cow's locker is 5. The window faced the hills. The train left on time. The horse's locker is 6. The festival drew a large crowd. The radio played old songs. The lion's locker is 9. The duck's locker is 1. The spider's locker is 3.\nWhich locker belongs to the spider? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 226,
+     "end": 251,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "6",
+    "edited": "5",
+    "expected": {
+     "none": "6",
+     "identity": "1",
+     "position": "7",
+     "value": "3"
+    },
+    "unedited_read": "6"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.2688,
+     "identity": 0.0529,
+     "position": 0.0195,
+     "value": 0.0002
+    },
+    "layer": 48,
+    "role": "context"
+   },
+   "why": "another digit of the base context, predicted by no hypothesis ('5')"
+  },
+  {
+   "group": "context",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0037",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe pig's locker is 3. The chicken's locker is 6. The horse's locker is 7. The spider's locker is 9. The turkey's locker is 1.\nWhich locker belongs to the animal known for gobbling? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 198,
+     "end": 301,
+     "role": "patched (final)"
+    },
+    {
+     "start": 118,
+     "end": 143,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 17,
+     "end": 39,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 92,
+     "end": 117,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 189,
+     "end": 197,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe horse's locker is 7. The turkey's locker is 1. The chicken's locker is 9. The pig's locker is 5. The spider's locker is 6.\nWhich locker belongs to the animal known for oinking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 95,
+     "end": 117,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "1",
+    "edited": "7",
+    "expected": {
+     "none": "1",
+     "identity": "3",
+     "position": "9",
+     "value": "5"
+    },
+    "unedited_read": "1"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0124,
+     "identity": 0.0001,
+     "position": 0.0001,
+     "value": 0.0
+    },
+    "layer": 48,
+    "role": "context"
+   },
+   "why": "another digit of the base context, predicted by no hypothesis ('7')"
+  },
+  {
+   "group": "context",
+   "family": "DL",
+   "item_id": "animals-DL-e5f0-0056",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe horse's locker is 7. The spider's locker is 9. The sheep's locker is 1. The pig's locker is 5. The chicken's locker is 6.\nWhich locker belongs to the spider? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 178,
+     "end": 281,
+     "role": "patched (final)"
+    },
+    {
+     "start": 42,
+     "end": 67,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 17,
+     "end": 41,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 116,
+     "end": 142,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 171,
+     "end": 177,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe spider's locker is 7. The pig's locker is 5. The sheep's locker is 6. The chicken's locker is 1. The horse's locker is 3.\nWhich locker belongs to the horse? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 118,
+     "end": 142,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "9",
+    "edited": "5",
+    "expected": {
+     "none": "9",
+     "identity": "7",
+     "position": "6",
+     "value": "3"
+    },
+    "unedited_read": "9"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0109,
+     "identity": 0.0001,
+     "position": 0.0012,
+     "value": 0.0
+    },
+    "layer": 48,
+    "role": "context"
+   },
+   "why": "another digit of the base context, predicted by no hypothesis ('5')"
+  }
+ ]
+}

@@ -1,0 +1,5206 @@
+{
+ "exp": "early_push",
+ "run": "d4_push_v1",
+ "seed": 0,
+ "k": 3,
+ "groups": [
+  {
+   "key": "both",
+   "title": "both",
+   "definition": "P* and E-insert both give X's answer",
+   "n_total": 100
+  },
+  {
+   "key": "push_only",
+   "title": "push only",
+   "definition": "P* gives X's answer, E-insert does not",
+   "n_total": 8
+  },
+  {
+   "key": "edit_only",
+   "title": "edit only",
+   "definition": "E-insert gives X's answer, P* does not",
+   "n_total": 182
+  },
+  {
+   "key": "neither",
+   "title": "neither",
+   "definition": "neither gives X's answer",
+   "n_total": 70
+  }
+ ],
+ "examples": [
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0012",
+   "prompt": "<|im_start|>user\nBob lives in Japan. Jack lives in Germany. Rachel lives in France. What is the capital of the country where Nice is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 107,
+     "end": 140,
+     "role": "cue"
+    },
+    {
+     "start": 83,
+     "end": 244,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "Paris",
+    "edited": "Tokyo",
+    "expected": {
+     "H-inject": "Tokyo",
+     "H-write": "Tokyo"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0001,
+    "p_b": 0.9246,
+    "ld": 9.25,
+    "frac": 1.0563,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (France -> Japan)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0012",
+   "prompt": "<|im_start|>user\nBob lives in Japan. Jack lives in Germany. Rachel lives in France. What is the capital of the country where Nice is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 107,
+     "end": 140,
+     "role": "cue"
+    },
+    {
+     "start": 106,
+     "end": 140,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "Paris",
+    "edited": "Tokyo",
+    "expected": {
+     "H-inject": "Tokyo",
+     "H-write": "Tokyo"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0002,
+    "p_b": 0.8264,
+    "ld": 8.438,
+    "frac": 1.0106,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (France -> Japan)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0012",
+   "prompt": "<|im_start|>user\nBob lives in Japan. Jack lives in Germany. Rachel lives in France. What is the capital of Japan? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 107,
+     "end": 112,
+     "role": "x"
+    },
+    {
+     "start": 107,
+     "end": 112,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "Paris",
+    "edited": "Tokyo",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.912,
+    "ld": 10.438,
+    "frac": 1.1232,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (France -> Japan)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0012",
+   "prompt": "<|im_start|>user\nBob lives in Japan. Jack lives in Germany. Rachel lives in France. What is the capital of the country where Nice is located, Japan? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 142,
+     "end": 147,
+     "role": "x"
+    },
+    {
+     "start": 140,
+     "end": 147,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "Paris",
+    "edited": "Tokyo",
+    "expected": {
+     "H-inject": "Tokyo",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.1904,
+    "p_b": 0.5177,
+    "ld": 1.0,
+    "frac": 0.5915,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (France -> Japan)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0012",
+   "prompt": "<|im_start|>user\nBob lives in Japan. Jack lives in Germany. Rachel lives in France. What is the capital of the country where Osaka is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 125,
+     "end": 130,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "Paris",
+    "edited": "Tokyo",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Tokyo"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0002,
+    "p_b": 0.8197,
+    "ld": 8.25,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (France -> Japan)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0012",
+   "prompt": "<|im_start|>user\nBob lives in Japan. Jack lives in Germany. Rachel lives in France. Someone read a book about Japan. What is the capital of the country where Nice is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 110,
+     "end": 115,
+     "role": "x"
+    },
+    {
+     "start": 84,
+     "end": 117,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "Paris",
+    "edited": "Paris",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.7819,
+    "p_b": 0.0003,
+    "ld": -7.812,
+    "frac": 0.0951,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* and E-insert both give X's answer on this item (France -> Japan)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0012",
+   "prompt": "<|im_start|>user\nBob lives in Japan. Jack lives in Germany. Rachel lives in France. What is the capital of the country where Nice is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 107,
+     "end": 140,
+     "role": "cue"
+    },
+    {
+     "start": 129,
+     "end": 244,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 36, scale None, positions r",
+   "answers": {
+    "clean": "Paris",
+    "edited": "Tokyo",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Tokyo"
+    }
+   },
+   "numbers": {
+    "p_A": 0.3174,
+    "p_b": 0.4618,
+    "ld": 0.375,
+    "frac": 0.5563,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (France -> Japan)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0012",
+   "prompt": "<|im_start|>user\nBob lives in Japan. Jack lives in Germany. Rachel lives in France. What is the capital of the country where Nice is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 107,
+     "end": 140,
+     "role": "cue"
+    },
+    {
+     "start": 106,
+     "end": 140,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "Paris",
+    "edited": "Tokyo",
+    "expected": {
+     "H-inject": "Tokyo",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0093,
+    "p_b": 0.7418,
+    "ld": 4.375,
+    "frac": 0.7817,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (France -> Japan)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0125",
+   "prompt": "<|im_start|>user\nBob lives in Germany. Nina lives in Greece. Will lives in Japan. What is the capital of the country where Osaka is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 75,
+     "end": 80,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 105,
+     "end": 139,
+     "role": "cue"
+    },
+    {
+     "start": 81,
+     "end": 243,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "Tokyo",
+    "edited": "Berlin",
+    "expected": {
+     "H-inject": "Berlin",
+     "H-write": "Berlin"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.8696,
+    "ld": 10.312,
+    "frac": 1.1111,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Japan -> Germany)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0125",
+   "prompt": "<|im_start|>user\nBob lives in Germany. Nina lives in Greece. Will lives in Japan. What is the capital of the country where Osaka is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 75,
+     "end": 80,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 105,
+     "end": 139,
+     "role": "cue"
+    },
+    {
+     "start": 104,
+     "end": 139,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "Tokyo",
+    "edited": "Berlin",
+    "expected": {
+     "H-inject": "Berlin",
+     "H-write": "Berlin"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0001,
+    "p_b": 0.7583,
+    "ld": 9.062,
+    "frac": 1.0394,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Japan -> Germany)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0125",
+   "prompt": "<|im_start|>user\nBob lives in Germany. Nina lives in Greece. Will lives in Japan. What is the capital of Germany? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 75,
+     "end": 80,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 105,
+     "end": 112,
+     "role": "x"
+    },
+    {
+     "start": 105,
+     "end": 112,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "Tokyo",
+    "edited": "Berlin",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.89,
+    "ld": 10.625,
+    "frac": 1.129,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Japan -> Germany)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0125",
+   "prompt": "<|im_start|>user\nBob lives in Germany. Nina lives in Greece. Will lives in Japan. What is the capital of the country where Osaka is located, Germany? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 75,
+     "end": 80,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 141,
+     "end": 148,
+     "role": "x"
+    },
+    {
+     "start": 139,
+     "end": 148,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "Tokyo",
+    "edited": "Berlin",
+    "expected": {
+     "H-inject": "Berlin",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.2918,
+    "p_b": 0.3307,
+    "ld": 0.125,
+    "frac": 0.5269,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Japan -> Germany)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0125",
+   "prompt": "<|im_start|>user\nBob lives in Germany. Nina lives in Greece. Will lives in Japan. What is the capital of the country where Munich is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 75,
+     "end": 80,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 123,
+     "end": 129,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "Tokyo",
+    "edited": "Berlin",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Berlin"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0002,
+    "p_b": 0.7501,
+    "ld": 8.375,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Japan -> Germany)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0125",
+   "prompt": "<|im_start|>user\nBob lives in Germany. Nina lives in Greece. Will lives in Japan. Someone read a book about Germany. What is the capital of the country where Osaka is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 75,
+     "end": 80,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 108,
+     "end": 115,
+     "role": "x"
+    },
+    {
+     "start": 82,
+     "end": 117,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "Tokyo",
+    "edited": "Tokyo",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.7669,
+    "p_b": 0.0002,
+    "ld": -8.188,
+    "frac": 0.0502,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Japan -> Germany)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0125",
+   "prompt": "<|im_start|>user\nBob lives in Germany. Nina lives in Greece. Will lives in Japan. What is the capital of the country where Osaka is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 75,
+     "end": 80,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 105,
+     "end": 139,
+     "role": "cue"
+    },
+    {
+     "start": 128,
+     "end": 243,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 36, scale None, positions r",
+   "answers": {
+    "clean": "Tokyo",
+    "edited": "Berlin",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Berlin"
+    }
+   },
+   "numbers": {
+    "p_A": 0.1763,
+    "p_b": 0.5431,
+    "ld": 1.125,
+    "frac": 0.5842,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Japan -> Germany)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0125",
+   "prompt": "<|im_start|>user\nBob lives in Germany. Nina lives in Greece. Will lives in Japan. What is the capital of the country where Osaka is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 75,
+     "end": 80,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 105,
+     "end": 139,
+     "role": "cue"
+    },
+    {
+     "start": 104,
+     "end": 139,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "Tokyo",
+    "edited": "Berlin",
+    "expected": {
+     "H-inject": "Berlin",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0057,
+    "p_b": 0.3508,
+    "ld": 4.125,
+    "frac": 0.7563,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Japan -> Germany)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0081",
+   "prompt": "<|im_start|>user\nRachel lives in France. Jack lives in Italy. Alice lives in Poland. What is the capital of the country where Florence is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 55,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 108,
+     "end": 145,
+     "role": "cue"
+    },
+    {
+     "start": 84,
+     "end": 249,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "Rome",
+    "edited": "Paris",
+    "expected": {
+     "H-inject": "Paris",
+     "H-write": "Paris"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0001,
+    "p_b": 0.9374,
+    "ld": 9.312,
+    "frac": 1.0444,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Italy -> France)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0081",
+   "prompt": "<|im_start|>user\nRachel lives in France. Jack lives in Italy. Alice lives in Poland. What is the capital of the country where Florence is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 55,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 108,
+     "end": 145,
+     "role": "cue"
+    },
+    {
+     "start": 107,
+     "end": 145,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "Rome",
+    "edited": "Paris",
+    "expected": {
+     "H-inject": "Paris",
+     "H-write": "Paris"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0003,
+    "p_b": 0.9104,
+    "ld": 8.062,
+    "frac": 0.9637,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Italy -> France)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0081",
+   "prompt": "<|im_start|>user\nRachel lives in France. Jack lives in Italy. Alice lives in Poland. What is the capital of France? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 55,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 108,
+     "end": 114,
+     "role": "x"
+    },
+    {
+     "start": 108,
+     "end": 114,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "Rome",
+    "edited": "Paris",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.958,
+    "ld": 10.688,
+    "frac": 1.1331,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Italy -> France)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0081",
+   "prompt": "<|im_start|>user\nRachel lives in France. Jack lives in Italy. Alice lives in Poland. What is the capital of the country where Florence is located, France? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 55,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 147,
+     "end": 153,
+     "role": "x"
+    },
+    {
+     "start": 145,
+     "end": 153,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "Rome",
+    "edited": "Paris",
+    "expected": {
+     "H-inject": "Paris",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.2,
+    "p_b": 0.4797,
+    "ld": 0.875,
+    "frac": 0.5,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Italy -> France)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0081",
+   "prompt": "<|im_start|>user\nRachel lives in France. Jack lives in Italy. Alice lives in Poland. What is the capital of the country where Marseille is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 55,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 126,
+     "end": 134,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "Rome",
+    "edited": "Paris",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Paris"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0002,
+    "p_b": 0.9011,
+    "ld": 8.625,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Italy -> France)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0081",
+   "prompt": "<|im_start|>user\nRachel lives in France. Jack lives in Italy. Alice lives in Poland. Someone read a book about France. What is the capital of the country where Florence is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 55,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 111,
+     "end": 117,
+     "role": "x"
+    },
+    {
+     "start": 85,
+     "end": 119,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "Rome",
+    "edited": "Rome",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.8075,
+    "p_b": 0.0016,
+    "ld": -6.25,
+    "frac": 0.0403,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Italy -> France)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0081",
+   "prompt": "<|im_start|>user\nRachel lives in France. Jack lives in Italy. Alice lives in Poland. What is the capital of the country where Florence is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 55,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 108,
+     "end": 145,
+     "role": "cue"
+    },
+    {
+     "start": 134,
+     "end": 249,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 36, scale None, positions r",
+   "answers": {
+    "clean": "Rome",
+    "edited": "Paris",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Paris"
+    }
+   },
+   "numbers": {
+    "p_A": 0.1199,
+    "p_b": 0.7818,
+    "ld": 1.875,
+    "frac": 0.5645,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Italy -> France)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0081",
+   "prompt": "<|im_start|>user\nRachel lives in France. Jack lives in Italy. Alice lives in Poland. What is the capital of the country where Florence is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 55,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 108,
+     "end": 145,
+     "role": "cue"
+    },
+    {
+     "start": 107,
+     "end": 145,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "Rome",
+    "edited": "Paris",
+    "expected": {
+     "H-inject": "Paris",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0127,
+    "p_b": 0.4774,
+    "ld": 3.625,
+    "frac": 0.6774,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Italy -> France)"
+  },
+  {
+   "group": "push_only",
+   "family": "RR",
+   "item_id": "RR-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nHow many legs does the animal known for mooing have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 176,
+     "end": 203,
+     "role": "cue"
+    },
+    {
+     "start": 157,
+     "end": 312,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "4",
+    "edited": "2",
+    "expected": {
+     "H-inject": "4",
+     "H-write": "2"
+    }
+   },
+   "numbers": {
+    "p_A": 0.1992,
+    "p_b": 0.7877,
+    "ld": 1.375,
+    "frac": 0.6301,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (cow -> chicken)"
+  },
+  {
+   "group": "push_only",
+   "family": "RR",
+   "item_id": "RR-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nHow many legs does the animal known for mooing have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 176,
+     "end": 203,
+     "role": "cue"
+    },
+    {
+     "start": 175,
+     "end": 203,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "4",
+    "edited": "2",
+    "expected": {
+     "H-inject": "4",
+     "H-write": "2"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0032,
+    "p_b": 0.9936,
+    "ld": 5.75,
+    "frac": 0.9146,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (cow -> chicken)"
+  },
+  {
+   "group": "push_only",
+   "family": "RR",
+   "item_id": "RR-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nHow many legs does the chicken have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 180,
+     "end": 187,
+     "role": "x"
+    },
+    {
+     "start": 180,
+     "end": 187,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "4",
+    "edited": "2",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0025,
+    "p_b": 0.9952,
+    "ld": 6.0,
+    "frac": 0.9309,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (cow -> chicken)"
+  },
+  {
+   "group": "push_only",
+   "family": "RR",
+   "item_id": "RR-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nHow many legs does the animal known for mooing, the chicken, have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 209,
+     "end": 216,
+     "role": "x"
+    },
+    {
+     "start": 203,
+     "end": 217,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-inject": "2",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.4986,
+    "p_b": 0.44,
+    "ld": -0.125,
+    "frac": 0.5325,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (cow -> chicken)"
+  },
+  {
+   "group": "push_only",
+   "family": "RR",
+   "item_id": "RR-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nHow many legs does the chicken known for mooing have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 180,
+     "end": 187,
+     "role": "x"
+    },
+    {
+     "start": 180,
+     "end": 187,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-head: text edit E-head, then a normal forward",
+   "answers": {
+    "clean": "4",
+    "edited": "0",
+    "expected": {
+     "H-inject": "2",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0865,
+    "p_b": 0.3422,
+    "ld": 1.375,
+    "frac": 0.6301,
+    "flip": false,
+    "role": "other"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (cow -> chicken)"
+  },
+  {
+   "group": "push_only",
+   "family": "RR",
+   "item_id": "RR-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nHow many legs does the animal known for clucking have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 197,
+     "end": 202,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "4",
+    "edited": "2",
+    "expected": {
+     "H-inject": null,
+     "H-write": "2"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0009,
+    "p_b": 0.9961,
+    "ld": 7.062,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (cow -> chicken)"
+  },
+  {
+   "group": "push_only",
+   "family": "RR",
+   "item_id": "RR-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1. Someone drew a picture of a chicken.\nHow many legs does the animal known for mooing have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 185,
+     "end": 192,
+     "role": "x"
+    },
+    {
+     "start": 156,
+     "end": 193,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.9967,
+    "p_b": 0.0003,
+    "ld": -8.062,
+    "frac": 0.0163,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (cow -> chicken)"
+  },
+  {
+   "group": "push_only",
+   "family": "RR",
+   "item_id": "RR-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nHow many legs does the animal known for mooing have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 176,
+     "end": 203,
+     "role": "cue"
+    },
+    {
+     "start": 203,
+     "end": 312,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 48, scale None, positions r",
+   "answers": {
+    "clean": "4",
+    "edited": "2",
+    "expected": {
+     "H-inject": null,
+     "H-write": "2"
+    }
+   },
+   "numbers": {
+    "p_A": 0.4943,
+    "p_b": 0.4943,
+    "ld": 0.0,
+    "frac": 0.5407,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (cow -> chicken)"
+  },
+  {
+   "group": "push_only",
+   "family": "RR",
+   "item_id": "RR-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nHow many legs does the animal known for mooing have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 176,
+     "end": 203,
+     "role": "cue"
+    },
+    {
+     "start": 175,
+     "end": 203,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "4",
+    "edited": "2",
+    "expected": {
+     "H-inject": "2",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0046,
+    "p_b": 0.9896,
+    "ld": 5.375,
+    "frac": 0.8902,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (cow -> chicken)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0023",
+   "prompt": "<|im_start|>user\nSam lives in Germany. Paul lives in France. Bob lives in Spain. What is the capital of the country where Bordeaux is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 53,
+     "end": 59,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 104,
+     "end": 141,
+     "role": "cue"
+    },
+    {
+     "start": 80,
+     "end": 245,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "Paris",
+    "edited": "Berlin",
+    "expected": {
+     "H-inject": "Paris",
+     "H-write": "Berlin"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0004,
+    "p_b": 0.6392,
+    "ld": 7.375,
+    "frac": 1.0349,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (France -> Germany)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0023",
+   "prompt": "<|im_start|>user\nSam lives in Germany. Paul lives in France. Bob lives in Spain. What is the capital of the country where Bordeaux is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 53,
+     "end": 59,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 104,
+     "end": 141,
+     "role": "cue"
+    },
+    {
+     "start": 103,
+     "end": 141,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "Paris",
+    "edited": "Berlin",
+    "expected": {
+     "H-inject": "Paris",
+     "H-write": "Berlin"
+    }
+   },
+   "numbers": {
+    "p_A": 0.001,
+    "p_b": 0.7005,
+    "ld": 6.562,
+    "frac": 0.9845,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (France -> Germany)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0023",
+   "prompt": "<|im_start|>user\nSam lives in Germany. Paul lives in France. Bob lives in Spain. What is the capital of Germany? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 53,
+     "end": 59,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 104,
+     "end": 111,
+     "role": "x"
+    },
+    {
+     "start": 104,
+     "end": 111,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "Paris",
+    "edited": "Berlin",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0001,
+    "p_b": 0.9135,
+    "ld": 8.938,
+    "frac": 1.1318,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (France -> Germany)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0023",
+   "prompt": "<|im_start|>user\nSam lives in Germany. Paul lives in France. Bob lives in Spain. What is the capital of the country where Bordeaux is located, Germany? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 53,
+     "end": 59,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 143,
+     "end": 150,
+     "role": "x"
+    },
+    {
+     "start": 141,
+     "end": 150,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "Paris",
+    "edited": "Paris",
+    "expected": {
+     "H-inject": "Berlin",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.2899,
+    "p_b": 0.2258,
+    "ld": -0.25,
+    "frac": 0.562,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (France -> Germany)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0023",
+   "prompt": "<|im_start|>user\nSam lives in Germany. Paul lives in France. Bob lives in Spain. What is the capital of the country where Cologne is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 53,
+     "end": 59,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 122,
+     "end": 129,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "Paris",
+    "edited": "Berlin",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Berlin"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0008,
+    "p_b": 0.7366,
+    "ld": 6.812,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (France -> Germany)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0023",
+   "prompt": "<|im_start|>user\nSam lives in Germany. Paul lives in France. Bob lives in Spain. Someone read a book about Germany. What is the capital of the country where Bordeaux is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 53,
+     "end": 59,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 107,
+     "end": 114,
+     "role": "x"
+    },
+    {
+     "start": 81,
+     "end": 116,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "Paris",
+    "edited": "Paris",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.8219,
+    "p_b": 0.0001,
+    "ld": -8.625,
+    "frac": 0.0426,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (France -> Germany)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0023",
+   "prompt": "<|im_start|>user\nSam lives in Germany. Paul lives in France. Bob lives in Spain. What is the capital of the country where Bordeaux is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 53,
+     "end": 59,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 104,
+     "end": 141,
+     "role": "cue"
+    },
+    {
+     "start": 130,
+     "end": 245,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 36, scale None, positions r",
+   "answers": {
+    "clean": "Paris",
+    "edited": "Berlin",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Berlin"
+    }
+   },
+   "numbers": {
+    "p_A": 0.2169,
+    "p_b": 0.4052,
+    "ld": 0.625,
+    "frac": 0.6163,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (France -> Germany)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0023",
+   "prompt": "<|im_start|>user\nSam lives in Germany. Paul lives in France. Bob lives in Spain. What is the capital of the country where Bordeaux is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 53,
+     "end": 59,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 104,
+     "end": 141,
+     "role": "cue"
+    },
+    {
+     "start": 103,
+     "end": 141,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "Paris",
+    "edited": "Berlin",
+    "expected": {
+     "H-inject": "Berlin",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0646,
+    "p_b": 0.3083,
+    "ld": 1.562,
+    "frac": 0.6744,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (France -> Germany)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0324",
+   "prompt": "<|im_start|>user\nLaura lives in Peru. Frank lives in Canada. Kate lives in Australia. What is the capital of the country where Perth is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 75,
+     "end": 84,
+     "role": "bridge"
+    },
+    {
+     "start": 53,
+     "end": 59,
+     "role": "x"
+    },
+    {
+     "start": 109,
+     "end": 143,
+     "role": "cue"
+    },
+    {
+     "start": 85,
+     "end": 247,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "Canberra",
+    "edited": "Ottawa",
+    "expected": {
+     "H-inject": "<|im_end|>",
+     "H-write": "Ottawa"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0002,
+    "p_b": 0.9402,
+    "ld": 8.438,
+    "frac": 1.1354,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Australia -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0324",
+   "prompt": "<|im_start|>user\nLaura lives in Peru. Frank lives in Canada. Kate lives in Australia. What is the capital of the country where Perth is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 75,
+     "end": 84,
+     "role": "bridge"
+    },
+    {
+     "start": 53,
+     "end": 59,
+     "role": "x"
+    },
+    {
+     "start": 109,
+     "end": 143,
+     "role": "cue"
+    },
+    {
+     "start": 108,
+     "end": 143,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "Canberra",
+    "edited": "Ottawa",
+    "expected": {
+     "H-inject": "<|im_end|>",
+     "H-write": "Ottawa"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0021,
+    "p_b": 0.718,
+    "ld": 5.812,
+    "frac": 0.952,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Australia -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0324",
+   "prompt": "<|im_start|>user\nLaura lives in Peru. Frank lives in Canada. Kate lives in Australia. What is the capital of Canada? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 75,
+     "end": 84,
+     "role": "bridge"
+    },
+    {
+     "start": 53,
+     "end": 59,
+     "role": "x"
+    },
+    {
+     "start": 109,
+     "end": 115,
+     "role": "x"
+    },
+    {
+     "start": 109,
+     "end": 115,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "Canberra",
+    "edited": "Ottawa",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0001,
+    "p_b": 0.7767,
+    "ld": 8.875,
+    "frac": 1.1659,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Australia -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0324",
+   "prompt": "<|im_start|>user\nLaura lives in Peru. Frank lives in Canada. Kate lives in Australia. What is the capital of the country where Perth is located, Canada? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 75,
+     "end": 84,
+     "role": "bridge"
+    },
+    {
+     "start": 53,
+     "end": 59,
+     "role": "x"
+    },
+    {
+     "start": 145,
+     "end": 151,
+     "role": "x"
+    },
+    {
+     "start": 143,
+     "end": 151,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "Canberra",
+    "edited": "<|im_end|>",
+    "expected": {
+     "H-inject": "Ottawa",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0461,
+    "p_b": 0.2652,
+    "ld": 1.75,
+    "frac": 0.6681,
+    "flip": false,
+    "role": "other"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Australia -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0324",
+   "prompt": "<|im_start|>user\nLaura lives in Peru. Frank lives in Canada. Kate lives in Australia. What is the capital of the country where Edmonton is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 75,
+     "end": 84,
+     "role": "bridge"
+    },
+    {
+     "start": 53,
+     "end": 59,
+     "role": "x"
+    },
+    {
+     "start": 127,
+     "end": 135,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "Canberra",
+    "edited": "Ottawa",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Ottawa"
+    }
+   },
+   "numbers": {
+    "p_A": 0.001,
+    "p_b": 0.695,
+    "ld": 6.5,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Australia -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0324",
+   "prompt": "<|im_start|>user\nLaura lives in Peru. Frank lives in Canada. Kate lives in Australia. Someone read a book about Canada. What is the capital of the country where Perth is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 75,
+     "end": 84,
+     "role": "bridge"
+    },
+    {
+     "start": 53,
+     "end": 59,
+     "role": "x"
+    },
+    {
+     "start": 112,
+     "end": 118,
+     "role": "x"
+    },
+    {
+     "start": 86,
+     "end": 120,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "Canberra",
+    "edited": "Canberra",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.702,
+    "p_b": 0.0042,
+    "ld": -5.125,
+    "frac": 0.1878,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Australia -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0324",
+   "prompt": "<|im_start|>user\nLaura lives in Peru. Frank lives in Canada. Kate lives in Australia. What is the capital of the country where Perth is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 75,
+     "end": 84,
+     "role": "bridge"
+    },
+    {
+     "start": 53,
+     "end": 59,
+     "role": "x"
+    },
+    {
+     "start": 109,
+     "end": 143,
+     "role": "cue"
+    },
+    {
+     "start": 132,
+     "end": 247,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 36, scale None, positions r",
+   "answers": {
+    "clean": "Canberra",
+    "edited": "Ottawa",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Ottawa"
+    }
+   },
+   "numbers": {
+    "p_A": 0.1364,
+    "p_b": 0.3708,
+    "ld": 1.0,
+    "frac": 0.6157,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Australia -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0324",
+   "prompt": "<|im_start|>user\nLaura lives in Peru. Frank lives in Canada. Kate lives in Australia. What is the capital of the country where Perth is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 75,
+     "end": 84,
+     "role": "bridge"
+    },
+    {
+     "start": 53,
+     "end": 59,
+     "role": "x"
+    },
+    {
+     "start": 109,
+     "end": 143,
+     "role": "cue"
+    },
+    {
+     "start": 108,
+     "end": 143,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "Canberra",
+    "edited": "<|im_end|>",
+    "expected": {
+     "H-inject": "Ottawa",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0043,
+    "p_b": 0.2523,
+    "ld": 4.062,
+    "frac": 0.8297,
+    "flip": false,
+    "role": "other"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Australia -> Canada)"
+  },
+  {
+   "group": "edit_only",
+   "family": "RL",
+   "item_id": "RL-0031",
+   "prompt": "<|im_start|>user\nKyle's pet is a chicken. Iris's pet is a goose. Noah's pet is a wolf. The goose's locker is 7. The wolf's locker is 1. The chicken's locker is 9.\nWhich locker belongs to the animal known for howling? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 85,
+     "role": "bridge"
+    },
+    {
+     "start": 116,
+     "end": 120,
+     "role": "bridge"
+    },
+    {
+     "start": 58,
+     "end": 63,
+     "role": "x"
+    },
+    {
+     "start": 91,
+     "end": 96,
+     "role": "x"
+    },
+    {
+     "start": 187,
+     "end": 215,
+     "role": "cue"
+    },
+    {
+     "start": 163,
+     "end": 319,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-inject": "7",
+     "H-write": "1"
+    }
+   },
+   "numbers": {
+    "p_A": 0.981,
+    "p_b": 0.0096,
+    "ld": -4.625,
+    "frac": 0.3191,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (wolf -> goose)"
+  },
+  {
+   "group": "edit_only",
+   "family": "RL",
+   "item_id": "RL-0031",
+   "prompt": "<|im_start|>user\nKyle's pet is a chicken. Iris's pet is a goose. Noah's pet is a wolf. The goose's locker is 7. The wolf's locker is 1. The chicken's locker is 9.\nWhich locker belongs to the animal known for howling? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 85,
+     "role": "bridge"
+    },
+    {
+     "start": 116,
+     "end": 120,
+     "role": "bridge"
+    },
+    {
+     "start": 58,
+     "end": 63,
+     "role": "x"
+    },
+    {
+     "start": 91,
+     "end": 96,
+     "role": "x"
+    },
+    {
+     "start": 187,
+     "end": 215,
+     "role": "cue"
+    },
+    {
+     "start": 186,
+     "end": 215,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-inject": "7",
+     "H-write": "1"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9975,
+    "p_b": 0.0002,
+    "ld": -8.688,
+    "frac": 0.1053,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (wolf -> goose)"
+  },
+  {
+   "group": "edit_only",
+   "family": "RL",
+   "item_id": "RL-0031",
+   "prompt": "<|im_start|>user\nKyle's pet is a chicken. Iris's pet is a goose. Noah's pet is a wolf. The goose's locker is 7. The wolf's locker is 1. The chicken's locker is 9.\nWhich locker belongs to the goose? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 85,
+     "role": "bridge"
+    },
+    {
+     "start": 116,
+     "end": 120,
+     "role": "bridge"
+    },
+    {
+     "start": 58,
+     "end": 63,
+     "role": "x"
+    },
+    {
+     "start": 91,
+     "end": 96,
+     "role": "x"
+    },
+    {
+     "start": 191,
+     "end": 196,
+     "role": "x"
+    },
+    {
+     "start": 191,
+     "end": 196,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "1",
+    "edited": "7",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0003,
+    "p_b": 0.9979,
+    "ld": 8.0,
+    "frac": 0.9836,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (wolf -> goose)"
+  },
+  {
+   "group": "edit_only",
+   "family": "RL",
+   "item_id": "RL-0031",
+   "prompt": "<|im_start|>user\nKyle's pet is a chicken. Iris's pet is a goose. Noah's pet is a wolf. The goose's locker is 7. The wolf's locker is 1. The chicken's locker is 9.\nWhich locker belongs to the animal known for howling, the goose? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 85,
+     "role": "bridge"
+    },
+    {
+     "start": 116,
+     "end": 120,
+     "role": "bridge"
+    },
+    {
+     "start": 58,
+     "end": 63,
+     "role": "x"
+    },
+    {
+     "start": 91,
+     "end": 96,
+     "role": "x"
+    },
+    {
+     "start": 221,
+     "end": 226,
+     "role": "x"
+    },
+    {
+     "start": 215,
+     "end": 226,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "1",
+    "edited": "7",
+    "expected": {
+     "H-inject": "1",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0822,
+    "p_b": 0.8838,
+    "ld": 2.375,
+    "frac": 0.6875,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (wolf -> goose)"
+  },
+  {
+   "group": "edit_only",
+   "family": "RL",
+   "item_id": "RL-0031",
+   "prompt": "<|im_start|>user\nKyle's pet is a chicken. Iris's pet is a goose. Noah's pet is a wolf. The goose's locker is 7. The wolf's locker is 1. The chicken's locker is 9.\nWhich locker belongs to the goose known for howling? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 85,
+     "role": "bridge"
+    },
+    {
+     "start": 116,
+     "end": 120,
+     "role": "bridge"
+    },
+    {
+     "start": 58,
+     "end": 63,
+     "role": "x"
+    },
+    {
+     "start": 91,
+     "end": 96,
+     "role": "x"
+    },
+    {
+     "start": 191,
+     "end": 196,
+     "role": "x"
+    },
+    {
+     "start": 191,
+     "end": 196,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-head: text edit E-head, then a normal forward",
+   "answers": {
+    "clean": "1",
+    "edited": "7",
+    "expected": {
+     "H-inject": "1",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.1806,
+    "p_b": 0.8096,
+    "ld": 1.5,
+    "frac": 0.6414,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (wolf -> goose)"
+  },
+  {
+   "group": "edit_only",
+   "family": "RL",
+   "item_id": "RL-0031",
+   "prompt": "<|im_start|>user\nKyle's pet is a chicken. Iris's pet is a goose. Noah's pet is a wolf. The goose's locker is 7. The wolf's locker is 1. The chicken's locker is 9.\nWhich locker belongs to the animal known for honking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 85,
+     "role": "bridge"
+    },
+    {
+     "start": 116,
+     "end": 120,
+     "role": "bridge"
+    },
+    {
+     "start": 58,
+     "end": 63,
+     "role": "x"
+    },
+    {
+     "start": 91,
+     "end": 96,
+     "role": "x"
+    },
+    {
+     "start": 210,
+     "end": 212,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "1",
+    "edited": "7",
+    "expected": {
+     "H-inject": null,
+     "H-write": "1"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0002,
+    "p_b": 0.9962,
+    "ld": 8.312,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (wolf -> goose)"
+  },
+  {
+   "group": "edit_only",
+   "family": "RL",
+   "item_id": "RL-0031",
+   "prompt": "<|im_start|>user\nKyle's pet is a chicken. Iris's pet is a goose. Noah's pet is a wolf. The goose's locker is 7. The wolf's locker is 1. The chicken's locker is 9. Someone drew a picture of a goose.\nWhich locker belongs to the animal known for howling? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 85,
+     "role": "bridge"
+    },
+    {
+     "start": 116,
+     "end": 120,
+     "role": "bridge"
+    },
+    {
+     "start": 58,
+     "end": 63,
+     "role": "x"
+    },
+    {
+     "start": 91,
+     "end": 96,
+     "role": "x"
+    },
+    {
+     "start": 191,
+     "end": 196,
+     "role": "x"
+    },
+    {
+     "start": 162,
+     "end": 197,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.9986,
+    "p_b": 0.0,
+    "ld": -10.25,
+    "frac": 0.023,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (wolf -> goose)"
+  },
+  {
+   "group": "edit_only",
+   "family": "RL",
+   "item_id": "RL-0031",
+   "prompt": "<|im_start|>user\nKyle's pet is a chicken. Iris's pet is a goose. Noah's pet is a wolf. The goose's locker is 7. The wolf's locker is 1. The chicken's locker is 9.\nWhich locker belongs to the animal known for howling? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 85,
+     "role": "bridge"
+    },
+    {
+     "start": 116,
+     "end": 120,
+     "role": "bridge"
+    },
+    {
+     "start": 58,
+     "end": 63,
+     "role": "x"
+    },
+    {
+     "start": 91,
+     "end": 96,
+     "role": "x"
+    },
+    {
+     "start": 187,
+     "end": 215,
+     "role": "cue"
+    },
+    {
+     "start": 215,
+     "end": 319,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 36, scale None, positions r",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-inject": null,
+     "H-write": "1"
+    }
+   },
+   "numbers": {
+    "p_A": 0.7171,
+    "p_b": 0.2055,
+    "ld": -1.25,
+    "frac": 0.4967,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (wolf -> goose)"
+  },
+  {
+   "group": "edit_only",
+   "family": "RL",
+   "item_id": "RL-0031",
+   "prompt": "<|im_start|>user\nKyle's pet is a chicken. Iris's pet is a goose. Noah's pet is a wolf. The goose's locker is 7. The wolf's locker is 1. The chicken's locker is 9.\nWhich locker belongs to the animal known for howling? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 85,
+     "role": "bridge"
+    },
+    {
+     "start": 116,
+     "end": 120,
+     "role": "bridge"
+    },
+    {
+     "start": 58,
+     "end": 63,
+     "role": "x"
+    },
+    {
+     "start": 91,
+     "end": 96,
+     "role": "x"
+    },
+    {
+     "start": 187,
+     "end": 215,
+     "role": "cue"
+    },
+    {
+     "start": 186,
+     "end": 215,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-inject": "1",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.9985,
+    "p_b": 0.0,
+    "ld": -10.812,
+    "frac": -0.0066,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (wolf -> goose)"
+  },
+  {
+   "group": "edit_only",
+   "family": "RR",
+   "item_id": "RR-0124",
+   "prompt": "<|im_start|>user\nLeo's pet is a wolf. Liam's pet is a goose. Will's pet is a spider. The spider's locker is 1. The goose's locker is 9. The wolf's locker is 7.\nHow many legs does the animal known for howling have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 32,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 140,
+     "end": 144,
+     "role": "bridge"
+    },
+    {
+     "start": 77,
+     "end": 83,
+     "role": "x"
+    },
+    {
+     "start": 89,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 179,
+     "end": 207,
+     "role": "cue"
+    },
+    {
+     "start": 160,
+     "end": 316,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-inject": "8",
+     "H-write": "8"
+    }
+   },
+   "numbers": {
+    "p_A": 0.8643,
+    "p_b": 0.0109,
+    "ld": -4.375,
+    "frac": 0.2491,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (wolf -> spider)"
+  },
+  {
+   "group": "edit_only",
+   "family": "RR",
+   "item_id": "RR-0124",
+   "prompt": "<|im_start|>user\nLeo's pet is a wolf. Liam's pet is a goose. Will's pet is a spider. The spider's locker is 1. The goose's locker is 9. The wolf's locker is 7.\nHow many legs does the animal known for howling have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 32,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 140,
+     "end": 144,
+     "role": "bridge"
+    },
+    {
+     "start": 77,
+     "end": 83,
+     "role": "x"
+    },
+    {
+     "start": 89,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 179,
+     "end": 207,
+     "role": "cue"
+    },
+    {
+     "start": 178,
+     "end": 207,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-inject": "8",
+     "H-write": "8"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9408,
+    "p_b": 0.0063,
+    "ld": -5.0,
+    "frac": 0.2125,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (wolf -> spider)"
+  },
+  {
+   "group": "edit_only",
+   "family": "RR",
+   "item_id": "RR-0124",
+   "prompt": "<|im_start|>user\nLeo's pet is a wolf. Liam's pet is a goose. Will's pet is a spider. The spider's locker is 1. The goose's locker is 9. The wolf's locker is 7.\nHow many legs does the spider have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 32,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 140,
+     "end": 144,
+     "role": "bridge"
+    },
+    {
+     "start": 77,
+     "end": 83,
+     "role": "x"
+    },
+    {
+     "start": 89,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 183,
+     "end": 189,
+     "role": "x"
+    },
+    {
+     "start": 183,
+     "end": 189,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "4",
+    "edited": "8",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0001,
+    "p_b": 0.9981,
+    "ld": 9.562,
+    "frac": 1.0659,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (wolf -> spider)"
+  },
+  {
+   "group": "edit_only",
+   "family": "RR",
+   "item_id": "RR-0124",
+   "prompt": "<|im_start|>user\nLeo's pet is a wolf. Liam's pet is a goose. Will's pet is a spider. The spider's locker is 1. The goose's locker is 9. The wolf's locker is 7.\nHow many legs does the animal known for howling, the spider, have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 32,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 140,
+     "end": 144,
+     "role": "bridge"
+    },
+    {
+     "start": 77,
+     "end": 83,
+     "role": "x"
+    },
+    {
+     "start": 89,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 213,
+     "end": 219,
+     "role": "x"
+    },
+    {
+     "start": 207,
+     "end": 220,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "4",
+    "edited": "8",
+    "expected": {
+     "H-inject": "4",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0044,
+    "p_b": 0.9455,
+    "ld": 5.375,
+    "frac": 0.8205,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (wolf -> spider)"
+  },
+  {
+   "group": "edit_only",
+   "family": "RR",
+   "item_id": "RR-0124",
+   "prompt": "<|im_start|>user\nLeo's pet is a wolf. Liam's pet is a goose. Will's pet is a spider. The spider's locker is 1. The goose's locker is 9. The wolf's locker is 7.\nHow many legs does the spider known for howling have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 32,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 140,
+     "end": 144,
+     "role": "bridge"
+    },
+    {
+     "start": 77,
+     "end": 83,
+     "role": "x"
+    },
+    {
+     "start": 89,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 183,
+     "end": 189,
+     "role": "x"
+    },
+    {
+     "start": 183,
+     "end": 189,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-head: text edit E-head, then a normal forward",
+   "answers": {
+    "clean": "4",
+    "edited": "8",
+    "expected": {
+     "H-inject": "4",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0007,
+    "p_b": 0.8123,
+    "ld": 7.0,
+    "frac": 0.9158,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (wolf -> spider)"
+  },
+  {
+   "group": "edit_only",
+   "family": "RR",
+   "item_id": "RR-0124",
+   "prompt": "<|im_start|>user\nLeo's pet is a wolf. Liam's pet is a goose. Will's pet is a spider. The spider's locker is 1. The goose's locker is 9. The wolf's locker is 7.\nHow many legs does the animal known for spinning webs have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 32,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 140,
+     "end": 144,
+     "role": "bridge"
+    },
+    {
+     "start": 77,
+     "end": 83,
+     "role": "x"
+    },
+    {
+     "start": 89,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 200,
+     "end": 213,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "4",
+    "edited": "8",
+    "expected": {
+     "H-inject": null,
+     "H-write": "4"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0002,
+    "p_b": 0.996,
+    "ld": 8.438,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (wolf -> spider)"
+  },
+  {
+   "group": "edit_only",
+   "family": "RR",
+   "item_id": "RR-0124",
+   "prompt": "<|im_start|>user\nLeo's pet is a wolf. Liam's pet is a goose. Will's pet is a spider. The spider's locker is 1. The goose's locker is 9. The wolf's locker is 7. Someone drew a picture of a spider.\nHow many legs does the animal known for howling have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 32,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 140,
+     "end": 144,
+     "role": "bridge"
+    },
+    {
+     "start": 77,
+     "end": 83,
+     "role": "x"
+    },
+    {
+     "start": 89,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 188,
+     "end": 194,
+     "role": "x"
+    },
+    {
+     "start": 159,
+     "end": 195,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.9899,
+    "p_b": 0.0006,
+    "ld": -7.375,
+    "frac": 0.0733,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (wolf -> spider)"
+  },
+  {
+   "group": "edit_only",
+   "family": "RR",
+   "item_id": "RR-0124",
+   "prompt": "<|im_start|>user\nLeo's pet is a wolf. Liam's pet is a goose. Will's pet is a spider. The spider's locker is 1. The goose's locker is 9. The wolf's locker is 7.\nHow many legs does the animal known for howling have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 32,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 140,
+     "end": 144,
+     "role": "bridge"
+    },
+    {
+     "start": 77,
+     "end": 83,
+     "role": "x"
+    },
+    {
+     "start": 89,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 179,
+     "end": 207,
+     "role": "cue"
+    },
+    {
+     "start": 207,
+     "end": 316,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 48, scale None, positions r",
+   "answers": {
+    "clean": "4",
+    "edited": "8",
+    "expected": {
+     "H-inject": null,
+     "H-write": "4"
+    }
+   },
+   "numbers": {
+    "p_A": 0.075,
+    "p_b": 0.914,
+    "ld": 2.5,
+    "frac": 0.652,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (wolf -> spider)"
+  },
+  {
+   "group": "edit_only",
+   "family": "RR",
+   "item_id": "RR-0124",
+   "prompt": "<|im_start|>user\nLeo's pet is a wolf. Liam's pet is a goose. Will's pet is a spider. The spider's locker is 1. The goose's locker is 9. The wolf's locker is 7.\nHow many legs does the animal known for howling have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 32,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 140,
+     "end": 144,
+     "role": "bridge"
+    },
+    {
+     "start": 77,
+     "end": 83,
+     "role": "x"
+    },
+    {
+     "start": 89,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 179,
+     "end": 207,
+     "role": "cue"
+    },
+    {
+     "start": 178,
+     "end": 207,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "4",
+    "edited": "8",
+    "expected": {
+     "H-inject": "4",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0049,
+    "p_b": 0.9425,
+    "ld": 5.25,
+    "frac": 0.8132,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (wolf -> spider)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0454",
+   "prompt": "<|im_start|>user\nLaura lives in Greece. Alice lives in Australia. Emma lives in China. What is the capital of the country where Emma lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 80,
+     "end": 85,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 38,
+     "role": "x"
+    },
+    {
+     "start": 110,
+     "end": 138,
+     "role": "cue"
+    },
+    {
+     "start": 86,
+     "end": 242,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "Beijing",
+    "edited": "Beijing",
+    "expected": {
+     "H-inject": "Athens",
+     "H-write": "Athens"
+    }
+   },
+   "numbers": {
+    "p_A": 0.8884,
+    "p_b": 0.0002,
+    "ld": -8.562,
+    "frac": 0.1367,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (China -> Greece)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0454",
+   "prompt": "<|im_start|>user\nLaura lives in Greece. Alice lives in Australia. Emma lives in China. What is the capital of the country where Emma lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 80,
+     "end": 85,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 38,
+     "role": "x"
+    },
+    {
+     "start": 110,
+     "end": 138,
+     "role": "cue"
+    },
+    {
+     "start": 109,
+     "end": 138,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "Beijing",
+    "edited": "Beijing",
+    "expected": {
+     "H-inject": "Athens",
+     "H-write": "Athens"
+    }
+   },
+   "numbers": {
+    "p_A": 0.8442,
+    "p_b": 0.0,
+    "ld": -11.75,
+    "frac": 0.0076,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (China -> Greece)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0454",
+   "prompt": "<|im_start|>user\nLaura lives in Greece. Alice lives in Australia. Emma lives in China. What is the capital of Greece? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 80,
+     "end": 85,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 38,
+     "role": "x"
+    },
+    {
+     "start": 110,
+     "end": 116,
+     "role": "x"
+    },
+    {
+     "start": 110,
+     "end": 116,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "Beijing",
+    "edited": "Athens",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.8497,
+    "ld": 12.812,
+    "frac": 1.0025,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (China -> Greece)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0454",
+   "prompt": "<|im_start|>user\nLaura lives in Greece. Alice lives in Australia. Emma lives in China. What is the capital of the country where Emma lives, Greece? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 80,
+     "end": 85,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 38,
+     "role": "x"
+    },
+    {
+     "start": 140,
+     "end": 146,
+     "role": "x"
+    },
+    {
+     "start": 138,
+     "end": 146,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "Beijing",
+    "edited": "Athens",
+    "expected": {
+     "H-inject": "Beijing",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0903,
+    "p_b": 0.4587,
+    "ld": 1.625,
+    "frac": 0.5494,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (China -> Greece)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0454",
+   "prompt": "<|im_start|>user\nLaura lives in China. Alice lives in Australia. Emma lives in Greece. What is the capital of the country where Emma lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 32,
+     "end": 37,
+     "role": "bridge"
+    },
+    {
+     "start": 79,
+     "end": 85,
+     "role": "x"
+    },
+    {
+     "start": 32,
+     "end": 85,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "Beijing",
+    "edited": "Athens",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Beijing"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.8776,
+    "ld": 12.75,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (China -> Greece)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0454",
+   "prompt": "<|im_start|>user\nLaura lives in Greece. Alice lives in Australia. Emma lives in China. Someone read a book about Greece. What is the capital of the country where Emma lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 80,
+     "end": 85,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 38,
+     "role": "x"
+    },
+    {
+     "start": 113,
+     "end": 119,
+     "role": "x"
+    },
+    {
+     "start": 87,
+     "end": 121,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "Beijing",
+    "edited": "Beijing",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.8385,
+    "p_b": 0.0,
+    "ld": -9.875,
+    "frac": 0.0835,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (China -> Greece)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0454",
+   "prompt": "<|im_start|>user\nLaura lives in Greece. Alice lives in Australia. Emma lives in China. What is the capital of the country where Emma lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 80,
+     "end": 85,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 38,
+     "role": "x"
+    },
+    {
+     "start": 110,
+     "end": 138,
+     "role": "cue"
+    },
+    {
+     "start": 86,
+     "end": 242,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 40, scale None, positions r",
+   "answers": {
+    "clean": "Beijing",
+    "edited": "Athens",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Beijing"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0018,
+    "p_b": 0.8317,
+    "ld": 6.125,
+    "frac": 0.7316,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (China -> Greece)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0454",
+   "prompt": "<|im_start|>user\nLaura lives in Greece. Alice lives in Australia. Emma lives in China. What is the capital of the country where Emma lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 80,
+     "end": 85,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 38,
+     "role": "x"
+    },
+    {
+     "start": 110,
+     "end": 138,
+     "role": "cue"
+    },
+    {
+     "start": 109,
+     "end": 138,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "Beijing",
+    "edited": "Athens",
+    "expected": {
+     "H-inject": "Beijing",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0192,
+    "p_b": 0.2997,
+    "ld": 2.75,
+    "frac": 0.5949,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (China -> Greece)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0162",
+   "prompt": "<|im_start|>user\nLeo's pet is a pig. Rose's pet is a turkey. Anna's pet is a spider. The spider's locker is 9. The pig's locker is 1. The turkey's locker is 5.\nWhich locker belongs to Anna's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 77,
+     "end": 83,
+     "role": "bridge"
+    },
+    {
+     "start": 89,
+     "end": 95,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 115,
+     "end": 118,
+     "role": "x"
+    },
+    {
+     "start": 184,
+     "end": 194,
+     "role": "cue"
+    },
+    {
+     "start": 160,
+     "end": 298,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-inject": "9",
+     "H-write": "9"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9967,
+    "p_b": 0.0003,
+    "ld": -8.125,
+    "frac": 0.0487,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (spider -> pig)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0162",
+   "prompt": "<|im_start|>user\nLeo's pet is a pig. Rose's pet is a turkey. Anna's pet is a spider. The spider's locker is 9. The pig's locker is 1. The turkey's locker is 5.\nWhich locker belongs to Anna's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 77,
+     "end": 83,
+     "role": "bridge"
+    },
+    {
+     "start": 89,
+     "end": 95,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 115,
+     "end": 118,
+     "role": "x"
+    },
+    {
+     "start": 184,
+     "end": 194,
+     "role": "cue"
+    },
+    {
+     "start": 183,
+     "end": 194,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-inject": "9",
+     "H-write": "9"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9961,
+    "p_b": 0.0001,
+    "ld": -8.812,
+    "frac": 0.013,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (spider -> pig)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0162",
+   "prompt": "<|im_start|>user\nLeo's pet is a pig. Rose's pet is a turkey. Anna's pet is a spider. The spider's locker is 9. The pig's locker is 1. The turkey's locker is 5.\nWhich locker belongs to the pig? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 77,
+     "end": 83,
+     "role": "bridge"
+    },
+    {
+     "start": 89,
+     "end": 95,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 115,
+     "end": 118,
+     "role": "x"
+    },
+    {
+     "start": 188,
+     "end": 191,
+     "role": "x"
+    },
+    {
+     "start": 184,
+     "end": 191,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "9",
+    "edited": "1",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0001,
+    "p_b": 0.9977,
+    "ld": 8.938,
+    "frac": 0.9351,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (spider -> pig)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0162",
+   "prompt": "<|im_start|>user\nLeo's pet is a pig. Rose's pet is a turkey. Anna's pet is a spider. The spider's locker is 9. The pig's locker is 1. The turkey's locker is 5.\nWhich locker belongs to Anna's pet, the pig? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 77,
+     "end": 83,
+     "role": "bridge"
+    },
+    {
+     "start": 89,
+     "end": 95,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 115,
+     "end": 118,
+     "role": "x"
+    },
+    {
+     "start": 200,
+     "end": 203,
+     "role": "x"
+    },
+    {
+     "start": 194,
+     "end": 203,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-inject": "9",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.7996,
+    "p_b": 0.1784,
+    "ld": -1.5,
+    "frac": 0.3929,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (spider -> pig)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0162",
+   "prompt": "<|im_start|>user\nLeo's pet is a pig. Rose's pet is a turkey. Anna's pet is a spider. The spider's locker is 9. The pig's locker is 1. The turkey's locker is 5.\nWhich locker belongs to Anna's pig? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 77,
+     "end": 83,
+     "role": "bridge"
+    },
+    {
+     "start": 89,
+     "end": 95,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 115,
+     "end": 118,
+     "role": "x"
+    },
+    {
+     "start": 191,
+     "end": 194,
+     "role": "x"
+    },
+    {
+     "start": 192,
+     "end": 194,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-head: text edit E-head, then a normal forward",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-inject": "9",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.5606,
+    "p_b": 0.3853,
+    "ld": -0.375,
+    "frac": 0.4513,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (spider -> pig)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0162",
+   "prompt": "<|im_start|>user\nLeo's pet is a spider. Rose's pet is a turkey. Anna's pet is a pig. The spider's locker is 9. The pig's locker is 1. The turkey's locker is 5.\nWhich locker belongs to Anna's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 32,
+     "end": 38,
+     "role": "bridge"
+    },
+    {
+     "start": 89,
+     "end": 95,
+     "role": "bridge"
+    },
+    {
+     "start": 80,
+     "end": 83,
+     "role": "x"
+    },
+    {
+     "start": 115,
+     "end": 118,
+     "role": "x"
+    },
+    {
+     "start": 32,
+     "end": 83,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "9",
+    "edited": "1",
+    "expected": {
+     "H-inject": null,
+     "H-write": "9"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.9973,
+    "ld": 10.188,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (spider -> pig)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0162",
+   "prompt": "<|im_start|>user\nLeo's pet is a pig. Rose's pet is a turkey. Anna's pet is a spider. The spider's locker is 9. The pig's locker is 1. The turkey's locker is 5. Someone drew a picture of a pig.\nWhich locker belongs to Anna's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 77,
+     "end": 83,
+     "role": "bridge"
+    },
+    {
+     "start": 89,
+     "end": 95,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 115,
+     "end": 118,
+     "role": "x"
+    },
+    {
+     "start": 188,
+     "end": 191,
+     "role": "x"
+    },
+    {
+     "start": 159,
+     "end": 192,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.9929,
+    "p_b": 0.0012,
+    "ld": -6.75,
+    "frac": 0.1201,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (spider -> pig)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0162",
+   "prompt": "<|im_start|>user\nLeo's pet is a pig. Rose's pet is a turkey. Anna's pet is a spider. The spider's locker is 9. The pig's locker is 1. The turkey's locker is 5.\nWhich locker belongs to Anna's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 77,
+     "end": 83,
+     "role": "bridge"
+    },
+    {
+     "start": 89,
+     "end": 95,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 115,
+     "end": 118,
+     "role": "x"
+    },
+    {
+     "start": 184,
+     "end": 194,
+     "role": "cue"
+    },
+    {
+     "start": 160,
+     "end": 298,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 48, scale None, positions r",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-inject": null,
+     "H-write": "9"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9125,
+    "p_b": 0.0749,
+    "ld": -2.5,
+    "frac": 0.3409,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (spider -> pig)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0162",
+   "prompt": "<|im_start|>user\nLeo's pet is a pig. Rose's pet is a turkey. Anna's pet is a spider. The spider's locker is 9. The pig's locker is 1. The turkey's locker is 5.\nWhich locker belongs to Anna's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 77,
+     "end": 83,
+     "role": "bridge"
+    },
+    {
+     "start": 89,
+     "end": 95,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 115,
+     "end": 118,
+     "role": "x"
+    },
+    {
+     "start": 184,
+     "end": 194,
+     "role": "cue"
+    },
+    {
+     "start": 183,
+     "end": 194,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "9",
+    "edited": "1",
+    "expected": {
+     "H-inject": "9",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0657,
+    "p_b": 0.9068,
+    "ld": 2.625,
+    "frac": 0.6071,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (spider -> pig)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0398",
+   "prompt": "<|im_start|>user\nLaura's pet is a duck. Zoe's pet is a cow. Luke's pet is a goose. The duck's locker is 9. The cow's locker is 5. The goose's locker is 3.\nWhich locker belongs to Zoe's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 55,
+     "end": 58,
+     "role": "bridge"
+    },
+    {
+     "start": 111,
+     "end": 114,
+     "role": "bridge"
+    },
+    {
+     "start": 76,
+     "end": 81,
+     "role": "x"
+    },
+    {
+     "start": 134,
+     "end": 139,
+     "role": "x"
+    },
+    {
+     "start": 179,
+     "end": 188,
+     "role": "cue"
+    },
+    {
+     "start": 155,
+     "end": 292,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-inject": "5",
+     "H-write": "5"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9969,
+    "p_b": 0.0002,
+    "ld": -8.625,
+    "frac": 0.0129,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (cow -> goose)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0398",
+   "prompt": "<|im_start|>user\nLaura's pet is a duck. Zoe's pet is a cow. Luke's pet is a goose. The duck's locker is 9. The cow's locker is 5. The goose's locker is 3.\nWhich locker belongs to Zoe's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 55,
+     "end": 58,
+     "role": "bridge"
+    },
+    {
+     "start": 111,
+     "end": 114,
+     "role": "bridge"
+    },
+    {
+     "start": 76,
+     "end": 81,
+     "role": "x"
+    },
+    {
+     "start": 134,
+     "end": 139,
+     "role": "x"
+    },
+    {
+     "start": 179,
+     "end": 188,
+     "role": "cue"
+    },
+    {
+     "start": 178,
+     "end": 188,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-inject": "5",
+     "H-write": "5"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9968,
+    "p_b": 0.0001,
+    "ld": -8.875,
+    "frac": 0.0,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (cow -> goose)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0398",
+   "prompt": "<|im_start|>user\nLaura's pet is a duck. Zoe's pet is a cow. Luke's pet is a goose. The duck's locker is 9. The cow's locker is 5. The goose's locker is 3.\nWhich locker belongs to the goose? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 55,
+     "end": 58,
+     "role": "bridge"
+    },
+    {
+     "start": 111,
+     "end": 114,
+     "role": "bridge"
+    },
+    {
+     "start": 76,
+     "end": 81,
+     "role": "x"
+    },
+    {
+     "start": 134,
+     "end": 139,
+     "role": "x"
+    },
+    {
+     "start": 183,
+     "end": 188,
+     "role": "x"
+    },
+    {
+     "start": 179,
+     "end": 188,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "5",
+    "edited": "3",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.9975,
+    "ld": 10.188,
+    "frac": 0.9839,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (cow -> goose)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0398",
+   "prompt": "<|im_start|>user\nLaura's pet is a duck. Zoe's pet is a cow. Luke's pet is a goose. The duck's locker is 9. The cow's locker is 5. The goose's locker is 3.\nWhich locker belongs to Zoe's pet, the goose? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 55,
+     "end": 58,
+     "role": "bridge"
+    },
+    {
+     "start": 111,
+     "end": 114,
+     "role": "bridge"
+    },
+    {
+     "start": 76,
+     "end": 81,
+     "role": "x"
+    },
+    {
+     "start": 134,
+     "end": 139,
+     "role": "x"
+    },
+    {
+     "start": 194,
+     "end": 199,
+     "role": "x"
+    },
+    {
+     "start": 188,
+     "end": 199,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-inject": "5",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.7419,
+    "p_b": 0.2409,
+    "ld": -1.125,
+    "frac": 0.4,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (cow -> goose)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0398",
+   "prompt": "<|im_start|>user\nLaura's pet is a duck. Zoe's pet is a cow. Luke's pet is a goose. The duck's locker is 9. The cow's locker is 5. The goose's locker is 3.\nWhich locker belongs to Zoe's goose? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 55,
+     "end": 58,
+     "role": "bridge"
+    },
+    {
+     "start": 111,
+     "end": 114,
+     "role": "bridge"
+    },
+    {
+     "start": 76,
+     "end": 81,
+     "role": "x"
+    },
+    {
+     "start": 134,
+     "end": 139,
+     "role": "x"
+    },
+    {
+     "start": 185,
+     "end": 190,
+     "role": "x"
+    },
+    {
+     "start": 185,
+     "end": 190,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-head: text edit E-head, then a normal forward",
+   "answers": {
+    "clean": "5",
+    "edited": "3",
+    "expected": {
+     "H-inject": "5",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.3054,
+    "p_b": 0.6466,
+    "ld": 0.75,
+    "frac": 0.4968,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (cow -> goose)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0398",
+   "prompt": "<|im_start|>user\nLaura's pet is a duck. Zoe's pet is a goose. Luke's pet is a cow. The duck's locker is 9. The cow's locker is 5. The goose's locker is 3.\nWhich locker belongs to Zoe's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 78,
+     "end": 81,
+     "role": "bridge"
+    },
+    {
+     "start": 111,
+     "end": 114,
+     "role": "bridge"
+    },
+    {
+     "start": 55,
+     "end": 60,
+     "role": "x"
+    },
+    {
+     "start": 134,
+     "end": 139,
+     "role": "x"
+    },
+    {
+     "start": 55,
+     "end": 81,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "5",
+    "edited": "3",
+    "expected": {
+     "H-inject": null,
+     "H-write": "5"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.9977,
+    "ld": 10.5,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (cow -> goose)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0398",
+   "prompt": "<|im_start|>user\nLaura's pet is a duck. Zoe's pet is a cow. Luke's pet is a goose. The duck's locker is 9. The cow's locker is 5. The goose's locker is 3. Someone drew a picture of a goose.\nWhich locker belongs to Zoe's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 55,
+     "end": 58,
+     "role": "bridge"
+    },
+    {
+     "start": 111,
+     "end": 114,
+     "role": "bridge"
+    },
+    {
+     "start": 76,
+     "end": 81,
+     "role": "x"
+    },
+    {
+     "start": 134,
+     "end": 139,
+     "role": "x"
+    },
+    {
+     "start": 183,
+     "end": 188,
+     "role": "x"
+    },
+    {
+     "start": 154,
+     "end": 189,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.9954,
+    "p_b": 0.0004,
+    "ld": -7.875,
+    "frac": 0.0516,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (cow -> goose)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0398",
+   "prompt": "<|im_start|>user\nLaura's pet is a duck. Zoe's pet is a cow. Luke's pet is a goose. The duck's locker is 9. The cow's locker is 5. The goose's locker is 3.\nWhich locker belongs to Zoe's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 55,
+     "end": 58,
+     "role": "bridge"
+    },
+    {
+     "start": 111,
+     "end": 114,
+     "role": "bridge"
+    },
+    {
+     "start": 76,
+     "end": 81,
+     "role": "x"
+    },
+    {
+     "start": 134,
+     "end": 139,
+     "role": "x"
+    },
+    {
+     "start": 179,
+     "end": 188,
+     "role": "cue"
+    },
+    {
+     "start": 155,
+     "end": 292,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 48, scale None, positions r",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-inject": null,
+     "H-write": "5"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9328,
+    "p_b": 0.0596,
+    "ld": -2.75,
+    "frac": 0.3161,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (cow -> goose)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0398",
+   "prompt": "<|im_start|>user\nLaura's pet is a duck. Zoe's pet is a cow. Luke's pet is a goose. The duck's locker is 9. The cow's locker is 5. The goose's locker is 3.\nWhich locker belongs to Zoe's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 55,
+     "end": 58,
+     "role": "bridge"
+    },
+    {
+     "start": 111,
+     "end": 114,
+     "role": "bridge"
+    },
+    {
+     "start": 76,
+     "end": 81,
+     "role": "x"
+    },
+    {
+     "start": 134,
+     "end": 139,
+     "role": "x"
+    },
+    {
+     "start": 179,
+     "end": 188,
+     "role": "cue"
+    },
+    {
+     "start": 178,
+     "end": 188,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-inject": "5",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.9965,
+    "p_b": 0.0001,
+    "ld": -8.812,
+    "frac": 0.0032,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (cow -> goose)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0282",
+   "prompt": "<|im_start|>user\nTom's pet is a wolf. Kyle's pet is a spider. Eric's pet is a mouse. The wolf's locker is 9. The mouse's locker is 1. The spider's locker is 5.\nWhich locker belongs to Tom's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 32,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 89,
+     "end": 93,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "x"
+    },
+    {
+     "start": 138,
+     "end": 144,
+     "role": "x"
+    },
+    {
+     "start": 184,
+     "end": 193,
+     "role": "cue"
+    },
+    {
+     "start": 160,
+     "end": 297,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-inject": "9",
+     "H-write": "9"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9969,
+    "p_b": 0.0,
+    "ld": -10.438,
+    "frac": 0.0,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (wolf -> spider)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0282",
+   "prompt": "<|im_start|>user\nTom's pet is a wolf. Kyle's pet is a spider. Eric's pet is a mouse. The wolf's locker is 9. The mouse's locker is 1. The spider's locker is 5.\nWhich locker belongs to Tom's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 32,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 89,
+     "end": 93,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "x"
+    },
+    {
+     "start": 138,
+     "end": 144,
+     "role": "x"
+    },
+    {
+     "start": 184,
+     "end": 193,
+     "role": "cue"
+    },
+    {
+     "start": 183,
+     "end": 193,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-inject": "9",
+     "H-write": "9"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9981,
+    "p_b": 0.0,
+    "ld": -10.312,
+    "frac": 0.0062,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (wolf -> spider)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0282",
+   "prompt": "<|im_start|>user\nTom's pet is a wolf. Kyle's pet is a spider. Eric's pet is a mouse. The wolf's locker is 9. The mouse's locker is 1. The spider's locker is 5.\nWhich locker belongs to the spider? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 32,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 89,
+     "end": 93,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "x"
+    },
+    {
+     "start": 138,
+     "end": 144,
+     "role": "x"
+    },
+    {
+     "start": 188,
+     "end": 194,
+     "role": "x"
+    },
+    {
+     "start": 184,
+     "end": 194,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "9",
+    "edited": "5",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0001,
+    "p_b": 0.997,
+    "ld": 9.875,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (wolf -> spider)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0282",
+   "prompt": "<|im_start|>user\nTom's pet is a wolf. Kyle's pet is a spider. Eric's pet is a mouse. The wolf's locker is 9. The mouse's locker is 1. The spider's locker is 5.\nWhich locker belongs to Tom's pet, the spider? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 32,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 89,
+     "end": 93,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "x"
+    },
+    {
+     "start": 138,
+     "end": 144,
+     "role": "x"
+    },
+    {
+     "start": 199,
+     "end": 205,
+     "role": "x"
+    },
+    {
+     "start": 193,
+     "end": 205,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-inject": "9",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.942,
+    "p_b": 0.0531,
+    "ld": -2.875,
+    "frac": 0.3723,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (wolf -> spider)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0282",
+   "prompt": "<|im_start|>user\nTom's pet is a wolf. Kyle's pet is a spider. Eric's pet is a mouse. The wolf's locker is 9. The mouse's locker is 1. The spider's locker is 5.\nWhich locker belongs to Tom's spider? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 32,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 89,
+     "end": 93,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "x"
+    },
+    {
+     "start": 138,
+     "end": 144,
+     "role": "x"
+    },
+    {
+     "start": 190,
+     "end": 196,
+     "role": "x"
+    },
+    {
+     "start": 190,
+     "end": 196,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-head: text edit E-head, then a normal forward",
+   "answers": {
+    "clean": "9",
+    "edited": "5",
+    "expected": {
+     "H-inject": "9",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.188,
+    "p_b": 0.7437,
+    "ld": 1.375,
+    "frac": 0.5815,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (wolf -> spider)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0282",
+   "prompt": "<|im_start|>user\nTom's pet is a spider. Kyle's pet is a wolf. Eric's pet is a mouse. The wolf's locker is 9. The mouse's locker is 1. The spider's locker is 5.\nWhich locker belongs to Tom's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 56,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 89,
+     "end": 93,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 38,
+     "role": "x"
+    },
+    {
+     "start": 138,
+     "end": 144,
+     "role": "x"
+    },
+    {
+     "start": 32,
+     "end": 60,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "9",
+    "edited": "5",
+    "expected": {
+     "H-inject": null,
+     "H-write": "9"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0001,
+    "p_b": 0.997,
+    "ld": 9.875,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (wolf -> spider)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0282",
+   "prompt": "<|im_start|>user\nTom's pet is a wolf. Kyle's pet is a spider. Eric's pet is a mouse. The wolf's locker is 9. The mouse's locker is 1. The spider's locker is 5. Someone drew a picture of a spider.\nWhich locker belongs to Tom's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 32,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 89,
+     "end": 93,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "x"
+    },
+    {
+     "start": 138,
+     "end": 144,
+     "role": "x"
+    },
+    {
+     "start": 188,
+     "end": 194,
+     "role": "x"
+    },
+    {
+     "start": 159,
+     "end": 195,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.9975,
+    "p_b": 0.0001,
+    "ld": -9.375,
+    "frac": 0.0523,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (wolf -> spider)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0282",
+   "prompt": "<|im_start|>user\nTom's pet is a wolf. Kyle's pet is a spider. Eric's pet is a mouse. The wolf's locker is 9. The mouse's locker is 1. The spider's locker is 5.\nWhich locker belongs to Tom's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 32,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 89,
+     "end": 93,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "x"
+    },
+    {
+     "start": 138,
+     "end": 144,
+     "role": "x"
+    },
+    {
+     "start": 184,
+     "end": 193,
+     "role": "cue"
+    },
+    {
+     "start": 160,
+     "end": 297,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 48, scale None, positions r",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-inject": null,
+     "H-write": "9"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9964,
+    "p_b": 0.0007,
+    "ld": -7.312,
+    "frac": 0.1538,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (wolf -> spider)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0282",
+   "prompt": "<|im_start|>user\nTom's pet is a wolf. Kyle's pet is a spider. Eric's pet is a mouse. The wolf's locker is 9. The mouse's locker is 1. The spider's locker is 5.\nWhich locker belongs to Tom's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 32,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 89,
+     "end": 93,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "x"
+    },
+    {
+     "start": 138,
+     "end": 144,
+     "role": "x"
+    },
+    {
+     "start": 184,
+     "end": 193,
+     "role": "cue"
+    },
+    {
+     "start": 183,
+     "end": 193,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-inject": "9",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.9983,
+    "p_b": 0.0,
+    "ld": -10.312,
+    "frac": 0.0062,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (wolf -> spider)"
+  }
+ ]
+}

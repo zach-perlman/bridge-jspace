@@ -1,0 +1,80 @@
+{
+  "exp": "early_push",
+  "run": "d4_push_v1",
+  "why": "D4: is a hard early lens push (layers 16-28, 4-16x the copy's norm) the same as editing the input word, or a write of the intermediate? Decides whether layers_v1's early RL flips contradict C2",
+  "written_utc": "2026-10-20T22:08:11Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  ],
+  "config": {
+    "n": 60,
+    "families": [
+      "BL",
+      "BR",
+      "RL",
+      "RR"
+    ],
+    "countries": true,
+    "map": "map_A8_v1",
+    "country_map": "map_v1",
+    "wording": "A",
+    "layers": [
+      16,
+      20,
+      24,
+      28
+    ],
+    "scales": [
+      4.0,
+      8.0,
+      16.0
+    ],
+    "embed_scales": [
+      1.0,
+      4.0
+    ],
+    "write_layers": [
+      32,
+      36,
+      40,
+      44,
+      48
+    ],
+    "down": [
+      32,
+      40,
+      48,
+      56
+    ],
+    "transit": [
+      44,
+      48,
+      52
+    ],
+    "textloss_pairs": 4
+  },
+  "inputs": {
+    "results/suite_split/map_A8_v1/cases.jsonl": "b3570104d9f99240f6b3103c0e57648137d017f3fc58044b26281bdc8992d734",
+    "results/control_split/map_v1/cases.jsonl": "d2a6c4cd77ba1db3edfd6f03085c9370540da312a4e205bdc1727cec1c733ca6",
+    "data/suite_v1/BL.json": "1d6bc3264cb78a73cc175f7423923d553a6a1e6201a301a5757d5771cc7cc017",
+    "data/suite_v1/BR.json": "b8aacfe7263aa2a81c0bd0e7b973a2057b61753f7470c22fe1119425facbc7fb",
+    "data/suite_v1/RL.json": "305f5e5b6679ff83466800cd05c019e62ab4d374dd0d3f916e968c8a733cd045",
+    "data/suite_v1/RR.json": "1cedcc460789ba2fee5c2b6f7a0d2302d2e81a9c73acb7853843f54a807fca07"
+  },
+  "seeds": {
+    "null": "0 + 1000003 x case index (one generator per item, rows in a fixed order)",
+    "bootstrap": 0,
+    "n_boot": 2000,
+    "examples": 0
+  },
+  "design": "early_push (D4): on Qwen3.6-27B, is a hard early lens push the same as editing the input word?\n\nread_write layers_v1 (EXPERIMENTS row 52): at layers 16-28, where copying C's question-token residual does nothing (0%\nflips), lens pushes v_X - v_I at 8-16x the copy's norm flip RL 35-61%, RR 46-78% and BL 24-44%, though the lens barely\nreads BL's bridge there. Two readings:\n  H-inject  the push acts like putting X's word into the question (an input edit); the early 'RL is writable' result\n            then does not contradict C2 (the lens cannot write a lookup-used bridge where the model carries it)\n  H-write   the push writes the intermediate variable itself, early; then RL is writable and C2 is wrong as stated\n\nItems: suite_split map_A8_v1's cases (BL, BR, RL, RR on the same scenes, the first n per family in the map's order;\nlayers_v1 used the first 80) and control_split map_v1's countries R, B (a bridge the lens reads and writes at 44-52).\nRead: suite_split's (one forward, a digit's space appended; top token's role, ld = logit(b) - logit(A), frac).\n\nPosition subsets of the clean prompt (the question region = the question sentence and the instruction):\n  r   read_write's own: suite_split's question group (after C's changed tokens: for R* items after the cue), per-position\n      norms s x C's copy delta there (layers_v1's push exactly: the replication anchor)\n  a   the question region and the chat template after it (= r's positions for B* items)\n  b   the subject phrase (\"Peter's pet\", \"the animal known for clucking\", \"the country where Lyon is located\")\n  nb  a minus b;   d  the template after the user turn (<|im_end|> ... Answer:)\n  a, b, nb, d get one per-token norm: s x the scene's reference, the RMS of C's copy delta over r pooled over the\n  scene's families at that layer (BL and RL on one scene get the same physical push).\nConditions per item:\n  push   lens v_X - v_I (unit J++ vectors at that layer) at each layer of L and all at once ('band'), scales S, each subset;\n         a random direction at the same per-position norms for every one\n  embed  at the input embedding (the 'edit the input word' limit): s_e x (e_X - e_I) and s_e x e_X at b; random controls\n  copy   C's residual copied at r at L (the 0% anchor) and at the write layers (the graded 'write' reference W-copy*)\n  edits  text edits, then a normal forward: E-name (subject phrase -> 'the X': 'Which locker belongs to the sheep?' in\n         BL and RL alike), E-insert (', the X' after the subject phrase), E-head (head noun -> X: \"Peter's sheep\", 'the\n         sheep known for clucking'; animals only), E-cue (the C prompt), E-unrelated (an unrelated sentence naming X at\n         the end of the context)\n  O      the off-path prompt under the lens push at a (collateral: O keeps its answer, follows X in O's context, other)\n  text   next-token loss on removal_textloss's WikiText rows, the push at every position from 4 (a stress version)\nMeasures: answer read over the candidates (A, b = X's answer, other in-context answers); flips, frac; per-item flip\nagreement (Cohen's kappa, Jaccard, item bootstrap); full-vocabulary JS divergence at the answer position, push vs each\nedit; downstream deltas (push - clean vs edit - clean) at the down layers: cosine per position over the final positions\nshared by every edit (text edits shift what precedes them, so only the common token suffix is compared, aligned by\nbeing last), with the pushed vectors projected out of both deltas (they persist in the residual stream); at the transit\nlayers the projection of that delta on C's copy delta (final positions and r).\n",
+  "decision": "Decision rule (fixed before the 27B run; RL is the family in question, BL the comparison):\n  P*  the lens push at a whose RL flip rate is nearest 50% over L+band x S (ties: lower scale, earlier layer);\n      W-copy* per family the write-layer copy nearest 50%; emb* the embedding push nearest 50% on RL\n  K1  dk = kappa(P*, E-insert) - kappa(P*, W-copy*), item bootstrap 95% CI: inject-like above 0, write-like below 0\n      (E-name and E-cue flip ~every eligible item, so they cannot carry a per-item test; reported)\n  K2  at P*'s layer and scale: inject-like if flips(nb) - flips(a)/2 has its CI above 0; write-like if that CI is below\n      0 and flips(b) - flips(nb) has its CI above 0\n  K3  flips(BL) - flips(RL) at P* (same scenes, same per-token norm): inject-like if the CI's lower bound is above\n      -0.15, write-like if its upper bound is below -0.15\n  verdict  'like an input-word edit' if >= 2 of K1-K3 inject-like and none write-like; 'writes the intermediate' if >= 2\n      write-like and none inject-like; otherwise mixed. Gate: K1 counts only if kappa(emb*, E-insert) -\n      kappa(emb*, W-copy*) has its CI above 0 on RL (the measure calls an input edit by construction inject-like)\n  secondary  K4 cos(P*_b, E-name) - cos(P*_b, E-cue) at the final positions below the answer onset (P*_b: subset b at\n      P*'s layer and scale, so the final positions are not pushed); K5 transit projection of P*_b vs E-name's\nPredictions: H-inject dk > 0, flips(nb) >= flips(a)/2, BL within 15 points of RL, K4 > 0. H-write dk < 0, b >> nb,\nBL < RL - 15 points, K4 < 0.\n\n"
+}

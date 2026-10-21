@@ -1,0 +1,150 @@
+{
+  "exp": "pointer_swap",
+  "run": "d3_smoke_27b",
+  "written_utc": "2026-10-20T21:29:10Z",
+  "why": "D3 smoke: every stage on the 27B, hooks, no-op and positive controls, timing",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "set": "dev",
+  "levels": [
+    "e5f0"
+  ],
+  "families": [
+    "RL",
+    "DL",
+    "RR"
+  ],
+  "domains": [
+    "animals",
+    "planets",
+    "elements",
+    "months"
+  ],
+  "items": {
+    "animals_RL_e5f0": {
+      "file": "data/pointer_v1/dev/animals_RL_e5f0.json",
+      "sha256": "ab5f93a4f4e1c4af85fb504132f83e91e8eabf83b3116ddb75a53105843b1d93"
+    },
+    "animals_DL_e5f0": {
+      "file": "data/pointer_v1/dev/animals_DL_e5f0.json",
+      "sha256": "f841b0efba2844410b7bb5bf9461041fdfc5d7c9ee5e08c3364c8186fc3457da"
+    },
+    "animals_RR_e5f0": {
+      "file": "data/pointer_v1/dev/animals_RR_e5f0.json",
+      "sha256": "15371621eb86d176e4e3b6fc3045bdb4ca99167a20dd789e815df70597835c3d"
+    },
+    "planets_RL_e5f0": {
+      "file": "data/pointer_v1/dev/planets_RL_e5f0.json",
+      "sha256": "47a9bcb6b29643c1aff7ba7da1c5a9bbd3c46b30a64b75dc3df3bb9d6098e40f"
+    },
+    "planets_DL_e5f0": {
+      "file": "data/pointer_v1/dev/planets_DL_e5f0.json",
+      "sha256": "c1b45cdbd1bc9b84a7a013f901a6a1df6610f2c102d9110edabb842a48950477"
+    },
+    "planets_RR_e5f0": {
+      "file": "data/pointer_v1/dev/planets_RR_e5f0.json",
+      "sha256": "92ad21349608fa57e07f25fbdb564146f0f0f8bb03a7cf44ac70a15ad8b56ca4"
+    },
+    "elements_RL_e5f0": {
+      "file": "data/pointer_v1/dev/elements_RL_e5f0.json",
+      "sha256": "d12a9999c1467cd203f2335a11becfea403f0e9cf945cc75d945b72e66e2a3f9"
+    },
+    "elements_DL_e5f0": {
+      "file": "data/pointer_v1/dev/elements_DL_e5f0.json",
+      "sha256": "1fa67c173ae5d147599fa7b4b23643131a828d49297372be90cb6a7fd9e1e65c"
+    },
+    "elements_RR_e5f0": {
+      "file": "data/pointer_v1/dev/elements_RR_e5f0.json",
+      "sha256": "1ed38c7706762f5cea83994b7e99ed4cfd4cf83197f825d606918ba5bcb9ff94"
+    },
+    "months_RL_e5f0": {
+      "file": "data/pointer_v1/dev/months_RL_e5f0.json",
+      "sha256": "ac6309f68b5a7ca094f3be660dc738e93b0064c6c22adbdd1eb90137473aef79"
+    },
+    "months_DL_e5f0": {
+      "file": "data/pointer_v1/dev/months_DL_e5f0.json",
+      "sha256": "7348414c33d9a39436c776c3973df24ea11dcf370a9af4e3225d8c2c0da69dd8"
+    },
+    "months_RR_e5f0": {
+      "file": "data/pointer_v1/dev/months_RR_e5f0.json",
+      "sha256": "36001079dd62ec2e9be526f3dae66580e02683c0c14819d76333330d87144329"
+    }
+  },
+  "competence": null,
+  "competence_sha256": null,
+  "n": 1,
+  "layers": [
+    0,
+    8,
+    16,
+    24,
+    32,
+    40,
+    48,
+    56
+  ],
+  "control_stride": 2,
+  "windows": {
+    "early": [
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28
+    ],
+    "mid": [
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40
+    ],
+    "transit": [
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52
+    ]
+  },
+  "groups": [
+    "question",
+    "final",
+    "last",
+    "both"
+  ],
+  "sources": [
+    "dissoc",
+    "same",
+    "rand",
+    "other"
+  ],
+  "sample": "per (domain, level), up to n scenes eligible (every competence prompt right) in all of the run's families, seed 0; every family on the same scenes",
+  "seeds": {
+    "sample": 0,
+    "null": 0,
+    "other": 0
+  },
+  "decision": "(fixed before any run; the job specs in jobs/d3/ repeat it). Per cell (family x group x layer or window\nx source dissoc), pooled over domains, Wilson 95% intervals over items:\n  - interpretable iff the dissoc patch changes the answer (1 - share none: lower bound >= 0.20) and the same control\n    changes it rarely (upper bound <= 0.10); otherwise \"none\" (nothing moves) or \"damage\"\n  - verdict X in {identity, position, value} (RR: identity, position) iff X's lower bound exceeds the upper bounds of\n    the other two and the chance bar: the rand control's upper bound for X at that layer (windows: the max over the\n    window's layers) and the per-digit context rate (upper bound of share context / (N - 3), N = 5 only)\n  - otherwise \"mixed\". Primary: RL, group final, window transit (the suite's 98-100% copy flips at 44-52). H-pointer:\n    position; H-word (or a lexical key): identity; H-value: value. DL is the reference (classic binding retrieval),\n    RR the contrast (a pointer is useless there)."
+}

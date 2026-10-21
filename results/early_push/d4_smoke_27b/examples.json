@@ -1,0 +1,4253 @@
+{
+ "exp": "early_push",
+ "run": "d4_smoke_27b",
+ "seed": 0,
+ "k": 3,
+ "groups": [
+  {
+   "key": "both",
+   "title": "both",
+   "definition": "P* and E-insert both give X's answer",
+   "n_total": 4
+  },
+  {
+   "key": "push_only",
+   "title": "push only",
+   "definition": "P* gives X's answer, E-insert does not",
+   "n_total": 0
+  },
+  {
+   "key": "edit_only",
+   "title": "edit only",
+   "definition": "E-insert gives X's answer, P* does not",
+   "n_total": 14
+  },
+  {
+   "key": "neither",
+   "title": "neither",
+   "definition": "neither gives X's answer",
+   "n_total": 6
+  }
+ ],
+ "examples": [
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "RL-0198",
+   "prompt": "<|im_start|>user\nAlice's pet is a sheep. Sara's pet is a goose. Peter's pet is a chicken. The goose's locker is 3. The sheep's locker is 5. The chicken's locker is 9.\nWhich locker belongs to the animal known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 144,
+     "end": 151,
+     "role": "bridge"
+    },
+    {
+     "start": 34,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 119,
+     "end": 124,
+     "role": "x"
+    },
+    {
+     "start": 191,
+     "end": 220,
+     "role": "cue"
+    },
+    {
+     "start": 167,
+     "end": 324,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 16.0, positions a",
+   "answers": {
+    "clean": "9",
+    "edited": "5",
+    "expected": {
+     "H-inject": "5",
+     "H-write": "9"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0006,
+    "p_b": 0.9849,
+    "ld": 7.438,
+    "frac": 0.8973,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (chicken -> sheep)"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "RL-0198",
+   "prompt": "<|im_start|>user\nAlice's pet is a sheep. Sara's pet is a goose. Peter's pet is a chicken. The goose's locker is 3. The sheep's locker is 5. The chicken's locker is 9.\nWhich locker belongs to the animal known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 144,
+     "end": 151,
+     "role": "bridge"
+    },
+    {
+     "start": 34,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 119,
+     "end": 124,
+     "role": "x"
+    },
+    {
+     "start": 191,
+     "end": 220,
+     "role": "cue"
+    },
+    {
+     "start": 190,
+     "end": 220,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 16.0, positions b",
+   "answers": {
+    "clean": "9",
+    "edited": "5",
+    "expected": {
+     "H-inject": "5",
+     "H-write": "9"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0001,
+    "p_b": 0.9951,
+    "ld": 9.0,
+    "frac": 0.9829,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (chicken -> sheep)"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "RL-0198",
+   "prompt": "<|im_start|>user\nAlice's pet is a sheep. Sara's pet is a goose. Peter's pet is a chicken. The goose's locker is 3. The sheep's locker is 5. The chicken's locker is 9.\nWhich locker belongs to the sheep? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 144,
+     "end": 151,
+     "role": "bridge"
+    },
+    {
+     "start": 34,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 119,
+     "end": 124,
+     "role": "x"
+    },
+    {
+     "start": 195,
+     "end": 200,
+     "role": "x"
+    },
+    {
+     "start": 195,
+     "end": 200,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "9",
+    "edited": "5",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0002,
+    "p_b": 0.9969,
+    "ld": 8.75,
+    "frac": 0.9692,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (chicken -> sheep)"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "RL-0198",
+   "prompt": "<|im_start|>user\nAlice's pet is a sheep. Sara's pet is a goose. Peter's pet is a chicken. The goose's locker is 3. The sheep's locker is 5. The chicken's locker is 9.\nWhich locker belongs to the animal known for clucking, the sheep? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 144,
+     "end": 151,
+     "role": "bridge"
+    },
+    {
+     "start": 34,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 119,
+     "end": 124,
+     "role": "x"
+    },
+    {
+     "start": 226,
+     "end": 231,
+     "role": "x"
+    },
+    {
+     "start": 220,
+     "end": 231,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "9",
+    "edited": "5",
+    "expected": {
+     "H-inject": "5",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0729,
+    "p_b": 0.8881,
+    "ld": 2.5,
+    "frac": 0.6267,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (chicken -> sheep)"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "RL-0198",
+   "prompt": "<|im_start|>user\nAlice's pet is a sheep. Sara's pet is a goose. Peter's pet is a chicken. The goose's locker is 3. The sheep's locker is 5. The chicken's locker is 9.\nWhich locker belongs to the sheep known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 144,
+     "end": 151,
+     "role": "bridge"
+    },
+    {
+     "start": 34,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 119,
+     "end": 124,
+     "role": "x"
+    },
+    {
+     "start": 195,
+     "end": 200,
+     "role": "x"
+    },
+    {
+     "start": 195,
+     "end": 200,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-head: text edit E-head, then a normal forward",
+   "answers": {
+    "clean": "9",
+    "edited": "5",
+    "expected": {
+     "H-inject": "5",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.3697,
+    "p_b": 0.6095,
+    "ld": 0.5,
+    "frac": 0.5171,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (chicken -> sheep)"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "RL-0198",
+   "prompt": "<|im_start|>user\nAlice's pet is a sheep. Sara's pet is a goose. Peter's pet is a chicken. The goose's locker is 3. The sheep's locker is 5. The chicken's locker is 9.\nWhich locker belongs to the animal known for its wool? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 144,
+     "end": 151,
+     "role": "bridge"
+    },
+    {
+     "start": 34,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 119,
+     "end": 124,
+     "role": "x"
+    },
+    {
+     "start": 212,
+     "end": 220,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "9",
+    "edited": "5",
+    "expected": {
+     "H-inject": null,
+     "H-write": "5"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0001,
+    "p_b": 0.9962,
+    "ld": 9.312,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (chicken -> sheep)"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "RL-0198",
+   "prompt": "<|im_start|>user\nAlice's pet is a sheep. Sara's pet is a goose. Peter's pet is a chicken. The goose's locker is 3. The sheep's locker is 5. The chicken's locker is 9. Someone drew a picture of a sheep.\nWhich locker belongs to the animal known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 144,
+     "end": 151,
+     "role": "bridge"
+    },
+    {
+     "start": 34,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 119,
+     "end": 124,
+     "role": "x"
+    },
+    {
+     "start": 195,
+     "end": 200,
+     "role": "x"
+    },
+    {
+     "start": 166,
+     "end": 201,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.9977,
+    "p_b": 0.0001,
+    "ld": -8.812,
+    "frac": 0.0068,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* and E-insert both give X's answer on this item (chicken -> sheep)"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "RL-0198",
+   "prompt": "<|im_start|>user\nAlice's pet is a sheep. Sara's pet is a goose. Peter's pet is a chicken. The goose's locker is 3. The sheep's locker is 5. The chicken's locker is 9.\nWhich locker belongs to the animal known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 144,
+     "end": 151,
+     "role": "bridge"
+    },
+    {
+     "start": 34,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 119,
+     "end": 124,
+     "role": "x"
+    },
+    {
+     "start": 191,
+     "end": 220,
+     "role": "cue"
+    },
+    {
+     "start": 220,
+     "end": 324,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 32, scale None, positions r",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-inject": null,
+     "H-write": "5"
+    }
+   },
+   "numbers": {
+    "p_A": 0.7319,
+    "p_b": 0.2376,
+    "ld": -1.125,
+    "frac": 0.4281,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* and E-insert both give X's answer on this item (chicken -> sheep)"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "RL-0198",
+   "prompt": "<|im_start|>user\nAlice's pet is a sheep. Sara's pet is a goose. Peter's pet is a chicken. The goose's locker is 3. The sheep's locker is 5. The chicken's locker is 9.\nWhich locker belongs to the animal known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 144,
+     "end": 151,
+     "role": "bridge"
+    },
+    {
+     "start": 34,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 119,
+     "end": 124,
+     "role": "x"
+    },
+    {
+     "start": 191,
+     "end": 220,
+     "role": "cue"
+    },
+    {
+     "start": 190,
+     "end": 220,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "9",
+    "edited": "5",
+    "expected": {
+     "H-inject": "5",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0001,
+    "p_b": 0.9954,
+    "ld": 8.875,
+    "frac": 0.976,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (chicken -> sheep)"
+  },
+  {
+   "group": "both",
+   "family": "RR",
+   "item_id": "RR-0198",
+   "prompt": "<|im_start|>user\nAlice's pet is a sheep. Sara's pet is a goose. Peter's pet is a chicken. The goose's locker is 3. The sheep's locker is 5. The chicken's locker is 9.\nHow many legs does the animal known for clucking have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 144,
+     "end": 151,
+     "role": "bridge"
+    },
+    {
+     "start": 34,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 119,
+     "end": 124,
+     "role": "x"
+    },
+    {
+     "start": 186,
+     "end": 215,
+     "role": "cue"
+    },
+    {
+     "start": 167,
+     "end": 324,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 16.0, positions a",
+   "answers": {
+    "clean": "2",
+    "edited": "4",
+    "expected": {
+     "H-inject": "4",
+     "H-write": "2"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0034,
+    "p_b": 0.9562,
+    "ld": 5.625,
+    "frac": 0.827,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (chicken -> sheep)"
+  },
+  {
+   "group": "both",
+   "family": "RR",
+   "item_id": "RR-0198",
+   "prompt": "<|im_start|>user\nAlice's pet is a sheep. Sara's pet is a goose. Peter's pet is a chicken. The goose's locker is 3. The sheep's locker is 5. The chicken's locker is 9.\nHow many legs does the animal known for clucking have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 144,
+     "end": 151,
+     "role": "bridge"
+    },
+    {
+     "start": 34,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 119,
+     "end": 124,
+     "role": "x"
+    },
+    {
+     "start": 186,
+     "end": 215,
+     "role": "cue"
+    },
+    {
+     "start": 185,
+     "end": 215,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 16.0, positions b",
+   "answers": {
+    "clean": "2",
+    "edited": "4",
+    "expected": {
+     "H-inject": "4",
+     "H-write": "2"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0003,
+    "p_b": 0.9949,
+    "ld": 8.0,
+    "frac": 0.9873,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (chicken -> sheep)"
+  },
+  {
+   "group": "both",
+   "family": "RR",
+   "item_id": "RR-0198",
+   "prompt": "<|im_start|>user\nAlice's pet is a sheep. Sara's pet is a goose. Peter's pet is a chicken. The goose's locker is 3. The sheep's locker is 5. The chicken's locker is 9.\nHow many legs does the sheep have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 144,
+     "end": 151,
+     "role": "bridge"
+    },
+    {
+     "start": 34,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 119,
+     "end": 124,
+     "role": "x"
+    },
+    {
+     "start": 190,
+     "end": 195,
+     "role": "x"
+    },
+    {
+     "start": 190,
+     "end": 195,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "4",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0002,
+    "p_b": 0.9969,
+    "ld": 8.438,
+    "frac": 1.0169,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (chicken -> sheep)"
+  },
+  {
+   "group": "both",
+   "family": "RR",
+   "item_id": "RR-0198",
+   "prompt": "<|im_start|>user\nAlice's pet is a sheep. Sara's pet is a goose. Peter's pet is a chicken. The goose's locker is 3. The sheep's locker is 5. The chicken's locker is 9.\nHow many legs does the animal known for clucking, the sheep, have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 144,
+     "end": 151,
+     "role": "bridge"
+    },
+    {
+     "start": 34,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 119,
+     "end": 124,
+     "role": "x"
+    },
+    {
+     "start": 221,
+     "end": 226,
+     "role": "x"
+    },
+    {
+     "start": 215,
+     "end": 227,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "4",
+    "expected": {
+     "H-inject": "4",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0069,
+    "p_b": 0.9575,
+    "ld": 4.938,
+    "frac": 0.7806,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (chicken -> sheep)"
+  },
+  {
+   "group": "both",
+   "family": "RR",
+   "item_id": "RR-0198",
+   "prompt": "<|im_start|>user\nAlice's pet is a sheep. Sara's pet is a goose. Peter's pet is a chicken. The goose's locker is 3. The sheep's locker is 5. The chicken's locker is 9.\nHow many legs does the sheep known for clucking have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 144,
+     "end": 151,
+     "role": "bridge"
+    },
+    {
+     "start": 34,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 119,
+     "end": 124,
+     "role": "x"
+    },
+    {
+     "start": 190,
+     "end": 195,
+     "role": "x"
+    },
+    {
+     "start": 190,
+     "end": 195,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-head: text edit E-head, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "0",
+    "expected": {
+     "H-inject": "4",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0788,
+    "p_b": 0.4003,
+    "ld": 1.625,
+    "frac": 0.557,
+    "flip": false,
+    "role": "other"
+   },
+   "why": "P* and E-insert both give X's answer on this item (chicken -> sheep)"
+  },
+  {
+   "group": "both",
+   "family": "RR",
+   "item_id": "RR-0198",
+   "prompt": "<|im_start|>user\nAlice's pet is a sheep. Sara's pet is a goose. Peter's pet is a chicken. The goose's locker is 3. The sheep's locker is 5. The chicken's locker is 9.\nHow many legs does the animal known for its wool have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 144,
+     "end": 151,
+     "role": "bridge"
+    },
+    {
+     "start": 34,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 119,
+     "end": 124,
+     "role": "x"
+    },
+    {
+     "start": 207,
+     "end": 215,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "4",
+    "expected": {
+     "H-inject": null,
+     "H-write": "4"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0003,
+    "p_b": 0.9968,
+    "ld": 8.188,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (chicken -> sheep)"
+  },
+  {
+   "group": "both",
+   "family": "RR",
+   "item_id": "RR-0198",
+   "prompt": "<|im_start|>user\nAlice's pet is a sheep. Sara's pet is a goose. Peter's pet is a chicken. The goose's locker is 3. The sheep's locker is 5. The chicken's locker is 9. Someone drew a picture of a sheep.\nHow many legs does the animal known for clucking have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 144,
+     "end": 151,
+     "role": "bridge"
+    },
+    {
+     "start": 34,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 119,
+     "end": 124,
+     "role": "x"
+    },
+    {
+     "start": 195,
+     "end": 200,
+     "role": "x"
+    },
+    {
+     "start": 166,
+     "end": 201,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.9964,
+    "p_b": 0.0011,
+    "ld": -6.812,
+    "frac": -0.0127,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* and E-insert both give X's answer on this item (chicken -> sheep)"
+  },
+  {
+   "group": "both",
+   "family": "RR",
+   "item_id": "RR-0198",
+   "prompt": "<|im_start|>user\nAlice's pet is a sheep. Sara's pet is a goose. Peter's pet is a chicken. The goose's locker is 3. The sheep's locker is 5. The chicken's locker is 9.\nHow many legs does the animal known for clucking have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 144,
+     "end": 151,
+     "role": "bridge"
+    },
+    {
+     "start": 34,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 119,
+     "end": 124,
+     "role": "x"
+    },
+    {
+     "start": 186,
+     "end": 215,
+     "role": "cue"
+    },
+    {
+     "start": 215,
+     "end": 324,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 48, scale None, positions r",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-inject": null,
+     "H-write": "4"
+    }
+   },
+   "numbers": {
+    "p_A": 0.5579,
+    "p_b": 0.4345,
+    "ld": -0.25,
+    "frac": 0.4304,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* and E-insert both give X's answer on this item (chicken -> sheep)"
+  },
+  {
+   "group": "both",
+   "family": "RR",
+   "item_id": "RR-0198",
+   "prompt": "<|im_start|>user\nAlice's pet is a sheep. Sara's pet is a goose. Peter's pet is a chicken. The goose's locker is 3. The sheep's locker is 5. The chicken's locker is 9.\nHow many legs does the animal known for clucking have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 144,
+     "end": 151,
+     "role": "bridge"
+    },
+    {
+     "start": 34,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 119,
+     "end": 124,
+     "role": "x"
+    },
+    {
+     "start": 186,
+     "end": 215,
+     "role": "cue"
+    },
+    {
+     "start": 185,
+     "end": 215,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "2",
+    "edited": "4",
+    "expected": {
+     "H-inject": "4",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0012,
+    "p_b": 0.9914,
+    "ld": 6.688,
+    "frac": 0.8987,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (chicken -> sheep)"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "RL-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nWhich locker belongs to the animal known for mooing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 181,
+     "end": 208,
+     "role": "cue"
+    },
+    {
+     "start": 157,
+     "end": 312,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 16.0, positions a",
+   "answers": {
+    "clean": "1",
+    "edited": "7",
+    "expected": {
+     "H-inject": "7",
+     "H-write": "1"
+    }
+   },
+   "numbers": {
+    "p_A": 0.2415,
+    "p_b": 0.5112,
+    "ld": 0.75,
+    "frac": 0.6007,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "RL-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nWhich locker belongs to the animal known for mooing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 181,
+     "end": 208,
+     "role": "cue"
+    },
+    {
+     "start": 180,
+     "end": 208,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 16.0, positions b",
+   "answers": {
+    "clean": "1",
+    "edited": "7",
+    "expected": {
+     "H-inject": "7",
+     "H-write": "1"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0011,
+    "p_b": 0.9866,
+    "ld": 6.812,
+    "frac": 0.9208,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "RL-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nWhich locker belongs to the chicken? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 185,
+     "end": 192,
+     "role": "x"
+    },
+    {
+     "start": 185,
+     "end": 192,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "1",
+    "edited": "7",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0004,
+    "p_b": 0.9969,
+    "ld": 7.812,
+    "frac": 0.9736,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "RL-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nWhich locker belongs to the animal known for mooing, the chicken? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 214,
+     "end": 221,
+     "role": "x"
+    },
+    {
+     "start": 208,
+     "end": 221,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "1",
+    "edited": "7",
+    "expected": {
+     "H-inject": "7",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.4301,
+    "p_b": 0.5523,
+    "ld": 0.25,
+    "frac": 0.5743,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "RL-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nWhich locker belongs to the chicken known for mooing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 185,
+     "end": 192,
+     "role": "x"
+    },
+    {
+     "start": 185,
+     "end": 192,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-head: text edit E-head, then a normal forward",
+   "answers": {
+    "clean": "1",
+    "edited": "7",
+    "expected": {
+     "H-inject": "7",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.3991,
+    "p_b": 0.5806,
+    "ld": 0.375,
+    "frac": 0.5809,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "RL-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nWhich locker belongs to the animal known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 202,
+     "end": 207,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "1",
+    "edited": "7",
+    "expected": {
+     "H-inject": null,
+     "H-write": "7"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0002,
+    "p_b": 0.9958,
+    "ld": 8.312,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "RL-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1. Someone drew a picture of a chicken.\nWhich locker belongs to the animal known for mooing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 185,
+     "end": 192,
+     "role": "x"
+    },
+    {
+     "start": 156,
+     "end": 193,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.9977,
+    "p_b": 0.0,
+    "ld": -10.188,
+    "frac": 0.0231,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* and E-insert both give X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "RL-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nWhich locker belongs to the animal known for mooing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 181,
+     "end": 208,
+     "role": "cue"
+    },
+    {
+     "start": 208,
+     "end": 312,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 32, scale None, positions r",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-inject": null,
+     "H-write": "7"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9265,
+    "p_b": 0.0317,
+    "ld": -3.375,
+    "frac": 0.3828,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* and E-insert both give X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "RL-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nWhich locker belongs to the animal known for mooing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 181,
+     "end": 208,
+     "role": "cue"
+    },
+    {
+     "start": 180,
+     "end": 208,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "1",
+    "edited": "7",
+    "expected": {
+     "H-inject": "7",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0003,
+    "p_b": 0.9964,
+    "ld": 8.188,
+    "frac": 0.9934,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0390",
+   "prompt": "<|im_start|>user\nPaul's pet is a cow. Vera's pet is a turkey. Grace's pet is a wolf. The wolf's locker is 7. The turkey's locker is 9. The cow's locker is 1.\nHow many legs does Vera's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 54,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 113,
+     "end": 119,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 36,
+     "role": "x"
+    },
+    {
+     "start": 139,
+     "end": 142,
+     "role": "x"
+    },
+    {
+     "start": 177,
+     "end": 187,
+     "role": "cue"
+    },
+    {
+     "start": 158,
+     "end": 296,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 16.0, positions a",
+   "answers": {
+    "clean": "2",
+    "edited": "<|im_end|>",
+    "expected": {
+     "H-inject": "4",
+     "H-write": "2"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.0001,
+    "ld": 4.312,
+    "frac": 0.6471,
+    "flip": false,
+    "role": "other"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (turkey -> cow)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0390",
+   "prompt": "<|im_start|>user\nPaul's pet is a cow. Vera's pet is a turkey. Grace's pet is a wolf. The wolf's locker is 7. The turkey's locker is 9. The cow's locker is 1.\nHow many legs does Vera's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 54,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 113,
+     "end": 119,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 36,
+     "role": "x"
+    },
+    {
+     "start": 139,
+     "end": 142,
+     "role": "x"
+    },
+    {
+     "start": 177,
+     "end": 187,
+     "role": "cue"
+    },
+    {
+     "start": 176,
+     "end": 187,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 16.0, positions b",
+   "answers": {
+    "clean": "2",
+    "edited": "4",
+    "expected": {
+     "H-inject": "4",
+     "H-write": "2"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0006,
+    "p_b": 0.9948,
+    "ld": 7.375,
+    "frac": 0.8688,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (turkey -> cow)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0390",
+   "prompt": "<|im_start|>user\nPaul's pet is a cow. Vera's pet is a turkey. Grace's pet is a wolf. The wolf's locker is 7. The turkey's locker is 9. The cow's locker is 1.\nHow many legs does the cow have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 54,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 113,
+     "end": 119,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 36,
+     "role": "x"
+    },
+    {
+     "start": 139,
+     "end": 142,
+     "role": "x"
+    },
+    {
+     "start": 181,
+     "end": 184,
+     "role": "x"
+    },
+    {
+     "start": 177,
+     "end": 184,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "4",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0002,
+    "p_b": 0.9972,
+    "ld": 8.625,
+    "frac": 0.9593,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (turkey -> cow)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0390",
+   "prompt": "<|im_start|>user\nPaul's pet is a cow. Vera's pet is a turkey. Grace's pet is a wolf. The wolf's locker is 7. The turkey's locker is 9. The cow's locker is 1.\nHow many legs does Vera's pet, the cow, have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 54,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 113,
+     "end": 119,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 36,
+     "role": "x"
+    },
+    {
+     "start": 139,
+     "end": 142,
+     "role": "x"
+    },
+    {
+     "start": 193,
+     "end": 196,
+     "role": "x"
+    },
+    {
+     "start": 187,
+     "end": 197,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "4",
+    "expected": {
+     "H-inject": "<|im_end|>",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0048,
+    "p_b": 0.8522,
+    "ld": 5.188,
+    "frac": 0.7104,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (turkey -> cow)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0390",
+   "prompt": "<|im_start|>user\nPaul's pet is a cow. Vera's pet is a turkey. Grace's pet is a wolf. The wolf's locker is 7. The turkey's locker is 9. The cow's locker is 1.\nHow many legs does Vera's cow have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 54,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 113,
+     "end": 119,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 36,
+     "role": "x"
+    },
+    {
+     "start": 139,
+     "end": 142,
+     "role": "x"
+    },
+    {
+     "start": 184,
+     "end": 187,
+     "role": "x"
+    },
+    {
+     "start": 184,
+     "end": 187,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-head: text edit E-head, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "0",
+    "expected": {
+     "H-inject": "<|im_end|>",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0012,
+    "p_b": 0.4965,
+    "ld": 6.062,
+    "frac": 0.7738,
+    "flip": false,
+    "role": "other"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (turkey -> cow)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0390",
+   "prompt": "<|im_start|>user\nPaul's pet is a turkey. Vera's pet is a cow. Grace's pet is a wolf. The wolf's locker is 7. The turkey's locker is 9. The cow's locker is 1.\nHow many legs does Vera's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 39,
+     "role": "bridge"
+    },
+    {
+     "start": 113,
+     "end": 119,
+     "role": "bridge"
+    },
+    {
+     "start": 57,
+     "end": 60,
+     "role": "x"
+    },
+    {
+     "start": 139,
+     "end": 142,
+     "role": "x"
+    },
+    {
+     "start": 33,
+     "end": 60,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "4",
+    "expected": {
+     "H-inject": null,
+     "H-write": "<|im_end|>"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0001,
+    "p_b": 0.9983,
+    "ld": 9.188,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (turkey -> cow)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0390",
+   "prompt": "<|im_start|>user\nPaul's pet is a cow. Vera's pet is a turkey. Grace's pet is a wolf. The wolf's locker is 7. The turkey's locker is 9. The cow's locker is 1. Someone drew a picture of a cow.\nHow many legs does Vera's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 54,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 113,
+     "end": 119,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 36,
+     "role": "x"
+    },
+    {
+     "start": 139,
+     "end": 142,
+     "role": "x"
+    },
+    {
+     "start": 186,
+     "end": 189,
+     "role": "x"
+    },
+    {
+     "start": 157,
+     "end": 190,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.9873,
+    "p_b": 0.011,
+    "ld": -4.5,
+    "frac": 0.009,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (turkey -> cow)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0390",
+   "prompt": "<|im_start|>user\nPaul's pet is a cow. Vera's pet is a turkey. Grace's pet is a wolf. The wolf's locker is 7. The turkey's locker is 9. The cow's locker is 1.\nHow many legs does Vera's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 54,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 113,
+     "end": 119,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 36,
+     "role": "x"
+    },
+    {
+     "start": 139,
+     "end": 142,
+     "role": "x"
+    },
+    {
+     "start": 177,
+     "end": 187,
+     "role": "cue"
+    },
+    {
+     "start": 158,
+     "end": 296,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 36, scale None, positions r",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-inject": null,
+     "H-write": "<|im_end|>"
+    }
+   },
+   "numbers": {
+    "p_A": 0.7952,
+    "p_b": 0.2011,
+    "ld": -1.375,
+    "frac": 0.2353,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (turkey -> cow)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0390",
+   "prompt": "<|im_start|>user\nPaul's pet is a cow. Vera's pet is a turkey. Grace's pet is a wolf. The wolf's locker is 7. The turkey's locker is 9. The cow's locker is 1.\nHow many legs does Vera's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 54,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 113,
+     "end": 119,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 36,
+     "role": "x"
+    },
+    {
+     "start": 139,
+     "end": 142,
+     "role": "x"
+    },
+    {
+     "start": 177,
+     "end": 187,
+     "role": "cue"
+    },
+    {
+     "start": 176,
+     "end": 187,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "2",
+    "edited": "4",
+    "expected": {
+     "H-inject": "<|im_end|>",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0016,
+    "p_b": 0.8709,
+    "ld": 6.312,
+    "frac": 0.7919,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (turkey -> cow)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0531",
+   "prompt": "<|im_start|>user\nKate lives in France. Frank lives in Russia. Victor lives in Germany. What is the capital of the country where Frank lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 54,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 110,
+     "end": 139,
+     "role": "cue"
+    },
+    {
+     "start": 86,
+     "end": 243,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 16.0, positions a",
+   "answers": {
+    "clean": "Moscow",
+    "edited": "<|im_end|>",
+    "expected": {
+     "H-inject": "Paris",
+     "H-write": "Moscow"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0828,
+    "p_b": 0.0072,
+    "ld": -2.438,
+    "frac": 0.3197,
+    "flip": false,
+    "role": "other"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Russia -> France)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0531",
+   "prompt": "<|im_start|>user\nKate lives in France. Frank lives in Russia. Victor lives in Germany. What is the capital of the country where Frank lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 54,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 110,
+     "end": 139,
+     "role": "cue"
+    },
+    {
+     "start": 109,
+     "end": 139,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 16.0, positions b",
+   "answers": {
+    "clean": "Moscow",
+    "edited": "Moscow",
+    "expected": {
+     "H-inject": "Paris",
+     "H-write": "Moscow"
+    }
+   },
+   "numbers": {
+    "p_A": 0.5601,
+    "p_b": 0.0262,
+    "ld": -3.062,
+    "frac": 0.2923,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Russia -> France)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0531",
+   "prompt": "<|im_start|>user\nKate lives in France. Frank lives in Russia. Victor lives in Germany. What is the capital of France? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 54,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 110,
+     "end": 116,
+     "role": "x"
+    },
+    {
+     "start": 110,
+     "end": 116,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "Moscow",
+    "edited": "Paris",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.9591,
+    "ld": 11.812,
+    "frac": 0.9426,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Russia -> France)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0531",
+   "prompt": "<|im_start|>user\nKate lives in France. Frank lives in Russia. Victor lives in Germany. What is the capital of the country where Frank lives, France? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 54,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 141,
+     "end": 147,
+     "role": "x"
+    },
+    {
+     "start": 139,
+     "end": 147,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "Moscow",
+    "edited": "Paris",
+    "expected": {
+     "H-inject": "<|im_end|>",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.1552,
+    "p_b": 0.4219,
+    "ld": 1.0,
+    "frac": 0.4699,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Russia -> France)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0531",
+   "prompt": "<|im_start|>user\nKate lives in Russia. Frank lives in France. Victor lives in Germany. What is the capital of the country where Frank lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 31,
+     "end": 37,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "x"
+    },
+    {
+     "start": 31,
+     "end": 60,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "Moscow",
+    "edited": "Paris",
+    "expected": {
+     "H-inject": null,
+     "H-write": "<|im_end|>"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.9326,
+    "ld": 13.125,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Russia -> France)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0531",
+   "prompt": "<|im_start|>user\nKate lives in France. Frank lives in Russia. Victor lives in Germany. Someone read a book about France. What is the capital of the country where Frank lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 54,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 113,
+     "end": 119,
+     "role": "x"
+    },
+    {
+     "start": 87,
+     "end": 121,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "Moscow",
+    "edited": "Moscow",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.7909,
+    "p_b": 0.0002,
+    "ld": -8.375,
+    "frac": 0.0601,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Russia -> France)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0531",
+   "prompt": "<|im_start|>user\nKate lives in France. Frank lives in Russia. Victor lives in Germany. What is the capital of the country where Frank lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 54,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 110,
+     "end": 139,
+     "role": "cue"
+    },
+    {
+     "start": 86,
+     "end": 243,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 32, scale None, positions r",
+   "answers": {
+    "clean": "Moscow",
+    "edited": "Moscow",
+    "expected": {
+     "H-inject": null,
+     "H-write": "<|im_end|>"
+    }
+   },
+   "numbers": {
+    "p_A": 0.884,
+    "p_b": 0.0001,
+    "ld": -8.938,
+    "frac": 0.0355,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Russia -> France)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0531",
+   "prompt": "<|im_start|>user\nKate lives in France. Frank lives in Russia. Victor lives in Germany. What is the capital of the country where Frank lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 54,
+     "end": 60,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 110,
+     "end": 139,
+     "role": "cue"
+    },
+    {
+     "start": 109,
+     "end": 139,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "Moscow",
+    "edited": "Moscow",
+    "expected": {
+     "H-inject": "<|im_end|>",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.7863,
+    "p_b": 0.0082,
+    "ld": -4.562,
+    "frac": 0.2268,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Russia -> France)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0457",
+   "prompt": "<|im_start|>user\nKate lives in Spain. Tom lives in Russia. David lives in Germany. What is the capital of the country where Kate lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 31,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 51,
+     "end": 57,
+     "role": "x"
+    },
+    {
+     "start": 106,
+     "end": 134,
+     "role": "cue"
+    },
+    {
+     "start": 82,
+     "end": 238,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 16.0, positions a",
+   "answers": {
+    "clean": "Madrid",
+    "edited": "Madrid",
+    "expected": {
+     "H-inject": "Moscow",
+     "H-write": "Madrid"
+    }
+   },
+   "numbers": {
+    "p_A": 0.5347,
+    "p_b": 0.0342,
+    "ld": -2.75,
+    "frac": 0.3626,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Spain -> Russia)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0457",
+   "prompt": "<|im_start|>user\nKate lives in Spain. Tom lives in Russia. David lives in Germany. What is the capital of the country where Kate lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 31,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 51,
+     "end": 57,
+     "role": "x"
+    },
+    {
+     "start": 106,
+     "end": 134,
+     "role": "cue"
+    },
+    {
+     "start": 105,
+     "end": 134,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 16.0, positions b",
+   "answers": {
+    "clean": "Madrid",
+    "edited": "Madrid",
+    "expected": {
+     "H-inject": "Moscow",
+     "H-write": "Madrid"
+    }
+   },
+   "numbers": {
+    "p_A": 0.6545,
+    "p_b": 0.0369,
+    "ld": -2.875,
+    "frac": 0.3553,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Spain -> Russia)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0457",
+   "prompt": "<|im_start|>user\nKate lives in Spain. Tom lives in Russia. David lives in Germany. What is the capital of Russia? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 31,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 51,
+     "end": 57,
+     "role": "x"
+    },
+    {
+     "start": 106,
+     "end": 112,
+     "role": "x"
+    },
+    {
+     "start": 106,
+     "end": 112,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "Madrid",
+    "edited": "Moscow",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0002,
+    "p_b": 0.8736,
+    "ld": 8.188,
+    "frac": 1.0037,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Spain -> Russia)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0457",
+   "prompt": "<|im_start|>user\nKate lives in Spain. Tom lives in Russia. David lives in Germany. What is the capital of the country where Kate lives, Russia? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 31,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 51,
+     "end": 57,
+     "role": "x"
+    },
+    {
+     "start": 136,
+     "end": 142,
+     "role": "x"
+    },
+    {
+     "start": 134,
+     "end": 142,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "Madrid",
+    "edited": "Moscow",
+    "expected": {
+     "H-inject": "Madrid",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.2197,
+    "p_b": 0.2821,
+    "ld": 0.25,
+    "frac": 0.5385,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Spain -> Russia)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0457",
+   "prompt": "<|im_start|>user\nKate lives in Russia. Tom lives in Spain. David lives in Germany. What is the capital of the country where Kate lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 52,
+     "end": 57,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 31,
+     "end": 57,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "Madrid",
+    "edited": "Moscow",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Madrid"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0003,
+    "p_b": 0.8493,
+    "ld": 8.125,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Spain -> Russia)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0457",
+   "prompt": "<|im_start|>user\nKate lives in Spain. Tom lives in Russia. David lives in Germany. Someone read a book about Russia. What is the capital of the country where Kate lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 31,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 51,
+     "end": 57,
+     "role": "x"
+    },
+    {
+     "start": 109,
+     "end": 115,
+     "role": "x"
+    },
+    {
+     "start": 83,
+     "end": 117,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "Madrid",
+    "edited": "Madrid",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.6903,
+    "p_b": 0.0003,
+    "ld": -7.688,
+    "frac": 0.0733,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Spain -> Russia)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0457",
+   "prompt": "<|im_start|>user\nKate lives in Spain. Tom lives in Russia. David lives in Germany. What is the capital of the country where Kate lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 31,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 51,
+     "end": 57,
+     "role": "x"
+    },
+    {
+     "start": 106,
+     "end": 134,
+     "role": "cue"
+    },
+    {
+     "start": 82,
+     "end": 238,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 32, scale None, positions r",
+   "answers": {
+    "clean": "Madrid",
+    "edited": "Madrid",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Madrid"
+    }
+   },
+   "numbers": {
+    "p_A": 0.7743,
+    "p_b": 0.0001,
+    "ld": -8.625,
+    "frac": 0.0183,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Spain -> Russia)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0457",
+   "prompt": "<|im_start|>user\nKate lives in Spain. Tom lives in Russia. David lives in Germany. What is the capital of the country where Kate lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 31,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 51,
+     "end": 57,
+     "role": "x"
+    },
+    {
+     "start": 106,
+     "end": 134,
+     "role": "cue"
+    },
+    {
+     "start": 105,
+     "end": 134,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "Madrid",
+    "edited": "Moscow",
+    "expected": {
+     "H-inject": "Madrid",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0727,
+    "p_b": 0.1855,
+    "ld": 0.938,
+    "frac": 0.5788,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Spain -> Russia)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0216",
+   "prompt": "<|im_start|>user\nOwen's pet is a spider. Laura's pet is a cat. Tom's pet is a pig. The cat's locker is 7. The pig's locker is 5. The spider's locker is 1.\nWhich locker belongs to Laura's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 58,
+     "end": 61,
+     "role": "bridge"
+    },
+    {
+     "start": 87,
+     "end": 90,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 133,
+     "end": 139,
+     "role": "x"
+    },
+    {
+     "start": 179,
+     "end": 190,
+     "role": "cue"
+    },
+    {
+     "start": 155,
+     "end": 294,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 16.0, positions a",
+   "answers": {
+    "clean": "7",
+    "edited": "<|im_end|>",
+    "expected": {
+     "H-inject": "7",
+     "H-write": "1"
+    }
+   },
+   "numbers": {
+    "p_A": 0.2147,
+    "p_b": 0.0256,
+    "ld": -2.125,
+    "frac": 0.3375,
+    "flip": false,
+    "role": "other"
+   },
+   "why": "neither gives X's answer on this item (cat -> spider)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0216",
+   "prompt": "<|im_start|>user\nOwen's pet is a spider. Laura's pet is a cat. Tom's pet is a pig. The cat's locker is 7. The pig's locker is 5. The spider's locker is 1.\nWhich locker belongs to Laura's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 58,
+     "end": 61,
+     "role": "bridge"
+    },
+    {
+     "start": 87,
+     "end": 90,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 133,
+     "end": 139,
+     "role": "x"
+    },
+    {
+     "start": 179,
+     "end": 190,
+     "role": "cue"
+    },
+    {
+     "start": 178,
+     "end": 190,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 16.0, positions b",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-inject": "7",
+     "H-write": "1"
+    }
+   },
+   "numbers": {
+    "p_A": 0.7212,
+    "p_b": 0.1609,
+    "ld": -1.5,
+    "frac": 0.3691,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (cat -> spider)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0216",
+   "prompt": "<|im_start|>user\nOwen's pet is a spider. Laura's pet is a cat. Tom's pet is a pig. The cat's locker is 7. The pig's locker is 5. The spider's locker is 1.\nWhich locker belongs to the spider? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 58,
+     "end": 61,
+     "role": "bridge"
+    },
+    {
+     "start": 87,
+     "end": 90,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 133,
+     "end": 139,
+     "role": "x"
+    },
+    {
+     "start": 183,
+     "end": 189,
+     "role": "x"
+    },
+    {
+     "start": 179,
+     "end": 189,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "7",
+    "edited": "1",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0001,
+    "p_b": 0.9981,
+    "ld": 9.812,
+    "frac": 0.9401,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (cat -> spider)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0216",
+   "prompt": "<|im_start|>user\nOwen's pet is a spider. Laura's pet is a cat. Tom's pet is a pig. The cat's locker is 7. The pig's locker is 5. The spider's locker is 1.\nWhich locker belongs to Laura's pet, the spider? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 58,
+     "end": 61,
+     "role": "bridge"
+    },
+    {
+     "start": 87,
+     "end": 90,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 133,
+     "end": 139,
+     "role": "x"
+    },
+    {
+     "start": 196,
+     "end": 202,
+     "role": "x"
+    },
+    {
+     "start": 190,
+     "end": 202,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-inject": "<|im_end|>",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.8711,
+    "p_b": 0.0918,
+    "ld": -2.25,
+    "frac": 0.3312,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (cat -> spider)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0216",
+   "prompt": "<|im_start|>user\nOwen's pet is a spider. Laura's pet is a cat. Tom's pet is a pig. The cat's locker is 7. The pig's locker is 5. The spider's locker is 1.\nWhich locker belongs to Laura's spider? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 58,
+     "end": 61,
+     "role": "bridge"
+    },
+    {
+     "start": 87,
+     "end": 90,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 133,
+     "end": 139,
+     "role": "x"
+    },
+    {
+     "start": 187,
+     "end": 193,
+     "role": "x"
+    },
+    {
+     "start": 187,
+     "end": 193,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-head: text edit E-head, then a normal forward",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-inject": "<|im_end|>",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.5569,
+    "p_b": 0.3828,
+    "ld": -0.375,
+    "frac": 0.4259,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (cat -> spider)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0216",
+   "prompt": "<|im_start|>user\nOwen's pet is a cat. Laura's pet is a spider. Tom's pet is a pig. The cat's locker is 7. The pig's locker is 5. The spider's locker is 1.\nWhich locker belongs to Laura's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 87,
+     "end": 90,
+     "role": "bridge"
+    },
+    {
+     "start": 55,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 133,
+     "end": 139,
+     "role": "x"
+    },
+    {
+     "start": 33,
+     "end": 61,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "7",
+    "edited": "1",
+    "expected": {
+     "H-inject": null,
+     "H-write": "<|im_end|>"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.9978,
+    "ld": 11.0,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (cat -> spider)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0216",
+   "prompt": "<|im_start|>user\nOwen's pet is a spider. Laura's pet is a cat. Tom's pet is a pig. The cat's locker is 7. The pig's locker is 5. The spider's locker is 1. Someone drew a picture of a spider.\nWhich locker belongs to Laura's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 58,
+     "end": 61,
+     "role": "bridge"
+    },
+    {
+     "start": 87,
+     "end": 90,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 133,
+     "end": 139,
+     "role": "x"
+    },
+    {
+     "start": 183,
+     "end": 189,
+     "role": "x"
+    },
+    {
+     "start": 154,
+     "end": 190,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.9937,
+    "p_b": 0.0007,
+    "ld": -7.25,
+    "frac": 0.0789,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (cat -> spider)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0216",
+   "prompt": "<|im_start|>user\nOwen's pet is a spider. Laura's pet is a cat. Tom's pet is a pig. The cat's locker is 7. The pig's locker is 5. The spider's locker is 1.\nWhich locker belongs to Laura's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 58,
+     "end": 61,
+     "role": "bridge"
+    },
+    {
+     "start": 87,
+     "end": 90,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 133,
+     "end": 139,
+     "role": "x"
+    },
+    {
+     "start": 179,
+     "end": 190,
+     "role": "cue"
+    },
+    {
+     "start": 155,
+     "end": 294,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 32, scale None, positions r",
+   "answers": {
+    "clean": "7",
+    "edited": "1",
+    "expected": {
+     "H-inject": null,
+     "H-write": "<|im_end|>"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0597,
+    "p_b": 0.9341,
+    "ld": 2.75,
+    "frac": 0.5836,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (cat -> spider)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0216",
+   "prompt": "<|im_start|>user\nOwen's pet is a spider. Laura's pet is a cat. Tom's pet is a pig. The cat's locker is 7. The pig's locker is 5. The spider's locker is 1.\nWhich locker belongs to Laura's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 58,
+     "end": 61,
+     "role": "bridge"
+    },
+    {
+     "start": 87,
+     "end": 90,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "x"
+    },
+    {
+     "start": 133,
+     "end": 139,
+     "role": "x"
+    },
+    {
+     "start": 179,
+     "end": 190,
+     "role": "cue"
+    },
+    {
+     "start": 178,
+     "end": 190,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-inject": "<|im_end|>",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.996,
+    "p_b": 0.0002,
+    "ld": -8.625,
+    "frac": 0.0095,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (cat -> spider)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nWhich locker belongs to Beth's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 181,
+     "end": 191,
+     "role": "cue"
+    },
+    {
+     "start": 157,
+     "end": 295,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 16.0, positions a",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-inject": "1",
+     "H-write": "1"
+    }
+   },
+   "numbers": {
+    "p_A": 0.8423,
+    "p_b": 0.0888,
+    "ld": -2.25,
+    "frac": 0.4355,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nWhich locker belongs to Beth's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 181,
+     "end": 191,
+     "role": "cue"
+    },
+    {
+     "start": 180,
+     "end": 191,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 16.0, positions b",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-inject": "1",
+     "H-write": "1"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9131,
+    "p_b": 0.0661,
+    "ld": -2.625,
+    "frac": 0.4161,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nWhich locker belongs to the chicken? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 185,
+     "end": 192,
+     "role": "x"
+    },
+    {
+     "start": 181,
+     "end": 192,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "1",
+    "edited": "7",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0004,
+    "p_b": 0.9969,
+    "ld": 7.812,
+    "frac": 0.9548,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nWhich locker belongs to Beth's pet, the chicken? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 197,
+     "end": 204,
+     "role": "x"
+    },
+    {
+     "start": 191,
+     "end": 204,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-inject": "1",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.7896,
+    "p_b": 0.1996,
+    "ld": -1.375,
+    "frac": 0.4806,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nWhich locker belongs to Beth's chicken? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 188,
+     "end": 195,
+     "role": "x"
+    },
+    {
+     "start": 188,
+     "end": 195,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-head: text edit E-head, then a normal forward",
+   "answers": {
+    "clean": "1",
+    "edited": "7",
+    "expected": {
+     "H-inject": "1",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.2586,
+    "p_b": 0.7029,
+    "ld": 1.0,
+    "frac": 0.6032,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a chicken. Lucy's pet is a cow. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nWhich locker belongs to Beth's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 58,
+     "end": 61,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 40,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 34,
+     "end": 61,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "1",
+    "edited": "7",
+    "expected": {
+     "H-inject": null,
+     "H-write": "1"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0002,
+    "p_b": 0.9977,
+    "ld": 8.688,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1. Someone drew a picture of a chicken.\nWhich locker belongs to Beth's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 185,
+     "end": 192,
+     "role": "x"
+    },
+    {
+     "start": 156,
+     "end": 193,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.9979,
+    "p_b": 0.0001,
+    "ld": -8.812,
+    "frac": 0.0968,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nWhich locker belongs to Beth's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 181,
+     "end": 191,
+     "role": "cue"
+    },
+    {
+     "start": 157,
+     "end": 295,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 32, scale None, positions r",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-inject": null,
+     "H-write": "1"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9984,
+    "p_b": 0.0,
+    "ld": -10.188,
+    "frac": 0.0258,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "neither",
+   "family": "BL",
+   "item_id": "BL-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nWhich locker belongs to Beth's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 181,
+     "end": 191,
+     "role": "cue"
+    },
+    {
+     "start": 180,
+     "end": 191,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "1",
+    "edited": "7",
+    "expected": {
+     "H-inject": "1",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0945,
+    "p_b": 0.6984,
+    "ld": 2.0,
+    "frac": 0.6548,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nHow many legs does Beth's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 176,
+     "end": 186,
+     "role": "cue"
+    },
+    {
+     "start": 157,
+     "end": 295,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 16.0, positions a",
+   "answers": {
+    "clean": "4",
+    "edited": "<|im_end|>",
+    "expected": {
+     "H-inject": "4",
+     "H-write": "4"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0021,
+    "p_b": 0.0096,
+    "ld": 1.5,
+    "frac": 0.713,
+    "flip": false,
+    "role": "other"
+   },
+   "why": "neither gives X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nHow many legs does Beth's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 176,
+     "end": 186,
+     "role": "cue"
+    },
+    {
+     "start": 175,
+     "end": 186,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 16.0, positions b",
+   "answers": {
+    "clean": "4",
+    "edited": "0",
+    "expected": {
+     "H-inject": "4",
+     "H-write": "4"
+    }
+   },
+   "numbers": {
+    "p_A": 0.1845,
+    "p_b": 0.0363,
+    "ld": -1.625,
+    "frac": 0.4957,
+    "flip": false,
+    "role": "other"
+   },
+   "why": "neither gives X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nHow many legs does the chicken have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 180,
+     "end": 187,
+     "role": "x"
+    },
+    {
+     "start": 176,
+     "end": 187,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "4",
+    "edited": "2",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0025,
+    "p_b": 0.9952,
+    "ld": 6.0,
+    "frac": 1.0261,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nHow many legs does Beth's pet, the chicken, have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 192,
+     "end": 199,
+     "role": "x"
+    },
+    {
+     "start": 186,
+     "end": 200,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-inject": "<|im_end|>",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.4504,
+    "p_b": 0.3975,
+    "ld": -0.125,
+    "frac": 0.6,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nHow many legs does Beth's chicken have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 183,
+     "end": 190,
+     "role": "x"
+    },
+    {
+     "start": 183,
+     "end": 190,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-head: text edit E-head, then a normal forward",
+   "answers": {
+    "clean": "4",
+    "edited": "0",
+    "expected": {
+     "H-inject": "<|im_end|>",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0462,
+    "p_b": 0.3866,
+    "ld": 2.125,
+    "frac": 0.7565,
+    "flip": false,
+    "role": "other"
+   },
+   "why": "neither gives X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a chicken. Lucy's pet is a cow. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nHow many legs does Beth's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 58,
+     "end": 61,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 33,
+     "end": 40,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 34,
+     "end": 61,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "4",
+    "edited": "2",
+    "expected": {
+     "H-inject": null,
+     "H-write": "<|im_end|>"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0036,
+    "p_b": 0.9949,
+    "ld": 5.625,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1. Someone drew a picture of a chicken.\nHow many legs does Beth's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 185,
+     "end": 192,
+     "role": "x"
+    },
+    {
+     "start": 156,
+     "end": 193,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.9974,
+    "p_b": 0.0002,
+    "ld": -8.438,
+    "frac": 0.0217,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nHow many legs does Beth's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 176,
+     "end": 186,
+     "role": "cue"
+    },
+    {
+     "start": 157,
+     "end": 295,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 36, scale None, positions r",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-inject": null,
+     "H-write": "<|im_end|>"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9978,
+    "p_b": 0.0007,
+    "ld": -7.312,
+    "frac": 0.1,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (cow -> chicken)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nHow many legs does Beth's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "x"
+    },
+    {
+     "start": 88,
+     "end": 95,
+     "role": "x"
+    },
+    {
+     "start": 176,
+     "end": 186,
+     "role": "cue"
+    },
+    {
+     "start": 175,
+     "end": 186,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "4",
+    "edited": "2",
+    "expected": {
+     "H-inject": "<|im_end|>",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0271,
+    "p_b": 0.616,
+    "ld": 3.125,
+    "frac": 0.8261,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (cow -> chicken)"
+  }
+ ]
+}
