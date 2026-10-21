@@ -1,10 +1,11 @@
 # bridge-jspace
 
-**Where things are:** this page = main results and open questions · full write-up of every experiment:
-[README_archive.md](README_archive.md) · run log: [EXPERIMENTS.md](EXPERIMENTS.md) · human-checked results:
-[VERIFIED.md](VERIFIED.md) · status by Zach (20 Oct): [STATUS.md](STATUS.md) · plan:
+**Where things are:** this page = main results and open questions · full write-up of every experiment, and the
+per-batch tables of Dan's depth track: [README_archive.md](README_archive.md) · run log: [EXPERIMENTS.md](EXPERIMENTS.md)
+· human-checked results: [VERIFIED.md](VERIFIED.md) · status by Zach (20 Oct): [STATUS.md](STATUS.md) · plan:
 [Google Doc](https://docs.google.com/document/d/1bqqdXePTUXQGlowVjk73sPfJkbV_tsu0RNNX-BiTYUc/edit?usp=drivesdk) ·
-how to run, queue, figures: [DEVELOPER.md](DEVELOPER.md)
+how to run, queue, figures: [DEVELOPER.md](DEVELOPER.md) · predictions vs results (Dan):
+[jobs/predictions/](jobs/predictions/)
 
 ## The question
 In a two-hop question the model first finds a **bridge** and then uses it to find the answer: "the language spoken in
@@ -16,7 +17,7 @@ route?**
 
 ## Names used on this page
 Each family of questions is named **"where the bridge comes from → where the answer comes from"**: *prompt* = stated
-in the prompt, *memory* = recalled by the model.
+in the prompt, *memory* = recalled by the model; *named* = the entity is named in the question.
 ```
 Jack's pet is a cow. Mia's pet is a dog. Tom's pet is a pig.
 The cow's locker is 5. The dog's locker is 3. The pig's locker is 7.
@@ -27,10 +28,11 @@ The cow's locker is 5. The dog's locker is 3. The pig's locker is 7.
 | prompt → memory (BR) | How many legs does Jack's pet have? | cow, from the prompt | 4, recalled |
 | memory → prompt (RL) | Which locker belongs to the animal known for mooing? | cow, recalled | 5, from the prompt |
 | memory → memory (RR) | How many legs does the animal known for mooing have? | cow, recalled | 4, recalled |
+| named → prompt (DL) | Which locker belongs to the cow? | cow, named | 5, from the prompt |
 
 Edits compare an **org prompt** with an **alt prompt** (the same prompt with another bridge): **bridge org** (cow) vs
 **bridge alt** (dog), **answer org** (5) vs **answer alt** (3). The **lens-readable part** of a change is its piece
-made of J-lens word directions; the rest is everything else.
+made of J-lens word directions; the rest is everything else. **Slot** = the position of a statement in the list.
 
 ## Main results
 
@@ -56,184 +58,229 @@ Recall from memory goes through the J-space; a lookup in the prompt goes around 
 
 ![The suite under three measures](figures/overview_1020/story_2x2.png)
 
-### Unverified: what is the "around" route? (Dan, 21 Oct; depth track D1-D4)
-One overnight queue, Qwen3.6-27B, pre-registered rules and controls; headline numbers recounted from the raw files.
-Predictions vs results: [jobs/predictions/2026-10-21_dan.md](jobs/predictions/2026-10-21_dan.md). Full write-up
-(methods and datasets compared, worked examples, every figure, numbers to recompute):
-[README_archive.md](README_archive.md#depth-track-d1-d4-2026-10-21-what-is-the-around-route).
+### Unverified: what is the "around" route? (Dan, 21 Oct; three batches on Qwen3.6-27B)
+Every run pre-registered (hypotheses, decision rule, controls) before it ran; Dan wrote predictions before each result
+was opened (scored: [2026-10-21](jobs/predictions/2026-10-21_dan.md), [2026-10-22](jobs/predictions/2026-10-22_dan.md));
+headline numbers recounted from the raw rows. Intervals: 95%; "entity" = resampling the asked entities within each
+topic, the honest interval when items of one entity are correlated. The per-batch tables are archived
+([README_archive.md](README_archive.md#depth-track-nights-1-3-21-oct-the-per-batch-tables-as-they-stood-in-the-readme)).
 
-| | Question | Result |
-|---|---|---|
-| D1 | Is "lookups go around the lens" an artefact of measuring only at the question? | **No.** For a bridge stated in the prompt (prompt → prompt), at layers 28-44 the bridge is spread over the whole context (pasting there switches 86% [77, 92]). The lens-readable part of that paste switches 0%: it does 14% of what its size predicts (1 = its fair share; a random piece of the same size does 7%). The same paste's lens-readable part does carry the bridge for the recall question (prompt → memory: 5× its fair share). |
-| D2 | From where, and when, does the answer read "The cow's locker is 5."? | Memory → prompt: hide that statement from **the last tokens before the answer** and only 7% [3, 16] stay right (4/60); hide it from the question words: 100%. The read runs through **attention layers** (attention only 8%, DeltaNet only 100%) at **layers 48-63** (blocking 0-47: 100%). Recall questions do not need it (100%). |
-| D3 | At that moment, do those tokens carry the **word** (cow), a **pointer to a statement slot**, or the **answer**? | Pasting from an alt prompt with reordered statements at layers 44-52: the answer at the **same statement slot** 29% [21, 39] vs bridge alt's statement 9% [5, 16] vs the alt prompt's own answer 12%; control 0/100. From layer ~52-56 the tokens carry the fetched digit (98-100%). Memory → memory never shows a slot answer. Pooled only: each topic alone is "mixed". |
-| D4 | Is the strong early lens push that switched memory → prompt just typing the word in? | It works only on the subject phrase (37% [26, 49]; rest of the question 0%; random 0%). Injection vs writing **not decidable** by the pre-registered tests; post-hoc reading below. |
-
-*D4, post hoc (same run, not pre-registered):* the early push switches exactly the families where the animal is
-**recalled from the cue**, whatever uses it next (layer 20, 8×, subject phrase: memory → prompt 49/60, memory →
-memory 57/60), and not those where it is stated in the prompt (prompt → prompt 0/60, prompt → memory 0/60) until 16×
-(28/60, 43/60, matching the earlier layer sweep). So the early push acts on **recalling the bridge**, a step that
-goes through the J-space, not on the lookup.
-
-![Word, slot or answer, by layer (D3)](figures/depth_1021/d3_word_slot_or_answer_by_layer.png)
-![From which layer the statement must stay readable (D2)](figures/depth_1021/d2_from_which_layer.png)
-
-### Unverified: batch 2 (Dan, 21 Oct; new data and a learned pointer)
-Same rules (pre-registered, controls, headline numbers recounted from the raw files), 4×A100. Predictions vs results:
-[jobs/predictions/2026-10-22_dan.md](jobs/predictions/2026-10-22_dan.md). Still running: "statement order or token
-position?" (pointer_v2).
-
-| | Question | Result |
-|---|---|---|
-| D2 | Does "the last tokens read the statement late, through attention" hold beyond the first animal scenes? | **Yes, on all three new datasets.** Statement hidden from the last tokens in every attention layer: new locker scenes 11% still right (memory → prompt, 20/175), Python lookups 38% (203/540), statements in another language 2% (1/60). In every DeltaNet layer: 99-100% everywhere. Recall questions (memory → memory) keep ≥ 96%. |
-| D2, details | | (1) **A named animal is read twice.** The question words read the statement early: hidden from the question words and the last tokens in layers 0-31 only, 1/175 stay right (from the question words alone, all layers: 2/175); the last tokens still read it late (48-63 only: 11%; 32-47 only: 100%). A recalled animal does not need the question words (88% when hidden from them). (2) **For a recalled animal the middle layers back up the late read:** hidden from the question words and the last tokens together in 32-47, only 45% [37, 52] stay right (78/175), each alone 87-88%. (3) In code the last tokens are one of several readers: blocked from them alone, 36% of list-position lookups stay right; blocked from every later token, 3%; with the key named in the print line, the print line itself reads the entry (as with a named animal). (4) A statement in another language is read over more depth: blocking only 48-63 keeps 45% [33, 58] vs 20% [12, 32] for the same scenes in English. |
-| D1 (batch 3) | Does "the lens-readable part of a stated bridge does nothing for the lookup" hold at n=80? | **Yes.** prompt → prompt, the whole context at layers 32-40: the paste switches 87% (209/240 item-layer cells), its lens-readable part alone 0/240; concentration 0.10 [0.08, 0.13] (random dictionary 0.07; night 1 at n=32: 0.14). Positive control prompt → memory at the same place: 4.87 [4.60, 5.18]. **The lens push does not write it either:** 0/240 at 0.5-4× the paste's size; at 8× and 16× it switches 10% (24/240, 25/240), no more than a random push of the same size (26/240, 28/240). Pre-registered verdict: around, not written (positive controls written). |
-| D3b (batch 3) | Does the pointer direction replicate on fresh scenes? | **Yes, with room to spare.** The same direction (not refitted) on 554 scenes the first run never used, layer 48, 1×: 43.0% become the target statement's digit, item-level [38.9, 47.1], entity-level [36.6, 48.9] (22 entities); lens push 0/554, random 0/554, shuffled-label direction 1.3%, memory → memory 0/151. Animals 53% (16 animals), elements 32% (6 elements; the first run's 16% was low). Held-out entities 46% vs entities seen in the fit 37% (all 729 eligible items). Layer 44 at 2×: 40%. |
-| Gates | Can the model do the new tasks unedited? | Python lookups of every kind (named key, list position, 2- or 3-variable chain) 98-100%; statements in another language 96-98%. Fails two cases, left out of the patching: a **recalled** element matched to its **chemical symbol** (52% [45, 58]; named, 100%) and a recalled month in code (61%). So the lookup matches the recalled entity against how the statement spells it, and some spellings don't match. |
-| D3 | Does the last-token pointer survive statements in another language? | **Yes at the last two tokens:** answer at the same statement slot 46% [37, 56] vs 48% [38, 58] in English (layer 50, 100 animal scenes). **No on the tokens after the question:** 14% vs 42% (layer 48). The pre-registered cell (after the question, layers 44-52) is not readable in the other language (the patch changes only 27%). |
-| D3 | In Python code, is there a pointer to the dict entry's **position**? | **Yes, at layers 48-50.** Patching the alt program into the org program gives the value at the **same dict position** more often than the alt key's value: recalled key, last two tokens, layer 50: 47% [38, 56] vs 24% [17, 33]; after the question 34% vs 16%. At the last two tokens every way of finding the key shows it (35-47%; named key 24%). The pre-registered window (layers 44-52 together) is mixed: in code the alt program's own answer arrives already at layer 52. n=120 per family (animals 100, months 20). |
-| D3 | Is the slot "the Nth statement" or "the same place in the text"? | **Mostly the Nth statement, partly the place.** Scenes where one filler sentence makes the two point at different statements (memory → prompt, 287 per cell: 179 animals + 108 elements): last two tokens, layer 50: Nth statement 28% [23, 33] vs same place in the text 16% [12, 20] (animals 44 vs 28, elements 36 vs 17); after the question, layer 48: 17% vs 8%. In these scenes bridge alt's statement (the word) is about as frequent as the slot (32% and 26%). Named → prompt: the same order, weaker (21% vs 6%). **With 3 statements** (bridge alt not in the org prompt, so no word answer; 199 items): 54% [47, 61] vs 25% at the same cell, in both topics (animals 58 vs 29 of 120, elements 49 vs 21 of 79). **Pointer to the digit itself:** from layer ~52-56 the digit travels (97-99%) whether or not the org prompt contains it; at 48-50 a small extra pull to the alt answer when the org prompt contains it (7-10% vs 0%). The pre-registered window (44-52 together) reads "alt answer" (the digit arrives by 52), so it does not decide. |
-| D3 (batch 3) | Is the slot counted from the start of the list, from the end, or a place in the text? | **From the start.** The alt prompt has one statement more or fewer (filler sentences keep the length), so the three readings name different statements. memory → prompt, last two tokens, layer 50 (403 items: 236 animals, 167 elements): from the start 28% [24, 33], same place in the text 15% [12, 19], from the end 9% [7, 12]. The same with one more (27 / 11 / 9%) and one fewer (30 / 18 / 9%), in both topics (animals 66 / 32 / 23, elements 48 / 28 / 14), and for named → prompt (21 / 8 / 5%). The word (bridge alt's statement) is about as frequent as the start-counted slot (25%), so each cell's pre-registered verdict is "mixed"; the pre-registered "from the start" hypothesis (≥ 25% and from the end ≤ 10%, both alt types) holds at the last tokens. |
-| D3b (batch 3) | Does the pointer direction mean "the Nth statement" or "this place in the text"? | **The Nth statement.** Fitted where both coincide, pushed toward a statement after a filler sentence (layer 48, 2×, 125 targets in 55 scenes): the target statement's digit 31% [24, 40] vs the digit now at its old place 9% [5, 15], difference +22 [+14, +31] (scene bootstrap); animals 29 vs 7 of 77, elements 10 vs 4 of 48; random and shuffled-label pushes 0/125; memory → memory 2%. Weaker than where both readings agree (51%). Without a push, the nearest learned mean names the asked statement by order 51% vs by place 12% (layer 48, 59 scenes). |
-| D3b | Can a learned **pointer direction** steer the lookup where the lens push cannot? | **For animals yes; pooled, only by the item-level rule.** A direction fitted to "which statement the question asks", added at layer 48 at the size of the alt-prompt patch: 37% of memory → prompt answers become the target statement's digit, item-level [30.3, 45] (the pre-registered rule passes by 0.3 points), but resampling the 22 queried entities gives [28.7, 45.2] (does not pass). **By domain: animals 54% (52/96, 16 animals), elements 16% (13/79, 6 elements;** the alt-prompt patch itself switches only 11/79 there). Lens push of the same size 0/175; random 0; shuffled-label direction 1%; memory → memory 1/100. Four dimensions are enough; unrelated to the lens's word directions (cosine 0.03, random 0.03). A probe reads which statement is asked at only 39% (chance 20%; small fit set). Prior art: an "ordering ID" subspace that steers binding (Dai, Heinzerling & Inui 2024, arXiv 2409.05448); new here is that it appears for a *recalled* bridge, where the lens reads the word but cannot steer. Caveat: at layer 48 the last tokens no longer carry the word (D3), so the lens push's 0% there is expected either way; it is not a test of "lookups go around the lens" (that is layers 32-40, question tokens). |
-
-![Where a stated bridge is carried, its lens-readable part and the lens push, n=80 (D1)](figures/depth_1022/d1_headline_n80.png)
-![The pointer direction on fresh scenes (D3b replication)](figures/depth_1022/d3b_replication_decision_cell.png)
-![The late attention read on Python code (D2)](figures/depth_1022/d2_code_which_positions_read.png)
-![The last-token pointer with statements in another language (D3)](figures/depth_1022/d3_other_language_last_tokens_by_layer.png)
-![Word, position or answer in Python code (D3)](figures/depth_1022/d3_code_word_slot_or_answer_by_layer.png)
-![The Nth statement or the same place in the text (D3)](figures/depth_1022/d3_order_or_place_by_layer.png)
-![Counted from the start or from the end (D3)](figures/depth_1022/d3_start_or_end_last_tokens.png)
-![The pointer direction: the Nth statement or the place (D3b)](figures/depth_1022/d3b_direction_order_or_position.png)
-![A learned pointer direction vs the lens push (D3b)](figures/depth_1022/d3b_pointer_direction_vs_lens_push.png)
+| # | Claim | Best evidence | How broad | Strength |
+|---|---|---|---|---|
+| D1 | A bridge **stated** in the prompt is carried by the whole context at layers 28-44, and the lookup does not use its lens-readable part; the lens push does not write it | Pasting the whole context switches 87% (209/240); its lens-readable part alone 0/240 (0.10 of its fair share; random 0.07). The same part carries the bridge for a recall question (4.87×). Lens push no better than a random push at any size (16×: 25/240 vs 28/240) | animal suite only; n=80 per family; 1 wording | strong within the suite, untested elsewhere |
+| D2 | For a lookup in the prompt, the **last tokens read the answer's statement late (layers 48-63), through attention**; DeltaNet layers are not needed; recall does not need the statement | Statement hidden from the last tokens in every attention layer: animal suite 7% still right, new locker scenes 11% (20/175), other language 2%; in every DeltaNet layer 99-100%; memory → memory ≥ 96% | 4 datasets, 3 topics, Python code, 3 languages; ~40 entities | **strongest**; one model, one chat template |
+| D2 | **Other positions read it too.** A named entity's question words read its statement early (0-31); in code the line that first mentions the key (the `names` list, the first chain line, or `print` when the key is written there); for a recalled entity, the middle layers (32-47) back up | Named: question words + last tokens blocked at 0-31 → 1/175. Code: last tokens + `names` line blocked → 6.5% (13/200), the same as blocking every line after the dict; either alone 35-44%. Recalled: question words + last tokens at 32-47 → 45% (78/175), each alone 87-88% | locker scenes + code; 2 topics each | good (code pre-registered) |
+| D2 | **No single "lookup head"**, but one head's attention points at the bridge's statement | Blocking any one of the 96 late query heads (layers 51-63) at the last tokens: none passes the reader rule (all < 10 points). Unedited, layer 51 head 22 looks most at the asked statement from the last token in 100% [100, 100] of held-out scenes (head chosen on the other half; chance 20%, the linear read-out 45%), but it does so for recall questions too: it tracks the bridge's statement, not the lookup | pointer_v1, 22 entities; preliminary (being scored) | good for "redundant"; the read-out needs D5a's test |
+| D3 | At layers 48-50 the last tokens carry a **pointer to a statement slot**: patched into another prompt, the answer becomes the digit at the same slot, more often than bridge alt's own statement (the word) | **pointer_v4, last tokens, layer 50: slot 50% [45, 54] vs word 21% [18, 25]** (450 items, 85 entities, 3 topics, 9 wordings each; countries 43/21, animals 55/19, body parts 51/23); pre-registered verdict "slot" pooled (in the 44-52 window: 16% vs 4%; no single topic passes with 150 scenes: per-topic rerun **running**). Also code (47% vs 24%), another language (46%, as English 48%). Recall questions follow the word instead (82%, slot 0%) | 6 datasets, ~100 entities, code, 3 languages | **strong**; but 20-50% of patches change nothing and the word travels too |
+| D3 | The slot is **counted from the start of the list**, partly a place in the text | From the start 28% vs same place 15% vs from the end 9% (403 items; same with one statement more or fewer); order vs place 28% vs 16% (5 statements), 54% vs 25% (3) | 22 entities, 1 wording, 2 topics | medium |
+| D3 | From ~layer 52 the last tokens carry the **fetched digit itself**; a pointer to the digit's place is small | The alt answer travels 97-99% from layer 56, whether or not the org prompt contains it; at 48-50 a 7-10% extra pull when it does | 2 topics | good |
+| D3b | A learned **~4-dimensional pointer direction steers the lookup** at layer 48 where a lens push of the same size does nothing; it means "the Nth statement" | Fresh scenes 43% (entity [36.6, 48.9]; animals 53%, elements 32%); **on 85 new entities / a held-out wording: 31% [27, 36]** (just under the pre-registered 30% bar: entity 28%, wording 31%, both 32%); lens push 0% everywhere; recall ≤ 2%. Order vs place: 31% vs 9%. Misses overshoot past the target (55% vs 32% by chance), like an ordered axis | 22 → 85 entities, 9 wordings | medium-strong for "steers"; weaker on new entities |
+| D3b | The pointer is **hard to read**: a read-out from the last tokens names the asked statement less often than a push can use it | Nearest-class-mean, 400 scenes, cross-validated: 45% at layer 48, best 48% at layer 50 (chance 20%); pre-registered verdict "hardly readable" | 22 entities | medium |
+| D3b | Where the lens reads the word but cannot write it (layers 32-40), does the pointer steer? | **Not decided.** Pointer 34% vs lens 13% (tokens after the cue); but the pointer also changed 16% of recall answers there (elements 31%, animals 2%), so the pre-registered control fails. Animals alone: 43% vs 7%, recall untouched | 22 entities | the "around = pointer" link is **not shown yet** |
+| D4 | The strong early lens push acts on **recalling the bridge**, not on the lookup | Post hoc: it switches the families where the entity is recalled (49/60, 57/60) and not those where it is stated (0/60 until 16×) | 1 dataset, 60 items, **post hoc** | weak |
 
 **The current picture** (a hypothesis, one model), layer by layer:
 
 | Layers | What happens in a lookup in the prompt | Seen in |
 |---|---|---|
 | 0-24 | a bridge stated in the prompt sits in its own sentence ("Jack's pet is a cow.") | D1 |
-| 0-31 | a *named* entity's words in the question read its statement ("Which locker belongs to the pig?" → "The pig's locker is 9."); a recalled one's do not | D2 |
-| 16-28 | a recalled bridge is formed from the cue; an early lens push here changes which animal is recalled | D4 (post hoc) |
-| up to ~40 | the question words carry the recalled word; after ~40 they no longer matter | D3 |
-| 28-44 | a stated bridge is spread over the whole context; its lens-readable part does nothing | D1 |
-| 44-50 | the last tokens before the answer carry *which statement* to read: a pointer **counted from the start of the list** (the Nth statement; partly also a place in the text), ~4 dimensions, unrelated to the lens's words, the same with statements in another language and for dict entries in code; pushing along it switches the lookup, the lens push does not. The word is carried there too, about as often | D3, D3b |
-| 48-63 | the last tokens read that statement through attention (DeltaNet layers are not needed); also in code, and in another language (there over more depth); in code other tokens read it too; for a recalled entity the question words and the last tokens at 32-47 are a backup (blocking both there: 45%) | D2 |
+| 0-31 | a *named* entity's words in the question read its statement; in code, the line that first mentions the key reads its dict entry | D2 |
+| 16-28 | a recalled bridge is formed from the cue; an early lens push here changes which entity is recalled | D4 (post hoc) |
+| 28-44 | a stated bridge is spread over the whole context; its lens-readable part does nothing for the lookup | D1 |
+| 32-47 | for a recalled entity, the question words and the last tokens can read the statement as a backup | D2 |
+| 44-50 | the last tokens carry a pointer: *the Nth statement, counted from the start* (~4 dimensions, unrelated to the lens's words); a push along it moves the lookup, a lens push does not. The word travels too, less often | D3, D3b |
+| 48-63 | the last tokens read the pointed-at statement through attention (not DeltaNet), spread over many heads (no single head is needed); one head (layer 51, head 22) attends to the bridge's statement on every scene | D2 |
 | 52-60 | the last tokens carry the fetched digit | D3 |
 
-The lens reads the word, but the lookup works with the pointer: the lens cannot steer it, a pointer direction can
-(43% on fresh scenes; animals 53%, elements 32%).
+![Where a stated bridge is carried, its lens-readable part and the lens push, n=80 (D1)](figures/depth_1022/d1_headline_n80.png)
+![From which layer the statement must stay readable (D2)](figures/depth_1021/d2_from_which_layer.png)
+![Which code lines read the dict entry (D2)](figures/depth_1022/d2_code_which_lines_read.png)
+![Word, slot or answer on 85 entities and 9 wordings per topic (D3, pointer_v4)](figures/depth_1022/d3_v4_word_slot_or_answer_by_layer.png)
+![Counted from the start or from the end (D3)](figures/depth_1022/d3_start_or_end_last_tokens.png)
+![The pointer direction on held-out entities and wordings (D3b, pointer_v4)](figures/depth_1022/d3b_v4_held_out_decision_cell.png)
+![The pointer direction vs the lens push where the lens reads the word (D3b, layers 32-40)](figures/depth_1022/d3b_pointer_vs_lens_layers_32_40.png)
+![How well the asked statement can be read out (D3b)](figures/depth_1022/d3b_pointer_readout_probe.png)
+![Does one head look at the statement the answer comes from? (D2 heads)](figures/depth_1022/d2_heads_attention_readout.png)
+![Which head units read the statement, late layers (D2 heads)](figures/depth_1022/d2_heads_units_late.png)
+
+## How general is it? An honest audit (21 Oct, evening)
+
+**What every result shares** (the main threats to generality):
+1. **One model**, Qwen3.6-27B, a hybrid of 16 attention and 48 DeltaNet layers. "Attention, not DeltaNet" and the
+   layer bands (48-63, 44-50) may be specific to it.
+2. **One prompt format.** All prompts use the chat template with an empty think block; the "last tokens" that read
+   the statement are exactly these 12 template tokens (`<|im_end|> … <think></think> Answer:`, checked by hand). A raw
+   prompt or another template may move the read.
+3. **Synthetic scenes**: 3-5 short statements, one-token digit answers, the question right after the list.
+4. **Moderate effect sizes**: patches and pushes move 25-50% of answers; 20-70% of patches change nothing.
+5. **Recounted by an agent, not checked by a human** (on purpose during this exploration phase).
+
+**Claims to avoid for now:** "the around route *is* the pointer" (not shown where the lens fails, layers 32-40);
+"a second, pointer lens" (a read-out reaches 45-48%); "DeltaNet plays no role in lookups" (shown only for reading the
+statement); "the slot always beats the word" (in two datasets the word is as frequent); anything about models other
+than the 27B.
+
+**Controls checked by hand** (random items, fixed seed; script in the session scratchpad):
+- The blocked span is exactly the answer's statement ("The pig's locker is 9."); the off-path control is another
+  statement of the same token length without the answer; for recall questions the "statement" is the bridge's own,
+  by design (the answer is recalled). The random-span control crosses statement borders, and when the answer's
+  statement is last the trailing-token control is a single newline: both weaker controls than the off-path one.
+- Every predicted digit (word / slot / alt answer / kept) matches its role on all 2,380 checked items (pointer_v1,
+  pointer_v4); the alt answer never appears in the org prompt; the same-entity control keeps the asked entity at the
+  same slot with the same digit, so it is a "nothing should change" control, not a word-vs-slot control.
+- In code, the "chain lines" destination includes the distractor chain (`g = "April"; w = g`), so it blocks more than
+  the target chain.
+- Elements (6 entities) drive two control failures (the recall control at layers 32-40, and the weak first D3b run):
+  conclusions should rest on topics with ≥ 15 entities.
+
+**Dataset formats needed for general conclusions** (what each would buy):
+
+| Format | Tests | Status |
+|---|---|---|
+| ≥ 3 topics with ≥ 15 entities, recalled by different cues, 9 wordings, held-out entities and wordings | that the pointer is not a property of a few entities or one sentence frame | **done** (pointer_v4) for D3/D3b; not yet for D1, D2 |
+| Non-digit answers (a word, a colour, a city; multi-token answers) | that the slot pointer is not a digit-copying trick | next |
+| Longer lists (8-12 statements) and the asked statement anywhere | counting from the start beyond 5; how far the pointer reaches | next |
+| Other prompt formats: no chat template (raw text), another template, a system prompt | whether "the last tokens" means the template tokens | next (cheap) |
+| Statements inside natural carriers: an earlier chat turn, a table, JSON, a paragraph of a document | that the read and the pointer survive layout and distance | next (agree a schema with Zach's battery) |
+| A passage that agrees or conflicts with memory (closed-book vs open-book) | which route a single item uses: D2's block as a per-item route detector, to split Zach's knock-out by route | next (with Zach) |
+| A second model (OLMo-3-7B: full attention, 32 layers) and the post-training ladder | whether any of D1-D3b is Qwen-specific | designed (D5b) |
 
 ## Open questions and the plan
 
-### Dan's track at a glance: "what is the around route?" (Zach's plan, 20 Oct)
-Everything below is UNVERIFIED (nothing of this track is in [VERIFIED.md](VERIFIED.md) yet); one model, Qwen3.6-27B.
+### Dan's track at a glance (Zach's plan, 20 Oct)
+| Plan item (Zach's words) | Thread | Status | What is still open |
+|---|---|---|---|
+| Where the lookup reads the bridge: the positions where it's stated vs the question tokens | D1 | **Done** on the animal suite (n=80) | other datasets (code chains are a stated bridge: `x = "mouse"`); which pieces of the context carry it; layers 20-28 |
+| Attention knock-out: block question → statement attention; does memory → prompt break while memory → memory survives? | D2 | **Done**, wider than planned (4 datasets, code lines, heads: no single reader) | the same grid on pointer_v4 (**building**); raw-format prompts (**building**); another model |
+| Pointers: lookback / binding-ID tests (swap statement order) | D3 | **Done**: a slot pointer, from the start, on 85 entities | why the word travels too; non-digit answers; longer lists |
+| Fit a code that does write memory → prompt, and its cosine with the lens | D3b | **Done**: it steers (31-43%), cosine at random level | the fair test at 32-40 (control failed); other families; another model |
+| The 27B's early writes: is a hard early lens push the same as editing the input word? | D4 | **Not decided**; post hoc: it acts on recall | a pre-registered replication on pointer_v4; does the push re-route the pointer |
+| The longshot: a pointer readout | D5a | **Designed** (below); linear read-out 45-48%, one head's attention 100% on unedited scenes | the decisive test: predict the patched slot answer, item by item |
+| The longshot: the OLMo post-training ladder | D5b | **Designed** (below); weights fetched; the specs' raw/chat switch was not wired (**fixing**) | run after the fix |
+| Shared: run log, cross-checks, freeze 2-3 claims (~26 Oct) | all | **Later, on purpose** (exploration phase) | when 2-3 claims look general |
 
-| Plan item (Zach's words) | Thread | Status | What we know | What is still open |
-|---|---|---|---|---|
-| Where the lookup reads the bridge: the positions where it's stated vs the question tokens (the one-pager's untested caveat) | D1 | **Partly** (animal suite only) | A stated bridge sits in its sentence up to layer 24, then is spread over the whole context at 28-44; the lens-readable part of that context does nothing for the lookup (0/240 at n=80; concentration 0.10), but carries it for recall (4.87); the lens push does not write it (no better than random at any size). So "around" is not an artefact of measuring at the question | layers 20-28 not run; which pieces of the context carry it; no dataset beyond the animal suite |
-| Attention knock-out: block question → statement attention. Does memory → prompt break while memory → memory survives? | D2 | **Done**, and wider than planned | Yes: memory → prompt breaks (7-11% right), memory → memory survives (≥ 96%). The read is by the last tokens, late (48-63), through attention only (DeltaNet not needed); holds on new scenes, Python code, another language. A named entity is also read early by the question words (0-31) | which heads (**building**); which code lines read the entry (**building**); Qwen3-32B (later) |
-| Pointers: lookback / binding-ID tests (swap statement order) | D3 | **Partly** | Patching the last tokens at 44-52 gives the answer at the **same statement slot** more than bridge alt's statement (29% vs 9%), also in code and in another language; from ~52 they carry the digit | answered: the Nth statement counted from the start, partly a place in the text; the pointer to the answer token itself is small (7-10%). Open: many more entities and wordings (pointer_v4, **running**); why the word is carried as often as the slot |
-| Fit a code that does write memory → prompt, and its cosine with the lens direction (as for brew, B3) | D3b | **Done on 2 domains** | A fitted ~4-dimensional pointer direction switches 43% of lookups on fresh scenes (animals 53%, elements 32%; entity-level [36.6, 48.9]) where the lens push switches 0%; cosine with the lens's word directions at the random level (0.03). Prior art: ordering ID (Dai et al. 2024) | answered: it means the Nth statement (31% vs 9%). Open: a fair "around" test at layers 32-40 and other families (**running**); the read-out with more data (**done, not opened yet**); more entities and wordings (pointer_v4, **running**) |
-| The 27B's early writes: is a hard early lens push the same as editing the input word? | D4 | **Not decided** by the pre-registered tests | Post hoc: the early push changes which entity is **recalled** (it switches memory → prompt and memory → memory, not prompt → prompt), so it acts on the recall step, which goes through the J-space, not on the lookup | does the push re-route the pointer; a continuous measure; hand the post-hoc reading to Zach (it bears on his "REVISES the headline") |
-| The longshot: a pointer readout | D5 | **Not started** (seeds only) | A linear probe reads which statement is asked at 39% (chance 20%, small fit set) | readout from the lookup heads' attention (after the D2 heads); nearest-class-mean probe on more data |
-| The longshot: the OLMo post-training ladder | D5 | **Not started** (ported, not run) | Pins, lenses and job specs for OLMo-3-7B base / SFT / DPO / Instruct exist | every run |
-| Shared: a run-log row per run; cross-check each other's numbers into VERIFIED.md; freeze 2-3 claims (~26 Oct) | all | **Later, on purpose** | Exploration phase: we try hypotheses and run them ourselves; headline numbers are recounted from raw files (not a human check); draft rows exist in `results/jobq/drafts/` | run-log rows, cross-checks and the freeze once 2-3 claims look general |
+### Batch 4 (21 Oct, evening): what is running or being built now
+| Run | What looked unreliable | Hypothesis (prior) | Status |
+|---|---|---|---|
+| `d4_push_wording_b_v1` | D4's reading is post hoc, one wording, 60 items | the early push switches recalled-bridge families (≥ 40%) and not stated ones (≤ 10%) on wording B, 100 per family (0.6) | **running** |
+| `d3v4_swap_topics` | "slot beats word" passed pooled only, no topic alone | the slot verdict holds in ≥ 2 of 3 topics with every eligible scene (0.45) | **running** |
+| `d2_v4_late_read` | D2's strongest claim rests on 22 entities | late attention read (≤ 20% kept) and no DeltaNet role (≥ 90%) in each of 3 topics, 85 entities (0.7) | building |
+| `d3b_fair_c2_v4` | the "around = pointer" link failed only on elements (6 entities) | pointer ≥ 30% and ≥ 20 points above the lens at 32-40 with the recall control ≤ 10%, in ≥ 2 of 3 topics (0.4) | building |
+| raw-format D3 on pointer_v4 | the "last tokens" are the chat template's tokens | in raw text the slot still beats the word at the last tokens (0.6) | building |
+| OLMo ladder (D5b) | the specs' raw / chat switch (`BJ_FORMAT`) is not read by the code: "raw" runs would be chat runs | — (a bug: fix, smoke, then run) | fixing; weights fetched |
 
-### By thread
-Status: **running** = on the 4×A100 box now (batch 3), **built** = code and spec ready, **next** = designed, not built,
-**later** = after something else. Predictions: `jobs/predictions/2026-10-22_dan.md`.
+### Next: tests that would make the claims general (in order)
+| # | Test | Settles | Cost |
+|---|---|---|---|
+| G1 | **The same prompts without the chat template** (raw text ending in "Answer:") for D2's late read and D3's slot | whether "the last tokens" are template tokens or any final tokens | ~0.5 GPU-h, no new data |
+| G2 | **The fair "around" test again on pointer_v4** (≥ 15 entities per topic) at layers 32-40, with the recall control per topic | whether the pointer steers where the lens reads but cannot write: the link between "around" and the pointer | ~1 GPU-h |
+| G3 | **A second model**: D2, D3 and D3b on pointer_v4 in OLMo-3-7B Instruct (first rung of D5b) | whether the late attention read and the pointer are Qwen-specific | ~1.5 GPU-h, ports exist |
+| G4 | **pointer_v5**: word answers (colours, cities), 3 / 5 / 8 / 12 statements, the asked statement anywhere | the pointer beyond digits and short lists; counting from the start on long lists | data ~1 h, runs ~1.5 GPU-h |
+| G5 | **D1 beyond the suite**: the stated bridge in code (`x = "mouse"` then `lockers[x]`) and a stated-bridge family in pointer_v4 | whether "the lens-readable part of a stated bridge does nothing" is general | ~1 GPU-h |
+| G6 | **D4 pre-registered** on pointer_v4: early lens push on recalled vs named vs stated entities | turns the post-hoc reading into a test | ~0.7 GPU-h |
+| G7 | **Natural carriers** (chat turn, table, document) and **open-book vs closed-book** items, with Zach's battery schema | layout and distance; a per-item route detector for C1 | with Zach |
 
-#### D1. Where is the bridge carried?
-- **Done (batch 3): the first-night result at n=80.** The lens-readable part of the context paste switches 0/240
-  (concentration 0.10), the lens push no more than random at any size (above). Layers 20-28 not run.
-- **Next: which pieces of the context hold a stated bridge at layers 28-44?** The whole context carries it, no single
-  sentence does. Paste piece by piece (each statement, the asked person's sentence, the locker rows). In-context
-  tasks are known to gather information on such "anchors" before the answer token reads it (Wang et al. 2023,
-  "Label words are anchors").
+### D5. The longshot (design)
 
-#### D2. From where and when is the statement read?
-- **Done (batch 2): the same blocking on new data.** Holds on new locker scenes, Python code and statements in
-  another language (above).
-- **Building: in code, who else reads the entry?** Blocking the last tokens alone keeps 36% of list-position lookups,
-  blocking every later token 3%: hide the entry from one code line at a time (the `names` line, each variable of a
-  chain, the print line).
-- **Building: which attention heads read it.** The full-attention layers inside 48-63 are 51, 55, 59 and 63. Block
-  one head at a time from reading the answer's statement at the last tokens; the heads whose block breaks
-  memory → prompt are the lookup heads. Also the early heads through which a named entity's question words read
-  its statement (layers 0-31).
-- **Later: Qwen3-32B**, full attention in every layer: the cleanest version of this test.
+#### D5a. A pointer readout
+**Question.** Can we read off, before the answer exists, *which statement the lookup will fetch*, a "pointer lens"
+next to the J-lens, which reads the word but not the pointer?
 
-#### D3. Does the lookup carry the word, a pointer, or the answer?
-- **Done: the statement's order, or its token position?** Mostly order, partly token position (28% vs 16% at the
-  last tokens, layer 50; with 3 statements 54% vs 25%); the pointer direction means the Nth statement (31% vs 9%;
-  above).
-- **Done: a pointer to the answer token itself** (the "reflexive" route, Gur-Arieh, Geva & Geiger 2025): small
-  (7-10% at layers 48-50 when the org prompt contains the alt answer); from ~52 the digit itself travels.
-- **Done: statements in another language.** The last-token pointer is unchanged (46% vs 48%); the tokens after the
-  question carry less (14% vs 42%). Chemical symbols: too few scenes pass the gate (22).
-- **Done: Python code.** A pointer to the entry's position at layers 48-50 for every way of finding the key (above);
-  the pre-registered 44-52 window is mixed because the digit arrives by layer 52.
-- **Next: why does a recalled entity miss its chemical symbol (52%) when a named one finds it (100%)?** A direct
-  probe of "the lookup matches spellings": the same scenes with half the statements by symbol, half by name.
-- **Done for animals (D3b): a learned pointer direction steers the lookup** (54% animals, 16% elements; lens push
-  0%, above). **Done (batch 3): replicated on fresh scenes** (43%, entity-level [36.6, 48.9]). **Building:** a fair
-  "around" test at layers 32-40 on the question tokens, where the lens still reads the word, plus the direction on
-  named → prompt and prompt → prompt; pointer_v4 (3 domains of ≥ 16 entities, 2-3 templates, held-out entities and
-  templates).
-- **Done: counted from the start or from the end?** From the start (28% vs 9% from the end and 15% the same place
-  in the text, at the last tokens, layer 50; same with one statement more or fewer; above).
-- **Next: why do half the patches change nothing?** (49% answer org kept at 44-52.) Patch the question words and
-  the last tokens together, and the last 1 / 2 / all template tokens separately; read item by item which items
-  carry the pointer.
-#### D4. Early lens push vs editing the prompt
-- **Next: does the early push re-route the pointer?** If the push writes "dog" at the recall step (post-hoc reading
-  above), the last tokens at 44-52 of the pushed run should point at the dog's statement: patch them into the org
-  prompt and read the slot answer. Plus a continuous measure (logit difference) instead of switched-or-not, and
-  later-layer similarity to "change the clue" vs "name it".
+**What we have.** Pushing along a ~4-dimensional pointer direction moves the lookup (31-43%); a nearest-mean read-out
+names the asked statement only 45-48% of the time; misses of the push overshoot past the target (an ordered axis).
+The heads job found one head (layer 51, head 22) whose attention from the last token falls most on the asked statement
+in 100% of held-out unedited scenes, but also for recall questions: it locates the bridge's statement, so the open
+question is whether it also follows the pointer when the pointer is changed (task b below).
 
-#### D5. Longshot: a pointer readout and the OLMo ladder
-- **Later (after the D2 heads): a pointer readout.** A linear probe reads which statement is asked at only 39%
-  (chance 20%), though the direction steers: first a nearest-class-mean read-out on more fit data. Then score each
-  statement by how much the lookup heads attend to it from the last tokens, and read off which statement will be
-  fetched before the answer exists; compare item by item with D3's slot answers and with the J-lens.
-- **Later: the OLMo-3-7B ladder** (base → SFT → DPO → Instruct; ported with verified lenses, job specs in
-  `jobs/d5/`): do the memory/prompt split and the pointer exist before post-training?
+**Three read-outs, one test bed.**
+1. *Attention read-out*: the late lookup head(s) from `d2_lookup_heads`: which statement gets most attention from the
+   last token. Head chosen on half the scenes, scored on the other half.
+2. *Axis read-out*: project the last-token state at layers 44-50 onto the fitted 4-dimensional subspace and read the
+   slot as a **number** (regression on 1..N) instead of 5 classes, since the pushes behave like an ordered axis.
+3. *Nearest-mean read-out* (today's 45-48%), the baseline.
 
-#### Across threads
-- **Reporting standard (from 21 Oct, after an outside review).** Next to every number: n items / k entities / t
-  templates / d domains, and per domain. Headline intervals by entity-cluster bootstrap (stratified by domain), the
-  item-level Wilson interval second; the interval method fixed in the manifest before the run. Item counts set
-  precision, not diversity: pointer_v1 has 16 animals and 6 elements with one template each, so more scenes of the
-  same entities add little; the bottleneck is new domains with ≥ 12 entities that pass the gate.
-- **Other models.** The 122B (weaker knock-out), then Zach's ports (the OLMo ladder is under D5).
-- **Knock-out confounds (Zach).** Removing the J-space also costs word answers ~35% even in a pure lookup; does it
-  erase the subject's identity rather than the workspace? (Control: keep the subject's own word.)
-- **Write-up.** Freeze 2-3 claims once batch 2 is in (candidates: D1 "not a location artefact", D2 "the last
-  tokens read the statement late through attention", D3 "a slot pointer, not the word"); each checked by the other
-  person into `VERIFIED.md`.
+**Test bed.** pointer_v4 held-out entities and the held-out wording (85 entities, 3 topics); code and another language
+as transfer sets. Two tasks: (a) on unedited prompts, name the asked statement; (b) on patched prompts (D3's alt
+patch), predict *which* statement the patched prompt will answer from, item by item, compared with the J-lens's top
+word on the same tokens.
+
+**Pre-registered rule (proposed).** A read-out "works" iff on held-out entities *and* the held-out wording its
+accuracy has an entity-level lower bound ≥ 60% on unedited prompts, and on patched prompts whose answer moved it
+predicts the new statement ≥ 60% (chance ~25%) and beats the J-lens's word read by ≥ 20 points (paired lower bound
+> 0). Controls: shuffled labels (chance), recall questions (no lookup: the read-out should not track the answer), a
+random 4-dimensional subspace. If all three read-outs stay ≤ 50%, the result is "the pointer steers but is not
+readable linearly or from one head", written as such.
+
+**Cost.** One collect job on pointer_v4 (~0.5 GPU-h: residuals at 40-52 and late-head attention), then CPU.
+Depends on `d2_lookup_heads` for read-out 1.
+
+#### D5b. The OLMo-3-7B post-training ladder
+**Question.** Do (i) the memory/prompt split (Zach's copy split, read vs write, knock-out) and (ii) the lookup
+pointer (D2's late read, D3's slot, D3b's direction) exist **in the base model**, or appear with SFT / DPO / Instruct?
+A second architecture too: OLMo-3-7B is full attention in all 32 layers.
+
+**What exists.** Pins and verified lenses for base / SFT / DPO / Instruct (lens layers 0-30, step 3); 30 job specs in
+`jobs/d5/` for the competence gate, the knock-out, the copy map and parts, and read/write dose, in raw and chat formats.
+
+**Stages** (per checkpoint; base in raw format only, the others in both):
+1. *Gates*: competence on the animal suite (existing specs) and on pointer_v4 (new, ~0.1 GPU-h each). A checkpoint
+   that fails a family's gate is reported, not measured on it.
+2. *Zach's three measures* (existing specs): copy split, read vs write, knock-out.
+3. *Dan's measures on pointer_v4* (new specs): D2's late read (block the statement from the last tokens per layer
+   band; full attention, so the band is found, not assumed), D3's slot vs word patch, D3b's pointer direction.
+
+**Pre-registered rules (proposed).** Split present iff the lookup's lens-readable concentration < 1 and the recall's
+> 1.2 with a knock-out contrast ≥ 30 points. Pointer present iff at some layer in the last third the slot answer's
+entity-level lower bound is ≥ 20% and ≥ 10 points above the word, with the same-entity control ≤ 10%. The ladder
+question is decided by base vs Instruct differences with entity-level intervals; layers reported as relative depth
+(layer / 32 vs / 64) to compare with the 27B.
+
+**Cost.** The 7B runs ~4× faster than the 27B: stages 1-3 ≈ 6-8 GPU-h in all, about 2 hours on the 4 GPUs. Risks: the
+base model may fail chat-format gates (hence raw format); the lens quality per checkpoint (checked when ported).
+
+### By thread (details)
+Status: **running** = on the 4×A100 box now, **next** = designed, not built, **later** = after something else.
+- **D1.** Next: the stated bridge in code and in pointer_v4 (G5); which pieces of the context hold it at layers
+  28-44 (paste piece by piece; in-context tasks gather information on "anchor" tokens, Wang et al. 2023).
+- **D2.** Running: which attention heads read the statement (`d2_lookup_heads`: late layers 51-63 at the last
+  tokens; `d2_lookup_heads_early_mid`: early layers at a named entity's words, middle layers for a recalled one).
+  Next: raw-format prompts (G1); another model (G3). Later: Qwen3-32B (full attention in every layer).
+- **D3.** Next: why the word travels with the slot (patch the last 1 / 2 / all template tokens separately; item by
+  item); non-digit answers and longer lists (G4); why a recalled entity misses its chemical symbol (52%) when a named
+  one finds it (100%).
+- **D3b.** Next: the fair test on pointer_v4 (G2); the direction on named → prompt and prompt → prompt (10% and 0% at
+  32-40, not yet at 48).
+- **D4.** Next: pre-registered replication (G6); does the early push re-route the pointer (patch the pushed run's last
+  tokens into the org prompt).
+- **Across threads.** Reporting standard: next to every number n items / k entities / t wordings, per topic;
+  entity-level intervals first, fixed in the manifest before the run. Knock-out confounds (Zach): removing the
+  J-space costs word answers ~35% even in a pure lookup.
 
 ## Data used in the depth track
 All generated by us (templates + fixed seeds; the model must pass a competence gate on a cut before it is used).
-The rule needs ≥ 35 items per cut (then 0 switches gives an upper bound ≤ 10%); runs use 50-180 per domain.
+Catalog with sizes: [data/README.md](data/README.md#depth-track-scenes-dan-21-oct-generated-seeded-each-with-a-check-and-a-verify-stage).
 
-| Dataset | Example | Size | Used by (items per run) |
+| Dataset | Example | What it separates | Used by |
 |---|---|---|---|
-| Animal suite (Zach, `data/suite_v1`) | "Jack's pet is a cow. … Which locker belongs to the animal known for mooing?" | 400 per family | night 1: D1 (80 per family), D2 (60), D4 (60) |
-| `pointer_v1`: 5 statements, one domain per scene | "The turkey's locker is 5. The mouse's locker is 1. The pig's locker is 9. … Which locker belongs to the animal known for oinking?" → 9 | 400 scenes per domain × family; animals, elements pass the gate (planets, months fail) | D3 (50 per domain), D2 batch 2 (96 animals + 79 elements), D3b (same 175, held out from the fit) |
-| `pointer_v2`: plus one filler sentence placed differently in org and alt | "… The bee's locker is 1. The street was lined with old trees." | 180 per topic (5 statements), 120 (3 statements) | D3 order vs token position (running) |
-| `code_pointer_v1`: Python dict lookups | `lockers = {"bee": 7, …, "mouse": 5}`, `x = "mouse"; h = x; print(lockers[h])` → 5 (named key, list position, 2- or 3-variable chain, recalled key) | 400 per domain × family; animals, months | D2 (60 per domain), D3 (animals 100 + months 20 per family: months fail the gate for the recalled key) |
-| `alias_pointer_v1`: statements in another language / by chemical symbol, question in English | "El perro tiene la taquilla 8. Die Kuh hat den Spind 6. … known for barking?" → 8; "The He card is in locker 9. … Which locker holds the helium card?" → 9 | 400 per domain × form × family | D2 (60 per form), D3 (up to 100 per topic) |
+| Animal suite (Zach, `data/suite_v1`) | "Jack's pet is a cow. … Which locker belongs to the animal known for mooing?" | the four families | D1, D2, D4 |
+| `pointer_v1` | "The turkey's locker is 5. The mouse's locker is 1. The pig's locker is 9. … known for oinking?" → 9 | word vs slot vs digit; 16 animals, 6 elements | D2, D3, D3b |
+| `pointer_v2` | … plus a filler sentence placed differently in org and alt | statement order vs place in the text | D3, D3b |
+| `pointer_v3` | the alt has one statement more or fewer (fillers keep the length) | counted from the start vs from the end | D3 |
+| `code_pointer_v1` | `lockers = {"bee": 7, …, "mouse": 5}`; `names = [...]`; `print(lockers[names[0]])` → 5 | named key, list position, variable chains, recalled key | D2, D3 |
+| `alias_pointer_v1` | "El perro tiene la taquilla 8. Die Kuh hat den Spind 6. … known for barking?" → 8 | matching by meaning across languages / chemical symbols | D2, D3 |
+| `pointer_v4` | "Drawer 1 holds the Greece file. … What drawer keeps the file on the country whose capital is Warsaw?" | 85 entities (36 countries, 34 animals, 15-16 body parts), 9 wordings per topic, held-out entities and wording | D3, D3b |
 
 ## Code and data (short map)
 | What | Code | Data / results |
 |---|---|---|
 | Animal suite (all families), competence | `scripts/suite_v1.py` | `data/suite_v1*`, `results/suite_v1/` |
 | Copy split, read/write, knock-out (Zach) | `scripts/suite_split.py`, `scripts/read_write.py`, `scripts/ablate_pilot.py` | `results/suite_split/`, `results/read_write/`, `results/ablate_pilot/` |
-| D1 patch at one place | `scripts/statement_positions.py` | `results/statement_positions/` |
-| D2 blocking reads | `src/bridge_jspace/knockout.py`, `scripts/attn_knockout.py` | `results/attn_knockout/` |
-| D3 word / slot / answer | `scripts/pointer_v1.py`, `scripts/pointer_v2.py`, `scripts/code_pointer_v1.py`, `scripts/alias_pointer_v1.py`, `scripts/pointer_swap.py` | `data/pointer_v1/`, `data/pointer_v2/`, `data/code_pointer_v1/`, `data/alias_pointer_v1/`, `results/pointer_v1/`, `results/pointer_v2/`, `results/code_pointer_v1/`, `results/alias_pointer_v1/`, `results/pointer_swap/` |
-| D3b learned pointer direction | `scripts/pointer_fit.py` | `results/pointer_fit/` |
+| D1 paste at one place | `scripts/statement_positions.py` | `results/statement_positions/` |
+| D2 blocking reads (per layer band, per head, per code line) | `src/bridge_jspace/knockout.py`, `scripts/attn_knockout.py` | `results/attn_knockout/` |
+| D3 word / slot / answer | `scripts/pointer_v1.py` … `pointer_v4.py`, `scripts/code_pointer_v1.py`, `scripts/alias_pointer_v1.py`, `scripts/pointer_swap.py` | `data/pointer_v*/`, `data/code_pointer_v1/`, `data/alias_pointer_v1/`, `results/pointer_swap/` and the gates under `results/<dataset>/` |
+| D3b pointer direction, order vs place, fair test, read-out | `scripts/pointer_fit.py`, `scripts/pointer_order.py`, `scripts/pointer_fair.py`, `scripts/pointer_probe.py` | `results/pointer_fit/`, `results/pointer_order/`, `results/pointer_fair/`, `results/pointer_probe/` |
 | D4 early push vs edits | `scripts/early_push.py` | `results/early_push/` |
+| Entity-cluster intervals | `src/bridge_jspace/stats.py` (`cluster_bootstrap`) | |
 | Job queue, job pages, plain names | `scripts/jobq.py`, `src/bridge_jspace/job_pages.py`, `jobs/`, `jobs/titles.yaml` | `results/jobq/` (ledger, draft run-log rows) |
 | Figures used on this page | | `figures/overview_1020/`, `figures/depth_1021/`, `figures/depth_1022/` |
 | Earlier experiments (exp01-exp23, part A readers) | `scripts/exp*` | see [README_archive.md](README_archive.md) |
