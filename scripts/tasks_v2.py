@@ -893,7 +893,7 @@ def judge(text: str, answer: str, kind: str) -> bool:
 
 def eligible(set_name: str, comp_run: str, words: list[str], n: int, level: str = "pick", max_chance: float = 0.5,
              fmt_class: str | None = None, strata: tuple[str, ...] = ("core",),
-             domains: list[str] | None = None) -> list[dict]:  # fmt: skip
+             domains: list[str] | None = None, per_word: bool = False) -> list[dict]:  # fmt: skip
     """The items a downstream run compares: from scenes whose items of the compared words the competence run got right
     on every prompt (whole, each step, C and O; the guess prompt excluded), at one level for the whole comparison
     (level "pick": the hardest level where every compared word scores >= 85% whole; "all"; or a level number; Zach,
@@ -901,7 +901,10 @@ def eligible(set_name: str, comp_run: str, words: list[str], n: int, level: str 
     answered its guess prompt right (None if the run had none). Every compared word must get items. v8: fmt_class
     ("text" or "structured") restricts to one format class and picks the level from that class's accuracy; strata
     (default core only; ("core", "secondary") or ("secondary",) for planets' three-step items) and domains restrict
-    further. A word below 85% at every level (M->P->M) is compared at an explicit level (e.g. "0"), labeled below band."""
+    further. A word below 85% at every level (M->P->M) is compared at an explicit level (e.g. "0"), labeled below band.
+    per_word (Zach, 2026-10-21, for the three-step words): judge each item on its own (every prompt right, its own
+    chance_same_answer < max_chance) instead of its whole scene; a three-step scene's words are different questions on
+    different contexts, ~60% right each on the 27B, so the scene rule kept about a third of them."""
     run_dir = pins.RESULTS_DIR / "tasks_v2" / comp_run
     ok: dict[str, list[bool]] = collections.defaultdict(list)
     guessed: dict[str, bool] = {}
@@ -939,9 +942,14 @@ def eligible(set_name: str, comp_run: str, words: list[str], n: int, level: str 
     scene_ok: dict[str, bool] = collections.defaultdict(lambda: True)
     for it in items:
         scene_ok[it["scene"]] &= bool(ok.get(it["id"])) and all(ok[it["id"]]) and it["scene"] not in bridge_free
+
+    def item_ok(it: dict) -> bool:
+        return bool(ok.get(it["id"])) and all(ok[it["id"]]) and it.get("chance_same_answer", 0) < max_chance
+
     out, got = [], collections.Counter()
     for it in items:
-        if got[it["word"]] >= n or not scene_ok[it["scene"]] or (want is not None and it["level"] != want):
+        passes = item_ok(it) if per_word else scene_ok[it["scene"]]
+        if got[it["word"]] >= n or not passes or (want is not None and it["level"] != want):
             continue
         got[it["word"]] += 1
         out.append({**it, "guessable": guessed.get(it["id"]), "compared_level": want})

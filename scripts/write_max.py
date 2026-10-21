@@ -123,7 +123,7 @@ def main(args) -> None:
                 "alphas": list(ALPHAS), "alphas_early": list(ALPHAS_EARLY), "swaps": list(SWAPS),
                 "transplants": list(TRANSPLANTS), "natural": list(NATURAL), "keep_gate": KEEP_GATE,
                 "families": args.families, "countries": args.countries, "n_per_family": args.n, "tf32": True,
-                "tasks": [args.tasks, args.tasks_competence, args.tasks_level], "from_competence": args.from_competence,
+                "tasks": [args.tasks, args.tasks_competence, args.tasks_level], "tasks_per_word": args.tasks_per_word, "from_competence": args.from_competence,
                 "doc": (__doc__ or "").split("\n\n", 1)[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     model = load_model()
@@ -134,7 +134,8 @@ def main(args) -> None:
     dic = {la: LensDictionary(wg, lens.J(la)) for la in band}
     emb = model.hf.get_input_embeddings().weight
     if args.tasks:
-        cases = RW.tasks_cases(tok, args.n, args.tasks, args.tasks_competence, args.families, args.tasks_level)
+        cases = RW.tasks_cases(tok, args.n, args.tasks, args.tasks_competence, args.families, args.tasks_level,
+                               args.tasks_per_word)  # fmt: skip
         assert cases, "no tasks_v2 cases"
     elif args.from_competence:  # a new target (no map run): its own competence run; countries built with this model
         cases = RW.suite_cases_from_competence(tok, args.n, args.from_competence, args.families)
@@ -350,6 +351,7 @@ if __name__ == "__main__":
     ap.add_argument("--tasks", help="a tasks_v2 set made with --counterfactuals (instead of the suite and countries)")
     ap.add_argument("--tasks-competence", help="the set's competence run (scenes right on every prompt are used)")
     ap.add_argument("--tasks-level", default="pick", help='tasks_v2 level: "pick" (per comparison), "all" or a number')
+    ap.add_argument("--tasks-per-word", action="store_true", help="tasks_v2: judge each item on its own (three-step)")
     ap.add_argument("--from-competence", default=None, help="a new target: suite_v1 competence run to take cases from")
     a = ap.parse_args()
     a.families = a.families or (["PP", "PM", "MP", "MM"] if a.tasks else ["BL", "BR", "RL", "RR"])

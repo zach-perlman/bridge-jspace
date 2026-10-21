@@ -83,7 +83,8 @@ def suite_cases_from_competence(tok, n: int, comp_run: str, families: list[str])
     return out
 
 
-def tasks_cases(tok, n: int, set_name: str, comp_run: str, words: list[str], level: str = "pick") -> list[dict]:
+def tasks_cases(tok, n: int, set_name: str, comp_run: str, words: list[str], level: str = "pick",
+                per_word: bool = False) -> list[dict]:  # fmt: skip
     """The first n items per word of a tasks_v2 set made with counterfactuals, from scenes its competence run got
     right on every prompt of the compared words, at one level for the comparison (tasks_v2.eligible). A scene with an
     item whose C or O does not line up in this tokenizer is dropped whole (its words stay paired) and the next scene
@@ -91,7 +92,7 @@ def tasks_cases(tok, n: int, set_name: str, comp_run: str, words: list[str], lev
     from scripts import tasks_v2 as T
 
     scenes: dict[str, list[dict]] = collections.defaultdict(list)
-    for it in T.eligible(set_name, comp_run, words, 10**9, level):
+    for it in T.eligible(set_name, comp_run, words, 10**9, level, per_word=per_word):
         if "cf_context" not in it:  # knock-out tier items have no C or O (a merged set like full_v8); 2026-10-21
             continue
         scenes[it["scene"]].append(it)
