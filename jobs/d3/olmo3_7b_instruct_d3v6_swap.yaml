@@ -1,0 +1,44 @@
+id: olmo3_7b_instruct_d3v6_swap
+title: "D3 v6 on OLMo-3-7B-Instruct: the Nth statement, a place in the text, or a distance back from the question?"
+thread: D3
+gpus: 1
+mem_gb: 25
+est_gpu_hours: 0.8
+depends_on:
+- olmo3_7b_instruct_d3v6_competence
+- olmo3_7b_instruct_d3v4_swap_fn
+- d3v6_smoke_27b
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_swap.py manifest --data pointer_v6 --set main
+  --name olmo3_7b_instruct_d3v6_swap --families RL DL --n 150 --layers 16 17 18 19 20 21 --control-stride 1
+  --groups final last --competence olmo3_7b_instruct_d3v6_competence --primary-layers 17 18 19
+  --why "D3 v6 on a second model (Dan: the pattern should match Qwen's): place in the text vs distance back vs order,
+  and long statements, at OLMo's last two tokens, layers 17-19 placed by function before the run"
+  && BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_swap.py run --name olmo3_7b_instruct_d3v6_swap
+examples_command: BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_swap.py examples --name olmo3_7b_instruct_d3v6_swap --group last
+figures_command: BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_swap.py figures --name olmo3_7b_instruct_d3v6_swap
+question: >-
+  As d3v6_swap_27b, on OLMo-3-7B-Instruct (full attention in every layer, 32 layers) at layers 17-19: under an extra
+  sentence before the list or before the question, which org statement does the patched answer come from; does the
+  same-slot share drop with long statements?
+why_it_matters: >-
+  Rotary position is in every layer of OLMo (Qwen3.6-27B's DeltaNet layers have none), so a distance-back address, if
+  it exists, should show at least as much here. Read with olmo3_7b_instruct_d3v4_swap_fn: if OLMo has no slot phase at
+  17-19, this run is reported as "not testable on OLMo".
+hypotheses:
+  H-rel (Dan): 'as d3v6_swap_27b at layers 17, 18 or 19. Agents'' prior 0.35'
+  H-abs: 'as d3v6_swap_27b. Prior 0.15'
+  H-ordinal: 'as d3v6_swap_27b. Prior 0.45'
+  H-long (Dan): 'as d3v6_swap_27b. Prior 0.4'
+decision_rule: >-
+  pointer_swap's "pointer_v6 additions" with the manifest's primary layers 17, 18 and 19 (placed by function before
+  the run: in olmo3_7b_instruct_d3v4_swap the alt digit at the last tokens is 0% at layer 16, 25% at 20, >= 76% from 22).
+  Three layers are looked at: a pass whose bound clears zero (or the rival) by under 2 points is reported as
+  "borderline". If olmo3_7b_instruct_d3v4_swap_fn finds no slot phase at 17-19, the run is "not testable on OLMo".
+controls:
+- 'as d3v6_swap_27b'
+n: >-
+  up to 150 scenes per topic eligible in every layout and both families x 3 topics x 4 layouts x 2 families; the 8
+  countries scenes not aligned under OLMo's tokenizer are dropped before sampling
+seeds: [0]
+notes: '~0.8 GPU-h on one A100 (7B). Depends on d3v6_smoke_27b (the end-aligned code path ran once).'

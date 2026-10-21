@@ -1,0 +1,58 @@
+id: d3v6_swap_27b
+title: "D3 v6: is the last tokens' address the Nth statement, a place in the text, or a distance back from the question?"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 2.1
+depends_on:
+- d3v6_competence_27b
+- d3v6_smoke_27b
+command: >-
+  uv run python scripts/pointer_swap.py manifest --data pointer_v6 --set main --name d3v6_swap_27b
+  --families RL DL --n 150 --layers 44 46 48 50 52 --control-stride 1 --groups final last
+  --competence d3v6_competence_27b
+  --why "D3 v6 (Dan's hypotheses, 21 Oct): an extra sentence before the list (place in the text shifts) vs before the
+  question (distance back shifts), and long statements, on the same scenes; last two tokens, layers 48 and 50
+  pre-registered"
+  && uv run python scripts/pointer_swap.py run --name d3v6_swap_27b
+examples_command: uv run python scripts/pointer_swap.py examples --name d3v6_swap_27b --group last
+figures_command: uv run python scripts/pointer_swap.py figures --name d3v6_swap_27b
+question: >-
+  When the alt prompt's last two tokens are patched into the org prompt at layers 48-50, and one prompt has an extra
+  sentence before its list (every statement moves in the text; its distance back from the question stays) or before
+  its question (the distance back changes; the place in the text stays), which org statement does the answer come
+  from: the same slot, the one at the same place in the text, or the one as far back from the question? And does the
+  same-slot share drop with statements twice as long?
+why_it_matters: >-
+  pointer_v4x showed the address follows the order index rather than the place in the text; there the place in the
+  text and the distance back from the question moved together. This run separates them. Dan's prediction: the
+  relative shift (distance back) matters more, as rotary position encodes distances. If the slot survives both shifts,
+  the address is an order index, not a token offset of either kind.
+hypotheses:
+  H-rel (Dan): 'share of answers at the same distance back (e5-rel) minus share at the same place in the text (e5-abs)
+    has lower bound > 0 at layer 48 or 50 (memory -> prompt, last two tokens, pooled). Agents'' prior 0.35'
+  H-abs: 'the same difference has upper bound < 0. Prior 0.15'
+  H-ordinal: 'in both shifted layouts the same slot''s lower bound exceeds the moved statement''s upper bound, at
+    layer 48 or 50. Prior 0.6'
+  H-long (Dan): 'same-slot share, long minus still, upper bound < 0 at layer 48 or 50. Prior 0.4'
+decision_rule: >-
+  Fixed before the run: scripts/pointer_swap.py docstring, "pointer_v6 additions" (analyze writes the tests to
+  summary.json `v6` and report.md). PRIMARY: memory -> prompt, the last two tokens, layers 48 and 50, pooled over
+  topics; a hypothesis holds if its test passes at either layer with n >= 35 in both layouts compared. Differences:
+  Newcombe 95% on items (the layouts share their scenes, so this is conservative); per-layout bounds: entity-cluster
+  bootstrap widened to Wilson. The full rule's verdicts, per topic cells, named -> prompt, the tokens after the
+  question and other layers are reported, not decisive. H-long's plain-answer half is d3v6_competence_27b's.
+controls:
+- 'same entity, statements reshuffled, the org layout (every hypothesis predicts answer org): damage bar'
+- 'random push of the same size per token at every layer: chance bar for each predicted digit'
+- 'a prompt of another topic, same size, aligned from the end: realistic-activation null'
+- 'e5-still: the same scenes with nothing moved (the reference for both shifts and for long statements)'
+- 'org prompt into itself (no-op); the layer-0 all-position check for the same-length layouts'
+n: >-
+  up to 150 scenes per topic eligible in every layout and both families (seed 0) x 3 topics x 4 layouts x 2 families
+  = up to 3,600 cases; per pooled primary cell up to 450 items over 85 entities and 27 wordings
+seeds: [0]
+notes: >-
+  ~2.1 GPU-h (d3v4x_swap_main: 2,700 cases, 5 layers, 1.5 h). The e5-abs and e5-rel sources are one sentence longer
+  or shorter than the org prompt; pointer_swap maps the patched positions from the end and checks that the question
+  and the template tokens line up (prepare).
