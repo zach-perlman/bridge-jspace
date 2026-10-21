@@ -1,0 +1,32 @@
+id: d3v4_seed2_swap_27b
+title: "Seed 2: does the slot-beats-word cell (last tokens, layer 50) replicate on a new draw of scenes?"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 1.0
+depends_on:
+- d3v4_seed2_competence_27b
+command: >-
+  uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set seed2 --name d3v4_seed2_swap_27b
+  --families RL DL --n 300 --layers 46 48 50 52 --groups last --competence d3v4_seed2_competence_27b
+  --why "seed 2 of the README's fig. 5 cell: the alt prompt's last two tokens patched at layers 46-52 on a new draw of
+  pointer_v4's scenes (same entities, wordings, split), every eligible scene per topic"
+  && uv run python scripts/pointer_swap.py run --name d3v4_seed2_swap_27b
+examples_command: uv run python scripts/pointer_swap.py examples --name d3v4_seed2_swap_27b --group last
+figures_command: uv run python scripts/pointer_swap.py figures --name d3v4_seed2_swap_27b
+question: >-
+  On a second draw of pointer_v4's scenes, at layer 50 with the alt prompt's last two tokens patched, does memory ->
+  prompt answer the digit of the same statement slot more often than bridge alt's statement and the alt prompt's
+  digit, pooled and in every topic (as d3v4_swap_topics: 50% vs 21%)?
+why_it_matters: 'The README''s pattern 5 rests on one draw of scenes; a second seed shows it is not that draw''s.'
+hypotheses:
+  H-replicates: 'layer 50, last two tokens, memory -> prompt: verdict "same statement slot" pooled and in each of the
+    3 topics (n >= 35), and the pooled slot share within 8 points of d3v4_swap_topics''s 50%. Prior 0.7'
+decision_rule: >-
+  pointer_swap's rule with the pointer_v4 additions (entity-cluster bootstrap widened to Wilson) at the last two
+  tokens, layer 50, memory -> prompt, pooled and per topic. Other layers and named -> prompt reported.
+controls:
+- 'same entity, statements reshuffled; random push of the same size; another topic''s prompt'
+n: 'every eligible scene, up to 300 per topic, memory -> prompt and named -> prompt'
+seeds: [844, 0]
+notes: '~1 GPU-h. Data seed 844 (seed2); sampling seed 0 as every pointer_swap run.'

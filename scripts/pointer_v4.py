@@ -69,6 +69,9 @@ N_ENT = 5
 LEVEL = "e5f0"
 SETS: dict[str, dict[str, Any]] = {
     "main": {"seed": 841, "n": 300, "families": FAMILIES, "split": "all"},
+    # 21 Oct, night: a second draw of main's design (same entities, wordings and split) to check the headline numbers
+    # are not one draw's; made with `make_set --set seed2` after the split existed
+    "seed2": {"seed": 844, "n": 300, "families": FAMILIES, "split": "all"},
     "fit": {"seed": 842, "n": 200, "families": ("RL",), "split": "fit"},
 }
 CAP = 12  # scenes per askable entity at most: with >= 12 askable entities, none is asked in > 1/12 of the scenes
@@ -539,10 +542,21 @@ def stage_make(probe_run: str | None) -> None:
     split_file().parent.mkdir(parents=True, exist_ok=True)
     split_file().write_text(json.dumps(split, indent=1) + "\n")
     print("wrote", split_file(), "used", split["used"], {d: len(v["pool"]) for d, v in split["domains"].items()})
-    for which in SETS:
+    for which in ("main", "fit"):
         for _label, (path, items, note) in generate(which, split).items():
             write_set(path, items, note)
             print("wrote", path, len(items))
+
+
+def stage_make_set(which: str) -> None:
+    """A set added after the split was written (seed2): the same split, entities and wordings, a new draw."""
+    tok = PV.tokenizer()
+    check_tokens(tok)
+    split = load_split()
+    assert split, "no split.json: run make first"
+    for _label, (path, items, note) in generate(which, split).items():
+        write_set(path, items, note)
+        print("wrote", path, len(items))
 
 
 def stage_verify() -> None:
@@ -625,7 +639,7 @@ def stage_competence(name: str) -> None:
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("stage", choices=["probe", "make", "verify", "check", "manifest", "competence"])
+    ap.add_argument("stage", choices=["probe", "make", "make_set", "verify", "check", "manifest", "competence"])
     ap.add_argument("--set", dest="sets", nargs="+", choices=list(SETS), default=["main"])
     ap.add_argument("--name")
     ap.add_argument("--why")
@@ -643,6 +657,9 @@ if __name__ == "__main__":
             "--no-probe writes only outside data/ (BJ_POINTER_V4_DATA)"
         )
         stage_make(args.probe)
+    elif args.stage == "make_set":
+        for s in args.sets:
+            stage_make_set(s)
     elif args.stage == "verify":
         stage_verify()
     elif args.stage == "check":
