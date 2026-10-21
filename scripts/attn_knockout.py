@@ -830,34 +830,41 @@ def run_check(model, case: dict, kinds: list[str]) -> dict:
         out[f"posctl_context_erased_{mode}_max_abs"] = float((lg[0] - lg[1]).abs().max())
     lg = forward_last(model, pair)
     out["unhooked_rolled_context_max_abs"] = float((lg[0] - lg[1]).abs().max())
-    # Kernel path: one DeltaNet layer's actual inputs, the dispatched kernel vs transformers' torch reference.
-    layer = next(i for i in range(n_layers // 2, n_layers) if kinds[i] == LINEAR)
-    gdn = model.layers[layer].linear_attn
-    ns: Any = sys.modules[type(gdn).__module__]
-    seen: dict[str, Any] = {}
-    rule = ns.torch_chunk_gated_delta_rule
+    # Kernel path (hybrid models only; a model with softmax attention in every layer has no DeltaNet kernel)
+    out["kernel_layer"] = None
+    if LINEAR in kinds:
+        # Kernel path: one DeltaNet layer's actual inputs, the dispatched kernel vs transformers' torch reference.
+        layer = next(i for i in range(n_layers // 2, n_layers) if kinds[i] == LINEAR)
+        gdn = model.layers[layer].linear_attn
+        ns: Any = sys.modules[type(gdn).__module__]
+        seen: dict[str, Any] = {}
+        rule = ns.torch_chunk_gated_delta_rule
 
-    def capture(*args, **kwargs):
-        seen["args"], seen["kwargs"] = args, kwargs
-        return rule(*args, **kwargs)
+        def capture(*args, **kwargs):
+            seen["args"], seen["kwargs"] = args, kwargs
+            return rule(*args, **kwargs)
 
-    ns.torch_chunk_gated_delta_rule = capture
-    try:
-        forward_last(model, ids)
-    finally:
-        ns.torch_chunk_gated_delta_rule = rule
-    ref = reference_chunk_rule(gdn)
-    q, k, v = seen["args"][:3]
-    g, beta = seen["kwargs"]["g"], seen["kwargs"]["beta"]
-    v0 = v.clone()
-    v0[:, src] = 0
-    for label, vv in (("noop", v), ("v0_at_source", v0)):
-        o1, _ = rule(q, k, vv, g=g, beta=beta, use_qk_l2norm_in_kernel=True)
-        o2, _ = ref(q, k, vv, g=g, beta=beta, use_qk_l2norm_in_kernel=True)
-        rms = float(o2.float().pow(2).mean().sqrt())
-        out[f"kernel_{label}_dispatched_vs_torch_max_abs_over_rms"] = float((o1.float() - o2.float()).abs().max()) / rms
-        out[f"kernel_{label}_dispatched_vs_torch_rel_fro"] = float((o1.float() - o2.float()).norm() / o2.float().norm())
-    out["kernel_layer"] = layer
+        ns.torch_chunk_gated_delta_rule = capture
+        try:
+            forward_last(model, ids)
+        finally:
+            ns.torch_chunk_gated_delta_rule = rule
+        ref = reference_chunk_rule(gdn)
+        q, k, v = seen["args"][:3]
+        g, beta = seen["kwargs"]["g"], seen["kwargs"]["beta"]
+        v0 = v.clone()
+        v0[:, src] = 0
+        for label, vv in (("noop", v), ("v0_at_source", v0)):
+            o1, _ = rule(q, k, vv, g=g, beta=beta, use_qk_l2norm_in_kernel=True)
+            o2, _ = ref(q, k, vv, g=g, beta=beta, use_qk_l2norm_in_kernel=True)
+            rms = float(o2.float().pow(2).mean().sqrt())
+            out[f"kernel_{label}_dispatched_vs_torch_max_abs_over_rms"] = (
+                float((o1.float() - o2.float()).abs().max()) / rms
+            )
+            out[f"kernel_{label}_dispatched_vs_torch_rel_fro"] = float(
+                (o1.float() - o2.float()).norm() / o2.float().norm()
+            )
+        out["kernel_layer"] = layer
     # Timing: a full batch unedited vs every row knocked out at every layer (the costliest condition).
     rows = torch.tensor([case["ids"]] * BATCH, device=DEVICE)
     for label, ctx in (

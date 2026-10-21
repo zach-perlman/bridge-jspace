@@ -1,0 +1,36 @@
+id: d2_abl_read_50_56_27b_v2
+title: "Remove the J-space where the lookup reads (layers 50-56): do lookups survive, does recall?"
+thread: D2
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.5
+depends_on: []
+command: >-
+  BJ_ABL_BATCH=8 uv run python scripts/ablate_pilot.py --name d2_abl_read_50_56_27b_v2 --layers 50 53 56 --rotated --no-random --comp-computed none
+  --n 100 --why "C2 / pattern 7: the paper's J-space removal (25-atom OMP over J++'s letter-token vectors at every
+  position, answer read as in abl_rot_v1) at layers 50-56, where D2 found the lookup's late read (48-63) and D3 the
+  address (44-50), instead of 32-40; the rotated same-size control (the random dictionary
+  does not fit next to the 27B on an 80 GB GPU)"
+question: >-
+  When the J-space is removed at every position at layers 50-56 (where the lookup reads its statement), do lookups in
+  the prompt (prompt -> prompt, memory -> prompt) stay right while recall (prompt -> memory, memory -> memory) drops,
+  as Zach's removal at 32-40 found (lookups 99%, recall 19-22%)?
+why_it_matters: >-
+  If the lookup survives the removal exactly in the layers where it reads and points, its read and its address do not
+  run through the J-space there: direct evidence for "around the lens" at the read itself, not only upstream.
+hypotheses:
+  H-lookup-survives: 'prompt -> prompt and memory -> prompt (whole question): accuracy with the J-space removed >= 90%
+    and within 10 points of the rotated control. Prior 0.7'
+  H-recall-drops: 'prompt -> memory and memory -> memory: accuracy with the J-space removed <= 60% while the rotated
+    control keeps >= 90% (late layers: the recalled answer may already be formed, so this may fail). Prior 0.35'
+decision_rule: >-
+  Per family (whole question, "clean"), accuracy under none / J-space removed / rotated removal
+  (same norm per position), Wilson 95% on items. H-lookup-survives: both lookup families' J-space accuracy lower bound
+  >= 0.85 and point within 10 points of rotated. H-recall-drops: both recall families' J-space upper bound <= 0.60 and
+  rotated lower bound >= 0.85. The last step alone ("hop") and the countries set are reported.
+controls:
+- 'rotated: the J-space fit turned by a fixed random rotation (the same norm removed, position by position)'
+- 'the last step alone (hop): what each family loses without the first hop'
+n: '100 eligible items per family (animal suite, competence_v2), countries from map_v1'
+seeds: [777, 888]
+notes: 'One band per job, so a band whose lens map is missing fails alone. abl_rot_v1 is the same at 32 36 40.'
