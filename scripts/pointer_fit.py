@@ -46,6 +46,14 @@ and the slot direction on memory → memory both keep the slot-target rate's Wil
 Illusion flag (reported with the verdict): the out-of-span remainder alone reaches at least half of the full direction's
 rate while the in-span part alone stays below half. Reported, not decisive: every layer and the window, every scale,
 the rank-k subspaces, the held-out-entity cut (queried entity never queried in the fit), geometry.
+Decision rule, pointer_v4 additions (--data pointer_v4; fixed 2026-10-21, before any v4 run): the fit uses pointer_v4's
+fit set (fit entities and wordings only: data/pointer_v4/split.json); the steer items are main items whose asked entity
+or wording is held out of the fit (cut entity, wording or both; never "neither"), the fit's entity split is the one in
+split.json. Every interval the rule reads is the entity-cluster bootstrap 95% interval (asked entity resampled within
+each topic, 2000 resamples, seed 0; for the differences, of the per-item paired difference), widened to the item-level
+Wilson interval where that is wider (rates only); item-level intervals are reported next to them. The thresholds are
+unchanged. Reported, not decisive: per topic, per cut (held-out entity / wording / both), n items / k entities / t
+wordings for every primary cell.
 
 Stages:  run --name N --why W [...]  (manifest.json first, then collect, fit, geometry, steer)
          analyze --name N   figures --name N   examples --name N [--k 3]
@@ -73,7 +81,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
-from bridge_jspace.stats import wilson
 from scripts import pointer_swap as PS
 from scripts import pointer_v1 as PV
 from scripts import suite_v1 as S
@@ -81,11 +88,12 @@ from scripts import suite_v1 as S
 EXP = "pointer_fit"
 RESULTS = pins.RESULTS_DIR / EXP
 DEFAULTS: dict[str, Any] = {
-    "domains": ["animals", "elements"], "collect_layers": [40, 42, 44, 46, 48, 50, 52],
+    "data": "pointer_v1", "domains": ["animals", "elements"], "collect_layers": [40, 42, 44, 46, 48, 50, 52],
     "steer_layers": [44, 46, 48, 50, 52], "scales": [0.5, 1.0, 2.0, 4.0], "ks": [1, 2, 4, 8, 16], "n_test": 100,
     "rr_n": 50, "fit_limit": None, "span_rank": 32, "primary_layer": 48, "primary_scale": 1.0,
     "competence": "d3_competence_27b",
 }  # fmt: skip
+DATASETS = ("pointer_v1", "pointer_v4")
 N_SLOTS = 5
 SPLIT_SEED, SHUFFLE_SEED, SAMPLE_SEED, NULL_SEED, BOOT_SEED, N_BOOT, EXAMPLE_SEED = 0, 1, 0, 0, 0, 2000, 0
 RATE_MIN, MARGIN, CONTROL_MAX = 0.30, 0.20, 0.10
@@ -207,22 +215,47 @@ def statement_spans(text: str, context: str) -> list[tuple[int, int]]:
 # ---- items ----------------------------------------------------------------------------------------------------------
 
 
-def pools(domains: list[str]) -> dict[str, tuple[list[str], list[str]]]:
-    return {d: entity_split(list(PV.DOMAINS[d]["entities"])) for d in domains}
+def data_gen(cfg: dict):
+    """The items' generator: pointer_v1 (the default; older manifests have no 'data') or pointer_v4."""
+    import importlib
+
+    return importlib.import_module(f"scripts.{cfg.get('data', 'pointer_v1')}")
+
+
+def is_v4(cfg: dict) -> bool:
+    return cfg.get("data") == "pointer_v4"
+
+
+def ci_of(cfg: dict) -> dict | None:
+    """pointer_v4: the entity-cluster bootstrap (pointer_swap's CLUSTER_CI); else None (Wilson, item bootstrap)."""
+    return PS.CLUSTER_CI if is_v4(cfg) else None
+
+
+def pools(cfg: dict | list[str]) -> dict[str, tuple[list[str], list[str]]]:
+    """(fit entities, held-out entities) per domain: pointer_v4's recorded split, else a seeded half of each pool. A
+    list of domains (older callers: scripts/pointer_probe.py, pointer_fair.py) means pointer_v1."""
+    if isinstance(cfg, list):
+        cfg = {"domains": cfg}
+    G = data_gen(cfg)
+    if is_v4(cfg):
+        sp = G.load_split()["domains"]
+        return {d: (sp[d]["fit_entities"], sp[d]["held_out_entities"]) for d in cfg["domains"]}
+    return {d: entity_split(list(G.DOMAINS[d]["entities"])) for d in cfg["domains"]}
 
 
 def fit_items(cfg: dict) -> list[dict]:
+    G = data_gen(cfg)
     out = []
     for d in cfg["domains"]:
-        its = PV.load_file(PV.DATA / "fit" / f"{d}_RL_e5f0.json")
+        its = PV.load_file(G.DATA / "fit" / f"{d}_RL_e5f0.json")
         out += its[: cfg["fit_limit"]] if cfg["fit_limit"] else its
     return out
 
 
-def eligible_main(comp_run: str) -> set[str]:
+def eligible_main(comp_run: str, cfg: dict | None = None) -> set[str]:
     """Main-set item ids with every competence prompt right (keyed by set: pointer_v1's main and dev reuse ids)."""
     ok: dict[str, list[bool]] = collections.defaultdict(list)
-    for line in (PV.RESULTS / comp_run / "items.jsonl").read_text().splitlines():
+    for line in (data_gen(cfg or {}).RESULTS / comp_run / "items.jsonl").read_text().splitlines():
         r = json.loads(line)
         if r.get("label", "").startswith("main/"):
             ok[r["id"]].append(r["correct"])
@@ -230,24 +263,37 @@ def eligible_main(comp_run: str) -> set[str]:
 
 
 def test_items(cfg: dict) -> list[dict]:
-    good = eligible_main(cfg["competence"]) if cfg["competence"] else None
+    """Eligible main items, up to n_test (RL) and rr_n (RR) per domain, seeded; pointer_v4: only items whose asked
+    entity or wording the fit never saw."""
+    G = data_gen(cfg)
+    good = eligible_main(cfg["competence"], cfg) if cfg["competence"] else None
     rng = random.Random(SAMPLE_SEED)
     out = []
     for fam, n in (("RL", cfg["n_test"]), ("RR", cfg["rr_n"])):
         for d in cfg["domains"]:
             its = [
-                it for it in PV.load_file(PV.DATA / "main" / f"{d}_{fam}_e5f0.json") if good is None or it["id"] in good
+                it
+                for it in PV.load_file(G.DATA / "main" / f"{d}_{fam}_e5f0.json")
+                if (good is None or it["id"] in good) and (not is_v4(cfg) or it["cut"] != "neither")
             ]
             out += [its[i] for i in sorted(rng.sample(range(len(its)), min(n, len(its))))]
     return out
 
 
 def input_files(cfg: dict) -> list[Path]:
-    files = [PV.DATA / "fit" / f"{d}_RL_e5f0.json" for d in cfg["domains"]]
-    files += [PV.DATA / "main" / f"{d}_{f}_e5f0.json" for d in cfg["domains"] for f in ("RL", "RR")]
+    G = data_gen(cfg)
+    files = [G.DATA / "fit" / f"{d}_RL_e5f0.json" for d in cfg["domains"]]
+    files += [G.DATA / "main" / f"{d}_{f}_e5f0.json" for d in cfg["domains"] for f in ("RL", "RR")]
+    if is_v4(cfg):
+        files.append(G.split_file())
     if cfg["competence"]:
-        files.append(PV.RESULTS / cfg["competence"] / "items.jsonl")
+        files.append(G.RESULTS / cfg["competence"] / "items.jsonl")
     return files
+
+
+def rel(p: Path) -> str:
+    """A path relative to the repo, or absolute (a smoke's data outside it)."""
+    return str(p.relative_to(pins.REPO_ROOT)) if p.is_relative_to(pins.REPO_ROOT) else str(p)
 
 
 # ---- the run ----------------------------------------------------------------------------------------------------------
@@ -269,8 +315,9 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
     doc = __doc__ or ""
     manifest = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "config": cfg,
-                "inputs": {str(p.relative_to(pins.REPO_ROOT)): sha256_of(p) for p in input_files(cfg)},
-                "entity_split": {d: {"fit": a, "held_out": b} for d, (a, b) in pools(cfg["domains"]).items()},
+                "inputs": {rel(p): sha256_of(p) for p in input_files(cfg)},
+                "entity_split": {d: {"fit": a, "held_out": b} for d, (a, b) in pools(cfg).items()},
+                "ci": ci_of(cfg) or {"kind": "wilson; differences: item bootstrap"},
                 "seeds": {"split": SPLIT_SEED, "shuffle": SHUFFLE_SEED, "sample": SAMPLE_SEED, "null": NULL_SEED,
                           "bootstrap": BOOT_SEED, "examples": EXAMPLE_SEED},
                 "design": doc.split("Decision rule")[0], "decision": "Decision rule" + doc.split("Decision rule")[1].split("Stages:")[0]}  # fmt: skip
@@ -279,7 +326,8 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
     tok = model.tokenizer
     lens = JLens(model, pins.FROZEN_LENS)
     t0 = time.time()
-    split = pools(cfg["domains"])
+    split = pools(cfg)
+    G = data_gen(cfg)
     digit_tok = {S.ids(tok, str(d))[0]: str(d) for d in range(10)}
     # 1. collect
     layers = tuple(cfg["collect_layers"])
@@ -330,7 +378,7 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
     torch.save({la: {k: v.cpu() for k, v in f.items()} for la, f in fits.items()}, cache / "fits.pt")
     # 3. geometry
     geometry = []
-    ents = sorted({e for d in cfg["domains"] for e in PV.DOMAINS[d]["entities"]})
+    ents = sorted({e for d in cfg["domains"] for e in G.DOMAINS[d]["entities"]})
     ent_tok = torch.tensor([model.concept_token(e) for e in ents], device="cuda")
     letters = model.letter_token_ids()
     from scripts.exp04_brew_parts import K_ATOMS, signed_omp
@@ -422,6 +470,7 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
         ptok = {h: S.ids(tok, v)[0] for h, v in preds.items()}
         read = torch.tensor([p["read_ids"]["base"]], device="cuda")
         held_out = c["query"] in split[c["domain"]][1]
+        wording = PS.wording_of(c)  # pointer_v4: the wording and the held-out cut
         for start in range(0, len(jobs), BATCH):
             chunk = jobs[start : start + BATCH]
             logits, _ = forward_rows(model, read, [e for _, e in chunk])
@@ -430,12 +479,13 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
                 top = int(logits[ri].argmax())
                 digit = digit_tok.get(top)
                 o = {"family": c["family"], "domain": c["domain"], "name": c["id"], "held_out_entity": held_out,
-                     "slot": PS.slot_class(c), **tags, "top": tok.decode([top]).strip(),
+                     "entity": q_b, **wording, "slot": PS.slot_class(c), **tags, "top": tok.decode([top]).strip(),
                      "role": roles.get(digit, "other_digit") if digit is not None else "other",
                      "p": {h: round(float(pr[ri, t]), 4) for h, t in ptok.items()}}  # fmt: skip
                 out_f.write(json.dumps(o) + "\n")
                 n_rows += 1
         cases.append({"id": c["id"], "family": c["family"], "domain": c["domain"], "held_out_entity": held_out,
+                      **wording, "question": c["question"],
                       "query_slot": a, "target_slot": j, "query": q_b, "alt_query": q_s, "answer": c["answer"],
                       "predictions": preds, "text": p["text"], "alt_text": p["source_text"], "context": c["context"],
                       "final_chars": [list(p["offsets"][i]) for i in fin],
@@ -470,28 +520,64 @@ def hit(o: dict, role: str = "position") -> float:
     return float(o["role"] == role)
 
 
-def rate(c: dict[str, dict], role: str = "position") -> list[float]:
-    return [round(x, 4) for x in wilson(sum(o["role"] == role for o in c.values()), len(c))] + [len(c)]
+def rate(c: dict[str, dict], role: str = "position", ci: dict | None = None) -> list[float]:
+    """[rate, lo, hi, n]: Wilson 95%, or (pointer_v4) the entity-cluster bootstrap widened to Wilson where wider."""
+    rows = list(c.values())
+    return [*PS.rate_ci([o["role"] == role for o in rows], rows, ci), len(c)]
 
 
-def paired(c1: dict, c2: dict, role: str = "position") -> list[float]:
+def paired(c1: dict, c2: dict, role: str = "position", ci: dict | None = None) -> list[float]:
+    """Paired difference of the role's share on the items in both cells: item bootstrap, or (pointer_v4) the
+    entity-cluster bootstrap of the per-item differences."""
     names = sorted(set(c1) & set(c2))
-    return boot_diff([hit(c1[n], role) for n in names], [hit(c2[n], role) for n in names])
+    if not (ci and names):
+        return boot_diff([hit(c1[n], role) for n in names], [hit(c2[n], role) for n in names])
+    from bridge_jspace.stats import cluster_bootstrap
+
+    diffs = [hit(c1[n], role) - hit(c2[n], role) for n in names]
+    d = cluster_bootstrap(diffs, [(c1[n]["domain"], c1[n]["entity"]) for n in names],
+                          [c1[n]["domain"] for n in names], ci["n_boot"], ci["seed"])  # fmt: skip
+    return [round(x, 4) for x in d]
+
+
+def nkt(c: dict[str, dict]) -> list[int]:
+    """n items, k asked entities, t wordings of a cell (k, t: 0 where the rows do not record them)."""
+    rows = list(c.values())
+    return [len(rows), len({(o["domain"], o["entity"]) for o in rows if "entity" in o}),
+            len({(o["domain"], o["template"]) for o in rows if "template" in o})]  # fmt: skip
 
 
 def summarise(rows: list[dict], cfg: dict, extra: dict) -> dict:
     la, sc = cfg["primary_layer"], cfg["primary_scale"]
+    ci = ci_of(cfg)
     rl = [o for o in rows if o["family"] == "RL"]
     rr = [o for o in rows if o["family"] == "RR"]
     prim = {cn: cell(rl, cond=cn, layer=la, scale=sc) for cn in conds_for(cfg, "RL")}
     prim["patch"] = cell(rl, cond="patch", layer=la)
     slot = prim["slot"]
-    r_slot, r_lens, r_rand = rate(slot), rate(prim["lens"]), rate(prim["random"])
-    d_lens, d_rand = paired(slot, prim["lens"]), paired(slot, prim["random"])
-    shuf, rr_slot = rate(prim["shuffled"]), rate(cell(rr, cond="slot", layer=la, scale=sc))
-    span_r, rest_r = rate(prim["span"]), rate(prim["rest"])
-    held = rate({n: o for n, o in slot.items() if o["held_out_entity"]})
-    seen = rate({n: o for n, o in slot.items() if not o["held_out_entity"]})
+    rr_cell = cell(rr, cond="slot", layer=la, scale=sc)
+    r_slot, r_lens, r_rand = rate(slot, ci=ci), rate(prim["lens"], ci=ci), rate(prim["random"], ci=ci)
+    d_lens, d_rand = paired(slot, prim["lens"], ci=ci), paired(slot, prim["random"], ci=ci)
+    shuf, rr_slot = rate(prim["shuffled"], ci=ci), rate(rr_cell, ci=ci)
+    span_r, rest_r = rate(prim["span"], ci=ci), rate(prim["rest"], ci=ci)
+    held = rate({n: o for n, o in slot.items() if o["held_out_entity"]}, ci=ci)
+    seen = rate({n: o for n, o in slot.items() if not o["held_out_entity"]}, ci=ci)
+    v4: dict[str, Any] = {}
+    if ci:  # pointer_v4: item-level intervals next to the cluster ones, n / k / t, per topic and per held-out cut
+        v4 = {
+            "ci": ci,
+            "item_level": {"slot": rate(slot), "lens": rate(prim["lens"]), "random": rate(prim["random"]),
+                           "shuffled": rate(prim["shuffled"]), "rr_slot": rate(rr_cell),
+                           "slot_minus_lens": paired(slot, prim["lens"]), "slot_minus_random": paired(slot, prim["random"])},
+            "n_k_t": {"slot": nkt(slot), "lens": nkt(prim["lens"]), "random": nkt(prim["random"]),
+                      "shuffled": nkt(prim["shuffled"]), "rr_slot": nkt(rr_cell)},
+            "per_domain": {d: {"slot": rate(s_d := {n: o for n, o in slot.items() if o["domain"] == d}, ci=ci),
+                               "lens": rate({n: o for n, o in prim["lens"].items() if o["domain"] == d}, ci=ci),
+                               "random": rate({n: o for n, o in prim["random"].items() if o["domain"] == d}, ci=ci),
+                               "n_k_t": nkt(s_d)} for d in cfg["domains"]},
+            "per_cut": {cut: {"slot": rate(s_c := {n: o for n, o in slot.items() if o.get("cut") == cut}, ci=ci),
+                              "n_k_t": nkt(s_c)} for cut in ("entity", "template", "both")},
+        }  # fmt: skip
     ok_a = r_slot[1] >= RATE_MIN
     ok_b = d_lens[0] >= MARGIN and d_rand[0] >= MARGIN and d_lens[1] > 0 and d_rand[1] > 0
     valid = shuf[2] <= CONTROL_MAX and rr_slot[2] <= CONTROL_MAX and shuf[3] >= 35 and rr_slot[3] >= 35
@@ -517,7 +603,7 @@ def summarise(rows: list[dict], cfg: dict, extra: dict) -> dict:
             "checks": {"a_lower_bound_ge_0.30": ok_a, "b_20_points_above_lens_and_random": ok_b,
                        "controls_valid": valid, "illusion_flag": illusion,
                        "unedited_answer_org": round(statistics.mean(o["role"] == "none" for o in unedited.values()), 4) if unedited else None},
-            "verdict": verdict, "grid": grid, **extra}  # fmt: skip
+            "verdict": verdict, "grid": grid, **({"pointer_v4": v4} if v4 else {}), **extra}  # fmt: skip
 
 
 def summary_md(sm: dict) -> str:
@@ -536,6 +622,22 @@ def summary_md(sm: dict) -> str:
               "seen_entities", "patch", *[k for k in p if k.startswith("sub")]):  # fmt: skip
         lines.append(f"| {k} | {r(p[k])} |")
     lines += ["", f"slot - lens {d(p['slot_minus_lens'])}; slot - random {d(p['slot_minus_random'])}"]
+    v4 = sm.get("pointer_v4")
+    if v4:
+        il, nk = v4["item_level"], v4["n_k_t"]
+        lines += ["", "Intervals above: entity-cluster bootstrap (asked entity within each topic), widened to Wilson where "
+                  "wider. Item level and n items / k entities / t wordings:", "",
+                  "| condition | item level | n / k / t |", "|---|---|---|"]  # fmt: skip
+        lines += [f"| {k} | {r(il[k])} | {' / '.join(map(str, nk[k]))} |" for k in nk]
+        lines += [
+            f"| slot - lens | {d(il['slot_minus_lens'])} | |",
+            f"| slot - random | {d(il['slot_minus_random'])} | |",
+        ]
+        lines += ["", "| topic | slot | lens | random | n / k / t |", "|---|---|---|---|---|"]
+        lines += [f"| {t} | {r(x['slot'])} | {r(x['lens'])} | {r(x['random'])} | {' / '.join(map(str, x['n_k_t']))} |"
+                  for t, x in v4["per_domain"].items()]  # fmt: skip
+        lines += ["", "| held out of the fit | slot | n / k / t |", "|---|---|---|"]
+        lines += [f"| {c} | {r(x['slot'])} | {' / '.join(map(str, x['n_k_t']))} |" for c, x in v4["per_cut"].items()]
     return "\n".join(lines) + "\n"
 
 
@@ -595,7 +697,7 @@ def example_text(cases: list[dict]) -> str:
     c = next((x for x in cases if x["family"] == "RL"), None)
     if c is None:
         return ""
-    q = c["text"][c["text"].rindex("Which") :].split("?")[0] + "?"
+    q = c.get("question") or c["text"][c["text"].rindex("Which") :].split("?")[0] + "?"  # older runs: no question
     sents = re.split(r"(?<=\.) ", c["context"])
     return (f"\"{sents[c['query_slot']]} ... {sents[c['target_slot']]} ... {q}\" -> answer org {c['answer']} (statement "
             f"{c['query_slot'] + 1}); pushing toward statement {c['target_slot'] + 1} should give "
@@ -634,6 +736,14 @@ def stage_figures(name: str) -> Path:
     n_rl = len({c["id"] for c in cases if c["family"] == "RL"})
     n_rr = len({c["id"] for c in cases if c["family"] == "RR"})
     ex = example_text(cases)
+    ci = ci_of(cfg)
+    bars = "Wilson 95%"
+    if ci:  # pointer_v4: entities and wordings next to n, cluster intervals
+        rl_c = [c for c in cases if c["family"] == "RL"]
+        n_rl = (f"{n_rl} ({len({(c['domain'], c['query']) for c in rl_c})} asked entities, "
+                f"{len({(c['domain'], c.get('template')) for c in rl_c})} wordings, all held out of the fit by entity or "
+                "wording)")  # fmt: skip
+        bars = "entity-cluster bootstrap 95% (asked entity resampled within each topic), widened to Wilson where wider"
 
     # 1. headline: slot direction vs lens push vs random vs patch, by layer and size
     fig, axes = plt.subplots(2, len(cfg["scales"]), figsize=(4.2 * len(cfg["scales"]), 7.2), sharey=True, squeeze=False)
@@ -651,7 +761,7 @@ def stage_figures(name: str) -> Path:
                         layer=key,
                         scale=None if cn == "patch" else s,
                     )
-                    vals.append(rate(c_)[:3] if c_ else [math.nan] * 3)
+                    vals.append(rate(c_, ci=ci)[:3] if c_ else [math.nan] * 3)
                 v = np.array(vals, float)
                 colour = COND_COLOURS.get(cn, PL.MUTED)
                 ls = "--" if cn in ("random", "shuffled") else "-"
@@ -680,7 +790,7 @@ def stage_figures(name: str) -> Path:
                ("Control", "Dashed: a random push and a direction fitted with shuffled slot labels, same size; both should "
                            "stay near 0%.")]  # fmt: skip
     save_fig(fig, out, "fig1_slot_direction_vs_lens", "Does a fitted slot direction steer the lookup where the lens push does not?",
-             explain, f"{model_name}; held-out scenes: {n_rl} memory → prompt and {n_rr} memory → memory items; error bars: Wilson 95%.",
+             explain, f"{model_name}; held-out scenes: {n_rl} memory → prompt and {n_rr} memory → memory items; error bars: {bars}.",
              handles, ncols=3, figs=figs)  # fmt: skip
 
     # 2. the decision: primary cell and its controls
@@ -723,10 +833,10 @@ def stage_figures(name: str) -> Path:
                ("Control", "Gray bars: random push, shuffled-label direction, memory → memory items; the two parts of the "
                            "slot direction test for an illusion (an effect carried only by the remainder).")]  # fmt: skip
     save_fig(fig, out, "fig2_decision_cell", "Does the slot direction pass the pre-registered test?", explain,
-             f"{model_name}; held-out scenes; error bars: Wilson 95%. Slot minus lens push {100 * p['slot_minus_lens'][0]:+.0f} "
+             f"{model_name}; held-out scenes; error bars: {bars}. Slot minus lens push {100 * p['slot_minus_lens'][0]:+.0f} "
              f"[{100 * p['slot_minus_lens'][1]:+.0f}, {100 * p['slot_minus_lens'][2]:+.0f}] points; minus random "
              f"{100 * p['slot_minus_random'][0]:+.0f} [{100 * p['slot_minus_random'][1]:+.0f}, {100 * p['slot_minus_random'][2]:+.0f}] "
-             "(item bootstrap).", figs=figs)  # fmt: skip
+             f"({'entity-cluster' if ci else 'item'} bootstrap).", figs=figs)  # fmt: skip
 
     # 3. geometry: decodability, entity cosines, principal angles, J-space share
     fig, axes = plt.subplots(1, 3, figsize=(15, 4.4))
@@ -831,7 +941,8 @@ def stage_figures(name: str) -> Path:
              f"{model_name}; {fitj['kept']} of {fitj['of']} fit items (answered right, queried entity in the fitting half); "
              "medians over slots x tokens.", figs=figs)  # fmt: skip
     (out / "summary.json").write_text(json.dumps({"run": name, "verdict": sm["verdict"], "checks": sm["checks"],
-                                                  "primary": sm["primary"], "fit": fitj, "figures": figs}, indent=2) + "\n")  # fmt: skip
+                                                  "primary": sm["primary"], **({"pointer_v4": sm["pointer_v4"]} if ci else {}),
+                                                  "fit": fitj, "figures": figs}, indent=2) + "\n")  # fmt: skip
     print(out)
     return out
 
@@ -890,7 +1001,10 @@ if __name__ == "__main__":
     ap.add_argument("stage", choices=["run", "analyze", "figures", "examples"])
     ap.add_argument("--name", required=True)
     ap.add_argument("--why")
-    ap.add_argument("--domains", nargs="+", default=DEFAULTS["domains"])
+    ap.add_argument("--data", default=DEFAULTS["data"], choices=list(DATASETS), help="the items' generator")
+    ap.add_argument(
+        "--domains", nargs="+", default=None, help="default: pointer_v1 animals elements; pointer_v4 all used"
+    )
     for key in ("collect_layers", "steer_layers", "ks"):
         ap.add_argument("--" + key.replace("_", "-"), nargs="+", type=int, default=DEFAULTS[key])
     ap.add_argument("--scales", nargs="+", type=float, default=DEFAULTS["scales"])
@@ -898,7 +1012,8 @@ if __name__ == "__main__":
         ap.add_argument("--" + key.replace("_", "-"), type=int, default=DEFAULTS[key])
     ap.add_argument("--primary-scale", type=float, default=DEFAULTS["primary_scale"])
     ap.add_argument("--fit-limit", type=int, default=None, help="fit items per domain (a smoke: few)")
-    ap.add_argument("--competence", default=DEFAULTS["competence"])
+    ap.add_argument("--competence", default=None, help="the --data generator's competence run (pointer_v1 default: "
+                    f"{DEFAULTS['competence']}; pointer_v4: required)")  # fmt: skip
     ap.add_argument("--no-eligibility", action="store_true", help="a smoke on another model: no competence filter")
     ap.add_argument(
         "--keep-wrong", action="store_true", help="a smoke on a weak model: fit on items it answers wrong too"
@@ -908,10 +1023,14 @@ if __name__ == "__main__":
     if args.stage == "run":
         assert args.why, "run needs --why"
         assert set(args.ks) <= set(DEFAULTS["ks"]), "ks must be a subset of the defaults (the conditions are fixed)"
-        config = {"domains": args.domains, "collect_layers": args.collect_layers, "steer_layers": args.steer_layers,
+        v4 = args.data == "pointer_v4"
+        domains = args.domains or (list(data_gen({"data": args.data}).DOMAINS) if v4 else DEFAULTS["domains"])
+        competence = args.competence or (None if v4 else DEFAULTS["competence"])
+        assert competence or args.no_eligibility, "pointer_v4 needs --competence RUN (or --no-eligibility for a smoke)"
+        config = {"data": args.data, "domains": domains, "collect_layers": args.collect_layers, "steer_layers": args.steer_layers,
                   "scales": args.scales, "ks": args.ks, "n_test": args.n_test, "rr_n": args.rr_n, "fit_limit": args.fit_limit,
                   "span_rank": args.span_rank, "primary_layer": args.primary_layer, "primary_scale": args.primary_scale,
-                  "competence": None if args.no_eligibility else args.competence,
+                  "competence": None if args.no_eligibility else competence,
                   "require_correct": not args.keep_wrong}  # fmt: skip
         stage_run(args.name, args.why, config)
     elif args.stage == "analyze":

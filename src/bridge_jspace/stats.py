@@ -38,6 +38,38 @@ def bootstrap_mean(values, n_boot: int, seed: int, alpha: float = 0.05) -> tuple
     return float(x.mean()), float(lo), float(hi)
 
 
+def cluster_bootstrap(
+    values, clusters, strata=None, n_boot: int = 2000, seed: int = 0, alpha: float = 0.05
+) -> tuple[float, float, float]:
+    """(mean, lo, hi): the item-level mean with a percentile CI from resampling whole clusters with replacement (e.g.
+    the queried entity: items of one entity are correlated), separately within each stratum (e.g. the domain), each
+    stratum keeping its number of clusters. A resample's statistic is the mean over all items it contains."""
+    x = np.asarray(values, dtype=float)
+    if x.size == 0:
+        raise ValueError("cluster_bootstrap needs at least one value")
+    st = [0] * x.size if strata is None else list(strata)
+    if len(clusters) != x.size or len(st) != x.size:
+        raise ValueError("values, clusters and strata must have the same length")
+    groups: dict = {}  # stratum -> cluster -> [sum, count]
+    for v, c, s in zip(x.tolist(), clusters, st, strict=True):
+        g = groups.setdefault(s, {}).setdefault(c, [0.0, 0])
+        g[0] += v
+        g[1] += 1
+    rng = np.random.default_rng(seed)
+    total_sum = np.zeros(n_boot)
+    total_n = np.zeros(n_boot)
+    for s in sorted(groups, key=str):
+        keys = sorted(groups[s], key=str)
+        sums = np.array([groups[s][k][0] for k in keys])
+        counts = np.array([groups[s][k][1] for k in keys], dtype=float)
+        pick = rng.integers(0, len(keys), size=(n_boot, len(keys)))
+        total_sum += sums[pick].sum(1)
+        total_n += counts[pick].sum(1)
+    means = total_sum / total_n
+    lo, hi = np.quantile(means, [alpha / 2, 1 - alpha / 2])
+    return float(x.mean()), float(lo), float(hi)
+
+
 def ledoit_wolf(z: torch.Tensor) -> tuple[torch.Tensor, float]:
     """Ledoit-Wolf (2004) shrunk covariance of already-centred rows z [n, d]: (1 - a) S + a (tr S / d) I with
     S = z^T z / n and the analytic intensity a = min(b2, d2) / d2, where (Frobenius norms divided by d)

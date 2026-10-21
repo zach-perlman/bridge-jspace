@@ -1,0 +1,65 @@
+id: d3v4_fit_main
+title: "D3b v4: does the fitted pointer direction steer the lookup for entities and wordings the fit never saw?"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.6
+depends_on:
+- d3v4_competence_27b
+- d3v4_smoke_27b
+command: >-
+  uv run python scripts/pointer_fit.py run --data pointer_v4 --name d3v4_fit_main --competence d3v4_competence_27b
+  --n-test 150 --rr-n 50 --steer-layers 44 46 48 50 52 --scales 1.0 2.0 --ks 4
+  --why "D3b on pointer_v4: fit the statement-slot direction on the fit set (fit entities and wordings only), steer
+  main items whose asked entity or wording is held out, entity-cluster intervals"
+examples_command: uv run python scripts/pointer_fit.py examples --name d3v4_fit_main
+figures_command: uv run python scripts/pointer_fit.py figures --name d3v4_fit_main
+question: >-
+  On pointer_v4, does adding the direction fitted to "the asked statement is slot j" minus the current slot (per token,
+  at every token after the question, layer 48, 1x the alt-prompt patch's size) switch the answer to the digit at slot j
+  on memory -> prompt items whose asked entity or wording was held out of the fit, where the lens push of the same
+  size does not?
+why_it_matters: >-
+  D3b's first run passed by 0.3 points on item-level intervals (37% [30.3, 45], 22 entities, one wording) and failed
+  on an entity-cluster interval ([28.7, 45.2]). pointer_v4 tests the same claim with ~3x the entities, three wordings,
+  a recorded held-out split (the fit never sees a test entity or wording) and entity-cluster intervals as the primary.
+  A pass makes "a pointer direction the lens cannot express steers the lookup" a candidate for VERIFIED.md; a fail on
+  held-out items says the direction was fitted to the entities or the sentence frame.
+hypotheses:
+  H-slot: 'slot direction, layer 48, 1x, pooled held-out items: target-slot answers 30-45%, entity-cluster lower bound
+    >= 0.30, >= 20 points above the lens push and the random push (cluster lower bounds of both differences > 0);
+    shuffled-label direction and memory -> memory <= 5%'
+  H-held-out-drop: 'the held-out-entity cut is >= 15 points below the held-out-wording cut (the direction carries
+    entity-specific content), or the rate is < 0.30 pooled'
+  H-topic: 'the rate differs by > 20 points between topics (pointer_v1: animals vs elements)'
+  prior: 'Agent prior: H-slot passes the rule 0.35; H-held-out-drop 0.3; H-topic 0.35.'
+decision_rule: >-
+  Fixed in scripts/pointer_fit.py's docstring ("Decision rule" and "pointer_v4 additions") and the manifest. Primary
+  cell: memory -> prompt, topics pooled, every steered item (asked entity or wording held out of the fit), slot
+  direction at layer 48, 1x. Passes iff (a) its target-slot rate's entity-cluster 95% lower bound (asked entity
+  resampled within each topic, 2000 resamples, seed 0, widened to Wilson where wider) >= 0.30 and (b) it is >= 20
+  points above both the lens push and the random push at the same size, each difference's entity-cluster bootstrap
+  95% lower bound > 0. Valid only if the shuffled-label direction and the slot direction on memory -> memory keep their
+  upper bound <= 0.10 (n >= 35 each). Illusion flag reported with the verdict. Reported, not decisive: item-level
+  intervals, per topic, per held-out cut (entity / wording / both), n items / k entities / t wordings, other layers
+  and 2x, the rank-4 subspace, geometry.
+controls:
+- 'random push per token at the same size'
+- 'lens push bridge alt − bridge org at the same size (the comparison the claim is about)'
+- 'shuffled-label direction (slot labels permuted before the fit)'
+- 'memory -> memory items (no lookup: a pointer should do nothing)'
+- 'held-out split recorded in data/pointer_v4/split.json: test entities and the third wording never in the fit'
+- 'in-span part vs remainder (illusion check)'
+- 'alt-prompt patch at the same tokens and layers (reference)'
+n: >-
+  memory -> prompt: up to 150 eligible held-out items per topic (~420-450 pooled over ~70-100 asked entities; sports
+  may have ~130 after the gate); memory -> memory: 50 per topic; fit: up to 200 fit scenes per topic (~570), those
+  answered right kept
+seeds:
+- 0
+- 1
+notes: >-
+  Reads: memory -> prompt ~450 x (1 + 6 layer settings x (2 sizes x 7 conditions + 1 patch)) = ~41k, memory -> memory
+  150 x (1 + 6 x (2 x 4 + 1)) = ~8.3k: ~49k reads at 31-37/s ~ 24 min; + collect ~570 forwards and fit ~2 min,
+  geometry ~2 min, load ~4 min: ~0.6 h. The conditions match d3b_replicate_fresh_27b (sizes 1x and 2x, rank 4) with
+  all five steer layers. Results: results/pointer_fit/d3v4_fit_main/.

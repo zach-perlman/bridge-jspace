@@ -2,8 +2,9 @@
 in-prompt lookup: the bridge's identity, a pointer to the binding statement's position, or the answer itself?
 
 Items: scripts/pointer_v1.py (data/pointer_v1/<set>/), or any generator with the same item schema chosen by --data
-(pointer_v2: offset-shift and reflexive scenes; code_pointer_v1: Python code; alias_pointer_v1: statements in other
-languages). Each base item has a token-aligned source "dissoc" whose residual,
+(pointer_v2: offset-shift and reflexive scenes; pointer_v3: one statement more or fewer; pointer_v4: three topics with
+many entities and three wordings; code_pointer_v1: Python code; alias_pointer_v1: statements in other languages). Each
+base item has a token-aligned source "dissoc" whose residual,
 patched into the base, predicts four distinct answers (none = the base answer; identity = the base's digit for the
 source's entity; position = the base's digit at the source's queried slot; value = the source's answer, absent from the
 base context; for RR value = identity by construction).
@@ -56,6 +57,12 @@ Decision rule, pointer_v3 additions (fixed 2026-10-21, before any v3 run):
   - primary cells: memory -> prompt, the last two tokens and the tokens after the question, layers 48 and 50 and the
     window 44-52, per alt type pooled over topics; a verdict counts as the answer only if it holds for both alt types
     (one more and one fewer), otherwise it is reported as type-dependent.
+Decision rule, pointer_v4 additions (fixed 2026-10-21, before any v4 run):
+  - intervals: every bound the rule reads (changed, the same control, the candidates, the random push, context) is the
+    entity-cluster bootstrap 95% interval (the asked entity resampled with replacement within each topic, 2000
+    resamples, seed 0; stats.cluster_bootstrap), widened to the item-level Wilson interval where that is wider (a
+    percentile bootstrap has zero width at 0 or n events); item-level Wilson is reported next to it. Every cell reports
+    n items / k asked entities / t wordings. The rule itself is unchanged.
 
 Stages:  manifest --name N --why W [--data pointer_v1|pointer_v2|code_pointer_v1|alias_pointer_v1] --set S
                   [--levels ...] [--families ...] [--domains ...] [--family-roles P R C] [--n K] [--layers ...]
@@ -96,7 +103,11 @@ SOURCES = ("dissoc", "same", "rand", "other")
 ROLES = ("none", "identity", "position", "end", "token", "value", "context", "recall", "other_digit", "other")
 # every prediction a dataset may record, in priority order (end: pointer_v3's slot counted from the end of the list)
 HYPS = ("none", "identity", "position", "end", "token", "value")
-DATASETS = ("pointer_v1", "pointer_v2", "pointer_v3", "code_pointer_v1", "alias_pointer_v1")
+DATASETS = ("pointer_v1", "pointer_v2", "pointer_v3", "pointer_v4", "code_pointer_v1", "alias_pointer_v1")
+# Interval method per dataset (pointer_v4 additions in the docstring); Wilson for every other dataset.
+CLUSTER_CI = {"kind": "entity_cluster", "cluster": "asked entity", "strata": "domain", "n_boot": 2000, "seed": 0,
+              "bounds": "the wider of the cluster bootstrap and the item-level Wilson interval"}  # fmt: skip
+CI_BY_DATA = {"pointer_v4": CLUSTER_CI}
 # primary (lookup of a recalled bridge), reference (named lookup), contrast (recall) family per dataset
 FAMILY_ROLES = {"code_pointer_v1": ("RK", "DK", "RR")}
 DEFAULT_ROLES = ("RL", "DL", "RR")
@@ -203,6 +214,12 @@ def role_map(item: dict, preds: dict[str, str], lookup: bool) -> dict[str, str]:
             if e in rec:
                 out.setdefault(str(rec[e]), "recall")
     return out
+
+
+def wording_of(item: dict) -> dict[str, str]:
+    """pointer_v4's wording ('<statement template>/<question template>') and held-out cut, for the outcome rows."""
+    t = item.get("templates")
+    return {"template": f"{t['statement']}/{t['question']}", "cut": item.get("cut", "-")} if t else {}
 
 
 def slot_class(item: dict) -> str:
@@ -313,11 +330,15 @@ def stage_manifest(args) -> None:
     comp = G.RESULTS / args.competence / "items.jsonl" if args.competence else None
     layers = args.layers or default_layers(args.layer_step)
     roles = tuple(args.family_roles) if args.family_roles else FAMILY_ROLES.get(args.data, DEFAULT_ROLES)
+    root = pins.REPO_ROOT
     m = {
         "exp": EXP, "run": args.name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "why": args.why,
         "model": pins.model_pin(), "data": args.data, "set": args.set, "levels": levels, "families": families,
         "domains": domains, "family_roles": list(roles),
-        "items": {k: {"file": str(f.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(f)} for k, f in files.items()},
+        # a smoke's items may live outside the repo (pointer_v4's BJ_POINTER_V4_DATA): absolute paths then
+        "items": {k: {"file": str(f.relative_to(root)) if f.is_relative_to(root) else str(f), "sha256": sha256_of(f)}
+                  for k, f in files.items()},
+        "ci": CI_BY_DATA.get(args.data, {"kind": "wilson"}),
         "competence": args.competence,
         "competence_path": str(comp.relative_to(pins.REPO_ROOT)) if comp else None,
         "competence_sha256": sha256_of(comp) if comp else None,
@@ -424,6 +445,7 @@ def stage_run(name: str) -> None:
                     edits = {la: SetRows(h[src][la][pos], pos) for la in wl}
                     jobs.append(({"layer": wname, "group": grp, "source": src}, edits))
         read_ids = torch.tensor([prep["read_ids"]["base"]], device="cuda")
+        wording = wording_of(c)
         logits_unedited = None
         for start in range(0, len(jobs), BATCH):
             chunk = jobs[start : start + BATCH]
@@ -436,8 +458,8 @@ def stage_run(name: str) -> None:
                 role = rm.get(digit, "other_digit") if digit is not None else "other"
                 p = {h_: round(float(logp[row, S.ids(tok, v)[0]].exp()), 4) for h_, v in pr.items() if v != "-"}
                 outcomes.append({"family": c["family"], "domain": c["domain"], "level": c["level"], "name": c["id"],
-                                 "n_entities": c["n_entities"], "slot": slot_class(c), **tags, "top": tok.decode([top]),
-                                 "role": role, "p": p})  # fmt: skip
+                                 "n_entities": c["n_entities"], "slot": slot_class(c), "entity": c["query"], **wording,
+                                 **tags, "top": tok.decode([top]), "role": role, "p": p})  # fmt: skip
                 if tags["source"] == "unedited":
                     logits_unedited = logits[row].clone()
                 elif tags["source"] == "self":
@@ -482,9 +504,10 @@ def verdict(
     identity, position, value; RR without value); `n_free`: the context digits no hypothesis predicts (default N - 3)."""
     if not d or not d["n"]:
         return "no data"
-    changed = wilson(d["n"] - round(d["none"][0] * d["n"]), d["n"])
+    # the cell's own 'changed' interval when it has one (analyze; pointer_v4: the cluster bootstrap), else Wilson
+    changed = d.get("changed") or wilson(d["n"] - round(d["none"][0] * d["n"]), d["n"])
     if same is not None and same["n"]:
-        same_changed = wilson(same["n"] - round(same["none"][0] * same["n"]), same["n"])
+        same_changed = same.get("changed") or wilson(same["n"] - round(same["none"][0] * same["n"]), same["n"])
         if same_changed[2] > DAMAGE_MAX:
             return "damage"
     if changed[1] < CHANGED_MIN:
@@ -594,15 +617,43 @@ SUPERSEDED = {  # shown in figure notes and reports: plain words, no run ids
 }
 
 
-def roles_of(rows: list[dict]) -> dict[str, Any]:
-    """n, role counts, Wilson (rate, lo, hi) per role and for 'changed' (any role but none)."""
+def roles_of(rows: list[dict], ci: dict | None = None) -> dict[str, Any]:
+    """n, role counts, (rate, lo, hi) per role and for 'changed' (any role but none): Wilson, or with `ci` of kind
+    entity_cluster the entity-cluster bootstrap (asked entity within each domain) widened to Wilson where Wilson is
+    wider, Wilson kept under 'wilson'. k_entities / t_wordings: distinct asked entities and wordings, where recorded."""
     n = len(rows)
     k = collections.Counter(r["role"] for r in rows)
     out: dict[str, Any] = {"n": n, "k": dict(k)}
-    for role in ROLES:
-        out[role] = [round(x, 4) for x in wilson(k[role], n)]
-    out["changed"] = [round(x, 4) for x in wilson(n - k["none"], n)]
+    ents = {(r["domain"], r["entity"]) for r in rows if "entity" in r}
+    words = {(r["domain"], r["template"]) for r in rows if "template" in r}
+    if ents:
+        out["k_entities"] = len(ents)
+    if words:
+        out["t_wordings"] = len(words)
+    cluster = bool(ci and ci.get("kind") == "entity_cluster")
+    if cluster:
+        out["wilson"] = {}
+    for role in (*ROLES, "changed"):
+        hits = [r["role"] != "none" if role == "changed" else r["role"] == role for r in rows]
+        out[role] = rate_ci(hits, rows, ci)
+        if cluster:
+            out["wilson"][role] = rate_ci(hits, rows, None)
     return out
+
+
+def rate_ci(hits: list[bool], rows: list[dict], ci: dict | None) -> list[float]:
+    """(rate, lo, hi) of per-item hits: Wilson 95%, or with `ci` of kind entity_cluster the entity-cluster bootstrap
+    (rows' (domain, entity) resampled within each domain; stats.cluster_bootstrap) widened to Wilson where Wilson is
+    wider (at 0 or n hits every resample agrees and the Wilson interval stands)."""
+    n, h = len(hits), sum(hits)
+    w = [round(x, 4) for x in wilson(h, n)]
+    if not (ci and ci.get("kind") == "entity_cluster") or not 0 < h < n:
+        return w
+    from bridge_jspace.stats import cluster_bootstrap
+
+    _, lo, hi = cluster_bootstrap([float(x) for x in hits], [(r["domain"], r["entity"]) for r in rows],
+                                  [r["domain"] for r in rows], ci["n_boot"], ci["seed"])  # fmt: skip
+    return [w[0], round(min(lo, w[1]), 4), round(max(hi, w[2]), 4)]
 
 
 def newcombe(k1: int, n1: int, k2: int, n2: int) -> tuple[float, float, float]:
@@ -622,7 +673,8 @@ def analyze(m: dict, rows: list[dict], checks: list[dict]) -> dict[str, Any]:
             continue
         for cut in ("all", f"domain:{o['domain']}", f"slot:{o['slot']}"):
             cells[(o["family"], cut, o["level"], o["group"], str(o["layer"]), o["source"])].append(o)
-    rates = {"|".join(k): roles_of(v) for k, v in cells.items()}
+    ci = m.get("ci")
+    rates = {"|".join(k): roles_of(v, ci) for k, v in cells.items()}
     windows = m["windows"]
     pf, rf, cf = family_roles(m)
     # which outcomes each (family, level) predicts: the keys of the alt prompt's predictions stored with every read
@@ -732,6 +784,18 @@ def analyze(m: dict, rows: list[dict], checks: list[dict]) -> dict[str, Any]:
             for lv in m["levels"]
             if f"{f}|all|{lv}|final|transit|dissoc" in rates
         },
+        # n items / k asked entities / t wordings of the same cells (k, t: 0 where the items do not record them)
+        "nkt_per_family": {
+            f"{f}|{lv}": [
+                (c := rates[f"{f}|all|{lv}|final|transit|dissoc"])["n"],
+                c.get("k_entities", 0),
+                c.get("t_wordings", 0),
+            ]
+            for f in m["families"]
+            for lv in m["levels"]
+            if f"{f}|all|{lv}|final|transit|dissoc" in rates
+        },
+        "ci": m.get("ci", {"kind": "wilson"}),
         "checks": chk,
         "family_roles": [pf, rf, cf],
         "predicted": {lv: sorted({h for (f, x), hs in has.items() if x == lv for h in hs}) for lv in m["levels"]},
@@ -1100,18 +1164,25 @@ def _finish(fig, path: Path, title: str, rows: list[tuple[str, str]], handles: l
     from bridge_jspace.plotting import INK, MUTED, SURFACE
 
     h, w = fig.get_figheight(), fig.get_figwidth()
-    fig.text(0.01, 1 - 0.1 / h, title, ha="left", va="top", fontsize=12, color=INK)
-    label_w, y = 1.05, 0.38
-    for label, text in rows:
-        lines = textwrap.wrap(text, width=int((w - label_w - 0.2) * 15.5)) or [""]
+    label_w = 1.05
+    # the title wrapped like the caption rows (~11 characters per inch at 12 pt): it never runs off the right edge
+    title_lines = textwrap.wrap(title, width=int((w - 0.2) * 11)) or [""]
+    wrapped = [(label, textwrap.wrap(text, width=int((w - label_w - 0.2) * 15.5)) or [""]) for label, text in rows]
+    y0 = 0.38 + 0.21 * (len(title_lines) - 1)
+    head = y0 + sum(0.155 * len(lines) + 0.05 for _, lines in wrapped) + 0.1
+    n_rows = -(-len(handles) // ncols)
+    foot = 0.2 + 0.25 * n_rows
+    # callers budget 1.6 in for caption and legend; a longer caption grows the figure instead of squeezing the panels
+    h = max(h, h - 1.6 + head + foot)
+    fig.set_figheight(h)
+    fig.text(0.01, 1 - 0.1 / h, "\n".join(title_lines), ha="left", va="top", fontsize=12, color=INK, linespacing=1.25)
+    y = y0
+    for label, lines in wrapped:
         fig.text(0.01, 1 - y / h, label, ha="left", va="top", fontsize=8.5, color=INK, fontweight="bold")
         fig.text(
             label_w / w, 1 - y / h, "\n".join(lines), ha="left", va="top", fontsize=8.5, color=MUTED, linespacing=1.4
         )
         y += 0.155 * len(lines) + 0.05
-    head = y + 0.1
-    n_rows = -(-len(handles) // ncols)
-    foot = 0.2 + 0.25 * n_rows
     fig.legend(handles=handles, loc="lower center", ncols=ncols, frameon=False, fontsize=8, labelcolor=INK,
                handlelength=3.2, bbox_to_anchor=(0.5, 0.0))  # fmt: skip
     fig.tight_layout(rect=(0, foot / h, 1, 1 - head / h))
@@ -1143,17 +1214,27 @@ def _caption(
     if all_levels:
         n = {f: "/".join(str(a["n_per_family"].get(f"{f}|{x}")) for x in m["levels"]) for f in m["families"]}
     ns = n_text or ", ".join(f"{fam_title(f).split(' (')[0]} {v}" for f, v in n.items())
+    per = " prompts per family"
+    nkt = {f: a.get("nkt_per_family", {}).get(f"{f}|{lv}") for f in m["families"]}
+    if not n_text and not all_levels and all(v and v[1] for v in nkt.values()):  # pointer_v4: entities and wordings
+        ns = "; ".join(f"{fam_title(f).split(' (')[0]} {v[0]} prompts, {v[1]} entities, {v[2]} wordings"
+                       for f, v in nkt.items() if v)  # fmt: skip
+        per = ""
+    if ci is None and a.get("ci", {}).get("kind") == "entity_cluster":
+        ci = (("bars" if windows else "shading") + " = 95% interval from resampling the asked entities within each "
+              "topic (entity-cluster bootstrap), widened to the item-level Wilson interval where that is wider.")  # fmt: skip
     topics = a["domains"] if all_levels else sorted(
         {k.split("|")[1].split(":")[1] for k in a["rates"] if f"|{lv}|" in k and "|domain:" in k}) or a["domains"]  # fmt: skip
+    digit = "a digit (its drawer, cabinet or locker)" if m.get("data") == "pointer_v4" else "a locker digit"
     rows = [
-        ("What we did", f"The org prompt: {level}; each statement gives an entity a locker digit. We copied the alt "
+        ("What we did", f"The org prompt: {level}; each statement gives an entity {digit}. We copied the alt "
          f"prompt's hidden states ({patched}) into the org prompt, {when}, and read the answer."),
         ("Example", a.get("example_lines", {}).get(lv) or a.get("example_line", "")),
         ("How to read", how),
         ("Control", control or "Grey: the same patch from a prompt asking about the same entity with the statements "
          "reshuffled, a random push of the same size, and a prompt from another topic. The first two should change "
          "nothing."),
-        ("Data", f"{pins.MODEL_REPO.split('/')[-1]}; topics: {', '.join(topics)}; {ns} prompts per family; "
+        ("Data", f"{pins.MODEL_REPO.split('/')[-1]}; topics: {', '.join(topics)}; {ns}{per}; "
          + (ci or (("bars" if windows else "shading") + " = 95% Wilson interval over prompts."))),
     ]  # fmt: skip
     if a["superseded"]:
@@ -1263,7 +1344,11 @@ def fig_domains(a: dict, m: dict, lv: str, grp: str, path: Path) -> list[str]:
         for j, dom in enumerate(doms):
             ax = axes[i][j]
             n = _panel(ax, a, m, fam, f"domain:{dom}", lv, grp)
-            ax.set_title(f"{plain(fam)} · {dom} (n={n})", fontsize=9, color=INK, loc="left")
+            k = (a["rates"].get(f"{fam}|domain:{dom}|{lv}|{grp}|{sorted(m['layers'])[0]}|dissoc") or {}).get(
+                "k_entities"
+            )
+            ax.set_title(f"{plain(fam)} · {dom} (n={n}{f', {k} entities' if k else ''})", fontsize=9, color=INK,
+                         loc="left")  # fmt: skip
             if j == 0:
                 ax.set_ylabel("% of original answers", fontsize=9, color=INK)
             if i == len(fams) - 1:
@@ -1580,11 +1665,21 @@ def report_md(name: str, m: dict, a: dict, out: Path) -> str:
     if a["superseded"]:
         lines += [f"**NOT A HEADLINE RUN (superseded or smoke)**: {a['superseded']}. Shown for completeness.", ""]
     seeds = json.dumps(list(m.get("seeds", {"sample": 0}).values()))
+    nkt = a.get("nkt_per_family", {})
+
+    def n_of(k: str, v: int) -> str:
+        x = nkt.get(k)
+        return f"{v} items / {x[1]} entities / {x[2]} wordings" if x and x[1] else str(v)
+
+    if a.get("ci", {}).get("kind") == "entity_cluster":
+        lines += ["Intervals: 95% entity-cluster bootstrap (asked entity resampled within each topic, 2000 resamples, "
+                  "seed 0), widened to the item-level Wilson interval where that is wider; the rule reads these. "
+                  "Item-level Wilson: summary.json `rates[...]['wilson']`.", ""]  # fmt: skip
     lines += [
         "```",
         f"EXP {name} @ {_commit(name)} | model Qwen3.6-27B | n per family = "
         + "; ".join(
-            f"{fam_title(k.split('|')[0]).split(' (')[0]} {v} ({level_short(m, k.split('|')[1])})"
+            f"{fam_title(k.split('|')[0]).split(' (')[0]} {n_of(k, v)} ({level_short(m, k.split('|')[1])})"
             for k, v in n_fam.items()
         )
         + f" | seeds={seeds} (sample, null, other)",

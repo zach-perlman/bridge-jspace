@@ -1,0 +1,45 @@
+id: d3v4_smoke_27b
+title: "D3 v4 test run: the new scenes work in the patching and pointer-direction code on the 27B"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.25
+depends_on:
+- d3v4_entity_probe_27b
+command: >-
+  uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set main --name d3v4_smoke_27b
+  --n 1 --layers 44 48 52 --groups final last --no-eligibility
+  --why "D3 v4 smoke: every pointer_swap stage on the 27B with pointer_v4's scenes (three topics, three wordings);
+  hook checks, entity-cluster intervals and timing"
+  && uv run python scripts/pointer_swap.py run --name d3v4_smoke_27b
+  && uv run python scripts/pointer_fit.py run --data pointer_v4 --name d3v4_smoke_27b --no-eligibility
+  --fit-limit 40 --n-test 4 --rr-n 4 --steer-layers 44 46 48 50 52 --scales 1.0 2.0 --ks 4
+  --why "D3 v4 smoke: every pointer_fit stage on the 27B with pointer_v4's fit set and held-out main items"
+examples_command: >-
+  uv run python scripts/pointer_swap.py examples --name d3v4_smoke_27b
+  && uv run python scripts/pointer_fit.py examples --name d3v4_smoke_27b
+figures_command: >-
+  uv run python scripts/pointer_swap.py figures --name d3v4_smoke_27b
+  && uv run python scripts/pointer_fit.py figures --name d3v4_smoke_27b
+question: >-
+  Do pointer_swap's and pointer_fit's stages (run, examples, figures) work end to end on Qwen3.6-27B with --data
+  pointer_v4, with pointer_swap's self no-op and layer-0 reproduction checks passing and the entity-cluster intervals
+  and n / entities / wordings written?
+why_it_matters: >-
+  Code-path check before d3v4_swap_main and d3v4_fit_main (part B code needs CUDA; the local smoke ran on the box's
+  0.8B). No claim: one scene per topic, competence not applied.
+hypotheses:
+  H-ok: 'pointer_swap: self no-op and layer-0 reproduction 9/9 (3 topics x 3 families); summary has nkt_per_family and
+    ci entity_cluster. pointer_fit: fit.json and outcomes.jsonl written; outcomes carry entity, template and cut; every
+    steered item''s cut is not "neither"; summary has pointer_v4 per_domain and per_cut'
+  H-broken: 'any check fails or a stage crashes: stop both mains'
+decision_rule: 'The mains proceed only if every H-ok check holds (pointer_swap summary.json checks; pointer_fit summary.json).'
+controls:
+- 'org prompt patched into itself at the middle layer (must change nothing)'
+- 'alt prompt patched at every position at layer 0 (must give the alt prompt''s own answer)'
+n: 'pointer_swap: 1 scene per topic x 3 families = 9 cases; pointer_fit: 40 fit items per topic, 4 + 4 held-out items per topic'
+seeds: [0]
+notes: >-
+  Enqueue only after data/pointer_v4/ is made from d3v4_entity_probe_27b and committed. The 0.8B smoke on the box
+  (BJ_TARGET=qwen3.5-0.8b, data in ~/smoke/d3v4_data, every candidate) ran the same stages. Timing: two model loads
+  (~8 min), pointer_swap 9 cases x ~35 reads, pointer_fit 12 x 91 + 12 x 55 reads, collect 120 forwards: ~0.25 h.
