@@ -665,8 +665,14 @@ def model_config() -> dict:
     return cfg.get("text_config", cfg)
 
 
+def config_kinds(cfg: dict) -> list[str]:
+    """Layer kinds from the config. OLMo-3's sliding-window layers (window 4096, far longer than any prompt here) are
+    softmax attention over the whole prompt: FULL, as knockout.layer_kinds sees their self_attn modules."""
+    return [FULL if k == "sliding_attention" else k for k in cfg["layer_types"]]
+
+
 def model_kinds() -> list[str]:
-    return list(model_config()["layer_types"])
+    return config_kinds(model_config())
 
 
 def head_sets(
@@ -675,7 +681,7 @@ def head_sets(
     """Batch 3 (a): per range of HEAD_RANGES, its full-attention layers and, per label, the layers and query heads
     blocked: one query head ("L51:h07"), one key/value group's query heads ("L51:kv2"), a whole layer ("L51"), the
     whole range ("late", "early", "mid")."""
-    kinds = list(cfg["layer_types"])
+    kinds = config_kinds(cfg)
     n, n_heads, n_kv = len(kinds), cfg["num_attention_heads"], cfg["num_key_value_heads"]
     group = n_heads // n_kv
     layers: dict[str, list[int]] = {}
@@ -706,7 +712,7 @@ def stage_manifest(args) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
     cfg = model_config()
-    kinds = list(cfg["layer_types"])
+    kinds = config_kinds(cfg)
     sets = layer_sets(kinds, args.layers)
     hsets: dict[str, list[int] | None] = {}
     att_info = None

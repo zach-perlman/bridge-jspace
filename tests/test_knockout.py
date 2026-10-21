@@ -629,3 +629,11 @@ def test_layer_sets_on_a_full_attention_model():
     assert sets["band28-31"] == [28, 29, 30, 31] and sets["band00-15"] == list(range(16))
     hybrid = layer_sets([LINEAR, LINEAR, LINEAR, FULL] * 16, ["bands"])
     assert hybrid["band48-63:attn"] == [51, 55, 59, 63] and len(hybrid["band48-63:gdn"]) == 12
+
+
+def test_sliding_window_layers_count_as_full_attention():
+    from scripts.attn_knockout import config_kinds
+
+    cfg = {"layer_types": ["sliding_attention", "sliding_attention", "sliding_attention", "full_attention"]}
+    assert config_kinds(cfg) == [FULL] * 4
+    assert config_kinds({"layer_types": [LINEAR, FULL]}) == [LINEAR, FULL]

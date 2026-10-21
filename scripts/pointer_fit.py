@@ -334,8 +334,14 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
     feats: dict[int, list[torch.Tensor]] = {la: [] for la in layers}
     labels, kept, n_fit = [], [], 0
     preps = []
+    # another target's tokenizer may split a cue differently: items whose prompts are not token-aligned under it are
+    # dropped (pointer_swap.drop_unaligned's rule), counted in unaligned.json
+    unaligned: collections.Counter = collections.Counter()
     for it in fit_items(cfg):
-        preps.append((it, PS.prepare(it, tok)))
+        try:
+            preps.append((it, PS.prepare(it, tok)))
+        except AssertionError:
+            unaligned[f"fit/{it['domain']}"] += 1
     n_final = {len(p["groups"]["final"]) for _, p in preps}
     assert len(n_final) == 1, f"the tokens after the question differ in number: {n_final}"
     by_len: dict[int, list[tuple[dict, dict]]] = collections.defaultdict(list)
@@ -415,7 +421,14 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
     (out_dir / "fit.json").write_text(json.dumps({"kept": len(kept), "of": n_fit, "layers": fit_rows,
                                                   "geometry": geometry}, indent=2) + "\n")  # fmt: skip
     # 4. steer
-    tests = test_items(cfg)
+    tests = []
+    for c in test_items(cfg):
+        try:
+            PS.prepare(c, tok)
+            tests.append(c)
+        except AssertionError:
+            unaligned[f"test/{c['domain']}"] += 1
+    (out_dir / "unaligned.json").write_text(json.dumps(dict(unaligned), indent=2) + "\n")
     steer = tuple(cfg["steer_layers"])
     settings: list[tuple[Any, tuple[int, ...]]] = [(la, (la,)) for la in steer] + [("window", steer)]
     out_f = open(out_dir / "outcomes.jsonl", "w")  # noqa: SIM115 - appended item by item, closed below

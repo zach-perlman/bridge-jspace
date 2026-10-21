@@ -1,0 +1,26 @@
+id: olmo3_7b_instruct_d2_smoke_v2
+title: "D2 smoke on OLMo-3-7B-Instruct: the attention knock-out runs on a full-attention model (3 items per family)"
+thread: D2
+gpus: 1
+mem_gb: 25
+est_gpu_hours: 0.1
+depends_on: []
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct uv run python scripts/attn_knockout.py manifest --name olmo3_7b_instruct_d2_smoke_v2
+  --why "smoke: attn_knockout on OLMo (no DeltaNet layers; 4-layer bands); not a result"
+  --dataset pointer_v4 --families RL RR --n 3 --layers all bands band4 --sweep path --sweep-dests final
+  --competence olmo3_7b_instruct_d3v4_competence
+  && BJ_TARGET=olmo-3-7b-instruct uv run python scripts/attn_knockout.py run --name olmo3_7b_instruct_d2_smoke_v2
+  && BJ_TARGET=olmo-3-7b-instruct uv run python scripts/attn_knockout.py summarise --name olmo3_7b_instruct_d2_smoke_v2
+  && (BJ_TARGET=olmo-3-7b-instruct uv run python scripts/attn_knockout.py figures --name olmo3_7b_instruct_d2_smoke_v2
+  || echo "SMOKE: figures failed (the run itself passed)")
+question: 'Does attn_knockout run end to end on OLMo-3-7B-Instruct (hooks on self_attn, no DeltaNet sets)?'
+why_it_matters: 'Code path check before olmo3_7b_instruct_d2_v4_late_read; not interpreted.'
+hypotheses:
+  H-runs: 'manifest, run and summarise exit 0. Prior 0.75'
+decision_rule: 'smoke: passes iff manifest, run and summarise exit 0; figures are tried, not required'
+controls:
+- 'the run''s own unhooked-forward checks'
+n: '3 items per family, memory -> prompt and memory -> memory'
+seeds: [0]
+notes: 'Not a measurement.'
