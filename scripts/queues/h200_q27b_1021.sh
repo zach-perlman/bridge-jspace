@@ -27,3 +27,27 @@ for pos in context question; do
     && $PY scripts/c1_v2.py full2_ko_pos_${pos}_v1 --middle L32-40 --set full_v8 > /dev/null || echo "=== position $pos FAILED"
 done
 echo "=== GPU 1 Qwen reruns done $(date -u +%FT%TZ)"
+# --- appended 2026-10-21 ~19:40 UTC while this queue waited (Zach: "Queue it such that all these additions will apply to
+# the current 27b model and all future models"; pipeline review, code 1330338 + 7363cf7). The 27B additions, GPU 0,
+# before the Gemma steering: (1) the paste ceiling for wm2_full2_v2 (its joint copy stacked): copy only, same cases,
+# c2_graded --ceiling-from; (2) the specificity control: unembed10 + rotated at 12-20, 20-28, 32-40 (whole depth left
+# out: ~90 min), compared with full2_ko_v1's paper10 on the same items; (3) the copy sweep again with the band paste.
+echo "=== 27B additions $(date -u +%FT%TZ)"
+W2B="--possets question final --tasks full_v8 --tasks-competence full_v8_competence_v1 --tasks-level all"
+BJ_BATCH=64 $PY scripts/write_max.py --name smoke_wm2_copyonly_1021 --why smoke --n 2 --writes copy $W2B --families PP MM \
+  && BJ_BATCH=64 $PY scripts/write_max.py --name wm2_full2_v2_ceiling --why "$WHY: the paste ceiling for wm2_full2_v2 (its joint copy stacked)" \
+  --n 1000 --writes copy $W2B --families PP PM MP MM CP CM \
+  && $PY scripts/c2_graded.py wm2_full2_v2 --ceiling-from wm2_full2_v2_ceiling | tail -8 \
+  && $PY scripts/c2_graded.py wm2_full2_v2 --fresh-vs wm2_full2_v1 --ceiling-from wm2_full2_v2_ceiling | tail -4 \
+  && $PY scripts/c2_graded.py wm2_full2_v2 --drop-guessable --ceiling-from wm2_full2_v2_ceiling > /dev/null || echo "=== paste ceiling FAILED"
+$PY scripts/ablate_v2.py --name smoke_unembed_ko_1021 --why smoke --plan bands --bands 32-40 --conditions unembed10 unembed10_rot \
+  --tasks full_v8 --tasks-competence full_v8_competence_v1 --tasks-words PP MM --tasks-level all --n 2 --kinds clean --batch 16 \
+  && $PY scripts/ablate_v2.py --name full2_ko_unembed_v1 --why "$WHY: the specificity control (the logit lens's directions)" \
+  --plan bands --bands 12-20 20-28 32-40 --conditions unembed10 unembed10_rot $T \
+  && $PY scripts/c1_specificity.py full2_ko_v1 full2_ko_unembed_v1 --set full_v8 | tail -6 \
+  && $PY scripts/c1_v2.py full2_ko_unembed_v1 --middle L32-40 --set full_v8 > /dev/null || echo "=== unembed knock-out FAILED"
+$PY scripts/copy_sweep.py --name smoke_copy_sweep_band_1021 --why smoke --tasks full_v8 --tasks-competence full_v8_competence_v1 \
+  --families PP MM --n 1 \
+  && $PY scripts/copy_sweep.py --name copy_sweep_full2_v2 --why "$WHY: the copy sweep with the band paste (v1's from mode stacked)" \
+  --tasks full_v8 --tasks-competence full_v8_competence_v1 --families PP PM MP MM --n 40 || echo "=== copy sweep v2 FAILED"
+echo "=== 27B additions done $(date -u +%FT%TZ)"

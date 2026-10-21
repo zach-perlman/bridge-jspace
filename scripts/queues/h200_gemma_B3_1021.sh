@@ -63,3 +63,15 @@ $PY scripts/ablate_v2.py --name gemma4itf_full3_ko_steps_v1 --why "$WHY: three-s
   --bands 30-38 --conditions paper10 paper10_rot $T3 --n 1000 --kinds step1 step2 step3 --batch 32 \
   && $PY scripts/c1_v2.py gemma4itf_full3_ko_steps_v1 --middle L30-38 --set full_v8b > /dev/null || echo "=== three-step steps FAILED"
 echo "=== Gemma knock-outs done $(date -u +%FT%TZ)"
+# --- appended 2026-10-21 ~19:40 UTC while this queue waited (Zach: the additions apply to every model; 7363cf7): the
+# specificity control on Gemma, unembed10 + rotated at 11-19, 19-27, 30-38 (whole depth left out), compared with
+# gemma4itf_full2_ko_v1's paper10 on the same items. (Gemma's steering and copy sweep get the paste fixes from the
+# code; its C1 reports get the margin-matched gap.)
+echo "=== Gemma additions $(date -u +%FT%TZ)"
+$PY scripts/ablate_v2.py --name gemma4itf_smoke_unembed_ko_1021 --why smoke --plan bands --bands 30-38 \
+  --conditions unembed10 unembed10_rot $T2 --n 2 --kinds clean --batch 16 \
+  && $PY scripts/ablate_v2.py --name gemma4itf_full2_ko_unembed_v1 --why "$WHY: the specificity control (the logit lens's directions)" \
+  --plan bands --bands 11-19 19-27 30-38 --conditions unembed10 unembed10_rot $T2 $K \
+  && $PY scripts/c1_specificity.py gemma4itf_full2_ko_v1 gemma4itf_full2_ko_unembed_v1 --set full_v8 | tail -6 \
+  && $PY scripts/c1_v2.py gemma4itf_full2_ko_unembed_v1 --middle L30-38 --set full_v8 > /dev/null || echo "=== Gemma unembed knock-out FAILED"
+echo "=== Gemma additions done $(date -u +%FT%TZ)"
