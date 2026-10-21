@@ -72,3 +72,13 @@ mkdir -p $LC
   || echo "=== 27B lens check FAILED"
 tail -8 /workspace/scratch/q27_lens_check.log
 echo "=== 27B gap fills done $(date -u +%FT%TZ)"
+# --- appended 2026-10-21 ~20:00 UTC while this queue waited (decided with Zach): the 27B's depth profile on the v2 rule
+# words, the same plan as every model's (nine-layer windows sliding by 4; PP MP PM MM, first 60 eligible per word;
+# paper10 + rotated): is 32-40, chosen on the suite, also where the v2 split is, or should the 27B's middle-band runs
+# be redone? (Analysis: half the bridge entities choose the window, the other half score it.)
+echo "=== 27B depth profile $(date -u +%FT%TZ)"
+$PY scripts/ablate_v2.py --name full2_profile_v1 --why "$WHY: depth profile on the v2 rule words (does 32-40 hold on v2?)" \
+  --plan bands --bands 0-8 4-12 8-16 12-20 16-24 20-28 24-32 28-36 32-40 36-44 40-48 44-52 48-56 52-60 \
+  --conditions paper10 paper10_rot --tasks full_v8 --tasks-competence full_v8_competence_v1 --tasks-words PP MP PM MM \
+  --tasks-level all --n 60 --kinds clean --batch 32 || echo "=== 27B depth profile FAILED"
+echo "=== 27B depth profile done $(date -u +%FT%TZ)"
