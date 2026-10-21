@@ -1,0 +1,168 @@
+{
+  "exp": "pointer_swap",
+  "run": "d3v2_n3",
+  "written_utc": "2026-10-21T14:43:53Z",
+  "why": "D3 v2 secondary level: 3 statements + 1 filler; bridge alt is not in the org prompt, so the slot answers (order vs token position) compete only with the alt answer",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "data": "pointer_v2",
+  "set": "n3",
+  "levels": [
+    "e3-off",
+    "e3-pln",
+    "e3-ref"
+  ],
+  "families": [
+    "RL",
+    "DL"
+  ],
+  "domains": [
+    "animals",
+    "elements"
+  ],
+  "family_roles": [
+    "RL",
+    "DL",
+    "RR"
+  ],
+  "items": {
+    "animals_RL_e3-off": {
+      "file": "data/pointer_v2/n3/animals_RL_e3-off.json",
+      "sha256": "aa10a4bc27bf7fe597390e7be23525db9ca9321ba35abec8b0645181c1a87074"
+    },
+    "animals_RL_e3-pln": {
+      "file": "data/pointer_v2/n3/animals_RL_e3-pln.json",
+      "sha256": "502f355eb7819bab41a966d4a0296d41e9b46ff9b12bc5a54b110d7054f1730b"
+    },
+    "animals_RL_e3-ref": {
+      "file": "data/pointer_v2/n3/animals_RL_e3-ref.json",
+      "sha256": "30d69bbc0fd003b04f57d0e09d6416c097ccdc45fa9c2e10726b2dbefc693c70"
+    },
+    "animals_DL_e3-off": {
+      "file": "data/pointer_v2/n3/animals_DL_e3-off.json",
+      "sha256": "6b47f3f87e76ecf99fa3ecfb439b8360c3e5c79d95c45115c6c4b17fc44444fa"
+    },
+    "animals_DL_e3-pln": {
+      "file": "data/pointer_v2/n3/animals_DL_e3-pln.json",
+      "sha256": "f11e5ea7040f48f0907a805485c6bbee7c5aca686b5d0a1c7f53c2d3d8f2a1c9"
+    },
+    "animals_DL_e3-ref": {
+      "file": "data/pointer_v2/n3/animals_DL_e3-ref.json",
+      "sha256": "ea65bf89884dee2285b7aa404aa1e03ebc55f62ca6f97b2cd65d5d69efe0dc63"
+    },
+    "elements_RL_e3-off": {
+      "file": "data/pointer_v2/n3/elements_RL_e3-off.json",
+      "sha256": "90f2c9ba5a482ab4407eb7b87b0106e4faaba9521b1a4655514ffe13299e9afd"
+    },
+    "elements_RL_e3-pln": {
+      "file": "data/pointer_v2/n3/elements_RL_e3-pln.json",
+      "sha256": "effd8b06399990bfabc091e9acfa2aaecd900d9e4d6443d1495fe2c238a3ddd1"
+    },
+    "elements_RL_e3-ref": {
+      "file": "data/pointer_v2/n3/elements_RL_e3-ref.json",
+      "sha256": "ae7023140f32fad9c15c3acc2f79aa3500e90135ceafd3f7d99dea0211757862"
+    },
+    "elements_DL_e3-off": {
+      "file": "data/pointer_v2/n3/elements_DL_e3-off.json",
+      "sha256": "d9f42d736be2e5036b16a1708408c5242f37253641b4ea8b21bbd88df51d56d0"
+    },
+    "elements_DL_e3-pln": {
+      "file": "data/pointer_v2/n3/elements_DL_e3-pln.json",
+      "sha256": "efdca29606854d2827eb9feba1b555259f4d18b672eddd15132926ba50e04209"
+    },
+    "elements_DL_e3-ref": {
+      "file": "data/pointer_v2/n3/elements_DL_e3-ref.json",
+      "sha256": "96a71ce3ca9eb55e0aa01b259a74095452b8e1feda3b43fd55b26bfc2d19e269"
+    }
+  },
+  "competence": "d3v2_competence_27b",
+  "competence_path": "results/pointer_v2/d3v2_competence_27b/items.jsonl",
+  "competence_sha256": "41d25263ff4270e78ec9ccf2ec832df7e73f851ecdb4490edf7f78e0de677d3c",
+  "n": 120,
+  "layers": [
+    16,
+    20,
+    24,
+    28,
+    32,
+    36,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50,
+    52,
+    54,
+    56,
+    58,
+    60
+  ],
+  "control_stride": 2,
+  "windows": {
+    "early": [
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28
+    ],
+    "mid": [
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40
+    ],
+    "transit": [
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52
+    ]
+  },
+  "groups": [
+    "question",
+    "final",
+    "last"
+  ],
+  "question_max_layer": 38,
+  "control_levels": [
+    "e3-pln"
+  ],
+  "sources": [
+    "dissoc",
+    "same",
+    "rand",
+    "other"
+  ],
+  "sample": "per (domain, base level), up to n scenes eligible (every competence prompt right, keyed by set and item id) in all of the run's families and conditions, seed 0; all of them on the same scenes",
+  "seeds": {
+    "sample": 0,
+    "null": 0,
+    "other": 0
+  },
+  "decision": "(fixed before any run; the job specs in jobs/d3/ repeat it). Per cell (family x group x layer or window\nx source dissoc), pooled over domains, Wilson 95% intervals over items:\n  - interpretable iff the dissoc patch changes the answer (1 - share none: lower bound >= 0.20) and the same control\n    changes it rarely (upper bound <= 0.10); otherwise \"none\" (nothing moves) or \"damage\"\n  - verdict X in {identity, position, value} (RR: identity, position) iff X's lower bound exceeds the upper bounds of\n    the other two and the chance bar: the rand control's upper bound for X at that layer (windows: the max over the\n    window's layers) and the per-digit context rate (upper bound of share context / (N - 3), N = 5 only)\n  - otherwise \"mixed\". Primary: RL, group final, window transit (the suite's 98-100% copy flips at 44-52). H-pointer:\n    position; H-word (or a lexical key): identity; H-value: value. DL is the reference (classic binding retrieval),\n    RR the contrast (a pointer is useless there).\n  - Other datasets name their primary / reference / contrast families in the manifest (code_pointer_v1: memory ->\n    prompt RK / named -> prompt DK / RR)."
+}
