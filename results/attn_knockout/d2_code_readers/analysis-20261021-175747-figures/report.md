@@ -32,7 +32,7 @@ Figures: code_readers.png, code_readers.svg
 Three dumbest ways this could be wrong:
 1) bf16 noise near ties decides cells. Checked: unedited p(answer org) min 0.47, median 0.996; an unedited row moves by up to 0.33 logits when other rows in its batch are knocked (check.json), so every knocked row is scored against the unedited row of its own batch.
 2) Hiding any statement there breaks the model. Checked: another dict entry, blocked the same way, loses answer org in 6 of 9487 rows; the worst control cell: code: 3-variable chain → prompt, hidden from chain line 1 (holds the key) in all 64 layers keeps 99%.
-3) Items of one entity are correlated (few queried keys per domain): every interval is the entity-cluster bootstrap; the item-level intervals are next to them (cluster / item width on average 0.6x). The lines are not independent: unions are read against 'every line after the dict', not summed.
+3) Items of one entity are correlated (few queried keys per domain): every interval is the entity-cluster bootstrap; the item-level intervals are next to them (cluster intervals are 1.0x the item-level ones (median over the 28 cells between 2% and 98%)). The lines are not independent: unions are read against 'every line after the dict', not summed.
 
 For the human to verify: rows.jsonl, keep rows whose item's source='none' row has correct=true; count correct=true with family=DK, source=lookup, dest=final, layers=all, mode=value (expect 95/200; the cluster interval: entity = cases.jsonl 'bridge', resampled within 'domain').
 

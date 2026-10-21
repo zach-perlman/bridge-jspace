@@ -206,7 +206,7 @@ def _complete_case(
     ]
     p = rng.choice(starts)
     sources["random"], texts["random"] = list(range(p, p + length)), tok.decode(ids[p : p + length])
-    content_end = text.index("<|im_end|>", q_start)
+    content_end = chat.content_end(text, q_start)  # the template's turn end (chat) or "\nAnswer:" (raw) begins here
     question = token_span(offsets, q_start, content_end)
     anchor = max(sources.get("lookup", sources.get("binding", [])))
     trailing = [t for t in range(anchor + 1, anchor + 1 + CONV_REACH) if t < min(question)]
@@ -225,9 +225,9 @@ def _complete_case(
 
 # ---- pointer-style item sets (D2 batch 2): pointer_v1, code_pointer_v1, alias_pointer_v1 -----------------------------
 
-POINTER_SETS = ("pointer_v1", "code_pointer_v1", "alias_pointer_v1")
+POINTER_SETS = ("pointer_v1", "code_pointer_v1", "alias_pointer_v1", "pointer_v4")
 POINTER_COMPETENCE = {"pointer_v1": "d3_competence_27b", "code_pointer_v1": "code_competence_27b",
-                      "alias_pointer_v1": "alias_competence_27b"}  # fmt: skip
+                      "alias_pointer_v1": "alias_competence_27b", "pointer_v4": "d3v4_competence_27b"}  # fmt: skip
 # pointer_v1's cell gate: a (domain, family[, condition]) cell enters iff its clean Wilson lower bound >= GATE_LO;
 # alias_pointer_v1's other surface forms use its own 0.80 (its docstring; English keeps 0.85).
 GATE_LO, ALIAS_GATE_LO = 0.85, 0.80
@@ -248,6 +248,15 @@ def pointer_statement_spans(item: dict, dataset: str) -> list[tuple[int, int]]:
     if dataset == "alias_pointer_v1":
         return [tuple(s) for s in item["spans"]["statements"]]
     assert item["n_filler"] == 0, f"{item['id']}: pointer_v1 spans are derived for scenes without filler only"
+    if dataset == "pointer_v4":  # its statements are listed (3 wordings): located in order in the context
+        ctx, out, start = item["context"], [], 0
+        for sent in item["statements"]:
+            a = ctx.index(sent, start)
+            out.append((a, a + len(sent)))
+            start = a + len(sent)
+        assert len(out) == item["n_entities"], f"{item['id']}: {len(out)} statements for {item['n_entities']} entities"
+        assert out[-1][1] == len(ctx), f"{item['id']}: the statements do not cover the context"
+        return out
     ctx, out, start = item["context"], [], 0
     for _ in range(item["n_entities"]):
         end = ctx.index(".", start) + 1
@@ -293,8 +302,10 @@ def pointer_case(item: dict, tok, dataset: str) -> dict:
     else:
         conf = {str(d) for e, d in zip(item["entities"], item["digits"], strict=True) if e != item["query"]}
     conf.discard(item["answer"])
+    tpl = item.get("templates") or {}  # pointer_v4: one statement and one question template per scene
     base = {"id": item["id"], "family": fam, "scene": item["scene"], "domain": item["domain"], "level": item["level"],
-            "question_text": item["question"],
+            "question_text": item["question"], "wording": f"s{tpl.get('statement', 0)}q{tpl.get('question', 0)}",
+            "cut": item.get("cut"),
             "bridge": item["query"], "cue": item["cue"], "answer": item["answer"], "answer_kind": item["answer_kind"],
             "conf_answers": sorted(conf), "tok_A": S.answer_token(tok, item["answer"], item["answer_kind"]),
             "conf_toks": sorted({S.answer_token(tok, c, item["answer_kind"]) for c in conf}),
@@ -303,7 +314,7 @@ def pointer_case(item: dict, tok, dataset: str) -> dict:
                           q_start, ctx_tok)  # fmt: skip
     if dataset == "code_pointer_v1":
         case["dests"].update(code_line_dests(item, content, shift, offsets, case["dests"]["final"]))
-    if dataset == "pointer_v1" and item["question"].count(item["cue"]) == 1:  # batch 3: the name (DL) / cue (RL) tokens
+    if dataset in ("pointer_v1", "pointer_v4") and item["question"].count(item["cue"]) == 1:  # the name / cue tokens
         a = q_start + item["question"].index(item["cue"])
         case["dests"]["cue"] = token_span(offsets, a, a + len(item["cue"]))
         assert set(case["dests"]["cue"]) <= set(case["dests"]["question"]), f"{item['id']}: cue outside the question"
@@ -954,7 +965,7 @@ def stage_run(name: str) -> None:
         write_jsonl(out_dir / "attention.jsonl", attention)
     keep = ("id", "family", "scene", "bridge", "cue", "answer", "answer_kind", "conf_answers", "tok_A", "conf_toks",
             "prompt", "ids", "offsets", "sources", "source_text", "source_flags", "dests", "context", "domain", "level",
-            "question_text", "statements", "query_slot")  # fmt: skip
+            "question_text", "statements", "query_slot", "wording", "cut")  # fmt: skip
     write_jsonl(out_dir / "cases.jsonl", [{k: c[k] for k in keep if k in c} for c in cases])
     timing = {"cases": len(cases), "knocked_rows": total, "forwards_rows_incl_unedited": total + sum(
         -(-len([x for x in conditions(c, m) if x["mode"] == g]) // (BATCH - 1)) for c in cases for g in ("value", "absent")),
@@ -1424,7 +1435,8 @@ def data_row(cells: dict, bars: str = "Wilson 95% CI") -> str:
     n = sorted({c["n"] for k, c in cells.items() if k[3] == "all"})
     codes = sorted(dict.fromkeys(k[0] for k in cells), key=fam_order)
     sets = {"pointer_v1": "locker scenes: animals, elements, planets, months", "code_pointer_v1": "Python programs "
-            "with a dict of lockers", "alias_pointer_v1": "locker scenes, English vs another surface form"}.get(
+            "with a dict of lockers", "alias_pointer_v1": "locker scenes, English vs another surface form",
+            "pointer_v4": "file / locker / chart scenes: countries, animals, body parts; 3 x 3 wordings"}.get(
         DATASET, "animal scenes" + (" and country prompts" if any(f.startswith("country") for f in codes) else ""))  # fmt: skip
     count = "-".join(map(str, (n[0], n[-1]))) if len(n) > 1 else str(n[0])
     return (f"{RUN_INFO['model']}; {', '.join(fam_label(f) for f in codes)} ({sets}); {count} prompts per family, "
@@ -1724,6 +1736,75 @@ def fig_cuts(cells: dict, m: dict, stem: Path) -> list[str] | None:
                  handles, 2)  # fmt: skip
 
 
+def topic_ticks(m: dict) -> list[tuple[str, str, str]]:
+    """(destination, layer set, tick) of the topics figure: all, every attention / DeltaNet layer, the whole bands
+    (the run's own band labels), and the question words in all layers."""
+    bands = [b for b in m["layer_sets"] if b.startswith("band") and ":" not in b]
+    return [("final", "all", "all\nlayers"), ("final", "attn", "every\nattention\nlayer"),
+            ("final", "gdn", "every\nDeltaNet\nlayer"),
+            *[("final", b, f"layers\n{int(b[4:6])}-{int(b[7:9])}") for b in bands],
+            ("question", "all", "question\nwords,\nall layers")]  # fmt: skip
+
+
+def topic_set(label: str) -> bool:
+    """Layer sets of the per-topic table: all layers, every attention / DeltaNet layer, the bands (and their kinds)."""
+    return label in ("all", "attn", "gdn") or label.startswith("band")
+
+
+def fig_topics(tc: dict[str, dict], m: dict, stem: Path) -> list[str] | None:
+    """Per family (rows) and topic (columns): the statement giving the answer hidden from the last tokens in each
+    layer set (and from the question words in all layers), with entity-cluster intervals, next to its control."""
+    import matplotlib.pyplot as plt
+    from matplotlib.lines import Line2D
+
+    from bridge_jspace.plotting import MUTED, percent_axis, style_axes
+
+    fams = sorted({k.split("|")[0] for k in tc}, key=fam_order)
+    topics = sorted({d for c in tc.values() for d in c["per_domain"]})
+    if not fams or len(topics) < 2:
+        return None
+    ticks = topic_ticks(m)
+    fig, axes = plt.subplots(len(fams), len(topics), figsize=(4.6 * len(topics), 2.9 * len(fams) + 0.4), squeeze=False,
+                             sharey=True)  # fmt: skip
+    for i, f in enumerate(fams):
+        for j, d in enumerate(topics):
+            ax = axes[i][j]
+            style_axes(ax)
+            xs = [x for x, (dest, la, _) in enumerate(ticks) if f"{f}|{dest}|{la}" in tc]
+            cells = [tc[f"{f}|{ticks[x][0]}|{ticks[x][1]}"]["per_domain"].get(d) for x in xs]
+            xs, cells = [x for x, c in zip(xs, cells, strict=True) if c], [c for c in cells if c]
+            _errorbar(ax, [x - 0.15 for x in xs], [{"acc": c["acc_cluster"]} for c in cells], SERIES["statement"][0], "o", ms=4.5)  # fmt: skip
+            _errorbar(ax, [x + 0.15 for x in xs], [{"acc": c["acc_control"]} for c in cells], CONTROL_GREY, "x", ms=4.5)  # fmt: skip
+            ax.set_xticks(range(len(ticks)), [t for _, _, t in ticks], fontsize=6)
+            ax.set_xlim(-0.6, len(ticks) - 0.4)
+            ax.set_ylim(-0.04, 1.06)
+            percent_axis(ax)
+            if f == "RL":
+                ax.axhline(GENERAL["attn_max"], color=MUTED, lw=0.6, ls=":")
+            nk = cells[0] if cells else {"n": 0, "k": 0, "t": 0}
+            ax.set_title(f"{fam_label(f)}, {d} (n={nk['n']}, {nk['k']} entities, {nk['t']} wordings)", fontsize=7.5,
+                         loc="left")  # fmt: skip
+            if j == 0:
+                ax.set_ylabel("% still giving answer org", fontsize=8, color=MUTED)
+    handles = [Line2D([], [], color=SERIES["statement"][0], marker="o", ls="none", ms=6, label="the statement giving the answer hidden"),
+               Line2D([], [], color=CONTROL_GREY, marker="x", mew=1.6, ls="none", ms=6, label="control: an off-path statement hidden"),
+               Line2D([], [], color=MUTED, lw=0.6, ls=":", label=f"memory → prompt: {GENERAL['attn_max']:.0%}, the bar for every attention layer")]  # fmt: skip
+    explain = [
+        ("What we did", "Stopped the last tokens before the answer from reading the statement giving the answer, in "
+                        "all layers, only the attention layers, only the DeltaNet layers, or one band of layers; the "
+                        "last tick: the question words instead, all layers. Each topic separately."),
+        ("Example", example_row({}, "the last tokens")),
+        ("How to read", "Each dot: % of prompts still giving answer org (low = that read is needed). The claim: in "
+                        "every topic, memory → prompt is low with every attention layer blocked and stays high with "
+                        "every DeltaNet layer blocked."),
+        ("Control", "Grey x: an off-path statement hidden the same way; it should stay near 100%. Memory → memory "
+                    "(the answer comes from memory) should stay near 100% everywhere."),
+    ]  # fmt: skip
+    data = (f"{RUN_INFO['model']}; per topic n prompts / entities / wordings in each panel title; error bars: "
+            "entity-cluster bootstrap 95% CI (entities resampled within the topic; control: Wilson 95% CI).")  # fmt: skip
+    return _save(fig, stem, "Is the late attention read the same in every topic?", explain, data, handles, 3)
+
+
 def fig_norm(rows: list[dict], m: dict, stem: Path) -> list[str] | None:
     import matplotlib.pyplot as plt
     from matplotlib.lines import Line2D
@@ -2002,7 +2083,31 @@ def prior_rows(hyps: dict, cells: dict, cl: dict, name: str) -> list[str]:
         return (", ".join(f"{f}: middle band {VERDICT.get(x or '', '-')}" for f, x in got.items()),
                 "holds" if got and all(x == "needed" for x in got.values()) else "fails")  # fmt: skip
 
-    checks = {"H_late_read": late_read, "H_late_read_english": lambda: late_read("same"),
+    def general(key: str = "general"):
+        g = cl[key]
+        return ("; ".join(f"{t}: every attention layer {_ci(v['attn'])}, every DeltaNet layer {_ci(v['gdn'])} "
+                          f"(n={v['n']} / k={v['k']} / t={v['t']}; {v['verdict']})" for t, v in g["topics"].items()),
+                g["verdict"])  # fmt: skip
+
+    def per_topic(key: str, test, words: str):
+        """A per-topic check on one topic cell's point estimate (its entity-cluster interval shown)."""
+        doms = cl["topics"][key]["per_domain"]
+        ok = {t: test(v["acc"][0]) for t, v in doms.items()}
+        return ("; ".join(f"{t}: {words} {_ci(v['acc_cluster'])} (n={v['n']} / k={v['k']})" for t, v in doms.items()),
+                "holds" if all(ok.values()) else "partly" if any(ok.values()) else "fails")  # fmt: skip
+
+    def null_topics():
+        tc = cl["topics"]
+        lows = {t: min(c["per_domain"][t]["acc"][0] for k, c in tc.items() if k.startswith("RR|") and t in c["per_domain"])
+                for t in {t for c in tc.values() for t in c["per_domain"]}}  # fmt: skip
+        return (", ".join(f"{t}: lowest cell {100 * x:.0f}%" for t, x in sorted(lows.items())),
+                "holds" if lows and all(x >= 0.95 for x in lows.values()) else "fails")  # fmt: skip
+
+    checks = {"H_general": general, "H_general_named": lambda: general("general_named"),
+              "H_named_question_topics": lambda: per_topic("DL|question|all", lambda a: a <= 0.10, "question words, all layers"),
+              "H_late_band_topics": lambda: per_topic("RL|final|band48-63", lambda a: a <= 0.40, "layers 48-63"),
+              "H_null_topics": null_topics,
+              "H_late_read": late_read, "H_late_read_english": lambda: late_read("same"),
               "H_late_read_other_surface": lambda: late_read("xlang") if any(
                   f.endswith("xlang") for f in late) else late_read("syn"),
               "H_question_free": question_free, "H_null": null_memory, "H_named_earlier": lambda: earlier("DL"),
@@ -2023,6 +2128,43 @@ def prior_rows(hyps: dict, cells: dict, cl: dict, name: str) -> list[str]:
         short = pred if len(pred) <= 220 else pred[:217] + "..."
         out.append(f"| {h} | {short} | {res} | {verdict} |")
     return out
+
+
+def topic_lines(cl: dict) -> tuple[list[str], list[str]]:
+    """The per-topic headline lines (entity cluster first, Wilson second, n items / k entities / t wordings) with the
+    H-general verdict, and the per-topic table; empty without per-topic cells."""
+    tc = cl.get("topics") or {}
+    if not tc:
+        return [], []
+    head = []
+    for key in ("RL|final|attn", "RL|final|gdn", "RL|final|all", "DL|final|attn", "DL|final|gdn", "RR|final|all"):
+        c = tc.get(key)
+        if not c:
+            continue
+        f, d, la = key.split("|")
+        per = "; ".join(f"{t} {_ci(v['acc_cluster'])} (Wilson [{100 * v['acc'][1]:.0f}, {100 * v['acc'][2]:.0f}]; "
+                        f"n={v['n']} / k={v['k']} / t={v['t']})" for t, v in c["per_domain"].items())  # fmt: skip
+        head.append(f"Per topic: {fam_label(f)}, the statement giving the answer hidden from {DEST_PHRASE[d]} in "
+                    f"{layers_phrase(la)}: pooled {_ci(c['acc_cluster'])} (n={c['n']} / k={c['k']} / t={c['t']}); {per}")  # fmt: skip
+    for key, who in (("general", "memory → prompt"), ("general_named", "named → prompt")):
+        g = cl.get(key) or {}
+        if g:
+            head.append(f"H-general ({who}, last tokens: every attention layer <= {GENERAL['attn_max']:.0%} and every "
+                        f"DeltaNet layer >= {GENERAL['gdn_min']:.0%} in each topic, on the entity-cluster bounds): "
+                        f"{g['verdict']} (" + "; ".join(f"{t}: {v['verdict']}" for t, v in g["topics"].items()) + ")")  # fmt: skip
+    table = ["## Per topic (entity-cluster intervals; the off-path control: Wilson)", "",
+             "| family | hidden from | layers | topic | n / k / t | answer org kept [95%, entity cluster] | Wilson | "
+             "control | drop, control - cell [95%, entity cluster] |", "|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    dest_order = {"final": 0, "both": 1, "question": 2}
+    for key in sorted(tc, key=lambda k: (fam_order(k.split("|")[0]), dest_order.get(k.split("|")[1], 9), k)):
+        f, d, la = key.split("|")
+        if not topic_set(la):
+            continue
+        for t, v in tc[key]["per_domain"].items():
+            table.append(f"| {f} | {DEST_PHRASE[d]} | {layers_phrase(la)} | {t} | {v['n']} / {v['k']} / {v['t']} | "
+                         f"{_ci(v['acc_cluster'])} | [{100 * v['acc'][1]:.0f}, {100 * v['acc'][2]:.0f}] | "
+                         f"{100 * v['acc_control'][0]:.0f}% | {_ci(v['drop'], True)} |")  # fmt: skip
+    return head, [*table, ""]
 
 
 def write_report(name: str, m: dict, rows: list[dict], cells: dict, cl: dict, figs: dict, out_dir: Path) -> None:
@@ -2064,6 +2206,8 @@ def write_report(name: str, m: dict, rows: list[dict], cells: dict, cl: dict, fi
         kinds = [(lab, cells.get((*head, lab, "value"))) for lab in ("attn", "gdn")]
         if all(v for _, v in kinds):
             lines.append("By layer kind: " + "; ".join(f"hidden in {layers_phrase(lab)} only: {_pct(v)}" for lab, v in kinds))  # fmt: skip
+    topic_head, topic_table = topic_lines(cl)
+    lines += topic_head
     lines += ["", "Figures: " + ", ".join(f for fs in figs.values() if fs for f in fs), ""]
     ps = sorted(math.exp(r["logp"]) for r in rows if r["source"] == "none")
     ctrl_rows = [r for r in rows if r["source"] in ("lookup_off", "binding_off", "random", "trailing")]
@@ -2136,6 +2280,7 @@ def write_report(name: str, m: dict, rows: list[dict], cells: dict, cl: dict, fi
         + (f". n = {small} per cell: NOT NEEDED is unreachable by the rule (a 100% cell is PARTIAL)" if small else "")
         + (". n = 4 per family: a gate run, not interpreted" if m["n_per_family"] < 10 else ""),
         "",
+        *topic_table,
         "## Dan's predictions (jobs/predictions/2026-10-21_dan.md, D2)",
         "",
         *(dan_table(cells) if DATASET == "suite" else ["(Dan's D2 questions were asked about the animal scenes; see "
@@ -2234,25 +2379,66 @@ def _clusters(ids: list[str], cases: dict[str, dict]) -> tuple[list[str], list[s
 
 
 def compare(a: dict[str, float], b: dict[str, float], cases: dict[str, dict]) -> dict:
-    """Paired per-item values a (the cell) and b (its control) on their common items: n items / k entities, both
-    accuracies (Wilson; the cell's also by entity cluster), the drop b - a (entity cluster; item bootstrap second),
-    and the same per domain."""
+    """Paired per-item values a (the cell) and b (its control) on their common items: n items / k entities / t
+    wordings, both accuracies (Wilson; the cell's also by entity cluster), the drop b - a (entity cluster; item
+    bootstrap second), and the same per domain."""
     names = sorted(set(a) & set(b))
     ents, doms = _clusters(names, cases)
+    words = [cases[i].get("wording", "") for i in names]
     x, y = [a[i] for i in names], [b[i] for i in names]
     diff = [q - p for p, q in zip(x, y, strict=True)]
     per_domain = {}
     for d in sorted(set(doms)):
         sel = [j for j, dd in enumerate(doms) if dd == d]
         xs, ds, es = [x[j] for j in sel], [diff[j] for j in sel], [ents[j] for j in sel]
-        per_domain[d] = {"n": len(sel), "k": len(set(es)), "acc": wilson(int(sum(xs)), len(xs)),
-                         "acc_cluster": entity_boot(xs, es, [d] * len(sel)),
+        per_domain[d] = {"n": len(sel), "k": len(set(es)), "t": len({words[j] for j in sel}),
+                         "acc": wilson(int(sum(xs)), len(xs)), "acc_cluster": entity_boot(xs, es, [d] * len(sel)),
                          "acc_control": wilson(int(sum(y[j] for j in sel)), len(sel)),
                          "drop": entity_boot(ds, es, [d] * len(sel))}  # fmt: skip
-    return {"n": len(names), "k": len(set(zip(doms, ents, strict=True))), "acc": wilson(int(sum(x)), len(x)),
+    return {"n": len(names), "k": len(set(zip(doms, ents, strict=True))), "t": len(set(words)),
+            "acc": wilson(int(sum(x)), len(x)),
             "acc_cluster": entity_boot(x, ents, doms), "acc_control": wilson(int(sum(y)), len(y)),
             "drop": entity_boot(diff, ents, doms), "drop_items": paired_bootstrap_diff(y, x, N_BOOT, BOOT_SEED),
             "per_domain": per_domain}  # fmt: skip
+
+
+# ---- per topic, by entity cluster (the batch-2 late-read grid on pointer_v4; README reporting standard) ----------
+
+GENERAL = {"attn_max": 0.20, "gdn_min": 0.90}  # H-general: memory → prompt, last tokens, per topic
+
+
+def topic_cells(rows: list[dict], m: dict, cases: dict[str, dict]) -> dict[str, dict]:
+    """Every (family, statement giving the answer, destination, layer set) cell of the standard grid in DeltaNet mode
+    value, against its off-path control on the same items (compare: pooled and per topic, entity-cluster intervals).
+    Keys 'family|dest|layers'."""
+    ok = right_items(rows, m)
+    measure = "kept" if m["eligibility"] == "none" else "correct"
+    idx: dict[tuple, dict[str, float]] = collections.defaultdict(dict)
+    for r in rows:
+        if r["source"] in ("lookup", "lookup_off") and r["mode"] == "value" and r["id"] in ok:
+            idx[(r["family"], r["source"], r["dest"], r["layers"])][r["id"]] = float(r[measure])
+    return {f"{f}|{d}|{la}": compare(cell, idx[(f, "lookup_off", d, la)], cases)
+            for (f, s, d, la), cell in idx.items() if s == "lookup" and (f, "lookup_off", d, la) in idx}  # fmt: skip
+
+
+def general_claim(tc: dict[str, dict], fam: str = "RL") -> dict:
+    """H-general per topic (fam RL: memory → prompt; DL: named → prompt, H_general_named): the statement giving the
+    answer hidden from the last tokens in every attention layer keeps <= 20% and in every DeltaNet layer >= 90%.
+    'holds' on the entity-cluster bounds (attention upper bound <= 20%, DeltaNet lower bound >= 90%), 'point' on the
+    point estimates only, else 'fails'."""
+    att, gdn = tc.get(f"{fam}|final|attn"), tc.get(f"{fam}|final|gdn")
+    if not att or not gdn:
+        return {}
+    out: dict[str, Any] = {"topics": {}}
+    for d in att["per_domain"]:
+        a, g = att["per_domain"][d], gdn["per_domain"][d]
+        bounds = a["acc_cluster"][2] <= GENERAL["attn_max"] and g["acc_cluster"][1] >= GENERAL["gdn_min"]
+        point = a["acc"][0] <= GENERAL["attn_max"] and g["acc"][0] >= GENERAL["gdn_min"]
+        out["topics"][d] = {"attn": a["acc_cluster"], "gdn": g["acc_cluster"], "n": a["n"], "k": a["k"], "t": a["t"],
+                            "verdict": "holds" if bounds else "point" if point else "fails"}  # fmt: skip
+    v = [x["verdict"] for x in out["topics"].values()]
+    out["verdict"] = "holds" if all(x == "holds" for x in v) else "partly" if all(x != "fails" for x in v) else "fails"
+    return out
 
 
 def reader_cells(rows: list[dict], m: dict, cases: dict[str, dict]) -> dict[tuple[str, str], dict]:
@@ -2432,24 +2618,31 @@ def fig_heads(rc: dict, m: dict, stem: Path) -> list[str] | None:
     handles = [Line2D([], [], color="#0b0b0b", marker="o", ls="none", ms=4,
                       label=f"a reader: >= {100 * READER_DROP:.0f} points below its control, lower bound >= "
                             f"{100 * READER_LO:.0f} points")]  # fmt: skip
+    where = {"late": "at the last tokens before the answer in the late layers",
+             "early": "for named → prompt at the question words in the early layers",
+             "mid": "for memory → prompt at the question words and the last tokens together in the middle layers"}  # fmt: skip
+    first = next(iter(att["ranges"]))
     explain = [
         ("What we did", "Stopped ONE query head of one attention layer from reading the statement giving the answer "
-                        "(its key/value partners still read it; every other head and layer untouched): at the last "
-                        "tokens before the answer in the late layers; for named → prompt also at the question words "
-                        "in the early layers; for memory → prompt also at the question words and the last tokens "
-                        "together in the middle layers."),
-        ("Example", example_row({}, "one query head at the last tokens")),
+                        "(its key/value partners still read it; every other head and layer untouched): "
+                        + "; ".join(where[r] for r in att["ranges"]) + "."),
+        ("Example", example_row({}, f"one query head at {DEST_PHRASE[att['ranges'][first]['dest']]}")),
         ("How to read", "Colour: points of answer org lost by blocking that head, relative to blocking the same head "
                         "from a statement off the answer's path (darker = the head matters more). Dots: heads that "
                         "pass the reader rule (on the entity-cluster interval)."),
         ("Control", "The same head blocked from an off-path statement of the same kind (subtracted); groups of heads, "
                     "whole layers and whole ranges are in the second figure."),
     ]  # fmt: skip
-    n = sorted({v["n"] for v in rc.values()})
-    k = sorted({v["k"] for v in rc.values()})
-    data = (f"{RUN_INFO['model']}; {', '.join(dict.fromkeys(fam_label(f) for _, f in panels))}; {n[0]}-{n[-1]} prompts "
-            f"({k[0]}-{k[-1]} queried entities) per family; colour scale in points.")  # fmt: skip
+    data = (f"{RUN_INFO['model']}; {', '.join(dict.fromkeys(fam_label(f) for _, f in panels))}; "
+            f"{_span(v['n'] for v in rc.values())} prompts ({_span(v['k'] for v in rc.values())} queried entities) per "
+            "family; colour scale in points.")  # fmt: skip
     return _save(fig, stem, "Which attention heads read the answer's statement?", explain, data, handles, 1)
+
+
+def _span(vals: Any) -> str:
+    """'200' when every value is the same, else 'min-max'."""
+    v = sorted(set(vals))
+    return str(v[0]) if len(v) == 1 else f"{v[0]}-{v[-1]}"
 
 
 def fig_head_units(rc: dict, m: dict, stem: Path) -> list[str] | None:
@@ -2503,23 +2696,26 @@ def fig_head_units(rc: dict, m: dict, stem: Path) -> list[str] | None:
     handles = [Line2D([], [], color=SERIES["statement"][0], marker="o", ls="none", ms=6, label="the statement giving the answer blocked"),
                Line2D([], [], color=CONTROL_GREY, marker="x", mew=1.6, ls="none", ms=6, label="control: an off-path statement blocked")]  # fmt: skip
     late = att["ranges"].get("late")
+    narrow = any(r.get("narrow_dest") for r in att["ranges"].values())
+    la0 = next(iter(att["ranges"].values()))["layers"][0]
+    first = next(iter(att["ranges"]))
     explain = [
-        ("What we did", "Blocked the statement giving the answer in one key/value group of an attention layer (its "
-                        "query heads; tick 'g2' under layer 51 = group 2 of layer 51), a whole layer ('all'), or every "
-                        "attention layer of the range ('whole range'). Early range, named → prompt: also from the "
-                        "name tokens of the question only ('name')."),
-        ("Example", example_row({}, "the last tokens (one group, one layer or the whole range)")),
+        ("What we did", f"Blocked the statement giving the answer in one key/value group of an attention layer (its "
+                        f"query heads; tick 'g2' under layer {la0} = group 2 of layer {la0}), a whole layer ('all'), "
+                        "or every attention layer of the range ('whole range')."
+                        + (" Early range, named → prompt: also from the name tokens of the question only ('name')."
+                           if narrow else "")),
+        ("Example", example_row({}, f"{DEST_PHRASE[att['ranges'][first]['dest']]} (one group, one layer or the "
+                                    "whole range)")),
         ("How to read", "Each dot: % of prompts still giving answer org. "
                         + (f"Memory → prompt, whole late range ({range_span(late)}) should reproduce the earlier run "
                            f"({LATE_REPRO[0]:.0%}-{LATE_REPRO[1]:.0%}). " if late else "")
-                        + "If 'name' matches 'all', the name tokens alone carry the early read."),
+                        + ("If 'name' matches 'all', the name tokens alone carry the early read." if narrow else "")),
         ("Control", "Grey x: the same blocking of an off-path statement; it should stay near 100%. Memory → memory "
                     "(the answer comes from memory) should stay at 100% everywhere."),
     ]  # fmt: skip
-    n = sorted({v["n"] for v in rc.values()})
-    k = sorted({v["k"] for v in rc.values()})
-    data = (f"{RUN_INFO['model']}; {n[0]}-{n[-1]} prompts ({k[0]}-{k[-1]} queried entities) per family; error bars: "
-            "entity-cluster bootstrap 95% CI (control: Wilson 95% CI).")  # fmt: skip
+    data = (f"{RUN_INFO['model']}; {_span(v['n'] for v in rc.values())} prompts ({_span(v['k'] for v in rc.values())} "
+            "queried entities) per family; error bars: entity-cluster bootstrap 95% CI (control: Wilson 95% CI).")  # fmt: skip
     return _save(fig, stem, "How much of the read sits in one group of heads, one layer, or a whole range?", explain,
                  data, handles, 2)  # fmt: skip
 
@@ -2561,16 +2757,20 @@ def fig_readout(ro: dict, m: dict, stem: Path) -> list[str] | None:
                       label="the head chosen on half the scenes (" + "; ".join(chosen(fd) for fd in ro) + ")")]  # fmt: skip
     chance = next(iter(ro.values()))["chance"] or 0
     explain = [
-        ("What we did", "Unedited prompts: for each query head, summed the attention from the last token (late "
-                        "attention layers) to each statement, and asked whether the asked statement gets the most; "
-                        "named → prompt also from the name tokens of the question (early attention layers; the name "
-                        "is also written in the asked statement)."),
+        ("What we did", "Unedited prompts: for each query head, summed the attention "
+                        + " and ".join({"last": "from the last token (late attention layers)",
+                                        "cue": "from the name tokens of the question (named → prompt, early attention "
+                                               "layers; the name is also written in the asked statement)"}[fd]
+                                       for fd in ro)
+                        + " to each statement, and asked whether the asked statement gets the most."),
         ("Example", example_row({}, None)),
         ("How to read", f"Colour: % of prompts where that head looks most at the asked statement (chance "
                         f"{100 * chance:.0f}%; the slot probe of the pointer study reached {100 * D3B_PROBE:.0f}%). "
                         "Box: the best head, chosen on even-numbered scenes."),
         ("Control", "Memory → memory: its 'asked statement' is irrelevant to the answer, so a high rate there means "
-                    "the head tracks the entity, not the lookup."),
+                    "the head tracks the entity, not the lookup." if any(not path_sources(f) for _, f in panels) else
+                    "None in this figure: the name is also written in the asked statement, so looking at it is "
+                    "expected; whether that look matters is tested by blocking (the other figures)."),
     ]  # fmt: skip
     data = (f"{RUN_INFO['model']}; the chosen head is scored on odd-numbered scenes only; its interval: entity-cluster "
             "bootstrap 95% CI.")  # fmt: skip
@@ -2624,10 +2824,9 @@ def fig_code_readers(rc: dict, m: dict, stem: Path) -> list[str] | None:
                         "itself; a union that drops below the last tokens alone shows a line that passes it on."),
         ("Control", "Grey x: another dict entry hidden from the same lines; it should stay near 100%."),
     ]  # fmt: skip
-    n = sorted({v["n"] for v in rc.values()})
-    k = sorted({v["k"] for v in rc.values()})
-    data = (f"{RUN_INFO['model']}; Python programs with a dict of lockers; {n[0]}-{n[-1]} programs ({k[0]}-{k[-1]} "
-            "queried keys) per family; error bars: entity-cluster bootstrap 95% CI (control: Wilson 95% CI).")  # fmt: skip
+    data = (f"{RUN_INFO['model']}; Python programs with a dict of lockers; {_span(v['n'] for v in rc.values())} "
+            f"programs ({_span(v['k'] for v in rc.values())} queried keys) per family; error bars: entity-cluster "
+            "bootstrap 95% CI (control: Wilson 95% CI).")  # fmt: skip
     return _save(fig, stem, "Which code lines read the answer's dict entry?", explain, data, handles, 2)
 
 
@@ -2901,8 +3100,11 @@ def write_report_b3(name: str, m: dict, rows: list[dict], cases: dict[str, dict]
     worst = min(rc.items(), key=lambda kv: kv[1]["acc_control"][0]) if rc else None
     singles = [(f, k) for f, k in rc if ":h" in k]
     mirror = sum(rc[x]["drop"][0] <= -READER_DROP and rc[x]["drop"][2] <= -READER_LO for x in singles)
-    width = [(c["acc_cluster"][2] - c["acc_cluster"][1], c["acc"][2] - c["acc"][1]) for c in rc.values()
-             if not math.isnan(c["acc_cluster"][1])]  # fmt: skip
+    # cluster / item interval width, over cells not at 0% or 100% (there the cluster interval collapses to a point)
+    ratios = [(c["acc_cluster"][2] - c["acc_cluster"][1]) / (c["acc"][2] - c["acc"][1]) for c in rc.values()
+              if 0.02 < c["acc"][0] < 0.98 and not math.isnan(c["acc_cluster"][1])]  # fmt: skip
+    ratio = (f"{statistics.median(ratios):.1f}x the item-level ones (median over the {len(ratios)} cells between 2% "
+             "and 98%)" if ratios else "not comparable here (every cell is at 0% or 100%)")  # fmt: skip
     lines = [f"# {EXP} / {name}: analysis", "",
              f"EXP {name} @ {commit} | model {RUN_INFO['model']} | n={dict(n_items)} org prompts per family, "
              f"k={k_ent} queried entities, domains {sorted({c['domain'] for c in cases.values()})} | seeds={seeds}", "",
@@ -2927,12 +3129,9 @@ def write_report_b3(name: str, m: dict, rows: list[dict], cases: dict[str, dict]
              (f"3) With {len(singles)} single heads tested, some readers are noise. Checked: the mirror image of the "
               f"rule (the off-path block costing >= {100 * READER_DROP:.0f} points more than the statement) fires for {mirror} of "
               f"{len(singles)} single heads; single heads are read with their group and layer. Items of one entity are "
-              "correlated (few entities per domain): the entity-cluster intervals are "
-              f"{statistics.mean(a / b for a, b in width if b) if any(b for _, b in width) else float('nan'):.1f}x the "
-              "item-level ones on average." if singles else
+              f"correlated (few entities per domain): the entity-cluster intervals are {ratio}." if singles else
               "3) Items of one entity are correlated (few queried keys per domain): every interval is the entity-cluster "
-              f"bootstrap; the item-level intervals are next to them (cluster / item width on average "
-              f"{statistics.mean(a / b for a, b in width if b) if any(b for _, b in width) else float('nan'):.1f}x). "
+              f"bootstrap; the item-level intervals are next to them (cluster intervals are {ratio}). "
               "The lines are not independent: unions are read against 'every line after the dict', not summed."),
              "",
              "For the human to verify: rows.jsonl, keep rows whose item's source='none' row has correct=true; count "
@@ -2979,10 +3178,14 @@ def stage_figures(name: str) -> None:
     if DATASET in POINTER_SETS:  # the captions' Example row: the first case of a family that looks the answer up
         looks = [c for c in cases.values() if path_sources(c["family"]) and "lookup" in c["sources"]]
         # the other-language figure shows a statement in another language; otherwise the first lookup family's case
-        # the code-line figure's example blocks the names line: a list-position program
+        # the code-line figure's example blocks the names line (a list-position program); the heads grid's is a case
+        # of the first range's first family (early: named → prompt)
+        want = "IX" if m.get("grid") == "code_readers" else None
+        if m.get("grid") == "heads":
+            want = next(iter(m["attention"]["ranges"].values()))["families"][0]
         pick = (
             next((c for c in looks if c["family"].endswith("xlang")), None)
-            or (next((c for c in looks if c["family"] == "IX"), None) if m.get("grid") == "code_readers" else None)
+            or (next((c for c in looks if c["family"] == want), None) if want else None)
             or (min(looks, key=lambda c: fam_order(c["family"])) if looks else None)
         )
         EXAMPLE_CASE.update(pick or {})
@@ -3019,6 +3222,10 @@ def stage_figures(name: str) -> None:
             "cuts": fig_cuts(cells, m, out_dir / "cuts"),
             "norm_ratio": fig_norm(rows, m, out_dir / "norm_ratio"),
         }
+        if DATASET in POINTER_SETS:  # per topic, by entity cluster (README reporting standard)
+            tc = topic_cells(rows, m, cases)
+            cl["topics"], cl["general"], cl["general_named"] = tc, general_claim(tc), general_claim(tc, "DL")
+            figs["topics"] = fig_topics(tc, m, out_dir / "topics")
     summary = {"run": name, "rule": m["decision"], "claims": cl, "figures": figs,
                "cells": [{"family": k[0], "source": k[1], "dest": k[2], "layers": k[3], "mode": k[4], **c}
                          for k, c in cells.items()]}  # fmt: skip

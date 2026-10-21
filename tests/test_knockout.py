@@ -335,6 +335,35 @@ def test_attention_probs_matches_eager_weights():
         assert torch.allclose(got[layer].sum(-1), torch.ones_like(got[layer].sum(-1)), atol=1e-5)
 
 
+def test_capture_attention_sees_residual_edits():
+    """capture_attention reads the forward it is active in: an identity edit of block 4's output leaves layer 7's
+    attention as attention_probs reports it, an edit of the last position changes it there (D5a reads a patched
+    forward this way)."""
+    from bridge_jspace.knockout import capture_attention
+
+    model = tiny_model()
+    ids = ids_for(5, 20)
+    ref = attention_probs(model, ids, [7], [19])[7]
+
+    def run(edit):
+        handle = decoder_layers(model)[4].register_forward_hook(lambda _m, _a, out: edit(out))
+        got: dict = {}
+        try:
+            with torch.no_grad(), capture_attention(model, [7], [19], got):
+                model(input_ids=ids, use_cache=False, logits_to_keep=1)
+        finally:
+            handle.remove()
+        return got[7]
+
+    def shift_last(out):
+        h = (out[0] if isinstance(out, tuple) else out).clone()
+        h[:, -1] += 5.0
+        return (h, *out[1:]) if isinstance(out, tuple) else h
+
+    assert (run(lambda out: None) - ref).abs().max() == 0
+    assert (run(shift_last) - ref).abs().max() > 1e-3
+
+
 def test_causality_nothing_before_min_dst_changes():
     model = tiny_model()
     ids = ids_for(4, 40, batch=3)
@@ -444,6 +473,45 @@ def test_compare_reports_domains_entities_and_cluster_intervals():
     assert c["drop"][0] == pytest.approx(1 - c["acc"][0])
     assert c["drop"][2] - c["drop"][1] > 2 * (c["drop_items"][2] - c["drop_items"][1])
     assert all(math.isnan(x) for x in K.entity_boot([], [], []))
+
+
+def test_pointer_v4_statement_spans_follow_the_listed_statements():
+    from scripts import attn_knockout as K
+
+    stmts = ["The chart on the ear is kept in folder 6.", "Folder 2 holds the chart on the heart."]
+    item = {"id": "x", "context": " ".join(stmts), "statements": stmts, "n_entities": 2, "n_filler": 0}
+    spans = K.pointer_statement_spans(item, "pointer_v4")
+    assert [item["context"][a:b] for a, b in spans] == stmts
+    with pytest.raises(AssertionError):
+        K.pointer_statement_spans({**item, "n_entities": 3}, "pointer_v4")
+
+
+def test_general_claim_per_topic_on_cluster_bounds():
+    """H-general holds in a topic only on the entity-cluster bounds; on the point estimates alone it is 'point';
+    a topic where every attention layer keeps more than 20% fails it."""
+    from scripts import attn_knockout as K
+
+    cases: dict[str, dict] = {}
+    rows: list[dict] = []
+    for j in range(240):
+        topic = ("countries", "animals", "body")[j // 80]
+        i = f"{topic}-{j}"
+        cases[i] = {"bridge": f"{topic}{j % 20}", "domain": topic, "wording": f"s{j % 3}q{j % 3}"}
+        rows.append(
+            {"id": i, "family": "RL", "source": "none", "dest": "-", "layers": "-", "mode": "-", "correct": True}
+        )
+        attn = {"countries": 0.0, "animals": float(j % 20 < 3), "body": float(j % 20 < 8)}[topic]
+        for src, la, val in (("lookup", "attn", attn), ("lookup", "gdn", 1.0), ("lookup_off", "attn", 1.0),
+                             ("lookup_off", "gdn", 1.0)):  # fmt: skip
+            rows.append({"id": i, "family": "RL", "source": src, "dest": "final", "layers": la, "mode": "value",
+                         "correct": bool(val)})  # fmt: skip
+    tc = K.topic_cells(rows, {"eligibility": "map"}, cases)
+    assert tc["RL|final|attn"]["per_domain"]["animals"]["t"] == 3
+    g = K.general_claim(tc)
+    assert g["topics"]["countries"]["verdict"] == "holds"  # 0% everywhere: the bound is 0
+    assert g["topics"]["animals"]["verdict"] in ("holds", "point")  # 15%: below the bar, the upper bound near it
+    assert g["topics"]["body"]["verdict"] == "fails"  # 40%
+    assert g["verdict"] == "fails"
 
 
 # ---- model tests (Qwen3.5-0.8B, fp32) --------------------------------------------------------------------------------

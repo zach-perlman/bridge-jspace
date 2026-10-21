@@ -294,9 +294,20 @@ def attention_probs(model: Any, input_ids: torch.Tensor, layers: Collection[int]
     position, in one unedited forward: {layer: [batch, heads, len(q_positions), T]} (fp32). Recomputed from the layer's
     own inputs (query projection without its gate half, per-head norms, rotary embedding, the scaling, causal softmax),
     so the forward itself keeps its attention implementation; tests check it against eager attention weights."""
-    blocks: Any = decoder_layers(model)
     hf = getattr(model, "hf", model)
     out: dict[int, torch.Tensor] = {}
+    with capture_attention(model, layers, q_positions, out):
+        hf(input_ids=input_ids, use_cache=False, logits_to_keep=1)
+    return out
+
+
+@contextlib.contextmanager
+def capture_attention(
+    model: Any, layers: Collection[int], q_positions: Sequence[int], out: dict[int, torch.Tensor]
+) -> Iterator[None]:
+    """While active, every forward fills `out` as attention_probs returns it, for whatever else the forward does
+    (e.g. residual edits by other hooks: the attention is then the edited forward's)."""
+    blocks: Any = decoder_layers(model)
 
     def hook_for(la: int):
         def hook(module, args, kwargs):
@@ -321,8 +332,7 @@ def attention_probs(model: Any, input_ids: torch.Tensor, layers: Collection[int]
         assert layer_kind(blocks[la]) == FULL, f"layer {la} is not a full-attention layer"
         handles.append(blocks[la].self_attn.register_forward_pre_hook(hook_for(la), with_kwargs=True))
     try:
-        hf(input_ids=input_ids, use_cache=False, logits_to_keep=1)
+        yield
     finally:
         for handle in handles:
             handle.remove()
-    return out
