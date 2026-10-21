@@ -1,0 +1,486 @@
+{
+  "run": "d3v4_smoke_27b",
+  "verdict": "not shown: the slot direction does not steer the lookup by the rule (controls failed: not interpretable)",
+  "checks": {
+    "a_lower_bound_ge_0.30": false,
+    "b_20_points_above_lens_and_random": false,
+    "controls_valid": false,
+    "illusion_flag": false,
+    "unedited_answer_org": 1
+  },
+  "primary": {
+    "layer": 48,
+    "scale": 1.0,
+    "slot": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ],
+    "lens": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ],
+    "random": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ],
+    "slot_minus_lens": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "slot_minus_random": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "shuffled": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ],
+    "rr_slot": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ],
+    "span_only": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ],
+    "rest_only": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ],
+    "held_out_entities": [
+      0.0,
+      0.0,
+      0.3903,
+      6
+    ],
+    "seen_entities": [
+      0.0,
+      0.0,
+      0.3903,
+      6
+    ],
+    "patch": [
+      0.0833,
+      0.0149,
+      0.3539,
+      12
+    ],
+    "sub4": [
+      0.0833,
+      0.0149,
+      0.3539,
+      12
+    ]
+  },
+  "pointer_v4": {
+    "ci": {
+      "kind": "entity_cluster",
+      "cluster": "asked entity",
+      "strata": "domain",
+      "n_boot": 2000,
+      "seed": 0,
+      "bounds": "the wider of the cluster bootstrap and the item-level Wilson interval"
+    },
+    "item_level": {
+      "slot": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "lens": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "random": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "shuffled": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "rr_slot": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "slot_minus_lens": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "slot_minus_random": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "n_k_t": {
+      "slot": [
+        12,
+        12,
+        11
+      ],
+      "lens": [
+        12,
+        12,
+        11
+      ],
+      "random": [
+        12,
+        12,
+        11
+      ],
+      "shuffled": [
+        12,
+        12,
+        11
+      ],
+      "rr_slot": [
+        12,
+        11,
+        11
+      ]
+    },
+    "per_domain": {
+      "countries": {
+        "slot": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "lens": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "random": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "n_k_t": [
+          4,
+          4,
+          4
+        ]
+      },
+      "animals": {
+        "slot": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "lens": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "random": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "n_k_t": [
+          4,
+          4,
+          4
+        ]
+      },
+      "body": {
+        "slot": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "lens": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "random": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "n_k_t": [
+          4,
+          4,
+          3
+        ]
+      }
+    },
+    "per_cut": {
+      "entity": {
+        "slot": [
+          0.0,
+          0.0,
+          0.6576,
+          2
+        ],
+        "n_k_t": [
+          2,
+          2,
+          2
+        ]
+      },
+      "template": {
+        "slot": [
+          0.0,
+          0.0,
+          0.3903,
+          6
+        ],
+        "n_k_t": [
+          6,
+          6,
+          6
+        ]
+      },
+      "both": {
+        "slot": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "n_k_t": [
+          4,
+          4,
+          4
+        ]
+      }
+    }
+  },
+  "fit": {
+    "kept": 118,
+    "of": 120,
+    "layers": [
+      {
+        "layer": 40,
+        "n": 118,
+        "per_slot": [
+          24,
+          23,
+          24,
+          24,
+          23
+        ],
+        "decode_cv": 0.2797,
+        "decode_cv_shuffled": 0.1525,
+        "deviation_norm_median": 1.663,
+        "state_norm_median": 69.03
+      },
+      {
+        "layer": 42,
+        "n": 118,
+        "per_slot": [
+          24,
+          23,
+          24,
+          24,
+          23
+        ],
+        "decode_cv": 0.2712,
+        "decode_cv_shuffled": 0.178,
+        "deviation_norm_median": 1.829,
+        "state_norm_median": 74.29
+      },
+      {
+        "layer": 44,
+        "n": 118,
+        "per_slot": [
+          24,
+          23,
+          24,
+          24,
+          23
+        ],
+        "decode_cv": 0.2966,
+        "decode_cv_shuffled": 0.161,
+        "deviation_norm_median": 2.148,
+        "state_norm_median": 78.02
+      },
+      {
+        "layer": 46,
+        "n": 118,
+        "per_slot": [
+          24,
+          23,
+          24,
+          24,
+          23
+        ],
+        "decode_cv": 0.322,
+        "decode_cv_shuffled": 0.1695,
+        "deviation_norm_median": 2.497,
+        "state_norm_median": 85.12
+      },
+      {
+        "layer": 48,
+        "n": 118,
+        "per_slot": [
+          24,
+          23,
+          24,
+          24,
+          23
+        ],
+        "decode_cv": 0.339,
+        "decode_cv_shuffled": 0.178,
+        "deviation_norm_median": 3.157,
+        "state_norm_median": 90.14
+      },
+      {
+        "layer": 50,
+        "n": 118,
+        "per_slot": [
+          24,
+          23,
+          24,
+          24,
+          23
+        ],
+        "decode_cv": 0.3644,
+        "decode_cv_shuffled": 0.1949,
+        "deviation_norm_median": 3.912,
+        "state_norm_median": 97.26
+      },
+      {
+        "layer": 52,
+        "n": 118,
+        "per_slot": [
+          24,
+          23,
+          24,
+          24,
+          23
+        ],
+        "decode_cv": 0.2966,
+        "decode_cv_shuffled": 0.1695,
+        "deviation_norm_median": 5.31,
+        "state_norm_median": 124.06
+      }
+    ],
+    "geometry": [
+      {
+        "layer": 44,
+        "n_vectors": 100,
+        "entities": 86,
+        "max_abs_cos_entity_median": 0.0361,
+        "max_abs_cos_entity_null": 0.0348,
+        "principal_cos": {
+          "4": {
+            "top": 0.1428,
+            "null_top": 0.1466
+          }
+        },
+        "jspace_share_median": 0.0729,
+        "random_dictionary_share_median": 0.0819,
+        "random_vector_jspace_share_median": 0.0736
+      },
+      {
+        "layer": 46,
+        "n_vectors": 100,
+        "entities": 86,
+        "max_abs_cos_entity_median": 0.0373,
+        "max_abs_cos_entity_null": 0.036,
+        "principal_cos": {
+          "4": {
+            "top": 0.142,
+            "null_top": 0.163
+          }
+        },
+        "jspace_share_median": 0.0714,
+        "random_dictionary_share_median": 0.0813,
+        "random_vector_jspace_share_median": 0.076
+      },
+      {
+        "layer": 48,
+        "n_vectors": 100,
+        "entities": 86,
+        "max_abs_cos_entity_median": 0.0347,
+        "max_abs_cos_entity_null": 0.036,
+        "principal_cos": {
+          "4": {
+            "top": 0.1438,
+            "null_top": 0.1541
+          }
+        },
+        "jspace_share_median": 0.0734,
+        "random_dictionary_share_median": 0.0813,
+        "random_vector_jspace_share_median": 0.0758
+      },
+      {
+        "layer": 50,
+        "n_vectors": 100,
+        "entities": 86,
+        "max_abs_cos_entity_median": 0.0357,
+        "max_abs_cos_entity_null": 0.037,
+        "principal_cos": {
+          "4": {
+            "top": 0.1403,
+            "null_top": 0.1394
+          }
+        },
+        "jspace_share_median": 0.0738,
+        "random_dictionary_share_median": 0.0815,
+        "random_vector_jspace_share_median": 0.0771
+      },
+      {
+        "layer": 52,
+        "n_vectors": 100,
+        "entities": 86,
+        "max_abs_cos_entity_median": 0.0356,
+        "max_abs_cos_entity_null": 0.036,
+        "principal_cos": {
+          "4": {
+            "top": 0.1742,
+            "null_top": 0.1576
+          }
+        },
+        "jspace_share_median": 0.0738,
+        "random_dictionary_share_median": 0.0815,
+        "random_vector_jspace_share_median": 0.077
+      }
+    ]
+  },
+  "figures": [
+    "fig1_slot_direction_vs_lens.png",
+    "fig2_decision_cell.png",
+    "fig3_geometry.png"
+  ]
+}

@@ -1,0 +1,193 @@
+{
+  "kept": 118,
+  "of": 120,
+  "layers": [
+    {
+      "layer": 40,
+      "n": 118,
+      "per_slot": [
+        24,
+        23,
+        24,
+        24,
+        23
+      ],
+      "decode_cv": 0.2797,
+      "decode_cv_shuffled": 0.1525,
+      "deviation_norm_median": 1.663,
+      "state_norm_median": 69.03
+    },
+    {
+      "layer": 42,
+      "n": 118,
+      "per_slot": [
+        24,
+        23,
+        24,
+        24,
+        23
+      ],
+      "decode_cv": 0.2712,
+      "decode_cv_shuffled": 0.178,
+      "deviation_norm_median": 1.829,
+      "state_norm_median": 74.29
+    },
+    {
+      "layer": 44,
+      "n": 118,
+      "per_slot": [
+        24,
+        23,
+        24,
+        24,
+        23
+      ],
+      "decode_cv": 0.2966,
+      "decode_cv_shuffled": 0.161,
+      "deviation_norm_median": 2.148,
+      "state_norm_median": 78.02
+    },
+    {
+      "layer": 46,
+      "n": 118,
+      "per_slot": [
+        24,
+        23,
+        24,
+        24,
+        23
+      ],
+      "decode_cv": 0.322,
+      "decode_cv_shuffled": 0.1695,
+      "deviation_norm_median": 2.497,
+      "state_norm_median": 85.12
+    },
+    {
+      "layer": 48,
+      "n": 118,
+      "per_slot": [
+        24,
+        23,
+        24,
+        24,
+        23
+      ],
+      "decode_cv": 0.339,
+      "decode_cv_shuffled": 0.178,
+      "deviation_norm_median": 3.157,
+      "state_norm_median": 90.14
+    },
+    {
+      "layer": 50,
+      "n": 118,
+      "per_slot": [
+        24,
+        23,
+        24,
+        24,
+        23
+      ],
+      "decode_cv": 0.3644,
+      "decode_cv_shuffled": 0.1949,
+      "deviation_norm_median": 3.912,
+      "state_norm_median": 97.26
+    },
+    {
+      "layer": 52,
+      "n": 118,
+      "per_slot": [
+        24,
+        23,
+        24,
+        24,
+        23
+      ],
+      "decode_cv": 0.2966,
+      "decode_cv_shuffled": 0.1695,
+      "deviation_norm_median": 5.31,
+      "state_norm_median": 124.06
+    }
+  ],
+  "geometry": [
+    {
+      "layer": 44,
+      "n_vectors": 100,
+      "entities": 86,
+      "max_abs_cos_entity_median": 0.0361,
+      "max_abs_cos_entity_null": 0.0348,
+      "principal_cos": {
+        "4": {
+          "top": 0.1428,
+          "null_top": 0.1466
+        }
+      },
+      "jspace_share_median": 0.0729,
+      "random_dictionary_share_median": 0.0819,
+      "random_vector_jspace_share_median": 0.0736
+    },
+    {
+      "layer": 46,
+      "n_vectors": 100,
+      "entities": 86,
+      "max_abs_cos_entity_median": 0.0373,
+      "max_abs_cos_entity_null": 0.036,
+      "principal_cos": {
+        "4": {
+          "top": 0.142,
+          "null_top": 0.163
+        }
+      },
+      "jspace_share_median": 0.0714,
+      "random_dictionary_share_median": 0.0813,
+      "random_vector_jspace_share_median": 0.076
+    },
+    {
+      "layer": 48,
+      "n_vectors": 100,
+      "entities": 86,
+      "max_abs_cos_entity_median": 0.0347,
+      "max_abs_cos_entity_null": 0.036,
+      "principal_cos": {
+        "4": {
+          "top": 0.1438,
+          "null_top": 0.1541
+        }
+      },
+      "jspace_share_median": 0.0734,
+      "random_dictionary_share_median": 0.0813,
+      "random_vector_jspace_share_median": 0.0758
+    },
+    {
+      "layer": 50,
+      "n_vectors": 100,
+      "entities": 86,
+      "max_abs_cos_entity_median": 0.0357,
+      "max_abs_cos_entity_null": 0.037,
+      "principal_cos": {
+        "4": {
+          "top": 0.1403,
+          "null_top": 0.1394
+        }
+      },
+      "jspace_share_median": 0.0738,
+      "random_dictionary_share_median": 0.0815,
+      "random_vector_jspace_share_median": 0.0771
+    },
+    {
+      "layer": 52,
+      "n_vectors": 100,
+      "entities": 86,
+      "max_abs_cos_entity_median": 0.0356,
+      "max_abs_cos_entity_null": 0.036,
+      "principal_cos": {
+        "4": {
+          "top": 0.1742,
+          "null_top": 0.1576
+        }
+      },
+      "jspace_share_median": 0.0738,
+      "random_dictionary_share_median": 0.0815,
+      "random_vector_jspace_share_median": 0.077
+    }
+  ]
+}

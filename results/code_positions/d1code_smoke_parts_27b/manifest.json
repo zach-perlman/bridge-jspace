@@ -1,0 +1,98 @@
+{
+  "exp": "code_positions",
+  "run": "d1code_smoke_parts_27b",
+  "kind": "parts",
+  "written_utc": "2026-10-21T19:44:18Z",
+  "why": "D1 in code smoke: parts at forced cells",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "0f68da3959ae08c4a4aae98bd1660f845026e165",
+    "dirty": true
+  },
+  "families": [
+    "KL",
+    "KR"
+  ],
+  "n_per_family": 2,
+  "inputs": {
+    "data/code_positions_v1/items.json": "d37dce1a98478c329dc6e2041e53618175e3ac3cc4b42b3d8fc3f431a60935d0"
+  },
+  "cases": "code_positions: the first n scenes (scene order) answered right in every competence prompt of both families by none; both families on each scene",
+  "sets": "Stages run statement_positions' map, parts and readwrite unchanged (its transit rule, J-space split, lens push and\ndecision rule), on these cases (its module constants set for the two families; this script's own competence, figures,\nreport and examples). Map layers 28-44 every 2 on the 27B; parts and readwrite at the map's transit cells on its coarse\ngrid below the answer onset (28, 32, 36, 40), primary 32-40.",
+  "read": "suite_split's: one forward of the edited clean prompt (a digit's space token appended), the top token's role (b: X's answer, A: the bridge's, other), ld = logit(b) - logit(A), frac = (ld - ld_clean) / (ld_C - ld_clean)",
+  "seeds": {
+    "null": 0,
+    "bootstrap": 0,
+    "random_dictionary": "777 + layer (suite_split's)"
+  },
+  "families_meaning": {
+    "KL": "stated in code \u2192 prompt: a variable holds the country, its number looked up in the program's dict",
+    "KR": "stated in code \u2192 memory: a variable holds the country, its capital recalled"
+  },
+  "d1code_decision": "Stages:  make (tokenizer; data/code_positions_v1/items.json)  verify  check\n         manifest_competence --name N --why W [--limit K]  competence --name N   (GPU)\n         plan [--n K]   map --name M --why W [--n K] [--layers ...]   parts --name P --map M --why W [--force SET:LAYER ...]\n         readwrite --name R --map M --parts P --why W [--force ...]   figures --name R   examples --name M [--k 3]\nEligibility: BJ_D1CODE_COMPETENCE names the competence run (default d1code_competence_27b; \"none\": every scene, a smoke).\n",
+  "map": {
+    "run": "d1code_smoke_map_27b",
+    "summary_sha256": "6823ce4d365f0f0f586e626c3cf0c6dc43c887fdb0d2b1afad2d94d8af623b4e",
+    "forced": {
+      "bind_bridge": [
+        32
+      ],
+      "context": [
+        32
+      ]
+    },
+    "sets": [
+      "bind_bridge",
+      "bridge_word",
+      "bind_other",
+      "lookup_bridge",
+      "lookup_x",
+      "context",
+      "question",
+      "q_words",
+      "final"
+    ],
+    "sub_n": null,
+    "layers_from": 16
+  },
+  "cells": {
+    "KL": {
+      "bind_bridge": [
+        32
+      ],
+      "context": [
+        32
+      ]
+    },
+    "KR": {
+      "bind_bridge": [
+        32
+      ],
+      "context": [
+        32
+      ]
+    }
+  },
+  "question": "Where the copy carries the bridge (transit cells), which part carries it: the J-space or the rest?",
+  "lens": {
+    "jpp": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "9fa267f841d62aa468dab5b9b38c3dc45a82d863"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "parts": "suite_split's parts with --calibrate: full (C), O's full copy, lens2 / not_lens2, jspace / not_jspace, jspace_wo_own, rand_omp (25-atom signed OMP), each with its random-direction null, lens2_matched and jspace_matched (exp02's matched-alignment pieces)",
+  "windows": {
+    "primary": "layers [32, 44)",
+    "secondary": "layers [16, 44)"
+  },
+  "decision": "Decision rule (fixed before the 27B run; per family, set and window, primary layers decide):\n  J-space verdict (frac): inside if the concentration's lower bound > INSIDE (1.2) and above the random-dictionary\n  null's upper bound; around if its upper bound < OUTSIDE (1.0) and not_jspace - jspace > 0 (paired bootstrap lower\n  bound); else inconclusive. suite_split's own rule (inside above 2.0) is reported as verdict_strict.\n  Lens write: written if at some scale <= 4x the lens direction flips >= 30% and beats the random direction (paired\n  bootstrap lower bound of the flip difference > 0); not written if at every scale (0.5-16x) the difference's upper\n  bound is < 0.10; else inconclusive.\n  H-loc (location artefact) is supported for a lookup-used bound family (BL, BLR) if at a statement set in transit at\n  the primary layers its J-space verdict is inside and the lens writes it there. H-around is supported if at every\n  statement set in transit at the primary layers its J-space verdict is around and the lens does not write it, while\n  the positive control at the same set and layers (countries B, else BR) is inside; without a passing positive control\n  an 'around' result at the statements is not interpretable. No statement set of BL in transit at the primary layers:\n  H-loc's location premise fails at the question-token layers (the secondary layers are reported, not decisive).\n  Paired readers: at statement sets BL and BR (and BLR and BRL) get the identical patch on the same scenes (the context\n  precedes the question), so their concentration difference isolates what the reader uses; reported with a scene\n  bootstrap."
+}

@@ -1,0 +1,505 @@
+{
+  "cells": {
+    "KL/bind_bridge/primary": {
+      "layers": [
+        32
+      ],
+      "n": 2,
+      "read_top10": 1,
+      "read_top1": 0.5,
+      "x_top10": 0,
+      "write": {
+        "copy": {
+          "frac": 0.9925999999999999,
+          "flips": 1
+        },
+        "lens_x0.5": {
+          "frac": -0.0095,
+          "flips": 0
+        },
+        "random_x0.5": {
+          "frac": -0.011099999999999999,
+          "flips": 0
+        },
+        "lens_x1": {
+          "frac": 0.0032500000000000003,
+          "flips": 0
+        },
+        "random_x1": {
+          "frac": -0.0037,
+          "flips": 0
+        },
+        "lens_x2": {
+          "frac": 0.1113,
+          "flips": 0
+        },
+        "random_x2": {
+          "frac": 0.0019,
+          "flips": 0
+        },
+        "lens_x4": {
+          "frac": 0.27899999999999997,
+          "flips": 0
+        },
+        "random_x4": {
+          "frac": 0.0828,
+          "flips": 0
+        },
+        "lens_x8": {
+          "frac": 0.5744,
+          "flips": 0.5
+        },
+        "random_x8": {
+          "frac": 0.3494,
+          "flips": 0
+        },
+        "lens_x16": {
+          "frac": 0.5539,
+          "flips": 0
+        },
+        "random_x16": {
+          "frac": 0.5071,
+          "flips": 0
+        }
+      },
+      "by_scale": {
+        "x0.5": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x1": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x2": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x4": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x8": {
+          "lens_flips": 0.5,
+          "random_flips": 0.0,
+          "diff": [
+            0.5,
+            0.0,
+            1.0
+          ]
+        },
+        "x16": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "verdict": "inconclusive"
+    },
+    "KL/bind_bridge/secondary": {
+      "layers": [
+        32
+      ],
+      "n": 2,
+      "read_top10": 1,
+      "read_top1": 0.5,
+      "x_top10": 0,
+      "write": {
+        "copy": {
+          "frac": 0.9925999999999999,
+          "flips": 1
+        },
+        "lens_x0.5": {
+          "frac": -0.0095,
+          "flips": 0
+        },
+        "random_x0.5": {
+          "frac": -0.011099999999999999,
+          "flips": 0
+        },
+        "lens_x1": {
+          "frac": 0.0032500000000000003,
+          "flips": 0
+        },
+        "random_x1": {
+          "frac": -0.0037,
+          "flips": 0
+        },
+        "lens_x2": {
+          "frac": 0.1113,
+          "flips": 0
+        },
+        "random_x2": {
+          "frac": 0.0019,
+          "flips": 0
+        },
+        "lens_x4": {
+          "frac": 0.27899999999999997,
+          "flips": 0
+        },
+        "random_x4": {
+          "frac": 0.0828,
+          "flips": 0
+        },
+        "lens_x8": {
+          "frac": 0.5744,
+          "flips": 0.5
+        },
+        "random_x8": {
+          "frac": 0.3494,
+          "flips": 0
+        },
+        "lens_x16": {
+          "frac": 0.5539,
+          "flips": 0
+        },
+        "random_x16": {
+          "frac": 0.5071,
+          "flips": 0
+        }
+      },
+      "by_scale": {
+        "x0.5": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x1": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x2": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x4": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x8": {
+          "lens_flips": 0.5,
+          "random_flips": 0.0,
+          "diff": [
+            0.5,
+            0.0,
+            1.0
+          ]
+        },
+        "x16": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "verdict": "inconclusive"
+    },
+    "KR/bind_bridge/primary": {
+      "layers": [
+        32
+      ],
+      "n": 2,
+      "read_top10": 1,
+      "read_top1": 0.5,
+      "x_top10": 0,
+      "write": {
+        "copy": {
+          "frac": 0.9967999999999999,
+          "flips": 1
+        },
+        "lens_x0.5": {
+          "frac": 0.36205,
+          "flips": 0
+        },
+        "random_x0.5": {
+          "frac": -0.0026000000000000003,
+          "flips": 0
+        },
+        "lens_x1": {
+          "frac": 0.9260999999999999,
+          "flips": 0.5
+        },
+        "random_x1": {
+          "frac": 0.0098,
+          "flips": 0
+        },
+        "lens_x2": {
+          "frac": 1.04765,
+          "flips": 1
+        },
+        "random_x2": {
+          "frac": 0.03635,
+          "flips": 0
+        },
+        "lens_x4": {
+          "frac": 1.01935,
+          "flips": 1
+        },
+        "random_x4": {
+          "frac": 0.14465,
+          "flips": 0
+        },
+        "lens_x8": {
+          "frac": 0.66735,
+          "flips": 0.5
+        },
+        "random_x8": {
+          "frac": 0.44794999999999996,
+          "flips": 0
+        },
+        "lens_x16": {
+          "frac": 0.34795,
+          "flips": 0
+        },
+        "random_x16": {
+          "frac": 0.4982,
+          "flips": 0
+        }
+      },
+      "by_scale": {
+        "x0.5": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x1": {
+          "lens_flips": 0.5,
+          "random_flips": 0.0,
+          "diff": [
+            0.5,
+            0.0,
+            1.0
+          ]
+        },
+        "x2": {
+          "lens_flips": 1.0,
+          "random_flips": 0.0,
+          "diff": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "x4": {
+          "lens_flips": 1.0,
+          "random_flips": 0.0,
+          "diff": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "x8": {
+          "lens_flips": 0.5,
+          "random_flips": 0.0,
+          "diff": [
+            0.5,
+            0.0,
+            1.0
+          ]
+        },
+        "x16": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "verdict": "written"
+    },
+    "KR/bind_bridge/secondary": {
+      "layers": [
+        32
+      ],
+      "n": 2,
+      "read_top10": 1,
+      "read_top1": 0.5,
+      "x_top10": 0,
+      "write": {
+        "copy": {
+          "frac": 0.9967999999999999,
+          "flips": 1
+        },
+        "lens_x0.5": {
+          "frac": 0.36205,
+          "flips": 0
+        },
+        "random_x0.5": {
+          "frac": -0.0026000000000000003,
+          "flips": 0
+        },
+        "lens_x1": {
+          "frac": 0.9260999999999999,
+          "flips": 0.5
+        },
+        "random_x1": {
+          "frac": 0.0098,
+          "flips": 0
+        },
+        "lens_x2": {
+          "frac": 1.04765,
+          "flips": 1
+        },
+        "random_x2": {
+          "frac": 0.03635,
+          "flips": 0
+        },
+        "lens_x4": {
+          "frac": 1.01935,
+          "flips": 1
+        },
+        "random_x4": {
+          "frac": 0.14465,
+          "flips": 0
+        },
+        "lens_x8": {
+          "frac": 0.66735,
+          "flips": 0.5
+        },
+        "random_x8": {
+          "frac": 0.44794999999999996,
+          "flips": 0
+        },
+        "lens_x16": {
+          "frac": 0.34795,
+          "flips": 0
+        },
+        "random_x16": {
+          "frac": 0.4982,
+          "flips": 0
+        }
+      },
+      "by_scale": {
+        "x0.5": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x1": {
+          "lens_flips": 0.5,
+          "random_flips": 0.0,
+          "diff": [
+            0.5,
+            0.0,
+            1.0
+          ]
+        },
+        "x2": {
+          "lens_flips": 1.0,
+          "random_flips": 0.0,
+          "diff": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "x4": {
+          "lens_flips": 1.0,
+          "random_flips": 0.0,
+          "diff": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "x8": {
+          "lens_flips": 0.5,
+          "random_flips": 0.0,
+          "diff": [
+            0.5,
+            0.0,
+            1.0
+          ]
+        },
+        "x16": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "verdict": "written"
+    }
+  },
+  "claims": {
+    "KL": {
+      "jspace": {
+        "statement_verdicts": {
+          "bind_bridge": "around",
+          "context": "around"
+        },
+        "positive_control": {
+          "bind_bridge": "around",
+          "context": "inconclusive"
+        },
+        "jspace_half": "H-around but positive control fails (not interpretable)"
+      },
+      "lens_write": {
+        "bind_bridge": "inconclusive",
+        "context": null
+      },
+      "verdict": "neither (mixed)"
+    }
+  },
+  "seconds": 4
+}

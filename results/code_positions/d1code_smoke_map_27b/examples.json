@@ -1,0 +1,118 @@
+{
+ "exp": "code_positions",
+ "run": "d1code_smoke_map_27b",
+ "seed": 0,
+ "k": 3,
+ "groups": [
+  {
+   "key": "switched",
+   "title": "switched",
+   "definition": "the paste at the key line gave the alt answer",
+   "n_total": 8
+  },
+  {
+   "key": "kept",
+   "title": "kept",
+   "definition": "the paste at the key line left the org answer",
+   "n_total": 0
+  },
+  {
+   "key": "control_switched",
+   "title": "control switched",
+   "definition": "a random push of the paste's size at the key line changed the answer",
+   "n_total": 0
+  }
+ ],
+ "examples": [
+  {
+   "group": "switched",
+   "family": "stated in code → memory",
+   "item_id": "KR-code-0001",
+   "prompt": "<|im_start|>user\n```python\ndrawers = {\"Portugal\": 8, \"Spain\": 3, \"Germany\": 7, \"Italy\": 5, \"Australia\": 2}\nkey = \"Australia\"\nspare = \"Iran\"\n```\nWhat is the capital of the country stored in key? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 107,
+     "end": 124,
+     "role": "the key line (key = \"Japan\")"
+    },
+    {
+     "start": 125,
+     "end": 139,
+     "role": "the other variable's line"
+    }
+   ],
+   "condition": "cf at the key line (key = \"Japan\"), layer 32",
+   "answers": {
+    "clean": "Canberra",
+    "edited": "Madrid",
+    "expected": "Madrid"
+   },
+   "numbers": {
+    "frac": 0.9924,
+    "ld": 11.375,
+    "role": "b"
+   },
+   "why": "the paste at the key line gave the alt answer; alt prompt: key = \"Spain\""
+  },
+  {
+   "group": "switched",
+   "family": "stated in code → memory",
+   "item_id": "KR-code-0001",
+   "prompt": "<|im_start|>user\n```python\ndrawers = {\"Portugal\": 8, \"Spain\": 3, \"Germany\": 7, \"Italy\": 5, \"Australia\": 2}\nkey = \"Australia\"\nspare = \"Iran\"\n```\nWhat is the capital of the country stored in key? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 107,
+     "end": 124,
+     "role": "the key line (key = \"Japan\")"
+    },
+    {
+     "start": 125,
+     "end": 139,
+     "role": "the other variable's line"
+    }
+   ],
+   "condition": "cf at the key line (key = \"Japan\"), layer 36",
+   "answers": {
+    "clean": "Canberra",
+    "edited": "Madrid",
+    "expected": "Madrid"
+   },
+   "numbers": {
+    "frac": 0.912,
+    "ld": 9.719,
+    "role": "b"
+   },
+   "why": "the paste at the key line gave the alt answer; alt prompt: key = \"Spain\""
+  },
+  {
+   "group": "switched",
+   "family": "stated in code → prompt",
+   "item_id": "KL-code-0001",
+   "prompt": "<|im_start|>user\n```python\ndrawers = {\"Portugal\": 8, \"Spain\": 3, \"Germany\": 7, \"Italy\": 5, \"Australia\": 2}\nkey = \"Australia\"\nspare = \"Iran\"\nprint(drawers[key])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 107,
+     "end": 124,
+     "role": "the key line (key = \"Japan\")"
+    },
+    {
+     "start": 125,
+     "end": 139,
+     "role": "the other variable's line"
+    }
+   ],
+   "condition": "cf at the key line (key = \"Japan\"), layer 36",
+   "answers": {
+    "clean": "2",
+    "edited": "3",
+    "expected": "3"
+   },
+   "numbers": {
+    "frac": 0.9038,
+    "ld": 6.625,
+    "role": "b"
+   },
+   "why": "the paste at the key line gave the alt answer; alt prompt: key = \"Spain\""
+  }
+ ]
+}

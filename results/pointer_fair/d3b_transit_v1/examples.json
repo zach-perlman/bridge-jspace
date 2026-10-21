@@ -1,0 +1,1055 @@
+{
+ "exp": "pointer_fair",
+ "run": "d3b_transit_v1",
+ "seed": 0,
+ "k": 3,
+ "layer": 40,
+ "groups": [
+  {
+   "key": "lens_writes",
+   "title": "lens writes",
+   "definition": "the lens push gives bridge alt's statement digit",
+   "n_total": 42
+  },
+  {
+   "key": "copy_only",
+   "title": "copy only",
+   "definition": "the alt-prompt copy changes the answer, the lens push does not give bridge alt's digit",
+   "n_total": 76
+  },
+  {
+   "key": "neither",
+   "title": "neither",
+   "definition": "neither",
+   "n_total": 182
+  }
+ ],
+ "examples": [
+  {
+   "group": "lens_writes",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0196",
+   "prompt": "<|im_start|>user\nThe nitrogen card is in locker 4. The helium card is in locker 1. The carbon card is in locker 9. The oxygen card is in locker 3. The hydrogen card is in locker 6.\nWhich locker holds the card for the party balloon gas? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 51,
+     "end": 82,
+     "role": "asked statement"
+    },
+    {
+     "start": 115,
+     "end": 146,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 234,
+     "end": 338,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layer 40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "3",
+    "expected": {
+     "C2 holds": "1",
+     "lens writes": "3"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "changed": true,
+    "topic": "elements"
+   },
+   "why": "the lens push gives bridge alt's statement digit"
+  },
+  {
+   "group": "lens_writes",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0196",
+   "prompt": "<|im_start|>user\nThe nitrogen card is in locker 4. The helium card is in locker 1. The carbon card is in locker 9. The oxygen card is in locker 3. The hydrogen card is in locker 6.\nWhich locker holds the card for the party balloon gas? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 51,
+     "end": 82,
+     "role": "asked statement"
+    },
+    {
+     "start": 115,
+     "end": 146,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 234,
+     "end": 338,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layer 40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "C2 holds": "-",
+     "lens writes": "-"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "changed": false,
+    "topic": "elements"
+   },
+   "why": "the lens push gives bridge alt's statement digit"
+  },
+  {
+   "group": "lens_writes",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0196",
+   "prompt": "<|im_start|>user\nThe nitrogen card is in locker 4. The helium card is in locker 1. The carbon card is in locker 9. The oxygen card is in locker 3. The hydrogen card is in locker 6.\nWhich locker holds the card for the party balloon gas? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 51,
+     "end": 82,
+     "role": "asked statement"
+    },
+    {
+     "start": 115,
+     "end": 146,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 234,
+     "end": 338,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "alt-prompt copy (pasted states), layer 40",
+   "answers": {
+    "clean": "1",
+    "edited": "3",
+    "expected": {
+     "C2 holds": "-",
+     "lens writes": "-"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "changed": true,
+    "topic": "elements"
+   },
+   "why": "the lens push gives bridge alt's statement digit"
+  },
+  {
+   "group": "lens_writes",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0243",
+   "prompt": "<|im_start|>user\nThe carbon card is in locker 5. The helium card is in locker 4. The hydrogen card is in locker 3. The oxygen card is in locker 9. The lithium card is in locker 1.\nWhich locker holds the card for the gas fires need? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 115,
+     "end": 146,
+     "role": "asked statement"
+    },
+    {
+     "start": 49,
+     "end": 80,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 230,
+     "end": 334,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layer 40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "9",
+    "edited": "4",
+    "expected": {
+     "C2 holds": "9",
+     "lens writes": "4"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "changed": true,
+    "topic": "elements"
+   },
+   "why": "the lens push gives bridge alt's statement digit"
+  },
+  {
+   "group": "lens_writes",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0243",
+   "prompt": "<|im_start|>user\nThe carbon card is in locker 5. The helium card is in locker 4. The hydrogen card is in locker 3. The oxygen card is in locker 9. The lithium card is in locker 1.\nWhich locker holds the card for the gas fires need? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 115,
+     "end": 146,
+     "role": "asked statement"
+    },
+    {
+     "start": 49,
+     "end": 80,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 230,
+     "end": 334,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layer 40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "9",
+    "edited": "4",
+    "expected": {
+     "C2 holds": "-",
+     "lens writes": "-"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "changed": true,
+    "topic": "elements"
+   },
+   "why": "the lens push gives bridge alt's statement digit"
+  },
+  {
+   "group": "lens_writes",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0243",
+   "prompt": "<|im_start|>user\nThe carbon card is in locker 5. The helium card is in locker 4. The hydrogen card is in locker 3. The oxygen card is in locker 9. The lithium card is in locker 1.\nWhich locker holds the card for the gas fires need? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 115,
+     "end": 146,
+     "role": "asked statement"
+    },
+    {
+     "start": 49,
+     "end": 80,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 230,
+     "end": 334,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "alt-prompt copy (pasted states), layer 40",
+   "answers": {
+    "clean": "9",
+    "edited": "4",
+    "expected": {
+     "C2 holds": "-",
+     "lens writes": "-"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "changed": true,
+    "topic": "elements"
+   },
+   "why": "the lens push gives bridge alt's statement digit"
+  },
+  {
+   "group": "lens_writes",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0333",
+   "prompt": "<|im_start|>user\nThe nitrogen card is in locker 5. The oxygen card is in locker 4. The hydrogen card is in locker 2. The lithium card is in locker 1. The helium card is in locker 6.\nWhich locker holds the card for the gas fires need? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 51,
+     "end": 82,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 50,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 232,
+     "end": 336,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layer 40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "5",
+    "expected": {
+     "C2 holds": "4",
+     "lens writes": "5"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "changed": true,
+    "topic": "elements"
+   },
+   "why": "the lens push gives bridge alt's statement digit"
+  },
+  {
+   "group": "lens_writes",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0333",
+   "prompt": "<|im_start|>user\nThe nitrogen card is in locker 5. The oxygen card is in locker 4. The hydrogen card is in locker 2. The lithium card is in locker 1. The helium card is in locker 6.\nWhich locker holds the card for the gas fires need? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 51,
+     "end": 82,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 50,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 232,
+     "end": 336,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layer 40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "C2 holds": "-",
+     "lens writes": "-"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "changed": false,
+    "topic": "elements"
+   },
+   "why": "the lens push gives bridge alt's statement digit"
+  },
+  {
+   "group": "lens_writes",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0333",
+   "prompt": "<|im_start|>user\nThe nitrogen card is in locker 5. The oxygen card is in locker 4. The hydrogen card is in locker 2. The lithium card is in locker 1. The helium card is in locker 6.\nWhich locker holds the card for the gas fires need? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 51,
+     "end": 82,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 50,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 232,
+     "end": 336,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "alt-prompt copy (pasted states), layer 40",
+   "answers": {
+    "clean": "4",
+    "edited": "5",
+    "expected": {
+     "C2 holds": "-",
+     "lens writes": "-"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "changed": true,
+    "topic": "elements"
+   },
+   "why": "the lens push gives bridge alt's statement digit"
+  },
+  {
+   "group": "copy_only",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0014",
+   "prompt": "<|im_start|>user\nThe cat's locker is 9. The goose's locker is 6. The spider's locker is 7. The turkey's locker is 5. The sheep's locker is 1.\nWhich locker belongs to the animal known for honking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 40,
+     "end": 64,
+     "role": "asked statement"
+    },
+    {
+     "start": 117,
+     "end": 141,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 194,
+     "end": 298,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layer 40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "6",
+    "edited": "6",
+    "expected": {
+     "C2 holds": "6",
+     "lens writes": "1"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "changed": false,
+    "topic": "animals"
+   },
+   "why": "the alt-prompt copy changes the answer, the lens push does not give bridge alt's digit"
+  },
+  {
+   "group": "copy_only",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0014",
+   "prompt": "<|im_start|>user\nThe cat's locker is 9. The goose's locker is 6. The spider's locker is 7. The turkey's locker is 5. The sheep's locker is 1.\nWhich locker belongs to the animal known for honking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 40,
+     "end": 64,
+     "role": "asked statement"
+    },
+    {
+     "start": 117,
+     "end": 141,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 194,
+     "end": 298,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layer 40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "6",
+    "edited": "6",
+    "expected": {
+     "C2 holds": "-",
+     "lens writes": "-"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "changed": false,
+    "topic": "animals"
+   },
+   "why": "the alt-prompt copy changes the answer, the lens push does not give bridge alt's digit"
+  },
+  {
+   "group": "copy_only",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0014",
+   "prompt": "<|im_start|>user\nThe cat's locker is 9. The goose's locker is 6. The spider's locker is 7. The turkey's locker is 5. The sheep's locker is 1.\nWhich locker belongs to the animal known for honking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 40,
+     "end": 64,
+     "role": "asked statement"
+    },
+    {
+     "start": 117,
+     "end": 141,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 194,
+     "end": 298,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "alt-prompt copy (pasted states), layer 40",
+   "answers": {
+    "clean": "6",
+    "edited": "1",
+    "expected": {
+     "C2 holds": "-",
+     "lens writes": "-"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "changed": true,
+    "topic": "animals"
+   },
+   "why": "the alt-prompt copy changes the answer, the lens push does not give bridge alt's digit"
+  },
+  {
+   "group": "copy_only",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0030",
+   "prompt": "<|im_start|>user\nThe spider's locker is 3. The horse's locker is 9. The cat's locker is 5. The cow's locker is 7. The chicken's locker is 1.\nWhich locker belongs to the animal known for neighing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 43,
+     "end": 67,
+     "role": "asked statement"
+    },
+    {
+     "start": 114,
+     "end": 140,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 194,
+     "end": 298,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layer 40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "C2 holds": "9",
+     "lens writes": "1"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "changed": false,
+    "topic": "animals"
+   },
+   "why": "the alt-prompt copy changes the answer, the lens push does not give bridge alt's digit"
+  },
+  {
+   "group": "copy_only",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0030",
+   "prompt": "<|im_start|>user\nThe spider's locker is 3. The horse's locker is 9. The cat's locker is 5. The cow's locker is 7. The chicken's locker is 1.\nWhich locker belongs to the animal known for neighing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 43,
+     "end": 67,
+     "role": "asked statement"
+    },
+    {
+     "start": 114,
+     "end": 140,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 194,
+     "end": 298,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layer 40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "C2 holds": "-",
+     "lens writes": "-"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "changed": false,
+    "topic": "animals"
+   },
+   "why": "the alt-prompt copy changes the answer, the lens push does not give bridge alt's digit"
+  },
+  {
+   "group": "copy_only",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0030",
+   "prompt": "<|im_start|>user\nThe spider's locker is 3. The horse's locker is 9. The cat's locker is 5. The cow's locker is 7. The chicken's locker is 1.\nWhich locker belongs to the animal known for neighing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 43,
+     "end": 67,
+     "role": "asked statement"
+    },
+    {
+     "start": 114,
+     "end": 140,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 194,
+     "end": 298,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "alt-prompt copy (pasted states), layer 40",
+   "answers": {
+    "clean": "9",
+    "edited": "3",
+    "expected": {
+     "C2 holds": "-",
+     "lens writes": "-"
+    }
+   },
+   "numbers": {
+    "role": "context",
+    "changed": true,
+    "topic": "animals"
+   },
+   "why": "the alt-prompt copy changes the answer, the lens push does not give bridge alt's digit"
+  },
+  {
+   "group": "copy_only",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0033",
+   "prompt": "<|im_start|>user\nThe frog's locker is 5. The sheep's locker is 8. The bee's locker is 9. The chicken's locker is 7. The pig's locker is 3.\nWhich locker belongs to the animal known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 89,
+     "end": 115,
+     "role": "asked statement"
+    },
+    {
+     "start": 41,
+     "end": 65,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 192,
+     "end": 296,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layer 40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "C2 holds": "7",
+     "lens writes": "8"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "changed": false,
+    "topic": "animals"
+   },
+   "why": "the alt-prompt copy changes the answer, the lens push does not give bridge alt's digit"
+  },
+  {
+   "group": "copy_only",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0033",
+   "prompt": "<|im_start|>user\nThe frog's locker is 5. The sheep's locker is 8. The bee's locker is 9. The chicken's locker is 7. The pig's locker is 3.\nWhich locker belongs to the animal known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 89,
+     "end": 115,
+     "role": "asked statement"
+    },
+    {
+     "start": 41,
+     "end": 65,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 192,
+     "end": 296,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layer 40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "C2 holds": "-",
+     "lens writes": "-"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "changed": false,
+    "topic": "animals"
+   },
+   "why": "the alt-prompt copy changes the answer, the lens push does not give bridge alt's digit"
+  },
+  {
+   "group": "copy_only",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0033",
+   "prompt": "<|im_start|>user\nThe frog's locker is 5. The sheep's locker is 8. The bee's locker is 9. The chicken's locker is 7. The pig's locker is 3.\nWhich locker belongs to the animal known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 89,
+     "end": 115,
+     "role": "asked statement"
+    },
+    {
+     "start": 41,
+     "end": 65,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 192,
+     "end": 296,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "alt-prompt copy (pasted states), layer 40",
+   "answers": {
+    "clean": "7",
+    "edited": "8",
+    "expected": {
+     "C2 holds": "-",
+     "lens writes": "-"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "changed": true,
+    "topic": "animals"
+   },
+   "why": "the alt-prompt copy changes the answer, the lens push does not give bridge alt's digit"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0012",
+   "prompt": "<|im_start|>user\nThe oxygen card is in locker 5. The lithium card is in locker 9. The hydrogen card is in locker 6. The helium card is in locker 4. The nitrogen card is in locker 3.\nWhich locker holds the card for the main atmospheric gas? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 148,
+     "end": 181,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 48,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 238,
+     "end": 342,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layer 40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "C2 holds": "3",
+     "lens writes": "5"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "changed": false,
+    "topic": "elements"
+   },
+   "why": "neither"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0012",
+   "prompt": "<|im_start|>user\nThe oxygen card is in locker 5. The lithium card is in locker 9. The hydrogen card is in locker 6. The helium card is in locker 4. The nitrogen card is in locker 3.\nWhich locker holds the card for the main atmospheric gas? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 148,
+     "end": 181,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 48,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 238,
+     "end": 342,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layer 40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "C2 holds": "-",
+     "lens writes": "-"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "changed": false,
+    "topic": "elements"
+   },
+   "why": "neither"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0012",
+   "prompt": "<|im_start|>user\nThe oxygen card is in locker 5. The lithium card is in locker 9. The hydrogen card is in locker 6. The helium card is in locker 4. The nitrogen card is in locker 3.\nWhich locker holds the card for the main atmospheric gas? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 148,
+     "end": 181,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 48,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 238,
+     "end": 342,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "alt-prompt copy (pasted states), layer 40",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "C2 holds": "-",
+     "lens writes": "-"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "changed": false,
+    "topic": "elements"
+   },
+   "why": "neither"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0127",
+   "prompt": "<|im_start|>user\nThe helium card is in locker 7. The lithium card is in locker 4. The nitrogen card is in locker 9. The oxygen card is in locker 1. The hydrogen card is in locker 6.\nWhich locker holds the card for the phone battery metal? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 49,
+     "end": 81,
+     "role": "asked statement"
+    },
+    {
+     "start": 116,
+     "end": 147,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 237,
+     "end": 341,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layer 40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "7",
+    "expected": {
+     "C2 holds": "4",
+     "lens writes": "1"
+    }
+   },
+   "numbers": {
+    "role": "context",
+    "changed": true,
+    "topic": "elements"
+   },
+   "why": "neither"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0127",
+   "prompt": "<|im_start|>user\nThe helium card is in locker 7. The lithium card is in locker 4. The nitrogen card is in locker 9. The oxygen card is in locker 1. The hydrogen card is in locker 6.\nWhich locker holds the card for the phone battery metal? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 49,
+     "end": 81,
+     "role": "asked statement"
+    },
+    {
+     "start": 116,
+     "end": 147,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 237,
+     "end": 341,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layer 40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "C2 holds": "-",
+     "lens writes": "-"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "changed": false,
+    "topic": "elements"
+   },
+   "why": "neither"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0127",
+   "prompt": "<|im_start|>user\nThe helium card is in locker 7. The lithium card is in locker 4. The nitrogen card is in locker 9. The oxygen card is in locker 1. The hydrogen card is in locker 6.\nWhich locker holds the card for the phone battery metal? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 49,
+     "end": 81,
+     "role": "asked statement"
+    },
+    {
+     "start": 116,
+     "end": 147,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 237,
+     "end": 341,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "alt-prompt copy (pasted states), layer 40",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "C2 holds": "-",
+     "lens writes": "-"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "changed": false,
+    "topic": "elements"
+   },
+   "why": "neither"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0310",
+   "prompt": "<|im_start|>user\nThe hydrogen card is in locker 1. The nitrogen card is in locker 2. The lithium card is in locker 5. The helium card is in locker 8. The carbon card is in locker 4.\nWhich locker holds the card for the main atmospheric gas? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 51,
+     "end": 84,
+     "role": "asked statement"
+    },
+    {
+     "start": 85,
+     "end": 117,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 238,
+     "end": 342,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layer 40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "C2 holds": "2",
+     "lens writes": "5"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "changed": false,
+    "topic": "elements"
+   },
+   "why": "neither"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0310",
+   "prompt": "<|im_start|>user\nThe hydrogen card is in locker 1. The nitrogen card is in locker 2. The lithium card is in locker 5. The helium card is in locker 8. The carbon card is in locker 4.\nWhich locker holds the card for the main atmospheric gas? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 51,
+     "end": 84,
+     "role": "asked statement"
+    },
+    {
+     "start": 85,
+     "end": 117,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 238,
+     "end": 342,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layer 40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "C2 holds": "-",
+     "lens writes": "-"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "changed": false,
+    "topic": "elements"
+   },
+   "why": "neither"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0310",
+   "prompt": "<|im_start|>user\nThe hydrogen card is in locker 1. The nitrogen card is in locker 2. The lithium card is in locker 5. The helium card is in locker 8. The carbon card is in locker 4.\nWhich locker holds the card for the main atmospheric gas? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 51,
+     "end": 84,
+     "role": "asked statement"
+    },
+    {
+     "start": 85,
+     "end": 117,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 238,
+     "end": 342,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "alt-prompt copy (pasted states), layer 40",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "C2 holds": "-",
+     "lens writes": "-"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "changed": false,
+    "topic": "elements"
+   },
+   "why": "neither"
+  }
+ ]
+}
