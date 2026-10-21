@@ -1,0 +1,89 @@
+id: d3b_fair_c2_v4
+title: 'D3b fair test of C2 on three topics: where the lens reads the word, does a pointer push steer the lookup the lens push cannot, and where is the word "in transit"?'
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 1.2
+depends_on:
+- d3v4_competence_27b
+- d3b_fair_c2_v4_smoke_27b
+command: >-
+  uv run python scripts/pointer_fair.py run --data pointer_v4 --name d3b_fair_c2_v4 --competence d3v4_competence_27b
+  --why "Batch 4, G2: the fair C2 test (pointer push vs lens push, same size, same target digit, layers 32-40, after the
+  cue and at the question words, 1x and 2x) on pointer_v4 (countries, animals, body; fit on the fit set, push only items
+  whose asked entity or wording the fit never saw), with the memory → memory control per topic; plus the transit sweep
+  (layers 28-52 one at a time, after the cue, 1x and 4x: the lens push and the alt-prompt copy on memory → prompt, the
+  lens push on memory → memory) that defines 'in transit' before C2's kill test"
+examples_command: uv run python scripts/pointer_fair.py examples --name d3b_fair_c2_v4
+figures_command: uv run python scripts/pointer_fair.py figures --name d3b_fair_c2_v4
+question: >-
+  (1) At layers 32-40, on the tokens after the cue, does a pointer push toward bridge alt's statement switch memory →
+  prompt answers to that statement's digit where the lens push of the same size, aimed at the same digit, does not, in at
+  least 2 of 3 topics, without changing memory → memory answers? (2) For each topic, at which layers is the recalled word
+  "in transit" (the lens push no longer changes the recalled fact on memory → memory, while pasting the alt prompt still
+  changes >= 50% of lookups), and can the lens push write the lookup there (C2's kill test)?
+why_it_matters: >-
+  (1) The batch-3 fair test (pointer_v1) failed only through elements (6 entities; memory → memory changed 31% there, 2%
+  in animals; animals alone: pointer 43% vs lens 7%), so the link "the lookup goes around the lens = a pointer at the
+  depth where the lens reads but cannot write" is undecided. pointer_v4 has 15-36 asked entities per topic, 9 wordings
+  and a recorded held-out split. (2) An outside review found the batch-3 run fires Zach's C2 kill test (elements, after
+  the cue, 32-40, 1x: lens 30/150 vs random 2/150) while the lens push also wrote recall questions there (55/100): the
+  word was still being recalled, so "in transit" has to be defined operationally before the test. If C2 holds in the
+  transit layers, "read without write" is stated for the right layers; if the lens writes there, C2 is killed; if recall
+  and copy overlap at every layer, C2 cannot be tested on these prompts.
+hypotheses:
+  H-pointer-at-lens-depth: 'after the cue, layers 32-40 at once, 1x: pointer entity-cluster lower bound >= 0.30, >= 20
+    points above the lens push (and the random push), memory → memory changed <= 0.10, in >= 2 of 3 topics'
+  H-pointer-later-only: 'pointer < 15% at layers 32-40 in >= 2 topics (the pointer forms later, 44-50)'
+  H-pointer-not-lookup-specific: 'memory → memory answers changed by the pointer push > 10% in >= 2 topics'
+  H-C2-transit: 'transit layers exist in >= 2 of 3 topics and C2 holds there (lens on memory → prompt < 3x random or
+    under 10% at every transit layer)'
+  H-no-transit: 'in some topic the lens still writes the recall at every layer where the alt-prompt copy switches
+    >= 50% of lookups (no transit layer)'
+  H-C2-killed: 'in some topic the lens push writes the lookup at >= 3x random (paired lower bound > 0, upper bound
+    >= 10%) at a transit layer'
+  H-overshoot: 'secondary: the pointer push''s off-target answers land beyond the target more often than a uniform
+    choice, pooled and in >= 2 topics'
+  prior: 'Agent prior: H-pointer-at-lens-depth 0.4, H-pointer-later-only 0.35, H-pointer-not-lookup-specific 0.25;
+    H-C2-transit 0.55, H-no-transit 0.25, H-C2-killed 0.2; H-overshoot 0.6 if the pointer moves answers at all.'
+decision_rule: >-
+  Fixed in scripts/pointer_fair.py's docstring ("pointer_v4 additions" and "transit sweep") and copied to the manifest.
+  Intervals: entity-cluster bootstrap 95% (asked entity resampled within its topic, 2000, seed 0), widened to the
+  item-level Wilson interval where wider; differences: cluster bootstrap of the per-item paired difference; n items / k
+  entities / t wordings reported for every cell. (1) Deciding cell per topic: memory → prompt, after the cue ('?' and the
+  20 template tokens), layers 32, 36, 40 at once, 1x. A topic passes iff the pointer push's rate of answers = bridge
+  alt's statement digit has a lower bound >= 0.30 and exceeds the lens push and the random push by >= 20 points, each
+  paired lower bound > 0; it counts only if valid: the shuffled-label direction's rate and the share of memory → memory
+  answers the pointer push changes (same topic and cell) both have an upper bound <= 0.10, n >= 35 each. The claim
+  holds iff >= 2 of 3 topics pass and are valid. Flags: pointer only later (< 15% in >= 2 topics); not lookup-specific
+  (memory → memory changed > 10% in >= 2 topics). The question words, 2x, single layers, topics pooled, per held-out
+  cut: reported, not decisive (at the question words the pointer is the mean over the question's tokens, since their
+  number differs between wordings). (2) Transit, per topic, at 1x (4x reported the same way): a single layer (28, 32,
+  36, 40, 44, 48, 52; after the cue) is in transit iff the memory → memory lens rate (answers = bridge alt's recalled
+  fact) has an upper bound <= 2x the memory → memory random rate's upper bound, and the alt-prompt copy changes >= 50%
+  of memory → prompt answers. C2 at a transit layer holds iff the memory → prompt lens rate is < 3x the random rate or
+  its upper bound < 0.10; else killed iff the paired lens − random lower bound > 0; else unclear. Topic: not testable
+  (no transit layer), killed (any killed layer), holds (all hold), else undecided. Overshoot (secondary): off-target
+  statement answers beyond the target vs a uniform choice, entity-cluster lower bound > 0, pooled and per topic.
+controls:
+- 'lens push bridge alt − bridge org at the same per-token size, aimed at the same digit (the comparison C2 is about)'
+- 'random push per token at the same size (pointer arm and transit sweep, both families)'
+- 'shuffled-label direction (statement labels permuted before the fit)'
+- 'memory → memory items per topic: nothing is looked up, so a pointer should change nothing; in the sweep, where the lens still writes the recall'
+- 'alt-prompt copy at the same tokens and layers (reference; defines transit)'
+- 'held-out split (data/pointer_v4/split.json): every pushed item has its asked entity or wording outside the fit'
+n: >-
+  Every held-out eligible item (d3v4_competence_27b gate, cut != neither): memory → prompt 212 countries / 191 animals /
+  120 body (36 / 34 / 15 asked entities, 9 wordings each); memory → memory 211 / 192 / 117. Fit: pointer_v4's fit set
+  (<= 200 per topic, fit entities and wordings only, answered right). Every per-topic cut >= 100 items; each held-out
+  cut >= 35 pooled.
+seeds:
+- 0
+- 1
+notes: >-
+  Timing: 1,043 items x 108 edited reads (pointer arm 73: 2 groups x 4 layer settings x (1 copy + 2 sizes x 4
+  pushes) + 1 unedited; transit 35: 7 layers x (1 copy + 2 sizes x 2 pushes)) = ~113k reads at 31-37/s ~ 51-61 min, +
+  fit collect (~530 forwards) ~1 min, load ~4 min, overhead ~5 min: ~1.2 h. The transit sweep pushes one layer at a time
+  (the kill-test numbers above came from layers 32-40 at once). The pointer_v1 comparison of the sweep is
+  d3b_transit_v1 (separate job, can run in parallel). 0.8B smokes (qwen35_08b_smoke_d3b_fair_v4_transit,
+  qwen35_08b_smoke_d3b_transit_v1) ran every stage. Results: results/pointer_fair/d3b_fair_c2_v4/.

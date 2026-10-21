@@ -1,0 +1,50 @@
+id: d3b_fair_c2_v4_smoke_27b
+title: 'D3b fair test on three topics and the "in transit" sweep, smoke: every stage on a few items'
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.25
+depends_on:
+- d3v4_competence_27b
+command: >-
+  uv run python scripts/pointer_fair.py run --data pointer_v4 --name d3b_fair_c2_v4_smoke_27b
+  --competence d3v4_competence_27b --n 4 0 4 0 --fit-limit 40
+  --why "smoke: pointer_fair on pointer_v4, pointer arm and transit sweep, every stage before d3b_fair_c2_v4"
+  && uv run python scripts/pointer_fair.py run --name d3b_transit_v1_smoke_27b --arms transit --no-suite --n 4 4 4 0
+  --why "smoke: the transit sweep alone on pointer_v1, every stage before d3b_transit_v1"
+examples_command: >-
+  uv run python scripts/pointer_fair.py examples --name d3b_fair_c2_v4_smoke_27b
+  && uv run python scripts/pointer_fair.py examples --name d3b_transit_v1_smoke_27b
+figures_command: >-
+  uv run python scripts/pointer_fair.py figures --name d3b_fair_c2_v4_smoke_27b
+  && uv run python scripts/pointer_fair.py figures --name d3b_transit_v1_smoke_27b
+question: >-
+  Do pointer_fair's pointer_v4 path (pooled fits on the fit set, held-out items only, both token groups, memory → memory
+  at both groups) and its transit sweep (layers 28-52 one at a time, lens / random / alt-prompt copy, 1x and 4x, on
+  pointer_v4 and on pointer_v1) run end to end on Qwen3.6-27B?
+why_it_matters: >-
+  Fail-fast gate for d3b_fair_c2_v4 and d3b_transit_v1. Not a result: n is tiny. Local smokes cannot run
+  (bridge_jspace.model.load_model hard-codes CUDA); both paths ran every stage on Qwen3.5-0.8B on the 4xA100 box.
+hypotheses:
+  H-code-ok: 'every unedited row of the 27B keeps answer org (gated items); outcomes.jsonl has 108 rows per pointer_v4
+    item (24 items: 2,592) and 36 per pointer_v1 item (24 items: 864); fit.json lists the after-the-cue and the
+    question-words fit (pointer_v4) and no fit (pointer_v1, transit only); summary.md has the per-topic table, the
+    held-out cuts, the overshoot and the transit tables; examples.json and one figures folder per run (fig1-fig4 for
+    pointer_v4, fig4 for pointer_v1)'
+  H-bug: any check fails or a stage crashes
+  prior: 'Agent prior: H-code-ok 0.85.'
+decision_rule: 'Run d3b_fair_c2_v4 and d3b_transit_v1 only if every H-code-ok check holds; otherwise cancel them and
+  read the log.'
+controls:
+- 'unedited reads (competence gates: answer org expected)'
+- 'random push and shuffled-label direction (pointer arm); random push (transit sweep)'
+n: 'pointer_v4: 4 memory → prompt and 4 memory → memory items per topic, 40 fit scenes per topic; pointer_v1: 4 items
+  per topic in each of memory → prompt, named → prompt, memory → memory'
+seeds:
+- 0
+- 1
+notes: >-
+  Timing: 2,592 + 864 = ~3.5k edited reads at 31-37/s ~2 min, + 2 loads ~8 min: ~0.25 h. 0.8B smokes:
+  qwen35_08b_smoke_d3b_fair_v4_transit (24 items, 2,592 rows, every stage in 3 min) and qwen35_08b_smoke_d3b_transit_v1
+  (16 items, 576 rows, 43 s). Results: results/pointer_fair/d3b_fair_c2_v4_smoke_27b/,
+  results/pointer_fair/d3b_transit_v1_smoke_27b/.
