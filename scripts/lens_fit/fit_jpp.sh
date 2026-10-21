@@ -10,6 +10,8 @@
 #   OUT     output directory (router, shard, experts, correctness CSV, lens, evaluation)
 set -euo pipefail
 MODEL=$1 LAYERS=$2 OUT=$3 N=${4:-32} LRP=${5:-rlens}
+# JPP_ROWS (env, default 16): Jacobian rows per backward pass, a batching knob (the same estimator); 2026-10-21: 32 on
+# the B200 where it fits (decided with Zach), 16 as the fallback.
 cd /workspace/ext/jpp_lens
 set -a; . /workspace/bridge-jspace/.env; set +a
 export UV_CACHE_DIR=/workspace/uv-cache
@@ -21,7 +23,7 @@ echo "=== router $(date -u +%H:%M:%S)"
 $C fit-router $M --layers "$LAYERS" --num-prompts 64 --skip-first-n-positions 16 --max-seq-len 128 --seed 0 --out "$OUT/router.pt"
 echo "=== fit-shard ($N prompts) $(date -u +%H:%M:%S)"
 $C fit-shard $M --layers "$LAYERS" --router-path "$OUT/router.pt" --shard-idx 0 --num-shards 1 --num-prompts "$N" \
-  --target-offset -1 --lrp-mode "$LRP" --jacobian-rows-per-pass 16 --max-seq-len 128 --skip-first-n-positions 16 \
+  --target-offset -1 --lrp-mode "$LRP" --jacobian-rows-per-pass "${JPP_ROWS:-16}" --max-seq-len 128 --skip-first-n-positions 16 \
   --checkpoint-every-n-prompts 8 --artifacts-base-dir "$OUT/artifacts" --checkpoint-name "fit$N"
 SHARD=$(ls -d "$OUT"/artifacts/*/fit"$N"/shard0of1 | tail -1)
 echo "=== merge $(date -u +%H:%M:%S)"

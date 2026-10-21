@@ -12,7 +12,10 @@ set -euo pipefail
 # ends), then until no write_max run shares the GPU and >= 150 GB is free (the fit needs the GPU to itself)
 while [ ! -f /workspace/scratch/markers/gemma_chain_done ] || pgrep -f "scripts/write_max[.]py" >/dev/null || [ "$(nvidia-smi --query-gpu=memory.free --format=csv,noheader,nounits | head -1)" -lt 150000 ]; do sleep 60; done
 OUT=/workspace/ext/qwen3_32b_fit
-bash /workspace/bridge-jspace/scripts/lens_fit/fit_jpp.sh Qwen/Qwen3-32B "$(seq -s, 0 62)" "$OUT" 32
+# 2026-10-21 (Zach): 32 Jacobian rows per pass where it fits, else 16 (the same estimator)
+JPP_ROWS=32 bash /workspace/bridge-jspace/scripts/lens_fit/fit_jpp.sh Qwen/Qwen3-32B "$(seq -s, 0 62)" "$OUT" 32 \
+  || { echo "=== 32 rows per pass failed; refitting with 16"; rm -rf "$OUT"; \
+       JPP_ROWS=16 bash /workspace/bridge-jspace/scripts/lens_fit/fit_jpp.sh Qwen/Qwen3-32B "$(seq -s, 0 62)" "$OUT" 32; }
 cd /workspace/bridge-jspace
 mkdir -p cache/qwen3-32b/lenses/jpp
 uv run --no-sync python scripts/lens_fit/export_jpp_lens.py "$OUT/Qwen3-32B_jpp_lens.pt" \

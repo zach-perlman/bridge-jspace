@@ -8,7 +8,7 @@ cd /workspace/bridge-jspace
 set -a; . ./.env; set +a
 PY="uv run --no-sync python"
 # 2026-10-21 (Zach: 27B first): after the 27B full-set job
-until grep -qs "^EXIT" /workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd-full27bv2-*.log; do sleep 120; done
+until grep -q "^EXIT" /workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd-full27bv3-1021-0514.log; do sleep 120; done
 ok=0; while [ $ok -lt 3 ]; do
   [ "$(nvidia-smi --query-gpu=memory.free --format=csv,noheader,nounits | head -1)" -ge 170000 ] && ok=$((ok + 1)) || ok=0
   sleep 20; done
@@ -19,7 +19,14 @@ MAIN=$(.venv/bin/python -c 'from huggingface_hub import model_info; print(model_
 LAYERS=$(seq -s, 0 58)
 SMOKE=/workspace/scratch/gemma_full_smoke OUT=/workspace/ext/gemma_it_fit_full
 echo "=== fit smoke (1 prompt, every layer) $(date -u +%FT%TZ)"
-bash scripts/lens_fit/fit_jpp.sh google/gemma-4-31B-it "$LAYERS" "$SMOKE" 1 > "$SMOKE.log" 2>&1
+export JPP_ROWS=32  # 2026-10-21 (Zach): 32 rows per pass where it fits; the 1-prompt run decides, 16 as the fallback
+JPP_ROWS=32 bash scripts/lens_fit/fit_jpp.sh google/gemma-4-31B-it "$LAYERS" "$SMOKE" 1 > "$SMOKE.log" 2>&1
+if ! grep -q FIT_DONE "$SMOKE.log"; then
+  echo "=== 32 rows per pass failed ($(grep -m1 -oiE "out of memory|error[^ ]*" "$SMOKE.log")); retrying with 16"
+  rm -rf "$SMOKE"; export JPP_ROWS=16
+  bash scripts/lens_fit/fit_jpp.sh google/gemma-4-31B-it "$LAYERS" "$SMOKE" 1 > "$SMOKE.log" 2>&1
+fi
+echo "=== rows per pass: $JPP_ROWS"
 grep -q FIT_DONE "$SMOKE.log" || { echo "fit smoke failed:"; tail -20 "$SMOKE.log"; exit 1; }
 SEC=$(grep -oE "prompt 1/1 .* [0-9]+s" "$SMOKE.log" | grep -oE "[0-9]+s$" | tr -d s)
 echo "=== fit smoke ok: ${SEC:-?}s per prompt; $(df -h /workspace | tail -1)"
