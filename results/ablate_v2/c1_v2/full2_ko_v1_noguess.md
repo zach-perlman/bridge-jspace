@@ -44,5 +44,23 @@ Accuracy % on the whole question [95% CI over bridge entities]; unedited first.
 | L0-62 | paper10 | 15 [6-25] (n=61) | 17 [5-28] (n=42) | 10 [2-19] (n=63) | 10 [2-18] (n=41) | 19 [11-28] (n=72) | 16 [8-26] (n=68) |
 | L0-62 | paper10_rot | 97 [92-100] (n=61) | 86 [73-95] (n=42) | 81 [70-91] (n=63) | 76 [57-89] (n=41) | 97 [93-100] (n=72) | 79 [70-88] (n=68) |
 
+
+## Margin-matched gap under paper10 at L32-40 (reported, outside the rule; added after the rule)
+
+Median unedited answer margin (logits): P->P 5.75, M->P 4.25, P->M 4.62, M->M 4.19. Loss (points) by quartile of that margin (cuts 3.75, 5.00, 5.88), n per cell:
+
+| word | Q1 (least confident) | Q2 | Q3 | Q4 |
+|---|---|---|---|---|
+| P->P | 0 (n=6) | 0 (n=20) | 0 (n=53) | 0 (n=56) |
+| M->P | 31 (n=36) | 8 (n=25) | 0 (n=27) | 0 (n=10) |
+| P->M | 58 (n=48) | 46 (n=46) | 29 (n=21) | 7 (n=28) |
+| M->M | 63 (n=35) | 34 (n=29) | 25 (n=16) | 20 (n=10) |
+| prompt-final, pooled | 26 (n=42) | 4 (n=45) | 0 (n=80) | 0 (n=66) |
+| memory-final, pooled | 60 (n=83) | 41 (n=75) | 27 (n=37) | 11 (n=38) |
+
+Memory-final minus prompt-final, items pooled per group: raw 35; reweighted to the prompt-final margins 26, to the memory-final margins 30; matched within 0.25-logit margin bins 33 [24-40] (224 of 233 memory-final items have a same-bin partner) points.
+
+Specificity control: no unembed10 rows in this run. Every model gets one (2026-10-21): ablate_v2 --conditions unembed10 unembed10_rot on the same items, then scripts/c1_specificity.py.
+
 Rule at L32-40: losses P->P 0, M->P 13, P->M 40, M->M 42, C->P 5, C->M 36; memory-final minus prompt-final 34 points (>= 30 needed); controls within 10 points: yes -> C1-graded HOLDS
-Original strict C1 (reported): fails. Output from commit 89b2ac2.
+Original strict C1 (reported): fails. Output from commit 7363cf7.
