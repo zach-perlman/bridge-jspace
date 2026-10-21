@@ -59,7 +59,8 @@ README: trailing space stripped, part B's v4 labels, bands 32-48 (primary) and 2
 ## Job queue on the GPU box
 GPU runs can be queued instead of started by hand (`scripts/jobq.py`). A job is a spec, `jobs/<thread>/<id>.yaml`,
 committed before the run: `command`, `gpus` (1), `mem_gb` (free GPU memory to wait for; default 70 for the 27B),
-`est_gpu_hours`, `depends_on`, `examples_command`, and the pre-registration: `question`, `why_it_matters`,
+`est_gpu_hours`, `depends_on`, `examples_command`, `figures_command` (required in practice: every experiment ends
+with figures), and the pre-registration: `question`, `why_it_matters`,
 `hypotheses` (name -> predicted numbers), `decision_rule`, `controls`, `n`, `seeds`. `make enqueue` refuses a dirty tree
 or an id already used, pushes the commit to a bare repo on the box (not GitHub) and queues the spec.
 ```bash
@@ -74,7 +75,8 @@ The worker takes jobs first in, first out once their dependencies are done and t
 never kills), runs each in a fresh checkout of its commit (earlier jobs' results copied in; `cache/` and `.env` shared
 with `~/bridge-jspace`), and appends to the ledger: queued/started/ended, setup/run/examples time, exit codes, peak GPU
 memory, new results dirs, W&B links. Each finished job gets a draft EXPERIMENTS.md row (`results/jobq/drafts/`) whose
-result and verdict a human writes. A script's `examples` stage writes `examples.json` (schema in
+result and verdict a human writes. A script's `figures` stage writes PNGs into a new `analysis-*/` folder of the run
+(the job page shows the newest such folder's figures). A script's `examples` stage writes `examples.json` (schema in
 `src/bridge_jspace/job_pages.py`), which the job page shows with the pre-registered predictions.
 
 ## Re-analysing a finished run (no GPU)

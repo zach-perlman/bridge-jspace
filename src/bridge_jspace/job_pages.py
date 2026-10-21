@@ -36,6 +36,8 @@ mark.sp{background:none;border-bottom:3px solid var(--c);padding:0 1px;color:inh
 .legend span{display:inline-block;margin-right:12px;font-size:12px}
 .legend i{display:inline-block;width:18px;height:3px;background:var(--c);vertical-align:middle;margin-right:4px}
 td.hit{font-weight:600;color:var(--bridge)}
+figure{margin:14px 0}figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;
+background:#fff}figcaption{font:12px var(--mono);color:var(--faint);margin-top:4px}
 pre.cmd{font:12px var(--mono);background:var(--panel);padding:6px 8px;border-radius:4px;white-space:pre-wrap;
 overflow-wrap:anywhere}
 """
@@ -73,6 +75,16 @@ def find_examples(repo: Path, rec: dict[str, Any]) -> dict[str, Any] | None:
         if path.exists():
             return json.loads(path.read_text())
     return None
+
+
+def find_figures(repo: Path, rec: dict[str, Any]) -> list[Path]:
+    """The PNGs of the newest analysis-*/ folder (per results dir) that has any: the figures stage's output."""
+    out: list[Path] = []
+    for d in rec.get("new_results", []):
+        folders = [a for a in sorted((repo / "results" / d).glob("analysis-*")) if any(a.glob("*.png"))]
+        if folders:
+            out += sorted(folders[-1].glob("*.png"))
+    return out
 
 
 def prompt_with_spans(prompt: str, spans: list[dict[str, Any]], colours: dict[str, str]) -> str:
@@ -117,7 +129,8 @@ def _kv(rows: list[tuple[str, Any]]) -> str:
     return f"<dl class='kv'>{cells}</dl>"
 
 
-def render_job(rec: dict[str, Any], examples: dict[str, Any] | None) -> str:
+def render_job(rec: dict[str, Any], examples: dict[str, Any] | None, figures: list[str] | None = None) -> str:
+    """`figures`: image paths relative to the page (shown above the worked examples)."""
     status = rec.get("status", "pending")
     est = rec.get("est_gpu_hours")
     timing = [
@@ -127,13 +140,14 @@ def render_job(rec: dict[str, Any], examples: dict[str, Any] | None) -> str:
         ("setup", _fmt_duration(rec.get("setup_s"))),
         ("run", f"{_fmt_duration(rec.get('run_s'))} (estimate {est} GPU-h)"),
         ("examples", _fmt_duration(rec.get("examples_s"))),
+        ("figures", _fmt_duration(rec.get("figures_s"))),
         ("total", _fmt_duration(rec.get("wall_s"))),
         (
             "GPU",
             f"{rec.get('gpu_name') or '-'}; peak {rec.get('peak_mem_gb')} GB (device; baseline "
             f"{rec.get('baseline_mem_gb')} GB)",
         ),
-        ("exit", f"{rec.get('exit_code')} (examples {rec.get('examples_exit')})"),
+        ("exit", f"{rec.get('exit_code')} (examples {rec.get('examples_exit')}, figures {rec.get('figures_exit')})"),
     ]
     where = [
         ("code", rec.get("commit", "")[:10]),
@@ -162,6 +176,15 @@ def render_job(rec: dict[str, Any], examples: dict[str, Any] | None) -> str:
     ]
     if rec.get("error"):
         body.append(f"<h2>Worker error</h2><pre class='cmd'>{_esc(rec['error'])}</pre>")
+    if figures:
+        body.append("<h2>Figures</h2>")
+        body += [
+            f"<figure><img src='{_esc(f)}' alt='{_esc(Path(f).stem)}' loading='lazy'>"
+            f"<figcaption>{_esc(Path(f).name)}</figcaption></figure>"
+            for f in figures
+        ]
+    elif status == "done":
+        body.append("<p class='meta'>No figures yet (no figures_command, or its analysis folder has no PNG).</p>")
     if examples:
         roles = sorted({s["role"] for ex in examples["examples"] for s in ex.get("spans", [])})
         colours = {r: ROLE_COLOURS[i % len(ROLE_COLOURS)] for i, r in enumerate(roles)}
@@ -199,7 +222,13 @@ def export_jobs(root: Path, repo: Path | None = None) -> list[Path]:
         if out.exists():
             shutil.rmtree(out)
         out.mkdir(parents=True)
-        (out / "index.html").write_text(render_job(rec, examples))
+        figures = []
+        for i, png in enumerate(find_figures(repo, rec)):
+            (out / "figures").mkdir(exist_ok=True)
+            name = f"figures/{i:02d}_{png.name}"  # two results dirs may hold figures of the same name
+            shutil.copy(png, out / name)
+            figures.append(name)
+        (out / "index.html").write_text(render_job(rec, examples, figures))
         meta = (
             f"{rec.get('status', 'pending')} · thread {rec['thread']} · run {_fmt_duration(rec.get('run_s'))} "
             f"(est {rec.get('est_gpu_hours')} GPU-h) · UNVERIFIED"

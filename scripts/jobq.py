@@ -58,6 +58,7 @@ SPEC: dict[str, tuple[type, ...]] = {  # key -> accepted types; every key requir
 OPTIONAL: dict[str, tuple[type, ...]] = {
     "depends_on": (list,),  # job ids that must be done first (their results are copied in)
     "examples_command": (str,),  # run after a successful command; writes the run's examples.json
+    "figures_command": (str,),  # run after examples; writes the run's figures into a new analysis-*/ folder
     "mem_gb": (int, float),  # free GPU memory the job needs before it starts (default DEFAULT_MEM_GB)
     "notes": (str,),
 }
@@ -378,6 +379,7 @@ def run_job(path: Path, root: Path, gpu: int) -> dict[str, Any]:
     write_json_atomic(path, rec)
     sampler = MemSampler(gpu)
     exit_code, examples_exit, setup_s, run_s, examples_s, error = None, None, None, None, None, None
+    figures_exit, figures_s = None, None
     try:
         repo = root / "repo.git"
         if code.exists():
@@ -410,6 +412,10 @@ def run_job(path: Path, root: Path, gpu: int) -> dict[str, Any]:
             t2 = time.time()
             examples_exit = _run_logged(["bash", "-c", dotenv + rec["examples_command"]], code, log, env)
             examples_s = round(time.time() - t2, 1)
+        if exit_code == 0 and rec.get("figures_command"):
+            t3 = time.time()
+            figures_exit = _run_logged(["bash", "-c", dotenv + rec["figures_command"]], code, log, env)
+            figures_s = round(time.time() - t3, 1)
         new = sorted(results_dirs(code / "results") - before)
         for d in new:
             (root / "results" / d).parent.mkdir(parents=True, exist_ok=True)
@@ -420,7 +426,7 @@ def run_job(path: Path, root: Path, gpu: int) -> dict[str, Any]:
         with open(log, "a") as f:
             f.write(f"\n[jobq {now()}] worker error:\n{error}")
     peak = sampler.stop() if sampler.is_alive() else None
-    ok = error is None and exit_code == 0 and examples_exit in (None, 0)
+    ok = error is None and exit_code == 0 and examples_exit in (None, 0) and figures_exit in (None, 0)
     log_text = log.read_text(errors="replace") if log.exists() else ""
     rec.update(
         status="done" if ok else "failed",
@@ -431,6 +437,8 @@ def run_job(path: Path, root: Path, gpu: int) -> dict[str, Any]:
         examples_s=examples_s,
         exit_code=exit_code,
         examples_exit=examples_exit,
+        figures_s=figures_s,
+        figures_exit=figures_exit,
         peak_mem_gb=peak,
         error=error,
         log=f"runs/{rec['id']}/log.txt",

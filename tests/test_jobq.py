@@ -176,3 +176,24 @@ def test_job_page_shows_preregistration_timing_and_examples(tmp_path):
         assert needle in page
     entry = json.loads((out / "source.json").read_text())["entry"]
     assert entry["n_examples"] == 1 and "done" in entry["meta"]
+    assert "No figures yet" in page
+
+
+def test_job_page_shows_the_newest_analysis_figures(tmp_path):
+    rec = {**spec(), "status": "done", "commit": "abcdef1234", "new_results": ["toy/t_ok_v1"]}
+    (tmp_path / "results/jobq").mkdir(parents=True)
+    (tmp_path / "results/jobq/ledger.jsonl").write_text(json.dumps(rec) + "\n")
+    run = tmp_path / "results/toy/t_ok_v1"
+    for stamp, names in (
+        ("analysis-20261021-090000-figures", ["old.png"]),
+        ("analysis-20261021-120000-figures", ["b_rates.png", "a_headline.png"]),
+    ):
+        (run / stamp).mkdir(parents=True)
+        for n in names:
+            (run / stamp / n).write_bytes(b"\x89PNG\r\n")
+    (run / "analysis-20261021-130000").mkdir()  # newer, but no figures: skipped
+    [out] = job_pages.export_jobs(tmp_path / "examples", repo=tmp_path)
+    page = (out / "index.html").read_text()
+    assert "src='figures/00_a_headline.png'" in page and "src='figures/01_b_rates.png'" in page
+    assert "old.png" not in page
+    assert (out / "figures/00_a_headline.png").read_bytes() == b"\x89PNG\r\n"
