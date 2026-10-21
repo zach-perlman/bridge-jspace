@@ -1,0 +1,36 @@
+id: d1code_competence_27b
+title: "D1 in code, gate: can the 27B answer the programs that state a country in a variable?"
+thread: D1
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.1
+depends_on: []
+command: >-
+  uv run python scripts/code_positions.py manifest_competence --name d1code_competence_27b
+  --why "D1 in code, gate: the programs (key = \"Japan\"; print(drawers[key]) / the capital of the country stored in
+  key), their alt (key line changed) and off-path (spare line changed) versions and the steps alone"
+  && uv run python scripts/code_positions.py competence --name d1code_competence_27b
+question: >-
+  Does Qwen3.6-27B answer the 200 programs in both families (stated in code -> prompt: the dict lookup; stated in code
+  -> memory: the capital), their alt versions (key line changed) and off-path versions (spare line changed), and each
+  step alone (the key's value; the lookup with the country named / the capital asked directly)?
+why_it_matters: >-
+  Gate for d1code_map_27b: the map takes the first 80 programs answered right in every prompt of both families.
+hypotheses:
+  H-competent: 'clean >= 95% in both families (the 27B answered suite_v1''s CODE family 100% and pointer_v4''s countries
+    98-100%); >= 80 programs right in every prompt of both families'
+  H-short: 'fewer than 80 programs right in both families (the capital question about a variable may confuse it)'
+  prior: 'Agent prior: H-competent 0.8.'
+decision_rule: >-
+  suite_v1's gate: a family enters the map iff its clean Wilson 95% lower bound >= 0.85; a program is eligible iff every
+  prompt of both families is right (clean, C, O, hop1, hop2). code_positions writes the per-family table
+  (summary_by_family.md); the map takes the first 80 eligible programs in scene order.
+controls:
+- 'each step alone (the key''s value; the lookup with the country named / the capital asked directly)'
+- 'answer read vs 8-token greedy'
+n: '200 programs x 2 families x 5 prompts = 2,000 prompts'
+seeds: [861]
+notes: >-
+  Data: data/code_positions_v1/items.json (scripts/code_positions.py make / verify / check: every program's C and O are
+  token-aligned; 34 countries in two token-length groups, pairs within a group; each country the key of at most 3% of
+  programs). Timing: ~2,000 prompts at ~18/s ~ 2 min + load ~4 min ~ 0.1 h.

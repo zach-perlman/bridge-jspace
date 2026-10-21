@@ -111,6 +111,12 @@ def test_raw_judge_reads_digits_and_words(tok, monkeypatch):
     assert "greedy" in PV.judge_rule("chat")
     monkeypatch.setattr(chat, "FORMAT", "raw")
     assert PV.judge_rule() == PV.JUDGE_READ
+    monkeypatch.setattr(chat, "FORMAT", "chat")
+    monkeypatch.setenv("BJ_JUDGE", "read")  # a target whose greedy reply names the bridge (OLMo-3-7B-Instruct)
+    assert PV.judge_mode() == "read" and PV.judge_rule() == PV.JUDGE_READ_CHAT
+    monkeypatch.setenv("BJ_JUDGE", "loose")
+    with pytest.raises(AssertionError):
+        PV.judge_mode()
 
 
 def test_pointer_swap_groups_in_raw_text(tok, monkeypatch):

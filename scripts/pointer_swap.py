@@ -3,8 +3,9 @@ in-prompt lookup: the bridge's identity, a pointer to the binding statement's po
 
 Items: scripts/pointer_v1.py (data/pointer_v1/<set>/), or any generator with the same item schema chosen by --data
 (pointer_v2: offset-shift and reflexive scenes; pointer_v3: one statement more or fewer; pointer_v4: three topics with
-many entities and three wordings; code_pointer_v1: Python code; alias_pointer_v1: statements in other languages). Each
-base item has a token-aligned source "dissoc" whose residual,
+many entities and three wordings; code_pointer_v1: Python code; alias_pointer_v1: statements in other languages; on
+another target (BJ_TARGET), scenes whose prompts are not token-aligned under its tokenizer are dropped before sampling
+and counted in summary counts.unaligned_scenes). Each base item has a token-aligned source "dissoc" whose residual,
 patched into the base, predicts four distinct answers (none = the base answer; identity = the base's digit for the
 source's entity; position = the base's digit at the source's queried slot; value = the source's answer, absent from the
 base context; for RR value = identity by construction).
@@ -91,6 +92,7 @@ from __future__ import annotations
 import argparse
 import collections
 import json
+import os
 import random
 import re
 import sys
@@ -137,7 +139,7 @@ FAMILY_ROLES = {"code_pointer_v1": ("RK", "DK", "RR")}
 DEFAULT_ROLES = ("RL", "DL", "RR")
 WINDOW_FRACTIONS = {"early": (16 / 64, 28 / 64), "mid": (32 / 64, 40 / 64), "transit": (44 / 64, 52 / 64)}
 SAMPLE_SEED, NULL_SEED, OTHER_SEED, EXAMPLE_SEED = 0, 0, 0, 0
-BATCH = 64
+BATCH = int(os.environ.get("BJ_BATCH", "64"))  # edited reads per batched call; smaller on a shared GPU (a smoke)
 CHANGED_MIN, DAMAGE_MAX = 0.20, 0.10
 
 
@@ -285,6 +287,21 @@ def base_level(level: str) -> str:
     return level.split("-")[0]
 
 
+def drop_unaligned(items: dict[str, list[dict]], tok) -> tuple[dict[str, list[dict]], dict[str, int]]:
+    """Items whose alt and control prompts are not token-aligned under this target's tokenizer (prepare's asserts;
+    every generator checks alignment with Qwen3.6-27B's tokenizer, another target's may split a cue differently) are
+    dropped with their whole scene, every family; returns the kept items and the dropped scenes per domain."""
+    bad: set[tuple[str, str]] = set()
+    for its in items.values():
+        for it in its:
+            try:
+                prepare(it, tok)
+            except AssertionError:
+                bad.add((it["domain"], it["scene"]))
+    kept = {k: [it for it in its if (it["domain"], it["scene"]) not in bad] for k, its in items.items()}
+    return kept, dict(collections.Counter(d for d, _ in bad))
+
+
 def load_items(m: dict) -> dict[str, list[dict]]:
     return {label: PV.load_file(pins.REPO_ROOT / pin["file"]) for label, pin in m["items"].items()}
 
@@ -400,8 +417,9 @@ def stage_run(name: str) -> None:
     model = load_model()
     tok = model.tokenizer
     t0 = time.time()
-    items = load_items(m)
+    items, unaligned = drop_unaligned(load_items(m), tok)
     cases, counts = sample_cases(m, items)
+    counts["unaligned_scenes"] = unaligned
     print(json.dumps(counts), flush=True)
     # (family, base level) -> items, for 'other' (another domain's item of the same family and layout)
     pool: dict[tuple[str, str], list[dict]] = collections.defaultdict(list)
@@ -1137,6 +1155,14 @@ def _series(
     return xs, r, lo, hi
 
 
+def band_words() -> str:
+    """What the grey band (the transit window) marks: on the 27B, where the lens reads the bridge but cannot steer it;
+    on another target, the same relative depth (WINDOW_FRACTIONS), with no lens claim."""
+    if pins.TARGET == "qwen3.6-27b":
+        return "the lens reads the bridge but cannot steer it"
+    return "the 27B's layers 44-52 at the same relative depth"
+
+
 def _band(ax, lo: int, hi: int, text: str | None) -> None:
     from bridge_jspace.plotting import GRID, MUTED
 
@@ -1198,11 +1224,7 @@ def _handles(fams: list[str], controls=("same", "rand", "other"), token: bool = 
          for r in ("identity", "position", *(("end",) if end else ()), *(("token",) if token else ()), "value")]  # fmt: skip
     h.append(Line2D([], [], color=NONE_COLOR, lw=1.1, label="% of original answers kept (answer org kept)"))
     tr = default_windows()["transit"]
-    h.append(
-        Patch(
-            color=GRID, alpha=0.7, lw=0, label=f"layers {tr[0]}-{tr[-1]}: the lens reads the bridge but cannot steer it"
-        )
-    )
+    h.append(Patch(color=GRID, alpha=0.7, lw=0, label=f"layers {tr[0]}-{tr[-1]}: {band_words()}"))
     for src in controls:
         col, ls = CONTROL_STYLE[src]
         h.append(
@@ -1361,7 +1383,7 @@ def fig_by_layer(a: dict, m: dict, lv: str, path: Path, headline: bool = False) 
         lv,
         "rows: " + " / ".join(GROUP_TITLE[g] for g in grps),
         "Each coloured line: % of original answers that become that answer after the patch; dark line: % of original "
-        f"answers kept. Grey band: layers {tr[0]}-{tr[-1]}, where the lens reads this bridge but cannot steer it.",
+        f"answers kept. Grey band: layers {tr[0]}-{tr[-1]}, {band_words()}.",
     )
     return _finish(fig, path, title, rows, _handles(fams, token=has_token(a, lv), end=has_role(a, lv, "end")), ncols=2)
 
@@ -1426,7 +1448,7 @@ def fig_domains(a: dict, m: dict, lv: str, grp: str, path: Path) -> list[str]:
         m,
         lv,
         GROUP_TITLE[grp],
-        "One column per topic; lines as in the main figure. Grey band: the layers where the lens reads but cannot steer.",
+        f"One column per topic; lines as in the main figure. Grey band: {band_words()}.",
     )
     return _finish(fig, path, "Is the pattern the same for each topic?", rows, _handles(fams), ncols=2)
 

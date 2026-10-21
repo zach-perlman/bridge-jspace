@@ -1,0 +1,56 @@
+{
+ "counts": {
+  "code": {
+   "n": 200,
+   "eligible": null,
+   "unaligned_skipped": 0,
+   "competence": "none"
+  }
+ },
+ "cases": 400,
+ "set_sizes": {
+  "bind_bridge": [
+   5,
+   6
+  ],
+  "bridge_word": [
+   1,
+   2
+  ],
+  "bind_other": [
+   6,
+   7
+  ],
+  "lookup_bridge": [
+   5,
+   6
+  ],
+  "lookup_x": [
+   5,
+   6
+  ],
+  "context": [
+   49,
+   50,
+   51,
+   52,
+   53,
+   54,
+   55,
+   56
+  ],
+  "question": [
+   33,
+   35
+  ],
+  "q_words": [
+   22,
+   24
+  ],
+  "final": [
+   11
+  ]
+ },
+ "max_bridge_share": 0.03,
+ "bridges": 34
+}

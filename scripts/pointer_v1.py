@@ -57,6 +57,7 @@ from __future__ import annotations
 import argparse
 import collections
 import json
+import os
 import random
 import re
 import statistics
@@ -616,6 +617,7 @@ def stage_manifest(name: str, why: str, sets: list[str], limit: int | None) -> N
         "user turn",
         "prompts": "base; each source (dissoc, same, redigit) with its own context and question; hop1 (cue -> entity, "
         "with the base context) and hop2 (the lookup with the entity named, or the recalled fact) for RL and RR",
+        "judge_mode": judge_mode(),
         "judge": judge_rule(),
         "answer_read": "suite_v1's: one forward with a digit answer's space token appended; p and margin of the answer's "
         "first token; whether the read's top token is the greedy answer",
@@ -640,9 +642,25 @@ JUDGE_READ = ("raw format: a digit prompt is right iff the top token of one forw
 RAW_WORD_PREFIX = "\n\n<think>\n\n</think>\n\n"
 
 
+JUDGE_READ_CHAT = ("read judge (BJ_JUDGE=read): a prompt is right iff the top token of one forward (a digit answer's "
+                   "space token appended: pointer_swap's read) is the expected answer's first token; the greedy judge is "
+                   "recorded as correct_greedy, not used")  # fmt: skip
+
+
+def judge_mode(fmt: str | None = None) -> str:
+    """'read' or 'greedy': BJ_JUDGE if set (a target whose greedy reply is not the read's answer, e.g. OLMo-3-7B-Instruct
+    naming the bridge instead of the looked-up digit), else read in raw format (the 2026-10-21 amendment), greedy in
+    chat."""
+    mode = os.environ.get("BJ_JUDGE") or ("read" if (fmt or chat.FORMAT) == "raw" else "greedy")
+    assert mode in ("read", "greedy"), f"BJ_JUDGE={mode!r}: read or greedy"
+    return mode
+
+
 def judge_rule(fmt: str | None = None) -> str:
-    """The competence judge of a run in this prompt format (manifests record it)."""
-    return JUDGE_READ if (fmt or chat.FORMAT) == "raw" else JUDGE_GREEDY
+    """The competence judge of a run in this prompt format and judge mode (manifests record it)."""
+    if judge_mode(fmt) == "greedy":
+        return JUDGE_GREEDY
+    return JUDGE_READ if (fmt or chat.FORMAT) == "raw" else JUDGE_READ_CHAT
 
 
 def read_right(tok, p: dict) -> bool:
@@ -727,15 +745,18 @@ def stage_competence(name: str) -> None:
     S.read_answers(model, tok, prompts)
     t_read = time.time() - t0 - t_gen
     fmt = chat.manifest_format(manifest)
-    if fmt == "raw":  # the 2026-10-21 amendment (JUDGE_READ): the reads decide, greedy is kept for the record
-        raw_word_reads(model, tok, [p for p in prompts if p["answer_kind"] == "word"])
+    mode = manifest.get("judge_mode", judge_mode(fmt))
+    assert mode == judge_mode(fmt), f"the manifest's judge is {mode}; set BJ_JUDGE={mode}"
+    if mode == "read":  # JUDGE_READ (raw, the 2026-10-21 amendment) / JUDGE_READ_CHAT: the reads decide
+        if fmt == "raw":
+            raw_word_reads(model, tok, [p for p in prompts if p["answer_kind"] == "word"])
         for p in prompts:
             p["correct_greedy"] = p["correct"]
-            p["correct"] = raw_right(tok, p)
+            p["correct"] = raw_right(tok, p) if fmt == "raw" else read_right(tok, p)
     rows = [{k: v for k, v in p.items() if k not in ("ids", "forced")} for p in prompts]
     write_jsonl(out_dir / "items.jsonl", rows)
     summary: dict[str, Any] = {"labels": {}, "seconds_generate": round(t_gen), "seconds_read": round(t_read),
-                               "prompt_format": fmt, "judge": judge_rule(fmt)}  # fmt: skip
+                               "prompt_format": fmt, "judge_mode": mode, "judge": judge_rule(fmt)}  # fmt: skip
     for label in labels:
         fr = [r for r in rows if r["label"] == label]
         per_item: dict[str, dict[str, bool]] = collections.defaultdict(dict)
@@ -753,7 +774,7 @@ def stage_competence(name: str) -> None:
             "clean_median_p_answer": statistics.median(r["p_answer"] for r in clean),
             "read_agrees_with_greedy": statistics.mean((r["said"] or "").lower().startswith(r["read_top"].lower())
                                                        if r["read_top"] else False for r in fr),
-            **({"clean_greedy_right": statistics.mean(r["correct_greedy"] for r in clean)} if fmt == "raw" else {}),
+            **({"clean_greedy_right": statistics.mean(r["correct_greedy"] for r in clean)} if mode == "read" else {}),
         }  # fmt: skip
     summary["seconds"] = round(time.time() - t0)
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")

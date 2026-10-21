@@ -1,0 +1,43 @@
+id: d1code_readwrite_27b
+title: "D1 in code: can the lens read the stated key and write it where the paste does?"
+thread: D1
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.6
+depends_on:
+- d1code_parts_27b
+command: >-
+  uv run python scripts/code_positions.py readwrite --name d1code_readwrite_27b --map d1code_map_27b
+  --parts d1code_parts_27b --sets bind_bridge bridge_word bind_other context question
+  --why "D1 in code: statement_positions' lens read and lens push (v_X - v_I at the paste's per-token norm, 0.5-16x) at
+  d1code_map_27b's transit cells"
+examples_command: uv run python scripts/code_positions.py examples --name d1code_map_27b
+figures_command: uv run python scripts/code_positions.py figures --name d1code_readwrite_27b
+question: >-
+  At the transit cells, does the J-lens read the stated country (its rank among word tokens), and does adding the lens
+  direction from bridge org to bridge alt at the paste's per-token size (0.5-16x) switch the answer as the paste does?
+why_it_matters: >-
+  The other half of D1's rule: "around" needs the lens push to fail where the paste works (D1's animal suite: not
+  written). With the parts run it decides H-D1-code and writes the report (figures: the map, the concentrations, the
+  lens push).
+hypotheses:
+  H-not-written: 'stated in code -> prompt, key line, primary layers: the lens push''s flip difference over the random
+    direction has an upper bound < 0.10 at every size (not written); the paste itself switches >= 50%'
+  H-written: 'the lens push flips >= 30% at some size <= 4x and beats the random direction'
+  prior: 'Agent prior: H-not-written 0.7 (D1 animal suite: not written at the statements).'
+decision_rule: >-
+  statement_positions' lens-write rule, unchanged: written iff at some size <= 4x the lens direction flips >= 30% and
+  beats the random direction (paired bootstrap lower bound of the flip difference > 0); not written iff at every size
+  (0.5-16x) the difference's upper bound < 0.10; else inconclusive. d1_claims (both halves): H-around supported for the
+  lookup family iff its J-space half is around (with a passing positive control) and the lens does not write it at
+  every such set; H-loc iff inside and written. The report states H-D1-code (parts) next to these.
+controls:
+- 'a random direction per position at the same norm (each size)'
+- 'the paste itself at the same cells (reference)'
+- 'the lens read of X (the alt country): the floor'
+n: '80 programs per family on the map''s transit cells'
+seeds: [0]
+notes: >-
+  Per transit cell 13 reads (the paste, 6 sizes x lens / random) + a lens readout; up to 5 sets x 4 layers x 160 cases
+  ~ 42k reads at ~33/s ~ 21 min + load ~ 0.6 h. Figures and report: code_positions figures on this run (it names the
+  map and parts runs).

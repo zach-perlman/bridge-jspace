@@ -420,7 +420,7 @@ def stage_manifest(name: str, why: str, limit: int | None) -> None:
          "model": pins.model_pin(), "sets": ["main"],
          "items": {k: {"file": str(f.relative_to(root)) if f.is_relative_to(root) else str(f), "sha256": sha256_of(f)}
                    for k, f in files.items()},
-         "limit": limit, "format": f"pointer_v1's: {chat.format_note()}", "judge": f"pointer_v1's: {PV.judge_rule()}",
+         "limit": limit, "format": f"pointer_v1's: {chat.format_note()}", "judge_mode": PV.judge_mode(), "judge": f"pointer_v1's: {PV.judge_rule()}",
          "prompts": "base; each source (dissoc, same, redigit); hop1 and hop2 for memory -> prompt",
          "eligibility": "pointer_swap uses items with every prompt right"}  # fmt: skip
     path.write_text(json.dumps(m, indent=2) + "\n")

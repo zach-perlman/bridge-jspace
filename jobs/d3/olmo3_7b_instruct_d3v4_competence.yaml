@@ -1,0 +1,46 @@
+id: olmo3_7b_instruct_d3v4_competence
+title: "G3 gate: can OLMo-3-7B-Instruct answer the pointer_v4 scenes (countries, animals, body parts)?"
+thread: D3
+gpus: 1
+mem_gb: 25
+est_gpu_hours: 0.15
+depends_on: []
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct BJ_JUDGE=read uv run python scripts/pointer_v4.py manifest --set main
+  --name olmo3_7b_instruct_d3v4_competence
+  --why "G3 (a second model for D3): pointer_v4's main scenes on OLMo-3-7B-Instruct, chat format, every prompt and step,
+  judged by pointer_swap's one-forward read"
+  && BJ_TARGET=olmo-3-7b-instruct BJ_JUDGE=read uv run python scripts/pointer_v4.py competence
+  --name olmo3_7b_instruct_d3v4_competence
+question: >-
+  Does OLMo-3-7B-Instruct (chat format) put the right answer on top in the read the patching uses, for pointer_v4's
+  main scenes (85 entities, 3 x 3 wordings), in every topic and family, every alt prompt, and the steps alone?
+why_it_matters: >-
+  Gate for olmo3_7b_instruct_d3v4_swap, G3: is the 27B's statement-slot answer a property of Qwen3.6-27B or of the
+  lookup? Read only on scenes OLMo answers.
+hypotheses:
+  H-competent: 'named -> prompt clean >= 95% per topic; memory -> prompt >= 85% where the 7B knows the cue (the entity
+    check was the 27B''s); >= 100 scenes per topic eligible in all three families'
+  H-cue-gap: 'memory -> prompt or memory -> memory below the gate for a topic: the 7B does not recall the cues or
+    facts the 27B''s entity check kept (countries'' dialling codes most likely)'
+  prior: 'Agent prior: H-competent 0.5 for memory -> prompt; memory -> memory below the gate in at least one topic 0.6.'
+decision_rule: >-
+  pointer_v1's gate with the read judge (scripts/pointer_v1.py JUDGE_READ_CHAT, BJ_JUDGE=read, recorded in the manifest
+  and summary.json): a prompt is right iff the top token of one forward with a digit answer's space token appended is
+  the expected answer's first token; the 8-token greedy judge is kept per prompt as correct_greedy and reported, not
+  used. A (topic, family) cell enters the patching run iff its clean Wilson 95% lower bound >= 0.85; an item is
+  eligible iff every prompt of it is right; pointer_swap keeps scenes eligible in every family of its run. Report
+  every cell next to d3v4_competence_27b and the greedy agreement per cell.
+controls:
+- 'each step alone (cue -> entity with the context; the lookup with the entity named / the recalled fact)'
+- 'greedy agreement (correct_greedy): how often the plain 8-token reply gives the read''s answer'
+- 'the same scenes on the 27B: d3v4_competence_27b'
+n: 'all main scenes: 300 + 300 + 180 per family x 3 families = 2,340 items (~12,500 prompts)'
+seeds: [841]
+notes: >-
+  Why the read judge (fixed before any OLMo pointer result): in the OLMo smoke (2 items per file) the greedy reply to
+  the memory -> prompt question named the bridge entity instead of the drawer number (" Japan", " Greece", " wolf")
+  while the read put the expected digit on top (p 0.93-0.999), so the greedy judge would leave almost no scene eligible
+  although the read the patching measures is right; the 27B's greedy and read agreed. Run names start with
+  olmo3_7b_instruct_ (pins); 18 countries scenes are not token-aligned under OLMo's tokenizer and are dropped by
+  pointer_swap (counted). Timing: a 7B at an estimated 3-4x the 27B's rate: ~6 min + load ~ 0.15 h.

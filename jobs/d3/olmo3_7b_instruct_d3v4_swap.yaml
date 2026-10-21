@@ -1,0 +1,61 @@
+id: olmo3_7b_instruct_d3v4_swap
+title: "G3: does a second model (OLMo-3-7B-Instruct) also answer the statement slot when the last tokens are patched?"
+thread: D3
+gpus: 1
+mem_gb: 25
+est_gpu_hours: 0.5
+depends_on:
+- olmo3_7b_instruct_d3v4_competence
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set main
+  --name olmo3_7b_instruct_d3v4_swap --families RL DL --n 150 --layers 8 12 16 20 22 23 24 25 26 28 --control-stride 1
+  --groups final last --competence olmo3_7b_instruct_d3v4_competence
+  --why "G3: d3v4_swap_main on OLMo-3-7B-Instruct, the 27B's layers mapped by relative depth (L -> round(L / 64 x 32)),
+  entity-cluster intervals, the same rule"
+  && BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_swap.py run --name olmo3_7b_instruct_d3v4_swap
+examples_command: BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_swap.py examples --name olmo3_7b_instruct_d3v4_swap
+figures_command: BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_swap.py figures --name olmo3_7b_instruct_d3v4_swap
+question: >-
+  On OLMo-3-7B-Instruct, when the alt prompt's hidden states at the last two tokens are patched into the org prompt at
+  layers 24 and 25 (the 27B's 48 and 50 by relative depth), does the org prompt answer the digit at the same statement
+  slot more often than the digit of bridge alt's statement, as the 27B does (layer 50: 50% vs 21%, d3v4_swap_main,
+  UNVERIFIED)?
+why_it_matters: >-
+  G3 (generality): the statement-slot pointer has been shown on one model. If OLMo shows it at the same relative depth,
+  the pointer is a property of how transformers do in-context lookups after recall; if not, the D3 line is about
+  Qwen3.6-27B (or about where each model stages its answer).
+hypotheses:
+  H-slot-olmo: 'memory -> prompt, last two tokens, layer 24 or 25, pooled over topics: the same-statement-slot share''s
+    entity-cluster lower bound exceeds the upper bound of the bridge-alt''s-statement share'
+  H-word-olmo: 'the bridge alt''s statement beats the slot there (OLMo looks the entity up by name)'
+  prior: 'Coordinator''s prior: H-slot-olmo 0.5.'
+decision_rule: >-
+  Fixed before the run. Layers: the 27B's 16 24 32 40 44 46 48 50 52 56 mapped to round(L / 64 x 32) on OLMo's 32
+  layers; windows by the same relative depth (pointer_swap's default: transit = 22-26, the 27B's 44-52). PRIMARY:
+  memory -> prompt, the last two tokens, layers 24 and 25 (the 27B's 48 and 50), pooled over topics; H-slot-olmo iff at
+  either layer the same-statement-slot share's lower bound > the bridge-alt's-statement share's upper bound
+  (computed from analyze's summary.json rates: RL|all|e5f0|last|24 or 25|dissoc, position vs identity). Bounds:
+  entity-cluster bootstrap 95% (asked entity within topic, 2000, seed 0) widened to Wilson where wider (pointer_v4
+  additions). The pre-registered rule's verdict (interpretable iff changed lower bound >= 0.20 and the same-entity
+  control's upper bound <= 0.10; candidates identity / position / value above the random push and context) is
+  reported for the same cells and for after the question at 24 and in the window 22-26 (the 27B's primary), per topic
+  (n >= 35) and for named -> prompt; not decisive. Families: memory -> prompt and named -> prompt (memory -> memory,
+  the contrast, is left out: in the smoke OLMo got the recalled digits half the time, and requiring them in every
+  scene would empty the sample; as accepted for d3v4_swap_raw_27b_v2).
+controls:
+- 'same entity, statements reshuffled: damage bar'
+- 'random push of the same size per token at every layer: chance bar'
+- 'a prompt of another topic, same size: realistic-activation null'
+- 'org prompt into itself (no-op) and the layer-0 all-position patch (hook checks; run invalid below 100%)'
+- 'the 27B run d3v4_swap_main: the same cells by relative depth'
+n: >-
+  up to 150 scenes per topic eligible in memory -> prompt and named -> prompt (seed 0) x 3 topics x 2 families = up to
+  900 cases; 18 countries scenes dropped (not token-aligned under OLMo's tokenizer: pointer_swap counts them)
+seeds: [0]
+notes: >-
+  Reads per case: 3 checks + 10 layers x 2 sites x 2 (alt, same) + random / other at every layer (10 x 2 x 2) + 3
+  windows x 2 sites x 2 = 95; up to 900 cases ~ 86k reads; a 7B at an estimated ~120 reads/s ~ 12 min + load ~ 0.4 h
+  with margin. Smoke (OLMo-3-7B-Instruct on the box, batch 16 on a shared GPU): pointer_v4 competence on 2 items per
+  file, pointer_swap run / examples / figures on 1 scene per topic at layers 0 22 24 25: self no-op 9/9, layer-0
+  reproduction 9/9, 18 countries scenes dropped as unaligned. Figures say "the 27B's layers 44-52 at the same relative
+  depth" for the band (no lens claim on OLMo).

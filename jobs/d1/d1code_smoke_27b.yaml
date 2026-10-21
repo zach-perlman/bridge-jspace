@@ -1,0 +1,37 @@
+id: d1code_smoke_27b
+title: "D1 in code, test run: map, parts and lens push on the 27B with a few programs"
+thread: D1
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.3
+depends_on: []
+command: >-
+  BJ_D1CODE_COMPETENCE=none uv run python scripts/code_positions.py map --name d1code_smoke_map_27b --n 2
+  --layers 32 36 --why "D1 in code smoke: map on 2 programs per family, every competence check skipped"
+  && BJ_D1CODE_COMPETENCE=none uv run python scripts/code_positions.py parts --name d1code_smoke_parts_27b
+  --map d1code_smoke_map_27b --force bind_bridge:32 context:32 --why "D1 in code smoke: parts at forced cells"
+  && BJ_D1CODE_COMPETENCE=none uv run python scripts/code_positions.py readwrite --name d1code_smoke_rw_27b
+  --map d1code_smoke_map_27b --parts d1code_smoke_parts_27b --force bind_bridge:32 --why "D1 in code smoke: lens push
+  at a forced cell"
+examples_command: uv run python scripts/code_positions.py examples --name d1code_smoke_map_27b
+figures_command: uv run python scripts/code_positions.py figures --name d1code_smoke_rw_27b
+question: >-
+  Do code_positions' map, parts (J-lens split, frozen J++) and readwrite (lens push) stages, statement_positions' code
+  configured for the two code families, run end to end on Qwen3.6-27B, with the map's sanity checks passing?
+why_it_matters: >-
+  Code-path check before d1code_map_27b / d1code_parts_27b / d1code_readwrite_27b; the 0.8B smoke ran the competence,
+  map and examples stages only (the 0.8B has no J-lens, so parts and readwrite were not run there). No claim.
+hypotheses:
+  H-ok: 'map sanity: identity patches change nothing (max |ld - clean| ~ bf16), the all-position layer-0 copy reproduces
+    the alt read, 0 causality violations; parts and readwrite write their summaries; figures and report.md written'
+  H-broken: 'a stage crashes or a sanity check fails: stop the main runs'
+decision_rule: 'The main runs proceed only if every H-ok check holds (each run''s summary.json / summary.md).'
+controls:
+- 'identity patch and the layer-0 all-position copy (hook checks)'
+- 'zero-delta cells (the dict entries precede the key line): verified exactly zero'
+n: '2 programs per family (4 cases); forced cells: the key line and the whole program at layer 32'
+seeds: [0]
+notes: >-
+  Three 27B loads (~4 min each) + a few hundred reads: ~0.3 h. The 0.8B smoke on the box (BJ_TARGET=qwen3.5-0.8b):
+  competence 4 items; map 2 programs at layers 8 12 16 (identity and all0 sanity, 0 causality violations); examples;
+  map-only figures.

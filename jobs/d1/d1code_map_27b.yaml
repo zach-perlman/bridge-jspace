@@ -1,0 +1,43 @@
+id: d1code_map_27b
+title: "D1 in code, map: where does pasting the alt program (key line changed) switch the answer?"
+thread: D1
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.4
+depends_on:
+- d1code_competence_27b
+- d1code_smoke_27b
+command: >-
+  uv run python scripts/code_positions.py map --name d1code_map_27b --n 80
+  --why "D1 in code: statement_positions' map on the programs (key line, its country, the spare line, the whole program,
+  the question, after it), layers 28-44 every 2, 80 programs per family on the same programs"
+examples_command: uv run python scripts/code_positions.py examples --name d1code_map_27b
+figures_command: uv run python scripts/code_positions.py figures --name d1code_map_27b
+question: >-
+  When a country is stated in a code line (key = "Japan") and then either looked up in the program's dict or asked
+  about from memory, at which positions (the key line, its country, the whole program, the question) and layers
+  (28-44) does pasting the alt program's hidden states switch the answer to the alt answer?
+why_it_matters: >-
+  Defines the transit cells (>= 50% switched, above the random push and the off-path paste) where parts and the lens
+  push are measured, as D1 did for the animal suite (where the stated bridge was in transit at its statement and the
+  whole context at 32-44).
+hypotheses:
+  H-key-line-transit: 'the key line is in transit for stated in code -> prompt at >= 2 of the layers 32, 36, 40 (D1:
+    statements in transit at 32-44)'
+  H-late: 'the key line is in transit only below 32 (the program is read early), so parts and readwrite get no primary
+    cell there'
+  prior: 'Agent prior: H-key-line-transit 0.65.'
+decision_rule: >-
+  statement_positions' transit rule, unchanged: a cell (family, set, layer) is in transit iff the paste switches >=
+  50% of answers to the alt answer and its Wilson 95% lower bound is above the upper bound of every control's change
+  rate (the off-path paste where non-zero; the random push at the paste's per-token norm). Sanity: the identity patch
+  changes nothing, the layer-0 all-position copy reproduces the alt read, zero-delta cells are exactly zero.
+controls:
+- 'random push of the paste''s per-token norm at the same positions and layer'
+- 'off-path paste (the spare line changed): its change rate where its delta is non-zero'
+- 'identity patch, layer-0 all-position copy, zero-delta cells (hook and causality checks)'
+n: '80 programs per family (the same programs), 2 families, 9 layers'
+seeds: [0]
+notes: >-
+  statement_positions' plan on these cases: 174 reads per case, 27,840 reads at ~33/s ~ 0.23 h + 3 forwards per case
+  and load ~ 0.4 h.

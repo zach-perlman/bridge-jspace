@@ -83,6 +83,24 @@ def test_token_alignment_with_the_real_tokenizer(items):
             assert all(X.check_item(tok, it).values()), (label, it["id"], X.check_item(tok, it))
 
 
+def test_unaligned_scenes_are_dropped_whole(items):
+    try:
+        tok = PV.tokenizer()
+    except Exception:
+        pytest.skip("no tokenizer snapshot")
+    _, out = items
+    by_label = {k: v[1][:4] for k, v in out.items() if k.startswith("animals_") and k.endswith("e5-off")}
+    rl = next(k for k in by_label if "_RL_" in k)
+    broken = dict(by_label[rl][0])
+    broken["sources"] = {**broken["sources"], "dissoc": {**broken["sources"]["dissoc"],
+                         "question": broken["sources"]["dissoc"]["question"] + " Please"}}  # fmt: skip
+    by_label[rl] = [broken, *by_label[rl][1:]]
+    kept, dropped = PS.drop_unaligned(by_label, tok)
+    assert dropped == {"animals": 1}
+    assert all(it["scene"] != broken["scene"] for its in kept.values() for it in its)  # both families of the scene
+    assert sum(len(v) for v in kept.values()) == sum(len(v) for v in by_label.values()) - 2
+
+
 def rate(p: float, half: float = 0.05) -> list[float]:
     return [p, max(0.0, p - half), min(1.0, p + half)]
 
