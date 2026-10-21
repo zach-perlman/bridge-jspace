@@ -9,7 +9,8 @@ band, with paper10_keepown_rot within 10 points of unedited, the recall damage i
 
 Claim (C1-graded): memory steps need the J-space, prompt lookups much less. Rule, on the whole question (kind "clean")
 under paper10 (the top-10 lens directions projected out at every position, the clean top-10 answer tokens kept) at the
-middle band (27B layers 32-40; Gemma 30-38, the same relative depth): the memory-final words (P->M, M->M) lose on
+middle band (27B layers 32-40; every other model: its band chosen by scripts/choose_band.py on its own suite depth
+sweep, the procedure that picked the 27B's, fixed before its tasks_v2 data; Zach, 2026-10-21): the memory-final words (P->M, M->M) lose on
 average >= 30 points more accuracy than the prompt-final words (P->P, M->P), and every word's rotated control
 (paper10_rot) stays within 10 points of its unedited accuracy at that band. Loss = unedited accuracy - knock-out
 accuracy, per word; the two words of each group are averaged.
