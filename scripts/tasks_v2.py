@@ -917,8 +917,8 @@ def eligible(set_name: str, comp_run: str, words: list[str], n: int, level: str 
         if it["word"] in words
         and stratum(it) in strata
         and (fmt_class is None or format_class(it) == fmt_class)
-        and (domains is None or it["domain"] in domains)
-    ]
+        and (it["domain"] in domains if domains else len(it["word"]) == 2 or it["domain"] in THREE_STEP_DOMAINS)
+    ]  # three-step items outside THREE_STEP_DOMAINS (from measurement sets) only when asked for by domains
     # v7 (review): an item whose answer half or more of the scene's other things would also give does not test the
     # bridge (instruments: every thing with 4 strings); it is left out (with its scene, below) of downstream runs
     bridge_free = {it["scene"] for it in items if it.get("chance_same_answer", 0) >= max_chance}
