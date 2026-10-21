@@ -140,7 +140,9 @@ def cmd_validate(paths: list[Path]) -> int:
     return 1 if bad else 0
 
 
-def cmd_enqueue(paths: list[Path]) -> int:
+def cmd_enqueue(paths: list[Path], allow_dirty: bool = False) -> int:
+    """`allow_dirty`: queue although tracked files have uncommitted changes (e.g. another script being edited). The
+    job still runs the committed tree only; the uncommitted paths are recorded in its record as `dirty_paths`."""
     specs = []
     for p in paths:
         spec = load_spec(p)
@@ -150,8 +152,11 @@ def cmd_enqueue(paths: list[Path]) -> int:
     # Prediction forms (jobs/predictions/) are human notes no job reads: being filled in must not block a queue.
     status = _git("status", "--porcelain", "--untracked-files=no").splitlines()
     changed = [(line, line.split(maxsplit=1)[-1]) for line in status]  # _git strips the first line's leading space
-    if dirty := "\n".join(line for line, path in changed if not path.startswith("jobs/predictions/")):
-        raise SystemExit(f"commit first: a job runs the committed tree only\n{dirty}")
+    dirty_paths = [path for _, path in changed if not path.startswith("jobs/predictions/")]
+    if dirty_paths and not allow_dirty:
+        raise SystemExit(
+            "commit first: a job runs the committed tree only (or pass --allow-dirty)\n" + "\n".join(dirty_paths)
+        )
     for p, _ in specs:
         try:
             _git("ls-files", "--error-unmatch", str(p))
@@ -174,6 +179,7 @@ def cmd_enqueue(paths: list[Path]) -> int:
             "spec_path": str(p.relative_to(REPO)),
             "enqueued_at": now(),
             "enqueued_by": who,
+            **({"dirty_paths": dirty_paths} if dirty_paths else {}),
         }
         name = f"{stamp}-{i:02d}_{spec['id']}.json"
         _ssh(
@@ -571,8 +577,10 @@ def box_cancel(root: Path, job_id: str) -> str:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
-    for name in ("validate", "enqueue"):
-        sub.add_parser(name).add_argument("specs", nargs="+", type=Path)
+    sub.add_parser("validate").add_argument("specs", nargs="+", type=Path)
+    eq = sub.add_parser("enqueue")
+    eq.add_argument("specs", nargs="+", type=Path)
+    eq.add_argument("--allow-dirty", action="store_true", help="queue despite uncommitted tracked files (recorded)")
     sub.add_parser("status").add_argument("--json", action="store_true")
     sub.add_parser("pull")
     sub.add_parser("cancel").add_argument("id")
@@ -587,7 +595,7 @@ def main(argv: list[str] | None = None) -> int:
     if a.cmd == "validate":
         return cmd_validate(a.specs)
     if a.cmd == "enqueue":
-        return cmd_enqueue(a.specs)
+        return cmd_enqueue(a.specs, a.allow_dirty)
     if a.cmd == "status":
         return cmd_status(a.json)
     if a.cmd == "pull":

@@ -32,7 +32,7 @@ data-report:        ## what data we work with: counts, categories, labels, overl
 
 # Job queue on the GPU box (scripts/jobq.py): make enqueue JOB=jobs/d2/d2_ko_v1.yaml (committed tree only)
 enqueue:            ## queue a job spec (or several: JOB="a.yaml b.yaml") on the GPU box
-	uv run python -m scripts.jobq enqueue $(JOB)
+	uv run python -m scripts.jobq enqueue $(JOB) $(ARGS)
 
 queue-status:       ## running (with progress/ETA), pending, last done/failed jobs and their durations
 	uv run python -m scripts.jobq status
