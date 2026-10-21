@@ -1,0 +1,44 @@
+id: d3b_slot_probe_27b
+title: 'D3b: can the last tokens tell which statement the question asks about, with twice the data?'
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.15
+depends_on:
+- d3b_slot_direction_main_27b
+- d3b_fair_probe_smoke_27b
+command: >-
+  uv run python scripts/pointer_probe.py run --name d3b_slot_probe_27b
+  --why "D3b probe re-analysis (batch 3): read the asked statement from the tokens after the question with the nearest per-statement mean, cross-validated on all 400 fit scenes, layers 40-52, and with the first run's own means on entities it never saw"
+examples_command: uv run python scripts/pointer_probe.py examples --name d3b_slot_probe_27b
+figures_command: uv run python scripts/pointer_probe.py figures --name d3b_slot_probe_27b
+question: With all 400 pointer_v1 fit scenes (animals and elements) instead of 197, can a nearest per-statement-mean
+  read-out of the tokens after the question tell which of the 5 statements the question asks about at layer 48, and is
+  the first run's 39% (steers but hardly readable) a small-sample effect?
+why_it_matters: 'd3b_slot_direction_main_27b read the asked statement at only 39% [33, 46] yet steered with the same
+  means (37%). If more data makes it readable (>= 60%), the pointer is an ordinary readable code and its low read-out
+  was noise; if it stays low, the model carries a pointer that a push can use but a simple read-out barely sees, which
+  matters for any "pointer lens" built from read-outs.'
+hypotheses:
+  H-readable: 'layer 48, cross-validated, all items (n ~ 400): Wilson lower bound >= 0.60; answered-right items higher
+    still; the first run''s own means on entities it never saw >= 50%'
+  H-hardly-readable: 'layer 48: upper bound < 0.60 (e.g. 40-50%); best layer <= 55%'
+  prior: 'Agent prior: H-hardly-readable 0.6, in between 0.25, H-readable 0.15 (twice the data helps a nearest-mean
+    read-out only modestly when each class mean averages ~80 items over ~20 tokens x 5120 dimensions).'
+decision_rule: 'Fixed in scripts/pointer_probe.py''s docstring and manifest. At layer 48, 5-fold cross-validated
+  nearest-class-mean accuracy on all fit scenes: "readable" iff its Wilson 95% lower bound >= 0.60; "hardly readable"
+  (the first run''s 39% survives) iff its upper bound < 0.60; otherwise in between. Valid only if the shuffled-label
+  null stays within 10 points of chance (20%). Per layer (40-52), per topic, answered-right items and the first run''s
+  own means on held-out entities are reported, with an entity-cluster bootstrap (queried entities within topic).'
+controls:
+- 'shuffled labels (same classifier and folds): must sit at chance'
+- 'the first run''s own class means applied to entities it never saw (out of sample for those means)'
+- 'per topic and answered-right-only cuts'
+n: 'all pointer_v1 fit scenes for animals and elements: 400 (200 per topic, 22 queried entities); answered right ~half
+  (the first run kept 197 of 400 with its entity filter)'
+seeds:
+- 0
+- 1
+notes: 'Timing: 400 forwards (no edits) ~1 min, cross-validation over 7 layers ~2 min, load ~4 min: ~0.15 h. Needs the
+  first run''s cached means (cache/pointer_fit/d3b_slot_direction_main_27b/fits.pt, present on the 4xA100 box); without
+  them the same-means check is skipped and the rest runs. Results: results/pointer_probe/d3b_slot_probe_27b/.'

@@ -1,0 +1,44 @@
+id: d3b_fair_probe_smoke_27b
+title: 'D3b pointer at the lens depth and statement read-out, smoke: every stage on a few items'
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.2
+depends_on:
+- d3_competence_27b
+command: >-
+  uv run python scripts/pointer_fair.py run --name d3b_fair_c2_smoke_27b --competence d3_competence_27b --n 4 4 4 16
+  --fit-limit 40 --why "D3b fair-C2 smoke: both fits, every push, every family, end to end before the main run"
+  && uv run python scripts/pointer_probe.py run --name d3b_slot_probe_smoke_27b --fit-limit 20
+  --why "D3b statement read-out smoke: collect, cross-validated read-out and the first run's own means, end to end"
+examples_command: >-
+  uv run python scripts/pointer_fair.py examples --name d3b_fair_c2_smoke_27b
+  && uv run python scripts/pointer_probe.py examples --name d3b_slot_probe_smoke_27b
+figures_command: >-
+  uv run python scripts/pointer_fair.py figures --name d3b_fair_c2_smoke_27b
+  && uv run python scripts/pointer_probe.py figures --name d3b_slot_probe_smoke_27b
+question: Do pointer_fair (both fits, every push, memory → prompt, named → prompt, memory → memory, prompt → prompt) and
+  pointer_probe (collect, cross-validated read-out, the first run's cached means) run on Qwen3.6-27B?
+why_it_matters: 'Fail-fast gate for d3b_fair_c2_27b and d3b_slot_probe_27b. Not a result: n is tiny. Local smokes cannot
+  run (bridge_jspace.model.load_model hard-codes CUDA); both scripts ran end to end on Qwen3.5-0.8B on the 4xA100 box.'
+hypotheses:
+  H-code-ok: 'pointer_fair: unedited rows keep answer org on every item; outcomes.jsonl has 137 rows per memory → prompt
+    item and 69 per other item; fit.json lists the after-the-cue fit, one question-words fit per topic and the suite
+    fit; the alt-prompt patch on all of layers 32-40 changes >= 1 memory → prompt answer. pointer_probe: preds.jsonl has
+    a cross-validated prediction for every item and layer and a same-means prediction (the cached means of
+    d3b_slot_direction_main_27b are found); the shuffled null sits near 20%. Both: examples.json and one figures folder.'
+  H-bug: any check fails or a stage crashes
+decision_rule: 'Run d3b_fair_c2_27b and d3b_slot_probe_27b only if every H-code-ok check holds; otherwise cancel them
+  and read the log.'
+controls:
+- 'unedited reads (competence gate: answer org expected)'
+- 'random push and shuffled-label direction (pointer_fair); shuffled labels (pointer_probe)'
+n: 'pointer_fair: 4 items per topic for memory → prompt, named → prompt, memory → memory; 16 suite scenes (8 fit, 8
+  pushed); 40 fit scenes per topic. pointer_probe: 20 fit scenes per topic'
+seeds:
+- 0
+- 1
+notes: 'Timing: pointer_fair ~8 x 137 + 24 x 69 = ~2.8k edited reads at 31-37/s ~1.5 min, + load ~4 min; pointer_probe 40
+  forwards, + load ~4 min: ~0.2 h. The 0.8B smokes (qwen35_08b_smoke_d3b_fair_v1, qwen35_08b_smoke_d3b_probe_v1) ran
+  every stage in 67 s and 15 s. Results: results/pointer_fair/d3b_fair_c2_smoke_27b/,
+  results/pointer_probe/d3b_slot_probe_smoke_27b/.'
