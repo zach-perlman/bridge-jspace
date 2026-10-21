@@ -1,0 +1,47 @@
+id: d3_main_ae_27b
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.9
+depends_on:
+- d3_competence_27b
+command: 'uv run python scripts/pointer_swap.py manifest --name d3_main_ae_27b --set main --n 50 --domains animals elements
+  --layers 16 18 20 22 24 26 28 30 32 34 36 38 40 42 44 46 48 50 52 54 56 58 60 --competence d3_competence_27b --why "D3
+  main on the domains that pass the competence gate (animals, elements): the three-way dissociation patch, every 2nd layer
+  16-60" && uv run python scripts/pointer_swap.py run --name d3_main_ae_27b'
+examples_command: uv run python scripts/pointer_swap.py examples --name d3_main_ae_27b
+question: On held-out main items (N=5, four domains, RL/DL/RR on the same scenes), what does patching the dissoc source's
+  residual (question / final / last / both; every 2nd layer 16-60 and the early, mid and transit windows) carry into the
+  base - the bridge's identity, a pointer to its statement's position, or the answer value?
+why_it_matters: The headline D3 test of the "around" route (C2). position at 44-52 => read-without-write is explained by
+  a pointer the lens cannot express (H-pointer, the longshot); identity => a non-lens identity code (fit it, D3 fit stage);
+  value => the lookup is finished before 44, so the "around" result at 44-52 is about timing and the write test belongs
+  earlier (the 27B's 16-28 pushes, D4); none => the bridge is carried elsewhere (statements, D1).
+hypotheses:
+  H-pointer: 'RL final/last transit (44-52): position >= 50% [Wilson lower bound > identity and value upper bounds], RR
+    position <= 10%, DL position >= 50%; by slot: position strongest for first/last, weaker in the middle'
+  H-word: 'RL final/last transit: identity >= 50%, position <= 20%, value <= 20%'
+  H-value: 'RL final/last transit: value >= 50%; last group value earlier (lower layer) than final'
+  H-none: RL final transit changes < 20%
+  prior: 'Agent prior: value 0.4, position 0.3, identity 0.3 (to be updated by the pilot before enqueuing).'
+decision_rule: 'As d3_pilot_27b (scripts/pointer_swap.py docstring), applied to main items: primary cell RL x final x transit
+  window (44-52) x dissoc, pooled over domains; supported hypothesis = the verdict (position -> H-pointer, identity -> H-word,
+  value -> H-value; none/damage/mixed -> inconclusive). Secondary, reported not decisive: the same rule for group last and
+  both, per layer, per domain, per queried slot (first/middle/last), DL and RR. A verdict that holds in fewer than 3 of
+  4 domains is reported as domain-dependent.'
+controls:
+- 'same source (no-op under every hypothesis): damage'
+- 'rand (matched-norm random direction): chance bar'
+- 'other (another domain''s item at matched norm): realistic null / domain-general positional code'
+- 'context digits predicted by no hypothesis: per-digit chance inside the runs'
+- 'self no-op and layer-0 all-position reproduction: hook checks (run invalid if either < 100% top agreement)'
+n: 50 scenes per domain x 2 domains (animals, elements) = 100 per family (RL, DL, RR), main N=5
+seeds:
+- 0
+notes: 'd3_pilot_27b came out ''damage'' in every cell, including layer 0 where nothing changes, because its n was 34 per
+  family (months and planets gave 2 eligible scenes each) and the rule asks the ''same'' control''s Wilson upper bound to
+  be <= 0.10, which needs n >= 35 even at 0 changes (3.84 / (n + 3.84)). This version applies the pre-registered competence
+  gate (a domain x family cell enters iff its clean Wilson lower bound >= 0.85, d3_competence_27b): months RL (46%), planets
+  RR (55%) and planets RL (lower bound 0.84) fail, so only domains passing in all three families are used, and n is raised
+  so the rule can pass. Controls, decision rule and hypotheses unchanged. Timing: d3_pilot_27b ran 102 cases x 16 layers
+  in 601 s (37 reads/s); this run is 300 cases x 23 layers, about 45 min.'
