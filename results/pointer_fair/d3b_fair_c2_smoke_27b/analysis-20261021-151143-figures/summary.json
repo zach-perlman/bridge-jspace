@@ -1,0 +1,242 @@
+{
+  "run": "d3b_fair_c2_smoke_27b",
+  "decisions": {
+    "after": {
+      "pointer": {
+        "n": 8,
+        "k_entities": 5,
+        "wilson": [
+          0.25,
+          0.0715,
+          0.5907
+        ],
+        "entity_boot": [
+          0.25,
+          0.0,
+          0.4444
+        ]
+      },
+      "lens": {
+        "n": 8,
+        "k_entities": 5,
+        "wilson": [
+          0.0,
+          0.0,
+          0.3244
+        ],
+        "entity_boot": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "random": {
+        "n": 8,
+        "k_entities": 5,
+        "wilson": [
+          0.0,
+          0.0,
+          0.3244
+        ],
+        "entity_boot": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "shuffled": {
+        "n": 8,
+        "k_entities": 5,
+        "wilson": [
+          0.125,
+          0.0224,
+          0.4709
+        ],
+        "entity_boot": [
+          0.125,
+          0.0,
+          0.2857
+        ]
+      },
+      "memory_memory_changed": {
+        "n": 8,
+        "k_entities": 5,
+        "wilson": [
+          0.0,
+          0.0,
+          0.3244
+        ],
+        "entity_boot": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "pointer_minus_lens": [
+        0.25,
+        0.0,
+        0.4444
+      ],
+      "pointer_minus_random": [
+        0.25,
+        0.0,
+        0.4444
+      ],
+      "patch": {
+        "n": 8,
+        "k_entities": 5,
+        "wilson": [
+          0.5,
+          0.2152,
+          0.7848
+        ],
+        "entity_boot": [
+          0.5,
+          0.125,
+          0.875
+        ]
+      },
+      "overshoot": {
+        "n_off_target": 0,
+        "beyond": 0,
+        "expected_uniform": 0.0,
+        "beyond_minus_uniform": [
+          NaN,
+          NaN,
+          NaN
+        ]
+      },
+      "overshoot_shuffled": {
+        "n_off_target": 0,
+        "beyond": 0,
+        "expected_uniform": 0.0,
+        "beyond_minus_uniform": [
+          NaN,
+          NaN,
+          NaN
+        ]
+      },
+      "verdict": "not shown (controls failed or n too small: not interpretable)"
+    },
+    "question": {
+      "pointer": {
+        "n": 8,
+        "k_entities": 5,
+        "wilson": [
+          0.5,
+          0.2152,
+          0.7848
+        ],
+        "entity_boot": [
+          0.5,
+          0.125,
+          0.875
+        ]
+      },
+      "lens": {
+        "n": 8,
+        "k_entities": 5,
+        "wilson": [
+          0.375,
+          0.1368,
+          0.6943
+        ],
+        "entity_boot": [
+          0.375,
+          0.2222,
+          0.5714
+        ]
+      },
+      "random": {
+        "n": 8,
+        "k_entities": 5,
+        "wilson": [
+          0.0,
+          0.0,
+          0.3244
+        ],
+        "entity_boot": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "shuffled": {
+        "n": 8,
+        "k_entities": 5,
+        "wilson": [
+          0.0,
+          0.0,
+          0.3244
+        ],
+        "entity_boot": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "memory_memory_changed": {
+        "n": 8,
+        "k_entities": 5,
+        "wilson": [
+          0.0,
+          0.0,
+          0.3244
+        ],
+        "entity_boot": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "pointer_minus_lens": [
+        0.125,
+        -0.4286,
+        0.625
+      ],
+      "pointer_minus_random": [
+        0.5,
+        0.125,
+        0.875
+      ],
+      "patch": {
+        "n": 8,
+        "k_entities": 5,
+        "wilson": [
+          0.625,
+          0.3057,
+          0.8632
+        ],
+        "entity_boot": [
+          0.625,
+          0.4,
+          1.0
+        ]
+      },
+      "overshoot": {
+        "n_off_target": 2,
+        "beyond": 2,
+        "expected_uniform": 1.67,
+        "beyond_minus_uniform": [
+          0.1667,
+          0.1667,
+          0.1667
+        ]
+      },
+      "overshoot_shuffled": {
+        "n_off_target": 2,
+        "beyond": 1,
+        "expected_uniform": 0.67,
+        "beyond_minus_uniform": [
+          0.1667,
+          0.1667,
+          0.1667
+        ]
+      },
+      "verdict": "not shown (controls failed or n too small: not interpretable)"
+    }
+  },
+  "figures": [
+    "fig1_pointer_vs_lens_32_40.png"
+  ]
+}

@@ -1,0 +1,616 @@
+{
+  "run": "d3b_slot_probe_27b",
+  "verdict": "hardly readable (the first run's 39% survives)",
+  "summary": {
+    "layers": {
+      "40": {
+        "all": {
+          "n": 400,
+          "k_entities": 22,
+          "wilson": [
+            0.2975,
+            0.2548,
+            0.3441
+          ],
+          "entity_boot": [
+            0.2975,
+            0.2486,
+            0.3446
+          ]
+        },
+        "shuffled": {
+          "n": 400,
+          "k_entities": 22,
+          "wilson": [
+            0.2225,
+            0.1845,
+            0.2658
+          ],
+          "entity_boot": [
+            0.2225,
+            0.1795,
+            0.2771
+          ]
+        },
+        "right_only": {
+          "n": 388,
+          "k_entities": 22,
+          "wilson": [
+            0.3273,
+            0.2825,
+            0.3755
+          ],
+          "entity_boot": [
+            0.3273,
+            0.2717,
+            0.3816
+          ]
+        },
+        "domain:animals": {
+          "n": 200,
+          "k_entities": 16,
+          "wilson": [
+            0.26,
+            0.2041,
+            0.3249
+          ],
+          "entity_boot": [
+            0.26,
+            0.175,
+            0.3333
+          ]
+        },
+        "domain:elements": {
+          "n": 200,
+          "k_entities": 6,
+          "wilson": [
+            0.335,
+            0.2732,
+            0.403
+          ],
+          "entity_boot": [
+            0.335,
+            0.2718,
+            0.3923
+          ]
+        },
+        "same_means_held_out_entities": {
+          "n": 195,
+          "k_entities": 11,
+          "wilson": [
+            0.3179,
+            0.2566,
+            0.3863
+          ],
+          "entity_boot": [
+            0.3179,
+            0.2078,
+            0.4435
+          ]
+        }
+      },
+      "42": {
+        "all": {
+          "n": 400,
+          "k_entities": 22,
+          "wilson": [
+            0.31,
+            0.2667,
+            0.357
+          ],
+          "entity_boot": [
+            0.31,
+            0.2525,
+            0.3661
+          ]
+        },
+        "shuffled": {
+          "n": 400,
+          "k_entities": 22,
+          "wilson": [
+            0.2225,
+            0.1845,
+            0.2658
+          ],
+          "entity_boot": [
+            0.2225,
+            0.1814,
+            0.2781
+          ]
+        },
+        "right_only": {
+          "n": 388,
+          "k_entities": 22,
+          "wilson": [
+            0.3325,
+            0.2874,
+            0.3808
+          ],
+          "entity_boot": [
+            0.3325,
+            0.2806,
+            0.3816
+          ]
+        },
+        "domain:animals": {
+          "n": 200,
+          "k_entities": 16,
+          "wilson": [
+            0.255,
+            0.1996,
+            0.3196
+          ],
+          "entity_boot": [
+            0.255,
+            0.1634,
+            0.3383
+          ]
+        },
+        "domain:elements": {
+          "n": 200,
+          "k_entities": 6,
+          "wilson": [
+            0.365,
+            0.3014,
+            0.4337
+          ],
+          "entity_boot": [
+            0.365,
+            0.2872,
+            0.4378
+          ]
+        },
+        "same_means_held_out_entities": {
+          "n": 195,
+          "k_entities": 11,
+          "wilson": [
+            0.2974,
+            0.2377,
+            0.365
+          ],
+          "entity_boot": [
+            0.2974,
+            0.2038,
+            0.3927
+          ]
+        }
+      },
+      "44": {
+        "all": {
+          "n": 400,
+          "k_entities": 22,
+          "wilson": [
+            0.35,
+            0.3049,
+            0.398
+          ],
+          "entity_boot": [
+            0.35,
+            0.2799,
+            0.4124
+          ]
+        },
+        "shuffled": {
+          "n": 400,
+          "k_entities": 22,
+          "wilson": [
+            0.2125,
+            0.1752,
+            0.2552
+          ],
+          "entity_boot": [
+            0.2125,
+            0.1649,
+            0.2722
+          ]
+        },
+        "right_only": {
+          "n": 388,
+          "k_entities": 22,
+          "wilson": [
+            0.3634,
+            0.3171,
+            0.4124
+          ],
+          "entity_boot": [
+            0.3634,
+            0.3092,
+            0.4076
+          ]
+        },
+        "domain:animals": {
+          "n": 200,
+          "k_entities": 16,
+          "wilson": [
+            0.275,
+            0.2178,
+            0.3407
+          ],
+          "entity_boot": [
+            0.275,
+            0.192,
+            0.3522
+          ]
+        },
+        "domain:elements": {
+          "n": 200,
+          "k_entities": 6,
+          "wilson": [
+            0.425,
+            0.3585,
+            0.4943
+          ],
+          "entity_boot": [
+            0.425,
+            0.3134,
+            0.5192
+          ]
+        },
+        "same_means_held_out_entities": {
+          "n": 195,
+          "k_entities": 11,
+          "wilson": [
+            0.3641,
+            0.2998,
+            0.4337
+          ],
+          "entity_boot": [
+            0.3641,
+            0.3052,
+            0.4121
+          ]
+        }
+      },
+      "46": {
+        "all": {
+          "n": 400,
+          "k_entities": 22,
+          "wilson": [
+            0.395,
+            0.3483,
+            0.4437
+          ],
+          "entity_boot": [
+            0.395,
+            0.3146,
+            0.462
+          ]
+        },
+        "shuffled": {
+          "n": 400,
+          "k_entities": 22,
+          "wilson": [
+            0.2125,
+            0.1752,
+            0.2552
+          ],
+          "entity_boot": [
+            0.2125,
+            0.1689,
+            0.271
+          ]
+        },
+        "right_only": {
+          "n": 388,
+          "k_entities": 22,
+          "wilson": [
+            0.4046,
+            0.357,
+            0.4542
+          ],
+          "entity_boot": [
+            0.4046,
+            0.3342,
+            0.4624
+          ]
+        },
+        "domain:animals": {
+          "n": 200,
+          "k_entities": 16,
+          "wilson": [
+            0.31,
+            0.25,
+            0.3772
+          ],
+          "entity_boot": [
+            0.31,
+            0.2162,
+            0.3875
+          ]
+        },
+        "domain:elements": {
+          "n": 200,
+          "k_entities": 6,
+          "wilson": [
+            0.48,
+            0.4118,
+            0.549
+          ],
+          "entity_boot": [
+            0.48,
+            0.345,
+            0.5909
+          ]
+        },
+        "same_means_held_out_entities": {
+          "n": 195,
+          "k_entities": 11,
+          "wilson": [
+            0.3897,
+            0.3241,
+            0.4597
+          ],
+          "entity_boot": [
+            0.3897,
+            0.3441,
+            0.4332
+          ]
+        }
+      },
+      "48": {
+        "all": {
+          "n": 400,
+          "k_entities": 22,
+          "wilson": [
+            0.4475,
+            0.3995,
+            0.4965
+          ],
+          "entity_boot": [
+            0.4475,
+            0.3724,
+            0.5127
+          ]
+        },
+        "shuffled": {
+          "n": 400,
+          "k_entities": 22,
+          "wilson": [
+            0.205,
+            0.1683,
+            0.2473
+          ],
+          "entity_boot": [
+            0.205,
+            0.1558,
+            0.2677
+          ]
+        },
+        "right_only": {
+          "n": 388,
+          "k_entities": 22,
+          "wilson": [
+            0.4433,
+            0.3947,
+            0.493
+          ],
+          "entity_boot": [
+            0.4433,
+            0.3699,
+            0.5013
+          ]
+        },
+        "domain:animals": {
+          "n": 200,
+          "k_entities": 16,
+          "wilson": [
+            0.38,
+            0.3156,
+            0.4489
+          ],
+          "entity_boot": [
+            0.38,
+            0.309,
+            0.441
+          ]
+        },
+        "domain:elements": {
+          "n": 200,
+          "k_entities": 6,
+          "wilson": [
+            0.515,
+            0.4461,
+            0.5833
+          ],
+          "entity_boot": [
+            0.515,
+            0.3797,
+            0.6207
+          ]
+        },
+        "same_means_held_out_entities": {
+          "n": 195,
+          "k_entities": 11,
+          "wilson": [
+            0.4051,
+            0.3387,
+            0.4752
+          ],
+          "entity_boot": [
+            0.4051,
+            0.3641,
+            0.4458
+          ]
+        }
+      },
+      "50": {
+        "all": {
+          "n": 400,
+          "k_entities": 22,
+          "wilson": [
+            0.48,
+            0.4315,
+            0.5289
+          ],
+          "entity_boot": [
+            0.48,
+            0.4143,
+            0.541
+          ]
+        },
+        "shuffled": {
+          "n": 400,
+          "k_entities": 22,
+          "wilson": [
+            0.2025,
+            0.166,
+            0.2446
+          ],
+          "entity_boot": [
+            0.2025,
+            0.1567,
+            0.2615
+          ]
+        },
+        "right_only": {
+          "n": 388,
+          "k_entities": 22,
+          "wilson": [
+            0.482,
+            0.4327,
+            0.5316
+          ],
+          "entity_boot": [
+            0.482,
+            0.4053,
+            0.5447
+          ]
+        },
+        "domain:animals": {
+          "n": 200,
+          "k_entities": 16,
+          "wilson": [
+            0.415,
+            0.3489,
+            0.4843
+          ],
+          "entity_boot": [
+            0.415,
+            0.3512,
+            0.48
+          ]
+        },
+        "domain:elements": {
+          "n": 200,
+          "k_entities": 6,
+          "wilson": [
+            0.545,
+            0.4758,
+            0.6125
+          ],
+          "entity_boot": [
+            0.545,
+            0.4315,
+            0.6411
+          ]
+        },
+        "same_means_held_out_entities": {
+          "n": 195,
+          "k_entities": 11,
+          "wilson": [
+            0.4667,
+            0.398,
+            0.5367
+          ],
+          "entity_boot": [
+            0.4667,
+            0.415,
+            0.5333
+          ]
+        }
+      },
+      "52": {
+        "all": {
+          "n": 400,
+          "k_entities": 22,
+          "wilson": [
+            0.4075,
+            0.3604,
+            0.4563
+          ],
+          "entity_boot": [
+            0.4075,
+            0.3359,
+            0.4741
+          ]
+        },
+        "shuffled": {
+          "n": 400,
+          "k_entities": 22,
+          "wilson": [
+            0.1875,
+            0.1523,
+            0.2287
+          ],
+          "entity_boot": [
+            0.1875,
+            0.1432,
+            0.2464
+          ]
+        },
+        "right_only": {
+          "n": 388,
+          "k_entities": 22,
+          "wilson": [
+            0.4149,
+            0.367,
+            0.4646
+          ],
+          "entity_boot": [
+            0.4149,
+            0.3501,
+            0.4689
+          ]
+        },
+        "domain:animals": {
+          "n": 200,
+          "k_entities": 16,
+          "wilson": [
+            0.32,
+            0.2593,
+            0.3875
+          ],
+          "entity_boot": [
+            0.32,
+            0.2484,
+            0.3946
+          ]
+        },
+        "domain:elements": {
+          "n": 200,
+          "k_entities": 6,
+          "wilson": [
+            0.495,
+            0.4265,
+            0.5637
+          ],
+          "entity_boot": [
+            0.495,
+            0.3737,
+            0.5874
+          ]
+        },
+        "same_means_held_out_entities": {
+          "n": 195,
+          "k_entities": 11,
+          "wilson": [
+            0.4154,
+            0.3485,
+            0.4855
+          ],
+          "entity_boot": [
+            0.4154,
+            0.3825,
+            0.4466
+          ]
+        }
+      }
+    },
+    "verdict": "hardly readable (the first run's 39% survives)",
+    "n_items": 400,
+    "n_right": 388
+  },
+  "figures": [
+    "fig1_slot_readable.png"
+  ]
+}

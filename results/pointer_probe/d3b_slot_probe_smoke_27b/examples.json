@@ -1,0 +1,238 @@
+{
+ "exp": "pointer_probe",
+ "run": "d3b_slot_probe_smoke_27b",
+ "seed": 0,
+ "k": 3,
+ "groups": [
+  {
+   "key": "read_right",
+   "title": "read right",
+   "definition": "the classifier names the asked statement",
+   "n_total": 10
+  },
+  {
+   "key": "read_wrong",
+   "title": "read wrong",
+   "definition": "it names another statement",
+   "n_total": 30
+  }
+ ],
+ "examples": [
+  {
+   "group": "read_right",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0005",
+   "prompt": "<|im_start|>user\nThe hydrogen card is in locker 5. The lithium card is in locker 3. The nitrogen card is in locker 9. The carbon card is in locker 8. The helium card is in locker 4.\nWhich locker holds the card for the lightest element? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 50,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 50,
+     "role": "statement read"
+    },
+    {
+     "start": 235,
+     "end": 338,
+     "role": "tokens read"
+    }
+   ],
+   "condition": "no edit; nearest statement mean at layer 48 (cross-validated)",
+   "answers": {
+    "clean": "statement 1",
+    "edited": "statement 1",
+    "expected": {
+     "H-readable": "statement 1",
+     "H-hardly-readable": "any of 5"
+    }
+   },
+   "numbers": {
+    "answered_right": true
+   },
+   "why": "the classifier names the asked statement"
+  },
+  {
+   "group": "read_right",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0007",
+   "prompt": "<|im_start|>user\nThe hydrogen card is in locker 6. The carbon card is in locker 4. The nitrogen card is in locker 7. The lithium card is in locker 8. The helium card is in locker 5.\nWhich locker holds the card for the lightest element? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 50,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 50,
+     "role": "statement read"
+    },
+    {
+     "start": 235,
+     "end": 338,
+     "role": "tokens read"
+    }
+   ],
+   "condition": "no edit; nearest statement mean at layer 48 (cross-validated)",
+   "answers": {
+    "clean": "statement 1",
+    "edited": "statement 1",
+    "expected": {
+     "H-readable": "statement 1",
+     "H-hardly-readable": "any of 5"
+    }
+   },
+   "numbers": {
+    "answered_right": true
+   },
+   "why": "the classifier names the asked statement"
+  },
+  {
+   "group": "read_right",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0019",
+   "prompt": "<|im_start|>user\nThe helium card is in locker 6. The nitrogen card is in locker 5. The oxygen card is in locker 3. The carbon card is in locker 1. The hydrogen card is in locker 9.\nWhich locker holds the card for the party balloon gas? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 48,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 48,
+     "role": "statement read"
+    },
+    {
+     "start": 235,
+     "end": 338,
+     "role": "tokens read"
+    }
+   ],
+   "condition": "no edit; nearest statement mean at layer 48 (cross-validated)",
+   "answers": {
+    "clean": "statement 1",
+    "edited": "statement 1",
+    "expected": {
+     "H-readable": "statement 1",
+     "H-hardly-readable": "any of 5"
+    }
+   },
+   "numbers": {
+    "answered_right": true
+   },
+   "why": "the classifier names the asked statement"
+  },
+  {
+   "group": "read_wrong",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0001",
+   "prompt": "<|im_start|>user\nThe cow's locker is 9. The dog's locker is 1. The goose's locker is 7. The spider's locker is 6. The pig's locker is 5.\nWhich locker belongs to the animal known for mooing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 39,
+     "role": "asked statement"
+    },
+    {
+     "start": 88,
+     "end": 113,
+     "role": "statement read"
+    },
+    {
+     "start": 189,
+     "end": 292,
+     "role": "tokens read"
+    }
+   ],
+   "condition": "no edit; nearest statement mean at layer 48 (cross-validated)",
+   "answers": {
+    "clean": "statement 1",
+    "edited": "statement 4",
+    "expected": {
+     "H-readable": "statement 1",
+     "H-hardly-readable": "any of 5"
+    }
+   },
+   "numbers": {
+    "answered_right": true
+   },
+   "why": "it names another statement"
+  },
+  {
+   "group": "read_wrong",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0002",
+   "prompt": "<|im_start|>user\nThe cat's locker is 5. The duck's locker is 3. The mouse's locker is 7. The bee's locker is 1. The lion's locker is 9.\nWhich locker belongs to the animal known for purring? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 39,
+     "role": "asked statement"
+    },
+    {
+     "start": 64,
+     "end": 88,
+     "role": "statement read"
+    },
+    {
+     "start": 189,
+     "end": 292,
+     "role": "tokens read"
+    }
+   ],
+   "condition": "no edit; nearest statement mean at layer 48 (cross-validated)",
+   "answers": {
+    "clean": "statement 1",
+    "edited": "statement 3",
+    "expected": {
+     "H-readable": "statement 1",
+     "H-hardly-readable": "any of 5"
+    }
+   },
+   "numbers": {
+    "answered_right": true
+   },
+   "why": "it names another statement"
+  },
+  {
+   "group": "read_wrong",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0003",
+   "prompt": "<|im_start|>user\nThe frog's locker is 3. The duck's locker is 9. The horse's locker is 6. The cow's locker is 7. The spider's locker is 1.\nWhich locker belongs to the animal known for spinning webs? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 113,
+     "end": 138,
+     "role": "asked statement"
+    },
+    {
+     "start": 90,
+     "end": 112,
+     "role": "statement read"
+    },
+    {
+     "start": 198,
+     "end": 301,
+     "role": "tokens read"
+    }
+   ],
+   "condition": "no edit; nearest statement mean at layer 48 (cross-validated)",
+   "answers": {
+    "clean": "statement 5",
+    "edited": "statement 4",
+    "expected": {
+     "H-readable": "statement 5",
+     "H-hardly-readable": "any of 5"
+    }
+   },
+   "numbers": {
+    "answered_right": true
+   },
+   "why": "it names another statement"
+  }
+ ]
+}
