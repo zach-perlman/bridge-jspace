@@ -79,7 +79,23 @@
         "strength": 0.4,
         "gated_cells": 230,
         "n": 60
-      }
+      },
+      "ceiling_copy": {
+        "flips": 0.8166666666666667,
+        "ci": [
+          0.7301587301587301,
+          0.9090909090909091
+        ],
+        "write": "copy",
+        "pos": "question",
+        "layer": "40",
+        "strength": 1.0,
+        "gated_cells": 14,
+        "n": 60
+      },
+      "cv_own_direction": 0.9632603723609091,
+      "cv_transplant": 0.9611365690087506,
+      "cv_dom": 0.7216484747386908
     },
     "BL": {
       "own_direction": {
@@ -159,7 +175,23 @@
         "strength": 1.0,
         "gated_cells": 234,
         "n": 60
-      }
+      },
+      "ceiling_copy": {
+        "flips": 0.13333333333333333,
+        "ci": [
+          0.06779661016949153,
+          0.19402985074626866
+        ],
+        "write": "copy",
+        "pos": "question",
+        "layer": "32",
+        "strength": 1.0,
+        "gated_cells": 14,
+        "n": 60
+      },
+      "cv_own_direction": 0.015950351053687705,
+      "cv_transplant": 0.41756725470876277,
+      "cv_dom": 0.5339418401455637
     },
     "BR": {
       "own_direction": {
@@ -239,7 +271,23 @@
         "strength": 0.4,
         "gated_cells": 233,
         "n": 60
-      }
+      },
+      "ceiling_copy": {
+        "flips": 0.4666666666666667,
+        "ci": [
+          0.27419354838709675,
+          0.6333333333333333
+        ],
+        "write": "copy",
+        "pos": "final",
+        "layer": "40",
+        "strength": 1.0,
+        "gated_cells": 14,
+        "n": 60
+      },
+      "cv_own_direction": 0.5327588599831392,
+      "cv_transplant": 0.6405449180359657,
+      "cv_dom": 0.983479291883446
     },
     "R": {
       "own_direction": {
@@ -319,7 +367,23 @@
         "strength": 0.4,
         "gated_cells": 223,
         "n": 60
-      }
+      },
+      "ceiling_copy": {
+        "flips": 0.9333333333333333,
+        "ci": [
+          0.8493150684931506,
+          1.0
+        ],
+        "write": "copy",
+        "pos": "question",
+        "layer": "40",
+        "strength": 1.0,
+        "gated_cells": 14,
+        "n": 60
+      },
+      "cv_own_direction": 0.9136445217507112,
+      "cv_transplant": 0.9834657421989902,
+      "cv_dom": 0.7991159118083445
     },
     "RL": {
       "own_direction": {
@@ -399,7 +463,23 @@
         "strength": 1.0,
         "gated_cells": 235,
         "n": 60
-      }
+      },
+      "ceiling_copy": {
+        "flips": 0.6666666666666666,
+        "ci": [
+          0.509090909090909,
+          0.7916666666666666
+        ],
+        "write": "copy",
+        "pos": "question",
+        "layer": "40",
+        "strength": 1.0,
+        "gated_cells": 14,
+        "n": 60
+      },
+      "cv_own_direction": 0.047774203522996404,
+      "cv_transplant": 0.6874486631535487,
+      "cv_dom": 0.34052694229618097
     },
     "RR": {
       "own_direction": {
@@ -479,7 +559,23 @@
         "strength": 0.4,
         "gated_cells": 233,
         "n": 60
-      }
+      },
+      "ceiling_copy": {
+        "flips": 0.6166666666666667,
+        "ci": [
+          0.4,
+          0.7868852459016393
+        ],
+        "write": "copy",
+        "pos": "final",
+        "layer": "38",
+        "strength": 1.0,
+        "gated_cells": 14,
+        "n": 60
+      },
+      "cv_own_direction": 0.5716912135056266,
+      "cv_transplant": 0.5155209852370666,
+      "cv_dom": 0.897895141413244
     }
   },
   "cases_dropped": 0,
@@ -493,6 +589,18 @@
     "ci_ok": true,
     "C2_graded_holds": true
   },
+  "rule_relative": {
+    "ceiling": {
+      "RL": 0.6666666666666666,
+      "RR": 0.6166666666666667
+    },
+    "relative": {
+      "RL": 0.07166130528449462,
+      "RR": 0.9270668327118269
+    },
+    "valid": true,
+    "verdict": "HOLDS"
+  },
   "positive_control": {
     "best": {
       "R": 1,
@@ -501,5 +609,5 @@
     },
     "passes": true
   },
-  "commit": "66d573bba98256956846cfb4725905d6c37b2980"
+  "commit": "624cf82e13ac9f79829af08fa3e573b3a33383a5"
 }

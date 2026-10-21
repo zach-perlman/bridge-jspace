@@ -79,7 +79,23 @@
         "strength": 0.8,
         "gated_cells": 150,
         "n": 40
-      }
+      },
+      "ceiling_copy": {
+        "flips": 0.15,
+        "ci": [
+          0.046511627906976744,
+          0.2631578947368421
+        ],
+        "write": "copy",
+        "pos": "final",
+        "layer": "40",
+        "strength": 1.0,
+        "gated_cells": 14,
+        "n": 40
+      },
+      "cv_own_direction": 0.12650044052674117,
+      "cv_transplant": 0.1398964955450317,
+      "cv_dom": 0.3376072722641995
     },
     "CP": {
       "own_direction": {
@@ -159,7 +175,23 @@
         "strength": 2.0,
         "gated_cells": 158,
         "n": 40
-      }
+      },
+      "ceiling_copy": {
+        "flips": 0.025,
+        "ci": [
+          0.0,
+          0.07692307692307693
+        ],
+        "write": "copy",
+        "pos": "final",
+        "layer": "40",
+        "strength": 1.0,
+        "gated_cells": 14,
+        "n": 40
+      },
+      "cv_own_direction": 0.0,
+      "cv_transplant": 0.0,
+      "cv_dom": 0.08627063652721548
     },
     "MM": {
       "own_direction": {
@@ -239,7 +271,23 @@
         "strength": 1.0,
         "gated_cells": 153,
         "n": 40
-      }
+      },
+      "ceiling_copy": {
+        "flips": 0.325,
+        "ci": [
+          0.15217391304347827,
+          0.5641025641025641
+        ],
+        "write": "copy",
+        "pos": "final",
+        "layer": "40",
+        "strength": 1.0,
+        "gated_cells": 14,
+        "n": 40
+      },
+      "cv_own_direction": 0.3133150228327686,
+      "cv_transplant": 0.4710418540625431,
+      "cv_dom": 0.15022457367194209
     },
     "MP": {
       "own_direction": {
@@ -319,7 +367,23 @@
         "strength": 0.1,
         "gated_cells": 155,
         "n": 40
-      }
+      },
+      "ceiling_copy": {
+        "flips": 0.35,
+        "ci": [
+          0.20689655172413793,
+          0.5357142857142857
+        ],
+        "write": "copy",
+        "pos": "question",
+        "layer": "40",
+        "strength": 1.0,
+        "gated_cells": 14,
+        "n": 40
+      },
+      "cv_own_direction": 0.2323196250824915,
+      "cv_transplant": 0.256548056653324,
+      "cv_dom": 0.18644232506829256
     },
     "PM": {
       "own_direction": {
@@ -399,7 +463,23 @@
         "strength": 0.8,
         "gated_cells": 151,
         "n": 40
-      }
+      },
+      "ceiling_copy": {
+        "flips": 0.225,
+        "ci": [
+          0.11764705882352941,
+          0.3333333333333333
+        ],
+        "write": "copy",
+        "pos": "question",
+        "layer": "40",
+        "strength": 1.0,
+        "gated_cells": 14,
+        "n": 40
+      },
+      "cv_own_direction": 0.12064786541232059,
+      "cv_transplant": 0.058426080787005875,
+      "cv_dom": 0.14212159995577178
     },
     "PP": {
       "own_direction": {
@@ -479,7 +559,23 @@
         "strength": 2.0,
         "gated_cells": 157,
         "n": 40
-      }
+      },
+      "ceiling_copy": {
+        "flips": 0.125,
+        "ci": [
+          0.047619047619047616,
+          0.2
+        ],
+        "write": "copy",
+        "pos": "question",
+        "layer": "40",
+        "strength": 1.0,
+        "gated_cells": 14,
+        "n": 40
+      },
+      "cv_own_direction": 0.0,
+      "cv_transplant": 0.3370117847285602,
+      "cv_dom": 0.041957774337805294
     }
   },
   "cases_dropped": 0,
@@ -493,11 +589,23 @@
     "ci_ok": false,
     "C2_graded_holds": false
   },
+  "rule_relative": {
+    "ceiling": {
+      "MP": 0.35,
+      "MM": 0.325
+    },
+    "relative": {
+      "MP": 0.6637703573785472,
+      "MM": 0.9640462241008263
+    },
+    "valid": false,
+    "verdict": "inconclusive: sites carry the bridge only partly"
+  },
   "positive_control": {
     "best": {
       "MM": 0.475
     },
     "passes": false
   },
-  "commit": "3693abacf06df24131ea868efa5ec83459f9e130"
+  "commit": "624cf82e13ac9f79829af08fa3e573b3a33383a5"
 }

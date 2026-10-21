@@ -98,7 +98,10 @@ def tasks_cases(tok, n: int, set_name: str, comp_run: str, words: list[str], lev
         scenes[it["scene"]].append(it)
     out, got, dropped = [], collections.Counter(), 0
     for its in scenes.values():
-        if any(got[it["word"]] >= n for it in its):
+        its = [
+            it for it in its if got[it["word"]] < n
+        ]  # 2026-10-21: words still short (a full word no longer skips its scene)
+        if not its:
             continue
         try:
             prepped = [{**it, **T.prepare(it, tok)} for it in its]

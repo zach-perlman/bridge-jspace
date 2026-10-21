@@ -3,6 +3,9 @@ first tasks_v2 knock-out ran. Tests: the full v8 set (full_v8: all 12 words, 7 d
 everywhere"): 27B full_ko_v1, Gemma gemma4itf_full_ko_v1. (tasks_ko_v1 on ctrl_v8 was stopped for it, its partial rows
 never opened.) The rule uses the core stratum's P->P, M->P, P->M, M->M; every other word (computed starts, three-step,
 the planets three-step stratum) is reported alongside.
+Second kill test (the sprint plan's; fixed 2026-10-21 before its data, decided with Zach): if paper10_keepown (paper10
+with the bridge's own-word directions also protected) restores >= 75% of the memory-final words' loss at the middle
+band, with paper10_keepown_rot within 10 points of unedited, the recall damage is the subject's word: C1 is killed.
 
 Claim (C1-graded): memory steps need the J-space, prompt lookups much less. Rule, on the whole question (kind "clean")
 under paper10 (the top-10 lens directions projected out at every position, the clean top-10 answer tokens kept) at the
@@ -169,6 +172,32 @@ def main(run: str, middle: str, set_name: str, drop_guessable: bool = False) -> 
         and all(a_of(b, "paper10_rot", w) >= STRICT_CONTROL for b in bands for w in words))  # fmt: skip
     out["rule"] = {"loss": loss, "control_distance": ctrl, "gap": gap, "controls_ok": controls_ok, "C1_graded_holds": holds,
                    "strict_C1_holds": strict}  # fmt: skip
+    if any(
+        r["condition"] == "paper10_keepown" for r in rows
+    ):  # C1's second kill test (fixed 2026-10-21, before its data)
+        kk: dict = {}
+        for w in [w for w in MEMORY_FINAL if w in words]:
+            base, ko, keep = (
+                unedited(w),
+                acc(pick(middle, "paper10", word=w)),
+                acc(pick(middle, "paper10_keepown", word=w)),
+            )
+            krot = acc(pick(middle, "paper10_keepown_rot", word=w))
+            kk[w] = {"unedited": base, "paper10": ko, "keepown": keep, "keepown_rot": krot,
+                     "restored": None if ko is None or keep is None or base - ko <= 0 else (keep - ko) / (base - ko)}  # fmt: skip
+        res_ = [v["restored"] for v in kk.values() if v["restored"] is not None]
+        restored = statistics.mean(res_) if res_ else None
+        ctrl_ok = all(
+            v["keepown_rot"] is not None and abs(v["unedited"] - v["keepown_rot"]) <= CONTROL_WITHIN
+            for v in kk.values()
+        )
+        out["keepown"] = {"per_word": kk, "restored": restored, "control_ok": ctrl_ok,
+                          "kills_C1": bool(restored is not None and restored >= 0.75 and ctrl_ok)}  # fmt: skip
+        lines += ["", f"Keep-own-word kill test at {middle} (memory-final words): " + ", ".join(
+            f"{NAMES[w]} unedited {100 * v['unedited']:.0f} / paper10 {100 * (v['paper10'] or 0):.0f} / keep-own "
+            f"{100 * (v['keepown'] or 0):.0f} (its control {100 * (v['keepown_rot'] or 0):.0f})" for w, v in kk.items())
+            + f"; restored {'-' if restored is None else f'{100 * restored:.0f}%'} of the damage (>= 75% kills C1); control "
+            f"within 10: {'yes' if ctrl_ok else 'no'} -> {'C1 KILLED (the damage is the subject word)' if out['keepown']['kills_C1'] else 'C1 survives'}"]  # fmt: skip
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     out["commit"] = commit
     lines += [f"Rule at {middle}: losses " + ", ".join(f"{NAMES[w]} {100 * v:.0f}" for w, v in loss.items())

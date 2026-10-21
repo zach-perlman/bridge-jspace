@@ -1,4 +1,4 @@
-# C2-graded / wm2_full2_v1 (rule fixed in scripts/c2_graded.py; this output from commit 3693aba)
+# C2-graded / wm2_full2_v1 (rule fixed in scripts/c2_graded.py; this output from commit 624cf82)
 
 Best gated flips to C's answer % [95% CI over bridge entities] (write, positions, layer, strength).
 
@@ -12,4 +12,17 @@ Best gated flips to C's answer % [95% CI over bridge entities] (write, positions
 | P->P | 2 [0-8] (lens_add, question, 30, 0.8) | 0 [0-0] (lens_add, final, 28, 0.05) | 35 [20-52] (lens_transpl, question, joint, 2) | 0 [0-0] (lens_transpl, question, 28, 1) | 12 [3-23] (dom_add, final, 36, 0.8) | 35 [20-52] (lens_transpl, question, joint, 2) |
 
 Rule: M->M best 45% vs M->P best 30%: >= 3x no, >= +30 points no, intervals apart no -> C2-graded FAILS
+
+Ceiling and cross-validated estimates (best cell chosen on half the bridge entities, scored on the other half):
+
+| family | copy ceiling, question/final | own direction (CV) | relative to ceiling | transplant (CV) | dom (CV) |
+|---|---|---|---|---|---|
+| CM | 15 | 13 | 84 | 14 | 34 |
+| CP | 2 | 0 | 0 | 0 | 9 |
+| M->M | 32 | 31 | 96 | 47 | 15 |
+| M->P | 35 | 23 | 66 | 26 | 19 |
+| P->M | 22 | 12 | 54 | 6 | 14 |
+| P->P | 12 | 0 | 0 | 34 | 4 |
+
+C2-relative: ceilings {"MP": 0.35, "MM": 0.33}, relative {"MP": 0.66, "MM": 0.96} -> inconclusive: sites carry the bridge only partly
 Positive control (binding for Gemma only): {"MM": 0.47} -> FAILS

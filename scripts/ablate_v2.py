@@ -9,7 +9,9 @@ Plans (--plan):
   depth     contiguous 3-layer bands sliding by 2 over layers 0 to n-2, and every one of those layers at once
   bands     the bands given with --bands, e.g. "32,36,40" "16-28"
 Conditions (--conditions): omp25, omp25_rot, omp25_rdict, paper10, paper10_rot, paper10_rdict, keep_own, skip_subject,
-  gauss (v1's Gaussian dictionary). Prompt kinds (--kinds): clean (the whole question), hop (the last step alone, as
+  gauss (v1's Gaussian dictionary); 2026-10-21 (C1's second kill test, decided with Zach): paper10_keepown and
+  paper10_keepown_rot, paper10 with the bridge's own-word directions (its surface tokens and every dictionary row with
+  cosine >= OWN_COS to its concept token, as keep_own) also protected. Prompt kinds (--kinds): clean (the whole question), hop (the last step alone, as
   v1), step1/step2/step3 (each step alone). Reported per band x family/kind x condition: accuracy (top token = the
   answer's first token) and the mean change in the answer token's log-probability from the unedited run.
 
@@ -376,7 +378,10 @@ def main(args) -> None:
                 for cond in conditions_for(band, args.conditions):
                     edits = {}
                     for la in band:
-                        if top_k(cond) is not None:
+                        if top_k(cond) is not None and "keepown" in cond:  # C1's kill test under paper10 (2026-10-21)
+                            rs = [RowSettings(skip=p["outside"], protected=torch.cat([protected[i], own_rows(p["bridge"], la)])
+                                              if p["bridge"] else protected[i]) for i, p in enumerate(chunk)]  # fmt: skip
+                        elif top_k(cond) is not None:
                             rs = [RowSettings(skip=p["outside"], protected=protected[i]) for i, p in enumerate(chunk)]
                         elif cond == "keep_own":
                             rs = [RowSettings(skip=p["outside"], banned=own_rows(p["bridge"], la) if p["bridge"] else None)

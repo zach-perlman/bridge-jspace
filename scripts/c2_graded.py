@@ -16,6 +16,15 @@ everywhere") is the primary one (wm2_ctrl_all_v1 on ctrl_v8 was stopped for it b
 (ctrl_v8, level 3) is reported. Other words than M->P / M->M are reported alongside. A Gemma run counts only if its positive control passes: countries recalled (R), countries given (B) and M->M
 (RR) each reach >= 50% best gated flips with some lens write (lens_add, lens_swap or lens_transpl, any position set).
 
+C2-relative (Zach, 2026-10-21, decided with Zach after the overnight runs showed the copy at the question / final
+positions moves only part of the answers, and that the best of ~100 cells is inflated; fixed before the reruns and any
+Gemma steering): ceiling = a family's best copy flip rate at the question / final positions (single layer or every band
+layer at once); written = the own lens direction's (lens_add, lens_swap) best gated cell chosen on a random half of the
+bridge entities and scored on the other half (mean over 200 halvings); relative = written / ceiling (at most 1). Valid
+only if M->P's and M->M's ceilings are both >= 0.5 (else "inconclusive: these sites carry the bridge only partly");
+C2-relative holds if M->M's relative >= 0.5 and >= 3 x M->P's. --fresh-vs RUN scores only the cases RUN did not use: the
+clean test on the 27B, whose rule was designed after seeing wm2_full2_v1 (written to RUN_fresh.md and .json).
+
 python scripts/c2_graded.py RUN [RUN ...] [--drop-guessable]   (writes results/write_max/c2_graded/RUN.md and .json)
 --drop-guessable (Zach, 2026-10-21; a robustness split, not the rule's test): the same scoring without the cases the
 model answers right from the guess prompt (tasks_v2 runs only); writes RUN_noguess.md and .json.
@@ -26,6 +35,7 @@ from __future__ import annotations
 import argparse
 import collections
 import json
+import random
 import statistics
 import subprocess
 import sys
@@ -41,7 +51,7 @@ PAIRS = {"suite": ("RL", "RR"), "tasks": ("MP", "MM")}
 SECONDARY = {"suite": ("BL", "BR"), "tasks": ("PP", "PM")}
 OWN = ("lens_add", "lens_swap")
 SITES = ("question", "final")
-RATIO, GAP, POSITIVE = 3.0, 0.30, 0.50
+RATIO, GAP, POSITIVE, CEILING = 3.0, 0.30, 0.50, 0.50
 NAMES = {"BL": "P->P", "BR": "P->M", "RL": "M->P", "RR": "M->M", "PP": "P->P", "PM": "P->M", "MP": "M->P", "MM": "M->M",
          "R": "countries, recalled", "B": "countries, given"}  # fmt: skip
 
@@ -76,6 +86,34 @@ def analyse(run: str, drop: set[str] | None = None) -> dict:
         return {"flips": flips, "ci": entity_ci([(o["bridge"], o["role"] == "b") for o in os_]), "write": w, "pos": pos,
                 "layer": la, "strength": s, "gated_cells": len(cand), "n": len(os_)}  # fmt: skip
 
+    def cv_best(fam: str, writes: tuple, sites: tuple, halvings: int = 200, seed: int = 0) -> float | None:
+        """The best gated cell chosen on a random half of the bridge entities, scored on the other half (mean)."""
+        gated = {}
+        for (f, w, pos, la, s, control), os_ in cells.items():
+            if f != fam or w not in writes or pos not in sites or control:
+                continue
+            ctrl = cells.get((f, w, pos, la, s, True))
+            if ctrl and statistics.mean(o["role"] == "A" for o in ctrl) >= KEEP_GATE:
+                by: dict = collections.defaultdict(list)
+                for o in os_:
+                    by[o["bridge"]].append(o["role"] == "b")
+                gated[(w, pos, la, s)] = by
+        if not gated:
+            return None
+        ents = sorted({e for by in gated.values() for e in by})
+        rng, scores = random.Random(seed), []
+
+        def rate(by: dict, half: set) -> float:
+            x = [v for e, vs in by.items() if e in half for v in vs]
+            return sum(x) / len(x) if x else 0.0
+
+        for _ in range(halvings):
+            rng.shuffle(ents)
+            a, b = set(ents[: len(ents) // 2]), set(ents[len(ents) // 2 :])
+            pick = max(gated, key=lambda k: rate(gated[k], a))
+            scores.append(rate(gated[pick], b))
+        return statistics.mean(scores)
+
     fams = {r["family"] for r in rows}
     kind = "tasks" if "MP" in fams else "suite"
     mp, mm = PAIRS[kind]
@@ -88,6 +126,10 @@ def analyse(run: str, drop: set[str] | None = None) -> dict:
             "own_final_only": best(fam, OWN, ("final",)),
             "transplant_1x": best(fam, ("lens_transpl",), SITES, (1.0,)),
             "any_lens_any_site": best(fam, ("lens_add", "lens_swap", "lens_transpl"), ("question", "final", "all")),
+            "ceiling_copy": best(fam, ("copy",), SITES),
+            "cv_own_direction": cv_best(fam, OWN, SITES),
+            "cv_transplant": cv_best(fam, ("lens_transpl",), SITES),
+            "cv_dom": cv_best(fam, ("dom_add", "dom_natural"), SITES),
         }
     if mp in fams and mm in fams:
         a, b = out["families"][mp]["own_direction"], out["families"][mm]["own_direction"]
@@ -98,6 +140,18 @@ def analyse(run: str, drop: set[str] | None = None) -> dict:
         out["rule"]["C2_graded_holds"] = out["rule"]["ratio_ok"] and out["rule"]["gap_ok"] and ci_ok
     else:  # a positive-control run (countries and M->M only): no rule
         out["rule"] = None
+    if mp in fams and mm in fams:  # C2-relative
+        ceil = {f: (out["families"][f]["ceiling_copy"] or {}).get("flips", 0.0) for f in (mp, mm)}
+        rel = {
+            f: min(1.0, (out["families"][f]["cv_own_direction"] or 0.0) / ceil[f]) if ceil[f] else None
+            for f in (mp, mm)
+        }
+        valid = all(v >= CEILING for v in ceil.values())
+        holds = valid and rel[mm] >= 0.5 and rel[mm] >= RATIO * rel[mp]
+        out["rule_relative"] = {"ceiling": ceil, "relative": rel, "valid": valid,
+                                "verdict": "HOLDS" if holds else "FAILS" if valid else "inconclusive: sites carry the bridge only partly"}  # fmt: skip
+    else:
+        out["rule_relative"] = None
     pc = {f: (out["families"][f]["any_lens_any_site"] or {}).get("flips", 0.0) for f in ("R", "B", mm) if f in fams}
     out["positive_control"] = {"best": pc, "passes": bool(pc) and all(v >= POSITIVE for v in pc.values())}
     return out
@@ -131,6 +185,19 @@ def show(res: dict, commit: str) -> str:
             f"-> C2-graded {'HOLDS' if r['C2_graded_holds'] else 'FAILS'}"
         ]
     )
+    lines += ["", "Ceiling and cross-validated estimates (best cell chosen on half the bridge entities, scored on the other half):", "",
+              "| family | copy ceiling, question/final | own direction (CV) | relative to ceiling | transplant (CV) | dom (CV) |",
+              "|---|---|---|---|---|---|"]  # fmt: skip
+    for fam, d in res["families"].items():
+        c = (d.get("ceiling_copy") or {}).get("flips")
+        cv = d.get("cv_own_direction")
+        f = lambda v: "-" if v is None else f"{100 * v:.0f}"  # noqa: E731
+        lines.append(f"| {NAMES.get(fam, fam)} | {f(c)} | {f(cv)} | {f(min(1.0, cv / c) if c and cv is not None else None)} | "
+                     f"{f(d.get('cv_transplant'))} | {f(d.get('cv_dom'))} |")  # fmt: skip
+    rr = res.get("rule_relative")
+    if rr:
+        lines += ["", f"C2-relative: ceilings {json.dumps({k: round(v, 2) for k, v in rr['ceiling'].items()})}, relative "
+                      f"{json.dumps({k: None if v is None else round(v, 2) for k, v in rr['relative'].items()})} -> {rr['verdict']}"]  # fmt: skip
     lines += [f"Positive control (binding for Gemma only): {json.dumps({k: round(v, 2) for k, v in res['positive_control']['best'].items()})}"
               f" -> {'passes' if res['positive_control']['passes'] else 'FAILS'}"]  # fmt: skip
     return "\n".join(lines) + "\n"
@@ -140,12 +207,16 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("runs", nargs="+")
     ap.add_argument("--drop-guessable", action="store_true")
+    ap.add_argument("--fresh-vs", default=None, help="score only the cases this earlier run did not use")
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     out_dir = RESULTS / "c2_graded"
     out_dir.mkdir(exist_ok=True)
     a = ap.parse_args()
     for run in a.runs:
         drop, suffix = None, ""
+        if a.fresh_vs:  # only cases the earlier run did not use
+            drop = {json.loads(x)["name"] for x in (RESULTS / a.fresh_vs / "outcomes.jsonl").read_text().splitlines()}
+            suffix = "_fresh"
         if a.drop_guessable:
             tasks = json.loads((RESULTS / run / "manifest.json").read_text()).get("tasks") or [None, None]
             if not tasks[1]:
@@ -156,7 +227,11 @@ if __name__ == "__main__":
         res["commit"] = commit
         (out_dir / f"{run}{suffix}.json").write_text(json.dumps(res, indent=2) + "\n")
         text = show(res, commit)
-        if drop is not None:
+        if suffix == "_fresh":
+            text = text.replace(
+                "# C2-graded / ", f"# C2-graded, FRESH cases only ({res['cases_dropped']} seen ones dropped) / ", 1
+            )
+        elif drop is not None:
             text = text.replace(
                 "# C2-graded / ",
                 f"# C2-graded WITHOUT guessable cases ({res['cases_dropped']} dropped; robustness split) / ",

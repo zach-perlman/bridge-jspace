@@ -10,7 +10,8 @@ reading position only), all (every position); layers: every --single-step-th lay
 default: where memory-final families break under the depth sweep), and every layer of the band at once ("joint").
 Writes (each at every site, each with a matched-norm random control: every row replaced by a random direction of the
 same norm):
-  copy         C's whole residual difference (lens-free positive control: can this site move the answer at all?)
+  copy         C's whole residual difference (lens-free positive control: can this site move the answer at all?);
+               2026-10-21: also at every band layer at once at the question / final positions (the ceiling)
   lens_add     alpha x |h| x unit(v_X - v_I), alpha in ALPHAS (v = unit J-lens vectors)
   lens_swap    swap the residual's least-squares coefficients on v_I and v_X, times SWAPS
   lens_transpl the J-space part of C's residual in place of the clean one's (25-atom OMP over the lens dictionary)
@@ -211,9 +212,14 @@ def main(args) -> None:
                 vi, vx = vecs[la][0], vecs[la][1]
                 norm = hc.norm(dim=-1, keepdim=True)
                 tags = {"pos": pset}
-                if la in singles:  # copy: single layers only (its joint version is C's whole run)
+                if la in singles:  # copy at single layers (at "all" positions this is C's whole run from there)
                     jobs.append(({**tags, "write": "copy", "strength": 1.0, "control": False, "layer": la},
                                  {la: AddRows(hx - hc, pos)}))  # fmt: skip
+                if (
+                    pset != "all"
+                ):  # 2026-10-21 (Zach): the copy at every band layer at once, the ceiling for joint writes
+                    key = tuple(sorted({**tags, "write": "copy", "strength": 1.0, "control": False}.items()))
+                    joint[key][la] = AddRows(hx - hc, pos)
                 lens_dir = torch.nn.functional.normalize(vx - vi, dim=-1)
                 for a in ALPHAS:
                     add({**tags, "write": "lens_add", "strength": a}, la, pos, a * norm * lens_dir)
