@@ -1,0 +1,65 @@
+id: alias_competence_27b
+title: 'D3 alias gate: can the 27B look up statements written in French/Spanish/German or with the chemical symbol?'
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.45
+depends_on: []
+command: >-
+  uv run python scripts/alias_pointer_v1.py manifest --set main dev --name alias_competence_27b --limit 200
+  --why "D3 alias gate: can the 27B look up a statement that names the entity in French/Spanish/German (animals) or by
+  its chemical symbol (elements), on the same scenes as statements in English, every alt and control prompt and each
+  step alone?"
+  && uv run python scripts/alias_pointer_v1.py competence --name alias_competence_27b
+examples_command: uv run python scripts/alias_pointer_v1.py examples --name alias_competence_27b
+figures_command: uv run python scripts/alias_pointer_v1.py figures --name alias_competence_27b
+question: >-
+  On alias_pointer_v1 (pointer_v1's scenes; the statements in English, or naming the entity in French/Spanish/German
+  for animals and by the chemical symbol for elements; the question always English), does Qwen3.6-27B answer the org
+  prompt, the alt prompt, the two control prompts and each step alone (cue -> entity; the lookup with the entity named
+  or the recalled fact; the other form -> English name) for memory → prompt, named → prompt and memory → memory?
+why_it_matters: >-
+  Gate for the alias patching run (pointer_swap on data/alias_pointer_v1). In pointer_v1 every statement repeats the
+  word the model recalls ("cow"), so matching by that word and matching by meaning look the same. D3's first night
+  (UNVERIFIED) found that after the question, at layers 44-50, memory → prompt carries the statement slot more often
+  than the entity (29% vs 9%). If the 27B can look up statements that do not contain the recalled word, the same patch
+  on this data asks whether that slot pointer (and the smaller entity share) survives when the statement is in another
+  language or uses a symbol: answer of bridge alt's statement with French/Spanish/German statements => the lookup
+  matches by meaning, not by the token the J-lens reads; answer at the same statement slot in every form => a
+  positional pointer that ignores the surface form; entity share only with English statements => a lexical key. A
+  failed gate for memory → prompt with named → prompt passing is itself a result: a recalled bridge cannot find a
+  statement that does not repeat its word.
+hypotheses:
+  H-meaning: 'statements in French/Spanish/German: named → prompt >= 95% and memory → prompt >= 90% (org prompt), each
+    within 5 points of statements in English on the same scenes; the other form -> English name step >= 95%'
+  H-symbol: 'statements with the chemical symbol: named → prompt >= 90%, memory → prompt >= 85% (pointer_v1 elements,
+    memory → prompt in English: 94% [88, 97])'
+  H-lexical-crutch: 'memory → prompt with another form < 80% while named → prompt with it >= 90% and memory → prompt in
+    English >= 95%'
+  H-alias-unknown: 'the other form -> English name step < 90% for some entities (porc, pollo; He read as a pronoun, C
+    or N as letters): those items drop out of the usable set; the gate can still pass'
+  prior: 'Agent prior (written before any run): H-meaning 0.6 (the suite''s translated-word family is answered by the
+    27B); H-symbol 0.5; H-lexical-crutch 0.25; H-alias-unknown 0.4. Statements in English: >= 95% in every animals
+    cell; elements as pointer_v1 (memory → prompt 94%).'
+decision_rule: 'Fixed before the run (scripts/alias_pointer_v1.py docstring, "Gate"). Per domain on main (first 200
+  scenes per file): the other form enters the patching run iff the org prompt''s Wilson 95% lower bound >= 0.80 in
+  both memory → prompt and named → prompt, the statements-in-English cells of that domain pass pointer_v1''s rule
+  (lower bound >= 0.85), and >= 35 scenes are usable (every prompt of every family right) in both forms. Usable per item
+  = every prompt right (org, alt, both controls, the steps alone). Report the answer read vs greedy agreement (must be
+  >= 99%) and the paired-by-scene counts (both right / English only / other form only / neither). Dev cells (3 and 5
+  statements, 60 scenes) are a pilot, never the gate.'
+controls:
+- 'statements in English on the same scenes (paired): separates the surface form from scene difficulty'
+- 'each step alone (cue -> entity; the lookup with the entity named or the recalled fact; the other form -> English
+  name): separates a composition failure from a missing translation or symbol'
+- 'memory → memory on the same contexts: it does not need the statements, so a drop there is damage from a foreign
+  context, not a lookup failure'
+- 'answer read vs 8-token greedy: validates the one-forward read the patching runs use'
+n: 'gate cuts (domain x form x family, main): 200 scenes each (>= 35); usable-scene count per (domain, form): up to 200;
+  dev cells: 60 each. 2400 main + 1440 dev items, 21760 prompts'
+seeds: [711, 712]
+notes: 'Greedy, no sampling seeds; item seeds are alias_pointer_v1''s (main 711, dev 712). Time from the measured rate
+  of d3_competence_27b (17920 prompts of the same shape: 545 s generate + 454 s read on this A100, 17.9 prompts/s):
+  21760 prompts ~ 1210 s + model load ~ 0.4 h; 0.45 h with margin. The 0.8B smoke (qwen35_08b_smoke_alias_comp2,
+  3 items per file, 612 prompts, 6 s) checks the code path only. Needs scripts/alias_pointer_v1.py and
+  data/alias_pointer_v1/ committed before enqueueing.'

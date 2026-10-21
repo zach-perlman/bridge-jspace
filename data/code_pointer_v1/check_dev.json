@@ -1,0 +1,1955 @@
+{
+ "pools": {
+  "animals": {
+   "keys": 12,
+   "cue_tokens": 2,
+   "recalled": {
+    "4": 9,
+    "2": 2,
+    "6": 1
+   }
+  },
+  "months": {
+   "keys": 7,
+   "cue_tokens": 5,
+   "recalled": {
+    "1": 1,
+    "2": 1,
+    "4": 1,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "9": 1
+   }
+  }
+ },
+ "files": {
+  "animals_DK_e3f0": {
+   "n": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "spans_text": 60,
+   "keys_single_token": 60,
+   "spans_decode": 60,
+   "executes": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "hard_promised": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "selector": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    64,
+    64.0,
+    64
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "ix_index": {},
+   "answers": {
+    "0": 9,
+    "1": 10,
+    "3": 5,
+    "5": 7,
+    "7": 10,
+    "8": 10,
+    "9": 9
+   },
+   "values": {
+    "0": 9,
+    "1": 5,
+    "3": 6,
+    "5": 10,
+    "7": 7,
+    "8": 14,
+    "9": 9
+   },
+   "policies": {
+    "soft": 60
+   },
+   "roles": {
+    "q_b": {
+     "bee": 15,
+     "owl": 10,
+     "duck": 9,
+     "mouse": 6,
+     "horse": 6,
+     "cat": 4,
+     "frog": 3,
+     "pig": 2,
+     "cow": 2,
+     "wolf": 1,
+     "dog": 1,
+     "lion": 1
+    },
+    "q_s": {
+     "bee": 12,
+     "duck": 8,
+     "owl": 7,
+     "pig": 6,
+     "wolf": 6,
+     "lion": 5,
+     "dog": 4,
+     "cow": 4,
+     "frog": 3,
+     "cat": 2,
+     "mouse": 2,
+     "horse": 1
+    },
+    "p": {
+     "bee": 33,
+     "duck": 14,
+     "owl": 12,
+     "dog": 1
+    }
+   }
+  },
+  "animals_IX_e3f0": {
+   "n": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "spans_text": 60,
+   "keys_single_token": 60,
+   "spans_decode": 60,
+   "executes": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "hard_promised": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "selector": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    78,
+    78.0,
+    78
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "ix_index": {
+    "0": 20,
+    "1": 20,
+    "2": 20
+   },
+   "answers": {
+    "0": 9,
+    "1": 10,
+    "3": 5,
+    "5": 7,
+    "7": 10,
+    "8": 10,
+    "9": 9
+   },
+   "values": {
+    "0": 9,
+    "1": 5,
+    "3": 6,
+    "5": 10,
+    "7": 7,
+    "8": 14,
+    "9": 9
+   },
+   "policies": {
+    "soft": 60
+   },
+   "roles": {
+    "q_b": {
+     "bee": 15,
+     "owl": 10,
+     "duck": 9,
+     "mouse": 6,
+     "horse": 6,
+     "cat": 4,
+     "frog": 3,
+     "pig": 2,
+     "cow": 2,
+     "wolf": 1,
+     "dog": 1,
+     "lion": 1
+    },
+    "q_s": {
+     "bee": 12,
+     "duck": 8,
+     "owl": 7,
+     "pig": 6,
+     "wolf": 6,
+     "lion": 5,
+     "dog": 4,
+     "cow": 4,
+     "frog": 3,
+     "cat": 2,
+     "mouse": 2,
+     "horse": 1
+    },
+    "p": {
+     "bee": 33,
+     "duck": 14,
+     "owl": 12,
+     "dog": 1
+    }
+   }
+  },
+  "animals_CH2_e3f0": {
+   "n": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "spans_text": 60,
+   "keys_single_token": 60,
+   "spans_decode": 60,
+   "executes": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "hard_promised": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "selector": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    83,
+    83.0,
+    83
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "ix_index": {},
+   "answers": {
+    "0": 9,
+    "1": 10,
+    "3": 5,
+    "5": 7,
+    "7": 10,
+    "8": 10,
+    "9": 9
+   },
+   "values": {
+    "0": 9,
+    "1": 5,
+    "3": 6,
+    "5": 10,
+    "7": 7,
+    "8": 14,
+    "9": 9
+   },
+   "policies": {
+    "soft": 60
+   },
+   "roles": {
+    "q_b": {
+     "bee": 15,
+     "owl": 10,
+     "duck": 9,
+     "mouse": 6,
+     "horse": 6,
+     "cat": 4,
+     "frog": 3,
+     "pig": 2,
+     "cow": 2,
+     "wolf": 1,
+     "dog": 1,
+     "lion": 1
+    },
+    "q_s": {
+     "bee": 12,
+     "duck": 8,
+     "owl": 7,
+     "pig": 6,
+     "wolf": 6,
+     "lion": 5,
+     "dog": 4,
+     "cow": 4,
+     "frog": 3,
+     "cat": 2,
+     "mouse": 2,
+     "horse": 1
+    },
+    "p": {
+     "bee": 33,
+     "duck": 14,
+     "owl": 12,
+     "dog": 1
+    }
+   }
+  },
+  "animals_CH3_e3f0": {
+   "n": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "spans_text": 60,
+   "keys_single_token": 60,
+   "spans_decode": 60,
+   "executes": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "hard_promised": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "selector": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    91,
+    91.0,
+    91
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "ix_index": {},
+   "answers": {
+    "0": 9,
+    "1": 10,
+    "3": 5,
+    "5": 7,
+    "7": 10,
+    "8": 10,
+    "9": 9
+   },
+   "values": {
+    "0": 9,
+    "1": 5,
+    "3": 6,
+    "5": 10,
+    "7": 7,
+    "8": 14,
+    "9": 9
+   },
+   "policies": {
+    "soft": 60
+   },
+   "roles": {
+    "q_b": {
+     "bee": 15,
+     "owl": 10,
+     "duck": 9,
+     "mouse": 6,
+     "horse": 6,
+     "cat": 4,
+     "frog": 3,
+     "pig": 2,
+     "cow": 2,
+     "wolf": 1,
+     "dog": 1,
+     "lion": 1
+    },
+    "q_s": {
+     "bee": 12,
+     "duck": 8,
+     "owl": 7,
+     "pig": 6,
+     "wolf": 6,
+     "lion": 5,
+     "dog": 4,
+     "cow": 4,
+     "frog": 3,
+     "cat": 2,
+     "mouse": 2,
+     "horse": 1
+    },
+    "p": {
+     "bee": 33,
+     "duck": 14,
+     "owl": 12,
+     "dog": 1
+    }
+   }
+  },
+  "animals_RK_e3f0": {
+   "n": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "spans_text": 60,
+   "keys_single_token": 60,
+   "spans_decode": 60,
+   "executes": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "hard_promised": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "selector": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    64,
+    64.0,
+    64
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "ix_index": {},
+   "answers": {
+    "0": 9,
+    "1": 10,
+    "3": 5,
+    "5": 7,
+    "7": 10,
+    "8": 10,
+    "9": 9
+   },
+   "values": {
+    "0": 9,
+    "1": 5,
+    "3": 6,
+    "5": 10,
+    "7": 7,
+    "8": 14,
+    "9": 9
+   },
+   "policies": {
+    "soft": 60
+   },
+   "roles": {
+    "q_b": {
+     "bee": 15,
+     "owl": 10,
+     "duck": 9,
+     "mouse": 6,
+     "horse": 6,
+     "cat": 4,
+     "frog": 3,
+     "pig": 2,
+     "cow": 2,
+     "wolf": 1,
+     "dog": 1,
+     "lion": 1
+    },
+    "q_s": {
+     "bee": 12,
+     "duck": 8,
+     "owl": 7,
+     "pig": 6,
+     "wolf": 6,
+     "lion": 5,
+     "dog": 4,
+     "cow": 4,
+     "frog": 3,
+     "cat": 2,
+     "mouse": 2,
+     "horse": 1
+    },
+    "p": {
+     "bee": 33,
+     "duck": 14,
+     "owl": 12,
+     "dog": 1
+    }
+   }
+  },
+  "animals_RR_e3f0": {
+   "n": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "spans_text": 60,
+   "keys_single_token": 60,
+   "spans_decode": 60,
+   "executes": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "hard_promised": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "selector": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    62,
+    62.0,
+    62
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "ix_index": {},
+   "answers": {
+    "2": 19,
+    "4": 26,
+    "6": 15
+   },
+   "values": {
+    "2": 15,
+    "4": 33,
+    "6": 12
+   },
+   "policies": {
+    "soft": 60
+   },
+   "roles": {
+    "q_b": {
+     "bee": 15,
+     "owl": 10,
+     "duck": 9,
+     "mouse": 6,
+     "horse": 6,
+     "cat": 4,
+     "frog": 3,
+     "pig": 2,
+     "cow": 2,
+     "wolf": 1,
+     "dog": 1,
+     "lion": 1
+    },
+    "q_s": {
+     "bee": 12,
+     "duck": 8,
+     "owl": 7,
+     "pig": 6,
+     "wolf": 6,
+     "lion": 5,
+     "dog": 4,
+     "cow": 4,
+     "frog": 3,
+     "cat": 2,
+     "mouse": 2,
+     "horse": 1
+    },
+    "p": {
+     "bee": 33,
+     "duck": 14,
+     "owl": 12,
+     "dog": 1
+    }
+   }
+  },
+  "months_DK_e3f0": {
+   "n": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "spans_text": 60,
+   "keys_single_token": 60,
+   "spans_decode": 60,
+   "executes": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "hard_promised": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "selector": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    64,
+    64.0,
+    64
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "ix_index": {},
+   "answers": {
+    "0": 7,
+    "1": 5,
+    "2": 3,
+    "3": 8,
+    "4": 5,
+    "5": 5,
+    "6": 4,
+    "7": 11,
+    "8": 6,
+    "9": 6
+   },
+   "values": {
+    "0": 7,
+    "1": 5,
+    "2": 4,
+    "3": 9,
+    "4": 3,
+    "5": 4,
+    "6": 9,
+    "7": 4,
+    "8": 12,
+    "9": 3
+   },
+   "policies": {
+    "soft": 60
+   },
+   "roles": {
+    "q_b": {
+     "May": 12,
+     "September": 9,
+     "January": 9,
+     "July": 9,
+     "April": 7,
+     "February": 7,
+     "June": 7
+    },
+    "q_s": {
+     "May": 11,
+     "January": 11,
+     "February": 9,
+     "July": 9,
+     "June": 8,
+     "September": 8,
+     "April": 4
+    },
+    "p": {
+     "July": 11,
+     "June": 11,
+     "February": 11,
+     "May": 8,
+     "January": 7,
+     "April": 6,
+     "September": 6
+    }
+   }
+  },
+  "months_IX_e3f0": {
+   "n": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "spans_text": 60,
+   "keys_single_token": 60,
+   "spans_decode": 60,
+   "executes": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "hard_promised": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "selector": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    78,
+    78.0,
+    78
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "ix_index": {
+    "0": 20,
+    "1": 20,
+    "2": 20
+   },
+   "answers": {
+    "0": 7,
+    "1": 5,
+    "2": 3,
+    "3": 8,
+    "4": 5,
+    "5": 5,
+    "6": 4,
+    "7": 11,
+    "8": 6,
+    "9": 6
+   },
+   "values": {
+    "0": 7,
+    "1": 5,
+    "2": 4,
+    "3": 9,
+    "4": 3,
+    "5": 4,
+    "6": 9,
+    "7": 4,
+    "8": 12,
+    "9": 3
+   },
+   "policies": {
+    "soft": 60
+   },
+   "roles": {
+    "q_b": {
+     "May": 12,
+     "September": 9,
+     "January": 9,
+     "July": 9,
+     "April": 7,
+     "February": 7,
+     "June": 7
+    },
+    "q_s": {
+     "May": 11,
+     "January": 11,
+     "February": 9,
+     "July": 9,
+     "June": 8,
+     "September": 8,
+     "April": 4
+    },
+    "p": {
+     "July": 11,
+     "June": 11,
+     "February": 11,
+     "May": 8,
+     "January": 7,
+     "April": 6,
+     "September": 6
+    }
+   }
+  },
+  "months_CH2_e3f0": {
+   "n": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "spans_text": 60,
+   "keys_single_token": 60,
+   "spans_decode": 60,
+   "executes": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "hard_promised": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "selector": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    83,
+    83.0,
+    83
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "ix_index": {},
+   "answers": {
+    "0": 7,
+    "1": 5,
+    "2": 3,
+    "3": 8,
+    "4": 5,
+    "5": 5,
+    "6": 4,
+    "7": 11,
+    "8": 6,
+    "9": 6
+   },
+   "values": {
+    "0": 7,
+    "1": 5,
+    "2": 4,
+    "3": 9,
+    "4": 3,
+    "5": 4,
+    "6": 9,
+    "7": 4,
+    "8": 12,
+    "9": 3
+   },
+   "policies": {
+    "soft": 60
+   },
+   "roles": {
+    "q_b": {
+     "May": 12,
+     "September": 9,
+     "January": 9,
+     "July": 9,
+     "April": 7,
+     "February": 7,
+     "June": 7
+    },
+    "q_s": {
+     "May": 11,
+     "January": 11,
+     "February": 9,
+     "July": 9,
+     "June": 8,
+     "September": 8,
+     "April": 4
+    },
+    "p": {
+     "July": 11,
+     "June": 11,
+     "February": 11,
+     "May": 8,
+     "January": 7,
+     "April": 6,
+     "September": 6
+    }
+   }
+  },
+  "months_CH3_e3f0": {
+   "n": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "spans_text": 60,
+   "keys_single_token": 60,
+   "spans_decode": 60,
+   "executes": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "hard_promised": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "selector": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    91,
+    91.0,
+    91
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "ix_index": {},
+   "answers": {
+    "0": 7,
+    "1": 5,
+    "2": 3,
+    "3": 8,
+    "4": 5,
+    "5": 5,
+    "6": 4,
+    "7": 11,
+    "8": 6,
+    "9": 6
+   },
+   "values": {
+    "0": 7,
+    "1": 5,
+    "2": 4,
+    "3": 9,
+    "4": 3,
+    "5": 4,
+    "6": 9,
+    "7": 4,
+    "8": 12,
+    "9": 3
+   },
+   "policies": {
+    "soft": 60
+   },
+   "roles": {
+    "q_b": {
+     "May": 12,
+     "September": 9,
+     "January": 9,
+     "July": 9,
+     "April": 7,
+     "February": 7,
+     "June": 7
+    },
+    "q_s": {
+     "May": 11,
+     "January": 11,
+     "February": 9,
+     "July": 9,
+     "June": 8,
+     "September": 8,
+     "April": 4
+    },
+    "p": {
+     "July": 11,
+     "June": 11,
+     "February": 11,
+     "May": 8,
+     "January": 7,
+     "April": 6,
+     "September": 6
+    }
+   }
+  },
+  "months_RK_e3f0": {
+   "n": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "spans_text": 60,
+   "keys_single_token": 60,
+   "spans_decode": 60,
+   "executes": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "hard_promised": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "selector": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    63,
+    63.0,
+    63
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "ix_index": {},
+   "answers": {
+    "0": 7,
+    "1": 5,
+    "2": 3,
+    "3": 8,
+    "4": 5,
+    "5": 5,
+    "6": 4,
+    "7": 11,
+    "8": 6,
+    "9": 6
+   },
+   "values": {
+    "0": 7,
+    "1": 5,
+    "2": 4,
+    "3": 9,
+    "4": 3,
+    "5": 4,
+    "6": 9,
+    "7": 4,
+    "8": 12,
+    "9": 3
+   },
+   "policies": {
+    "soft": 60
+   },
+   "roles": {
+    "q_b": {
+     "May": 12,
+     "September": 9,
+     "January": 9,
+     "July": 9,
+     "April": 7,
+     "February": 7,
+     "June": 7
+    },
+    "q_s": {
+     "May": 11,
+     "January": 11,
+     "February": 9,
+     "July": 9,
+     "June": 8,
+     "September": 8,
+     "April": 4
+    },
+    "p": {
+     "July": 11,
+     "June": 11,
+     "February": 11,
+     "May": 8,
+     "January": 7,
+     "April": 6,
+     "September": 6
+    }
+   }
+  },
+  "months_RR_e3f0": {
+   "n": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "spans_text": 60,
+   "keys_single_token": 60,
+   "spans_decode": 60,
+   "executes": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "hard_promised": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "selector": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    62,
+    62.0,
+    62
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "ix_index": {},
+   "answers": {
+    "1": 9,
+    "2": 7,
+    "4": 7,
+    "5": 12,
+    "6": 7,
+    "7": 9,
+    "9": 9
+   },
+   "values": {
+    "1": 11,
+    "2": 9,
+    "4": 4,
+    "5": 11,
+    "6": 8,
+    "7": 9,
+    "9": 8
+   },
+   "policies": {
+    "soft": 60
+   },
+   "roles": {
+    "q_b": {
+     "May": 12,
+     "September": 9,
+     "January": 9,
+     "July": 9,
+     "April": 7,
+     "February": 7,
+     "June": 7
+    },
+    "q_s": {
+     "May": 11,
+     "January": 11,
+     "February": 9,
+     "July": 9,
+     "June": 8,
+     "September": 8,
+     "April": 4
+    },
+    "p": {
+     "July": 11,
+     "June": 11,
+     "February": 11,
+     "May": 8,
+     "January": 7,
+     "April": 6,
+     "September": 6
+    }
+   }
+  },
+  "animals_DK_e8f0": {
+   "n": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "spans_text": 60,
+   "keys_single_token": 60,
+   "spans_decode": 60,
+   "executes": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 0,
+   "soft_collision_free": 0,
+   "hard_promised": 0,
+   "soft_promised": 0,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "selector": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    94,
+    94.0,
+    94
+   ],
+   "slots": {
+    "query": {
+     "0": 8,
+     "1": 8,
+     "2": 7,
+     "3": 7,
+     "4": 8,
+     "5": 7,
+     "6": 7,
+     "7": 8
+    },
+    "identity": {
+     "0": 11,
+     "1": 8,
+     "2": 6,
+     "3": 4,
+     "4": 9,
+     "5": 10,
+     "6": 4,
+     "7": 8
+    },
+    "position": {
+     "0": 7,
+     "1": 8,
+     "2": 7,
+     "3": 8,
+     "4": 9,
+     "5": 7,
+     "6": 7,
+     "7": 7
+    }
+   },
+   "ix_index": {},
+   "answers": {
+    "0": 8,
+    "1": 8,
+    "2": 5,
+    "3": 2,
+    "4": 5,
+    "5": 7,
+    "6": 3,
+    "7": 6,
+    "8": 9,
+    "9": 7
+   },
+   "values": {
+    "0": 4,
+    "1": 7,
+    "2": 3,
+    "3": 3,
+    "4": 8,
+    "5": 11,
+    "6": 7,
+    "7": 7,
+    "8": 2,
+    "9": 8
+   },
+   "policies": {
+    "none": 60
+   },
+   "roles": {
+    "q_b": {
+     "duck": 14,
+     "owl": 10,
+     "bee": 7,
+     "lion": 6,
+     "dog": 4,
+     "frog": 4,
+     "horse": 3,
+     "wolf": 3,
+     "cow": 3,
+     "cat": 2,
+     "mouse": 2,
+     "pig": 2
+    },
+    "q_s": {
+     "duck": 13,
+     "bee": 11,
+     "owl": 6,
+     "frog": 6,
+     "wolf": 4,
+     "horse": 4,
+     "lion": 3,
+     "pig": 3,
+     "cow": 3,
+     "cat": 3,
+     "dog": 2,
+     "mouse": 2
+    },
+    "p": {
+     "bee": 42,
+     "owl": 10,
+     "duck": 7,
+     "mouse": 1
+    }
+   }
+  },
+  "animals_IX_e8f0": {
+   "n": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "spans_text": 60,
+   "keys_single_token": 60,
+   "spans_decode": 60,
+   "executes": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 0,
+   "soft_collision_free": 0,
+   "hard_promised": 0,
+   "soft_promised": 0,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "selector": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    123,
+    123.0,
+    123
+   ],
+   "slots": {
+    "query": {
+     "0": 8,
+     "1": 8,
+     "2": 7,
+     "3": 7,
+     "4": 8,
+     "5": 7,
+     "6": 7,
+     "7": 8
+    },
+    "identity": {
+     "0": 11,
+     "1": 8,
+     "2": 6,
+     "3": 4,
+     "4": 9,
+     "5": 10,
+     "6": 4,
+     "7": 8
+    },
+    "position": {
+     "0": 7,
+     "1": 8,
+     "2": 7,
+     "3": 8,
+     "4": 9,
+     "5": 7,
+     "6": 7,
+     "7": 7
+    }
+   },
+   "ix_index": {
+    "0": 8,
+    "1": 8,
+    "2": 7,
+    "3": 7,
+    "4": 8,
+    "5": 7,
+    "6": 7,
+    "7": 8
+   },
+   "answers": {
+    "0": 8,
+    "1": 8,
+    "2": 5,
+    "3": 2,
+    "4": 5,
+    "5": 7,
+    "6": 3,
+    "7": 6,
+    "8": 9,
+    "9": 7
+   },
+   "values": {
+    "0": 4,
+    "1": 7,
+    "2": 3,
+    "3": 3,
+    "4": 8,
+    "5": 11,
+    "6": 7,
+    "7": 7,
+    "8": 2,
+    "9": 8
+   },
+   "policies": {
+    "none": 60
+   },
+   "roles": {
+    "q_b": {
+     "duck": 14,
+     "owl": 10,
+     "bee": 7,
+     "lion": 6,
+     "dog": 4,
+     "frog": 4,
+     "horse": 3,
+     "wolf": 3,
+     "cow": 3,
+     "cat": 2,
+     "mouse": 2,
+     "pig": 2
+    },
+    "q_s": {
+     "duck": 13,
+     "bee": 11,
+     "owl": 6,
+     "frog": 6,
+     "wolf": 4,
+     "horse": 4,
+     "lion": 3,
+     "pig": 3,
+     "cow": 3,
+     "cat": 3,
+     "dog": 2,
+     "mouse": 2
+    },
+    "p": {
+     "bee": 42,
+     "owl": 10,
+     "duck": 7,
+     "mouse": 1
+    }
+   }
+  },
+  "animals_CH2_e8f0": {
+   "n": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "spans_text": 60,
+   "keys_single_token": 60,
+   "spans_decode": 60,
+   "executes": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 0,
+   "soft_collision_free": 0,
+   "hard_promised": 0,
+   "soft_promised": 0,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "selector": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    113,
+    113.0,
+    113
+   ],
+   "slots": {
+    "query": {
+     "0": 8,
+     "1": 8,
+     "2": 7,
+     "3": 7,
+     "4": 8,
+     "5": 7,
+     "6": 7,
+     "7": 8
+    },
+    "identity": {
+     "0": 11,
+     "1": 8,
+     "2": 6,
+     "3": 4,
+     "4": 9,
+     "5": 10,
+     "6": 4,
+     "7": 8
+    },
+    "position": {
+     "0": 7,
+     "1": 8,
+     "2": 7,
+     "3": 8,
+     "4": 9,
+     "5": 7,
+     "6": 7,
+     "7": 7
+    }
+   },
+   "ix_index": {},
+   "answers": {
+    "0": 8,
+    "1": 8,
+    "2": 5,
+    "3": 2,
+    "4": 5,
+    "5": 7,
+    "6": 3,
+    "7": 6,
+    "8": 9,
+    "9": 7
+   },
+   "values": {
+    "0": 4,
+    "1": 7,
+    "2": 3,
+    "3": 3,
+    "4": 8,
+    "5": 11,
+    "6": 7,
+    "7": 7,
+    "8": 2,
+    "9": 8
+   },
+   "policies": {
+    "none": 60
+   },
+   "roles": {
+    "q_b": {
+     "duck": 14,
+     "owl": 10,
+     "bee": 7,
+     "lion": 6,
+     "dog": 4,
+     "frog": 4,
+     "horse": 3,
+     "wolf": 3,
+     "cow": 3,
+     "cat": 2,
+     "mouse": 2,
+     "pig": 2
+    },
+    "q_s": {
+     "duck": 13,
+     "bee": 11,
+     "owl": 6,
+     "frog": 6,
+     "wolf": 4,
+     "horse": 4,
+     "lion": 3,
+     "pig": 3,
+     "cow": 3,
+     "cat": 3,
+     "dog": 2,
+     "mouse": 2
+    },
+    "p": {
+     "bee": 42,
+     "owl": 10,
+     "duck": 7,
+     "mouse": 1
+    }
+   }
+  },
+  "animals_CH3_e8f0": {
+   "n": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "spans_text": 60,
+   "keys_single_token": 60,
+   "spans_decode": 60,
+   "executes": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 0,
+   "soft_collision_free": 0,
+   "hard_promised": 0,
+   "soft_promised": 0,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "selector": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    121,
+    121.0,
+    121
+   ],
+   "slots": {
+    "query": {
+     "0": 8,
+     "1": 8,
+     "2": 7,
+     "3": 7,
+     "4": 8,
+     "5": 7,
+     "6": 7,
+     "7": 8
+    },
+    "identity": {
+     "0": 11,
+     "1": 8,
+     "2": 6,
+     "3": 4,
+     "4": 9,
+     "5": 10,
+     "6": 4,
+     "7": 8
+    },
+    "position": {
+     "0": 7,
+     "1": 8,
+     "2": 7,
+     "3": 8,
+     "4": 9,
+     "5": 7,
+     "6": 7,
+     "7": 7
+    }
+   },
+   "ix_index": {},
+   "answers": {
+    "0": 8,
+    "1": 8,
+    "2": 5,
+    "3": 2,
+    "4": 5,
+    "5": 7,
+    "6": 3,
+    "7": 6,
+    "8": 9,
+    "9": 7
+   },
+   "values": {
+    "0": 4,
+    "1": 7,
+    "2": 3,
+    "3": 3,
+    "4": 8,
+    "5": 11,
+    "6": 7,
+    "7": 7,
+    "8": 2,
+    "9": 8
+   },
+   "policies": {
+    "none": 60
+   },
+   "roles": {
+    "q_b": {
+     "duck": 14,
+     "owl": 10,
+     "bee": 7,
+     "lion": 6,
+     "dog": 4,
+     "frog": 4,
+     "horse": 3,
+     "wolf": 3,
+     "cow": 3,
+     "cat": 2,
+     "mouse": 2,
+     "pig": 2
+    },
+    "q_s": {
+     "duck": 13,
+     "bee": 11,
+     "owl": 6,
+     "frog": 6,
+     "wolf": 4,
+     "horse": 4,
+     "lion": 3,
+     "pig": 3,
+     "cow": 3,
+     "cat": 3,
+     "dog": 2,
+     "mouse": 2
+    },
+    "p": {
+     "bee": 42,
+     "owl": 10,
+     "duck": 7,
+     "mouse": 1
+    }
+   }
+  },
+  "animals_RK_e8f0": {
+   "n": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "spans_text": 60,
+   "keys_single_token": 60,
+   "spans_decode": 60,
+   "executes": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 0,
+   "soft_collision_free": 0,
+   "hard_promised": 0,
+   "soft_promised": 0,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "selector": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    94,
+    94.0,
+    94
+   ],
+   "slots": {
+    "query": {
+     "0": 8,
+     "1": 8,
+     "2": 7,
+     "3": 7,
+     "4": 8,
+     "5": 7,
+     "6": 7,
+     "7": 8
+    },
+    "identity": {
+     "0": 11,
+     "1": 8,
+     "2": 6,
+     "3": 4,
+     "4": 9,
+     "5": 10,
+     "6": 4,
+     "7": 8
+    },
+    "position": {
+     "0": 7,
+     "1": 8,
+     "2": 7,
+     "3": 8,
+     "4": 9,
+     "5": 7,
+     "6": 7,
+     "7": 7
+    }
+   },
+   "ix_index": {},
+   "answers": {
+    "0": 8,
+    "1": 8,
+    "2": 5,
+    "3": 2,
+    "4": 5,
+    "5": 7,
+    "6": 3,
+    "7": 6,
+    "8": 9,
+    "9": 7
+   },
+   "values": {
+    "0": 4,
+    "1": 7,
+    "2": 3,
+    "3": 3,
+    "4": 8,
+    "5": 11,
+    "6": 7,
+    "7": 7,
+    "8": 2,
+    "9": 8
+   },
+   "policies": {
+    "none": 60
+   },
+   "roles": {
+    "q_b": {
+     "duck": 14,
+     "owl": 10,
+     "bee": 7,
+     "lion": 6,
+     "dog": 4,
+     "frog": 4,
+     "horse": 3,
+     "wolf": 3,
+     "cow": 3,
+     "cat": 2,
+     "mouse": 2,
+     "pig": 2
+    },
+    "q_s": {
+     "duck": 13,
+     "bee": 11,
+     "owl": 6,
+     "frog": 6,
+     "wolf": 4,
+     "horse": 4,
+     "lion": 3,
+     "pig": 3,
+     "cow": 3,
+     "cat": 3,
+     "dog": 2,
+     "mouse": 2
+    },
+    "p": {
+     "bee": 42,
+     "owl": 10,
+     "duck": 7,
+     "mouse": 1
+    }
+   }
+  },
+  "animals_RR_e8f0": {
+   "n": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "spans_text": 60,
+   "keys_single_token": 60,
+   "spans_decode": 60,
+   "executes": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 0,
+   "soft_collision_free": 0,
+   "hard_promised": 0,
+   "soft_promised": 0,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "selector": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    92,
+    92.0,
+    92
+   ],
+   "slots": {
+    "query": {
+     "0": 8,
+     "1": 8,
+     "2": 7,
+     "3": 7,
+     "4": 8,
+     "5": 7,
+     "6": 7,
+     "7": 8
+    },
+    "identity": {
+     "0": 11,
+     "1": 8,
+     "2": 6,
+     "3": 4,
+     "4": 9,
+     "5": 10,
+     "6": 4,
+     "7": 8
+    },
+    "position": {
+     "0": 7,
+     "1": 8,
+     "2": 7,
+     "3": 8,
+     "4": 9,
+     "5": 7,
+     "6": 7,
+     "7": 7
+    }
+   },
+   "ix_index": {},
+   "answers": {
+    "2": 24,
+    "4": 29,
+    "6": 7
+   },
+   "values": {
+    "2": 19,
+    "4": 30,
+    "6": 11
+   },
+   "policies": {
+    "none": 60
+   },
+   "roles": {
+    "q_b": {
+     "duck": 14,
+     "owl": 10,
+     "bee": 7,
+     "lion": 6,
+     "dog": 4,
+     "frog": 4,
+     "horse": 3,
+     "wolf": 3,
+     "cow": 3,
+     "cat": 2,
+     "mouse": 2,
+     "pig": 2
+    },
+    "q_s": {
+     "duck": 13,
+     "bee": 11,
+     "owl": 6,
+     "frog": 6,
+     "wolf": 4,
+     "horse": 4,
+     "lion": 3,
+     "pig": 3,
+     "cow": 3,
+     "cat": 3,
+     "dog": 2,
+     "mouse": 2
+    },
+    "p": {
+     "bee": 42,
+     "owl": 10,
+     "duck": 7,
+     "mouse": 1
+    }
+   }
+  }
+ }
+}
