@@ -394,6 +394,58 @@ def test_rejects_overlapping_sets_and_bad_layers():
         pass
 
 
+# ---- the experiment script's batch-3 grid and statistics (scripts/attn_knockout.py; no model) ----------------------
+
+
+def _grid_27b():
+    from scripts import attn_knockout as K
+
+    cfg = {"layer_types": [FULL if i % 4 == 3 else LINEAR for i in range(64)], "num_attention_heads": 24,
+           "num_key_value_heads": 4}  # fmt: skip
+    sets, heads, info = K.head_sets(cfg)
+    return K, {"grid": "heads", "layer_sets": sets, "head_sets": heads, "attention": info}
+
+
+def test_head_grid_ranges_and_rows_per_family():
+    """The 27B layout: early = 3..31 (8 layers), mid = 35..47, late = 51..63; rows per item: named → prompt blocks
+    every unit early (question words) and late (last tokens), plus whole layers / the early range from the name
+    tokens; memory → prompt every unit mid (both) and late; memory → memory whole layers and ranges only."""
+    K, m = _grid_27b()
+    r = m["attention"]["ranges"]
+    assert r["early"]["layers"] == list(range(3, 32, 4))
+    assert r["mid"]["layers"] == [35, 39, 43, 47]
+    assert r["late"]["layers"] == [51, 55, 59, 63]
+    assert m["head_sets"]["L51:kv2"] == list(range(12, 18)) and m["head_sets"]["L07:h05"] == [5]
+    dests = {"question": [10, 11], "final": [12, 13], "both": [10, 11, 12, 13], "cue": [11]}
+    rows = {f: K.conditions({"family": f, "dests": dests}, m) for f in ("DL", "RL", "RR")}
+    units = 24 + 4 + 1  # per layer: heads, key/value groups, the layer
+    assert len(rows["DL"]) == 2 * ((8 * units + 1) + (8 + 1) + (4 * units + 1))
+    assert len(rows["RL"]) == 2 * ((4 * units + 1) + (4 * units + 1))
+    assert len(rows["RR"]) == 2 * ((8 + 1) + (4 + 1) + (4 + 1))
+    by = {(x["layers"], x["dest"]) for x in rows["DL"]}
+    assert ("L03:h00", "question") in by and ("L51:h23", "final") in by and ("early", "cue") in by
+    assert ("L03:h00", "cue") not in by and ("L35", "both") not in by
+    assert {x["dest"] for x in rows["RL"] if x["layers"].startswith(("L35", "mid"))} == {"both"}
+    assert K.unit_key({"layers": "L07", "dest": "cue"}, m) == "L07@cue"
+    assert K.unit_key({"layers": "L07:h01", "dest": "question"}, m) == "L07:h01"
+
+
+def test_compare_reports_domains_entities_and_cluster_intervals():
+    """compare: n items / k entities, the drop = control - cell, per domain; entity-correlated items widen the
+    cluster interval beyond the item-level one."""
+    from scripts import attn_knockout as K
+
+    cases = {f"i{j}": {"bridge": f"e{j // 10}", "domain": "animals" if j < 60 else "elements"} for j in range(100)}
+    cell = {i: float(int(i[1:]) // 10 % 2) for i in cases}  # each entity all right or all wrong
+    ctrl = dict.fromkeys(cases, 1.0)
+    c = K.compare(cell, ctrl, cases)
+    assert (c["n"], c["k"]) == (100, 10)
+    assert c["per_domain"]["animals"]["n"] == 60 and c["per_domain"]["elements"]["k"] == 4
+    assert c["drop"][0] == pytest.approx(1 - c["acc"][0])
+    assert c["drop"][2] - c["drop"][1] > 2 * (c["drop_items"][2] - c["drop_items"][1])
+    assert all(math.isnan(x) for x in K.entity_boot([], [], []))
+
+
 # ---- model tests (Qwen3.5-0.8B, fp32) --------------------------------------------------------------------------------
 
 ROOT = Path(__file__).resolve().parents[1]

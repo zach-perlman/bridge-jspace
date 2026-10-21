@@ -1,0 +1,69 @@
+id: d2_code_readers
+title: 'D2 batch 3: in Python code, which later lines read the answer''s dict entry? (the names list, each chain line, the print line, the last tokens, and their unions)'
+thread: D2
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.35
+depends_on:
+- code_competence_27b
+command: >-
+  uv run python scripts/attn_knockout.py manifest --name d2_code_readers
+  --why "D2 batch 3 (b): the answer's dict entry hidden from one later code line at a time (names list, chain lines,
+  print line, rest of the question, last tokens) and from unions with the last tokens, all layers, on code_pointer_v1
+  (animals, months)"
+  --dataset code_pointer_v1 --families DK IX CH2 CH3 RK --domains animals months --n 100 --grid code_readers
+  && uv run python scripts/attn_knockout.py run --name d2_code_readers
+  && uv run python scripts/attn_knockout.py summarise --name d2_code_readers
+examples_command: uv run python scripts/attn_knockout.py examples --name d2_code_readers --k 3
+figures_command: uv run python scripts/attn_knockout.py figures --name d2_code_readers
+question: 'In code_pointer_v1 (lockers = {"bee": 7, ..., "mouse": 5}; names = ["mouse", ...]; print(lockers[names[0]])
+  -> 5), batch 2 found (UNVERIFIED) that hiding the answer''s dict entry from the last tokens in all layers leaves 36%
+  of list-position programs right (43/120), from the question words (print line onward) 100%, from everything after the
+  entry 3%. Which later lines read the entry themselves: the names list line, a chain line (x = "mouse"), the print
+  line, the rest of the question? Does a line pass it on, i.e. does hiding it from that line and the last tokens
+  together cost more than the last tokens alone, and do these lines account for the gap between 36% and 3%?'
+why_it_matters: 'The late read by the last tokens is D2''s main finding; the 36% that survive it in list-position code
+  say the entry also reaches the answer another way. If the names list line (which contains "mouse") reads the entry
+  and relays it, the model pre-fetches values at the key''s mention, a different mechanism from the late lookup, and
+  the J-space question then applies to the list tokens, not only the last ones. The named-key family is the code
+  analogue of named → prompt''s early read at the question words (here: the key literal in the print line).'
+hypotheses:
+  H_print_reader: 'named key: the print line (print(lockers["mouse"])) is a reader of the entry (batch 2: the question
+    words, which start at the print line, are needed: 6% kept). Prior 0.8'
+  H_list_not_reader: 'list position: the names list line alone is not a reader (the last tokens still read the entry
+    directly). Prior 0.6'
+  H_relay: 'list position: the names list line (or the print line) relays the entry: blocking it together with the
+    last tokens costs >= 10 points more than the last tokens alone. Prior 0.65'
+  H_explained: 'in every family, the union (last tokens + print line + list/chain lines + the rest of the question)
+    keeps answer org within 10 points of hiding the entry from every line after the dict, i.e. no other line (the
+    other chain, the closing fence) matters. Prior 0.55'
+decision_rule: 'Fixed before the run (scripts/attn_knockout.py BATCH3_RULES and INTERVALS, written into
+  manifest.json). Items: code_pointer_v1 main, animals and months, the (domain, family) cells passing
+  code_competence_27b''s gate (clean Wilson lower bound >= 0.85; months fails it for the recalled key), scenes with
+  every competence prompt right in every entered family, first 100 per domain by scene id, unedited read right. The
+  entry is hidden (attention scores masked, DeltaNet values removed, all 64 layers) from: the names list line; each
+  chain line by role (the key''s chain, lines 1-3; the other chain); the print line; the rest of the question (closing
+  fence, English question, instruction); the last tokens; the unions last tokens + print, + list/chain lines, + both,
+  + both + the rest of the question; every line after the dict; everything after the entry. A line is a READER if
+  acc(control) - acc(line) >= 10 points with the 95% entity-cluster bootstrap lower bound >= 5 points (control: another
+  dict entry of the same token length hidden from the same line, same items). A line RELAYS if adding it to the last
+  tokens'' block costs >= 10 more points than the last tokens alone (entity-cluster lower bound >= 5). The lines
+  EXPLAIN the survivors if the full union is within 10 points of "every line after the dict" (point estimate).
+  Intervals: entity-cluster bootstrap (queried keys resampled within domain: 12 animals, 7 months; 4,000 draws, seed 0)
+  first, item level second; every number per domain with n items / k keys. n per cut: 100 per domain (>= 35).'
+controls:
+- 'another dict entry (same token length, seeded per scene) hidden from the same line or union: every reader and
+  relay is measured against it'
+- 'everything after the entry (the positive control of batch 2: 3% kept in list position)'
+- 'the last tokens alone (reproduces batch 2: 36% in list position)'
+- 'pre-run check (check.json): an empty source leaves the answer read bit-exact; context independence under full
+  blocking'
+n: '900 programs (named key, list position, 2- and 3-variable chains: 100 animals + 100 months each; recalled key: 100
+  animals; months fails the gate for it)'
+seeds:
+- 0
+notes: 'Rows: 19,000 knocked reads (per program: 7 destinations for named key, 10 list position, 13 two-variable chain,
+  15 three-variable chain, 5 recalled key; x 2 sources). Code prompts are ~92 tokens: measured ~28 reads/s -> ~11 min +
+  load and check ~5 min. Local 0.8B CPU smoke (qwen35_08b_smoke_d2_code_cpu1, scratchpad): every stage ran, check.json
+  gates exact; the line destinations decode to the intended lines (tokenizer check). Results:
+  results/attn_knockout/d2_code_readers/.'

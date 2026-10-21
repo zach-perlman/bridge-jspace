@@ -1,0 +1,55 @@
+id: d2_lookup_heads_early_mid
+title: 'D2 batch 3: which attention heads read the answer''s statement early (named → prompt, question words) and in the middle (memory → prompt, question words + last tokens)?'
+thread: D2
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 1.7
+depends_on:
+- d3b_competence_400
+command: >-
+  uv run python scripts/attn_knockout.py manifest --name d2_lookup_heads_early_mid
+  --why "D2 batch 3 (a), early and middle ranges of d2_lookup_heads (split off to run in parallel; same rule): one
+  attention head at a time blocked from reading the answer's statement on pointer_v1 (animals, elements): early layers
+  at the question words (named → prompt), middle layers at question words and last tokens together (memory → prompt);
+  memory → memory as the null"
+  --dataset pointer_v1 --families RL DL RR --domains animals elements --n 100 --competence d3b_competence_400
+  --grid heads --head-ranges early mid
+  && uv run python scripts/attn_knockout.py run --name d2_lookup_heads_early_mid
+  && uv run python scripts/attn_knockout.py summarise --name d2_lookup_heads_early_mid
+examples_command: uv run python scripts/attn_knockout.py examples --name d2_lookup_heads_early_mid --k 3
+figures_command: uv run python scripts/attn_knockout.py figures --name d2_lookup_heads_early_mid
+question: 'The early and middle halves of d2_lookup_heads (its spec has the full question). Batch 2 (UNVERIFIED): in
+  named → prompt the question words read the answer''s statement early (hiding it from the question words + last
+  tokens in layers 0-31 leaves 1/175 right, attention layers only 6/175); in memory → prompt the question words and the
+  last tokens together read it in layers 32-47 (78/175 left, each alone 87-88%). Which heads do these two reads?'
+why_it_matters: 'Whether a named entity is matched to its statement by one early "name-matching" head, and whether the
+  recalled bridge''s middle-layer backup read uses single heads or all of them; together with d2_lookup_heads (late) it
+  says whether a recalled and a named entity are looked up by the same heads at different depths.'
+hypotheses:
+  H_named_early: 'named → prompt, every head of the 8 early attention layers (3, 7, ..., 31) blocked at the question
+    words: <= 10% kept; and at least one single early head is a reader (a name-matching head). Prior 0.5 (<= 10%
+    alone: 0.7)'
+  H_name_tokens: 'named → prompt, early layers: blocking the read from the name tokens only (" pig") keeps answer org
+    within 10 points of blocking it from all the question words, so the per-head results at the question words are
+    about the name. Prior 0.6'
+  H_mid_joint: 'memory → prompt, every head of the 4 middle attention layers (35, 39, 43, 47) blocked at the question
+    words and the last tokens together: 30-60% kept (batch 2: 45% with the DeltaNet layers blocked too, which alone
+    cost nothing), and no single middle head is a reader. Prior 0.5'
+  H_null: 'memory → memory: every whole-layer and whole-range cell >= 95%. Prior 0.9'
+decision_rule: 'As d2_lookup_heads (scripts/attn_knockout.py BATCH3_RULES and INTERVALS, written into manifest.json):
+  a unit (query head, key/value group, layer, range) is a READER if acc(control) - acc(unit) >= 10 points and the 95%
+  entity-cluster bootstrap lower bound of that drop >= 5 points (control: the same unit blocked from a same-kind
+  statement off the answer''s path); entity-cluster intervals first (16 animals, 6 elements; 4,000 draws, seed 0),
+  item-level second; per domain with n items / k entities. A single-head reader is read with its group and layer
+  cells, never alone (early 192 + middle 96 single-head cells; the rule''s mirror image is the noise floor).'
+controls:
+- 'the same unit blocked from a same-kind statement off the answer''s path'
+- 'memory → memory on the same scenes: whole layers and whole ranges'
+- 'the whole range as the reproduction of batch 2 (early: 6/175 attention only; middle: 78/175)'
+- 'pre-run check (check.json): an empty source leaves the answer read bit-exact'
+n: '200 org prompts per family (100 animals with 16 queried entities + 100 elements with 6)'
+seeds:
+- 0
+notes: 'Split from d2_lookup_heads to use two GPUs: ~1.7 h (named → prompt early 233 units + 9 name-token units,
+  memory → prompt middle 117 units, x 2 sources; memory → memory whole layers and ranges). Results:
+  results/attn_knockout/d2_lookup_heads_early_mid/.'
