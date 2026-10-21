@@ -1,0 +1,117 @@
+{
+  "run": "full3_ko_steps_v2",
+  "middle": "L32-40",
+  "bands": {
+    "L32-40": {
+      "paper10": {
+        "PPP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "PPM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "PMP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MPP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MPM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MMP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        }
+      },
+      "paper10_rot": {
+        "PPP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "PPM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "PMP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MPP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MPM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MMP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        }
+      }
+    }
+  },
+  "rule": {
+    "loss": {},
+    "control_distance": {},
+    "gap": null,
+    "controls_ok": false,
+    "C1_graded_holds": false,
+    "strict_C1_holds": null
+  },
+  "commit": "228b09ad75819494c123b5e53311aa64a6b93a1e"
+}
