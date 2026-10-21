@@ -1,0 +1,63 @@
+id: d3_start_or_end_main
+title: "D3: is the statement-slot pointer counted from the start or from the end of the list (or is it a token position)?"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.7
+depends_on:
+- d3_start_or_end_competence_27b
+- d3_start_or_end_smoke_27b
+command: >-
+  uv run python scripts/pointer_swap.py manifest --data pointer_v3 --set main --name d3_start_or_end_main
+  --families RL DL --n 120 --layers 40 42 44 46 48 50 52 54 56 --groups final last
+  --competence d3_start_or_end_competence_27b
+  --why "D3 start or end: alt prompts with one statement more or fewer, so the slot counted from the start, the slot
+  counted from the end and the same token position name three different org statements; animals and elements"
+  && uv run python scripts/pointer_swap.py run --name d3_start_or_end_main
+examples_command: uv run python scripts/pointer_swap.py examples --name d3_start_or_end_main
+figures_command: uv run python scripts/pointer_swap.py figures --name d3_start_or_end_main
+question: >-
+  When the alt prompt has one statement more (or fewer) than the org prompt and its hidden states at the last two tokens
+  (and at every token after the question) are patched into the org prompt at layers 40-56, does the org prompt answer
+  the digit of the statement at the same place counted from the START of the list, counted from the END, at the same
+  TOKEN position, the answer of bridge alt's statement, or the alt prompt's own answer?
+why_it_matters: >-
+  The pointer found at layers 44-50 (the slot answer beats the word) could be an index from the start of the list (a
+  binding ID as in the lookback literature), an index from the end (recency, as attention to the latest bindings), or an
+  address in the token sequence. With equal list lengths all three coincided. Which one it is decides what a "pointer
+  readout" must read, and whether the lens's failure to steer is about indices or about attention addresses.
+hypotheses:
+  H-start: 'memory -> prompt, last two tokens, layer 50 (and after the question, layer 48): answer at the same slot
+    counted from the start >= 25% and counted from the end <= 10%, in both alt types'
+  H-end: 'counted from the end >= 25% and from the start <= 10%, in both alt types'
+  H-token: 'the same token position >= 25%, both slot answers <= 10% (would agree with a token-position result of
+    d3v2_offset_reflexive_main)'
+  H-mixed: 'two of them >= 10% (verdict "mixed"), or the winner differs between one more and one fewer'
+  prior: 'Agent prior: H-start 0.4, H-token 0.25, H-end 0.15, H-mixed 0.2.'
+decision_rule: >-
+  Fixed before the run (scripts/pointer_swap.py docstring, "Decision rule" and "pointer_v3 additions"). Per cell
+  (family x patched tokens x layer or window x alt type), pooled over topics, Wilson 95%: interpretable iff the patch
+  changes the answer (lower bound >= 0.20) and the same-entity control changes it rarely (upper bound <= 0.10); the
+  verdict is the outcome among {answer of bridge alt's statement, slot from the start, slot from the end, same token
+  position, the alt prompt's own answer} whose lower bound exceeds the others' upper bounds and the random push's upper
+  bound; else "mixed". Primary cells: memory -> prompt, last two tokens and after the question, layers 48 and 50 and
+  the window 44-52; the answer counts only if it holds for both alt types, else it is type-dependent. Every cut needs
+  n >= 35; cuts below are reported, not judged.
+controls:
+- 'same entity, statements reshuffled (same filler places): every hypothesis predicts answer org'
+- 'random push of the same size (every 2nd layer): chance bar for each predicted digit'
+- 'a prompt of the other topic, same size: realistic-activation null'
+- 'org prompt into itself (no-op) and the layer-0 all-position patch (hook checks)'
+- 'both alt types: an artefact of one filler arrangement should not appear in both'
+n: >-
+  up to 120 scenes per topic x alt type (all eligible): per (topic x alt type x family) ~115 (animals) and ~80
+  (elements) if the gate keeps 96% / 68% as for pointer_v2, i.e. >= 100 per topic pooled over the alt types; per alt
+  type pooled over topics ~195. Slot cuts (first / middle / last, 40 each before the gate) fall below 35 for elements
+  alone and are judged only pooled over topics.
+seeds: [0]
+notes: >-
+  Reads per case: 3 checks + 9 layers x 2 sites x 2 (alt, same) + random/other at 5 layers x 2 sites x 2 + 3 windows x 2
+  sites x 2 = 71; ~790 cases (395 eligible scenes x 2 families) -> ~56k reads at 34/s -> ~28 min + forwards and load
+  (~10 min) -> 0.7 h. Separability: one statement more or fewer shifts the alt list's indices, and the filler cells
+  (1-2 per prompt, each a statement's length) are placed so that the start-counted slot, the end-counted slot and the
+  token position always name three different org statements (checked per item by pointer_v3 check).

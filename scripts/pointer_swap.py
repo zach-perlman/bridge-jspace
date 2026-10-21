@@ -49,6 +49,13 @@ Decision rule, pointer_v2 additions (fixed 2026-10-21, before any v2 run):
     (the digit carried as content): the CI inside [-0.10, +0.10]. Otherwise unclear. Interpreted only where the pln cell
     is interpretable by the rule above (changes >= 20% lower bound, same control <= 10% upper bound).
   - every cut the rule is applied to needs n >= 35 (the same control's bound); cuts below are reported, not judged.
+Decision rule, pointer_v3 additions (fixed 2026-10-21, before any v3 run):
+  - the alt prompt has one statement more (e5more) or one fewer (e5fewer) than the org prompt; the candidates are
+    {identity, position (the slot counted from the start), end (counted from the end), token, value}; the per-digit
+    chance bar from unpredicted context digits is 0 (all five org statements are predicted), the random push's stays.
+  - primary cells: memory -> prompt, the last two tokens and the tokens after the question, layers 48 and 50 and the
+    window 44-52, per alt type pooled over topics; a verdict counts as the answer only if it holds for both alt types
+    (one more and one fewer), otherwise it is reported as type-dependent.
 
 Stages:  manifest --name N --why W [--data pointer_v1|pointer_v2|code_pointer_v1|alias_pointer_v1] --set S
                   [--levels ...] [--families ...] [--domains ...] [--family-roles P R C] [--n K] [--layers ...]
@@ -86,9 +93,10 @@ EXP = "pointer_swap"
 RESULTS = pins.RESULTS_DIR / EXP
 GROUPS = ("question", "final", "last", "both")
 SOURCES = ("dissoc", "same", "rand", "other")
-ROLES = ("none", "identity", "position", "token", "value", "context", "recall", "other_digit", "other")
-HYPS = ("none", "identity", "position", "token", "value")  # every prediction a dataset may record, in priority order
-DATASETS = ("pointer_v1", "pointer_v2", "code_pointer_v1", "alias_pointer_v1")
+ROLES = ("none", "identity", "position", "end", "token", "value", "context", "recall", "other_digit", "other")
+# every prediction a dataset may record, in priority order (end: pointer_v3's slot counted from the end of the list)
+HYPS = ("none", "identity", "position", "end", "token", "value")
+DATASETS = ("pointer_v1", "pointer_v2", "pointer_v3", "code_pointer_v1", "alias_pointer_v1")
 # primary (lookup of a recalled bridge), reference (named lookup), contrast (recall) family per dataset
 FAMILY_ROLES = {"code_pointer_v1": ("RK", "DK", "RR")}
 DEFAULT_ROLES = ("RL", "DL", "RR")
@@ -625,12 +633,12 @@ def analyze(m: dict, rows: list[dict], checks: list[dict]) -> dict[str, Any]:
 
     def cands_of(fam: str, lv: str) -> tuple[str, ...]:
         hs = has.get((fam, lv)) or set(PV.HYPOTHESES)
-        out = [h for h in ("identity", "position", "token", "value") if h in hs]
+        out = [h for h in ("identity", "position", "end", "token", "value") if h in hs]
         return tuple(h for h in out if not (fam == cf and h == "value"))
 
     def free_of(fam: str, lv: str) -> int:
         hs = has.get((fam, lv)) or set(PV.HYPOTHESES)
-        in_ctx = [h for h in ("none", "identity", "position", "token") if h in hs] + (
+        in_ctx = [h for h in ("none", "identity", "position", "end", "token") if h in hs] + (
             ["value"] if lv.endswith("-ref") else []
         )
         return int(lv[1]) - len(in_ctx)
@@ -726,6 +734,7 @@ def analyze(m: dict, rows: list[dict], checks: list[dict]) -> dict[str, Any]:
         },
         "checks": chk,
         "family_roles": [pf, rf, cf],
+        "predicted": {lv: sorted({h for (f, x), hs in has.items() if x == lv for h in hs}) for lv in m["levels"]},
         "primary": {
             lv: {
                 "verdict": verdicts.get(f"{pf}|all|{lv}|final|transit", {}),
@@ -814,7 +823,7 @@ def near_ties(rows: list[dict], gap: float = 0.1) -> dict[str, Any]:
 # Outcome hues: the reference categorical palette's first three slots (validated: adjacent CVD dE >= 9.2, normal-vision
 # >= 27.6 on the light surface; aqua is below 3:1 contrast, so lines carry direct labels). 'none' and every control are
 # grey: they are baselines, not identities.
-OUTCOME_COLOR = {"identity": "#2a78d6", "position": "#eb6834", "value": "#1baf7a", "token": "#eda100"}
+OUTCOME_COLOR = {"identity": "#2a78d6", "position": "#eb6834", "value": "#1baf7a", "token": "#eda100", "end": "#6250d6"}
 NONE_COLOR = "#52514e"
 CONTROL_STYLE = {
     "same": ("#898781", (0, (4, 2))),
@@ -826,6 +835,7 @@ CONTROL_STYLE = {
 OUTCOME_TERM = {
     "identity": "answer of bridge alt's statement",
     "position": "answer at the same statement slot",
+    "end": "answer at the same slot counted from the end",
     "token": "answer at the same token position",
     "value": "the alt prompt's own answer",
     "none": "answer org kept",
@@ -833,6 +843,7 @@ OUTCOME_TERM = {
 OUTCOME_SHORT = {
     "identity": "bridge alt's statement",
     "position": "same slot",
+    "end": "same slot from the end",
     "token": "same token position",
     "value": "alt prompt's answer",
 }
@@ -845,6 +856,7 @@ GROUP_SHORT = {
 OUTCOME_HELP = {
     "identity": "org prompt's digit for bridge alt",
     "position": "org prompt's digit in bridge alt's slot",
+    "end": "the same, counted from the end",
     "token": "org prompt's digit at bridge alt's token offset",
     "value": "the alt prompt's answer",
     "none": "",
@@ -883,9 +895,15 @@ def fam_title(fam: str) -> str:
     return FAMILY_TITLE.get(fam, family_label(fam))
 
 
+def is_code(m: dict) -> bool:
+    return m.get("data") == "code_pointer_v1"
+
+
 def level_text(m: dict, lv: str) -> str:
     names = {"e3f0": "3 statements", "e5f0": "5 statements", "e5f4": "5 statements with filler sentences between them"}
-    if lv in names and m.get("data", "pointer_v1") in ("pointer_v1", "code_pointer_v1"):
+    if lv in names and is_code(m):
+        return names[lv].replace("statements", "dict entries")
+    if lv in names and m.get("data", "pointer_v1") == "pointer_v1":
         return names[lv]
     G = gen(m)
     return G.level_name(lv) if hasattr(G, "level_name") else f"{int(lv[1])} statements"
@@ -956,18 +974,21 @@ def example_line(m: dict, name: str, level: str | None = None) -> str:
                     if isinstance(j, int)})  # fmt: skip
     if "statements" in it:  # alias_pointer_v1 records each prompt's statements
         org = " ... ".join(it["statements"][j] for j in shown)
-    elif it["domain"] in PV.DOMAINS and m.get("data", "pointer_v1") in ("pointer_v1", "pointer_v2"):
+    elif it["domain"] in PV.DOMAINS and m.get("data", "pointer_v1") in ("pointer_v1", "pointer_v2", "pointer_v3"):
         stmt = PV.DOMAINS[it["domain"]]["statement"]
         org = " ... ".join(stmt.format(e=it["entities"][j], d=it["digits"][j]) for j in shown)
     else:  # code: the context is a program; show its last line before the query
         org = it["context"].strip().splitlines()[-1]
+    question = " ".join(it["question"].replace("```", " ").split())  # code: no fences or line breaks in a caption
     term = dict(OUTCOME_TERM)
     if isinstance(sl.get("value_in_org"), int):
         term["value"] += ", also in the org prompt"
-    opts = ", ".join(f"{exp[h]} ({term[h]})" for h in ("identity", "position", "token", "value", "none")
+    if exp.get("end", "-") != "-":
+        term["position"] = "answer at the same slot counted from the start"
+    opts = ", ".join(f"{exp[h]} ({term[h]})" for h in ("identity", "position", "end", "token", "value", "none")
                      if exp.get(h, "-") != "-")  # fmt: skip
     return (
-        f'org prompt "... {org} ... {it["question"]}" -> answer org {exp["none"]}; the alt prompt asks about the '
+        f'org prompt "... {org} ... {question}" -> answer org {exp["none"]}; the alt prompt asks about the '
         f"{d['query']} (bridge alt), its {nth} statement. Possible answers after the patch: {opts}."
     )
 
@@ -1009,8 +1030,8 @@ def _panel(
         _band(ax, tr[0], tr[-1], None)  # labelled once, in the legend
     n = 0
     cf = family_roles(m)[2]
-    roles = [h for h in ("identity", "position", "token", "value") if not (fam == cf and h == "value")]
-    roles = [h for h in roles if h != "token" or has_token(a, lv)]
+    roles = [h for h in ("identity", "position", "end", "token", "value") if not (fam == cf and h == "value")]
+    roles = [h for h in roles if (h != "token" or has_token(a, lv)) and (h != "end" or has_role(a, lv, "end"))]
     for role in roles:
         xs, r, lo, hi = _series(a, prefix, layers, "dissoc", role)
         if not xs:
@@ -1033,15 +1054,18 @@ def _panel(
     return n
 
 
-def _handles(fams: list[str], controls=("same", "rand", "other"), token: bool = False) -> list:
+def _handles(fams: list[str], controls=("same", "rand", "other"), token: bool = False, end: bool = False) -> list:
     from matplotlib.lines import Line2D
     from matplotlib.patches import Patch
 
     from bridge_jspace.plotting import GRID
 
+    term = dict(OUTCOME_TERM)
+    if end:  # with an end-counted slot in the figure, say which way the plain slot is counted
+        term["position"] = "answer at the same slot counted from the start"
     h: list[Any] = [Line2D([], [], color=OUTCOME_COLOR[r], lw=2,
-                label=f"% that become {OUTCOME_TERM[r].removeprefix('the ')} ({OUTCOME_HELP[r]})")
-         for r in ("identity", "position", *(("token",) if token else ()), "value")]  # fmt: skip
+                label=f"% that become {term[r].removeprefix('the ')} ({OUTCOME_HELP[r]})")
+         for r in ("identity", "position", *(("end",) if end else ()), *(("token",) if token else ()), "value")]  # fmt: skip
     h.append(Line2D([], [], color=NONE_COLOR, lw=1.1, label="% of original answers kept (answer org kept)"))
     tr = default_windows()["transit"]
     h.append(
@@ -1134,7 +1158,16 @@ def _caption(
     ]  # fmt: skip
     if a["superseded"]:
         rows.insert(0, ("Not a headline", a["superseded"]))
+    if is_code(m):  # a program's "statements" are its dict entries
+        rows = [(k, v.replace("statements", "dict entries").replace("statement", "dict entry")) for k, v in rows]
     return [(k, plain(v)) for k, v in rows if v]
+
+
+def has_role(a: dict, lv: str, role: str) -> bool:
+    """Whether a level's items predict this outcome (any read of it, or a share above 0)."""
+    return any(f"|{lv}|" in k and k.endswith("|dissoc") and v.get(role, [0])[0] > 0 for k, v in a["rates"].items()) or (
+        role in a.get("predicted", {}).get(lv, [])
+    )
 
 
 def has_token(a: dict, lv: str) -> bool:
@@ -1149,11 +1182,12 @@ def fig_by_layer(a: dict, m: dict, lv: str, path: Path, headline: bool = False) 
 
     from bridge_jspace.plotting import INK
 
-    fams, grps = m["families"], ("question", "final", "last")
+    fams = m["families"]
+    grps = [g for g in ("question", "final", "last") if g in m.get("groups", GROUPS)]
     fig, axes = plt.subplots(
         len(grps),
         len(fams),
-        figsize=(max(4.2 * len(fams), 12.6), 2.6 * len(grps) + 1.6),
+        figsize=(max(4.2 * len(fams), 12.6), 2.6 * len(grps) + 1.6 + (1.6 if len(grps) < 3 else 0)),
         sharex=True,
         sharey=True,
         squeeze=False,
@@ -1176,11 +1210,11 @@ def fig_by_layer(a: dict, m: dict, lv: str, path: Path, headline: bool = False) 
         a,
         m,
         lv,
-        "rows: question words / everything after the question / the last 2 tokens",
+        "rows: " + " / ".join(GROUP_TITLE[g] for g in grps),
         "Each coloured line: % of original answers that become that answer after the patch; dark line: % of original "
         f"answers kept. Grey band: layers {tr[0]}-{tr[-1]}, where the lens reads this bridge but cannot steer it.",
     )
-    return _finish(fig, path, title, rows, _handles(fams, token=has_token(a, lv)), ncols=2)
+    return _finish(fig, path, title, rows, _handles(fams, token=has_token(a, lv), end=has_role(a, lv, "end")), ncols=2)
 
 
 def fig_slots(a: dict, m: dict, lv: str, grp: str, path: Path) -> list[str]:
@@ -1255,6 +1289,9 @@ LEVELS_TEXT = {  # (title, how to read) of the levels figure, per dataset
                          "One column per topic and statement form, on the same scenes within a topic (animals: English "
                          "or French/Spanish/German; elements: English or the chemical symbol)."),
     "code_pointer_v1": ("Does the split change with the number of dict entries?", "One column per number of entries."),
+    "pointer_v3": ("Is the statement slot counted from the start or from the end of the list?",
+                   "One column per alt prompt: one statement more, or one fewer, than the org prompt, so the slot counted "
+                   "from the start and the slot counted from the end name different org statements."),
 }  # fmt: skip
 
 
@@ -1265,6 +1302,8 @@ def level_short(m: dict, lv: str) -> str:
         return {"": "English", "xlang": "other language", "syn": "chemical symbol"}[lv.partition("-")[2]]
     if data == "pointer_v2":
         return {"off": "filler moved", "pln": "filler in place", "ref": "alt answer in org"}[lv.partition("-")[2]]
+    if data == "pointer_v3":
+        return {"e5more": "alt has one statement more", "e5fewer": "alt has one statement fewer"}.get(lv, lv)
     return {"e3f0": "3 statements", "e5f0": "5 statements", "e5f4": "5 + filler", "e8f0": "8 entries"}.get(lv, lv)
 
 
@@ -1300,7 +1339,8 @@ def fig_levels(a: dict, m: dict, grp: str, path: Path) -> list[str]:
     rows = _caption(a, m, lvs[0], GROUP_TITLE[grp], f"{how} Lines as in the main figure; panels with fewer than "
                     f"{MIN_N_RULE} prompts cannot pass the pre-registered rule.", all_levels=True,
                     n_text=", ".join(f"{fam_title(f).split(' (')[0]} {'/'.join(v)}" for f, v in col_n.items()))  # fmt: skip
-    return _finish(fig, path, title, rows, _handles(fams, token=any(has_token(a, lv) for lv in lvs)), ncols=2)
+    return _finish(fig, path, title, rows, _handles(fams, token=any(has_token(a, lv) for lv in lvs),
+                                                   end=any(has_role(a, lv, "end") for lv in lvs)), ncols=2)  # fmt: skip
 
 
 def fig_windows(a: dict, m: dict, lv: str, path: Path) -> list[str]:
@@ -1311,8 +1351,10 @@ def fig_windows(a: dict, m: dict, lv: str, path: Path) -> list[str]:
 
     from bridge_jspace.plotting import INK, percent_axis, style_axes
 
-    fams, grps, wins = m["families"], GROUPS, list(m["windows"])
-    roles = ("none", "identity", "position", *(("token",) if has_token(a, lv) else ()), "value")
+    fams, wins = m["families"], list(m["windows"])
+    grps = [g for g in GROUPS if g in m.get("groups", GROUPS)]
+    roles = ("none", "identity", "position", *(("end",) if has_role(a, lv, "end") else ()),
+             *(("token",) if has_token(a, lv) else ()), "value")  # fmt: skip
     col = {"none": NONE_COLOR, **OUTCOME_COLOR}
     fig, axes = plt.subplots(
         len(grps),
@@ -1355,7 +1397,7 @@ def fig_windows(a: dict, m: dict, lv: str, path: Path) -> list[str]:
                for r in roles]  # fmt: skip
     handles.append(Line2D([], [], color=CONTROL_STYLE["same"][0], marker="s", mfc="none", ls="none", ms=4,
                           label=CONTROL_LABEL["same"]))  # fmt: skip
-    rows = _caption(a, m, lv, "rows: question words / everything after / the last 2 tokens / question + after",
+    rows = _caption(a, m, lv, "rows: " + " / ".join(GROUP_TITLE[g] for g in grps),
                     "Each dot: % of original answers that become that answer when a whole window of layers is patched; "
                     "the pre-registered main test is memory → prompt, everything after the question, layers 44-52.",
                     windows=True, control="Grey squares: the same patch from a prompt about the same entity with the "
@@ -1793,6 +1835,7 @@ def stage_figures(name: str) -> Path:
 GROUP_DEFS = {
     "position": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction)",
     "token": "the patched base answered the base's digit at the source statement's token offset (H-token)",
+    "end": "the patched base answered the base's digit at the source's slot counted from the end (H-end)",
     "identity": "the patched base answered the base's digit for the source's entity (H-word / lexical key)",
     "value": "the patched base answered the source's own answer, absent from the base context (H-value)",
     "none": "the patch left the base answer",
@@ -1855,7 +1898,7 @@ def stage_examples(name: str, k: int, seed: int, group: str | None) -> None:
         picked = [o for o in rows if o["source"] == "dissoc" and o["group"] == focus and o["layer"] != 0]
     by_group: dict[str, list[dict]] = collections.defaultdict(list)
     for o in picked:
-        g = o["role"] if o["role"] in ("position", "token", "identity", "value", "none", "context") else "other"
+        g = o["role"] if o["role"] in ("position", "end", "token", "identity", "value", "none", "context") else "other"
         by_group[g].append(o)
     by_group["same_changed"] = [
         o for o in rows if o["source"] == "same" and o["group"] == focus and o["role"] != "none"
@@ -1879,6 +1922,7 @@ def stage_examples(name: str, k: int, seed: int, group: str | None) -> None:
             named = (("query", "bridge statement (base query, slot a)"),
                      ("identity", "identity statement (source's entity in the base)"),
                      ("position", "position statement (base entity at the source's queried slot)"),
+                     ("end", "end statement (base statement at the source's slot counted from the end)"),
                      ("token", "token statement (base statement at the source statement's token offset)"))  # fmt: skip
             spans += [{"start": st[sl[key]][0], "end": st[sl[key]][1], "role": role} for key, role in named
                       if isinstance(sl.get(key), int) and sl[key] < len(st)]  # fmt: skip
