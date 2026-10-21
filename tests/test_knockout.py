@@ -637,3 +637,4 @@ def test_sliding_window_layers_count_as_full_attention():
     cfg = {"layer_types": ["sliding_attention", "sliding_attention", "sliding_attention", "full_attention"]}
     assert config_kinds(cfg) == [FULL] * 4
     assert config_kinds({"layer_types": [LINEAR, FULL]}) == [LINEAR, FULL]
+    assert config_kinds({"num_hidden_layers": 3}) == [FULL] * 3

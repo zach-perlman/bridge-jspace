@@ -107,6 +107,18 @@ TARGETS: dict[str, dict[str, Any]] = {
         },
         "frozen_lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5",
     },
+    # Qwen3-32B (dense: softmax attention in all 64 layers; Qwen3 family, no DeltaNet), 22 Oct, for D2 / D3, which use no
+    # lens. Zach fits its J++ on his branch (Thursday); until it is pinned here the target has no lens and every script
+    # that loads one fails on it.
+    "qwen3-32b": {
+        "repo": "Qwen/Qwen3-32B",
+        "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+        "n_layers": 64,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "qwen3_32b_",
+        "lenses": {},
+    },
     # Gemma 4 31B-it with neuronpedia's published J++ fit on the BASE model (google/gemma-4-31B; 64 wikitext prompts,
     # target layer 59): no published lens is fit on the instruction-tuned model, and our own (gemma-4-31b-it above) was
     # lost with the old box. A stand-in (Zach, 2026-10-20): results on this target say what a base-model lens sees and

@@ -668,6 +668,8 @@ def model_config() -> dict:
 def config_kinds(cfg: dict) -> list[str]:
     """Layer kinds from the config. OLMo-3's sliding-window layers (window 4096, far longer than any prompt here) are
     softmax attention over the whole prompt: FULL, as knockout.layer_kinds sees their self_attn modules."""
+    if "layer_types" not in cfg:  # a dense model whose config lists no kinds (Qwen3-32B): softmax attention everywhere
+        return [FULL] * cfg["num_hidden_layers"]
     return [FULL if k == "sliding_attention" else k for k in cfg["layer_types"]]
 
 
