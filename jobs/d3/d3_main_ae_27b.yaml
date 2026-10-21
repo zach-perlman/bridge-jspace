@@ -45,3 +45,4 @@ notes: 'd3_pilot_27b came out ''damage'' in every cell, including layer 0 where 
   RR (55%) and planets RL (lower bound 0.84) fail, so only domains passing in all three families are used, and n is raised
   so the rule can pass. Controls, decision rule and hypotheses unchanged. Timing: d3_pilot_27b ran 102 cases x 16 layers
   in 601 s (37 reads/s); this run is 300 cases x 23 layers, about 45 min.'
+figures_command: uv run python scripts/pointer_swap.py figures --name d3_main_ae_27b

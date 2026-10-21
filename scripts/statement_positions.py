@@ -1376,9 +1376,895 @@ def stage_examples(name: str, k: int, seed: int) -> None:
     print("wrote", path, {g["key"]: g["n_total"] for g in groups})
 
 
+# ---- analysis and figures (CPU, saved outputs only) ---------------------------------------------------------------
+
+SEQ = ("#fcfcfb", "#cde2fb", "#9ec5f4", "#6da7ec", "#3987e5", "#256abf", "#184f95", "#0d366b")  # one hue, light->dark
+BLUE, ORANGE, AQUA = "#2a78d6", "#eb6834", "#1baf7a"  # categorical slots 1-3 (validated all-pairs, light)
+CONTROL, CONTROL2 = "#898781", "#b5b4ad"  # controls in muted greys (figure_terms.md), told apart by marker too
+FAMILY_DESC = {  # what the prompt does, in words (figures and reports never show the family codes)
+    "BL": "pet stated, its locker looked up",
+    "BR": "pet stated, its legs from memory",
+    "RL": "animal recalled from a clue, its locker looked up",
+    "RR": "animal recalled from a clue, its legs from memory",
+    "BLR": "pet stated, its friend looked up, legs from memory",
+    "BRL": "pet stated, legs from memory, locker looked up",
+    "R": "a city's country recalled, its capital from memory",
+    "B": "a person's country stated, its capital from memory",
+}
+SET_TITLE = {  # the position sets in the outside reader's terms (figure_terms.md)
+    "bind_bridge": "sentence stating bridge org",
+    "bridge_word": "the bridge org word",
+    "bind_other": "other people's sentences",
+    "lookup_bridge": "bridge org's table row",
+    "lookup_x": "bridge alt's table row",
+    "context": "the whole context",
+    "question": "question and all after it",
+    "q_words": "the question words",
+    "final": "last tokens before the answer",
+}
+PATCH = "patch from the alt prompt"
+FLIPS = "% of original answers that become the alternative answer (answer org → answer alt)"  # plotting.TERM["flips"]
+JPART = "lens-readable part"
+FLIPS_WRAPPED = "% of original answers that become\nthe alternative answer (answer org → answer alt)"
+
+
+def example_short(c: dict) -> str:
+    """The 'Example' caption row: a real item, shortened, with answer org and what the alt prompt changes."""
+    text = c["prompt"].split("user\n", 1)[1].split("<|im_end|>")[0]
+    question = text.split("\n")[-1].replace(" " + S.INSTRUCTION, "")
+    fam = c["family"]
+    if fam in SUITE and fam not in CUE_ONLY:
+        stated = f"{c['cue']}'s pet is a {c['bridge']}."
+        if fam in ("BL", "RL"):
+            stated += f" ... The {c['bridge']}'s locker is {c['answer']}."
+        alt = f"“{c['cue']}'s pet is a {c['cf_bridge']}.” (two pets swapped)"
+    elif fam == "B":
+        stated = f"{c['cue']} lives in {c['bridge']}."
+        alt = f"“{c['cue']} lives in {c['cf_bridge']}.” (two countries swapped)"
+    else:
+        stated, alt = "", f"the clue in the question names bridge alt ({c['cf_bridge']})"
+    org = f"“... {stated} ... {question}”" if stated else f"“... {question}”"
+    return (f"{fam_label(fam)}: org prompt {org} → answer org {c['answer']} (bridge org {c['bridge']}); alt prompt: "
+            f"{alt} → answer alt {c['cf_answer']}.")  # fmt: skip
+
+
+def example_note(c: dict) -> str:
+    """One real item in the outside reader's terms: the org prompt's user text, bridge org / alt, answer org / alt."""
+    text = c["prompt"].split("user\n", 1)[1].split("<|im_end|>")[0].replace("\n", " ")
+    fam = c["family"]
+    if fam in CUE_ONLY:
+        change = f"the clue in the question names bridge alt ({c['cf_bridge']}) instead"
+    elif fam in SUITE:
+        change = f"“{c['cue']}'s pet is a {c['cf_bridge']}.” (two pets swapped)"
+    else:
+        change = f"“{c['cue']} lives in {c['cf_bridge']}.” (two countries swapped)"
+    return (f"Example ({fam_label(fam)}): org prompt “{text}” → answer org {c['answer']} (bridge org {c['bridge']}). "
+            f"Alt prompt: the same but {change} → answer alt {c['cf_answer']} (bridge alt {c['cf_bridge']}).")  # fmt: skip
+
+
+def fam_label(code: str) -> str:
+    """The display name of a family: where the bridge comes from -> where the answer comes from."""
+    from bridge_jspace.plotting import family_label
+
+    return family_label(code)
+
+
+def fam_title(code: str) -> str:
+    return f"{fam_label(code)}  ({FAMILY_DESC[code]})"
+
+
+def cell_label(fam: str, s: str) -> str:
+    return f"{fam_label(fam)}: {SET_TITLE[s]}"
+
+
+def plain(d: Any) -> Any:
+    """A summary fragment keyed by family codes and set keys, with display names instead (for reports)."""
+    if isinstance(d, dict):
+        out = {}
+        for k, v in d.items():
+            key = k
+            if isinstance(k, str):
+                parts = k.split("/")
+                parts = [fam_label(p) if p in FAMILIES else SET_TITLE.get(p, p) for p in parts]
+                key = " / ".join(parts)
+            out[key] = plain(v)
+        return out
+    if isinstance(d, list):
+        return [plain(x) for x in d]
+    return d
+
+
+CELL_ORDER = ("BL", "BLR", "RL", "BR", "BRL", "RR", "B", "R")  # lookup-used first, then recall-used
+HEAT_ORDER = ("BL", "BR", "BLR", "BRL", "RL", "RR", "B", "R")  # paired readers side by side
+
+
+def read_jsonl(path: Path) -> list[dict]:
+    return [json.loads(line) for line in path.read_text().splitlines()]
+
+
+def as_json(x: Any) -> Any:
+    return json.loads(json.dumps(x))
+
+
+def stage_analyze(name: str) -> dict:
+    """Re-applies the run's pre-registered rule to its saved outputs (no model) and compares with its summary.json."""
+    out = run_dir(name)
+    m = json.loads((out / "manifest.json").read_text())
+    saved = json.loads((out / "summary.json").read_text())
+    outcomes = read_jsonl(out / "outcomes.jsonl")
+    cases = read_jsonl(out / "cases.jsonl")
+    extra: dict[str, Any] = {}
+    if m["kind"] == "map":
+        zeros = read_jsonl(out / "zero_cells.jsonl")
+        s = summarize_map(outcomes, zeros, cases, tuple(m["layers"]))
+        same = {k: as_json(s[k]) == saved[k] for k in ("transit", "handoff", "sanity", "validation")}
+    elif m["kind"] == "parts":
+        fve = read_jsonl(out / "fve.jsonl")
+        s = summarize_parts(outcomes, fve, m["cells"])
+        extra["fve"] = fve
+        same = {"claims": as_json(s["claims"]) == saved["claims"],
+                "verdicts": {k: v["verdict"] for k, v in s["cells"].items()} == {k: v["verdict"] for k, v in saved["cells"].items()},
+                "concentrations": all(as_json(s["cells"][k]["frac"]["jspace"]["concentration"]) == v["frac"]["jspace"]["concentration"]
+                                      for k, v in saved["cells"].items())}  # fmt: skip
+    else:
+        reads = read_jsonl(out / "reads.jsonl")
+        s = summarize_readwrite(reads, outcomes, m["cells"])
+        if "parts" in m:
+            s["claims"] = d1_claims(json.loads((run_dir(m["parts"]["run"]) / "summary.json").read_text()), s)
+        extra["reads"] = reads
+        same = {"verdicts": {k: v["verdict"] for k, v in s["cells"].items()} == {k: v["verdict"] for k, v in saved["cells"].items()},
+                "claims": as_json(s.get("claims")) == saved.get("claims")}  # fmt: skip
+    print(name, "recomputed == saved:", json.dumps(same), flush=True)
+    return {
+        "manifest": m,
+        "summary": s,
+        "saved": saved,
+        "same_as_saved": same,
+        "outcomes": outcomes,
+        "cases": cases,
+        **extra,
+    }
+
+
+def new_figure_folder(name: str, out: str | None = None) -> Path:
+    """results/statement_positions/<run>/analysis-<stamp>-figures/ (or under `out`, for a draft outside results/). One
+    figures folder per run (the user's rule): this stage's earlier analysis-*-figures folders of the run are removed
+    first; nothing the run itself wrote is touched."""
+    import shutil
+
+    base = Path(out) / name if out else run_dir(name)
+    for old in sorted(base.glob("analysis-*-figures")) if base.exists() else []:
+        assert old.is_dir(), old
+        assert old.parent == base, old
+        shutil.rmtree(old)
+        print("removed", old)
+    folder = base / f"analysis-{time.strftime('%Y%m%d-%H%M%S')}-figures"
+    folder.mkdir(parents=bool(out), exist_ok=False)
+    return folder
+
+
+def caption(
+    fig,
+    folder: Path,
+    stem: str,
+    made: list[str],
+    title: str,
+    rows: list[tuple[str, str]],
+    data: str,
+    handles: list | None = None,
+    ncols: int | None = None,
+    foot: float | None = None,
+    after: Any = None,
+) -> None:
+    """The caption format of figure_terms.md (bridge_jspace.plotting.finish's labelled rows: What we did / Example /
+    How to read / Control / Data, one short sentence each), then tight layout and PNG at 200 dpi + SVG (finish saves
+    one 150-dpi PNG). `foot`: inches kept free under the panels (legend, colour bar)."""
+    import textwrap
+
+    from bridge_jspace.plotting import INK, MUTED
+
+    h, w = fig.get_figheight(), fig.get_figwidth()
+    fig.text(0.01, 1 - 0.1 / h, title, ha="left", va="top", fontsize=12, color=INK)
+    label_w, y = 1.05, 0.38
+    for label, text in [*rows, ("Data", data)]:
+        lines = textwrap.wrap(text, width=int((w - label_w - 0.2) * 15.5)) or [""]
+        fig.text(0.01, 1 - y / h, label, ha="left", va="top", fontsize=8.5, color=INK, fontweight="bold")
+        fig.text(label_w / w, 1 - y / h, "\n".join(lines), ha="left", va="top", fontsize=8.5, color=MUTED,
+                 linespacing=1.4)  # fmt: skip
+        y += 0.155 * len(lines) + 0.05
+    head = y + 0.1
+    n_rows = -(-len(handles) // (ncols or len(handles))) if handles else 0
+    if handles:
+        fig.legend(handles=handles, loc="lower center", ncols=ncols or len(handles), frameon=False, fontsize=8.5,
+                   labelcolor=INK, bbox_to_anchor=(0.5, 0.0))  # fmt: skip
+    foot = foot if foot is not None else (0.2 + 0.25 * n_rows if handles else 0.1)
+    fig.tight_layout(rect=(0, foot / h, 1, 1 - head / h))
+    if after is not None:  # artists placed in the reserved foot after the layout (a colour bar)
+        after(fig)
+    save(fig, folder, stem, made)
+
+
+def save(fig, folder: Path, stem: str, made: list[str]) -> None:
+    import matplotlib.pyplot as plt
+
+    from bridge_jspace.plotting import SURFACE
+
+    for ext in ("png", "svg"):
+        fig.savefig(folder / f"{stem}.{ext}", dpi=200, facecolor=SURFACE)
+    plt.close(fig)
+    made.append(f"{stem}.png")
+
+
+def model_note(m: dict) -> str:
+    """The model, as figure notes name it (commit and run names stay in report.md and summary.json)."""
+    return m["model"]["repo"].split("/")[-1]
+
+
+SPLIT_PLAIN = {"inside": "carried by the lens-readable part", "around": "carried around it", "inconclusive": "unclear"}
+WRITE_PLAIN = {"written": "changes the answer", "not written": "does not change it", "inconclusive": "unclear",
+               "no data": "not tested"}  # fmt: skip
+
+
+def map_cell(summary: dict, fam: str, s: str, la: int) -> dict | None:
+    return next((r for r in summary["rates"] if r["family"] == fam and r["set"] == s and r["layer"] == la), None)
+
+
+def map_cells(summary: dict, fam: str, s: str, layers: list[int]) -> list[dict]:
+    cells = [map_cell(summary, fam, s, la) for la in layers]
+    assert all(c is not None for c in cells), f"{fam}/{s}: a layer is missing from the map"
+    return [c for c in cells if c is not None]
+
+
+def draw_heat(ax, summary: dict, fam: str, layers: list[int], show_rows: bool) -> Any:
+    from matplotlib.colors import LinearSegmentedColormap
+    from matplotlib.patches import Rectangle
+
+    from bridge_jspace.plotting import GRID, INK, MUTED, SURFACE
+
+    grid = np.full((len(SETS), len(layers)), np.nan)
+    for i, s in enumerate(SETS):
+        for j, la in enumerate(layers):
+            r = map_cell(summary, fam, s, la)
+            if r is None:
+                ax.add_patch(Rectangle((j - 0.5, i - 0.5), 1, 1, facecolor=SURFACE, edgecolor="none"))
+            elif r["cf"]["zero"] == r["n"]:  # C identical here: an exact no-op
+                ax.add_patch(Rectangle((j - 0.5, i - 0.5), 1, 1, facecolor=SURFACE, edgecolor=GRID, hatch="////", lw=0))
+            else:
+                grid[i, j] = r["cf"]["flips"][0]
+    im = ax.imshow(np.ma.masked_invalid(grid), cmap=LinearSegmentedColormap.from_list("seq", SEQ), vmin=0, vmax=1,
+                   aspect="auto", interpolation="nearest")  # fmt: skip
+    for i, s in enumerate(SETS):
+        for j, la in enumerate(layers):
+            r = map_cell(summary, fam, s, la)
+            if r is not None and r["transit"]:
+                ax.scatter(j, i, s=16, c=SURFACE, edgecolors=INK, linewidths=0.7, zorder=3)
+    ax.set_xticks(range(len(layers)), [str(la) for la in layers], fontsize=7, color=MUTED)
+    ax.set_yticks(range(len(SETS)), [SET_TITLE[s] for s in SETS], fontsize=7.5, color=MUTED)
+    ax.tick_params(labelleft=show_rows)  # shared rows: labels on the first column only
+    ax.set_xticks(np.arange(-0.5, len(layers)), minor=True)
+    ax.set_yticks(np.arange(-0.5, len(SETS)), minor=True)
+    ax.grid(which="minor", color=SURFACE, lw=1.5)
+    ax.tick_params(which="minor", length=0)
+    ax.tick_params(which="major", length=0)
+    for side in ax.spines.values():
+        side.set_visible(False)
+    ax.set_title(f"{fam_label(fam)}\n({FAMILY_DESC[fam]})", fontsize=8.5, color=INK, loc="left")
+    return im
+
+
+def map_figures(a: dict, folder: Path, against: str | None) -> list[str]:
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.lines import Line2D
+    from matplotlib.patches import Patch
+
+    from bridge_jspace.plotting import GRID, INK, MUTED, SURFACE, percent_axis, style_axes
+
+    m, s = a["manifest"], a["summary"]
+    layers = list(m["layers"])
+    fams = [f for f in HEAT_ORDER if f in m["families"]]
+    n = m["n_per_family"]
+    made: list[str] = []
+    # 1. the heat map: every family, set and layer (paired readers side by side: BL|BR, BLR|BRL; then RL, RR, B, R)
+    fig, axes = plt.subplots(2, 4, figsize=(17, 10.4), sharey=True)
+    im = None
+    for k, (ax, fam) in enumerate(zip(axes.flat, fams, strict=False)):
+        im = draw_heat(ax, s, fam, layers, show_rows=k % 4 == 0)
+        ax.set_xlabel("layer", fontsize=7.5, color=MUTED)
+    from matplotlib.ticker import PercentFormatter
+
+    assert im is not None
+
+    def colour_bar(fig, im=im) -> None:
+        cax = fig.add_axes((0.06, 0.62 / fig.get_figheight(), 0.25, 0.12 / fig.get_figheight()))
+        cb = fig.colorbar(im, cax=cax, orientation="horizontal")
+        cb.ax.xaxis.set_major_formatter(PercentFormatter(1.0, decimals=0))
+        cb.set_label(FLIPS, fontsize=8, color=MUTED)
+        cb.ax.tick_params(labelsize=7, colors=MUTED)
+        cb.outline.set_visible(False)
+
+    handles = [Line2D([], [], marker="o", ls="", markerfacecolor=SURFACE, markeredgecolor=INK, label="transit cell"),
+               Patch(facecolor=SURFACE, edgecolor=GRID, hatch="////", label="no-op by construction")]  # fmt: skip
+    caption(fig, folder, "heatmap_copy_flips", made, "Where in the prompt, and up to which layer, is the bridge carried?",
+            [("What we did", "Took the alt prompt's hidden states at one layer and pasted them into the org prompt at "
+              "one group of positions only (one row), then read the answer."),
+             ("Example", example_short(first_case(a, "BL"))),
+             ("How to read", f"Each cell: {FLIPS}. Dark = that place still carries the bridge at that layer; dot = "
+              "transit cell (at least 50% and above both controls)."),
+             ("Control", "The off-path control's paste and a random push of the same size at every cell (both stay "
+              "near 0%). Hatched: the alt prompt is identical there (only its question differs), so nothing changes.")],
+            f"{model_note(m)}; {n} items per family; seed 0.", handles=handles, foot=1.25, after=colour_bar)  # fmt: skip
+    # 2. three sets per family with their Wilson intervals and the largest control change
+    fig, axes = plt.subplots(2, 4, figsize=(17, 9.8), sharey=True, sharex=True)
+    lines = (("bind_bridge", BLUE, "o"), ("context", ORANGE, "s"), ("question", AQUA, "D"))
+    for ax, fam in zip(axes.flat, fams, strict=False):
+        style_axes(ax)
+        ctrl = []
+        for st, color, marker in lines:
+            rows = [map_cell(s, fam, st, la) for la in layers]
+            if all(r is None or r["cf"]["zero"] == r["n"] for r in rows):
+                continue
+            y = np.array([r["cf"]["flips"][0] if r else np.nan for r in rows])
+            lo = np.array([r["cf"]["flips"][1] if r else np.nan for r in rows])
+            hi = np.array([r["cf"]["flips"][2] if r else np.nan for r in rows])
+            ax.fill_between(layers, lo, hi, color=color, alpha=0.12, lw=0)
+            ax.plot(layers, y, color=color, lw=2, marker=marker, ms=4, label=SET_TITLE[st])
+            ctrl.append([max([r[c]["changed"][0] for c in ("off", "rand") if r[c]["zero"] < r["n"]] or [0.0]) if r else 0.0
+                         for r in rows])  # fmt: skip
+        if ctrl:
+            ax.plot(layers, np.max(ctrl, axis=0), color=MUTED, lw=1.2, ls="-", marker="",
+                    label="control: largest change (off-path control or random push)")  # fmt: skip
+        else:
+            ax.text(0.5, 0.5, "pastes at the statements change nothing\n(the alt prompt differs only in the question)",
+                    transform=ax.transAxes, ha="center", color=MUTED)  # fmt: skip
+        ax.set_title(f"{fam_label(fam)}\n({FAMILY_DESC[fam]})", fontsize=8.5, color=INK, loc="left")
+        ax.set_ylim(-0.03, 1.03)
+        percent_axis(ax)
+    for ax in axes[1]:
+        ax.set_xlabel("layer", fontsize=8, color=MUTED)
+    for ax in axes[:, 0]:
+        ax.set_ylabel(FLIPS_WRAPPED, fontsize=7.5, color=MUTED)
+    handles = [Line2D([], [], color=c, marker=mk, lw=2, label=SET_TITLE[st]) for st, c, mk in lines]
+    handles.append(
+        Line2D([], [], color=MUTED, lw=1.2, label="control: largest change (off-path control or random push)")
+    )
+    caption(fig, folder, "copy_flips_by_layer", made,
+            "Up to which layer does the sentence stating bridge org decide the answer, and when does the question take over?",
+            [("What we did", f"Pasted the alt prompt's hidden states into the org prompt ({PATCH}) at one place, one "
+              "layer at a time."),
+             ("Example", example_short(first_case(a, "BL"))),
+             ("How to read", f"Each line: {FLIPS}, by the layer of the paste. A line that drops to 0 means that place "
+              "no longer carries the bridge by that layer."),
+             ("Control", "Grey: the larger change of the off-path control's paste and a random push of the same size "
+              "(should stay near 0%).")],
+            f"{model_note(m)}; {n} items per family; bands: Wilson 95%.", handles=handles, ncols=4)  # fmt: skip
+    if against:
+        made += confirm_figure(a, against, folder)
+    return made
+
+
+def first_case(a: dict, fam: str) -> dict:
+    """The run's first case of a family (for the example line), else its first case."""
+    return next((c for c in a["cases"] if c["family"] == fam), a["cases"][0])
+
+
+def transit_agreement(s_new: dict, s_old: dict) -> dict:
+    """Cell by cell, on the layers both maps ran: is the transit verdict the same?"""
+    old = {(r["family"], r["set"], r["layer"]): r for r in s_old["rates"]}
+    out: dict[str, list] = {"both": [], "only_old": [], "only_new": [], "neither": []}
+    for r in s_new["rates"]:
+        q = old.get((r["family"], r["set"], r["layer"]))
+        if q is None or r["cf"]["zero"] == r["n"]:
+            continue
+        key = (
+            "both"
+            if r["transit"] and q["transit"]
+            else "only_old"
+            if q["transit"]
+            else "only_new"
+            if r["transit"]
+            else "neither"
+        )
+        out[key].append((r["family"], r["set"], r["layer"], q["cf"]["flips"], r["cf"]["flips"]))
+    return out
+
+
+def confirm_figure(a: dict, against: str, folder: Path) -> list[str]:
+    import matplotlib.pyplot as plt
+
+    from bridge_jspace.plotting import GRID, MUTED, percent_axis, style_axes
+
+    old = json.loads((run_dir(against) / "summary.json").read_text())
+    om = json.loads((run_dir(against) / "manifest.json").read_text())
+    agree = transit_agreement(a["summary"], old)
+    a["agreement"] = {k: len(v) for k, v in agree.items()}
+    a["disagreements"] = {k: [f"{cell_label(f, s)}, layer {la}: {100 * o[0]:.0f}% -> {100 * nw[0]:.0f}%"
+                              for f, s, la, o, nw in v] for k, v in agree.items() if k.startswith("only")}  # fmt: skip
+    fig, ax = plt.subplots(figsize=(8.5, 9.2))
+    style_axes(ax)
+    ax.plot([0, 1], [0, 1], color=GRID, lw=1)
+    ax.axhline(TRANSIT_FLIPS, color=GRID, lw=1)
+    ax.axvline(TRANSIT_FLIPS, color=GRID, lw=1)
+    styles = {"neither": (MUTED, "o", 12, "transit in neither"), "both": (BLUE, "o", 30, "transit in both"),
+              "only_old": (ORANGE, "s", 40, f"transit only at n={om['n_per_family']}"),
+              "only_new": (AQUA, "D", 40, f"transit only at n={a['manifest']['n_per_family']}")}  # fmt: skip
+    for key, (color, marker, size, label) in styles.items():
+        pts = agree[key]
+        if not pts:
+            continue
+        x = [o[0] for *_, o, _ in pts]
+        y = [nw[0] for *_, nw in pts]
+        ax.errorbar(x, y, xerr=[[o[0] - o[1] for *_, o, _ in pts], [o[2] - o[0] for *_, o, _ in pts]],
+                    yerr=[[nw[0] - nw[1] for *_, nw in pts], [nw[2] - nw[0] for *_, nw in pts]], fmt="none",
+                    ecolor=color, alpha=0.25, lw=0.8)  # fmt: skip
+        ax.scatter(
+            x, y, s=size, c=color, marker=marker, edgecolors="white", linewidths=1, label=f"{label} ({len(pts)})"
+        )
+    listed = [f"{'n=32 only' if key == 'only_old' else 'n=80 only'}: {cell_label(f, st)}, layer {la} "
+              f"({100 * o[0]:.0f}% -> {100 * nw[0]:.0f}%)" for key in ("only_old", "only_new") for f, st, la, o, nw in agree[key]]  # fmt: skip
+    if listed:
+        ax.text(0.02, 0.98, "Cells that changed verdict:\n" + "\n".join(listed), transform=ax.transAxes, va="top",
+                fontsize=7, color=MUTED, linespacing=1.4)  # fmt: skip
+    percent_axis(ax, "x")
+    percent_axis(ax)
+    ax.set_xlabel(f"{FLIPS_WRAPPED}\nfirst map ({om['n_per_family']} items per family)", fontsize=8, color=MUTED)
+    ax.set_ylabel(f"{FLIPS_WRAPPED}\nconfirmatory map ({a['manifest']['n_per_family']} items per family)", fontsize=8,
+                  color=MUTED)  # fmt: skip
+    handles, _ = ax.get_legend_handles_labels()
+    common = sorted(set(a["manifest"]["layers"]) & set(om["layers"]))
+    made: list[str] = []
+    caption(fig, folder, "map_confirmation", made, "Does a larger map find the same transit cells?",
+            [("What we did", f"Ran the same paste map again with {a['manifest']['n_per_family']} items per family "
+              f"(the first {om['n_per_family']} are the first map's) at layers {common[0]}-{common[-1]}."),
+             ("How to read", "Each point: one family x place x layer; on the diagonal = both maps agree. Grey lines at "
+              "50% = the transit threshold."),
+             ("Control", "Cells that changed verdict are listed; a real disagreement would sit far from 50%.")],
+            f"{model_note(a['manifest'])}; bars: Wilson 95%.", handles=handles, ncols=2)  # fmt: skip
+    return made
+
+
+def part_concentration(outcomes: list[dict], fve: list[dict], fam: str, s: str, win: list[int], part: str,
+                       share_of: str = "jspace") -> tuple[float, ...]:  # fmt: skip
+    """suite_split's concentration of one part (its effect / (its variance share x the full copy's effect))."""
+    rows = [o for o in outcomes if o["family"] == fam and o.get("set") == s and o["layer"] in win]
+    mine = [f for f in fve if f.get("family") == fam and f.get("set") == s and f["layer"] in win]
+    per: dict[str, list[float]] = collections.defaultdict(list)
+    for f in mine:
+        if f["what"] == share_of:
+            per[f["name"]].append(f["share"])
+    full = P.scores(rows, "frac", part="full", null=False, source="cf")
+    eff = P.scores(rows, "frac", part=part, null=False, source="cf")
+    return P.concentration(eff, full, {k: statistics.mean(v) for k, v in per.items()})
+
+
+def concentration_rows(a: dict) -> list[dict]:
+    s, outcomes, fve = a["summary"], a["outcomes"], a["fve"]
+    rows = []
+    for key, c in s["cells"].items():
+        fam, st, wname = key.split("/")
+        if wname != "primary":
+            continue
+        rows.append({"family": fam, "set": st, "layers": c["layers"], "n": c["n"], "verdict": c["verdict"],
+                     "jspace": c["frac"]["jspace"]["concentration"], "null": c["calibration"]["rand_omp"]["concentration"],
+                     "matched": part_concentration(outcomes, fve, fam, st, c["layers"], "jspace_matched"),
+                     "full_flips": c["flip"]["means"]["full"], "jspace_flips": c["flip"]["means"]["jspace"],
+                     "full_frac": c["frac"]["means"]["full"], "jspace_frac": c["frac"]["means"]["jspace"],
+                     "share": c["share_median"]["jspace"]})  # fmt: skip
+    rows.sort(key=lambda r: (CELL_ORDER.index(r["family"]), SETS.index(r["set"])))
+    return rows
+
+
+def draw_concentration(ax, rows: list[dict], labels: bool = True, verdicts: bool = True) -> None:
+    from bridge_jspace.plotting import GRID, MUTED, style_axes
+
+    style_axes(ax)
+    ax.grid(axis="y", visible=False)
+    ax.axvline(1.0, color=GRID, lw=1.2)
+    ax.axvline(INSIDE, color=MUTED, lw=0.8, ls=(0, (2, 2)))
+    for i, r in enumerate(rows):
+        for key, color, marker, dy in (
+            ("jspace", BLUE, "o", 0.0),
+            ("matched", CONTROL2, "D", 0.22),
+            ("null", CONTROL, "s", -0.22),
+        ):
+            c = r[key]
+            ax.plot([c[1], c[2]], [i + dy, i + dy], color=color, lw=2, solid_capstyle="round")
+            ax.scatter([c[0]], [i + dy], s=36, c=color, marker=marker, edgecolors="white", linewidths=1, zorder=3)
+        if verdicts:
+            ax.annotate(SPLIT_PLAIN[r["verdict"]], (1.0, i), xycoords=("axes fraction", "data"), xytext=(4, 0),
+                        textcoords="offset points", va="center", fontsize=7.5, color=MUTED)  # fmt: skip
+    ax.set_yticks(range(len(rows)), [f"{cell_label(r['family'], r['set'])}, layers {','.join(map(str, r['layers']))}"
+                                     for r in rows] if labels else [])  # fmt: skip
+    ax.invert_yaxis()
+    ax.set_xlabel("concentration: effect of the part ÷ its share of the patch\n(relative to the whole patch's effect); "
+                  "1 = its fair share", fontsize=8, color=MUTED)  # fmt: skip
+
+
+def parts_figures(a: dict, folder: Path) -> list[str]:
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.lines import Line2D
+
+    from bridge_jspace.plotting import INK, MUTED, percent_axis, style_axes
+    from bridge_jspace.stats import bootstrap_mean
+
+    m = a["manifest"]
+    rows = concentration_rows(a)
+    a["concentration_rows"] = rows
+    made: list[str] = []
+    fig, ax = plt.subplots(figsize=(12, 0.45 * len(rows) + 4.2))
+    draw_concentration(ax, rows)
+    handles = [Line2D([], [], color=c, marker=mk, lw=2, label=lab) for c, mk, lab in
+               ((BLUE, "o", JPART), (CONTROL2, "D", "control: matched piece"),
+                (CONTROL, "s", "control: random-dictionary fit (null)"))]  # fmt: skip
+    caption(fig, folder, "jspace_concentration", made,
+            "Where the bridge is in transit, does the lens-readable part of the patch carry its fair share?",
+            [("What we did", f"Split the {PATCH} into the part the J++ lens can read (its {JPART}: a 25-word fit) and "
+              "the rest, and pasted the lens-readable part alone at the same place and layer."),
+             ("Example", example_short(first_case(a, "BL"))),
+             ("How to read", "Concentration = effect of the part ÷ its share of the patch; 1 = its fair share; right of "
+              "the dashed line (1.2) = the bridge rides on the lens-readable part. Right: the pre-registered verdict."),
+             ("Control", "A matched piece of the same size and angle, and the same fit over a random dictionary; both "
+              "should stay near or below 1.")],
+            f"{model_note(m)}; {m['n_per_family']} items per family; the transit cells at layers 32-40; bars: case "
+            "bootstrap 95%.", handles=handles, ncols=3)  # fmt: skip
+    # paired readers: the identical context patch, a lookup question vs a recall question
+    pairs = [
+        (x, y)
+        for x, y in PAIRS
+        if f"{x}/context/primary" in a["summary"]["cells"] and f"{y}/context/primary" in a["summary"]["cells"]
+    ]
+    if pairs:
+        fig, axes = plt.subplots(1, len(pairs), figsize=(7.5 * len(pairs), 6.6), sharey=True, squeeze=False)
+        parts = (("full", False, "whole patch"), ("jspace", False, JPART), ("not_jspace", False, "the rest"),
+                 ("jspace_matched", False, "control:\nmatched piece"), ("jspace", True, "control: random\npush, same size"))  # fmt: skip
+        stats_out = {}
+        for ax, (lk, rc) in zip(axes[0], pairs, strict=True):
+            style_axes(ax)
+            common = [la for la in a["summary"]["cells"][f"{lk}/context/primary"]["layers"]
+                      if la in a["summary"]["cells"][f"{rc}/context/primary"]["layers"]]  # fmt: skip
+            for fam, color, marker, dx in ((lk, BLUE, "o", -0.12), (rc, ORANGE, "s", 0.12)):
+                rows_f = [
+                    o
+                    for o in a["outcomes"]
+                    if o["family"] == fam and o.get("set") == "context" and o["layer"] in common
+                ]
+                for j, (p, null, _) in enumerate(parts):
+                    vals = list(P.scores(rows_f, "frac", part=p, null=null, source="cf").values())
+                    mean, lo, hi = bootstrap_mean(vals, N_BOOT, BOOT_SEED)
+                    stats_out[f"{fam}/{p}{'/null' if null else ''}"] = (mean, lo, hi, len(vals))
+                    ax.plot([j + dx, j + dx], [lo, hi], color=color, lw=2)
+                    ax.scatter([j + dx], [mean], c=color, marker=marker, s=40, edgecolors="white", linewidths=1, zorder=3,
+                               label=fam_title(fam) if j == 0 else None)  # fmt: skip
+            ax.set_xticks(range(len(parts)), [lab for *_, lab in parts], fontsize=8, color=MUTED)
+            ax.set_title(f"{fam_label(lk)} vs {fam_label(rc)}\nthe whole context, layers {','.join(map(str, common))}",
+                         fontsize=9, color=INK, loc="left")  # fmt: skip
+            percent_axis(ax)
+            ax.legend(frameon=False, fontsize=8, loc="upper center", bbox_to_anchor=(0.5, -0.16))
+        axes[0][0].set_ylabel("way moved from answer org to answer alt\n(logit margin, 100% = all the way)", fontsize=8,
+                              color=MUTED)  # fmt: skip
+        a["paired_means"] = stats_out
+        c0 = first_case(a, "BL")
+        caption(fig, folder, "paired_readers", made,
+                "Same paste, two questions: does a lookup in the prompt use the lens-readable part of the stated bridge?",
+                [("What we did", "Pasted the alt prompt's states over the whole context into two prompts that differ only "
+                  "in the question, then pasted only the lens-readable part, or only the rest."),
+                 ("Example", f"“... {c0['cue']}'s pet is a {c0['bridge']}. ... Which locker belongs to {c0['cue']}'s "
+                  f"pet?” ({fam_label('BL')}) vs “... How many legs does {c0['cue']}'s pet have?” ({fam_label('BR')}); "
+                  f"alt prompt: “{c0['cue']}'s pet is a {c0['cf_bridge']}.” in both."),
+                 ("How to read", "Each point: how far the answer moves from answer org to answer alt. Same paste, very "
+                  "different use of its lens-readable part = the question decides what is read."),
+                 ("Control", "A matched piece of the lens-readable part's size and a random push of that size; both "
+                  "should stay near 0.")],
+                f"{model_note(m)}; {m['n_per_family']} items per family, the same scenes in both; bars: bootstrap 95% "
+                "over items. The pasted states are identical for the two-step pair; in the three-step pair the tables "
+                "differ, so only the sentences stating the pets are shared.", foot=0.15)  # fmt: skip
+    return made
+
+
+def write_rows(a: dict) -> list[dict]:
+    out = []
+    for key, c in a["summary"]["cells"].items():
+        fam, st, wname = key.split("/")
+        if wname != "primary":
+            continue
+        rows = [o for o in a["outcomes"] if o["family"] == fam and o["set"] == st and o["layer"] in c["layers"]]
+        per = {}
+        for pname in ("copy", *(f"{w}_x{sc:g}" for w in ("lens", "random") for sc in SCALES)):
+            sel = [o for o in rows if o["part"] == pname]
+            per[pname] = wilson(sum(o["role"] == "b" for o in sel), len(sel))
+        out.append({"family": fam, "set": st, "layers": c["layers"], "n": c["n"], "verdict": c["verdict"], "flips": per,
+                    "read_top10": c["read_top10"], "x_top10": c["x_top10"]})  # fmt: skip
+    out.sort(key=lambda r: (CELL_ORDER.index(r["family"]), SETS.index(r["set"])))
+    return out
+
+
+def readwrite_figures(a: dict, folder: Path) -> list[str]:
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    from bridge_jspace.plotting import INK, MUTED, percent_axis, style_axes
+
+    m = a["manifest"]
+    rows = write_rows(a)
+    a["write_rows"] = rows
+    made: list[str] = []
+    ncol = 4
+    nrow = (len(rows) + ncol - 1) // ncol
+    fig, axes = plt.subplots(nrow, ncol, figsize=(16, 3.4 * nrow + 3.2), sharey=True, squeeze=False)
+    xs = np.log2(SCALES)
+    for ax, r in zip(axes.flat, rows, strict=False):
+        style_axes(ax)
+        for w, color, marker, lab in (
+            ("lens", BLUE, "o", "lens push (bridge alt − bridge org)"),
+            ("random", CONTROL, "s", "control: random push (same size)"),
+        ):
+            c = [r["flips"][f"{w}_x{sc:g}"] for sc in SCALES]
+            ax.fill_between(xs, [x[1] for x in c], [x[2] for x in c], color=color, alpha=0.12, lw=0)
+            ax.plot(xs, [x[0] for x in c], color=color, lw=2, marker=marker, ms=4, label=lab)
+        ax.axhline(r["flips"]["copy"][0], color=ORANGE, lw=1.2, ls=(0, (3, 2)), label=f"reference: the {PATCH}")
+        ax.set_xticks(xs, [f"{sc:g}x" for sc in SCALES], fontsize=7.5)
+        ax.set_ylim(-0.03, 1.03)
+        percent_axis(ax)
+        ax.set_title(f"{cell_label(r['family'], r['set'])}\nlayers {','.join(map(str, r['layers']))}: the lens push "
+                     f"{WRITE_PLAIN[r['verdict']]}",
+                     fontsize=8.5, color=INK, loc="left")  # fmt: skip
+    for ax in axes.flat[len(rows) :]:
+        ax.set_visible(False)
+    for ax in axes[:, 0]:
+        ax.set_ylabel(FLIPS_WRAPPED, fontsize=7.5, color=MUTED)
+    for ax in axes[-1]:
+        ax.set_xlabel("push size (times the paste's size at each position)", fontsize=8, color=MUTED)
+    handles, _ = axes.flat[0].get_legend_handles_labels()
+    caption(fig, folder, "lens_write", made,
+            "Can a lens push (bridge alt − bridge org) change the answer where the bridge is in transit?",
+            [("What we did", "Added the J++ lens's direction bridge alt − bridge org at the positions and layers where "
+              "the bridge is in transit, at 0.5 to 16 times the size of the paste from the alt prompt there."),
+             ("Example", example_short(first_case(a, "BL"))),
+             ("How to read", f"Blue: {FLIPS} after the lens push; orange dashed: what the full paste does. Panel "
+              "titles end with the pre-registered verdict."),
+             ("Control", "Grey: a random push of the same size (should stay near 0% unless the push is so big it "
+              "breaks the answer).")],
+            f"{model_note(m)}; {m['n_per_family']} items per family; the transit cells at layers 32-40; bands: Wilson "
+            "95%.", handles=handles, ncols=3)  # fmt: skip
+    if "parts" in m:
+        made += headline_figure(a, folder)
+    return made
+
+
+def headline_figure(a: dict, folder: Path) -> list[str]:
+    """The thread's headline: where BL's bridge travels (map), and at those cells the J-space split and the lens write."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.lines import Line2D
+
+    from bridge_jspace.plotting import INK, MUTED, percent_axis, shade_band, style_axes
+
+    m = a["manifest"]
+    mp = stage_analyze(m["map"]["run"])
+    pa = stage_analyze(m["parts"]["run"])
+    crows = concentration_rows(pa)
+    wrows = {(r["family"], r["set"]): r for r in a["write_rows"]}
+    layers = list(mp["manifest"]["layers"])
+    fig, (ax0, ax1, ax2) = plt.subplots(1, 3, figsize=(18, 9.0), gridspec_kw={"width_ratios": [1.0, 0.75, 0.6]})
+    style_axes(ax0)
+    shade_band(ax0, 32, 40, label=False)
+    for st, color, marker in (("bind_bridge", BLUE, "o"), ("context", ORANGE, "s"), ("question", AQUA, "D")):
+        rows = map_cells(mp["summary"], "BL", st, layers)
+        ax0.fill_between(layers, [r["cf"]["flips"][1] for r in rows], [r["cf"]["flips"][2] for r in rows], color=color,
+                         alpha=0.12, lw=0)  # fmt: skip
+        ax0.plot(
+            layers, [r["cf"]["flips"][0] for r in rows], color=color, lw=2, marker=marker, ms=4, label=SET_TITLE[st]
+        )
+    br = map_cells(mp["summary"], "BR", "bind_bridge", layers)
+    ax0.plot(layers, [r["cf"]["flips"][0] for r in br], color=BLUE, lw=1.2, ls=(0, (3, 2)),
+             label=f"for comparison, {fam_label('BR')}: sentence stating bridge org")  # fmt: skip
+    ax0.set_ylim(-0.03, 1.03)
+    percent_axis(ax0)
+    ax0.set_xlabel("layer", fontsize=8, color=MUTED)
+    ax0.set_ylabel(FLIPS_WRAPPED, fontsize=7.5, color=MUTED)
+    ax0.set_title(f"A. Paste from the alt prompt at one place ({fam_label('BL')})", fontsize=9.5, color=INK,
+                  loc="left")  # fmt: skip
+    ax0.legend(frameon=False, fontsize=7.5, loc="upper left", bbox_to_anchor=(0, -0.1), ncol=2)
+    keep = [r for r in crows if r["set"] in ("context", "question")]
+    draw_concentration(ax1, keep, verdicts=False)
+    ax1.set_title("B. Is the bridge carried by\nthe lens-readable part there?", fontsize=9.5, color=INK, loc="left")
+    ax1.set_xlabel("concentration\n(1 = its fair share)", fontsize=8, color=MUTED)
+    style_axes(ax2)
+    ax2.grid(axis="y", visible=False)
+    for i, r in enumerate(keep):
+        w = wrows.get((r["family"], r["set"]))
+        if w is None:
+            continue
+        for key, color, marker, dy in (("copy", ORANGE, "D", -0.27), ("lens_x1", BLUE, "o", -0.09), ("lens_x4", BLUE, "^", 0.09),
+                                       ("random_x4", CONTROL, "s", 0.27)):  # fmt: skip
+            c = w["flips"][key]
+            ax2.plot([c[1], c[2]], [i + dy, i + dy], color=color, lw=2)
+            ax2.scatter([c[0]], [i + dy], c=color, marker=marker, s=34, edgecolors="white", linewidths=1, zorder=3)
+        ax2.annotate(f"bridge {SPLIT_PLAIN[r['verdict']]};\nlens push {WRITE_PLAIN[w['verdict']]}", (1.0, i),
+                     xycoords=("axes fraction", "data"),
+                     xytext=(5, 0), textcoords="offset points", va="center", fontsize=7, color=MUTED)  # fmt: skip
+    ax2.set_yticks(range(len(keep)), [])
+    ax2.set_ylim(len(keep) - 0.5, -0.5)
+    ax2.set_xlim(-0.03, 1.03)
+    percent_axis(ax2, "x")
+    ax2.set_xlabel(FLIPS_WRAPPED, fontsize=7.5, color=MUTED)
+    ax2.set_title("C. Can a lens push\n(bridge alt − bridge org) do it?", fontsize=9.5, color=INK, loc="left")
+    handles = [Line2D([], [], color=c, marker=mk, lw=2, label=lab) for c, mk, lab in
+               ((BLUE, "o", f"B: {JPART} / C: lens push at the paste's size"), (BLUE, "^", "C: lens push, 4x"),
+                (ORANGE, "D", "C: the full paste from the alt prompt"), (CONTROL2, "D", "B, control: matched piece"),
+                (CONTROL, "s", "B, control: random-dictionary fit (null) / C, control: random push, 4x"))]  # fmt: skip
+    made: list[str] = []
+    caption(fig, folder, "headline_d1", made,
+            "Is 'prompt lookups go around the lens' an artefact of measuring only at the question?",
+            [("What we did", "Pasted the alt prompt's hidden states into the org prompt at one place (A); where that "
+              "flips the answer, pasted only the part the lens can read (B), or pushed along the lens's direction (C)."),
+             ("Example", example_short(first_case(mp, "BL"))),
+             ("How to read", f"A: {FLIPS} by layer; the sentence stating bridge org stops mattering by layer 28, the "
+              "whole context carries the bridge to layer 44, the question only from 52. B: 1 = the lens-readable part "
+              "does its fair share; right of the dashed line (1.2) = the bridge rides on it. C: flips; right: verdicts."),
+             ("Control", "B: a matched piece and a random-dictionary fit (grey). C: a random push of the same size "
+              "(grey). Both should stay low.")],
+            f"{model_note(m)}; map: {mp['manifest']['n_per_family']} items per family, layers 0-60; B and C: the transit "
+            f"cells at layers 32-40 (grey band in A), {m['n_per_family']} items per family; Wilson / bootstrap 95%.",
+            handles=handles, ncols=3, after=lambda fig: close_gap(ax1, ax2, 0.05))  # fmt: skip
+    return made
+
+
+def close_gap(left, right, gap: float = 0.015) -> None:
+    """Pull `right` next to `left` (tight_layout spaces every column for the widest tick labels: B's row names)."""
+    lp, rp = left.get_position(), right.get_position()
+    right.set_position((lp.x1 + gap, rp.y0, rp.width * 1.15, rp.height))
+
+
+def stage_figures(name: str, against: str | None, out: str | None = None) -> None:
+    a = stage_analyze(name)
+    folder = new_figure_folder(name, out)
+    kind = a["manifest"]["kind"]
+    if kind == "map":
+        made = map_figures(a, folder, against)
+    elif kind == "parts":
+        made = parts_figures(a, folder)
+    else:
+        made = readwrite_figures(a, folder)
+    blob = {"exp": EXP, "run": name, "kind": kind, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "recomputed_equals_saved": a["same_as_saved"], "figures": made}  # fmt: skip
+    for key in ("agreement", "disagreements", "concentration_rows", "paired_means", "write_rows"):
+        if key in a:
+            blob[key] = as_json(a[key])
+    s = a["summary"]
+    if kind == "map":
+        blob.update(transit=s["transit"], handoff=s["handoff"], sanity=s["sanity"], validation=s["validation"])
+    else:
+        blob["claims"] = s.get("claims")
+    (folder / "summary.json").write_text(json.dumps(blob, indent=2) + "\n")
+    (folder / "report.md").write_text(run_report(a, blob, folder))
+    print("wrote", folder, made)
+
+
+def gates(s: dict, kind: str) -> list[str]:
+    if kind != "map":
+        return ["no gate of its own (reads without greedy validation); the map run's gates apply"]
+    san, v = s["sanity"], s["validation"]
+    return [
+        f"identity (the org prompt's own states patched back in) keeps the org prompt's top token: "
+        f"{san['identity']['top_is_clean_top']:.0%} of {san['identity']['n']}; logit-margin difference from an unedited "
+        f"read in the same batch: max {san['identity']['max_abs_ld_minus_unedited_same_batch']}",
+        f"the alt prompt's states patched at every position at the first map layer give the alt prompt's top token: "
+        f"{san['all0']['top_is_C_top']:.0%} of {san['all0']['n']} (logit-margin difference max "
+        f"{san['all0']['max_abs_ld_minus_C']}, bf16 batch rounding)",
+        f"memory-bridge families (alt prompt differs only in the question): patches at the statements are exactly zero "
+        f"(causality violations: {s.get('n_causality_violations', 0)}); {san['noop_statements']['n']} of them read anyway: "
+        f"difference from the identity max {san['noop_statements']['max_abs_ld_minus_identity']}",
+        f"read vs greedy agreement: {v['agree']:.2%} of {v['n']} edited runs (rule: >= 99%)",
+    ]  # fmt: skip
+
+
+CLAIM_TESTED = {
+    "map": "Where in the prompt (which positions) and up to which layer does a patch from the alt prompt change the "
+    "answer to answer alt?",
+    "parts": "Where the bridge is in transit, is the patch's effect carried by its lens-readable part?",
+    "readwrite": "Where the bridge is in transit, does the lens read bridge org there, and does a lens push (bridge alt "
+    "− bridge org) change the answer?",
+}
+
+
+def claims_text(claims: dict | None) -> list[str]:
+    """The decision rule's per-family outcome in the outside reader's terms."""
+    out = []
+    for fam, c in (claims or {}).items():
+        if not isinstance(c, dict):
+            out.append(f"- {fam_label(fam)}: {c}")
+            continue
+        half = c.get("jspace", c)
+        sets = half["statement_verdicts"]
+        parts = [f"at {SET_TITLE[s]}: bridge {SPLIT_PLAIN[v]} (rule: {v}); positive control "
+                 f"({fam_label('B')}) there: {SPLIT_PLAIN.get(half['positive_control'].get(s) or '', 'not in transit')}"
+                 for s, v in sets.items()]  # fmt: skip
+        if "lens_write" in c:
+            parts += [f"lens push at {SET_TITLE[s]}: {WRITE_PLAIN[v]} (rule: {v})" for s, v in c["lens_write"].items()]
+            parts.append(f"combined verdict: {c['verdict']}")
+        else:
+            parts.append(f"split half of the rule: {half['jspace_half']}")
+        out.append(f"- {fam_label(fam)}: " + "; ".join(parts))
+    return out
+
+
+def run_report(a: dict, blob: dict, folder: Path) -> str:
+    """The AGENTS.md report block for one run, from the recomputed summary (numbers only from saved files)."""
+    m, s, kind = a["manifest"], a["summary"], a["manifest"]["kind"]
+    rel = folder.relative_to(pins.REPO_ROOT) if folder.is_relative_to(pins.REPO_ROOT) else folder
+    lines = [f"# {EXP} / {m['run']}: analysis", "",
+             f"EXP {EXP}/{m['run']} @ {m['code']['sha'][:7]}{' (dirty tree)' if m['code']['dirty'] else ''} | model "
+             f"{m['model']['repo']} | n={m['n_per_family']} per family ({'; '.join(map(fam_label, m['families']))}) | seeds=[0]",
+             f"Claim tested: {CLAIM_TESTED[kind]}", ""]  # fmt: skip
+    if kind == "map":
+        bl = {la: map_cell(s, "BL", "context", la) for la in m["layers"]}
+        q = {la: map_cell(s, "BL", "question", la) for la in m["layers"]}
+        mid = [la for la in m["layers"] if PRIMARY_LO <= la < ONSET]
+        if mid:
+            la = mid[len(mid) // 2]
+            c, qq = bl[la], q[la]
+            if c is not None and qq is not None:
+                f, g = c["cf"]["flips"], qq["cf"]["flips"]
+                r = c["rand"]["changed"]
+                lines.append(f"Headline ({fam_label('BL')}): {FLIPS} after a {PATCH} at the whole context, layer {la} "
+                             f"= {f[0]:.0%} [{f[1]:.0%}, {f[2]:.0%}]   Baseline (the same patch at the question and all "
+                             f"after it): {g[0]:.0%} [{g[1]:.0%}, {g[2]:.0%}]   Control (random push, same size): "
+                             f"{r[0]:.0%} [{max(0.0, r[1]):.0%}, {r[2]:.0%}]")  # fmt: skip
+        lines += ["", f"Transit cells (rule: {FLIPS} >= {TRANSIT_FLIPS:.0%}, Wilson lower bound above every control): "
+                  f"{json.dumps(plain(s['transit']), ensure_ascii=False)}",
+                  f"Handoff: {json.dumps(plain(s['handoff']), ensure_ascii=False)}"]  # fmt: skip
+        if "agreement" in a:
+            lines += ["", f"Against the first map: {json.dumps(a['agreement'])}; disagreements: "
+                      f"{json.dumps(a['disagreements'], ensure_ascii=False)}"]  # fmt: skip
+    elif kind == "parts":
+        for r in a.get("concentration_rows", []):
+            if r["family"] in LOOKUP_USED_BOUND or r["family"] in POSITIVE:
+                lines.append(f"- {cell_label(r['family'], r['set'])} (layers {r['layers']}): concentration of the "
+                             f"{JPART} {r['jspace'][0]:.2f} [{r['jspace'][1]:.2f}, {r['jspace'][2]:.2f}]; random-dictionary "
+                             f"fit (null) {r['null'][0]:.2f} [{r['null'][1]:.2f}, {r['null'][2]:.2f}]; matched piece "
+                             f"(control) {r['matched'][0]:.2f} [{r['matched'][1]:.2f}, {r['matched'][2]:.2f}]; {FLIPS}: "
+                             f"{JPART} alone {r['jspace_flips']:.0%}, whole patch {r['full_flips']:.0%}; bridge "
+                             f"{SPLIT_PLAIN[r['verdict']]} (rule: {r['verdict']})")  # fmt: skip
+        for key, v in s["pairs"].items():
+            fams, st = key.split("/")
+            hi_fam, lo_fam = fams.split("-")
+            d = v["concentration_diff"]
+            lines.append(f"- Same patch, two questions ({SET_TITLE[st]}, layers {v['layers']}): concentration of "
+                         f"{fam_label(hi_fam)} minus {fam_label(lo_fam)} = {d[0]:.2f} [{d[1]:.2f}, {d[2]:.2f}] (scene "
+                         f"bootstrap); largest share difference between the two patches {v['same_patch_max_share_diff']}")  # fmt: skip
+        lines += ["", "Split half of the decision rule:", *claims_text(s["claims"])]
+    else:
+        for r in a.get("write_rows", []):
+            fl = r["flips"]
+            lines.append(f"- {cell_label(r['family'], r['set'])} (layers {r['layers']}), {FLIPS}: {PATCH} "
+                         f"{fl['copy'][0]:.0%}; lens push 1x {fl['lens_x1'][0]:.0%} [{fl['lens_x1'][1]:.0%}, "
+                         f"{fl['lens_x1'][2]:.0%}], 4x {fl['lens_x4'][0]:.0%}, 16x {fl['lens_x16'][0]:.0%}; random push "
+                         f"(control) 4x {fl['random_x4'][0]:.0%}, 16x {fl['random_x16'][0]:.0%}; lens reads bridge org in "
+                         f"its top 10 {r['read_top10']:.0%} (bridge alt {r['x_top10']:.0%}); the lens push "
+                         f"{WRITE_PLAIN[r['verdict']]} (rule: {r['verdict']})")  # fmt: skip
+        lines += ["", "Combined decision rule (with the split run):", *claims_text(s.get("claims"))]
+    lines += ["", f"Figures: {', '.join(f'{rel}/{f}' for f in blob['figures'])}", "", "Gates:"]
+    lines += [f"- {g}" for g in gates({**s, **{k: a["saved"].get(k) for k in ("n_causality_violations",)}}, kind)]
+    lines += ["", f"Recomputed from the saved outputs == the run's summary.json: {json.dumps(a['same_as_saved'])}",
+              "", "Status: UNVERIFIED", ""]  # fmt: skip
+    return "\n".join(lines)
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("stage", choices=["plan", "map", "parts", "readwrite", "examples"])
+    ap.add_argument("stage", choices=["plan", "map", "parts", "readwrite", "examples", "analyze", "figures"])
+    ap.add_argument("--against", default=None, help="figures, map runs: an earlier map to compare transit cells with")
+    ap.add_argument("--out", default=None, help="figures: write the folder under this directory (a draft)")
     ap.add_argument("--name", required=True)
     ap.add_argument("--why")
     ap.add_argument("--map", help="parts / readwrite: the map run whose transit cells to use")
@@ -1415,5 +2301,9 @@ if __name__ == "__main__":
         assert args.why, "readwrite needs --why"
         assert args.map, "readwrite needs --map"
         stage_readwrite(args.name, args.map, args.why, args.parts, parse_force(args.force))
+    elif args.stage == "analyze":
+        stage_analyze(args.name)
+    elif args.stage == "figures":
+        stage_figures(args.name, args.against, args.out)
     else:
         stage_examples(args.name, args.k, args.seed)

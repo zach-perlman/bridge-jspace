@@ -13,6 +13,7 @@ command: >-
   && uv run python scripts/attn_knockout.py run --name d2_ko_tie_country_v1
   && uv run python scripts/attn_knockout.py summarise --name d2_ko_tie_country_v1
 examples_command: uv run python scripts/attn_knockout.py examples --name d2_ko_tie_country_v1 --k 3
+figures_command: uv run python scripts/attn_knockout.py figures --name d2_ko_tie_country_v1
 question: In the three-step families, where the use of the bridge and the source of the answer come apart, and in the
   paper-style countries (B bound, R recalled), which statements must the question and final positions read directly,
   and when?

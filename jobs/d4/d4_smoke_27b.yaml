@@ -8,6 +8,7 @@ command: >-
   --why "D4 27B smoke: every early_push condition end to end on n=4 per family (zero-scale no-op included) before the main run"
   --n 4 --scales 0 4 8 16 --embed-scales 0 1 4 --textloss-pairs 1
 examples_command: uv run python scripts/early_push.py examples --name d4_smoke_27b
+figures_command: uv run python scripts/early_push.py figures --name d4_smoke_27b
 question: Does every early_push condition (lens / random pushes at r, a, b, nb, d; embedding pushes; C copies; the
   edited-input patch; the five text edits; O pushes; plain-text loss) run on Qwen3.6-27B with the hook checks passing?
 why_it_matters: 'Fail-fast gate for d4_push_v1 (D4: is the early lens push that flips RL/BL at layers 16-28 an input-word

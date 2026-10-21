@@ -77,6 +77,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.plotting import TERM as PLOT_TERM
 from bridge_jspace.stats import wilson
 from bridge_jspace.tokens import raw_encoding
 from scripts import control_split as CS
@@ -973,9 +974,603 @@ def stage_examples(name: str, k: int = 3, seed: int = EXAMPLE_SEED) -> None:
     print("wrote", path, len(examples), "examples")
 
 
+# ---- figures (CPU only, from a finished run) --------------------------------------------------------------------------
+
+SCALE_COLOURS = {4.0: "#86b6ef", 8.0: "#2a78d6", 16.0: "#104281"}  # one hue light -> dark (ordinal; validated)
+CALL_COLOURS = {"inject": "#2a78d6", "write": "#eb6834", "inconclusive": "#898781", "untestable": "#898781"}
+EDIT_COLOURS = dict(zip(EDITS, ("#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4"), strict=True))  # slot order
+ROLE_COLOURS = {"A": "#2a78d6", "bO": "#eb6834", "b": "#1baf7a", "other": "#eda100"}
+BAR = "#52514e"
+# Plain names for figures and reports (the user's rule, scratchpad figure_terms.md: an outside reader knows only bridge
+# org / alt, answer org / alt, org prompt / alt prompt; families via plotting.family_label; no condition codes)
+SUBSET_TITLES = {"a": "whole question", "b": "subject phrase only", "nb": "question without\nthe subject phrase",
+                 "d": "last tokens\n(chat template)", "r": "after the cue, sized like\nthe alt prompt's change"}  # fmt: skip
+EDIT_WORDS = {"E-name": "name bridge alt directly", "E-insert": "add bridge alt next to the cue",
+              "E-head": "swap the noun for bridge alt", "E-cue": "alt prompt", "E-unrelated": "mention bridge alt elsewhere"}  # fmt: skip
+FLIPS = PLOT_TERM["flips"]  # the user's exact wording for flip rates on every axis and legend
+
+
+def wrap(text: str, width: int) -> str:
+    import textwrap
+
+    return "\n".join(textwrap.wrap(text, width))
+
+
+def example_line(cases: list[dict], both: bool = False, off: bool = False) -> str:
+    """One real prompt pair in the outside reader's terms (org prompt / alt prompt, bridge and answer org / alt)."""
+    rl = next((c for c in cases if c["family"] == "RL"), None)
+    if rl is None:
+        return ""
+    bl = next((c for c in cases if c["family"] == "BL" and c["scene"] == rl["scene"]), None)
+    cue_alt = re.search(r"known for (.+?)\?", rl["prompts"]["E-cue"])
+    out = (f"\"... The {rl['bridge']}'s locker is {rl['answer']}. ... Which locker belongs to the animal known for "
+           f"{rl['subject'].split('known for ')[-1]}?\" -> answer org {rl['answer']} (bridge org {rl['bridge']}); alt prompt "
+           f"\"... known for {cue_alt[1] if cue_alt else '...'}?\" -> answer alt {rl['cf_answer']} (bridge alt {rl['cf_bridge']}).")  # fmt: skip
+    if both and bl:
+        out += (f" Same scene, prompt → prompt: \"Which locker belongs to {bl['subject']}?\" (the {bl['bridge']} in the org "
+                f"prompt, the {bl['cf_bridge']} in the alt prompt).")  # fmt: skip
+    if off:
+        ct = rl["cand_text"]
+        out += (f" Off-path control: the lockers of the {rl['cf_bridge']} and a third animal swapped, so answer org stays "
+                f"{rl['answer']} and its answer alt is {ct['bO']} (not {rl['cf_answer']}).")  # fmt: skip
+    return out
+
+
+def err(v: np.ndarray) -> np.ndarray:
+    """[[below], [above]] error-bar lengths from rows (estimate, lo, hi), clipped at 0 (Wilson's float edges)."""
+    v = np.asarray(v, float)
+    return np.clip(np.stack([v[:, 0] - v[:, 1], v[:, 2] - v[:, 0]]), 0, None)
+
+
+def wilson_of(cell: dict) -> list[float]:
+    return list(wilson(sum(o["role"] == "b" for o in cell.values()), len(cell))) if cell else [math.nan] * 3
+
+
+def scene_diff(idx: dict, key: tuple, scene_of: dict, f1: str = "BL", f2: str = "RL") -> list[float]:
+    """flips(f1) - flips(f2) under one condition, paired by scene, item bootstrap."""
+    a_ = {scene_of[n]: o for n, o in idx[f1].get(key, {}).items()}
+    b_ = {scene_of[n]: o for n, o in idx[f2].get(key, {}).items()}
+    x, y = paired(a_, b_)
+    return boot(lambda u, v: u.mean() - v.mean(), [x, y]) if len(x) else [math.nan] * 3
+
+
+def state_rows(states: list[dict], fam: str, **where) -> list[dict]:
+    return [s for s in states if s["family"] == fam and all(s.get(k) == v for k, v in where.items())]
+
+
+def mean_ci(vals) -> list[float]:
+    v = np.array([x for x in vals if x is not None and not math.isnan(x)], float)
+    return boot(lambda u: u.mean(), [v]) if len(v) else [math.nan] * 3
+
+
+def stage_figures(name: str) -> None:
+    """Figures and the decision rule re-applied, into <run>/analysis-<stamp>-figures/ (summary.json, PNG + SVG)."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.lines import Line2D
+    from matplotlib.patches import Patch
+
+    from bridge_jspace import plotting as PL
+
+    m, cases, outcomes, states, tl = load_run(name)
+    cfg = {
+        **m["config"],
+        "scales": [s for s in m["config"]["scales"] if s > 0],
+    }  # a smoke's zero scale is a no-op check
+    out = RESULTS / name / f"analysis-{time.strftime('%Y%m%d-%H%M%S')}-figures"
+    assert not out.exists(), f"{out} exists"
+    idx = index(outcomes)
+    scene_of = {c["id"]: c["scene"] for c in cases}
+    sm = summarize(cases, outcomes, states, cfg, {"textloss": tl})  # the pre-registered rule, re-applied
+    p_star = sm["P*"]
+    assert p_star, "no P*"
+    la_s, sc_s = p_star[3], p_star[4]
+    pb_key = push_key(la_s, sc_s, "b")
+    n_of = {f: len({c["id"] for c in cases if c["family"] == f}) for f in idx}
+    keys = [*cfg["layers"], "band"]
+    xs = np.arange(len(keys))
+    xl = [str(k) for k in cfg["layers"]] + ["all 4"]
+    figs: list[str] = []
+
+    def save(fig, stem: str, title: str, explain: list[tuple[str, str]], data: str, handles=None, ncols=None,
+             manual: dict | None = None) -> None:  # fmt: skip
+        """plotting.finish's frame with its labelled caption rows (What we did / Example / How to read / Control / Data),
+        legend below; saved as 200-dpi PNG and SVG (finish saves a 150-dpi PNG only)."""
+        import textwrap
+
+        h, w = fig.get_figheight(), fig.get_figwidth()
+        fig.text(0.01, 1 - 0.1 / h, title, ha="left", va="top", fontsize=12, color=PL.INK)
+        label_w, y = 1.05, 0.38
+        for label, text in [*explain, ("Data", data)]:
+            lines = textwrap.wrap(text, width=int((w - label_w - 0.2) * 15.5)) or [""]
+            fig.text(0.01, 1 - y / h, label, ha="left", va="top", fontsize=8.5, color=PL.INK, fontweight="bold")
+            fig.text(label_w / w, 1 - y / h, "\n".join(lines), ha="left", va="top", fontsize=8.5, color=PL.MUTED,
+                     linespacing=1.4)  # fmt: skip
+            y += 0.155 * len(lines) + 0.05
+        head = y + 0.1
+        rows_ = -(-len(handles) // (ncols or len(handles))) if handles else 0
+        foot = 0.2 + 0.25 * rows_ if handles else 0.05
+        if handles:
+            fig.legend(handles=handles, loc="lower center", ncols=ncols or len(handles), frameon=False, fontsize=9,
+                       handlelength=2.6, labelcolor=PL.INK, bbox_to_anchor=(0.5, 0.0))  # fmt: skip
+        if manual is None:
+            fig.tight_layout(rect=(0, foot / h, 1, 1 - head / h))
+        else:  # long tick labels: tight_layout would shrink every panel to fit them
+            fig.subplots_adjust(bottom=(foot + 0.45) / h, top=1 - (head + 0.3) / h, **manual)
+        out.mkdir(exist_ok=True)  # created at the first figure, so a failed run leaves no empty folder
+        for ext in ("png", "svg"):
+            fig.savefig(out / f"{stem}.{ext}", dpi=200, facecolor=PL.SURFACE)
+        plt.close(fig)
+        figs.append(f"{stem}.png")
+
+    # (post hoc, not pre-registered) the K2/K3 statistics on input edits, which inject by construction
+    post: dict[str, Any] = {"K3_on_input_edits": {}}
+    k3_rows = {
+        "the tested push (whole question; pre-registered)": p_star,
+        "lens push on the subject phrase only, same layer and size": pb_key,
+        f"lens push on the subject phrase only, layer {cfg['layers'][0]}, {max(cfg['scales']):g}x": push_key(cfg["layers"][0], max(cfg["scales"]), "b"),
+        "add bridge alt's word to the input (embedding)": ("clean", "emb_add", "lens", -1, 1.0, "b", None),
+        "add (bridge alt − bridge org) to the input (embedding)": ("clean", "emb_diff", "lens", -1, 1.0, "b", None),
+        "text: swap the noun for bridge alt": edit_key("E-head"),
+        "text: add bridge alt next to the cue": edit_key("E-insert"),
+        "text: name bridge alt directly": edit_key("E-name"),
+    }  # fmt: skip
+    for label, key in k3_rows.items():
+        post["K3_on_input_edits"][label] = scene_diff(idx, key, scene_of)
+    for fam in ("RL", "RR"):
+        rows = state_rows(states, fam, kind="push", dir="lens", layer=la_s, scale=sc_s, subset="b")
+        rnd = state_rows(states, fam, kind="push", dir="random", layer=la_s, scale=sc_s, subset="b")
+        onset = [i for i, la in enumerate(cfg["down"]) if la < P.ANSWER_ONSET]
+        alt = [statistics.mean(r_["cos"]["E-head"]["final"][i] for i in onset) - statistics.mean(r_["cos"]["E-cue"]["final"][i] for i in onset)
+               for r_ in rows if "E-head" in r_["cos"] and None not in [r_["cos"][e]["final"][i] for e in ("E-head", "E-cue") for i in onset]]  # fmt: skip
+        flips = {n: o["role"] == "b" for n, o in idx[fam].get(pb_key, {}).items()}
+        tr = {k_: [] for k_ in ("flipped", "kept")}
+        for r_ in rows:
+            v = [t[0] for t in r_["transit"] if t[0] is not None]
+            if v:
+                tr["flipped" if flips.get(r_["name"]) else "kept"].append(statistics.mean(v))
+        post[fam] = {"K4_alt_E-head_minus_E-cue": mean_ci(alt),
+                     "transit_P*_b_by_flip": {k_: mean_ci(v) for k_, v in tr.items()},
+                     "n_flipped_P*_b": sum(flips.values()),
+                     "random_b_cos_final": {e: [nanmean([r_["cos"][e]["final"][i] if r_["cos"][e]["final"][i] is not None else math.nan
+                                                         for r_ in rnd if e in r_["cos"]]) for i in range(len(cfg["down"]))]
+                                            for e in EDITS if any(e in r_["cos"] for r_ in rnd)}}  # fmt: skip
+
+    # 1. headline: where must the push land, next to the text edits and controls
+    fams = [f for f in ("RL", "BL") if f in idx]
+    fig, grid = plt.subplots(len(fams), 7, figsize=(19, 3.6 * len(fams) + 0.4), squeeze=False,
+                             gridspec_kw={"width_ratios": [1, 1, 1, 1, 1, 1.3, 1.25]})  # fmt: skip
+    for i, fam in enumerate(fams):
+        f = idx[fam]
+        grid[i][5].axis("off")  # room for the reference panel's labels
+        for j, sname in enumerate(("a", "b", "nb", "d", "r")):
+            ax = grid[i][j]
+            PL.style_axes(ax)
+            PL.percent_axis(ax)
+            for si, s in enumerate(cfg["scales"]):
+                v = np.array([wilson_of(f.get(push_key(k, s, sname), {})) for k in keys])
+                ax.errorbar(xs + (si - 1) * 0.13, v[:, 0], yerr=err(v), color=SCALE_COLOURS[s],
+                            lw=2, marker="o", ms=4.5, elinewidth=1, capsize=0, zorder=3)  # fmt: skip
+            v = np.array([wilson_of(f.get(push_key(k, max(cfg["scales"]), sname, "random"), {})) for k in keys])
+            ax.errorbar(xs + 0.3, v[:, 0], yerr=err(v), color=PL.MUTED, ls="--", lw=1.2,
+                        marker="o", mfc=PL.SURFACE, ms=4, elinewidth=0.8, capsize=0, zorder=2)  # fmt: skip
+            if fam == "RL" and sname == "a":
+                ax.plot([keys.index(la_s) + (cfg["scales"].index(sc_s) - 1) * 0.13], [rate(f[p_star])], marker="*", ms=15,
+                        color=PL.INK, mfc="none", zorder=4)  # fmt: skip
+            ax.set_ylim(-0.04, 1.04)
+            ax.set_xticks(xs, xl)
+            if i == 0:
+                ax.set_title(SUBSET_TITLES[sname], fontsize=9.5, color=PL.INK, loc="left")
+            if j == 0:
+                ax.set_ylabel(f"{PL.family_label(fam)}\n{wrap(FLIPS, 34)}", fontsize=8.5, color=PL.INK)
+            else:
+                ax.set_yticklabels([])
+            if i == len(fams) - 1:
+                ax.set_xlabel("layer pushed", fontsize=9, color=PL.MUTED)
+        ax = grid[i][6]
+        PL.style_axes(ax)
+        PL.percent_axis(ax, "x")
+        ws = sm["families"][fam].get("W-copy*")
+        refs = [(EDIT_WORDS[e], edit_key(e), None) for e in EDITS]
+        refs += [("add bridge alt's word to the input (embedding)", ("clean", "emb_add", "lens", -1, 1.0, "b", None),
+                  ("clean", "emb_add", "random", -1, 1.0, "b", None)),
+                 ("add (bridge alt − bridge org) to the input (embedding)", ("clean", "emb_diff", "lens", -1, 1.0, "b", None),
+                  ("clean", "emb_diff", "random", -1, 1.0, "b", None)),
+                 (f"patch from the alt prompt after the cue, layer {la_s}", ("clean", "copy", None, la_s, None, "r", None), None),
+                 (f"patch from the alt prompt after the cue, layer {ws[3] if ws else '-'}", tuple(ws) if ws else None, None),
+                 (f"patch from the alt prompt, whole question, layer {la_s}", ("clean", "patch", None, la_s, None, "a", None), None),
+                 (f"  same, rescaled to the push's size ({sc_s:g}x)", ("clean", "patch", None, la_s, sc_s, "a", None), None)]  # fmt: skip
+        ys = np.arange(len(refs))[::-1]
+        for y, (_, key, ctrl) in zip(ys, refs, strict=True):
+            r_ = wilson_of(f.get(key, {})) if key else [math.nan] * 3
+            if not math.isnan(r_[0]):
+                ax.barh(y, r_[0], height=0.62, color=BAR, zorder=2)
+                ax.errorbar(r_[0], y, xerr=err(np.array([r_])), color=PL.INK, elinewidth=0.9, capsize=0, zorder=3)
+                ax.text(min(r_[2], 1.0) + 0.03, y, f"{100 * r_[0]:.0f}%", va="center", fontsize=8, color=PL.INK)
+            if ctrl and f.get(ctrl):
+                c_ = wilson_of(f[ctrl])
+                ax.plot(c_[0], y, marker="o", mfc=PL.SURFACE, color=PL.MUTED, ms=5, zorder=4)
+        ax.set_yticks(ys, [r[0] for r in refs], fontsize=8, color=PL.INK)
+        ax.set_xlim(0, 1.18)
+        if i == 0:
+            ax.set_title("same items: prompt edits and other controls", fontsize=9.5, color=PL.INK, loc="left")
+        if i == len(fams) - 1:
+            ax.set_xlabel(wrap(FLIPS, 48), fontsize=8.5, color=PL.MUTED)
+    handles = [
+        Line2D([], [], color=SCALE_COLOURS[s], lw=2, marker="o", label=f"lens push (bridge alt − bridge org), {s:g}x")
+        for s in cfg["scales"]
+    ]
+    handles += [Line2D([], [], color=PL.MUTED, ls="--", marker="o", mfc=PL.SURFACE, label=f"control: random push (same size, {max(cfg['scales']):g}x)"),
+                Patch(color=BAR, label="prompt edit or patch (bar)"),
+                Line2D([], [], color=PL.MUTED, ls="", marker="o", mfc=PL.SURFACE, label="control: random embedding push (same size)"),
+                Line2D([], [], color=PL.INK, ls="", marker="*", mfc="none", ms=12, label="the push the decision rule tests")]  # fmt: skip
+    explain = [
+        ("What we did", "Added the lens direction bridge alt − bridge org to the org prompt's hidden state at one early layer "
+                        "(or all four), on one set of question tokens (column titles), at 4, 8 or 16 times the size of the "
+                        "alt-prompt patch per token."),
+        ("Example", example_line(cases, both=True)),
+        ("How to read", "Each dot: the share of items whose answer switched, by layer pushed (top row memory → prompt, bottom "
+                        "row prompt → prompt). Bars: the same items under prompt edits and patches. At 16x or on all four "
+                        "layers the push often yields neither answer."),
+        ("Control", "Gray dashed line: a random push of the same size (16x); hollow dots on the embedding bars: a random "
+                    "embedding push. Both should stay near 0%."),
+    ]  # fmt: skip
+    data = f"Qwen3.6-27B; {n_of.get('RL', 0)} items per family on the same scenes; error bars: Wilson 95%."
+    save(fig, "fig1_where_the_push_works", "Where must an early lens push land to switch the answer to answer alt, and how does it compare with editing the prompt?",
+         explain, data, handles, ncols=4, manual={"left": 0.075, "right": 0.965, "wspace": 0.22, "hspace": 0.38})  # fmt: skip
+
+    # 2. the pre-registered tests, and the same statistics on input edits (which inject by construction)
+    rl, rr = sm["families"].get("RL", {}), sm["families"].get("RR", {})
+    mp, pp, mm = (PL.family_label(f) for f in ("RL", "BL", "RR"))
+    rows_l = [(f"test 2 ({mp}): question without the subject phrase,\nminus half of the whole question", rl.get("K2_nb_minus_half_a"), 0.0, rl.get("K2_call")),
+              (f"test 2 ({mp}): subject phrase only,\nminus question without the subject phrase", rl.get("K2_b_minus_nb"), 0.0, None),
+              (f"test 3: {pp} minus {mp},\nthe tested push", sm.get("K3"), -EQUIV, sm.get("K3_call"))]  # fmt: skip
+    rows_l += [
+        (f"{pp} minus {mp},\n{k_}", v, -EQUIV, "control") for k_, v in list(post["K3_on_input_edits"].items())[1:]
+    ]
+    rows_r = [(f"test 1 ({mp}): agreement with 'add bridge alt next to the cue',\nminus agreement with the patch from the alt prompt (layers 32-48)", rl.get("K1"), 0.0, rl.get("K1_call")),
+              (f"validity check ({mp}): the same for the embedding push", rl.get("gate"), 0.0, None),
+              (f"later layers ({mp}): like 'name bridge alt directly',\nminus like the alt prompt", rl.get("K4"), 0.0, None),
+              (f"post hoc ({mp}): like 'swap the noun for bridge alt',\nminus like the alt prompt", post["RL"]["K4_alt_E-head_minus_E-cue"], 0.0, None),
+              (f"later layers ({mm}): like 'name bridge alt directly',\nminus like the alt prompt", rr.get("K4"), 0.0, None),
+              (f"post hoc ({mm}): like 'swap the noun for bridge alt',\nminus like the alt prompt", post.get("RR", {}).get("K4_alt_E-head_minus_E-cue"), 0.0, None)]  # fmt: skip
+    fig, axes = plt.subplots(1, 2, figsize=(17, 7.2), gridspec_kw={"width_ratios": [1.1, 1]})
+    from matplotlib.ticker import FuncFormatter
+
+    for ax, rows, unit, mult in (
+        (axes[0], rows_l, "difference, percentage points, in\n" + FLIPS, 100),
+        (axes[1], rows_r, "difference (agreement: Cohen's kappa; later layers: cosine)", 1),
+    ):
+        PL.style_axes(ax)
+        ys = np.arange(len(rows))[::-1]
+        for y, (_, ci_, _thr, cl) in zip(ys, rows, strict=True):
+            ci = list(ci_) if ci_ is not None else [math.nan] * 3
+            colour = CALL_COLOURS.get(cl or "", PL.INK) if cl != "control" else PL.MUTED
+            if not math.isnan(ci[0]) and not math.isnan(ci[1]):
+                ax.errorbar(ci[0], y, xerr=err(np.array([ci])), color=colour, marker="o", ms=7,
+                            mfc=colour if cl != "control" else PL.SURFACE, elinewidth=1.6, capsize=0, zorder=3)  # fmt: skip
+                p = 0 if mult == 100 else 2
+                tag = f"{mult * ci[0]:+.{p}f} [{mult * ci[1]:+.{p}f}, {mult * ci[2]:+.{p}f}]"
+                tag += f"  -> {cl}" if cl and cl != "control" else ""
+                ax.annotate(
+                    tag, (ci[2], y), xytext=(6, 0), textcoords="offset points", va="center", fontsize=8, color=PL.INK
+                )
+            else:
+                ax.annotate("not testable: 'add bridge alt next to the cue'\nswitches every item", (-0.55, y),
+                            va="center", fontsize=8, color=PL.MUTED)  # fmt: skip
+        if mult == 100:
+            ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{100 * v:+.0f}"))
+        ax.axvline(0, color=PL.MUTED, lw=1, zorder=1)
+        ax.set_yticks(ys, [r[0] for r in rows], fontsize=8.5, color=PL.INK)
+        ax.set_xlabel(unit, fontsize=9, color=PL.MUTED)
+    axes[0].axvline(-EQUIV, color=PL.MUTED, ls=":", lw=1)
+    axes[0].set_xlim(-1.05, 1.0)
+    axes[1].set_xlim(-0.6, 0.75)
+    handles = [Line2D([], [], color=CALL_COLOURS["inject"], marker="o", ls="", label="rule says: like an input-word edit"),
+               Line2D([], [], color=CALL_COLOURS["write"], marker="o", ls="", label="rule says: writes the intermediate"),
+               Line2D([], [], color=PL.INK, marker="o", ls="", label="secondary / reported"),
+               Line2D([], [], color=PL.MUTED, marker="o", mfc=PL.SURFACE, ls="", label="control: test 3's difference for edits of the input itself (not pre-registered)"),
+               Line2D([], [], color=PL.MUTED, ls=":", label="test 3's margin (-15 points)")]  # fmt: skip
+    plain_calls = [
+        {"gate failed": "not testable", "untestable": "not testable"}.get(c_, c_) or "-" for c_ in sm["calls"]
+    ]
+    explain = [
+        ("What we did", f"Applied the three pre-registered tests to the tested push: the lens push bridge alt − bridge org "
+                        f"on the whole question at layer {la_s}, {sc_s:g}x (the setting whose {mp} rate was nearest 50%: "
+                        f"{100 * rate(idx['RL'][p_star]):.0f}% for {mp}, {100 * rate(idx['BL'][p_star]):.0f}% for {pp})."),
+        ("Example", example_line(cases, both=True)),
+        ("How to read", f"Each dot: a difference with its 95% interval; colour: what the rule calls it. Verdict: "
+                        f"'{sm['verdict']}' (tests 1, 2, 3: {', '.join(plain_calls)})."),
+        ("Control", f"Gray hollow rows: test 3's {pp} minus {mp} difference for edits of the input itself, which inject a "
+                    "word by construction; if test 3 can tell injection from writing, they should sit near 0."),
+    ]  # fmt: skip
+    data = f"Qwen3.6-27B; {n_of.get('RL', 0)} items per family; item-bootstrap 95% CI ({N_BOOT:,} resamples, seed {BOOT_SEED})."
+    save(
+        fig,
+        "fig2_decision_tests",
+        "Do the pre-registered tests tell an input-word edit from a write of the intermediate?",
+        explain,
+        data,
+        handles,
+        ncols=3,
+    )
+
+    # 3. per-item agreement of P* with each reference
+    agree_fams = [f for f in ("RL", "RR", "R", "BL", "BR", "B") if "agreement" in sm["families"].get(f, {})
+                  and 0 < rate(idx[f][p_star]) < 1]  # P* flipping every item or none leaves no kappa to draw  # fmt: skip
+    ref_names = ["E-head", "E-insert", "W-copy*", "emb*", "patch_matched", "low_margin", "E-name", "E-cue"]
+    ref_words = {"E-head": "text: swap the noun for bridge alt", "E-insert": "text: add bridge alt next to the cue",
+                 "W-copy*": "patch from the alt prompt (layers 32-48)",
+                 "emb*": "add bridge alt's word to the input (embedding)",
+                 "patch_matched": "patch from the alt prompt, whole question,\nsame layer, rescaled to the push's size",
+                 "low_margin": "baseline: small answer-org margin", "E-name": "text: name bridge alt directly",
+                 "E-cue": "the alt prompt"}  # fmt: skip
+    fig, axes = plt.subplots(1, len(agree_fams), figsize=(6.4 * len(agree_fams), 5.4), sharey=True, squeeze=False)
+    for ax, fam in zip(axes[0], agree_fams, strict=True):
+        PL.style_axes(ax)
+        ag = sm["families"][fam]["agreement"]
+        ys = np.arange(len(ref_names))[::-1]
+        for y, rn in zip(ys, ref_names, strict=True):
+            a = ag.get(rn)
+            k_ = a["kappa"] if a else None
+            if k_ and not math.isnan(k_[0]) and not math.isnan(k_[1]):
+                ax.errorbar(
+                    k_[0],
+                    y,
+                    xerr=err(np.array([k_])),
+                    color=PL.INK,
+                    marker="o",
+                    ms=6,
+                    elinewidth=1.4,
+                    capsize=0,
+                )
+                ax.annotate(
+                    f"{k_[0]:+.2f}",
+                    (k_[2], y),
+                    xytext=(5, 0),
+                    textcoords="offset points",
+                    va="center",
+                    fontsize=8,
+                    color=PL.INK,
+                )
+            else:
+                rr_ = a.get("rate_ref") if a else None
+                why = f"no kappa: it switches {100 * rr_:.0f}% of items" if rr_ is not None else "no kappa"
+                ax.annotate(why, (-0.55, y), va="center", fontsize=7.5, color=PL.MUTED)
+        ax.axvline(0, color=PL.MUTED, lw=1)
+        ax.set_xlim(-0.6, 0.85)
+        ax.set_title(
+            f"{PL.family_label(fam)}: the push switches {100 * rate(idx[fam][p_star]):.0f}% of {n_of[fam]}",
+            fontsize=9.5,
+            color=PL.INK,
+            loc="left",
+        )
+        ax.set_xlabel("item-by-item agreement (Cohen's kappa)", fontsize=9, color=PL.MUTED)
+    axes[0][0].set_yticks(
+        np.arange(len(ref_names))[::-1], [ref_words[r] for r in ref_names], fontsize=8.5, color=PL.INK
+    )
+    absent = [PL.family_label(f) for f in ("BL", "BR", "B", "R") if f in idx and f not in agree_fams]
+    explain = [
+        ("What we did", f"For every item, noted whether the tested push (lens push bridge alt − bridge org on the whole "
+                        f"question, layer {la_s}, {sc_s:g}x) switches answer org to answer alt, and the same for each other edit."),
+        ("Example", example_line(cases)),
+        ("How to read", "Each dot: item-by-item agreement (Cohen's kappa) between the push and that edit; 0 = no more "
+                        "overlap than chance, 1 = the same items. An edit that switches every item has no kappa."),
+        ("Control", "Baseline row: items whose answer org wins by a small margin. Agreement with it is what any edit gets "
+                    "just because some items are easy to switch."),
+    ]  # fmt: skip
+    data = (f"Qwen3.6-27B; {n_of.get('RL', 0)} items per family; item-bootstrap 95% CI. Not shown: {'; '.join(absent)} "
+            "(the push switches none or all of their items).")  # fmt: skip
+    save(fig, "fig3_item_agreement", "Item by item, which edit does the early push agree with?", explain, data)
+
+    # 4. downstream states: cosine with each edit's change, and the in-transit projection on C's change
+    st_fams = [f for f in ("RL", "RR") if f in idx]
+    fig, axes = plt.subplots(
+        len(st_fams), 2, figsize=(13, 3.8 * len(st_fams)), squeeze=False, gridspec_kw={"width_ratios": [1.2, 1]}
+    )
+    for i, fam in enumerate(st_fams):
+        ax = axes[i][0]
+        PL.style_axes(ax)
+        rows = state_rows(states, fam, kind="push", dir="lens", layer=la_s, scale=sc_s, subset="b")
+        rnd = state_rows(states, fam, kind="push", dir="random", layer=la_s, scale=sc_s, subset="b")
+        dl = np.array(cfg["down"], float)
+        for k_, e in enumerate(EDITS):
+            if not any(e in r_["cos"] for r_ in rows):
+                continue
+            cis = [mean_ci([r_["cos"][e]["final"][li] for r_ in rows if e in r_["cos"]]) for li in range(len(dl))]
+            v = np.array(cis)
+            off = (k_ - 2) * 0.35
+            ax.errorbar(dl + off, v[:, 0], yerr=err(v), color=EDIT_COLOURS[e], lw=2, marker="o", ms=5,
+                        elinewidth=1, capsize=0, label=EDIT_WORDS[e])  # fmt: skip
+            rv = [mean_ci([r_["cos"][e]["final"][li] for r_ in rnd if e in r_["cos"]])[0] for li in range(len(dl))]
+            ax.plot(dl + off, rv, color=EDIT_COLOURS[e], ls=":", lw=1, alpha=0.8)
+        ax.axhline(0, color=PL.MUTED, lw=1)
+        ax.set_xticks(dl, [str(int(x)) for x in dl])
+        ax.set_xlim(dl[0] - 2, dl[-1] + 2)
+        ax.set_ylabel(f"{PL.family_label(fam)}\ncosine of the changes at the last tokens", fontsize=9, color=PL.INK)
+        ax.set_xlabel("layer read (downstream of the push)", fontsize=9, color=PL.MUTED)
+        if i == 0:
+            ax.set_title(
+                "push on the subject phrase vs each prompt edit; dotted: random push",
+                fontsize=9.5,
+                color=PL.INK,
+                loc="left",
+            )
+        ax = axes[i][1]
+        PL.style_axes(ax)
+        bars = []
+        tr_b = post.get(fam, {}).get("transit_P*_b_by_flip", {})
+        bars.append(
+            (
+                f"push on the subject, items it switched (n={post.get(fam, {}).get('n_flipped_P*_b', 0)})",
+                tr_b.get("flipped"),
+            )
+        )
+        bars.append(("push on the subject, items it did not switch", tr_b.get("kept")))
+        rows_a = state_rows(states, fam, kind="push", dir="lens", layer=la_s, scale=sc_s, subset="a")
+        bars.append(
+            (
+                "push on the whole question (the tested push)",
+                mean_ci(
+                    [statistics.mean([t[0] for t in r_["transit"] if t[0] is not None] or [math.nan]) for r_ in rows_a]
+                ),
+            )
+        )
+        bars.append(
+            (
+                "random push on the subject (same size)",
+                mean_ci(
+                    [statistics.mean([t[0] for t in r_["transit"] if t[0] is not None] or [math.nan]) for r_ in rnd]
+                ),
+            )
+        )
+        ed = state_rows(states, fam, kind="edit")
+        for e in ("E-name", "E-insert", "E-head", "E-unrelated"):
+            vals = [
+                statistics.mean([t[0] for t in r_["transit"] if t[0] is not None] or [math.nan])
+                for r_ in ed
+                if r_["edit"] == e
+            ]
+            if vals:
+                bars.append((EDIT_WORDS[e], mean_ci(vals)))
+        ys = np.arange(len(bars))[::-1]
+        for y, (_, ci) in zip(ys, bars, strict=True):
+            if ci and not math.isnan(ci[0]):
+                ax.barh(y, ci[0], height=0.62, color=BAR, zorder=2)
+                if not math.isnan(ci[1]):
+                    ax.errorbar(
+                        ci[0],
+                        y,
+                        xerr=err(np.array([ci])),
+                        color=PL.INK,
+                        elinewidth=0.9,
+                        capsize=0,
+                        zorder=3,
+                    )
+                ax.text(max(ci[0], 0) + 0.03, y + 0.3, f"{ci[0]:.2f}", va="center", fontsize=7.5, color=PL.INK)
+        ax.set_yticks(ys, [b_[0] for b_ in bars], fontsize=8, color=PL.INK)
+        ax.axvline(1, color=PL.MUTED, ls=":", lw=1)
+        ax.set_xlim(-0.1, 1.1)
+        ax.set_xlabel(
+            f"projection on the alt prompt's change, layers {cfg['transit'][0]}-{cfg['transit'][-1]}",
+            fontsize=9,
+            color=PL.MUTED,
+        )
+    explain = [
+        ("What we did", f"Pushed only the subject phrase (lens push bridge alt − bridge org, layer {la_s}, {sc_s:g}x) and "
+                        "compared how the last tokens change at later layers with how each prompt edit changes them."),
+        ("Example", example_line(cases)),
+        ("How to read", "Left: cosine between the push's change and an edit's change at the last tokens (pushed vectors "
+                        "removed); higher = more alike. Right: projection on the alt prompt's own change at layers "
+                        f"{cfg['transit'][0]}-{cfg['transit'][-1]}, where the patch from the alt prompt switches the answer; "
+                        "1 = moves like the alt prompt."),
+        ("Control", "Dotted lines and the 'random push' bar: a random push of the same size; they should be near 0."),
+    ]  # fmt: skip
+    note = f"Qwen3.6-27B; {n_of.get('RL', 0)} items per family; item-bootstrap 95% CI."
+    handles = [
+        Line2D([], [], color=EDIT_COLOURS[e], lw=2, marker="o", label=f"push vs '{EDIT_WORDS[e]}'") for e in EDITS
+    ]
+    handles.append(
+        Line2D([], [], color=PL.MUTED, ls=":", label="control: random push vs the same edit (dotted, its colour)")
+    )
+    save(
+        fig,
+        "fig4_downstream_states",
+        "Do later layers after the push look like a word edit or like the alt prompt?",
+        explain,
+        note,
+        handles,
+        ncols=3,
+    )
+
+    # 5. collateral: plain-text loss and the off-path prompt
+    fig, axes = plt.subplots(1, 2, figsize=(15, 4.8))
+    ax = axes[0]
+    PL.style_axes(ax)
+    ramp = ["#86b6ef", "#5598e7", "#2a78d6", "#1c5cab", PL.INK]
+    sc = np.array(cfg["scales"], float)
+    nll = tl.get("mean_nll", {})
+    for colour, k_ in zip(ramp, keys, strict=False):
+        lab = "all 4 layers" if k_ == "band" else f"layer {k_}"
+        ax.plot(sc, [nll.get(f"lens/{k_}/x{s:g}", math.nan) for s in cfg["scales"]], color=colour, lw=2, marker="o",
+                ms=5, label=f"lens push, {lab}")  # fmt: skip
+        ax.plot(sc, [nll.get(f"random/{k_}/x{s:g}", math.nan) for s in cfg["scales"]], color=colour, lw=1.2, ls="--",
+                marker="o", mfc=PL.SURFACE, ms=4, label=f"control: random push, {lab}")  # fmt: skip
+    ax.axhline(nll.get("none", math.nan), color=PL.MUTED, lw=1, label="no push")
+    ax.set_xscale("log", base=2)
+    ax.set_xticks(sc, [f"{s:g}x" for s in sc])
+    ax.set_xlim(sc[0] * 0.85, sc[-1] * 1.2)
+    ax.set_ylabel("next-token loss on WikiText (nats)", fontsize=9, color=PL.INK)
+    ax.set_xlabel("push size per token (x the size of the alt-prompt patch)", fontsize=9, color=PL.MUTED)
+    ax.set_title("plain text under the push", fontsize=9.5, color=PL.INK, loc="left")
+    ax.legend(frameon=False, fontsize=7.5, loc="upper left", ncols=2)
+    ax = axes[1]
+    PL.style_axes(ax)
+    PL.percent_axis(ax)
+    groups = [(fam, s) for fam in ("RL", "BL") if fam in idx for s in cfg["scales"]]
+    xg = np.arange(len(groups))
+    bottom = np.zeros(len(groups))
+    for role_name, words in (
+        ("A", "answer org kept"),
+        ("bO", "answer alt of this prompt"),
+        ("b", "answer alt of the org prompt"),
+        ("other", "anything else"),
+    ):
+        vals = []
+        for fam, s in groups:
+            cell = idx[fam].get(push_key(la_s, s, "a", prompt="off"), {})
+            roles = [o["role"] for o in cell.values()]
+            vals.append(
+                sum((r == role_name) if role_name != "other" else r in ("other", "oc") for r in roles)
+                / max(1, len(roles))
+            )
+        ax.bar(
+            xg,
+            vals,
+            bottom=bottom,
+            color=ROLE_COLOURS[role_name],
+            width=0.7,
+            edgecolor=PL.SURFACE,
+            linewidth=2,
+            label=words,
+        )
+        bottom += np.array(vals)
+    ax.set_xticks(xg, [f"{PL.family_label(fam).replace(' → ', ' →\n')}\n{s:g}x" for fam, s in groups], fontsize=8)
+    ax.set_ylabel("share of off-path controls", fontsize=9, color=PL.INK)
+    ax.set_title(
+        f"lens push on the whole question, layer {la_s}, applied to the off-path control",
+        fontsize=9.5,
+        color=PL.INK,
+        loc="left",
+    )
+    ax.legend(frameon=False, fontsize=8, loc="upper left", bbox_to_anchor=(1.0, 1.0))
+    explain = [
+        ("What we did", "Left: the same lens pushes on plain WikiText, on every token from the 5th (harsher than the ~25 "
+                        f"question tokens pushed above). Right: the push on the whole question at layer {la_s}, applied to "
+                        "the off-path control."),
+        ("Example", example_line(cases, off=True)),
+        ("How to read", "Left: next-token loss, lower = text still predicted well. Right: what the off-path control "
+                        "answers; taking its own answer alt means the push acts before the locker lookup, not on the "
+                        "output digit."),
+        ("Control", "Dashed lines: a random push of the same size; it should stay near the 'no push' line."),
+    ]  # fmt: skip
+    note = (f"Qwen3.6-27B; {tl.get('n_texts', '?')} WikiText rows x {len(tl.get('pairs', []))} (bridge org, bridge alt) "
+            f"pairs, no intervals (per-row losses were not saved); {n_of.get('RL', 0)} off-path controls per family.")  # fmt: skip
+    save(fig, "fig5_collateral", "What else does the push break?", explain, note)
+
+    summary ={"run": name, "P*": p_star, "P*_b": pb_key, "verdict": sm["verdict"], "calls": sm["calls"], "K3": sm.get("K3"),
+               "families": {f: {k_: v for k_, v in fs.items() if k_ != "cells"} for f, fs in sm["families"].items()},
+               "post_hoc": post, "textloss": tl.get("mean_nll"), "figures": figs,
+               "rates": {f: {"|".join(map(str, k_)): wilson_of(c_) for k_, c_ in idx[f].items()} for f in idx}}  # fmt: skip
+    (out / "summary.json").write_text(json.dumps(summary, indent=2, default=str) + "\n")
+    print(out)
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("stage", choices=["run", "analyze", "examples"])
+    ap.add_argument("stage", choices=["run", "analyze", "examples", "figures"])
     ap.add_argument("--name", required=True)
     ap.add_argument("--why")
     ap.add_argument("--n", type=int, default=DEFAULTS["n"], help="cases per family (a smoke run: few)")
@@ -1000,5 +1595,7 @@ if __name__ == "__main__":
         stage_run(args.name, args.why, config)
     elif args.stage == "analyze":
         stage_analyze(args.name)
+    elif args.stage == "figures":
+        stage_figures(args.name)
     else:
         stage_examples(args.name, args.k)

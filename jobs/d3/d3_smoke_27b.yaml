@@ -30,3 +30,4 @@ n: 1 scene per domain at dev e5f0 (12 cases), layers every 8th; competence 2 ite
 seeds: [0]
 notes: 0.8B smoke (same commands, BJ_TARGET=qwen3.5-0.8b, n=2 per domain, 6 layers) passed 24/24 on both checks,
   2376 edited reads in ~26 s.
+figures_command: uv run python scripts/pointer_swap.py figures --name d3_smoke_27b

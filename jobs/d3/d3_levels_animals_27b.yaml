@@ -49,3 +49,4 @@ notes: 'd3_pilot_27b came out ''damage'' in every cell, including layer 0 where 
   so the rule can pass. Controls, decision rule and hypotheses unchanged. Here elements also fail at e5f4 (RL lower bound
   0.74), so animals only; e5f0 is rerun in the same job as the within-run baseline. Timing: 3 x 180 cases x 16 layers at
   37 reads/s, about 35-40 min.'
+figures_command: uv run python scripts/pointer_swap.py figures --name d3_levels_animals_27b

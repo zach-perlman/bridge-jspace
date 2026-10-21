@@ -13,6 +13,7 @@ command: >-
   && uv run python scripts/attn_knockout.py run --name d2_ko_sweep_v1
   && uv run python scripts/attn_knockout.py summarise --name d2_ko_sweep_v1
 examples_command: uv run python scripts/attn_knockout.py examples --name d2_ko_sweep_v1 --k 3
+figures_command: uv run python scripts/attn_knockout.py figures --name d2_ko_sweep_v1
 question: Over which layers must the lookup statement stay readable from the final positions (and the binding
   statement from the question tokens) for BL and RL to keep their answer, compared with the copy's transit band
   (44-52) and the lens's write failure (32-52)?

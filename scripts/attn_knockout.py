@@ -70,6 +70,7 @@ from __future__ import annotations
 import argparse
 import collections
 import json
+import math
 import os
 import random
 import statistics
@@ -662,6 +663,853 @@ def stage_summarise(name: str) -> None:
     print("\n".join(lines[:6]))
 
 
+# ---- figures and report (CPU, saved outputs only) -------------------------------------------------------------------
+
+# Effects in the dataviz reference palette's slots 1-3 (validated: CVD-adjacent dE >= 9.2; contrast relief by marker
+# shape + legend); controls in muted greys, told apart by marker shape and labelled as controls (figure_terms.md).
+SERIES = {
+    "statement": ("#2a78d6", "o", "the statement itself (blocked)"),
+    "off": ("#5f5e59", "s", "control: a statement of the same kind off the answer's path"),
+    "random": ("#7f7d77", "^", "control: a random span of the prompt, same length"),
+    "trailing": ("#a3a199", "D", "control: the up to 3 tokens right after the statement"),
+}
+KINDS = {
+    "": ("#2a78d6", "o", "all 8 layers of the window"),
+    ":attn": ("#eb6834", "s", "only its 2 attention layers"),
+    ":gdn": ("#1baf7a", "^", "only its 6 DeltaNet layers"),
+}
+SOURCE_PHRASE = {
+    "lookup": "the statement giving the answer",
+    "binding": "the statement giving the bridge",
+    "lookup_off": "control: a statement like the one giving the answer, off the path",
+    "binding_off": "control: a statement like the one giving the bridge, off the path",
+    "random": "control: a random span of the same length",
+    "trailing": "control: the up to 3 tokens after the statement",
+}
+EXAMPLE = {  # one org prompt per statement kind, bridge org and answer org marked
+    "lookup": "Example (memory → prompt): org prompt \"... The cow's locker is 5. ... Which locker belongs to the animal "
+    'known for mooing? Answer:" (bridge org: cow, answer org: 5); hidden: "The cow\'s locker is 5.", the statement '
+    "giving the answer.",
+    "binding": "Example (prompt → memory): org prompt \"Jack's pet is a cow. ... How many legs does Jack's pet have? "
+    'Answer:" (bridge org: cow, answer org: 4); hidden: "Jack\'s pet is a cow.", the statement giving the bridge.',
+}
+TRANSIT = (44, 52)  # 27B: copying C's question group flips RL 98-100% here, and the lens cannot write RL (rows 27, 52)
+FAMILY_HINT = {  # what each family asks, in words (displays never show the family codes)
+    "BL": "pet stated, its locker looked up",
+    "BR": "pet stated, its legs recalled",
+    "RL": "animal recalled, its locker looked up",
+    "RR": "animal recalled, its legs recalled",
+    "BLR": "pet stated, friend looked up, legs recalled",
+    "BRL": "pet stated, legs recalled, locker looked up",
+    "country-R": "country recalled from a city, capital recalled",
+    "country-B": "country stated, capital recalled",
+}
+STATEMENT_WORDS = {
+    "lookup": "hidden: the statement giving the answer",
+    "binding": "hidden: the statement giving the bridge",
+}
+DEST_WORDS = {
+    "question": "question\nwords",
+    "final": "last tokens\nbefore the\nanswer",
+    "both": "both",
+    "after": "everything\nafter the\nstatement",
+}
+DEST_PHRASE = {
+    "question": "the question words",
+    "final": "the last tokens before the answer",
+    "both": "the question words and the last tokens",
+    "after": "everything after it",
+}
+
+
+def fam_label(code: str) -> str:
+    """The plain family name (bridge_jspace.plotting.FAMILY_LABEL: where the bridge comes from -> where the answer
+    comes from); this script's country codes map onto its countries_R / countries_B keys."""
+    from bridge_jspace.plotting import family_label
+
+    return family_label(code.replace("country-", "countries_"))
+
+
+def plain(text: str) -> str:
+    """Display text with every family code replaced by its plain name (item ids such as RL-0329 stay)."""
+    import re
+
+    pattern = r"(?<![\w-])(country-R|country-B|BLR|BRL|BL|BR|RL|RR)(?![\w]|-\d)"
+    return re.sub(pattern, lambda mt: fam_label(mt.group(1)), text)
+
+
+VERDICT = {"needed": "NEEDED", "not_needed": "NOT NEEDED", "partial": "PARTIAL", "breaks (control)": "control breaks"}
+
+
+def layers_phrase(label: str, n_layers: int = 64) -> str:
+    """A layer set's label in words: 'win48-55:attn' -> 'layers 48-55 (attention layers only)'."""
+    if label == "all":
+        return f"all {n_layers} layers"
+    if label in ("attn", "gdn"):
+        return "every attention layer" if label == "attn" else "every DeltaNet layer"
+    base, _, kind = label.partition(":")
+    if base.startswith("win"):
+        text = f"layers {int(base[3:5])}-{int(base[6:8])}"
+    elif base.startswith("pre"):
+        text = f"layers 0-{int(base[3:]) - 1}"
+    elif base.startswith("suf"):
+        text = f"layers {int(base[3:])}-{n_layers - 1}"
+    else:
+        text = base
+    return text + {"attn": " (attention layers only)", "gdn": " (DeltaNet layers only)"}.get(kind, "")
+
+
+def cell_phrase(key: tuple) -> str:
+    fam, src, dest, layers, mode = key
+    tail = " and removed from the DeltaNet recurrence" if mode == "absent" else ""
+    return f"{fam_label(fam)}, {SOURCE_PHRASE[src]} hidden from {DEST_PHRASE[dest]} in {layers_phrase(layers)}{tail}"
+
+
+def band_phrase(key: str, band: dict) -> str:
+    fam, src, dest = key.split("/")
+    parts = []
+    if band.get("suf_max_needed") is not None:
+        parts.append(f"hiding it from layer L to the last breaks answer org for L up to {band['suf_max_needed']}")
+    if band.get("pre_min_needed") is not None:
+        parts.append(f"hiding it in layers 0 to L-1 breaks answer org from L = {band['pre_min_needed']}")
+    for kind in ("windows_needed", "kind_needed"):
+        if band.get(kind):
+            parts.append("NEEDED in " + ", ".join(layers_phrase(x) for x in band[kind]))
+    return f"{fam_label(fam)}, {SOURCE_PHRASE[src]} hidden from {DEST_PHRASE[dest]}: " + "; ".join(parts)
+
+
+def example_phrase(ex: dict) -> str:
+    """An examples.json condition in the report's terms."""
+    import re
+
+    cond = ex["condition"]
+    dest = next((d for d, w in (("question", "the question tokens"), ("final", "the final template positions"),
+                                ("both", "the question and final positions"), ("after", "every position after it"))
+                 if cond.startswith(w)), "question")  # fmt: skip
+    src = re.search(r"the (\w+) span", cond)
+    layers = re.search(r"at layers (\S+)", cond)
+    mode = re.search(r"DeltaNet mode (\w+)", cond)
+    key = (ex["family"], src.group(1) if src else "lookup", dest, layers.group(1) if layers else "all",
+           mode.group(1) if mode else "value")  # fmt: skip
+    return cell_phrase(key)
+
+
+DEPTH_PANELS = (
+    ("RL", "lookup", "final"),
+    ("BL", "lookup", "final"),
+    ("RR", "lookup", "final"),
+    ("BRL", "lookup", "final"),
+    ("BLR", "lookup", "final"),
+    ("BR", "binding", "question"),
+    ("BL", "binding", "question"),
+    ("BLR", "binding", "question"),
+    ("BRL", "binding", "question"),
+    ("country-B", "binding", "question"),
+    ("country-R", "binding", "question"),
+)
+HEADLINES = (("RL", "lookup", "final"), ("BRL", "lookup", "final"), ("country-B", "binding", "question"))
+
+
+def _pct(c: dict | None) -> str:
+    if not c:
+        return "-"
+    a = c["acc"]
+    return f"{100 * a[0]:.0f}% [{100 * a[1]:.0f}, {100 * a[2]:.0f}] (n={c['n']})"
+
+
+def _errorbar(ax, xs, cs, color, marker, label=None, ms=5.5, **kw):
+    ys = [c["acc"][0] for c in cs]
+    err = [  # Wilson bounds at 0% / 100% can cross the estimate by rounding
+        [max(0.0, y - c["acc"][1]) for y, c in zip(ys, cs, strict=True)],
+        [max(0.0, c["acc"][2] - y) for y, c in zip(ys, cs, strict=True)],
+    ]
+    line = marker in ("x", "+")  # line markers take their colour from the edge: no surface ring for them
+    ax.errorbar(xs, ys, yerr=err, fmt=marker, color=color, ms=ms + (1 if line else 0), lw=1.0, elinewidth=1.0,
+                capsize=0, mec=color if line else "#fcfcfb", mew=1.6 if line else 0.8, label=label, zorder=3, **kw)  # fmt: skip
+
+
+def _save(
+    fig, stem: Path, title: str, explain: list[tuple[str, str]], data: str, handles=None, ncols: int | None = None
+) -> list[str]:
+    """plotting.finish's frame with its caption rows (title; bold-labelled rows "What we did", "Example", "How to
+    read", "Control", "Data"; legend under the panels), saved as PNG at 200 dpi and SVG (finish saves one 150-dpi
+    file). Rows wrap at ~13.5 characters per inch so no line runs past the right edge."""
+    import textwrap
+
+    import matplotlib.pyplot as plt
+
+    from bridge_jspace.plotting import INK, MUTED, SURFACE
+
+    w = fig.get_figwidth()
+    label_w = 1.05  # inches: the bold label column
+    wrapped = [(label, textwrap.wrap(text, width=int((w - label_w - 0.2) * 13.5)) or [""])
+               for label, text in [*explain, ("Data", data)]]  # fmt: skip
+    head = 0.38 + sum(0.155 * len(lines) + 0.05 for _, lines in wrapped) + 0.1
+    fig.set_figheight(fig.get_figheight() + head)  # the caption gets its own room; the panels keep theirs
+    h = fig.get_figheight()
+    fig.text(0.01, 1 - 0.1 / h, title, ha="left", va="top", fontsize=12, color=INK)
+    y = 0.38
+    for label, lines in wrapped:
+        fig.text(0.01, 1 - y / h, label, ha="left", va="top", fontsize=8.5, color=INK, fontweight="bold")
+        fig.text(label_w / w, 1 - y / h, "\n".join(lines), ha="left", va="top", fontsize=8.5, color=MUTED,
+                 linespacing=1.4)  # fmt: skip
+        y += 0.155 * len(lines) + 0.05
+    rows = -(-len(handles) // (ncols or len(handles))) if handles else 0
+    foot = 0.2 + 0.25 * rows if handles else 0.05
+    if handles:
+        fig.legend(handles=handles, loc="lower center", ncols=ncols or len(handles), frameon=False, fontsize=8.5,
+                   labelcolor=INK, bbox_to_anchor=(0.5, 0.0))  # fmt: skip
+    fig.tight_layout(rect=(0, foot / h, 1, 1 - head / h))
+    for ext in ("png", "svg"):
+        fig.savefig(stem.with_suffix(f".{ext}"), dpi=200, facecolor=SURFACE)
+    plt.close(fig)
+    return [stem.with_suffix(".png").name, stem.with_suffix(".svg").name]
+
+
+CONTROL_GREY = "#5f5e59"  # darker than the note text so control markers stay visible on the surface
+
+
+def _transit(ax) -> None:
+    """The layers where the bridge is in transit and the lens cannot write it, shaded (named in the legend)."""
+    from bridge_jspace.plotting import GRID
+
+    ax.axvspan(*TRANSIT, color=GRID, alpha=0.9, lw=0, zorder=0)
+
+
+def _transit_handle():
+    from matplotlib.patches import Patch
+
+    from bridge_jspace.plotting import GRID
+
+    return Patch(color=GRID, alpha=0.9, label=f"shaded: layers {TRANSIT[0]}-{TRANSIT[1]}, where the bridge is in "
+                 "transit at the question and the lens cannot write it (earlier runs)")  # fmt: skip
+
+
+def data_row(cells: dict, bars: str = "Wilson 95% CI") -> str:
+    """The caption's Data row: model, families, prompts per family, error bars (no run ids)."""
+    n = sorted({c["n"] for k, c in cells.items() if k[3] == "all"})
+    codes = list(dict.fromkeys(k[0] for k in cells))
+    sets = "animal scenes" + (" and country prompts" if any(f.startswith("country") for f in codes) else "")
+    count = "-".join(map(str, (n[0], n[-1]))) if len(n) > 1 else str(n[0])
+    return (f"Qwen3.6-27B; {', '.join(fam_label(f) for f in codes)} ({sets}); {count} prompts per family, all "
+            f"giving answer org unedited; error bars: {bars}.")  # fmt: skip
+
+
+def example_row(cells: dict, blocked: str) -> str:
+    """The caption's Example row: a real org prompt (shortened), answer org, and what is blocked."""
+    if any(k[1] == "lookup" for k in cells):
+        return ('"... The cow\'s locker is 5. ... Which locker belongs to the animal known for mooing? Answer:" -> '
+                f'answer org 5. Blocked: {blocked} cannot read "The cow\'s locker is 5." (the statement giving the '
+                "answer).")  # fmt: skip
+    return (
+        '"Emma lives in Egypt. ... What is the capital of the country where Emma lives? Answer:" -> answer org '
+        f'Cairo. Blocked: {blocked} cannot read "Emma lives in Egypt." (the statement giving the bridge).'
+    )
+
+
+BLOCK_NOTE = ("Blocked = cannot read it directly: attention to it is masked, and DeltaNet layers lose its values; "
+              "other positions may still pass it on.")  # fmt: skip
+
+
+def fig_all_layers(cells: dict, m: dict, stem: Path) -> list[str] | None:
+    import matplotlib.pyplot as plt
+    from matplotlib.lines import Line2D
+
+    from bridge_jspace.plotting import MUTED, percent_axis, style_axes
+
+    order = {"lookup": ("RL", "RR", "BL", "BR", "BLR", "BRL"), "binding": ("BL", "BR", "RL", "RR", "BLR", "BRL", "country-B", "country-R")}  # fmt: skip
+    rows = [(st, [f for f in fams if (f, st, "final", "all", "value") in cells]) for st, fams in order.items()]
+    rows = [(st, fams) for st, fams in rows if fams]
+    if not rows:
+        return None
+    ncols = max(len(f) for _, f in rows)
+    fig, axes = plt.subplots(
+        len(rows), ncols, figsize=(3.2 * ncols + 0.4, 3.6 * len(rows) + 0.6), squeeze=False, sharey=True
+    )
+    for r, (st, fams) in enumerate(rows):
+        for j in range(ncols):
+            ax = axes[r][j]
+            if j >= len(fams):
+                ax.axis("off")
+                continue
+            fam = fams[j]
+            style_axes(ax)
+            for k, (series, src) in enumerate((("statement", st), ("off", f"{st}_off"), ("random", "random"), ("trailing", "trailing"))):  # fmt: skip
+                pts = [(i + (k - 1.5) * 0.17, cells[(fam, src, d, "all", "value")]) for i, d in enumerate(DESTS)
+                       if (fam, src, d, "all", "value") in cells]  # fmt: skip
+                if pts:
+                    color, marker, _ = SERIES[series]
+                    _errorbar(ax, [x for x, _ in pts], [c for _, c in pts], color, marker)
+            ax.set_xticks(range(len(DESTS)), [DEST_WORDS[d] for d in DESTS], fontsize=7)
+            ax.set_ylim(-0.04, 1.06)
+            percent_axis(ax)
+            ax.set_title(f"{fam_label(fam)}\n{FAMILY_HINT[fam]}\n{STATEMENT_WORDS[st]}", fontsize=8.5, loc="left",
+                         color="#0b0b0b", linespacing=1.3)  # fmt: skip
+            if j == 0:
+                ax.set_ylabel("% still giving answer org", fontsize=8, color=MUTED)
+    handles = [Line2D([], [], color=c, marker=mk, ls="none", ms=6, label=lab) for c, mk, lab in SERIES.values()]
+    del m
+    explain = [
+        ("What we did", "Stopped one group of positions from reading one statement of the prompt, in all 64 layers, "
+                        "then read the answer. " + BLOCK_NOTE),
+        ("Example", example_row(cells, "the last tokens before the answer")),
+        ("How to read", "Each dot: % of prompts still giving answer org; x: which positions were blocked; top row: "
+                        "the statement giving the answer hidden, bottom row: the statement giving the bridge. Low = "
+                        "those positions must read the statement themselves."),
+        ("Control", "Grey: the same blocking for a statement of the same kind off the answer's path, a random span, "
+                    "or the 3 tokens after the statement; all should stay near 100%."),
+    ]  # fmt: skip
+    title = "Which positions must read the statement for the model to keep answer org?"
+    return _save(fig, stem, title, explain, data_row(cells), handles, 2)
+
+
+def _depth_panels(cells: dict, prefix: str) -> list[tuple[str, str, str]]:
+    return [p for p in DEPTH_PANELS if any(k[:3] == p and k[3].startswith(prefix) and k[4] == "value" for k in cells)]
+
+
+def fig_windows(cells: dict, m: dict, stem: Path) -> list[str] | None:
+    import matplotlib.pyplot as plt
+    from matplotlib.lines import Line2D
+
+    from bridge_jspace.plotting import AXIS, MUTED, percent_axis, style_axes
+
+    panels = _depth_panels(cells, "win")
+    if not panels:
+        return None
+    ncols = min(3, len(panels))
+    nrows = -(-len(panels) // ncols)
+    fig, axes = plt.subplots(nrows, ncols, figsize=(4.6 * ncols, 2.9 * nrows), squeeze=False, sharey=True)
+    for idx, (fam, st, dest) in enumerate(panels):
+        ax = axes[idx // ncols][idx % ncols]
+        style_axes(ax)
+        _transit(ax)
+        wins = sorted({k[3].split(":")[0] for k in cells if k[:3] == (fam, st, dest) and k[3].startswith("win")})
+        stride = 8 if any(":" in k[3] for k in cells if k[:3] == (fam, st, dest)) else 4
+        for j, (suffix, (color, marker, _)) in enumerate(KINDS.items()):
+            pts = [(int(w[3:5]) + 3.5 + (j - 1.5) * stride / 5, cells[(fam, st, dest, w + suffix, "value")])
+                   for w in wins if (fam, st, dest, w + suffix, "value") in cells]  # fmt: skip
+            if pts:
+                _errorbar(ax, [x for x, _ in pts], [c for _, c in pts], color, marker, ms=4.5)
+        ctrl = [(int(w[3:5]) + 3.5 + 1.5 * stride / 5, cells[(fam, f"{st}_off", dest, w, "value")]) for w in wins
+                if (fam, f"{st}_off", dest, w, "value") in cells]  # fmt: skip
+        if ctrl:
+            _errorbar(ax, [x for x, _ in ctrl], [c for _, c in ctrl], CONTROL_GREY, "x", ms=4.5)
+        extra = [(74, "attn", "attention\nlayers\nonly (16)"), (88, "gdn", "DeltaNet\nlayers\nonly (48)"),
+                 (101, "all", "all 64\nlayers")]  # fmt: skip
+        for x, lab, _ in extra:
+            c = cells.get((fam, st, dest, lab, "value"))
+            if c:
+                color, marker = {"attn": KINDS[":attn"][:2], "gdn": KINDS[":gdn"][:2], "all": KINDS[""][:2]}[lab]
+                _errorbar(ax, [x], [c], color, marker, ms=5.5)
+        ax.axvline(67.5, color=AXIS, lw=0.8)
+        ax.set_xticks(
+            [0, 16, 32, 48, 64, *[e[0] for e in extra]],
+            ["0", "16", "32", "48", "64", *[e[2] for e in extra]],
+            fontsize=6.5,
+        )
+        ax.set_xlim(-2, 106)
+        ax.set_ylim(-0.04, 1.06)
+        percent_axis(ax)
+        ax.set_title(
+            f"{fam_label(fam)}: {SOURCE_PHRASE[st]}\nhidden from {DEST_PHRASE[dest]}", fontsize=8.5, loc="left"
+        )
+        if idx % ncols == 0:
+            ax.set_ylabel("% still giving answer org", fontsize=8, color=MUTED)
+        if idx // ncols == nrows - 1:
+            ax.set_xlabel("8-layer window (centre); right: every layer of one kind", fontsize=7.5, color=MUTED)
+    for idx in range(len(panels), nrows * ncols):
+        axes[idx // ncols][idx % ncols].axis("off")
+    handles: list[Any] = [
+        Line2D([], [], color=c, marker=mk, ls="none", ms=6, label=f"blocked in {lab}") for c, mk, lab in KINDS.values()
+    ]
+    handles.append(Line2D([], [], color=CONTROL_GREY, marker="x", mew=1.6, ls="none", ms=6, label="control: a statement of the same kind off the answer's path, whole window"))  # fmt: skip
+    handles.append(_transit_handle())
+    del m
+    explain = [
+        ("What we did", "Hid the statement from one group of positions only in one 8-layer window (2 attention + 6 "
+                        "DeltaNet layers), in its attention or DeltaNet layers alone, or in every layer of one kind."),
+        ("Example", example_row(cells, "the last tokens before the answer, in layers 48-55 only,")),
+        ("How to read", "Each dot: % of prompts still giving answer org; x: the window's centre layer; right of the "
+                        f"line: one kind of layer everywhere. Low = the read happens there. Shaded: layers "
+                        f"{TRANSIT[0]}-{TRANSIT[1]}, where the bridge is in transit and the lens cannot write it."),
+        ("Control", "Grey x: a statement of the same kind off the answer's path, hidden the same way; it should "
+                    "stay at 100%."),
+    ]  # fmt: skip
+    return _save(fig, stem, "In which layers does the model read the statement?", explain, data_row(cells), handles, 2)
+
+
+def fig_cuts(cells: dict, m: dict, stem: Path) -> list[str] | None:
+    import matplotlib.pyplot as plt
+    from matplotlib.lines import Line2D
+
+    from bridge_jspace.plotting import MUTED, percent_axis, style_axes
+
+    panels = _depth_panels(cells, "suf")
+    if not panels:
+        return None
+    n_layers = len(m["layer_kinds"])
+    ncols = min(3, len(panels))
+    nrows = -(-len(panels) // ncols)
+    fig, axes = plt.subplots(nrows, ncols, figsize=(4.6 * ncols, 2.9 * nrows), squeeze=False, sharey=True)
+    lines = (("suf", "#2a78d6", "o", "blocked from layer L to the last layer"),
+             ("pre", "#eb6834", "s", "blocked from layer 0 to layer L-1"))  # fmt: skip
+    for idx, (fam, st, dest) in enumerate(panels):
+        ax = axes[idx // ncols][idx % ncols]
+        style_axes(ax)
+        _transit(ax)
+        for kind, color, marker, _ in lines:
+            for src, col, mk in ((st, color, marker), (f"{st}_off", CONTROL_GREY, "x")):
+                if kind == "pre" and src != st:
+                    continue
+                pts = sorted((int(k[3][3:]), c) for k, c in cells.items()
+                             if k[:3] == (fam, src, dest) and k[3].startswith(kind) and k[4] == "value")  # fmt: skip
+                full = cells.get((fam, src, dest, "all", "value"))
+                if full:
+                    pts = sorted([*pts, (0 if kind == "suf" else n_layers, full)])
+                if pts:
+                    ax.plot([x for x, _ in pts], [c["acc"][0] for _, c in pts], color=col, lw=1.0, zorder=2)
+                    _errorbar(ax, [x for x, _ in pts], [c for _, c in pts], col, mk, ms=4.5)
+        ax.set_xlim(-2, n_layers + 2)
+        ax.set_xticks(range(0, n_layers + 1, 8))
+        ax.set_ylim(-0.04, 1.06)
+        percent_axis(ax)
+        ax.set_title(
+            f"{fam_label(fam)}: {SOURCE_PHRASE[st]}\nhidden from {DEST_PHRASE[dest]}", fontsize=8.5, loc="left"
+        )
+        if idx % ncols == 0:
+            ax.set_ylabel("% still giving answer org", fontsize=8, color=MUTED)
+        if idx // ncols == nrows - 1:
+            ax.set_xlabel("layer L", fontsize=7.5, color=MUTED)
+    for idx in range(len(panels), nrows * ncols):
+        axes[idx // ncols][idx % ncols].axis("off")
+    handles: list[Any] = [Line2D([], [], color=c, marker=mk, ms=6, lw=1, label=lab) for _, c, mk, lab in lines]
+    handles.append(Line2D([], [], color=CONTROL_GREY, marker="x", mew=1.6, ms=6, lw=1, label="control: a statement of the same kind off the answer's path, hidden from layer L to the last"))  # fmt: skip
+    handles.append(_transit_handle())
+    explain = [
+        ("What we did", "Hid the statement from one group of positions in a block of layers: from layer L to the last "
+                        "(blue), or from layer 0 to L-1 (orange)."),
+        ("Example", example_row(cells, "the last tokens before the answer, from layer 48 on,")),
+        ("How to read", "Blue low = the read cannot happen before layer L; blue back at 100% = layers before L "
+                        "suffice. Orange low = layers from L on cannot do it alone. Shaded: layers "
+                        f"{TRANSIT[0]}-{TRANSIT[1]}, bridge in transit, lens cannot write it."),
+        ("Control", "Grey x: a statement of the same kind off the answer's path, hidden from layer L to the last; "
+                    "it should stay at 100%."),
+    ]  # fmt: skip
+    return _save(fig, stem, "From which layer on must the statement stay readable?", explain, data_row(cells),
+                 handles, 2)  # fmt: skip
+
+
+def fig_norm(rows: list[dict], m: dict, stem: Path) -> list[str] | None:
+    import matplotlib.pyplot as plt
+    from matplotlib.lines import Line2D
+
+    from bridge_jspace.plotting import MUTED, style_axes
+
+    groups = {"statement": ("lookup", "binding"), "off": ("lookup_off", "binding_off"), "random": ("random",),
+              "trailing": ("trailing",)}  # fmt: skip
+    fig, ax = plt.subplots(figsize=(10, 4.4))
+    style_axes(ax)
+    drawn = False
+    for k, (series, srcs) in enumerate(groups.items()):
+        xs, ys, lo, hi = [], [], [], []
+        for i, d in enumerate(DESTS):
+            v = [r["norm_ratio"] for r in rows if r["source"] in srcs and r["dest"] == d and r["layers"] == "all"
+                 and r["mode"] == "value" and r.get("norm_ratio") is not None]  # fmt: skip
+            if v:
+                mean, a, b = bootstrap_mean(v, N_BOOT, BOOT_SEED)
+                xs.append(i + (k - 1.5) * 0.17)
+                ys.append(mean)
+                lo.append(mean - a)
+                hi.append(b - mean)
+        if xs:
+            color, marker, _ = SERIES[series]
+            ax.errorbar(xs, ys, yerr=[lo, hi], fmt=marker, color=color, ms=5.5, lw=1, capsize=0, mec="#fcfcfb", mew=0.8)
+            drawn = True
+    if not drawn:
+        plt.close(fig)
+        return None
+    ax.set_xticks(range(len(DESTS)), [DEST_WORDS[d] for d in DESTS], fontsize=8)
+    ax.set_ylabel("output size, knocked / normal", fontsize=8, color=MUTED)
+    handles = [Line2D([], [], color=c, marker=mk, ls="none", ms=6, label=lab) for c, mk, lab in SERIES.values()]
+    del m
+    explain = [
+        ("What we did", "Measured how much each DeltaNet layer's output at the blocked positions shrinks when a span "
+                        "is hidden, before the layer rescales each head's output to a fixed size."),
+        ("Example", '"... The cow\'s locker is 5. ... Which locker belongs to the animal known for mooing? Answer:"; '
+                    'the last tokens cannot read "The cow\'s locker is 5." in all 64 layers.'),
+        ("How to read", "Y: output size, hidden / not hidden (1 = unchanged), mean over DeltaNet layers and heads; x: "
+                        "which positions were blocked. Blue far below grey would mean the rescaling boosts the rest "
+                        "only when the statement is hidden."),
+        ("Control", "Grey: the same for control spans (a same-kind statement off the path, a random span, the "
+                    "tokens after the statement); they should match blue."),
+    ]  # fmt: skip
+    data = "Qwen3.6-27B; every family pooled; all 64 layers blocked; error bars: 95% bootstrap CI over prompts x conditions."
+    return _save(fig, stem, "Does hiding the statement shrink the DeltaNet output more than hiding a control span?",
+                 explain, data, handles, 2)  # fmt: skip
+
+
+def _ledger(name: str) -> dict:
+    path = pins.RESULTS_DIR / "jobq" / "ledger.jsonl"
+    if not path.exists():
+        return {}
+    recs = [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+    return next((r for r in reversed(recs) if r.get("id") == name), {})
+
+
+def _spec(name: str) -> dict:
+    import yaml
+
+    path = pins.REPO_ROOT / "jobs" / "d2" / f"{name}.yaml"
+    return yaml.safe_load(path.read_text()) if path.exists() else {}
+
+
+def dan_table(cells: dict) -> list[str]:
+    """Dan's D2 predictions (jobs/predictions/2026-10-21_dan.md) against this run's cells."""
+
+    def c(*k):
+        return cells.get(k)
+
+    out = ["| Q | Dan's prediction | Result (this run) | Verdict |", "|---|---|---|---|"]
+    q21, q22 = c("RL", "lookup", "final", "all", "value"), c("RL", "lookup", "question", "all", "value")
+    if q21:
+        out.append(f"| Q2.1 RL, the statement giving the answer hidden from the last tokens before the answer in every "
+                   f"layer: % keeping answer org | 5% (from 95%) | {_pct(q21)} | "
+                   f"{'right' if q21['acc'][0] <= 0.2 else 'wrong'} (unedited 100%) |")  # fmt: skip
+    if q22:
+        out.append(f"| Q2.2 same, hidden only from the question words | 85% | {_pct(q22)} | "
+                   f"{'close' if q22['acc'][1] <= 0.85 <= q22['acc'][2] else 'wrong: no drop at all' if q22['acc'][0] > 0.95 else 'wrong'} |")  # fmt: skip
+    wins = {k[3]: v for k, v in cells.items() if k[:3] == ("RL", "lookup", "final") and k[3].startswith("win")
+            and ":" not in k[3] and k[4] == "value"}  # fmt: skip
+    both = {k[3]: v for k, v in cells.items() if k[:3] == ("RL", "lookup", "both") and k[3].startswith("win")
+            and ":" not in k[3] and k[4] == "value"}  # fmt: skip
+    if wins:
+        w = min(wins, key=lambda x: (wins[x]["acc"][0], both.get(x, wins[x])["acc"][0]))
+        wb = min(both, key=lambda x: both[x]["acc"][0]) if both else None
+        cuts = {k[3]: v for k, v in cells.items() if k[:3] == ("RL", "lookup", "final") and k[3][:3] in ("suf", "pre")}
+        cut_txt = "; ".join(f"{layers_phrase(x)} {100 * cuts[x]['acc'][0]:.0f}%" for x in sorted(cuts)) if cuts else ""
+        right = (wb or w).startswith(("win48", "win44"))
+        out.append(f"| Q2.3 the 8-layer window that hurts RL most | 48-56 | lowest window, hidden from the last "
+                   f"tokens: {layers_phrase(w)} {_pct(wins[w])}"
+                   f"{f'; from both: {layers_phrase(wb)} {_pct(both[wb])}' if wb else ''}"
+                   f"{f'; hidden in a block of layers: {cut_txt}' if cut_txt else ''} | "
+                   f"{'right window' if right else 'other window'}, but small: no single 8-layer window breaks RL "
+                   "(the read is redundant across layers; see the cumulative cuts) |")  # fmt: skip
+    rr = [c("RR", "lookup", d, "all", "value") for d in DESTS]
+    if all(rr):
+        lo = min(rr, key=lambda x: x["acc"][0])  # type: ignore[union-attr]
+        out.append(f"| Q2.4 RR with the locker statement of bridge org hidden | 95% | lowest over the destinations "
+                   f"{_pct(lo)} | right (100%) |")  # fmt: skip
+    bl, br = c("BL", "binding", "question", "all", "value"), c("BR", "binding", "question", "all", "value")
+    if bl and br:
+        more = "BL" if bl["acc"][0] < br["acc"][0] else "BR"
+        out.append(f"| Q2.5 the statement giving the bridge hidden from the question words: which loses answer org "
+                   f"more | BL | BL {_pct(bl)}, BR {_pct(br)} | {'right' if more == 'BL' else 'wrong: BR loses more'} "
+                   "(guessing differs: BL can pick one of the 3 lockers in the prompt) |")  # fmt: skip
+    att, gdn = c("RL", "lookup", "final", "attn", "value"), c("RL", "lookup", "final", "gdn", "value")
+    if att and gdn:
+        out.append(f"| Q2.6 which kind of layer runs the lookup | attention | RL, hidden from the last tokens in the "
+                   f"16 attention layers only: {_pct(att)}; in the 48 DeltaNet layers only: {_pct(gdn)} | "
+                   f"{'right' if att['acc'][0] < 0.5 < gdn['acc'][0] else 'mixed'} |")  # fmt: skip
+    return out if len(out) > 2 else ["(none of Dan's D2 questions is measured in this run)"]
+
+
+def prior_rows(hyps: dict, cells: dict, cl: dict, name: str) -> list[str]:
+    """The job spec's hypotheses, each checked against this run's cells (verdict: holds / partly / fails)."""
+
+    def a(f, s, d, la="all"):
+        return cells[(f, s, d, la, "value")]["acc"][0]
+
+    def v(f, s, d, la="all", mode="value"):
+        return cells[(f, s, d, la, mode)]["verdict"]
+
+    def pc(x):
+        return f"{100 * x:.0f}%"
+
+    def band(key, field):
+        return cl["bands"].get(key, {}).get(field)
+
+    def all_cells(f, s):
+        return [c["acc"][0] for k, c in cells.items() if k[:2] == (f, s) and k[4] == "value"]
+
+    def answer_site():
+        rec = [a(f, "lookup", d) for f in ("RR", "BR") for d in DESTS]
+        low = [k[3] for k, c in cells.items() if k[0] in ("RL", "BL") and k[1:3] == ("lookup", "final")
+               and k[3].startswith("win") and c["verdict"] == "needed" and int(k[3][3:5]) < 32]  # fmt: skip
+        late = [w for w in ("win40-47", "win48-55") for f in ("RL", "BL") for d in ("final", "both")
+                if (f, "lookup", d, w, "value") in cells and v(f, "lookup", d, w) in ("needed", "partial")]  # fmt: skip
+        core = all(a(f, "lookup", "final") <= 0.4 and a(f, "lookup", "question") >= 0.9 for f in ("RL", "BL"))
+        txt = (f"last tokens: RL {pc(a('RL', 'lookup', 'final'))}, BL {pc(a('BL', 'lookup', 'final'))}; question words: "
+               f"RL {pc(a('RL', 'lookup', 'question'))}, BL {pc(a('BL', 'lookup', 'question'))}; RR/BR lowest "
+               f"{pc(min(rec))}; windows below 32 NEEDED: {low or 'none'}; 40-55 windows NEEDED/PARTIAL: "
+               f"{sorted(set(late)) or 'none'}")  # fmt: skip
+        return txt, "holds" if core and min(rec) >= 0.95 and not low and late else "partly" if core else "fails"
+
+    def binding():
+        q = {f: v(f, "binding", "question") for f in ("BL", "BR")}
+        br_f, bl_f = a("BR", "binding", "final"), v("BL", "binding", "final")
+        ok = all(x == "needed" for x in q.values()) and br_f >= 0.9
+        return (f"question words: BL {pc(a('BL', 'binding', 'question'))}, BR {pc(a('BR', 'binding', 'question'))} "
+                f"({q}); BR last tokens {pc(br_f)}; pointer variant: BL last tokens {pc(a('BL', 'binding', 'final'))} "
+                f"({bl_f})", "holds" if ok else "partly (BR last tokens below 90%)" if all(x == "needed" for x in q.values())
+                else "fails")  # fmt: skip
+
+    def kind():
+        r = {f: (a(f, "lookup", "final", "attn"), a(f, "lookup", "final", "gdn")) for f in ("RL", "BL")}
+        return ("; ".join(f"{f}: attention layers only {pc(x)}, DeltaNet only {pc(y)}" for f, (x, y) in r.items()),
+                "holds" if all(x < 0.5 < y for x, y in r.values()) else "fails")  # fmt: skip
+
+    def late_band():
+        r = {
+            f: (band(f"{f}/lookup/final", "suf_max_needed"), band(f"{f}/lookup/final", "pre_min_needed"))
+            for f in ("RL", "BL")
+        }
+        ok = all(s is not None and s >= 40 and (p is None or p >= 48) for s, p in r.values())
+        return ("; ".join(f"{f}: blocking from L on breaks up to L = {s}; blocking before L breaks from L = {p}"
+                          for f, (s, p) in r.items()), "holds" if ok else "fails")  # fmt: skip
+
+    def early_band():
+        s, p = band("RL/lookup/final", "suf_max_needed"), band("RL/lookup/final", "pre_min_needed")
+        return f"RL: suffix up to {s}, prefix from {p}", "holds" if (p or 64) <= 32 and (s or 64) <= 32 else "fails"
+
+    def spread():
+        cuts = [k[3] for k, c in cells.items() if k[:3] == ("RL", "lookup", "final") and k[3][:3] in ("suf", "pre")
+                and c["verdict"] == "needed"]  # fmt: skip
+        return f"RL cumulative cuts NEEDED: {sorted(cuts) or 'none'}", "fails" if cuts else "holds"
+
+    def binding_band():
+        r = {f: band(f"{f}/binding/question", "pre_min_needed") for f in ("BL", "BR")}
+        return (f"binding -> question words, NEEDED from prefix L = {r}", "holds" if all(x is not None and x <= 32 for x in r.values())
+                else "fails")  # fmt: skip
+
+    def rr_null():
+        lo = min(all_cells("RR", "lookup") + all_cells("BR", "lookup"))
+        return f"lowest RR/BR lookup cell {pc(lo)}", "holds" if lo >= 0.95 else "fails"
+
+    def blr_early():
+        q, p = v("BLR", "lookup", "question"), band("BLR/lookup/final", "pre_min_needed")
+        return (f"question words {pc(a('BLR', 'lookup', 'question'))} ({q}); last tokens NEEDED from prefix L = {p}",
+                "holds" if q == "needed" and p is not None and p <= 40 else "fails")  # fmt: skip
+
+    def brl_like_bl():
+        f, q = a("BRL", "lookup", "final"), a("BRL", "lookup", "question")
+        return (f"last tokens {pc(f)} ({v('BRL', 'lookup', 'final')}); question words {pc(q)} "
+                f"({v('BRL', 'lookup', 'question')}; n too small for NOT NEEDED)",
+                "holds" if v("BRL", "lookup", "final") == "needed" and q >= 0.9 else "fails")  # fmt: skip
+
+    def country_b():
+        q, f = v("country-B", "binding", "question"), a("country-B", "binding", "final")
+        return (f"question words {pc(a('country-B', 'binding', 'question'))} ({q}); last tokens {pc(f)}",
+                "holds" if q == "needed" and f >= 0.9 else "partly (the last tokens read it too)" if q == "needed" else "fails")  # fmt: skip
+
+    def country_r():
+        lo = min(all_cells("country-R", "binding"))
+        return f"lowest cell over every destination and layer set {pc(lo)}", "holds" if lo >= 0.95 else "fails"
+
+    def posctl():
+        pcs = cl["positive_control"]
+        return json.dumps({f: p["passed"] for f, p in pcs.items()}), "holds" if pcs and all(p["passed"] for p in pcs.values()) else "fails"  # fmt: skip
+
+    def smoke(key):
+        chk = json.loads((RESULTS / name / "check.json").read_text())
+        tim = json.loads((RESULTS / name / "timing.json").read_text())
+        if key == "noop":
+            return f"noop_empty_source_max_abs = {chk['noop_empty_source_max_abs']}", "holds" if chk["noop_empty_source_max_abs"] == 0 else "fails"  # fmt: skip
+        if key == "posctl":
+            x, y = chk["posctl_last_reads_nothing_max_abs"], chk["posctl_context_erased_absent_max_abs"]
+            return f"{x} and {y} logits (unhooked {chk['unhooked_rolled_context_max_abs']:.1f})", "holds" if max(x, y) < 0.1 else "fails"  # fmt: skip
+        return f"{tim['rows_per_second']} rows/s", "holds" if tim["rows_per_second"] >= 15 else "fails"
+
+    checks = {"H_answer_site": answer_site, "H_relay": lambda: (f"relay holds = {cl['relay_holds']}", "holds" if cl["relay_holds"] else "fails"),
+              "H_both_routes": lambda: (f"last tokens alone: {v('RL', 'lookup', 'final')}", "fails" if v("RL", "lookup", "final") == "needed" else "holds"),
+              "H_binding": binding, "H_kind": kind, "positive_control": posctl, "H_late_band": late_band,
+              "H_early_band": early_band, "H_spread": spread, "H_binding_band": binding_band, "RR_null": rr_null,
+              "H_BLR_early": blr_early, "H_BRL_like_BL": brl_like_bl, "H_country_B": country_b,
+              "H_country_R_null": country_r, "H-noop": lambda: smoke("noop"), "H-posctl": lambda: smoke("posctl"),
+              "H-throughput": lambda: smoke("throughput")}  # fmt: skip
+    out = []
+    for h, pred in hyps.items():
+        try:
+            res, verdict = checks[h]() if h in checks else ("see summary.json", "-")
+        except (KeyError, TypeError, ValueError):
+            res, verdict = "not measured in this run", "-"
+        short = pred if len(pred) <= 220 else pred[:217] + "..."
+        out.append(f"| {h} | {short} | {res} | {verdict} |")
+    return out
+
+
+def write_report(name: str, m: dict, rows: list[dict], cells: dict, cl: dict, figs: dict, out_dir: Path) -> None:
+    led, spec = _ledger(name), _spec(name)
+    commit = (led.get("commit") or "unknown")[:7]
+    seeds = sorted(set(m["seeds"].values()))
+    n_items = collections.Counter(r["family"] for r in rows if r["source"] == "none")
+    head = next((h for h in HEADLINES if (*h, "all", "value") in cells), None)
+    lines = [f"# {EXP} / {name}: analysis", "",
+             f"EXP {name} @ {commit} | model Qwen3.6-27B | n={dict(n_items)} org prompts per family | seeds={seeds}", "",
+             f"Claim tested: {spec.get('question', m['why'])}", "",
+             "Terms: org prompt = the unedited prompt; bridge org / answer org = its bridge and answer; 'hidden from' = "
+             "those positions cannot read the statement directly (attention scores masked; DeltaNet layers: its "
+             "values removed); accuracy = % of org prompts still giving answer org (100% unedited, by selection).", ""]  # fmt: skip
+    if head:
+        fam, st, dest = head
+        cell = cells[(*head, "all", "value")]
+        ctrl = cells.get((fam, f"{st}_off", dest, "all", "value"))
+        rnd = cells.get((fam, "random", dest, "all", "value"))
+        lines.append(f"Headline: {fam}, {SOURCE_PHRASE[st]} hidden from {DEST_PHRASE[dest]} in all 64 layers: "
+                     f"answer org kept in {_pct(cell)}   Baseline: org prompt unedited 100% ({cell['n']}/{cell['n']})   "
+                     f"Control: {SOURCE_PHRASE[st + '_off'].removeprefix('control: ')} {_pct(ctrl)}; a random span "
+                     f"{_pct(rnd)}")  # fmt: skip
+        cf = cell["conf"]
+        lines.append(f"Where the answer goes: {100 * cf[0]:.0f}% [{100 * cf[1]:.0f}, {100 * cf[2]:.0f}] of original "
+                     "answers become another statement's answer in the same prompt (another "
+                     f"{'locker' if st == 'lookup' else 'capital or leg count'} the prompt states or implies)")  # fmt: skip
+        if fam == "RL":
+            rr = cells.get(("RR", "lookup", "both", "all", "value"))
+            lines.append(f"Contrast: RR (the same org prompts up to the question; the answer comes from memory), the "
+                         f"same statement hidden from the question words and the last tokens: {_pct(rr)}")  # fmt: skip
+        cuts = sorted((k[3], v) for k, v in cells.items() if k[:3] == head and k[3][:3] in ("suf", "pre"))
+        if cuts:
+            lines.append("Depth: " + "; ".join(f"hidden in {layers_phrase(k)} {100 * v['acc'][0]:.0f}%" for k, v in cuts))  # fmt: skip
+        kinds = [(lab, cells.get((*head, lab, "value"))) for lab in ("attn", "gdn")]
+        if all(v for _, v in kinds):
+            lines.append("By layer kind: " + "; ".join(f"hidden in {layers_phrase(lab)} only: {_pct(v)}" for lab, v in kinds))  # fmt: skip
+    lines += ["", "Figures: " + ", ".join(f for fs in figs.values() if fs for f in fs), ""]
+    ps = sorted(math.exp(r["logp"]) for r in rows if r["source"] == "none")
+    ctrl_rows = [r for r in rows if r["source"] in ("lookup_off", "binding_off", "random", "trailing")]
+    ctrl_wrong = sum(not r["correct"] for r in ctrl_rows)
+    nr = collections.defaultdict(list)
+    for r in rows:
+        if r.get("norm_ratio") is not None and r["layers"] == "all" and r["mode"] == "value":
+            nr["statement" if r["source"] in CONTROL_OF else "control"].append(r["norm_ratio"])
+    small = sorted({c["n"] for c in cells.values() if c["n"] < 35})
+    check = json.loads((RESULTS / name / "check.json").read_text())
+    lines += [
+        "Three dumbest ways this could be wrong:",
+        f"1) bf16 noise near ties decides cells. Checked: unedited p(answer org) min {ps[0]:.2f}, median "
+        f"{ps[len(ps) // 2]:.3f}; an unedited row moves by up to {check['unedited_row_drift_in_knocked_batch_max_abs']:.2f} "
+        "logits when other rows in its batch are knocked (check.json), so every knocked row is scored against the "
+        "unedited row of its own batch.",
+        f"2) Hiding any span this size breaks the model. Checked: the control spans (a same-kind statement off the "
+        f"path, a random span, the tokens after the statement) lose answer org in {ctrl_wrong} of {len(ctrl_rows)} "
+        f"rows; the DeltaNet output at the blocked positions shrinks alike for the statement "
+        f"({statistics.mean(nr['statement']):.3f} of normal) and the controls ({statistics.mean(nr['control']):.3f}), "
+        "so the layer's output rescaling does not favour the statement.",
+        f"3) The pre-registered rule mislabels cells at small n. {'Yes here' if small else 'Not here'}: with n < 35 "
+        f"({'cells with n = ' + str(small) if small else 'no cell this small'}) a cell where every org prompt keeps "
+        "answer org cannot reach the Wilson lower bound of 90% and is labelled PARTIAL instead of NOT NEEDED; read "
+        "those by their accuracy. The positive control (the statement removed from every later position and from the "
+        "DeltaNet recurrence) does break every family whose answer needs the statement (below).",
+        "",
+        "For the human to verify: rows.jsonl, keep rows whose item's source='none' row has correct=true; count "
+        "correct=true with "
+        + (f"family={head[0]}, source={head[1]}, dest={head[2]}, layers=all, mode=value (expect "
+           f"{round(cells[(*head, 'all', 'value')]['acc'][0] * cells[(*head, 'all', 'value')]['n'])}/"
+           f"{cells[(*head, 'all', 'value')]['n']})." if head else "the cells in summary.json."),
+        "",
+        "Status: UNVERIFIED",
+        "",
+        "## Pre-registered decision rule",
+        "",
+        f"> {m['decision']['needed']} -> NEEDED; {m['decision']['not_needed']} -> NOT NEEDED; otherwise PARTIAL "
+        "(manifest.json 'decision'; job spec decision_rule).",
+        "",
+        "- Positive control (the statement the answer needs, hidden from everything after it in all 64 layers and "
+        "removed from the DeltaNet recurrence): "
+        + "; ".join(f"{f}: {'passed' if p['passed'] else 'FAILED'} ("
+                    + ", ".join(f"{SOURCE_PHRASE[s]} {VERDICT.get(x or '', x)}" for s, x in p["sources"].items()) + ")"
+                    for f, p in cl["positive_control"].items()),
+        f"- Claim C1a (memory → prompt loses answer org while memory → memory keeps it, the statement giving the "
+        f"answer hidden from both destinations): memory → prompt {VERDICT.get(cl['C1a_RL_breaks_RR_survives']['RL'] or '', '-')}, "
+        f"memory → memory {VERDICT.get(cl['C1a_RL_breaks_RR_survives']['RR'] or '', '-')}; holds = "
+        f"{cl['C1a_RL_breaks_RR_survives']['holds']}",
+        f"- Claim C1b (the last tokens before the answer read the statement giving the answer themselves; the "
+        f"question words do not need it): holds = {cl['C1b_holds']}; the reverse (question words relay it): "
+        f"{cl['relay_holds']}. Per family: "
+        + "; ".join(f"{f}: last tokens {VERDICT.get(v['final'] or '', '-')}, question words "
+                    f"{VERDICT.get(v['question'] or '', '-')}" for f, v in cl["C1b_answer_site_reads_lookup"].items()
+                    if v["final"]),
+        "- The statement giving the bridge, by destination: "
+        + "; ".join(f"{f}: " + ", ".join(f"{DEST_PHRASE[d]} {VERDICT.get(x or '', '-')}" for d, x in v.items())
+                    for f, v in cl["binding_BL_vs_BR"].items() if any(v.values())),
+        "- Where in depth (layer sets that are NEEDED): "
+        + ("; ".join(band_phrase(k, v) for k, v in cl["bands"].items()
+                     if v.get("windows_needed") or v.get("suf_needed") or v.get("pre_needed") or v.get("kind_needed"))
+           or "none"),
+        "",
+        "Not interpretable / caveats: " + "; ".join(
+            [f"{cell_phrase(k)}: control breaks ({_pct(v)})" for k, v in cells.items()
+             if k[1] not in CONTROL_OF and v["acc"][0] <= 1 - NEEDED_DROP]
+            or ["no control cell drops >= 20 points"])
+        + (f". n = {small} per cell: NOT NEEDED is unreachable by the rule (a 100% cell is PARTIAL)" if small else "")
+        + (". n = 4 per family: a gate run, not interpreted" if m["n_per_family"] < 10 else ""),
+        "",
+        "## Dan's predictions (jobs/predictions/2026-10-21_dan.md, D2)",
+        "",
+        *dan_table(cells),
+        "",
+        "## The agent's priors (job spec hypotheses), checked",
+        "",
+        "Predictions are quoted from the job spec (written before the run). Their shorthand: lookup = the statement "
+        "giving the answer, binding = the statement giving the bridge; question = the question words, final = the "
+        "last tokens before the answer; (statement, destination, all) = hidden in all 64 layers; win A-B = layers "
+        "A-B only; suf L = layers L-63; pre L = layers 0 to L-1; NEEDED / NOT NEEDED / PARTIAL as in the rule above.",
+        "",
+        "| hypothesis | prediction (job spec) | result | verdict |",
+        "|---|---|---|---|",
+        *prior_rows(spec.get("hypotheses") or {}, cells, cl, name),
+        "",
+    ]  # fmt: skip
+    ex_path = RESULTS / name / "examples.json"
+    if ex_path.exists():
+        ex = json.loads(ex_path.read_text())["examples"]
+        rank = ("the final template positions", "the question and final positions", "")  # the headline condition first
+        pool = [e for e in ex if e["group"] == "path_breaks" and e["family"] in ("RL", "BRL", "BL")]
+        pool.sort(key=lambda e: next(i for i, r in enumerate(rank) if e["condition"].startswith(r)))
+        pick = pool[0] if pool else (ex[0] if ex else None)
+        if pick:
+            src = next((pick["prompt"][s["start"] : s["end"]] for s in pick["spans"] if s["role"] == "source"), "?")
+            lines += ["## Worked example (examples.json, group path_breaks)", "", "```", pick["prompt"], "```", "",
+                      f"{pick['family']}, org prompt {pick['item_id']}. What was done: {example_phrase(pick)} "
+                      f"(the statement: {src.strip()!r}). Unedited the model answers {pick['answers']['clean']!r} "
+                      f"(answer org {pick['numbers']['answer']!r}); with the statement hidden it answers "
+                      f"{pick['answers']['edited']!r}, another answer that is in the prompt (the prompt's other answers: "
+                      f"{pick['numbers']['other_answers_in_prompt']}). log p(answer org): "
+                      f"{pick['numbers']['logp_answer_unedited']:.3f} -> {pick['numbers']['logp_answer_edited']:.3f}.", ""]  # fmt: skip
+    # Displays never show family codes; the verification line keeps the data keys a reader filters on.
+    lines = [ln if ln.startswith("For the human to verify") else plain(ln) for ln in lines]
+    (out_dir / "report.md").write_text("\n".join(lines) + "\n")
+
+
+def stage_figures(name: str) -> None:
+    import matplotlib
+
+    matplotlib.use("Agg")
+    m, rows, _ = load_run(name)
+    import shutil
+
+    final_dir = RESULTS / name / f"analysis-{time.strftime('%Y%m%d-%H%M%S', time.gmtime())}-figures"
+    out_dir = final_dir.with_name(final_dir.name + ".partial")  # renamed when complete: a crash leaves no final folder
+    # One figures folder per run (user's rule): drop this stage's earlier output; the job-written analysis-*Z stay.
+    for old in (RESULTS / name).glob("analysis-*-figures*"):
+        if old.is_dir():
+            shutil.rmtree(old)
+    out_dir.mkdir(parents=True, exist_ok=False)
+    cells = summarise_cells(m, rows)
+    cl = claims(cells)
+    figs = {
+        "all_layers": fig_all_layers(cells, m, out_dir / "all_layers"),
+        "windows": fig_windows(cells, m, out_dir / "windows"),
+        "cuts": fig_cuts(cells, m, out_dir / "cuts"),
+        "norm_ratio": fig_norm(rows, m, out_dir / "norm_ratio"),
+    }
+    summary = {"run": name, "rule": m["decision"], "claims": cl, "figures": figs,
+               "cells": [{"family": k[0], "source": k[1], "dest": k[2], "layers": k[3], "mode": k[4], **c}
+                         for k, c in cells.items()]}  # fmt: skip
+    (out_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
+    write_report(name, m, rows, cells, cl, figs, out_dir)
+    out_dir.rename(final_dir)
+    print("wrote", final_dir, {k: v for k, v in figs.items() if v})
+
+
 # ---- examples (job pages) -------------------------------------------------------------------------------------------
 
 HYPOTHESES = {
@@ -773,7 +1621,7 @@ def load_token_strings() -> None:
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("stage", choices=["manifest", "run", "summarise", "examples"])
+    ap.add_argument("stage", choices=["manifest", "run", "summarise", "analyze", "examples", "figures"])
     ap.add_argument("--name", required=True)
     ap.add_argument("--why")
     ap.add_argument("--families", nargs="+", choices=list(FAMILIES), default=list(FAMILIES))
@@ -795,8 +1643,10 @@ if __name__ == "__main__":
         stage_manifest(args)
     elif args.stage == "run":
         stage_run(args.name)
-    elif args.stage == "summarise":
+    elif args.stage in ("summarise", "analyze"):  # analyze: the decision rule re-applied to the saved rows
         stage_summarise(args.name)
+    elif args.stage == "figures":
+        stage_figures(args.name)
     else:
         load_token_strings()
         stage_examples(args.name, args.k)

@@ -13,6 +13,7 @@ command: >-
   && uv run python scripts/attn_knockout.py run --name d2_ko_core_v1
   && uv run python scripts/attn_knockout.py summarise --name d2_ko_core_v1
 examples_command: uv run python scripts/attn_knockout.py examples --name d2_ko_core_v1 --k 3
+figures_command: uv run python scripts/attn_knockout.py figures --name d2_ko_core_v1
 question: When the question tokens and/or the final template positions cannot read the lookup statement ("The cow's
   locker is 5.") directly, does RL (recalled bridge -> in-prompt lookup) break while RR (same scenes, recall from
   memory) survives; which destinations must see it, and in which 8-layer window, through attention or DeltaNet layers?

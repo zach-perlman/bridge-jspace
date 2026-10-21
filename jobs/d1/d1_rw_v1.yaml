@@ -11,6 +11,7 @@ command: >-
   --why "D1: at the transit cells, does the J-lens read the bridge and does its direction write it?"
   --lo 32 --sets bind_bridge bridge_word lookup_x context question
 examples_command: uv run python scripts/statement_positions.py examples --name d1_rw_v1
+figures_command: uv run python scripts/statement_positions.py figures --name d1_rw_v1
 question: At the cells where the bridge is in transit at layers 32-40, does the J-lens read it, and does pushing v_X -
   v_I (0.5-16x the copy's per-position norm) write X, as it does for countries at the question tokens?
 why_it_matters: 'The lens-write half of D1''s decision. "Read without write" (RL read 95%, written <= 3% at 32-40) is

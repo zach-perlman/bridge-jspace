@@ -10,6 +10,7 @@ command: >-
   --why "D1: where the lookup reads the bridge, statement positions vs question tokens (position-set x layer copy map)"
   --n 32 --layers 0 8 16 24 28 32 34 36 38 40 44 48 52 60
 examples_command: uv run python scripts/statement_positions.py examples --name d1_map_v1
+figures_command: uv run python scripts/statement_positions.py figures --name d1_map_v1
 question: Where, by position set (the bridge's binding statement, its word, the other bindings, the lookup rows, the
   whole context, the question, its words, the template tail) and layer, does each family carry its bridge, i.e. where
   does copying C's residual into the clean run give X's answer?

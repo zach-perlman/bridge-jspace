@@ -14,6 +14,9 @@ command: >-
 examples_command: >-
   S="uv run python scripts/statement_positions.py" &&
   $S examples --name d1_smoke_27b && $S examples --name d1_smoke_27b_parts && $S examples --name d1_smoke_27b_rw
+figures_command: >-
+  S="uv run python scripts/statement_positions.py" &&
+  $S figures --name d1_smoke_27b && $S figures --name d1_smoke_27b_parts && $S figures --name d1_smoke_27b_rw
 question: Does every D1 stage (map, parts, readwrite, examples) run end to end on Qwen3.6-27B, with the hook checks
   passing, before the main runs spend the night's budget?
 why_it_matters: 'Fail-fast gate for d1_map_v1 / d1_parts_v1 / d1_rw_v1 (the D1 test of whether "lookup-used bridges

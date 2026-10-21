@@ -53,3 +53,4 @@ notes: 'Reads per case: 3 checks + 16 layers x 4 groups x 2 (dissoc, same) + 8 l
   x 4 x 2 = 219 -> 39.4k edited reads. Throughput: suite_split map_A8_v1 (27B, faster box) 76.8k reads in 1205 s = 64/s;
   read_write layers_v1 50k in 571 s = 87/s; the A100 PCIe at ~1/3 of that -> ~22/s -> 30 min + load. Re-size from
   d3_smoke_27b''s measured rate. Pilot items (dev) are never headline items.'
+figures_command: uv run python scripts/pointer_swap.py figures --name d3_pilot_27b

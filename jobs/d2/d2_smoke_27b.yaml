@@ -11,6 +11,7 @@ command: >-
   && uv run python scripts/attn_knockout.py run --name d2_smoke_27b
   && uv run python scripts/attn_knockout.py summarise --name d2_smoke_27b
 examples_command: uv run python scripts/attn_knockout.py examples --name d2_smoke_27b --k 2
+figures_command: uv run python scripts/attn_knockout.py figures --name d2_smoke_27b
 question: Does the exact edge knock-out (bridge_jspace.knockout) run on Qwen3.6-27B for every condition type, with an
   exact no-op, a passing positive control, and a throughput that fits tonight's D2 budget?
 why_it_matters: Gate for d2_ko_core_v1, d2_ko_sweep_v1 and d2_ko_tie_country_v1. The knock-out is new code (masked

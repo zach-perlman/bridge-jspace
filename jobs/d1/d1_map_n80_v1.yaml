@@ -9,6 +9,7 @@ depends_on:
 command: 'uv run python scripts/statement_positions.py map --name d1_map_n80_v1 --why "D1 confirmatory map: n=80 per family
   at the layers where H-loc is decided (32-52)" --n 80 --layers 32 34 36 38 40 44 48 52'
 examples_command: uv run python scripts/statement_positions.py examples --name d1_map_n80_v1
+figures_command: uv run python scripts/statement_positions.py figures --name d1_map_n80_v1 --against d1_map_v1
 question: Same as d1_map_v1, at n=80 per family and only layers 32-52 (where H-loc vs H-early-handoff is decided).
 why_it_matters: 'Every "around" measure (copy split, lens read/write) was taken at the question tokens only. For bound bridges
   the bridge is stated in the context and only referred to in the question (lens reads BL there 7%; question copy moves

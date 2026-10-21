@@ -10,6 +10,7 @@ command: >-
   --why "D4: is a hard early lens push (layers 16-28, 4-16x the copy's norm) the same as editing the input word, or a write of the intermediate? Decides whether layers_v1's early RL flips contradict C2"
   --n 60
 examples_command: uv run python scripts/early_push.py examples --name d4_push_v1
+figures_command: uv run python scripts/early_push.py figures --name d4_push_v1
 question: On Qwen3.6-27B at layers 16-28, does the lens push v_X - v_I that flips RL 35-61% and BL 24-44% act like
   putting X's word into the question (agreeing item by item with the text edits, not depending on the cue positions,
   moving BL as much as RL) or like writing the intermediate variable (agreeing with C's own in-transit state)?

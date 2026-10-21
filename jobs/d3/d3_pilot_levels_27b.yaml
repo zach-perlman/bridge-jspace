@@ -43,3 +43,4 @@ seeds:
 - 0
 notes: 'Two levels x d3_pilot_27b''s per-level cost (0.55 h est): 1.1 h est; d3_smoke_27b measured 31 edited reads/s on
   this A100 (1476 reads in 48 s), so likely ~0.8 h. Dev items are never headline items.'
+figures_command: uv run python scripts/pointer_swap.py figures --name d3_pilot_levels_27b

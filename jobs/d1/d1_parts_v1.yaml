@@ -10,6 +10,7 @@ command: >-
   --why "D1: at the transit cells (statement positions vs question), is the copy's effect carried by its J-space part?"
   --lo 32 --sets bind_bridge bridge_word lookup_x context question
 examples_command: uv run python scripts/statement_positions.py examples --name d1_parts_v1
+figures_command: uv run python scripts/statement_positions.py figures --name d1_parts_v1
 question: Where the bridge is in transit at layers 32-40 (d1_map_v1's transit cells), does the J-space part of C's copy
   carry more of its effect than its share of the copy predicts, at the statement positions as at the question tokens?
 why_it_matters: 'Kills or supports the location-artefact reading of claim C2''s "prompt lookups go around the J-space".
