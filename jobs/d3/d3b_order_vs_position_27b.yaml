@@ -1,0 +1,63 @@
+id: d3b_order_vs_position_27b
+title: 'D3b: does the pointer direction mean "the Nth statement" or "this token position"?'
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.5
+depends_on:
+- d3v2_competence_27b
+- d3b_order_vs_position_smoke_27b
+command: >-
+  uv run python scripts/pointer_order.py run --name d3b_order_vs_position_27b
+  --why "D3b order or position: fit the pointer direction on pointer_v2 prompts whose asked statement precedes the filler sentence (the Nth statement = the Nth position), push held-out scenes toward a statement after the filler (the Nth statement now sits one position later), two folds"
+examples_command: uv run python scripts/pointer_order.py examples --name d3b_order_vs_position_27b
+figures_command: uv run python scripts/pointer_order.py figures --name d3b_order_vs_position_27b
+question: When the pointer direction (fitted to "the question asks statement N") is pushed into a scene where a filler
+  sentence has shifted the later statements by one position, does the model answer with the Nth statement's digit
+  (ORDER) or with the digit of whatever statement now sits at position N (TOKEN POSITION)?
+why_it_matters: 'd3b_slot_direction_main_27b found a direction that steers the lookup where the lens push cannot (37% vs
+  0%), but in pointer_v1 "the Nth statement" and "the Nth token position" are the same thing. ORDER means the "around"
+  route is an ordinal pointer into a list (the binding-ID / lookback picture); TOKEN means it is a positional address,
+  which would not survive any change of layout and points to attention-by-position, not to a variable.'
+hypotheses:
+  H-order: 'statements after the filler, layer 48, 2x: answers = the target statement''s digit >= 20%, = the digit now at
+    its old position <= 5%; targets before the filler (both readings agree) >= 25%; read test (no push, asked statement
+    after the filler): the fitted read-out picks the statement''s number more often than the position one later'
+  H-token: 'order <= 5%, token >= 20%; the read test picks the position one later'
+  H-both: 'both >= 10% (the direction carries a mixture, or the two codes coexist)'
+  H-no-transfer: 'targets before the filler < 15% (the direction does not work in these scenes): not interpretable'
+  prior: 'Agent prior: H-order 0.45, H-token 0.3, H-both 0.15, H-no-transfer 0.1 (positional binding IDs in the
+    literature are ordinal; but every context here has the same length, so a positional code would also have been
+    sufficient for the model).'
+decision_rule: 'Fixed in scripts/pointer_order.py''s docstring and manifest. Primary cut: memory → prompt, held-out
+  scenes whose asked statement comes before the filler, targets after it (separating), slot push (target minus current)
+  at layer 48, 2x the alt-prompt patch''s per-token size. order = share of answers = the target statement''s digit, token
+  = share = the digit of the statement that now sits at the target''s position; order - token by a scene-cluster
+  bootstrap (2000, seed 0). ORDER iff order - token has its 95% lower bound > 0, order >= 2 x token and order''s Wilson
+  lower bound >= 0.10; TOKEN iff the reverse; BOTH iff both Wilson lower bounds >= 0.10 and neither; else inconclusive.
+  Valid only if targets before the filler land on the target statement with Wilson lower bound >= 0.15, the random push
+  and the shuffled-label direction land on either predicted digit with Wilson upper bound <= 0.10, and the slot push
+  changes memory → memory answers with Wilson upper bound <= 0.10 (each n >= 35). Filler-position targets, scenes whose
+  asked statement follows the filler, the push without the current statement, layer 44, 1x, both layers and the read
+  test are reported, not decisive.'
+controls:
+- 'random push per token at the same size (rules out any push of that size)'
+- 'shuffled-label direction (rules out a direction that works without statement information)'
+- 'memory → memory items: nothing is looked up, so a pointer should change nothing'
+- 'targets before the filler: both readings agree there (positive control: the direction works in pointer_v2 at all)'
+- 'targets at the filler''s position: the order reading predicts the target digit, the token reading the filler (no digit)'
+- 'push without the current statement (target minus the mean): neutral between the readings; the primary subtracts the
+  current statement, which is the same under both readings only when it precedes the filler (hence the primary cut)'
+- 'two folds: every scene is steered by a fit that never saw it'
+n: 'memory → prompt: 287 eligible scenes (animals 180, elements 107). Primary cut: 125 separating target instances in 55
+  scenes (animals 77, elements 48), >= 35; positive control 392 instances (122 scenes); memory → memory 287 scenes x 4
+  targets; read test 59 scenes whose asked statement follows the filler; fit 367 + 363 prompts (two folds)'
+seeds:
+- 0
+- 1
+notes: 'Timing: 287 memory → prompt scenes x 97 rows + 287 memory → memory x 49 = ~41.9k edited reads at 31-37/s ~19-23
+  min, + collect (~730 fit prompts and 2 forwards per scene) ~1 min, load ~4 min, overhead ~3 min: ~0.5 h. Related:
+  d3v2_offset_reflexive_main (running) asks the same question with the alt-prompt patch instead of a fitted direction.
+  A stronger version needs a data change (see the agent report): a pointer_v2 fit set with the filler always last and a
+  steer set with it always first, so every target after statement 1 separates the readings. Results:
+  results/pointer_order/d3b_order_vs_position_27b/.'

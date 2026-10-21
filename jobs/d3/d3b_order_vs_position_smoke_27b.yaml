@@ -1,0 +1,37 @@
+id: d3b_order_vs_position_smoke_27b
+title: 'D3b order or position, smoke: every stage on a few scenes'
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.12
+depends_on:
+- d3v2_competence_27b
+command: >-
+  uv run python scripts/pointer_order.py run --name d3b_order_vs_position_smoke_27b --scene-limit 16
+  --why "D3b order-or-position smoke: collect, two-fold fit, read test and pushes end to end on 16 scenes before the main run"
+examples_command: uv run python scripts/pointer_order.py examples --name d3b_order_vs_position_smoke_27b
+figures_command: uv run python scripts/pointer_order.py figures --name d3b_order_vs_position_smoke_27b
+question: Does every pointer_order stage (collect the clean fit prompts of each half, fit, the read test, the pushes on both
+  folds, examples, figures) run on Qwen3.6-27B?
+why_it_matters: 'Fail-fast gate for d3b_order_vs_position_27b (does the pointer direction mean "the Nth statement" or "this
+  token position"?). Not a result: 16 scenes. Local smokes cannot run (bridge_jspace.model.load_model hard-codes CUDA);
+  the 0.8B smoke ran on the 4xA100 box.'
+hypotheses:
+  H-code-ok: 'fit.json has two folds with a decode_cv per collect layer; every unedited memory → prompt and memory →
+    memory row keeps answer org / is "kept"; outcomes.jsonl has 97 rows per memory → prompt scene and 49 per memory →
+    memory scene; reads.jsonl has 7 rows per memory → prompt scene; the slot push at layer 48, 2x lands on the target
+    statement for >= 1 of the agreeing targets (d3b_slot_direction_main_27b: 45% at 2x); examples.json and one figures
+    folder written'
+  H-bug: any check fails or a stage crashes
+decision_rule: 'Run d3b_order_vs_position_27b only if every H-code-ok check holds; otherwise cancel it and read the log.'
+controls:
+- 'unedited read of every steered item (answer org expected: the competence gate)'
+- 'random push and shuffled-label direction at the same size'
+- 'memory → memory items (nothing looked up)'
+n: 16 eligible scenes (8 per fold), memory → prompt and memory → memory
+seeds:
+- 0
+- 1
+notes: 'Timing: 16 x 97 + 16 x 49 = ~2.3k edited reads at 31-37/s ~1.2 min, + 27B load ~4 min, + collect ~1 min: ~0.12
+  h. The 0.8B smoke (qwen35_08b_smoke_d3b_order_v2 on the 4xA100 box, layers 15-19, 12 scenes) ran every stage in 40 s.
+  Results: results/pointer_order/d3b_order_vs_position_smoke_27b/.'
