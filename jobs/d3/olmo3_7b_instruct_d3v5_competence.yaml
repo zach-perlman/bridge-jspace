@@ -1,0 +1,21 @@
+id: olmo3_7b_instruct_d3v5_competence
+title: "G3 gate: can OLMo-3-7B-Instruct answer pointer_v5 (colour-word answers, 8-statement lists)?"
+thread: D3
+gpus: 1
+mem_gb: 25
+est_gpu_hours: 0.25
+depends_on: []
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct BJ_JUDGE=read uv run python scripts/pointer_v5.py manifest --name olmo3_7b_instruct_d3v5_competence
+  --why "pointer_v5 on a second model (chat format, read judge)"
+  && BJ_TARGET=olmo-3-7b-instruct BJ_JUDGE=read uv run python scripts/pointer_v5.py competence --name olmo3_7b_instruct_d3v5_competence
+question: 'Does OLMo-3-7B-Instruct answer pointer_v5''s prompts (read judge)?'
+why_it_matters: 'Gate for olmo3_7b_instruct_d3v5_swap.'
+hypotheses:
+  H-gate: 'every topic, family and layout >= 80% right (read judge). Prior 0.6'
+decision_rule: 'pointer_v1''s competence rule (read judge).'
+controls:
+- 'each step alone for memory -> prompt'
+n: 'all of pointer_v5 main (3,600 items); 8-9 countries memory -> prompt scenes per list length are not token-aligned under OLMo''s tokenizer and are dropped by pointer_swap'
+seeds: [871]
+notes: '~0.25 GPU-h (7B).'

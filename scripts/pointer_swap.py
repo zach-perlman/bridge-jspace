@@ -94,6 +94,14 @@ Decision rule, pointer_v6 additions (fixed 2026-10-21, before any v6 run; the sa
     upper bound < 0. H-ordinal: in both e5-abs and e5-rel, the same slot's lower bound exceeds the moved statement's
     upper bound (token / back). H-long (Dan): share(position | e5-long) - share(position | e5-still) has upper bound
     < 0. Per-topic cells, named -> prompt, other layers and the full rule's verdicts are reported, not decisive.
+Decision rule, pointer_v5 additions (fixed 2026-10-21, before any v5 run; the same scenes with digit and with
+colour-word answers, 5 and 8 statements):
+  - the rule above with the pointer_v4 additions (entity-cluster intervals) at the last two tokens, memory -> prompt,
+    each primary layer (48 and 50 on the 27B; another target's --primary-layers). A level "keeps the slot" iff at one
+    primary layer the verdict is "same statement slot" pooled and in >= 2 of 3 topics (cells with n >= 35).
+  - H-word: e5-word keeps the slot. H-long: e8-digit keeps the slot. e5-digit (pointer_v4's layout again) and
+    e8-word are reported with the same test. Word answers are read right after 'Answer:' (the word's first token with
+    its leading space), digits after the appended space token, so "the last two tokens" are the read's last two.
 
 Stages:  manifest --name N --why W [--data pointer_v1|pointer_v2|code_pointer_v1|alias_pointer_v1] --set S
                   [--levels ...] [--families ...] [--domains ...] [--family-roles P R C] [--n K] [--layers ...]
@@ -143,6 +151,7 @@ DATASETS = (
     "pointer_v3",
     "pointer_v4",
     "pointer_v4x",
+    "pointer_v5",
     "pointer_v6",
     "code_pointer_v1",
     "alias_pointer_v1",
@@ -150,7 +159,7 @@ DATASETS = (
 # Interval method per dataset (pointer_v4 additions in the docstring); Wilson for every other dataset.
 CLUSTER_CI = {"kind": "entity_cluster", "cluster": "asked entity", "strata": "domain", "n_boot": 2000, "seed": 0,
               "bounds": "the wider of the cluster bootstrap and the item-level Wilson interval"}  # fmt: skip
-CI_BY_DATA = {"pointer_v4": CLUSTER_CI, "pointer_v4x": CLUSTER_CI, "pointer_v6": CLUSTER_CI}
+CI_BY_DATA = {"pointer_v4": CLUSTER_CI, "pointer_v4x": CLUSTER_CI, "pointer_v5": CLUSTER_CI, "pointer_v6": CLUSTER_CI}
 V4X_LAYERS = ("48", "50")  # pointer_v4x's primary layers on the 27B (the docstring's pointer_v4x additions)
 
 
@@ -228,6 +237,11 @@ def question_span(tok, text: str, question: str) -> tuple[list[int], list[int], 
     )
 
 
+def answer_kind(item: dict) -> str:
+    """'digit', or 'word' for any other answer kind (pointer_v5's 'colour')."""
+    return "digit" if item.get("answer_kind", "digit") == "digit" else "word"
+
+
 def prepare(item: dict, tok) -> dict[str, Any]:
     """Token ids (read form: the space token appended) of the base and the sources, and the position groups. Sources
     are token-aligned with the base, or, for items with align = "end" (pointer_v6's shifted contexts), aligned from
@@ -235,7 +249,9 @@ def prepare(item: dict, tok) -> dict[str, Any]:
     maps to source position i + shift[source]."""
     from bridge_jspace.tokens import raw_encoding
 
-    space = S.ids(tok, " ")
+    # suite_v1's read: a digit answer after 'Answer:' plus the space token; a word answer (pointer_v5's colours) right
+    # after 'Answer:', its first token carrying the leading space (S.answer_token)
+    space = S.ids(tok, " ") if answer_kind(item) == "digit" else []
     texts = {"base": (item["context"], item["question"])}
     texts |= {s: (v["context"], v["question"]) for s, v in item["sources"].items()}
     rendered = {k: prompt_text(tok, c, q) for k, (c, q) in texts.items()}
@@ -265,7 +281,7 @@ def prepare(item: dict, tok) -> dict[str, Any]:
         "groups": {
             "question": question,
             "final": final,
-            "last": [n - 1, n],
+            "last": [n + len(space) - 2, n + len(space) - 1],  # the read's last two tokens
             "both": question + final,
             "all": list(range(n + len(space))),
         },
@@ -313,7 +329,7 @@ def other_predictions(item: dict, other: dict) -> dict[str, str]:
     p = {"none": item["answer"], "identity": "-", "position": "-", "value": "-"}
     if k != item["slots"]["query"] and k < len(item["digits"]) and item["family"] != "RR":
         p["position"] = str(item["digits"][k])
-    if item["family"] != "RR" and int(other["answer"]) not in item["digits"]:
+    if item["family"] != "RR" and other["answer"] not in {str(d) for d in item["digits"]}:
         p["value"] = other["answer"]
     return p
 
@@ -473,10 +489,10 @@ def stage_run(name: str) -> None:
     counts["unaligned_scenes"] = unaligned
     print(json.dumps(counts), flush=True)
     # (family, base level) -> items, for 'other' (another domain's item of the same family and layout)
-    pool: dict[tuple[str, str], list[dict]] = collections.defaultdict(list)
+    pool: dict[tuple[str, str, str], list[dict]] = collections.defaultdict(list)
     for its in items.values():
-        for it in its:
-            pool[(it["family"], base_level(it["level"]))].append(it)
+        for it in its:  # the same answer kind too: a digit prompt ends with the space token, a word prompt does not
+            pool[(it["family"], base_level(it["level"]), answer_kind(it))].append(it)
     groups = m.get("groups", list(GROUPS))
     q_max = m.get("question_max_layer")
     ctrl_levels = m.get("control_levels")
@@ -493,11 +509,17 @@ def stage_run(name: str) -> None:
     for ci, c in enumerate(progress(cases, "cases")):
         prep = prepare(c, tok)
         rng = random.Random(OTHER_SEED * 1_000_003 + ci)
+        kind = answer_kind(c)
         other = rng.choice(
-            [o for o in pool[(c["family"], base_level(c["level"]))] if o["domain"] != c["domain"]] or [c]
+            [o for o in pool[(c["family"], base_level(c["level"]), kind)] if o["domain"] != c["domain"]] or [c]
         )
         controls = ctrl_levels is None or c["level"] in ctrl_levels
-        o_ids = S.ids(tok, prompt_text(tok, other["context"], other["question"])) + S.ids(tok, " ")
+        o_ids = S.ids(tok, prompt_text(tok, other["context"], other["question"])) + (
+            S.ids(tok, " ") if kind == "digit" else []
+        )
+        # top token -> answer: any digit for digit items; for word items the first token of each word the item uses
+        words = {str(v) for v in c["digits"]} | {v for v in c["sources"]["dissoc"]["predictions"].values() if v != "-"}
+        answer_of = digit_tok if kind == "digit" else {S.answer_token(tok, w, "word"): w for w in words}
         runs = {k: model.run(torch.tensor([v], device="cuda"), record=record) for k, v in prep["read_ids"].items()}
         runs["other"] = model.run(torch.tensor([o_ids], device="cuda"), record=record)
         h = {k: v[1] for k, v in runs.items()}
@@ -554,10 +576,14 @@ def stage_run(name: str) -> None:
             logp = logits.log_softmax(-1)
             for row, (tags, _) in enumerate(chunk):
                 top = int(logits[row].argmax())
-                digit = digit_tok.get(top)
+                digit = answer_of.get(top)  # a digit, or (word items) one of the item's words
                 rm, pr = (o_roles, o_preds) if tags["source"] == "other" else (roles, preds)
                 role = rm.get(digit, "other_digit") if digit is not None else "other"
-                p = {h_: round(float(logp[row, S.ids(tok, v)[0]].exp()), 4) for h_, v in pr.items() if v != "-"}
+                p = {
+                    h_: round(float(logp[row, S.answer_token(tok, v, kind)].exp()), 4)
+                    for h_, v in pr.items()
+                    if v != "-"
+                }
                 outcomes.append({"family": c["family"], "domain": c["domain"], "level": c["level"], "name": c["id"],
                                  "n_entities": c["n_entities"], "slot": slot_class(c), "entity": c["query"], **wording,
                                  **tags, "top": tok.decode([top]), "role": role, "p": p})  # fmt: skip
@@ -910,6 +936,7 @@ def analyze(m: dict, rows: list[dict], checks: list[dict]) -> dict[str, Any]:
         "ref_contrasts": ref_contrasts(m, rows, verdicts),
         "v4x": v4x_tests(m, rates) if m.get("data") == "pointer_v4x" else {},
         "v6": v6_tests(m, rates) if m.get("data") == "pointer_v6" else {},
+        "v5": v5_tests(m, verdicts) if m.get("data") == "pointer_v5" else {},
         "strongest_layer": strongest,
         "level_contrasts": levels,
         "verdicts": verdicts,
@@ -958,6 +985,28 @@ def v4x_tests(m: dict, rates: dict) -> dict[str, Any]:
         return out
 
     return {"cells": cells, "H-order-v4": holds(("e5-off",)), "H-start-v4": holds(("e5more", "e5fewer"))}
+
+
+def v5_tests(m: dict, verdicts: dict) -> dict[str, Any]:
+    """pointer_v5's pre-registered tests (the docstring's pointer_v5 additions): per level, the rule's verdict at the
+    last two tokens, memory -> prompt, each primary layer: "same statement slot" pooled and in >= 2 of 3 topics (cells
+    with n >= 35)."""
+    pf = family_roles(m)[0]
+    out: dict[str, Any] = {}
+    for lv in m["levels"]:
+        layers: dict[str, Any] = {}
+        for la in primary_layers(m):
+            pooled = verdicts.get(f"{pf}|all|{lv}|last|{la}", {})
+            topics = [
+                d
+                for d in m["domains"]
+                if (v := verdicts.get(f"{pf}|domain:{d}|{lv}|last|{la}", {})).get("verdict") == "position"
+                and v.get("rule_reachable")
+            ]
+            ok = pooled.get("verdict") == "position" and bool(pooled.get("rule_reachable")) and len(topics) >= 2
+            layers[la] = {"pooled": pooled.get("verdict"), "topics_with_slot": topics, "holds": ok}
+        out[lv] = {"layers": layers, "holds": any(c["holds"] for c in layers.values())}
+    return out
 
 
 V6_LEVELS = ("e5-still", "e5-abs", "e5-rel", "e5-long")
@@ -1580,6 +1629,9 @@ LEVELS_TEXT = {  # (title, how to read) of the levels figure, per dataset
                     "One column per alt prompt: the filler sentence moved (order vs token position), one statement more, "
                     "one fewer (the slot from the start, from the end and the token position name three different org "
                     "statements)."),
+    "pointer_v5": ("Does the statement address survive word answers and longer lists?",
+                   "One column per prompt layout: 5 or 8 statements, with digit or colour-word answers (the same "
+                   "scenes for digits and words)."),
     "pointer_v6": ("Is the address the Nth statement, a place in the text, or a distance back from the question?",
                    "One column per alt prompt: nothing moves; an extra sentence before the list in one prompt only "
                    "(every statement moves in the text, its distance back from the question stays); an extra sentence "
@@ -1601,6 +1653,9 @@ def level_short(m: dict, lv: str) -> str:
     if data in ("pointer_v3", "pointer_v4x"):
         return {"e5more": "alt has one statement more", "e5fewer": "alt has one statement fewer",
                 "e5-off": "filler moved"}.get(lv, lv)  # fmt: skip
+    if data == "pointer_v5":
+        n, kind = lv[1:].split("-")
+        return f"{n} statements, {'digits' if kind == 'digit' else 'colour words'}"
     if data == "pointer_v6":
         return {"e5-still": "nothing moves", "e5-abs": "extra sentence before the list",
                 "e5-rel": "extra sentence before the question", "e5-long": "long statements"}.get(lv, lv)  # fmt: skip
@@ -2031,6 +2086,13 @@ def report_md(name: str, m: dict, a: dict, out: Path) -> str:
             rivals = "; ".join(f"{r} {_pct(c[r])}" for r in V4X_TESTS[lv][1])
             lines.append(f"| {level_short(m, lv)} | {la} | {cut} | {c['n']} | {c['k_entities']} | {_pct(c['winner'])} | "
                          f"{rivals} | {'yes' if c['beats'] else 'no'}{'' if c['reachable'] else ' (n < 35)'} |")  # fmt: skip
+    if a.get("v5"):
+        lines += ["", "## Pre-registered primary (pointer_v5): memory -> prompt, the last two tokens, layers "
+                  f"{' and '.join(primary_layers(m))}: does each layout keep the statement slot?", "",
+                  "| layout | keeps the slot | per layer: pooled verdict, topics with the slot |", "|---|---|---|"]  # fmt: skip
+        for lv, c in a["v5"].items():
+            per = "; ".join(f"{la}: {v['pooled']}, {len(v['topics_with_slot'])}/3" for la, v in c["layers"].items())
+            lines.append(f"| {level_short(m, lv)} | **{'yes' if c['holds'] else 'no'}** | {per} |")
     if a.get("v6"):
         x = a["v6"]
         yes = {True: "holds", False: "does not hold"}

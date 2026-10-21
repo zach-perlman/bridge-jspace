@@ -1,0 +1,22 @@
+id: d3v5_smoke_27b
+title: "D3 v5 smoke: pointer_swap on colour-word answers (2 scenes per topic and layout)"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.15
+depends_on: []
+command: >-
+  uv run python scripts/pointer_swap.py manifest --data pointer_v5 --set main --name d3v5_smoke_27b --families RL
+  --n 2 --layers 50 --groups last --no-eligibility
+  --why "smoke: the word-answer read (no appended space, the word's first token) on 2 scenes; not a result"
+  && uv run python scripts/pointer_swap.py run --name d3v5_smoke_27b
+question: 'Does pointer_swap run end to end on pointer_v5 (word answers read right after Answer:)?'
+why_it_matters: 'Code path check before d3v5_swap_27b and the OLMo run; not interpreted.'
+hypotheses:
+  H-runs: 'the run exits 0 with outcomes for every layout. Prior 0.8'
+decision_rule: 'smoke: passes iff the job exits 0; not interpreted'
+controls:
+- 'the run''s own no-op and layer-0 checks'
+n: '2 scenes per topic and layout, memory -> prompt'
+seeds: [0]
+notes: 'No competence gate (--no-eligibility).'

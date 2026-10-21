@@ -694,10 +694,11 @@ def raw_right(tok, p: dict) -> bool:
 
 def item_prompts(it: dict) -> dict[str, tuple[str, str, str, str]]:
     """kind -> (context, question, expected answer, answer kind) for one item."""
-    spec = {"clean": (it["context"], it["question"], it["answer"], "digit")}
+    kind = it.get("answer_kind", "digit")  # pointer_v5's word answers: "colour"
+    spec = {"clean": (it["context"], it["question"], it["answer"], kind)}
     for s in SOURCES:
         src = it["sources"][s]
-        spec[f"src_{s}"] = (src["context"], src["question"], src["answer"], "digit")
+        spec[f"src_{s}"] = (src["context"], src["question"], src["answer"], kind)
     for h in ("hop1", "hop2"):
         if h in it:
             spec[h] = (it["context"], it[h]["question"], it[h]["answer"], it[h]["kind"])
