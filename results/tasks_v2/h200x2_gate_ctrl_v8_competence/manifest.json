@@ -1,0 +1,18 @@
+{
+  "run": "h200x2_gate_ctrl_v8_competence",
+  "why": "Zach (2026-10-21): gate of the 2x H200 NVL box against the B200 (ctrl_v8_competence_v1)",
+  "set": "ctrl_v8",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "624cf82e13ac9f79829af08fa3e573b3a33383a5",
+  "guess": true,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-21T16:51:36Z"
+}

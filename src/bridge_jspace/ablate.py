@@ -185,9 +185,10 @@ def removal_edit(method: str, dic, rows: list[RowSettings], rotation: torch.Tens
 
 
 def rotation(d: int, seed: int, device: str = "cuda") -> torch.Tensor:
-    """A Haar-random orthogonal matrix [d, d], fixed by seed (ablate_pilot's)."""
-    g = torch.Generator(device=device).manual_seed(seed)
-    q, r = torch.linalg.qr(torch.randn(d, d, device=device, generator=g))
+    """A Haar-random orthogonal matrix [d, d], fixed by seed. 2026-10-21 (Zach): the Gaussian is drawn on the CPU, then
+    moved: GPU random streams depend on the GPU type (the B200 and the H200 drew different rotations from one seed)."""
+    g = torch.Generator(device="cpu").manual_seed(seed)
+    q, r = torch.linalg.qr(torch.randn(d, d, generator=g).to(device))
     return q * torch.sign(torch.diagonal(r))
 
 

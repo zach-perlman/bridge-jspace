@@ -12,7 +12,7 @@ export CUDA_VISIBLE_DEVICES=0 UV_CACHE_DIR=/workspace/uv-cache PYTORCH_CUDA_ALLO
 PY="uv run --no-sync python"
 R=/workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd
 until grep -qs "^EXIT" $R-h200gate-*.log; do sleep 60; done
-grep -qs "GATE PASSED" $R-h200gate-*.log || { echo "the box's gate did not pass: stop"; exit 1; }
+{ grep -qs "GATE PASSED" $R-h200gate-*.log || [ -f /workspace/scratch/markers/gate_accepted ]; } || { echo "the box gate did not pass: stop"; exit 1; }  # accepted with a caveat (Zach)
 WHY="Zach (2026-10-21): 27B, after the fixes"
 echo "=== start $(date -u +%FT%TZ)"
 $PY scripts/ablate_v2.py --name full3_ko_steps_v2 --why "$WHY: full_v8b three-step words, each step alone at L32-40 (rerun; the B200 went down)" \

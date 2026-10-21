@@ -105,7 +105,9 @@ class AddRows:
 
 def null_rows(delta: torch.Tensor, generator: torch.Generator) -> torch.Tensor:
     """Each row replaced by a random unit direction scaled to that row's norm (the matched-norm null)."""
-    r = torch.randn(delta.shape, device=delta.device, generator=generator)
+    r = torch.randn(delta.shape, device=generator.device, generator=generator).to(
+        delta.device
+    )  # a CPU generator: hardware-independent
     return torch.nn.functional.normalize(r, dim=-1) * delta.norm(dim=-1, keepdim=True)
 
 

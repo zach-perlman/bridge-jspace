@@ -192,7 +192,7 @@ def main(args) -> None:
         e_dir = torch.nn.functional.normalize((emb[tx] - emb[ti]).float(), dim=-1)
         jobs: list[tuple[dict, dict]] = []
         joint: dict[tuple, dict[int, AddRows]] = collections.defaultdict(dict)
-        gen = torch.Generator(device="cuda").manual_seed(20_000 + k)
+        gen = torch.Generator(device="cpu").manual_seed(20_000 + k)  # 2026-10-21: CPU draws, the same on any GPU
 
         def add(tags: dict, la: int, pos: list[int], delta: torch.Tensor, in_band: bool = True, jobs=jobs,
                 joint=joint, gen=gen) -> None:  # fmt: skip

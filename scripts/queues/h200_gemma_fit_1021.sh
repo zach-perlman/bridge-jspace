@@ -10,7 +10,7 @@ export CUDA_VISIBLE_DEVICES=1 UV_CACHE_DIR=/workspace/uv-cache
 PY="uv run --no-sync python"
 R=/workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd
 until grep -qs "^EXIT" $R-h200gate-*.log; do sleep 60; done
-grep -qs "GATE PASSED" $R-h200gate-*.log || { echo "the box's gate did not pass: stop"; exit 1; }
+{ grep -qs "GATE PASSED" $R-h200gate-*.log || [ -f /workspace/scratch/markers/gate_accepted ]; } || { echo "the box gate did not pass: stop"; exit 1; }  # accepted with a caveat (Zach)
 echo "=== start $(date -u +%FT%TZ)"
 PIN=842da3794eaa0b77d5f08bae87a17459d91ff475
 MAIN=$(.venv/bin/python -c 'from huggingface_hub import model_info; print(model_info("google/gemma-4-31B-it").sha)')
