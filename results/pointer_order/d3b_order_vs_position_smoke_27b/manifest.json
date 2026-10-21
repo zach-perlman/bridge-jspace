@@ -1,0 +1,83 @@
+{
+  "exp": "pointer_order",
+  "run": "d3b_order_vs_position_smoke_27b",
+  "why": "D3b order-or-position smoke: collect, two-fold fit, read test and pushes end to end on 16 scenes before the main run",
+  "written_utc": "2026-10-21T14:41:51Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "config": {
+    "domains": [
+      "animals",
+      "elements"
+    ],
+    "collect_layers": [
+      40,
+      42,
+      44,
+      46,
+      48,
+      50,
+      52
+    ],
+    "steer_layers": [
+      44,
+      48
+    ],
+    "scales": [
+      1.0,
+      2.0
+    ],
+    "primary_layer": 48,
+    "primary_scale": 2.0,
+    "competence": "d3v2_competence_27b",
+    "scene_limit": 16
+  },
+  "inputs": {
+    "data/pointer_v2/main/animals_RL_e5-off.json": "a43e5d19188d456fa136de6c7ca4a842caa2af491b302ea9199e7e1c97e93c89",
+    "data/pointer_v2/main/animals_RL_e5-pln.json": "7b7885899bf6385417ad5dcb10a81d932a64ad996811a9af0fd24375d53e3ff3",
+    "data/pointer_v2/main/animals_RL_e5-ref.json": "e497603b85488dc460a104c2cb8ba0b7a65994660b2e29c61d847a14674b5dbc",
+    "data/pointer_v2/main/elements_RL_e5-off.json": "0b4c9e546d1c7dfaa4b81102ac150da5194a7fc2c2237b6b4dba71441f1e3dc6",
+    "data/pointer_v2/main/elements_RL_e5-pln.json": "6aae66e8e7cdad3b97e635f9118f77481fbedb399acb21c72581066b4b625961",
+    "data/pointer_v2/main/elements_RL_e5-ref.json": "c74e3960839245e27dfe58cad81c3f310aab647f31a2a735e1047aa164d00353",
+    "data/pointer_v2/main/animals_RR_e5-pln.json": "62ad9dd289f8d3ce62a375a30ee5270deebdd48a919f5fe4577edcb8c0bded0d",
+    "data/pointer_v2/main/elements_RR_e5-pln.json": "cce01c8a1116cf96a57538c465c407867c3931a8f305e33430abed6c3cc96c76",
+    "results/pointer_v2/d3v2_competence_27b/items.jsonl": "41d25263ff4270e78ec9ccf2ec832df7e73f851ecdb4490edf7f78e0de677d3c"
+  },
+  "split": {
+    "half_a": [
+      "animals-e5-0001",
+      "animals-e5-0003",
+      "animals-e5-0004",
+      "animals-e5-0006",
+      "animals-e5-0010",
+      "animals-e5-0011",
+      "animals-e5-0012",
+      "animals-e5-0015"
+    ],
+    "half_b": [
+      "animals-e5-0000",
+      "animals-e5-0005",
+      "animals-e5-0007",
+      "animals-e5-0008",
+      "animals-e5-0009",
+      "animals-e5-0013",
+      "animals-e5-0014",
+      "animals-e5-0016"
+    ],
+    "folds": "fit on A, steer B; then fit on B, steer A"
+  },
+  "seeds": {
+    "split": 0,
+    "shuffle": 1,
+    "null": 0,
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "design": "pointer_order (D3b, batch 3): does the pointer direction encode \"the Nth statement\" (ORDER) or \"this token position\"\n(TOKEN)?\n\nBackground (UNVERIFIED): d3b_slot_direction_main_27b found that a direction fitted to \"which statement the question asks\"\n(target minus current statement, at the tokens after the question, layer 48) switches 37% [30, 45] of memory \u2192 prompt\nanswers to the target statement's digit, the lens push 0%. In pointer_v1 every statement has the same length and there\nis no filler, so \"the 4th statement\" and \"the statement at token cell 4\" are the same thing.\n\nData: pointer_v2 main (scripts/pointer_v2.py; gate d3v2_competence_27b): 5 statements and ONE filler sentence of exactly\na statement's token length, so every context is 6 equal cells and the filler takes one of them. Statement k sits in\ncell k if the filler comes later, in cell k + 1 otherwise. All contexts have the same length, so \"token position from\nthe start\" and \"distance back from the question\" name the same cell.\n\nDesign (memory \u2192 prompt; animals and elements; scenes split in two halves by a seeded shuffle, two folds: fit on half A\nand steer half B, then fit on half B and steer half A, so every scene is steered once by a fit that never saw it):\n  fit    on the fit half: every prompt of the scene (the org prompt, the three alt prompts, the \"same\" prompt) whose asked\n         statement comes BEFORE its filler, so its label (the asked statement k) is at once \"the k-th statement\" and\n         \"cell k\"; the hidden states at every token after the question, layers 40-52; per-token class means (5 classes),\n         a shuffled-label fit (seed 1), nearest-mean decodability (5-fold)\n  read   on the steer half (no steering): the org prompt's states, classified by the nearest fitted class mean. Where the\n         asked statement k comes AFTER the filler (it sits in cell k + 1), an ORDER code is read as k and a TOKEN code as\n         k + 1 (k <= 3; cell 5 has no fitted class)\n  steer  on the steer half, for every target statement j != the asked one, at the tokens after the question, layers 44\n         and 48 one at a time and both at once, at 1x and 2x the per-token size of the alt-prompt patch there:\n           slot       mean_j - mean_asked (target minus current, as d3b_slot_direction_main_27b)\n           slot_mean  mean_j - the grand mean (no current subtracted: neutral between the readings)\n           random     a random direction per token at the slot push's size; shuffled: the shuffled-label difference\n         Predictions, the steered scene's filler in cell f:\n           j < f   AGREE: both readings point at statement j (positive control: the direction works in these scenes)\n           j = f   FILLER: ORDER -> statement j's digit; TOKEN -> cell j is the filler (no digit: answer org or noise)\n           j > f   SEPARATE: ORDER -> statement j's digit (it sits in cell j + 1); TOKEN -> cell j holds statement j - 1,\n                   so its digit (all digits of a scene differ)\n         memory \u2192 memory items of the steer half get the slot and random pushes (control: no lookup, nothing to point at)\n",
+  "decision": "Decision rule (fixed before the 27B run). Primary cut: memory \u2192 prompt, steer-half scenes whose asked statement comes\nbefore the filler (the subtracted current is the same under both readings), SEPARATE targets, slot push, layer 48, 2x\n(the strongest clean cell of d3b_slot_direction_main_27b: 45%). order = share of answers = statement j's digit, token =\nshare = statement j - 1's digit; differences by a scene-cluster bootstrap (2000, seed 0). Verdict:\n  ORDER    iff order - token has its 95% lower bound > 0, order >= 2 x token, and order's Wilson lower bound >= 0.10\n  TOKEN    iff the reverse\n  BOTH     iff both Wilson lower bounds >= 0.10 and neither of the above\n  otherwise inconclusive\nValid only if (i) AGREE targets of the same scenes land on statement j with a Wilson lower bound >= 0.15 (the direction\nworks here at all), (ii) the random push and the shuffled-label direction land on either predicted digit of the SEPARATE\ntargets with a Wilson upper bound <= 0.10, and (iii) on memory \u2192 memory the slot push changes the answer with a Wilson\nupper bound <= 0.10; each with n >= 35 (target instances; several per scene, so these intervals are a little narrow:\nthe primary difference uses the cluster bootstrap). Reported, not decisive: FILLER targets, scenes whose asked statement\ncomes after the filler, the neutral push, layer 44, 1x, both layers, and the read test.\n\n"
+}

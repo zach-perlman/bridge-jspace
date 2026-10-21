@@ -1,0 +1,948 @@
+{
+ "exp": "pointer_order",
+ "run": "d3b_order_vs_position_smoke_27b",
+ "seed": 0,
+ "k": 3,
+ "groups": [
+  {
+   "key": "order",
+   "title": "order",
+   "definition": "the answer is the target statement's digit (order reading)",
+   "n_total": 1
+  },
+  {
+   "key": "token",
+   "title": "token",
+   "definition": "the answer is the digit now at the target's old position (token reading)",
+   "n_total": 1
+  },
+  {
+   "key": "neither",
+   "title": "neither",
+   "definition": "neither predicted digit",
+   "n_total": 8
+  }
+ ],
+ "examples": [
+  {
+   "group": "order",
+   "family": "RL",
+   "item_id": "animals-RL-e5-pln-0008",
+   "prompt": "<|im_start|>user\nThe duck's locker is 5. The shop on the corner reopened today. The spider's locker is 1. The bee's locker is 3. The pig's locker is 9. The cow's locker is 7.\nWhich locker belongs to the animal known for quacking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 40,
+     "role": "asked statement"
+    },
+    {
+     "start": 41,
+     "end": 79,
+     "role": "filler"
+    },
+    {
+     "start": 106,
+     "end": 128,
+     "role": "order target"
+    },
+    {
+     "start": 229,
+     "end": 332,
+     "role": "pushed tokens"
+    },
+    {
+     "start": 80,
+     "end": 105,
+     "role": "token target"
+    }
+   ],
+   "condition": "slot push toward statement 3 at layer 48, 2x the alt-prompt patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "3",
+    "expected": {
+     "H-order": "3",
+     "H-token": "1"
+    }
+   },
+   "numbers": {
+    "role": "order"
+   },
+   "why": "the answer is the target statement's digit (order reading) (asked statement 1, filler in cell 2)"
+  },
+  {
+   "group": "order",
+   "family": "RL",
+   "item_id": "animals-RL-e5-pln-0008",
+   "prompt": "<|im_start|>user\nThe duck's locker is 5. The shop on the corner reopened today. The spider's locker is 1. The bee's locker is 3. The pig's locker is 9. The cow's locker is 7.\nWhich locker belongs to the animal known for quacking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 40,
+     "role": "asked statement"
+    },
+    {
+     "start": 41,
+     "end": 79,
+     "role": "filler"
+    },
+    {
+     "start": 106,
+     "end": 128,
+     "role": "order target"
+    },
+    {
+     "start": 229,
+     "end": 332,
+     "role": "pushed tokens"
+    },
+    {
+     "start": 80,
+     "end": 105,
+     "role": "token target"
+    }
+   ],
+   "condition": "slot_mean push toward statement 3 at layer 48, 2x the alt-prompt patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-order": "3",
+     "H-token": "1"
+    }
+   },
+   "numbers": {
+    "role": "org"
+   },
+   "why": "the answer is the target statement's digit (order reading) (asked statement 1, filler in cell 2)"
+  },
+  {
+   "group": "order",
+   "family": "RL",
+   "item_id": "animals-RL-e5-pln-0008",
+   "prompt": "<|im_start|>user\nThe duck's locker is 5. The shop on the corner reopened today. The spider's locker is 1. The bee's locker is 3. The pig's locker is 9. The cow's locker is 7.\nWhich locker belongs to the animal known for quacking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 40,
+     "role": "asked statement"
+    },
+    {
+     "start": 41,
+     "end": 79,
+     "role": "filler"
+    },
+    {
+     "start": 106,
+     "end": 128,
+     "role": "order target"
+    },
+    {
+     "start": 229,
+     "end": 332,
+     "role": "pushed tokens"
+    },
+    {
+     "start": 80,
+     "end": 105,
+     "role": "token target"
+    }
+   ],
+   "condition": "random push toward statement 3 at layer 48, 2x the alt-prompt patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-order": "3",
+     "H-token": "1"
+    }
+   },
+   "numbers": {
+    "role": "org"
+   },
+   "why": "the answer is the target statement's digit (order reading) (asked statement 1, filler in cell 2)"
+  },
+  {
+   "group": "order",
+   "family": "RL",
+   "item_id": "animals-RL-e5-pln-0008",
+   "prompt": "<|im_start|>user\nThe duck's locker is 5. The shop on the corner reopened today. The spider's locker is 1. The bee's locker is 3. The pig's locker is 9. The cow's locker is 7.\nWhich locker belongs to the animal known for quacking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 40,
+     "role": "asked statement"
+    },
+    {
+     "start": 41,
+     "end": 79,
+     "role": "filler"
+    },
+    {
+     "start": 106,
+     "end": 128,
+     "role": "order target"
+    },
+    {
+     "start": 229,
+     "end": 332,
+     "role": "pushed tokens"
+    },
+    {
+     "start": 80,
+     "end": 105,
+     "role": "token target"
+    }
+   ],
+   "condition": "shuffled push toward statement 3 at layer 48, 2x the alt-prompt patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-order": "3",
+     "H-token": "1"
+    }
+   },
+   "numbers": {
+    "role": "org"
+   },
+   "why": "the answer is the target statement's digit (order reading) (asked statement 1, filler in cell 2)"
+  },
+  {
+   "group": "token",
+   "family": "RL",
+   "item_id": "animals-RL-e5-pln-0013",
+   "prompt": "<|im_start|>user\nThe mouse's locker is 1. The door to the shed was open. The spider's locker is 3. The bee's locker is 9. The goose's locker is 0. The cow's locker is 7.\nWhich locker belongs to the animal known for squeaking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 41,
+     "role": "asked statement"
+    },
+    {
+     "start": 42,
+     "end": 72,
+     "role": "filler"
+    },
+    {
+     "start": 147,
+     "end": 169,
+     "role": "order target"
+    },
+    {
+     "start": 225,
+     "end": 328,
+     "role": "pushed tokens"
+    },
+    {
+     "start": 122,
+     "end": 146,
+     "role": "token target"
+    }
+   ],
+   "condition": "slot push toward statement 5 at layer 48, 2x the alt-prompt patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "0",
+    "expected": {
+     "H-order": "7",
+     "H-token": "0"
+    }
+   },
+   "numbers": {
+    "role": "token"
+   },
+   "why": "the answer is the digit now at the target's old position (token reading) (asked statement 1, filler in cell 2)"
+  },
+  {
+   "group": "token",
+   "family": "RL",
+   "item_id": "animals-RL-e5-pln-0013",
+   "prompt": "<|im_start|>user\nThe mouse's locker is 1. The door to the shed was open. The spider's locker is 3. The bee's locker is 9. The goose's locker is 0. The cow's locker is 7.\nWhich locker belongs to the animal known for squeaking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 41,
+     "role": "asked statement"
+    },
+    {
+     "start": 42,
+     "end": 72,
+     "role": "filler"
+    },
+    {
+     "start": 147,
+     "end": 169,
+     "role": "order target"
+    },
+    {
+     "start": 225,
+     "end": 328,
+     "role": "pushed tokens"
+    },
+    {
+     "start": 122,
+     "end": 146,
+     "role": "token target"
+    }
+   ],
+   "condition": "slot_mean push toward statement 5 at layer 48, 2x the alt-prompt patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-order": "7",
+     "H-token": "0"
+    }
+   },
+   "numbers": {
+    "role": "org"
+   },
+   "why": "the answer is the digit now at the target's old position (token reading) (asked statement 1, filler in cell 2)"
+  },
+  {
+   "group": "token",
+   "family": "RL",
+   "item_id": "animals-RL-e5-pln-0013",
+   "prompt": "<|im_start|>user\nThe mouse's locker is 1. The door to the shed was open. The spider's locker is 3. The bee's locker is 9. The goose's locker is 0. The cow's locker is 7.\nWhich locker belongs to the animal known for squeaking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 41,
+     "role": "asked statement"
+    },
+    {
+     "start": 42,
+     "end": 72,
+     "role": "filler"
+    },
+    {
+     "start": 147,
+     "end": 169,
+     "role": "order target"
+    },
+    {
+     "start": 225,
+     "end": 328,
+     "role": "pushed tokens"
+    },
+    {
+     "start": 122,
+     "end": 146,
+     "role": "token target"
+    }
+   ],
+   "condition": "random push toward statement 5 at layer 48, 2x the alt-prompt patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-order": "7",
+     "H-token": "0"
+    }
+   },
+   "numbers": {
+    "role": "org"
+   },
+   "why": "the answer is the digit now at the target's old position (token reading) (asked statement 1, filler in cell 2)"
+  },
+  {
+   "group": "token",
+   "family": "RL",
+   "item_id": "animals-RL-e5-pln-0013",
+   "prompt": "<|im_start|>user\nThe mouse's locker is 1. The door to the shed was open. The spider's locker is 3. The bee's locker is 9. The goose's locker is 0. The cow's locker is 7.\nWhich locker belongs to the animal known for squeaking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 41,
+     "role": "asked statement"
+    },
+    {
+     "start": 42,
+     "end": 72,
+     "role": "filler"
+    },
+    {
+     "start": 147,
+     "end": 169,
+     "role": "order target"
+    },
+    {
+     "start": 225,
+     "end": 328,
+     "role": "pushed tokens"
+    },
+    {
+     "start": 122,
+     "end": 146,
+     "role": "token target"
+    }
+   ],
+   "condition": "shuffled push toward statement 5 at layer 48, 2x the alt-prompt patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-order": "7",
+     "H-token": "0"
+    }
+   },
+   "numbers": {
+    "role": "org"
+   },
+   "why": "the answer is the digit now at the target's old position (token reading) (asked statement 1, filler in cell 2)"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5-pln-0016",
+   "prompt": "<|im_start|>user\nThe turkey's locker is 1. The cow's locker is 7. The lamp in the hall flickered. The wolf's locker is 9. The bee's locker is 0. The spider's locker is 3.\nWhich locker belongs to the animal known for gobbling? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 42,
+     "role": "asked statement"
+    },
+    {
+     "start": 66,
+     "end": 97,
+     "role": "filler"
+    },
+    {
+     "start": 122,
+     "end": 144,
+     "role": "order target"
+    },
+    {
+     "start": 225,
+     "end": 328,
+     "role": "pushed tokens"
+    },
+    {
+     "start": 98,
+     "end": 121,
+     "role": "token target"
+    }
+   ],
+   "condition": "slot push toward statement 4 at layer 48, 2x the alt-prompt patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-order": "0",
+     "H-token": "9"
+    }
+   },
+   "numbers": {
+    "role": "org"
+   },
+   "why": "neither predicted digit (asked statement 1, filler in cell 3)"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5-pln-0016",
+   "prompt": "<|im_start|>user\nThe turkey's locker is 1. The cow's locker is 7. The lamp in the hall flickered. The wolf's locker is 9. The bee's locker is 0. The spider's locker is 3.\nWhich locker belongs to the animal known for gobbling? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 42,
+     "role": "asked statement"
+    },
+    {
+     "start": 66,
+     "end": 97,
+     "role": "filler"
+    },
+    {
+     "start": 122,
+     "end": 144,
+     "role": "order target"
+    },
+    {
+     "start": 225,
+     "end": 328,
+     "role": "pushed tokens"
+    },
+    {
+     "start": 98,
+     "end": 121,
+     "role": "token target"
+    }
+   ],
+   "condition": "slot_mean push toward statement 4 at layer 48, 2x the alt-prompt patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-order": "0",
+     "H-token": "9"
+    }
+   },
+   "numbers": {
+    "role": "org"
+   },
+   "why": "neither predicted digit (asked statement 1, filler in cell 3)"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5-pln-0016",
+   "prompt": "<|im_start|>user\nThe turkey's locker is 1. The cow's locker is 7. The lamp in the hall flickered. The wolf's locker is 9. The bee's locker is 0. The spider's locker is 3.\nWhich locker belongs to the animal known for gobbling? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 42,
+     "role": "asked statement"
+    },
+    {
+     "start": 66,
+     "end": 97,
+     "role": "filler"
+    },
+    {
+     "start": 122,
+     "end": 144,
+     "role": "order target"
+    },
+    {
+     "start": 225,
+     "end": 328,
+     "role": "pushed tokens"
+    },
+    {
+     "start": 98,
+     "end": 121,
+     "role": "token target"
+    }
+   ],
+   "condition": "random push toward statement 4 at layer 48, 2x the alt-prompt patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-order": "0",
+     "H-token": "9"
+    }
+   },
+   "numbers": {
+    "role": "org"
+   },
+   "why": "neither predicted digit (asked statement 1, filler in cell 3)"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5-pln-0016",
+   "prompt": "<|im_start|>user\nThe turkey's locker is 1. The cow's locker is 7. The lamp in the hall flickered. The wolf's locker is 9. The bee's locker is 0. The spider's locker is 3.\nWhich locker belongs to the animal known for gobbling? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 42,
+     "role": "asked statement"
+    },
+    {
+     "start": 66,
+     "end": 97,
+     "role": "filler"
+    },
+    {
+     "start": 122,
+     "end": 144,
+     "role": "order target"
+    },
+    {
+     "start": 225,
+     "end": 328,
+     "role": "pushed tokens"
+    },
+    {
+     "start": 98,
+     "end": 121,
+     "role": "token target"
+    }
+   ],
+   "condition": "shuffled push toward statement 4 at layer 48, 2x the alt-prompt patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-order": "0",
+     "H-token": "9"
+    }
+   },
+   "numbers": {
+    "role": "org"
+   },
+   "why": "neither predicted digit (asked statement 1, filler in cell 3)"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5-pln-0016",
+   "prompt": "<|im_start|>user\nThe turkey's locker is 1. The cow's locker is 7. The lamp in the hall flickered. The wolf's locker is 9. The bee's locker is 0. The spider's locker is 3.\nWhich locker belongs to the animal known for gobbling? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 42,
+     "role": "asked statement"
+    },
+    {
+     "start": 66,
+     "end": 97,
+     "role": "filler"
+    },
+    {
+     "start": 145,
+     "end": 170,
+     "role": "order target"
+    },
+    {
+     "start": 225,
+     "end": 328,
+     "role": "pushed tokens"
+    },
+    {
+     "start": 122,
+     "end": 144,
+     "role": "token target"
+    }
+   ],
+   "condition": "slot push toward statement 5 at layer 48, 2x the alt-prompt patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-order": "3",
+     "H-token": "0"
+    }
+   },
+   "numbers": {
+    "role": "org"
+   },
+   "why": "neither predicted digit (asked statement 1, filler in cell 3)"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5-pln-0016",
+   "prompt": "<|im_start|>user\nThe turkey's locker is 1. The cow's locker is 7. The lamp in the hall flickered. The wolf's locker is 9. The bee's locker is 0. The spider's locker is 3.\nWhich locker belongs to the animal known for gobbling? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 42,
+     "role": "asked statement"
+    },
+    {
+     "start": 66,
+     "end": 97,
+     "role": "filler"
+    },
+    {
+     "start": 145,
+     "end": 170,
+     "role": "order target"
+    },
+    {
+     "start": 225,
+     "end": 328,
+     "role": "pushed tokens"
+    },
+    {
+     "start": 122,
+     "end": 144,
+     "role": "token target"
+    }
+   ],
+   "condition": "slot_mean push toward statement 5 at layer 48, 2x the alt-prompt patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-order": "3",
+     "H-token": "0"
+    }
+   },
+   "numbers": {
+    "role": "org"
+   },
+   "why": "neither predicted digit (asked statement 1, filler in cell 3)"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5-pln-0016",
+   "prompt": "<|im_start|>user\nThe turkey's locker is 1. The cow's locker is 7. The lamp in the hall flickered. The wolf's locker is 9. The bee's locker is 0. The spider's locker is 3.\nWhich locker belongs to the animal known for gobbling? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 42,
+     "role": "asked statement"
+    },
+    {
+     "start": 66,
+     "end": 97,
+     "role": "filler"
+    },
+    {
+     "start": 145,
+     "end": 170,
+     "role": "order target"
+    },
+    {
+     "start": 225,
+     "end": 328,
+     "role": "pushed tokens"
+    },
+    {
+     "start": 122,
+     "end": 144,
+     "role": "token target"
+    }
+   ],
+   "condition": "random push toward statement 5 at layer 48, 2x the alt-prompt patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-order": "3",
+     "H-token": "0"
+    }
+   },
+   "numbers": {
+    "role": "org"
+   },
+   "why": "neither predicted digit (asked statement 1, filler in cell 3)"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5-pln-0016",
+   "prompt": "<|im_start|>user\nThe turkey's locker is 1. The cow's locker is 7. The lamp in the hall flickered. The wolf's locker is 9. The bee's locker is 0. The spider's locker is 3.\nWhich locker belongs to the animal known for gobbling? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 42,
+     "role": "asked statement"
+    },
+    {
+     "start": 66,
+     "end": 97,
+     "role": "filler"
+    },
+    {
+     "start": 145,
+     "end": 170,
+     "role": "order target"
+    },
+    {
+     "start": 225,
+     "end": 328,
+     "role": "pushed tokens"
+    },
+    {
+     "start": 122,
+     "end": 144,
+     "role": "token target"
+    }
+   ],
+   "condition": "shuffled push toward statement 5 at layer 48, 2x the alt-prompt patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-order": "3",
+     "H-token": "0"
+    }
+   },
+   "numbers": {
+    "role": "org"
+   },
+   "why": "neither predicted digit (asked statement 1, filler in cell 3)"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5-pln-0011",
+   "prompt": "<|im_start|>user\nThe dog's locker is 0. The goose's locker is 3. The weather was mild all week long. The spider's locker is 7. The bee's locker is 5. The pig's locker is 1.\nWhich locker belongs to the animal known for honking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 40,
+     "end": 64,
+     "role": "asked statement"
+    },
+    {
+     "start": 65,
+     "end": 100,
+     "role": "filler"
+    },
+    {
+     "start": 150,
+     "end": 172,
+     "role": "order target"
+    },
+    {
+     "start": 226,
+     "end": 329,
+     "role": "pushed tokens"
+    },
+    {
+     "start": 127,
+     "end": 149,
+     "role": "token target"
+    }
+   ],
+   "condition": "slot push toward statement 5 at layer 48, 2x the alt-prompt patch's size",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "H-order": "1",
+     "H-token": "5"
+    }
+   },
+   "numbers": {
+    "role": "org"
+   },
+   "why": "neither predicted digit (asked statement 2, filler in cell 3)"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5-pln-0011",
+   "prompt": "<|im_start|>user\nThe dog's locker is 0. The goose's locker is 3. The weather was mild all week long. The spider's locker is 7. The bee's locker is 5. The pig's locker is 1.\nWhich locker belongs to the animal known for honking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 40,
+     "end": 64,
+     "role": "asked statement"
+    },
+    {
+     "start": 65,
+     "end": 100,
+     "role": "filler"
+    },
+    {
+     "start": 150,
+     "end": 172,
+     "role": "order target"
+    },
+    {
+     "start": 226,
+     "end": 329,
+     "role": "pushed tokens"
+    },
+    {
+     "start": 127,
+     "end": 149,
+     "role": "token target"
+    }
+   ],
+   "condition": "slot_mean push toward statement 5 at layer 48, 2x the alt-prompt patch's size",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "H-order": "1",
+     "H-token": "5"
+    }
+   },
+   "numbers": {
+    "role": "org"
+   },
+   "why": "neither predicted digit (asked statement 2, filler in cell 3)"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5-pln-0011",
+   "prompt": "<|im_start|>user\nThe dog's locker is 0. The goose's locker is 3. The weather was mild all week long. The spider's locker is 7. The bee's locker is 5. The pig's locker is 1.\nWhich locker belongs to the animal known for honking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 40,
+     "end": 64,
+     "role": "asked statement"
+    },
+    {
+     "start": 65,
+     "end": 100,
+     "role": "filler"
+    },
+    {
+     "start": 150,
+     "end": 172,
+     "role": "order target"
+    },
+    {
+     "start": 226,
+     "end": 329,
+     "role": "pushed tokens"
+    },
+    {
+     "start": 127,
+     "end": 149,
+     "role": "token target"
+    }
+   ],
+   "condition": "random push toward statement 5 at layer 48, 2x the alt-prompt patch's size",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "H-order": "1",
+     "H-token": "5"
+    }
+   },
+   "numbers": {
+    "role": "org"
+   },
+   "why": "neither predicted digit (asked statement 2, filler in cell 3)"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5-pln-0011",
+   "prompt": "<|im_start|>user\nThe dog's locker is 0. The goose's locker is 3. The weather was mild all week long. The spider's locker is 7. The bee's locker is 5. The pig's locker is 1.\nWhich locker belongs to the animal known for honking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 40,
+     "end": 64,
+     "role": "asked statement"
+    },
+    {
+     "start": 65,
+     "end": 100,
+     "role": "filler"
+    },
+    {
+     "start": 150,
+     "end": 172,
+     "role": "order target"
+    },
+    {
+     "start": 226,
+     "end": 329,
+     "role": "pushed tokens"
+    },
+    {
+     "start": 127,
+     "end": 149,
+     "role": "token target"
+    }
+   ],
+   "condition": "shuffled push toward statement 5 at layer 48, 2x the alt-prompt patch's size",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "H-order": "1",
+     "H-token": "5"
+    }
+   },
+   "numbers": {
+    "role": "org"
+   },
+   "why": "neither predicted digit (asked statement 2, filler in cell 3)"
+  }
+ ]
+}
