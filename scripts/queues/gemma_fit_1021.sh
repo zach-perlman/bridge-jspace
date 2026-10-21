@@ -7,6 +7,8 @@ set -uo pipefail
 cd /workspace/bridge-jspace
 set -a; . ./.env; set +a
 PY="uv run --no-sync python"
+# 2026-10-21 (Zach: 27B first): after the 27B full-set job
+until grep -q "^EXIT" /workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd-full27b-1021-0432.log; do sleep 120; done
 ok=0; while [ $ok -lt 3 ]; do
   [ "$(nvidia-smi --query-gpu=memory.free --format=csv,noheader,nounits | head -1)" -ge 170000 ] && ok=$((ok + 1)) || ok=0
   sleep 20; done

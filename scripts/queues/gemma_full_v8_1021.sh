@@ -11,7 +11,7 @@ cd /workspace/bridge-jspace
 set -a; . ./.env; set +a
 PY="uv run --no-sync python"
 R=/workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd
-until grep -q "^EXIT" $R-gemmafit-1021-0428.log && grep -q "^EXIT" $R-full27b-*.log 2>/dev/null; do sleep 120; done
+until grep -q "^EXIT" $R-full27b-1021-0432.log && grep -qs "^EXIT" $R-gemmafit2-*.log; do sleep 120; done  # 27B first, then the fit
 grep -q '"gemma-4-31b-it-full"' src/bridge_jspace/pins.py || { echo "no gemma-4-31b-it-full target (the fit or its gate failed): stop"; exit 1; }
 ok=0; while [ $ok -lt 3 ]; do
   [ "$(nvidia-smi --query-gpu=memory.free --format=csv,noheader,nounits | head -1)" -ge 150000 ] && ok=$((ok + 1)) || ok=0
