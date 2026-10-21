@@ -1,0 +1,18 @@
+{
+  "exact": "pad_check_exact_1021",
+  "padded": "pad_check_padded_1021",
+  "rows": 2016,
+  "agreement": 0.9871031746031746,
+  "median_abs_dlogp": 0.0,
+  "max_abs_dlogp": 2.706144332885742,
+  "accuracy_shift_padded_minus_exact": {
+    "-/none": 0.0,
+    "L0-62/paper10": 0.010416666666666671,
+    "L0-62/paper10_rot": 0.00347222222222221,
+    "L0-62/top5": -0.006944444444444434,
+    "L32-40/paper10": -0.00694444444444442,
+    "L32-40/paper10_rot": -0.00347222222222221,
+    "L32-40/top5": 0.00347222222222221
+  },
+  "accepted": false
+}
