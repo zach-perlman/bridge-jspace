@@ -32,6 +32,9 @@ Rules (fixed before the run, 2026-10-20):
   (the copy does)"; copy < 50% -> "these sites do not carry M->P's bridge; look elsewhere".
   Injection: early lens_add's best flips within 10 points of embed_add's -> early lens writes are token injection.
 
+A new target (BJ_TARGET; 2026-10-21, Gemma 4 31B-it): --from-competence takes the suite cases from its own competence
+run and builds its country cases with the model; --layers gives the band's layers when the lens covers only some.
+
 python scripts/write_max.py --name N --why W [--n 60] [--families ...] [--band 28-40] [--tasks SET --tasks-competence RUN]
 """
 
@@ -54,6 +57,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.ablate import LensDictionary, omp_fit
+from scripts import control_split as C
 from scripts import read_write as RW
 from scripts import suite_split as P
 from scripts.exp03_brew_swaps import write_jsonl
@@ -105,8 +109,11 @@ def main(args) -> None:
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
     torch.backends.cuda.matmul.allow_tf32 = True
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
-    lo, hi = (int(x) for x in args.band.split("-"))
-    band = tuple(range(lo, hi + 1))
+    if args.layers:  # a lens fit at some layers only (Gemma: 24-45, every 3rd): the band is those layers
+        band = tuple(sorted(args.layers))
+    else:
+        lo, hi = (int(x) for x in args.band.split("-"))
+        band = tuple(range(lo, hi + 1))
     singles = band[:: args.single_step]
     early = tuple(args.early)
     rec_layers = tuple(sorted(set(band) | set(early)))
@@ -116,7 +123,7 @@ def main(args) -> None:
                 "alphas": list(ALPHAS), "alphas_early": list(ALPHAS_EARLY), "swaps": list(SWAPS),
                 "transplants": list(TRANSPLANTS), "natural": list(NATURAL), "keep_gate": KEEP_GATE,
                 "families": args.families, "countries": args.countries, "n_per_family": args.n, "tf32": True,
-                "tasks": [args.tasks, args.tasks_competence, args.tasks_level],
+                "tasks": [args.tasks, args.tasks_competence, args.tasks_level], "from_competence": args.from_competence,
                 "doc": (__doc__ or "").split("\n\n", 1)[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     model = load_model()
@@ -129,6 +136,9 @@ def main(args) -> None:
     if args.tasks:
         cases = RW.tasks_cases(tok, args.n, args.tasks, args.tasks_competence, args.families, args.tasks_level)
         assert cases, "no tasks_v2 cases"
+    elif args.from_competence:  # a new target (no map run): its own competence run; countries built with this model
+        cases = RW.suite_cases_from_competence(tok, args.n, args.from_competence, args.families)
+        cases += C.build_cases(model, tok, args.n)[0] if args.countries else []
     else:
         cases = RW.suite_cases(tok, args.n, "map_A8_v1", "A", args.families)
         cases += RW.country_cases(tok, args.n) if args.countries else []
@@ -332,6 +342,7 @@ if __name__ == "__main__":
     ap.add_argument("--n", type=int, default=60)
     ap.add_argument("--families", nargs="+", default=None, help="default: BL BR RL RR (suite) or PP PM MP MM (--tasks)")
     ap.add_argument("--band", default="28-40", help="contiguous layers written jointly; singles every --single-step")
+    ap.add_argument("--layers", nargs="+", type=int, default=None, help="explicit band layers (instead of --band)")
     ap.add_argument("--single-step", type=int, default=2)
     ap.add_argument("--early", nargs="+", type=int, default=[16, 20, 24], help="layers of the injection control")
     ap.add_argument("--possets", nargs="+", default=["question", "final", "all"], choices=["question", "final", "all"])
@@ -339,6 +350,7 @@ if __name__ == "__main__":
     ap.add_argument("--tasks", help="a tasks_v2 set made with --counterfactuals (instead of the suite and countries)")
     ap.add_argument("--tasks-competence", help="the set's competence run (scenes right on every prompt are used)")
     ap.add_argument("--tasks-level", default="pick", help='tasks_v2 level: "pick" (per comparison), "all" or a number')
+    ap.add_argument("--from-competence", default=None, help="a new target: suite_v1 competence run to take cases from")
     a = ap.parse_args()
     a.families = a.families or (["PP", "PM", "MP", "MM"] if a.tasks else ["BL", "BR", "RL", "RR"])
     main(a)

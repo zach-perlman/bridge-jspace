@@ -13,6 +13,10 @@ Conditions (--conditions): omp25, omp25_rot, omp25_rdict, paper10, paper10_rot, 
   v1), step1/step2/step3 (each step alone). Reported per band x family/kind x condition: accuracy (top token = the
   answer's first token) and the mean change in the answer token's log-probability from the unedited run.
 
+A new target (BJ_TARGET; 2026-10-21, Gemma 4 31B-it): --competence names its suite_v1 competence run (eligibility for
+BL BR RL RR) and --countries-build draws its country cases with this model (exp09's eligibility); a lens fit at some
+layers only takes --plan bands with those layers ("30,33,36").
+
 python scripts/ablate_v2.py --name N --why W --plan depth [--n 100] [--families BL BR RL RR R B] [--kinds clean]
 """
 
@@ -116,6 +120,17 @@ def country_prompts(tok, fams: list[str], n: int, skip: int = 0) -> list[dict]:
     return out
 
 
+def built_country_prompts(model, tok, fams: list[str], n: int) -> list[dict]:
+    """A new target's country prompts (no map run): exp09's eligibility generated now with this model
+    (control_split.build_cases, as ablate_pilot --countries-build and read_write --from-competence), whole question."""
+    return [
+        {"family": f"country-{c['family']}", "id": c["id"], "kind": "clean", "ids": c["ids"]["clean"], "tok": c["tok_A"],
+         "bridge": c["bridge"]}
+        for c in C.build_cases(model, tok, n)[0]
+        if c["family"] in fams
+    ]  # fmt: skip
+
+
 def tasks_prompts(tok, set_name: str, comp_run: str, words: list[str] | None, n: int, kinds: list[str],
                   level: str = "pick") -> list[dict]:  # fmt: skip
     """tasks_v2 items of the compared words (--tasks-words) from scenes the model gets right on them throughout, at
@@ -181,7 +196,8 @@ def question_start(tok, ids: list[int]) -> int:
         starts.append(pos)
         pos += len(piece)
     text = "".join(pieces)
-    q_end = text.rindex("?", 0, text.rindex("<|im_end|>"))
+    end = text.rfind("<|im_end|>")  # Qwen's end of the user turn; another template's prompt: its last '?' (2026-10-21)
+    q_end = text.rindex("?", 0, end if end >= 0 else len(text))
     q_start = max(text.rfind(". ", 0, q_end) + 2, text.rfind("\n", 0, q_end) + 1)
     return next(i for i, s in enumerate(starts) if s + len(pieces[i]) > q_start)
 
@@ -251,7 +267,7 @@ def main(args) -> None:
                 "git_commit": commit, "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
                 "plan": args.plan, "bands": [label(b) for b in bands], "conditions": args.conditions,
                 "families": args.families, "kinds": args.kinds, "skip": args.skip, "wording": args.wording, "n_per_family": args.n, "batch": args.batch,
-                "tf32": not args.no_tf32, "workspace_start": args.workspace, "positions": args.positions, "wide": WIDE, "seed_offset": args.seed_offset, "seeds": {"rotation": f"{SEED_ROT + args.seed_offset}+layer", "rotated_dictionary": f"{SEED_DICT + args.seed_offset}+layer",
+                "tf32": not args.no_tf32, "workspace_start": args.workspace, "positions": args.positions, "competence": args.competence, "countries_build": args.countries_build, "wide": WIDE, "seed_offset": args.seed_offset, "seeds": {"rotation": f"{SEED_ROT + args.seed_offset}+layer", "rotated_dictionary": f"{SEED_DICT + args.seed_offset}+layer",
                 "gauss": f"{SEED_GAUSS}+layer"}, "own_cos": OWN_COS, "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 
@@ -271,8 +287,15 @@ def main(args) -> None:
         )
     else:
         competence = COMPETENCE if args.wording == "A" else {f: "competence_b_v1" for f in ("BL", "BR", "RL", "RR")}
+        if args.competence:  # a new target: its own suite_v1 competence run decides eligibility
+            competence = {f: args.competence for f in ("BL", "BR", "RL", "RR")}
         prompts = suite_prompts(tok, suite_fams, args.kinds, args.n, competence, args.skip, args.wording)
-        prompts += country_prompts(tok, [f for f in args.families if f in ("R", "B")], args.n, args.skip)
+        cfams = [f for f in args.families if f in ("R", "B")]
+        if args.countries_build:
+            assert not args.skip, "--countries-build draws its own sample: no --skip"
+            prompts += built_country_prompts(model, tok, cfams, args.n)
+        else:
+            prompts += country_prompts(tok, cfams, args.n, args.skip)
     if args.answertype:
         prompts += answertype_prompts(tok, args.answertype)
     for p in prompts:
@@ -449,6 +472,10 @@ if __name__ == "__main__":
     ap.add_argument("--tasks-words", nargs="*", default=None, help="tasks_v2 words to include (default: all)")
     ap.add_argument("--skip", type=int, default=0, help="skip the first K eligible items per family (a fresh sample)")
     ap.add_argument("--wording", default="A", choices=["A", "B"], help="the suite's wording (B: data/suite_v1_b)")
+    ap.add_argument(
+        "--competence", default=None, help="a new target's suite_v1 competence run (BL BR RL RR eligibility)"
+    )
+    ap.add_argument("--countries-build", action="store_true", help="a new target: build its country cases now")
     ap.add_argument("--answertype", type=int, default=0, help="add N tool_answer_type scenes (AT-name, AT-digit)")
     ap.add_argument(
         "--seed-offset",
