@@ -57,7 +57,7 @@ TERM = {
     "random": "random push (same size)",
     "jpart": "lens-readable part",
     "rest": "the rest",
-    "flips": "% answers that become answer alt",
+    "flips": "% of original answers that become the alternative answer (answer org → answer alt)",
 }
 
 
