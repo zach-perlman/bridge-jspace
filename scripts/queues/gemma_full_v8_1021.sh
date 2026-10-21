@@ -11,7 +11,7 @@ cd /workspace/bridge-jspace
 set -a; . ./.env; set +a
 PY="uv run --no-sync python"
 R=/workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd
-until grep -qs "^EXIT" $R-gemmafit3-*.log; do sleep 120; done  # after the 27B job and the fit (competence -> steer -> knockout)
+until grep -qs "^EXIT" $R-gemmafit3-1021-0445.log; do sleep 120; done  # after the 27B job and the fit (competence -> steer -> knockout)
 grep -q '"gemma-4-31b-it-full"' src/bridge_jspace/pins.py || { echo "no gemma-4-31b-it-full target (the fit or its gate failed): stop"; exit 1; }
 ok=0; while [ $ok -lt 3 ]; do
   [ "$(nvidia-smi --query-gpu=memory.free --format=csv,noheader,nounits | head -1)" -ge 150000 ] && ok=$((ok + 1)) || ok=0
@@ -29,6 +29,8 @@ $PY scripts/ablate_v2.py --name gemma4itf_smoke_full_ko_1021 --why smoke --plan 
   && BJ_BATCH=32 $PY scripts/write_max.py --name gemma4itf_smoke_wm2_full_1021 --why smoke --n 2 --band 30-32 \
     --single-step 1 --early 23 --possets question final $W || { echo "smokes failed: stop"; exit 1; }
 echo "=== smokes ok $(date -u +%FT%TZ)"
+$PY scripts/removal_textloss.py --name gemma4itf_textloss_top_v1 --why "$WHY: plain-text loss under the knock-out, the 27B L32-40 depth" \
+  --layers $(seq 30 38) --conditions none top5 top5_rot top10 top10_rot || echo "=== text loss FAILED"
 BJ_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_posctrl_v1 --why "$WHY: positive control (countries, suite M->M)" \
   --n 60 --families RR --band 26-38 --single-step 2 --early 15 19 23 --from-competence gemma4itb_competence_v1 \
   && $PY scripts/c2_graded.py gemma4itf_wm2_posctrl_v1 || echo "=== positive control FAILED"
