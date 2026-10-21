@@ -1,14 +1,14 @@
 #!/bin/bash
-# Zach (2026-10-21): Qwen3-32B on GPU 1 of the 2x H200 box, after the Gemma knock-outs (the 27B reruns and Gemma first,
+# Zach (2026-10-21): Qwen3-32B on GPU 0 of the 2x H200 box, after the Gemma steering (the 27B reruns and Gemma first,
 # decided with Zach): 1-prompt fit smoke, the every-layer J++ fit (layers 0-62, 32 prompts, 32 rows per pass where it
 # fits, else 16), export, model entry qwen3-32b (sha256 + held-out readout), competence on full_v8 and its report.
 set -u
 cd /workspace/bridge-jspace
 set -a; . ./.env; set +a
-export CUDA_VISIBLE_DEVICES=1 UV_CACHE_DIR=/workspace/uv-cache PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+export CUDA_VISIBLE_DEVICES=0 UV_CACHE_DIR=/workspace/uv-cache PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 PY="uv run --no-sync python"
 R=/workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd
-until grep -qs "^EXIT" $R-h200gemmaB2-*.log; do sleep 120; done  # after the Gemma knock-outs (GPU 1)
+until grep -qs "^EXIT" $R-h200gemmaA2-*.log; do sleep 120; done  # after the Gemma steering (GPU 0, expected to free first)
 echo "=== start $(date -u +%FT%TZ)"
 echo "=== Qwen3-32B fit smoke $(date -u +%FT%TZ)"
 SMOKE=/workspace/scratch/q32_fit_smoke OUT=/workspace/ext/qwen3_32b_fit

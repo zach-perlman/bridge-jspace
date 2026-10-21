@@ -1,5 +1,5 @@
 #!/bin/bash
-# Zach (2026-10-21, decided with Zach): GPU 1 of the 2x H200 box, after the Gemma fit: the 27B knock-out additions on
+# Zach (2026-10-21, decided with Zach): GPU 0 of the 2x H200 box, after the 27B steering rerun (moved from GPU 1): the 27B knock-out additions on
 # the two-step words of full_v8. (1) C1's second kill test: paper10 / paper10_keepown and their rotated controls at
 # L32-40 (c1_v2: >= 75% of the memory-final loss restored kills C1). (2) Two more rotation seeds for the control
 # (paper10_rot, --seed-offset 1 and 2). (3) The position split: the facts only (--positions context) and the question
@@ -7,10 +7,10 @@
 set -u
 cd /workspace/bridge-jspace
 set -a; . ./.env; set +a
-export CUDA_VISIBLE_DEVICES=1 UV_CACHE_DIR=/workspace/uv-cache PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+export CUDA_VISIBLE_DEVICES=0 UV_CACHE_DIR=/workspace/uv-cache PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 PY="uv run --no-sync python"
 R=/workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd
-until grep -qs "^EXIT" $R-h200gemmafit-*.log; do sleep 120; done
+until grep -qs "^EXIT" $R-h200q27a-*.log; do sleep 60; done  # 2026-10-21: moved to GPU 0 after its steering rerun (balances the GPUs)
 WHY="Zach (2026-10-21): 27B, after the fixes"
 T="--tasks full_v8 --tasks-competence full_v8_competence_v1 --tasks-words PP PM MP MM CP CM --tasks-level all --n 1000 --kinds clean --batch 32"
 echo "=== start $(date -u +%FT%TZ)"
