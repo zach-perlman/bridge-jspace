@@ -11,7 +11,10 @@ Plans (--plan):
 Conditions (--conditions): omp25, omp25_rot, omp25_rdict, paper10, paper10_rot, paper10_rdict, keep_own, skip_subject,
   gauss (v1's Gaussian dictionary); 2026-10-21 (C1's second kill test, decided with Zach): paper10_keepown and
   paper10_keepown_rot, paper10 with the bridge's own-word directions (its surface tokens and every dictionary row with
-  cosine >= OWN_COS to its concept token, as keep_own) also protected. Prompt kinds (--kinds): clean (the whole question), hop (the last step alone, as
+  cosine >= OWN_COS to its concept token, as keep_own) also protected. 2026-10-21 (the specificity control, decided with
+  Zach after the pipeline review): unembed10 and unembed10_rot, paper10's procedure over the unit unembedding rows of
+  letter tokens (the final norm's gain folded in: the logit lens's directions, the same at every layer) instead of the
+  J-lens vectors: is the damage specific to the J-space, or shared by any token-aligned directions? Prompt kinds (--kinds): clean (the whole question), hop (the last step alone, as
   v1), step1/step2/step3 (each step alone). Reported per band x family/kind x condition: accuracy (top token = the
   answer's first token) and the mean change in the answer token's log-probability from the unedited run.
 
@@ -64,7 +67,7 @@ COMPETENCE = {  # the 27B's competence runs per suite family (eligibility: every
     "TBL": "competence_tool_v1", "TBR": "competence_tool_v1",
 }  # fmt: skip
 CONDITIONS = ("omp25", "omp25_rot", "omp25_rdict", "paper10", "paper10_rot", "paper10_rdict", "keep_own",
-              "skip_subject", "gauss")  # fmt: skip
+              "skip_subject", "gauss", "unembed10", "unembed10_rot")  # fmt: skip
 SEED_ROT, SEED_DICT, SEED_GAUSS = 888, 999, 777  # + layer (888 and 777 as ablate_pilot)
 
 
@@ -235,8 +238,8 @@ WIDE = 9  # bands wider than this run paper10 and its controls only (Zach, 2026-
 
 
 def top_k(cond: str) -> int | None:
-    """K of a top-K condition: paper10 (K = 10) or topK, with any control suffix; None for OMP and others."""
-    if cond.startswith("paper10"):
+    """K of a top-K condition: paper10 or unembed10 (K = 10) or topK, with any control suffix; None for OMP and others."""
+    if cond.startswith(("paper10", "unembed10")):
         return 10
     m = re.fullmatch(r"top(\d+)(_rot|_rdict)?", cond)
     return int(m[1]) if m else None
@@ -325,6 +328,9 @@ def main(args) -> None:
     dic = {la: LensDictionary(wg, lens.J(la)) for la in layers}
     rot = {la: rotation(wg.shape[1], SEED_ROT + args.seed_offset + la) for la in layers}
     rdict = {la: RotatedDictionary(dic[la], rotation(wg.shape[1], SEED_DICT + args.seed_offset + la)) for la in layers}
+    unembed = None  # the logit lens's directions: the same dictionary with J = identity, one for every layer
+    if any(c.startswith("unembed") for c in args.conditions):
+        unembed = LensDictionary(wg, torch.eye(wg.shape[1], device="cuda"))
     gauss = {}
     if "gauss" in args.conditions:
         for la in layers:  # v1's control, drawn exactly as ablate_pilot did
@@ -391,7 +397,8 @@ def main(args) -> None:
                         else:
                             rs = [RowSettings(skip=p["outside"]) for p in chunk]
                         method = "top" if top_k(cond) is not None else "omp"
-                        d = rdict[la] if cond.endswith("_rdict") else gauss[la] if cond == "gauss" else dic[la]
+                        d = (unembed if cond.startswith("unembed") else rdict[la] if cond.endswith("_rdict")
+                             else gauss[la] if cond == "gauss" else dic[la])  # fmt: skip
                         edits[la] = removal_edit(
                             method, d, rs, rotation=rot[la] if cond.endswith("_rot") else None, k=top_k(cond)
                         )

@@ -19,7 +19,16 @@ controls >= 90%); text vs structured formats; each step alone (step1, step2); 95
 
 python scripts/c1_v2.py RUN [--middle L32-40] [--set ctrl_v8] [--drop-guessable]
 --drop-guessable (Zach, 2026-10-21; a robustness split, not the rule's test): the same scoring without the items the
-model answers right from the guess prompt; writes RUN_noguess.md and .json.   (writes results/ablate_v2/c1_v2/RUN.md and .json)
+model answers right from the guess prompt; writes RUN_noguess.md and .json.
+Margin-matched gap (Zach, 2026-10-21, after the pipeline review; reported, outside the rule, added after the rule was
+fixed and after the 27B's full2_ko_v1 was seen): memory-final items are less confident unedited, and less confident
+items break more easily. At the middle band, each condition's loss by quartile of the unedited answer margin (the
+logit margin of the answer's first token, from the set's competence run), and the memory-final minus prompt-final gap
+with the items pooled per group: raw, reweighted to either group's quartile distribution, and matched (memory-final
+items against prompt-final items in the same BIN-logit margin bin, bins weighted by their memory-final items; 95%
+bootstrap over items). 1:1 nearest-margin pairs were tried first and dropped before any real data: margins are rounded
+and the groups sit apart, so the nearest free partner is systematically more confident (a 10-point gap from nothing in
+a toy test).   (writes results/ablate_v2/c1_v2/RUN.md and .json)
 """
 
 from __future__ import annotations
@@ -27,6 +36,7 @@ from __future__ import annotations
 import argparse
 import collections
 import json
+import math
 import random
 import statistics
 import subprocess
@@ -44,6 +54,62 @@ ORDER = ("PP", "MP", "PM", "MM", "CP", "CM", "PPP", "PPM", "PMP", "MPP", "MPM", 
 NAMES = {w: "->".join(w) for w in ORDER}
 GAP, CONTROL_WITHIN, STRICT_LOSS, STRICT_CONTROL = 0.30, 0.10, 0.10, 0.90
 TEXT = ("prose", "chat", "document")
+TABLE_CONDS = ("paper10", "paper10_rot", "unembed10", "unembed10_rot")
+BIN = 0.25
+
+
+def margin_matched(items: list[tuple[str, float, int]], reps: int = 1000, seed: int = 0) -> dict:
+    """items: (word, unedited margin, loss) with loss = unedited correct - knock-out correct, for the rule's four words.
+    Losses by margin quartile (cuts over all four words) and the memory-final minus prompt-final gap: raw, reweighted to
+    each group's quartile distribution, and matched within BIN-logit margin bins (weighted by memory-final items)."""
+    ms = sorted(m for _, m, _ in items)
+    cuts = [ms[len(ms) // 4], ms[len(ms) // 2], ms[3 * len(ms) // 4]]
+
+    def q(m: float) -> int:
+        return sum(m > c for c in cuts)
+
+    group = {w: g for g, ws in (("memory", MEMORY_FINAL), ("prompt", PROMPT_FINAL)) for w in ws}
+    cell: dict = collections.defaultdict(list)
+    for w, m, loss in items:
+        cell[(w, q(m))].append(loss)
+        cell[(group[w], q(m))].append(loss)
+    mean = lambda v: statistics.mean(v) if v else None  # noqa: E731
+    out: dict = {"cuts": cuts}
+    out["by_quartile"] = {k: [[mean(cell[(k, b)]), len(cell[(k, b)])] for b in range(4)]
+                          for k in (*PROMPT_FINAL, *MEMORY_FINAL, "prompt", "memory")}  # fmt: skip
+    out["median_margin"] = {
+        w: statistics.median([m for w2, m, _ in items if w2 == w]) for w in (*PROMPT_FINAL, *MEMORY_FINAL)
+    }
+    pooled = {g: [loss for w, _, loss in items if group[w] == g] for g in ("memory", "prompt")}
+    out["raw_gap"] = mean(pooled["memory"]) - mean(pooled["prompt"]) if all(pooled.values()) else None
+    for ref in ("prompt", "memory"):
+        w_ = {b: len(cell[(ref, b)]) for b in range(4) if cell[("memory", b)] and cell[("prompt", b)]}
+        tot = sum(w_.values())
+        out[f"gap_at_{ref}_margins"] = (sum(n * (mean(cell[("memory", b)]) - mean(cell[("prompt", b)]))
+                                            for b, n in w_.items()) / tot) if tot else None  # fmt: skip
+
+    def matched(mem: list[tuple[float, int]], prm: list[tuple[float, int]]) -> tuple[float | None, int]:
+        bins: dict = collections.defaultdict(lambda: ([], []))
+        for k, its in enumerate((mem, prm)):
+            for m, loss in its:
+                bins[math.floor(m / BIN)][k].append(loss)
+        num = den = 0.0
+        for a, b in bins.values():
+            if a and b:
+                num += len(a) * (statistics.mean(a) - statistics.mean(b))
+                den += len(a)
+        return (num / den if den else None), int(den)
+
+    mem = [(m, loss) for w, m, loss in items if group[w] == "memory"]
+    prm = [(m, loss) for w, m, loss in items if group[w] == "prompt"]
+    out["matched_gap"], out["matched_n"] = matched(mem, prm)
+    out["memory_n"] = len(mem)
+    rng = random.Random(seed)
+    boot = sorted(g for g, _ in (matched(rng.choices(mem, k=len(mem)), rng.choices(prm, k=len(prm)))
+                                 for _ in range(reps)) if g is not None)  # fmt: skip
+    if boot:
+        out["matched_gap_ci"] = [boot[int(0.025 * len(boot))], boot[int(0.975 * len(boot)) - 1]]
+    return out
 
 
 def guessable_ids(comp_run: str) -> set[str]:
@@ -80,6 +146,7 @@ def main(run: str, middle: str, set_name: str, drop_guessable: bool = False) -> 
     none = {(r["family"], r["id"], r["kind"]): r["correct"] for r in rows if r["condition"] == "none"}
     bands = list(dict.fromkeys(r["band"] for r in rows if r["condition"] != "none"))
     words = [w for w in ORDER if any(r["family"] == w for r in rows)]
+    conds = [c for c in TABLE_CONDS if any(r["condition"] == c for r in rows)]
     from scripts import tasks_v2 as T
 
     items = T.load(set_name)
@@ -109,7 +176,7 @@ def main(run: str, middle: str, set_name: str, drop_guessable: bool = False) -> 
                   "|---|---|" + "---|" * len(words),
                   "| - | unedited | " + " | ".join(f"{100 * unedited(w, cls=cls):.0f}" for w in words) + " |"]  # fmt: skip
         for band in bands:
-            for cond in ("paper10", "paper10_rot"):
+            for cond in conds:
                 cells = []
                 for w in words:
                     sel = pick(band, cond, word=w, cls=cls)
@@ -130,7 +197,7 @@ def main(run: str, middle: str, set_name: str, drop_guessable: bool = False) -> 
                   "| band | condition | " + " | ".join(NAMES[w] for w in sec) + " |", "|---|---|" + "---|" * len(sec),
                   "| - | unedited | " + " | ".join(f"{100 * unedited(w, st='secondary'):.0f}" for w in sec) + " |"]  # fmt: skip
         for band in bands:
-            for cond in ("paper10", "paper10_rot"):
+            for cond in conds:
                 lines.append(f"| {band} | {cond} | " + " | ".join(
                     f"{100 * a:.0f} (n={len(sel)})" if (a := acc(sel := pick(band, cond, word=w, st="secondary"))) is not None
                     else "-" for w in sec) + " |")  # fmt: skip
@@ -141,7 +208,7 @@ def main(run: str, middle: str, set_name: str, drop_guessable: bool = False) -> 
                   "|---|---|" + "---|" * len(words),
                   "| - | unedited | " + " | ".join(f"{100 * unedited(w, kind):.0f}" for w in words) + " |"]  # fmt: skip
         for band in bands:
-            for cond in ("paper10", "paper10_rot"):
+            for cond in conds:
                 lines.append(f"| {band} | {cond} | " + " | ".join(
                     f"{100 * a:.0f}" if (a := acc(pick(band, cond, kind, w))) is not None else "-" for w in words) + " |")  # fmt: skip
         lines.append("")
@@ -198,6 +265,36 @@ def main(run: str, middle: str, set_name: str, drop_guessable: bool = False) -> 
             f"{100 * (v['keepown'] or 0):.0f} (its control {100 * (v['keepown_rot'] or 0):.0f})" for w, v in kk.items())
             + f"; restored {'-' if restored is None else f'{100 * restored:.0f}%'} of the damage (>= 75% kills C1); control "
             f"within 10: {'yes' if ctrl_ok else 'no'} -> {'C1 KILLED (the damage is the subject word)' if out['keepown']['kills_C1'] else 'C1 survives'}"]  # fmt: skip
+    comp = (json.loads((RES / run / "manifest.json").read_text()).get("tasks") or [None, None])[1]
+    if comp and all(w in words for w in PROMPT_FINAL + MEMORY_FINAL):  # the margin-matched gap (reported)
+        margin = {r["id"]: r["margin"] for r in map(json.loads, (pins.RESULTS_DIR / "tasks_v2" / comp / "items.jsonl")
+                  .read_text().splitlines()) if r["part"] == "whole" and r.get("margin") is not None}  # fmt: skip
+        out["margin_matched"] = {}
+        for cond in [c for c in ("paper10", "unembed10") if c in conds]:
+            its = [(r["family"], margin[r["id"]], int(none[(r["family"], r["id"], "clean")]) - int(r["correct"]))
+                   for w in PROMPT_FINAL + MEMORY_FINAL for r in pick(middle, cond, word=w) if r["id"] in margin]  # fmt: skip
+            if not its:
+                continue
+            mm = out["margin_matched"][cond] = margin_matched(its)
+            f = lambda v: "-" if v is None else f"{100 * v:.0f}"  # noqa: E731
+            lines += ["", f"## Margin-matched gap under {cond} at {middle} (reported, outside the rule; added after the rule)", "",
+                      "Median unedited answer margin (logits): " + ", ".join(f"{NAMES[w]} {v:.2f}" for w, v in mm["median_margin"].items())
+                      + f". Loss (points) by quartile of that margin (cuts {', '.join(f'{c:.2f}' for c in mm['cuts'])}), n per cell:", "",
+                      "| word | Q1 (least confident) | Q2 | Q3 | Q4 |", "|---|---|---|---|---|"]  # fmt: skip
+            for k, v in mm["by_quartile"].items():
+                lines.append(
+                    f"| {NAMES.get(k, k + '-final, pooled')} | " + " | ".join(f"{f(a)} (n={n})" for a, n in v) + " |"
+                )
+            ci_ = mm.get("matched_gap_ci")
+            lines += ["", f"Memory-final minus prompt-final, items pooled per group: raw {f(mm['raw_gap'])}; reweighted to the "
+                      f"prompt-final margins {f(mm['gap_at_prompt_margins'])}, to the memory-final margins "
+                      f"{f(mm['gap_at_memory_margins'])}; matched within {BIN}-logit margin bins {f(mm['matched_gap'])}"
+                      + (f" [{f(ci_[0])}-{f(ci_[1])}]" if ci_ else "")
+                      + f" ({mm['matched_n']} of {mm['memory_n']} memory-final items have a same-bin partner) points."]  # fmt: skip
+    if "unembed10" not in conds and all(w in words for w in PROMPT_FINAL + MEMORY_FINAL):
+        lines += ["", "Specificity control: no unembed10 rows in this run. Every model gets one (2026-10-21): ablate_v2 "
+                  "--conditions unembed10 unembed10_rot on the same items, then scripts/c1_specificity.py."]  # fmt: skip
+    lines.append("")
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     out["commit"] = commit
     lines += [f"Rule at {middle}: losses " + ", ".join(f"{NAMES[w]} {100 * v:.0f}" for w, v in loss.items())

@@ -25,6 +25,10 @@ only if M->P's and M->M's ceilings are both >= 0.5 (else "inconclusive: these si
 C2-relative holds if M->M's relative >= 0.5 and >= 3 x M->P's. --fresh-vs RUN scores only the cases RUN did not use: the
 clean test on the 27B, whose rule was designed after seeing wm2_full2_v1 (written to RUN_fresh.md and .json).
 
+--ceiling-from RUN2 (Zach, 2026-10-21): the ceiling from RUN2, a "write_max --writes copy" run on the same cases, for
+runs made before 1330338, whose joint copy added each band layer's difference on top of the earlier ones (it overshot
+instead of pasting C's state); RUN's own copy ceiling is reported beside it. Writes RUN[_fresh|_noguess]_paste.md/.json.
+
 python scripts/c2_graded.py RUN [RUN ...] [--drop-guessable]   (writes results/write_max/c2_graded/RUN.md and .json)
 --drop-guessable (Zach, 2026-10-21; a robustness split, not the rule's test): the same scoring without the cases the
 model answers right from the guess prompt (tasks_v2 runs only); writes RUN_noguess.md and .json.
@@ -63,15 +67,27 @@ def guessable_ids(comp_run: str) -> set[str]:
     return {r["id"] for r in map(json.loads, path.read_text().splitlines()) if r["part"] == "guess" and r["correct"]}
 
 
-def analyse(run: str, drop: set[str] | None = None) -> dict:
-    rows_all = [json.loads(line) for line in (RESULTS / run / "outcomes.jsonl").read_text().splitlines()]
-    rows = [r for r in rows_all if not drop or r["name"] not in drop]
-    n_dropped = len({r["name"] for r in rows_all} - {r["name"] for r in rows})
+def cells_of(rows: list[dict]) -> dict:
     cells: dict = collections.defaultdict(list)
     for r in rows:
         cells[(r["family"], r["write"], r["pos"], str(r["layer"]), r["strength"], r["control"])].append(r)
+    return cells
 
-    def best(fam: str, writes: tuple, sites: tuple, strengths: tuple | None = None) -> dict | None:
+
+def analyse(run: str, drop: set[str] | None = None, ceiling_run: str | None = None) -> dict:
+    rows_all = [json.loads(line) for line in (RESULTS / run / "outcomes.jsonl").read_text().splitlines()]
+    rows = [r for r in rows_all if not drop or r["name"] not in drop]
+    n_dropped = len({r["name"] for r in rows_all} - {r["name"] for r in rows})
+    cells = ceil_cells = cells_of(rows)
+    if ceiling_run:  # the ceiling from a copy-only run on the same cases (--ceiling-from)
+        crows = [json.loads(line) for line in (RESULTS / ceiling_run / "outcomes.jsonl").read_text().splitlines()]
+        crows = [r for r in crows if not drop or r["name"] not in drop]
+        for fam in {r["family"] for r in rows}:
+            mine, theirs = ({r["name"] for r in rs if r["family"] == fam} for rs in (rows, crows))
+            assert mine == theirs, f"{ceiling_run} has other {fam} cases than {run}"
+        ceil_cells = cells_of(crows)
+
+    def best(fam: str, writes: tuple, sites: tuple, strengths: tuple | None = None, cells: dict = cells) -> dict | None:
         cand = []
         for (f, w, pos, la, s, control), os_ in cells.items():
             if f != fam or w not in writes or pos not in sites or control or (strengths and s not in strengths):
@@ -117,7 +133,7 @@ def analyse(run: str, drop: set[str] | None = None) -> dict:
     fams = {r["family"] for r in rows}
     kind = "tasks" if "MP" in fams else "suite"
     mp, mm = PAIRS[kind]
-    out: dict = {"run": run, "families": {}, "cases_dropped": n_dropped}
+    out: dict = {"run": run, "families": {}, "cases_dropped": n_dropped, "ceiling_from": ceiling_run}
     for fam in sorted(fams):
         out["families"][fam] = {
             "own_direction": best(fam, OWN, SITES),
@@ -126,11 +142,13 @@ def analyse(run: str, drop: set[str] | None = None) -> dict:
             "own_final_only": best(fam, OWN, ("final",)),
             "transplant_1x": best(fam, ("lens_transpl",), SITES, (1.0,)),
             "any_lens_any_site": best(fam, ("lens_add", "lens_swap", "lens_transpl"), ("question", "final", "all")),
-            "ceiling_copy": best(fam, ("copy",), SITES),
+            "ceiling_copy": best(fam, ("copy",), SITES, cells=ceil_cells),
             "cv_own_direction": cv_best(fam, OWN, SITES),
             "cv_transplant": cv_best(fam, ("lens_transpl",), SITES),
             "cv_dom": cv_best(fam, ("dom_add", "dom_natural"), SITES),
         }
+        if ceiling_run:
+            out["families"][fam]["ceiling_copy_own_run"] = best(fam, ("copy",), SITES)
     if mp in fams and mm in fams:
         a, b = out["families"][mp]["own_direction"], out["families"][mm]["own_direction"]
         fa, fb = (a["flips"] if a else 0.0), (b["flips"] if b else 0.0)
@@ -194,6 +212,11 @@ def show(res: dict, commit: str) -> str:
         f = lambda v: "-" if v is None else f"{100 * v:.0f}"  # noqa: E731
         lines.append(f"| {NAMES.get(fam, fam)} | {f(c)} | {f(cv)} | {f(min(1.0, cv / c) if c and cv is not None else None)} | "
                      f"{f(d.get('cv_transplant'))} | {f(d.get('cv_dom'))} |")  # fmt: skip
+    if res.get("ceiling_from"):
+        lines += ["", f"Copy ceiling from {res['ceiling_from']} (copy-only run on the same cases, the joint copy pasted); "
+                      "this run's own (stacked joint copy): " + ", ".join(
+                          f"{NAMES.get(f, f)} {100 * d['ceiling_copy_own_run']['flips']:.0f}"
+                          for f, d in res["families"].items() if d.get("ceiling_copy_own_run"))]  # fmt: skip
     rr = res.get("rule_relative")
     if rr:
         lines += ["", f"C2-relative: ceilings {json.dumps({k: round(v, 2) for k, v in rr['ceiling'].items()})}, relative "
@@ -208,6 +231,7 @@ if __name__ == "__main__":
     ap.add_argument("runs", nargs="+")
     ap.add_argument("--drop-guessable", action="store_true")
     ap.add_argument("--fresh-vs", default=None, help="score only the cases this earlier run did not use")
+    ap.add_argument("--ceiling-from", default=None, help="take the copy ceiling from this copy-only run (same cases)")
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     out_dir = RESULTS / "c2_graded"
     out_dir.mkdir(exist_ok=True)
@@ -223,11 +247,12 @@ if __name__ == "__main__":
                 print(f"{run}: not a tasks_v2 run (no guess prompts); skipped")
                 continue
             drop, suffix = guessable_ids(tasks[1]), "_noguess"
-        res = analyse(run, drop)
+        res = analyse(run, drop, a.ceiling_from)
+        suffix += "_paste" if a.ceiling_from else ""
         res["commit"] = commit
         (out_dir / f"{run}{suffix}.json").write_text(json.dumps(res, indent=2) + "\n")
         text = show(res, commit)
-        if suffix == "_fresh":
+        if suffix.startswith("_fresh"):
             text = text.replace(
                 "# C2-graded / ", f"# C2-graded, FRESH cases only ({res['cases_dropped']} seen ones dropped) / ", 1
             )

@@ -36,6 +36,9 @@ Rules (fixed before the run, 2026-10-20):
 A new target (BJ_TARGET; 2026-10-21, Gemma 4 31B-it): --from-competence takes the suite cases from its own competence
 run and builds its country cases with the model; --layers gives the band's layers when the lens covers only some.
 
+--writes (Zach, 2026-10-21): only these writes; "--writes copy" re-measures the ceiling (single-layer copies and the joint
+paste) on the cases of a run made before 1330338, whose joint copy stacked (c2_graded --ceiling-from).
+
 python scripts/write_max.py --name N --why W [--n 60] [--families ...] [--band 28-40] [--tasks SET --tasks-competence RUN]
 """
 
@@ -124,7 +127,7 @@ def main(args) -> None:
                 "alphas": list(ALPHAS), "alphas_early": list(ALPHAS_EARLY), "swaps": list(SWAPS),
                 "transplants": list(TRANSPLANTS), "natural": list(NATURAL), "keep_gate": KEEP_GATE,
                 "families": args.families, "countries": args.countries, "n_per_family": args.n, "tf32": True,
-                "tasks": [args.tasks, args.tasks_competence, args.tasks_level], "tasks_per_word": args.tasks_per_word, "from_competence": args.from_competence,
+                "tasks": [args.tasks, args.tasks_competence, args.tasks_level], "tasks_per_word": args.tasks_per_word, "from_competence": args.from_competence, "writes": args.writes,
                 "doc": (__doc__ or "").split("\n\n", 1)[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     model = load_model()
@@ -226,9 +229,10 @@ def main(args) -> None:
                 sd = swap_delta(hc, vi, vx)
                 for b in SWAPS:
                     add({**tags, "write": "lens_swap", "strength": b}, la, pos, b * sd)
-                td = omp_fit(dic[la], hx, 25) - omp_fit(dic[la], hc, 25)
-                for b in TRANSPLANTS:
-                    add({**tags, "write": "lens_transpl", "strength": b}, la, pos, b * td)
+                if not args.writes or "lens_transpl" in args.writes:  # the OMP fits are the slow part
+                    td = omp_fit(dic[la], hx, 25) - omp_fit(dic[la], hc, 25)
+                    for b in TRANSPLANTS:
+                        add({**tags, "write": "lens_transpl", "strength": b}, la, pos, b * td)
                 mx, mi = mu(c["cf_bridge"], (la, pset), c), mu(c["bridge"], (la, pset), c)
                 if mx is None or mi is None:
                     missing = True
@@ -253,6 +257,8 @@ def main(args) -> None:
                         a * norm * e_dir.expand_as(hc), in_band=False)  # fmt: skip
         for key, edits in joint.items():
             jobs.append(({**dict(key), "layer": "joint"}, dict(edits)))
+        if args.writes:
+            jobs = [j for j in jobs if j[0]["write"] in args.writes]
         start = len(outcomes)
         P.read_jobs(model, c, jobs, outcomes)
         for o in outcomes[start:]:
@@ -317,7 +323,7 @@ def summarize(out_dir: Path, args, cases: list[dict], outcomes: list[dict], dom_
 
     mp = "RL" if "RL" in fams else "MP" if "MP" in fams else None
     mm = "RR" if "RR" in fams else "MM" if "MM" in fams else None
-    if mp and mm:
+    if mp and mm and not args.writes:
         lp, lm = best_of(mp, LENS_WRITES), best_of(mm, LENS_WRITES)
         rule = {"MP_lens_le_control_plus_5": bool(lp and lp[0] <= lp[1] + 0.05),
                 "MM_lens_ge_4x_control_and_10pct": bool(lm and lm[0] >= max(4 * lm[1], 0.10))}  # fmt: skip
@@ -359,6 +365,7 @@ if __name__ == "__main__":
     ap.add_argument("--tasks-level", default="pick", help='tasks_v2 level: "pick" (per comparison), "all" or a number')
     ap.add_argument("--tasks-per-word", action="store_true", help="tasks_v2: judge each item on its own (three-step)")
     ap.add_argument("--from-competence", default=None, help="a new target: suite_v1 competence run to take cases from")
+    ap.add_argument("--writes", nargs="+", default=None, help='only these writes (e.g. "copy": the ceiling alone)')
     a = ap.parse_args()
     a.families = a.families or (["PP", "PM", "MP", "MM"] if a.tasks else ["BL", "BR", "RL", "RR"])
     main(a)

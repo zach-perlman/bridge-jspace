@@ -1,10 +1,13 @@
 """copy_sweep: where do the question / final positions carry the bridge? (Zach, 2026-10-21: the overnight steering runs
 showed that copying C's state at the question or final positions at one layer of 28-40 moves only 2-67% of answers, so
-the steering sites may not carry the bridge.) For each case: C's state pasted at the question positions or
-the final position, (single) at one layer, (from) at that layer and every later swept layer (every --step); flips to C's answer.
-Diagnostic: it locates the layers where those positions carry the bridge; no rule.
+the steering sites may not carry the bridge.) For each case, at the question positions or the final position: (single)
+C's state pasted at one layer (every --step); (band) C's state pasted at that layer and every layer up to --window
+later (2026-10-21, Zach: a window as wide as the steering band, so each column is the ceiling of a band starting
+there; copy_sweep_full2_v1's "from" mode added the differences at every later layer, which stacks and overshoots, and
+pasting to the last layer would make the final position trivially C's). Flips to C's answer. Diagnostic; no rule.
 
 python scripts/copy_sweep.py --name N --why W [--tasks SET --tasks-competence RUN --families ...] [--n 40] [--step 2]
+                             [--window 12]
 """
 
 from __future__ import annotations
@@ -44,9 +47,10 @@ def main(args) -> None:
     model = load_model()
     tok = model.tokenizer
     layers = tuple(range(args.step, pins.N_LAYERS - 1, args.step))
+    every = tuple(range(pins.N_LAYERS - 1))
     (out_dir / "manifest.json").write_text(json.dumps({
         "run": args.name, "why": args.why, "git_commit": commit, "model": pins.model_pin(), "layers": list(layers),
-        "tasks": [args.tasks, args.tasks_competence], "families": args.families, "n_per_family": args.n,
+        "tasks": [args.tasks, args.tasks_competence], "families": args.families, "n_per_family": args.n, "window": args.window,
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "doc": (__doc__ or "").split("\n\n")[1]},
         indent=2) + "\n")  # fmt: skip
     if args.tasks:
@@ -56,17 +60,15 @@ def main(args) -> None:
     t0, outcomes = time.time(), []
     for k, c in enumerate(cases):
         P.unedited_ld(model, c)
-        hs = {s: model.run(torch.tensor([c["read_ids"][s]], device="cuda"), record=layers)[1] for s in ("clean", "cf")}
+        hs = {s: model.run(torch.tensor([c["read_ids"][s]], device="cuda"), record=every)[1] for s in ("clean", "cf")}
         sites = {"question": c["groups"]["question"], "final": [len(c["read_ids"]["clean"]) - 1]}
         jobs = []
         for pos_name, pos in sites.items():
             delta = {la: hs["cf"][la][pos] - hs["clean"][la][pos] for la in layers}
             for la in layers:
                 jobs.append(({"pos": pos_name, "mode": "single", "layer": la}, {la: AddRows(delta[la], pos)}))
-                # 2026-10-21 (Zach): "from" pastes C's state (SetRows); copy_sweep_full2_v1 added the differences
-                # (AddRows) at every layer, which stack and overshoot, so its "from" columns are not C's state
-                jobs.append(({"pos": pos_name, "mode": "from", "layer": la},
-                             {m: SetRows(hs["cf"][m][pos], pos) for m in layers if m >= la}))  # fmt: skip
+                jobs.append(({"pos": pos_name, "mode": "band", "layer": la},
+                             {m: SetRows(hs["cf"][m][pos], pos) for m in every if la <= m <= la + args.window}))  # fmt: skip
         start = len(outcomes)
         P.read_jobs(model, c, jobs, outcomes)
         for o in outcomes[start:]:
@@ -80,28 +82,32 @@ def main(args) -> None:
     fams = list(dict.fromkeys(c["family"] for c in cases))
     summary: dict = {"seconds": round(time.time() - t0), "flips": {}}
     lines = [f"# copy_sweep / {args.name}: flips to C's answer % when C's state is pasted at the question / final "
-             f"positions (single layer | that layer and every later one)", ""]  # fmt: skip
+             f"positions (single layer | that layer through {args.window} layers later)", ""]  # fmt: skip
     for pos in ("question", "final"):
         lines += [f"## {pos} positions", "", "| family | " + " | ".join(f"L{la}" for la in layers) + " |",
                   "|---" * (len(layers) + 1) + "|"]  # fmt: skip
         for fam in fams:
             row = []
             for la in layers:
-                v = {m: statistics.mean(o["role"] == "b" for o in cell[(fam, pos, m, la)]) for m in ("single", "from")}
+                v = {m: statistics.mean(o["role"] == "b" for o in cell[(fam, pos, m, la)]) for m in ("single", "band")}
                 summary["flips"][f"{fam}/{pos}/L{la}"] = v
-                row.append(f"{100 * v['single']:.0f} \\| {100 * v['from']:.0f}")
+                row.append(f"{100 * v['single']:.0f} \\| {100 * v['band']:.0f}")
             lines.append(f"| {fam} | " + " | ".join(row) + " |")
         lines.append("")
     best = {}
     for fam in fams:
         for pos in ("question", "final"):
             for la in layers:
-                os_ = cell[(fam, pos, "from", la)]
+                os_ = cell[(fam, pos, "band", la)]
                 rate = statistics.mean(o["role"] == "b" for o in os_)
                 if rate > best.get(fam, (0, None))[0]:
-                    best[fam] = (rate, f"{pos}, from L{la}", entity_ci([(o["bridge"], o["role"] == "b") for o in os_]))
-    summary["best_from"] = {f: {"flips": b[0], "site": b[1], "ci": b[2]} for f, b in best.items()}
-    lines += ["Best 'from' copy per family: " + ", ".join(f"{f} {100 * b[0]:.0f}% ({b[1]})" for f, b in best.items())]
+                    best[fam] = (
+                        rate,
+                        f"{pos}, L{la}-{la + args.window}",
+                        entity_ci([(o["bridge"], o["role"] == "b") for o in os_]),
+                    )
+    summary["best_band"] = {f: {"flips": b[0], "site": b[1], "ci": b[2]} for f, b in best.items()}
+    lines += ["Best band paste per family: " + ", ".join(f"{f} {100 * b[0]:.0f}% ({b[1]})" for f, b in best.items())]
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     (out_dir / "summary.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
@@ -113,6 +119,7 @@ if __name__ == "__main__":
     ap.add_argument("--why", required=True)
     ap.add_argument("--n", type=int, default=40)
     ap.add_argument("--step", type=int, default=2)
+    ap.add_argument("--window", type=int, default=12, help="band mode: paste from a layer through this many later")
     ap.add_argument("--families", nargs="+", default=None)
     ap.add_argument("--tasks", default=None)
     ap.add_argument("--tasks-competence", default=None)
