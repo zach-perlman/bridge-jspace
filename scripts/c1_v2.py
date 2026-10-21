@@ -163,7 +163,7 @@ def main(run: str, middle: str, set_name: str, drop_guessable: bool = False) -> 
     def a_of(b: str, cond: str, w: str) -> float | None:
         return out["bands"].get(b, {}).get(cond, {}).get(w, {}).get("acc")
 
-    vals = [a_of(b, c, w) for b in bands for c in ("paper10", "paper10_rot") for w in words]
+    vals = [a_of(b, c, w) for b in bands for c in ("paper10", "paper10_rot") for w in set(words) | set(PROMPT_FINAL)]
     strict = None if any(v is None for v in vals) else (
         all(unedited(w) - a_of(b, "paper10", w) <= STRICT_LOSS for b in bands for w in PROMPT_FINAL)
         and all(a_of(b, "paper10_rot", w) >= STRICT_CONTROL for b in bands for w in words))  # fmt: skip

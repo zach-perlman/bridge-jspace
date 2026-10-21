@@ -45,4 +45,4 @@ Accuracy % on the whole question [95% CI over bridge entities]; unedited first.
 | L0-62 | paper10_rot | 97 [93-100] (n=68) | 86 [74-95] (n=44) | 82 [72-91] (n=68) | 77 [60-90] (n=44) | 97 [93-100] (n=76) | 78 [66-87] (n=76) |
 
 Rule at L32-40: losses P->P 0, M->P 13, P->M 41, M->M 45, C->P 6, C->M 41; memory-final minus prompt-final 36 points (>= 30 needed); controls within 10 points: yes -> C1-graded HOLDS
-Original strict C1 (reported): fails. Output from commit 89b2ac2.
+Original strict C1 (reported): fails. Output from commit 9f436cf.
