@@ -3,8 +3,12 @@ overnight; on Gemma 4 31B-it the J-space removal breaks every task, lookups too,
 breaks none.) Mean next-token loss (nats) over 16 WikiText rows of 64+ tokens (first 128 tokens, predictions from
 position 4 on) under: none, the J-space removal (ablate_pilot's Remove, all positions, the layers at once) and the
 size-matched rotated control (ablate_pilot's Rotated). No verdict rule; the comparison is between models.
+2026-10-21 (Zach: is Gemma broken by the current knock-out too, or only by the 25-atom one?): --conditions adds topK and
+topK_rot, the headline knock-out's removal (the span of the K highest-scoring lens directions at every position,
+ablate_v2's removal_edit "top") and its same-size rotated control (seed 888 + layer, as ablate_v2). Plain text has no
+single answer, so nothing is protected: harsher than the task knock-out, which keeps the answer's top 10.
 
-python scripts/removal_textloss.py --name N --why W --layers L [L ...]
+python scripts/removal_textloss.py --name N --why W --layers L [L ...] [--conditions none jspace rotated top10 top10_rot]
 """
 
 from __future__ import annotations
@@ -21,6 +25,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.ablate import LensDictionary, RowSettings, removal_edit
+from bridge_jspace.ablate import rotation as rotation_v2
 from bridge_jspace.model import _forward_hooks
 from bridge_jspace.tokens import raw_encoding
 from scripts.ablate_pilot import Remove, Rotated, rotation
@@ -29,7 +35,7 @@ RESULTS = pins.RESULTS_DIR / "removal_textloss"
 
 
 @torch.no_grad()
-def main(name: str, why: str, layers: tuple[int, ...]) -> None:
+def main(name: str, why: str, layers: tuple[int, ...], conditions: tuple[str, ...]) -> None:
     from bridge_jspace.lens import JLens
     from bridge_jspace.model import load_model
 
@@ -38,7 +44,7 @@ def main(name: str, why: str, layers: tuple[int, ...]) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
     manifest = {"run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "layers": list(layers),
+                "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "layers": list(layers), "conditions": list(conditions),
                 "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     model = load_model()
@@ -46,8 +52,16 @@ def main(name: str, why: str, layers: tuple[int, ...]) -> None:
     lens = JLens(model, pins.FROZEN_LENS)
     letters = model.letter_token_ids()
     jd = {la: lens.vectors(la, letters) for la in layers}
-    conds = {"none": {}, "jspace": {la: Remove(jd[la]) for la in layers},
+    every = {"none": {}, "jspace": {la: Remove(jd[la]) for la in layers},
              "rotated": {la: Rotated(jd[la], rotation(jd[la].shape[1], 888 + la)) for la in layers}}  # fmt: skip
+    wg = model.hf.lm_head.weight[letters].float() * model.norm_gain()
+    dic = {la: LensDictionary(wg, lens.J(la)) for la in layers}
+    for c in conditions:
+        if c.startswith("top"):
+            k = int(c[3:].removesuffix("_rot"))
+            rot = c.endswith("_rot")
+            every[c] = {la: _top(dic[la], k, rotation_v2(wg.shape[1], 888 + la) if rot else None) for la in layers}
+    conds = {c: every[c] for c in conditions}
     texts = [ids for t in pins.wikitext_rows() if len(ids := raw_encoding(tok, t)["input_ids"][:128]) >= 64][:16]
 
     def hook_for(edit):
@@ -71,10 +85,17 @@ def main(name: str, why: str, layers: tuple[int, ...]) -> None:
     print(json.dumps(summary["mean_nll"]))
 
 
+def _top(dic, k: int, rot):
+    """ablate_v2's top-K removal for one [T, d] residual (no row settings: every position, nothing protected)."""
+    edit = removal_edit("top", dic, [RowSettings()], rotation=rot, k=k)
+    return lambda h: edit(h[None])[0]
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--name", required=True)
     ap.add_argument("--why", required=True)
     ap.add_argument("--layers", nargs="+", type=int, required=True)
+    ap.add_argument("--conditions", nargs="+", default=["none", "jspace", "rotated"])
     args = ap.parse_args()
-    main(args.name, args.why, tuple(args.layers))
+    main(args.name, args.why, tuple(args.layers), tuple(args.conditions))
