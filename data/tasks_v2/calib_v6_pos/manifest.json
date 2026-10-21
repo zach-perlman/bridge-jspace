@@ -1,0 +1,211 @@
+{
+  "set": "calib_v6_pos",
+  "n_scenes_per_group_level": 48,
+  "words": [
+    "PPP",
+    "PPM",
+    "PMP",
+    "MPP",
+    "MPM",
+    "MMP"
+  ],
+  "domains": [
+    "planets",
+    "greek"
+  ],
+  "formats": [
+    "prose",
+    "json",
+    "table",
+    "code",
+    "chat",
+    "document"
+  ],
+  "levels": {
+    "0": {
+      "entities": 3,
+      "distractors": false,
+      "filler": 0,
+      "paraphrase": false,
+      "hard_cues": false
+    },
+    "1": {
+      "entities": 6,
+      "distractors": true,
+      "filler": 5,
+      "paraphrase": false,
+      "hard_cues": false
+    },
+    "2": {
+      "entities": 9,
+      "distractors": true,
+      "filler": 10,
+      "paraphrase": true,
+      "hard_cues": true
+    },
+    "3": {
+      "entities": 12,
+      "distractors": true,
+      "filler": 20,
+      "paraphrase": true,
+      "hard_cues": true
+    }
+  },
+  "seed": 708,
+  "generator": "scripts/tasks_v2.py make (v3)",
+  "git_commit": "f4902bfafd9b2ce389ad78bb7919c9c6d03aa61c",
+  "counterfactuals": false,
+  "n_items": 1152,
+  "coverage": {
+    "P3/L0": {
+      "scenes": 48,
+      "dead_combinations": [],
+      "by_domain_format": {
+        "greek/prose": 4,
+        "greek/document": 4,
+        "planets/prose": 4,
+        "greek/code": 4,
+        "planets/code": 4,
+        "greek/table": 4,
+        "greek/json": 4,
+        "planets/table": 4,
+        "planets/chat": 4,
+        "planets/document": 4,
+        "greek/chat": 4,
+        "planets/json": 4
+      }
+    },
+    "M3/L0": {
+      "scenes": 48,
+      "dead_combinations": [],
+      "by_domain_format": {
+        "greek/prose": 4,
+        "greek/table": 4,
+        "planets/document": 4,
+        "greek/code": 4,
+        "planets/chat": 4,
+        "planets/prose": 4,
+        "planets/code": 4,
+        "greek/document": 4,
+        "greek/chat": 4,
+        "planets/table": 4,
+        "planets/json": 4,
+        "greek/json": 4
+      }
+    },
+    "P3/L1": {
+      "scenes": 48,
+      "dead_combinations": [],
+      "by_domain_format": {
+        "planets/code": 4,
+        "planets/chat": 4,
+        "planets/table": 4,
+        "greek/code": 4,
+        "greek/prose": 4,
+        "greek/document": 4,
+        "planets/prose": 4,
+        "planets/json": 4,
+        "planets/document": 4,
+        "greek/chat": 4,
+        "greek/json": 4,
+        "greek/table": 4
+      }
+    },
+    "M3/L1": {
+      "scenes": 48,
+      "dead_combinations": [],
+      "by_domain_format": {
+        "greek/table": 4,
+        "greek/code": 4,
+        "planets/chat": 4,
+        "planets/table": 4,
+        "planets/prose": 4,
+        "planets/document": 4,
+        "greek/chat": 4,
+        "greek/document": 4,
+        "greek/json": 4,
+        "planets/json": 4,
+        "greek/prose": 4,
+        "planets/code": 4
+      }
+    },
+    "P3/L2": {
+      "scenes": 48,
+      "dead_combinations": [],
+      "by_domain_format": {
+        "planets/code": 4,
+        "planets/table": 4,
+        "planets/chat": 4,
+        "greek/code": 4,
+        "greek/table": 4,
+        "greek/json": 4,
+        "greek/prose": 4,
+        "planets/json": 4,
+        "planets/prose": 4,
+        "greek/document": 4,
+        "greek/chat": 4,
+        "planets/document": 4
+      }
+    },
+    "M3/L2": {
+      "scenes": 48,
+      "dead_combinations": [
+        "greek/chat",
+        "greek/code",
+        "greek/document",
+        "greek/json",
+        "greek/prose",
+        "greek/table"
+      ],
+      "by_domain_format": {
+        "planets/table": 8,
+        "planets/json": 8,
+        "planets/chat": 8,
+        "planets/code": 8,
+        "planets/prose": 8,
+        "planets/document": 8
+      }
+    },
+    "P3/L3": {
+      "scenes": 48,
+      "dead_combinations": [],
+      "by_domain_format": {
+        "greek/chat": 4,
+        "greek/code": 4,
+        "greek/json": 4,
+        "greek/prose": 4,
+        "planets/chat": 4,
+        "planets/document": 4,
+        "planets/code": 4,
+        "planets/prose": 4,
+        "greek/table": 4,
+        "planets/table": 4,
+        "planets/json": 4,
+        "greek/document": 4
+      }
+    },
+    "M3/L3": {
+      "scenes": 48,
+      "dead_combinations": [
+        "greek/chat",
+        "greek/code",
+        "greek/document",
+        "greek/json",
+        "greek/prose",
+        "greek/table"
+      ],
+      "by_domain_format": {
+        "planets/json": 8,
+        "planets/table": 8,
+        "planets/prose": 8,
+        "planets/document": 8,
+        "planets/chat": 8,
+        "planets/code": 8
+      }
+    }
+  },
+  "three_step_domains": [
+    "planets",
+    "greek"
+  ]
+}

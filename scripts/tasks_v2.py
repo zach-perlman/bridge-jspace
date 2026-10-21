@@ -732,7 +732,7 @@ def groups_of(words: list[str]) -> dict[str, list[str]]:
 
 
 def make(name: str, n: int, words: list[str], domains: list[str], formats: list[str], levels: list[int], seed: int,
-         counterfactuals: bool = False) -> None:  # fmt: skip
+         counterfactuals: bool = False, three_step_domains: list[str] | None = None) -> None:  # fmt: skip
     """n scenes per start group x level, each asked with every word of its group, spread evenly over the domain x
     format combinations that can carry the group, each word's digit answers capped at twice their uniform share.
     Write-once; a shortfall (fewer than n scenes) stops it."""
@@ -750,7 +750,7 @@ def make(name: str, n: int, words: list[str], domains: list[str], formats: list[
     cap_n = math.ceil(2 * n / 9)
     for level in levels:
         for group, gwords in groups_of(words).items():
-            doms = [d for d in domains if group[1] == "2" or d in THREE_STEP_DOMAINS]
+            doms = [d for d in domains if group[1] == "2" or d in (three_step_domains or THREE_STEP_DOMAINS)]
             combos = [(d, f) for d in doms for f in formats]
             rng.shuffle(combos)
             answers = {w: collections.Counter() for w in gwords}
@@ -784,7 +784,8 @@ def make(name: str, n: int, words: list[str], domains: list[str], formats: list[
     (out / "items.jsonl").write_text("".join(json.dumps(it) + "\n" for it in items))
     meta = {"set": name, "n_scenes_per_group_level": n, "words": words, "domains": domains, "formats": formats,
             "levels": {k: LEVELS[k] for k in levels}, "seed": seed, "generator": "scripts/tasks_v2.py make (v3)",
-            "git_commit": commit, "counterfactuals": counterfactuals, "n_items": len(items), "coverage": coverage}  # fmt: skip
+            "git_commit": commit, "counterfactuals": counterfactuals, "n_items": len(items), "coverage": coverage,
+            "three_step_domains": list(three_step_domains or THREE_STEP_DOMAINS)}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(meta, indent=2) + "\n")
     print("wrote", out / "items.jsonl", len(items), "items")
 
@@ -1012,13 +1013,27 @@ if __name__ == "__main__":
     ap.add_argument("--name")
     ap.add_argument("--why")
     ap.add_argument("--counterfactuals", action="store_true", help="make: token-aligned C and O (controlled tier)")
+    ap.add_argument(
+        "--three-step-domains",
+        nargs="+",
+        default=None,
+        help="make: domains for three-step words (default THREE_STEP_DOMAINS; e.g. planets greek to measure them)",
+    )
     ap.add_argument("--guess", action="store_true", help="competence: add the guess prompt (start made unknown)")
     args = ap.parse_args()
     if args.stage == "examples":
         examples(args.seed)
     elif args.stage == "make":
         make(
-            args.set_name, args.n, args.words, args.domains, args.formats, args.levels, args.seed, args.counterfactuals
+            args.set_name,
+            args.n,
+            args.words,
+            args.domains,
+            args.formats,
+            args.levels,
+            args.seed,
+            args.counterfactuals,
+            args.three_step_domains,
         )
     else:
         competence(args.set_name, args.name, args.why, args.guess)
