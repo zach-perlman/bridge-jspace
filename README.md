@@ -174,7 +174,11 @@ than the 27B.
 | `d2_v4_late_read` | D2's strongest claim rests on 22 entities | late attention read (≤ 20% kept) and no DeltaNet role (≥ 90%) in each of 3 topics, 85 entities (0.7) | building |
 | `d3b_fair_c2_v4` | the "around = pointer" link failed only on elements (6 entities) | pointer ≥ 30% and ≥ 20 points above the lens at 32-40 with the recall control ≤ 10%, in ≥ 2 of 3 topics (0.4) | building |
 | raw-format D3 on pointer_v4 | the "last tokens" are the chat template's tokens | in raw text the slot still beats the word at the last tokens (0.6) | building |
-| OLMo ladder (D5b) | the specs' raw / chat switch (`BJ_FORMAT`) is not read by the code: "raw" runs would be chat runs | — (a bug: fix, smoke, then run) | fixing; weights fetched |
+| OLMo ladder (D5b) | the specs' raw / chat switch (`BJ_FORMAT`) was not read by the code: "raw" runs would have been chat runs | — (a bug) | **fixed** (fad7be3); competence gates **running**; lens stages need the OLMo lens port |
+| C2 "in transit" (with `d3b_fair_c2_v4`) | Zach's C2 kill test fires on elements at 32-40, where the bridge is still being recalled | transit layers (recall no longer lens-writable, copy still switches the lookup) exist in ≥ 2 of 3 topics and C2 holds there (0.55) | building |
+| order / from the start on pointer_v4 | "order" and "from the start" rest on single layers, 22 entities, 1 wording | with the primary cell pre-registered at the last tokens (layers 48, 50): order beats place (0.6), from the start beats from the end (0.55), pooled and in ≥ 2 of 3 topics | building |
+| D1 in code | D1 rests on the animal suite only | a stated key (`x = "mouse"`) is carried around the lens too: its lens-readable part < its fair share while the paste switches ≥ 50% (0.6) | next |
+| does head 51/22 follow the pointer? (D5a task b) | the head names the bridge's statement on unedited scenes, but also on recall questions | after a patch that moves the answer, the head looks at the statement the new answer comes from (≥ 60%) (0.5) | next |
 
 ### Next: tests that would make the claims general (in order)
 | # | Test | Settles | Cost |
