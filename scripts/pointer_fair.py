@@ -535,7 +535,9 @@ def stage_figures(name: str) -> Path:
                     ("after the subject" if fam == "BL" else "after the cue") if grp == "after" else "question words"
                 )
                 ax.set_ylabel(
-                    f"{FAMILY_WORDS[fam]}, {where}\n% answers = bridge alt's statement", fontsize=8.5, color=PL.INK
+                    f"{FAMILY_WORDS[fam]}, {where}\n% of original answers that become\nbridge alt's statement digit",
+                    fontsize=8,
+                    color=PL.INK,
                 )
             if i == len(panels) - 1:
                 ax.set_xlabel("layer pushed", fontsize=9, color=PL.MUTED)
@@ -547,8 +549,12 @@ def stage_figures(name: str) -> Path:
                ("Example", ex),
                ("How to read", f"Each dot: share of answers that become bridge alt's statement digit. Deciding cell "
                                f"(memory → prompt, after the cue, all 3 layers, 1x): '{dec.get('verdict', '-')}'."),
-               ("Control", "Gray: a random push and a shuffled-label direction of the same size; memory → memory items "
-                           "(nothing looked up) are reported in the summary.")]  # fmt: skip
+               ("Control", "Gray: a random push and a shuffled-label direction of the same size. Memory → memory items "
+                           "(nothing looked up; must stay under 10%): the pointer push changed "
+                           + (f"{100 * dec['memory_memory_changed']['entity_boot'][0]:.0f}% "
+                              f"[{100 * dec['memory_memory_changed']['entity_boot'][1]:.0f}, "
+                              f"{100 * dec['memory_memory_changed']['entity_boot'][2]:.0f}]" if dec else "-")
+                           + " of their answers.")]  # fmt: skip
     PF.save_fig(fig, out, "fig1_pointer_vs_lens_32_40", "Where the lens reads the word, does a pointer code steer the lookup when the lens push cannot?",
                 explain, f"{model_name}; held-out scenes; error bars: bootstrap over the asked entities within each topic.",
                 handles, ncols=2, figs=figs)  # fmt: skip

@@ -1445,7 +1445,9 @@ def example_row(cells: dict, blocked: str | None) -> str:
         q = "'" if '"' in stmt + question else '"'  # code quotes its keys: wrap in single quotes then
         tail = (f"The asked statement: {q}{stmt}{q}." if blocked is None else
                 f"Blocked: {blocked} cannot read {q}{stmt}{q} ({ANSWER_SOURCE[DATASET == 'code_pointer_v1']}).")  # fmt: skip
-        return f"{q}... {stmt} ... {question} Answer:{q} -> answer org {c['answer']}. {tail}"
+        lp = c.get("dests", {}).get("list")  # code, list position: the names line sits between the dict and the print
+        names = f" {c['prompt'][c['offsets'][lp[0]][0] : c['offsets'][lp[-1]][1]].strip()} ..." if lp else ""
+        return f"{q}... {stmt} ...{names} {question} Answer:{q} -> answer org {c['answer']}. {tail}"
     if any(k[1] == "lookup" for k in cells):
         return ('"... The cow\'s locker is 5. ... Which locker belongs to the animal known for mooing? Answer:" -> '
                 f'answer org 5. Blocked: {blocked} cannot read "The cow\'s locker is 5." (the statement giving the '
@@ -2977,8 +2979,11 @@ def stage_figures(name: str) -> None:
     if DATASET in POINTER_SETS:  # the captions' Example row: the first case of a family that looks the answer up
         looks = [c for c in cases.values() if path_sources(c["family"]) and "lookup" in c["sources"]]
         # the other-language figure shows a statement in another language; otherwise the first lookup family's case
-        pick = next((c for c in looks if c["family"].endswith("xlang")), None) or (
-            min(looks, key=lambda c: fam_order(c["family"])) if looks else None
+        # the code-line figure's example blocks the names line: a list-position program
+        pick = (
+            next((c for c in looks if c["family"].endswith("xlang")), None)
+            or (next((c for c in looks if c["family"] == "IX"), None) if m.get("grid") == "code_readers" else None)
+            or (min(looks, key=lambda c: fam_order(c["family"])) if looks else None)
         )
         EXAMPLE_CASE.update(pick or {})
 

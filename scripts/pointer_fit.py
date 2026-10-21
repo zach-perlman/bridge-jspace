@@ -737,16 +737,24 @@ def stage_figures(name: str) -> Path:
     n_rr = len({c["id"] for c in cases if c["family"] == "RR"})
     ex = example_text(cases)
     ci = ci_of(cfg)
-    bars = "Wilson 95%"
-    if ci:  # pointer_v4: entities and wordings next to n, cluster intervals
+    ci_text = "Wilson 95%"
+    held_lab, seen_lab = "slot direction, held-out entities", "slot direction, entities seen in the fit"
+    if ci:  # pointer_v4: entities and wordings next to n, cluster intervals; every steered item is held out somehow
         rl_c = [c for c in cases if c["family"] == "RL"]
         n_rl = (f"{n_rl} ({len({(c['domain'], c['query']) for c in rl_c})} asked entities, "
                 f"{len({(c['domain'], c.get('template')) for c in rl_c})} wordings, all held out of the fit by entity or "
                 "wording)")  # fmt: skip
-        bars = "entity-cluster bootstrap 95% (asked entity resampled within each topic), widened to Wilson where wider"
+        ci_text = (
+            "entity-cluster bootstrap 95% (asked entity resampled within each topic), widened to Wilson where wider"
+        )
+        held_lab = "slot direction, entity held out (wording held out or not)"
+        seen_lab = "slot direction, entity seen in the fit, wording held out"
 
     # 1. headline: slot direction vs lens push vs random vs patch, by layer and size
-    fig, axes = plt.subplots(2, len(cfg["scales"]), figsize=(4.2 * len(cfg["scales"]), 7.2), sharey=True, squeeze=False)
+    # at least 12.6 in wide (fewer sizes would clip the legend) and tall enough for the caption and two panel rows
+    fig, axes = plt.subplots(
+        2, len(cfg["scales"]), figsize=(max(4.2 * len(cfg["scales"]), 12.6), 9.6), sharey=True, squeeze=False
+    )
     for i, (fam, rows_f) in enumerate((("RL", rows), ("RR", rows))):
         for jx, s in enumerate(cfg["scales"]):
             ax = axes[i][jx]
@@ -773,7 +781,7 @@ def stage_figures(name: str) -> Path:
             if i == 0:
                 ax.set_title(f"{s:g}x the alt-prompt patch's size", fontsize=9.5, color=PL.INK, loc="left")
             if jx == 0:
-                ax.set_ylabel(f"{PL.family_label(fam)}\n" + "\n".join(_wrap(flips, 34)), fontsize=8.5, color=PL.INK)
+                ax.set_ylabel(f"{PL.family_label(fam)}\n" + "\n".join(_wrap(flips, 46)), fontsize=8.5, color=PL.INK)
             if i == 1:
                 ax.set_xlabel("layer pushed", fontsize=9, color=PL.MUTED)
     handles = [Line2D([], [], color=COND_COLOURS["slot"], lw=2, marker="o", label=COND_WORDS["slot"]),
@@ -790,15 +798,15 @@ def stage_figures(name: str) -> Path:
                ("Control", "Dashed: a random push and a direction fitted with shuffled slot labels, same size; both should "
                            "stay near 0%.")]  # fmt: skip
     save_fig(fig, out, "fig1_slot_direction_vs_lens", "Does a fitted slot direction steer the lookup where the lens push does not?",
-             explain, f"{model_name}; held-out scenes: {n_rl} memory → prompt and {n_rr} memory → memory items; error bars: {bars}.",
+             explain, f"{model_name}; held-out scenes: {n_rl} memory → prompt and {n_rr} memory → memory items; error bars: {ci_text}.",
              handles, ncols=3, figs=figs)  # fmt: skip
 
     # 2. the decision: primary cell and its controls
     p = sm["primary"]
     bars = [("slot direction", p["slot"]), ("lens push (bridge alt − bridge org)", p["lens"]),
             ("random push (same size)", p["random"]), ("shuffled-label direction", p["shuffled"]),
-            ("slot direction on memory → memory", p["rr_slot"]), ("slot direction, held-out entities", p["held_out_entities"]),
-            ("slot direction, entities seen in the fit", p["seen_entities"]),
+            ("slot direction on memory → memory", p["rr_slot"]), (held_lab, p["held_out_entities"]),
+            (seen_lab, p["seen_entities"]),
             ("part inside real activation differences", p["span_only"]), ("the remainder", p["rest_only"]),
             *[(f"rank-{k[3:]} slot subspace", p[k]) for k in p if k.startswith("sub")],
             ("patch from the alt prompt (not rescaled)", p["patch"])]  # fmt: skip
@@ -833,13 +841,13 @@ def stage_figures(name: str) -> Path:
                ("Control", "Gray bars: random push, shuffled-label direction, memory → memory items; the two parts of the "
                            "slot direction test for an illusion (an effect carried only by the remainder).")]  # fmt: skip
     save_fig(fig, out, "fig2_decision_cell", "Does the slot direction pass the pre-registered test?", explain,
-             f"{model_name}; held-out scenes; error bars: {bars}. Slot minus lens push {100 * p['slot_minus_lens'][0]:+.0f} "
+             f"{model_name}; held-out scenes; error bars: {ci_text}. Slot minus lens push {100 * p['slot_minus_lens'][0]:+.0f} "
              f"[{100 * p['slot_minus_lens'][1]:+.0f}, {100 * p['slot_minus_lens'][2]:+.0f}] points; minus random "
              f"{100 * p['slot_minus_random'][0]:+.0f} [{100 * p['slot_minus_random'][1]:+.0f}, {100 * p['slot_minus_random'][2]:+.0f}] "
              f"({'entity-cluster' if ci else 'item'} bootstrap).", figs=figs)  # fmt: skip
 
     # 3. geometry: decodability, entity cosines, principal angles, J-space share
-    fig, axes = plt.subplots(1, 3, figsize=(15, 4.4))
+    fig, axes = plt.subplots(1, 3, figsize=(15, 6.0))  # room for the caption rows above the panels
     lay = [r_["layer"] for r_ in fitj["layers"]]
     ax = axes[0]
     PL.style_axes(ax)
@@ -931,14 +939,16 @@ def stage_figures(name: str) -> Path:
     ax.set_title("share inside the lens-readable space (25 words)", fontsize=9.5, color=PL.INK, loc="left")
     ax.set_ylabel("share of the direction's squared length", fontsize=9, color=PL.INK)
     ax.legend(frameon=False, fontsize=7)
-    explain = [("What we did", "Fitted per-token slot means on the fit scenes (queried entity in the fitting half), then "
+    fit_set = ("fit entities (two thirds of each topic) and two of the three wordings only" if ci
+               else "queried entity in the fitting half")  # fmt: skip
+    explain = [("What we did", f"Fitted per-token slot means on the fit scenes ({fit_set}), then "
                                "compared the slot directions with the lens's word directions for the entities."),
                ("Example", ex),
                ("How to read", "Left: is the asked slot readable at all. Middle: does the slot direction point along an "
                                "entity's word direction. Right: how much of it a 25-word lens fit explains."),
                ("Control", "Dashed: shuffled labels, random directions, a random dictionary of the same size.")]  # fmt: skip
     save_fig(fig, out, "fig3_geometry", "Is the slot code readable, and is it made of the lens's word directions?", explain,
-             f"{model_name}; {fitj['kept']} of {fitj['of']} fit items (answered right, queried entity in the fitting half); "
+             f"{model_name}; {fitj['kept']} of {fitj['of']} fit items (answered right; {fit_set}); "
              "medians over slots x tokens.", figs=figs)  # fmt: skip
     (out / "summary.json").write_text(json.dumps({"run": name, "verdict": sm["verdict"], "checks": sm["checks"],
                                                   "primary": sm["primary"], **({"pointer_v4": sm["pointer_v4"]} if ci else {}),
