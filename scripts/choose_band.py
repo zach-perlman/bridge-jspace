@@ -1,9 +1,11 @@
 """choose_band: each model's middle band for C1, by the procedure that picked the 27B's 32-40 (Zach, 2026-10-21,
-decided with Zach before any non-27B tasks_v2 knock-out ran). On the model's suite depth sweep (ablate_v2, paper10 and
-paper10_rot, BL BR RL RR whole questions, windows 9/64 of the depth wide sliding by 4/64): the window where the
-memory-final families (BR, RR) are most broken under paper10 (lowest mean accuracy), among windows whose rotated
-control keeps every family >= 90%; ties go to the earlier window. Lookup families (BL, RL) play no part in the choice,
-and the suite is not the tasks_v2 test set, so the C1 test on full_v8 is not biased by it.
+decided with Zach before any non-27B tasks_v2 knock-out ran). On a depth sweep (ablate_v2, paper10 and paper10_rot,
+whole questions, windows 9/64 of the depth wide sliding by 4/64): the window where the memory-final words are most
+broken under paper10 (lowest mean accuracy), among windows whose rotated control keeps every word >= 90%; ties go to
+the earlier window. The lookup words play no part in the choice. The 27B's 32-40 came from the old suite (BR, RR;
+controls BL BR RL RR); every model's band is now chosen on ctrl_v8 (P->M, M->M; controls PP PM MP MM): the v2
+generator with another seed (712; the test set full_v8 is seeds 713-715), no prompt or context shared with full_v8,
+so the C1 test on full_v8 is not biased by the choice (Zach, 2026-10-21: the new suite, not the old one).
 
 python scripts/choose_band.py SWEEP_RUN   (prints the band as "lo-hi"; writes results/ablate_v2/band_choice/SWEEP_RUN.json)
 """
@@ -19,11 +21,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from bridge_jspace import pins
 
 RES = pins.RESULTS_DIR / "ablate_v2"
-MEMORY_FINAL, ALL = ("BR", "RR"), ("BL", "BR", "RL", "RR")
+WORDS = {"suite": (("BR", "RR"), ("BL", "BR", "RL", "RR")), "v2": (("PM", "MM"), ("PP", "PM", "MP", "MM"))}
 CONTROL_MIN = 0.90
 
 
 def choose(cells: dict) -> tuple[str | None, list[dict]]:
+    kind = "suite" if any(fk.startswith("BR/") for fams in cells.values() for fk in fams) else "v2"
+    memory_final, every = WORDS[kind]
     table = []
     widths = [int(b.split("-")[1]) - int(b.removeprefix("L").split("-")[0]) + 1 for b in cells]
     window = max(set(widths), key=widths.count)  # the sweep's window width; the whole-depth band is not a candidate
@@ -34,8 +38,8 @@ def choose(cells: dict) -> tuple[str | None, list[dict]]:
         def acc(f: str, cond: str, fams: dict = fams) -> float | None:
             return (fams.get(f"{f}/clean", {}).get(cond) or {}).get("accuracy")
 
-        mem = [acc(f, "paper10") for f in MEMORY_FINAL]
-        ctrl = [acc(f, "paper10_rot") for f in ALL]
+        mem = [acc(f, "paper10") for f in memory_final]
+        ctrl = [acc(f, "paper10_rot") for f in every]
         if any(v is None for v in mem + ctrl):
             continue
         lo = int(band.removeprefix("L").split("-")[0])
