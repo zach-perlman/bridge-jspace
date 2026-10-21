@@ -1,0 +1,18 @@
+{
+  "run": "gemma4itr_full_v8b_competence_v1",
+  "why": "Zach (2026-10-21): competence on full_v8b before the three-step runs (Gemma 4 31B-it)",
+  "set": "full_v8b",
+  "model": {
+    "target": "gemma-4-31b-it-refit",
+    "repo": "google/gemma-4-31B-it",
+    "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "ec642c26703cb711b04eed30f0c2420923eb3d3f",
+  "guess": true,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-21T09:00:52Z"
+}
