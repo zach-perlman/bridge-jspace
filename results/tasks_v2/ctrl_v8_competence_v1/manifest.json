@@ -1,0 +1,18 @@
+{
+  "run": "ctrl_v8_competence_v1",
+  "why": "Zach (2026-10-21): eligibility and the comparison level for write_max on tasks_v2 (C2), generator v8",
+  "set": "ctrl_v8",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "1dded406dbfe7112d8fdbfc565e06caeeb0d51fd",
+  "guess": true,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-21T02:04:47Z"
+}

@@ -1,0 +1,33 @@
+{
+  "run": "gemma4itr_textloss_top_v1",
+  "why": "Zach (2026-10-21): plain-text loss under the current knock-out (top-K) vs the 25-atom one (Gemma)",
+  "written_utc": "2026-10-21T05:07:00Z",
+  "model": {
+    "target": "gemma-4-31b-it-refit",
+    "repo": "google/gemma-4-31B-it",
+    "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "323733a9bec124c7a037a6839191bd545eb00d1d47bfffde6b92e1e638117408"
+  ],
+  "layers": [
+    30,
+    33,
+    36
+  ],
+  "conditions": [
+    "none",
+    "jspace",
+    "rotated",
+    "top1",
+    "top1_rot",
+    "top5",
+    "top5_rot",
+    "top10",
+    "top10_rot"
+  ],
+  "doc": "python scripts/removal_textloss.py --name N --why W --layers L [L ...] [--conditions none jspace rotated top10 top10_rot]\n"
+}
