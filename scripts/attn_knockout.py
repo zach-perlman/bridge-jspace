@@ -547,9 +547,13 @@ def layer_sets(kinds: list[str], wanted: list[str]) -> dict[str, list[int]]:
                 sets[f"band{a:02d}-{b:02d}"] = band
                 sets[f"band{a:02d}-{b:02d}:attn"] = [i for i in band if kinds[i] == FULL]
                 sets[f"band{a:02d}-{b:02d}:gdn"] = [i for i in band if kinds[i] == LINEAR]
+        elif w == "band4":  # consecutive 4-layer bands: where the read happens, finer (a model without DeltaNet)
+            for a in range(0, n, 4):
+                sets[f"band{a:02d}-{min(a + 3, n - 1):02d}"] = list(range(a, min(a + 4, n)))
         else:
             raise ValueError(w)
-    return sets
+    # a model with one layer kind (OLMo: full attention in every layer): no empty or duplicate per-kind sets
+    return {k: v for k, v in sets.items() if v and not (":" in k and v == sets.get(k.split(":")[0]))}
 
 
 # D2 (first night): the lookup statement is read at layers 48-63 of Qwen3.6-27B's 64. Bands as fractions of depth, so
@@ -3374,7 +3378,10 @@ if __name__ == "__main__":
     ap.add_argument("--sources", nargs="+", choices=list(SOURCES), default=list(SOURCES))
     ap.add_argument("--dests", nargs="+", choices=list(DESTS), default=list(DESTS))
     ap.add_argument(
-        "--layers", nargs="+", choices=["all", "win8", "win8k", "win4", "pre", "suf", "kind", "bands"], default=["all"]
+        "--layers",
+        nargs="+",
+        choices=["all", "win8", "win8k", "win4", "pre", "suf", "kind", "bands", "band4"],
+        default=["all"],
     )
     ap.add_argument("--sweep", choices=["path", "path+random", "all"], default="path")
     ap.add_argument("--sweep-dests", nargs="+", choices=["question", "final", "both"], default=["question", "final", "both"])  # fmt: skip

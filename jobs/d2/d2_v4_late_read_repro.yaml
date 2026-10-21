@@ -1,0 +1,32 @@
+id: d2_v4_late_read_repro
+title: "Reproduction: d2_v4_late_read again from the job's clean checkout, same seeds (numbers should match)"
+thread: D2
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 1.1
+depends_on: []
+command: >-
+  uv run python scripts/attn_knockout.py manifest --name d2_v4_late_read_repro
+  --why "reproduction of d2_v4_late_read (the README's fig. 4) from the queue's clean checkout of this commit, the same
+  arguments and seeds"
+  --dataset pointer_v4 --families RL DL RR --n 100
+  --layers all kind bands --sweep path+random --sweep-dests question final both --absent
+  && uv run python scripts/attn_knockout.py run --name d2_v4_late_read_repro
+  && uv run python scripts/attn_knockout.py summarise --name d2_v4_late_read_repro
+figures_command: uv run python scripts/attn_knockout.py figures --name d2_v4_late_read_repro
+question: 'Does d2_v4_late_read reproduce: the same items and, per cell, the same kept counts (or within bf16 noise)?'
+why_it_matters: >-
+  The README's strongest claim (pattern 4) has been recounted by an agent, not rerun. A rerun from a clean checkout of
+  a later commit (attn_knockout changed since: 4-layer bands, empty-set filter) shows the numbers do not depend on
+  the working copy.
+hypotheses:
+  H-same: 'the same item ids per family; per (family, destination, layer set) the kept counts differ by <= 2 items.
+    Prior 0.85'
+decision_rule: >-
+  Compare rows.jsonl of the two runs per (family, source, destination, layer set): same item ids; kept counts within 2
+  items per cell (bf16 batch-order noise); report every cell that differs more.
+controls:
+- 'the original run d2_v4_late_read (same arguments)'
+n: 'as d2_v4_late_read (100 per family, 3 topics)'
+seeds: [0]
+notes: 'The queue runs every job from a fresh checkout of the job''s commit (/ephemeral/jobq/runs/<id>/code).'

@@ -617,3 +617,15 @@ def test_small_deltanet_matches_naive_fp64(small, layer):
     print(f"0.8B layer {layer}: knocked vs fp64 reference rel err {err:.2e} (knock-out moved D by {moved:.2e})")
     assert err < REL
     assert moved > 10 * err
+
+
+def test_layer_sets_on_a_full_attention_model():
+    """OLMo (full attention in every layer): no empty DeltaNet sets, no per-kind copies of a band; 4-layer bands."""
+    from scripts.attn_knockout import layer_sets
+
+    sets = layer_sets([FULL] * 32, ["all", "bands", "band4"])
+    assert all(sets.values())
+    assert not any(k.endswith((":gdn", ":attn")) for k in sets)
+    assert sets["band28-31"] == [28, 29, 30, 31] and sets["band00-15"] == list(range(16))
+    hybrid = layer_sets([LINEAR, LINEAR, LINEAR, FULL] * 16, ["bands"])
+    assert hybrid["band48-63:attn"] == [51, 55, 59, 63] and len(hybrid["band48-63:gdn"]) == 12
