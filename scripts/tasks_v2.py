@@ -1,39 +1,43 @@
-"""tasks_v2: the breadth task generator (Zach, 2026-10-20; design decided with Zach the same day). This is generator v3
-(the evening of 2026-10-20, after an audit and a cold code review; decided with Zach), revised as v6 on 2026-10-21
-after the three-step questions failed calibration (tasks3_ab_v1, tasks3_ab2_v1; decided with Zach): bin rules keyed by
-the property ("Animals with 4 legs go in bin 5"), natural bin questions ("Which bin does Sam's pick go in?"), one-way
-partner statements, each word's context only what its question needs (CONTEXT_RELS; the scene stays shared), two- and
-three-step words in separate scene groups, three-step words without planets and Greek letters, no reverse lookups
-(PMM, MMM) and no Caesar or acrostic starts. calib_v2/v3/v4/v5 and the smoke and ctrl sets were made by earlier
-versions (see their manifests' git_commit) and cannot be regenerated from this one.
+"""tasks_v2: the breadth task generator (Zach, 2026-10-20; design decided with Zach the same day). Generator v7:
+v3 (2026-10-20 evening, after an audit and a cold review), v6 (2026-10-21, after the three-step questions failed
+calibration; tasks3_ab_v1, tasks3_ab2_v1) and v7 (the same night, after a review of v6), each decided with Zach.
+calib_v2-v6 and the earlier smoke and ctrl sets were made by earlier versions (their manifests' git_commit) and
+cannot be regenerated from this one.
 
 Every task is a chain of steps; each step retrieves from the Prompt (P), from Memory (M) or is Computed from the input
-(C). A family is its "word": 2-step PP, PM, MP, MM, CP, CM and all eight 3-step words PPP ... MMM. Relations:
+(C). A family is its "word": 2-step PP, PM, MP, MM, CP, CM and the 3-step PPP, PPM, PMP, MPP, MPM, MMP (the reverse
+lookups PMM and MMM were dropped in v6: nested by nature). Relations:
   start     P  a person's pick, stated in the prompt          "Clara picked Mars."
             M  a cue, recalled                                 "the red planet" -> Mars
-            C  a string computation on the input               typo, reversal, letter count, Caesar shift, acrostic
-  thing ->  P  its partner (prompt; things come in pairs, "Mars and Venus are partners.") or its locker (a number)
+            C  a string computation on the input               typo, reversal, letter count (v6: no Caesar shift,
+                                                               which the model cannot do, nor acrostic)
+  thing ->  P  its partner (one-way statements, both directions: "Mars's partner is Venus.") or its locker (a number)
             M  its number (memory: legs, position from the Sun, atomic number, alphabet position, sides, ...)
-  number -> P  the bin for that number (prompt)
-            M  the thing with that number in another domain (memory; the answer is then a word: P-M-M, M-M-M)
-Shared scenes (as suite_v1's 2x2): the words that start the same way (P-, M- or C-start) are asked on one scene, one
-person and one start thing, so P->P and P->M differ only in the question's last step; item["scene"] names the scene.
+  number -> P  the bin, by a rule keyed by the property, one per number the domain has ("Animals with 4 legs go in
+               bin 5."; v6: "Things numbered 4 go in bin 5" left P->M->P at 15%); asked "Which bin does Sam's pick go in?"
+Contexts (v6/v7, CONTEXT_RELS): picks always, and only the relations the word's question reads: lockers for the 2-step
+words (P->P and P->M read one identical context), partners + lockers for PPP/PPM and MPP/MPM (each last-step pair one
+context), bins for PMP/MMP. Shared scenes: the words of a scene group (start letter x length: P2, M2, C2, P3, M3) are
+asked on one scene, person and start thing; item["scene"] names it. Three-step words use THREE_STEP_DOMAINS
+(--three-step-domains overrides it, to measure the others; planets and Greek letters were weak, 31-73%, in v6's
+diagnostic: decision pending, Zach 2026-10-21).
 Number style: each scene states its lockers and bins as digits ("is 7") or as number words ("is seven"); digit answers
 are always asked for as a digit, so with number words a prompt lookup cannot copy its answer token verbatim (it still
-copies the value and converts it: this removes token copying, not lookup by copying).
+copies the value and converts it: this removes token copying, not lookup by copying). Report P->M->P by number style:
+its bin rules show the middle number next to the answer.
 Entities: the start thing, its partner and C's bridge are drawn with sqrt_weights (between uniform answers and uniform
-things); each item records chance_same_answer, the share of the scene's other things whose chain gives its answer.
+things); each item records chance_same_answer, the share of the scene's other things whose chain gives its answer, and
+eligible() leaves out scenes where it is >= 0.5 (the answer does not depend on the bridge).
 Downstream runs compare words at one level (eligible(): the hardest level where all compared words score >= 85%).
 Domains: controlled tier (single-token names; with --counterfactuals each scene also gets suite_v1-style C and O,
 token-aligned: C changes only the first bridge, and so every word's answer, O swaps two other people's picks) animals,
 planets, elements, Greek letters; knock-out tier adds shapes, vehicles, instruments (multi-token names allowed).
 Formats (only the facts change; the question is the same): prose, json (tool outputs), table (markdown), code (Python
 dicts), chat (facts in an earlier user turn), document (facts inside a short record). Every relation's rows are
-shuffled separately in json, table and code (no answer by row position).
-Knobs (one ladder, LEVELS; each word calibrated to 85-95% on the target model): entities (capped by the domain's size;
-item["n_things"] records it), look-alike distractors (the queried person and one other get a look-alike name with
-another pick), filler (sentences, records or code lines, by format), paraphrase (every whole-question template has
-two wordings) and hard cues (indirect cues for the M start: the memory side's difficulty).
+shuffled separately in json, table and code (no answer by row position); bin tables name the property (bin_by_legs).
+Knobs (one ladder, LEVELS): entities (capped by the domain's size; item["n_things"] records it), look-alike distractors
+(the queried person and one other get a look-alike name with another pick), filler (sentences, records or code lines,
+by format), paraphrase (every whole-question template has two wordings) and hard cues (indirect cues for the M start).
 Validity (rejected at generation): a thing's locker never equals its memory number, no bin holds its own number, and
 no wrong route (skipping a step, the other relation, the look-alike's pick) gives any word's answer.
 Each item also carries every step alone (same context) for per-step knock-outs, and competence --guess adds a
@@ -232,8 +236,10 @@ BIN_KEY = {"animals": "legs", "vehicles": "wheels", "instruments": "strings", "s
 # Each word's context states only what its question needs (v6, after tasks3_ab_v1: extra numbers in the context cost
 # three-step questions 10-15 points); the scene (people, picks, things, start) stays shared within a group.
 CONTEXT_RELS = {"PP": ("locker",), "PM": ("locker",), "MP": ("locker",), "MM": ("locker",), "CP": ("locker",),
-                "CM": ("locker",), "PPP": ("partner", "locker"), "MPP": ("partner", "locker"), "PPM": ("partner",),
-                "MPM": ("partner",), "PMP": ("bin",), "MMP": ("bin",)}  # fmt: skip
+                "CM": ("locker",), "PPP": ("partner", "locker"), "MPP": ("partner", "locker"), "PPM": ("partner", "locker"),
+                "MPM": ("partner", "locker"), "PMP": ("bin",), "MMP": ("bin",)}  # fmt: skip
+# v7 (review, 2026-10-21): PPM/MPM keep PPP/MPP's lockers, as PM keeps PP's, so each last-step pair (P vs M) reads one
+# context; PMP/MMP read the bins only (as the suite's BRL reads its locker table).
 THREE_STEP_DOMAINS = ("animals", "vehicles", "instruments", "shapes", "elements")
 # Planets and Greek letters stay out of three-step words: no wording tried brought them to 85% on items whose steps
 # the model answers alone (tasks3_ab2_v1: planets 31-62%, Greek 66-73%, elements 84-97%; rule set before the run).
@@ -585,7 +591,8 @@ def make_scene(rng: random.Random, group: str, words: list[str], domain: str, fm
         context = render_facts(fmt, dom, sc, random.Random(render_seed), knobs["filler"], CONTEXT_RELS[word])
         items.append({"chance_same_answer": round(chance, 3), "word": word, "domain": domain, "format": fmt, "knobs": knobs, "c_op": c_op,
                       "domain2": dom2_name if d2 else None, "numbers": style, "n_things": len(sc["things"]),
-                      "context": context, "context_rels": list(CONTEXT_RELS[word]), "question": ch["question"],
+                      "context": context, "context_rels": list(CONTEXT_RELS[word]), "render_seed": render_seed,
+                      "question": ch["question"],
                       "answer": ch["answer"], "kind": ch["kind"], "steps": [first, *ch["steps"]], "tier": dom.tier,
                       "start_desc": desc})  # fmt: skip
     if tok is None:
@@ -736,6 +743,8 @@ def make(name: str, n: int, words: list[str], domains: list[str], formats: list[
     """n scenes per start group x level, each asked with every word of its group, spread evenly over the domain x
     format combinations that can carry the group, each word's digit answers capped at twice their uniform share.
     Write-once; a shortfall (fewer than n scenes) stops it."""
+    unknown = [w for w in words if w not in CONTEXT_RELS]
+    assert not unknown, f"unknown words {unknown} (v6 dropped PMM and MMM)"
     out = DATA / name
     out.mkdir(parents=True, exist_ok=True)
     assert not (out / "items.jsonl").exists(), f"{out} exists; data sets are written once"
@@ -783,7 +792,7 @@ def make(name: str, n: int, words: list[str], domains: list[str], formats: list[
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     (out / "items.jsonl").write_text("".join(json.dumps(it) + "\n" for it in items))
     meta = {"set": name, "n_scenes_per_group_level": n, "words": words, "domains": domains, "formats": formats,
-            "levels": {k: LEVELS[k] for k in levels}, "seed": seed, "generator": "scripts/tasks_v2.py make (v3)",
+            "levels": {k: LEVELS[k] for k in levels}, "seed": seed, "generator": "scripts/tasks_v2.py make (v7)",
             "git_commit": commit, "counterfactuals": counterfactuals, "n_items": len(items), "coverage": coverage,
             "three_step_domains": list(three_step_domains or THREE_STEP_DOMAINS)}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(meta, indent=2) + "\n")
@@ -864,7 +873,8 @@ def judge(text: str, answer: str, kind: str) -> bool:
     return False
 
 
-def eligible(set_name: str, comp_run: str, words: list[str], n: int, level: str = "pick") -> list[dict]:
+def eligible(set_name: str, comp_run: str, words: list[str], n: int, level: str = "pick",
+             max_chance: float = 0.5) -> list[dict]:  # fmt: skip
     """The items a downstream run compares: from scenes whose items of the compared words the competence run got right
     on every prompt (whole, each step, C and O; the guess prompt excluded), at one level for the whole comparison
     (level "pick": the hardest level where every compared word scores >= 85% whole; "all"; or a level number; Zach,
@@ -880,6 +890,9 @@ def eligible(set_name: str, comp_run: str, words: list[str], n: int, level: str 
         else:
             ok[r["id"]].append(r["correct"])
     items = [it for it in load(set_name) if it["word"] in words]
+    # v7 (review): an item whose answer half or more of the scene's other things would also give does not test the
+    # bridge (instruments: every thing with 4 strings); it is left out (with its scene, below) of downstream runs
+    bridge_free = {it["scene"] for it in items if it.get("chance_same_answer", 0) >= max_chance}
     if level == "pick":
         cells = json.loads((run_dir / "summary.json").read_text())["by_word_level"]
         levels = sorted({it["level"] for it in items})
@@ -890,7 +903,7 @@ def eligible(set_name: str, comp_run: str, words: list[str], n: int, level: str 
         want = None if level == "all" else int(level)
     scene_ok: dict[str, bool] = collections.defaultdict(lambda: True)
     for it in items:
-        scene_ok[it["scene"]] &= bool(ok.get(it["id"])) and all(ok[it["id"]])
+        scene_ok[it["scene"]] &= bool(ok.get(it["id"])) and all(ok[it["id"]]) and it["scene"] not in bridge_free
     out, got = [], collections.Counter()
     for it in items:
         if got[it["word"]] >= n or not scene_ok[it["scene"]] or (want is not None and it["level"] != want):
