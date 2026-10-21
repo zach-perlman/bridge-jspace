@@ -1,0 +1,112 @@
+{
+  "exp": "code_positions",
+  "run": "d1code_map_27b",
+  "kind": "map",
+  "written_utc": "2026-10-21T20:02:35Z",
+  "why": "D1 in code: statement_positions' map on the programs (key line, its country, the spare line, the whole program, the question, after it), layers 28-44 every 2, 80 programs per family on the same programs",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "0f68da3959ae08c4a4aae98bd1660f845026e165",
+    "dirty": true
+  },
+  "families": [
+    "KL",
+    "KR"
+  ],
+  "n_per_family": 80,
+  "inputs": {
+    "data/code_positions_v1/items.json": "d37dce1a98478c329dc6e2041e53618175e3ac3cc4b42b3d8fc3f431a60935d0",
+    "results/code_positions/d1code_competence_27b/items.jsonl": "addb3692583efad2b090e8007f341d7f7a507525ba8f049c14352bed50bf8f62"
+  },
+  "cases": "code_positions: the first n scenes (scene order) answered right in every competence prompt of both families by d1code_competence_27b; both families on each scene",
+  "sets": "Stages run statement_positions' map, parts and readwrite unchanged (its transit rule, J-space split, lens push and\ndecision rule), on these cases (its module constants set for the two families; this script's own competence, figures,\nreport and examples). Map layers 28-44 every 2 on the 27B; parts and readwrite at the map's transit cells on its coarse\ngrid below the answer onset (28, 32, 36, 40), primary 32-40.",
+  "read": "suite_split's: one forward of the edited clean prompt (a digit's space token appended), the top token's role (b: X's answer, A: the bridge's, other), ld = logit(b) - logit(A), frac = (ld - ld_clean) / (ld_C - ld_clean)",
+  "seeds": {
+    "null": 0,
+    "bootstrap": 0,
+    "random_dictionary": "777 + layer (suite_split's)"
+  },
+  "families_meaning": {
+    "KL": "stated in code \u2192 prompt: a variable holds the country, its number looked up in the program's dict",
+    "KR": "stated in code \u2192 memory: a variable holds the country, its capital recalled"
+  },
+  "d1code_decision": "Stages:  make (tokenizer; data/code_positions_v1/items.json)  verify  check\n         manifest_competence --name N --why W [--limit K]  competence --name N   (GPU)\n         plan [--n K]   map --name M --why W [--n K] [--layers ...]   parts --name P --map M --why W [--force SET:LAYER ...]\n         readwrite --name R --map M --parts P --why W [--force ...]   figures --name R   examples --name M [--k 3]\nEligibility: BJ_D1CODE_COMPETENCE names the competence run (default d1code_competence_27b; \"none\": every scene, a smoke).\n",
+  "question": "Where, by position set and layer, does each family carry its bridge (lens-free)?",
+  "layers": [
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44
+  ],
+  "layer_grid": {
+    "coarse": [
+      0,
+      4,
+      8,
+      12,
+      16,
+      20,
+      24,
+      28,
+      32,
+      36,
+      40,
+      44,
+      48,
+      52,
+      56,
+      60
+    ],
+    "window": [
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52
+    ]
+  },
+  "sources": {
+    "cf": "C's block output copied at the set (AddRows of h_C - h_clean)",
+    "off": "O's, the same way, where O's delta is non-zero",
+    "rand": "C's delta with each row replaced by a random direction at that row's norm (null_rows, seed 0 + 1e9 x set index + 1e5 x case index + layer)"
+  },
+  "sanity": {
+    "identity": "AddRows of zero at every position (layers: the first and last map layer): no change",
+    "all0": "C's delta at every position at the first map layer: reproduces C's read",
+    "zero_cells": "cells whose positions all precede the first changed token are verified exactly zero and skipped; for the first 5 cases of each cue-only family the zero C copies at the statements are read anyway (exact no-ops)",
+    "validation": "8 greedy tokens for every edit of the first 10 cases per family"
+  },
+  "decision": {
+    "transit": "C's copy gives X's answer in >= 50% of cases and its Wilson 95% lower bound is above the upper bound of every control's change rate (O where non-zero, rand); zero-delta cases count as unchanged",
+    "handoff": "per family and statement set, the last transit layer; per family, the first layer at which the question set is in transit",
+    "fixed": "before the 27B run (the 0.8B smoke checks the code path only)"
+  }
+}
