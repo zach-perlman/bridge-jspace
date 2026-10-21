@@ -14,7 +14,9 @@ Reported alongside, outside the rule: every band (27B 12-20, 20-28, 32-40, whole
 whole depth); the original strict C1 rule (every prompt-final word loses <= 10 points in every band and at whole depth,
 controls >= 90%); text vs structured formats; each step alone (step1, step2); 95% intervals over bridge entities.
 
-python scripts/c1_v2.py RUN [--middle L32-40] [--set ctrl_v8]   (writes results/ablate_v2/c1_v2/RUN.md and .json)
+python scripts/c1_v2.py RUN [--middle L32-40] [--set ctrl_v8] [--drop-guessable]
+--drop-guessable (Zach, 2026-10-21; a robustness split, not the rule's test): the same scoring without the items the
+model answers right from the guess prompt; writes RUN_noguess.md and .json.   (writes results/ablate_v2/c1_v2/RUN.md and .json)
 """
 
 from __future__ import annotations
@@ -41,6 +43,13 @@ GAP, CONTROL_WITHIN, STRICT_LOSS, STRICT_CONTROL = 0.30, 0.10, 0.10, 0.90
 TEXT = ("prose", "chat", "document")
 
 
+def guessable_ids(comp_run: str) -> set[str]:
+    """Items the model answers right from the guess prompt (the start replaced by an unknown one): answerable from
+    priors without the bridge (tasks_v2 competence --guess)."""
+    path = pins.RESULTS_DIR / "tasks_v2" / comp_run / "items.jsonl"
+    return {r["id"] for r in map(json.loads, path.read_text().splitlines()) if r["part"] == "guess" and r["correct"]}
+
+
 def ci(rows: list[dict], reps: int = 1000, seed: int = 0) -> tuple[float, float]:
     """95% bootstrap interval of accuracy, resampling bridge entities."""
     by = collections.defaultdict(list)
@@ -57,8 +66,14 @@ def ci(rows: list[dict], reps: int = 1000, seed: int = 0) -> tuple[float, float]
     return stats[int(0.025 * reps)], stats[int(0.975 * reps) - 1]
 
 
-def main(run: str, middle: str, set_name: str) -> None:
+def main(run: str, middle: str, set_name: str, drop_guessable: bool = False) -> None:
     rows = [json.loads(line) for line in (RES / run / "rows.jsonl").read_text().splitlines()]
+    suffix = ""
+    if drop_guessable:
+        comp = json.loads((RES / run / "manifest.json").read_text())["tasks"][1]
+        drop = guessable_ids(comp)
+        rows = [r for r in rows if r["id"] not in drop]
+        suffix = "_noguess"
     none = {(r["family"], r["id"], r["kind"]): r["correct"] for r in rows if r["condition"] == "none"}
     bands = list(dict.fromkeys(r["band"] for r in rows if r["condition"] != "none"))
     words = [w for w in ORDER if any(r["family"] == w for r in rows)]
@@ -83,7 +98,7 @@ def main(run: str, middle: str, set_name: str) -> None:
         return statistics.mean(v) if v else float("nan")
 
     out: dict = {"run": run, "middle": middle, "bands": {}}
-    lines = [f"# C1 on tasks_v2 / {run} (rule fixed in scripts/c1_v2.py)", "",
+    lines = [f"# C1 on tasks_v2 / {run}{' WITHOUT guessable items (robustness split)' if suffix else ''} (rule fixed in scripts/c1_v2.py)", "",
              "Accuracy % on the whole question [95% CI over bridge entities]; unedited first.", ""]  # fmt: skip
     for cls in (None, "text", "structured"):
         title = "all formats" if cls is None else f"{cls} formats"
@@ -161,8 +176,8 @@ def main(run: str, middle: str, set_name: str) -> None:
               f"controls within 10 points: {'yes' if controls_ok else 'no'} -> C1-graded {'n/a (no whole-question rows at this band)' if not have else 'HOLDS' if holds else 'FAILS'}",
               f"Original strict C1 (reported): {'n/a' if strict is None else 'holds' if strict else 'fails'}. Output from commit {commit[:7]}."]  # fmt: skip
     (RES / "c1_v2").mkdir(exist_ok=True)
-    (RES / "c1_v2" / f"{run}.json").write_text(json.dumps(out, indent=2) + "\n")
-    (RES / "c1_v2" / f"{run}.md").write_text("\n".join(lines) + "\n")
+    (RES / "c1_v2" / f"{run}{suffix}.json").write_text(json.dumps(out, indent=2) + "\n")
+    (RES / "c1_v2" / f"{run}{suffix}.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
 
 
@@ -171,5 +186,6 @@ if __name__ == "__main__":
     ap.add_argument("run")
     ap.add_argument("--middle", default="L32-40", help="the rule's band label (Gemma: L30-38)")
     ap.add_argument("--set", dest="set_name", default="ctrl_v8", help="the tasks_v2 set the run drew from")
+    ap.add_argument("--drop-guessable", action="store_true")
     a = ap.parse_args()
-    main(a.run, a.middle, a.set_name)
+    main(a.run, a.middle, a.set_name, a.drop_guessable)

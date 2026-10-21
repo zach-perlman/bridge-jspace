@@ -16,7 +16,9 @@ everywhere") is the primary one (wm2_ctrl_all_v1 on ctrl_v8 was stopped for it b
 (ctrl_v8, level 3) is reported. Other words than M->P / M->M are reported alongside. A Gemma run counts only if its positive control passes: countries recalled (R), countries given (B) and M->M
 (RR) each reach >= 50% best gated flips with some lens write (lens_add, lens_swap or lens_transpl, any position set).
 
-python scripts/c2_graded.py RUN [RUN ...]   (writes results/write_max/c2_graded/RUN.md and .json)
+python scripts/c2_graded.py RUN [RUN ...] [--drop-guessable]   (writes results/write_max/c2_graded/RUN.md and .json)
+--drop-guessable (Zach, 2026-10-21; a robustness split, not the rule's test): the same scoring without the cases the
+model answers right from the guess prompt (tasks_v2 runs only); writes RUN_noguess.md and .json.
 """
 
 from __future__ import annotations
@@ -32,6 +34,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from bridge_jspace import pins
 from scripts.write_max import KEEP_GATE, RESULTS, entity_ci
 
 PAIRS = {"suite": ("RL", "RR"), "tasks": ("MP", "MM")}
@@ -43,8 +46,17 @@ NAMES = {"BL": "P->P", "BR": "P->M", "RL": "M->P", "RR": "M->M", "PP": "P->P", "
          "R": "countries, recalled", "B": "countries, given"}  # fmt: skip
 
 
-def analyse(run: str) -> dict:
-    rows = [json.loads(line) for line in (RESULTS / run / "outcomes.jsonl").read_text().splitlines()]
+def guessable_ids(comp_run: str) -> set[str]:
+    """Items the model answers right from the guess prompt (the start replaced by an unknown one): answerable from
+    priors without the bridge (tasks_v2 competence --guess)."""
+    path = pins.RESULTS_DIR / "tasks_v2" / comp_run / "items.jsonl"
+    return {r["id"] for r in map(json.loads, path.read_text().splitlines()) if r["part"] == "guess" and r["correct"]}
+
+
+def analyse(run: str, drop: set[str] | None = None) -> dict:
+    rows_all = [json.loads(line) for line in (RESULTS / run / "outcomes.jsonl").read_text().splitlines()]
+    rows = [r for r in rows_all if not drop or r["name"] not in drop]
+    n_dropped = len({r["name"] for r in rows_all} - {r["name"] for r in rows})
     cells: dict = collections.defaultdict(list)
     for r in rows:
         cells[(r["family"], r["write"], r["pos"], str(r["layer"]), r["strength"], r["control"])].append(r)
@@ -67,7 +79,7 @@ def analyse(run: str) -> dict:
     fams = {r["family"] for r in rows}
     kind = "tasks" if "MP" in fams else "suite"
     mp, mm = PAIRS[kind]
-    out: dict = {"run": run, "families": {}}
+    out: dict = {"run": run, "families": {}, "cases_dropped": n_dropped}
     for fam in sorted(fams):
         out["families"][fam] = {
             "own_direction": best(fam, OWN, SITES),
@@ -127,13 +139,28 @@ def show(res: dict, commit: str) -> str:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("runs", nargs="+")
+    ap.add_argument("--drop-guessable", action="store_true")
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     out_dir = RESULTS / "c2_graded"
     out_dir.mkdir(exist_ok=True)
-    for run in ap.parse_args().runs:
-        res = analyse(run)
+    a = ap.parse_args()
+    for run in a.runs:
+        drop, suffix = None, ""
+        if a.drop_guessable:
+            tasks = json.loads((RESULTS / run / "manifest.json").read_text()).get("tasks") or [None, None]
+            if not tasks[1]:
+                print(f"{run}: not a tasks_v2 run (no guess prompts); skipped")
+                continue
+            drop, suffix = guessable_ids(tasks[1]), "_noguess"
+        res = analyse(run, drop)
         res["commit"] = commit
-        (out_dir / f"{run}.json").write_text(json.dumps(res, indent=2) + "\n")
+        (out_dir / f"{run}{suffix}.json").write_text(json.dumps(res, indent=2) + "\n")
         text = show(res, commit)
-        (out_dir / f"{run}.md").write_text(text)
+        if drop is not None:
+            text = text.replace(
+                "# C2-graded / ",
+                f"# C2-graded WITHOUT guessable cases ({res['cases_dropped']} dropped; robustness split) / ",
+                1,
+            )
+        (out_dir / f"{run}{suffix}.md").write_text(text)
         print(text)

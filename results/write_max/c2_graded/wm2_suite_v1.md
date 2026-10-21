@@ -1,4 +1,4 @@
-# C2-graded / wm2_suite_v1 (rule fixed in scripts/c2_graded.py; this output from commit ae0b1c3)
+# C2-graded / wm2_suite_v1 (rule fixed in scripts/c2_graded.py; this output from commit 66d573b)
 
 Best gated flips to C's answer % [95% CI over bridge entities] (write, positions, layer, strength).
 
