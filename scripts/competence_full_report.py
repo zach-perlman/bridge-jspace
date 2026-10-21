@@ -54,15 +54,25 @@ def main(run: str, set_name: str) -> None:
             whole([i for i, it in items.items() if it["word"] == w and it["domain"] == d and i in parts]) for d in doms
         ]
         lines.append(f"| {w} | " + " | ".join(cells) + " |")
+    three = [w for w in words if len(w) == 3]
     ko = T.eligible(set_name, run, list(words), 10**9, "all", strata=("core", "secondary"))
     st = [it for it in T.eligible(set_name, run, list(words), 10**9, "all") if "cf_context" in it]
+    kpw = T.eligible(set_name, run, three, 10**9, "all", strata=("core", "secondary"), per_word=True) if three else []
+    spw = (
+        [it for it in T.eligible(set_name, run, three, 10**9, "all", per_word=True) if "cf_context" in it]
+        if three
+        else []
+    )
     kc, sc = collections.Counter(it["word"] for it in ko), collections.Counter(it["word"] for it in st)
+    kpc, spc = collections.Counter(it["word"] for it in kpw), collections.Counter(it["word"] for it in spw)
     kcls = collections.Counter((it["word"], T.format_class(it)) for it in ko)
-    lines += ["", "## Items the experiments will use", "",
-              "| word | knock-out (all domains) | of which text / structured | steering pool (counterfactual domains, core) |",
+    lines += ["", "## Items the experiments will use (three-step words: scene rule / per word, the 2026-10-21 fix)", "",
+              "| word | knock-out (all domains) | of which text / structured (scene rule) | steering pool (counterfactual, core) |",
               "|---|---|---|---|"]  # fmt: skip
     for w in words:
-        lines.append(f"| {w} | {kc[w]} | {kcls[(w, 'text')]} / {kcls[(w, 'structured')]} | {sc[w]} (40 used) |")
+        k = f"{kc[w]} / {kpc[w]}" if len(w) == 3 else f"{kc[w]}"
+        s_ = f"{sc[w]} / {spc[w]}" if len(w) == 3 else f"{sc[w]}"
+        lines.append(f"| {w} | {k} | {kcls[(w, 'text')]} / {kcls[(w, 'structured')]} | {s_} (40 used) |")
     lines.append(f"\nTotal: knock-out {len(ko)} items, steering pool {len(st)} items.")
     text = "\n".join(lines) + "\n"
     (pins.RESULTS_DIR / "tasks_v2" / run / "report.md").write_text(text)
