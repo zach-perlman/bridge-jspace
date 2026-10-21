@@ -32,6 +32,8 @@ def test_default_target_keeps_jpp_and_its_grids():
 
 def test_every_target_has_its_frozen_lens_and_valid_lens_layers():
     for name, t in pins.TARGETS.items():
+        if not t["lenses"]:  # pinned for lens-free runs only (qwen3-32b until Zach's J++ fit is pinned)
+            continue
         assert t.get("frozen_lens", "jpp") in t["lenses"], name
         layers = t.get("lens_layers")
         if layers is not None:  # J_l maps a block output to the final block's: source layers 0..n_layers - 2
