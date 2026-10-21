@@ -1,0 +1,30 @@
+id: d3v2_smoke_27b
+title: "D3 v2 test run: the new scenes and the --data option work on the 27B"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.1
+depends_on: []
+command: >-
+  uv run python scripts/pointer_swap.py manifest --data pointer_v2 --set main --name d3v2_smoke_27b --families RL DL
+  --n 1 --layers 16 28 40 48 52 56 --groups question final last --question-max-layer 38 --control-levels e5-pln
+  --no-eligibility --why "D3 v2 smoke: every stage on the 27B with pointer_v2's three types, hooks, no-op and positive
+  controls, timing"
+  && uv run python scripts/pointer_swap.py run --name d3v2_smoke_27b
+examples_command: uv run python scripts/pointer_swap.py examples --name d3v2_smoke_27b
+figures_command: uv run python scripts/pointer_swap.py figures --name d3v2_smoke_27b
+question: >-
+  Do pointer_swap's run / examples / figures stages work end to end on the 27B with --data pointer_v2 (three item types
+  per scene, a token-position outcome, the reflexive contrast), with the self no-op and the layer-0 reproduction checks
+  passing, and how many edited reads per second does it reach?
+why_it_matters: Code-path and timing check before d3v2_offset_reflexive_main; no claim.
+hypotheses:
+  H-ok: 'self no-op and layer-0 reproduction 12/12; >= 30 edited reads/s'
+  H-broken: 'any check below 12/12: the hooks or the token alignment are wrong; stop the queue'
+decision_rule: 'The main v2 run proceeds only if both checks are 12/12 (summary.json checks).'
+controls:
+- 'org prompt patched into itself at the middle layer (must change nothing)'
+- 'alt prompt patched at every position at layer 0 (must give the alt prompt''s own answer)'
+n: '1 scene per topic x 2 families x 3 types = 12 cases'
+seeds: [0]
+notes: 'The 0.8B smoke (same stages, layers 0-20) passed both checks; 27B rate on this A100: 31-38 reads/s.'

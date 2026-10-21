@@ -1,0 +1,47 @@
+id: d3v2_n3
+title: "D3 v2 with 3 statements: order or token position, when bridge alt is not in the org prompt"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 1.0
+depends_on:
+- d3v2_competence_27b
+- d3v2_offset_reflexive_main
+command: >-
+  uv run python scripts/pointer_swap.py manifest --data pointer_v2 --set n3 --name d3v2_n3 --families RL DL --n 120
+  --layers 16 20 24 28 32 36 40 42 44 46 48 50 52 54 56 58 60 --groups question final last --question-max-layer 38
+  --control-levels e3-pln --competence d3v2_competence_27b
+  --why "D3 v2 secondary level: 3 statements + 1 filler; bridge alt is not in the org prompt, so the slot answers (order
+  vs token position) compete only with the alt answer"
+  && uv run python scripts/pointer_swap.py run --name d3v2_n3
+examples_command: uv run python scripts/pointer_swap.py examples --name d3v2_n3
+figures_command: uv run python scripts/pointer_swap.py figures --name d3v2_n3
+question: >-
+  With 3 statements and one filler sentence (bridge alt not in the org prompt), does the patch from the alt prompt give
+  the answer at the same statement slot, at the same token position, or the alt prompt's own answer, by layer; and does
+  the reflexive contrast agree with the 5-statement run?
+why_it_matters: >-
+  The first night's 3-statement run gave the strongest slot answer (73% at layer 48). With bridge alt absent from the org
+  prompt, the word cannot be looked up there at all, so any slot answer is a pointer by construction. It is the
+  secondary level of the v2 test (fewer statements: Mixing Mechanisms predicts more positional binding).
+hypotheses:
+  H-order: 'memory -> prompt, after the question, layer 48: answer at the same statement slot >= 40%, same token
+    position <= 10%'
+  H-token: 'same token position >= 40%, same statement slot <= 10%'
+  H-reflexive: 'last two tokens, 52-56: alt answer share with the digit in the org prompt minus without >= +10 points'
+  prior: 'Agent prior: H-order 0.55; H-reflexive 0.25.'
+decision_rule: >-
+  As d3v2_offset_reflexive_main (the same pre-registered rule; candidates without the answer of bridge alt's statement,
+  which is not defined here). Primary cells: memory -> prompt, offset shift, after the question and last two tokens,
+  layers 48 and 50 and the window 44-52. The query sits first or last only (one filler cell shifts a statement by one
+  cell, so with the query in the middle the token-pointed statement would be the query itself).
+controls:
+- 'same entity, statements reshuffled: every hypothesis predicts answer org'
+- 'random push of the same size and a prompt of the other topic (plain scenes)'
+- 'context digits no hypothesis predicts'
+- 'org prompt into itself (no-op) and the layer-0 all-position patch (hook checks)'
+n: >-
+  up to 120 scenes per topic; per (topic x slot class {first, last} x family x type) 60 before the gate, ~42-54 after
+seeds: [0]
+notes: >-
+  ~1,200 cases x ~111 reads -> ~135k reads at 38/s -> ~60 min.

@@ -1,0 +1,290 @@
+{
+ "animals_RL_e5-off": {
+  "n": 180,
+  "equal_cells": 180,
+  "dissoc_aligned": 180,
+  "same_aligned": 180,
+  "redigit_aligned": 180,
+  "permutation": 180,
+  "predictions_distinct": 180,
+  "hard_collision_free": 180,
+  "slot_class": {
+   "first": 60,
+   "last": 60,
+   "middle": 60
+  },
+  "prompts_unique": 180
+ },
+ "animals_RL_e5-pln": {
+  "n": 180,
+  "equal_cells": 180,
+  "dissoc_aligned": 180,
+  "same_aligned": 180,
+  "redigit_aligned": 180,
+  "permutation": 180,
+  "predictions_distinct": 180,
+  "hard_collision_free": 180,
+  "slot_class": {
+   "first": 60,
+   "last": 60,
+   "middle": 60
+  },
+  "prompts_unique": 180
+ },
+ "animals_RL_e5-ref": {
+  "n": 180,
+  "equal_cells": 180,
+  "dissoc_aligned": 180,
+  "same_aligned": 180,
+  "redigit_aligned": 180,
+  "permutation": 180,
+  "predictions_distinct": 180,
+  "hard_collision_free": 180,
+  "slot_class": {
+   "first": 60,
+   "last": 60,
+   "middle": 60
+  },
+  "prompts_unique": 180
+ },
+ "animals_DL_e5-off": {
+  "n": 180,
+  "equal_cells": 180,
+  "dissoc_aligned": 180,
+  "same_aligned": 180,
+  "redigit_aligned": 180,
+  "permutation": 180,
+  "predictions_distinct": 180,
+  "hard_collision_free": 180,
+  "slot_class": {
+   "first": 60,
+   "last": 60,
+   "middle": 60
+  },
+  "prompts_unique": 180
+ },
+ "animals_DL_e5-pln": {
+  "n": 180,
+  "equal_cells": 180,
+  "dissoc_aligned": 180,
+  "same_aligned": 180,
+  "redigit_aligned": 180,
+  "permutation": 180,
+  "predictions_distinct": 180,
+  "hard_collision_free": 180,
+  "slot_class": {
+   "first": 60,
+   "last": 60,
+   "middle": 60
+  },
+  "prompts_unique": 180
+ },
+ "animals_DL_e5-ref": {
+  "n": 180,
+  "equal_cells": 180,
+  "dissoc_aligned": 180,
+  "same_aligned": 180,
+  "redigit_aligned": 180,
+  "permutation": 180,
+  "predictions_distinct": 180,
+  "hard_collision_free": 180,
+  "slot_class": {
+   "first": 60,
+   "last": 60,
+   "middle": 60
+  },
+  "prompts_unique": 180
+ },
+ "animals_RR_e5-off": {
+  "n": 180,
+  "equal_cells": 180,
+  "dissoc_aligned": 180,
+  "same_aligned": 180,
+  "redigit_aligned": 180,
+  "permutation": 180,
+  "predictions_distinct": 180,
+  "hard_collision_free": 180,
+  "slot_class": {
+   "first": 60,
+   "last": 60,
+   "middle": 60
+  },
+  "prompts_unique": 180
+ },
+ "animals_RR_e5-pln": {
+  "n": 180,
+  "equal_cells": 180,
+  "dissoc_aligned": 180,
+  "same_aligned": 180,
+  "redigit_aligned": 180,
+  "permutation": 180,
+  "predictions_distinct": 180,
+  "hard_collision_free": 180,
+  "slot_class": {
+   "first": 60,
+   "last": 60,
+   "middle": 60
+  },
+  "prompts_unique": 180
+ },
+ "animals_RR_e5-ref": {
+  "n": 180,
+  "equal_cells": 180,
+  "dissoc_aligned": 180,
+  "same_aligned": 180,
+  "redigit_aligned": 180,
+  "permutation": 180,
+  "predictions_distinct": 180,
+  "hard_collision_free": 180,
+  "slot_class": {
+   "first": 60,
+   "last": 60,
+   "middle": 60
+  },
+  "prompts_unique": 180
+ },
+ "elements_RL_e5-off": {
+  "n": 180,
+  "equal_cells": 180,
+  "dissoc_aligned": 180,
+  "same_aligned": 180,
+  "redigit_aligned": 180,
+  "permutation": 180,
+  "predictions_distinct": 180,
+  "hard_collision_free": 180,
+  "slot_class": {
+   "middle": 60,
+   "first": 60,
+   "last": 60
+  },
+  "prompts_unique": 180
+ },
+ "elements_RL_e5-pln": {
+  "n": 180,
+  "equal_cells": 180,
+  "dissoc_aligned": 180,
+  "same_aligned": 180,
+  "redigit_aligned": 180,
+  "permutation": 180,
+  "predictions_distinct": 180,
+  "hard_collision_free": 180,
+  "slot_class": {
+   "middle": 60,
+   "first": 60,
+   "last": 60
+  },
+  "prompts_unique": 180
+ },
+ "elements_RL_e5-ref": {
+  "n": 180,
+  "equal_cells": 180,
+  "dissoc_aligned": 180,
+  "same_aligned": 180,
+  "redigit_aligned": 180,
+  "permutation": 180,
+  "predictions_distinct": 180,
+  "hard_collision_free": 180,
+  "slot_class": {
+   "middle": 60,
+   "first": 60,
+   "last": 60
+  },
+  "prompts_unique": 180
+ },
+ "elements_DL_e5-off": {
+  "n": 180,
+  "equal_cells": 180,
+  "dissoc_aligned": 180,
+  "same_aligned": 180,
+  "redigit_aligned": 180,
+  "permutation": 180,
+  "predictions_distinct": 180,
+  "hard_collision_free": 180,
+  "slot_class": {
+   "middle": 60,
+   "first": 60,
+   "last": 60
+  },
+  "prompts_unique": 180
+ },
+ "elements_DL_e5-pln": {
+  "n": 180,
+  "equal_cells": 180,
+  "dissoc_aligned": 180,
+  "same_aligned": 180,
+  "redigit_aligned": 180,
+  "permutation": 180,
+  "predictions_distinct": 180,
+  "hard_collision_free": 180,
+  "slot_class": {
+   "middle": 60,
+   "first": 60,
+   "last": 60
+  },
+  "prompts_unique": 180
+ },
+ "elements_DL_e5-ref": {
+  "n": 180,
+  "equal_cells": 180,
+  "dissoc_aligned": 180,
+  "same_aligned": 180,
+  "redigit_aligned": 180,
+  "permutation": 180,
+  "predictions_distinct": 180,
+  "hard_collision_free": 180,
+  "slot_class": {
+   "middle": 60,
+   "first": 60,
+   "last": 60
+  },
+  "prompts_unique": 180
+ },
+ "elements_RR_e5-off": {
+  "n": 180,
+  "equal_cells": 180,
+  "dissoc_aligned": 180,
+  "same_aligned": 180,
+  "redigit_aligned": 180,
+  "permutation": 180,
+  "predictions_distinct": 180,
+  "hard_collision_free": 180,
+  "slot_class": {
+   "middle": 60,
+   "first": 60,
+   "last": 60
+  },
+  "prompts_unique": 180
+ },
+ "elements_RR_e5-pln": {
+  "n": 180,
+  "equal_cells": 180,
+  "dissoc_aligned": 180,
+  "same_aligned": 180,
+  "redigit_aligned": 180,
+  "permutation": 180,
+  "predictions_distinct": 180,
+  "hard_collision_free": 180,
+  "slot_class": {
+   "middle": 60,
+   "first": 60,
+   "last": 60
+  },
+  "prompts_unique": 180
+ },
+ "elements_RR_e5-ref": {
+  "n": 180,
+  "equal_cells": 180,
+  "dissoc_aligned": 180,
+  "same_aligned": 180,
+  "redigit_aligned": 180,
+  "permutation": 180,
+  "predictions_distinct": 180,
+  "hard_collision_free": 180,
+  "slot_class": {
+   "middle": 60,
+   "first": 60,
+   "last": 60
+  },
+  "prompts_unique": 180
+ }
+}

@@ -1,7 +1,9 @@
 """pointer_swap (Dan's D3, 2026-10-20): what do the question tokens carry in transit when a recalled bridge feeds an
 in-prompt lookup: the bridge's identity, a pointer to the binding statement's position, or the answer itself?
 
-Items: scripts/pointer_v1.py (data/pointer_v1/<set>/). Each base item has a token-aligned source "dissoc" whose residual,
+Items: scripts/pointer_v1.py (data/pointer_v1/<set>/), or any generator with the same item schema chosen by --data
+(pointer_v2: offset-shift and reflexive scenes; code_pointer_v1: Python code; alias_pointer_v1: statements in other
+languages). Each base item has a token-aligned source "dissoc" whose residual,
 patched into the base, predicts four distinct answers (none = the base answer; identity = the base's digit for the
 source's entity; position = the base's digit at the source's queried slot; value = the source's answer, absent from the
 base context; for RR value = identity by construction).
@@ -22,8 +24,9 @@ Edits (activation patching: the base's block output at the positions replaced by
            source patched at every position at layer 0 (must reproduce the source's own read: the hook's positive
            control)
 Scoring (suite_split's answer read): one forward with the digit answer's space token appended; the top token's role:
-none / identity / position / value (in that priority) / context (another digit of the base context) / recall (a
-recalled digit of q_b, q_s or p; lookups only) / other_digit / other; p of each predicted digit.
+none / identity / position / token / value (in that priority; token only where the data predicts it) / context
+(another digit of the base context) / recall (a recalled digit of q_b, q_s or p; lookups only) / other_digit / other;
+p of each predicted digit.
 
 Decision rule (fixed before any run; the job specs in jobs/d3/ repeat it). Per cell (family x group x layer or window
 x source dissoc), pooled over domains, Wilson 95% intervals over items:
@@ -35,9 +38,23 @@ x source dissoc), pooled over domains, Wilson 95% intervals over items:
   - otherwise "mixed". Primary: RL, group final, window transit (the suite's 98-100% copy flips at 44-52). H-pointer:
     position; H-word (or a lexical key): identity; H-value: value. DL is the reference (classic binding retrieval),
     RR the contrast (a pointer is useless there).
+  - Other datasets name their primary / reference / contrast families in the manifest (code_pointer_v1: memory ->
+    prompt RK / named -> prompt DK / RR).
+Decision rule, pointer_v2 additions (fixed 2026-10-21, before any v2 run):
+  - offset-shift levels (e<N>-off): the same rule with candidates {identity, position, token, value} (RR: identity,
+    position, token). position = the order-slot pointer (H-order), token = the token-position pointer (H-token).
+  - reflexive vs plain (e<N>-ref vs e<N>-pln, the same scenes): per family x group x layer or window, the paired
+    difference of the 'value' share (ref minus pln; items paired by scene; paired bootstrap 95% CI, seed 0).
+    H-reflexive (a pointer to the answer token, which needs the digit in the prompt): lower bound > +0.10. H-value
+    (the digit carried as content): the CI inside [-0.10, +0.10]. Otherwise unclear. Interpreted only where the pln cell
+    is interpretable by the rule above (changes >= 20% lower bound, same control <= 10% upper bound).
+  - every cut the rule is applied to needs n >= 35 (the same control's bound); cuts below are reported, not judged.
 
-Stages:  manifest --name N --why W --set S [--levels ...] [--families ...] [--domains ...] [--n K] [--layers ...]
-                  [--control-stride 2] [--competence RUN | --no-eligibility]
+Stages:  manifest --name N --why W [--data pointer_v1|pointer_v2|code_pointer_v1|alias_pointer_v1] --set S
+                  [--levels ...] [--families ...] [--domains ...] [--family-roles P R C] [--n K] [--layers ...]
+                  [--control-stride 2] [--groups ...] [--question-max-layer L] [--control-levels ...]
+                  [--competence RUN | --no-eligibility]
+         analyze --name N | figures --name N (CPU; a new analysis-<stamp>-figures/, replacing the run's previous one)
          run --name N          summarise --name N (re-aggregates into a new analysis-<stamp>/)
          examples --name N [--k 3] [--seed 0] (results/pointer_swap/N/examples.json)
 """
@@ -69,7 +86,12 @@ EXP = "pointer_swap"
 RESULTS = pins.RESULTS_DIR / EXP
 GROUPS = ("question", "final", "last", "both")
 SOURCES = ("dissoc", "same", "rand", "other")
-ROLES = ("none", "identity", "position", "value", "context", "recall", "other_digit", "other")
+ROLES = ("none", "identity", "position", "token", "value", "context", "recall", "other_digit", "other")
+HYPS = ("none", "identity", "position", "token", "value")  # every prediction a dataset may record, in priority order
+DATASETS = ("pointer_v1", "pointer_v2", "code_pointer_v1", "alias_pointer_v1")
+# primary (lookup of a recalled bridge), reference (named lookup), contrast (recall) family per dataset
+FAMILY_ROLES = {"code_pointer_v1": ("RK", "DK", "RR")}
+DEFAULT_ROLES = ("RL", "DL", "RR")
 WINDOW_FRACTIONS = {"early": (16 / 64, 28 / 64), "mid": (32 / 64, 40 / 64), "transit": (44 / 64, 52 / 64)}
 SAMPLE_SEED, NULL_SEED, OTHER_SEED, EXAMPLE_SEED = 0, 0, 0, 0
 BATCH = 64
@@ -157,14 +179,21 @@ def prepare(item: dict, tok) -> dict[str, Any]:
 def role_map(item: dict, preds: dict[str, str], lookup: bool) -> dict[str, str]:
     """digit -> role, by the docstring's priority."""
     out: dict[str, str] = {}
-    for h in PV.HYPOTHESES:
-        out.setdefault(preds[h], h)
+    for h in HYPS:
+        if preds.get(h, "-") != "-":
+            out.setdefault(preds[h], h)
     for d in item["digits"]:
         out.setdefault(str(d), "context")
-    if lookup:
-        sl = item["slots"]
-        for e in (item["query"], item["entities"][sl["identity"]], item["entities"][sl["position"]]):
-            out.setdefault(str(item["recalled"][e]), "recall")
+    rec = item.get("recalled", {})
+    if lookup and rec:
+        ents = [item["query"], item["sources"]["dissoc"].get("query")]
+        for key in ("position", "token"):
+            j = item["slots"].get(key)
+            if isinstance(j, int) and j < len(item["entities"]):
+                ents.append(item["entities"][j])
+        for e in ents:
+            if e in rec:
+                out.setdefault(str(rec[e]), "recall")
     return out
 
 
@@ -187,37 +216,71 @@ def other_predictions(item: dict, other: dict) -> dict[str, str]:
     return p
 
 
+def gen(m: dict | str):
+    """The generator module of a run's items (same item schema): pointer_v1 (the default; older manifests have no
+    'data'), pointer_v2, code_pointer_v1 or alias_pointer_v1. Each has DATA, RESULTS, SETS, FAMILIES, DOMAINS and
+    set_files(set) -> {'<domain>_<family>_<level>': file}."""
+    import importlib
+
+    return importlib.import_module(f"scripts.{m if isinstance(m, str) else m.get('data', 'pointer_v1')}")
+
+
+def family_roles(m: dict) -> tuple[str, str, str]:
+    """(primary, reference, contrast) families: memory -> prompt, named -> prompt, memory -> memory."""
+    return tuple(m.get("family_roles") or FAMILY_ROLES.get(m.get("data", "pointer_v1"), DEFAULT_ROLES))  # type: ignore[return-value]
+
+
+def base_level(level: str) -> str:
+    """'e5f0-xlang' -> 'e5f0', 'e5-off' -> 'e5': the scene's layout; the suffix names a condition built on the same
+    scenes (alias_pointer_v1's languages, pointer_v2's item types), so conditions are sampled on the same scenes."""
+    return level.split("-")[0]
+
+
 def load_items(m: dict) -> dict[str, list[dict]]:
     return {label: PV.load_file(pins.REPO_ROOT / pin["file"]) for label, pin in m["items"].items()}
 
 
-def eligible_ids(comp_run: str | None) -> set[str] | None:
-    if not comp_run:
+def eligible_ids(comp: Path | None) -> set[tuple[str, str]] | None:
+    """(set, item id) with every competence prompt right. Keyed by set too: pointer_v1's main and dev sets reuse ids."""
+    if comp is None:
         return None
-    ok: dict[str, list[bool]] = collections.defaultdict(list)
-    for line in (PV.RESULTS / comp_run / "items.jsonl").read_text().splitlines():
+    ok: dict[tuple[str, str], list[bool]] = collections.defaultdict(list)
+    for line in comp.read_text().splitlines():
         r = json.loads(line)
-        ok[r["id"]].append(r["correct"])
-    return {i for i, v in ok.items() if all(v)}
+        ok[(r.get("label", "").split("/")[0] if "/" in r.get("label", "") else "", r["id"])].append(r["correct"])
+    return {k for k, v in ok.items() if all(v)}
+
+
+def competence_path(m: dict) -> Path | None:
+    if m.get("competence_path"):
+        return pins.REPO_ROOT / m["competence_path"]
+    return gen(m).RESULTS / m["competence"] / "items.jsonl" if m.get("competence") else None
 
 
 def sample_cases(m: dict, items: dict[str, list[dict]]) -> tuple[list[dict], dict]:
-    """Per (domain, level): up to n scenes eligible in every family of the run, seed SAMPLE_SEED; every family on them."""
-    good = eligible_ids(m["competence"])
-    by_cell: dict[tuple[str, str], dict[str, dict[str, dict]]] = collections.defaultdict(dict)
+    """Per (domain, base level): up to n scenes eligible in every family and every condition of the run (pointer_v1:
+    one condition per level), seed SAMPLE_SEED; every family and condition on the same scenes."""
+    good = eligible_ids(competence_path(m))
+    by_cell: dict[tuple[str, str], dict[tuple[str, str], dict[str, dict]]] = collections.defaultdict(dict)
     for its in items.values():
         for it in its:
             if it["family"] in m["families"] and it["domain"] in m["domains"] and it["level"] in m["levels"]:
-                by_cell[(it["domain"], it["level"])].setdefault(it["family"], {})[it["scene"]] = it
+                by_cell[(it["domain"], base_level(it["level"]))].setdefault((it["family"], it["level"]), {})[
+                    it["scene"]
+                ] = it
+
+    def ok(it: dict) -> bool:
+        return good is None or (m["set"], it["id"]) in good or ("", it["id"]) in good
+
     rng = random.Random(SAMPLE_SEED)
     cases, counts = [], {}
-    for (dom, lv), fams in sorted(by_cell.items()):
-        scenes = set.intersection(*(set(fams[f]) for f in m["families"]))
-        if good is not None:
-            scenes = {s for s in scenes if all(fams[f][s]["id"] in good for f in m["families"])}
+    for (dom, lv), cells in sorted(by_cell.items()):
+        keys = [(f, x) for f in m["families"] for x in m["levels"] if (f, x) in cells]
+        scenes = set.intersection(*(set(cells[k]) for k in keys))
+        scenes = {sc for sc in scenes if all(ok(cells[k][sc]) for k in keys)}
         picked = rng.sample(sorted(scenes), min(m["n"], len(scenes)))
         counts[f"{dom}/{lv}"] = {"eligible_scenes": len(scenes), "sampled": len(picked)}
-        cases += [fams[f][s] for s in picked for f in m["families"]]
+        cases += [cells[k][sc] for sc in picked for k in keys]
     return cases, counts
 
 
@@ -229,26 +292,32 @@ def stage_manifest(args) -> None:
     path = RESULTS / args.name / "manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
-    levels = args.levels or list(PV.SETS[args.set]["levels"])
-    files = {
-        f"{d}_{f}_{lv}": PV.DATA / args.set / f"{d}_{f}_{lv}.json"
-        for lv in levels
-        for d in args.domains
-        for f in args.families
-    }
+    G = gen(args.data)
+    assert args.set in G.SETS, f"{args.data} has no set {args.set!r}"
+    every = {lab: f for lab, f in G.set_files(args.set).items() if f.exists()}  # '<domain>_<family>_<level>' -> file
+    families = args.families or list(G.FAMILIES)
+    domains = args.domains or list(G.DOMAINS)
+    levels = args.levels or list(dict.fromkeys(lab.split("_", 2)[2] for lab in every))
+    files = {lab: f for lab, f in every.items()
+             if lab.split("_", 2)[0] in domains and lab.split("_", 2)[1] in families and lab.split("_", 2)[2] in levels}  # fmt: skip
+    assert files, "no item files for these domains, families and levels"
     assert args.competence or args.no_eligibility, "--competence RUN (or --no-eligibility for a smoke)"
-    comp = PV.RESULTS / args.competence / "items.jsonl" if args.competence else None
+    comp = G.RESULTS / args.competence / "items.jsonl" if args.competence else None
     layers = args.layers or default_layers(args.layer_step)
+    roles = tuple(args.family_roles) if args.family_roles else FAMILY_ROLES.get(args.data, DEFAULT_ROLES)
     m = {
         "exp": EXP, "run": args.name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "why": args.why,
-        "model": pins.model_pin(), "set": args.set, "levels": levels, "families": args.families, "domains": args.domains,
+        "model": pins.model_pin(), "data": args.data, "set": args.set, "levels": levels, "families": families,
+        "domains": domains, "family_roles": list(roles),
         "items": {k: {"file": str(f.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(f)} for k, f in files.items()},
         "competence": args.competence,
+        "competence_path": str(comp.relative_to(pins.REPO_ROOT)) if comp else None,
         "competence_sha256": sha256_of(comp) if comp else None,
         "n": args.n, "layers": layers, "control_stride": args.control_stride, "windows": default_windows(),
-        "groups": list(GROUPS), "sources": list(SOURCES),
-        "sample": f"per (domain, level), up to n scenes eligible (every competence prompt right) in all of the run's "
-        f"families, seed {SAMPLE_SEED}; every family on the same scenes",
+        "groups": args.groups or list(GROUPS), "question_max_layer": args.question_max_layer,
+        "control_levels": args.control_levels, "sources": list(SOURCES),
+        "sample": f"per (domain, base level), up to n scenes eligible (every competence prompt right, keyed by set and "
+        f"item id) in all of the run's families and conditions, seed {SAMPLE_SEED}; all of them on the same scenes",
         "seeds": {"sample": SAMPLE_SEED, "null": NULL_SEED, "other": OTHER_SEED},
         "decision": (__doc__ or "").split("Decision rule")[1].split("Stages:")[0].strip(),
     }  # fmt: skip
@@ -259,8 +328,8 @@ def stage_manifest(args) -> None:
 def check_inputs(m: dict) -> None:
     for f, pin in m["items"].items():
         assert sha256_of(pins.REPO_ROOT / pin["file"]) == pin["sha256"], f"{f} changed since the manifest"
-    if m["competence"]:
-        comp = PV.RESULTS / m["competence"] / "items.jsonl"
+    comp = competence_path(m)
+    if comp is not None:
         assert sha256_of(comp) == m["competence_sha256"], "the competence run changed since the manifest"
 
 
@@ -280,10 +349,18 @@ def stage_run(name: str) -> None:
     items = load_items(m)
     cases, counts = sample_cases(m, items)
     print(json.dumps(counts), flush=True)
-    pool: dict[tuple[str, str], list[dict]] = collections.defaultdict(list)  # (family, level) -> items, for 'other'
+    # (family, base level) -> items, for 'other' (another domain's item of the same family and layout)
+    pool: dict[tuple[str, str], list[dict]] = collections.defaultdict(list)
     for its in items.values():
         for it in its:
-            pool[(it["family"], it["level"])].append(it)
+            pool[(it["family"], base_level(it["level"]))].append(it)
+    groups = m.get("groups", list(GROUPS))
+    q_max = m.get("question_max_layer")
+    ctrl_levels = m.get("control_levels")
+
+    def skip(grp: str, layer_set: list[int]) -> bool:  # the question words are patched only up to q_max
+        return q_max is not None and grp in ("question", "both") and max(layer_set) > q_max
+
     digit_tok = {S.ids(tok, str(d))[0]: str(d) for d in range(10)}
     layers, windows, stride = m["layers"], m["windows"], m["control_stride"]
     mid = layers[len(layers) // 2]
@@ -293,7 +370,10 @@ def stage_run(name: str) -> None:
     for ci, c in enumerate(progress(cases, "cases")):
         prep = prepare(c, tok)
         rng = random.Random(OTHER_SEED * 1_000_003 + ci)
-        other = rng.choice([o for o in pool[(c["family"], c["level"])] if o["domain"] != c["domain"]] or [c])
+        other = rng.choice(
+            [o for o in pool[(c["family"], base_level(c["level"]))] if o["domain"] != c["domain"]] or [c]
+        )
+        controls = ctrl_levels is None or c["level"] in ctrl_levels
         o_ids = S.ids(tok, prompt_text(tok, other["context"], other["question"])) + S.ids(tok, " ")
         runs = {k: model.run(torch.tensor([v], device="cuda"), record=record) for k, v in prep["read_ids"].items()}
         runs["other"] = model.run(torch.tensor([o_ids], device="cuda"), record=record)
@@ -312,11 +392,13 @@ def stage_run(name: str) -> None:
         ]
         gen = torch.Generator(device="cuda").manual_seed(NULL_SEED + 7919 * ci)
         for li, la in enumerate(layers):
-            for grp in GROUPS:
+            for grp in groups:
+                if skip(grp, [la]):
+                    continue
                 pos = g[grp]
                 for src in ("dissoc", "same"):
                     jobs.append(({"layer": la, "group": grp, "source": src}, {la: SetRows(h[src][la][pos], pos)}))
-                if li % stride:
+                if li % stride or not controls:
                     continue
                 delta = h["dissoc"][la][pos] - h["base"][la][pos]
                 jobs.append(({"layer": la, "group": grp, "source": "rand"}, {la: AddRows(null_rows(delta, gen), pos)}))
@@ -326,7 +408,9 @@ def stage_run(name: str) -> None:
                     d_o = torch.nn.functional.normalize(d_o, dim=-1) * delta.norm(dim=-1, keepdim=True)
                     jobs.append(({"layer": la, "group": grp, "source": "other"}, {la: AddRows(d_o, pos)}))
         for wname, wl in windows.items():
-            for grp in GROUPS:
+            for grp in groups:
+                if skip(grp, wl):
+                    continue
                 pos = g[grp]
                 for src in ("dissoc", "same"):
                     edits = {la: SetRows(h[src][la][pos], pos) for la in wl}
@@ -377,8 +461,17 @@ def cell_rates(rows: list[dict]) -> dict[str, Any]:
     return {"n": n, **{k: [round(x, 4) for x in wilson(roles[k], n)] for k in ROLES if roles[k] or k in PV.HYPOTHESES}}
 
 
-def verdict(fam: str, d: dict, same: dict | None, chance: dict[str, float], n_ent: int) -> str:
-    """The docstring's decision rule for one cell."""
+def verdict(
+    fam: str,
+    d: dict,
+    same: dict | None,
+    chance: dict[str, float],
+    n_ent: int,
+    cands: tuple[str, ...] | None = None,
+    n_free: int | None = None,
+) -> str:
+    """The docstring's decision rule for one cell. `cands`: the outcomes the cell's items predict (default pointer_v1's:
+    identity, position, value; RR without value); `n_free`: the context digits no hypothesis predicts (default N - 3)."""
     if not d or not d["n"]:
         return "no data"
     changed = wilson(d["n"] - round(d["none"][0] * d["n"]), d["n"])
@@ -388,9 +481,11 @@ def verdict(fam: str, d: dict, same: dict | None, chance: dict[str, float], n_en
             return "damage"
     if changed[1] < CHANGED_MIN:
         return "none"
-    cands = ("identity", "position") if fam == "RR" else ("identity", "position", "value")
+    if cands is None:
+        cands = ("identity", "position") if fam == "RR" else ("identity", "position", "value")
     ctx = d.get("context", [0.0, 0.0, 0.0])
-    per_digit = ctx[2] / (n_ent - 3) if n_ent > 3 else 0.0
+    free = n_ent - 3 if n_free is None else n_free
+    per_digit = ctx[2] / free if free > 0 else 0.0
     for x in cands:
         others = [d[y][2] for y in cands if y != x]
         bar = max(chance.get(x, 0.0), per_digit)
@@ -521,6 +616,25 @@ def analyze(m: dict, rows: list[dict], checks: list[dict]) -> dict[str, Any]:
             cells[(o["family"], cut, o["level"], o["group"], str(o["layer"]), o["source"])].append(o)
     rates = {"|".join(k): roles_of(v) for k, v in cells.items()}
     windows = m["windows"]
+    pf, rf, cf = family_roles(m)
+    # which outcomes each (family, level) predicts: the keys of the alt prompt's predictions stored with every read
+    has: dict[tuple[str, str], set[str]] = collections.defaultdict(set)
+    for o in rows:
+        if o["source"] == "dissoc":
+            has[(o["family"], o["level"])] |= set(o.get("p", {}))
+
+    def cands_of(fam: str, lv: str) -> tuple[str, ...]:
+        hs = has.get((fam, lv)) or set(PV.HYPOTHESES)
+        out = [h for h in ("identity", "position", "token", "value") if h in hs]
+        return tuple(h for h in out if not (fam == cf and h == "value"))
+
+    def free_of(fam: str, lv: str) -> int:
+        hs = has.get((fam, lv)) or set(PV.HYPOTHESES)
+        in_ctx = [h for h in ("none", "identity", "position", "token") if h in hs] + (
+            ["value"] if lv.endswith("-ref") else []
+        )
+        return int(lv[1]) - len(in_ctx)
+
     verdicts: dict[str, Any] = {}
     for key, d in rates.items():
         fam, cut, lv, grp, layer, src = key.split("|")
@@ -530,12 +644,12 @@ def analyze(m: dict, rows: list[dict], checks: list[dict]) -> dict[str, Any]:
         chance: dict[str, float] = {}
         for la in windows.get(layer, [int(layer)] if layer.lstrip("-").isdigit() else []):
             r = rates.get("|".join((fam, cut, lv, grp, str(la), "rand")))
-            for x in PV.HYPOTHESES:
+            for x in HYPS:
                 if r:
                     chance[x] = max(chance.get(x, 0.0), r[x][2])
         n_same = same["n"] if same else 0
         verdicts["|".join((fam, cut, lv, grp, layer))] = {
-            "verdict": verdict(fam, d, same, chance, int(lv[1])),
+            "verdict": verdict(fam, d, same, chance, int(lv[1]), cands_of(fam, lv), free_of(fam, lv)),
             "n": d["n"],
             "n_same": n_same,
             "rule_reachable": min(d["n"], n_same) >= MIN_N_RULE,
@@ -545,7 +659,7 @@ def analyze(m: dict, rows: list[dict], checks: list[dict]) -> dict[str, Any]:
     strongest: dict[str, Any] = {}
     for fam in m["families"]:
         for lv in m["levels"]:
-            for grp in GROUPS:
+            for grp in m.get("groups", list(GROUPS)):
                 cand = [
                     (rates[k]["changed"][0], la) for la in single if (k := f"{fam}|all|{lv}|{grp}|{la}|dissoc") in rates
                 ]
@@ -553,18 +667,27 @@ def analyze(m: dict, rows: list[dict], checks: list[dict]) -> dict[str, Any]:
                     continue
                 best = max(cand, key=lambda t: (t[0], -t[1]))[1]
                 d = rates[f"{fam}|all|{lv}|{grp}|{best}|dissoc"]
-                strongest[f"{fam}|{lv}|{grp}"] = {"layer": best, **{r: d[r] for r in ("changed", *PV.HYPOTHESES)}}
+                strongest[f"{fam}|{lv}|{grp}"] = {"layer": best, **{r: d[r] for r in ("changed", *HYPS)}}
     levels: dict[str, Any] = {}
+    # alias_pointer_v1: each condition exists in one domain, so compare it with English in that domain only
+    lv_cuts = (
+        ["all"]
+        if m.get("data", "pointer_v1") in ("pointer_v1", "code_pointer_v1")
+        else [f"domain:{x}" for x in m["domains"]]
+    )
     if "e5f0" in m["levels"] and len(m["levels"]) > 1:
         for lv in m["levels"]:
             if lv == "e5f0":
                 continue
-            for grp in ("final", "last"):
-                a, b = rates.get(f"RL|all|{lv}|{grp}|transit|dissoc"), rates.get(f"RL|all|e5f0|{grp}|transit|dissoc")
+            for cut, grp in [(c_, g_) for c_ in lv_cuts for g_ in ("final", "last")]:
+                a, b = (
+                    rates.get(f"{pf}|{cut}|{lv}|{grp}|transit|dissoc"),
+                    rates.get(f"{pf}|{cut}|e5f0|{grp}|transit|dissoc"),
+                )
                 if not a or not b:
                     continue
                 ok = all(
-                    verdicts[f"RL|all|{x}|{grp}|transit"]["verdict"] not in ("none", "damage") for x in (lv, "e5f0")
+                    verdicts[f"{pf}|{cut}|{x}|{grp}|transit"]["verdict"] not in ("none", "damage") for x in (lv, "e5f0")
                 )
                 diffs = {}
                 for role in PV.HYPOTHESES:
@@ -577,7 +700,10 @@ def analyze(m: dict, rows: list[dict], checks: list[dict]) -> dict[str, Any]:
                         else "unclear"
                     )
                     diffs[role] = {"diff": [round(x, 4) for x in dd], "label": label}
-                levels[f"{lv}_vs_e5f0|{grp}"] = {"interpretable": ok, "diffs": diffs}
+                levels[f"{lv}_vs_e5f0|{grp}" if cut == "all" else f"{lv}_vs_e5f0|{cut}|{grp}"] = {
+                    "interpretable": ok,
+                    "diffs": diffs,
+                }
     chk: dict[str, Any] = {}
     for kind in ("self_noop", "layer0_all_reproduces_source"):
         cr = [c for c in checks if c["check"] == kind]
@@ -599,19 +725,59 @@ def analyze(m: dict, rows: list[dict], checks: list[dict]) -> dict[str, Any]:
             if f"{f}|all|{lv}|final|transit|dissoc" in rates
         },
         "checks": chk,
+        "family_roles": [pf, rf, cf],
         "primary": {
             lv: {
-                "verdict": verdicts.get(f"RL|all|{lv}|final|transit", {}),
-                "rates": rates.get(f"RL|all|{lv}|final|transit|dissoc"),
+                "verdict": verdicts.get(f"{pf}|all|{lv}|final|transit", {}),
+                "rates": rates.get(f"{pf}|all|{lv}|final|transit|dissoc"),
             }
             for lv in m["levels"]
         },
+        "ref_contrasts": ref_contrasts(m, rows, verdicts),
         "strongest_layer": strongest,
         "level_contrasts": levels,
         "verdicts": verdicts,
         "rule_unreachable_cells": {"count": len(unreachable), "cuts": sorted({k.split("|")[1] for k in unreachable})},
         "rates": rates,
     }
+
+
+REF_MARGIN = 0.10
+
+
+def ref_contrasts(m: dict, rows: list[dict], verdicts: dict) -> dict[str, Any]:
+    """pointer_v2's reflexive test: per family x group x layer/window, the paired difference of the 'value' share between
+    the e<N>-ref and e<N>-pln items of the same scene (the docstring's v2 rule)."""
+    from bridge_jspace.stats import paired_bootstrap_diff
+
+    pairs = [(lv, lv[: -len("-ref")] + "-pln") for lv in m["levels"] if lv.endswith("-ref")]
+    pairs = [(r, p) for r, p in pairs if p in m["levels"]]
+    out: dict[str, Any] = {}
+    if not pairs:
+        return out
+    val: dict[tuple, dict[str, float]] = collections.defaultdict(dict)
+    for o in rows:
+        if o["source"] == "dissoc" and o["group"] != "all":
+            scene = o["name"].replace(f"-{o['level']}-", "-")
+            val[(o["family"], o["level"], o["group"], str(o["layer"]))][scene] = float(o["role"] == "value")
+    for ref, pln in pairs:
+        for (fam, lv, grp, layer), a in val.items():
+            if lv != ref:
+                continue
+            b = val.get((fam, pln, grp, layer), {})
+            names = sorted(set(a) & set(b))
+            if not names:
+                continue
+            d = paired_bootstrap_diff([a[x] for x in names], [b[x] for x in names], 2000, 0)
+            label = ("reflexive" if d[1] > REF_MARGIN else "value" if d[1] >= -REF_MARGIN and d[2] <= REF_MARGIN
+                     else "unclear")  # fmt: skip
+            pv = verdicts.get(f"{fam}|all|{pln}|{grp}|{layer}", {})
+            out[f"{fam}|{ref}|{grp}|{layer}"] = {
+                "n_pairs": len(names), "ref_value": round(sum(a[x] for x in names) / len(names), 4),
+                "pln_value": round(sum(b[x] for x in names) / len(names), 4), "diff": [round(x, 4) for x in d],
+                "label": label, "interpretable": pv.get("verdict") not in (None, "none", "damage"),
+            }  # fmt: skip
+    return out
 
 
 def load_run(name: str) -> tuple[dict, list[dict], list[dict]]:
@@ -635,10 +801,10 @@ def stage_analyze(name: str) -> Path:
 def near_ties(rows: list[dict], gap: float = 0.1) -> dict[str, Any]:
     """Among dissoc reads whose top token is a predicted digit, the share where the runner-up prediction's p is within
     `gap` of the winner's (bf16 batch noise could flip those)."""
-    win = [o for o in rows if o["source"] == "dissoc" and o["role"] in PV.HYPOTHESES and o["group"] != "all"]
+    win = [o for o in rows if o["source"] == "dissoc" and o["role"] in HYPS and o["group"] != "all"]
     close = 0
     for o in win:
-        ps = sorted({o["p"].get(h, 0.0) for h in PV.HYPOTHESES if h in o["p"]}, reverse=True)
+        ps = sorted({o["p"].get(h, 0.0) for h in HYPS if h in o["p"]}, reverse=True)
         close += len(ps) > 1 and ps[0] - ps[1] < gap
     return {"n": len(win), "within_gap": close, "gap": gap}
 
@@ -648,7 +814,7 @@ def near_ties(rows: list[dict], gap: float = 0.1) -> dict[str, Any]:
 # Outcome hues: the reference categorical palette's first three slots (validated: adjacent CVD dE >= 9.2, normal-vision
 # >= 27.6 on the light surface; aqua is below 3:1 contrast, so lines carry direct labels). 'none' and every control are
 # grey: they are baselines, not identities.
-OUTCOME_COLOR = {"identity": "#2a78d6", "position": "#eb6834", "value": "#1baf7a"}
+OUTCOME_COLOR = {"identity": "#2a78d6", "position": "#eb6834", "value": "#1baf7a", "token": "#eda100"}
 NONE_COLOR = "#52514e"
 CONTROL_STYLE = {
     "same": ("#898781", (0, (4, 2))),
@@ -660,10 +826,16 @@ CONTROL_STYLE = {
 OUTCOME_TERM = {
     "identity": "answer of bridge alt's statement",
     "position": "answer at the same statement slot",
+    "token": "answer at the same token position",
     "value": "the alt prompt's own answer",
     "none": "answer org kept",
 }
-OUTCOME_SHORT = {"identity": "bridge alt's statement", "position": "same slot", "value": "alt prompt's answer"}
+OUTCOME_SHORT = {
+    "identity": "bridge alt's statement",
+    "position": "same slot",
+    "token": "same token position",
+    "value": "alt prompt's answer",
+}
 GROUP_SHORT = {
     "question": "question words",
     "final": "after the question",
@@ -673,7 +845,8 @@ GROUP_SHORT = {
 OUTCOME_HELP = {
     "identity": "org prompt's digit for bridge alt",
     "position": "org prompt's digit in bridge alt's slot",
-    "value": "not in the org prompt",
+    "token": "org prompt's digit at bridge alt's token offset",
+    "value": "the alt prompt's answer",
     "none": "",
 }
 CONTROL_LABEL = {
@@ -692,13 +865,34 @@ FAMILY_TITLE = {  # display names (the user's rule: never the letter codes): whe
     "DL": "named → prompt (entity named, prompt lookup)",
     "RR": "memory → memory (recalled cue, recalled fact)",
 }
-_CODE_RE = re.compile(r"(?<![\w|/`=-])(BLR|BRL|RL|RR|DL|BL|BR)(?![\w|/`-])")
+_CODE_RE = re.compile(r"(?<![\w|/`=-])(BLR|BRL|CH2|CH3|RL|RR|DL|BL|BR|DK|IX|RK)(?![\w|/`-])")
+
+
+def family_label(code: str) -> str:
+    """Display name of a family code (plotting.FAMILY_LABEL, then code_pointer_v1's)."""
+    from bridge_jspace.plotting import FAMILY_LABEL
+
+    if code in FAMILY_LABEL:
+        return FAMILY_LABEL[code]
+    from scripts import code_pointer_v1 as CP
+
+    return CP.FAMILY_LABEL.get(code, code)
+
+
+def fam_title(fam: str) -> str:
+    return FAMILY_TITLE.get(fam, family_label(fam))
+
+
+def level_text(m: dict, lv: str) -> str:
+    names = {"e3f0": "3 statements", "e5f0": "5 statements", "e5f4": "5 statements with filler sentences between them"}
+    if lv in names and m.get("data", "pointer_v1") in ("pointer_v1", "code_pointer_v1"):
+        return names[lv]
+    G = gen(m)
+    return G.level_name(lv) if hasattr(G, "level_name") else f"{int(lv[1])} statements"
 
 
 def plain(text: str) -> str:
     """Family codes replaced by their display names, outside `code spans` (data keys keep their codes there)."""
-    from bridge_jspace.plotting import family_label
-
     words = (("base's residual", "org prompt's hidden states"), ("dissoc source's", "alt prompt's"),
              ("the dissoc source", "the alt prompt"), ("dissoc", "alt prompt"),
              ("the 'same' control", "the same-entity control (statements reshuffled)"),
@@ -736,14 +930,17 @@ def rule_plain(text: str) -> str:
     return text
 
 
-def example_line(m: dict, name: str) -> str:
-    """One shortened prompt pair in outside-reader terms, from the run's examples.json (a memory → prompt item whose
-    patch gave the same-slot answer, else the first example)."""
+def example_line(m: dict, name: str, level: str | None = None) -> str:
+    """One shortened prompt pair in outside-reader terms, from the run's examples.json: a memory → prompt item (of
+    `level`, if given) whose patch gave the same-slot answer, else another of that level, else the first example."""
     ex = RESULTS / name / "examples.json"
     if not ex.exists():
         return ""
     e = json.loads(ex.read_text())["examples"]
-    pick = next((x for x in e if x["family"] == "RL" and x["group"] == "position"), None) or (e[0] if e else None)
+    at = [x for x in e if level is None or f"-{level}-" in x["item_id"]] or e
+    pf = family_roles(m)[0]
+    pick = (next((x for x in at if x["family"] == pf and x["group"] == "position"), None)
+            or next((x for x in at if x["family"] == pf), None) or (at[0] if at else None))  # fmt: skip
     if not pick:
         return ""
     it = next((i for its in load_items(m).values() for i in its if i["id"] == pick["item_id"]), None)
@@ -753,14 +950,23 @@ def example_line(m: dict, name: str) -> str:
     k = sl["position"]
     nth = {0: "1st", 1: "2nd", 2: "3rd"}.get(k, f"{k + 1}th")
     exp = d["predictions"]
-    stmt = PV.DOMAINS[it["domain"]]["statement"]
-    shown = sorted({sl["query"], sl["identity"], k})
-    org = " ... ".join(stmt.format(e=it["entities"][j], d=it["digits"][j]) for j in shown)
+    shown = sorted({j for j in (sl["query"], sl.get("identity"), k, sl.get("token"), sl.get("value_in_org"))
+                    if isinstance(j, int)})  # fmt: skip
+    if "statements" in it:  # alias_pointer_v1 records each prompt's statements
+        org = " ... ".join(it["statements"][j] for j in shown)
+    elif it["domain"] in PV.DOMAINS and m.get("data", "pointer_v1") in ("pointer_v1", "pointer_v2"):
+        stmt = PV.DOMAINS[it["domain"]]["statement"]
+        org = " ... ".join(stmt.format(e=it["entities"][j], d=it["digits"][j]) for j in shown)
+    else:  # code: the context is a program; show its last line before the query
+        org = it["context"].strip().splitlines()[-1]
+    term = dict(OUTCOME_TERM)
+    if isinstance(sl.get("value_in_org"), int):
+        term["value"] += ", also in the org prompt"
+    opts = ", ".join(f"{exp[h]} ({term[h]})" for h in ("identity", "position", "token", "value", "none")
+                     if exp.get(h, "-") != "-")  # fmt: skip
     return (
         f'org prompt "... {org} ... {it["question"]}" -> answer org {exp["none"]}; the alt prompt asks about the '
-        f"{d['query']} (bridge alt), its {nth} statement. Possible answers after the patch: {exp['identity']} (answer "
-        f"of bridge alt's statement), {exp['position']} (answer at the same statement slot), {exp['value']} (the alt "
-        f"prompt's own answer), {exp['none']} (answer org kept)."
+        f"{d['query']} (bridge alt), its {nth} statement. Possible answers after the patch: {opts}."
     )
 
 
@@ -800,7 +1006,9 @@ def _panel(
     if band:
         _band(ax, tr[0], tr[-1], None)  # labelled once, in the legend
     n = 0
-    roles = ("identity", "position") if fam == "RR" else ("identity", "position", "value")
+    cf = family_roles(m)[2]
+    roles = [h for h in ("identity", "position", "token", "value") if not (fam == cf and h == "value")]
+    roles = [h for h in roles if h != "token" or has_token(a, lv)]
     for role in roles:
         xs, r, lo, hi = _series(a, prefix, layers, "dissoc", role)
         if not xs:
@@ -823,7 +1031,7 @@ def _panel(
     return n
 
 
-def _handles(fams: list[str], controls=("same", "rand", "other")) -> list:
+def _handles(fams: list[str], controls=("same", "rand", "other"), token: bool = False) -> list:
     from matplotlib.lines import Line2D
     from matplotlib.patches import Patch
 
@@ -831,7 +1039,7 @@ def _handles(fams: list[str], controls=("same", "rand", "other")) -> list:
 
     h: list[Any] = [Line2D([], [], color=OUTCOME_COLOR[r], lw=2,
                 label=f"% that become {OUTCOME_TERM[r].removeprefix('the ')} ({OUTCOME_HELP[r]})")
-         for r in ("identity", "position", "value")]  # fmt: skip
+         for r in ("identity", "position", *(("token",) if token else ()), "value")]  # fmt: skip
     h.append(Line2D([], [], color=NONE_COLOR, lw=1.1, label="% of original answers kept (answer org kept)"))
     tr = default_windows()["transit"]
     h.append(
@@ -899,29 +1107,36 @@ def _caption(
     windows: bool = False,
     all_levels: bool = False,
     control: str | None = None,
+    ci: str | None = None,
 ) -> list[tuple[str, str]]:
     """The caption rows (figure_terms.md's CAPTION FORMAT): What we did, Example, How to read, Control, Data."""
-    levels = {"e3f0": "3 statements", "e5f0": "5 statements", "e5f4": "5 statements with filler sentences between them"}
-    level = "3 or 5 statements" if all_levels else levels[lv]
+    level = "several prompt layouts (one per column)" if all_levels else level_text(m, lv)
     when = "at every layer of a window at once" if windows else "one layer at a time"
     n = {f: a["n_per_family"].get(f"{f}|{lv}") for f in m["families"]}
     if all_levels:
         n = {f: "/".join(str(a["n_per_family"].get(f"{f}|{x}")) for x in m["levels"]) for f in m["families"]}
-    ns = ", ".join(f"{FAMILY_TITLE[f].split(' (')[0]} {v}" for f, v in n.items())
+    ns = ", ".join(f"{fam_title(f).split(' (')[0]} {v}" for f, v in n.items())
     rows = [
-        ("What we did", f"The org prompt lists {level} (an entity and its locker digit each). We copied the alt "
+        ("What we did", f"The org prompt: {level}; each statement gives an entity a locker digit. We copied the alt "
          f"prompt's hidden states ({patched}) into the org prompt, {when}, and read the answer."),
-        ("Example", a.get("example_line", "")),
+        ("Example", a.get("example_lines", {}).get(lv) or a.get("example_line", "")),
         ("How to read", how),
         ("Control", control or "Grey: the same patch from a prompt asking about the same entity with the statements "
          "reshuffled, a random push of the same size, and a prompt from another topic. The first two should change "
          "nothing."),
-        ("Data", f"Qwen3.6-27B; topics: {', '.join(a['domains'])}; {ns} prompts per family; "
-         + ("bars" if windows else "shading") + " = 95% Wilson interval over prompts."),
+        ("Data", f"{pins.MODEL_REPO.split('/')[-1]}; topics: {', '.join(a['domains'])}; {ns} prompts per family; "
+         + (ci or (("bars" if windows else "shading") + " = 95% Wilson interval over prompts."))),
     ]  # fmt: skip
     if a["superseded"]:
         rows.insert(0, ("Not a headline", a["superseded"]))
     return [(k, plain(v)) for k, v in rows if v]
+
+
+def has_token(a: dict, lv: str) -> bool:
+    """Whether a level's items predict a token-position answer (pointer_v2's offset shift)."""
+    return any(
+        f"|{lv}|" in k and k.endswith("|dissoc") and v["token"][0] > 0 for k, v in a["rates"].items()
+    ) or lv.endswith("-off")
 
 
 def fig_by_layer(a: dict, m: dict, lv: str, path: Path, headline: bool = False) -> list[str]:
@@ -931,29 +1146,36 @@ def fig_by_layer(a: dict, m: dict, lv: str, path: Path, headline: bool = False) 
 
     fams, grps = m["families"], ("question", "final", "last")
     fig, axes = plt.subplots(
-        len(grps), len(fams), figsize=(4.2 * len(fams), 2.6 * len(grps) + 1.6), sharex=True, sharey=True, squeeze=False
+        len(grps),
+        len(fams),
+        figsize=(max(4.2 * len(fams), 12.6), 2.6 * len(grps) + 1.6),
+        sharex=True,
+        sharey=True,
+        squeeze=False,
     )
     for i, grp in enumerate(grps):
         for j, fam in enumerate(fams):
             ax = axes[i][j]
             _panel(ax, a, m, fam, "all", lv, grp)
             if i == 0:
-                ax.set_title(FAMILY_TITLE[fam], fontsize=10, color=INK, loc="left")
+                ax.set_title(fam_title(fam), fontsize=10, color=INK, loc="left")
             if j == 0:
                 ax.set_ylabel(f"patched: {GROUP_SHORT[grp]}\n% of original answers", fontsize=9, color=INK)
             if i == len(grps) - 1:
                 ax.set_xlabel("layer patched", fontsize=9, color=INK)
     title = ("Patch from the alt prompt: does the answer follow bridge alt's statement, its slot, or the alt "
              "prompt's own answer?") if headline else (
-             f"Patch from the alt prompt: which answer does the org prompt give, by layer and patched tokens? ({lv})")  # fmt: skip
+             f"Patch from the alt prompt: which answer does the org prompt give, by layer? ({level_text(m, lv)})")  # fmt: skip
+    tr = m["windows"]["transit"]
     rows = _caption(
         a,
         m,
         lv,
         "rows: question words / everything after the question / the last 2 tokens",
-        "Each coloured line: % of original answers that become that answer after the patch; dark line: % of original answers kept. Grey band: layers 44-52, where the lens reads this bridge but cannot steer it.",
+        "Each coloured line: % of original answers that become that answer after the patch; dark line: % of original "
+        f"answers kept. Grey band: layers {tr[0]}-{tr[-1]}, where the lens reads this bridge but cannot steer it.",
     )
-    return _finish(fig, path, title, rows, _handles(fams), ncols=2)
+    return _finish(fig, path, title, rows, _handles(fams, token=has_token(a, lv)), ncols=2)
 
 
 def fig_slots(a: dict, m: dict, lv: str, grp: str, path: Path) -> list[str]:
@@ -991,7 +1213,12 @@ def fig_domains(a: dict, m: dict, lv: str, grp: str, path: Path) -> list[str]:
 
     fams, doms = m["families"], a["domains"]
     fig, axes = plt.subplots(
-        len(fams), len(doms), figsize=(4.2 * len(doms), 2.6 * len(fams) + 1.6), sharex=True, sharey=True, squeeze=False
+        len(fams),
+        len(doms),
+        figsize=(max(4.2 * len(doms), 12.6), 2.6 * len(fams) + 1.6),
+        sharex=True,
+        sharey=True,
+        squeeze=False,
     )
     for i, fam in enumerate(fams):
         for j, dom in enumerate(doms):
@@ -1003,7 +1230,11 @@ def fig_domains(a: dict, m: dict, lv: str, grp: str, path: Path) -> list[str]:
             if i == len(fams) - 1:
                 ax.set_xlabel("layer patched", fontsize=9, color=INK)
     rows = _caption(
-        a, m, lv, GROUP_TITLE[grp], "One column per topic; lines as in the main figure. Grey band: layers 44-52."
+        a,
+        m,
+        lv,
+        GROUP_TITLE[grp],
+        "One column per topic; lines as in the main figure. Grey band: the layers where the lens reads but cannot steer.",
     )
     return _finish(fig, path, "Is the pattern the same for each topic?", rows, _handles(fams), ncols=2)
 
@@ -1015,9 +1246,14 @@ def fig_levels(a: dict, m: dict, grp: str, path: Path) -> list[str]:
 
     fams, lvs = m["families"], m["levels"]
     fig, axes = plt.subplots(
-        len(fams), len(lvs), figsize=(4.2 * len(lvs), 2.6 * len(fams) + 1.6), sharex=True, sharey=True, squeeze=False
+        len(fams),
+        len(lvs),
+        figsize=(max(4.2 * len(lvs), 12.6), 2.6 * len(fams) + 1.6),
+        sharex=True,
+        sharey=True,
+        squeeze=False,
     )
-    names = {"e3f0": "3 statements", "e5f0": "5 statements", "e5f4": "5 statements + filler"}
+    names = {lv: level_text(m, lv) for lv in lvs}
     for i, fam in enumerate(fams):
         for j, lv in enumerate(lvs):
             ax = axes[i][j]
@@ -1030,7 +1266,7 @@ def fig_levels(a: dict, m: dict, grp: str, path: Path) -> list[str]:
     rows = _caption(a, m, lvs[0], GROUP_TITLE[grp], "One column per prompt layout (3 statements; 5; 5 with filler "
                     "sentences between them); lines as in the main figure.", all_levels=True)  # fmt: skip
     return _finish(fig, path, "Does the split change with 3 statements, or with filler between the statements?", rows,
-                   _handles(fams), ncols=2)  # fmt: skip
+                   _handles(fams, token=any(has_token(a, lv) for lv in lvs)), ncols=2)  # fmt: skip
 
 
 def fig_windows(a: dict, m: dict, lv: str, path: Path) -> list[str]:
@@ -1042,10 +1278,15 @@ def fig_windows(a: dict, m: dict, lv: str, path: Path) -> list[str]:
     from bridge_jspace.plotting import INK, percent_axis, style_axes
 
     fams, grps, wins = m["families"], GROUPS, list(m["windows"])
-    roles = ("none", "identity", "position", "value")
+    roles = ("none", "identity", "position", *(("token",) if has_token(a, lv) else ()), "value")
     col = {"none": NONE_COLOR, **OUTCOME_COLOR}
     fig, axes = plt.subplots(
-        len(grps), len(fams), figsize=(4.2 * len(fams), 2.3 * len(grps) + 1.6), sharex=True, sharey=True, squeeze=False
+        len(grps),
+        len(fams),
+        figsize=(max(4.2 * len(fams), 12.6), 2.3 * len(grps) + 1.6),
+        sharex=True,
+        sharey=True,
+        squeeze=False,
     )
     for i, grp in enumerate(grps):
         for j, fam in enumerate(fams):
@@ -1057,9 +1298,9 @@ def fig_windows(a: dict, m: dict, lv: str, path: Path) -> list[str]:
                 if not d:
                     continue
                 for ri, role in enumerate(roles):
-                    if fam == "RR" and role == "value":
+                    if fam == family_roles(m)[2] and role == "value":
                         continue
-                    x = wi + (ri - 1.5) * 0.17
+                    x = wi + (ri - (len(roles) - 1) / 2) * 0.15
                     r, lo, hi = d[role]
                     ax.errorbar([x], [r], yerr=[[r - max(lo, 0)], [hi - r]], fmt="o", ms=5, color=col[role], ecolor=col[role], elinewidth=1.4, capsize=0)  # fmt: skip
                 if s:
@@ -1072,7 +1313,7 @@ def fig_windows(a: dict, m: dict, lv: str, path: Path) -> list[str]:
             ax.set_ylim(-0.02, 1.05)
             percent_axis(ax)
             if i == 0:
-                ax.set_title(FAMILY_TITLE[fam], fontsize=10, color=INK, loc="left")
+                ax.set_title(fam_title(fam), fontsize=10, color=INK, loc="left")
             if j == 0:
                 ax.set_ylabel(f"patched: {GROUP_SHORT[grp]}\n% of original answers", fontsize=9, color=INK)
     handles = [Line2D([], [], color=col[r], marker="o", ls="none", ms=5,
@@ -1180,6 +1421,7 @@ def dan_section(a: dict) -> list[str]:
 
 def prior_checks(m: dict, a: dict) -> list[str]:
     """Each job-spec hypothesis's numeric prediction against the run (main-type and levels-type runs)."""
+    pf, rf, cf = family_roles(m)
     r = a["rates"]
     lvs = m["levels"]
     lv = "e5f0" if "e5f0" in lvs else lvs[0]
@@ -1189,7 +1431,7 @@ def prior_checks(m: dict, a: dict) -> list[str]:
         return r.get(f"{fam}|all|{level}|{grp}|{w}|dissoc") or {x: [float("nan")] * 3 for x in (*ROLES, "changed")}
 
     def onset(grp: str) -> int | None:
-        return next((la for la in sorted(m["layers"]) if c("RL", grp, str(la))["value"][0] >= 0.2), None)
+        return next((la for la in sorted(m["layers"]) if c(pf, grp, str(la))["value"][0] >= 0.2), None)
 
     def yn(ok: bool) -> str:
         return "met" if ok else "not met"
@@ -1201,15 +1443,15 @@ def prior_checks(m: dict, a: dict) -> list[str]:
             out.append(f"- {k} (interpretable: {cc['interpretable']}): " + ", ".join(
                 f"{T[x]} {100 * d[x]['diff'][0]:+.0f} [{100 * d[x]['diff'][1]:+.0f}, {100 * d[x]['diff'][2]:+.0f}] "
                 f"{d[x]['label']}" for x in PV.HYPOTHESES))  # fmt: skip
-        win = max(("identity", "position", "value"), key=lambda x: c("RL", "final")[x][0])
+        win = max(("identity", "position", "value"), key=lambda x: c(pf, "final")[x][0])
         out.append(f"- H-robust / H-contiguity: this run's leading outcome at 5 statements (memory → prompt, everything "
                    f"after the question, layers 44-52) is '{T[win]}'; e5f4 vs e5f0 for it: see the rows above "
                    f"('same' = within 0.15 supports H-robust, 'differs' with a drop H-contiguity, 'unclear' neither).")  # fmt: skip
         out.append(f"- H-fewer-entities: the e3f0_vs_e5f0 '{T['position']}' entries above ('differs' with a positive "
                    "difference supports it).")  # fmt: skip
         return out
-    f_, l_ = c("RL", "final"), c("RL", "last")
-    rr_f, rr_l, dl_f = c("RR", "final"), c("RR", "last"), c("DL", "final")
+    f_, l_ = c(pf, "final"), c(pf, "last")
+    rr_f, rr_l, dl_f = c(cf, "final"), c(cf, "last"), c(rf, "final")
     return [
         f"- H-pointer: memory → prompt, {T['position']}: after the question {_pct(f_['position'])}, last two tokens "
         f"{_pct(l_['position'])} (>= 50%: {yn(f_['position'][0] >= 0.5 or l_['position'][0] >= 0.5)}); memory → "
@@ -1228,16 +1470,17 @@ def prior_checks(m: dict, a: dict) -> list[str]:
 
 def report_md(name: str, m: dict, a: dict, out: Path) -> str:
     """AGENTS.md's report block, the rule's verdicts (with cuts and reachability), checks, Dan's predictions, priors."""
+    pf = family_roles(m)[0]
     r, v = a["rates"], a["verdicts"]
     lvs = m["levels"]
     main_lv = "e5f0" if "e5f0" in lvs else lvs[0]
     n_fam = {k: x for k, x in a["n_per_family"].items()}
-    prim = r.get(f"RL|all|{main_lv}|final|transit|dissoc")
-    same = r.get(f"RL|all|{main_lv}|final|transit|same")
+    prim = r.get(f"{pf}|all|{main_lv}|final|transit|dissoc")
+    same = r.get(f"{pf}|all|{main_lv}|final|transit|same")
     tr = m["windows"]["transit"]
-    rand_l = [r.get(f"RL|all|{main_lv}|final|{la}|rand") for la in tr]
+    rand_l = [r.get(f"{pf}|all|{main_lv}|final|{la}|rand") for la in tr]
     rand_changed = max((x["changed"] for x in rand_l if x), default=None, key=lambda t: t[0])
-    other_l = [r.get(f"RL|all|{main_lv}|final|{la}|other") for la in tr]
+    other_l = [r.get(f"{pf}|all|{main_lv}|final|{la}|other") for la in tr]
     other_changed = max((x["changed"] for x in other_l if x), default=None, key=lambda t: t[0])
     where = out.relative_to(pins.REPO_ROOT) if out.is_relative_to(pins.REPO_ROOT) else out
     figs = [f"{where}/{f}" for fs in a["figures"].values() for f in fs if f.endswith(".png")]
@@ -1274,7 +1517,7 @@ def report_md(name: str, m: dict, a: dict, out: Path) -> str:
     ]
     ch = a["checks"]
     nt = a["near_ties"]
-    dom_v = {dm: v.get(f"RL|domain:{dm}|{main_lv}|final|transit", {}).get("verdict") for dm in a["domains"]}
+    dom_v = {dm: v.get(f"{pf}|domain:{dm}|{main_lv}|final|transit", {}).get("verdict") for dm in a["domains"]}
     dumb = [
         "Position here could be the absolute token offset rather than the statement's order: statements have equal "
         "length, so the two coincide (the filler level keeps the same layout in base and source and does not separate "
@@ -1331,11 +1574,11 @@ def report_md(name: str, m: dict, a: dict, out: Path) -> str:
               "| cut | level | n | same n | verdict | rule reachable | shares |", "|---|---|---|---|---|---|---|"]  # fmt: skip
     for lv in lvs:
         for cut in ["all", *(f"domain:{d}" for d in a["domains"]), "slot:first", "slot:middle", "slot:last"]:
-            vv = v.get(f"RL|{cut}|{lv}|final|transit")
+            vv = v.get(f"{pf}|{cut}|{lv}|final|transit")
             if not vv:
                 continue
-            d = r.get(f"RL|{cut}|{lv}|final|transit|dissoc")
-            sm = r.get(f"RL|{cut}|{lv}|final|transit|same")
+            d = r.get(f"{pf}|{cut}|{lv}|final|transit|dissoc")
+            sm = r.get(f"{pf}|{cut}|{lv}|final|transit|same")
             dmg = f" ({sm['n'] - sm['k'].get('none', 0)} 'same' changes)" if vv["verdict"] == "damage" and sm else ""
             lines.append(f"| {cut} | {lv} | {vv['n']} | {vv['n_same']} | {VERDICT_TERM[vv['verdict']]}{dmg} | "
                          f"{'yes' if vv['rule_reachable'] else 'NO (n < 35)'} | {_shares(d)} |")  # fmt: skip
@@ -1355,6 +1598,19 @@ def report_md(name: str, m: dict, a: dict, out: Path) -> str:
             cells = [f"{100 * c['diffs'][x]['diff'][0]:+.0f} [{100 * c['diffs'][x]['diff'][1]:+.0f}, "
                      f"{100 * c['diffs'][x]['diff'][2]:+.0f}] {c['diffs'][x]['label']}" for x in PV.HYPOTHESES]  # fmt: skip
             lines.append(f"| {k} | {c['interpretable']} | " + " | ".join(cells) + " |")
+    if a.get("ref_contrasts"):
+        lines += ["", "## Reflexive test (pre-registered v2 rule): the alt prompt's own answer, when it is also in the org "
+                  "prompt vs when it is not (same scenes, paired)", "",
+                  "| family | patched tokens | layer | pairs | alt answer, also in org | alt answer, not in org | "
+                  "difference [95% CI] | label | plain cell interpretable |", "|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+        for k, c in a["ref_contrasts"].items():
+            fam, _lv, grp, layer = k.split("|")
+            if fam != pf or grp not in ("final", "last"):
+                continue
+            dd = c["diff"]
+            lines.append(f"| {fam} | {GROUP_TITLE[grp]} | {layer} | {c['n_pairs']} | {100 * c['ref_value']:.0f}% | "
+                         f"{100 * c['pln_value']:.0f}% | {100 * dd[0]:+.0f} [{100 * dd[1]:+.0f}, {100 * dd[2]:+.0f}] | "
+                         f"{c['label']} | {c['interpretable']} |")  # fmt: skip
     if name == "d3_main_ae_27b":
         lines += dan_section(a)
     lines += ["", "## Agent priors in the job spec (jobs/d3/" + name + ".yaml `hypotheses`) vs results", ""]
@@ -1369,7 +1625,7 @@ def report_md(name: str, m: dict, a: dict, out: Path) -> str:
     if ex.exists():
         e = json.loads(ex.read_text())
         pick = (
-            next((x for x in e["examples"] if x["group"] == "position" and x["family"] == "RL"), None)
+            next((x for x in e["examples"] if x["group"] == "position" and x["family"] == pf), None)
             or (e["examples"] or [None])[0]
         )
         if pick:
@@ -1379,9 +1635,67 @@ def report_md(name: str, m: dict, a: dict, out: Path) -> str:
                       f"patched answer was the {outcome}). {pick['condition']}.", "", "Org prompt (as fed):", "", "```",
                       pick["prompt"], "```", "", "Alt prompt:", "", "```", pick["source_prompt"], "```", "",
                       f"Answers: answer org {pick['answers']['clean']}; after the patch {pick['answers']['edited']}. "
-                      "Predicted: " + "; ".join(f"{OUTCOME_TERM[h]} {exp[h]} (p {pp.get(h, 0):.3f})" for h in PV.HYPOTHESES)
+                      "Predicted: " + "; ".join(f"{OUTCOME_TERM[h]} {exp[h]} (p {pp.get(h, 0):.3f})" for h in HYPS
+                                         if exp.get(h, "-") != "-")
                       + ".", ""]  # fmt: skip
     return "\n".join(lines) + "\n"
+
+
+def fig_ref(a: dict, m: dict, path: Path) -> list[str]:
+    """pointer_v2's reflexive test: the alt prompt's own answer by layer, when it is also in the org prompt (ref) and
+    when it is not (pln), on the same scenes; the paired difference's 95% CI shaded."""
+    import matplotlib.pyplot as plt
+    from matplotlib.lines import Line2D
+
+    from bridge_jspace.plotting import INK, percent_axis, style_axes
+
+    pf, rf, _ = family_roles(m)
+    fams = [f for f in (pf, rf) if f in m["families"]]
+    grps = ("final", "last")
+    refs = [lv for lv in m["levels"] if lv.endswith("-ref")]
+    fig, axes = plt.subplots(len(grps), len(fams) * len(refs), figsize=(max(4.4 * len(fams) * len(refs), 12.6), 7.4), sharex=True,
+                             sharey=True, squeeze=False)  # fmt: skip
+    layers = sorted(m["layers"])
+    for j, (fam, ref) in enumerate([(f, r) for r in refs for f in fams]):
+        for i, grp in enumerate(grps):
+            ax = axes[i][j]
+            style_axes(ax)
+            tr = m["windows"]["transit"]
+            _band(ax, tr[0], tr[-1], None)
+            xs, rr, rp, lo, hi = [], [], [], [], []
+            for la in layers:
+                c = a["ref_contrasts"].get(f"{fam}|{ref}|{grp}|{la}")
+                if c:
+                    xs.append(la)
+                    rr.append(c["ref_value"])
+                    rp.append(c["pln_value"])
+                    lo.append(c["pln_value"] + c["diff"][1])
+                    hi.append(c["pln_value"] + c["diff"][2])
+            ax.fill_between(xs, lo, hi, color=OUTCOME_COLOR["value"], alpha=0.14, lw=0)
+            ax.plot(xs, rr, color=OUTCOME_COLOR["value"], lw=2)
+            ax.plot(xs, rp, color=OUTCOME_COLOR["value"], lw=1.4, ls=(0, (4, 2)))
+            ax.set_ylim(-0.02, 1.05)
+            percent_axis(ax)
+            if i == 0:
+                ax.set_title(f"{fam_title(fam).split(' (')[0]} · {level_text(m, ref).split(',')[0]}", fontsize=9,
+                             color=INK, loc="left")  # fmt: skip
+            if j == 0:
+                ax.set_ylabel(f"patched: {GROUP_SHORT[grp]}\n% of original answers", fontsize=9, color=INK)
+            if i == len(grps) - 1:
+                ax.set_xlabel("layer patched", fontsize=9, color=INK)
+    handles: list[Any] = [
+        Line2D([], [], color=OUTCOME_COLOR["value"], lw=2, label="% that become the alt prompt's answer, which the org prompt also has"),
+        Line2D([], [], color=OUTCOME_COLOR["value"], lw=1.4, ls=(0, (4, 2)), label="% that become the alt prompt's answer, which the org prompt does not have"),
+    ]  # fmt: skip
+    rows = _caption(a, m, refs[0], "everything after the question / the last 2 tokens",
+                    "Solid vs dashed: the same scenes, the alt prompt's answer present in the org prompt or not. Shading: "
+                    "95% CI of the paired difference around the dashed line. A pointer to the answer token needs the "
+                    "digit in the prompt (solid above dashed); a digit carried as content does not (lines together).",
+                    control="Pre-registered: 'reflexive' if the difference's lower bound is above +10 points, 'content' "
+                    "if its CI lies within ±10 points.", ci="shading = paired-bootstrap 95% CI of the difference.")  # fmt: skip
+    return _finish(
+        fig, path, "Does the alt prompt's answer need to be in the org prompt to come out?", rows, handles, ncols=1
+    )
 
 
 def stage_figures(name: str) -> Path:
@@ -1400,6 +1714,7 @@ def stage_figures(name: str) -> Path:
     a = analyze(m, rows, checks)
     a["near_ties"] = near_ties(rows)
     a["example_line"] = example_line(m, name)
+    a["example_lines"] = {lv: example_line(m, name, lv) for lv in m["levels"]}
     figs: dict[str, list[str]] = {}
     main_lv = "e5f0" if "e5f0" in m["levels"] else m["levels"][0]
     for lv in m["levels"]:
@@ -1414,6 +1729,8 @@ def stage_figures(name: str) -> Path:
     if len(m["levels"]) > 1:
         figs["levels_final"] = fig_levels(a, m, "final", out / "levels_final")
         figs["levels_last"] = fig_levels(a, m, "last", out / "levels_last")
+    if a.get("ref_contrasts"):
+        figs["reflexive"] = fig_ref(a, m, out / "reflexive")
     a["figures"] = figs
     (out / "summary.json").write_text(json.dumps(a, indent=1) + "\n")
     (out / "report.md").write_text(plain(report_md(name, m, a, out)))
@@ -1426,6 +1743,7 @@ def stage_figures(name: str) -> Path:
 
 GROUP_DEFS = {
     "position": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction)",
+    "token": "the patched base answered the base's digit at the source statement's token offset (H-token)",
     "identity": "the patched base answered the base's digit for the source's entity (H-word / lexical key)",
     "value": "the patched base answered the source's own answer, absent from the base context (H-value)",
     "none": "the patch left the base answer",
@@ -1450,13 +1768,22 @@ def char_spans(offsets: list[tuple[int, int]], positions: list[int]) -> list[tup
 
 
 def statement_char_spans(text: str, item: dict, order: list[str], digits: list[int]) -> list[tuple[int, int]]:
+    """Char spans of the prompt's statements (in order; pointer_v1/v2 and alias items). Code items have none: []."""
+    base = order == item["entities"] and digits == item["digits"]
+    ctx = item["context"] if base else item["sources"]["dissoc"]["context"]
+    if "statements" in item:  # alias_pointer_v1 records every prompt's statements
+        return PV.statement_spans(text, ctx, item["statements"] if base else item["sources"]["dissoc"]["statements"])
+    part = item if base else item["sources"]["dissoc"]
+    if "entries" in part.get("spans", {}):  # code_pointer_v1: the dict entries, offsets in the user turn's content
+        at = text.index(ctx)
+        return [(at + s, at + e) for s, e in part["spans"]["entries"]]
+    if item["domain"] not in PV.DOMAINS:
+        return []
     facts = [PV.DOMAINS[item["domain"]]["statement"].format(e=e, d=d) for e, d in zip(order, digits, strict=True)]
-    ctx = (
-        item["context"]
-        if order == item["entities"] and digits == item["digits"]
-        else item["sources"]["dissoc"]["context"]
-    )
-    return PV.statement_spans(text, ctx, facts)
+    try:
+        return PV.statement_spans(text, ctx, facts)
+    except ValueError:
+        return []
 
 
 def stage_examples(name: str, k: int, seed: int, group: str | None) -> None:
@@ -1479,7 +1806,7 @@ def stage_examples(name: str, k: int, seed: int, group: str | None) -> None:
         picked = [o for o in rows if o["source"] == "dissoc" and o["group"] == focus and o["layer"] != 0]
     by_group: dict[str, list[dict]] = collections.defaultdict(list)
     for o in picked:
-        g = o["role"] if o["role"] in ("position", "identity", "value", "none", "context") else "other"
+        g = o["role"] if o["role"] in ("position", "token", "identity", "value", "none", "context") else "other"
         by_group[g].append(o)
     by_group["same_changed"] = [
         o for o in rows if o["source"] == "same" and o["group"] == focus and o["role"] != "none"
@@ -1495,22 +1822,26 @@ def stage_examples(name: str, k: int, seed: int, group: str | None) -> None:
             sl, d = it["slots"], it["sources"]["dissoc"]
             st = statement_char_spans(prep["text"], it, it["entities"], it["digits"])
             q0 = prep["text"].rindex("\n" + it["question"]) + 1
-            cue_at = prep["text"].index(it["cue"], q0)
+            cue_at = prep["text"].find(it["cue"], q0)
             spans = [
                 {"start": s, "end": e, "role": f"patched ({o['group']})"}
                 for s, e in char_spans(prep["offsets"], prep["groups"][o["group"]])
             ]
-            spans += [{"start": st[sl["query"]][0], "end": st[sl["query"]][1], "role": "bridge statement (base query, slot a)"},
-                      {"start": st[sl["identity"]][0], "end": st[sl["identity"]][1], "role": "identity statement (source's entity in the base)"},
-                      {"start": st[sl["position"]][0], "end": st[sl["position"]][1], "role": "position statement (base entity at the source's queried slot)"},
-                      {"start": cue_at, "end": cue_at + len(it["cue"]), "role": "cue"}]  # fmt: skip
+            named = (("query", "bridge statement (base query, slot a)"),
+                     ("identity", "identity statement (source's entity in the base)"),
+                     ("position", "position statement (base entity at the source's queried slot)"),
+                     ("token", "token statement (base statement at the source statement's token offset)"))  # fmt: skip
+            spans += [{"start": st[sl[key]][0], "end": st[sl[key]][1], "role": role} for key, role in named
+                      if isinstance(sl.get(key), int) and sl[key] < len(st)]  # fmt: skip
+            if cue_at >= 0:
+                spans.append({"start": cue_at, "end": cue_at + len(it["cue"]), "role": "cue"})
             s_st = statement_char_spans(prep["source_text"], it, d["entities"], d["digits"])
             examples.append({
                 "group": g, "family": it["family"], "item_id": it["id"], "domain": it["domain"], "prompt": text,
                 "spans": spans,
                 "source_prompt": prep["source_text"] + " ",
                 "source_spans": [{"start": s_st[sl["position"]][0], "end": s_st[sl["position"]][1],
-                                  "role": "source's queried statement (slot k)"}],
+                                  "role": "source's queried statement (slot k)"}] if sl["position"] < len(s_st) else [],
                 "condition": f"base's residual at the {o['group']} tokens replaced by the dissoc source's at layer "
                              f"{o['layer']} (one forward, answer read after 'Answer:' and a space)",
                 "answers": {"clean": it["answer"], "edited": o["top"].strip(), "expected": d["predictions"],
@@ -1532,15 +1863,22 @@ if __name__ == "__main__":
     ap.add_argument("stage", choices=["manifest", "run", "summarise", "examples", "analyze", "figures"])
     ap.add_argument("--name", required=True)
     ap.add_argument("--why")
-    ap.add_argument("--set", default="dev", choices=list(PV.SETS))
-    ap.add_argument("--levels", nargs="+", default=None)
-    ap.add_argument("--families", nargs="+", default=list(PV.FAMILIES), choices=list(PV.FAMILIES))
-    ap.add_argument("--domains", nargs="+", default=list(PV.DOMAINS), choices=list(PV.DOMAINS))
-    ap.add_argument("--n", type=int, default=25, help="scenes per (domain, level)")
+    ap.add_argument("--data", default="pointer_v1", choices=list(DATASETS), help="the items' generator (data/<data>/)")
+    ap.add_argument("--set", default="dev", help="a set of the --data generator (pointer_v1: main, dev, fit)")
+    ap.add_argument("--levels", nargs="+", default=None, help="default: every level with files")
+    ap.add_argument("--families", nargs="+", default=None, help="default: the generator's FAMILIES")
+    ap.add_argument("--domains", nargs="+", default=None, help="default: the generator's DOMAINS")
+    ap.add_argument(
+        "--family-roles", nargs=3, default=None, help="primary, reference, contrast family (default per data)"
+    )
+    ap.add_argument("--n", type=int, default=25, help="scenes per (domain, base level)")
     ap.add_argument("--layers", nargs="+", type=int, default=None)
     ap.add_argument("--layer-step", type=int, default=2)
     ap.add_argument("--control-stride", type=int, default=2)
-    ap.add_argument("--competence", default=None, help="pointer_v1 competence run deciding eligibility")
+    ap.add_argument("--groups", nargs="+", default=None, choices=list(GROUPS), help="patch sites (default: all four)")
+    ap.add_argument("--question-max-layer", type=int, default=None, help="patch the question words only up to here")
+    ap.add_argument("--control-levels", nargs="+", default=None, help="levels that get the random and other controls")
+    ap.add_argument("--competence", default=None, help="the --data generator's competence run deciding eligibility")
     ap.add_argument("--no-eligibility", action="store_true", help="smoke runs: sample regardless of competence")
     ap.add_argument("--k", type=int, default=3)
     ap.add_argument("--seed", type=int, default=EXAMPLE_SEED)

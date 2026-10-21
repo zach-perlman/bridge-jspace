@@ -53,3 +53,46 @@ def test_plain_names():
     assert PS.plain("RL and RR, `family == 'RL'`") == "memory → prompt and memory → memory, `family == 'RL'`"
     assert PS.plain("item animals-RL-e5f0-0001") == "item animals-RL-e5f0-0001"  # ids keep their codes
     assert "W" in PS.rule_plain("verdict X in {identity}") and "bridge alt's statement" in PS.rule_plain("identity")
+    assert PS.plain("RK and DK") == "memory → prompt and named → prompt"  # code_pointer_v1's families
+
+
+def test_token_candidate():
+    same = cell(100)
+    cands = ("identity", "position", "token", "value")
+    assert PS.verdict("RL", cell(100, token=40, position=5), same, {}, 5, cands, 1) == "token"
+    assert PS.verdict("RL", cell(100, token=30, position=28), same, {}, 5, cands, 1) == "mixed"
+
+
+def test_eligibility_keyed_by_set(tmp_path):
+    import json
+
+    rows = [
+        {"label": "main/animals_RL_e5f0", "id": "x-0", "correct": True},
+        {"label": "dev/animals_RL_e5f0", "id": "x-0", "correct": False},  # the same id in another set
+        {"label": "main/animals_RL_e5f0", "id": "x-1", "correct": False},
+    ]
+    f = tmp_path / "items.jsonl"
+    f.write_text("\n".join(json.dumps(r) for r in rows) + "\n")
+    assert PS.eligible_ids(f) == {("main", "x-0")}
+
+
+def test_ref_contrast_pairs_by_scene():
+    rows = []
+    for i in range(60):
+        for lv, val in (("e5-ref", i < 40), ("e5-pln", i < 10)):
+            rows.append({"source": "dissoc", "group": "last", "family": "RL", "level": lv, "layer": 56,
+                         "name": f"animals-RL-{lv}-{i:04d}", "role": "value" if val else "none"})  # fmt: skip
+    m = {"levels": ["e5-ref", "e5-pln"]}
+    out = PS.ref_contrasts(m, rows, {"RL|all|e5-pln|last|56": {"verdict": "value"}})
+    c = out["RL|e5-ref|last|56"]
+    assert c["n_pairs"] == 60
+    assert c["ref_value"] == pytest.approx(40 / 60, abs=1e-3)
+    assert c["pln_value"] == pytest.approx(10 / 60, abs=1e-3)
+    assert c["label"] == "reflexive"
+    assert c["interpretable"]
+
+
+def test_base_level():
+    assert PS.base_level("e5-off") == "e5"
+    assert PS.base_level("e5f0-xlang") == "e5f0"
+    assert PS.base_level("e5f0") == "e5f0"
