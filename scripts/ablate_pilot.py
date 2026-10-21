@@ -1,10 +1,11 @@
 """ablate_pilot: the paper's own kind of test, removing the J-space, as a check that does not depend on the copy split
 (Zach, 2026-10-20, cheap experiment before the sprint plan).
 
-At layers 32, 36 and 40 at once, at every position, each residual loses its 25-atom J-space part (signed OMP over the
-frozen J++'s letter-token vectors, the split's J-space part, here of the state itself); the control loses the same
-fit over a random dictionary of the same size (seeded per layer). On unedited-correct items, read at the answer's
-first token (suite_split's read):
+At layers 32, 36 and 40 at once (another target: --layers, each a layer its frozen lens has a map at), at every
+position, each residual loses its 25-atom J-space part (signed OMP over the frozen lens's letter-token vectors: J++ on
+Qwen, the J-lens on OLMo, recorded in the manifest with its layers; the split's J-space part, here of the state itself);
+the control loses the same fit over a random dictionary of the same size (seeded per layer). On unedited-correct
+items, read at the answer's first token (suite_split's read):
   clean   the whole question                      hop     the last step alone (suite_v1's hop2 / hop3: a lookup in the
                                                           prompt for BL, RL; a recalled fact for BR, RR, TYPO, TRANS)
 Reported per family: accuracy (top token = the answer's) and the mean change in the answer token's log-probability.
@@ -181,11 +182,13 @@ def main(
     from bridge_jspace.model import load_model
 
     pins.check_run_name(name)  # the target's prefix; "_raw" iff BJ_FORMAT=raw
+    pins.check_lens_layers(LAYERS)
     out_dir = RESULTS / name
     out_dir.mkdir(parents=True, exist_ok=True)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
     manifest = {"run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "layers": list(LAYERS),
+                "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
+                "lens_layers": pins.LENS_LAYERS, "layers": list(LAYERS),
                 "k_atoms": K_ATOMS, "n_per_family": n, "skip_first": skip_first, "center": center, "rotated": rotated,
                 "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")

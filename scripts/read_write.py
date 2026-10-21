@@ -2,8 +2,10 @@
 2026-10-20: quick experiment L4 before the sprint plan.)
 
 On the cases of suite_split's map_A8_v1 (animal suite, wording A) and control_split's map_v1 (countries R, B), at
-Qwen3.6-27B's window (layers 32, 36, 40) on the question tokens:
-  read   the J-lens readout (frozen J++) of the clean run: the bridge's best rank among word tokens over the question
+Qwen3.6-27B's window (layers 32, 36, 40; another target: --layers, each a layer its frozen lens has a map at) on the
+question tokens:
+  read   the J-lens readout (the target's frozen lens, pins.FROZEN_LENS: J++ on Qwen, the J-lens on OLMo; recorded in
+         the manifest with its layers) of the clean run: the bridge's best rank among word tokens over the question
          positions (formatting tokens removed; any single-token surface of the bridge counts), per layer; the same
          for X (the counterfactual bridge, absent from the clean prompt) as the floor
   write  add the lens direction v_X - v_I (unit lens vectors of X and the bridge I, their difference rescaled per
@@ -119,6 +121,7 @@ def main(
     from bridge_jspace.model import load_model
 
     pins.check_run_name(name)  # the target's prefix; "_raw" iff BJ_FORMAT=raw
+    pins.check_lens_layers(LAYERS)
     out_dir = RESULTS / name
     out_dir.mkdir(parents=True, exist_ok=True)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
@@ -129,7 +132,8 @@ def main(
     )
     inputs = {p: sha256_of(p) for p in sources}
     manifest = {"run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "layers": list(LAYERS),
+                "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
+                "lens_layers": pins.LENS_LAYERS, "layers": list(LAYERS),
                 "scales": list(SCALES), "n_per_family": n, "doc": (__doc__ or "").split("\n\n")[1],
                 "inputs": {str(p.relative_to(pins.REPO_ROOT)): s for p, s in inputs.items()}}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")

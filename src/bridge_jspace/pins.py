@@ -35,7 +35,8 @@ TEMPLATE_LENS_FILE = "qwen3.6-27b/template-lens/templates.safetensors"
 TEMPLATE_WORDS_FILE = "qwen3.6-27b/template-lens/template_words.txt"
 # The lens is frozen (Zach, 2026-10-19; README Decisions): part B's runs use the published J++ (neuronpedia/jacobian-lens,
 # JPP_FILE at LENS_REVISION), no further lens fitting or lens comparisons in headline runs. Its file's sha256 is checked
-# on load (lens.py), so a changed upload cannot slip in under the same name.
+# on load (lens.py), so a changed upload cannot slip in under the same name. Another target names its own frozen lens
+# ("frozen_lens" in TARGETS; default "jpp") and sha256 (see below the TARGETS table).
 FROZEN_LENS = "jpp"
 FROZEN_LENS_SHA256 = "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
 LENS_SOURCES = {  # every J-format lens part B can load: name -> (repo, file, revision)
@@ -191,8 +192,9 @@ TARGETS: dict[str, dict[str, Any]] = {
     # Lenses: mhough/olmo3-jacobian-lenses, plain J-lenses (NOT J++) in jlens's save format (J, source_layers,
     # n_prompts, d_model; fp16), one per checkpoint, fit with the same recipe on the same 616 wikitext-103 train prompts
     # (128 tokens, skip 16, target = block 31) at source layers 0, 3, ..., 30 only ("lens_layers"). JLens reads them as
-    # they are (no conversion). Their key is "jlens": the part B scripts load pins.FROZEN_LENS ("jpp") and fail on these
-    # targets until pins picks a target's frozen lens (the port plan's diff), so no run can label a J-lens as J++.
+    # they are (no conversion). Their key is "jlens", named by "frozen_lens": FROZEN_LENS below is this key on these
+    # targets (and its sha256 is checked on load), so a run records the J-lens as "jlens", never as J++; scripts that use
+    # the lens restrict their layers to LENS_LAYERS.
     "olmo-3-7b-base": {
         "repo": "allenai/Olmo-3-1025-7B",
         "revision": "a81bae42db3975be1671e27b9c9a56da1a9f980f",
@@ -200,6 +202,7 @@ TARGETS: dict[str, dict[str, Any]] = {
         "norm_gain": "weight",
         "bos": False,
         "run_prefix": "olmo3_7b_base_",
+        "frozen_lens": "jlens",
         "lens_layers": list(range(0, 31, 3)),
         "lenses": {
             "jlens": (
@@ -224,6 +227,7 @@ TARGETS: dict[str, dict[str, Any]] = {
         "norm_gain": "weight",
         "bos": False,
         "run_prefix": "olmo3_7b_sft_",
+        "frozen_lens": "jlens",
         "lens_layers": list(range(0, 31, 3)),
         "lenses": {
             "jlens": (
@@ -241,6 +245,7 @@ TARGETS: dict[str, dict[str, Any]] = {
         "norm_gain": "weight",
         "bos": False,
         "run_prefix": "olmo3_7b_dpo_",
+        "frozen_lens": "jlens",
         "lens_layers": list(range(0, 31, 3)),
         "lenses": {
             "jlens": (
@@ -258,6 +263,7 @@ TARGETS: dict[str, dict[str, Any]] = {
         "norm_gain": "weight",
         "bos": False,
         "run_prefix": "olmo3_7b_instruct_",
+        "frozen_lens": "jlens",
         "lens_layers": list(range(0, 31, 3)),
         "lenses": {
             "jlens": (
@@ -275,10 +281,28 @@ MODEL_REPO: str = TARGETS[TARGET]["repo"]
 MODEL_REVISION: str = TARGETS[TARGET]["revision"]
 N_LAYERS: int = TARGETS[TARGET]["n_layers"]
 RUN_PREFIX: str = TARGETS[TARGET]["run_prefix"]
+# The layers the target's frozen lens has a map at; None: the layers the scripts use all have one (every pin before the
+# OLMo ladder), so nothing is restricted.
+LENS_LAYERS: list[int] | None = None
 if TARGET != "qwen3.6-27b":
     CACHE_DIR = REPO_ROOT / "cache" / TARGET
     LENS_SOURCES = TARGETS[TARGET]["lenses"]
+    FROZEN_LENS = TARGETS[TARGET].get("frozen_lens", FROZEN_LENS)
     FROZEN_LENS_SHA256 = TARGETS[TARGET].get("frozen_lens_sha256", FROZEN_LENS_SHA256)
+    LENS_LAYERS = TARGETS[TARGET].get("lens_layers")
+
+
+def on_lens(layers) -> tuple[int, ...]:
+    """`layers` that have a map in the target's frozen lens, in order (all of them when LENS_LAYERS is None)."""
+    return tuple(la for la in layers if LENS_LAYERS is None or la in LENS_LAYERS)
+
+
+def check_lens_layers(layers) -> None:
+    """Assert every layer in `layers` has a map in the target's frozen lens (before a run writes anything)."""
+    missing = [la for la in layers if not on_lens((la,))]
+    assert not missing, (
+        f"BJ_TARGET={TARGET}: layers {missing} have no {FROZEN_LENS} map; its lens layers are {LENS_LAYERS}"
+    )
 
 
 def model_pin() -> dict[str, str]:

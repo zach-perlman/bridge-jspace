@@ -2,7 +2,7 @@ id: olmo3_7b_dpo_parts_a_raw_v1
 thread: D5
 gpus: 1
 est_gpu_hours: 0.5
-mem_gb: 30
+mem_gb: 48
 depends_on:
 - olmo3_7b_dpo_map_a_raw_v1
 command: BJ_TARGET=olmo-3-7b-dpo BJ_FORMAT=raw uv run python scripts/suite_split.py manifest_parts --name olmo3_7b_dpo_parts_a_raw_v1
@@ -25,6 +25,6 @@ controls:
 n: 150 scenes per family group
 seeds:
 - 0
-notes: 'DRAFT for a later night (not enqueued). BJ_FORMAT is in (chat.py, 2026-10-21: raw = the user content, a newline and Answer:, no template; recorded as model.prompt_format in every manifest; raw run names carry _raw) and suite_split reads the competence run of the same format (<prefix>competence_<format>_v1); competence smoked on OLMo-3-7B-Instruct in both formats. Still needed for the lens stages (read_write, ablate_pilot, suite_split parts): pins picking the frozen lens of each target (jlens) and lens-stage layers restricted to the lens layers (0, 3, ..., 30). Disk:
+notes: 'DRAFT for a later night (not enqueued). BJ_FORMAT is in (chat.py, 2026-10-21: raw = the user content, a newline and Answer:, no template; recorded as model.prompt_format in every manifest; raw run names carry _raw) and suite_split reads the competence run of the same format (<prefix>competence_<format>_v1); competence smoked on OLMo-3-7B-Instruct in both formats. Lens port in (2026-10-21): pins.FROZEN_LENS is each OLMo target''s J-lens (key jlens, sha256-checked on load), a lens stage refuses a layer without a lens map before it writes anything, and manifests record the lens key and lens_layers. Disk:
   model snapshots in the box''s HF cache (/ephemeral/hf). 9B parts took 1141 s. No examples_command: suite_split.py
   has no examples stage yet (none of suite_v1, ablate_pilot, read_write, suite_split has one).'

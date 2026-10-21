@@ -2,12 +2,14 @@
 part B's prompt suite (scripts/suite_v1.py), scored by reading the answer instead of generating it.
 
   map    copy C's (or O's) block output into the clean run at a position group, one layer at a time (every 4th layer
-         on Qwen3.6-27B, every 2nd on Qwen3.5-9B, below the last three blocks): 'question' (the question's tokens after
-         C's changed ones, through the template and 'Answer:'), 'last' (the last token)
-  parts  at each family's question-group window, below the layer where the last token alone already carries the
-         answer: the copy split into its J-space part (25-atom signed OMP over the frozen J++'s letter-token vectors)
-         and the rest, and into its projection on J++'s vectors of the bridge and X and the rest; each part also along
-         a matched-norm random direction (its null)
+         on Qwen3.6-27B, every 2nd on Qwen3.5-9B, below the last three blocks; on a target whose frozen lens has maps
+         only at some layers, those below the last three blocks, so the parts window is made of lens layers: OLMo-3-7B
+         0, 3, ..., 27): 'question' (the question's tokens after C's changed ones, through the template and 'Answer:'),
+         'last' (the last token)
+  parts  at each family's question-group window (lens layers only), below the layer where the last token alone already
+         carries the answer: the copy split into its J-space part (25-atom signed OMP over the frozen lens's
+         letter-token vectors: J++ on Qwen, the J-lens on OLMo) and the rest, and into its projection on the lens's
+         vectors of the bridge and X and the rest; each part also along a matched-norm random direction (its null)
 
 Scoring (Zach, 2026-10-19: a continuous measure next to answer flips): one forward of the edited prompt, with a digit
 answer's space token appended (the greedy reply's first token in every unedited competence prompt), read at the
@@ -55,7 +57,11 @@ from scripts.exp04_brew_parts import K_ATOMS, AddRows, lens2_part, null_rows, si
 
 EXP = "suite_split"
 RESULTS = pins.RESULTS_DIR / EXP
-MAP_LAYERS = tuple(range(0, pins.N_LAYERS - 3, max(1, pins.N_LAYERS // 16)))
+MAP_LAYERS = (
+    tuple(la for la in pins.LENS_LAYERS if la < pins.N_LAYERS - 3)
+    if pins.LENS_LAYERS is not None
+    else tuple(range(0, pins.N_LAYERS - 3, max(1, pins.N_LAYERS // 16)))
+)
 # exp12 (Qwen3.6-27B): the answer is read at the last word from about layer 44 (exp09's cap); other targets: the map's
 # own answer_formed only.
 # Qwen3.5-122B-A10B: no exp12 either; capped at the 27B's relative depth (44/64 -> 33/48), so its windows stay in the
@@ -232,6 +238,7 @@ def stage_manifest_map(name: str, why: str, families: list[str], n_scenes: int, 
     m = manifest_common(name, why, "map", families, wording)
     m["question"] = "Where, by layer and position group, does each family carry its bridge (lens-free)?"
     m["layers"] = list(MAP_LAYERS)
+    m["lens_layers"] = pins.LENS_LAYERS  # the grid's restriction (null: none), so the parts window has lens maps
     m["n_scenes"] = n_scenes
     m["validation"] = f"8 greedy tokens for every edit of the first {N_VALIDATE} cases per family; agreement of roles"
     m["decision"] = {
@@ -381,6 +388,21 @@ def answer_formed(outcomes: list[dict]) -> dict[str, int]:
 CALIBRATION = ("jspace_wo_own", "rand_omp")  # parts with --calibrate (each with its random null)
 
 
+def parts_window(
+    map_summary: dict, families: list[str], cap_override: int | None = None
+) -> tuple[dict[str, int], dict[str, list[int]]]:
+    """Per family, the cap (answer_formed, at most ANSWER_ONSET, or `cap_override`) and the parts window: the map's
+    question-group window below the cap, at layers the frozen lens has a map at."""
+    cap = {f: min(map_summary["answer_formed"].get(f, ANSWER_ONSET), ANSWER_ONSET) for f in families}
+    if cap_override is not None:  # a sensitivity run: the window's upper layer set by hand (the manifest records it)
+        cap = {f: cap_override for f in cap}
+    window = {
+        f: list(pins.on_lens(la for la in map_summary["windows"].get(f, {}).get("question", []) if la < cap[f]))
+        for f in families
+    }
+    return cap, window
+
+
 def stage_manifest_parts(
     name: str, map_run: str, why: str, calibrate: bool = False, cap_override: int | None = None
 ) -> None:
@@ -391,10 +413,7 @@ def stage_manifest_parts(
     map_summary = RESULTS / map_run / "summary.json"
     blob = json.loads(map_summary.read_text())
     families = map_m["families"]
-    cap = {f: min(blob["answer_formed"].get(f, ANSWER_ONSET), ANSWER_ONSET) for f in families}
-    if cap_override is not None:  # a sensitivity run: the window's upper layer set by hand (the manifest records it)
-        cap = {f: cap_override for f in cap}
-    window = {f: [la for la in blob["windows"].get(f, {}).get("question", []) if la < cap[f]] for f in families}
+    cap, window = parts_window(blob, families, cap_override)
     m = manifest_common(name, why, "parts", families, map_m["wording"])
     m["question"] = "At each family's window, which part of the copy carries the bridge: its J-space part or the rest?"
     m["map"] = {
@@ -405,7 +424,8 @@ def stage_manifest_parts(
         "cap_override": cap_override,
     }
     m["sample"] = "the map run's cases (cases.jsonl), not resampled"
-    m["lens"] = {pins.FROZEN_LENS: list(pins.LENS_SOURCES[pins.FROZEN_LENS]), "sha256": pins.FROZEN_LENS_SHA256}
+    m["lens"] = {pins.FROZEN_LENS: list(pins.LENS_SOURCES[pins.FROZEN_LENS]), "sha256": pins.FROZEN_LENS_SHA256,
+                 "layers": pins.LENS_LAYERS}  # fmt: skip
     m["parts"] = {
         "full": "delta = h_C - h_clean at the question group",
         "lens2": "delta's projection on span{v_I, v_X}, the lens's unit vectors of the bridge and X; not_lens2 the rest",
@@ -466,6 +486,7 @@ def stage_run_parts(name: str) -> None:
     window = m["map"]["parts_window"]
     layers = tuple(sorted({la for v in window.values() for la in v}))
     assert layers, "no family has a window"
+    pins.check_lens_layers(layers)
     model = load_model()
     tok = model.tokenizer
     t0 = time.time()

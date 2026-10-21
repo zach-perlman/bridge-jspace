@@ -24,7 +24,7 @@ controls:
 n: 150 scenes per family group
 seeds:
 - 0
-notes: 'DRAFT for a later night (not enqueued). BJ_FORMAT is in (chat.py, 2026-10-21: raw = the user content, a newline and Answer:, no template; recorded as model.prompt_format in every manifest; raw run names carry _raw) and suite_split reads the competence run of the same format (<prefix>competence_<format>_v1); competence smoked on OLMo-3-7B-Instruct in both formats. Still needed for the lens stages (read_write, ablate_pilot, suite_split parts): pins picking the frozen lens of each target (jlens) and lens-stage layers restricted to the lens layers (0, 3, ..., 30). Disk:
-  model snapshots in the box''s HF cache (/ephemeral/hf). Map layers = the 11 lens layers (diff). 9B map took 406
+notes: 'DRAFT for a later night (not enqueued). BJ_FORMAT is in (chat.py, 2026-10-21: raw = the user content, a newline and Answer:, no template; recorded as model.prompt_format in every manifest; raw run names carry _raw) and suite_split reads the competence run of the same format (<prefix>competence_<format>_v1); competence smoked on OLMo-3-7B-Instruct in both formats. Lens port in (2026-10-21): pins.FROZEN_LENS is each OLMo target''s J-lens (key jlens, sha256-checked on load), a lens stage refuses a layer without a lens map before it writes anything, and manifests record the lens key and lens_layers. Disk:
+  model snapshots in the box''s HF cache (/ephemeral/hf). Map layers = the lens layers below the last three blocks (0, 3, ..., 27; suite_split.MAP_LAYERS). 9B map took 406
   s. No examples_command: suite_split.py has no examples stage yet (none of suite_v1, ablate_pilot, read_write,
   suite_split has one).'

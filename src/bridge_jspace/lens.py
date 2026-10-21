@@ -17,14 +17,15 @@ from .model import Model
 
 
 def check_frozen(path: Path) -> None:
-    """Assert the J++ file is the frozen one. Hashing 3.3 GB takes a minute or two, so a passed check is remembered
-    (cache/frozen_lens_checked.json: the file's path, size and mtime) and redone only when the file changes."""
+    """Assert the target's frozen lens file (pins.FROZEN_LENS: J++ on Qwen, the J-lens on OLMo) is the pinned one.
+    Hashing 3.3 GB takes a minute or two, so a passed check is remembered (cache/frozen_lens_checked.json: the file's
+    path, size and mtime) and redone only when the file changes."""
     st = path.stat()
     key = {"path": str(path.resolve()), "size": st.st_size, "mtime": st.st_mtime, "sha256": pins.FROZEN_LENS_SHA256}
     marker = pins.CACHE_DIR / "frozen_lens_checked.json"
     if marker.exists() and json.loads(marker.read_text()) == key:
         return
-    assert pins.sha256_file(path) == pins.FROZEN_LENS_SHA256, f"{path} is not the frozen J++ file"
+    assert pins.sha256_file(path) == pins.FROZEN_LENS_SHA256, f"{path} is not the frozen {pins.FROZEN_LENS} file"
     marker.parent.mkdir(parents=True, exist_ok=True)
     marker.write_text(json.dumps(key) + "\n")
 
