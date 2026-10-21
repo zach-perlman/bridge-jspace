@@ -1,0 +1,209 @@
+{
+  "domains": {
+    "countries": {
+      "pass": [
+        "Australia",
+        "Austria",
+        "Belgium",
+        "Canada",
+        "Chile",
+        "China",
+        "Cuba",
+        "Denmark",
+        "Egypt",
+        "Finland",
+        "France",
+        "Germany",
+        "Greece",
+        "Hungary",
+        "Indonesia",
+        "Iran",
+        "Iraq",
+        "Ireland",
+        "Italy",
+        "Japan",
+        "Kenya",
+        "Korea",
+        "Lebanon",
+        "Norway",
+        "Pakistan",
+        "Peru",
+        "Philippines",
+        "Poland",
+        "Portugal",
+        "Russia",
+        "Spain",
+        "Sweden",
+        "Syria",
+        "Thailand",
+        "Turkey",
+        "Venezuela"
+      ],
+      "fail": {},
+      "n_pass": 36,
+      "n_candidates": 36,
+      "usable": true
+    },
+    "sports": {
+      "pass": [
+        "baseball",
+        "basketball",
+        "bowling",
+        "boxing",
+        "chess",
+        "climbing",
+        "diving",
+        "golf",
+        "hockey",
+        "sailing",
+        "surfing",
+        "swimming",
+        "volleyball",
+        "wrestling"
+      ],
+      "fail": {
+        "polo": [
+          "chain"
+        ],
+        "softball": [
+          "chain"
+        ],
+        "pool": [
+          "chain",
+          "cue"
+        ],
+        "tennis": [
+          "chain"
+        ],
+        "skiing": [
+          "chain"
+        ],
+        "fencing": [
+          "chain"
+        ],
+        "squash": [
+          "chain",
+          "cue"
+        ],
+        "skating": [
+          "fact"
+        ],
+        "marathon": [
+          "cue"
+        ]
+      },
+      "n_pass": 14,
+      "n_candidates": 23,
+      "usable": false
+    },
+    "animals": {
+      "pass": [
+        "ant",
+        "bear",
+        "bee",
+        "butterfly",
+        "camel",
+        "cat",
+        "chicken",
+        "cow",
+        "crow",
+        "deer",
+        "dog",
+        "duck",
+        "eagle",
+        "elephant",
+        "fish",
+        "frog",
+        "goat",
+        "goose",
+        "horse",
+        "lion",
+        "mosquito",
+        "moth",
+        "mouse",
+        "owl",
+        "pig",
+        "rabbit",
+        "sheep",
+        "snake",
+        "spider",
+        "tiger",
+        "turkey",
+        "whale",
+        "wolf",
+        "worm"
+      ],
+      "fail": {
+        "dolphin": [
+          "chain"
+        ],
+        "tick": [
+          "chain",
+          "cue"
+        ],
+        "shark": [
+          "cue"
+        ],
+        "beetle": [
+          "chain",
+          "cue"
+        ],
+        "fox": [
+          "cue"
+        ],
+        "bat": [
+          "chain",
+          "fact"
+        ]
+      },
+      "n_pass": 34,
+      "n_candidates": 40,
+      "usable": true
+    },
+    "body": {
+      "pass": [
+        "ankle",
+        "bladder",
+        "brain",
+        "ear",
+        "elbow",
+        "eye",
+        "eyebrow",
+        "forehead",
+        "heart",
+        "knee",
+        "liver",
+        "skull",
+        "spine",
+        "stomach",
+        "tongue",
+        "wrist"
+      ],
+      "fail": {
+        "nose": [
+          "chain"
+        ],
+        "kidney": [
+          "cue"
+        ],
+        "cheek": [
+          "cue"
+        ],
+        "lung": [
+          "cue"
+        ],
+        "thumb": [
+          "chain"
+        ]
+      },
+      "n_pass": 16,
+      "n_candidates": 21,
+      "usable": true
+    }
+  },
+  "used": [
+    "countries",
+    "animals",
+    "body"
+  ]
+}

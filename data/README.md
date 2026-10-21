@@ -104,6 +104,20 @@ the test answers never appear; no 4-gram overlap with the 90 test prompts.
   round 3 `entity_prompts_more/` (97 entities, 1989). 24-32 prompts per entity.
 - exp01 v3 kept 2260 of 2673 (Qwen answered as expected): 12-30 per entity, median 24.
 
+### Depth-track scenes (Dan, 21 Oct; generated, seeded, each with a `check` and a `verify` stage)
+Five statements give entities a digit ("The pig's locker is 9."); a question asks one of them by a recalled cue
+(memory → prompt), by name (named → prompt), or a recalled fact (memory → memory); each item carries alt prompts
+(statements reordered, another entity asked) for patching. Used by D2 / D3 / D3b (see the root README).
+
+| Set | Generator | What differs | Size |
+|---|---|---|---|
+| `pointer_v1/` | `scripts/pointer_v1.py` | 5 statements; animals (16), elements (6), planets, months | 400 scenes per domain × family (main), plus fit / dev |
+| `pointer_v2/` | `scripts/pointer_v2.py` | one filler sentence placed differently in org and alt (order vs token position) | 180 per topic (5 statements), 120 (3) |
+| `pointer_v3/` | `scripts/pointer_v3.py` | alt with one statement more or fewer (from the start vs from the end) | 120 per topic × alt type |
+| `code_pointer_v1/` | `scripts/code_pointer_v1.py` | Python dict lookups: named key, list position, 2-3 variable chains, recalled key | 400 per domain × family |
+| `alias_pointer_v1/` | `scripts/alias_pointer_v1.py` | statements in French/Spanish/German or by chemical symbol | 400 per domain × form × family |
+| `pointer_v4/` | `scripts/pointer_v4.py` | many entities and 3 wordings: countries (36), animals (34), body parts (16) kept by the 27B entity check `d3v4_entity_probe_27b` (sports failed: 14 < 16); a held-out third of each topic's entities and wording 2 never in the fit set (`split.json`); at most 12 scenes per asked entity | main 300 / 300 / 180 scenes per family, fit 200 / 200 / 120 |
+
 ## What the lenses were fitted on
 
 Not on our data: a lens is the average Jacobian of the final residual with respect to a layer's residual over

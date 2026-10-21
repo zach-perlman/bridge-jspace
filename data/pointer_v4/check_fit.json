@@ -1,0 +1,65 @@
+{
+ "countries_RL_e5f0": {
+  "n": 200,
+  "dissoc_aligned": 200,
+  "same_aligned": 200,
+  "redigit_aligned": 200,
+  "predictions": 200,
+  "statements": 200,
+  "entities_asked": 24,
+  "max_share_asked": 0.045,
+  "wordings": {
+   "0/0": 40,
+   "0/1": 65,
+   "1/0": 45,
+   "1/1": 50
+  },
+  "cuts": {
+   "neither": 200
+  },
+  "fit_sees_held_out": false,
+  "prompts_unique": 200
+ },
+ "animals_RL_e5f0": {
+  "n": 200,
+  "dissoc_aligned": 200,
+  "same_aligned": 200,
+  "redigit_aligned": 200,
+  "predictions": 200,
+  "statements": 200,
+  "entities_asked": 21,
+  "max_share_asked": 0.05,
+  "wordings": {
+   "0/0": 45,
+   "0/1": 51,
+   "1/0": 54,
+   "1/1": 50
+  },
+  "cuts": {
+   "neither": 200
+  },
+  "fit_sees_held_out": false,
+  "prompts_unique": 200
+ },
+ "body_RL_e5f0": {
+  "n": 120,
+  "dissoc_aligned": 120,
+  "same_aligned": 120,
+  "redigit_aligned": 120,
+  "predictions": 120,
+  "statements": 120,
+  "entities_asked": 10,
+  "max_share_asked": 0.1,
+  "wordings": {
+   "0/0": 21,
+   "0/1": 35,
+   "1/0": 37,
+   "1/1": 27
+  },
+  "cuts": {
+   "neither": 120
+  },
+  "fit_sees_held_out": false,
+  "prompts_unique": 120
+ }
+}

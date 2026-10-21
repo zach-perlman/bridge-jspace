@@ -71,7 +71,7 @@ SETS: dict[str, dict[str, Any]] = {
     "main": {"seed": 841, "n": 300, "families": FAMILIES, "split": "all"},
     "fit": {"seed": 842, "n": 200, "families": ("RL",), "split": "fit"},
 }
-CAP = 12  # scenes per askable entity at most: no entity asked in more than 1/12 of a domain's scenes
+CAP = 12  # scenes per askable entity at most: with >= 12 askable entities, none is asked in > 1/12 of the scenes
 SPLIT_SEED = 843
 HELD_OUT_SHARE = 1 / 3
 HELD_OUT_TEMPLATE = 2  # the statement and question template held out of every fit
@@ -584,7 +584,9 @@ def stage_check(which: str) -> None:
         print(label, json.dumps(report[label]))
         for k in ("dissoc_aligned", "same_aligned", "redigit_aligned", "predictions", "statements"):
             assert stats[k] == n, f"{label}: {k} {stats[k]}/{n}"
-        assert report[label]["max_share_asked"] <= 1 / CAP + 1e-9, f"{label}: an entity is asked too often"
+        # the cap is a count; with fewer than CAP askable entities equal shares exceed 1/CAP and that is fine
+        assert max(asked.values()) <= CAP, f"{label}: an entity is asked more than {CAP} times"
+        assert report[label]["max_share_asked"] <= max(1 / CAP, 1 / len(asked)) + 1e-9, f"{label}: shares unequal"
         assert report[label]["prompts_unique"] == n, f"{label}: repeated prompts"
         assert not fit_leak, f"{label}: the fit set contains a held-out entity or wording"
     out = DATA / f"check_{which}.json"
