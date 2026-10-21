@@ -1,0 +1,16 @@
+{
+ "exp": "pointer_swap",
+ "run": "d3v4_swap_raw_27b",
+ "seed": 0,
+ "k": 3,
+ "selection": "source dissoc, group final, layers [44, 46, 48, 50, 52] and the transit window",
+ "groups": [
+  {
+   "key": "same_changed",
+   "title": "same changed",
+   "definition": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer",
+   "n_total": 0
+  }
+ ],
+ "examples": []
+}

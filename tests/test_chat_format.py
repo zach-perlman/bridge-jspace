@@ -89,6 +89,30 @@ def first_item(path: str) -> dict:
     return PV.load_file(pins.REPO_ROOT / path)[0]
 
 
+def test_raw_judge_reads_digits_and_words(tok, monkeypatch):
+    from scripts import pointer_v1 as PV
+    from scripts import pointer_v4 as P4
+
+    digit = {"expected": "3", "answer_kind": "digit", "read_top": "3", "continuation": "\n\n<think>\nHere's"}
+    assert PV.raw_right(tok, digit)  # the read decides, not the 8 greedy tokens that never reach the answer
+    assert not PV.raw_right(tok, digit | {"read_top": "7"})
+    word = {
+        "expected": "Japan",
+        "answer_kind": "word",
+        "judge": "countries",
+        "read_top": "",
+        "continuation_think": "Japan",
+    }
+    monkeypatch.setattr(PV, "said", P4.said)  # what pointer_v4's competence does
+    assert PV.raw_right(tok, word)
+    assert not PV.raw_right(tok, word | {"continuation_think": "Greece"})
+    assert not PV.raw_right(tok, word | {"continuation_think": "G"})  # a first token alone is not the entity
+    assert "raw format" in PV.judge_rule("raw")
+    assert "greedy" in PV.judge_rule("chat")
+    monkeypatch.setattr(chat, "FORMAT", "raw")
+    assert PV.judge_rule() == PV.JUDGE_READ
+
+
 def test_pointer_swap_groups_in_raw_text(tok, monkeypatch):
     from scripts import pointer_swap as PS
 

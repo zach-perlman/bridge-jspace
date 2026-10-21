@@ -611,7 +611,7 @@ def stage_manifest(name: str, why: str, sets: list[str], limit: int | None) -> N
          "format": f"pointer_v1's: {chat.format_note()}; context, newline, question and instruction as the user turn",
          "prompts": "base; each source (dissoc, same, redigit); hop1 (cue -> entity, with the base context) and hop2 "
          "(the lookup with the entity named, or the recalled fact) for RL and RR",
-         "judge": "pointer_v1's (digits, number words; the domain's entities for hop1)",
+         "judge": f"pointer_v1's: {PV.judge_rule()} (the domain's entities for hop1)",
          "eligibility": "pointer_swap and pointer_fit use items with every prompt right"}  # fmt: skip
     path.write_text(json.dumps(m, indent=2) + "\n")
     print("wrote", path)

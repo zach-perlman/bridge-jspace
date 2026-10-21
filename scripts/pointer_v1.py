@@ -616,8 +616,7 @@ def stage_manifest(name: str, why: str, sets: list[str], limit: int | None) -> N
         "user turn",
         "prompts": "base; each source (dissoc, same, redigit) with its own context and question; hop1 (cue -> entity, "
         "with the base context) and hop2 (the lookup with the entity named, or the recalled fact) for RL and RR",
-        "judge": "the first answer of the item's kind in the first non-empty line of 8 greedy tokens (digits, number words "
-        "and ordinals for digits; the domain's entities otherwise)",
+        "judge": judge_rule(),
         "answer_read": "suite_v1's: one forward with a digit answer's space token appended; p and margin of the answer's "
         "first token; whether the read's top token is the greedy answer",
         "eligibility": "pointer_swap uses items with every prompt right (base, the three sources, the steps alone)",
@@ -627,6 +626,52 @@ def stage_manifest(name: str, why: str, sets: list[str], limit: int | None) -> N
 
 
 PROMPT_KINDS = ("clean", *(f"src_{s}" for s in SOURCES), "hop1", "hop2")
+JUDGE_GREEDY = ("the first answer of the item's kind in the first non-empty line of 8 greedy tokens (digits, number words "
+                "and ordinals for digits; the domain's entities otherwise)")  # fmt: skip
+# Amendment 2026-10-21 (before any raw-format patching result was opened): in raw format Qwen3.6-27B opens its greedy
+# reply with a think block ("\n\n<think>..."), so the 8-token greedy judge never reaches the answer (d3v4_competence_raw_27b:
+# 0% in every cell with the read's top token right). In raw format a prompt is therefore judged by the one-forward read
+# the patching itself uses; greedy agreement is still recorded (correct_greedy) and reported, not used.
+JUDGE_READ = ("raw format: a digit prompt is right iff the top token of one forward with the digit's space token appended "
+              "(pointer_swap's read) is the expected digit; a word prompt (the cue -> entity step, never read by the "
+              "patching) iff the greedy judge finds the entity in 4 greedy tokens after the model's own empty think block "
+              "(RAW_WORD_PREFIX, the start of its greedy reply where it does not think); the plain greedy judge is "
+              "recorded as correct_greedy, not used (amendment 2026-10-21)")  # fmt: skip
+RAW_WORD_PREFIX = "\n\n<think>\n\n</think>\n\n"
+
+
+def judge_rule(fmt: str | None = None) -> str:
+    """The competence judge of a run in this prompt format (manifests record it)."""
+    return JUDGE_READ if (fmt or chat.FORMAT) == "raw" else JUDGE_GREEDY
+
+
+def read_right(tok, p: dict) -> bool:
+    """The read's top token is the expected answer's first token (as S.read_answers reads it)."""
+    first = tok.decode([S.answer_token(tok, p["expected"], p["answer_kind"])]).strip().lower()
+    return bool(p.get("read_top")) and p["read_top"].lower() == first
+
+
+def raw_word_reads(model, tok, prompts: list[dict]) -> None:
+    """4 greedy tokens per word prompt after RAW_WORD_PREFIX (continuation_think)."""
+    import torch
+
+    prefix = S.ids(tok, RAW_WORD_PREFIX)
+    by_len: dict[int, list[dict]] = collections.defaultdict(list)
+    for p in prompts:
+        by_len[len(p["ids"]) + len(prefix)].append(p)
+    for group in by_len.values():
+        for i in range(0, len(group), 64):
+            chunk = group[i : i + 64]
+            x = torch.tensor([p["ids"] + prefix for p in chunk], device="cuda")
+            for p, text in zip(chunk, model.generate_batch(x, 4, [{}] * len(chunk)), strict=True):
+                p["continuation_think"] = text
+
+
+def raw_right(tok, p: dict) -> bool:
+    """JUDGE_READ: digit prompts by the read, word prompts by the greedy judge after the empty think block."""
+    if p["answer_kind"] == "digit":
+        return read_right(tok, p)
+    return (said(p.get("continuation_think", ""), p["judge"]) or "").lower() == p["expected"].lower()
 
 
 def item_prompts(it: dict) -> dict[str, tuple[str, str, str, str]]:
@@ -681,9 +726,16 @@ def stage_competence(name: str) -> None:
     t_gen = time.time() - t0
     S.read_answers(model, tok, prompts)
     t_read = time.time() - t0 - t_gen
+    fmt = chat.manifest_format(manifest)
+    if fmt == "raw":  # the 2026-10-21 amendment (JUDGE_READ): the reads decide, greedy is kept for the record
+        raw_word_reads(model, tok, [p for p in prompts if p["answer_kind"] == "word"])
+        for p in prompts:
+            p["correct_greedy"] = p["correct"]
+            p["correct"] = raw_right(tok, p)
     rows = [{k: v for k, v in p.items() if k not in ("ids", "forced")} for p in prompts]
     write_jsonl(out_dir / "items.jsonl", rows)
-    summary: dict[str, Any] = {"labels": {}, "seconds_generate": round(t_gen), "seconds_read": round(t_read)}
+    summary: dict[str, Any] = {"labels": {}, "seconds_generate": round(t_gen), "seconds_read": round(t_read),
+                               "prompt_format": fmt, "judge": judge_rule(fmt)}  # fmt: skip
     for label in labels:
         fr = [r for r in rows if r["label"] == label]
         per_item: dict[str, dict[str, bool]] = collections.defaultdict(dict)
@@ -701,6 +753,7 @@ def stage_competence(name: str) -> None:
             "clean_median_p_answer": statistics.median(r["p_answer"] for r in clean),
             "read_agrees_with_greedy": statistics.mean((r["said"] or "").lower().startswith(r["read_top"].lower())
                                                        if r["read_top"] else False for r in fr),
+            **({"clean_greedy_right": statistics.mean(r["correct_greedy"] for r in clean)} if fmt == "raw" else {}),
         }  # fmt: skip
     summary["seconds"] = round(time.time() - t0)
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")

@@ -42,3 +42,12 @@ notes: >-
   the competence stage refuses to run in another format. Smoked on Qwen3.5-0.8B (pointer_v4 competence and
   pointer_swap in raw format) and OLMo-3-7B-Instruct (suite_v1 competence, both formats). Timing: d3v4_competence_27b's
   size at ~18 prompts/s, raw prompts ~15 tokens shorter: ~12 min + reads + load ~ 0.35 h.
+
+  AMENDMENT 2026-10-21 (after this gate ran, before any raw-format patching result existed; this run is kept as it
+  is): the run gave 0% in every cell because in raw format Qwen3.6-27B opens its greedy reply with a think block
+  ("\n\n<think>..."), so the 8-token greedy judge never reached the answer, while the read put the expected digit on top
+  (p ~0.85-0.98). The rule is amended for raw format (scripts/pointer_v1.py JUDGE_READ, recorded in every raw manifest
+  and summary): a digit prompt is right iff the top token of the one-forward read pointer_swap uses (the digit's space
+  token appended) is the expected digit; a word prompt (the cue -> entity step) iff pointer_v1's greedy judge finds the
+  entity in 4 greedy tokens after the model's own empty think block ("\n\n<think>\n\n</think>\n\n"); the plain greedy
+  judge is kept per prompt as correct_greedy and reported, not used. The amended gate runs as d3v4_competence_raw_27b_v2.

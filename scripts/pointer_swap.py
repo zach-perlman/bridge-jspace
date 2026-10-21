@@ -63,6 +63,19 @@ Decision rule, pointer_v4 additions (fixed 2026-10-21, before any v4 run):
     resamples, seed 0; stats.cluster_bootstrap), widened to the item-level Wilson interval where that is wider (a
     percentile bootstrap has zero width at 0 or n events); item-level Wilson is reported next to it. Every cell reports
     n items / k asked entities / t wordings. The rule itself is unchanged.
+Decision rule, pointer_v4x additions (fixed 2026-10-21, before any v4x run; pointer_v2's filler-moved and pointer_v3's
+one-more / one-fewer layouts on pointer_v4's topics, wordings and entity-cluster intervals):
+  - PRIMARY cells: memory -> prompt, the last two tokens, layers 48 and 50 (single layers, not the 44-52 window, where
+    the digit has already arrived by 52), pooled over topics and per topic.
+  - e5-off: "order beats the same place in the text" at a layer iff the lower bound of the order slot (position) exceeds
+    the upper bound of the same token position (token). H-order-v4 holds iff, at layer 48 or 50, this is true pooled
+    and in at least 2 of the 3 topics (at the same layer).
+  - e5more / e5fewer: "from the start beats from the end and the same place" at a layer iff the lower bound of the slot
+    counted from the start (position) exceeds the upper bounds of the slot counted from the end (end) and of the same
+    token position (token). H-start-v4 holds iff, at layer 48 or 50, this is true pooled and in at least 2 of the 3 topics
+    for both alt types (one more and one fewer; at the same layer).
+  - The rule's verdict (all candidates, controls) is reported for the same cells, and every other cell, the window and
+    the after-question tokens are reported, not decisive. A per-topic cell needs n >= 35.
 
 Stages:  manifest --name N --why W [--data pointer_v1|pointer_v2|code_pointer_v1|alias_pointer_v1] --set S
                   [--levels ...] [--families ...] [--domains ...] [--family-roles P R C] [--n K] [--layers ...]
@@ -103,11 +116,22 @@ SOURCES = ("dissoc", "same", "rand", "other")
 ROLES = ("none", "identity", "position", "end", "token", "value", "context", "recall", "other_digit", "other")
 # every prediction a dataset may record, in priority order (end: pointer_v3's slot counted from the end of the list)
 HYPS = ("none", "identity", "position", "end", "token", "value")
-DATASETS = ("pointer_v1", "pointer_v2", "pointer_v3", "pointer_v4", "code_pointer_v1", "alias_pointer_v1")
+DATASETS = (
+    "pointer_v1",
+    "pointer_v2",
+    "pointer_v3",
+    "pointer_v4",
+    "pointer_v4x",
+    "code_pointer_v1",
+    "alias_pointer_v1",
+)
 # Interval method per dataset (pointer_v4 additions in the docstring); Wilson for every other dataset.
 CLUSTER_CI = {"kind": "entity_cluster", "cluster": "asked entity", "strata": "domain", "n_boot": 2000, "seed": 0,
               "bounds": "the wider of the cluster bootstrap and the item-level Wilson interval"}  # fmt: skip
-CI_BY_DATA = {"pointer_v4": CLUSTER_CI}
+CI_BY_DATA = {"pointer_v4": CLUSTER_CI, "pointer_v4x": CLUSTER_CI}
+V4X_LAYERS = ("48", "50")  # pointer_v4x's primary layers (the docstring's pointer_v4x additions)
+V4X_TESTS = {"e5-off": ("position", ("token",)), "e5more": ("position", ("end", "token")),
+             "e5fewer": ("position", ("end", "token"))}  # level -> (winner, the outcomes it must beat)  # fmt: skip
 # primary (lookup of a recalled bridge), reference (named lookup), contrast (recall) family per dataset
 FAMILY_ROLES = {"code_pointer_v1": ("RK", "DK", "RR")}
 DEFAULT_ROLES = ("RL", "DL", "RR")
@@ -808,12 +832,53 @@ def analyze(m: dict, rows: list[dict], checks: list[dict]) -> dict[str, Any]:
             for lv in m["levels"]
         },
         "ref_contrasts": ref_contrasts(m, rows, verdicts),
+        "v4x": v4x_tests(m, rates) if m.get("data") == "pointer_v4x" else {},
         "strongest_layer": strongest,
         "level_contrasts": levels,
         "verdicts": verdicts,
         "rule_unreachable_cells": {"count": len(unreachable), "cuts": sorted({k.split("|")[1] for k in unreachable})},
         "rates": rates,
     }
+
+
+def v4x_tests(m: dict, rates: dict) -> dict[str, Any]:
+    """pointer_v4x's pre-registered tests (the docstring's pointer_v4x additions): per level, primary layer and cut
+    (pooled, each topic), whether the winner's lower bound exceeds each rival's upper bound; then H-order-v4 (e5-off)
+    and H-start-v4 (e5more and e5fewer): true pooled and in >= 2 of 3 topics at the same layer (48 or 50)."""
+    pf = family_roles(m)[0]
+    cells: dict[str, Any] = {}
+    for lv, (win, rivals) in V4X_TESTS.items():
+        if lv not in m["levels"]:
+            continue
+        for la in V4X_LAYERS:
+            for cut in ["all", *(f"domain:{d}" for d in m["domains"])]:
+                d = rates.get(f"{pf}|{cut}|{lv}|last|{la}|dissoc")
+                if not d:
+                    continue
+                beats = d[win][1] > max(d[r][2] for r in rivals)
+                cells[f"{lv}|{la}|{cut}"] = {"n": d["n"], "k_entities": d.get("k_entities"), "winner": d[win],
+                                             **{r: d[r] for r in rivals}, "beats": beats,
+                                             "reachable": d["n"] >= MIN_N_RULE}  # fmt: skip
+
+    def holds(levels: tuple[str, ...]) -> dict[str, Any]:
+        out: dict[str, Any] = {}
+        for la in V4X_LAYERS:
+            ok = True
+            for lv in levels:  # a cut counts only if it passes and has the n the rule needs (>= MIN_N_RULE)
+
+                def ok_cut(cut: str, lv: str = lv, la: str = la) -> bool:
+                    c = cells.get(f"{lv}|{la}|{cut}", {})
+                    return bool(c.get("beats")) and bool(c.get("reachable"))
+
+                pooled = ok_cut("all")
+                topics = sum(ok_cut(f"domain:{d}") for d in m["domains"])
+                ok = ok and pooled and topics >= 2
+                out[f"{lv}|{la}"] = {"pooled": pooled, "topics": topics}
+            out[f"layer {la}"] = ok
+        out["holds"] = any(out[f"layer {la}"] for la in V4X_LAYERS)
+        return out
+
+    return {"cells": cells, "H-order-v4": holds(("e5-off",)), "H-start-v4": holds(("e5more", "e5fewer"))}
 
 
 REF_MARGIN = 0.10
@@ -1377,6 +1442,11 @@ LEVELS_TEXT = {  # (title, how to read) of the levels figure, per dataset
                          "One column per topic and statement form, on the same scenes within a topic (animals: English "
                          "or French/Spanish/German; elements: English or the chemical symbol)."),
     "code_pointer_v1": ("Does the split change with the number of dict entries?", "One column per number of entries."),
+    "pointer_v4x": ("Order, from the start, from the end, or the same place in the text: which statement does the pointer "
+                    "name?",
+                    "One column per alt prompt: the filler sentence moved (order vs token position), one statement more, "
+                    "one fewer (the slot from the start, from the end and the token position name three different org "
+                    "statements)."),
     "pointer_v3": ("Is the statement slot counted from the start or from the end of the list?",
                    "One column per alt prompt: one statement more, or one fewer, than the org prompt, so the slot counted "
                    "from the start and the slot counted from the end name different org statements."),
@@ -1390,8 +1460,9 @@ def level_short(m: dict, lv: str) -> str:
         return {"": "English", "xlang": "other language", "syn": "chemical symbol"}[lv.partition("-")[2]]
     if data == "pointer_v2":
         return {"off": "filler moved", "pln": "filler in place", "ref": "alt answer in org"}[lv.partition("-")[2]]
-    if data == "pointer_v3":
-        return {"e5more": "alt has one statement more", "e5fewer": "alt has one statement fewer"}.get(lv, lv)
+    if data in ("pointer_v3", "pointer_v4x"):
+        return {"e5more": "alt has one statement more", "e5fewer": "alt has one statement fewer",
+                "e5-off": "filler moved"}.get(lv, lv)  # fmt: skip
     return {"e3f0": "3 statements", "e5f0": "5 statements", "e5f4": "5 + filler", "e8f0": "8 entries"}.get(lv, lv)
 
 
@@ -1801,6 +1872,22 @@ def report_md(name: str, m: dict, a: dict, out: Path) -> str:
             lines.append(f"| {fam} | {GROUP_TITLE[grp]} | {layer} | {c['n_pairs']} | {100 * c['ref_value']:.0f}% | "
                          f"{100 * c['pln_value']:.0f}% | {100 * dd[0]:+.0f} [{100 * dd[1]:+.0f}, {100 * dd[2]:+.0f}] | "
                          f"{c['label']} | {c['interpretable']} |")  # fmt: skip
+    if a.get("v4x"):
+        x = a["v4x"]
+        T = OUTCOME_TERM
+        lines += ["", "## Pre-registered primary (pointer_v4x): memory -> prompt, the last two tokens, layers "
+                  f"{' and '.join(V4X_LAYERS)}", "",
+                  f"H-order-v4 (filler moved: {T['position']} beats {T['token']}, pooled and in >= 2 of 3 topics at one "
+                  f"layer): **{'holds' if x['H-order-v4']['holds'] else 'does not hold'}**; H-start-v4 (one more / one "
+                  f"fewer: the slot from the start beats {T['end']} and {T['token']}, pooled and in >= 2 topics, both alt "
+                  f"types, one layer): **{'holds' if x['H-start-v4']['holds'] else 'does not hold'}**.", "",
+                  "| layout | layer | cut | n | entities | winner (from the start / order) | rivals | lower bound > rivals' "
+                  "upper bounds |", "|---|---|---|---|---|---|---|---|"]  # fmt: skip
+        for key, c in x["cells"].items():
+            lv, la, cut = key.split("|")
+            rivals = "; ".join(f"{r} {_pct(c[r])}" for r in V4X_TESTS[lv][1])
+            lines.append(f"| {level_short(m, lv)} | {la} | {cut} | {c['n']} | {c['k_entities']} | {_pct(c['winner'])} | "
+                         f"{rivals} | {'yes' if c['beats'] else 'no'}{'' if c['reachable'] else ' (n < 35)'} |")  # fmt: skip
     if name == "d3_main_ae_27b":
         lines += dan_section(a)
     lines += ["", "## Agent priors in the job spec (jobs/d3/" + name + ".yaml `hypotheses`) vs results", ""]
@@ -1888,6 +1975,20 @@ def fig_ref(a: dict, m: dict, path: Path) -> list[str]:
     )
 
 
+def no_cases_report(name: str, m: dict) -> str:
+    """report.md of a run that patched nothing: which scenes the competence gate left, per topic and layout."""
+    summ = RESULTS / name / "summary.json"
+    counts = json.loads(summ.read_text()).get("counts", {}) if summ.exists() else {}
+    rows = [f"| {k} | {v.get('eligible_scenes', 0)} | {v.get('sampled', 0)} |" for k, v in sorted(counts.items())]
+    return "\n".join([
+        f"# {name}: no eligible cases", "",
+        f"Nothing was patched: no scene was answered right in every prompt of every family of the run by the "
+        f"competence run `{m.get('competence')}` ({m.get('model', {}).get('prompt_format', 'chat')} format), so there "
+        "are no outcomes, figures or verdicts. Look at the competence run before reading anything into this one.", "",
+        "| topic / layout | eligible scenes | sampled |", "|---|---|---|", *rows, "",
+    ])  # fmt: skip
+
+
 def stage_figures(name: str) -> Path:
     """Re-applies the rule (analyze), draws the run's figures, writes summary.json and report.md into a new
     results/pointer_swap/<run>/analysis-<stamp>-figures/."""
@@ -1901,6 +2002,11 @@ def stage_figures(name: str) -> Path:
         shutil.rmtree(old)
     out = RESULTS / name / f"analysis-{time.strftime('%Y%m%d-%H%M%S')}-figures"
     out.mkdir()
+    if not any(o["source"] == "dissoc" for o in rows):  # nothing was patched: say so instead of drawing empty figures
+        (out / "report.md").write_text(no_cases_report(name, m))
+        (out / "summary.json").write_text(json.dumps({"run": name, "cases": 0, "figures": {}}, indent=1) + "\n")
+        print("wrote", out, "(no eligible cases)")
+        return out
     a = analyze(m, rows, checks)
     a["near_ties"] = near_ties(rows)
     a["example_line"] = example_line(m, name)
@@ -1916,6 +2022,9 @@ def stage_figures(name: str) -> Path:
     figs["windows"] = fig_windows(a, m, main_lv, out / f"windows_{main_lv}")
     if len(a["domains"]) > 1:
         figs["domains_final"] = fig_domains(a, m, main_lv, "final", out / f"domains_final_{main_lv}")
+    if m.get("data") == "pointer_v4x":  # the primary is the last two tokens per topic: one topics figure per layout
+        for lv in m["levels"]:
+            figs[f"domains_last_{lv}"] = fig_domains(a, m, lv, "last", out / f"domains_last_{lv}")
     if len(m["levels"]) > 1:
         figs["levels_final"] = fig_levels(a, m, "final", out / "levels_final")
         figs["levels_last"] = fig_levels(a, m, "last", out / "levels_last")

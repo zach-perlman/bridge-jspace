@@ -1,0 +1,50 @@
+id: d3v4_competence_raw_27b_v2
+title: "D3 v4 gate, plain text, judged by the read: can the 27B answer the pointer_v4 scenes without its chat template?"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.4
+depends_on: []
+command: >-
+  BJ_FORMAT=raw uv run python scripts/pointer_v4.py manifest --set main --name d3v4_competence_raw_27b_v2
+  --why "G1 gate, amended judge: pointer_v4's main scenes in raw format (plain text ending in Answer:, no template),
+  every prompt and step; digit prompts judged by pointer_swap's one-forward read, the cue -> entity step by 4 greedy
+  tokens after the model's own empty think block (the 2026-10-21 amendment; d3v4_competence_raw_27b judged by 8 greedy
+  tokens that never reached the answer)"
+  && BJ_FORMAT=raw uv run python scripts/pointer_v4.py competence --name d3v4_competence_raw_27b_v2
+question: >-
+  With the prompt as plain text (the statements, a newline, the question and the instruction, a newline and "Answer:";
+  no chat template), does Qwen3.6-27B put the right answer on top in the read the patching uses (the digit's space token
+  appended), in every topic (countries, animals, body parts) and family, every alt prompt, and the steps alone?
+why_it_matters: >-
+  Gate for d3v4_swap_raw_27b_v2, the G1 test (is the statement-slot answer about the chat template's tokens?). The
+  first raw gate (d3v4_competence_raw_27b) is uninterpretable: its 8-token greedy judge read only the start of a think
+  block. The patching reads the answer with one forward and the space token appended, so the gate now judges what the
+  patching reads.
+hypotheses:
+  H-competent: 'memory -> prompt and named -> prompt clean >= 90% per topic by the read (the failed run''s reads put
+    the digit on top with p ~0.85-0.98); >= 100 scenes per topic eligible in memory -> prompt and named -> prompt'
+  H-format-hurts: 'memory -> prompt or the cue -> entity step below the gate (clean Wilson lower bound < 0.85) in a topic,
+    or fewer than 35 eligible scenes there'
+  prior: 'Agent prior: H-competent 0.6 for memory -> prompt and named -> prompt; memory -> memory (the recalled digit
+    fact) likely below the gate in raw format for countries and body parts.'
+decision_rule: >-
+  pointer_v1's gate with the 2026-10-21 raw-format judge (scripts/pointer_v1.py JUDGE_READ, recorded in the manifest
+  and summary.json): a digit prompt is right iff the top token of one forward with the digit's space token appended is
+  the expected digit; a word prompt (cue -> entity) iff pointer_v1's greedy judge finds the entity in 4 greedy tokens
+  after "\n\n<think>\n\n</think>\n\n" (the model's own empty think block); the plain greedy judge is kept per prompt as
+  correct_greedy and reported, not used. A (topic, family) cell enters the patching run iff its clean Wilson 95% lower
+  bound >= 0.85; an item is eligible iff every prompt of it is right; pointer_swap keeps scenes eligible in every
+  family of its run (d3v4_swap_raw_27b_v2: memory -> prompt and named -> prompt). A topic with fewer than 35 eligible
+  scenes is dropped from the patching run and named. Report every cell next to d3v4_competence_27b (chat, greedy judge)
+  and the greedy agreement per cell.
+controls:
+- 'each step alone (cue -> entity with the context; the lookup with the entity named / the recalled fact)'
+- 'greedy agreement (correct_greedy) per prompt: how often the plain 8-token reply reaches the answer in raw format'
+- 'the same scenes in chat format: d3v4_competence_27b'
+n: 'all main scenes: 300 + 300 + 180 per family (countries, animals, body parts) x 3 families = 2,340 items (~12,500 prompts)'
+seeds: [841]
+notes: >-
+  Amendment of d3v4_competence_raw_27b (see its notes), written before any raw-format patching result existed; the
+  first run is kept as it is. Cost: the first run's size plus one extra forward per word prompt (~1,560): ~0.4 h.
+  Code: scripts/pointer_v1.py (judge_rule, raw_right, raw_word_reads), tested in tests/test_chat_format.py.

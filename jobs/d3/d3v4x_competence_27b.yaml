@@ -1,0 +1,41 @@
+id: d3v4x_competence_27b
+title: "D3 v4x gate: can the 27B answer the filler-moved and one-more / one-fewer scenes on the 85 pointer_v4 entities?"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.35
+depends_on: []
+command: >-
+  uv run python scripts/pointer_v4x.py manifest --name d3v4x_competence_27b
+  --why "D3 v4x gate: pointer_v4x's scenes (pointer_v2's filler moved, pointer_v3's one statement more / fewer, on
+  pointer_v4's 85 entities and 9 wordings), every alt and control prompt and each step alone"
+  && uv run python scripts/pointer_v4x.py competence --name d3v4x_competence_27b
+question: >-
+  Can Qwen3.6-27B answer pointer_v4x's org prompts (5 statements plus one or two filler sentences of a statement's
+  length), the alt prompts (filler moved; 6 or 4 statements), the same-entity and changed-digit controls and each step
+  alone, per topic (countries, animals, body parts), family (memory -> prompt, named -> prompt) and layout?
+why_it_matters: >-
+  Gate for d3v4x_swap_main: its tests are read only on scenes answered unedited in both families, and need >= 35
+  eligible scenes per topic and layout (the per-topic tests) and as many as possible pooled.
+hypotheses:
+  H-competent: 'clean >= 95% in every topic x family x layout cell (pointer_v4: 98-100%; pointer_v2 / v3 with filler
+    sentences: 91-100%); eligible scenes >= 120 of 150 per topic and layout'
+  H-filler-hurts: 'some cell below the gate (clean Wilson lower bound < 0.85), most likely where two filler sentences
+    sit among the statements'
+  prior: 'Agent prior: H-competent 0.7, H-filler-hurts 0.3.'
+decision_rule: >-
+  pointer_v1's gate, unchanged (chat format, greedy judge): a (topic, family, layout) cell enters the patching run iff
+  its clean Wilson 95% lower bound >= 0.85; an item is eligible iff every prompt of it is right (org, alt, same,
+  redigit, hop1, hop2); pointer_swap keeps scenes eligible in both families. A topic x layout with fewer than 35
+  eligible scenes is reported and judged only pooled.
+controls:
+- 'each step alone (cue -> entity with the context; the lookup with the entity named)'
+- 'answer read vs 8-token greedy on the digit prompts'
+- 'the same entities and wordings without filler: d3v4_competence_27b'
+n: '150 scenes per topic x layout (3 x 3) x 2 families = 2,700 items (~13,500 prompts)'
+seeds: [851]
+notes: >-
+  Data: data/pointer_v4x/ (scripts/pointer_v4x.py; make, check and verify locally first: tokenizer only, about a minute;
+  check asserts equal cells, token alignment of every alt and control prompt, the pointers' slots and token offsets,
+  the cap and unique prompts). Entities, wordings and held-out split are pointer_v4's (data/pointer_v4/split.json).
+  Timing: ~13,500 prompts at ~18/s ~ 13 min + reads ~3 min + load ~4 min ~ 0.35 h.
