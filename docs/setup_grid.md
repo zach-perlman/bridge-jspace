@@ -8,6 +8,7 @@ Decisions (Zach, 2026-10-21):
 - **Positive control:** reported for every model, binding for none.
 - **9B:** rerun on this pipeline after Qwen3-32B.
 - **Dose curves:** wait until every model's core runs are done. The 27B's and 9B's are not queued; decide later.
+- **Middle band:** every model's comes from its own suite depth sweep by the rule that gave the 27B's 32-40 (`scripts/choose_band.py`), fixed before its v2 data. Every model also gets a v2 depth profile.
 
 ## 1. Model and lens
 
@@ -39,11 +40,12 @@ Decisions (Zach, 2026-10-21):
 | | Qwen3.6-27B | Gemma 4 31B-it | Qwen3-32B | Qwen3.5-9B | |
 |---|---|---|---|---|---|
 | Bands | 12-20, 20-28, 32-40, 0-62 | 11-19, 19-27, 30-38, 0-58 | as 27B | 6-10, 10-14, 16-20, whole | ≈ (9B bands are 5 layers wide) |
-| Rule band | 32-40 | 30-38 | 32-40 | 16-20 | ≈ |
+| Rule (middle) band | 32-40, chosen on its suite depth sweep (2026-10-20) | chosen on its own suite sweep, same rule (fallback 30-38) | same (fallback 32-40) | same, 5-layer windows (fallback 16-20) | ✅ same procedure |
+| Depth profile on the v2 rule words | queued (tonight) | queued | queued | queued | ✅ |
 | Two-step C1, margin-matched gap | done (B200) | queued | queued | queued | ⚠️ 27B hardware |
 | Specificity (unembed10), keep-own, control seeds, position split, steps | queued / done | queued | queued | queued | ✅ |
 | Three-step whole + steps | done | queued | queued | queued | ✅ |
-| Dose curves | not queued | after everything | after everything | not queued | ⚠️ deferred |
+| Dose curves | not queued | after everything, at its chosen band | after everything, at its chosen band | not queued | ⚠️ deferred |
 | Rotated-control draw | B200 GPU (headline); CPU since | CPU | CPU | CPU | ⚠️ benign |
 
 ## 4. C2: steering
