@@ -76,12 +76,15 @@ def analyse(run: str) -> dict:
             "transplant_1x": best(fam, ("lens_transpl",), SITES, (1.0,)),
             "any_lens_any_site": best(fam, ("lens_add", "lens_swap", "lens_transpl"), ("question", "final", "all")),
         }
-    a, b = out["families"][mp]["own_direction"], out["families"][mm]["own_direction"]
-    fa, fb = (a["flips"] if a else 0.0), (b["flips"] if b else 0.0)
-    ci_ok = bool(a and b and b["ci"][0] >= a["ci"][1]) or bool(b and not a and b["ci"][0] > 0)
-    out["rule"] = {"mp": mp, "mm": mm, "mp_best": fa, "mm_best": fb, "ratio_ok": fb >= RATIO * fa,
-                   "gap_ok": fb >= fa + GAP, "ci_ok": ci_ok}  # fmt: skip
-    out["rule"]["C2_graded_holds"] = out["rule"]["ratio_ok"] and out["rule"]["gap_ok"] and ci_ok
+    if mp in fams and mm in fams:
+        a, b = out["families"][mp]["own_direction"], out["families"][mm]["own_direction"]
+        fa, fb = (a["flips"] if a else 0.0), (b["flips"] if b else 0.0)
+        ci_ok = bool(a and b and b["ci"][0] >= a["ci"][1]) or bool(b and not a and b["ci"][0] > 0)
+        out["rule"] = {"mp": mp, "mm": mm, "mp_best": fa, "mm_best": fb, "ratio_ok": fb >= RATIO * fa,
+                       "gap_ok": fb >= fa + GAP, "ci_ok": ci_ok}  # fmt: skip
+        out["rule"]["C2_graded_holds"] = out["rule"]["ratio_ok"] and out["rule"]["gap_ok"] and ci_ok
+    else:  # a positive-control run (countries and M->M only): no rule
+        out["rule"] = None
     pc = {f: (out["families"][f]["any_lens_any_site"] or {}).get("flips", 0.0) for f in ("R", "B", mm) if f in fams}
     out["positive_control"] = {"best": pc, "passes": bool(pc) and all(v >= POSITIVE for v in pc.values())}
     return out
@@ -103,12 +106,19 @@ def show(res: dict, commit: str) -> str:
         lines.append(f"| {NAMES.get(fam, fam)} | {cell(d['own_direction'])} | {cell(d['own_final_only'])} | "
                      f"{cell(d['transplant'])} | {cell(d['transplant_1x'])} | {cell(d['dom'])} | "
                      f"{cell(d['any_lens_any_site'])} |")  # fmt: skip
-    r = res["rule"]
-    lines += ["", f"Rule: {NAMES[r['mm']]} best {100 * r['mm_best']:.0f}% vs {NAMES[r['mp']]} best {100 * r['mp_best']:.0f}%: "
-              f">= {RATIO:g}x {'yes' if r['ratio_ok'] else 'no'}, >= +{100 * GAP:.0f} points {'yes' if r['gap_ok'] else 'no'}, "
-              f"intervals apart {'yes' if r['ci_ok'] else 'no'} "
-              f"-> C2-graded {'HOLDS' if r['C2_graded_holds'] else 'FAILS'}",
-              f"Positive control (binding for Gemma only): {json.dumps({k: round(v, 2) for k, v in res['positive_control']['best'].items()})}"
+    r = res["rule"] or {}
+    lines += [""] if r else ["", "Rule: n/a (no M->P / M->M pair in this run)"]
+    lines += (
+        []
+        if not r
+        else [
+            f"Rule: {NAMES[r['mm']]} best {100 * r['mm_best']:.0f}% vs {NAMES[r['mp']]} best {100 * r['mp_best']:.0f}%: "
+            f">= {RATIO:g}x {'yes' if r['ratio_ok'] else 'no'}, >= +{100 * GAP:.0f} points {'yes' if r['gap_ok'] else 'no'}, "
+            f"intervals apart {'yes' if r['ci_ok'] else 'no'} "
+            f"-> C2-graded {'HOLDS' if r['C2_graded_holds'] else 'FAILS'}"
+        ]
+    )
+    lines += [f"Positive control (binding for Gemma only): {json.dumps({k: round(v, 2) for k, v in res['positive_control']['best'].items()})}"
               f" -> {'passes' if res['positive_control']['passes'] else 'FAILS'}"]  # fmt: skip
     return "\n".join(lines) + "\n"
 
