@@ -203,7 +203,17 @@ def cmd_pull() -> int:
     (jq / "drafts").mkdir(parents=True, exist_ok=True)
     (REPO / "log" / "jobq").mkdir(parents=True, exist_ok=True)
     rsync = ["rsync", "-a"]
-    subprocess.run([*rsync, "--ignore-existing", f"{box}/results/", str(REPO / "results") + "/"], check=True)
+    # whole run dirs (results/<exp>/<run>) not here yet: a run already pulled keeps its local state, so a figures
+    # folder redrawn here is not joined again by the box's original one
+    runs = _ssh(f"cd ~/{BOX_ROOT}/results && find . -mindepth 2 -maxdepth 2 -type d").split()
+    new = [r.removeprefix("./") for r in runs if not (REPO / "results" / r.removeprefix("./")).exists()]
+    if new:
+        listing = REPO / "cache" / "jobq" / "pull_runs.txt"
+        listing.parent.mkdir(parents=True, exist_ok=True)
+        listing.write_text("\n".join(new) + "\n")
+        subprocess.run(
+            [*rsync, "-r", f"--files-from={listing}", f"{box}/results/", str(REPO / "results") + "/"], check=True
+        )
     subprocess.run([*rsync, f"{box}/ledger.jsonl", str(jq / "ledger.jsonl")], check=False)  # box: append-only
     subprocess.run([*rsync, f"{box}/drafts/", str(jq / "drafts") + "/"], check=False)
     subprocess.run(

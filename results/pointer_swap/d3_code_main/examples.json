@@ -1,0 +1,1217 @@
+{
+ "exp": "pointer_swap",
+ "run": "d3_code_main",
+ "seed": 0,
+ "k": 3,
+ "selection": "source dissoc, group final, layers [44, 46, 48, 50, 52] and the transit window",
+ "groups": [
+  {
+   "key": "none",
+   "title": "none",
+   "definition": "the patch left the base answer",
+   "n_total": 3239
+  },
+  {
+   "key": "position",
+   "title": "position",
+   "definition": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction)",
+   "n_total": 370
+  },
+  {
+   "key": "identity",
+   "title": "identity",
+   "definition": "the patched base answered the base's digit for the source's entity (H-word / lexical key)",
+   "n_total": 243
+  },
+  {
+   "key": "value",
+   "title": "value",
+   "definition": "the patched base answered the source's own answer, absent from the base context (H-value)",
+   "n_total": 367
+  },
+  {
+   "key": "context",
+   "title": "context",
+   "definition": "another digit of the base context, predicted by no hypothesis",
+   "n_total": 101
+  },
+  {
+   "key": "same_changed",
+   "title": "same changed",
+   "definition": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer",
+   "n_total": 19
+  }
+ ],
+ "examples": [
+  {
+   "group": "none",
+   "family": "CH2",
+   "item_id": "animals-CH2-e5f0-0386",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"bee\": 8, \"mouse\": 1, \"owl\": 9, \"wolf\": 3, \"frog\": 5}\nu = \"frog\"\nv = u\nq = \"bee\"\nh = q\nprint(lockers[h])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 180,
+     "end": 283,
+     "role": "patched (final)"
+    },
+    {
+     "start": 38,
+     "end": 46,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 70,
+     "end": 79,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 60,
+     "end": 68,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 139,
+     "end": 140,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\n```python\nlockers = {\"owl\": 7, \"bee\": 3, \"wolf\": 0, \"mouse\": 1, \"frog\": 9}\nu = \"frog\"\nv = u\nq = \"wolf\"\nh = q\nprint(lockers[h])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 58,
+     "end": 67,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 44 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "8",
+    "edited": "8",
+    "expected": {
+     "none": "8",
+     "identity": "3",
+     "position": "9",
+     "value": "0"
+    },
+    "unedited_read": "8"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.8706,
+     "identity": 0.1178,
+     "position": 0.0003,
+     "value": 0.0028
+    },
+    "layer": 44,
+    "role": "none"
+   },
+   "why": "the patch left the base answer ('8')"
+  },
+  {
+   "group": "none",
+   "family": "DK",
+   "item_id": "months-DK-e5f0-0389",
+   "domain": "months",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"July\": 3, \"January\": 0, \"February\": 2, \"September\": 8, \"April\": 5}\nprint(lockers[\"January\"])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 169,
+     "end": 272,
+     "role": "patched (final)"
+    },
+    {
+     "start": 49,
+     "end": 61,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 38,
+     "end": 47,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 78,
+     "end": 92,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 121,
+     "end": 128,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\n```python\nlockers = {\"April\": 3, \"September\": 0, \"February\": 2, \"July\": 6, \"January\": 8}\nprint(lockers[\"July\"])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 81,
+     "end": 90,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 46 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "0",
+    "edited": "0",
+    "expected": {
+     "none": "0",
+     "identity": "3",
+     "position": "8",
+     "value": "6"
+    },
+    "unedited_read": "0"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.7191,
+     "identity": 0.001,
+     "position": 0.1604,
+     "value": 0.0015
+    },
+    "layer": 46,
+    "role": "none"
+   },
+   "why": "the patch left the base answer ('0')"
+  },
+  {
+   "group": "none",
+   "family": "DK",
+   "item_id": "animals-DK-e5f0-0075",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"wolf\": 0, \"duck\": 5, \"horse\": 1, \"cow\": 7, \"bee\": 9}\nprint(lockers[\"horse\"])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 153,
+     "end": 256,
+     "role": "patched (final)"
+    },
+    {
+     "start": 60,
+     "end": 70,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 82,
+     "end": 90,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 49,
+     "end": 58,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 107,
+     "end": 112,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\n```python\nlockers = {\"wolf\": 9, \"bee\": 8, \"duck\": 5, \"horse\": 0, \"cow\": 7}\nprint(lockers[\"bee\"])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 49,
+     "end": 57,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 44 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "none": "1",
+     "identity": "9",
+     "position": "5",
+     "value": "8"
+    },
+    "unedited_read": "1"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.9957,
+     "identity": 0.0001,
+     "position": 0.0015,
+     "value": 0.0
+    },
+    "layer": 44,
+    "role": "none"
+   },
+   "why": "the patch left the base answer ('1')"
+  },
+  {
+   "group": "position",
+   "family": "RK",
+   "item_id": "animals-RK-e5f0-0290",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"duck\": 9, \"bee\": 3, \"cow\": 1, \"cat\": 5, \"horse\": 0}\n```\nWhat number does lockers store for the animal known for neighing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 160,
+     "end": 263,
+     "role": "patched (final)"
+    },
+    {
+     "start": 79,
+     "end": 89,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 49,
+     "end": 57,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 38,
+     "end": 47,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 151,
+     "end": 159,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\n```python\nlockers = {\"bee\": 7, \"cat\": 1, \"cow\": 9, \"duck\": 0, \"horse\": 8}\n```\nWhat number does lockers store for the animal known for making honey? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 38,
+     "end": 46,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "0",
+    "edited": "9",
+    "expected": {
+     "none": "0",
+     "identity": "3",
+     "position": "9",
+     "value": "7"
+    },
+    "unedited_read": "0"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0594,
+     "identity": 0.0004,
+     "position": 0.9288,
+     "value": 0.0001
+    },
+    "layer": 48,
+    "role": "position"
+   },
+   "why": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction) ('9')"
+  },
+  {
+   "group": "position",
+   "family": "RK",
+   "item_id": "animals-RK-e5f0-0374",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"bee\": 0, \"lion\": 3, \"dog\": 8, \"owl\": 9, \"pig\": 5}\n```\nWhat number does lockers store for the animal known for hooting? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 157,
+     "end": 260,
+     "role": "patched (final)"
+    },
+    {
+     "start": 69,
+     "end": 77,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 38,
+     "end": 46,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 48,
+     "end": 57,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 149,
+     "end": 156,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\n```python\nlockers = {\"pig\": 3, \"bee\": 1, \"owl\": 0, \"dog\": 5, \"lion\": 8}\n```\nWhat number does lockers store for the animal known for making honey? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 48,
+     "end": 56,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 46 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "9",
+    "edited": "3",
+    "expected": {
+     "none": "9",
+     "identity": "0",
+     "position": "3",
+     "value": "1"
+    },
+    "unedited_read": "9"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.198,
+     "identity": 0.0039,
+     "position": 0.7831,
+     "value": 0.0016
+    },
+    "layer": 46,
+    "role": "position"
+   },
+   "why": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction) ('3')"
+  },
+  {
+   "group": "position",
+   "family": "RK",
+   "item_id": "animals-RK-e5f0-0158",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"pig\": 5, \"bee\": 1, \"owl\": 9, \"cow\": 7, \"lion\": 8}\n```\nWhat number does lockers store for the animal known for making honey? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 162,
+     "end": 265,
+     "role": "patched (final)"
+    },
+    {
+     "start": 48,
+     "end": 56,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 78,
+     "end": 87,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 58,
+     "end": 66,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 149,
+     "end": 161,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\n```python\nlockers = {\"cow\": 8, \"bee\": 9, \"lion\": 0, \"owl\": 7, \"pig\": 5}\n```\nWhat number does lockers store for the animal known for its roar? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 58,
+     "end": 67,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 50 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "1",
+    "edited": "9",
+    "expected": {
+     "none": "1",
+     "identity": "8",
+     "position": "9",
+     "value": "0"
+    },
+    "unedited_read": "1"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.1915,
+     "identity": 0.2459,
+     "position": 0.5206,
+     "value": 0.0014
+    },
+    "layer": 50,
+    "role": "position"
+   },
+   "why": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction) ('9')"
+  },
+  {
+   "group": "identity",
+   "family": "IX",
+   "item_id": "animals-IX-e5f0-0083",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"duck\": 3, \"owl\": 9, \"bee\": 5, \"wolf\": 1, \"cow\": 8}\nnames = [\"bee\", \"wolf\", \"cow\", \"duck\", \"owl\"]\nprint(lockers[names[4]])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 198,
+     "end": 301,
+     "role": "patched (final)"
+    },
+    {
+     "start": 49,
+     "end": 57,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 80,
+     "end": 88,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 59,
+     "end": 67,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 150,
+     "end": 158,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\n```python\nlockers = {\"wolf\": 0, \"bee\": 1, \"cow\": 7, \"duck\": 8, \"owl\": 5}\nnames = [\"bee\", \"wolf\", \"owl\", \"duck\", \"cow\"]\nprint(lockers[names[4]])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 59,
+     "end": 67,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "9",
+    "edited": "8",
+    "expected": {
+     "none": "9",
+     "identity": "8",
+     "position": "5",
+     "value": "7"
+    },
+    "unedited_read": "9"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.4328,
+     "identity": 0.5557,
+     "position": 0.0029,
+     "value": 0.0001
+    },
+    "layer": 48,
+    "role": "identity"
+   },
+   "why": "the patched base answered the base's digit for the source's entity (H-word / lexical key) ('8')"
+  },
+  {
+   "group": "identity",
+   "family": "RR",
+   "item_id": "animals-RR-e5f0-0326",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"cat\": 0, \"bee\": 7, \"horse\": 3, \"duck\": 5, \"frog\": 9}\n```\nHow many legs does the animal known for croaking have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 150,
+     "end": 253,
+     "role": "patched (final)"
+    },
+    {
+     "start": 81,
+     "end": 90,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 48,
+     "end": 56,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 70,
+     "end": 79,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 136,
+     "end": 144,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\n```python\nlockers = {\"frog\": 9, \"horse\": 1, \"duck\": 0, \"bee\": 8, \"cat\": 7}\n```\nHow many legs does the animal known for making honey have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 72,
+     "end": 80,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "4",
+    "edited": "6",
+    "expected": {
+     "none": "4",
+     "identity": "6",
+     "position": "2",
+     "value": "6"
+    },
+    "unedited_read": "4"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.2204,
+     "identity": 0.599,
+     "position": 0.0023,
+     "value": 0.599
+    },
+    "layer": 48,
+    "role": "identity"
+   },
+   "why": "the patched base answered the base's digit for the source's entity (H-word / lexical key) ('6')"
+  },
+  {
+   "group": "identity",
+   "family": "CH2",
+   "item_id": "months-CH2-e5f0-0142",
+   "domain": "months",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"April\": 3, \"September\": 4, \"January\": 8, \"February\": 6, \"May\": 7}\ne = \"February\"\nx = e\nk = \"September\"\nm = k\nprint(lockers[m])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 203,
+     "end": 306,
+     "role": "patched (final)"
+    },
+    {
+     "start": 50,
+     "end": 64,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 95,
+     "end": 103,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 66,
+     "end": 78,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 162,
+     "end": 163,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\n```python\nlockers = {\"April\": 3, \"February\": 8, \"May\": 0, \"September\": 4, \"January\": 7}\ne = \"February\"\nx = e\nk = \"May\"\nm = k\nprint(lockers[m])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 65,
+     "end": 73,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "4",
+    "edited": "7",
+    "expected": {
+     "none": "4",
+     "identity": "7",
+     "position": "8",
+     "value": "0"
+    },
+    "unedited_read": "4"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.3412,
+     "identity": 0.6374,
+     "position": 0.0014,
+     "value": 0.0132
+    },
+    "layer": 48,
+    "role": "identity"
+   },
+   "why": "the patched base answered the base's digit for the source's entity (H-word / lexical key) ('7')"
+  },
+  {
+   "group": "value",
+   "family": "DK",
+   "item_id": "animals-DK-e5f0-0080",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"owl\": 8, \"lion\": 0, \"wolf\": 3, \"bee\": 5, \"dog\": 7}\nprint(lockers[\"owl\"])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 149,
+     "end": 252,
+     "role": "patched (final)"
+    },
+    {
+     "start": 38,
+     "end": 46,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 80,
+     "end": 88,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 70,
+     "end": 78,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 105,
+     "end": 108,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\n```python\nlockers = {\"owl\": 7, \"wolf\": 8, \"bee\": 3, \"dog\": 9, \"lion\": 5}\nprint(lockers[\"dog\"])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 69,
+     "end": 77,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 52 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "8",
+    "edited": "9",
+    "expected": {
+     "none": "8",
+     "identity": "7",
+     "position": "5",
+     "value": "9"
+    },
+    "unedited_read": "8"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.3176,
+     "identity": 0.15,
+     "position": 0.0003,
+     "value": 0.5236
+    },
+    "layer": 52,
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('9')"
+  },
+  {
+   "group": "value",
+   "family": "CH3",
+   "item_id": "animals-CH3-e5f0-0240",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"mouse\": 7, \"owl\": 9, \"bee\": 5, \"lion\": 3, \"dog\": 1}\nj = \"mouse\"\nv = \"bee\"\nn = j\nh = v\nu = n\np = h\nprint(lockers[p])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 192,
+     "end": 295,
+     "role": "patched (final)"
+    },
+    {
+     "start": 60,
+     "end": 68,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 50,
+     "end": 58,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 81,
+     "end": 89,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 137,
+     "end": 138,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\n```python\nlockers = {\"mouse\": 7, \"bee\": 8, \"lion\": 1, \"dog\": 3, \"owl\": 0}\nj = \"mouse\"\nv = \"owl\"\nn = j\nh = v\nu = n\np = h\nprint(lockers[p])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 81,
+     "end": 89,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 52 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "5",
+    "edited": "0",
+    "expected": {
+     "none": "5",
+     "identity": "9",
+     "position": "1",
+     "value": "0"
+    },
+    "unedited_read": "5"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.4665,
+     "identity": 0.0014,
+     "position": 0.0005,
+     "value": 0.5286
+    },
+    "layer": 52,
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('0')"
+  },
+  {
+   "group": "value",
+   "family": "DK",
+   "item_id": "animals-DK-e5f0-0269",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"bee\": 1, \"owl\": 9, \"duck\": 7, \"mouse\": 5, \"lion\": 8}\nprint(lockers[\"mouse\"])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 153,
+     "end": 256,
+     "role": "patched (final)"
+    },
+    {
+     "start": 69,
+     "end": 79,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 48,
+     "end": 56,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 38,
+     "end": 46,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 107,
+     "end": 112,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\n```python\nlockers = {\"owl\": 0, \"mouse\": 8, \"bee\": 7, \"duck\": 3, \"lion\": 1}\nprint(lockers[\"owl\"])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 38,
+     "end": 46,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "5",
+    "edited": "0",
+    "expected": {
+     "none": "5",
+     "identity": "9",
+     "position": "1",
+     "value": "0"
+    },
+    "unedited_read": "5"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0097,
+     "identity": 0.0,
+     "position": 0.0012,
+     "value": 0.9871
+    },
+    "layer": "transit",
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('0')"
+  },
+  {
+   "group": "context",
+   "family": "RK",
+   "item_id": "animals-RK-e5f0-0312",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"pig\": 3, \"duck\": 8, \"bee\": 1, \"wolf\": 5, \"frog\": 7}\n```\nWhat number does lockers store for the animal known for oinking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 159,
+     "end": 262,
+     "role": "patched (final)"
+    },
+    {
+     "start": 38,
+     "end": 46,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 48,
+     "end": 57,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 59,
+     "end": 67,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 151,
+     "end": 158,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\n```python\nlockers = {\"wolf\": 3, \"frog\": 7, \"duck\": 9, \"pig\": 5, \"bee\": 8}\n```\nWhat number does lockers store for the animal known for quacking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 60,
+     "end": 69,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 50 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "3",
+    "edited": "7",
+    "expected": {
+     "none": "3",
+     "identity": "8",
+     "position": "1",
+     "value": "9"
+    },
+    "unedited_read": "3"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.174,
+     "identity": 0.0049,
+     "position": 0.1972,
+     "value": 0.0003
+    },
+    "layer": 50,
+    "role": "context"
+   },
+   "why": "another digit of the base context, predicted by no hypothesis ('7')"
+  },
+  {
+   "group": "context",
+   "family": "RK",
+   "item_id": "animals-RK-e5f0-0074",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"wolf\": 9, \"owl\": 5, \"bee\": 3, \"lion\": 0, \"frog\": 7}\n```\nWhat number does lockers store for the animal known for its roar? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 160,
+     "end": 263,
+     "role": "patched (final)"
+    },
+    {
+     "start": 69,
+     "end": 78,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 49,
+     "end": 57,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 59,
+     "end": 67,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 151,
+     "end": 159,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\n```python\nlockers = {\"frog\": 3, \"lion\": 7, \"owl\": 8, \"wolf\": 9, \"bee\": 0}\n```\nWhat number does lockers store for the animal known for hooting? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 60,
+     "end": 68,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "0",
+    "edited": "7",
+    "expected": {
+     "none": "0",
+     "identity": "5",
+     "position": "3",
+     "value": "8"
+    },
+    "unedited_read": "0"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.2577,
+     "identity": 0.0175,
+     "position": 0.0349,
+     "value": 0.0006
+    },
+    "layer": 48,
+    "role": "context"
+   },
+   "why": "another digit of the base context, predicted by no hypothesis ('7')"
+  },
+  {
+   "group": "context",
+   "family": "RR",
+   "item_id": "animals-RR-e5f0-0264",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"cow\": 5, \"bee\": 7, \"wolf\": 0, \"duck\": 9, \"dog\": 8}\n```\nHow many legs does the animal known for making honey have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 152,
+     "end": 255,
+     "role": "patched (final)"
+    },
+    {
+     "start": 48,
+     "end": 56,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 58,
+     "end": 67,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 69,
+     "end": 78,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 134,
+     "end": 146,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\n```python\nlockers = {\"dog\": 8, \"bee\": 9, \"cow\": 0, \"wolf\": 1, \"duck\": 5}\n```\nHow many legs does the animal known for howling have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 68,
+     "end": 77,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 50 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "6",
+    "edited": "0",
+    "expected": {
+     "none": "6",
+     "identity": "4",
+     "position": "2",
+     "value": "4"
+    },
+    "unedited_read": "6"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.3348,
+     "identity": 0.1232,
+     "position": 0.0108,
+     "value": 0.1232
+    },
+    "layer": 50,
+    "role": "context"
+   },
+   "why": "another digit of the base context, predicted by no hypothesis ('0')"
+  },
+  {
+   "group": "same_changed",
+   "family": "RR",
+   "item_id": "animals-RR-e5f0-0232",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"horse\": 1, \"frog\": 8, \"wolf\": 9, \"bee\": 0, \"owl\": 5}\n```\nHow many legs does the animal known for hooting have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 149,
+     "end": 252,
+     "role": "patched (final)"
+    },
+    {
+     "start": 82,
+     "end": 90,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 50,
+     "end": 59,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 72,
+     "end": 80,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 136,
+     "end": 143,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\n```python\nlockers = {\"horse\": 8, \"wolf\": 5, \"bee\": 1, \"frog\": 7, \"owl\": 9}\n```\nHow many legs does the animal known for croaking have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 71,
+     "end": 80,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer early (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "2",
+    "edited": "5",
+    "expected": {
+     "none": "2",
+     "identity": "4",
+     "position": "6",
+     "value": "4"
+    },
+    "unedited_read": "2"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.4595,
+     "identity": 0.0031,
+     "position": 0.0007,
+     "value": 0.0031
+    },
+    "layer": "early",
+    "role": "context"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('5')"
+  },
+  {
+   "group": "same_changed",
+   "family": "RR",
+   "item_id": "animals-RR-e5f0-0295",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"owl\": 7, \"bee\": 8, \"horse\": 3, \"lion\": 0, \"mouse\": 1}\n```\nHow many legs does the animal known for squeaking have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 152,
+     "end": 255,
+     "role": "patched (final)"
+    },
+    {
+     "start": 81,
+     "end": 91,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 38,
+     "end": 46,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 48,
+     "end": 56,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 137,
+     "end": 146,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\n```python\nlockers = {\"lion\": 1, \"owl\": 9, \"horse\": 7, \"bee\": 8, \"mouse\": 3}\n```\nHow many legs does the animal known for hooting have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 49,
+     "end": 57,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "4",
+    "edited": "1",
+    "expected": {
+     "none": "4",
+     "identity": "2",
+     "position": "6",
+     "value": "2"
+    },
+    "unedited_read": "4"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.456,
+     "identity": 0.0048,
+     "position": 0.0008,
+     "value": 0.0048
+    },
+    "layer": 48,
+    "role": "context"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('1')"
+  },
+  {
+   "group": "same_changed",
+   "family": "RK",
+   "item_id": "months-RK-e5f0-0377",
+   "domain": "months",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"July\": 3, \"February\": 6, \"June\": 4, \"April\": 8, \"September\": 0}\n```\nWhat number does lockers store for the month of Independence Day? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 172,
+     "end": 275,
+     "role": "patched (final)"
+    },
+    {
+     "start": 38,
+     "end": 47,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 87,
+     "end": 101,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 49,
+     "end": 62,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 142,
+     "end": 171,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\n```python\nlockers = {\"February\": 6, \"September\": 5, \"April\": 4, \"July\": 3, \"June\": 0}\n```\nWhat number does lockers store for the month of Labor Day? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 53,
+     "end": 67,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "3",
+    "edited": "4",
+    "expected": {
+     "none": "3",
+     "identity": "0",
+     "position": "6",
+     "value": "5"
+    },
+    "unedited_read": "3"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.3888,
+     "identity": 0.0983,
+     "position": 0.0133,
+     "value": 0.0017
+    },
+    "layer": "transit",
+    "role": "context"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('4')"
+  }
+ ]
+}
