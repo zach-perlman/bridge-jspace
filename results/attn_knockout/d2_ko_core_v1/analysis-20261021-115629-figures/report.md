@@ -45,6 +45,15 @@ Not interpretable / caveats: no control cell drops >= 20 points
 | Q2.5 the statement giving the bridge hidden from the question words: which loses answer org more | prompt → prompt | prompt → prompt 58% [46, 70] (n=60), prompt → memory 18% [11, 30] (n=60) | wrong: prompt → memory loses more (guessing differs: prompt → prompt can pick one of the 3 lockers in the prompt) |
 | Q2.6 which kind of layer runs the lookup | attention | memory → prompt, hidden from the last tokens in the 16 attention layers only: 8% [4, 18] (n=60); in the 48 DeltaNet layers only: 100% [94, 100] (n=60) | right |
 
+## Late attention read, per family (the statement giving the answer hidden from the last tokens)
+
+| family | question words, all layers | all layers | every attention layer | every DeltaNet layer | late attention read |
+|---|---|---|---|---|---|
+| prompt → prompt | 100% (NOT NEEDED) | 3% (NEEDED) | 3% (NEEDED) | 100% (NOT NEEDED) | - |
+| prompt → memory | 100% (NOT NEEDED) | 100% (NOT NEEDED) | - | - | - |
+| memory → prompt | 100% (NOT NEEDED) | 7% (NEEDED) | 8% (NEEDED) | 100% (NOT NEEDED) | - |
+| memory → memory | 100% (NOT NEEDED) | 100% (NOT NEEDED) | 100% (NOT NEEDED) | 100% (NOT NEEDED) | null (memory) |
+
 ## The agent's priors (job spec hypotheses), checked
 
 Predictions are quoted from the job spec (written before the run). Their shorthand: lookup = the statement giving the answer, binding = the statement giving the bridge; question = the question words, final = the last tokens before the answer; (statement, destination, all) = hidden in all 64 layers; win A-B = layers A-B only; suf L = layers L-63; pre L = layers 0 to L-1; NEEDED / NOT NEEDED / PARTIAL as in the rule above.

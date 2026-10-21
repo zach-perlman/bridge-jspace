@@ -27,6 +27,108 @@
         "passed": true
       }
     },
+    "late_attention_read": {
+      "BL": {
+        "path": true,
+        "final": {
+          "all": {
+            "acc": 0.033,
+            "verdict": "needed"
+          },
+          "attn": {
+            "acc": 0.033,
+            "verdict": "needed"
+          },
+          "gdn": {
+            "acc": 1.0,
+            "verdict": "not_needed"
+          }
+        },
+        "question_all": {
+          "acc": 1.0,
+          "verdict": "not_needed"
+        },
+        "late_attention_read": null,
+        "bands": {
+          "early": null,
+          "middle": null,
+          "late": null
+        }
+      },
+      "BR": {
+        "path": true,
+        "final": {
+          "all": {
+            "acc": 1.0,
+            "verdict": "not_needed"
+          }
+        },
+        "question_all": {
+          "acc": 1.0,
+          "verdict": "not_needed"
+        },
+        "late_attention_read": null,
+        "bands": {
+          "early": null,
+          "middle": null,
+          "late": null
+        }
+      },
+      "RL": {
+        "path": true,
+        "final": {
+          "all": {
+            "acc": 0.067,
+            "verdict": "needed"
+          },
+          "attn": {
+            "acc": 0.083,
+            "verdict": "needed"
+          },
+          "gdn": {
+            "acc": 1.0,
+            "verdict": "not_needed"
+          }
+        },
+        "question_all": {
+          "acc": 1.0,
+          "verdict": "not_needed"
+        },
+        "late_attention_read": null,
+        "bands": {
+          "early": null,
+          "middle": null,
+          "late": null
+        }
+      },
+      "RR": {
+        "path": false,
+        "final": {
+          "all": {
+            "acc": 1.0,
+            "verdict": "not_needed"
+          },
+          "attn": {
+            "acc": 1.0,
+            "verdict": "not_needed"
+          },
+          "gdn": {
+            "acc": 1.0,
+            "verdict": "not_needed"
+          }
+        },
+        "question_all": {
+          "acc": 1.0,
+          "verdict": "not_needed"
+        },
+        "late_attention_read": null,
+        "bands": {
+          "early": null,
+          "middle": null,
+          "late": null
+        }
+      }
+    },
     "C1a_RL_breaks_RR_survives": {
       "RL": "needed",
       "RR": "not_needed",
@@ -236,6 +338,7 @@
       "windows.png",
       "windows.svg"
     ],
+    "bands": null,
     "cuts": null,
     "norm_ratio": [
       "norm_ratio.png",

@@ -37,6 +37,13 @@ Not interpretable / caveats: countries: prompt → memory, control: the up to 3 
 
 (none of Dan's D2 questions is measured in this run)
 
+## Late attention read, per family (the statement giving the answer hidden from the last tokens)
+
+| family | question words, all layers | all layers | every attention layer | every DeltaNet layer | late attention read |
+|---|---|---|---|---|---|
+| prompt → prompt → memory | 60% (NEEDED) | 20% (NEEDED) | - | - | - |
+| prompt → memory → prompt | 100% (PARTIAL) | 0% (NEEDED) | - | - | - |
+
 ## The agent's priors (job spec hypotheses), checked
 
 Predictions are quoted from the job spec (written before the run). Their shorthand: lookup = the statement giving the answer, binding = the statement giving the bridge; question = the question words, final = the last tokens before the answer; (statement, destination, all) = hidden in all 64 layers; win A-B = layers A-B only; suf L = layers L-63; pre L = layers 0 to L-1; NEEDED / NOT NEEDED / PARTIAL as in the rule above.

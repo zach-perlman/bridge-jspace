@@ -171,19 +171,31 @@ def finish_case(base: dict, tok, text: str, statements: dict, alts: dict, q_star
         flags[name] = "same_length" if same else "length_mismatch"
         sources[name], texts[name] = span_of(pick), pick
     ctx_tok = token_span(offsets, *ctx)
-    length = len(sources.get("lookup", sources["binding"]))
     forbidden = set(sources["binding"]) | set(sources.get("lookup", []))
-    named = [v for v in sources.values()]  # a random span is never exactly one of the named statements
+    return _complete_case(base, tok, text, (ids, offsets, prompt), (sources, texts, flags), rng, ctx_tok, forbidden,
+                          q_start, ctx_tok)  # fmt: skip
+
+
+def _complete_case(
+    base: dict, tok, text: str, enc: tuple, named_sources: tuple, rng: random.Random, region: list[int],
+    forbidden: set[int], q_start: int, ctx_tok: list[int],
+) -> dict:  # fmt: skip
+    """The shared tail of a case: the random span (inside `region`, of the main statement's length, overlapping no
+    `forbidden` token and never exactly a named statement), the trailing tokens, the destinations and checks."""
+    ids, offsets, prompt = enc
+    sources, texts, flags = named_sources
+    length = len(sources.get("lookup", sources.get("binding", [])))
+    named = list(sources.values())
     starts = [
         p
-        for p in range(ctx_tok[0], ctx_tok[-1] - length + 2)
+        for p in range(region[0], region[-1] - length + 2)
         if not forbidden & set(range(p, p + length)) and list(range(p, p + length)) not in named
     ]
     p = rng.choice(starts)
     sources["random"], texts["random"] = list(range(p, p + length)), tok.decode(ids[p : p + length])
     content_end = text.index("<|im_end|>", q_start)
     question = token_span(offsets, q_start, content_end)
-    anchor = max(sources.get("lookup", sources["binding"]))
+    anchor = max(sources.get("lookup", sources.get("binding", [])))
     trailing = [t for t in range(anchor + 1, anchor + 1 + CONV_REACH) if t < min(question)]
     if trailing:
         sources["trailing"], texts["trailing"] = trailing, tok.decode(ids[trailing[0] : trailing[-1] + 1])
@@ -196,6 +208,164 @@ def finish_case(base: dict, tok, text: str, statements: dict, alts: dict, q_star
     return {**base, "prompt": prompt, "ids": ids, "offsets": offsets, "sources": sources, "source_text": texts,
             "source_flags": flags, "dests": {"question": question, "final": final, "both": question + final},
             "context": [ctx_tok[0], ctx_tok[-1]], "q_start": q_start}  # fmt: skip
+
+
+# ---- pointer-style item sets (D2 batch 2): pointer_v1, code_pointer_v1, alias_pointer_v1 -----------------------------
+
+POINTER_SETS = ("pointer_v1", "code_pointer_v1", "alias_pointer_v1")
+POINTER_COMPETENCE = {"pointer_v1": "d3_competence_27b", "code_pointer_v1": "code_competence_27b",
+                      "alias_pointer_v1": "alias_competence_27b"}  # fmt: skip
+# pointer_v1's cell gate: a (domain, family[, condition]) cell enters iff its clean Wilson lower bound >= GATE_LO;
+# alias_pointer_v1's other surface forms use its own 0.80 (its docstring; English keeps 0.85).
+GATE_LO, ALIAS_GATE_LO = 0.85, 0.80
+CONDITION = {"e5f0": "same", "e5f0-xlang": "xlang", "e5f0-syn": "syn"}  # alias_pointer_v1's levels -> conditions
+
+
+def pointer_family(item: dict, dataset: str) -> str:
+    """The family key a run reports by: the item's family, with the statements' surface form for alias_pointer_v1."""
+    return f"{item['family']}-{CONDITION[item['level']]}" if dataset == "alias_pointer_v1" else item["family"]
+
+
+def pointer_statement_spans(item: dict, dataset: str) -> list[tuple[int, int]]:
+    """Char spans [start, end) of the statements (dict entries for code) in slot order, in the user-turn content
+    context + "\\n" + question + " " + instruction. pointer_v1 has no spans: its context is the statements alone,
+    one sentence per slot (main and e*f0 levels: no filler, asserted)."""
+    if dataset == "code_pointer_v1":
+        return [tuple(s) for s in item["spans"]["entries"]]
+    if dataset == "alias_pointer_v1":
+        return [tuple(s) for s in item["spans"]["statements"]]
+    assert item["n_filler"] == 0, f"{item['id']}: pointer_v1 spans are derived for scenes without filler only"
+    ctx, out, start = item["context"], [], 0
+    for _ in range(item["n_entities"]):
+        end = ctx.index(".", start) + 1
+        while end < len(ctx) and ctx[end] != " ":  # a period inside a token (none in these domains): keep scanning
+            end = ctx.index(".", end) + 1
+        out.append((start, end))
+        start = end + 1
+    assert out[-1][1] == len(ctx), f"{item['id']}: the statements do not cover the context"
+    for (a, b), ent, dig in zip(out, item["entities"], item["digits"], strict=True):
+        assert ent in ctx[a:b], f"{item['id']}: slot statement {ctx[a:b]!r} does not name {ent}"
+        assert str(dig) in ctx[a:b], f"{item['id']}: slot statement {ctx[a:b]!r} does not give {dig}"
+    return out
+
+
+def pointer_case(item: dict, tok, dataset: str) -> dict:
+    """A pointer-style item as a case: the statement giving the answer (the queried slot's), a same-kind statement
+    off the path (another slot, same token length, seeded per scene), a random span inside the statements' region
+    (no overlap with the answer's statement or, in code, the selector lines), the trailing tokens, destinations."""
+    text = S.render(tok, item["context"], item["question"])
+    content = f"{item['context']}\n{item['question']} {S.INSTRUCTION}"
+    shift = text.index(content)
+    ids, offsets, prompt = encode(tok, text, item["answer_kind"] == "digit")
+    spans = pointer_statement_spans(item, dataset)
+    tok_spans = [token_span(offsets, a + shift, b + shift) for a, b in spans]
+    q = item["slots"]["query"]
+    fam = pointer_family(item, dataset)
+    rng = random.Random(f"{SPAN_SEED}:{dataset}:{item['scene']}:{item.get('level', '')}")
+    sources = {"lookup": tok_spans[q]}
+    texts = {"lookup": content[slice(*spans[q])]}
+    same = [i for i, s in enumerate(tok_spans) if i != q and len(s) == len(tok_spans[q])]
+    off = rng.choice(same) if same else next(i for i in range(len(spans)) if i != q)
+    sources["lookup_off"], texts["lookup_off"] = tok_spans[off], content[slice(*spans[off])]
+    flags = {"lookup_off": "same_length" if same else "length_mismatch"}
+    region = list(range(min(min(s) for s in tok_spans), max(max(s) for s in tok_spans) + 1))
+    forbidden = set(sources["lookup"])
+    for key in ("list", "chain"):  # code selectors (IX's list, CH's chains): on the path, never a random control
+        for a, b in (item.get("spans") or {}).get(key, []):
+            forbidden |= set(token_span(offsets, a + shift, b + shift))
+    q_start = shift + len(item["context"]) + 1
+    ctx_tok = token_span(offsets, shift, shift + len(item["context"]))
+    if item["family"] == "RR":  # the answer is recalled: confusions are other entities' recalled facts
+        conf = {str(v) for e, v in item["recalled"].items() if e != item["query"]}
+    else:
+        conf = {str(d) for e, d in zip(item["entities"], item["digits"], strict=True) if e != item["query"]}
+    conf.discard(item["answer"])
+    base = {"id": item["id"], "family": fam, "scene": item["scene"], "domain": item["domain"], "level": item["level"],
+            "question_text": item["question"],
+            "bridge": item["query"], "cue": item["cue"], "answer": item["answer"], "answer_kind": item["answer_kind"],
+            "conf_answers": sorted(conf), "tok_A": S.answer_token(tok, item["answer"], item["answer_kind"]),
+            "conf_toks": sorted({S.answer_token(tok, c, item["answer_kind"]) for c in conf})}  # fmt: skip
+    return _complete_case(base, tok, text, (ids, offsets, prompt), (sources, texts, flags), rng, region, forbidden,
+                          q_start, ctx_tok)  # fmt: skip
+
+
+def pointer_files(dataset: str, families: list[str], domains: list[str] | None, set_name: str = "main") -> list[Path]:
+    folder = pins.DATA_DIR / dataset / set_name
+    out = []
+    for path in sorted(folder.glob("*.json")):
+        domain, fam = path.stem.split("_")[:2]
+        if fam in families and (not domains or domain in domains):
+            out.append(path)
+    return out
+
+
+def pointer_competence(dataset: str, run: str) -> tuple[dict[str, bool], dict[str, tuple]]:
+    """From the dataset's competence run, main set only (main and dev reuse item ids): item id -> every prompt right;
+    and per file label ("main/<domain>_<family>_<level>") the clean Wilson bound."""
+    rows = [json.loads(line) for line in (pins.RESULTS_DIR / dataset / run / "items.jsonl").read_text().splitlines()]
+    ok: dict[str, list[bool]] = collections.defaultdict(list)
+    clean: dict[str, list[bool]] = collections.defaultdict(list)
+    for r in rows:
+        if not r["label"].startswith("main/"):
+            continue
+        ok[r["id"]].append(r["correct"])
+        if r["kind"] == "clean":
+            clean[r["label"]].append(r["correct"])
+    return {i: all(v) for i, v in ok.items()}, {k: wilson(sum(v), len(v)) for k, v in clean.items()}
+
+
+def build_pointer_cases(tok, dataset: str, families: list[str], domains: list[str] | None, n: int,
+                        eligibility: str, competence: str | None) -> tuple[list[dict], dict]:  # fmt: skip
+    """Per domain (and alias condition), the scenes eligible in every requested family (paired), first n by scene
+    id; a (domain, condition) group enters only if every family's cell passes the competence gate."""
+    files = pointer_files(dataset, families, domains)
+    items: dict[tuple[str, str], dict[str, dict]] = collections.defaultdict(dict)  # (domain, level) -> id -> item
+    for path in files:
+        for it in json.loads(path.read_text())["items"]:
+            items[(it["domain"], it["level"])][it["id"]] = it
+    report: dict[str, Any] = {}
+    elig, gate = pointer_competence(dataset, competence) if eligibility == "map" and competence else ({}, {})
+    groups: dict[tuple[str, str], tuple[dict[str, dict[str, dict]], list[str]]] = {}
+    for (domain, level), by_id in sorted(items.items()):
+        by_scene: dict[str, dict[str, dict]] = collections.defaultdict(dict)
+        for it in by_id.values():
+            by_scene[it["scene"]][it["family"]] = it
+        key = f"{domain}/{level}"
+        kept = list(families)
+        if eligibility == "map":
+            lo_needed = ALIAS_GATE_LO if dataset == "alias_pointer_v1" and level != "e5f0" else GATE_LO
+            lows = {f: gate.get(f"main/{domain}_{f}_{level}", (0.0, 0.0, 0.0))[1] for f in families}
+            kept = [f for f in families if lows[f] >= lo_needed]
+            report[key] = {"gate_lower_bounds": lows, "gate": lo_needed, "families": kept,
+                           "entered": any(path_sources(f) for f in kept)}  # fmt: skip
+            if not report[key]["entered"]:
+                continue
+            scenes = [s for s, fams in sorted(by_scene.items())
+                      if all(f in fams and elig.get(fams[f]["id"], False) for f in kept)]  # fmt: skip
+        else:
+            report[key] = {"entered": True, "families": kept}
+            scenes = [s for s, fams in sorted(by_scene.items()) if all(f in fams for f in kept)]
+        groups[(domain, level)] = (by_scene, scenes)
+    if dataset == "alias_pointer_v1":  # pair the surface forms: a domain's scenes eligible in every entered condition
+        for domain in {d for d, _ in groups}:
+            levels = [lv for d, lv in groups if d == domain]
+            if len(levels) < 2:  # the English baseline or the alias form failed the gate: no pair to compare
+                for lv in levels:
+                    report[f"{domain}/{lv}"]["entered"] = False
+                    groups.pop((domain, lv))
+                continue
+            common = set.intersection(*(set(groups[(domain, lv)][1]) for lv in levels))
+            for lv in levels:
+                by_scene, scenes = groups[(domain, lv)]
+                groups[(domain, lv)] = (by_scene, [s for s in scenes if s in common])
+    cases = []
+    for (domain, level), (by_scene, scenes) in sorted(groups.items()):
+        picked = scenes[:n]
+        rep = report[f"{domain}/{level}"]
+        rep.update({"eligible_scenes": len(scenes), "picked": len(picked)})
+        for s in picked:
+            cases += [pointer_case(by_scene[s][f], tok, dataset) for f in rep["families"]]
+    return cases, report
 
 
 def suite_case(item: dict, tok) -> dict:
@@ -305,9 +475,38 @@ def layer_sets(kinds: list[str], wanted: list[str]) -> dict[str, list[int]]:
         elif w == "kind":
             sets["attn"] = [i for i, k in enumerate(kinds) if k == FULL]
             sets["gdn"] = [i for i, k in enumerate(kinds) if k == LINEAR]
+        elif w == "bands":  # batch 2: the late read band and the two before it, each also by layer kind
+            for fa, fb in BANDS:
+                a, b = round(fa * n), round(fb * n) - 1  # 64 layers: 0-31, 32-47, 48-63
+                band = list(range(a, b + 1))
+                sets[f"band{a:02d}-{b:02d}"] = band
+                sets[f"band{a:02d}-{b:02d}:attn"] = [i for i in band if kinds[i] == FULL]
+                sets[f"band{a:02d}-{b:02d}:gdn"] = [i for i in band if kinds[i] == LINEAR]
         else:
             raise ValueError(w)
     return sets
+
+
+# D2 (first night): the lookup statement is read at layers 48-63 of Qwen3.6-27B's 64. Bands as fractions of depth, so
+# the 27B gets 0-31, 32-47, 48-63 and a smoke model the same thirds of its depth.
+BANDS = ((0.0, 0.5), (0.5, 0.75), (0.75, 1.0))
+
+
+def band_labels(cells: dict) -> list[str]:
+    """The run's band labels, earliest first (late band last)."""
+    return sorted({k[3].split(":")[0] for k in cells if k[3].startswith("band")}, key=lambda s: int(s[4:6]))
+
+
+def path_sources(fam: str) -> tuple[str, ...]:
+    """Sources on the family's path: the suite's table; a pointer family's lookup statement unless the answer is
+    recalled (RR, the null)."""
+    if fam in PATH:
+        return PATH[fam]
+    return () if fam.split("-")[0] == "RR" else ("lookup",)
+
+
+def sweep_sources(fam: str) -> tuple[str, ...]:
+    return SWEEP.get(fam, ("lookup", "lookup_off"))
 
 
 def conditions(case: dict, m: dict) -> list[dict]:
@@ -316,7 +515,7 @@ def conditions(case: dict, m: dict) -> list[dict]:
     out = [{"source": s, "dest": d, "layers": "all", "mode": "value"} for s in srcs for d in m["dests"]]
     if m["absent"]:
         out += [{"source": s, "dest": d, "layers": "all", "mode": "absent"} for s in srcs for d in ("both", "after")]
-    sweep = srcs if m["sweep"] == "all" else [s for s in srcs if s in SWEEP[fam]]
+    sweep = srcs if m["sweep"] == "all" else [s for s in srcs if s in sweep_sources(fam)]
     if m["sweep"] == "path+random" and "random" in srcs:
         sweep.append("random")
     for label in m["layer_sets"]:
@@ -351,10 +550,17 @@ def stage_manifest(args) -> None:
     for label, ls in sets.items():
         if label.startswith("win") and ":" not in label:
             assert sum(kinds[i] == FULL for i in ls) == 2, f"{label}: not 2 full-attention layers"
-    inputs = [S.data_dir("A") / f"{f}.json" for f in args.families if f in SUITE]
-    if any(f in COUNTRIES for f in args.families):
+    pointer = args.dataset in POINTER_SETS
+    if pointer:
+        inputs = pointer_files(args.dataset, args.families, args.domains)
+        assert inputs, f"no {args.dataset} files for families {args.families}, domains {args.domains}"
+        if args.eligibility == "map":
+            inputs.append(pins.RESULTS_DIR / args.dataset / args.competence / "items.jsonl")
+    else:
+        inputs = [S.data_dir("A") / f"{f}.json" for f in args.families if f in SUITE]
+    if not pointer and any(f in COUNTRIES for f in args.families):
         inputs.append(pins.BIND_RECALL_FILE)
-    if args.eligibility == "map":
+    if not pointer and args.eligibility == "map":
         inputs += (
             [pins.RESULTS_DIR / "suite_split" / SUITE_MAP / "cases.jsonl"]
             if any(f in SUITE for f in args.families)
@@ -364,7 +570,14 @@ def stage_manifest(args) -> None:
     m = {
         "exp": EXP, "run": args.name, "why": args.why,
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "model": pins.model_pin(), "families": args.families, "n_per_family": args.n, "eligibility": args.eligibility,
+        "model": pins.model_pin(), "dataset": args.dataset, "domains": args.domains,
+        "competence": args.competence if pointer and args.eligibility == "map" else None,
+        "gate": f"pointer sets: a (domain, family, condition) cell enters iff its clean Wilson lower bound >= {GATE_LO} "
+        f"in the competence run ({ALIAS_GATE_LO} for alias_pointer_v1's other surface forms); a (domain, condition) "
+        "group needs at least one family that looks its answer up; items: every competence prompt right; scenes "
+        "paired across the group's entered families (and, in alias_pointer_v1, across the surface forms: a domain "
+        "enters only with both forms); first n scenes by id" if pointer else None,
+        "families": args.families, "n_per_family": args.n, "eligibility": args.eligibility,
         "inputs": {str(p.relative_to(pins.REPO_ROOT)): sha256_of(p) for p in inputs},
         "sources": args.sources, "dests": args.dests, "sweep": args.sweep, "sweep_dests": args.sweep_dests,
         "absent": args.absent, "layer_sets": sets, "layer_kinds": kinds,
@@ -394,7 +607,7 @@ def run_check(model, case: dict, kinds: list[str]) -> dict:
     out: dict[str, Any] = {"kernel_path": kernel_path()}
     with knock_out(model, every, [[]], [case["dests"]["final"]]):
         out["noop_empty_source_max_abs"] = float((forward_last(model, ids) - plain).abs().max())
-    src = case["sources"].get("lookup", case["sources"]["binding"])
+    src = case["sources"]["lookup"] if "lookup" in case["sources"] else case["sources"]["binding"]
     with knock_out(model, every, [[], src], [[], case["dests"]["both"]]):
         two = forward_last(model, ids.expand(2, -1).contiguous())
     out["unedited_row_drift_in_knocked_batch_max_abs"] = float((two[0] - plain[0]).abs().max())
@@ -479,7 +692,13 @@ def stage_run(name: str) -> None:
     assert kinds == m["layer_kinds"], "the loaded model's layer kinds differ from the manifest's"
     tok = model.tokenizer
     t0 = time.time()
-    cases = build_cases(tok, m["families"], m["n_per_family"], m["eligibility"])
+    if m.get("dataset", "suite") in POINTER_SETS:
+        cases, report = build_pointer_cases(tok, m["dataset"], m["families"], m.get("domains"), m["n_per_family"],
+                                            m["eligibility"], m.get("competence"))  # fmt: skip
+        (out_dir / "cases_report.json").write_text(json.dumps(report, indent=2) + "\n")
+        print(json.dumps(report), flush=True)
+    else:
+        cases = build_cases(tok, m["families"], m["n_per_family"], m["eligibility"])
     print(json.dumps(collections.Counter(c["family"] for c in cases)), flush=True)
     check = run_check(model, cases[0], kinds)
     check["seconds"] = round(time.time() - t0, 1)
@@ -525,8 +744,9 @@ def stage_run(name: str) -> None:
     seconds = time.time() - t_run
     write_jsonl(out_dir / "rows.jsonl", rows)
     keep = ("id", "family", "scene", "bridge", "cue", "answer", "answer_kind", "conf_answers", "tok_A", "conf_toks",
-            "prompt", "ids", "offsets", "sources", "source_text", "source_flags", "dests", "context")  # fmt: skip
-    write_jsonl(out_dir / "cases.jsonl", [{k: c[k] for k in keep} for c in cases])
+            "prompt", "ids", "offsets", "sources", "source_text", "source_flags", "dests", "context", "domain", "level",
+            "question_text")  # fmt: skip
+    write_jsonl(out_dir / "cases.jsonl", [{k: c[k] for k in keep if k in c} for c in cases])
     timing = {"cases": len(cases), "knocked_rows": total, "forwards_rows_incl_unedited": total + sum(
         -(-len([x for x in conditions(c, m) if x["mode"] == g]) // (BATCH - 1)) for c in cases for g in ("value", "absent")),
         "seconds_run": round(seconds, 1), "rows_per_second": round(total / seconds, 2),
@@ -539,8 +759,11 @@ def stage_run(name: str) -> None:
 
 
 def load_run(name: str) -> tuple[dict, list[dict], dict[str, dict]]:
+    global DATASET
     out_dir = RESULTS / name
     m = json.loads((out_dir / "manifest.json").read_text())
+    DATASET = m.get("dataset", "suite")  # family codes read per item set in every display
+    RUN_INFO.update({"model": m["model"]["repo"].split("/")[-1], "n_layers": len(m["layer_kinds"])})
     rows = [json.loads(line) for line in (out_dir / "rows.jsonl").read_text().splitlines()]
     cases = {c["id"]: c for c in (json.loads(line) for line in (out_dir / "cases.jsonl").read_text().splitlines())}
     return m, rows, cases
@@ -596,10 +819,41 @@ def claims(cells: dict[tuple, dict]) -> dict:
         return c["verdict"] if c else None
 
     out: dict[str, Any] = {"positive_control": {}}
-    for fam, srcs in PATH.items():
-        got = {s: v(fam, s, "after", mode="absent") for s in srcs}
+    present = sorted({k[0] for k in cells}, key=fam_order)
+    for fam in present:
+        got = {s: v(fam, s, "after", mode="absent") for s in path_sources(fam)}
         if any(x is not None for x in got.values()):
             out["positive_control"][fam] = {"sources": got, "passed": all(x == "needed" for x in got.values())}
+
+    def acc(fam, dest, layers):
+        c = cells.get((fam, "lookup", dest, layers, "value"))
+        return round(c["acc"][0], 3) if c else None
+
+    late = {}  # batch 2: is the answer's statement read by the last tokens, late, through attention?
+    blabels = band_labels(cells)
+    early, mid, last = (blabels[0], blabels[1], blabels[2]) if len(blabels) == 3 else (None, None, None)
+    for fam in present:
+        if (fam, "lookup", "final", "all", "value") not in cells:
+            continue
+        sets = ["all", "attn", "gdn", *[f"{b}{k}" for b in blabels for k in ("", ":attn", ":gdn")]]
+        late[fam] = {"path": bool(path_sources(fam)),
+                     "final": {s: {"acc": acc(fam, "final", s), "verdict": v(fam, "lookup", "final", s)}
+                               for s in sets if acc(fam, "final", s) is not None},
+                     "question_all": {"acc": acc(fam, "question", "all"), "verdict": v(fam, "lookup", "question")}}  # fmt: skip
+        f = late[fam]["final"]
+        late[fam]["late_attention_read"] = (
+            bool(
+                f.get("all", {}).get("verdict") == "needed"
+                and f.get("attn", {}).get("verdict") == "needed"
+                and (f.get("gdn", {}).get("acc") or 0) >= NOT_NEEDED_LO
+                and f.get(last or "", {}).get("verdict") in ("needed", "partial")
+                and all((f.get(b or "", {}).get("acc") or 0) >= NOT_NEEDED_LO for b in (early, mid))
+            )
+            if last in f
+            else None
+        )
+        late[fam]["bands"] = {"early": early, "middle": mid, "late": last}
+    out["late_attention_read"] = late
     out["C1a_RL_breaks_RR_survives"] = {"RL": v("RL", "lookup", "both"), "RR": v("RR", "lookup", "both"),
                                        "holds": v("RL", "lookup", "both") == "needed" and v("RR", "lookup", "both") == "not_needed"}  # fmt: skip
     fin = {f: (v(f, "lookup", "final"), v(f, "lookup", "question")) for f in ("BL", "RL", "BLR", "BRL")}
@@ -616,7 +870,7 @@ def claims(cells: dict[tuple, dict]) -> dict:
         if c["verdict"] == "needed":
             kind = (
                 "windows_needed"
-                if layers.startswith("win")
+                if layers.startswith(("win", "band"))
                 else f"{layers[:3]}_needed"
                 if layers[:3] in ("suf", "pre")
                 else "kind_needed"
@@ -649,7 +903,7 @@ def stage_summarise(name: str) -> None:
     def pct(t):
         return f"{100 * t[0]:.0f}% [{100 * t[1]:.0f},{100 * t[2]:.0f}]"
 
-    for k, c in sorted(cells.items(), key=lambda kv: (FAMILIES.index(kv[0][0]), kv[0][1:])):
+    for k, c in sorted(cells.items(), key=lambda kv: (fam_order(kv[0][0]), kv[0][1:])):
         vs = (
             f"{100 * c['vs_control'][0]:+.0f} [{100 * c['vs_control'][1]:+.0f},{100 * c['vs_control'][2]:+.0f}]"
             if "vs_control" in c
@@ -703,7 +957,23 @@ FAMILY_HINT = {  # what each family asks, in words (displays never show the fami
     "BRL": "pet stated, legs recalled, locker looked up",
     "country-R": "country recalled from a city, capital recalled",
     "country-B": "country stated, capital recalled",
+    "DL": "entity named, its locker looked up",
+    "DK": "key named in the code, dict value printed",
+    "IX": "key read from a list position, dict value printed",
+    "CH2": "key passed through 2 variables, dict value printed",
+    "CH3": "key passed through 3 variables, dict value printed",
+    "RK": "key recalled from a cue, dict value read",
 }
+POINTER_HINT = {"RL": "entity recalled from a cue, its locker looked up", "RR": "entity recalled, a fact recalled"}
+
+
+def fam_hint(code: str) -> str:
+    base = code.split("-")[0]
+    if DATASET in POINTER_SETS and base in POINTER_HINT:
+        return POINTER_HINT[base] if DATASET != "code_pointer_v1" or base != "RR" else "key recalled, a fact recalled"
+    return FAMILY_HINT.get(code, FAMILY_HINT.get(base, ""))
+
+
 STATEMENT_WORDS = {
     "lookup": "hidden: the statement giving the answer",
     "binding": "hidden: the statement giving the bridge",
@@ -722,11 +992,31 @@ DEST_PHRASE = {
 }
 
 
+DATASET = "suite"  # the run being analysed (set from its manifest): family codes read differently per item set
+RUN_INFO: dict[str, Any] = {"model": "Qwen3.6-27B", "n_layers": 64}  # the analysed run's model, from its manifest
+CODE_LABEL = {  # code_pointer_v1's families (its docstring's plain names)
+    "DK": "code: named → prompt",
+    "IX": "code: list position → prompt",
+    "CH2": "code: 2-variable chain → prompt",
+    "CH3": "code: 3-variable chain → prompt",
+    "RK": "code: memory → prompt",
+    "RR": "code: memory → memory",
+}
+SURFACE = {"same": "statements in English", "xlang": "statements in French/Spanish/German",
+           "syn": "statements name the chemical symbol"}  # fmt: skip
+
+
 def fam_label(code: str) -> str:
     """The plain family name (bridge_jspace.plotting.FAMILY_LABEL: where the bridge comes from -> where the answer
-    comes from); this script's country codes map onto its countries_R / countries_B keys."""
+    comes from); this script's country codes map onto its countries_R / countries_B keys; code_pointer_v1's families
+    and alias_pointer_v1's surface forms get their own words."""
     from bridge_jspace.plotting import family_label
 
+    if DATASET == "code_pointer_v1":
+        return CODE_LABEL.get(code, code)
+    if DATASET == "alias_pointer_v1" and "-" in code:
+        fam, cond = code.split("-", 1)
+        return f"{family_label(fam)}, {SURFACE.get(cond, cond)}"
     return family_label(code.replace("country-", "countries_"))
 
 
@@ -734,8 +1024,15 @@ def plain(text: str) -> str:
     """Display text with every family code replaced by its plain name (item ids such as RL-0329 stay)."""
     import re
 
-    pattern = r"(?<![\w-])(country-R|country-B|BLR|BRL|BL|BR|RL|RR)(?![\w]|-\d)"
+    codes = "RL-same|RL-xlang|RL-syn|DL-same|DL-xlang|DL-syn|RR-same|RR-xlang|RR-syn|country-R|country-B|BLR|BRL|CH2|CH3|BL|BR|RL|RR|DL|DK|IX|RK"
+    pattern = rf"(?<![\w-])({codes})(?![\w]|-\d)"
     return re.sub(pattern, lambda mt: fam_label(mt.group(1)), text)
+
+
+def fam_order(code: str) -> tuple[int, str]:
+    order = [*FAMILIES, "DL", "DK", "IX", "CH2", "CH3", "RK"]
+    base = code.split("-")[0] if code not in FAMILIES else code
+    return (order.index(base) if base in order else len(order), code)
 
 
 VERDICT = {"needed": "NEEDED", "not_needed": "NOT NEEDED", "partial": "PARTIAL", "breaks (control)": "control breaks"}
@@ -750,6 +1047,8 @@ def layers_phrase(label: str, n_layers: int = 64) -> str:
     base, _, kind = label.partition(":")
     if base.startswith("win"):
         text = f"layers {int(base[3:5])}-{int(base[6:8])}"
+    elif base.startswith("band"):
+        text = f"layers {int(base[4:6])}-{int(base[7:9])}"
     elif base.startswith("pre"):
         text = f"layers 0-{int(base[3:]) - 1}"
     elif base.startswith("suf"):
@@ -888,15 +1187,26 @@ def _transit_handle():
 def data_row(cells: dict, bars: str = "Wilson 95% CI") -> str:
     """The caption's Data row: model, families, prompts per family, error bars (no run ids)."""
     n = sorted({c["n"] for k, c in cells.items() if k[3] == "all"})
-    codes = list(dict.fromkeys(k[0] for k in cells))
-    sets = "animal scenes" + (" and country prompts" if any(f.startswith("country") for f in codes) else "")
+    codes = sorted(dict.fromkeys(k[0] for k in cells), key=fam_order)
+    sets = {"pointer_v1": "locker scenes: animals, elements, planets, months", "code_pointer_v1": "Python programs "
+            "with a dict of lockers", "alias_pointer_v1": "locker scenes, English vs another surface form"}.get(
+        DATASET, "animal scenes" + (" and country prompts" if any(f.startswith("country") for f in codes) else ""))  # fmt: skip
     count = "-".join(map(str, (n[0], n[-1]))) if len(n) > 1 else str(n[0])
-    return (f"Qwen3.6-27B; {', '.join(fam_label(f) for f in codes)} ({sets}); {count} prompts per family, all "
-            f"giving answer org unedited; error bars: {bars}.")  # fmt: skip
+    return (f"{RUN_INFO['model']}; {', '.join(fam_label(f) for f in codes)} ({sets}); {count} prompts per family, "
+            f"all giving answer org unedited; error bars: {bars}.")  # fmt: skip
+
+
+EXAMPLE_CASE: dict[str, Any] = {}  # a pointer run's example (a real case), set by stage_figures
 
 
 def example_row(cells: dict, blocked: str) -> str:
     """The caption's Example row: a real org prompt (shortened), answer org, and what is blocked."""
+    if EXAMPLE_CASE:
+        c = EXAMPLE_CASE
+        stmt = c["source_text"]["lookup"].strip()
+        question = " ".join(c.get("question_text", "").split())
+        return (f'"... {stmt} ... {question} Answer:" -> answer org {c["answer"]}. Blocked: {blocked} cannot read '
+                f'"{stmt}" (the statement giving the answer).')  # fmt: skip
     if any(k[1] == "lookup" for k in cells):
         return ('"... The cow\'s locker is 5. ... Which locker belongs to the animal known for mooing? Answer:" -> '
                 f'answer org 5. Blocked: {blocked} cannot read "The cow\'s locker is 5." (the statement giving the '
@@ -918,6 +1228,8 @@ def fig_all_layers(cells: dict, m: dict, stem: Path) -> list[str] | None:
     from bridge_jspace.plotting import MUTED, percent_axis, style_axes
 
     order = {"lookup": ("RL", "RR", "BL", "BR", "BLR", "BRL"), "binding": ("BL", "BR", "RL", "RR", "BLR", "BRL", "country-B", "country-R")}  # fmt: skip
+    if DATASET in POINTER_SETS:  # one statement kind; families in reading order
+        order = {"lookup": tuple(sorted({k[0] for k in cells}, key=fam_order))}
     rows = [(st, [f for f in fams if (f, st, "final", "all", "value") in cells]) for st, fams in order.items()]
     rows = [(st, fams) for st, fams in rows if fams]
     if not rows:
@@ -943,7 +1255,7 @@ def fig_all_layers(cells: dict, m: dict, stem: Path) -> list[str] | None:
             ax.set_xticks(range(len(DESTS)), [DEST_WORDS[d] for d in DESTS], fontsize=7)
             ax.set_ylim(-0.04, 1.06)
             percent_axis(ax)
-            ax.set_title(f"{fam_label(fam)}\n{FAMILY_HINT[fam]}\n{STATEMENT_WORDS[st]}", fontsize=8.5, loc="left",
+            ax.set_title(f"{fam_label(fam)}\n{fam_hint(fam)}\n{STATEMENT_WORDS[st]}", fontsize=8.5, loc="left",
                          color="#0b0b0b", linespacing=1.3)  # fmt: skip
             if j == 0:
                 ax.set_ylabel("% still giving answer org", fontsize=8, color=MUTED)
@@ -953,9 +1265,10 @@ def fig_all_layers(cells: dict, m: dict, stem: Path) -> list[str] | None:
         ("What we did", "Stopped one group of positions from reading one statement of the prompt, in all 64 layers, "
                         "then read the answer. " + BLOCK_NOTE),
         ("Example", example_row(cells, "the last tokens before the answer")),
-        ("How to read", "Each dot: % of prompts still giving answer org; x: which positions were blocked; top row: "
-                        "the statement giving the answer hidden, bottom row: the statement giving the bridge. Low = "
-                        "those positions must read the statement themselves."),
+        ("How to read", "Each dot: % of prompts still giving answer org; x: which positions were blocked"
+                        + ("; top row: the statement giving the answer hidden, bottom row: the statement giving the "
+                           "bridge" if len(rows) > 1 else "") + ". Low = those positions must read the statement "
+                        "themselves."),
         ("Control", "Grey: the same blocking for a statement of the same kind off the answer's path, a random span, "
                     "or the 3 tokens after the statement; all should stay near 100%."),
     ]  # fmt: skip
@@ -964,7 +1277,75 @@ def fig_all_layers(cells: dict, m: dict, stem: Path) -> list[str] | None:
 
 
 def _depth_panels(cells: dict, prefix: str) -> list[tuple[str, str, str]]:
-    return [p for p in DEPTH_PANELS if any(k[:3] == p and k[3].startswith(prefix) and k[4] == "value" for k in cells)]
+    panels = DEPTH_PANELS
+    if DATASET in POINTER_SETS:
+        panels = tuple((f, "lookup", "final") for f in sorted({k[0] for k in cells}, key=fam_order))
+    return [p for p in panels if any(k[:3] == p and k[3].startswith(prefix) and k[4] == "value" for k in cells)]
+
+
+def fig_bands(cells: dict, m: dict, stem: Path) -> list[str] | None:
+    """Batch 2: the answer's statement hidden from the last tokens in one block of layers (0-31, 32-47, 48-63), in
+    that block's attention or DeltaNet layers alone, or in every layer of one kind; per family."""
+    import matplotlib.pyplot as plt
+    from matplotlib.lines import Line2D
+
+    from bridge_jspace.plotting import AXIS, MUTED, percent_axis, style_axes
+
+    panels = _depth_panels(cells, "band")
+    if not panels:
+        return None
+    del m
+    ncols = min(3, len(panels))
+    nrows = -(-len(panels) // ncols)
+    fig, axes = plt.subplots(nrows, ncols, figsize=(4.6 * ncols, 3.0 * nrows), squeeze=False, sharey=True)
+    groups = band_labels(cells)
+    for idx, (fam, st, dest) in enumerate(panels):
+        ax = axes[idx // ncols][idx % ncols]
+        style_axes(ax)
+        for gi, g in enumerate(groups):
+            for j, (suffix, (color, marker, _)) in enumerate(KINDS.items()):
+                c = cells.get((fam, st, dest, g + suffix, "value"))
+                if c:
+                    _errorbar(ax, [gi + (j - 1.5) * 0.18], [c], color, marker, ms=5)
+            c = cells.get((fam, f"{st}_off", dest, g, "value"))
+            if c:
+                _errorbar(ax, [gi + 1.5 * 0.18], [c], CONTROL_GREY, "x", ms=5)
+        extra = [(3.5, "attn", ":attn", "every\nattention\nlayer"), (4.3, "gdn", ":gdn", "every\nDeltaNet\nlayer"),
+                 (5.1, "all", "", f"all {RUN_INFO['n_layers']}\nlayers")]  # fmt: skip
+        for x, lab, kind, _ in extra:
+            c = cells.get((fam, st, dest, lab, "value"))
+            if c:
+                _errorbar(ax, [x], [c], KINDS[kind][0], KINDS[kind][1], ms=5.5)
+        ax.axvline(2.95, color=AXIS, lw=0.8)
+        ax.set_xticks([0, 1, 2, *[e[0] for e in extra]],
+                      [f"layers\n{int(g[4:6])}-{int(g[7:9])}" for g in groups] + [e[3] for e in extra], fontsize=7)  # fmt: skip
+        ax.set_xlim(-0.5, 5.5)
+        ax.set_ylim(-0.04, 1.06)
+        percent_axis(ax)
+        ax.set_title(f"{fam_label(fam)}\n{fam_hint(fam)}", fontsize=8.5, loc="left")
+        if idx % ncols == 0:
+            ax.set_ylabel("% still giving answer org", fontsize=8, color=MUTED)
+    for idx in range(len(panels), nrows * ncols):
+        axes[idx // ncols][idx % ncols].axis("off")
+    handles: list[Any] = [Line2D([], [], color=c, marker=mk, ls="none", ms=6,
+                                 label=f"blocked in {lab.replace('the window', 'the block').replace('all 8', 'all').replace(' 2 ', ' ').replace(' 6 ', ' ')}")
+                          for c, mk, lab in KINDS.values()]  # fmt: skip
+    handles.append(Line2D([], [], color=CONTROL_GREY, marker="x", mew=1.6, ls="none", ms=6,
+                          label="control: a statement of the same kind off the answer's path, whole block"))  # fmt: skip
+    spans = [f"{int(g[4:6])}-{int(g[7:9])}" for g in groups]
+    explain = [
+        ("What we did", "Stopped the last tokens before the answer from reading the statement giving the answer, "
+                        f"only in one block of layers ({', '.join(spans)}), in that block's attention or DeltaNet "
+                        "layers alone, or in every layer of one kind. " + BLOCK_NOTE),
+        ("Example", example_row(cells, f"the last tokens before the answer, in layers {spans[-1]} only,")),
+        ("How to read", f"Each dot: % of prompts still giving answer org. Low in layers {spans[-1]} and with every "
+                        "attention layer blocked, high elsewhere = the late attention read seen on the animal "
+                        "scenes."),
+        ("Control", "Grey x: a statement of the same kind off the answer's path, hidden the same way; it should "
+                    "stay at 100%. The family whose answer comes from memory should stay at 100% everywhere."),
+    ]  # fmt: skip
+    title = "Do the last tokens read the answer's statement late, through attention?"
+    return _save(fig, stem, title, explain, data_row(cells), handles, 2)
 
 
 def fig_windows(cells: dict, m: dict, stem: Path) -> list[str] | None:
@@ -1213,6 +1594,28 @@ def dan_table(cells: dict) -> list[str]:
     return out if len(out) > 2 else ["(none of Dan's D2 questions is measured in this run)"]
 
 
+def late_table(late: dict) -> list[str]:
+    """Per family: answer org kept when the last tokens cannot read the answer's statement, by layer set."""
+    if not late:
+        return ["(no family with the statement giving the answer hidden from the last tokens in this run)"]
+    bands = next(iter(late.values()))["bands"]
+    span = {k: f"{int(b[4:6])}-{int(b[7:9])}" for k, b in bands.items() if b}
+    sets = [("all", "all layers"), *[(bands[k], f"layers {span[k]}") for k in ("early", "middle", "late") if bands[k]],
+            *[(f"{bands['late']}{s}", f"{span['late']}, {w} only") for s, w in ((":attn", "attention"), (":gdn", "DeltaNet"))
+              if bands["late"]],
+            ("attn", "every attention layer"), ("gdn", "every DeltaNet layer")]  # fmt: skip
+    head = "| family | question words, all layers | " + " | ".join(lab for _, lab in sets) + " | late attention read |"
+    out = [head, "|" + "---|" * (len(sets) + 3)]
+    for fam, v in late.items():
+        cellv = [f"{100 * v['final'][s]['acc']:.0f}% ({VERDICT.get(v['final'][s]['verdict'] or '', '-')})"
+                 if s in v["final"] else "-" for s, _ in sets]  # fmt: skip
+        q = v["question_all"]
+        qtxt = f"{100 * q['acc']:.0f}% ({VERDICT.get(q['verdict'] or '', '-')})" if q["acc"] is not None else "-"
+        flag = {True: "yes", False: "no", None: "-"}[v["late_attention_read"]] if v["path"] else "null (memory)"
+        out.append(f"| {fam} | {qtxt} | " + " | ".join(cellv) + f" | {flag} |")
+    return out
+
+
 def prior_rows(hyps: dict, cells: dict, cl: dict, name: str) -> list[str]:
     """The job spec's hypotheses, each checked against this run's cells (verdict: holds / partly / fails)."""
 
@@ -1319,7 +1722,48 @@ def prior_rows(hyps: dict, cells: dict, cl: dict, name: str) -> list[str]:
             return f"{x} and {y} logits (unhooked {chk['unhooked_rolled_context_max_abs']:.1f})", "holds" if max(x, y) < 0.1 else "fails"  # fmt: skip
         return f"{tim['rows_per_second']} rows/s", "holds" if tim["rows_per_second"] >= 15 else "fails"
 
-    checks = {"H_answer_site": answer_site, "H_relay": lambda: (f"relay holds = {cl['relay_holds']}", "holds" if cl["relay_holds"] else "fails"),
+    late = cl.get("late_attention_read", {})
+
+    def late_read(only: str | None = None):
+        fams = [f for f, x in late.items() if x["path"] and (only is None or f.endswith(only))]
+        flags = {f: late[f]["late_attention_read"] for f in fams}
+
+        def pa(f, s):
+            x = late[f]["final"].get(s, {}).get("acc")
+            return "-" if x is None else pc(x)
+
+        def bl(f, k):
+            return late[f]["bands"][k] or ""
+
+        txt = "; ".join(f"{f}: all layers {pa(f, 'all')}, late band {pa(f, bl(f, 'late'))}, middle band "
+                        f"{pa(f, bl(f, 'middle'))}, early band {pa(f, bl(f, 'early'))}, every attention layer "
+                        f"{pa(f, 'attn')}, every DeltaNet layer {pa(f, 'gdn')}" for f in fams)  # fmt: skip
+        n_yes = sum(bool(x) for x in flags.values())
+        return txt, "holds" if fams and n_yes == len(fams) else "partly" if n_yes else "fails"
+
+    def question_free():
+        fams = [f for f, x in late.items() if x["path"]]
+        accs = {f: late[f]["question_all"]["acc"] for f in fams}
+        return (", ".join(f"{f} {pc(a)}" for f, a in accs.items()),
+                "holds" if accs and all(a is not None and a >= 0.9 for a in accs.values()) else "fails")  # fmt: skip
+
+    def null_memory():
+        lows = {f: min(all_cells(f, "lookup")) for f in {k[0] for k in cells} if f.split("-")[0] == "RR"}
+        return (", ".join(f"{f}: lowest cell {pc(x)}" for f, x in lows.items()),
+                "holds" if lows and all(x >= 0.95 for x in lows.values()) else "fails")  # fmt: skip
+
+    def earlier(fam_prefix: str):
+        fams = [f for f in late if f.split("-")[0] == fam_prefix or f.endswith(fam_prefix)]
+        got = {f: late[f]["final"].get(late[f]["bands"]["middle"] or "", {}).get("verdict") for f in fams}
+        return (", ".join(f"{f}: middle band {VERDICT.get(x or '', '-')}" for f, x in got.items()),
+                "holds" if got and all(x == "needed" for x in got.values()) else "fails")  # fmt: skip
+
+    checks = {"H_late_read": late_read, "H_late_read_english": lambda: late_read("same"),
+              "H_late_read_other_surface": lambda: late_read("xlang") if any(
+                  f.endswith("xlang") for f in late) else late_read("syn"),
+              "H_question_free": question_free, "H_null": null_memory, "H_named_earlier": lambda: earlier("DL"),
+              "H_surface_earlier": lambda: earlier("xlang"), "H_chain_earlier": lambda: earlier("CH3"),
+              "H_answer_site": answer_site, "H_relay": lambda: (f"relay holds = {cl['relay_holds']}", "holds" if cl["relay_holds"] else "fails"),
               "H_both_routes": lambda: (f"last tokens alone: {v('RL', 'lookup', 'final')}", "fails" if v("RL", "lookup", "final") == "needed" else "holds"),
               "H_binding": binding, "H_kind": kind, "positive_control": posctl, "H_late_band": late_band,
               "H_early_band": early_band, "H_spread": spread, "H_binding_band": binding_band, "RR_null": rr_null,
@@ -1343,6 +1787,9 @@ def write_report(name: str, m: dict, rows: list[dict], cells: dict, cl: dict, fi
     seeds = sorted(set(m["seeds"].values()))
     n_items = collections.Counter(r["family"] for r in rows if r["source"] == "none")
     head = next((h for h in HEADLINES if (*h, "all", "value") in cells), None)
+    if DATASET in POINTER_SETS:  # the first family that looks its answer up
+        head = next(((f, "lookup", "final") for f in sorted({k[0] for k in cells}, key=fam_order)
+                     if path_sources(f) and (f, "lookup", "final", "all", "value") in cells), None)  # fmt: skip
     lines = [f"# {EXP} / {name}: analysis", "",
              f"EXP {name} @ {commit} | model Qwen3.6-27B | n={dict(n_items)} org prompts per family | seeds={seeds}", "",
              f"Claim tested: {spec.get('question', m['why'])}", "",
@@ -1444,7 +1891,12 @@ def write_report(name: str, m: dict, rows: list[dict], cells: dict, cl: dict, fi
         "",
         "## Dan's predictions (jobs/predictions/2026-10-21_dan.md, D2)",
         "",
-        *dan_table(cells),
+        *(dan_table(cells) if DATASET == "suite" else ["(Dan's D2 questions were asked about the animal scenes; see "
+                                                       "the late-attention table below for this item set)"]),
+        "",
+        "## Late attention read, per family (the statement giving the answer hidden from the last tokens)",
+        "",
+        *late_table(cl.get("late_attention_read", {})),
         "",
         "## The agent's priors (job spec hypotheses), checked",
         "",
@@ -1483,8 +1935,13 @@ def stage_figures(name: str) -> None:
     import matplotlib
 
     matplotlib.use("Agg")
-    m, rows, _ = load_run(name)
+    m, rows, cases = load_run(name)
     import shutil
+
+    EXAMPLE_CASE.clear()
+    if DATASET in POINTER_SETS:  # the captions' Example row: the first case of a family that looks the answer up
+        pick = next((c for c in cases.values() if path_sources(c["family"]) and "lookup" in c["sources"]), None)
+        EXAMPLE_CASE.update(pick or {})
 
     final_dir = RESULTS / name / f"analysis-{time.strftime('%Y%m%d-%H%M%S', time.gmtime())}-figures"
     out_dir = final_dir.with_name(final_dir.name + ".partial")  # renamed when complete: a crash leaves no final folder
@@ -1498,6 +1955,7 @@ def stage_figures(name: str) -> None:
     figs = {
         "all_layers": fig_all_layers(cells, m, out_dir / "all_layers"),
         "windows": fig_windows(cells, m, out_dir / "windows"),
+        "bands": fig_bands(cells, m, out_dir / "bands"),
         "cuts": fig_cuts(cells, m, out_dir / "cuts"),
         "norm_ratio": fig_norm(rows, m, out_dir / "norm_ratio"),
     }
@@ -1520,7 +1978,7 @@ HYPOTHESES = {
 
 
 def predicted_break(h: str, fam: str, source: str, dest: str) -> bool:
-    if source not in PATH[fam]:
+    if source not in path_sources(fam):
         return False
     if dest == "after":
         return True
@@ -1548,7 +2006,7 @@ def stage_examples(name: str, k: int) -> None:
     measure = "kept" if m["eligibility"] == "none" else "correct"
     none = {r["id"]: r for r in rows if r["source"] == "none"}
     knocked = [r for r in rows if r["source"] != "none" and r["id"] in ok]
-    on_path = [r for r in knocked if r["source"] in PATH[r["family"]]]
+    on_path = [r for r in knocked if r["source"] in path_sources(r["family"])]
     note = " (smoke: 'right' = the unedited top token)" if m["eligibility"] == "none" else ""
     groups = {
         "path_breaks": ("A path statement blocked, the answer lost", "source on the family's path, all layers, "
@@ -1624,12 +2082,18 @@ if __name__ == "__main__":
     ap.add_argument("stage", choices=["manifest", "run", "summarise", "analyze", "examples", "figures"])
     ap.add_argument("--name", required=True)
     ap.add_argument("--why")
-    ap.add_argument("--families", nargs="+", choices=list(FAMILIES), default=list(FAMILIES))
+    ap.add_argument("--dataset", choices=["suite", *POINTER_SETS], default="suite",
+                    help="suite: the animal suite and countries; or a pointer-style item set (batch 2)")  # fmt: skip
+    ap.add_argument("--families", nargs="+", default=None,
+                    help="suite: BL BR RL RR BLR BRL country-R country-B (default all); pointer sets: the files' "
+                    "family codes (pointer_v1 / alias: RL DL RR; code: DK IX CH2 CH3 RK RR)")  # fmt: skip
+    ap.add_argument("--domains", nargs="+", default=None, help="pointer sets: the domains to use (default all)")
+    ap.add_argument("--competence", default=None, help="pointer sets: the competence run (default the dataset's)")
     ap.add_argument("--n", type=int, default=100, help="items per family")
     ap.add_argument("--sources", nargs="+", choices=list(SOURCES), default=list(SOURCES))
     ap.add_argument("--dests", nargs="+", choices=list(DESTS), default=list(DESTS))
     ap.add_argument(
-        "--layers", nargs="+", choices=["all", "win8", "win8k", "win4", "pre", "suf", "kind"], default=["all"]
+        "--layers", nargs="+", choices=["all", "win8", "win8k", "win4", "pre", "suf", "kind", "bands"], default=["all"]
     )
     ap.add_argument("--sweep", choices=["path", "path+random", "all"], default="path")
     ap.add_argument("--sweep-dests", nargs="+", choices=["question", "final", "both"], default=["question", "final", "both"])  # fmt: skip
@@ -1640,6 +2104,12 @@ if __name__ == "__main__":
     args = ap.parse_args()
     if args.stage == "manifest":
         assert args.why, "manifest needs --why"
+        if args.dataset == "suite":
+            args.families = args.families or list(FAMILIES)
+            assert set(args.families) <= set(FAMILIES), f"suite families are {FAMILIES}"
+        else:
+            assert args.families, "pointer sets need --families"
+            args.competence = args.competence or POINTER_COMPETENCE[args.dataset]
         stage_manifest(args)
     elif args.stage == "run":
         stage_run(args.name)

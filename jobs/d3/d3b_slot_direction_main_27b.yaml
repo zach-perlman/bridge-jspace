@@ -1,0 +1,59 @@
+id: d3b_slot_direction_main_27b
+title: 'D3b: does a fitted statement-slot direction steer the lookup where the lens push cannot?'
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.7
+depends_on:
+- d3_competence_27b
+- d3b_slot_direction_smoke_27b
+command: >-
+  uv run python scripts/pointer_fit.py run --name d3b_slot_direction_main_27b
+  --why "D3b: fit a statement-slot direction at the tokens after the question (layers 40-52) on the fit scenes, steer held-out scenes with it at the alt-prompt patch's size, against the lens push, a random push, a shuffled-label direction and memory → memory items"
+examples_command: uv run python scripts/pointer_fit.py examples --name d3b_slot_direction_main_27b
+figures_command: uv run python scripts/pointer_fit.py figures --name d3b_slot_direction_main_27b
+question: In memory → prompt on Qwen3.6-27B, does adding a direction fitted to "the asked statement is slot j" (minus the
+  current slot) at the tokens after the question, layers 44-52, switch the answer to the digit at slot j, where the lens
+  push (bridge alt − bridge org) of the same size does not?
+why_it_matters: 'D3 found that at layers 44-50 the last tokens carry which statement slot is asked more often than which
+  entity (29% vs 9%), and the lens cannot steer there. If a fitted slot direction steers the lookup, the "around" route
+  is a statement pointer the model reads, outside the lens''s word directions (supports C2''s explanation); if it does
+  not, D3''s slot answers came from the whole patch, not a linear slot code.'
+hypotheses:
+  H-slot: 'slot direction at layer 48, 1x: the answer at the target slot on >= 40% of memory → prompt items (Wilson lower
+    bound >= 30%), lens push <= 10% and random <= 5% at the same size; shuffled-label direction <= 5%; memory → memory
+    <= 5%; held-out entities within 15 points of seen ones; rank-4 subspace within 10 points of the full direction;
+    slot decodable from the last tokens at 44-50 (5-way cross-validated accuracy >= 60%, chance 20%); slot directions
+    no closer to the entities'' lens word directions than random (largest |cos| at the null) and their lens-readable
+    share at the random-dictionary null'
+  H-no-linear-slot: 'slot direction <= 15% at every layer and size 0.5-2x (4x may only break answers); decodability may
+    still be high (readable but not used)'
+  H-illusion: 'the slot direction passes, but the remainder outside real activation differences alone reaches >= half
+    of its rate while the in-span part stays below half, or the shuffled-label direction also moves >= 10%'
+  prior: 'Agent prior: H-slot 0.35, H-no-linear-slot 0.5, H-illusion 0.15.'
+decision_rule: 'Fixed in scripts/pointer_fit.py''s docstring and manifest. Primary cell: memory → prompt, animals and
+  elements pooled, all held-out items, slot direction (per-token difference of class means, target minus current slot)
+  at layer 48, 1x the alt-prompt patch''s per-token size, added at every token after the question. "The slot direction
+  steers the lookup where the lens push does not" iff (a) its rate of answers at the target slot has a Wilson 95% lower
+  bound >= 0.30 and (b) it is >= 20 points above both the lens push and the random push at the same size, with each
+  difference''s paired-bootstrap 95% lower bound > 0. Valid only if the shuffled-label direction (memory → prompt) and
+  the slot direction on memory → memory both keep their Wilson upper bound <= 0.10. Illusion flag reported with the
+  verdict. Every other layer, size, subspace rank, the held-out-entity cut and the geometry are reported, not decisive.'
+controls:
+- 'random push per token at the same size (rules out any push of that size)'
+- 'lens push bridge alt − bridge org at the same size (the comparison the claim is about)'
+- 'shuffled-label direction: the same fit with slot labels permuted (rules out a direction that works without slot information)'
+- 'memory → memory items: no lookup, so a slot pointer should do nothing (rules out generic answer damage)'
+- 'held-out scenes (main set; fit on the separate fit set) and held-out entities (queried entity never queried in the fit)'
+- 'span of real activation differences vs the remainder, each added alone (Makelov et al. 2023 illusion check)'
+- 'alt-prompt patch at the same tokens and layers (reference: D3''s 29% slot answers)'
+n: 'memory → prompt: 175 held-out items (animals 96 + elements 79 eligible; >= 35 for every pooled cut, ~85 in the
+  held-out-entity cut); memory → memory: 100 (50 per domain, >= 35); fit: up to 400 fit items, about half kept after the
+  answered-right and fitting-half filters'
+seeds:
+- 0
+- 1
+notes: 'Timing from the measured A100 rate for the 27B (31-37 edited reads/s): memory → prompt 175 x (1 + 6 layer settings
+  x (4 sizes x 11 conditions + 1 patch)) = 47.4k reads, memory → memory 100 x (1 + 6 x (4 x 4 + 1)) = 10.3k: ~57.7k
+  reads ~ 28 min; + collect (400 forwards) and fit ~1 min, geometry ~2 min, load ~4 min, per-item overhead ~3 min:
+  ~0.7 h. Layers 40-52 are past the first third of the depth. Results: results/pointer_fit/d3b_slot_direction_main_27b/.'

@@ -1,0 +1,37 @@
+id: d3b_slot_direction_smoke_27b
+title: 'D3b smoke: fitted slot direction, every stage on a few items'
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.15
+depends_on:
+- d3_competence_27b
+command: >-
+  uv run python scripts/pointer_fit.py run --name d3b_slot_direction_smoke_27b
+  --why "D3b 27B smoke: collect, fit, geometry and steer end to end on 40 fit items per domain and 4 + 4 held-out items per domain before the main run"
+  --fit-limit 40 --n-test 4 --rr-n 4
+examples_command: uv run python scripts/pointer_fit.py examples --name d3b_slot_direction_smoke_27b
+figures_command: uv run python scripts/pointer_fit.py figures --name d3b_slot_direction_smoke_27b
+question: Does every pointer_fit stage (collect the states after the question, fit the slot directions and subspaces,
+  geometry against the lens, steer with every condition, examples, figures) run on Qwen3.6-27B?
+why_it_matters: 'Fail-fast gate for d3b_slot_direction_main_27b, the test of whether the "around" route is a statement
+  pointer a fitted direction can steer. Not a result: n is tiny.'
+hypotheses:
+  H-code-ok: 'fit.json has a decode_cv per collect layer and a geometry row per steer layer; unedited held-out items keep
+    answer org on >= 15/16 (they passed the competence gate); the alt-prompt patch at layer 48 changes the answer on >= 1
+    of 8 memory → prompt items (D3 found 29% slot answers); outcomes.jsonl has 1 + 6 x (4 x 11 + 1) rows per memory →
+    prompt item and 1 + 6 x (4 x 4 + 1) per memory → memory item; examples.json and one figures folder written'
+  H-bug: any check fails or a stage crashes
+decision_rule: 'Run d3b_slot_direction_main_27b only if every H-code-ok check holds; otherwise cancel it and read the log.'
+controls:
+- 'unedited read of every held-out item (answer org expected: the competence gate)'
+- 'alt-prompt patch (positive reference: D3''s slot answers)'
+- 'random push and shuffled-label direction at the same size (should not move the answer)'
+n: 40 fit items per domain; 4 memory → prompt and 4 memory → memory held-out items per domain
+seeds:
+- 0
+- 1
+notes: 'Timing: ~2.9k edited reads at 31-37 reads/s (the A100 rate for the 27B) ~1.5 min, + one 27B load and the J++
+  lens ~4 min, + the geometry (letter-token dictionary and a random dictionary, ~5 GB each, at 5 layers) ~2 min:
+  ~0.15 h. The 0.8B smoke (qwen35_08b_smoke_d3b_v1, layers 15-19) ran every stage in 43 s. Results:
+  results/pointer_fit/d3b_slot_direction_smoke_27b/.'

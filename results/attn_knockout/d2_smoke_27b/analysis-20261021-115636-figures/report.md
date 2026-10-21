@@ -42,6 +42,17 @@ Not interpretable / caveats: prompt → prompt → memory, control: a statement 
 | Q2.4 memory → memory with the locker statement of bridge org hidden | 95% | lowest over the destinations 100% [51, 100] (n=4) | right (100%) |
 | Q2.5 the statement giving the bridge hidden from the question words: which loses answer org more | prompt → prompt | prompt → prompt 75% [30, 95] (n=4), prompt → memory 25% [5, 70] (n=4) | wrong: prompt → memory loses more (guessing differs: prompt → prompt can pick one of the 3 lockers in the prompt) |
 
+## Late attention read, per family (the statement giving the answer hidden from the last tokens)
+
+| family | question words, all layers | all layers | every attention layer | every DeltaNet layer | late attention read |
+|---|---|---|---|---|---|
+| prompt → prompt | 100% (PARTIAL) | 0% (NEEDED) | - | - | - |
+| prompt → memory | 100% (PARTIAL) | 100% (PARTIAL) | - | - | - |
+| memory → prompt | 100% (PARTIAL) | 0% (NEEDED) | - | - | - |
+| memory → memory | 100% (PARTIAL) | 100% (PARTIAL) | - | - | null (memory) |
+| prompt → prompt → memory | 50% (PARTIAL) | 25% (NEEDED) | - | - | - |
+| prompt → memory → prompt | 100% (PARTIAL) | 0% (NEEDED) | - | - | - |
+
 ## The agent's priors (job spec hypotheses), checked
 
 Predictions are quoted from the job spec (written before the run). Their shorthand: lookup = the statement giving the answer, binding = the statement giving the bridge; question = the question words, final = the last tokens before the answer; (statement, destination, all) = hidden in all 64 layers; win A-B = layers A-B only; suf L = layers L-63; pre L = layers 0 to L-1; NEEDED / NOT NEEDED / PARTIAL as in the rule above.
