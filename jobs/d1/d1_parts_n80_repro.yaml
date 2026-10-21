@@ -1,0 +1,22 @@
+id: d1_parts_n80_repro
+title: "Reproduction: d1_parts_n80_v1 again from the job's clean checkout, same arguments and seeds (numbers should match)"
+thread: D1
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.6
+depends_on: []
+command: >-
+  uv run python scripts/statement_positions.py parts --name d1_parts_n80_repro --map d1_map_n80_v1
+  --why "reproduction of d1_parts_n80_v1 (the README's fig. 2) from the queue's clean checkout, the same
+  arguments" --lo 32 --sets bind_bridge bridge_word lookup_x context question
+figures_command: uv run python scripts/statement_positions.py figures --name d1_parts_n80_repro
+question: 'Does d1_parts_n80_v1 reproduce item by item (the same items, the same outcome per item up to bf16 noise)?'
+why_it_matters: 'The README''s pattern 2 rests on d1_parts_n80_v1, recounted by an agent but never rerun.'
+hypotheses:
+  H-same: 'the same items; per item the same outcome for >= 98% of rows; headline shares within 1 point. Prior 0.85'
+decision_rule: 'Compare outcomes by item with d1_parts_n80_v1: share of rows with the same outcome; the headline cells'' shares.'
+controls:
+- 'the original run d1_parts_n80_v1'
+n: 'as d1_parts_n80_v1'
+seeds: [0]
+notes: 'The queue runs every job from a fresh checkout of its commit.'

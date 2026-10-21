@@ -1,0 +1,27 @@
+id: olmo3_7b_sft_d2_v4_late_read
+title: "D5b ladder: D2's late read on OLMo-3-7B-SFT (statement hidden from the last tokens, 4-layer bands)"
+thread: D5
+gpus: 1
+mem_gb: 25
+est_gpu_hours: 0.4
+depends_on:
+- olmo3_7b_instruct_d2_smoke_v2
+- olmo3_7b_sft_d3v4_competence
+command: >-
+  BJ_TARGET=olmo-3-7b-sft uv run python scripts/attn_knockout.py manifest --name olmo3_7b_sft_d2_v4_late_read
+  --why "D5b: olmo3_7b_instruct_d2_v4_late_read_v2's grid on the SFT checkpoint"
+  --dataset pointer_v4 --families RL DL RR --n 100 --layers all bands band4 --sweep path+random
+  --sweep-dests question final both --competence olmo3_7b_sft_d3v4_competence
+  && BJ_TARGET=olmo-3-7b-sft uv run python scripts/attn_knockout.py run --name olmo3_7b_sft_d2_v4_late_read
+  && BJ_TARGET=olmo-3-7b-sft uv run python scripts/attn_knockout.py summarise --name olmo3_7b_sft_d2_v4_late_read
+figures_command: BJ_TARGET=olmo-3-7b-sft uv run python scripts/attn_knockout.py figures --name olmo3_7b_sft_d2_v4_late_read
+question: 'As olmo3_7b_instruct_d2_v4_late_read_v2, on OLMo-3-7B-SFT.'
+why_it_matters: 'Whether the late read exists before the last post-training stage (D5b).'
+hypotheses:
+  H-late-read: 'as olmo3_7b_instruct_d2_v4_late_read_v2. Prior 0.65'
+decision_rule: 'olmo3_7b_instruct_d2_v4_late_read_v2''s rule.'
+controls:
+- 'off-path same-length statement; random span; memory -> memory'
+n: '100 items per family (eligible in olmo3_7b_sft_d3v4_competence)'
+seeds: [0]
+notes: '~0.4 GPU-h. Runs after the Instruct smoke passed.'
