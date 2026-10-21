@@ -1,0 +1,772 @@
+{
+ "exp": "attn_knockout",
+ "run": "d2_code_late_read",
+ "seed": 0,
+ "k": 3,
+ "groups": [
+  {
+   "key": "path_breaks",
+   "title": "A path statement blocked, the answer lost",
+   "definition": "source on the family's path, all layers, unedited read right, edited read wrong",
+   "n_total": 2323
+  },
+  {
+   "key": "path_confusion",
+   "title": "Lost to another statement's answer",
+   "definition": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)",
+   "n_total": 3736
+  },
+  {
+   "key": "path_survives",
+   "title": "A path statement blocked from the answer site, the answer kept",
+   "definition": "source on the path, destination final or both, all layers, edited read still right",
+   "n_total": 462
+  },
+  {
+   "key": "control_breaks",
+   "title": "A control span blocked, the answer lost (collateral damage)",
+   "definition": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong",
+   "n_total": 141
+  },
+  {
+   "key": "positive_control",
+   "title": "Path statement invisible to everything after it",
+   "definition": "source on the path, destination after, all layers, DeltaNet mode absent (no write, erase or decay at S): any outcome",
+   "n_total": 540
+  }
+ ],
+ "examples": [
+  {
+   "group": "path_breaks",
+   "family": "IX",
+   "item_id": "months-IX-e5f0-0017",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"July\": 0, \"June\": 4, \"April\": 9, \"September\": 8, \"January\": 3}\nnames = [\"January\", \"September\", \"June\", \"July\", \"April\"]\nprint(lockers[names[2]])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 48,
+     "end": 58,
+     "role": "source"
+    },
+    {
+     "start": 58,
+     "end": 326,
+     "role": "destination"
+    },
+    {
+     "start": 174,
+     "end": 182,
+     "role": "cue"
+    }
+   ],
+   "condition": "every position after it cannot read the lookup span ('\"June\": 4') directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "4",
+    "edited": "0",
+    "expected": {
+     "H_answer_site": "not 4",
+     "H_relay": "not 4"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0092,
+    "logp_answer_edited": -3.0968,
+    "dlogp": -3.0876,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9692,
+    "answer": "4",
+    "other_answers_in_prompt": [
+     "0",
+     "3",
+     "8",
+     "9"
+    ]
+   },
+   "why": "source on the family's path, all layers, unedited read right, edited read wrong"
+  },
+  {
+   "group": "path_breaks",
+   "family": "DK",
+   "item_id": "months-DK-e5f0-0025",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"April\": 9, \"July\": 7, \"May\": 2, \"January\": 4, \"June\": 8}\nprint(lockers[\"January\"])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 70,
+     "end": 83,
+     "role": "source"
+    },
+    {
+     "start": 96,
+     "end": 263,
+     "role": "destination"
+    },
+    {
+     "start": 111,
+     "end": 118,
+     "role": "cue"
+    }
+   ],
+   "condition": "the question and final positions cannot read the lookup span ('\"January\": 4') directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "4",
+    "edited": "1",
+    "expected": {
+     "H_answer_site": "not 4",
+     "H_relay": "not 4"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.003,
+    "logp_answer_edited": -4.0176,
+    "dlogp": -4.0146,
+    "correct": false,
+    "kept": false,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9932,
+    "answer": "4",
+    "other_answers_in_prompt": [
+     "2",
+     "7",
+     "8",
+     "9"
+    ]
+   },
+   "why": "source on the family's path, all layers, unedited read right, edited read wrong"
+  },
+  {
+   "group": "path_breaks",
+   "family": "CH2",
+   "item_id": "animals-CH2-e5f0-0010",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"cow\": 5, \"dog\": 3, \"bee\": 8, \"owl\": 7, \"frog\": 9}\nj = \"dog\"\nv = \"cow\"\nk = j\nr = v\nprint(lockers[r])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 36,
+     "end": 46,
+     "role": "source"
+    },
+    {
+     "start": 46,
+     "end": 280,
+     "role": "destination"
+    },
+    {
+     "start": 277,
+     "end": 278,
+     "role": "cue"
+    }
+   ],
+   "condition": "every position after it cannot read the lookup span ('\"cow\": 5') directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "5",
+    "edited": "3",
+    "expected": {
+     "H_answer_site": "not 5",
+     "H_relay": "not 5"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0034,
+    "logp_answer_edited": -1.9244,
+    "dlogp": -1.921,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9539,
+    "answer": "5",
+    "other_answers_in_prompt": [
+     "3",
+     "7",
+     "8",
+     "9"
+    ]
+   },
+   "why": "source on the family's path, all layers, unedited read right, edited read wrong"
+  },
+  {
+   "group": "path_confusion",
+   "family": "RK",
+   "item_id": "animals-RK-e5f0-0035",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"wolf\": 5, \"owl\": 3, \"duck\": 8, \"lion\": 9, \"bee\": 7}\n```\nWhat number does lockers store for the animal known for quacking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 58,
+     "end": 68,
+     "role": "source"
+    },
+    {
+     "start": 68,
+     "end": 264,
+     "role": "destination"
+    },
+    {
+     "start": 151,
+     "end": 159,
+     "role": "cue"
+    }
+   ],
+   "condition": "every position after it cannot read the lookup span ('\"duck\": 8') directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "8",
+    "edited": "3",
+    "expected": {
+     "H_answer_site": "not 8",
+     "H_relay": "not 8"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0037,
+    "logp_answer_edited": -5.4061,
+    "dlogp": -5.4027,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9918,
+    "answer": "8",
+    "other_answers_in_prompt": [
+     "3",
+     "5",
+     "7",
+     "9"
+    ]
+   },
+   "why": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)"
+  },
+  {
+   "group": "path_confusion",
+   "family": "CH2",
+   "item_id": "animals-CH2-e5f0-0061",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"cow\": 5, \"lion\": 1, \"frog\": 7, \"duck\": 9, \"bee\": 8}\nm = \"lion\"\nb = \"cow\"\nv = m\nt = b\nprint(lockers[t])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 36,
+     "end": 46,
+     "role": "source"
+    },
+    {
+     "start": 124,
+     "end": 283,
+     "role": "destination"
+    },
+    {
+     "start": 267,
+     "end": 268,
+     "role": "cue"
+    }
+   ],
+   "condition": "the question and final positions cannot read the lookup span ('\"cow\": 5') directly at layers attn (16 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "5",
+    "edited": "1",
+    "expected": {}
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0059,
+    "logp_answer_edited": -5.1589,
+    "dlogp": -5.1529,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "5",
+    "other_answers_in_prompt": [
+     "1",
+     "7",
+     "8",
+     "9"
+    ]
+   },
+   "why": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)"
+  },
+  {
+   "group": "path_confusion",
+   "family": "RK",
+   "item_id": "animals-RK-e5f0-0056",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"duck\": 3, \"cow\": 5, \"owl\": 9, \"bee\": 7, \"pig\": 8}\n```\nWhat number does lockers store for the animal known for mooing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 48,
+     "end": 57,
+     "role": "source"
+    },
+    {
+     "start": 89,
+     "end": 260,
+     "role": "destination"
+    },
+    {
+     "start": 149,
+     "end": 155,
+     "role": "cue"
+    }
+   ],
+   "condition": "the question and final positions cannot read the lookup span ('\"cow\": 5') directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "5",
+    "edited": "8",
+    "expected": {
+     "H_answer_site": "not 5",
+     "H_relay": "not 5"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0058,
+    "logp_answer_edited": -7.2385,
+    "dlogp": -7.2327,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9942,
+    "answer": "5",
+    "other_answers_in_prompt": [
+     "3",
+     "7",
+     "8",
+     "9"
+    ]
+   },
+   "why": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)"
+  },
+  {
+   "group": "path_survives",
+   "family": "CH3",
+   "item_id": "animals-CH3-e5f0-0059",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"mouse\": 5, \"bee\": 3, \"frog\": 8, \"owl\": 1, \"pig\": 7}\nd = \"mouse\"\nj = \"owl\"\ng = j\na = g\nu = d\ny = u\nprint(lockers[a])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 70,
+     "end": 79,
+     "role": "source"
+    },
+    {
+     "start": 137,
+     "end": 296,
+     "role": "destination"
+    },
+    {
+     "start": 265,
+     "end": 266,
+     "role": "cue"
+    }
+   ],
+   "condition": "the question and final positions cannot read the lookup span ('\"owl\": 1') directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H_answer_site": "not 1",
+     "H_relay": "not 1"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0166,
+    "logp_answer_edited": -0.0207,
+    "dlogp": -0.0041,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9969,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "3",
+     "5",
+     "7",
+     "8"
+    ]
+   },
+   "why": "source on the path, destination final or both, all layers, edited read still right"
+  },
+  {
+   "group": "path_survives",
+   "family": "CH3",
+   "item_id": "months-CH3-e5f0-0046",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"May\": 4, \"July\": 8, \"June\": 3, \"September\": 9, \"February\": 1}\ny = \"February\"\nz = \"September\"\nm = z\nk = y\nn = m\nb = k\nprint(lockers[b])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 85,
+     "end": 99,
+     "role": "source"
+    },
+    {
+     "start": 156,
+     "end": 315,
+     "role": "destination"
+    },
+    {
+     "start": 170,
+     "end": 171,
+     "role": "cue"
+    }
+   ],
+   "condition": "the question and final positions cannot read the lookup span ('\"February\": 1') directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H_answer_site": "not 1",
+     "H_relay": "not 1"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0067,
+    "logp_answer_edited": -0.0088,
+    "dlogp": -0.0027,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9975,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "3",
+     "4",
+     "8",
+     "9"
+    ]
+   },
+   "why": "source on the path, destination final or both, all layers, edited read still right"
+  },
+  {
+   "group": "path_survives",
+   "family": "IX",
+   "item_id": "months-IX-e5f0-0053",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"July\": 4, \"May\": 1, \"June\": 3, \"January\": 2, \"September\": 8}\nnames = [\"July\", \"June\", \"September\", \"May\", \"January\"]\nprint(lockers[names[0]])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 36,
+     "end": 47,
+     "role": "source"
+    },
+    {
+     "start": 156,
+     "end": 322,
+     "role": "destination"
+    },
+    {
+     "start": 170,
+     "end": 178,
+     "role": "cue"
+    }
+   ],
+   "condition": "the question and final positions cannot read the lookup span ('\"July\": 4') directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H_answer_site": "not 4",
+     "H_relay": "not 4"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0035,
+    "logp_answer_edited": -0.0064,
+    "dlogp": -0.0029,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9904,
+    "answer": "4",
+    "other_answers_in_prompt": [
+     "1",
+     "2",
+     "3",
+     "8"
+    ]
+   },
+   "why": "source on the path, destination final or both, all layers, edited read still right"
+  },
+  {
+   "group": "control_breaks",
+   "family": "CH2",
+   "item_id": "animals-CH2-e5f0-0063",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"lion\": 8, \"wolf\": 1, \"horse\": 3, \"owl\": 5, \"bee\": 9}\nw = \"wolf\"\nq = \"horse\"\nz = w\ny = q\nprint(lockers[z])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 58,
+     "end": 66,
+     "role": "source"
+    },
+    {
+     "start": 66,
+     "end": 286,
+     "role": "destination"
+    },
+    {
+     "start": 141,
+     "end": 142,
+     "role": "cue"
+    }
+   ],
+   "condition": "every position after it cannot read the trailing span (', \"horse') directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "3",
+    "expected": {
+     "H_answer_site": "1",
+     "H_relay": "1"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0081,
+    "logp_answer_edited": -2.5041,
+    "dlogp": -2.4964,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9908,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "3",
+     "5",
+     "8",
+     "9"
+    ]
+   },
+   "why": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong"
+  },
+  {
+   "group": "control_breaks",
+   "family": "CH3",
+   "item_id": "months-CH3-e5f0-0050",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"September\": 6, \"May\": 3, \"January\": 7, \"February\": 8, \"June\": 0}\nt = \"June\"\np = t\nq = \"September\"\nk = q\nf = k\nx = p\nprint(lockers[f])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 52,
+     "end": 58,
+     "role": "source"
+    },
+    {
+     "start": 58,
+     "end": 314,
+     "role": "destination"
+    },
+    {
+     "start": 169,
+     "end": 170,
+     "role": "cue"
+    }
+   ],
+   "condition": "every position after it cannot read the trailing span (', \"May') directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "6",
+    "edited": "3",
+    "expected": {
+     "H_answer_site": "6",
+     "H_relay": "6"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0706,
+    "logp_answer_edited": -1.3211,
+    "dlogp": -1.2513,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9889,
+    "answer": "6",
+    "other_answers_in_prompt": [
+     "0",
+     "3",
+     "7",
+     "8"
+    ]
+   },
+   "why": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong"
+  },
+  {
+   "group": "control_breaks",
+   "family": "CH3",
+   "item_id": "months-CH3-e5f0-0008",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"February\": 7, \"January\": 0, \"June\": 3, \"April\": 4, \"May\": 9}\nt = \"April\"\nb = \"February\"\ne = b\nn = e\ng = t\nx = g\nprint(lockers[n])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 51,
+     "end": 61,
+     "role": "source"
+    },
+    {
+     "start": 61,
+     "end": 310,
+     "role": "destination"
+    },
+    {
+     "start": 303,
+     "end": 304,
+     "role": "cue"
+    }
+   ],
+   "condition": "every position after it cannot read the trailing span (', \"January') directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "7",
+    "edited": "0",
+    "expected": {
+     "H_answer_site": "7",
+     "H_relay": "7"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0481,
+    "logp_answer_edited": -3.7821,
+    "dlogp": -3.7336,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9893,
+    "answer": "7",
+    "other_answers_in_prompt": [
+     "0",
+     "3",
+     "4",
+     "9"
+    ]
+   },
+   "why": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong"
+  },
+  {
+   "group": "positive_control",
+   "family": "CH3",
+   "item_id": "animals-CH3-e5f0-0048",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"duck\": 8, \"pig\": 5, \"mouse\": 9, \"bee\": 1, \"dog\": 3}\nc = \"duck\"\ns = \"mouse\"\nx = c\ne = s\nf = e\nz = x\nprint(lockers[z])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 36,
+     "end": 47,
+     "role": "source"
+    },
+    {
+     "start": 47,
+     "end": 297,
+     "role": "destination"
+    },
+    {
+     "start": 152,
+     "end": 153,
+     "role": "cue"
+    }
+   ],
+   "condition": "every position after it cannot read the lookup span ('\"duck\": 8') directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "8",
+    "edited": "5",
+    "expected": {
+     "H_answer_site": "not 8",
+     "H_relay": "not 8"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.004,
+    "logp_answer_edited": -3.1011,
+    "dlogp": -3.0974,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9839,
+    "answer": "8",
+    "other_answers_in_prompt": [
+     "1",
+     "3",
+     "5",
+     "9"
+    ]
+   },
+   "why": "source on the path, destination after, all layers, DeltaNet mode absent (no write, erase or decay at S): any outcome"
+  },
+  {
+   "group": "positive_control",
+   "family": "DK",
+   "item_id": "months-DK-e5f0-0059",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"June\": 1, \"September\": 6, \"April\": 3, \"May\": 7, \"January\": 0}\nprint(lockers[\"April\"])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 64,
+     "end": 75,
+     "role": "source"
+    },
+    {
+     "start": 75,
+     "end": 266,
+     "role": "destination"
+    },
+    {
+     "start": 116,
+     "end": 121,
+     "role": "cue"
+    }
+   ],
+   "condition": "every position after it cannot read the lookup span ('\"April\": 3') directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "3",
+    "edited": "<|im_end|>",
+    "expected": {
+     "H_answer_site": "not 3",
+     "H_relay": "not 3"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0026,
+    "logp_answer_edited": -3.6202,
+    "dlogp": -3.618,
+    "correct": false,
+    "kept": false,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9965,
+    "answer": "3",
+    "other_answers_in_prompt": [
+     "0",
+     "1",
+     "6",
+     "7"
+    ]
+   },
+   "why": "source on the path, destination after, all layers, DeltaNet mode absent (no write, erase or decay at S): any outcome"
+  },
+  {
+   "group": "positive_control",
+   "family": "CH2",
+   "item_id": "animals-CH2-e5f0-0032",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"lion\": 1, \"bee\": 8, \"horse\": 9, \"wolf\": 7, \"owl\": 3}\ne = \"owl\"\nz = \"horse\"\nt = e\nj = z\nprint(lockers[t])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 90,
+     "role": "source"
+    },
+    {
+     "start": 90,
+     "end": 285,
+     "role": "destination"
+    },
+    {
+     "start": 269,
+     "end": 270,
+     "role": "cue"
+    }
+   ],
+   "condition": "every position after it cannot read the lookup span ('\"owl\": 3') directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "3",
+    "edited": "1",
+    "expected": {
+     "H_answer_site": "not 3",
+     "H_relay": "not 3"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0033,
+    "logp_answer_edited": -7.4678,
+    "dlogp": -7.4648,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9933,
+    "answer": "3",
+    "other_answers_in_prompt": [
+     "1",
+     "7",
+     "8",
+     "9"
+    ]
+   },
+   "why": "source on the path, destination after, all layers, DeltaNet mode absent (no write, erase or decay at S): any outcome"
+  }
+ ]
+}

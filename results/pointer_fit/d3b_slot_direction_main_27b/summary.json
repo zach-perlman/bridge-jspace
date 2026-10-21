@@ -1,0 +1,5154 @@
+{
+  "primary": {
+    "layer": 48,
+    "scale": 1.0,
+    "slot": [
+      0.3714,
+      0.3033,
+      0.4451,
+      175
+    ],
+    "lens": [
+      0.0,
+      0.0,
+      0.0215,
+      175
+    ],
+    "random": [
+      0.0,
+      0.0,
+      0.0215,
+      175
+    ],
+    "slot_minus_lens": [
+      0.37142857142857144,
+      0.3028571428571429,
+      0.44571428571428573
+    ],
+    "slot_minus_random": [
+      0.37142857142857144,
+      0.3028571428571429,
+      0.44571428571428573
+    ],
+    "shuffled": [
+      0.0114,
+      0.0031,
+      0.0407,
+      175
+    ],
+    "rr_slot": [
+      0.01,
+      0.0018,
+      0.0545,
+      100
+    ],
+    "span_only": [
+      0.2629,
+      0.2032,
+      0.3327,
+      175
+    ],
+    "rest_only": [
+      0.0629,
+      0.0355,
+      0.109,
+      175
+    ],
+    "held_out_entities": [
+      0.3523,
+      0.2606,
+      0.4563,
+      88
+    ],
+    "seen_entities": [
+      0.3908,
+      0.295,
+      0.4959,
+      87
+    ],
+    "patch": [
+      0.3429,
+      0.2766,
+      0.4159,
+      175
+    ],
+    "sub1": [
+      0.2114,
+      0.1575,
+      0.2778,
+      175
+    ],
+    "sub2": [
+      0.2171,
+      0.1625,
+      0.284,
+      175
+    ],
+    "sub4": [
+      0.3657,
+      0.298,
+      0.4392,
+      175
+    ],
+    "sub8": [
+      0.4114,
+      0.3412,
+      0.4855,
+      175
+    ],
+    "sub16": [
+      0.3829,
+      0.3141,
+      0.4567,
+      175
+    ]
+  },
+  "checks": {
+    "a_lower_bound_ge_0.30": true,
+    "b_20_points_above_lens_and_random": true,
+    "controls_valid": true,
+    "illusion_flag": false,
+    "unedited_answer_org": 1
+  },
+  "verdict": "the slot direction steers the lookup where the lens push does not",
+  "grid": {
+    "RL|slot|44|0.5": {
+      "position": [
+        0.12,
+        0.0798,
+        0.1765,
+        175
+      ],
+      "roles": {
+        "none": 141,
+        "position": 21,
+        "context": 11,
+        "identity": 2
+      }
+    },
+    "RL|slot|44|1.0": {
+      "position": [
+        0.3143,
+        0.2501,
+        0.3864,
+        175
+      ],
+      "roles": {
+        "none": 103,
+        "position": 55,
+        "context": 15,
+        "identity": 2
+      }
+    },
+    "RL|slot|44|2.0": {
+      "position": [
+        0.4114,
+        0.3412,
+        0.4855,
+        175
+      ],
+      "roles": {
+        "context": 18,
+        "none": 79,
+        "position": 72,
+        "identity": 6
+      }
+    },
+    "RL|slot|44|4.0": {
+      "position": [
+        0.4114,
+        0.3412,
+        0.4855,
+        175
+      ],
+      "roles": {
+        "context": 18,
+        "none": 79,
+        "position": 72,
+        "recall": 1,
+        "identity": 5
+      }
+    },
+    "RL|slot|46|0.5": {
+      "position": [
+        0.1486,
+        0.1034,
+        0.2088,
+        175
+      ],
+      "roles": {
+        "none": 137,
+        "position": 26,
+        "context": 10,
+        "identity": 2
+      }
+    },
+    "RL|slot|46|1.0": {
+      "position": [
+        0.28,
+        0.2188,
+        0.3507,
+        175
+      ],
+      "roles": {
+        "none": 109,
+        "position": 49,
+        "context": 11,
+        "identity": 6
+      }
+    },
+    "RL|slot|46|2.0": {
+      "position": [
+        0.2514,
+        0.193,
+        0.3206,
+        175
+      ],
+      "roles": {
+        "none": 120,
+        "position": 44,
+        "context": 10,
+        "identity": 1
+      }
+    },
+    "RL|slot|46|4.0": {
+      "position": [
+        0.2343,
+        0.1777,
+        0.3023,
+        175
+      ],
+      "roles": {
+        "value": 1,
+        "none": 119,
+        "position": 41,
+        "identity": 5,
+        "context": 9
+      }
+    },
+    "RL|slot|48|0.5": {
+      "position": [
+        0.1486,
+        0.1034,
+        0.2088,
+        175
+      ],
+      "roles": {
+        "none": 144,
+        "position": 26,
+        "context": 3,
+        "identity": 2
+      }
+    },
+    "RL|slot|48|1.0": {
+      "position": [
+        0.3714,
+        0.3033,
+        0.4451,
+        175
+      ],
+      "roles": {
+        "none": 95,
+        "position": 65,
+        "context": 8,
+        "identity": 7
+      }
+    },
+    "RL|slot|48|2.0": {
+      "position": [
+        0.4514,
+        0.3795,
+        0.5254,
+        175
+      ],
+      "roles": {
+        "none": 73,
+        "position": 79,
+        "context": 14,
+        "identity": 7,
+        "value": 1,
+        "recall": 1
+      }
+    },
+    "RL|slot|48|4.0": {
+      "position": [
+        0.3257,
+        0.2607,
+        0.3982,
+        175
+      ],
+      "roles": {
+        "identity": 8,
+        "position": 57,
+        "context": 22,
+        "none": 82,
+        "value": 3,
+        "recall": 3
+      }
+    },
+    "RL|slot|50|0.5": {
+      "position": [
+        0.0571,
+        0.0313,
+        0.102,
+        175
+      ],
+      "roles": {
+        "none": 165,
+        "position": 10
+      }
+    },
+    "RL|slot|50|1.0": {
+      "position": [
+        0.1886,
+        0.1375,
+        0.253,
+        175
+      ],
+      "roles": {
+        "none": 137,
+        "position": 33,
+        "context": 4,
+        "identity": 1
+      }
+    },
+    "RL|slot|50|2.0": {
+      "position": [
+        0.16,
+        0.1131,
+        0.2215,
+        175
+      ],
+      "roles": {
+        "none": 143,
+        "position": 28,
+        "context": 3,
+        "identity": 1
+      }
+    },
+    "RL|slot|50|4.0": {
+      "position": [
+        0.0971,
+        0.0615,
+        0.1501,
+        175
+      ],
+      "roles": {
+        "identity": 2,
+        "none": 153,
+        "position": 17,
+        "context": 2,
+        "value": 1
+      }
+    },
+    "RL|slot|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|slot|52|1.0": {
+      "position": [
+        0.0114,
+        0.0031,
+        0.0407,
+        175
+      ],
+      "roles": {
+        "none": 173,
+        "position": 2
+      }
+    },
+    "RL|slot|52|2.0": {
+      "position": [
+        0.04,
+        0.0195,
+        0.0803,
+        175
+      ],
+      "roles": {
+        "none": 154,
+        "position": 7,
+        "value": 2,
+        "identity": 3,
+        "recall": 4,
+        "context": 5
+      }
+    },
+    "RL|slot|52|4.0": {
+      "position": [
+        0.0343,
+        0.0158,
+        0.0728,
+        175
+      ],
+      "roles": {
+        "none": 145,
+        "identity": 5,
+        "position": 6,
+        "value": 5,
+        "recall": 6,
+        "context": 8
+      }
+    },
+    "RL|slot|window|0.5": {
+      "position": [
+        0.3943,
+        0.3249,
+        0.4682,
+        175
+      ],
+      "roles": {
+        "identity": 7,
+        "none": 75,
+        "position": 69,
+        "context": 16,
+        "recall": 5,
+        "value": 3
+      }
+    },
+    "RL|slot|window|1.0": {
+      "position": [
+        0.32,
+        0.2554,
+        0.3923,
+        175
+      ],
+      "roles": {
+        "identity": 7,
+        "none": 87,
+        "position": 56,
+        "value": 5,
+        "recall": 4,
+        "context": 16
+      }
+    },
+    "RL|slot|window|2.0": {
+      "position": [
+        0.2514,
+        0.193,
+        0.3206,
+        175
+      ],
+      "roles": {
+        "identity": 7,
+        "none": 76,
+        "position": 44,
+        "context": 27,
+        "recall": 6,
+        "value": 5,
+        "other": 10
+      }
+    },
+    "RL|slot|window|4.0": {
+      "position": [
+        0.0514,
+        0.0273,
+        0.0948,
+        175
+      ],
+      "roles": {
+        "other": 101,
+        "none": 34,
+        "position": 9,
+        "recall": 3,
+        "identity": 7,
+        "context": 16,
+        "value": 5
+      }
+    },
+    "RL|sub1|44|0.5": {
+      "position": [
+        0.0571,
+        0.0313,
+        0.102,
+        175
+      ],
+      "roles": {
+        "none": 152,
+        "position": 10,
+        "context": 8,
+        "identity": 5
+      }
+    },
+    "RL|sub1|44|1.0": {
+      "position": [
+        0.1029,
+        0.0661,
+        0.1567,
+        175
+      ],
+      "roles": {
+        "none": 124,
+        "position": 18,
+        "context": 24,
+        "identity": 9
+      }
+    },
+    "RL|sub1|44|2.0": {
+      "position": [
+        0.1657,
+        0.1179,
+        0.2279,
+        175
+      ],
+      "roles": {
+        "identity": 17,
+        "position": 29,
+        "none": 99,
+        "context": 30
+      }
+    },
+    "RL|sub1|44|4.0": {
+      "position": [
+        0.2286,
+        0.1726,
+        0.2962,
+        175
+      ],
+      "roles": {
+        "identity": 23,
+        "position": 40,
+        "none": 64,
+        "context": 48
+      }
+    },
+    "RL|sub1|46|0.5": {
+      "position": [
+        0.0971,
+        0.0615,
+        0.1501,
+        175
+      ],
+      "roles": {
+        "none": 148,
+        "position": 17,
+        "context": 8,
+        "identity": 2
+      }
+    },
+    "RL|sub1|46|1.0": {
+      "position": [
+        0.1314,
+        0.0892,
+        0.1895,
+        175
+      ],
+      "roles": {
+        "none": 127,
+        "position": 23,
+        "context": 16,
+        "identity": 9
+      }
+    },
+    "RL|sub1|46|2.0": {
+      "position": [
+        0.1029,
+        0.0661,
+        0.1567,
+        175
+      ],
+      "roles": {
+        "none": 123,
+        "identity": 11,
+        "position": 18,
+        "context": 22,
+        "recall": 1
+      }
+    },
+    "RL|sub1|46|4.0": {
+      "position": [
+        0.1486,
+        0.1034,
+        0.2088,
+        175
+      ],
+      "roles": {
+        "none": 95,
+        "other": 18,
+        "position": 26,
+        "identity": 10,
+        "context": 24,
+        "recall": 2
+      }
+    },
+    "RL|sub1|48|0.5": {
+      "position": [
+        0.0971,
+        0.0615,
+        0.1501,
+        175
+      ],
+      "roles": {
+        "none": 143,
+        "context": 9,
+        "position": 17,
+        "identity": 6
+      }
+    },
+    "RL|sub1|48|1.0": {
+      "position": [
+        0.2114,
+        0.1575,
+        0.2778,
+        175
+      ],
+      "roles": {
+        "none": 92,
+        "identity": 17,
+        "position": 37,
+        "context": 29
+      }
+    },
+    "RL|sub1|48|2.0": {
+      "position": [
+        0.2171,
+        0.1625,
+        0.284,
+        175
+      ],
+      "roles": {
+        "none": 90,
+        "identity": 17,
+        "position": 38,
+        "context": 30
+      }
+    },
+    "RL|sub1|48|4.0": {
+      "position": [
+        0.1486,
+        0.1034,
+        0.2088,
+        175
+      ],
+      "roles": {
+        "none": 112,
+        "identity": 18,
+        "position": 26,
+        "context": 17,
+        "other": 1,
+        "recall": 1
+      }
+    },
+    "RL|sub1|50|0.5": {
+      "position": [
+        0.0171,
+        0.0058,
+        0.0492,
+        175
+      ],
+      "roles": {
+        "none": 168,
+        "context": 2,
+        "identity": 2,
+        "position": 3
+      }
+    },
+    "RL|sub1|50|1.0": {
+      "position": [
+        0.1314,
+        0.0892,
+        0.1895,
+        175
+      ],
+      "roles": {
+        "none": 124,
+        "position": 23,
+        "context": 19,
+        "identity": 9
+      }
+    },
+    "RL|sub1|50|2.0": {
+      "position": [
+        0.1143,
+        0.0752,
+        0.1699,
+        175
+      ],
+      "roles": {
+        "none": 125,
+        "identity": 12,
+        "position": 20,
+        "context": 18
+      }
+    },
+    "RL|sub1|50|4.0": {
+      "position": [
+        0.0743,
+        0.0439,
+        0.1229,
+        175
+      ],
+      "roles": {
+        "none": 138,
+        "identity": 12,
+        "position": 13,
+        "context": 11,
+        "recall": 1
+      }
+    },
+    "RL|sub1|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|sub1|52|1.0": {
+      "position": [
+        0.04,
+        0.0195,
+        0.0803,
+        175
+      ],
+      "roles": {
+        "none": 164,
+        "position": 7,
+        "identity": 2,
+        "context": 2
+      }
+    },
+    "RL|sub1|52|2.0": {
+      "position": [
+        0.0571,
+        0.0313,
+        0.102,
+        175
+      ],
+      "roles": {
+        "none": 152,
+        "identity": 8,
+        "position": 10,
+        "context": 5
+      }
+    },
+    "RL|sub1|52|4.0": {
+      "position": [
+        0.0343,
+        0.0158,
+        0.0728,
+        175
+      ],
+      "roles": {
+        "none": 143,
+        "identity": 11,
+        "context": 11,
+        "value": 4,
+        "position": 6
+      }
+    },
+    "RL|sub1|window|0.5": {
+      "position": [
+        0.1771,
+        0.1277,
+        0.2405,
+        175
+      ],
+      "roles": {
+        "none": 102,
+        "identity": 16,
+        "position": 31,
+        "context": 26
+      }
+    },
+    "RL|sub1|window|1.0": {
+      "position": [
+        0.1657,
+        0.1179,
+        0.2279,
+        175
+      ],
+      "roles": {
+        "none": 95,
+        "identity": 20,
+        "position": 29,
+        "context": 29,
+        "value": 2
+      }
+    },
+    "RL|sub1|window|2.0": {
+      "position": [
+        0.1371,
+        0.0939,
+        0.196,
+        175
+      ],
+      "roles": {
+        "none": 70,
+        "identity": 27,
+        "position": 24,
+        "context": 43,
+        "value": 4,
+        "other": 1,
+        "recall": 6
+      }
+    },
+    "RL|sub1|window|4.0": {
+      "position": [
+        0.0457,
+        0.0233,
+        0.0876,
+        175
+      ],
+      "roles": {
+        "other": 78,
+        "context": 32,
+        "identity": 18,
+        "none": 32,
+        "value": 4,
+        "position": 8,
+        "recall": 3
+      }
+    },
+    "RL|sub2|44|0.5": {
+      "position": [
+        0.0743,
+        0.0439,
+        0.1229,
+        175
+      ],
+      "roles": {
+        "none": 149,
+        "context": 10,
+        "position": 13,
+        "identity": 3
+      }
+    },
+    "RL|sub2|44|1.0": {
+      "position": [
+        0.1714,
+        0.1228,
+        0.2342,
+        175
+      ],
+      "roles": {
+        "none": 123,
+        "position": 30,
+        "context": 14,
+        "identity": 8
+      }
+    },
+    "RL|sub2|44|2.0": {
+      "position": [
+        0.2114,
+        0.1575,
+        0.2778,
+        175
+      ],
+      "roles": {
+        "none": 97,
+        "position": 37,
+        "context": 29,
+        "identity": 12
+      }
+    },
+    "RL|sub2|44|4.0": {
+      "position": [
+        0.2457,
+        0.1878,
+        0.3145,
+        175
+      ],
+      "roles": {
+        "position": 43,
+        "identity": 18,
+        "context": 48,
+        "none": 65,
+        "recall": 1
+      }
+    },
+    "RL|sub2|46|0.5": {
+      "position": [
+        0.08,
+        0.0482,
+        0.1298,
+        175
+      ],
+      "roles": {
+        "none": 150,
+        "position": 14,
+        "context": 9,
+        "identity": 2
+      }
+    },
+    "RL|sub2|46|1.0": {
+      "position": [
+        0.1429,
+        0.0987,
+        0.2024,
+        175
+      ],
+      "roles": {
+        "none": 133,
+        "position": 25,
+        "context": 13,
+        "identity": 4
+      }
+    },
+    "RL|sub2|46|2.0": {
+      "position": [
+        0.1143,
+        0.0752,
+        0.1699,
+        175
+      ],
+      "roles": {
+        "none": 129,
+        "identity": 5,
+        "position": 20,
+        "context": 20,
+        "recall": 1
+      }
+    },
+    "RL|sub2|46|4.0": {
+      "position": [
+        0.1543,
+        0.1083,
+        0.2152,
+        175
+      ],
+      "roles": {
+        "none": 101,
+        "position": 27,
+        "identity": 10,
+        "recall": 4,
+        "context": 28,
+        "other": 5
+      }
+    },
+    "RL|sub2|48|0.5": {
+      "position": [
+        0.0857,
+        0.0526,
+        0.1366,
+        175
+      ],
+      "roles": {
+        "none": 153,
+        "context": 4,
+        "position": 15,
+        "identity": 3
+      }
+    },
+    "RL|sub2|48|1.0": {
+      "position": [
+        0.2171,
+        0.1625,
+        0.284,
+        175
+      ],
+      "roles": {
+        "none": 112,
+        "position": 38,
+        "context": 16,
+        "identity": 9
+      }
+    },
+    "RL|sub2|48|2.0": {
+      "position": [
+        0.2286,
+        0.1726,
+        0.2962,
+        175
+      ],
+      "roles": {
+        "none": 103,
+        "identity": 10,
+        "position": 40,
+        "context": 22
+      }
+    },
+    "RL|sub2|48|4.0": {
+      "position": [
+        0.1943,
+        0.1425,
+        0.2592,
+        175
+      ],
+      "roles": {
+        "none": 105,
+        "identity": 12,
+        "position": 34,
+        "context": 22,
+        "recall": 1,
+        "other": 1
+      }
+    },
+    "RL|sub2|50|0.5": {
+      "position": [
+        0.04,
+        0.0195,
+        0.0803,
+        175
+      ],
+      "roles": {
+        "none": 161,
+        "context": 6,
+        "position": 7,
+        "identity": 1
+      }
+    },
+    "RL|sub2|50|1.0": {
+      "position": [
+        0.1771,
+        0.1277,
+        0.2405,
+        175
+      ],
+      "roles": {
+        "none": 127,
+        "position": 31,
+        "context": 10,
+        "identity": 7
+      }
+    },
+    "RL|sub2|50|2.0": {
+      "position": [
+        0.12,
+        0.0798,
+        0.1765,
+        175
+      ],
+      "roles": {
+        "none": 143,
+        "identity": 5,
+        "position": 21,
+        "context": 6
+      }
+    },
+    "RL|sub2|50|4.0": {
+      "position": [
+        0.08,
+        0.0482,
+        0.1298,
+        175
+      ],
+      "roles": {
+        "none": 154,
+        "identity": 4,
+        "position": 14,
+        "context": 3
+      }
+    },
+    "RL|sub2|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|sub2|52|1.0": {
+      "position": [
+        0.0343,
+        0.0158,
+        0.0728,
+        175
+      ],
+      "roles": {
+        "none": 168,
+        "position": 6,
+        "identity": 1
+      }
+    },
+    "RL|sub2|52|2.0": {
+      "position": [
+        0.0514,
+        0.0273,
+        0.0948,
+        175
+      ],
+      "roles": {
+        "none": 159,
+        "identity": 4,
+        "position": 9,
+        "context": 3
+      }
+    },
+    "RL|sub2|52|4.0": {
+      "position": [
+        0.0286,
+        0.0123,
+        0.0651,
+        175
+      ],
+      "roles": {
+        "none": 150,
+        "identity": 9,
+        "value": 2,
+        "context": 9,
+        "position": 5
+      }
+    },
+    "RL|sub2|window|0.5": {
+      "position": [
+        0.2457,
+        0.1878,
+        0.3145,
+        175
+      ],
+      "roles": {
+        "none": 99,
+        "identity": 11,
+        "position": 43,
+        "context": 22
+      }
+    },
+    "RL|sub2|window|1.0": {
+      "position": [
+        0.2,
+        0.1475,
+        0.2654,
+        175
+      ],
+      "roles": {
+        "none": 98,
+        "identity": 12,
+        "position": 35,
+        "context": 29,
+        "recall": 1
+      }
+    },
+    "RL|sub2|window|2.0": {
+      "position": [
+        0.16,
+        0.1131,
+        0.2215,
+        175
+      ],
+      "roles": {
+        "none": 76,
+        "identity": 24,
+        "position": 28,
+        "context": 40,
+        "value": 2,
+        "other": 1,
+        "recall": 4
+      }
+    },
+    "RL|sub2|window|4.0": {
+      "position": [
+        0.0343,
+        0.0158,
+        0.0728,
+        175
+      ],
+      "roles": {
+        "none": 34,
+        "context": 27,
+        "identity": 14,
+        "other": 90,
+        "value": 3,
+        "position": 6,
+        "recall": 1
+      }
+    },
+    "RL|sub4|44|0.5": {
+      "position": [
+        0.1086,
+        0.0706,
+        0.1633,
+        175
+      ],
+      "roles": {
+        "none": 141,
+        "position": 19,
+        "context": 13,
+        "identity": 2
+      }
+    },
+    "RL|sub4|44|1.0": {
+      "position": [
+        0.2457,
+        0.1878,
+        0.3145,
+        175
+      ],
+      "roles": {
+        "none": 111,
+        "position": 43,
+        "context": 16,
+        "identity": 5
+      }
+    },
+    "RL|sub4|44|2.0": {
+      "position": [
+        0.3257,
+        0.2607,
+        0.3982,
+        175
+      ],
+      "roles": {
+        "none": 89,
+        "position": 57,
+        "context": 20,
+        "identity": 9
+      }
+    },
+    "RL|sub4|44|4.0": {
+      "position": [
+        0.3029,
+        0.2396,
+        0.3746,
+        175
+      ],
+      "roles": {
+        "position": 53,
+        "none": 80,
+        "context": 28,
+        "recall": 3,
+        "identity": 10,
+        "value": 1
+      }
+    },
+    "RL|sub4|46|0.5": {
+      "position": [
+        0.1257,
+        0.0845,
+        0.183,
+        175
+      ],
+      "roles": {
+        "none": 135,
+        "position": 22,
+        "context": 14,
+        "identity": 4
+      }
+    },
+    "RL|sub4|46|1.0": {
+      "position": [
+        0.2171,
+        0.1625,
+        0.284,
+        175
+      ],
+      "roles": {
+        "none": 120,
+        "position": 38,
+        "context": 13,
+        "identity": 4
+      }
+    },
+    "RL|sub4|46|2.0": {
+      "position": [
+        0.1829,
+        0.1326,
+        0.2467,
+        175
+      ],
+      "roles": {
+        "none": 126,
+        "position": 32,
+        "context": 12,
+        "identity": 5
+      }
+    },
+    "RL|sub4|46|4.0": {
+      "position": [
+        0.2,
+        0.1475,
+        0.2654,
+        175
+      ],
+      "roles": {
+        "none": 107,
+        "position": 35,
+        "recall": 3,
+        "identity": 10,
+        "context": 18,
+        "other": 2
+      }
+    },
+    "RL|sub4|48|0.5": {
+      "position": [
+        0.1543,
+        0.1083,
+        0.2152,
+        175
+      ],
+      "roles": {
+        "none": 140,
+        "position": 27,
+        "context": 5,
+        "identity": 3
+      }
+    },
+    "RL|sub4|48|1.0": {
+      "position": [
+        0.3657,
+        0.298,
+        0.4392,
+        175
+      ],
+      "roles": {
+        "none": 87,
+        "position": 64,
+        "context": 17,
+        "identity": 7
+      }
+    },
+    "RL|sub4|48|2.0": {
+      "position": [
+        0.3886,
+        0.3195,
+        0.4624,
+        175
+      ],
+      "roles": {
+        "none": 75,
+        "position": 68,
+        "context": 21,
+        "identity": 11
+      }
+    },
+    "RL|sub4|48|4.0": {
+      "position": [
+        0.2457,
+        0.1878,
+        0.3145,
+        175
+      ],
+      "roles": {
+        "none": 105,
+        "position": 43,
+        "identity": 11,
+        "context": 15,
+        "recall": 1
+      }
+    },
+    "RL|sub4|50|0.5": {
+      "position": [
+        0.0743,
+        0.0439,
+        0.1229,
+        175
+      ],
+      "roles": {
+        "none": 158,
+        "position": 13,
+        "context": 3,
+        "identity": 1
+      }
+    },
+    "RL|sub4|50|1.0": {
+      "position": [
+        0.2057,
+        0.1525,
+        0.2716,
+        175
+      ],
+      "roles": {
+        "none": 128,
+        "position": 36,
+        "context": 8,
+        "identity": 3
+      }
+    },
+    "RL|sub4|50|2.0": {
+      "position": [
+        0.1543,
+        0.1083,
+        0.2152,
+        175
+      ],
+      "roles": {
+        "none": 137,
+        "position": 27,
+        "context": 8,
+        "identity": 3
+      }
+    },
+    "RL|sub4|50|4.0": {
+      "position": [
+        0.0914,
+        0.0571,
+        0.1433,
+        175
+      ],
+      "roles": {
+        "none": 153,
+        "position": 16,
+        "identity": 3,
+        "context": 3
+      }
+    },
+    "RL|sub4|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|sub4|52|1.0": {
+      "position": [
+        0.0457,
+        0.0233,
+        0.0876,
+        175
+      ],
+      "roles": {
+        "none": 167,
+        "position": 8
+      }
+    },
+    "RL|sub4|52|2.0": {
+      "position": [
+        0.0571,
+        0.0313,
+        0.102,
+        175
+      ],
+      "roles": {
+        "none": 156,
+        "position": 10,
+        "identity": 3,
+        "recall": 1,
+        "value": 1,
+        "context": 4
+      }
+    },
+    "RL|sub4|52|4.0": {
+      "position": [
+        0.04,
+        0.0195,
+        0.0803,
+        175
+      ],
+      "roles": {
+        "none": 142,
+        "position": 7,
+        "other": 1,
+        "value": 4,
+        "recall": 5,
+        "identity": 5,
+        "context": 11
+      }
+    },
+    "RL|sub4|window|0.5": {
+      "position": [
+        0.3086,
+        0.2449,
+        0.3805,
+        175
+      ],
+      "roles": {
+        "none": 87,
+        "position": 54,
+        "context": 22,
+        "identity": 11,
+        "value": 1
+      }
+    },
+    "RL|sub4|window|1.0": {
+      "position": [
+        0.2,
+        0.1475,
+        0.2654,
+        175
+      ],
+      "roles": {
+        "identity": 13,
+        "position": 35,
+        "none": 98,
+        "value": 5,
+        "other": 5,
+        "recall": 2,
+        "context": 17
+      }
+    },
+    "RL|sub4|window|2.0": {
+      "position": [
+        0.1486,
+        0.1034,
+        0.2088,
+        175
+      ],
+      "roles": {
+        "identity": 15,
+        "none": 71,
+        "position": 26,
+        "other": 31,
+        "context": 24,
+        "value": 4,
+        "recall": 4
+      }
+    },
+    "RL|sub4|window|4.0": {
+      "position": [
+        0.0286,
+        0.0123,
+        0.0651,
+        175
+      ],
+      "roles": {
+        "other": 121,
+        "context": 17,
+        "none": 21,
+        "identity": 5,
+        "position": 5,
+        "value": 3,
+        "recall": 3
+      }
+    },
+    "RL|sub8|44|0.5": {
+      "position": [
+        0.1086,
+        0.0706,
+        0.1633,
+        175
+      ],
+      "roles": {
+        "none": 145,
+        "position": 19,
+        "context": 9,
+        "identity": 2
+      }
+    },
+    "RL|sub8|44|1.0": {
+      "position": [
+        0.2629,
+        0.2032,
+        0.3327,
+        175
+      ],
+      "roles": {
+        "none": 115,
+        "position": 46,
+        "context": 9,
+        "identity": 5
+      }
+    },
+    "RL|sub8|44|2.0": {
+      "position": [
+        0.3714,
+        0.3033,
+        0.4451,
+        175
+      ],
+      "roles": {
+        "none": 86,
+        "position": 65,
+        "context": 15,
+        "identity": 8,
+        "recall": 1
+      }
+    },
+    "RL|sub8|44|4.0": {
+      "position": [
+        0.3257,
+        0.2607,
+        0.3982,
+        175
+      ],
+      "roles": {
+        "none": 89,
+        "position": 57,
+        "context": 18,
+        "identity": 10,
+        "recall": 1
+      }
+    },
+    "RL|sub8|46|0.5": {
+      "position": [
+        0.1714,
+        0.1228,
+        0.2342,
+        175
+      ],
+      "roles": {
+        "none": 135,
+        "position": 30,
+        "context": 9,
+        "identity": 1
+      }
+    },
+    "RL|sub8|46|1.0": {
+      "position": [
+        0.2629,
+        0.2032,
+        0.3327,
+        175
+      ],
+      "roles": {
+        "none": 116,
+        "position": 46,
+        "context": 9,
+        "identity": 4
+      }
+    },
+    "RL|sub8|46|2.0": {
+      "position": [
+        0.2514,
+        0.193,
+        0.3206,
+        175
+      ],
+      "roles": {
+        "none": 113,
+        "position": 44,
+        "context": 13,
+        "identity": 5
+      }
+    },
+    "RL|sub8|46|4.0": {
+      "position": [
+        0.2229,
+        0.1675,
+        0.2901,
+        175
+      ],
+      "roles": {
+        "none": 113,
+        "position": 39,
+        "recall": 3,
+        "context": 15,
+        "identity": 5
+      }
+    },
+    "RL|sub8|48|0.5": {
+      "position": [
+        0.1486,
+        0.1034,
+        0.2088,
+        175
+      ],
+      "roles": {
+        "none": 142,
+        "position": 26,
+        "context": 5,
+        "identity": 2
+      }
+    },
+    "RL|sub8|48|1.0": {
+      "position": [
+        0.4114,
+        0.3412,
+        0.4855,
+        175
+      ],
+      "roles": {
+        "none": 84,
+        "position": 72,
+        "context": 11,
+        "identity": 8
+      }
+    },
+    "RL|sub8|48|2.0": {
+      "position": [
+        0.4171,
+        0.3466,
+        0.4912,
+        175
+      ],
+      "roles": {
+        "none": 75,
+        "position": 73,
+        "context": 16,
+        "identity": 11
+      }
+    },
+    "RL|sub8|48|4.0": {
+      "position": [
+        0.28,
+        0.2188,
+        0.3507,
+        175
+      ],
+      "roles": {
+        "position": 49,
+        "none": 92,
+        "context": 21,
+        "identity": 12,
+        "other": 1
+      }
+    },
+    "RL|sub8|50|0.5": {
+      "position": [
+        0.08,
+        0.0482,
+        0.1298,
+        175
+      ],
+      "roles": {
+        "none": 158,
+        "position": 14,
+        "context": 3
+      }
+    },
+    "RL|sub8|50|1.0": {
+      "position": [
+        0.2571,
+        0.1981,
+        0.3266,
+        175
+      ],
+      "roles": {
+        "none": 120,
+        "position": 45,
+        "context": 6,
+        "identity": 4
+      }
+    },
+    "RL|sub8|50|2.0": {
+      "position": [
+        0.16,
+        0.1131,
+        0.2215,
+        175
+      ],
+      "roles": {
+        "none": 140,
+        "position": 28,
+        "context": 4,
+        "identity": 3
+      }
+    },
+    "RL|sub8|50|4.0": {
+      "position": [
+        0.1029,
+        0.0661,
+        0.1567,
+        175
+      ],
+      "roles": {
+        "none": 154,
+        "position": 18,
+        "context": 2,
+        "recall": 1
+      }
+    },
+    "RL|sub8|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|sub8|52|1.0": {
+      "position": [
+        0.0457,
+        0.0233,
+        0.0876,
+        175
+      ],
+      "roles": {
+        "none": 166,
+        "position": 8,
+        "context": 1
+      }
+    },
+    "RL|sub8|52|2.0": {
+      "position": [
+        0.0514,
+        0.0273,
+        0.0948,
+        175
+      ],
+      "roles": {
+        "none": 156,
+        "position": 9,
+        "value": 2,
+        "recall": 2,
+        "context": 4,
+        "identity": 2
+      }
+    },
+    "RL|sub8|52|4.0": {
+      "position": [
+        0.0229,
+        0.0089,
+        0.0573,
+        175
+      ],
+      "roles": {
+        "identity": 7,
+        "context": 12,
+        "none": 139,
+        "other": 1,
+        "position": 4,
+        "value": 5,
+        "recall": 7
+      }
+    },
+    "RL|sub8|window|0.5": {
+      "position": [
+        0.3371,
+        0.2713,
+        0.41,
+        175
+      ],
+      "roles": {
+        "recall": 4,
+        "position": 59,
+        "context": 15,
+        "none": 89,
+        "identity": 6,
+        "value": 2
+      }
+    },
+    "RL|sub8|window|1.0": {
+      "position": [
+        0.2629,
+        0.2032,
+        0.3327,
+        175
+      ],
+      "roles": {
+        "identity": 8,
+        "position": 46,
+        "none": 92,
+        "value": 5,
+        "other": 2,
+        "recall": 6,
+        "context": 16
+      }
+    },
+    "RL|sub8|window|2.0": {
+      "position": [
+        0.1371,
+        0.0939,
+        0.196,
+        175
+      ],
+      "roles": {
+        "identity": 9,
+        "none": 75,
+        "position": 24,
+        "other": 29,
+        "recall": 7,
+        "context": 27,
+        "value": 4
+      }
+    },
+    "RL|sub8|window|4.0": {
+      "position": [
+        0.0286,
+        0.0123,
+        0.0651,
+        175
+      ],
+      "roles": {
+        "identity": 6,
+        "other": 116,
+        "context": 16,
+        "none": 26,
+        "position": 5,
+        "value": 3,
+        "recall": 3
+      }
+    },
+    "RL|sub16|44|0.5": {
+      "position": [
+        0.1029,
+        0.0661,
+        0.1567,
+        175
+      ],
+      "roles": {
+        "none": 144,
+        "position": 18,
+        "context": 11,
+        "identity": 2
+      }
+    },
+    "RL|sub16|44|1.0": {
+      "position": [
+        0.2857,
+        0.2239,
+        0.3567,
+        175
+      ],
+      "roles": {
+        "none": 109,
+        "position": 50,
+        "context": 13,
+        "identity": 3
+      }
+    },
+    "RL|sub16|44|2.0": {
+      "position": [
+        0.3543,
+        0.2872,
+        0.4276,
+        175
+      ],
+      "roles": {
+        "context": 14,
+        "none": 91,
+        "position": 62,
+        "identity": 8
+      }
+    },
+    "RL|sub16|44|4.0": {
+      "position": [
+        0.3371,
+        0.2713,
+        0.41,
+        175
+      ],
+      "roles": {
+        "context": 20,
+        "none": 85,
+        "position": 59,
+        "recall": 1,
+        "identity": 10
+      }
+    },
+    "RL|sub16|46|0.5": {
+      "position": [
+        0.1314,
+        0.0892,
+        0.1895,
+        175
+      ],
+      "roles": {
+        "none": 141,
+        "position": 23,
+        "context": 9,
+        "identity": 2
+      }
+    },
+    "RL|sub16|46|1.0": {
+      "position": [
+        0.2743,
+        0.2136,
+        0.3447,
+        175
+      ],
+      "roles": {
+        "none": 110,
+        "position": 48,
+        "context": 11,
+        "identity": 6
+      }
+    },
+    "RL|sub16|46|2.0": {
+      "position": [
+        0.2686,
+        0.2084,
+        0.3387,
+        175
+      ],
+      "roles": {
+        "context": 15,
+        "none": 106,
+        "position": 47,
+        "identity": 7
+      }
+    },
+    "RL|sub16|46|4.0": {
+      "position": [
+        0.2457,
+        0.1878,
+        0.3145,
+        175
+      ],
+      "roles": {
+        "identity": 5,
+        "none": 113,
+        "position": 43,
+        "context": 13,
+        "recall": 1
+      }
+    },
+    "RL|sub16|48|0.5": {
+      "position": [
+        0.12,
+        0.0798,
+        0.1765,
+        175
+      ],
+      "roles": {
+        "none": 148,
+        "position": 21,
+        "context": 5,
+        "identity": 1
+      }
+    },
+    "RL|sub16|48|1.0": {
+      "position": [
+        0.3829,
+        0.3141,
+        0.4567,
+        175
+      ],
+      "roles": {
+        "none": 94,
+        "position": 67,
+        "context": 10,
+        "identity": 4
+      }
+    },
+    "RL|sub16|48|2.0": {
+      "position": [
+        0.4114,
+        0.3412,
+        0.4855,
+        175
+      ],
+      "roles": {
+        "none": 75,
+        "position": 72,
+        "context": 16,
+        "recall": 2,
+        "identity": 9,
+        "value": 1
+      }
+    },
+    "RL|sub16|48|4.0": {
+      "position": [
+        0.3143,
+        0.2501,
+        0.3864,
+        175
+      ],
+      "roles": {
+        "identity": 12,
+        "position": 55,
+        "context": 17,
+        "none": 85,
+        "value": 2,
+        "recall": 4
+      }
+    },
+    "RL|sub16|50|0.5": {
+      "position": [
+        0.0686,
+        0.0397,
+        0.116,
+        175
+      ],
+      "roles": {
+        "none": 162,
+        "position": 12,
+        "context": 1
+      }
+    },
+    "RL|sub16|50|1.0": {
+      "position": [
+        0.2286,
+        0.1726,
+        0.2962,
+        175
+      ],
+      "roles": {
+        "none": 129,
+        "position": 40,
+        "context": 5,
+        "identity": 1
+      }
+    },
+    "RL|sub16|50|2.0": {
+      "position": [
+        0.1771,
+        0.1277,
+        0.2405,
+        175
+      ],
+      "roles": {
+        "none": 137,
+        "position": 31,
+        "context": 6,
+        "identity": 1
+      }
+    },
+    "RL|sub16|50|4.0": {
+      "position": [
+        0.1029,
+        0.0661,
+        0.1567,
+        175
+      ],
+      "roles": {
+        "identity": 2,
+        "none": 150,
+        "position": 18,
+        "context": 4,
+        "recall": 1
+      }
+    },
+    "RL|sub16|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|sub16|52|1.0": {
+      "position": [
+        0.0171,
+        0.0058,
+        0.0492,
+        175
+      ],
+      "roles": {
+        "none": 171,
+        "position": 3,
+        "context": 1
+      }
+    },
+    "RL|sub16|52|2.0": {
+      "position": [
+        0.0286,
+        0.0123,
+        0.0651,
+        175
+      ],
+      "roles": {
+        "none": 160,
+        "position": 5,
+        "value": 2,
+        "identity": 3,
+        "context": 4,
+        "recall": 1
+      }
+    },
+    "RL|sub16|52|4.0": {
+      "position": [
+        0.0171,
+        0.0058,
+        0.0492,
+        175
+      ],
+      "roles": {
+        "identity": 6,
+        "context": 10,
+        "none": 144,
+        "other": 1,
+        "position": 3,
+        "value": 6,
+        "recall": 5
+      }
+    },
+    "RL|sub16|window|0.5": {
+      "position": [
+        0.3771,
+        0.3087,
+        0.4509,
+        175
+      ],
+      "roles": {
+        "recall": 6,
+        "none": 79,
+        "position": 66,
+        "context": 14,
+        "identity": 7,
+        "value": 3
+      }
+    },
+    "RL|sub16|window|1.0": {
+      "position": [
+        0.2514,
+        0.193,
+        0.3206,
+        175
+      ],
+      "roles": {
+        "identity": 8,
+        "none": 93,
+        "position": 44,
+        "value": 6,
+        "recall": 5,
+        "other": 3,
+        "context": 16
+      }
+    },
+    "RL|sub16|window|2.0": {
+      "position": [
+        0.1657,
+        0.1179,
+        0.2279,
+        175
+      ],
+      "roles": {
+        "identity": 10,
+        "none": 74,
+        "position": 29,
+        "other": 17,
+        "recall": 11,
+        "context": 26,
+        "value": 8
+      }
+    },
+    "RL|sub16|window|4.0": {
+      "position": [
+        0.0514,
+        0.0273,
+        0.0948,
+        175
+      ],
+      "roles": {
+        "identity": 7,
+        "other": 112,
+        "context": 19,
+        "none": 22,
+        "position": 9,
+        "recall": 4,
+        "value": 2
+      }
+    },
+    "RL|shuffled|44|0.5": {
+      "position": [
+        0.0057,
+        0.001,
+        0.0317,
+        175
+      ],
+      "roles": {
+        "none": 171,
+        "position": 1,
+        "identity": 1,
+        "context": 2
+      }
+    },
+    "RL|shuffled|44|1.0": {
+      "position": [
+        0.0114,
+        0.0031,
+        0.0407,
+        175
+      ],
+      "roles": {
+        "none": 164,
+        "context": 5,
+        "position": 2,
+        "identity": 4
+      }
+    },
+    "RL|shuffled|44|2.0": {
+      "position": [
+        0.04,
+        0.0195,
+        0.0803,
+        175
+      ],
+      "roles": {
+        "context": 16,
+        "none": 145,
+        "position": 7,
+        "identity": 7
+      }
+    },
+    "RL|shuffled|44|4.0": {
+      "position": [
+        0.04,
+        0.0195,
+        0.0803,
+        175
+      ],
+      "roles": {
+        "identity": 11,
+        "none": 130,
+        "context": 26,
+        "position": 7,
+        "value": 1
+      }
+    },
+    "RL|shuffled|46|0.5": {
+      "position": [
+        0.0057,
+        0.001,
+        0.0317,
+        175
+      ],
+      "roles": {
+        "none": 173,
+        "position": 1,
+        "context": 1
+      }
+    },
+    "RL|shuffled|46|1.0": {
+      "position": [
+        0.0171,
+        0.0058,
+        0.0492,
+        175
+      ],
+      "roles": {
+        "context": 7,
+        "none": 160,
+        "identity": 5,
+        "position": 3
+      }
+    },
+    "RL|shuffled|46|2.0": {
+      "position": [
+        0.04,
+        0.0195,
+        0.0803,
+        175
+      ],
+      "roles": {
+        "context": 19,
+        "none": 143,
+        "position": 7,
+        "identity": 6
+      }
+    },
+    "RL|shuffled|46|4.0": {
+      "position": [
+        0.0286,
+        0.0123,
+        0.0651,
+        175
+      ],
+      "roles": {
+        "identity": 7,
+        "none": 142,
+        "context": 17,
+        "position": 5,
+        "recall": 2,
+        "other": 2
+      }
+    },
+    "RL|shuffled|48|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|shuffled|48|1.0": {
+      "position": [
+        0.0114,
+        0.0031,
+        0.0407,
+        175
+      ],
+      "roles": {
+        "context": 7,
+        "none": 164,
+        "position": 2,
+        "identity": 2
+      }
+    },
+    "RL|shuffled|48|2.0": {
+      "position": [
+        0.0343,
+        0.0158,
+        0.0728,
+        175
+      ],
+      "roles": {
+        "context": 20,
+        "none": 141,
+        "position": 6,
+        "identity": 7,
+        "recall": 1
+      }
+    },
+    "RL|shuffled|48|4.0": {
+      "position": [
+        0.0514,
+        0.0273,
+        0.0948,
+        175
+      ],
+      "roles": {
+        "context": 28,
+        "none": 121,
+        "position": 9,
+        "other": 2,
+        "identity": 12,
+        "recall": 3
+      }
+    },
+    "RL|shuffled|50|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|shuffled|50|1.0": {
+      "position": [
+        0.0057,
+        0.001,
+        0.0317,
+        175
+      ],
+      "roles": {
+        "none": 167,
+        "position": 1,
+        "context": 6,
+        "identity": 1
+      }
+    },
+    "RL|shuffled|50|2.0": {
+      "position": [
+        0.0114,
+        0.0031,
+        0.0407,
+        175
+      ],
+      "roles": {
+        "context": 14,
+        "none": 156,
+        "position": 2,
+        "identity": 3
+      }
+    },
+    "RL|shuffled|50|4.0": {
+      "position": [
+        0.0057,
+        0.001,
+        0.0317,
+        175
+      ],
+      "roles": {
+        "identity": 5,
+        "none": 162,
+        "position": 1,
+        "context": 4,
+        "recall": 1,
+        "other": 2
+      }
+    },
+    "RL|shuffled|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|shuffled|52|1.0": {
+      "position": [
+        0.0114,
+        0.0031,
+        0.0407,
+        175
+      ],
+      "roles": {
+        "none": 169,
+        "context": 1,
+        "position": 2,
+        "value": 1,
+        "recall": 2
+      }
+    },
+    "RL|shuffled|52|2.0": {
+      "position": [
+        0.04,
+        0.0195,
+        0.0803,
+        175
+      ],
+      "roles": {
+        "none": 139,
+        "recall": 6,
+        "position": 7,
+        "value": 4,
+        "identity": 8,
+        "context": 11
+      }
+    },
+    "RL|shuffled|52|4.0": {
+      "position": [
+        0.0514,
+        0.0273,
+        0.0948,
+        175
+      ],
+      "roles": {
+        "none": 117,
+        "value": 7,
+        "recall": 13,
+        "context": 16,
+        "position": 9,
+        "other": 1,
+        "identity": 12
+      }
+    },
+    "RL|shuffled|window|0.5": {
+      "position": [
+        0.04,
+        0.0195,
+        0.0803,
+        175
+      ],
+      "roles": {
+        "context": 25,
+        "none": 130,
+        "position": 7,
+        "value": 2,
+        "identity": 7,
+        "recall": 4
+      }
+    },
+    "RL|shuffled|window|1.0": {
+      "position": [
+        0.0857,
+        0.0526,
+        0.1366,
+        175
+      ],
+      "roles": {
+        "context": 29,
+        "none": 99,
+        "recall": 12,
+        "position": 15,
+        "other": 2,
+        "value": 5,
+        "identity": 13
+      }
+    },
+    "RL|shuffled|window|2.0": {
+      "position": [
+        0.0629,
+        0.0355,
+        0.109,
+        175
+      ],
+      "roles": {
+        "context": 30,
+        "value": 6,
+        "recall": 13,
+        "other": 27,
+        "none": 74,
+        "position": 11,
+        "identity": 13,
+        "other_digit": 1
+      }
+    },
+    "RL|shuffled|window|4.0": {
+      "position": [
+        0.0457,
+        0.0233,
+        0.0876,
+        175
+      ],
+      "roles": {
+        "recall": 1,
+        "value": 3,
+        "other": 80,
+        "none": 53,
+        "identity": 7,
+        "context": 19,
+        "position": 8,
+        "other_digit": 4
+      }
+    },
+    "RL|random|44|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|random|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|random|44|2.0": {
+      "position": [
+        0.0057,
+        0.001,
+        0.0317,
+        175
+      ],
+      "roles": {
+        "none": 171,
+        "context": 3,
+        "position": 1
+      }
+    },
+    "RL|random|44|4.0": {
+      "position": [
+        0.0114,
+        0.0031,
+        0.0407,
+        175
+      ],
+      "roles": {
+        "none": 169,
+        "context": 3,
+        "identity": 1,
+        "position": 2
+      }
+    },
+    "RL|random|46|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|random|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|random|46|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 173,
+        "context": 1,
+        "identity": 1
+      }
+    },
+    "RL|random|46|4.0": {
+      "position": [
+        0.0057,
+        0.001,
+        0.0317,
+        175
+      ],
+      "roles": {
+        "none": 173,
+        "context": 1,
+        "position": 1
+      }
+    },
+    "RL|random|48|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|random|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|random|48|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|random|48|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|random|50|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|random|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|random|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|random|50|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|random|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|random|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|random|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|random|52|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|random|window|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|random|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|random|window|2.0": {
+      "position": [
+        0.0114,
+        0.0031,
+        0.0407,
+        175
+      ],
+      "roles": {
+        "none": 170,
+        "context": 3,
+        "position": 2
+      }
+    },
+    "RL|random|window|4.0": {
+      "position": [
+        0.0057,
+        0.001,
+        0.0317,
+        175
+      ],
+      "roles": {
+        "none": 153,
+        "other": 15,
+        "position": 1,
+        "context": 4,
+        "identity": 2
+      }
+    },
+    "RL|lens|44|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|lens|44|1.0": {
+      "position": [
+        0.0057,
+        0.001,
+        0.0317,
+        175
+      ],
+      "roles": {
+        "none": 174,
+        "position": 1
+      }
+    },
+    "RL|lens|44|2.0": {
+      "position": [
+        0.0057,
+        0.001,
+        0.0317,
+        175
+      ],
+      "roles": {
+        "none": 172,
+        "position": 1,
+        "context": 2
+      }
+    },
+    "RL|lens|44|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 168,
+        "context": 5,
+        "identity": 2
+      }
+    },
+    "RL|lens|46|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|lens|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|lens|46|2.0": {
+      "position": [
+        0.0057,
+        0.001,
+        0.0317,
+        175
+      ],
+      "roles": {
+        "none": 170,
+        "identity": 1,
+        "position": 1,
+        "context": 3
+      }
+    },
+    "RL|lens|46|4.0": {
+      "position": [
+        0.0057,
+        0.001,
+        0.0317,
+        175
+      ],
+      "roles": {
+        "none": 168,
+        "context": 4,
+        "identity": 2,
+        "position": 1
+      }
+    },
+    "RL|lens|48|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|lens|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|lens|48|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|lens|48|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|lens|50|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|lens|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|lens|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|lens|50|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|lens|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|lens|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|lens|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|lens|52|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|lens|window|0.5": {
+      "position": [
+        0.0057,
+        0.001,
+        0.0317,
+        175
+      ],
+      "roles": {
+        "none": 174,
+        "position": 1
+      }
+    },
+    "RL|lens|window|1.0": {
+      "position": [
+        0.0057,
+        0.001,
+        0.0317,
+        175
+      ],
+      "roles": {
+        "none": 171,
+        "position": 1,
+        "context": 3
+      }
+    },
+    "RL|lens|window|2.0": {
+      "position": [
+        0.0057,
+        0.001,
+        0.0317,
+        175
+      ],
+      "roles": {
+        "other": 52,
+        "none": 119,
+        "identity": 1,
+        "position": 1,
+        "context": 2
+      }
+    },
+    "RL|lens|window|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "other": 165,
+        "none": 10
+      }
+    },
+    "RL|span|44|0.5": {
+      "position": [
+        0.0629,
+        0.0355,
+        0.109,
+        175
+      ],
+      "roles": {
+        "none": 156,
+        "context": 6,
+        "position": 11,
+        "identity": 2
+      }
+    },
+    "RL|span|44|1.0": {
+      "position": [
+        0.1371,
+        0.0939,
+        0.196,
+        175
+      ],
+      "roles": {
+        "none": 133,
+        "context": 14,
+        "position": 24,
+        "identity": 4
+      }
+    },
+    "RL|span|44|2.0": {
+      "position": [
+        0.1943,
+        0.1425,
+        0.2592,
+        175
+      ],
+      "roles": {
+        "none": 111,
+        "position": 34,
+        "context": 22,
+        "identity": 8
+      }
+    },
+    "RL|span|44|4.0": {
+      "position": [
+        0.24,
+        0.1827,
+        0.3084,
+        175
+      ],
+      "roles": {
+        "none": 101,
+        "position": 42,
+        "context": 22,
+        "identity": 10
+      }
+    },
+    "RL|span|46|0.5": {
+      "position": [
+        0.0571,
+        0.0313,
+        0.102,
+        175
+      ],
+      "roles": {
+        "none": 155,
+        "context": 8,
+        "position": 10,
+        "identity": 2
+      }
+    },
+    "RL|span|46|1.0": {
+      "position": [
+        0.1314,
+        0.0892,
+        0.1895,
+        175
+      ],
+      "roles": {
+        "none": 138,
+        "context": 10,
+        "position": 23,
+        "identity": 4
+      }
+    },
+    "RL|span|46|2.0": {
+      "position": [
+        0.1657,
+        0.1179,
+        0.2279,
+        175
+      ],
+      "roles": {
+        "none": 128,
+        "position": 29,
+        "context": 14,
+        "identity": 4
+      }
+    },
+    "RL|span|46|4.0": {
+      "position": [
+        0.1714,
+        0.1228,
+        0.2342,
+        175
+      ],
+      "roles": {
+        "none": 131,
+        "position": 30,
+        "identity": 2,
+        "context": 12
+      }
+    },
+    "RL|span|48|0.5": {
+      "position": [
+        0.04,
+        0.0195,
+        0.0803,
+        175
+      ],
+      "roles": {
+        "none": 163,
+        "context": 4,
+        "position": 7,
+        "identity": 1
+      }
+    },
+    "RL|span|48|1.0": {
+      "position": [
+        0.2629,
+        0.2032,
+        0.3327,
+        175
+      ],
+      "roles": {
+        "none": 109,
+        "position": 46,
+        "context": 13,
+        "identity": 7
+      }
+    },
+    "RL|span|48|2.0": {
+      "position": [
+        0.3371,
+        0.2713,
+        0.41,
+        175
+      ],
+      "roles": {
+        "none": 90,
+        "position": 59,
+        "context": 20,
+        "identity": 5,
+        "recall": 1
+      }
+    },
+    "RL|span|48|4.0": {
+      "position": [
+        0.3086,
+        0.2449,
+        0.3805,
+        175
+      ],
+      "roles": {
+        "none": 91,
+        "position": 54,
+        "context": 21,
+        "identity": 9
+      }
+    },
+    "RL|span|50|0.5": {
+      "position": [
+        0.0229,
+        0.0089,
+        0.0573,
+        175
+      ],
+      "roles": {
+        "none": 170,
+        "position": 4,
+        "context": 1
+      }
+    },
+    "RL|span|50|1.0": {
+      "position": [
+        0.2,
+        0.1475,
+        0.2654,
+        175
+      ],
+      "roles": {
+        "none": 132,
+        "position": 35,
+        "context": 6,
+        "identity": 2
+      }
+    },
+    "RL|span|50|2.0": {
+      "position": [
+        0.1771,
+        0.1277,
+        0.2405,
+        175
+      ],
+      "roles": {
+        "none": 136,
+        "position": 31,
+        "context": 6,
+        "identity": 2
+      }
+    },
+    "RL|span|50|4.0": {
+      "position": [
+        0.1086,
+        0.0706,
+        0.1633,
+        175
+      ],
+      "roles": {
+        "none": 149,
+        "position": 19,
+        "context": 4,
+        "identity": 3
+      }
+    },
+    "RL|span|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|span|52|1.0": {
+      "position": [
+        0.0114,
+        0.0031,
+        0.0407,
+        175
+      ],
+      "roles": {
+        "none": 171,
+        "position": 2,
+        "context": 2
+      }
+    },
+    "RL|span|52|2.0": {
+      "position": [
+        0.0457,
+        0.0233,
+        0.0876,
+        175
+      ],
+      "roles": {
+        "none": 161,
+        "position": 8,
+        "context": 4,
+        "value": 1,
+        "identity": 1
+      }
+    },
+    "RL|span|52|4.0": {
+      "position": [
+        0.0114,
+        0.0031,
+        0.0407,
+        175
+      ],
+      "roles": {
+        "none": 151,
+        "identity": 4,
+        "value": 5,
+        "context": 10,
+        "position": 2,
+        "recall": 3
+      }
+    },
+    "RL|span|window|0.5": {
+      "position": [
+        0.2914,
+        0.2292,
+        0.3627,
+        175
+      ],
+      "roles": {
+        "none": 95,
+        "position": 51,
+        "context": 24,
+        "identity": 5
+      }
+    },
+    "RL|span|window|1.0": {
+      "position": [
+        0.24,
+        0.1827,
+        0.3084,
+        175
+      ],
+      "roles": {
+        "none": 105,
+        "position": 42,
+        "context": 19,
+        "identity": 8,
+        "value": 1
+      }
+    },
+    "RL|span|window|2.0": {
+      "position": [
+        0.1829,
+        0.1326,
+        0.2467,
+        175
+      ],
+      "roles": {
+        "other": 6,
+        "position": 32,
+        "context": 28,
+        "none": 99,
+        "identity": 9,
+        "value": 1
+      }
+    },
+    "RL|span|window|4.0": {
+      "position": [
+        0.0686,
+        0.0397,
+        0.116,
+        175
+      ],
+      "roles": {
+        "other": 52,
+        "position": 12,
+        "identity": 11,
+        "context": 19,
+        "none": 72,
+        "value": 5,
+        "recall": 4
+      }
+    },
+    "RL|rest|44|0.5": {
+      "position": [
+        0.0229,
+        0.0089,
+        0.0573,
+        175
+      ],
+      "roles": {
+        "none": 169,
+        "position": 4,
+        "context": 2
+      }
+    },
+    "RL|rest|44|1.0": {
+      "position": [
+        0.0686,
+        0.0397,
+        0.116,
+        175
+      ],
+      "roles": {
+        "none": 160,
+        "position": 12,
+        "context": 3
+      }
+    },
+    "RL|rest|44|2.0": {
+      "position": [
+        0.1657,
+        0.1179,
+        0.2279,
+        175
+      ],
+      "roles": {
+        "none": 139,
+        "position": 29,
+        "context": 4,
+        "identity": 3
+      }
+    },
+    "RL|rest|44|4.0": {
+      "position": [
+        0.3143,
+        0.2501,
+        0.3864,
+        175
+      ],
+      "roles": {
+        "identity": 5,
+        "none": 103,
+        "position": 55,
+        "context": 10,
+        "recall": 2
+      }
+    },
+    "RL|rest|46|0.5": {
+      "position": [
+        0.0229,
+        0.0089,
+        0.0573,
+        175
+      ],
+      "roles": {
+        "none": 169,
+        "position": 4,
+        "context": 2
+      }
+    },
+    "RL|rest|46|1.0": {
+      "position": [
+        0.0457,
+        0.0233,
+        0.0876,
+        175
+      ],
+      "roles": {
+        "none": 164,
+        "position": 8,
+        "context": 3
+      }
+    },
+    "RL|rest|46|2.0": {
+      "position": [
+        0.0914,
+        0.0571,
+        0.1433,
+        175
+      ],
+      "roles": {
+        "context": 7,
+        "none": 151,
+        "position": 16,
+        "identity": 1
+      }
+    },
+    "RL|rest|46|4.0": {
+      "position": [
+        0.1371,
+        0.0939,
+        0.196,
+        175
+      ],
+      "roles": {
+        "none": 147,
+        "position": 24,
+        "context": 4
+      }
+    },
+    "RL|rest|48|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|rest|48|1.0": {
+      "position": [
+        0.0629,
+        0.0355,
+        0.109,
+        175
+      ],
+      "roles": {
+        "none": 162,
+        "context": 1,
+        "position": 11,
+        "identity": 1
+      }
+    },
+    "RL|rest|48|2.0": {
+      "position": [
+        0.1543,
+        0.1083,
+        0.2152,
+        175
+      ],
+      "roles": {
+        "none": 132,
+        "position": 27,
+        "context": 9,
+        "recall": 2,
+        "identity": 5
+      }
+    },
+    "RL|rest|48|4.0": {
+      "position": [
+        0.1371,
+        0.0939,
+        0.196,
+        175
+      ],
+      "roles": {
+        "identity": 11,
+        "none": 117,
+        "position": 24,
+        "context": 17,
+        "recall": 4,
+        "value": 2
+      }
+    },
+    "RL|rest|50|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|rest|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|rest|50|2.0": {
+      "position": [
+        0.0171,
+        0.0058,
+        0.0492,
+        175
+      ],
+      "roles": {
+        "none": 172,
+        "position": 3
+      }
+    },
+    "RL|rest|50|4.0": {
+      "position": [
+        0.0286,
+        0.0123,
+        0.0651,
+        175
+      ],
+      "roles": {
+        "none": 166,
+        "position": 5,
+        "context": 3,
+        "recall": 1
+      }
+    },
+    "RL|rest|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|rest|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 175
+      }
+    },
+    "RL|rest|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 173,
+        "context": 1,
+        "recall": 1
+      }
+    },
+    "RL|rest|52|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0215,
+        175
+      ],
+      "roles": {
+        "none": 167,
+        "recall": 7,
+        "value": 1
+      }
+    },
+    "RL|rest|window|0.5": {
+      "position": [
+        0.1714,
+        0.1228,
+        0.2342,
+        175
+      ],
+      "roles": {
+        "none": 134,
+        "position": 30,
+        "recall": 3,
+        "context": 7,
+        "identity": 1
+      }
+    },
+    "RL|rest|window|1.0": {
+      "position": [
+        0.1486,
+        0.1034,
+        0.2088,
+        175
+      ],
+      "roles": {
+        "identity": 4,
+        "position": 26,
+        "none": 122,
+        "recall": 10,
+        "context": 11,
+        "value": 2
+      }
+    },
+    "RL|rest|window|2.0": {
+      "position": [
+        0.1543,
+        0.1083,
+        0.2152,
+        175
+      ],
+      "roles": {
+        "identity": 7,
+        "none": 120,
+        "position": 27,
+        "recall": 9,
+        "context": 9,
+        "value": 2,
+        "other": 1
+      }
+    },
+    "RL|rest|window|4.0": {
+      "position": [
+        0.1943,
+        0.1425,
+        0.2592,
+        175
+      ],
+      "roles": {
+        "other": 49,
+        "context": 14,
+        "position": 34,
+        "none": 65,
+        "recall": 5,
+        "value": 2,
+        "identity": 6
+      }
+    },
+    "RL|patch|44|None": {
+      "position": [
+        0.2229,
+        0.1675,
+        0.2901,
+        175
+      ],
+      "roles": {
+        "none": 105,
+        "position": 39,
+        "identity": 27,
+        "context": 4
+      }
+    },
+    "RL|patch|46|None": {
+      "position": [
+        0.2343,
+        0.1777,
+        0.3023,
+        175
+      ],
+      "roles": {
+        "none": 88,
+        "position": 41,
+        "identity": 40,
+        "context": 6
+      }
+    },
+    "RL|patch|48|None": {
+      "position": [
+        0.3429,
+        0.2766,
+        0.4159,
+        175
+      ],
+      "roles": {
+        "none": 88,
+        "position": 60,
+        "identity": 20,
+        "context": 7
+      }
+    },
+    "RL|patch|50|None": {
+      "position": [
+        0.28,
+        0.2188,
+        0.3507,
+        175
+      ],
+      "roles": {
+        "none": 106,
+        "position": 49,
+        "identity": 15,
+        "context": 5
+      }
+    },
+    "RL|patch|52|None": {
+      "position": [
+        0.1086,
+        0.0706,
+        0.1633,
+        175
+      ],
+      "roles": {
+        "value": 24,
+        "none": 127,
+        "position": 19,
+        "identity": 5
+      }
+    },
+    "RL|patch|window|None": {
+      "position": [
+        0.2629,
+        0.2032,
+        0.3327,
+        175
+      ],
+      "roles": {
+        "value": 20,
+        "position": 46,
+        "none": 87,
+        "identity": 20,
+        "context": 2
+      }
+    },
+    "RR|slot|44|0.5": {
+      "position": [
+        0.01,
+        0.0018,
+        0.0545,
+        100
+      ],
+      "roles": {
+        "none": 99,
+        "position": 1
+      }
+    },
+    "RR|slot|44|1.0": {
+      "position": [
+        0.02,
+        0.0055,
+        0.07,
+        100
+      ],
+      "roles": {
+        "none": 97,
+        "position": 2,
+        "context": 1
+      }
+    },
+    "RR|slot|44|2.0": {
+      "position": [
+        0.04,
+        0.0157,
+        0.0984,
+        100
+      ],
+      "roles": {
+        "none": 94,
+        "position": 4,
+        "context": 2
+      }
+    },
+    "RR|slot|44|4.0": {
+      "position": [
+        0.05,
+        0.0215,
+        0.1118,
+        100
+      ],
+      "roles": {
+        "none": 95,
+        "position": 5
+      }
+    },
+    "RR|slot|46|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|slot|46|1.0": {
+      "position": [
+        0.02,
+        0.0055,
+        0.07,
+        100
+      ],
+      "roles": {
+        "none": 98,
+        "position": 2
+      }
+    },
+    "RR|slot|46|2.0": {
+      "position": [
+        0.02,
+        0.0055,
+        0.07,
+        100
+      ],
+      "roles": {
+        "none": 97,
+        "context": 1,
+        "position": 2
+      }
+    },
+    "RR|slot|46|4.0": {
+      "position": [
+        0.03,
+        0.0103,
+        0.0845,
+        100
+      ],
+      "roles": {
+        "none": 95,
+        "position": 3,
+        "context": 2
+      }
+    },
+    "RR|slot|48|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|slot|48|1.0": {
+      "position": [
+        0.01,
+        0.0018,
+        0.0545,
+        100
+      ],
+      "roles": {
+        "none": 99,
+        "position": 1
+      }
+    },
+    "RR|slot|48|2.0": {
+      "position": [
+        0.01,
+        0.0018,
+        0.0545,
+        100
+      ],
+      "roles": {
+        "none": 98,
+        "context": 1,
+        "position": 1
+      }
+    },
+    "RR|slot|48|4.0": {
+      "position": [
+        0.01,
+        0.0018,
+        0.0545,
+        100
+      ],
+      "roles": {
+        "none": 94,
+        "context": 5,
+        "position": 1
+      }
+    },
+    "RR|slot|50|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|slot|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|slot|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|slot|50|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|slot|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|slot|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|slot|52|2.0": {
+      "position": [
+        0.01,
+        0.0018,
+        0.0545,
+        100
+      ],
+      "roles": {
+        "none": 98,
+        "context": 1,
+        "position": 1
+      }
+    },
+    "RR|slot|52|4.0": {
+      "position": [
+        0.01,
+        0.0018,
+        0.0545,
+        100
+      ],
+      "roles": {
+        "none": 96,
+        "context": 3,
+        "position": 1
+      }
+    },
+    "RR|slot|window|0.5": {
+      "position": [
+        0.01,
+        0.0018,
+        0.0545,
+        100
+      ],
+      "roles": {
+        "none": 98,
+        "context": 1,
+        "position": 1
+      }
+    },
+    "RR|slot|window|1.0": {
+      "position": [
+        0.02,
+        0.0055,
+        0.07,
+        100
+      ],
+      "roles": {
+        "none": 92,
+        "other_digit": 1,
+        "position": 2,
+        "context": 5
+      }
+    },
+    "RR|slot|window|2.0": {
+      "position": [
+        0.03,
+        0.0103,
+        0.0845,
+        100
+      ],
+      "roles": {
+        "none": 79,
+        "other_digit": 1,
+        "identity": 1,
+        "context": 10,
+        "other": 6,
+        "position": 3
+      }
+    },
+    "RR|slot|window|4.0": {
+      "position": [
+        0.03,
+        0.0103,
+        0.0845,
+        100
+      ],
+      "roles": {
+        "other": 34,
+        "none": 51,
+        "context": 9,
+        "other_digit": 3,
+        "position": 3
+      }
+    },
+    "RR|shuffled|44|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|shuffled|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 98,
+        "context": 2
+      }
+    },
+    "RR|shuffled|44|2.0": {
+      "position": [
+        0.01,
+        0.0018,
+        0.0545,
+        100
+      ],
+      "roles": {
+        "none": 95,
+        "context": 3,
+        "other_digit": 1,
+        "position": 1
+      }
+    },
+    "RR|shuffled|44|4.0": {
+      "position": [
+        0.02,
+        0.0055,
+        0.07,
+        100
+      ],
+      "roles": {
+        "none": 88,
+        "context": 7,
+        "other_digit": 2,
+        "identity": 1,
+        "position": 2
+      }
+    },
+    "RR|shuffled|46|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|shuffled|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 99,
+        "context": 1
+      }
+    },
+    "RR|shuffled|46|2.0": {
+      "position": [
+        0.02,
+        0.0055,
+        0.07,
+        100
+      ],
+      "roles": {
+        "none": 94,
+        "context": 3,
+        "other_digit": 1,
+        "position": 2
+      }
+    },
+    "RR|shuffled|46|4.0": {
+      "position": [
+        0.02,
+        0.0055,
+        0.07,
+        100
+      ],
+      "roles": {
+        "none": 87,
+        "identity": 2,
+        "context": 9,
+        "position": 2
+      }
+    },
+    "RR|shuffled|48|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|shuffled|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|shuffled|48|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 97,
+        "context": 3
+      }
+    },
+    "RR|shuffled|48|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 93,
+        "identity": 1,
+        "context": 5,
+        "other_digit": 1
+      }
+    },
+    "RR|shuffled|50|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|shuffled|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|shuffled|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|shuffled|50|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|shuffled|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|shuffled|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|shuffled|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|shuffled|52|4.0": {
+      "position": [
+        0.01,
+        0.0018,
+        0.0545,
+        100
+      ],
+      "roles": {
+        "none": 96,
+        "context": 2,
+        "other_digit": 1,
+        "position": 1
+      }
+    },
+    "RR|shuffled|window|0.5": {
+      "position": [
+        0.01,
+        0.0018,
+        0.0545,
+        100
+      ],
+      "roles": {
+        "none": 94,
+        "context": 4,
+        "other_digit": 1,
+        "position": 1
+      }
+    },
+    "RR|shuffled|window|1.0": {
+      "position": [
+        0.04,
+        0.0157,
+        0.0984,
+        100
+      ],
+      "roles": {
+        "none": 84,
+        "context": 9,
+        "position": 4,
+        "other_digit": 2,
+        "identity": 1
+      }
+    },
+    "RR|shuffled|window|2.0": {
+      "position": [
+        0.06,
+        0.0278,
+        0.1248,
+        100
+      ],
+      "roles": {
+        "none": 72,
+        "position": 6,
+        "other_digit": 6,
+        "context": 10,
+        "other": 3,
+        "identity": 3
+      }
+    },
+    "RR|shuffled|window|4.0": {
+      "position": [
+        0.05,
+        0.0215,
+        0.1118,
+        100
+      ],
+      "roles": {
+        "none": 55,
+        "position": 5,
+        "other": 24,
+        "context": 6,
+        "other_digit": 8,
+        "identity": 2
+      }
+    },
+    "RR|random|44|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|random|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|random|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|random|44|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 99,
+        "context": 1
+      }
+    },
+    "RR|random|46|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|random|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|random|46|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|random|46|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|random|48|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|random|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|random|48|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|random|48|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|random|50|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|random|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|random|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|random|50|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|random|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|random|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|random|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|random|52|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|random|window|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|random|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|random|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 99,
+        "context": 1
+      }
+    },
+    "RR|random|window|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 84,
+        "other": 15,
+        "context": 1
+      }
+    },
+    "RR|lens|44|0.5": {
+      "position": [
+        0.02,
+        0.0055,
+        0.07,
+        100
+      ],
+      "roles": {
+        "none": 92,
+        "position": 2,
+        "context": 2,
+        "identity": 4
+      }
+    },
+    "RR|lens|44|1.0": {
+      "position": [
+        0.02,
+        0.0055,
+        0.07,
+        100
+      ],
+      "roles": {
+        "none": 78,
+        "position": 2,
+        "context": 1,
+        "identity": 19
+      }
+    },
+    "RR|lens|44|2.0": {
+      "position": [
+        0.02,
+        0.0055,
+        0.07,
+        100
+      ],
+      "roles": {
+        "none": 75,
+        "position": 2,
+        "context": 1,
+        "identity": 22
+      }
+    },
+    "RR|lens|44|4.0": {
+      "position": [
+        0.03,
+        0.0103,
+        0.0845,
+        100
+      ],
+      "roles": {
+        "none": 84,
+        "position": 3,
+        "context": 4,
+        "identity": 9
+      }
+    },
+    "RR|lens|46|0.5": {
+      "position": [
+        0.02,
+        0.0055,
+        0.07,
+        100
+      ],
+      "roles": {
+        "none": 92,
+        "position": 2,
+        "context": 2,
+        "identity": 4
+      }
+    },
+    "RR|lens|46|1.0": {
+      "position": [
+        0.01,
+        0.0018,
+        0.0545,
+        100
+      ],
+      "roles": {
+        "none": 80,
+        "position": 1,
+        "context": 1,
+        "identity": 18
+      }
+    },
+    "RR|lens|46|2.0": {
+      "position": [
+        0.02,
+        0.0055,
+        0.07,
+        100
+      ],
+      "roles": {
+        "none": 78,
+        "position": 2,
+        "identity": 19,
+        "context": 1
+      }
+    },
+    "RR|lens|46|4.0": {
+      "position": [
+        0.04,
+        0.0157,
+        0.0984,
+        100
+      ],
+      "roles": {
+        "none": 86,
+        "position": 4,
+        "context": 5,
+        "identity": 5
+      }
+    },
+    "RR|lens|48|0.5": {
+      "position": [
+        0.01,
+        0.0018,
+        0.0545,
+        100
+      ],
+      "roles": {
+        "none": 95,
+        "context": 2,
+        "identity": 2,
+        "position": 1
+      }
+    },
+    "RR|lens|48|1.0": {
+      "position": [
+        0.02,
+        0.0055,
+        0.07,
+        100
+      ],
+      "roles": {
+        "none": 81,
+        "position": 2,
+        "context": 2,
+        "identity": 15
+      }
+    },
+    "RR|lens|48|2.0": {
+      "position": [
+        0.02,
+        0.0055,
+        0.07,
+        100
+      ],
+      "roles": {
+        "none": 87,
+        "position": 2,
+        "context": 2,
+        "identity": 9
+      }
+    },
+    "RR|lens|48|4.0": {
+      "position": [
+        0.02,
+        0.0055,
+        0.07,
+        100
+      ],
+      "roles": {
+        "none": 93,
+        "position": 2,
+        "identity": 3,
+        "context": 1,
+        "other": 1
+      }
+    },
+    "RR|lens|50|0.5": {
+      "position": [
+        0.01,
+        0.0018,
+        0.0545,
+        100
+      ],
+      "roles": {
+        "none": 96,
+        "context": 2,
+        "position": 1,
+        "identity": 1
+      }
+    },
+    "RR|lens|50|1.0": {
+      "position": [
+        0.02,
+        0.0055,
+        0.07,
+        100
+      ],
+      "roles": {
+        "none": 91,
+        "position": 2,
+        "context": 2,
+        "identity": 5
+      }
+    },
+    "RR|lens|50|2.0": {
+      "position": [
+        0.02,
+        0.0055,
+        0.07,
+        100
+      ],
+      "roles": {
+        "none": 90,
+        "position": 2,
+        "context": 2,
+        "identity": 6
+      }
+    },
+    "RR|lens|50|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 99,
+        "identity": 1
+      }
+    },
+    "RR|lens|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|lens|52|1.0": {
+      "position": [
+        0.02,
+        0.0055,
+        0.07,
+        100
+      ],
+      "roles": {
+        "none": 95,
+        "position": 2,
+        "context": 1,
+        "identity": 2
+      }
+    },
+    "RR|lens|52|2.0": {
+      "position": [
+        0.01,
+        0.0018,
+        0.0545,
+        100
+      ],
+      "roles": {
+        "none": 96,
+        "identity": 3,
+        "position": 1
+      }
+    },
+    "RR|lens|52|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 100
+      }
+    },
+    "RR|lens|window|0.5": {
+      "position": [
+        0.04,
+        0.0157,
+        0.0984,
+        100
+      ],
+      "roles": {
+        "none": 80,
+        "position": 4,
+        "context": 1,
+        "identity": 15
+      }
+    },
+    "RR|lens|window|1.0": {
+      "position": [
+        0.02,
+        0.0055,
+        0.07,
+        100
+      ],
+      "roles": {
+        "none": 86,
+        "identity": 6,
+        "position": 2,
+        "context": 4,
+        "other": 2
+      }
+    },
+    "RR|lens|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 54,
+        "other": 46
+      }
+    },
+    "RR|lens|window|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "other": 93,
+        "none": 7
+      }
+    },
+    "RR|patch|44|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 81,
+        "identity": 18,
+        "context": 1
+      }
+    },
+    "RR|patch|46|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 79,
+        "identity": 20,
+        "context": 1
+      }
+    },
+    "RR|patch|48|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 82,
+        "identity": 17,
+        "context": 1
+      }
+    },
+    "RR|patch|50|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 90,
+        "identity": 10
+      }
+    },
+    "RR|patch|52|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 92,
+        "identity": 8
+      }
+    },
+    "RR|patch|window|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.037,
+        100
+      ],
+      "roles": {
+        "none": 72,
+        "identity": 27,
+        "context": 1
+      }
+    }
+  },
+  "seconds": 1511,
+  "edited_reads": 57725,
+  "n_cases": 275
+}

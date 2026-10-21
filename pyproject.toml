@@ -60,6 +60,10 @@ jlens = { git = "https://github.com/anthropics/jacobian-lens", rev = "581d398613
 line-length = 120
 target-version = "py312"
 
+[tool.ruff.format]
+# prediction forms are written records: their code examples are illustrations, not code to reformat
+exclude = ["jobs/predictions/**"]
+
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM", "RUF", "NPY", "PT"]
 ignore = [

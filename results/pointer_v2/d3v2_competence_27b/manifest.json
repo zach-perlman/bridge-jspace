@@ -1,0 +1,166 @@
+{
+  "exp": "pointer_v2",
+  "run": "d3v2_competence_27b",
+  "written_utc": "2026-10-21T12:40:35Z",
+  "why": "D3 v2 gate: can the 27B answer pointer_v2's scenes (5 or 3 statements plus one filler sentence of the same length; animals and elements), every alt prompt (offset shift, plain, reflexive), the controls and each step alone?",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "sets": [
+    "main",
+    "n3"
+  ],
+  "items": {
+    "main/animals_RL_e5-off": {
+      "file": "data/pointer_v2/main/animals_RL_e5-off.json",
+      "sha256": "a43e5d19188d456fa136de6c7ca4a842caa2af491b302ea9199e7e1c97e93c89"
+    },
+    "main/animals_RL_e5-pln": {
+      "file": "data/pointer_v2/main/animals_RL_e5-pln.json",
+      "sha256": "7b7885899bf6385417ad5dcb10a81d932a64ad996811a9af0fd24375d53e3ff3"
+    },
+    "main/animals_RL_e5-ref": {
+      "file": "data/pointer_v2/main/animals_RL_e5-ref.json",
+      "sha256": "e497603b85488dc460a104c2cb8ba0b7a65994660b2e29c61d847a14674b5dbc"
+    },
+    "main/animals_DL_e5-off": {
+      "file": "data/pointer_v2/main/animals_DL_e5-off.json",
+      "sha256": "d7fa43e5db63a479e720801eb5c02cf1ea164c494cb7aa498f15cc595b6fdb82"
+    },
+    "main/animals_DL_e5-pln": {
+      "file": "data/pointer_v2/main/animals_DL_e5-pln.json",
+      "sha256": "9af802884f2d6b2351262b9ac94475c834685d94f7d37ea8a0b571857c5bddea"
+    },
+    "main/animals_DL_e5-ref": {
+      "file": "data/pointer_v2/main/animals_DL_e5-ref.json",
+      "sha256": "3c1054530457e96b44151d608ed95d96221883e0e7375ee52324d084175d337b"
+    },
+    "main/animals_RR_e5-off": {
+      "file": "data/pointer_v2/main/animals_RR_e5-off.json",
+      "sha256": "11ace3bd5bc7a98675c11bc439b2dc076834c427f9e0deb9f1a4d9241770d110"
+    },
+    "main/animals_RR_e5-pln": {
+      "file": "data/pointer_v2/main/animals_RR_e5-pln.json",
+      "sha256": "62ad9dd289f8d3ce62a375a30ee5270deebdd48a919f5fe4577edcb8c0bded0d"
+    },
+    "main/animals_RR_e5-ref": {
+      "file": "data/pointer_v2/main/animals_RR_e5-ref.json",
+      "sha256": "1c7b34942269816e2735cdd2db2daa957067109168a5b068043c80e55e83de71"
+    },
+    "main/elements_RL_e5-off": {
+      "file": "data/pointer_v2/main/elements_RL_e5-off.json",
+      "sha256": "0b4c9e546d1c7dfaa4b81102ac150da5194a7fc2c2237b6b4dba71441f1e3dc6"
+    },
+    "main/elements_RL_e5-pln": {
+      "file": "data/pointer_v2/main/elements_RL_e5-pln.json",
+      "sha256": "6aae66e8e7cdad3b97e635f9118f77481fbedb399acb21c72581066b4b625961"
+    },
+    "main/elements_RL_e5-ref": {
+      "file": "data/pointer_v2/main/elements_RL_e5-ref.json",
+      "sha256": "c74e3960839245e27dfe58cad81c3f310aab647f31a2a735e1047aa164d00353"
+    },
+    "main/elements_DL_e5-off": {
+      "file": "data/pointer_v2/main/elements_DL_e5-off.json",
+      "sha256": "497cd9a610cf0735cd4c631c56f5a1af9d3f51efd0d4ef2992ca8ea046adb07e"
+    },
+    "main/elements_DL_e5-pln": {
+      "file": "data/pointer_v2/main/elements_DL_e5-pln.json",
+      "sha256": "a2c2e454060bcdedbbdb9e439850ad20ca9461cea40f82b526667364d282c26b"
+    },
+    "main/elements_DL_e5-ref": {
+      "file": "data/pointer_v2/main/elements_DL_e5-ref.json",
+      "sha256": "a5ae99e26c2220a8665aec17b1ad081e7281a57d520f794491857fe6d8f4284b"
+    },
+    "main/elements_RR_e5-off": {
+      "file": "data/pointer_v2/main/elements_RR_e5-off.json",
+      "sha256": "54d4eb2f2b380bc134ffeed3edead26f09b8f116be89bc13970a013b1ba59846"
+    },
+    "main/elements_RR_e5-pln": {
+      "file": "data/pointer_v2/main/elements_RR_e5-pln.json",
+      "sha256": "cce01c8a1116cf96a57538c465c407867c3931a8f305e33430abed6c3cc96c76"
+    },
+    "main/elements_RR_e5-ref": {
+      "file": "data/pointer_v2/main/elements_RR_e5-ref.json",
+      "sha256": "ba0a4a79a94d1f6ca0036060247be4dff459e3293aa50768e8a18821a5ce2bfe"
+    },
+    "n3/animals_RL_e3-off": {
+      "file": "data/pointer_v2/n3/animals_RL_e3-off.json",
+      "sha256": "aa10a4bc27bf7fe597390e7be23525db9ca9321ba35abec8b0645181c1a87074"
+    },
+    "n3/animals_RL_e3-pln": {
+      "file": "data/pointer_v2/n3/animals_RL_e3-pln.json",
+      "sha256": "502f355eb7819bab41a966d4a0296d41e9b46ff9b12bc5a54b110d7054f1730b"
+    },
+    "n3/animals_RL_e3-ref": {
+      "file": "data/pointer_v2/n3/animals_RL_e3-ref.json",
+      "sha256": "30d69bbc0fd003b04f57d0e09d6416c097ccdc45fa9c2e10726b2dbefc693c70"
+    },
+    "n3/animals_DL_e3-off": {
+      "file": "data/pointer_v2/n3/animals_DL_e3-off.json",
+      "sha256": "6b47f3f87e76ecf99fa3ecfb439b8360c3e5c79d95c45115c6c4b17fc44444fa"
+    },
+    "n3/animals_DL_e3-pln": {
+      "file": "data/pointer_v2/n3/animals_DL_e3-pln.json",
+      "sha256": "f11e5ea7040f48f0907a805485c6bbee7c5aca686b5d0a1c7f53c2d3d8f2a1c9"
+    },
+    "n3/animals_DL_e3-ref": {
+      "file": "data/pointer_v2/n3/animals_DL_e3-ref.json",
+      "sha256": "ea65bf89884dee2285b7aa404aa1e03ebc55f62ca6f97b2cd65d5d69efe0dc63"
+    },
+    "n3/animals_RR_e3-off": {
+      "file": "data/pointer_v2/n3/animals_RR_e3-off.json",
+      "sha256": "da39619cb8012d4f7eb401e98338ce37acd29823dad08b8e8d17317224f64949"
+    },
+    "n3/animals_RR_e3-pln": {
+      "file": "data/pointer_v2/n3/animals_RR_e3-pln.json",
+      "sha256": "d453de8258298a4d45357ed775f0e55a868e6a491a4c546f62d3c85887701024"
+    },
+    "n3/animals_RR_e3-ref": {
+      "file": "data/pointer_v2/n3/animals_RR_e3-ref.json",
+      "sha256": "1a41aee6c8ce4290e4b409af21c0242ec12fc7b51e7b5357e312669546dfdc3d"
+    },
+    "n3/elements_RL_e3-off": {
+      "file": "data/pointer_v2/n3/elements_RL_e3-off.json",
+      "sha256": "90f2c9ba5a482ab4407eb7b87b0106e4faaba9521b1a4655514ffe13299e9afd"
+    },
+    "n3/elements_RL_e3-pln": {
+      "file": "data/pointer_v2/n3/elements_RL_e3-pln.json",
+      "sha256": "effd8b06399990bfabc091e9acfa2aaecd900d9e4d6443d1495fe2c238a3ddd1"
+    },
+    "n3/elements_RL_e3-ref": {
+      "file": "data/pointer_v2/n3/elements_RL_e3-ref.json",
+      "sha256": "ae7023140f32fad9c15c3acc2f79aa3500e90135ceafd3f7d99dea0211757862"
+    },
+    "n3/elements_DL_e3-off": {
+      "file": "data/pointer_v2/n3/elements_DL_e3-off.json",
+      "sha256": "d9f42d736be2e5036b16a1708408c5242f37253641b4ea8b21bbd88df51d56d0"
+    },
+    "n3/elements_DL_e3-pln": {
+      "file": "data/pointer_v2/n3/elements_DL_e3-pln.json",
+      "sha256": "efdca29606854d2827eb9feba1b555259f4d18b672eddd15132926ba50e04209"
+    },
+    "n3/elements_DL_e3-ref": {
+      "file": "data/pointer_v2/n3/elements_DL_e3-ref.json",
+      "sha256": "96a71ce3ca9eb55e0aa01b259a74095452b8e1feda3b43fd55b26bfc2d19e269"
+    },
+    "n3/elements_RR_e3-off": {
+      "file": "data/pointer_v2/n3/elements_RR_e3-off.json",
+      "sha256": "a7a054065a3d0a5eb98f82b0564ec591d34a5fe02a6c6797dece6f131adc7550"
+    },
+    "n3/elements_RR_e3-pln": {
+      "file": "data/pointer_v2/n3/elements_RR_e3-pln.json",
+      "sha256": "e7c3aa2bebc51f314bc34e8b93c70e7e1739c1c32fc7aaff497845a49a0af662"
+    },
+    "n3/elements_RR_e3-ref": {
+      "file": "data/pointer_v2/n3/elements_RR_e3-ref.json",
+      "sha256": "2cc56fd6b325d63d725b6676c0b4a7cd371e035148edc1a5bf8cf63590862241"
+    }
+  },
+  "limit": null,
+  "format": "pointer_v1's competence: base, each source, the steps alone; greedy and answer read",
+  "eligibility": "pointer_swap uses items with every prompt right"
+}

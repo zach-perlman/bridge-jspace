@@ -1029,10 +1029,17 @@ def plain(text: str) -> str:
     return re.sub(pattern, lambda mt: fam_label(mt.group(1)), text)
 
 
-def fam_order(code: str) -> tuple[int, str]:
+def fam_order(code: str) -> tuple[int, int, str]:
+    """Reading order: the suite's families; pointer sets: the lookups first (recalled, named, the code forms), the
+    memory → memory null last; English before the other surface forms."""
+    if DATASET in POINTER_SETS:
+        order = ["RL", "DL", "DK", "IX", "CH2", "CH3", "RK", "RR"]
+        base, _, cond = code.partition("-")
+        forms = ["", "same", "xlang", "syn"]
+        return (order.index(base) if base in order else len(order), forms.index(cond) if cond in forms else 9, code)
     order = [*FAMILIES, "DL", "DK", "IX", "CH2", "CH3", "RK"]
     base = code.split("-")[0] if code not in FAMILIES else code
-    return (order.index(base) if base in order else len(order), code)
+    return (order.index(base) if base in order else len(order), 0, code)
 
 
 VERDICT = {"needed": "NEEDED", "not_needed": "NOT NEEDED", "partial": "PARTIAL", "breaks (control)": "control breaks"}
@@ -1204,9 +1211,10 @@ def example_row(cells: dict, blocked: str) -> str:
     if EXAMPLE_CASE:
         c = EXAMPLE_CASE
         stmt = c["source_text"]["lookup"].strip()
-        question = " ".join(c.get("question_text", "").split())
-        return (f'"... {stmt} ... {question} Answer:" -> answer org {c["answer"]}. Blocked: {blocked} cannot read '
-                f'"{stmt}" (the statement giving the answer).')  # fmt: skip
+        question = " ".join(c.get("question_text", "").replace("```", " ").split())
+        q = "'" if '"' in stmt + question else '"'  # code quotes its keys: wrap in single quotes then
+        return (f"{q}... {stmt} ... {question} Answer:{q} -> answer org {c['answer']}. Blocked: {blocked} cannot read "
+                f"{q}{stmt}{q} (the statement giving the answer).")  # fmt: skip
     if any(k[1] == "lookup" for k in cells):
         return ('"... The cow\'s locker is 5. ... Which locker belongs to the animal known for mooing? Answer:" -> '
                 f'answer org 5. Blocked: {blocked} cannot read "The cow\'s locker is 5." (the statement giving the '
@@ -1342,7 +1350,10 @@ def fig_bands(cells: dict, m: dict, stem: Path) -> list[str] | None:
                         "attention layer blocked, high elsewhere = the late attention read seen on the animal "
                         "scenes."),
         ("Control", "Grey x: a statement of the same kind off the answer's path, hidden the same way; it should "
-                    "stay at 100%. The family whose answer comes from memory should stay at 100% everywhere."),
+                    "stay at 100%."
+                    + (" The family whose answer comes from memory should stay at 100% everywhere."
+                       if any(not path_sources(f) for f, _, _ in panels) else
+                       " (No memory → memory family here: it failed the competence gate.)")),
     ]  # fmt: skip
     title = "Do the last tokens read the answer's statement late, through attention?"
     return _save(fig, stem, title, explain, data_row(cells), handles, 2)
@@ -1940,7 +1951,11 @@ def stage_figures(name: str) -> None:
 
     EXAMPLE_CASE.clear()
     if DATASET in POINTER_SETS:  # the captions' Example row: the first case of a family that looks the answer up
-        pick = next((c for c in cases.values() if path_sources(c["family"]) and "lookup" in c["sources"]), None)
+        looks = [c for c in cases.values() if path_sources(c["family"]) and "lookup" in c["sources"]]
+        # the other-language figure shows a statement in another language; otherwise the first lookup family's case
+        pick = next((c for c in looks if c["family"].endswith("xlang")), None) or (
+            min(looks, key=lambda c: fam_order(c["family"])) if looks else None
+        )
         EXAMPLE_CASE.update(pick or {})
 
     final_dir = RESULTS / name / f"analysis-{time.strftime('%Y%m%d-%H%M%S', time.gmtime())}-figures"

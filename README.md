@@ -78,6 +78,23 @@ goes through the J-space, not on the lookup.
 ![Word, slot or answer, by layer (D3)](figures/depth_1021/d3_word_slot_or_answer_by_layer.png)
 ![From which layer the statement must stay readable (D2)](figures/depth_1021/d2_from_which_layer.png)
 
+### Unverified: batch 2 (Dan, 21 Oct; new data and a learned pointer)
+Same rules (pre-registered, controls, headline numbers recounted from the raw files), 4×A100. Predictions vs results:
+[jobs/predictions/2026-10-22_dan.md](jobs/predictions/2026-10-22_dan.md). Still running: D3 on Python code and
+"statement order or token position?" (pointer_v2).
+
+| | Question | Result |
+|---|---|---|
+| D2 | Does "the last tokens read the statement late, through attention" hold beyond the first animal scenes? | **Yes, on all three new datasets.** Statement hidden from the last tokens in every attention layer: new locker scenes 11% still right (memory → prompt, 20/175), Python lookups 38% (203/540), statements in another language 2% (1/60). In every DeltaNet layer: 99-100% everywhere. Recall questions (memory → memory) keep ≥ 96%. |
+| D2, details | | (1) Naming the animal does not move the read earlier (named → prompt: blocking layers 32-47 keeps 100%, 48-63 keeps 11%). (2) In code the last tokens are one of several readers: blocked from them alone, 36% of list-position lookups stay right; blocked from every later token, 3%; with the key named in the print line, the print line itself reads the entry. (3) A statement in another language is read over more depth: blocking only 48-63 keeps 45% [33, 58] vs 20% [12, 32] for the same scenes in English. |
+| Gates | Can the model do the new tasks unedited? | Python lookups of every kind (named key, list position, 2- or 3-variable chain) 98-100%; statements in another language 96-98%. Fails two cases, left out of the patching: a **recalled** element matched to its **chemical symbol** (52% [45, 58]; named, 100%) and a recalled month in code (61%). So the lookup matches the recalled entity against how the statement spells it, and some spellings don't match. |
+| D3 | Does the last-token pointer survive statements in another language? | **Yes at the last two tokens:** answer at the same statement slot 46% [37, 56] vs 48% [38, 58] in English (layer 50, 100 animal scenes). **No on the tokens after the question:** 14% vs 42% (layer 48). The pre-registered cell (after the question, layers 44-52) is not readable in the other language (the patch changes only 27%). |
+| D3b | Can a learned **pointer direction** steer the lookup where the lens push cannot? | **Yes, just past the pre-registered bar.** A direction fitted to "which statement the question asks", added at layer 48 at the size of the alt-prompt patch: 37% [30, 45] of memory → prompt answers become the target statement's digit; the lens push of the same size 0% (0/175); random push 0%; shuffled-label direction 1%; memory → memory 1% (1/100). Four dimensions are enough; it is unrelated to the lens's word directions (cosine 0.03, random 0.03). A probe reads which statement is asked at only 39% (chance 20%). |
+
+![The late attention read on Python code (D2)](figures/depth_1022/d2_code_which_positions_read.png)
+![The last-token pointer with statements in another language (D3)](figures/depth_1022/d3_other_language_last_tokens_by_layer.png)
+![A learned pointer direction vs the lens push (D3b)](figures/depth_1022/d3b_pointer_direction_vs_lens_push.png)
+
 **The current picture** (a hypothesis, one model), layer by layer:
 
 | Layers | What happens in a lookup in the prompt | Seen in |
@@ -86,11 +103,11 @@ goes through the J-space, not on the lookup.
 | 16-28 | a recalled bridge is formed from the cue; an early lens push here changes which animal is recalled | D4 (post hoc) |
 | up to ~40 | the question words carry the recalled word; after ~40 they no longer matter | D3 |
 | 28-44 | a stated bridge is spread over the whole context; its lens-readable part does nothing | D1 |
-| 44-50 | the last tokens before the answer carry *which statement* to read (a slot pointer) more than *which animal* | D3 |
-| 48-63 | the last tokens read that statement through attention (DeltaNet layers are not needed) | D2 |
+| 44-50 | the last tokens before the answer carry *which statement* to read (a pointer, ~4 dimensions, unrelated to the lens's words, the same with statements in another language) more than *which animal*; pushing along it switches the lookup, the lens push does not | D3, D3b |
+| 48-63 | the last tokens read that statement through attention (DeltaNet layers are not needed); also in code, and in another language (there over more depth); in code other tokens read it too | D2 |
 | 52-60 | the last tokens carry the fetched digit | D3 |
 
-The lens reads the word, but the lookup works with the pointer: that is where the lens cannot steer.
+The lens reads the word, but the lookup works with the pointer: the lens cannot steer it, a pointer direction can.
 
 ## Open questions and the plan
 By thread, D1 → D4, then what cuts across them. Status: **running** = batch 2 on the 4×A100 box
@@ -106,8 +123,11 @@ not built, **later** = after something else.
   inconclusive (3/32 vs 1/32 random); rerun at n=80, and at layers 20-28 (not run).
 
 ### D2. From where and when is the statement read?
-- **Running: the same blocking on new data** (new locker scenes, Python code, statements in another language).
-  Is the read still at the last tokens, late, through attention?
+- **Done (batch 2): the same blocking on new data.** Holds on new locker scenes, Python code and statements in
+  another language (above).
+- **Next: in code, who else reads the entry?** Blocking the last tokens alone keeps 36% of list-position lookups,
+  blocking every later token 3%: hide the entry from one code line at a time (the `names` line, each variable of a
+  chain, the print line).
 - **Next: which attention heads read it.** The full-attention layers inside 48-63 are 51, 55, 59 and 63. Block one
   head at a time from reading the answer's statement at the last tokens; the heads whose block breaks
   memory → prompt are the lookup heads (~1 GPU-h).
@@ -119,20 +139,25 @@ not built, **later** = after something else.
   token position predict different digits (>= 35 items per topic and slot), with 5 and 3 statements.
 - **Running: a pointer to the answer token itself** (the "reflexive" route, Gur-Arieh, Geva & Geiger 2025): scenes
   where the alt prompt's answer also appears in the org prompt.
-- **Running: Python code and statements in another language.** Is there a slot answer when the pointer is literal
-  (dict keys, list positions, variable chains), and when the statement must be matched by meaning?
-- **Running (D3b): a learned slot direction.** Success = it switches the lookup to the target statement where the
-  lens push does not, at the same size, on held-out animals, and does nothing on memory → memory. If it works, it is
-  the seed of a second, "pointer" readout next to the J-lens.
+- **Done: statements in another language.** The last-token pointer is unchanged (46% vs 48%); the tokens after the
+  question carry less (14% vs 42%). Chemical symbols: too few scenes pass the gate (22).
+- **Running: Python code.** Is there a slot answer when the pointer is literal (dict keys, list positions, variable
+  chains)?
+- **Next: why does a recalled entity miss its chemical symbol (52%) when a named one finds it (100%)?** A direct
+  probe of "the lookup matches spellings": the same scenes with half the statements by symbol, half by name.
+- **Done (D3b): a learned pointer direction steers the lookup** (37% vs lens push 0%, above). Fragile: the lower
+  bound clears the 30% bar by 0.3 points. Next: confirm on pointer_v2 scenes (statement order vs token position,
+  which these scenes do not separate) and on code; and steer at 2× size / layer 44, where it was stronger (41-45%).
 - **Next: counted from the start or from the end?** Slot answers rose toward the last statement (first 13%, middle
   28%, last 42%; cuts too small for the rule). Alt prompts with one statement more or fewer than the org prompt
   separate "2nd from the start" from "4th from the end" (~0.5 GPU-h).
 - **Next: why do half the patches change nothing?** (49% answer org kept at 44-52.) Patch the question words and
   the last tokens together, and the last 1 / 2 / all template tokens separately; read item by item which items
   carry the pointer.
-- **Later (after the D2 heads): a pointer readout.** Score each statement by how much the lookup heads attend to it
-  from the last tokens, and read off which statement will be fetched before the answer exists; compare item by
-  item with D3's slot answers and with the J-lens.
+- **Later (after the D2 heads): a pointer readout.** A linear probe reads which statement is asked at only 39%
+  (chance 20%), though the direction steers. Score each statement by how much the lookup heads attend to it from
+  the last tokens, and read off which statement will be fetched before the answer exists; compare item by item with
+  D3's slot answers and with the J-lens.
 
 ### D4. Early lens push vs editing the prompt
 - **Next: does the early push re-route the pointer?** If the push writes "dog" at the recall step (post-hoc reading
@@ -149,6 +174,18 @@ not built, **later** = after something else.
   tokens read the statement late through attention", D3 "a slot pointer, not the word"); each checked by the other
   person into `VERIFIED.md`.
 
+## Data used in the depth track
+All generated by us (templates + fixed seeds; the model must pass a competence gate on a cut before it is used).
+The rule needs ≥ 35 items per cut (then 0 switches gives an upper bound ≤ 10%); runs use 50-180 per domain.
+
+| Dataset | Example | Size | Used by (items per run) |
+|---|---|---|---|
+| Animal suite (Zach, `data/suite_v1`) | "Jack's pet is a cow. … Which locker belongs to the animal known for mooing?" | 400 per family | night 1: D1 (80 per family), D2 (60), D4 (60) |
+| `pointer_v1`: 5 statements, one domain per scene | "The turkey's locker is 5. The mouse's locker is 1. The pig's locker is 9. … Which locker belongs to the animal known for oinking?" → 9 | 400 scenes per domain × family; animals, elements pass the gate (planets, months fail) | D3 (50 per domain), D2 batch 2 (96 animals + 79 elements), D3b (same 175, held out from the fit) |
+| `pointer_v2`: plus one filler sentence placed differently in org and alt | "… The bee's locker is 1. The street was lined with old trees." | 180 per topic (5 statements), 120 (3 statements) | D3 order vs token position (running) |
+| `code_pointer_v1`: Python dict lookups | `lockers = {"bee": 7, …, "mouse": 5}`, `x = "mouse"; h = x; print(lockers[h])` → 5 (named key, list position, 2- or 3-variable chain, recalled key) | 400 per domain × family; animals, months | D2 (60 per domain), D3 (100, running) |
+| `alias_pointer_v1`: statements in another language / by chemical symbol, question in English | "El perro tiene la taquilla 8. Die Kuh hat den Spind 6. … known for barking?" → 8; "The He card is in locker 9. … Which locker holds the helium card?" → 9 | 400 per domain × form × family | D2 (60 per form), D3 (up to 100 per topic) |
+
 ## Code and data (short map)
 | What | Code | Data / results |
 |---|---|---|
@@ -156,8 +193,9 @@ not built, **later** = after something else.
 | Copy split, read/write, knock-out (Zach) | `scripts/suite_split.py`, `scripts/read_write.py`, `scripts/ablate_pilot.py` | `results/suite_split/`, `results/read_write/`, `results/ablate_pilot/` |
 | D1 patch at one place | `scripts/statement_positions.py` | `results/statement_positions/` |
 | D2 blocking reads | `src/bridge_jspace/knockout.py`, `scripts/attn_knockout.py` | `results/attn_knockout/` |
-| D3 word / slot / answer | `scripts/pointer_v1.py`, `scripts/pointer_swap.py` | `data/pointer_v1/`, `results/pointer_v1/`, `results/pointer_swap/` |
+| D3 word / slot / answer | `scripts/pointer_v1.py`, `scripts/pointer_v2.py`, `scripts/code_pointer_v1.py`, `scripts/alias_pointer_v1.py`, `scripts/pointer_swap.py` | `data/pointer_v1/`, `data/pointer_v2/`, `data/code_pointer_v1/`, `data/alias_pointer_v1/`, `results/pointer_v1/`, `results/pointer_v2/`, `results/code_pointer_v1/`, `results/alias_pointer_v1/`, `results/pointer_swap/` |
+| D3b learned pointer direction | `scripts/pointer_fit.py` | `results/pointer_fit/` |
 | D4 early push vs edits | `scripts/early_push.py` | `results/early_push/` |
 | Job queue, job pages, plain names | `scripts/jobq.py`, `src/bridge_jspace/job_pages.py`, `jobs/`, `jobs/titles.yaml` | `results/jobq/` (ledger, draft run-log rows) |
-| Figures used on this page | | `figures/overview_1020/`, `figures/depth_1021/` |
+| Figures used on this page | | `figures/overview_1020/`, `figures/depth_1021/`, `figures/depth_1022/` |
 | Earlier experiments (exp01-exp23, part A readers) | `scripts/exp*` | see [README_archive.md](README_archive.md) |

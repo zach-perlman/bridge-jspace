@@ -901,13 +901,15 @@ def plain(text: str) -> str:
              ("same control", "same-entity control"), ("the rand control", "the random-push control"),
              ("rand control", "random-push control"), ("random-direction control", "random-push control"),
              ("random direction changed", "random push of the same size changed"),
-             ("other item changed", "another domain's prompt changed"), ("| same n |", "| control n |"))  # fmt: skip
-    parts = text.split("`")
+             ("other item changed", "another domain's prompt changed"), ("| same n |", "| control n |"),
+             ("a single 'same' change", "a single same-entity-control change"))  # fmt: skip
+    fence = "\x00FENCE\x00"  # ``` fences are not code spans: keep them out of the backtick parity
+    parts = text.replace("```", fence).split("`")
     for i in range(0, len(parts), 2):
         parts[i] = _CODE_RE.sub(lambda mm: family_label(mm.group(1)), parts[i])
         for old, new in words:
             parts[i] = parts[i].replace(old, new)
-    return "`".join(parts)
+    return "`".join(parts).replace(fence, "```")
 
 
 VERDICT_TERM = {
@@ -1108,6 +1110,7 @@ def _caption(
     all_levels: bool = False,
     control: str | None = None,
     ci: str | None = None,
+    n_text: str | None = None,
 ) -> list[tuple[str, str]]:
     """The caption rows (figure_terms.md's CAPTION FORMAT): What we did, Example, How to read, Control, Data."""
     level = "several prompt layouts (one per column)" if all_levels else level_text(m, lv)
@@ -1115,7 +1118,9 @@ def _caption(
     n = {f: a["n_per_family"].get(f"{f}|{lv}") for f in m["families"]}
     if all_levels:
         n = {f: "/".join(str(a["n_per_family"].get(f"{f}|{x}")) for x in m["levels"]) for f in m["families"]}
-    ns = ", ".join(f"{fam_title(f).split(' (')[0]} {v}" for f, v in n.items())
+    ns = n_text or ", ".join(f"{fam_title(f).split(' (')[0]} {v}" for f, v in n.items())
+    topics = a["domains"] if all_levels else sorted(
+        {k.split("|")[1].split(":")[1] for k in a["rates"] if f"|{lv}|" in k and "|domain:" in k}) or a["domains"]  # fmt: skip
     rows = [
         ("What we did", f"The org prompt: {level}; each statement gives an entity a locker digit. We copied the alt "
          f"prompt's hidden states ({patched}) into the org prompt, {when}, and read the answer."),
@@ -1124,7 +1129,7 @@ def _caption(
         ("Control", control or "Grey: the same patch from a prompt asking about the same entity with the statements "
          "reshuffled, a random push of the same size, and a prompt from another topic. The first two should change "
          "nothing."),
-        ("Data", f"{pins.MODEL_REPO.split('/')[-1]}; topics: {', '.join(a['domains'])}; {ns} prompts per family; "
+        ("Data", f"{pins.MODEL_REPO.split('/')[-1]}; topics: {', '.join(topics)}; {ns} prompts per family; "
          + (ci or (("bars" if windows else "shading") + " = 95% Wilson interval over prompts."))),
     ]  # fmt: skip
     if a["superseded"]:
@@ -1239,34 +1244,63 @@ def fig_domains(a: dict, m: dict, lv: str, grp: str, path: Path) -> list[str]:
     return _finish(fig, path, "Is the pattern the same for each topic?", rows, _handles(fams), ncols=2)
 
 
+LEVELS_TEXT = {  # (title, how to read) of the levels figure, per dataset
+    "pointer_v1": ("Does the split change with 3 statements, or with filler between the statements?",
+                   "One column per prompt layout (3 statements; 5; 5 with filler sentences between them)."),
+    "pointer_v2": ("Does the split change when the filler moves, or when the alt answer is also in the org prompt?",
+                   "One column per alt prompt: the filler sentence moved (statement order and token position point at "
+                   "different statements); the filler in place; the alt answer also in the org prompt."),
+    "alias_pointer_v1": ("Does the split change when the statements name the entity in another language or by its "
+                         "chemical symbol?",
+                         "One column per topic and statement form, on the same scenes within a topic (animals: English "
+                         "or French/Spanish/German; elements: English or the chemical symbol)."),
+    "code_pointer_v1": ("Does the split change with the number of dict entries?", "One column per number of entries."),
+}  # fmt: skip
+
+
+def level_short(m: dict, lv: str) -> str:
+    """A short column name for a level."""
+    data = m.get("data", "pointer_v1")
+    if data == "alias_pointer_v1":
+        return {"": "English", "xlang": "other language", "syn": "chemical symbol"}[lv.partition("-")[2]]
+    if data == "pointer_v2":
+        return {"off": "filler moved", "pln": "filler in place", "ref": "alt answer in org"}[lv.partition("-")[2]]
+    return {"e3f0": "3 statements", "e5f0": "5 statements", "e5f4": "5 + filler", "e8f0": "8 entries"}.get(lv, lv)
+
+
 def fig_levels(a: dict, m: dict, grp: str, path: Path) -> list[str]:
     import matplotlib.pyplot as plt
 
     from bridge_jspace.plotting import INK
 
     fams, lvs = m["families"], m["levels"]
-    fig, axes = plt.subplots(
-        len(fams),
-        len(lvs),
-        figsize=(max(4.2 * len(lvs), 12.6), 2.6 * len(fams) + 1.6),
-        sharex=True,
-        sharey=True,
-        squeeze=False,
-    )
-    names = {lv: level_text(m, lv) for lv in lvs}
+    data = m.get("data", "pointer_v1")
+    if data == "alias_pointer_v1":  # each statement form exists in one topic: compare it with English in that topic
+        cols = [(f"domain:{d}", lv) for d in a["domains"] for lv in lvs
+                if any(k.startswith(f"{fams[0]}|domain:{d}|{lv}|") for k in a["rates"])]  # fmt: skip
+    else:
+        cols = [("all", lv) for lv in lvs]
+    fig, axes = plt.subplots(len(fams), len(cols), figsize=(max(4.2 * len(cols), 12.6), 2.6 * len(fams) + 1.6),
+                             sharex=True, sharey=True, squeeze=False)  # fmt: skip
+    col_n: dict[str, list[str]] = {}
     for i, fam in enumerate(fams):
-        for j, lv in enumerate(lvs):
+        for j, (cut, lv) in enumerate(cols):
             ax = axes[i][j]
-            n = _panel(ax, a, m, fam, "all", lv, grp)
-            ax.set_title(f"{plain(fam)} · {names[lv]} (n={n})", fontsize=9, color=INK, loc="left")
+            n = _panel(ax, a, m, fam, cut, lv, grp)
+            topic = f"{cut.split(':')[1]}, " if cut != "all" else ""
+            few = "" if n >= MIN_N_RULE else ", too few"
+            ax.set_title(f"{fam_title(fam).split(' (')[0]} · {topic}{level_short(m, lv)} (n={n}{few})",
+                         fontsize=9 if len(cols) <= 3 else 8, color=INK, loc="left")  # fmt: skip
+            col_n.setdefault(fam, []).append(str(n))
             if j == 0:
                 ax.set_ylabel("% of original answers", fontsize=9, color=INK)
             if i == len(fams) - 1:
                 ax.set_xlabel("layer patched", fontsize=9, color=INK)
-    rows = _caption(a, m, lvs[0], GROUP_TITLE[grp], "One column per prompt layout (3 statements; 5; 5 with filler "
-                    "sentences between them); lines as in the main figure.", all_levels=True)  # fmt: skip
-    return _finish(fig, path, "Does the split change with 3 statements, or with filler between the statements?", rows,
-                   _handles(fams, token=any(has_token(a, lv) for lv in lvs)), ncols=2)  # fmt: skip
+    title, how = LEVELS_TEXT.get(data, LEVELS_TEXT["pointer_v1"])
+    rows = _caption(a, m, lvs[0], GROUP_TITLE[grp], f"{how} Lines as in the main figure; panels with fewer than "
+                    f"{MIN_N_RULE} prompts cannot pass the pre-registered rule.", all_levels=True,
+                    n_text=", ".join(f"{fam_title(f).split(' (')[0]} {'/'.join(v)}" for f, v in col_n.items()))  # fmt: skip
+    return _finish(fig, path, title, rows, _handles(fams, token=any(has_token(a, lv) for lv in lvs)), ncols=2)
 
 
 def fig_windows(a: dict, m: dict, lv: str, path: Path) -> list[str]:
@@ -1484,19 +1518,34 @@ def report_md(name: str, m: dict, a: dict, out: Path) -> str:
     other_changed = max((x["changed"] for x in other_l if x), default=None, key=lambda t: t[0])
     where = out.relative_to(pins.REPO_ROOT) if out.is_relative_to(pins.REPO_ROOT) else out
     figs = [f"{where}/{f}" for fs in a["figures"].values() for f in fs if f.endswith(".png")]
-    titles = pins.REPO_ROOT / "jobs" / "titles.yaml"
-    title = name
-    if titles.exists():
-        import yaml
+    import yaml
 
+    titles = pins.REPO_ROOT / "jobs" / "titles.yaml"
+    spec_file = pins.REPO_ROOT / "jobs" / "d3" / f"{name}.yaml"
+    title = name
+    if spec_file.exists():  # a job spec's own title, else jobs/titles.yaml (older runs)
+        title = (yaml.safe_load(spec_file.read_text()) or {}).get("title", name)
+    if title == name and titles.exists():
         title = (yaml.safe_load(titles.read_text()) or {}).get(name, name)
-    lines = [f"# {title}", "", f"Run `{name}` (results/pointer_swap/), analysis of the saved outputs only.", ""]
+    lines = [
+        f"# {title}",
+        "",
+        f"Run `{name}` (results/pointer_swap/), analysis of the saved outputs only.",
+        "",
+        "Level names: " + "; ".join(f"`{lv}` = {level_text(m, lv)}" for lv in lvs) + ".",
+        "",
+    ]
     if a["superseded"]:
         lines += [f"**NOT A HEADLINE RUN (superseded or smoke)**: {a['superseded']}. Shown for completeness.", ""]
     seeds = json.dumps(list(m.get("seeds", {"sample": 0}).values()))
     lines += [
         "```",
-        f"EXP {name} @ {_commit(name)} | model Qwen3.6-27B | n={json.dumps(n_fam)} | seeds={seeds} (sample, null, other)",
+        f"EXP {name} @ {_commit(name)} | model Qwen3.6-27B | n per family = "
+        + "; ".join(
+            f"{fam_title(k.split('|')[0]).split(' (')[0]} {v} ({level_short(m, k.split('|')[1])})"
+            for k, v in n_fam.items()
+        )
+        + f" | seeds={seeds} (sample, null, other)",
         "Claim tested: in RL (recalled cue -> in-prompt lookup), what the tokens after the question carry at layers "
         f"{tr[0]}-{tr[-1]}: the bridge's identity (H-word), a pointer to its statement's position (H-pointer), or the "
         "answer (H-value)",

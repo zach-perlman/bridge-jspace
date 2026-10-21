@@ -1,0 +1,175 @@
+{
+  "exp": "alias_pointer_v1",
+  "run": "alias_competence_27b",
+  "written_utc": "2026-10-21T11:48:31Z",
+  "why": "D3 alias gate: can the 27B look up a statement that names the entity in French/Spanish/German (animals) or by its chemical symbol (elements), on the same scenes as statements in English, every alt and control prompt and each step alone?",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "sets": [
+    "main",
+    "dev"
+  ],
+  "items": {
+    "main/animals_RL_e5f0": {
+      "file": "data/alias_pointer_v1/main/animals_RL_e5f0.json",
+      "sha256": "c944e984fbf746f19d9a1155b4250b06e2de09733b7d2a0cc95d5a49917aba0c"
+    },
+    "main/animals_DL_e5f0": {
+      "file": "data/alias_pointer_v1/main/animals_DL_e5f0.json",
+      "sha256": "4834240b6c412fcfcf4ed3f051e329d41d8d5594d5c115a81b262432c60bebb7"
+    },
+    "main/animals_RR_e5f0": {
+      "file": "data/alias_pointer_v1/main/animals_RR_e5f0.json",
+      "sha256": "0f0fe50165dd636856a92fd09ec7363305cda99d1ac0e66adbe193ff03abcbb9"
+    },
+    "main/animals_RL_e5f0-xlang": {
+      "file": "data/alias_pointer_v1/main/animals_RL_e5f0-xlang.json",
+      "sha256": "8749da834df910a9b1b144b56ee0e48837c0fcb7f08951af0fdc1e29f8c86cf8"
+    },
+    "main/animals_DL_e5f0-xlang": {
+      "file": "data/alias_pointer_v1/main/animals_DL_e5f0-xlang.json",
+      "sha256": "2f41da15e46b6220d6b794fcbaaf6bb58ac8490885c758e719d83ed7d6416e20"
+    },
+    "main/animals_RR_e5f0-xlang": {
+      "file": "data/alias_pointer_v1/main/animals_RR_e5f0-xlang.json",
+      "sha256": "12a407c1afcbc17e4370264a28fceb74c1aed6ac2193e9863a3c8b24e9bddd2d"
+    },
+    "main/elements_RL_e5f0": {
+      "file": "data/alias_pointer_v1/main/elements_RL_e5f0.json",
+      "sha256": "aadf371eefc69aaf95d354659b3621dbc1ecfc778ca1ecf87c5be4258253e0d3"
+    },
+    "main/elements_DL_e5f0": {
+      "file": "data/alias_pointer_v1/main/elements_DL_e5f0.json",
+      "sha256": "4e81a1c5334aec4b100359b6d93147b1eeaa27ff29f9c6cfc1990a7900be8319"
+    },
+    "main/elements_RR_e5f0": {
+      "file": "data/alias_pointer_v1/main/elements_RR_e5f0.json",
+      "sha256": "7f1a003eb0cab9a4b8b54818af24353df7bb7966ac97c52905efc3837262f39f"
+    },
+    "main/elements_RL_e5f0-syn": {
+      "file": "data/alias_pointer_v1/main/elements_RL_e5f0-syn.json",
+      "sha256": "4c9a2e5bf15472fc78633b64f071a31138b688c5a5d8f20aee08fff5dba44eac"
+    },
+    "main/elements_DL_e5f0-syn": {
+      "file": "data/alias_pointer_v1/main/elements_DL_e5f0-syn.json",
+      "sha256": "eaef98467b934a4f7b3dfab59159ef54801a8759399ebac7c8008d6cffb5eafb"
+    },
+    "main/elements_RR_e5f0-syn": {
+      "file": "data/alias_pointer_v1/main/elements_RR_e5f0-syn.json",
+      "sha256": "8b9b4badcd3dc50b52f4d19753c3586ba3ede7a64039a62acf067040bc7db79b"
+    },
+    "dev/animals_RL_e3f0": {
+      "file": "data/alias_pointer_v1/dev/animals_RL_e3f0.json",
+      "sha256": "645436e8f904f0300911f245d535f22c974baf6cc23fc8d4f87e75371ae9307f"
+    },
+    "dev/animals_DL_e3f0": {
+      "file": "data/alias_pointer_v1/dev/animals_DL_e3f0.json",
+      "sha256": "0dacfcdb3606eb4b67744a41c2e0d3c917b8a314180bb92fc37f6f844fcc0e72"
+    },
+    "dev/animals_RR_e3f0": {
+      "file": "data/alias_pointer_v1/dev/animals_RR_e3f0.json",
+      "sha256": "8f04b120ae72b1772618d2cd021489f296e85cde8d1ee52b4f0403e3f7862f9a"
+    },
+    "dev/animals_RL_e3f0-xlang": {
+      "file": "data/alias_pointer_v1/dev/animals_RL_e3f0-xlang.json",
+      "sha256": "68a5d89047df85f970766f8c3266984b21165db6f2fbbe69698cf2a16bff320d"
+    },
+    "dev/animals_DL_e3f0-xlang": {
+      "file": "data/alias_pointer_v1/dev/animals_DL_e3f0-xlang.json",
+      "sha256": "34b2caf3cd2ae1bd7b0457670f19b5172f7ca4893d804d9c8897d09171072057"
+    },
+    "dev/animals_RR_e3f0-xlang": {
+      "file": "data/alias_pointer_v1/dev/animals_RR_e3f0-xlang.json",
+      "sha256": "b7c290087c3a564db813fe7722045afe3208fcaa072aa6b167a0c2b27f99e2de"
+    },
+    "dev/elements_RL_e3f0": {
+      "file": "data/alias_pointer_v1/dev/elements_RL_e3f0.json",
+      "sha256": "a8f234220702d0cba5c3726e8f020458a6c27d743aebb9522ae9eb21794edf47"
+    },
+    "dev/elements_DL_e3f0": {
+      "file": "data/alias_pointer_v1/dev/elements_DL_e3f0.json",
+      "sha256": "2327c9be2da59309a2595d59d1be747f984592a9edf30c7d3336d6db56a261d7"
+    },
+    "dev/elements_RR_e3f0": {
+      "file": "data/alias_pointer_v1/dev/elements_RR_e3f0.json",
+      "sha256": "5cb4b8c004964142764300744057b03943e6cb6498aa56251ce2a42e680b8227"
+    },
+    "dev/elements_RL_e3f0-syn": {
+      "file": "data/alias_pointer_v1/dev/elements_RL_e3f0-syn.json",
+      "sha256": "defff86ced81d6d7012f43945882abf9dfe4b8fb6952d04bb5497244f19fdc75"
+    },
+    "dev/elements_DL_e3f0-syn": {
+      "file": "data/alias_pointer_v1/dev/elements_DL_e3f0-syn.json",
+      "sha256": "5ca14e8c8bbdbeac48f3073089538a9cf69b13d388d0035cb3e027b4bee64bb8"
+    },
+    "dev/elements_RR_e3f0-syn": {
+      "file": "data/alias_pointer_v1/dev/elements_RR_e3f0-syn.json",
+      "sha256": "0449286b80a5d4ee649e305b1b0bdb43eadeadaf6c643a0e0a42fbb40cfff3d5"
+    },
+    "dev/animals_RL_e5f0": {
+      "file": "data/alias_pointer_v1/dev/animals_RL_e5f0.json",
+      "sha256": "b36c22d56ed138642d609cebf37108fb63834d987be0611a502df33d13802c22"
+    },
+    "dev/animals_DL_e5f0": {
+      "file": "data/alias_pointer_v1/dev/animals_DL_e5f0.json",
+      "sha256": "d6a9778b18b2aaa53e85d52943e17cf3c4a771a3d5d1e3ec2687a21a189f1be9"
+    },
+    "dev/animals_RR_e5f0": {
+      "file": "data/alias_pointer_v1/dev/animals_RR_e5f0.json",
+      "sha256": "8d6f578f19d0afe4f26eb2387aec3e5a8e70ae05930702c63780452851b093ff"
+    },
+    "dev/animals_RL_e5f0-xlang": {
+      "file": "data/alias_pointer_v1/dev/animals_RL_e5f0-xlang.json",
+      "sha256": "872c256ce3eddd846fb4b7542875b7222c44beaeab682bcbd36a016e9ec5c1e2"
+    },
+    "dev/animals_DL_e5f0-xlang": {
+      "file": "data/alias_pointer_v1/dev/animals_DL_e5f0-xlang.json",
+      "sha256": "a2a4ed629c97336d408cfb0cd4908d9e84ebcc7f8d9e009e1920a7e5d2cbc20e"
+    },
+    "dev/animals_RR_e5f0-xlang": {
+      "file": "data/alias_pointer_v1/dev/animals_RR_e5f0-xlang.json",
+      "sha256": "553f9198bc07c751187676daec915f3c0efa77d8dffbd5787691140894b88766"
+    },
+    "dev/elements_RL_e5f0": {
+      "file": "data/alias_pointer_v1/dev/elements_RL_e5f0.json",
+      "sha256": "d5c2e30587c4c9235ad0957f75f913e82a2b713397475bdc2f4f06094387fdf5"
+    },
+    "dev/elements_DL_e5f0": {
+      "file": "data/alias_pointer_v1/dev/elements_DL_e5f0.json",
+      "sha256": "53656eb1bb8142eaa3d12e146714c3b605d135f06acd186fa03756e379d84981"
+    },
+    "dev/elements_RR_e5f0": {
+      "file": "data/alias_pointer_v1/dev/elements_RR_e5f0.json",
+      "sha256": "381727f5f1997fafdeed5587064540f78f3381dea6d951d76ff9e30a11485ada"
+    },
+    "dev/elements_RL_e5f0-syn": {
+      "file": "data/alias_pointer_v1/dev/elements_RL_e5f0-syn.json",
+      "sha256": "8eff1697bc5a68cc2b85dd726aad4076149b3ba136127f18dbd328bb4e152563"
+    },
+    "dev/elements_DL_e5f0-syn": {
+      "file": "data/alias_pointer_v1/dev/elements_DL_e5f0-syn.json",
+      "sha256": "93e5069e6606a85503cd90386886e944017f2cb8abe89171eec4eb01355d04d2"
+    },
+    "dev/elements_RR_e5f0-syn": {
+      "file": "data/alias_pointer_v1/dev/elements_RR_e5f0-syn.json",
+      "sha256": "007220a1cf2a170e59be6d39e30d750615dd670d5be601b97e0f4053590b7c64"
+    }
+  },
+  "limit": 200,
+  "conditions": {
+    "same": "statements in English",
+    "xlang": "statements in French/Spanish/German",
+    "syn": "statements with the chemical symbol"
+  },
+  "format": "suite_v1's: chat template, thinking off, 'Answer:' prefilled; the context, a newline, the question and 'Answer with a single word and nothing else.' in one user turn",
+  "prompts": "base; each source (dissoc, same, redigit) with its own context and question; hop1 (cue -> entity) and hop2 (the lookup with the entity named / the recalled fact) for RL and RR; alias (surface form -> English entity) for RL and DL in xlang / syn; every step with the base context",
+  "judge": "the first answer of the prompt's kind in the first non-empty line of 8 greedy tokens (digits, number words and ordinals for digits; the domain's English names otherwise; hop1 in xlang / syn also the surface form, matched case-sensitively)",
+  "answer_read": "suite_v1's: one forward with a digit answer's space token appended; p and margin of the answer's first token; whether the read's top token is the greedy answer",
+  "gate": "an alias condition enters the patching runs iff, in its domain on main (400 scenes per file), the base prompt's Wilson 95% lower bound is >= 0.80 in both lookup families (RL and DL), the English baseline passes pointer_v1's rule (lower bound >= 0.85) in the same cells, and at least 35 scenes are eligible (every prompt of every family right, in both conditions; 35 is the n at which a control with no change can have a Wilson upper bound <= 0.10, as pointer_swap's rule asks).",
+  "eligibility": "pointer_swap uses items with every prompt right (base, the three sources, the steps alone)"
+}

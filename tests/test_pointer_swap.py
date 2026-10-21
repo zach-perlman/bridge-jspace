@@ -54,6 +54,8 @@ def test_plain_names():
     assert PS.plain("item animals-RL-e5f0-0001") == "item animals-RL-e5f0-0001"  # ids keep their codes
     assert "W" in PS.rule_plain("verdict X in {identity}") and "bridge alt's statement" in PS.rule_plain("identity")
     assert PS.plain("RK and DK") == "memory → prompt and named → prompt"  # code_pointer_v1's families
+    fenced = "```\nRL `family == 'RL'`\n```\nRL"  # a ``` fence is not a code span
+    assert PS.plain(fenced) == "```\nmemory → prompt `family == 'RL'`\n```\nmemory → prompt"
 
 
 def test_token_candidate():

@@ -1,0 +1,153 @@
+{
+  "exp": "code_pointer_v1",
+  "run": "code_competence_27b",
+  "written_utc": "2026-10-21T12:40:26Z",
+  "why": "D3 code gate: can the 27B run code_pointer_v1's Python lookups (key named, by list position, through a 2- or 3-variable chain, recalled from a cue) and the recall contrast, every alt prompt and each step alone, in chat format?",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "sets": [
+    "main",
+    "dev"
+  ],
+  "items": {
+    "main/animals_DK_e5f0": {
+      "file": "data/code_pointer_v1/main/animals_DK_e5f0.json",
+      "sha256": "591b249a36af1c1a7ce3adb818291ec50c2faf14bd5cd69bf66eaa1556c057f0"
+    },
+    "main/animals_IX_e5f0": {
+      "file": "data/code_pointer_v1/main/animals_IX_e5f0.json",
+      "sha256": "26ef9e788dd834fbf4c76d61a4b35ce9d2d262116f24073a6fae466b684fc229"
+    },
+    "main/animals_CH2_e5f0": {
+      "file": "data/code_pointer_v1/main/animals_CH2_e5f0.json",
+      "sha256": "fe618771a30c939579cc33f4c972bd59e09a546f2cd33a7cf3570bd56c85b0ce"
+    },
+    "main/animals_CH3_e5f0": {
+      "file": "data/code_pointer_v1/main/animals_CH3_e5f0.json",
+      "sha256": "523ea72e8e704b1a21f20f0f2b4c3939ffa93efa5e93d2b76f5e6bb2d5ba0794"
+    },
+    "main/animals_RK_e5f0": {
+      "file": "data/code_pointer_v1/main/animals_RK_e5f0.json",
+      "sha256": "e7af53399f37015f9501949cac5faaff812254cd90727a0c285d44bd1d52a483"
+    },
+    "main/animals_RR_e5f0": {
+      "file": "data/code_pointer_v1/main/animals_RR_e5f0.json",
+      "sha256": "3d7c88ff77c1c2d2364652388ec2a5221ed016f45da1e56a9e9c98737b5b0548"
+    },
+    "main/months_DK_e5f0": {
+      "file": "data/code_pointer_v1/main/months_DK_e5f0.json",
+      "sha256": "d13cb762f2938a2d3b4b14770e8f3a5040478ebc3ccf2ec96fc283a62a5acecf"
+    },
+    "main/months_IX_e5f0": {
+      "file": "data/code_pointer_v1/main/months_IX_e5f0.json",
+      "sha256": "67e9c4b0d0d26bbd3b5b16f2f9d37267c6321c075b79b68e7cd130a553efa458"
+    },
+    "main/months_CH2_e5f0": {
+      "file": "data/code_pointer_v1/main/months_CH2_e5f0.json",
+      "sha256": "7ae199664c8d43e2cf5bdeb04231c7057aa97bd865c9876071f7dee888bb7ec8"
+    },
+    "main/months_CH3_e5f0": {
+      "file": "data/code_pointer_v1/main/months_CH3_e5f0.json",
+      "sha256": "1492a591d57f8bce4b3a5ec4f895d901b87d4e678bb2b17d6e93540a4d8bfe2a"
+    },
+    "main/months_RK_e5f0": {
+      "file": "data/code_pointer_v1/main/months_RK_e5f0.json",
+      "sha256": "00f967a00d7b1bf4ba7e4dfd45141862ca316115552d8b36ae3f2d3617fa9936"
+    },
+    "main/months_RR_e5f0": {
+      "file": "data/code_pointer_v1/main/months_RR_e5f0.json",
+      "sha256": "429809a20e40e1fd52c7870a60cb7d7b84e1ee16c82126a2211f1214efcf2c25"
+    },
+    "dev/animals_DK_e3f0": {
+      "file": "data/code_pointer_v1/dev/animals_DK_e3f0.json",
+      "sha256": "0b592024080d4b4917ecf7a0e14ad8738e8ab33a8af67d2abebfcad1a77fa2ec"
+    },
+    "dev/animals_IX_e3f0": {
+      "file": "data/code_pointer_v1/dev/animals_IX_e3f0.json",
+      "sha256": "4f66f1367cce4c77fbf7065bbae0d66f9137dcbc143cca8e64c0d5094ae5c894"
+    },
+    "dev/animals_CH2_e3f0": {
+      "file": "data/code_pointer_v1/dev/animals_CH2_e3f0.json",
+      "sha256": "b5ac6f4eca809646e047aa1e9acf820de3e0d13d0c03b1637d8c2541738a3823"
+    },
+    "dev/animals_CH3_e3f0": {
+      "file": "data/code_pointer_v1/dev/animals_CH3_e3f0.json",
+      "sha256": "8a0e5ff4980485bcfcf8716c2a06f52744899dfe1b735dd7cc7e82301adc2882"
+    },
+    "dev/animals_RK_e3f0": {
+      "file": "data/code_pointer_v1/dev/animals_RK_e3f0.json",
+      "sha256": "51722c819aacd79e1be9a33077da8ea235ff4c1bc4b4225fc306b60b789231c0"
+    },
+    "dev/animals_RR_e3f0": {
+      "file": "data/code_pointer_v1/dev/animals_RR_e3f0.json",
+      "sha256": "315ab68d132f44d8d7464932b765bf9a1e7968687dd7d5058324630a15b6528d"
+    },
+    "dev/months_DK_e3f0": {
+      "file": "data/code_pointer_v1/dev/months_DK_e3f0.json",
+      "sha256": "f28fafde94b7903c41acef7e9792bbf552ddbfb2c92607fd65b0586ccebe3c30"
+    },
+    "dev/months_IX_e3f0": {
+      "file": "data/code_pointer_v1/dev/months_IX_e3f0.json",
+      "sha256": "5689e9103c7ecf823f00af044f00add0aafd09e1f241b1c552c4f565f389a490"
+    },
+    "dev/months_CH2_e3f0": {
+      "file": "data/code_pointer_v1/dev/months_CH2_e3f0.json",
+      "sha256": "84a8e2f4f6747a9260caf3a8d5f514bb36e9d8ce78f08f0781a7caf645aeeab4"
+    },
+    "dev/months_CH3_e3f0": {
+      "file": "data/code_pointer_v1/dev/months_CH3_e3f0.json",
+      "sha256": "3e281e79d54cfe8d03faeef01ef7a3e0b1b441b7ed6f88ad6260991d2b878e50"
+    },
+    "dev/months_RK_e3f0": {
+      "file": "data/code_pointer_v1/dev/months_RK_e3f0.json",
+      "sha256": "a7effa87d9a74ce4423af349ce281c1c8e775bb2956b96bf320ccd2ed6686d71"
+    },
+    "dev/months_RR_e3f0": {
+      "file": "data/code_pointer_v1/dev/months_RR_e3f0.json",
+      "sha256": "831b91f71ebd4c62231c9fdb2a339108f5a1d105e0b60ba363f13a06f3920165"
+    },
+    "dev/animals_DK_e8f0": {
+      "file": "data/code_pointer_v1/dev/animals_DK_e8f0.json",
+      "sha256": "6cdc4f41ba34470e1270a4c83187efca8a1c96b1feab505e43c02e0564c9b4c4"
+    },
+    "dev/animals_IX_e8f0": {
+      "file": "data/code_pointer_v1/dev/animals_IX_e8f0.json",
+      "sha256": "f64118438936b4a7c4e652726a88f6fe319ab4167ce0b9958f295d86cfe348b4"
+    },
+    "dev/animals_CH2_e8f0": {
+      "file": "data/code_pointer_v1/dev/animals_CH2_e8f0.json",
+      "sha256": "d3090623bd0c3c462f46c2e362a2f4a7012c9e3cc64bcd31537c676691921b41"
+    },
+    "dev/animals_CH3_e8f0": {
+      "file": "data/code_pointer_v1/dev/animals_CH3_e8f0.json",
+      "sha256": "60f9065f650246ef0d85ea648cb65ede09b9eda39c40fd0a62b76df9f0871a45"
+    },
+    "dev/animals_RK_e8f0": {
+      "file": "data/code_pointer_v1/dev/animals_RK_e8f0.json",
+      "sha256": "a30047cd89ec63eb5a5f54a14faa4076404be6d7422944d6ad7877ccec293be2"
+    },
+    "dev/animals_RR_e8f0": {
+      "file": "data/code_pointer_v1/dev/animals_RR_e8f0.json",
+      "sha256": "beee5f4dc5246095db1a054a540ad9e209989bcefedaade516034d5e46ae36f9"
+    }
+  },
+  "limit": null,
+  "family_labels": {
+    "DK": "named → prompt",
+    "IX": "list position → prompt",
+    "CH2": "2-variable chain → prompt",
+    "CH3": "3-variable chain → prompt",
+    "RK": "memory → prompt",
+    "RR": "memory → memory"
+  },
+  "format": "suite_v1's: chat template, thinking off, 'Answer:' prefilled; the context, a newline, the question and 'Answer with a single word and nothing else.' in one user turn (the suite's CODE layout: fenced code, then the question)",
+  "prompts": "base; each source (dissoc, same, redigit) with its own context and question; hop1 (the key alone: names[i], the chain's last variable, or the cue -> key) and hop2 (the lookup with the key named, or the recalled fact) with the base context, for every family but DK",
+  "judge": "the first answer of the item's kind in the first non-empty line of 8 greedy tokens (digits, number words and ordinals for digits; the domain's keys otherwise)",
+  "answer_read": "suite_v1's: one forward with a digit answer's space token appended; p and margin of the answer's first token; whether the read's top token is the greedy answer",
+  "gate": "; fixed before any 27B run, jobs/d3/code_competence_27b.yaml): a (domain, family) cell enters the\npatching runs iff its clean Wilson 95% lower bound >= 0.85 (suite_v1's rule); an item is eligible iff every prompt of\nit is right (base, dissoc, same, redigit, hop1, hop2)."
+}

@@ -1,0 +1,65 @@
+{
+  "animals/e5f0": {
+    "gate_lower_bounds": {
+      "RL": 0.9568335194437211,
+      "DL": 0.9811539940816791,
+      "RR": 0.9811539940816791
+    },
+    "gate": 0.85,
+    "families": [
+      "RL",
+      "DL",
+      "RR"
+    ],
+    "entered": true,
+    "eligible_scenes": 136,
+    "picked": 60
+  },
+  "animals/e5f0-xlang": {
+    "gate_lower_bounds": {
+      "RL": 0.9230670617058012,
+      "DL": 0.9568335194437211,
+      "RR": 0.9811539940816791
+    },
+    "gate": 0.8,
+    "families": [
+      "RL",
+      "DL",
+      "RR"
+    ],
+    "entered": true,
+    "eligible_scenes": 136,
+    "picked": 60
+  },
+  "elements/e5f0": {
+    "gate_lower_bounds": {
+      "RL": 0.9230670617058012,
+      "DL": 0.9811539940816791,
+      "RR": 0.9811539940816791
+    },
+    "gate": 0.85,
+    "families": [
+      "RL",
+      "DL",
+      "RR"
+    ],
+    "entered": true,
+    "eligible_scenes": 138,
+    "picked": 60
+  },
+  "elements/e5f0-syn": {
+    "gate_lower_bounds": {
+      "RL": 0.44610724474630287,
+      "DL": 0.9722256001302286,
+      "RR": 0.9811539940816791
+    },
+    "gate": 0.8,
+    "families": [
+      "DL",
+      "RR"
+    ],
+    "entered": true,
+    "eligible_scenes": 138,
+    "picked": 60
+  }
+}

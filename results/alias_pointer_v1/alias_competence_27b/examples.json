@@ -1,0 +1,1384 @@
+{
+ "exp": "alias_pointer_v1",
+ "run": "alias_competence_27b",
+ "seed": 0,
+ "k": 3,
+ "groups": [
+  {
+   "key": "alias_wrong",
+   "title": "alias step wrong",
+   "definition": "the alias step alone (surface form -> English name) answered wrong",
+   "n_total": 88
+  },
+  {
+   "key": "same_right",
+   "title": "statements in English: right",
+   "definition": "base prompt answered right, statements in English",
+   "n_total": 1901
+  },
+  {
+   "key": "same_wrong",
+   "title": "statements in English: wrong",
+   "definition": "base prompt answered wrong, statements in English",
+   "n_total": 19
+  },
+  {
+   "key": "syn_right",
+   "title": "statements with the chemical symbol: right",
+   "definition": "base prompt answered right, statements with the chemical symbol",
+   "n_total": 795
+  },
+  {
+   "key": "syn_wrong",
+   "title": "statements with the chemical symbol: wrong",
+   "definition": "base prompt answered wrong, statements with the chemical symbol",
+   "n_total": 165
+  },
+  {
+   "key": "xlang_right",
+   "title": "statements in French/Spanish/German: right",
+   "definition": "base prompt answered right, statements in French/Spanish/German",
+   "n_total": 946
+  },
+  {
+   "key": "xlang_wrong",
+   "title": "statements in French/Spanish/German: wrong",
+   "definition": "base prompt answered wrong, statements in French/Spanish/German",
+   "n_total": 14
+  }
+ ],
+ "examples": [
+  {
+   "group": "alias_wrong",
+   "family": "RL",
+   "family_name": "memory → prompt",
+   "item_id": "animals-RL-e3f0-xlang-d0035",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nEl pollo tiene la taquilla 5. Le cheval a le casier 1. Le porc a le casier 3.\nWhich animal is called « pollo » in Spanish? Answer in English. Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 46,
+     "role": "statement: chicken as 'pollo' (the queried entity's)"
+    },
+    {
+     "start": 47,
+     "end": 71,
+     "role": "statement: horse as 'cheval'"
+    },
+    {
+     "start": 72,
+     "end": 94,
+     "role": "statement: pig as 'porc'"
+    },
+    {
+     "start": 95,
+     "end": 158,
+     "role": "question"
+    },
+    {
+     "start": 158,
+     "end": 261,
+     "role": "template tail"
+    }
+   ],
+   "condition": "statements in French/Spanish/German, question in English; unedited, 8 greedy tokens (the alias step alone)",
+   "answers": {
+    "clean": "chicken",
+    "edited": null,
+    "model": null,
+    "continuation": "",
+    "expected": {
+     "right": "chicken"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.16848,
+    "margin": -0.812,
+    "read_top": "<|im_end|>"
+   },
+   "why": "the alias step alone (surface form -> English name) answered wrong (expected 'chicken', said None)"
+  },
+  {
+   "group": "alias_wrong",
+   "family": "RL",
+   "family_name": "memory → prompt",
+   "item_id": "animals-RL-e3f0-xlang-d0049",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nDie Kuh hat den Spind 3. Le cheval a le casier 1. El pollo tiene la taquilla 6.\nWhich animal is called « pollo » in Spanish? Answer in English. Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 41,
+     "role": "statement: cow as 'Kuh'"
+    },
+    {
+     "start": 42,
+     "end": 66,
+     "role": "statement: horse as 'cheval'"
+    },
+    {
+     "start": 67,
+     "end": 96,
+     "role": "statement: chicken as 'pollo' (the queried entity's)"
+    },
+    {
+     "start": 97,
+     "end": 160,
+     "role": "question"
+    },
+    {
+     "start": 160,
+     "end": 263,
+     "role": "template tail"
+    }
+   ],
+   "condition": "statements in French/Spanish/German, question in English; unedited, 8 greedy tokens (the alias step alone)",
+   "answers": {
+    "clean": "chicken",
+    "edited": null,
+    "model": null,
+    "continuation": "",
+    "expected": {
+     "right": "chicken"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.27499,
+    "margin": -0.375,
+    "read_top": "<|im_end|>"
+   },
+   "why": "the alias step alone (surface form -> English name) answered wrong (expected 'chicken', said None)"
+  },
+  {
+   "group": "alias_wrong",
+   "family": "RL",
+   "family_name": "memory → prompt",
+   "item_id": "animals-RL-e5f0-xlang-m0059",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nLa souris a le casier 1. El gato tiene la taquilla 6. Die Kuh hat den Spind 7. El perro tiene la taquilla 3. El pollo tiene la taquilla 8.\nWhich animal is called « pollo » in Spanish? Answer in English. Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 41,
+     "role": "statement: mouse as 'souris'"
+    },
+    {
+     "start": 42,
+     "end": 70,
+     "role": "statement: cat as 'gato'"
+    },
+    {
+     "start": 71,
+     "end": 95,
+     "role": "statement: cow as 'Kuh'"
+    },
+    {
+     "start": 96,
+     "end": 125,
+     "role": "statement: dog as 'perro'"
+    },
+    {
+     "start": 126,
+     "end": 155,
+     "role": "statement: chicken as 'pollo' (the queried entity's)"
+    },
+    {
+     "start": 156,
+     "end": 219,
+     "role": "question"
+    },
+    {
+     "start": 219,
+     "end": 322,
+     "role": "template tail"
+    }
+   ],
+   "condition": "statements in French/Spanish/German, question in English; unedited, 8 greedy tokens (the alias step alone)",
+   "answers": {
+    "clean": "chicken",
+    "edited": null,
+    "model": null,
+    "continuation": "",
+    "expected": {
+     "right": "chicken"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.29485,
+    "margin": -0.25,
+    "read_top": "<|im_end|>"
+   },
+   "why": "the alias step alone (surface form -> English name) answered wrong (expected 'chicken', said None)"
+  },
+  {
+   "group": "same_right",
+   "family": "RR",
+   "family_name": "memory → memory",
+   "item_id": "animals-RR-e5f0-m0133",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe horse's locker is 7. The dog's locker is 1. The duck's locker is 5. The chicken's locker is 3. The cat's locker is 8.\nHow many legs does the animal known for quacking have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 41,
+     "role": "statement: horse as 'horse'"
+    },
+    {
+     "start": 42,
+     "end": 64,
+     "role": "statement: dog as 'dog'"
+    },
+    {
+     "start": 65,
+     "end": 88,
+     "role": "statement: duck as 'duck' (the queried entity's)"
+    },
+    {
+     "start": 89,
+     "end": 115,
+     "role": "statement: chicken as 'chicken'"
+    },
+    {
+     "start": 116,
+     "end": 138,
+     "role": "statement: cat as 'cat'"
+    },
+    {
+     "start": 139,
+     "end": 193,
+     "role": "question"
+    },
+    {
+     "start": 193,
+     "end": 296,
+     "role": "template tail"
+    },
+    {
+     "start": 179,
+     "end": 187,
+     "role": "cue"
+    }
+   ],
+   "condition": "statements in English, question in English; unedited, 8 greedy tokens",
+   "answers": {
+    "clean": "2",
+    "edited": null,
+    "model": "2",
+    "continuation": " 2",
+    "expected": {
+     "right": "2"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.99444,
+    "margin": 5.938,
+    "read_top": "2"
+   },
+   "why": "base prompt answered right, statements in English (expected '2', said '2')"
+  },
+  {
+   "group": "same_right",
+   "family": "RR",
+   "family_name": "memory → memory",
+   "item_id": "elements-RR-e5f0-m0058",
+   "domain": "elements",
+   "prompt": "<|im_start|>user\nThe oxygen card is in locker 9. The helium card is in locker 8. The carbon card is in locker 5. The lithium card is in locker 4. The nitrogen card is in locker 3.\nWhat is the atomic number of the element in diamonds? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 48,
+     "role": "statement: oxygen as 'oxygen'"
+    },
+    {
+     "start": 49,
+     "end": 80,
+     "role": "statement: helium as 'helium'"
+    },
+    {
+     "start": 81,
+     "end": 112,
+     "role": "statement: carbon as 'carbon' (the queried entity's)"
+    },
+    {
+     "start": 113,
+     "end": 145,
+     "role": "statement: lithium as 'lithium'"
+    },
+    {
+     "start": 146,
+     "end": 179,
+     "role": "statement: nitrogen as 'nitrogen'"
+    },
+    {
+     "start": 180,
+     "end": 233,
+     "role": "question"
+    },
+    {
+     "start": 233,
+     "end": 336,
+     "role": "template tail"
+    },
+    {
+     "start": 209,
+     "end": 232,
+     "role": "cue"
+    }
+   ],
+   "condition": "statements in English, question in English; unedited, 8 greedy tokens",
+   "answers": {
+    "clean": "6",
+    "edited": null,
+    "model": "6",
+    "continuation": " 6",
+    "expected": {
+     "right": "6"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.99172,
+    "margin": 6.25,
+    "read_top": "6"
+   },
+   "why": "base prompt answered right, statements in English (expected '6', said '6')"
+  },
+  {
+   "group": "same_right",
+   "family": "RR",
+   "family_name": "memory → memory",
+   "item_id": "elements-RR-e5f0-m0006",
+   "domain": "elements",
+   "prompt": "<|im_start|>user\nThe hydrogen card is in locker 8. The carbon card is in locker 6. The nitrogen card is in locker 4. The lithium card is in locker 3. The helium card is in locker 9.\nWhat is the atomic number of the main atmospheric gas? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 50,
+     "role": "statement: hydrogen as 'hydrogen'"
+    },
+    {
+     "start": 51,
+     "end": 82,
+     "role": "statement: carbon as 'carbon'"
+    },
+    {
+     "start": 83,
+     "end": 116,
+     "role": "statement: nitrogen as 'nitrogen' (the queried entity's)"
+    },
+    {
+     "start": 117,
+     "end": 149,
+     "role": "statement: lithium as 'lithium'"
+    },
+    {
+     "start": 150,
+     "end": 181,
+     "role": "statement: helium as 'helium'"
+    },
+    {
+     "start": 182,
+     "end": 236,
+     "role": "question"
+    },
+    {
+     "start": 236,
+     "end": 339,
+     "role": "template tail"
+    },
+    {
+     "start": 211,
+     "end": 235,
+     "role": "cue"
+    }
+   ],
+   "condition": "statements in English, question in English; unedited, 8 greedy tokens",
+   "answers": {
+    "clean": "7",
+    "edited": null,
+    "model": "7",
+    "continuation": " 7",
+    "expected": {
+     "right": "7"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.95392,
+    "margin": 4.0,
+    "read_top": "7"
+   },
+   "why": "base prompt answered right, statements in English (expected '7', said '7')"
+  },
+  {
+   "group": "same_wrong",
+   "family": "RL",
+   "family_name": "memory → prompt",
+   "item_id": "elements-RL-e3f0-d0035",
+   "domain": "elements",
+   "prompt": "<|im_start|>user\nThe hydrogen card is in locker 4. The oxygen card is in locker 3. The carbon card is in locker 5.\nWhich locker holds the card for the gas fires need? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 50,
+     "role": "statement: hydrogen as 'hydrogen'"
+    },
+    {
+     "start": 51,
+     "end": 82,
+     "role": "statement: oxygen as 'oxygen' (the queried entity's)"
+    },
+    {
+     "start": 83,
+     "end": 114,
+     "role": "statement: carbon as 'carbon'"
+    },
+    {
+     "start": 115,
+     "end": 166,
+     "role": "question"
+    },
+    {
+     "start": 166,
+     "end": 269,
+     "role": "template tail"
+    },
+    {
+     "start": 147,
+     "end": 165,
+     "role": "cue"
+    }
+   ],
+   "condition": "statements in English, question in English; unedited, 8 greedy tokens",
+   "answers": {
+    "clean": "3",
+    "edited": null,
+    "model": "4",
+    "continuation": " 4",
+    "expected": {
+     "right": "3"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.39999,
+    "margin": -0.375,
+    "read_top": "4"
+   },
+   "why": "base prompt answered wrong, statements in English (expected '3', said '4')"
+  },
+  {
+   "group": "same_wrong",
+   "family": "RL",
+   "family_name": "memory → prompt",
+   "item_id": "elements-RL-e5f0-m0185",
+   "domain": "elements",
+   "prompt": "<|im_start|>user\nThe oxygen card is in locker 9. The hydrogen card is in locker 6. The helium card is in locker 5. The lithium card is in locker 8. The nitrogen card is in locker 4.\nWhich locker holds the card for the lightest element? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 48,
+     "role": "statement: oxygen as 'oxygen'"
+    },
+    {
+     "start": 49,
+     "end": 82,
+     "role": "statement: hydrogen as 'hydrogen' (the queried entity's)"
+    },
+    {
+     "start": 83,
+     "end": 114,
+     "role": "statement: helium as 'helium'"
+    },
+    {
+     "start": 115,
+     "end": 147,
+     "role": "statement: lithium as 'lithium'"
+    },
+    {
+     "start": 148,
+     "end": 181,
+     "role": "statement: nitrogen as 'nitrogen'"
+    },
+    {
+     "start": 182,
+     "end": 235,
+     "role": "question"
+    },
+    {
+     "start": 235,
+     "end": 338,
+     "role": "template tail"
+    },
+    {
+     "start": 214,
+     "end": 234,
+     "role": "cue"
+    }
+   ],
+   "condition": "statements in English, question in English; unedited, 8 greedy tokens",
+   "answers": {
+    "clean": "6",
+    "edited": null,
+    "model": "5",
+    "continuation": " 5",
+    "expected": {
+     "right": "6"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.10527,
+    "margin": -2.125,
+    "read_top": "5"
+   },
+   "why": "base prompt answered wrong, statements in English (expected '6', said '5')"
+  },
+  {
+   "group": "same_wrong",
+   "family": "RL",
+   "family_name": "memory → prompt",
+   "item_id": "elements-RL-e3f0-d0055",
+   "domain": "elements",
+   "prompt": "<|im_start|>user\nThe carbon card is in locker 1. The nitrogen card is in locker 9. The oxygen card is in locker 3.\nWhich locker holds the card for the main atmospheric gas? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 48,
+     "role": "statement: carbon as 'carbon'"
+    },
+    {
+     "start": 49,
+     "end": 82,
+     "role": "statement: nitrogen as 'nitrogen' (the queried entity's)"
+    },
+    {
+     "start": 83,
+     "end": 114,
+     "role": "statement: oxygen as 'oxygen'"
+    },
+    {
+     "start": 115,
+     "end": 172,
+     "role": "question"
+    },
+    {
+     "start": 172,
+     "end": 275,
+     "role": "template tail"
+    },
+    {
+     "start": 147,
+     "end": 171,
+     "role": "cue"
+    }
+   ],
+   "condition": "statements in English, question in English; unedited, 8 greedy tokens",
+   "answers": {
+    "clean": "9",
+    "edited": null,
+    "model": "1",
+    "continuation": " 1",
+    "expected": {
+     "right": "9"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.48937,
+    "margin": 0.0,
+    "read_top": "1"
+   },
+   "why": "base prompt answered wrong, statements in English (expected '9', said '1')"
+  },
+  {
+   "group": "syn_right",
+   "family": "RR",
+   "family_name": "memory → memory",
+   "item_id": "elements-RR-e5f0-syn-m0064",
+   "domain": "elements",
+   "prompt": "<|im_start|>user\nThe H card is in locker 4. The Li card is in locker 3. The C card is in locker 5. The N card is in locker 1. The He card is in locker 8.\nWhat is the atomic number of the party balloon gas? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 43,
+     "role": "statement: hydrogen as 'H'"
+    },
+    {
+     "start": 44,
+     "end": 71,
+     "role": "statement: lithium as 'Li'"
+    },
+    {
+     "start": 72,
+     "end": 98,
+     "role": "statement: carbon as 'C'"
+    },
+    {
+     "start": 99,
+     "end": 125,
+     "role": "statement: nitrogen as 'N'"
+    },
+    {
+     "start": 126,
+     "end": 153,
+     "role": "statement: helium as 'He' (the queried entity's)"
+    },
+    {
+     "start": 154,
+     "end": 205,
+     "role": "question"
+    },
+    {
+     "start": 205,
+     "end": 308,
+     "role": "template tail"
+    },
+    {
+     "start": 183,
+     "end": 204,
+     "role": "cue"
+    }
+   ],
+   "condition": "statements with the chemical symbol, question in English; unedited, 8 greedy tokens",
+   "answers": {
+    "clean": "2",
+    "edited": null,
+    "model": "2",
+    "continuation": " 2",
+    "expected": {
+     "right": "2"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.92183,
+    "margin": 3.0,
+    "read_top": "2"
+   },
+   "why": "base prompt answered right, statements with the chemical symbol (expected '2', said '2')"
+  },
+  {
+   "group": "syn_right",
+   "family": "RR",
+   "family_name": "memory → memory",
+   "item_id": "elements-RR-e3f0-syn-d0008",
+   "domain": "elements",
+   "prompt": "<|im_start|>user\nThe N card is in locker 2. The Li card is in locker 8. The C card is in locker 1.\nWhat is the atomic number of the phone battery metal? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 43,
+     "role": "statement: nitrogen as 'N'"
+    },
+    {
+     "start": 44,
+     "end": 71,
+     "role": "statement: lithium as 'Li' (the queried entity's)"
+    },
+    {
+     "start": 72,
+     "end": 98,
+     "role": "statement: carbon as 'C'"
+    },
+    {
+     "start": 99,
+     "end": 152,
+     "role": "question"
+    },
+    {
+     "start": 152,
+     "end": 255,
+     "role": "template tail"
+    },
+    {
+     "start": 128,
+     "end": 151,
+     "role": "cue"
+    }
+   ],
+   "condition": "statements with the chemical symbol, question in English; unedited, 8 greedy tokens",
+   "answers": {
+    "clean": "3",
+    "edited": null,
+    "model": "3",
+    "continuation": " 3",
+    "expected": {
+     "right": "3"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.87566,
+    "margin": 3.25,
+    "read_top": "3"
+   },
+   "why": "base prompt answered right, statements with the chemical symbol (expected '3', said '3')"
+  },
+  {
+   "group": "syn_right",
+   "family": "DL",
+   "family_name": "named → prompt",
+   "item_id": "elements-DL-e5f0-syn-m0121",
+   "domain": "elements",
+   "prompt": "<|im_start|>user\nThe He card is in locker 4. The O card is in locker 9. The N card is in locker 5. The Li card is in locker 6. The H card is in locker 2.\nWhich locker holds the oxygen card? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 44,
+     "role": "statement: helium as 'He'"
+    },
+    {
+     "start": 45,
+     "end": 71,
+     "role": "statement: oxygen as 'O' (the queried entity's)"
+    },
+    {
+     "start": 72,
+     "end": 98,
+     "role": "statement: nitrogen as 'N'"
+    },
+    {
+     "start": 99,
+     "end": 126,
+     "role": "statement: lithium as 'Li'"
+    },
+    {
+     "start": 127,
+     "end": 153,
+     "role": "statement: hydrogen as 'H'"
+    },
+    {
+     "start": 154,
+     "end": 189,
+     "role": "question"
+    },
+    {
+     "start": 189,
+     "end": 292,
+     "role": "template tail"
+    },
+    {
+     "start": 177,
+     "end": 183,
+     "role": "cue"
+    }
+   ],
+   "condition": "statements with the chemical symbol, question in English; unedited, 8 greedy tokens",
+   "answers": {
+    "clean": "9",
+    "edited": null,
+    "model": "9",
+    "continuation": " 9",
+    "expected": {
+     "right": "9"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.99087,
+    "margin": 5.375,
+    "read_top": "9"
+   },
+   "why": "base prompt answered right, statements with the chemical symbol (expected '9', said '9')"
+  },
+  {
+   "group": "syn_wrong",
+   "family": "RL",
+   "family_name": "memory → prompt",
+   "item_id": "elements-RL-e3f0-syn-d0058",
+   "domain": "elements",
+   "prompt": "<|im_start|>user\nThe H card is in locker 4. The Li card is in locker 6. The He card is in locker 9.\nWhich locker holds the card for the party balloon gas? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 43,
+     "role": "statement: hydrogen as 'H'"
+    },
+    {
+     "start": 44,
+     "end": 71,
+     "role": "statement: lithium as 'Li'"
+    },
+    {
+     "start": 72,
+     "end": 99,
+     "role": "statement: helium as 'He' (the queried entity's)"
+    },
+    {
+     "start": 100,
+     "end": 154,
+     "role": "question"
+    },
+    {
+     "start": 154,
+     "end": 257,
+     "role": "template tail"
+    },
+    {
+     "start": 132,
+     "end": 153,
+     "role": "cue"
+    }
+   ],
+   "condition": "statements with the chemical symbol, question in English; unedited, 8 greedy tokens",
+   "answers": {
+    "clean": "9",
+    "edited": null,
+    "model": "4",
+    "continuation": " 4",
+    "expected": {
+     "right": "9"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.0951,
+    "margin": -1.625,
+    "read_top": "4"
+   },
+   "why": "base prompt answered wrong, statements with the chemical symbol (expected '9', said '4')"
+  },
+  {
+   "group": "syn_wrong",
+   "family": "RL",
+   "family_name": "memory → prompt",
+   "item_id": "elements-RL-e5f0-syn-m0075",
+   "domain": "elements",
+   "prompt": "<|im_start|>user\nThe O card is in locker 3. The N card is in locker 9. The C card is in locker 5. The He card is in locker 1. The H card is in locker 4.\nWhich locker holds the card for the main atmospheric gas? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 43,
+     "role": "statement: oxygen as 'O'"
+    },
+    {
+     "start": 44,
+     "end": 70,
+     "role": "statement: nitrogen as 'N' (the queried entity's)"
+    },
+    {
+     "start": 71,
+     "end": 97,
+     "role": "statement: carbon as 'C'"
+    },
+    {
+     "start": 98,
+     "end": 125,
+     "role": "statement: helium as 'He'"
+    },
+    {
+     "start": 126,
+     "end": 152,
+     "role": "statement: hydrogen as 'H'"
+    },
+    {
+     "start": 153,
+     "end": 210,
+     "role": "question"
+    },
+    {
+     "start": 210,
+     "end": 313,
+     "role": "template tail"
+    },
+    {
+     "start": 185,
+     "end": 209,
+     "role": "cue"
+    }
+   ],
+   "condition": "statements with the chemical symbol, question in English; unedited, 8 greedy tokens",
+   "answers": {
+    "clean": "9",
+    "edited": null,
+    "model": "4",
+    "continuation": " 4",
+    "expected": {
+     "right": "9"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.26556,
+    "margin": -0.375,
+    "read_top": "4"
+   },
+   "why": "base prompt answered wrong, statements with the chemical symbol (expected '9', said '4')"
+  },
+  {
+   "group": "syn_wrong",
+   "family": "RL",
+   "family_name": "memory → prompt",
+   "item_id": "elements-RL-e5f0-syn-m0145",
+   "domain": "elements",
+   "prompt": "<|im_start|>user\nThe O card is in locker 6. The C card is in locker 5. The He card is in locker 1. The H card is in locker 9. The Li card is in locker 7.\nWhich locker holds the card for the phone battery metal? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 43,
+     "role": "statement: oxygen as 'O'"
+    },
+    {
+     "start": 44,
+     "end": 70,
+     "role": "statement: carbon as 'C'"
+    },
+    {
+     "start": 71,
+     "end": 98,
+     "role": "statement: helium as 'He'"
+    },
+    {
+     "start": 99,
+     "end": 125,
+     "role": "statement: hydrogen as 'H'"
+    },
+    {
+     "start": 126,
+     "end": 153,
+     "role": "statement: lithium as 'Li' (the queried entity's)"
+    },
+    {
+     "start": 154,
+     "end": 210,
+     "role": "question"
+    },
+    {
+     "start": 210,
+     "end": 313,
+     "role": "template tail"
+    },
+    {
+     "start": 186,
+     "end": 209,
+     "role": "cue"
+    }
+   ],
+   "condition": "statements with the chemical symbol, question in English; unedited, 8 greedy tokens",
+   "answers": {
+    "clean": "7",
+    "edited": null,
+    "model": "5",
+    "continuation": " 5",
+    "expected": {
+     "right": "7"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.1882,
+    "margin": -0.5,
+    "read_top": "5"
+   },
+   "why": "base prompt answered wrong, statements with the chemical symbol (expected '7', said '5')"
+  },
+  {
+   "group": "xlang_right",
+   "family": "RL",
+   "family_name": "memory → prompt",
+   "item_id": "animals-RL-e5f0-xlang-m0148",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nLe cheval a le casier 3. El pollo tiene la taquilla 1. El perro tiene la taquilla 6. El gato tiene la taquilla 8. Le porc a le casier 7.\nWhich locker belongs to the animal known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 41,
+     "role": "statement: horse as 'cheval'"
+    },
+    {
+     "start": 42,
+     "end": 71,
+     "role": "statement: chicken as 'pollo' (the queried entity's)"
+    },
+    {
+     "start": 72,
+     "end": 101,
+     "role": "statement: dog as 'perro'"
+    },
+    {
+     "start": 102,
+     "end": 130,
+     "role": "statement: cat as 'gato'"
+    },
+    {
+     "start": 131,
+     "end": 153,
+     "role": "statement: pig as 'porc'"
+    },
+    {
+     "start": 154,
+     "end": 208,
+     "role": "question"
+    },
+    {
+     "start": 208,
+     "end": 311,
+     "role": "template tail"
+    },
+    {
+     "start": 199,
+     "end": 207,
+     "role": "cue"
+    }
+   ],
+   "condition": "statements in French/Spanish/German, question in English; unedited, 8 greedy tokens",
+   "answers": {
+    "clean": "1",
+    "edited": null,
+    "model": "1",
+    "continuation": " 1",
+    "expected": {
+     "right": "1"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.99129,
+    "margin": 5.75,
+    "read_top": "1"
+   },
+   "why": "base prompt answered right, statements in French/Spanish/German (expected '1', said '1')"
+  },
+  {
+   "group": "xlang_right",
+   "family": "RL",
+   "family_name": "memory → prompt",
+   "item_id": "animals-RL-e5f0-xlang-d0006",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nLe cheval a le casier 7. El gato tiene la taquilla 5. La souris a le casier 9. Die Ente hat den Spind 3. Le porc a le casier 1.\nWhich locker belongs to the animal known for squeaking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 41,
+     "role": "statement: horse as 'cheval'"
+    },
+    {
+     "start": 42,
+     "end": 70,
+     "role": "statement: cat as 'gato'"
+    },
+    {
+     "start": 71,
+     "end": 95,
+     "role": "statement: mouse as 'souris' (the queried entity's)"
+    },
+    {
+     "start": 96,
+     "end": 121,
+     "role": "statement: duck as 'Ente'"
+    },
+    {
+     "start": 122,
+     "end": 144,
+     "role": "statement: pig as 'porc'"
+    },
+    {
+     "start": 145,
+     "end": 200,
+     "role": "question"
+    },
+    {
+     "start": 200,
+     "end": 303,
+     "role": "template tail"
+    },
+    {
+     "start": 190,
+     "end": 199,
+     "role": "cue"
+    }
+   ],
+   "condition": "statements in French/Spanish/German, question in English; unedited, 8 greedy tokens",
+   "answers": {
+    "clean": "9",
+    "edited": null,
+    "model": "9",
+    "continuation": " 9",
+    "expected": {
+     "right": "9"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.84755,
+    "margin": 2.5,
+    "read_top": "9"
+   },
+   "why": "base prompt answered right, statements in French/Spanish/German (expected '9', said '9')"
+  },
+  {
+   "group": "xlang_right",
+   "family": "RL",
+   "family_name": "memory → prompt",
+   "item_id": "animals-RL-e5f0-xlang-m0101",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nEl perro tiene la taquilla 6. El pollo tiene la taquilla 9. Die Kuh hat den Spind 5. Le cheval a le casier 3. Die Ente hat den Spind 1.\nWhich locker belongs to the animal known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 46,
+     "role": "statement: dog as 'perro'"
+    },
+    {
+     "start": 47,
+     "end": 76,
+     "role": "statement: chicken as 'pollo' (the queried entity's)"
+    },
+    {
+     "start": 77,
+     "end": 101,
+     "role": "statement: cow as 'Kuh'"
+    },
+    {
+     "start": 102,
+     "end": 126,
+     "role": "statement: horse as 'cheval'"
+    },
+    {
+     "start": 127,
+     "end": 152,
+     "role": "statement: duck as 'Ente'"
+    },
+    {
+     "start": 153,
+     "end": 207,
+     "role": "question"
+    },
+    {
+     "start": 207,
+     "end": 310,
+     "role": "template tail"
+    },
+    {
+     "start": 198,
+     "end": 206,
+     "role": "cue"
+    }
+   ],
+   "condition": "statements in French/Spanish/German, question in English; unedited, 8 greedy tokens",
+   "answers": {
+    "clean": "9",
+    "edited": null,
+    "model": "9",
+    "continuation": " 9",
+    "expected": {
+     "right": "9"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.98855,
+    "margin": 5.688,
+    "read_top": "9"
+   },
+   "why": "base prompt answered right, statements in French/Spanish/German (expected '9', said '9')"
+  },
+  {
+   "group": "xlang_wrong",
+   "family": "DL",
+   "family_name": "named → prompt",
+   "item_id": "animals-DL-e5f0-xlang-m0178",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nDie Ente hat den Spind 9. El pollo tiene la taquilla 1. El gato tiene la taquilla 3. El perro tiene la taquilla 5. Le cheval a le casier 7.\nWhich locker belongs to the chicken? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 42,
+     "role": "statement: duck as 'Ente'"
+    },
+    {
+     "start": 43,
+     "end": 72,
+     "role": "statement: chicken as 'pollo' (the queried entity's)"
+    },
+    {
+     "start": 73,
+     "end": 101,
+     "role": "statement: cat as 'gato'"
+    },
+    {
+     "start": 102,
+     "end": 131,
+     "role": "statement: dog as 'perro'"
+    },
+    {
+     "start": 132,
+     "end": 156,
+     "role": "statement: horse as 'cheval'"
+    },
+    {
+     "start": 157,
+     "end": 193,
+     "role": "question"
+    },
+    {
+     "start": 193,
+     "end": 296,
+     "role": "template tail"
+    },
+    {
+     "start": 185,
+     "end": 192,
+     "role": "cue"
+    }
+   ],
+   "condition": "statements in French/Spanish/German, question in English; unedited, 8 greedy tokens",
+   "answers": {
+    "clean": "1",
+    "edited": null,
+    "model": "9",
+    "continuation": " 9",
+    "expected": {
+     "right": "1"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.38842,
+    "margin": -0.375,
+    "read_top": "9"
+   },
+   "why": "base prompt answered wrong, statements in French/Spanish/German (expected '1', said '9')"
+  },
+  {
+   "group": "xlang_wrong",
+   "family": "RL",
+   "family_name": "memory → prompt",
+   "item_id": "animals-RL-e5f0-xlang-d0001",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nEl pollo tiene la taquilla 8. El perro tiene la taquilla 6. Die Kuh hat den Spind 7. El gato tiene la taquilla 5. Die Ente hat den Spind 9.\nWhich locker belongs to the animal known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 46,
+     "role": "statement: chicken as 'pollo' (the queried entity's)"
+    },
+    {
+     "start": 47,
+     "end": 76,
+     "role": "statement: dog as 'perro'"
+    },
+    {
+     "start": 77,
+     "end": 101,
+     "role": "statement: cow as 'Kuh'"
+    },
+    {
+     "start": 102,
+     "end": 130,
+     "role": "statement: cat as 'gato'"
+    },
+    {
+     "start": 131,
+     "end": 156,
+     "role": "statement: duck as 'Ente'"
+    },
+    {
+     "start": 157,
+     "end": 211,
+     "role": "question"
+    },
+    {
+     "start": 211,
+     "end": 314,
+     "role": "template tail"
+    },
+    {
+     "start": 202,
+     "end": 210,
+     "role": "cue"
+    }
+   ],
+   "condition": "statements in French/Spanish/German, question in English; unedited, 8 greedy tokens",
+   "answers": {
+    "clean": "8",
+    "edited": null,
+    "model": "9",
+    "continuation": " 9",
+    "expected": {
+     "right": "8"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.31548,
+    "margin": -0.25,
+    "read_top": "9"
+   },
+   "why": "base prompt answered wrong, statements in French/Spanish/German (expected '8', said '9')"
+  },
+  {
+   "group": "xlang_wrong",
+   "family": "RL",
+   "family_name": "memory → prompt",
+   "item_id": "animals-RL-e5f0-xlang-m0127",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nEl gato tiene la taquilla 5. El perro tiene la taquilla 9. Die Ente hat den Spind 1. El pollo tiene la taquilla 8. La souris a le casier 6.\nWhich locker belongs to the animal known for quacking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 45,
+     "role": "statement: cat as 'gato'"
+    },
+    {
+     "start": 46,
+     "end": 75,
+     "role": "statement: dog as 'perro'"
+    },
+    {
+     "start": 76,
+     "end": 101,
+     "role": "statement: duck as 'Ente' (the queried entity's)"
+    },
+    {
+     "start": 102,
+     "end": 131,
+     "role": "statement: chicken as 'pollo'"
+    },
+    {
+     "start": 132,
+     "end": 156,
+     "role": "statement: mouse as 'souris'"
+    },
+    {
+     "start": 157,
+     "end": 211,
+     "role": "question"
+    },
+    {
+     "start": 211,
+     "end": 314,
+     "role": "template tail"
+    },
+    {
+     "start": 202,
+     "end": 210,
+     "role": "cue"
+    }
+   ],
+   "condition": "statements in French/Spanish/German, question in English; unedited, 8 greedy tokens",
+   "answers": {
+    "clean": "1",
+    "edited": null,
+    "model": "8",
+    "continuation": " 8",
+    "expected": {
+     "right": "1"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.03463,
+    "margin": -3.25,
+    "read_top": "8"
+   },
+   "why": "base prompt answered wrong, statements in French/Spanish/German (expected '1', said '8')"
+  }
+ ]
+}

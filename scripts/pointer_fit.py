@@ -671,7 +671,7 @@ def stage_figures(name: str) -> Path:
                Line2D([], [], color=COND_COLOURS["patch"], lw=2, marker="o", label=COND_WORDS["patch"] + " (not rescaled)"),
                Line2D([], [], color=PL.MUTED, ls="--", marker="o", label="control: " + COND_WORDS["random"]),
                Line2D([], [], color=PL.MUTED, ls="--", marker="o", mfc=PL.SURFACE, label="control: " + COND_WORDS["shuffled"])]  # fmt: skip
-    explain = [("What we did", "Added a fitted 'slot' direction (statement j minus the asked statement) to the tokens after "
+    explain = [("What we did", "Added a fitted 'slot' direction (the target statement minus the asked one) to the tokens after "
                                "the question, at one layer (or all), sized like the alt-prompt patch there; compared with "
                                "the lens push and a random push of the same size."),
                ("Example", ex),
@@ -713,7 +713,7 @@ def stage_figures(name: str) -> Path:
     ax.axvline(RATE_MIN, color=PL.MUTED, ls=":", lw=1)
     ax.axvline(CONTROL_MAX, color=PL.MUTED, ls="--", lw=1)
     ax.set_yticks(ys, [b[0] for b in bars], fontsize=8.5, color=PL.INK)
-    ax.set_xlim(0, 1.2)
+    ax.set_xlim(0, 1.0)
     ax.set_xlabel("\n".join(_wrap(flips, 70)), fontsize=9, color=PL.MUTED)
     explain = [("What we did", f"The pre-registered cell: memory → prompt, layer {p['layer']}, {p['scale']:g}x the alt-prompt "
                                "patch's size, next to its controls."),
@@ -766,25 +766,25 @@ def stage_figures(name: str) -> Path:
         color=COND_COLOURS["slot"],
         lw=2,
         marker="o",
-        label="slot deviations",
+        label="slot directions (one statement vs the mean)",
     )
     ax.plot(
         gl,
         [g["max_abs_cos_entity_null"] for g in geo],
-        color=PL.MUTED,
+        color=COND_COLOURS["slot"],
         ls="--",
         marker="o",
+        mfc=PL.SURFACE,
         label="control: random directions",
     )
-    for k in cfg["ks"]:
-        ax.plot(
-            gl,
-            [g["principal_cos"][str(k)]["top"] for g in geo],
-            lw=1,
-            marker=".",
-            label=f"rank-{k} subspace (principal angle)",
-        )
-    ax.set_ylim(0, 1)
+    for k, colour in ((4, "#eb6834"), (16, "#1baf7a")):
+        if str(k) not in geo[0]["principal_cos"]:
+            continue
+        ax.plot(gl, [g["principal_cos"][str(k)]["top"] for g in geo], color=colour, lw=2, marker="o",
+                label=f"rank-{k} slot subspace (smallest angle)")  # fmt: skip
+        ax.plot(gl, [g["principal_cos"][str(k)]["null_top"] for g in geo], color=colour, ls="--", marker="o",
+                mfc=PL.SURFACE, label=f"control: random rank-{k} subspace")  # fmt: skip
+    ax.set_ylim(0, 0.6)
     ax.set_xlabel("layer", fontsize=9, color=PL.MUTED)
     ax.set_title("alignment with the entities' lens word directions", fontsize=9.5, color=PL.INK, loc="left")
     ax.set_ylabel("largest |cosine|", fontsize=9, color=PL.INK)
@@ -798,7 +798,7 @@ def stage_figures(name: str) -> Path:
         color=COND_COLOURS["slot"],
         lw=2,
         marker="o",
-        label="slot deviations, lens-readable part",
+        label="slot directions, lens-readable part",
     )
     ax.plot(
         gl,
