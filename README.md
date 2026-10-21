@@ -104,6 +104,56 @@ topic, the honest interval when items of one entity are correlated. The per-batc
 ![Does one head look at the statement the answer comes from? (D2 heads)](figures/depth_1022/d2_heads_attention_readout.png)
 ![Which head units read the statement, late layers (D2 heads)](figures/depth_1022/d2_heads_units_late.png)
 
+## Synthesis so far: two routes (Dan, 21 Oct, evening; UNVERIFIED, one model)
+
+**The working hypothesis.** In Qwen3.6-27B a two-hop answer is built along one of two routes:
+1. **Recall goes through the J-space.** A bridge recalled from a cue is formed at layers 16-28 as a word the lens
+   both reads and can rewrite (D4: an early lens push switches recalled-bridge answers 73-84%, stated-bridge answers
+   1-2%); removing the J-space breaks recall (Zach: 19-22% right) and the lens-readable part carries more than its
+   share for recall (D1's positive control, Zach's copy split). This matches what Gurnee et al. report for Claude.
+2. **A lookup in the prompt goes through an address, not the word.** Up to ~layer 40 the question words carry the
+   recalled word; at 44-50 the last tokens carry an ordinal pointer ("the Nth statement, counted from the start",
+   ~4 dimensions, unrelated to the lens's word directions); at 48-63 those tokens read the pointed-at statement
+   through the full-attention layers, redundantly across heads. The lens reads the word on 95% of items but its push
+   does not move the lookup; a push along the pointer does (31-43%).
+3. **So "reading ≠ using" (C2) has a candidate explanation**: the lookup consumes an address, the lens shows the
+   content. The early "writable" lookups were the recall step (D4), not a way around the lens.
+
+**How sure (subjective, Dan's track; what would change it):**
+
+| Statement | Confidence | Would change it |
+|---|---|---|
+| The late attention read (D2) holds on the 27B in this format | ~85% | the plain-text run (done, not opened yet) moving the read off the template tokens |
+| A statement-slot pointer exists at 44-50 | ~70% | the per-topic run failing in ≥ 2 of 3 topics |
+| The pointer counts statements (order), not text positions | ~60% | pointer_v4x on 85 entities (running) |
+| "Around the lens" *is* the pointer | ~45% | the fair test on pointer_v4 with a pre-registered "in transit" (queued) |
+| Something of this transfers to OLMo-3-7B | ~55% | the OLMo runs (queued; the chat-format gates fail for memory → prompt when judged by the reply, because OLMo names the entity instead of the drawer) |
+
+**Known vs new.** Late retrieval from context by attention: Geva et al. 2023 (dissecting factual recall), retrieval
+heads (Wu et al. 2024). Ordinal binding IDs: Feng & Steinhardt 2023, the ordering ID (Dai, Heinzerling & Inui 2024;
+also "order, not position"), lookback (Prakash et al. 2025). New here, if it holds: (a) the link between that
+literature and the J-space workspace, which explains why the lens reads but cannot steer; (b) the pointer forms for a
+*recalled* entity that is not written in the question; (c) in a hybrid model the read runs only through the 16
+full-attention layers; (d) the method (pre-registered rules, predictions written before each result). Honest weight:
+(a) is the main contribution; the rest confirms known mechanisms on a new model.
+
+**Why it may matter for AI safety.** Shown on one model:
+- *Lens-based monitors see content, not provenance.* J-lens, oracle lens and NLA show what the model represents, not
+  which part of the context it takes the answer from (B4, verified: verbalizers name a direction the model ignores on
+  99% of items; C2: the lens reads the bridge the lookup does not depend on). An audit of the form "the lens shows X,
+  so the model uses X" can be systematically wrong.
+- *Removing a concept from the workspace leaves lookups in context intact* (Zach's knock-out: lookups 99%, recalls
+  19-22%).
+
+Hypotheses worth testing:
+- *A provenance monitor*: the pointer read-out or the late head that marks the bridge's statement could say, before
+  the answer is produced, which document, tool output or instruction it comes from, e.g. to flag answers drawn from an
+  injected passage. The decisive test is D5a (does the head follow the pointer when the pointer is changed).
+- *Limits of concept-level interventions*: steering or unlearning in the workspace may not touch the use of the same
+  fact when it is supplied in context.
+- *A bottleneck to monitor in hybrid models*: the in-context read goes through a few full-attention layers at the
+  last tokens; redundancy across heads makes single-head ablations useless there.
+
 ## How general is it? An honest audit (21 Oct, evening)
 
 **What every result shares** (the main threats to generality):
@@ -174,7 +224,7 @@ than the 27B.
 | `d3v4_swap_topics` | "slot beats word" passed pooled only, no topic alone | the slot verdict holds in ≥ 2 of 3 topics with every eligible scene (0.45) | **running** |
 | `d2_v4_late_read` | D2's strongest claim rests on 22 entities | late attention read (≤ 20% kept) and no DeltaNet role (≥ 90%) in each of 3 topics, 85 entities (0.7) | building |
 | `d3b_fair_c2_v4` | the "around = pointer" link failed only on elements (6 entities) | pointer ≥ 30% and ≥ 20 points above the lens at 32-40 with the recall control ≤ 10%, in ≥ 2 of 3 topics (0.4) | building |
-| raw-format D3 on pointer_v4 | the "last tokens" are the chat template's tokens | in raw text the slot still beats the word at the last tokens (0.6) | building |
+| raw-format D3 on pointer_v4 | the "last tokens" are the chat template's tokens | in raw text the slot still beats the word at the last tokens (0.6) | **done, not opened** (the first gate judged greedy replies and found 0%: the 27B opens a think block in plain text; v2 judges the read) |
 | OLMo ladder (D5b) | the specs' raw / chat switch (`BJ_FORMAT`) was not read by the code: "raw" runs would have been chat runs | — (a bug) | **fixed** (fad7be3); competence gates **running**; lens stages need the OLMo lens port |
 | C2 "in transit" (with `d3b_fair_c2_v4`) | Zach's C2 kill test fires on elements at 32-40, where the bridge is still being recalled | transit layers (recall no longer lens-writable, copy still switches the lookup) exist in ≥ 2 of 3 topics and C2 holds there (0.55) | building |
 | order / from the start on pointer_v4 | "order" and "from the start" rest on single layers, 22 entities, 1 wording | with the primary cell pre-registered at the last tokens (layers 48, 50): order beats place (0.6), from the start beats from the end (0.55), pooled and in ≥ 2 of 3 topics | building |
