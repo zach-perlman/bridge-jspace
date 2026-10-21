@@ -67,7 +67,9 @@ Decision rule, pointer_v4 additions (fixed 2026-10-21, before any v4 run):
 Decision rule, pointer_v4x additions (fixed 2026-10-21, before any v4x run; pointer_v2's filler-moved and pointer_v3's
 one-more / one-fewer layouts on pointer_v4's topics, wordings and entity-cluster intervals):
   - PRIMARY cells: memory -> prompt, the last two tokens, layers 48 and 50 (single layers, not the 44-52 window, where
-    the digit has already arrived by 52), pooled over topics and per topic.
+    the digit has already arrived by 52), pooled over topics and per topic. On another target: the manifest's
+    primary_layers (--primary-layers), placed by function (before the fetched digit arrives) before the run; "48 or 50"
+    below then reads "any one of them".
   - e5-off: "order beats the same place in the text" at a layer iff the lower bound of the order slot (position) exceeds
     the upper bound of the same token position (token). H-order-v4 holds iff, at layer 48 or 50, this is true pooled
     and in at least 2 of the 3 topics (at the same layer).
@@ -131,7 +133,15 @@ DATASETS = (
 CLUSTER_CI = {"kind": "entity_cluster", "cluster": "asked entity", "strata": "domain", "n_boot": 2000, "seed": 0,
               "bounds": "the wider of the cluster bootstrap and the item-level Wilson interval"}  # fmt: skip
 CI_BY_DATA = {"pointer_v4": CLUSTER_CI, "pointer_v4x": CLUSTER_CI}
-V4X_LAYERS = ("48", "50")  # pointer_v4x's primary layers (the docstring's pointer_v4x additions)
+V4X_LAYERS = ("48", "50")  # pointer_v4x's primary layers on the 27B (the docstring's pointer_v4x additions)
+
+
+def primary_layers(m: dict) -> tuple[str, ...]:
+    """pointer_v4x's primary layers: the manifest's --primary-layers (another target's layers placed by function before
+    its run), else the 27B's 48 and 50."""
+    return tuple(str(la) for la in m.get("primary_layers") or V4X_LAYERS)
+
+
 V4X_TESTS = {"e5-off": ("position", ("token",)), "e5more": ("position", ("end", "token")),
              "e5fewer": ("position", ("end", "token"))}  # level -> (winner, the outcomes it must beat)  # fmt: skip
 # primary (lookup of a recalled bridge), reference (named lookup), contrast (recall) family per dataset
@@ -385,7 +395,7 @@ def stage_manifest(args) -> None:
         "competence_sha256": sha256_of(comp) if comp else None,
         "n": args.n, "layers": layers, "control_stride": args.control_stride, "windows": default_windows(),
         "groups": args.groups or list(GROUPS), "question_max_layer": args.question_max_layer,
-        "control_levels": args.control_levels, "sources": list(SOURCES),
+        "control_levels": args.control_levels, "sources": list(SOURCES), "primary_layers": args.primary_layers,
         "sample": f"per (domain, base level), up to n scenes eligible (every competence prompt right, keyed by set and "
         f"item id) in all of the run's families and conditions, seed {SAMPLE_SEED}; all of them on the same scenes",
         "seeds": {"sample": SAMPLE_SEED, "null": NULL_SEED, "other": OTHER_SEED},
@@ -862,13 +872,15 @@ def analyze(m: dict, rows: list[dict], checks: list[dict]) -> dict[str, Any]:
 def v4x_tests(m: dict, rates: dict) -> dict[str, Any]:
     """pointer_v4x's pre-registered tests (the docstring's pointer_v4x additions): per level, primary layer and cut
     (pooled, each topic), whether the winner's lower bound exceeds each rival's upper bound; then H-order-v4 (e5-off)
-    and H-start-v4 (e5more and e5fewer): true pooled and in >= 2 of 3 topics at the same layer (48 or 50)."""
+    and H-start-v4 (e5more and e5fewer): true pooled and in >= 2 of 3 topics at the same primary layer (the 27B: 48 or
+    50)."""
     pf = family_roles(m)[0]
+    layers = primary_layers(m)
     cells: dict[str, Any] = {}
     for lv, (win, rivals) in V4X_TESTS.items():
         if lv not in m["levels"]:
             continue
-        for la in V4X_LAYERS:
+        for la in layers:
             for cut in ["all", *(f"domain:{d}" for d in m["domains"])]:
                 d = rates.get(f"{pf}|{cut}|{lv}|last|{la}|dissoc")
                 if not d:
@@ -880,7 +892,7 @@ def v4x_tests(m: dict, rates: dict) -> dict[str, Any]:
 
     def holds(levels: tuple[str, ...]) -> dict[str, Any]:
         out: dict[str, Any] = {}
-        for la in V4X_LAYERS:
+        for la in layers:
             ok = True
             for lv in levels:  # a cut counts only if it passes and has the n the rule needs (>= MIN_N_RULE)
 
@@ -893,7 +905,7 @@ def v4x_tests(m: dict, rates: dict) -> dict[str, Any]:
                 ok = ok and pooled and topics >= 2
                 out[f"{lv}|{la}"] = {"pooled": pooled, "topics": topics}
             out[f"layer {la}"] = ok
-        out["holds"] = any(out[f"layer {la}"] for la in V4X_LAYERS)
+        out["holds"] = any(out[f"layer {la}"] for la in layers)
         return out
 
     return {"cells": cells, "H-order-v4": holds(("e5-off",)), "H-start-v4": holds(("e5more", "e5fewer"))}
@@ -1898,7 +1910,7 @@ def report_md(name: str, m: dict, a: dict, out: Path) -> str:
         x = a["v4x"]
         T = OUTCOME_TERM
         lines += ["", "## Pre-registered primary (pointer_v4x): memory -> prompt, the last two tokens, layers "
-                  f"{' and '.join(V4X_LAYERS)}", "",
+                  f"{' and '.join(primary_layers(m))}", "",
                   f"H-order-v4 (filler moved: {T['position']} beats {T['token']}, pooled and in >= 2 of 3 topics at one "
                   f"layer): **{'holds' if x['H-order-v4']['holds'] else 'does not hold'}**; H-start-v4 (one more / one "
                   f"fewer: the slot from the start beats {T['end']} and {T['token']}, pooled and in >= 2 topics, both alt "
@@ -2202,6 +2214,13 @@ if __name__ == "__main__":
     ap.add_argument("--groups", nargs="+", default=None, choices=list(GROUPS), help="patch sites (default: all four)")
     ap.add_argument("--question-max-layer", type=int, default=None, help="patch the question words only up to here")
     ap.add_argument("--control-levels", nargs="+", default=None, help="levels that get the random and other controls")
+    ap.add_argument(
+        "--primary-layers",
+        nargs="+",
+        type=int,
+        default=None,
+        help="pointer_v4x's pre-registered layers on another target (default: the 27B's 48 and 50)",
+    )
     ap.add_argument("--competence", default=None, help="the --data generator's competence run deciding eligibility")
     ap.add_argument("--no-eligibility", action="store_true", help="smoke runs: sample regardless of competence")
     ap.add_argument("--k", type=int, default=3)

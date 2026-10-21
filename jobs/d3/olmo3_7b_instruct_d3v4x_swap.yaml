@@ -1,0 +1,56 @@
+id: olmo3_7b_instruct_d3v4x_swap
+title: "D3 v4x on OLMo-3-7B-Instruct: does its last-token pointer also count statements by order, from the start?"
+thread: D3
+gpus: 1
+mem_gb: 25
+est_gpu_hours: 0.7
+depends_on:
+- olmo3_7b_instruct_d3v4x_competence
+- olmo3_7b_instruct_d3v4_swap_fn
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_swap.py manifest --data pointer_v4x --set main
+  --name olmo3_7b_instruct_d3v4x_swap --families RL DL --n 150 --layers 16 17 18 19 20 21 --control-stride 1
+  --groups final last --competence olmo3_7b_instruct_d3v4x_competence --primary-layers 17 18 19
+  --why "D3 v4x on a second model: order vs the same place in the text, and from the start vs from the end vs the same
+  place, at OLMo's last two tokens, layers 17-19 pre-registered by function (before the digit arrives)"
+  && BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_swap.py run --name olmo3_7b_instruct_d3v4x_swap
+examples_command: BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_swap.py examples --name olmo3_7b_instruct_d3v4x_swap --group last
+figures_command: BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_swap.py figures --name olmo3_7b_instruct_d3v4x_swap
+question: >-
+  On OLMo-3-7B-Instruct (full attention in every layer, 32 layers), when the alt prompt's last two tokens are patched
+  into the org prompt at layers 17-19, does the org prompt answer the digit of the statement with the same ORDER index
+  rather than the one at the same place in the text (filler moved), and the statement counted FROM THE START rather than
+  from the end or at the same place (one statement more / fewer), as d3v4x_swap_main tests on Qwen3.6-27B?
+why_it_matters: >-
+  Dan's prediction (21 Oct): the slot pattern on OLMo should look like Qwen's. If the order / from-the-start pattern
+  repeats on a model with a different architecture and size, "the lookup is steered by a statement index" is a claim
+  about the lookup, not about Qwen3.6-27B. Read together with olmo3_7b_instruct_d3v4_swap_fn: that run says whether
+  OLMo has a slot phase at all; this one says how the slot counts.
+hypotheses:
+  H-order-olmo: 'filler moved: the order slot''s lower bound exceeds the same-token-position''s upper bound at layer 17,
+    18 or 19, pooled and in >= 2 of 3 topics (same layer). Prior 0.45 (Dan: yes, like Qwen)'
+  H-start-olmo: 'one more and one fewer: the slot from the start''s lower bound exceeds the upper bounds of the slot
+    from the end and of the same token position at layer 17, 18 or 19, pooled and in >= 2 of 3 topics, both alt types.
+    Prior 0.4 (Dan: yes, like Qwen)'
+  H-text-position-olmo: 'the same token position beats order, or the end / token rival beats the start: OLMo''s
+    address is a place in the token sequence'
+decision_rule: >-
+  pointer_swap's pointer_v4x rule (docstring "pointer_v4x additions") with OLMo's primary layers 17, 18 and 19 in place
+  of the 27B's 48 and 50, fixed by function before this run (in olmo3_7b_instruct_d3v4_swap the alt digit at the last
+  tokens is 0% at layer 16, 25% at 20, >= 76% from 22). Memory -> prompt, last two tokens, pooled and per topic (n >= 35).
+  Three layers are looked at: a pass whose lower bound is within 2 points of the rival's upper bound is reported as
+  "borderline". If olmo3_7b_instruct_d3v4_swap_fn finds no slot phase at 17-19 (the slot does not beat word and digit),
+  this run is reported as "not testable on OLMo", whatever its numbers. Layers 16, 20, 21, the tokens after the
+  question and named -> prompt are reported, not decisive.
+controls:
+- 'same entity, statements reshuffled, the org prompt''s filler places (every hypothesis predicts answer org): damage bar'
+- 'random push of the same size per token at every layer: chance bar for each predicted digit'
+- 'a prompt of another topic, same size: realistic-activation null'
+- 'org prompt into itself (no-op) and the layer-0 all-position patch (hook checks)'
+n: >-
+  up to 150 scenes per topic x layout eligible in both families (seed 0) x 3 topics x 3 layouts x 2 families; scenes not
+  token-aligned under OLMo's tokenizer are dropped (23 countries scenes in memory -> prompt, before eligibility)
+seeds: [0]
+notes: >-
+  ~0.7 GPU-h on one A100 (7B; olmo3_7b_instruct_d3v4_swap ran 900 cases x 10 layers in 12 min). Results:
+  results/pointer_swap/olmo3_7b_instruct_d3v4x_swap/.

@@ -131,3 +131,13 @@ def test_v4x_hypotheses_need_pooled_and_two_topics():
     m1 = m | {"levels": ["e5-off", "e5more"]}
     x = PS.v4x_tests(m1, fake_rates(0.4, 0.1, m1["levels"]))
     assert x["H-order-v4"]["holds"] and not x["H-start-v4"]["holds"]
+
+
+def test_v4x_primary_layers_from_the_manifest():
+    m = {"levels": ["e5-off", "e5more", "e5fewer"], "domains": ["a", "b", "c"], "family_roles": ["RL", "DL", "RR"]}
+    rates = {k.replace("|48|", "|18|"): v for k, v in fake_rates(0.4, 0.1, m["levels"]).items() if "|48|" in k}
+    # the 27B's layers by default: OLMo's layer-18 cells are not looked at
+    assert not PS.v4x_tests(m, rates)["H-order-v4"]["holds"]
+    x = PS.v4x_tests(m | {"primary_layers": [17, 18, 19]}, rates)
+    assert x["H-order-v4"]["holds"] and x["H-start-v4"]["holds"]
+    assert x["H-order-v4"]["layer 18"] and not x["H-order-v4"]["layer 17"]
