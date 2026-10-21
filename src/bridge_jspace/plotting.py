@@ -14,6 +14,51 @@ from matplotlib.ticker import FuncFormatter, PercentFormatter
 INK, MUTED, GRID, SURFACE = "#0b0b0b", "#898781", "#e1e0d9", "#fcfcfb"
 AXIS = "#c3c2b7"
 READER_TITLE = {"logit": "logit lens (baseline)", "jlens": "J-lens", "jpp": "J++"}
+# Plain names for the families in every figure, table and report (Dan, 2026-10-21: the letter codes are hard to read):
+# "where the bridge comes from -> where the answer comes from". prompt = stated in the prompt, memory = recalled.
+FAMILY_LABEL = {
+    "BL": "prompt → prompt",
+    "BR": "prompt → memory",
+    "RL": "memory → prompt",
+    "RR": "memory → memory",
+    "BLR": "prompt → prompt → memory",
+    "BRL": "prompt → memory → prompt",
+    "DL": "named → prompt",
+    "NAMES": "names: prompt → prompt",
+    "CODE": "code: prompt → prompt",
+    "TBL": "JSON → prompt",
+    "TBR": "JSON → memory",
+    "R": "countries: memory → memory",
+    "B": "countries: prompt → memory",
+    "countries_R": "countries: memory → memory",
+    "countries_B": "countries: prompt → memory",
+    "TYPO": "typo fixed → memory",
+    "TRANS": "translated → memory",
+    "ARITH": "sum computed → memory",
+}
+
+
+def family_label(code: str) -> str:
+    """The plain name of a family code (unknown codes pass through unchanged)."""
+    return FAMILY_LABEL.get(code, code)
+
+
+# Plain terms for figures (Dan, 2026-10-21: a reader outside the project must not need I, X, A, b, C, O, W-copy).
+TERM = {
+    "I": "bridge org",  # the bridge of the original prompt
+    "X": "bridge alt",  # the bridge the edit substitutes
+    "A": "answer org",
+    "b": "answer alt",  # the answer the model gives with bridge alt
+    "clean": "org prompt",
+    "C": "alt prompt",  # the same prompt with bridge alt (only the bridge differs)
+    "O": "off-path control",  # changes something the answer does not depend on
+    "copy": "patch from the alt prompt",
+    "push": "lens push (bridge alt − bridge org)",
+    "random": "random push (same size)",
+    "jpart": "lens-readable part",
+    "rest": "the rest",
+    "flips": "% answers that become answer alt",
+}
 
 
 def style_axes(ax) -> None:
@@ -62,20 +107,48 @@ def bootstrap_note(n_boot: int) -> str:
     return f"95% bootstrap CI over questions ({n_boot:,} resamples)"
 
 
+EXPLAIN_LABELS = ("What we did", "Example", "How to read", "Control", "Data")
+
+
 def finish(
-    fig, path: Path, title: str, note: str, handles=None, ncols: int | None = None, handlelength: float | None = None
+    fig,
+    path: Path,
+    title: str,
+    note: str,
+    handles=None,
+    ncols: int | None = None,
+    handlelength: float | None = None,
+    explain: list[tuple[str, str]] | None = None,
 ) -> None:
     """Title and note above the panels, legend below them; save at 150 dpi and close. A longer `handlelength` keeps
-    dashed lines visible as dashes in the legend."""
+    dashed lines visible as dashes in the legend.
+
+    `explain` (preferred for new figures, Dan 2026-10-21: a one-paragraph note is hard to read): short labelled rows,
+    label in bold on the left, e.g. [("What we did", ...), ("Example", ...), ("How to read", ...), ("Control", ...),
+    ("Data", ...)] (EXPLAIN_LABELS); `note`, if not empty, is added as the last "Data" row."""
     import matplotlib.pyplot as plt  # here, so importing this module never picks a backend before the caller's use()
 
     h, w = fig.get_figheight(), fig.get_figwidth()
-    note_lines = textwrap.wrap(note, width=int(w * 15.5))
-    head = 0.42 + 0.17 * len(note_lines)  # inches above the panels
+    fig.text(0.01, 1 - 0.1 / h, title, ha="left", va="top", fontsize=12, color=INK)
+    if explain is None:
+        note_lines = textwrap.wrap(note, width=int(w * 15.5))
+        head = 0.42 + 0.17 * len(note_lines)  # inches above the panels
+        fig.text(
+            0.01, 1 - 0.36 / h, "\n".join(note_lines), ha="left", va="top", fontsize=8.5, color=MUTED, linespacing=1.4
+        )
+    else:
+        rows_ = [*explain, *([("Data", note)] if note else [])]
+        label_w = 1.05  # inches: the bold label column
+        y = 0.38
+        for label, text in rows_:
+            lines = textwrap.wrap(text, width=int((w - label_w - 0.2) * 15.5)) or [""]
+            fig.text(0.01, 1 - y / h, label, ha="left", va="top", fontsize=8.5, color=INK, fontweight="bold")
+            fig.text(label_w / w, 1 - y / h, "\n".join(lines), ha="left", va="top", fontsize=8.5, color=MUTED,
+                     linespacing=1.4)  # fmt: skip
+            y += 0.155 * len(lines) + 0.05
+        head = y + 0.1
     rows = -(-len(handles) // (ncols or len(handles))) if handles else 0
     foot = 0.2 + 0.25 * rows if handles else 0.05
-    fig.text(0.01, 1 - 0.1 / h, title, ha="left", va="top", fontsize=12, color=INK)
-    fig.text(0.01, 1 - 0.36 / h, "\n".join(note_lines), ha="left", va="top", fontsize=8.5, color=MUTED, linespacing=1.4)
     if handles:
         fig.legend(handles=handles, loc="lower center", ncols=ncols or len(handles), frameon=False, fontsize=9,
                    **({"handlelength": handlelength} if handlelength else {}),

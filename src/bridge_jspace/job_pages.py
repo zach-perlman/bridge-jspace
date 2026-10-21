@@ -21,6 +21,7 @@ from pathlib import Path
 from typing import Any
 
 from bridge_jspace.examples import _CSS, _esc
+from bridge_jspace.plotting import family_label
 
 STATUS_ORDER = ("running", "pending", "failed", "done", "cancelled")
 ROLE_COLOURS = ("#2a78d6", "#eb6834", "#2f9e6a", "#9b59b6", "#c9a227", "#d6456b", "#5a6b7d")
@@ -69,6 +70,14 @@ def load_jobs(repo: Path) -> list[dict[str, Any]]:
     return sorted(jobs.values(), key=lambda r: (STATUS_ORDER.index(r.get("status", "done")), r["id"]))
 
 
+def load_titles(repo: Path) -> dict[str, str]:
+    """jobs/titles.yaml: plain names for runs queued before specs carried a `title`."""
+    import yaml
+
+    path = repo / "jobs" / "titles.yaml"
+    return dict(yaml.safe_load(path.read_text()) or {}) if path.exists() else {}
+
+
 def find_examples(repo: Path, rec: dict[str, Any]) -> dict[str, Any] | None:
     for d in rec.get("new_results", []):
         path = repo / "results" / d / "examples.json"
@@ -113,7 +122,8 @@ def _example_html(ex: dict[str, Any], colours: dict[str, str]) -> str:
     )
     numbers = "".join(f"<tr><td>{_esc(k)}</td><td>{_esc(str(v))}</td></tr>" for k, v in ex.get("numbers", {}).items())
     return (
-        f"<section class='card'><h3>{_esc(str(ex.get('family', '')))} · {_esc(str(ex.get('item_id', '')))}</h3>"
+        f"<section class='card'><h3>{_esc(family_label(str(ex.get('family', ''))))} · "
+        f"{_esc(str(ex.get('item_id', '')))}</h3>"
         f"<p class='meta'>{_esc(ex.get('condition', ''))}</p>"
         f"<div class='prompt'>{prompt_with_spans(ex.get('prompt', ''), ex.get('spans', []), colours)}</div>"
         f"<p class='meta'>clean <code>{_esc(str(answers.get('clean')))}</code> → edited "
@@ -161,7 +171,8 @@ def render_job(rec: dict[str, Any], examples: dict[str, Any] | None, figures: li
     )
     controls = "".join(f"<li>{_esc(str(c))}</li>" for c in rec.get("controls", []))
     body = [
-        f"<header><h1>{_esc(rec['id'])} <span class='status {status}'>{status}</span> "
+        f"<header><h1>{_esc(rec.get('title') or rec['id'])} <span class='status {status}'>{status}</span> "
+        f"<span class='badge'>{_esc(rec['id'])}</span> "
         f"<span class='unverified'>UNVERIFIED</span></h1><div class='lead'><p>{_esc(rec['question'])}</p></div>"
         "</header><main class='solo'>",
         f"<h2>Why it matters</h2><p>{_esc(rec['why_it_matters'])}</p>",
@@ -203,7 +214,7 @@ def render_job(rec: dict[str, Any], examples: dict[str, Any] | None, figures: li
     return (
         "<!doctype html><html lang='en'><head><meta charset='utf-8'>"
         "<meta name='viewport' content='width=device-width,initial-scale=1,viewport-fit=cover'>"
-        f"<title>{_esc(rec['id'])}</title>"
+        f"<title>{_esc(rec.get('title') or rec['id'])}</title>"
         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600'
         '&family=IBM+Plex+Sans:wght@400;600&display=swap">'
         f"<style>{_CSS}{_JOB_CSS}</style></head><body>{''.join(body)}</body></html>"
@@ -216,7 +227,9 @@ def export_jobs(root: Path, repo: Path | None = None) -> list[Path]:
 
     repo = repo or REPO_ROOT
     outs = []
+    titles = load_titles(repo)
     for rec in load_jobs(repo):
+        rec = {**rec, "title": rec.get("title") or titles.get(rec["id"])}
         examples = find_examples(repo, rec)
         out = root / f"job_{rec['id']}"
         if out.exists():
@@ -234,7 +247,7 @@ def export_jobs(root: Path, repo: Path | None = None) -> list[Path]:
             f"(est {rec.get('est_gpu_hours')} GPU-h) · UNVERIFIED"
         )
         entry = {
-            "title": f"{rec['id']}: {rec['question']}",
+            "title": rec["title"] or f"{rec['id']}: {rec['question']}",
             "groups": (examples or {}).get("groups", []),
             "n_examples": len((examples or {}).get("examples", [])),
             "model": rec.get("gpu_name") or "-",

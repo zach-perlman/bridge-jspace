@@ -61,6 +61,7 @@ OPTIONAL: dict[str, tuple[type, ...]] = {
     "figures_command": (str,),  # run after examples; writes the run's figures into a new analysis-*/ folder
     "mem_gb": (int, float),  # free GPU memory the job needs before it starts (default DEFAULT_MEM_GB)
     "notes": (str,),
+    "title": (str,),  # the run's plain name, shown instead of its id (jobs/titles.yaml for older runs)
 }
 DEFAULT_MEM_GB = 70  # Qwen3.6-27B: ~54 GB bf16 weights + lens maps + activations
 ID_RE = re.compile(r"^[a-z0-9][a-z0-9_]*$")

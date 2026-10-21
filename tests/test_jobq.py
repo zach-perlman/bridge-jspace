@@ -177,6 +177,15 @@ def test_job_page_shows_preregistration_timing_and_examples(tmp_path):
     entry = json.loads((out / "source.json").read_text())["entry"]
     assert entry["n_examples"] == 1 and "done" in entry["meta"]
     assert "No figures yet" in page
+    assert "prompt → prompt · bl_001" in page and ">BL ·" not in page  # family shown by its plain name
+    assert entry["title"].startswith("t_ok_v1: ")  # no title anywhere: the id and the question
+
+    (tmp_path / "jobs").mkdir()
+    (tmp_path / "jobs/titles.yaml").write_text('t_ok_v1: "Toy run: does the queue work?"\n')
+    [out] = job_pages.export_jobs(tmp_path / "examples", repo=tmp_path)
+    page = (out / "index.html").read_text()
+    assert "<h1>Toy run: does the queue work?" in page and "<title>Toy run: does the queue work?</title>" in page
+    assert json.loads((out / "source.json").read_text())["entry"]["title"] == "Toy run: does the queue work?"
 
 
 def test_job_page_shows_the_newest_analysis_figures(tmp_path):
