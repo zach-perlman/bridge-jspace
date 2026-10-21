@@ -13,8 +13,9 @@ Reported alongside, outside the rule: P->P vs P->M; the transplant and differenc
 the own direction at the final position only; the transplant at natural size (strength 1) only.
 Tests: wm2_full_v1 (27B, the full v8 set's counterfactual domains, every word, 40 per word; Zach, 2026-10-21, "full v2
 everywhere") is the primary one (wm2_ctrl_all_v1 on ctrl_v8 was stopped for it before writing any outcome); wm2_ctrl_v1
-(ctrl_v8, level 3) is reported. Other words than M->P / M->M are reported alongside. A Gemma run counts only if its positive control passes: countries recalled (R), countries given (B) and M->M
-(RR) each reach >= 50% best gated flips with some lens write (lens_add, lens_swap or lens_transpl, any position set).
+(ctrl_v8, level 3) is reported. Other words than M->P / M->M are reported alongside. Positive control: countries recalled (R), countries given (B) and
+M->M (RR) each reach >= 50% best gated flips with some lens write (lens_add, lens_swap or lens_transpl, any position
+set). It was binding for Gemma; 2026-10-21 (Zach): reported for every model, binding for none.
 
 C2-relative (Zach, 2026-10-21, decided with Zach after the overnight runs showed the copy at the question / final
 positions moves only part of the answers, and that the best of ~100 cells is inflated; fixed before the reruns and any
@@ -221,7 +222,7 @@ def show(res: dict, commit: str) -> str:
     if rr:
         lines += ["", f"C2-relative: ceilings {json.dumps({k: round(v, 2) for k, v in rr['ceiling'].items()})}, relative "
                       f"{json.dumps({k: None if v is None else round(v, 2) for k, v in rr['relative'].items()})} -> {rr['verdict']}"]  # fmt: skip
-    lines += [f"Positive control (binding for Gemma only): {json.dumps({k: round(v, 2) for k, v in res['positive_control']['best'].items()})}"
+    lines += [f"Positive control (reported; binding for no model): {json.dumps({k: round(v, 2) for k, v in res['positive_control']['best'].items()})}"
               f" -> {'passes' if res['positive_control']['passes'] else 'FAILS'}"]  # fmt: skip
     return "\n".join(lines) + "\n"
 
