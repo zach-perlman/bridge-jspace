@@ -171,7 +171,8 @@ def changed_tokens(a: list[int], b: list[int]) -> list[int] | None:
 
 
 def render(text: str, fmt: str, tokenizer) -> str:
-    """A prompt as the run feeds it: raw text, or the chat template with the statement as a question (chat_prefill)."""
+    """A prompt as the run feeds it: raw text, or the statement as a question in the run's prompt format
+    (chat_prefill: chat.chat_text, so BJ_FORMAT=raw gives the plain question, a newline and 'Answer:')."""
     return text if fmt == "raw" else chat.chat_text(tokenizer, chat.question_content(text))
 
 

@@ -267,7 +267,7 @@ def stage_probe(name: str, why: str) -> None:
     manifest = {
         "exp": EXP, "run": name, "kind": "entity probe", "why": why, "model": pins.model_pin(),
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "n_prompts": len(prompts),
-        "format": "chat template, thinking off, 'Answer:' prefilled; the question and the instruction alone (no context)",
+        "format": f"{chat.format_note()}; the question and the instruction alone (no context)",
         "judge": "pointer_v1's: the first digit or number word (or the domain's entity) in the first non-empty line of 8 "
         "greedy tokens",
         "rule": f"an entity enters pointer_v4 iff its cue -> entity, entity -> fact and cue -> fact prompts are all right; "
@@ -608,8 +608,7 @@ def stage_manifest(name: str, why: str, sets: list[str], limit: int | None) -> N
          "items": {k: {"file": str(f.relative_to(root)) if f.is_relative_to(root) else str(f), "sha256": sha256_of(f)}
                    for k, f in files.items()},
          "limit": limit,
-         "format": "pointer_v1's: chat template, thinking off, 'Answer:' prefilled; context, newline, question and "
-         "instruction in one user turn",
+         "format": f"pointer_v1's: {chat.format_note()}; context, newline, question and instruction as the user turn",
          "prompts": "base; each source (dissoc, same, redigit); hop1 (cue -> entity, with the base context) and hop2 "
          "(the lookup with the entity named, or the recalled fact) for RL and RR",
          "judge": "pointer_v1's (digits, number words; the domain's entities for hop1)",

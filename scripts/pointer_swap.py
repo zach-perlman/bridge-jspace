@@ -90,7 +90,7 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from bridge_jspace import pins
+from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
 from bridge_jspace.stats import wilson
 from scripts import pointer_v1 as PV
@@ -355,6 +355,7 @@ def stage_manifest(args) -> None:
 
 
 def check_inputs(m: dict) -> None:
+    chat.check_format(m)  # the run renders its prompts in the manifest's format (BJ_FORMAT)
     for f, pin in m["items"].items():
         assert sha256_of(pins.REPO_ROOT / pin["file"]) == pin["sha256"], f"{f} changed since the manifest"
     comp = competence_path(m)
@@ -1226,9 +1227,11 @@ def _caption(
     topics = a["domains"] if all_levels else sorted(
         {k.split("|")[1].split(":")[1] for k in a["rates"] if f"|{lv}|" in k and "|domain:" in k}) or a["domains"]  # fmt: skip
     digit = "a digit (its drawer, cabinet or locker)" if m.get("data") == "pointer_v4" else "a locker digit"
+    raw = (" Prompts are plain text ending in 'Answer:', with no chat template."
+           if m.get("model", {}).get("prompt_format") == "raw" else "")  # fmt: skip
     rows = [
         ("What we did", f"The org prompt: {level}; each statement gives an entity {digit}. We copied the alt "
-         f"prompt's hidden states ({patched}) into the org prompt, {when}, and read the answer."),
+         f"prompt's hidden states ({patched}) into the org prompt, {when}, and read the answer.{raw}"),
         ("Example", a.get("example_lines", {}).get(lv) or a.get("example_line", "")),
         ("How to read", how),
         ("Control", control or "Grey: the same patch from a prompt asking about the same entity with the statements "
@@ -1677,7 +1680,8 @@ def report_md(name: str, m: dict, a: dict, out: Path) -> str:
                   "Item-level Wilson: summary.json `rates[...]['wilson']`.", ""]  # fmt: skip
     lines += [
         "```",
-        f"EXP {name} @ {_commit(name)} | model Qwen3.6-27B | n per family = "
+        f"EXP {name} @ {_commit(name)} | model {m['model']['repo'].split('/')[-1]} "
+        f"({m['model'].get('prompt_format', 'chat')} format) | n per family = "
         + "; ".join(
             f"{fam_title(k.split('|')[0]).split(' (')[0]} {n_of(k, v)} ({level_short(m, k.split('|')[1])})"
             for k, v in n_fam.items()
@@ -1978,6 +1982,7 @@ def stage_examples(name: str, k: int, seed: int, group: str | None) -> None:
 
     run_dir = RESULTS / name
     m = json.loads((run_dir / "manifest.json").read_text())
+    chat.FORMAT = chat.manifest_format(m)  # the prompts shown exactly as the run fed them, whatever BJ_FORMAT says
     rows = [json.loads(x) for x in (run_dir / "outcomes.jsonl").read_text().splitlines()]
     try:
         tok = load_tokenizer()

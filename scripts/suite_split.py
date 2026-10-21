@@ -45,7 +45,7 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from bridge_jspace import pins
+from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from bridge_jspace.tokens import raw_encoding
@@ -95,8 +95,12 @@ def matched_rows(part: torch.Tensor, delta: torch.Tensor, generator: torch.Gener
 
 
 def competence_file(fam: str, wording: str) -> Path:
+    """The competence run deciding eligibility, in the run's prompt format: COMPETENCE's (chat-format) runs, else, for
+    a target without an entry or in raw format, the target's own run <prefix>competence_<format>_v1 (D5's specs)."""
     which = "tiebreak" if fam in S.TIEBREAK else "main"
-    return S.RESULTS / COMPETENCE[pins.TARGET, wording][which] / "items.jsonl"
+    key = (pins.TARGET, wording)
+    run = COMPETENCE[key][which] if chat.FORMAT == "chat" and key in COMPETENCE else None
+    return S.RESULTS / (run or f"{pins.RUN_PREFIX}competence_{chat.FORMAT}_v1") / "items.jsonl"
 
 
 def prepare(item: dict, tok) -> dict:
@@ -212,7 +216,7 @@ def manifest_common(name: str, why: str, kind: str, families: list[str], wording
         "eligibility": {f: {"competence": str(p.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(p)} for f, p in comp.items()},
         "sample": f"per scene group, up to {N_SCENES} scenes eligible (every prompt right) in all of the run's families "
         f"of the group, seed {SAMPLE_SEED}; BL/BR/RL/RR and BLR/BRL are scene groups, other families their own",
-        "format": "suite_v1's: chat template, thinking off, 'Answer:' prefilled",
+        "format": f"suite_v1's: {chat.format_note()}",
         "groups": {"question": "the question's tokens after C's changed ones, through the end of the prompt (the "
                    "instruction, the template's tokens and 'Answer:' included)", "last": "the last prompt token"},
         "read": "one forward of the edited prompt, a digit answer's space token appended; role of the top token (b: X's "
@@ -245,6 +249,7 @@ def stage_manifest_map(name: str, why: str, families: list[str], n_scenes: int, 
 
 
 def check_inputs(m: dict) -> None:
+    chat.check_format(m)  # the run renders its prompts in the manifest's format (BJ_FORMAT)
     for f, pin in m["items"].items():
         assert sha256_of(pins.REPO_ROOT / pin["file"]) == pin["sha256"], f"{f} items changed since the manifest"
     for f, pin in m["eligibility"].items():

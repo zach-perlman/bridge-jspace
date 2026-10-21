@@ -118,6 +118,7 @@ def main(
     from bridge_jspace.lens import JLens
     from bridge_jspace.model import load_model
 
+    pins.check_run_name(name)  # the target's prefix; "_raw" iff BJ_FORMAT=raw
     out_dir = RESULTS / name
     out_dir.mkdir(parents=True, exist_ok=True)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"

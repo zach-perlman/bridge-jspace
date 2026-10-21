@@ -34,8 +34,7 @@ n: 80 per family (BL, BR, RL, RR; countries R, B)
 seeds:
 - 10000*case+layer (random directions)
 - 0
-notes: 'DRAFT for a later night (not enqueued). Needs the D5b port diff applied first (pins: frozen lens per target
-  and BJ_FORMAT; chat.chat_text raw branch; suite_split MAP_LAYERS = lens layers and COMPETENCE fallback). Disk:
+notes: 'DRAFT for a later night (not enqueued). BJ_FORMAT is in (chat.py, 2026-10-21: raw = the user content, a newline and Answer:, no template; recorded as model.prompt_format in every manifest; raw run names carry _raw) and suite_split reads the competence run of the same format (<prefix>competence_<format>_v1); competence smoked on OLMo-3-7B-Instruct in both formats. Still needed for the lens stages (read_write, ablate_pilot, suite_split parts): pins picking the frozen lens of each target (jlens) and lens-stage layers restricted to the lens layers (0, 3, ..., 30). Disk:
   model snapshots in the box''s HF cache (/ephemeral/hf). Time: 9B dose (n=320, 3 layers, 6 scales) took 97 s; 4
   layers here. No examples_command: read_write.py has no examples stage yet (none of suite_v1, ablate_pilot, read_write,
   suite_split has one).'

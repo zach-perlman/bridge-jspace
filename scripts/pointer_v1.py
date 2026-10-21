@@ -68,7 +68,7 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from bridge_jspace import pins
+from bridge_jspace import chat, pins
 from scripts import suite_v1 as S
 
 DATA = pins.DATA_DIR / "pointer_v1"
@@ -612,8 +612,8 @@ def stage_manifest(name: str, why: str, sets: list[str], limit: int | None) -> N
         "model": pins.model_pin(), "sets": sets,
         "items": {k: {"file": str(f.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(f)} for k, f in files.items()},
         "limit": limit,
-        "format": "suite_v1's: chat template, thinking off, 'Answer:' prefilled; the context, a newline, the question and "
-        f"'{S.INSTRUCTION}' in one user turn",
+        "format": f"suite_v1's: {chat.format_note()}; the context, a newline, the question and '{S.INSTRUCTION}' as the "
+        "user turn",
         "prompts": "base; each source (dissoc, same, redigit) with its own context and question; hop1 (cue -> entity, "
         "with the base context) and hop2 (the lookup with the entity named, or the recalled fact) for RL and RR",
         "judge": "the first answer of the item's kind in the first non-empty line of 8 greedy tokens (digits, number words "
@@ -653,6 +653,7 @@ def stage_competence(name: str) -> None:
     out_dir = RESULTS / name
     manifest = json.loads((out_dir / "manifest.json").read_text())
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
+    chat.check_format(manifest)  # prompts rendered in the manifest's format (BJ_FORMAT)
     for f, pin in manifest["items"].items():
         assert sha256_of(pins.REPO_ROOT / pin["file"]) == pin["sha256"], f"{f} changed since the manifest"
     model = load_model()

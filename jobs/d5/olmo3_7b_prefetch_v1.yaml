@@ -18,8 +18,7 @@ controls:
 n: 4 checkpoints, 5 lens files
 seeds:
 - 0
-notes: 'DRAFT for a later night (not enqueued). Needs the D5b port diff applied first (pins: frozen lens per target
-  and BJ_FORMAT; chat.chat_text raw branch; suite_split MAP_LAYERS = lens layers and COMPETENCE fallback). Disk:
+notes: 'DRAFT for a later night (not enqueued). BJ_FORMAT is in (chat.py, 2026-10-21: raw = the user content, a newline and Answer:, no template; recorded as model.prompt_format in every manifest; raw run names carry _raw) and suite_split reads the competence run of the same format (<prefix>competence_<format>_v1); competence smoked on OLMo-3-7B-Instruct in both formats. Still needed for the lens stages (read_write, ablate_pilot, suite_split parts): pins picking the frozen lens of each target (jlens) and lens-stage layers restricted to the lens layers (0, 3, ..., 30). Disk:
   model snapshots in the box''s HF cache (/ephemeral/hf). Disk ~74 GB: base/SFT/Instruct 14.6 GB each, DPO 29.2
   GB (ships .bin and safetensors; full snapshot needed), lenses 4 x 0.37 GB + neuronpedia base lens 1.04 GB. ~5-15
   min download.'

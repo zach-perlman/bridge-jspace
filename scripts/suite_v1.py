@@ -225,8 +225,9 @@ def tokenizer():
 
 
 def render(tok, context: str, question: str) -> str:
-    """The prompt as every run feeds it: the context, the question and the instruction in one user turn, thinking off,
-    the assistant turn prefilled "Answer:"."""
+    """The prompt as every run feeds it: the context, the question and the instruction as one user turn in the run's
+    prompt format (chat.chat_text, BJ_FORMAT): the chat template, thinking off, the assistant turn prefilled
+    "Answer:" (chat, default), or the same text, a newline and "Answer:" (raw)."""
     return chat.chat_text(tok, f"{context}\n{question} {INSTRUCTION}")
 
 
@@ -883,8 +884,7 @@ def stage_manifest(name: str, why: str, which: str, limit: int | None) -> None:
         "set": which,
         "items": {label: {"file": str(f.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(f)} for label, f in set_files(which).items()},
         "limit": limit,
-        "format": "chat template, thinking off, 'Answer:' prefilled; the context, a newline, the question and "
-        f"'{INSTRUCTION}' in one user turn",
+        "format": f"{chat.format_note()}; the context, a newline, the question and '{INSTRUCTION}' as the user turn",
         "prompts": "clean, C (cf_context + cf_question), O (off_context + question), hop1-hop3 (each step alone, "
         "with the item's context or the hop's own code)",
         "judge": "the first answer of the item's kind in the first non-empty line of the greedy continuation (digits "
@@ -947,6 +947,7 @@ def stage_competence(name: str) -> None:
     out_dir = RESULTS / name
     manifest = json.loads((out_dir / "manifest.json").read_text())
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
+    chat.check_format(manifest)  # prompts rendered in the manifest's format (BJ_FORMAT)
     for f, pin in manifest["items"].items():
         assert sha256_of(pins.REPO_ROOT / pin["file"]) == pin["sha256"], f"{f} changed since the manifest"
     model = load_model()

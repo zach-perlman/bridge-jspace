@@ -282,13 +282,23 @@ if TARGET != "qwen3.6-27b":
 
 
 def model_pin() -> dict[str, str]:
-    """The target model as manifests record it."""
-    return {"target": TARGET, "repo": MODEL_REPO, "revision": MODEL_REVISION, "dtype": "bfloat16", "attn": "sdpa"}
+    """The target model as manifests record it, with the prompt format (chat.FORMAT, BJ_FORMAT) its prompts use."""
+    from bridge_jspace import chat
+
+    return {"target": TARGET, "repo": MODEL_REPO, "revision": MODEL_REVISION, "dtype": "bfloat16", "attn": "sdpa",
+            "prompt_format": chat.FORMAT}  # fmt: skip
 
 
 def check_run_name(name: str) -> None:
-    """A run of a non-default target is named with its prefix, so its results never pass for Qwen's."""
+    """A run of a non-default target is named with its prefix, so its results never pass for Qwen's; a raw-format run
+    (BJ_FORMAT=raw) has "_raw" in its name and a chat-format run does not, so the two never pass for each other."""
+    from bridge_jspace import chat
+
     assert name.startswith(RUN_PREFIX), f"BJ_TARGET={TARGET}: run names start with {RUN_PREFIX!r}, got {name!r}"
+    raw = "_raw" in name
+    assert raw == (chat.FORMAT == "raw"), (
+        f"BJ_FORMAT={chat.FORMAT}: run names {'need' if chat.FORMAT == 'raw' else 'must not have'} '_raw', got {name!r}"
+    )
 
 
 # The oracle lens (exp15): a LoRA on Qwen3.6-27B, same repo and revision; run s3d.rl.ddp600.s0 (see its run.json).
