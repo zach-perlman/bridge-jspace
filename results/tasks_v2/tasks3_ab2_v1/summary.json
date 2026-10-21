@@ -1,0 +1,95 @@
+{
+  "seconds": 65,
+  "cells": {
+    "PPM/q1/planets": {
+      "all": 0.375,
+      "steps_ok": 0.375,
+      "n": 32,
+      "n_ok": 32
+    },
+    "PPM/q1/greek": {
+      "all": 0.65625,
+      "steps_ok": 0.6666666666666666,
+      "n": 32,
+      "n_ok": 30
+    },
+    "PPM/q1/elements": {
+      "all": 0.96875,
+      "steps_ok": 0.96875,
+      "n": 32,
+      "n_ok": 32
+    },
+    "PPM/q2/planets": {
+      "all": 0.5,
+      "steps_ok": 0.5,
+      "n": 32,
+      "n_ok": 32
+    },
+    "PPM/q2/greek": {
+      "all": 0.65625,
+      "steps_ok": 0.6666666666666666,
+      "n": 32,
+      "n_ok": 30
+    },
+    "PPM/q2/elements": {
+      "all": 0.9375,
+      "steps_ok": 0.9375,
+      "n": 32,
+      "n_ok": 32
+    },
+    "PMP/position/planets": {
+      "all": 0.3125,
+      "steps_ok": 0.3125,
+      "n": 32,
+      "n_ok": 32
+    },
+    "PMP/position/greek": {
+      "all": 0.71875,
+      "steps_ok": 0.7333333333333333,
+      "n": 32,
+      "n_ok": 30
+    },
+    "PMP/position/elements": {
+      "all": 0.875,
+      "steps_ok": 0.875,
+      "n": 32,
+      "n_ok": 32
+    },
+    "PMP/ordinal/planets": {
+      "all": 0.625,
+      "steps_ok": 0.625,
+      "n": 32,
+      "n_ok": 32
+    },
+    "PMP/ordinal/greek": {
+      "all": 0.71875,
+      "steps_ok": 0.7333333333333333,
+      "n": 32,
+      "n_ok": 30
+    },
+    "PMP/ordinal/elements": {
+      "all": 0.875,
+      "steps_ok": 0.875,
+      "n": 32,
+      "n_ok": 32
+    },
+    "PMP/whose/planets": {
+      "all": 0.3125,
+      "steps_ok": 0.3125,
+      "n": 32,
+      "n_ok": 32
+    },
+    "PMP/whose/greek": {
+      "all": 0.65625,
+      "steps_ok": 0.6666666666666666,
+      "n": 32,
+      "n_ok": 30
+    },
+    "PMP/whose/elements": {
+      "all": 0.84375,
+      "steps_ok": 0.84375,
+      "n": 32,
+      "n_ok": 32
+    }
+  }
+}

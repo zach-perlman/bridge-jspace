@@ -1,6 +1,11 @@
 """tasks_v2: the breadth task generator (Zach, 2026-10-20; design decided with Zach the same day). This is generator v3
-(the evening of 2026-10-20, after an audit and a cold code review; decided with Zach): calib_v2 and cf_smoke_1020 were
-made by the earlier generator (commits acbbca7 and 93e11f5) and cannot be regenerated from this one.
+(the evening of 2026-10-20, after an audit and a cold code review; decided with Zach), revised as v6 on 2026-10-21
+after the three-step questions failed calibration (tasks3_ab_v1, tasks3_ab2_v1; decided with Zach): bin rules keyed by
+the property ("Animals with 4 legs go in bin 5"), natural bin questions ("Which bin does Sam's pick go in?"), one-way
+partner statements, each word's context only what its question needs (CONTEXT_RELS; the scene stays shared), two- and
+three-step words in separate scene groups, three-step words without planets and Greek letters, no reverse lookups
+(PMM, MMM) and no Caesar or acrostic starts. calib_v2/v3/v4/v5 and the smoke and ctrl sets were made by earlier
+versions (see their manifests' git_commit) and cannot be regenerated from this one.
 
 Every task is a chain of steps; each step retrieves from the Prompt (P), from Memory (M) or is Computed from the input
 (C). A family is its "word": 2-step PP, PM, MP, MM, CP, CM and all eight 3-step words PPP ... MMM. Relations:
@@ -62,10 +67,11 @@ from scripts import suite_v1 as S
 
 DATA = pins.DATA_DIR / "tasks_v2"
 WORDS2 = ("PP", "PM", "MP", "MM", "CP", "CM")
-WORDS3 = tuple("".join(w) for w in itertools.product("PM", repeat=3))
+WORDS3 = ("PPP", "PPM", "PMP", "MPP", "MPM", "MMP")  # v6: the reverse lookups (PMM, MMM) dropped (Zach, 2026-10-21)
 FORMATS = ("prose", "json", "table", "code", "chat", "document")
-C_OPS = ("typo", "reverse", "letters", "caesar", "acrostic")
+C_OPS = ("typo", "reverse", "letters")  # v6: Caesar (31% even alone) and acrostic (33% when nested) dropped
 NUMBER_WORDS = S.WORDS  # zero ... nine
+ORDINAL_WORDS = ["zeroth", "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth"]
 DIGIT_INSTRUCTION = "Answer with a single digit and nothing else."
 
 
@@ -210,7 +216,27 @@ DOMAINS = {
 }  # fmt: skip
 REVERSE_DOMAINS = [d for d, dom in DOMAINS.items() if dom.reverse_q]
 Q_LOCKER = ("Which locker belongs to {d}?", "What is the locker number of {d}?")
-Q_BIN = ("Which bin holds things numbered the same as {n}?", "In which bin do things go when they are numbered the same as {n}?")  # fmt: skip
+Q_BIN = ("Which bin does {d} go in?", "In which bin does {d} go?")
+# v6 (Zach, 2026-10-21, after tasks3_ab_v1: "Things numbered 4 go in bin 5" left P->M->P at 15%; a rule keyed by the
+# property brought it to 72-85%): one rule per number the domain has, in its own terms.
+BIN_RULE = {"animals": "Animals with {n} legs go in bin {b}.", "vehicles": "Vehicles with {n} wheels go in bin {b}.",
+            "instruments": "Instruments with {n} strings go in bin {b}.", "shapes": "Shapes with {n} sides go in bin {b}.",
+            "planets": "The {o} planet from the Sun goes in bin {b}.", "elements": "Elements with atomic number {n} go in bin {b}.",
+            "greek": "The {o} letter of the Greek alphabet goes in bin {b}."}  # fmt: skip
+BIN_STEP = {"animals": "Which bin do animals with {n} legs go in?", "vehicles": "Which bin do vehicles with {n} wheels go in?",
+            "instruments": "Which bin do instruments with {n} strings go in?", "shapes": "Which bin do shapes with {n} sides go in?",
+            "planets": "Which bin does the {o} planet from the Sun go in?", "elements": "Which bin do elements with atomic number {n} go in?",
+            "greek": "Which bin does the {o} letter of the Greek alphabet go in?"}  # fmt: skip
+BIN_KEY = {"animals": "legs", "vehicles": "wheels", "instruments": "strings", "shapes": "sides",
+           "planets": "position_from_sun", "elements": "atomic_number", "greek": "alphabet_position"}  # fmt: skip
+# Each word's context states only what its question needs (v6, after tasks3_ab_v1: extra numbers in the context cost
+# three-step questions 10-15 points); the scene (people, picks, things, start) stays shared within a group.
+CONTEXT_RELS = {"PP": ("locker",), "PM": ("locker",), "MP": ("locker",), "MM": ("locker",), "CP": ("locker",),
+                "CM": ("locker",), "PPP": ("partner", "locker"), "MPP": ("partner", "locker"), "PPM": ("partner",),
+                "MPM": ("partner",), "PMP": ("bin",), "MMP": ("bin",)}  # fmt: skip
+THREE_STEP_DOMAINS = ("animals", "vehicles", "instruments", "shapes", "elements")
+# Planets and Greek letters stay out of three-step words: no wording tried brought them to 85% on items whose steps
+# the model answers alone (tasks3_ab2_v1: planets 31-62%, Greek 66-73%, elements 84-97%; rule set before the run).
 
 # Filler: no digits, number words, names, things of any domain, or the relation words (pick, partner, locker, bin).
 FILLER = (
@@ -394,8 +420,8 @@ def chain(word: str, dom: Domain, sc: dict, x: str, desc: str, dom2: Domain | No
         ndesc = dom.prop_phrase.format(x=desc)
         if rest[1] == "P":
             b = sc["bin"][n]
-            steps.append(step(f"Which bin holds things numbered {n}?", str(b), "digit", "P"))
-            return {"question": Q_BIN[para].format(n=ndesc), "answer": str(b), "kind": "digit", "steps": steps}
+            steps.append(step(BIN_STEP[dom_name(dom)].format(n=n, o=ORDINAL_WORDS[n]), str(b), "digit", "P"))
+            return {"question": Q_BIN[para].format(d=desc), "answer": str(b), "kind": "digit", "steps": steps}
         z = next((t for t, v in dom2.values.items() if v == n), None) if dom2 else None
         if z is None:
             return None
@@ -408,6 +434,10 @@ def chain(word: str, dom: Domain, sc: dict, x: str, desc: str, dom2: Domain | No
     a = str(dom.values[x])
     steps.append(step(dom.prop_q[0].format(x=ref(dom, x)), a, "digit", "M"))
     return {"question": dom.prop_q[para].format(x=desc), "answer": a, "kind": "digit", "steps": steps}
+
+
+def dom_name(dom: Domain) -> str:
+    return next(k for k, v in DOMAINS.items() if v is dom)
 
 
 def follow(word: str, dom: Domain, sc: dict, x: str, dom2: Domain | None) -> tuple[str | None, list[str]]:
@@ -439,7 +469,7 @@ def wrong_routes(word: str, dom: Domain, sc: dict, x: str, dom2: Domain | None) 
     elif len(rest) == 2:
         n, lk = dom.values[x], sc["locker"][x]
         if rest[1] == "P":
-            alts += [str(n), str(lk), str(sc["bin"][lk])]  # bin skipped; locker read as the number
+            alts.append(str(n))  # the bin step skipped (v6: no lockers in a bin question's context)
         else:
             alts.append(next((t for t, v in dom2.values.items() if v == lk), None))  # locker read as the number
         x = None
@@ -451,18 +481,21 @@ def wrong_routes(word: str, dom: Domain, sc: dict, x: str, dom2: Domain | None) 
 
 
 # ---- formats ------------------------------------------------------------------------------------------------------
-def render_facts(fmt: str, dom: Domain, sc: dict, rng: random.Random, n_filler: int) -> str:
-    """The scene's facts (all relations, whichever the words use) in one format. The draws depend only on the scene's
-    sizes, so the same rng state renders C and O with the clean prompt's layout."""
+def render_facts(fmt: str, dom: Domain, sc: dict, rng: random.Random, n_filler: int, rels: tuple[str, ...]) -> str:
+    """The scene's picks and the relations in rels (partner, locker, bin) in one format. The draws depend only on the
+    scene's sizes and rels, so a generator seeded alike renders C and O with the clean prompt's layout."""
     st = sc["numbers"]
+    d = dom_name(dom)
     picks = list(sc["pick"].items()) + sc["lookalike_picks"]
-    lockers, bins, pairs = list(sc["locker"].items()), list(sc["bin"].items()), list(sc["pairs"])
+    pairs = list(sc["pairs"]) if "partner" in rels else []
+    lockers = list(sc["locker"].items()) if "locker" in rels else []
+    bins = [(n, sc["bin"][n]) for n in sorted(set(dom.values.values()))] if "bin" in rels else []
     both = [(a, b) for a, b in pairs] + [(b, a) for a, b in pairs]
     if fmt in ("prose", "chat", "document"):
         lines = [f"{p} picked {ref(dom, t)}." for p, t in picks]
-        lines += [f"{cap(ref(dom, a))} and {ref(dom, b)} are partners." for a, b in pairs]
+        lines += [f"{cap(ref(dom, a))}'s partner is {ref(dom, b)}." for a, b in both]
         lines += [f"The locker of {ref(dom, t)} is {num(n, st)}." for t, n in lockers]
-        lines += [f"Things numbered {num(n, st)} go in bin {num(b, st)}." for n, b in bins]
+        lines += [BIN_RULE[d].format(n=num(n, st), b=num(b, st), o=ORDINAL_WORDS[n]) for n, b in bins]
         fill = rng.sample(FILLER, n_filler)
         intro = fill[: min(3, n_filler)] if fmt == "document" else []
         lines += fill[len(intro) :]
@@ -475,7 +508,8 @@ def render_facts(fmt: str, dom: Domain, sc: dict, rng: random.Random, n_filler: 
     val = (lambda n: n) if st == "digits" else (lambda n: NUMBER_WORDS[n])
     rel = {"picks": ("name", "pick", picks), "partners": ("item", "partner", both),
            "lockers": ("item", "locker", [(t, val(n)) for t, n in lockers]),
-           "bins": ("number", "bin", [(val(n), val(b)) for n, b in bins])}  # fmt: skip
+           "bins": (BIN_KEY[d], "bin", [(val(n), val(b)) for n, b in bins])}  # fmt: skip
+    rel = {k: v for k, v in rel.items() if v[2] or k == "picks"}
     for _, _, rows in rel.values():
         rng.shuffle(rows)
     rooms = [(r, rng.choice(PAINTS)) for r in rng.sample(ROOMS, n_filler)] if fmt in ("json", "table") else []
@@ -484,13 +518,15 @@ def render_facts(fmt: str, dom: Domain, sc: dict, rng: random.Random, n_filler: 
     order = list(rel)
     rng.shuffle(order)
     if fmt == "json":
-        return "\n".join(f"Tool output from get_{k}:\n" + json.dumps([{rel[k][0]: a, rel[k][1]: b} for a, b in rel[k][2]])
+        tool = {"bins": f"get_bins_by_{BIN_KEY[d]}"}
+        return "\n".join(f"Tool output from {tool.get(k, 'get_' + k)}:\n" + json.dumps([{rel[k][0]: a, rel[k][1]: b} for a, b in rel[k][2]])
                          for k in order)  # fmt: skip
     if fmt == "table":
         return "\n\n".join(f"Table {k}:\n| {rel[k][0]} | {rel[k][1]} |\n|---|---|\n"
                            + "\n".join(f"| {a} | {b} |" for a, b in rel[k][2]) for k in order)  # fmt: skip
     if fmt == "code":
-        lines = [f"{k} = {dict(rel[k][2])!r}" for k in order]
+        name = {"bins": f"bin_by_{BIN_KEY[d]}"}  # the property named in code too (bin_by_legs), not abstract "bins"
+        lines = [f"{name.get(k, k)} = {dict(rel[k][2])!r}" for k in order]
         lines += rng.sample(CODE_FILLER, n_filler)
         rng.shuffle(lines)
         return "```python\n" + "\n".join(lines) + "\n```"
@@ -536,8 +572,7 @@ def make_scene(rng: random.Random, group: str, words: list[str], domain: str, fm
     dom2 = DOMAINS[dom2_name] if dom2_name else None
     first = {"P": step(f"What did {sc['person']} pick?", x, "word", "P"), "M": step(f"What is {desc}?", x, "word", "M"),
              "C": step(f"What is {desc}?", x, "word", "C")}[group]  # fmt: skip
-    render_state = rng.getstate()
-    context = render_facts(fmt, dom, sc, rng, knobs["filler"])
+    render_seed = rng.random()  # every word's context (and C's and O's) is drawn from Random(render_seed)
     items = []
     for word in words:
         para = int(rng.random() < 0.5) if knobs["paraphrase"] else 0
@@ -547,14 +582,16 @@ def make_scene(rng: random.Random, group: str, words: list[str], domain: str, fm
             return None
         others = [t for t in sc["things"] if t != x]
         chance = sum(follow(word, dom, sc, t, d2)[0] == ch["answer"] for t in others) / len(others)
+        context = render_facts(fmt, dom, sc, random.Random(render_seed), knobs["filler"], CONTEXT_RELS[word])
         items.append({"chance_same_answer": round(chance, 3), "word": word, "domain": domain, "format": fmt, "knobs": knobs, "c_op": c_op,
                       "domain2": dom2_name if d2 else None, "numbers": style, "n_things": len(sc["things"]),
-                      "context": context, "question": ch["question"], "answer": ch["answer"], "kind": ch["kind"],
-                      "steps": [first, *ch["steps"]], "tier": dom.tier, "start_desc": desc})  # fmt: skip
+                      "context": context, "context_rels": list(CONTEXT_RELS[word]), "question": ch["question"],
+                      "answer": ch["answer"], "kind": ch["kind"], "steps": [first, *ch["steps"]], "tier": dom.tier,
+                      "start_desc": desc})  # fmt: skip
     if tok is None:
         return items
     assert dom.tier == "controlled", domain
-    cf = counterfactuals(tok, items, group, dom, sc, desc, dom2, render_state, knobs["filler"])
+    cf = counterfactuals(tok, items, group, dom, sc, desc, dom2, render_seed, knobs["filler"])
     return None if cf is None else [{**it, **c} for it, c in zip(items, cf, strict=True)]
 
 
@@ -573,7 +610,7 @@ def _swap_picks(sc: dict, a: str, b: str) -> dict:
 
 
 def counterfactuals(tok, items: list[dict], group: str, dom: Domain, sc: dict, desc: str, dom2: Domain | None,
-                    render_state, n_filler: int) -> list[dict] | None:  # fmt: skip
+                    render_seed: float, n_filler: int) -> list[dict] | None:  # fmt: skip
     """One C and one O for the whole scene, token-aligned with every word's prompt (suite_v1's convention), or None.
     C changes only the first bridge (x to X), and every word's answer: P swaps the queried person's pick with another
     person's; M puts X's cue in each question in place of x's; C computes the description from X instead. O swaps the
@@ -585,10 +622,9 @@ def counterfactuals(tok, items: list[dict], group: str, dom: Domain, sc: dict, d
         return None
     d2 = {it["word"]: (dom2 if it["word"][1:] == "MM" else None) for it in items}
 
-    def context_of(scene_: dict) -> str:
-        gen = random.Random()
-        gen.setstate(render_state)
-        return render_facts(items[0]["format"], dom, scene_, gen, n_filler)
+    def context_of(scene_: dict, i: int) -> str:
+        return render_facts(items[i]["format"], dom, scene_, random.Random(render_seed), n_filler,
+                            CONTEXT_RELS[items[i]["word"]])  # fmt: skip
 
     clean_ids = [S.ids(tok, render(tok, it)) for it in items]
 
@@ -605,12 +641,12 @@ def counterfactuals(tok, items: list[dict], group: str, dom: Domain, sc: dict, d
         if group == "P":
             q = next(p for p in others if sc["pick"][p] == X)
             cf_sc, limit = _swap_picks(sc, person, q), MAX_SWAP_CHANGED
-            cf_context, new_desc = context_of(cf_sc), desc
+            cf_contexts, new_desc = [context_of(cf_sc, i) for i in range(len(items))], desc
         else:
             new_desc = cues.get(X) if group == "M" else c_description(items[0]["c_op"], dom, X, rng)
             if new_desc is None:
                 continue
-            cf_sc, cf_context, limit = sc, items[0]["context"], 10**6
+            cf_sc, cf_contexts, limit = sc, [it["context"] for it in items], 10**6
         out = []
         for i, it in enumerate(items):
             assert it["question"].count(desc) == 1, it["question"]
@@ -620,6 +656,7 @@ def counterfactuals(tok, items: list[dict], group: str, dom: Domain, sc: dict, d
                 follow(it["word"], dom, sc, t, d2[it["word"]])[0] != cf_answer for t in la
             )  # no look-alike route to the C answer
             ok = ok and S.answer_token(tok, cf_answer, it["kind"]) != S.answer_token(tok, it["answer"], it["kind"])
+            cf_context = cf_contexts[i]
             changed = aligned(i, cf_context, cf_q, limit) if ok else None
             if not changed:
                 break
@@ -630,13 +667,14 @@ def counterfactuals(tok, items: list[dict], group: str, dom: Domain, sc: dict, d
     else:
         return None
     for a, b in rng.sample(list(itertools.combinations(others, 2)), len(others) * (len(others) - 1) // 2):
-        off_context = context_of(_swap_picks(sc, a, b))
-        offs = [aligned(i, off_context, it["question"], MAX_SWAP_CHANGED) for i, it in enumerate(items)]
+        off_sc = _swap_picks(sc, a, b)
+        off_contexts = [context_of(off_sc, i) for i in range(len(items))]
+        offs = [aligned(i, off_contexts[i], it["question"], MAX_SWAP_CHANGED) for i, it in enumerate(items)]
         if all(offs):
-            return [{**c, "off_context": off_context, "off_changed_tokens": len(o), "bridge": x,
+            return [{**c, "off_context": oc, "off_changed_tokens": len(o), "bridge": x,
                      "bridges": follow(it["word"], dom, sc, x, d2[it["word"]])[1], "answer_kind": it["kind"],
                      "scene_facts": {k: sc[k] for k in ("pick", "pairs", "locker")}}
-                    for c, o, it in zip(out, offs, items, strict=True)]  # fmt: skip
+                    for c, o, oc, it in zip(out, offs, off_contexts, items, strict=True)]  # fmt: skip
     return None
 
 
@@ -685,7 +723,12 @@ BAND = (0.85, 0.95)
 
 
 def groups_of(words: list[str]) -> dict[str, list[str]]:
-    return {g: [w for w in words if w[0] == g] for g in "PMC" if any(w[0] == g for w in words)}
+    """Scene groups: the words that start alike and have the same length (v6: three-step words have their own scenes,
+    on THREE_STEP_DOMAINS), e.g. P2 = PP, PM; P3 = PPP, PPM, PMP."""
+    out: dict[str, list[str]] = {}
+    for w in words:
+        out.setdefault(f"{w[0]}{len(w)}", []).append(w)
+    return out
 
 
 def make(name: str, n: int, words: list[str], domains: list[str], formats: list[str], levels: list[int], seed: int,
@@ -707,7 +750,8 @@ def make(name: str, n: int, words: list[str], domains: list[str], formats: list[
     cap_n = math.ceil(2 * n / 9)
     for level in levels:
         for group, gwords in groups_of(words).items():
-            combos = [(d, f) for d in domains for f in formats]
+            doms = [d for d in domains if group[1] == "2" or d in THREE_STEP_DOMAINS]
+            combos = [(d, f) for d in doms for f in formats]
             rng.shuffle(combos)
             answers = {w: collections.Counter() for w in gwords}
             got, dead, used = 0, set(), collections.Counter()
@@ -716,7 +760,7 @@ def make(name: str, n: int, words: list[str], domains: list[str], formats: list[
                     if got >= n or (d, f) in dead:
                         continue
                     for _ in range(60):  # a combination that yields nothing in 60 draws cannot carry this group
-                        its = make_scene(rng, group, gwords, d, f, LEVELS[level], domains, tok)
+                        its = make_scene(rng, group[0], gwords, d, f, LEVELS[level], domains, tok)
                         if its is None or (its[0]["context"], tuple(it["question"] for it in its)) in seen:
                             continue
                         if any(it["kind"] == "digit" and answers[it["word"]][it["answer"]] >= cap_n for it in its):
@@ -749,21 +793,24 @@ def examples(seed: int) -> None:
     rng = random.Random(seed)
     for group, words in groups_of(list(WORDS2 + WORDS3)).items():
         for _ in range(200):
-            its = make_scene(rng, group, words, rng.choice(["animals", "planets", "elements", "greek"]), "prose",
-                             LEVELS[1], list(DOMAINS))  # fmt: skip
+            doms = (
+                ["animals", "planets", "elements", "greek"] if group[1] == "2" else ["animals", "vehicles", "elements"]
+            )
+            its = make_scene(rng, group[0], words, rng.choice(doms), "prose", LEVELS[1], list(DOMAINS))
             if its:
                 break
-        print(f"\n=== {group}-start scene ({its[0]['domain']}, numbers as {its[0]['numbers']}"
-              f"{', ' + its[0]['c_op'] if its[0]['c_op'] else ''})\n{its[0]['context']}")  # fmt: skip
+        print(f"\n=== {group} scene ({its[0]['domain']}, numbers as {its[0]['numbers']}"
+              f"{', ' + its[0]['c_op'] if its[0]['c_op'] else ''})")  # fmt: skip
         for it in its:
+            print(f"  {it['word']:4s} context ({'+'.join(['picks', *it['context_rels']])}): {it['context'][:300]}")
             print(f"  {it['word']:4s} Q: {it['question']} -> {it['answer']}")
             print("        steps:", " | ".join(f"{s['source']}: {s['question']} -> {s['answer']}" for s in it["steps"]))
     for fmt in FORMATS:
-        for _ in range(200):
-            its = make_scene(random.Random(seed), "P", ["PM"], "planets", fmt, LEVELS[1], list(DOMAINS))
+        for k in range(200):
+            its = make_scene(random.Random(seed + k), "P", ["PMP"], "animals", fmt, LEVELS[1], list(DOMAINS))
             if its:
                 break
-        print(f"\n=== format {fmt} (PM, planets, level 1)\n{its[0]['context'][:900]}\nQ: {its[0]['question']}")
+        print(f"\n=== format {fmt} (PMP, animals, level 1)\n{its[0]['context'][:900]}\nQ: {its[0]['question']}")
 
 
 def load(name: str) -> list[dict]:

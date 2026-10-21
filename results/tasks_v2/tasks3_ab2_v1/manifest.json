@@ -1,0 +1,16 @@
+{
+  "run": "tasks3_ab2_v1",
+  "why": "Zach (2026-10-21): can a rewording rescue planets and Greek letters in three-step questions",
+  "git_commit": "5c29a4d627db338e0f6bc24fe21927f2f745bebf",
+  "n": 24,
+  "seed": 711,
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "doc": "python scripts/tasks3_ab2.py --name N --why W [--n 24]\n",
+  "written_utc": "2026-10-21T00:26:59Z"
+}
