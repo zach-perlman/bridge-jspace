@@ -1,0 +1,19 @@
+{
+  "run": "tasks3_ab_v1",
+  "why": "Zach (2026-10-21): why the spelled-out three-step questions fail; diagnose before the rewrite",
+  "git_commit": "c6b88cec77ffba22ced77a31466bf8a7cb0ecc07",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "set": "calib_v5",
+  "levels": [
+    0,
+    2
+  ],
+  "doc": "P->M->P (the bin step), 3 phrasings x 2 contexts:\n  abstract      rules \"Things numbered 4 go in bin 5.\" (1-9); question \"Which bin holds things numbered the same as\n                the number of legs of Sam's pick?\" (calib_v5 as is)\n  prop_nested   rules keyed by the property, for the domain's numbers only (\"Animals with 4 legs go in bin 5.\");\n                question still nested (\"Which bin goes with the number of legs of Sam's pick?\")\n  prop_natural  the same rules; question \"Which bin does Sam's pick go in?\" (the suite's BRL style)\nP->P->M (the partner step), 2 wordings x 2 contexts:\n  pairs         \"The cow and the spider are partners.\" (calib_v5 as is)\n  one_way       \"The cow's partner is the spider. The spider's partner is the cow.\" (the suite's BLR style)\nContexts: full (picks, partners, lockers, bins: calib_v5) or relevant (picks and only the relation the question uses);\nfiller and look-alike picks as the scene's level has them. Success (fixed before the run): >= 85% on the items whose\nsteps the model answered right alone in calibration.\n\npython scripts/tasks3_ab.py --name N --why W\n",
+  "written_utc": "2026-10-21T00:19:32Z"
+}
