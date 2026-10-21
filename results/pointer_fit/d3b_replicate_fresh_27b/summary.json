@@ -1,0 +1,1095 @@
+{
+  "primary": {
+    "layer": 48,
+    "scale": 1.0,
+    "slot": [
+      0.4156,
+      0.3804,
+      0.4518,
+      729
+    ],
+    "lens": [
+      0.0,
+      -0.0,
+      0.0052,
+      729
+    ],
+    "random": [
+      0.0,
+      -0.0,
+      0.0052,
+      729
+    ],
+    "slot_minus_lens": [
+      0.4156378600823045,
+      0.37997256515775035,
+      0.4499314128943759
+    ],
+    "slot_minus_random": [
+      0.4156378600823045,
+      0.37997256515775035,
+      0.4499314128943759
+    ],
+    "shuffled": [
+      0.0123,
+      0.0065,
+      0.0233,
+      729
+    ],
+    "rr_slot": [
+      0.005,
+      0.0009,
+      0.0278,
+      200
+    ],
+    "span_only": [
+      0.2743,
+      0.2432,
+      0.3079,
+      729
+    ],
+    "rest_only": [
+      0.0658,
+      0.05,
+      0.0862,
+      729
+    ],
+    "held_out_entities": [
+      0.4582,
+      0.4082,
+      0.5091,
+      371
+    ],
+    "seen_entities": [
+      0.3715,
+      0.3231,
+      0.4227,
+      358
+    ],
+    "patch": [
+      0.3073,
+      0.2749,
+      0.3417,
+      729
+    ],
+    "sub4": [
+      0.3841,
+      0.3495,
+      0.4199,
+      729
+    ]
+  },
+  "checks": {
+    "a_lower_bound_ge_0.30": true,
+    "b_20_points_above_lens_and_random": true,
+    "controls_valid": true,
+    "illusion_flag": false,
+    "unedited_answer_org": 1
+  },
+  "verdict": "the slot direction steers the lookup where the lens push does not",
+  "grid": {
+    "RL|slot|44|1.0": {
+      "position": [
+        0.3224,
+        0.2894,
+        0.3571,
+        729
+      ],
+      "roles": {
+        "none": 418,
+        "position": 235,
+        "context": 65,
+        "identity": 11
+      }
+    },
+    "RL|slot|44|2.0": {
+      "position": [
+        0.4033,
+        0.3683,
+        0.4393,
+        729
+      ],
+      "roles": {
+        "context": 72,
+        "none": 340,
+        "position": 294,
+        "identity": 22,
+        "recall": 1
+      }
+    },
+    "RL|slot|48|1.0": {
+      "position": [
+        0.4156,
+        0.3804,
+        0.4518,
+        729
+      ],
+      "roles": {
+        "none": 348,
+        "position": 303,
+        "context": 52,
+        "identity": 25,
+        "recall": 1
+      }
+    },
+    "RL|slot|48|2.0": {
+      "position": [
+        0.4431,
+        0.4074,
+        0.4793,
+        729
+      ],
+      "roles": {
+        "none": 308,
+        "position": 323,
+        "context": 63,
+        "identity": 24,
+        "value": 3,
+        "recall": 8
+      }
+    },
+    "RL|slot|window|1.0": {
+      "position": [
+        0.4842,
+        0.4481,
+        0.5205,
+        729
+      ],
+      "roles": {
+        "recall": 9,
+        "none": 258,
+        "position": 353,
+        "context": 79,
+        "identity": 28,
+        "value": 2
+      }
+    },
+    "RL|slot|window|2.0": {
+      "position": [
+        0.4033,
+        0.3683,
+        0.4393,
+        729
+      ],
+      "roles": {
+        "identity": 33,
+        "none": 300,
+        "position": 294,
+        "context": 82,
+        "value": 6,
+        "recall": 14
+      }
+    },
+    "RL|sub4|44|1.0": {
+      "position": [
+        0.251,
+        0.2209,
+        0.2838,
+        729
+      ],
+      "roles": {
+        "none": 472,
+        "position": 183,
+        "context": 58,
+        "identity": 16
+      }
+    },
+    "RL|sub4|44|2.0": {
+      "position": [
+        0.3347,
+        0.3014,
+        0.3697,
+        729
+      ],
+      "roles": {
+        "none": 363,
+        "position": 244,
+        "context": 90,
+        "identity": 32
+      }
+    },
+    "RL|sub4|48|1.0": {
+      "position": [
+        0.3841,
+        0.3495,
+        0.4199,
+        729
+      ],
+      "roles": {
+        "none": 332,
+        "position": 280,
+        "context": 80,
+        "identity": 36,
+        "recall": 1
+      }
+    },
+    "RL|sub4|48|2.0": {
+      "position": [
+        0.3704,
+        0.3361,
+        0.406,
+        729
+      ],
+      "roles": {
+        "none": 322,
+        "position": 270,
+        "context": 92,
+        "identity": 45
+      }
+    },
+    "RL|sub4|window|1.0": {
+      "position": [
+        0.4074,
+        0.3723,
+        0.4435,
+        729
+      ],
+      "roles": {
+        "none": 296,
+        "position": 297,
+        "context": 95,
+        "identity": 41
+      }
+    },
+    "RL|sub4|window|2.0": {
+      "position": [
+        0.3909,
+        0.3562,
+        0.4269,
+        729
+      ],
+      "roles": {
+        "position": 285,
+        "none": 309,
+        "context": 95,
+        "identity": 38,
+        "value": 2
+      }
+    },
+    "RL|shuffled|44|1.0": {
+      "position": [
+        0.0096,
+        0.0047,
+        0.0197,
+        729
+      ],
+      "roles": {
+        "none": 666,
+        "context": 40,
+        "identity": 16,
+        "position": 7
+      }
+    },
+    "RL|shuffled|44|2.0": {
+      "position": [
+        0.0302,
+        0.02,
+        0.0453,
+        729
+      ],
+      "roles": {
+        "context": 85,
+        "none": 590,
+        "position": 22,
+        "identity": 32
+      }
+    },
+    "RL|shuffled|48|1.0": {
+      "position": [
+        0.0123,
+        0.0065,
+        0.0233,
+        729
+      ],
+      "roles": {
+        "context": 42,
+        "none": 673,
+        "position": 9,
+        "identity": 5
+      }
+    },
+    "RL|shuffled|48|2.0": {
+      "position": [
+        0.0398,
+        0.0278,
+        0.0565,
+        729
+      ],
+      "roles": {
+        "context": 91,
+        "none": 576,
+        "position": 29,
+        "identity": 30,
+        "value": 1,
+        "recall": 2
+      }
+    },
+    "RL|shuffled|window|1.0": {
+      "position": [
+        0.0439,
+        0.0313,
+        0.0613,
+        729
+      ],
+      "roles": {
+        "context": 91,
+        "none": 570,
+        "position": 32,
+        "identity": 35,
+        "recall": 1
+      }
+    },
+    "RL|shuffled|window|2.0": {
+      "position": [
+        0.0576,
+        0.0429,
+        0.077,
+        729
+      ],
+      "roles": {
+        "context": 143,
+        "none": 484,
+        "position": 42,
+        "other": 6,
+        "identity": 47,
+        "recall": 4,
+        "value": 3
+      }
+    },
+    "RL|random|44|1.0": {
+      "position": [
+        0.0027,
+        0.0008,
+        0.0099,
+        729
+      ],
+      "roles": {
+        "none": 724,
+        "position": 2,
+        "context": 3
+      }
+    },
+    "RL|random|44|2.0": {
+      "position": [
+        0.0082,
+        0.0038,
+        0.0178,
+        729
+      ],
+      "roles": {
+        "none": 708,
+        "context": 14,
+        "position": 6,
+        "identity": 1
+      }
+    },
+    "RL|random|48|1.0": {
+      "position": [
+        0.0,
+        -0.0,
+        0.0052,
+        729
+      ],
+      "roles": {
+        "none": 729
+      }
+    },
+    "RL|random|48|2.0": {
+      "position": [
+        0.0,
+        -0.0,
+        0.0052,
+        729
+      ],
+      "roles": {
+        "none": 726,
+        "context": 3
+      }
+    },
+    "RL|random|window|1.0": {
+      "position": [
+        0.0041,
+        0.0014,
+        0.012,
+        729
+      ],
+      "roles": {
+        "none": 724,
+        "position": 3,
+        "context": 2
+      }
+    },
+    "RL|random|window|2.0": {
+      "position": [
+        0.0082,
+        0.0038,
+        0.0178,
+        729
+      ],
+      "roles": {
+        "none": 711,
+        "context": 10,
+        "position": 6,
+        "identity": 2
+      }
+    },
+    "RL|lens|44|1.0": {
+      "position": [
+        0.0041,
+        0.0014,
+        0.012,
+        729
+      ],
+      "roles": {
+        "none": 720,
+        "position": 3,
+        "identity": 2,
+        "context": 4
+      }
+    },
+    "RL|lens|44|2.0": {
+      "position": [
+        0.0055,
+        0.0021,
+        0.014,
+        729
+      ],
+      "roles": {
+        "none": 710,
+        "position": 4,
+        "context": 11,
+        "identity": 4
+      }
+    },
+    "RL|lens|48|1.0": {
+      "position": [
+        0.0,
+        -0.0,
+        0.0052,
+        729
+      ],
+      "roles": {
+        "none": 727,
+        "context": 2
+      }
+    },
+    "RL|lens|48|2.0": {
+      "position": [
+        0.0,
+        -0.0,
+        0.0052,
+        729
+      ],
+      "roles": {
+        "none": 725,
+        "context": 3,
+        "identity": 1
+      }
+    },
+    "RL|lens|window|1.0": {
+      "position": [
+        0.0041,
+        0.0014,
+        0.012,
+        729
+      ],
+      "roles": {
+        "none": 718,
+        "identity": 3,
+        "context": 5,
+        "position": 3
+      }
+    },
+    "RL|lens|window|2.0": {
+      "position": [
+        0.0069,
+        0.0029,
+        0.016,
+        729
+      ],
+      "roles": {
+        "none": 703,
+        "context": 17,
+        "position": 5,
+        "identity": 4
+      }
+    },
+    "RL|span|44|1.0": {
+      "position": [
+        0.1372,
+        0.1141,
+        0.1641,
+        729
+      ],
+      "roles": {
+        "none": 564,
+        "context": 52,
+        "position": 100,
+        "identity": 13
+      }
+    },
+    "RL|span|44|2.0": {
+      "position": [
+        0.2071,
+        0.1793,
+        0.238,
+        729
+      ],
+      "roles": {
+        "none": 473,
+        "position": 151,
+        "context": 81,
+        "identity": 24
+      }
+    },
+    "RL|span|48|1.0": {
+      "position": [
+        0.2743,
+        0.2432,
+        0.3079,
+        729
+      ],
+      "roles": {
+        "none": 449,
+        "position": 200,
+        "context": 54,
+        "identity": 25,
+        "recall": 1
+      }
+    },
+    "RL|span|48|2.0": {
+      "position": [
+        0.358,
+        0.324,
+        0.3935,
+        729
+      ],
+      "roles": {
+        "none": 356,
+        "position": 261,
+        "context": 80,
+        "identity": 29,
+        "recall": 3
+      }
+    },
+    "RL|span|window|1.0": {
+      "position": [
+        0.3114,
+        0.2788,
+        0.3459,
+        729
+      ],
+      "roles": {
+        "none": 374,
+        "position": 227,
+        "context": 99,
+        "identity": 29
+      }
+    },
+    "RL|span|window|2.0": {
+      "position": [
+        0.3525,
+        0.3187,
+        0.3879,
+        729
+      ],
+      "roles": {
+        "none": 347,
+        "position": 257,
+        "context": 98,
+        "identity": 27
+      }
+    },
+    "RL|rest|44|1.0": {
+      "position": [
+        0.0809,
+        0.0633,
+        0.103,
+        729
+      ],
+      "roles": {
+        "none": 640,
+        "position": 59,
+        "context": 23,
+        "identity": 7
+      }
+    },
+    "RL|rest|44|2.0": {
+      "position": [
+        0.1495,
+        0.1255,
+        0.1772,
+        729
+      ],
+      "roles": {
+        "none": 563,
+        "position": 109,
+        "context": 37,
+        "identity": 20
+      }
+    },
+    "RL|rest|48|1.0": {
+      "position": [
+        0.0658,
+        0.05,
+        0.0862,
+        729
+      ],
+      "roles": {
+        "none": 667,
+        "context": 9,
+        "position": 48,
+        "identity": 5
+      }
+    },
+    "RL|rest|48|2.0": {
+      "position": [
+        0.1495,
+        0.1255,
+        0.1772,
+        729
+      ],
+      "roles": {
+        "none": 553,
+        "position": 109,
+        "context": 42,
+        "recall": 7,
+        "identity": 16,
+        "value": 2
+      }
+    },
+    "RL|rest|window|1.0": {
+      "position": [
+        0.1866,
+        0.1599,
+        0.2165,
+        729
+      ],
+      "roles": {
+        "none": 522,
+        "position": 136,
+        "context": 44,
+        "identity": 19,
+        "recall": 5,
+        "value": 3
+      }
+    },
+    "RL|rest|window|2.0": {
+      "position": [
+        0.2305,
+        0.2013,
+        0.2624,
+        729
+      ],
+      "roles": {
+        "identity": 38,
+        "none": 450,
+        "position": 168,
+        "context": 57,
+        "value": 3,
+        "recall": 13
+      }
+    },
+    "RL|patch|44|None": {
+      "position": [
+        0.214,
+        0.1858,
+        0.2452,
+        729
+      ],
+      "roles": {
+        "none": 433,
+        "position": 156,
+        "identity": 127,
+        "context": 13
+      }
+    },
+    "RL|patch|48|None": {
+      "position": [
+        0.3073,
+        0.2749,
+        0.3417,
+        729
+      ],
+      "roles": {
+        "none": 345,
+        "position": 224,
+        "identity": 133,
+        "context": 27
+      }
+    },
+    "RL|patch|window|None": {
+      "position": [
+        0.3402,
+        0.3067,
+        0.3753,
+        729
+      ],
+      "roles": {
+        "none": 307,
+        "position": 248,
+        "identity": 152,
+        "context": 22
+      }
+    },
+    "RR|slot|44|1.0": {
+      "position": [
+        0.005,
+        0.0009,
+        0.0278,
+        200
+      ],
+      "roles": {
+        "none": 199,
+        "position": 1
+      }
+    },
+    "RR|slot|44|2.0": {
+      "position": [
+        0.01,
+        0.0027,
+        0.0357,
+        200
+      ],
+      "roles": {
+        "none": 196,
+        "position": 2,
+        "context": 2
+      }
+    },
+    "RR|slot|48|1.0": {
+      "position": [
+        0.005,
+        0.0009,
+        0.0278,
+        200
+      ],
+      "roles": {
+        "none": 199,
+        "position": 1
+      }
+    },
+    "RR|slot|48|2.0": {
+      "position": [
+        0.01,
+        0.0027,
+        0.0357,
+        200
+      ],
+      "roles": {
+        "none": 197,
+        "position": 2,
+        "context": 1
+      }
+    },
+    "RR|slot|window|1.0": {
+      "position": [
+        0.02,
+        0.0078,
+        0.0503,
+        200
+      ],
+      "roles": {
+        "none": 192,
+        "position": 4,
+        "context": 3,
+        "identity": 1
+      }
+    },
+    "RR|slot|window|2.0": {
+      "position": [
+        0.04,
+        0.0204,
+        0.0769,
+        200
+      ],
+      "roles": {
+        "none": 182,
+        "context": 6,
+        "position": 8,
+        "other_digit": 2,
+        "identity": 2
+      }
+    },
+    "RR|shuffled|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0188,
+        200
+      ],
+      "roles": {
+        "none": 197,
+        "other_digit": 1,
+        "identity": 1,
+        "context": 1
+      }
+    },
+    "RR|shuffled|44|2.0": {
+      "position": [
+        0.015,
+        0.0051,
+        0.0432,
+        200
+      ],
+      "roles": {
+        "none": 190,
+        "position": 3,
+        "context": 5,
+        "other_digit": 1,
+        "identity": 1
+      }
+    },
+    "RR|shuffled|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0188,
+        200
+      ],
+      "roles": {
+        "none": 197,
+        "other_digit": 1,
+        "identity": 1,
+        "context": 1
+      }
+    },
+    "RR|shuffled|48|2.0": {
+      "position": [
+        0.01,
+        0.0027,
+        0.0357,
+        200
+      ],
+      "roles": {
+        "none": 189,
+        "context": 5,
+        "identity": 2,
+        "other_digit": 2,
+        "position": 2
+      }
+    },
+    "RR|shuffled|window|1.0": {
+      "position": [
+        0.02,
+        0.0078,
+        0.0503,
+        200
+      ],
+      "roles": {
+        "none": 187,
+        "position": 4,
+        "identity": 3,
+        "context": 4,
+        "other_digit": 2
+      }
+    },
+    "RR|shuffled|window|2.0": {
+      "position": [
+        0.04,
+        0.0204,
+        0.0769,
+        200
+      ],
+      "roles": {
+        "none": 168,
+        "identity": 6,
+        "context": 15,
+        "position": 8,
+        "other_digit": 3
+      }
+    },
+    "RR|random|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0188,
+        200
+      ],
+      "roles": {
+        "none": 200
+      }
+    },
+    "RR|random|44|2.0": {
+      "position": [
+        0.005,
+        0.0009,
+        0.0278,
+        200
+      ],
+      "roles": {
+        "none": 199,
+        "position": 1
+      }
+    },
+    "RR|random|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0188,
+        200
+      ],
+      "roles": {
+        "none": 200
+      }
+    },
+    "RR|random|48|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0188,
+        200
+      ],
+      "roles": {
+        "none": 200
+      }
+    },
+    "RR|random|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0188,
+        200
+      ],
+      "roles": {
+        "none": 200
+      }
+    },
+    "RR|random|window|2.0": {
+      "position": [
+        0.005,
+        0.0009,
+        0.0278,
+        200
+      ],
+      "roles": {
+        "none": 199,
+        "position": 1
+      }
+    },
+    "RR|lens|44|1.0": {
+      "position": [
+        0.01,
+        0.0027,
+        0.0357,
+        200
+      ],
+      "roles": {
+        "none": 157,
+        "identity": 41,
+        "position": 2
+      }
+    },
+    "RR|lens|44|2.0": {
+      "position": [
+        0.01,
+        0.0027,
+        0.0357,
+        200
+      ],
+      "roles": {
+        "none": 142,
+        "identity": 53,
+        "position": 2,
+        "context": 3
+      }
+    },
+    "RR|lens|48|1.0": {
+      "position": [
+        0.01,
+        0.0027,
+        0.0357,
+        200
+      ],
+      "roles": {
+        "none": 161,
+        "identity": 36,
+        "position": 2,
+        "context": 1
+      }
+    },
+    "RR|lens|48|2.0": {
+      "position": [
+        0.02,
+        0.0078,
+        0.0503,
+        200
+      ],
+      "roles": {
+        "none": 163,
+        "identity": 31,
+        "position": 4,
+        "context": 2
+      }
+    },
+    "RR|lens|window|1.0": {
+      "position": [
+        0.015,
+        0.0051,
+        0.0432,
+        200
+      ],
+      "roles": {
+        "none": 144,
+        "identity": 49,
+        "position": 3,
+        "context": 4
+      }
+    },
+    "RR|lens|window|2.0": {
+      "position": [
+        0.035,
+        0.0171,
+        0.0705,
+        200
+      ],
+      "roles": {
+        "none": 161,
+        "position": 7,
+        "identity": 26,
+        "context": 6
+      }
+    },
+    "RR|patch|44|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.0188,
+        200
+      ],
+      "roles": {
+        "none": 159,
+        "identity": 39,
+        "context": 2
+      }
+    },
+    "RR|patch|48|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.0188,
+        200
+      ],
+      "roles": {
+        "none": 159,
+        "identity": 41
+      }
+    },
+    "RR|patch|window|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.0188,
+        200
+      ],
+      "roles": {
+        "none": 148,
+        "identity": 50,
+        "context": 2
+      }
+    }
+  },
+  "seconds": 1118,
+  "edited_reads": 39134,
+  "n_cases": 929
+}

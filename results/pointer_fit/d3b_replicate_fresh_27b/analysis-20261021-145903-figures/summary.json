@@ -1,0 +1,241 @@
+{
+  "run": "d3b_replicate_fresh_27b",
+  "verdict": "the slot direction steers the lookup where the lens push does not",
+  "checks": {
+    "a_lower_bound_ge_0.30": true,
+    "b_20_points_above_lens_and_random": true,
+    "controls_valid": true,
+    "illusion_flag": false,
+    "unedited_answer_org": 1
+  },
+  "primary": {
+    "layer": 48,
+    "scale": 1.0,
+    "slot": [
+      0.4156,
+      0.3804,
+      0.4518,
+      729
+    ],
+    "lens": [
+      0.0,
+      -0.0,
+      0.0052,
+      729
+    ],
+    "random": [
+      0.0,
+      -0.0,
+      0.0052,
+      729
+    ],
+    "slot_minus_lens": [
+      0.4156378600823045,
+      0.37997256515775035,
+      0.4499314128943759
+    ],
+    "slot_minus_random": [
+      0.4156378600823045,
+      0.37997256515775035,
+      0.4499314128943759
+    ],
+    "shuffled": [
+      0.0123,
+      0.0065,
+      0.0233,
+      729
+    ],
+    "rr_slot": [
+      0.005,
+      0.0009,
+      0.0278,
+      200
+    ],
+    "span_only": [
+      0.2743,
+      0.2432,
+      0.3079,
+      729
+    ],
+    "rest_only": [
+      0.0658,
+      0.05,
+      0.0862,
+      729
+    ],
+    "held_out_entities": [
+      0.4582,
+      0.4082,
+      0.5091,
+      371
+    ],
+    "seen_entities": [
+      0.3715,
+      0.3231,
+      0.4227,
+      358
+    ],
+    "patch": [
+      0.3073,
+      0.2749,
+      0.3417,
+      729
+    ],
+    "sub4": [
+      0.3841,
+      0.3495,
+      0.4199,
+      729
+    ]
+  },
+  "fit": {
+    "kept": 197,
+    "of": 400,
+    "layers": [
+      {
+        "layer": 40,
+        "n": 197,
+        "per_slot": [
+          42,
+          34,
+          36,
+          42,
+          43
+        ],
+        "decode_cv": 0.335,
+        "decode_cv_shuffled": 0.1624,
+        "deviation_norm_median": 1.372,
+        "state_norm_median": 66.54
+      },
+      {
+        "layer": 42,
+        "n": 197,
+        "per_slot": [
+          42,
+          34,
+          36,
+          42,
+          43
+        ],
+        "decode_cv": 0.335,
+        "decode_cv_shuffled": 0.1726,
+        "deviation_norm_median": 1.495,
+        "state_norm_median": 72.92
+      },
+      {
+        "layer": 44,
+        "n": 197,
+        "per_slot": [
+          42,
+          34,
+          36,
+          42,
+          43
+        ],
+        "decode_cv": 0.3553,
+        "decode_cv_shuffled": 0.1624,
+        "deviation_norm_median": 1.773,
+        "state_norm_median": 77.34
+      },
+      {
+        "layer": 46,
+        "n": 197,
+        "per_slot": [
+          42,
+          34,
+          36,
+          42,
+          43
+        ],
+        "decode_cv": 0.3706,
+        "decode_cv_shuffled": 0.1878,
+        "deviation_norm_median": 2.133,
+        "state_norm_median": 83.97
+      },
+      {
+        "layer": 48,
+        "n": 197,
+        "per_slot": [
+          42,
+          34,
+          36,
+          42,
+          43
+        ],
+        "decode_cv": 0.3909,
+        "decode_cv_shuffled": 0.1878,
+        "deviation_norm_median": 2.912,
+        "state_norm_median": 89.85
+      },
+      {
+        "layer": 50,
+        "n": 197,
+        "per_slot": [
+          42,
+          34,
+          36,
+          42,
+          43
+        ],
+        "decode_cv": 0.4264,
+        "decode_cv_shuffled": 0.198,
+        "deviation_norm_median": 4.015,
+        "state_norm_median": 96.72
+      },
+      {
+        "layer": 52,
+        "n": 197,
+        "per_slot": [
+          42,
+          34,
+          36,
+          42,
+          43
+        ],
+        "decode_cv": 0.3959,
+        "decode_cv_shuffled": 0.1878,
+        "deviation_norm_median": 5.297,
+        "state_norm_median": 123.74
+      }
+    ],
+    "geometry": [
+      {
+        "layer": 44,
+        "n_vectors": 100,
+        "entities": 22,
+        "max_abs_cos_entity_median": 0.0307,
+        "max_abs_cos_entity_null": 0.029,
+        "principal_cos": {
+          "4": {
+            "top": 0.1642,
+            "null_top": 0.095
+          }
+        },
+        "jspace_share_median": 0.0713,
+        "random_dictionary_share_median": 0.0816,
+        "random_vector_jspace_share_median": 0.0736
+      },
+      {
+        "layer": 48,
+        "n_vectors": 100,
+        "entities": 22,
+        "max_abs_cos_entity_median": 0.0313,
+        "max_abs_cos_entity_null": 0.0299,
+        "principal_cos": {
+          "4": {
+            "top": 0.1284,
+            "null_top": 0.0901
+          }
+        },
+        "jspace_share_median": 0.0732,
+        "random_dictionary_share_median": 0.0813,
+        "random_vector_jspace_share_median": 0.0758
+      }
+    ]
+  },
+  "figures": [
+    "fig1_slot_direction_vs_lens.png",
+    "fig2_decision_cell.png",
+    "fig3_geometry.png"
+  ]
+}
