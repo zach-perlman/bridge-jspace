@@ -18,9 +18,10 @@ lookups PMM and MMM were dropped in v6: nested by nature). Relations:
 Contexts (v6/v7, CONTEXT_RELS): picks always, and only the relations the word's question reads: lockers for the 2-step
 words (P->P and P->M read one identical context), partners + lockers for PPP/PPM and MPP/MPM (each last-step pair one
 context), bins for PMP/MMP. Shared scenes: the words of a scene group (start letter x length: P2, M2, C2, P3, M3) are
-asked on one scene, person and start thing; item["scene"] names it. Three-step words use THREE_STEP_DOMAINS
-(--three-step-domains overrides it, to measure the others; planets and Greek letters were weak, 31-73%, in v6's
-diagnostic: decision pending, Zach 2026-10-21).
+asked on one scene, person and start thing; item["scene"] names it. Three-step words use THREE_STEP_DOMAINS (v8:
+animals, vehicles, shapes, elements, and planets as a separately reported stratum; --three-step-domains overrides it).
+Format classes (v8): text (prose, chat, document) and structured (json, table, code); three-step chains are much harder
+through structured records, so every analysis and level pick splits by format_class.
 Number style: each scene states its lockers and bins as digits ("is 7") or as number words ("is seven"); digit answers
 are always asked for as a digit, so with number words a prompt lookup cannot copy its answer token verbatim (it still
 copies the value and converts it: this removes token copying, not lookup by copying). Report P->M->P by number style:
@@ -240,9 +241,24 @@ CONTEXT_RELS = {"PP": ("locker",), "PM": ("locker",), "MP": ("locker",), "MM": (
                 "MPM": ("partner", "locker"), "PMP": ("bin",), "MMP": ("bin",)}  # fmt: skip
 # v7 (review, 2026-10-21): PPM/MPM keep PPP/MPP's lockers, as PM keeps PP's, so each last-step pair (P vs M) reads one
 # context; PMP/MMP read the bins only (as the suite's BRL reads its locker table).
-THREE_STEP_DOMAINS = ("animals", "vehicles", "instruments", "shapes", "elements")
-# Planets and Greek letters stay out of three-step words: no wording tried brought them to 85% on items whose steps
-# the model answers alone (tasks3_ab2_v1: planets 31-62%, Greek 66-73%, elements 84-97%; rule set before the run).
+THREE_STEP_DOMAINS = ("animals", "vehicles", "shapes", "elements", "planets")
+SECONDARY_THREE_STEP = ("planets",)
+# v8 (Zach, 2026-10-21, after calib_v7_3 on all seven domains): three-step words on the core four (animals, vehicles,
+# shapes, elements) and planets as a separately reported stratum (good on PPP/MPP only); out: Greek letters (0-83% in
+# every three-step word, text formats included) and instruments (two string counts: answers guessable).
+TEXT_FORMATS = ("prose", "chat", "document")  # "easy" formats; json, table, code are "structured" (hard for 3 steps)
+
+
+def format_class(it: dict) -> str:
+    """text (prose, chat, document) or structured (json, table, code): three-step chains through structured records
+    are much harder for the 27B (calib_v7_3: P->M->P 70-96% in text, 32-63% in code), so analyses split by it."""
+    return "text" if it["format"] in TEXT_FORMATS else "structured"
+
+
+def stratum(it: dict) -> str:
+    """core, or secondary for three-step items on SECONDARY_THREE_STEP domains (reported separately)."""
+    return "secondary" if len(it["word"]) == 3 and it["domain"] in SECONDARY_THREE_STEP else "core"
+
 
 # Filler: no digits, number words, names, things of any domain, or the relation words (pick, partner, locker, bin).
 FILLER = (
@@ -592,6 +608,8 @@ def make_scene(rng: random.Random, group: str, words: list[str], domain: str, fm
         items.append({"chance_same_answer": round(chance, 3), "word": word, "domain": domain, "format": fmt, "knobs": knobs, "c_op": c_op,
                       "domain2": dom2_name if d2 else None, "numbers": style, "n_things": len(sc["things"]),
                       "context": context, "context_rels": list(CONTEXT_RELS[word]), "render_seed": render_seed,
+                      "format_class": "text" if fmt in TEXT_FORMATS else "structured",
+                      "stratum": "secondary" if len(word) == 3 and domain in SECONDARY_THREE_STEP else "core",
                       "question": ch["question"],
                       "answer": ch["answer"], "kind": ch["kind"], "steps": [first, *ch["steps"]], "tier": dom.tier,
                       "start_desc": desc})  # fmt: skip
@@ -792,7 +810,7 @@ def make(name: str, n: int, words: list[str], domains: list[str], formats: list[
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     (out / "items.jsonl").write_text("".join(json.dumps(it) + "\n" for it in items))
     meta = {"set": name, "n_scenes_per_group_level": n, "words": words, "domains": domains, "formats": formats,
-            "levels": {k: LEVELS[k] for k in levels}, "seed": seed, "generator": "scripts/tasks_v2.py make (v7)",
+            "levels": {k: LEVELS[k] for k in levels}, "seed": seed, "generator": "scripts/tasks_v2.py make (v8)",
             "git_commit": commit, "counterfactuals": counterfactuals, "n_items": len(items), "coverage": coverage,
             "three_step_domains": list(three_step_domains or THREE_STEP_DOMAINS)}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(meta, indent=2) + "\n")
@@ -873,13 +891,17 @@ def judge(text: str, answer: str, kind: str) -> bool:
     return False
 
 
-def eligible(set_name: str, comp_run: str, words: list[str], n: int, level: str = "pick",
-             max_chance: float = 0.5) -> list[dict]:  # fmt: skip
+def eligible(set_name: str, comp_run: str, words: list[str], n: int, level: str = "pick", max_chance: float = 0.5,
+             fmt_class: str | None = None, strata: tuple[str, ...] = ("core",),
+             domains: list[str] | None = None) -> list[dict]:  # fmt: skip
     """The items a downstream run compares: from scenes whose items of the compared words the competence run got right
     on every prompt (whole, each step, C and O; the guess prompt excluded), at one level for the whole comparison
     (level "pick": the hardest level where every compared word scores >= 85% whole; "all"; or a level number; Zach,
     2026-10-20: per compared words), the first n per word in file order. Each item gets "guessable": whether the model
-    answered its guess prompt right (None if the run had none). Every compared word must get items."""
+    answered its guess prompt right (None if the run had none). Every compared word must get items. v8: fmt_class
+    ("text" or "structured") restricts to one format class and picks the level from that class's accuracy; strata
+    (default core only; ("core", "secondary") or ("secondary",) for planets' three-step items) and domains restrict
+    further. A word below 85% at every level (M->P->M) is compared at an explicit level (e.g. "0"), labeled below band."""
     run_dir = pins.RESULTS_DIR / "tasks_v2" / comp_run
     ok: dict[str, list[bool]] = collections.defaultdict(list)
     guessed: dict[str, bool] = {}
@@ -889,14 +911,27 @@ def eligible(set_name: str, comp_run: str, words: list[str], n: int, level: str 
             guessed[r["id"]] = r["correct"]
         else:
             ok[r["id"]].append(r["correct"])
-    items = [it for it in load(set_name) if it["word"] in words]
+    items = [
+        it
+        for it in load(set_name)
+        if it["word"] in words
+        and stratum(it) in strata
+        and (fmt_class is None or format_class(it) == fmt_class)
+        and (domains is None or it["domain"] in domains)
+    ]
     # v7 (review): an item whose answer half or more of the scene's other things would also give does not test the
     # bridge (instruments: every thing with 4 strings); it is left out (with its scene, below) of downstream runs
     bridge_free = {it["scene"] for it in items if it.get("chance_same_answer", 0) >= max_chance}
     if level == "pick":
-        cells = json.loads((run_dir / "summary.json").read_text())["by_word_level"]
+        whole = collections.defaultdict(list)  # accuracy on the selected items only (format class, strata, domains)
+        right = {r["id"]: r["correct"] for r in map(json.loads, (run_dir / "items.jsonl").read_text().splitlines())
+                 if r["part"] == "whole"}  # fmt: skip
+        for it in items:
+            if it["id"] in right:
+                whole[(it["word"], it["level"])].append(right[it["id"]])
+        acc = {k: sum(v) / len(v) for k, v in whole.items()}
         levels = sorted({it["level"] for it in items})
-        good = [lv for lv in levels if all(cells.get(f"{w}/L{lv}", {}).get("whole", 0) >= BAND[0] for w in words)]
+        good = [lv for lv in levels if all(acc.get((w, lv), 0) >= BAND[0] for w in words)]
         assert good, f"no level has every one of {words} at >= {BAND[0]:.0%}"
         want = good[-1]
     else:
