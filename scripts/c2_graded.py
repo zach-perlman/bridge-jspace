@@ -11,8 +11,9 @@ RR on the suite, MP / MM on tasks_v2), and (interval guard, added with Zach one 
 test run was opened) the lower end of M->M's 95% interval over bridge entities is >= the upper end of M->P's.
 Reported alongside, outside the rule: P->P vs P->M; the transplant and difference-of-means writes at the same sites;
 the own direction at the final position only; the transplant at natural size (strength 1) only.
-Tests: wm2_ctrl_all_v1 (27B, tasks_v2 ctrl_v8, all levels) is the primary one; wm2_ctrl_v1 (its level-3 subset) is
-reported. A Gemma run counts only if its positive control passes: countries recalled (R), countries given (B) and M->M
+Tests: wm2_full_v1 (27B, the full v8 set's counterfactual domains, every word, 40 per word; Zach, 2026-10-21, "full v2
+everywhere") is the primary one (wm2_ctrl_all_v1 on ctrl_v8 was stopped for it before writing any outcome); wm2_ctrl_v1
+(ctrl_v8, level 3) is reported. Other words than M->P / M->M are reported alongside. A Gemma run counts only if its positive control passes: countries recalled (R), countries given (B) and M->M
 (RR) each reach >= 50% best gated flips with some lens write (lens_add, lens_swap or lens_transpl, any position set).
 
 python scripts/c2_graded.py RUN [RUN ...]   (writes results/write_max/c2_graded/RUN.md and .json)

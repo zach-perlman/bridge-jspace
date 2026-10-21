@@ -1,5 +1,8 @@
 """c1_v2: C1 on tasks_v2 (Zach, 2026-10-21, decided with Zach: v2 replaces v1 for the headline). Rule fixed before the
-first tasks_v2 knock-out ran (27B: tasks_ko_v1; Gemma: gemma4itf_tasks_ko_v1).
+first tasks_v2 knock-out ran. Tests: the full v8 set (full_v8: all 12 words, 7 domains; Zach, 2026-10-21, "full v2
+everywhere"): 27B full_ko_v1, Gemma gemma4itf_full_ko_v1. (tasks_ko_v1 on ctrl_v8 was stopped for it, its partial rows
+never opened.) The rule uses the core stratum's P->P, M->P, P->M, M->M; every other word (computed starts, three-step,
+the planets three-step stratum) is reported alongside.
 
 Claim (C1-graded): memory steps need the J-space, prompt lookups much less. Rule, on the whole question (kind "clean")
 under paper10 (the top-10 lens directions projected out at every position, the clean top-10 answer tokens kept) at the
@@ -32,7 +35,8 @@ from bridge_jspace import pins
 
 RES = pins.RESULTS_DIR / "ablate_v2"
 PROMPT_FINAL, MEMORY_FINAL = ("PP", "MP"), ("PM", "MM")
-NAMES = {"PP": "P->P", "MP": "M->P", "PM": "P->M", "MM": "M->M"}
+ORDER = ("PP", "MP", "PM", "MM", "CP", "CM", "PPP", "PPM", "PMP", "MPP", "MPM", "MMP")
+NAMES = {w: "->".join(w) for w in ORDER}
 GAP, CONTROL_WITHIN, STRICT_LOSS, STRICT_CONTROL = 0.30, 0.10, 0.10, 0.90
 TEXT = ("prose", "chat", "document")
 
@@ -57,21 +61,24 @@ def main(run: str, middle: str, set_name: str) -> None:
     rows = [json.loads(line) for line in (RES / run / "rows.jsonl").read_text().splitlines()]
     none = {(r["family"], r["id"], r["kind"]): r["correct"] for r in rows if r["condition"] == "none"}
     bands = list(dict.fromkeys(r["band"] for r in rows if r["condition"] != "none"))
-    words = [w for w in ("PP", "MP", "PM", "MM") if any(r["family"] == w for r in rows)]
+    words = [w for w in ORDER if any(r["family"] == w for r in rows)]
     from scripts import tasks_v2 as T
 
-    fmt = {it["id"]: it["format"] for it in T.load(set_name)}  # id -> format
+    items = T.load(set_name)
+    fmt = {it["id"]: it["format"] for it in items}  # id -> format
+    strat = {it["id"]: T.stratum(it) for it in items}  # id -> core / secondary
 
     def acc(sel: list[dict]) -> float | None:
         return statistics.mean(r["correct"] for r in sel) if sel else None
 
-    def pick(band: str, cond: str, kind: str = "clean", word: str | None = None, cls: str | None = None) -> list[dict]:
+    def pick(band: str, cond: str, kind: str = "clean", word: str | None = None, cls: str | None = None,
+             st: str = "core") -> list[dict]:  # fmt: skip
         return [r for r in rows if r["band"] == band and r["condition"] == cond and r["kind"] == kind
-                and (word is None or r["family"] == word)
+                and (word is None or r["family"] == word) and strat.get(r["id"], "core") == st
                 and (cls is None or (fmt.get(r["id"]) in TEXT) == (cls == "text"))]  # fmt: skip
 
-    def unedited(word: str, kind: str = "clean", cls: str | None = None) -> float:
-        v = [c for (f, i, k), c in none.items() if f == word and k == kind
+    def unedited(word: str, kind: str = "clean", cls: str | None = None, st: str = "core") -> float:
+        v = [c for (f, i, k), c in none.items() if f == word and k == kind and strat.get(i, "core") == st
              and (cls is None or (fmt.get(i) in TEXT) == (cls == "text"))]  # fmt: skip
         return statistics.mean(v) if v else float("nan")
 
@@ -98,6 +105,17 @@ def main(run: str, middle: str, set_name: str) -> None:
                             "n": len(sel),
                         }
                 lines.append(f"| {band} | {cond} | " + " | ".join(cells) + " |")
+        lines.append("")
+    sec = [w for w in words if any(r["family"] == w and strat.get(r["id"]) == "secondary" for r in rows)]
+    if sec:  # the planets three-step stratum, reported apart (v8)
+        lines += ["## secondary stratum (planets, three-step words), all formats", "",
+                  "| band | condition | " + " | ".join(NAMES[w] for w in sec) + " |", "|---|---|" + "---|" * len(sec),
+                  "| - | unedited | " + " | ".join(f"{100 * unedited(w, st='secondary'):.0f}" for w in sec) + " |"]  # fmt: skip
+        for band in bands:
+            for cond in ("paper10", "paper10_rot"):
+                lines.append(f"| {band} | {cond} | " + " | ".join(
+                    f"{100 * a:.0f} (n={len(sel)})" if (a := acc(sel := pick(band, cond, word=w, st="secondary"))) is not None
+                    else "-" for w in sec) + " |")  # fmt: skip
         lines.append("")
     kinds = sorted({r["kind"] for r in rows} - {"clean"})
     for kind in kinds:
@@ -140,7 +158,7 @@ def main(run: str, middle: str, set_name: str) -> None:
     out["commit"] = commit
     lines += [f"Rule at {middle}: losses " + ", ".join(f"{NAMES[w]} {100 * v:.0f}" for w, v in loss.items())
               + f"; memory-final minus prompt-final {'-' if gap is None else f'{100 * gap:.0f}'} points (>= 30 needed); "
-              f"controls within 10 points: {'yes' if controls_ok else 'no'} -> C1-graded {'HOLDS' if holds else 'FAILS'}",
+              f"controls within 10 points: {'yes' if controls_ok else 'no'} -> C1-graded {'n/a (no whole-question rows at this band)' if not have else 'HOLDS' if holds else 'FAILS'}",
               f"Original strict C1 (reported): {'n/a' if strict is None else 'holds' if strict else 'fails'}. Output from commit {commit[:7]}."]  # fmt: skip
     (RES / "c1_v2").mkdir(exist_ok=True)
     (RES / "c1_v2" / f"{run}.json").write_text(json.dumps(out, indent=2) + "\n")

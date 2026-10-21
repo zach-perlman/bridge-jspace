@@ -92,6 +92,8 @@ def tasks_cases(tok, n: int, set_name: str, comp_run: str, words: list[str], lev
 
     scenes: dict[str, list[dict]] = collections.defaultdict(list)
     for it in T.eligible(set_name, comp_run, words, 10**9, level):
+        if "cf_context" not in it:  # knock-out tier items have no C or O (a merged set like full_v8); 2026-10-21
+            continue
         scenes[it["scene"]].append(it)
     out, got, dropped = [], collections.Counter(), 0
     for its in scenes.values():
