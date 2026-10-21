@@ -8,6 +8,8 @@
 # prompts, not layers). Needs the GPU to itself (64 GB of weights + the 36 layers' expert accumulators, ~29 GB) and
 # ~55 GB of disk (scaled from Gemma's 8-layer fit: checkpoint 7 GB, experts 4 GB, lens and pooled lens 0.9 GB each).
 set -euo pipefail
+# 2026-10-21: wait until no write_max run shares the GPU and >= 150 GB is free (the fit needs the GPU to itself)
+while pgrep -f "scripts/write_max[.]py" >/dev/null || [ "$(nvidia-smi --query-gpu=memory.free --format=csv,noheader,nounits | head -1)" -lt 150000 ]; do sleep 60; done
 OUT=/workspace/ext/qwen3_32b_fit
 bash /workspace/bridge-jspace/scripts/lens_fit/fit_jpp.sh Qwen/Qwen3-32B "$(seq -s, 0 62)" "$OUT" 32
 cd /workspace/bridge-jspace
