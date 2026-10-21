@@ -62,7 +62,7 @@ from scripts import control_split as C
 from scripts import read_write as RW
 from scripts import suite_split as P
 from scripts.exp03_brew_swaps import write_jsonl
-from scripts.exp04_brew_parts import AddRows, null_rows
+from scripts.exp04_brew_parts import AddRows, SetRows, null_rows
 
 RESULTS = pins.RESULTS_DIR / "write_max"
 ALPHAS = (0.05, 0.1, 0.2, 0.4, 0.8)
@@ -191,7 +191,7 @@ def main(args) -> None:
         vecs = {la: lens.vectors(la, torch.tensor([ti, tx], device="cuda")) for la in rec_layers}
         e_dir = torch.nn.functional.normalize((emb[tx] - emb[ti]).float(), dim=-1)
         jobs: list[tuple[dict, dict]] = []
-        joint: dict[tuple, dict[int, AddRows]] = collections.defaultdict(dict)
+        joint: dict[tuple, dict[int, AddRows | SetRows]] = collections.defaultdict(dict)
         gen = torch.Generator(device="cpu").manual_seed(20_000 + k)  # 2026-10-21: CPU draws, the same on any GPU
 
         def add(tags: dict, la: int, pos: list[int], delta: torch.Tensor, in_band: bool = True, jobs=jobs,
@@ -219,7 +219,7 @@ def main(args) -> None:
                     pset != "all"
                 ):  # 2026-10-21 (Zach): the copy at every band layer at once, the ceiling for joint writes
                     key = tuple(sorted({**tags, "write": "copy", "strength": 1.0, "control": False}.items()))
-                    joint[key][la] = AddRows(hx - hc, pos)
+                    joint[key][la] = SetRows(hx, pos)  # a paste: AddRows(hx - hc) at every layer stacks and overshoots
                 lens_dir = torch.nn.functional.normalize(vx - vi, dim=-1)
                 for a in ALPHAS:
                     add({**tags, "write": "lens_add", "strength": a}, la, pos, a * norm * lens_dir)

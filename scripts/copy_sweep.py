@@ -1,6 +1,6 @@
 """copy_sweep: where do the question / final positions carry the bridge? (Zach, 2026-10-21: the overnight steering runs
 showed that copying C's state at the question or final positions at one layer of 28-40 moves only 2-67% of answers, so
-the steering sites may not carry the bridge.) For each case: C's residual difference pasted at the question positions or
+the steering sites may not carry the bridge.) For each case: C's state pasted at the question positions or
 the final position, (single) at one layer, (from) at that layer and every later swept layer (every --step); flips to C's answer.
 Diagnostic: it locates the layers where those positions carry the bridge; no rule.
 
@@ -26,7 +26,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from bridge_jspace import pins
 from scripts import read_write as RW
 from scripts import suite_split as P
-from scripts.exp04_brew_parts import AddRows
+from scripts.exp04_brew_parts import AddRows, SetRows
 from scripts.write_max import entity_ci
 
 RESULTS = pins.RESULTS_DIR / "copy_sweep"
@@ -63,8 +63,10 @@ def main(args) -> None:
             delta = {la: hs["cf"][la][pos] - hs["clean"][la][pos] for la in layers}
             for la in layers:
                 jobs.append(({"pos": pos_name, "mode": "single", "layer": la}, {la: AddRows(delta[la], pos)}))
+                # 2026-10-21 (Zach): "from" pastes C's state (SetRows); copy_sweep_full2_v1 added the differences
+                # (AddRows) at every layer, which stack and overshoot, so its "from" columns are not C's state
                 jobs.append(({"pos": pos_name, "mode": "from", "layer": la},
-                             {m: AddRows(delta[m], pos) for m in layers if m >= la}))  # fmt: skip
+                             {m: SetRows(hs["cf"][m][pos], pos) for m in layers if m >= la}))  # fmt: skip
         start = len(outcomes)
         P.read_jobs(model, c, jobs, outcomes)
         for o in outcomes[start:]:

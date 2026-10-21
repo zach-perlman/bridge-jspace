@@ -103,6 +103,20 @@ class AddRows:
         return out
 
 
+class SetRows:
+    """Edit for one layer: set the given positions to `values` [P, d] (2026-10-21, Zach: a paste that does not stack
+    when applied at several layers; AddRows of (C's state - the clean state) at layer after layer adds each layer's
+    difference on top of the earlier ones and overshoots)."""
+
+    def __init__(self, values: torch.Tensor, positions: list[int]):
+        self.values, self.positions = values, positions
+
+    def __call__(self, h: torch.Tensor) -> torch.Tensor:
+        out = h.clone()
+        out[self.positions] = self.values.to(h.dtype)
+        return out
+
+
 def null_rows(delta: torch.Tensor, generator: torch.Generator) -> torch.Tensor:
     """Each row replaced by a random unit direction scaled to that row's norm (the matched-norm null)."""
     r = torch.randn(delta.shape, device=generator.device, generator=generator).to(
