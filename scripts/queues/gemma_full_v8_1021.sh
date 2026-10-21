@@ -11,7 +11,7 @@ cd /workspace/bridge-jspace
 set -a; . ./.env; set +a
 PY="uv run --no-sync python"
 R=/workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd
-until grep -qs "^EXIT" $R-gemmafit3-1021-0445.log; do sleep 120; done  # after the 27B job and the fit (competence -> steer -> knockout)
+until grep -q "^EXIT" $R-gemmafit4-1021-0516.log; do sleep 120; done  # after the 27B job and the fit (competence -> steer -> knockout)
 grep -q '"gemma-4-31b-it-full"' src/bridge_jspace/pins.py || { echo "no gemma-4-31b-it-full target (the fit or its gate failed): stop"; exit 1; }
 ok=0; while [ $ok -lt 3 ]; do
   [ "$(nvidia-smi --query-gpu=memory.free --format=csv,noheader,nounits | head -1)" -ge 150000 ] && ok=$((ok + 1)) || ok=0
@@ -34,14 +34,21 @@ $PY scripts/removal_textloss.py --name gemma4itf_textloss_top_v1 --why "$WHY: pl
 BJ_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_posctrl_v1 --why "$WHY: positive control (countries, suite M->M)" \
   --n 60 --families RR --band 26-38 --single-step 2 --early 15 19 23 --from-competence gemma4itb_competence_v1 \
   && $PY scripts/c2_graded.py gemma4itf_wm2_posctrl_v1 || echo "=== positive control FAILED"
-BJ_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_full_v1 --why "$WHY: write_max v2, C2-graded" --n 40 \
-  --band 26-38 --single-step 2 --early 15 19 23 $W && $PY scripts/c2_graded.py gemma4itf_wm2_full_v1 || echo "=== steering FAILED"
+# 2026-10-21 speed-ups (decided with Zach): the knock-out alongside steering; steering skips the all-positions site
+(
   $PY scripts/ablate_v2.py --name gemma4itf_full_ko_v1 --why "$WHY: C1, whole question" --plan bands \
     --bands 11-19 19-27 30-38 0-58 --conditions paper10 paper10_rot $T --n 1000 --kinds clean --batch 32 \
-    && $PY scripts/c1_v2.py gemma4itf_full_ko_v1 --middle L30-38 --set full_v8 || echo "=== knock-out FAILED"
+    && $PY scripts/c1_v2.py gemma4itf_full_ko_v1 --middle L30-38 --set full_v8 \
+    && $PY scripts/c1_v2.py gemma4itf_full_ko_v1 --middle L30-38 --set full_v8 --drop-guessable > /dev/null || echo "=== knock-out FAILED"
   $PY scripts/ablate_v2.py --name gemma4itf_full_ko_steps_v1 --why "$WHY: C1, each step alone at the middle band" \
     --plan bands --bands 30-38 --conditions paper10 paper10_rot $T --n 1000 --kinds step1 step2 step3 --batch 32 \
-    && $PY scripts/c1_v2.py gemma4itf_full_ko_steps_v1 --middle L30-38 --set full_v8 || echo "=== steps knock-out FAILED"
+    && $PY scripts/c1_v2.py gemma4itf_full_ko_steps_v1 --middle L30-38 --set full_v8 > /dev/null || echo "=== steps knock-out FAILED"
+) &
+BJ_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_full_v1 --why "$WHY: write_max v2, C2-graded (question and final positions)" \
+  --n 40 --possets question final --band 26-38 --single-step 2 --early 15 19 23 $W \
+  && $PY scripts/c2_graded.py gemma4itf_wm2_full_v1 && $PY scripts/c2_graded.py gemma4itf_wm2_full_v1 --drop-guessable > /dev/null \
+  || echo "=== steering FAILED"
+wait
 $PY scripts/ablate_v2.py --name gemma4itf_full_dose_v1 --why "$WHY: knock-out dose on the 2x2 words" --plan bands \
   --bands 30-38 11-19 --tasks full_v8 --tasks-competence $COMP --tasks-words PP PM MP MM --tasks-level all --n 1000 \
   --kinds clean --batch 16 \
