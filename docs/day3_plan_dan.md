@@ -53,7 +53,7 @@ The lens shows the word, the content. It does not show the address.
 | **OLMo-3-7B-Instruct** (all attention) | done at the function-placed layers (to score); order vs place done; v5, v6, D3b overnight | overnight (4-layer bands) | Zach's three measures (raw format) done | results today |
 | **OLMo ladder** (SFT, DPO) | overnight | overnight | Zach's three measures (raw) overnight | results today |
 | **Qwen3.5-9B** | overnight | overnight | | results today |
-| **Gemma 4 31B-it** | specs ready, no lens needed | specs ready | | needs an HF token on our box |
+| **Gemma 4 31B-it** | overnight (no lens needed) | overnight | | results today |
 | **Qwen3-32B** (dense) | after Zach's port | after Zach's port | | Thu |
 
 ## 5. Challenges and limitations
@@ -70,7 +70,7 @@ The lens shows the word, the content. It does not show the address.
 |---|---|---|
 | Is the address a digit-copying trick, or a 5-item effect? | v5: colour words, 8 statements (overnight) | If it fails: narrow the claim to digit lookups |
 | Is it an order index or a token distance (RoPE)? | v6: an extra sentence before the list vs before the question (overnight) | If the distance wins: "positional pointer", still outside the lens |
-| Is it Qwen-specific? | OLMo, 9B (overnight), Gemma (token), Qwen3-32B (Thu) | Scope the claim |
+| Is it Qwen-specific? | OLMo, 9B, Gemma (overnight), Qwen3-32B (Thu) | Scope the claim |
 | Is the read itself outside the J-space? | J-space removal at layers 44-62 (overnight) | If lookups survive where they read: direct evidence for "around" |
 | Is there a readable address (a provenance monitor)? | Late heads on natural errors (overnight) | A candidate monitor, or "steers but is not readable" |
 | Do the numbers reproduce? | Clean-checkout reruns + a second data seed (overnight) | Which numbers go to VERIFIED.md |
