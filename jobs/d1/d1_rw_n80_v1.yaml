@@ -1,0 +1,39 @@
+id: d1_rw_n80_v1
+title: 'D1 at n=80: does the lens push write a stated bridge where it is in transit?'
+thread: D1
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.5
+depends_on:
+- d1_map_n80_v1
+- d1_parts_n80_v1
+command: >-
+  uv run python scripts/statement_positions.py readwrite --name d1_rw_n80_v1 --map d1_map_n80_v1 --parts d1_parts_n80_v1
+  --why "D1 confirmatory (batch 3): d1_rw_v1 at n=80 per family; resolves the inconclusive 16x cell (3/32 vs 1/32 random)"
+  --lo 32 --sets bind_bridge bridge_word lookup_x context question
+examples_command: uv run python scripts/statement_positions.py examples --name d1_rw_n80_v1
+figures_command: uv run python scripts/statement_positions.py figures --name d1_rw_n80_v1
+question: At the cells where a stated bridge is in transit (layers 32-44), does pushing along the lens's bridge alt −
+  bridge org direction (0.5-16x the copy's per-position size) switch prompt → prompt answers more than a random push of
+  the same size, at n=80 per family?
+why_it_matters: 'The write half of D1. At n=32 every cell was 0/32 except one 16x cell (3/32 vs 1/32 random) that the
+  rule could not decide. With n=80 "the lens push does not write a stated bridge where it is carried" can be decided
+  (or refuted) at every size, which is what a human needs to put D1 into VERIFIED.md.'
+hypotheses:
+  H-around: 'prompt → prompt and the tie families: lens − random switch difference upper bound < 10 points at every
+    size 0.5-16x at every transit cell; countries B / prompt → memory written at the same sets'
+  H-loc: 'prompt → prompt: lens switches >= 30% at <= 4x with random <= 5% at some transit cell'
+  prior: 'Agent prior: H-around 0.75; the 16x cell stays below 10 points 0.7 (n=32: +6 points).'
+decision_rule: 'Unchanged from d1_rw_v1 (statement_positions.py module docstring): per family, set, primary window:
+  written if at some size <= 4x lens switches >= 30% and the paired-bootstrap lower bound of lens − random > 0; not
+  written if at every size the difference''s upper bound < 0.10; else inconclusive. Combined D1 verdict with
+  d1_parts_n80_v1 as in d1_rw_v1.'
+controls:
+- 'a random direction per position at the same sizes (rules out a pure size effect)'
+- 'the copy at the same cell (the effect to explain)'
+- 'bridge alt''s rank at the same positions (the read''s floor)'
+- 'countries B and prompt → memory at the same sets (positive control: written)'
+n: 80 per family (d1_map_n80_v1's cases), only families with transit cells at layers >= 32
+seeds:
+- 0
+notes: 'd1_rw_v1 took ~0.2 h at n=32; n=80: ~0.5 h. Results: results/statement_positions/d1_rw_n80_v1/.'

@@ -1,0 +1,46 @@
+id: d3b_replicate_fresh_27b
+title: 'D3b replication: does the pointer direction steer the lookup on fresh scenes?'
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.6
+depends_on:
+- d3b_competence_400
+command: >-
+  uv run python scripts/pointer_fit.py run --name d3b_replicate_fresh_27b --competence d3b_competence_400
+  --n-test 400 --rr-n 100 --steer-layers 44 48 --scales 1.0 2.0 --ks 4
+  --why "D3b replication (batch 3): the same fit, steered on every eligible main scene (the primary cell: scenes the first run never used), layers 44 and 48, 1x and 2x"
+examples_command: uv run python scripts/pointer_fit.py examples --name d3b_replicate_fresh_27b
+figures_command: uv run python scripts/pointer_fit.py figures --name d3b_replicate_fresh_27b
+question: On memory → prompt scenes that d3b_slot_direction_main_27b never used, does the pointer direction (fitted to
+  "which statement the question asks", target minus current) at layer 48, 1x the alt-prompt patch's size, switch the
+  answer to the target statement's digit, where the lens push of the same size does not?
+why_it_matters: 'The first run passed its rule by 0.3 points (37% [30.3, 45]). Before "a pointer direction steers the
+  lookup, the lens cannot" goes to a human for VERIFIED.md, it must hold on fresh scenes with a tighter interval.'
+hypotheses:
+  H-replicates: 'fresh scenes, layer 48, 1x: target-statement answers 30-45%, Wilson lower bound >= 0.30 with n ~500;
+    lens push and random <= 2%; shuffled-label and memory → memory <= 5%'
+  H-regresses: 'fresh scenes: rate < 30% (the first run''s 37% was a lucky draw)'
+  prior: 'Agent prior: H-replicates 0.6 (the point estimate 37% with n~500 gives a lower bound ~33%), H-regresses 0.4.'
+decision_rule: 'Fixed before the run. Primary cell: memory → prompt, animals and elements pooled, held-out main items
+  whose scene index is >= 100 (never used by d3b_slot_direction_main_27b), slot direction at layer 48, 1x, every token
+  after the question; computed from outcomes.jsonl (name suffix >= 0100). Same rule as d3b_slot_direction_main_27b:
+  passes iff the Wilson 95% lower bound >= 0.30 and the rate is >= 20 points above both the lens push and the random
+  push at the same size with each paired-bootstrap lower bound > 0; valid only if the shuffled-label direction and the
+  slot direction on memory → memory keep their Wilson upper bound <= 0.10. The script''s own verdict (all eligible
+  items, old ones included) is reported next to it, not decisive. Layer 44 and 2x are reported, not decisive.'
+controls:
+- 'random push per token at the same size'
+- 'lens push bridge alt − bridge org at the same size'
+- 'shuffled-label direction (slot labels permuted before the fit)'
+- 'memory → memory items (no lookup: the pointer should do nothing)'
+- 'held-out entities (queried entity never queried in the fit)'
+- 'in-span part vs remainder (illusion check)'
+n: 'memory → prompt: every eligible main item (~380 animals + ~300 elements, of which ~500 fresh); memory → memory: 100
+  per domain; fit: as d3b_slot_direction_main_27b (fit set, separate scenes)'
+seeds:
+- 0
+- 1
+notes: 'Reads: ~680 memory → prompt items x (1 + 3 layer settings x (2 sizes x 7 conditions + 1 patch)) = ~31k, memory
+  → memory 200 x 28 = ~5.6k: ~37k reads at 31-37/s ~ 20 min; + collect and fit ~3 min, geometry ~2 min, load ~4 min:
+  ~0.6 h. Results: results/pointer_fit/d3b_replicate_fresh_27b/.'

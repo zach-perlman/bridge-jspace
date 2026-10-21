@@ -1,0 +1,43 @@
+id: d1_parts_n80_v1
+title: 'D1 at n=80: is the stated bridge carried by its lens-readable part where it is in transit?'
+thread: D1
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.9
+depends_on:
+- d1_map_n80_v1
+command: >-
+  uv run python scripts/statement_positions.py parts --name d1_parts_n80_v1 --map d1_map_n80_v1
+  --why "D1 confirmatory (batch 3): d1_parts_v1 at n=80 per family on d1_map_n80_v1's transit cells, layers 32-52"
+  --lo 32 --sets bind_bridge bridge_word lookup_x context question
+examples_command: uv run python scripts/statement_positions.py examples --name d1_parts_n80_v1
+figures_command: uv run python scripts/statement_positions.py figures --name d1_parts_n80_v1
+question: At the cells where a stated bridge is in transit (prompt → prompt and the tie families on the context at
+  layers 32-44; prompt → memory on its statement at 32-38), how much of the copy's effect does its lens-readable part
+  carry, at n=80 per family instead of 32?
+why_it_matters: 'D1''s first-night answer ("for prompt → prompt the lens-readable part of the whole-context paste does
+  14% of its fair share, null 7%; for prompt → memory 5x") rests on n=32. It is the first claim we would put into
+  VERIFIED.md, so it needs the confirmatory n before a human checks it. It is also the parts input the n=80 lens push
+  (d1_rw_n80_v1) needs.'
+hypotheses:
+  H-around: 'at every prompt → prompt statement set in transit at 32-40: concentration upper bound < 1.0 with the rest
+    minus the lens-readable part > 0; prompt → memory (and countries B) at the same sets > 1.2'
+  H-loc: 'at a prompt → prompt (or tie-family) statement set in transit at 32-40: concentration lower bound > 1.2 and
+    above the random-dictionary null''s upper bound'
+  prior: 'Agent prior: H-around 0.8 (n=32 gave 0.14 [0.10, 0.19] vs null 0.07), H-loc 0.05, inconclusive 0.15.'
+decision_rule: 'Unchanged from d1_parts_v1 (statement_positions.py module docstring). Per family, set, primary window
+  (layers 32/36/40 among the transit cells): inside if the J-space concentration (case bootstrap 95%) lower bound > 1.2
+  and above rand_omp''s upper bound; around if the upper bound < 1.0 and not_jspace - jspace > 0 (paired bootstrap
+  lower bound); else inconclusive. H-loc if any prompt → prompt / tie-family statement set is inside; H-around if all
+  are around and the positive control (countries B, else prompt → memory) is inside at the same set; around without a
+  passing positive control is not interpretable.'
+controls:
+- 'a random subspace of the same size per cell (the null concentration)'
+- 'the copy itself at the same cell (the effect to split)'
+- 'prompt → memory and countries B at the same sets (positive controls: the lens-readable part carries the bridge)'
+n: 80 per family (d1_map_n80_v1's cases; BL, BR, RL, RR, BLR, BRL, countries R, B), only families with transit cells
+  at layers >= 32
+seeds:
+- 0
+notes: 'd1_parts_v1 took ~0.35 h at n=32 on one A100; n=80 scales it ~2.5x: ~0.9 h. Results:
+  results/statement_positions/d1_parts_n80_v1/.'

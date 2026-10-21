@@ -1,0 +1,29 @@
+id: d3b_competence_400
+title: 'Gate for the pointer-direction replication: pointer_v1 main scenes 1-400'
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.5
+depends_on: []
+command: >-
+  uv run python scripts/pointer_v1.py manifest --set main --name d3b_competence_400 --limit 400
+  --why "D3b replication gate (batch 3): pointer_v1 main, all 400 scenes per file, so the pointer direction can be tested on scenes the first run never used"
+  && uv run python scripts/pointer_v1.py competence --name d3b_competence_400
+question: Which of pointer_v1's 400 main scenes per (domain, family) does Qwen3.6-27B answer right unedited, every prompt
+  of the item (org, alt prompts, each step alone)?
+why_it_matters: 'd3b_slot_direction_main_27b used only the first 100 scenes per file (175 eligible memory → prompt
+  items) and passed its rule by 0.3 points. The replication needs fresh eligible scenes (index >= 100).'
+hypotheses:
+  H-competent: 'animals and elements memory → prompt and memory → memory: Wilson lower bound >= 0.85 on scenes 1-400,
+    as on scenes 1-100 (98% / 94%)'
+  prior: 'Agent prior: 0.85.'
+decision_rule: 'As d3_competence_27b: a (domain, family) cell is usable iff its org-prompt Wilson lower bound >= 0.85;
+  an item is eligible iff every one of its prompts is right.'
+controls:
+- 'each step alone (cue -> entity; the lookup with the entity named / the recalled fact)'
+- 'answer read vs 8-token greedy agreement (must be >= 99%)'
+n: 400 per (domain, family) for 4 domains x 3 families (4,800 items, ~29k prompts)
+seeds:
+- 701
+- 702
+notes: 'd3v2_competence_27b ran ~28.6k prompts in 26 min on one A100. Results: results/pointer_v1/d3b_competence_400/.'
