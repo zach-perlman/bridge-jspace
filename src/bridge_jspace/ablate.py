@@ -193,11 +193,13 @@ def rotation(d: int, seed: int, device: str = "cuda") -> torch.Tensor:
 
 @torch.no_grad()
 def first_token_logits(
-    model, ids: torch.Tensor, edits: dict[int, Callable[[torch.Tensor], torch.Tensor]]
+    model, ids: torch.Tensor, edits: dict[int, Callable[[torch.Tensor], torch.Tensor]], last: torch.Tensor | None = None
 ) -> torch.Tensor:
     """Final-position logits [B, vocab] (fp32) of one forward of ids [B, T] (one length), with each edit applied to
     its layer's block output for the whole batch. The same numbers as generate_batch's first step, up to kernel
-    rounding; one call per batch instead of one edit call per row."""
+    rounding; one call per batch instead of one edit call per row. With `last` ([B], 2026-10-21: right-padded batches
+    of different lengths) each row's logits are read at its own last real position; the models are causal (attention,
+    linear attention, causal conv), so padding after a prompt cannot change its earlier positions."""
     from bridge_jspace.model import _forward_hooks
 
     def hook_for(layer: int):
@@ -208,6 +210,12 @@ def first_token_logits(
 
         return hook
 
+    if last is None:
+        with _forward_hooks([(model.layers[layer], hook_for(layer)) for layer in sorted(edits)]):
+            out = model.hf(input_ids=ids, attention_mask=torch.ones_like(ids), use_cache=False, logits_to_keep=1)
+        return out.logits[:, -1].float()
+    keep = last.unique()  # sorted positions to keep; each row reads its own
     with _forward_hooks([(model.layers[layer], hook_for(layer)) for layer in sorted(edits)]):
-        out = model.hf(input_ids=ids, attention_mask=torch.ones_like(ids), use_cache=False, logits_to_keep=1)
-    return out.logits[:, -1].float()
+        out = model.hf(input_ids=ids, attention_mask=torch.ones_like(ids), use_cache=False, logits_to_keep=keep)
+    col = torch.searchsorted(keep, last)
+    return out.logits[torch.arange(ids.shape[0], device=ids.device), col].float()

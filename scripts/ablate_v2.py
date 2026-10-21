@@ -267,7 +267,7 @@ def main(args) -> None:
                 "git_commit": commit, "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
                 "plan": args.plan, "bands": [label(b) for b in bands], "conditions": args.conditions,
                 "families": args.families, "kinds": args.kinds, "skip": args.skip, "wording": args.wording, "n_per_family": args.n, "batch": args.batch,
-                "tf32": not args.no_tf32, "workspace_start": args.workspace, "positions": args.positions, "competence": args.competence, "countries_build": args.countries_build, "tasks": [args.tasks, args.tasks_competence, args.tasks_words, args.tasks_level, args.tasks_strata], "wide": WIDE, "seed_offset": args.seed_offset, "seeds": {"rotation": f"{SEED_ROT + args.seed_offset}+layer", "rotated_dictionary": f"{SEED_DICT + args.seed_offset}+layer",
+                "tf32": not args.no_tf32, "workspace_start": args.workspace, "positions": args.positions, "pad": args.pad, "competence": args.competence, "countries_build": args.countries_build, "tasks": [args.tasks, args.tasks_competence, args.tasks_words, args.tasks_level, args.tasks_strata], "wide": WIDE, "seed_offset": args.seed_offset, "seeds": {"rotation": f"{SEED_ROT + args.seed_offset}+layer", "rotated_dictionary": f"{SEED_DICT + args.seed_offset}+layer",
                 "gauss": f"{SEED_GAUSS}+layer"}, "own_cos": OWN_COS, "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 
@@ -351,12 +351,17 @@ def main(args) -> None:
     by_len: dict[int, list[dict]] = collections.defaultdict(list)
     for p in prompts:
         by_len[len(p["ids"])].append(p)
+    if args.pad:  # 2026-10-21 (Zach): length-sorted, right-padded batches instead of exact-length ones
+        by_len = {0: sorted(prompts, key=lambda p: len(p["ids"]))}
+    pad_id = tok.pad_token_id if tok.pad_token_id is not None else tok.eos_token_id
     for group in by_len.values():
         for start in range(0, len(group), args.batch):
             chunk = group[start : start + args.batch]
-            ids = torch.tensor([p["ids"] for p in chunk], device="cuda")
+            width = max(len(p["ids"]) for p in chunk)
+            ids = torch.tensor([p["ids"] + [pad_id] * (width - len(p["ids"])) for p in chunk], device="cuda")
+            last = torch.tensor([len(p["ids"]) - 1 for p in chunk], device="cuda") if args.pad else None
             answer = torch.tensor([p["tok"] for p in chunk], device="cuda")
-            clean = first_token_logits(model, ids, {})
+            clean = first_token_logits(model, ids, {}, last)
             base_logp = clean.log_softmax(-1).gather(1, answer[:, None]).squeeze(1)
             for row, p in enumerate(chunk):
                 rows_out.append({"family": p["family"], "id": p["id"], "kind": p["kind"], "band": "-", "condition": "none",
@@ -384,7 +389,7 @@ def main(args) -> None:
                         edits[la] = removal_edit(
                             method, d, rs, rotation=rot[la] if cond.endswith("_rot") else None, k=top_k(cond)
                         )
-                    logits = first_token_logits(model, ids, edits)
+                    logits = first_token_logits(model, ids, edits, last)
                     logp = logits.log_softmax(-1).gather(1, answer[:, None]).squeeze(1)
                     for row, p in enumerate(chunk):
                         rows_out.append({"family": p["family"], "id": p["id"], "kind": p["kind"], "band": label(band),
@@ -473,6 +478,9 @@ if __name__ == "__main__":
     ap.add_argument("--kinds", nargs="+", default=["clean"], choices=["clean", "hop", "step1", "step2", "step3"])
     ap.add_argument("--n", type=int, default=100)
     ap.add_argument("--batch", type=int, default=32)
+    ap.add_argument(
+        "--pad", action="store_true", help="length-sorted right-padded batches (validated against exact-length)"
+    )
     ap.add_argument("--no-tf32", action="store_true", help="full fp32 matmuls (the v1 numerics check)")
     ap.add_argument("--tasks", default=None, help="a tasks_v2 set to draw prompts from instead of the suite")
     ap.add_argument("--tasks-competence", default=None, help="its competence run (eligibility: every part right)")

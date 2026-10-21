@@ -35,13 +35,15 @@ BJ_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_posctrl_v1 --why "$WHY
   --n 60 --families RR --band 26-38 --single-step 2 --early 15 19 23 --from-competence gemma4itb_competence_v1 \
   && $PY scripts/c2_graded.py gemma4itf_wm2_posctrl_v1 || echo "=== positive control FAILED"
 # 2026-10-21 speed-ups (decided with Zach): the knock-out alongside steering; steering skips the all-positions site
+# padded batches only if scripts/pad_check.py accepted them on the 27B (padcheck_1021.sh leaves the marker)
+PAD=$([ -f /workspace/scratch/markers/pad_validated ] && echo --pad); echo "=== knock-out batches: ${PAD:-exact-length}"
 (
   $PY scripts/ablate_v2.py --name gemma4itf_full_ko_v1 --why "$WHY: C1, whole question" --plan bands \
-    --bands 11-19 19-27 30-38 0-58 --conditions paper10 paper10_rot $T --n 1000 --kinds clean --batch 32 \
+    --bands 11-19 19-27 30-38 0-58 --conditions paper10 paper10_rot $T --n 1000 --kinds clean --batch 32 $PAD \
     && $PY scripts/c1_v2.py gemma4itf_full_ko_v1 --middle L30-38 --set full_v8 \
     && $PY scripts/c1_v2.py gemma4itf_full_ko_v1 --middle L30-38 --set full_v8 --drop-guessable > /dev/null || echo "=== knock-out FAILED"
   $PY scripts/ablate_v2.py --name gemma4itf_full_ko_steps_v1 --why "$WHY: C1, each step alone at the middle band" \
-    --plan bands --bands 30-38 --conditions paper10 paper10_rot $T --n 1000 --kinds step1 step2 step3 --batch 32 \
+    --plan bands --bands 30-38 --conditions paper10 paper10_rot $T --n 1000 --kinds step1 step2 step3 --batch 32 $PAD \
     && $PY scripts/c1_v2.py gemma4itf_full_ko_steps_v1 --middle L30-38 --set full_v8 > /dev/null || echo "=== steps knock-out FAILED"
 ) &
 BJ_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_full_v1 --why "$WHY: write_max v2, C2-graded (question and final positions)" \
@@ -51,7 +53,7 @@ BJ_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_full_v1 --why "$WHY: w
 wait
 $PY scripts/ablate_v2.py --name gemma4itf_full_dose_v1 --why "$WHY: knock-out dose on the 2x2 words" --plan bands \
   --bands 30-38 11-19 --tasks full_v8 --tasks-competence $COMP --tasks-words PP PM MP MM --tasks-level all --n 1000 \
-  --kinds clean --batch 16 \
+  --kinds clean --batch 32 $PAD \
   --conditions top1 top1_rot top2 top2_rot top5 top5_rot top10 top10_rot top25 top25_rot top50 top50_rot top100 top100_rot \
   || echo "=== dose FAILED"
 mkdir -p /workspace/scratch/markers && touch /workspace/scratch/markers/gemma_chain_done
