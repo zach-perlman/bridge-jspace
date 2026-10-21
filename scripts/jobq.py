@@ -37,7 +37,7 @@ import traceback
 from pathlib import Path
 from typing import Any
 
-HOST = os.environ.get("JOBQ_HOST", "sesterce-a100")
+HOST = os.environ.get("JOBQ_HOST", "sesterce-a100x4")  # 4x A100 80GB since 2026-10-21
 BOX_ROOT = "jobq"  # relative to the box user's home
 REPO = Path(__file__).resolve().parents[1]
 STATES = ("pending", "running", "done", "failed", "cancelled")
