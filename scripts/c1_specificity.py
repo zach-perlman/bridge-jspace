@@ -25,27 +25,29 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts.c1_v2 import MEMORY_FINAL, NAMES, ORDER, PROMPT_FINAL, RES, ci
 
-CONDS = {"paper10": "paper10_rot", "unembed10": "unembed10_rot"}
+SUFFIX = ""  # 2026-10-21: "_nosink" (--suffix) compares the conditions that leave attention sinks unedited
 
 
 def load(run: str) -> list[dict]:
     return [json.loads(line) for line in (RES / run / "rows.jsonl").read_text().splitlines()]
 
 
-def main(paper_run: str, unembed_run: str, set_name: str) -> None:
+def main(paper_run: str, unembed_run: str, set_name: str, suffix: str = "") -> None:
+    conds = {f"paper10{suffix}": f"paper10{suffix}_rot", f"unembed10{suffix}": f"unembed10{suffix}_rot"}
+    P, U = f"paper10{suffix}", f"unembed10{suffix}"
     from scripts import tasks_v2 as T
 
     core = {it["id"] for it in T.load(set_name) if T.stratum(it) == "core"}
-    rows = {"paper10": [r for r in load(paper_run) if r["kind"] == "clean" and r["id"] in core],
-            "unembed10": [r for r in load(unembed_run) if r["kind"] == "clean" and r["id"] in core]}  # fmt: skip
+    rows = {P: [r for r in load(paper_run) if r["kind"] == "clean" and r["id"] in core],
+            U: [r for r in load(unembed_run) if r["kind"] == "clean" and r["id"] in core]}  # fmt: skip
     none = {k: {(r["family"], r["id"]): r["correct"] for r in rs if r["condition"] == "none"} for k, rs in rows.items()}
-    shared = set(none["paper10"]) & set(none["unembed10"])
+    shared = set(none[P]) & set(none[U])
     assert shared, "no shared items"
-    differ = sum(none["paper10"][k] != none["unembed10"][k] for k in shared)
-    bands = [b for b in dict.fromkeys(r["band"] for r in rows["unembed10"] if r["condition"].startswith("unembed10"))
-             if any(r["band"] == b and r["condition"] == "paper10" for r in rows["paper10"])]  # fmt: skip
+    differ = sum(none[P][k] != none[U][k] for k in shared)
+    bands = [b for b in dict.fromkeys(r["band"] for r in rows[U] if r["condition"] == U)
+             if any(r["band"] == b and r["condition"] == P for r in rows[P])]  # fmt: skip
     words = [w for w in ORDER if any(k[0] == w for k in shared)]
-    unedited = {m: {w: statistics.mean(none[m][k] for k in shared if k[0] == w) for w in words} for m in CONDS}
+    unedited = {m: {w: statistics.mean(none[m][k] for k in shared if k[0] == w) for w in words} for m in conds}
     out: dict = {"paper_run": paper_run, "unembed_run": unembed_run, "shared_items": len(shared),
                  "unedited_differ": differ, "bands": {}}  # fmt: skip
     lines = [f"# C1 specificity: J-lens (paper10, {paper_run}) vs unembedding (unembed10, {unembed_run})", "",
@@ -54,11 +56,11 @@ def main(paper_run: str, unembed_run: str, set_name: str) -> None:
              "| band | condition | " + " | ".join(NAMES[w] for w in words) + " | gap |",
              "|---|---|" + "---|" * (len(words) + 1),
              *(f"| - | unedited ({m} run) | " + " | ".join(f"{100 * unedited[m][w]:.0f}" for w in words) + " | |"
-               for m in CONDS)]  # fmt: skip
+               for m in conds)]  # fmt: skip
     overlap = []
     for band in bands:
         out["bands"][band] = {}
-        for main_cond, rot in CONDS.items():
+        for main_cond, rot in conds.items():
             for cond in (main_cond, rot):
                 sel = {w: [r for r in rows[main_cond] if r["band"] == band and r["condition"] == cond
                            and (r["family"], r["id"]) in shared and r["family"] == w] for w in words}  # fmt: skip
@@ -86,9 +88,9 @@ def main(paper_run: str, unembed_run: str, set_name: str) -> None:
                 )
         broke = {m: {(r["family"], r["id"]) for r in rows[m] if r["band"] == band and r["condition"] == m
                      and (r["family"], r["id"]) in shared and none[m][(r["family"], r["id"])] and not r["correct"]}
-                 for m in CONDS}  # fmt: skip
-        mem = {k for k in broke["paper10"] if k[0] in MEMORY_FINAL}
-        both = len(mem & broke["unembed10"])
+                 for m in conds}  # fmt: skip
+        mem = {k for k in broke[P] if k[0] in MEMORY_FINAL}
+        both = len(mem & broke[U])
         out["bands"][band]["overlap_memory_final"] = {"paper10_broken": len(mem), "also_unembed10": both}
         overlap.append(f"{band}: of the {len(mem)} memory-final items paper10 breaks, unembed10 breaks {both}"
                        f" ({'-' if not mem else f'{100 * both / len(mem):.0f}%'}).")  # fmt: skip
@@ -96,8 +98,8 @@ def main(paper_run: str, unembed_run: str, set_name: str) -> None:
     out["commit"] = commit
     lines += ["", *overlap, "", f"Descriptive (no rule). Output from commit {commit[:7]}."]
     (RES / "c1_specificity").mkdir(exist_ok=True)
-    (RES / "c1_specificity" / f"{unembed_run}.json").write_text(json.dumps(out, indent=2) + "\n")
-    (RES / "c1_specificity" / f"{unembed_run}.md").write_text("\n".join(lines) + "\n")
+    (RES / "c1_specificity" / f"{unembed_run}{suffix}.json").write_text(json.dumps(out, indent=2) + "\n")
+    (RES / "c1_specificity" / f"{unembed_run}{suffix}.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
 
 
@@ -106,5 +108,6 @@ if __name__ == "__main__":
     ap.add_argument("paper_run")
     ap.add_argument("unembed_run")
     ap.add_argument("--set", dest="set_name", default="full_v8", help="the tasks_v2 set the runs drew from")
+    ap.add_argument("--suffix", default="", help='condition suffix, e.g. "_nosink"')
     a = ap.parse_args()
-    main(a.paper_run, a.unembed_run, a.set_name)
+    main(a.paper_run, a.unembed_run, a.set_name, a.suffix)

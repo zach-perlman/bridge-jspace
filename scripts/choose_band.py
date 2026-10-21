@@ -7,7 +7,7 @@ controls BL BR RL RR); every model's band is now chosen on ctrl_v8 (P->M, M->M; 
 generator with another seed (712; the test set full_v8 is seeds 713-715), no prompt or context shared with full_v8,
 so the C1 test on full_v8 is not biased by the choice (Zach, 2026-10-21: the new suite, not the old one).
 
-python scripts/choose_band.py SWEEP_RUN   (prints the band as "lo-hi"; writes results/ablate_v2/band_choice/SWEEP_RUN.json)
+python scripts/choose_band.py SWEEP_RUN [_nosink]   (prints the band as "lo-hi"; writes results/ablate_v2/band_choice/SWEEP_RUN.json)
 """
 
 from __future__ import annotations
@@ -25,7 +25,7 @@ WORDS = {"suite": (("BR", "RR"), ("BL", "BR", "RL", "RR")), "v2": (("PM", "MM"),
 CONTROL_MIN = 0.90
 
 
-def choose(cells: dict) -> tuple[str | None, list[dict]]:
+def choose(cells: dict, suffix: str = "") -> tuple[str | None, list[dict]]:
     kind = "suite" if any(fk.startswith("BR/") for fams in cells.values() for fk in fams) else "v2"
     memory_final, every = WORDS[kind]
     table = []
@@ -38,8 +38,8 @@ def choose(cells: dict) -> tuple[str | None, list[dict]]:
         def acc(f: str, cond: str, fams: dict = fams) -> float | None:
             return (fams.get(f"{f}/clean", {}).get(cond) or {}).get("accuracy")
 
-        mem = [acc(f, "paper10") for f in memory_final]
-        ctrl = [acc(f, "paper10_rot") for f in every]
+        mem = [acc(f, f"paper10{suffix}") for f in memory_final]
+        ctrl = [acc(f, f"paper10{suffix}_rot") for f in every]
         if any(v is None for v in mem + ctrl):
             continue
         lo = int(band.removeprefix("L").split("-")[0])
@@ -50,13 +50,13 @@ def choose(cells: dict) -> tuple[str | None, list[dict]]:
     return (best["band"].removeprefix("L") if best else None), sorted(table, key=lambda r: r["start"])
 
 
-def main(run: str) -> None:
+def main(run: str, suffix: str = "") -> None:
     summary = json.loads((RES / run / "summary.json").read_text())
     cells = {b: c for b, c in summary["cells"].items() if b.count("-") == 1}
-    band, table = choose(cells)
-    out = {"sweep": run, "band": band, "rule": __doc__.split("\n\n")[0], "table": table}
+    band, table = choose(cells, suffix)
+    out = {"sweep": run, "suffix": suffix, "band": band, "rule": __doc__.split("\n\n")[0], "table": table}
     (RES / "band_choice").mkdir(exist_ok=True)
-    (RES / "band_choice" / f"{run}.json").write_text(json.dumps(out, indent=2) + "\n")
+    (RES / "band_choice" / f"{run}{suffix}.json").write_text(json.dumps(out, indent=2) + "\n")
     for r in table:
         print(f"# {r['band']}: memory-final {100 * r['memory_final_acc']:.0f}%, control min {100 * r['control_min']:.0f}%",
               file=sys.stderr)  # fmt: skip
@@ -66,4 +66,4 @@ def main(run: str) -> None:
 
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(sys.argv[1], sys.argv[2] if len(sys.argv) > 2 else "")  # optional condition suffix, e.g. _nosink

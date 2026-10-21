@@ -28,6 +28,9 @@ import torch
 
 K_OMP = 25
 K_PAPER = 10
+SINK_RATIO = (
+    10.0  # 2026-10-21 (docs/prereg_sink_1021.md): a position whose residual norm exceeds 10x the prompt's median
+)
 OWN_COS = 0.5
 
 
@@ -148,11 +151,14 @@ class RowSettings:
 
 
 def removal_edit(method: str, dic, rows: list[RowSettings], rotation: torch.Tensor | None = None,
-                 k: int | None = None, chunk: int = 4096) -> Callable[[torch.Tensor], torch.Tensor]:  # fmt: skip
+                 k: int | None = None, chunk: int = 4096, skip_sinks: bool = False) -> Callable[[torch.Tensor], torch.Tensor]:  # fmt: skip
     """An edit h [B, T, d] -> h minus its removal, for method 'omp' (k atoms, rows' banned atoms never chosen) or 'top'
     (span of the k highest-logit atoms, rows' protected atoms never chosen); with rotation, the removal vector is turned
-    by it before subtraction (the same-size control). Skipped positions are unchanged."""
+    by it before subtraction (the same-size control). Skipped positions are unchanged. With skip_sinks (2026-10-21,
+    docs/prereg_sink_1021.md) position 0 and every position whose residual norm exceeds SINK_RATIO x the row's median
+    are also left unchanged (attention sinks); edit.sinks counts [sink positions, positions] over calls."""
     k = k or (K_OMP if method == "omp" else K_PAPER)
+    counts = [0, 0]
 
     def edit(h: torch.Tensor) -> torch.Tensor:
         B, T, d = h.shape
@@ -161,6 +167,13 @@ def removal_edit(method: str, dic, rows: list[RowSettings], rotation: torch.Tens
         for b, row in enumerate(rows):
             if row.skip:
                 keep[torch.tensor([b * T + p for p in row.skip], device=h.device)] = False
+        if skip_sinks:
+            norms = h.float().norm(dim=-1)  # [B, T]
+            sink = norms > SINK_RATIO * norms.median(dim=1, keepdim=True).values
+            sink[:, 0] = True
+            keep &= ~sink.reshape(-1)
+            counts[0] += int(sink.sum())
+            counts[1] += B * T
         idx = keep.nonzero().squeeze(1)
         r = torch.zeros_like(x)
         for s in range(0, idx.numel(), chunk):
@@ -181,6 +194,7 @@ def removal_edit(method: str, dic, rows: list[RowSettings], rotation: torch.Tens
             r = r @ rotation.T
         return (x - r).reshape(B, T, d)
 
+    edit.sinks = counts
     return edit
 
 

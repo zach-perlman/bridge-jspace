@@ -14,7 +14,10 @@ Conditions (--conditions): omp25, omp25_rot, omp25_rdict, paper10, paper10_rot, 
   cosine >= OWN_COS to its concept token, as keep_own) also protected. 2026-10-21 (the specificity control, decided with
   Zach after the pipeline review): unembed10 and unembed10_rot, paper10's procedure over the unit unembedding rows of
   letter tokens (the final norm's gain folded in: the logit lens's directions, the same at every layer) instead of the
-  J-lens vectors: is the damage specific to the J-space, or shared by any token-aligned directions? Prompt kinds (--kinds): clean (the whole question), hop (the last step alone, as
+  J-lens vectors: is the damage specific to the J-space, or shared by any token-aligned directions? 2026-10-21
+  (docs/prereg_sink_1021.md): any top-K condition with "_nosink" before its control suffix (paper10_nosink,
+  paper10_nosink_rot, unembed10_nosink, top5_nosink_rot, paper10_keepown_nosink, ...) leaves attention-sink positions
+  unedited: position 0 and every position whose residual norm exceeds 10x the prompt's median. Prompt kinds (--kinds): clean (the whole question), hop (the last step alone, as
   v1), step1/step2/step3 (each step alone). Reported per band x family/kind x condition: accuracy (top token = the
   answer's first token) and the mean change in the answer token's log-probability from the unedited run.
 
@@ -241,7 +244,7 @@ def top_k(cond: str) -> int | None:
     """K of a top-K condition: paper10 or unembed10 (K = 10) or topK, with any control suffix; None for OMP and others."""
     if cond.startswith(("paper10", "unembed10")):
         return 10
-    m = re.fullmatch(r"top(\d+)(_rot|_rdict)?", cond)
+    m = re.fullmatch(r"top(\d+)(_nosink)?(_rot|_rdict)?", cond)
     return int(m[1]) if m else None
 
 
@@ -354,6 +357,7 @@ def main(args) -> None:
 
     t0 = time.time()
     rows_out, band_seconds = [], collections.Counter()
+    sink_tally: dict[str, list[int]] = {}
     rows_path = out_dir / "rows.jsonl"
     assert not rows_path.exists(), f"{rows_path} exists"
     written = 0
@@ -400,9 +404,20 @@ def main(args) -> None:
                         d = (unembed if cond.startswith("unembed") else rdict[la] if cond.endswith("_rdict")
                              else gauss[la] if cond == "gauss" else dic[la])  # fmt: skip
                         edits[la] = removal_edit(
-                            method, d, rs, rotation=rot[la] if cond.endswith("_rot") else None, k=top_k(cond)
+                            method,
+                            d,
+                            rs,
+                            rotation=rot[la] if cond.endswith("_rot") else None,
+                            k=top_k(cond),
+                            skip_sinks="_nosink" in cond,
                         )
                     logits = first_token_logits(model, ids, edits, last)
+                    if "_nosink" in cond:  # attention-sink positions left unedited: counted per band x condition
+                        tally = sink_tally.setdefault(f"{label(band)}/{cond}", [0, 0])
+                        for e in edits.values():
+                            tally[0] += e.sinks[0]
+                            tally[1] += e.sinks[1]
+                            e.sinks[0] = e.sinks[1] = 0
                     logp = logits.log_softmax(-1).gather(1, answer[:, None]).squeeze(1)
                     for row, p in enumerate(chunk):
                         rows_out.append({"family": p["family"], "id": p["id"], "kind": p["kind"], "band": label(band),
@@ -423,7 +438,8 @@ def main(args) -> None:
         fk: statistics.mean(r["correct"] for r in rs) for (bl, fk, cond), rs in _group(rows_out, none=True).items()
     }
     summary = {"seconds": round(time.time() - t0), "band_seconds": {k: round(v) for k, v in band_seconds.items()},
-               "unedited_accuracy": none_acc, "cells": cells}  # fmt: skip
+               "unedited_accuracy": none_acc, "cells": cells,
+               "sink_positions": {k: {"skipped": v[0], "positions": v[1]} for k, v in sink_tally.items()}}  # fmt: skip
     if args.plan == "v1check":
         summary["v1_agreement"] = v1_agreement(rows_out)
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")

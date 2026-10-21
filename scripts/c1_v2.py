@@ -137,7 +137,13 @@ def ci(rows: list[dict], reps: int = 1000, seed: int = 0) -> tuple[float, float]
     return stats[int(0.025 * reps)], stats[int(0.975 * reps) - 1]
 
 
-def main(run: str, middle: str, set_name: str, drop_guessable: bool = False) -> None:
+def main(run: str, middle: str, set_name: str, drop_guessable: bool = False, cond_suffix: str = "") -> None:
+    # cond_suffix (2026-10-21, docs/prereg_sink_1021.md): "_nosink" scores the conditions that leave attention sinks
+    # unedited; outputs are written to RUN_nosink[_noguess].md / .json
+    s_ = cond_suffix
+    P10, P10R, PK, PKR = f"paper10{s_}", f"paper10{s_}_rot", f"paper10_keepown{s_}", f"paper10_keepown{s_}_rot"
+    U10 = f"unembed10{s_}"
+    table_conds = (P10, P10R, U10, f"unembed10{s_}_rot")
     rows = [json.loads(line) for line in (RES / run / "rows.jsonl").read_text().splitlines()]
     suffix = ""
     if drop_guessable:
@@ -148,7 +154,7 @@ def main(run: str, middle: str, set_name: str, drop_guessable: bool = False) -> 
     none = {(r["family"], r["id"], r["kind"]): r["correct"] for r in rows if r["condition"] == "none"}
     bands = list(dict.fromkeys(r["band"] for r in rows if r["condition"] != "none"))
     words = [w for w in ORDER if any(r["family"] == w for r in rows)]
-    conds = [c for c in TABLE_CONDS if any(r["condition"] == c for r in rows)]
+    conds = [c for c in table_conds if any(r["condition"] == c for r in rows)]
     from scripts import tasks_v2 as T
 
     items = T.load(set_name)
@@ -170,7 +176,7 @@ def main(run: str, middle: str, set_name: str, drop_guessable: bool = False) -> 
         return statistics.mean(v) if v else float("nan")
 
     out: dict = {"run": run, "middle": middle, "bands": {}}
-    lines = [f"# C1 on tasks_v2 / {run}{' WITHOUT guessable items (robustness split)' if suffix else ''} (rule fixed in scripts/c1_v2.py)", "",
+    lines = [f"# C1 on tasks_v2 / {run}{' WITHOUT guessable items (robustness split)' if suffix else ''} (rule fixed in scripts/c1_v2.py){' — conditions ' + cond_suffix if cond_suffix else ''}", "",
              "Accuracy % on the whole question [95% CI over bridge entities]; unedited first.", ""]  # fmt: skip
     for cls in (None, "text", "structured"):
         title = "all formats" if cls is None else f"{cls} formats"
@@ -216,13 +222,9 @@ def main(run: str, middle: str, set_name: str, drop_guessable: bool = False) -> 
         lines.append("")
     # the rule
     mid = out["bands"].get(middle, {})
-    loss = {
-        w: unedited(w) - mid["paper10"][w]["acc"]
-        for w in words
-        if mid.get("paper10", {}).get(w, {}).get("acc") is not None
-    }
-    ctrl = {w: abs(unedited(w) - mid["paper10_rot"][w]["acc"]) for w in words
-            if mid.get("paper10_rot", {}).get(w, {}).get("acc") is not None}  # fmt: skip
+    loss = {w: unedited(w) - mid[P10][w]["acc"] for w in words if mid.get(P10, {}).get(w, {}).get("acc") is not None}
+    ctrl = {w: abs(unedited(w) - mid[P10R][w]["acc"]) for w in words
+            if mid.get(P10R, {}).get(w, {}).get("acc") is not None}  # fmt: skip
     have = all(w in loss and w in ctrl for w in PROMPT_FINAL + MEMORY_FINAL)
     gap = (
         (statistics.mean(loss[w] for w in MEMORY_FINAL) - statistics.mean(loss[w] for w in PROMPT_FINAL))
@@ -235,23 +237,21 @@ def main(run: str, middle: str, set_name: str, drop_guessable: bool = False) -> 
     def a_of(b: str, cond: str, w: str) -> float | None:
         return out["bands"].get(b, {}).get(cond, {}).get(w, {}).get("acc")
 
-    vals = [a_of(b, c, w) for b in bands for c in ("paper10", "paper10_rot") for w in set(words) | set(PROMPT_FINAL)]
+    vals = [a_of(b, c, w) for b in bands for c in (P10, P10R) for w in set(words) | set(PROMPT_FINAL)]
     strict = None if any(v is None for v in vals) else (
-        all(unedited(w) - a_of(b, "paper10", w) <= STRICT_LOSS for b in bands for w in PROMPT_FINAL)
-        and all(a_of(b, "paper10_rot", w) >= STRICT_CONTROL for b in bands for w in words))  # fmt: skip
+        all(unedited(w) - a_of(b, P10, w) <= STRICT_LOSS for b in bands for w in PROMPT_FINAL)
+        and all(a_of(b, P10R, w) >= STRICT_CONTROL for b in bands for w in words))  # fmt: skip
     out["rule"] = {"loss": loss, "control_distance": ctrl, "gap": gap, "controls_ok": controls_ok, "C1_graded_holds": holds,
                    "strict_C1_holds": strict}  # fmt: skip
-    if any(
-        r["condition"] == "paper10_keepown" for r in rows
-    ):  # C1's second kill test (fixed 2026-10-21, before its data)
+    if any(r["condition"] == PK for r in rows):  # C1's second kill test (fixed 2026-10-21, before its data)
         kk: dict = {}
         for w in [w for w in MEMORY_FINAL if w in words]:
             base, ko, keep = (
                 unedited(w),
-                acc(pick(middle, "paper10", word=w)),
-                acc(pick(middle, "paper10_keepown", word=w)),
+                acc(pick(middle, P10, word=w)),
+                acc(pick(middle, PK, word=w)),
             )
-            krot = acc(pick(middle, "paper10_keepown_rot", word=w))
+            krot = acc(pick(middle, PKR, word=w))
             kk[w] = {"unedited": base, "paper10": ko, "keepown": keep, "keepown_rot": krot,
                      "restored": None if ko is None or keep is None or base - ko <= 0 else (keep - ko) / (base - ko)}  # fmt: skip
         res_ = [v["restored"] for v in kk.values() if v["restored"] is not None]
@@ -272,7 +272,7 @@ def main(run: str, middle: str, set_name: str, drop_guessable: bool = False) -> 
         margin = {r["id"]: r["margin"] for r in map(json.loads, (pins.RESULTS_DIR / "tasks_v2" / comp / "items.jsonl")
                   .read_text().splitlines()) if r["part"] == "whole" and r.get("margin") is not None}  # fmt: skip
         out["margin_matched"] = {}
-        for cond in [c for c in ("paper10", "unembed10") if c in conds]:
+        for cond in [c for c in (P10, U10) if c in conds]:
             its = [(r["family"], margin[r["id"]], int(none[(r["family"], r["id"], "clean")]) - int(r["correct"]))
                    for w in PROMPT_FINAL + MEMORY_FINAL for r in pick(middle, cond, word=w) if r["id"] in margin]  # fmt: skip
             if not its:
@@ -293,7 +293,7 @@ def main(run: str, middle: str, set_name: str, drop_guessable: bool = False) -> 
                       f"{f(mm['gap_at_memory_margins'])}; matched within {BIN}-logit margin bins {f(mm['matched_gap'])}"
                       + (f" [{f(ci_[0])}-{f(ci_[1])}]" if ci_ else "")
                       + f" ({mm['matched_n']} of {mm['memory_n']} memory-final items have a same-bin partner) points."]  # fmt: skip
-    if "unembed10" not in conds and all(w in words for w in PROMPT_FINAL + MEMORY_FINAL):
+    if U10 not in conds and all(w in words for w in PROMPT_FINAL + MEMORY_FINAL):
         lines += ["", "Specificity control: no unembed10 rows in this run. Every model gets one (2026-10-21): ablate_v2 "
                   "--conditions unembed10 unembed10_rot on the same items, then scripts/c1_specificity.py."]  # fmt: skip
     lines.append("")
@@ -304,8 +304,8 @@ def main(run: str, middle: str, set_name: str, drop_guessable: bool = False) -> 
               f"controls within 10 points: {'yes' if controls_ok else 'no'} -> C1-graded {'n/a (no whole-question rows at this band)' if not have else 'HOLDS' if holds else 'FAILS'}",
               f"Original strict C1 (reported): {'n/a' if strict is None else 'holds' if strict else 'fails'}. Output from commit {commit[:7]}."]  # fmt: skip
     (RES / "c1_v2").mkdir(exist_ok=True)
-    (RES / "c1_v2" / f"{run}{suffix}.json").write_text(json.dumps(out, indent=2) + "\n")
-    (RES / "c1_v2" / f"{run}{suffix}.md").write_text("\n".join(lines) + "\n")
+    (RES / "c1_v2" / f"{run}{cond_suffix}{suffix}.json").write_text(json.dumps(out, indent=2) + "\n")
+    (RES / "c1_v2" / f"{run}{cond_suffix}{suffix}.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
 
 
@@ -315,5 +315,6 @@ if __name__ == "__main__":
     ap.add_argument("--middle", default="L32-40", help="the rule's band label (Gemma: L30-38)")
     ap.add_argument("--set", dest="set_name", default="ctrl_v8", help="the tasks_v2 set the run drew from")
     ap.add_argument("--drop-guessable", action="store_true")
+    ap.add_argument("--suffix", default="", help='condition suffix, e.g. "_nosink" (attention sinks left unedited)')
     a = ap.parse_args()
-    main(a.run, a.middle, a.set_name, a.drop_guessable)
+    main(a.run, a.middle, a.set_name, a.drop_guessable, a.suffix)

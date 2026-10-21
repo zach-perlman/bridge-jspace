@@ -57,10 +57,11 @@ def main(name: str, why: str, layers: tuple[int, ...], conditions: tuple[str, ..
     wg = model.hf.lm_head.weight[letters].float() * model.norm_gain()
     dic = {la: LensDictionary(wg, lens.J(la)) for la in layers}
     for c in conditions:
-        if c.startswith("top"):
-            k = int(c[3:].removesuffix("_rot"))
+        if c.startswith("top"):  # topK[_nosink][_rot] (2026-10-21: _nosink leaves attention-sink positions unedited)
+            k = int(c[3:].removesuffix("_rot").removesuffix("_nosink"))
             rot = c.endswith("_rot")
-            every[c] = {la: _top(dic[la], k, rotation_v2(wg.shape[1], 888 + la) if rot else None) for la in layers}
+            every[c] = {la: _top(dic[la], k, rotation_v2(wg.shape[1], 888 + la) if rot else None, "_nosink" in c)
+                        for la in layers}  # fmt: skip
     conds = {c: every[c] for c in conditions}
     texts = [ids for t in pins.wikitext_rows() if len(ids := raw_encoding(tok, t)["input_ids"][:128]) >= 64][:16]
 
@@ -85,9 +86,9 @@ def main(name: str, why: str, layers: tuple[int, ...], conditions: tuple[str, ..
     print(json.dumps(summary["mean_nll"]))
 
 
-def _top(dic, k: int, rot):
+def _top(dic, k: int, rot, skip_sinks: bool = False):
     """ablate_v2's top-K removal for one [T, d] residual (no row settings: every position, nothing protected)."""
-    edit = removal_edit("top", dic, [RowSettings()], rotation=rot, k=k)
+    edit = removal_edit("top", dic, [RowSettings()], rotation=rot, k=k, skip_sinks=skip_sinks)
     return lambda h: edit(h[None])[0]
 
 
