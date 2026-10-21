@@ -24,7 +24,7 @@ import torch
 import torch.nn.functional as F
 import yaml
 
-from bridge_jspace.knockout import FULL, LINEAR, decoder_layers, knock_out, layer_kinds
+from bridge_jspace.knockout import FULL, LINEAR, attention_probs, decoder_layers, knock_out, layer_kinds
 
 TYPES = [LINEAR, LINEAR, LINEAR, FULL] * 2
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
@@ -131,8 +131,9 @@ def naive_deltanet(mod, x: torch.Tensor, src: set[int], mode: str = "value") -> 
     return o.reshape(length, -1) @ f(mod.out_proj.weight).T
 
 
-def naive_attention(mod, x, cos, sin, src: list[int], dst: list[int]) -> torch.Tensor:
-    """Qwen3.5's gated full attention in fp64 from its equations, with the (dst, src) logits at -inf. x [T, d]."""
+def naive_attention(mod, x, cos, sin, src: list[int], dst: list[int], heads: list[int] | None = None) -> torch.Tensor:
+    """Qwen3.5's gated full attention in fp64 from its equations, with the (dst, src) logits at -inf in the listed
+    query heads (all heads when None). x [T, d]."""
 
     def f(t):
         return cpu64(t)
@@ -158,7 +159,8 @@ def naive_attention(mod, x, cos, sin, src: list[int], dst: list[int]) -> torch.T
         return torch.cat([zr * cos[:, None, :] + half * sin[:, None, :], zp], dim=-1)
 
     q, k = rope(q), rope(k)
-    keep = torch.ones(length, length, dtype=torch.bool).tril()
+    causal = torch.ones(length, length, dtype=torch.bool).tril()
+    keep = causal.clone()
     for d in dst:
         for s in src:
             keep[d, s] = False
@@ -166,7 +168,8 @@ def naive_attention(mod, x, cos, sin, src: list[int], dst: list[int]) -> torch.T
     groups = n_heads // n_kv
     for h in range(n_heads):
         scores = (q[:, h] @ k[:, h // groups].T) * hd**-0.5
-        out[:, h] = scores.masked_fill(~keep, float("-inf")).softmax(-1) @ v[:, h // groups]
+        mask = keep if heads is None or h in heads else causal
+        out[:, h] = scores.masked_fill(~mask, float("-inf")).softmax(-1) @ v[:, h // groups]
     return (out.reshape(length, -1) * torch.sigmoid(gate)) @ f(mod.o_proj.weight).T
 
 
@@ -271,6 +274,65 @@ def test_full_attention_matches_naive_fp64(impl):
         assert (cpu64(plain.out[row]) - ref_plain).abs().max() / scale < REL
         assert (cpu64(hooked.out[row]) - ref_knock).abs().max() / scale < REL
         assert (ref_knock[dst[row]] - ref_plain[dst[row]]).abs().max() / scale > 1e-3
+
+
+@pytest.mark.parametrize("impl", ["sdpa", "eager"])
+def test_per_head_mask_matches_naive_fp64(impl):
+    """Blocking only some query heads (the unit under grouped-query attention: the tiny model has 4 query heads on 2
+    key/value heads) equals the fp64 reference with the (D, S) logits masked in those heads alone; a row with heads
+    None blocks every head, as before."""
+    model = tiny_model(impl)
+    layer = 3
+    mod = decoder_layers(model)[layer].self_attn
+    ids = ids_for(10, 30, batch=3)
+    src = [[5, 6, 7], [1, 12], [8, 9]]
+    dst = [[20, 29], [13, 14, 15], [25]]
+    heads = [[1], [0, 3], None]
+    with Capture(mod) as plain:
+        logits(model, ids)
+    with knock_out(model, [layer], src, dst, heads=heads), Capture(mod) as hooked:
+        logits(model, ids)
+    x = plain.kwargs["hidden_states"]
+    cos, sin = plain.kwargs["position_embeddings"]
+    for row in range(3):
+        ref = naive_attention(mod, x[row], cos[row], sin[row], src[row], dst[row], heads[row])
+        everyone = naive_attention(mod, x[row], cos[row], sin[row], src[row], dst[row])
+        scale = ref.abs().max()
+        assert (cpu64(hooked.out[row]) - ref).abs().max() / scale < REL
+        if heads[row] is not None:  # blocking some heads is not blocking all of them
+            assert (ref[dst[row]] - everyone[dst[row]]).abs().max() / scale > 1e-3
+
+
+def test_heads_only_on_full_attention():
+    model = tiny_model()
+    with pytest.raises(AssertionError), knock_out(model, [0], [[2]], [[5]], heads=[[0]]):
+        pass
+    with pytest.raises(AssertionError), knock_out(model, [3], [[2]], [[5]], heads=[[4]]):  # 4 query heads: 0-3
+        pass
+
+
+def test_attention_probs_matches_eager_weights():
+    """The readout's attention (recomputed from the layer inputs) equals eager attention's own weights."""
+    model = tiny_model("eager")
+    ids = ids_for(11, 26, batch=2)
+    q_pos = [25, 24, 10]
+    got = attention_probs(model, ids, [3, 7], q_pos)
+    for layer in (3, 7):
+        mod: Any = decoder_layers(model)[layer].self_attn
+        seen: dict = {}
+
+        def keep(_m, _a, _k, out, seen=seen):
+            seen["w"] = out[1]
+
+        handle = mod.register_forward_hook(keep, with_kwargs=True)
+        try:
+            with torch.no_grad():
+                model(input_ids=ids, use_cache=False, output_attentions=True)
+        finally:
+            handle.remove()
+        ref = seen["w"][:, :, q_pos, :].float()
+        assert (got[layer] - ref).abs().max() < ABS
+        assert torch.allclose(got[layer].sum(-1), torch.ones_like(got[layer].sum(-1)), atol=1e-5)
 
 
 def test_causality_nothing_before_min_dst_changes():

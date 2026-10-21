@@ -121,6 +121,7 @@ def knock_out(
     dst_positions: Sequence[Collection[int]],
     mode: str = "value",
     norm_log: list[dict] | None = None,
+    heads: Sequence[Collection[int] | None] | None = None,
 ) -> Iterator[None]:
     """Within the block, in every forward of a batch with len(src_positions) rows: for row r, at each layer in its set,
     positions dst_positions[r] cannot read src_positions[r] directly (module docstring). `layers` is one collection of
@@ -128,10 +129,17 @@ def knock_out(
     forward is bit-for-bit the unhooked one, except that sdpa may pick another kernel for the batch's full-attention
     layers when another row is knocked out there). Sources and destinations of a row must be disjoint, and position 0
     is never a source. With `norm_log`, each knocked DeltaNet layer appends {"layer", "rows", "ratio"}: per knocked row,
-    the mean over D and heads of ||o_d|| (second run) / ||o_d|| (normal run), before the per-head output RMSNorm."""
+    the mean over D and heads of ||o_d|| (second run) / ||o_d|| (normal run), before the per-head output RMSNorm.
+
+    `heads` (one entry per row, None = every head): the query heads whose (D, S) logits are masked, in full-attention
+    layers only (a row with heads may list no DeltaNet layer). The unit is the query head: with grouped-query attention
+    several query heads share one key/value head, and masking one query head's logits leaves its group partners
+    reading S; blocking a key/value group means listing all its query heads."""
     assert mode in MODES, mode
     n_rows = len(src_positions)
     assert len(dst_positions) == n_rows, "one destination set per source set"
+    head_sets = [None if h is None else sorted({int(x) for x in h}) for h in (heads or [None] * n_rows)]
+    assert len(head_sets) == n_rows, "one head set (or None) per row"
     src = [sorted({int(p) for p in s}) for s in src_positions]
     dst = [sorted({int(p) for p in d}) for d in dst_positions]
     for row, (s, d) in enumerate(zip(src, dst, strict=True)):
@@ -142,6 +150,10 @@ def knock_out(
     blocks: Any = decoder_layers(model)
     for row, ls in enumerate(per_row):
         assert all(0 <= la < len(blocks) for la in ls), f"row {row}: layer outside 0..{len(blocks) - 1}"
+        if head_sets[row] is not None:
+            assert all(layer_kind(blocks[la]) == FULL for la in ls), f"row {row}: heads apply to full attention only"
+            n_heads = blocks[next(iter(ls))].self_attn.config.num_attention_heads if ls else 0
+            assert all(0 <= h < n_heads for h in head_sets[row] or []), f"row {row}: head outside 0..{n_heads - 1}"
     masks = _Masks(src, dst)
     handles = []
     try:
@@ -150,7 +162,7 @@ def knock_out(
             if not rows:
                 continue
             if layer_kind(block) == FULL:
-                hook = _attention_hook(rows, masks)
+                hook = _attention_hook(rows, masks, {r: head_sets[r] for r in rows})
                 handles.append(block.self_attn.register_forward_pre_hook(hook, with_kwargs=True))
             else:
                 gdn = block.linear_attn
@@ -165,15 +177,28 @@ def knock_out(
             handle.remove()
 
 
-def _attention_hook(rows: list[int], masks: _Masks):
+def _attention_hook(rows: list[int], masks: _Masks, head_sets: dict[int, list[int] | None]):
+    per_head = any(h is not None for h in head_sets.values())
+
     def hook(module, args, kwargs):
         hs = kwargs["hidden_states"] if "hidden_states" in kwargs else args[0]
         batch, length = hs.shape[:2]
         src, dst = masks.get(length, hs.device)
         assert batch == src.shape[0], f"batch of {batch} rows, knock-out set up for {src.shape[0]}"
-        idx = torch.tensor(rows, device=hs.device)
-        block = torch.zeros(batch, 1, length, length, dtype=torch.bool, device=hs.device)
-        block[idx, 0] = dst[idx, :, None] & src[idx, None, :]
+        if not per_head:
+            idx = torch.tensor(rows, device=hs.device)
+            block = torch.zeros(batch, 1, length, length, dtype=torch.bool, device=hs.device)
+            block[idx, 0] = dst[idx, :, None] & src[idx, None, :]
+        else:  # one mask per query head
+            block = torch.zeros(batch, module.config.num_attention_heads, length, length, dtype=torch.bool,
+                                device=hs.device)  # fmt: skip
+            for r in rows:
+                pair = dst[r, :, None] & src[r, None, :]
+                which = head_sets[r]
+                if which is None:
+                    block[r] = pair
+                else:
+                    block[r, which] = pair
         kwargs["attention_mask"] = _blocked_mask(kwargs.get("attention_mask"), block, hs.dtype, module)
         return args, kwargs
 
@@ -194,7 +219,7 @@ def _blocked_mask(mask: torch.Tensor | None, block: torch.Tensor, dtype: torch.d
     assert mask.shape[-1] == mask.shape[-2] == length, "knock_out supports uncached forwards only"
     if mask.dtype == torch.bool:
         return mask & ~block
-    return mask.expand(block.shape[0], -1, -1, -1).masked_fill(block, torch.finfo(mask.dtype).min)
+    return mask.expand(block.shape[0], block.shape[1], -1, -1).masked_fill(block, torch.finfo(mask.dtype).min)
 
 
 def _keep_norm_input(seen: dict[str, torch.Tensor]):
@@ -261,3 +286,43 @@ def _without_sources(gdn: Any, src: torch.Tensor, mode: str) -> Iterator[None]:
     finally:
         ns.causal_conv1d_fn, ns.torch_chunk_gated_delta_rule = conv, rule
     assert calls == {"conv": 1, "rule": 1}, f"the Gated DeltaNet forward did not call its kernels once each: {calls}"
+
+
+@torch.no_grad()
+def attention_probs(model: Any, input_ids: torch.Tensor, layers: Collection[int], q_positions: Sequence[int]):
+    """Each listed full-attention layer's softmax attention, per query head, from the query positions to every key
+    position, in one unedited forward: {layer: [batch, heads, len(q_positions), T]} (fp32). Recomputed from the layer's
+    own inputs (query projection without its gate half, per-head norms, rotary embedding, the scaling, causal softmax),
+    so the forward itself keeps its attention implementation; tests check it against eager attention weights."""
+    blocks: Any = decoder_layers(model)
+    hf = getattr(model, "hf", model)
+    out: dict[int, torch.Tensor] = {}
+
+    def hook_for(la: int):
+        def hook(module, args, kwargs):
+            hs = kwargs["hidden_states"] if "hidden_states" in kwargs else args[0]
+            cos, sin = kwargs["position_embeddings"]
+            ns: Any = sys.modules[type(module).__module__]
+            shape = (*hs.shape[:-1], -1, module.head_dim)
+            q, _gate = torch.chunk(module.q_proj(hs).view(*hs.shape[:-1], -1, module.head_dim * 2), 2, dim=-1)
+            q = module.q_norm(q.reshape(shape)).transpose(1, 2)
+            k = module.k_norm(module.k_proj(hs).view(shape)).transpose(1, 2)
+            q, k = ns.apply_rotary_pos_emb(q, k, cos, sin)
+            k = ns.repeat_kv(k, module.num_key_value_groups)
+            qp = torch.tensor(list(q_positions), device=hs.device)
+            scores = (q[:, :, qp].float() @ k.float().transpose(-1, -2)) * module.scaling
+            future = torch.arange(hs.shape[1], device=hs.device)[None, :] > qp[:, None]
+            out[la] = scores.masked_fill(future, float("-inf")).softmax(-1)
+
+        return hook
+
+    handles = []
+    for la in layers:
+        assert layer_kind(blocks[la]) == FULL, f"layer {la} is not a full-attention layer"
+        handles.append(blocks[la].self_attn.register_forward_pre_hook(hook_for(la), with_kwargs=True))
+    try:
+        hf(input_ids=input_ids, use_cache=False, logits_to_keep=1)
+    finally:
+        for handle in handles:
+            handle.remove()
+    return out
