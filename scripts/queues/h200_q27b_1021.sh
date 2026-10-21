@@ -51,3 +51,24 @@ $PY scripts/copy_sweep.py --name smoke_copy_sweep_band_1021 --why smoke --tasks 
   && $PY scripts/copy_sweep.py --name copy_sweep_full2_v2 --why "$WHY: the copy sweep with the band paste (v1's from mode stacked)" \
   --tasks full_v8 --tasks-competence full_v8_competence_v1 --families PP PM MP MM --n 40 || echo "=== copy sweep v2 FAILED"
 echo "=== 27B additions done $(date -u +%FT%TZ)"
+# --- appended 2026-10-21 ~19:50 UTC while this queue waited (Zach: fill the 27B's gaps so it matches Gemma and Qwen3-32B;
+# docs/setup_grid.md): (1) plain-text loss under the knock-out at every layer of 32-40 (it had 32, 36, 40 only);
+# (2) the copy-only paste ceiling for the three-step steering (wm2_full3_v1 predates the joint copy); (3) the lens check
+# every model gets: graded on jpp_lens's readout items and scored at every layer, the published J++ and the logit lens.
+echo "=== 27B gap fills $(date -u +%FT%TZ)"
+$PY scripts/removal_textloss.py --name textloss_top_l32_40_v1 --why "$WHY: plain-text loss under the knock-out at every layer of 32-40, as Gemma and Qwen3-32B" \
+  --layers $(seq 32 40) --conditions none top1 top1_rot top5 top5_rot top10 top10_rot || echo "=== 27B text loss FAILED"
+BJ_BATCH=64 $PY scripts/write_max.py --name wm2_full3_v1_ceiling --why "$WHY: the paste ceiling for the three-step steering (wm2_full3_v1 had none)" \
+  --n 40 --writes copy --possets question final --tasks full_v8b --tasks-competence full_v8b_competence_v1 --tasks-level all \
+  --families PPP PPM PMP MPP MPM MMP --tasks-per-word \
+  && $PY scripts/c2_graded.py wm2_full3_v1 --ceiling-from wm2_full3_v1_ceiling > /dev/null || echo "=== 27B three-step ceiling FAILED"
+LC=/workspace/bridge-jspace/results/lens_check/qwen3.6-27b
+PUB=/workspace/hf_cache/hub/models--neuronpedia--jacobian-lens/snapshots/e166deb5ad540932100ef803c8c9bcc2a5453694/qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt
+mkdir -p $LC
+( cd /workspace/ext/jpp_lens && uv run --no-sync python /workspace/bridge-jspace/scripts/lens_fit/jpp_grade.py Qwen/Qwen3.6-27B $(seq -s, 0 62) $LC/model_correctness.csv \
+  && uv run --no-sync python scripts/jpp_cli.py evaluate --hf-model-name Qwen/Qwen3.6-27B --layers $(seq -s, 0 62) --lens $PUB logit \
+     --items held-out:0 --correctness-csv $LC/model_correctness.csv --out $LC/eval_ranks.csv \
+  && uv run --no-sync python /workspace/bridge-jspace/scripts/lens_fit/lens_check.py | tail -8 ) > /workspace/scratch/q27_lens_check.log 2>&1 \
+  || echo "=== 27B lens check FAILED"
+tail -8 /workspace/scratch/q27_lens_check.log
+echo "=== 27B gap fills done $(date -u +%FT%TZ)"
