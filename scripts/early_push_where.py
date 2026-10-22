@@ -48,10 +48,12 @@ families under suite_split's rule (every competence prompt right) and not in the
 
 Rule v2.1 (amended 2026-10-22 20:35 +0200, Dan, while d4_where_fresh_27b ran and before any of its results was
 opened): v2 applied to d4_where_27b (already opened) picks the word at layer 16, 8x (recall 90%, lookup 20%:
-inconclusive), while every valid cell at layers 20-36 has lookup 0%; at layer 16 the push moves lookups as an input
-edit would. So v2.1 = v2 with the decisive cell chosen among valid cells at layers >= 20 (V21_MIN_LAYER); the valid
-cells below 20 are reported separately (below_v21), not decisive. Written by `analyze --name N --rule v2.1` into
-<run>/analysis-v2.1-<stamp>/ (the run's own summary keeps v2).
+inconclusive), while every valid cell at layers 20-36 has lookup 0%; at layer 16 the push moves lookups too (an input
+edit by another name, or the lens writing the lookup early: open). So v2.1 = v2 with the decisive cell chosen among
+valid cells at layers >= 20 (V21_MIN_LAYER); the valid cells below 20 are reported separately (below_v21). v2.1 was
+written knowing the old data, so v2 stays the main rule (revised 20:55): both verdicts are reported, and a
+disagreement is stated as such. v2.1 is written by `analyze --name N --rule v2.1` into <run>/analysis-v2.1-<stamp>/
+(the run's own summary keeps v2).
 
 Stages:  run --name N --why W [--n K] [--scenes map|fresh] [--rule v1|v2]   analyze --name N [--rule v2.1]
          figures --name N

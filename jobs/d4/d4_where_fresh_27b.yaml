@@ -34,8 +34,10 @@ decision_rule: >-
   scale, earlier layer, the word before the sentence). H-where iff prompt -> prompt >= 30% (lower bound >= 0.20) there;
   H-around iff prompt -> prompt <= 10% and the scene-paired BR - BL gap's 2.5th percentile >= 0.20; else inconclusive;
   no selected cell: H-no-cell. Reported, not decisive: every cell, the whole context, the question's subject phrase at
-  layer 20, 8x (slide 6's anchor), the off-scene push, the text edits. Amended 2026-10-22 20:35 +0200 (Dan), while this
-  run ran and before any of its results was opened: rule v2.1 decides. v2 applied to d4_where_27b (already opened) picks
+  layer 20, 8x (slide 6's anchor), the off-scene push, the text edits. Amendment 2026-10-22 20:35 +0200 (Dan), while this
+  run ran and before any of its results was opened, reported alongside v2 (revised 20:55: v2 stays the main rule
+  because v2.1 was written knowing the old data; both verdicts are shown, and a disagreement is stated as such): rule
+  v2.1. v2 applied to d4_where_27b (already opened) picks
   the word at layer 16, 8x (recall 90%, lookup 20%), where the push moves lookups as an input edit would, while every
   valid cell at layers 20-36 has lookup 0%. v2.1 = v2 with the primary cell chosen among valid cells at layers >= 20;
   valid cells below 20 reported separately, not decisive. Analysis: `uv run python scripts/early_push_where.py analyze
