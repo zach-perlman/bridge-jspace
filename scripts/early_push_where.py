@@ -66,6 +66,14 @@ switches <= 5% of lookups at every grid layer. Reported: s the same way, the rec
 Prior (the review's guess): lens_stop ~18-20, patch_stop ~30; the D1 map's patch at the sentence moves 0% of lookups
 from layer 32 on (d1_map_n80_v1), so patch_stop <= 32 is expected.
 
+Layer-gap test v2 (Dan, 22 Oct 23:30, before its run d4_layer_gap_v2_27b; flags --patch --embed --gap-rule v2): a fourth
+arm, the input-embedding difference W_E[X] - W_E[I] at the lens push's norms (is the layer-16 effect an input edit?).
+Each arm's valid cells: v2's off-path check with that arm's own rows. An arm STOPS at a layer iff at every valid cell
+of that layer its lookup switch rate has the Wilson upper bound < 5%; it KEEPS MOVING iff the lower bound > 5% at some
+valid cell; arm_stop = the first grid layer from which it stops at every later layer that has a valid cell. H-gap iff
+patch_stop - lens_stop >= 6 and the patch keeps moving at lens_stop; H-no-gap iff <= 2; else inconclusive. The
+embedding arm's stop and moving layers reported next to the lens's.
+
 Layer-16 test (the night brief's T4, 22 Oct 23:00, before the run; `--embed --subsets w`): at the stated bridge's word,
 layers 12-24 every second, scales 1/2/4/8, three directions of equal norm: the lens word difference, the input-embedding
 difference W_E[X] - W_E[I] (an input edit's direction), a random direction. Valid cells: v2's off-path check. At the
@@ -282,6 +290,46 @@ def embed_test(
     else:
         verdict = "inconclusive"
     return {**out, "verdict": verdict}
+
+
+def arm_cells(cells: dict[tuple, dict[str, str]], sub: str, la: int, arm: str) -> list[tuple]:
+    """The valid cells of one arm at one layer: v2's off-path check with that arm's own rows (memory -> prompt and
+    memory -> memory changed <= 10%) and the random push switching <= 5% of lookups at the same layer and scale."""
+    out = []
+    for key in sorted(k for k in cells if k[0] == "BL" and k[1] == sub and k[2] == la and k[4] == arm):
+        _, _, _, sc, _ = key
+        off = [cell_rate(cells[(f, sub, la, sc, arm)], "changed")[0] for f in ("RL", "RR") if cells.get((f, sub, la, sc, arm))]  # fmt: skip
+        rnd = cell_rate(cells.get(("BL", sub, la, 8.0 if arm == "patch" else sc, "random"), {}))[0]
+        if all(v <= OFF_PATH_MAX for v in off) and (math.isnan(rnd) or rnd <= RAND_MAX):
+            out.append(key)
+    return out
+
+
+def layer_gap_v2(cells: dict[tuple, dict[str, str]], layers: list[int], sub: str = "w") -> dict:
+    """The layer-gap test v2 (docstring; Dan, 22 Oct 23:30): an arm stops at a layer iff at every valid cell of that
+    layer its lookup switch rate has the Wilson upper bound < 5%; it keeps moving iff the lower bound > 5% at some valid
+    cell; arm_stop = the first grid layer from which it stops at every later layer with a valid cell. Pure."""
+
+    def state(arm: str, la: int) -> tuple[bool | None, bool]:
+        rs = [cell_rate(cells[k]) for k in arm_cells(cells, sub, la, arm)]
+        return (all(r[2] < RAND_MAX for r in rs) if rs else None), any(r[1] > RAND_MAX for r in rs)
+
+    out: dict[str, Any] = {"subset": sub}
+    for arm in ("lens", "patch", "embed"):
+        states = {la: state(arm, la) for la in layers}
+        tested = [la for la in layers if states[la][0] is not None]
+        stop = next((la for i, la in enumerate(tested) if all(states[g][0] for g in tested[i:])), None)
+        out[arm] = {"stop": stop, "stopped": {la: s[0] for la, s in states.items()}, "moving": {la: s[1] for la, s in states.items()}}  # fmt: skip
+    ls, ps = out["lens"]["stop"], out["patch"]["stop"]
+    if ls is None or ps is None:
+        out["verdict"] = "inconclusive (an arm never stops for good)"
+    elif ps - ls >= 6 and out["patch"]["moving"].get(ls):
+        out["verdict"] = "H-gap"
+    elif ps - ls <= 2:
+        out["verdict"] = "H-no-gap"
+    else:
+        out["verdict"] = "inconclusive"
+    return out
 
 
 def decide(
@@ -523,9 +571,10 @@ def stage_analyze(name: str, rule: str | None = None) -> None:
                          for (f, s, la, sc, d), v in sorted(cells.items())],
                "edits": [{"family": f, "edit": e, "n": len(v), "to_x": cell_rate(v), "changed": cell_rate(v, "changed")}
                          for (f, e), v in sorted(edits.items())]}  # fmt: skip
-    if cfg.get("patch"):
-        summary["layer_gap"] = {sub: layer_gap(cells, cfg["layers"], sub) for sub in ("w", "s")}
-    if cfg.get("embed"):
+    if cfg.get("patch"):  # the gap rule in the run's config (v2 from d4_layer_gap_v2_27b on)
+        gap = layer_gap_v2 if cfg.get("gap_rule") == "v2" else layer_gap
+        summary["layer_gap"] = {sub: gap(cells, cfg["layers"], sub) for sub in ("w", "s")}
+    if cfg.get("embed") and not cfg.get("patch"):
         bridge_of = {c["name"]: c["bridge"] for c in map(json.loads, (RESULTS / name / "cases.jsonl").read_text().splitlines())}  # fmt: skip
         summary["embed_test"] = embed_test(cells, bridge_of, cfg["scales"])
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2, default=str) + "\n")
@@ -544,8 +593,11 @@ def stage_analyze(name: str, rule: str | None = None) -> None:
         et = summary["embed_test"]
         lines += [f"**Layer-16 test:** {et['verdict']} (valid cells {et['valid_cells']}, n {et['n']})", ""]
     for sub, g in summary.get("layer_gap", {}).items():
-        lines += [f"**Layer gap ({sub}):** {g['verdict']} (lens_stop {g.get('lens_stop')}, patch_stop {g.get('patch_stop')}); "
-                  f"lookups moved by layer, lens {g.get('lens')}, patch {g.get('patch')}", ""]  # fmt: skip
+        if "lens_stop" in g:
+            lines += [f"**Layer gap ({sub}):** {g['verdict']} (lens_stop {g.get('lens_stop')}, patch_stop {g.get('patch_stop')}); "
+                      f"lookups moved by layer, lens {g.get('lens')}, patch {g.get('patch')}", ""]  # fmt: skip
+        else:
+            lines += [f"**Layer gap v2 ({sub}):** {g['verdict']}; stops: " + ", ".join(f"{arm} {g[arm]['stop']}" for arm in ("lens", "patch", "embed")), ""]  # fmt: skip
     if "below_v21" in dec:
         lines += [f"Valid cells below layer {min_layer} (reported, not decisive): "
                   + ("; ".join(f"{d['subset']} L{d['layer']} {d['scale']:g}x: BR {100 * d['br']:.0f}%, BL "
@@ -619,6 +671,7 @@ if __name__ == "__main__":
     ap.add_argument("--scenes", choices=["map", "fresh"], default=DEFAULTS["scenes"])
     ap.add_argument("--patch", action="store_true", help="run: add the full patch of the C residual at s and w")
     ap.add_argument("--embed", action="store_true", help="run: add the input-embedding difference direction")
+    ap.add_argument("--gap-rule", choices=["v1", "v2"], default="v1", help="run, with --patch: the layer-gap rule")
     ap.add_argument("--subsets", nargs="+", choices=list(WHERE), default=None, help="run: push positions (default all)")
     ap.add_argument("--rule", choices=["v1", "v2", "v2.1"], default=None,
                     help="run: the rule in the config (default v1); analyze: an amendment into a new folder")  # fmt: skip
@@ -640,6 +693,7 @@ if __name__ == "__main__":
             cfg.update(layers=a.layers, context_layers=a.context_layers, v21_min_layer=a.v21_min_layer)
         if a.patch:
             cfg["patch"] = True
+            cfg["gap_rule"] = a.gap_rule
         if a.embed:
             cfg["embed"] = True
         if a.subsets:

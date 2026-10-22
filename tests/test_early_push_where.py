@@ -197,3 +197,28 @@ def test_embed_test(lens, embed, at20, starts):
     out = W.embed_test(_embed_cells(lens, embed, at20), bridge_of, [4.0, 8.0])
     assert out["verdict"].startswith(starts), out
     assert len(out["valid_cells"]) == 4
+
+
+def _gap_v2_cells(lens_until: int, patch_until: int, embed_until: int, rnd: float = 0.0) -> dict:
+    rates = {}
+    for la in GRID:
+        for sc in (4.0, 8.0):
+            rates[("BL", "w", la, sc, "lens")] = 0.3 if la <= lens_until else 0.0
+            rates[("BL", "w", la, sc, "embed")] = 0.3 if la <= embed_until else 0.0
+        rates[("BL", "w", la, 0.0, "patch")] = 0.6 if la <= patch_until else 0.0
+        rates[("BL", "w", la, 8.0, "random")] = rnd
+        rates[("BL", "w", la, 4.0, "random")] = rnd
+    return _cells(rates, n=100)[0]
+
+
+@pytest.mark.parametrize(("lens_until", "patch_until", "starts"), [
+    (18, 28, "H-gap"), (18, 20, "H-no-gap"), (18, 22, "inconclusive")])  # fmt: skip
+def test_layer_gap_v2(lens_until, patch_until, starts):
+    g = W.layer_gap_v2(_gap_v2_cells(lens_until, patch_until, 16), GRID)
+    assert g["verdict"].startswith(starts), g
+    assert g["lens"]["stop"] == lens_until + 2 and g["embed"]["stop"] == 18
+
+
+def test_layer_gap_v2_needs_valid_cells():
+    g = W.layer_gap_v2(_gap_v2_cells(18, 28, 16, rnd=0.2), GRID)  # the random push moves lookups: no valid cell
+    assert g["verdict"].startswith("inconclusive") and g["lens"]["stop"] is None

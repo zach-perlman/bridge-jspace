@@ -1,0 +1,32 @@
+id: d4_layer_gap_v2_27b
+title: "v2, four arms: lens push vs full patch vs input-embedding push at the stated bridge, every second layer 12-34 (Qwen3.6-27B, new fresh scenes)"
+thread: D4
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.5
+depends_on: []
+command: >-
+  uv run python scripts/early_push_where.py run --name d4_layer_gap_v2_27b --n 100 --scenes fresh --fresh-seed 2 --exclude-runs d4_where_fresh_27b --rule v2 --patch --embed --gap-rule v2 --layers 12 14 16 18 20 22 24 26 28 30 32 34 --context-layers 20 --scales 4 8 --v21-min-layer 20 --why "the layer-16 lead as a test: where the lens push stops moving lookups at the stated bridge, against the full patch of the residual there"
+figures_command: uv run python scripts/early_push_where.py figures --name d4_layer_gap_v2_27b
+question: >-
+  Layer by layer, does the full residual patch at the stated bridge's word keep moving lookups after the lens push stops?
+why_it_matters: >-
+  On two sets of scenes the lens push at the bridge's word moves 20-30% of lookups at layer 16 and 0% from layer 20. If the full patch of the residual at the same place keeps moving lookups for several layers more, the lookup's bridge is in the residual there but outside the lens: the cleanest form of the project's main claim.
+hypotheses:
+  H-gap: 'patch_stop - lens_stop >= 6 layers, the patch >= 30% at lens_stop. Prior 0.45 (the review: lens ~18-20, patch ~30)'
+  H-no-gap: 'they stop within 2 layers of each other. Prior 0.3'
+  inconclusive: 'Prior 0.25'
+decision_rule: >-
+  scripts/early_push_where.py's layer-gap test v2 (docstring; Dan, 22 Oct 23:30, before this run): four arms at the
+  stated bridge's word and sentence, every second layer 12-34: the lens push (4x, 8x), the input-embedding push
+  W_E[X] - W_E[I] at the same norms (4x, 8x), the full patch of C's residual, a random push. Each arm's valid cells:
+  v2's off-path check with that arm's own rows. An arm stops at a layer iff at every valid cell of that layer its lookup
+  switch rate has the Wilson upper bound < 5%; it keeps moving iff the lower bound > 5% at some valid cell; arm_stop =
+  the first grid layer from which it stops at every later layer with a valid cell. At the word: H-gap iff patch_stop -
+  lens_stop >= 6 and the patch keeps moving at lens_stop; H-no-gap iff <= 2; else inconclusive. The embedding arm's
+  stop reported next to the lens's (an input edit would move lookups like the lens push and stop with it).
+controls:
+- 'a random push (8x) at the same positions; recall (prompt -> memory) curves; the off-scene push; the text edits'
+n: '100 new fresh scenes (seed 2, none from map_A8_v1 or d4_where_fresh_27b), four families'
+seeds: [0]
+notes: "Replaces d4_layer_gap_27b, stopped at 39% of its scenes when Dan asked for the fourth arm in the same run and the stop rule above (its partial rows are not used). Dan, 2026-10-22 night (the critic's priorities: the lens claims beyond one model and family first, then the mechanism in less toy settings). Rules fixed before the run."

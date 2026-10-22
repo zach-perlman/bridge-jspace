@@ -1,4 +1,4 @@
-.PHONY: install fmt lint typecheck test test-model check run data-report examples-render examples-serve enqueue queue-status queue-pull queue-worker queue-cancel
+.PHONY: install fmt lint typecheck test test-model check run data-report examples-render examples-serve enqueue queue-status queue-pull queue-worker queue-cancel queue-stats
 
 # make run CONFIG=scripts/exp10_lens_sanity/config.yaml ARGS="model=configs/models/qwen3.6-27b.yaml"
 run:                ## experiment in a detached tmux session, log in log/
@@ -48,6 +48,9 @@ queue-cancel:       ## cancel a pending job: make queue-cancel ID=<job id>
 
 queue-archive:      ## move done / failed / cancelled records out of queue-status (the ledger keeps them)
 	uv run python -m scripts.jobq archive
+
+queue-stats:        ## counts, GPU-hours used (last 24 h) and left, when the queue drains on 4 GPUs
+	uv run python -m scripts.jobq stats
 
 examples-render:    ## examples/<exp>/ from the latest examples run of each experiment (no GPU)
 	uv run python -m bridge_jspace.examples export

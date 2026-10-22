@@ -1,0 +1,23 @@
+id: gemma4itf_d1_topics2_parts
+title: "D1 (Gemma 4 31B-it, Zach's J++): parts and the verdict"
+thread: D1
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.0
+depends_on:
+- gemma4itf_d1_topics2_map
+command: >-
+  BJ_TARGET=gemma-4-31b-it-full uv run python scripts/d1_precheck.py --gate gemma4itf_lens_gate_v2 --competence gemma4itf_d1_topics2_competence && BJ_TARGET=gemma-4-31b-it-full uv run python scripts/statement_positions.py parts --name gemma4itf_d1_topics2_parts --map gemma4itf_d1_topics2_map --why "D1 on Gemma: the parts" --lo 30 --sets bind_bridge bridge_word lookup_x context question && BJ_TARGET=gemma-4-31b-it-full uv run python scripts/d1_verdict.py --map gemma4itf_d1_topics2_map --parts gemma4itf_d1_topics2_parts --tasks-set d1_topics_v2 --lo 30 --onset 41 --keep-min 0.8
+question: >-
+  At the decisive cell, do lookups keep their answer under the lens-part patch, and does that part move them?
+why_it_matters: >-
+  The lens claim on another family, with the instruction-tuned model's own J++ (the base-model lens failed its positive control before).
+hypotheses:
+  H-replicates: 'Prior 0.25'
+decision_rule: >-
+  Opening (Dan, 22 Oct 23:20, before these runs): the D1 chain runs iff this lens's gate v1 passes and >= 2 topics have >= 30 eligible scenes (scripts/d1_precheck.py); gate v2 is informational. Verdict: scripts/d1_verdict.py's map rule at the 27B's layers scaled by depth [30, 41), with --keep-min 0.8: under the lens-part patch the lookups must keep their original answer on >= 80% of items (Gemma breaks under almost any intervention: our random patch breaks 85%), else not interpretable; the recall control (PM lens part >= 30%) must pass too; then replicates iff the lens part alone switches <= 0.10 of lookups and the rest >= 0.50. Per topic reported.
+controls:
+- 'O (another pair of picks swapped, off the path); a random direction at each row''s norm; a 25-atom OMP over a random dictionary; PM as the positive control; the keep-answer gate'
+n: '60 scenes for the gate; 180 for D1 (d1_topics_v2, PP and PM, right on every prompt)'
+seeds: [23]
+notes: "Dan, 22 Oct 23:20: Zach's Gemma 4 31B-it J++ (zachperlman20/gemma-4-31B-it-jpp-lens, revision c3c4340e, sha256 d16d81d8..., checked on the box), D1 queued after the OLMo chain and only if gate v1 passes. Not opened before Dan's predictions."

@@ -575,6 +575,65 @@ def box_status(root: Path, as_json: bool = False) -> str:
     return "\n".join(lines or ["queue empty"]) + "\n"
 
 
+def schedule(running_left: list[float], pending: list[dict[str, Any]], done_ids: set[str], n_gpu: int) -> float:
+    """Hours until the queue drains: list scheduling on n_gpu workers, first in first out, a job starting once its
+    dependencies have finished (memory not modelled). running_left: hours left of each running job. Pure."""
+    free = sorted(running_left + [0.0] * max(0, n_gpu - len(running_left)))[:n_gpu] or [0.0]
+    finish: dict[str, float] = {}
+    queue = list(pending)
+    while queue:
+        ready = (i for i, r in enumerate(queue) if all(d in done_ids or d in finish for d in r.get("depends_on", [])))
+        idx = next(ready, None)
+        if idx is None:  # dependencies outside the queue (failed or unknown): count the rest as unscheduled
+            return max(free)
+        rec = queue.pop(idx)
+        free.sort()
+        start = max(free[0], *(finish.get(d, 0.0) for d in rec.get("depends_on", [])), 0.0)
+        free[0] = start + float(rec.get("est_gpu_hours", 0.0))
+        finish[rec["id"]] = free[0]
+    return max(free)
+
+
+def box_stats(root: Path, hours: float = 24.0, n_gpu: int = 4) -> str:
+    """Counts, GPU-hours used in the last `hours`, what is left and when the queue should drain."""
+    ensure_layout(root)
+    now_ = dt.datetime.now().astimezone()
+    since = now_ - dt.timedelta(hours=hours)
+    ledger = [r for r in read_ledger(root) if r.get("ended_at") and dt.datetime.fromisoformat(r["ended_at"]) >= since]
+    state = {s: [json.loads(p.read_text()) for p in jobs_in(root, s)] for s in ("pending", "running")}
+    done = [r for r in ledger if r.get("status") == "done"]
+    failed = [r for r in ledger if r.get("status") == "failed"]
+    used = sum(r.get("run_s") or 0 for r in ledger) / 3600
+    left = []
+    for rec in state["running"]:
+        el = (
+            (now_ - dt.datetime.fromisoformat(rec["started_at"])).total_seconds() / 3600 if rec.get("started_at") else 0
+        )
+        used += el
+        left.append(max(float(rec["est_gpu_hours"]) - el, 0.0))
+    ratios = sorted(
+        r["run_s"] / 3600 / float(r["est_gpu_hours"]) for r in done if r.get("run_s") and r.get("est_gpu_hours")
+    )
+    ratio = ratios[len(ratios) // 2] if ratios else 1.0
+    pend_h = sum(float(r["est_gpu_hours"]) for r in state["pending"])
+    done_ids = {r["id"] for r in read_ledger(root) if r.get("status") == "done"}
+    raw = schedule(left, state["pending"], done_ids, n_gpu)
+    scaled = schedule([x * ratio for x in left], [{**r, "est_gpu_hours": float(r["est_gpu_hours"]) * ratio}
+                                                   for r in state["pending"]], done_ids, n_gpu)  # fmt: skip
+    eta = (now_ + dt.timedelta(hours=scaled)).strftime("%H:%M %Z")
+    lines = [
+        f"last {hours:g} h: {len(done)} done, {len(failed)} failed; GPU-hours used {used:.1f} (running jobs included)",
+        f"now: {len(state['running'])} running, {len(state['pending'])} pending",
+        f"left: running ~{sum(left):.1f} GPU-h by estimate, pending {pend_h:.1f} GPU-h by estimate "
+        f"(x {ratio:.2f} = the median actual / estimate of the done jobs: {sum(left) * ratio + pend_h * ratio:.1f} GPU-h)",
+        f"drains on {n_gpu} GPUs in ~{raw:.1f} h by the estimates, ~{scaled:.1f} h scaled (around {eta}); memory and "
+        "a GPU held by a long job are not modelled",
+    ]
+    if failed:
+        lines.append("failed: " + ", ".join(f"{r['id']} (exit {r.get('exit_code')}, figures {r.get('figures_exit')})" for r in failed))  # fmt: skip
+    return "\n".join(lines) + "\n"
+
+
 def box_ids(root: Path) -> list[str]:
     ensure_layout(root)
     ids = {r["id"] for r in read_ledger(root)}
@@ -624,6 +683,10 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("box-ids")
     sub.add_parser("box-cancel").add_argument("id")
     sub.add_parser("box-archive")
+    for name in ("stats", "box-stats"):
+        st = sub.add_parser(name, help="counts, GPU-hours used and left, when the queue drains")
+        st.add_argument("--hours", type=float, default=24.0, help="the window for done / failed / used")
+        st.add_argument("--gpus", type=int, default=4)
     a = ap.parse_args(argv)
     if a.cmd == "validate":
         return cmd_validate(a.specs)
@@ -653,6 +716,13 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if a.cmd == "box-cancel":
         print(box_cancel(box_root(), a.id), end="")
+        return 0
+    if a.cmd == "stats":
+        _install_box_script()
+        print(_ssh(f"python3 ~/{BOX_ROOT}/jobq.py box-stats --hours {a.hours} --gpus {a.gpus}"), end="")
+        return 0
+    if a.cmd == "box-stats":
+        print(box_stats(box_root(), a.hours, a.gpus), end="")
         return 0
     return 2
 

@@ -25,6 +25,11 @@ at after_word, best over the window's layers, the bridge is in the lens's top 10
 (the same bars). An item without an after_word token does not count. Reported: v1 (bind_bridge), context_nomention,
 top-1, each layer.
 
+Which gate opens D1, and the wording (Dan, 22 Oct 23:20, before any v2 result was opened): D1 starts on a model iff its
+gate v1 passes; D1's validity comes from its own recall control. Gate v2 is informational: if it fails, even on
+Qwen3.6-27B, "the lens reads the bridge" is reworded "the lens reads the bridge word where it stands"; it does not
+cancel D1 on Qwen3.6-27B or Qwen3.5-9B.
+
 uv run python scripts/lens_gate.py --name N --tasks-set S --n 60 --lo L --onset O [--why W]
 """
 

@@ -1,0 +1,22 @@
+id: gemma4itb_lens_gate_v2_r2
+title: "Lens gate (Gemma 4 31B-it): does its lens name a stated bridge at its own sentence?"
+thread: D1
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.1
+depends_on: []
+command: >-
+  BJ_TARGET=gemma-4-31b-it-baselens uv run python scripts/lens_gate.py --name gemma4itb_lens_gate_v2_r2 --tasks-set d1_topics_v2 --n 60 --lo 30 --onset 41 --why "the lens gate on another family"
+question: >-
+  Does Gemma 4 31B-it's lens (neuronpedia's J++ fit on the base model (the instruction-tuned refit is on Zach's box)) put a stated bridge in its top 10 at the bridge's sentence, and the other bridge not?
+why_it_matters: >-
+  The lens claims rest on two Qwen models; another family is the critic's first priority.
+hypotheses:
+  H-pass: 'passes. Prior 0.35'
+decision_rule: >-
+  scripts/lens_gate.py gate v2 (fixed 22 Oct 23:00 before any v2 run): PASS iff at after_word (the bridge's sentence after its word; in prose the period), best over the window's coarse layers, the bridge is in the lens's top 10 on >= 50% of items and X on <= 20%. v1 (the whole sentence, mostly the word itself) and context_nomention reported.
+controls:
+- 'the other bridge X mentioned elsewhere (the floor); the 27B / Qwen3-32B gates as known pass / fail'
+n: '60 PP scenes of d1_topics_v2 that line up in this tokenizer'
+seeds: [0]
+notes: "Rerun: the first run failed on statement_positions' <|im_end|> lookup, fixed in dbc4527 (the end of the user turn on other templates). Dan, 2026-10-22 night (the critic's priorities: the lens claims beyond one model and family first, then the mechanism in less toy settings). Rules fixed before the run."

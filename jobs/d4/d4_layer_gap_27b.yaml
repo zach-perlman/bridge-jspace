@@ -22,4 +22,4 @@ controls:
 - 'a random push (8x) at the same positions; recall (prompt -> memory) curves; the off-scene push; the text edits'
 n: '100 new fresh scenes (seed 2, none from map_A8_v1 or d4_where_fresh_27b), four families'
 seeds: [0]
-notes: "Dan, 2026-10-22 night (the critic's priorities: the lens claims beyond one model and family first, then the mechanism in less toy settings). Rules fixed before the run."
+notes: "STOPPED 22 Oct ~23:35 at 39% of its scenes (Dan: a fourth arm and a stop rule with Wilson bounds, in one run); superseded by d4_layer_gap_v2_27b; its partial rows are not used. Dan, 2026-10-22 night (the critic's priorities: the lens claims beyond one model and family first, then the mechanism in less toy settings). Rules fixed before the run."

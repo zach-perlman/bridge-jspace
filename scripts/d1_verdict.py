@@ -17,6 +17,10 @@ stage ran only on items the model answers right).
 (context:32, the cell d1_topics_map_27b chose) instead of chosen from the map. With a tasks set, each topic also gets
 the same verdict on its own rows (topic_verdicts); a topic counts only if its own positive control passes.
 
+--keep-min K (Gemma 4, Muse Glimmer; Dan, 22 Oct 23:45, before those runs): under the lens-part patch the lookups
+must keep their original answer on >= K of items (role A at the decisive cell), else the verdict is "not
+interpretable" (a model that breaks under almost any intervention makes a null meaningless).
+
 uv run python scripts/d1_verdict.py --map M --parts P [--lookup PP --recall PM] [--tasks-set S] [--onset 44]
                                     [--cell SET:LAYER]
 """
@@ -84,6 +88,8 @@ def main() -> int:
     ap.add_argument("--lo", type=int, default=32)
     ap.add_argument("--out", default=str(OUT), help="parent folder of the new verdict folder")
     ap.add_argument("--cell", default=None, help="SET:LAYER fixed in advance (else chosen from the map)")
+    ap.add_argument("--keep-min", type=float, default=None,
+                    help="Gemma-style gate: under the lens-part patch, lookups keep their answer on >= this share")  # fmt: skip
     a = ap.parse_args()
     rates = json.loads((SP / a.map / "summary.json").read_text())["rates"]
     cell = fixed_cell(rates, a.cell, a.lookup) if a.cell else decisive_cell(rates, a.lookup, a.lo, a.onset)
@@ -109,6 +115,11 @@ def main() -> int:
            "recall": {p: part(a.recall, p) for p in ("full", "jspace", "not_jspace", "rand_omp")},
            "nulls": {"lookup_jspace_null": part(a.lookup, "jspace", nulls), "recall_jspace_null": part(a.recall, "jspace", nulls)}}  # fmt: skip
     verdict = verdict_of(out["lookup"], out["recall"])
+    if a.keep_min is not None:  # a model that breaks under almost any patch: a null means something only if kept
+        lk = [r for r in at if r["family"] == a.lookup and r["part"] == "jspace"]
+        out["kept_under_lens_part"] = [*wilson(sum(r["role"] == "A" for r in lk), len(lk)), len(lk)]
+        if not lk or out["kept_under_lens_part"][0] < a.keep_min:
+            verdict = f"not interpretable: lookups keep their answer under the lens-part patch on < {a.keep_min:.0%}"
     out["verdict"] = verdict
     for key in ("topic", "numbers", "format"):
         values = sorted({m[key] for m in meta.values()})

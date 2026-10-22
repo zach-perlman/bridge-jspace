@@ -1,0 +1,23 @@
+id: gemma4itf_lens_gate_v2
+title: "Lens gate v1 and v2 (Gemma 4 31B-it, Zach's J++)"
+thread: D1
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.15
+depends_on: []
+command: >-
+  BJ_TARGET=gemma-4-31b-it-full uv run python scripts/lens_gate.py --name gemma4itf_lens_gate_v2 --tasks-set d1_topics_v2 --n 60 --lo 30 --onset 41 --why "Zach's Gemma J++: gate v1 opens D1, v2 informational"
+question: >-
+  Does Zach's Gemma J++ put the stated bridge in its top 10 at its sentence (v1) and after its word (v2)?
+why_it_matters: >-
+  The lens claim on another family, with the instruction-tuned model's own J++ (the base-model lens failed its positive control before).
+hypotheses:
+  H-v1: 'passes. Prior 0.6'
+  H-v2: 'passes. Prior 0.35'
+decision_rule: >-
+  scripts/lens_gate.py: v1 = bind_bridge, v2 = after_word, both >= 50% bridge top 10 and <= 20% X; v1 opens D1 (Dan, 22 Oct 23:20), v2 is informational: if it fails, "the lens reads the bridge" is worded "the lens reads the bridge word where it stands".
+controls:
+- 'O (another pair of picks swapped, off the path); a random direction at each row''s norm; a 25-atom OMP over a random dictionary; PM as the positive control; the keep-answer gate'
+n: '60 scenes for the gate; 180 for D1 (d1_topics_v2, PP and PM, right on every prompt)'
+seeds: [23]
+notes: "Dan, 22 Oct 23:20: Zach's Gemma 4 31B-it J++ (zachperlman20/gemma-4-31B-it-jpp-lens, revision c3c4340e, sha256 d16d81d8..., checked on the box), D1 queued after the OLMo chain and only if gate v1 passes. Not opened before Dan's predictions."

@@ -220,3 +220,13 @@ def test_job_page_shows_the_newest_analysis_figures(tmp_path):
     assert "src='figures/00_a_headline.png'" in page and "src='figures/01_b_rates.png'" in page
     assert "old.png" not in page
     assert (out / "figures/00_a_headline.png").read_bytes() == b"\x89PNG\r\n"
+
+
+def test_schedule_respects_dependencies_and_gpus():
+    from scripts import jobq as Q
+
+    pend = [{"id": "a", "est_gpu_hours": 2.0}, {"id": "b", "est_gpu_hours": 1.0, "depends_on": ["a"]},
+            {"id": "c", "est_gpu_hours": 1.0}]  # fmt: skip
+    assert Q.schedule([], pend, set(), 2) == 3.0  # a then b on one GPU, c on the other
+    assert Q.schedule([0.5], pend[2:], set(), 1) == 1.5  # c waits for the running job
+    assert Q.schedule([], [{"id": "x", "est_gpu_hours": 1.0, "depends_on": ["gone"]}], set(), 2) == 0.0
