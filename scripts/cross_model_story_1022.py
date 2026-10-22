@@ -526,7 +526,7 @@ for yy, kind, pl in rows:
 fig.suptitle("Two- and three-step chains together: the knock-out hurts a chain when a recall from memory comes after the first step,\n"
              "most when the recall is the last step, in every model; how much depends on the model", x=0.01, y=0.995, ha="left", fontsize=11.5)  # fmt: skip
 fig.legend([plt.Rectangle((0, 0), 1, 1, color=LOOKUP), plt.Rectangle((0, 0), 1, 1, color=MEMORY), plt.Rectangle((0, 0), 1, 1, color=CONTROL)],
-           ["P: looked up in the prompt", "M: recalled from memory", "C: computed (typo repaired, word translated)"],
+           ["P: looked up in the prompt", "M: recalled from memory", "C: computed (misspelling repaired, name reversed, name from its letters)"],
            loc="upper left", bbox_to_anchor=(0.01, 1 - 0.62 / FH), ncol=3, frameon=False, fontsize=8.8)  # fmt: skip
 foot(fig, "Points lost beyond the same-size random removal (random-control minus knock-out accuracy, same items, items right unedited) at each "
      "model's middle band; whole question for the chains, one step asked on its own below (darker bar: steps of two-step chains, lighter: of "
