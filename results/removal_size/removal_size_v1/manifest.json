@@ -1,0 +1,24 @@
+{
+  "run": "removal_size_v1",
+  "why": "Zach (2026-10-22): does the unembedding knock-out remove less of the residual than the J-lens one? (27B)",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  ],
+  "layers": [
+    16,
+    24,
+    32,
+    36,
+    40
+  ],
+  "written_utc": "2026-10-22T16:29:26Z",
+  "doc": "removal_size: how much of the residual does each knock-out remove? (Zach, 2026-10-22; the caveat on C1's specificity\ncontrol: removing the top-10 unembedding directions per position did nothing on the 27B, but those directions may simply\nhold less of the mid-layer residual than the top-10 J-lens directions do.) On removal_textloss's 16 WikiText rows, at\neach layer: the removed share of the residual's norm, ||h - edit(h)|| / ||h||, per position (position 0 excluded), for\nthe top-K span removal over the J-lens dictionary (paper10's) and over the unit unembedding rows (unembed10's), K = 1 and\n10, and the same-size rotated control (equal norm by construction). Descriptive."
+}

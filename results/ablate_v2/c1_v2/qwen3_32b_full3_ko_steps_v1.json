@@ -1,0 +1,117 @@
+{
+  "run": "qwen3_32b_full3_ko_steps_v1",
+  "middle": "L44-52",
+  "bands": {
+    "L44-52": {
+      "paper10": {
+        "PPP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "PPM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "PMP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MPP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MPM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MMP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        }
+      },
+      "paper10_rot": {
+        "PPP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "PPM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "PMP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MPP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MPM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MMP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        }
+      }
+    }
+  },
+  "rule": {
+    "loss": {},
+    "control_distance": {},
+    "gap": null,
+    "controls_ok": false,
+    "C1_graded_holds": false,
+    "strict_C1_holds": null
+  },
+  "commit": "50be071c471e7cbff438160955b345e40f975ec9"
+}

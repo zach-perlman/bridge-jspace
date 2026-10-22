@@ -1,0 +1,13 @@
+{
+  "run": "muse30_copy_sweep_full2_v1",
+  "window": 10,
+  "rule": "choose_steer_band: the aligned steering band (Zach, 2026-10-22; the rule fixed before any Qwen3-32B or Muse copy-sweep\ndata, applying the Day 3 plan's pre-stated \"if the corrected ceiling clears 0.5 only later, rerun steering at an aligned\nband\"). From a copy_sweep run in band mode: the earliest start layer L such that pasting C's state from L through\nL + window flips >= 50% of P->P, P->M, M->P and M->M alike, at one position set (question or final; final first on a tie).\nPrints \"LO-HI POSSET\": the steering band (L to L + window, capped at the last lens layer) and the position set. Exit 1 if\nno band qualifies. Writes results/write_max/steer_band/RUN.json.",
+  "band": "22-32",
+  "possets": "final",
+  "flips_at_band": {
+    "PP": 0.725,
+    "PM": 0.525,
+    "MP": 0.975,
+    "MM": 0.875
+  }
+}

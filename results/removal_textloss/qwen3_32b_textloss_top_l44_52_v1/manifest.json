@@ -1,0 +1,37 @@
+{
+  "run": "qwen3_32b_textloss_top_l44_52_v1",
+  "why": "Zach (2026-10-21): plain-text loss under the knock-out at the band chosen on ctrl_v8",
+  "written_utc": "2026-10-22T14:59:45Z",
+  "model": {
+    "target": "qwen3-32b",
+    "repo": "Qwen/Qwen3-32B",
+    "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "6fbc03865ec674a2d2f346b23ea8220a7c7e2b0b3922d1afd1b300f455d3253e"
+  ],
+  "layers": [
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52
+  ],
+  "conditions": [
+    "none",
+    "top1",
+    "top1_rot",
+    "top5",
+    "top5_rot",
+    "top10",
+    "top10_rot"
+  ],
+  "doc": "python scripts/removal_textloss.py --name N --why W --layers L [L ...] [--conditions none jspace rotated top10 top10_rot]\n"
+}

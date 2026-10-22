@@ -1,0 +1,18 @@
+{
+  "run": "muse30_full_v8b_competence_v1",
+  "why": "Zach (2026-10-22): Muse Glimmer 30B, the second family, its published plain J-lens (900 prompts): competence on full_v8b (three-step words)",
+  "set": "full_v8b",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "50be071c471e7cbff438160955b345e40f975ec9",
+  "guess": true,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-22T11:52:14Z"
+}

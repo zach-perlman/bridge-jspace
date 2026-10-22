@@ -1,0 +1,59 @@
+{
+  "run": "qwen3_32b_copy_sweep_full2_v1",
+  "why": "Zach (2026-10-21): Qwen3-32B, every-layer J++ (32 prompts): where the question / final positions carry the bridge",
+  "git_commit": "50be071c471e7cbff438160955b345e40f975ec9",
+  "model": {
+    "target": "qwen3-32b",
+    "repo": "Qwen/Qwen3-32B",
+    "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "layers": [
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50,
+    52,
+    54,
+    56,
+    58,
+    60,
+    62
+  ],
+  "tasks": [
+    "full_v8",
+    "qwen3_32b_full_v8_competence_v1"
+  ],
+  "families": [
+    "PP",
+    "PM",
+    "MP",
+    "MM"
+  ],
+  "n_per_family": 40,
+  "window": 12,
+  "written_utc": "2026-10-22T08:58:23Z",
+  "doc": "python scripts/copy_sweep.py --name N --why W [--tasks SET --tasks-competence RUN --families ...] [--n 40] [--step 2]\n                             [--window 12]\n"
+}
