@@ -30,6 +30,14 @@ Never blocked: the first token (an attention sink; asserted). The second DeltaNe
 the two kernel functions it calls (causal_conv1d_fn and torch_chunk_gated_delta_rule: flash-linear-attention's kernels
 when installed, else transformers' torch reference) wrapped to change their inputs; per-token values, beta and g are
 ordinary inputs of both paths. Only full, uncached forwards (prefill) are supported.
+
+Models: Qwen3.5 (Qwen3_5GatedDeltaNet) and OLMo-Hybrid (OlmoHybridGatedDeltaNet, 23 Oct). A layer's kind comes from
+the config's layer_types (layer_kinds; checked against the block's modules). Both DeltaNets build mixed_qkv as
+[queries, keys, values] before the same conv and call the same two kernels by the same module-level names; they differ
+in their projections (fused vs separate; neither changes what is zeroed), the output norm's name (`norm` / `o_norm`),
+and OLMo-Hybrid's beta range [0, 2] (allow_neg_eigval), which leaves the rule linear in the values. OLMo-Hybrid's
+full-attention layers have no RoPE and no output gate; the knock-out only edits their mask, so neither matters there.
+attention_probs / capture_attention recompute Qwen3.5's gated, rotary attention and are not ported to other models.
 """
 
 from __future__ import annotations
@@ -63,8 +71,33 @@ def layer_kind(layer: nn.Module) -> str:
     raise TypeError(f"{type(layer).__name__}: neither self_attn nor linear_attn")
 
 
+def config_layer_kinds(config: Any) -> list[str]:
+    """Layer kinds from a model config (a multimodal model's text config): LINEAR where layer_types says
+    "linear_attention" (a Gated DeltaNet: Qwen3.5, OLMo-Hybrid), FULL for every other type (softmax attention, full or
+    sliding-window); FULL everywhere when the config lists no layer_types (a dense model)."""
+    cfg = config.get_text_config() if hasattr(config, "get_text_config") else config
+    types = getattr(cfg, "layer_types", None)
+    if types is None:
+        return [FULL] * cfg.num_hidden_layers
+    return [LINEAR if t == LINEAR else FULL for t in types]
+
+
 def layer_kinds(model: Any) -> list[str]:
-    return [layer_kind(layer) for layer in decoder_layers(model)]
+    """Each decoder block's kind, from the model's config (config_layer_kinds), asserted to match the block's own
+    token mixer (a LINEAR layer has `linear_attn`, a FULL one `self_attn`)."""
+    blocks = decoder_layers(model)
+    kinds = config_layer_kinds(getattr(model, "hf", model).config)
+    assert len(kinds) == len(blocks), f"config lists {len(kinds)} layer types for {len(blocks)} blocks"
+    for la, (kind, block) in enumerate(zip(kinds, blocks, strict=True)):
+        assert layer_kind(block) == kind, f"layer {la}: config says {kind}, the block is {type(block).__name__}"
+    return kinds
+
+
+def output_norm(gdn: nn.Module) -> nn.Module:
+    """A Gated DeltaNet's per-head gated output RMSNorm: `norm` (Qwen3.5) or `o_norm` (OLMo-Hybrid)."""
+    found = [getattr(gdn, name) for name in ("norm", "o_norm") if hasattr(gdn, name)]
+    assert len(found) == 1, f"{type(gdn).__name__}: expected one output norm (norm or o_norm), found {len(found)}"
+    return found[0]
 
 
 def kernel_path() -> str:
@@ -149,10 +182,11 @@ def knock_out(
         assert 0 not in s, f"row {row}: the first token (attention sink) is never blocked"
     per_row = _per_row(layers, n_rows)
     blocks: Any = decoder_layers(model)
+    kinds = layer_kinds(model)
     for row, ls in enumerate(per_row):
         assert all(0 <= la < len(blocks) for la in ls), f"row {row}: layer outside 0..{len(blocks) - 1}"
         if head_sets[row] is not None:
-            assert all(layer_kind(blocks[la]) == FULL for la in ls), f"row {row}: heads apply to full attention only"
+            assert all(kinds[la] == FULL for la in ls), f"row {row}: heads apply to full attention only"
             n_heads = blocks[next(iter(ls))].self_attn.config.num_attention_heads if ls else 0
             assert all(0 <= h < n_heads for h in head_sets[row] or []), f"row {row}: head outside 0..{n_heads - 1}"
     masks = _Masks(src, dst)
@@ -162,14 +196,14 @@ def knock_out(
             rows = [r for r in range(n_rows) if la in per_row[r] and src[r] and dst[r]]
             if not rows:
                 continue
-            if layer_kind(block) == FULL:
+            if kinds[la] == FULL:
                 hook = _attention_hook(rows, masks, {r: head_sets[r] for r in rows})
                 handles.append(block.self_attn.register_forward_pre_hook(hook, with_kwargs=True))
             else:
                 gdn = block.linear_attn
                 seen: dict[str, torch.Tensor] = {}
                 if norm_log is not None:
-                    handles.append(gdn.norm.register_forward_pre_hook(_keep_norm_input(seen)))
+                    handles.append(output_norm(gdn).register_forward_pre_hook(_keep_norm_input(seen)))
                 hook = _deltanet_hook(la, rows, masks, mode, seen if norm_log is not None else None, norm_log)
                 handles.append(gdn.register_forward_hook(hook, with_kwargs=True))
         yield

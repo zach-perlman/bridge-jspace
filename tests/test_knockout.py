@@ -24,7 +24,15 @@ import torch
 import torch.nn.functional as F
 import yaml
 
-from bridge_jspace.knockout import FULL, LINEAR, attention_probs, decoder_layers, knock_out, layer_kinds
+from bridge_jspace.knockout import (
+    FULL,
+    LINEAR,
+    attention_probs,
+    config_layer_kinds,
+    decoder_layers,
+    knock_out,
+    layer_kinds,
+)
 
 TYPES = [LINEAR, LINEAR, LINEAR, FULL] * 2
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
@@ -652,3 +660,210 @@ def test_sliding_window_layers_count_as_full_attention():
     assert config_kinds(cfg) == [FULL] * 4
     assert config_kinds({"layer_types": [LINEAR, FULL]}) == [LINEAR, FULL]
     assert config_kinds({"num_hidden_layers": 3}) == [FULL] * 3
+
+
+# ---- OLMo-Hybrid (OlmoHybridGatedDeltaNet + NoPE full attention; tiny random model, no download) --------------------
+
+
+def tiny_olmo_hybrid(impl: str = "sdpa", seed: int = 0):
+    """The released checkpoint's layout in miniature: DeltaNet x3 then full attention, twice; no RoPE (rope_theta None),
+    beta in [0, 2] (allow_neg_eigval); 2 key heads expanded to 4 value heads to exercise the expansion."""
+    from transformers import OlmoHybridConfig
+    from transformers.models.olmo_hybrid.modeling_olmo_hybrid import OlmoHybridForCausalLM
+
+    cfg = OlmoHybridConfig(
+        vocab_size=61,
+        hidden_size=32,
+        intermediate_size=48,
+        num_hidden_layers=len(TYPES),
+        layer_types=TYPES,
+        num_attention_heads=4,
+        num_key_value_heads=4,
+        linear_num_key_heads=2,
+        linear_num_value_heads=4,
+        linear_key_head_dim=8,
+        linear_value_head_dim=6,
+        linear_conv_kernel_dim=4,
+        linear_allow_neg_eigval=True,
+        max_position_embeddings=128,
+        rope_parameters={"rope_theta": None, "rope_type": "default"},
+        pad_token_id=None,
+        eos_token_id=None,
+    )
+    cfg._attn_implementation = impl
+    torch.manual_seed(seed)
+    model = OlmoHybridForCausalLM(cfg).eval()
+    assert model.model.rotary_emb is None  # NoPE, as released
+    g = torch.Generator().manual_seed(seed)
+    with torch.no_grad():
+        for name, p in model.named_parameters():
+            if name.endswith(("A_log", "dt_bias")):
+                continue
+            noise = torch.randn(p.shape, generator=g)
+            # OLMo's RMSNorms scale by weight (not 1 + weight): gains around 1
+            p.copy_(noise / math.sqrt(p.shape[-1]) if p.ndim >= 2 else 1.0 + 0.3 * noise)
+    moved: Any = model
+    return moved.to(DEVICE)
+
+
+def naive_olmo_deltanet(mod, x: torch.Tensor, src: set[int], mode: str = "value") -> torch.Tensor:
+    """OLMo-Hybrid's Gated DeltaNet in fp64 from its equations, as naive_deltanet for Qwen3.5: separate q/k/v
+    projections into the same [q, k, v] conv, beta = 2 sigmoid (allow_neg_eigval), the gated output norm `o_norm`
+    with its own gate projection g_proj."""
+    f = cpu64
+    x = f(x)
+    length = x.shape[0]
+    u = torch.cat([x @ f(mod.q_proj.weight).T, x @ f(mod.k_proj.weight).T, x @ f(mod.v_proj.weight).T], dim=-1)
+    u[sorted(src), (2 * mod.key_dim if mode == "value" else 0) :] = 0
+    w = f(mod.conv1d.weight).squeeze(1)
+    c = torch.zeros_like(u)
+    for t in range(length):
+        for j in range(w.shape[1]):
+            if (p := t - (w.shape[1] - 1 - j)) >= 0:
+                c[t] += w[:, j] * u[p]
+    q, k, v = F.silu(c).split([mod.key_dim, mod.key_dim, mod.value_dim], dim=-1)
+    rep = mod.num_v_heads // mod.num_k_heads
+    q = q.reshape(length, mod.num_k_heads, mod.head_k_dim).repeat_interleave(rep, dim=1)
+    k = k.reshape(length, mod.num_k_heads, mod.head_k_dim).repeat_interleave(rep, dim=1)
+    v = v.reshape(length, mod.num_v_heads, mod.head_v_dim).clone()
+    if mode == "value":
+        v[sorted(src)] = 0
+    q = q / torch.sqrt((q * q).sum(-1, keepdim=True) + 1e-6) * mod.head_k_dim**-0.5
+    k = k / torch.sqrt((k * k).sum(-1, keepdim=True) + 1e-6)
+    beta = torch.sigmoid(x @ f(mod.b_proj.weight).T) * (2.0 if mod.allow_neg_eigval else 1.0)
+    g = -f(mod.A_log).exp() * F.softplus(x @ f(mod.a_proj.weight).T + f(mod.dt_bias))
+    if mode == "absent":
+        g[sorted(src)] = 0
+    o = torch.zeros(length, mod.num_v_heads, mod.head_v_dim, dtype=torch.float64)
+    for h in range(mod.num_v_heads):
+        state = torch.zeros(mod.head_k_dim, mod.head_v_dim, dtype=torch.float64)
+        for t in range(length):
+            state = state * g[t, h].exp()
+            if mode == "value" or t not in src:
+                state = state + torch.outer(k[t, h], beta[t, h] * (v[t, h] - state.T @ k[t, h]))
+            o[t, h] = state.T @ q[t, h]
+    gate = (x @ f(mod.g_proj.weight).T).reshape(length, mod.num_v_heads, mod.head_v_dim)
+    o = o * torch.rsqrt(o.pow(2).mean(-1, keepdim=True) + mod.o_norm.variance_epsilon) * f(mod.o_norm.weight)
+    return (o * F.silu(gate)).reshape(length, -1) @ f(mod.o_proj.weight).T
+
+
+def naive_olmo_attention(mod, x: torch.Tensor, src: list[int], dst: list[int]) -> torch.Tensor:
+    """OLMo-Hybrid's full attention in fp64 (no RoPE, no output gate; q/k RMSNorm over all heads at once), with the
+    (dst, src) logits at -inf in every head."""
+    f = cpu64
+    x = f(x)
+    length, hd = x.shape[0], mod.head_dim
+    n_heads, n_kv = mod.config.num_attention_heads, mod.config.num_key_value_heads
+
+    def rms(z, norm):
+        return z * torch.rsqrt(z.pow(2).mean(-1, keepdim=True) + norm.variance_epsilon) * f(norm.weight)
+
+    q = rms(x @ f(mod.q_proj.weight).T, mod.q_norm).reshape(length, n_heads, hd)
+    k = rms(x @ f(mod.k_proj.weight).T, mod.k_norm).reshape(length, n_kv, hd)
+    v = (x @ f(mod.v_proj.weight).T).reshape(length, n_kv, hd)
+    keep = torch.ones(length, length, dtype=torch.bool).tril()
+    for d in dst:
+        keep[d, src] = False
+    out = torch.zeros(length, n_heads, hd, dtype=torch.float64)
+    for h in range(n_heads):
+        kv = h // (n_heads // n_kv)
+        out[:, h] = ((q[:, h] @ k[:, kv].T) * hd**-0.5).masked_fill(~keep, float("-inf")).softmax(-1) @ v[:, kv]
+    return out.reshape(length, -1) @ f(mod.o_proj.weight).T
+
+
+def test_olmo_hybrid_layer_kinds_come_from_the_config():
+    from types import SimpleNamespace
+
+    model = tiny_olmo_hybrid()
+    assert layer_kinds(model) == config_layer_kinds(model.config) == TYPES
+    assert config_layer_kinds(SimpleNamespace(layer_types=["sliding_attention", "full_attention"])) == [FULL, FULL]
+    assert config_layer_kinds(SimpleNamespace(num_hidden_layers=3)) == [FULL] * 3  # dense, no layer_types
+    model.config.layer_types = [FULL, *TYPES[1:]]  # the config disagrees with block 0 (a DeltaNet)
+    with pytest.raises(AssertionError, match="layer 0"):
+        layer_kinds(model)
+
+
+@pytest.mark.parametrize("empty", ["src", "dst"])
+def test_olmo_hybrid_noop_empty_sets_is_bit_exact(empty):
+    model = tiny_olmo_hybrid()
+    ids = ids_for(1, 23, batch=2)
+    ref = logits(model, ids)
+    some, none = [[3, 4, 5], [10, 11]], [[], []]
+    src, dst = (none, some) if empty == "src" else (some, none)
+    with knock_out(model, range(len(TYPES)), src, dst):
+        assert torch.equal(logits(model, ids), ref)
+
+
+@pytest.mark.parametrize("mode", ["value", "absent"])
+def test_olmo_hybrid_deltanet_matches_naive_fp64(mode):
+    """As test_deltanet_matches_naive_fp64 on OLMo-Hybrid's DeltaNet: D right after S (the conv's reach), T = 70 over
+    two 64-token chunks; the norm log hooks its `o_norm`."""
+    model = tiny_olmo_hybrid()
+    layer = 1
+    mod = decoder_layers(model)[layer].linear_attn
+    ids = ids_for(2, 70, batch=2)
+    src = [[20, 21, 22, 23, 24], [60, 61]]
+    dst = [[25, 26, 40, 69], [62, 63, 66]]
+    with Capture(mod) as plain:
+        logits(model, ids)
+    norm_log: list[dict] = []
+    with knock_out(model, [layer], src, dst, mode=mode, norm_log=norm_log), Capture(mod) as hooked:
+        logits(model, ids)
+    x = plain.kwargs["hidden_states"]
+    assert torch.equal(hooked.kwargs["hidden_states"], x)
+    for row in range(2):
+        ref_plain = naive_olmo_deltanet(mod, x[row], set())
+        ref_knock = naive_olmo_deltanet(mod, x[row], set(src[row]), mode)
+        scale = ref_plain.abs().max()
+        assert (cpu64(plain.out[row]) - ref_plain).abs().max() / scale < REL  # the reference is the layer
+        d = dst[row]
+        assert (cpu64(hooked.out[row, d]) - ref_knock[d]).abs().max() / scale < REL
+        assert (ref_knock[d] - ref_plain[d]).abs().max() / scale > 1e-3
+        rest = [t for t in range(70) if t not in d]
+        assert torch.equal(hooked.out[row, rest], plain.out[row, rest])
+    assert [e["layer"] for e in norm_log] == [layer] and len(norm_log[0]["ratio"]) == 2
+    assert all(math.isfinite(r) and r > 0 for r in norm_log[0]["ratio"])
+
+
+@pytest.mark.parametrize("impl", ["sdpa", "eager"])
+def test_olmo_hybrid_full_attention_matches_naive_fp64(impl):
+    model = tiny_olmo_hybrid(impl)
+    layer = 3
+    mod = decoder_layers(model)[layer].self_attn
+    ids = ids_for(3, 30, batch=2)
+    src = [[5, 6, 7], [1, 12]]
+    dst = [[20, 29], [13, 14, 15]]
+    with Capture(mod) as plain:
+        logits(model, ids)
+    with knock_out(model, [layer], src, dst), Capture(mod) as hooked:
+        logits(model, ids)
+    assert plain.kwargs["position_embeddings"] is None  # NoPE
+    x = plain.kwargs["hidden_states"]
+    for row in range(2):
+        ref_knock = naive_olmo_attention(mod, x[row], src[row], dst[row])
+        ref_plain = naive_olmo_attention(mod, x[row], [], [])
+        scale = ref_plain.abs().max()
+        assert (cpu64(plain.out[row]) - ref_plain).abs().max() / scale < REL
+        assert (cpu64(hooked.out[row]) - ref_knock).abs().max() / scale < REL
+        assert (ref_knock[dst[row]] - ref_plain[dst[row]]).abs().max() / scale > 1e-3
+
+
+def test_olmo_hybrid_positive_control_and_kind_arms():
+    """Mode 'absent' at every layer: the last position reads nothing but itself and the first token. Then the two
+    arms of the late read: blocking the context from the last position in the full-attention layers only, or in the
+    DeltaNet layers only, each changes its logits, and neither equals blocking at every layer."""
+    model = tiny_olmo_hybrid()
+    a, b = ids_for(5, 33), ids_for(6, 33)
+    b[0, 0], b[0, -1] = a[0, 0], a[0, -1]
+    src, dst = [list(range(1, 32))], [[32]]
+    with knock_out(model, range(8), src, dst, mode="absent"):
+        assert (logits(model, a)[0, -1] - logits(model, b)[0, -1]).abs().max() < ABS
+    assert (logits(model, a)[0, -1] - logits(model, b)[0, -1]).abs().max() > 10 * ABS
+    plain = logits(model, a)[0, -1]
+    arms = {}
+    for arm in (FULL, LINEAR, "all"):
+        layers = [la for la, k in enumerate(TYPES) if arm in (k, "all")]
+        with knock_out(model, layers, src, dst):
+            arms[arm] = logits(model, a)[0, -1]
+        assert (arms[arm] - plain).abs().max() > 10 * ABS
+    assert (arms[FULL] - arms["all"]).abs().max() > 10 * ABS and (arms[LINEAR] - arms["all"]).abs().max() > 10 * ABS

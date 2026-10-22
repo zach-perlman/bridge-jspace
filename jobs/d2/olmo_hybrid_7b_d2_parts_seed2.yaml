@@ -1,0 +1,29 @@
+id: olmo_hybrid_7b_d2_parts_seed2
+title: "Name vs digit on a second draw (Olmo-Hybrid-7B Instruct)"
+thread: D2
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.5
+depends_on:
+- olmo_hybrid_7b_port_smoke
+- olmo_hybrid_7b_d3v4_seed2_competence
+command: >-
+  BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/attn_knockout.py manifest --name olmo_hybrid_7b_d2_parts_seed2 --dataset pointer_v4 --set seed2 --families RL DL --n 100 --sources lookup lookup_off lookup_name lookup_digit lookup_off_name lookup_off_digit lookup_nodigit lookup_noname lookup_off_nodigit lookup_off_noname --dests question final --layers all --competence olmo_hybrid_7b_d3v4_seed2_competence --why "name vs digit on a second draw (Olmo-Hybrid-7B Instruct); analysed by scripts/d2_parts.py" && BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/attn_knockout.py run --name olmo_hybrid_7b_d2_parts_seed2
+figures_command: uv run python scripts/d2_parts.py --name olmo_hybrid_7b_d2_parts_seed2
+question: >-
+  Do the last tokens take only the digit from the answer's statement, and the question's tokens its name?
+why_it_matters: >-
+  Zach's C1 holds only on the DeltaNet hybrids; Dan's late read is attention-only on the 27B; Olmo-Hybrid vs
+  OLMo-3-7B separates architecture from family.
+hypotheses:
+  H-digit-final-split: 'holds. Prior 0.7'
+  H-name-q-split: 'holds where testable. Prior 0.5'
+decision_rule: >-
+  scripts/d2_parts.py's rule, unchanged: valid-split first; H-digit-final-split (memory -> prompt) and, where the
+  question is testable, H-name-q-split; per topic reported. No main draw on this model: each verdict is reported as
+  it falls, next to OLMo-3-7B-Instruct's seed2 verdicts (olmo3_7b_instruct_d2_parts_seed2).
+controls:
+- 'the off-path statement of the same token length hidden the same way; unedited accuracy; the competence gate (every prompt of the scene right)'
+n: '100 items per family (RL DL), seed2'
+seeds: [844]
+notes: "Dan, 23 Oct ~00:30: Olmo-Hybrid-7B for the lens-free findings, the seed2 rules. Copied from olmo3_7b_instruct_d2_parts_seed2, rules unchanged; only the target (every layer, as there: blocking in every layer covers both kinds). Not opened before Dan predicts (predictions/2026-10-22_dan.md, Q14.4: agents' prior for name vs digit 0.7, given here to H-digit-final-split; H-name-q-split's 0.5 is the OLMo-3 spec's)."

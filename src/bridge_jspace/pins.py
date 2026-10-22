@@ -356,6 +356,23 @@ TARGETS: dict[str, dict[str, Any]] = {
         },
         "frozen_lens_sha256": "b847dbba1406dc019adaeec09d971c60574c18dc28f031a93e8b43fa028b2774",
     },
+    # Olmo-Hybrid-7B Instruct (Dan, 23 Oct): the non-Qwen DeltaNet hybrid, paired with OLMo-3-7B-Instruct (same family,
+    # tokenizer and chat template; softmax attention in every layer) to separate architecture from family. Lens-free
+    # findings only (late read, name vs digit). The DPO checkpoint is the final Olmo Hybrid Instruct (Ai2 released no
+    # RLVR stage for it; OLMo-3-7B-Instruct is DPO + RLVR). OlmoHybridForCausalLM (transformers >= 5.3), 32 layers, d 3840:
+    # Gated DeltaNet in 24 (OlmoHybridGatedDeltaNet), full attention without RoPE at 3, 7, ..., 31; post-sublayer norms on
+    # attention blocks, input norms on DeltaNet blocks; final norm scales by weight; no BOS (as OLMo-3).
+    # No lens: "lenses" is empty (port_smoke skips its lens check) and no layer has a map (check_lens_layers refuses).
+    "olmo-hybrid-7b-instruct-dpo": {
+        "repo": "allenai/Olmo-Hybrid-Instruct-DPO-7B",
+        "revision": "ec62da5af0106ab4e83a60e07c4796ff358fd204",
+        "n_layers": 32,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "olmo_hybrid_7b_",
+        "lens_layers": [],
+        "lenses": {},
+    },
 }
 TARGET = os.environ.get("BJ_TARGET", "qwen3.6-27b")
 assert TARGET in TARGETS, f"BJ_TARGET={TARGET!r}: not one of {sorted(TARGETS)}"

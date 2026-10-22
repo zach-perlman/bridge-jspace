@@ -3,10 +3,13 @@
   greedy      the greedy first token equals the argmax of the unedited forward's last logits
   residual    recording a layer gives [seq, d]; adding zeros there leaves the logits unchanged (max |diff| <= 1e-2),
               adding a random vector at the last position changes them
-  blocking    knocking the list out of the last token's attention at every layer changes the logits; the same at half
-              the heads changes them too (a head subset runs); an empty destination leaves them unchanged
-  lens        the frozen lens loads (its sha256 checked) and reads layer n/2 out to [vocab] logits
-Writes results/port_smoke/<name>/report.json; exits 1 if any check fails.
+  blocking    knocking the stated facts (the context) out of the last token's reading changes the logits: at every
+              layer, at the full-attention layers only, at half the heads of those (a head subset runs) and, on a
+              hybrid, at the linear-attention (Gated DeltaNet) layers only; an empty destination leaves them unchanged.
+              Layer kinds come from the model's config (knockout.layer_kinds)
+  lens        the frozen lens loads (its sha256 checked) and reads layer n/2 out to [vocab] logits; skipped for a
+              target with no lens pinned (Olmo-Hybrid: lens-free findings only)
+Writes results/port_smoke/<name>/report.json (with each blocking arm's max |dlogit|); exits 1 if any check fails.
 
 BJ_TARGET=... uv run python scripts/port_smoke.py --name <prefix>port_smoke
 """
@@ -34,7 +37,7 @@ PROMPTS = [("The cow's locker is 5. The pig's locker is 3. The hen's locker is 7
 
 @torch.no_grad()
 def main() -> int:
-    from bridge_jspace.knockout import FULL, knock_out, layer_kind
+    from bridge_jspace.knockout import FULL, LINEAR, kernel_path, knock_out, layer_kinds
     from bridge_jspace.lens import JLens
     from bridge_jspace.model import load_model
 
@@ -49,8 +52,19 @@ def main() -> int:
     model = load_model()
     tok = model.tokenizer
     mid = pins.N_LAYERS // 2
-    checks: dict[str, list] = {"greedy": [], "residual_zero": [], "residual_push": [], "block_all": [],
-                               "block_heads": [], "block_empty": []}  # fmt: skip
+    kinds = layer_kinds(model)
+    all_layers = list(range(pins.N_LAYERS))
+    full = [la for la in all_layers if kinds[la] == FULL]  # heads: softmax-attention layers
+    linear = [la for la in all_layers if kinds[la] == LINEAR]
+    n_heads = model.hf.config.get_text_config().num_attention_heads
+    half: list[set[int] | None] = [set(range(n_heads // 2))]
+    arms: list[tuple[str, list[int], list[set[int] | None] | None]] = [
+        ("block_all", all_layers, None), ("block_full", full, None), ("block_heads", full, half)]  # fmt: skip
+    if linear:
+        arms.append(("block_linear", linear, None))
+    checks: dict[str, list] = {"greedy": [], "residual_zero": [], "residual_push": [], **{k: [] for k, _, _ in arms},
+                               "block_empty": []}  # fmt: skip
+    dlogit: dict[str, list[float]] = {k: [] for k, _, _ in arms}
     for ctx, q in PROMPTS:
         text = S.render(tok, ctx, q)
         enc = raw_encoding(tok, text, offsets=True)
@@ -68,23 +82,24 @@ def main() -> int:
         checks["residual_push"].append(float((l1 - logits).abs().max()) > 1e-2)
         c0 = text.index(ctx)
         src = [i for i, (s, e) in enumerate(enc["offset_mapping"]) if e > s and s >= c0 and e <= c0 + len(ctx)]
-        all_layers = list(range(pins.N_LAYERS))
-        n_heads = model.hf.config.get_text_config().num_attention_heads
-        half: list[set[int] | None] = [set(range(n_heads // 2))]
-        full = [la for la in all_layers if layer_kind(model.layers[la]) == FULL]  # heads: softmax-attention layers
-        for key, layers, heads, dst in (("block_all", all_layers, None, [last]), ("block_heads", full, half, [last]),
-                                        ("block_empty", all_layers, None, [])):  # fmt: skip
+        for key, layers, heads, dst in [*((k, ls, h, [last]) for k, ls, h in arms), ("block_empty", all_layers, None, [])]:  # fmt: skip
             with knock_out(model, layers, [src], [dst], heads=heads):
                 lk = model.hf(input_ids=ids, use_cache=False, logits_to_keep=1).logits[0, -1].float()
-            changed = float((lk - logits).abs().max()) > 1e-2
-            checks[key].append(not changed if key == "block_empty" else changed)
-    lens_ok, lens_err = False, None
-    try:
-        lens = JLens(model, pins.FROZEN_LENS)
-        lens_ok = tuple(lens.readout(rec[mid][-1:], mid).shape)[-1] == model.hf.lm_head.weight.shape[0]
-    except Exception as e:  # no lens pinned yet, or a format problem: reported, not fatal here
-        lens_err = f"{type(e).__name__}: {str(e)[:200]}"
-    report = {"target": pins.TARGET, "model": pins.model_pin(), "checks": checks, "lens_ok": lens_ok, "lens_error": lens_err,
+            diff = float((lk - logits).abs().max())
+            if key in dlogit:
+                dlogit[key].append(round(diff, 4))
+            checks[key].append(diff <= 1e-2 if key == "block_empty" else diff > 1e-2)
+    lens_ok, lens_err = None, "no lens pinned for this target"
+    if pins.LENS_SOURCES:
+        lens_ok, lens_err = False, None
+        try:
+            lens = JLens(model, pins.FROZEN_LENS)
+            lens_ok = tuple(lens.readout(rec[mid][-1:], mid).shape)[-1] == model.hf.lm_head.weight.shape[0]
+        except Exception as e:  # a format problem: reported, fails the exit code below
+            lens_err = f"{type(e).__name__}: {str(e)[:200]}"
+    report = {"target": pins.TARGET, "model": pins.model_pin(), "checks": checks, "max_abs_dlogit": dlogit,
+              "layer_kinds": {"full": full, "linear": linear}, "kernel_path": kernel_path() if linear else None,
+              "lens_ok": lens_ok, "lens_error": lens_err,
               "all_hooks_ok": all(all(v) for v in checks.values()), "seconds": round(time.time() - t0)}  # fmt: skip
     (out / "report.json").write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps(report, indent=1))

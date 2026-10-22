@@ -1,0 +1,33 @@
+id: olmo_hybrid_7b_d2_late_read_seed2
+title: "Late read on a second draw (Olmo-Hybrid-7B Instruct; attention vs DeltaNet layers)"
+thread: D2
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.25
+depends_on:
+- olmo_hybrid_7b_port_smoke
+- olmo_hybrid_7b_d3v4_seed2_competence
+command: >-
+  BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/attn_knockout.py manifest --name olmo_hybrid_7b_d2_late_read_seed2 --dataset pointer_v4 --set seed2 --families RL --n 100 --sources lookup lookup_off --dests final question --layers all kind --sweep path --competence olmo_hybrid_7b_d3v4_seed2_competence --why "finding 4 on a second draw (Olmo-Hybrid-7B Instruct): the answer's statement hidden from the last tokens in every attention layer, and in every DeltaNet layer instead" && BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/attn_knockout.py run --name olmo_hybrid_7b_d2_late_read_seed2
+figures_command: BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/attn_knockout.py summarise --name olmo_hybrid_7b_d2_late_read_seed2
+question: >-
+  Hidden from the last tokens in every attention layer, does the answer's statement leave the model guessing, while
+  hidden in every DeltaNet layer instead it does not?
+why_it_matters: >-
+  Zach's C1 holds only on the DeltaNet hybrids; Dan's late read is attention-only on the 27B; Olmo-Hybrid vs
+  OLMo-3-7B separates architecture from family.
+hypotheses:
+  H-late-attn: 'the answer''s statement hidden from the last tokens in every attention layer (8 of 32) leaves <= 20%
+    right (Wilson upper bound <= 0.30). Prior 0.75'
+  H-late-gdn-spared: 'hidden in every DeltaNet layer (24 of 32) instead keeps >= 90% right. Prior 0.55'
+decision_rule: >-
+  Fixed 2026-10-22 for the 27B and Qwen3-32B, unchanged (the Qwen hybrids' wording): memory -> prompt, topics pooled,
+  items right unedited. Holds iff the answer's statement hidden from the last tokens in every attention layer leaves
+  <= 20% right with the Wilson upper bound <= 0.30, the off-path statement hidden there keeps >= 90% (lower bound
+  >= 0.85), and hidden in every DeltaNet layer instead keeps >= 90% right.
+controls:
+- 'the off-path statement of the same token length hidden the same way; unedited accuracy; the competence gate (every prompt of the scene right)'
+- 'the run''s own pre-run check (attn_knockout run_check): empty-source no-op exact, mode-absent positive control (the last token reads nothing), the DeltaNet kernel against the torch reference'
+n: '100 items per family (RL), seed2'
+seeds: [844]
+notes: "Dan, 23 Oct ~00:30: Olmo-Hybrid-7B for the lens-free findings, the seed2 rules. Copied from olmo3_7b_instruct_d2_late_read_seed2 with --layers all kind (the attention and DeltaNet arms, as qwen35_9b_d2_late_read_seed2); layer sets from the config (attn = 3, 7, ..., 31; gdn = the other 24). No main draw on this model, so 'holds' rather than 'replicates'. Not opened before Dan predicts (predictions/2026-10-22_dan.md, Q14.4; the priors are the agents' priors registered there)."

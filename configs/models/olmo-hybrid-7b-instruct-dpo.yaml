@@ -1,0 +1,26 @@
+# Olmo-Hybrid-7B Instruct (Ai2, Apache 2.0; Dan, 23 Oct): the non-Qwen Gated DeltaNet hybrid, paired with
+# OLMo-3-7B-Instruct (same family, tokenizer and chat template; softmax attention in every layer) so that a result
+# found on the Qwen hybrids can be split into architecture vs family. Lens-free findings only (late read, name vs
+# digit). The pins entry (src/bridge_jspace/pins.py, "olmo-hybrid-7b-instruct-dpo") is what the scripts read; this
+# file records the checkpoint as read from config.json at the revision below.
+# Checkpoint: the DPO stage is Ai2's final Olmo Hybrid Instruct (their model card: SFT -> DPO, no RLVR release for the
+# hybrid; OLMo-3-7B-Instruct is SFT -> DPO -> RLVR), so it is the instruct checkpoint used as OLMo-3-7B-Instruct is.
+# Architecture: OlmoHybridForCausalLM (model_type olmo_hybrid; transformers >= 5.3, ours 5.17), 32 decoder layers,
+# d_model 3840, 30 query / 30 key-value heads (head_dim 128). layer_types: linear_attention (Gated DeltaNet,
+# OlmoHybridGatedDeltaNet: 30 key / 30 value heads, key dim 96, value dim 192, conv kernel 4, beta in [0, 2] via
+# allow_neg_eigval) at 24 layers, full_attention at 3, 7, 11, 15, 19, 23, 27, 31 (the Qwen3.5 pattern). The full
+# attention has no RoPE (rope_theta null: NoPE) and no output gate. Attention blocks: post-sublayer norms (OLMo-3);
+# DeltaNet blocks: input norm before the mixer. Final norm scales by weight; lm_head untied.
+# Tokenizer: OLMo-3's cl100k-style vocabulary (100278 ids; a few pre-token splits differ from OLMo-3-7B-Instruct's file,
+# e.g. "function-calling"); no BOS (bos_token null); the chat template renders a one-turn prompt to the same text as
+# OLMo-3-7B-Instruct's (its default system turn included).
+# Memory: bf16 weights ~14.9 GB (one model.safetensors): 1x 80 GB A100.
+name: allenai/Olmo-Hybrid-Instruct-DPO-7B
+revision: ec62da5af0106ab4e83a60e07c4796ff358fd204
+license: apache-2.0
+dtype: bfloat16
+n_layers: 32
+d_model: 3840
+moe: false
+attention: hybrid (Gated DeltaNet x3, full attention x1, repeating; full attention at 3, 7, ..., 31; NoPE)
+lenses: {}

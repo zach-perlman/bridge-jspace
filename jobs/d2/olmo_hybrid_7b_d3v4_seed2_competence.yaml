@@ -1,0 +1,25 @@
+id: olmo_hybrid_7b_d3v4_seed2_competence
+title: "Seed 2 gate on Olmo-Hybrid-7B Instruct: a second draw of pointer_v4's scenes (read judge)"
+thread: D2
+gpus: 1
+mem_gb: 25
+est_gpu_hours: 0.15
+depends_on:
+- olmo_hybrid_7b_port_smoke
+command: >-
+  BJ_TARGET=olmo-hybrid-7b-instruct-dpo BJ_JUDGE=read uv run python scripts/pointer_v4.py manifest --set seed2 --name olmo_hybrid_7b_d3v4_seed2_competence
+  --why "the competence gate of the seed2 late read and name vs digit on Olmo-Hybrid-7B Instruct: pointer_v4's second draw (seed 844), chat format, read judge"
+  && BJ_TARGET=olmo-hybrid-7b-instruct-dpo BJ_JUDGE=read uv run python scripts/pointer_v4.py competence --name olmo_hybrid_7b_d3v4_seed2_competence
+question: 'Does Olmo-Hybrid-7B Instruct answer the seed-2 scenes as OLMo-3-7B-Instruct does?'
+why_it_matters: >-
+  Gate for olmo_hybrid_7b_d2_late_read_seed2 and olmo_hybrid_7b_d2_parts_seed2. Zach's C1 holds only on the DeltaNet
+  hybrids; Dan's late read is attention-only on the 27B; Olmo-Hybrid vs OLMo-3-7B separates architecture from family.
+hypotheses:
+  H-gate: 'per topic and family within 5 points of olmo3_7b_instruct_d3v4_seed2_competence (OLMo-3-7B-Instruct, same
+    scenes). Prior 0.5'
+decision_rule: 'pointer_v1''s competence rule (read judge).'
+controls:
+- 'each step alone for memory -> prompt'
+n: 'pointer_v4 seed2'
+seeds: [844]
+notes: "Copied from olmo3_7b_instruct_d3v4_seed2_competence, rules unchanged; only the target. There is no main-draw competence run on this model, so H-gate compares with OLMo-3-7B-Instruct's seed2 gate. ~0.15 GPU-h. The prior is the agent's draft (not in the predictions file)."
