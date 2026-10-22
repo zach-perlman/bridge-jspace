@@ -186,6 +186,16 @@ RULES = {
     "the random-dictionary control (too large next to the model on an 80 GB GPU): G2 reads the rotated control "
     "alone. Zach's pilots (the 27B's abl_rot_v1, Gemma's refit, the 122B's abl_v1) have no G2",
 }
+# How finding 1's interval is computed, in plain words (grid.md's legend and its choices list)
+GAP_METHOD = (
+    "J-space removal (finding 1, animal suite) has no committed rule, so its cell is descriptive: the gap is the "
+    "share of lookups right minus the share of recalls right with the J-space removed (the clean question; items "
+    "pooled within each group). Its 95% interval: the bridge animals are drawn with replacement, separately for "
+    "the lookup items and for the recall items (unpaired), 4000 times with seed 0; each draw gives the lookups' "
+    "mean minus the recalls' mean, and the interval is the 2.5th to 97.5th percentile of those differences. "
+    "stats.cluster_bootstrap does this resampling for one mean only, so the grid applies it to each group and takes "
+    "the difference (scripts/cross_model_grid.py gap_ci). Chosen after seeing the data; accepted by Dan (23 Oct)."
+)
 # Choices made after seeing the data (grid.md lists them; the README keeps its own list)
 CHOICES = (
     "Where the lens writes the bridge (finding 8, stated bridge): the cell holds iff the readwrite verdicts say "
@@ -198,10 +208,11 @@ CHOICES = (
     "draws ran under the older 'needed' rule). Accepted by Dan (23 Oct).",
     "The lens push's main rule says 'inconclusive' where the lookup moves 10-30%: shown as its own word, "
     "'inconclusive', not as a failed control (Dan, 23 Oct).",
-    "J-space removal (finding 1) without a rule: the gap with an unpaired entity-bootstrap interval, labelled "
-    "descriptive (Dan, 23 Oct); the interval's method was chosen then.",
+    GAP_METHOD,
     "A late read that fails with its interval around chance (20%) is footnoted 'at chance' (Gemma's reading in the "
     "README; Dan, 23 Oct).",
+    "Seven verdict words: 'open' is its own word for a cell that shows values under no committed rule (finding 1's "
+    "animal-suite removal, finding 8's last-token lens arm), never 'missing' for that reason (Dan, 23 Oct).",
 )
 
 
@@ -1379,7 +1390,8 @@ def grid_md(rows: list[Row], meta: dict) -> str:
             "committed rule: descriptive). A second line lists a run with another lens (plain J-lens, base-model J++) or "
             "another run beside the main one. Numbered footnotes: failed controls and the cell-level notes.", "",
             "Finding 1: \"no random-dictionary control\" marks the removal runs that dropped it (Qwen3-32B, Gemma 4, "
-            "Muse: too large next to the model on an 80 GB GPU); their gate G2 reads the rotated control alone.", ""]  # fmt: skip
+            "Muse: too large next to the model on an 80 GB GPU); their gate G2 reads the rotated control alone.", "",
+            GAP_METHOD, ""]  # fmt: skip
     key_lines = ["## Key cells", ""]
     for m, f, s in KEY_CELLS:
         key_lines.append(f"- {MODEL[m].label}, {FINDING[f].name} ({s}): {text((f, s, m)) or 'no cell'}")

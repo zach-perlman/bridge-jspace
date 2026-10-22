@@ -298,6 +298,17 @@ def test_every_grid_cell_has_a_row(monkeypatch):
     assert next(csv.reader(io.StringIO(text))) == list(G.COLUMNS)
 
 
+def test_grid_md_states_the_seven_words_and_how_finding_1s_interval_is_computed():
+    row = G.Row("27b", "f1", "animal suite", verdict="open (descriptive, no committed rule)", md_setting="animal suite",
+                md_text="gap +1 [0,2] n=8", unit="pts")  # fmt: skip
+    md = G.grid_md([row], {"git": "test", "written_utc": "test"})
+    assert md.count(G.GAP_METHOD) == 2  # the legend and the choices made after seeing the data
+    assert "drawn with replacement, separately for the lookup items and for the recall items (unpaired)" in md
+    for word in G.VERDICTS:
+        assert f"{G.SYMBOL[word]} {word}" in md.split("## Key cells")[0]
+    assert "○ gap +1 [0,2] n=8" in md
+
+
 # ---------------------------------------------------------------- the README's runs
 
 
