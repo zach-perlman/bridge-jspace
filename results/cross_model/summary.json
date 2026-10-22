@@ -52,11 +52,70 @@
   },
   {
     "model": "Qwen3-32B",
-    "lens": "our J++ (32 prompts)"
+    "lens": "our J++ (32 prompts)",
+    "c1": {
+      "band": "L44-52",
+      "loss": {
+        "PP": 0.008130081300813052,
+        "MP": 0.0,
+        "PM": 0.22764227642276424,
+        "MM": 0.21311475409836067,
+        "CP": 0.07407407407407407,
+        "CM": 0.2870370370370371
+      },
+      "gap": 0.21631347461015593,
+      "controls_ok": false,
+      "holds": false,
+      "strict": false,
+      "gap_noguess": 0.20092743879805874,
+      "unembed_gap": 0.04491536718645872,
+      "keepown_restored": -0.10027472527472513,
+      "keepown_kills": false,
+      "rot_seed_min": [
+        0.8518518518518519,
+        0.8241758241758241
+      ]
+    },
+    "c2": {
+      "run": "qwen3_32b_wm2_full2_v1",
+      "graded": false,
+      "mm_best": 0.1,
+      "mp_best": 0.125,
+      "relative": "inconclusive: sites carry the bridge only partly",
+      "narrow": "FAILS",
+      "narrow_writes": {
+        "P": [
+          0.04689807094013729,
+          0.16061166133753554
+        ],
+        "C": [
+          0.0,
+          0.015208194658358869
+        ]
+      }
+    }
   },
   {
     "model": "Muse Glimmer 30B",
     "lens": "our J++ (32 prompts)",
+    "c1": {
+      "band": "L36-42",
+      "loss": {
+        "PP": 0,
+        "MP": 0,
+        "PM": 0.11382113821138207,
+        "MM": 0.02898550724637683,
+        "CP": 0,
+        "CM": 0.0847457627118644
+      },
+      "gap": 0.07140332272887945,
+      "controls_ok": true,
+      "holds": false,
+      "strict": false,
+      "gap_noguess": 0.07056277056277055,
+      "unembed_gap": 0.06733828207847298,
+      "rot_seed_min": []
+    },
     "plain_text": {
       "none": 2.4344515204429626,
       "top10": 0.2731175571680069,

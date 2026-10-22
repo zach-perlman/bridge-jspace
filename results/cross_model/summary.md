@@ -5,8 +5,8 @@
 | model | lens | band | loss P→P / M→P / C→P | loss P→M / M→M / C→M | gap (≥30) | controls | C1-graded | no-guess gap | unembedding gap | keep-own restored (kill ≥75%) | extra control seeds (min acc) | plain-text +nats top-10 / random |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | Qwen3.6-27B | published J++ | L32-40 | 0 / 13 / 6 | 41 / 45 / 41 | 36 | ok | **HOLDS** | 34 | 0 | 20% | 96, 97 | +0.30 / +0.07 |
-| Qwen3-32B | our J++ (32 prompts) | - | - | - | - | - | - | - | - | - | - | - |
-| Muse Glimmer 30B | our J++ (32 prompts) | - | - | - | - | - | - | - | - | - | - | +0.27 / +0.03 |
+| Qwen3-32B | our J++ (32 prompts) | L44-52 | 1 / 0 / 7 | 23 / 21 / 29 | 22 | NO | **FAILS** | 20 | 4 | -10% | 85, 82 | - |
+| Muse Glimmer 30B | our J++ (32 prompts) | L36-42 | 0 / 0 / 0 | 11 / 3 / 8 | 7 | ok | **FAILS** | 7 | 7 | - | - | +0.27 / +0.03 |
 | Qwen3.5-9B | published J++ | - | - | - | - | - | - | - | - | - | - | - |
 | Gemma 4 31B-it | our J++ (64 prompts) | L48-56 | 93 / 93 / 91 | 90 / 93 / 86 | -1 | ok | **n/a (untestable)** | -1 | 0 | - | - | +9.25 / +0.01 UNTESTABLE |
 
@@ -15,5 +15,6 @@
 | model | band | C2-graded (M→M best vs M→P best) | C2-relative | C2' (narrow): P→P vs P→M; C→P vs C→M (cross-validated writes) |
 |---|---|---|---|---|
 | Qwen3.6-27B | current | FAILS (40 vs 36) | inconclusive: sites carry the bridge only partly | **HOLDS**: P 1→18; C 0→17 |
+| Qwen3-32B | current | FAILS (10 vs 12) | inconclusive: sites carry the bridge only partly | **FAILS**: P 5→16; C 0→2 |
 
 The 27B's C2' is the data the rule was read off (not evidence); the other models are the test.
