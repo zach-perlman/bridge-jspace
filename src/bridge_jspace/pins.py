@@ -306,6 +306,19 @@ TARGETS: dict[str, dict[str, Any]] = {
     # Is C1's strength the lens or the model? (Zach, 2026-10-22, docs/prereg_replication_1022.md amendment 3.) Qwen3-32B
     # with neuronpedia's published plain J-lens (557 WikiText prompts) beside our 32-prompt J++; and Qwen3-8B (dense,
     # standard attention like Qwen3-32B, unlike the hybrid 27B and 9B) with its published plain J-lens (461 prompts).
+    # allenai/Olmo-Hybrid-Instruct-DPO-7B (Gated DeltaNet linear attention in 24 blocks, full attention in 8; the Olmo architecture pair, prereg amendment 6B; Zach, 2026-10-22): our own J++, the
+    # safety-research/jpp_lens@93f02cd recipe (+ scripts/lens_fit/jpp_lens_olmo_hybrid_1022.patch), 32 WikiText prompts, one
+    # shard, source layers 0-30, target the final block; scripts/queues/h200_olmo_fit_1022.sh. held-out macro pass@10: {'Olmo-Hybrid-Instruct-DPO-7B_jpp_lens': 0.605, 'logit': 0.399, 'pooled_lens': 0.491}.
+    "olmo-hybrid-7b": {
+        "repo": "allenai/Olmo-Hybrid-Instruct-DPO-7B",
+        "revision": "ec62da5af0106ab4e83a60e07c4796ff358fd204",
+        "n_layers": 32,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "olmoh7_",
+        "lenses": {"jpp": ("local", "cache/olmo-hybrid-7b/lenses/jpp/Olmo-Hybrid-Instruct-DPO-7B_jpp_lens.pt", "b8dd5d16ba1ee7318c943ec1f3def36aed30f286185724c55afcb14a350c25dc")},
+        "frozen_lens_sha256": "b8dd5d16ba1ee7318c943ec1f3def36aed30f286185724c55afcb14a350c25dc",
+    },
     "qwen3-32b-jlens": {
         "repo": "Qwen/Qwen3-32B",
         "revision": "9216db5781bf21249d130ec9da846c4624c16137",
