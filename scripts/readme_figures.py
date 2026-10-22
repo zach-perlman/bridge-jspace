@@ -438,7 +438,7 @@ def f8_shifts(out: Path) -> None:
         ax.set_title(title, loc="left", fontsize=9.5)
         ax.set_ylim(0, 65)
     axes[0].set_ylabel("% of patched answers")
-    head(axes[0], "The position label is an order index: it survives both shifts",
+    head(axes[0], "The order label counts order in the list: it survives both shifts",
          "One extra sentence, in one of the two prompts only. Before the list: every statement moves in the text. "
          "Before the\nquestion: every statement moves farther from the question. Their order in the list stays.",
          above=16)  # fmt: skip
@@ -475,7 +475,7 @@ def f10_late_read_models(out: Path) -> None:
     """D2 across models: memory -> prompt still right with the statement hidden from the last tokens in every
     attention layer (and, for the hybrids, in every DeltaNet layer), and the off-path statement control."""
     models = [("Qwen3.6-27B\n(hybrid)", "d2_v4_late_read", True), ("Qwen3.5-9B\n(hybrid)", "qwen35_9b_d2_v4_late_read_r2", True),
-              ("Qwen3-32B\n(dense)", "qwen3_32b_d2_v4_late_read_v2_r2", False),
+              ("Qwen3-32B\n(attention only)", "qwen3_32b_d2_v4_late_read_v2_r2", False),
               ("OLMo-3-7B\nInstruct", "olmo3_7b_instruct_d2_v4_late_read_v3", False),
               ("OLMo-3-7B\nSFT", "olmo3_7b_sft_d2_v4_late_read_v2", False),
               ("OLMo-3-7B\nDPO", "olmo3_7b_dpo_d2_v4_late_read_v2", False),
@@ -484,13 +484,13 @@ def f10_late_read_models(out: Path) -> None:
     style(ax, "y")
     for i, (_, run, hybrid) in enumerate(models):
         attn = "attn" if hybrid else "all"
-        bar_ci(ax, i - 0.26, *wilson(*kept_all_layers(run, layers=attn)), LOOKUP, width=0.24)
+        bar_ci(ax, i - 0.26, *wilson(*kept_all_layers(run, layers=attn)), LOOKUP, width=0.24, fs=7.5)
         if hybrid:
-            bar_ci(ax, i, *wilson(*kept_all_layers(run, layers="gdn")), LIGHT, width=0.24)
+            bar_ci(ax, i, *wilson(*kept_all_layers(run, layers="gdn")), LIGHT, width=0.24, fs=7.5)
         else:
             ax.text(i, 3, "no DeltaNet layers", ha="center", va="bottom", fontsize=7.5, color=INK2, style="italic",
                     rotation=90)  # fmt: skip
-        bar_ci(ax, i + 0.26, *wilson(*kept_all_layers(run, layers=attn, source="lookup_off")), SURF, width=0.24,
+        bar_ci(ax, i + 0.26, *wilson(*kept_all_layers(run, layers=attn, source="lookup_off")), SURF, width=0.24, fs=7.5,
                edge=INK2, hatch="///")  # fmt: skip
     ax.set_xticks(range(len(models)), [m for m, _, _ in models])
     ax.set_ylim(0, 115)
@@ -526,8 +526,8 @@ def f11_natural_errors(out: Path) -> None:
                            f"{len(right)} prompts the model\ngets right"])  # fmt: skip
     ax.set_ylim(0, 112)
     ax.set_ylabel("% of prompts")
-    head(ax, "Head 51/22 looks at the statement the output digit comes from",
-         f"Qwen3.6-27B, no patch: {len(rr)} unedited lookup prompts. Bars: how often layer 51, head 22 attends most to "
+    head(ax, "Layer 51, head 22 looks at the statement the output digit comes from",
+         f"Qwen3.6-27B, no edit: {len(rr)} lookup prompts as they are. Bars: how often layer 51, head 22 attends most to "
          "that\nstatement from the last token. Near-tautological: each digit appears once per scene, so the output "
          "already names it.")  # fmt: skip
     ax.legend([box(LOOKUP), box(RECALL)], ["the statement the wrong answer comes from", "the statement that was asked"],
@@ -538,7 +538,7 @@ def f11_natural_errors(out: Path) -> None:
 def f12_address_models(out: Path) -> None:
     """D3 across models: at each model's layer before the alt digit arrives (alt-digit upper bound < 10%) with the largest
     same-slot share, the same slot vs bridge alt's own statement (memory -> prompt, last two tokens)."""
-    models = [("Qwen3.6-27B\n(hybrid)", "d3v4_swap_topics"), ("Qwen3-32B\n(dense)", "qwen3_32b_d3v4_swap_r2"),
+    models = [("Qwen3.6-27B\n(hybrid)", "d3v4_swap_topics"), ("Qwen3-32B\n(attention only)", "qwen3_32b_d3v4_swap_r2"),
               ("Qwen3.5-9B\n(hybrid)", "qwen35_9b_d3v4_swap_r2"), ("OLMo-3-7B\nInstruct", "olmo3_7b_instruct_d3v4_swap_fn"),
               ("Gemma 4\n31B-it", "gemma4it_d3v4_swap_v2_r2")]  # fmt: skip
     fig, ax = plt.subplots(figsize=(8.5, 3.2))
@@ -585,9 +585,11 @@ def f13_mechanism(out: Path) -> None:
     ax.text(1.4, ch, f"chance\n({ch:.0f}%)", va="center", fontsize=8, color=INK)
     ax.set_xticks([0, 1, 2], ["the target", "a position\nin between", "past the\ntarget"])
     ax.set_ylim(0, 100)
-    ax.set_ylabel("% of pushes (first new answer)")
+    ax.set_ylabel("% of pushes\n(where the answer goes first)")
     ax.set_title(
-        "a. Push position a toward position j, growing:\nwhere does the answer go first?", loc="left", fontsize=9.5
+        "a. A growing push from position a\ntoward position j: where does\nthe answer go first?",
+        loc="left",
+        fontsize=9.5,
     )
     ax = axes[1]
     style(ax, "y")
@@ -610,12 +612,16 @@ def f13_mechanism(out: Path) -> None:
     ax.set_xticks([0, 1], ["memory → prompt\n(lookup)", "memory → memory\n(recall)"])
     ax.set_ylim(0, 112)
     ax.set_ylabel("% of answers still right")
-    ax.set_title("c. Does the model need it? Remove 4 dims\nafter the question, layers 44-52", loc="left", fontsize=9.5)
-    ax.legend([box(SLOT), box(LIGHT), box(INK2)], ["the position\nsubspace", "random\n4 dims", "top-variance\n4 dims"],
+    ax.set_title(
+        "c. Does the model need it? Remove these 4 directions\nfrom the tokens after the question, layers 44-52",
+        loc="left",
+        fontsize=9.5,
+    )
+    ax.legend([box(SLOT), box(LIGHT), box(INK2)], ["the 4 position\ndirections", "4 random\ndirections", "the 4 directions\nof largest variance"],
               frameon=False, loc="center left", fontsize=8.5, bbox_to_anchor=(1.0, 0.5), labelspacing=1.2)  # fmt: skip
     head(axes[0], "The fitted position direction overrides the lookup; it is not shown to be the model's own address",
-         "Qwen3.6-27B, layer 48, held-out scenes, pre-registered. Slot direction: the difference between the average "
-         "last-token states of two positions.", above=30)  # fmt: skip
+         "Qwen3.6-27B, layer 48, scenes not used for the fit, pre-registered. Position direction: the difference between "
+         "the average last-token states of two list positions.", above=30)  # fmt: skip
     save(fig, out, "f13_mechanism.png")
 
 
@@ -698,8 +704,8 @@ def f15_counts_models(out: Path) -> None:
               ("OLMo-3-7B", "olmo3_7b_instruct_d3v4x_swap", 18), ("Gemma 4 31B", "gemma4it_d3v4x_swap_r2", 40)]  # fmt: skip
     levels = [
         ("e5-off", "filler\nmoved"),
-        ("e5more", "donor list\nhas 6 statements"),
-        ("e5fewer", "donor list\nhas 4 statements"),
+        ("e5more", "donor list\none longer"),
+        ("e5fewer", "donor list\none shorter"),
     ]
     roles = [("position", SLOT), ("end", INK2), ("token", LIGHT)]
     fig, axes = plt.subplots(1, len(models), figsize=(14, 3.4), sharey=True, gridspec_kw={"wspace": 0.06})
@@ -746,8 +752,8 @@ def f16_slot_by_target_v5(out: Path) -> None:
     axes[0].set_ylabel("% of patched answers")
     axes[1].set_xlabel("where the donor's asked statement sits in the donor list")
     head(axes[0], "With 8 statements and with colour-word answers: an order label for the 1st and 2nd, then the bridge's identity",
-         "memory → prompt, last two tokens, the same patch, split by the asked statement. Colour words: \"The cow's locker is "
-         "red.\"; on Qwen3.6-27B and Gemma their same-entity\ncontrol fails (33% and 56% of answers change), so they are "
+         "memory → prompt, last two tokens copied from a donor prompt, split by the asked statement. Colour words: \"The cow's locker is "
+         "red.\"; on Qwen3.6-27B and Gemma their control (a donor prompt about the\nsame entity, which should change nothing) fails: 33% and 56% of answers change, so they are "
          "shown only for Qwen3.5-9B. Shaded: the 1st and 2nd places.", above=16)  # fmt: skip
     fig.legend([box(SLOT), box(WORD)], ["the same position in the original list", "the statement about the donor's entity (identity)"],
                loc="lower center", ncol=2, frameon=False, bbox_to_anchor=(0.5, -0.12))  # fmt: skip
@@ -756,7 +762,7 @@ def f16_slot_by_target_v5(out: Path) -> None:
 
 STAGE_MODELS = [  # name, architecture, layers, D3 run (pointer_v4), D2 run (late read)
     ("Qwen3.6-27B", "hybrid: 16 attention + 48 DeltaNet", 64, "d3v4_swap_topics", "d2_v4_late_read"),
-    ("Qwen3-32B", "dense attention", 64, "qwen3_32b_d3v4_swap_r2", "qwen3_32b_d2_v4_late_read_v2_r2"),
+    ("Qwen3-32B", "attention in every layer", 64, "qwen3_32b_d3v4_swap_r2", "qwen3_32b_d2_v4_late_read_v2_r2"),
     ("Qwen3.5-9B", "hybrid: 8 attention + 24 DeltaNet", 32, "qwen35_9b_d3v4_swap_r2", "qwen35_9b_d2_v4_late_read_r2"),
     ("OLMo-3-7B", "attention, 3 of 4 sliding", 32, "olmo3_7b_instruct_d3v4_swap_fn", "olmo3_7b_instruct_d2_v4_late_read_v3"),
     ("Gemma 4 31B", "attention, sliding + global", 60, "gemma4it_d3v4_swap_v2_r2", "gemma4it_d2_v4_late_read_v3_r2"),
@@ -809,7 +815,7 @@ def f18_stages_models(out: Path) -> None:
         ax.scatter([pct(s["digit"])], [i], marker="D", s=50, color=DIGIT, zorder=3)
         core = ", ".join(f"{a2}-{b2}" for a2, b2 in s["core"] if (a2, b2) != (a, b))
         win = f"{w0}" if w0 == w1 else f"{w0}-{w1}"
-        ax.text(101, i, f"label/identity {win} · read {a}-{b}{f' (most {core})' if core else ''} · digit {s['digit']}",
+        ax.text(101, i, f"label or identity: {win} · read: {a}-{b}{f' (most {core})' if core else ''} · digit arrives: {s['digit']}",
                 va="center", fontsize=8.5, color=INK)  # fmt: skip
     ax.set_yticks(range(len(STAGE_MODELS)), [f"{n} ({nl} layers)\n{arch}" for n, arch, nl, _, _ in STAGE_MODELS],
                   fontsize=8.5)  # fmt: skip
@@ -817,9 +823,9 @@ def f18_stages_models(out: Path) -> None:
     ax.set_xlim(0, 100)
     ax.set_xlabel("depth (% of the model's layers)")
     head(ax, "Where the stages sit along the depth, by model",
-         "memory → prompt. Orange: layers where patching the last two tokens moves the answer to another statement "
+         "memory → prompt. Orange: layers where copying the last two tokens from a donor prompt moves the answer to another statement "
          "(label or identity). Grey: the layer block\nthe last tokens must be able to attend to the answer's statement in "
-         "(the knock-out's resolution: 8-16 layers, so it does not order the read against the orange window;\ndarker: "
+         "(blocking is tested in blocks of 8-16 layers, so it does not order the read against the orange window;\ndarker: "
          "the narrowest block that is needed alone). Green: the donor's digit has reached the last tokens.")  # fmt: skip
     save(fig, out, "f18_stages_models.png")
 
@@ -849,7 +855,7 @@ def f19_where_bridge(out: Path) -> None:
     axes[0].set_ylabel("% of answers that switch")
     axes[0].legend(frameon=False, loc="center left", fontsize=9, title="positions copied", title_fontsize=9)
     head(axes[0], "A stated bridge waits at its statement until layer ~44; a recalled one sits at the question",
-         "Qwen3.6-27B, animal suite: copy the hidden states of one set of positions from a prompt with another bridge "
+         "Qwen3.6-27B, animal suite: copy the hidden states of one group of tokens from a donor prompt with another bridge "
          "and count answers that switch.\nIn memory → prompt the statements are the same in both prompts, so copying "
          "them changes nothing and is not drawn.", above=16)  # fmt: skip
     save(fig, out, "f19_where_bridge.png")
@@ -877,7 +883,7 @@ def f20_olmo_ladder(out: Path) -> None:
         bar_ci(axes[2], i + 0.17, *ci3(d["token"]), LIGHT, width=0.32, fs=7.5)
     titles = [("Late read: statement blocked\nfrom the last tokens", "% still right",
                [box(LOOKUP), box(SURF, INK2, "///")], ["answer's statement", "control: another statement"]),
-              ("Patch split by the asked statement", "% of patched answers", [box(SLOT), box(WORD)],
+              ("Copy from a donor prompt,\nby the asked statement", "% of patched answers", [box(SLOT), box(WORD)],
                ["1st / 2nd: same position", "3rd-5th: the bridge's identity"]),
               ("How the label counts\n(filler moved)", "% of patched answers", [box(SLOT), box(LIGHT)],
                ["order in the list", "place in the text"])]  # fmt: skip
@@ -887,9 +893,9 @@ def f20_olmo_ladder(out: Path) -> None:
         ax.set_title(t, loc="left", fontsize=9.5)
         ax.set_ylabel(yl)
         ax.set_ylim(0, 115)
-        ax.legend(h, labs, frameon=False, loc="upper center", fontsize=8, ncol=2, bbox_to_anchor=(0.5, -0.12))
+        ax.legend(h, labs, frameon=False, loc="upper center", fontsize=8, ncol=1, bbox_to_anchor=(0.5, -0.12))
     head(axes[0], "OLMo-3-7B across post-training (SFT → DPO → Instruct): the same picture at every stage",
-         "memory → prompt; the D3 panels at layer 18 (before the donor's digit arrives).", above=30)  # fmt: skip
+         "memory → prompt. Middle and right: the last two tokens copied from a donor prompt at layer 18 (before the donor's digit arrives).", above=30)  # fmt: skip
     save(fig, out, "f20_olmo_ladder.png")
 
 
@@ -907,7 +913,7 @@ def f21_name_vs_digit(out: Path) -> None:
             ("lookup_nodigit", "name + rest (all but the digit)", "#9cc1ee", None),
             ("lookup_digit", "digit only", DIGIT, None), ("lookup_noname", "digit + rest (all but the name)", "#93dcc0", None),
             ("lookup_off", "control: another statement", SURF, "///")]  # fmt: skip
-    fig, axes = plt.subplots(1, 2, figsize=(14, 3.4), sharey=True, gridspec_kw={"wspace": 0.06})
+    fig, axes = plt.subplots(2, 1, figsize=(12, 6.6), sharey=True, gridspec_kw={"hspace": 0.32})
     w = 0.13
     for ax, dest, title in zip(axes, ("question", "final"), ("hidden from the question's tokens", "hidden from the last tokens"),
                                strict=True):  # fmt: skip
@@ -918,18 +924,18 @@ def f21_name_vs_digit(out: Path) -> None:
             cl = P.cells([json.loads(x) for x in (d / "rows.jsonl").read_text().splitlines()], cases)
             for j, (src, _, col, hatch) in enumerate(bars):
                 c = cl[("RL", src, dest)]
-                bar_ci(ax, i + (j - 2.5) * w, *c["right"], col, width=w * 0.95, fs=6.5,
+                bar_ci(ax, i + (j - 2.5) * w, *c["right"], col, width=w * 0.95, fs=7.5,
                        edge=INK2 if hatch else None, hatch=hatch)  # fmt: skip
         ax.axhline(20, color=INK, lw=1, ls=":")
         ax.set_xticks(range(len(models)), [m for m, _ in models])
         ax.set_title(title, loc="left", fontsize=9.5)
         ax.set_ylim(0, 115)
-    axes[0].set_ylabel("% of answers still right")
+        ax.set_ylabel("% of answers still right")
     head(axes[0], "The question's tokens take the entity's name; the last tokens take the digit",
          "memory → prompt: one part of the answer's statement (\"The file on Greece is kept in drawer 1.\") is hidden in "
          "every layer. Dotted: guessing among the list's 5 digits.", above=16)  # fmt: skip
     fig.legend([box(c, INK2 if h else None, h) for _, _, c, h in bars], [lab for _, lab, _, _ in bars],
-               loc="lower center", ncol=6, frameon=False, bbox_to_anchor=(0.5, -0.1), fontsize=8.5)  # fmt: skip
+               loc="lower center", ncol=3, frameon=False, bbox_to_anchor=(0.5, -0.06), fontsize=9)  # fmt: skip
     save(fig, out, "f21_name_vs_digit.png")
 
 
