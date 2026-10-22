@@ -175,3 +175,25 @@ def test_layer_gap(lens_until, patch_until, rnd, starts):
 def test_stop_layer_needs_every_later_layer_low():
     assert W.stop_layer({12: 0.0, 14: 0.3, 16: 0.0}) == 16
     assert W.stop_layer({12: 0.3, 14: 0.3}) is None
+
+
+def _embed_cells(lens: float, embed: float, at20: float = 0.0) -> dict:
+    rates = {}
+    for la in (16, 18, 20):
+        for sc in (4.0, 8.0):
+            rates[("BL", "w", la, sc, "lens")] = lens if la < 20 else at20
+            rates[("BL", "w", la, sc, "embed")] = embed if la < 20 else at20
+    return _cells(rates, n=100)[0]
+
+
+@pytest.mark.parametrize(("lens", "embed", "at20", "starts"), [
+    (0.4, 0.05, 0.0, "H_lens"),
+    (0.3, 0.3, 0.0, "H_input"),
+    (0.3, 0.3, 0.2, "inconclusive"),  # the embedding push still moves lookups at 20
+    (0.0, 0.0, 0.0, "no lead"),
+])  # fmt: skip
+def test_embed_test(lens, embed, at20, starts):
+    bridge_of = {f"BL-{i}": f"e{i % 10}" for i in range(100)}
+    out = W.embed_test(_embed_cells(lens, embed, at20), bridge_of, [4.0, 8.0])
+    assert out["verdict"].startswith(starts), out
+    assert len(out["valid_cells"]) == 4

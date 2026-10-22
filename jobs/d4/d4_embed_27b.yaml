@@ -1,0 +1,41 @@
+id: d4_embed_27b
+title: "The layer-16 lead: lens push vs input-embedding push at the stated bridge's word, layers 12-24 (Qwen3.6-27B)"
+thread: D4
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.8
+depends_on: []
+command: >-
+  uv run python scripts/early_push_where.py run --name d4_embed_27b --n 100 --scenes fresh --fresh-seed 2
+  --exclude-runs d4_where_fresh_27b --rule v2 --embed --subsets w --layers 12 14 16 18 20 22 24 --context-layers 20
+  --scales 1 2 4 8 --v21-min-layer 20
+  --why "the night brief's T4: is the layer-16 lookup effect an input edit (the input-embedding direction does as much) or an early lens write (the lens direction does twice as much)?"
+figures_command: uv run python scripts/early_push_where.py figures --name d4_embed_27b
+question: >-
+  At layers 16 and 18, does a push along the lens's word difference move lookups at least twice as often as a push of
+  the same norm along the input-embedding difference (an early lens write), or does the embedding push do at least half
+  as much and both vanish by layer 20 (an input edit)?
+why_it_matters: >-
+  On two sets of scenes a lens push at the stated bridge's word moves 20-30% of lookups at layer 16 and 0% from layer 20.
+  If the lens direction does it and the input-embedding direction does not, the lens writes something the lookup uses
+  before layer 20, which bounds finding 7 ("the lookup never follows a lens-written stated bridge") to layers >= 20.
+  If the embedding direction does as much, layer 16 is an input edit by another name and finding 7 stands as stated.
+hypotheses:
+  H_lens: 'd_lens = lens - 2 x embed has its entity-cluster lower bound > 0 at the valid cells of 16 and 18. Prior 0.35'
+  H_input: 'd_input = embed - 0.5 x lens has its lower bound >= 0 and both pushes switch <= 5% of lookups at layer 20. Prior 0.4'
+  no_lead: 'the lens push moves <= 5% of lookups at 16-18 on these scenes. Prior 0.1'
+  inconclusive: 'Prior 0.15'
+decision_rule: >-
+  scripts/early_push_where.py's layer-16 test (docstring, fixed 22 Oct 23:00 before the run): valid cells = v2's
+  off-path check (lens push changes <= 10% of memory -> prompt and memory -> memory, random push <= 5% of prompt ->
+  prompt); at the valid cells of layers 16 and 18 (scales 1/2/4/8), items pooled, per item d_lens and d_input as above
+  (1 = the lookup switched to X); entity-cluster bootstrap (2000, seed 0). H_lens iff d_lens's lower bound > 0; H_input
+  iff d_input's lower bound >= 0 and at layer 20 lens and embedding pushes switch <= 5% at every scale; no lead iff the
+  lens push switches <= 5% at 16-18; else inconclusive. Rule v2 and the per-cell table reported as usual.
+controls:
+- 'a random direction of the same norm; the input-embedding direction as the input-edit comparison; memory -> prompt
+  and memory -> memory off the path; the text edits'
+n: '100 fresh scenes, the four families: the same draw as d4_layer_gap_27b (seed 2 from the 248 eligible scenes not in
+  map_A8_v1 or d4_where_fresh_27b; only 48 remain beyond it), never opened'
+seeds: [0, 2]
+notes: "Night brief 22-23 Oct, T4 (P0). The CPU table it asked for first: results/layer_table/d1_topics2_map_27b_20261022-225312 (committed, not read). Not opened before Dan's batch-13 predictions."

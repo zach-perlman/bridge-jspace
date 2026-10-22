@@ -66,6 +66,15 @@ switches <= 5% of lookups at every grid layer. Reported: s the same way, the rec
 Prior (the review's guess): lens_stop ~18-20, patch_stop ~30; the D1 map's patch at the sentence moves 0% of lookups
 from layer 32 on (d1_map_n80_v1), so patch_stop <= 32 is expected.
 
+Layer-16 test (the night brief's T4, 22 Oct 23:00, before the run; `--embed --subsets w`): at the stated bridge's word,
+layers 12-24 every second, scales 1/2/4/8, three directions of equal norm: the lens word difference, the input-embedding
+difference W_E[X] - W_E[I] (an input edit's direction), a random direction. Valid cells: v2's off-path check. At the
+valid cells of layers 16 and 18, items pooled, per item d_lens = lens - 2 x embed and d_input = embed - 0.5 x lens (1 =
+the lookup switched to X), entity-cluster bootstrap (the bridge). H_lens iff d_lens's lower bound > 0 (the lens writes
+lookup-relevant information before layer 20). H_input iff d_input's lower bound >= 0 and at layer 20 both pushes
+switch <= 5% of lookups at every scale (layer 16 is an input edit). No lead iff the lens push switches <= 5% of lookups
+at 16-18. Else inconclusive.
+
 Stages:  run --name N --why W [--n K] [--scenes map|fresh] [--rule v1|v2] [--patch]   analyze --name N [--rule v2.1]
          figures --name N
 """
@@ -236,6 +245,45 @@ def layer_gap(cells: dict[tuple, dict[str, str]], layers: list[int], sub: str = 
     return out
 
 
+def embed_test(
+    cells: dict[tuple, dict[str, str]],
+    bridge_of: dict[str, str],
+    scales: list[float],
+    test_layers: tuple[int, ...] = (16, 18),
+    zero_layer: int = 20,
+) -> dict:
+    """The layer-16 test (docstring) on BL rows at w. Pure."""
+    from bridge_jspace.stats import cluster_bootstrap
+
+    valid = [(la, sc) for la in test_layers for sc in scales
+             if cells.get(("BL", "w", la, sc, "lens")) and cell_valid(cells, ("w", la, sc))[0]]  # fmt: skip
+    lens_v, emb_v, clusters = [], [], []
+    for la, sc in valid:
+        lens_c, emb_c = cells[("BL", "w", la, sc, "lens")], cells.get(("BL", "w", la, sc, "embed"), {})
+        for item in sorted(set(lens_c) & set(emb_c)):
+            lens_v.append(float(lens_c[item] == "b"))
+            emb_v.append(float(emb_c[item] == "b"))
+            clusters.append(bridge_of.get(item, item))
+    out: dict[str, Any] = {"valid_cells": valid, "n": len(lens_v)}
+    if not lens_v:
+        return {**out, "verdict": "no valid cell at layers 16-18"}
+    lens_rate, emb_rate = statistics.mean(lens_v), statistics.mean(emb_v)
+    d_lens = cluster_bootstrap([lv - 2 * ev for lv, ev in zip(lens_v, emb_v, strict=True)], clusters, seed=SEED)
+    d_input = cluster_bootstrap([ev - 0.5 * lv for lv, ev in zip(lens_v, emb_v, strict=True)], clusters, seed=SEED)
+    at20 = [cell_rate(cells.get(("BL", "w", zero_layer, sc, d), {}))[0] for sc in scales for d in ("lens", "embed")]
+    zero = all(not math.isnan(v) and v <= RAND_MAX for v in at20)
+    out.update(lens=lens_rate, embed=emb_rate, d_lens=d_lens, d_input=d_input, zero_at_20=zero)
+    if lens_rate <= RAND_MAX:
+        verdict = "no lead: the lens push moves <= 5% of lookups at layers 16-18"
+    elif d_lens[1] > 0:
+        verdict = "H_lens: the lens writes lookup-relevant information before layer 20"
+    elif d_input[1] >= 0 and zero:
+        verdict = "H_input: layer 16 is an input edit"
+    else:
+        verdict = "inconclusive"
+    return {**out, "verdict": verdict}
+
+
 def decide(
     cells: dict[tuple, dict[str, str]],
     scene_of: dict[str, str],
@@ -318,6 +366,9 @@ def run_item(model, lens, c: dict, ref: dict, y: str, cfg: dict, k: int, out: di
     for la in cfg["layers"]:
         v = lens.vectors(la, pair)
         dirs[la] = {"lens": v[1] - v[0], "offscene": v[2] - v[0]}
+        if cfg.get("embed"):  # the input-embedding difference W_E[X] - W_E[I] (an input edit's direction), every layer
+            e = model.text.embed_tokens.weight[pair[:2]].float()
+            dirs[la]["embed"] = e[1] - e[0]
     y_tok = S.answer_token(tok, str(S.ANIMALS[y][0]), "digit") if c["family"].endswith("R") else None
     head = {"family": c["family"], "name": c["id"], "scene": c["scene"]}
 
@@ -339,7 +390,7 @@ def run_item(model, lens, c: dict, ref: dict, y: str, cfg: dict, k: int, out: di
     rows: list[tuple[dict, dict]] = []
     for la in cfg["layers"]:
         for sc in cfg["scales"]:
-            for sname in WHERE:
+            for sname in cfg.get("subsets", WHERE):
                 if sname == "c" and la not in cfg["context_layers"]:
                     continue
                 p = pos[sname]
@@ -349,6 +400,8 @@ def run_item(model, lens, c: dict, ref: dict, y: str, cfg: dict, k: int, out: di
                 rows.append(({**tags, "dir": "lens"}, {la: AddRows(lens_vec, p)}))
                 rows.append(({**tags, "dir": "random"}, {la: AddRows(null_rows(lens_vec, gen), p)}))
                 rows.append(({**tags, "dir": "offscene"}, {la: AddRows(EP.push_rows(dirs[la]["offscene"], norms), p)}))
+                if cfg.get("embed"):  # the same norms along the input-embedding difference
+                    rows.append(({**tags, "dir": "embed"}, {la: AddRows(EP.push_rows(dirs[la]["embed"], norms), p)}))
         if cfg.get("patch"):
             for sname in ("s", "w"):  # C's residual at the stated bridge's sentence / word, at its own size (scale 0)
                 p = pos[sname]
@@ -472,6 +525,9 @@ def stage_analyze(name: str, rule: str | None = None) -> None:
                          for (f, e), v in sorted(edits.items())]}  # fmt: skip
     if cfg.get("patch"):
         summary["layer_gap"] = {sub: layer_gap(cells, cfg["layers"], sub) for sub in ("w", "s")}
+    if cfg.get("embed"):
+        bridge_of = {c["name"]: c["bridge"] for c in map(json.loads, (RESULTS / name / "cases.jsonl").read_text().splitlines())}  # fmt: skip
+        summary["embed_test"] = embed_test(cells, bridge_of, cfg["scales"])
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2, default=str) + "\n")
     lines = [f"# {EXP} / {name} (rule {dec['rule']})", "", f"Items: {counts}", "", f"**Verdict:** {dec['verdict']}", ""]
     if dec.get("primary"):
@@ -484,6 +540,9 @@ def stage_analyze(name: str, rule: str | None = None) -> None:
         g = dec["br_minus_bl"]
         lines += [f"- BR - BL (scene-paired, {dec['n_scenes_paired']} scenes): {100 * g[0]:+.0f} [{100 * g[1]:+.0f}, {100 * g[2]:+.0f}] points", ""]  # fmt: skip
     lines += [f"Selected cells (BR rows only): {len(dec['selected'])}", ""]
+    if "embed_test" in summary:
+        et = summary["embed_test"]
+        lines += [f"**Layer-16 test:** {et['verdict']} (valid cells {et['valid_cells']}, n {et['n']})", ""]
     for sub, g in summary.get("layer_gap", {}).items():
         lines += [f"**Layer gap ({sub}):** {g['verdict']} (lens_stop {g.get('lens_stop')}, patch_stop {g.get('patch_stop')}); "
                   f"lookups moved by layer, lens {g.get('lens')}, patch {g.get('patch')}", ""]  # fmt: skip
@@ -559,6 +618,8 @@ if __name__ == "__main__":
     ap.add_argument("--n", type=int, default=DEFAULTS["n"])
     ap.add_argument("--scenes", choices=["map", "fresh"], default=DEFAULTS["scenes"])
     ap.add_argument("--patch", action="store_true", help="run: add the full patch of the C residual at s and w")
+    ap.add_argument("--embed", action="store_true", help="run: add the input-embedding difference direction")
+    ap.add_argument("--subsets", nargs="+", choices=list(WHERE), default=None, help="run: push positions (default all)")
     ap.add_argument("--rule", choices=["v1", "v2", "v2.1"], default=None,
                     help="run: the rule in the config (default v1); analyze: an amendment into a new folder")  # fmt: skip
     ap.add_argument("--layers", type=int, nargs="+", default=None, help="run: the layer grid (default the 27B's)")
@@ -579,6 +640,10 @@ if __name__ == "__main__":
             cfg.update(layers=a.layers, context_layers=a.context_layers, v21_min_layer=a.v21_min_layer)
         if a.patch:
             cfg["patch"] = True
+        if a.embed:
+            cfg["embed"] = True
+        if a.subsets:
+            cfg["subsets"] = a.subsets
         if a.scales:
             cfg["scales"] = a.scales
         if a.scenes == "fresh" and (a.fresh_seed != FRESH_SEED or a.exclude_runs):
