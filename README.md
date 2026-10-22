@@ -48,9 +48,9 @@ We name each kind of question by **where the bridge comes from → where the ans
 | 2 | **The lens reads what the model has, not what it uses.** A stated bridge is read by the lens, but its lens-readable part does nothing for a lookup. | **High** on Qwen3.6-27B (partly *verified*), in prose and in Python code | Verified B4; D1 (fig. 2), D1 in code; Zach's C2 descriptive shows the same split by another method |
 | 3 | **An early lens push changes *which entity is recalled*, not the lookup.** | **Medium-high**: pre-registered, one dataset, 2 wordings | D4 (fig. 3) |
 | 4 | **A lookup reads the answer's statement late, from the last tokens, through attention layers** (not DeltaNet), spread over many heads. | **High**, and it holds on every model tested so far (3 of 3: two Qwen hybrids and OLMo with its training stages) | D2 (figs. 4, 10) |
-| 5a | **Just before that, the last tokens carry an address to a statement, and it beats the bridge word.** | **Medium**: Qwen3.6-27B only, with 5 statements (every topic, a second data seed); with 8 statements the word ties it; on Qwen3.5-9B and OLMo slot and word tie | D3 (figs. 5, 9) |
-| 5b | **The address is "the Nth statement" by order**, not a place in the text, nor a distance back from the question. | **High** where tested: Qwen3.6-27B and OLMo (all three stages), pre-registered | D3 (figs. 6, 8) |
-| 5c | **The order is counted from the start of the list.** | **Medium**: Qwen3.6-27B (pre-registered); on OLMo start and end are not separated | D3 (fig. 6) |
+| 5a | **Just before that, the last tokens carry an address to a statement, and it beats the bridge word.** | **Medium**: on the two larger Qwens, hybrid and dense (Qwen3.6-27B, Qwen3-32B: 51-53% vs 18-22%, every topic), with 5 statements; with 8 statements the word ties it; on Qwen3.5-9B, OLMo-3-7B and Gemma 4 slot and word tie | D3 (figs. 5, 12) |
+| 5b | **The address is "the Nth statement" by order**, not a place in the text, nor a distance back from the question. | **High** where tested: Qwen3.6-27B, Qwen3.5-9B and OLMo (all three stages), pre-registered | D3 (figs. 6, 8) |
+| 5c | **The order is counted from the start of the list.** | **Medium**: Qwen3.6-27B (pre-registered); Qwen3.5-9B pooled only; on OLMo start and end are not separated | D3 (fig. 6) |
 | 6 | **That address can be written.** A learned ~4-dimensional direction moves the lookup to another statement; the lens direction does nothing. | **Medium** on Qwen3.6-27B (42% fresh scenes, 31% new entities, just under the bar); **not on OLMo** (2%) | D3b (fig. 7) |
 | 7 | **A late attention head looks at the statement the answer is fetched from, even when the model gets it wrong.** | **Medium**: Qwen3.6-27B, 339 natural errors (76% on the fetched statement vs 17% on the right one), but only 9 entities | D5a (fig. 11) |
 | 8 | "Around the lens" *is* this address. | **Not shown**: the pointer push beats the lens push pooled (34% vs 8%) but in 1 of 3 topics with valid controls; removing the J-space where the lookup reads leaves lookups at 100%, but recall survives there too | D3b fair test; J-space removal at 44-62 |
@@ -65,16 +65,17 @@ Legend: **yes** holds · **partly** · **no** does not hold · *running* · – 
 | 2. Stated bridge's lens part unused by a lookup | **yes** (prose, code) | – | – | – | – |
 | 3. Early lens push moves recall, not the lookup | **yes** (pre-registered) | – | – | – | – |
 | 4. Late read through attention | **yes** (2-13% kept; DeltaNet 100%) | **yes** (3%; DeltaNet 100%) | **yes** (0-1% in all three; layers 16-23) | *running* | *running* |
-| 5a. Address beats the word | **yes**, 5 statements; no, 8 | no (tie, 35% vs 35%) | no (tie in all three) | *running* | *running* |
-| 5b. Address = order, not place or distance | **yes** | *running* | **yes** (all three) | *running* | *running* |
-| 5c. Counted from the start | **yes** | *running* | no (start = end) | *running* | *running* |
+| 5a. Address beats the word | **yes**, 5 statements; no, 8 | no (tie, 35% vs 35%) | no (tie in all three) | **yes** (53% vs 18%, every topic) | no (tie at its one layer before the digit, 17% vs 22%) |
+| 5b. Address = order, not place or distance | **yes** | **yes** (order 22-29% vs place 5-8%) | **yes** (all three) | *running* | *running* |
+| 5c. Counted from the start | **yes** | partly (pooled yes, per topic no) | no (start = end) | *running* | *running* |
 | 6. Address can be written (fitted direction) | partly | – | no (2%) | – | – |
 | 7. Late head marks the fetched statement | **yes** (natural errors) | – | – | – | – |
 | 8. "Around the lens" = the address | not shown | – | – | – | – |
 
 **Reading the table.** The late read (4) and the order-based address (5b) hold on every model tested so far, hybrid or
-not. What is specific so far is the address *beating the word* (5a): on Qwen3.6-27B with 5 statements only. On the
-smaller hybrid and on OLMo the patched last tokens carry the address and the word about equally.
+not. The address *beating the word* (5a) holds on the two larger Qwens, the hybrid 27B and the dense 32B, so it does
+not come from the DeltaNet layers; on the smaller Qwen (9B), on OLMo-3-7B and on Gemma 4 the patched last tokens carry
+the address and the word about equally (fig. 12).
 
 **The working picture** (Qwen3.6-27B, a hypothesis):
 
@@ -150,10 +151,18 @@ for the word, in each of 3 topics); from layer 52 the digit itself takes over. 4
 draw of scenes gives the same (50% vs 23%, every topic). Runs `d3v4_swap_main`, `d3v4_swap_topics`,
 `d3v4_seed2_swap_27b`.
 
+![Address or word on five models](figures/readme_1021/f12_address_models.png)
+
+**On other models.** The same patch on each model at its layers before the alt digit arrives (chosen by that rule, the
+one with the largest same-slot share shown). **Qwen3-32B**, dense with attention in every layer, shows the 27B's
+picture: the slot 53% vs the word 18%, in every topic (450 items). On **Qwen3.5-9B** and **OLMo-3-7B** (fig. 9) slot and
+word tie (~35% each); on **Gemma 4 31B-it** the digit arrives by layer 42 and the only earlier layer with an effect
+(40) gives 17% vs 22% (its sweep went in steps of 2 layers, so a narrow phase could be missed). Runs
+`qwen3_32b_d3v4_swap_r2`, `qwen35_9b_d3v4_swap_r2`, `gemma4it_d3v4_swap_v2_r2`.
+
 **Where it stops.** With **8 statements** instead of 5, the slot no longer beats the word (31% vs 34% at layer 50).
 With **colour-word answers** ("The cow's locker is red.") the slot leads (31% vs 13%), but the same-entity control
-changes a third of the answers, so the test cannot be judged. On **Qwen3.5-9B** and **OLMo-3-7B** (fig. 9) the slot and
-the word tie (~35% each) before the digit arrives. Runs `d3v5_swap_27b`, `qwen35_9b_d3v4_swap_r2`.
+changes a third of the answers, so the test cannot be judged. Run `d3v5_swap_27b`.
 
 ![How the address counts](figures/readme_1021/f6_slot_counts.png)
 
@@ -208,8 +217,10 @@ candidate read-out of provenance. Caveat: the errors come from only 9 asked enti
 
 ## What is not shown yet
 
-- **The address beating the word is a Qwen3.6-27B result with 5 statements.** It does not hold with 8 statements, on
-  Qwen3.5-9B or on OLMo-3-7B; colour-word answers break the control. Qwen3-32B and Gemma 4 are running.
+- **The address beating the word holds on the two larger Qwens only, with 5 statements.** Not with 8 statements, not
+  on Qwen3.5-9B, OLMo-3-7B or Gemma 4; colour-word answers break the control. Size alone does not explain it: Gemma 4
+  (31B) ties too, though its sweep was coarse (every 2nd layer, and its phase before the digit is 1-2 layers wide). A
+  layer-by-layer Gemma sweep would tell.
 - **Simple scenes.** 3-8 short statements, mostly one-digit answers, the question right after the list.
 - **Moderate effects.** Patches and pushes move 30-50% of answers; many patches change nothing.
 - **The link between patterns 2 and 5** ("the lookup uses the address, which the lens does not read") is a candidate
@@ -225,7 +236,9 @@ candidate read-out of provenance. Caveat: the errors come from only 9 asked enti
 | Step | Question | Status |
 |---|---|---|
 | D2 and D3 on Qwen3-32B (dense) and Gemma 4 31B-it; the address tests (order, shifts, colours, 8 statements) on Qwen3.5-9B, Qwen3-32B, Gemma | Patterns 4 and 5 on a dense Qwen and a non-Qwen family | running |
-| Why the word ties the slot on smaller models and longer lists | Is "address beats word" a capacity effect? (more statements, smaller models) | next |
+| Gemma 4 at every layer 36-42 (its phase before the digit is narrow) | Does any non-Qwen model show the address beating the word? | next |
+| Why the word ties the slot on smaller models and longer lists | Is "address beats word" a Qwen-at-scale effect? (more statements, smaller models) | next |
+| Is the slot direction the model's own address? (`d3b_mechanism_27b`: ordered axis, dose path, natural size, necessity, the late head as reader) | Mechanism or steering trick | running |
 | A colour-word design whose same-entity control holds | Pattern 5a beyond digits | next |
 | Head 51/22 on errors of more entities (new datasets with natural errors) | Pattern 7 beyond 9 entities | next |
 | Zach's three measures on OLMo (ran, raw format) | Pattern 1 on a second architecture | to analyse |

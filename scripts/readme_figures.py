@@ -348,11 +348,39 @@ def f11_natural_errors(out: Path) -> None:
     save(fig, out, "f11_natural_errors.png")
 
 
+def f12_address_models(out: Path) -> None:
+    """D3 across models: at each model's layer before the alt digit arrives (alt-digit upper bound < 10%) with the largest
+    same-slot share, the same slot vs bridge alt's own statement (memory -> prompt, last two tokens)."""
+    models = [("Qwen3.6-27B\n(hybrid)", "d3v4_swap_topics"), ("Qwen3-32B\n(dense)", "qwen3_32b_d3v4_swap_r2"),
+              ("Qwen3.5-9B\n(hybrid)", "qwen35_9b_d3v4_swap_r2"), ("OLMo-3-7B\nInstruct", "olmo3_7b_instruct_d3v4_swap_fn"),
+              ("Gemma 4\n31B-it", "gemma4it_d3v4_swap_v2_r2")]  # fmt: skip
+    fig, ax = plt.subplots(figsize=(8.5, 3.2))
+    style(ax, "y")
+    labels = []
+    for i, (name, run) in enumerate(models):
+        rates = load("pointer_swap", run)["rates"]
+        cells = {int(k.split("|")[4]): v for k, v in rates.items()
+                 if k.startswith("RL|all|e5f0|last|") and k.endswith("|dissoc") and k.split("|")[4].isdigit()}  # fmt: skip
+        pre = {la: d for la, d in cells.items() if d["value"][2] < 0.10 and d["none"][0] < 0.95}
+        la, d = max(pre.items(), key=lambda t: t[1]["position"][0])
+        bar_ci(ax, i - 0.17, *d["position"][:3], LOOKUP, width=0.32)
+        bar_ci(ax, i + 0.17, *d["identity"][:3], RECALL, width=0.32)
+        labels.append(f"{name}\nlayer {la}")
+    ax.set_xticks(range(len(models)), labels, fontsize=8.5)
+    ax.set_ylim(0, 70)
+    ax.set_ylabel("% of patched answers")
+    ax.set_title("Patched last tokens, before the digit arrives: address or word?", loc="left")
+    handles = [plt.Rectangle((0, 0), 1, 1, color=LOOKUP), plt.Rectangle((0, 0), 1, 1, color=RECALL)]
+    ax.legend(handles, ["the same slot (address)", "bridge alt's own statement (word)"], frameon=False,
+              loc="upper right")  # fmt: skip
+    save(fig, out, "f12_address_models.png")
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", default="figures/readme_1021")
     out = ROOT / ap.parse_args().out
     out.mkdir(parents=True, exist_ok=True)
     for f in (f1_two_routes, f2_stated_bridge, f3_early_push, f4_late_read, f5_slot_by_layer, f6_slot_counts, f8_shifts, f9_olmo_slot,
-              f7_pointer_push, f10_late_read_models, f11_natural_errors):  # fmt: skip
+              f7_pointer_push, f10_late_read_models, f11_natural_errors, f12_address_models):  # fmt: skip
         f(out)
