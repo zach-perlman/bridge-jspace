@@ -1,0 +1,23 @@
+id: olmo_hybrid_7b_d3v5_len12_competence
+title: "Finding 5 on 12 sentences, gate: can Olmo-Hybrid-7B Instruct answer fresh 12-statement scenes with colour-word answers (seed 873)?"
+thread: D3
+gpus: 1
+mem_gb: 25
+est_gpu_hours: 0.12
+depends_on:
+- olmo_hybrid_7b_port_smoke
+command: >-
+  BJ_TARGET=olmo-hybrid-7b-instruct-dpo BJ_JUDGE=read uv run python scripts/pointer_v5.py manifest --set len12 --name olmo_hybrid_7b_d3v5_len12_competence
+  --why "finding 5 on lists of 12 sentences (T8) on Olmo-Hybrid-7B Instruct: pointer_v5 len12 (seed 873), colour-word
+  answers from 16 colours; every alt and control prompt and each step alone (chat format, read judge)"
+  && BJ_TARGET=olmo-hybrid-7b-instruct-dpo BJ_JUDGE=read uv run python scripts/pointer_v5.py competence --name olmo_hybrid_7b_d3v5_len12_competence
+question: 'Does Olmo-Hybrid-7B Instruct answer the fresh 12-statement scenes (colour-word answers, read judge)?'
+why_it_matters: 'Gate for olmo_hybrid_7b_d3v5_len12_swap: only scenes with every prompt right in both families are patched.'
+hypotheses:
+  H-gate: 'every topic and family >= 80% right. Prior 0.5 (agent''s) (copied from qwen35_9b_d3v5_len12_competence)'
+decision_rule: 'pointer_v1''s competence rule, unchanged (every prompt of an item right = eligible), with the read judge (BJ_JUDGE=read, as every Olmo-Hybrid / OLMo-3 competence spec): a prompt is right iff the top token of one forward is the expected colour word''s first token (answer kind colour16, the set''s 16 colours); the greedy judge is recorded as correct_greedy, not used.'
+controls:
+- 'each step alone (the recall and the named lookup) for memory -> prompt'
+n: 'all of pointer_v5 len12: 150 scenes per topic (3 topics) x 2 families = 900 items'
+seeds: [873]
+notes: 'Mechanical copy of qwen35_9b_d3v5_len12_competence (Dan, 23 Oct ~01:30: fill the grid); not opened before Dan''s predictions. Only the target and run name change, and the judge and dependency are this model''s own committed competence pattern (BJ_JUDGE=read and olmo_hybrid_7b_port_smoke, as olmo_hybrid_7b_d3v4_seed2_competence). Data: data/pointer_v5/len12/ (per-file seeds 87312, 87332, 87342). The OLMo tokenizer is not Qwen''s: pointer_swap drops (and counts) the scenes not token-aligned under it.'

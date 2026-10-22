@@ -1,0 +1,26 @@
+id: olmo_hybrid_7b_d2_formats
+title: "Late read and name vs digit in prose, tables and JSON (Olmo-Hybrid-7B Instruct)"
+thread: D2
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.8
+depends_on:
+- olmo_hybrid_7b_port_smoke
+command: >-
+  BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/tasks_v2.py competence --set d2_formats_v1 --name olmo_hybrid_7b_d2_formats_competence --why "D2 formats" && BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/attn_knockout.py manifest --name olmo_hybrid_7b_d2_formats --dataset tasks_v2 --tasks-set d2_formats_v1 --competence olmo_hybrid_7b_d2_formats_competence --families MP MM PP PM --formats prose table json --n 20 --sources lookup lookup_off lookup_name lookup_digit lookup_off_name lookup_off_digit lookup_nodigit lookup_noname lookup_off_nodigit lookup_off_noname --dests question final --layers all kind --sweep path --why "findings 3 and 4 in tables and JSON on Olmo-Hybrid-7B Instruct" && BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/attn_knockout.py run --name olmo_hybrid_7b_d2_formats
+figures_command: uv run python scripts/d2_formats.py --name olmo_hybrid_7b_d2_formats
+question: >-
+  Do the late read and the name / digit split hold in tables and JSON tool outputs?
+why_it_matters: >-
+  Findings 3 and 4 in less toy formats on every model (27B and Qwen3-32B: both hold in all three formats), here on the
+  non-Qwen DeltaNet hybrid.
+hypotheses:
+  H-all-formats: 'both hold in all three formats. Prior 0.55 (copied from olmo3_7b_instruct_d2_formats_r2_q)'
+decision_rule: >-
+  As d2_formats_27b, scored by scripts/d2_formats.py: the committed rules per format (on a hybrid it reads the late
+  read in the attention layers, with the DeltaNet layers alongside, as for d2_formats_27b).
+controls:
+- 'the off-path row hidden the same way; the off-path row without its name / value; the recall words'
+n: '20 scenes per (word, topic, format) cell where eligible'
+seeds: [0]
+notes: 'Mechanical copy of olmo3_7b_instruct_d2_formats_r2_q incl. its competence step (Dan, 23 Oct ~01:30: fill the grid); not opened before Dan''s predictions. Target and run names change (id without the source''s requeue suffix _r2_q). Layers "all kind" in place of OLMo-3''s "all": the hybrids'' set (d2_formats_27b, qwen35_9b_d2_formats_r2_q, and this model''s own late-read spec olmo_hybrid_7b_d2_late_read_seed2); scripts/d2_formats.py applies the hybrid rule only when the attn set is present, else falls back to all layers.'

@@ -1,0 +1,36 @@
+id: olmo_hybrid_7b_d3v5_swap
+title: "D3 v5 on Olmo-Hybrid-7B Instruct: does the statement address survive colour words and 8-statement lists?"
+thread: D3
+gpus: 1
+mem_gb: 30
+est_gpu_hours: 0.6
+depends_on:
+- olmo_hybrid_7b_d3v5_competence
+- d3v5_smoke_27b
+command: >-
+  BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/pointer_swap.py manifest --data pointer_v5 --set main
+  --name olmo_hybrid_7b_d3v5_swap --families RL DL --n 150 --layers 16 17 18 19 20 21 --control-stride 1
+  --groups last --competence olmo_hybrid_7b_d3v5_competence --primary-layers 17 18 19
+  --why "olmo3_7b_instruct_d3v5_swap on Olmo-Hybrid-7B Instruct: colour-word answers and 8 statements at the last two
+  tokens, OLMo-3's layers 17-19 (placed by function on OLMo-3, the same depth) carried over unchanged"
+  && BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/pointer_swap.py run --name olmo_hybrid_7b_d3v5_swap
+examples_command: BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/pointer_swap.py examples --name olmo_hybrid_7b_d3v5_swap --group last
+figures_command: BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/pointer_swap.py figures --name olmo_hybrid_7b_d3v5_swap
+question: >-
+  As d3v5_swap_27b, on Olmo-Hybrid-7B Instruct at layers 17-19.
+why_it_matters: >-
+  The two boring explanations of the README's pattern 5: a trick for copying a digit, and a property of 5-item
+  lists. Colour-word answers and 8-statement lists on the same scenes test both. On the non-Qwen DeltaNet hybrid.
+hypotheses:
+  H-word: 'e5-word keeps the slot at layer 17, 18 or 19. Prior 0.4 (copied from olmo3_7b_instruct_d3v5_swap)'
+  H-long: 'e8-digit keeps the slot. Prior 0.35 (copied from olmo3_7b_instruct_d3v5_swap)'
+  H-replicate: 'e5-digit keeps the slot. Prior 0.5 (copied from olmo3_7b_instruct_d3v5_swap)'
+decision_rule: >-
+  pointer_swap's pointer_v5 additions with the manifest's primary layers 17, 18 and 19 (placed by function on
+  OLMo-3-7B-Instruct before olmo3_7b_instruct_d3v4_swap_fn, carried over unchanged to this model of the same depth).
+  Three layers are looked at: passes within 2 points of the bar are reported as borderline.
+controls:
+- 'as d3v5_swap_27b'
+n: 'up to 150 scenes per topic and list length; unaligned countries scenes dropped'
+seeds: [871, 0]
+notes: 'Mechanical copy of olmo3_7b_instruct_d3v5_swap (Dan, 23 Oct ~01:30: fill the grid); not opened before Dan''s predictions. Only the target and run / gate names change; layers unchanged (both 32 layers). d3v5_smoke_27b is done. ~0.6 GPU-h (OLMo-3: 0.14 h).'
