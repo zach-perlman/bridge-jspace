@@ -1,0 +1,31 @@
+id: olmo3_7b_instruct_jpp_d4_where_raw
+title: "Where can the lens write a stated bridge? (OLMo-3-7B-Instruct, our J++, raw prompts, fresh scenes, rules v2 and v2.1)"
+thread: D4
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.5
+depends_on:
+- olmo3_7b_instruct_jpp_lens_gate
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/d1_precheck.py --gate olmo3_7b_instruct_jpp_lens_gate --competence olmo3_7b_instruct_d1_topics2_competence --min-topics 0
+  && BJ_TARGET=olmo-3-7b-instruct-jpp BJ_FORMAT=raw uv run python scripts/suite_v1.py manifest --set main --name olmo3_7b_instruct_jpp_competence_raw_v1 --why "the animal suite on OLMo-3-7B-Instruct in raw format under the J++ prefix: which scenes are right on every prompt (D4's fresh-scene eligibility; lens-free)"
+  && BJ_TARGET=olmo-3-7b-instruct-jpp BJ_FORMAT=raw uv run python scripts/suite_v1.py competence --name olmo3_7b_instruct_jpp_competence_raw_v1
+  && BJ_TARGET=olmo-3-7b-instruct-jpp BJ_FORMAT=raw uv run python scripts/early_push_where.py run --name olmo3_7b_instruct_jpp_d4_where_raw_smoke --n 1 --scenes fresh --rule v2 --layers 6 8 10 12 14 16 18 20 22 --context-layers 14 16 18 20 22 --v21-min-layer 10 --why "smoke: not a result"
+  && BJ_TARGET=olmo-3-7b-instruct-jpp BJ_FORMAT=raw uv run python scripts/early_push_where.py run --name olmo3_7b_instruct_jpp_d4_where_raw --n 100 --scenes fresh --rule v2 --layers 6 8 10 12 14 16 18 20 22 --context-layers 14 16 18 20 22 --v21-min-layer 10 --why "finding 7 on OLMo-3-7B-Instruct with our J++, raw prompts (OLMo's animal-suite format)"
+figures_command: BJ_TARGET=olmo-3-7b-instruct-jpp BJ_FORMAT=raw uv run python scripts/early_push_where.py analyze --name olmo3_7b_instruct_jpp_d4_where_raw --rule v2.1 && BJ_TARGET=olmo-3-7b-instruct-jpp BJ_FORMAT=raw uv run python scripts/early_push_where.py figures --name olmo3_7b_instruct_jpp_d4_where_raw
+question: >-
+  On OLMo-3-7B-Instruct with our J++, in the raw prompt format its animal-suite runs use, does a lens push at a stated bridge's sentence or word switch recalls but not lookups (finding 7)?
+why_it_matters: >-
+  The chat-format copy (olmo3_7b_instruct_jpp_d4_where) has ~20 eligible scenes: OLMo-Instruct is right on every recall -> lookup prompt for 30 of 400 items in chat format, 171 scenes in raw format (olmo3_7b_instruct_competence_raw_v1). Raw gives the test its intended size.
+hypotheses:
+  H-around: 'v2.1 (from layer 10 on): recall >= 30%, lookup <= 10%. Prior 0.5 (copied from qwen35_9b_d4_where)'
+  H-no-cell: 'no valid cell. Prior 0.3 (copied from qwen35_9b_d4_where)'
+  H-where: 'the lookup follows (>= 30%). Prior 0.05 (copied from qwen35_9b_d4_where)'
+  inconclusive: 'Prior 0.15 (copied from qwen35_9b_d4_where)'
+decision_rule: >-
+  Fixed 23 Oct ~00:45 before any OLMo J++ result (agent's choice while Dan sleeps; Dan may override before opening): THIS raw-format run is OLMo's decisive D4 cell; the chat-format run (olmo3_7b_instruct_jpp_d4_where, n ~20) is reported beside it, not decisive. Runs iff our J++ passes gate v1 (scripts/d1_precheck.py, --min-topics 0). scripts/early_push_where.py unchanged: rule v2 main, v2.1 alongside, both verdicts shown; the 9B's grid (the same depth): 6-22 every 2nd, context 14-22, v2.1 from layer 10; fresh scenes: suite_split's eligibility on this model in raw format (the competence run in this job), none of map_A8_v1's scenes, seed 1. The only change from the chat copy is BJ_FORMAT=raw (the prompt format setting OLMo's animal-suite runs use; no code change). Primary lens (Dan, 23 Oct ~00:30): ours on 64 prompts; no silent switch.
+controls:
+- 'a random push of the same size; a push toward an animal not in the scene; the text edits; memory -> prompt and memory -> memory off the path; the chat-format run beside it'
+n: '100 fresh animal-suite scenes (seed 1, eligible on OLMo-3-7B-Instruct in raw format), four families'
+seeds: [0]
+notes: "Raw-format variant of olmo3_7b_instruct_jpp_d4_where (the grid-fill agent flagged its n ~20 in chat). early_push_where has not run with BJ_FORMAT=raw before: if the raw path fails, the chat run stands as the only OLMo D4 cell, labelled small-n. Waits for the OLMo J++ pin. Not opened before Dan's predictions."
