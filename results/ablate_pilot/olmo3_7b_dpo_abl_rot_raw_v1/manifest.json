@@ -1,0 +1,41 @@
+{
+  "run": "olmo3_7b_dpo_abl_rot_raw_v1",
+  "why": "D5b gate G2 + ladder E2 on olmo-3-7b-dpo (raw)",
+  "written_utc": "2026-10-21T21:40:07Z",
+  "model": {
+    "target": "olmo-3-7b-dpo",
+    "repo": "allenai/Olmo-3-7B-Instruct-DPO",
+    "revision": "b33130b7de49f0c2553b5c2b3bc8409ff3e627d1",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "raw"
+  },
+  "lens": [
+    "jlens",
+    "0b407ba5b0d9efdd4cfce979a2b2e26d33b4b0bfc60a8025f2a4308f02ccd6fb"
+  ],
+  "lens_layers": [
+    0,
+    3,
+    6,
+    9,
+    12,
+    15,
+    18,
+    21,
+    24,
+    27,
+    30
+  ],
+  "layers": [
+    15,
+    18,
+    21
+  ],
+  "k_atoms": 25,
+  "n_per_family": 100,
+  "skip_first": 0,
+  "center": false,
+  "rotated": true,
+  "doc": "At layers 32, 36 and 40 at once (another target: --layers, each a layer its frozen lens has a map at), at every\nposition, each residual loses its 25-atom J-space part (signed OMP over the frozen lens's letter-token vectors: J++ on\nQwen, the J-lens on OLMo, recorded in the manifest with its layers; the split's J-space part, here of the state itself);\nthe control loses the same fit over a random dictionary of the same size (seeded per layer). On unedited-correct\nitems, read at the answer's first token (suite_split's read):\n  clean   the whole question                      hop     the last step alone (suite_v1's hop2 / hop3: a lookup in the\n                                                          prompt for BL, RL; a recalled fact for BR, RR, TYPO, TRANS)\nReported per family: accuracy (top token = the answer's) and the mean change in the answer token's log-probability.\nFamilies: BL, BR, RL, RR (suite main set), TYPO, TRANS (computed set), countries R, B (bind_recall, clean only).\nPrediction from the read/write results (not a decision rule): removing the J-space hurts the recall chains more than\nthe lookup chains, beyond what the step alone loses."
+}

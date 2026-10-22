@@ -1,0 +1,32 @@
+{
+  "H-D1-code": {
+    "key_line_transit_layers_KL": [
+      28,
+      30,
+      32,
+      34,
+      36,
+      38,
+      40,
+      42,
+      44
+    ],
+    "KL_verdict": "around",
+    "KR_verdict": "inconclusive",
+    "KL_concentration": [
+      0.1497777223594609,
+      0.13352334693166942,
+      0.16711285118355093
+    ],
+    "KR_concentration": [
+      1.1781312547484017,
+      1.055919701402295,
+      1.310025308618015
+    ],
+    "H-D1-code": "around, but the positive control is not inside (not interpretable)"
+  },
+  "figures": [
+    "map_paste_by_layer.png",
+    "parts_concentration.png"
+  ]
+}

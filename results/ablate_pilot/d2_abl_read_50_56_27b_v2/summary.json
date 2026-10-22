@@ -1,0 +1,125 @@
+{
+  "seconds": 2235,
+  "families": {
+    "BL/clean": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 1,
+        "rotated": 1
+      },
+      "dlogp": {
+        "jspace": -0.00224186293897219,
+        "rotated": -0.0016441294073592872
+      }
+    },
+    "BL/hop": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 1,
+        "rotated": 1
+      },
+      "dlogp": {
+        "jspace": -0.0028222506103338673,
+        "rotated": -0.0023050805053208023
+      }
+    },
+    "BR/clean": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.96,
+        "rotated": 1
+      },
+      "dlogp": {
+        "jspace": -0.13233001433080063,
+        "rotated": -0.00394291959470138
+      }
+    },
+    "BR/hop": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 1,
+        "rotated": 1
+      },
+      "dlogp": {
+        "jspace": -0.0027355481719132514,
+        "rotated": -0.0027725377050228416
+      }
+    },
+    "RL/clean": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 1,
+        "rotated": 1
+      },
+      "dlogp": {
+        "jspace": 0.0014162085406132974,
+        "rotated": -0.0019879396504256875
+      }
+    },
+    "RL/hop": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 1,
+        "rotated": 1
+      },
+      "dlogp": {
+        "jspace": -0.0028222506103338673,
+        "rotated": -0.0023050805053208023
+      }
+    },
+    "RR/clean": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.99,
+        "rotated": 1
+      },
+      "dlogp": {
+        "jspace": -0.0353875501715811,
+        "rotated": -0.0046481795387808235
+      }
+    },
+    "RR/hop": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 1,
+        "rotated": 1
+      },
+      "dlogp": {
+        "jspace": -0.002721669507154729,
+        "rotated": -0.0026532983989454805
+      }
+    },
+    "country-R/clean": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.72,
+        "rotated": 0.93
+      },
+      "dlogp": {
+        "jspace": -0.7991530066728592,
+        "rotated": -0.17172411665320397
+      }
+    },
+    "country-B/clean": {
+      "n": 100,
+      "accuracy": {
+        "none": 1,
+        "jspace": 0.68,
+        "rotated": 1
+      },
+      "dlogp": {
+        "jspace": -1.084465079307556,
+        "rotated": -0.07175297541543842
+      }
+    }
+  }
+}

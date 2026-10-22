@@ -1,0 +1,123 @@
+{
+  "n_rows": 4160,
+  "n_right": 3819,
+  "n_wrong_in_context": 339,
+  "n_wrong_off_prompt": 2,
+  "wrong_by_label": {
+    "main/animals_RL_e5f0": 6,
+    "main/animals_RL_e5f0-xlang": 12,
+    "main/animals_DL_e5f0-xlang": 4,
+    "main/elements_RL_e5f0": 24,
+    "main/elements_RL_e5f0-syn": 208,
+    "main/elements_DL_e5f0-syn": 9,
+    "dev/animals_DL_e3f0-xlang": 1,
+    "dev/elements_RL_e3f0": 4,
+    "dev/elements_RL_e3f0-syn": 31,
+    "dev/elements_DL_e3f0-syn": 1,
+    "dev/animals_RL_e5f0": 3,
+    "dev/animals_RL_e5f0-xlang": 2,
+    "dev/elements_RL_e5f0-syn": 33,
+    "dev/elements_DL_e5f0-syn": 1
+  },
+  "heads": {
+    "51:22": {
+      "wrong_on_answered": {
+        "k": 256,
+        "n": 339,
+        "rate": [
+          0.7552,
+          0.7067,
+          0.7979
+        ],
+        "entities": 9
+      },
+      "wrong_on_asked": {
+        "k": 57,
+        "n": 339,
+        "rate": [
+          0.1681,
+          0.1321,
+          0.2116
+        ],
+        "entities": 9
+      },
+      "right_on_asked": {
+        "k": 3771,
+        "n": 3819,
+        "rate": [
+          0.9874,
+          0.9834,
+          0.9905
+        ],
+        "entities": 14
+      },
+      "verdict": "H-fetch"
+    },
+    "59:21": {
+      "wrong_on_answered": {
+        "k": 156,
+        "n": 339,
+        "rate": [
+          0.4602,
+          0.4079,
+          0.5134
+        ],
+        "entities": 9
+      },
+      "wrong_on_asked": {
+        "k": 64,
+        "n": 339,
+        "rate": [
+          0.1888,
+          0.1507,
+          0.2338
+        ],
+        "entities": 9
+      },
+      "right_on_asked": {
+        "k": 3618,
+        "n": 3819,
+        "rate": [
+          0.9474,
+          0.9398,
+          0.954
+        ],
+        "entities": 14
+      },
+      "verdict": "H-fetch"
+    },
+    "59:3": {
+      "wrong_on_answered": {
+        "k": 250,
+        "n": 339,
+        "rate": [
+          0.7375,
+          0.6881,
+          0.7815
+        ],
+        "entities": 9
+      },
+      "wrong_on_asked": {
+        "k": 55,
+        "n": 339,
+        "rate": [
+          0.1622,
+          0.1268,
+          0.2052
+        ],
+        "entities": 9
+      },
+      "right_on_asked": {
+        "k": 3761,
+        "n": 3819,
+        "rate": [
+          0.9848,
+          0.9804,
+          0.9882
+        ],
+        "entities": 14
+      },
+      "verdict": "H-fetch"
+    }
+  }
+}

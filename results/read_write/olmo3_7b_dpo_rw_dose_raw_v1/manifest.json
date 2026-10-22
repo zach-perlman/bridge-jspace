@@ -1,0 +1,49 @@
+{
+  "run": "olmo3_7b_dpo_rw_dose_raw_v1",
+  "why": "D5b gate G3 + ladder E1 on olmo-3-7b-dpo (raw)",
+  "written_utc": "2026-10-21T21:35:50Z",
+  "model": {
+    "target": "olmo-3-7b-dpo",
+    "repo": "allenai/Olmo-3-7B-Instruct-DPO",
+    "revision": "b33130b7de49f0c2553b5c2b3bc8409ff3e627d1",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "raw"
+  },
+  "lens": [
+    "jlens",
+    "0b407ba5b0d9efdd4cfce979a2b2e26d33b4b0bfc60a8025f2a4308f02ccd6fb"
+  ],
+  "lens_layers": [
+    0,
+    3,
+    6,
+    9,
+    12,
+    15,
+    18,
+    21,
+    24,
+    27,
+    30
+  ],
+  "layers": [
+    15,
+    18,
+    21,
+    24
+  ],
+  "scales": [
+    0.5,
+    1.0,
+    2.0,
+    4.0,
+    8.0,
+    16.0
+  ],
+  "n_per_family": 80,
+  "doc": "On the cases of suite_split's map_A8_v1 (animal suite, wording A) and control_split's map_v1 (countries R, B), at\nQwen3.6-27B's window (layers 32, 36, 40; another target: --layers, each a layer its frozen lens has a map at) on the\nquestion tokens:\n  read   the J-lens readout (the target's frozen lens, pins.FROZEN_LENS: J++ on Qwen, the J-lens on OLMo; recorded in\n         the manifest with its layers) of the clean run: the bridge's best rank among word tokens over the question\n         positions (formatting tokens removed; any single-token surface of the bridge counts), per layer; the same\n         for X (the counterfactual bridge, absent from the clean prompt) as the floor\n  write  add the lens direction v_X - v_I (unit lens vectors of X and the bridge I, their difference rescaled per\n         position to the norm of C's copy delta there, times 1 or 4) at the question tokens, one layer at a time and\n         at all three at once; controls: a random direction at the same norms, and C's full copy itself\nScored by suite_split's answer read (frac of the way to C; flips). n per family: up to 60 cases (the first in each\nmap's case order). Descriptive: no verdict rule; it decides whether read-vs-write enters the sprint plan.",
+  "inputs": {
+    "results/suite_v1/olmo3_7b_dpo_competence_raw_v1/items.jsonl": "0bf175090f6b6a5a99ab3e55726c5ec507a7d9addd9d9b8f76144be9e88b2405"
+  }
+}

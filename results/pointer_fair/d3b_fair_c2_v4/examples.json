@@ -1,0 +1,1906 @@
+{
+ "exp": "pointer_fair",
+ "run": "d3b_fair_c2_v4",
+ "seed": 0,
+ "k": 3,
+ "groups": [
+  {
+   "key": "pointer_only",
+   "title": "pointer only",
+   "definition": "the pointer push gives bridge alt's digit, the lens push does not",
+   "n_total": 163
+  },
+  {
+   "key": "both",
+   "title": "both",
+   "definition": "both give it",
+   "n_total": 17
+  },
+  {
+   "key": "neither",
+   "title": "neither",
+   "definition": "neither gives it",
+   "n_total": 319
+  },
+  {
+   "key": "lens_only",
+   "title": "lens only",
+   "definition": "only the lens push gives it",
+   "n_total": 24
+  }
+ ],
+ "examples": [
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0042",
+   "prompt": "<|im_start|>user\nThe wolf keeps its things in locker 7. The lion keeps its things in locker 9. The owl keeps its things in locker 3. The moth keeps its things in locker 5. The elephant keeps its things in locker 1.\nIn which locker does the animal known for hooting keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 95,
+     "end": 132,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 55,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 280,
+     "end": 384,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "pointer push (bridge alt's statement − the asked one), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "3",
+    "edited": "7",
+    "expected": {
+     "H-pointer": "7",
+     "H-lens": "3"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "answer_statement": 0,
+    "topic": "animals",
+    "held_out": "wording held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0042",
+   "prompt": "<|im_start|>user\nThe wolf keeps its things in locker 7. The lion keeps its things in locker 9. The owl keeps its things in locker 3. The moth keeps its things in locker 5. The elephant keeps its things in locker 1.\nIn which locker does the animal known for hooting keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 95,
+     "end": 132,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 55,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 280,
+     "end": 384,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "H-pointer": "3",
+     "H-lens": "7"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 2,
+    "topic": "animals",
+    "held_out": "wording held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0042",
+   "prompt": "<|im_start|>user\nThe wolf keeps its things in locker 7. The lion keeps its things in locker 9. The owl keeps its things in locker 3. The moth keeps its things in locker 5. The elephant keeps its things in locker 1.\nIn which locker does the animal known for hooting keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 95,
+     "end": 132,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 55,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 280,
+     "end": 384,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "H-pointer": "3",
+     "H-lens": "3"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 2,
+    "topic": "animals",
+    "held_out": "wording held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0042",
+   "prompt": "<|im_start|>user\nThe wolf keeps its things in locker 7. The lion keeps its things in locker 9. The owl keeps its things in locker 3. The moth keeps its things in locker 5. The elephant keeps its things in locker 1.\nIn which locker does the animal known for hooting keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 95,
+     "end": 132,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 55,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 280,
+     "end": 384,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: shuffled-label direction, layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "H-pointer": "3",
+     "H-lens": "3"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 2,
+    "topic": "animals",
+    "held_out": "wording held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0154",
+   "prompt": "<|im_start|>user\nThe rabbit's locker is 8. The worm's locker is 7. The cow's locker is 1. The cat's locker is 9. The butterfly's locker is 3.\nWhich locker belongs to the animal known for wriggling underground? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 43,
+     "end": 66,
+     "role": "asked statement"
+    },
+    {
+     "start": 113,
+     "end": 141,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 208,
+     "end": 312,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "pointer push (bridge alt's statement − the asked one), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "3",
+    "expected": {
+     "H-pointer": "3",
+     "H-lens": "7"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "answer_statement": 4,
+    "topic": "animals",
+    "held_out": "asked entity held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0154",
+   "prompt": "<|im_start|>user\nThe rabbit's locker is 8. The worm's locker is 7. The cow's locker is 1. The cat's locker is 9. The butterfly's locker is 3.\nWhich locker belongs to the animal known for wriggling underground? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 43,
+     "end": 66,
+     "role": "asked statement"
+    },
+    {
+     "start": 113,
+     "end": 141,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 208,
+     "end": 312,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-pointer": "7",
+     "H-lens": "3"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 1,
+    "topic": "animals",
+    "held_out": "asked entity held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0154",
+   "prompt": "<|im_start|>user\nThe rabbit's locker is 8. The worm's locker is 7. The cow's locker is 1. The cat's locker is 9. The butterfly's locker is 3.\nWhich locker belongs to the animal known for wriggling underground? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 43,
+     "end": 66,
+     "role": "asked statement"
+    },
+    {
+     "start": 113,
+     "end": 141,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 208,
+     "end": 312,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-pointer": "7",
+     "H-lens": "7"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 1,
+    "topic": "animals",
+    "held_out": "asked entity held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0154",
+   "prompt": "<|im_start|>user\nThe rabbit's locker is 8. The worm's locker is 7. The cow's locker is 1. The cat's locker is 9. The butterfly's locker is 3.\nWhich locker belongs to the animal known for wriggling underground? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 43,
+     "end": 66,
+     "role": "asked statement"
+    },
+    {
+     "start": 113,
+     "end": 141,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 208,
+     "end": 312,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: shuffled-label direction, layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-pointer": "7",
+     "H-lens": "7"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 1,
+    "topic": "animals",
+    "held_out": "asked entity held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0070",
+   "prompt": "<|im_start|>user\nThe chart on the ankle is kept in folder 4. The chart on the ear is kept in folder 5. The chart on the brain is kept in folder 8. The chart on the stomach is kept in folder 9. The chart on the heart is kept in folder 3.\nWhich folder holds the chart on the body part joining foot and leg? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 60,
+     "role": "asked statement"
+    },
+    {
+     "start": 147,
+     "end": 192,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 303,
+     "end": 407,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "pointer push (bridge alt's statement − the asked one), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "9",
+    "expected": {
+     "H-pointer": "9",
+     "H-lens": "4"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "answer_statement": 3,
+    "topic": "body",
+    "held_out": "both held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0070",
+   "prompt": "<|im_start|>user\nThe chart on the ankle is kept in folder 4. The chart on the ear is kept in folder 5. The chart on the brain is kept in folder 8. The chart on the stomach is kept in folder 9. The chart on the heart is kept in folder 3.\nWhich folder holds the chart on the body part joining foot and leg? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 60,
+     "role": "asked statement"
+    },
+    {
+     "start": 147,
+     "end": 192,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 303,
+     "end": 407,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-pointer": "4",
+     "H-lens": "9"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 0,
+    "topic": "body",
+    "held_out": "both held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0070",
+   "prompt": "<|im_start|>user\nThe chart on the ankle is kept in folder 4. The chart on the ear is kept in folder 5. The chart on the brain is kept in folder 8. The chart on the stomach is kept in folder 9. The chart on the heart is kept in folder 3.\nWhich folder holds the chart on the body part joining foot and leg? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 60,
+     "role": "asked statement"
+    },
+    {
+     "start": 147,
+     "end": 192,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 303,
+     "end": 407,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-pointer": "4",
+     "H-lens": "4"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 0,
+    "topic": "body",
+    "held_out": "both held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0070",
+   "prompt": "<|im_start|>user\nThe chart on the ankle is kept in folder 4. The chart on the ear is kept in folder 5. The chart on the brain is kept in folder 8. The chart on the stomach is kept in folder 9. The chart on the heart is kept in folder 3.\nWhich folder holds the chart on the body part joining foot and leg? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 60,
+     "role": "asked statement"
+    },
+    {
+     "start": 147,
+     "end": 192,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 303,
+     "end": 407,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: shuffled-label direction, layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-pointer": "4",
+     "H-lens": "4"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 0,
+    "topic": "body",
+    "held_out": "both held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0076",
+   "prompt": "<|im_start|>user\nThe worm keeps its things in locker 8. The horse keeps its things in locker 1. The mosquito keeps its things in locker 9. The fish keeps its things in locker 2. The goat keeps its things in locker 5.\nWhich locker belongs to the animal known for its itchy bites? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 96,
+     "end": 138,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 55,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 277,
+     "end": 381,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "pointer push (bridge alt's statement − the asked one), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "9",
+    "edited": "8",
+    "expected": {
+     "H-pointer": "8",
+     "H-lens": "9"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "answer_statement": 0,
+    "topic": "animals",
+    "held_out": "wording held out"
+   },
+   "why": "both give it"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0076",
+   "prompt": "<|im_start|>user\nThe worm keeps its things in locker 8. The horse keeps its things in locker 1. The mosquito keeps its things in locker 9. The fish keeps its things in locker 2. The goat keeps its things in locker 5.\nWhich locker belongs to the animal known for its itchy bites? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 96,
+     "end": 138,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 55,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 277,
+     "end": 381,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "9",
+    "edited": "8",
+    "expected": {
+     "H-pointer": "9",
+     "H-lens": "8"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "answer_statement": 0,
+    "topic": "animals",
+    "held_out": "wording held out"
+   },
+   "why": "both give it"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0076",
+   "prompt": "<|im_start|>user\nThe worm keeps its things in locker 8. The horse keeps its things in locker 1. The mosquito keeps its things in locker 9. The fish keeps its things in locker 2. The goat keeps its things in locker 5.\nWhich locker belongs to the animal known for its itchy bites? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 96,
+     "end": 138,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 55,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 277,
+     "end": 381,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-pointer": "9",
+     "H-lens": "9"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 2,
+    "topic": "animals",
+    "held_out": "wording held out"
+   },
+   "why": "both give it"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0076",
+   "prompt": "<|im_start|>user\nThe worm keeps its things in locker 8. The horse keeps its things in locker 1. The mosquito keeps its things in locker 9. The fish keeps its things in locker 2. The goat keeps its things in locker 5.\nWhich locker belongs to the animal known for its itchy bites? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 96,
+     "end": 138,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 55,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 277,
+     "end": 381,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: shuffled-label direction, layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-pointer": "9",
+     "H-lens": "9"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 2,
+    "topic": "animals",
+    "held_out": "wording held out"
+   },
+   "why": "both give it"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0137",
+   "prompt": "<|im_start|>user\nThe turkey's locker is 3. The goat's locker is 5. The snake's locker is 1. The moth's locker is 7. The ant's locker is 8.\nWhat locker is used by the animal known for climbing cliffs? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 43,
+     "end": 66,
+     "role": "asked statement"
+    },
+    {
+     "start": 67,
+     "end": 91,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 198,
+     "end": 302,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "pointer push (bridge alt's statement − the asked one), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "1",
+    "expected": {
+     "H-pointer": "1",
+     "H-lens": "5"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "answer_statement": 2,
+    "topic": "animals",
+    "held_out": "both held out"
+   },
+   "why": "both give it"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0137",
+   "prompt": "<|im_start|>user\nThe turkey's locker is 3. The goat's locker is 5. The snake's locker is 1. The moth's locker is 7. The ant's locker is 8.\nWhat locker is used by the animal known for climbing cliffs? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 43,
+     "end": 66,
+     "role": "asked statement"
+    },
+    {
+     "start": 67,
+     "end": 91,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 198,
+     "end": 302,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "1",
+    "expected": {
+     "H-pointer": "5",
+     "H-lens": "1"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "answer_statement": 2,
+    "topic": "animals",
+    "held_out": "both held out"
+   },
+   "why": "both give it"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0137",
+   "prompt": "<|im_start|>user\nThe turkey's locker is 3. The goat's locker is 5. The snake's locker is 1. The moth's locker is 7. The ant's locker is 8.\nWhat locker is used by the animal known for climbing cliffs? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 43,
+     "end": 66,
+     "role": "asked statement"
+    },
+    {
+     "start": 67,
+     "end": 91,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 198,
+     "end": 302,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-pointer": "5",
+     "H-lens": "5"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 1,
+    "topic": "animals",
+    "held_out": "both held out"
+   },
+   "why": "both give it"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0137",
+   "prompt": "<|im_start|>user\nThe turkey's locker is 3. The goat's locker is 5. The snake's locker is 1. The moth's locker is 7. The ant's locker is 8.\nWhat locker is used by the animal known for climbing cliffs? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 43,
+     "end": 66,
+     "role": "asked statement"
+    },
+    {
+     "start": 67,
+     "end": 91,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 198,
+     "end": 302,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: shuffled-label direction, layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "3",
+    "expected": {
+     "H-pointer": "5",
+     "H-lens": "5"
+    }
+   },
+   "numbers": {
+    "role": "context",
+    "answer_statement": 0,
+    "topic": "animals",
+    "held_out": "both held out"
+   },
+   "why": "both give it"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0173",
+   "prompt": "<|im_start|>user\nThe chart on the ankle is kept in folder 3. The chart on the skull is kept in folder 4. The chart on the knee is kept in folder 9. The chart on the tongue is kept in folder 5. The chart on the bladder is kept in folder 6.\nIn which folder is the chart on the body part that protects the brain? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 61,
+     "end": 104,
+     "role": "asked statement"
+    },
+    {
+     "start": 105,
+     "end": 147,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 308,
+     "end": 412,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "pointer push (bridge alt's statement − the asked one), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "9",
+    "expected": {
+     "H-pointer": "9",
+     "H-lens": "4"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "answer_statement": 2,
+    "topic": "body",
+    "held_out": "wording held out"
+   },
+   "why": "both give it"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0173",
+   "prompt": "<|im_start|>user\nThe chart on the ankle is kept in folder 3. The chart on the skull is kept in folder 4. The chart on the knee is kept in folder 9. The chart on the tongue is kept in folder 5. The chart on the bladder is kept in folder 6.\nIn which folder is the chart on the body part that protects the brain? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 61,
+     "end": 104,
+     "role": "asked statement"
+    },
+    {
+     "start": 105,
+     "end": 147,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 308,
+     "end": 412,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "9",
+    "expected": {
+     "H-pointer": "4",
+     "H-lens": "9"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "answer_statement": 2,
+    "topic": "body",
+    "held_out": "wording held out"
+   },
+   "why": "both give it"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0173",
+   "prompt": "<|im_start|>user\nThe chart on the ankle is kept in folder 3. The chart on the skull is kept in folder 4. The chart on the knee is kept in folder 9. The chart on the tongue is kept in folder 5. The chart on the bladder is kept in folder 6.\nIn which folder is the chart on the body part that protects the brain? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 61,
+     "end": 104,
+     "role": "asked statement"
+    },
+    {
+     "start": 105,
+     "end": 147,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 308,
+     "end": 412,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-pointer": "4",
+     "H-lens": "4"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 1,
+    "topic": "body",
+    "held_out": "wording held out"
+   },
+   "why": "both give it"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0173",
+   "prompt": "<|im_start|>user\nThe chart on the ankle is kept in folder 3. The chart on the skull is kept in folder 4. The chart on the knee is kept in folder 9. The chart on the tongue is kept in folder 5. The chart on the bladder is kept in folder 6.\nIn which folder is the chart on the body part that protects the brain? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 61,
+     "end": 104,
+     "role": "asked statement"
+    },
+    {
+     "start": 105,
+     "end": 147,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 308,
+     "end": 412,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: shuffled-label direction, layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-pointer": "4",
+     "H-lens": "4"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 1,
+    "topic": "body",
+    "held_out": "wording held out"
+   },
+   "why": "both give it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0071",
+   "prompt": "<|im_start|>user\nThe goat keeps its things in locker 6. The chicken keeps its things in locker 7. The duck keeps its things in locker 3. The spider keeps its things in locker 1. The horse keeps its things in locker 9.\nWhich locker belongs to the animal known for climbing cliffs? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 55,
+     "role": "asked statement"
+    },
+    {
+     "start": 56,
+     "end": 97,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 278,
+     "end": 382,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "pointer push (bridge alt's statement − the asked one), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "6",
+    "edited": "9",
+    "expected": {
+     "H-pointer": "7",
+     "H-lens": "6"
+    }
+   },
+   "numbers": {
+    "role": "context",
+    "answer_statement": 4,
+    "topic": "animals",
+    "held_out": "both held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0071",
+   "prompt": "<|im_start|>user\nThe goat keeps its things in locker 6. The chicken keeps its things in locker 7. The duck keeps its things in locker 3. The spider keeps its things in locker 1. The horse keeps its things in locker 9.\nWhich locker belongs to the animal known for climbing cliffs? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 55,
+     "role": "asked statement"
+    },
+    {
+     "start": 56,
+     "end": 97,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 278,
+     "end": 382,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "6",
+    "edited": "1",
+    "expected": {
+     "H-pointer": "6",
+     "H-lens": "7"
+    }
+   },
+   "numbers": {
+    "role": "context",
+    "answer_statement": 3,
+    "topic": "animals",
+    "held_out": "both held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0071",
+   "prompt": "<|im_start|>user\nThe goat keeps its things in locker 6. The chicken keeps its things in locker 7. The duck keeps its things in locker 3. The spider keeps its things in locker 1. The horse keeps its things in locker 9.\nWhich locker belongs to the animal known for climbing cliffs? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 55,
+     "role": "asked statement"
+    },
+    {
+     "start": 56,
+     "end": 97,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 278,
+     "end": 382,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "6",
+    "edited": "6",
+    "expected": {
+     "H-pointer": "6",
+     "H-lens": "6"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 0,
+    "topic": "animals",
+    "held_out": "both held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0071",
+   "prompt": "<|im_start|>user\nThe goat keeps its things in locker 6. The chicken keeps its things in locker 7. The duck keeps its things in locker 3. The spider keeps its things in locker 1. The horse keeps its things in locker 9.\nWhich locker belongs to the animal known for climbing cliffs? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 55,
+     "role": "asked statement"
+    },
+    {
+     "start": 56,
+     "end": 97,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 278,
+     "end": 382,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: shuffled-label direction, layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "6",
+    "edited": "9",
+    "expected": {
+     "H-pointer": "6",
+     "H-lens": "6"
+    }
+   },
+   "numbers": {
+    "role": "context",
+    "answer_statement": 4,
+    "topic": "animals",
+    "held_out": "both held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0172",
+   "prompt": "<|im_start|>user\nThe snake keeps its things in locker 7. The whale keeps its things in locker 1. The wolf keeps its things in locker 2. The spider keeps its things in locker 9. The ant keeps its things in locker 3.\nIn which locker does the animal known for howling keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 97,
+     "end": 135,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 56,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 280,
+     "end": 384,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "pointer push (bridge alt's statement − the asked one), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-pointer": "7",
+     "H-lens": "2"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 2,
+    "topic": "animals",
+    "held_out": "both held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0172",
+   "prompt": "<|im_start|>user\nThe snake keeps its things in locker 7. The whale keeps its things in locker 1. The wolf keeps its things in locker 2. The spider keeps its things in locker 9. The ant keeps its things in locker 3.\nIn which locker does the animal known for howling keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 97,
+     "end": 135,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 56,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 280,
+     "end": 384,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-pointer": "2",
+     "H-lens": "7"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 2,
+    "topic": "animals",
+    "held_out": "both held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0172",
+   "prompt": "<|im_start|>user\nThe snake keeps its things in locker 7. The whale keeps its things in locker 1. The wolf keeps its things in locker 2. The spider keeps its things in locker 9. The ant keeps its things in locker 3.\nIn which locker does the animal known for howling keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 97,
+     "end": 135,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 56,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 280,
+     "end": 384,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-pointer": "2",
+     "H-lens": "2"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 2,
+    "topic": "animals",
+    "held_out": "both held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0172",
+   "prompt": "<|im_start|>user\nThe snake keeps its things in locker 7. The whale keeps its things in locker 1. The wolf keeps its things in locker 2. The spider keeps its things in locker 9. The ant keeps its things in locker 3.\nIn which locker does the animal known for howling keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 97,
+     "end": 135,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 56,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 280,
+     "end": 384,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: shuffled-label direction, layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-pointer": "2",
+     "H-lens": "2"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 2,
+    "topic": "animals",
+    "held_out": "both held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0092",
+   "prompt": "<|im_start|>user\nFolder 4 holds the skull chart. Folder 7 holds the elbow chart. Folder 5 holds the heart chart. Folder 6 holds the eyebrow chart. Folder 8 holds the ankle chart.\nWhich folder holds the chart on the body part that pumps blood? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 112,
+     "role": "asked statement"
+    },
+    {
+     "start": 113,
+     "end": 146,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 241,
+     "end": 345,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "pointer push (bridge alt's statement − the asked one), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "4",
+    "expected": {
+     "H-pointer": "6",
+     "H-lens": "5"
+    }
+   },
+   "numbers": {
+    "role": "context",
+    "answer_statement": 0,
+    "topic": "body",
+    "held_out": "asked entity held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0092",
+   "prompt": "<|im_start|>user\nFolder 4 holds the skull chart. Folder 7 holds the elbow chart. Folder 5 holds the heart chart. Folder 6 holds the eyebrow chart. Folder 8 holds the ankle chart.\nWhich folder holds the chart on the body part that pumps blood? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 112,
+     "role": "asked statement"
+    },
+    {
+     "start": 113,
+     "end": 146,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 241,
+     "end": 345,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-pointer": "5",
+     "H-lens": "6"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 2,
+    "topic": "body",
+    "held_out": "asked entity held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0092",
+   "prompt": "<|im_start|>user\nFolder 4 holds the skull chart. Folder 7 holds the elbow chart. Folder 5 holds the heart chart. Folder 6 holds the eyebrow chart. Folder 8 holds the ankle chart.\nWhich folder holds the chart on the body part that pumps blood? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 112,
+     "role": "asked statement"
+    },
+    {
+     "start": 113,
+     "end": 146,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 241,
+     "end": 345,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-pointer": "5",
+     "H-lens": "5"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 2,
+    "topic": "body",
+    "held_out": "asked entity held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0092",
+   "prompt": "<|im_start|>user\nFolder 4 holds the skull chart. Folder 7 holds the elbow chart. Folder 5 holds the heart chart. Folder 6 holds the eyebrow chart. Folder 8 holds the ankle chart.\nWhich folder holds the chart on the body part that pumps blood? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 112,
+     "role": "asked statement"
+    },
+    {
+     "start": 113,
+     "end": 146,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 241,
+     "end": 345,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: shuffled-label direction, layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-pointer": "5",
+     "H-lens": "5"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 2,
+    "topic": "body",
+    "held_out": "asked entity held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "lens_only",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0032",
+   "prompt": "<|im_start|>user\nThe chart on the eye is kept in folder 6. The chart on the ear is kept in folder 7. The chart on the elbow is kept in folder 5. The chart on the stomach is kept in folder 9. The chart on the ankle is kept in folder 3.\nWhich folder holds the chart on the body part that bends the arm? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 101,
+     "end": 144,
+     "role": "asked statement"
+    },
+    {
+     "start": 145,
+     "end": 190,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 299,
+     "end": 403,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "pointer push (bridge alt's statement − the asked one), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-pointer": "9",
+     "H-lens": "5"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 2,
+    "topic": "body",
+    "held_out": "wording held out"
+   },
+   "why": "only the lens push gives it"
+  },
+  {
+   "group": "lens_only",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0032",
+   "prompt": "<|im_start|>user\nThe chart on the eye is kept in folder 6. The chart on the ear is kept in folder 7. The chart on the elbow is kept in folder 5. The chart on the stomach is kept in folder 9. The chart on the ankle is kept in folder 3.\nWhich folder holds the chart on the body part that bends the arm? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 101,
+     "end": 144,
+     "role": "asked statement"
+    },
+    {
+     "start": 145,
+     "end": 190,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 299,
+     "end": 403,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "9",
+    "expected": {
+     "H-pointer": "5",
+     "H-lens": "9"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "answer_statement": 3,
+    "topic": "body",
+    "held_out": "wording held out"
+   },
+   "why": "only the lens push gives it"
+  },
+  {
+   "group": "lens_only",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0032",
+   "prompt": "<|im_start|>user\nThe chart on the eye is kept in folder 6. The chart on the ear is kept in folder 7. The chart on the elbow is kept in folder 5. The chart on the stomach is kept in folder 9. The chart on the ankle is kept in folder 3.\nWhich folder holds the chart on the body part that bends the arm? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 101,
+     "end": 144,
+     "role": "asked statement"
+    },
+    {
+     "start": 145,
+     "end": 190,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 299,
+     "end": 403,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-pointer": "5",
+     "H-lens": "5"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 2,
+    "topic": "body",
+    "held_out": "wording held out"
+   },
+   "why": "only the lens push gives it"
+  },
+  {
+   "group": "lens_only",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0032",
+   "prompt": "<|im_start|>user\nThe chart on the eye is kept in folder 6. The chart on the ear is kept in folder 7. The chart on the elbow is kept in folder 5. The chart on the stomach is kept in folder 9. The chart on the ankle is kept in folder 3.\nWhich folder holds the chart on the body part that bends the arm? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 101,
+     "end": 144,
+     "role": "asked statement"
+    },
+    {
+     "start": 145,
+     "end": 190,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 299,
+     "end": 403,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: shuffled-label direction, layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-pointer": "5",
+     "H-lens": "5"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 2,
+    "topic": "body",
+    "held_out": "wording held out"
+   },
+   "why": "only the lens push gives it"
+  },
+  {
+   "group": "lens_only",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0034",
+   "prompt": "<|im_start|>user\nFolder 7 holds the bladder chart. Folder 4 holds the knee chart. Folder 8 holds the forehead chart. Folder 6 holds the eyebrow chart. Folder 5 holds the heart chart.\nWhat folder keeps the chart on the body part above each eye? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 117,
+     "end": 150,
+     "role": "asked statement"
+    },
+    {
+     "start": 82,
+     "end": 116,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 242,
+     "end": 346,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "pointer push (bridge alt's statement − the asked one), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "6",
+    "edited": "6",
+    "expected": {
+     "H-pointer": "8",
+     "H-lens": "6"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 3,
+    "topic": "body",
+    "held_out": "wording held out"
+   },
+   "why": "only the lens push gives it"
+  },
+  {
+   "group": "lens_only",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0034",
+   "prompt": "<|im_start|>user\nFolder 7 holds the bladder chart. Folder 4 holds the knee chart. Folder 8 holds the forehead chart. Folder 6 holds the eyebrow chart. Folder 5 holds the heart chart.\nWhat folder keeps the chart on the body part above each eye? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 117,
+     "end": 150,
+     "role": "asked statement"
+    },
+    {
+     "start": 82,
+     "end": 116,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 242,
+     "end": 346,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "6",
+    "edited": "8",
+    "expected": {
+     "H-pointer": "6",
+     "H-lens": "8"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "answer_statement": 2,
+    "topic": "body",
+    "held_out": "wording held out"
+   },
+   "why": "only the lens push gives it"
+  },
+  {
+   "group": "lens_only",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0034",
+   "prompt": "<|im_start|>user\nFolder 7 holds the bladder chart. Folder 4 holds the knee chart. Folder 8 holds the forehead chart. Folder 6 holds the eyebrow chart. Folder 5 holds the heart chart.\nWhat folder keeps the chart on the body part above each eye? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 117,
+     "end": 150,
+     "role": "asked statement"
+    },
+    {
+     "start": 82,
+     "end": 116,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 242,
+     "end": 346,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "6",
+    "edited": "6",
+    "expected": {
+     "H-pointer": "6",
+     "H-lens": "6"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 3,
+    "topic": "body",
+    "held_out": "wording held out"
+   },
+   "why": "only the lens push gives it"
+  },
+  {
+   "group": "lens_only",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0034",
+   "prompt": "<|im_start|>user\nFolder 7 holds the bladder chart. Folder 4 holds the knee chart. Folder 8 holds the forehead chart. Folder 6 holds the eyebrow chart. Folder 5 holds the heart chart.\nWhat folder keeps the chart on the body part above each eye? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 117,
+     "end": 150,
+     "role": "asked statement"
+    },
+    {
+     "start": 82,
+     "end": 116,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 242,
+     "end": 346,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: shuffled-label direction, layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "6",
+    "edited": "6",
+    "expected": {
+     "H-pointer": "6",
+     "H-lens": "6"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 3,
+    "topic": "body",
+    "held_out": "wording held out"
+   },
+   "why": "only the lens push gives it"
+  },
+  {
+   "group": "lens_only",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0044",
+   "prompt": "<|im_start|>user\nFolder 8 holds the eyebrow chart. Folder 7 holds the heart chart. Folder 6 holds the elbow chart. Folder 4 holds the eye chart. Folder 3 holds the ankle chart.\nWhich folder holds the chart on the body part that pumps blood? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 51,
+     "end": 82,
+     "role": "asked statement"
+    },
+    {
+     "start": 115,
+     "end": 144,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 239,
+     "end": 343,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "pointer push (bridge alt's statement − the asked one), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "3",
+    "expected": {
+     "H-pointer": "4",
+     "H-lens": "7"
+    }
+   },
+   "numbers": {
+    "role": "context",
+    "answer_statement": 4,
+    "topic": "body",
+    "held_out": "asked entity held out"
+   },
+   "why": "only the lens push gives it"
+  },
+  {
+   "group": "lens_only",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0044",
+   "prompt": "<|im_start|>user\nFolder 8 holds the eyebrow chart. Folder 7 holds the heart chart. Folder 6 holds the elbow chart. Folder 4 holds the eye chart. Folder 3 holds the ankle chart.\nWhich folder holds the chart on the body part that pumps blood? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 51,
+     "end": 82,
+     "role": "asked statement"
+    },
+    {
+     "start": 115,
+     "end": 144,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 239,
+     "end": 343,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "4",
+    "expected": {
+     "H-pointer": "7",
+     "H-lens": "4"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "answer_statement": 3,
+    "topic": "body",
+    "held_out": "asked entity held out"
+   },
+   "why": "only the lens push gives it"
+  },
+  {
+   "group": "lens_only",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0044",
+   "prompt": "<|im_start|>user\nFolder 8 holds the eyebrow chart. Folder 7 holds the heart chart. Folder 6 holds the elbow chart. Folder 4 holds the eye chart. Folder 3 holds the ankle chart.\nWhich folder holds the chart on the body part that pumps blood? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 51,
+     "end": 82,
+     "role": "asked statement"
+    },
+    {
+     "start": 115,
+     "end": 144,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 239,
+     "end": 343,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-pointer": "7",
+     "H-lens": "7"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 1,
+    "topic": "body",
+    "held_out": "asked entity held out"
+   },
+   "why": "only the lens push gives it"
+  },
+  {
+   "group": "lens_only",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0044",
+   "prompt": "<|im_start|>user\nFolder 8 holds the eyebrow chart. Folder 7 holds the heart chart. Folder 6 holds the elbow chart. Folder 4 holds the eye chart. Folder 3 holds the ankle chart.\nWhich folder holds the chart on the body part that pumps blood? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 51,
+     "end": 82,
+     "role": "asked statement"
+    },
+    {
+     "start": 115,
+     "end": 144,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 239,
+     "end": 343,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: shuffled-label direction, layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-pointer": "7",
+     "H-lens": "7"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 1,
+    "topic": "body",
+    "held_out": "asked entity held out"
+   },
+   "why": "only the lens push gives it"
+  }
+ ]
+}

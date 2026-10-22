@@ -1,0 +1,121 @@
+{
+  "exp": "pointer_v6",
+  "run": "d3v6_competence_27b",
+  "written_utc": "2026-10-21T21:06:55Z",
+  "why": "D3 v6 gate: pointer_v6's four layouts of the same scenes (nothing moves, an extra sentence before the list in one prompt, before the question in one prompt, long statements), every alt and control prompt and each step alone",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "sets": [
+    "main"
+  ],
+  "items": {
+    "main/countries_RL_e5-still": {
+      "file": "data/pointer_v6/main/countries_RL_e5-still.json",
+      "sha256": "77deb61c6ea73d814c15b10bf610cf9ec2457d43884cf1bf42096a4c70c836c4"
+    },
+    "main/countries_RL_e5-abs": {
+      "file": "data/pointer_v6/main/countries_RL_e5-abs.json",
+      "sha256": "16fdaa782437fa5499c4e8e5dc8c3d78c7ae8d410d93a1c27e2a763aa220ade9"
+    },
+    "main/countries_RL_e5-rel": {
+      "file": "data/pointer_v6/main/countries_RL_e5-rel.json",
+      "sha256": "402af3ac9e46819709c2a3f8cab83b5c10c45d41dccbcd2b39aa62602f799b34"
+    },
+    "main/countries_RL_e5-long": {
+      "file": "data/pointer_v6/main/countries_RL_e5-long.json",
+      "sha256": "48796b466444c526c4f39475e43e478037d3a6adb5809f0e50c1566032e22c86"
+    },
+    "main/countries_DL_e5-still": {
+      "file": "data/pointer_v6/main/countries_DL_e5-still.json",
+      "sha256": "1ecf763056f2f057b225f7220c7ba8ccaab62ed5fd8bfaa58f821533ce523c9b"
+    },
+    "main/countries_DL_e5-abs": {
+      "file": "data/pointer_v6/main/countries_DL_e5-abs.json",
+      "sha256": "2f1ce6e4213d915f7b9ab1f29220736763701399d8010cbaf6272fbf779bcb30"
+    },
+    "main/countries_DL_e5-rel": {
+      "file": "data/pointer_v6/main/countries_DL_e5-rel.json",
+      "sha256": "341246d95d8aff8df38969b391aeaed4191a90c087c37946af131523d6955643"
+    },
+    "main/countries_DL_e5-long": {
+      "file": "data/pointer_v6/main/countries_DL_e5-long.json",
+      "sha256": "aabba7ed58057ba949f1f4087df905ed2d2ed4821e630715fc6475d8b90006e2"
+    },
+    "main/animals_RL_e5-still": {
+      "file": "data/pointer_v6/main/animals_RL_e5-still.json",
+      "sha256": "cd357dbd1541705c0ffc9204c78b8da369ea082f5022068496f740aef28c5d91"
+    },
+    "main/animals_RL_e5-abs": {
+      "file": "data/pointer_v6/main/animals_RL_e5-abs.json",
+      "sha256": "eabe489e84fd5dfa2b5ebfd249c21699fbbd0d8725692a8f1828b84d7fdfb8a3"
+    },
+    "main/animals_RL_e5-rel": {
+      "file": "data/pointer_v6/main/animals_RL_e5-rel.json",
+      "sha256": "7764550aa82bce9bdd77fa985d1539bc05fb8961b5213d9af9966f82f61eaa57"
+    },
+    "main/animals_RL_e5-long": {
+      "file": "data/pointer_v6/main/animals_RL_e5-long.json",
+      "sha256": "20a0c9c2e762d5b08f24d4a2ab77172abf919a107526d7c8651cbcce6a417c65"
+    },
+    "main/animals_DL_e5-still": {
+      "file": "data/pointer_v6/main/animals_DL_e5-still.json",
+      "sha256": "76b8a71b1a5e1c54604fc33a13bf1c2fe82ee4b86bbf7009239618cb846e54cd"
+    },
+    "main/animals_DL_e5-abs": {
+      "file": "data/pointer_v6/main/animals_DL_e5-abs.json",
+      "sha256": "2a821f367fad075b5a9d7b2a8f3942150c46916b667da9f8cc189213c7d3aec7"
+    },
+    "main/animals_DL_e5-rel": {
+      "file": "data/pointer_v6/main/animals_DL_e5-rel.json",
+      "sha256": "0a27ab8a18535fcac231c76520fb0cb3c45946db7a8c81c74fae7cd9b0e9dbbd"
+    },
+    "main/animals_DL_e5-long": {
+      "file": "data/pointer_v6/main/animals_DL_e5-long.json",
+      "sha256": "ed93e789c283c745e290daa047a657806b613e8ea72c54acf46b5d232075eb64"
+    },
+    "main/body_RL_e5-still": {
+      "file": "data/pointer_v6/main/body_RL_e5-still.json",
+      "sha256": "d463d2e2de61bc2d3e6de020ac538597b80ca1a23d06804b816e336fed787f78"
+    },
+    "main/body_RL_e5-abs": {
+      "file": "data/pointer_v6/main/body_RL_e5-abs.json",
+      "sha256": "38aa90a33336656f793c8cd6a98193682b348d6574ce70b206733bd250769a0d"
+    },
+    "main/body_RL_e5-rel": {
+      "file": "data/pointer_v6/main/body_RL_e5-rel.json",
+      "sha256": "b2536a8123270a383beaf75a2ba27dfc96760f0a797a94ad96447d47e44cbfd9"
+    },
+    "main/body_RL_e5-long": {
+      "file": "data/pointer_v6/main/body_RL_e5-long.json",
+      "sha256": "a986aa24c65a63b9ee5f12271283b97600212d41bdb67372e9d66df9a04a94dd"
+    },
+    "main/body_DL_e5-still": {
+      "file": "data/pointer_v6/main/body_DL_e5-still.json",
+      "sha256": "5c7334e0c50f2c6ae7de2d46e4643c9130af18ece0690d950a92a7be6e23d55e"
+    },
+    "main/body_DL_e5-abs": {
+      "file": "data/pointer_v6/main/body_DL_e5-abs.json",
+      "sha256": "0ef356f81ad1daf84ab0cf70e75e5b9ecc9fe83bb7cc5350d95a3df832bf22de"
+    },
+    "main/body_DL_e5-rel": {
+      "file": "data/pointer_v6/main/body_DL_e5-rel.json",
+      "sha256": "985d07a43817fc0c4b63e5040cae9d98d364ac2f2418982f98ce975318726ae8"
+    },
+    "main/body_DL_e5-long": {
+      "file": "data/pointer_v6/main/body_DL_e5-long.json",
+      "sha256": "e5ad9020d3abe9d05a8272b8770e466f4ad911f2103a89b0a8663f66f20710b5"
+    }
+  },
+  "limit": null,
+  "format": "pointer_v1's: chat template, thinking off, 'Answer:' prefilled (BJ_FORMAT=chat)",
+  "judge_mode": "greedy",
+  "judge": "pointer_v1's: the first answer of the item's kind in the first non-empty line of 8 greedy tokens (digits, number words and ordinals for digits; the domain's entities otherwise)",
+  "prompts": "base; each source (dissoc, same, redigit); hop1 and hop2 for memory -> prompt",
+  "eligibility": "pointer_swap uses scenes with every prompt right in every level"
+}

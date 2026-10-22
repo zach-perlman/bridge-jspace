@@ -1,0 +1,1032 @@
+{
+ "exp": "pointer_swap",
+ "run": "olmo3_7b_instruct_d3v4x_swap",
+ "seed": 0,
+ "k": 3,
+ "selection": "source dissoc, group last, layers all but 0 and the transit window",
+ "groups": [
+  {
+   "key": "value",
+   "title": "value",
+   "definition": "the patched base answered the source's own answer, absent from the base context (H-value)",
+   "n_total": 1208
+  },
+  {
+   "key": "token",
+   "title": "token",
+   "definition": "the patched base answered the base's digit at the source statement's token offset (H-token)",
+   "n_total": 2
+  },
+  {
+   "key": "other",
+   "title": "other",
+   "definition": "any other answer (a recalled digit, another digit, a word)",
+   "n_total": 4
+  },
+  {
+   "key": "position",
+   "title": "position",
+   "definition": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction)",
+   "n_total": 1
+  },
+  {
+   "key": "none",
+   "title": "none",
+   "definition": "the patch left the base answer",
+   "n_total": 1
+  },
+  {
+   "key": "same_changed",
+   "title": "same changed",
+   "definition": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer",
+   "n_total": 95
+  }
+ ],
+ "examples": [
+  {
+   "group": "value",
+   "family": "DL",
+   "item_id": "countries-DL-e5-off-0056",
+   "domain": "countries",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe Austria file is in drawer 2. The wind picked up late in the evening. The China file is in drawer 5. The Russia file is in drawer 0. The Canada file is in drawer 3. The Pakistan file is in drawer 6.\nWhich drawer holds the file on Pakistan? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 495,
+     "end": 496,
+     "role": "patched (last)"
+    },
+    {
+     "start": 338,
+     "end": 371,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 243,
+     "end": 273,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 306,
+     "end": 337,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 274,
+     "end": 305,
+     "role": "token statement (base statement at the source statement's token offset)"
+    },
+    {
+     "start": 403,
+     "end": 411,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe Pakistan file is in drawer 3. The Canada file is in drawer 6. The Austria file is in drawer 0. The China file is in drawer 4. The Russia file is in drawer 2. The wind picked up late in the evening.\nWhich drawer holds the file on China? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 269,
+     "end": 299,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "6",
+    "edited": "4",
+    "expected": {
+     "none": "6",
+     "identity": "5",
+     "position": "3",
+     "token": "0",
+     "value": "4"
+    },
+    "unedited_read": "6"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0,
+     "identity": 0.0,
+     "position": 0.0,
+     "token": 0.0,
+     "value": 1.0
+    },
+    "layer": "transit",
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('4')"
+  },
+  {
+   "group": "value",
+   "family": "RL",
+   "item_id": "countries-RL-e5fewer-0048",
+   "domain": "countries",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe file on Russia is kept in drawer 6. The file on Iran is kept in drawer 3. The file on Pakistan is kept in drawer 4. The file on Peru is kept in drawer 2. The noise from the road kept everyone awake that night. The file on Iraq is kept in drawer 8.\nIn which drawer is the file on the country whose capital is Baghdad? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 573,
+     "end": 574,
+     "role": "patched (last)"
+    },
+    {
+     "start": 384,
+     "end": 421,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 170,
+     "end": 209,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 210,
+     "end": 247,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 248,
+     "end": 289,
+     "role": "end statement (base statement at the source's slot counted from the end)"
+    },
+    {
+     "start": 290,
+     "end": 327,
+     "role": "token statement (base statement at the source statement's token offset)"
+    },
+    {
+     "start": 453,
+     "end": 489,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe noise from the road kept everyone awake that night. The file on Pakistan is kept in drawer 6. The museum added a new wing over the summer months. The file on Russia is kept in drawer 0. The file on Peru is kept in drawer 8. The file on Iraq is kept in drawer 4.\nIn which drawer is the file on the country whose capital is Moscow? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 320,
+     "end": 359,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "8",
+    "edited": "0",
+    "expected": {
+     "none": "8",
+     "identity": "6",
+     "position": "3",
+     "end": "4",
+     "token": "2",
+     "value": "0"
+    },
+    "unedited_read": "8"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0,
+     "identity": 0.0,
+     "position": 0.0,
+     "end": 0.0002,
+     "token": 0.0,
+     "value": 0.9998
+    },
+    "layer": "transit",
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('0')"
+  },
+  {
+   "group": "value",
+   "family": "RL",
+   "item_id": "animals-RL-e5-off-0093",
+   "domain": "animals",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nLocker 9 belongs to the mouse. Locker 5 belongs to the worm. Locker 3 belongs to the pig. Locker 7 belongs to the goose. Locker 1 belongs to the bee. The weather was mild all week long.\nWhat locker is used by the animal known for honking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 491,
+     "end": 492,
+     "role": "patched (last)"
+    },
+    {
+     "start": 260,
+     "end": 290,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 291,
+     "end": 319,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 170,
+     "end": 200,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 201,
+     "end": 230,
+     "role": "token statement (base statement at the source statement's token offset)"
+    },
+    {
+     "start": 379,
+     "end": 407,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe weather was mild all week long. Locker 8 belongs to the bee. Locker 1 belongs to the pig. Locker 7 belongs to the mouse. Locker 3 belongs to the worm. Locker 5 belongs to the goose.\nWhat locker is used by the animal known for making honey? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 206,
+     "end": 234,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "7",
+    "edited": "8",
+    "expected": {
+     "none": "7",
+     "identity": "1",
+     "position": "9",
+     "token": "5",
+     "value": "8"
+    },
+    "unedited_read": "7"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0,
+     "identity": 0.0001,
+     "position": 0.0,
+     "token": 0.0,
+     "value": 0.9999
+    },
+    "layer": "transit",
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('8')"
+  },
+  {
+   "group": "token",
+   "family": "RL",
+   "item_id": "body-RL-e5-off-0062",
+   "domain": "body",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nFolder 9 holds the eye chart. Folder 0 holds the ear chart. Folder 5 holds the stomach chart. The town hall bell rang twice today. Folder 6 holds the tongue chart. Folder 7 holds the bladder chart.\nIn which folder is the chart on the body part that sees colours? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 515,
+     "end": 516,
+     "role": "patched (last)"
+    },
+    {
+     "start": 170,
+     "end": 199,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 301,
+     "end": 333,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 200,
+     "end": 229,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 230,
+     "end": 263,
+     "role": "token statement (base statement at the source statement's token offset)"
+    },
+    {
+     "start": 400,
+     "end": 431,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nFolder 3 holds the ear chart. The town hall bell rang twice today. Folder 4 holds the tongue chart. Folder 5 holds the stomach chart. Folder 7 holds the eye chart. Folder 0 holds the bladder chart.\nIn which folder is the chart on the body part that tastes food? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 237,
+     "end": 269,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "9",
+    "edited": "5",
+    "expected": {
+     "none": "9",
+     "identity": "6",
+     "position": "0",
+     "token": "5",
+     "value": "4"
+    },
+    "unedited_read": "9"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.001,
+     "identity": 0.0127,
+     "position": 0.2893,
+     "token": 0.3279,
+     "value": 0.2893
+    },
+    "layer": "transit",
+    "role": "token"
+   },
+   "why": "the patched base answered the base's digit at the source statement's token offset (H-token) ('5')"
+  },
+  {
+   "group": "token",
+   "family": "RL",
+   "item_id": "animals-RL-e5more-0060",
+   "domain": "animals",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe spider keeps its things in locker 3. The sheep keeps its things in locker 5. The lion keeps its things in locker 2. The bear keeps its things in locker 9. The mouse keeps its things in locker 7. The printer in the office jammed twice today. The bus was late again on the rainy afternoon.\nWhich locker belongs to the animal known for spinning webs? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 604,
+     "end": 605,
+     "role": "patched (last)"
+    },
+    {
+     "start": 170,
+     "end": 210,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 329,
+     "end": 368,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 251,
+     "end": 289,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 211,
+     "end": 250,
+     "role": "end statement (base statement at the source's slot counted from the end)"
+    },
+    {
+     "start": 290,
+     "end": 328,
+     "role": "token statement (base statement at the source statement's token offset)"
+    },
+    {
+     "start": 486,
+     "end": 520,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe sheep keeps its things in locker 2. The spider keeps its things in locker 1. The printer in the office jammed twice today. The mouse keeps its things in locker 0. The bear keeps its things in locker 7. The lion keeps its things in locker 9. The owl keeps its things in locker 6.\nWhich locker belongs to the animal known for squeaking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 297,
+     "end": 336,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "3",
+    "edited": "9",
+    "expected": {
+     "none": "3",
+     "identity": "7",
+     "position": "2",
+     "end": "5",
+     "token": "9",
+     "value": "0"
+    },
+    "unedited_read": "3"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0036,
+     "identity": 0.0041,
+     "position": 0.0047,
+     "end": 0.0017,
+     "token": 0.4187,
+     "value": 0.3695
+    },
+    "layer": "transit",
+    "role": "token"
+   },
+   "why": "the patched base answered the base's digit at the source statement's token offset (H-token) ('9')"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "body-RL-e5fewer-0009",
+   "domain": "body",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe train stopped briefly at the small station. The knee chart is in folder 5. The eye chart is in folder 8. The wrist chart is in folder 9. The tongue chart is in folder 7. The ear chart is in folder 0.\nIn which folder is the chart on the body part that hears sounds? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 521,
+     "end": 522,
+     "role": "patched (last)"
+    },
+    {
+     "start": 344,
+     "end": 373,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 311,
+     "end": 343,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 249,
+     "end": 278,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 279,
+     "end": 310,
+     "role": "end statement (base statement at the source's slot counted from the end)"
+    },
+    {
+     "start": 218,
+     "end": 248,
+     "role": "token statement (base statement at the source statement's token offset)"
+    },
+    {
+     "start": 406,
+     "end": 437,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe ear chart is in folder 4. The tongue chart is in folder 6. The train stopped briefly at the small station. The wind picked up late in the evening. The wrist chart is in folder 3. The knee chart is in folder 8.\nIn which folder is the chart on the body part that tastes food? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 200,
+     "end": 232,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "0",
+    "edited": "4",
+    "expected": {
+     "none": "0",
+     "identity": "7",
+     "position": "8",
+     "end": "9",
+     "token": "5",
+     "value": "6"
+    },
+    "unedited_read": "0"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0,
+     "identity": 0.0,
+     "position": 0.0,
+     "end": 0.0,
+     "token": 0.0001,
+     "value": 0.4843
+    },
+    "layer": "transit",
+    "role": "other_digit"
+   },
+   "why": "any other answer (a recalled digit, another digit, a word) ('4')"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "body-RL-e5-off-0019",
+   "domain": "body",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nFolder 3 holds the elbow chart. Folder 0 holds the stomach chart. Folder 4 holds the tongue chart. Folder 5 holds the eye chart. Folder 8 holds the ear chart. The weather was mild all week long.\nWhat folder keeps the chart on the body part that hears sounds? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 511,
+     "end": 512,
+     "role": "patched (last)"
+    },
+    {
+     "start": 299,
+     "end": 328,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 236,
+     "end": 268,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 170,
+     "end": 201,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 202,
+     "end": 235,
+     "role": "token statement (base statement at the source statement's token offset)"
+    },
+    {
+     "start": 396,
+     "end": 427,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe weather was mild all week long. Folder 6 holds the tongue chart. Folder 4 holds the elbow chart. Folder 0 holds the ear chart. Folder 5 holds the stomach chart. Folder 3 holds the eye chart.\nWhat folder keeps the chart on the body part that tastes food? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 206,
+     "end": 238,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "8",
+    "edited": "2",
+    "expected": {
+     "none": "8",
+     "identity": "4",
+     "position": "3",
+     "token": "0",
+     "value": "6"
+    },
+    "unedited_read": "8"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0026,
+     "identity": 0.0316,
+     "position": 0.009,
+     "token": 0.2333,
+     "value": 0.2333
+    },
+    "layer": "transit",
+    "role": "recall"
+   },
+   "why": "any other answer (a recalled digit, another digit, a word) ('2')"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "body-RL-e5fewer-0070",
+   "domain": "body",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nFolder 6 holds the stomach chart. Folder 9 holds the brain chart. Folder 5 holds the heart chart. Folder 7 holds the eye chart. Folder 0 holds the liver chart. The paper was left on the step.\nWhich folder holds the chart on the body part that sees colours? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 509,
+     "end": 510,
+     "role": "patched (last)"
+    },
+    {
+     "start": 268,
+     "end": 297,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 298,
+     "end": 329,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 170,
+     "end": 203,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 204,
+     "end": 235,
+     "role": "end statement (base statement at the source's slot counted from the end)"
+    },
+    {
+     "start": 236,
+     "end": 267,
+     "role": "token statement (base statement at the source statement's token offset)"
+    },
+    {
+     "start": 394,
+     "end": 425,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe paper was left on the step. The shop on the corner reopened today. Folder 4 holds the liver chart. Folder 7 holds the brain chart. Folder 3 holds the heart chart. Folder 9 holds the eye chart.\nWhich folder holds the chart on the body part that makes bile? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 241,
+     "end": 272,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "7",
+    "edited": "8",
+    "expected": {
+     "none": "7",
+     "identity": "0",
+     "position": "6",
+     "end": "9",
+     "token": "5",
+     "value": "4"
+    },
+    "unedited_read": "7"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0135,
+     "identity": 0.0028,
+     "position": 0.0087,
+     "end": 0.0072,
+     "token": 0.0068,
+     "value": 0.272
+    },
+    "layer": "transit",
+    "role": "other_digit"
+   },
+   "why": "any other answer (a recalled digit, another digit, a word) ('8')"
+  },
+  {
+   "group": "position",
+   "family": "RL",
+   "item_id": "body-RL-e5more-0001",
+   "domain": "body",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nFolder 9 holds the stomach chart. Folder 7 holds the elbow chart. Folder 5 holds the bladder chart. The town hall bell rang twice today. Folder 0 holds the tongue chart. Folder 4 holds the ear chart. The clock on the wall was slow.\nWhich folder holds the chart on the body part that hears sounds? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 549,
+     "end": 550,
+     "role": "patched (last)"
+    },
+    {
+     "start": 340,
+     "end": 369,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 307,
+     "end": 339,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 204,
+     "end": 235,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 170,
+     "end": 203,
+     "role": "end statement (base statement at the source's slot counted from the end)"
+    },
+    {
+     "start": 236,
+     "end": 269,
+     "role": "token statement (base statement at the source statement's token offset)"
+    },
+    {
+     "start": 434,
+     "end": 465,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nFolder 7 holds the stomach chart. The town hall bell rang twice today. Folder 6 holds the tongue chart. Folder 9 holds the ear chart. Folder 5 holds the spine chart. Folder 3 holds the bladder chart. Folder 4 holds the elbow chart.\nWhich folder holds the chart on the body part that tastes food? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 241,
+     "end": 273,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "4",
+    "edited": "7",
+    "expected": {
+     "none": "4",
+     "identity": "0",
+     "position": "7",
+     "end": "9",
+     "token": "5",
+     "value": "6"
+    },
+    "unedited_read": "4"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0014,
+     "identity": 0.0222,
+     "position": 0.2385,
+     "end": 0.0774,
+     "token": 0.1639,
+     "value": 0.1857
+    },
+    "layer": "transit",
+    "role": "position"
+   },
+   "why": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction) ('7')"
+  },
+  {
+   "group": "none",
+   "family": "RL",
+   "item_id": "countries-RL-e5fewer-0069",
+   "domain": "countries",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe file on Canada is kept in drawer 9. The file on Denmark is kept in drawer 2. The file on Philippines is kept in drawer 8. The file on Peru is kept in drawer 3. The file on Finland is kept in drawer 7. The streetlights came on a little earlier than usual.\nIn which drawer is the file on the country whose capital is Ottawa? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 579,
+     "end": 580,
+     "role": "patched (last)"
+    },
+    {
+     "start": 170,
+     "end": 209,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 210,
+     "end": 250,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 251,
+     "end": 295,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 296,
+     "end": 333,
+     "role": "end statement (base statement at the source's slot counted from the end)"
+    },
+    {
+     "start": 334,
+     "end": 374,
+     "role": "token statement (base statement at the source statement's token offset)"
+    },
+    {
+     "start": 460,
+     "end": 495,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe file on Peru is kept in drawer 9. The file on Philippines is kept in drawer 3. The streetlights came on a little earlier than usual. The tea had gone cold by the time anyone noticed. The file on Denmark is kept in drawer 0. The file on Canada is kept in drawer 7.\nIn which drawer is the file on the country whose capital is Copenhagen? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 357,
+     "end": 397,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "none": "9",
+     "identity": "2",
+     "position": "8",
+     "end": "3",
+     "token": "7",
+     "value": "0"
+    },
+    "unedited_read": "9"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.5312,
+     "identity": 0.0,
+     "position": 0.0,
+     "end": 0.0,
+     "token": 0.0,
+     "value": 0.4688
+    },
+    "layer": "transit",
+    "role": "none"
+   },
+   "why": "the patch left the base answer ('9')"
+  },
+  {
+   "group": "same_changed",
+   "family": "RL",
+   "item_id": "countries-RL-e5-off-0026",
+   "domain": "countries",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe kettle whistled loudly in the empty kitchen. The file on Syria is kept in drawer 8. The file on Sweden is kept in drawer 1. The file on Belgium is kept in drawer 0. The file on Egypt is kept in drawer 6. The file on Iran is kept in drawer 7.\nWhat drawer keeps the file on the country whose capital is Cairo? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 564,
+     "end": 565,
+     "role": "patched (last)"
+    },
+    {
+     "start": 339,
+     "end": 377,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 298,
+     "end": 338,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 258,
+     "end": 297,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 219,
+     "end": 257,
+     "role": "token statement (base statement at the source statement's token offset)"
+    },
+    {
+     "start": 446,
+     "end": 480,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe file on Sweden is kept in drawer 1. The file on Belgium is kept in drawer 5. The file on Egypt is kept in drawer 7. The kettle whistled loudly in the empty kitchen. The file on Iran is kept in drawer 6. The file on Syria is kept in drawer 0.\nWhat drawer keeps the file on the country whose capital is Brussels? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 210,
+     "end": 250,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 18 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "6",
+    "edited": "0",
+    "expected": {
+     "none": "6",
+     "identity": "0",
+     "position": "1",
+     "token": "8",
+     "value": "5"
+    },
+    "unedited_read": "6"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.2448,
+     "identity": 0.7542,
+     "position": 0.0001,
+     "token": 0.0002,
+     "value": 0.0001
+    },
+    "layer": 18,
+    "role": "identity"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('0')"
+  },
+  {
+   "group": "same_changed",
+   "family": "RL",
+   "item_id": "animals-RL-e5fewer-0008",
+   "domain": "animals",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe goat keeps its things in locker 3. The pig keeps its things in locker 9. The whale keeps its things in locker 1. The chicken keeps its things in locker 8. The weekend market opened an hour later than usual. The horse keeps its things in locker 5.\nIn which locker does the animal known for neighing keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 571,
+     "end": 572,
+     "role": "patched (last)"
+    },
+    {
+     "start": 381,
+     "end": 420,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 287,
+     "end": 328,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 170,
+     "end": 208,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 209,
+     "end": 246,
+     "role": "end statement (base statement at the source's slot counted from the end)"
+    },
+    {
+     "start": 247,
+     "end": 286,
+     "role": "token statement (base statement at the source statement's token offset)"
+    },
+    {
+     "start": 442,
+     "end": 471,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe weekend market opened an hour later than usual. The school choir practised every evening that month. The chicken keeps its things in locker 6. The whale keeps its things in locker 0. The pig keeps its things in locker 9. The goat keeps its things in locker 3.\nIn which locker does the animal known for clucking keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 275,
+     "end": 316,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 20 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "5",
+    "edited": "4",
+    "expected": {
+     "none": "5",
+     "identity": "8",
+     "position": "3",
+     "end": "9",
+     "token": "1",
+     "value": "6"
+    },
+    "unedited_read": "5"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0726,
+     "identity": 0.0566,
+     "position": 0.001,
+     "end": 0.0009,
+     "token": 0.0022,
+     "value": 0.2535
+    },
+    "layer": 20,
+    "role": "recall"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('4')"
+  },
+  {
+   "group": "same_changed",
+   "family": "RL",
+   "item_id": "body-RL-e5-off-0019",
+   "domain": "body",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nFolder 3 holds the elbow chart. Folder 0 holds the stomach chart. Folder 4 holds the tongue chart. Folder 5 holds the eye chart. Folder 8 holds the ear chart. The weather was mild all week long.\nWhat folder keeps the chart on the body part that hears sounds? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 511,
+     "end": 512,
+     "role": "patched (last)"
+    },
+    {
+     "start": 299,
+     "end": 328,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 236,
+     "end": 268,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 170,
+     "end": 201,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 202,
+     "end": 235,
+     "role": "token statement (base statement at the source statement's token offset)"
+    },
+    {
+     "start": 396,
+     "end": 427,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe weather was mild all week long. Folder 6 holds the tongue chart. Folder 4 holds the elbow chart. Folder 0 holds the ear chart. Folder 5 holds the stomach chart. Folder 3 holds the eye chart.\nWhat folder keeps the chart on the body part that tastes food? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 206,
+     "end": 238,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 17 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "8",
+    "edited": "4",
+    "expected": {
+     "none": "8",
+     "identity": "4",
+     "position": "3",
+     "token": "0",
+     "value": "6"
+    },
+    "unedited_read": "8"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0759,
+     "identity": 0.9241,
+     "position": 0.0,
+     "token": 0.0,
+     "value": 0.0
+    },
+    "layer": 17,
+    "role": "identity"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('4')"
+  }
+ ]
+}
