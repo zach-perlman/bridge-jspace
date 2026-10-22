@@ -1,0 +1,35 @@
+{
+  "run": "muse30j_textloss_top_v1",
+  "why": "Zach (2026-10-22): Muse Glimmer 30B: the published J-lens, plain-text loss under the knock-out at L26-32 (the untestable gate)",
+  "written_utc": "2026-10-22T03:17:47Z",
+  "model": {
+    "target": "muse-glimmer-30b-jlens",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jlens",
+    "397dc00807a8f72d9d21feaeedeba7fb9e7c50e5c80efc317f37e8cd9c833300"
+  ],
+  "layers": [
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32
+  ],
+  "conditions": [
+    "none",
+    "top1",
+    "top1_rot",
+    "top5",
+    "top5_rot",
+    "top10",
+    "top10_rot"
+  ],
+  "doc": "python scripts/removal_textloss.py --name N --why W --layers L [L ...] [--conditions none jspace rotated top10 top10_rot]\n"
+}

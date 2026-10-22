@@ -1,0 +1,192 @@
+{
+  "seconds": 996,
+  "band_seconds": {
+    "L30-38": 286,
+    "L40-48": 286,
+    "L48-56": 286
+  },
+  "unedited_accuracy": {
+    "PP/clean": 1,
+    "PM/clean": 0.99,
+    "MP/clean": 1,
+    "MM/clean": 1
+  },
+  "cells": {
+    "L30-38": {
+      "PP/clean": {
+        "paper10_nosink": {
+          "n": 100,
+          "accuracy": 0.34,
+          "dlogp": -6.034366489354333
+        },
+        "paper10_nosink_rot": {
+          "n": 100,
+          "accuracy": 1,
+          "dlogp": -2.6702751696916495e-07
+        }
+      },
+      "PM/clean": {
+        "paper10_nosink": {
+          "n": 100,
+          "accuracy": 0.54,
+          "dlogp": -3.4430095553091853
+        },
+        "paper10_nosink_rot": {
+          "n": 100,
+          "accuracy": 1,
+          "dlogp": 0.009388165577591678
+        }
+      },
+      "MP/clean": {
+        "paper10_nosink": {
+          "n": 98,
+          "accuracy": 0.2653061224489796,
+          "dlogp": -6.044061021675017
+        },
+        "paper10_nosink_rot": {
+          "n": 98,
+          "accuracy": 1,
+          "dlogp": -0.00031326048562321514
+        }
+      },
+      "MM/clean": {
+        "paper10_nosink": {
+          "n": 98,
+          "accuracy": 0.5714285714285714,
+          "dlogp": -2.5232440244111882
+        },
+        "paper10_nosink_rot": {
+          "n": 98,
+          "accuracy": 1,
+          "dlogp": -0.0025868091800646635
+        }
+      }
+    },
+    "L40-48": {
+      "PP/clean": {
+        "paper10_nosink": {
+          "n": 100,
+          "accuracy": 0.47,
+          "dlogp": -4.8395834557416535
+        },
+        "paper10_nosink_rot": {
+          "n": 100,
+          "accuracy": 1,
+          "dlogp": 1.787961792842907e-08
+        }
+      },
+      "PM/clean": {
+        "paper10_nosink": {
+          "n": 100,
+          "accuracy": 0.23,
+          "dlogp": -8.961038777515487
+        },
+        "paper10_nosink_rot": {
+          "n": 100,
+          "accuracy": 0.99,
+          "dlogp": -0.06087187180645728
+        }
+      },
+      "MP/clean": {
+        "paper10_nosink": {
+          "n": 98,
+          "accuracy": 0.47959183673469385,
+          "dlogp": -4.916755413450401
+        },
+        "paper10_nosink_rot": {
+          "n": 98,
+          "accuracy": 1,
+          "dlogp": -2.5178019205286872e-05
+        }
+      },
+      "MM/clean": {
+        "paper10_nosink": {
+          "n": 98,
+          "accuracy": 0.24489795918367346,
+          "dlogp": -8.466928216874628
+        },
+        "paper10_nosink_rot": {
+          "n": 98,
+          "accuracy": 0.9897959183673469,
+          "dlogp": -0.047164302983979084
+        }
+      }
+    },
+    "L48-56": {
+      "PP/clean": {
+        "paper10_nosink": {
+          "n": 100,
+          "accuracy": 0.03,
+          "dlogp": -4.7752167740499765
+        },
+        "paper10_nosink_rot": {
+          "n": 100,
+          "accuracy": 1,
+          "dlogp": -3.5643074518532104e-07
+        }
+      },
+      "PM/clean": {
+        "paper10_nosink": {
+          "n": 100,
+          "accuracy": 0.13,
+          "dlogp": -3.6148946619605806
+        },
+        "paper10_nosink_rot": {
+          "n": 100,
+          "accuracy": 0.99,
+          "dlogp": 0.002560376676764804
+        }
+      },
+      "MP/clean": {
+        "paper10_nosink": {
+          "n": 98,
+          "accuracy": 0.04081632653061224,
+          "dlogp": -4.5032911825276924
+        },
+        "paper10_nosink_rot": {
+          "n": 98,
+          "accuracy": 1,
+          "dlogp": -0.00018547693098616193
+        }
+      },
+      "MM/clean": {
+        "paper10_nosink": {
+          "n": 98,
+          "accuracy": 0.061224489795918366,
+          "dlogp": -3.9796724237405434
+        },
+        "paper10_nosink_rot": {
+          "n": 98,
+          "accuracy": 1,
+          "dlogp": -0.00011152415841925281
+        }
+      }
+    }
+  },
+  "sink_positions": {
+    "L30-38/paper10_nosink": {
+      "skipped": 3564,
+      "positions": 724005
+    },
+    "L30-38/paper10_nosink_rot": {
+      "skipped": 3564,
+      "positions": 724005
+    },
+    "L40-48/paper10_nosink": {
+      "skipped": 3564,
+      "positions": 724005
+    },
+    "L40-48/paper10_nosink_rot": {
+      "skipped": 3564,
+      "positions": 724005
+    },
+    "L48-56/paper10_nosink": {
+      "skipped": 3564,
+      "positions": 724005
+    },
+    "L48-56/paper10_nosink_rot": {
+      "skipped": 3564,
+      "positions": 724005
+    }
+  }
+}

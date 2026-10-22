@@ -1,0 +1,62 @@
+{
+  "Qwen3.6-27B (published J++)": {
+    "relative_layers": [
+      8,
+      16,
+      24,
+      32,
+      40,
+      48,
+      56
+    ],
+    "band": {
+      "jpp": 0.5027270290684924,
+      "logit": 0.1991750322847884
+    },
+    "all": {
+      "jpp": 0.7174025974025974,
+      "logit": 0.4355919690066032
+    },
+    "relative7": {
+      "jpp": 0.5952565726955971,
+      "logit": 0.3402828878438635
+    },
+    "items_per_eval": {
+      "association": 82,
+      "multihop": 40,
+      "multilingual": 65,
+      "poetry": 65,
+      "typo": 77
+    }
+  },
+  "Gemma 4 31B-it (our J++, 64 prompts)": {
+    "relative_layers": [
+      8,
+      15,
+      23,
+      30,
+      38,
+      45,
+      53
+    ],
+    "band": {
+      "jpp": 0.367130722935601,
+      "logit": 0.0185974025974026
+    },
+    "all": {
+      "jpp": 0.6327429643527205,
+      "logit": 0.559637752491411
+    },
+    "relative7": {
+      "jpp": 0.5233714821763602,
+      "logit": 0.3292991277015668
+    },
+    "items_per_eval": {
+      "association": 82,
+      "multihop": 25,
+      "multilingual": 52,
+      "poetry": 8,
+      "typo": 77
+    }
+  }
+}

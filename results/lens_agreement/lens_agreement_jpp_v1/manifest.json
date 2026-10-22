@@ -1,0 +1,24 @@
+{
+  "run": "lens_agreement_jpp_v1",
+  "why": "Zach (2026-10-22): bridge for Muse Glimmer 30B's plain J-lens: the same check on the 27B's own J++",
+  "written_utc": "2026-10-22T02:41:54Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  ],
+  "argv": [
+    "scripts/lens_agreement.py",
+    "--name",
+    "lens_agreement_jpp_v1",
+    "--why",
+    "Zach (2026-10-22): bridge for Muse Glimmer 30B's plain J-lens: the same check on the 27B's own J++"
+  ],
+  "doc": "lens_agreement: does a lens read the model's own next-token prediction from earlier layers? (Zach, 2026-10-21: a\nsanity check for third-party lenses, solarkyle's plain J-lenses for Mistral-Small-24B-2501 and the two bridges, before\nruns lean on them.) On removal_textloss's 16 WikiText rows (first 128 tokens), the share of positions (from 16 on) where\nthe model's own top-1 next token (the final block, unembedded) is in the lens's top 10 at each layer, for the target's\nfrozen lens and for the logit lens (no J). Also the model's mean next-token loss on the rows (from position 4, as\nremoval_textloss), and greedy answers to a few chat questions. Not jpp_lens's pass@10 (other items and grading); numbers\nare comparable across targets run with this script."
+}

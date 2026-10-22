@@ -1,0 +1,120 @@
+{
+  "seconds": 966,
+  "dom_missing_cases": 46,
+  "families": {
+    "PP": {
+      "n": 87,
+      "entities": 35,
+      "best": {
+        "copy": {
+          "flips": 0.27586206896551724,
+          "ci": [
+            0.17346938775510204,
+            0.375
+          ],
+          "control": null,
+          "other": 0.05747126436781609,
+          "pos": "question",
+          "layer": "joint",
+          "strength": 1.0,
+          "gated_cells": 16
+        }
+      }
+    },
+    "PM": {
+      "n": 87,
+      "entities": 35,
+      "best": {
+        "copy": {
+          "flips": 0.3563218390804598,
+          "ci": [
+            0.2604166666666667,
+            0.4675324675324675
+          ],
+          "control": null,
+          "other": 0.10344827586206896,
+          "pos": "question",
+          "layer": "joint",
+          "strength": 1.0,
+          "gated_cells": 16
+        }
+      }
+    },
+    "MP": {
+      "n": 72,
+      "entities": 25,
+      "best": {
+        "copy": {
+          "flips": 0.5694444444444444,
+          "ci": [
+            0.38372093023255816,
+            0.8032786885245902
+          ],
+          "control": null,
+          "other": 0.013888888888888888,
+          "pos": "question",
+          "layer": "joint",
+          "strength": 1.0,
+          "gated_cells": 16
+        }
+      }
+    },
+    "MM": {
+      "n": 72,
+      "entities": 25,
+      "best": {
+        "copy": {
+          "flips": 0.2361111111111111,
+          "ci": [
+            0.1232876712328767,
+            0.38461538461538464
+          ],
+          "control": null,
+          "other": 0.041666666666666664,
+          "pos": "question",
+          "layer": "joint",
+          "strength": 1.0,
+          "gated_cells": 16
+        }
+      }
+    },
+    "CP": {
+      "n": 82,
+      "entities": 32,
+      "best": {
+        "copy": {
+          "flips": 0.024390243902439025,
+          "ci": [
+            0.0,
+            0.05747126436781609
+          ],
+          "control": null,
+          "other": 0,
+          "pos": "final",
+          "layer": "40",
+          "strength": 1.0,
+          "gated_cells": 16
+        }
+      }
+    },
+    "CM": {
+      "n": 82,
+      "entities": 32,
+      "best": {
+        "copy": {
+          "flips": 0.12195121951219512,
+          "ci": [
+            0.05747126436781609,
+            0.20270270270270271
+          ],
+          "control": null,
+          "other": 0.024390243902439025,
+          "pos": "final",
+          "layer": "joint",
+          "strength": 1.0,
+          "gated_cells": 16
+        }
+      }
+    }
+  }
+}

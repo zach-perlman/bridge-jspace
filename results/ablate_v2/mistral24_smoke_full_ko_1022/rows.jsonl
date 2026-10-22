@@ -1,0 +1,96 @@
+{"family": "PP", "id": "cf:PP-L0-0000", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.03893877565860748}
+{"family": "MP", "id": "cf:MP-L0-0001", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6932628154754639}
+{"family": "PP", "id": "cf:PP-L0-0000", "kind": "clean", "band": "L20-25", "condition": "paper10", "correct": true, "logp": -0.034207530319690704, "bridge_protected": false, "bridge": "wolf"}
+{"family": "MP", "id": "cf:MP-L0-0001", "kind": "clean", "band": "L20-25", "condition": "paper10", "correct": true, "logp": -0.9610611200332642, "bridge_protected": false, "bridge": "ant"}
+{"family": "PP", "id": "cf:PP-L0-0000", "kind": "clean", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.03355470672249794, "bridge_protected": false, "bridge": "wolf"}
+{"family": "MP", "id": "cf:MP-L0-0001", "kind": "clean", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.8317280411720276, "bridge_protected": false, "bridge": "ant"}
+{"family": "PP", "id": "cf:PP-L0-0000", "kind": "clean", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.053244512528181076, "bridge_protected": false, "bridge": "wolf"}
+{"family": "MP", "id": "cf:MP-L0-0001", "kind": "clean", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.8079119324684143, "bridge_protected": false, "bridge": "ant"}
+{"family": "PP", "id": "cf:PP-L0-0000", "kind": "step1", "band": "-", "condition": "none", "correct": true, "logp": -0.6577494740486145}
+{"family": "PM", "id": "cf:PM-L0-0000", "kind": "step1", "band": "-", "condition": "none", "correct": true, "logp": -0.6577494740486145}
+{"family": "MP", "id": "cf:MP-L0-0002", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5719686150550842}
+{"family": "PP", "id": "cf:PP-L0-0000", "kind": "step1", "band": "L20-25", "condition": "paper10", "correct": true, "logp": -0.6739667654037476, "bridge_protected": true, "bridge": "wolf"}
+{"family": "PM", "id": "cf:PM-L0-0000", "kind": "step1", "band": "L20-25", "condition": "paper10", "correct": true, "logp": -0.6739667654037476, "bridge_protected": true, "bridge": "wolf"}
+{"family": "MP", "id": "cf:MP-L0-0002", "kind": "clean", "band": "L20-25", "condition": "paper10", "correct": true, "logp": -0.8711426854133606, "bridge_protected": false, "bridge": "Venus"}
+{"family": "PP", "id": "cf:PP-L0-0000", "kind": "step1", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.5886801481246948, "bridge_protected": true, "bridge": "wolf"}
+{"family": "PM", "id": "cf:PM-L0-0000", "kind": "step1", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.5886801481246948, "bridge_protected": true, "bridge": "wolf"}
+{"family": "MP", "id": "cf:MP-L0-0002", "kind": "clean", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -1.0947368144989014, "bridge_protected": false, "bridge": "Venus"}
+{"family": "PP", "id": "cf:PP-L0-0000", "kind": "step1", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.553066611289978, "bridge_protected": true, "bridge": "wolf"}
+{"family": "PM", "id": "cf:PM-L0-0000", "kind": "step1", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.553066611289978, "bridge_protected": true, "bridge": "wolf"}
+{"family": "MP", "id": "cf:MP-L0-0002", "kind": "clean", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.5585705041885376, "bridge_protected": false, "bridge": "Venus"}
+{"family": "PM", "id": "cf:PM-L0-0000", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.08485329896211624}
+{"family": "MM", "id": "cf:MM-L0-0001", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0052243852987885475}
+{"family": "MM", "id": "cf:MM-L0-0002", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6797976493835449}
+{"family": "PM", "id": "cf:PM-L0-0000", "kind": "clean", "band": "L20-25", "condition": "paper10", "correct": true, "logp": -0.05607660114765167, "bridge_protected": false, "bridge": "wolf"}
+{"family": "MM", "id": "cf:MM-L0-0001", "kind": "clean", "band": "L20-25", "condition": "paper10", "correct": true, "logp": -0.04162752628326416, "bridge_protected": false, "bridge": "ant"}
+{"family": "MM", "id": "cf:MM-L0-0002", "kind": "clean", "band": "L20-25", "condition": "paper10", "correct": true, "logp": -1.0005899667739868, "bridge_protected": false, "bridge": "Venus"}
+{"family": "PM", "id": "cf:PM-L0-0000", "kind": "clean", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.1038002297282219, "bridge_protected": false, "bridge": "wolf"}
+{"family": "MM", "id": "cf:MM-L0-0001", "kind": "clean", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.014406242407858372, "bridge_protected": false, "bridge": "ant"}
+{"family": "MM", "id": "cf:MM-L0-0002", "kind": "clean", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.20099513232707977, "bridge_protected": false, "bridge": "Venus"}
+{"family": "PM", "id": "cf:PM-L0-0000", "kind": "clean", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.07454782724380493, "bridge_protected": false, "bridge": "wolf"}
+{"family": "MM", "id": "cf:MM-L0-0001", "kind": "clean", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.035950373858213425, "bridge_protected": false, "bridge": "ant"}
+{"family": "MM", "id": "cf:MM-L0-0002", "kind": "clean", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.3751261234283447, "bridge_protected": false, "bridge": "Venus"}
+{"family": "PP", "id": "cf:PP-L0-0001", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0029862592928111553}
+{"family": "PP", "id": "cf:PP-L0-0001", "kind": "clean", "band": "L20-25", "condition": "paper10", "correct": true, "logp": -0.018001511693000793, "bridge_protected": false, "bridge": "Mars"}
+{"family": "PP", "id": "cf:PP-L0-0001", "kind": "clean", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.005806483328342438, "bridge_protected": false, "bridge": "Mars"}
+{"family": "PP", "id": "cf:PP-L0-0001", "kind": "clean", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.004618928302079439, "bridge_protected": false, "bridge": "Mars"}
+{"family": "PP", "id": "cf:PP-L0-0001", "kind": "step1", "band": "-", "condition": "none", "correct": true, "logp": -0.06888001412153244}
+{"family": "PM", "id": "cf:PM-L0-0001", "kind": "step1", "band": "-", "condition": "none", "correct": true, "logp": -0.06888001412153244}
+{"family": "PP", "id": "cf:PP-L0-0001", "kind": "step1", "band": "L20-25", "condition": "paper10", "correct": true, "logp": -0.7469914555549622, "bridge_protected": true, "bridge": "Mars"}
+{"family": "PM", "id": "cf:PM-L0-0001", "kind": "step1", "band": "L20-25", "condition": "paper10", "correct": true, "logp": -0.7822117209434509, "bridge_protected": true, "bridge": "Mars"}
+{"family": "PP", "id": "cf:PP-L0-0001", "kind": "step1", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.08434470742940903, "bridge_protected": true, "bridge": "Mars"}
+{"family": "PM", "id": "cf:PM-L0-0001", "kind": "step1", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.0837821438908577, "bridge_protected": true, "bridge": "Mars"}
+{"family": "PP", "id": "cf:PP-L0-0001", "kind": "step1", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.07171571254730225, "bridge_protected": true, "bridge": "Mars"}
+{"family": "PM", "id": "cf:PM-L0-0001", "kind": "step1", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.07171571254730225, "bridge_protected": true, "bridge": "Mars"}
+{"family": "PM", "id": "cf:PM-L0-0001", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.032671768218278885}
+{"family": "PM", "id": "cf:PM-L0-0001", "kind": "clean", "band": "L20-25", "condition": "paper10", "correct": true, "logp": -0.09210190922021866, "bridge_protected": false, "bridge": "Mars"}
+{"family": "PM", "id": "cf:PM-L0-0001", "kind": "clean", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.06407611817121506, "bridge_protected": false, "bridge": "Mars"}
+{"family": "PM", "id": "cf:PM-L0-0001", "kind": "clean", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.03179347515106201, "bridge_protected": false, "bridge": "Mars"}
+{"family": "MP", "id": "cf:MP-L0-0001", "kind": "step1", "band": "-", "condition": "none", "correct": true, "logp": -0.41492390632629395}
+{"family": "MM", "id": "cf:MM-L0-0001", "kind": "step1", "band": "-", "condition": "none", "correct": true, "logp": -0.41492390632629395}
+{"family": "CM", "id": "cf:CM-L0-0000", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.8575417995452881}
+{"family": "MP", "id": "cf:MP-L0-0001", "kind": "step1", "band": "L20-25", "condition": "paper10", "correct": true, "logp": -1.0007306337356567, "bridge_protected": true, "bridge": "ant"}
+{"family": "MM", "id": "cf:MM-L0-0001", "kind": "step1", "band": "L20-25", "condition": "paper10", "correct": true, "logp": -1.0007306337356567, "bridge_protected": true, "bridge": "ant"}
+{"family": "CM", "id": "cf:CM-L0-0000", "kind": "clean", "band": "L20-25", "condition": "paper10", "correct": true, "logp": -1.3788679838180542, "bridge_protected": false, "bridge": "gamma"}
+{"family": "MP", "id": "cf:MP-L0-0001", "kind": "step1", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.5940260291099548, "bridge_protected": true, "bridge": "ant"}
+{"family": "MM", "id": "cf:MM-L0-0001", "kind": "step1", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.5940260291099548, "bridge_protected": true, "bridge": "ant"}
+{"family": "CM", "id": "cf:CM-L0-0000", "kind": "clean", "band": "L20-25", "condition": "paper10_rot", "correct": false, "logp": -2.1607375144958496, "bridge_protected": false, "bridge": "gamma"}
+{"family": "MP", "id": "cf:MP-L0-0001", "kind": "step1", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.3273070752620697, "bridge_protected": true, "bridge": "ant"}
+{"family": "MM", "id": "cf:MM-L0-0001", "kind": "step1", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.3273070752620697, "bridge_protected": true, "bridge": "ant"}
+{"family": "CM", "id": "cf:CM-L0-0000", "kind": "clean", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -1.2466671466827393, "bridge_protected": false, "bridge": "gamma"}
+{"family": "MP", "id": "cf:MP-L0-0002", "kind": "step1", "band": "-", "condition": "none", "correct": true, "logp": -0.2216518521308899}
+{"family": "MM", "id": "cf:MM-L0-0002", "kind": "step1", "band": "-", "condition": "none", "correct": true, "logp": -0.2216518521308899}
+{"family": "CP", "id": "cf:CP-L0-0000", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3556901514530182}
+{"family": "MP", "id": "cf:MP-L0-0002", "kind": "step1", "band": "L20-25", "condition": "paper10", "correct": true, "logp": -0.5433692932128906, "bridge_protected": true, "bridge": "Venus"}
+{"family": "MM", "id": "cf:MM-L0-0002", "kind": "step1", "band": "L20-25", "condition": "paper10", "correct": true, "logp": -0.5433692932128906, "bridge_protected": true, "bridge": "Venus"}
+{"family": "CP", "id": "cf:CP-L0-0000", "kind": "clean", "band": "L20-25", "condition": "paper10", "correct": true, "logp": -0.7787778377532959, "bridge_protected": false, "bridge": "gamma"}
+{"family": "MP", "id": "cf:MP-L0-0002", "kind": "step1", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.14644202589988708, "bridge_protected": true, "bridge": "Venus"}
+{"family": "MM", "id": "cf:MM-L0-0002", "kind": "step1", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.14644202589988708, "bridge_protected": true, "bridge": "Venus"}
+{"family": "CP", "id": "cf:CP-L0-0000", "kind": "clean", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.43463948369026184, "bridge_protected": false, "bridge": "gamma"}
+{"family": "MP", "id": "cf:MP-L0-0002", "kind": "step1", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.257690966129303, "bridge_protected": true, "bridge": "Venus"}
+{"family": "MM", "id": "cf:MM-L0-0002", "kind": "step1", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.257690966129303, "bridge_protected": true, "bridge": "Venus"}
+{"family": "CP", "id": "cf:CP-L0-0000", "kind": "clean", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.3951479196548462, "bridge_protected": false, "bridge": "gamma"}
+{"family": "CP", "id": "cf:CP-L0-0000", "kind": "step1", "band": "-", "condition": "none", "correct": true, "logp": -0.21667593717575073}
+{"family": "CM", "id": "cf:CM-L0-0000", "kind": "step1", "band": "-", "condition": "none", "correct": true, "logp": -0.21667593717575073}
+{"family": "CP", "id": "cf:CP-L0-0000", "kind": "step1", "band": "L20-25", "condition": "paper10", "correct": false, "logp": -1.4672119617462158, "bridge_protected": true, "bridge": "gamma"}
+{"family": "CM", "id": "cf:CM-L0-0000", "kind": "step1", "band": "L20-25", "condition": "paper10", "correct": false, "logp": -1.4672119617462158, "bridge_protected": true, "bridge": "gamma"}
+{"family": "CP", "id": "cf:CP-L0-0000", "kind": "step1", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.30073797702789307, "bridge_protected": true, "bridge": "gamma"}
+{"family": "CM", "id": "cf:CM-L0-0000", "kind": "step1", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.30073797702789307, "bridge_protected": true, "bridge": "gamma"}
+{"family": "CP", "id": "cf:CP-L0-0000", "kind": "step1", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.15796904265880585, "bridge_protected": true, "bridge": "gamma"}
+{"family": "CM", "id": "cf:CM-L0-0000", "kind": "step1", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.15796904265880585, "bridge_protected": true, "bridge": "gamma"}
+{"family": "CP", "id": "cf:CP-L0-0001", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.07576441019773483}
+{"family": "CP", "id": "cf:CP-L0-0001", "kind": "clean", "band": "L20-25", "condition": "paper10", "correct": true, "logp": -0.22838065028190613, "bridge_protected": false, "bridge": "gamma"}
+{"family": "CP", "id": "cf:CP-L0-0001", "kind": "clean", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.08588961511850357, "bridge_protected": false, "bridge": "gamma"}
+{"family": "CP", "id": "cf:CP-L0-0001", "kind": "clean", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.0907464399933815, "bridge_protected": false, "bridge": "gamma"}
+{"family": "CP", "id": "cf:CP-L0-0001", "kind": "step1", "band": "-", "condition": "none", "correct": true, "logp": -0.8208712339401245}
+{"family": "CM", "id": "cf:CM-L0-0001", "kind": "step1", "band": "-", "condition": "none", "correct": true, "logp": -0.8208712339401245}
+{"family": "CP", "id": "cf:CP-L0-0001", "kind": "step1", "band": "L20-25", "condition": "paper10", "correct": false, "logp": -1.5507490634918213, "bridge_protected": true, "bridge": "gamma"}
+{"family": "CM", "id": "cf:CM-L0-0001", "kind": "step1", "band": "L20-25", "condition": "paper10", "correct": false, "logp": -1.5507490634918213, "bridge_protected": true, "bridge": "gamma"}
+{"family": "CP", "id": "cf:CP-L0-0001", "kind": "step1", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.6968868374824524, "bridge_protected": true, "bridge": "gamma"}
+{"family": "CM", "id": "cf:CM-L0-0001", "kind": "step1", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.6968868374824524, "bridge_protected": true, "bridge": "gamma"}
+{"family": "CP", "id": "cf:CP-L0-0001", "kind": "step1", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.6306285262107849, "bridge_protected": true, "bridge": "gamma"}
+{"family": "CM", "id": "cf:CM-L0-0001", "kind": "step1", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.6306285262107849, "bridge_protected": true, "bridge": "gamma"}
+{"family": "CM", "id": "cf:CM-L0-0001", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.11228250712156296}
+{"family": "CM", "id": "cf:CM-L0-0001", "kind": "clean", "band": "L20-25", "condition": "paper10", "correct": true, "logp": -0.2775108516216278, "bridge_protected": false, "bridge": "gamma"}
+{"family": "CM", "id": "cf:CM-L0-0001", "kind": "clean", "band": "L20-25", "condition": "paper10_rot", "correct": true, "logp": -0.27773264050483704, "bridge_protected": false, "bridge": "gamma"}
+{"family": "CM", "id": "cf:CM-L0-0001", "kind": "clean", "band": "L20-25", "condition": "unembed10", "correct": true, "logp": -0.13985666632652283, "bridge_protected": false, "bridge": "gamma"}

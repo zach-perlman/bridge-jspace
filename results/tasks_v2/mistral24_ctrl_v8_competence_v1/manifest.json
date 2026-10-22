@@ -1,0 +1,18 @@
+{
+  "run": "mistral24_ctrl_v8_competence_v1",
+  "why": "Zach (2026-10-21): Mistral-Small-24B-2501, the second family, solarkyle's plain J-lens: competence on ctrl_v8 (the band sweep's items)",
+  "set": "ctrl_v8",
+  "model": {
+    "target": "mistral-small-24b-2501",
+    "repo": "mistralai/Mistral-Small-24B-Instruct-2501",
+    "revision": "9527884be6e5616bdd54de542f9ae13384489724",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "f30a0f0b3640f6bcf1ca99c191c3218b946729b8",
+  "guess": true,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-22T01:27:35Z"
+}

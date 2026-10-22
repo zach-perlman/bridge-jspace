@@ -1,0 +1,18 @@
+{
+  "run": "muse30_full_v8_competence_v1",
+  "why": "Zach (2026-10-22): Muse Glimmer 30B, the second family, our J++: competence on full_v8",
+  "set": "full_v8",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "d6b03e7c8b3b8f099c4f850f990387300925445c",
+  "guess": true,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-22T04:51:39Z"
+}

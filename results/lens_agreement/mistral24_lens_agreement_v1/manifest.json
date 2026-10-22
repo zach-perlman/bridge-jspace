@@ -1,0 +1,24 @@
+{
+  "run": "mistral24_lens_agreement_v1",
+  "why": "Zach (2026-10-21): Mistral-Small-24B-2501, the second family, solarkyle's plain J-lens: lens sanity check before any run",
+  "written_utc": "2026-10-22T01:03:40Z",
+  "model": {
+    "target": "mistral-small-24b-2501",
+    "repo": "mistralai/Mistral-Small-24B-Instruct-2501",
+    "revision": "9527884be6e5616bdd54de542f9ae13384489724",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jlens",
+    "6bda03097bf949788be3d2115c4635cc49c8217fdfa9e1d6d4832ac8ff531fec"
+  ],
+  "argv": [
+    "scripts/lens_agreement.py",
+    "--name",
+    "mistral24_lens_agreement_v1",
+    "--why",
+    "Zach (2026-10-21): Mistral-Small-24B-2501, the second family, solarkyle's plain J-lens: lens sanity check before any run"
+  ],
+  "doc": "lens_agreement: does a lens read the model's own next-token prediction from earlier layers? (Zach, 2026-10-21: a\nsanity check for third-party lenses, solarkyle's plain J-lenses for Mistral-Small-24B-2501 and the two bridges, before\nruns lean on them.) On removal_textloss's 16 WikiText rows (first 128 tokens), the share of positions (from 16 on) where\nthe model's own top-1 next token (the final block, unembedded) is in the lens's top 10 at each layer, for the target's\nfrozen lens and for the logit lens (no J). Also the model's mean next-token loss on the rows (from position 4, as\nremoval_textloss), and greedy answers to a few chat questions. Not jpp_lens's pass@10 (other items and grading); numbers\nare comparable across targets run with this script."
+}

@@ -1,0 +1,61 @@
+{
+  "seconds": 506,
+  "band_seconds": {
+    "L32-40": 274
+  },
+  "unedited_accuracy": {
+    "PP/clean": 1,
+    "PM/clean": 1,
+    "MP/clean": 1,
+    "CP/clean": 1,
+    "MM/clean": 1,
+    "CM/clean": 1
+  },
+  "cells": {
+    "L32-40": {
+      "PP/clean": {
+        "paper10_rot": {
+          "n": 152,
+          "accuracy": 1,
+          "dlogp": -0.0036226901437131395
+        }
+      },
+      "PM/clean": {
+        "paper10_rot": {
+          "n": 152,
+          "accuracy": 0.9868421052631579,
+          "dlogp": -0.06590421175075646
+        }
+      },
+      "MP/clean": {
+        "paper10_rot": {
+          "n": 101,
+          "accuracy": 0.9702970297029703,
+          "dlogp": -0.07697253816733414
+        }
+      },
+      "CP/clean": {
+        "paper10_rot": {
+          "n": 144,
+          "accuracy": 0.9930555555555556,
+          "dlogp": -0.014002138003383556
+        }
+      },
+      "MM/clean": {
+        "paper10_rot": {
+          "n": 101,
+          "accuracy": 0.9900990099009901,
+          "dlogp": -0.04129946188733793
+        }
+      },
+      "CM/clean": {
+        "paper10_rot": {
+          "n": 144,
+          "accuracy": 0.9722222222222222,
+          "dlogp": -0.08464308886323124
+        }
+      }
+    }
+  },
+  "sink_positions": {}
+}

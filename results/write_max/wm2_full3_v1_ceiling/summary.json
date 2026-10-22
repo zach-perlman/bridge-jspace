@@ -1,0 +1,120 @@
+{
+  "seconds": 520,
+  "dom_missing_cases": 36,
+  "families": {
+    "PPP": {
+      "n": 40,
+      "entities": 17,
+      "best": {
+        "copy": {
+          "flips": 0.475,
+          "ci": [
+            0.30303030303030304,
+            0.6153846153846154
+          ],
+          "control": null,
+          "other": 0.225,
+          "pos": "question",
+          "layer": "joint",
+          "strength": 1.0,
+          "gated_cells": 16
+        }
+      }
+    },
+    "PPM": {
+      "n": 40,
+      "entities": 14,
+      "best": {
+        "copy": {
+          "flips": 0.475,
+          "ci": [
+            0.3333333333333333,
+            0.6097560975609756
+          ],
+          "control": null,
+          "other": 0.175,
+          "pos": "question",
+          "layer": "joint",
+          "strength": 1.0,
+          "gated_cells": 16
+        }
+      }
+    },
+    "PMP": {
+      "n": 40,
+      "entities": 15,
+      "best": {
+        "copy": {
+          "flips": 0.475,
+          "ci": [
+            0.36363636363636365,
+            0.6521739130434783
+          ],
+          "control": null,
+          "other": 0.125,
+          "pos": "question",
+          "layer": "joint",
+          "strength": 1.0,
+          "gated_cells": 16
+        }
+      }
+    },
+    "MPP": {
+      "n": 40,
+      "entities": 22,
+      "best": {
+        "copy": {
+          "flips": 0.7,
+          "ci": [
+            0.5666666666666667,
+            0.8260869565217391
+          ],
+          "control": null,
+          "other": 0.075,
+          "pos": "question",
+          "layer": "joint",
+          "strength": 1.0,
+          "gated_cells": 16
+        }
+      }
+    },
+    "MMP": {
+      "n": 40,
+      "entities": 17,
+      "best": {
+        "copy": {
+          "flips": 0.725,
+          "ci": [
+            0.6097560975609756,
+            0.8666666666666667
+          ],
+          "control": null,
+          "other": 0.05,
+          "pos": "question",
+          "layer": "joint",
+          "strength": 1.0,
+          "gated_cells": 16
+        }
+      }
+    },
+    "MPM": {
+      "n": 40,
+      "entities": 17,
+      "best": {
+        "copy": {
+          "flips": 0.6,
+          "ci": [
+            0.36363636363636365,
+            0.8333333333333334
+          ],
+          "control": null,
+          "other": 0.1,
+          "pos": "question",
+          "layer": "joint",
+          "strength": 1.0,
+          "gated_cells": 16
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "run": "mistral24_textloss_top_v1",
+  "why": "Zach (2026-10-21): Mistral-Small-24B-2501, the second family, solarkyle's plain J-lens: plain-text loss under the knock-out, L20-25 (the 27B's 32-40)",
+  "written_utc": "2026-10-22T01:04:23Z",
+  "model": {
+    "target": "mistral-small-24b-2501",
+    "repo": "mistralai/Mistral-Small-24B-Instruct-2501",
+    "revision": "9527884be6e5616bdd54de542f9ae13384489724",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jlens",
+    "6bda03097bf949788be3d2115c4635cc49c8217fdfa9e1d6d4832ac8ff531fec"
+  ],
+  "layers": [
+    20,
+    21,
+    22,
+    23,
+    24,
+    25
+  ],
+  "conditions": [
+    "none",
+    "top1",
+    "top1_rot",
+    "top5",
+    "top5_rot",
+    "top10",
+    "top10_rot"
+  ],
+  "doc": "python scripts/removal_textloss.py --name N --why W --layers L [L ...] [--conditions none jspace rotated top10 top10_rot]\n"
+}

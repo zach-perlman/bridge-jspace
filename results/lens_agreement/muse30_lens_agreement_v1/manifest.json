@@ -1,0 +1,24 @@
+{
+  "run": "muse30_lens_agreement_v1",
+  "why": "Zach (2026-10-22): Muse Glimmer 30B: our J++, lens check",
+  "written_utc": "2026-10-22T04:49:23Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  ],
+  "argv": [
+    "scripts/lens_agreement.py",
+    "--name",
+    "muse30_lens_agreement_v1",
+    "--why",
+    "Zach (2026-10-22): Muse Glimmer 30B: our J++, lens check"
+  ],
+  "doc": "lens_agreement: does a lens read the model's own next-token prediction from earlier layers? (Zach, 2026-10-21: a\nsanity check for third-party lenses, solarkyle's plain J-lenses for Mistral-Small-24B-2501 and the two bridges, before\nruns lean on them.) On removal_textloss's 16 WikiText rows (first 128 tokens), the share of positions (from 16 on) where\nthe model's own top-1 next token (the final block, unembedded) is in the lens's top 10 at each layer, for the target's\nfrozen lens and for the logit lens (no J). Also the model's mean next-token loss on the rows (from position 4, as\nremoval_textloss), and greedy answers to a few chat questions. Not jpp_lens's pass@10 (other items and grading); numbers\nare comparable across targets run with this script."
+}

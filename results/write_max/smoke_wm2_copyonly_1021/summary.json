@@ -1,0 +1,44 @@
+{
+  "seconds": 11,
+  "dom_missing_cases": 4,
+  "families": {
+    "PP": {
+      "n": 2,
+      "entities": 2,
+      "best": {
+        "copy": {
+          "flips": 0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "control": null,
+          "other": 0,
+          "pos": "question",
+          "layer": "28",
+          "strength": 1.0,
+          "gated_cells": 16
+        }
+      }
+    },
+    "MM": {
+      "n": 2,
+      "entities": 2,
+      "best": {
+        "copy": {
+          "flips": 1,
+          "ci": [
+            1.0,
+            1.0
+          ],
+          "control": null,
+          "other": 0,
+          "pos": "question",
+          "layer": "joint",
+          "strength": 1.0,
+          "gated_cells": 16
+        }
+      }
+    }
+  }
+}

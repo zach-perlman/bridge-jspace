@@ -1,0 +1,276 @@
+{
+  "diag_run": "gemma4itf_sink_diag_v1",
+  "verdict": "NOT ARTIFACT",
+  "per_window": {
+    "L30-38": {
+      "lookup_acc": {
+        "PP": 0.34,
+        "MP": 0.2653061224489796
+      },
+      "control_min": 1,
+      "gap": -0.25806122448979585,
+      "pass": false
+    },
+    "L40-48": {
+      "lookup_acc": {
+        "PP": 0.47,
+        "MP": 0.47959183673469385
+      },
+      "control_min": 0.9897959183673469,
+      "gap": 0.23234693877551016,
+      "pass": false
+    },
+    "L48-56": {
+      "lookup_acc": {
+        "PP": 0.03,
+        "MP": 0.04081632653061224
+      },
+      "control_min": 0.99,
+      "gap": -0.06520408163265301,
+      "pass": false
+    }
+  },
+  "protocol": "paper10",
+  "rule": "sink_decision: the attention-sink diagnostic's verdict, by the rule in docs/prereg_sink_1021.md (Zach, 2026-10-21,\nwritten before Gemma's test-set C1 was opened). Reads Gemma's held-out ctrl_v8 run with `paper10_nosink` and\n`paper10_nosink_rot` at layers 30-38, 40-48, 48-56:\n- ARTIFACT if at one or more windows P->P and M->P each keep >= 80%, every word's rotated control keeps >= 90%, and the\n  memory-final words' mean loss exceeds the lookup-final words' by >= 30 points;\n- NOT ARTIFACT if P->P and M->P are both below 50% at all three windows;\n- MIXED otherwise.\nWrites results/ablate_v2/sink_decision/<RUN>.json and .md, and the protocol for every later C1 run to MARKER (\"nosink\"\nfor ARTIFACT, else \"paper10\"). Also tabulates the descriptive companions if present (plain-text loss, dose, the 27B).",
+  "27B, ctrl_v8 (descriptive)": {
+    "L12-20": {
+      "paper10_nosink": {
+        "PP": {
+          "acc": 0.66,
+          "unedited": 1,
+          "n": 100
+        },
+        "PM": {
+          "acc": 0.62,
+          "unedited": 1,
+          "n": 100
+        },
+        "MM": {
+          "acc": 0.82,
+          "unedited": 1,
+          "n": 100
+        },
+        "MP": {
+          "acc": 0.71,
+          "unedited": 1,
+          "n": 100
+        }
+      },
+      "paper10_nosink_rot": {
+        "PP": {
+          "acc": 1,
+          "unedited": 1,
+          "n": 100
+        },
+        "PM": {
+          "acc": 1,
+          "unedited": 1,
+          "n": 100
+        },
+        "MM": {
+          "acc": 0.98,
+          "unedited": 1,
+          "n": 100
+        },
+        "MP": {
+          "acc": 0.99,
+          "unedited": 1,
+          "n": 100
+        }
+      }
+    },
+    "L32-40": {
+      "paper10_nosink": {
+        "PP": {
+          "acc": 1,
+          "unedited": 1,
+          "n": 100
+        },
+        "PM": {
+          "acc": 0.48,
+          "unedited": 1,
+          "n": 100
+        },
+        "MM": {
+          "acc": 0.46,
+          "unedited": 1,
+          "n": 100
+        },
+        "MP": {
+          "acc": 0.89,
+          "unedited": 1,
+          "n": 100
+        }
+      },
+      "paper10_nosink_rot": {
+        "PP": {
+          "acc": 1,
+          "unedited": 1,
+          "n": 100
+        },
+        "PM": {
+          "acc": 0.99,
+          "unedited": 1,
+          "n": 100
+        },
+        "MM": {
+          "acc": 1,
+          "unedited": 1,
+          "n": 100
+        },
+        "MP": {
+          "acc": 0.94,
+          "unedited": 1,
+          "n": 100
+        }
+      }
+    }
+  },
+  "Gemma dose, layers 30-38 (descriptive)": {
+    "L30-38": {
+      "top1": {
+        "PP": {
+          "acc": 0.7,
+          "unedited": 1,
+          "n": 100
+        },
+        "PM": {
+          "acc": 0.84,
+          "unedited": 0.99,
+          "n": 100
+        },
+        "MP": {
+          "acc": 0.6632653061224489,
+          "unedited": 1,
+          "n": 98
+        },
+        "MM": {
+          "acc": 0.9285714285714286,
+          "unedited": 1,
+          "n": 98
+        }
+      },
+      "top1_rot": {
+        "PP": {
+          "acc": 1,
+          "unedited": 1,
+          "n": 100
+        },
+        "PM": {
+          "acc": 0.99,
+          "unedited": 0.99,
+          "n": 100
+        },
+        "MP": {
+          "acc": 1,
+          "unedited": 1,
+          "n": 98
+        },
+        "MM": {
+          "acc": 1,
+          "unedited": 1,
+          "n": 98
+        }
+      },
+      "top2": {
+        "PP": {
+          "acc": 0.59,
+          "unedited": 1,
+          "n": 100
+        },
+        "PM": {
+          "acc": 0.8,
+          "unedited": 0.99,
+          "n": 100
+        },
+        "MP": {
+          "acc": 0.5306122448979592,
+          "unedited": 1,
+          "n": 98
+        },
+        "MM": {
+          "acc": 0.9081632653061225,
+          "unedited": 1,
+          "n": 98
+        }
+      },
+      "top2_rot": {
+        "PP": {
+          "acc": 1,
+          "unedited": 1,
+          "n": 100
+        },
+        "PM": {
+          "acc": 1,
+          "unedited": 0.99,
+          "n": 100
+        },
+        "MP": {
+          "acc": 1,
+          "unedited": 1,
+          "n": 98
+        },
+        "MM": {
+          "acc": 1,
+          "unedited": 1,
+          "n": 98
+        }
+      },
+      "top5": {
+        "PP": {
+          "acc": 0.5,
+          "unedited": 1,
+          "n": 100
+        },
+        "PM": {
+          "acc": 0.64,
+          "unedited": 0.99,
+          "n": 100
+        },
+        "MP": {
+          "acc": 0.3673469387755102,
+          "unedited": 1,
+          "n": 98
+        },
+        "MM": {
+          "acc": 0.7551020408163265,
+          "unedited": 1,
+          "n": 98
+        }
+      },
+      "top5_rot": {
+        "PP": {
+          "acc": 1,
+          "unedited": 1,
+          "n": 100
+        },
+        "PM": {
+          "acc": 1,
+          "unedited": 0.99,
+          "n": 100
+        },
+        "MP": {
+          "acc": 1,
+          "unedited": 1,
+          "n": 98
+        },
+        "MM": {
+          "acc": 0.9897959183673469,
+          "unedited": 1,
+          "n": 98
+        }
+      }
+    }
+  },
+  "textloss": {
+    "none": 7.659563899040222,
+    "top1": 12.946561574935913,
+    "top1_rot": 7.622420847415924,
+    "top1_nosink": 12.834357559680939,
+    "top1_nosink_rot": 7.653253942728043,
+    "top10": 16.911485135555267,
+    "top10_rot": 7.671062380075455,
+    "top10_nosink": 17.06180638074875,
+    "top10_nosink_rot": 7.66507613658905
+  }
+}

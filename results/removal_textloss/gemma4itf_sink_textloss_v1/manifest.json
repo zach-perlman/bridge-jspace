@@ -1,0 +1,39 @@
+{
+  "run": "gemma4itf_sink_textloss_v1",
+  "why": "Zach (2026-10-21): the attention-sink diagnostic (docs/prereg_sink_1021.md): Gemma plain-text loss, 30-38",
+  "written_utc": "2026-10-22T00:06:40Z",
+  "model": {
+    "target": "gemma-4-31b-it-full",
+    "repo": "google/gemma-4-31B-it",
+    "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "d16d81d8751ad69df3493c0b3ea7410da97f69abfb07ee115600ad21ef9ef30a"
+  ],
+  "layers": [
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38
+  ],
+  "conditions": [
+    "none",
+    "top1",
+    "top1_rot",
+    "top1_nosink",
+    "top1_nosink_rot",
+    "top10",
+    "top10_rot",
+    "top10_nosink",
+    "top10_nosink_rot"
+  ],
+  "doc": "python scripts/removal_textloss.py --name N --why W --layers L [L ...] [--conditions none jspace rotated top10 top10_rot]\n"
+}

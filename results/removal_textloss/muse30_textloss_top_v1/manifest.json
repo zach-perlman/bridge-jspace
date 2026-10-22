@@ -1,0 +1,35 @@
+{
+  "run": "muse30_textloss_top_v1",
+  "why": "Zach (2026-10-22): Muse Glimmer 30B, the second family, our J++: plain-text loss under the knock-out, L26-32 (the 27B's 32-40)",
+  "written_utc": "2026-10-22T04:50:43Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  ],
+  "layers": [
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32
+  ],
+  "conditions": [
+    "none",
+    "top1",
+    "top1_rot",
+    "top5",
+    "top5_rot",
+    "top10",
+    "top10_rot"
+  ],
+  "doc": "python scripts/removal_textloss.py --name N --why W --layers L [L ...] [--conditions none jspace rotated top10 top10_rot]\n"
+}

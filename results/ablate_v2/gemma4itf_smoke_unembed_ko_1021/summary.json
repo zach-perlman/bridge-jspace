@@ -1,0 +1,91 @@
+{
+  "seconds": 14,
+  "band_seconds": {
+    "L30-38": 6
+  },
+  "unedited_accuracy": {
+    "PP/clean": 1,
+    "PM/clean": 1,
+    "MP/clean": 1,
+    "MM/clean": 1,
+    "CP/clean": 1,
+    "CM/clean": 1
+  },
+  "cells": {
+    "L30-38": {
+      "PP/clean": {
+        "unembed10": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -9.965928673744273
+        },
+        "unembed10_rot": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -7.339148998260569
+        }
+      },
+      "PM/clean": {
+        "unembed10": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -9.970077335836663
+        },
+        "unembed10_rot": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -11.693308174612298
+        }
+      },
+      "MP/clean": {
+        "unembed10": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -12.452205955990863
+        },
+        "unembed10_rot": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -10.505421698102069
+        }
+      },
+      "MM/clean": {
+        "unembed10": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -11.4900068643351
+        },
+        "unembed10_rot": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -15.80136340882973
+        }
+      },
+      "CP/clean": {
+        "unembed10": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -18.549780070782223
+        },
+        "unembed10_rot": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -13.595610797405758
+        }
+      },
+      "CM/clean": {
+        "unembed10": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -8.316603004933143
+        },
+        "unembed10_rot": {
+          "n": 2,
+          "accuracy": 0,
+          "dlogp": -9.274067223072791
+        }
+      }
+    }
+  },
+  "sink_positions": {}
+}

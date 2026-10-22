@@ -1,0 +1,39 @@
+{
+  "seconds": 5,
+  "band_seconds": {
+    "L32-40": 2
+  },
+  "unedited_accuracy": {
+    "PP/clean": 1,
+    "MM/clean": 1
+  },
+  "cells": {
+    "L32-40": {
+      "PP/clean": {
+        "unembed10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.006351955933496356
+        },
+        "unembed10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.002251726109534502
+        }
+      },
+      "MM/clean": {
+        "unembed10": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.3512830901890993
+        },
+        "unembed10_rot": {
+          "n": 2,
+          "accuracy": 1,
+          "dlogp": -0.0349526796489954
+        }
+      }
+    }
+  },
+  "sink_positions": {}
+}
