@@ -1,0 +1,24 @@
+id: qwen35_122b_d1_topics2_map
+title: "D1 doubled (Qwen3.5-122B): competence and the map (PP, PM; animals, elements, Greek)"
+thread: D1
+gpus: 1
+mem_gb: 140
+est_gpu_hours: 2.0
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/tasks_v2.py competence --set d1_topics_v2 --name qwen35_122b_d1_topics2_competence --why "D1 on 122B: which scenes are right on every prompt" && BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/statement_positions.py map --name qwen35_122b_d1_topics2_smoke --families PP PM --n 3 --layers 24 28 --tasks-set d1_topics_v2 --tasks-competence qwen35_122b_d1_topics2_competence --why "smoke: not a result" && BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/statement_positions.py map --name qwen35_122b_d1_topics2_map --families PP PM --n 180 --tasks-set d1_topics_v2 --tasks-competence qwen35_122b_d1_topics2_competence --why "D1 on 122B: the map"
+question: >-
+  Where and at which layers is a stated bridge in transit for PP and PM on Qwen3.5-122B?
+why_it_matters: >-
+  The J-space claims rest on Qwen3.6-27B; Neel asked for a larger model early. Qwen3.5-122B-A10B has a published J++ and needs no port on an H200.
+hypotheses:
+  H-replicates: 'the lens gate passes and the split replicates. Prior 0.4'
+  H-no-lens: 'the lens gate fails (PM lens part < 30%). Prior 0.4'
+  H-not: 'the gate passes, the split does not replicate. Prior 0.2'
+decision_rule: >-
+  scripts/d1_verdict.py's map rule at the 27B's layers scaled by depth (fixed 2026-10-22 before these runs): the decisive cell is PP's statement cell (bind_bridge, bridge_word, context) in transit at the coarse layers in [24, 33) where C's whole copy flips the most lookups (ties: earlier layer, then bind_bridge, bridge_word, context). Replicates iff there the lens-readable part alone switches <= 0.10 of lookups and everything else >= 0.50 while PM's lens-readable part switches >= 0.30 (the lens gate: a failing control means no claim about the lens on this model). Per topic (animals, elements, Greek letters) the same verdict on the topic's rows; a topic counts only if its own control passes.
+controls:
+- 'O (another pair of picks swapped, off the path); a random direction at each row''s norm; a 25-atom OMP over a random dictionary; PM as the positive control on the same scenes'
+n: '180 scenes (PP and PM), d1_topics_v2, right on every prompt'
+seeds: [0]
+notes: "Dan, 2026-10-22 night: every experiment on Qwen3.5-122B-A10B on 23 Oct, on GPUs brought up for it (FP8 needs compute capability >= 8.9: one H200 per job; on A100s transformers dequantizes to bf16, ~244 GB, which needs a multi-GPU port). The 27B's rules, layers scaled by depth (x 48/64): its answer onset 33 (suite_split), the stated-bridge window [24, 33), the D4 grid 9-33. Lens: the published J++ (neuronpedia, fit on bf16 weights). Not opened before Dan predicts."

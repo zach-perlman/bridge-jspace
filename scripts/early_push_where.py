@@ -193,10 +193,11 @@ def decide(
     layers: list[int],
     scales: list[float],
     rule: str = "v1",
+    min_layer: int = V21_MIN_LAYER,
 ) -> dict:
     """cells: (family, subset, layer, scale, dir) -> {item: role}, items answered right unedited only. rule v1:
     select on BR, then check validity at the primary cell; v2: only valid cells are selected; v2.1: v2 at layers
-    >= V21_MIN_LAYER, the valid cells below reported in 'below_v21'."""
+    >= min_layer (V21_MIN_LAYER on the 27B; scaled by depth on other models), the valid cells below in 'below_v21'."""
     assert rule in ("v1", "v2", "v2.1"), rule
     sel, below = [], []
     for sub in ("w", "s"):
@@ -210,7 +211,7 @@ def decide(
                     if rule != "v1" and not cell_valid(cells, (sub, la, sc))[0]:
                         continue
                     row = {"subset": sub, "layer": la, "scale": sc, "br": round(p, 4)}
-                    if rule == "v2.1" and la < V21_MIN_LAYER:
+                    if rule == "v2.1" and la < min_layer:
                         bl = cell_rate(cells.get(("BL", sub, la, sc, "lens"), {}))
                         below.append({**row, "bl": None if math.isnan(bl[0]) else round(bl[0], 4)})
                         continue
@@ -403,7 +404,8 @@ def stage_analyze(name: str, rule: str | None = None) -> None:
     if rule:
         out_dir = out_dir / f"analysis-{rule}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
         out_dir.mkdir()
-    dec = decide(cells, scene_of, cfg["layers"], cfg["scales"], rule or cfg.get("rule", "v1"))
+    min_layer = cfg.get("v21_min_layer", V21_MIN_LAYER)
+    dec = decide(cells, scene_of, cfg["layers"], cfg["scales"], rule or cfg.get("rule", "v1"), min_layer)
     anchor = {f: cell_rate(cells.get((f, "b", 20, 8.0, "lens"), {})) for f in cfg["families"]}
     summary = {"run": name, "decision": dec, "counts": counts,
                "slide6_anchor": {f: {"now": anchor[f], "slide6": SLIDE6.get(f)} for f in anchor},
@@ -425,7 +427,7 @@ def stage_analyze(name: str, rule: str | None = None) -> None:
         lines += [f"- BR - BL (scene-paired, {dec['n_scenes_paired']} scenes): {100 * g[0]:+.0f} [{100 * g[1]:+.0f}, {100 * g[2]:+.0f}] points", ""]  # fmt: skip
     lines += [f"Selected cells (BR rows only): {len(dec['selected'])}", ""]
     if "below_v21" in dec:
-        lines += [f"Valid cells below layer {V21_MIN_LAYER} (reported, not decisive): "
+        lines += [f"Valid cells below layer {min_layer} (reported, not decisive): "
                   + ("; ".join(f"{d['subset']} L{d['layer']} {d['scale']:g}x: BR {100 * d['br']:.0f}%, BL "
                                + ("-" if d["bl"] is None else f"{100 * d['bl']:.0f}%") for d in dec["below_v21"]) or "none"), ""]  # fmt: skip
     lines += ["Slide 6 anchor (b, layer 20, 8x, lens): " + ", ".join(f"{f} {pct(v)} (slide 6: {100 * SLIDE6[f]:.0f}%)" for f, v in anchor.items()), ""]  # fmt: skip
@@ -476,13 +478,13 @@ def stage_figures(name: str) -> None:
                if any((f, sub, la, sc, "random") in cells for f in cfg["families"])]  # fmt: skip
         ax.plot([p[0] for p in rnd], [100 * p[1] for p in rnd], color="#52514e", ls=":", lw=1.5, label="random push (highest family)")  # fmt: skip
         ax.set_title(titles[sub], loc="left", fontsize=9.5)
-        ax.set_xlabel("layer (of 64)")
+        ax.set_xlabel(f"layer (of {m['model'].get('n_layers', pins.N_LAYERS)})")
         ax.set_ylim(0, 100)
         ax.grid(alpha=0.3)
     axes[0].set_ylabel("% switched to the other\nbridge's answer")
     h, labs = axes[0].get_legend_handles_labels()
     fig.legend(h, labs, loc="lower center", ncol=3, frameon=False, bbox_to_anchor=(0.5, -0.16), fontsize=9)
-    fig.suptitle(f"Where can the lens write a bridge? A lens push of {sc:g}x by layer and position (Qwen3.6-27B)",
+    fig.suptitle(f"Where can the lens write a bridge? A lens push of {sc:g}x by layer and position ({m['model']['repo'].split('/')[-1]})",
                  x=0.125, ha="left", fontweight="bold")  # fmt: skip
     fig.savefig(RESULTS / name / "where.png", dpi=150, bbox_inches="tight")
     print("wrote", RESULTS / name / "where.png")
@@ -496,12 +498,19 @@ if __name__ == "__main__":
     ap.add_argument("--n", type=int, default=DEFAULTS["n"])
     ap.add_argument("--scenes", choices=["map", "fresh"], default=DEFAULTS["scenes"])
     ap.add_argument("--rule", choices=["v1", "v2", "v2.1"], default=None,
-                    help="run: the rule in the config (v1, v2; default v1); analyze: an amendment into a new folder")  # fmt: skip
+                    help="run: the rule in the config (default v1); analyze: an amendment into a new folder")  # fmt: skip
+    ap.add_argument("--layers", type=int, nargs="+", default=None, help="run: the layer grid (default the 27B's)")
+    ap.add_argument("--context-layers", type=int, nargs="+", default=None, help="run, with --layers: the c layers")
+    ap.add_argument("--v21-min-layer", type=int, default=V21_MIN_LAYER, help="run, with --layers: v2.1's lowest layer")
     a = ap.parse_args()
     if a.stage == "run":
         assert a.why, "run needs --why"
-        assert a.rule in (None, "v1", "v2"), "run: rule v1 or v2 (v2.1 is an analysis amendment)"
-        stage_run(a.name, a.why, {**DEFAULTS, "n": a.n, "scenes": a.scenes, "rule": a.rule or DEFAULTS["rule"]})
+        cfg = {**DEFAULTS, "n": a.n, "scenes": a.scenes, "rule": a.rule or DEFAULTS["rule"]}
+        if a.layers:  # another depth (Qwen3.5-122B: the 27B's grid scaled by depth)
+            assert a.context_layers, "--layers needs --context-layers"
+            assert set(a.context_layers) <= set(a.layers), "--context-layers must be in --layers"
+            cfg.update(layers=a.layers, context_layers=a.context_layers, v21_min_layer=a.v21_min_layer)
+        stage_run(a.name, a.why, cfg)
     elif a.stage == "analyze":
         stage_analyze(a.name, a.rule)
     else:

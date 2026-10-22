@@ -427,7 +427,7 @@ Each model is tested only on items it answers right without any edit. All scenes
 
 | # | Step | Why | When |
 |---|---|---|---|
-| 1 | **Qwen3.5-122B-A10B, every experiment**, on GPUs we bring up for it: the stated-bridge test (its recall control is the lens gate), the lens read and push, the late read, name vs digit, finding 5 by the fixed rule. The 27B's specs, layers scaled by depth | The J-space claim on a larger model (Neel's ask) | Fri 23 |
+| 1 | **Qwen3.5-122B-A10B, every experiment**, on GPUs we bring up for it: the stated-bridge test (its recall control is the lens gate), the lens read and push, the late read (also with a long context), name vs digit (also in tables and JSON), finding 5 by the fixed rule. The 27B's rules, layers scaled by depth; ten specs ready (`jobs/*/qwen35_122b_*.yaml`, one H200 per job for the FP8 checkpoint) | The J-space claim on a larger model (Neel's ask) | Fri 23 |
 | 2 | **The stated-bridge test on Gemma 4** with Zach's refit J++ (it passed his gate, 0.53; the lens file is on Zach's box) | Another family for the lens claim | Fri 23 |
 | 3 | **The stated-bridge test in tables and JSON**, Qwen3.6-27B (needs the statement adapter for rows and objects); C1 there is Zach's, done | The lens claim beyond prose | Fri 23 |
 | 4 | The late read with a long context: the same scenes with ~2000 tokens of filler between the list and the question, Qwen3.6-27B | "The DeltaNet layers play no part only because the prompts are short" | Fri 23 |

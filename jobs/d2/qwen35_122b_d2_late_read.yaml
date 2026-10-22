@@ -1,0 +1,24 @@
+id: qwen35_122b_d2_late_read
+title: "The late read (Qwen3.5-122B)"
+thread: D2
+gpus: 1
+mem_gb: 140
+est_gpu_hours: 0.4
+depends_on:
+- qwen35_122b_d3v4_competence
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/attn_knockout.py manifest --name qwen35_122b_d2_late_read --dataset pointer_v4 --families RL --n 100 --sources lookup lookup_off --dests final question --layers all kind --sweep path --competence qwen35_122b_d3v4_competence --why "finding 4 on a larger model" && BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/attn_knockout.py run --name qwen35_122b_d2_late_read
+figures_command: BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/attn_knockout.py summarise --name qwen35_122b_d2_late_read
+question: >-
+  Hidden from the last tokens in every attention layer, does the answer's statement leave Qwen3.5-122B guessing?
+why_it_matters: >-
+  The J-space claims rest on Qwen3.6-27B; Neel asked for a larger model early. Qwen3.5-122B-A10B has a published J++ and needs no port on an H200.
+hypotheses:
+  H-late: 'replicates. Prior 0.8'
+decision_rule: >-
+  The late-read rule of the seed2 runs, unchanged: memory -> prompt, topics pooled, items right unedited. Replicates iff the answer's statement hidden from the last tokens in every attention layer leaves <= 20% right with the Wilson upper bound <= 0.30, the off-path statement hidden there keeps >= 90% (lower bound >= 0.85), and hidden in every DeltaNet layer instead keeps >= 90%.
+controls:
+- 'the off-path statement of the same token length hidden the same way; the DeltaNet layers instead of the attention layers; unedited accuracy'
+n: '100 memory -> prompt items, main'
+seeds: [0]
+notes: "Dan, 2026-10-22 night: every experiment on Qwen3.5-122B-A10B on 23 Oct, on GPUs brought up for it (FP8 needs compute capability >= 8.9: one H200 per job; on A100s transformers dequantizes to bf16, ~244 GB, which needs a multi-GPU port). The 27B's rules, layers scaled by depth (x 48/64): its answer onset 33 (suite_split), the stated-bridge window [24, 33), the D4 grid 9-33. Lens: the published J++ (neuronpedia, fit on bf16 weights). Not opened before Dan predicts."

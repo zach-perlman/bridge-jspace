@@ -1,0 +1,24 @@
+id: qwen35_122b_d2_parts
+title: "Name vs digit (Qwen3.5-122B)"
+thread: D2
+gpus: 1
+mem_gb: 140
+est_gpu_hours: 0.8
+depends_on:
+- qwen35_122b_d3v4_competence
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/attn_knockout.py manifest --name qwen35_122b_d2_parts --dataset pointer_v4 --families RL DL RR --n 100 --sources lookup lookup_off lookup_name lookup_digit lookup_off_name lookup_off_digit lookup_nodigit lookup_noname lookup_off_nodigit lookup_off_noname --dests question final --layers all --competence qwen35_122b_d3v4_competence --why "finding 3 on a larger model" && BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/attn_knockout.py run --name qwen35_122b_d2_parts
+figures_command: uv run python scripts/d2_parts.py --name qwen35_122b_d2_parts
+question: >-
+  Do the last tokens take only the digit from the answer's statement, the question's tokens its name?
+why_it_matters: >-
+  The J-space claims rest on Qwen3.6-27B; Neel asked for a larger model early. Qwen3.5-122B-A10B has a published J++ and needs no port on an H200.
+hypotheses:
+  H-digit-final-split: 'holds. Prior 0.75'
+decision_rule: >-
+  scripts/d2_parts.py's rule, unchanged: valid-split first; H-digit-final-split (memory -> prompt) decisive; H-name-q-split where the question is testable.
+controls:
+- 'the off-path statement of the same token length hidden the same way; the DeltaNet layers instead of the attention layers; unedited accuracy'
+n: '100 items per family (RL, DL, RR), main'
+seeds: [0]
+notes: "Dan, 2026-10-22 night: every experiment on Qwen3.5-122B-A10B on 23 Oct, on GPUs brought up for it (FP8 needs compute capability >= 8.9: one H200 per job; on A100s transformers dequantizes to bf16, ~244 GB, which needs a multi-GPU port). The 27B's rules, layers scaled by depth (x 48/64): its answer onset 33 (suite_split), the stated-bridge window [24, 33), the D4 grid 9-33. Lens: the published J++ (neuronpedia, fit on bf16 weights). Not opened before Dan predicts."
