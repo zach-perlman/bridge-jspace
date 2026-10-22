@@ -10,6 +10,8 @@
 #     32 prompts (rows per pass 32, else 16; one checkpoint at the end: disk), merge, grading, readout weights, held-out
 #     evaluation (J++, pooled, logit lens), export, model entry muse-glimmer-30b (prefix muse30_), commit.
 # 2026-10-22 ~03:20 UTC: relaunched after the router failed offline (no cached 'main' ref); finished steps skip.
+# 2026-10-22 ~04:45 UTC: the merge ran out of GPU memory (one 72 GB shard on the GPU): it now sums on the CPU;
+# the finished shard is kept and skipped.
 set -u
 cd /workspace/bridge-jspace
 set -a; . ./.env; set +a
@@ -41,7 +43,9 @@ echo "=== router $(date -u +%T)"
 [ -f "$OUT/router.pt" ] || { $C fit-router $M --layers "$LAYERS" --num-prompts 64 --skip-first-n-positions 16 --max-seq-len 128 --seed 0 \
   --out "$OUT/router.tmp.pt" > /workspace/scratch/muse_router.log 2>&1 && mv "$OUT/router.tmp.pt" "$OUT/router.pt" || { echo "router failed: stop"; tail -5 /workspace/scratch/muse_router.log; exit 1; }; }
 ok=0
+[ -n "$(ls "$OUT"/artifacts/*/fit32/shard0of*/experts_K8_checkpoint.pt 2>/dev/null)" ] && { ok=1; echo "=== shard done already"; }
 for rows in 32 16; do
+  [ $ok = 1 ] && break
   echo "=== fit-shard (32 prompts, one shard), $rows rows per pass $(date -u +%T)"
   $C fit-shard $M --layers "$LAYERS" --router-path "$OUT/router.pt" --shard-idx 0 --num-shards 1 --num-prompts 32 \
     --target-offset -1 --lrp-mode rlens --jacobian-rows-per-pass $rows --max-seq-len 128 --skip-first-n-positions 16 \
@@ -53,7 +57,7 @@ for rows in 32 16; do
 done
 [ $ok = 1 ] || { echo "fit failed: stop"; exit 1; }
 echo "=== merge $(date -u +%T)"
-$C merge-experts --checkpoint-dirs $(ls -d "$OUT"/artifacts/*/fit32/shard0of* | tail -1) --out "$OUT/experts.pt" --pooled-lens-out "$OUT/pooled_lens.pt" \
+$C merge-experts --checkpoint-dirs $(ls -d "$OUT"/artifacts/*/fit32/shard0of* | tail -1) --out "$OUT/experts.pt" --pooled-lens-out "$OUT/pooled_lens.pt" --device cpu \
   > /workspace/scratch/muse_merge.log 2>&1 || { echo "merge failed: stop"; tail -5 /workspace/scratch/muse_merge.log; exit 1; }
 rm -rf "$OUT"/artifacts
 echo "=== grade $(date -u +%T)"
