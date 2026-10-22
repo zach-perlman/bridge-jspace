@@ -30,27 +30,41 @@ check: lint typecheck test
 data-report:        ## what data we work with: counts, categories, labels, overlaps (add ARGS=--json)
 	uv run python -m scripts.data_report $(ARGS)
 
-# Job queue on the GPU box (scripts/jobq.py): make enqueue JOB=jobs/d2/d2_ko_v1.yaml (committed tree only)
-enqueue:            ## queue a job spec (or several: JOB="a.yaml b.yaml") on the GPU box
-	uv run python -m scripts.jobq enqueue $(JOB) $(ARGS)
+# Job queue on a GPU box (scripts/jobq.py): make enqueue JOB=jobs/d2/d2_ko_v1.yaml (committed tree only).
+# Which box: QUEUE=a100 (default: sesterce-a100x4, 4 GPUs) or QUEUE=h200 (sesterce-h200x2, 2 GPUs);
+# queue-stats also takes QUEUE=all. Example: make queue-stats QUEUE=h200
+QUEUE ?= a100
+QUEUE_HOST_a100 := sesterce-a100x4
+QUEUE_HOST_h200 := sesterce-h200x2
+QUEUE_GPUS_a100 := 4
+QUEUE_GPUS_h200 := 2
+JOBQ = JOBQ_HOST=$(QUEUE_HOST_$(QUEUE)) uv run python -m scripts.jobq
 
-queue-status:       ## running (with progress/ETA), pending, last done/failed jobs and their durations
-	uv run python -m scripts.jobq status
+enqueue:            ## queue a job spec (or several: JOB="a.yaml b.yaml") on the GPU box (QUEUE=a100|h200)
+	$(JOBQ) enqueue $(JOB) $(ARGS)
 
-queue-pull:         ## results (new dirs only), ledger, EXPERIMENTS.md drafts, logs from the box
-	uv run python -m scripts.jobq pull
+queue-status:       ## running (with progress/ETA), pending, last done/failed jobs and their durations (QUEUE=a100|h200)
+	$(JOBQ) status
 
-queue-worker:       ## start the worker for GPU $(GPU) (default 0) in tmux on the box, if not running
-	uv run python -m scripts.jobq start-worker --gpu $(or $(GPU),0)
+queue-pull:         ## results (new dirs only), ledger, EXPERIMENTS.md drafts, logs from the box (QUEUE=a100|h200)
+	$(JOBQ) pull
 
-queue-cancel:       ## cancel a pending job: make queue-cancel ID=<job id>
-	uv run python -m scripts.jobq cancel $(ID)
+queue-worker:       ## start the worker for GPU $(GPU) (default 0) in tmux on the box, if not running (QUEUE=a100|h200)
+	$(JOBQ) start-worker --gpu $(or $(GPU),0)
 
-queue-archive:      ## move done / failed / cancelled records out of queue-status (the ledger keeps them)
-	uv run python -m scripts.jobq archive
+queue-cancel:       ## cancel a pending job: make queue-cancel ID=<job id> (QUEUE=a100|h200)
+	$(JOBQ) cancel $(ID)
 
-queue-stats:        ## counts, GPU-hours used (last 24 h) and left, when the queue drains on 4 GPUs
-	uv run python -m scripts.jobq stats
+queue-archive:      ## move done / failed / cancelled records out of queue-status (the ledger keeps them) (QUEUE=a100|h200)
+	$(JOBQ) archive
+
+queue-stats:        ## counts, GPU-hours used (last 24 h) and left, when the queue drains (QUEUE=a100|h200|all)
+ifeq ($(QUEUE),all)
+	@echo "== a100 ($(QUEUE_HOST_a100))"; JOBQ_HOST=$(QUEUE_HOST_a100) uv run python -m scripts.jobq stats --gpus $(QUEUE_GPUS_a100)
+	@echo "== h200 ($(QUEUE_HOST_h200))"; JOBQ_HOST=$(QUEUE_HOST_h200) uv run python -m scripts.jobq stats --gpus $(QUEUE_GPUS_h200) || echo "(h200 queue not set up or box gone)"
+else
+	$(JOBQ) stats --gpus $(QUEUE_GPUS_$(QUEUE))
+endif
 
 examples-render:    ## examples/<exp>/ from the latest examples run of each experiment (no GPU)
 	uv run python -m bridge_jspace.examples export
