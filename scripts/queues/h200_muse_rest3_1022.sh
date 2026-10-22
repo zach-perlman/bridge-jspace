@@ -1,4 +1,7 @@
 #!/bin/bash
+# 2026-10-22 ~07:20 UTC (efficiency): the aligned-band steering runs only the writes the C2 rules score (lens_add,
+# lens_swap, copy for the ceiling, and the early injection control); c2_graded / c2_narrow give identical verdicts
+# and numbers without the transplant and difference-of-means writes (checked on wm2_full2_v2). Saves ~half the run.
 # 2026-10-22 (Zach; replaces h200_muse_rest2_1022.sh before it started: Muse's kill tests dropped, since the knock-out
 # barely moves Muse, and the dose curve runs in the core job instead). Was: (Zach: "Go"; replaces h200_muse_rest_1022.sh): the rest of Muse Glimmer 30B's set (our
 # J++), GPU 0, reordered so that what the claims hinge on runs first: (1) C1's kill tests at the middle band (keep own
@@ -43,7 +46,7 @@ AB=$($PY scripts/choose_steer_band.py muse30_copy_sweep_full2_v1) || AB=""
 echo "=== aligned band: ${AB:-none}"
 if [ -n "$AB" ]; then
   BJ_BATCH=64 $PY scripts/write_max.py --name muse30_wm2_full2_aligned_v1 --why "$WHY: two-step steering at the aligned band ${AB%% *} (scripts/choose_steer_band.py)" \
-    --n 1000 --possets question final --band ${AB%% *} --single-step 2 --early 13 16 20 $W2 \
+    --n 1000 --writes lens_add lens_swap copy early_lens_add early_embed_add --possets question final --band ${AB%% *} --single-step 2 --early 13 16 20 $W2 \
     && $PY scripts/c2_graded.py muse30_wm2_full2_aligned_v1 | tail -14 \
     && $PY scripts/c2_graded.py muse30_wm2_full2_aligned_v1 --drop-guessable > /dev/null \
     && $PY scripts/c2_narrow.py muse30_wm2_full2_aligned_v1 muse30_wm2_full2_aligned_v1_noguess || echo "=== aligned steering FAILED"

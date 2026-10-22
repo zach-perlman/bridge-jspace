@@ -1,4 +1,7 @@
 #!/bin/bash
+# 2026-10-22 ~07:20 UTC (efficiency): the aligned-band steering runs only the writes the C2 rules score (lens_add,
+# lens_swap, copy for the ceiling, and the early injection control); c2_graded / c2_narrow give identical verdicts
+# and numbers without the transplant and difference-of-means writes (checked on wm2_full2_v2). Saves ~half the run.
 # 2026-10-22 (Zach: "Go"; replaces h200_q32_rest_1021.sh before it started): the rest of Qwen3-32B's set, reordered so
 # that what the claims hinge on runs first. (1) C1's kill tests at the middle band: keep own word, two more rotated-
 # control seeds. (2) C2 at the aligned band: the band copy sweep, then scripts/choose_steer_band.py (the earliest band
@@ -55,7 +58,7 @@ AB=$($PY scripts/choose_steer_band.py qwen3_32b_copy_sweep_full2_v1) || AB=""
 echo "=== aligned band: ${AB:-none}"
 if [ -n "$AB" ]; then
   BJ_BATCH=64 $PY scripts/write_max.py --name qwen3_32b_wm2_full2_aligned_v1 --why "$WHY: two-step steering at the aligned band ${AB%% *} (scripts/choose_steer_band.py)" \
-    --n 1000 --possets question final --band ${AB%% *} --single-step 2 --early 16 20 24 $W2 \
+    --n 1000 --writes lens_add lens_swap copy early_lens_add early_embed_add --possets question final --band ${AB%% *} --single-step 2 --early 16 20 24 $W2 \
     && $PY scripts/c2_graded.py qwen3_32b_wm2_full2_aligned_v1 | tail -14 \
     && $PY scripts/c2_graded.py qwen3_32b_wm2_full2_aligned_v1 --drop-guessable > /dev/null \
     && $PY scripts/c2_narrow.py qwen3_32b_wm2_full2_aligned_v1 qwen3_32b_wm2_full2_aligned_v1_noguess || echo "=== aligned steering FAILED"
@@ -65,7 +68,7 @@ AB27=$(BJ_TARGET=qwen3.6-27b $PY scripts/choose_steer_band.py copy_sweep_full2_v
 echo "=== 27B aligned band: ${AB27:-none}"
 [ -n "$AB27" ] && { BJ_TARGET=qwen3.6-27b BJ_BATCH=64 $PY scripts/write_max.py --name wm2_full2_aligned_v1 \
     --why "Zach (2026-10-22): the 27B's two-step steering at the aligned band ${AB27%% *} (scripts/choose_steer_band.py on copy_sweep_full2_v2)" \
-    --n 1000 --possets question final --band ${AB27%% *} --single-step 2 --early 16 20 24 \
+    --n 1000 --writes lens_add lens_swap copy early_lens_add early_embed_add --possets question final --band ${AB27%% *} --single-step 2 --early 16 20 24 \
     --tasks full_v8 --tasks-competence full_v8_competence_v1 --tasks-level all --families PP PM MP MM CP CM \
     && BJ_TARGET=qwen3.6-27b $PY scripts/c2_graded.py wm2_full2_aligned_v1 | tail -14 \
     && BJ_TARGET=qwen3.6-27b $PY scripts/c2_graded.py wm2_full2_aligned_v1 --drop-guessable > /dev/null \
