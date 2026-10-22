@@ -13,7 +13,7 @@ import torch
 from huggingface_hub import hf_hub_download
 
 from . import pins
-from .model import Model
+from .model import Model, to_device
 
 
 def check_frozen(path: Path) -> None:
@@ -49,26 +49,29 @@ class JLens:
         self.name, self.file_keys = lens, sorted(blob)
         self.source_layers: list[int] = list(blob["source_layers"])
         self._J_cpu: dict[int, torch.Tensor] = blob["J"]
-        self._J_gpu: dict[int, torch.Tensor] = {}
+        self._J_gpu: dict[tuple[int, torch.device], torch.Tensor] = {}
         self.model = model
-        self._gain = model.norm_gain()
-        self._w_u = model.hf.lm_head.weight  # [vocab, d] bf16, cuda
+        self._gain = model.norm_gain()  # home device
+        self._w_u = model.hf.lm_head.weight  # [vocab, d] bf16, on the lm_head's GPU
 
-    def J(self, layer: int) -> torch.Tensor:
-        """J_l [d, d], fp32 on the GPU (kept after first use)."""
-        if layer not in self._J_gpu:
-            self._J_gpu[layer] = self._J_cpu[layer].to("cuda", torch.float32)
-        return self._J_gpu[layer]
+    def J(self, layer: int, device: torch.device | None = None) -> torch.Tensor:
+        """J_l [d, d], fp32 on `device` (default: the model's home device), kept per device after first use."""
+        key = (layer, device or self.model.device)
+        if key not in self._J_gpu:
+            self._J_gpu[key] = self._J_cpu[layer].to(key[1], torch.float32)
+        return self._J_gpu[key]
 
     def readout(self, h: torch.Tensor, layer: int) -> torch.Tensor:
-        """Lens logits [..., vocab] for residuals h [..., d] at a layer."""
-        return self.model.unembed(h.float() @ self.J(layer).T)
+        """Lens logits [..., vocab] (home device) for residuals h [..., d] at a layer; J_l is applied on h's device."""
+        return self.model.unembed(h.float() @ self.J(layer, h.device).T)
 
     @torch.no_grad()
     def vectors(self, layer: int, token_ids: torch.Tensor, unit: bool = True, chunk: int = 32768) -> torch.Tensor:
-        """J-lens vectors [n, d] fp32 for token_ids at a layer, unit-normalised by default."""
-        out = torch.empty(len(token_ids), self._w_u.shape[1], device="cuda")
+        """J-lens vectors [n, d] fp32 on the home device for token_ids at a layer, unit-normalised by default."""
+        home = self.model.device
+        out = torch.empty(len(token_ids), self._w_u.shape[1], device=home)
         for s in range(0, len(token_ids), chunk):
-            rows = (self._w_u[token_ids[s : s + chunk]].float() * self._gain) @ self.J(layer)
+            w_u = to_device(self._w_u[to_device(token_ids[s : s + chunk], self._w_u.device)], home)
+            rows = (w_u.float() * self._gain) @ self.J(layer, home)
             out[s : s + chunk] = torch.nn.functional.normalize(rows, dim=-1) if unit else rows
         return out

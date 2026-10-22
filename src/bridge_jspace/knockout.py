@@ -130,6 +130,7 @@ def knock_out(
     layers when another row is knocked out there). Sources and destinations of a row must be disjoint, and position 0
     is never a source. With `norm_log`, each knocked DeltaNet layer appends {"layer", "rows", "ratio"}: per knocked row,
     the mean over D and heads of ||o_d|| (second run) / ||o_d|| (normal run), before the per-head output RMSNorm.
+    The blocks may be split over GPUs (model.py, Devices): each layer builds its masks on its own device.
 
     `heads` (one entry per row, None = every head): the query heads whose (D, S) logits are masked, in full-attention
     layers only (a row with heads may list no DeltaNet layer). The unit is the query head: with grouped-query attention
@@ -291,9 +292,10 @@ def _without_sources(gdn: Any, src: torch.Tensor, mode: str) -> Iterator[None]:
 @torch.no_grad()
 def attention_probs(model: Any, input_ids: torch.Tensor, layers: Collection[int], q_positions: Sequence[int]):
     """Each listed full-attention layer's softmax attention, per query head, from the query positions to every key
-    position, in one unedited forward: {layer: [batch, heads, len(q_positions), T]} (fp32). Recomputed from the layer's
-    own inputs (query projection without its gate half, per-head norms, rotary embedding, the scaling, causal softmax),
-    so the forward itself keeps its attention implementation; tests check it against eager attention weights."""
+    position, in one unedited forward: {layer: [batch, heads, len(q_positions), T]} (fp32, on the input embedding's
+    device however the blocks are split over GPUs). Recomputed from the layer's own inputs (query projection without
+    its gate half, per-head norms, rotary embedding, the scaling, causal softmax), so the forward itself keeps its
+    attention implementation; tests check it against eager attention weights."""
     hf = getattr(model, "hf", model)
     out: dict[int, torch.Tensor] = {}
     with capture_attention(model, layers, q_positions, out):
@@ -308,6 +310,7 @@ def capture_attention(
     """While active, every forward fills `out` as attention_probs returns it, for whatever else the forward does
     (e.g. residual edits by other hooks: the attention is then the edited forward's)."""
     blocks: Any = decoder_layers(model)
+    home = getattr(model, "hf", model).get_input_embeddings().weight.device
 
     def hook_for(la: int):
         def hook(module, args, kwargs):
@@ -323,7 +326,8 @@ def capture_attention(
             qp = torch.tensor(list(q_positions), device=hs.device)
             scores = (q[:, :, qp].float() @ k.float().transpose(-1, -2)) * module.scaling
             future = torch.arange(hs.shape[1], device=hs.device)[None, :] > qp[:, None]
-            out[la] = scores.masked_fill(future, float("-inf")).softmax(-1)
+            probs = scores.masked_fill(future, float("-inf")).softmax(-1)
+            out[la] = probs if probs.device == home else probs.to(home)
 
         return hook
 
