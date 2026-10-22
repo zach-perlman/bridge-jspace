@@ -8,7 +8,7 @@
 
 ### The story in three claims
 
-1. **Recall goes through the J-space; a lookup does not use the J-space part of its bridge.** The lens reads a stated bridge, but the lookup works without that part (Zach's measures and slide 2; Qwen3.6-27B).
+1. **Recall goes through the J-space; a lookup does not use the J-space part of its bridge.** The lens reads a stated bridge, but the lookup works without that part (Zach's measures and slide 2; Qwen3.6-27B). The lens can write the bridge only while it is being formed (layer 20 in slide 6, layers 32-40 in Zach's measures); later, at the last tokens, it writes neither recall nor the lookup, with one exception (slide 5).
 2. **What the lookup uses instead is the same on five models:** a late attention read of the answer's statement by the last tokens (slide 3), and the choice of statement is set by an order label for the first two statements and by the bridge's identity for the rest (slide 4).
 3. **Open:** is that identity carried in a code the lens cannot write? A fair test needs a place where the lens push does write the bridge (a positive control). At the last tokens there is only one: chemical elements at layers 40-44 (six entities); on countries, animals and body parts the lens writes no recall at any layer 32-48 (slide 5). There, at layer 44, the lens push moves none of the lookups of statements 3-5 (0 of 47; 2 of 154 on new scenes) while a patch moves 27-30% and the same push moves 43-47% of recalls. So the "reads but does not write" asymmetry is shown where the bridge sits in the context (slide 2), and at the last tokens only on six entities. If it holds more widely, a lens-based monitor would miss what drives lookups.
 
@@ -26,7 +26,7 @@ The **J-lens** (Gurnee et al. 2026, [Verbalizable Representations Form a Global 
 
 | Slide | Plan item | Answer so far | Models |
 |---|---|---|---|
-| 2 | Where does the lookup read the bridge: where it is stated, or at the question? | Where it is stated, from the last tokens, late. A stated bridge stays at its statement until ~2/3 of the depth; the lens-readable part of it is not what the lookup uses | 27B (all 5 for the read) |
+| 2 | Where does the lookup read the bridge: where it is stated, or at the question? | Where it is stated, from the last tokens, late. A stated bridge stays at its statement until ~2/3 of the depth; the lens-readable part of it is not what the lookup uses. The question's tokens read the entity's name back from the statement, the last tokens its digit | 27B (the read: all 5; name / digit: 4) |
 | 3 | Attention knock-out: block the read. Does the lookup break while recall survives? | The lookup breaks down to guessing among the list's digits on all 5; recall stays (99-100% on the 3 models with a recall family), but that is by construction: its blocked statement is off its path | all 5 (recall: 3) |
 | 4 | Pointers: lookback / binding-ID tests (swap the statement order) | The last tokens carry an **order label for the 1st and 2nd statement** and the **bridge's identity** for the rest; the label counts order in the list, not place in the text | all 5 |
 | 5 | Fit a code that writes the lookup; its cosine with the lens | A fitted ~4-dim slot code moves 31-42% of lookups; its cosine with lens directions is at chance; the model does not need it. Where the lens push does write recall at the last tokens (only elements, layers 40-44), it moves no lookups while a patch does; six entities | 27B (OLMo: does not write) |
@@ -94,11 +94,11 @@ The **J-lens** (Gurnee et al. 2026, [Verbalizable Representations Form a Global 
 
 ![Name vs digit, four models](figures/readme_1021/f21_name_vs_digit.png)
 
-- The **question's tokens read the name**: hiding the name hurts exactly as much as hiding the whole statement (Qwen3-32B 32% right, Qwen3.5-9B 61%, OLMo 13%), hiding the digit and the rest of the statement nothing (95-100%). The model needs the name there to resolve the bridge among the listed entities; the wrong answers fall off the list.
+- The **question's tokens read the name back from the statement** ("lookback to the name"): hiding the name hurts exactly as much as hiding the whole statement, hiding the digit and the rest of the statement nothing (95-100%), and the wrong answers fall off the list. For a **named** bridge ("Which drawer holds the file on Greece?") this holds on all four models (5-12% right with the name hidden, Qwen3.6-27B included); for a **recalled** bridge on Qwen3-32B (32%), Qwen3.5-9B (61%) and OLMo (13%), but not on Qwen3.6-27B (90%): there the recalled bridge skips this step. Why the question reads the name (for instance, to resolve the bridge among the listed entities) is not tested; for a named bridge there is nothing to resolve.
 - The **last tokens read the digit**: hiding the digit with the statement's other tokens breaks the lookup (2-11% right, as low as the whole statement), hiding the name and the rest barely matters (88-96%), on all four models. The digit token alone leaks through its neighbours (7-44% right).
 - The same at every position of the asked statement; controls (the same parts of another statement) 99-100%.
 
-**So:** the lookup reads the bridge where it is stated, late, and not through the part of it the lens reads; the question's tokens fetch the name, the last tokens the digit.
+**So:** the lookup reads the bridge where it is stated, late, and not through the part of it the lens reads; the question's tokens read the name back (always for a named bridge, on three of four models for a recalled one), the last tokens read the digit.
 
 ---
 
@@ -178,7 +178,7 @@ The **J-lens** (Gurnee et al. 2026, [Verbalizable Representations Form a Global 
 
 ![A positive control for the lens](figures/readme_1021/f22_c2_positive_control.png)
 
-- Only **chemical elements at layers 40 and 44** qualify (lens on recall 31-47%). On countries, animals and body parts the lens writes 0-16% of recalls at every layer; on countries even a patch moves no recall at the last tokens.
+- Only **chemical elements at layers 40 and 44** qualify (lens on recall 31-47%). On countries, animals and body parts the lens writes 0-16% of recalls at every layer, while a patch moves 23-63% of recalls on animals and body parts at layers 44-48; on countries even a patch moves no recall at the last tokens. Caveat: for a recall the bridge's identity and the answer coincide, so a late patch may carry the answer itself rather than the bridge.
 - In the primary cell (elements, layer 44) the split **holds**: lookups of statements 3-5 moved to the bridge's statement by the lens 0 of 47 (upper bound 8%), random 0%, patch 30%; the same push moves 47% of recalls. At layer 40 it is **inconclusive**: the lens moves 13% of lookups [6, 25], random 2%.
 - On 154 scenes not used in this sweep, the same rule at layer 44 gives the same: lens 2 of 154, patch 42 of 154, recall 39 of 90. (An earlier version of this page called a 201-item set "independent"; it shared 47 items with the sweep.)
 - Six entities only, so step b (a supervised identity direction, ≥ 12 entities) is not run.
@@ -240,7 +240,7 @@ The **J-lens** (Gurnee et al. 2026, [Verbalizable Representations Form a Global 
 | Label → digit, % of depth | 72-81% | 75-81% | 56-72% | 50-59% | 67-70% |
 | Lookup right, statement hidden from the last tokens (guessing: 20%) | 9% | 3% | 3% | 0% | 23% |
 | … hidden from the question's tokens | 90% | 32% | 61% | 14% | 98% |
-| What the question's tokens take from the statement | – (not needed) | the name | the name | the name | – (not needed) |
+| What the question's tokens take from the statement (recalled / named bridge) | – (not needed) / the name | the name / the name | the name / the name | the name / the name | – / – |
 | What the last tokens take from the statement | the digit | the digit | the digit | the digit | – |
 | 1st / 2nd statement label | 100% / 97% | 100% / 89% | 89% / 57% | 86% / 41% | 40% / 37% |
 | 3rd-5th: the bridge identity steers | yes | ties the slot | yes | yes | yes |
@@ -265,8 +265,10 @@ The **J-lens** (Gurnee et al. 2026, [Verbalizable Representations Form a Global 
 | 3 | Which statement: an order label for the 1st and 2nd, the bridge's identity for the rest | **High** in the data; one layer per model | 5 of 5 |
 | 4 | The label counts order in the list, not place in the text | **Medium**: pooled over statements | 4 of 4 tested |
 | 5 | An early lens push writes the recalled bridge; it is not an input edit | **Medium-high**, pre-registered | Qwen3.6-27B |
-| 6 | The question's tokens read the entity's **name** from the statement (to resolve the bridge); the last tokens read its **digit** | **High**, leak-robust spans, pre-registered | name: the 3 models whose question needs the statement; digit: 4 of 4 |
+| 6 | The question's tokens read the entity's **name** back from the statement; the last tokens read its **digit** | **High**, leak-robust spans, pre-registered | name: named bridges 4 of 4, recalled bridges 3 of 4 (not Qwen3.6-27B); digit: 4 of 4 |
 | 7 | The "around" route *is* an identity code outside the J-space | **Not shown**: the only positive control at the last tokens is one topic (6 entities), where it holds | Qwen3.6-27B |
+
+**A candidate mechanism (not tested).** Claims 3 and 6 fit together: the last tokens form a query (an order label for the 1st and 2nd statement, the bridge's identity otherwise) and read the answer's **digit**, not its name, even for statements 3-5. So the owner's identity must sit in the attention key at the digit or its neighbours, and late attention matches query to key, as in binding and lookback work. Two cheap tests: read the digit positions with the lens; patch the digit token's residual between scenes.
 
 **Negative or inconclusive** (kept for the record, not part of the story):
 - The fitted slot code overrides the lookup but is not the model's own address (4% at its natural size; removing it changes nothing); it does not write on OLMo.
@@ -285,7 +287,8 @@ The **J-lens** (Gurnee et al. 2026, [Verbalizable Representations Form a Global 
 | ~~Sharp C2, step a~~ (done): only elements at layers 40-44 give a positive control at the last tokens (slide 5) | | Thu 22 |
 | ~~Name vs digit~~ (done): the question's tokens read the name, the last tokens the digit (slide 2) | | Thu 22 |
 | **D1 on three topics and on Qwen3-32B** (its lens from neuronpedia) | Claim 2 beyond one topic and one model, and claim 7's main evidence: D1's positive control is built in (the same vector a recall from the stated bridge uses) | Fri 23 |
-| C2 plan B: a second topic that is recalled late at the last tokens (like elements: symbol → element, or similar), to reach ≥ 12 entities; then step b (the identity direction, code ready) | Does an identity code the lens cannot write steer the lookup? (claim 7) | Fri 23, if a topic is found |
+| C2 plan B: screen new topics recalled late, with an extra step in memory ("the element with atomic number N", "the state with postal code XX"), with the lens on recall only (~0.2 GPU-h per topic); with ≥ 12 entities in valid cells, step b (the identity direction, code ready) | Does an identity code the lens cannot write steer the lookup? (claim 7) | Fri 23 |
+| The candidate mechanism: the lens at the digit positions; patch the digit token's residual between scenes | Does the owner's identity sit in the key at the digit? | Fri 23, if time |
 | Freeze claims 1, 3 and slide 2 (b); verify by hand with Zach into VERIFIED.md; sync on Zach's C1 for the other models | Process | Sat-Sun 24-25 |
 | The late read in Zach's six formats (chat turn, table, document, JSON, Python, prose) | Claim 1 beyond toy scenes | Mon-Tue 26-27 |
 | Write-up and slides | | Wed-Fri 28-30 |
