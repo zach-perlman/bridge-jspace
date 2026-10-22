@@ -44,9 +44,14 @@ JSPACE_MAX, REST_MIN, POSITIVE_MIN = 0.10, 0.50, 0.30
 
 
 def decisive_cell(rates: list[dict], lookup: str, lo: int, onset: int) -> dict | None:
-    grid = (lambda la: la in pins.LENS_LAYERS) if pins.LENS_LAYERS else (lambda la: la % 4 == 0)  # lens layers (OLMo)
+    # The map's coarse grid (suite_split's MAP_LAYERS): every N/16-th layer, or the lens's own layers where it has only
+    # some. Was "every 4th layer" (right for the 64-layer Qwens only): on Muse (52 layers, every 3rd) it never met the
+    # parts' cells, on Gemma (60) only at 36; on 32-layer models it skipped half the grid (fixed 23 Oct ~01:00, before
+    # any Muse / Gemma / OLMo-J++ D1 verdict ran; the 64-layer models' cells are unchanged).
+    step = max(1, pins.N_LAYERS // 16)
+    grid = (lambda la: la in pins.LENS_LAYERS) if pins.LENS_LAYERS else (lambda la: la % step == 0)
     cands = [r for r in rates if r["family"] == lookup and r["set"] in SETS and r["transit"] and lo <= r["layer"] < onset
-             and grid(r["layer"])]  # fmt: skip  # the coarse grid: every 4th layer, or the lens's own layers
+             and grid(r["layer"])]  # fmt: skip
     if not cands:
         return None
     best = min(cands, key=lambda r: (-r["cf"]["flips"][0], r["layer"], SETS.index(r["set"])))
