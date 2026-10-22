@@ -8,9 +8,16 @@ from . import pins
 def load_tokenizer():
     from transformers import AutoTokenizer
 
-    return AutoTokenizer.from_pretrained(
-        snapshot_download(pins.MODEL_REPO, revision=pins.MODEL_REVISION, local_files_only=True)
+    target = pins.TARGETS[pins.TARGET]
+    tokenizer = AutoTokenizer.from_pretrained(
+        snapshot_download(
+            pins.MODEL_REPO, revision=pins.MODEL_REVISION, local_files_only=True, ignore_patterns=target.get("snapshot_ignore")
+        ),
+        **target.get("tokenizer_kwargs", {}),
     )
+    if "chat_template" in target:  # Mistral: its template without the default system prompt (pins.MISTRAL_CHAT_TEMPLATE)
+        tokenizer.chat_template = target["chat_template"]
+    return tokenizer
 
 
 def raw_encoding(tokenizer, text: str, offsets: bool = False) -> dict:

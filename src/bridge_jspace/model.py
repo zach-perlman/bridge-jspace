@@ -196,7 +196,10 @@ class Model:
 def load_model() -> Model:
     from transformers import AutoConfig, AutoModelForCausalLM, AutoModelForImageTextToText
 
-    path = snapshot_download(pins.MODEL_REPO, revision=pins.MODEL_REVISION, local_files_only=True)
+    path = snapshot_download(
+        pins.MODEL_REPO, revision=pins.MODEL_REVISION, local_files_only=True,
+        ignore_patterns=pins.TARGETS[pins.TARGET].get("snapshot_ignore"),
+    )
     tokenizer = tokens.load_tokenizer()
     architectures = AutoConfig.from_pretrained(path).architectures or []
     multimodal = any(a.endswith("ForConditionalGeneration") for a in architectures)

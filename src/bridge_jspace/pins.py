@@ -56,6 +56,26 @@ LENS_SOURCES = {  # every J-format lens part B can load: name -> (repo, file, re
     ),
 }
 
+# solarkyle/jspace-lenses: third-party plain J-lenses in the jlens library's format (J per source layer), 100
+# WikiText-103 prompts each, bf16 fits (its README). The only lens for Mistral-Small-24B-Instruct-2501 (README: "validation
+# in progress"); the 27B's and Gemma 4 31B-it's are bridges, the same third party's lens on models we already ran (Zach,
+# 2026-10-21: verify C1 and C2 on a second family; Gemma: is its breakage the model or our fit?).
+SOLAR_LENS_REPO = "solarkyle/jspace-lenses"
+SOLAR_LENS_REVISION = "f5767d1bb4cb25ed65a8ed16eb47a6e6a1f0a0bc"
+# Mistral's own chat template minus its default system prompt, which names Paris and France (answers in our tasks) and
+# today's date (prompts would change daily): no system turn unless a message gives one, as the other targets' templates.
+MISTRAL_CHAT_TEMPLATE = (
+    "{{- bos_token }}"
+    "{%- if messages[0]['role'] == 'system' %}{{- '[SYSTEM_PROMPT]' + messages[0]['content'] + '[/SYSTEM_PROMPT]' }}"
+    "{%- set loop_messages = messages[1:] %}{%- else %}{%- set loop_messages = messages %}{%- endif %}"
+    "{%- for message in loop_messages %}"
+    "{%- if message['role'] == 'user' %}{{- '[INST]' + message['content'] + '[/INST]' }}"
+    "{%- elif message['role'] == 'system' %}{{- '[SYSTEM_PROMPT]' + message['content'] + '[/SYSTEM_PROMPT]' }}"
+    "{%- elif message['role'] == 'assistant' %}{{- message['content'] + eos_token }}"
+    "{%- else %}{{- raise_exception('Only user, system and assistant roles are supported!') }}{%- endif %}"
+    "{%- endfor %}"
+)
+
 # Part B's target model. BJ_TARGET picks it; the default is Qwen3.6-27B, the model of every run before the Gemma port,
 # whose pins, paths and lenses above stay as they are. Another target loads its own model and lenses, keeps its caches
 # under cache/<target>/ and names its runs with its own prefix. A "local" lens is (path under the repo, sha256): a lens
@@ -186,6 +206,49 @@ TARGETS: dict[str, dict[str, Any]] = {
         },
         "frozen_lens_sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53",
     },
+    # Mistral-Small-24B-Instruct-2501 (released 2025-01-30; dense, 40 blocks): the second model family (Zach, 2026-10-21,
+    # after Gemma proved untestable with the knock-out). Its only lens is solarkyle's plain J-lens (not J++; 100 WikiText
+    # prompts), so it is this target's frozen lens; the bridge target qwen3.6-27b-solarlens tells whether the lens type
+    # moves the 27B's result. The snapshot skips the Mistral-format consolidated.safetensors (the HF shards are loaded);
+    # the tokenizer loads with fix_mistral_regex (transformers warns the shipped pre-tokenizer regex is wrong).
+    "mistral-small-24b-2501": {
+        "repo": "mistralai/Mistral-Small-24B-Instruct-2501",
+        "revision": "9527884be6e5616bdd54de542f9ae13384489724",
+        "n_layers": 40,
+        "norm_gain": "weight",  # MistralRMSNorm scales by weight
+        "bos": True,  # <s> first; the chat template writes it, raw text gets it prepended
+        "run_prefix": "mistral24_",
+        "snapshot_ignore": ["consolidated.safetensors"],
+        "tokenizer_kwargs": {"fix_mistral_regex": True},
+        "chat_template": MISTRAL_CHAT_TEMPLATE,
+        "frozen_lens": "jlens",
+        "lenses": {"jlens": (SOLAR_LENS_REPO, "mistral-small-24b-instruct-2501/lens.pt", SOLAR_LENS_REVISION)},
+        "frozen_lens_sha256": "6bda03097bf949788be3d2115c4635cc49c8217fdfa9e1d6d4832ac8ff531fec",
+    },
+    # Bridges (Zach, 2026-10-21): solarkyle's plain J-lens on Qwen3.6-27B (does the 27B's C1 hold with the lens type and
+    # fitter Mistral gets?) and on Gemma 4 31B-it (does an independent lens also wreck Gemma's plain text?).
+    "qwen3.6-27b-solarlens": {
+        "repo": QWEN_REPO,
+        "revision": QWEN_REVISION,
+        "n_layers": 64,
+        "norm_gain": "one_plus_weight",
+        "bos": False,
+        "run_prefix": "q27solar_",
+        "frozen_lens": "jlens",
+        "lenses": {"jlens": (SOLAR_LENS_REPO, "qwen3.6-27b/lens.pt", SOLAR_LENS_REVISION)},
+        "frozen_lens_sha256": "55e1ec5c8565bbebe77c6c0eb3c6f725327e71a098038e0ec650cfd8152bdad6",
+    },
+    "gemma-4-31b-it-solarlens": {
+        "repo": "google/gemma-4-31B-it",
+        "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+        "n_layers": 60,
+        "norm_gain": "weight",
+        "bos": True,
+        "run_prefix": "gemma4its_",
+        "frozen_lens": "jlens",
+        "lenses": {"jlens": (SOLAR_LENS_REPO, "gemma-4-31b-it/lens.pt", SOLAR_LENS_REVISION)},
+        "frozen_lens_sha256": "d53742a3b15b3a9fe396ca8a58dca6cc6c05b688f2b4c3ccb1595d6d22f8b1ec",
+    },
 }
 TARGET = os.environ.get("BJ_TARGET", "qwen3.6-27b")
 assert TARGET in TARGETS, f"BJ_TARGET={TARGET!r}: not one of {sorted(TARGETS)}"
@@ -197,6 +260,7 @@ if TARGET != "qwen3.6-27b":
     CACHE_DIR = REPO_ROOT / "cache" / TARGET
     LENS_SOURCES = TARGETS[TARGET]["lenses"]
     FROZEN_LENS_SHA256 = TARGETS[TARGET].get("frozen_lens_sha256", FROZEN_LENS_SHA256)
+    FROZEN_LENS = TARGETS[TARGET].get("frozen_lens", FROZEN_LENS)  # a target with no J++ freezes its J-lens
 
 
 def model_pin() -> dict[str, str]:
