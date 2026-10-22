@@ -254,8 +254,6 @@ Each model is tested only on items it answers right without any edit. All scenes
 
 ![How the label counts, four models](figures/readme_1021/f15_counts_models.png)
 
-![The label under position shifts, four models](figures/readme_1021/f8_shifts.png)
-
 **Weak spots**
 - Qwen3.6-27B's layer 50 was chosen after the first runs (a second and a third draw of scenes reproduce it). The other models' layers follow a fixed rule: the last layer where the donor's digit is still under 10% of answers.
 - The identity part (3rd-5th) is a modest margin (+12-14 points), with many answers unchanged or elsewhere in the list.
@@ -278,8 +276,6 @@ Each model is tested only on items it answers right without any edit. All scenes
 - **Positive control for the lens.** A lens push that moves no lookups means something only where the same push does write recall. We swept layers 32-48 on five topics and kept only the cells where the lens push switches recall (≥ 20%, lower bound ≥ 10%), a random push ≤ 5% and a patch ≥ 20%. Cells were chosen on recall alone, before any lookup was read.
 
 ![Position direction vs lens direction](figures/readme_1021/f7_pointer_push.png)
-
-![Is the position direction the model's own address?](figures/readme_1021/f13_mechanism.png)
 
 ![A positive control for the lens](figures/readme_1021/f22_c2_positive_control.png)
 
@@ -342,10 +338,6 @@ Each model is tested only on items it answers right without any edit. All scenes
 **What we did**
 - **Read-out.** Without any edit, on Qwen3.6-27B's own wrong lookups: does a late attention head look at the sentence the wrong answer came from?
 - **Ladder.** Ran slides 3 and 4 on three checkpoints of OLMo-3-7B: SFT, DPO and Instruct.
-
-![Head 51/22 on the model's own errors](figures/readme_1021/f11_natural_errors.png)
-
-![OLMo across post-training](figures/readme_1021/f20_olmo_ladder.png)
 
 **What we found**
 - On 339 wrong answers (of 4160 prompts), layer 51, head 22 looks most at the sentence the wrong digit comes from 76% of the time and at the asked one 17%. On right answers it looks at the asked sentence 99% of the time.
@@ -413,24 +405,32 @@ Each model is tested only on items it answers right without any edit. All scenes
 
 ## 10. Next steps
 
-| Step | Why | Status |
-|---|---|---|
-| Positive control for the lens at the last tokens | Finding 8 | Done 22 Oct: only elements, layers 40-44 (slide 5) |
-| Name vs digit, and again on a second draw of scenes | Finding 3 | Done 22 Oct: repeats on Qwen3.6-27B and Qwen3-32B (slide 2) |
-| The stated-bridge test (slide 2) on four topics and on Qwen3-32B | Finding 2 | Done 22 Oct: holds on 3 of 4 topics where the control passes (Qwen3.6-27B); Qwen3-32B not interpretable |
-| Where a lens push writes a stated bridge (slide 6, step 1: Qwen3.6-27B, animal suite) | Findings 7 and 8 | Done 22 Oct: recall yes, lookup no; formally not valid at the decisive cell |
-| Finding 5 as a rule fixed in advance on fresh scenes; the late read on a second draw | Findings 4 and 5 | Done 22 Oct: both hold, on both models |
-| **1. Slide 6, step 2:** the same push on Zach's generator (four topics, prose and tables), with a scene that does not name the cued animal (a clean off-path check) | Findings 7 and 8 beyond one topic | Next (needs a tasks_v2 adapter for the push) |
-| **2. New late-recall topics for the positive control** (recall-only lens sweep first): the animal by its young's name ("the animal whose young is called a kid") → legs; chemical elements extended to 15-20 entities, recalled by symbol → period | Finding 8 beyond six entities; ≥ 12 entities for the supervised identity direction | Next: data, then a recall-only screen on 2 GPUs |
-| 3. The first-sentence bias, version 2: the forced choice among the list's digits under noise | Slide 3's caveat | To design (the first version was not testable) |
-| Blocking (slide 3) on Zach's generator: prose and tables, four topics, Qwen3.6-27B, Qwen3-32B, OLMo | Finding 4 beyond our toy scenes | Code ready and smoke-tested; waits for Zach's frozen data and the weekend's verification |
-| Blocking (slide 3) on Zach's generator: prose and tables, four topics, Qwen3.6-27B, Qwen3-32B, OLMo | Finding 4 beyond our toy scenes | Code ready and smoke-tested; waits for the stated-bridge test, Zach's frozen data and the weekend's verification |
-| **Update to Neel** | The main claim changed: finding 1 holds only while the bridge forms; finding 8 now has evidence for stated bridges, not yet for recalled ones; every lens claim rests on one model | Sat 24 |
-| Freeze findings 3, 4, 5 and slide 2; verify by hand with Zach into VERIFIED.md; sync on Zach's work on the other models | Process | Sat-Sun 24-25 |
-| The late read in Zach's six formats (chat turn, table, document, JSON, Python, prose) | Finding 4 beyond simple scenes | Mon-Tue 26-27 |
-| Write-up and slides | | Wed-Fri 28-30 |
+**Done on 22 Oct** (each with its rule and Dan's prediction written before it was opened):
 
-Later, if time: the candidate mechanism (the lens at the digit positions; patch the digit token's hidden state); the label with two lists in one prompt, a header before the list, or the question before the list; the identity with each entity in a different language in the original and donor prompts (rules out a lexical match); the late head on scenes with a repeated digit.
+| Step | Result |
+|---|---|
+| Positive control for the lens at the last tokens (slide 5) | Only chemical elements, layers 40-44 |
+| Name vs digit, and again on a second draw (slide 2) | Repeats on Qwen3.6-27B and Qwen3-32B |
+| The stated-bridge test on four topics and on Qwen3-32B (slide 2) | Holds on the 3 of 4 topics where the control passes (Qwen3.6-27B); Qwen3-32B not interpretable |
+| Where a lens push writes a stated bridge (slide 6, step 1) | Recall yes, the lookup no; formally not valid at the decisive cell |
+| Finding 5 as a rule fixed in advance on fresh scenes; the late read on a second draw (slides 3-4) | Both hold, on both models |
+| Random damage instead of blocking (slide 3) | Not testable as designed |
+
+**Next**, in order. What strengthens the findings we are about to freeze comes before anything that opens a new question.
+
+| # | Step | Why | When |
+|---|---|---|---|
+| 1 | **Slide 6, step 2:** the same push on Zach's generator (four topics, prose and tables), in scenes that do not name the cued thing elsewhere, so the off-path check is clean | Findings 7 and 8 beyond one topic, without the off-path flaw | Fri 23 (needs a push adapter for tasks_v2) |
+| 2 | **A second model with a working lens.** Before any new lens run, a cheap read-only check: does the lens name the stated bridge (as on Qwen3.6-27B, 92%)? Candidates: OLMo-3-7B's J-lens, Qwen3.5-9B's | Every lens claim rests on one model; Qwen3-32B's lens reads these bridges on 7.5% of items | Fri 23 |
+| 3 | **New late-recall topics for the positive control** (recall-only lens sweep first): the animal by its young's name ("the animal whose young is called a kid") → legs; chemical elements extended to 15-20 entities, recalled by symbol → period | Finding 8 for a recalled bridge beyond six entities; ≥ 12 entities for the supervised identity direction | Fri 23, if 1-2 leave GPUs free |
+| 4 | The first-sentence bias, version 2: the forced choice among the list's digits under noise | Slide 3's caveat | When a GPU is idle (~0.1 GPU-h) |
+| 5 | **Update to Neel**: finding 1 holds only while the bridge forms; findings 4 and 5 now strong; finding 8 has evidence for stated bridges, not yet for recalled ones; all lens claims on one model | Process | Sat 24 |
+| 6 | Freeze findings 3, 4, 5 and slide 2; verify by hand with Zach into VERIFIED.md; sync on Zach's work on the other models | Process | Sat-Sun 24-25 |
+| 7 | Blocking (slide 3) on Zach's generator: prose and tables, four topics, Qwen3.6-27B, Qwen3-32B, OLMo (code ready and smoke-tested) | Finding 4 beyond our toy scenes | After Zach freezes the data and the weekend's verification |
+| 8 | The late read in Zach's six formats (chat turn, table, document, JSON, Python, prose) | Finding 4 beyond simple scenes | Mon-Tue 26-27 |
+| 9 | Write-up and slides | | Wed-Fri 28-30 |
+
+Not before 30 Oct (new questions): the candidate mechanism (the lens at the digit positions; patch the digit token's hidden state); the label with two lists in one prompt, a header before the list, or the question before the list; the identity with each entity in a different language in the original and donor prompts; the late head on scenes with a repeated digit.
 
 ---
 
