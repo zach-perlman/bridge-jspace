@@ -1570,7 +1570,9 @@ def fig_bands(cells: dict, m: dict, stem: Path) -> list[str] | None:
     ncols = min(3, len(panels))
     nrows = -(-len(panels) // ncols)
     fig, axes = plt.subplots(nrows, ncols, figsize=(4.6 * ncols, 3.0 * nrows), squeeze=False, sharey=True)
-    groups = band_labels(cells)
+    n = RUN_INFO["n_layers"]
+    thirds = {f"band{round(fa * n):02d}-{round(fb * n) - 1:02d}" for fa, fb in BANDS}
+    groups = [g for g in band_labels(cells) if g in thirds]  # the 4-layer bands get fig_band4
     for idx, (fam, st, dest) in enumerate(panels):
         ax = axes[idx // ncols][idx % ncols]
         style_axes(ax)
@@ -1620,6 +1622,55 @@ def fig_bands(cells: dict, m: dict, stem: Path) -> list[str] | None:
                        " (No memory → memory family here: it failed the competence gate.)")),
     ]  # fmt: skip
     title = "Do the last tokens read the answer's statement late, through attention?"
+    return _save(fig, stem, title, explain, data_row(cells), handles, 2)
+
+
+def fig_band4(cells: dict, m: dict, stem: Path) -> list[str] | None:
+    """The answer's statement hidden from the last tokens in one 4-layer band at a time (--layers band4), per family."""
+    import matplotlib.pyplot as plt
+    from matplotlib.lines import Line2D
+
+    from bridge_jspace.plotting import MUTED, percent_axis, style_axes
+
+    del m
+    n = RUN_INFO["n_layers"]
+    thirds = {f"band{round(fa * n):02d}-{round(fb * n) - 1:02d}" for fa, fb in BANDS}
+    groups = [g for g in band_labels(cells) if g not in thirds and int(g[7:9]) - int(g[4:6]) <= 3]
+    panels = _depth_panels(cells, "band")
+    if not panels or not groups:
+        return None
+    ncols = min(3, len(panels))
+    nrows = -(-len(panels) // ncols)
+    fig, axes = plt.subplots(nrows, ncols, figsize=(4.6 * ncols, 3.0 * nrows), squeeze=False, sharey=True)
+    color, marker, _ = KINDS[""]
+    for idx, (fam, st, dest) in enumerate(panels):
+        ax = axes[idx // ncols][idx % ncols]
+        style_axes(ax)
+        for gi, g in enumerate(groups):
+            c = cells.get((fam, st, dest, g, "value"))
+            if c:
+                _errorbar(ax, [gi], [c], color, marker, ms=5)
+            c = cells.get((fam, f"{st}_off", dest, g, "value"))
+            if c:
+                _errorbar(ax, [gi + 0.25], [c], CONTROL_GREY, "x", ms=5)
+        ax.set_xticks(range(len(groups)), [f"{int(g[4:6])}-{int(g[7:9])}" for g in groups], fontsize=7, rotation=90)
+        ax.set_ylim(-0.04, 1.06)
+        percent_axis(ax)
+        ax.set_title(f"{fam_label(fam)}\n{fam_hint(fam)}", fontsize=8.5, loc="left")
+        if idx % ncols == 0:
+            ax.set_ylabel("% still giving answer org", fontsize=8, color=MUTED)
+    for idx in range(len(panels), nrows * ncols):
+        axes[idx // ncols][idx % ncols].axis("off")
+    handles: list[Any] = [Line2D([], [], color=color, marker=marker, ls="none", ms=6, label="statement hidden in this band"),
+                          Line2D([], [], color=CONTROL_GREY, marker="x", mew=1.6, ls="none", ms=6,
+                                 label="control: a statement off the answer's path, same band")]  # fmt: skip
+    explain = [
+        ("What we did", "Stopped the last tokens before the answer from reading the statement giving the answer in "
+                        "one band of 4 layers at a time. " + BLOCK_NOTE),
+        ("How to read", "Each dot: % of prompts still giving answer org with that band blocked. A dip marks a band "
+                        "the lookup needs."),
+    ]  # fmt: skip
+    title = "In which 4-layer band must the answer's statement stay visible to the last tokens?"
     return _save(fig, stem, title, explain, data_row(cells), handles, 2)
 
 
@@ -3238,6 +3289,7 @@ def stage_figures(name: str) -> None:
             "all_layers": fig_all_layers(cells, m, out_dir / "all_layers"),
             "windows": fig_windows(cells, m, out_dir / "windows"),
             "bands": fig_bands(cells, m, out_dir / "bands"),
+            "band4": fig_band4(cells, m, out_dir / "band4"),
             "cuts": fig_cuts(cells, m, out_dir / "cuts"),
             "norm_ratio": fig_norm(rows, m, out_dir / "norm_ratio"),
         }
