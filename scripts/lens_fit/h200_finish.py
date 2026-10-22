@@ -114,11 +114,14 @@ def save(s: dict, out: Path) -> bool:
 
 
 def pass10(out: Path) -> tuple[list[str], dict[str, dict[str, float]]]:
-    """eval -> lens -> pass@10 from the recipe's evaluate table (eval_ranks_pass_at_k.csv)."""
+    """eval -> lens -> pass@10 from the recipe's evaluate table (eval_ranks_pass_at_k.csv), item-weighted rows only
+    (the table also has pair-weighted rows, which would otherwise overwrite them; Zach's cards are item-weighted)."""
     table: dict[str, dict[str, float]] = {}
     lenses: list[str] = []
     with open(out / "eval_ranks_pass_at_k.csv") as f:
         for r in csv.DictReader(f):
+            if r.get("weighting", "item") != "item":
+                continue
             if int(float(r["k"])) == 10:
                 table.setdefault(r["eval"], {})[r["lens"]] = float(r["pass_at_k"])
                 lenses += [r["lens"]] if r["lens"] not in lenses else []
