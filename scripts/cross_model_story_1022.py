@@ -273,8 +273,8 @@ fig.legend([Line2D([], [], color=c, marker=mk, linestyle="", markersize=10 if mk
 ax2 = fig.add_subplot(gs[0, 1])
 style(ax2, "y")
 KS = [1, 2, 5, 10, 25, 50, 100]
-DOSE = [("Qwen3.6-27B", [("full2_ko_v1", "L32-40"), ("full2_dose_v1", "L32-40")], "#0f766e"),
-        ("Qwen3.5-9B", [("qwen35_9b_full2_ko_v1", "L12-16"), ("qwen35_9b_full2_dose_v1", "L12-16")], "#b45309"),
+DOSE = [("27B", [("full2_ko_v1", "L32-40"), ("full2_dose_v1", "L32-40")], "#0f766e"),
+        ("9B", [("qwen35_9b_full2_ko_v1", "L12-16"), ("qwen35_9b_full2_dose_v1", "L12-16")], "#b45309"),
         ("Qwen3-32B", [("qwen3_32b_full_dose_v1", "L44-52")], "#3b3a37"),
         ("Muse", [("muse30_full2_ko_v1", "L36-42"), ("muse30_full2_dose_v1", "L36-42")], "#8a5cc2")]  # fmt: skip
 ymax_dose = 10.0
@@ -303,8 +303,8 @@ ax2.set_ylim(-5, ymax_dose + 6)
 ax2.set_xlabel("lens directions removed per position")
 ax2.set_ylabel("recall minus lookup loss (points)")
 ax2.set_title("B. More directions removed (dashed: random)", loc="left", fontsize=10)
-fig.suptitle("In the hybrid Qwens the effect is specific to the J++ lens: logit-lens and random removals do almost nothing, and keeping\n"
-             "the bridge's own word restores only a quarter. Removing more directions barely moves Qwen3-32B or Muse",
+fig.suptitle("In the hybrid Qwens the effect is specific to the J++ lens: logit-lens and random removals do almost nothing, keeping the\n"
+             "bridge's word restores only a quarter, and even one lens direction opens a 20-31 point gap; Qwen3-32B and Muse stay low",
              x=0.01, y=0.985, ha="left", fontsize=11)  # fmt: skip
 foot(fig, "Gap: mean accuracy lost by P→M, M→M minus P→P, M→P (the pre-registered rule's chain types). Not run: keep-own on Muse; the "
      "share-matched logit lens on Qwen3-32B and Muse (their J++ and logit-lens top-10 take the same share). " + FOOT, 7.3)  # fmt: skip
