@@ -314,7 +314,7 @@ Each model is tested only on items it answers right without any edit. All scenes
 | sentence / word | 36, 4x | 56% / 64% | 0% / 0% | 0% / 4% |
 | sentence / word | 36, 8x | 54% / 61% | 0% / 0% | 0% / 4-5% |
 
-- So the cells split by depth: from layer 20 on, recall only; at layer 16, the push also moves lookups, as an input edit would. The fixed rule of the rerun (the valid cell with the most recall) picks layer 16 on these data, where the verdict is "inconclusive" (lookup 20%, between the 10% and 30% bars).
+- So the cells split by depth: from layer 20 on, recall only; at layer 16, the push also moves lookups, as an input edit would. The rerun's rule as first written (the valid cell with the most recall) would pick layer 16 on these data ("inconclusive": lookup 20%). Amended while the rerun ran, before its results were opened: the decisive cell is the valid cell with the most recall from layer 20 on, and layer 16 is reported separately.
 
 **Weak spots**
 - One model, one topic (the animal suite), strong pushes (4-8x a typical change).
@@ -505,7 +505,7 @@ Which locker belongs to Maria's pick?                                       → 
 | Slide 4: layer 50 on Qwen3.6-27B (other models follow a fixed rule) | Repeated on two more draws of scenes |
 | Finding 2: counting a topic only when its own recall control passes | Stricter than the pre-registered pooled rule (which replicates); 3 of 4 new topics pass |
 | Finding 3: animals on Qwen3-32B's second draw, which missed the competence gate by 0.0005 | Run post hoc with the gate at 0.845; same verdicts. The gate now rounds to two decimals |
-| Finding 7: reading the cells that pass the off-path check | The decisive cell, fixed in advance, failed that check. Rule v2 (the off-path check before the maximum) was fixed after seeing these data; its rerun on fresh scenes is running. On the old data it picks layer 16 (inconclusive) |
+| Finding 7: reading the cells that pass the off-path check | The decisive cell, fixed in advance, failed that check. Rule v2 (the off-path check before the maximum) was fixed after seeing these data; its rerun on fresh scenes is running. On the old data v2 picks layer 16 (inconclusive), so it was amended (v2.1: the decisive cell from layer 20 on) during the rerun, before its results were opened |
 | Finding 2, the doubled run: the cell fixed in advance at the context, layer 32 (the first map's choice); on Qwen3.5-9B the 27B's layers scaled by depth | Fixed before those runs |
 | Slide 3: the first-sentence bias as a fall-back to the order label | Dropped from the story; its control was not testable |
 | Slide 5: the position code's natural-size test allowed 1x or 2x | Passes only at 2x (26%; 4% at 1x); we read it as an override |
