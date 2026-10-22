@@ -8,6 +8,7 @@ h200finish) and OLMo-3-7B-Instruct on the A100 queue (the jobq state and the sta
 """
 
 import argparse
+import calendar
 import json
 import re
 import subprocess
@@ -50,7 +51,7 @@ def qwen32b() -> None:
         if head == "status":
             try:
                 s = json.loads("\n".join(rest))
-                started = time.mktime(time.strptime(s["started"], "%Y-%m-%dT%H:%M:%SZ")) - time.timezone
+                started = calendar.timegm(time.strptime(s["started"], "%Y-%m-%dT%H:%M:%SZ"))
                 print(
                     f"  launcher: {s.get('state')} at {s.get('at')}, {(time.time() - started) / 60:.0f} min since start"
                 )
