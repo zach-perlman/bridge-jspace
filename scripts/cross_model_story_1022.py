@@ -4,8 +4,9 @@ in the text (results/cross_model/summary.md).
 Fig 1  remove vs write, per model (C1 knock-out on the test set; C2 lens write at the aligned band)
 Fig 2  the knock-out by depth on held-out ctrl_v8 (the band-selection data)
 Fig 3  what the knock-out effect is specific to (logit-lens, random, keep-the-bridge-word) and how it grows with dose
-Fig 4  the knock-out across task variants (chain types incl. three-step, formats, levels, each step alone)
-Fig 5  the lens write by single layer, through and past the band (direct-output check)
+Fig 4  two- and three-step chains together, grouped by where the recall sits; each step asked alone
+Fig 5  the recall-vs-lookup gap by prompt format and difficulty
+Fig 6  the lens write by single layer, through and past the band (direct-output check)
 """
 
 import collections
@@ -48,7 +49,8 @@ FOOT = "One data seed; unverified. J++ lenses: published for the 27B and 9B, our
 
 
 def foot(fig, text, size=7.4):
-    fig.text(0.01, 0.012, "\n".join(textwrap.wrap(text, 196 if size < 7.4 else 188)), fontsize=size, color=INK2, va="bottom")
+    width = int(fig.get_figwidth() * (17.8 if size < 7.4 else 17.1))  # characters per line at this font size
+    fig.text(0.01, 0.012, "\n".join(textwrap.wrap(text, width)), fontsize=size, color=INK2, va="bottom")
 
 
 def load(p: Path):
@@ -350,16 +352,10 @@ for m in MODELS:
     V[m["name"]] = d
 Path("results/cross_model/variants_story_1022.json").write_text(json.dumps(V, indent=2) + "\n")
 cmap = LinearSegmentedColormap.from_list("mem", [SURFACE, "#fbd9c4", "#f4a172", MEMORY, "#a8410f"])
-fig = plt.figure(figsize=(11, 7.6))
-gs = fig.add_gridspec(1, 2, left=0.105, right=0.985, top=0.8, bottom=0.07, wspace=0.5)
-blocks = [
-    (fig.add_subplot(gs[0, 0]), "A. Accuracy lost, by chain type", [
-        ("two steps, ends in a lookup", [x for x, _ in TWO[:3]]), ("two steps, ends in a recall", [x for x, _ in TWO[3:]]),
-        ("three steps, ends in a lookup", [x for x, _ in THREE[:4]]), ("three steps, ends in a recall", [x for x, _ in THREE[4:]])]),
-    (fig.add_subplot(gs[0, 1]), "B. Recall-final minus lookup-final loss, by variant", [
-        ("two-step chains, by prompt format", FORMATS), ("two-step chains, by difficulty", LEVELS),
-        ("one step asked alone, minus a lookup step", ["a later recall step", "a first-step recall"])]),
-]  # fmt: skip
+fig = plt.figure(figsize=(8.2, 6.4))
+gs = fig.add_gridspec(1, 1, left=0.2, right=0.985, top=0.78, bottom=0.11)
+blocks = [(fig.add_subplot(gs[0, 0]), "Recall-final minus lookup-final loss (points)",
+           [("two-step chains, by prompt format", FORMATS), ("two-step chains, by difficulty", LEVELS)])]  # fmt: skip
 for ax, title, groups in blocks:
     labels, heads, y = [], [], 0.0
     for head, rs in groups:
@@ -391,13 +387,11 @@ for ax, title, groups in blocks:
             ax.text(c, yy - 0.07, f"{v:.0f}", ha="center", va="center", fontsize=9.5, color="white" if dark else INK, fontweight="bold")
             ax.text(c, yy + 0.29, f"n={n}", ha="center", va="center", fontsize=6, color="white" if dark else INK3)
     ax.set_title(title, loc="left", fontsize=10, pad=30)
-fig.suptitle("The knock-out across task variants: in the hybrid Qwens the recall-vs-lookup split shows in every format and difficulty\n"
-             "level, and for later recall steps asked alone; Qwen3-32B shows it unevenly and at about half the size, Muse barely",
+fig.suptitle("By prompt format and difficulty: the hybrid Qwens show the split in every format\nand level; Qwen3-32B unevenly and at about half the size; Muse barely",
              x=0.01, y=0.985, ha="left", fontsize=11.5)  # fmt: skip
 foot(fig, "Points lost beyond the same-size random removal (random-control accuracy minus knock-out accuracy, same items, items right unedited), at each model's middle band. "
-     "B: format and level cells: mean of P→M, M→M minus mean of P→P, M→P (20-60 items per type per cell); one-step cells: a recall step asked on its own minus a "
-     "lookup step asked on its own. " + FOOT, 7.3)  # fmt: skip
-fig.savefig(OUT / "story_fig4_variants_1022.png", dpi=200)
+     "Each cell: mean of P→M, M→M minus mean of P→P, M→P (20-60 items per type per cell). " + FOOT, 7.3)  # fmt: skip
+fig.savefig(OUT / "story_fig5_formats_1022.png", dpi=200)
 plt.close(fig)
 
 # ---------------------------------------------------------------- Fig 5: lens write by single layer (direct-output check)
@@ -427,6 +421,106 @@ fig.suptitle("The lens write works up to about ⅔-⅘ of the depth and stops be
 foot(fig, "Best gated add of the bridge's own lens direction at the final position, one layer at a time (best cell per layer, not cross-validated). "
      "Qwen3-32B and Muse; the 27B's writes already vanish by L56-60 of its own band. " + FOOT)  # fmt: skip
 fig.subplots_adjust(left=0.07, right=0.99, top=0.82, bottom=0.2, wspace=0.08)
-fig.savefig(OUT / "story_fig5_late_1022.png", dpi=200)
+fig.savefig(OUT / "story_fig6_late_1022.png", dpi=200)
+plt.close(fig)
+
+# ---------------------------------------------------------------- Fig 6: two- and three-step chains together
+from matplotlib.patches import FancyBboxPatch  # noqa: E402
+
+GROUPS = [("no recall after the first step", ["P→P", "C→P", "M→P", "P→P→P", "M→P→P"], CONTROL),
+          ("a later recall, then a lookup", ["P→M→P", "M→M→P"], "#f4a172"),
+          ("the last step recalls", ["P→M", "C→M", "M→M", "P→P→M", "M→P→M"], MEMORY)]  # fmt: skip
+STEPCATS = [("lookup", "a lookup step", LOOKUP), ("computed", "a computed step", CONTROL),
+            ("first", "a recall as the first step", "#f4a172"), ("later", "a recall after the first step", MEMORY)]  # fmt: skip
+SV = {}
+for m in MODELS:
+    cats = collections.defaultdict(list)
+    for run, n in ((f"{m['p']}full2_ko_steps_v1", 2), (f"{m['p']}{m.get('three_steps', 'full3_ko_steps_v1')}", 3)):
+        for (kind, fam, i), v in (per_item(run, m["band"], kinds=("step1", "step2", "step3")) or {}).items():
+            k = int(kind[-1])
+            src = ITEMS[i]["steps"][k - 1]["source"]
+            cats[({"P": "lookup", "C": "computed"}.get(src, "first" if k == 1 else "later"), n)].append(v)
+    SV[m["name"]] = {key: net(v) for key, v in cats.items()}
+CHIP = {"P": LOOKUP, "M": MEMORY, "C": CONTROL}
+rows = []  # (y, kind, payload)
+y = 0.0
+for head, chains, col in GROUPS:
+    rows.append((y, "head", head))
+    y += 0.85
+    for ch in chains:
+        rows.append((y, "chain", (ch, col)))
+        y += 1
+    y += 0.35
+rows.append((y + 0.25, "head2", "the same knock-out on one step asked on its own (two-step chains / three-step chains)"))
+y += 1.1
+for key, lab, col in STEPCATS:
+    rows.append((y, "step", (key, lab, col)))
+    y += 1.15
+H = y
+FH = 0.33 * H + 2.4
+fig = plt.figure(figsize=(11, FH))
+gs = fig.add_gridspec(1, 1 + len(MODELS), width_ratios=[1.55] + [1] * len(MODELS), left=0.015, right=0.985,
+                      top=1 - 1.75 / FH, bottom=0.75 / FH, wspace=0.12)  # fmt: skip
+axL = fig.add_subplot(gs[0, 0])
+axL.set_xlim(0, 10)
+axL.set_ylim(H - 0.3, -0.6)
+axL.axis("off")
+XMAX = 50
+for c, m in enumerate(MODELS):
+    ax = fig.add_subplot(gs[0, c + 1])
+    ax.set_xlim(-12, XMAX + 8)
+    ax.set_ylim(H - 0.3, -0.6)
+    ax.axis("off")
+    ax.text((XMAX - 12) / 2, -1.5, f"{m['name']}\n{m['kind'].split(' · ')[1]}", ha="center", va="bottom", fontsize=9.5, fontweight="bold")
+    for yy, kind, pl in rows:
+        if kind in ("head", "head2"):
+            continue
+        ax.plot([0, 0], [yy - 0.45, yy + 0.45], color=INK2, linewidth=0.8)
+        if kind == "chain":
+            ch, col = pl
+            v, n = V[m["name"]].get(ch, (None, 0))
+            bars = [(v, n, col, yy, 0.62)]
+        else:
+            key, lab, col = pl
+            bars = [(SV[m["name"]].get((key, k), (None, 0))[0], SV[m["name"]].get((key, k), (None, 0))[1], col, yy + off, 0.38)
+                    for k, off in ((2, -0.22), (3, 0.22))]  # fmt: skip
+        for i, (v, n, col, yb, h) in enumerate(bars):
+            if v is None and kind == "step":
+                continue  # three-step chains have no computed step
+            if v is None:
+                ax.text(1, yb, "running" if m["name"] in RUNNING else "–", va="center", fontsize=7.5, color=INK3)
+                continue
+            shade = col if (kind == "chain" or i == 0) else col + "99"
+            ax.barh(yb, max(min(v, XMAX), -12), height=h, color=shade, edgecolor="none")
+            ax.text(max(v, 0) + 1.5, yb, f"{round(v) + 0}", va="center", fontsize=8 if kind == "chain" else 7, color=INK)
+            if kind == "chain" and n < 30:
+                ax.text(max(v, 0) + 9, yb, f"n={n}", va="center", fontsize=6.5, color=INK3)
+for yy, kind, pl in rows:
+    if kind == "head":
+        axL.text(0, yy, pl, fontsize=8.8, color=INK2, style="italic", va="center")
+    elif kind == "head2":
+        axL.text(0, yy, pl, fontsize=8.8, color=INK2, style="italic", va="center")
+    elif kind == "chain":
+        ch, _ = pl
+        steps = ch.split("→")
+        x = 3.2 if len(steps) == 2 else 1.6
+        for j, st in enumerate(steps):
+            axL.add_patch(FancyBboxPatch((x, yy - 0.32), 1.0, 0.64, boxstyle="round,pad=0.02,rounding_size=0.15", facecolor=CHIP[st], edgecolor="none"))
+            axL.text(x + 0.5, yy, st, ha="center", va="center", fontsize=8.5, color="white", fontweight="bold")
+            if j < len(steps) - 1:
+                axL.annotate("", xy=(x + 1.55, yy), xytext=(x + 1.05, yy), arrowprops=dict(arrowstyle="-|>", color=INK3, lw=1))
+            x += 1.6
+    else:
+        key, lab, col = pl
+        axL.text(9.9, yy, lab, ha="right", va="center", fontsize=8.8)
+fig.suptitle("Two- and three-step chains together: the knock-out hurts a chain when a recall from memory comes after the first step,\n"
+             "most when the recall is the last step, in every model; how much depends on the model", x=0.01, y=0.995, ha="left", fontsize=11.5)  # fmt: skip
+fig.legend([plt.Rectangle((0, 0), 1, 1, color=LOOKUP), plt.Rectangle((0, 0), 1, 1, color=MEMORY), plt.Rectangle((0, 0), 1, 1, color=CONTROL)],
+           ["P: looked up in the prompt", "M: recalled from memory", "C: computed (typo repaired, word translated)"],
+           loc="upper left", bbox_to_anchor=(0.01, 1 - 0.62 / FH), ncol=3, frameon=False, fontsize=8.8)  # fmt: skip
+foot(fig, "Points lost beyond the same-size random removal (random-control minus knock-out accuracy, same items, items right unedited) at each "
+     "model's middle band; whole question for the chains, one step asked on its own below (darker bar: steps of two-step chains, lighter: of "
+     "three-step chains). 15-152 items per chain type (n shown below 30). " + FOOT, 7.2)  # fmt: skip
+fig.savefig(OUT / "story_fig4_chains_1022.png", dpi=200)
 plt.close(fig)
 print("saved", sorted(p.name for p in OUT.glob("story_fig*_1022.png")))
