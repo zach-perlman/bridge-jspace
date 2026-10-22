@@ -62,3 +62,30 @@ h200_q32_core_1021.sh).
 - **C2' "replicates"** on a model only if it HOLDS there.
 - **Every number** is one data seed (ctrl_v8 seed 712; full_v8 seeds 713-715) and one run. The rotated-control seeds
   and keep-own run after the core, in each model's rest queue.
+
+## Amendment 1 (Zach, 2026-10-22 ~02:45 UTC): Muse Glimmer 30B replaces Mistral
+
+- **What was seen when this was decided:**
+  - Mistral's lens check and plain-text gate. It passed: +0.33 nats at top-10, rotated control +0.18.
+  - Mistral's held-out ctrl_v8 sweep. The plain-lens knock-out barely moved anything: memory words kept 81-99% at every
+    window, the largest memory-minus-lookup loss was 12 points, and the rule chose 6-11.
+  - Mistral's test-set C1 had not been seen.
+- **Mistral's status.** Its test-set C1 (mistral24_full2_ko_v1) finishes and is reported as "Mistral, third-party
+  plain J-lens (100 prompts)". It is not the second-family test, and none of its other runs go ahead.
+- **Second family: Muse Glimmer 30B** (meta-models/Muse-Glimmer-30B@cec94fc, Meta, released 2026-08, dense, 52 blocks).
+  - *Lens.* Its published plain J-lens: eyes-ml/Muse-Glimmer-30B_jacobian-lens@71d8434, neuronpedia's fitter, 900
+    WikiText prompts, fit on a byte-identical copy of the weights.
+  - *Procedure.* Every rule above applies unchanged at Muse's depths:
+    - the untestable gate at the relative band 26-32;
+    - C1-graded at the band chosen on its ctrl_v8 sweep;
+    - C2' on muse30_wm2_full2_v1.
+- **The lens bridge** is now neuronpedia's plain J-lens for Qwen3.6-27B (1000 prompts; the fitter family of Muse's lens),
+  in run q27jlens_full2_ko_v1 at 32-40.
+  - If C1-graded FAILS there, a Muse C1 failure is not evidence against C1.
+  - A Muse HOLD counts either way.
+- **"Is the J-lens good enough" (Zach: if not, consider our own J++).** The decision is made with Zach, before Muse's
+  test-set C1 is opened. It uses:
+  - Muse's lens-agreement curve, against the 27B's J-lens and J++ (scripts/lens_agreement.py);
+  - the 27B bridge.
+
+  If a J++ is fit, J++ becomes Muse's lens of record, matching the other models, and both lenses are reported.
