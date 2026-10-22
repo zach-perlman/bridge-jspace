@@ -17,18 +17,24 @@ JOBQ_HOST=sesterce-h200x2). This script starts its workers, enqueues new 122B sp
    the lens gate (first in the queue) is done: the gate before any other 122B job. One job per GPU (FP8 122B ~127 GB).
    Workers run with HF_HOME=~/work/hf (the prefetched weights and lens), UV_CACHE_DIR=~/work/uv-cache, and jobq's
    free-memory check off: an idle H200 shows 143771 - 616 MiB = 139.8 GiB free, under the specs' mem_gb 140, so the
-   check would hold every job forever; nothing else runs on these GPUs once the fit is over.
-2. Every minute the queue's state; every 5 min a pull: the box's run dirs into results/ (a dir that exists here and
-   was not created by this watchdog goes to log/remote/h200q_conflicts/ instead: nothing here is overwritten), the
-   ledger to results/jobq/ledger_h200.jsonl (results/jobq/ledger.jsonl stays the A100 queue's), drafts, job logs.
-3. Stop when the queue is finished (nothing running; every pending job waits on a failed one) after the last batch is
+   check would hold every job forever; nothing else runs on these GPUs once the fit is over. A restarted watchdog
+   takes worker sessions already on the box as started.
+2. Every minute the queue's state; every 5 min jobq's pull (new run dirs into results/, this box's ledger and queue
+   state as results/jobq/ledger_sesterce-h200x2.jsonl and cache/jobq/queue_state_sesterce-h200x2.json, drafts, logs).
+3. Final when the queue is finished (nothing running; every pending job waits on a failed one) after the last batch is
    in (--last-batch wrote cache/jobq/h200q_last_batch, or no new spec was enqueued while the queue sat finished for
    1 h), the lens gate or the port smoke job failed (other failures are logged and the queue goes on), or at 09:50 UTC
-   (Dan, 23 Oct ~00:55: the hard limit is 10:00 UTC). Then a last pull; every file of the box's run dirs must be here with its size, and the 32B fit's files too
-   (its status copy in results/lens_fit/, and if DONE the lens with the box's sha256). Only then
-   scripts/lens_fit/h200_finish.py --terminate-only (the checked DELETE). If a check fails it does NOT delete and
-   retries every 5 min (an idle box costs less than lost results), giving up 2 h after the limit. Ctrl-C stops the
-   watchdog only: no pull, no delete.
+   (Dan, 23 Oct ~00:55: the hard limit is 10:00 UTC).
+4. The final (Dan's rule: delete ONLY after everything is verified on the Mac, at the hard limit too): pending jobs are
+   cancelled (nothing new starts); then up to 3 tries of: jobq's pull; `rsync -a --ignore-existing
+   sesterce-h200x2:jobq/results/ results/` (fills files missing here, never overwrites one); ~/work/fit32b's small
+   files and ~/work/prefetch_122b.log into log/remote/; and the checks: every file under the box's ~/jobq/results is
+   under results/ with its size; the local ledger_sesterce-h200x2.jsonl has as many lines as the box's ledger.jsonl;
+   every run's log.txt is under log/jobq/ (same size unless the job still runs); the 32B fit's files are here (its
+   status copy in results/lens_fit/, and if DONE the lens with the box's sha256). Only when all pass:
+   scripts/lens_fit/h200_finish.py --terminate-only (the checked DELETE). Otherwise NOT deleted: an ACTION line in the
+   log for the hourly check, and the final is retried every 10 min until 2 h after the limit, then the box is left up.
+   Ctrl-C stops the watchdog only: no pull, no delete.
 """
 
 from __future__ import annotations
@@ -50,20 +56,20 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from scripts import jobq as jq
 
 HOST = "sesterce-h200x2"
-jq.HOST = HOST  # jobq's Mac-side helpers read it at call time
+jq.HOST = HOST  # jobq's Mac-side helpers (and its per-box ledger name) read it at call time
 REPO = jq.REPO
 GATE, PORT = "qwen35_122b_lens_gate_v2", "qwen35_122b_port_smoke"
 LIMIT = dt.datetime(2026, 10, 23, 10, 0, tzinfo=dt.UTC)
 FINAL_AT = LIMIT - dt.timedelta(minutes=10)
 GIVE_UP = LIMIT + dt.timedelta(hours=2)
-WAIT_S, POLL_S, PULL_S, IDLE_S = 120, 60, 300, 3600
+WAIT_S, POLL_S, PULL_S, RETRY_S, IDLE_S = 120, 60, 300, 600, 3600
 LOG = REPO / "log" / "remote" / "h200q_watchdog.log"
-PULLED = REPO / "cache" / "jobq" / "h200q_pulled.json"  # the run dirs this watchdog created in results/
 LAST_BATCH = REPO / "cache" / "jobq" / "h200q_last_batch"  # written by --last-batch
+LEDGER = REPO / "results" / "jobq" / f"ledger_{HOST}.jsonl"  # jobq pull's name for this box's ledger
+FIT_COPY = REPO / "log" / "remote" / "h200_fit32b"
+FIT_LENS = REPO / "cache" / "qwen3-32b" / "lenses" / "jpp" / "Qwen3-32B_jpp_lens.pt"
 SPEC_RE = re.compile(r"jobs/[^/]+/(qwen35_122b_[a-z0-9_]+)\.yaml")
 RANK_RE = re.compile(r"^(.*?)(?:_r(\d+))?$")
-CONFLICTS = REPO / "log" / "remote" / "h200q_conflicts"
-FIT_LENS = REPO / "cache" / "qwen3-32b" / "lenses" / "jpp" / "Qwen3-32B_jpp_lens.pt"
 WORKER = ("export HF_HOME=$HOME/work/hf UV_CACHE_DIR=$HOME/work/uv-cache; python3 -c {code} 2>&1 | "
           "tee -a ~/jobq/worker-gpu{gpu}.log; exec bash")  # fmt: skip
 WORKER_CODE = (
@@ -131,6 +137,10 @@ def start_condition() -> tuple[bool, str]:
     return fit_over and finish_gone and prefetched and free, why
 
 
+def worker_running(gpu: int) -> bool:
+    return box(f"tmux has-session -t jobq-gpu{gpu}") is not None
+
+
 def start_worker(gpu: int) -> bool:
     inner = WORKER.format(code=shlex.quote(WORKER_CODE.format(gpu=gpu)), gpu=gpu)
     cmd = shlex.join(["tmux", "new-session", "-d", "-s", f"jobq-gpu{gpu}", "bash", "-c", inner])
@@ -140,8 +150,7 @@ def start_worker(gpu: int) -> bool:
 
 
 def queue() -> dict[str, Any] | None:
-    """Running and pending jobs, each job's last ledger status, and the pending jobs that can still run (every
-    dependency done, running, or itself pending and able to run)."""
+    """Running and pending jobs, each job's last ledger status, and the pending jobs that can still run."""
     st = box("python3 ~/jobq/jobq.py box-status --json")
     led = box("cat ~/jobq/ledger.jsonl 2>/dev/null; true")
     if st is None or led is None:
@@ -226,59 +235,76 @@ def enqueue_new(pending: list[str]) -> int:
     return len(new)
 
 
-def pulled_dirs() -> set[str]:
-    return set(json.loads(PULLED.read_text())) if PULLED.exists() else set()
-
-
-def pull(announced: set[str]) -> bool:
-    """The box's run dirs (results/<exp>/<run>) here, never over a file that exists; ledger, drafts, logs."""
-    out = box("cd ~/jobq/results && find . -mindepth 2 -maxdepth 2 -type d", 120)
-    if out is None:
-        say("pull: the box did not answer")
+def pull() -> bool:
+    """jobq's pull for this box (new run dirs, ledger, queue state, drafts, logs)."""
+    try:
+        jq.cmd_pull()
+        return True
+    except (subprocess.CalledProcessError, OSError) as e:
+        say(f"pull failed: {e}")
         return False
-    pulled, ok = pulled_dirs(), True
-    for d in sorted(x.removeprefix("./") for x in out.split()):
-        here = REPO / "results" / d
-        if d not in pulled and here.exists():
-            dst = CONFLICTS / d
-            if d not in announced:
-                say(
-                    f"pull: results/{d} exists here and is not this queue's; the box's copy goes to {dst.relative_to(REPO)}"
-                )
-                announced.add(d)
-        else:
-            dst = here
-            if d not in pulled:  # recorded first, so a copy cut short is completed by the next pull
-                pulled.add(d)
-                PULLED.parent.mkdir(parents=True, exist_ok=True)
-                PULLED.write_text(json.dumps(sorted(pulled), indent=1) + "\n")
-        dst.mkdir(parents=True, exist_ok=True)
-        r = run(["rsync", "-a", "--ignore-existing", f"{HOST}:jobq/results/{d}/", f"{dst}/"], 1200)
+
+
+def fill_and_copy() -> list[str]:
+    """The final's copies besides jobq's pull: files missing here from the box's results (never overwriting one), the
+    fit's small files and the prefetch log. Returns the failures."""
+    FIT_COPY.mkdir(parents=True, exist_ok=True)
+    copies = {
+        "results (--ignore-existing)": ["rsync", "-a", "--ignore-existing", f"{HOST}:jobq/results/", f"{REPO / 'results'}/"],
+        "fit32b small files": ["rsync", "-a", "--include=*.log", "--include=*.json", "--include=*.csv", "--include=*.txt",
+                               "--exclude=*", f"{HOST}:work/fit32b/", f"{FIT_COPY}/"],
+        "prefetch log": ["rsync", "-a", f"{HOST}:work/prefetch_122b.log", str(REPO / "log" / "remote" / "prefetch_122b.log")],
+    }  # fmt: skip
+    failed = []
+    for name, argv in copies.items():
+        r = run(argv, 1800)
         if r is None or r.returncode:
-            ok = False
-            say(f"pull: rsync of {d} failed: {(r.stderr if r else 'timed out')[-300:]}")
-    (REPO / "results" / "jobq" / "drafts").mkdir(parents=True, exist_ok=True)
-    (REPO / "log" / "jobq").mkdir(parents=True, exist_ok=True)
-    run(["rsync", "-a", f"{HOST}:jobq/ledger.jsonl", str(REPO / "results" / "jobq" / "ledger_h200.jsonl")], 300)
-    run(["rsync", "-a", f"{HOST}:jobq/drafts/", f"{REPO / 'results' / 'jobq' / 'drafts'}/"], 300)
-    run(["rsync", "-a", "--exclude=code/", "--include=*/", "--include=log.txt", "--exclude=*", f"{HOST}:jobq/runs/",
-         f"{REPO / 'log' / 'jobq'}/"], 300)  # fmt: skip
-    return ok
+            failed.append(f"copy of {name}: {(r.stderr.strip() if r else 'timed out')[-200:]}")
+    return failed
 
 
-def missing_here() -> list[str]:
-    """Files of the box's run dirs not here with the same size ([] when everything came back)."""
-    out = box("cd ~/jobq/results && find . -mindepth 3 -type f -printf '%P\\t%s\\n'", 300)
+def lines(text: str) -> int:
+    return sum(1 for x in text.splitlines() if x.strip())
+
+
+def verify(running: set[str]) -> list[str]:
+    """Dan's checks before the delete; [] when everything is on the Mac."""
+    problems: list[str] = []
+    out = box("cd ~/jobq/results && find . -type f -printf '%P\\t%s\\n'", 300)
     if out is None:
-        return ["(the box did not answer)"]
-    pulled, missing = pulled_dirs(), []
-    for line in out.splitlines():
-        path, size = line.rsplit("\t", 1)
-        base = REPO / "results" if "/".join(path.split("/")[:2]) in pulled else CONFLICTS
-        f = base / path
-        if not f.is_file() or f.stat().st_size != int(size):
-            missing.append(path)
-    return missing
+        problems.append("the box's results list did not come")
+    else:
+        bad = []
+        for row in out.splitlines():
+            path, size = row.rsplit("\t", 1)
+            f = REPO / "results" / path
+            if not f.is_file() or f.stat().st_size != int(size):
+                bad.append(path)
+        if bad:
+            problems.append(
+                f"{len(bad)} of the box's {lines(out)} result files not here with their size, e.g. {bad[:3]}"
+            )
+    led = box("cat ~/jobq/ledger.jsonl 2>/dev/null; true")
+    here = lines(LEDGER.read_text()) if LEDGER.exists() else 0
+    if led is None or lines(led) != here:
+        problems.append(f"ledger: box {lines(led) if led is not None else '?'} lines, {LEDGER.name} {here}")
+    out = box("cd ~/jobq/runs && find . -mindepth 2 -maxdepth 2 -name log.txt -printf '%P\\t%s\\n'", 120)
+    if out is None:
+        problems.append("the box's run logs list did not come")
+    else:
+        bad = []
+        for row in out.splitlines():
+            path, size = row.rsplit("\t", 1)
+            f = REPO / "log" / "jobq" / path
+            job = path.split("/")[0]
+            if not f.is_file() or (job not in running and f.stat().st_size != int(size)):
+                bad.append(path)
+        if bad:
+            problems.append(f"{len(bad)} run logs not under log/jobq/, e.g. {bad[:3]}")
+    ok, why = fit_saved()
+    if not ok:
+        problems.append(f"the 32B fit's files: {why}")
+    return problems
 
 
 def sha256(path: Path) -> str:
@@ -314,28 +340,39 @@ def terminate() -> bool:
     return False
 
 
-def final(reason: str, announced: set[str]) -> bool:
-    """A last pull and the checks, then the DELETE; False (box kept) if anything is not on the Mac."""
+def final(reason: str, actions: set[str]) -> bool:
+    """Pending jobs cancelled, then up to 3 tries of pull + fill + checks; the DELETE only if every check passes.
+    False: the box is kept (an ACTION line says why, once per distinct reason)."""
     say(f"final: {reason}")
-    missing = ["(not pulled)"]
-    for _ in range(3):
-        pull(announced)
-        if not (missing := missing_here()):
+    q = queue()
+    for i in q["pending"] if q else []:
+        say(f"cancel {i}: the queue is ending")
+        jq.cmd_cancel(i)
+    problems = ["(not checked)"]
+    for attempt in range(1, 4):
+        pulled = pull()
+        failed = fill_and_copy()
+        q = queue()
+        problems = ([] if pulled else ["jobq pull failed"]) + failed + verify(set(q["running"]) if q else set())
+        if not problems:
             break
-        time.sleep(30)
-    if missing:
-        say(f"NOT DELETING: {len(missing)} files of the box's results are not here, e.g. {missing[:5]}")
+        say(f"final check {attempt}/3 failed: {'; '.join(problems)}")
+        time.sleep(60)
+    if problems:
+        key = "; ".join(sorted(p.split(":")[0] for p in problems))
+        if key not in actions:
+            actions.add(key)
+            say(f"ACTION: {HOST} NOT deleted ({reason}): {'; '.join(problems)}. The watchdog retries every "
+                f"{RETRY_S // 60} min until {GIVE_UP:%H:%M}Z; by hand: JOBQ_HOST={HOST} uv run python scripts/jobq.py "
+                f"pull, then uv run python scripts/remote/h200q_watchdog.py --check, then h200_finish.py --terminate-only")  # fmt: skip
         return False
-    say(f"results: every file of the box's {len(pulled_dirs())} run dirs is here")
-    ok, why = fit_saved()
-    if not ok:
-        say(f"NOT DELETING: the 32B fit's files are not on the Mac ({why})")
-        return False
-    say(why)
+    say("verified: every result file, the ledger, every run log and the 32B fit's files are on the Mac")
     if terminate():
         say("box deleted")
         return True
-    say("!! the DELETE failed 3 times (a status deleting / deleted above means it went): check the Sesterce console")
+    say(
+        "ACTION: the DELETE failed 3 times (a status deleting / deleted above means it went): check the Sesterce console"
+    )
     return False
 
 
@@ -359,8 +396,11 @@ def check() -> int:
     if ids is not None:
         new, superseded = new_specs(set(json.loads(ids)))
         say(f"would enqueue {[i for i, _ in new]}; superseded {sorted(superseded)}")
-    say(f"last batch marked: {LAST_BATCH.exists()}")
-    say(f"fit files on the Mac: {fit_saved()}")
+    say(
+        f"workers on the box: GPU 0 {worker_running(0)}, GPU 1 {worker_running(1)}; last batch marked {LAST_BATCH.exists()}"
+    )
+    problems = verify(set(q["running"]) if q else set())
+    say(f"delete checks now (no pull done here): {'; '.join(problems) or 'all pass'}")
     say(f"final from {FINAL_AT:%Y-%m-%d %H:%M}Z ({(FINAL_AT - now()).total_seconds() / 3600:.1f} h from now)")
     return 0
 
@@ -382,9 +422,11 @@ def main() -> int:
         jq._install_box_script()  # the Mac's jobq.py on the box, for box-status
     except subprocess.CalledProcessError as e:
         say(f"could not install jobq.py on the box ({e}); using the copy there")
-    started: set[int] = set()
-    announced: set[str] = set()
+    started = {g for g in (0, 1) if worker_running(g)}
+    if started:
+        say(f"workers already on the box: GPU {sorted(started)}")
     seen_failed: set[str] = set()
+    actions: set[str] = set()
     last_why, last_pull, last_scan, last_enqueue, reason = "", 0.0, 0.0, time.time(), None
     finished_since: float | None = None
     while True:
@@ -397,12 +439,12 @@ def main() -> int:
                     last_enqueue = time.time()
                 last_scan = time.time()
             if reason is not None:
-                if final(reason, announced):
+                if final(reason, actions):
                     return 0
                 if now() >= GIVE_UP:
-                    say("giving up 2 h after the limit: the box is still running; delete it by hand")
+                    say(f"ACTION: giving up 2 h after the limit; {HOST} is left up: verify and delete it by hand")
                     return 2
-                time.sleep(PULL_S)
+                time.sleep(RETRY_S)
                 continue
             if 0 not in started:
                 ok, why = start_condition()
@@ -415,7 +457,7 @@ def main() -> int:
                 started.add(0)
             q = queue()
             if time.time() - last_pull >= PULL_S:
-                pull(announced)
+                pull()
                 last_pull = time.time()
                 say(summary(q))
             if q is None:
