@@ -426,11 +426,55 @@ def f13_mechanism(out: Path) -> None:
     save(fig, out, "f13_mechanism.png")
 
 
+def by_target(run: str, layer: int) -> dict[int, tuple[int, int, int]]:
+    """memory -> prompt, last two tokens, one layer: per alt target statement k, (same slot, word, n)."""
+    import sys
+
+    sys.path.insert(0, str(ROOT))
+    from scripts import pointer_swap as PS
+
+    m = json.loads((RES / "pointer_swap" / run / "manifest.json").read_text())
+    items = {it["id"]: it for its in PS.load_items(m).values() for it in its}
+    c: dict[int, list[int]] = collections.defaultdict(lambda: [0, 0, 0])
+    for r in rows("pointer_swap", run, file="outcomes.jsonl"):
+        if r["family"] == "RL" and r["source"] == "dissoc" and r["group"] == "last" and str(r["layer"]) == str(layer):
+            k = items[r["name"]]["slots"]["position"]
+            c[k][0] += r["role"] == "position"
+            c[k][1] += r["role"] == "identity"
+            c[k][2] += 1
+    return {k: tuple(v) for k, v in c.items()}  # type: ignore[misc]
+
+
+def f14_slot_by_target(out: Path) -> None:
+    """D3 by the statement the alt prompt asks: share of patched answers at the same slot (solid) and at bridge alt's
+    own statement (dashed), memory -> prompt, each model at its layer before the digit arrives."""
+    models = [("Qwen3.6-27B (L50)", "d3v4_swap_topics", 50, LOOKUP), ("Qwen3-32B (L50)", "qwen3_32b_d3v4_swap_r2", 50, "#b5482a"),
+              ("Qwen3.5-9B (L22)", "qwen35_9b_d3v4_swap_r2", 22, "#eda100"),
+              ("OLMo-3-7B (L19)", "olmo3_7b_instruct_d3v4_swap_fn", 19, "#6250d6"),
+              ("Gemma 4 31B (L40)", "gemma4it_d3v4_swap_v2_r2", 40, DIGIT)]  # fmt: skip
+    fig, ax = plt.subplots(figsize=(8.5, 3.6))
+    style(ax, "y")
+    for name, run, la, col in models:
+        c = by_target(run, la)
+        ks = sorted(c)
+        ax.plot(
+            [k + 1 for k in ks], [100 * c[k][0] / c[k][2] for k in ks], color=col, lw=2, marker="o", ms=4, label=name
+        )
+        ax.plot([k + 1 for k in ks], [100 * c[k][1] / c[k][2] for k in ks], color=col, lw=1.2, ls="--", alpha=0.8)
+    ax.set_xticks(range(1, 6), ["1st", "2nd", "3rd", "4th", "5th"])
+    ax.set_xlabel("statement the alt prompt asks")
+    ax.set_ylabel("% of patched answers")
+    ax.set_ylim(0, 105)
+    ax.set_title("Same slot (solid) vs bridge alt's own statement (dashed), by asked statement", loc="left")
+    ax.legend(frameon=False, loc="upper right", fontsize=8.5)
+    save(fig, out, "f14_slot_by_target.png")
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", default="figures/readme_1021")
     out = ROOT / ap.parse_args().out
     out.mkdir(parents=True, exist_ok=True)
     for f in (f1_two_routes, f2_stated_bridge, f3_early_push, f4_late_read, f5_slot_by_layer, f6_slot_counts, f8_shifts, f9_olmo_slot,
-              f7_pointer_push, f10_late_read_models, f11_natural_errors, f12_address_models, f13_mechanism):  # fmt: skip
+              f7_pointer_push, f10_late_read_models, f11_natural_errors, f12_address_models, f13_mechanism, f14_slot_by_target):  # fmt: skip
         f(out)
