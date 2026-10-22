@@ -378,14 +378,15 @@ def f7_pointer_push(out: Path) -> None:
 
 def f8_shifts(out: Path) -> None:
     """D3 v6: under an extra sentence before the list (place in the text shifts) or before the question (distance back
-    shifts), the same slot vs the moved statement; Qwen3.6-27B at layer 50, Qwen3.5-9B at layer 18 (its only swept layer
-    before the alt digit arrives), OLMo-3-7B-Instruct at layer 18."""
+    shifts), the same slot vs the moved statement; Qwen3.6-27B at layer 50, Qwen3.5-9B at layer 18 and Gemma 4 at layer
+    40 (their only swept layers before the alt digit arrives), OLMo-3-7B-Instruct at layer 18."""
     runs = [
         ("d3v6_swap_27b", "50", "Qwen3.6-27B (layer 50)"),
         ("qwen35_9b_d3v6_swap_r2", "18", "Qwen3.5-9B (layer 18)"),
         ("olmo3_7b_instruct_d3v6_swap", "18", "OLMo-3-7B (layer 18)"),
+        ("gemma4it_d3v6_swap_r2", "40", "Gemma 4 31B (layer 40)"),
     ]
-    fig, axes = plt.subplots(1, len(runs), figsize=(13, 3.2), sharey=True, gridspec_kw={"wspace": 0.08})
+    fig, axes = plt.subplots(1, len(runs), figsize=(15, 3.2), sharey=True, gridspec_kw={"wspace": 0.08})
     for ax, (run, la, title) in zip(axes, runs, strict=True):
         style(ax, "y")
         rates = load("pointer_swap", run)["rates"]
@@ -434,10 +435,12 @@ def f10_late_read_models(out: Path) -> None:
     """D2 across models: memory -> prompt still right with the statement hidden from the last tokens in every
     attention layer (and, for the hybrids, in every DeltaNet layer), and the off-path statement control."""
     models = [("Qwen3.6-27B\n(hybrid)", "d2_v4_late_read", True), ("Qwen3.5-9B\n(hybrid)", "qwen35_9b_d2_v4_late_read_r2", True),
+              ("Qwen3-32B\n(dense)", "qwen3_32b_d2_v4_late_read_v2_r2", False),
               ("OLMo-3-7B\nInstruct", "olmo3_7b_instruct_d2_v4_late_read_v3", False),
               ("OLMo-3-7B\nSFT", "olmo3_7b_sft_d2_v4_late_read_v2", False),
-              ("OLMo-3-7B\nDPO", "olmo3_7b_dpo_d2_v4_late_read_v2", False)]  # fmt: skip
-    fig, ax = plt.subplots(figsize=(9.5, 3.2))
+              ("OLMo-3-7B\nDPO", "olmo3_7b_dpo_d2_v4_late_read_v2", False),
+              ("Gemma 4 31B\n(sliding\n+ global)", "gemma4it_d2_v4_late_read_v3_r2", False)]  # fmt: skip
+    fig, ax = plt.subplots(figsize=(12, 3.2))
     style(ax, "y")
     for i, (_, run, hybrid) in enumerate(models):
         attn = "attn" if hybrid else "all"
@@ -454,8 +457,9 @@ def f10_late_read_models(out: Path) -> None:
     ax.set_ylabel("% of answers still right")
     head(
         ax,
-        "The same on every model tested: blocking the attention layers breaks the lookup",
-        "memory → prompt; the last tokens are blocked from seeing one statement. OLMo has attention in every layer.",
+        "On every model tested, blocking the attention layers breaks the lookup",
+        "memory → prompt; the last tokens are blocked from seeing one statement. Qwen3-32B, OLMo and Gemma have attention "
+        "in every layer.",
     )
     handles = [box(LOOKUP), box(LIGHT), box(SURF, INK2, "///")]
     ax.legend(handles, ["answer's statement,\nevery attention layer", "answer's statement,\nevery DeltaNet layer",
