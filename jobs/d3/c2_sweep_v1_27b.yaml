@@ -1,0 +1,29 @@
+id: c2_sweep_v1_27b
+title: "Sharp C2, step a (pointer_v1): does the lens push write recall earlier than layer 44 on animals and elements?"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.7
+depends_on: []
+command: >-
+  uv run python scripts/pointer_fit.py run --data pointer_v1 --name c2_sweep_v1_27b --n-test 100 --rr-n 100
+  --collect-layers 32 36 40 44 --steer-layers 32 36 40 44 --scales 1.0 2.0 --ks 4 --primary-layer 44
+  --why "Sharp C2, step a: pointer_fit's lens / random / patch conditions at layers 32-44 on pointer_v1 (animals,
+  elements); d3b_slot_direction_main_27b covered 44-52, where only elements had the lens writing recall"
+examples_command: uv run python scripts/pointer_fit.py examples --name c2_sweep_v1_27b
+figures_command: uv run python scripts/pointer_fit.py figures --name c2_sweep_v1_27b
+question: >-
+  At layers 32-44 on pointer_v1 (animals, elements), does the lens push switch memory -> memory answers to bridge alt's
+  recalled answer, and with more memory -> memory items than before (100 per topic)?
+why_it_matters: >-
+  Elements at layers 44-48 is the only valid C2 cell so far (lens on recall 30-44%, 6 entities, 50 items). Earlier
+  layers may add animals (15 entities) as a second valid topic.
+hypotheses:
+  H-cells: 'scripts/c2_cells.py selects an animals cell at some layer 32-40. Prior 0.35'
+decision_rule: >-
+  as c2_sweep_v4_27b (scripts/c2_cells.py, select on memory -> memory only, then reveal on lookups of statements 3-5).
+controls:
+- 'random direction of the same size; the patch as the reference'
+n: '100 memory -> prompt and 100 memory -> memory items per topic, 2 topics'
+seeds: [0]
+notes: 'Qwen3.6-27B; pointer_v1 competence d3_competence_27b (default).'

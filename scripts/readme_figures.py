@@ -44,7 +44,7 @@ SLOT, WORD = LOOKUP, RECALL  # D3 figures: the same slot (orange), bridge alt's 
 plt.rcParams.update({"font.size": 10, "text.color": INK, "axes.labelcolor": INK2, "xtick.color": INK2,
                      "ytick.color": INK, "axes.titlesize": 10, "axes.titleweight": "bold"})  # fmt: skip
 NAMES = {"BL": "prompt → prompt", "RL": "memory → prompt", "BR": "prompt → memory", "RR": "memory → memory"}
-D3_ROLES = (("position", "the same slot in the org list", SLOT), ("identity", "bridge alt's own statement (word)", WORD),
+D3_ROLES = (("position", "the same slot in the org list", SLOT), ("identity", "bridge alt's own statement (identity)", WORD),
             ("value", "alt prompt's own answer (digit)", DIGIT))  # fmt: skip
 
 
@@ -150,7 +150,7 @@ def f0_patch_example(out: Path) -> None:
             linespacing=1.2)  # fmt: skip
     ax.text(0, 0.72, "The patched org prompt now answers:", ha="left", va="center", fontsize=9.5, fontweight="bold")
     outs = [("7", "org's 3rd statement: the same slot as the asked one", SLOT, 0.0, 0.2),
-            ("9", "lion's statement in org: bridge alt's own statement (word)", WORD, 0.0, -0.3),
+            ("9", "lion's statement in org: bridge alt's own statement (identity)", WORD, 0.0, -0.3),
             ("5", "alt's own answer: the digit itself", DIGIT, 6.2, 0.2),
             ("3", "org's own answer: unchanged", GREY, 6.2, -0.3)]  # fmt: skip
     for d, txt, col, x, y in outs:
@@ -493,12 +493,12 @@ def f10_late_read_models(out: Path) -> None:
     ax.set_xticks(range(len(models)), [m for m, _, _ in models])
     ax.set_ylim(0, 115)
     ax.set_ylabel("% of answers still right")
-    head(
-        ax,
-        "On every model tested, blocking the attention layers breaks the lookup",
-        "memory → prompt; the last tokens are blocked from seeing one statement. Qwen3-32B, OLMo and Gemma have attention "
-        "in every layer.",
-    )
+    ax.axhline(20, color=INK, lw=1, ls=":")
+    ax.annotate("guessing among\nthe list's 5 digits", (1.0, 20), xycoords=("axes fraction", "data"), xytext=(4, 0),
+                textcoords="offset points", ha="left", va="center", fontsize=8, color=INK)  # fmt: skip
+    head(ax, "On every model tested, blocking the attention layers breaks the lookup down to guessing",
+         "memory → prompt; the last tokens are blocked from seeing one statement. 72-96% of the answers then go to another "
+         "digit of the list.\nQwen3-32B, OLMo and Gemma have attention in every layer.")  # fmt: skip
     handles = [box(LOOKUP), box(LIGHT), box(SURF, INK2, "///")]
     ax.legend(handles, ["answer's statement,\nevery attention layer", "answer's statement,\nevery DeltaNet layer",
                         "control: another statement,\nevery attention layer"], frameon=False, loc="upper center",
@@ -557,7 +557,7 @@ def f12_address_models(out: Path) -> None:
         "Pooled over asked statements: slot vs word by model",
         "memory → prompt, last two tokens; fig. 14 splits it.",
     )
-    ax.legend([box(SLOT), box(WORD)], ["the same slot", "bridge alt's own statement (word)"], frameon=False,
+    ax.legend([box(SLOT), box(WORD)], ["the same slot", "bridge alt's own statement (identity)"], frameon=False,
               loc="upper right")  # fmt: skip
     save(fig, out, "f12_address_models.png")
 
@@ -677,12 +677,12 @@ def f14_slot_by_target(out: Path) -> None:
     axes[0].set_ylim(0, 105)
     axes[0].set_ylabel("% of patched answers")
     axes[2].set_xlabel("where the alt question's answer sits in the alt list (in the example: lion, 3rd)")
-    head(axes[0], "The slot label covers the 1st and 2nd statements; from the 3rd on, the word steers",
+    head(axes[0], "The slot label covers the 1st and 2nd statements; from the 3rd on, the bridge identity steers",
          "memory → prompt, last two tokens patched at each model's layer before the alt digit arrives. Items are grouped "
          "by the place of the\nasked statement in the alt list. Orange: the answer moved to the org statement at that "
          "same place. Blue: it moved to the org\nstatement about alt's bridge animal. Shaded: 1st and 2nd places, "
          "where the same place leads on every model.", above=16)  # fmt: skip
-    fig.legend([box(SLOT), box(WORD)], ["the same slot in the org list", "bridge alt's own statement (word)"],
+    fig.legend([box(SLOT), box(WORD)], ["the same slot in the org list", "bridge alt's own statement (identity)"],
                loc="lower center", ncol=2, frameon=False, bbox_to_anchor=(0.5, -0.15))  # fmt: skip
     save(fig, out, "f14_slot_by_target.png")
 
@@ -737,11 +737,11 @@ def f16_slot_by_target_v5(out: Path) -> None:
     axes[0].set_ylim(0, 105)
     axes[0].set_ylabel("% of patched answers")
     axes[1].set_xlabel("where the alt question's answer sits in the alt list")
-    head(axes[0], "With 8 statements and with colour-word answers: a label for the 1st and 2nd, then the word",
+    head(axes[0], "With 8 statements and with colour-word answers: a label for the 1st and 2nd, then the bridge identity",
          "memory → prompt, last two tokens, the same patch, split by the asked statement. Colour words: \"The cow's locker is "
          "red.\"; on Qwen3.6-27B and Gemma their same-entity\ncontrol fails (33% and 56% of answers change), so they are "
          "shown only for Qwen3.5-9B. Shaded: the 1st and 2nd places.", above=16)  # fmt: skip
-    fig.legend([box(SLOT), box(WORD)], ["the same slot in the org list", "bridge alt's own statement (word)"],
+    fig.legend([box(SLOT), box(WORD)], ["the same slot in the org list", "bridge alt's own statement (identity)"],
                loc="lower center", ncol=2, frameon=False, bbox_to_anchor=(0.5, -0.12))  # fmt: skip
     save(fig, out, "f16_slot_by_target_v5.png")
 
@@ -801,17 +801,18 @@ def f18_stages_models(out: Path) -> None:
         ax.scatter([pct(s["digit"])], [i], marker="D", s=50, color=DIGIT, zorder=3)
         core = ", ".join(f"{a2}-{b2}" for a2, b2 in s["core"] if (a2, b2) != (a, b))
         win = f"{w0}" if w0 == w1 else f"{w0}-{w1}"
-        ax.text(101, i, f"label/word {win} · read {a}-{b}{f' (most {core})' if core else ''} · digit {s['digit']}",
+        ax.text(101, i, f"label/identity {win} · read {a}-{b}{f' (most {core})' if core else ''} · digit {s['digit']}",
                 va="center", fontsize=8.5, color=INK)  # fmt: skip
     ax.set_yticks(range(len(STAGE_MODELS)), [f"{n} ({nl} layers)\n{arch}" for n, arch, nl, _, _ in STAGE_MODELS],
                   fontsize=8.5)  # fmt: skip
     ax.invert_yaxis()
     ax.set_xlim(0, 100)
     ax.set_xlabel("depth (% of the model's layers)")
-    head(ax, "The same sequence on every model, at a different depth",
+    head(ax, "Where the stages sit along the depth, by model",
          "memory → prompt. Orange: layers where patching the last two tokens moves the answer to another statement "
-         "(label or word). Grey: layers\nthe last tokens must be able to attend to the answer's statement (darker: the "
-         "narrowest such band). Green: the alt digit has reached the last tokens.")  # fmt: skip
+         "(label or identity). Grey: the layer block\nthe last tokens must be able to attend to the answer's statement in "
+         "(the knock-out's resolution: 8-16 layers, so it does not order the read against the orange window;\ndarker: "
+         "the narrowest block that is needed alone). Green: the alt digit has reached the last tokens.")  # fmt: skip
     save(fig, out, "f18_stages_models.png")
 
 
@@ -847,7 +848,7 @@ def f19_where_bridge(out: Path) -> None:
 
 
 def f20_olmo_ladder(out: Path) -> None:
-    """OLMo-3-7B post-training ladder (SFT -> DPO -> Instruct): the late read (D2), the 1st / 2nd label and the word
+    """OLMo-3-7B post-training ladder (SFT -> DPO -> Instruct): the late read (D2), the 1st / 2nd label and the bridge identity
     from the 3rd on (D3, layer 18), order vs place (D3 v4x, filler moved, layer 18)."""
     ladder = [("SFT", "olmo3_7b_sft_d2_v4_late_read_v2", "olmo3_7b_sft_d3v4_swap", "olmo3_7b_sft_d3v4x_swap"),
               ("DPO", "olmo3_7b_dpo_d2_v4_late_read_v2", "olmo3_7b_dpo_d3v4_swap", "olmo3_7b_dpo_d3v4x_swap"),
@@ -869,7 +870,7 @@ def f20_olmo_ladder(out: Path) -> None:
     titles = [("Late read: statement blocked\nfrom the last tokens", "% still right",
                [box(LOOKUP), box(SURF, INK2, "///")], ["answer's statement", "control: another statement"]),
               ("Patch split by the asked statement", "% of patched answers", [box(SLOT), box(WORD)],
-               ["1st / 2nd: same slot", "3rd-5th: the word"]),
+               ["1st / 2nd: same slot", "3rd-5th: bridge identity"]),
               ("How the label counts\n(filler moved)", "% of patched answers", [box(SLOT), box(LIGHT)],
                ["order in the list", "place in the text"])]  # fmt: skip
     for ax, (t, yl, h, labs) in zip(axes, titles, strict=True):

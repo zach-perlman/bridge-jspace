@@ -112,9 +112,12 @@ SUITE = ("BL", "BR", "RL", "RR", "BLR", "BRL")
 COUNTRIES = ("country-R", "country-B")
 FAMILIES = SUITE + COUNTRIES
 SOURCES = ("lookup", "binding", "lookup_off", "binding_off", "random", "trailing")
+# pointer_v1 / pointer_v4 only, opt-in via --sources: one part of the answer's (or the off-path) statement
+PART_SOURCES = ("lookup_name", "lookup_digit", "lookup_off_name", "lookup_off_digit")
 CONV_REACH = 3  # the DeltaNet conv's kernel is 4: a token's input reaches the next 3 tokens' queries, keys, values
 DESTS = ("question", "final", "both", "after")
-CONTROL_OF = {"lookup": "lookup_off", "binding": "binding_off"}
+CONTROL_OF = {"lookup": "lookup_off", "binding": "binding_off", "lookup_name": "lookup_off_name",
+              "lookup_digit": "lookup_off_digit"}  # fmt: skip
 PATH = {  # sources on each family's path
     "BL": ("lookup", "binding"),
     "BR": ("binding",),
@@ -271,6 +274,18 @@ def pointer_statement_spans(item: dict, dataset: str) -> list[tuple[int, int]]:
     return out
 
 
+def statement_parts(stmt: str, entity: str, digit: int | str) -> dict[str, tuple[int, int]]:
+    """Char ranges inside one statement of the entity's name and of its digit (its only standalone occurrence)."""
+    a = stmt.index(entity)
+    d = str(digit)
+    hits = [i for i in range(len(stmt) - len(d) + 1) if stmt[i : i + len(d)] == d
+            and not (i > 0 and stmt[i - 1].isdigit()) and not (i + len(d) < len(stmt) and stmt[i + len(d)].isdigit())]  # fmt: skip
+    assert len(hits) == 1, f"{stmt!r}: digit {d} found {len(hits)} times"
+    name, dig = (a, a + len(entity)), (hits[0], hits[0] + len(d))
+    assert name[1] <= dig[0] or dig[1] <= name[0], f"{stmt!r}: name and digit overlap"
+    return {"name": name, "digit": dig}
+
+
 def pointer_case(item: dict, tok, dataset: str) -> dict:
     """A pointer-style item as a case: the statement giving the answer (the queried slot's), a same-kind statement
     off the path (another slot, same token length, seeded per scene), a random span inside the statements' region
@@ -290,6 +305,13 @@ def pointer_case(item: dict, tok, dataset: str) -> dict:
     off = rng.choice(same) if same else next(i for i in range(len(spans)) if i != q)
     sources["lookup_off"], texts["lookup_off"] = tok_spans[off], content[slice(*spans[off])]
     flags = {"lookup_off": "same_length" if same else "length_mismatch"}
+    if dataset in ("pointer_v1", "pointer_v4"):  # PART_SOURCES: the name or the digit alone, on and off the path
+        for key, i in (("lookup", q), ("lookup_off", off)):
+            a, b = spans[i]
+            for part, (pa, pb) in statement_parts(content[a:b], item["entities"][i], item["digits"][i]).items():
+                sources[f"{key}_{part}"] = token_span(offsets, a + pa + shift, a + pb + shift)
+                texts[f"{key}_{part}"] = content[a + pa : a + pb]
+                assert sources[f"{key}_{part}"], f"{item['id']}: no tokens for {key}_{part}"
     region = list(range(min(min(s) for s in tok_spans), max(max(s) for s in tok_spans) + 1))
     forbidden = set(sources["lookup"])
     for key in ("list", "chain"):  # code selectors (IX's list, CH's chains): on the path, never a random control
@@ -3442,7 +3464,8 @@ if __name__ == "__main__":
     ap.add_argument("--domains", nargs="+", default=None, help="pointer sets: the domains to use (default all)")
     ap.add_argument("--competence", default=None, help="pointer sets: the competence run (default the dataset's)")
     ap.add_argument("--n", type=int, default=100, help="items per family")
-    ap.add_argument("--sources", nargs="+", choices=list(SOURCES), default=list(SOURCES))
+    ap.add_argument("--sources", nargs="+", choices=[*SOURCES, *PART_SOURCES], default=list(SOURCES),
+                    help="PART_SOURCES (pointer_v1 / pointer_v4): the name or the digit of a statement alone")  # fmt: skip
     ap.add_argument("--dests", nargs="+", choices=list(DESTS), default=list(DESTS))
     ap.add_argument(
         "--layers",

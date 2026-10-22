@@ -1,0 +1,37 @@
+id: d2_parts_27b
+title: "Name vs digit: what do the question's tokens and the last tokens take from the answer's statement? (Qwen3.6-27B)"
+thread: D2
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.4
+depends_on: []
+command: >-
+  uv run python scripts/attn_knockout.py manifest --name d2_parts_27b --dataset pointer_v4 --families RL DL RR --n 100
+  --sources lookup lookup_off lookup_name lookup_digit lookup_off_name lookup_off_digit --dests question final --layers all --competence d3v4_competence_27b
+  --why "D2 follow-up (name vs digit): hide only the entity's name or only the digit of the answer's statement (and of an
+  off-path statement) from the question's tokens or from the last tokens, in every layer; analysed by scripts/d2_parts.py"
+  && uv run python scripts/attn_knockout.py run --name d2_parts_27b
+examples_command: uv run python scripts/attn_knockout.py examples --name d2_parts_27b --k 3
+figures_command: uv run python scripts/d2_parts.py --name d2_parts_27b
+question: >-
+  When only the entity's name, or only the digit, of the answer's statement is hidden from the question's tokens or from
+  the last tokens, how many lookups stay right, and where do the wrong answers go?
+why_it_matters: >-
+  Qwen3.6-27B: the question's tokens barely matter (90% right without the statement). Hiding the whole statement from the question's tokens breaks lookups on Qwen3-32B, OLMo and Qwen3.5-9B with
+  mostly off-list answers: the question's tokens take something other than the digit choice from the statement,
+  perhaps the name to resolve the bridge. The last tokens should need the digit.
+hypotheses:
+  H-name-q: 'where the question needs the statement at all (whole statement hidden from the question leaves <= 0.70
+    right): hiding the name alone there hurts as much as the whole statement (within 0.15) and the digit alone keeps
+    >= 0.85. Prior 0.55'
+  H-digit-final: 'from the last tokens, hiding the digit alone leaves <= 0.35 right and the name alone >= 0.70. Prior 0.6'
+decision_rule: >-
+  scripts/d2_parts.py (committed before this run): memory -> prompt, topics pooled, items right unedited; valid iff the
+  off-path name and digit controls keep >= 0.90 right at both destinations; question hypotheses testable iff the whole
+  statement hidden from the question leaves <= 0.70 right; H-name-q, H-digit-q, H-digit-final, H-name-final as in its
+  docstring. Error types (another list digit vs off the list) reported for every cell.
+controls:
+- 'the same parts (name, digit) of an off-path statement of the same length; the whole statement and the whole off-path statement'
+n: '100 items per family, 3 topics (pointer_v4)'
+seeds: [0]
+notes: "Qwen3.6-27B: the question's tokens barely matter (90% right without the statement). Not opened before Dan predicts (batch 8)."

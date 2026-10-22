@@ -486,6 +486,19 @@ def test_pointer_v4_statement_spans_follow_the_listed_statements():
         K.pointer_statement_spans({**item, "n_entities": 3}, "pointer_v4")
 
 
+def test_statement_parts_name_and_digit():
+    from scripts import attn_knockout as K
+
+    s = "Folder 2 holds the chart on the heart."
+    parts = K.statement_parts(s, "heart", 2)
+    assert s[slice(*parts["name"])] == "heart" and s[slice(*parts["digit"])] == "2"
+    s2 = "The file on New Zealand is kept in drawer 7."
+    parts2 = K.statement_parts(s2, "New Zealand", "7")
+    assert s2[slice(*parts2["name"])] == "New Zealand" and s2[slice(*parts2["digit"])] == "7"
+    with pytest.raises(AssertionError):  # the digit must be a standalone number, once
+        K.statement_parts("Drawer 17 holds the file on Peru.", "Peru", 7)
+
+
 def test_general_claim_per_topic_on_cluster_bounds():
     """H-general holds in a topic only on the entity-cluster bounds; on the point estimates alone it is 'point';
     a topic where every attention layer keeps more than 20% fails it."""

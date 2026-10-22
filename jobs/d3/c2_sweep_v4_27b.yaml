@@ -1,0 +1,41 @@
+id: c2_sweep_v4_27b
+title: "Sharp C2, step a (pointer_v4): at which layers and topics does the lens push write recall?"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.9
+depends_on: []
+command: >-
+  uv run python scripts/pointer_fit.py run --data pointer_v4 --name c2_sweep_v4_27b --competence d3v4_competence_27b
+  --n-test 150 --rr-n 100 --collect-layers 32 36 40 44 48 --steer-layers 32 36 40 44 48 --scales 1.0 2.0 --ks 4
+  --primary-layer 48
+  --why "Sharp C2, step a: pointer_fit's lens / random / patch conditions on memory -> memory and memory -> prompt at
+  layers 32-48 (countries, animals, body parts), to find cells where the lens push writes recall (the positive control
+  the lookup test needs); cells are selected by scripts/c2_cells.py from the memory -> memory rows only"
+examples_command: uv run python scripts/pointer_fit.py examples --name c2_sweep_v4_27b
+figures_command: uv run python scripts/pointer_fit.py figures --name c2_sweep_v4_27b
+question: >-
+  At which layers (32-48) and topics of pointer_v4 does the lens push (bridge alt minus bridge org, 1x and 2x the patch's
+  size, at the tokens after the question) switch memory -> memory answers to bridge alt's recalled answer?
+why_it_matters: >-
+  The README's "the lens moves 0 lookups" (layer 48) has no positive control: the lens does not write recall there
+  either. Only pointer_v1's elements at layers 44-48 (6 entities) are a valid cell. C2 (does an identity code the lens
+  cannot write steer the lookup?) needs >= 12 entities in valid cells; countries (capital -> country) may recall late
+  enough at layers 32-40.
+hypotheses:
+  H-cells: 'scripts/c2_cells.py selects at least one cell (lens on recall >= 0.20 with Wilson lower bound >= 0.10,
+    random <= 0.05, patch >= 0.20) in at least one pointer_v4 topic. Prior 0.6'
+  H-c2-lens: 'in the selected cells, on lookups of statements 3-5, the patch moves >= 0.20 to the bridge statement and
+    the lens <= random + 0.05 and <= its recall rate / 3. Prior 0.5'
+decision_rule: >-
+  scripts/c2_cells.py (committed before this run): select stage on the memory -> memory rows only (lens 1x or 2x >= 0.20
+  with Wilson lower bound >= 0.10; random <= 0.05 at both sizes; patch >= 0.20), then the reveal stage on the selected
+  cells' memory -> prompt items whose alt prompt asks statement 3-5 (C2-lens: patch >= 0.20, lens at the size that wrote
+  recall <= random + 0.05 and <= recall rate / 3). Step b (a supervised identity direction) needs >= 12 distinct asked
+  entities pooled over the selected cells of this run and c2_sweep_v1_27b.
+controls:
+- 'random direction of the same per-token size (1x, 2x); the patch (alt prompt pasted) as the reference; shuffled-label
+  slot direction (pointer_fit, reported)'
+n: '150 memory -> prompt and 100 memory -> memory items per topic, held-out entities or wordings, 3 topics'
+seeds: [0]
+notes: 'Qwen3.6-27B. Runs with c2_sweep_v1_27b; analysed together after Dan predicts (batch 8).'
