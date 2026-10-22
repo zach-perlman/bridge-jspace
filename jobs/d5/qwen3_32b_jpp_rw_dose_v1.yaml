@@ -1,0 +1,31 @@
+id: qwen3_32b_jpp_rw_dose_v1
+title: "Lens read / write dose on Qwen3-32B with our J++: does the lens write recall but not lookups? (finding 1)"
+thread: D5
+gpus: 1
+est_gpu_hours: 0.4
+mem_gb: 75
+depends_on:
+- qwen3_32b_jpp_lens_gate
+- qwen3_32b_competence_chat_v1
+command: >-
+  BJ_TARGET=qwen3-32b-jpp uv run python scripts/d1_precheck.py --gate qwen3_32b_jpp_lens_gate --competence qwen3_32b_d1_topics_competence --tasks-set d1_topics_v1 --min-topics 0
+  && BJ_TARGET=qwen3-32b-jpp BJ_FORMAT=chat uv run python scripts/read_write.py --name qwen3_32b_jpp_rw_dose_v1
+  --why "finding 1 (lens read / write dose) on Qwen3-32B with our J++: dose_v1 at the same layers (32 36 40)" --from-competence qwen3_32b_competence_chat_v1
+  --n 80 --layers 32 36 40 --scales 0.5 1 2 4 8 16
+question: In Qwen3-32B (chat), does our J++ read the bridge at the question tokens (top-10) and can the lens direction v_X - v_I write it (flips to X's answer), for countries (positive control) and for RL vs RR?
+why_it_matters: 'Gate G3 (the lens must read AND write countries, which failed on Gemma) and slide 1''s push half (Qwen3.6-27B: RL read 95% but never written; RR written 30-36%; read_write/dose_v1), on a dense, attention-only model where it was never run.'
+hypotheses:
+  H_gate: 'countries R/B: lens top-10 read >= 70% and lens flips >= 50% at some scale <= 4x with random <= 10% (27B: 95-98% flips at 2-8x) (copied from olmo3_7b_instruct_rw_dose_chat_v1)'
+  H_rw_split: RL read >= 70% but lens flips <= random + 5 points at every scale; RR flips >= 20 points above random at its best scale (copied from olmo3_7b_instruct_rw_dose_chat_v1)
+  H_rw_none: RL and RR alike (both written or neither) (copied from olmo3_7b_instruct_rw_dose_chat_v1)
+decision_rule: Runs iff our J++ passes gate v1 (scripts/d1_precheck.py, --min-topics 0; only the gate matters here). GATE G3 passes iff the countries criterion in H_gate holds at layers 32/36/40 (single layer, best scale). read-not-written for RL holds iff H_rw_split; reported with Wilson CIs, n=80 (copied from olmo3_7b_instruct_rw_dose_chat_v1, at the 27B's layers of dose_v1). Primary lens (Dan, 23 Oct ~00:30); ours on 64 prompts for Qwen3-32B and OLMo, Zach's for Gemma and Muse; no silent switch.
+controls:
+- random direction at the same norm per scale
+- C's full copy (the upper bound of a write)
+- X's rank in the clean readout (read floor)
+- countries as the positive control
+n: 80 per family (BL, BR, RL, RR; countries R, B)
+seeds:
+- 10000*case+layer (random directions)
+- 0
+notes: "Mechanical copy of olmo3_7b_instruct_rw_dose_chat_v1 (the 27B's read_write/dose_v1 on a new target; the 27B's layers, no descriptive layer 24) (Dan, 23 Oct ~01:30: the full J++ lens table); not opened before Dan's predictions. Cases from qwen3_32b_competence_chat_v1 (lens-free, this commit). No examples or figures stage: read_write.py has none, as the source. Waits for the Qwen3-32B J++ pin (target qwen3-32b-jpp)."
