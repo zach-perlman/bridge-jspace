@@ -1,0 +1,28 @@
+id: d1_topics_rw_27b
+title: "D1 topics (27b): does the lens read and write the stated bridge there?"
+thread: D1
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.4
+depends_on:
+- d1_topics_parts_27b
+command: >-
+  uv run python scripts/statement_positions.py readwrite --name d1_topics_rw_27b --map d1_topics_map_27b --parts d1_topics_parts_27b --why "D1 on four topics: the lens read and write at the transit cells" --lo 32 --sets bind_bridge bridge_word lookup_x context question
+figures_command: uv run python scripts/statement_positions.py figures --name d1_topics_rw_27b
+question: >-
+  At the same cells, does the lens read the stated bridge, and does its push write it?
+why_it_matters: >-
+  D1 (the lens reads a stated bridge, the lookup does not use that part) holds on Qwen3.6-27B on one topic (the animal
+  suite). It is the main evidence left for claim 7 (an identity code outside the J-space), and its positive control is
+  built in (the same vector a recall from the stated bridge uses). Lens on this model: J++ (neuronpedia, the frozen 27B lens).
+hypotheses:
+  H-replicates: 'the D1 split (lens-readable part <= 0.10 of lookups, the rest >= 0.50; >= 0.30 of recalls) holds pooled
+    over the four topics. Prior 0.65 on Qwen3.6-27B, 0.45 on Qwen3-32B (its lens may fail the positive control)'
+decision_rule: >-
+  statement_positions' rule (docstring; transit, parts and readwrite as for d1_parts_n80_v1), with PP as the lookup-used bound family (BL's place) and PM as the positive control (BR's place) on the same scenes. Replication (fixed 2026-10-22 before these runs): the D1 split replicates on this model iff, pooled over topics, at a PP statement cell (bind_bridge, bridge_word or context) in transit at layers 32-43, the lens-readable part alone switches <= 0.10 of lookups and everything else >= 0.50, while at the same cell PM's lens-readable part switches >= 0.30 (the positive control); without a passing positive control the run is not interpretable. Per topic (animals, planets, elements, Greek letters) reported, not decisive.
+controls:
+- 'O (another pair of picks swapped, off the path); a random direction at each row''s norm; a 25-atom OMP over a random
+  dictionary (the fitting null); PM as the positive control on the same scenes'
+n: '120 scenes (PP and PM each), four topics, prose, 3 entities (level 0), scenes right on every prompt'
+seeds: [22]
+notes: 'Data: data/tasks_v2/d1_topics_v1 (scripts/tasks_v2.py make, seed 22; numbers as digits or words per scene).'

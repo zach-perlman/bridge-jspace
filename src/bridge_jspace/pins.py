@@ -107,9 +107,11 @@ TARGETS: dict[str, dict[str, Any]] = {
         },
         "frozen_lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5",
     },
-    # Qwen3-32B (dense: softmax attention in all 64 layers; Qwen3 family, no DeltaNet), 22 Oct, for D2 / D3, which use no
-    # lens. Zach fits its J++ on his branch (Thursday); until it is pinned here the target has no lens and every script
-    # that loads one fails on it.
+    # Qwen3-32B (dense: softmax attention in all 64 layers; Qwen3 family, no DeltaNet), 22 Oct. Its lens (22 Oct, for D1 on
+    # a second model): neuronpedia's plain J-lens (NOT J++; none is published for this model), fit on Qwen/Qwen3-32B with
+    # the jlens recipe on 557 wikitext-103 prompts. Their note: the fit did not reach its stopping threshold (relative
+    # standard error of the mean Jacobian ~13%, ~5% for their other lenses), so runs on this target must pass their own
+    # positive control before a lens result counts. Key "jlens", named by "frozen_lens" as on OLMo; sha256 checked on load.
     "qwen3-32b": {
         "repo": "Qwen/Qwen3-32B",
         "revision": "9216db5781bf21249d130ec9da846c4624c16137",
@@ -117,7 +119,15 @@ TARGETS: dict[str, dict[str, Any]] = {
         "norm_gain": "weight",
         "bos": False,
         "run_prefix": "qwen3_32b_",
-        "lenses": {},
+        "frozen_lens": "jlens",
+        "lenses": {
+            "jlens": (
+                LENS_REPO,
+                "qwen3-32b/jlens/Salesforce-wikitext/Qwen3-32B_jacobian_lens.pt",
+                "e166deb5ad540932100ef803c8c9bcc2a5453694",
+            ),
+        },
+        "frozen_lens_sha256": "0af5ccf2e1c251bedc202607a7ca214f3b9f60980bab73d67a3d0b887db213d8",
     },
     # Gemma 4 31B-it with neuronpedia's published J++ fit on the BASE model (google/gemma-4-31B; 64 wikitext prompts,
     # target layer 59): no published lens is fit on the instruction-tuned model, and our own (gemma-4-31b-it above) was

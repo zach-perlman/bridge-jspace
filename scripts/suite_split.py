@@ -66,7 +66,9 @@ MAP_LAYERS = (
 # own answer_formed only.
 # Qwen3.5-122B-A10B: no exp12 either; capped at the 27B's relative depth (44/64 -> 33/48), so its windows stay in the
 # same part of the network (the 9B's runs, uncapped, reached 88% depth).
-ANSWER_ONSET = {"qwen3.6-27b": 44, "qwen3.5-122b-a10b": 33}.get(pins.TARGET, pins.N_LAYERS - 1)
+# Qwen3-32B (22 Oct, for D1 on a second model): 44, as the 27B; same 64 layers, and D3 put its patch window (48-50) and
+# the alt digit's arrival at the last tokens (52) at the 27B's layers (46-50, 52).
+ANSWER_ONSET = {"qwen3.6-27b": 44, "qwen3.5-122b-a10b": 33, "qwen3-32b": 44}.get(pins.TARGET, pins.N_LAYERS - 1)
 GROUPS = ("question", "last")
 N_SCENES = 150
 N_VALIDATE = 20

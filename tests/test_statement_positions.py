@@ -23,7 +23,7 @@ def tok():
 
 @pytest.fixture(scope="module")
 def cases(tok):
-    got, counts = D.build_cases(tok, N, list(D.FAMILIES))
+    got, counts = D.build_cases(tok, N, list(D.DEFAULT_FAMILIES))  # PP / PM need a tasks_v2 set and competence run
     assert all(v == N for part in counts.values() for v in part["n"].values())
     return got
 

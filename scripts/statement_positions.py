@@ -113,12 +113,19 @@ EXP = "statement_positions"
 RESULTS = pins.RESULTS_DIR / EXP
 SUITE = ("BL", "BR", "RL", "RR", "BLR", "BRL")
 COUNTRIES = ("R", "B")  # bind_recall's families (countries), as control_split names them
-FAMILIES = SUITE + COUNTRIES
+# tasks_v2 (Zach's generator, scripts/tasks_v2.py) PP and PM on one scene ("Grace picked delta. ... The locker of delta
+# is 8."; PP: "Which locker belongs to Grace's pick?", PM: "Which position in the Greek alphabet does Grace's pick
+# have?"): suite BL / BR in other topics (animals, planets, elements, Greek letters), opt-in with --tasks-set (22 Oct)
+TASKS = ("PP", "PM")
+FAMILIES = SUITE + COUNTRIES + TASKS
+DEFAULT_FAMILIES = SUITE + COUNTRIES
 CUE_ONLY = ("RL", "RR", "R")  # C changes only the cue in the question: every statement precedes C's change
-BOUND = ("BL", "BR", "BLR", "BRL", "B")
-LOOKUP_USED_BOUND = ("BL", "BLR")
-POSITIVE = ("B", "BR")  # the positive control at the statements, in order of preference
-PAIRS = (("BL", "BR"), ("BLR", "BRL"))  # same scenes, same statements: one patch, two readers
+BOUND = ("BL", "BR", "BLR", "BRL", "B", "PP", "PM")
+LOOKUP_USED_BOUND = ("BL", "BLR", "PP")
+POSITIVE = ("B", "BR", "PM")  # the positive control at the statements, in order of preference
+PAIRS = (("BL", "BR"), ("BLR", "BRL"), ("PP", "PM"))  # same scenes, same statements: one patch, two readers
+TASKS_SET: str | None = None  # --tasks-set: the tasks_v2 data set of the PP / PM cases
+TASKS_COMP: str | None = None  # --tasks-competence: its competence run (scenes right on every prompt of PP and PM)
 STATEMENT_SETS = ("bind_bridge", "bridge_word", "bind_other", "lookup_bridge", "lookup_x", "context")
 QUESTION_SETS = ("question", "q_words", "final")
 SETS = STATEMENT_SETS + QUESTION_SETS
@@ -161,9 +168,34 @@ def load_tokenizer():
         return AutoTokenizer.from_pretrained(str(Path(path).parent))
 
 
+def tasks_statements(c: dict) -> dict[str, Any]:
+    """A tasks_v2 PP / PM prose context (level 0: picks and lockers only, no filler) by role: "<person> picked
+    <thing>." and "The locker of <thing> is <number>.", things written as the domain refers to them ("the eagle")."""
+    sents = [s if s.endswith(".") else s + "." for s in c["context"].split(". ")]
+    picks, lockers = {}, {}
+    for s in sents:
+        if " picked " in s:
+            person, thing = s[:-1].split(" picked ", 1)
+            picks[person] = (thing.removeprefix("the "), s)
+        else:
+            assert s.startswith("The locker of "), f"{c['id']}: {s!r} is neither a pick nor a locker"
+            thing = s[len("The locker of ") : s.rindex(" is ")]
+            lockers[thing.removeprefix("the ")] = s
+    holders = [p for p in picks if f"{p}'s pick" in c["question"]]
+    assert len(holders) == 1, f"{c['id']}: the question names {holders}"
+    holder = holders[0]
+    assert picks[holder][0] == c["bridge"], f"{c['id']}: {holder} picked {picks[holder][0]}, not {c['bridge']}"
+    return {"holder": holder, "bind_bridge": picks[holder][1],
+            "bind_other": [s for p, (_, s) in picks.items() if p != holder],
+            "lookup_bridge": lockers.get(c["bridge"]), "lookup_x": lockers.get(c["cf_bridge"]), "all": sents}  # fmt: skip
+
+
 def statements(c: dict) -> dict[str, Any]:
-    """The context's sentences by role, as the item generators wrote them (suite_v1 wording A; exp09's countries)."""
+    """The context's sentences by role, as the item generators wrote them (suite_v1 wording A; exp09's countries;
+    tasks_v2's prose for PP / PM)."""
     fam = c["family"]
+    if fam in TASKS:
+        return tasks_statements(c)
     rows: dict[Any, str] = {}
     key_i: Any = None
     key_x: Any = None
@@ -264,7 +296,7 @@ def check_sets(c: dict, sets: dict[str, list[int]], every: list[int], n_tokens: 
             assert a == b or not set(sets[a]) & set(sets[b]), f"{name}: {a} and {b} overlap"
     for k in ("bind_bridge", "bridge_word", "bind_other", "context", "question", "q_words", "final"):
         assert sets[k], f"{name}: {k} is empty"
-    if c["family"] in SUITE:
+    if c["family"] in SUITE + TASKS:
         assert sets["lookup_bridge"], f"{name}: the bridge's lookup statement is missing"
         assert sets["lookup_x"], f"{name}: X's lookup statement is missing"
     assert set(sets["bridge_word"]) <= set(sets["bind_bridge"]), f"{name}: the bridge word is outside its statement"
@@ -333,16 +365,49 @@ def country_cases(tok, n: int, families: list[str], map_run: str = COUNTRY_MAP) 
     return out, {"country_map": map_run, "n": dict(seen), "unaligned_skipped": dict(skipped)}
 
 
+def tasks_cases(tok, n: int, families: list[str]) -> tuple[list[dict], dict]:
+    """The first n scenes of TASKS_SET whose PP and PM the competence run TASKS_COMP got right on every prompt (whole,
+    each step, C and O; tasks_v2.eligible at level 0), both families on the same scenes; scenes whose C or O does not
+    line up in this tokenizer are skipped and counted."""
+    from scripts import tasks_v2 as T
+
+    assert TASKS_SET, "PP / PM need --tasks-set"
+    assert TASKS_COMP, "PP / PM need --tasks-competence"
+    items = T.eligible(TASKS_SET, TASKS_COMP, list(TASKS), 10**6, level="0")
+    by_scene: dict[str, dict[str, dict]] = collections.defaultdict(dict)
+    for it in items:
+        by_scene[it["scene"]][it["word"]] = it
+    seen, skipped, out = 0, collections.Counter(), []
+    for scene in sorted(by_scene):
+        pair = by_scene[scene]
+        if seen >= n or not set(families) <= set(pair):
+            continue
+        try:
+            preps = {w: T.prepare(pair[w], tok) for w in families}
+        except AssertionError:
+            skipped["unaligned"] += 1
+            continue
+        seen += 1
+        for w in families:
+            it = pair[w]
+            out.append({**it, **preps[w], "family": w, "rendered": T.render(tok, it), "context_text": it["context"]})
+    return out, {"tasks_set": TASKS_SET, "competence": TASKS_COMP, "scenes": seen, "skipped": dict(skipped)}
+
+
 def build_cases(tok, n: int, families: list[str]) -> tuple[list[dict], dict]:
     """Every case with its position sets (asserted), in family order."""
     suite = [f for f in families if f in SUITE]
     countries = [f for f in families if f in COUNTRIES]
+    tasks = [f for f in families if f in TASKS]
     cases, counts = [], {}
     if suite:
         got, counts["suite"] = suite_cases(tok, n, suite)
         cases += got
     if countries:
         got, counts["countries"] = country_cases(tok, n, countries)
+        cases += got
+    if tasks:
+        got, counts["tasks"] = tasks_cases(tok, n, tasks)
         cases += got
     for c in cases:
         enc = raw_encoding(tok, c["rendered"], offsets=True)
@@ -451,6 +516,12 @@ def manifest_common(name: str, why: str, kind: str, families: list[str], n: int)
         p = C.RESULTS / COUNTRY_MAP / "cases.jsonl"
         inputs[str(p.relative_to(pins.REPO_ROOT))] = sha256_of(p)
         inputs[str(pins.BIND_RECALL_FILE.relative_to(pins.REPO_ROOT))] = pins.BIND_RECALL_SHA256
+    tasks = None
+    if any(f in TASKS for f in families):
+        for p in (pins.DATA_DIR / "tasks_v2" / str(TASKS_SET) / "items.jsonl",
+                  pins.RESULTS_DIR / "tasks_v2" / str(TASKS_COMP) / "items.jsonl"):  # fmt: skip
+            inputs[str(p.relative_to(pins.REPO_ROOT))] = sha256_of(p)
+        tasks = {"set": TASKS_SET, "competence": TASKS_COMP}
     return {
         "exp": EXP,
         "run": name,
@@ -462,6 +533,7 @@ def manifest_common(name: str, why: str, kind: str, families: list[str], n: int)
         "families": families,
         "n_per_family": n,
         "inputs": inputs,
+        **({"tasks": tasks} if tasks else {}),
         "cases": f"suite: the first n per family of suite_split/{SUITE_MAP}'s cases (read_write's selection; "
         f"BL/BR/RL/RR and BLR/BRL share scenes); countries: the first n per family of control_split/{COUNTRY_MAP}'s",
         "sets": (__doc__ or "").split("\n\n")[3],
@@ -737,8 +809,16 @@ def windows_of(layers: list[int]) -> dict[str, list[int]]:
     return {"primary": [la for la in layers if la >= PRIMARY_LO], "secondary": list(layers)}
 
 
+def use_tasks(m: dict) -> None:
+    """A map run's tasks_v2 set and competence run (PP / PM) for the stages that rebuild its cases."""
+    global TASKS_SET, TASKS_COMP
+    if "tasks" in m:
+        TASKS_SET, TASKS_COMP = m["tasks"]["set"], m["tasks"]["competence"]
+
+
 def reload_cases(m: dict, tok) -> list[dict]:
     """The map's cases, rebuilt (deterministic) and checked against its cases.jsonl."""
+    use_tasks(m)
     cases, _ = build_cases(tok, m["n_per_family"], m["families"])
     mine = [json.loads(line)["id"] for line in (run_dir(m["map"]["run"]) / "cases.jsonl").read_text().splitlines()]
     assert [c["id"] for c in cases] == mine, "the rebuilt cases are not the map's"
@@ -760,6 +840,7 @@ CALIBRATION = ("jspace_wo_own", "rand_omp")
 
 def stage_parts(name: str, map_name: str, why: str, force: dict[str, list[int]] | None) -> None:
     mm = json.loads((run_dir(map_name) / "manifest.json").read_text())
+    use_tasks(mm)
     m = manifest_common(name, why, "parts", mm["families"], mm["n_per_family"])
     cells, m["map"] = stage_cells(map_name, mm["families"], force)
     m["cells"] = cells
@@ -1015,6 +1096,7 @@ def write_parts_md(path: Path, run: str, s: dict) -> None:
 
 def stage_readwrite(name: str, map_name: str, why: str, parts: str | None, force: dict[str, list[int]] | None) -> None:
     mm = json.loads((run_dir(map_name) / "manifest.json").read_text())
+    use_tasks(mm)
     m = manifest_common(name, why, "readwrite", mm["families"], mm["n_per_family"])
     cells, m["map"] = stage_cells(map_name, mm["families"], force)
     m["cells"] = cells
@@ -2270,7 +2352,9 @@ if __name__ == "__main__":
     ap.add_argument("--map", help="parts / readwrite: the map run whose transit cells to use")
     ap.add_argument("--parts", help="readwrite: the parts run, for the combined decision")
     ap.add_argument("--n", type=int, default=N_CASES, help="cases per family (a smoke run: few)")
-    ap.add_argument("--families", nargs="+", default=list(FAMILIES), choices=list(FAMILIES))
+    ap.add_argument("--families", nargs="+", default=list(DEFAULT_FAMILIES), choices=list(FAMILIES))
+    ap.add_argument("--tasks-set", default=None, help="PP / PM: the tasks_v2 data set (data/tasks_v2/<set>)")
+    ap.add_argument("--tasks-competence", default=None, help="PP / PM: its competence run (results/tasks_v2/<run>)")
     ap.add_argument("--layers", nargs="+", type=int, default=None, help="map: override the layer grid (smoke)")
     ap.add_argument(
         "--force", nargs="+", default=None, help="parts / readwrite: SET:LAYER cells for every family (smoke)"
@@ -2287,6 +2371,7 @@ if __name__ == "__main__":
     if args.sets:
         CELL_SETS = tuple(args.sets)
     SUB_N = args.sub_n
+    TASKS_SET, TASKS_COMP = args.tasks_set, args.tasks_competence
     grid = tuple(sorted(args.layers)) if args.layers else MAP_LAYERS
     if args.stage == "plan":
         stage_plan(args.n, args.families, grid, args.reads_per_s)
