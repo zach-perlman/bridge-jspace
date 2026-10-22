@@ -41,7 +41,7 @@ Five open models: Qwen3.6-27B, Qwen3-32B, Qwen3.5-9B, OLMo-3-7B (SFT, DPO, Instr
 - **The fitted position code's natural-size test** (slide 5) was pre-registered to count 1x or 2x its natural size. It passes only at 2x (26%; 4% at 1x), so the rule says "passes" while we read it as an override.
 - **Animals in Qwen3-32B's second draw of name vs digit** (finding 3) was added after the first results were opened. The topic missed the pre-registered competence gate by 0.0005 (lower bound 0.8495, gate 0.85); it was run afterwards with the gate at 0.845 for that topic only, gives the same verdicts, and is reported apart from the pre-registered two-topic result. From then on the gate compares the bound rounded to two decimals.
 - **One seed almost everywhere.** Second draws so far: slide 4 on Qwen3.6-27B, and name vs digit on Qwen3.6-27B and Qwen3-32B; all repeat.
-- **The stated-bridge test on four topics** (running): its rule was tightened before any result was opened, so that one cell, chosen without the lens, decides.
+- **The stated-bridge test on four topics** (finding 2): its rule was changed once, at 17:36 on 22 Oct, after the runs started and before any result was opened. The first version said "at a statement cell in transit", which would have let us pick the cell after seeing the lens results; the amended rule fixes one cell, chosen from the lens-free map. It also adds a separate report for scenes that write numbers as digits and as words.
 
 ---
 
@@ -370,7 +370,7 @@ Each model is tested only on items it answers right without any edit. All scenes
 | Positive control for the lens at the last tokens | Finding 8 | Done 22 Oct: only elements, layers 40-44 (slide 5) |
 | Name vs digit, and again on a second draw of scenes | Finding 3 | Done 22 Oct: repeats on Qwen3.6-27B and Qwen3-32B (slide 2) |
 | **1. Analyse the stated-bridge test (slide 2) on four topics and on Qwen3-32B** (Zach's generator; the 32B lens from neuronpedia) | Finding 2, and through it finding 8 | Running; Fri 23. Rule fixed before the run, decisive cell chosen without the lens |
-| **2. The early lens push (slide 6) beyond one setting**: other topics and formats (Zach's generator), Qwen3-32B, several layers and push sizes, and the stated bridge pushed where it sits (its sentence) | Finding 7 carries findings 1 and 8: can the lens write a bridge at all, and where? | To design: Fri 23 |
+| **2. The early lens push (slide 6) beyond one setting**: other topics and formats (Zach's generator), Qwen3-32B, several layers and push sizes, and the stated bridge pushed where it sits (its sentence) | Finding 7 carries findings 1 and 8: can the lens write a bridge at all, and where? | Step 1 (Qwen3.6-27B, animal suite, `d4_where_27b`) running; rule and Dan's predictions (batch 10) written before it; topics, formats and Qwen3-32B next |
 | 3. New late-recall topics for the positive control ("the element with atomic number N", "the state with postal code XX"); with ≥ 12 entities, the supervised identity direction | Finding 8 beyond six entities | Only if the stated-bridge test holds on elements |
 | Blocking (slide 3) on Zach's generator: prose and tables, four topics, Qwen3.6-27B, Qwen3-32B, OLMo | Finding 4 beyond our toy scenes | Code ready and smoke-tested; waits for the stated-bridge test, Zach's frozen data and the weekend's verification |
 | **Update to Neel** | The main claim changed (finding 8 is open; finding 1 holds only while the bridge forms) | Sat 24 |

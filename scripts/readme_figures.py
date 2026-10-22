@@ -1150,6 +1150,52 @@ def f25_stated_bridge_topics(out: Path) -> None:
     save(fig, out, "f25_stated_bridge_topics.png")
 
 
+def f26_where_lens_writes(out: Path) -> None:
+    """D4 v2 (early_push_where d4_where_27b): % switched to the other bridge's answer by layer, per push position, the
+    four families under the lens push at the primary cell's scale (8x without one); the random push's highest family
+    dotted; the primary cell circled."""
+    path = RES / "early_push_where" / "d4_where_27b" / "summary.json"
+    if not path.exists():
+        return
+    sm = json.loads(path.read_text())
+    dec = sm["decision"]
+    sc = dec["primary"]["scale"] if dec.get("primary") else 8.0
+    cells = {(c["family"], c["subset"], c["layer"], c["scale"], c["dir"]): c for c in sm["cells"]}
+    fams = [("BR", "prompt → memory (stated bridge, recall)", RECALL, "-"),
+            ("BL", "prompt → prompt (stated bridge, lookup)", LOOKUP, "-"),
+            ("RR", "memory → memory (recalled bridge, recall)", RECALL, "--"),
+            ("RL", "memory → prompt (recalled bridge, lookup)", LOOKUP, "--")]  # fmt: skip
+    subs = [("b", "the question's words\n(where slide 6 pushed)"), ("s", "the sentence stating the bridge"),
+            ("w", "the bridge's word in that sentence"), ("c", "the whole context")]  # fmt: skip
+    fig, axes = plt.subplots(1, 4, figsize=(15, 3.4), sharey=True, gridspec_kw={"wspace": 0.08})
+    for ax, (sub, title) in zip(axes, subs, strict=True):
+        style(ax, "y")
+        layers = sorted({k[2] for k in cells if k[1] == sub})
+        for fam, _, col, ls in fams:
+            pts = [
+                (la, cells[(fam, sub, la, sc, "lens")]["to_x"]) for la in layers if (fam, sub, la, sc, "lens") in cells
+            ]
+            ax.plot([p[0] for p in pts], [100 * p[1][0] for p in pts], color=col, ls=ls, lw=2, marker="o", ms=3)
+        rnd = [(la, max(cells[(f, sub, la, sc, "random")]["to_x"][0] for f, *_ in fams if (f, sub, la, sc, "random") in cells))
+               for la in layers]  # fmt: skip
+        ax.plot([p[0] for p in rnd], [100 * p[1] for p in rnd], color=INK2, ls=":", lw=1.5)
+        p = dec.get("primary")
+        if p and p["subset"] == sub:
+            ax.scatter([p["layer"]], [100 * p["br"]], s=120, facecolors="none", edgecolors=INK, lw=1.5, zorder=5)
+        ax.set_title(title, loc="left", fontsize=9.5)
+        ax.set_xlabel("layer (of 64)")
+        ax.set_ylim(0, 105)
+    axes[0].set_ylabel("% switched to the\nother bridge's answer")
+    handles = [Line2D([], [], color=c, ls=ls, lw=2) for _, _, c, ls in fams] + [Line2D([], [], color=INK2, ls=":")]
+    labels = [lab for _, lab, _, _ in fams] + ["random push of the same size (highest family)"]
+    fig.legend(handles, labels, loc="lower center", ncol=3, frameon=False, bbox_to_anchor=(0.5, -0.2), fontsize=9)
+    head(axes[0], f"Where can a lens push write a bridge? Qwen3.6-27B, animal suite, push {sc:g}x",
+         "Push the hidden state along the lens direction from the bridge's word to another animal's, at one group of "
+         "tokens and one layer. Circled: the cell chosen on\nprompt → memory rows alone (the rule fixed before the run); "
+         f"verdict: {dec['verdict']}.", above=16)  # fmt: skip
+    save(fig, out, "f26_where_lens_writes.png")
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", default="figures/readme_1021")
@@ -1160,5 +1206,5 @@ if __name__ == "__main__":
               f12_address_models, f13_mechanism, f14_slot_by_target, f15_counts_models,
               f16_slot_by_target_v5, f17_by_layer_models, f18_stages_models, f19_where_bridge,
               f20_olmo_ladder, f21_name_vs_digit, f22_c2_positive_control, f23_name_digit_draws,
-              f24_where_bridge_topics, f25_stated_bridge_topics):  # fmt: skip
+              f24_where_bridge_topics, f25_stated_bridge_topics, f26_where_lens_writes):  # fmt: skip
         f(out)

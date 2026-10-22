@@ -72,6 +72,8 @@ SETS: dict[str, dict[str, Any]] = {
     # 21 Oct, night: a second draw of main's design (same entities, wordings and split) to check the headline numbers
     # are not one draw's; made with `make_set --set seed2` after the split existed
     "seed2": {"seed": 844, "n": 300, "families": FAMILIES, "split": "all"},
+    # 22 Oct, evening (Dan): a third draw for the pre-registered confirmation of finding 5 on fresh scenes
+    "seed3": {"seed": 845, "n": 300, "families": FAMILIES, "split": "all"},
     "fit": {"seed": 842, "n": 200, "families": ("RL",), "split": "fit"},
 }
 CAP = 12  # scenes per askable entity at most: with >= 12 askable entities, none is asked in > 1/12 of the scenes
