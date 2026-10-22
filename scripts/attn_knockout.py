@@ -491,7 +491,8 @@ TASKS = "tasks_v2"
 # two-step words on one scene's picks and lockers, in the suite's places: memory → prompt (RL), memory → memory (RR),
 # prompt → prompt (BL), prompt → memory (BR); a scene carries MP and MM, or PP and PM (tasks_v2.groups_of)
 TASKS_FAMILIES = ("MP", "MM", "PP", "PM")
-TASKS_FORMATS = ("prose", "table")  # the formats whose statements tasks_spans locates
+TASKS_FORMATS = ("prose", "table", "json")  # the formats whose statements tasks_spans locates
+JSON_KEYS = {"picks": ("name", "pick"), "lockers": ("item", "locker")}  # tasks_v2.render_facts' column names
 
 
 def _tasks_table(ctx: str, name: str) -> tuple[int, int]:
@@ -500,6 +501,21 @@ def _tasks_table(ctx: str, name: str) -> tuple[int, int]:
     a = 0 if ctx.startswith(head) else ctx.index("\n\n" + head) + 2
     b = ctx.find("\n\n", a)
     return a, len(ctx) if b < 0 else b
+
+
+def _tasks_json(ctx: str, name: str) -> tuple[int, int]:
+    """Char range of one tool output's JSON array ('picks', 'lockers') in a json-format context: the line after
+    "Tool output from get_<name>:"."""
+    head = f"Tool output from get_{name}:\n"
+    a = (0 if ctx.startswith(head) else ctx.index("\n" + head) + 1) + len(head)
+    b = ctx.find("\n", a)
+    return a, len(ctx) if b < 0 else b
+
+
+def _json_row(key: str, a: str, b: str | int) -> str:
+    """One row of a tool output as tasks_v2 writes it (json.dumps of a two-key dict)."""
+    k1, k2 = JSON_KEYS[key]
+    return json.dumps({k1: a, k2: b})
 
 
 def tasks_facts(item: dict) -> dict[str, dict]:
@@ -515,6 +531,10 @@ def tasks_facts(item: dict) -> dict[str, dict]:
     if item["format"] == "prose":
         lockers = re.findall(r"(?:^| )The locker of (?:the )?([\w-]+) is (\w+)\.", ctx)
         picks = re.findall(r"(?:^| )([A-Z]\w*) picked (?:the )?([\w-]+)\.", ctx)
+    elif item["format"] == "json":
+        rows = {k: json.loads(ctx[slice(*_tasks_json(ctx, k))]) for k in JSON_KEYS}
+        lockers = [(r["item"], str(r["locker"])) for r in rows["lockers"]]
+        picks = [(r["name"], r["pick"]) for r in rows["picks"]]
     else:
         rows = r"^\| ([^|\n]+?) \| ([^|\n]+?) \|$"
         lockers = re.findall(rows, ctx[slice(*_tasks_table(ctx, "lockers"))], re.M)[1:]  # [0]: the header row
@@ -530,8 +550,9 @@ def tasks_facts(item: dict) -> dict[str, dict]:
 def tasks_spans(item: dict) -> dict[str, dict[str, dict[str, tuple[int, int]]]]:
     """Char spans in item['context'] of each thing's locker statement ('locker' -> thing -> span, and the thing's
     'name' and the locker's 'value' inside it) and each person's pick statement ('pick' -> person -> span): a sentence
-    in prose ("The locker of the dog is 3."), a row in table ("| dog | 3 |"). Rebuilt from the scene's facts
-    (tasks_facts) with tasks_v2.render_facts' templates; each must occur exactly once (in its table, for rows)."""
+    in prose ("The locker of the dog is 3."), a row in table ("| dog | 3 |"), an object in json ('{"item": "dog",
+    "locker": 3}'; a number word is quoted, its span without the quotes). Rebuilt from the scene's facts (tasks_facts)
+    with tasks_v2.render_facts' templates; each must occur exactly once (in its table or tool output, for rows)."""
     ctx, fmt = item["context"], item["format"]
     assert fmt in TASKS_FORMATS, f"{item['id']}: format {fmt}; the adapter reads {TASKS_FORMATS}"
     dom, facts = T.DOMAINS[item["domain"]], tasks_facts(item)
@@ -539,12 +560,14 @@ def tasks_spans(item: dict) -> dict[str, dict[str, dict[str, tuple[int, int]]]]:
     def number(n: int) -> str:
         return T.num(n, item["numbers"])
 
-    def find(s: str, lo: int = 0, hi: int | None = None, row: bool = False) -> int:
-        """The one start of s in ctx[lo:hi] on a statement boundary (a sentence after a space; a row on its own line)."""
+    def find(s: str, lo: int = 0, hi: int | None = None, row: str = "") -> int:
+        """The one start of s in ctx[lo:hi] on a statement boundary (a sentence after a space; a table row on its own
+        line; a json object after '[' or ', ' and before ',' or ']')."""
         hi = len(ctx) if hi is None else hi
-        sep = "\n" if row else " "
+        before, after = {"": (" ", " "), "table": ("\n", "\n"), "json": ("[ ", ",]")}[row]
         hits = [i for i in range(lo, hi - len(s) + 1) if ctx.startswith(s, i)
-                and (i == 0 or ctx[i - 1] == sep) and (i + len(s) == hi or ctx[i + len(s)] == sep)]  # fmt: skip
+                and (i == 0 or ctx[i - 1] in before)
+                and (i + len(s) == hi or ctx[i + len(s)] in after)]  # fmt: skip
         assert len(hits) == 1, f"{item['id']}: {s!r} found {len(hits)} times"
         return hits[0]
 
@@ -556,16 +579,27 @@ def tasks_spans(item: dict) -> dict[str, dict[str, dict[str, tuple[int, int]]]]:
             a = find(stmt)
             name = a + len("The locker of ") + (len("the ") if dom.article else 0)
             value = a + len(stmt) - 1 - len(v)
+        elif fmt == "json":
+            stmt = _json_row("lockers", t, n if item["numbers"] == "digits" else v)
+            a = find(stmt, *_tasks_json(ctx, "lockers"), row="json")
+            name, value = a + stmt.index(json.dumps(t)) + 1, a + stmt.rindex(v)
         else:
             stmt = f"| {t} | {v} |"
-            a = find(stmt, *_tasks_table(ctx, "lockers"), row=True)
+            a = find(stmt, *_tasks_table(ctx, "lockers"), row="table")
             name, value = a + 2, a + 2 + len(t) + 3
         assert ctx[name : name + len(t)] == t, f"{item['id']}: {stmt!r}"
         assert ctx[value : value + len(v)] == v, f"{item['id']}: {stmt!r}"
         out["locker"][t] = {"span": (a, a + len(stmt)), "name": (name, name + len(t)), "value": (value, value + len(v))}
     for p, t in facts["pick"].items():
-        stmt = f"{p} picked {T.ref(dom, t)}." if fmt == "prose" else f"| {p} | {t} |"
-        a = find(stmt) if fmt == "prose" else find(stmt, *_tasks_table(ctx, "picks"), row=True)
+        if fmt == "prose":
+            stmt = f"{p} picked {T.ref(dom, t)}."
+            a = find(stmt)
+        elif fmt == "json":
+            stmt = _json_row("picks", p, t)
+            a = find(stmt, *_tasks_json(ctx, "picks"), row="json")
+        else:
+            stmt = f"| {p} | {t} |"
+            a = find(stmt, *_tasks_table(ctx, "picks"), row="table")
         out["pick"][p] = {"span": (a, a + len(stmt))}
     return out
 
@@ -621,6 +655,10 @@ def tasks_case(item: dict, tok) -> dict:
         person = item["start_desc"].removesuffix("'s pick")
         assert facts["pick"].get(person) == x, f"{item['id']}: {person} did not pick {x}"
         statement_and_off("binding", sp["pick"], person)
+    stmts = [k for k in ("lookup", "lookup_off", "binding", "binding_off") if k in sources]
+    for i, a in enumerate(stmts):  # a token merged across two statements (json's '"}, {"') would hide both
+        for b in stmts[i + 1 :]:
+            assert not set(sources[a]) & set(sources[b]), f"{item['id']}: {a} and {b} share a token"
     dom = T.DOMAINS[item["domain"]]
     if fam[1] == "P":
         conf = {str(n) for t, n in facts["locker"].items() if t != x}

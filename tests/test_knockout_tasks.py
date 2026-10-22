@@ -20,11 +20,17 @@ def _item(fmt: str, numbers: str, context: str, facts: dict | None = None) -> di
 PROSE = "The locker of the eagle is three. Ivy picked the cat. Clara picked the eagle. The locker of the cat is six."
 TABLE = ("Table picks:\n| name | pick |\n|---|---|\n| Ivy | cat |\n| Clara | eagle |\n\n"
          "Table lockers:\n| item | locker |\n|---|---|\n| eagle | 3 |\n| cat | 6 |")  # fmt: skip
+JSON = ('Tool output from get_lockers:\n[{"item": "eagle", "locker": "three"}, {"item": "cat", "locker": "six"}]\n'
+        'Tool output from get_picks:\n[{"name": "Ivy", "pick": "cat"}, {"name": "Clara", "pick": "eagle"}]')  # fmt: skip
+JSON_DIGITS = JSON.replace('"three"', "3").replace('"six"', "6")
+PICK = {"prose": "Clara picked the eagle.", "table": "| Clara | eagle |", "json": '{"name": "Clara", "pick": "eagle"}'}
 
 
 @pytest.mark.parametrize(("fmt", "numbers", "ctx", "eagle", "value"), [
     ("prose", "words", PROSE, "The locker of the eagle is three.", "three"),
     ("table", "digits", TABLE, "| eagle | 3 |", "3"),
+    ("json", "words", JSON, '{"item": "eagle", "locker": "three"}', "three"),
+    ("json", "digits", JSON_DIGITS, '{"item": "eagle", "locker": 3}', "3"),
 ])  # fmt: skip
 @pytest.mark.parametrize("stored", [True, False])
 def test_tasks_spans_locate_statements_and_parts(fmt, numbers, ctx, eagle, value, stored):
@@ -35,15 +41,16 @@ def test_tasks_spans_locate_statements_and_parts(fmt, numbers, ctx, eagle, value
     assert ctx[slice(*got["span"])] == eagle
     assert ctx[slice(*got["name"])] == "eagle"
     assert ctx[slice(*got["value"])] == value
-    pick = ctx[slice(*sp["pick"]["Clara"]["span"])]
-    assert pick == ("Clara picked the eagle." if fmt == "prose" else "| Clara | eagle |")
+    assert ctx[slice(*sp["pick"]["Clara"]["span"])] == PICK[fmt]
 
 
 def test_tasks_spans_refuse_what_they_cannot_locate():
     with pytest.raises(AssertionError):  # the facts say 3, the context writes three
         AK.tasks_spans(_item("prose", "digits", PROSE, FACTS))
+    with pytest.raises(AssertionError):  # the facts say 3, the tool output writes "three"
+        AK.tasks_spans(_item("json", "digits", JSON, FACTS))
     with pytest.raises(AssertionError):
-        AK.tasks_spans(_item("json", "digits", TABLE, FACTS))
+        AK.tasks_spans(_item("code", "digits", TABLE, FACTS))
     with pytest.raises(AssertionError):  # a thing outside the topic
         AK.tasks_facts(_item("prose", "words", PROSE.replace("eagle", "Mars")))
 
@@ -114,7 +121,8 @@ def test_tasks_cases_decode_to_their_statements(tok, scenes):
             n = facts["locker"][x]
             value = str(n) if it["numbers"] == "digits" else T.NUMBER_WORDS[n]
             assert c["bridge"] == x
-            assert dec("lookup") == c["source_text"]["lookup"]
+            # a statement's last token may carry the separator after it (json: '"},'), never more
+            assert dec("lookup").rstrip(",]\n|") == c["source_text"]["lookup"].rstrip("|"), it["id"]
             assert x in dec("lookup") and dec("lookup").replace(x, "").count(value) == 1
             assert dec("lookup_name") == x
             assert dec("lookup_digit") == value
@@ -126,7 +134,7 @@ def test_tasks_cases_decode_to_their_statements(tok, scenes):
                 assert len(src["lookup_off"]) == len(src["lookup"])
             if it["word"][0] == "P":
                 person = it["start_desc"].removesuffix("'s pick")
-                assert dec("binding").startswith(person if it["format"] == "prose" else f"| {person} |")
+                assert person in dec("binding").split(x)[0]
                 assert x in dec("binding") and person not in c["source_text"]["binding_off"]
             else:
                 assert "binding" not in src
