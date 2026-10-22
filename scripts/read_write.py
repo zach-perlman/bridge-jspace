@@ -89,6 +89,7 @@ def tasks_cases(tok, n: int, set_name: str, comp_run: str, words: list[str], lev
     right on every prompt of the compared words, at one level for the comparison (tasks_v2.eligible). A scene with an
     item whose C or O does not line up in this tokenizer is dropped whole (its words stay paired) and the next scene
     takes its place; generation checks alignment with the same tokenizer, so any drop is reported."""
+    from bridge_jspace.tokens import concept_token
     from scripts import tasks_v2 as T
 
     scenes: dict[str, list[dict]] = collections.defaultdict(list)
@@ -105,13 +106,15 @@ def tasks_cases(tok, n: int, set_name: str, comp_run: str, words: list[str], lev
             continue
         try:
             prepped = [{**it, **T.prepare(it, tok)} for it in its]
-        except AssertionError:
+            for c in prepped:  # 2026-10-22: the lens writes need a single-token bridge surface (Muse: 'iota' has none)
+                concept_token(tok, c["bridge"]), concept_token(tok, c["cf_bridge"])
+        except (AssertionError, ValueError):
             dropped += 1
             continue
         out += prepped
         got.update(it["word"] for it in its)
     print(f"tasks_cases: {len(out)} cases from {len(out) and len({c['scene'] for c in out})} scenes; {dropped} scenes "
-          "dropped (C/O alignment or first tokens)", flush=True)  # fmt: skip
+          "dropped (C/O alignment, first tokens or no single-token bridge)", flush=True)  # fmt: skip
     return out
 
 

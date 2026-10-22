@@ -55,3 +55,13 @@ echo "=== aligned band: ${AB:-none}"
   && $PY scripts/c2_graded.py muse30_wm2_full3_v1 > /dev/null || echo "=== three-step steering FAILED"
 $PY scripts/cross_model_summary.py > /dev/null || echo "=== cross-model summary FAILED"
 echo "=== Muse C2 recovery done $(date -u +%FT%TZ)"
+# appended 2026-10-22 ~16:30 UTC: the current-band C2 crashed on a bridge with no single-token surface ('iota'); scenes
+# like it are now dropped in read_write.tasks_cases (the 27B's and Qwen3-32B's case sets unchanged: 482, 294). Re-run.
+d=results/write_max/muse30_wm2_full2_v1; [ -d $d ] && [ ! -f $d/summary.json ] && mv $d /workspace/runs/archive_cancelled/results/muse30_wm2_full2_v1_iota && echo "archived crashed $d"
+echo "=== C2 rerun $(date -u +%T)"
+BJ_BATCH=64 $PY scripts/write_max.py --name muse30_wm2_full2_v1 --why "$WHY: two-step steering, full pools, joint paste ceiling" \
+  --n 1000 $STEER $W2 && $PY scripts/c2_graded.py muse30_wm2_full2_v1 | tail -14 \
+  && $PY scripts/c2_graded.py muse30_wm2_full2_v1 --drop-guessable > /dev/null \
+  && $PY scripts/c2_narrow.py muse30_wm2_full2_v1 muse30_wm2_full2_v1_noguess || echo "=== two-step steering FAILED"
+$PY scripts/cross_model_summary.py > /dev/null || echo "=== cross-model summary FAILED"
+echo "=== Muse C2 rerun done $(date -u +%FT%TZ)"
