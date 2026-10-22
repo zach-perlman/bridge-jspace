@@ -46,6 +46,9 @@ queue-worker:       ## start the worker for GPU $(GPU) (default 0) in tmux on th
 queue-cancel:       ## cancel a pending job: make queue-cancel ID=<job id>
 	uv run python -m scripts.jobq cancel $(ID)
 
+queue-archive:      ## move done / failed / cancelled records out of queue-status (the ledger keeps them)
+	uv run python -m scripts.jobq archive
+
 examples-render:    ## examples/<exp>/ from the latest examples run of each experiment (no GPU)
 	uv run python -m bridge_jspace.examples export
 

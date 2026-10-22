@@ -111,6 +111,20 @@ def test_a_failing_job_is_failed_and_its_dependents_stay_blocked(box):
     assert path is None and "dependency failed" in why
 
 
+def test_archive_clears_finished_jobs_from_the_listing_and_keeps_dependencies(box):
+    root, enqueue = box
+    enqueue(1)
+    jobq.worker(0, root, once=True, check_mem=False)
+    enqueue(2, id="t_dep_v1", command="python3 write.py t_dep_v1", depends_on=["t_ok_v1"])
+    assert "DONE" in jobq.box_status(root)
+    assert jobq.box_archive(root).startswith("archived 1 done, 0 failed, 0 cancelled")
+    listing = jobq.box_status(root)
+    assert "DONE" not in listing and "PENDING  t_dep_v1" in listing
+    assert len(list((root / "archive" / "done").glob("*t_ok_v1.json"))) == 1
+    path, _ = jobq.pick(root, 0, check_mem=False)  # the dependency is read from the ledger, not done/
+    assert path is not None and path.name.endswith("t_dep_v1.json")
+
+
 def test_dependencies_run_in_order_and_see_earlier_results(box):
     root, enqueue = box
     enqueue(1, id="t_dep_v1", command="test -f results/toy/t_ok_v1/summary.json", depends_on=["t_ok_v1"])

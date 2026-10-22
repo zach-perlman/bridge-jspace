@@ -12,11 +12,12 @@ pages in examples/ (`make examples-render`) show each job's pre-registration, ti
 
 Box layout (~/jobq): repo.git, pending/ running/ done/ failed/ cancelled/ (one JSON per job), runs/<id>/log.txt
 (and runs/<id>/code/, the checkout, removed after the run), results/ (every job's new results dirs), ledger.jsonl,
-drafts/<id>.md, worker-gpu<N>.log. Jobs read earlier jobs' results: results/ is copied into each checkout first.
+drafts/<id>.md, worker-gpu<N>.log, archive/<state>/ (finished records moved out of the listing by `archive`). Jobs
+read earlier jobs' results: results/ is copied into each checkout first.
 
     uv run python -m scripts.jobq validate jobs/d2/d2_ko_v1.yaml     # spec check, no box needed
     uv run python -m scripts.jobq enqueue jobs/d2/d2_ko_v1.yaml      # committed tree only
-    uv run python -m scripts.jobq status | pull | cancel ID | start-worker [--gpu N]
+    uv run python -m scripts.jobq status | pull | cancel ID | archive | start-worker [--gpu N]
     python3 ~/jobq/jobq.py worker --gpu 0                             # on the box (stdlib only: system python3)
 """
 
@@ -231,6 +232,12 @@ def cmd_pull() -> int:
 def cmd_cancel(job_id: str) -> int:
     _install_box_script()
     print(_ssh(f"python3 ~/{BOX_ROOT}/jobq.py box-cancel {job_id}"), end="")
+    return 0
+
+
+def cmd_archive() -> int:
+    _install_box_script()
+    print(_ssh(f"python3 ~/{BOX_ROOT}/jobq.py box-archive"), end="")
     return 0
 
 
@@ -576,6 +583,20 @@ def box_ids(root: Path) -> list[str]:
     return sorted(ids)
 
 
+def box_archive(root: Path) -> str:
+    """Finished jobs' records (done, failed, cancelled) out of the status listing, into archive/<state>/; nothing is
+    deleted. Dependencies and job pages read the ledger, which stays as it is."""
+    ensure_layout(root)
+    moved = {}
+    for s in ("done", "failed", "cancelled"):
+        paths = jobs_in(root, s)
+        (root / "archive" / s).mkdir(parents=True, exist_ok=True)
+        for path in paths:
+            os.replace(path, root / "archive" / s / path.name)
+        moved[s] = len(paths)
+    return "archived " + ", ".join(f"{n} {s}" for s, n in moved.items()) + " (ledger unchanged)\n"
+
+
 def box_cancel(root: Path, job_id: str) -> str:
     for path in jobs_in(root, "pending"):
         if json.loads(path.read_text())["id"] == job_id:
@@ -594,6 +615,7 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("status").add_argument("--json", action="store_true")
     sub.add_parser("pull")
     sub.add_parser("cancel").add_argument("id")
+    sub.add_parser("archive", help="move finished jobs' records out of the status listing (ledger unchanged)")
     sub.add_parser("start-worker").add_argument("--gpu", type=int, default=0)
     w = sub.add_parser("worker")
     w.add_argument("--gpu", type=int, default=0)
@@ -601,6 +623,7 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("box-status").add_argument("--json", action="store_true")
     sub.add_parser("box-ids")
     sub.add_parser("box-cancel").add_argument("id")
+    sub.add_parser("box-archive")
     a = ap.parse_args(argv)
     if a.cmd == "validate":
         return cmd_validate(a.specs)
@@ -612,6 +635,11 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_pull()
     if a.cmd == "cancel":
         return cmd_cancel(a.id)
+    if a.cmd == "archive":
+        return cmd_archive()
+    if a.cmd == "box-archive":
+        print(box_archive(box_root()), end="")
+        return 0
     if a.cmd == "start-worker":
         return cmd_start_worker(a.gpu)
     if a.cmd == "worker":
