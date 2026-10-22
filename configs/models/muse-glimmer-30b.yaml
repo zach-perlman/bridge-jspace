@@ -1,0 +1,23 @@
+# Muse Glimmer 30B (Meta, Apache 2.0): the sixth model, another lab (22 Oct night). The pins entry (src/bridge_jspace/
+# pins.py, "muse-glimmer-30b") is what the scripts read; this file records the checkpoint as read from config.json.
+# Architecture: dense (no experts), 52 decoder layers, d_model 6656, 32 query / 2 key-value heads, mixed attention:
+# sliding-window (2048 tokens) in 3 of 4 layers, full attention every 4th (layers 3, 7, ..., 51). Our prompts are far
+# shorter than 2048 tokens (the long set ~2100), so every layer can see the sentences; the blocking runs use every
+# layer, as for Gemma. Multimodal checkpoint (MuseGlimmerForConditionalGeneration); our runs feed text only, so the
+# vision encoder never runs. Final norm: a centered RMSNorm with a 1 + weight gain. Chat template: chat_template.jinja.
+# bf16 weights ~60 GB + one fp32 lens map at a time: 1x 80 GB A100.
+name: meta-models/Muse-Glimmer-30B
+revision: cec94fcfd6512f2cfe708138c32533b346ea4f69
+dtype: bfloat16
+n_layers: 52
+d_model: 6656
+moe: false
+attention: mixed (sliding_window 2048 x3, full x1, repeating)
+lenses:
+  jpp:
+    repo: zachperlman20/Muse-Glimmer-30B-jpp-lens
+    revision: 68ecd838ad0b13653af7fac985995606f37911dc
+    filename: Muse-Glimmer-30B_jpp_lens.pt
+    sha256: 90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12
+    source_layers: 0-50
+    caveats: "Zach: fit on 32 prompts, evaluated on 112 items, weak in the middle layers"

@@ -173,15 +173,24 @@ TARGETS: dict[str, dict[str, Any]] = {
     # Muse Glimmer 30B (Meta, Apache 2.0; 22 Oct night, Dan): dense, 52 layers, sliding-window (2048) attention with a
     # full-attention layer every 4th, a multimodal checkpoint (MuseGlimmerForConditionalGeneration; the text decoder is
     # hf.model.language_model, transformers' own muse_glimmer), centered RMSNorm with a 1 + weight gain, <|begin_of_text|>.
-    # No lens yet (Zach will share a J++): lens-free runs only until it is pinned.
+    # Lens: Zach's J++ (zachperlman20/Muse-Glimmer-30B-jpp-lens, published 22 Oct night; source layers 0-50, fp16, cast
+    # to fp32 by JLens.J; sha256 90fc5e52..., as Dan passed it on and as computed on the box). Zach's caveats: fit on 32
+    # prompts, evaluated on 112 items, weak in the middle layers; its gate (lens_gate v1 / v2) decides whether D1 runs.
     "muse-glimmer-30b": {
         "repo": "meta-models/Muse-Glimmer-30B",
         "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
         "n_layers": 52,
         "norm_gain": "one_plus_weight",
         "bos": True,
-        "run_prefix": "museg30_",
-        "lenses": {},
+        "run_prefix": "muse30b_",
+        "lenses": {
+            "jpp": (
+                "zachperlman20/Muse-Glimmer-30B-jpp-lens",
+                "Muse-Glimmer-30B_jpp_lens.pt",
+                "68ecd838ad0b13653af7fac985995606f37911dc",
+            ),
+        },
+        "frozen_lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12",
     },
     # Gemma 4 31B-it with Zach's J++ fit at every layer 0-58 (target 59), published 22 Oct 2026 on the Hub (his gate:
     # 0.5284, PASS at layers 24-45). fp16 maps, cast to fp32 when used (JLens.J). Named as on his branch.
