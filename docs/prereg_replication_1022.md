@@ -145,3 +145,11 @@ h200_q32_core_1021.sh).
 
 Qwen3-8B was dropped before it ran; no data from it exists. Prediction 1 (architecture) now rests on the 9B's C1-graded
 alone, beside Qwen3-32B's existing result: supported if the 9B HOLDS, refuted if it FAILS.
+
+## Amendment 5 (Zach, 2026-10-22 ~17:45 UTC): Muse's late-layer check
+
+- **Seen when this was written:** Muse's aligned-band steering (22-32, final): C2-graded and C2-relative HOLD, C2'
+  FAILS. Lens_add flips at the final position by single layer (M->M) rise to 67% at layer 32, the band's end.
+- **The check:** Muse's lens_add at the final position, single layers 34-50 (muse30_wm2_full2_late_v1), with the same
+  rule as prediction 3. If M->M's best flips at 46-50 fall below half its layer-32 value (67%), the aligned-band C2
+  is not read as a direct output effect. Otherwise it is flagged.
