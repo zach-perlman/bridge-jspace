@@ -6,7 +6,7 @@
 
 Five open models: Qwen3.6-27B, Qwen3-32B, Qwen3.5-9B, OLMo-3-7B (SFT, DPO, Instruct), Gemma 4 31B-it.
 
-> **Status, 22 Oct: exploration.** Nothing on this page is in [VERIFIED.md](VERIFIED.md) yet except Zach's B1-B4. The numbers are an agent's recount of saved runs. The main Qwen3.6-27B runs reproduce row for row from a clean checkout: the pipeline is deterministic, which does not mean the analysis is right.
+> **Status, 22 Oct (night): exploration.** Nothing on this page is in [VERIFIED.md](VERIFIED.md) yet except Zach's B1-B4. The numbers are an agent's recount of saved runs. The main Qwen3.6-27B runs reproduce row for row from a clean checkout: the pipeline is deterministic, which does not mean the analysis is right.
 
 [Dan's predictions vs results](predictions/) · [plan (Google Doc)](https://docs.google.com/document/d/1bqqdXePTUXQGlowVjk73sPfJkbV_tsu0RNNX-BiTYUc/edit?usp=drivesdk) · [run log](EXPERIMENTS.md) · [old README with every number](README_archive.md) · [how to run](DEVELOPER.md)
 
@@ -19,13 +19,13 @@ Five open models: Qwen3.6-27B, Qwen3-32B, Qwen3.5-9B, OLMo-3-7B (SFT, DPO, Instr
 | # | Finding | How sure | Models | Slide |
 |---|---|---|---|---|
 | 1 | **Recall uses the bridge in the form the lens reads while the bridge is being formed (layers 20-40); a lookup in the prompt does not.** Removing the lens's subspace breaks recall (19-22% still right) and leaves lookups at 99%. Later, at the last tokens, the lens writes recall in only one of five topics (slide 5). | 🟡 one model, one topic; Zach's runs, partly verified | Qwen3.6-27B | [1](#1-background-recall-goes-through-the-j-space-a-lookup-does-not) |
-| 2 | **The lens reads a bridge stated in the prompt, but the lookup does not use that part of it.** The lens-readable part of a changed bridge switches 0% of lookups; everything else switches 83%. | 🟡 one model, one topic; four topics and a second model are running | Qwen3.6-27B | [2](#2-where-does-the-lookup-read-the-bridge) |
+| 2 | **The lens reads a bridge stated in the prompt, but the lookup does not use that part of it.** On Qwen3.6-27B the lens-readable part of a stated bridge's change switches 0% of lookups on the animal suite and on each of four new topics; everything else switches 82-92%. The same part does switch recalls (the positive control) on the animal suite (92%) and on 3 of the 4 new topics (31-54%). | 🟡 one model; on the new topics the control is weaker (only animals clears 30% with its lower bound) and fails on planets (18%); 6-12 bridges per topic. Qwen3-32B: not interpretable, its lens does not read these bridges | Qwen3.6-27B | [2](#2-where-does-the-lookup-read-the-bridge) |
 | 3 | **The question's tokens read the entity's name back from its sentence; the last tokens read its digit.** | 🟢 pre-registered, robust to leaks, repeated on a second draw of scenes (Qwen3.6-27B, Qwen3-32B) | name: 4 of 4 for named bridges, 3 of 4 for recalled ones; digit: 4 of 4 | [2](#2-where-does-the-lookup-read-the-bridge) |
-| 4 | **A lookup ends in a late attention read of the answer's sentence by the last tokens.** Blocking that read drops the model to guessing (0-23% right; guessing is 20%). | 🟢 | 5 of 5 | [3](#3-blocking-the-read-the-lookup-reads-late-through-attention) |
-| 5 | **Which sentence gets read: an order label for the 1st and 2nd sentence, the bridge's identity for the rest.** | 🟡 a split chosen after the pooled test; consistent on 5 models and on a second draw (Qwen3.6-27B); one layer per model | 5 of 5 | [4](#4-what-the-last-tokens-carry-an-order-label-then-the-bridges-identity) |
+| 4 | **A lookup ends in a late attention read of the answer's sentence by the last tokens.** Blocking that read drops the model to guessing (0-23% right; guessing is 20%). | 🟢 repeated on a second draw of scenes (Qwen3.6-27B 7%, Qwen3-32B 3%) | 5 of 5 | [3](#3-blocking-the-read-the-lookup-reads-late-through-attention) |
+| 5 | **Which sentence gets read: an order label for the 1st and 2nd sentence, the bridge's identity for the rest.** | 🟢 confirmed as a rule fixed in advance on fresh scenes (Qwen3.6-27B, a third draw; Qwen3-32B, a second draw), after the split was first chosen post hoc; one layer per model | 5 of 5 | [4](#4-what-the-last-tokens-carry-an-order-label-then-the-bridges-identity) |
 | 6 | **The order label counts order in the list, not place in the text.** | 🟡 pooled over all asked sentences | 4 of 4 tested | [4](#4-what-the-last-tokens-carry-an-order-label-then-the-bridges-identity) |
-| 7 | **An early lens push rewrites a recalled bridge; it is not the same as editing the input word.** Whether it can write a stated bridge is open: that push went to the question, not to the bridge's sentence. | 🟡 pre-registered, one model, one setting; a replication is next | Qwen3.6-27B | [6](#6-early-lens-push-vs-editing-the-input) |
-| 8 | **Is the bridge's identity carried in a code the lens cannot write?** Where the lens does write recall at the last tokens, it moves 0 of 47 lookups while a patch moves 30%, and the same push moves 47% of recalls. | ⚪ one topic, six entities | Qwen3.6-27B | [5](#5-can-a-code-outside-the-lens-write-the-lookup) |
+| 7 | **A lens push writes a bridge where the bridge sits: a recalled bridge at the question's words, a stated bridge at its own sentence. A stated bridge written there moves recall (37-100%) but not the lookup (0% from layer 20 on).** Early on, a lens push is not the same as editing the input word. | 🟡 pre-registered, one model, one topic; its decisive cell failed the off-path check (memory → memory moved 25%), and the cells that pass it show the same | Qwen3.6-27B | [6](#6-where-can-a-lens-push-write-a-bridge) |
+| 8 | **Is the bridge's identity carried in a code the lens cannot write?** Where the lens does write a bridge, the lookup does not move: at a stated bridge's sentence (findings 2 and 7: recall 37-100%, lookups 0%) and at the last tokens on chemical elements (recall 47%, lookups 0 of 47, while a patch moves 30%). | 🟡 for a stated bridge at its sentence (two independent tests, one model); ⚪ for a recalled bridge at the last tokens (one topic, six entities) | Qwen3.6-27B | [5](#5-can-a-code-outside-the-lens-write-the-lookup), [6](#6-where-can-a-lens-push-write-a-bridge) |
 
 **Why it matters.** If finding 8 holds more widely, a monitor that reads a model through the J-lens would see the bridge but miss what actually drives a lookup.
 
@@ -34,14 +34,31 @@ Five open models: Qwen3.6-27B, Qwen3-32B, Qwen3.5-9B, OLMo-3-7B (SFT, DPO, Instr
 - A late attention head that follows the wrong answer's sentence is near-tautological so far.
 - OLMo's SFT, DPO and Instruct checkpoints look the same, but without the base model this says nothing about where the route comes from.
 - Colour-word answers fail their control on Qwen3.6-27B and Gemma; on Gemma a random patch breaks 85% of answers.
+- Qwen3-32B's lens (from neuronpedia, not converged) fails the stated-bridge test's positive control: it names the stated bridge on 7.5% of items (Qwen3.6-27B: 92%). No lens claim on Qwen3-32B.
+- The random-damage control for the first-sentence bias (slide 3) is not testable as designed: noise strong enough to break the lookup sends the answers off the list (87%), not to another digit of the list (15 such answers; 50 needed).
 
 **What we chose after seeing the data**, or set loosely in advance (read these findings with that in mind):
-- **Finding 5, by the place of the asked sentence.** The pre-registered test pooled all asked sentences. It came out mixed or failed (with 8 sentences: mixed on Qwen3.6-27B, toward identity on Qwen3.5-9B and Gemma; OLMo failed at its pre-registered cell). The split into the 1st and 2nd sentence vs the rest was added after that. It is consistent on five models, but it is a reading chosen after the data.
+- **Finding 5, by the place of the asked sentence.** The pre-registered test pooled all asked sentences. It came out mixed or failed (with 8 sentences: mixed on Qwen3.6-27B, toward identity on Qwen3.5-9B and Gemma; OLMo failed at its pre-registered cell). The split into the 1st and 2nd sentence vs the rest was added after that. On 22 Oct it was then tested as a rule fixed in advance on fresh scenes, and it held on both models tested (slide 4).
+- **Finding 2, per topic.** The pre-registered verdict pools the four topics (it replicates). Counting a topic only when its own recall control passes is a stricter reading added afterwards (an outside review); by it the split holds on 3 of 4 topics, and only animals clears the control with its lower bound.
+- **Finding 7's run (D4 v2).** Its decisive cell, chosen in advance, failed the off-path check (a push at "cow" in "Clara's pet is a cow." also moved 25% of memory → memory answers about the animal known for mooing). Reading the cells that pass the check is our own, after the data.
 - **Layer 50 on Qwen3.6-27B** (slide 4) was chosen after the first runs. A second draw of scenes repeats the result; the other models' layers follow a fixed rule.
 - **The fitted position code's natural-size test** (slide 5) was pre-registered to count 1x or 2x its natural size. It passes only at 2x (26%; 4% at 1x), so the rule says "passes" while we read it as an override.
 - **Animals in Qwen3-32B's second draw of name vs digit** (finding 3) was added after the first results were opened. The topic missed the pre-registered competence gate by 0.0005 (lower bound 0.8495, gate 0.85); it was run afterwards with the gate at 0.845 for that topic only, gives the same verdicts, and is reported apart from the pre-registered two-topic result. From then on the gate compares the bound rounded to two decimals.
 - **One seed almost everywhere.** Second draws so far: slide 4 on Qwen3.6-27B, and name vs digit on Qwen3.6-27B and Qwen3-32B; all repeat.
 - **The stated-bridge test on four topics** (finding 2): its rule was changed once, at 17:36 on 22 Oct, after the runs started and before any result was opened. The first version said "at a statement cell in transit", which would have let us pick the cell after seeing the lens results; the amended rule fixes one cell, chosen from the lens-free map. It also adds a separate report for scenes that write numbers as digits and as words.
+
+**Today's new results (22 Oct) and how far to trust them.** Every run below had its rule written and Dan's prediction committed before it was opened.
+
+| Result | Fresh data | Controls | Size | Trust |
+|---|---|---|---|---|
+| Name vs digit repeats on a second draw (finding 3) | yes, a second draw | the same parts of another sentence: 99-100% | 300 items (27B), 199 + 100 post hoc (32B) | 🟢 high |
+| Finding 5 confirmed as a rule fixed in advance | yes: a third draw (27B), a second (32B) | pointer_swap's own (same entity, random push, another topic) | 766 / 447 items | 🟢 high for the 1st-2nd label (+82-95 points); the identity part from the 3rd on is smaller (+12-14 points) |
+| The late read on a second draw (finding 4) | yes, a second draw | another sentence 100%; DeltaNet layers 100% (27B) | 300 / 299 items | 🟢 high |
+| Where a stated bridge sits, four topics (map) | yes, Zach's generator | an off-path change and a random copy | 120 scenes per model | 🟢 lens-free; new: on Qwen3-32B the bridge goes from the context straight to the read position |
+| The stated-bridge test on four topics, Qwen3.6-27B (finding 2) | yes, Zach's generator | the recall control passes on 3 of 4 topics, weakly (31-54%) | 120 scenes; 6-12 bridges per topic | 🟡 medium: one model, a weak control, few bridges |
+| The same on Qwen3-32B | yes | the recall control fails (5%) | 120 scenes | ⚪ none: its lens does not read these bridges |
+| Where a lens push writes a stated bridge (finding 7, D4 v2) | no, the animal suite | a random push 0%; a push to an animal outside the scene; text edits | 100 items per family | 🟡 medium: the decisive cell failed its off-path check; strong pushes (4-8x); one topic |
+| Random damage instead of blocking (slide 3's first-sentence bias) | no | — | 300 items | not testable as designed |
 
 ---
 
@@ -112,7 +129,7 @@ Each model is tested only on items it answers right without any edit. All scenes
 
 > **In short:** a bridge stated in the prompt stays at its sentence until about two thirds of the depth. The lookup reads it there, late, and not through the part the lens reads. The question's tokens read the entity's name back from the sentence; the last tokens read its digit.
 >
-> **How sure:** (a, b) 🟡 one model, one topic · (c) 🟢 pre-registered, four models · **Plan item:** "where the lookup reads the bridge: the positions where it's stated vs the question tokens"
+> **How sure:** (a) 🟢 lens-free, five topics, two models · (b) 🟡 one model (Qwen3.6-27B), five topics, the recall control weak on the new ones · (c) 🟢 pre-registered, four models, repeated on a second draw · **Plan item:** "where the lookup reads the bridge: the positions where it's stated vs the question tokens"
 
 **What we did**
 - **(a) Where the bridge sits.** Copy the hidden states of one group of tokens (the sentences, the question, the last tokens) from a donor prompt with another bridge, layer by layer.
@@ -124,6 +141,8 @@ Each model is tested only on items it answers right without any edit. All scenes
 ![Where a stated bridge sits on four topics, two models](figures/readme_1021/f24_where_bridge_topics.png)
 
 ![Which part of a stated bridge's change switches the answer](figures/readme_1021/f2_stated_bridge.png)
+
+![The same on four topics and two models](figures/readme_1021/f25_stated_bridge_topics.png)
 
 ![Name vs digit, four models](figures/readme_1021/f21_name_vs_digit.png)
 
@@ -137,6 +156,20 @@ Each model is tested only on items it answers right without any edit. All scenes
   - Qwen3-32B keeps it at its sentence to layer ~37 and over the context to layer 47, but copying the question or the tokens before "Answer:" never moves the lookup (0-7% at every layer). There the bridge goes from the context straight to the position where the answer is read.
 - Of a stated bridge's change, the **lens-readable part alone switches 0% of lookups**; everything else switches 83% (the whole change 87%). The lens does name the stated bridge: it is the lens's top word on 90% of items.
 - For a **recall** from the same stated bridge it is the reverse: the lens-readable part does the work (66%).
+- **On four topics** (Zach's generator), at the cell the map chose without the lens (the whole context at layer 32), Qwen3.6-27B:
+
+  | Topic | Recall: lens-readable part (the control, needs ≥ 30%) | Lookup: lens-readable part | Lookup: everything else | Items | Bridges |
+  |---|---|---|---|---|---|
+  | animals | 54% [35, 71] | 0% [0, 13] | 92% | 26 | 12 |
+  | chemical elements | 41% [26, 58] | 0% [0, 10] | 85% | 34 | 6 |
+  | Greek letters | 31% [18, 49] | 0% [0, 11] | 88% | 32 | 8 |
+  | planets | 18% [8, 36] (fails) | 0% [0, 12] | 82% | 28 | 7 |
+  | all four (the pre-registered verdict: replicates) | 36% [28, 45] | 0% [0, 3] | 87% | 120 | 33 |
+
+  - The lens-readable part gives 0% of lookups on all four topics. The control passes on 3 of 4, and the split holds on those three.
+  - Scenes that write numbers as words ("The locker of the eagle is three.") give the same as digits (lookup 0% and 83-89%; control 35-36%).
+  - The lens still names the stated bridge (its top word on 92% of items), and its push writes the lookup no more than a random push (6% vs 6% at 4x).
+- **Qwen3-32B** on the same scenes is not interpretable: the recall control fails (5% [2, 10]; 0-16% per topic). Its lens names the stated bridge on only 7.5% of items, so it does not see these bridges.
 - The **question's tokens read the name**. Hiding the name hurts as much as hiding the whole sentence, hiding the digit and the rest of the sentence costs nothing (95-100% right), and the wrong answers fall off the list.
   - For a **named** bridge ("Which drawer holds the file on Greece?") this holds on all four models: 5-12% right with the name hidden, Qwen3.6-27B included.
   - For a **recalled** bridge it holds on Qwen3-32B (32%), Qwen3.5-9B (61%) and OLMo (13%), but not on Qwen3.6-27B (90%): there the recalled bridge skips this step.
@@ -144,13 +177,14 @@ Each model is tested only on items it answers right without any edit. All scenes
 - **On a second draw of scenes** (same design, new lists) every verdict repeats on Qwen3.6-27B and Qwen3-32B. Qwen3-32B, recalled bridge, sentence without its digit hidden from the question's tokens: 38% right (whole sentence 37%), sentence without its name 100%. From the last tokens, sentence without its name: 4% (Qwen3-32B) and 10% (Qwen3.6-27B) right; sentence without its digit: 94% and 88%.
 
 **Weak spots**
-- (b) is one model and one topic (animals, 80 items); on four topics and on Qwen3-32B it is running now. (a) now has four topics and two models.
+- (b) rests on one model. On the new topics its control is weak: 31-54% where it passes (92% on the animal suite), only animals clears 30% with its lower bound, and planets fails; 6-12 different bridges per topic.
+- The recall control on the new topics is carried as much by the rest of the change as by the lens-readable part (rest 38% vs lens part 36%, pooled), unlike the animal suite (1% vs 92%).
 - The copies never include the read position itself (the space after "Answer:"), so "the last tokens" here means the template tokens before it.
 - On Qwen3-32B the question's tokens need the name to a different degree by topic, the same on both draws: with the sentence hidden from them, 8-10% right on countries, 23% on animals, 63-68% on body parts. On the second draw animals missed the pre-registered competence gate by 0.0005 (lower bound 0.8495, gate 0.85), so the pre-registered result rests on two topics. Run afterwards and labelled post hoc, animals alone gives the same verdicts (sentence hidden from the question's tokens 27% right, without its digit 27%, without its name 100%; from the last tokens, without its name 6%, without its digit 94%). From now on the gate compares the lower bound rounded to two decimals.
 - The digit token alone leaks through its neighbours (7-44% right when only it is hidden), so the decisive test hides the sentence without its name or digit.
 - Why the question's tokens read the name (for instance, to pick the bridge among the listed entities) is not tested. For a named bridge there is nothing to pick.
 
-**What it means:** the lookup reads the bridge where it is stated, late, and not through the part the lens reads. The question's tokens look the name up; the last tokens fetch the digit.
+**What it means:** the lookup reads the bridge where it is stated, late, and not through the part the lens reads, now on four topics of a second generator where the control works (Qwen3.6-27B). The question's tokens look the name up; the last tokens fetch the digit.
 
 ---
 
@@ -172,11 +206,12 @@ Each model is tested only on items it answers right without any edit. All scenes
 - On the hybrid models only the **attention** layers matter: blocking the DeltaNet layers keeps 100%.
 - The read is spread over attention heads: no single head or layer is needed. Where it sits along the depth differs by model (slide 8).
 - The same in 5 datasets on Qwen3.6-27B, including Python code and sentences in other languages.
+- **On a second draw of scenes**, pre-registered: Qwen3.6-27B 7% right [5, 11] (first draw 9%), Qwen3-32B 3% [2, 6] (first draw 3%); another sentence blocked instead keeps 100%, and on Qwen3.6-27B the DeltaNet layers blocked instead keep 100%.
 - The wrong answers favour the **1st sentence** and never the last. Against a uniform choice among each scene's 4 other sentences: Qwen3.6-27B 128 / 56 / 35 / 25 / 19 on sentences 1-5 (expected 59 / 51 / 51 / 51 / 51), Gemma 154 / 35 / 25 / 8 / 3 (expected 56 / 42 / 42 / 43 / 42); weaker on the other three models.
 
 **Weak spots**
 - Recall stays right (Qwen3.6-27B 99%, Qwen3.5-9B 96%, Gemma 100%), but by construction: the blocked sentence is not on a recall's path. It is a control, not a finding. Qwen3-32B's run had no recall questions, and OLMo fails its recall gate.
-- The link between the first-sentence bias and the order label (slide 4) is only suggestive: models may guess with a positional bias anyway, and there is no random-damage control yet.
+- The link between the first-sentence bias and the order label (slide 4) is only suggestive: models may guess with a positional bias anyway. The random-damage control we ran (noise at the last tokens in layers 48-63 instead of blocking) could not answer this: noise strong enough to break the lookup sends 87% of answers off the list, leaving 15 wrong answers from the list (50 needed). A version that reads the forced choice among the list's digits is the next try.
 
 **What it means:** the route around the J-space ends in an ordinary attention read of the answer's sentence by the last tokens.
 
@@ -186,7 +221,7 @@ Each model is tested only on items it answers right without any edit. All scenes
 
 > **In short:** which sentence gets read is set by an **order label** for the 1st and 2nd sentence and by the **bridge's identity** for the rest. The label counts order in the list, not place in the text.
 >
-> **How sure:** 🟡 the split by the asked sentence was chosen after the pooled pre-registered test; it is consistent on 5 of 5 models and on a second draw (Qwen3.6-27B); one layer per model; the counting tests pooled · **Plan item:** "pointers: lookback / binding-ID tests (swap the statement order)"
+> **How sure:** 🟢 the split by the asked sentence, first chosen after the pooled test, is consistent on 5 of 5 models and held as a rule fixed in advance on fresh scenes (Qwen3.6-27B, Qwen3-32B); one layer per model; the counting tests 🟡 pooled · **Plan item:** "pointers: lookback / binding-ID tests (swap the statement order)"
 
 **What we did**
 - Two prompts list the same entities in a different order. We copy the donor prompt's last two tokens into the original prompt at one layer. Each possible answer is a different digit, so the answer shows what the copied tokens pointed to:
@@ -205,6 +240,10 @@ Each model is tested only on items it answers right without any edit. All scenes
 
 ![By the place of the asked sentence, five models](figures/readme_1021/f14_slot_by_target.png)
 
+- **Confirmed as a rule fixed in advance on fresh scenes** (scripts/finding5_confirm.py, entity-cluster intervals): for the 1st and 2nd sentence the place must beat the identity, from the 3rd on the identity must be at least as frequent.
+  - Qwen3.6-27B, a third draw never seen before, layer 50: place minus identity +95 [+93, +98] points for the 1st and 2nd; identity minus place +14 [+7, +22] from the 3rd on.
+  - Qwen3-32B, its second draw, layer 50 (chosen by the fixed donor-digit rule): +82 [+75, +89] and +12 [+4, +20]. On its first draw the 3rd-5th tied.
+  - Named bridges (reported, not decisive): the same on Qwen3.6-27B; on Qwen3-32B only the 1st-2nd part (3rd-5th: -1 [-11, +10]).
 - The same in Python dicts and with the sentences in French, Spanish and German (Qwen3.6-27B, layer 50): 1st / 2nd 96% / 90% in code and 100% / 83% across languages, then the identity (code 20-55% vs position 6-37%; languages 37-45% vs 13-29%).
 - The same with 8 sentences (Qwen3.6-27B, Qwen3.5-9B, Gemma) and with colour words as answers (Qwen3.5-9B only):
 
@@ -218,7 +257,8 @@ Each model is tested only on items it answers right without any edit. All scenes
 ![The label under position shifts, four models](figures/readme_1021/f8_shifts.png)
 
 **Weak spots**
-- Qwen3.6-27B's layer 50 was chosen after the first runs (a second draw of scenes reproduces it). The other models' layers follow a fixed rule: the last layer where the donor's digit is still under 10% of answers.
+- Qwen3.6-27B's layer 50 was chosen after the first runs (a second and a third draw of scenes reproduce it). The other models' layers follow a fixed rule: the last layer where the donor's digit is still under 10% of answers.
+- The identity part (3rd-5th) is a modest margin (+12-14 points), with many answers unchanged or elsewhere in the list.
 - The counting tests pool all asked sentences, so their signal comes mostly from the 1st and 2nd.
 - On Gemma a random patch of the same size breaks 85% of answers (never into a position or identity answer). Colour words fail their control on Qwen3.6-27B and Gemma.
 - "Identity", not "word": whether the identity is the lens's word form is the open question of slide 5.
@@ -261,28 +301,35 @@ Each model is tested only on items it answers right without any edit. All scenes
 
 ---
 
-## 6. Early lens push vs editing the input
+## 6. Where can a lens push write a bridge?
 
-> **In short:** at layer 20, a lens push rewrites only bridges the model recalls (73-84%), not bridges stated in the prompt (1-2%); editing the input word switches every kind of question (100%).
+> **In short:** a lens push writes a bridge where the bridge sits. A recalled bridge is written at the question's words; a stated bridge at its own sentence. But a stated bridge written there moves only recall (37-100%), never the lookup (0% from layer 20 on). Early on, a lens push is also not the same as editing the input word.
 >
-> **How sure:** 🟡 pre-registered, one model · **Models:** Qwen3.6-27B · **Plan item:** "the 27B's early writes: is a hard early lens push the same as editing the input word?"
+> **How sure:** 🟡 pre-registered, one model, one topic; the decisive cell failed its off-path check (the cells that pass show the same) · **Models:** Qwen3.6-27B · **Plan item:** "the 27B's early writes: is a hard early lens push the same as editing the input word?"
 
 **What we did**
-- At layer 20, pushed the words that name the bridge ("the animal known for mooing", "Jack's pet") toward another animal's lens word.
-- Or edited those words to name that animal ("the sheep"). A random push of the same size as the control.
+- **(a) First test (21 Oct).** At layer 20, pushed the words of the question that name the bridge ("the animal known for mooing", "Jack's pet") toward another animal's lens word; or edited those words to name that animal ("the sheep"). A random push of the same size as the control.
+- **(b) Second test (22 Oct, D4 v2).** The first test pushed a stated bridge at the question, but slide 2 shows it sits at its own sentence. So: the same push at four places (the question's words; the sentence stating the bridge, "Clara's pet is a cow."; the bridge's word in it, "cow"; the whole context), at layers 12-44, 1-8x a typical change.
+  - Controls: a random push of the same size; a push toward an animal not in the scene; the text edits of (a).
+  - Rule fixed before the run: pick the cell on prompt → memory rows only (the push must switch ≥ 30% of recalls there, a random push ≤ 5%); there, read prompt → prompt. The cell is valid only if the same push changes ≤ 10% of the questions whose bridge is recalled (their bridge is not on that sentence).
 
 ![Lens push vs input edit](figures/readme_1021/f3_early_push.png)
 
+![Where a lens push writes a bridge](figures/readme_1021/f26_where_lens_writes.png)
+
 **What we found**
-- Editing the input words switches **every** kind of question (100%).
-- The lens push switches only questions whose bridge is **recalled** (73%, 84%), not those whose bridge is stated (1%, 2%); a random push 0%.
-- The pre-registered verdict: the push "writes the bridge", not "acts like an input edit".
+- (a) Editing the input words switches **every** kind of question (100%). The lens push at the question switches only questions whose bridge is **recalled** (73%, 84%), not those whose bridge is stated (1%, 2%); a random push 0%. Pre-registered verdict: the push "writes the bridge", not "acts like an input edit". The second test repeats this cell: 84% and 95% vs 0% and 0%.
+- (b) At the stated bridge's **sentence or word**, the push writes it for **recall**: prompt → memory switches in 21 cells at layers 16-36 (37-100%; 100% at the word, layer 28, 8x). A random push switches 0%. A push toward an animal outside the scene gives that animal's leg count in 96% of recalls.
+- In the same cells it never writes the **lookup**: prompt → prompt 0% in every cell from layer 20 on. Only at layer 16, 8x, does the lookup move (20-24%), where the push acts closer to an input edit.
+- Over the whole context (layers 28-36) the same: recall 72-100%, lookup 0-3%.
+- Pre-registered verdict: **not valid**. At the decisive cell (the word, layer 28, 8x: recall 100%, lookup 0%), the push also moved 25% of memory → memory answers ("How many legs does the animal known for mooing have?"): the cue's animal is the same cow, named in the scene, and its recall reads that mention. In the cells that pass the off-path check (layers 20-36, 4-8x; for instance the sentence at layer 24, 8x: recall 84%, lookup 0%, off-path 4-10%) the pattern is the same; that reading is ours, after the data.
 
 **Weak spots**
-- One model, one topic, one layer, one strong push size (8x a typical change).
-- **The stated bridge was pushed in the wrong place.** The push went to the question's words ("Jack's pet"), but slide 2 shows a stated bridge sits at its own sentence ("Jack's pet is a cow.") until layer ~44, not at the question. The 1-2% may mean the push missed the bridge, not that the lens cannot write it. Not tested yet.
+- One model, one topic (the animal suite), strong pushes (4-8x a typical change).
+- The decisive cell failed its off-path check: the scene names the cued animal, so "off the path" is not clean for memory → memory.
+- (a) and (b) push a single direction (the lens's word difference); a lookup could still use a lens-readable feature that this direction does not reach.
 
-**What it means:** an early lens push rewrites the recalled bridge, the thing the lens reads. Whether it can write a stated bridge where that bridge sits is open. This claim carries findings 1 and 8 (the lens can write a bridge at all), so it needs a replication: next steps.
+**What it means:** the lens can write a bridge, recalled or stated, where that bridge sits, and recall follows it. The lookup does not follow a stated bridge written that way, not at its sentence, not over the context. This is a second, independent form of slide 2's split (there: pasting the lens-readable part of a real change; here: a lens push) and the main evidence for finding 8 so far.
 
 ---
 
@@ -350,15 +397,16 @@ Each model is tested only on items it answers right without any edit. All scenes
 ## 9. What it adds up to, and what is missing
 
 **The story so far.**
-- Recall uses the bridge in the form the lens reads (slide 1); a lookup reads its sentence late, through attention, from the last tokens (slide 3).
-- The lens reads a stated bridge, but the lookup does not use that part (slide 2).
-- The last tokens pick the sentence by an order label (1st, 2nd) or by the bridge's identity (3rd on), and fetch its digit (slides 2 and 4).
+- Recall uses the bridge in the form the lens reads while the bridge forms (slide 1); a lookup reads its sentence late, through attention, from the last tokens (slide 3, now on two draws of scenes).
+- The lens reads a stated bridge, and can even write it where it sits, but the lookup does not use that form: two independent tests on Qwen3.6-27B (slide 2, pasting the lens-readable part; slide 6, a lens push), on five topics with a working recall control.
+- The last tokens pick the sentence by an order label (1st, 2nd) or by the bridge's identity (3rd on), and fetch its digit (slides 2 and 4, now confirmed as rules fixed in advance on fresh scenes).
 
 **A candidate mechanism (not tested).** The last tokens form a query (an order label, or the bridge's identity) and read the answer's **digit**, not its name, even for sentences 3-5. So the owner's identity must sit in the attention key at the digit or its neighbours, and late attention matches query to key, as in binding and lookback work. Two cheap tests: read the digit positions with the lens; patch the digit token's hidden state between scenes.
 
 **Not shown yet.**
-- **Finding 8 links findings 2 and 5:** is the identity a code the lens cannot write? The only positive control at the last tokens is one topic (six entities), where it holds at layer 44 (also on 154 new scenes) and is inconclusive at layer 40.
-- The better evidence is the stated-bridge test of slide 2, whose positive control is built in (the same pasted change, read by a recall). It needs more topics and a second model: both are running.
+- **Finding 8 for a recalled bridge:** is its identity at the last tokens a code the lens cannot write? The only positive control there is one topic (six entities), where it holds at layer 44 (also on 154 new scenes) and is inconclusive at layer 40.
+- **A second model with a working lens.** Qwen3-32B's lens does not read these bridges (7.5% vs 92%), so every lens claim rests on Qwen3.6-27B.
+- **Strength of the recall control on new topics:** 31-54%, and carried as much by the non-lens part as by the lens part.
 - The scenes are simple: 3-8 short sentences, one-digit answers, the question right after the list. Patches move 30-50% of answers at most.
 
 ---
@@ -369,16 +417,20 @@ Each model is tested only on items it answers right without any edit. All scenes
 |---|---|---|
 | Positive control for the lens at the last tokens | Finding 8 | Done 22 Oct: only elements, layers 40-44 (slide 5) |
 | Name vs digit, and again on a second draw of scenes | Finding 3 | Done 22 Oct: repeats on Qwen3.6-27B and Qwen3-32B (slide 2) |
-| **1. Analyse the stated-bridge test (slide 2) on four topics and on Qwen3-32B** (Zach's generator; the 32B lens from neuronpedia) | Finding 2, and through it finding 8 | Running; Fri 23. Rule fixed before the run, decisive cell chosen without the lens |
-| **2. The early lens push (slide 6) beyond one setting**: other topics and formats (Zach's generator), Qwen3-32B, several layers and push sizes, and the stated bridge pushed where it sits (its sentence) | Finding 7 carries findings 1 and 8: can the lens write a bridge at all, and where? | Step 1 (Qwen3.6-27B, animal suite, `d4_where_27b`) running; rule and Dan's predictions (batch 10) written before it; topics, formats and Qwen3-32B next |
-| 3. New late-recall topics for the positive control ("the element with atomic number N", "the state with postal code XX"); with ≥ 12 entities, the supervised identity direction | Finding 8 beyond six entities | Only if the stated-bridge test holds on elements |
+| The stated-bridge test (slide 2) on four topics and on Qwen3-32B | Finding 2 | Done 22 Oct: holds on 3 of 4 topics where the control passes (Qwen3.6-27B); Qwen3-32B not interpretable |
+| Where a lens push writes a stated bridge (slide 6, step 1: Qwen3.6-27B, animal suite) | Findings 7 and 8 | Done 22 Oct: recall yes, lookup no; formally not valid at the decisive cell |
+| Finding 5 as a rule fixed in advance on fresh scenes; the late read on a second draw | Findings 4 and 5 | Done 22 Oct: both hold, on both models |
+| **1. Slide 6, step 2:** the same push on Zach's generator (four topics, prose and tables), with a scene that does not name the cued animal (a clean off-path check) | Findings 7 and 8 beyond one topic | Next (needs a tasks_v2 adapter for the push) |
+| **2. New late-recall topics for the positive control** (recall-only lens sweep first): the animal by its young's name ("the animal whose young is called a kid") → legs; chemical elements extended to 15-20 entities, recalled by symbol → period | Finding 8 beyond six entities; ≥ 12 entities for the supervised identity direction | Next: data, then a recall-only screen on 2 GPUs |
+| 3. The first-sentence bias, version 2: the forced choice among the list's digits under noise | Slide 3's caveat | To design (the first version was not testable) |
+| Blocking (slide 3) on Zach's generator: prose and tables, four topics, Qwen3.6-27B, Qwen3-32B, OLMo | Finding 4 beyond our toy scenes | Code ready and smoke-tested; waits for Zach's frozen data and the weekend's verification |
 | Blocking (slide 3) on Zach's generator: prose and tables, four topics, Qwen3.6-27B, Qwen3-32B, OLMo | Finding 4 beyond our toy scenes | Code ready and smoke-tested; waits for the stated-bridge test, Zach's frozen data and the weekend's verification |
-| **Update to Neel** | The main claim changed (finding 8 is open; finding 1 holds only while the bridge forms) | Sat 24 |
+| **Update to Neel** | The main claim changed: finding 1 holds only while the bridge forms; finding 8 now has evidence for stated bridges, not yet for recalled ones; every lens claim rests on one model | Sat 24 |
 | Freeze findings 3, 4, 5 and slide 2; verify by hand with Zach into VERIFIED.md; sync on Zach's work on the other models | Process | Sat-Sun 24-25 |
 | The late read in Zach's six formats (chat turn, table, document, JSON, Python, prose) | Finding 4 beyond simple scenes | Mon-Tue 26-27 |
 | Write-up and slides | | Wed-Fri 28-30 |
 
-Later, if time: the candidate mechanism (the lens at the digit positions; patch the digit token's hidden state); the label with two lists in one prompt, a header before the list, or the question before the list; the identity with each entity in a different language in the original and donor prompts (rules out a lexical match); a random-damage control for the first-sentence bias; the late head on scenes with a repeated digit.
+Later, if time: the candidate mechanism (the lens at the digit positions; patch the digit token's hidden state); the label with two lists in one prompt, a header before the list, or the question before the list; the identity with each entity in a different language in the original and donor prompts (rules out a lexical match); the late head on scenes with a repeated digit.
 
 ---
 
@@ -440,16 +492,16 @@ Which locker belongs to Maria's pick?                                       → 
 | What | Code | Results |
 |---|---|---|
 | Slide 1 (Zach) | `scripts/suite_split.py`, `read_write.py`, `ablate_pilot.py` | `results/read_write/`, `ablate_pilot/` |
-| Slide 2 | `scripts/statement_positions.py`; name vs digit: `scripts/attn_knockout.py`, `scripts/d2_parts.py` | `results/statement_positions/`, `results/attn_knockout/` |
-| Slide 3 | `scripts/attn_knockout.py` | `results/attn_knockout/` |
-| Slide 4 | `scripts/pointer_v*.py`, `pointer_swap.py` | `results/pointer_swap/` |
+| Slide 2 | `scripts/statement_positions.py`, `d1_verdict.py` (the four-topic rule); name vs digit: `scripts/attn_knockout.py`, `scripts/d2_parts.py` | `results/statement_positions/`, `results/attn_knockout/` |
+| Slide 3 | `scripts/attn_knockout.py`; the random-damage control: `primacy_noise.py` | `results/attn_knockout/`, `primacy_noise/` |
+| Slide 4 | `scripts/pointer_v*.py`, `pointer_swap.py`; the fixed-in-advance check: `finding5_confirm.py` | `results/pointer_swap/`, `finding5_confirm/` |
 | Slide 5 | `scripts/pointer_fit.py`, `pointer_mechanism.py`, `c2_cells.py` | `results/pointer_fit/`, `pointer_mechanism/`, `c2_cells/` |
-| Slide 6 | `scripts/early_push.py` | `results/early_push/` |
+| Slide 6 | `scripts/early_push.py`, `early_push_where.py` | `results/early_push/`, `early_push_where/` |
 | Slide 7 | `scripts/d5a_natural_errors.py`, the slide 3-4 scripts | `results/d5a_natural_errors/` |
 | All figures | `scripts/readme_figures.py` | `figures/readme_1021/` |
 | Job queue, pre-registered specs | `scripts/jobq.py`, `jobs/` | `results/jobq/` |
 
-Every run's spec in `jobs/` states its hypotheses, decision rule and controls before it runs. Internal names used in `jobs/` and [predictions/](predictions/): D1 = the stated-bridge test (slide 2), D2 = blocking (slides 2-3), D3 = patching the last tokens (slide 4), D3b = the fitted position code (slide 5), C2 = the lens positive control (slide 5), D4 = the early push (slide 6).
+Every run's spec in `jobs/` states its hypotheses, decision rule and controls before it runs. Internal names used in `jobs/` and [predictions/](predictions/): D1 = the stated-bridge test (slide 2), D2 = blocking (slides 2-3), D3 = patching the last tokens (slide 4), D3b = the fitted position code (slide 5), C2 = the lens positive control (slide 5), D4 = the early push (slide 6), D4 v2 = where the push writes (slide 6).
 
 <details>
 <summary>Runs behind each slide</summary>
@@ -457,13 +509,12 @@ Every run's spec in `jobs/` states its hypotheses, decision rule and controls be
 | Slide | Runs |
 |---|---|
 | 1 | `read_write/dose_v1`, `ablate_pilot/abl_rot_v1` |
-| 2 | `statement_positions/d1_map_n80_v1`, `d1_parts_n80_v1`; four topics: `d1_topics_map_27b`, `qwen3_32b_d1_topics_map`; question-token rows of the slide 3 runs; name vs digit: `attn_knockout/{d2_parts_v2_27b, qwen3_32b_d2_parts_v2, qwen35_9b_d2_parts_v2, olmo3_7b_instruct_d2_parts_v2}` (first version without the leak-robust spans: `*d2_parts*` without `_v2`), analysed by `scripts/d2_parts.py`; second draw: `d2_parts_seed2_27b`, `qwen3_32b_d2_parts_seed2` |
-| 3 | `attn_knockout/d2_v4_late_read`, `qwen3_32b_d2_v4_late_read_v2_r2`, `qwen35_9b_d2_v4_late_read_r2`, `olmo3_7b_{instruct,sft,dpo}_d2_v4_late_read_*`, `gemma4it_d2_v4_late_read_v3_r2` |
-| 4 | `pointer_swap/d3v4_swap_topics`, `d3v4_seed2_swap_27b`, `qwen3_32b_d3v4_swap_r2`, `qwen35_9b_d3v4_swap_r2`, `olmo3_7b_instruct_d3v4_swap_fn`, `gemma4it_d3v4_swap_v2_r2`; 8 sentences and colour words: `d3v5_swap_27b`, `qwen35_9b_d3v5_swap_r2`, `gemma4it_d3v5_swap_r2`; counting: `d3v4x_swap_main`, `qwen35_9b_d3v4x_swap_r2`, `olmo3_7b_instruct_d3v4x_swap`, `gemma4it_d3v4x_swap_r2`; shifts: `d3v6_swap_27b`, `qwen35_9b_d3v6_swap_r2`, `olmo3_7b_instruct_d3v6_swap`, `gemma4it_d3v6_swap_r2` |
+| 2 | `statement_positions/d1_map_n80_v1`, `d1_parts_n80_v1`; four topics: `d1_topics_{map,parts,rw}_27b`, `qwen3_32b_d1_topics_{map,parts,rw}`, judged by `scripts/d1_verdict.py` into `results/d1_verdict/`; question-token rows of the slide 3 runs; name vs digit: `attn_knockout/{d2_parts_v2_27b, qwen3_32b_d2_parts_v2, qwen35_9b_d2_parts_v2, olmo3_7b_instruct_d2_parts_v2}` (first version without the leak-robust spans: `*d2_parts*` without `_v2`), analysed by `scripts/d2_parts.py`; second draw: `d2_parts_seed2_27b`, `qwen3_32b_d2_parts_seed2` |
+| 3 | `attn_knockout/d2_v4_late_read`, `qwen3_32b_d2_v4_late_read_v2_r2`, `qwen35_9b_d2_v4_late_read_r2`, `olmo3_7b_{instruct,sft,dpo}_d2_v4_late_read_*`, `gemma4it_d2_v4_late_read_v3_r2`; second draw: `d2_late_read_seed2_27b`, `qwen3_32b_d2_late_read_seed2`; random damage: `primacy_noise/d2_primacy_noise_27b` |
+| 4 | `pointer_swap/d3v4_swap_topics`, `d3v4_seed2_swap_27b`, `qwen3_32b_d3v4_swap_r2`, `qwen35_9b_d3v4_swap_r2`, `olmo3_7b_instruct_d3v4_swap_fn`, `gemma4it_d3v4_swap_v2_r2`; 8 sentences and colour words: `d3v5_swap_27b`, `qwen35_9b_d3v5_swap_r2`, `gemma4it_d3v5_swap_r2`; counting: `d3v4x_swap_main`, `qwen35_9b_d3v4x_swap_r2`, `olmo3_7b_instruct_d3v4x_swap`, `gemma4it_d3v4x_swap_r2`; shifts: `d3v6_swap_27b`, `qwen35_9b_d3v6_swap_r2`, `olmo3_7b_instruct_d3v6_swap`, `gemma4it_d3v6_swap_r2`; fixed in advance on fresh scenes: `d3v4_seed3_swap_27b`, `qwen3_32b_d3v4_seed2_swap`, judged by `scripts/finding5_confirm.py` |
 | 5 | `pointer_fit/d3b_replicate_fresh_27b`, `d3v4_fit_main`, `olmo3_7b_instruct_d3b_fit_v2`; `pointer_mechanism/d3b_mechanism_27b`; positive control: `pointer_fit/c2_sweep_v4_27b`, `c2_sweep_v1_27b`, selected and revealed by `scripts/c2_cells.py` into `results/c2_cells/step_a_20261022/` |
-| 6 | `early_push/d4_push_wording_b_v1` (wording A: `d4_push_v1`) |
+| 6 | `early_push/d4_push_wording_b_v1` (wording A: `d4_push_v1`); where the push writes: `early_push_where/d4_where_27b` |
 | 7 | `d5a_natural_errors/d5a_natural_errors_27b`; OLMo ladder: `olmo3_7b_{sft,dpo}_d3v4_swap`, `olmo3_7b_{sft,dpo}_d3v4x_swap` and the slide 3 OLMo runs |
-| Running | stated bridge on four topics: `statement_positions/{d1_topics_*_27b, qwen3_32b_d1_topics_*}` |
 
 Two blocking runs (Qwen3-32B, Gemma) were analysed locally: the box's figure stage hit an old plotting bug. On Qwen3.5-9B the shifts run also reported layers 20-22, where the donor's digit had started to arrive; the spec excludes them.
 

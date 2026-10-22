@@ -1136,14 +1136,15 @@ def f25_stated_bridge_topics(out: Path) -> None:
                 if r and r[3]:
                     bar_ci(ax, i + (j - 1) * 0.27, r[0], r[1], r[2], col, width=0.25, fs=6.5,
                            edge=INK2 if hatch else None, hatch=hatch)  # fmt: skip
-        ax.set_xticks(range(len(groups)), [f"{val}\n{m.split('-')[0]}{m.split('-')[1][:3]}" for m, val, _ in groups],
+        ax.set_xticks(range(len(groups)), [f"{val}\n{m.split('-')[-1]}" for m, val, _ in groups],
                       fontsize=7.5)  # fmt: skip
         ax.set_ylim(0, 112)
         ax.set_title(title, loc="left", fontsize=9.5)
+        ax.axhline(30, color=INK, lw=1, ls=":")
     head(axes[0], "Four topics, two models: the part of a stated bridge the lens reads, and the lookup",
          "Zach's generator (animals, planets, chemical elements, Greek letters; 120 scenes). Swap the thing Clara picked "
          "and paste one part of the change it causes, at the cell chosen from\nthe map without the lens. Lookup: \"Which "
-         "locker belongs to Clara's pick?\"; recall: the pick's number from memory (legs, position from the Sun, atomic number, place in the alphabet).",
+         "locker belongs to Clara's pick?\"; recall: the pick's number from memory (legs, position from the Sun, atomic number, place in the alphabet). Dotted: the 30% bar the recall control must pass.",
          above=24)  # fmt: skip
     fig.legend([box(c, INK2 if h else None, h) for *_, c, h in bars], [lab for _, _, lab, _, _ in bars],
                loc="lower center", ncol=4, frameon=False, bbox_to_anchor=(0.5, -0.14), fontsize=8.5)  # fmt: skip
@@ -1192,7 +1193,7 @@ def f26_where_lens_writes(out: Path) -> None:
     head(axes[0], f"Where can a lens push write a bridge? Qwen3.6-27B, animal suite, push {sc:g}x",
          "Push the hidden state along the lens direction from the bridge's word to another animal's, at one group of "
          "tokens and one layer. Circled: the cell chosen on\nprompt → memory rows alone (the rule fixed before the run); "
-         f"verdict: {dec['verdict']}.", above=16)  # fmt: skip
+         f"verdict: {dec['verdict']}.", above=26)  # fmt: skip
     save(fig, out, "f26_where_lens_writes.png")
 
 
