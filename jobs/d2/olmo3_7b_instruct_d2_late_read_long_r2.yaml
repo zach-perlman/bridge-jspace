@@ -1,0 +1,23 @@
+id: olmo3_7b_instruct_d2_late_read_long_r2
+title: "The late read with ~2000 filler tokens (OLMo-3-7B-Instruct)"
+thread: D2
+gpus: 1
+mem_gb: 30
+est_gpu_hours: 0.8
+depends_on: []
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct BJ_JUDGE=read uv run python scripts/pointer_v4.py manifest --set long --name olmo3_7b_instruct_d3v4_long_competence --why "the long set" && BJ_TARGET=olmo-3-7b-instruct BJ_JUDGE=read BJ_GEN_BATCH=16 uv run python scripts/pointer_v4.py competence --name olmo3_7b_instruct_d3v4_long_competence && BJ_TARGET=olmo-3-7b-instruct PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True BJ_BATCH=8 uv run python scripts/attn_knockout.py manifest --name olmo3_7b_instruct_d2_late_read_long --dataset pointer_v4 --set long --families RL --n 100 --sources lookup lookup_off --dests final question --layers all --sweep path --gate-lo 0.80 --competence olmo3_7b_instruct_d3v4_long_competence --why "finding 4 with a long context" && BJ_TARGET=olmo-3-7b-instruct PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True BJ_BATCH=8 uv run python scripts/attn_knockout.py run --name olmo3_7b_instruct_d2_late_read_long
+figures_command: BJ_TARGET=olmo-3-7b-instruct uv run python scripts/attn_knockout.py summarise --name olmo3_7b_instruct_d2_late_read_long
+question: >-
+  With ~2000 tokens between the list and the question, is the read still late, through the last tokens' attention?
+why_it_matters: >-
+  Finding 4 on short prompts only, except Qwen3.5-9B (holds with the long context).
+hypotheses:
+  H-late-long: 'replicates. Prior 0.75'
+decision_rule: >-
+  The late-read rule of the seed2 runs, unchanged (attention-only models: the statement hidden from the last tokens in every layer leaves <= 20% right, Wilson upper bound <= 0.30; the off-path statement keeps >= 90%, lower bound >= 0.85). Competence gate 0.80 (declared).
+controls:
+- 'the off-path statement hidden the same way; the same scenes without filler (the seed2 runs)'
+n: '100 memory -> prompt items of pointer_v4 long'
+seeds: [0]
+notes: "Requeued (cancelled before it started) on the fix of the competence read pass (BJ_GEN_BATCH). Dan, 2026-10-22 night (the critic's priorities: the lens claims beyond one model and family first, then the mechanism in less toy settings). Rules fixed before the run."

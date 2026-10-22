@@ -40,8 +40,9 @@ JSPACE_MAX, REST_MIN, POSITIVE_MIN = 0.10, 0.50, 0.30
 
 
 def decisive_cell(rates: list[dict], lookup: str, lo: int, onset: int) -> dict | None:
+    grid = (lambda la: la in pins.LENS_LAYERS) if pins.LENS_LAYERS else (lambda la: la % 4 == 0)  # lens layers (OLMo)
     cands = [r for r in rates if r["family"] == lookup and r["set"] in SETS and r["transit"] and lo <= r["layer"] < onset
-             and r["layer"] % 4 == 0]  # fmt: skip  # the coarse grid: every 4th layer
+             and grid(r["layer"])]  # fmt: skip  # the coarse grid: every 4th layer, or the lens's own layers
     if not cands:
         return None
     best = min(cands, key=lambda r: (-r["cf"]["flips"][0], r["layer"], SETS.index(r["set"])))

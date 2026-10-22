@@ -49,6 +49,7 @@ from __future__ import annotations
 import argparse
 import collections
 import json
+import os
 import random
 import re
 import statistics
@@ -922,8 +923,9 @@ def read_answers(model, tok, prompts: list[dict]) -> None:
         by_len.setdefault(len(p["forced"]), []).append(p)
     with torch.inference_mode():
         for group in by_len.values():
-            for start in range(0, len(group), 64):
-                chunk = group[start : start + 64]
+            step = int(os.environ.get("BJ_GEN_BATCH", "64"))  # long prompts (pointer_v4 long): smaller on a 27B
+            for start in range(0, len(group), step):
+                chunk = group[start : start + step]
                 x = torch.tensor([p["forced"] for p in chunk], device="cuda")
                 logits = model.hf(input_ids=x, logits_to_keep=1).logits[:, -1].float()
                 logp = logits.log_softmax(-1)
