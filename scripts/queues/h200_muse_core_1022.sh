@@ -55,6 +55,11 @@ $PY scripts/ablate_v2.py --name muse30_full2_ko_unembed_v1 --why "$WHY: the spec
   --plan bands --bands $(uniq_bands 10-16 16-22 $MID) --conditions unembed10$S unembed10${S}_rot $T2 $K \
   && $PY scripts/c1_specificity.py muse30_full2_ko_v1 muse30_full2_ko_unembed_v1 --set full_v8 --suffix "$S" | tail -6 \
   && $PY scripts/c1_v2.py muse30_full2_ko_unembed_v1 --middle L$MID --set full_v8 --suffix "$S" > /dev/null || echo "=== unembed knock-out FAILED"
+# inserted 2026-10-22 ~06:40 UTC (Zach): the held-out sweep showed almost no knock-out effect on Muse at any depth; is
+# removing 10 directions just too weak? Dose at the chosen band and at the relative-depth band 26-32, before C2.
+echo "=== dose $(date -u +%T)"
+$PY scripts/ablate_v2.py --name muse30_full2_dose_v1 --why "$WHY: knock-out dose (25 / 50 / 100 directions and same-size controls) at the chosen and relative-depth bands" \
+  --plan bands --bands $(uniq_bands $MID 26-32) --conditions top25 top25_rot top50 top50_rot top100 top100_rot $T2 $K | tail -22 || echo "=== dose FAILED"
 echo "=== C2 $(date -u +%T)"
 BJ_BATCH=32 $PY scripts/write_max.py --name muse30_smoke_wm2_full_1022 --why smoke --n 2 --band 26-28 \
   --single-step 1 --early 16 --possets question final $W2 || { echo "steering smoke failed: stop"; exit 1; }
