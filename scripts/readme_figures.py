@@ -998,6 +998,98 @@ def f22_c2_positive_control(out: Path) -> None:
     save(fig, out, "f22_c2_positive_control.png")
 
 
+def f23_name_digit_draws(out: Path) -> None:
+    """Name vs digit on two draws of pointer_v4's scenes (main, seed2) for Qwen3.6-27B and Qwen3-32B: % right with the
+    whole statement, the statement without its digit, or without its name hidden, per destination and family."""
+    import sys
+
+    sys.path.insert(0, str(ROOT))
+    from scripts import d2_parts as P
+
+    runs = [("Qwen3.6-27B", "d2_parts_v2_27b", "d2_parts_seed2_27b"),
+            ("Qwen3-32B", "qwen3_32b_d2_parts_v2", "qwen3_32b_d2_parts_seed2")]  # fmt: skip
+    hidden = [("lookup", "whole statement", INK2), ("lookup_nodigit", "all but the digit (name + rest)", "#9cc1ee"),
+              ("lookup_noname", "all but the name (digit + rest)", "#93dcc0")]  # fmt: skip
+    fams = [("DL", "named"), ("RL", "recalled")]
+
+    def cells(run: str) -> dict:
+        d = RES / "attn_knockout" / run
+        cases = {c["id"]: c for c in map(json.loads, (d / "cases.jsonl").read_text().splitlines())}
+        return P.cells([json.loads(x) for x in (d / "rows.jsonl").read_text().splitlines()], cases)
+
+    cl = {run: cells(run) for _, a, b in runs for run in (a, b)}
+    groups = [(m, fam, flab, a, b) for m, a, b in runs for fam, flab in fams]
+    fig, axes = plt.subplots(2, 1, figsize=(12, 6.4), sharey=True, gridspec_kw={"hspace": 0.4})
+    w = 0.13
+    for ax, dest, title in zip(axes, ("question", "final"), ("hidden from the question's tokens",
+                                                             "hidden from the last tokens"), strict=True):  # fmt: skip
+        style(ax, "y")
+        for i, (_, fam, _, a, b) in enumerate(groups):
+            for j, (src, _, col) in enumerate(hidden):
+                for k, (run, hatch) in enumerate(((a, None), (b, "///"))):
+                    c = cl[run].get((fam, src, dest))
+                    if c:
+                        x = i + (2 * j + k - 2.5) * w
+                        bar_ci(ax, x, *c["right"], col, width=w * 0.95, fs=7, edge=INK2 if hatch else None, hatch=hatch)
+        ax.axhline(20, color=INK, lw=1, ls=":")
+        ax.set_xticks(range(len(groups)), [f"{m}\n{flab} bridge" for m, _, flab, _, _ in groups])
+        ax.set_title(title, loc="left", fontsize=9.5)
+        ax.set_ylim(0, 115)
+        ax.set_ylabel("% of answers still right")
+    head(axes[0], "Name vs digit on a second draw of scenes: every verdict repeats",
+         "The same test on new scenes of the same design (same entities and wordings, new lists). Solid: first draw; "
+         "hatched: second draw. Dotted: guessing among the list's 5 digits.\nQwen3-32B, recalled bridge, second draw: "
+         "2 of 3 topics (animals missed the competence gate by 0.0005; run afterwards alone, it gives the same).",
+         above=24)  # fmt: skip
+    handles = [box(c) for _, _, c in hidden] + [box(SURF, INK2), box(SURF, INK2, "///")]
+    labels = [lab for _, lab, _ in hidden] + ["first draw", "second draw"]
+    fig.legend(handles, labels, loc="lower center", ncol=5, frameon=False, bbox_to_anchor=(0.5, -0.05), fontsize=9)
+    save(fig, out, "f23_name_digit_draws.png")
+
+
+def f24_where_bridge_topics(out: Path) -> None:
+    """D1 map on four topics (Zach's generator, d1_topics_v1): where a stated bridge sits, by layer, for prompt ->
+    prompt, on each model whose map has finished."""
+    models = [("Qwen3.6-27B", "d1_topics_map_27b"), ("Qwen3-32B", "qwen3_32b_d1_topics_map")]
+    models = [(m, r) for m, r in models if (RES / "statement_positions" / r / "summary.json").exists()]
+    sets = [("bind_bridge", "the sentence stating the bridge", "#9b8ce8"), ("context", "the whole context", "#6250d6"),
+            ("question", "the question", RECALL), ("final", "the last tokens", INK2)]  # fmt: skip
+    fig, axes = plt.subplots(1, len(models), figsize=(5.6 * len(models), 3.3), sharey=True, squeeze=False,
+                             gridspec_kw={"wspace": 0.08})  # fmt: skip
+    for ax, (model, run) in zip(axes[0], models, strict=True):
+        rates = json.loads((RES / "statement_positions" / run / "summary.json").read_text())["rates"]
+        style(ax, "y")
+        for key, label, col in sets:
+            pts = sorted((r["layer"], r["cf"]["flips"]) for r in rates if r["family"] == "PP" and r["set"] == key
+                         and r["layer"] >= 16)  # fmt: skip
+            ax.plot(
+                [p[0] for p in pts], [100 * p[1][0] for p in pts], color=col, lw=2.2, marker="o", ms=3.5, label=label
+            )
+            ax.fill_between([p[0] for p in pts], [100 * max(p[1][1], 0) for p in pts], [100 * p[1][2] for p in pts],
+                            color=col, alpha=0.15, lw=0)  # fmt: skip
+        ax.set_title(f"{model} (64 layers)", loc="left", fontsize=9.5)
+        ax.set_xlabel("layer")
+    axes[0][0].set_ylim(0, 105)
+    axes[0][0].set_ylabel("% of lookups that switch")
+    h, labs = axes[0][0].get_legend_handles_labels()
+    fig.legend(
+        h,
+        labs,
+        loc="lower center",
+        ncol=4,
+        frameon=False,
+        bbox_to_anchor=(0.5, -0.12),
+        fontsize=9,
+        title="tokens copied from the donor prompt",
+        title_fontsize=9,
+    )
+    head(axes[0][0], "Four topics: a stated bridge sits at its sentence, then over the context; only Qwen3.6-27B hands it to the question",
+         "Zach's generator (animals, planets, chemical elements, Greek letters; 120 scenes), prompt → prompt (\"Which "
+         "locker belongs to Clara's pick?\"):\ncopy one group of tokens from a donor prompt where Clara picked another "
+         "thing, layer by layer, and count lookups that switch to the other thing's locker. The read position itself (the space after\n'Answer:') is never copied: on Qwen3-32B the bridge goes from the context straight there, past the question and the tokens before 'Answer:'.", above=24)  # fmt: skip
+    save(fig, out, "f24_where_bridge_topics.png")
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", default="figures/readme_1021")
@@ -1007,5 +1099,6 @@ if __name__ == "__main__":
               f6_slot_counts, f7_pointer_push, f8_shifts, f9_olmo_slot, f10_late_read_models, f11_natural_errors,
               f12_address_models, f13_mechanism, f14_slot_by_target, f15_counts_models,
               f16_slot_by_target_v5, f17_by_layer_models, f18_stages_models, f19_where_bridge,
-              f20_olmo_ladder, f21_name_vs_digit, f22_c2_positive_control):  # fmt: skip
+              f20_olmo_ladder, f21_name_vs_digit, f22_c2_positive_control, f23_name_digit_draws,
+              f24_where_bridge_topics):  # fmt: skip
         f(out)

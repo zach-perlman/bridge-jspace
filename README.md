@@ -120,13 +120,20 @@ Each model is tested only on items it answers right without any edit. All scenes
 
 ![Where the bridge sits, by layer](figures/readme_1021/f19_where_bridge.png)
 
+![Where a stated bridge sits on four topics, two models](figures/readme_1021/f24_where_bridge_topics.png)
+
 ![Which part of a stated bridge's change switches the answer](figures/readme_1021/f2_stated_bridge.png)
 
 ![Name vs digit, four models](figures/readme_1021/f21_name_vs_digit.png)
 
+![Name vs digit on a second draw of scenes](figures/readme_1021/f23_name_digit_draws.png)
+
 **What we found**
 - A **stated** bridge stays at its sentence: copying the sentences switches 79-94% of answers at layers 32-44. The question and the last tokens carry it only from layer 48-52.
 - A **recalled** bridge sits at the question (57-100% from layer 36) and reaches the last tokens at layer 48.
+- **On four topics** (Zach's generator: animals, planets, chemical elements, Greek letters; 120 scenes; prompt → prompt):
+  - Qwen3.6-27B repeats the animal-suite picture: the stated bridge stays at its sentence to layer ~24, over the whole context to layer 42, and the question takes it from layer 47 (78% at layer 56).
+  - Qwen3-32B keeps it at its sentence to layer ~37 and over the context to layer 47, but copying the question or the tokens before "Answer:" never moves the lookup (0-7% at every layer). There the bridge goes from the context straight to the position where the answer is read.
 - Of a stated bridge's change, the **lens-readable part alone switches 0% of lookups**; everything else switches 83% (the whole change 87%). The lens does name the stated bridge: it is the lens's top word on 90% of items.
 - For a **recall** from the same stated bridge it is the reverse: the lens-readable part does the work (66%).
 - The **question's tokens read the name**. Hiding the name hurts as much as hiding the whole sentence, hiding the digit and the rest of the sentence costs nothing (95-100% right), and the wrong answers fall off the list.
@@ -136,7 +143,8 @@ Each model is tested only on items it answers right without any edit. All scenes
 - **On a second draw of scenes** (same design, new lists) every verdict repeats on Qwen3.6-27B and Qwen3-32B. Qwen3-32B, recalled bridge, sentence without its digit hidden from the question's tokens: 38% right (whole sentence 37%), sentence without its name 100%. From the last tokens, sentence without its name: 4% (Qwen3-32B) and 10% (Qwen3.6-27B) right; sentence without its digit: 94% and 88%.
 
 **Weak spots**
-- (a) and (b) are one model and one topic (animals, 80 items). The same test on four topics and on Qwen3-32B is running now.
+- (b) is one model and one topic (animals, 80 items); on four topics and on Qwen3-32B it is running now. (a) now has four topics and two models.
+- The copies never include the read position itself (the space after "Answer:"), so "the last tokens" here means the template tokens before it.
 - On Qwen3-32B the question's tokens need the name to a different degree by topic, the same on both draws: with the sentence hidden from them, 8-10% right on countries, 23% on animals, 63-68% on body parts. On the second draw animals missed the pre-registered competence gate by 0.0005 (lower bound 0.8495, gate 0.85), so the pre-registered result rests on two topics. Run afterwards and labelled post hoc, animals alone gives the same verdicts (sentence hidden from the question's tokens 27% right, without its digit 27%, without its name 100%; from the last tokens, without its name 6%, without its digit 94%). From now on the gate compares the lower bound rounded to two decimals.
 - The digit token alone leaks through its neighbours (7-44% right when only it is hidden), so the decisive test hides the sentence without its name or digit.
 - Why the question's tokens read the name (for instance, to pick the bridge among the listed entities) is not tested. For a named bridge there is nothing to pick.
@@ -448,7 +456,7 @@ Every run's spec in `jobs/` states its hypotheses, decision rule and controls be
 | Slide | Runs |
 |---|---|
 | 1 | `read_write/dose_v1`, `ablate_pilot/abl_rot_v1` |
-| 2 | `statement_positions/d1_map_n80_v1`, `d1_parts_n80_v1`; question-token rows of the slide 3 runs; name vs digit: `attn_knockout/{d2_parts_v2_27b, qwen3_32b_d2_parts_v2, qwen35_9b_d2_parts_v2, olmo3_7b_instruct_d2_parts_v2}` (first version without the leak-robust spans: `*d2_parts*` without `_v2`), analysed by `scripts/d2_parts.py`; second draw: `d2_parts_seed2_27b`, `qwen3_32b_d2_parts_seed2` |
+| 2 | `statement_positions/d1_map_n80_v1`, `d1_parts_n80_v1`; four topics: `d1_topics_map_27b`, `qwen3_32b_d1_topics_map`; question-token rows of the slide 3 runs; name vs digit: `attn_knockout/{d2_parts_v2_27b, qwen3_32b_d2_parts_v2, qwen35_9b_d2_parts_v2, olmo3_7b_instruct_d2_parts_v2}` (first version without the leak-robust spans: `*d2_parts*` without `_v2`), analysed by `scripts/d2_parts.py`; second draw: `d2_parts_seed2_27b`, `qwen3_32b_d2_parts_seed2` |
 | 3 | `attn_knockout/d2_v4_late_read`, `qwen3_32b_d2_v4_late_read_v2_r2`, `qwen35_9b_d2_v4_late_read_r2`, `olmo3_7b_{instruct,sft,dpo}_d2_v4_late_read_*`, `gemma4it_d2_v4_late_read_v3_r2` |
 | 4 | `pointer_swap/d3v4_swap_topics`, `d3v4_seed2_swap_27b`, `qwen3_32b_d3v4_swap_r2`, `qwen35_9b_d3v4_swap_r2`, `olmo3_7b_instruct_d3v4_swap_fn`, `gemma4it_d3v4_swap_v2_r2`; 8 sentences and colour words: `d3v5_swap_27b`, `qwen35_9b_d3v5_swap_r2`, `gemma4it_d3v5_swap_r2`; counting: `d3v4x_swap_main`, `qwen35_9b_d3v4x_swap_r2`, `olmo3_7b_instruct_d3v4x_swap`, `gemma4it_d3v4x_swap_r2`; shifts: `d3v6_swap_27b`, `qwen35_9b_d3v6_swap_r2`, `olmo3_7b_instruct_d3v6_swap`, `gemma4it_d3v6_swap_r2` |
 | 5 | `pointer_fit/d3b_replicate_fresh_27b`, `d3v4_fit_main`, `olmo3_7b_instruct_d3b_fit_v2`; `pointer_mechanism/d3b_mechanism_27b`; positive control: `pointer_fit/c2_sweep_v4_27b`, `c2_sweep_v1_27b`, selected and revealed by `scripts/c2_cells.py` into `results/c2_cells/step_a_20261022/` |
