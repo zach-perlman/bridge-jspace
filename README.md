@@ -52,7 +52,7 @@ We name each kind of question by **where the bridge comes from → where the ans
 | 4 | **A lookup reads the answer's statement late, from the last tokens, through attention layers** (not DeltaNet), spread over many heads. | **High**, and it holds on every model tested so far (3 of 3: two Qwen hybrids and OLMo with its training stages) | D2 (figs. 4, 10) |
 | 5a | **Just before that, the last tokens carry a label for "the first" or "the second" statement.** Patched in, it moves the answer to the org prompt's 1st or 2nd statement. | **High** in the data: 1st statement 90-100% on every model, 2nd 89-97% on the larger Qwens and 54-58% on the smaller models; a second data seed, 8-statement lists and named bridges give the same; one post-hoc layer per model | D3 (figs. 5, 14) |
 | 5b | **From the 3rd statement on, the bridge word steers the lookup instead.** | **High** in the data: for statements 3-5 the patched answer follows the alt bridge's own statement (27-54%) at least as often as the slot (2-31%), on every model. Unlike lookback results elsewhere (Gur-Arieh et al. 2026: positional at the first and last positions, lexical in the middle), there is no last-position peak | D3 (fig. 14) |
-| 5c | **The label counts statements, not places in the text**, and from the start of the list. | **Medium**: pre-registered on Qwen3.6-27B, Qwen3.5-9B and OLMo (order vs place, and two position shifts on all three), but these tests pool all statements, so their signal comes mostly from statements 1-2; under the absolute shift about a quarter of 1st-statement answers follow the place in the text | D3 (figs. 6, 8) |
+| 5c | **The label counts statements, not places in the text**, and from the start of the list. | **Medium**: pre-registered; order beats place on all four models tested (27B, 9B, OLMo, Gemma), and survives two position shifts on the three run so far; "from the start" beats "from the end" only on the 27B (pooled only elsewhere). These tests pool all statements, so their signal comes mostly from statements 1-2; under the absolute shift about a quarter of 1st-statement answers follow the place in the text | D3 (figs. 6, 8) |
 | 6 | **A fitted direction can override the lookup; the lens direction cannot.** A ~4-dimensional direction from the slot averages moves the answer to another statement. | **Medium** on Qwen3.6-27B, as an override, not as the model's own address: it works at a patch's norm (31%, more than the patch itself, 26%) or twice its natural size (26%), barely at its natural size (4%, the pre-registered 10% bar missed), and removing it leaves lookups 98% right; not on OLMo (2%) | D3b (figs. 7, 13) |
 | 7 | **A late attention head looks at the statement whose digit the model outputs, even when that answer is wrong.** | **Low**: digits are unique in a scene, so this follows the output itself and adds nothing beyond it yet (339 errors, 9 entities, mostly chemical symbols) | D5a (fig. 11) |
 | 8 | "Around the lens" *is* this address. | **Not shown**: the pointer push beats the lens push pooled (34% vs 8%) but in 1 of 3 topics with valid controls; removing the J-space where the lookup reads leaves lookups at 100%, but recall survives there too | D3b fair test; J-space removal at 44-62 |
@@ -69,7 +69,7 @@ Legend: **yes** holds · **partly** · **no** does not hold · *running* · – 
 | 4. Late read through attention | **yes** (2-13% kept; DeltaNet 100%) | **yes** (3%; DeltaNet 100%) | **yes** (0-1% in all three; layers 16-23) | *running* | *running* |
 | 5a. Label for the 1st / 2nd statement | **yes** (100% / 97%) | **yes** / partly (90% / 58%) | **yes** / partly (93% / 54%) | **yes** (100% / 89%) | **yes** (of moved answers: 100% / 78%) |
 | 5b. Statements 3-5: the word steers | **yes** | **yes** | **yes** | partly (word ≈ slot) | **yes** |
-| 5c. Counts statements, not places | **yes** (pre-registered; both shifts) | **yes** (order 22-29% vs place 5-8%; both shifts, layer 18: 21% / 31% vs 6-7%) | **yes** (all three; both shifts) | – (sweeps cancelled) | *running* |
+| 5c. Counts statements, not places | **yes** (order, from the start, both shifts; pre-registered) | **yes** / partly (order 22% vs place 5%, both shifts 21% / 31% vs 6-7%; from the start pooled only) | **yes** / partly (order, both shifts; from the start not separated; all three) | – (sweeps cancelled) | partly (order 12% vs place 2%; from the start pooled only; shifts *running*) |
 | 6. A fitted direction overrides the lookup | partly (at ≥ 2× its natural size; not necessary) | – | no (2%) | – | – |
 | 7. Late head follows the output statement | yes, but tautological so far | – | – | – | – |
 | 8. "Around the lens" = the address | not shown | – | – | – | – |
@@ -188,7 +188,10 @@ each panel: items per point and the share of answers left unchanged.
 model. So the "same slot" of fig. 5 is a label for the first two statements, and its pooled 50% is this mix. The same
 on a second data seed (27B: 100% / 92%, then 14-25%), with 8 statements (100% / 94%, then at most 16% for statements
 3-8) and for named bridges. Recounted from the raw rows by an outside reviewer and by us. Each model at its layer
-before the alt digit arrives (the 27B's 50 was picked after seeing the first runs). Runs `d3v4_swap_topics`,
+before the alt digit arrives (the 27B's 50 was picked after seeing the first runs). On Gemma, unlike the other models,
+a random patch of the same size does not leave the answer alone: it turns 85% of answers into a digit not in the list
+or a non-digit. It gives no slot or word answers (0-2%), so the slot and word shares do not come from the patch's size
+alone, but Gemma's control is "breaks" rather than "no change". Runs `d3v4_swap_topics`,
 `d3v4_seed2_swap_27b`, `d3v5_swap_27b`, `qwen3_32b_d3v4_swap_r2`, `qwen35_9b_d3v4_swap_r2`,
 `olmo3_7b_instruct_d3v4_swap_fn`, `gemma4it_d3v4_swap_v2_r2`.
 
@@ -205,6 +208,10 @@ and the one at the same place in the text. Bars: % of patched answers that went 
 (9-16%) or the count from the end (10-12%). These tests pool all asked statements, so their signal comes mostly from
 the 1st and 2nd (fig. 14). Pre-registered, layer 50, ~435 items per panel; holds pooled and in at least 2 of 3 topics
 in every panel. Run `d3v4x_swap_main`.
+**On other models** (each at its layers before the alt digit arrives): order beats place on Qwen3.5-9B (layer 18: 22%
+vs 5%) and Gemma 4 (layer 40: 12% vs 2%), pooled and in 2 of 3 topics; "from the start" beats "from the end" only
+pooled (9B 14-23% vs 7-10%, Gemma 9-11% vs 1-2%, in 1 topic each), as on OLMo. Runs `qwen35_9b_d3v4x_swap_r2`,
+`gemma4it_d3v4x_swap_r2`, `olmo3_7b_instruct_d3v4x_swap`.
 
 ![The address under position shifts](figures/readme_1021/f8_shifts.png)
 
