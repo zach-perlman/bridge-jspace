@@ -72,11 +72,11 @@ def shards() -> None:
     def launch(i: int) -> None:
         r = ROWS[rows[i]]
         art = OUT / f"artifacts_s{i}_r{r}"
-        args = C + ["fit-shard", "--hf-model-name", MODEL, "--layers", LAYERS, "--router-path", str(OUT / "router.pt"),
-                    "--shard-idx", str(i), "--num-shards", str(SHARDS), "--num-prompts", str(N), "--target-offset", "-1",
-                    "--lrp-mode", "rlens", "--jacobian-rows-per-pass", str(r), "--max-seq-len", "128",
-                    "--skip-first-n-positions", "16", "--checkpoint-every-n-prompts", str(CKPT),
-                    "--artifacts-base-dir", str(art), "--checkpoint-name", f"fit{N}"]  # fmt: skip
+        args = [*C, "fit-shard", "--hf-model-name", MODEL, "--layers", LAYERS, "--router-path", str(OUT / "router.pt"),
+                "--shard-idx", str(i), "--num-shards", str(SHARDS), "--num-prompts", str(N), "--target-offset", "-1",
+                "--lrp-mode", "rlens", "--jacobian-rows-per-pass", str(r), "--max-seq-len", "128",
+                "--skip-first-n-positions", "16", "--checkpoint-every-n-prompts", str(CKPT),
+                "--artifacts-base-dir", str(art), "--checkpoint-name", f"fit{N}"]  # fmt: skip
         log = open(OUT / f"shard{i}_r{r}.log", "w")  # noqa: SIM115 (closed when the process ends)
         p = subprocess.Popen(
             args, cwd=JPP, env={**ENV, "CUDA_VISIBLE_DEVICES": str(i)}, stdout=log, stderr=subprocess.STDOUT
