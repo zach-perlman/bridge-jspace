@@ -272,13 +272,15 @@ TARGETS: dict[str, dict[str, Any]] = {
     # model with a better published lens). Frozen lens: eyes-ml's published plain J-lens (neuronpedia's fitter, 900
     # WikiText prompts, target = the final block, fit on a byte-identical copy of these weights). Zach: if this lens is not
     # good enough, consider fitting our own J++. The final norm scales by weight (the blocks' norms by 1 + weight).
-    "muse-glimmer-30b": {
+    # 2026-10-22 (Zach): our own J++ is fit and becomes Muse's lens of record (target muse-glimmer-30b, prefix muse30_,
+    # added by scripts/queues/h200_muse_fit_1022.sh); this J-lens target (prefix muse30j_) runs the gate and comparisons.
+    "muse-glimmer-30b-jlens": {
         "repo": "meta-models/Muse-Glimmer-30B",
         "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
         "n_layers": 52,
         "norm_gain": "weight",
         "bos": True,  # <|begin_of_text|> first; the chat template writes it, raw text gets it prepended
-        "run_prefix": "muse30_",
+        "run_prefix": "muse30j_",
         "chat_template_edits": MUSE_TEMPLATE_EDITS,
         "frozen_lens": "jlens",
         "lenses": {"jlens": ("eyes-ml/Muse-Glimmer-30B_jacobian-lens", "Muse-Glimmer-30B_jacobian_lens.pt", "71d8434fbd38c8b5d70e1ff1ff2095d5da926c34")},
