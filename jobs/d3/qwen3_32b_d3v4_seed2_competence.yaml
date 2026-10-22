@@ -1,0 +1,22 @@
+id: qwen3_32b_d3v4_seed2_competence
+title: "Seed 2 gate: Qwen3-32B on a second draw of pointer_v4's scenes"
+thread: D3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.4
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3-32b uv run python scripts/pointer_v4.py manifest --set seed2 --name qwen3_32b_d3v4_seed2_competence
+  --why "seed 2: a second draw of pointer_v4's main design (same 85 entities, wordings and split, seed 844), every alt
+  and control prompt and each step alone; gate for qwen3_32b_d2_parts_seed2"
+  && BJ_TARGET=qwen3-32b uv run python scripts/pointer_v4.py competence --name qwen3_32b_d3v4_seed2_competence
+question: 'Does Qwen3-32B answer the seed-2 scenes as it answers main''s?'
+why_it_matters: 'Gate for qwen3_32b_d2_parts_seed2 (name vs digit on a second draw).'
+hypotheses:
+  H-gate: 'per topic and family within 5 points of main''s competence (qwen3_32b_d3v4_competence_r2). Prior 0.8'
+decision_rule: 'pointer_v1''s competence rule (every prompt of an item right = eligible).'
+controls:
+- 'each step alone (the recall and the named lookup) for memory -> prompt'
+n: 'pointer_v4 seed2: up to 300 scenes per topic x 3 families'
+seeds: [844]
+notes: 'Data: data/pointer_v4/seed2/ (as d3v4_seed2_competence_27b).'

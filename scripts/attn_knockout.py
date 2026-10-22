@@ -409,14 +409,14 @@ def pointer_files(dataset: str, families: list[str], domains: list[str] | None, 
     return out
 
 
-def pointer_competence(dataset: str, run: str) -> tuple[dict[str, bool], dict[str, tuple]]:
-    """From the dataset's competence run, main set only (main and dev reuse item ids): item id -> every prompt right;
-    and per file label ("main/<domain>_<family>_<level>") the clean Wilson bound."""
+def pointer_competence(dataset: str, run: str, set_name: str = "main") -> tuple[dict[str, bool], dict[str, tuple]]:
+    """From the dataset's competence run, one set only (main, dev and seed2 reuse item ids): item id -> every prompt
+    right; and per file label ("<set>/<domain>_<family>_<level>") the clean Wilson bound."""
     rows = [json.loads(line) for line in (pins.RESULTS_DIR / dataset / run / "items.jsonl").read_text().splitlines()]
     ok: dict[str, list[bool]] = collections.defaultdict(list)
     clean: dict[str, list[bool]] = collections.defaultdict(list)
     for r in rows:
-        if not r["label"].startswith("main/"):
+        if not r["label"].startswith(f"{set_name}/"):
             continue
         ok[r["id"]].append(r["correct"])
         if r["kind"] == "clean":
@@ -425,16 +425,17 @@ def pointer_competence(dataset: str, run: str) -> tuple[dict[str, bool], dict[st
 
 
 def build_pointer_cases(tok, dataset: str, families: list[str], domains: list[str] | None, n: int,
-                        eligibility: str, competence: str | None) -> tuple[list[dict], dict]:  # fmt: skip
+                        eligibility: str, competence: str | None, set_name: str = "main") -> tuple[list[dict], dict]:  # fmt: skip
     """Per domain (and alias condition), the scenes eligible in every requested family (paired), first n by scene
-    id; a (domain, condition) group enters only if every family's cell passes the competence gate."""
-    files = pointer_files(dataset, families, domains)
+    id; a (domain, condition) group enters only if every family's cell passes the competence gate. set_name: the
+    data set (pointer_v4: main, or seed2, a second draw of the same design)."""
+    files = pointer_files(dataset, families, domains, set_name)
     items: dict[tuple[str, str], dict[str, dict]] = collections.defaultdict(dict)  # (domain, level) -> id -> item
     for path in files:
         for it in json.loads(path.read_text())["items"]:
             items[(it["domain"], it["level"])][it["id"]] = it
     report: dict[str, Any] = {}
-    elig, gate = pointer_competence(dataset, competence) if eligibility == "map" and competence else ({}, {})
+    elig, gate = pointer_competence(dataset, competence, set_name) if eligibility == "map" and competence else ({}, {})
     groups: dict[tuple[str, str], tuple[dict[str, dict[str, dict]], list[str]]] = {}
     for (domain, level), by_id in sorted(items.items()):
         by_scene: dict[str, dict[str, dict]] = collections.defaultdict(dict)
@@ -444,7 +445,7 @@ def build_pointer_cases(tok, dataset: str, families: list[str], domains: list[st
         kept = list(families)
         if eligibility == "map":
             lo_needed = ALIAS_GATE_LO if dataset == "alias_pointer_v1" and level != "e5f0" else GATE_LO
-            lows = {f: gate.get(f"main/{domain}_{f}_{level}", (0.0, 0.0, 0.0))[1] for f in families}
+            lows = {f: gate.get(f"{set_name}/{domain}_{f}_{level}", (0.0, 0.0, 0.0))[1] for f in families}
             kept = [f for f in families if lows[f] >= lo_needed]
             report[key] = {"gate_lower_bounds": lows, "gate": lo_needed, "families": kept,
                            "entered": any(path_sources(f) for f in kept)}  # fmt: skip
@@ -956,8 +957,8 @@ def stage_manifest(args) -> None:
             assert sum(kinds[i] == FULL for i in ls) == 2, f"{label}: not 2 full-attention layers"
     pointer, tasks = args.dataset in POINTER_SETS, args.dataset == TASKS
     if pointer:
-        inputs = pointer_files(args.dataset, args.families, args.domains)
-        assert inputs, f"no {args.dataset} files for families {args.families}, domains {args.domains}"
+        inputs = pointer_files(args.dataset, args.families, args.domains, args.set)
+        assert inputs, f"no {args.dataset}/{args.set} files for families {args.families}, domains {args.domains}"
         if args.eligibility == "map":
             inputs.append(pins.RESULTS_DIR / args.dataset / args.competence / "items.jsonl")
     elif tasks:
@@ -979,6 +980,7 @@ def stage_manifest(args) -> None:
         "exp": EXP, "run": args.name, "why": args.why,
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "model": pins.model_pin(), "dataset": args.dataset, "domains": args.domains,
+        "set": args.set if pointer else None,
         "competence": args.competence if (pointer or tasks) and args.eligibility == "map" else None,
         "tasks": {"set": args.tasks_set, "formats": args.formats, "level": args.level,
                   "gate": "tasks_v2.eligible: scenes right on every competence prompt of every requested word of their "
@@ -1161,7 +1163,7 @@ def stage_run(name: str) -> None:
     t0 = time.time()
     if m.get("dataset", "suite") in POINTER_SETS:
         cases, report = build_pointer_cases(tok, m["dataset"], m["families"], m.get("domains"), m["n_per_family"],
-                                            m["eligibility"], m.get("competence"))  # fmt: skip
+                                            m["eligibility"], m.get("competence"), m.get("set") or "main")  # fmt: skip
         (out_dir / "cases_report.json").write_text(json.dumps(report, indent=2) + "\n")
         print(json.dumps(report), flush=True)
     elif m.get("dataset") == TASKS:
@@ -3695,6 +3697,7 @@ if __name__ == "__main__":
                     help="suite: BL BR RL RR BLR BRL country-R country-B (default all); pointer sets: the files' "
                     "family codes (pointer_v1 / alias: RL DL RR; code: DK IX CH2 CH3 RK RR); tasks_v2: MP MM PP PM")  # fmt: skip
     ap.add_argument("--domains", nargs="+", default=None, help="pointer sets, tasks_v2: the topics (default all)")
+    ap.add_argument("--set", default="main", help="pointer sets: the data set (pointer_v4: main or seed2)")
     ap.add_argument("--competence", default=None,
                     help="pointer sets: the competence run (default the dataset's); tasks_v2: required")  # fmt: skip
     ap.add_argument("--tasks-set", default=None, help="tasks_v2: the data set (data/tasks_v2/<set>)")
