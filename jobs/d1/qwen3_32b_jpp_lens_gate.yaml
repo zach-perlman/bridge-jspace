@@ -1,0 +1,24 @@
+id: qwen3_32b_jpp_lens_gate
+title: "Lens gate (Qwen3-32B, our J++): does the J++ name a stated bridge at its own sentence?"
+thread: D1
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.1
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3-32b-jpp uv run python scripts/lens_gate.py --name qwen3_32b_jpp_lens_gate --tasks-set d1_topics_v2 --n 60 --lo 32 --onset 44
+  --why "the lens gate with our J++ before any J++ lens stage on Qwen3-32B: read-only, one clean forward per scene"
+question: >-
+  With our J++ (the published recipe, 64 prompts) instead of the plain J-lens, at the bridge's own sentence in the stated-bridge window (layers [32, 44)), is the bridge in the lens's top 10 and the other bridge X not?
+why_it_matters: >-
+  Every lens result must use J++ (Dan, 23 Oct; J++ reads the bridge better, README_archive). Qwen3-32B's lens claims were "not testable" because its plain J-lens failed the gate (v1: 8% vs 0%). With J++ the claim may become testable on a second architecture (dense, attention only).
+hypotheses:
+  H-pass-v1: 'gate v1 passes with J++. Prior 0.5 (agent''s): Zach''s 32-prompt J++ writes recalled bridges on this model (his C2 holds), so a J++ reads them; the plain J-lens did not converge'
+  H-pass-v2: 'gate v2 passes. Prior 0.35 (agent''s)'
+decision_rule: >-
+  scripts/lens_gate.py unchanged: gate v1 (the whole sentence, the stated-bridge window's coarse layers) and gate v2 (after_word; fixed 22 Oct 23:00): PASS iff, best over the window's coarse layers (32, 36, 40: the plain J-lens run's grid, kept inside the J++ fit's layers 16-51), the bridge is in the lens's top 10 on >= 50% of items and X on <= 20%. Gate v1 opens the J++ lens stages (qwen3_32b_jpp_d1_topics_parts / _rw); v2 is informational. Primary lens (Dan, 23 Oct ~00:30, fixed before any J++ result): ours, the published recipe (safety-research/jpp_lens@93f02cd) on 64 prompts; Zach's 32-prompt fit is a robustness check reported alongside when he shares it; if ours fails the gate and his passes, both are reported; no silent switch.
+controls:
+- 'X, the other bridge, mentioned elsewhere in the same context (the floor); the plain J-lens gate on the same 60 scenes (qwen3_32b_lens_gate_v2), reported labelled "plain J-lens"'
+n: '60 PP scenes of d1_topics_v2 (the first in scene order), as the plain J-lens gate v2'
+seeds: [23]
+notes: "Dan, 23 Oct ~00:30: every lens result on J++. Lens: our fit on 2x H200 (2 shards x 32 prompts, one router, seed 0, merged; source layers 16-51), pinned as target qwen3-32b-jpp (local, sha256 in pins). Enqueued only after the pin is committed. Not opened before Dan's predictions."

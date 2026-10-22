@@ -1,0 +1,25 @@
+id: qwen3_32b_jpp_d1_topics_rw
+title: "D1 topics (Qwen3-32B, our J++): does the J++ read and write the stated bridge there?"
+thread: D1
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.4
+depends_on:
+- qwen3_32b_jpp_d1_topics_parts
+command: >-
+  BJ_TARGET=qwen3-32b-jpp uv run python scripts/d1_precheck.py --gate qwen3_32b_jpp_lens_gate --competence qwen3_32b_d1_topics_competence --tasks-set d1_topics_v1 --min-topics 0
+  && BJ_TARGET=qwen3-32b-jpp uv run python scripts/statement_positions.py readwrite --name qwen3_32b_jpp_d1_topics_rw --map qwen3_32b_d1_topics_map --parts qwen3_32b_jpp_d1_topics_parts --why "D1 on four topics with our J++: the lens read and write at the plain J-lens run's transit cells" --lo 32 --sets bind_bridge bridge_word lookup_x context question
+figures_command: BJ_TARGET=qwen3-32b-jpp uv run python scripts/statement_positions.py figures --name qwen3_32b_jpp_d1_topics_rw
+question: >-
+  At the same cells, does our J++ read the stated bridge, and does its push write it into recalls but not lookups (finding 8)?
+why_it_matters: >-
+  The lens read and write on a second architecture, with the lens type every other model uses.
+hypotheses:
+  H-recall-only: 'the push writes PM, not PP. Prior 0.35 (agent''s)'
+decision_rule: >-
+  Runs iff our J++ passes gate v1 (scripts/d1_precheck.py, --min-topics 0). statement_positions' readwrite rule unchanged (docstring), as qwen3_32b_d1_topics_rw. Primary lens (Dan, 23 Oct ~00:30, fixed before any J++ result): ours, the published recipe on 64 prompts; Zach's fit reported alongside when shared; no silent switch.
+controls:
+- 'a random direction at each row''s norm; O (off the path); PM vs PP on the same scenes; the plain J-lens run (qwen3_32b_d1_topics_rw) reported beside it, labelled "plain J-lens"'
+n: 'as qwen3_32b_jpp_d1_topics_parts'
+seeds: [22]
+notes: "Dan, 23 Oct ~00:30: every lens result on J++. Not opened before Dan's predictions."

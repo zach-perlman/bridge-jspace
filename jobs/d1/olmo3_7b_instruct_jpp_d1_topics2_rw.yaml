@@ -1,0 +1,25 @@
+id: olmo3_7b_instruct_jpp_d1_topics2_rw
+title: "D1 doubled (OLMo-3-7B-Instruct, our J++): the lens read and write"
+thread: D1
+gpus: 1
+mem_gb: 30
+est_gpu_hours: 0.2
+depends_on:
+- olmo3_7b_instruct_jpp_d1_topics2_parts
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/d1_precheck.py --gate olmo3_7b_instruct_jpp_lens_gate --competence olmo3_7b_instruct_d1_topics2_competence
+  && BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/statement_positions.py readwrite --name olmo3_7b_instruct_jpp_d1_topics2_rw --map olmo3_7b_instruct_jpp_d1_topics2_map --parts olmo3_7b_instruct_jpp_d1_topics2_parts --why "D1 on OLMo with our J++: lens read and write" --lo 16 --sets bind_bridge bridge_word lookup_x context question
+figures_command: BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/statement_positions.py figures --name olmo3_7b_instruct_jpp_d1_topics2_rw
+question: >-
+  Does a J++ push at the transit cell write recall but not the lookup (finding 8)?
+why_it_matters: >-
+  Finding 8 on another family, with J++.
+hypotheses:
+  H-recall-only: 'the push writes PM, not PP. Prior 0.3 (agent''s)'
+decision_rule: >-
+  Runs iff our J++ passes gate v1 and >= 2 topics have >= 30 eligible scenes (scripts/d1_precheck.py). statement_positions' readwrite rule unchanged, as olmo3_7b_instruct_d1_topics2_rw_r2; the lens write verdicts (written / not written) reported. Primary lens: ours (Dan, 23 Oct ~00:30); no silent switch.
+controls:
+- 'a random direction at each row''s norm; O (off the path); PM vs PP on the same scenes'
+n: 'as the map'
+seeds: [0]
+notes: "Dan, 23 Oct ~00:30: every lens result on J++. Not opened before Dan's predictions."

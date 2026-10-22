@@ -1,0 +1,34 @@
+id: olmo3_7b_instruct_jpp_d3b_fit_v2
+title: "D3b on OLMo-3-7B-Instruct with our J++: the slot direction vs a J++ lens push"
+thread: D3
+gpus: 1
+mem_gb: 25
+est_gpu_hours: 0.6
+depends_on:
+- olmo3_7b_instruct_jpp_lens_gate
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/d1_precheck.py --gate olmo3_7b_instruct_jpp_lens_gate --competence olmo3_7b_instruct_d1_topics2_competence --min-topics 0
+  && BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/pointer_fit.py run --data pointer_v4 --name olmo3_7b_instruct_jpp_d3b_fit_smoke_v2
+  --competence olmo3_7b_instruct_d3v4_competence --fit-limit 20 --n-test 4 --rr-n 4 --collect-layers 18
+  --steer-layers 18 --scales 1.0 --ks 4 --primary-layer 18
+  --why "smoke: pointer_fit on OLMo with our J++; not a result"
+  && BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/pointer_fit.py run --data pointer_v4 --name olmo3_7b_instruct_jpp_d3b_fit_v2
+  --competence olmo3_7b_instruct_d3v4_competence --n-test 150 --rr-n 50 --collect-layers 12 15 18 21
+  --steer-layers 15 18 21 --scales 1.0 2.0 --ks 4 --primary-layer 18
+  --why "D3b on OLMo with our J++: the same fit, test items, layers and scales as olmo3_7b_instruct_d3b_fit_v2; the lens push now along J++ word directions"
+examples_command: BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/pointer_fit.py examples --name olmo3_7b_instruct_jpp_d3b_fit_v2
+figures_command: BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/pointer_fit.py figures --name olmo3_7b_instruct_jpp_d3b_fit_v2
+question: >-
+  On OLMo-3-7B-Instruct, with our J++, does a lens push of the same size (bridge alt's J++ word direction minus bridge org's) move the lookup to the target statement, where the fitted slot direction does?
+why_it_matters: >-
+  Fig D4's OLMo arm used the plain J-lens; the "lens direction moves 0%" claim must hold with J++ (Dan, 23 Oct). The slot-direction arm is lens-free and repeats with the same seed (a reproducibility check).
+hypotheses:
+  H-lens-null: 'the J++ lens push moves <= 5% of lookups at layer 18, scale 1, like the plain J-lens push. Prior 0.75 (agent''s)'
+  H-steer: 'pointer_fit''s rule at layer 18, scale 1 (slot-target rate lower bound >= 0.30 and >= 20 points above the lens push and the random direction). Prior 0.1 (agent''s; the plain J-lens run moved 2%)'
+decision_rule: >-
+  Runs iff our J++ passes gate v1 (scripts/d1_precheck.py, --min-topics 0: only the gate matters here). pointer_fit's pre-registered rule unchanged (docstring "Decision rule"; pointer_v4: entity-cluster intervals) at the primary layer 18, scale 1, the same cells as olmo3_7b_instruct_d3b_fit_v2 (layers 15 and 21, scale 2 and per topic reported). Primary lens (Dan, 23 Oct ~00:30, fixed before any J++ result): ours, the published recipe on 64 prompts; no silent switch.
+controls:
+- 'lens push of the same norm (J++ word directions); random direction of the same norm; shuffled slot labels; memory -> memory items; the plain J-lens run (olmo3_7b_instruct_d3b_fit_v2) reported beside it, labelled "plain J-lens"'
+n: '150 held-out test items (pointer_v4 main, eligible in olmo3_7b_instruct_d3v4_competence), 50 recall items'
+seeds: [0]
+notes: "Dan, 23 Oct ~00:30: every lens result on J++, at the same cells. Not opened before Dan's predictions."
