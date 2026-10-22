@@ -251,6 +251,8 @@ POINTER_COMPETENCE = {"pointer_v1": "d3_competence_27b", "code_pointer_v1": "cod
                       "alias_pointer_v1": "alias_competence_27b", "pointer_v4": "d3v4_competence_27b"}  # fmt: skip
 # pointer_v1's cell gate: a (domain, family[, condition]) cell enters iff its clean Wilson lower bound >= GATE_LO;
 # alias_pointer_v1's other surface forms use its own 0.80 (its docstring; English keeps 0.85).
+# The lower bound is compared rounded to two decimals (Dan, 2026-10-22: 0.8495 passes 0.85; runs before that day did not
+# round, so qwen3_32b_d2_parts_seed2 left animals out).
 GATE_LO, ALIAS_GATE_LO = 0.85, 0.80
 CONDITION = {"e5f0": "same", "e5f0-xlang": "xlang", "e5f0-syn": "syn"}  # alias_pointer_v1's levels -> conditions
 
@@ -425,7 +427,7 @@ def pointer_competence(dataset: str, run: str, set_name: str = "main") -> tuple[
 
 
 def build_pointer_cases(tok, dataset: str, families: list[str], domains: list[str] | None, n: int,
-                        eligibility: str, competence: str | None, set_name: str = "main") -> tuple[list[dict], dict]:  # fmt: skip
+                        eligibility: str, competence: str | None, set_name: str = "main", gate_lo: float | None = None) -> tuple[list[dict], dict]:  # fmt: skip
     """Per domain (and alias condition), the scenes eligible in every requested family (paired), first n by scene
     id; a (domain, condition) group enters only if every family's cell passes the competence gate. set_name: the
     data set (pointer_v4: main, or seed2, a second draw of the same design)."""
@@ -444,9 +446,13 @@ def build_pointer_cases(tok, dataset: str, families: list[str], domains: list[st
         key = f"{domain}/{level}"
         kept = list(families)
         if eligibility == "map":
-            lo_needed = ALIAS_GATE_LO if dataset == "alias_pointer_v1" and level != "e5f0" else GATE_LO
+            lo_needed = (
+                ALIAS_GATE_LO
+                if dataset == "alias_pointer_v1" and level != "e5f0"
+                else (GATE_LO if gate_lo is None else gate_lo)
+            )
             lows = {f: gate.get(f"{set_name}/{domain}_{f}_{level}", (0.0, 0.0, 0.0))[1] for f in families}
-            kept = [f for f in families if lows[f] >= lo_needed]
+            kept = [f for f in families if round(lows[f], 2) >= lo_needed]  # rounded: Dan, 2026-10-22
             report[key] = {"gate_lower_bounds": lows, "gate": lo_needed, "families": kept,
                            "entered": any(path_sources(f) for f in kept)}  # fmt: skip
             if not report[key]["entered"]:
@@ -980,7 +986,7 @@ def stage_manifest(args) -> None:
         "exp": EXP, "run": args.name, "why": args.why,
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "model": pins.model_pin(), "dataset": args.dataset, "domains": args.domains,
-        "set": args.set if pointer else None,
+        "set": args.set if pointer else None, "gate_lo": args.gate_lo,
         "competence": args.competence if (pointer or tasks) and args.eligibility == "map" else None,
         "tasks": {"set": args.tasks_set, "formats": args.formats, "level": args.level,
                   "gate": "tasks_v2.eligible: scenes right on every competence prompt of every requested word of their "
@@ -1163,7 +1169,7 @@ def stage_run(name: str) -> None:
     t0 = time.time()
     if m.get("dataset", "suite") in POINTER_SETS:
         cases, report = build_pointer_cases(tok, m["dataset"], m["families"], m.get("domains"), m["n_per_family"],
-                                            m["eligibility"], m.get("competence"), m.get("set") or "main")  # fmt: skip
+                                            m["eligibility"], m.get("competence"), m.get("set") or "main", m.get("gate_lo"))  # fmt: skip
         (out_dir / "cases_report.json").write_text(json.dumps(report, indent=2) + "\n")
         print(json.dumps(report), flush=True)
     elif m.get("dataset") == TASKS:
@@ -3698,6 +3704,8 @@ if __name__ == "__main__":
                     "family codes (pointer_v1 / alias: RL DL RR; code: DK IX CH2 CH3 RK RR); tasks_v2: MP MM PP PM")  # fmt: skip
     ap.add_argument("--domains", nargs="+", default=None, help="pointer sets, tasks_v2: the topics (default all)")
     ap.add_argument("--set", default="main", help="pointer sets: the data set (pointer_v4: main or seed2)")
+    ap.add_argument("--gate-lo", type=float, default=None,
+                    help="pointer sets: the competence gate's lower bound instead of GATE_LO (a declared exception)")  # fmt: skip
     ap.add_argument("--competence", default=None,
                     help="pointer sets: the competence run (default the dataset's); tasks_v2: required")  # fmt: skip
     ap.add_argument("--tasks-set", default=None, help="tasks_v2: the data set (data/tasks_v2/<set>)")
