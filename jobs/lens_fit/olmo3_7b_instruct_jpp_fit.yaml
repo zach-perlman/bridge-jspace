@@ -1,0 +1,35 @@
+id: olmo3_7b_instruct_jpp_fit
+title: "J++ for OLMo-3-7B-Instruct with the published recipe, every layer (A100)"
+thread: LENS
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 3.0
+depends_on: []
+command: >-
+  JPP_DIR=/ephemeral/ext/jpp_lens BJ_REPO=$PWD UV_CACHE_DIR=/ephemeral/uv-cache HF_HOME=/ephemeral/hf
+  bash scripts/lens_fit/fit_jpp.sh allenai/Olmo-3-7B-Instruct 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30
+  /ephemeral/lens_fit/olmo3_7b_instruct_jpp 64 rlens
+  && cd /ephemeral/ext/jpp_lens && UV_CACHE_DIR=/ephemeral/uv-cache HF_HOME=/ephemeral/hf uv run --no-sync python $OLDPWD/scripts/lens_fit/export_jpp_lens.py
+  /ephemeral/lens_fit/olmo3_7b_instruct_jpp/Olmo-3-7B-Instruct_jpp_lens.pt /ephemeral/lens_fit/olmo3_7b_instruct_jpp/export/Olmo-3-7B-Instruct_jpp_lens_fp16.pt
+  "J++ for allenai/Olmo-3-7B-Instruct: safety-research/jpp_lens@93f02cd, 64 WikiText prompts x 128 tokens, skip 16, router seed 0, target = the last block, rlens LRP, 8 experts, source layers 0-30; fit 22-23 Oct 2026 on an A100 80GB"
+  && sha256sum /ephemeral/lens_fit/olmo3_7b_instruct_jpp/export/Olmo-3-7B-Instruct_jpp_lens_fp16.pt
+question: >-
+  Can the published J++ recipe give OLMo-3-7B-Instruct a lens at every layer, so that its lens results are J++ like the
+  other models' (Dan, 22 Oct night: every lens result uses J++)?
+why_it_matters: >-
+  OLMo's lens is a plain J-lens at every 3rd layer only (mhough); a lens finding that differs between models may then
+  be a lens difference. With J++ on every model the cross-model comparison is like for like.
+hypotheses:
+  H-fit: 'the fit and the held-out evaluation complete on one A100. Prior 0.7'
+  H-gate: 'the fitted lens passes gate v1 (run after it is pinned). Prior 0.5'
+decision_rule: >-
+  Acceptance (Dan, 22 Oct night, fixed before the fit): the fitted lens is used iff it passes lens gate v1 (the same
+  gate as every model); its held-out pass@10 (the recipe's evaluate, held-out:0 items) is reported next to the
+  published recipe's numbers on other models. The fp16 export's sha256 goes into pins with this provenance (recipe
+  commit, prompts, seed, date). Then the lens stages (D1 read / write, parts, the D4 push) are rerun on OLMo with J++
+  at the same scenes and cells as its plain J-lens runs, which stay reported, labelled "plain J-lens".
+controls:
+- 'the pooled lens (the recipe''s baseline, evaluated alongside); the plain J-lens on the same items'
+n: '64 WikiText prompts x 128 tokens for the fit; the recipe''s held-out readout items for the evaluation'
+seeds: [0]
+notes: "Dan, 22 Oct night. The recipe repo is cloned on the box at /ephemeral/ext/jpp_lens (93f02cd, uv env synced). Zach's fit, grade and export scripts copied from his branch (scripts/lens_fit/), paths parametrised. Ask Zach whether his Gemma / Glimmer fits used a patch to the recipe (the Mistral one did)."
