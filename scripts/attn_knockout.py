@@ -2226,10 +2226,9 @@ def fig_norm(rows: list[dict], m: dict, stem: Path) -> list[str] | None:
 
 
 def _ledger(name: str) -> dict:
-    path = pins.RESULTS_DIR / "jobq" / "ledger.jsonl"
-    if not path.exists():
-        return {}
-    recs = [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+    from bridge_jspace.ledgers import ledger_records
+
+    recs = ledger_records(pins.RESULTS_DIR)  # every box's ledger
     return next((r for r in reversed(recs) if r.get("id") == name), {})
 
 

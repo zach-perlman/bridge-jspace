@@ -1771,15 +1771,12 @@ def fig_windows(a: dict, m: dict, lv: str, path: Path) -> list[str]:
 
 
 PRIMARY_RUNS = ("d3_main_ae_27b", "d3_levels_animals_27b")
-LEDGER = pins.RESULTS_DIR / "jobq" / "ledger.jsonl"
-
-
 def _commit(name: str) -> str:
-    if LEDGER.exists():
-        for line in LEDGER.read_text().splitlines():
-            r = json.loads(line)
-            if r.get("id") == name and r.get("commit"):
-                return r["commit"][:7]
+    from bridge_jspace.ledgers import ledger_records
+
+    for r in reversed(ledger_records(pins.RESULTS_DIR)):  # every box's ledger; the newest record wins
+        if r.get("id") == name and r.get("commit"):
+            return r["commit"][:7]
     return "unknown"
 
 

@@ -216,7 +216,7 @@ def cmd_pull() -> int:
             [*rsync, "-r", f"--files-from={listing}", f"{box}/results/", str(REPO / "results") + "/"], check=True
         )
     # one ledger / queue state per box: a second queue (JOBQ_HOST=sesterce-h200x2) must not overwrite the A100's copies
-    sfx = "" if HOST == "sesterce-a100x4" else f"_{HOST}"
+    sfx = f"_{HOST}"  # every box its own ledger and queue state (Dan, 23 Oct); readers: bridge_jspace.ledgers
     subprocess.run([*rsync, f"{box}/ledger.jsonl", str(jq / f"ledger{sfx}.jsonl")], check=False)  # box: append-only
     subprocess.run([*rsync, f"{box}/drafts/", str(jq / "drafts") + "/"], check=False)
     subprocess.run(

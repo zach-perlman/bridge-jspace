@@ -53,15 +53,12 @@ def _fmt_duration(seconds: float | None) -> str:
 
 def load_jobs(repo: Path) -> list[dict[str, Any]]:
     """Every job known locally: the ledger's last record per id, then pending/running from the queue snapshot."""
+    from bridge_jspace.ledgers import ledger_records, queue_state_files
+
     jobs: dict[str, dict[str, Any]] = {}
-    ledger = repo / "results" / "jobq" / "ledger.jsonl"
-    if ledger.exists():
-        for line in ledger.read_text().splitlines():
-            if line.strip():
-                rec = json.loads(line)
-                jobs[rec["id"]] = rec
-    state_file = repo / "cache" / "jobq" / "queue_state.json"
-    if state_file.exists():
+    for rec in ledger_records(repo / "results"):  # every box's ledger
+        jobs[rec["id"]] = rec
+    for state_file in queue_state_files(repo / "cache"):
         state = json.loads(state_file.read_text())
         for status in ("pending", "running", "cancelled"):
             for rec in state.get(status, []):
