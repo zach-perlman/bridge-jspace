@@ -2115,7 +2115,7 @@ def readwrite_figures(a: dict, folder: Path) -> list[str]:
               "breaks the answer).")],
             f"{model_note(m)}; {m['n_per_family']} items per family; the transit cells at layers 32-40; bands: Wilson "
             "95%.", handles=handles, ncols=3)  # fmt: skip
-    if "parts" in m:
+    if "parts" in m and "BL" in m["families"]:  # the headline is the animal suite's (BL / BR, its layers)
         made += headline_figure(a, folder)
     return made
 

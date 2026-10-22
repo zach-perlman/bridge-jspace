@@ -735,7 +735,8 @@ def stage_competence(name: str) -> None:
     by_len: dict[int, list[dict]] = collections.defaultdict(list)
     for p in prompts:
         by_len[len(p["ids"])].append(p)
-    chunks = [g[i : i + 64] for g in by_len.values() for i in range(0, len(g), 64)]
+    step = int(os.environ.get("BJ_GEN_BATCH", "64"))  # long prompts (pointer_v4 long, ~2100 tokens): smaller on a 27B
+    chunks = [g[i : i + step] for g in by_len.values() for i in range(0, len(g), step)]
     for chunk in progress(chunks, "generate"):
         texts = model.generate_batch(torch.tensor([p["ids"] for p in chunk], device="cuda"), 8, [{}] * len(chunk))
         for p, text in zip(chunk, texts, strict=True):

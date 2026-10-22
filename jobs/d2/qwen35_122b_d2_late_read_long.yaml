@@ -6,8 +6,8 @@ mem_gb: 140
 est_gpu_hours: 1.0
 depends_on: []
 command: >-
-  BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/pointer_v4.py manifest --set long --name qwen35_122b_d3v4_long_competence --why "the long set on 122B" && BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/pointer_v4.py competence --name qwen35_122b_d3v4_long_competence && BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/attn_knockout.py manifest --name qwen35_122b_d2_late_read_long --dataset pointer_v4 --set long --families RL --n 100 --sources lookup lookup_off --dests final question --layers all kind --sweep path --gate-lo 0.80 --competence qwen35_122b_d3v4_long_competence --why "finding 4 with a long context on a larger hybrid" && BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/attn_knockout.py run --name qwen35_122b_d2_late_read_long
-figures_command: BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/attn_knockout.py summarise --name qwen35_122b_d2_late_read_long
+  BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=2 uv run python scripts/pointer_v4.py manifest --set long --name qwen35_122b_d3v4_long_competence --why "the long set on 122B" && BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=2 BJ_GEN_BATCH=4 uv run python scripts/pointer_v4.py competence --name qwen35_122b_d3v4_long_competence && BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=2 uv run python scripts/attn_knockout.py manifest --name qwen35_122b_d2_late_read_long --dataset pointer_v4 --set long --families RL --n 100 --sources lookup lookup_off --dests final question --layers all kind --sweep path --gate-lo 0.80 --competence qwen35_122b_d3v4_long_competence --why "finding 4 with a long context on a larger hybrid" && BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=2 uv run python scripts/attn_knockout.py run --name qwen35_122b_d2_late_read_long
+figures_command: BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=2 uv run python scripts/attn_knockout.py summarise --name qwen35_122b_d2_late_read_long
 question: >-
   With ~2000 tokens between the list and the question, is the read still late and through attention only?
 why_it_matters: >-
