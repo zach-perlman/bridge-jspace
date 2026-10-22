@@ -68,7 +68,8 @@ MAP_LAYERS = (
 # same part of the network (the 9B's runs, uncapped, reached 88% depth).
 # Qwen3-32B (22 Oct, for D1 on a second model): 44, as the 27B; same 64 layers, and D3 put its patch window (48-50) and
 # the alt digit's arrival at the last tokens (52) at the 27B's layers (46-50, 52).
-ANSWER_ONSET = {"qwen3.6-27b": 44, "qwen3.6-27b-jlens": 44, "qwen3.5-122b-a10b": 33, "qwen3-32b": 44}.get(
+ANSWER_ONSET = {"qwen3.6-27b": 44, "qwen3.6-27b-jlens": 44, "qwen3.5-122b-a10b": 33, "qwen3-32b": 44,
+                "qwen3-32b-jpp": 44}.get(
     pins.TARGET, pins.N_LAYERS - 1
 )  # the 27B read with its plain J-lens (the lens-type control) keeps the 27B's onset
 GROUPS = ("question", "last")
