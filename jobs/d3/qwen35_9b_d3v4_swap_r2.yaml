@@ -1,0 +1,38 @@
+id: qwen35_9b_d3v4_swap_r2
+title: "D3 on Qwen3.5-9B: is there a statement-slot phase at the last tokens before the digit arrives?"
+thread: D3
+gpus: 1
+mem_gb: 30
+est_gpu_hours: 1.0
+depends_on:
+- qwen35_9b_d3v4_competence_r2
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set main --name qwen35_9b_d3v4_swap_r2
+  --families RL DL --n 150 --layers 12 14 16 18 19 20 21 22 23 24 25 26 27 28 30 --control-stride 1 --groups last
+  --competence qwen35_9b_d3v4_competence_r2
+  --why "D3 on a smaller model of the same family: the last-two-token patch at every layer of the second half, the
+  slot phase placed by function (before the alt digit arrives)"
+  && BJ_TARGET=qwen3.5-9b uv run python scripts/pointer_swap.py run --name qwen35_9b_d3v4_swap_r2
+examples_command: BJ_TARGET=qwen3.5-9b uv run python scripts/pointer_swap.py examples --name qwen35_9b_d3v4_swap_r2 --group last
+figures_command: BJ_TARGET=qwen3.5-9b uv run python scripts/pointer_swap.py figures --name qwen35_9b_d3v4_swap_r2
+question: >-
+  On Qwen3.5-9B (32 layers: 8 attention, 24 DeltaNet), at the layers where the alt prompt's digit has not yet arrived
+  at the last tokens, does patching the alt prompt's last two tokens give the digit of the same statement slot more
+  often than bridge alt's statement and the alt digit, as on the 27B?
+why_it_matters: >-
+  The README's pattern 5 is shown on one model; OLMo tests another architecture. A smaller model of the same family
+  says whether the statement address comes with this family's design at another size.
+hypotheses:
+  H-slot-9b: 'at some patched layer L where the alt digit''s share at the last tokens has upper bound < 10% (its digit
+    has not arrived), memory -> prompt''s verdict is "same statement slot" pooled and in >= 2 of 3 topics (pointer_v4
+    additions: entity-cluster intervals; n >= 35). Prior 0.5'
+decision_rule: >-
+  Fixed before the run: the slot phase is placed by function, not by depth. Candidate layers: every patched layer
+  whose pooled alt-digit share (memory -> prompt, last two tokens) has upper bound < 0.10. H-slot-9b holds iff at one
+  candidate layer the rule's verdict is "same statement slot" pooled and in >= 2 of 3 topics. Looked at over up to 15
+  layers: a pass within 2 points of the bar is reported as borderline. Named -> prompt reported.
+controls:
+- 'same entity, statements reshuffled; random push of the same size; another topic''s prompt'
+n: '150 scenes per topic eligible in both families; 3 topics'
+seeds: [0]
+notes: '~1 GPU-h. Same tokenizer as the 27B, so every pointer_v4 scene is token-aligned.'

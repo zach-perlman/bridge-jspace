@@ -1,0 +1,23 @@
+id: qwen3_32b_d3v6_competence_r2
+title: "Gate: can Qwen3-32B answer pointer_v6's scenes?"
+thread: D3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.45
+depends_on:
+- qwen3_32b_d3v4_swap_r2
+command: >-
+  BJ_TARGET=qwen3-32b uv run python scripts/pointer_v6.py manifest --name qwen3_32b_d3v6_competence_r2
+  --why "pointer_v6 on Qwen3-32B: every alt and control prompt and each step alone"
+  && BJ_TARGET=qwen3-32b uv run python scripts/pointer_v6.py competence --name qwen3_32b_d3v6_competence_r2
+  && BJ_TARGET=qwen3-32b uv run python scripts/pointer_v6.py errors --name qwen3_32b_d3v6_competence_r2
+question: 'Does Qwen3-32B answer pointer_v6''s prompts?'
+why_it_matters: 'Gate for qwen3_32b_d3v6_swap_r2.'
+hypotheses:
+  H-gate: 'every topic, family and layout >= 80% right. Prior 0.6'
+decision_rule: 'pointer_v1''s competence rule.'
+controls:
+- 'each step alone for memory -> prompt'
+n: 'all of pointer_v6 main'
+seeds: [0]
+notes: 'Runs after qwen3_32b_d3v4_swap_r2, so pointer_swap is known to work on this model.'
