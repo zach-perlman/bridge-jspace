@@ -42,6 +42,7 @@ FIT = pins.RESULTS_DIR / "pointer_fit"
 LENS_MIN, LENS_LO, RANDOM_MAX, PATCH_MIN = 0.20, 0.10, 0.05, 0.20
 C2_PATCH_MIN, C2_MARGIN, C2_RATIO = 0.20, 0.05, 3.0
 STEP_B_ENTITIES = 12
+IDENT_LOOKUP_MIN, IDENT_RECALL_MIN = 0.15, 0.20  # step b (pointer_fit --ident; its docstring's rule)
 
 
 def load(run: str) -> tuple[dict[str, dict], list[dict]]:
@@ -61,7 +62,8 @@ def cells_of(rows: list[dict], family: str) -> dict[tuple, dict[tuple, list[dict
     """(domain, layer) -> (cond, scale) -> rows, for one family, steer layers only (not the 'window')."""
     out: dict[tuple, dict[tuple, list[dict]]] = collections.defaultdict(lambda: collections.defaultdict(list))
     for r in rows:
-        if r["family"] == family and r["cond"] in ("lens", "random", "patch") and r["layer"] not in (None, "window"):
+        if (r["family"] == family and r["cond"] in ("lens", "random", "patch", "ident")
+                and r["layer"] not in (None, "window")):  # fmt: skip
             out[(r["domain"], int(r["layer"]))][(r["cond"], r["scale"])].append(r)
     return out
 
@@ -102,7 +104,13 @@ def reveal_cell(cell: dict, cases: dict[str, dict], rows: list[dict]) -> dict:
     holds = (patch["rate"] >= C2_PATCH_MIN and lk["rate"] <= rk["rate"] + C2_MARGIN
              and lk["rate"] <= cell["rr_lens"][str(size)]["rate"] / C2_RATIO)  # fmt: skip
     ents = sorted({cases[r["name"]]["query"] for rs in conds.values() for r in late(rs)})
-    return {**cell, "rl_patch": patch, "rl_lens": lens, "rl_random": rand, "rl_entities": ents, "c2_lens": holds}
+    out = {**cell, "rl_patch": patch, "rl_lens": lens, "rl_random": rand, "rl_entities": ents, "c2_lens": holds}
+    if conds.get(("ident", size)):  # step b: the identity direction at the size the lens wrote recall with
+        rr = cells_of(rows, "RR").get((cell["domain"], cell["layer"]), {})
+        rl_id, rr_id = rate(late(conds[("ident", size)])), rate(rr.get(("ident", size), []))
+        out |= {"rl_ident": rl_id, "rr_ident": rr_id,
+                "two_codes": holds and rl_id["rate"] >= IDENT_LOOKUP_MIN and rr_id["rate"] >= IDENT_RECALL_MIN}  # fmt: skip
+    return out
 
 
 def main() -> int:
@@ -137,7 +145,9 @@ def main() -> int:
         s = str(c["lens_size"])
         print(f"{c['run']:28s} {c['domain']:9s} L{c['layer']:<3d} lookups 3-5: patch {100 * c['rl_patch']['rate']:.0f}% "
               f"lens {100 * c['rl_lens'][s]['rate']:.0f}% random {100 * c['rl_random'][s]['rate']:.0f}% "
-              f"(n {c['rl_patch']['n']}) | recall lens {100 * c['rr_lens'][s]['rate']:.0f}% | C2-lens {c['c2_lens']}")  # fmt: skip
+              f"(n {c['rl_patch']['n']}) | recall lens {100 * c['rr_lens'][s]['rate']:.0f}% | C2-lens {c['c2_lens']}"
+              + (f" | identity: lookups {100 * c['rl_ident']['rate']:.0f}% (n {c['rl_ident']['n']}), recall "
+                 f"{100 * c['rr_ident']['rate']:.0f}% | two codes {c['two_codes']}" if "rl_ident" in c else ""))  # fmt: skip
     print(f"pooled entities {len(ents)}; step b ready: {out['step_b_ready']}; wrote {a.out / 'reveal.json'}")
     return 0
 

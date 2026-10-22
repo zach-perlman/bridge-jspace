@@ -38,6 +38,15 @@ def test_select_needs_lens_on_recall_a_quiet_random_and_a_working_patch():
     assert out["c2_lens"] and out["rl_patch"]["k"] == 9 and len(out["rl_entities"]) == 30
     lens_moves = rl[:30] + _rows("RL", "elements", 44, "lens", 1.0, 6, 30, rl_names) + rl[60:]
     assert not C.reveal_cell(cells[44], rl_cases, good + lens_moves)["c2_lens"]
+    ident = _rows("RL", "elements", 44, "ident", 1.0, 6, 30, rl_names) + _rows(
+        "RR", "elements", 44, "ident", 1.0, 10, 40, names
+    )
+    b = C.reveal_cell(cells[44], rl_cases, good + rl + ident)
+    assert b["two_codes"] and b["rl_ident"]["k"] == 6 and b["rr_ident"]["k"] == 10
+    weak_rr = _rows("RL", "elements", 44, "ident", 1.0, 6, 30, rl_names) + _rows(
+        "RR", "elements", 44, "ident", 1.0, 4, 40, names
+    )
+    assert not C.reveal_cell(cells[44], rl_cases, good + rl + weak_rr)["two_codes"]  # not a bridge code: recall 10%
 
 
 def _cl(values: dict[tuple[str, str], float], fam: str = "RL") -> dict:

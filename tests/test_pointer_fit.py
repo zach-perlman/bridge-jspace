@@ -32,6 +32,25 @@ def test_class_means_and_between_basis():
     assert float((PF.project(dev, basis) - dev).norm() / dev.norm()) < 0.05
 
 
+def test_identity_means_remove_the_slot_and_keep_the_entity():
+    torch.manual_seed(0)
+    d, p = 16, 2
+    slot_dirs, ent_dirs = torch.randn(PF.N_SLOTS, d), {"cow": torch.randn(d), "pig": torch.randn(d)}
+    y = torch.arange(40) % PF.N_SLOTS
+    ents = ["cow" if i % 2 else "pig" for i in range(40)] + ["bee"] * 2  # bee: too few items, left out
+    y = torch.cat([y, torch.tensor([0, 1])])
+    x = torch.stack([slot_dirs[int(y[i])] + ent_dirs.get(e, torch.zeros(d)) for i, e in enumerate(ents)])
+    x = x[:, None, :].expand(-1, p, -1) + torch.randn(len(ents), p, d) * 0.01
+    mu, _ = PF.class_means(x, y)
+    ident = PF.identity_means(x, y, ents, mu)
+    assert set(ident) == {"cow", "pig"} and ident["cow"].shape == (p, d)
+    # the slot is gone: cow minus pig is the entity difference, whatever slots they were asked at
+    diff = (ident["cow"] - ident["pig"])[0]
+    assert float(torch.nn.functional.cosine_similarity(diff, ent_dirs["cow"] - ent_dirs["pig"], dim=0)) > 0.95
+    assert PF.conds_for({"ks": [4], "ident": True}, "RR")[-1] == "ident"
+    assert "ident" not in PF.conds_for({"ks": [4]}, "RL")
+
+
 def test_empty_class_falls_back_to_the_grand_mean():
     x = torch.randn(6, 2, 4)
     y = torch.tensor([0, 0, 1, 1, 2, 2])

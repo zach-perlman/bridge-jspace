@@ -54,6 +54,17 @@ each topic, 2000 resamples, seed 0; for the differences, of the per-item paired 
 Wilson interval where that is wider (rates only); item-level intervals are reported next to them. The thresholds are
 unchanged. Reported, not decisive: per topic, per cut (held-out entity / wording / both), n items / k entities / t
 wordings for every primary cell.
+Decision rule, sharp C2 step b additions (--ident; fixed 2026-10-22, before any --ident run): the identity direction
+  at a steer layer = the per-token mean, over fit items asking entity e, of the states minus their slot's mean (the
+  bridge's identity at the tokens after the question with the slot label taken out; entities with >= 3 fit items);
+  pushed as unit(identity(bridge alt) - identity(bridge org)) per token at the same norm as the other conditions, on
+  memory -> prompt and memory -> memory items whose two bridges both have an identity mean (fit and test are different
+  scenes; an entity must be seen in the fit to have a mean, so held-out entities get no identity push). Read in the
+  cells scripts/c2_cells.py selected from memory -> memory rows alone (lens on recall >= 0.20, random <= 0.05, patch
+  >= 0.20), on memory -> prompt items whose alt prompt asks statement 3-5: "the same bridge is carried by two codes"
+  iff the identity push moves >= 0.15 of those lookups to the bridge's statement AND >= 0.20 of the cell's recalls to
+  bridge alt's answer (it must be a bridge code, like the lens), while the lens push stays <= random + 0.05 and <= its
+  recall rate / 3 and the patch moves >= 0.20; pooled over the selected cells, >= 12 distinct asked entities.
 
 Stages:  run --name N --why W [...]  (manifest.json first, then collect, fit, geometry, steer)
          analyze --name N   figures --name N   examples --name N [--k 3]
@@ -99,14 +110,17 @@ SPLIT_SEED, SHUFFLE_SEED, SAMPLE_SEED, NULL_SEED, BOOT_SEED, N_BOOT, EXAMPLE_SEE
 RATE_MIN, MARGIN, CONTROL_MAX = 0.30, 0.20, 0.10
 FOLDS = 5
 CONDS_RR = ("slot", "shuffled", "random", "lens")
+IDENT_MIN = 3  # --ident: an entity's identity mean needs at least this many fit items
 BATCH = PS.BATCH
 
 
 def conds_for(cfg: dict, family: str) -> tuple[str, ...]:
-    """The additive conditions per item: memory → prompt gets every one, memory → memory the four that test the rule."""
+    """The additive conditions per item: memory → prompt gets every one, memory → memory the four that test the rule;
+    --ident adds the identity direction to both."""
+    extra = ("ident",) if cfg.get("ident") else ()
     if family == "RR":
-        return CONDS_RR
-    return ("slot", *(f"sub{k}" for k in cfg["ks"]), "shuffled", "random", "lens", "span", "rest")
+        return (*CONDS_RR, *extra)
+    return ("slot", *(f"sub{k}" for k in cfg["ks"]), "shuffled", "random", "lens", "span", "rest", *extra)
 
 
 # ---- pure helpers (tests/test_pointer_fit.py) ---------------------------------------------------------------------
@@ -130,6 +144,21 @@ def class_means(x: torch.Tensor, y: torch.Tensor, n_classes: int = N_SLOTS) -> t
         if bool(sel.any()):
             mu[c] = x[sel].mean(0)
     return mu, m
+
+
+def identity_means(
+    x: torch.Tensor, y: torch.Tensor, ents: list[str], mu: torch.Tensor, min_count: int = IDENT_MIN
+) -> dict[str, torch.Tensor]:
+    """x [N, P, d], slot labels y [N], asked entities ents [N], slot means mu [C, P, d] -> per entity, the per-token mean
+    of the states minus their slot's mean (the bridge's identity at these tokens with the slot label taken out); entities
+    with fewer than min_count items are left out."""
+    resid = x - mu[y]
+    out = {}
+    for e in sorted(set(ents)):
+        sel = torch.tensor([v == e for v in ents], device=x.device)
+        if int(sel.sum()) >= min_count:
+            out[e] = resid[sel].mean(0)
+    return out
 
 
 def top_directions(rows: torch.Tensor, k: int) -> torch.Tensor:
@@ -332,7 +361,7 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
     # 1. collect
     layers = tuple(cfg["collect_layers"])
     feats: dict[int, list[torch.Tensor]] = {la: [] for la in layers}
-    labels, kept, n_fit = [], [], 0
+    labels, kept, n_fit, fit_ents = [], [], 0, []
     preps = []
     # another target's tokenizer may split a cue differently: items whose prompts are not token-aligned under it are
     # dropped (pointer_swap.drop_unaligned's rule), counted in unaligned.json
@@ -360,10 +389,12 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
                 feats[la].append(rec[la][ri, p["groups"]["final"]].half().cpu())
             labels.append(it["slots"]["query"])
             kept.append(it["id"])
+            fit_ents.append(it["query"])
     y = torch.tensor(labels, device="cuda")
     print(f"collect: {len(kept)} of {n_fit} fit items kept", flush=True)
     # 2. fit
     fits: dict[int, dict[str, torch.Tensor]] = {}
+    idents: dict[int, dict[str, torch.Tensor]] = {}  # --ident: per layer, the asked entities' identity means
     fit_rows = []
     gen_s = torch.Generator().manual_seed(SHUFFLE_SEED)
     y_shuf = y[torch.randperm(len(y), generator=gen_s).to(y.device)]
@@ -373,15 +404,20 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
         mu_s, _ = class_means(x, y_shuf)
         fits[la] = {"mu": mu, "m": m, "basis": between_basis(mu, m, max(cfg["ks"])), "span": data_span(x, m, cfg["span_rank"]),
                     "mu_shuf": mu_s}  # fmt: skip
+        ident = identity_means(x, y, fit_ents, mu) if cfg.get("ident") else {}
         dev = (mu - m).norm(dim=-1)
         fit_rows.append({"layer": la, "n": int(x.shape[0]), "per_slot": [int((y == c).sum()) for c in range(N_SLOTS)],
                          "decode_cv": round(nearest_mean_cv(x, y), 4), "decode_cv_shuffled": round(nearest_mean_cv(x, y_shuf), 4),
                          "deviation_norm_median": round(float(dev.median()), 3),
-                         "state_norm_median": round(float(x.norm(dim=-1).median()), 2)})  # fmt: skip
+                         "state_norm_median": round(float(x.norm(dim=-1).median()), 2),
+                         **({"ident_entities": sorted(ident)} if cfg.get("ident") else {})})  # fmt: skip
+        idents[la] = ident
         del x
     cache = pins.CACHE_DIR / EXP / name
     cache.mkdir(parents=True, exist_ok=True)
     torch.save({la: {k: v.cpu() for k, v in f.items()} for la, f in fits.items()}, cache / "fits.pt")
+    if cfg.get("ident"):
+        torch.save({la: {e: v.cpu() for e, v in d.items()} for la, d in idents.items()}, cache / "idents.pt")
     # 3. geometry
     geometry = []
     ents = sorted({e for d in cfg["domains"] for e in G.DOMAINS[d]["entities"]})
@@ -460,6 +496,8 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
                 vec[(la, s, "shuffled")] = matched(f["mu_shuf"][j] - f["mu_shuf"][a], nn_)
                 vec[(la, s, "random")] = PS.null_rows(sv, gen)
                 vec[(la, s, "lens")] = matched(lens_dir[la], nn_)
+                if q_b in idents.get(la, {}) and q_s in idents[la]:  # --ident: both bridges seen in the fit
+                    vec[(la, s, "ident")] = matched(idents[la][q_s] - idents[la][q_b], nn_)
                 if rl:
                     for k in cfg["ks"]:
                         vec[(la, s, f"sub{k}")] = matched(project(dm, f["basis"][:k]), nn_)
@@ -472,6 +510,8 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
             )
             for s in cfg["scales"]:
                 for cn in conds:
+                    if any((la, s, cn) not in vec for la in group):  # ident: a bridge not seen in the fit
+                        continue
                     jobs.append(
                         (
                             {"cond": cn, "layer": key, "scale": s},
@@ -600,7 +640,10 @@ def summarise(rows: list[dict], cfg: dict, extra: dict) -> dict:
     if not valid:
         verdict += " (controls failed: not interpretable)"
     grid: dict[str, Any] = {}
-    for fam, rows_f, conds in (("RL", rl, (*conds_for(cfg, "RL"), "patch")), ("RR", rr, (*CONDS_RR, "patch"))):
+    for fam, rows_f, conds in (
+        ("RL", rl, (*conds_for(cfg, "RL"), "patch")),
+        ("RR", rr, (*conds_for(cfg, "RR"), "patch")),
+    ):
         for cn in conds:
             for key in [*cfg["steer_layers"], "window"]:
                 for s in [None] if cn == "patch" else cfg["scales"]:
@@ -1041,6 +1084,7 @@ if __name__ == "__main__":
     ap.add_argument(
         "--keep-wrong", action="store_true", help="a smoke on a weak model: fit on items it answers wrong too"
     )
+    ap.add_argument("--ident", action="store_true", help="add the identity direction (sharp C2, step b)")
     ap.add_argument("--k", type=int, default=3)
     args = ap.parse_args()
     if args.stage == "run":
@@ -1054,7 +1098,7 @@ if __name__ == "__main__":
                   "scales": args.scales, "ks": args.ks, "n_test": args.n_test, "rr_n": args.rr_n, "fit_limit": args.fit_limit,
                   "span_rank": args.span_rank, "primary_layer": args.primary_layer, "primary_scale": args.primary_scale,
                   "competence": None if args.no_eligibility else competence,
-                  "require_correct": not args.keep_wrong}  # fmt: skip
+                  "require_correct": not args.keep_wrong, **({"ident": True} if args.ident else {})}  # fmt: skip
         stage_run(args.name, args.why, config)
     elif args.stage == "analyze":
         stage_analyze(args.name)
