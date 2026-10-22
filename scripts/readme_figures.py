@@ -255,7 +255,7 @@ def f8_shifts(out: Path) -> None:
     for ax, (run, la, title) in zip(axes, runs, strict=True):
         style(ax, "y")
         rates = load("pointer_swap", run)["rates"]
-        for i, (lv, moved, label) in enumerate((("e5-abs", "token", "sentence added\nbefore the list"),
+        for i, (lv, moved, _) in enumerate((("e5-abs", "token", "sentence added\nbefore the list"),
                                                 ("e5-rel", "back", "sentence added\nbefore the question"))):  # fmt: skip
             d = rates[f"RL|all|{lv}|last|{la}|dissoc"]
             bar_ci(ax, i - 0.17, *d["position"][:3], LOOKUP, width=0.32)
