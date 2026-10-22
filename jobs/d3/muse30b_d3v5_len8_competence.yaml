@@ -1,0 +1,23 @@
+id: muse30b_d3v5_len8_competence
+title: "Finding 5 on 8 sentences, gate: can Muse Glimmer 30B answer a fresh draw of 8-statement scenes (seed 872)?"
+thread: D3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.35
+depends_on:
+- muse30b_port_smoke
+command: >-
+  BJ_TARGET=muse-glimmer-30b BJ_JUDGE=read uv run python scripts/pointer_v5.py manifest --set len8 --name muse30b_d3v5_len8_competence
+  --why "finding 5 on lists of 8 sentences (T8) on Muse: pointer_v5 len8, main's 8-statement design on a fresh draw
+  (seed 872), digit and colour-word answers on the same scenes; every alt and control prompt and each step alone (read judge)"
+  && BJ_TARGET=muse-glimmer-30b BJ_JUDGE=read uv run python scripts/pointer_v5.py competence --name muse30b_d3v5_len8_competence
+question: 'Does Muse Glimmer 30B answer the fresh 8-statement scenes, with digit and with colour-word answers (read judge)?'
+why_it_matters: 'Gate for muse30b_d3v5_len8_swap: only scenes with every prompt right, in both answer kinds and both families, are patched.'
+hypotheses:
+  H-gate: 'every topic, family and answer kind >= 80% right. Prior 0.6 (agent''s) (copied from qwen35_9b_d3v5_len8_competence)'
+decision_rule: 'pointer_v1''s competence rule, unchanged (every prompt of an item right = eligible), with the read judge (BJ_JUDGE=read, as Muse''s pointer_v5 competence in muse30b_competence_extra): a prompt is right iff the top token of one forward is the expected answer''s first token (digit or colour word); the greedy judge is recorded as correct_greedy, not used.'
+controls:
+- 'each step alone (the recall and the named lookup) for memory -> prompt'
+n: 'all of pointer_v5 len8: 150 scenes per topic (3 topics) x 2 answer kinds x 2 families = 1,800 items'
+seeds: [872]
+notes: 'Mechanical copy of qwen35_9b_d3v5_len8_competence (Dan, 23 Oct ~01:30: fill the grid); not opened before Dan''s predictions. Only the target and run name change, and the judge and dependency are Muse''s own committed competence pattern (BJ_JUDGE=read and muse30b_port_smoke, as muse30b_competence_extra). Data: data/pointer_v5/len8/ (per-file seeds 87208, 87228, 87238). check_len8.json is under Qwen''s tokenizer; pointer_swap drops (and counts) the scenes not token-aligned under Muse''s.'

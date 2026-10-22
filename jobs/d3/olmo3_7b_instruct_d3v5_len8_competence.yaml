@@ -1,0 +1,23 @@
+id: olmo3_7b_instruct_d3v5_len8_competence
+title: "Finding 5 on 8 sentences, gate: can OLMo-3-7B-Instruct answer a fresh draw of 8-statement scenes (seed 872)?"
+thread: D3
+gpus: 1
+mem_gb: 25
+est_gpu_hours: 0.15
+depends_on: []
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct BJ_JUDGE=read uv run python scripts/pointer_v5.py manifest --set len8 --name olmo3_7b_instruct_d3v5_len8_competence
+  --why "finding 5 on lists of 8 sentences (T8) on OLMo-3-7B-Instruct: pointer_v5 len8, main's 8-statement design on a
+  fresh draw (seed 872), digit and colour-word answers on the same scenes; every alt and control prompt and each step
+  alone (chat format, read judge)"
+  && BJ_TARGET=olmo-3-7b-instruct BJ_JUDGE=read uv run python scripts/pointer_v5.py competence --name olmo3_7b_instruct_d3v5_len8_competence
+question: 'Does OLMo-3-7B-Instruct answer the fresh 8-statement scenes, with digit and with colour-word answers (read judge)?'
+why_it_matters: 'Gate for olmo3_7b_instruct_d3v5_len8_swap: only scenes with every prompt right, in both answer kinds and both families, are patched.'
+hypotheses:
+  H-gate: 'every topic, family and answer kind >= 80% right. Prior 0.6 (agent''s) (copied from qwen35_9b_d3v5_len8_competence)'
+decision_rule: 'pointer_v1''s competence rule, unchanged (every prompt of an item right = eligible), with the read judge (BJ_JUDGE=read, as olmo3_7b_instruct_d3v5_competence): a prompt is right iff the top token of one forward is the expected answer''s first token (digit or colour word); the greedy judge is recorded as correct_greedy, not used.'
+controls:
+- 'each step alone (the recall and the named lookup) for memory -> prompt'
+n: 'all of pointer_v5 len8: 150 scenes per topic (3 topics) x 2 answer kinds x 2 families = 1,800 items'
+seeds: [872]
+notes: 'Mechanical copy of qwen35_9b_d3v5_len8_competence (Dan, 23 Oct ~01:30: fill the grid); not opened before Dan''s predictions. Only the target and run name change, and the judge is OLMo-3''s own committed competence pattern (BJ_JUDGE=read, as in olmo3_7b_instruct_d3v5_competence; the reason is in olmo3_7b_instruct_d3v4_competence''s notes). Data: data/pointer_v5/len8/ (per-file seeds 87208, 87228, 87238). OLMo''s tokenizer is not Qwen''s: check_len8.json does not hold for it; pointer_swap drops (and counts) the scenes not token-aligned under it, as on main (8-9 countries scenes per list length).'
