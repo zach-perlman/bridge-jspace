@@ -44,8 +44,8 @@ SLOT, WORD = LOOKUP, RECALL  # D3 figures: the same slot (orange), bridge alt's 
 plt.rcParams.update({"font.size": 10, "text.color": INK, "axes.labelcolor": INK2, "xtick.color": INK2,
                      "ytick.color": INK, "axes.titlesize": 10, "axes.titleweight": "bold"})  # fmt: skip
 NAMES = {"BL": "prompt → prompt", "RL": "memory → prompt", "BR": "prompt → memory", "RR": "memory → memory"}
-D3_ROLES = (("position", "the same slot in the org list", SLOT), ("identity", "bridge alt's own statement (identity)", WORD),
-            ("value", "alt prompt's own answer (digit)", DIGIT))  # fmt: skip
+D3_ROLES = (("position", "the same position in the original list", SLOT), ("identity", "the statement about the donor's entity (identity)", WORD),
+            ("value", "the donor's own answer (its digit)", DIGIT))  # fmt: skip
 
 
 def load(*p: str) -> dict:
@@ -119,48 +119,50 @@ def f0_patch_example(out: Path) -> None:
     ax.set_ylim(-0.55, 4.1)
     ax.axis("off")
     x0, w, gap = 1.25, 1.02, 0.1
-    rows_ = [(3.15, "org prompt", org, "Which locker belongs to the animal\nknown for making honey?", "3", 2),
-             (1.75, "alt prompt", alt, "Which locker belongs to the animal\nknown for its roar?", "5", 2)]  # fmt: skip
+    rows_ = [(3.15, "original prompt", org, "Which locker belongs to the animal\nknown for making honey?", "3", 2),
+             (1.75, "donor prompt", alt, "Which locker belongs to the animal\nknown for its roar?", "5", 2)]  # fmt: skip
     for y, name, items, q, ans, _ in rows_:
-        ax.text(0, y, name, ha="left", va="center", fontsize=10, fontweight="bold")
+        ax.text(0, y, name.replace(" ", "\n"), ha="left", va="center", fontsize=10, fontweight="bold", linespacing=1.1)
         for i, (e, d) in enumerate(items):
             x = x0 + i * (w + gap)
             edge, lw, face = LIGHT, 1, "#f6f6f4"
-            if name == "org prompt" and i == 2:
+            if name == "original prompt" and i == 2:
                 edge, lw, face = SLOT, 2.5, SURF
-            if name == "org prompt" and e == "lion":
+            if name == "original prompt" and e == "lion":
                 edge, lw, face = WORD, 2.5, SURF
-            if name == "alt prompt" and e == "lion":
+            if name == "donor prompt" and e == "lion":
                 edge, lw, face = INK, 2, "#fff4e0"
             ax.add_patch(FancyBboxPatch((x, y - 0.3), w, 0.6, boxstyle="round,pad=0.02,rounding_size=0.08", fc=face,
                                         ec=edge, lw=lw))  # fmt: skip
             ax.text(x + w / 2, y, f"{e}: {d}", ha="center", va="center", fontsize=9)
-            if name == "org prompt":
+            if name == "original prompt":
                 ax.text(
                     x + w / 2, y + 0.42, ["1st", "2nd", "3rd", "4th", "5th"][i], ha="center", fontsize=8, color=INK2
                 )
         qx = x0 + 5 * (w + gap) + 0.1
         ax.text(qx, y, q, ha="left", va="center", fontsize=8.5, color=INK2, linespacing=1.2)
         ax.text(9.75, y, f"→ {ans}", ha="left", va="center", fontsize=10, fontweight="bold")
-    ax.text(x0 + 2 * (w + gap) + w / 2, 1.75 - 0.42, "asked: lion, 3rd in alt", ha="center", va="top", fontsize=8,
+    ax.text(x0 + 2 * (w + gap) + w / 2, 1.75 - 0.42, "asked: lion, 3rd in the donor list", ha="center", va="top", fontsize=8,
             color=INK)  # fmt: skip
     ax.add_patch(FancyArrowPatch((9.5, 1.95), (9.5, 2.95), arrowstyle="-|>", mutation_scale=14, color=INK, lw=1.5,
                                  connectionstyle="arc3,rad=0.0"))  # fmt: skip
     ax.text(9.43, 2.45, "copy the last 2 tokens\nat one layer", ha="right", va="center", fontsize=8.5, color=INK,
             linespacing=1.2)  # fmt: skip
-    ax.text(0, 0.72, "The patched org prompt now answers:", ha="left", va="center", fontsize=9.5, fontweight="bold")
-    outs = [("7", "org's 3rd statement: the same slot as the asked one", SLOT, 0.0, 0.2),
-            ("9", "lion's statement in org: bridge alt's own statement (identity)", WORD, 0.0, -0.3),
-            ("5", "alt's own answer: the digit itself", DIGIT, 6.2, 0.2),
-            ("3", "org's own answer: unchanged", GREY, 6.2, -0.3)]  # fmt: skip
+    ax.text(
+        0, 0.72, "After the copy, the original prompt answers:", ha="left", va="center", fontsize=9.5, fontweight="bold"
+    )
+    outs = [("7", "its 3rd statement: the same position as the one asked", SLOT, 0.0, 0.2),
+            ("9", "its statement about lion: the donor's entity (identity)", WORD, 0.0, -0.3),
+            ("5", "the donor's own answer: the digit itself", DIGIT, 6.2, 0.2),
+            ("3", "its own answer: unchanged", GREY, 6.2, -0.3)]  # fmt: skip
     for d, txt, col, x, y in outs:
         ax.add_patch(FancyBboxPatch((x, y - 0.18), 0.3, 0.36, boxstyle="round,pad=0.02,rounding_size=0.06", fc=col,
                                     ec=col))  # fmt: skip
         ax.text(x + 0.15, y, d, ha="center", va="center", fontsize=10, color=SURF, fontweight="bold")
         ax.text(x + 0.42, y, txt, ha="left", va="center", fontsize=8.5, color=INK)
     head(ax, "How a patch is read: each possible answer is a different digit",
-         "Two prompts with the same animals in a different order. We copy the alt prompt's last two tokens into the org "
-         "prompt at one layer\nand read which digit comes out. Every D3 figure below counts these outcomes.")  # fmt: skip
+         "Two prompts with the same animals in a different order. We copy the donor prompt's last two tokens into the original "
+         "prompt at one layer\nand read which digit comes out. Every figure of slide 4 counts these outcomes.")  # fmt: skip
     save(fig, out, "f0_patch_example.png")
 
 
@@ -340,8 +342,8 @@ def f17_by_layer_models(out: Path) -> None:
     axes[2].set_xlabel("layer at which the last two tokens are copied")
     head(axes[0], "On every model a short window before the digit arrives, where the patch moves the answer to another "
          "statement",
-         "memory → prompt; the alt prompt's last two tokens are copied into the org prompt at one layer (see the example "
-         "above). Green band: the alt\ndigit has already reached the last tokens, so the copy carries the answer itself. "
+         "memory → prompt; the donor prompt's last two tokens are copied into the original prompt at one layer (see the example "
+         "above). Green band: the donor's\ndigit has already reached the last tokens, so the copy carries the answer itself. "
          "The rest of the answers are unchanged.", above=16)  # fmt: skip
     fig.legend([box(c) for _, _, c in D3_ROLES], [lab for _, lab, _ in D3_ROLES], loc="lower center", ncol=3,
                frameon=False, bbox_to_anchor=(0.5, -0.13))  # fmt: skip
@@ -354,9 +356,9 @@ def f5_slot_by_layer(out: Path) -> None:
     d3_by_layer(ax, "d3v4_swap_topics")
     ax.set_xlabel("layer patched (Qwen3.6-27B has 64)")
     ax.set_ylim(0, 100)
-    head(ax, "Before the digit arrives, the patched answer goes mostly to the same slot",
-         "Qwen3.6-27B, memory → prompt. The alt prompt's last two tokens are copied into the org prompt at one layer "
-         "(see the example\nabove). Green band: the alt digit has already reached the last tokens. The rest of the "
+    head(ax, "Before the digit arrives, the patched answer goes mostly to the same position in the list",
+         "Qwen3.6-27B, memory → prompt. The donor prompt's last two tokens are copied into the original prompt at one layer "
+         "(see the example\nabove). Green band: the donor's digit has already reached the last tokens. The rest of the "
          "answers are unchanged.")  # fmt: skip
     save(fig, out, "f5_slot_by_layer.png")
 
@@ -369,8 +371,8 @@ def f6_slot_counts(out: Path) -> None:
         ("token", "same place\nin the text"),
     )
     panels = [("e5-off", "a filler line moved", [("position", "k-th in\nthe list"), place]),
-              ("e5more", "alt has 6 statements", [start, end, place]),
-              ("e5fewer", "alt has 4 statements", [start, end, place])]  # fmt: skip
+              ("e5more", "donor list has 6 statements", [start, end, place]),
+              ("e5fewer", "donor list has 4 statements", [start, end, place])]  # fmt: skip
     fig, axes = plt.subplots(1, 3, figsize=(10, 3.0), sharey=True, gridspec_kw={"wspace": 0.08,
                                                                               "width_ratios": [2, 3, 3]})  # fmt: skip
     for ax, (lv, title, bars) in zip(axes, panels, strict=True):
@@ -382,9 +384,9 @@ def f6_slot_counts(out: Path) -> None:
         ax.set_title(title, loc="left", fontsize=9.5)
     axes[0].set_ylabel("% of patched answers")
     axes[0].set_ylim(0, 60)
-    head(axes[0], "The slot is counted by order in the list, from its start",
-         "Qwen3.6-27B, layer 50; the org list has 5 statements. The alt prompt asks its k-th statement, and the lists "
-         "are built so\nthat three ways of counting point to three different org statements; each bar: share of answers "
+    head(axes[0], "The position label counts by order in the list, from its start",
+         "Qwen3.6-27B, layer 50; the original list has 5 statements. The donor prompt asks its k-th statement, and the lists "
+         "are built so\nthat three ways of counting point to three different original statements; each bar: share of answers "
          "that went there.",
          above=16)  # fmt: skip
     save(fig, out, "f6_slot_counts.png")
@@ -405,11 +407,11 @@ def f7_pointer_push(out: Path) -> None:
     ax.set_ylabel("% moved to the target statement")
     head(
         ax,
-        "A fitted slot direction can move the answer on Qwen3.6-27B; the lens direction cannot",
-        "The last tokens are pushed toward another slot, by as much as a real patch changes them; held-out scenes.",
+        "A fitted position direction can move the answer on Qwen3.6-27B; the lens direction cannot",
+        "The last tokens are pushed toward another position, by as much as a real patch changes them; held-out scenes.",
     )
     handles = [box(c) for c in (SLOT, RECALL, LIGHT)]
-    ax.legend(handles, ["slot direction (fitted from slot averages)", "lens direction of the target's word",
+    ax.legend(handles, ["position direction (fitted from position averages)", "lens direction of the target's word",
                         "random direction"], frameon=False, loc="upper right", fontsize=9)  # fmt: skip
     save(fig, out, "f7_pointer_push.png")
 
@@ -436,7 +438,7 @@ def f8_shifts(out: Path) -> None:
         ax.set_title(title, loc="left", fontsize=9.5)
         ax.set_ylim(0, 65)
     axes[0].set_ylabel("% of patched answers")
-    head(axes[0], "The slot is an order index: it survives both shifts",
+    head(axes[0], "The position label is an order index: it survives both shifts",
          "One extra sentence, in one of the two prompts only. Before the list: every statement moves in the text. "
          "Before the\nquestion: every statement moves farther from the question. Their order in the list stays.",
          above=16)  # fmt: skip
@@ -454,9 +456,9 @@ def f9_olmo_slot(out: Path) -> None:
     d3_by_layer(ax, "olmo3_7b_instruct_d3v4_swap_fn", [16, 17, 18, 19, 20, 21])
     ax.set_xlabel("layer patched (OLMo-3-7B has 32)")
     ax.set_ylim(0, 60)
-    head(ax, "OLMo-3-7B: before the digit arrives, slot and word tie",
+    head(ax, "OLMo-3-7B: before the digit arrives, position and identity tie",
          "OLMo-3-7B-Instruct, memory → prompt, the same patch as in fig. 5 (layers chosen before the run).\n"
-         "Green band: the alt digit has already reached the last tokens.")  # fmt: skip
+         "Green band: the donor's digit has already reached the last tokens.")  # fmt: skip
     save(fig, out, "f9_olmo_slot.png")
 
 
@@ -554,10 +556,10 @@ def f12_address_models(out: Path) -> None:
     ax.set_ylabel("% of patched answers")
     head(
         ax,
-        "Pooled over asked statements: slot vs word by model",
+        "Pooled over asked statements: position vs identity by model",
         "memory → prompt, last two tokens; fig. 14 splits it.",
     )
-    ax.legend([box(SLOT), box(WORD)], ["the same slot", "bridge alt's own statement (identity)"], frameon=False,
+    ax.legend([box(SLOT), box(WORD)], ["the same position", "the statement about the donor's entity (identity)"], frameon=False,
               loc="upper right")  # fmt: skip
     save(fig, out, "f12_address_models.png")
 
@@ -581,21 +583,23 @@ def f13_mechanism(out: Path) -> None:
     ch = 100 * t2["chance_between"]
     ax.plot([0.62, 1.38], [ch, ch], color=INK, lw=1.2, ls=":")
     ax.text(1.4, ch, f"chance\n({ch:.0f}%)", va="center", fontsize=8, color=INK)
-    ax.set_xticks([0, 1, 2], ["the target", "a slot\nin between", "past the\ntarget"])
+    ax.set_xticks([0, 1, 2], ["the target", "a position\nin between", "past the\ntarget"])
     ax.set_ylim(0, 100)
     ax.set_ylabel("% of pushes (first new answer)")
-    ax.set_title("a. Push slot a toward slot j, growing:\nwhere does the answer go first?", loc="left", fontsize=9.5)
+    ax.set_title(
+        "a. Push position a toward position j, growing:\nwhere does the answer go first?", loc="left", fontsize=9.5
+    )
     ax = axes[1]
     style(ax, "y")
     t3 = a["T3"]
     for i, al in enumerate(("1.0", "2.0")):
         bar_ci(ax, i - 0.17, *ci3(t3[f"slot|{al}"]["rate"]), SLOT, width=0.32)
         bar_ci(ax, i + 0.17, *ci3(t3[f"random|{al}"]["rate"]), LIGHT, width=0.32)
-    ax.set_xticks([0, 1], ["natural size\n(slot a → slot j)", "twice that"])
+    ax.set_xticks([0, 1], ["natural size\n(position a → position j)", "twice that"])
     ax.set_ylim(0, 100)
     ax.set_ylabel("% moved to the target statement")
     ax.set_title("b. How strong is it at the size\nthe model itself uses?", loc="left", fontsize=9.5)
-    ax.legend([box(SLOT), box(LIGHT)], ["slot direction", "random, same size"], frameon=False, loc="upper left",
+    ax.legend([box(SLOT), box(LIGHT)], ["position direction", "random, same size"], frameon=False, loc="upper left",
               fontsize=8.5)  # fmt: skip
     ax = axes[2]
     style(ax, "y")
@@ -607,11 +611,11 @@ def f13_mechanism(out: Path) -> None:
     ax.set_ylim(0, 112)
     ax.set_ylabel("% of answers still right")
     ax.set_title("c. Does the model need it? Remove 4 dims\nafter the question, layers 44-52", loc="left", fontsize=9.5)
-    ax.legend([box(SLOT), box(LIGHT), box(INK2)], ["the slot\nsubspace", "random\n4 dims", "top-variance\n4 dims"],
+    ax.legend([box(SLOT), box(LIGHT), box(INK2)], ["the position\nsubspace", "random\n4 dims", "top-variance\n4 dims"],
               frameon=False, loc="center left", fontsize=8.5, bbox_to_anchor=(1.0, 0.5), labelspacing=1.2)  # fmt: skip
-    head(axes[0], "The fitted slot direction overrides the lookup; it is not shown to be the model's own address",
+    head(axes[0], "The fitted position direction overrides the lookup; it is not shown to be the model's own address",
          "Qwen3.6-27B, layer 48, held-out scenes, pre-registered. Slot direction: the difference between the average "
-         "last-token states of two slots.", above=30)  # fmt: skip
+         "last-token states of two positions.", above=30)  # fmt: skip
     save(fig, out, "f13_mechanism.png")
 
 
@@ -676,13 +680,13 @@ def f14_slot_by_target(out: Path) -> None:
         ax.set_xlim(0.6, 5.4)
     axes[0].set_ylim(0, 105)
     axes[0].set_ylabel("% of patched answers")
-    axes[2].set_xlabel("where the alt question's answer sits in the alt list (in the example: lion, 3rd)")
-    head(axes[0], "The slot label covers the 1st and 2nd statements; from the 3rd on, the bridge identity steers",
-         "memory → prompt, last two tokens patched at each model's layer before the alt digit arrives. Items are grouped "
-         "by the place of the\nasked statement in the alt list. Orange: the answer moved to the org statement at that "
-         "same place. Blue: it moved to the org\nstatement about alt's bridge animal. Shaded: 1st and 2nd places, "
+    axes[2].set_xlabel("where the donor's asked statement sits in the donor list (in the example: lion, 3rd)")
+    head(axes[0], "An order label picks the 1st and 2nd statements; from the 3rd on, the bridge's identity picks",
+         "memory → prompt, last two tokens patched at each model's layer before the donor's digit arrives. Items are grouped "
+         "by the place of the\nasked statement in the donor list. Orange: the answer moved to the original statement at that "
+         "same place. Blue: it moved to the original\nstatement about the donor's animal. Shaded: 1st and 2nd places, "
          "where the same place leads on every model.", above=16)  # fmt: skip
-    fig.legend([box(SLOT), box(WORD)], ["the same slot in the org list", "bridge alt's own statement (identity)"],
+    fig.legend([box(SLOT), box(WORD)], ["the same position in the original list", "the statement about the donor's entity (identity)"],
                loc="lower center", ncol=2, frameon=False, bbox_to_anchor=(0.5, -0.15))  # fmt: skip
     save(fig, out, "f14_slot_by_target.png")
 
@@ -692,7 +696,11 @@ def f15_counts_models(out: Path) -> None:
     end and the same place in the text, under a moved filler and an alt list one statement longer or shorter."""
     models = [("Qwen3.6-27B", "d3v4x_swap_main", 50), ("Qwen3.5-9B", "qwen35_9b_d3v4x_swap_r2", 18),
               ("OLMo-3-7B", "olmo3_7b_instruct_d3v4x_swap", 18), ("Gemma 4 31B", "gemma4it_d3v4x_swap_r2", 40)]  # fmt: skip
-    levels = [("e5-off", "filler\nmoved"), ("e5more", "alt has\n6 statements"), ("e5fewer", "alt has\n4 statements")]
+    levels = [
+        ("e5-off", "filler\nmoved"),
+        ("e5more", "donor list\nhas 6 statements"),
+        ("e5fewer", "donor list\nhas 4 statements"),
+    ]
     roles = [("position", SLOT), ("end", INK2), ("token", LIGHT)]
     fig, axes = plt.subplots(1, len(models), figsize=(14, 3.4), sharey=True, gridspec_kw={"wspace": 0.06})
     for ax, (name, run, la) in zip(axes, models, strict=True):
@@ -711,8 +719,8 @@ def f15_counts_models(out: Path) -> None:
     axes[0].set_ylim(0, 50)
     axes[0].set_ylabel("% of patched answers")
     head(axes[0], "On every model the label counts by order in the list, not by place in the text",
-         "memory → prompt, last two tokens, each model at its layer before the alt digit arrives. The org list has 5 "
-         "statements; the alt list is changed so that\nthree ways of counting point to three different org statements. "
+         "memory → prompt, last two tokens, each model at its layer before the donor's digit arrives. The original list has 5 "
+         "statements; the donor list is changed so that\nthree ways of counting point to three different original statements. "
          "\"From the start\" beats \"from the end\" in the pre-registered test (pooled and in 2 of 3 topics) only on "
          "Qwen3.6-27B.", above=16)  # fmt: skip
     fig.legend([box(c) for _, c in roles], ["k-th from the start of the list", "k-th from the end of the list",
@@ -736,12 +744,12 @@ def f16_slot_by_target_v5(out: Path) -> None:
         ax.set_title(title, loc="left", fontsize=9.5)
     axes[0].set_ylim(0, 105)
     axes[0].set_ylabel("% of patched answers")
-    axes[1].set_xlabel("where the alt question's answer sits in the alt list")
-    head(axes[0], "With 8 statements and with colour-word answers: a label for the 1st and 2nd, then the bridge identity",
+    axes[1].set_xlabel("where the donor's asked statement sits in the donor list")
+    head(axes[0], "With 8 statements and with colour-word answers: an order label for the 1st and 2nd, then the bridge's identity",
          "memory → prompt, last two tokens, the same patch, split by the asked statement. Colour words: \"The cow's locker is "
          "red.\"; on Qwen3.6-27B and Gemma their same-entity\ncontrol fails (33% and 56% of answers change), so they are "
          "shown only for Qwen3.5-9B. Shaded: the 1st and 2nd places.", above=16)  # fmt: skip
-    fig.legend([box(SLOT), box(WORD)], ["the same slot in the org list", "bridge alt's own statement (identity)"],
+    fig.legend([box(SLOT), box(WORD)], ["the same position in the original list", "the statement about the donor's entity (identity)"],
                loc="lower center", ncol=2, frameon=False, bbox_to_anchor=(0.5, -0.12))  # fmt: skip
     save(fig, out, "f16_slot_by_target_v5.png")
 
@@ -812,7 +820,7 @@ def f18_stages_models(out: Path) -> None:
          "memory → prompt. Orange: layers where patching the last two tokens moves the answer to another statement "
          "(label or identity). Grey: the layer block\nthe last tokens must be able to attend to the answer's statement in "
          "(the knock-out's resolution: 8-16 layers, so it does not order the read against the orange window;\ndarker: "
-         "the narrowest block that is needed alone). Green: the alt digit has reached the last tokens.")  # fmt: skip
+         "the narrowest block that is needed alone). Green: the donor's digit has reached the last tokens.")  # fmt: skip
     save(fig, out, "f18_stages_models.png")
 
 
@@ -870,7 +878,7 @@ def f20_olmo_ladder(out: Path) -> None:
     titles = [("Late read: statement blocked\nfrom the last tokens", "% still right",
                [box(LOOKUP), box(SURF, INK2, "///")], ["answer's statement", "control: another statement"]),
               ("Patch split by the asked statement", "% of patched answers", [box(SLOT), box(WORD)],
-               ["1st / 2nd: same slot", "3rd-5th: bridge identity"]),
+               ["1st / 2nd: same position", "3rd-5th: the bridge's identity"]),
               ("How the label counts\n(filler moved)", "% of patched answers", [box(SLOT), box(LIGHT)],
                ["order in the list", "place in the text"])]  # fmt: skip
     for ax, (t, yl, h, labs) in zip(axes, titles, strict=True):
@@ -881,7 +889,7 @@ def f20_olmo_ladder(out: Path) -> None:
         ax.set_ylim(0, 115)
         ax.legend(h, labs, frameon=False, loc="upper center", fontsize=8, ncol=2, bbox_to_anchor=(0.5, -0.12))
     head(axes[0], "OLMo-3-7B across post-training (SFT → DPO → Instruct): the same picture at every stage",
-         "memory → prompt; the D3 panels at layer 18 (before the alt digit arrives).", above=30)  # fmt: skip
+         "memory → prompt; the D3 panels at layer 18 (before the donor's digit arrives).", above=30)  # fmt: skip
     save(fig, out, "f20_olmo_ladder.png")
 
 
@@ -935,44 +943,52 @@ def f22_c2_positive_control(out: Path) -> None:
     sel = json.loads((C2_DIR / "cells.json").read_text())["cells"]
     rev = json.loads((C2_DIR / "reveal.json").read_text())
     topics = sorted({(c["run"], c["domain"]) for c in sel})
-    names = {"c2_sweep_v4_27b": "pointer_v4", "c2_sweep_v1_27b": "pointer_v1"}
+    names = {"c2_sweep_v4_27b": "85-entity set", "c2_sweep_v1_27b": "locker lists"}  # README datasets
+    plain = {"body": "body parts"}
     cols = [LOOKUP, RECALL, DIGIT, "#6250d6", "#eda100", INK2]
-    fig, axes = plt.subplots(1, 2, figsize=(13, 3.4), gridspec_kw={"wspace": 0.25, "width_ratios": [1.3, 1]})
+    fig, axes = plt.subplots(1, 2, figsize=(13, 3.6), gridspec_kw={"wspace": 0.25, "width_ratios": [1.3, 1]})
     ax = axes[0]
     style(ax, "y")
     for (run, dom), col in zip(topics, cols, strict=False):
         cs = sorted((c for c in sel if (c["run"], c["domain"]) == (run, dom)), key=lambda c: c["layer"])
         ys = [100 * max(v["rate"] for v in c["rr_lens"].values()) for c in cs]
-        ax.plot([c["layer"] for c in cs], ys, color=col, lw=2, marker="o", ms=4, label=f"{dom} ({names.get(run, run)})")
+        ax.plot([c["layer"] for c in cs], ys, color=col, lw=2, marker="o", ms=4,
+                label=f"{plain.get(dom, dom)} ({names.get(run, run)})")  # fmt: skip
         for c, y in zip(cs, ys, strict=True):
             if c["selected"]:
                 ax.scatter([c["layer"]], [y], s=90, facecolors="none", edgecolors=INK, lw=1.5, zorder=4)
     ax.axhline(20, color=INK, lw=1, ls=":")
-    ax.set_xlabel("layer (Qwen3.6-27B has 64)")
-    ax.set_ylabel("% of recalls switched by the lens push")
+    ax.text(47.8, 21.5, "bar to pass: 20%", fontsize=8, color=INK2, ha="right")
+    ax.set_xlabel("layer (of 64)")
+    ax.set_ylabel("% of answers from memory\nswitched by the lens push")
     ax.set_ylim(0, 100)
     ax.legend(frameon=False, fontsize=8, loc="upper right")
-    ax.set_title("Where the lens writes recall (circled: selected cells)", loc="left", fontsize=9.5)
+    ax.set_title("Where does the lens push change an answer from memory?\n(circled: cells that pass)", loc="left",
+                 fontsize=9.5)  # fmt: skip
     ax = axes[1]
     style(ax, "y")
     prim = rev.get("primary", {})
     if "rates" in prim:
         r = prim["rates"]
-        bars = [("patch", "patch\n(lookups 3-5)", INK2), ("lens", "lens push\n(lookups 3-5)", RECALL),
-                ("random", "random\n(lookups 3-5)", LIGHT), ("rr_lens", "lens push\n(recall)", LOOKUP)]  # fmt: skip
+        bars = [("patch", "copy from a\ndonor prompt\n(lookup)", INK2), ("lens", "lens push\n(lookup)", RECALL),
+                ("random", "random push\n(lookup)", LIGHT), ("rr_lens", "lens push\n(answer from\nmemory)", LOOKUP)]  # fmt: skip
         for i, (key, _, col) in enumerate(bars):
             bar_ci(ax, i, r[key]["rate"], r[key]["lo"], r[key]["hi"], col, width=0.6)
         ax.set_xticks(range(len(bars)), [lab for _, lab, _ in bars], fontsize=8.5)
-        cells = ", ".join(f"{d} L{la}" for _, d, la in rev["primary_cells"])
-        ax.set_title(f"Primary cell ({cells}, 6 entities): {prim['state']}", loc="left", fontsize=9.5)
+        cells = ", ".join(f"{d}, layer {la}" for _, d, la in rev["primary_cells"])
+        verdict = "the lens moves no lookup" if prim["state"] == "holds" else f"result: {prim['state']}"
+        ax.set_title(f"In the cell that passes ({cells}; 6 entities):\n{verdict}", loc="left", fontsize=9.5)
     else:
-        ax.text(0.5, 0.5, "no cell selected", transform=ax.transAxes, ha="center", va="center", color=INK2)
-        ax.set_title("Selected cells: none", loc="left", fontsize=9.5)
+        ax.text(0.5, 0.5, "no cell passes", transform=ax.transAxes, ha="center", va="center", color=INK2)
+        ax.set_title("Cells that pass: none", loc="left", fontsize=9.5)
     ax.set_ylim(0, 100)
-    ax.set_ylabel("% moved to bridge alt's answer")
-    head(axes[0], "A positive control for 'the lens does not write the lookup': where does the lens write recall at all?",
-         "Qwen3.6-27B, the tokens after the question. Cells are selected on recall alone (lens ≥ 20% with lower bound ≥ "
-         "10%, random ≤ 5%, patch ≥ 20%); only then are the lookups read.", above=16)  # fmt: skip
+    ax.set_ylabel("% switched to the\nother entity's answer")
+    head(axes[0], "Is there a place where the lens can write the bridge at the last tokens? One: chemical elements, layers 40-44",
+         "Qwen3.6-27B. Lens push: move the last tokens' hidden state along the lens direction from the bridge's word to "
+         "another entity's word. A cell (topic, layer) passes if this\nswitches ≥ 20% of answers from memory (lower bound "
+         "≥ 10%), a random push of the same size ≤ 5%, and a copy of the hidden state from a donor prompt ≥ 20%. Cells "
+         "are chosen on\nanswers from memory alone; only then are the lookups read. Lookups count only when the asked "
+         "sentence is the 3rd-5th in the list, where the bridge's identity picks it.", above=24)  # fmt: skip
     save(fig, out, "f22_c2_positive_control.png")
 
 

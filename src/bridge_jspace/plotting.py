@@ -45,19 +45,19 @@ def family_label(code: str) -> str:
 
 # Plain terms for figures (Dan, 2026-10-21: a reader outside the project must not need I, X, A, b, C, O, W-copy).
 TERM = {
-    "I": "bridge org",  # the bridge of the original prompt
-    "X": "bridge alt",  # the bridge the edit substitutes
-    "A": "answer org",
-    "b": "answer alt",  # the answer the model gives with bridge alt
-    "clean": "org prompt",
-    "C": "alt prompt",  # the same prompt with bridge alt (only the bridge differs)
+    "I": "original bridge",  # the bridge of the original prompt
+    "X": "other bridge",  # the bridge the edit substitutes
+    "A": "original answer",
+    "b": "other bridge's answer",  # the answer the model gives with the other bridge
+    "clean": "original prompt",
+    "C": "donor prompt",  # the same prompt with the other bridge (only the bridge differs)
     "O": "off-path control",  # changes something the answer does not depend on
-    "copy": "patch from the alt prompt",
-    "push": "lens push (bridge alt − bridge org)",
+    "copy": "patch from the donor prompt",
+    "push": "lens push (other − original bridge)",
     "random": "random push (same size)",
     "jpart": "lens-readable part",
     "rest": "the rest",
-    "flips": "% of original answers that become the alternative answer (answer org → answer alt)",
+    "flips": "% of original answers that become the alternative answer (original answer → the other bridge's answer)",
 }
 
 
