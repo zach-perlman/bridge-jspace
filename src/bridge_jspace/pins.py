@@ -319,6 +319,19 @@ TARGETS: dict[str, dict[str, Any]] = {
         "lenses": {"jpp": ("local", "cache/olmo-hybrid-7b/lenses/jpp/Olmo-Hybrid-Instruct-DPO-7B_jpp_lens.pt", "b8dd5d16ba1ee7318c943ec1f3def36aed30f286185724c55afcb14a350c25dc")},
         "frozen_lens_sha256": "b8dd5d16ba1ee7318c943ec1f3def36aed30f286185724c55afcb14a350c25dc",
     },
+    # allenai/Olmo-3-7B-Instruct-DPO (dense: sliding-window attention in 24 blocks, full attention in 8; the Olmo architecture pair, prereg amendment 6B; Zach, 2026-10-22): our own J++, the
+    # safety-research/jpp_lens@93f02cd recipe (+ scripts/lens_fit/jpp_lens_olmo_hybrid_1022.patch), 32 WikiText prompts, one
+    # shard, source layers 0-30, target the final block; scripts/queues/h200_olmo_fit_1022.sh. held-out macro pass@10: {'Olmo-3-7B-Instruct-DPO_jpp_lens': 0.487, 'logit': 0.384, 'pooled_lens': 0.427}.
+    "olmo-3-7b": {
+        "repo": "allenai/Olmo-3-7B-Instruct-DPO",
+        "revision": "b33130b7de49f0c2553b5c2b3bc8409ff3e627d1",
+        "n_layers": 32,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "olmo3d7_",
+        "lenses": {"jpp": ("local", "cache/olmo-3-7b/lenses/jpp/Olmo-3-7B-Instruct-DPO_jpp_lens.pt", "1ca44bf5938b400b64a32bf9585b5e4cedb6a10249005b0cb6643f9115e94c11")},
+        "frozen_lens_sha256": "1ca44bf5938b400b64a32bf9585b5e4cedb6a10249005b0cb6643f9115e94c11",
+    },
     "qwen3-32b-jlens": {
         "repo": "Qwen/Qwen3-32B",
         "revision": "9216db5781bf21249d130ec9da846c4624c16137",
