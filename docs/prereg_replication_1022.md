@@ -140,3 +140,8 @@ h200_q32_core_1021.sh).
      closest to the J-lens top-10's.
    - Run: unembedK + unembedK_rot at 32-40 on full_v8.
    - Specificity holds size-matched if that knock-out's gap is <= 10 (J-lens: 36).
+
+## Amendment 4 (Zach, 2026-10-22 ~17:05 UTC): Qwen3-8B dropped
+
+Qwen3-8B was dropped before it ran; no data from it exists. Prediction 1 (architecture) now rests on the 9B's C1-graded
+alone, beside Qwen3-32B's existing result: supported if the 9B HOLDS, refuted if it FAILS.
