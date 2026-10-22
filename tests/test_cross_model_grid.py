@@ -30,7 +30,7 @@ OPENED = {
     "olmo3_7b_instruct_d3v4x_swap", "gemma4it_d3v4x_swap_r2", "d3v4_seed3_swap_27b", "qwen3_32b_d3v4_seed2_swap",
     "qwen35_9b_d3v4_seed2_swap", "gemma4it_d3v4_seed2_swap", "olmo3_7b_instruct_d3v4_seed2_swap",
     "qwen35_9b_d3v4_swap_r2", "gemma4it_d3v4_swap_v2_r2", "olmo3_7b_instruct_d3v4_swap_fn", "d4_where_fresh_27b",
-    "d3v4_fit_main", "olmo3_7b_instruct_d3b_fit_v2", "abl_rot_v1",
+    "d3v4_fit_main", "olmo3_7b_instruct_d3b_fit_v2", "abl_rot_v1", "full2_ko_v1",
 }  # fmt: skip
 
 
@@ -147,34 +147,80 @@ def test_lens_push_verdicts(results):
     d = results / "early_push_where" / "r"
     _json(d / "summary.json", {"decision": dec})
     cell = G.Cell("27b", "f7", "main rule", "d4", "r")
-    assert [r.word for r in G.ev_d4(cell)] == ["not interpretable", "missing"]
+    assert [r.word for r in G.ev_d4(cell)] == ["inconclusive", "missing"]  # the rule's own word, no control failed
     _json(d / "analysis-v2.1-20261022T000000Z" / "summary.json",
           {"decision": {**dec, "rule": "v2.1", "verdict": "H-around: the lens writes ..."}})  # fmt: skip
-    assert [r.word for r in G.ev_d4(cell)] == ["not interpretable", "holds"]
+    assert [r.word for r in G.ev_d4(cell)] == ["inconclusive", "holds"]
+    assert [r.setting for r in G.ev_d4(G.Cell("27b", "f7", "x", "d4", "r", opts={"suffix": ", draw 2"}))] == [
+        "main rule, draw 2", "amended rule, draw 2"]  # fmt: skip
     assert G.d4_word("not valid (H-around: x)").startswith("not interpretable")
     assert G.d4_word("no valid cell: the lens does not write").startswith("not interpretable")
 
 
-def test_removal_g2_and_missing_random_control(results):
-    def fam(j: float, rot: float) -> dict:
-        return {"n": 100, "accuracy": {"none": 1, "jspace": j, "rotated": rot}}
+def test_gap_interval_unpaired_over_entities():
+    look = [(1.0, "cow")] * 10 + [(1.0, "pig")] * 10
+    rec = [(0.0, "cow")] * 10 + [(1.0, "pig")] * 10
+    point, lo, hi = G.gap_ci(look, rec)
+    assert point == pytest.approx(0.5) and lo <= point <= hi
+    assert (lo, hi) == pytest.approx((0.0, 1.0))  # two entities: the recall mean resamples to 0, 0.5 or 1
+    same = [(1.0, "cow")] * 5 + [(0.0, "pig")] * 5
+    assert G.gap_ci(same, same)[0] == 0
 
-    fams = {
-        "BL/clean": fam(0.99, 1.0),
-        "RL/clean": fam(0.99, 1.0),
-        "BR/clean": fam(0.2, 1.0),
-        "RR/clean": fam(0.2, 0.8),
-    }
+
+def test_removal_descriptive_with_g2_and_no_random_control(results, monkeypatch):
+    def fam(j: float, rot: float) -> dict:
+        return {"n": 2, "accuracy": {"none": 1, "jspace": j, "rotated": rot}}
+
+    ids = {f: [f"{f}-0000", f"{f}-0001"] for f in ("BL", "RL", "BR", "RR")}
+    monkeypatch.setattr(G, "suite_entities", lambda: {(f, i): f"e{k}" for f, v in ids.items() for k, i in enumerate(v)})
+    correct = {"BL": 1, "RL": 1, "BR": 0, "RR": 0}
+    _jsonl(results / "ablate_pilot" / "r" / "rows.jsonl",
+           [{"family": f, "id": i, "kind": "clean", "condition": "jspace", "correct": bool(correct[f])}
+            for f, v in ids.items() for i in v])  # fmt: skip
+    fams = {"BL/clean": fam(1.0, 1.0), "RL/clean": fam(1.0, 1.0), "BR/clean": fam(0.0, 1.0), "RR/clean": fam(0.0, 0.8)}
     _json(results / "ablate_pilot" / "r" / "summary.json", {"families": fams})
-    rows = G.ev_removal(G.Cell("32b", "f1", "draw 1", "removal", "r", opts={"g2": True}))
+    rows = G.ev_removal(G.Cell("32b", "f1", "animal suite", "removal", "r", opts={"g2": True}))
     assert {r.word for r in rows} == {"not interpretable"} and "RR/clean" in rows[0].verdict
     assert "no random-dictionary control" in (rows[0].md_text or "")
-    fams["RR/clean"] = fam(0.2, 1.0)
+    assert rows[0].value == pytest.approx(1.0) and rows[0].unit == "pts" and rows[0].n == 8
+    fams["RR/clean"] = fam(0.0, 1.0)
     _json(results / "ablate_pilot" / "r" / "summary.json", {"families": fams})
-    rows = G.ev_removal(G.Cell("32b", "f1", "draw 1", "removal", "r", opts={"g2": True}))
-    assert rows[0].word == "missing" and "G2 passes" in rows[0].verdict and "+79 points" in rows[0].verdict
-    pilot = G.ev_removal(G.Cell("27b", "f1", "draw 1", "removal", "r"))
-    assert "no decision rule" in pilot[0].verdict
+    rows = G.ev_removal(G.Cell("32b", "f1", "animal suite", "removal", "r", opts={"g2": True}))
+    assert rows[0].verdict == "open (descriptive, no committed rule)"
+    pilot = G.ev_removal(G.Cell("27b", "f1", "animal suite", "removal", "r"))  # Zach's pilot: no G2, never missing
+    assert pilot[0].word == "open"
+
+
+@pytest.mark.parametrize(
+    ("rule", "word"),
+    [
+        ({"gap": 0.4, "controls_ok": True, "C1_graded_holds": True}, "holds"),
+        ({"gap": 0.1, "controls_ok": True, "C1_graded_holds": False}, "fails"),
+        ({"gap": 0.4, "controls_ok": False, "C1_graded_holds": False}, "not interpretable"),
+        ({"gap": None, "controls_ok": False, "C1_graded_holds": False}, "missing"),
+    ],
+)
+def test_zach_c1_verdict_read_as_it_is(monkeypatch, rule, word):
+    v = {"middle": "L32-40", "bands": {"L32-40": {"paper10": {w: {"acc": 0.5, "n": 10} for w in ("PP", "MP", "PM", "MM")}}},
+         "rule": rule}  # fmt: skip
+    monkeypatch.setattr(G, "zach_file", lambda path: json.dumps(v))
+    (row,) = G.ev_zach_c1(G.Cell("27b", "f1", "tasks, Zach's rule", "zach_c1", "z"))
+    assert row.word == word and row.n == 40 and row.path.startswith(G.ZACH_REF)
+
+
+def test_lens_arm_is_open_and_late_read_footnotes(results):
+    _json(results / "pointer_fit" / "r" / "summary.json",
+          {"verdict": "x", "primary": {"lens": [0.0, 0.0, 0.01, 400], "slot": [0.3, 0.2, 0.4, 400],
+                                       "random": [0.0, 0.0, 0.01, 400], "layer": 48, "scale": 1.0}})  # fmt: skip
+    (row,) = G.ev_fitlens(G.Cell("27b", "f8", "last tokens", "fitlens", "r"))
+    assert row.verdict == "open (no rule for the lens arm)"
+    _jsonl(results / "attn_knockout" / "g" / "rows.jsonl", _late_rows(300, 66, 300, None))
+    (row,) = G.ev_late(G.Cell("gemma", "f4", "draw 1", "late", "g", opts={"first_draw": True}))
+    assert row.word == "fails"
+    assert row.notes[0].startswith("at chance (22% [") and row.notes[0].endswith(", chance 20%)")
+    assert "draw 1 judged by the late-read rule" in row.notes[1]
+    text, notes = G.md_cell([row])
+    assert text.count("[{n}]") == 2 and len(notes) == 2
 
 
 # ---------------------------------------------------------------- the queue: status without results
@@ -204,6 +250,25 @@ def test_status_from_ledger_and_queue(tmp_path, results):
     assert jobs.status(("zz",)) == ("no spec", "no spec")
     assert jobs.status(("a",), values=False)[0] == "failed"  # no gate summary is read without values
     assert jobs.commit(G.Cell("27b", "f2", "draw 1", "d1", "r", ("a",))) == "abc1234"
+    _json(tmp_path / "cache" / "jobq" / "queue_state_h200.json", {"pending": [{"id": "d"}], "running": []})
+    _jsonl(tmp_path / "results" / "jobq" / "ledger_h200.jsonl", [{"id": "e", "status": "failed", "exit_code": 1,
+                                                                   "ended_at": "2", "command": "x"}])  # fmt: skip
+    jobs = G.Jobs(tmp_path)  # every box's ledger and queue state; a queued retry outranks an earlier failure
+    assert jobs.status(("d",))[0] == "pending" and jobs.status(("e",))[0] == "failed"
+
+
+def test_jobs_found_by_run_name_and_finding5_layers(tmp_path):
+    spec = {"id": "x_r2", "command": "uv run python scripts/pointer_swap.py manifest --name run_a --n 1",
+            "figures_command": "uv run python scripts/finding5_confirm.py --run run_a --layers 16 17 18 --level e8-digit "
+                               "--sentences 8 && uv run python scripts/finding5_confirm.py --run run_a --layers 20 21 "
+                               "--level e8-word --sentences 8"}  # fmt: skip
+    (tmp_path / "jobs" / "d3").mkdir(parents=True)
+    (tmp_path / "jobs" / "d3" / "x_r2.yaml").write_text(json.dumps(spec))
+    jobs = G.Jobs(tmp_path)
+    assert jobs.jobs_of(G.Cell("27b", "f5", "draw 1", "f5", "run_a")) == ("x_r2",)
+    assert jobs.f5_layers("run_a", "e8-digit") == [16, 17, 18]
+    assert jobs.f5_layers("run_a", "e8-word") == [20, 21]
+    assert jobs.f5_layers("run_b", None) is None
 
 
 def test_no_values_opens_no_result(monkeypatch):
@@ -213,19 +278,22 @@ def test_no_values_opens_no_result(monkeypatch):
     monkeypatch.setattr(G, "EVAL", dict.fromkeys(G.EVAL, boom))
     rows = G.build(["27b:*", "olmo_hybrid:*"], values=False)
     assert rows and {r.status for r in rows} <= {"has-run", "failed", "pending", "running", "blocked", "not enqueued",
-                                                 "no spec", "no lens", "done, no results"}  # fmt: skip
+                                                 "no spec", "no lens", "done, no results", "not on Zach's branch"}  # fmt: skip
     assert all(r.value is None for r in rows)
 
 
-def test_every_grid_cell_has_a_row_and_one_of_five_verdicts(monkeypatch):
+def test_every_grid_cell_has_a_row(monkeypatch):
     monkeypatch.setattr(G, "EVAL", dict.fromkeys(G.EVAL, lambda cell: []))
     cells = G._cells()
     have = {(c.model, c.finding, s) for c in cells for s in G.settings_of(c)}
     for f in G.FINDINGS:
         for s in f.settings:
             for m in G.MODELS:
-                assert (m.key, f.key, s) in have or (f.key, s) == ("f5", "draw 3"), (m.key, f.key, s)
+                assert (m.key, f.key, s) in have, (m.key, f.key, s)
     assert len({(c.model, c.finding, c.setting, c.role, c.run) for c in cells}) == len(cells)
+    assert {c.run for c in cells if c.model == "olmo_hybrid" and c.finding in ("f5", "f6")} >= {
+        "olmo_hybrid_7b_d3v4_swap_fn", "olmo_hybrid_7b_d3v4_seed2_swap", "olmo_hybrid_7b_d3v4x_swap"}  # fmt: skip
+    assert len(G.VERDICTS) == 7 and set(G.SYMBOL) == set(G.VERDICTS)
     text = G.csv_text([G.Row("27b", "f4", "draw 2", verdict="missing (x)")])
     assert next(csv.reader(io.StringIO(text))) == list(G.COLUMNS)
 
@@ -289,11 +357,17 @@ def _recompute(r: dict, grid_row) -> float | None:
                and not o["null"] and o["set"] == v["cell"]["set"] and o["layer"] == v["cell"]["layer"]]  # fmt: skip
         return 100 * sum(sel) / len(sel)
     if "ablate_pilot" in str(path):
+        rows = [o for o in G.jl(path.parent / "rows.jsonl") if o["kind"] == "clean" and o["condition"] == "jspace"]
+
+        def acc(fams: tuple[str, ...]) -> float:
+            sel = [o["correct"] for o in rows if o["family"] in fams]
+            return 100 * sum(sel) / len(sel)
+
+        if " · " not in setting:  # the gap: lookups minus recalls, items pooled per group
+            return acc(("BL", "RL")) - acc(("BR", "RR"))
         fam = {"lookup, bridge stated": "BL", "lookup, bridge recalled": "RL", "recall, bridge stated": "BR",
                "recall, bridge recalled": "RR"}[setting.split(" · ")[1]]  # fmt: skip
-        sel = [o["correct"] for o in G.jl(path.parent / "rows.jsonl")
-               if o["family"] == fam and o["kind"] == "clean" and o["condition"] == "jspace"]  # fmt: skip
-        return 100 * sum(sel) / len(sel)
+        return acc((fam,))
     return None
 
 
@@ -305,6 +379,14 @@ def test_ten_random_cells_recomputed_from_raw_rows(opened):
         got = _recompute(c, g)
         assert got is not None
         assert f"{got:.1f}" == f"{_num(c['value']):.1f}", (c["model"], c["finding"], c["setting"])
+
+
+def test_zach_c1_on_the_27b_holds_as_the_readme_says(opened):
+    rows, _ = opened
+    z = [r for r in rows if r.model == "27b" and r.finding == "f1" and r.setting == "tasks, Zach's rule"]
+    if not z or z[0].word == "missing":
+        pytest.skip("Zach's branch (origin/zach/v8-breadth-1021) is not fetched here")
+    assert z[0].word == "holds"  # README: "C1 on Zach's generator ... Holds on Qwen3.6-27B by his rule"
 
 
 def _covered(c: dict) -> bool:
