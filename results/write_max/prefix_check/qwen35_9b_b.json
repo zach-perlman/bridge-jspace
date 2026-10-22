@@ -1,0 +1,62 @@
+{
+  "cases": [
+    {
+      "case": "cf:PP-L0-0000",
+      "prefix": 61,
+      "seq": 90,
+      "jobs": 384,
+      "role_agree": 383,
+      "max_abs_dld": 0.25,
+      "mean_abs_dld": 0.044109375
+    },
+    {
+      "case": "cf:PM-L0-0000",
+      "prefix": 61,
+      "seq": 91,
+      "jobs": 384,
+      "role_agree": 381,
+      "max_abs_dld": 0.375,
+      "mean_abs_dld": 0.06152604166666667
+    },
+    {
+      "case": "cf:PP-L0-0001",
+      "prefix": 104,
+      "seq": 133,
+      "jobs": 384,
+      "role_agree": 383,
+      "max_abs_dld": 0.25,
+      "mean_abs_dld": 0.060872395833333336
+    },
+    {
+      "case": "cf:PM-L0-0001",
+      "prefix": 104,
+      "seq": 138,
+      "jobs": 384,
+      "role_agree": 382,
+      "max_abs_dld": 0.25,
+      "mean_abs_dld": 0.057455729166666664
+    },
+    {
+      "case": "cf:MP-L0-0000",
+      "prefix": 72,
+      "seq": 94,
+      "jobs": 384,
+      "role_agree": 382,
+      "max_abs_dld": 0.25,
+      "mean_abs_dld": 0.04295572916666668
+    },
+    {
+      "case": "cf:MM-L0-0000",
+      "prefix": 72,
+      "seq": 95,
+      "jobs": 384,
+      "role_agree": 383,
+      "max_abs_dld": 0.25,
+      "mean_abs_dld": 0.046549479166666664
+    }
+  ],
+  "role_agreement": 0.9956597222222222,
+  "max_abs_dld": 0.375,
+  "seconds": 227.57550764083862,
+  "pass": true
+}

@@ -1,0 +1,96 @@
+{
+  "cases": [
+    {
+      "case": "cf:PP-L0-0000",
+      "prefix": 61,
+      "seq": 90,
+      "jobs": 384,
+      "role_agree": 383,
+      "max_abs_dld": 0.25,
+      "mean_abs_dld": 0.044109375,
+      "t_full": 13.8,
+      "t_prefix": 12.91
+    },
+    {
+      "case": "cf:PM-L0-0000",
+      "prefix": 61,
+      "seq": 91,
+      "jobs": 384,
+      "role_agree": 381,
+      "max_abs_dld": 0.375,
+      "mean_abs_dld": 0.06152604166666667,
+      "t_full": 15.11,
+      "t_prefix": 13.0
+    },
+    {
+      "case": "cf:PP-L0-0001",
+      "prefix": 104,
+      "seq": 133,
+      "jobs": 384,
+      "role_agree": 383,
+      "max_abs_dld": 0.25,
+      "mean_abs_dld": 0.060872395833333336,
+      "t_full": 16.22,
+      "t_prefix": 13.57
+    },
+    {
+      "case": "cf:PM-L0-0001",
+      "prefix": 104,
+      "seq": 138,
+      "jobs": 384,
+      "role_agree": 382,
+      "max_abs_dld": 0.25,
+      "mean_abs_dld": 0.057455729166666664,
+      "t_full": 16.29,
+      "t_prefix": 11.69
+    },
+    {
+      "case": "cf:PP-L0-0005",
+      "prefix": 96,
+      "seq": 125,
+      "jobs": 384,
+      "role_agree": 379,
+      "max_abs_dld": 0.25,
+      "mean_abs_dld": 0.059812500000000005,
+      "t_full": 15.47,
+      "t_prefix": 12.44
+    },
+    {
+      "case": "cf:PM-L0-0005",
+      "prefix": 96,
+      "seq": 129,
+      "jobs": 384,
+      "role_agree": 384,
+      "max_abs_dld": 0.375,
+      "mean_abs_dld": 0.04240885416666666,
+      "t_full": 13.76,
+      "t_prefix": 12.44
+    },
+    {
+      "case": "cf:PP-L0-0006",
+      "prefix": 38,
+      "seq": 67,
+      "jobs": 384,
+      "role_agree": 383,
+      "max_abs_dld": 0.25,
+      "mean_abs_dld": 0.038901041666666664,
+      "t_full": 13.27,
+      "t_prefix": 12.96
+    },
+    {
+      "case": "cf:PM-L0-0006",
+      "prefix": 38,
+      "seq": 72,
+      "jobs": 384,
+      "role_agree": 381,
+      "max_abs_dld": 0.25,
+      "mean_abs_dld": 0.07177864583333333,
+      "t_full": 13.15,
+      "t_prefix": 11.1
+    }
+  ],
+  "role_agreement": 0.9947916666666666,
+  "max_abs_dld": 0.375,
+  "seconds": 314.07774090766907,
+  "pass": false
+}

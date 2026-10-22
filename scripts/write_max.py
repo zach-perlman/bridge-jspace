@@ -184,6 +184,7 @@ def main(args) -> None:
         return (s / n).cuda()
 
     outcomes: list[dict] = []
+    check: list[dict] = []  # write_max --check-prefix (2026-10-22)
     dom_missing = 0
     for k, c in enumerate(cases):
         P.unedited_ld(model, c)
@@ -260,11 +261,36 @@ def main(args) -> None:
         if args.writes:
             jobs = [j for j in jobs if j[0]["write"] in args.writes]
         start = len(outcomes)
-        P.read_jobs(model, c, jobs, outcomes)
+        pstart = min(min(e.positions) for _, ed in jobs for e in ed.values()) if (args.prefix_cache or args.check_prefix) else None
+        if args.check_prefix:  # 2026-10-22: the prefix-cache path against the full runs, on the same jobs
+            full, fast = [], []
+            torch.cuda.synchronize(); t1 = time.time()
+            P.read_jobs(model, c, jobs, full)
+            torch.cuda.synchronize(); t2 = time.time()
+            P.read_jobs(model, c, jobs, fast, prefix_start=pstart)
+            torch.cuda.synchronize(); t3 = time.time()
+            check.append({"case": c["id"], "prefix": pstart, "seq": len(c["read_ids"]["clean"]), "jobs": len(jobs),
+                          "role_agree": sum(a["role"] == b["role"] for a, b in zip(full, fast, strict=True)),
+                          "max_abs_dld": max(abs(a["ld"] - b["ld"]) for a, b in zip(full, fast, strict=True)),
+                          "mean_abs_dld": statistics.mean(abs(a["ld"] - b["ld"]) for a, b in zip(full, fast, strict=True)),
+                          "t_full": round(t2 - t1, 2), "t_prefix": round(t3 - t2, 2)})  # fmt: skip
+            print(json.dumps(check[-1]), flush=True)
+            if len(check) >= args.check_prefix:
+                break
+            continue
+        P.read_jobs(model, c, jobs, outcomes, prefix_start=pstart)
         for o in outcomes[start:]:
             o["bridge"] = c["bridge"]
         if (k + 1) % 20 == 0:
             print(f"{k + 1}/{len(cases)} cases, {time.time() - t0:.0f}s", flush=True)
+    if args.check_prefix:
+        agree = sum(x["role_agree"] for x in check) / sum(x["jobs"] for x in check)
+        res = {"cases": check, "role_agreement": agree, "max_abs_dld": max(x["max_abs_dld"] for x in check),
+               "seconds": time.time() - t0, "pass": agree >= 0.995}  # fmt: skip
+        (out_dir / "prefix_check.json").write_text(json.dumps(res, indent=2) + "\n")
+        print(f"prefix-cache check: role agreement {100 * agree:.2f}% over {sum(x['jobs'] for x in check)} jobs, max |dld| "
+              f"{res['max_abs_dld']:.3f} -> {'PASS' if res['pass'] else 'FAIL'} (>= 99.5%)")  # fmt: skip
+        return
     write_jsonl(out_dir / "outcomes.jsonl", outcomes)
     summarize(out_dir, args, cases, outcomes, dom_missing, time.time() - t0)
 
@@ -366,6 +392,8 @@ if __name__ == "__main__":
     ap.add_argument("--tasks-per-word", action="store_true", help="tasks_v2: judge each item on its own (three-step)")
     ap.add_argument("--from-competence", default=None, help="a new target: suite_v1 competence run to take cases from")
     ap.add_argument("--writes", nargs="+", default=None, help='only these writes (e.g. "copy": the ceiling alone)')
+    ap.add_argument("--prefix-cache", action="store_true", help="2026-10-22: reuse the unedited prompt prefix (needs a passing --check-prefix run for the model)")
+    ap.add_argument("--check-prefix", type=int, default=0, help="2026-10-22: compare the prefix-cache path with full runs on N cases, then stop")
     a = ap.parse_args()
     a.families = a.families or (["PP", "PM", "MP", "MM"] if a.tasks else ["BL", "BR", "RL", "RR"])
     main(a)

@@ -168,17 +168,23 @@ def unedited_ld(model, c: dict) -> None:
 
 
 def read_jobs(
-    model, c: dict, jobs: list[tuple[dict, dict]], outcomes: list[dict], validate: bool = False, judge=None
+    model, c: dict, jobs: list[tuple[dict, dict]], outcomes: list[dict], validate: bool = False, judge=None,
+    prefix_start: int | None = None,
 ) -> None:
     """An item's edited runs (tags, edits) in batches: the answer read, and with `validate` 8 greedy tokens too
-    (judged by `judge(text)`, default suite_v1's judge for the item's answer kind)."""
+    (judged by `judge(text)`, default suite_v1's judge for the item's answer kind). With prefix_start (2026-10-22,
+    write_max --prefix-cache) the answer read reuses the unedited prompt prefix (model.first_logits_prefix)."""
     read_ids = torch.tensor([c["read_ids"]["clean"]], device="cuda")
     gen_ids = torch.tensor([c["ids"]["clean"]], device="cuda")
     span = c["ld_cf"] - c["ld_clean"]
+    pre = model.first_logits_prefix(read_ids, [e for _, e in jobs], prefix_start, BATCH) if prefix_start and not validate else None
     for start in range(0, len(jobs), BATCH):
         chunk = jobs[start : start + BATCH]
         edits = [e for _, e in chunk]
-        _, logits = model.generate_batch(read_ids, 1, edits, first_logits=True)
+        if pre is not None:
+            logits = pre[start : start + BATCH]
+        else:
+            _, logits = model.generate_batch(read_ids, 1, edits, first_logits=True)
         texts = model.generate_batch(gen_ids, 8, edits) if validate else None
         for row, (tags, _) in enumerate(chunk):
             lg = logits[row]

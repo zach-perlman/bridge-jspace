@@ -169,6 +169,54 @@ class Model:
         texts = [self.tokenizer.decode(seq[prompt_len:], skip_special_tokens=True) for seq in out.sequences]
         return (texts, out.logits[0].float()) if first_logits else texts
 
+    @torch.no_grad()
+    def first_logits_prefix(self, ids: torch.Tensor, edits: list[dict[int, Edit]], start: int, rows: int) -> torch.Tensor:
+        """generate_batch(ids, 1, edits, first_logits=True)'s logits [len(edits), vocab] (fp32) for one prompt [1, seq]
+        whose edits all act at positions >= start (2026-10-22, the steering speed-up): the first `start` tokens run once,
+        batched `rows` wide, and their cache (attention KV, and the hybrid models' recurrent and conv state) is reused;
+        each chunk of `rows` edit sets then runs only tokens start.. with every edit's positions shifted by -start.
+        Edits must carry `positions` (write_max's AddRows / SetRows). Equal to the full run up to kernel rounding,
+        checked per model by write_max --check-prefix."""
+        import copy
+
+        seq = ids.shape[1]
+        assert 0 < start < seq, (start, seq)
+        prefix = self.hf(input_ids=ids[:, :start].expand(rows, -1).contiguous(), use_cache=True)
+        cache0 = prefix.past_key_values
+        suffix = ids[:, start:].expand(rows, -1).contiguous()
+        out = []
+        for c0 in range(0, len(edits), rows):
+            chunk = list(edits[c0 : c0 + rows])
+            n = len(chunk)
+            chunk += [{}] * (rows - n)  # padded rows: no edits, outputs dropped
+            shifted = []
+            for row_edits in chunk:
+                se = {}
+                for la, e in row_edits.items():
+                    assert min(e.positions) >= start, (min(e.positions), start)
+                    e2 = copy.copy(e)
+                    e2.positions = [q - start for q in e.positions]
+                    se[la] = e2
+                shifted.append(se)
+
+            def hook_for(layer: int, shifted=shifted):
+                def hook(_module, _args, o):
+                    h = o[0] if isinstance(o, tuple) else o
+                    h = h.clone()
+                    for row, row_edits in enumerate(shifted):
+                        if layer in row_edits:
+                            h[row] = row_edits[layer](h[row].float()).to(h.dtype)
+                    return (h, *o[1:]) if isinstance(o, tuple) else h
+
+                return hook
+
+            layers = sorted({la for row_edits in shifted for la in row_edits})
+            cache = copy.deepcopy(cache0)
+            with _forward_hooks([(self.layers[la], hook_for(la)) for la in layers]):
+                logits = self.hf(input_ids=suffix, past_key_values=cache, use_cache=True, logits_to_keep=1).logits[:, -1].float()
+            out.append(logits[:n])
+        return torch.cat(out)
+
     def surface_ids(self, word: str) -> list[int]:
         return tokens.surface_ids(self.tokenizer, word)
 
