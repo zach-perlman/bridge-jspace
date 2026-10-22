@@ -170,6 +170,26 @@ TARGETS: dict[str, dict[str, Any]] = {
         },
         "frozen_lens_sha256": "323733a9bec124c7a037a6839191bd545eb00d1d47bfffde6b92e1e638117408",
     },
+    # Qwen3.6-27B read with neuronpedia's plain J-lens (n1000) instead of J++: the within-model lens-type control (Dan,
+    # 22 Oct night; Qwen3-32B and OLMo have plain J-lenses only). Same weights; the file exists from repo revision
+    # e166deb5 on (absent at 9fa267f8); sha256 computed on the box.
+    "qwen3.6-27b-jlens": {
+        "repo": "Qwen/Qwen3.6-27B",
+        "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+        "n_layers": 64,
+        "norm_gain": "one_plus_weight",
+        "bos": False,
+        "run_prefix": "qwen36_27b_jlens_",
+        "frozen_lens": "jlens",
+        "lenses": {
+            "jlens": (
+                "neuronpedia/jacobian-lens",
+                "qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt",
+                "e166deb5ad540932100ef803c8c9bcc2a5453694",
+            ),
+        },
+        "frozen_lens_sha256": "1718c8c52dd8a9dad03738d4d625937c1fbba10be325b872ed446c7290fc11e1",
+    },
     # Muse Glimmer 30B (Meta, Apache 2.0; 22 Oct night, Dan): dense, 52 layers, sliding-window (2048) attention with a
     # full-attention layer every 4th, a multimodal checkpoint (MuseGlimmerForConditionalGeneration; the text decoder is
     # hf.model.language_model, transformers' own muse_glimmer), centered RMSNorm with a 1 + weight gain, <|begin_of_text|>.

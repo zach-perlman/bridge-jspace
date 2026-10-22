@@ -34,7 +34,7 @@ PROMPTS = [("The cow's locker is 5. The pig's locker is 3. The hen's locker is 7
 
 @torch.no_grad()
 def main() -> int:
-    from bridge_jspace.knockout import knock_out
+    from bridge_jspace.knockout import FULL, knock_out, layer_kind
     from bridge_jspace.lens import JLens
     from bridge_jspace.model import load_model
 
@@ -71,8 +71,10 @@ def main() -> int:
         all_layers = list(range(pins.N_LAYERS))
         n_heads = model.hf.config.get_text_config().num_attention_heads
         half: list[set[int] | None] = [set(range(n_heads // 2))]
-        for key, heads, dst in (("block_all", None, [last]), ("block_heads", half, [last]), ("block_empty", None, [])):
-            with knock_out(model, all_layers, [src], [dst], heads=heads):
+        full = [la for la in all_layers if layer_kind(model.layers[la]) == FULL]  # heads: softmax-attention layers
+        for key, layers, heads, dst in (("block_all", all_layers, None, [last]), ("block_heads", full, half, [last]),
+                                        ("block_empty", all_layers, None, [])):  # fmt: skip
+            with knock_out(model, layers, [src], [dst], heads=heads):
                 lk = model.hf(input_ids=ids, use_cache=False, logits_to_keep=1).logits[0, -1].float()
             changed = float((lk - logits).abs().max()) > 1e-2
             checks[key].append(not changed if key == "block_empty" else changed)
