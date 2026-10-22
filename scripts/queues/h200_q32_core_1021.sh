@@ -66,3 +66,6 @@ echo "=== Qwen3-32B core (C1 + C2) done $(date -u +%FT%TZ)"
 $PY scripts/c2_narrow.py qwen3_32b_wm2_full2_v1 qwen3_32b_wm2_full2_v1_noguess || echo "=== C2-narrow scoring FAILED"  # appended 2026-10-22 (docs/prereg_replication_1022.md)
 # appended 2026-10-22 (Zach: specificity caveat): the share of the residual each knock-out removes, J-lens vs unembedding
 $PY scripts/removal_size.py --name qwen3_32b_removal_size_v1 --why "Zach (2026-10-22): removal size, J-lens vs unembedding (Qwen3-32B)" --layers 16 24 32 36 40 || echo "=== Qwen3-32B removal size FAILED"
+# appended 2026-10-22: the hand-check packet for this model's C1 and the cross-model table (CPU)
+$PY scripts/verify_c1.py qwen3_32b_full2_ko_v1 L$MID full_v8 $C2 > /dev/null || echo "=== verify packet FAILED"
+$PY scripts/cross_model_summary.py > /dev/null || echo "=== cross-model summary FAILED"

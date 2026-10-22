@@ -66,3 +66,6 @@ echo "=== Muse core (C1 + C2) done $(date -u +%FT%TZ)"
 # appended 2026-10-22 (Zach: specificity caveat): the share of the residual each knock-out removes, J-lens vs unembedding
 BJ_TARGET=qwen3.6-27b $PY scripts/removal_size.py --name removal_size_v1 --why "Zach (2026-10-22): does the unembedding knock-out remove less of the residual than the J-lens one? (27B)" --layers 16 24 32 36 40 || echo "=== 27B removal size FAILED"
 $PY scripts/removal_size.py --name muse30_removal_size_v1 --why "Zach (2026-10-22): removal size, J-lens vs unembedding (Muse, J++)" --layers 13 20 26 29 32 || echo "=== Muse removal size FAILED"
+# appended 2026-10-22: the hand-check packet for this model's C1 and the cross-model table (CPU)
+$PY scripts/verify_c1.py muse30_full2_ko_v1 L$MID full_v8 $C2 > /dev/null || echo "=== verify packet FAILED"
+$PY scripts/cross_model_summary.py > /dev/null || echo "=== cross-model summary FAILED"
