@@ -1,0 +1,111 @@
+{
+  "exp": "statement_positions",
+  "run": "qwen35_9b_d1_topics2_map",
+  "kind": "map",
+  "written_utc": "2026-10-22T18:21:06Z",
+  "why": "D1 doubled (animals, elements, Greek): the map",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "a786b36e40323529bcc3bff1b1a1195848c8940d",
+    "dirty": true
+  },
+  "families": [
+    "PP",
+    "PM"
+  ],
+  "n_per_family": 180,
+  "inputs": {
+    "data/tasks_v2/d1_topics_v2/items.jsonl": "062aac437d8ec6b41f6b352c3ffe3713a09618df30c778f1ccf0f577943bb51e",
+    "results/tasks_v2/qwen35_9b_d1_topics2_competence/items.jsonl": "517bfd1634549fe760439a3af373ce322520f890bdbd7b97ac3f6cf57fa0e2f5"
+  },
+  "tasks": {
+    "set": "d1_topics_v2",
+    "competence": "qwen35_9b_d1_topics2_competence"
+  },
+  "cases": "suite: the first n per family of suite_split/map_A8_v1's cases (read_write's selection; BL/BR/RL/RR and BLR/BRL share scenes); countries: the first n per family of control_split/map_v1's",
+  "sets": "Position sets, per prompt, from character offsets of the generator's own sentences (asserted to tile the context):\n  bind_bridge    the binding statement that states the bridge (bound families: the queried person's)\n  bridge_word    its bridge-entity token(s) alone\n  bind_other     the other persons' binding statements (in B families C also changes X's owner's)\n  lookup_bridge  the bridge's lookup statement (\"The cow's locker is 5.\"; BLR its friend row, BRL its legs row; none\n                 for countries, whose capital is recalled)\n  lookup_x       X's lookup statement (the row C's re-binding points the question to: a copy at the bridge's row\n                 alone cannot redirect the lookup)\n  context        every context token (all statements: the statement route's ceiling)\n  question       suite_split's question group, exactly (the question's tokens after C's changed ones through the end)\n  q_words        question minus final\n  final          the template after the user turn: <|im_end|>, the assistant header, the empty think block, \"Answer:\"\nFor RL, RR and countries R, C changes only the cue in the question, so every statement position precedes C's change:\ncopying C there is an exact no-op (a built-in check). O's change (the lockers / friends / rows / holders of X and Z)\nalso comes after every binding statement in the suite, so O's copy at the binding statements is exactly zero there.",
+  "read": "suite_split's: one forward of the edited clean prompt (a digit's space token appended), the top token's role (b: X's answer, A: the bridge's, other), ld = logit(b) - logit(A), frac = (ld - ld_clean) / (ld_C - ld_clean)",
+  "seeds": {
+    "null": 0,
+    "bootstrap": 0,
+    "random_dictionary": "777 + layer (suite_split's)"
+  },
+  "question": "Where, by position set and layer, does each family carry its bridge (lens-free)?",
+  "layers": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    28
+  ],
+  "layer_grid": {
+    "coarse": [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20,
+      22,
+      24,
+      26,
+      28
+    ],
+    "window": [
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26
+    ]
+  },
+  "sources": {
+    "cf": "C's block output copied at the set (AddRows of h_C - h_clean)",
+    "off": "O's, the same way, where O's delta is non-zero",
+    "rand": "C's delta with each row replaced by a random direction at that row's norm (null_rows, seed 0 + 1e9 x set index + 1e5 x case index + layer)"
+  },
+  "sanity": {
+    "identity": "AddRows of zero at every position (layers: the first and last map layer): no change",
+    "all0": "C's delta at every position at the first map layer: reproduces C's read",
+    "zero_cells": "cells whose positions all precede the first changed token are verified exactly zero and skipped; for the first 5 cases of each cue-only family the zero C copies at the statements are read anyway (exact no-ops)",
+    "validation": "8 greedy tokens for every edit of the first 10 cases per family"
+  },
+  "decision": {
+    "transit": "C's copy gives X's answer in >= 50% of cases and its Wilson 95% lower bound is above the upper bound of every control's change rate (O where non-zero, rand); zero-delta cases count as unchanged",
+    "handoff": "per family and statement set, the last transit layer; per family, the first layer at which the question set is in transit",
+    "fixed": "before the 27B run (the 0.8B smoke checks the code path only)"
+  }
+}

@@ -1,0 +1,682 @@
+{
+ "exp": "attn_knockout",
+ "run": "d2_formats_27b",
+ "seed": 0,
+ "k": 3,
+ "groups": [
+  {
+   "key": "path_breaks",
+   "title": "A path statement blocked, the answer lost",
+   "definition": "source on the family's path, all layers (heads grid: every attention layer of a range), unedited read right, edited read wrong",
+   "n_total": 299
+  },
+  {
+   "key": "path_confusion",
+   "title": "Lost to another statement's answer",
+   "definition": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)",
+   "n_total": 697
+  },
+  {
+   "key": "path_survives",
+   "title": "A path statement blocked from the answer site, the answer kept",
+   "definition": "source on the path, destination final or both, all layers, edited read still right",
+   "n_total": 27
+  },
+  {
+   "key": "control_breaks",
+   "title": "A control span blocked, the answer lost (collateral damage)",
+   "definition": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong",
+   "n_total": 12
+  },
+  {
+   "key": "positive_control",
+   "title": "Path statement invisible to everything after it",
+   "definition": "source on the path, destination after, all layers, DeltaNet mode absent (no write, erase or decay at S): any outcome",
+   "n_total": 0
+  }
+ ],
+ "examples": [
+  {
+   "group": "path_breaks",
+   "family": "MP",
+   "item_id": "MP-L0-0092",
+   "prompt": "<|im_start|>user\nTool output from get_picks:\n[{\"name\": \"Diana\", \"pick\": \"Mercury\"}, {\"name\": \"Ella\", \"pick\": \"Saturn\"}, {\"name\": \"Zoe\", \"pick\": \"Mars\"}]\nTool output from get_lockers:\n[{\"item\": \"Mars\", \"locker\": 1}, {\"item\": \"Mercury\", \"locker\": 5}, {\"item\": \"Saturn\", \"locker\": 3}]\nWhich locker belongs to the red planet? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 184,
+     "end": 214,
+     "role": "source"
+    },
+    {
+     "start": 366,
+     "end": 426,
+     "role": "destination"
+    },
+    {
+     "start": 306,
+     "end": 320,
+     "role": "cue"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('{\"item\": \"Mars\", \"locker\": 1}') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "3",
+    "expected": {
+     "H_answer_site": "not 1",
+     "H_relay": "1"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.016,
+    "logp_answer_edited": -1.3519,
+    "dlogp": -1.3359,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9929,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "3",
+     "5"
+    ]
+   },
+   "why": "source on the family's path, all layers (heads grid: every attention layer of a range), unedited read right, edited read wrong"
+  },
+  {
+   "group": "path_breaks",
+   "family": "MP",
+   "item_id": "MP-L0-0116",
+   "prompt": "<|im_start|>user\nTable picks:\n| name | pick |\n|---|---|\n| Mark | spider |\n| Ryan | goose |\n| Kyle | deer |\n\nTable lockers:\n| item | locker |\n|---|---|\n| goose | 6 |\n| spider | 2 |\n| deer | 9 |\nWhich locker belongs to the animal known for spinning webs? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 165,
+     "end": 179,
+     "role": "source"
+    },
+    {
+     "start": 297,
+     "end": 357,
+     "role": "destination"
+    },
+    {
+     "start": 217,
+     "end": 251,
+     "role": "cue"
+    },
+    {
+     "start": 65,
+     "end": 71,
+     "role": "bridge"
+    },
+    {
+     "start": 167,
+     "end": 173,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('| spider | 2 |') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "2",
+    "edited": "6",
+    "expected": {
+     "H_answer_site": "not 2",
+     "H_relay": "2"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0064,
+    "logp_answer_edited": -2.9926,
+    "dlogp": -2.9861,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9926,
+    "answer": "2",
+    "other_answers_in_prompt": [
+     "6",
+     "9"
+    ]
+   },
+   "why": "source on the family's path, all layers (heads grid: every attention layer of a range), unedited read right, edited read wrong"
+  },
+  {
+   "group": "path_breaks",
+   "family": "PP",
+   "item_id": "PP-L0-0043",
+   "prompt": "<|im_start|>user\nTool output from get_picks:\n[{\"name\": \"Emma\", \"pick\": \"frog\"}, {\"name\": \"Mia\", \"pick\": \"fly\"}, {\"name\": \"James\", \"pick\": \"bee\"}]\nTool output from get_lockers:\n[{\"item\": \"fly\", \"locker\": \"three\"}, {\"item\": \"bee\", \"locker\": \"four\"}, {\"item\": \"frog\", \"locker\": \"one\"}]\nWhich locker belongs to Emma's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 247,
+     "end": 281,
+     "role": "source"
+    },
+    {
+     "start": 364,
+     "end": 424,
+     "role": "destination"
+    },
+    {
+     "start": 307,
+     "end": 318,
+     "role": "cue"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('{\"item\": \"frog\", \"locker\": \"one\"}') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "3",
+    "expected": {
+     "H_answer_site": "not 1",
+     "H_relay": "1"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.014,
+    "logp_answer_edited": -2.4205,
+    "dlogp": -2.4065,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9849,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "3",
+     "4"
+    ]
+   },
+   "why": "source on the family's path, all layers (heads grid: every attention layer of a range), unedited read right, edited read wrong"
+  },
+  {
+   "group": "path_confusion",
+   "family": "PP",
+   "item_id": "PP-L0-0202",
+   "prompt": "<|im_start|>user\nTable picks:\n| name | pick |\n|---|---|\n| Alice | lithium |\n| Beth | helium |\n| Lily | oxygen |\n\nTable lockers:\n| item | locker |\n|---|---|\n| lithium | five |\n| helium | one |\n| oxygen | seven |\nWhich locker belongs to Beth's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 175,
+     "end": 191,
+     "role": "source"
+    },
+    {
+     "start": 292,
+     "end": 352,
+     "role": "destination"
+    },
+    {
+     "start": 235,
+     "end": 246,
+     "role": "cue"
+    },
+    {
+     "start": 85,
+     "end": 91,
+     "role": "bridge"
+    },
+    {
+     "start": 177,
+     "end": 183,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('| helium | one |') directly at every attention layer; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "5",
+    "expected": {}
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0068,
+    "logp_answer_edited": -3.1766,
+    "dlogp": -3.1699,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "5",
+     "7"
+    ]
+   },
+   "why": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)"
+  },
+  {
+   "group": "path_confusion",
+   "family": "MP",
+   "item_id": "MP-L0-0132",
+   "prompt": "<|im_start|>user\nMaria picked Venus. The locker of Neptune is two. Will picked Neptune. The locker of Mercury is five. The locker of Venus is three. Ella picked Mercury.\nWhich locker belongs to the smallest planet? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 87,
+     "end": 118,
+     "role": "source"
+    },
+    {
+     "start": 170,
+     "end": 259,
+     "role": "destination"
+    },
+    {
+     "start": 194,
+     "end": 213,
+     "role": "cue"
+    },
+    {
+     "start": 102,
+     "end": 109,
+     "role": "bridge"
+    },
+    {
+     "start": 161,
+     "end": 168,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question tokens cannot read the lookup span ('The locker of Mercury is five.') directly at every attention layer; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "5",
+    "edited": "3",
+    "expected": {}
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.6964,
+    "logp_answer_edited": -1.0908,
+    "dlogp": -0.3945,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "5",
+    "other_answers_in_prompt": [
+     "2",
+     "3"
+    ]
+   },
+   "why": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)"
+  },
+  {
+   "group": "path_confusion",
+   "family": "MP",
+   "item_id": "MP-L0-0119",
+   "prompt": "<|im_start|>user\nTool output from get_picks:\n[{\"name\": \"Ella\", \"pick\": \"Mercury\"}, {\"name\": \"Sara\", \"pick\": \"Jupiter\"}, {\"name\": \"Ivy\", \"pick\": \"Mars\"}]\nTool output from get_lockers:\n[{\"item\": \"Jupiter\", \"locker\": \"seven\"}, {\"item\": \"Mercury\", \"locker\": \"nine\"}, {\"item\": \"Mars\", \"locker\": \"two\"}]\nWhich locker belongs to the smallest planet? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 223,
+     "end": 262,
+     "role": "source"
+    },
+    {
+     "start": 298,
+     "end": 387,
+     "role": "destination"
+    },
+    {
+     "start": 322,
+     "end": 341,
+     "role": "cue"
+    }
+   ],
+   "condition": "the question tokens cannot read the lookup span ('{\"item\": \"Mercury\", \"locker\": \"nine\"}') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "9",
+    "edited": "2",
+    "expected": {
+     "H_answer_site": "9",
+     "H_relay": "not 9"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.3444,
+    "logp_answer_edited": -0.9746,
+    "dlogp": -0.6302,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9791,
+    "answer": "9",
+    "other_answers_in_prompt": [
+     "2",
+     "7"
+    ]
+   },
+   "why": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)"
+  },
+  {
+   "group": "path_survives",
+   "family": "PP",
+   "item_id": "PP-L0-0128",
+   "prompt": "<|im_start|>user\nThe locker of carbon is 1. Ivan picked carbon. Hugo picked hydrogen. The locker of nitrogen is 3. Nina picked nitrogen. The locker of hydrogen is 4.\nWhich locker belongs to Ivan's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 43,
+     "role": "source"
+    },
+    {
+     "start": 247,
+     "end": 307,
+     "role": "destination"
+    },
+    {
+     "start": 190,
+     "end": 201,
+     "role": "cue"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "bridge"
+    },
+    {
+     "start": 56,
+     "end": 62,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('The locker of carbon is 1.') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H_answer_site": "not 1",
+     "H_relay": "1"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0053,
+    "logp_answer_edited": -0.0115,
+    "dlogp": -0.0062,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9847,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "3",
+     "4"
+    ]
+   },
+   "why": "source on the path, destination final or both, all layers, edited read still right"
+  },
+  {
+   "group": "path_survives",
+   "family": "MP",
+   "item_id": "MP-L0-0142",
+   "prompt": "<|im_start|>user\nTable picks:\n| name | pick |\n|---|---|\n| Emma | lithium |\n| Adam | carbon |\n| Lucy | oxygen |\n\nTable lockers:\n| item | locker |\n|---|---|\n| carbon | 5 |\n| oxygen | 6 |\n| lithium | 4 |\nWhich locker belongs to the element diamonds are made of? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 155,
+     "end": 169,
+     "role": "source"
+    },
+    {
+     "start": 303,
+     "end": 363,
+     "role": "destination"
+    },
+    {
+     "start": 225,
+     "end": 257,
+     "role": "cue"
+    },
+    {
+     "start": 84,
+     "end": 90,
+     "role": "bridge"
+    },
+    {
+     "start": 157,
+     "end": 163,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('| carbon | 5 |') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H_answer_site": "not 5",
+     "H_relay": "5"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0085,
+    "logp_answer_edited": -0.6604,
+    "dlogp": -0.6519,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.994,
+    "answer": "5",
+    "other_answers_in_prompt": [
+     "4",
+     "6"
+    ]
+   },
+   "why": "source on the path, destination final or both, all layers, edited read still right"
+  },
+  {
+   "group": "path_survives",
+   "family": "MP",
+   "item_id": "MP-L0-0159",
+   "prompt": "<|im_start|>user\nThe locker of Mars is 1. The locker of Neptune is 3. The locker of Venus is 5. Lucy picked Venus. Owen picked Neptune. Mia picked Mars.\nWhich locker belongs to the red planet? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 41,
+     "role": "source"
+    },
+    {
+     "start": 237,
+     "end": 297,
+     "role": "destination"
+    },
+    {
+     "start": 177,
+     "end": 191,
+     "role": "cue"
+    },
+    {
+     "start": 31,
+     "end": 35,
+     "role": "bridge"
+    },
+    {
+     "start": 147,
+     "end": 151,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('The locker of Mars is 1.') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H_answer_site": "not 1",
+     "H_relay": "1"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0112,
+    "logp_answer_edited": -0.014,
+    "dlogp": -0.0028,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9831,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "3",
+     "5"
+    ]
+   },
+   "why": "source on the path, destination final or both, all layers, edited read still right"
+  },
+  {
+   "group": "control_breaks",
+   "family": "MP",
+   "item_id": "MP-L0-0201",
+   "prompt": "<|im_start|>user\nThe locker of oxygen is 4. Beth picked nitrogen. The locker of nitrogen is 2. Tara picked oxygen. The locker of hydrogen is 3. Zoe picked hydrogen.\nWhich locker belongs to the element that makes up most of the Sun? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 43,
+     "role": "source"
+    },
+    {
+     "start": 165,
+     "end": 276,
+     "role": "destination"
+    },
+    {
+     "start": 189,
+     "end": 230,
+     "role": "cue"
+    },
+    {
+     "start": 129,
+     "end": 137,
+     "role": "bridge"
+    },
+    {
+     "start": 155,
+     "end": 163,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question tokens cannot read the lookup_off span ('The locker of oxygen is 4.') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "3",
+    "edited": "4",
+    "expected": {
+     "H_answer_site": "3",
+     "H_relay": "3"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -1.0967,
+    "logp_answer_edited": -1.4652,
+    "dlogp": -0.3685,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9697,
+    "answer": "3",
+    "other_answers_in_prompt": [
+     "2",
+     "4"
+    ]
+   },
+   "why": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong"
+  },
+  {
+   "group": "control_breaks",
+   "family": "MP",
+   "item_id": "MP-L0-0201",
+   "prompt": "<|im_start|>user\nThe locker of oxygen is 4. Beth picked nitrogen. The locker of nitrogen is 2. Tara picked oxygen. The locker of hydrogen is 3. Zoe picked hydrogen.\nWhich locker belongs to the element that makes up most of the Sun? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 43,
+     "role": "source"
+    },
+    {
+     "start": 165,
+     "end": 336,
+     "role": "destination"
+    },
+    {
+     "start": 189,
+     "end": 230,
+     "role": "cue"
+    },
+    {
+     "start": 129,
+     "end": 137,
+     "role": "bridge"
+    },
+    {
+     "start": 155,
+     "end": 163,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question and final positions cannot read the lookup_off span ('The locker of oxygen is 4.') directly at every DeltaNet layer; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "3",
+    "edited": "4",
+    "expected": {}
+   },
+   "numbers": {
+    "logp_answer_unedited": -1.0967,
+    "logp_answer_edited": -1.5311,
+    "dlogp": -0.4345,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9753,
+    "answer": "3",
+    "other_answers_in_prompt": [
+     "2",
+     "4"
+    ]
+   },
+   "why": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong"
+  },
+  {
+   "group": "control_breaks",
+   "family": "MP",
+   "item_id": "MP-L0-0201",
+   "prompt": "<|im_start|>user\nThe locker of oxygen is 4. Beth picked nitrogen. The locker of nitrogen is 2. Tara picked oxygen. The locker of hydrogen is 3. Zoe picked hydrogen.\nWhich locker belongs to the element that makes up most of the Sun? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 43,
+     "role": "source"
+    },
+    {
+     "start": 165,
+     "end": 276,
+     "role": "destination"
+    },
+    {
+     "start": 189,
+     "end": 230,
+     "role": "cue"
+    },
+    {
+     "start": 129,
+     "end": 137,
+     "role": "bridge"
+    },
+    {
+     "start": 155,
+     "end": 163,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question tokens cannot read the lookup_off span ('The locker of oxygen is 4.') directly at every DeltaNet layer; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "3",
+    "edited": "4",
+    "expected": {}
+   },
+   "numbers": {
+    "logp_answer_unedited": -1.0967,
+    "logp_answer_edited": -1.4779,
+    "dlogp": -0.3812,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.97,
+    "answer": "3",
+    "other_answers_in_prompt": [
+     "2",
+     "4"
+    ]
+   },
+   "why": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong"
+  }
+ ]
+}
