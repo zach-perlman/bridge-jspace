@@ -169,6 +169,8 @@ def cmd_enqueue(paths: list[Path], allow_dirty: bool = False) -> int:
     ids = [s["id"] for _, s in specs]
     if clash := sorted(taken & set(ids)) or sorted({i for i in ids if ids.count(i) > 1}):
         raise SystemExit(f"job ids are write-once and already used: {clash}")
+    if other := sorted(ids_on_other_boxes(REPO, HOST) & set(ids)):  # logs / drafts are pulled into one folder per id
+        raise SystemExit(f"job ids already used on another queue box (one id, one box): {other}")
     refspecs = [f"{commit}:refs/jobq/{s['id']}" for _, s in specs]
     subprocess.run(["git", "push", "-q", f"{HOST}:{BOX_ROOT}/repo.git", *refspecs], cwd=REPO, check=True)
     who = _git("config", "user.name") or "?"
@@ -195,6 +197,23 @@ def cmd_status(as_json: bool = False) -> int:
     _install_box_script()
     print(_ssh(f"python3 ~/{BOX_ROOT}/jobq.py box-status{' --json' if as_json else ''}"), end="")
     return 0
+
+
+def ids_on_other_boxes(repo: Path, host: str) -> set[str]:
+    """Job ids known from the other boxes' pulled ledgers and queue states (results/jobq/ledger_<host>.jsonl,
+    cache/jobq/queue_state_<host>.json; the older unsuffixed and archive ledgers count as the A100's)."""
+    own = {f"ledger_{host}.jsonl", f"queue_state_{host}.json"}
+    if host == "sesterce-a100x4":  # the A100's older ledgers are its own
+        own |= {"ledger.jsonl", "queue_state.json", "ledger_a100_until_2026-10-21.jsonl", "ledger_seed_a100x4.jsonl"}
+    ids: set[str] = set()
+    for p in sorted((repo / "results" / "jobq").glob("ledger*.jsonl")):
+        if p.name not in own:
+            ids |= {json.loads(x)["id"] for x in p.read_text().splitlines() if x.strip()}
+    for p in sorted((repo / "cache" / "jobq").glob("queue_state*.json")):
+        if p.name not in own:
+            state = json.loads(p.read_text() or "{}")
+            ids |= {r["id"] for s in ("pending", "running", "cancelled") for r in state.get(s, [])}
+    return ids
 
 
 def cmd_pull() -> int:
