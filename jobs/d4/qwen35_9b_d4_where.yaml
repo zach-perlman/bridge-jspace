@@ -1,0 +1,26 @@
+id: qwen35_9b_d4_where
+title: "Where can the lens write a stated bridge? (Qwen3.5-9B, fresh scenes, rules v2 and v2.1)"
+thread: D4
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.6
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/early_push_where.py run --name qwen35_9b_d4_where_smoke --n 1 --scenes fresh --rule v2 --layers 6 8 10 12 14 16 18 20 22 --context-layers 14 16 18 20 22 --v21-min-layer 10 --why "smoke: not a result" && BJ_TARGET=qwen3.5-9b uv run python scripts/early_push_where.py run --name qwen35_9b_d4_where --n 100 --scenes fresh --rule v2 --layers 6 8 10 12 14 16 18 20 22 --context-layers 14 16 18 20 22 --v21-min-layer 10 --why "finding 7 on a second model whose lens passes the gate"
+figures_command: BJ_TARGET=qwen3.5-9b uv run python scripts/early_push_where.py analyze --name qwen35_9b_d4_where --rule v2.1 && BJ_TARGET=qwen3.5-9b uv run python scripts/early_push_where.py figures --name qwen35_9b_d4_where
+question: >-
+  On Qwen3.5-9B, does a lens push at a stated bridge's sentence or word switch recalls but not lookups?
+why_it_matters: >-
+  Finding 7 rests on one model; the 9B's lens passed the gate and its D1 replicated.
+hypotheses:
+  H-around: 'v2.1 (from layer 10 on): recall >= 30%, lookup <= 10%. Prior 0.5'
+  H-no-cell: 'no valid cell. Prior 0.3'
+  H-where: 'the lookup follows (>= 30%). Prior 0.05'
+  inconclusive: 'Prior 0.15'
+decision_rule: >-
+  scripts/early_push_where.py, rule v2 as the main rule and v2.1 reported alongside (both fixed before this run; the 27B's layers scaled by depth x 32/64: grid 6-22, v2.1 from layer 10); both verdicts shown.
+controls:
+- 'a random push of the same size; a push toward an animal not in the scene; the text edits; memory -> prompt and memory -> memory off the path'
+n: '100 fresh animal-suite scenes (seed 1, eligible on the 9B), four families'
+seeds: [0]
+notes: "Dan, 2026-10-22 night (the critic's priorities: the lens claims beyond one model and family first, then the mechanism in less toy settings). Rules fixed before the run."

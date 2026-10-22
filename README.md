@@ -34,7 +34,7 @@ Five open models: Qwen3.6-27B, Qwen3-32B, Qwen3.5-9B, OLMo-3-7B (SFT, DPO, Instr
 **Why it matters.** The lens sees the bridge, but a lookup in the prompt does not use the form the lens sees (findings 2, 7, 8); it reads the answer's sentence late, through attention, choosing it by an order label or the bridge's identity (findings 3-6). If this holds widely, a monitor that reads a model through the J-lens would see what the model recalled but not where in the context it takes its answer from.
 
 **Main caveats.**
-- The lens claims rest on two models of one family. A read-only lens gate (is the bridge in the lens's top 10 at its own sentence, and the other bridge not?) passes on Qwen3.6-27B (95% vs 8%) and Qwen3.5-9B (100% vs 15%) and fails on Qwen3-32B (8% vs 0%). A larger model (Qwen3.5-122B) and another family (Gemma 4) are planned for 23 Oct.
+- The lens claims rest on two models of one family. A read-only lens gate (is the bridge in the lens's top 10 at its own sentence, and the other bridge not?) passes on Qwen3.6-27B (95% vs 8%) and Qwen3.5-9B (100% vs 15%) and fails on Qwen3-32B (8% vs 0%). That read sits almost entirely on the bridge's own word (the best rank is at the word itself in 157-180 of 180 cells): it shows the lens decodes the input word where it stands, not yet that it reads the bridge as a variable. A second gate (v2), read after the word and over the context without any mention of either bridge, runs tonight. A larger model (Qwen3.5-122B) and another family (Gemma 4) are planned for 23 Oct.
 - The scenes are simple: short lists, one-digit answers. Findings 3 and 4 now also hold in markdown tables and JSON tool outputs (Qwen3.6-27B, Qwen3-32B) and, for finding 4, with ~2000 tokens between the list and the question (Qwen3.5-9B; Qwen3.6-27B running).
 - Some splits were chosen after seeing the data; two were then confirmed in advance ([list](#choices-made-after-seeing-the-data)).
 
@@ -148,9 +148,9 @@ Each model is tested only on items it answers right without any edit. All scenes
 
   - The lens-readable part gives 0% of lookups on all four topics. The control passes on 3 of 4, and the split holds on those three.
   - Scenes that write numbers as words ("The locker of the eagle is three.") give the same as digits (lookup 0% and 83-89%; control 35-36%).
-  - The lens names the stated bridge at its own sentence (layer 32: its top word on 62% of items, top 10 on 85%; the other bridge in the top 10 on 5%), and its push writes the lookup no more than a random push (6% vs 6% at 4x). Over the whole context the read is 92%, but there the other bridge, also mentioned, reaches the top 10 on 99-100%: that number says the lens reads mentioned words, not this bridge.
+  - The lens names the stated bridge at its own sentence, mostly at the bridge's word itself (layer 32: its top word on 62% of items, top 10 on 85%; the other bridge in the top 10 on 5%), and its push writes the lookup no more than a random push (6% vs 6% at 4x). Over the whole context the read is 92%, but there the other bridge, also mentioned, reaches the top 10 on 99-100%: that number says the lens reads mentioned words, not this bridge.
 - **Qwen3-32B** on the same scenes is not interpretable: the recall control fails (5% [2, 10]; 0-16% per topic). Its lens does not name the stated bridge at its sentence (top 10 on 6-10%, top word 1-2%), so it cannot test this.
-- **The lens gate** (read-only, 60 scenes, fixed before it ran: the bridge in the lens's top 10 at its own sentence on ≥ 50% of items, the other bridge on ≤ 20%): Qwen3.6-27B passes (95% [86, 98] vs 8%), Qwen3.5-9B passes (100% [94, 100] vs 15%; the top word on 97%), Qwen3-32B fails (8% [4, 18] vs 0%). The gate separates the two known cases.
+- **The lens gate** (read-only, 60 scenes, fixed before it ran: the bridge in the lens's top 10 at its own sentence on ≥ 50% of items, the other bridge on ≤ 20%): Qwen3.6-27B passes (95% [86, 98] vs 8%), Qwen3.5-9B passes (100% [94, 100] vs 15%; the top word on 97%), Qwen3-32B fails (8% [4, 18] vs 0%). The gate separates the two known cases. That read sits almost entirely on the bridge's own word (the best rank is at the word itself in 157-180 of 180 cells): it shows the lens decodes the input word where it stands, not yet that it reads the bridge as a variable. A second gate (v2), read after the word and over the context without any mention of either bridge, runs tonight. The D1 result on the 9B does not depend on it: it has its own recall control (56%), which passes.
 - **Qwen3.5-9B** (its published J++; 180 scenes on animals, elements and Greek letters; the cell chosen by the lens-free map rule at the 27B's layers scaled by depth: the context, layer 16). Pooled verdict: **replicates**. The lens-readable part moves 1% [0, 3] of lookups, the rest 52% [45, 59] (the whole change 56%). For recall the lens-readable part does the work: 56% [48, 63], the rest 11% (clearer than the 27B on these topics, 36% vs 38%).
   - Per topic: elements replicates (lens part 0%, rest 56%, control 63%). Animals and Greek letters formally do not: their rest is 49% against the 50% bar, with the lens part at 0-3% and the controls passing (54%, 48%). The whole change itself moves only 52-54% there.
   - A lens push at that cell writes recall (50-59% at 1x; random 12-14%) but not the lookup (0% at 1x, 5% at 4x; random 4%).
@@ -195,7 +195,7 @@ Each model is tested only on items it answers right without any edit. All scenes
 - The read is spread over attention heads: no single head or layer is needed. Where it sits along the depth differs by model (slide 8).
 - The same in 5 datasets on Qwen3.6-27B, including Python code and sentences in other languages.
 - **On a second draw of scenes**, pre-registered: Qwen3.6-27B 7% right [5, 11] (first draw 9%), Qwen3-32B 3% [2, 6] (first draw 3%); another sentence blocked instead keeps 100%, and on Qwen3.6-27B the DeltaNet layers blocked instead keep 100%.
-- **Second draws on the other three models:** Qwen3.5-9B 1% [1, 3] right (300 items; DeltaNet layers blocked instead: 100%), OLMo 0% [0, 4] (100 items: only countries passed its competence gate), Gemma 22% [17, 27] (300 items; first draw 23%). Another sentence blocked keeps 98-100%. By the pre-registered bar (≤ 20%) Gemma does not replicate: blocking the read drops it to guessing (20%), not below.
+- **Second draws on the other three models:** Qwen3.5-9B 1% [1, 3] right (300 items; DeltaNet layers blocked instead: 100%), OLMo 0% [0, 4] (100 items: only countries passed its competence gate), Gemma 22% [17, 27] (300 items; first draw 23%). Another sentence blocked keeps 98-100%. By the pre-registered bar (≤ 20%) Gemma does not replicate. The bar was set at the guessing rate, so it asked for "below chance" where the expected result is "at chance"; Gemma's interval [17, 27] includes 20%. The rule stays as written; we read Gemma as dropping to guessing, as the other models do or below.
 - **In tables and JSON** (Zach's generator; Qwen3.6-27B, Qwen3-32B): 0-9% right in prose, tables and JSON; another row blocked keeps 98-100%; on Qwen3.6-27B the DeltaNet layers blocked instead keep 98-100%.
 - **With a long context** (the second draw's scenes with ~2000 tokens of neutral sentences between the list and the question; Qwen3.5-9B): 1% [0, 4] right (156 items); the DeltaNet layers blocked instead 100%; another sentence 100%. Qwen3.6-27B is running.
 - Observation, not part of the story: the wrong answers favour the **1st sentence** (Qwen3.6-27B 128 / 56 / 35 / 25 / 19 on sentences 1-5, against 59 / 51 / 51 / 51 / 51 for a uniform choice; Gemma similar; weaker on the other three). We do not read it as a fall-back to the order label: a model may guess with a positional bias anyway, and the control that could separate the two (random damage instead of blocking) was not testable (87% of answers went off the list). Dropped on 22 Oct.
@@ -337,6 +337,8 @@ Each model is tested only on items it answers right without any edit. All scenes
 
   - All 11 valid cells from layer 20 to 36 have lookup 0% (recall 37-70%). At layer 16 (sentence and word, 8x) the lookup moves 29-30%: the layer-16 effect repeats on new scenes, so it is a lead worth a test of its own.
   - The first test's cell (the question's words, layer 20, 8x) repeats: recalled bridges 80% and 85%, stated 0% and 0%.
+- **Where the information goes (a CPU check on the animal suite's map, already opened):** from layer 32 on, a full patch of C's residual at the stated bridge's sentence or word moves 0% of lookups (recall 98% at layers 32-34), while the same patch over the whole context moves 79-94%. By layer 32 the lookup takes the bridge from elsewhere in the context; the open window is layers 20-30.
+- **Tonight, pre-registered (the layer-gap test):** lens push vs the full patch of the residual vs a random push at the bridge's word and sentence, every second layer 12-34, 100 new fresh scenes. If the patch keeps moving lookups for at least 6 layers after the lens push stops (and ≥ 30% at that layer), the lookup's bridge is in the residual there but outside the lens.
 
 **Weak spots**
 - One model, one topic (the animal suite), strong pushes (2-8x a typical change).
@@ -444,7 +446,16 @@ Each model is tested only on items it answers right without any edit. All scenes
 | The late read with ~2000 tokens of filler (Qwen3.5-9B) | Holds; the DeltaNet layers still play no part |
 | Second draws on Qwen3.5-9B, Gemma, OLMo | Finding 5 holds on all three; name vs digit holds (Gemma weaker); the late read holds on 9B and OLMo, Gemma at guessing (22%) |
 
-**Still running (night of 22-23 Oct):** the stated-bridge test with twice the scenes on Qwen3.6-27B (parts, then the lens read and write); the late read with a long context on Qwen3.6-27B.
+**Running and queued (night of 22-23 Oct; Dan's predictions are written before these are opened):**
+
+| Run | What it tests | Findings |
+|---|---|---|
+| The stated-bridge test with twice the scenes, Qwen3.6-27B (parts, the lens read and write) | Finding 2 per topic | 2 |
+| Lens gate v2 on Qwen3.6-27B, Qwen3.5-9B, Qwen3-32B, OLMo-3-7B (its J-lens), Gemma 4 (the base-model J++) | Does the lens read the bridge where its word is not? | 2, 7, 8 |
+| The stated-bridge test on OLMo-3-7B and Gemma 4 (map, parts, the lens read and write) | The lens claim on two other families | 2, 8 |
+| The lens push on Qwen3.5-9B (fresh scenes, both rules, layers scaled by depth) | Finding 7 on a second model | 7 |
+| The layer-gap test, Qwen3.6-27B | Is the lookup's bridge in the residual but outside the lens at layers 20-30? | 7, 8 |
+| The late read with a long context, Qwen3.6-27B, Qwen3-32B, OLMo, Gemma; tables and JSON on Qwen3.5-9B, OLMo, Gemma | Findings 3-4 beyond short lists, all five models | 3, 4 |
 
 **Next**, in order. The J-space claims on more data and models come first.
 
@@ -462,7 +473,7 @@ Each model is tested only on items it answers right without any edit. All scenes
 | 9 | A passage vs a closed book, or TwoHopFact, for C1 and the stated-bridge test | Less toy | Mon-Tue 26-27 |
 | 10 | Write-up and slides | | Wed-Fri 28-30 |
 
-**Decision point.** Qwen3.5-9B passed, so findings 2 and 8 now rest on two models of one family. If the gates fail on Qwen3.5-122B and Gemma's lens cannot be had, they stay within one family. Then the presentation rests on findings 3-5 in tables, JSON and long contexts, with an honest section "the J-space part holds on one model", not on more lens runs.
+**Decision point.** Qwen3.5-9B passed (gate v1; v2 tonight), so findings 2 and 8 now rest on two models of one family. If the gates fail on Qwen3.5-122B and Gemma's lens cannot be had, they stay within one family. Then the presentation rests on findings 3-5 in tables, JSON and long contexts, with an honest section "the J-space part holds on one model", not on more lens runs.
 
 **Dropped on 22 Oct:** porting Mistral-Small-24B and Llama-3.1-8B (breadth for the lens-free findings, not what Neel asked for); the first-sentence bias, version 2; the key-query mechanism; new late-recall topics.
 

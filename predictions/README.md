@@ -12,4 +12,4 @@ One file per day, by the day the batch was set up and run:
 
 Total so far: 52 right, 35 partly, 44 wrong, 7 not decidable, of 138 scored questions (38% right).
 
-**Open:** batch 12 in [2026-10-22_dan.md](2026-10-22_dan.md#batch-12-22-oct-night-the-j-space-claims-on-more-data-and-models-the-mechanism-in-tables-json-and-long-contexts) (11 questions, runs of the night of 22-23 Oct).
+**Open:** batch 12 (opened early at Dan's request; answers count as written after the results) and **batch 13** (5 questions, the runs of the night of 22-23 Oct; answer before they are opened), both in [2026-10-22_dan.md](2026-10-22_dan.md).

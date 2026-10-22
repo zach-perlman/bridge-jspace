@@ -55,7 +55,18 @@ written knowing the old data, so v2 stays the main rule (revised 20:55): both ve
 disagreement is stated as such. v2.1 is written by `analyze --name N --rule v2.1` into <run>/analysis-v2.1-<stamp>/
 (the run's own summary keeps v2).
 
-Stages:  run --name N --why W [--n K] [--scenes map|fresh] [--rule v1|v2]   analyze --name N [--rule v2.1]
+Layer-gap test (22 Oct 23:15, the outside review, before the run; `--patch`): at the stated bridge's word (w) and
+sentence (s), every second layer 12-34, the lens push (4x, 8x), a random push (8x) and the full patch of C's residual
+at those positions (its own size; C rebinds the sentence to X). lens_stop = the first grid layer from which the lens
+push (the larger of 4x and 8x) switches <= 5% of prompt -> prompt lookups at that and every later grid layer;
+patch_stop the same for the patch. At w: H-gap (between the two, the lookup's bridge is in the residual at the word but
+outside the lens) iff patch_stop - lens_stop >= 6 layers and the patch switches >= 30% of lookups (Wilson lower bound
+>= 0.20) at lens_stop; H-no-gap iff patch_stop - lens_stop <= 2; else inconclusive. Valid only if the random push
+switches <= 5% of lookups at every grid layer. Reported: s the same way, the recall (BR) curves, the off-scene push.
+Prior (the review's guess): lens_stop ~18-20, patch_stop ~30; the D1 map's patch at the sentence moves 0% of lookups
+from layer 32 on (d1_map_n80_v1), so patch_stop <= 32 is expected.
+
+Stages:  run --name N --why W [--n K] [--scenes map|fresh] [--rule v1|v2] [--patch]   analyze --name N [--rule v2.1]
          figures --name N
 """
 
@@ -151,6 +162,8 @@ def fresh_cases(tok, cfg: dict) -> tuple[list[dict], dict]:
     line up in one family is dropped in all four, so the families stay on the same scenes."""
     rows = [json.loads(x) for x in (P.RESULTS / cfg["map"] / "cases.jsonl").read_text().splitlines()]
     used = {r["scene"] for r in rows if r["family"] in cfg["families"]}
+    for run in cfg.get("exclude_runs", []):  # scenes an earlier fresh run drew
+        used |= set(json.loads((RESULTS / run / "selection.json").read_text())["scenes"])
     eligible: dict[str, dict[str, dict]] = {}
     for fam in cfg["families"]:
         ok: dict[str, list[bool]] = collections.defaultdict(list)
@@ -160,7 +173,7 @@ def fresh_cases(tok, cfg: dict) -> tuple[list[dict], dict]:
                 ok[r["id"]].append(r["correct"])
         good = {i for i, v in ok.items() if all(v)}
         eligible[fam] = {it["scene"]: it for it in S.load(fam, cfg["wording"]) if it["id"] in good}
-    picked = fresh_scenes({f: set(v) for f, v in eligible.items()}, used, cfg["n"])
+    picked = fresh_scenes({f: set(v) for f, v in eligible.items()}, used, cfg["n"], cfg.get("fresh_seed", FRESH_SEED))
     cases, dropped = [], []
     for s in picked:
         try:
@@ -187,6 +200,40 @@ def cell_valid(cells: dict[tuple, dict[str, str]], key: tuple) -> tuple[bool, di
     bl_rand = cell_rate(cells.get(("BL", *key, "random"), {}))
     valid = all(v[0] <= OFF_PATH_MAX for v in off.values()) and (math.isnan(bl_rand[0]) or bl_rand[0] <= RAND_MAX)
     return valid, off, bl_rand
+
+
+def stop_layer(rates: dict[int, float], hi: float = 0.05) -> int | None:
+    """The first grid layer from which the rate stays <= hi at it and every later layer (None: never)."""
+    grid = sorted(rates)
+    for i, la in enumerate(grid):
+        if all(rates[g] <= hi for g in grid[i:]):
+            return la
+    return None
+
+
+def layer_gap(cells: dict[tuple, dict[str, str]], layers: list[int], sub: str = "w") -> dict:
+    """The layer-gap test (docstring) on BL rows at one subset. Pure."""
+    lens = {la: max(cell_rate(cells.get(("BL", sub, la, sc, "lens"), {}))[0] for sc in (4.0, 8.0)) for la in layers}
+    patch = {la: cell_rate(cells.get(("BL", sub, la, 0.0, "patch"), {}))[0] for la in layers}
+    rnd = {la: cell_rate(cells.get(("BL", sub, la, 8.0, "random"), {}))[0] for la in layers}
+    if any(math.isnan(v) for v in (*lens.values(), *patch.values())):
+        return {"verdict": "no data", "subset": sub}
+    ls, ps = stop_layer(lens), stop_layer(patch)
+    valid = all(v <= RAND_MAX for v in rnd.values() if not math.isnan(v))
+    out = {"subset": sub, "lens_stop": ls, "patch_stop": ps, "valid": valid,
+           "lens": {la: round(v, 4) for la, v in lens.items()}, "patch": {la: round(v, 4) for la, v in patch.items()}}  # fmt: skip
+    if ls is None or ps is None:
+        out["verdict"] = "inconclusive (a curve never settles at <= 5%)"
+        return out
+    at = cell_rate(cells.get(("BL", sub, ls, 0.0, "patch"), {}))
+    if ps - ls >= 6 and at[0] >= 0.30 and at[1] >= 0.20:
+        verdict = "H-gap"
+    elif ps - ls <= 2:
+        verdict = "H-no-gap"
+    else:
+        verdict = "inconclusive"
+    out.update(patch_at_lens_stop=at, verdict=verdict if valid else f"not valid ({verdict})")
+    return out
 
 
 def decide(
@@ -255,6 +302,8 @@ def run_scene(model, lens, scene: list[dict], cfg: dict, k0: int, out: dict) -> 
         r = c["subsets"]["r"]
         c["_ref"] = {la: float((rec[la][1][r] - rec[la][0][r]).norm(dim=-1).pow(2).mean().sqrt()) for la in layers}
         c["_logits"] = logits
+        if cfg.get("patch"):  # the full residual swap clean <- C (token-aligned) at each layer, for the patch rows
+            c["_delta"] = {la: rec[la][1] - rec[la][0] for la in layers}
     ref = {la: math.sqrt(statistics.mean(c["_ref"][la] ** 2 for c in scene)) for la in layers}
     y = offscene_animal(scene[0])
     for i, c in enumerate(scene):
@@ -300,6 +349,11 @@ def run_item(model, lens, c: dict, ref: dict, y: str, cfg: dict, k: int, out: di
                 rows.append(({**tags, "dir": "lens"}, {la: AddRows(lens_vec, p)}))
                 rows.append(({**tags, "dir": "random"}, {la: AddRows(null_rows(lens_vec, gen), p)}))
                 rows.append(({**tags, "dir": "offscene"}, {la: AddRows(EP.push_rows(dirs[la]["offscene"], norms), p)}))
+        if cfg.get("patch"):
+            for sname in ("s", "w"):  # C's residual at the stated bridge's sentence / word, at its own size (scale 0)
+                p = pos[sname]
+                tags = {"kind": "push", "layer": la, "scale": 0.0, "subset": sname, "dir": "patch"}
+                rows.append((tags, {la: AddRows(c["_delta"][la][p], p)}))
     ids = torch.tensor([c["read"]["clean"]], device="cuda")
     for start in range(0, len(rows), BATCH - 1):
         chunk = rows[start : start + BATCH - 1]
@@ -332,7 +386,7 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
                 "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "config": cfg,
                 "inputs": {str(p.relative_to(pins.REPO_ROOT)): sha256_of(p) for p in inputs},
                 "seeds": {"random": f"{SEED} + 1000003 x item index", "offscene": f"Random('{SEED}:<scene>')",
-                          "bootstrap": SEED, **({"fresh_scenes": FRESH_SEED} if cfg["scenes"] == "fresh" else {})},
+                          "bootstrap": SEED, **({"fresh_scenes": cfg.get("fresh_seed", FRESH_SEED)} if cfg["scenes"] == "fresh" else {})},
                 "design": doc.split("Decision rule")[0], "decision": "Decision rule" + doc.split("Decision rule")[1].split("Stages:")[0]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     model = load_model()
@@ -416,6 +470,8 @@ def stage_analyze(name: str, rule: str | None = None) -> None:
                          for (f, s, la, sc, d), v in sorted(cells.items())],
                "edits": [{"family": f, "edit": e, "n": len(v), "to_x": cell_rate(v), "changed": cell_rate(v, "changed")}
                          for (f, e), v in sorted(edits.items())]}  # fmt: skip
+    if cfg.get("patch"):
+        summary["layer_gap"] = {sub: layer_gap(cells, cfg["layers"], sub) for sub in ("w", "s")}
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2, default=str) + "\n")
     lines = [f"# {EXP} / {name} (rule {dec['rule']})", "", f"Items: {counts}", "", f"**Verdict:** {dec['verdict']}", ""]
     if dec.get("primary"):
@@ -428,6 +484,9 @@ def stage_analyze(name: str, rule: str | None = None) -> None:
         g = dec["br_minus_bl"]
         lines += [f"- BR - BL (scene-paired, {dec['n_scenes_paired']} scenes): {100 * g[0]:+.0f} [{100 * g[1]:+.0f}, {100 * g[2]:+.0f}] points", ""]  # fmt: skip
     lines += [f"Selected cells (BR rows only): {len(dec['selected'])}", ""]
+    for sub, g in summary.get("layer_gap", {}).items():
+        lines += [f"**Layer gap ({sub}):** {g['verdict']} (lens_stop {g.get('lens_stop')}, patch_stop {g.get('patch_stop')}); "
+                  f"lookups moved by layer, lens {g.get('lens')}, patch {g.get('patch')}", ""]  # fmt: skip
     if "below_v21" in dec:
         lines += [f"Valid cells below layer {min_layer} (reported, not decisive): "
                   + ("; ".join(f"{d['subset']} L{d['layer']} {d['scale']:g}x: BR {100 * d['br']:.0f}%, BL "
@@ -499,11 +558,17 @@ if __name__ == "__main__":
     ap.add_argument("--why")
     ap.add_argument("--n", type=int, default=DEFAULTS["n"])
     ap.add_argument("--scenes", choices=["map", "fresh"], default=DEFAULTS["scenes"])
+    ap.add_argument("--patch", action="store_true", help="run: add the full patch of the C residual at s and w")
     ap.add_argument("--rule", choices=["v1", "v2", "v2.1"], default=None,
                     help="run: the rule in the config (default v1); analyze: an amendment into a new folder")  # fmt: skip
     ap.add_argument("--layers", type=int, nargs="+", default=None, help="run: the layer grid (default the 27B's)")
     ap.add_argument("--context-layers", type=int, nargs="+", default=None, help="run, with --layers: the c layers")
     ap.add_argument("--v21-min-layer", type=int, default=V21_MIN_LAYER, help="run, with --layers: v2.1's lowest layer")
+    ap.add_argument("--scales", type=float, nargs="+", default=None, help="run: the push sizes (default 1 2 4 8)")
+    ap.add_argument("--fresh-seed", type=int, default=FRESH_SEED, help="run, fresh scenes: the draw's seed")
+    ap.add_argument(
+        "--exclude-runs", nargs="+", default=[], help="run, fresh scenes: also leave out these runs' scenes"
+    )
     a = ap.parse_args()
     if a.stage == "run":
         assert a.why, "run needs --why"
@@ -512,6 +577,12 @@ if __name__ == "__main__":
             assert a.context_layers, "--layers needs --context-layers"
             assert set(a.context_layers) <= set(a.layers), "--context-layers must be in --layers"
             cfg.update(layers=a.layers, context_layers=a.context_layers, v21_min_layer=a.v21_min_layer)
+        if a.patch:
+            cfg["patch"] = True
+        if a.scales:
+            cfg["scales"] = a.scales
+        if a.scenes == "fresh" and (a.fresh_seed != FRESH_SEED or a.exclude_runs):
+            cfg.update(fresh_seed=a.fresh_seed, exclude_runs=a.exclude_runs)
         stage_run(a.name, a.why, cfg)
     elif a.stage == "analyze":
         stage_analyze(a.name, a.rule)

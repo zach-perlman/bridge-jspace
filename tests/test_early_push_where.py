@@ -143,3 +143,35 @@ def test_fresh_scenes_draw():
     assert sorted(got) == ["b", "d"]  # in every family, not used; n capped at the pool
     assert W.fresh_scenes(eligible, set(), 2) == W.fresh_scenes(eligible, set(), 2)  # seeded
     assert len(W.fresh_scenes(eligible, set(), 2)) == 2
+
+
+def _gap_cells(lens: dict, patch: dict, rnd: float = 0.0) -> dict:
+    rates = {}
+    for la in lens:
+        rates[("BL", "w", la, 4.0, "lens")] = lens[la]
+        rates[("BL", "w", la, 8.0, "lens")] = lens[la]
+        rates[("BL", "w", la, 0.0, "patch")] = patch[la]
+        rates[("BL", "w", la, 8.0, "random")] = rnd
+    return _cells(rates, n=100)[0]
+
+
+GRID = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+
+
+@pytest.mark.parametrize(("lens_until", "patch_until", "rnd", "starts"), [
+    (18, 28, 0.0, "H-gap"),  # lens stops at 20, patch at 30: a gap of 10 layers
+    (18, 20, 0.0, "H-no-gap"),  # both stop at 20-22
+    (18, 22, 0.0, "inconclusive"),  # a gap of 4 layers
+    (18, 28, 0.2, "not valid"),  # the random push moves lookups too
+])  # fmt: skip
+def test_layer_gap(lens_until, patch_until, rnd, starts):
+    lens = {la: 0.3 if la <= lens_until else 0.0 for la in GRID}
+    patch = {la: 0.6 if la <= patch_until else 0.0 for la in GRID}
+    g = W.layer_gap(_gap_cells(lens, patch, rnd), GRID)
+    assert g["verdict"].startswith(starts), g
+    assert g["lens_stop"] == lens_until + 2
+
+
+def test_stop_layer_needs_every_later_layer_low():
+    assert W.stop_layer({12: 0.0, 14: 0.3, 16: 0.0}) == 16
+    assert W.stop_layer({12: 0.3, 14: 0.3}) is None

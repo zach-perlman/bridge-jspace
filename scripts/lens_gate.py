@@ -16,6 +16,15 @@ Gate (fixed before the first run): PASS iff at bind_bridge, best over the window
 top 10 on >= 50% of items and X on <= 20% (Wilson intervals reported). Reported, not decisive: top-1, each layer, the
 bridge's word, the context (the old "92%"), digits vs words.
 
+Gate v2 (22 Oct, 23:00, the outside review, before any v2 run). In the first runs the bridge's best rank over its
+sentence sat on the bridge's own word in 166 / 180 (Qwen3.6-27B), 180 / 180 (Qwen3.5-9B) and 157 / 180 (Qwen3-32B)
+cells: the lens decodes the input token where it stands, which shows the lens is not broken, not that it reads the
+bridge as a variable. v2 reads only where the word is not: after_word (the bridge's sentence after its word: in prose
+the closing period) and context_nomention (the context without any token of a mention of the bridge or of X). PASS iff
+at after_word, best over the window's layers, the bridge is in the lens's top 10 on >= 50% of items and X on <= 20%
+(the same bars). An item without an after_word token does not count. Reported: v1 (bind_bridge), context_nomention,
+top-1, each layer.
+
 uv run python scripts/lens_gate.py --name N --tasks-set S --n 60 --lo L --onset O [--why W]
 """
 
@@ -39,17 +48,31 @@ from bridge_jspace.tokens import raw_encoding
 
 EXP = "lens_gate"
 RESULTS = pins.RESULTS_DIR / EXP
-SETS = ("bind_bridge", "bridge_word", "context")
+SETS = ("bind_bridge", "bridge_word", "after_word", "context_nomention", "context")
 GATE_TOP10, FLOOR_TOP10 = 0.50, 0.20
 
 
-def gate(best: dict[str, dict[str, int]], best_x: dict[str, dict[str, int]]) -> dict:
-    """best[set][item] = the bridge's best rank over the window; best_x the same for X. Pure."""
-    b = [r <= 10 for r in best["bind_bridge"].values()]
-    x = [r <= 10 for r in best_x["bind_bridge"].values()]
+def gate(best: dict[str, dict[str, int]], best_x: dict[str, dict[str, int]], key: str = "bind_bridge") -> dict:
+    """best[set][item] = the bridge's best rank over the window; best_x the same for X; v1 key bind_bridge, v2
+    after_word. Pure."""
+    b = [r <= 10 for r in best.get(key, {}).values()]
+    x = [r <= 10 for r in best_x.get(key, {}).values()]
     bt, xt = wilson(sum(b), len(b)), wilson(sum(x), len(x))
     ok = bool(b) and bt[0] >= GATE_TOP10 and xt[0] <= FLOOR_TOP10
-    return {"pass": ok, "bridge_top10": bt, "x_top10": xt, "n": len(b)}
+    return {"pass": ok, "set": key, "bridge_top10": bt, "x_top10": xt, "n": len(b)}
+
+
+def unmentioned(c: dict, offsets: list[tuple[int, int]]) -> tuple[list[int], list[int]]:
+    """after_word (the bridge's sentence after its word) and context_nomention (context tokens that overlap no
+    mention of the bridge or of X), from statement_positions' sets and the rendered prompt's offsets."""
+    import re
+
+    after = [i for i in c["sets"]["bind_bridge"] if i > max(c["sets"]["bridge_word"])]
+    base = c["rendered"].index(c["context_text"])
+    spans = [(base + m.start(), base + m.end()) for w in (c["bridge"], c["cf_bridge"])
+             for m in re.finditer(rf"\b{re.escape(w)}\b", c["context_text"])]  # fmt: skip
+    hit = {i for a, b in spans for i, (s, e) in enumerate(offsets) if e > s and s < b and e > a}
+    return after, [i for i in c["sets"]["context"] if i not in hit]
 
 
 def build(tok, set_name: str, n: int) -> list[dict]:
@@ -60,10 +83,21 @@ def build(tok, set_name: str, n: int) -> list[dict]:
                    key=lambda it: it["scene"])[:n]  # fmt: skip
     out = []
     for it in items:
-        c = {**it, **T.prepare(it, tok), "family": "PP", "rendered": T.render(tok, it), "context_text": it["context"]}
-        enc = raw_encoding(tok, c["rendered"], offsets=True)
-        assert enc["input_ids"] == c["ids"]["clean"], f"{c['id']}: the rendered prompt is not the clean one"
-        c["sets"], _ = SP.position_sets(c, c["rendered"], enc["offset_mapping"])
+        try:  # C or O may not line up in another model's tokenizer (the sets were made with Qwen's): skipped
+            c = {
+                **it,
+                **T.prepare(it, tok),
+                "family": "PP",
+                "rendered": T.render(tok, it),
+                "context_text": it["context"],
+            }
+            enc = raw_encoding(tok, c["rendered"], offsets=True)
+            assert enc["input_ids"] == c["ids"]["clean"], f"{c['id']}: the rendered prompt is not the clean one"
+            c["sets"], _ = SP.position_sets(c, c["rendered"], enc["offset_mapping"])
+            c["sets"]["after_word"], c["sets"]["context_nomention"] = unmentioned(c, enc["offset_mapping"])
+        except AssertionError as e:
+            print("skipped (unaligned):", str(e)[:120])
+            continue
         out.append(c)
     return out
 
@@ -106,6 +140,8 @@ def main() -> int:
         i_ids, x_ids = model.surface_ids(c["bridge"]), model.surface_ids(c["cf_bridge"])
         for s in SETS:
             pos = c["sets"][s]
+            if not pos:  # no token after the bridge word in its sentence: the item does not count for v2
+                continue
             for la in layers:
                 logits = lens.readout(rec[la][pos], la)
                 rows.append({"id": c["id"], "domain": c["domain"], "numbers": c["numbers"], "set": s, "layer": la,
@@ -114,7 +150,7 @@ def main() -> int:
     (out / "rows.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
     summary = summarise(rows, layers)
     (out / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
-    print(json.dumps(summary["gate"]))
+    print(json.dumps(summary["gate_v2"]), json.dumps(summary["gate"]))
     print("wrote", out)
     return 0
 
@@ -140,7 +176,12 @@ def summarise(rows: list[dict], layers: list[int]) -> dict:
     window = {s: {"top1": wilson(sum(v <= 1 for v in best[s].values()), len(best[s])),
                   "top10": wilson(sum(v <= 10 for v in best[s].values()), len(best[s])),
                   "x_top10": wilson(sum(v <= 10 for v in best_x[s].values()), len(best_x[s]))} for s in SETS}  # fmt: skip
-    return {"gate": gate(best, best_x), "window_best": window, "per_layer": per_layer}
+    return {
+        "gate_v2": gate(best, best_x, "after_word"),
+        "gate": gate(best, best_x),
+        "window_best": window,
+        "per_layer": per_layer,
+    }
 
 
 if __name__ == "__main__":

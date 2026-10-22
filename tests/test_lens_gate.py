@@ -39,7 +39,16 @@ def test_cases_have_the_bridge_sentence_and_word():
     cases = G.build(tok, "d1_topics_v2", 6)
     assert len(cases) == 6
     for c in cases:
-        word = tok.decode([c["ids"]["clean"][i] for i in c["sets"]["bridge_word"]]).strip()
-        sent = tok.decode([c["ids"]["clean"][i] for i in c["sets"]["bind_bridge"]]).strip()
-        assert word == c["bridge"] and sent.endswith(f"{c['bridge']}.")
+        dec = lambda key, c=c: tok.decode([c["ids"]["clean"][i] for i in c["sets"][key]])  # noqa: E731
+        assert dec("bridge_word").strip() == c["bridge"] and dec("bind_bridge").strip().endswith(f"{c['bridge']}.")
         assert set(c["sets"]["bind_bridge"]) <= set(c["sets"]["context"])
+        assert dec("after_word").strip() == "."  # v2: the sentence after the bridge's word, in prose its period
+        rest = dec("context_nomention")
+        assert c["bridge"] not in rest.split() and c["cf_bridge"] not in rest.split()
+        assert set(c["sets"]["context_nomention"]) < set(c["sets"]["context"])
+
+
+def test_gate_v2_reads_after_the_word():
+    best = {"bind_bridge": {"a": 1, "b": 1}, "after_word": {"a": 50, "b": 50}}
+    x = {"bind_bridge": {"a": 99, "b": 99}, "after_word": {"a": 99, "b": 99}}
+    assert G.gate(best, x)["pass"] and not G.gate(best, x, "after_word")["pass"]

@@ -1,0 +1,25 @@
+id: gemma4itb_d1_topics2_map
+title: "D1 doubled (Gemma 4 31B-it): competence and the map"
+thread: D1
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 2.0
+depends_on:
+- gemma4itb_lens_gate_v2
+command: >-
+  BJ_TARGET=gemma-4-31b-it-baselens uv run python scripts/tasks_v2.py competence --set d1_topics_v2 --name gemma4itb_d1_topics2_competence --why "D1 on another family: scenes right on every prompt" && BJ_TARGET=gemma-4-31b-it-baselens uv run python scripts/statement_positions.py map --name gemma4itb_d1_topics2_smoke --families PP PM --n 3 --layers 30 34 --tasks-set d1_topics_v2 --tasks-competence gemma4itb_d1_topics2_competence --why "smoke: not a result" && BJ_TARGET=gemma-4-31b-it-baselens uv run python scripts/statement_positions.py map --name gemma4itb_d1_topics2_map --families PP PM --n 180 --tasks-set d1_topics_v2 --tasks-competence gemma4itb_d1_topics2_competence --why "D1 on another family: the map"
+question: >-
+  Where is a stated bridge in transit for PP and PM on Gemma 4 31B-it?
+why_it_matters: >-
+  Finding 2 on another family (the paste test with its built-in recall control).
+hypotheses:
+  H-replicates: 'the gate and the control pass and the split replicates. Prior 0.3'
+  H-no-lens: 'the gate or the control fails. Prior 0.5'
+  H-not: 'both pass, the split does not replicate. Prior 0.2'
+decision_rule: >-
+  scripts/d1_verdict.py's map rule at the 27B's layers scaled by depth [30, 41) (fixed before these runs): the decisive cell is PP's statement cell in transit at the coarse layers in that window with the most C flips. Replicates iff there the lens-readable part alone switches <= 0.10 of lookups and the rest >= 0.50, while PM's lens-readable part switches >= 0.30 (the positive control; failing it, or failing the lens gate, means no claim about the lens on this model). Per topic the same verdict on the topic's rows.
+controls:
+- 'O (another pair of picks swapped, off the path); a random direction at each row''s norm; a 25-atom OMP over a random dictionary; PM as the positive control on the same scenes; the lens gate'
+n: '180 scenes (PP and PM), d1_topics_v2, right on every prompt'
+seeds: [0]
+notes: "Dan, 2026-10-22 night (the critic's priorities: the lens claims beyond one model and family first, then the mechanism in less toy settings). Rules fixed before the run."

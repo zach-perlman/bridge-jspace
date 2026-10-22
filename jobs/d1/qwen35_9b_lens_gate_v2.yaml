@@ -1,0 +1,30 @@
+id: qwen35_9b_lens_gate_v2
+title: "Lens gate (Qwen3.5-9B): does the J-lens name a stated bridge at its own sentence?"
+thread: D1
+gpus: 1
+mem_gb: 30
+est_gpu_hours: 0.1
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/lens_gate.py --name qwen35_9b_lens_gate_v2 --tasks-set d1_topics_v2 --n 60 --lo 16 --onset 22
+  --why "the lens gate before lens tests on Qwen3.5-9B: read-only, one clean forward per scene"
+question: >-
+  After the bridge's word in its own sentence (and over the context without any mention), in the stated-bridge window (layers [16, 22)), does Qwen3.5-9B's J-lens put the bridge
+  in its top 10, and the other bridge X (mentioned elsewhere) not?
+why_it_matters: >-
+  Every lens claim (findings 2, 7, 8) rests on Qwen3.6-27B. A lens that does not name the stated bridge where it is
+  stated cannot test whether the lookup uses the lens-readable form; D1 and D4 on such a model say nothing about the
+  lens. The old "92%" read was over the whole context, where X is mentioned too (X top-10 99-100% on the 27B).
+hypotheses:
+  H-pass: 'v2 passes. Prior 0.5 (v1 passed: 100% vs 15%, at the word)'
+decision_rule: >-
+  scripts/lens_gate.py gate v2 (fixed 22 Oct 23:00 before any v2 run; the outside review found the v1 read sat on the
+  bridge word itself in 157-180 of 180 cells): PASS iff at after_word (the bridge's sentence after its word; in prose
+  the period), best over the window's coarse layers, the bridge is in the lens's top 10 on >= 50% of items and X on
+  <= 20%. Reported, not decisive: v1 (the whole sentence), context_nomention (the context without any mention of the
+  bridge or X), top-1, each layer.
+controls:
+- 'X, the other bridge, mentioned elsewhere in the same context (the floor); the 27B and Qwen3-32B as known pass / fail'
+n: '60 PP scenes of d1_topics_v2 (the first in scene order; animals, elements, Greek letters)'
+seeds: [23]
+notes: "Dan, 2026-10-22 night (outside review: before any lens run on a new model, a cheap read-only check whether its lens names the stated bridge). Not opened before Dan predicts."
