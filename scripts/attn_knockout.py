@@ -74,6 +74,11 @@ Batch 3 grids (manifest --grid; pointer sets). heads (pointer_v1): attention onl
   attention.jsonl: the unedited attention of each head to each statement (pointer readout). code_readers
   (code_pointer_v1): the answer's dict entry hidden from one code line or a union of lines, all layers. Rules and
   intervals: BATCH3_RULES, INTERVALS (entity-cluster bootstrap within domain; written into the manifest).
+
+tasks_v2 (--dataset tasks_v2 --tasks-set S --competence R [--formats prose table] [--level 0]; 2026-10-22, the trimmed
+  bank): Zach's two-step words MP, MM, PP, PM in the places of RL, RR, BL, BR (tasks_case): the bridge's locker
+  statement (a sentence, or a table row) and, for PP and PM, the queried person's pick statement, each with a same-length
+  off-path statement; PART_SOURCES on the locker statement; n scenes per (topic, format) cell and family.
 """
 
 from __future__ import annotations
@@ -103,6 +108,7 @@ from bridge_jspace.tokens import raw_encoding
 from bridge_jspace.utils import progress
 from scripts import exp09_bind_recall as E
 from scripts import suite_v1 as S
+from scripts import tasks_v2 as T
 from scripts.exp03_brew_swaps import write_jsonl
 
 EXP = "attn_knockout"
@@ -129,6 +135,10 @@ PATH = {  # sources on each family's path
     "BRL": ("lookup", "binding"),
     "country-R": (),
     "country-B": ("binding",),
+    "MP": ("lookup",),  # tasks_v2's two-step words (TASKS_FAMILIES), as RL, RR, BL, BR
+    "MM": (),
+    "PP": ("lookup", "binding"),
+    "PM": ("binding",),
 }
 SWEEP = {  # --sweep path: path sources and their controls; RR and country-R mirror RL and country-B
     "BL": ("lookup", "lookup_off", "binding", "binding_off"),
@@ -139,6 +149,10 @@ SWEEP = {  # --sweep path: path sources and their controls; RR and country-R mir
     "BRL": ("lookup", "lookup_off", "binding", "binding_off"),
     "country-R": ("binding", "binding_off"),
     "country-B": ("binding", "binding_off"),
+    "MP": ("lookup", "lookup_off"),
+    "MM": ("lookup", "lookup_off"),
+    "PP": ("lookup", "lookup_off", "binding", "binding_off"),
+    "PM": ("binding", "binding_off"),
 }
 SUITE_MAP, COUNTRY_MAP = "map_A8_v1", "map_v1"  # suite_split's and control_split's case samples
 SPAN_SEED, BOOT_SEED, N_BOOT, EXAMPLE_SEED = 0, 0, 2000, 0
@@ -196,10 +210,11 @@ def finish_case(base: dict, tok, text: str, statements: dict, alts: dict, q_star
 
 def _complete_case(
     base: dict, tok, text: str, enc: tuple, named_sources: tuple, rng: random.Random, region: list[int],
-    forbidden: set[int], q_start: int, ctx_tok: list[int],
+    forbidden: set[int], q_start: int, ctx_tok: list[int], content_end: int | None = None,
 ) -> dict:  # fmt: skip
     """The shared tail of a case: the random span (inside `region`, of the main statement's length, overlapping no
-    `forbidden` token and never exactly a named statement), the trailing tokens, the destinations and checks."""
+    `forbidden` token and never exactly a named statement), the trailing tokens, the destinations and checks.
+    content_end: where the user content ends (default: after chat.QUESTION_INSTRUCTION; tasks_v2 asks for a digit)."""
     ids, offsets, prompt = enc
     sources, texts, flags = named_sources
     length = len(sources.get("lookup", sources.get("binding", [])))
@@ -211,7 +226,8 @@ def _complete_case(
     ]
     p = rng.choice(starts)
     sources["random"], texts["random"] = list(range(p, p + length)), tok.decode(ids[p : p + length])
-    content_end = chat.content_end(text, q_start)  # the template's turn end (chat) or "\nAnswer:" (raw) begins here
+    if content_end is None:  # the template's turn end (chat) or "\nAnswer:" (raw) begins here
+        content_end = chat.content_end(text, q_start)
     question = token_span(offsets, q_start, content_end)
     anchor = max(sources.get("lookup", sources.get("binding", [])))
     trailing = [t for t in range(anchor + 1, anchor + 1 + CONV_REACH) if t < min(question)]
@@ -460,6 +476,190 @@ def build_pointer_cases(tok, dataset: str, families: list[str], domains: list[st
         for s in picked:
             cases += [pointer_case(by_scene[s][f], tok, dataset) for f in rep["families"]]
     return cases, report
+
+
+# ---- tasks_v2 (Zach's generator; the trimmed bank's D2, 2026-10-22) ------------------------------------------------
+
+TASKS = "tasks_v2"
+# two-step words on one scene's picks and lockers, in the suite's places: memory → prompt (RL), memory → memory (RR),
+# prompt → prompt (BL), prompt → memory (BR); a scene carries MP and MM, or PP and PM (tasks_v2.groups_of)
+TASKS_FAMILIES = ("MP", "MM", "PP", "PM")
+TASKS_FORMATS = ("prose", "table")  # the formats whose statements tasks_spans locates
+
+
+def _tasks_table(ctx: str, name: str) -> tuple[int, int]:
+    """Char range of one table ('picks', 'lockers') in a table-format context; tables are joined by blank lines."""
+    head = f"Table {name}:\n"
+    a = 0 if ctx.startswith(head) else ctx.index("\n\n" + head) + 2
+    b = ctx.find("\n\n", a)
+    return a, len(ctx) if b < 0 else b
+
+
+def tasks_facts(item: dict) -> dict[str, dict]:
+    """The scene's picks (person -> thing) and lockers (thing -> number): item['scene_facts'] when the set was made
+    with C and O, else read back from the context (Dan, 2026-10-22: Zach's generator stays as it is; Greek letters from
+    a cue get no C, so their memory-started scenes come without scene_facts). Look-alike rows count as picks."""
+    if item.get("scene_facts"):
+        return {k: item["scene_facts"][k] for k in ("pick", "locker")}
+    import re
+
+    ctx, dom = item["context"], T.DOMAINS[item["domain"]]
+    number = {str(n): n for n in range(10)} | {w: n for n, w in enumerate(T.NUMBER_WORDS)}
+    if item["format"] == "prose":
+        lockers = re.findall(r"(?:^| )The locker of (?:the )?([\w-]+) is (\w+)\.", ctx)
+        picks = re.findall(r"(?:^| )([A-Z]\w*) picked (?:the )?([\w-]+)\.", ctx)
+    else:
+        rows = r"^\| ([^|\n]+?) \| ([^|\n]+?) \|$"
+        lockers = re.findall(rows, ctx[slice(*_tasks_table(ctx, "lockers"))], re.M)[1:]  # [0]: the header row
+        picks = re.findall(rows, ctx[slice(*_tasks_table(ctx, "picks"))], re.M)[1:]
+    out = {"pick": dict(picks), "locker": {t: number[v] for t, v in lockers}}
+    assert len(out["pick"]) == len(picks), f"{item['id']}: a person picks twice"
+    assert len(out["locker"]) == len(lockers), f"{item['id']}: a thing has two lockers"
+    assert set(out["locker"]) <= set(dom.values), f"{item['id']}: lockers of things outside {item['domain']}"
+    assert set(out["pick"].values()) <= set(out["locker"]), f"{item['id']}: a pick without a locker"
+    return out
+
+
+def tasks_spans(item: dict) -> dict[str, dict[str, dict[str, tuple[int, int]]]]:
+    """Char spans in item['context'] of each thing's locker statement ('locker' -> thing -> span, and the thing's
+    'name' and the locker's 'value' inside it) and each person's pick statement ('pick' -> person -> span): a sentence
+    in prose ("The locker of the dog is 3."), a row in table ("| dog | 3 |"). Rebuilt from the scene's facts
+    (tasks_facts) with tasks_v2.render_facts' templates; each must occur exactly once (in its table, for rows)."""
+    ctx, fmt = item["context"], item["format"]
+    assert fmt in TASKS_FORMATS, f"{item['id']}: format {fmt}; the adapter reads {TASKS_FORMATS}"
+    dom, facts = T.DOMAINS[item["domain"]], tasks_facts(item)
+
+    def number(n: int) -> str:
+        return T.num(n, item["numbers"])
+
+    def find(s: str, lo: int = 0, hi: int | None = None, row: bool = False) -> int:
+        """The one start of s in ctx[lo:hi] on a statement boundary (a sentence after a space; a row on its own line)."""
+        hi = len(ctx) if hi is None else hi
+        sep = "\n" if row else " "
+        hits = [i for i in range(lo, hi - len(s) + 1) if ctx.startswith(s, i)
+                and (i == 0 or ctx[i - 1] == sep) and (i + len(s) == hi or ctx[i + len(s)] == sep)]  # fmt: skip
+        assert len(hits) == 1, f"{item['id']}: {s!r} found {len(hits)} times"
+        return hits[0]
+
+    out: dict[str, dict[str, dict[str, tuple[int, int]]]] = {"locker": {}, "pick": {}}
+    for t, n in facts["locker"].items():
+        v = number(n)
+        if fmt == "prose":
+            stmt = f"The locker of {T.ref(dom, t)} is {v}."
+            a = find(stmt)
+            name = a + len("The locker of ") + (len("the ") if dom.article else 0)
+            value = a + len(stmt) - 1 - len(v)
+        else:
+            stmt = f"| {t} | {v} |"
+            a = find(stmt, *_tasks_table(ctx, "lockers"), row=True)
+            name, value = a + 2, a + 2 + len(t) + 3
+        assert ctx[name : name + len(t)] == t, f"{item['id']}: {stmt!r}"
+        assert ctx[value : value + len(v)] == v, f"{item['id']}: {stmt!r}"
+        out["locker"][t] = {"span": (a, a + len(stmt)), "name": (name, name + len(t)), "value": (value, value + len(v))}
+    for p, t in facts["pick"].items():
+        stmt = f"{p} picked {T.ref(dom, t)}." if fmt == "prose" else f"| {p} | {t} |"
+        a = find(stmt) if fmt == "prose" else find(stmt, *_tasks_table(ctx, "picks"), row=True)
+        out["pick"][p] = {"span": (a, a + len(stmt))}
+    return out
+
+
+def tasks_case(item: dict, tok) -> dict:
+    """A tasks_v2 two-step item as a case: the bridge's locker statement (lookup) and, in a scene started from a pick
+    (PP, PM), the queried person's pick statement (binding); for each a same-kind statement off the path of the same
+    token length (seeded per scene, so a scene's two words hide the same statements); the locker statement's name and
+    value parts (PART_SOURCES; the value is a digit or a number word, as the scene writes numbers); the random span
+    inside the context, the trailing tokens and the destinations. Confusions: the other things' lockers (… → prompt)
+    or their numbers (… → memory)."""
+    fam, x = item["word"], item["steps"][0]["answer"]  # the first step's answer: the bridge (also without C and O)
+    assert item.get("bridge", x) == x, f"{item['id']}: bridge {item.get('bridge')} vs first step {x}"
+    assert fam in TASKS_FAMILIES, f"{item['id']}: word {fam}"
+    assert item["kind"] == "digit", f"{item['id']}: kind {item['kind']}"
+    text = T.render(tok, item)
+    content = f"{item['context']}\n{item['question']} {T.DIGIT_INSTRUCTION}"
+    assert text.count(content) == 1, f"{item['id']}: the user content not once in the prompt"
+    shift = text.index(content)
+    ids, offsets, prompt = encode(tok, text, True)
+    sp, facts = tasks_spans(item), tasks_facts(item)
+    rng = random.Random(f"{SPAN_SEED}:{TASKS}:{item['scene']}")
+    sources: dict[str, list[int]] = {}
+    texts: dict[str, str] = {}
+    flags: dict[str, str] = {}
+
+    def toks(span: tuple[int, int]) -> list[int]:
+        return token_span(offsets, span[0] + shift, span[1] + shift)
+
+    def put(key: str, span: tuple[int, int]) -> None:
+        sources[key], texts[key] = toks(span), item["context"][span[0] : span[1]]
+        assert sources[key], f"{item['id']}: no tokens for {key}"
+
+    def statement_and_off(key: str, spans: dict[str, dict], own: str) -> str:
+        put(key, spans[own]["span"])
+        others = [k for k in sorted(spans) if k != own]
+        same = [k for k in others if len(toks(spans[k]["span"])) == len(sources[key])]
+        off = rng.choice(same) if same else others[0]
+        flags[f"{key}_off"] = "same_length" if same else "length_mismatch"
+        put(f"{key}_off", spans[off]["span"])
+        return off
+
+    off = statement_and_off("lookup", sp["locker"], x)
+    for key, t in (("lookup", x), ("lookup_off", off)):
+        put(f"{key}_name", sp["locker"][t]["name"])
+        put(f"{key}_digit", sp["locker"][t]["value"])
+        assert not set(sources[f"{key}_name"]) & set(sources[f"{key}_digit"]), f"{item['id']}: {key} name and value share a token"  # fmt: skip
+        for part in ("name", "digit"):  # the statement without one part: its other tokens are hidden too
+            drop = set(sources[f"{key}_{part}"])
+            sources[f"{key}_no{part}"] = [i for i in sources[key] if i not in drop]
+            texts[f"{key}_no{part}"] = f"{texts[key]} without {texts[f'{key}_{part}']!r}"
+    if fam[0] == "P":  # the queried person from the question (a look-alike may have picked the same thing)
+        person = item["start_desc"].removesuffix("'s pick")
+        assert facts["pick"].get(person) == x, f"{item['id']}: {person} did not pick {x}"
+        statement_and_off("binding", sp["pick"], person)
+    dom = T.DOMAINS[item["domain"]]
+    if fam[1] == "P":
+        conf = {str(n) for t, n in facts["locker"].items() if t != x}
+    else:
+        conf = {str(dom.values[t]) for t in facts["locker"] if t != x}
+    conf.discard(item["answer"])
+    q_start = shift + len(item["context"]) + 1
+    ctx_tok = token_span(offsets, shift, shift + len(item["context"]))
+    forbidden = set(sources["lookup"]) | set(sources.get("binding", []))
+    base = {"id": item["id"], "family": fam, "scene": item["scene"], "domain": item["domain"], "level": item["level"],
+            "format": item["format"], "numbers": item["numbers"], "question_text": item["question"],
+            "wording": f"{item['format']}/{item['numbers']}", "cut": None, "bridge": x, "cue": item["start_desc"],
+            "answer": item["answer"], "answer_kind": "digit", "conf_answers": sorted(conf),
+            "tok_A": S.answer_token(tok, item["answer"], "digit"),
+            "conf_toks": sorted({S.answer_token(tok, c, "digit") for c in conf})}  # fmt: skip
+    case = _complete_case(base, tok, text, (ids, offsets, prompt), (sources, texts, flags), rng, ctx_tok, forbidden,
+                          q_start, ctx_tok, shift + len(content))  # fmt: skip
+    if item["question"].count(item["start_desc"]) == 1:  # the cue (M) or "<person>'s pick" (P) in the question
+        a = q_start + item["question"].index(item["start_desc"])
+        case["dests"]["cue"] = token_span(offsets, a, a + len(item["start_desc"]))
+    return case
+
+
+def build_tasks_cases(tok, set_name: str, families: list[str], domains: list[str] | None, formats: list[str],
+                      level: int, n: int, eligibility: str, competence: str | None) -> tuple[list[dict], dict]:  # fmt: skip
+    """The first n scenes per (topic, format) cell and family, in file order: with eligibility 'map' from
+    tasks_v2.eligible (scenes right on every prompt of every requested word of their group: whole, steps, C, O; the
+    answer guessable from the other things < 50%), at one level; a group's two words share their scenes."""
+    if eligibility == "map":
+        assert competence, "tasks_v2 eligibility needs a competence run"
+        items = T.eligible(set_name, competence, families, 10**6, level=str(level), domains=domains)
+    else:
+        items = [it for it in T.load(set_name) if it["word"] in families and it["level"] == level
+                 and (not domains or it["domain"] in domains)]  # fmt: skip
+    got: collections.Counter = collections.Counter()
+    cases = []
+    for it in items:
+        cell = (it["domain"], it["format"], it["word"])
+        if it["format"] not in formats or got[cell] >= n:
+            continue
+        got[cell] += 1
+        cases.append(tasks_case(it, tok))
+    report: dict[str, dict[str, int]] = collections.defaultdict(dict)
+    for (d, f, w), k in sorted(got.items()):
+        report[f"{d}/{f}"][w] = k
+    return cases, dict(report)
 
 
 def suite_case(item: dict, tok) -> dict:
@@ -754,17 +954,21 @@ def stage_manifest(args) -> None:
     for label, ls in sets.items():
         if label.startswith("win") and ":" not in label:
             assert sum(kinds[i] == FULL for i in ls) == 2, f"{label}: not 2 full-attention layers"
-    pointer = args.dataset in POINTER_SETS
+    pointer, tasks = args.dataset in POINTER_SETS, args.dataset == TASKS
     if pointer:
         inputs = pointer_files(args.dataset, args.families, args.domains)
         assert inputs, f"no {args.dataset} files for families {args.families}, domains {args.domains}"
         if args.eligibility == "map":
             inputs.append(pins.RESULTS_DIR / args.dataset / args.competence / "items.jsonl")
+    elif tasks:
+        inputs = [T.DATA / args.tasks_set / "items.jsonl"]
+        if args.eligibility == "map":
+            inputs.append(pins.RESULTS_DIR / TASKS / args.competence / "items.jsonl")
     else:
         inputs = [S.data_dir("A") / f"{f}.json" for f in args.families if f in SUITE]
-    if not pointer and any(f in COUNTRIES for f in args.families):
+    if args.dataset == "suite" and any(f in COUNTRIES for f in args.families):
         inputs.append(pins.BIND_RECALL_FILE)
-    if not pointer and args.eligibility == "map":
+    if args.dataset == "suite" and args.eligibility == "map":
         inputs += (
             [pins.RESULTS_DIR / "suite_split" / SUITE_MAP / "cases.jsonl"]
             if any(f in SUITE for f in args.families)
@@ -775,7 +979,11 @@ def stage_manifest(args) -> None:
         "exp": EXP, "run": args.name, "why": args.why,
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "model": pins.model_pin(), "dataset": args.dataset, "domains": args.domains,
-        "competence": args.competence if pointer and args.eligibility == "map" else None,
+        "competence": args.competence if (pointer or tasks) and args.eligibility == "map" else None,
+        "tasks": {"set": args.tasks_set, "formats": args.formats, "level": args.level,
+                  "gate": "tasks_v2.eligible: scenes right on every competence prompt of every requested word of their "
+                  "group (whole, steps, C, O), the answer not guessable from half the other things; first n scenes "
+                  "per (topic, format) cell and family in file order"} if tasks else None,
         "gate": f"pointer sets: a (domain, family, condition) cell enters iff its clean Wilson lower bound >= {GATE_LO} "
         f"in the competence run ({ALIAS_GATE_LO} for alias_pointer_v1's other surface forms); a (domain, condition) "
         "group needs at least one family that looks its answer up; items: every competence prompt right; scenes "
@@ -954,6 +1162,12 @@ def stage_run(name: str) -> None:
     if m.get("dataset", "suite") in POINTER_SETS:
         cases, report = build_pointer_cases(tok, m["dataset"], m["families"], m.get("domains"), m["n_per_family"],
                                             m["eligibility"], m.get("competence"))  # fmt: skip
+        (out_dir / "cases_report.json").write_text(json.dumps(report, indent=2) + "\n")
+        print(json.dumps(report), flush=True)
+    elif m.get("dataset") == TASKS:
+        t = m["tasks"]
+        cases, report = build_tasks_cases(tok, t["set"], m["families"], m.get("domains"), t["formats"], t["level"],
+                                          m["n_per_family"], m["eligibility"], m.get("competence"))  # fmt: skip
         (out_dir / "cases_report.json").write_text(json.dumps(report, indent=2) + "\n")
         print(json.dumps(report), flush=True)
     else:
@@ -1233,8 +1447,17 @@ FAMILY_HINT = {  # what each family asks, in words (displays never show the fami
     "CH2": "key passed through 2 variables, dict value printed",
     "CH3": "key passed through 3 variables, dict value printed",
     "RK": "key recalled from a cue, dict value read",
+    "MP": "thing recalled from a cue, its locker looked up",
+    "MM": "thing recalled from a cue, its number recalled",
+    "PP": "thing picked (stated), its locker looked up",
+    "PM": "thing picked (stated), its number recalled",
 }
 POINTER_HINT = {"RL": "entity recalled from a cue, its locker looked up", "RR": "entity recalled, a fact recalled"}
+
+
+def pointer_like() -> bool:
+    """Displays: the analysed run reads entities by topic (pointer sets, tasks_v2), not the animal suite."""
+    return DATASET in POINTER_SETS or DATASET == TASKS
 
 
 def fam_hint(code: str) -> str:
@@ -1303,9 +1526,9 @@ def plain(text: str) -> str:
 
 def fam_order(code: str) -> tuple[int, int, str]:
     """Reading order: the suite's families; pointer sets: the lookups first (recalled, named, the code forms), the
-    memory → memory null last; English before the other surface forms."""
-    if DATASET in POINTER_SETS:
-        order = ["RL", "DL", "DK", "IX", "CH2", "CH3", "RK", "RR"]
+    memory → memory null last; English before the other surface forms. tasks_v2: MP, PP, PM, MM."""
+    if pointer_like():
+        order = ["RL", "MP", "PP", "DL", "DK", "IX", "CH2", "CH3", "RK", "PM", "RR", "MM"]
         base, _, cond = code.partition("-")
         forms = ["", "same", "xlang", "syn"]
         return (order.index(base) if base in order else len(order), forms.index(cond) if cond in forms else 9, code)
@@ -1531,6 +1754,8 @@ def fig_all_layers(cells: dict, m: dict, stem: Path) -> list[str] | None:
     order = {"lookup": ("RL", "RR", "BL", "BR", "BLR", "BRL"), "binding": ("BL", "BR", "RL", "RR", "BLR", "BRL", "country-B", "country-R")}  # fmt: skip
     if DATASET in POINTER_SETS:  # one statement kind; families in reading order
         order = {"lookup": tuple(sorted({k[0] for k in cells}, key=fam_order))}
+    elif DATASET == TASKS:
+        order = {"lookup": ("MP", "MM", "PP", "PM"), "binding": ("PP", "PM")}
     rows = [(st, [f for f in fams if (f, st, "final", "all", "value") in cells]) for st, fams in order.items()]
     rows = [(st, fams) for st, fams in rows if fams]
     if not rows:
@@ -1579,7 +1804,7 @@ def fig_all_layers(cells: dict, m: dict, stem: Path) -> list[str] | None:
 
 def _depth_panels(cells: dict, prefix: str) -> list[tuple[str, str, str]]:
     panels = DEPTH_PANELS
-    if DATASET in POINTER_SETS:
+    if pointer_like():
         panels = tuple((f, "lookup", "final") for f in sorted({k[0] for k in cells}, key=fam_order))
     return [p for p in panels if any(k[:3] == p and k[3].startswith(prefix) and k[4] == "value" for k in cells)]
 
@@ -2273,7 +2498,7 @@ def write_report(name: str, m: dict, rows: list[dict], cells: dict, cl: dict, fi
     n_items = collections.Counter(r["family"] for r in rows if r["source"] == "none")
     hl = "all"  # the headline's layer set (the batch-3 grids report through write_report_b3)
     head = next((h for h in HEADLINES if (*h, hl, "value") in cells), None)
-    if DATASET in POINTER_SETS:  # the first family that looks its answer up
+    if pointer_like():  # the first family that looks its answer up
         head = next(((f, "lookup", "final") for f in sorted({k[0] for k in cells}, key=fam_order)
                      if path_sources(f) and (f, "lookup", "final", hl, "value") in cells), None)  # fmt: skip
     lines = [f"# {EXP} / {name}: analysis", "",
@@ -3274,7 +3499,7 @@ def stage_figures(name: str) -> None:
     import shutil
 
     EXAMPLE_CASE.clear()
-    if DATASET in POINTER_SETS:  # the captions' Example row: the first case of a family that looks the answer up
+    if pointer_like():  # the captions' Example row: the first case of a family that looks the answer up
         looks = [c for c in cases.values() if path_sources(c["family"]) and "lookup" in c["sources"]]
         # the other-language figure shows a statement in another language; otherwise the first lookup family's case
         # the code-line figure's example blocks the names line (a list-position program); the heads grid's is a case
@@ -3322,7 +3547,7 @@ def stage_figures(name: str) -> None:
             "cuts": fig_cuts(cells, m, out_dir / "cuts"),
             "norm_ratio": fig_norm(rows, m, out_dir / "norm_ratio"),
         }
-        if DATASET in POINTER_SETS:  # per topic, by entity cluster (README reporting standard)
+        if pointer_like():  # per topic, by entity cluster (README reporting standard)
             tc = topic_cells(rows, m, cases)
             cl["topics"], cl["general"], cl["general_named"] = tc, general_claim(tc), general_claim(tc, "DL")
             figs["topics"] = fig_topics(tc, m, out_dir / "topics")
@@ -3463,16 +3688,22 @@ if __name__ == "__main__":
     ap.add_argument("stage", choices=["manifest", "run", "summarise", "analyze", "examples", "figures"])
     ap.add_argument("--name", required=True)
     ap.add_argument("--why")
-    ap.add_argument("--dataset", choices=["suite", *POINTER_SETS], default="suite",
-                    help="suite: the animal suite and countries; or a pointer-style item set (batch 2)")  # fmt: skip
+    ap.add_argument("--dataset", choices=["suite", *POINTER_SETS, TASKS], default="suite",
+                    help="suite: the animal suite and countries; a pointer-style item set (batch 2); or a tasks_v2 "
+                    "set (--tasks-set)")  # fmt: skip
     ap.add_argument("--families", nargs="+", default=None,
                     help="suite: BL BR RL RR BLR BRL country-R country-B (default all); pointer sets: the files' "
-                    "family codes (pointer_v1 / alias: RL DL RR; code: DK IX CH2 CH3 RK RR)")  # fmt: skip
-    ap.add_argument("--domains", nargs="+", default=None, help="pointer sets: the domains to use (default all)")
-    ap.add_argument("--competence", default=None, help="pointer sets: the competence run (default the dataset's)")
-    ap.add_argument("--n", type=int, default=100, help="items per family")
+                    "family codes (pointer_v1 / alias: RL DL RR; code: DK IX CH2 CH3 RK RR); tasks_v2: MP MM PP PM")  # fmt: skip
+    ap.add_argument("--domains", nargs="+", default=None, help="pointer sets, tasks_v2: the topics (default all)")
+    ap.add_argument("--competence", default=None,
+                    help="pointer sets: the competence run (default the dataset's); tasks_v2: required")  # fmt: skip
+    ap.add_argument("--tasks-set", default=None, help="tasks_v2: the data set (data/tasks_v2/<set>)")
+    ap.add_argument("--formats", nargs="+", choices=list(TASKS_FORMATS), default=list(TASKS_FORMATS))
+    ap.add_argument("--level", type=int, default=0, help="tasks_v2: the difficulty level compared")
+    ap.add_argument("--n", type=int, default=100, help="items per family (tasks_v2: per family, topic and format)")
     ap.add_argument("--sources", nargs="+", choices=[*SOURCES, *PART_SOURCES], default=list(SOURCES),
-                    help="PART_SOURCES (pointer_v1 / pointer_v4): the name or the digit of a statement alone")  # fmt: skip
+                    help="PART_SOURCES (pointer_v1 / pointer_v4 / tasks_v2): the name or the digit of a statement "
+                    "alone, or the statement without it")  # fmt: skip
     ap.add_argument("--dests", nargs="+", choices=list(DESTS), default=list(DESTS))
     ap.add_argument(
         "--layers",
@@ -3497,6 +3728,11 @@ if __name__ == "__main__":
         if args.dataset == "suite":
             args.families = args.families or list(FAMILIES)
             assert set(args.families) <= set(FAMILIES), f"suite families are {FAMILIES}"
+        elif args.dataset == TASKS:
+            assert args.tasks_set, "tasks_v2 needs --tasks-set"
+            args.families = args.families or list(TASKS_FAMILIES)
+            assert set(args.families) <= set(TASKS_FAMILIES), f"tasks_v2 families are {TASKS_FAMILIES}"
+            assert args.competence or args.eligibility == "none", "tasks_v2 needs --competence (or --no-eligibility)"
         else:
             assert args.families, "pointer sets need --families"
             args.competence = args.competence or POINTER_COMPETENCE[args.dataset]
