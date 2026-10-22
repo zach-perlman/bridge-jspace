@@ -1,0 +1,67 @@
+{
+  "exp": "early_push_where",
+  "run": "d4_where_smoke_27b",
+  "why": "smoke: the early_push_where path end to end; not a result",
+  "written_utc": "2026-10-22T16:31:05Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "lens": [
+    "jpp",
+    "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  ],
+  "config": {
+    "n": 1,
+    "families": [
+      "BL",
+      "BR",
+      "RL",
+      "RR"
+    ],
+    "map": "map_A8_v1",
+    "wording": "A",
+    "layers": [
+      12,
+      16,
+      20,
+      24,
+      28,
+      32,
+      36,
+      40,
+      44
+    ],
+    "scales": [
+      1.0,
+      2.0,
+      4.0,
+      8.0
+    ],
+    "context_layers": [
+      28,
+      32,
+      36,
+      40,
+      44
+    ]
+  },
+  "inputs": {
+    "results/suite_split/map_A8_v1/cases.jsonl": "b3570104d9f99240f6b3103c0e57648137d017f3fc58044b26281bdc8992d734",
+    "data/suite_v1/BL.json": "1d6bc3264cb78a73cc175f7423923d553a6a1e6201a301a5757d5771cc7cc017",
+    "data/suite_v1/BR.json": "b8aacfe7263aa2a81c0bd0e7b973a2057b61753f7470c22fe1119425facbc7fb",
+    "data/suite_v1/RL.json": "305f5e5b6679ff83466800cd05c019e62ab4d374dd0d3f916e968c8a733cd045",
+    "data/suite_v1/RR.json": "1cedcc460789ba2fee5c2b6f7a0d2302d2e81a9c73acb7853843f54a807fca07"
+  },
+  "seeds": {
+    "random": "0 + 1000003 x item index",
+    "offscene": "Random('0:<scene>')",
+    "bootstrap": 0
+  },
+  "design": "early_push_where (D4 v2, 2026-10-22): can the lens write a STATED bridge where it sits?\n\nBackground (UNVERIFIED; README slide 6): at layer 20 on Qwen3.6-27B, a lens push v_X - v_I (8x) on the question's\nsubject phrase switches bridges the model recalls (memory -> prompt 73%, memory -> memory 84%) but not bridges stated in\nthe prompt (prompt -> prompt 1%, prompt -> memory 2%). The stated bridge was pushed at the question, but it sits at its\nown sentence (\"Clara's pet is a cow.\") until layer ~24 and over the whole context until ~44 (statement_positions\nd1_map_n80_v1). The null for stated bridges may only mean that the push missed the bridge.\n\nDesign. Animal suite (wording A), the four families on the same scenes (suite_split map_A8_v1's cases, the first n per\nfamily), Qwen3.6-27B, J++. Push positions of the unedited prompt:\n  b  the question's subject phrase (\"Clara's pet\", \"the animal known for mooing\"): slide 6's own (replication anchor)\n  s  the bridge's owner sentence (\"Clara's pet is a cow.\"): where a stated bridge sits early\n  w  the bridge's word in that sentence (\"cow\")\n  c  the whole context (every sentence), layers 28-44 only: where a stated bridge sits later\nAt each layer of L (12-44, every 4) and scale of S (1, 2, 4, 8), each pushed position gets scale x the scene's reference\nnorm (early_push's: the RMS of C's copy delta over suite_split's question group, pooled over the scene's families), along\n  lens      v_X - v_I (unit J++ vectors at that layer; X = the bridge of the C prompt)\n  random    a random direction at the same per-position norms (one generator per item)\n  offscene  v_Y - v_I, Y an animal not in the scene whose leg count differs from I's and X's (one Y per scene, seeded)\nText edits as early_push (E-name, E-insert, E-head, E-cue, E-unrelated); E-cue is the C prompt, which for prompt -> *\nrebinds the stated sentence to X: the input-edit limit at s. Read: suite_split's (the top token after 'Answer:' and a\nspace): A (unchanged), b (X's answer), y (Y's legs; recall families only), oc (another in-context answer), other.\nFamilies: prompt -> memory (BR) is the positive control (a stated bridge, a recalled answer: D1 found that the\nlens-readable part of a stated bridge's change does the work there, 66%); prompt -> prompt (BL) is the test; memory ->\nprompt and memory -> memory (RL, RR) are off the path at s and w (their bridge comes from the cue) and the replication\nanchor at b. Only items the model answers right unedited count.\n\n",
+  "decision": "Decision rule (fixed 2026-10-22 before the run; the controls agreed with Dan):\n  select   on BR rows only: cells (subset s or w, layer, scale) where the lens push switches BR to X's answer in >= 30%\n           with Wilson lower bound >= 0.20, and the random push switches <= 5%. Primary cell: the selected cell with the\n           highest BR rate (ties: smaller scale, earlier layer, w before s). No selected cell: the lens does not write a\n           stated bridge at its sentence even for recall, and BL is not interpretable there (reported).\n  valid    at the primary cell, the lens push changes <= 10% of RL and of RR answers (off the path), and the random\n           push switches <= 5% of BL.\n  verdict  H-where (the stated null of slide 6 was a location artefact): BL switched >= 30% with lower bound >= 0.20.\n           H-around (consistent with D1: the lookup does not use the lens-writable form of a stated bridge): BL switched\n           <= 10% and the scene-paired bootstrap of BR - BL has its 2.5th percentile >= 0.20. Otherwise inconclusive.\n  reported, not decisive: every cell; c; b at layer 20, 8x against slide 6 (RL 73%, RR 84%, BL 1%, BR 2%); offscene\n           (BR to Y's legs, BL changed); the edits.\n\n"
+}
