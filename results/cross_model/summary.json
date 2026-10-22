@@ -1,0 +1,99 @@
+[
+  {
+    "model": "Qwen3.6-27B",
+    "lens": "published J++",
+    "c1": {
+      "band": "L32-40",
+      "loss": {
+        "PP": 0,
+        "MP": 0.12871287128712872,
+        "PM": 0.4078947368421053,
+        "MM": 0.4455445544554455,
+        "CP": 0.05555555555555558,
+        "CM": 0.4097222222222222
+      },
+      "gap": 0.36236321000521104,
+      "controls_ok": true,
+      "holds": true,
+      "strict": false,
+      "gap_noguess": 0.34408527979956555,
+      "unembed_gap": 0.0,
+      "keepown_restored": 0.19729206963249518,
+      "keepown_kills": false,
+      "rot_seed_min": [
+        0.9583333333333334,
+        0.9702970297029703
+      ]
+    },
+    "plain_text": {
+      "none": 2.3320883736014366,
+      "top10": 0.3047029972076416,
+      "top10_rot": 0.07429253309965134,
+      "untestable": false
+    },
+    "c2": {
+      "run": "wm2_full2_v2",
+      "graded": false,
+      "mm_best": 0.4027777777777778,
+      "mp_best": 0.3611111111111111,
+      "relative": "inconclusive: sites carry the bridge only partly",
+      "narrow": "HOLDS",
+      "narrow_writes": {
+        "P": [
+          0.005194715461479433,
+          0.18499896878550587
+        ],
+        "C": [
+          0.0,
+          0.17483236258527132
+        ]
+      }
+    }
+  },
+  {
+    "model": "Qwen3-32B",
+    "lens": "our J++ (32 prompts)"
+  },
+  {
+    "model": "Muse Glimmer 30B",
+    "lens": "our J++ (32 prompts)",
+    "plain_text": {
+      "none": 2.4344515204429626,
+      "top10": 0.2731175571680069,
+      "top10_rot": 0.031459465622901917,
+      "untestable": false
+    }
+  },
+  {
+    "model": "Qwen3.5-9B",
+    "lens": "published J++"
+  },
+  {
+    "model": "Gemma 4 31B-it",
+    "lens": "our J++ (64 prompts)",
+    "c1": {
+      "band": "L48-56",
+      "loss": {
+        "PP": 0.9290780141843972,
+        "MP": 0.9347826086956522,
+        "PM": 0.900709219858156,
+        "MM": 0.9347826086956522,
+        "CP": 0.9140625,
+        "CM": 0.859375
+      },
+      "gap": -0.014184397163120588,
+      "controls_ok": true,
+      "holds": false,
+      "strict": false,
+      "gap_noguess": -0.014995756189489784,
+      "unembed_gap": 0,
+      "rot_seed_min": []
+    },
+    "plain_text": {
+      "none": 7.659563899040222,
+      "top10": 9.251921236515045,
+      "top10_rot": 0.011498481035232544,
+      "untestable": true
+    }
+  }
+]
