@@ -76,6 +76,24 @@ MISTRAL_CHAT_TEMPLATE = (
     "{%- endfor %}"
 )
 
+# Muse Glimmer 30B's chat template, edited (applied to the tokenizer's own template, each edit checked to apply once): no
+# "Current date" line (prompts would change daily); reasoning strength "low" instead of the default "high" (levels: low /
+# medium / high / xhigh); the generation prompt opens the answer channel to the user directly ("<|start|>assistant
+# to=user<|message|>"), so the prefill "Answer:" follows as for every target (Qwen: empty think block; Gemma: empty
+# thought channel). Its default system line ("You are a helpful AI assistant." and the knowledge cutoff) is kept.
+MUSE_TEMPLATE_EDITS = [
+    (
+        "    {%- if current_date is defined and current_date -%}\n"
+        "        {{- '\\nCurrent date: ' + current_date + '.' -}}\n"
+        "    {%- elif strftime_now is defined -%}\n"
+        "        {{- '\\nCurrent date: ' + strftime_now('%Y-%m-%d') + '.' -}}\n"
+        "    {%- endif -%}\n",
+        "",
+    ),
+    ("reasoning_strength else 'high' -%}", "reasoning_strength else 'low' -%}"),
+    ("{%- if add_generation_prompt -%}\n    {{- '<|start|>assistant' -}}", "{%- if add_generation_prompt -%}\n    {{- '<|start|>assistant to=user<|message|>' -}}"),
+]
+
 # Part B's target model. BJ_TARGET picks it; the default is Qwen3.6-27B, the model of every run before the Gemma port,
 # whose pins, paths and lenses above stay as they are. Another target loads its own model and lenses, keeps its caches
 # under cache/<target>/ and names its runs with its own prefix. A "local" lens is (path under the repo, sha256): a lens
@@ -248,6 +266,36 @@ TARGETS: dict[str, dict[str, Any]] = {
         "frozen_lens": "jlens",
         "lenses": {"jlens": (SOLAR_LENS_REPO, "gemma-4-31b-it/lens.pt", SOLAR_LENS_REVISION)},
         "frozen_lens_sha256": "d53742a3b15b3a9fe396ca8a58dca6cc6c05b688f2b4c3ccb1595d6d22f8b1ec",
+    },
+    # Muse Glimmer 30B (Meta Superintelligence Lab, released 2026-08; dense, 52 blocks, local/global attention 3:1,
+    # logit softcap with an output multiplier): the second model family from 2026-10-22, replacing Mistral (Zach: a newer
+    # model with a better published lens). Frozen lens: eyes-ml's published plain J-lens (neuronpedia's fitter, 900
+    # WikiText prompts, target = the final block, fit on a byte-identical copy of these weights). Zach: if this lens is not
+    # good enough, consider fitting our own J++. The final norm scales by weight (the blocks' norms by 1 + weight).
+    "muse-glimmer-30b": {
+        "repo": "meta-models/Muse-Glimmer-30B",
+        "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+        "n_layers": 52,
+        "norm_gain": "weight",
+        "bos": True,  # <|begin_of_text|> first; the chat template writes it, raw text gets it prepended
+        "run_prefix": "muse30_",
+        "chat_template_edits": MUSE_TEMPLATE_EDITS,
+        "frozen_lens": "jlens",
+        "lenses": {"jlens": ("eyes-ml/Muse-Glimmer-30B_jacobian-lens", "Muse-Glimmer-30B_jacobian_lens.pt", "71d8434fbd38c8b5d70e1ff1ff2095d5da926c34")},
+        "frozen_lens_sha256": "397dc00807a8f72d9d21feaeedeba7fb9e7c50e5c80efc317f37e8cd9c833300",
+    },
+    # Bridge for Muse (Zach, 2026-10-22): neuronpedia's published plain J-lens for Qwen3.6-27B (1000 WikiText prompts,
+    # the fitter family of Muse's lens): does the 27B's C1 hold with a plain J-lens?
+    "qwen3.6-27b-jlens": {
+        "repo": QWEN_REPO,
+        "revision": QWEN_REVISION,
+        "n_layers": 64,
+        "norm_gain": "one_plus_weight",
+        "bos": False,
+        "run_prefix": "q27jlens_",
+        "frozen_lens": "jlens",
+        "lenses": {"jlens": (LENS_REPO, LENS_FILE, LENS_REVISION)},
+        "frozen_lens_sha256": "1718c8c52dd8a9dad03738d4d625937c1fbba10be325b872ed446c7290fc11e1",
     },
 }
 TARGET = os.environ.get("BJ_TARGET", "qwen3.6-27b")

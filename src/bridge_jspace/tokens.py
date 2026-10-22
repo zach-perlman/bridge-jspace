@@ -17,6 +17,9 @@ def load_tokenizer():
     )
     if "chat_template" in target:  # Mistral: its template without the default system prompt (pins.MISTRAL_CHAT_TEMPLATE)
         tokenizer.chat_template = target["chat_template"]
+    for before, after in target.get("chat_template_edits", []):  # Muse Glimmer (pins.MUSE_TEMPLATE_EDITS)
+        assert tokenizer.chat_template.count(before) == 1, f"chat template edit does not apply once: {before[:60]!r}"
+        tokenizer.chat_template = tokenizer.chat_template.replace(before, after)
     return tokenizer
 
 
