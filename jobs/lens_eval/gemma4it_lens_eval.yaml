@@ -1,0 +1,35 @@
+id: gemma4it_lens_eval
+title: "Lens quality (Gemma 4 31B-it): neuronpedia's base-model J++ and the logit lens on Zach's held-out items"
+thread: LENS
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.6
+depends_on: []
+command: >-
+  cd /ephemeral/ext/jpp_lens && UV_CACHE_DIR=/ephemeral/uv-cache HF_HOME=/ephemeral/hf
+  uv run --no-sync python $OLDPWD/scripts/lens_fit/lens_eval.py --name gemma4it_lens_eval --model google/gemma-4-31B-it
+  --lens hf:neuronpedia/jacobian-lens@e166deb5ad540932100ef803c8c9bcc2a5453694:gemma-4-31b/jpp/Salesforce-wikitext/gemma-4-31B_jpp_lens.pt#ef50bc54b04738e558b7d86847889bb5d60437e45276b1952e73da91b4e9f5fc
+  --correctness-csv results/lens_fit/gemma_it_refit/model_correctness.csv
+figures_command: uv run python -m scripts.lens_table figure results/lens_eval/gemma4it_lens_eval
+question: >-
+  On the items Zach scored his Gemma 4 31B-it J++ on (the J++ recipe's held-out:0 split of his graded CSV), at every
+  layer 0-58, what pass@10 do neuronpedia's J++ fit on the base model and the logit lens get, per eval and macro, next
+  to his J++ (macro .633, pooled lens .503)?
+why_it_matters: >-
+  Zach's card compares his J++ with its pooled lens only; the base-model J++ was scored at layers 24-45 every 3rd only
+  (.376 vs his .528) and the logit lens not in a committed file. With both at 0-58 on his exact items, the Gemma rows
+  of the lens table are complete and comparable across models (lens minus logit).
+hypotheses:
+  H-it: 'agent prior: Zach''s J++ beats the base-model J++ by >= 0.10 macro at 0-58 (+0.15 at 24-45 every 3rd). Prior 0.8'
+  H-logit: 'agent prior: Zach''s J++ beats the logit lens by >= 0.15 macro at 0-58 (his C1-band margin is +0.35; the logit lens catches up in the last layers). Prior 0.6'
+decision_rule: >-
+  Descriptive: pass@10 per eval and macro, item-weighted, as Zach's cards (scripts/lens_table.py recomputes them from
+  the per-layer ranks, which reproduce the recipe's own pass_at_k.csv). Headline at 0-58, also at the C1 band 30-38.
+  His J++ and pooled-lens numbers are read from his rank file (origin/zach/v8-breadth-1021,
+  results/lens_fit/gemma_it_full/eval_ranks.csv), not re-run; the table checks that the item sets are equal.
+controls:
+- 'the logit lens on the same items and layers (in this run)'
+- 'the pooled-lens baseline of Zach''s fit (his rank file, same items); none exists for the published base-model J++'
+n: "Zach's held-out:0 items: the CSV committed at results/lens_fit/gemma_it_refit/model_correctness.csv (sha256 5e575b28..., identical to his gemma_it_full CSV and the Hub card's eval/model_correctness.csv)"
+seeds: [0]
+notes: "Agent, 22 Oct night, for the lens table (scripts/lens_table.py). No grading: Zach's CSV, so the items are his. The base-model lens loads as it is and is labelled with the -it model's name (the recipe's legacy loader checks d_model only). Zach's J++ is not re-run (coordinator: reuse his numbers). Not enqueued by the agent."
