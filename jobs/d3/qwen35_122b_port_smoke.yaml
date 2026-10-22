@@ -1,0 +1,22 @@
+id: qwen35_122b_port_smoke
+title: "Qwen3.5-122B-A10B (FP8): port smoke (hooks, blocking, greedy, lens)"
+thread: D3
+gpus: 1
+mem_gb: 140
+est_gpu_hours: 0.1
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/port_smoke.py --name qwen35_122b_port_smoke
+question: >-
+  Do the residual hooks, attention blocking by layer / head / token group, greedy decoding and the lens work on Qwen3.5-122B-A10B (FP8, MoE)?
+why_it_matters: >-
+  Every 122B result rests on the hooks and the lens working on its FP8 MoE checkpoint; the 122B queue's stop rule.
+hypotheses:
+  H-ok: 'every check passes. Prior 0.8'
+decision_rule: >-
+  scripts/port_smoke.py: every check passes, else the 122B jobs stop (the H200 queue's watchdog pulls the results and deletes the box).
+controls:
+- 'as the same test on the other models'
+n: '2 prompts'
+seeds: [841, 844]
+notes: "Dan, 23 Oct ~00:35 (relayed): the 122B suite on the 2x H200 box after the Qwen3-32B fit, the gate first, then this check. Copied from muse30b_port_smoke; only the target, the names, mem_gb and the wording change. Not opened before Dan's predictions."
