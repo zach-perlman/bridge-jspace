@@ -885,6 +885,97 @@ def f20_olmo_ladder(out: Path) -> None:
     save(fig, out, "f20_olmo_ladder.png")
 
 
+def f21_name_vs_digit(out: Path) -> None:
+    """d2_parts v2 on four models, memory -> prompt: % right with one part of the answer's statement hidden from the
+    question's tokens or from the last tokens, in every layer."""
+    import sys
+
+    sys.path.insert(0, str(ROOT))
+    from scripts import d2_parts as P
+
+    models = [("Qwen3.6-27B", "d2_parts_v2_27b"), ("Qwen3-32B", "qwen3_32b_d2_parts_v2"),
+              ("Qwen3.5-9B", "qwen35_9b_d2_parts_v2"), ("OLMo-3-7B", "olmo3_7b_instruct_d2_parts_v2")]  # fmt: skip
+    bars = [("lookup", "whole statement", INK2, None), ("lookup_name", "name only", RECALL, None),
+            ("lookup_nodigit", "name + rest (all but the digit)", "#9cc1ee", None),
+            ("lookup_digit", "digit only", DIGIT, None), ("lookup_noname", "digit + rest (all but the name)", "#93dcc0", None),
+            ("lookup_off", "control: another statement", SURF, "///")]  # fmt: skip
+    fig, axes = plt.subplots(1, 2, figsize=(14, 3.4), sharey=True, gridspec_kw={"wspace": 0.06})
+    w = 0.13
+    for ax, dest, title in zip(axes, ("question", "final"), ("hidden from the question's tokens", "hidden from the last tokens"),
+                               strict=True):  # fmt: skip
+        style(ax, "y")
+        for i, (_, run) in enumerate(models):
+            d = RES / "attn_knockout" / run
+            cases = {c["id"]: c for c in map(json.loads, (d / "cases.jsonl").read_text().splitlines())}
+            cl = P.cells([json.loads(x) for x in (d / "rows.jsonl").read_text().splitlines()], cases)
+            for j, (src, _, col, hatch) in enumerate(bars):
+                c = cl[("RL", src, dest)]
+                bar_ci(ax, i + (j - 2.5) * w, *c["right"], col, width=w * 0.95, fs=6.5,
+                       edge=INK2 if hatch else None, hatch=hatch)  # fmt: skip
+        ax.axhline(20, color=INK, lw=1, ls=":")
+        ax.set_xticks(range(len(models)), [m for m, _ in models])
+        ax.set_title(title, loc="left", fontsize=9.5)
+        ax.set_ylim(0, 115)
+    axes[0].set_ylabel("% of answers still right")
+    head(axes[0], "The question's tokens take the entity's name; the last tokens take the digit",
+         "memory → prompt: one part of the answer's statement (\"The file on Greece is kept in drawer 1.\") is hidden in "
+         "every layer. Dotted: guessing among the list's 5 digits.", above=16)  # fmt: skip
+    fig.legend([box(c, INK2 if h else None, h) for _, _, c, h in bars], [lab for _, lab, _, _ in bars],
+               loc="lower center", ncol=6, frameon=False, bbox_to_anchor=(0.5, -0.1), fontsize=8.5)  # fmt: skip
+    save(fig, out, "f21_name_vs_digit.png")
+
+
+C2_DIR = RES / "c2_cells" / "step_a_20261022"  # scripts/c2_cells.py select + reveal on the two sweeps
+
+
+def f22_c2_positive_control(out: Path) -> None:
+    """Sharp C2 step a: (left) where the lens push writes recall, by layer and topic (memory -> memory, the larger of
+    1x / 2x), with the selection bar; (right) in the selected cells, lookups of statements 3-5: patch, lens, random,
+    and the same lens push on recall."""
+    sel = json.loads((C2_DIR / "cells.json").read_text())["cells"]
+    rev = json.loads((C2_DIR / "reveal.json").read_text())
+    topics = sorted({(c["run"], c["domain"]) for c in sel})
+    names = {"c2_sweep_v4_27b": "pointer_v4", "c2_sweep_v1_27b": "pointer_v1"}
+    cols = [LOOKUP, RECALL, DIGIT, "#6250d6", "#eda100", INK2]
+    fig, axes = plt.subplots(1, 2, figsize=(13, 3.4), gridspec_kw={"wspace": 0.25, "width_ratios": [1.3, 1]})
+    ax = axes[0]
+    style(ax, "y")
+    for (run, dom), col in zip(topics, cols, strict=False):
+        cs = sorted((c for c in sel if (c["run"], c["domain"]) == (run, dom)), key=lambda c: c["layer"])
+        ys = [100 * max(v["rate"] for v in c["rr_lens"].values()) for c in cs]
+        ax.plot([c["layer"] for c in cs], ys, color=col, lw=2, marker="o", ms=4, label=f"{dom} ({names.get(run, run)})")
+        for c, y in zip(cs, ys, strict=True):
+            if c["selected"]:
+                ax.scatter([c["layer"]], [y], s=90, facecolors="none", edgecolors=INK, lw=1.5, zorder=4)
+    ax.axhline(20, color=INK, lw=1, ls=":")
+    ax.set_xlabel("layer (Qwen3.6-27B has 64)")
+    ax.set_ylabel("% of recalls switched by the lens push")
+    ax.set_ylim(0, 100)
+    ax.legend(frameon=False, fontsize=8, loc="upper right")
+    ax.set_title("Where the lens writes recall (circled: selected cells)", loc="left", fontsize=9.5)
+    ax = axes[1]
+    style(ax, "y")
+    prim = rev.get("primary", {})
+    if "rates" in prim:
+        r = prim["rates"]
+        bars = [("patch", "patch\n(lookups 3-5)", INK2), ("lens", "lens push\n(lookups 3-5)", RECALL),
+                ("random", "random\n(lookups 3-5)", LIGHT), ("rr_lens", "lens push\n(recall)", LOOKUP)]  # fmt: skip
+        for i, (key, _, col) in enumerate(bars):
+            bar_ci(ax, i, r[key]["rate"], r[key]["lo"], r[key]["hi"], col, width=0.6)
+        ax.set_xticks(range(len(bars)), [lab for _, lab, _ in bars], fontsize=8.5)
+        cells = ", ".join(f"{d} L{la}" for _, d, la in rev["primary_cells"])
+        ax.set_title(f"Primary cell ({cells}, 6 entities): {prim['state']}", loc="left", fontsize=9.5)
+    else:
+        ax.text(0.5, 0.5, "no cell selected", transform=ax.transAxes, ha="center", va="center", color=INK2)
+        ax.set_title("Selected cells: none", loc="left", fontsize=9.5)
+    ax.set_ylim(0, 100)
+    ax.set_ylabel("% moved to bridge alt's answer")
+    head(axes[0], "A positive control for 'the lens does not write the lookup': where does the lens write recall at all?",
+         "Qwen3.6-27B, the tokens after the question. Cells are selected on recall alone (lens ≥ 20% with lower bound ≥ "
+         "10%, random ≤ 5%, patch ≥ 20%); only then are the lookups read.", above=16)  # fmt: skip
+    save(fig, out, "f22_c2_positive_control.png")
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", default="figures/readme_1021")
@@ -894,5 +985,5 @@ if __name__ == "__main__":
               f6_slot_counts, f7_pointer_push, f8_shifts, f9_olmo_slot, f10_late_read_models, f11_natural_errors,
               f12_address_models, f13_mechanism, f14_slot_by_target, f15_counts_models,
               f16_slot_by_target_v5, f17_by_layer_models, f18_stages_models, f19_where_bridge,
-              f20_olmo_ladder):  # fmt: skip
+              f20_olmo_ladder, f21_name_vs_digit, f22_c2_positive_control):  # fmt: skip
         f(out)
