@@ -1,0 +1,31 @@
+id: qwen35_9b_abl_rot_v1
+title: "J-space removal on Qwen3.5-9B with its J++: does recall break while lookups survive? (finding 1)"
+thread: D5
+gpus: 1
+est_gpu_hours: 0.4
+mem_gb: 40
+depends_on:
+- qwen35_9b_lens_gate
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/d1_precheck.py --gate qwen35_9b_lens_gate --competence qwen35_9b_d1_topics2_competence --min-topics 0
+  && BJ_TARGET=qwen3.5-9b BJ_FORMAT=chat uv run python scripts/ablate_pilot.py --name qwen35_9b_abl_rot_v1
+  --why "finding 1 (J-space removal) on Qwen3.5-9B with its J++: abl_rot_v1 at the 9B's depth (16 18 20)" --n 100 --layers 16 18 20 --comp-main qwen35_9b_competence_v2
+  --comp-computed none --countries-build --rotated
+question: In Qwen3.5-9B (chat format), does removing the J-space (25-atom OMP over its own J++'s letter-token vectors) at layers 16/18/20 break recall chains (BR, RR) but not prompt lookups (BL, RL), while same-size controls leave every family intact?
+why_it_matters: 'Finding 1 (J-space removed: recall 19-22% right, lookup 99%) rests on Qwen3.6-27B alone (ablate_pilot/abl_rot_v1). The 9B''s read/write half of slide 1 exists (Zach''s qwen35_9b_rw_v1: the lens reads, cannot write); its removal half was never run.'
+hypotheses:
+  H_split: 'J-space removal at 16/18/20 leaves BL/RL >= 90% and drops BR/RR by >= 30 points (copied from olmo3_7b_instruct_abl_rot_chat_v1, H_pre, for one model)'
+  H_none: 'no gap >= 20 (copied from olmo3_7b_instruct_abl_rot_chat_v1, H_none)'
+  prior: 'Prior (Dan''s agent, before any run): H_pre 0.35, H_none 0.3 (the 9B wrote recall weakly) (copied from olmo3_7b_instruct_abl_rot_chat_v1)'
+decision_rule: 'Runs iff the 9B''s J++ passes gate v1 (scripts/d1_precheck.py, --min-topics 0: only the gate matters here). GATE G2: rotated and random-dictionary removal keep accuracy >= 0.90 on every family/step (items right unedited); else the J-space rows are not interpreted (Gemma''s failure mode). Split measure: gap = mean(BL, RL) - mean(BR, RR) accuracy under J-space removal, clean prompts; ''present'' if the paired-bootstrap 95% CI lower bound >= 20 points, ''absent'' if the upper bound <= 10, else ''inconclusive'' (copied from olmo3_7b_instruct_abl_rot_chat_v1). Layers: the 27B''s 32/36/40 at the 9B''s depth, 16/18/20, as Zach''s qwen35_9b_rw_v1. Primary lens (Dan, 23 Oct ~00:30): ours on 64 prompts for Qwen3-32B and OLMo, Zach''s for Gemma and Muse; no silent switch (the 9B: its published J++).'
+controls:
+- 'rotated: the J-space fit turned by a fixed random rotation (exact same norm removed, position by position)'
+- 'random dictionary: same OMP over a random dictionary of the same size'
+- 'hop rows: the last step alone, to separate the step from the chain'
+- 'countries R/B (built now from exp09 eligibility on this model): word answers, a known J-space-heavy family'
+n: 100 per family (BL, BR, RL, RR clean + hop; countries R, B)
+seeds:
+- 777
+- 888
+- 0
+notes: "Mechanical copy of olmo3_7b_instruct_abl_rot_chat_v1 (the 27B's ablate_pilot/abl_rot_v1 on a new target) (Dan, 23 Oct ~01:30: the full J++ lens table); not opened before Dan's predictions. Cases from the 9B's committed animal-suite competence (qwen35_9b_competence_v2, chat; suite_split's own entry for this target); no computed set (TYPO, TRANS) on the 9B. No examples or figures stage: ablate_pilot.py has none (summary.md is the table), as the source."

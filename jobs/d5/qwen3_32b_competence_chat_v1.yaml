@@ -1,0 +1,23 @@
+id: qwen3_32b_competence_chat_v1
+title: "Animal-suite competence of Qwen3-32B in chat format (lens-free; the cases of its finding-1 runs)"
+thread: D5
+gpus: 1
+est_gpu_hours: 0.3
+mem_gb: 75
+depends_on: []
+command: 'BJ_TARGET=qwen3-32b BJ_FORMAT=chat uv run python scripts/suite_v1.py manifest --set main --name
+  qwen3_32b_competence_chat_v1 --why "the animal suite on Qwen3-32B in chat format: the cases of finding 1 (J-space removal, read / write) with our J++" && BJ_TARGET=qwen3-32b
+  BJ_FORMAT=chat uv run python scripts/suite_v1.py competence --name qwen3_32b_competence_chat_v1'
+question: Can Qwen3-32B do the suite's six families in the chat format (the chat template, one user turn, 'Answer:' prefilled, the suite's convention), item by item and step by step?
+why_it_matters: 'Gate G1 (Zach): a model counts only if it is competent in the format its runs use. qwen3_32b_jpp_abl_rot_v1 and qwen3_32b_jpp_rw_dose_v1 take their cases from it. Lens-free, so it runs under the pinned plain target now, before the J++ pin, and does not depend on qwen3_32b_jpp_d4_where (whose own competence step writes qwen3_32b_jpp_competence_chat_v1 from the same weights: the two must agree item for item).'
+hypotheses:
+  H_competent: clean accuracy >= 80% on BL, BR, RL, RR with >= 150 eligible items each (copied from olmo3_7b_instruct_competence_chat_v1)
+  H_format_fail: 'answers with filler (e.g. ''__'', a restated question): clean < 80% from format, not knowledge (hops alone high) (copied from olmo3_7b_instruct_competence_chat_v1)'
+decision_rule: "GATE G1 passes for this model and format iff clean accuracy >= 0.80 (point estimate; Wilson CI reported) on each of BL, BR, RL, RR and >= 150 items eligible (clean, C, O right) per family; otherwise no finding-1 job of this model is interpreted (copied from olmo3_7b_instruct_competence_chat_v1). Primary lens (Dan, 23 Oct ~00:30): ours on 64 prompts for Qwen3-32B and OLMo, Zach's for Gemma and Muse; no silent switch (this job uses no lens)."
+controls:
+- 'each step alone (hop1-hop3): separates knowledge from composition'
+- 'C and O prompts (token-aligned): O must keep the answer, C must change it'
+n: 400 items per family x (clean, C, O, hops), all items
+seeds:
+- 101
+notes: "Mechanical copy of olmo3_7b_instruct_competence_chat_v1 (Dan, 23 Oct ~01:30: the full J++ lens table); not opened before Dan's predictions. No lens gate: it uses no lens (the lens stages that read it are gated). No examples or figures stage: suite_v1.py has none, as the source."
