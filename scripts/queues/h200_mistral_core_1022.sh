@@ -76,3 +76,4 @@ BJ_BATCH=64 $PY scripts/write_max.py --name mistral24_wm2_full2_v1 --why "$WHY: 
   --n 1000 $STEER $W2 && $PY scripts/c2_graded.py mistral24_wm2_full2_v1 | tail -14 \
   && $PY scripts/c2_graded.py mistral24_wm2_full2_v1 --drop-guessable > /dev/null || echo "=== two-step steering FAILED"
 echo "=== Mistral core (C1 + C2) done $(date -u +%FT%TZ)"
+$PY scripts/c2_narrow.py mistral24_wm2_full2_v1 mistral24_wm2_full2_v1_noguess || echo "=== C2-narrow scoring FAILED"  # appended 2026-10-22 (docs/prereg_replication_1022.md)
