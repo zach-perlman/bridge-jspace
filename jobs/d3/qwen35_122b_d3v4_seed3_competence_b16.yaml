@@ -1,0 +1,22 @@
+id: qwen35_122b_d3v4_seed3_competence_b16
+title: "pointer_v4 seed3 competence (Qwen3.5-122B)"
+thread: D3
+gpus: 1
+mem_gb: 135
+est_gpu_hours: 0.5
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_GEN_BATCH=16 uv run python scripts/pointer_v4.py manifest --set seed3 --name qwen35_122b_d3v4_seed3_competence --why "seed 3: a third draw of pointer_v4 (seed 845) for finding 5 on Qwen3.5-122B" && BJ_TARGET=qwen3.5-122b-a10b BJ_GEN_BATCH=16 uv run python scripts/pointer_v4.py competence --name qwen35_122b_d3v4_seed3_competence
+question: >-
+  Does Qwen3.5-122B answer the seed-3 scenes as it answers main's?
+why_it_matters: >-
+  The gate for qwen35_122b_d3v4_seed3_swap.
+hypotheses:
+  H-gate: 'every topic >= 0.85 right (the gate, rounded to 2 decimals). Prior 0.7 (copied from qwen35_9b_d3v4_seed3_competence)'
+decision_rule: >-
+  pointer_v4.py's competence gate, unchanged (GATE_LO 0.85, rounded to two decimals); a topic below it is dropped from the downstream runs.
+controls:
+- 'the off-path statement of the same token length hidden the same way; unedited accuracy; the competence gate (every prompt of the scene right)'
+n: 'pointer_v4 seed3 (300 scenes)'
+seeds: [845]
+notes: "mechanical copy of qwen35_9b_d3v4_seed3_competence for Qwen3.5-122B (Dan, 23 Oct ~00:55: the whole grid on the 2x H200); not opened before Dan's predictions. Primary lens: neuronpedia's published J++ for Qwen3.5-122B-A10B (this job uses no lens). Only BJ_TARGET, the run name and the batch change. Seed 3 for F5 only (the 27B has d3v4_seed3_competence_27b / d3v4_seed3_swap_27b). Memory (Dan, 00:55): FP8 weights ~127 GB of a 143 GB H200, so mem_gb 135 and BJ_GEN_BATCH=16 on the competence reads (pointer_v1's generation and suite_v1.read_answers). Data: data/pointer_v4/seed3/ (pointer_v4.py make_set --set seed3, data seed 845; check_seed3.json; no prompt shared with main or seed2). Batch 16 for the read-heavy steps (Dan, 23 Oct ~01:20: known to fit on one H200, Oct 20); J-space removal at BJ_ABL_BATCH=8 (Zach's 122B run with the random-dictionary control). Requeued as qwen35_122b_d3v4_seed3_competence_b16 in place of qwen35_122b_d3v4_seed3_competence (cancelled before running)."

@@ -1,0 +1,22 @@
+id: qwen35_122b_d3v5_len12_competence_b16
+title: "Finding 5 on 12 sentences, gate: can Qwen3.5-122B answer fresh 12-statement scenes with colour-word answers (seed 873)?"
+thread: D3
+gpus: 1
+mem_gb: 135
+est_gpu_hours: 0.4
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_GEN_BATCH=16 uv run python scripts/pointer_v5.py manifest --set len12 --name qwen35_122b_d3v5_len12_competence
+  --why "finding 5 on lists of 12 sentences (T8) on Qwen3.5-122B: pointer_v5 len12 (seed 873), colour-word answers from
+  16 colours (12 distinct values need more than the 10 digits); every alt and control prompt and each step alone"
+  && BJ_TARGET=qwen3.5-122b-a10b BJ_GEN_BATCH=16 uv run python scripts/pointer_v5.py competence --name qwen35_122b_d3v5_len12_competence
+question: 'Does Qwen3.5-122B answer the fresh 12-statement scenes (colour-word answers)?'
+why_it_matters: 'Gate for qwen35_122b_d3v5_len12_swap: only scenes with every prompt right in both families are patched.'
+hypotheses:
+  H-gate: 'every topic and family >= 85% right on the org prompt (Wilson lower bound). Prior 0.6 (agent''s) (copied from d3v5_len12_competence_27b)'
+decision_rule: 'pointer_v1''s competence rule, unchanged (every prompt of an item right = eligible); colour answers judged by the first of the set''s 16 colour words in the reply''s first line (answer kind colour16).'
+controls:
+- 'each step alone (the recall and the named lookup) for memory -> prompt'
+n: 'all of pointer_v5 len12: 150 scenes per topic (3 topics) x 2 families = 900 items'
+seeds: [873]
+notes: "mechanical copy of d3v5_len12_competence_27b for Qwen3.5-122B (Dan, 23 Oct ~00:55: the whole grid on the 2x H200); not opened before Dan's predictions. Primary lens: neuronpedia's published J++ for Qwen3.5-122B-A10B (this job uses no lens). Only BJ_TARGET, the run name and the batch change. Data: data/pointer_v5/len12/ (per-file seeds 87312, 87332, 87342); Qwen3.5-122B-A10B shares Qwen3.6-27B's tokenizer file (pins), so check_len12.json holds for it. Memory (Dan, 00:55): FP8 weights ~127 GB of a 143 GB H200, so mem_gb 135 and BJ_GEN_BATCH=16 on the competence reads. Batch 16 for the read-heavy steps (Dan, 23 Oct ~01:20: known to fit on one H200, Oct 20); J-space removal at BJ_ABL_BATCH=8 (Zach's 122B run with the random-dictionary control). Requeued as qwen35_122b_d3v5_len12_competence_b16 in place of qwen35_122b_d3v5_len12_competence (cancelled before running)."
