@@ -1,0 +1,37 @@
+id: qwen35_122b_d3b_fit_v2_b16
+title: "D3b on Qwen3.5-122B with its J++: the slot direction vs a J++ lens push"
+thread: D3
+gpus: 1
+mem_gb: 135
+est_gpu_hours: 1.2
+depends_on:
+- qwen35_122b_lens_gate_v2
+- qwen35_122b_d1_topics2_map_r2
+- qwen35_122b_d3v4_competence
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/d1_precheck.py --gate qwen35_122b_lens_gate_v2 --competence qwen35_122b_d1_topics2_competence --min-topics 0
+  && BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/pointer_fit.py run --data pointer_v4 --name qwen35_122b_d3b_fit_smoke_v2
+  --competence qwen35_122b_d3v4_competence --fit-limit 20 --n-test 4 --rr-n 4 --collect-layers 38
+  --steer-layers 38 --scales 1.0 --ks 4 --primary-layer 38
+  --why "smoke: pointer_fit on the 122B with its J++; not a result"
+  && BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/pointer_fit.py run --data pointer_v4 --name qwen35_122b_d3b_fit_v2
+  --competence qwen35_122b_d3v4_competence --n-test 150 --rr-n 50 --collect-layers 28 33 38 43
+  --steer-layers 33 38 43 --scales 1.0 2.0 --ks 4 --primary-layer 38
+  --why "D3b on the 122B with its J++: qwen35_9b_d3b_fit_v2's fit, test items and scales; primary = the 27B's finding-5 layer 50 x 48/64 = 37.5 -> 38, steer layers +-5 around it (the 9B's +-3 x 48/32 = 4.5 -> 5)"
+examples_command: BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/pointer_fit.py examples --name qwen35_122b_d3b_fit_v2
+figures_command: BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/pointer_fit.py figures --name qwen35_122b_d3b_fit_v2
+question: >-
+  On Qwen3.5-122B, with its J++, does a lens push of the same size (bridge alt's J++ word direction minus bridge org's) move the lookup to the target statement, where the fitted slot direction does?
+why_it_matters: >-
+  Fig D4 (finding 8's lens arm: the fitted slot direction writes the lookup, a lens push of the same size does not) has the 27B (J++), OLMo and the 9B; the 122B is the larger model Neel asked for, with a published J++.
+hypotheses:
+  H-lens-null: 'the J++ lens push moves <= 5% of lookups at layer 38, scale 1, like the plain J-lens push. Prior 0.75 (agent''s) (copied from qwen35_9b_d3b_fit_v2; layer 21 there)'
+  H-steer: 'pointer_fit''s rule at layer 38, scale 1 (slot-target rate lower bound >= 0.30 and >= 20 points above the lens push and the random direction). Prior 0.1 (agent''s; the plain J-lens run moved 2%) (copied from qwen35_9b_d3b_fit_v2; layer 21 there)'
+decision_rule: >-
+  Runs iff the 122B's published J++ passes gate v1 (scripts/d1_precheck.py, --min-topics 0: only the gate matters here; the first step). pointer_fit's pre-registered rule unchanged (docstring "Decision rule"; pointer_v4: entity-cluster intervals) at the primary layer 38, scale 1. Primary layer (fixed now, before any 122B finding-5 result): the 27B's finding-5 layer 50 scaled by depth, 50 x 48/64 = 37.5, rounded half up to 38 (as muse30b_d4_where); qwen35_122b_d3v4_swap names no single layer (its sweep 24-46 is decided by finding5_confirm after the run), so the scaled layer stands even if that run's decisive layer differs (then reported beside it, not substituted). The 9B's cells around its primary (collect 15 18 21 24, steer 18 21 24 around 21 on 32 layers) scaled by depth x 48/32 (3 x 48/32 = 4.5, rounded half up to 5): collect 28 33 38 43, steer 33 38 43. Layers 33 and 43, scale 2 and per topic reported. Primary lens (Dan, 23 Oct ~00:55): neuronpedia's published J++ for Qwen3.5-122B-A10B; no silent switch.
+controls:
+- 'lens push of the same norm (J++ word directions); random direction of the same norm; shuffled slot labels; memory -> memory items (copied from qwen35_9b_d3b_fit_v2)'
+n: '150 held-out test items (pointer_v4 main, eligible in qwen35_122b_d3v4_competence), 50 recall items'
+seeds: [0]
+notes: "mechanical copy of qwen35_9b_d3b_fit_v2 for Qwen3.5-122B (Dan, 23 Oct ~00:55: the whole grid on the 2x H200); not opened before Dan's predictions. Primary lens: neuronpedia's published J++ for Qwen3.5-122B-A10B (frozen, pinned in src/bridge_jspace/pins.py; fit on bf16 weights, run here on FP8). Only BJ_TARGET, names, the competence (the 122B's own pointer_v4 main competence, as its finding-5 run qwen35_122b_d3v4_swap; pointer_fit reads its main rows only), the batch and the layers change. Depends on qwen35_122b_d1_topics2_map_r2 only for the precheck's competence file. Memory (Dan, 00:55): FP8 weights ~127 GB of a 143 GB H200, so mem_gb 135 and BJ_BATCH=16 (pointer_fit's batch is pointer_swap's BJ_BATCH). Batch 16 for the read-heavy steps (Dan, 23 Oct ~01:20: known to fit on one H200, Oct 20); J-space removal at BJ_ABL_BATCH=8 (Zach's 122B run with the random-dictionary control)."
+notes_b16_id: "Queued as qwen35_122b_d3b_fit_v2_b16: qwen35_122b_d3b_fit_v2 had been queued at 99783ed (batch 4) and was cancelled before running."

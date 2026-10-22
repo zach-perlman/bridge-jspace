@@ -1,0 +1,29 @@
+id: qwen35_122b_d1_formats_rw_b16
+title: "D1 in tables and JSON (Qwen3.5-122B): lens read and write"
+thread: D1
+gpus: 1
+mem_gb: 135
+est_gpu_hours: 1.0
+depends_on:
+- qwen35_122b_d1_formats_parts_b16
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/d1_precheck.py --gate qwen35_122b_lens_gate_v2 --competence qwen35_122b_d1_topics2_competence --min-topics 0
+  && BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/statement_positions.py readwrite --name qwen35_122b_d1_formats_rw --map qwen35_122b_d1_formats_map --parts qwen35_122b_d1_formats_parts --why "D1 in tables and JSON (Qwen3.5-122B): lens read and write" --lo 24 --sets bind_bridge bridge_word lookup_x context question
+figures_command: BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/statement_positions.py figures --name qwen35_122b_d1_formats_rw
+question: >-
+  Does a lens push at the transit cell write recall but not the lookup in tables and JSON?
+why_it_matters: >-
+  Finding 2 (a lookup ignores the lens-readable part of a stated bridge) holds in prose on two models; the outside review asks for less toy formats for the lens claim itself.
+hypotheses:
+  H-both: 'replicates in tables and in JSON. Prior 0.45 (copied from d1_formats_rw_27b)'
+  H-one: 'one format replicates, the other does not or its control fails. Prior 0.3 (copied from d1_formats_rw_27b)'
+  H-none: 'neither (the control fails, or the split does not hold). Prior 0.25 (copied from d1_formats_rw_27b)'
+decision_rule: >-
+  Precheck (Dan, 23 Oct ~00:55, before these runs), the first step: runs only if the model's lens gate v1 passed (qwen35_122b_lens_gate_v2; scripts/d1_precheck.py --min-topics 0: only the gate matters; else the job stops with exit 3 and is logged). scripts/d1_verdict.py's map rule (window [24, 33), the 122B's prose window: the 27B's [32, 44) scaled by depth x 48/64, as qwen35_122b_d1_topics2_*_r2), unchanged: the decisive cell is PP's statement cell (the pick row / object, the bridge's cell, the context) in transit with the most C flips; replicates iff there the lens-readable part alone switches <= 0.10 of lookups and the rest >= 0.50, while PM's lens-readable part switches >= 0.30 (the control; failing it: not interpretable). The same verdict per format (format_verdicts) and per topic. Finding 2 holds in tables and JSON on this model iff the pooled verdict and both format verdicts replicate (fixed 22 Oct 23:30 before these runs).
+controls:
+- 'O (another pair of picks swapped, off the path); a random direction at each row''s norm; a 25-atom OMP over a random dictionary; PM as the positive control on the same scenes'
+- 'the lens gate (qwen35_122b_lens_gate_v2, via scripts/d1_precheck.py)'
+n: '180 scenes (PP and PM), d1_formats_v1, right on every prompt, both formats in scene order'
+seeds: [41]
+notes: "mechanical copy of d1_formats_rw_27b for Qwen3.5-122B (Dan, 23 Oct ~00:55: the whole grid on the 2x H200); not opened before Dan's predictions. Primary lens: neuronpedia's published J++ for Qwen3.5-122B-A10B (frozen, pinned in src/bridge_jspace/pins.py). Only BJ_TARGET, run names, the precheck, the batch and the layers change (cells from 24: the 27B's 32 x 48/64). Memory (Dan, 00:55): FP8 weights ~127 GB of a 143 GB H200, so mem_gb 135 and BJ_BATCH=16 (the queued 122B specs use 16). Data: data/tasks_v2/d1_formats_v1 (seed 41). Batch 16 for the read-heavy steps (Dan, 23 Oct ~01:20: known to fit on one H200, Oct 20); J-space removal at BJ_ABL_BATCH=8 (Zach's 122B run with the random-dictionary control)."
+notes_b16_id: "Queued as qwen35_122b_d1_formats_rw_b16: qwen35_122b_d1_formats_rw had been queued at 99783ed (batch 4) and was cancelled before running."
