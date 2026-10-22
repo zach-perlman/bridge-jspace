@@ -75,7 +75,32 @@ SETS: dict[str, dict[str, Any]] = {
     # 22 Oct, evening (Dan): a third draw for the pre-registered confirmation of finding 5 on fresh scenes
     "seed3": {"seed": 845, "n": 300, "families": FAMILIES, "split": "all"},
     "fit": {"seed": 842, "n": 200, "families": ("RL",), "split": "fit"},
+    # 22 Oct, night (Dan; the outside review: "the DeltaNet layers play no part only because the prompts are short"):
+    # seed2's scenes with LONG_FILLER neutral sentences (~2000 tokens) between the list and the question, the same in
+    # every prompt of a scene (make_long; not drawn by generate)
+    # (the first 60 scenes per file: ~2000 tokens x 4 prompts per item make the files large)
+    "long": {"seed": 846, "n": 60, "families": ("RL", "RR"), "split": "all", "from": "seed2"},
 }
+LONG_FILLER = 200  # sentences of 7-11 tokens: ~2000 tokens after the list (Qwen3.6-27B's tokenizer)
+FILLER_SUBJECTS = (
+    "The old library", "A quiet street", "The morning train", "The community garden", "A small bakery",
+    "The river path", "The village square", "The museum hall", "A wooden bridge", "The town market",
+    "The evening bus", "A narrow lane", "The city fountain", "The school gym", "A corner shop", "The harbour wall",
+    "The bus station", "A hillside farm", "The city hall", "The concert stage", "A sunny balcony", "The office lobby",
+    "The parking lot", "A stone tower", "The tram stop", "The repair workshop", "A rooftop terrace", "The art studio",
+    "The train platform", "A country lane",
+)  # fmt: skip
+FILLER_PREDICATES = (
+    "was busy for most of the afternoon.", "looked brighter after the rain.", "smelled of fresh bread and coffee.",
+    "stayed quiet until late in the evening.", "was painted a pale shade of green.", "filled up quickly on the weekend.",
+    "had a new sign near the entrance.", "was closed for cleaning on Monday.", "echoed with distant music.",
+    "felt colder than it did last week.", "was decorated with paper lanterns.", "had puddles all along the edges.",
+    "was crowded with visitors at noon.", "seemed smaller than people remembered.", "was lit by a row of tall lights.",
+    "kept its old wooden benches.", "was covered in fallen leaves.", "drew a queue early in the morning.",
+    "was repaired over the summer.", "had a view of the distant hills.", "was swept clean before sunrise.",
+    "smelled faintly of rain and dust.", "was quieter than usual today.", "had a fresh coat of white paint.",
+    "was full of students in the spring.",
+)  # fmt: skip
 CAP = 12  # scenes per askable entity at most: with >= 12 askable entities, none is asked in > 1/12 of the scenes
 SPLIT_SEED = 843
 HELD_OUT_SHARE = 1 / 3
@@ -444,9 +469,51 @@ def set_plan(which: str, split: dict[str, Any], domain: str) -> tuple[list[str],
     return pool, tpls, askable, min(SETS[which]["n"], CAP * len(askable))
 
 
+def long_filler(seed: int, scene: str) -> str:
+    """LONG_FILLER neutral sentences for one scene (seeded by scene), with the space that joins them to the list."""
+    pool = [f"{s} {p}" for s in FILLER_SUBJECTS for p in FILLER_PREDICATES]
+    return " " + " ".join(random.Random(f"{seed}:{scene}").sample(pool, LONG_FILLER))
+
+
+def check_filler_words() -> None:
+    """No filler word is an entity, a cue word or a statement noun of any topic, and no filler has a digit."""
+    import re
+
+    words = {w.lower() for s in FILLER_SUBJECTS + FILLER_PREDICATES for w in re.findall(r"[A-Za-z]+", s)}
+    banned = {"locker", "lockers", "drawer", "file", "folder", "chart", "box"}
+    frame = {"with", "known", "for", "from", "used", "made", "makes", "making", "over", "into", "most", "their"}
+    for spec in SPEC.values():
+        for e, (_, cue) in spec["candidates"].items():
+            banned |= {w.lower() for w in re.findall(r"[A-Za-z]+", f"{e} {cue}") if len(w) > 3} - frame
+            banned |= {w.lower() for w in re.findall(r"[A-Za-z]+", e)}
+    assert not words & banned, f"filler words that name or cue an entity: {sorted(words & banned)}"
+    assert not re.search(r"\d", " ".join(FILLER_SUBJECTS + FILLER_PREDICATES)), "a digit in the filler"
+
+
+def make_long(which: str) -> dict[str, tuple[Path, list[dict], str]]:
+    """A derived set: SETS[which]['from']'s items with long_filler appended to the context of the item and of every
+    source prompt (so the prompts stay token-aligned); 'after' records the appended text."""
+    spec = SETS[which]
+    check_filler_words()
+    out: dict[str, tuple[Path, list[dict], str]] = {}
+    for label, path in set_files(which).items():
+        items = PV.load_file(DATA / spec["from"] / path.name)[: spec["n"]]
+        for it in items:
+            after = long_filler(spec["seed"], it["scene"])
+            it["context"] += after
+            for s in it["sources"].values():
+                s["context"] += after
+            it.update(after=after, n_filler=LONG_FILLER)
+        note = f"scripts/pointer_v4.py make_set --set {which}: {spec['from']}'s items + {LONG_FILLER} filler sentences (seed {spec['seed']})"  # fmt: skip
+        out[label] = (path, items, note)
+    return out
+
+
 def generate(which: str, split: dict[str, Any]) -> dict[str, tuple[Path, list[dict], str]]:
     """label -> (file, items, generator note); tokenizer-free given split.json."""
     spec = SETS[which]
+    if "from" in spec:
+        return make_long(which)
     out: dict[str, tuple[Path, list[dict], str]] = {}
     pairs = [(a, k) for a in range(N_ENT) for k in range(N_ENT) if a != k]
     for domain in split["used"]:
@@ -517,7 +584,7 @@ def check_item(tok, item: dict) -> dict[str, bool]:
                               and pd["identity"] == str(dg[sl["identity"]]) and int(pd["value"]) not in dg)  # fmt: skip
     else:
         out["predictions"] = pd["none"] != pd["identity"]
-    out["statements"] = item["context"] == " ".join(item["statements"])
+    out["statements"] = item["context"] == " ".join(item["statements"]) + item.get("after", "")
     return out
 
 

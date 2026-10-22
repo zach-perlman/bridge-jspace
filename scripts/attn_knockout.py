@@ -270,7 +270,6 @@ def pointer_statement_spans(item: dict, dataset: str) -> list[tuple[int, int]]:
         return [tuple(s) for s in item["spans"]["entries"]]
     if dataset == "alias_pointer_v1":
         return [tuple(s) for s in item["spans"]["statements"]]
-    assert item["n_filler"] == 0, f"{item['id']}: pointer_v1 spans are derived for scenes without filler only"
     if dataset == "pointer_v4":  # its statements are listed (3 wordings): located in order in the context
         ctx, out, start = item["context"], [], 0
         for sent in item["statements"]:
@@ -278,8 +277,10 @@ def pointer_statement_spans(item: dict, dataset: str) -> list[tuple[int, int]]:
             out.append((a, a + len(sent)))
             start = a + len(sent)
         assert len(out) == item["n_entities"], f"{item['id']}: {len(out)} statements for {item['n_entities']} entities"
-        assert out[-1][1] == len(ctx), f"{item['id']}: the statements do not cover the context"
+        # the long set: filler after the list ('after'); otherwise the statements end the context
+        assert out[-1][1] + len(item.get("after", "")) == len(ctx), f"{item['id']}: the statements do not cover the context"  # fmt: skip
         return out
+    assert item["n_filler"] == 0, f"{item['id']}: pointer_v1 spans are derived for scenes without filler only"
     ctx, out, start = item["context"], [], 0
     for _ in range(item["n_entities"]):
         end = ctx.index(".", start) + 1
