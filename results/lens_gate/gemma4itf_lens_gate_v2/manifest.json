@@ -1,0 +1,32 @@
+{
+  "exp": "lens_gate",
+  "run": "gemma4itf_lens_gate_v2",
+  "why": "Zach's Gemma J++: gate v1 opens D1, v2 informational",
+  "model": {
+    "target": "gemma-4-31b-it-full",
+    "repo": "google/gemma-4-31B-it",
+    "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "lens": [
+    "jpp",
+    "d16d81d8751ad69df3493c0b3ea7410da97f69abfb07ee115600ad21ef9ef30a"
+  ],
+  "tasks_set": "d1_topics_v2",
+  "data_sha256": "062aac437d8ec6b41f6b352c3ffe3713a09618df30c778f1ccf0f577943bb51e",
+  "n": 60,
+  "layers": [
+    30,
+    33,
+    36,
+    39
+  ],
+  "window": [
+    30,
+    41
+  ],
+  "gate": "PASS iff at bind_bridge, best over the window's layers, the bridge is in the lens's\ntop 10 on >= 50% of items and X on <= 20% (Wilson intervals reported). Reported, not decisive: top-1, each layer, the\nbridge's word, the context (the old \"92%\"), digits vs words.\n\nGate v2 (22 Oct, 23:00, the outside review, before any v2 run). In the first runs the bridge's best rank over its\nsentence sat on the bridge's own word in 166 / 180 (Qwen3.6-27B), 180 / 180 (Qwen3.5-9B) and 157 / 180 (Qwen3-32B)\ncells: the lens decodes the input token where it stands, which shows the lens is not broken, not that it reads the\nbridge as a variable. v2 reads only where the word is not: after_word (the bridge's sentence after its word: in prose\nthe closing period) and context_nomention (the context without any token of a mention of the bridge or of X). PASS iff\nat after_word, best over the window's layers, the bridge is in the lens's top 10 on >= 50% of items and X on <= 20%\n(the same bars). An item without an after_word token does not count. Reported: v1 (bind_bridge), context_nomention,\ntop-1, each layer.\n\nWhich gate opens D1, and the wording (Dan, 22 Oct 23:20, before any v2 result was opened): D1 starts on a model iff its\ngate v1 passes; D1's validity comes from its own recall control. Gate v2 is informational: if it fails, even on\nQwen3.6-27B, \"the lens reads the bridge\" is reworded \"the lens reads the bridge word where it stands\"; it does not\ncancel D1 on Qwen3.6-27B or Qwen3.5-9B.",
+  "written_utc": "2026-10-22T21:17:43Z"
+}
