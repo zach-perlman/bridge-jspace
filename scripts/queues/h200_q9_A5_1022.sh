@@ -18,7 +18,7 @@ export UV_CACHE_DIR=/workspace/uv-cache PYTORCH_CUDA_ALLOC_CONF=expandable_segme
 PY="uv run --no-sync python"
 R=/workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd
 MK=/workspace/scratch/markers/q9_competence_done
-until grep -qs "^EXIT" $R-h200muserest-*.log; do sleep 60; done  # 2026-10-22: the 9B last (Zach)
+until grep -qs "^EXIT" $R-h200muserest-*.log && [ -f results/ablate_v2/muse30_full2_ko_v1/summary.json ]; do sleep 60; done  # 2026-10-22: the 9B last, and only once the Muse C1 exists (no cascade on a failed chain)
 export BJ_TARGET=qwen3.5-9b
 WHY="Zach (2026-10-21): Qwen3.5-9B on the v2 pipeline (published J++), the same set as the others"
 C2=qwen35_9b_full_v8_competence_v1

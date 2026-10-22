@@ -1,3 +1,22 @@
+diff --git a/src/workspace_lens/__init__.py b/src/workspace_lens/__init__.py
+index 2bb8d8b..00c8dc8 100644
+--- a/src/workspace_lens/__init__.py
++++ b/src/workspace_lens/__init__.py
+@@ -37,7 +37,13 @@ def get_hf_model(
+         # loading attributes from this one: dequantize=True unpacks the FP8 blocks and the FP4
+         # experts to bf16 on load.
+         from_pretrained_kwargs["quantization_config"] = FineGrainedFP8Config(dequantize=True)
+-    hf_model = AutoModelForCausalLM.from_pretrained(
++    from transformers import AutoConfig, AutoModelForImageTextToText
++    from transformers.models.auto.modeling_auto import MODEL_FOR_CAUSAL_LM_MAPPING_NAMES
++
++    auto_class = AutoModelForCausalLM
++    if AutoConfig.from_pretrained(model_name).model_type not in MODEL_FOR_CAUSAL_LM_MAPPING_NAMES:
++        auto_class = AutoModelForImageTextToText  # bridge-jspace 2026-10-22: Muse Glimmer has no causal-LM class
++    hf_model = auto_class.from_pretrained(
+         model_name,
+         dtype=t.bfloat16,
+         attn_implementation=attn_implementation,
 diff --git a/src/workspace_lens/lrp/lrp.py b/src/workspace_lens/lrp/lrp.py
 index d310df3..c5b2e55 100644
 --- a/src/workspace_lens/lrp/lrp.py
