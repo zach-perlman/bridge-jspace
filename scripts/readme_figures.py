@@ -290,11 +290,69 @@ def f9_olmo_slot(out: Path) -> None:
     save(fig, out, "f9_olmo_slot.png")
 
 
+def kept_all_layers(run: str, fam: str = "RL", layers: str = "all") -> tuple[int, int]:
+    """(kept, n): the answer's statement hidden from the tokens after the question in `layers`, unedited-right items."""
+    rr = rows("attn_knockout", run, file="rows.jsonl")
+    ok = {r["id"] for r in rr if r["source"] == "none" and r["correct"]}
+    sel = [r for r in rr if r["id"] in ok and r["family"] == fam and r["source"] == "lookup" and r["dest"] == "final"
+           and r["layers"] == layers and r.get("mode", "value") == "value"]  # fmt: skip
+    return sum(r["kept"] for r in sel), len(sel)
+
+
+def f10_late_read_models(out: Path) -> None:
+    """D2 across models: memory -> prompt still right with the statement hidden from the last tokens in every
+    attention layer (and, for the hybrids, in every DeltaNet layer)."""
+    models = [("Qwen3.6-27B\n(hybrid)", "d2_v4_late_read", True), ("Qwen3.5-9B\n(hybrid)", "qwen35_9b_d2_v4_late_read_r2", True),
+              ("OLMo-3-7B\nInstruct", "olmo3_7b_instruct_d2_v4_late_read_v3", False),
+              ("OLMo-3-7B\nSFT", "olmo3_7b_sft_d2_v4_late_read_v2", False),
+              ("OLMo-3-7B\nDPO", "olmo3_7b_dpo_d2_v4_late_read_v2", False)]  # fmt: skip
+    fig, ax = plt.subplots(figsize=(8.5, 3.2))
+    style(ax, "y")
+    for i, (_, run, hybrid) in enumerate(models):
+        bar_ci(ax, i - 0.17, *wilson(*kept_all_layers(run, layers="attn" if hybrid else "all")), LOOKUP, width=0.32)
+        if hybrid:
+            bar_ci(ax, i + 0.17, *wilson(*kept_all_layers(run, layers="gdn")), LIGHT, width=0.32)
+    ax.set_xticks(range(len(models)), [m for m, _, _ in models])
+    ax.set_ylim(0, 112)
+    ax.set_ylabel("% still right")
+    ax.set_title("Hide the answer's statement from the last tokens (memory → prompt)", loc="left")
+    handles = [plt.Rectangle((0, 0), 1, 1, color=LOOKUP), plt.Rectangle((0, 0), 1, 1, color=LIGHT)]
+    ax.legend(handles, ["hidden in every attention layer", "hidden in every DeltaNet layer (hybrids only)"],
+              frameon=False, loc="upper center", bbox_to_anchor=(0.5, -0.25), ncol=2)  # fmt: skip
+    save(fig, out, "f10_late_read_models.png")
+
+
+def f11_natural_errors(out: Path) -> None:
+    """D5a without a patch: where layer 51 head 22 looks on the model's own wrong vs right answers."""
+    rr = rows("d5a_natural_errors", "d5a_natural_errors_27b", file="rows.jsonl")
+    wrong = [r for r in rr if not r["right"] and r["answered"] is not None and r["answered"] != r["asked"]]
+    right = [r for r in rr if r["right"]]
+
+    def share(sel: list[dict], target: str) -> tuple[float, float, float]:
+        return wilson(sum(r["heads"]["51:22"]["top"] == r[target] for r in sel), len(sel))
+
+    fig, ax = plt.subplots(figsize=(6.5, 3.0))
+    style(ax, "y")
+    bar_ci(ax, 0 - 0.17, *share(wrong, "answered"), LOOKUP, width=0.32)
+    bar_ci(ax, 0 + 0.17, *share(wrong, "asked"), RECALL, width=0.32)
+    bar_ci(ax, 1, *share(right, "asked"), RECALL, width=0.32)
+    ax.set_xticks(
+        [0, 1], [f"model answers wrong\n({len(wrong)} answers)", f"model answers right\n({len(right)} answers)"]
+    )
+    ax.set_ylim(0, 112)
+    ax.set_ylabel("% of answers")
+    ax.set_title("Which statement does head 51/22 look at most?", loc="left")
+    handles = [plt.Rectangle((0, 0), 1, 1, color=LOOKUP), plt.Rectangle((0, 0), 1, 1, color=RECALL)]
+    ax.legend(handles, ["the statement the (wrong) answer comes from", "the right statement"], frameon=False,
+              loc="upper center", bbox_to_anchor=(0.5, -0.25), ncol=2)  # fmt: skip
+    save(fig, out, "f11_natural_errors.png")
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", default="figures/readme_1021")
     out = ROOT / ap.parse_args().out
     out.mkdir(parents=True, exist_ok=True)
     for f in (f1_two_routes, f2_stated_bridge, f3_early_push, f4_late_read, f5_slot_by_layer, f6_slot_counts, f8_shifts, f9_olmo_slot,
-              f7_pointer_push):  # fmt: skip
+              f7_pointer_push, f10_late_read_models, f11_natural_errors):  # fmt: skip
         f(out)
