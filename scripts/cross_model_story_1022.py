@@ -243,7 +243,7 @@ plt.close(fig)
 CONDS = [("J++ top-10 (the knock-out)", "full2_ko_v1", "paper10", "o", MEMORY, True),
          ("J++ top-10, the bridge's own word kept", "full2_ko_keepown_v1", "paper10_keepown", "o", MEMORY, False),
          ("logit-lens top-10", "full2_ko_unembed_v1", "unembed10", "D", INK2, True),
-         ("logit-lens top-50 (same share of the residual)", "full2_ko_unembed_sized_v1", "unembed50", "D", INK2, False),
+         ("logit-lens top-K matching the J++ share of the residual (K = 50 on the 27B, 40 on the 9B)", "full2_ko_unembed_sized_v1", "unembedK", "D", INK2, False),
          ("same-size random (one mark per seed)", None, "paper10_rot", "|", INK3, True)]  # fmt: skip
 fig = plt.figure(figsize=(11, 5.5))
 gs = fig.add_gridspec(1, 2, width_ratios=[1.3, 1], left=0.15, right=0.975, top=0.7, bottom=0.18, wspace=0.27)
@@ -258,7 +258,8 @@ for y, m in zip(ys, MODELS, strict=True):
     for label, run, cond, mk, col, filled in CONDS:
         runs = [f"{m['p']}{r}" for r in ("full2_ko_v1", "full2_ko_rotseed1_v1", "full2_ko_rotseed2_v1")] if run is None else [f"{m['p']}{run}"]
         for r in runs:
-            L = losses(r, m["band"]).get(cond)
+            LL = losses(r, m["band"])
+            L = LL.get(cond) if cond != "unembedK" else next((v for c, v in LL.items() if c.startswith("unembed") and not c.endswith("_rot")), None)
             if L and len(L) == 6:
                 ax.plot(gap(L), y, mk, color=col, markersize=12 if mk == "|" else 8, markeredgewidth=2 if mk == "|" else 1.6,
                         markerfacecolor=col if filled else SURFACE, zorder=3)  # fmt: skip
@@ -268,13 +269,17 @@ ax.set_xlabel("recall-final minus lookup-final accuracy loss (points)")
 ax.set_title("A. What the effect is specific to (test set, each model's band)", loc="left", fontsize=10)
 fig.legend([Line2D([], [], color=c, marker=mk, linestyle="", markersize=10 if mk == "|" else 7, markeredgewidth=2 if mk == "|" else 1.5,
                    markerfacecolor=c if f else SURFACE) for _, _, _, mk, c, f in CONDS], [c[0] for c in CONDS],
-           loc="upper left", bbox_to_anchor=(0.01, 0.885), ncol=3, frameon=False, fontsize=8.6)  # fmt: skip
+           loc="upper left", bbox_to_anchor=(0.01, 0.885), ncol=2, frameon=False, fontsize=8.6)  # fmt: skip
 ax2 = fig.add_subplot(gs[0, 1])
 style(ax2, "y")
 KS = [1, 2, 5, 10, 25, 50, 100]
-DOSE = [("Qwen3-32B", [("qwen3_32b_full_dose_v1", "L44-52")], "#3b3a37"),
+DOSE = [("Qwen3.6-27B", [("full2_ko_v1", "L32-40"), ("full2_dose_v1", "L32-40")], "#0f766e"),
+        ("Qwen3.5-9B", [("qwen35_9b_full2_ko_v1", "L12-16"), ("qwen35_9b_full2_dose_v1", "L12-16")], "#b45309"),
+        ("Qwen3-32B", [("qwen3_32b_full_dose_v1", "L44-52")], "#3b3a37"),
         ("Muse", [("muse30_full2_ko_v1", "L36-42"), ("muse30_full2_dose_v1", "L36-42")], "#8a5cc2")]  # fmt: skip
 for name, srcs, col in DOSE:
+    if not all((AB / run / "summary.json").exists() for run, _ in srcs):
+        continue  # a dose run still in progress is never drawn
     for rot in (False, True):
         pts = {}
         for run, b in srcs:
@@ -292,7 +297,7 @@ ax2.set_xscale("log")
 ax2.set_xticks(KS, [str(k) for k in KS])
 ax2.minorticks_off()
 ax2.set_xlim(0.8, 330)
-ax2.set_ylim(-3, 32)
+ax2.set_ylim(-5, 52)
 ax2.set_xlabel("lens directions removed per position")
 ax2.set_ylabel("recall minus lookup loss (points)")
 ax2.set_title("B. More directions removed (dashed: random)", loc="left", fontsize=10)
@@ -300,7 +305,7 @@ fig.suptitle("In the hybrid Qwens the effect is specific to the J++ lens: logit-
              "the bridge's own word restores only a quarter. Removing more directions barely moves Qwen3-32B or Muse",
              x=0.01, y=0.985, ha="left", fontsize=11)  # fmt: skip
 foot(fig, "Gap: mean accuracy lost by P→M, M→M minus P→P, M→P (the pre-registered rule's chain types). Not run: keep-own on Muse; the "
-     "size-matched logit lens (only the 27B's J++ removal was larger); dose on the 27B and 9B on this task set. " + FOOT, 7.3)  # fmt: skip
+     "share-matched logit lens on Qwen3-32B and Muse (their J++ and logit-lens top-10 take the same share). " + FOOT, 7.3)  # fmt: skip
 fig.savefig(OUT / "story_fig3_specificity_1022.png", dpi=200)
 plt.close(fig)
 
