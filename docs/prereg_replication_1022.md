@@ -153,3 +153,52 @@ alone, beside Qwen3-32B's existing result: supported if the 9B HOLDS, refuted if
 - **The check:** Muse's lens_add at the final position, single layers 34-50 (muse30_wm2_full2_late_v1), with the same
   rule as prediction 3. If M->M's best flips at 46-50 fall below half its layer-32 value (67%), the aligned-band C2
   is not read as a direct output effect. Otherwise it is flagged.
+
+## Amendment 6 (Zach, 2026-10-22 ~21:30 UTC): fresh data seed, the Olmo architecture pair, the Muse diagnostic
+
+- **Seen when this was written:** every result in results/cross_model/summary.md, plus the 9B's C1 (gap 38, controls
+  within 10), its specificity (logit lens -3), keep-own (26% restored), three control seeds, and its C2 at the
+  pre-registered band 14-20 (C2-graded, C2-relative and C2' HOLD).
+- **Nothing has been seen** of: the fresh set fresh_v8s2 (generated for this amendment, never run), either Olmo model,
+  or the Muse diagnostic.
+
+**A. Fresh data seed (the Day 3 plan's rule: a gap within 10 of 30, or models that disagree; both now true).**
+- Data: fresh_v8s2 = full_v8's two-step recipe with seeds 721 / 722 / 723 (cf tier, levels 0-3; knock-out tier levels
+  0-1; knock-out tier levels 2-3), merged by scripts/merge_tasks_sets.py: 1,072 items, the same per-word counts as
+  full_v8. No prompt or context is shared with full_v8, full_v8b or ctrl_v8. The entity pool is the generator's fixed
+  lists, so this resamples scenes, wordings, formats and numbers, not entities.
+- Models and fixed bands (no re-choice): the 27B L32-40, the 9B L12-16, Qwen3-32B L44-52; each model's lens of record;
+  competence on fresh_v8s2 first; paper10 and paper10_rot; scored by scripts/c1_v2.py, unchanged.
+- Predictions: the 27B and the 9B HOLD C1-graded; Qwen3-32B's gap lands within 10 of 22.
+- What follows: if the 27B or the 9B falls below 30, C1 is reported as a graded trend with intervals, not by the
+  threshold (Day 3 fallback). Either way both data seeds are reported.
+
+**B. Architecture: the Olmo pair.**
+- Models: allenai/Olmo-Hybrid-Instruct-DPO-7B (Gated DeltaNet linear-attention layers plus full attention) and
+  allenai/Olmo-3-7B-Instruct-DPO (dense: sliding-window plus full attention), DPO checkpoints on both sides (the hybrid
+  has no RL-stage instruct model). Revisions are pinned in src/bridge_jspace/pins.py when registered.
+- Lens: our own J++ on each, Qwen3-32B's and Muse's recipe (32 WikiText prompts, safety-research/jpp_lens@93f02cd,
+  plus any LRP entries the Olmo classes need, each checked value-exact against the stock forward before fitting).
+- Procedure: as every model. Lens check; plain-text loss under the knock-out (untestable if top-10 adds >= 2 nats with
+  the rotated control within 0.3); competence on ctrl_v8 and full_v8; the middle band chosen on ctrl_v8 by
+  scripts/choose_band.py with 5-layer windows sliding by 2 (as the 9B, also 32 blocks); C1-graded on full_v8 at that
+  band; then the logit-lens specificity control, keep-own and two more control seeds; steering as every model.
+- Power floor: if a model answers fewer than 30 items right on any of P->P, M->P, P->M, M->M of full_v8, its C1 is
+  reported as descriptive only.
+- Prediction (architecture): C1-graded HOLDS on Olmo-Hybrid and FAILS on Olmo-3.
+  - Supported if both happen.
+  - Refuted if Olmo-Hybrid FAILS (a linear-attention hybrid is not enough) or Olmo-3 HOLDS (a dense model can show it).
+
+**C. The Muse diagnostic (descriptive; mechanism).** On items right unedited of full_v8's memory-final words (P->M,
+M->M), for Muse at L36-42 and the 27B at L32-40 (reference):
+- (a) the bridge's rank in the lens readout at each band layer at the question's last token and the final position;
+- (b) the share of items whose bridge is among the top-10 directions the knock-out removes at those positions, at one
+  or more band layers;
+- (c) under the band knock-out, the bridge's lens rank 2 and 4 layers after the band.
+- Reading: if (b) is below 20% on Muse and at least 50% on the 27B, the knock-out mostly misses Muse's bridge (the
+  cross-model C1 difference is partly the tool's reach). If (b) is at least 50% on Muse, Muse's recall survives removal
+  of its bridge's lens directions (redundant routes). Otherwise mixed.
+
+**D. Descriptive additions.** The 9B: removal size at L12-16 (scripts/removal_size.py) and, if its J++ top-10 takes more
+than 1.2x the residual share of the logit-lens top-10, the logit-lens top-K matched in share; the dose (top 1-100 and
+rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
