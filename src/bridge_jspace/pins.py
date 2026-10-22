@@ -170,6 +170,19 @@ TARGETS: dict[str, dict[str, Any]] = {
         },
         "frozen_lens_sha256": "323733a9bec124c7a037a6839191bd545eb00d1d47bfffde6b92e1e638117408",
     },
+    # Muse Glimmer 30B (Meta, Apache 2.0; 22 Oct night, Dan): dense, 52 layers, sliding-window (2048) attention with a
+    # full-attention layer every 4th, a multimodal checkpoint (MuseGlimmerForConditionalGeneration; the text decoder is
+    # hf.model.language_model, transformers' own muse_glimmer), centered RMSNorm with a 1 + weight gain, <|begin_of_text|>.
+    # No lens yet (Zach will share a J++): lens-free runs only until it is pinned.
+    "muse-glimmer-30b": {
+        "repo": "meta-models/Muse-Glimmer-30B",
+        "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+        "n_layers": 52,
+        "norm_gain": "one_plus_weight",
+        "bos": True,
+        "run_prefix": "museg30_",
+        "lenses": {},
+    },
     # Gemma 4 31B-it with Zach's J++ fit at every layer 0-58 (target 59), published 22 Oct 2026 on the Hub (his gate:
     # 0.5284, PASS at layers 24-45). fp16 maps, cast to fp32 when used (JLens.J). Named as on his branch.
     "gemma-4-31b-it-full": {

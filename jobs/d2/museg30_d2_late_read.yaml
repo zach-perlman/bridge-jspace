@@ -1,0 +1,24 @@
+id: museg30_d2_late_read
+title: "The late read (Muse Glimmer 30B)"
+thread: D2
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.5
+depends_on:
+- museg30_port_check
+command: >-
+  BJ_TARGET=muse-glimmer-30b uv run python scripts/attn_knockout.py manifest --name museg30_d2_late_read --dataset pointer_v4 --families RL --n 100 --sources lookup lookup_off --dests final question --layers all --sweep path --competence museg30_d3v4_competence --why "finding 4 on Muse Glimmer" && BJ_TARGET=muse-glimmer-30b uv run python scripts/attn_knockout.py run --name museg30_d2_late_read
+figures_command: BJ_TARGET=muse-glimmer-30b uv run python scripts/attn_knockout.py summarise --name museg30_d2_late_read
+question: >-
+  As the same test on the other five models.
+why_it_matters: >-
+  A model from another lab for the lens-free findings now, and for the lens claim once Zach's J++ is pinned.
+hypotheses:
+  H-late: 'holds. Prior 0.8'
+decision_rule: >-
+  The late-read rule of the seed2 runs, unchanged: memory -> prompt, topics pooled, items right unedited; holds iff the answer's statement hidden from the last tokens in every layer leaves <= 20% right with the Wilson upper bound <= 0.30, and the off-path statement hidden there keeps >= 90% (lower bound >= 0.85).
+controls:
+- 'the off-path statement hidden or patched the same way; the random patch of the same size; unedited accuracy'
+n: '100-150 items per family, items right on every prompt'
+seeds: [841, 844]
+notes: "Dan, 22 Oct 23:40: Muse Glimmer 30B (Meta, Apache 2.0) as another family; priority above the Gemma D1, below the OLMo D1. Port: a pins entry only (transformers 5.17 has muse_glimmer; the text decoder, hooks and attention masks work as on Gemma). No lens yet. Not opened before Dan's predictions."

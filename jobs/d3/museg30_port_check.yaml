@@ -1,0 +1,23 @@
+id: museg30_port_check
+title: "Muse Glimmer 30B: port check and competence (pointer_v4 main + seed2, d1_topics_v2)"
+thread: D3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.8
+depends_on: []
+command: >-
+  BJ_TARGET=muse-glimmer-30b BJ_JUDGE=read uv run python scripts/pointer_v4.py manifest --set main seed2 --name museg30_d3v4_competence --why "Muse Glimmer: the port check and the competence gate" && BJ_TARGET=muse-glimmer-30b BJ_JUDGE=read uv run python scripts/pointer_v4.py competence --name museg30_d3v4_competence && BJ_TARGET=muse-glimmer-30b uv run python scripts/tasks_v2.py competence --set d1_topics_v2 --name museg30_d1_topics2_competence --why "Muse Glimmer: d1_topics_v2 competence (for D1 once its lens is pinned)" && BJ_TARGET=muse-glimmer-30b uv run python scripts/attn_knockout.py manifest --name museg30_d2_smoke --dataset pointer_v4 --families RL --n 2 --layers all --sweep path --competence museg30_d3v4_competence --why "smoke: the knockout hooks on Muse; not a result" && BJ_TARGET=muse-glimmer-30b uv run python scripts/attn_knockout.py run --name museg30_d2_smoke && BJ_TARGET=muse-glimmer-30b uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set main --name museg30_d3v4_swap_smoke --families RL --n 2 --layers 40 --groups last --no-eligibility --why "smoke: the patch path on Muse; not a result" && BJ_TARGET=muse-glimmer-30b uv run python scripts/pointer_swap.py run --name museg30_d3v4_swap_smoke
+question: >-
+  Does Muse Glimmer load, render its chat template, answer pointer_v4 and d1_topics_v2, and run the knockout and patch paths?
+why_it_matters: >-
+  A model from another lab for the lens-free findings now, and for the lens claim once Zach's J++ is pinned.
+hypotheses:
+  H-port: 'every step runs. Prior 0.75'
+  H-gate: 'every pointer_v4 topic passes the competence gate (>= 0.85). Prior 0.6'
+decision_rule: >-
+  Port check: every step exits 0; otherwise the failing step is logged and the Muse jobs stop. Competence: pointer_v4.py's gate, unchanged (0.85, rounded to two decimals); tasks_v2.eligible for d1_topics_v2.
+controls:
+- 'the off-path statement hidden or patched the same way; the random patch of the same size; unedited accuracy'
+n: 'pointer_v4 main and seed2; d1_topics_v2 (360 scenes); smokes on 2 items'
+seeds: [841, 844]
+notes: "Dan, 22 Oct 23:40: Muse Glimmer 30B (Meta, Apache 2.0) as another family; priority above the Gemma D1, below the OLMo D1. Port: a pins entry only (transformers 5.17 has muse_glimmer; the text decoder, hooks and attention masks work as on Gemma). No lens yet. Not opened before Dan's predictions."
