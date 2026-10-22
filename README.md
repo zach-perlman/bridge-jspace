@@ -52,7 +52,7 @@ We name each kind of question by **where the bridge comes from → where the ans
 | 4 | **A lookup reads the answer's statement late, from the last tokens, through attention layers** (not DeltaNet), spread over many heads. | **High**, and it holds on every model tested so far (3 of 3: two Qwen hybrids and OLMo with its training stages) | D2 (figs. 4, 10) |
 | 5a | **Just before that, the last tokens carry a label for "the first" or "the second" statement.** Patched in, it moves the answer to the org prompt's 1st or 2nd statement. | **High** in the data: 1st statement 90-100% on every model, 2nd 89-97% on the larger Qwens and 54-58% on the smaller models; a second data seed, 8-statement lists and named bridges give the same; one post-hoc layer per model | D3 (figs. 5, 14) |
 | 5b | **From the 3rd statement on, the bridge word steers the lookup instead.** | **High** in the data: for statements 3-5 the patched answer follows the alt bridge's own statement (27-54%) at least as often as the slot (2-31%), on every model. Unlike lookback results elsewhere (Gur-Arieh et al. 2026: positional at the first and last positions, lexical in the middle), there is no last-position peak | D3 (fig. 14) |
-| 5c | **The label counts statements, not places in the text**, and from the start of the list. | **Medium**: pre-registered on Qwen3.6-27B, Qwen3.5-9B and OLMo, but these tests pool all statements, so their signal comes mostly from statements 1-2; under the absolute shift about a quarter of 1st-statement answers follow the place in the text | D3 (figs. 6, 8) |
+| 5c | **The label counts statements, not places in the text**, and from the start of the list. | **Medium**: pre-registered on Qwen3.6-27B, Qwen3.5-9B and OLMo (order vs place, and two position shifts on all three), but these tests pool all statements, so their signal comes mostly from statements 1-2; under the absolute shift about a quarter of 1st-statement answers follow the place in the text | D3 (figs. 6, 8) |
 | 6 | **A fitted direction can override the lookup; the lens direction cannot.** A ~4-dimensional direction from the slot averages moves the answer to another statement. | **Medium** on Qwen3.6-27B, as an override, not as the model's own address: it works at a patch's norm (31%, more than the patch itself, 26%) or twice its natural size (26%), barely at its natural size (4%, the pre-registered 10% bar missed), and removing it leaves lookups 98% right; not on OLMo (2%) | D3b (figs. 7, 13) |
 | 7 | **A late attention head looks at the statement whose digit the model outputs, even when that answer is wrong.** | **Low**: digits are unique in a scene, so this follows the output itself and adds nothing beyond it yet (339 errors, 9 entities, mostly chemical symbols) | D5a (fig. 11) |
 | 8 | "Around the lens" *is* this address. | **Not shown**: the pointer push beats the lens push pooled (34% vs 8%) but in 1 of 3 topics with valid controls; removing the J-space where the lookup reads leaves lookups at 100%, but recall survives there too | D3b fair test; J-space removal at 44-62 |
@@ -69,7 +69,7 @@ Legend: **yes** holds · **partly** · **no** does not hold · *running* · – 
 | 4. Late read through attention | **yes** (2-13% kept; DeltaNet 100%) | **yes** (3%; DeltaNet 100%) | **yes** (0-1% in all three; layers 16-23) | *running* | *running* |
 | 5a. Label for the 1st / 2nd statement | **yes** (100% / 97%) | **yes** / partly (90% / 58%) | **yes** / partly (93% / 54%) | **yes** (100% / 89%) | **yes** (of moved answers: 100% / 78%) |
 | 5b. Statements 3-5: the word steers | **yes** | **yes** | **yes** | partly (word ≈ slot) | **yes** |
-| 5c. Counts statements, not places | **yes** (pre-registered) | **yes** (order 22-29% vs place 5-8%) | **yes** (all three) | *running* | *running* |
+| 5c. Counts statements, not places | **yes** (pre-registered; both shifts) | **yes** (order 22-29% vs place 5-8%; both shifts, layer 18: 21% / 31% vs 6-7%) | **yes** (all three; both shifts) | – (sweeps cancelled) | *running* |
 | 6. A fitted direction overrides the lookup | partly (at ≥ 2× its natural size; not necessary) | – | no (2%) | – | – |
 | 7. Late head follows the output statement | yes, but tautological so far | – | – | – | – |
 | 8. "Around the lens" = the address | not shown | – | – | – | – |
@@ -212,11 +212,15 @@ in every panel. Run `d3v4x_swap_main`.
 in the text; added before the question, it moves every statement farther from the question. The number in the list
 stays. Orange: % of answers to the same number in the list; grey: to the statement the shift lines up (now at the same
 place in the text, or at the same distance before the question).
-**What it shows.** Under both shifts the answer follows the number in the list (Qwen 38% and 50%, OLMo 36% and 42%),
-not the lined-up statement (9-17%): an order index, not a token position or a distance (the guess that rotary position
-would make the distance matter more did not hold). Statements twice as long change neither the plain answers' errors
-nor the same-slot share. Pre-registered; ~435 items per bar (Qwen), 132 (OLMo). Runs `d3v6_swap_27b`,
-`olmo3_7b_instruct_d3v6_swap`.
+**What it shows.** Under both shifts the answer follows the number in the list (Qwen3.6-27B 38% and 50%, Qwen3.5-9B
+21% and 31%, OLMo 36% and 42%), not the lined-up statement (6-17%): an order index, not a token position or a
+distance. The guess that rotary position would make the distance matter more did not hold on any of the three: on the
+27B the shift before the list moves more answers than the one before the question (17% vs 9%), on the 9B and OLMo the
+two are equal. Statements twice as long lower neither the plain answers' accuracy nor the same-slot share on any model (within the
+95% intervals).
+Pre-registered; each model at its layer before the alt digit arrives (the 9B's only such swept layer is 18; the run
+also reported layers 20-22, where the alt digit has started to arrive, and the spec excludes them). ~435 items per bar
+(27B), 375 (9B), 132 (OLMo). Runs `d3v6_swap_27b`, `qwen35_9b_d3v6_swap_r2`, `olmo3_7b_instruct_d3v6_swap`.
 
 ### 6. A fitted slot direction can override the lookup; the lens direction cannot
 
@@ -308,7 +312,7 @@ symbol, 9 entities in all. Run `d5a_natural_errors_27b`.
 | Freeze D1, D2 and "1st / 2nd label, then the word"; verify by hand with Zach into VERIFIED.md | Process | next |
 | Patch only the 4-dim part of the alt − org difference at its natural size | Does the 4-dim subspace carry half of the patch's effect? (would make pattern 6 an address) | next |
 | Head 51/22 on scenes with a repeated digit, read before the digit forms, vs a J-lens baseline | Pattern 7 beyond the output | next |
-| D2 on Qwen3-32B and Gemma 4 (queued); the remaining D3 sweeps on new models | Pattern 4 generality; more D3 models are low value now | running |
+| D2 on Gemma 4 (running) and Qwen3-32B (queued); Gemma's D3 sweeps (running). The Qwen3-32B D3 sweeps were cancelled: more D3 models are low value now | Pattern 4 generality | running |
 | Zach's three measures on OLMo (ran, raw format) | Pattern 1 on a second architecture | to analyse |
 | Natural carriers (chat turn, table, document; Zach's full_v8), open- vs closed-book | Does any of this survive real layouts? | next, with Zach |
 

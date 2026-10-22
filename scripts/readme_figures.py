@@ -378,12 +378,14 @@ def f7_pointer_push(out: Path) -> None:
 
 def f8_shifts(out: Path) -> None:
     """D3 v6: under an extra sentence before the list (place in the text shifts) or before the question (distance back
-    shifts), the same slot vs the moved statement; Qwen3.6-27B at layer 50, OLMo-3-7B-Instruct at layer 18."""
+    shifts), the same slot vs the moved statement; Qwen3.6-27B at layer 50, Qwen3.5-9B at layer 18 (its only swept layer
+    before the alt digit arrives), OLMo-3-7B-Instruct at layer 18."""
     runs = [
         ("d3v6_swap_27b", "50", "Qwen3.6-27B (layer 50)"),
+        ("qwen35_9b_d3v6_swap_r2", "18", "Qwen3.5-9B (layer 18)"),
         ("olmo3_7b_instruct_d3v6_swap", "18", "OLMo-3-7B (layer 18)"),
     ]
-    fig, axes = plt.subplots(1, 2, figsize=(10, 3.2), sharey=True, gridspec_kw={"wspace": 0.08})
+    fig, axes = plt.subplots(1, len(runs), figsize=(13, 3.2), sharey=True, gridspec_kw={"wspace": 0.08})
     for ax, (run, la, title) in zip(axes, runs, strict=True):
         style(ax, "y")
         rates = load("pointer_swap", run)["rates"]
