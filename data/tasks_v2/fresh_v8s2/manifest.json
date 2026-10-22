@@ -1,0 +1,838 @@
+{
+  "set": "fresh_v8s2",
+  "merged_from": {
+    "cf": {
+      "set": "fresh_v8s2_cf",
+      "sha256": "d9128ae2db5f5c4f9c80c01db2810ee1345915612385f9baf3c26307281d8903",
+      "manifest": {
+        "set": "fresh_v8s2_cf",
+        "n_scenes_per_group_level": 28,
+        "words": [
+          "PP",
+          "PM",
+          "MP",
+          "MM",
+          "CP",
+          "CM"
+        ],
+        "domains": [
+          "animals",
+          "planets",
+          "elements",
+          "greek"
+        ],
+        "formats": [
+          "prose",
+          "json",
+          "table",
+          "code",
+          "chat",
+          "document"
+        ],
+        "levels": {
+          "0": {
+            "entities": 3,
+            "distractors": false,
+            "filler": 0,
+            "paraphrase": false,
+            "hard_cues": false
+          },
+          "1": {
+            "entities": 6,
+            "distractors": true,
+            "filler": 5,
+            "paraphrase": false,
+            "hard_cues": false
+          },
+          "2": {
+            "entities": 9,
+            "distractors": true,
+            "filler": 10,
+            "paraphrase": true,
+            "hard_cues": true
+          },
+          "3": {
+            "entities": 12,
+            "distractors": true,
+            "filler": 20,
+            "paraphrase": true,
+            "hard_cues": true
+          }
+        },
+        "seed": 721,
+        "generator": "scripts/tasks_v2.py make (v8)",
+        "git_commit": "6c0760e71bcc3a9fbbf8f17415fb43dcb0e60196",
+        "counterfactuals": true,
+        "n_items": 672,
+        "coverage": {
+          "P2/L0": {
+            "scenes": 28,
+            "dead_combinations": [],
+            "by_domain_format": {
+              "animals/json": 2,
+              "greek/prose": 2,
+              "planets/prose": 2,
+              "animals/table": 2,
+              "greek/code": 1,
+              "planets/chat": 1,
+              "elements/prose": 1,
+              "planets/table": 1,
+              "planets/code": 1,
+              "planets/json": 1,
+              "elements/document": 1,
+              "greek/json": 1,
+              "animals/prose": 1,
+              "elements/chat": 1,
+              "animals/code": 1,
+              "greek/table": 1,
+              "greek/document": 1,
+              "elements/table": 1,
+              "greek/chat": 1,
+              "elements/code": 1,
+              "planets/document": 1,
+              "animals/document": 1,
+              "elements/json": 1,
+              "animals/chat": 1
+            }
+          },
+          "M2/L0": {
+            "scenes": 28,
+            "dead_combinations": [
+              "greek/chat",
+              "greek/code",
+              "greek/document",
+              "greek/json",
+              "greek/prose",
+              "greek/table"
+            ],
+            "by_domain_format": {
+              "elements/document": 2,
+              "elements/json": 2,
+              "planets/json": 2,
+              "planets/prose": 2,
+              "elements/code": 2,
+              "elements/prose": 2,
+              "animals/prose": 2,
+              "planets/table": 2,
+              "animals/chat": 2,
+              "planets/chat": 2,
+              "animals/document": 1,
+              "elements/chat": 1,
+              "animals/json": 1,
+              "animals/table": 1,
+              "elements/table": 1,
+              "planets/document": 1,
+              "animals/code": 1,
+              "planets/code": 1
+            }
+          },
+          "C2/L0": {
+            "scenes": 28,
+            "dead_combinations": [],
+            "by_domain_format": {
+              "planets/json": 2,
+              "greek/document": 2,
+              "elements/prose": 2,
+              "animals/table": 2,
+              "greek/json": 1,
+              "greek/code": 1,
+              "elements/code": 1,
+              "elements/chat": 1,
+              "animals/prose": 1,
+              "animals/chat": 1,
+              "planets/table": 1,
+              "planets/document": 1,
+              "animals/json": 1,
+              "greek/chat": 1,
+              "elements/json": 1,
+              "elements/document": 1,
+              "elements/table": 1,
+              "animals/document": 1,
+              "greek/table": 1,
+              "planets/prose": 1,
+              "planets/chat": 1,
+              "greek/prose": 1,
+              "planets/code": 1,
+              "animals/code": 1
+            }
+          },
+          "P2/L1": {
+            "scenes": 28,
+            "dead_combinations": [],
+            "by_domain_format": {
+              "greek/prose": 2,
+              "greek/table": 2,
+              "animals/document": 2,
+              "greek/document": 2,
+              "elements/chat": 1,
+              "elements/table": 1,
+              "animals/table": 1,
+              "animals/json": 1,
+              "greek/chat": 1,
+              "planets/prose": 1,
+              "elements/json": 1,
+              "planets/chat": 1,
+              "elements/prose": 1,
+              "planets/json": 1,
+              "planets/table": 1,
+              "animals/code": 1,
+              "planets/code": 1,
+              "elements/code": 1,
+              "elements/document": 1,
+              "animals/prose": 1,
+              "planets/document": 1,
+              "animals/chat": 1,
+              "greek/json": 1,
+              "greek/code": 1
+            }
+          },
+          "M2/L1": {
+            "scenes": 28,
+            "dead_combinations": [
+              "greek/chat",
+              "greek/code",
+              "greek/document",
+              "greek/json",
+              "greek/prose",
+              "greek/table"
+            ],
+            "by_domain_format": {
+              "planets/table": 2,
+              "animals/code": 2,
+              "elements/json": 2,
+              "elements/prose": 2,
+              "planets/chat": 2,
+              "elements/table": 2,
+              "animals/document": 2,
+              "planets/prose": 2,
+              "planets/document": 2,
+              "animals/table": 2,
+              "elements/chat": 1,
+              "elements/document": 1,
+              "animals/chat": 1,
+              "animals/prose": 1,
+              "planets/code": 1,
+              "animals/json": 1,
+              "planets/json": 1,
+              "elements/code": 1
+            }
+          },
+          "C2/L1": {
+            "scenes": 28,
+            "dead_combinations": [],
+            "by_domain_format": {
+              "greek/document": 2,
+              "animals/chat": 2,
+              "planets/chat": 2,
+              "greek/code": 2,
+              "elements/code": 1,
+              "elements/chat": 1,
+              "planets/table": 1,
+              "greek/chat": 1,
+              "planets/json": 1,
+              "elements/prose": 1,
+              "elements/document": 1,
+              "elements/table": 1,
+              "animals/prose": 1,
+              "elements/json": 1,
+              "greek/table": 1,
+              "planets/prose": 1,
+              "greek/json": 1,
+              "planets/code": 1,
+              "planets/document": 1,
+              "animals/table": 1,
+              "greek/prose": 1,
+              "animals/json": 1,
+              "animals/document": 1,
+              "animals/code": 1
+            }
+          },
+          "P2/L2": {
+            "scenes": 28,
+            "dead_combinations": [],
+            "by_domain_format": {
+              "planets/chat": 2,
+              "animals/chat": 2,
+              "animals/code": 2,
+              "greek/table": 2,
+              "planets/prose": 1,
+              "animals/document": 1,
+              "greek/document": 1,
+              "elements/table": 1,
+              "planets/json": 1,
+              "animals/prose": 1,
+              "elements/json": 1,
+              "greek/json": 1,
+              "elements/code": 1,
+              "elements/prose": 1,
+              "greek/prose": 1,
+              "elements/document": 1,
+              "planets/document": 1,
+              "animals/table": 1,
+              "planets/table": 1,
+              "planets/code": 1,
+              "greek/chat": 1,
+              "greek/code": 1,
+              "animals/json": 1,
+              "elements/chat": 1
+            }
+          },
+          "M2/L2": {
+            "scenes": 28,
+            "dead_combinations": [
+              "greek/chat",
+              "greek/code",
+              "greek/document",
+              "greek/json",
+              "greek/prose",
+              "greek/table"
+            ],
+            "by_domain_format": {
+              "elements/table": 2,
+              "animals/chat": 2,
+              "planets/table": 2,
+              "animals/json": 2,
+              "elements/document": 2,
+              "elements/prose": 2,
+              "planets/prose": 2,
+              "animals/table": 2,
+              "elements/code": 2,
+              "elements/chat": 2,
+              "animals/prose": 1,
+              "planets/json": 1,
+              "animals/document": 1,
+              "planets/chat": 1,
+              "planets/document": 1,
+              "elements/json": 1,
+              "animals/code": 1,
+              "planets/code": 1
+            }
+          },
+          "C2/L2": {
+            "scenes": 28,
+            "dead_combinations": [],
+            "by_domain_format": {
+              "planets/table": 2,
+              "animals/table": 2,
+              "elements/chat": 2,
+              "greek/document": 2,
+              "planets/json": 1,
+              "animals/prose": 1,
+              "greek/chat": 1,
+              "greek/code": 1,
+              "greek/table": 1,
+              "animals/code": 1,
+              "planets/document": 1,
+              "elements/document": 1,
+              "greek/prose": 1,
+              "animals/chat": 1,
+              "planets/code": 1,
+              "animals/json": 1,
+              "planets/prose": 1,
+              "elements/code": 1,
+              "elements/prose": 1,
+              "elements/table": 1,
+              "elements/json": 1,
+              "planets/chat": 1,
+              "greek/json": 1,
+              "animals/document": 1
+            }
+          },
+          "P2/L3": {
+            "scenes": 28,
+            "dead_combinations": [],
+            "by_domain_format": {
+              "elements/code": 2,
+              "elements/prose": 2,
+              "planets/document": 2,
+              "greek/json": 2,
+              "planets/prose": 1,
+              "planets/json": 1,
+              "animals/table": 1,
+              "elements/document": 1,
+              "greek/code": 1,
+              "greek/prose": 1,
+              "elements/json": 1,
+              "animals/document": 1,
+              "planets/table": 1,
+              "elements/chat": 1,
+              "animals/code": 1,
+              "planets/code": 1,
+              "animals/prose": 1,
+              "greek/document": 1,
+              "animals/json": 1,
+              "greek/chat": 1,
+              "greek/table": 1,
+              "planets/chat": 1,
+              "animals/chat": 1,
+              "elements/table": 1
+            }
+          },
+          "M2/L3": {
+            "scenes": 28,
+            "dead_combinations": [
+              "greek/chat",
+              "greek/code",
+              "greek/document",
+              "greek/json",
+              "greek/prose",
+              "greek/table"
+            ],
+            "by_domain_format": {
+              "elements/document": 2,
+              "animals/document": 2,
+              "animals/table": 2,
+              "elements/json": 2,
+              "animals/chat": 2,
+              "planets/chat": 2,
+              "elements/chat": 2,
+              "elements/code": 2,
+              "planets/json": 2,
+              "planets/table": 2,
+              "elements/table": 1,
+              "planets/code": 1,
+              "animals/code": 1,
+              "planets/document": 1,
+              "elements/prose": 1,
+              "animals/prose": 1,
+              "animals/json": 1,
+              "planets/prose": 1
+            }
+          },
+          "C2/L3": {
+            "scenes": 28,
+            "dead_combinations": [],
+            "by_domain_format": {
+              "elements/prose": 2,
+              "planets/json": 2,
+              "elements/table": 2,
+              "elements/document": 2,
+              "animals/json": 1,
+              "animals/chat": 1,
+              "greek/table": 1,
+              "animals/code": 1,
+              "animals/table": 1,
+              "planets/prose": 1,
+              "greek/code": 1,
+              "animals/document": 1,
+              "planets/code": 1,
+              "elements/code": 1,
+              "greek/json": 1,
+              "planets/table": 1,
+              "greek/prose": 1,
+              "greek/chat": 1,
+              "elements/json": 1,
+              "greek/document": 1,
+              "elements/chat": 1,
+              "planets/document": 1,
+              "planets/chat": 1,
+              "animals/prose": 1
+            }
+          }
+        },
+        "three_step_domains": [
+          "animals",
+          "vehicles",
+          "shapes",
+          "elements",
+          "planets"
+        ]
+      }
+    },
+    "kt01": {
+      "set": "fresh_v8s2_kt01",
+      "sha256": "96c1c2f0ca00c3c365e757218bf4525b50cd4069a58035a3ac00c502c72fa7f9",
+      "manifest": {
+        "set": "fresh_v8s2_kt01",
+        "n_scenes_per_group_level": 20,
+        "words": [
+          "PP",
+          "PM",
+          "MP",
+          "MM",
+          "CP",
+          "CM"
+        ],
+        "domains": [
+          "shapes",
+          "vehicles",
+          "instruments"
+        ],
+        "formats": [
+          "prose",
+          "json",
+          "table",
+          "code",
+          "chat",
+          "document"
+        ],
+        "levels": {
+          "0": {
+            "entities": 3,
+            "distractors": false,
+            "filler": 0,
+            "paraphrase": false,
+            "hard_cues": false
+          },
+          "1": {
+            "entities": 6,
+            "distractors": true,
+            "filler": 5,
+            "paraphrase": false,
+            "hard_cues": false
+          }
+        },
+        "seed": 722,
+        "generator": "scripts/tasks_v2.py make (v8)",
+        "git_commit": "6c0760e71bcc3a9fbbf8f17415fb43dcb0e60196",
+        "counterfactuals": false,
+        "n_items": 240,
+        "coverage": {
+          "P2/L0": {
+            "scenes": 20,
+            "dead_combinations": [],
+            "by_domain_format": {
+              "instruments/chat": 2,
+              "shapes/prose": 2,
+              "vehicles/json": 1,
+              "instruments/json": 1,
+              "vehicles/chat": 1,
+              "instruments/prose": 1,
+              "shapes/json": 1,
+              "instruments/code": 1,
+              "shapes/code": 1,
+              "vehicles/document": 1,
+              "shapes/table": 1,
+              "instruments/document": 1,
+              "vehicles/prose": 1,
+              "vehicles/table": 1,
+              "instruments/table": 1,
+              "vehicles/code": 1,
+              "shapes/document": 1,
+              "shapes/chat": 1
+            }
+          },
+          "M2/L0": {
+            "scenes": 20,
+            "dead_combinations": [
+              "instruments/json"
+            ],
+            "by_domain_format": {
+              "shapes/document": 2,
+              "instruments/json": 1,
+              "vehicles/chat": 2,
+              "shapes/code": 1,
+              "shapes/table": 1,
+              "vehicles/document": 1,
+              "instruments/chat": 1,
+              "instruments/document": 1,
+              "instruments/code": 1,
+              "vehicles/prose": 1,
+              "shapes/json": 1,
+              "vehicles/code": 1,
+              "shapes/prose": 1,
+              "instruments/table": 1,
+              "instruments/prose": 1,
+              "vehicles/table": 1,
+              "vehicles/json": 1,
+              "shapes/chat": 1
+            }
+          },
+          "C2/L0": {
+            "scenes": 20,
+            "dead_combinations": [],
+            "by_domain_format": {
+              "instruments/json": 2,
+              "shapes/prose": 2,
+              "instruments/chat": 1,
+              "instruments/code": 1,
+              "shapes/json": 1,
+              "vehicles/table": 1,
+              "shapes/code": 1,
+              "instruments/table": 1,
+              "vehicles/chat": 1,
+              "vehicles/document": 1,
+              "vehicles/prose": 1,
+              "instruments/prose": 1,
+              "vehicles/json": 1,
+              "vehicles/code": 1,
+              "shapes/document": 1,
+              "instruments/document": 1,
+              "shapes/table": 1,
+              "shapes/chat": 1
+            }
+          },
+          "P2/L1": {
+            "scenes": 20,
+            "dead_combinations": [],
+            "by_domain_format": {
+              "shapes/chat": 2,
+              "instruments/table": 2,
+              "vehicles/table": 1,
+              "instruments/json": 1,
+              "vehicles/chat": 1,
+              "shapes/code": 1,
+              "shapes/prose": 1,
+              "vehicles/json": 1,
+              "vehicles/code": 1,
+              "instruments/document": 1,
+              "instruments/prose": 1,
+              "shapes/document": 1,
+              "shapes/json": 1,
+              "shapes/table": 1,
+              "instruments/chat": 1,
+              "instruments/code": 1,
+              "vehicles/prose": 1,
+              "vehicles/document": 1
+            }
+          },
+          "M2/L1": {
+            "scenes": 20,
+            "dead_combinations": [],
+            "by_domain_format": {
+              "instruments/prose": 2,
+              "instruments/table": 2,
+              "instruments/chat": 1,
+              "shapes/json": 1,
+              "shapes/document": 1,
+              "instruments/document": 1,
+              "shapes/chat": 1,
+              "vehicles/code": 1,
+              "instruments/json": 1,
+              "vehicles/json": 1,
+              "instruments/code": 1,
+              "vehicles/chat": 1,
+              "shapes/prose": 1,
+              "shapes/code": 1,
+              "vehicles/table": 1,
+              "shapes/table": 1,
+              "vehicles/prose": 1,
+              "vehicles/document": 1
+            }
+          },
+          "C2/L1": {
+            "scenes": 20,
+            "dead_combinations": [],
+            "by_domain_format": {
+              "shapes/code": 2,
+              "vehicles/code": 2,
+              "shapes/json": 1,
+              "vehicles/chat": 1,
+              "instruments/prose": 1,
+              "instruments/code": 1,
+              "instruments/document": 1,
+              "vehicles/table": 1,
+              "shapes/table": 1,
+              "instruments/table": 1,
+              "vehicles/document": 1,
+              "vehicles/json": 1,
+              "shapes/prose": 1,
+              "shapes/document": 1,
+              "instruments/json": 1,
+              "instruments/chat": 1,
+              "vehicles/prose": 1,
+              "shapes/chat": 1
+            }
+          }
+        },
+        "three_step_domains": [
+          "animals",
+          "vehicles",
+          "shapes",
+          "elements",
+          "planets"
+        ]
+      }
+    },
+    "kt23": {
+      "set": "fresh_v8s2_kt23",
+      "sha256": "4f761d5bc0476f8ed1d1eb800759166db0342d3b42f9d6e176e6ea2ed7254f70",
+      "manifest": {
+        "set": "fresh_v8s2_kt23",
+        "n_scenes_per_group_level": 20,
+        "words": [
+          "PP",
+          "PM",
+          "CP",
+          "CM"
+        ],
+        "domains": [
+          "shapes",
+          "vehicles",
+          "instruments"
+        ],
+        "formats": [
+          "prose",
+          "json",
+          "table",
+          "code",
+          "chat",
+          "document"
+        ],
+        "levels": {
+          "2": {
+            "entities": 9,
+            "distractors": true,
+            "filler": 10,
+            "paraphrase": true,
+            "hard_cues": true
+          },
+          "3": {
+            "entities": 12,
+            "distractors": true,
+            "filler": 20,
+            "paraphrase": true,
+            "hard_cues": true
+          }
+        },
+        "seed": 723,
+        "generator": "scripts/tasks_v2.py make (v8)",
+        "git_commit": "6c0760e71bcc3a9fbbf8f17415fb43dcb0e60196",
+        "counterfactuals": false,
+        "n_items": 160,
+        "coverage": {
+          "P2/L2": {
+            "scenes": 20,
+            "dead_combinations": [],
+            "by_domain_format": {
+              "shapes/json": 2,
+              "instruments/code": 2,
+              "vehicles/table": 1,
+              "vehicles/chat": 1,
+              "instruments/json": 1,
+              "instruments/chat": 1,
+              "shapes/prose": 1,
+              "vehicles/json": 1,
+              "shapes/table": 1,
+              "vehicles/code": 1,
+              "instruments/prose": 1,
+              "instruments/table": 1,
+              "vehicles/document": 1,
+              "shapes/code": 1,
+              "shapes/chat": 1,
+              "vehicles/prose": 1,
+              "shapes/document": 1,
+              "instruments/document": 1
+            }
+          },
+          "C2/L2": {
+            "scenes": 20,
+            "dead_combinations": [],
+            "by_domain_format": {
+              "shapes/prose": 2,
+              "vehicles/json": 2,
+              "vehicles/prose": 1,
+              "shapes/document": 1,
+              "vehicles/chat": 1,
+              "shapes/table": 1,
+              "instruments/document": 1,
+              "instruments/table": 1,
+              "vehicles/table": 1,
+              "instruments/code": 1,
+              "shapes/json": 1,
+              "shapes/code": 1,
+              "vehicles/document": 1,
+              "shapes/chat": 1,
+              "instruments/json": 1,
+              "vehicles/code": 1,
+              "instruments/prose": 1,
+              "instruments/chat": 1
+            }
+          },
+          "P2/L3": {
+            "scenes": 20,
+            "dead_combinations": [
+              "instruments/table"
+            ],
+            "by_domain_format": {
+              "instruments/table": 1,
+              "shapes/prose": 2,
+              "vehicles/table": 2,
+              "vehicles/json": 1,
+              "vehicles/document": 1,
+              "shapes/code": 1,
+              "instruments/json": 1,
+              "shapes/table": 1,
+              "vehicles/prose": 1,
+              "vehicles/chat": 1,
+              "shapes/json": 1,
+              "instruments/prose": 1,
+              "instruments/document": 1,
+              "instruments/chat": 1,
+              "instruments/code": 1,
+              "vehicles/code": 1,
+              "shapes/chat": 1,
+              "shapes/document": 1
+            }
+          },
+          "C2/L3": {
+            "scenes": 20,
+            "dead_combinations": [],
+            "by_domain_format": {
+              "vehicles/json": 2,
+              "instruments/table": 2,
+              "shapes/json": 1,
+              "shapes/code": 1,
+              "instruments/document": 1,
+              "instruments/prose": 1,
+              "shapes/document": 1,
+              "instruments/json": 1,
+              "vehicles/code": 1,
+              "shapes/prose": 1,
+              "instruments/chat": 1,
+              "shapes/chat": 1,
+              "instruments/code": 1,
+              "vehicles/chat": 1,
+              "vehicles/table": 1,
+              "vehicles/document": 1,
+              "vehicles/prose": 1,
+              "shapes/table": 1
+            }
+          }
+        },
+        "three_step_domains": [
+          "animals",
+          "vehicles",
+          "shapes",
+          "elements",
+          "planets"
+        ]
+      }
+    }
+  },
+  "n_items": 1072,
+  "per_word": {
+    "PP": 192,
+    "PM": 192,
+    "MP": 152,
+    "MM": 152,
+    "CP": 192,
+    "CM": 192
+  },
+  "per_domain": {
+    "animals": 182,
+    "greek": 116,
+    "planets": 184,
+    "elements": 190,
+    "instruments": 134,
+    "shapes": 136,
+    "vehicles": 130
+  },
+  "per_level": {
+    "0": 288,
+    "1": 288,
+    "2": 248,
+    "3": 248
+  },
+  "per_format": {
+    "json": 176,
+    "prose": 184,
+    "table": 188,
+    "code": 168,
+    "chat": 180,
+    "document": 176
+  },
+  "with_counterfactuals": 672,
+  "written_utc": "2026-10-22T21:08:33Z",
+  "doc": "Merge tasks_v2 sets into one (Zach, 2026-10-21: the full v8 set). make() cannot put the controlled tier (with\ncounterfactuals) and the knock-out tier in one call, and the knock-out tier has no hard cues, so M-start words exist\nthere at levels 0-1 only; the full set is made in parts and merged here. Item and scene ids restart at 0 in each part,\nso they are prefixed with the part's tag (\"cf:PP-L0-0000\"); every other field is unchanged. Write-once."
+}
