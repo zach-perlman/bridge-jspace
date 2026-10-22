@@ -1,0 +1,22 @@
+id: qwen35_9b_d3v4_seed2_competence
+title: "pointer_v4 seed2 competence (Qwen3.5-9B)"
+thread: D3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.3
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/pointer_v4.py manifest --set seed2 --name qwen35_9b_d3v4_seed2_competence --why "seed 2: a second draw of pointer_v4 (seed 844) for findings 3-5 on Qwen3.5-9B" && BJ_TARGET=qwen3.5-9b uv run python scripts/pointer_v4.py competence --name qwen35_9b_d3v4_seed2_competence
+question: >-
+  Does Qwen3.5-9B answer the seed-2 scenes as it answers main's?
+why_it_matters: >-
+  The gate for the seed-2 runs below.
+hypotheses:
+  H-gate: 'every topic >= 0.85 right (the gate, rounded to 2 decimals). Prior 0.7'
+decision_rule: >-
+  pointer_v4.py's competence gate, unchanged (GATE_LO 0.85, rounded to two decimals); a topic below it is dropped from the downstream runs.
+controls:
+- 'the off-path statement of the same token length hidden the same way; unedited accuracy; the competence gate (every prompt of the scene right)'
+n: 'pointer_v4 seed2 (300 scenes)'
+seeds: [844]
+notes: "Dan, 2026-10-22 evening: strengthen findings 3-5 on the models whose results were read after the data (critic priority 3): a second draw of scenes, the rules committed for the 27B and Qwen3-32B, unchanged. Not opened before Dan predicts."
