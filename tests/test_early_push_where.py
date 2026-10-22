@@ -119,6 +119,18 @@ def test_rule_v2_skips_a_higher_cell_that_moves_answers_off_the_path():
     assert v2["valid"] and len(v2["selected"]) == 1
 
 
+def test_rule_v21_takes_the_decisive_cell_from_layer_20_on():
+    rates = _grid(0.9, 0.2)  # w 20 8x: valid, BL 20%
+    rates |= {("BR", "w", 12, 8.0, "lens"): 0.95, ("BL", "w", 12, 8.0, "lens"): 0.25}  # valid, higher, but layer 12
+    cells, scene_of = _cells(rates)
+    v2 = W.decide(cells, scene_of, LAYERS, SCALES, "v2")
+    assert v2["primary"]["layer"] == 12
+    v21 = W.decide(cells, scene_of, LAYERS, SCALES, "v2.1")
+    assert (v21["primary"]["subset"], v21["primary"]["layer"], v21["primary"]["scale"]) == ("w", 20, 8.0)
+    assert v21["below_v21"] == [{"subset": "w", "layer": 12, "scale": 8.0, "br": 0.96, "bl": 0.24}]
+    assert v21["verdict"].startswith("inconclusive")
+
+
 def test_rule_v2_without_a_valid_cell():
     cells, scene_of = _cells(_grid(0.9, 0.02, off=0.3))
     d = W.decide(cells, scene_of, LAYERS, SCALES, "v2")

@@ -46,7 +46,15 @@ the selected cell with the highest BR rate (v1's ties); the verdicts are v1's. R
 v1. Fresh scenes (config "scenes": "fresh"): n scenes sampled (seed FRESH_SEED) from those eligible in all four
 families under suite_split's rule (every competence prompt right) and not in the map run at all.
 
-Stages:  run --name N --why W [--n K] [--scenes map|fresh] [--rule v1|v2]   analyze --name N   figures --name N
+Rule v2.1 (amended 2026-10-22 20:35 +0200, Dan, while d4_where_fresh_27b ran and before any of its results was
+opened): v2 applied to d4_where_27b (already opened) picks the word at layer 16, 8x (recall 90%, lookup 20%:
+inconclusive), while every valid cell at layers 20-36 has lookup 0%; at layer 16 the push moves lookups as an input
+edit would. So v2.1 = v2 with the decisive cell chosen among valid cells at layers >= 20 (V21_MIN_LAYER); the valid
+cells below 20 are reported separately (below_v21), not decisive. Written by `analyze --name N --rule v2.1` into
+<run>/analysis-v2.1-<stamp>/ (the run's own summary keeps v2).
+
+Stages:  run --name N --why W [--n K] [--scenes map|fresh] [--rule v1|v2]   analyze --name N [--rule v2.1]
+         figures --name N
 """
 
 from __future__ import annotations
@@ -84,6 +92,7 @@ WHERE = ("b", "s", "w", "c")
 DIRS = ("lens", "random", "offscene")
 SEED = 0
 FRESH_SEED = 1
+V21_MIN_LAYER = 20
 SEL_RATE, SEL_LO, RAND_MAX, OFF_PATH_MAX = 0.30, 0.20, 0.05, 0.10
 WHERE_RATE, WHERE_LO, AROUND_MAX, AROUND_GAP = 0.30, 0.20, 0.10, 0.20
 SLIDE6 = {"RL": 0.73, "RR": 0.84, "BL": 0.01, "BR": 0.02}  # early_push d4_push_wording_b_v1, b, layer 20, 8x
@@ -186,9 +195,10 @@ def decide(
     rule: str = "v1",
 ) -> dict:
     """cells: (family, subset, layer, scale, dir) -> {item: role}, items answered right unedited only. rule v1:
-    select on BR, then check validity at the primary cell; v2: only valid cells are selected."""
-    assert rule in ("v1", "v2"), rule
-    sel = []
+    select on BR, then check validity at the primary cell; v2: only valid cells are selected; v2.1: v2 at layers
+    >= V21_MIN_LAYER, the valid cells below reported in 'below_v21'."""
+    assert rule in ("v1", "v2", "v2.1"), rule
+    sel, below = [], []
     for sub in ("w", "s"):
         for la in layers:
             for sc in scales:
@@ -197,12 +207,17 @@ def decide(
                     continue
                 p, lo, _ = cell_rate(br)
                 if p >= SEL_RATE and lo >= SEL_LO and cell_rate(rnd)[0] <= RAND_MAX:
-                    if rule == "v2" and not cell_valid(cells, (sub, la, sc))[0]:
+                    if rule != "v1" and not cell_valid(cells, (sub, la, sc))[0]:
                         continue
-                    sel.append({"subset": sub, "layer": la, "scale": sc, "br": round(p, 4)})
-    out: dict[str, Any] = {"rule": rule, "selected": sel}
+                    row = {"subset": sub, "layer": la, "scale": sc, "br": round(p, 4)}
+                    if rule == "v2.1" and la < V21_MIN_LAYER:
+                        bl = cell_rate(cells.get(("BL", sub, la, sc, "lens"), {}))
+                        below.append({**row, "bl": None if math.isnan(bl[0]) else round(bl[0], 4)})
+                        continue
+                    sel.append(row)
+    out: dict[str, Any] = {"rule": rule, "selected": sel, **({"below_v21": below} if rule == "v2.1" else {})}
     if not sel:
-        none = "no valid cell" if rule == "v2" else "no cell"
+        none = "no cell" if rule == "v1" else "no valid cell"
         out.update(primary=None, valid=None, verdict=f"{none}: the lens does not write a stated bridge at its sentence")
         return out
     best = min(sel, key=lambda d: (-d["br"], d["scale"], d["layer"], 0 if d["subset"] == "w" else 1))
@@ -378,12 +393,17 @@ def pct(t: tuple[float, float, float]) -> str:
     return "-" if math.isnan(t[0]) else f"{100 * t[0]:.0f}% [{100 * t[1]:.0f}, {100 * t[2]:.0f}]"
 
 
-def stage_analyze(name: str) -> None:
+def stage_analyze(name: str, rule: str | None = None) -> None:
+    """The run's own rule into the run folder; another rule (an amendment) into a new <run>/analysis-<rule>-<stamp>/."""
     m, cells, edits, counts = load_cells(name)
     cfg = m["config"]
     rows = [json.loads(x) for x in (RESULTS / name / "outcomes.jsonl").read_text().splitlines()]
     scene_of = {r["name"]: r["scene"] for r in rows}
-    dec = decide(cells, scene_of, cfg["layers"], cfg["scales"], cfg.get("rule", "v1"))
+    out_dir = RESULTS / name
+    if rule:
+        out_dir = out_dir / f"analysis-{rule}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+        out_dir.mkdir()
+    dec = decide(cells, scene_of, cfg["layers"], cfg["scales"], rule or cfg.get("rule", "v1"))
     anchor = {f: cell_rate(cells.get((f, "b", 20, 8.0, "lens"), {})) for f in cfg["families"]}
     summary = {"run": name, "decision": dec, "counts": counts,
                "slide6_anchor": {f: {"now": anchor[f], "slide6": SLIDE6.get(f)} for f in anchor},
@@ -392,8 +412,8 @@ def stage_analyze(name: str) -> None:
                          for (f, s, la, sc, d), v in sorted(cells.items())],
                "edits": [{"family": f, "edit": e, "n": len(v), "to_x": cell_rate(v), "changed": cell_rate(v, "changed")}
                          for (f, e), v in sorted(edits.items())]}  # fmt: skip
-    (RESULTS / name / "summary.json").write_text(json.dumps(summary, indent=2, default=str) + "\n")
-    lines = [f"# {EXP} / {name}", "", f"Items: {counts}", "", f"**Verdict:** {dec['verdict']}", ""]
+    (out_dir / "summary.json").write_text(json.dumps(summary, indent=2, default=str) + "\n")
+    lines = [f"# {EXP} / {name} (rule {dec['rule']})", "", f"Items: {counts}", "", f"**Verdict:** {dec['verdict']}", ""]
     if dec.get("primary"):
         p = dec["primary"]
         lines += [
@@ -404,6 +424,10 @@ def stage_analyze(name: str) -> None:
         g = dec["br_minus_bl"]
         lines += [f"- BR - BL (scene-paired, {dec['n_scenes_paired']} scenes): {100 * g[0]:+.0f} [{100 * g[1]:+.0f}, {100 * g[2]:+.0f}] points", ""]  # fmt: skip
     lines += [f"Selected cells (BR rows only): {len(dec['selected'])}", ""]
+    if "below_v21" in dec:
+        lines += [f"Valid cells below layer {V21_MIN_LAYER} (reported, not decisive): "
+                  + ("; ".join(f"{d['subset']} L{d['layer']} {d['scale']:g}x: BR {100 * d['br']:.0f}%, BL "
+                               + ("-" if d["bl"] is None else f"{100 * d['bl']:.0f}%") for d in dec["below_v21"]) or "none"), ""]  # fmt: skip
     lines += ["Slide 6 anchor (b, layer 20, 8x, lens): " + ", ".join(f"{f} {pct(v)} (slide 6: {100 * SLIDE6[f]:.0f}%)" for f, v in anchor.items()), ""]  # fmt: skip
     lines += ["| family | where | layer | scale | lens → X | random → X | off-scene: changed | off-scene → Y |", "|---|---|---|---|---|---|---|---|"]  # fmt: skip
     for f in cfg["families"]:
@@ -419,7 +443,7 @@ def stage_analyze(name: str) -> None:
     lines += ["", "| family | edit | n | → X | changed |", "|---|---|---|---|---|"]
     for (f, e), v in sorted(edits.items()):
         lines.append(f"| {f} | {e} | {len(v)} | {pct(cell_rate(v))} | {pct(cell_rate(v, 'changed'))} |")
-    (RESULTS / name / "summary.md").write_text("\n".join(lines) + "\n")
+    (out_dir / "summary.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines[:16]))
 
 
@@ -471,12 +495,14 @@ if __name__ == "__main__":
     ap.add_argument("--why")
     ap.add_argument("--n", type=int, default=DEFAULTS["n"])
     ap.add_argument("--scenes", choices=["map", "fresh"], default=DEFAULTS["scenes"])
-    ap.add_argument("--rule", choices=["v1", "v2"], default=DEFAULTS["rule"])
+    ap.add_argument("--rule", choices=["v1", "v2", "v2.1"], default=None,
+                    help="run: the rule in the config (v1, v2; default v1); analyze: an amendment into a new folder")  # fmt: skip
     a = ap.parse_args()
     if a.stage == "run":
         assert a.why, "run needs --why"
-        stage_run(a.name, a.why, {**DEFAULTS, "n": a.n, "scenes": a.scenes, "rule": a.rule})
+        assert a.rule in (None, "v1", "v2"), "run: rule v1 or v2 (v2.1 is an analysis amendment)"
+        stage_run(a.name, a.why, {**DEFAULTS, "n": a.n, "scenes": a.scenes, "rule": a.rule or DEFAULTS["rule"]})
     elif a.stage == "analyze":
-        stage_analyze(a.name)
+        stage_analyze(a.name, a.rule)
     else:
         stage_figures(a.name)
