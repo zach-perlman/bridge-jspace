@@ -1,0 +1,595 @@
+{
+ "exp": "attn_knockout",
+ "run": "qwen3_32b_d2_parts_seed2",
+ "seed": 0,
+ "k": 3,
+ "groups": [
+  {
+   "key": "path_breaks",
+   "title": "A path statement blocked, the answer lost",
+   "definition": "source on the family's path, all layers (heads grid: every attention layer of a range), unedited read right, edited read wrong",
+   "n_total": 907
+  },
+  {
+   "key": "path_confusion",
+   "title": "Lost to another statement's answer",
+   "definition": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)",
+   "n_total": 505
+  },
+  {
+   "key": "path_survives",
+   "title": "A path statement blocked from the answer site, the answer kept",
+   "definition": "source on the path, destination final or both, all layers, edited read still right",
+   "n_total": 12
+  },
+  {
+   "key": "control_breaks",
+   "title": "A control span blocked, the answer lost (collateral damage)",
+   "definition": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong",
+   "n_total": 1
+  },
+  {
+   "key": "positive_control",
+   "title": "Path statement invisible to everything after it",
+   "definition": "source on the path, destination after, all layers, DeltaNet mode absent (no write, erase or decay at S): any outcome",
+   "n_total": 0
+  }
+ ],
+ "examples": [
+  {
+   "group": "path_breaks",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0105",
+   "prompt": "<|im_start|>user\nThe Denmark file is in drawer 1. The Ireland file is in drawer 8. The France file is in drawer 5. The Thailand file is in drawer 9. The Russia file is in drawer 7.\nWhat drawer keeps the file on the country whose capital is Dublin? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 49,
+     "end": 82,
+     "role": "source"
+    },
+    {
+     "start": 291,
+     "end": 351,
+     "role": "destination"
+    },
+    {
+     "start": 211,
+     "end": 246,
+     "role": "cue"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('The Ireland file is in drawer 8.') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "8",
+    "edited": "1",
+    "expected": {
+     "H_answer_site": "not 8",
+     "H_relay": "8"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0001,
+    "logp_answer_edited": -9.5253,
+    "dlogp": -9.5251,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "8",
+    "other_answers_in_prompt": [
+     "1",
+     "5",
+     "7",
+     "9"
+    ]
+   },
+   "why": "source on the family's path, all layers (heads grid: every attention layer of a range), unedited read right, edited read wrong"
+  },
+  {
+   "group": "path_breaks",
+   "family": "DL",
+   "item_id": "body-DL-e5f0-0076",
+   "prompt": "<|im_start|>user\nFolder 5 holds the eye chart. Folder 3 holds the elbow chart. Folder 9 holds the eyebrow chart. Folder 6 holds the heart chart. Folder 7 holds the wrist chart.\nIn which folder is the chart on the heart? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 112,
+     "end": 144,
+     "role": "source"
+    },
+    {
+     "start": 263,
+     "end": 323,
+     "role": "destination"
+    },
+    {
+     "start": 209,
+     "end": 218,
+     "role": "cue"
+    },
+    {
+     "start": 132,
+     "end": 137,
+     "role": "bridge"
+    },
+    {
+     "start": 213,
+     "end": 218,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('Folder 6 holds the heart chart.') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "6",
+    "edited": "9",
+    "expected": {
+     "H_answer_site": "not 6",
+     "H_relay": "6"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0,
+    "logp_answer_edited": -16.3892,
+    "dlogp": -16.3892,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "6",
+    "other_answers_in_prompt": [
+     "3",
+     "5",
+     "7",
+     "9"
+    ]
+   },
+   "why": "source on the family's path, all layers (heads grid: every attention layer of a range), unedited read right, edited read wrong"
+  },
+  {
+   "group": "path_breaks",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0079",
+   "prompt": "<|im_start|>user\nThe Sweden file is in drawer 2. The Hungary file is in drawer 8. The Lebanon file is in drawer 7. The Turkey file is in drawer 5. The Russia file is in drawer 6.\nIn which drawer is the file on the country whose capital is Budapest? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 48,
+     "end": 81,
+     "role": "source"
+    },
+    {
+     "start": 292,
+     "end": 352,
+     "role": "destination"
+    },
+    {
+     "start": 210,
+     "end": 247,
+     "role": "cue"
+    },
+    {
+     "start": 53,
+     "end": 60,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('The Hungary file is in drawer 8.') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "8",
+    "edited": "2",
+    "expected": {
+     "H_answer_site": "not 8",
+     "H_relay": "8"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0003,
+    "logp_answer_edited": -8.7603,
+    "dlogp": -8.76,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "8",
+    "other_answers_in_prompt": [
+     "2",
+     "5",
+     "6",
+     "7"
+    ]
+   },
+   "why": "source on the family's path, all layers (heads grid: every attention layer of a range), unedited read right, edited read wrong"
+  },
+  {
+   "group": "path_confusion",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0087",
+   "prompt": "<|im_start|>user\nThe file on Indonesia is kept in drawer 4. The file on Italy is kept in drawer 1. The file on Belgium is kept in drawer 3. The file on Lebanon is kept in drawer 5. The file on Korea is kept in drawer 2.\nIn which drawer is the file on the country whose capital is Beirut? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 139,
+     "end": 180,
+     "role": "source"
+    },
+    {
+     "start": 331,
+     "end": 391,
+     "role": "destination"
+    },
+    {
+     "start": 251,
+     "end": 286,
+     "role": "cue"
+    },
+    {
+     "start": 152,
+     "end": 159,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('The file on Lebanon is kept in drawer 5.') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "5",
+    "edited": "3",
+    "expected": {
+     "H_answer_site": "not 5",
+     "H_relay": "5"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0,
+    "logp_answer_edited": -8.7843,
+    "dlogp": -8.7843,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "5",
+    "other_answers_in_prompt": [
+     "1",
+     "2",
+     "3",
+     "4"
+    ]
+   },
+   "why": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)"
+  },
+  {
+   "group": "path_confusion",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0067",
+   "prompt": "<|im_start|>user\nThe chart on the liver is kept in folder 6. The chart on the eye is kept in folder 7. The chart on the eyebrow is kept in folder 5. The chart on the bladder is kept in folder 8. The chart on the heart is kept in folder 3.\nIn which folder is the chart on the body part that makes bile? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 60,
+     "role": "source"
+    },
+    {
+     "start": 345,
+     "end": 405,
+     "role": "destination"
+    },
+    {
+     "start": 271,
+     "end": 300,
+     "role": "cue"
+    },
+    {
+     "start": 34,
+     "end": 39,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('The chart on the liver is kept in folder 6.') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "6",
+    "edited": "3",
+    "expected": {
+     "H_answer_site": "not 6",
+     "H_relay": "6"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0588,
+    "logp_answer_edited": -5.6105,
+    "dlogp": -5.5517,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "6",
+    "other_answers_in_prompt": [
+     "3",
+     "5",
+     "7",
+     "8"
+    ]
+   },
+   "why": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)"
+  },
+  {
+   "group": "path_confusion",
+   "family": "DL",
+   "item_id": "animals-DL-e5f0-0018",
+   "prompt": "<|im_start|>user\nThe turkey's locker is 7. The dog's locker is 9. The snake's locker is 1. The duck's locker is 5. The mosquito's locker is 8.\nWhat locker is used by the dog? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 42,
+     "end": 65,
+     "role": "source"
+    },
+    {
+     "start": 218,
+     "end": 278,
+     "role": "destination"
+    },
+    {
+     "start": 166,
+     "end": 173,
+     "role": "cue"
+    },
+    {
+     "start": 47,
+     "end": 50,
+     "role": "bridge"
+    },
+    {
+     "start": 170,
+     "end": 173,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span (\"The dog's locker is 9.\") directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "9",
+    "edited": "7",
+    "expected": {
+     "H_answer_site": "not 9",
+     "H_relay": "9"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0,
+    "logp_answer_edited": -12.7534,
+    "dlogp": -12.7534,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "9",
+    "other_answers_in_prompt": [
+     "1",
+     "5",
+     "7",
+     "8"
+    ]
+   },
+   "why": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)"
+  },
+  {
+   "group": "path_survives",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0064",
+   "prompt": "<|im_start|>user\nThe file on Greece is kept in drawer 1. The file on Austria is kept in drawer 9. The file on Russia is kept in drawer 6. The file on Denmark is kept in drawer 8. The file on Peru is kept in drawer 5.\nWhich drawer holds the file on the country whose capital is Athens? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 56,
+     "role": "source"
+    },
+    {
+     "start": 328,
+     "end": 388,
+     "role": "destination"
+    },
+    {
+     "start": 248,
+     "end": 283,
+     "role": "cue"
+    },
+    {
+     "start": 29,
+     "end": 35,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('The file on Greece is kept in drawer 1.') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H_answer_site": "not 1",
+     "H_relay": "1"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0,
+    "logp_answer_edited": -0.5414,
+    "dlogp": -0.5414,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "5",
+     "6",
+     "8",
+     "9"
+    ]
+   },
+   "why": "source on the path, destination final or both, all layers, edited read still right"
+  },
+  {
+   "group": "path_survives",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0088",
+   "prompt": "<|im_start|>user\nThe Pakistan file is in drawer 1. The Kenya file is in drawer 6. The Hungary file is in drawer 5. The Lebanon file is in drawer 7. The Spain file is in drawer 8.\nWhat drawer keeps the file on the country whose capital is Islamabad? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 50,
+     "role": "source"
+    },
+    {
+     "start": 292,
+     "end": 352,
+     "role": "destination"
+    },
+    {
+     "start": 209,
+     "end": 247,
+     "role": "cue"
+    },
+    {
+     "start": 21,
+     "end": 29,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('The Pakistan file is in drawer 1.') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H_answer_site": "not 1",
+     "H_relay": "1"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0002,
+    "logp_answer_edited": -0.0355,
+    "dlogp": -0.0353,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "5",
+     "6",
+     "7",
+     "8"
+    ]
+   },
+   "why": "source on the path, destination final or both, all layers, edited read still right"
+  },
+  {
+   "group": "path_survives",
+   "family": "DL",
+   "item_id": "countries-DL-e5f0-0083",
+   "prompt": "<|im_start|>user\nThe file on Korea is kept in drawer 1. The file on Hungary is kept in drawer 5. The file on Finland is kept in drawer 4. The file on Iran is kept in drawer 2. The file on Thailand is kept in drawer 3.\nWhat drawer keeps the file on Korea? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 55,
+     "role": "source"
+    },
+    {
+     "start": 298,
+     "end": 358,
+     "role": "destination"
+    },
+    {
+     "start": 248,
+     "end": 253,
+     "role": "cue"
+    },
+    {
+     "start": 29,
+     "end": 34,
+     "role": "bridge"
+    },
+    {
+     "start": 248,
+     "end": 253,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('The file on Korea is kept in drawer 1.') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H_answer_site": "not 1",
+     "H_relay": "1"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0,
+    "logp_answer_edited": -0.0086,
+    "dlogp": -0.0086,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "2",
+     "3",
+     "4",
+     "5"
+    ]
+   },
+   "why": "source on the path, destination final or both, all layers, edited read still right"
+  },
+  {
+   "group": "control_breaks",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0082",
+   "prompt": "<|im_start|>user\nThe eye chart is in folder 5. The skull chart is in folder 8. The elbow chart is in folder 6. The stomach chart is in folder 9. The ear chart is in folder 7.\nIn which folder is the chart on the body part that protects the brain? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 144,
+     "end": 175,
+     "role": "source"
+    },
+    {
+     "start": 175,
+     "end": 289,
+     "role": "destination"
+    },
+    {
+     "start": 207,
+     "end": 244,
+     "role": "cue"
+    },
+    {
+     "start": 51,
+     "end": 56,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question tokens cannot read the lookup_off span ('The ear chart is in folder 7.') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "8",
+    "edited": "5",
+    "expected": {
+     "H_answer_site": "8",
+     "H_relay": "8"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.5154,
+    "logp_answer_edited": -1.5266,
+    "dlogp": -1.0112,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "8",
+    "other_answers_in_prompt": [
+     "5",
+     "6",
+     "7",
+     "9"
+    ]
+   },
+   "why": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong"
+  }
+ ]
+}

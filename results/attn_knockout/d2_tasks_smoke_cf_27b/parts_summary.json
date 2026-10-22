@@ -1,0 +1,429 @@
+{
+ "run": "d2_tasks_smoke_cf_27b",
+ "cells": {
+  "PM|lookup|final": {
+   "n": 16,
+   "right": [
+    1.0,
+    0.8063865817272802,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PM|lookup|question": {
+   "n": 16,
+   "right": [
+    1.0,
+    0.8063865817272802,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PM|lookup_digit|final": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PM|lookup_digit|question": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PM|lookup_name|final": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PM|lookup_name|question": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PM|lookup_nodigit|final": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PM|lookup_nodigit|question": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PM|lookup_noname|final": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PM|lookup_noname|question": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PM|lookup_off|final": {
+   "n": 16,
+   "right": [
+    1.0,
+    0.8063865817272802,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PM|lookup_off|question": {
+   "n": 16,
+   "right": [
+    1.0,
+    0.8063865817272802,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PM|lookup_off_digit|final": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PM|lookup_off_digit|question": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PM|lookup_off_name|final": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PM|lookup_off_name|question": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PM|lookup_off_nodigit|final": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PM|lookup_off_nodigit|question": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PM|lookup_off_noname|final": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PM|lookup_off_noname|question": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PP|lookup|final": {
+   "n": 16,
+   "right": [
+    0.0,
+    0.0,
+    0.19361341827271994
+   ],
+   "list": 0.625,
+   "off": 0.375
+  },
+  "PP|lookup|question": {
+   "n": 16,
+   "right": [
+    1.0,
+    0.8063865817272802,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PP|lookup_digit|final": {
+   "n": 8,
+   "right": [
+    0.25,
+    0.07147768885802763,
+    0.5907301208974108
+   ],
+   "list": 0.5,
+   "off": 0.25
+  },
+  "PP|lookup_digit|question": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PP|lookup_name|final": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PP|lookup_name|question": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PP|lookup_nodigit|final": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PP|lookup_nodigit|question": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PP|lookup_noname|final": {
+   "n": 8,
+   "right": [
+    0.0,
+    0.0,
+    0.3244156195108769
+   ],
+   "list": 0.875,
+   "off": 0.125
+  },
+  "PP|lookup_noname|question": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PP|lookup_off|final": {
+   "n": 16,
+   "right": [
+    1.0,
+    0.8063865817272802,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PP|lookup_off|question": {
+   "n": 16,
+   "right": [
+    1.0,
+    0.8063865817272802,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PP|lookup_off_digit|final": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PP|lookup_off_digit|question": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PP|lookup_off_name|final": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PP|lookup_off_name|question": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PP|lookup_off_nodigit|final": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PP|lookup_off_nodigit|question": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PP|lookup_off_noname|final": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "PP|lookup_off_noname|question": {
+   "n": 8,
+   "right": [
+    1.0,
+    0.6755843804891231,
+    1.0
+   ],
+   "list": 0.0,
+   "off": 0.0
+  }
+ },
+ "verdicts": {
+  "PM": {
+   "valid": true,
+   "question_testable": false,
+   "H-name-q": false,
+   "H-digit-q": false,
+   "H-digit-final": false,
+   "H-name-final": false,
+   "valid-split": true,
+   "H-name-q-split": false,
+   "H-digit-final-split": false
+  },
+  "PP": {
+   "valid": true,
+   "question_testable": false,
+   "H-name-q": false,
+   "H-digit-q": false,
+   "H-digit-final": true,
+   "H-name-final": false,
+   "valid-split": true,
+   "H-name-q-split": false,
+   "H-digit-final-split": true
+  }
+ }
+}

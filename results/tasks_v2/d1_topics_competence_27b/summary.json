@@ -1,0 +1,46 @@
+{
+  "seconds": 117,
+  "by_word_level": {
+    "PP/L0": {
+      "n": 240,
+      "whole": 0.992,
+      "all_steps": 0.95,
+      "median_margin": 5.5,
+      "whole_by_numbers": {
+        "digits": 1,
+        "words": 0.981
+      },
+      "cf": 1,
+      "off": 1
+    },
+    "PM/L0": {
+      "n": 240,
+      "whole": 0.95,
+      "all_steps": 0.871,
+      "median_margin": 3.88,
+      "whole_by_numbers": {
+        "digits": 0.97,
+        "words": 0.926
+      },
+      "cf": 0.967,
+      "off": 0.95
+    }
+  },
+  "by_domain": {
+    "greek": 0.983,
+    "elements": 1,
+    "animals": 0.992,
+    "planets": 0.908
+  },
+  "by_format": {
+    "prose": 0.971
+  },
+  "by_numbers": {
+    "digits": 0.985,
+    "words": 0.954
+  },
+  "pick": {
+    "PP": null,
+    "PM": 0
+  }
+}

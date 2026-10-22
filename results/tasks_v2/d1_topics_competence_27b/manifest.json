@@ -1,0 +1,19 @@
+{
+  "run": "d1_topics_competence_27b",
+  "why": "D1 on four topics: which PP / PM scenes the model gets right on every prompt",
+  "set": "d1_topics_v1",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "git_commit": "3e909594c078adfe8cc2b9e053061a891ab57625",
+  "guess": false,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-22T15:07:37Z"
+}
