@@ -43,13 +43,13 @@ We name each kind of question by **where the bridge comes from → where the ans
 | # | Pattern | How sure | Evidence |
 |---|---|---|---|
 | 1 | **Recall goes through the J-space; a lookup in the prompt goes around it.** | **High** on Qwen3.6-27B (partly *verified*); low for other models | Verified B1-B3; Zach's three measures (fig. 1) |
-| 2 | **The lens reads what the model has, not what it uses.** A stated bridge is read by the lens, but its lens-readable part does nothing for a lookup. | **High** (partly *verified*) | Verified B4; D1 (fig. 2) |
+| 2 | **The lens reads what the model has, not what it uses.** A stated bridge is read by the lens, but its lens-readable part does nothing for a lookup. | **High** (partly *verified*): also in Python code (the key's lens part carries 0.15 of its share; the lens push never beats random) | Verified B4; D1 (fig. 2), D1 in code; Zach's C2 descriptive shows the same split by another method |
 | 3 | **An early lens push changes *which entity is recalled*, not the lookup.** | **Medium-high**: pre-registered, one dataset, 2 wordings | D4 (fig. 3) |
 | 4 | **A lookup reads the answer's statement late (layers 48-63), from the last tokens, through attention layers** (not DeltaNet), spread over many heads. | **High** on Qwen3.6-27B: 5 datasets, ~120 entities, code, 3 languages | D2 (fig. 4) |
-| 5 | **Just before that, the last tokens carry an address: "the Nth statement, counted from the start of the list".** It is neither the bridge word nor a place in the text. | **Medium-high**: strong at layer 50 in every topic, and "counted from the start" passed its pre-registered test; an earlier pre-registered window (layers 44-52) failed per topic because the answer digit already arrives at 52 | D3 (figs. 5, 6) |
+| 5 | **Just before that, the last tokens carry an address: "the Nth statement, counted from the start of the list".** It is neither the bridge word, nor a place in the text, nor a distance back from the question. | **Medium-high**: strong at layer 50 in every topic; "counted from the start" and "an order index under both position shifts" passed their pre-registered tests; an earlier pre-registered window (layers 44-52) failed per topic because the answer digit already arrives at 52 | D3 (figs. 5, 6, 8) |
 | 6 | **That address can be written.** A learned ~4-dimensional direction moves the lookup to another statement; the lens direction does nothing. | **Medium**: 42% on fresh scenes; 31% on new entities and wording, but its lower bound (27%) misses the pre-registered 30% bar | D3b (fig. 7) |
-| 7 | "Around the lens" *is* this address. | **Open**: the fair test failed its control on one topic; rerun on 3 topics finished, not analysed yet | D3b fair test |
-| 8 | The same holds in another model (OLMo-3-7B). | **Open**: first test looked at the wrong layers; layer-placed rerun queued | D3 on OLMo |
+| 7 | "Around the lens" *is* this address. | **Not shown**: at layers 32-40 the pointer push moves 34% of lookups and the lens push 8% (pooled), but only 1 of 3 topics passes with valid controls (2 needed). Zach's C2 also failed as pre-registered | D3b fair test (3 topics) |
+| 8 | The same holds in another model (OLMo-3-7B). | **Partly**: OLMo's address also counts statements, not places in the text (order 27-31% vs place 8-11%, pre-registered), and survives both position shifts. But its slot does not clearly beat the word: they tie at layers 17-18, and the slot leads only pooled at 19 (pre-registered per-topic test fails) | D3 on OLMo (figs. 8, 9) |
 
 **The working picture** (Qwen3.6-27B, a hypothesis):
 
@@ -123,6 +123,16 @@ Runs `d3v4_swap_main`, `d3v4_swap_topics`.
 end (10-12%). Pre-registered, layer 50, ~435 items per panel; holds pooled and in at least 2 of 3 topics in every
 panel. Run `d3v4x_swap_main`.
 
+![The address under position shifts](figures/readme_1021/f8_shifts.png)
+
+**Is it a place in the text, or a distance back from the question?** One extra sentence, in one prompt only, moves
+every statement either in the text (added before the list) or relative to the question (added before the question);
+the number in the list stays. The answer follows **the same number in the list** under both shifts (Qwen 38% and 50%,
+OLMo 36% and 42%); the statement the shift lines up gets 9-17%. So the address is an order index, not a token
+position or a distance (the guess that rotary position would make the distance matter more did not hold). Statements
+twice as long change neither the plain answers' errors nor the same-slot share. Pre-registered; ~435 items per bar
+(Qwen), 132 (OLMo). Runs `d3v6_swap_27b`, `olmo3_7b_instruct_d3v6_swap`.
+
 ### 6. The address can be written; the lens direction cannot
 
 ![Pointer direction vs lens direction](figures/readme_1021/f7_pointer_push.png)
@@ -132,14 +142,28 @@ lookup to the target statement on 42% of fresh scenes and 31% of scenes with new
 push of the same size along the lens's word direction, or a random one, moves nothing (0%). Runs
 `d3b_replicate_fresh_27b`, `d3v4_fit_main`.
 
+### 7. A second model: OLMo-3-7B-Instruct
+
+![Word, slot or digit on OLMo by layer](figures/readme_1021/f9_olmo_slot.png)
+
+OLMo-3-7B has softmax attention in all 32 layers (no DeltaNet). Its digit reaches the last tokens from layer 19, so
+the decisive layers were fixed at 17-19 before the run. There the patched answer goes to **the same slot and to the
+word about equally** (32-36% each at 17-18); at 19 the slot leads pooled (35% vs 23%) but in no topic alone, so the
+pre-registered test fails. What does transfer: the address counts statements by order, not places in the text (27-31%
+vs 8-11%, pre-registered), and survives both position shifts (fig. 8). Counting from the start vs from the end is not
+separated on OLMo. 412 items, 3 topics. Runs `olmo3_7b_instruct_d3v4_swap_fn`, `olmo3_7b_instruct_d3v4x_swap`.
+
 ## What is not shown yet
 
-- **One model.** All of patterns 2-6 are on Qwen3.6-27B, a hybrid of attention and DeltaNet layers. OLMo-3-7B runs
-  are queued.
+- **Mostly one model.** Patterns 2-6 are on Qwen3.6-27B, a hybrid of attention and DeltaNet layers. On OLMo-3-7B the
+  address counts the same way, but the slot does not separate from the word. Qwen3.5-9B, Qwen3-32B and Gemma 4 are
+  running.
 - **Simple scenes.** 3-5 short statements, one-digit answers, the question right after the list.
 - **Moderate effects.** Patches and pushes move 30-50% of answers; many patches change nothing.
 - **The link between patterns 2 and 5** ("the lookup uses the address, which the lens does not read") is a candidate
-  explanation, not a result.
+  explanation, not a result. The fair test at layers 32-40 passes pooled (pointer 34%, lens 8%) but in 1 of 3 topics
+  with valid controls; and the layers where a bridge is "in transit" (the lens can no longer rewrite the recall, the
+  copy still switches the lookup) exist in only one topic, where C2 holds.
 - A late attention head (layer 51, head 22) looks at the right statement on every unedited scene, but after a patch
   it follows the new address only 58% of the time (the bar was 60%).
 
@@ -147,13 +171,13 @@ push of the same size along the lens's word direction, or a random one, moves no
 
 | Step | Question | Status |
 |---|---|---|
-| OLMo-3-7B: the address, at layers placed by when the digit arrives (17-19) | Is the address a Qwen property or how lookups work? | queued |
-| OLMo-3-7B: does its address count by order, from the start? | Same pattern as fig. 6? (Dan: yes) | queued |
-| Absolute vs relative position; long statements (`pointer_v6`) | Is the address "the Nth statement" or "N tokens back"? (Dan: relative shifts matter more; long statements give more errors) | being built |
-| Fair "around the lens" test on 3 topics | Pattern 7 | finished, to analyse |
-| Stated bridge in code (D1 in code) | Is pattern 2 general? | running |
-| Word answers, longer lists (`pointer_v5`) | Is the address a digit trick? Does it count past 5? | designed |
-| Natural carriers (chat turn, table, document), open- vs closed-book | Does any of this survive real layouts? | with Zach |
+| D2 and D3 on Qwen3.5-9B, Qwen3-32B (dense), Gemma 4 31B-it | Is the address and the late read a property of lookups or of one model family? | running |
+| Colour-word answers, 8-statement lists (`pointer_v5`) | Is the address a digit trick? Does it count past 5? | running |
+| J-space removed at the read layers (44-62) | Does the lookup survive where it reads? (pattern 7, directly) | running |
+| Late heads on the model's own errors | A readable address (a provenance monitor)? | running |
+| OLMo ladder (SFT, DPO); D2 and D3b on OLMo | Is the address there before instruction tuning ends? | running |
+| Reproduction from a clean checkout; a second data seed | Do the headline numbers hold? | running |
+| Natural carriers (chat turn, table, document; Zach's full_v8), open- vs closed-book | Does any of this survive real layouts? | next, with Zach |
 
 ## Datasets
 

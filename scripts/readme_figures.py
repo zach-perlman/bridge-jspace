@@ -244,11 +244,57 @@ def f7_pointer_push(out: Path) -> None:
     save(fig, out, "f7_pointer_push.png")
 
 
+def f8_shifts(out: Path) -> None:
+    """D3 v6: under an extra sentence before the list (place in the text shifts) or before the question (distance back
+    shifts), the same slot vs the moved statement; Qwen3.6-27B at layer 50, OLMo-3-7B-Instruct at layer 18."""
+    runs = [
+        ("d3v6_swap_27b", "50", "Qwen3.6-27B (layer 50)"),
+        ("olmo3_7b_instruct_d3v6_swap", "18", "OLMo-3-7B (layer 18)"),
+    ]
+    fig, axes = plt.subplots(1, 2, figsize=(10, 3.2), sharey=True, gridspec_kw={"wspace": 0.08})
+    for ax, (run, la, title) in zip(axes, runs, strict=True):
+        style(ax, "y")
+        rates = load("pointer_swap", run)["rates"]
+        for i, (lv, moved, label) in enumerate((("e5-abs", "token", "sentence added\nbefore the list"),
+                                                ("e5-rel", "back", "sentence added\nbefore the question"))):  # fmt: skip
+            d = rates[f"RL|all|{lv}|last|{la}|dissoc"]
+            bar_ci(ax, i - 0.17, *d["position"][:3], LOOKUP, width=0.32)
+            bar_ci(ax, i + 0.17, *d[moved][:3], LIGHT, width=0.32)
+        ax.set_xticks([0, 1], ["sentence added\nbefore the list", "sentence added\nbefore the question"])
+        ax.set_title(title, loc="left", fontsize=10)
+        ax.set_ylim(0, 65)
+    axes[0].set_ylabel("% of patched answers")
+    handles = [plt.Rectangle((0, 0), 1, 1, color=c) for c in (LOOKUP, LIGHT)]
+    fig.legend(handles, ["the same number in the list", "the statement the shift lines up (same place / same distance)"],
+               loc="lower center", ncol=2, frameon=False, bbox_to_anchor=(0.5, -0.12))  # fmt: skip
+    save(fig, out, "f8_shifts.png")
+
+
+def f9_olmo_slot(out: Path) -> None:
+    """D3 on OLMo-3-7B-Instruct: word / slot / alt digit by layer (layers placed by function, 16-21)."""
+    rates = load("pointer_swap", "olmo3_7b_instruct_d3v4_swap_fn")["rates"]
+    layers = [16, 17, 18, 19, 20, 21]
+    fig, ax = plt.subplots(figsize=(7.5, 3.2))
+    style(ax, "y")
+    for role, label, col in (("position", "the same slot in the org prompt (pointer)", LOOKUP),
+                             ("identity", "bridge alt's own statement (word)", RECALL),
+                             ("value", "the alt prompt's answer (digit)", DIGIT)):  # fmt: skip
+        c = [rates[f"RL|all|e5f0|last|{la}|dissoc"][role] for la in layers]
+        ax.plot(layers, [100 * x[0] for x in c], color=col, lw=2, marker="o", ms=4, label=label)
+        ax.fill_between(layers, [100 * x[1] for x in c], [100 * x[2] for x in c], color=col, alpha=0.15, lw=0)
+    ax.set_xlabel("layer patched (OLMo-3-7B has 32)")
+    ax.set_ylabel("% of patched answers")
+    ax.set_ylim(0, 60)
+    ax.set_title("OLMo-3-7B-Instruct: patch the alt prompt's last two tokens", loc="left")
+    ax.legend(frameon=False, loc="upper left")
+    save(fig, out, "f9_olmo_slot.png")
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", default="figures/readme_1021")
     out = ROOT / ap.parse_args().out
     out.mkdir(parents=True, exist_ok=True)
-    for f in (f1_two_routes, f2_stated_bridge, f3_early_push, f4_late_read, f5_slot_by_layer, f6_slot_counts,
+    for f in (f1_two_routes, f2_stated_bridge, f3_early_push, f4_late_read, f5_slot_by_layer, f6_slot_counts, f8_shifts, f9_olmo_slot,
               f7_pointer_push):  # fmt: skip
         f(out)
