@@ -64,3 +64,5 @@ BJ_BATCH=64 $PY scripts/write_max.py --name qwen3_32b_wm2_full2_v1 --why "$WHY: 
   && $PY scripts/c2_graded.py qwen3_32b_wm2_full2_v1 --drop-guessable > /dev/null || echo "=== two-step steering FAILED"
 echo "=== Qwen3-32B core (C1 + C2) done $(date -u +%FT%TZ)"
 $PY scripts/c2_narrow.py qwen3_32b_wm2_full2_v1 qwen3_32b_wm2_full2_v1_noguess || echo "=== C2-narrow scoring FAILED"  # appended 2026-10-22 (docs/prereg_replication_1022.md)
+# appended 2026-10-22 (Zach: specificity caveat): the share of the residual each knock-out removes, J-lens vs unembedding
+$PY scripts/removal_size.py --name qwen3_32b_removal_size_v1 --why "Zach (2026-10-22): removal size, J-lens vs unembedding (Qwen3-32B)" --layers 16 24 32 36 40 || echo "=== Qwen3-32B removal size FAILED"
