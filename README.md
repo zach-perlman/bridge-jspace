@@ -22,7 +22,7 @@ Five open models: Qwen3.6-27B, Qwen3-32B, Qwen3.5-9B, OLMo-3-7B (SFT, DPO, Instr
 | 2 | **The lens reads a bridge stated in the prompt, but the lookup does not use that part of it.** The lens-readable part of a changed bridge switches 0% of lookups; everything else switches 83%. | 🟡 one model, one topic; four topics and a second model are running | Qwen3.6-27B | [2](#2-where-does-the-lookup-read-the-bridge) |
 | 3 | **The question's tokens read the entity's name back from its sentence; the last tokens read its digit.** | 🟢 pre-registered, robust to leaks, repeated on a second draw of scenes (Qwen3.6-27B, Qwen3-32B) | name: 4 of 4 for named bridges, 3 of 4 for recalled ones; digit: 4 of 4 | [2](#2-where-does-the-lookup-read-the-bridge) |
 | 4 | **A lookup ends in a late attention read of the answer's sentence by the last tokens.** Blocking that read drops the model to guessing (0-23% right; guessing is 20%). | 🟢 | 5 of 5 | [3](#3-blocking-the-read-the-lookup-reads-late-through-attention) |
-| 5 | **Which sentence gets read: an order label for the 1st and 2nd sentence, the bridge's identity for the rest.** | 🟢 in the data; 🟡 one layer per model | 5 of 5 | [4](#4-what-the-last-tokens-carry-an-order-label-then-the-bridges-identity) |
+| 5 | **Which sentence gets read: an order label for the 1st and 2nd sentence, the bridge's identity for the rest.** | 🟡 a split chosen after the pooled test; consistent on 5 models and on a second draw (Qwen3.6-27B); one layer per model | 5 of 5 | [4](#4-what-the-last-tokens-carry-an-order-label-then-the-bridges-identity) |
 | 6 | **The order label counts order in the list, not place in the text.** | 🟡 pooled over all asked sentences | 4 of 4 tested | [4](#4-what-the-last-tokens-carry-an-order-label-then-the-bridges-identity) |
 | 7 | **An early lens push rewrites a recalled bridge; it is not the same as editing the input word.** Whether it can write a stated bridge is open: that push went to the question, not to the bridge's sentence. | 🟡 pre-registered, one model, one setting; a replication is next | Qwen3.6-27B | [6](#6-early-lens-push-vs-editing-the-input) |
 | 8 | **Is the bridge's identity carried in a code the lens cannot write?** Where the lens does write recall at the last tokens, it moves 0 of 47 lookups while a patch moves 30%, and the same push moves 47% of recalls. | ⚪ one topic, six entities | Qwen3.6-27B | [5](#5-can-a-code-outside-the-lens-write-the-lookup) |
@@ -39,6 +39,7 @@ Five open models: Qwen3.6-27B, Qwen3-32B, Qwen3.5-9B, OLMo-3-7B (SFT, DPO, Instr
 - **Finding 5, by the place of the asked sentence.** The pre-registered test pooled all asked sentences. It came out mixed or failed (with 8 sentences: mixed on Qwen3.6-27B, toward identity on Qwen3.5-9B and Gemma; OLMo failed at its pre-registered cell). The split into the 1st and 2nd sentence vs the rest was added after that. It is consistent on five models, but it is a reading chosen after the data.
 - **Layer 50 on Qwen3.6-27B** (slide 4) was chosen after the first runs. A second draw of scenes repeats the result; the other models' layers follow a fixed rule.
 - **The fitted position code's natural-size test** (slide 5) was pre-registered to count 1x or 2x its natural size. It passes only at 2x (26%; 4% at 1x), so the rule says "passes" while we read it as an override.
+- **Animals in Qwen3-32B's second draw of name vs digit** (finding 3) was added after the first results were opened. The topic missed the pre-registered competence gate by 0.0005 (lower bound 0.8495, gate 0.85); it was run afterwards with the gate at 0.845 for that topic only, gives the same verdicts, and is reported apart from the pre-registered two-topic result. From then on the gate compares the bound rounded to two decimals.
 - **One seed almost everywhere.** Second draws so far: slide 4 on Qwen3.6-27B, and name vs digit on Qwen3.6-27B and Qwen3-32B; all repeat.
 - **The stated-bridge test on four topics** (running): its rule was tightened before any result was opened, so that one cell, chosen without the lens, decides.
 
@@ -185,7 +186,7 @@ Each model is tested only on items it answers right without any edit. All scenes
 
 > **In short:** which sentence gets read is set by an **order label** for the 1st and 2nd sentence and by the **bridge's identity** for the rest. The label counts order in the list, not place in the text.
 >
-> **How sure:** 🟢 in the data, 5 of 5 models; 🟡 one layer per model; the counting tests 🟡 pooled · **Plan item:** "pointers: lookback / binding-ID tests (swap the statement order)"
+> **How sure:** 🟡 the split by the asked sentence was chosen after the pooled pre-registered test; it is consistent on 5 of 5 models and on a second draw (Qwen3.6-27B); one layer per model; the counting tests pooled · **Plan item:** "pointers: lookback / binding-ID tests (swap the statement order)"
 
 **What we did**
 - Two prompts list the same entities in a different order. We copy the donor prompt's last two tokens into the original prompt at one layer. Each possible answer is a different digit, so the answer shows what the copied tokens pointed to:

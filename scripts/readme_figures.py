@@ -1090,6 +1090,66 @@ def f24_where_bridge_topics(out: Path) -> None:
     save(fig, out, "f24_where_bridge_topics.png")
 
 
+def latest_verdict(parts_run: str) -> dict | None:
+    """The newest scripts/d1_verdict.py output for a parts run (results/d1_verdict/<run>_<stamp>/verdict.json)."""
+    found = sorted((RES / "d1_verdict").glob(f"{parts_run}_*/verdict.json"))
+    return json.loads(found[-1].read_text()) if found else None
+
+
+def f25_stated_bridge_topics(out: Path) -> None:
+    """D1 on four topics at the decisive cell (chosen from the lens-free map): the lookup's whole change, its
+    lens-readable part and the rest, and the recall's lens-readable part (the positive control), per model; then the
+    lens-readable part and the rest per topic and per number style."""
+    models = [("Qwen3.6-27B", "d1_topics_parts_27b"), ("Qwen3-32B", "qwen3_32b_d1_topics_parts")]
+    vs = [(m, v) for m, run in models if (v := latest_verdict(run))]
+    if not vs:
+        return
+    bars = [("lookup", "full", "lookup: the whole change", INK2, None),
+            ("lookup", "jspace", "lookup: only the part the lens can read", RECALL, None),
+            ("lookup", "not_jspace", "lookup: everything except that part", LOOKUP, None),
+            ("recall", "jspace", "recall: only the part the lens can read\n(the positive control)", "#9cc1ee", "///")]  # fmt: skip
+    fig, axes = plt.subplots(1, 3, figsize=(15, 3.6), gridspec_kw={"wspace": 0.22, "width_ratios": [1, 1.6, 0.9]})
+    ax = axes[0]
+    style(ax, "y")
+    w = 0.2
+    for i, (_, v) in enumerate(vs):
+        for j, (block, p, _, col, hatch) in enumerate(bars):
+            r = v[block][p]
+            bar_ci(ax, i + (j - 1.5) * w, r[0], r[1], r[2], col, width=w * 0.95, fs=7.5, edge=INK2 if hatch else None,
+                   hatch=hatch)  # fmt: skip
+    ax.set_xticks(
+        range(len(vs)), [f"{m}\n({v['cell']['set']}, layer {v['cell']['layer']})" for m, v in vs], fontsize=8.5
+    )
+    ax.set_ylim(0, 112)
+    ax.set_ylabel("% of answers that switch")
+    ax.set_title("All four topics", loc="left", fontsize=9.5)
+    for ax, key, title in (
+        (axes[1], "by_topic", "By topic"),
+        (axes[2], "by_numbers", "By how the scene writes numbers"),
+    ):
+        style(ax, "y")
+        groups = [(m, val, cells) for m, v in vs for val, cells in v[key].items()]
+        for i, (_, _, cells) in enumerate(groups):
+            for j, (name, col, hatch) in enumerate((("PP_jspace", RECALL, None), ("PP_not_jspace", LOOKUP, None),
+                                                    ("PM_jspace", "#9cc1ee", "///"))):  # fmt: skip
+                r = cells.get(name)
+                if r and r[3]:
+                    bar_ci(ax, i + (j - 1) * 0.27, r[0], r[1], r[2], col, width=0.25, fs=6.5,
+                           edge=INK2 if hatch else None, hatch=hatch)  # fmt: skip
+        ax.set_xticks(range(len(groups)), [f"{val}\n{m.split('-')[0]}{m.split('-')[1][:3]}" for m, val, _ in groups],
+                      fontsize=7.5)  # fmt: skip
+        ax.set_ylim(0, 112)
+        ax.set_title(title, loc="left", fontsize=9.5)
+    head(axes[0], "Four topics, two models: the part of a stated bridge the lens reads, and the lookup",
+         "Zach's generator (animals, planets, chemical elements, Greek letters; 120 scenes). Swap the thing Clara picked "
+         "and paste one part of the change it causes, at the cell chosen from\nthe map without the lens. Lookup: \"Which "
+         "locker belongs to Clara's pick?\"; recall: the pick's number from memory (legs, position from the Sun, atomic number, place in the alphabet).",
+         above=24)  # fmt: skip
+    fig.legend([box(c, INK2 if h else None, h) for *_, c, h in bars], [lab for _, _, lab, _, _ in bars],
+               loc="lower center", ncol=4, frameon=False, bbox_to_anchor=(0.5, -0.14), fontsize=8.5)  # fmt: skip
+    save(fig, out, "f25_stated_bridge_topics.png")
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", default="figures/readme_1021")
@@ -1100,5 +1160,5 @@ if __name__ == "__main__":
               f12_address_models, f13_mechanism, f14_slot_by_target, f15_counts_models,
               f16_slot_by_target_v5, f17_by_layer_models, f18_stages_models, f19_where_bridge,
               f20_olmo_ladder, f21_name_vs_digit, f22_c2_positive_control, f23_name_digit_draws,
-              f24_where_bridge_topics):  # fmt: skip
+              f24_where_bridge_topics, f25_stated_bridge_topics):  # fmt: skip
         f(out)
