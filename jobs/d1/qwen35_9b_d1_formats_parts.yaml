@@ -1,0 +1,25 @@
+id: qwen35_9b_d1_formats_parts
+title: "D1 in tables and JSON (Qwen3.5-9B): parts"
+thread: D1
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.3
+depends_on:
+- qwen35_9b_d1_formats_map
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/statement_positions.py parts --name qwen35_9b_d1_formats_parts --map qwen35_9b_d1_formats_map --why "D1 in tables and JSON: the parts" --lo 16 --sets bind_bridge bridge_word lookup_x context question && BJ_TARGET=qwen3.5-9b uv run python scripts/d1_verdict.py --map qwen35_9b_d1_formats_map --parts qwen35_9b_d1_formats_parts --tasks-set d1_formats_v1 --lo 16 --onset 22
+question: >-
+  At the decisive cell, does the lens-readable part switch lookups (PP) and recalls (PM), per format?
+why_it_matters: >-
+  Finding 2 (a lookup ignores the lens-readable part of a stated bridge) holds in prose on two models; the outside review asks for less toy formats for the lens claim itself.
+hypotheses:
+  H-both: 'replicates in tables and in JSON. Prior 0.45'
+  H-one: 'one format replicates, the other does not or its control fails. Prior 0.3'
+  H-none: 'neither (the control fails, or the split does not hold). Prior 0.25'
+decision_rule: >-
+  scripts/d1_verdict.py's map rule (window [16, 22), the prose runs' window), unchanged: the decisive cell is PP's statement cell (the pick row / object, the bridge's cell, the context) in transit with the most C flips; replicates iff there the lens-readable part alone switches <= 0.10 of lookups and the rest >= 0.50, while PM's lens-readable part switches >= 0.30 (the control; failing it: not interpretable). The same verdict per format (format_verdicts) and per topic. Finding 2 holds in tables and JSON on this model iff the pooled verdict and both format verdicts replicate (fixed 22 Oct 23:30 before these runs).
+controls:
+- 'O (another pair of picks swapped, off the path); a random direction at each row''s norm; a 25-atom OMP over a random dictionary; PM as the positive control on the same scenes'
+n: '180 scenes (PP and PM), d1_formats_v1, right on every prompt, both formats in scene order'
+seeds: [41]
+notes: "Night brief 22-23 Oct, T5 (P0). Data: data/tasks_v2/d1_formats_v1 (scripts/tasks_v2.py make, seed 41: PP and PM, animals, elements, Greek letters, markdown tables and tool-output JSON, level 0, C and O token-aligned). Not opened before Dan's predictions."

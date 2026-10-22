@@ -97,7 +97,7 @@ def main() -> int:
     if a.tasks_set:
         for line in (pins.DATA_DIR / "tasks_v2" / a.tasks_set / "items.jsonl").read_text().splitlines():
             it = json.loads(line)
-            meta[it["id"]] = {"topic": it["domain"], "numbers": it["numbers"]}
+            meta[it["id"]] = {"topic": it["domain"], "numbers": it["numbers"], "format": it.get("format", "prose")}
 
     def part(fam: str, p: str, pool: list[dict] = at, key: str | None = None, value: str | None = None) -> list[float]:
         sel = [r for r in pool if r["family"] == fam and r["part"] == p
@@ -110,15 +110,15 @@ def main() -> int:
            "nulls": {"lookup_jspace_null": part(a.lookup, "jspace", nulls), "recall_jspace_null": part(a.recall, "jspace", nulls)}}  # fmt: skip
     verdict = verdict_of(out["lookup"], out["recall"])
     out["verdict"] = verdict
-    for key in ("topic", "numbers"):
+    for key in ("topic", "numbers", "format"):
         values = sorted({m[key] for m in meta.values()})
         out[f"by_{key}"] = {v: {f"{fam}_{p}": part(fam, p, at, key, v) for fam in (a.lookup, a.recall)
                                 for p in ("full", "jspace", "not_jspace")} for v in values}  # fmt: skip
-    if meta:
-        out["topic_verdicts"] = {
+    for key in ("topic", "format") if meta else ():  # the same verdict on one topic's / one format's rows
+        out[f"{key}_verdicts"] = {
             v: verdict_of({p: c[f"{a.lookup}_{p}"] for p in ("jspace", "not_jspace")},
                           {p: c[f"{a.recall}_{p}"] for p in ("jspace", "not_jspace")})
-            for v, c in out["by_topic"].items()
+            for v, c in out[f"by_{key}"].items()
         }  # fmt: skip
     d = Path(a.out) / f"{a.parts}_{time.strftime('%Y%m%d-%H%M%S')}"
     d.mkdir(parents=True)
@@ -127,12 +127,13 @@ def main() -> int:
     how = "fixed in advance" if cell.get("fixed") else f"chosen from map {a.map}"
     lines = [f"# d1_verdict / {a.parts}", "", f"Decisive cell ({how}): {cell['set']} at layer {cell['layer']} ({flips})",
              "", f"**Verdict:** {verdict}", "", "| family | part | switched [95%] | n |", "|---|---|---|---|"]  # fmt: skip
-    if "topic_verdicts" in out:
-        lines[6:6] = ["Per topic: " + "; ".join(f"{t}: {v}" for t, v in out["topic_verdicts"].items()), ""]
+    for key in ("format", "topic"):
+        if f"{key}_verdicts" in out:
+            lines[6:6] = [f"Per {key}: " + "; ".join(f"{t}: {v}" for t, v in out[f"{key}_verdicts"].items()), ""]
     for fam, block in ((a.lookup, out["lookup"]), (a.recall, out["recall"])):
         for p, v in block.items():
             lines.append(f"| {fam} | {p} | {100 * v[0]:.0f}% [{100 * v[1]:.0f}, {100 * v[2]:.0f}] | {v[3]} |")
-    for key in ("topic", "numbers"):
+    for key in ("topic", "numbers", "format"):
         lines += [
             "",
             f"By {key} (reported, not decisive):",

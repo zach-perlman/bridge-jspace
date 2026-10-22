@@ -252,30 +252,35 @@ def position_sets(
     c: dict, rendered: str, offsets: list[tuple[int, int]]
 ) -> tuple[dict[str, list[int]], dict[str, list[tuple[int, int]]]]:
     """Token positions of every set (module docstring) and the character spans they were cut from."""
-    st = statements(c)
     ctx = c["context_text"]
     assert rendered.count(ctx) == 1, f"{c['id']}: the context is not once in the prompt"
     base = rendered.index(ctx)
-    found = sorted((find_sentence(ctx, s), s) for s in st["all"])
-    assert " ".join(s for _, s in found) == ctx, f"{c['id']}: the statements do not tile the context"
+    structured = c["family"] in TASKS and c.get("format", "prose") != "prose"
+    if structured:  # tasks_v2 tables / tool-output JSON: rows and objects, with headers in between
+        marks, spans = tasks_structured_marks(c, base)
+    else:
+        st = statements(c)
+        found = sorted((find_sentence(ctx, s), s) for s in st["all"])
+        assert " ".join(s for _, s in found) == ctx, f"{c['id']}: the statements do not tile the context"
 
-    def span(sentence: str) -> tuple[int, int]:
-        i = base + find_sentence(ctx, sentence)
-        return (i, i + len(sentence))
+        def span(sentence: str) -> tuple[int, int]:
+            i = base + find_sentence(ctx, sentence)
+            return (i, i + len(sentence))
 
-    marks: dict[str, list[tuple[int, int]]] = {"bind_bridge": [span(st["bind_bridge"])]}
-    sent, (b0, _) = st["bind_bridge"], marks["bind_bridge"][0]
-    assert sent.endswith(f"{c['bridge']}."), f"{c['id']}: {sent!r} does not end with the bridge"
-    w0 = b0 + sent.rindex(c["bridge"])
-    marks["bridge_word"] = [(w0, w0 + len(c["bridge"]))]
-    marks["bind_other"] = [span(s) for s in st["bind_other"]]
-    marks["lookup_bridge"] = [span(st["lookup_bridge"])] if st["lookup_bridge"] else []
-    marks["lookup_x"] = [span(st["lookup_x"])] if st["lookup_x"] else []
+        marks = {"bind_bridge": [span(st["bind_bridge"])]}
+        sent, (b0, _) = st["bind_bridge"], marks["bind_bridge"][0]
+        assert sent.endswith(f"{c['bridge']}."), f"{c['id']}: {sent!r} does not end with the bridge"
+        w0 = b0 + sent.rindex(c["bridge"])
+        marks["bridge_word"] = [(w0, w0 + len(c["bridge"]))]
+        marks["bind_other"] = [span(s) for s in st["bind_other"]]
+        marks["lookup_bridge"] = [span(st["lookup_bridge"])] if st["lookup_bridge"] else []
+        marks["lookup_x"] = [span(st["lookup_x"])] if st["lookup_x"] else []
+        spans = [(base + at, base + at + len(sentence)) for at, sentence in found]
     marks["context"] = [(base, base + len(ctx))]
     sets = {k: sorted({i for a, b in v for i in tokens_in(offsets, a, b)}) for k, v in marks.items()}
-    every = sorted({i for at, sentence in found for i in tokens_in(offsets, base + at, base + at + len(sentence))})
+    every = sorted({i for a, b in spans for i in tokens_in(offsets, a, b)})
     question = list(c["groups"]["question"])
-    im_end = rendered.rindex("<|im_end|>")
+    im_end = turn_end(rendered, c)
     final = [i for i, (s, e) in enumerate(offsets) if e > s and s >= im_end]
     sets["question"] = question
     sets["final"] = final
@@ -283,11 +288,56 @@ def position_sets(
     marks["question"] = [(offsets[question[0]][0], offsets[question[-1]][1])]
     marks["final"] = [(offsets[final[0]][0], offsets[final[-1]][1])]
     marks["q_words"] = [(offsets[sets["q_words"][0]][0], offsets[sets["q_words"][-1]][1])] if sets["q_words"] else []
-    check_sets(c, sets, every, len(offsets))
+    check_sets(c, sets, every, len(offsets), exact_context=not structured)
     return sets, marks
 
 
-def check_sets(c: dict, sets: dict[str, list[int]], every: list[int], n_tokens: int) -> None:
+def turn_end(rendered: str, c: dict) -> int:
+    """Where the user turn ends: Qwen's / OLMo's <|im_end|>, else (Gemma) right after the user content (the question
+    and its instruction)."""
+    if "<|im_end|>" in rendered:
+        return rendered.rindex("<|im_end|>")
+    from scripts import tasks_v2 as T
+
+    q_end = rendered.rindex(c["question"]) + len(c["question"])
+    for instr in (T.DIGIT_INSTRUCTION, S.INSTRUCTION):
+        j = rendered.find(instr, q_end)
+        if 0 <= j - q_end <= 2:
+            return j + len(instr)
+    raise AssertionError(f"{c['id']}: no end of the user turn found")
+
+
+def tasks_structured_marks(c: dict, base: int) -> tuple[dict[str, list[tuple[int, int]]], list[tuple[int, int]]]:
+    """A tasks_v2 table / JSON context's statement spans (attn_knockout's rows and objects): the queried person's pick
+    (bind_bridge), the bridge's cell in it (bridge_word), the other picks, the bridge's and X's locker rows; and every
+    row / object (the statements; the headers between them are context, not statements)."""
+    from scripts import attn_knockout as AK
+
+    item = {**c, "context": c["context_text"]}
+    sp, facts = AK.tasks_spans(item), AK.tasks_facts(item)
+    holders = [p for p in facts["pick"] if f"{p}'s pick" in c["question"]]
+    assert len(holders) == 1, f"{c['id']}: the question names {holders}"
+    holder = holders[0]
+    assert facts["pick"][holder] == c["bridge"], (
+        f"{c['id']}: {holder} picked {facts['pick'][holder]}, not {c['bridge']}"
+    )
+
+    def at(s: tuple[int, int]) -> tuple[int, int]:
+        return (base + s[0], base + s[1])
+
+    a, b = sp["pick"][holder]["span"]
+    w0 = a + c["context_text"][a:b].rindex(c["bridge"])
+    lock = sp["locker"]
+    marks = {"bind_bridge": [at((a, b))], "bridge_word": [at((w0, w0 + len(c["bridge"])))],
+             "bind_other": [at(v["span"]) for p, v in sp["pick"].items() if p != holder],
+             "lookup_bridge": [at(lock[c["bridge"]]["span"])] if c["bridge"] in lock else [],
+             "lookup_x": [at(lock[c["cf_bridge"]]["span"])] if c["cf_bridge"] in lock else []}  # fmt: skip
+    return marks, [at(v["span"]) for v in (*sp["pick"].values(), *lock.values())]
+
+
+def check_sets(
+    c: dict, sets: dict[str, list[int]], every: list[int], n_tokens: int, exact_context: bool = True
+) -> None:
     """Disjointness, containment and the counterfactuals' footprint (asserts)."""
     name = c["id"]
     statement_parts = ("bind_bridge", "bind_other", "lookup_bridge", "lookup_x")
@@ -300,7 +350,10 @@ def check_sets(c: dict, sets: dict[str, list[int]], every: list[int], n_tokens: 
         assert sets["lookup_bridge"], f"{name}: the bridge's lookup statement is missing"
         assert sets["lookup_x"], f"{name}: X's lookup statement is missing"
     assert set(sets["bridge_word"]) <= set(sets["bind_bridge"]), f"{name}: the bridge word is outside its statement"
-    assert sets["context"] == every, f"{name}: the context is not exactly its statements"
+    if exact_context:  # prose: the statements tile the context; tables / JSON: headers sit between them
+        assert sets["context"] == every, f"{name}: the context is not exactly its statements"
+    else:
+        assert set(every) < set(sets["context"]), f"{name}: a statement outside the context"
     assert max(sets["context"]) < min(sets["question"]), f"{name}: a statement token sits in the question"
     assert sorted(sets["q_words"] + sets["final"]) == sets["question"], f"{name}: question != q_words + final"
     assert sets["final"] == list(range(sets["final"][0], n_tokens)), f"{name}: final is not the prompt's tail"

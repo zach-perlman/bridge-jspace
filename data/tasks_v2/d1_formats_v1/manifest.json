@@ -1,0 +1,52 @@
+{
+  "set": "d1_formats_v1",
+  "n_scenes_per_group_level": 360,
+  "words": [
+    "PP",
+    "PM"
+  ],
+  "domains": [
+    "animals",
+    "elements",
+    "greek"
+  ],
+  "formats": [
+    "table",
+    "json"
+  ],
+  "levels": {
+    "0": {
+      "entities": 3,
+      "distractors": false,
+      "filler": 0,
+      "paraphrase": false,
+      "hard_cues": false
+    }
+  },
+  "seed": 41,
+  "generator": "scripts/tasks_v2.py make (v8)",
+  "git_commit": "7ca3b6b4acf3df43e3336b581bc9e33c1642a78c",
+  "counterfactuals": true,
+  "n_items": 720,
+  "coverage": {
+    "P2/L0": {
+      "scenes": 360,
+      "dead_combinations": [],
+      "by_domain_format": {
+        "greek/table": 60,
+        "greek/json": 60,
+        "animals/table": 60,
+        "animals/json": 60,
+        "elements/table": 60,
+        "elements/json": 60
+      }
+    }
+  },
+  "three_step_domains": [
+    "animals",
+    "vehicles",
+    "shapes",
+    "elements",
+    "planets"
+  ]
+}
