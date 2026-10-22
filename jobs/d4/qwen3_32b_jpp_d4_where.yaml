@@ -1,0 +1,31 @@
+id: qwen3_32b_jpp_d4_where
+title: "Where can the lens write a stated bridge? (Qwen3-32B, our J++, fresh scenes, rules v2 and v2.1)"
+thread: D4
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 2.5
+depends_on:
+- qwen3_32b_jpp_lens_gate
+command: >-
+  BJ_TARGET=qwen3-32b-jpp uv run python scripts/d1_precheck.py --gate qwen3_32b_jpp_lens_gate --competence qwen3_32b_d1_topics_competence --tasks-set d1_topics_v1 --min-topics 0
+  && BJ_TARGET=qwen3-32b-jpp BJ_FORMAT=chat uv run python scripts/suite_v1.py manifest --set main --name qwen3_32b_jpp_competence_chat_v1 --why "the animal suite on Qwen3-32B in chat format: which scenes are right on every prompt (D4's fresh-scene eligibility)"
+  && BJ_TARGET=qwen3-32b-jpp BJ_FORMAT=chat uv run python scripts/suite_v1.py competence --name qwen3_32b_jpp_competence_chat_v1
+  && BJ_TARGET=qwen3-32b-jpp uv run python scripts/early_push_where.py run --name qwen3_32b_jpp_d4_where_smoke --n 1 --scenes fresh --rule v2 --layers 16 20 24 28 32 36 40 44 --context-layers 28 32 36 40 44 --why "smoke: not a result"
+  && BJ_TARGET=qwen3-32b-jpp uv run python scripts/early_push_where.py run --name qwen3_32b_jpp_d4_where --n 100 --scenes fresh --rule v2 --layers 16 20 24 28 32 36 40 44 --context-layers 28 32 36 40 44 --why "finding 7 on a dense, attention-only model with our J++"
+figures_command: BJ_TARGET=qwen3-32b-jpp uv run python scripts/early_push_where.py analyze --name qwen3_32b_jpp_d4_where --rule v2.1 && BJ_TARGET=qwen3-32b-jpp uv run python scripts/early_push_where.py figures --name qwen3_32b_jpp_d4_where
+question: >-
+  On Qwen3-32B with our J++, does a lens push at a stated bridge's sentence or word switch recalls but not lookups (finding 7)?
+why_it_matters: >-
+  Finding 7 rests on Qwen3.6-27B (and the 9B, running); Qwen3-32B is dense and attention-only, a different architecture in the same family. It was never run there: the plain J-lens failed the gate. A new experiment, not a rerun (Dan's OK, 23 Oct ~01:10).
+hypotheses:
+  H-around: 'v2.1 (from layer 20 on): recall >= 30%, lookup <= 10%. Prior 0.4 (agent''s)'
+  H-no-cell: 'no valid cell. Prior 0.3 (agent''s)'
+  H-where: 'the lookup follows (>= 30%). Prior 0.05 (agent''s)'
+  inconclusive: 'Prior 0.25 (agent''s)'
+decision_rule: >-
+  Runs iff our J++ passes gate v1 (scripts/d1_precheck.py, --min-topics 0: only the gate matters here). scripts/early_push_where.py, rule v2 as the main rule and v2.1 (from layer 20) reported alongside, both verdicts shown, as on the 27B (d4_where_fresh_27b) and the 9B. Layers: the 27B's grid (the same depth, 64 layers) without layer 12, because our J++ has maps at 16-51 only: 16-44 every 4th, the context at 28-44. Fresh scenes as the 9B's: suite_split's eligibility on this model (the competence run in this job), none of the 27B map's scenes, seed 1. Primary lens (Dan, 23 Oct ~00:30): ours, the published recipe on 64 prompts; Zach's fit reported alongside when shared; no silent switch.
+controls:
+- 'a random push of the same size; a push toward an animal not in the scene; the text edits; memory -> prompt and memory -> memory off the path'
+n: '100 fresh animal-suite scenes (seed 1, eligible on Qwen3-32B), four families'
+seeds: [0, 1]
+notes: "Dan's OK, 23 Oct ~01:10 (the critic's item 3). The competence step is lens-free and runs under the J++ target so that suite_split finds it by prefix (qwen3_32b_jpp_competence_chat_v1). Not opened before Dan's predictions."
