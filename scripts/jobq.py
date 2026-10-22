@@ -629,8 +629,13 @@ def box_stats(root: Path, hours: float = 24.0, n_gpu: int = 4) -> str:
         f"drains on {n_gpu} GPUs in ~{raw:.1f} h by the estimates, ~{scaled:.1f} h scaled (around {eta}); memory and "
         "a GPU held by a long job are not modelled",
     ]
+    # only failures still in failed/ (box-archive moves the looked-at ones to archive/; the ledger keeps them all)
+    open_ids = {json.loads(p.read_text())["id"] for p in jobs_in(root, "failed")}
+    still = [r for r in failed if r["id"] in open_ids]
     if failed:
-        lines.append("failed: " + ", ".join(f"{r['id']} (exit {r.get('exit_code')}, figures {r.get('figures_exit')})" for r in failed))  # fmt: skip
+        lines.append(f"failed, not archived ({len(still)} of {len(failed)} in the last {hours:g} h): "
+                     + (", ".join(f"{r['id']} (exit {r.get('exit_code')}, figures {r.get('figures_exit')})" for r in still)
+                        or "none"))  # fmt: skip
     return "\n".join(lines) + "\n"
 
 
