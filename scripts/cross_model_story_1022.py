@@ -45,7 +45,7 @@ GEMMA = dict(name="Gemma 4 31B-it", kind="Google · dense", p="gemma4itf_", nl=6
 LOOK, MEM = ("PP", "MP", "CP"), ("PM", "MM", "CM")
 RLOOK, RMEM = ("PP", "MP"), ("PM", "MM")  # the pre-registered C1 rule's chain types: every gap and mean uses these
 RUNNING = {}
-FOOT = "One data seed; unverified. J++ lenses: published for the 27B and 9B, our own fits for Qwen3-32B and Muse."
+FOOT = "Unverified; one data seed unless labeled \"fresh data seed\". J++ lenses: published for the 27B and 9B, our own fits for Qwen3-32B and Muse."
 
 
 def foot(fig, text, size=7.4):
@@ -108,6 +108,8 @@ summary = {d["model"]: d for d in json.loads(Path("results/cross_model/summary.j
 gemma_txt = summary.get(GEMMA["name"], {}).get("plain_text", {})
 for m in MODELS:
     m["band"] = (load(AB / "c1_v2" / f"{m['p']}full2_ko_v1.json") or {}).get("middle")
+    fr = load(AB / "c1_v2" / f"{m['p']}fresh2_ko_v1.json")
+    m["fresh_gap"] = 100 * fr["rule"]["gap"] if fr else None
     m["ko"] = losses(f"{m['p']}full2_ko_v1", m["band"])
     m["c2"] = c2(m)
 ys = [len(MODELS) - i for i in range(len(MODELS))]
@@ -120,7 +122,7 @@ def row_labels(ax, size=10.5):
 
 
 # ---------------------------------------------------------------- Fig 1: remove vs write
-def dumbbell(ax, y, vals):
+def dumbbell(ax, y, vals, extra=""):
     ml, mm = statistics.mean(vals[w] for w in RLOOK), statistics.mean(vals[w] for w in RMEM)
     ax.plot([ml, mm], [y, y], color="#dcdad5", linewidth=7, solid_capstyle="round", zorder=1)
     for w in LOOK + MEM:
@@ -129,7 +131,7 @@ def dumbbell(ax, y, vals):
                 markerfacecolor=SURFACE if w[0] == "C" else col, markeredgecolor=col, zorder=2)  # fmt: skip
     for v, col in ((ml, LOOKUP), (mm, MEMORY)):
         ax.plot(v, y, "o", color=col, markersize=11, markeredgecolor=SURFACE, markeredgewidth=1.5, zorder=4)
-    ax.text((ml + mm) / 2, y + 0.3, f"gap {mm - ml:.0f}", ha="center", va="center", fontsize=9.5, color=INK2)
+    ax.text((ml + mm) / 2, y + 0.3, f"gap {mm - ml:.0f}{extra}", ha="center", va="center", fontsize=9.5, color=INK2)
 
 
 fig = plt.figure(figsize=(11, 5.7))
@@ -152,7 +154,7 @@ for ax, key, xmax in ((axes[0], "ko", 62), (axes[1], "c2", 92)):
         if not vals:
             ax.text(1.5, y, RUNNING.get(m["name"], "not run"), va="center", fontsize=9, color=INK3, style="italic")
             continue
-        dumbbell(ax, y, vals)
+        dumbbell(ax, y, vals, f"   (fresh data seed: {m['fresh_gap']:.0f})" if key == "ko" and m.get("fresh_gap") is not None else "")
         ax.text(xmax, y + 0.33, sub, ha="right", va="center", fontsize=7.5, color=INK3)
 axes[0].text(-0.03, 0.35, "Gemma 4 31B-it", transform=axes[0].get_yaxis_transform(), ha="right", va="center", fontsize=10.5, fontweight="bold", color=INK3)
 axes[0].text(1.5, 0.35, "can't be read: the knock-out alone breaks it on plain text (+%.1f nats)" % gemma_txt.get("top10", 0),
@@ -214,7 +216,8 @@ for ax, m in zip(axs.flat, panels, strict=False):
     if m["name"] == GEMMA["name"]:
         note = f"dense, 60 layers · knock-out breaks plain text (+{gemma_txt.get('top10', 0):.1f} nats)"
     else:
-        note = f"{m['kind'].split(' · ')[1]}, {m['nl']} layers · test-set gap at {m['band']}: {gap(m['ko']['paper10']):.0f}"
+        note = f"{m['kind'].split(' · ')[1]}, {m['nl']} layers · test-set gap at {m['band']}: {gap(m['ko']['paper10']):.0f}" + (
+            f" (fresh seed {m['fresh_gap']:.0f})" if m.get("fresh_gap") is not None else "")
     ax.text(0, 1.035, note, transform=ax.transAxes, fontsize=8.3, color=INK2)
 for ax in axs[1]:
     ax.set_xlabel("window depth (fraction of layers)")
