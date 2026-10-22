@@ -277,6 +277,7 @@ DOSE = [("Qwen3.6-27B", [("full2_ko_v1", "L32-40"), ("full2_dose_v1", "L32-40")]
         ("Qwen3.5-9B", [("qwen35_9b_full2_ko_v1", "L12-16"), ("qwen35_9b_full2_dose_v1", "L12-16")], "#b45309"),
         ("Qwen3-32B", [("qwen3_32b_full_dose_v1", "L44-52")], "#3b3a37"),
         ("Muse", [("muse30_full2_ko_v1", "L36-42"), ("muse30_full2_dose_v1", "L36-42")], "#8a5cc2")]  # fmt: skip
+ymax_dose = 10.0
 for name, srcs, col in DOSE:
     if not all((AB / run / "summary.json").exists() for run, _ in srcs):
         continue  # a dose run still in progress is never drawn
@@ -290,6 +291,7 @@ for name, srcs, col in DOSE:
                 pts[10 if base == "paper10" else int(base[3:])] = gap(L)
         if pts:
             ks = sorted(pts)
+            ymax_dose = max(ymax_dose, max(pts.values()))
             ax2.plot(ks, [pts[k] for k in ks], "--" if rot else "-", color=col, marker=None if rot else "o", markersize=4, linewidth=1.3 if rot else 2.2)
             if not rot:
                 ax2.text(ks[-1] * 1.15, pts[ks[-1]], name, va="center", fontsize=9.5, color=col, fontweight="bold")
@@ -297,7 +299,7 @@ ax2.set_xscale("log")
 ax2.set_xticks(KS, [str(k) for k in KS])
 ax2.minorticks_off()
 ax2.set_xlim(0.8, 330)
-ax2.set_ylim(-5, 52)
+ax2.set_ylim(-5, ymax_dose + 6)
 ax2.set_xlabel("lens directions removed per position")
 ax2.set_ylabel("recall minus lookup loss (points)")
 ax2.set_title("B. More directions removed (dashed: random)", loc="left", fontsize=10)
