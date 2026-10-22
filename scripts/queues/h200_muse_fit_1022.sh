@@ -9,6 +9,7 @@
 #     /workspace/ext/jpp_muse/.venv for transformers 5.17's Muse classes): router on 64 WikiText prompts, one fit shard of
 #     32 prompts (rows per pass 32, else 16; one checkpoint at the end: disk), merge, grading, readout weights, held-out
 #     evaluation (J++, pooled, logit lens), export, model entry muse-glimmer-30b (prefix muse30_), commit.
+# 2026-10-22 ~03:20 UTC: relaunched after the router failed offline (no cached 'main' ref); finished steps skip.
 set -u
 cd /workspace/bridge-jspace
 set -a; . ./.env; set +a
@@ -24,13 +25,13 @@ uv tool run --from huggingface_hub hf download meta-models/Muse-Glimmer-30B --re
 echo "=== Muse downloaded $(date -u +%T)"; df -h /workspace | tail -1
 WHY="Zach (2026-10-22): Muse Glimmer 30B"
 echo "=== J-lens gate $(date -u +%T)"
-BJ_TARGET=muse-glimmer-30b-jlens $PY scripts/lens_agreement.py --name muse30j_lens_agreement_v1 --why "$WHY: the published J-lens, lens check" \
+[ -f results/lens_agreement/muse30j_lens_agreement_v1/summary.json ] || BJ_TARGET=muse-glimmer-30b-jlens $PY scripts/lens_agreement.py --name muse30j_lens_agreement_v1 --why "$WHY: the published J-lens, lens check" \
   || { echo "J-lens check failed: stop"; exit 1; }
-BJ_TARGET=muse-glimmer-30b-jlens $PY scripts/removal_textloss.py --name muse30j_textloss_top_v1 \
+[ -f results/removal_textloss/muse30j_textloss_top_v1/summary.json ] || BJ_TARGET=muse-glimmer-30b-jlens $PY scripts/removal_textloss.py --name muse30j_textloss_top_v1 \
   --why "$WHY: the published J-lens, plain-text loss under the knock-out at L26-32 (the untestable gate)" \
   --layers $(seq 26 32) --conditions none top1 top1_rot top5 top5_rot top10 top10_rot || echo "=== J-lens text loss FAILED"
 OUT=/workspace/ext/muse30_fit LAYERS=$(seq -s, 0 50)
-export HF_HUB_OFFLINE=1
+# (no HF_HUB_OFFLINE: the fitter loads the model by name, which needs the hub's 'main' ref; main = cec94fc as pinned)
 M="--hf-model-name meta-models/Muse-Glimmer-30B"
 MP=/workspace/ext/jpp_muse/.venv/bin/python
 mkdir -p "$OUT"
