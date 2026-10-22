@@ -204,6 +204,21 @@ TARGETS: dict[str, dict[str, Any]] = {
         },
         "frozen_lens_sha256": "d16d81d8751ad69df3493c0b3ea7410da97f69abfb07ee115600ad21ef9ef30a",
     },
+    # Qwen3-32B (dense, full attention in every layer: separates architecture from family; Zach, 2026-10-20/21): a J++ we
+    # fit on it at every source layer 0-62 (32 wikitext prompts, the safety-research/jpp_lens@93f02cd recipe, on the
+    # 2x H200 box, scripts/queues/h200_q32_shard_1021.sh + h200_q32_merge_1021.sh (2 shards)); held-out readout macro recall@10: {'Qwen3-32B_jpp_lens': 0.638, 'pooled_lens': 0.519} (gate: J++ >= 0.45).
+    "qwen3-32b": {
+        "repo": "Qwen/Qwen3-32B",
+        "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+        "n_layers": 64,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "qwen3_32b_",
+        "lenses": {
+            "jpp": ("local", "cache/qwen3-32b/lenses/jpp/Qwen3-32B_jpp_lens.pt", "6fbc03865ec674a2d2f346b23ea8220a7c7e2b0b3922d1afd1b300f455d3253e"),
+        },
+        "frozen_lens_sha256": "6fbc03865ec674a2d2f346b23ea8220a7c7e2b0b3922d1afd1b300f455d3253e",
+    },
     # Qwen3.5-122B-A10B (MoE, 10B active) in Qwen's official FP8 release: the largest model with a published J++ that
     # fits one H200 (Zach, 2026-10-20, quick experiment L5; Neel: try a larger model early). Same tokenizer file as
     # Qwen3.6-27B; its J++ (neuronpedia, target layer 47) was fit on the bf16 weights, so FP8 activations differ
