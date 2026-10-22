@@ -275,7 +275,16 @@ def terminate() -> bool:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--dry-run", action="store_true", help="list the instances and the match; change nothing")
+    ap.add_argument(
+        "--no-terminate",
+        action="store_true",
+        help="save, upload and copy the lens, but keep the box (Dan, 23 Oct ~00:35: the 122B runs next)",
+    )
+    ap.add_argument("--terminate-only", action="store_true",
+                    help="only the checked DELETE of the box (the 122B launcher's TERMINATE_CMD)")  # fmt: skip
     a = ap.parse_args()
+    if a.terminate_only:
+        return 0 if terminate() else 1
     if a.dry_run:
         it = the_instance()
         log(f"would wait for {FIT}/status.json, save, upload, then DELETE instance {it['_id']} ({it.get('name')})")
@@ -284,13 +293,21 @@ def main() -> int:
         return 0
     s = wait()
     log(f"fit ended: {s['state']} at {s.get('at')}")
-    out = REPO / "results" / "lens_fit" / f"qwen3_32b_jpp_{datetime.now().strftime('%Y%m%d-%H%M%S')}"
+    out = (
+        REPO / "results" / "lens_fit" / "qwen3_32b_jpp64"
+    )  # the folder scripts/lens_table.py reads for our 64-prompt fit
+    if out.exists():
+        out = out.with_name(f"qwen3_32b_jpp64_{datetime.now().strftime('%Y%m%d-%H%M%S')}")
     if not save(s, out):
         log("SAVE FAILED: not terminating; the box keeps running")
         return 2
     if s["state"] == "DONE":
         upload(s, out)
-    ok = terminate()
+    if a.no_terminate:
+        ok = False
+        log("not terminating (--no-terminate): the 122B runs on this box next; its launcher deletes it")
+    else:
+        ok = terminate()
     if s["state"] == "DONE":
         dst = "bridge-jspace/cache/qwen3-32b/lenses/jpp/"
         subprocess.run(["ssh", A100, f"mkdir -p ~/{dst}"], check=False)
