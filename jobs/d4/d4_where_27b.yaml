@@ -1,0 +1,43 @@
+id: d4_where_27b
+title: "Where can the lens write a stated bridge? The lens push at the question, at the bridge's sentence, at its word and over the context (Qwen3.6-27B)"
+thread: D4
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.3
+depends_on: []
+command: >-
+  uv run python scripts/early_push_where.py run --name d4_where_smoke_27b --n 1
+  --why "smoke: the early_push_where path end to end; not a result"
+  && uv run python scripts/early_push_where.py run --name d4_where_27b --n 100
+  --why "D4 v2 (Dan, 22 Oct): slide 6 pushed a stated bridge at the question, but a stated bridge sits at its sentence;
+  push it there, at its word and over the context, by layer and size, against a random and an off-scene push"
+figures_command: uv run python scripts/early_push_where.py figures --name d4_where_27b
+question: >-
+  Can a lens push write a bridge stated in the prompt where that bridge sits (its sentence, its word), first for a
+  recall from it (prompt -> memory), then for a lookup (prompt -> prompt)?
+why_it_matters: >-
+  Slide 6 (finding 7) carries findings 1 and 8: that the lens can write a bridge at all. Its null for stated bridges
+  (1-2%) came from a push at the question's words, where a stated bridge is not (slide 2). If the lens writes a stated
+  bridge at its sentence for a lookup too, the "lookup goes around the J-space" story weakens; if it writes it there for
+  recall but not for the lookup, the D1 split holds in a second, independent form.
+hypotheses:
+  H-around: 'a cell at s or w where the push switches prompt -> memory >= 30%, and there prompt -> prompt <= 10%
+    (scene-paired gap >= 20 points). Prior 0.45'
+  H-where: 'at that cell prompt -> prompt also switches >= 30%. Prior 0.2'
+  H-no-cell: 'no cell at s or w passes for prompt -> memory (the lens cannot write a stated bridge at its sentence at
+    all). Prior 0.35'
+decision_rule: >-
+  scripts/early_push_where.py's docstring (committed before this run): cells selected on prompt -> memory rows only
+  (lens >= 30% with Wilson lower bound >= 0.20, random <= 5%), one primary cell (highest rate; ties: smaller scale,
+  earlier layer, the word before the sentence); valid iff memory -> prompt and memory -> memory change <= 10% there
+  (off the path) and the random push switches <= 5% of prompt -> prompt; H-where iff prompt -> prompt >= 30% (lower
+  bound >= 0.20); H-around iff prompt -> prompt <= 10% and the scene-paired BR - BL gap's 2.5th percentile >= 0.20;
+  else inconclusive. Reported, not decisive: every cell, the whole context, the question's subject phrase at layer 20,
+  8x against slide 6, the off-scene push, the text edits.
+controls:
+- 'a random direction at the same per-position norms; a push toward an animal not in the scene (other leg count); the
+  text edits of slide 6 (E-name, E-insert, E-head, E-cue = the stated sentence rebound, E-unrelated); memory -> prompt
+  and memory -> memory, for which the owner sentence is off the path'
+n: '100 items per family (animal suite, map_A8_v1 order), the four families on the same scenes; items right unedited'
+seeds: [0]
+notes: "Dan, 2026-10-22: slide 6 is a load-bearing claim; check it, then for generality on other models, topics and formats. This is step 1 (the animal suite, Qwen3.6-27B). Not opened before Dan predicts (batch 10)."
