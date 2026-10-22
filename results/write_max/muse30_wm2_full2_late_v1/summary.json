@@ -1,0 +1,198 @@
+{
+  "seconds": 1489,
+  "dom_missing_cases": 60,
+  "families": {
+    "PP": {
+      "n": 60,
+      "entities": 28,
+      "best": {
+        "copy": {
+          "flips": 1,
+          "ci": [
+            1.0,
+            1.0
+          ],
+          "control": null,
+          "other": 0,
+          "pos": "final",
+          "layer": "36",
+          "strength": 1.0,
+          "gated_cells": 10
+        },
+        "lens_add": {
+          "flips": 0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "control": 0,
+          "other": 0,
+          "pos": "final",
+          "layer": "34",
+          "strength": 0.05,
+          "gated_cells": 49
+        }
+      }
+    },
+    "PM": {
+      "n": 60,
+      "entities": 28,
+      "best": {
+        "copy": {
+          "flips": 1,
+          "ci": [
+            1.0,
+            1.0
+          ],
+          "control": null,
+          "other": 0,
+          "pos": "final",
+          "layer": "36",
+          "strength": 1.0,
+          "gated_cells": 10
+        },
+        "lens_add": {
+          "flips": 0.16666666666666666,
+          "ci": [
+            0.07017543859649122,
+            0.29411764705882354
+          ],
+          "control": 0,
+          "other": 0.08333333333333333,
+          "pos": "final",
+          "layer": "38",
+          "strength": 0.4,
+          "gated_cells": 38
+        }
+      }
+    },
+    "MP": {
+      "n": 48,
+      "entities": 22,
+      "best": {
+        "copy": {
+          "flips": 1,
+          "ci": [
+            1.0,
+            1.0
+          ],
+          "control": null,
+          "other": 0,
+          "pos": "final",
+          "layer": "34",
+          "strength": 1.0,
+          "gated_cells": 10
+        },
+        "lens_add": {
+          "flips": 0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "control": 0,
+          "other": 0,
+          "pos": "final",
+          "layer": "34",
+          "strength": 0.05,
+          "gated_cells": 49
+        }
+      }
+    },
+    "MM": {
+      "n": 48,
+      "entities": 22,
+      "best": {
+        "copy": {
+          "flips": 1,
+          "ci": [
+            1.0,
+            1.0
+          ],
+          "control": null,
+          "other": 0,
+          "pos": "final",
+          "layer": "50",
+          "strength": 1.0,
+          "gated_cells": 10
+        },
+        "lens_add": {
+          "flips": 0.5,
+          "ci": [
+            0.25,
+            0.7169811320754716
+          ],
+          "control": 0,
+          "other": 0.0625,
+          "pos": "final",
+          "layer": "34",
+          "strength": 0.4,
+          "gated_cells": 42
+        }
+      }
+    },
+    "CP": {
+      "n": 48,
+      "entities": 24,
+      "best": {
+        "copy": {
+          "flips": 1,
+          "ci": [
+            1.0,
+            1.0
+          ],
+          "control": null,
+          "other": 0,
+          "pos": "final",
+          "layer": "joint",
+          "strength": 1.0,
+          "gated_cells": 10
+        },
+        "lens_add": {
+          "flips": 0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "control": 0,
+          "other": 0,
+          "pos": "final",
+          "layer": "34",
+          "strength": 0.05,
+          "gated_cells": 49
+        }
+      }
+    },
+    "CM": {
+      "n": 48,
+      "entities": 24,
+      "best": {
+        "copy": {
+          "flips": 1,
+          "ci": [
+            1.0,
+            1.0
+          ],
+          "control": null,
+          "other": 0,
+          "pos": "final",
+          "layer": "joint",
+          "strength": 1.0,
+          "gated_cells": 10
+        },
+        "lens_add": {
+          "flips": 0.2708333333333333,
+          "ci": [
+            0.13513513513513514,
+            0.41818181818181815
+          ],
+          "control": 0,
+          "other": 0.20833333333333334,
+          "pos": "final",
+          "layer": "36",
+          "strength": 0.4,
+          "gated_cells": 39
+        }
+      }
+    }
+  }
+}

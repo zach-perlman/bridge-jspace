@@ -1,0 +1,91 @@
+{
+  "seconds": 3997,
+  "band_seconds": {
+    "L32-40": 3743
+  },
+  "unedited_accuracy": {
+    "PP/clean": 1,
+    "PM/clean": 1,
+    "MP/clean": 1,
+    "CP/clean": 1,
+    "MM/clean": 1,
+    "CM/clean": 1
+  },
+  "cells": {
+    "L32-40": {
+      "PP/clean": {
+        "unembed50": {
+          "n": 152,
+          "accuracy": 1,
+          "dlogp": -0.01813231347171639
+        },
+        "unembed50_rot": {
+          "n": 152,
+          "accuracy": 0.993421052631579,
+          "dlogp": -0.023970999900484458
+        }
+      },
+      "PM/clean": {
+        "unembed50": {
+          "n": 152,
+          "accuracy": 0.993421052631579,
+          "dlogp": -0.08761585130521685
+        },
+        "unembed50_rot": {
+          "n": 152,
+          "accuracy": 0.9736842105263158,
+          "dlogp": -0.09955465251512483
+        }
+      },
+      "MP/clean": {
+        "unembed50": {
+          "n": 101,
+          "accuracy": 0.9702970297029703,
+          "dlogp": -0.0762614591167041
+        },
+        "unembed50_rot": {
+          "n": 101,
+          "accuracy": 0.9603960396039604,
+          "dlogp": -0.10682858571889672
+        }
+      },
+      "CP/clean": {
+        "unembed50": {
+          "n": 144,
+          "accuracy": 1,
+          "dlogp": -0.012224396288123293
+        },
+        "unembed50_rot": {
+          "n": 144,
+          "accuracy": 0.9861111111111112,
+          "dlogp": -0.05094657709802656
+        }
+      },
+      "MM/clean": {
+        "unembed50": {
+          "n": 101,
+          "accuracy": 0.9504950495049505,
+          "dlogp": -0.11259967382619213
+        },
+        "unembed50_rot": {
+          "n": 101,
+          "accuracy": 0.9801980198019802,
+          "dlogp": -0.09099435806043889
+        }
+      },
+      "CM/clean": {
+        "unembed50": {
+          "n": 144,
+          "accuracy": 0.9444444444444444,
+          "dlogp": -0.13300784056061982
+        },
+        "unembed50_rot": {
+          "n": 144,
+          "accuracy": 0.9583333333333334,
+          "dlogp": -0.15274374335098806
+        }
+      }
+    }
+  },
+  "sink_positions": {}
+}
