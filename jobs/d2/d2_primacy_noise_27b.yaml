@@ -1,0 +1,34 @@
+id: d2_primacy_noise_27b
+title: "Is the first-sentence bias of blocked lookups how the model guesses anyway? Random damage instead of blocking (Qwen3.6-27B)"
+thread: D2
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.3
+depends_on: []
+command: >-
+  uv run python scripts/primacy_noise.py run --name d2_primacy_noise_27b --n 100
+  --why "random-damage control for the first-sentence bias (Dan, 22 Oct): noise at the last tokens in layers 48-63
+  instead of blocking the answer's statement, on d2_v4_late_read's items"
+figures_command: uv run python scripts/primacy_noise.py analyze --name d2_primacy_noise_27b
+question: >-
+  When the last tokens' read is damaged without any positional structure, do the wrong answers that are another digit
+  of the list still favour the 1st statement, as they do when the answer's statement is blocked (observed / expected
+  2.16 [1.90, 2.40])?
+why_it_matters: >-
+  README slide 3 links the first-sentence bias of blocked lookups to the order label of slide 4. If random damage
+  gives the same bias, it is the model's general way of guessing and the link is void.
+hypotheses:
+  H-generic: 'R1 lower bound >= 1.5 at sigma*. Prior 0.5'
+  H-specific: 'R1 upper bound < 1.5 at sigma*. Prior 0.35'
+decision_rule: >-
+  scripts/primacy_noise.py's docstring (committed before this run): sigma* = the noise size whose accuracy is nearest
+  the blocking's on the same items (8.7%, recomputed from d2_v4_late_read), chosen on accuracy alone; R1 = observed /
+  expected list-wrong answers at the 1st statement (expected: uniform over each item's 4 other statements), scene
+  bootstrap 95% interval; generic iff R1's lower bound >= 1.5, specific to blocking iff its upper bound < 1.5, else
+  inconclusive; fewer than 50 list-wrong answers: not testable at sigma*. Every sigma, the 5th statement's ratio and
+  off-list shares reported.
+controls:
+- 'the blocking run itself on the same items (R1 2.16 [1.90, 2.40], recomputed with the same bootstrap); five noise sizes'
+n: '100 scenes per topic, 3 topics (pointer_v4 main, the scenes of d2_v4_late_read), memory -> prompt, items right unedited'
+seeds: [0]
+notes: "Dan, 2026-10-22. The blocking run's numbers were recomputed by this script's own function before the run (accuracy 8.7%, 128 / 56 / 35 / 25 / 19). Not opened before Dan predicts (batch 11)."
