@@ -1,0 +1,28 @@
+id: olmo3_7b_instruct_jpp_d1_formats_parts
+title: "D1 in tables and JSON (OLMo-3-7B-Instruct, our J++): parts and the verdict"
+thread: D1
+gpus: 1
+mem_gb: 30
+est_gpu_hours: 0.3
+depends_on:
+- olmo3_7b_instruct_jpp_d1_formats_map
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/d1_precheck.py --gate olmo3_7b_instruct_jpp_lens_gate --competence olmo3_7b_instruct_jpp_d1_formats_competence --tasks-set d1_formats_v1
+  && BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/statement_positions.py parts --name olmo3_7b_instruct_jpp_d1_formats_parts --map olmo3_7b_instruct_jpp_d1_formats_map --why "D1 in tables and JSON (OLMo, our J++): the parts" --lo 16 --sets bind_bridge bridge_word lookup_x context question
+  && BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/d1_verdict.py --map olmo3_7b_instruct_jpp_d1_formats_map --parts olmo3_7b_instruct_jpp_d1_formats_parts --tasks-set d1_formats_v1 --lo 16 --onset 22
+question: >-
+  At the decisive cell, does the lens-readable part switch lookups (PP) and recalls (PM), per format?
+why_it_matters: >-
+  Finding 2 (a lookup ignores the lens-readable part of a stated bridge) holds in prose on two models; the outside review asks for less toy formats for the lens claim itself.
+hypotheses:
+  H-both: 'replicates in tables and in JSON. Prior 0.45 (copied from qwen35_9b_d1_formats_parts)'
+  H-one: 'one format replicates, the other does not or its control fails. Prior 0.3 (copied from qwen35_9b_d1_formats_parts)'
+  H-none: 'neither (the control fails, or the split does not hold). Prior 0.25 (copied from qwen35_9b_d1_formats_parts)'
+decision_rule: >-
+  Opens iff this model's J++ gate v1 (olmo3_7b_instruct_jpp_lens_gate) passes and >= 2 topics of d1_formats_v1 have >= 30 eligible scenes (scripts/d1_precheck.py --tasks-set d1_formats_v1; it runs right after the formats competence it reads, and again before parts and readwrite). scripts/d1_verdict.py's map rule (window [16, 22), the prose runs' window on this model, olmo3_7b_instruct_jpp_d1_topics2_map / _parts / _rw), unchanged: the decisive cell is PP's statement cell (the pick row / object, the bridge's cell, the context) in transit with the most C flips; replicates iff there the lens-readable part alone switches <= 0.10 of lookups and the rest >= 0.50, while PM's lens-readable part switches >= 0.30 (the control; failing it: not interpretable). The same verdict per format (format_verdicts) and per topic. Finding 2 holds in tables and JSON on this model iff the pooled verdict and both format verdicts replicate (fixed 22 Oct 23:30 before these runs).
+controls:
+- 'O (another pair of picks swapped, off the path); a random direction at each row''s norm; a 25-atom OMP over a random dictionary; PM as the positive control on the same scenes'
+- 'the lens gate (olmo3_7b_instruct_jpp_lens_gate, via scripts/d1_precheck.py)'
+n: '180 scenes (PP and PM), d1_formats_v1, right on every prompt, both formats in scene order'
+seeds: [41]
+notes: "mechanical copy of qwen35_9b_d1_formats_parts (Dan, 23 Oct ~00:40: a 10-hour plan); not opened before Dan's predictions. Primary lens (Dan, 23 Oct ~00:30): ours on 64 prompts for Qwen3-32B and OLMo, Zach's for Gemma and Muse; no silent switch. Only the target (olmo-3-7b-instruct-jpp), run names, the precheck and the layers change; layers from OLMo's own J++ D1 specs (olmo3_7b_instruct_jpp_d1_topics2_map / _parts / _rw): smoke 16 20, cells from 16, window [16, 22) = the 27B's x 32/64, as the 9B. Waits for the OLMo J++ pin and olmo3_7b_instruct_jpp_lens_gate. Data: data/tasks_v2/d1_formats_v1 (scripts/tasks_v2.py make, seed 41: PP and PM, animals, elements, Greek letters, markdown tables and tool-output JSON, level 0, C and O token-aligned)."

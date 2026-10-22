@@ -1,0 +1,22 @@
+id: gemma4it_d3v4_seed3_competence
+title: "pointer_v4 seed3 competence (Gemma 4 31B-it)"
+thread: D3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.3
+depends_on: []
+command: >-
+  BJ_TARGET=gemma-4-31b-it BJ_JUDGE=read uv run python scripts/pointer_v4.py manifest --set seed3 --name gemma4it_d3v4_seed3_competence --why "seed 3: a third draw of pointer_v4 (seed 845) for findings 3-5 on Gemma 4 31B-it" && BJ_TARGET=gemma-4-31b-it BJ_JUDGE=read uv run python scripts/pointer_v4.py competence --name gemma4it_d3v4_seed3_competence
+question: >-
+  Does Gemma 4 31B-it answer the seed-3 scenes as it answers main's?
+why_it_matters: >-
+  The gate for the seed-3 runs below.
+hypotheses:
+  H-gate: 'every topic >= 0.85 right (the gate, rounded to 2 decimals). Prior 0.7 (copied from gemma4it_d3v4_seed2_competence)'
+decision_rule: >-
+  pointer_v4.py's competence gate, unchanged (GATE_LO 0.85, rounded to two decimals); a topic below it is dropped from the downstream runs.
+controls:
+- 'the off-path statement of the same token length hidden the same way; unedited accuracy; the competence gate (every prompt of the scene right)'
+n: 'pointer_v4 seed3 (300 scenes)'
+seeds: [845]
+notes: "mechanical copy of gemma4it_d3v4_seed2_competence (Dan, 23 Oct ~00:40: a 10-hour plan); not opened before Dan's predictions. Only the data set (pointer_v4 seed3), the gate, run names and dependencies change; layers, n and rules as in gemma4it_d3v4_seed2_competence. Data: data/pointer_v4/seed3/ (pointer_v4.py make_set --set seed3, data seed 845; check_seed3.json; no prompt shared with main or seed2), the 27B's third draw (d3v4_seed3_competence_27b / d3v4_seed3_swap_27b)."

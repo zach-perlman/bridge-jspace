@@ -1,0 +1,24 @@
+id: muse30b_d2_parts_seed3
+title: "Muse Glimmer 30B: name vs digit (seed3)"
+thread: D2
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.8
+depends_on:
+- muse30b_d3v4_seed3_competence
+command: >-
+  BJ_TARGET=muse-glimmer-30b uv run python scripts/attn_knockout.py manifest --name muse30b_d2_parts_seed3 --dataset pointer_v4 --set seed3 --families RL DL RR --n 100 --sources lookup lookup_off lookup_name lookup_digit lookup_off_name lookup_off_digit lookup_nodigit lookup_noname lookup_off_nodigit lookup_off_noname --dests question final --layers all --competence muse30b_d3v4_seed3_competence --why "finding 3 on Muse (seed3)" && BJ_TARGET=muse-glimmer-30b uv run python scripts/attn_knockout.py run --name muse30b_d2_parts_seed3
+figures_command: uv run python scripts/d2_parts.py --name muse30b_d2_parts_seed3
+question: >-
+  Do the last tokens take only the digit, the question's tokens the name?
+why_it_matters: >-
+  A sixth model from another lab (Meta), with every test the other five have, so the cross-model table has no gaps.
+hypotheses:
+  H-digit-final-split: 'holds. Prior 0.7 (copied from muse30b_d2_parts_seed2)'
+decision_rule: >-
+  scripts/d2_parts.py's rule, unchanged: valid-split first; H-digit-final-split (memory -> prompt) decisive; H-name-q-split where the question is testable.
+controls:
+- 'as the same test on the other models'
+n: '100 items per family'
+seeds: [845]
+notes: "mechanical copy of muse30b_d2_parts_seed2 (Dan, 23 Oct ~00:40: a 10-hour plan); not opened before Dan's predictions. Only the data set (pointer_v4 seed3), the gate, run names and dependencies change; layers, n and rules as in muse30b_d2_parts_seed2. Data: data/pointer_v4/seed3/ (pointer_v4.py make_set --set seed3, data seed 845; check_seed3.json; no prompt shared with main or seed2), the 27B's third draw (d3v4_seed3_competence_27b / d3v4_seed3_swap_27b)."

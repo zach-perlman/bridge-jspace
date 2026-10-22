@@ -1,0 +1,24 @@
+id: muse30b_d3v4_seed3_competence
+title: "Muse Glimmer 30B: competence on pointer_v4 seed3 (the third draw)"
+thread: D3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.5
+depends_on:
+- muse30b_port_smoke
+command: >-
+  BJ_TARGET=muse-glimmer-30b BJ_JUDGE=read uv run python scripts/pointer_v4.py manifest --set seed3 --name muse30b_d3v4_seed3_competence --why "Muse: pointer_v4 seed3 competence (a third draw, seed 845)"
+  && BJ_TARGET=muse-glimmer-30b BJ_JUDGE=read BJ_GEN_BATCH=8 uv run python scripts/pointer_v4.py competence --name muse30b_d3v4_seed3_competence
+question: >-
+  Which pointer_v4 seed3 items does Muse answer right on every prompt?
+why_it_matters: >-
+  The gate for muse30b_d3v4_seed3_swap, muse30b_d2_late_read_seed3 and muse30b_d2_parts_seed3.
+hypotheses:
+  H-gate: 'every pointer_v4 topic >= 0.85. Prior 0.6 (copied from muse30b_competence)'
+decision_rule: >-
+  The competence gates as on the other models (pointer_v4.py 0.85 rounded), as muse30b_competence.
+controls:
+- 'as the same test on the other models'
+n: 'pointer_v4 seed3: up to 300 scenes per topic x 3 families'
+seeds: [845]
+notes: "mechanical copy of muse30b_competence (Dan, 23 Oct ~00:40: a 10-hour plan); not opened before Dan's predictions. Its pointer_v4 steps only (manifest + competence, read judge, BJ_GEN_BATCH=8) with --set seed3 alone. Data: data/pointer_v4/seed3/ (pointer_v4.py make_set --set seed3, data seed 845; check_seed3.json; no prompt shared with main or seed2), the 27B's third draw (d3v4_seed3_competence_27b / d3v4_seed3_swap_27b)."

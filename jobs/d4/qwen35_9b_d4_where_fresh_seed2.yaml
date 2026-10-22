@@ -1,0 +1,30 @@
+id: qwen35_9b_d4_where_fresh_seed2
+title: "Where can the lens write a stated bridge? (Qwen3.5-9B, a second fresh draw, rules v2 and v2.1)"
+thread: D4
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.6
+depends_on:
+- qwen35_9b_d4_where
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/early_push_where.py run --name qwen35_9b_d4_where_fresh_seed2_smoke --n 1 --scenes fresh --rule v2 --layers 6 8 10 12 14 16 18 20 22 --context-layers 14 16 18 20 22 --v21-min-layer 10 --fresh-seed 2 --exclude-runs qwen35_9b_d4_where --why "smoke: not a result"
+  && BJ_TARGET=qwen3.5-9b uv run python scripts/early_push_where.py run --name qwen35_9b_d4_where_fresh_seed2 --n 100 --scenes fresh --rule v2 --layers 6 8 10 12 14 16 18 20 22 --context-layers 14 16 18 20 22 --v21-min-layer 10 --fresh-seed 2 --exclude-runs qwen35_9b_d4_where --why "F7 replication on a second fresh draw (seed 2, qwen35_9b_d4_where's scenes left out)"
+figures_command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/early_push_where.py analyze --name qwen35_9b_d4_where_fresh_seed2 --rule v2.1
+  && BJ_TARGET=qwen3.5-9b uv run python scripts/early_push_where.py figures --name qwen35_9b_d4_where_fresh_seed2
+question: >-
+  On Qwen3.5-9B and a second fresh draw (seed 2, the first draw's scenes left out), does a lens push at a stated bridge's sentence or word switch recalls but not lookups?
+why_it_matters: >-
+  Finding 7 on the 9B rests on one fresh draw; a second draw with the rules unchanged.
+hypotheses:
+  H-around: 'v2.1 (from layer 10 on): recall >= 30%, lookup <= 10%. Prior 0.5 (copied from qwen35_9b_d4_where)'
+  H-no-cell: 'no valid cell. Prior 0.3 (copied from qwen35_9b_d4_where)'
+  H-where: 'the lookup follows (>= 30%). Prior 0.05 (copied from qwen35_9b_d4_where)'
+  inconclusive: 'Prior 0.15 (copied from qwen35_9b_d4_where)'
+decision_rule: >-
+  scripts/early_push_where.py, rule v2 as the main rule and v2.1 reported alongside (both fixed before qwen35_9b_d4_where; the 27B's layers scaled by depth x 32/64: grid 6-22, v2.1 from layer 10); both verdicts shown. Second draw (Dan, 23 Oct ~00:40): --fresh-seed 2 and --exclude-runs qwen35_9b_d4_where (the first fresh draw's scenes left out, read from its selection.json), nothing else changed.
+controls:
+- 'a random push of the same size; a push toward an animal not in the scene; the text edits; memory -> prompt and memory -> memory off the path'
+n: '100 fresh animal-suite scenes (seed 2, eligible on the 9B, not in map_A8_v1 nor in qwen35_9b_d4_where''s draw: pool 248 - 100 = 148 before alignment drops), four families'
+seeds: [0, 2]
+notes: "mechanical copy of qwen35_9b_d4_where (Dan, 23 Oct ~00:40: a 10-hour plan); not opened before Dan's predictions. Primary lens (Dan, 23 Oct ~00:30): ours on 64 prompts for Qwen3-32B and OLMo, Zach's for Gemma and Muse; no silent switch. On this model the lens is its frozen published J++ (pins), as in the first draw. Only the run names, --fresh-seed 2 and --exclude-runs qwen35_9b_d4_where change."

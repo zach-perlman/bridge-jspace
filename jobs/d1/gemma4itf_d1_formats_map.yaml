@@ -1,0 +1,29 @@
+id: gemma4itf_d1_formats_map
+title: "D1 in tables and JSON (Gemma 4 31B-it, Zach's J++): competence, precheck, map"
+thread: D1
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 3.0
+depends_on:
+- gemma4itf_lens_gate_v2
+command: >-
+  BJ_TARGET=gemma-4-31b-it-full uv run python scripts/tasks_v2.py competence --set d1_formats_v1 --name gemma4itf_d1_formats_competence --why "D1 in tables and JSON (Gemma): scenes right on every prompt"
+  && BJ_TARGET=gemma-4-31b-it-full uv run python scripts/d1_precheck.py --gate gemma4itf_lens_gate_v2 --competence gemma4itf_d1_formats_competence --tasks-set d1_formats_v1
+  && BJ_TARGET=gemma-4-31b-it-full uv run python scripts/statement_positions.py map --name gemma4itf_d1_formats_smoke --families PP PM --n 3 --layers 32 36 --tasks-set d1_formats_v1 --tasks-competence gemma4itf_d1_formats_competence --why "smoke: not a result"
+  && BJ_TARGET=gemma-4-31b-it-full uv run python scripts/statement_positions.py map --name gemma4itf_d1_formats_map --families PP PM --n 180 --tasks-set d1_formats_v1 --tasks-competence gemma4itf_d1_formats_competence --why "D1 in tables and JSON (Gemma): the map"
+question: >-
+  Where is a stated bridge in transit for PP and PM when the facts are table rows or JSON objects?
+why_it_matters: >-
+  Finding 2 (a lookup ignores the lens-readable part of a stated bridge) holds in prose on two models; the outside review asks for less toy formats for the lens claim itself.
+hypotheses:
+  H-both: 'replicates in tables and in JSON. Prior 0.45 (copied from qwen35_9b_d1_formats_map)'
+  H-one: 'one format replicates, the other does not or its control fails. Prior 0.3 (copied from qwen35_9b_d1_formats_map)'
+  H-none: 'neither (the control fails, or the split does not hold). Prior 0.25 (copied from qwen35_9b_d1_formats_map)'
+decision_rule: >-
+  Opens iff this model's J++ gate v1 (gemma4itf_lens_gate_v2) passes and >= 2 topics of d1_formats_v1 have >= 30 eligible scenes (scripts/d1_precheck.py --tasks-set d1_formats_v1; it runs right after the formats competence it reads, and again before parts and readwrite). scripts/d1_verdict.py's map rule (window [30, 41), the prose runs' window on this model, gemma4itf_d1_topics2_map / _parts / _rw), unchanged: the decisive cell is PP's statement cell (the pick row / object, the bridge's cell, the context) in transit with the most C flips; with --keep-min 0.8 as in the prose runs (under the lens-part patch the lookups must keep their original answer on >= 80% of items, else not interpretable); replicates iff there the lens-readable part alone switches <= 0.10 of lookups and the rest >= 0.50, while PM's lens-readable part switches >= 0.30 (the control; failing it: not interpretable). The same verdict per format (format_verdicts) and per topic. Finding 2 holds in tables and JSON on this model iff the pooled verdict and both format verdicts replicate (fixed 22 Oct 23:30 before these runs).
+controls:
+- 'O (another pair of picks swapped, off the path); a random direction at each row''s norm; a 25-atom OMP over a random dictionary; PM as the positive control on the same scenes'
+- 'the lens gate (gemma4itf_lens_gate_v2, via scripts/d1_precheck.py); the keep-answer gate (--keep-min 0.8)'
+n: '180 scenes (PP and PM), d1_formats_v1, right on every prompt, both formats in scene order'
+seeds: [41]
+notes: "mechanical copy of qwen35_9b_d1_formats_map (Dan, 23 Oct ~00:40: a 10-hour plan); not opened before Dan's predictions. Primary lens (Dan, 23 Oct ~00:30): ours on 64 prompts for Qwen3-32B and OLMo, Zach's for Gemma and Muse; no silent switch. Only the target (gemma-4-31b-it-full), run names, the precheck and the layers change; layers from Gemma's own D1 specs (gemma4itf_d1_topics2_map / _parts / _rw): smoke 32 36, cells from 30, window [30, 41) = the 27B's [32, 44) scaled by depth (x 60/64); --keep-min 0.8 as there. Data: data/tasks_v2/d1_formats_v1 (scripts/tasks_v2.py make, seed 41: PP and PM, animals, elements, Greek letters, markdown tables and tool-output JSON, level 0, C and O token-aligned)."
