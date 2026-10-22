@@ -94,77 +94,103 @@ strong the "second" label is (89-97% on the larger Qwens, 54-58% on the 9B and O
 
 ## The evidence, one figure per pattern
 
-Bars show the share of items; whiskers are 95% intervals. Each figure is built from saved runs by
+**How to read the figures.** The bold title states the finding; the grey line under it says what was done. Bars and
+lines are shares of items, whiskers and bands 95% intervals. Grey, hatched or tick-marked bars are controls. Each
+caption below says first how to read the figure, then what it shows. All figures are built from saved runs by
 [scripts/readme_figures.py](scripts/readme_figures.py).
 
 ### 1. Recall uses the J-space, a lookup does not
 
 ![Lens push and J-space removal, by kind of question](figures/readme_1021/f1_two_routes.png)
 
-**Left:** pushing a hidden state along the lens direction of another animal switches recalled answers (36-51%), but
-lookups no more than a random push of the same size does (3% and 19%; ticks = random push). **Right:** removing the
-J-space leaves lookups right (99%) and breaks recall (19-22%); removing a random subspace of the same size changes
-nothing (ticks). Animal suite, layers 32-40, 80 (push) and 100 (removal) scenes per kind.
-*Zach, 20 Oct.* The 122B shows the same direction but weaker; Gemma 4 cannot be tested this way.
+**How to read.** One row per kind of question (where the bridge comes from → where the answer comes from); orange
+rows look the answer up in the prompt, blue rows recall it. Left: % of answers that switch to another animal after
+the hidden state is pushed toward that animal's lens word. Right: % of answers still right after the J-space is
+removed. Black tick: the same edit along a random direction.
+**What it shows.** The lens push switches recalled answers (51%, 36%; random 6%, 0%) but lookups no more than the
+random push (3% vs 4%, 19% vs 21%). Removing the J-space breaks recall (19-22% still right) and leaves lookups (99%);
+a random subspace of the same size changes nothing (100%). Animal suite, layers 32-40, 80 (push) and 100 (removal)
+scenes per kind. *Zach, 20 Oct.* The 122B shows the same direction but weaker; Gemma 4 cannot be tested this way.
 
 ### 2. A stated bridge: the lens-readable part is not what the lookup uses
 
 ![Which part of a stated bridge's change switches the answer](figures/readme_1021/f2_stated_bridge.png)
 
-We take the change in hidden state that swapping the stated bridge causes (org vs alt prompt) and paste only one part
-of it into the org prompt. **For a lookup** (left), the whole change switches 87% of answers, the lens-readable part
-alone 0%, everything except it 83%. **For a recall from the same stated bridge** (right) it is the other way round:
-the lens-readable part does the work (66%). The lens still names the stated bridge as its top word on 90% of items.
-80 scenes × 3 layers (32, 36, 40) per kind. Run `d1_parts_n80_v1`.
+**How to read.** Swapping the stated bridge (Jack's pet is a cow → a pig) changes the hidden states. We paste one part
+of that change back into the original prompt and count how often the answer switches to the pig's. Dark grey: the
+whole change; blue: only its lens-readable part; orange: everything except that part.
+**What it shows.** For a lookup (left) the lens-readable part alone switches 0% of answers and the rest 83% (the whole
+change 87%). For a recall from the same stated bridge (right) it is the other way round: the lens-readable part does
+the work (66%; the rest 1%). The lens does read the stated bridge (its top word on 90% of items); the lookup uses
+something else. 80 scenes × 3 layers (32, 36, 40) per kind. Run `d1_parts_n80_v1`.
 
 ### 3. An early lens push acts on recall, not on the lookup
 
 ![Early lens push by kind of question](figures/readme_1021/f3_early_push.png)
 
-At layer 20 we push the words that name the bridge ("the animal known for mooing", or "Jack's pet") toward another
-animal's lens word. When the bridge is **recalled**, the answer switches (73%, 84%); when it is **stated**, it does
-not (1%, 2%). A random push of the same size: 0%. Pre-registered, 100 scenes per kind (second wording; the first gave
-the same picture). Run `d4_push_wording_b_v1`.
+**How to read.** At layer 20 we push the words that name the bridge ("the animal known for mooing", or "Jack's pet")
+toward another animal's lens word and count answers that switch to that animal's. Left two groups: the bridge is
+recalled; right two: it is stated. Light grey: a random push of the same size.
+**What it shows.** A recalled bridge is rewritten (73%, 84%), a stated one is not (1%, 2%); random 0%. Pre-registered,
+100 scenes per kind (second wording; the first gave the same picture). Run `d4_push_wording_b_v1`.
 
 ### 4. The lookup reads its statement late, through attention
 
 ![Answer statement hidden from the last tokens](figures/readme_1021/f4_late_read.png)
 
-Qwen3.6-27B has 16 attention layers and 48 DeltaNet layers. Blocking the last tokens from seeing the answer's
-statement **in the attention layers** breaks the lookup (2-13% still right); blocking it **in the DeltaNet layers**
-changes nothing (100%). Same in 5 datasets (also Python code and other languages). No single head or layer is needed:
-the read is spread out. 85 entities, 3 topics, 9 wordings (`pointer_v4`). Run `d2_v4_late_read`.
+**How to read.** The last tokens are blocked from attending to one statement in a chosen set of layers; bars are % of
+answers still right. Orange: the answer's statement blocked in all 16 attention layers of Qwen3.6-27B; light grey: in
+all 48 DeltaNet layers; hatched: another statement blocked in the attention layers (control).
+**What it shows.** Blocking the answer's statement in the attention layers breaks the lookup (2-13% still right); in
+the DeltaNet layers it changes nothing (100%), and neither does blocking another statement (100%). Same in 5 datasets
+(also Python code and other languages). No single head or layer is needed: the read is spread out. 300 items, 85
+entities, 3 topics, 9 wordings (`pointer_v4`). Run `d2_v4_late_read`.
 
 ![The late read on other models](figures/readme_1021/f10_late_read_models.png)
 
-**On other models.** The same block on Qwen3.5-9B (the same hybrid design, smaller) and on OLMo-3-7B (attention in
-every layer) breaks the lookup just as completely (0-3% still right), while hiding an off-path statement keeps 100%.
-On the 9B, hiding it in the DeltaNet layers again changes nothing. On OLMo the read sits in layers 16-23 (no single
-4-layer band is needed; the 8 layers together are), the same in its SFT and DPO checkpoints. OLMo fails its recall
-gate (35-68% right), so it has no memory → memory control. 100-300 items per model. Runs
-`qwen35_9b_d2_v4_late_read_r2`, `olmo3_7b_{instruct,sft,dpo}_d2_v4_late_read_*`.
+**On other models** (same bars). Qwen3.5-9B (the same hybrid design, smaller) and OLMo-3-7B (attention in every layer,
+no DeltaNet) lose the lookup just as completely (0-3% still right), and blocking another statement keeps 100% on every
+model. On the 9B, the DeltaNet layers again do not matter. On OLMo the read sits in layers 16-23 (no single 4-layer
+band is needed; the 8 layers together are), the same in its SFT and DPO checkpoints. OLMo fails its recall gate
+(35-68% right), so it has no memory → memory control. 100-300 items per model. Runs `qwen35_9b_d2_v4_late_read_r2`,
+`olmo3_7b_{instruct,sft,dpo}_d2_v4_late_read_*`.
 
-### 5. The last tokens carry an address to a statement
+### 5. The last tokens carry a label for the 1st or 2nd statement, then the bridge word
+
+![How a patch is read](figures/readme_1021/f0_patch_example.png)
+
+**How to read the patching figures (5, 6, 8, 9, 14).** Each item is a pair of prompts with the same entities in a
+different order. We copy the alt prompt's last two tokens into the org prompt at one layer and read the digit the org
+prompt now gives. Every outcome is a different digit, so the answer tells which statement the copied tokens pointed
+to: **the same slot** (orange: the org statement at the place where alt's asked statement sits), **the word** (blue:
+the org statement about alt's bridge animal), **the digit** (green: the alt prompt's own answer, already formed), or
+unchanged. A real `pointer_v1` item.
 
 ![Word, slot or digit after patching the last two tokens](figures/readme_1021/f5_slot_by_layer.png)
 
-We copy the alt prompt's last two tokens into the org prompt at one layer. Three answers are possible, each a
-different digit: the digit of **the same slot** in the org list (an address), the org digit of **the alt bridge's own
-statement** (the word), or **the alt prompt's answer** (the digit itself). Around layer 50 the address wins (50% vs 21%
-for the word, in each of 3 topics); from layer 52 the digit itself takes over. 450-760 items, 85 entities; a second
-draw of scenes gives the same (50% vs 23%, every topic). Runs `d3v4_swap_main`, `d3v4_swap_topics`,
-`d3v4_seed2_swap_27b`.
+**How to read.** x: the layer at which the last two tokens are copied; each line: % of patched answers with that
+outcome. Green band: from here the alt digit itself has reached the last tokens, so the copy just carries the answer.
+**What it shows.** Around layer 50, just before the digit arrives, more answers go to the same slot (50%) than to the
+word (21%), in each of 3 topics; from layer 52 the digit takes over. This pools all asked statements; fig. 14 splits
+it. 450-760 items, 85 entities; a second draw of scenes gives the same (50% vs 23%, every topic). Runs
+`d3v4_swap_main`, `d3v4_swap_topics`, `d3v4_seed2_swap_27b`.
 
 ![Same slot vs word by the asked statement, five models](figures/readme_1021/f14_slot_by_target.png)
 
-**Split by the statement the alt prompt asks** (recounted by an outside reviewer and by us from the raw rows): when the
-alt prompt asks its **1st or 2nd statement**, the patched answer goes to the org prompt's 1st or 2nd statement almost
-always (Qwen3.6-27B 100% / 97%, Qwen3-32B 100% / 89%; the 9B and OLMo 90-93% / 54-58%; Gemma 4, of the answers that
-move, 100% / 78%). For the **3rd to 5th** it follows the alt bridge's own statement (the word) as often as or more than
-the slot, on every model. The same on a second data seed (27B: 100% / 92%, then 14-25%), with 8 statements (100% / 94%,
-then at most 16% for statements 3-8) and for named bridges. Each model at its layer before the alt digit arrives (the
-27B's 50 was picked after seeing the first runs). Runs `d3v4_swap_topics`, `d3v4_seed2_swap_27b`, `d3v5_swap_27b`,
-`qwen3_32b_d3v4_swap_r2`, `qwen35_9b_d3v4_swap_r2`, `olmo3_7b_instruct_d3v4_swap_fn`, `gemma4it_d3v4_swap_v2_r2`.
+**How to read.** The same patch at one layer per model, with the items grouped by **where the alt question's answer
+sits in the alt list** (x axis). In the example above the alt prompt asks about the lion, the 3rd statement of the alt
+list, so that item counts at "3rd": orange is the share of such items whose patched answer is the org's 3rd statement
+(spider, 7), blue the share whose answer is the org's lion statement (9). Shaded: the 1st and 2nd places. Corner of
+each panel: items per point and the share of answers left unchanged.
+**What it shows.** When alt asks its 1st or 2nd statement, the answer goes to the org's 1st or 2nd almost always
+(Qwen3.6-27B 100% / 97%, Qwen3-32B 100% / 89%; the 9B and OLMo 90-93% / 54-58%; Gemma 4 40% / 37%, which is 100% /
+78% of the answers that move). From the 3rd on, it follows the bridge word as often as or more than the slot, on every
+model. So the "same slot" of fig. 5 is a label for the first two statements, and its pooled 50% is this mix. The same
+on a second data seed (27B: 100% / 92%, then 14-25%), with 8 statements (100% / 94%, then at most 16% for statements
+3-8) and for named bridges. Recounted from the raw rows by an outside reviewer and by us. Each model at its layer
+before the alt digit arrives (the 27B's 50 was picked after seeing the first runs). Runs `d3v4_swap_topics`,
+`d3v4_seed2_swap_27b`, `d3v5_swap_27b`, `qwen3_32b_d3v4_swap_r2`, `qwen35_9b_d3v4_swap_r2`,
+`olmo3_7b_instruct_d3v4_swap_fn`, `gemma4it_d3v4_swap_v2_r2`.
 
 **Colour-word answers** ("The cow's locker is red.") give the slot a pooled lead (27B: 31% vs 13%; 9B: 23-33% vs
 14-21%), but on the 27B the same-entity control changes a third of the answers, so it cannot be judged there; on the
@@ -172,78 +198,89 @@ then at most 16% for statements 3-8) and for named bridges. Each model at its la
 
 ![How the address counts](figures/readme_1021/f6_slot_counts.png)
 
-**How does the label count?** (These tests pool all asked statements, so their signal comes mostly from the 1st and
-2nd.) We make the alt list differ from the org list so that "the same number in the list",
-"the same number from the end" and "the same place in the text" point to different statements. The address follows
-**the number counted from the start of the list** (31-39%), not the place in the text (9-16%) or the count from the
-end (10-12%). Pre-registered, layer 50, ~435 items per panel; holds pooled and in at least 2 of 3 topics in every
-panel. Run `d3v4x_swap_main`.
+**How to read.** The org list has 5 statements; the alt list is changed (a filler line moved, or 6 or 4 statements)
+so that three ways of counting name three different org statements: the k-th from the start, the k-th from the end,
+and the one at the same place in the text. Bars: % of patched answers that went to each.
+**What it shows.** The label follows the count from the start of the list (31-39%), not the place in the text
+(9-16%) or the count from the end (10-12%). These tests pool all asked statements, so their signal comes mostly from
+the 1st and 2nd (fig. 14). Pre-registered, layer 50, ~435 items per panel; holds pooled and in at least 2 of 3 topics
+in every panel. Run `d3v4x_swap_main`.
 
 ![The address under position shifts](figures/readme_1021/f8_shifts.png)
 
-**Is it a place in the text, or a distance back from the question?** One extra sentence, in one prompt only, moves
-every statement either in the text (added before the list) or relative to the question (added before the question);
-the number in the list stays. The answer follows **the same number in the list** under both shifts (Qwen 38% and 50%,
-OLMo 36% and 42%); the statement the shift lines up gets 9-17%. So the address is an order index, not a token
-position or a distance (the guess that rotary position would make the distance matter more did not hold). Statements
-twice as long change neither the plain answers' errors nor the same-slot share. Pre-registered; ~435 items per bar
-(Qwen), 132 (OLMo). Runs `d3v6_swap_27b`, `olmo3_7b_instruct_d3v6_swap`.
+**How to read.** One extra sentence, in one of the two prompts only. Added before the list, it moves every statement
+in the text; added before the question, it moves every statement farther from the question. The number in the list
+stays. Orange: % of answers to the same number in the list; grey: to the statement the shift lines up (now at the same
+place in the text, or at the same distance before the question).
+**What it shows.** Under both shifts the answer follows the number in the list (Qwen 38% and 50%, OLMo 36% and 42%),
+not the lined-up statement (9-17%): an order index, not a token position or a distance (the guess that rotary position
+would make the distance matter more did not hold). Statements twice as long change neither the plain answers' errors
+nor the same-slot share. Pre-registered; ~435 items per bar (Qwen), 132 (OLMo). Runs `d3v6_swap_27b`,
+`olmo3_7b_instruct_d3v6_swap`.
 
-### 6. The address can be written; the lens direction cannot
+### 6. A fitted slot direction can override the lookup; the lens direction cannot
 
 ![Pointer direction vs lens direction](figures/readme_1021/f7_pointer_push.png)
 
-We fit a small (~4-dimensional) "pointer" direction from the slot labels and push along it at layer 48. It moves the
-lookup to the target statement on 42% of fresh scenes and 31% of scenes with new entities and an unseen wording. A
-push of the same size along the lens's word direction, or a random one, moves nothing (0%). Runs
-`d3b_replicate_fresh_27b`, `d3v4_fit_main`. On OLMo-3-7B the same fit moves 2% (layer 18): no writable address there
-(`olmo3_7b_instruct_d3b_fit_v2`).
+**How to read.** The slot direction (~4 dimensions) is fitted from the average last-token states of each slot. At
+layer 48 we push the last tokens toward a target slot, by as much as a real patch changes them, and count answers that
+move to the target statement. Blue: the same push along the lens direction of the target's word; grey: random. Both
+are at 0%, so their bars are flat.
+**What it shows.** The slot direction moves 42% of answers on fresh scenes and 31% on new entities with an unseen
+wording; the lens and random directions move none. Runs `d3b_replicate_fresh_27b`, `d3v4_fit_main`. On OLMo-3-7B the
+same fit moves 2% (layer 18): no writable direction there (`olmo3_7b_instruct_d3b_fit_v2`).
 
 ![Is the slot direction the model's own address?](figures/readme_1021/f13_mechanism.png)
 
-**Is it the model's own address, or a direction that overrides the lookup?** Pre-registered tests (held-out scenes,
-layer 48). The answer so far: an override.
-- **(a) Labels, not a number line.** Pushing from slot a toward a slot two or more away, the answer jumps straight to
-  the target (78%), rarely through the slots in between (9%, chance 46%). The slot averages are far apart for slots 1
-  and 2 and close for 3-5 (distances 1↔2 45, 2↔3 25, 3↔4 16, 4↔5 12.5), matching 5a; the pre-registered rank test on
-  10 distances is underpowered (rho 0.62, p 0.055).
-- **(b) Weak at its natural size.** A push by exactly the natural difference between two slot averages moves 4%
-  [3, 7] of answers to the target (the pre-registered bar was 10%); twice that, 26%; a random direction of the same
-  size, 0%.
+**Is it the model's own address, or a direction that overrides the lookup?** Three pre-registered tests, held-out
+scenes, layer 48. The answer so far: an override.
+- **(a) Labels, not a number line.** We push from slot a toward a slot j two or more away, growing the push step by
+  step, and record the first new answer. It jumps straight to the target (78%), rarely to a slot in between (9%; if it
+  landed at random among the other slots, 46%, dotted line). The slot averages are far apart for slots 1 and 2 and
+  close for 3-5 (distances 1↔2 45, 2↔3 25, 3↔4 16, 4↔5 12.5), matching fig. 14; the pre-registered rank test on 10
+  distances is underpowered (rho 0.62, p 0.055).
+- **(b) Weak at its natural size.** A push by exactly the difference between two slot averages moves 4% [3, 7] of
+  answers to the target (the pre-registered bar was 10%); twice that, 26%; a random direction of the same size, 0%.
 - **(c) The model does not need it.** Removing the 4-dimensional slot subspace from every token after the question at
-  every layer 44-52 leaves 98% of lookups right (random or top-variance removals: 100%).
-- **Reader.** After a push that moves the answer, head 51/22 still looks at the old statement (15% on the new one);
-  head 59/21 follows on 49%. 420 memory → prompt and 150 memory → memory items. Run `d3b_mechanism_27b`.
-- *Descriptive, post hoc:* panel (d) compares each slot's code with the output directions of "first" … "fifth". The
-  matching pairing is the strongest of 120 (p = 1/120), but the cosines are 0.04-0.12 against a random-token maximum
-  of ~0.05, slots 1 and 5 are at noise level, and the largest is slot 3, which is barely used as a label. Not evidence
-  either way.
+  every layer 44-52 leaves 98% of lookups right (random or top-variance 4 dimensions: 100%); recall is untouched too.
+- **Reader** (not in the figure). After a push that moves the answer, head 51/22 still looks at the old statement (15%
+  on the new one); head 59/21 follows on 49%. 420 memory → prompt and 150 memory → memory items. Run
+  `d3b_mechanism_27b`.
+- *Descriptive, post hoc (not in the figure):* each slot's code compared with the output directions of "first" …
+  "fifth". The matching pairing is the strongest of 120 (p = 1/120), but the cosines are 0.04-0.12 against a
+  random-token maximum of ~0.05, slots 1 and 5 are at noise level, and the largest is slot 3, which is barely used as
+  a label. Not evidence either way.
 
 ### 7. A second model: OLMo-3-7B-Instruct
 
 ![Word, slot or digit on OLMo by layer](figures/readme_1021/f9_olmo_slot.png)
 
-OLMo-3-7B has softmax attention in all 32 layers (no DeltaNet). Its digit reaches the last tokens from layer 19, so
-the decisive layers were fixed at 17-19 before the run. There the patched answer goes to **the same slot and to the
-word about equally** (32-36% each at 17-18); at 19 the slot leads pooled (35% vs 23%) but in no topic alone, so the
-pre-registered test fails. What does transfer: the address counts statements by order, not places in the text (27-31%
-vs 8-11%, pre-registered), and survives both position shifts (fig. 8). Counting from the start vs from the end is not
-separated on OLMo. 412 items, 3 topics; a second draw of scenes and the SFT and DPO checkpoints give the same picture.
-Runs `olmo3_7b_instruct_d3v4_swap_fn`, `olmo3_7b_instruct_d3v4x_swap`, `olmo3_7b_{sft,dpo}_d3v4*_swap`.
+**How to read.** As fig. 5, on OLMo-3-7B-Instruct (softmax attention in all 32 layers, no DeltaNet). Its digit reaches
+the last tokens from layer 19 (green band), so the decisive layers were fixed at 17-19 before the run.
+**What it shows.** At 17-18 the answer goes to the same slot and to the word about equally (32-36% each); at 19 the
+slot leads pooled (35% vs 23%) but in no topic alone, so the pre-registered test fails. Split by the asked statement
+(fig. 14), OLMo has the same label for the 1st statement (93%) and a weaker one for the 2nd (54%). What also transfers:
+the label counts statements by order, not places in the text (27-31% vs 8-11%, pre-registered), and survives both
+position shifts (fig. 8). Counting from the start vs from the end is not separated on OLMo. 412 items, 3 topics; a
+second draw of scenes and the SFT and DPO checkpoints give the same picture. Runs `olmo3_7b_instruct_d3v4_swap_fn`,
+`olmo3_7b_instruct_d3v4x_swap`, `olmo3_7b_{sft,dpo}_d3v4*_swap`.
 
 ### 8. A late head looks at the statement whose digit is output, even when it is wrong
 
 ![Head 51/22 on the model's own errors](figures/readme_1021/f11_natural_errors.png)
 
-No patch: we take the lookups Qwen3.6-27B gets wrong on its own (mostly recalled elements named by their chemical
-symbol) and ask which statement layer 51, head 22 attends to most from the last token. On 339 wrong answers it looks
-at **the statement the wrong answer comes from** 76% [71, 80] of the time, at the right one 17%; on right answers it
-is on the asked statement 99%. **But this is close to a tautology:** every digit appears once in a scene, so "the
-statement the answer comes from" is fixed by the output, and a head that attends to the statement holding the digit it
-is about to write tells us nothing beyond the output. It becomes a provenance read-out only if it predicts the answer
-before the digit is formed, or on scenes with a repeated digit, and against a J-lens baseline; none of that is run yet.
-Most errors (208 of 339) are recalled elements named by their chemical symbol, 9 entities in all.
-Run `d5a_natural_errors_27b`.
+**How to read.** No patch. Qwen3.6-27B answers 4160 unedited lookup prompts (`alias_pointer_v1`: statements in other
+languages, animals and chemical elements). It gets 3819 right; on 339 it outputs the digit of another statement in the
+list (2 more wrong answers, with a digit not in the list, are left out). For each prompt we find the statement that
+layer 51, head 22 attends to most from the last token. Left: the 339 wrong prompts, split into "the head is on the
+statement the wrong digit comes from" (orange) and "on the asked statement" (blue). Right: the 3819 right prompts.
+**What it shows.** On wrong prompts the head is on the statement the wrong digit comes from 76% [71, 80] of the time,
+on the asked one 17%; on right prompts, on the asked statement 99%. **But this is close to a tautology:** every digit
+appears once in a scene, so "the statement the answer comes from" is fixed by the output, and a head that attends to
+the statement holding the digit it is about to write tells us nothing beyond the output. It becomes a provenance
+read-out only if it predicts the answer before the digit is formed, or on scenes with a repeated digit, and against a
+J-lens baseline; none of that is run yet. Most errors (208 of 339) are recalled elements named by their chemical
+symbol, 9 entities in all. Run `d5a_natural_errors_27b`.
 
 ## What is not shown yet
 
