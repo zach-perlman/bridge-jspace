@@ -215,14 +215,16 @@ def cmd_pull() -> int:
         subprocess.run(
             [*rsync, "-r", f"--files-from={listing}", f"{box}/results/", str(REPO / "results") + "/"], check=True
         )
-    subprocess.run([*rsync, f"{box}/ledger.jsonl", str(jq / "ledger.jsonl")], check=False)  # box: append-only
+    # one ledger / queue state per box: a second queue (JOBQ_HOST=sesterce-h200x2) must not overwrite the A100's copies
+    sfx = "" if HOST == "sesterce-a100x4" else f"-{HOST}"
+    subprocess.run([*rsync, f"{box}/ledger.jsonl", str(jq / f"ledger{sfx}.jsonl")], check=False)  # box: append-only
     subprocess.run([*rsync, f"{box}/drafts/", str(jq / "drafts") + "/"], check=False)
     subprocess.run(
         [*rsync, "--include=*/", "--include=log.txt", "--exclude=*", f"{box}/runs/", str(REPO / "log" / "jobq") + "/"],
         check=False,
     )
     _install_box_script()
-    state = REPO / "cache" / "jobq" / "queue_state.json"
+    state = REPO / "cache" / "jobq" / f"queue_state{sfx}.json"
     state.parent.mkdir(parents=True, exist_ok=True)
     state.write_text(_ssh(f"python3 ~/{BOX_ROOT}/jobq.py box-status --json"))
     print(f"pulled into results/ (new dirs only), {jq.relative_to(REPO)}/, log/jobq/; render: make examples-render")
