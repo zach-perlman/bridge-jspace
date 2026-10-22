@@ -376,11 +376,61 @@ def f12_address_models(out: Path) -> None:
     save(fig, out, "f12_address_models.png")
 
 
+def f13_mechanism(out: Path) -> None:
+    """d3b_mechanism_27b: (a) the dose path's first landing, (b) the push at its natural size and twice it vs random,
+    (c) removing the 4-dim slot subspace vs random and top-variance removals, (d) slot code vs ordinal-word directions."""
+    import glob
+
+    run = RES / "pointer_mechanism" / "d3b_mechanism_27b"
+    a = json.loads(Path(sorted(glob.glob(str(run / "analysis-*" / "summary.json")))[-1]).read_text())
+    words = json.loads((run / "geometry.json").read_text())["words"]["ordinal/unembedding"]
+    fig, axes = plt.subplots(1, 4, figsize=(15, 3.4), gridspec_kw={"wspace": 0.35, "width_ratios": [1.1, 1, 1.2, 1]})
+    ax = axes[0]
+    style(ax, "y")
+    t2 = a["T2"]
+    n = t2["departed"]
+    for i, key in enumerate(("target", "between", "beyond")):
+        k = t2["first_landing"].get(key, 0)
+        bar_ci(ax, i, *wilson(k, n), LOOKUP if key == "target" else LIGHT, width=0.6)
+    ax.axhline(100 * t2["chance_between"], color=INK2, lw=1, ls=":")
+    ax.set_xticks([0, 1, 2], ["the target", "a slot\nin between", "past the\ntarget"])
+    ax.set_ylim(0, 100)
+    ax.set_ylabel("% of first landings")
+    ax.set_title("a. Push from slot a toward slot j:\nwhere does the answer go first?", loc="left", fontsize=9.5)
+    ax = axes[1]
+    style(ax, "y")
+    t3 = a["T3"]
+    for i, al in enumerate(("1.0", "2.0")):
+        bar_ci(ax, i - 0.17, *t3[f"slot|{al}"]["rate"], LOOKUP, width=0.32)
+        bar_ci(ax, i + 0.17, *t3[f"random|{al}"]["rate"], LIGHT, width=0.32)
+    ax.set_xticks([0, 1], ["natural size", "twice natural"])
+    ax.set_ylim(0, 100)
+    ax.set_ylabel("% moved to the target statement")
+    ax.set_title("b. Slot direction (orange) vs\nrandom (grey), same size", loc="left", fontsize=9.5)
+    ax = axes[2]
+    style(ax, "y")
+    t4 = a["T4"]
+    for i, (fam, _) in enumerate((("RL", "memory → prompt\n(lookup)"), ("RR", "memory → memory\n(recall)"))):
+        for j, (b, col) in enumerate((("slot4", LOOKUP), ("rand4", LIGHT), ("var4", INK2))):
+            bar_ci(ax, i + (j - 1) * 0.26, *t4[fam][b]["rate"], col, width=0.24)
+    ax.set_xticks([0, 1], ["memory → prompt\n(lookup)", "memory → memory\n(recall)"])
+    ax.set_ylim(0, 112)
+    ax.set_ylabel("% still right")
+    ax.set_title("c. Remove 4 dims at layers 44-52:\nslot (orange), random, top variance", loc="left", fontsize=9.5)
+    ax = axes[3]
+    im = ax.imshow(words, cmap="RdBu_r", vmin=-0.13, vmax=0.13)
+    ax.set_xticks(range(5), ["first", "second", "third", "fourth", "fifth"], fontsize=8, rotation=30)
+    ax.set_yticks(range(5), [f"slot {i + 1}" for i in range(5)], fontsize=8)
+    ax.set_title("d. Slot code vs the words'\noutput directions (cosine)", loc="left", fontsize=9.5)
+    fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
+    save(fig, out, "f13_mechanism.png")
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", default="figures/readme_1021")
     out = ROOT / ap.parse_args().out
     out.mkdir(parents=True, exist_ok=True)
     for f in (f1_two_routes, f2_stated_bridge, f3_early_push, f4_late_read, f5_slot_by_layer, f6_slot_counts, f8_shifts, f9_olmo_slot,
-              f7_pointer_push, f10_late_read_models, f11_natural_errors, f12_address_models):  # fmt: skip
+              f7_pointer_push, f10_late_read_models, f11_natural_errors, f12_address_models, f13_mechanism):  # fmt: skip
         f(out)

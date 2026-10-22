@@ -1,0 +1,69 @@
+{
+  "exp": "pointer_mechanism",
+  "run": "d3b_mechanism_27b",
+  "why": "D3b mechanism (22 Oct): ordered axis, dose path through the slots in between, natural dose, necessity (remove the 4-dim slot subspace), the late head as the reader, ordinal words; held-out pointer_v4 items, layer 48",
+  "written_utc": "2026-10-22T10:21:25Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "config": {
+    "data": "pointer_v4",
+    "domains": [
+      "countries",
+      "animals",
+      "body"
+    ],
+    "competence": "d3v4_competence_27b",
+    "n_test": 150,
+    "rr_n": 50,
+    "fit_limit": null,
+    "primary_layer": 48
+  },
+  "layers": [
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52
+  ],
+  "alphas": [
+    0.25,
+    0.5,
+    1.0,
+    1.5,
+    2.0,
+    3.0
+  ],
+  "heads": [
+    "51:22",
+    "59:21",
+    "59:3"
+  ],
+  "inputs": {
+    "data/pointer_v4/fit/countries_RL_e5f0.json": "733a2f73d85a7a3efe64f8f4e49ea4735890e92e889cffa14ed1d357391bb4a7",
+    "data/pointer_v4/fit/animals_RL_e5f0.json": "f87a869fa8720907b13d6f592ef1dfad9b1463ba9504fb9639ecc7c9e76e9dfd",
+    "data/pointer_v4/fit/body_RL_e5f0.json": "3db31bed270690eba979803965c82e49565073878d5e5a5aa28c9bf376a39f2c",
+    "data/pointer_v4/main/countries_RL_e5f0.json": "43b59cb01f9d4a39e12b71a9c06ca5965206bcae89d7965dc354e39e86c7174b",
+    "data/pointer_v4/main/countries_RR_e5f0.json": "ab26417b4b6348edb7c2bef5ceafc3900ea4fca5461b2d28aadc5362674f98bd",
+    "data/pointer_v4/main/animals_RL_e5f0.json": "c1138a7f05fdeef384d23828afc7ea168282f8599e8a8a20e73055d5162d667b",
+    "data/pointer_v4/main/animals_RR_e5f0.json": "c5301782c4ebd22a4589c1ff29bc05490b54253944cdf37b52272e02414d0b52",
+    "data/pointer_v4/main/body_RL_e5f0.json": "6e226678ac9e375384cc845ce67f1b9d2b445c1018f9ae5701b983a561ef6b60",
+    "data/pointer_v4/main/body_RR_e5f0.json": "74cce980aee4238fb14706d10244a67ceb5c65bd8886e3b8ffd75979ed87efe3",
+    "data/pointer_v4/split.json": "0abc08041da10ecade5d8949c1c9d45f0d5a8ae515695708a4d69fc91d26f245",
+    "results/pointer_v4/d3v4_competence_27b/items.jsonl": "36c19455deb11026606c3362eb7e2b38428aa314bf52f5bafaf296194e3da971"
+  },
+  "seeds": {
+    "perm": 0,
+    "null": 0
+  },
+  "decision": "(fixed before the run; jobs/d3/d3b_mechanism_27b.yaml). Wilson 95% on items unless said; held-out items\nonly (asked entity or wording outside the fit); memory -> prompt primary, memory -> memory the control.\n  H-axis (T1): rho >= 0.8 at layer 48 and the permutation p < 0.05.\n  H-path (T2): among paths whose first departure lands on a statement of the prompt, the share landing strictly between\n    a and j has its lower bound above the chance share (the slots in between / the 4 other slots, averaged), and the\n    share landing on the other side of a has upper bound <= 0.15. H-jump: the share landing on j itself has lower\n    bound >= 0.5 and the in-between share is not above chance.\n  H-natural (T3): at alpha 1 (or 2) the slot-target rate's lower bound >= 0.10 and above the random push's upper bound.\n  H-necessary (T4): with the slot subspace removed, memory -> prompt keeps answer org on <= 70% (upper bound), at least\n    20 points below both control removals (paired item bootstrap lower bound > 0), and memory -> memory keeps >= 90%.\n  H-reader (T5): on the alpha-2 pushes that moved the answer to j, head 51/22's top statement is j on >= 50% (lower\n    bound), above its share on the random pushes' rows (upper bound).\n  T6 is descriptive. Each hypothesis is reported holds / does not hold / not testable (n < 35 rows)."
+}
