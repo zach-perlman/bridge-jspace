@@ -105,3 +105,29 @@ def test_decide(br, bl, off, rnd, starts):
     assert d["verdict"].startswith(starts), d["verdict"]
     if d["primary"]:
         assert (d["primary"]["subset"], d["primary"]["layer"], d["primary"]["scale"]) == ("w", 20, 8.0)
+
+
+def test_rule_v2_skips_a_higher_cell_that_moves_answers_off_the_path():
+    rates = _grid(0.9, 0.02, off=0.3)  # w 20 8x: BR 90%, but RL and RR changed 30%
+    rates |= {("BR", "s", 20, 1.0, "lens"): 0.6, ("BL", "s", 20, 1.0, "lens"): 0.02}  # valid, lower
+    cells, scene_of = _cells(rates)
+    v1 = W.decide(cells, scene_of, LAYERS, SCALES, "v1")
+    assert v1["verdict"].startswith("not valid") and v1["primary"]["subset"] == "w"
+    v2 = W.decide(cells, scene_of, LAYERS, SCALES, "v2")
+    assert v2["verdict"].startswith("H-around"), v2["verdict"]
+    assert (v2["primary"]["subset"], v2["primary"]["layer"], v2["primary"]["scale"]) == ("s", 20, 1.0)
+    assert v2["valid"] and len(v2["selected"]) == 1
+
+
+def test_rule_v2_without_a_valid_cell():
+    cells, scene_of = _cells(_grid(0.9, 0.02, off=0.3))
+    d = W.decide(cells, scene_of, LAYERS, SCALES, "v2")
+    assert d["primary"] is None and d["verdict"].startswith("no valid cell")
+
+
+def test_fresh_scenes_draw():
+    eligible = {"BL": {"a", "b", "c", "d", "e"}, "BR": {"a", "b", "c", "d"}, "RL": {"b", "c", "d", "z"}}
+    got = W.fresh_scenes(eligible, used={"c"}, n=10)
+    assert sorted(got) == ["b", "d"]  # in every family, not used; n capped at the pool
+    assert W.fresh_scenes(eligible, set(), 2) == W.fresh_scenes(eligible, set(), 2)  # seeded
+    assert len(W.fresh_scenes(eligible, set(), 2)) == 2

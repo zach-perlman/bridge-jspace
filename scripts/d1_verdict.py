@@ -13,7 +13,12 @@ result was opened) applied to a map run and its parts run.
 "switches" = the read's top token is the C bridge's answer (role b); items: every parts row of the cell (the parts
 stage ran only on items the model answers right).
 
+--cell SET:LAYER (d1_topics_v2 runs, fixed 2026-10-22 evening before they ran): the decisive cell is given in advance
+(context:32, the cell d1_topics_map_27b chose) instead of chosen from the map. With a tasks set, each topic also gets
+the same verdict on its own rows (topic_verdicts); a topic counts only if its own positive control passes.
+
 uv run python scripts/d1_verdict.py --map M --parts P [--lookup PP --recall PM] [--tasks-set S] [--onset 44]
+                                    [--cell SET:LAYER]
 """
 
 from __future__ import annotations
@@ -43,6 +48,26 @@ def decisive_cell(rates: list[dict], lookup: str, lo: int, onset: int) -> dict |
     return {"set": best["set"], "layer": best["layer"], "map_flips": best["cf"]["flips"]}
 
 
+def fixed_cell(rates: list[dict], spec: str, lookup: str) -> dict:
+    """--cell SET:LAYER, with the map's flips there when the map has that row."""
+    s, layer = spec.split(":")
+    assert s in SETS, f"--cell: {s} not one of {SETS}"
+    row = next((r for r in rates if r["family"] == lookup and r["set"] == s and r["layer"] == int(layer)), None)
+    return {"set": s, "layer": int(layer), "map_flips": row["cf"]["flips"] if row else None, "fixed": True,
+            "transit": row["transit"] if row else None}  # fmt: skip
+
+
+def verdict_of(lk: dict, rc: dict) -> str:
+    """lk / rc: part -> [rate, lo, hi, n] of the lookup and recall families at the decisive cell."""
+    if not rc["jspace"][3]:
+        return "not interpretable: no recall row at the decisive cell"
+    if rc["jspace"][0] < POSITIVE_MIN:
+        return "not interpretable: the positive control fails"
+    if lk["jspace"][0] <= JSPACE_MAX and lk["not_jspace"][0] >= REST_MIN:
+        return "replicates"
+    return "does not replicate"
+
+
 def rate(rows: list[dict]) -> list[float]:
     return list(wilson(sum(r["role"] == "b" for r in rows), len(rows)))
 
@@ -57,9 +82,10 @@ def main() -> int:
     ap.add_argument("--onset", type=int, default=44)
     ap.add_argument("--lo", type=int, default=32)
     ap.add_argument("--out", default=str(OUT), help="parent folder of the new verdict folder")
+    ap.add_argument("--cell", default=None, help="SET:LAYER fixed in advance (else chosen from the map)")
     a = ap.parse_args()
     rates = json.loads((SP / a.map / "summary.json").read_text())["rates"]
-    cell = decisive_cell(rates, a.lookup, a.lo, a.onset)
+    cell = fixed_cell(rates, a.cell, a.lookup) if a.cell else decisive_cell(rates, a.lookup, a.lo, a.onset)
     assert cell, "no lookup statement cell in transit in the primary layers"
     rows = [json.loads(x) for x in (SP / a.parts / "outcomes.jsonl").read_text().splitlines()]
     at = [r for r in rows if r["set"] == cell["set"] and r["layer"] == cell["layer"] and r["source"] == "cf"
@@ -81,27 +107,28 @@ def main() -> int:
            "lookup": {p: part(a.lookup, p) for p in ("full", "jspace", "not_jspace", "rand_omp")},
            "recall": {p: part(a.recall, p) for p in ("full", "jspace", "not_jspace", "rand_omp")},
            "nulls": {"lookup_jspace_null": part(a.lookup, "jspace", nulls), "recall_jspace_null": part(a.recall, "jspace", nulls)}}  # fmt: skip
-    lk, rc = out["lookup"], out["recall"]
-    if not rc["jspace"][3]:
-        verdict = "not interpretable: no recall row at the decisive cell"
-    elif rc["jspace"][0] < POSITIVE_MIN:
-        verdict = "not interpretable: the positive control fails"
-    elif lk["jspace"][0] <= JSPACE_MAX and lk["not_jspace"][0] >= REST_MIN:
-        verdict = "replicates"
-    else:
-        verdict = "does not replicate"
+    verdict = verdict_of(out["lookup"], out["recall"])
     out["verdict"] = verdict
     for key in ("topic", "numbers"):
         values = sorted({m[key] for m in meta.values()})
         out[f"by_{key}"] = {v: {f"{fam}_{p}": part(fam, p, at, key, v) for fam in (a.lookup, a.recall)
                                 for p in ("full", "jspace", "not_jspace")} for v in values}  # fmt: skip
+    if meta:
+        out["topic_verdicts"] = {
+            v: verdict_of({p: c[f"{a.lookup}_{p}"] for p in ("jspace", "not_jspace")},
+                          {p: c[f"{a.recall}_{p}"] for p in ("jspace", "not_jspace")})
+            for v, c in out["by_topic"].items()
+        }  # fmt: skip
     d = Path(a.out) / f"{a.parts}_{time.strftime('%Y%m%d-%H%M%S')}"
     d.mkdir(parents=True)
     (d / "verdict.json").write_text(json.dumps(out, indent=1) + "\n")
-    lines = [f"# d1_verdict / {a.parts}", "", f"Decisive cell (map {a.map}): {cell['set']} at layer {cell['layer']} "
-             f"(C's whole copy flips {100 * cell['map_flips'][0]:.0f}% of lookups)", "", f"**Verdict:** {verdict}", "",
-             "| family | part | switched [95%] | n |", "|---|---|---|---|"]  # fmt: skip
-    for fam, block in ((a.lookup, lk), (a.recall, rc)):
+    flips = "no map row" if cell["map_flips"] is None else f"C's whole copy flips {100 * cell['map_flips'][0]:.0f}% of lookups"  # fmt: skip
+    how = "fixed in advance" if cell.get("fixed") else f"chosen from map {a.map}"
+    lines = [f"# d1_verdict / {a.parts}", "", f"Decisive cell ({how}): {cell['set']} at layer {cell['layer']} ({flips})",
+             "", f"**Verdict:** {verdict}", "", "| family | part | switched [95%] | n |", "|---|---|---|---|"]  # fmt: skip
+    if "topic_verdicts" in out:
+        lines[6:6] = ["Per topic: " + "; ".join(f"{t}: {v}" for t, v in out["topic_verdicts"].items()), ""]
+    for fam, block in ((a.lookup, out["lookup"]), (a.recall, out["recall"])):
         for p, v in block.items():
             lines.append(f"| {fam} | {p} | {100 * v[0]:.0f}% [{100 * v[1]:.0f}, {100 * v[2]:.0f}] | {v[3]} |")
     for key in ("topic", "numbers"):

@@ -1,0 +1,43 @@
+id: d4_where_fresh_27b
+title: "Where can the lens write a stated bridge? D4 v2 on fresh scenes with the fixed rule (Qwen3.6-27B)"
+thread: D4
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.3
+depends_on: []
+command: >-
+  uv run python scripts/early_push_where.py run --name d4_where_fresh_smoke_27b --n 1 --scenes fresh --rule v2
+  --why "smoke: the fresh-scene path end to end; not a result"
+  && uv run python scripts/early_push_where.py run --name d4_where_fresh_27b --n 100 --scenes fresh --rule v2
+  --why "D4 v2 rerun (Dan, 22 Oct): fresh scenes, rule v2 (only cells that pass the off-path check are selected,
+  then the highest recall rate), fixed before this run"
+figures_command: uv run python scripts/early_push_where.py figures --name d4_where_fresh_27b
+question: >-
+  On scenes not used before, at the cell chosen by the fixed rule, does a lens push at the bridge's own sentence or word
+  switch lookups from a stated bridge (prompt -> prompt) as it switches recalls (prompt -> memory)?
+why_it_matters: >-
+  d4_where_27b's pre-registered cell failed its off-path check (memory -> memory changed 25%), so its verdict was "not
+  valid"; the cells that passed (BR 39-84%, BL 0%) were read after the data. This run fixes the rule (validity before
+  the maximum) and uses fresh scenes, so the reading is no longer post hoc. It is the second, independent form of D1
+  (finding 2): the lens writes a stated bridge for recall but the lookup ignores it.
+hypotheses:
+  H-around: 'the primary valid cell switches prompt -> memory >= 30% and prompt -> prompt <= 10% (scene-paired gap
+    lower bound >= 20 points). Prior 0.65'
+  H-where: 'prompt -> prompt also switches >= 30% there. Prior 0.05'
+  H-no-cell: 'no cell passes selection and the off-path check. Prior 0.2'
+  inconclusive: 'a cell exists, prompt -> prompt between 10% and 30% or the gap is not clear. Prior 0.1'
+decision_rule: >-
+  scripts/early_push_where.py's docstring, rule v2 (committed before this run): a cell (s or w, layer, scale) is selected
+  iff the lens push switches prompt -> memory >= 30% (Wilson lower bound >= 0.20), the random push switches it <= 5%,
+  the lens push changes <= 10% of memory -> prompt and of memory -> memory answers (off the path) and the random push
+  switches <= 5% of prompt -> prompt. Primary = the selected cell with the highest prompt -> memory rate (ties: smaller
+  scale, earlier layer, the word before the sentence). H-where iff prompt -> prompt >= 30% (lower bound >= 0.20) there;
+  H-around iff prompt -> prompt <= 10% and the scene-paired BR - BL gap's 2.5th percentile >= 0.20; else inconclusive;
+  no selected cell: H-no-cell. Reported, not decisive: every cell, the whole context, the question's subject phrase at
+  layer 20, 8x (slide 6's anchor), the off-scene push, the text edits.
+controls:
+- 'a random direction at the same per-position norms; a push toward an animal not in the scene (other leg count); the
+  text edits of slide 6; memory -> prompt and memory -> memory, for which the owner sentence is off the path'
+n: '100 fresh scenes, the four families on each (animal suite, wording A): drawn with seed 1 from the 248 scenes eligible in all four families (every competence prompt right) and not in map_A8_v1; items right unedited'
+seeds: [0, 1]
+notes: "Dan, 2026-10-22 evening: rerun D4 v2 on fresh scenes with the rule fixed; report d4_where_27b's valid cells as post hoc. Not opened before Dan predicts (batch 12)."

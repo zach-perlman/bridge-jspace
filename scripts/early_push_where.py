@@ -38,7 +38,15 @@ Decision rule (fixed 2026-10-22 before the run; the controls agreed with Dan):
   reported, not decisive: every cell; c; b at layer 20, 8x against slide 6 (RL 73%, RR 84%, BL 1%, BR 2%); offscene
            (BR to Y's legs, BL changed); the edits.
 
-Stages:  run --name N --why W [--n K]   analyze --name N   figures --name N
+Rule v2 (fixed 2026-10-22 evening, after d4_where_27b and before the fresh-scene run; config "rule": "v2"). In
+d4_where_27b the primary cell (w, layer 28, 8x) changed 25% of RR, so the verdict was "not valid" while other cells
+passed. v2 moves the validity conditions into the selection: a cell is selected iff it passes v1's selection AND, at
+that cell, the lens push changes <= 10% of RL and of RR and the random push switches <= 5% of BL. The primary cell is
+the selected cell with the highest BR rate (v1's ties); the verdicts are v1's. Runs without "rule" in their config use
+v1. Fresh scenes (config "scenes": "fresh"): n scenes sampled (seed FRESH_SEED) from those eligible in all four
+families under suite_split's rule (every competence prompt right) and not in the map run at all.
+
+Stages:  run --name N --why W [--n K] [--scenes map|fresh] [--rule v1|v2]   analyze --name N   figures --name N
 """
 
 from __future__ import annotations
@@ -71,10 +79,11 @@ EXP = "early_push_where"
 RESULTS = pins.RESULTS_DIR / EXP
 DEFAULTS: dict[str, Any] = {"n": 100, "families": ["BL", "BR", "RL", "RR"], "map": "map_A8_v1", "wording": "A",
                             "layers": [12, 16, 20, 24, 28, 32, 36, 40, 44], "scales": [1.0, 2.0, 4.0, 8.0],
-                            "context_layers": [28, 32, 36, 40, 44]}  # fmt: skip
+                            "context_layers": [28, 32, 36, 40, 44], "scenes": "map", "rule": "v1"}  # fmt: skip
 WHERE = ("b", "s", "w", "c")
 DIRS = ("lens", "random", "offscene")
 SEED = 0
+FRESH_SEED = 1
 SEL_RATE, SEL_LO, RAND_MAX, OFF_PATH_MAX = 0.30, 0.20, 0.05, 0.10
 WHERE_RATE, WHERE_LO, AROUND_MAX, AROUND_GAP = 0.30, 0.20, 0.10, 0.20
 SLIDE6 = {"RL": 0.73, "RR": 0.84, "BL": 0.01, "BR": 0.02}  # early_push d4_push_wording_b_v1, b, layer 20, 8x
@@ -120,6 +129,37 @@ def role_of(top: int, cand: dict, y_tok: int | None) -> str:
     return "oc" if top in cand["oc"] else "other"
 
 
+def fresh_scenes(eligible: dict[str, set[str]], used: set[str], n: int, seed: int = FRESH_SEED) -> list[str]:
+    """n scenes eligible in every family and not used, sampled by seed (sorted first, so the draw is reproducible)."""
+    pool = sorted(set.intersection(*eligible.values()) - used)
+    return random.Random(seed).sample(pool, min(n, len(pool)))
+
+
+def fresh_cases(tok, cfg: dict) -> tuple[list[dict], dict]:
+    """The fresh-scene cases (suite_split's eligibility, none of the map run's scenes); a scene whose C or O does not
+    line up in one family is dropped in all four, so the families stay on the same scenes."""
+    rows = [json.loads(x) for x in (P.RESULTS / cfg["map"] / "cases.jsonl").read_text().splitlines()]
+    used = {r["scene"] for r in rows if r["family"] in cfg["families"]}
+    eligible: dict[str, dict[str, dict]] = {}
+    for fam in cfg["families"]:
+        ok: dict[str, list[bool]] = collections.defaultdict(list)
+        for line in P.competence_file(fam, cfg["wording"]).read_text().splitlines():
+            r = json.loads(line)
+            if r["family"] == fam:
+                ok[r["id"]].append(r["correct"])
+        good = {i for i, v in ok.items() if all(v)}
+        eligible[fam] = {it["scene"]: it for it in S.load(fam, cfg["wording"]) if it["id"] in good}
+    picked = fresh_scenes({f: set(v) for f, v in eligible.items()}, used, cfg["n"])
+    cases, dropped = [], []
+    for s in picked:
+        try:
+            cases += [{**eligible[f][s], **P.prepare(eligible[f][s], tok)} for f in cfg["families"]]
+        except AssertionError:  # the comprehension fails before +=, so none of the scene's families is kept
+            dropped.append(s)
+    pool = len(set.intersection(*(set(v) for v in eligible.values())) - used)
+    return cases, {"pool": pool, "picked": len(picked), "unaligned_dropped": dropped, "scenes": picked}
+
+
 # ---- the decision (pure) ----------------------------------------------------------------------------------------------
 
 
@@ -129,10 +169,25 @@ def cell_rate(cell: dict[str, str], hit: str = "b") -> tuple[float, float, float
     return wilson(k, len(cell))
 
 
+def cell_valid(cells: dict[tuple, dict[str, str]], key: tuple) -> tuple[bool, dict, tuple]:
+    """At (subset, layer, scale): the lens push changes <= OFF_PATH_MAX of RL and of RR, the random push switches
+    <= RAND_MAX of BL. Returns (valid, {RL, RR: changed}, BL random)."""
+    off = {f: cell_rate(cells[(f, *key, "lens")], "changed") for f in ("RL", "RR") if cells.get((f, *key, "lens"))}
+    bl_rand = cell_rate(cells.get(("BL", *key, "random"), {}))
+    valid = all(v[0] <= OFF_PATH_MAX for v in off.values()) and (math.isnan(bl_rand[0]) or bl_rand[0] <= RAND_MAX)
+    return valid, off, bl_rand
+
+
 def decide(
-    cells: dict[tuple, dict[str, str]], scene_of: dict[str, str], layers: list[int], scales: list[float]
+    cells: dict[tuple, dict[str, str]],
+    scene_of: dict[str, str],
+    layers: list[int],
+    scales: list[float],
+    rule: str = "v1",
 ) -> dict:
-    """cells: (family, subset, layer, scale, dir) -> {item: role}, items answered right unedited only."""
+    """cells: (family, subset, layer, scale, dir) -> {item: role}, items answered right unedited only. rule v1:
+    select on BR, then check validity at the primary cell; v2: only valid cells are selected."""
+    assert rule in ("v1", "v2"), rule
     sel = []
     for sub in ("w", "s"):
         for la in layers:
@@ -142,17 +197,18 @@ def decide(
                     continue
                 p, lo, _ = cell_rate(br)
                 if p >= SEL_RATE and lo >= SEL_LO and cell_rate(rnd)[0] <= RAND_MAX:
+                    if rule == "v2" and not cell_valid(cells, (sub, la, sc))[0]:
+                        continue
                     sel.append({"subset": sub, "layer": la, "scale": sc, "br": round(p, 4)})
-    out: dict[str, Any] = {"selected": sel}
+    out: dict[str, Any] = {"rule": rule, "selected": sel}
     if not sel:
-        out.update(primary=None, valid=None, verdict="no cell: the lens does not write a stated bridge at its sentence")
+        none = "no valid cell" if rule == "v2" else "no cell"
+        out.update(primary=None, valid=None, verdict=f"{none}: the lens does not write a stated bridge at its sentence")
         return out
     best = min(sel, key=lambda d: (-d["br"], d["scale"], d["layer"], 0 if d["subset"] == "w" else 1))
     key = (best["subset"], best["layer"], best["scale"])
     get = {f: cells.get((f, *key, "lens"), {}) for f in ("BL", "BR", "RL", "RR")}
-    off = {f: cell_rate(get[f], "changed") for f in ("RL", "RR") if get[f]}
-    bl_rand = cell_rate(cells.get(("BL", *key, "random"), {}))
-    valid = all(v[0] <= OFF_PATH_MAX for v in off.values()) and (math.isnan(bl_rand[0]) or bl_rand[0] <= RAND_MAX)
+    valid, off, bl_rand = cell_valid(cells, key)
     bl, br = cell_rate(get["BL"]), cell_rate(get["BR"])
     by_scene = {f: {scene_of[i]: float(r == "b") for i, r in get[f].items()} for f in ("BL", "BR")}
     common = sorted(set(by_scene["BL"]) & set(by_scene["BR"]))
@@ -251,18 +307,25 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
     inputs = [P.RESULTS / cfg["map"] / "cases.jsonl"] + [
         S.data_dir(cfg["wording"]) / f"{f}.json" for f in cfg["families"]
     ]
+    if cfg["scenes"] == "fresh":
+        inputs += sorted({P.competence_file(f, cfg["wording"]) for f in cfg["families"]})
     doc = __doc__ or ""
     manifest = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "config": cfg,
                 "inputs": {str(p.relative_to(pins.REPO_ROOT)): sha256_of(p) for p in inputs},
                 "seeds": {"random": f"{SEED} + 1000003 x item index", "offscene": f"Random('{SEED}:<scene>')",
-                          "bootstrap": SEED},
+                          "bootstrap": SEED, **({"fresh_scenes": FRESH_SEED} if cfg["scenes"] == "fresh" else {})},
                 "design": doc.split("Decision rule")[0], "decision": "Decision rule" + doc.split("Decision rule")[1].split("Stages:")[0]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     model = load_model()
     lens = JLens(model, pins.FROZEN_LENS)
     t0 = time.time()
-    cases = EP.build_cases(model.tokenizer, {**cfg, "countries": False})
+    if cfg["scenes"] == "fresh":
+        raw, selection = fresh_cases(model.tokenizer, cfg)
+        (out_dir / "selection.json").write_text(json.dumps(selection, indent=2) + "\n")
+        cases = [EP.augment(c, model.tokenizer, cfg["wording"]) for c in raw]
+    else:
+        cases = EP.build_cases(model.tokenizer, {**cfg, "countries": False})
     scenes: dict[str, list[dict]] = {}
     for c in cases:
         scenes.setdefault(c["scene"], []).append(c)
@@ -320,7 +383,7 @@ def stage_analyze(name: str) -> None:
     cfg = m["config"]
     rows = [json.loads(x) for x in (RESULTS / name / "outcomes.jsonl").read_text().splitlines()]
     scene_of = {r["name"]: r["scene"] for r in rows}
-    dec = decide(cells, scene_of, cfg["layers"], cfg["scales"])
+    dec = decide(cells, scene_of, cfg["layers"], cfg["scales"], cfg.get("rule", "v1"))
     anchor = {f: cell_rate(cells.get((f, "b", 20, 8.0, "lens"), {})) for f in cfg["families"]}
     summary = {"run": name, "decision": dec, "counts": counts,
                "slide6_anchor": {f: {"now": anchor[f], "slide6": SLIDE6.get(f)} for f in anchor},
@@ -407,10 +470,12 @@ if __name__ == "__main__":
     ap.add_argument("--name", required=True)
     ap.add_argument("--why")
     ap.add_argument("--n", type=int, default=DEFAULTS["n"])
+    ap.add_argument("--scenes", choices=["map", "fresh"], default=DEFAULTS["scenes"])
+    ap.add_argument("--rule", choices=["v1", "v2"], default=DEFAULTS["rule"])
     a = ap.parse_args()
     if a.stage == "run":
         assert a.why, "run needs --why"
-        stage_run(a.name, a.why, {**DEFAULTS, "n": a.n})
+        stage_run(a.name, a.why, {**DEFAULTS, "n": a.n, "scenes": a.scenes, "rule": a.rule})
     elif a.stage == "analyze":
         stage_analyze(a.name)
     else:

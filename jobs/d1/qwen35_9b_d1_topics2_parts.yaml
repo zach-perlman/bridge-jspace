@@ -1,0 +1,25 @@
+id: qwen35_9b_d1_topics2_parts
+title: "D1 doubled (Qwen3.5-9B): which part of a stated bridge's change does the lookup use?"
+thread: D1
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.3
+depends_on:
+- qwen35_9b_d1_topics2_map
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/statement_positions.py parts --name qwen35_9b_d1_topics2_parts --map qwen35_9b_d1_topics2_map --why "D1 doubled: the lens-readable part vs the rest at the transit cells" --lo 16 --sets bind_bridge bridge_word lookup_x context question && BJ_TARGET=qwen3.5-9b uv run python scripts/d1_verdict.py --map qwen35_9b_d1_topics2_map --parts qwen35_9b_d1_topics2_parts --tasks-set d1_topics_v2 --lo 16 --onset 22
+question: >-
+  At the decisive cell, does the stated bridge's lens-readable part switch lookups (PP) and recalls (PM)?
+why_it_matters: >-
+  D1 (finding 2: a lookup ignores the lens-readable part of a stated bridge) rests on one model; per topic its control passed on animals, elements and Greek with ~30 scenes each, too few for per-topic verdicts. Lens on this model: J++ (neuronpedia, published, target layer 31).
+hypotheses:
+  H-replicates: 'the lens gate passes and the split replicates. Prior 0.35'
+  H-no-lens: 'the lens gate fails (PM lens part < 30%): no claim about the lens on this model. Prior 0.5'
+  H-not: 'the gate passes and the split does not replicate. Prior 0.15'
+decision_rule: >-
+  scripts/d1_verdict.py's map rule with the 27B's layers scaled by depth (fixed 2026-10-22 evening, before these runs): the decisive cell is PP's statement cell (bind_bridge, bridge_word, context) in transit at the coarse layers in [16, 22) (the 27B's [32, 44) of 64 layers, on 32) where C's whole copy flips the most lookups (ties: earlier layer, then bind_bridge, bridge_word, context). Then the 27B's verdict: replicates iff the lens-readable part alone switches <= 0.10 of lookups and everything else >= 0.50 while PM's lens-readable part switches >= 0.30 (the lens gate: without it the run says nothing about the lens, 'not interpretable'). Per topic reported as on the 27B. The rw stage's lens read (the lens's top word = the stated bridge) is reported as the second gate number.
+controls:
+- 'O (another pair of picks swapped, off the path); a random direction at each row''s norm; a 25-atom OMP over a random dictionary (the fitting null); PM as the positive control on the same scenes'
+n: '180 scenes (PP and PM each; the first 180 eligible in scene order, 60 per topic), animals, elements, Greek letters, prose, 3 entities (level 0), scenes right on every prompt'
+seeds: [23]
+notes: 'Dan, 2026-10-22 evening: double the scenes on animals, elements and Greek (planets dropped: its control failed); D1 on Qwen3.5-9B with its published J++. Data: data/tasks_v2/d1_topics_v2 (scripts/tasks_v2.py make, seed 23; no context shared with d1_topics_v1). Not opened before Dan predicts (batch 12).'
