@@ -289,6 +289,20 @@ TARGETS: dict[str, dict[str, Any]] = {
     # good enough, consider fitting our own J++. The final norm scales by weight (the blocks' norms by 1 + weight).
     # 2026-10-22 (Zach): our own J++ is fit and becomes Muse's lens of record (target muse-glimmer-30b, prefix muse30_,
     # added by scripts/queues/h200_muse_fit_1022.sh); this J-lens target (prefix muse30j_) runs the gate and comparisons.
+    # Muse Glimmer 30B with our own J++ (Zach, 2026-10-22; its lens of record): the safety-research/jpp_lens@93f02cd recipe
+    # (+ scripts/lens_fit/jpp_lens_muse_1022.patch), 32 WikiText prompts, one shard, source layers 0-50, target the final
+    # block; scripts/queues/h200_muse_fit_1022.sh. held-out macro pass@10: {'Muse-Glimmer-30B_jpp_lens': 0.959, 'logit': 0.67, 'pooled_lens': 0.893}.
+    "muse-glimmer-30b": {
+        "repo": "meta-models/Muse-Glimmer-30B",
+        "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+        "n_layers": 52,
+        "norm_gain": "weight",
+        "bos": True,
+        "run_prefix": "muse30_",
+        "chat_template_edits": MUSE_TEMPLATE_EDITS,
+        "lenses": {"jpp": ("local", "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt", "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12")},
+        "frozen_lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12",
+    },
     "muse-glimmer-30b-jlens": {
         "repo": "meta-models/Muse-Glimmer-30B",
         "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
