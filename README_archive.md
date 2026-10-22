@@ -1811,7 +1811,7 @@ manifest); chain `scripts/phase4_chain.sh`.
 *Draft, UNVERIFIED: nothing in this section is in `VERIFIED.md`. Qwen3.6-27B, chat format, one overnight queue
 (2026-10-20/21, `scripts/jobq.py`). Each headline number below was recounted by the coordinator from the run's raw
 file (named under "To recompute"); the rest come from the run reports in `results/<exp>/<run>/analysis-*-figures/`.
-Dan wrote his predictions before any result was pulled: `jobs/predictions/2026-10-21_dan.md` (commit `18a0104`).*
+Dan wrote his predictions before any result was pulled: `predictions/2026-10-20_dan.md` (commit `18a0104`).*
 
 **The question.** Earlier runs (rows 32-59 of EXPERIMENTS.md) found that when the bridge is recalled from memory and
 then used to look something up in the prompt, the J-lens can **read** the bridge (95% of items) but pushing along its
@@ -2210,7 +2210,7 @@ Moved here from README.md on 2026-10-21 (evening) when the README was consolidat
 
 ### Detail: what is the "around" route? (Dan, 21 Oct; depth track D1-D4)
 One overnight queue, Qwen3.6-27B, pre-registered rules and controls; headline numbers recounted from the raw files.
-Predictions vs results: [jobs/predictions/2026-10-21_dan.md](jobs/predictions/2026-10-21_dan.md). Full write-up
+Predictions vs results: [predictions/2026-10-20_dan.md](predictions/2026-10-20_dan.md). Full write-up
 (methods and datasets compared, worked examples, every figure, numbers to recompute):
 [README_archive.md](README_archive.md#depth-track-d1-d4-2026-10-21-what-is-the-around-route).
 
@@ -2232,7 +2232,7 @@ goes through the J-space, not on the lookup.
 
 ### Detail: batch 2 (Dan, 21 Oct; new data and a learned pointer)
 Same rules (pre-registered, controls, headline numbers recounted from the raw files), 4×A100. Predictions vs results:
-[jobs/predictions/2026-10-22_dan.md](jobs/predictions/2026-10-22_dan.md). Still running: "statement order or token
+[predictions/2026-10-21_dan.md](predictions/2026-10-21_dan.md). Still running: "statement order or token
 position?" (pointer_v2).
 
 | | Question | Result |
@@ -2268,7 +2268,7 @@ per-batch tables of Dan's depth track: [README_archive.md](README_archive.md) ·
 · human-checked results: [VERIFIED.md](VERIFIED.md) · status by Zach (20 Oct): [STATUS.md](STATUS.md) · plan:
 [Google Doc](https://docs.google.com/document/d/1bqqdXePTUXQGlowVjk73sPfJkbV_tsu0RNNX-BiTYUc/edit?usp=drivesdk) ·
 how to run, queue, figures: [DEVELOPER.md](DEVELOPER.md) · predictions vs results (Dan):
-[jobs/predictions/](jobs/predictions/)
+[predictions/](predictions/)
 
 ### The question
 In a two-hop question the model first finds a **bridge** and then uses it to find the answer: "the language spoken in
@@ -2323,7 +2323,7 @@ Recall from memory goes through the J-space; a lookup in the prompt goes around 
 
 #### Unverified: what is the "around" route? (Dan, 21 Oct; three batches on Qwen3.6-27B)
 Every run pre-registered (hypotheses, decision rule, controls) before it ran; Dan wrote predictions before each result
-was opened (scored: [2026-10-21](jobs/predictions/2026-10-21_dan.md), [2026-10-22](jobs/predictions/2026-10-22_dan.md));
+was opened (scored: [2026-10-21](predictions/2026-10-20_dan.md), [2026-10-22](predictions/2026-10-21_dan.md));
 headline numbers recounted from the raw rows. Intervals: 95%; "entity" = resampling the asked entities within each
 topic, the honest interval when items of one entity are correlated. The per-batch tables are archived
 ([README_archive.md](README_archive.md#depth-track-nights-1-3-21-oct-the-per-batch-tables-as-they-stood-in-the-readme)).

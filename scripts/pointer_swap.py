@@ -1788,7 +1788,7 @@ COMPETENCE_RUN = "d3_competence_27b"
 
 
 def dan_section(a: dict) -> list[str]:
-    """Dan's written D3 predictions (jobs/predictions/2026-10-21_dan.md) next to this run's numbers. The numbers are
+    """Dan's written D3 predictions (predictions/2026-10-20_dan.md) next to this run's numbers. The numbers are
     computed; the last column is the agent's reading of them."""
     r, s = a["rates"], a["strongest_layer"]
 
@@ -1845,7 +1845,7 @@ def dan_section(a: dict) -> list[str]:
          f"a pointer to the statement's slot ({T['position']}, more than {T['identity']}), then the answer itself; "
          "pooled verdict 'same statement slot', but 'mixed' for each topic alone"),
     ]  # fmt: skip
-    out = ["", "## Dan's predictions (jobs/predictions/2026-10-21_dan.md, D3) vs results", "",
+    out = ["", "## Dan's predictions (predictions/2026-10-20_dan.md, D3) vs results", "",
            f"Shares are {T['identity']} / {T['position']} / {T['value']} / {T['none']}, in % of prompts.", "",
            "| question | Dan | result (this run unless said) | reading |", "|---|---|---|---|"]  # fmt: skip
     out += [f"| {q} | {d} | {res} | {rd} |" for q, d, res, rd in rows]

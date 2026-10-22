@@ -2,7 +2,7 @@
 
 *Draft for docs/day3_plan_zach.md (Dan to edit), 22 Oct, morning. Qwen3.6-27B unless named; every number is
 **unverified**, one data seed. Each run's hypotheses, rule and controls are in its spec under `jobs/`, written before
-it ran; Dan writes predictions before each result is opened (`jobs/predictions/`). Figures: README.md.*
+it ran; Dan writes predictions before each result is opened (`predictions/`). Figures: README.md.*
 
 ## 1. The question
 

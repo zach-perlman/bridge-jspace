@@ -2196,7 +2196,7 @@ def _spec(name: str) -> dict:
 
 
 def dan_table(cells: dict) -> list[str]:
-    """Dan's D2 predictions (jobs/predictions/2026-10-21_dan.md) against this run's cells."""
+    """Dan's D2 predictions (predictions/2026-10-20_dan.md) against this run's cells."""
 
     def c(*k):
         return cells.get(k)
@@ -2607,7 +2607,7 @@ def write_report(name: str, m: dict, rows: list[dict], cells: dict, cl: dict, fi
         + (". n = 4 per family: a gate run, not interpreted" if m["n_per_family"] < 10 else ""),
         "",
         *topic_table,
-        "## Dan's predictions (jobs/predictions/2026-10-21_dan.md, D2)",
+        "## Dan's predictions (predictions/2026-10-20_dan.md, D2)",
         "",
         *(dan_table(cells) if DATASET == "suite" else ["(Dan's D2 questions were asked about the animal scenes; see "
                                                        "the late-attention table below for this item set)"]),

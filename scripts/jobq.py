@@ -150,10 +150,10 @@ def cmd_enqueue(paths: list[Path], allow_dirty: bool = False) -> int:
         if errors := validate(spec, p):
             raise SystemExit(f"{p}: {'; '.join(errors)}")
         specs.append((p.resolve(), spec))
-    # Prediction forms (jobs/predictions/) are human notes no job reads: being filled in must not block a queue.
+    # Prediction forms (predictions/) are human notes no job reads: being filled in must not block a queue.
     status = _git("status", "--porcelain", "--untracked-files=no").splitlines()
     changed = [(line, line.split(maxsplit=1)[-1]) for line in status]  # _git strips the first line's leading space
-    dirty_paths = [path for _, path in changed if not path.startswith("jobs/predictions/")]
+    dirty_paths = [path for _, path in changed if not path.startswith("predictions/")]
     if dirty_paths and not allow_dirty:
         raise SystemExit(
             "commit first: a job runs the committed tree only (or pass --allow-dirty)\n" + "\n".join(dirty_paths)
