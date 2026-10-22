@@ -1,0 +1,24 @@
+id: muse30b_d2_formats
+title: "Muse Glimmer 30B: late read and name vs digit in prose, tables, JSON"
+thread: D2
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.0
+depends_on:
+- muse30b_competence
+command: >-
+  BJ_TARGET=muse-glimmer-30b uv run python scripts/attn_knockout.py manifest --name muse30b_d2_formats --dataset tasks_v2 --tasks-set d2_formats_v1 --competence muse30b_d2_formats_competence --families MP MM PP PM --formats prose table json --n 20 --sources lookup lookup_off lookup_name lookup_digit lookup_off_name lookup_off_digit lookup_nodigit lookup_noname lookup_off_nodigit lookup_off_noname --dests question final --layers all --sweep path --why "findings 3-4 in three formats on Muse" && BJ_TARGET=muse-glimmer-30b uv run python scripts/attn_knockout.py run --name muse30b_d2_formats
+figures_command: uv run python scripts/d2_formats.py --name muse30b_d2_formats
+question: >-
+  Do findings 3 and 4 hold in tables and JSON on Muse?
+why_it_matters: >-
+  A sixth model from another lab (Meta), with every test the other five have, so the cross-model table has no gaps.
+hypotheses:
+  H-all: 'Prior 0.5'
+decision_rule: >-
+  As d2_formats_27b, scored by scripts/d2_formats.py per format.
+controls:
+- 'as the same test on the other models'
+n: '20 scenes per (word, topic, format)'
+seeds: [841, 844]
+notes: "Dan, 22 Oct night: Muse Glimmer 30B (Meta) as a sixth model, every experiment, the rules copied unchanged from the other models; layers by the fixed rules or the 27B's scaled by depth (x 52/64). Not opened before Dan's predictions; README and figures only after he opens the results."

@@ -1,0 +1,22 @@
+id: muse30b_port_smoke
+title: "Muse Glimmer 30B: port smoke (hooks, blocking, greedy, lens)"
+thread: D3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.1
+depends_on: []
+command: >-
+  BJ_TARGET=muse-glimmer-30b uv run python scripts/port_smoke.py --name muse30b_port_smoke
+question: >-
+  Do the residual hooks, attention blocking by layer / head / token group, greedy decoding and the lens work on Muse?
+why_it_matters: >-
+  A sixth model from another lab (Meta), with every test the other five have, so the cross-model table has no gaps.
+hypotheses:
+  H-ok: 'every check passes. Prior 0.8'
+decision_rule: >-
+  scripts/port_smoke.py: every check passes, else the Muse jobs stop.
+controls:
+- 'as the same test on the other models'
+n: '2 prompts'
+seeds: [841, 844]
+notes: "Dan, 22 Oct night: Muse Glimmer 30B (Meta) as a sixth model, every experiment, the rules copied unchanged from the other models; layers by the fixed rules or the 27B's scaled by depth (x 52/64). Not opened before Dan's predictions; README and figures only after he opens the results."

@@ -1,0 +1,23 @@
+id: muse30b_competence
+title: "Muse Glimmer 30B: competence on pointer_v4 (main, seed2, long), d1_topics_v2, d2_formats_v1"
+thread: D3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.2
+depends_on:
+- muse30b_port_smoke
+command: >-
+  BJ_TARGET=muse-glimmer-30b BJ_JUDGE=read uv run python scripts/pointer_v4.py manifest --set main seed2 long --name muse30b_d3v4_competence --why "Muse: pointer_v4 competence" && BJ_TARGET=muse-glimmer-30b BJ_JUDGE=read BJ_GEN_BATCH=8 uv run python scripts/pointer_v4.py competence --name muse30b_d3v4_competence && BJ_TARGET=muse-glimmer-30b uv run python scripts/tasks_v2.py competence --set d1_topics_v2 --name muse30b_d1_topics2_competence --why "Muse: d1_topics_v2 competence" && BJ_TARGET=muse-glimmer-30b uv run python scripts/tasks_v2.py competence --set d2_formats_v1 --name muse30b_d2_formats_competence --why "Muse: d2_formats_v1 competence"
+question: >-
+  Which items does Muse answer right on every prompt?
+why_it_matters: >-
+  A sixth model from another lab (Meta), with every test the other five have, so the cross-model table has no gaps.
+hypotheses:
+  H-gate: 'every pointer_v4 topic >= 0.85. Prior 0.6'
+decision_rule: >-
+  The competence gates as on the other models (pointer_v4.py 0.85 rounded; tasks_v2.eligible; long: 0.80 declared).
+controls:
+- 'as the same test on the other models'
+n: 'pointer_v4 main / seed2 / long, d1_topics_v2, d2_formats_v1'
+seeds: [841, 844]
+notes: "Dan, 22 Oct night: Muse Glimmer 30B (Meta) as a sixth model, every experiment, the rules copied unchanged from the other models; layers by the fixed rules or the 27B's scaled by depth (x 52/64). Not opened before Dan's predictions; README and figures only after he opens the results."

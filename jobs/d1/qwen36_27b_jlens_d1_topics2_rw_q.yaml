@@ -1,0 +1,24 @@
+id: qwen36_27b_jlens_d1_topics2_rw_q
+title: "D1 with the plain J-lens (Qwen3.6-27B): read and write"
+thread: D1
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.5
+depends_on:
+- qwen36_27b_jlens_d1_topics2_parts
+command: >-
+  BJ_TARGET=qwen3.6-27b-jlens uv run python scripts/statement_positions.py readwrite --name qwen36_27b_jlens_d1_topics2_rw --map d1_topics2_map_27b --parts qwen36_27b_jlens_d1_topics2_parts --why "the lens-type control: read and write" --lo 32 --sets bind_bridge bridge_word lookup_x context question
+figures_command: BJ_TARGET=qwen3.6-27b-jlens uv run python scripts/statement_positions.py figures --name qwen36_27b_jlens_d1_topics2_rw
+question: >-
+  Does the plain J-lens read the stated bridge and write recall but not the lookup, as J++ does?
+why_it_matters: >-
+  Qwen3-32B and OLMo have plain J-lenses; without this control a lens result that differs between models may be a lens difference.
+hypotheses:
+  H-same: 'the lens type does not matter. Prior 0.55'
+decision_rule: >-
+  Lens-type control (Dan, 22 Oct 00:30, before these runs): Qwen3.6-27B read with neuronpedia's plain J-lens (n1000) on the same scenes, map (d1_topics2_map_27b) and cell (context, layer 32) as the J++ runs (d1_topics2_parts_27b, _rw_27b). The lens type does not matter iff with both lenses the lens-readable part moves <= 5% of lookups and the recall control (prompt -> memory, lens part >= 30%) passes; otherwise the lens type is a caveat and cross-model comparisons use one lens type. Gate v1 / v2 as lens_gate_v2_27b.
+controls:
+- 'the J++ runs on the same scenes and cell; the usual D1 nulls'
+n: 'as the J++ runs (60 scenes for the gate, 180 for D1)'
+seeds: [23]
+notes: "Requeued as _q (cancelled before it started) to put the Muse Glimmer jobs ahead (Dan, 22 Oct night); the J-lens control moved to P2. Dan, 22 Oct night: lens types differ across models (J++ / plain J-lens); a within-model control on the 27B. Not opened before Dan's predictions."
