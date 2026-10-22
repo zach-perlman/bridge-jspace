@@ -117,6 +117,7 @@ Five statements give entities a digit ("The pig's locker is 9."); a question ask
 | `code_pointer_v1/` | `scripts/code_pointer_v1.py` | Python dict lookups: named key, list position, 2-3 variable chains, recalled key | 400 per domain × family |
 | `alias_pointer_v1/` | `scripts/alias_pointer_v1.py` | statements in French/Spanish/German or by chemical symbol | 400 per domain × form × family |
 | `pointer_v4/` | `scripts/pointer_v4.py` | many entities and 3 wordings: countries (36), animals (34), body parts (16) kept by the 27B entity check `d3v4_entity_probe_27b` (sports failed: 14 < 16); a held-out third of each topic's entities and wording 2 never in the fit set (`split.json`); at most 12 scenes per asked entity | main 300 / 300 / 180 scenes per family, fit 200 / 200 / 120 |
+| `pointer_v5/` | `scripts/pointer_v5.py` | pointer_v4's entities in longer lists, digit or colour-word answers on the same scenes: main (5 and 8 statements, seed 871); len8 (8 statements, a fresh draw, seed 872); len12 (12 statements, colour words from 16 colours only, seed 873) | 150 scenes per topic × list length; memory → prompt and named → prompt |
 
 ## What the lenses were fitted on
 

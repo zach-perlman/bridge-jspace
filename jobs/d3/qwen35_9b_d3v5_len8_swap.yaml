@@ -1,0 +1,49 @@
+id: qwen35_9b_d3v5_len8_swap
+title: "Finding 5 by the fixed rule on fresh 8-sentence lists (Qwen3.5-9B, layers 18-28)"
+thread: D3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.6
+depends_on:
+- qwen35_9b_d3v5_len8_competence
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/pointer_swap.py manifest --data pointer_v5 --set len8 --name qwen35_9b_d3v5_len8_swap
+  --families RL DL --n 150 --layers 18 19 20 21 22 23 24 25 26 27 28 --control-stride 1 --groups last
+  --competence qwen35_9b_d3v5_len8_competence --primary-layers 18 19 20 21 22 23 24 25 26 27 28
+  --why "finding 5 on lists of 8 sentences (T8) on Qwen3.5-9B: the donor's last two tokens copied at layers 18-28 on
+  a fresh draw (pointer_v5 len8, seed 872); scripts/finding5_confirm.py --sentences 8 decides, per level"
+  && BJ_TARGET=qwen3.5-9b uv run python scripts/pointer_swap.py run --name qwen35_9b_d3v5_len8_swap
+examples_command: BJ_TARGET=qwen3.5-9b uv run python scripts/pointer_swap.py examples --name qwen35_9b_d3v5_len8_swap --group last
+figures_command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/finding5_confirm.py --run qwen35_9b_d3v5_len8_swap --layers 18 19 20 21 22 23 24 25 26 27 28 --level e8-digit --sentences 8
+  && BJ_TARGET=qwen3.5-9b uv run python scripts/finding5_confirm.py --run qwen35_9b_d3v5_len8_swap --layers 18 19 20 21 22 23 24 25 26 27 28 --level e8-word --sentences 8
+  && BJ_TARGET=qwen3.5-9b uv run python scripts/pointer_swap.py figures --name qwen35_9b_d3v5_len8_swap
+question: >-
+  On Qwen3.5-9B and fresh 8-sentence lists, does the copied label pick the original's statement at the same place when
+  the donor asks its 1st or 2nd sentence, and the original's statement about the donor's entity from the 3rd to the 8th?
+why_it_matters: >-
+  Finding 5 holds by the fixed rule on 9B's 5-sentence second draw; its 8-statement split (README fig. 16: 1st / 2nd
+  82 / 56% the same place) was read after the data and is weaker than the 27B's. A fixed rule on fresh scenes says
+  whether the label survives longer lists on a smaller model.
+hypotheses:
+  H-A: 'e8-digit: position - identity (1st and 2nd) has its entity-cluster 95% lower bound > 0. Prior 0.75 (agent''s)'
+  H-B: 'e8-digit: identity - position (3rd-8th) >= 0 with lower bound >= -0.05. Prior 0.6 (agent''s)'
+  H-word: 'e8-word gets the same verdict as e8-digit (reported, not decisive). Prior 0.5 (agent''s)'
+decision_rule: >-
+  scripts/finding5_confirm.py, its rule unchanged and generalised to N statements before this run (the committed
+  5-statement verdicts are reproduced byte for byte, tests/test_finding5_confirm.py), with --sentences 8: memory ->
+  prompt, the donor's last two tokens copied at one layer, items split by the place k of the donor's asked statement;
+  A: k = 1-2 pooled, position - identity with its entity-cluster 95% lower bound > 0; B: k = 3-8 pooled, identity -
+  position >= 0 (point) with its lower bound >= -0.05; confirms iff A and B, partly if one, fails if neither. Layer:
+  the last of 18-28 where the donor's own answer ('value', memory -> prompt, the level's rows) has its Wilson upper
+  bound < 0.10, decided before the split is read; none qualifies = not testable. Decisive: e8-digit (finding 5's
+  answer kind). e8-word judged by the same rule, reported. Per topic, every k and named -> prompt reported, not
+  decisive. (--primary-layers only feeds pointer_swap's own pointer_v5 report, not this rule.)
+controls:
+- 'same entity, statements reshuffled (every hypothesis predicts answer org): damage bar (pointer_swap''s own)'
+- 'random push of the same size per token at every layer; another topic''s prompt of the same answer kind and list length'
+- 'org prompt into itself (no-op) and the layer-0 all-position patch (hook checks)'
+- 'the donor''s own answer (value) as the layer cut-off'
+n: 'every eligible scene, up to 150 per topic (3 topics), right on every prompt in both answer kinds and both families; memory -> prompt decisive. Before the gate, 123 of 450 scenes ask the 1st or 2nd sentence.'
+seeds: [872, 0]
+notes: 'T8 (night brief, 22 Oct). Data: data/pointer_v5/len8/ (seed 872; never used before). 11 layers swept (18-28, every layer). If a finding5_confirm call stops with "no layer ... before the donor''s digit arrives", that level is not testable by the rule and the figures stage after it has to be run by hand. Not opened before Dan predicts.'

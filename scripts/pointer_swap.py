@@ -348,6 +348,13 @@ def family_roles(m: dict) -> tuple[str, str, str]:
     return tuple(m.get("family_roles") or FAMILY_ROLES.get(m.get("data", "pointer_v1"), DEFAULT_ROLES))  # type: ignore[return-value]
 
 
+def n_statements(level: str) -> int:
+    """The org prompt's number of statements from a level name: 'e5f0' -> 5, 'e8-digit' -> 8, 'e12-word' -> 12."""
+    m = re.match(r"e(\d+)", level)
+    assert m, f"level {level!r} does not start with e<N>"
+    return int(m.group(1))
+
+
 def base_level(level: str) -> str:
     """'e5f0-xlang' -> 'e5f0', 'e5-off' -> 'e5': the scene's layout; the suffix names a condition built on the same
     scenes (alias_pointer_v1's languages, pointer_v2's item types), so conditions are sampled on the same scenes."""
@@ -676,7 +683,7 @@ def summarise(outcomes: list[dict], checks: list[dict], m: dict) -> dict[str, An
             for x in PV.HYPOTHESES:
                 if r and x in r:
                     chance[x] = max(chance.get(x, 0.0), r[x][2])
-        n_ent = int(lv[1])
+        n_ent = n_statements(lv)
         verdicts.setdefault(f"{fam}|{lv}|{grp}", {})[layer] = verdict(fam, d, same, chance, n_ent)
     chk: dict[str, Any] = {}
     for kind in ("self_noop", "layer0_all_reproduces_source"):
@@ -820,7 +827,7 @@ def analyze(m: dict, rows: list[dict], checks: list[dict]) -> dict[str, Any]:
         in_ctx = [h for h in ("none", "identity", "position", *POINTER_ROLES) if h in hs] + (
             ["value"] if lv.endswith("-ref") else []
         )
-        return int(lv[1]) - len(in_ctx)
+        return n_statements(lv) - len(in_ctx)
 
     verdicts: dict[str, Any] = {}
     for key, d in rates.items():
@@ -836,7 +843,7 @@ def analyze(m: dict, rows: list[dict], checks: list[dict]) -> dict[str, Any]:
                     chance[x] = max(chance.get(x, 0.0), r[x][2])
         n_same = same["n"] if same else 0
         verdicts["|".join((fam, cut, lv, grp, layer))] = {
-            "verdict": verdict(fam, d, same, chance, int(lv[1]), cands_of(fam, lv), free_of(fam, lv)),
+            "verdict": verdict(fam, d, same, chance, n_statements(lv), cands_of(fam, lv), free_of(fam, lv)),
             "n": d["n"],
             "n_same": n_same,
             "rule_reachable": min(d["n"], n_same) >= MIN_N_RULE,
@@ -1208,7 +1215,7 @@ def level_text(m: dict, lv: str) -> str:
     if lv in names and m.get("data", "pointer_v1") == "pointer_v1":
         return names[lv]
     G = gen(m)
-    return G.level_name(lv) if hasattr(G, "level_name") else f"{int(lv[1])} statements"
+    return G.level_name(lv) if hasattr(G, "level_name") else f"{n_statements(lv)} statements"
 
 
 def plain(text: str) -> str:

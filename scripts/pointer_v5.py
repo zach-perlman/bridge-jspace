@@ -2,10 +2,11 @@
 The two boring explanations of D3's "same statement slot": a trick for copying a digit, and a property of 5-item
 lists. Here the same scenes are built with digit answers and with colour words, with 5 and with 8 statements.
 
-Scene: pointer_v4's entities (85, 3 topics, held-out split) in N = 5 or 8 statements; one wording of 3 per scene
-(pointer_v4's for digits, the colour wordings below for words, the same index; wording 2 is pointer_v4's held-out
-one). Each scene is built twice on the same entities and slots: values are digits 0-9 (level e<N>-digit) or colour
-words (e<N>-word: 11 colours, one token each with a leading space under Qwen3.6-27B's and OLMo-3's tokenizers).
+Scene: pointer_v4's entities (85, 3 topics, held-out split) in N = 5 or 8 statements (set len12: 12); one wording of 3
+per scene (pointer_v4's for digits, the colour wordings below for words, the same index; wording 2 is pointer_v4's
+held-out one). Each scene is built twice on the same entities and slots: values are digits 0-9 (level e<N>-digit) or
+colour words (e<N>-word: 11 colours, one token each with a leading space under Qwen3.6-27B's and OLMo-3's tokenizers;
+set len12: words only, 16 colours).
 The alt prompt asks about bridge alt (q_s), at slot k; the org prompt has q_s at slot c and the asked entity at a
 (a, c, k distinct). Predictions: none / identity (the org value of q_s) / position (the org value at slot k) / value
 (the alt answer, not in the org prompt). Families: memory -> prompt (RL), named -> prompt (DL). Controls: "same" (q_b
@@ -13,10 +14,19 @@ in its slot with its value, the rest reshuffled) and "redigit" (the asked value 
 recalled digits of q_b and q_s where the pool allows (pointer_v4x's rule). Cap: the asked entity cycles through the
 askable pool.
 
-Sets: main, up to 150 scenes per topic and list length, seed 871. Files: data/pointer_v5/main/<topic>_<family>_<level>.json.
+Sets: main, up to 150 scenes per topic and list length, seed 871 (5 and 8 statements, digits and words). Files:
+data/pointer_v5/<set>/<topic>_<family>_<level>.json.
+  len8   (22 Oct, night; finding 5 on longer lists) main's 8-statement design on a fresh draw, seed 872: e8-digit and
+         e8-word on the same scenes, 11 colours.
+  len12  (the same night) 12 statements, seed 873: colour words only (12 distinct values and an alt answer absent from
+         the org prompt need 13; digits 0-9 are 10), from 16 colours: the 11 above and gold, silver, cyan, violet,
+         beige (the first five of a list fixed before the tokenizer check: gold, silver, cyan, violet, beige, navy, teal,
+         tan, ...; each one token after a space under Qwen3.6-27B's tokenizer, which Qwen3.5-9B shares); answer kind
+         "colour16", judged on those 16.
+  Per file the seed is <set seed> * 100 + 10 * <topic index in pointer_v4's SPEC> + N.
 
-Stages:  make | verify | check (tokenizer only; BJ_TARGET picks the tokenizer) | manifest --name N --why W [--limit K]
-         competence --name N (GPU)
+Stages:  make [--set S] | verify (every set) | check [--set S] (tokenizer only; BJ_TARGET picks the tokenizer)
+         manifest [--set S] --name N --why W [--limit K] | competence --name N (GPU)
 """
 
 from __future__ import annotations
@@ -47,11 +57,17 @@ FAMILIES = ("RL", "DL")
 DOMAINS = P4.DOMAINS
 SIZES = (5, 8)
 KINDS = ("digit", "word")
-LEVELS = tuple(f"e{n}-{k}" for n in SIZES for k in KINDS)
 DIGITS = tuple(str(d) for d in range(10))
 COLOURS = ("red", "blue", "green", "black", "white", "pink", "brown", "grey", "orange", "purple", "yellow")
+COLOURS16 = (*COLOURS, "gold", "silver", "cyan", "violet", "beige")
+WORD_POOLS = {"colour": COLOURS, "colour16": COLOURS16}  # a word item's answer kind -> its values (and its judge's)
 CAP = P4.CAP
-SETS: dict[str, dict[str, Any]] = {"main": {"seed": 871, "n": 150}}
+# a set's list lengths, answer kinds and word pool default to main's: SIZES, KINDS, "colour"
+SETS: dict[str, dict[str, Any]] = {
+    "main": {"seed": 871, "n": 150},
+    "len8": {"seed": 872, "n": 150, "sizes": (8,)},
+    "len12": {"seed": 873, "n": 150, "sizes": (12,), "kinds": ("word",), "words": "colour16"},
+}
 WORDS: dict[str, dict[str, tuple[str, ...]]] = {  # colour wordings, index-matched to pointer_v4's
     "countries": {
         "statements": ("The {e} file is in the {d} drawer.", "The {d} drawer holds the {e} file.",
@@ -86,9 +102,11 @@ def statements(domain: str, kind: str, t: int, ents: list[str], values: list[str
 
 
 def said(text: str, kind: str) -> str | None:
-    """pointer_v4's judge; for colour answers, the first colour word of the first non-empty line."""
-    if kind == "colour":
-        return next((w for w in re.findall(r"[a-z]+", S.first_line(text).lower()) if w in COLOURS), None)
+    """pointer_v4's judge; for colour answers, the first colour word of the first non-empty line, among the colours
+    of the item's pool (WORD_POOLS[kind]: main's 11 for "colour", 16 for "colour16")."""
+    if kind in WORD_POOLS:
+        pool = WORD_POOLS[kind]
+        return next((w for w in re.findall(r"[a-z]+", S.first_line(text).lower()) if w in pool), None)
     return P4.said(text, kind)
 
 
@@ -112,7 +130,10 @@ def values_for(rng: random.Random, pool: list[str], n: int, k: int) -> dict[str,
     return {"values": vals, "value": value, "alt": alt}
 
 
-def scene(rng: random.Random, domain: str, pool: list[str], q_b: str, cue_len: dict, n: int) -> dict:
+def scene(rng: random.Random, domain: str, pool: list[str], q_b: str, cue_len: dict, n: int,
+          kinds: tuple[str, ...] = KINDS, colours: tuple[str, ...] = COLOURS) -> dict:  # fmt: skip
+    """One scene's entities and slots, and per answer kind in `kinds` its values (main's defaults draw in main's
+    order, so its files are reproduced)."""
     k = rng.randrange(n)
     a, c = rng.sample([s for s in range(n) if s != k], 2)
     q_s = rng.choice([e for e in pool if P4.pair_ok(domain, q_b, e, cue_len)])
@@ -130,14 +151,18 @@ def scene(rng: random.Random, domain: str, pool: list[str], q_b: str, cue_len: d
             break
     out: dict[str, Any] = {"ents": ents, "alt": alt, "recalled": recalled, "slots": {"query": a, "identity": c,
                            "position": k}, "digit_policy": f"avoid {sorted(avoid)}"}  # fmt: skip
-    for kind, vpool in (("digit", dpool), ("word", list(COLOURS))):
+    for kind, vpool in (("digit", dpool), ("word", list(colours))):
+        if kind not in kinds:
+            continue
         v = values_for(rng, vpool, n, k)
         v["same"] = same_control(rng, ents, v["values"], a, vpool)
         out[kind] = v
     return out
 
 
-def items_for(sc: dict, domain: str, n: int, kind: str, i: int, tw: tuple[int, int], held: set[str]) -> dict[str, dict]:
+def items_for(sc: dict, domain: str, n: int, kind: str, i: int, tw: tuple[int, int], held: set[str],
+              words: str = "colour") -> dict[str, dict]:  # fmt: skip
+    """The families' items of one scene and answer kind; `words`: the word items' answer kind (WORD_POOLS key)."""
     tpl = templates(domain, kind)
     t, u = tw
     ents, sl = sc["ents"], sc["slots"]
@@ -146,7 +171,7 @@ def items_for(sc: dict, domain: str, n: int, kind: str, i: int, tw: tuple[int, i
     q_b, q_s = ents[sl["query"]], ents[sl["identity"]]
     look = dict(zip(ents, vals, strict=True))
     level = f"e{n}-{kind}"
-    answer_kind = "digit" if kind == "digit" else "colour"
+    answer_kind = "digit" if kind == "digit" else words
     m_ents, m_vals = v["same"]
     r_vals = list(vals)
     r_vals[sl["query"]] = value
@@ -192,6 +217,7 @@ def items_for(sc: dict, domain: str, n: int, kind: str, i: int, tw: tuple[int, i
 def generate(which: str, split: dict[str, Any]) -> dict[str, tuple[Path, list[dict], str]]:
     """label -> (file, items, generator note); tokenizer-free given pointer_v4's split.json."""
     spec = SETS[which]
+    sizes, kinds, words = set_layout(which)
     cells: dict[str, list[dict]] = collections.defaultdict(list)
     notes: dict[str, str] = {}
     for domain in split["used"]:
@@ -199,7 +225,7 @@ def generate(which: str, split: dict[str, Any]) -> dict[str, tuple[Path, list[di
         pool, cue_len = info["pool"], info["cue_tokens"]
         held = set(info["held_out_entities"])
         askable = [e for e in pool if any(P4.pair_ok(domain, e, f, cue_len) for f in pool)]
-        for n in SIZES:
+        for n in sizes:
             count = min(spec["n"], CAP * len(askable))
             seed = spec["seed"] * 100 + 10 * list(P4.SPEC).index(domain) + n
             rng = random.Random(seed)
@@ -211,23 +237,35 @@ def generate(which: str, split: dict[str, Any]) -> dict[str, tuple[Path, list[di
                 q_b = q_round.pop()
                 for _ in range(50):  # scenes never repeat within a topic and list length
                     tw = (rng.randrange(3), rng.randrange(3))
-                    sc = scene(rng, domain, pool, q_b, cue_len, n)
-                    key = " ".join(statements(domain, "digit", tw[0], sc["ents"], sc["digit"]["values"]))
+                    sc = scene(rng, domain, pool, q_b, cue_len, n, kinds, WORD_POOLS[words])
+                    key = " ".join(statements(domain, kinds[0], tw[0], sc["ents"], sc[kinds[0]]["values"]))
                     if key not in seen:
                         break
                 else:
                     raise AssertionError(f"{domain} n={n}: no new scene for {q_b}")
                 seen.add(key)
-                for kind in KINDS:
-                    for fam, item in items_for(sc, domain, n, kind, i, tw, held).items():
+                for kind in kinds:
+                    for fam, item in items_for(sc, domain, n, kind, i, tw, held, words).items():
                         label = f"{domain}_{fam}_e{n}-{kind}"
                         cells[label].append(item)
                         notes[label] = f"scripts/pointer_v5.py make (set {which}, seed {seed}: {domain}, n={n})"
     return {label: (DATA / which / f"{label}.json", items, notes[label]) for label, items in cells.items()}
 
 
+def set_layout(which: str) -> tuple[tuple[int, ...], tuple[str, ...], str]:
+    """(list lengths, answer kinds, word pool) of a set; main's by default."""
+    spec = SETS[which]
+    return spec.get("sizes", SIZES), spec.get("kinds", KINDS), spec.get("words", "colour")
+
+
+def set_levels(which: str) -> tuple[str, ...]:
+    sizes, kinds, _ = set_layout(which)
+    return tuple(f"e{n}-{k}" for n in sizes for k in kinds)
+
+
 def set_files(which: str) -> dict[str, Path]:
-    return {f"{d}_{f}_{lv}": DATA / which / f"{d}_{f}_{lv}.json" for d in DOMAINS for f in FAMILIES for lv in LEVELS}
+    levels = set_levels(which)
+    return {f"{d}_{f}_{lv}": DATA / which / f"{d}_{f}_{lv}.json" for d in DOMAINS for f in FAMILIES for lv in levels}
 
 
 def level_name(level: str) -> str:
@@ -270,10 +308,10 @@ def write_set(path: Path, items: list[dict], note: str) -> None:
     path.write_text(json.dumps(head, indent=1)[:-2] + ',\n "items": [\n' + body + "\n ]\n}\n")
 
 
-def stage_make() -> None:
+def stage_make(which: str) -> None:
     split = P4.load_split()
     assert split, "pointer_v4's split.json is missing"
-    for _label, (path, items, note) in generate("main", split).items():
+    for _label, (path, items, note) in generate(which, split).items():
         write_set(path, items, note)
         print("wrote", path, len(items))
 
@@ -281,17 +319,19 @@ def stage_make() -> None:
 def stage_verify() -> None:
     split = P4.load_split()
     assert split, "pointer_v4's split.json is missing"
-    for label, (path, items, _) in generate("main", split).items():
-        same = PV.load_file(path) == items
-        print(label, "same" if same else "DIFFERENT")
-        assert same, f"{label}: the generator no longer reproduces {path}"
+    for which in SETS:
+        for label, (path, items, _) in generate(which, split).items():
+            same = PV.load_file(path) == items
+            print(which, label, "same" if same else "DIFFERENT")
+            assert same, f"{label}: the generator no longer reproduces {path}"
 
 
-def stage_check() -> None:
-    """Every item under the target's tokenizer (BJ_TARGET); writes check_main.json (another target: _<target>)."""
+def stage_check(which: str) -> None:
+    """Every item of a set under the target's tokenizer (BJ_TARGET); writes check_<set>.json (another target:
+    check_<set>_<target>.json)."""
     tok = PV.tokenizer()
     report: dict[str, Any] = {}
-    for label, path in set_files("main").items():
+    for label, path in set_files(which).items():
         items = PV.load_file(path)
         stats: collections.Counter = collections.Counter()
         for it in items:
@@ -308,12 +348,12 @@ def stage_check() -> None:
                 assert stats[k] == n, f"{label}: {k} {stats[k]}/{n}"
         assert report[label]["max_asked"] <= CAP, f"{label}: an entity is asked more than {CAP} times"
         assert report[label]["prompts_unique"] == n, label
-    out = DATA / ("check_main.json" if pins.TARGET == "qwen3.6-27b" else f"check_main_{pins.TARGET}.json")
+    out = DATA / (f"check_{which}.json" if pins.TARGET == "qwen3.6-27b" else f"check_{which}_{pins.TARGET}.json")
     out.write_text(json.dumps(report, indent=1) + "\n")
     print("wrote", out)
 
 
-def stage_manifest(name: str, why: str, limit: int | None) -> None:
+def stage_manifest(name: str, why: str, limit: int | None, which: str) -> None:
     from bridge_jspace.data import sha256_of
 
     pins.check_run_name(name)
@@ -321,9 +361,9 @@ def stage_manifest(name: str, why: str, limit: int | None) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
     root = pins.REPO_ROOT
-    files = {f"main/{label}": f for label, f in set_files("main").items()}
+    files = {f"{which}/{label}": f for label, f in set_files(which).items()}
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "why": why,
-         "model": pins.model_pin(), "sets": ["main"],
+         "model": pins.model_pin(), "sets": [which],
          "items": {k: {"file": str(f.relative_to(root)) if f.is_relative_to(root) else str(f), "sha256": sha256_of(f)}
                    for k, f in files.items()},
          "limit": limit, "format": f"pointer_v1's: {chat.format_note()}", "judge_mode": PV.judge_mode(),
@@ -343,20 +383,21 @@ def stage_competence(name: str) -> None:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("stage", choices=["make", "verify", "check", "manifest", "competence"])
+    ap.add_argument("--set", dest="which", choices=list(SETS), default="main", help="make, check, manifest")
     ap.add_argument("--name")
     ap.add_argument("--why")
     ap.add_argument("--limit", type=int, default=None)
     args = ap.parse_args()
     if args.stage == "make":
-        stage_make()
+        stage_make(args.which)
     elif args.stage == "verify":
         stage_verify()
     elif args.stage == "check":
-        stage_check()
+        stage_check(args.which)
     elif args.stage == "manifest":
         assert args.name, "manifest needs --name"
         assert args.why, "manifest needs --why"
-        stage_manifest(args.name, args.why, args.limit)
+        stage_manifest(args.name, args.why, args.limit, args.which)
     else:
         assert args.name, "competence needs --name"
         stage_competence(args.name)

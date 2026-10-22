@@ -1,0 +1,22 @@
+id: qwen35_9b_d3v5_len12_competence
+title: "Finding 5 on 12 sentences, gate: can Qwen3.5-9B answer fresh 12-statement scenes with colour-word answers (seed 873)?"
+thread: D3
+gpus: 1
+mem_gb: 30
+est_gpu_hours: 0.1
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/pointer_v5.py manifest --set len12 --name qwen35_9b_d3v5_len12_competence
+  --why "finding 5 on lists of 12 sentences (T8) on Qwen3.5-9B: pointer_v5 len12 (seed 873), colour-word answers from
+  16 colours; every alt and control prompt and each step alone"
+  && BJ_TARGET=qwen3.5-9b uv run python scripts/pointer_v5.py competence --name qwen35_9b_d3v5_len12_competence
+question: 'Does Qwen3.5-9B answer the fresh 12-statement scenes (colour-word answers)?'
+why_it_matters: 'Gate for qwen35_9b_d3v5_len12_swap: only scenes with every prompt right in both families are patched.'
+hypotheses:
+  H-gate: 'every topic and family >= 80% right. Prior 0.5 (agent''s)'
+decision_rule: 'pointer_v1''s competence rule, unchanged (every prompt of an item right = eligible); colour answers judged by the first of the set''s 16 colour words in the reply''s first line (answer kind colour16).'
+controls:
+- 'each step alone (the recall and the named lookup) for memory -> prompt'
+n: 'all of pointer_v5 len12: 150 scenes per topic (3 topics) x 2 families = 900 items'
+seeds: [873]
+notes: 'T8 (night brief, 22 Oct). Data: data/pointer_v5/len12/ (per-file seeds 87312, 87332, 87342). Qwen3.5-9B shares Qwen3.6-27B''s tokenizer file, so check_len12.json holds for it. Not opened before Dan predicts.'

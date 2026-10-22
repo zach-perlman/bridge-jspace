@@ -10,17 +10,51 @@ from scripts import pointer_v5 as V
 from scripts import suite_v1 as S
 
 
-@pytest.fixture(scope="module")
-def items():
+def _first(which: str, n: int = 20) -> dict:
+    """The set's generator output with its first n scenes per topic and list length (the same draws as the full set)."""
     split = P4.load_split()
     if split is None:
         pytest.skip("no data/pointer_v4/split.json")
     old = V.SETS
-    V.SETS = {"main": {"seed": 871, "n": 20}}
+    V.SETS = {**old, which: {**old[which], "n": n}}
     try:
-        return V.generate("main", split)
+        return V.generate(which, split)
     finally:
         V.SETS = old
+
+
+@pytest.fixture(scope="module")
+def items():
+    return _first("main")
+
+
+@pytest.mark.parametrize("which", list(V.SETS))
+def test_sets_reproduce_their_files(which):
+    """Each set's first scenes regenerate its committed files' first items (verify does every item)."""
+    for label, (path, its, _) in _first(which, 5).items():
+        if not path.exists():
+            pytest.skip(f"{path} not made")
+        assert PV.load_file(path)[: len(its)] == its, label
+
+
+def test_long_sets():
+    l8, l12 = _first("len8"), _first("len12")
+    assert {it["level"] for _, its, _ in l8.values() for it in its} == {"e8-digit", "e8-word"}
+    assert {it["level"] for _, its, _ in l12.values() for it in its} == {"e12-word"}
+    for _, its, _ in l12.values():
+        for it in its:
+            pd, vals, sl = it["sources"]["dissoc"]["predictions"], it["digits"], it["slots"]
+            assert it["n_entities"] == len(vals) == len(set(vals)) == 12 and it["answer_kind"] == "colour16"
+            assert set(vals) <= set(V.COLOURS16) and pd["value"] in V.COLOURS16 and pd["value"] not in vals
+            assert len(set(pd.values())) == 4 and pd["position"] == vals[sl["position"]]
+            assert pd["identity"] == vals[sl["identity"]]
+            assert it["family"] == "DL" or it["hop2"]["kind"] == "colour16"  # memory -> prompt's lookup step alone
+    main = {it["context"] for _, its, _ in _first("main").values() for it in its}
+    assert not main & {it["context"] for _, its, _ in l8.values() for it in its}, "len8 repeats main's scenes"
+
+
+def test_n_statements():
+    assert [PS.n_statements(x) for x in ("e5f0", "e5-off", "e5more", "e8-digit", "e12-word")] == [5, 5, 5, 8, 12]
 
 
 def test_digit_and_word_share_the_scene(items):
@@ -48,6 +82,7 @@ def test_colour_judge():
     assert V.said("Red.", "colour") == "red"
     assert V.said("The drawer is green.\nmore", "colour") == "green"
     assert V.said("3", "digit") == "3"
+    assert V.said("Gold.", "colour16") == "gold" and V.said("Gold, not red.", "colour") == "red"  # main's 11 unchanged
 
 
 def test_word_items_read_without_the_space(items):
