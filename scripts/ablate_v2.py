@@ -242,9 +242,10 @@ WIDE = 9  # bands wider than this run paper10 and its controls only (Zach, 2026-
 
 def top_k(cond: str) -> int | None:
     """K of a top-K condition: paper10 or unembed10 (K = 10) or topK, with any control suffix; None for OMP and others."""
-    if cond.startswith(("paper10", "unembed10")):
+    if cond.startswith("paper10"):
         return 10
-    m = re.fullmatch(r"top(\d+)(_nosink)?(_rot|_rdict)?", cond)
+    # topK: the J-lens dictionary; unembedK (2026-10-22, the size-matched specificity control): the unembedding rows
+    m = re.fullmatch(r"(?:top|unembed)(\d+)(_nosink)?(_rot|_rdict)?", cond)
     return int(m[1]) if m else None
 
 

@@ -107,3 +107,36 @@ h200_q32_core_1021.sh).
   - the untestable gate at 26-32 (muse30_textloss_top_v1);
   - C1-graded at the ctrl_v8-chosen band;
   - C2' on muse30_wm2_full2_v1.
+
+## Amendment 3 (Zach, 2026-10-22 ~17:00 UTC): where does C1 hold, and do the positive results survive their confounds?
+
+- **What was seen when this was written:**
+  - C1 on the test set: 27B HOLDS (gap 36), Qwen3-32B FAILS (22; a control 13 off), Muse FAILS (7 with our J++, 4 with
+    its published J-lens);
+  - C2 at the aligned band: Qwen3-32B HOLDS on all three rules, the 27B C2' HOLDS with C2-graded / -relative failing;
+  - the removal-size check: on the 27B the top-10 J-lens removal takes ~1.5x the residual share of the top-10
+    unembedding one, on Qwen3-32B the same share.
+- **Nothing has been seen** of: the 9B, Qwen3-8B, Qwen3-32B with its published J-lens, layers 54-62 on Qwen3-32B, or
+  the 27B's size-matched control.
+
+**Predictions:**
+
+1. **Architecture.** The hybrid linear-attention Qwen models (27B; Qwen3.5-9B, 24 of 32 layers linear) show C1;
+   standard-attention Qwen models (Qwen3-32B; Qwen3-8B) don't.
+   - Supported if the 9B's C1-graded (published J++, every model's procedure) HOLDS and Qwen3-8B's (published J-lens,
+     5-layer windows sliding by 2 as the 9B, bands scaled from 64 to 36 blocks) FAILS.
+   - Refuted if the 9B FAILS, or Qwen3-8B HOLDS.
+2. **Lens.** Qwen3-32B's test-set C1 at its chosen band 44-52, with neuronpedia's published J-lens (557 prompts) in
+   place of our 32-prompt J++.
+   - A gap within 8 points of 22 -> the lens does not explain Qwen3-32B's weaker effect.
+   - A gap >= 30 -> our fit understated it.
+3. **C2 at late layers, a direct push on the answer?** Qwen3-32B's lens_add at the final position, single layers
+   54-62 (the 27B's aligned run already falls to 0% at 56-60).
+   - If M->M's best flips at 58-62 fall below half its layer-52 value (72%), the aligned-band C2 is not read as a
+     direct output effect.
+   - Otherwise it is flagged as possibly one.
+4. **The 27B's specificity, size-matched.**
+   - Choosing K: the unembedding K whose median removed share at layers 32-40 (scripts/removal_size.py, WikiText) is
+     closest to the J-lens top-10's.
+   - Run: unembedK + unembedK_rot at 32-40 on full_v8.
+   - Specificity holds size-matched if that knock-out's gap is <= 10 (J-lens: 36).

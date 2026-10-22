@@ -303,6 +303,31 @@ TARGETS: dict[str, dict[str, Any]] = {
         "lenses": {"jpp": ("local", "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt", "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12")},
         "frozen_lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12",
     },
+    # Is C1's strength the lens or the model? (Zach, 2026-10-22, docs/prereg_replication_1022.md amendment 3.) Qwen3-32B
+    # with neuronpedia's published plain J-lens (557 WikiText prompts) beside our 32-prompt J++; and Qwen3-8B (dense,
+    # standard attention like Qwen3-32B, unlike the hybrid 27B and 9B) with its published plain J-lens (461 prompts).
+    "qwen3-32b-jlens": {
+        "repo": "Qwen/Qwen3-32B",
+        "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+        "n_layers": 64,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "qwen3_32bj_",
+        "frozen_lens": "jlens",
+        "lenses": {"jlens": (LENS_REPO, "qwen3-32b/jlens/Salesforce-wikitext/Qwen3-32B_jacobian_lens.pt", LENS_REVISION)},
+        "frozen_lens_sha256": "0af5ccf2e1c251bedc202607a7ca214f3b9f60980bab73d67a3d0b887db213d8",
+    },
+    "qwen3-8b-jlens": {
+        "repo": "Qwen/Qwen3-8B",
+        "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+        "n_layers": 36,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "qwen3_8b_",
+        "frozen_lens": "jlens",
+        "lenses": {"jlens": (LENS_REPO, "qwen3-8b/jlens/Salesforce-wikitext/Qwen3-8B_jacobian_lens.pt", LENS_REVISION)},
+        "frozen_lens_sha256": "1e1f96c3b63ac46731a78658304c8857ef08992351268f0c78893361692059c3",
+    },
     "muse-glimmer-30b-jlens": {
         "repo": "meta-models/Muse-Glimmer-30B",
         "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",

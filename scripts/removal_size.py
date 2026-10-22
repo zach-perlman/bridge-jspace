@@ -29,7 +29,7 @@ RESULTS = pins.RESULTS_DIR / "removal_size"
 
 
 @torch.no_grad()
-def main(name: str, why: str, layers: tuple[int, ...]) -> None:
+def main(name: str, why: str, layers: tuple[int, ...], ks: tuple[int, ...] = (1, 10)) -> None:
     from bridge_jspace.lens import JLens
     from bridge_jspace.model import load_model
 
@@ -46,14 +46,14 @@ def main(name: str, why: str, layers: tuple[int, ...]) -> None:
     d = wg.shape[1]
     eye = torch.eye(d, device="cuda")
     texts = [ids for t in pins.wikitext_rows() if len(ids := raw_encoding(model.tokenizer, t)["input_ids"][:128]) >= 64][:16]
-    shares: dict = {la: {f"{kind}{k}": [] for kind in ("jlens_top", "unembed_top") for k in (1, 10)} for la in layers}
+    shares: dict = {la: {f"{kind}{k}": [] for kind in ("jlens_top", "unembed_top") for k in ks} for la in layers}
     for ids in texts:
         _, rec = model.run(torch.tensor([ids], device="cuda"), record=tuple(layers))
         for la in layers:
             h = rec[la][1:][None]  # [1, T-1, d], position 0 excluded
             norm = h.norm(dim=-1)
             for kind, dic in (("jlens_top", LensDictionary(wg, lens.J(la))), ("unembed_top", LensDictionary(wg, eye))):
-                for k in (1, 10):
+                for k in ks:
                     edit = removal_edit("top", dic, [RowSettings()], k=k)
                     removed = (h - edit(h)).norm(dim=-1) / norm
                     shares[la][f"{kind}{k}"] += removed[0].tolist()
@@ -70,5 +70,6 @@ if __name__ == "__main__":
     ap.add_argument("--name", required=True)
     ap.add_argument("--why", required=True)
     ap.add_argument("--layers", nargs="+", type=int, required=True)
+    ap.add_argument("--ks", nargs="+", type=int, default=[1, 10])
     a = ap.parse_args()
-    main(a.name, a.why, tuple(a.layers))
+    main(a.name, a.why, tuple(a.layers), tuple(a.ks))
