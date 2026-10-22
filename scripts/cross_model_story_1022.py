@@ -43,7 +43,7 @@ MODELS = [
 GEMMA = dict(name="Gemma 4 31B-it", kind="Google · dense", p="gemma4itf_", nl=60)
 LOOK, MEM = ("PP", "MP", "CP"), ("PM", "MM", "CM")
 RLOOK, RMEM = ("PP", "MP"), ("PM", "MM")  # the pre-registered C1 rule's chain types: every gap and mean uses these
-RUNNING = {"Qwen3.5-9B": "running (ETA ~7:30pm ET)"}
+RUNNING = {}
 FOOT = "One data seed; unverified. J++ lenses: published for the 27B and 9B, our own fits for Qwen3-32B and Muse."
 
 
@@ -319,7 +319,7 @@ def per_item(run, band, kinds=("clean",)):
 
 
 def net(cells):
-    pairs = [(c["paper10_rot"], c["paper10"]) for c in cells if "paper10" in c and "paper10_rot" in c]
+    pairs = [(c["paper10_rot"], c["paper10"]) for c in cells if "paper10" in c and "paper10_rot" in c and c.get("none", 1)]  # items right unedited
     return (100 * (statistics.mean(a for a, _ in pairs) - statistics.mean(b for _, b in pairs)), len(pairs)) if pairs else (None, 0)
 
 
@@ -394,7 +394,7 @@ for ax, title, groups in blocks:
 fig.suptitle("The knock-out across task variants: in the hybrid Qwens the recall-vs-lookup split shows in every format and difficulty\n"
              "level, and for later recall steps asked alone; Qwen3-32B shows it unevenly and at about half the size, Muse barely",
              x=0.01, y=0.985, ha="left", fontsize=11.5)  # fmt: skip
-foot(fig, "Points lost beyond the same-size random removal (random-control accuracy minus knock-out accuracy, same items), at each model's middle band. "
+foot(fig, "Points lost beyond the same-size random removal (random-control accuracy minus knock-out accuracy, same items, items right unedited), at each model's middle band. "
      "B: format and level cells: mean of P→M, M→M minus mean of P→P, M→P (20-60 items per type per cell); one-step cells: a recall step asked on its own minus a "
      "lookup step asked on its own. " + FOOT, 7.3)  # fmt: skip
 fig.savefig(OUT / "story_fig4_variants_1022.png", dpi=200)
