@@ -1,0 +1,50 @@
+id: olmo_hybrid_7b_d3v4_swap_fn
+title: "G3 on Olmo-Hybrid-7B Instruct, cells placed by function: is there a statement-slot phase before the digit arrives?"
+thread: D3
+gpus: 1
+mem_gb: 30
+est_gpu_hours: 0.6
+depends_on:
+- olmo_hybrid_7b_d3v4_competence
+command: >-
+  BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set main
+  --name olmo_hybrid_7b_d3v4_swap_fn --families RL DL --n 300 --layers 16 17 18 19 20 21 --control-stride 1
+  --groups final last --competence olmo_hybrid_7b_d3v4_competence
+  --why "olmo3_7b_instruct_d3v4_swap_fn on Olmo-Hybrid-7B Instruct: OLMo-3's layers 16-21 (placed by function on
+  OLMo-3-7B-Instruct, the same depth) carried over unchanged; every eligible scene"
+  && BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/pointer_swap.py run --name olmo_hybrid_7b_d3v4_swap_fn
+examples_command: BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/pointer_swap.py examples --name olmo_hybrid_7b_d3v4_swap_fn
+figures_command: >-
+  uv run python scripts/finding5_confirm.py --run olmo_hybrid_7b_d3v4_swap_fn --layers 16 17 18 19 20 21
+  && BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/pointer_swap.py figures --name olmo_hybrid_7b_d3v4_swap_fn
+question: >-
+  On Olmo-Hybrid-7B Instruct, at layers 17-19 (on OLMo-3-7B-Instruct, the same depth, the layers between "the recalled
+  bridge is formed" and "the fetched digit has arrived" at the last tokens: alt digit 0% at layer 16, 25% at 20,
+  >= 76% from 22), does patching the alt prompt's last two tokens give the digit at the same statement slot more often
+  than bridge alt's statement and the alt prompt's own digit?
+why_it_matters: >-
+  Finding 5's main draw on Olmo-Hybrid (same family and tokenizer as OLMo-3-7B, Gated DeltaNet in 24 of 32 layers):
+  whether the statement pointer is a property of the family or of the architecture. A yes means the statement pointer
+  is not a Qwen3.6-27B property; a no means it must be stated per architecture.
+hypotheses:
+  H-slot-phase: 'memory → prompt, last two tokens, at least one of layers 17, 18, 19: verdict "same statement slot"
+    pooled (the slot share''s lower bound above the word''s, the alt digit''s and the random push''s upper bounds; the
+    same-entity control <= 10%), and the same at that layer in >= 2 of the topics with n >= 35. Prior 0.5 (copied from olmo3_7b_instruct_d3v4_swap_fn)'
+  H-word: 'the word (bridge alt''s statement) wins at 17-19 (a content code, as the J-lens would suggest). Prior 0.15 (copied from olmo3_7b_instruct_d3v4_swap_fn)'
+  H-no-phase: 'mixed or none at every layer 17-19 (slot and digit arrive together; no separable pointer phase). Prior 0.35 (copied from olmo3_7b_instruct_d3v4_swap_fn)'
+decision_rule: >-
+  pointer_swap's rule with the pointer_v4 additions (entity-cluster bootstrap widened to Wilson; per topic n items / k
+  entities / t wordings), applied at the last two tokens at layers 17, 18 and 19 for memory → prompt (primary) and
+  named → prompt (reported). "Slot phase" iff H-slot-phase holds at >= 1 of the 3 layers; three layers are
+  looked at, so a single-layer pass with its lower bound within 2 points of the competitor's upper bound is reported as
+  "borderline". Layers 16, 20, 21 and the after-question tokens are reported, not decisive. Finding 5 (README) is read
+  as it was for OLMo-3-7B-Instruct's main draw (finding5_confirm/olmo3_7b_instruct_d3v4_swap_fn_20261022-200354):
+  scripts/finding5_confirm.py, unchanged, over the swept layers 16-21, here run in the figures stage.
+controls:
+- 'same entity, statements reshuffled (every hypothesis predicts answer org)'
+- 'random push of the same size at every layer'
+- 'another topic''s prompt of the same size'
+- 'org prompt into itself (no-op) and the layer-0 all-position patch (hook checks)'
+n: 'every eligible scene, up to 300 per topic (token-unaligned countries scenes are dropped); memory → prompt and named → prompt'
+seeds: [0]
+notes: 'Mechanical copy of olmo3_7b_instruct_d3v4_swap_fn (Dan, 23 Oct ~01:30: fill the grid); not opened before Dan''s predictions. The README''s finding-5 main draw on OLMo-3 is this _fn run (not olmo3_7b_instruct_d3v4_swap, whose relative-depth cells landed after the digit had arrived), and the OLMo-3 v4x / v6 swaps and the seed2 swap use its layers, so it is the source here. Only the target, run / gate names change; OLMo-3''s layers carry over unchanged (both 32 layers). Not re-placed by function on Olmo-Hybrid: if its digit arrives before 16, finding5_confirm finds no qualifying layer ("not testable"); if it stops, the pointer_swap figures after it have to be run by hand. ~0.6 GPU-h (OLMo-3: 0.18 h).'

@@ -1,0 +1,35 @@
+id: qwen3_32b_d3v4x_swap_r3
+title: "D3 v4x on Qwen3-32B: does the address count statements by order and from the start (filler ..."
+thread: D3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.6
+depends_on:
+- qwen3_32b_d3v4x_competence_r2
+command: >-
+  BJ_TARGET=qwen3-32b uv run python scripts/pointer_swap.py manifest --data pointer_v4x --set main --name qwen3_32b_d3v4x_swap_r3
+  --families RL DL --n 150 --layers 32 36 40 44 48 52 56 --control-stride 1 --groups last
+  --competence qwen3_32b_d3v4x_competence_r2 --primary-layers 32 36 40 44 48 52 56
+  --why "pointer_v4x on Qwen3-32B: the last-two-token patch over a layer sweep; the decisive layers are the swept
+  layers before the alt digit arrives (pre-registered rule in the spec)"
+  && BJ_TARGET=qwen3-32b uv run python scripts/pointer_swap.py run --name qwen3_32b_d3v4x_swap_r3
+examples_command: BJ_TARGET=qwen3-32b uv run python scripts/pointer_swap.py examples --name qwen3_32b_d3v4x_swap_r3 --group last
+figures_command: BJ_TARGET=qwen3-32b uv run python scripts/pointer_swap.py figures --name qwen3_32b_d3v4x_swap_r3
+question: >-
+  On Qwen3-32B, at the layers where the alt prompt's digit has not yet arrived at the last tokens, does the address count statements by order and from the start (filler moved; one statement more / fewer), as on Qwen3.6-27B (pre-registered there: order 39% vs place 9%; start 31-39% vs end 10-12%)?
+why_it_matters: >-
+  The address tests (README pattern 5) on another model, to say whether how the address counts is a property of the
+  lookup or of Qwen3.6-27B.
+hypotheses:
+  H-same-as-27b: 'the pointer_swap pointer_v4x tests (H-order-v4, H-start-v4) come out as on Qwen3.6-27B. Prior 0.4 (copied from qwen3_32b_d3v4x_swap_r2)'
+decision_rule: >-
+  Decisive layers by function, fixed before the run: of the swept layers, those whose pooled alt-digit share (memory ->
+  prompt, last two tokens, the level's own cell) has upper bound < 0.10. the pointer_swap pointer_v4x tests (H-order-v4, H-start-v4) are applied at those layers
+  only (the manifest lists every swept layer as primary; the analysis filters them by this rule). If no swept layer
+  qualifies, the run is "not testable on this model". Several layers are looked at: a pass whose bound clears the bar
+  by under 2 points is reported as borderline.
+controls:
+- 'same entity, statements reshuffled; random push of the same size; another topic''s prompt'
+n: 'up to 150 scenes per topic and layout eligible in both families; scenes not token-aligned under the tokenizer dropped'
+seeds: [0]
+notes: 'Mechanical copy of qwen3_32b_d3v4x_swap_r2 (Dan, 23 Oct ~01:30: fill the grid); not opened before Dan''s predictions. qwen3_32b_d3v4x_swap_r2 was cancelled before it ran and job ids are write-once, so only the id and the run name change (_r3); script, arguments, layers (32-56 every 4) and rule unchanged. Its gate qwen3_32b_d3v4x_competence_r2 is done.'

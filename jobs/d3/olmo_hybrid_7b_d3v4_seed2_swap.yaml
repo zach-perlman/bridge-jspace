@@ -1,0 +1,33 @@
+id: olmo_hybrid_7b_d3v4_seed2_swap
+title: "Seed 2: does Olmo-Hybrid-7B Instruct's slot test (layers 17-19) give the same answer on a new draw of scenes?"
+thread: D3
+gpus: 1
+mem_gb: 30
+est_gpu_hours: 0.3
+depends_on:
+- olmo_hybrid_7b_port_smoke
+- olmo_hybrid_7b_d3v4_seed2_competence
+command: >-
+  BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set seed2 --name olmo_hybrid_7b_d3v4_seed2_swap
+  --families RL DL --n 300 --layers 16 17 18 19 20 21 --control-stride 1 --groups last
+  --competence olmo_hybrid_7b_d3v4_seed2_competence
+  --why "seed 2 of olmo_hybrid_7b_d3v4_swap_fn: the same layers and rule on a new draw of pointer_v4's scenes (Olmo-Hybrid-7B Instruct)"
+  && BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/pointer_swap.py run --name olmo_hybrid_7b_d3v4_seed2_swap
+figures_command: >-
+  uv run python scripts/finding5_confirm.py --run olmo_hybrid_7b_d3v4_seed2_swap --layers 16 17 18 19 20 21
+  && BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/pointer_swap.py figures --name olmo_hybrid_7b_d3v4_seed2_swap
+question: 'olmo_hybrid_7b_d3v4_swap_fn''s question, on pointer_v4''s seed-2 scenes.'
+why_it_matters: 'The OLMo slot result is close at its layers; a second draw shows whether its verdict is the draw''s. On Olmo-Hybrid (same family and tokenizer as OLMo-3-7B, Gated DeltaNet in 24 of 32 layers) it separates architecture from family.'
+hypotheses:
+  H-same-verdict: 'the pre-registered verdict at layers 17-19 (slot phase or not) is the same as in
+    olmo_hybrid_7b_d3v4_swap_fn. Prior 0.7 (copied from olmo3_7b_instruct_d3v4_seed2_swap)'
+decision_rule: >-
+  olmo_hybrid_7b_d3v4_swap_fn's rule (= olmo3_7b_instruct_d3v4_swap_fn's: memory -> prompt, last two tokens, layers
+  17-19, pooled and >= 2 of 3 topics). Finding 5 (README) is read as it was for OLMo-3-7B-Instruct's second draw
+  (finding5_confirm/olmo3_7b_instruct_d3v4_seed2_swap_20261022-222827): scripts/finding5_confirm.py, unchanged, over
+  the swept layers 16-21, here run in the figures stage.
+controls:
+- 'same entity, statements reshuffled; random push of the same size; another topic''s prompt'
+n: 'every eligible seed-2 scene, up to 300 per topic'
+seeds: [844, 0]
+notes: 'Mechanical copy of olmo3_7b_instruct_d3v4_seed2_swap (Dan, 23 Oct ~01:30: fill the grid); not opened before Dan''s predictions. Only the target, the run / gate names and the reference run change; OLMo-3''s layers carry over unchanged (both 32 layers). The finding5_confirm call in the figures stage is the step done by hand for OLMo-3 (same script, same layers); if it stops with "no layer ... before the donor''s digit arrives", the pointer_swap figures after it have to be run by hand. ~0.3 GPU-h.'
