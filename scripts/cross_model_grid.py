@@ -1,0 +1,1359 @@
+"""cross_model_grid: one table of every finding on every model, each cell judged by its committed rule (Dan, 23 Oct).
+
+Every cell reads the saved outputs of its run, or calls the repo's own verdict functions on the run's saved rows; no
+rule is written here. Rules used (ids in RULES, printed in grid.md's mapping table):
+  late read (finding 4)       scripts/d2_formats.py late_read: the answer's sentence hidden from the last tokens
+  name vs digit (finding 3)   scripts/d2_parts.py cells / verdicts: valid-split, then H-digit-final-split
+  tables and JSON             the same two, per format, as scripts/d2_formats.py main (computed in memory)
+  order label / identity (5)  results/finding5_confirm/<run>_<stamp>/verdict.json, else finding5_confirm's functions
+  order counting (6)          pointer_swap's v4x tests (saved analysis, else pointer_swap.analyze), at the spec's layers
+  lens gate v1 / v2           results/lens_gate/<run>/summary.json "gate" / "gate_v2"
+  stated bridge (2)           results/d1_verdict/<parts run>_<stamp>/verdict.json
+  lens push (7)               results/early_push_where/<run>/summary.json (main rule) and analysis-v2.1-*/ (amended)
+  lens write (8)              statement_positions readwrite summary: the write verdicts at the stated-bridge cell's set;
+                              the fitted-code test's lens arm (pointer_fit) shown, no rule of its own
+  J-space removal (1)         results/ablate_pilot/<run>/summary.json: the specs' gate G2 checked from the summary (the
+                              split measure's paired bootstrap is not in code: no verdict beyond G2)
+Verdicts, exactly five: holds, fails, not interpretable (a control failed: which), not testable (no lens, gate or
+competence failed), missing (did not run, failed, or no rule / no saved verdict: why).
+
+Status of a cell without results: the queue ledgers (results/jobq/ledger*.jsonl), the queue states saved by
+`jobq pull` (cache/jobq/queue_state*.json) and the specs in jobs/. A job stopped by scripts/d1_precheck.py (exit 3)
+is "not testable"; a job blocked behind it inherits that; a raw-format smoke stop (scripts/check_unedited.py, exit 3)
+is "missing: raw smoke mismatch".
+
+uv run python scripts/cross_model_grid.py [--cells PAT[,PAT...]] [--no-values] [--out DIR]
+  --cells      model:finding[:setting] glob patterns, e.g. "27b:f4:long*,olmo_hybrid:*" (models: 27b 9b olmo_hybrid
+               32b olmo muse gemma 122b; findings: f1-f8, gate)
+  --no-values  write only the status of each cell (has-run / failed / pending / running / blocked / not enqueued / no
+               spec / no lens): no result file is opened
+Writes results/cross_model/<UTC stamp>/: grid.csv (long format), grid.md, grid.json, sources.txt (cell -> files to
+check by hand); with --no-values status.csv and status.md instead. Prints only the folder and counts.
+"""
+
+from __future__ import annotations
+
+import argparse
+import collections
+import csv
+import fnmatch
+import functools
+import io
+import json
+import re
+import subprocess
+import sys
+import time
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from bridge_jspace import pins
+from bridge_jspace.stats import wilson
+from scripts import d2_formats as DF
+from scripts import d2_parts as DP
+
+REPO = pins.REPO_ROOT
+RESULTS = pins.RESULTS_DIR
+OUT = RESULTS / "cross_model"
+VERDICTS = ("holds", "fails", "not interpretable", "not testable", "missing")
+SYMBOL = {"holds": "✓", "fails": "✗", "not interpretable": "⚠", "not testable": "⊘", "missing": "·"}
+COLUMNS = ("model", "finding", "setting", "lens", "n", "value", "95% CI", "chance or control level", "verdict",
+           "rule id", "spec commit", "result path")  # fmt: skip
+STAMP_RE = r"\d{8}-\d{6}"
+CHANCE = 0.20  # five digits in the list: guessing
+
+
+# ---------------------------------------------------------------- models, findings, rules
+
+
+@dataclass(frozen=True)
+class Model:
+    key: str
+    label: str
+    arch: str  # "hybrid" or "attention"
+    lens_rows: tuple[str, str, str]  # results/lens_table rows: model label, main lens label, plain lens label ("" none)
+
+
+MODELS = (
+    Model("27b", "Qwen3.6-27B", "hybrid", ("Qwen3.6-27B", "published J++", "published plain J-lens (n1000)")),
+    Model("9b", "Qwen3.5-9B", "hybrid", ("Qwen3.5-9B", "published J++", "")),
+    Model("olmo_hybrid", "Olmo-Hybrid-7B", "hybrid", ("", "", "")),
+    Model("32b", "Qwen3-32B", "attention", ("Qwen3-32B", "our J++ (64 prompts)", "published plain J-lens")),
+    Model("olmo", "OLMo-3-7B-I", "attention", ("OLMo-3-7B-Instruct", "our J++ (64 prompts)", "mhough plain J-lens")),
+    Model("muse", "Muse 30B", "attention", ("Muse Glimmer 30B", "Zach's J++ (every layer)", "")),
+    Model("gemma", "Gemma 4 31B-it", "attention",
+          ("Gemma 4 31B-it", "Zach's J++ (every layer)", "neuronpedia J++ (base model)")),
+    Model("122b", "Qwen3.5-122B", "hybrid", ("Qwen3.5-122B-A10B (FP8)", "published J++", "")),
+)  # fmt: skip
+MODEL = {m.key: m for m in MODELS}
+
+
+@dataclass(frozen=True)
+class Finding:
+    key: str
+    number: str  # README's finding number ("" for the lens gate)
+    name: str  # plain words, no internal codes
+    lens: bool
+    settings: tuple[str, ...]  # the rows of grid.md, in order
+    codes: str  # internal names, for the mapping table only
+    scripts: str
+
+
+FINDINGS = (
+    Finding("f1", "1", "Removing the J-space breaks recall, not the lookup", True, ("draw 1",),
+            "C1 (Zach's J-space removal)", "scripts/ablate_pilot.py"),
+    Finding("f2", "2", "A lookup ignores the lens-readable part of a stated bridge", True,
+            ("draw 1", "draw 2", "table", "JSON"), "D1 (topics, formats; parts)",
+            "scripts/statement_positions.py parts, scripts/d1_verdict.py"),
+    Finding("f3", "3", "The last tokens read the answer's digit, not the entity's name", False,
+            ("draw 1", "draw 2", "prose", "table", "JSON"), "D2 parts (name vs digit)",
+            "scripts/attn_knockout.py, scripts/d2_parts.py, scripts/d2_formats.py"),
+    Finding("f4", "4", "A lookup ends in a late attention read of the answer's sentence", False,
+            ("draw 1", "draw 2", "prose", "table", "JSON", "long context"), "D2 late read (C1b)",
+            "scripts/attn_knockout.py, scripts/d2_formats.py"),
+    Finding("f5", "5", "Order label for the 1st and 2nd sentence, the bridge's identity after", False,
+            ("draw 1", "draw 2", "draw 3", "8 sentences", "12 sentences"), "D3 v4 / v5 (pointer_swap)",
+            "scripts/pointer_swap.py, scripts/finding5_confirm.py"),
+    Finding("f6", "6", "The order label counts order in the list, not place in the text", False,
+            ("filler moved", "one statement more", "one statement fewer"), "D3 v4x (pointer_v4x)",
+            "scripts/pointer_swap.py (v4x tests)"),
+    Finding("gate", "", "The lens names a stated bridge where it is stated (lens gate)", True,
+            ("v1 (at the word)", "v2 (after the word)"), "lens gate v1 / v2", "scripts/lens_gate.py"),
+    Finding("f7", "7", "A lens push writes a stated bridge for recall; the lookup does not follow", True,
+            ("main rule", "amended rule"), "D4 v2 / v2.1 (early_push_where)", "scripts/early_push_where.py"),
+    Finding("f8", "8", "Where the lens writes the bridge, the lookup still does not follow it", True,
+            ("stated bridge, draw 1", "stated bridge, draw 2", "last tokens"), "D1 readwrite; D3b lens arm",
+            "scripts/statement_positions.py readwrite, scripts/pointer_fit.py"),
+)  # fmt: skip
+FINDING = {f.key: f for f in FINDINGS}
+
+RULES = {
+    "late-read": "the answer's sentence hidden from the last tokens in every attention layer (every layer on "
+    "attention-only models) leaves <= 20% right with the Wilson upper bound <= 30%; the off-path sentence hidden "
+    "there keeps >= 90% (lower bound >= 85%); on a hybrid, hidden in every DeltaNet layer instead keeps >= 90%. "
+    "Memory -> prompt, items right unedited (fixed 22 Oct; scripts/d2_formats.py late_read)",
+    "name-digit": "the off-path sentence's parts hidden keep >= 90% at both places (valid-split); then the sentence "
+    "without its name hidden from the last tokens leaves <= 35% right and without its digit >= 70% "
+    "(H-digit-final-split). Memory -> prompt (amended 22 Oct 16:40; scripts/d2_parts.py verdicts)",
+    "formats": "the late-read and name-vs-digit rules per format (prose, table, JSON), memory -> prompt "
+    "(scripts/d2_formats.py, fixed 22 Oct evening)",
+    "order-identity": "A: 1st-2nd asked, position - identity, entity-cluster lower bound > 0; B: 3rd on, identity - "
+    "position >= 0 with lower bound >= -0.05; holds iff A and B. Layer: the last swept layer where the donor's digit "
+    "has its Wilson upper bound < 10%, or fixed (Qwen3.6-27B: 50) (scripts/finding5_confirm.py)",
+    "counting": "filler moved: the order slot's lower bound above the same place's upper bound, pooled and in >= 2 "
+    "of 3 topics at one decisive layer; one more / one fewer: from the start above from the end and the same place, "
+    "both layouts, same layer (scripts/pointer_swap.py v4x_tests). Decisive layers: the 27B's 48 and 50 and OLMo's "
+    "17-19 fixed; elsewhere the swept layers where the donor's digit has its Wilson upper bound < 10% (the specs)",
+    "lens-gate-v1": "the bridge in the lens's top 10 at its own sentence on >= 50% of items, the other bridge on <= "
+    "20% (scripts/lens_gate.py gate, 22 Oct)",
+    "lens-gate-v2": "the same bars read after the bridge's word (scripts/lens_gate.py gate_v2, 22 Oct 23:00)",
+    "stated-bridge": "at the cell chosen without the lens: the lens-readable part alone switches <= 10% of lookups "
+    "and the rest >= 50%, while the lens-readable part switches >= 30% of recalls (the control); where set, lookups "
+    "keep their answer under the lens-part patch on >= 80% (scripts/d1_verdict.py)",
+    "push-main": "rule v2: the valid cell with the most recall; holds (H-around) iff the lookup switches <= 10% and "
+    "the scene-paired recall - lookup gap's lower bound >= 20 points (scripts/early_push_where.py decide)",
+    "push-amended": "rule v2.1: v2 among cells from layer 20 on (Qwen3.5-9B: 10); written knowing the old data, "
+    "reported beside the main rule",
+    "lens-write": "statement_positions' write verdicts (written / not written / inconclusive) at the stated-bridge "
+    "cell's set, primary window; holds iff recall is written and the lookup not written (recall not written: no "
+    "positive control)",
+    "fitted-code": "scripts/pointer_fit.py's rule judges the fitted position code; its lens push arm has no rule of "
+    "its own",
+    "removal": "the specs' gate G2: the control removals (rotated; random dictionary where it ran) keep >= 90% on "
+    "every family and step, else not interpretable (checked here from the summary). The split measure (gap = "
+    "lookups - recalls under J-space removal, paired-bootstrap interval) is in the specs only, not in code: no "
+    "verdict beyond G2. The 32B, Gemma and Muse runs (and the 27B's d2_abl_read_*_v2 copies) ran without the "
+    "random-dictionary control (too large next to the model on an 80 GB GPU): G2 reads the rotated control alone. "
+    "Zach's pilots (the 27B's abl_rot_v1, Gemma's refit, the 122B) have no decision rule",
+}
+
+
+# ---------------------------------------------------------------- the cell registry
+
+
+@dataclass
+class Cell:
+    model: str
+    finding: str
+    setting: str
+    kind: str
+    run: str = ""
+    jobs: tuple[str, ...] = ()
+    role: str = "main"  # main, or the lens it is listed beside: "plain J-lens", "base-model J++"
+    opts: dict[str, Any] = field(default_factory=dict)
+    why: str = ""  # for a cell with no run: why (no spec, no lens)
+
+
+def _cells() -> list[Cell]:
+    out: list[Cell] = []
+
+    def add(model: str, finding: str, setting: str, kind: str, run: str = "", jobs: tuple[str, ...] | None = None,
+            role: str = "main", why: str = "", **opts: Any) -> None:  # fmt: skip
+        out.append(Cell(model, finding, setting, kind, run, jobs if jobs is not None else ((run,) if run else ()),
+                        role, opts, why))  # fmt: skip
+
+    def none(model: str, finding: str, setting: str, why: str = "no spec") -> None:
+        add(model, finding, setting, "none", why=why)
+
+    # finding 1: J-space removal. g2: the run's spec has the G2 / gap rule (Zach's pilots have none)
+    add("27b", "f1", "draw 1", "removal", "abl_rot_v1", ())
+    add("9b", "f1", "draw 1", "removal", "qwen35_9b_abl_rot_v1", g2=True)
+    add("32b", "f1", "draw 1", "removal", "qwen3_32b_jpp_abl_rot_v1", g2=True)
+    add("olmo", "f1", "draw 1", "removal", "olmo3_7b_instruct_jpp_abl_rot_raw_v1", g2=True)
+    add("olmo", "f1", "draw 1", "removal", "olmo3_7b_instruct_abl_rot_raw_v1", role="plain J-lens", g2=True)
+    add("muse", "f1", "draw 1", "removal", "muse30b_abl_rot_v1", g2=True)
+    add("gemma", "f1", "draw 1", "removal", "gemma4itf_abl_rot_v1", g2=True)
+    add("gemma", "f1", "draw 1", "removal", "gemma4itr_abl_rot_v1", (), role="refit J++")
+    add("122b", "f1", "draw 1", "removal", "qwen35_122b_abl_v1", ())
+    # finding 2: the stated-bridge split
+    add("27b", "f2", "draw 1", "d1", "d1_topics_parts_27b")
+    add("27b", "f2", "draw 2", "d1", "d1_topics2_parts_27b")
+    add("27b", "f2", "draw 2", "d1", "qwen36_27b_jlens_d1_topics2_parts", role="plain J-lens")
+    add("9b", "f2", "draw 2", "d1", "qwen35_9b_d1_topics2_parts")
+    add("32b", "f2", "draw 1", "d1", "qwen3_32b_jpp_d1_topics_parts")
+    add("32b", "f2", "draw 1", "d1", "qwen3_32b_d1_topics_parts", role="plain J-lens")
+    add("olmo", "f2", "draw 2", "d1", "olmo3_7b_instruct_jpp_d1_topics2_parts")
+    add(
+        "olmo",
+        "f2",
+        "draw 2",
+        "d1",
+        "olmo3_7b_instruct_d1_topics2_parts",
+        ("olmo3_7b_instruct_d1_topics2_parts", "olmo3_7b_instruct_d1_topics2_parts_r2"),
+        role="plain J-lens",
+    )
+    add("muse", "f2", "draw 2", "d1", "muse30b_d1_topics2_parts")
+    add(
+        "gemma",
+        "f2",
+        "draw 2",
+        "d1",
+        "gemma4itf_d1_topics2_parts",
+        ("gemma4itf_d1_topics2_parts", "gemma4itf_d1_topics2_parts_q"),
+    )
+    add(
+        "gemma",
+        "f2",
+        "draw 2",
+        "d1",
+        "gemma4itb_d1_topics2_parts",
+        ("gemma4itb_d1_topics2_parts", "gemma4itb_d1_topics2_parts_r2"),
+        role="base-model J++",
+    )
+    add("122b", "f2", "draw 2", "d1", "qwen35_122b_d1_topics2_parts")
+    add("27b", "f2", "table", "d1_formats", "d1_formats_parts_27b")
+    add("9b", "f2", "table", "d1_formats", "qwen35_9b_d1_formats_parts")
+    # findings 3 and 4 on prose draws, formats and the long context
+    draws = {  # model -> (name vs digit draw 1, draw 2, late read draw 1, draw 2, formats run + jobs, long run + jobs)
+        "27b": ("d2_parts_v2_27b", "d2_parts_seed2_27b", "d2_v4_late_read", "d2_late_read_seed2_27b",
+                ("d2_formats_27b",), ("d2_late_read_long_27b_r3",)),
+        "9b": ("qwen35_9b_d2_parts_v2", "qwen35_9b_d2_parts_seed2", "qwen35_9b_d2_v4_late_read_r2",
+               "qwen35_9b_d2_late_read_seed2",
+               ("qwen35_9b_d2_formats", "qwen35_9b_d2_formats_r2", "qwen35_9b_d2_formats_r2_q"),
+               ("qwen35_9b_d2_late_read_long",)),
+        "olmo_hybrid": ("", "olmo_hybrid_7b_d2_parts_seed2", "", "olmo_hybrid_7b_d2_late_read_seed2", (), ()),
+        "32b": ("qwen3_32b_d2_parts_v2", "qwen3_32b_d2_parts_seed2", "qwen3_32b_d2_v4_late_read_v2_r2",
+                "qwen3_32b_d2_late_read_seed2", ("qwen3_32b_d2_formats",),
+                ("qwen3_32b_d2_late_read_long", "qwen3_32b_d2_late_read_long_r2", "qwen3_32b_d2_late_read_long_r2_q")),
+        "olmo": ("olmo3_7b_instruct_d2_parts_v2", "olmo3_7b_instruct_d2_parts_seed2",
+                 "olmo3_7b_instruct_d2_v4_late_read_v3", "olmo3_7b_instruct_d2_late_read_seed2",
+                 ("olmo3_7b_instruct_d2_formats", "olmo3_7b_instruct_d2_formats_r2",
+                  "olmo3_7b_instruct_d2_formats_r2_q"),
+                 ("olmo3_7b_instruct_d2_late_read_long", "olmo3_7b_instruct_d2_late_read_long_r2",
+                  "olmo3_7b_instruct_d2_late_read_long_r2_q")),
+        "muse": ("muse30b_d2_parts", "muse30b_d2_parts_seed2", "muse30b_d2_late_read", "muse30b_d2_late_read_seed2",
+                 ("muse30b_d2_formats",), ("muse30b_d2_late_read_long",)),
+        "gemma": ("gemma4it_d2_parts_v2", "gemma4it_d2_parts_seed2", "gemma4it_d2_v4_late_read_v3_r2",
+                  "gemma4it_d2_late_read_seed2",
+                  ("gemma4it_d2_formats", "gemma4it_d2_formats_r2", "gemma4it_d2_formats_r2_q"),
+                  ("gemma4it_d2_late_read_long", "gemma4it_d2_late_read_long_r2", "gemma4it_d2_late_read_long_r2_q")),
+        "122b": ("qwen35_122b_d2_parts", "", "qwen35_122b_d2_late_read", "", ("qwen35_122b_d2_formats",),
+                 ("qwen35_122b_d2_late_read_long",)),
+    }  # fmt: skip
+    for m, (p1, p2, l1, l2, fmt, long) in draws.items():
+        for setting, run, kind, fnd in (("draw 1", p1, "parts", "f3"), ("draw 2", p2, "parts", "f3"),
+                                        ("draw 1", l1, "late", "f4"), ("draw 2", l2, "late", "f4")):  # fmt: skip
+            if run:
+                add(m, fnd, setting, kind, run)
+            else:
+                none(m, fnd, setting)
+        for fnd in ("f3", "f4"):
+            if fmt:  # one run, three settings: the run name is the first job's
+                add(m, fnd, "prose", f"formats_{fnd}", fmt[0], fmt)
+            else:
+                none(m, fnd, "prose")
+        if long:  # retries keep one run name, except the 27B's (each try named apart)
+            add(m, "f4", "long context", "late", long[0], long)
+        else:
+            none(m, "f4", "long context")
+    # finding 5: order label / identity. layer: fixed, or "manifest" (the rule over the run's swept layers)
+    add("27b", "f5", "draw 1", "f5", "d3v4_swap_topics", layer=50)
+    add("27b", "f5", "draw 2", "f5", "d3v4_seed2_swap_27b", layer=50)
+    add("27b", "f5", "draw 3", "f5", "d3v4_seed3_swap_27b", layer=50)
+    add("27b", "f5", "8 sentences", "f5", "d3v5_len8_swap_27b", level="e8-digit", sentences=8)
+    add("27b", "f5", "12 sentences", "f5", "d3v5_len12_swap_27b", level="e12-word", sentences=12)
+    add("9b", "f5", "draw 1", "f5", "qwen35_9b_d3v4_swap_r2")
+    add("9b", "f5", "draw 2", "f5", "qwen35_9b_d3v4_seed2_swap")
+    add("9b", "f5", "8 sentences", "f5", "qwen35_9b_d3v5_len8_swap", level="e8-digit", sentences=8)
+    add("9b", "f5", "12 sentences", "f5", "qwen35_9b_d3v5_len12_swap", level="e12-word", sentences=12)
+    add("32b", "f5", "draw 1", "f5", "qwen3_32b_d3v4_swap_r2")
+    add("32b", "f5", "draw 2", "f5", "qwen3_32b_d3v4_seed2_swap")
+    add("olmo", "f5", "draw 1", "f5", "olmo3_7b_instruct_d3v4_swap_fn")
+    add("olmo", "f5", "draw 2", "f5", "olmo3_7b_instruct_d3v4_seed2_swap")
+    add("muse", "f5", "draw 1", "f5", "muse30b_d3v4_swap", rand_gate=True)
+    add("muse", "f5", "draw 2", "f5", "muse30b_d3v4_seed2_swap")
+    add("gemma", "f5", "draw 1", "f5", "gemma4it_d3v4_swap_v2_r2")
+    add("gemma", "f5", "draw 2", "f5", "gemma4it_d3v4_seed2_swap")
+    add("122b", "f5", "draw 1", "f5", "qwen35_122b_d3v4_swap")
+    for m in ("olmo_hybrid", "32b", "olmo", "muse", "gemma", "122b"):
+        for s in ("8 sentences", "12 sentences"):
+            none(m, "f5", s)
+    for s in ("draw 1", "draw 2"):
+        none("olmo_hybrid", "f5", s)
+    none("122b", "f5", "draw 2")
+    # finding 6: counting (one run, three settings)
+    add("27b", "f6", "filler moved", "f6", "d3v4x_swap_main")
+    add("9b", "f6", "filler moved", "f6", "qwen35_9b_d3v4x_swap_r2", by_value=True)
+    add("32b", "f6", "filler moved", "f6", "qwen3_32b_d3v4x_swap_r2", by_value=True)
+    add("olmo", "f6", "filler moved", "f6", "olmo3_7b_instruct_d3v4x_swap")
+    add("muse", "f6", "filler moved", "f6", "muse30b_d3v4x_swap", by_value=True, rand_gate=True)
+    add("gemma", "f6", "filler moved", "f6", "gemma4it_d3v4x_swap_r2", by_value=True)
+    none("olmo_hybrid", "f6", "filler moved")
+    none("122b", "f6", "filler moved")
+    # lens gates (v1 and v2 from one summary where the run has both)
+    gates = {"27b": [("lens_gate_27b", "main", "v1"), ("lens_gate_v2_27b", "main", "v2"),
+                     ("qwen36_27b_jlens_lens_gate_v2", "plain J-lens", "both")],
+             "9b": [("qwen35_9b_lens_gate", "main", "v1"), ("qwen35_9b_lens_gate_v2", "main", "v2")],
+             "32b": [("qwen3_32b_jpp_lens_gate", "main", "both"), ("qwen3_32b_lens_gate", "plain J-lens", "v1"),
+                     ("qwen3_32b_lens_gate_v2", "plain J-lens", "v2")],
+             "olmo": [("olmo3_7b_instruct_jpp_lens_gate", "main", "both"),
+                      ("olmo3_7b_instruct_lens_gate_v2", "plain J-lens", "both")],
+             "muse": [("muse30b_lens_gate_v2", "main", "both")],
+             "gemma": [("gemma4itf_lens_gate_v2", "main", "both"), ("gemma4itb_lens_gate_v2_r2", "base-model J++", "both")],
+             "122b": [("qwen35_122b_lens_gate_v2", "main", "both")]}  # fmt: skip
+    for m, lst in gates.items():
+        for run, role, which in lst:
+            for v, setting in (("v1", "v1 (at the word)"), ("v2", "v2 (after the word)")):
+                if which in (v, "both"):
+                    jobs = (run, "gemma4itb_lens_gate_v2") if run == "gemma4itb_lens_gate_v2_r2" else (run,)
+                    add(m, "gate", setting, "gate", run, jobs, role=role, gate=v)
+    # finding 7: the lens push (one run, two settings)
+    add("27b", "f7", "main rule", "d4", "d4_where_fresh_27b")
+    add("9b", "f7", "main rule", "d4", "qwen35_9b_d4_where")
+    add("32b", "f7", "main rule", "d4", "qwen3_32b_jpp_d4_where")
+    add("muse", "f7", "main rule", "d4", "muse30b_d4_where")
+    add("122b", "f7", "main rule", "d4", "qwen35_122b_d4_where")
+    add("olmo", "f7", "main rule", "d4", "olmo3_7b_instruct_jpp_d4_where_raw")  # the chat copy is not run (Dan)
+    add("gemma", "f7", "main rule", "d4", "gemma4itf_d4_where")
+    # finding 8: the lens write at the stated bridge (at its D1 cell) and the fitted-code test's lens arm
+    rw = {"27b": [("d1_topics_rw_27b", "d1_topics_parts_27b", "main", 1), ("d1_topics2_rw_27b", "d1_topics2_parts_27b", "main", 2),
+                  ("qwen36_27b_jlens_d1_topics2_rw", "qwen36_27b_jlens_d1_topics2_parts", "plain J-lens", 2)],
+          "9b": [("qwen35_9b_d1_topics2_rw", "qwen35_9b_d1_topics2_parts", "main", 2)],
+          "32b": [("qwen3_32b_jpp_d1_topics_rw", "qwen3_32b_jpp_d1_topics_parts", "main", 1),
+                  ("qwen3_32b_d1_topics_rw", "qwen3_32b_d1_topics_parts", "plain J-lens", 1)],
+          "olmo": [("olmo3_7b_instruct_jpp_d1_topics2_rw", "olmo3_7b_instruct_jpp_d1_topics2_parts", "main", 2),
+                   ("olmo3_7b_instruct_d1_topics2_rw", "olmo3_7b_instruct_d1_topics2_parts", "plain J-lens", 2)],
+          "muse": [("muse30b_d1_topics2_rw", "muse30b_d1_topics2_parts", "main", 2)],
+          "gemma": [("gemma4itf_d1_topics2_rw", "gemma4itf_d1_topics2_parts", "main", 2),
+                    ("gemma4itb_d1_topics2_rw", "gemma4itb_d1_topics2_parts", "base-model J++", 2)],
+          "122b": [("qwen35_122b_d1_topics2_rw", "qwen35_122b_d1_topics2_parts", "main", 2)]}  # fmt: skip
+    retries = {"olmo3_7b_instruct_d1_topics2_rw": ("olmo3_7b_instruct_d1_topics2_rw", "olmo3_7b_instruct_d1_topics2_rw_r2"),
+               "gemma4itf_d1_topics2_rw": ("gemma4itf_d1_topics2_rw", "gemma4itf_d1_topics2_rw_q"),
+               "gemma4itb_d1_topics2_rw": ("gemma4itb_d1_topics2_rw", "gemma4itb_d1_topics2_rw_r2"),
+               "qwen36_27b_jlens_d1_topics2_rw": ("qwen36_27b_jlens_d1_topics2_rw", "qwen36_27b_jlens_d1_topics2_rw_q")}  # fmt: skip
+    for m, lst in rw.items():
+        for run, parts, role, draw in lst:
+            add(m, "f8", f"stated bridge, draw {draw}", "rw", run, retries.get(run), role=role, parts=parts)
+    add("27b", "f8", "last tokens", "fitlens", "d3v4_fit_main")
+    add("9b", "f8", "last tokens", "fitlens", "qwen35_9b_d3b_fit_v2")
+    add("32b", "f8", "last tokens", "fitlens", "qwen3_32b_jpp_d3b_fit_v2")
+    add("gemma", "f8", "last tokens", "fitlens", "gemma4itf_d3b_fit_v2")
+    add("olmo", "f8", "last tokens", "fitlens", "olmo3_7b_instruct_jpp_d3b_fit_v2")
+    add("olmo", "f8", "last tokens", "fitlens", "olmo3_7b_instruct_d3b_fit_v2", role="plain J-lens")
+    # lens findings on a model without a lens
+    for f in FINDINGS:
+        if f.lens:
+            for s in f.settings:
+                none("olmo_hybrid", f.key, s, "no lens")
+    # every other grid cell without a run: no spec (the 27B's third draw of finding 5 is its own)
+    have = {(c.model, c.finding, s) for c in out for s in EXPAND.get(c.kind, (c.setting,))}
+    for f in FINDINGS:
+        for s in f.settings:
+            for m in MODELS:
+                if (m.key, f.key, s) not in have and (f.key, s) != ("f5", "draw 3"):
+                    none(m.key, f.key, s)
+    return out
+
+
+# ---------------------------------------------------------------- jobs: specs, ledger, queue
+
+
+class Jobs:
+    """Specs (jobs/*/<id>.yaml), the ledger records (latest per id) and the queue state saved by `jobq pull`."""
+
+    def __init__(self, repo: Path = REPO):
+        import yaml
+
+        self.repo = repo
+        self.specs: dict[str, Path] = {p.stem: p for p in repo.glob("jobs/*/*.yaml") if p.name != "titles.yaml"}
+        self._spec_text: dict[str, dict] = {}
+        self.ledger: dict[str, dict] = {}
+        for p in sorted((repo / "results" / "jobq").glob("ledger*.jsonl")):  # every box's ledger, if kept apart
+            for line in p.read_text().splitlines():
+                if line.strip():
+                    r = json.loads(line)
+                    old = self.ledger.get(r["id"])
+                    if old is None or (r.get("ended_at") or "") >= (old.get("ended_at") or ""):
+                        self.ledger[r["id"]] = r
+        self.queued: dict[str, str] = {}
+        for state in sorted((repo / "cache" / "jobq").glob("queue_state*.json")):
+            q = json.loads(state.read_text())
+            self.queued |= {r["id"]: s for s in ("pending", "running") for r in q.get(s, [])}
+        self._yaml = yaml
+
+    def spec(self, job: str) -> dict:
+        if job not in self._spec_text and job in self.specs:
+            self._spec_text[job] = self._yaml.safe_load(self.specs[job].read_text()) or {}
+        return self._spec_text.get(job, {})
+
+    def latest(self, jobs: tuple[str, ...]) -> dict | None:
+        recs = [self.ledger[j] for j in jobs if j in self.ledger]
+        return max(recs, key=lambda r: r.get("ended_at") or "") if recs else None
+
+    @functools.cache  # noqa: B019 (one Jobs per build)
+    def added_commit(self, job: str) -> str:
+        if job not in self.specs:
+            return ""
+        p = subprocess.run(["git", "-C", str(self.repo), "log", "--diff-filter=A", "--format=%h", "-1", "--",
+                            str(self.specs[job].relative_to(self.repo))], capture_output=True, text=True, check=False)  # fmt: skip
+        return p.stdout.strip()
+
+    def commit(self, cell: Cell) -> str:
+        """The commit the job ran at (ledger), else the commit that added its spec; '-' without a spec."""
+        rec = self.latest(cell.jobs)
+        if rec and rec.get("commit"):
+            return rec["commit"][:7]
+        for j in cell.jobs:
+            if c := self.added_commit(j):
+                return f"{c} (spec added)"
+        return "-"
+
+    def precheck_stop(self, rec: dict) -> tuple[str, str] | None:
+        """(verdict word, why) when a job's chain was stopped on purpose (exit 3): scripts/d1_precheck.py (the gate
+        failed: not testable) or scripts/check_unedited.py (a raw-format smoke mismatch: missing); None otherwise."""
+        cmd = rec.get("command", "")
+        stopper = "d1_precheck" in cmd or "check_unedited" in cmd
+        if rec.get("status") != "failed" or rec.get("exit_code") != 3 or not stopper:
+            return None
+        gate = re.search(r"--gate (\w+)", cmd)
+        s = RESULTS / "lens_gate" / gate.group(1) / "summary.json" if gate else None
+        passed = json.loads(s.read_text())["gate"]["pass"] if s and s.exists() else None
+        if passed is False:
+            return "not testable", f"gate v1 failed ({gate.group(1) if gate else '?'})"
+        if "check_unedited" in cmd and (passed or "d1_precheck" not in cmd):
+            return "missing", "raw smoke mismatch: the smoke's unedited answers differ from the raw competence run"
+        return "not testable", "stopped by the precheck: too few eligible scenes, or the gate"
+
+    def status(self, jobs: tuple[str, ...], values: bool = True, _seen: frozenset = frozenset()) -> tuple[str, str]:
+        """(status, reason) of a run that has no results: failed / pending / running / blocked / not enqueued / no
+        spec, or 'not testable' (stopped by the precheck, or blocked behind such a job; only with values)."""
+        if not jobs:
+            return "no spec", "no spec"
+        rec = self.latest(jobs)
+        if rec is not None:
+            if rec.get("status") == "failed":
+                stop = self.precheck_stop(rec) if values else None
+                if stop:
+                    return stop
+                err = (rec.get("error") or "").strip().splitlines()
+                stage = ("figures" if rec.get("figures_exit") not in (None, 0) else
+                         "examples" if rec.get("examples_exit") not in (None, 0) else "run")  # fmt: skip
+                why = f"job {rec['id']} failed at the {stage} stage (exit {rec.get('exit_code')})"
+                return "failed", why + (f": {err[-1][:120]}" if err and values else "")
+            if rec.get("status") == "done":
+                return "done, no results", f"job {rec['id']} done but its results are not here (pull?)"
+        for j in jobs:
+            if j in self.queued:
+                deps = self.spec(j).get("depends_on") or []
+                for d in deps:
+                    if d in _seen:
+                        continue
+                    st, why = self.status((d,), values, _seen | {j})
+                    if st == "not testable":
+                        return st, f"{why} (blocks {j})"
+                    if st == "failed":
+                        return "blocked", f"{j} waits on {d}, which failed"
+                return self.queued[j], f"{j} is {self.queued[j]} in the queue"
+        if any(j in self.specs for j in jobs):
+            return "not enqueued", f"spec {jobs[-1]} not run (not in the queue or the ledger)"
+        return "no spec", "no spec"
+
+
+# ---------------------------------------------------------------- reading results
+
+
+def jl(path: Path) -> list[dict]:
+    return [json.loads(x) for x in path.read_text().splitlines() if x.strip()]
+
+
+def latest_dir(parent: Path, run: str, tag: str = "") -> Path | None:
+    """parent/<run><tag>_<stamp>/ (the newest), matched exactly so that run names that extend `run` never match."""
+    pat = re.compile(re.escape(run + tag) + "_" + STAMP_RE)
+    hits = sorted(d for d in parent.glob(f"{run}{tag}_*") if d.is_dir() and pat.fullmatch(d.name))
+    return hits[-1] if hits else None
+
+
+def required(cell: Cell) -> Path:
+    """The file whose presence means the run is here (no result is read)."""
+    k, r = cell.kind, cell.run
+    if k in ("late", "parts", "formats_f3", "formats_f4"):
+        return RESULTS / "attn_knockout" / r / "rows.jsonl"
+    if k in ("f5", "f6"):
+        return RESULTS / "pointer_swap" / r / "outcomes.jsonl"
+    if k == "gate":
+        return RESULTS / "lens_gate" / r / "summary.json"
+    if k in ("d1", "d1_formats"):
+        return RESULTS / "statement_positions" / r / "outcomes.jsonl"
+    if k == "d4":
+        return RESULTS / "early_push_where" / r / "summary.json"
+    if k == "rw":
+        return RESULTS / "statement_positions" / r / "summary.json"
+    if k == "fitlens":
+        return RESULTS / "pointer_fit" / r / "summary.json"
+    if k == "removal":
+        return RESULTS / "ablate_pilot" / r / "summary.json"
+    raise ValueError(k)
+
+
+def rel(p: Path) -> str:
+    try:
+        return str(p.relative_to(REPO))
+    except ValueError:
+        return str(p)
+
+
+PREFIXES = sorted(
+    ((t["run_prefix"], name) for name, t in pins.TARGETS.items() if t["run_prefix"]), key=lambda x: -len(x[0])
+)  # longest prefix first
+LENS_KNOWN = {  # sha256 prefix -> (type, source); the pins in src/bridge_jspace/pins.py
+    "bbef480b": ("J++", "published (neuronpedia)"), "1718c8c5": ("plain J-lens", "published (neuronpedia, n1000)"),
+    "8cda12f7": ("J++", "published (neuronpedia)"), "0af5ccf2": ("plain J-lens", "published (neuronpedia)"),
+    "b847dbba": ("plain J-lens", "published (mhough)"), "d16d81d8": ("J++", "Zach (every layer)"),
+    "ef50bc54": ("J++", "published (neuronpedia, base model)"), "323733a9": ("J++", "Zach (refit, layers 24-45)"),
+    "90fc5e52": ("J++", "Zach"), "b771e502": ("J++", "published (neuronpedia)"), "0b092e93": ("J++", "ours (old fit)"),
+}  # fmt: skip
+LENS_FREE = ("late", "parts", "formats_f3", "formats_f4", "f5", "f6")
+
+
+def lens_of(cell: Cell) -> str:
+    """'type, source, sha256 prefix' from the run's manifest, else from the pins by the run's prefix."""
+    if cell.kind in LENS_FREE:
+        return "none (lens-free)"
+    if cell.kind == "none":
+        return "none (no lens)" if cell.why == "no lens" else ""
+    exp = {"gate": "lens_gate", "d1": "statement_positions", "d1_formats": "statement_positions",
+           "d4": "early_push_where", "rw": "statement_positions", "fitlens": "pointer_fit",
+           "removal": "ablate_pilot"}[cell.kind]  # fmt: skip
+    name, sha = "", ""
+    mp = RESULTS / exp / cell.run / "manifest.json"
+    if mp.exists():
+        lens = json.loads(mp.read_text()).get("lens")
+        if isinstance(lens, list) and len(lens) == 2:
+            name, sha = lens
+        elif isinstance(lens, dict):
+            sha = lens.get("sha256", "")
+            name = next((k for k in lens if k != "sha256"), "")
+    if not sha:
+        target = next((t for p, t in PREFIXES if cell.run.startswith(p)), "qwen3.6-27b")
+        t = pins.TARGETS[target]
+        name = t.get("frozen_lens", "jpp")
+        sha = t.get("frozen_lens_sha256", pins.FROZEN_LENS_SHA256 if target == "qwen3.6-27b" else "")
+        if "_jpp_" in cell.run:
+            name, sha = "jpp", ""
+    kind, source = LENS_KNOWN.get(sha[:8], ("J++" if name == "jpp" else "plain J-lens" if name == "jlens" else name,
+                                            "ours" if "_jpp_" in cell.run else "unknown"))  # fmt: skip
+    return f"{kind}, {source}, {sha[:8] or 'sha256 not here'}"
+
+
+# ---------------------------------------------------------------- rows
+
+
+@dataclass
+class Row:
+    model: str
+    finding: str
+    setting: str
+    lens: str = ""
+    n: int | None = None
+    value: float | None = None  # a share or a difference, 0-1 scale
+    ci: tuple[float, float] | None = None
+    control: str = ""
+    verdict: str = "missing"
+    rule: str = ""
+    commit: str = ""
+    path: str = ""
+    # grid.md
+    role: str = "main"
+    run: str = ""
+    md_setting: str | None = None  # the grid.md row this csv row fills (None: csv only)
+    md_text: str | None = None  # the cell text (key number + n), on the first csv row of an md cell
+    unit: str = "%"  # "%" for shares, "pts" for differences
+    sources: list[str] = field(default_factory=list)
+    status: str = "has-run"
+
+    @property
+    def word(self) -> str:
+        w = next(v for v in VERDICTS if self.verdict.startswith(v))
+        return w
+
+
+def r100(x: float) -> int:
+    """Percent, rounded as the repo's reports round (f"{:.0f}"), without a "-0"."""
+    return int(f"{100 * x:.0f}") + 0
+
+
+def pct(x: float | None) -> str:
+    return "-" if x is None else f"{r100(x)}%"
+
+
+def pts(x: float | None) -> str:
+    return "-" if x is None else f"{r100(x):+d}"
+
+
+def ci_txt(lo: float, hi: float, unit: str = "%") -> str:
+    return f"[{r100(lo):+d}, {r100(hi):+d}]" if unit == "pts" else f"[{r100(lo)}, {r100(hi)}]"
+
+
+def key(value: float | None, ci: tuple[float, float] | None, n: int | None, unit: str = "%") -> str:
+    """'4% [2,9] n=300' (grid.md's cell text)."""
+    v = (pts if unit == "pts" else pct)(value)
+    c = "" if ci is None else " " + ci_txt(*ci, unit=unit).replace(", ", ",")
+    return f"{v}{c}" + ("" if n is None else f" n={n}")
+
+
+# ---------------------------------------------------------------- evaluators: each returns rows for one cell
+
+
+def ev_late(cell: Cell) -> list[Row]:
+    d = RESULTS / "attn_knockout" / cell.run
+    rows = jl(d / "rows.jsonl")
+    ok = {(r["family"], r["id"]) for r in rows if r["source"] == "none" and r["correct"]}
+    res = DF.late_read(rows, ok, cell.opts.get("family", "RL"))
+    return [late_row(cell, cell.setting, res, rel(d / "rows.jsonl"))]
+
+
+def late_row(cell: Cell, setting: str, res: dict, path: str) -> Row:
+    lk, off = res["lookup"], res["off"]
+    where = "every attention layer" if res["layers"] == "attn" else "every layer"
+    control = (f"chance {pct(CHANCE)}; blocked in {where}; the off-path sentence hidden instead keeps {pct(off[0])} "
+               f"{ci_txt(off[1], off[2])}")  # fmt: skip
+    if "deltanet" in res:
+        control += f"; hidden in every DeltaNet layer instead: {pct(res['deltanet'][0])}"
+    if not lk[3]:
+        verdict = "missing (no memory -> prompt items in the run)"
+    elif res["holds"]:
+        verdict = "holds"
+    elif not (off[0] >= DF.OFF_MIN and off[1] >= DF.OFF_LO):
+        verdict = "not interpretable (the off-path control: the off-path sentence hidden keeps < 90% or its lower bound < 85%)"
+    elif lk[0] <= DF.LATE_MAX and lk[2] <= DF.LATE_HI:
+        verdict = "fails (the DeltaNet layers matter: blocking them instead keeps < 90%)"
+    else:
+        verdict = "fails (more than 20% right, or the upper bound above 30%)"
+    return Row(cell.model, cell.finding, setting, n=lk[3], value=lk[0], ci=(lk[1], lk[2]), control=control,
+               verdict=verdict, rule="late-read", path=path, md_setting=setting,
+               md_text=key(lk[0], (lk[1], lk[2]), lk[3]), sources=[path])  # fmt: skip
+
+
+def parts_row(cell: Cell, setting: str, cl: dict, fam: str, path: str) -> Row:
+    need = [(fam, s, d) for s in DP.PARTS + DP.SPLIT for d in ("question", "final")]
+    if not all(k in cl for k in need):
+        return Row(cell.model, cell.finding, setting, verdict="missing (the run has no leak-robust parts: first "
+                   "version)", rule="name-digit", path=path, md_setting=setting, md_text="", sources=[path])  # fmt: skip
+    v = DP.verdicts(cl, fam)
+    noname, nodigit = cl[(fam, "lookup_noname", "final")], cl[(fam, "lookup_nodigit", "final")]
+    offs = {s: cl[(fam, s, d)]["right"][0] for s in DP.SPLIT[2:] for d in ("question", "final")}
+    q = ("not testable here (the whole sentence hidden from the question's tokens leaves > 70% right)"
+         if not v["question_testable"] else "holds" if v["H-name-q-split"] else "fails")  # fmt: skip
+    control = (f"the digit left visible (the sentence without its digit hidden): {pct(nodigit['right'][0])} "
+               f"{ci_txt(*nodigit['right'][1:])}; off-path parts hidden: lowest {pct(min(offs.values()))}; "
+               f"the question's tokens read the name: {q}")  # fmt: skip
+    if not v["valid-split"]:
+        verdict = "not interpretable (the off-path control: an off-path sentence's part hidden keeps < 90%)"
+    else:
+        verdict = "holds" if v["H-digit-final-split"] else "fails"
+    r = noname["right"]
+    return Row(cell.model, cell.finding, setting, n=noname["n"], value=r[0], ci=(r[1], r[2]), control=control,
+               verdict=verdict, rule="name-digit", path=path, md_setting=setting, md_text=key(r[0], (r[1], r[2]), noname["n"]),
+               sources=[path])  # fmt: skip
+
+
+def ev_parts(cell: Cell) -> list[Row]:
+    d = RESULTS / "attn_knockout" / cell.run
+    cases = {c["id"]: c for c in jl(d / "cases.jsonl")}
+    cl = DP.cells(jl(d / "rows.jsonl"), cases)
+    return [parts_row(cell, cell.setting, cl, "RL", rel(d / "rows.jsonl"))]
+
+
+@functools.cache
+def formats_eval(run: str) -> dict:
+    """scripts/d2_formats.py main's per-format results, in memory (nothing written)."""
+    d = RESULTS / "attn_knockout" / run
+    cases = {c["id"]: c for c in jl(d / "cases.jsonl")}
+    for c in cases.values():
+        c.setdefault("format", c["wording"].split("/")[0])
+    rows = jl(d / "rows.jsonl")
+    ok = {(r["family"], r["id"]) for r in rows if r["source"] == "none" and r["correct"]}
+    out = {}
+    for fmt in sorted({c["format"] for c in cases.values()}):
+        sub = [r for r in rows if cases[r["id"]]["format"] == fmt]
+        out[fmt] = {"late_MP": DF.late_read(sub, ok, "MP"), "cells": DP.cells(sub, cases)}
+    return out
+
+
+FORMAT_SETTING = {"prose": "prose", "table": "table", "json": "JSON"}
+
+
+def ev_formats(cell: Cell) -> list[Row]:
+    d = RESULTS / "attn_knockout" / cell.run
+    path = rel(d / "rows.jsonl")
+    res = formats_eval(cell.run)
+    saved = latest_dir(RESULTS / "d2_formats", cell.run)
+    out = []
+    for fmt, setting in FORMAT_SETTING.items():
+        if fmt not in res:
+            out.append(Row(cell.model, cell.finding, setting, verdict=f"missing (no {setting} items in the run)",
+                           rule="formats", path=path, md_setting=setting, md_text=""))  # fmt: skip
+            continue
+        if cell.finding == "f4":
+            row = late_row(cell, setting, res[fmt]["late_MP"], path)
+        else:
+            row = parts_row(cell, setting, res[fmt]["cells"], "MP", path)
+        row.rule = "formats"
+        if saved:  # the saved verdict must agree with the recomputation
+            sv = json.loads((saved / "verdict.json").read_text())["formats"].get(fmt, {})
+            same = (sv.get("late_MP", {}).get("holds") == res[fmt]["late_MP"]["holds"] if cell.finding == "f4"
+                    else (sv.get("parts_MP") or {}).get("H-digit-final-split") == (row.word == "holds"))  # fmt: skip
+            row.sources.append(rel(saved / "verdict.json"))
+            if not same and row.word in ("holds", "fails"):
+                row.verdict = f"missing (inconsistent: {rel(saved / 'verdict.json')} disagrees with the recomputation)"
+        out.append(row)
+    return out
+
+
+def f5_block(cell: Cell) -> tuple[dict, int, str, str]:
+    """(RL family block, layer, source path, how) from the saved verdict, else finding5_confirm's functions."""
+    from scripts import finding5_confirm as FC
+
+    level, sentences = cell.opts.get("level"), cell.opts.get("sentences", FC.SENTENCES)
+    saved = latest_dir(RESULTS / "finding5_confirm", cell.run, f"_{level}" if level else "")
+    if saved:
+        v = json.loads((saved / "verdict.json").read_text())
+        if v.get("sentences", FC.SENTENCES) == sentences and (cell.opts.get("layer") in (None, v["layer"])):
+            return v["families"]["RL"], v["layer"], rel(saved / "verdict.json"), "saved verdict"
+    from scripts import pointer_swap as PS
+
+    d = RESULTS / "pointer_swap" / cell.run
+    m = json.loads((d / "manifest.json").read_text())
+    items = {it["id"]: it for its in PS.load_items(m).values() for it in its}
+    rows = FC.select(jl(d / "outcomes.jsonl"), items, level, sentences)
+    layer = cell.opts.get("layer") or FC.pick_layer(rows, m["layers"], "RL")[0]
+    fams = FC.confirm(rows, layer, sentences)
+    return fams["RL"], layer, rel(d / "outcomes.jsonl"), "computed here with finding5_confirm's functions"
+
+
+def rand_broken(run: str, layer: int | str) -> float | None:
+    """Share of memory -> prompt answers a same-size random patch at the last two tokens changes (the Muse specs'
+    random-patch control: > 30% means not interpretable)."""
+    rows = [o for o in jl(RESULTS / "pointer_swap" / run / "outcomes.jsonl")
+            if o["source"] == "rand" and o["family"] == "RL" and o["group"] == "last" and str(o["layer"]) == str(layer)]  # fmt: skip
+    return sum(o["role"] != "none" for o in rows) / len(rows) if rows else None
+
+
+def ev_f5(cell: Cell) -> list[Row]:
+    path = rel(RESULTS / "pointer_swap" / cell.run / "outcomes.jsonl")
+    try:
+        b, layer, path, how = f5_block(cell)
+    except AssertionError as e:
+        why = str(e)
+        word = "not testable" if "before the donor's digit arrives" in why else "missing"
+        return [Row(cell.model, cell.finding, f"{cell.setting}, {part}", verdict=f"{word} ({why[:140]})",
+                    rule="order-identity", path=path, md_setting=cell.setting if part == "1st-2nd" else None,
+                    md_text="", sources=[path]) for part in ("1st-2nd", "3rd on")]  # fmt: skip
+    verdict = {"confirms": "holds", "fails": "fails"}.get(b["verdict"], f"fails (partly: A {b['A']}, B {b['B']})")
+    if cell.opts.get("rand_gate"):
+        broken = rand_broken(cell.run, layer)
+        if broken is not None and broken > 0.30:
+            verdict = f"not interpretable (the random-patch control breaks {pct(broken)} of answers, above 30%)"
+    a, r = b["first2"]["position_minus_identity"], b["rest"]["identity_minus_position"]
+    ctl = f"layer {layer} ({how})"
+    out = []
+    for part, x, n, txt in (("1st-2nd", a, b["first2"]["n"], f"position - identity {pts(a[0])}, A: {b['A']}"),
+                            ("3rd on", r, b["rest"]["n"], f"identity - position {pts(r[0])}, B: {b['B']}")):  # fmt: skip
+        out.append(Row(cell.model, cell.finding, f"{cell.setting}, {part}", n=n, value=x[0], ci=(x[1], x[2]),
+                       control=f"{txt}; {ctl}", verdict=verdict, rule="order-identity", path=path, unit="pts",
+                       md_setting=cell.setting if part == "1st-2nd" else None, sources=[path]))  # fmt: skip
+    out[0].md_text = f"{pts(a[0])}/{pts(r[0])} n={b['n']}"
+    return out
+
+
+V4X = (("filler moved", "e5-off", "H-order-v4", ("token",)), ("one statement more", "e5more", "H-start-v4",
+       ("end", "token")), ("one statement fewer", "e5fewer", "H-start-v4", ("end", "token")))  # fmt: skip
+RIVAL = {"token": "the same place in the text", "end": "counted from the end"}
+
+
+def ev_f6(cell: Cell) -> list[Row]:
+    from scripts import pointer_swap as PS
+
+    d = RESULTS / "pointer_swap" / cell.run
+    m = json.loads((d / "manifest.json").read_text())
+    saved = sorted(p for p in d.glob("analysis-*/summary.json") if json.loads(p.read_text()).get("v4x"))
+    if saved:
+        v4x, src = json.loads(saved[-1].read_text())["v4x"], rel(saved[-1])
+    else:
+        v4x = PS.v4x_tests(m, PS.analyze(m, jl(d / "outcomes.jsonl"), jl(d / "checks.jsonl"))["rates"])
+        src = rel(d / "outcomes.jsonl") + " (pointer_swap.analyze, computed here)"
+    layers = list(PS.primary_layers(m))
+    rows = [o for o in jl(d / "outcomes.jsonl") if o["family"] == "RL" and o["group"] == "last" and o["source"] == "dissoc"]  # fmt: skip
+    by = collections.defaultdict(list)
+    for o in rows:
+        by[(o["level"], str(o["layer"]))].append(o)
+
+    def ub(lv: str, la: str) -> float:  # the donor's digit (value) share's Wilson upper bound, the specs' layer rule
+        sel = by[(lv, la)]
+        return wilson(sum(o["role"] == "value" for o in sel), len(sel))[2] if sel else 1.0
+
+    out = []
+    for setting, lv, hyp, rivals in V4X:
+        levels = ("e5-off",) if hyp == "H-order-v4" else ("e5more", "e5fewer")
+        early = [la for la in layers if all(ub(x, la) < 0.10 for x in levels)]
+        decisive = early if cell.opts.get("by_value") else layers
+        show = (early or decisive)[-1:] if decisive else []
+        path = src
+        if not decisive:
+            out.append(Row(cell.model, "f6", setting, verdict="not testable (no swept layer before the donor's digit "
+                           "arrives)", rule="counting", path=path, md_setting=setting, md_text="", sources=[path]))  # fmt: skip
+            continue
+        holds = any(v4x[hyp].get(f"layer {la}") for la in decisive)
+        c = v4x["cells"].get(f"{lv}|{show[0]}|all")
+        if c is None:
+            out.append(Row(cell.model, "f6", setting, verdict=f"missing (no {lv} cell at layer {show[0]})",
+                           rule="counting", path=path, md_setting=setting, md_text="", sources=[path]))  # fmt: skip
+            continue
+        verdict = "holds" if holds else "fails"
+        if cell.opts.get("rand_gate"):
+            broken = rand_broken(cell.run, show[0])
+            if broken is not None and broken > 0.30:
+                verdict = f"not interpretable (the random-patch control breaks {pct(broken)} of answers, above 30%)"
+        w = c["winner"]
+        ctl = "; ".join(f"{RIVAL[r]} {pct(c[r][0])} {ci_txt(c[r][1], c[r][2])}" for r in rivals)
+        ctl += f"; shown at layer {show[0]}; decisive layers {', '.join(decisive)}"
+        out.append(Row(cell.model, "f6", setting, n=c["n"], value=w[0], ci=(w[1], w[2]), control=ctl, verdict=verdict,
+                       rule="counting", path=path, md_setting=setting,
+                       md_text=f"{pct(w[0])} vs {pct(c[rivals[-1]][0])} n={c['n']}", sources=[path]))  # fmt: skip
+    return out
+
+
+def ev_gate(cell: Cell) -> list[Row]:
+    p = RESULTS / "lens_gate" / cell.run / "summary.json"
+    s = json.loads(p.read_text())
+    g = s.get("gate" if cell.opts["gate"] == "v1" else "gate_v2")
+    if g is None:
+        return [Row(cell.model, "gate", cell.setting, verdict="missing (this run has no gate v2)", path=rel(p),
+                    md_setting=cell.setting, md_text="", sources=[rel(p)])]  # fmt: skip
+    b, x = g["bridge_top10"], g["x_top10"]
+    return [Row(cell.model, "gate", cell.setting, n=g["n"], value=b[0], ci=(b[1], b[2]),
+                control=f"the other bridge in the top 10: {pct(x[0])} {ci_txt(x[1], x[2])} (needs <= 20%; the bridge >= 50%)",
+                verdict="holds" if g["pass"] else "fails", rule=f"lens-gate-{cell.opts['gate']}", path=rel(p),
+                md_setting=cell.setting, md_text=key(b[0], (b[1], b[2]), g["n"]), sources=[rel(p)])]  # fmt: skip
+
+
+def d1_word(v: str) -> str:
+    if v == "replicates":
+        return "holds"
+    if v == "does not replicate":
+        return "fails"
+    if v.startswith("not interpretable"):
+        return "not interpretable (" + v.split(":", 1)[-1].strip() + ")"
+    return f"missing (unknown verdict {v!r})"
+
+
+def ev_d1(cell: Cell) -> list[Row]:
+    saved = latest_dir(RESULTS / "d1_verdict", cell.run)
+    if saved is None:
+        p = rel(required(cell))
+        return [Row(cell.model, "f2", cell.setting, verdict="missing (the parts ran but no saved verdict: "
+                    "scripts/d1_verdict.py not run on it)", rule="stated-bridge", path=p, md_setting=cell.setting,
+                    md_text="", sources=[p])]  # fmt: skip
+    p = rel(saved / "verdict.json")
+    v = json.loads((saved / "verdict.json").read_text())
+    lk, rc = v["lookup"], v["recall"]
+
+    def row(setting: str, lj: list, ln: list, rj: list, verdict: str, md: str | None) -> Row:
+        ctl = (f"recall, lens-readable part (the control, needs >= 30%): {pct(rj[0])} {ci_txt(rj[1], rj[2])}; "
+               f"lookup, the rest (needs >= 50%): {pct(ln[0])}; cell {v['cell']['set']} at layer {v['cell']['layer']}")  # fmt: skip
+        if "kept_under_lens_part" in v and md:
+            ctl += f"; lookups keep their answer under the lens-part patch: {pct(v['kept_under_lens_part'][0])}"
+        return Row(cell.model, "f2", setting, n=lj[3], value=lj[0], ci=(lj[1], lj[2]), control=ctl,
+                   verdict=d1_word(verdict), rule="stated-bridge", path=p, md_setting=md,
+                   md_text=key(lj[0], (lj[1], lj[2]), lj[3]) if md else None, sources=[p])  # fmt: skip
+
+    if cell.kind == "d1_formats":  # one row per format, its own verdict (format_verdicts); pooled in the control
+        out = []
+        for fmt, setting in (("table", "table"), ("json", "JSON")):
+            c, fv = v.get("by_format", {}).get(fmt), (v.get("format_verdicts") or {}).get(fmt)
+            if c is None or fv is None:
+                out.append(Row(cell.model, "f2", setting, verdict=f"missing (no {setting} rows in {p})",
+                               rule="stated-bridge", path=p, md_setting=setting, md_text="", sources=[p]))  # fmt: skip
+                continue
+            r = row(setting, c["PP_jspace"], c["PP_not_jspace"], c["PM_jspace"], fv, setting)
+            r.control += f"; pooled over formats: {v['verdict']}"
+            out.append(r)
+        return out
+    out = [row(cell.setting, lk["jspace"], lk["not_jspace"], rc["jspace"], v["verdict"], cell.setting)]
+    for t, tv in (v.get("topic_verdicts") or {}).items():
+        c = v["by_topic"][t]
+        out.append(row(f"{cell.setting} · {t}", c["PP_jspace"], c["PP_not_jspace"], c["PM_jspace"], tv, None))
+    return out
+
+
+def d4_word(v: str) -> str:
+    if v.startswith("H-around"):
+        return "holds"
+    if v.startswith("H-where"):
+        return "fails"
+    if v.startswith("not valid"):
+        return f"not interpretable (the off-path check failed at the decisive cell; reading there: {v[11:-1]})"
+    if v.startswith(("no cell", "no valid cell")):
+        return "not interpretable (no cell where the lens push writes recall: the positive control fails)"
+    if v == "inconclusive":
+        return (
+            "not interpretable (inconclusive by the rule: the lookup moves between 10% and 30%, or the gap is unclear)"
+        )
+    return f"missing (unknown verdict {v!r})"
+
+
+def ev_d4(cell: Cell) -> list[Row]:
+    d = RESULTS / "early_push_where" / cell.run
+    out = []
+    amended = sorted(d.glob("analysis-v2.1-*/summary.json"))
+    for setting, p in (("main rule", d / "summary.json"), ("amended rule", amended[-1] if amended else None)):
+        if p is None:
+            out.append(Row(cell.model, "f7", setting, verdict="missing (no amended-rule analysis: early_push_where "
+                           "analyze --rule v2.1 not run)", rule="push-amended", path=rel(d), md_setting=setting,
+                           md_text="", sources=[rel(d)]))  # fmt: skip
+            continue
+        dec = json.loads(p.read_text())["decision"]
+        rule = "push-main" if setting == "main rule" else "push-amended"
+        if dec.get("rule") not in ("v2", "v2.1"):
+            out.append(Row(cell.model, "f7", setting, verdict=f"missing (the run's rule is {dec.get('rule')}, not v2)",
+                           rule=rule, path=rel(p), md_setting=setting, md_text="", sources=[rel(p)]))  # fmt: skip
+            continue
+        rates, prim = dec.get("rates") or {}, dec.get("primary") or {}
+        bl, br = rates.get("BL"), rates.get("BR")
+        n = dec.get("n_scenes_paired")
+        where = f"{'word' if prim.get('subset') == 'w' else 'sentence'}, layer {prim.get('layer')}, {prim.get('scale', 0):g}x"
+        ctl = "" if not br else (f"recall switched {pct(br[0])} {ci_txt(br[1], br[2])}; random push on lookups "
+                                 f"{pct(rates['BL_random'][0])}; off-path changed {pct(rates['RL_changed'][0])} / "
+                                 f"{pct(rates['RR_changed'][0])}; cell: {where}")  # fmt: skip
+        out.append(Row(cell.model, "f7", setting, n=n, value=bl[0] if bl else None, ci=(bl[1], bl[2]) if bl else None,
+                       control=ctl, verdict=d4_word(dec["verdict"]), rule=rule, path=rel(p), md_setting=setting,
+                       md_text=(f"{pct(bl[0])} vs recall {pct(br[0])} n={n}" if bl and br else ""), sources=[rel(p)]))  # fmt: skip
+    return out
+
+
+def ev_rw(cell: Cell) -> list[Row]:
+    p = RESULTS / "statement_positions" / cell.run / "summary.json"
+    saved = latest_dir(RESULTS / "d1_verdict", cell.opts["parts"])
+    if saved is None:
+        return [Row(cell.model, "f8", cell.setting, verdict="missing (no stated-bridge verdict to give the cell)",
+                    rule="lens-write", path=rel(p), md_setting=cell.setting, md_text="", sources=[rel(p)])]  # fmt: skip
+    s = json.loads(p.read_text())
+    st = json.loads((saved / "verdict.json").read_text())["cell"]["set"]
+    pp, pm = s["cells"].get(f"PP/{st}/primary"), s["cells"].get(f"PM/{st}/primary")
+    if not pp or not pm:
+        return [Row(cell.model, "f8", cell.setting, verdict=f"missing (no write cell at {st})", rule="lens-write",
+                    path=rel(p), md_setting=cell.setting, md_text="", sources=[rel(p)])]  # fmt: skip
+    if pm["verdict"] != "written":
+        verdict = f"not interpretable (the lens push does not write recall here: {pm['verdict']}; no positive control)"
+    elif pp["verdict"] == "written":
+        verdict = "fails"
+    elif pp["verdict"] == "not written":
+        verdict = "holds"
+    else:
+        verdict = f"not interpretable (the lookup write is {pp['verdict']} by the rule)"
+    x1, r1 = pp["by_scale"].get("x1", {}), pm["by_scale"].get("x1", {})
+    v = x1.get("lens_flips")
+    ctl = (f"recall written: {pct(r1.get('lens_flips'))} at 1x (random {pct(r1.get('random_flips'))}); lookup at 4x "
+           f"{pct(pp['by_scale'].get('x4', {}).get('lens_flips'))} (random {pct(pp['by_scale'].get('x4', {}).get('random_flips'))}); "
+           f"set {st}, layers {pp['layers']}; write verdicts: lookup {pp['verdict']}, recall {pm['verdict']}")  # fmt: skip
+    return [Row(cell.model, "f8", cell.setting, n=pp["n"], value=v, control=ctl, verdict=verdict, rule="lens-write",
+                path=rel(p), md_setting=cell.setting, md_text=f"{pct(v)} vs recall {pct(r1.get('lens_flips'))} n={pp['n']}",
+                sources=[rel(p), rel(saved / "verdict.json")])]  # fmt: skip
+
+
+def ev_fitlens(cell: Cell) -> list[Row]:
+    p = RESULTS / "pointer_fit" / cell.run / "summary.json"
+    s = json.loads(p.read_text())
+    pr = s["primary"]
+    lens, slot, rnd = pr["lens"], pr["slot"], pr["random"]
+    ctl = (f"the fitted code (slot direction) {pct(slot[0])}; random push {pct(rnd[0])}; layer {pr['layer']}, "
+           f"{pr['scale']:g}x; the run's verdict: {s['verdict']}")  # fmt: skip
+    return [Row(cell.model, "f8", cell.setting, n=lens[3], value=lens[0], ci=(lens[1], lens[2]), control=ctl,
+                verdict="missing (no committed rule for the lens arm alone; the run's rule judges the fitted code)",
+                rule="fitted-code", path=rel(p), md_setting=cell.setting, md_text=key(lens[0], (lens[1], lens[2]), lens[3]),
+                sources=[rel(p)])]  # fmt: skip
+
+
+REMOVAL = (("lookup, bridge stated", "BL"), ("lookup, bridge recalled", "RL"), ("recall, bridge stated", "BR"),
+           ("recall, bridge recalled", "RR"))  # fmt: skip
+
+
+G2_MIN = 0.90  # the specs' gate G2: the control removals keep >= 90% on every family / step
+
+
+def g2(fams: dict) -> tuple[bool | None, list[str], bool]:
+    """(G2 passes, the family/steps where a control removal keeps < 90%, the random-dictionary control ran). None:
+    no control removal in the summary. The rotated control alone where the random one was dropped (--no-random)."""
+    has_random = any("random" in f["accuracy"] for f in fams.values())
+    if not any("rotated" in f["accuracy"] or "random" in f["accuracy"] for f in fams.values()):
+        return None, [], has_random
+    low = [f"{k} ({c} {pct(f['accuracy'][c])})" for k, f in fams.items() for c in ("rotated", "random")
+           if c in f["accuracy"] and f["accuracy"][c] < G2_MIN]  # fmt: skip
+    return not low, low, has_random
+
+
+def ev_removal(cell: Cell) -> list[Row]:
+    p = RESULTS / "ablate_pilot" / cell.run / "summary.json"
+    fams = json.loads(p.read_text())["families"]
+    ok, low, has_random = g2(fams)
+    acc_of = {fam: fams[f"{fam}/clean"]["accuracy"]["jspace"] for _, fam in REMOVAL if f"{fam}/clean" in fams}
+    gap = (sum(acc_of[f] for f in ("BL", "RL")) / 2 - sum(acc_of[f] for f in ("BR", "RR")) / 2
+           if len(acc_of) == 4 else None)  # fmt: skip
+    g2_txt = ("G2 not readable (no control removal)" if ok is None else "G2 passes" if ok else
+              f"G2 fails: {', '.join(low[:4])}")  # fmt: skip
+    norandom = "" if has_random else "; no random-dictionary control (G2 reads the rotated control alone)"
+    if not cell.opts.get("g2"):
+        verdict = "missing (no decision rule for this run: Zach's pilot)"
+    elif ok is None:
+        verdict = "missing (no control removal in the run: G2 cannot be read)"
+    elif not ok:
+        verdict = f"not interpretable (G2: a control removal keeps < 90% on {', '.join(low[:4])})"
+    else:
+        verdict = ("missing (G2 passes; the split measure's paired bootstrap is not in code, so no verdict: the "
+                   f"gap's point estimate {pts(gap)} points is shown)")  # fmt: skip
+    out = []
+    for name, fam in REMOVAL:
+        f = fams.get(f"{fam}/clean")
+        if not f:
+            continue
+        acc, n = f["accuracy"], f["n"]
+        lo, hi = wilson(round(acc["jspace"] * n), n)[1:]
+        ctl = "; ".join(f"{w} removed instead: {pct(acc[c])}" for c, w in (("rotated", "the J-space fit rotated"),
+                        ("random", "a random dictionary")) if c in acc)  # fmt: skip
+        ctl += f"; unedited: {pct(acc.get('none'))}; gap lookup - recall {pts(gap)} points; {g2_txt}{norandom}"
+        out.append(Row(cell.model, "f1", f"{cell.setting} · {name}", n=n, value=acc["jspace"], ci=(lo, hi),
+                       control=ctl, rule="removal", path=rel(p), verdict=verdict, sources=[rel(p)]))  # fmt: skip
+    if out:
+        out[0].md_setting = cell.setting
+        rec = [acc_of[f] for f in ("BR", "RR") if f in acc_of]
+        look = [acc_of[f] for f in ("BL", "RL") if f in acc_of]
+        out[0].md_text = (f"recall {'/'.join(pct(x) for x in rec)}, lookup {'/'.join(pct(x) for x in look)} "
+                          f"n={out[0].n}" + ("" if has_random else ", no random-dictionary control"))  # fmt: skip
+    else:
+        out.append(Row(cell.model, "f1", cell.setting, verdict="missing (no clean-step rows in the summary)",
+                       rule="removal", path=rel(p), md_setting=cell.setting, md_text="", sources=[rel(p)]))  # fmt: skip
+    return out
+
+
+EVAL = {"late": ev_late, "parts": ev_parts, "formats_f3": ev_formats, "formats_f4": ev_formats, "f5": ev_f5,
+        "f6": ev_f6, "gate": ev_gate, "d1": ev_d1, "d1_formats": ev_d1, "d4": ev_d4, "rw": ev_rw,
+        "fitlens": ev_fitlens, "removal": ev_removal}  # fmt: skip
+EXPAND = {  # the grid cells one run fills (several settings)
+    "formats_f3": ("prose", "table", "JSON"), "formats_f4": ("prose", "table", "JSON"), "d1_formats": ("table", "JSON"),
+    "f6": ("filler moved", "one statement more", "one statement fewer"), "d4": ("main rule", "amended rule"),
+}  # fmt: skip
+
+
+# ---------------------------------------------------------------- the build
+
+
+def selected(cell: Cell, patterns: list[str] | None) -> bool:
+    if not patterns:
+        return True
+    name = f"{cell.model}:{cell.finding}:{cell.setting}"
+    return any(fnmatch.fnmatch(name, p if p.count(":") >= 2 else p + ":*") for p in patterns)
+
+
+def settings_of(cell: Cell) -> tuple[str, ...]:
+    return EXPAND.get(cell.kind, (cell.setting,))
+
+
+def empty_rows(cell: Cell, verdict: str, status: str, jobs: Jobs | None) -> list[Row]:
+    out = []
+    for s in settings_of(cell):
+        out.append(Row(cell.model, cell.finding, s, lens=lens_of(cell) if cell.kind != "none" or cell.why else "",
+                       verdict=verdict, commit=jobs.commit(cell) if jobs and cell.jobs else "-",
+                       path=rel(required(cell)) if cell.kind != "none" else "", role=cell.role, run=cell.run,
+                       md_setting=s, md_text="", status=status))  # fmt: skip
+    return out
+
+
+def build(patterns: list[str] | None = None, values: bool = True, runs: set[str] | None = None) -> list[Row]:
+    """Every selected cell's rows. `runs`: only cells whose run is in it (tests: README-opened runs)."""
+    jobs = Jobs()
+    rows: list[Row] = []
+    for cell in _cells():
+        if not selected(cell, patterns) or (runs is not None and cell.run not in runs):
+            continue
+        if cell.kind == "none":
+            word = "not testable" if cell.why == "no lens" else "missing"
+            rows += empty_rows(cell, f"{word} ({cell.why})", cell.why, jobs)
+            continue
+        if not required(cell).exists():
+            st, why = jobs.status(cell.jobs, values)
+            word = "not testable" if st == "not testable" else "missing"
+            rows += empty_rows(cell, f"{word} ({why})", st, jobs)
+            continue
+        if not values:
+            rows += empty_rows(cell, "", "has-run", jobs)
+            continue
+        try:
+            got = EVAL[cell.kind](cell)
+        except Exception as e:  # one unreadable run is a missing cell, listed, never a crash of the whole grid
+            why = f"{type(e).__name__}: {e}"[:160]
+            got = [Row(cell.model, cell.finding, s, verdict=f"missing (files inconsistent: {why})",
+                       path=rel(required(cell)), md_setting=s, md_text="") for s in settings_of(cell)]  # fmt: skip
+        for r in got:
+            r.lens, r.commit, r.role, r.run = lens_of(cell), jobs.commit(cell), cell.role, cell.run
+            assert r.word in VERDICTS, r.verdict
+        rows += got
+    return rows
+
+
+# ---------------------------------------------------------------- outputs
+
+
+def csv_text(rows: list[Row]) -> str:
+    buf = io.StringIO()
+    w = csv.writer(buf, lineterminator="\n")
+    w.writerow(COLUMNS)
+    for r in rows:
+        unit = r.unit
+        val = "" if r.value is None else f"{100 * r.value:.1f}"
+        ci = "" if r.ci is None else f"[{100 * r.ci[0]:.1f}, {100 * r.ci[1]:.1f}]"
+        lens = r.lens + ("" if r.role == "main" else f" ({r.role}, listed beside)")
+        w.writerow([MODEL[r.model].label, FINDING[r.finding].name, r.setting, lens, "" if r.n is None else r.n,
+                    val + ("" if not val else " pts" if unit == "pts" else " %"), ci, r.control, r.verdict, r.rule,
+                    r.commit, r.path])  # fmt: skip
+    return buf.getvalue()
+
+
+def md_cell(rows: list[Row]) -> tuple[str, list[tuple[str, str]]]:
+    """grid.md text for one (finding, md setting, model): the main cell, then the cells listed beside it; with the
+    footnotes the not-interpretable ones need."""
+    parts, notes = [], []
+    for r in sorted(rows, key=lambda r: r.role != "main"):
+        sym = SYMBOL[r.word]
+        if r.word in ("missing", "not testable"):
+            reason = r.verdict[len(r.word) :].strip(" ()")
+            short = ("no spec" if reason.startswith("no spec") else "no lens" if reason == "no lens" else
+                     "failed" if " failed at the " in reason else "pending" if "pending in the queue" in reason else
+                     "running" if "running in the queue" in reason else "blocked" if " waits on " in reason else
+                     "not run" if "not run" in reason else "gate failed" if "gate v1 failed" in reason else
+                     "raw smoke mismatch" if "raw smoke mismatch" in reason else
+                     "no early layer" if "before the donor's digit" in reason else "see csv")  # fmt: skip
+            text = f"{sym} {r.word}: {short}" if r.md_text == "" or r.md_text is None else f"{sym} {r.md_text}"
+        else:
+            text = f"{sym} {r.md_text}"
+        if r.word == "not interpretable":
+            notes.append((f"{MODEL[r.model].label}, {FINDING[r.finding].name}, {r.md_setting}"
+                          f"{'' if r.role == 'main' else f' ({r.role})'}", r.verdict))  # fmt: skip
+            text += " [{n}]"
+        parts.append(text if r.role == "main" else f"{r.role}: {text}")
+    return "<br>".join(parts), notes
+
+
+def lens_block(rows: list[Row]) -> list[str]:
+    table = sorted((RESULTS / "lens_table").glob("*/table.json"))
+    lt = json.loads(table[-1].read_text())["rows"] if table else []
+
+    def score(model: str, lens: str) -> str:
+        r = next((x for x in lt if x["model"] == model and x["lens"] == lens), None)
+        if not r:
+            return "-"
+        if r.get("macro") is None:
+            return r.get("status", "-")
+        d = r.get("d_logit")
+        return f"{r['macro']:.2f}" + ("" if d is None else f" ({d:+.2f} vs the logit lens)")
+
+    def recipe(model: str, lens: str) -> str:
+        r = next((x for x in lt if x["model"] == model and x["lens"] == lens), None)
+        return r["recipe"] if r else "-"
+
+    def gate(m: str, role: str, v: str) -> str:
+        g = [r for r in rows if r.model == m and r.finding == "gate" and r.role == role and r.setting.startswith(v)]
+        return (SYMBOL[g[0].word] + " " + (g[0].md_text or g[0].word)) if g else "-"
+
+    lines = ["## Lens", "",
+             f"Lens quality: pass@10 (macro) on the J++ recipe's held-out readout evals, minus the logit lens on the "
+             f"same items and layers ({rel(table[-1]) if table else 'results/lens_table: none'}). Gates: the bridge "
+             "in the lens's top 10 at its own sentence (v1) or after its word (v2), share of items.", "",
+             "| Model | Lens | Source, sha256 | Recipe (prompts) | pass@10 | Gate v1 | Gate v2 | Listed beside |",
+             "|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    for m in MODELS:
+        if m.key == "olmo_hybrid":
+            lines.append(f"| {m.label} | none | - | - | - | ⊘ no lens | ⊘ no lens | - |")
+            continue
+        mains = [r for r in rows if r.model == m.key and r.finding == "gate" and r.role == "main"]
+        lens = mains[0].lens if mains else "-"
+        kind, _, rest = lens.partition(", ")
+        beside = []
+        for role in sorted({r.role for r in rows if r.model == m.key and r.finding == "gate" and r.role != "main"}):
+            other = next(r for r in rows if r.model == m.key and r.finding == "gate" and r.role == role)
+            sc = score(m.lens_rows[0], m.lens_rows[2]) if m.lens_rows[2] else "-"
+            beside.append(f"{role} ({other.lens}): v1 {gate(m.key, role, 'v1')}, v2 {gate(m.key, role, 'v2')}, "
+                          f"pass@10 {sc}")  # fmt: skip
+        lines.append(f"| {m.label} | {kind} | {rest} | {recipe(m.lens_rows[0], m.lens_rows[1])} | "
+                     f"{score(m.lens_rows[0], m.lens_rows[1])} | {gate(m.key, 'main', 'v1')} | {gate(m.key, 'main', 'v2')} | "
+                     f"{'<br>'.join(beside) or '-'} |")  # fmt: skip
+    return [*lines, ""]
+
+
+KEY_CELLS = (
+    ("27b", "f4", "long context"), ("32b", "f6", "filler moved"), ("olmo_hybrid", "f3", "draw 2"),
+    ("olmo_hybrid", "f4", "draw 2"), ("olmo_hybrid", "f5", "draw 2"), ("olmo_hybrid", "f6", "filler moved"),
+    ("olmo", "f7", "main rule"), ("32b", "gate", "v1 (at the word)"), ("32b", "gate", "v2 (after the word)"),
+    ("olmo", "gate", "v1 (at the word)"), ("olmo", "gate", "v2 (after the word)"), ("gemma", "gate", "v1 (at the word)"),
+    ("gemma", "gate", "v2 (after the word)"), ("muse", "gate", "v1 (at the word)"), ("muse", "gate", "v2 (after the word)"),
+    ("32b", "f2", "draw 1"), ("olmo", "f2", "draw 2"), ("gemma", "f2", "draw 2"), ("muse", "f2", "draw 2"),
+)  # fmt: skip
+
+
+def grid_md(rows: list[Row], meta: dict) -> str:
+    cells: dict[tuple, list[Row]] = collections.defaultdict(list)
+    for r in rows:
+        if r.md_setting is not None:
+            cells[(r.finding, r.md_setting, r.model)].append(r)
+    notes: list[tuple[str, str]] = []
+    done: dict[tuple, str] = {}
+
+    def text(k: tuple) -> str:  # once per cell, so that a footnote is numbered once
+        if k not in cells:
+            return ""
+        if k not in done:
+            t, ns = md_cell(cells[k])
+            for n in ns:
+                notes.append(n)
+                t = t.replace("[{n}]", f"[{len(notes)}]", 1)
+            done[k] = t
+        return done[k]
+
+    head = ["# Every finding on every model", "",
+            f"Built by scripts/cross_model_grid.py at {meta['git']} ({meta['written_utc']}) from the saved results; "
+            "each cell is judged by the rule committed with its run (rule ids in the mapping table below). Nothing here "
+            "is human-verified. Long format with every number: grid.csv; the files behind each cell: sources.txt.", "",
+            "Cell: verdict, key number [95% CI], n. ✓ holds · ✗ fails · ⚠ not interpretable (a control failed; "
+            "footnote) · ⊘ not testable (no lens, the gate or competence failed) · · missing (did not run, failed, or no "
+            "rule). A second line lists a run with another lens (plain J-lens, base-model J++) beside the main one.", "",
+            "Finding 1: \"no random-dictionary control\" marks the removal runs that dropped it (Qwen3-32B, Gemma 4, "
+            "Muse: too large next to the model on an 80 GB GPU); their gate G2 reads the rotated control alone.", ""]  # fmt: skip
+    key_lines = ["## Key cells", ""]
+    for m, f, s in KEY_CELLS:
+        key_lines.append(f"- {MODEL[m].label}, {FINDING[f].name} ({s}): {text((f, s, m)) or 'no cell'}")
+    key_lines.append("")
+    models = [m for m in MODELS]
+    tab = ["## The grid", "",
+           "| # | Finding | Setting | " + " | ".join(m.label for m in models) + " |",
+           "|---|---|---|" + "---|" * len(models)]  # fmt: skip
+    for f in FINDINGS:
+        if f.key == "gate":
+            continue
+        for s in f.settings:
+            if not any((f.key, s, m.key) in cells for m in models):
+                continue
+            tab.append(f"| {f.number} | {f.name} | {s} | " + " | ".join(text((f.key, s, m.key)) for m in models) + " |")
+    what = ["", "What the key numbers are, by finding:", "",
+            "- 1: % right with the J-space removed (recall / lookup, the clean question); no rule in code.",
+            "- 2: % of lookups the lens-readable part of a stated bridge's change switches.",
+            "- 3: % right with the sentence without its name hidden from the last tokens (the digit hidden too).",
+            "- 4: % right with the answer's sentence hidden from the last tokens (chance 20%).",
+            "- 5: points, position - identity for the 1st-2nd asked sentence / identity - position from the 3rd on.",
+            "- 6: % of patched answers at the same order in the list vs at the same place in the text (or from the end).",
+            "- 7: % of lookups vs recalls the lens push switches at the rule's cell.",
+            "- 8: % of lookups vs recalls the lens push writes (1x) at the stated bridge's cell; last tokens: % of "
+            "lookups the lens push moves in the fitted-code test.", ""]  # fmt: skip
+    foot = ["## Footnotes (not interpretable)", ""] + [f"{i}. {w}: {v}" for i, (w, v) in enumerate(notes, 1)] + [""]
+    mapping = ["## Mapping: names, internal codes, scripts, rules", "",
+               "| # | Finding | Internal codes | Scripts | Rule ids |", "|---|---|---|---|---|"]  # fmt: skip
+    for f in FINDINGS:
+        ids = sorted({r.rule for r in rows if r.finding == f.key and r.rule})
+        mapping.append(f"| {f.number} | {f.name} | {f.codes} | {f.scripts} | {', '.join(ids) or '-'} |")
+    mapping += ["", "| Rule id | Rule |", "|---|---|"] + [f"| {k} | {v} |" for k, v in RULES.items()] + [""]
+    body = [*head, *key_lines, *lens_block(rows), *tab, *what, *foot, *mapping]
+    return "\n".join(body)
+
+
+def status_outputs(rows: list[Row]) -> tuple[str, str]:
+    buf = io.StringIO()
+    w = csv.writer(buf, lineterminator="\n")
+    w.writerow(("model", "finding", "setting", "lens role", "run", "status", "spec commit", "result path"))
+    for r in rows:
+        w.writerow(
+            (MODEL[r.model].label, FINDING[r.finding].name, r.setting, r.role, r.run, r.status, r.commit, r.path)
+        )
+    counts = collections.Counter(r.status for r in rows)
+    md = ["# Cell status (no values)", "", "| status | cells |", "|---|---|"]
+    md += [f"| {k} | {v} |" for k, v in sorted(counts.items())] + [""]
+    return buf.getvalue(), "\n".join(md)
+
+
+def git_head() -> str:
+    p = subprocess.run(["git", "-C", str(REPO), "rev-parse", "--short", "HEAD"], capture_output=True, text=True,
+                       check=False)  # fmt: skip
+    dirty = subprocess.run(["git", "-C", str(REPO), "status", "--porcelain", "--untracked-files=no"],
+                           capture_output=True, text=True, check=False).stdout.strip()  # fmt: skip
+    return p.stdout.strip() + (" (uncommitted changes)" if dirty else "")
+
+
+def write(rows: list[Row], out_root: Path, values: bool) -> Path:
+    stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+    d = out_root / stamp
+    d.mkdir(parents=True, exist_ok=False)
+    meta = {"written_utc": stamp, "git": git_head(), "script": "scripts/cross_model_grid.py", "values": values}
+    if not values:
+        c, md = status_outputs(rows)
+        (d / "status.csv").write_text(c)
+        (d / "status.md").write_text(md)
+        return d
+    (d / "grid.csv").write_text(csv_text(rows))
+    (d / "grid.md").write_text(grid_md(rows, meta))
+    (d / "grid.json").write_text(json.dumps({"meta": meta, "rules": RULES, "rows": [r.__dict__ for r in rows]},
+                                            indent=1, default=str) + "\n")  # fmt: skip
+    src = [f"{MODEL[r.model].label} | {FINDING[r.finding].name} | {r.setting} | {r.role} | {r.run or '-'} | "
+           f"{'; '.join(r.sources) or r.path or '-'}" for r in rows]  # fmt: skip
+    (d / "sources.txt").write_text("\n".join(src) + "\n")
+    return d
+
+
+def main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--cells", default=None, help="model:finding[:setting] glob patterns, comma-separated")
+    ap.add_argument("--no-values", action="store_true", help="status only; no result file is opened")
+    ap.add_argument("--out", default=str(OUT), help="parent folder of the new grid folder")
+    a = ap.parse_args(argv)
+    patterns = [p.strip() for p in a.cells.split(",")] if a.cells else None
+    rows = build(patterns, values=not a.no_values)
+    d = write(rows, Path(a.out), values=not a.no_values)
+    if a.no_values:
+        print("cells by status:", dict(collections.Counter(r.status for r in rows)))
+    else:
+        print(f"{len(rows)} rows")
+    print("wrote", d)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

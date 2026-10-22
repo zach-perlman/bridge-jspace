@@ -1,0 +1,358 @@
+"""cross_model_grid: the verdict words on synthetic runs (each rule's pass, fail and failed-control case), the cell
+status from the queue without opening any result, and on the runs README.md already reports: 10 random cells
+recomputed from the raw rows, and every number of README's findings table found in grid.csv.
+
+Only README-reported runs are read here (OPENED); the night's runs are never opened by these tests."""
+
+from __future__ import annotations
+
+import csv
+import io
+import json
+import random
+import re
+
+import pytest
+
+from scripts import cross_model_grid as G
+
+# The runs README.md reports (its "Runs behind each slide" list and the body), and nothing else.
+OPENED = {
+    "d2_parts_v2_27b", "qwen3_32b_d2_parts_v2", "qwen35_9b_d2_parts_v2", "olmo3_7b_instruct_d2_parts_v2",
+    "gemma4it_d2_parts_v2", "d2_parts_seed2_27b", "qwen3_32b_d2_parts_seed2", "qwen35_9b_d2_parts_seed2",
+    "olmo3_7b_instruct_d2_parts_seed2", "gemma4it_d2_parts_seed2", "d2_v4_late_read", "qwen3_32b_d2_v4_late_read_v2_r2",
+    "qwen35_9b_d2_v4_late_read_r2", "olmo3_7b_instruct_d2_v4_late_read_v3", "gemma4it_d2_v4_late_read_v3_r2",
+    "d2_late_read_seed2_27b", "qwen3_32b_d2_late_read_seed2", "qwen35_9b_d2_late_read_seed2",
+    "olmo3_7b_instruct_d2_late_read_seed2", "gemma4it_d2_late_read_seed2", "d2_formats_27b", "qwen3_32b_d2_formats",
+    "qwen35_9b_d2_late_read_long", "lens_gate_27b", "qwen3_32b_lens_gate", "qwen35_9b_lens_gate",
+    "d1_topics_parts_27b", "qwen3_32b_d1_topics_parts", "qwen35_9b_d1_topics2_parts", "d1_topics_rw_27b",
+    "qwen3_32b_d1_topics_rw", "qwen35_9b_d1_topics2_rw", "d3v4x_swap_main", "qwen35_9b_d3v4x_swap_r2",
+    "olmo3_7b_instruct_d3v4x_swap", "gemma4it_d3v4x_swap_r2", "d3v4_seed3_swap_27b", "qwen3_32b_d3v4_seed2_swap",
+    "qwen35_9b_d3v4_seed2_swap", "gemma4it_d3v4_seed2_swap", "olmo3_7b_instruct_d3v4_seed2_swap",
+    "qwen35_9b_d3v4_swap_r2", "gemma4it_d3v4_swap_v2_r2", "olmo3_7b_instruct_d3v4_swap_fn", "d4_where_fresh_27b",
+    "d3v4_fit_main", "olmo3_7b_instruct_d3b_fit_v2", "abl_rot_v1",
+}  # fmt: skip
+
+
+def _jsonl(path, rows):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("".join(json.dumps(r) + "\n" for r in rows))
+
+
+def _json(path, obj):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(obj))
+
+
+@pytest.fixture
+def results(tmp_path, monkeypatch):
+    r = tmp_path / "results"
+    monkeypatch.setattr(G, "RESULTS", r)
+    return r
+
+
+# ---------------------------------------------------------------- synthetic runs: each rule's verdict words
+
+
+def _late_rows(n: int, attn: int, off: int, gdn: int | None) -> list[dict]:
+    rows = [{"family": "RL", "id": f"i{i}", "source": "none", "dest": "none", "layers": "none", "correct": True}
+            for i in range(n)]  # fmt: skip
+    arms = [("lookup", "attn", attn), ("lookup_off", "attn", off)] + (
+        [("lookup", "gdn", gdn)] if gdn is not None else []
+    )
+    for src, layers, k in arms:
+        rows += [{"family": "RL", "id": f"i{i}", "source": src, "dest": "final", "layers": layers, "correct": i < k}
+                 for i in range(n)]  # fmt: skip
+    return rows
+
+
+@pytest.mark.parametrize(
+    ("attn", "off", "gdn", "word"),
+    [
+        (5, 100, 100, "holds"),
+        (5, 80, 100, "not interpretable"),
+        (5, 100, 50, "fails"),
+        (40, 100, 100, "fails"),
+        (5, 100, None, "holds"),
+    ],
+)
+def test_late_read_verdicts(results, attn, off, gdn, word):
+    _jsonl(results / "attn_knockout" / "r" / "rows.jsonl", _late_rows(100, attn, off, gdn))
+    (row,) = G.ev_late(G.Cell("27b", "f4", "draw 2", "late", "r"))
+    assert row.word == word
+    assert row.n == 100 and row.value == pytest.approx(attn / 100)
+    if word == "not interpretable":
+        assert "off-path" in row.verdict
+
+
+def _parts_rows(rates: dict[tuple[str, str], float], n: int = 100) -> tuple[list[dict], list[dict]]:
+    cases = [{"id": f"i{i}", "tok_A": 1, "conf_toks": [2, 3]} for i in range(n)]
+    rows = [{"family": "RL", "id": f"i{i}", "source": "none", "dest": "none", "layers": "all", "correct": True, "top": 1}
+            for i in range(n)]  # fmt: skip
+    for s in G.DP.PARTS + G.DP.SPLIT:
+        for d in ("question", "final"):
+            k = round(rates.get((s, d), 1.0) * n)
+            rows += [{"family": "RL", "id": f"i{i}", "source": s, "dest": d, "layers": "all", "correct": i < k,
+                      "top": 1 if i < k else 2} for i in range(n)]  # fmt: skip
+    return rows, cases
+
+
+@pytest.mark.parametrize(
+    ("rates", "word"),
+    [
+        ({("lookup_noname", "final"): 0.05, ("lookup_nodigit", "final"): 0.95}, "holds"),
+        ({("lookup_noname", "final"): 0.80, ("lookup_nodigit", "final"): 0.95}, "fails"),
+        ({("lookup_noname", "final"): 0.05, ("lookup_off_noname", "final"): 0.50}, "not interpretable"),
+    ],
+)
+def test_name_vs_digit_verdicts(results, rates, word):
+    rows, cases = _parts_rows(rates)
+    _jsonl(results / "attn_knockout" / "r" / "rows.jsonl", rows)
+    _jsonl(results / "attn_knockout" / "r" / "cases.jsonl", cases)
+    (row,) = G.ev_parts(G.Cell("27b", "f3", "draw 2", "parts", "r"))
+    assert row.word == word
+    assert row.value == pytest.approx(rates[("lookup_noname", "final")])
+
+
+def test_gate_verdicts(results):
+    g = {"pass": False, "bridge_top10": [0.4, 0.3, 0.5], "x_top10": [0.1, 0.05, 0.2], "n": 60}
+    _json(results / "lens_gate" / "r" / "summary.json", {"gate": g})
+    v1 = G.ev_gate(G.Cell("32b", "gate", "v1 (at the word)", "gate", "r", opts={"gate": "v1"}))
+    v2 = G.ev_gate(G.Cell("32b", "gate", "v2 (after the word)", "gate", "r", opts={"gate": "v2"}))
+    assert (v1[0].word, v1[0].value, v1[0].n) == ("fails", 0.4, 60)
+    assert v2[0].word == "missing"
+
+
+def test_stated_bridge_verdicts_and_exact_run_match(results):
+    cell = {"set": "context", "layer": 32, "map_flips": [0.9, 0.8, 0.95]}
+    part = {"full": [0.9, 0.8, 0.95, 100], "jspace": [0.0, 0.0, 0.04, 100], "not_jspace": [0.85, 0.77, 0.9, 100]}
+    v = {"cell": cell, "lookup": part, "recall": {**part, "jspace": [0.05, 0.02, 0.1, 100]},
+         "verdict": "not interpretable: the positive control fails", "topic_verdicts": {"animals": "replicates"},
+         "by_topic": {"animals": {"PP_jspace": [0.0, 0.0, 0.1, 30], "PP_not_jspace": [0.9, 0.8, 0.95, 30],
+                                  "PM_jspace": [0.5, 0.3, 0.7, 30]}}}  # fmt: skip
+    _json(results / "d1_verdict" / "p_20261022-100000" / "verdict.json", v)
+    _json(results / "d1_verdict" / "p_r2_20261023-100000" / "verdict.json", {**v, "verdict": "replicates"})
+    latest = G.latest_dir(results / "d1_verdict", "p")
+    assert latest is not None and latest.name == "p_20261022-100000"
+    rows = G.ev_d1(G.Cell("32b", "f2", "draw 1", "d1", "p"))
+    assert [r.word for r in rows] == ["not interpretable", "holds"]
+    assert "positive control" in rows[0].verdict and rows[1].md_setting is None
+
+
+def test_lens_push_verdicts(results):
+    rates = {"BL": [0.29, 0.21, 0.39], "BR": [0.84, 0.76, 0.9], "BL_random": [0, 0, 0.04], "RL_changed": [0.05, 0, 0.1],
+             "RR_changed": [0.03, 0, 0.08]}  # fmt: skip
+    dec = {"rule": "v2", "primary": {"subset": "w", "layer": 16, "scale": 8.0}, "verdict": "inconclusive", "rates": rates,
+           "n_scenes_paired": 100}  # fmt: skip
+    d = results / "early_push_where" / "r"
+    _json(d / "summary.json", {"decision": dec})
+    cell = G.Cell("27b", "f7", "main rule", "d4", "r")
+    assert [r.word for r in G.ev_d4(cell)] == ["not interpretable", "missing"]
+    _json(d / "analysis-v2.1-20261022T000000Z" / "summary.json",
+          {"decision": {**dec, "rule": "v2.1", "verdict": "H-around: the lens writes ..."}})  # fmt: skip
+    assert [r.word for r in G.ev_d4(cell)] == ["not interpretable", "holds"]
+    assert G.d4_word("not valid (H-around: x)").startswith("not interpretable")
+    assert G.d4_word("no valid cell: the lens does not write").startswith("not interpretable")
+
+
+def test_removal_g2_and_missing_random_control(results):
+    def fam(j: float, rot: float) -> dict:
+        return {"n": 100, "accuracy": {"none": 1, "jspace": j, "rotated": rot}}
+
+    fams = {
+        "BL/clean": fam(0.99, 1.0),
+        "RL/clean": fam(0.99, 1.0),
+        "BR/clean": fam(0.2, 1.0),
+        "RR/clean": fam(0.2, 0.8),
+    }
+    _json(results / "ablate_pilot" / "r" / "summary.json", {"families": fams})
+    rows = G.ev_removal(G.Cell("32b", "f1", "draw 1", "removal", "r", opts={"g2": True}))
+    assert {r.word for r in rows} == {"not interpretable"} and "RR/clean" in rows[0].verdict
+    assert "no random-dictionary control" in (rows[0].md_text or "")
+    fams["RR/clean"] = fam(0.2, 1.0)
+    _json(results / "ablate_pilot" / "r" / "summary.json", {"families": fams})
+    rows = G.ev_removal(G.Cell("32b", "f1", "draw 1", "removal", "r", opts={"g2": True}))
+    assert rows[0].word == "missing" and "G2 passes" in rows[0].verdict and "+79 points" in rows[0].verdict
+    pilot = G.ev_removal(G.Cell("27b", "f1", "draw 1", "removal", "r"))
+    assert "no decision rule" in pilot[0].verdict
+
+
+# ---------------------------------------------------------------- the queue: status without results
+
+
+def test_status_from_ledger_and_queue(tmp_path, results):
+    for job, deps in (("a", []), ("b", ["a"]), ("c", []), ("d", []), ("e", [])):
+        (tmp_path / "jobs" / "d1").mkdir(parents=True, exist_ok=True)
+        (tmp_path / "jobs" / "d1" / f"{job}.yaml").write_text(json.dumps({"id": job, "depends_on": deps}))
+    stop = "uv run python scripts/d1_precheck.py --gate {g} && uv run python scripts/x.py"
+    ledger = [
+        {"id": "a", "status": "failed", "exit_code": 3, "command": stop.format(g="g_fail"), "ended_at": "1", "commit": "abc1234ff"},
+        {"id": "c", "status": "failed", "exit_code": 3, "ended_at": "1",
+         "command": stop.format(g="g_pass") + " && uv run python scripts/check_unedited.py --run s"},
+        {"id": "d", "status": "failed", "exit_code": 1, "ended_at": "1", "command": "x", "error": "Traceback\nOOM"},
+    ]  # fmt: skip
+    _jsonl(tmp_path / "results" / "jobq" / "ledger.jsonl", ledger)
+    _json(tmp_path / "cache" / "jobq" / "queue_state.json", {"pending": [{"id": "b"}], "running": []})
+    _json(results / "lens_gate" / "g_fail" / "summary.json", {"gate": {"pass": False}})
+    _json(results / "lens_gate" / "g_pass" / "summary.json", {"gate": {"pass": True}})
+    jobs = G.Jobs(tmp_path)
+    assert jobs.status(("a",)) == ("not testable", "gate v1 failed (g_fail)")
+    assert jobs.status(("b",))[0] == "not testable"  # blocked behind a job the gate stopped
+    assert jobs.status(("c",))[0] == "missing" and "raw smoke mismatch" in jobs.status(("c",))[1]
+    assert jobs.status(("d",))[0] == "failed"
+    assert jobs.status(("e",))[0] == "not enqueued"
+    assert jobs.status(("zz",)) == ("no spec", "no spec")
+    assert jobs.status(("a",), values=False)[0] == "failed"  # no gate summary is read without values
+    assert jobs.commit(G.Cell("27b", "f2", "draw 1", "d1", "r", ("a",))) == "abc1234"
+
+
+def test_no_values_opens_no_result(monkeypatch):
+    def boom(cell):
+        raise AssertionError("a result was opened")
+
+    monkeypatch.setattr(G, "EVAL", dict.fromkeys(G.EVAL, boom))
+    rows = G.build(["27b:*", "olmo_hybrid:*"], values=False)
+    assert rows and {r.status for r in rows} <= {"has-run", "failed", "pending", "running", "blocked", "not enqueued",
+                                                 "no spec", "no lens", "done, no results"}  # fmt: skip
+    assert all(r.value is None for r in rows)
+
+
+def test_every_grid_cell_has_a_row_and_one_of_five_verdicts(monkeypatch):
+    monkeypatch.setattr(G, "EVAL", dict.fromkeys(G.EVAL, lambda cell: []))
+    cells = G._cells()
+    have = {(c.model, c.finding, s) for c in cells for s in G.settings_of(c)}
+    for f in G.FINDINGS:
+        for s in f.settings:
+            for m in G.MODELS:
+                assert (m.key, f.key, s) in have or (f.key, s) == ("f5", "draw 3"), (m.key, f.key, s)
+    assert len({(c.model, c.finding, c.setting, c.role, c.run) for c in cells}) == len(cells)
+    text = G.csv_text([G.Row("27b", "f4", "draw 2", verdict="missing (x)")])
+    assert next(csv.reader(io.StringIO(text))) == list(G.COLUMNS)
+
+
+# ---------------------------------------------------------------- the README's runs
+
+
+@pytest.fixture(scope="module")
+def opened() -> tuple[list, list[dict]]:
+    if not (G.RESULTS / "attn_knockout" / "d2_late_read_seed2_27b" / "rows.jsonl").exists():
+        pytest.skip("the README's runs are not in results/")
+    rows = G.build(runs=OPENED)
+    return rows, list(csv.DictReader(io.StringIO(G.csv_text(rows))))
+
+
+def _num(s: str) -> float:
+    return float(s.split()[0])
+
+
+def _recompute(r: dict, grid_row) -> float | None:
+    """The csv row's value (percent) from the raw rows, without the grid's code; None for a kind not covered."""
+    path = G.REPO / r["result path"]
+    finding, setting = grid_row.finding, r["setting"]
+    if "attn_knockout" in str(path):
+        rows = G.jl(path)
+        fam = "MP" if setting in ("prose", "table", "JSON") else "RL"
+        fmt = {"prose": "prose", "table": "table", "JSON": "json"}.get(setting)
+        cases = {c["id"]: c for c in G.jl(path.parent / "cases.jsonl")}
+        ok = {r_["id"] for r_ in rows if r_["source"] == "none" and r_["correct"] and r_["family"] == fam}
+
+        def keep(r_: dict) -> bool:
+            return (
+                r_["id"] in ok
+                and r_["family"] == fam
+                and (fmt is None or cases[r_["id"]]["wording"].split("/")[0] == fmt)
+            )
+
+        if finding == "f4":
+            labels = {r_["layers"] for r_ in rows if r_["source"] == "lookup" and r_["dest"] == "final"}
+            lab = "attn" if "attn" in labels else "all"
+            sel = [
+                r_["correct"]
+                for r_ in rows
+                if keep(r_) and r_["source"] == "lookup" and r_["dest"] == "final" and r_["layers"] == lab
+            ]
+        else:
+            sel = [r_["top"] == cases[r_["id"]]["tok_A"] for r_ in rows if keep(r_) and r_["source"] == "lookup_noname"
+                   and r_["dest"] == "final" and r_["layers"] == "all"]  # fmt: skip
+        return 100 * sum(sel) / len(sel)
+    if "lens_gate" in str(path):
+        key = "bind_bridge" if setting.startswith("v1") else "after_word"
+        best: dict[str, int] = {}
+        for r_ in G.jl(path.parent / "rows.jsonl"):
+            if r_["set"] == key and r_["rank_bridge"] is not None:
+                best[r_["id"]] = min(best.get(r_["id"], 10**9), r_["rank_bridge"])
+        return 100 * sum(v <= 10 for v in best.values()) / len(best)
+    if "d1_verdict" in str(path) and "·" not in setting:
+        v = json.loads(path.read_text())
+        out = G.jl(G.RESULTS / "statement_positions" / v["parts"] / "outcomes.jsonl")
+        sel = [o["role"] == "b" for o in out if o["family"] == "PP" and o["part"] == "jspace" and o["source"] == "cf"
+               and not o["null"] and o["set"] == v["cell"]["set"] and o["layer"] == v["cell"]["layer"]]  # fmt: skip
+        return 100 * sum(sel) / len(sel)
+    if "ablate_pilot" in str(path):
+        fam = {"lookup, bridge stated": "BL", "lookup, bridge recalled": "RL", "recall, bridge stated": "BR",
+               "recall, bridge recalled": "RR"}[setting.split(" · ")[1]]  # fmt: skip
+        sel = [o["correct"] for o in G.jl(path.parent / "rows.jsonl")
+               if o["family"] == fam and o["kind"] == "clean" and o["condition"] == "jspace"]  # fmt: skip
+        return 100 * sum(sel) / len(sel)
+    return None
+
+
+def test_ten_random_cells_recomputed_from_raw_rows(opened):
+    rows, table = opened
+    pairs = [(c, g) for c, g in zip(table, rows, strict=True) if c["value"] and _covered(c)]
+    assert len(pairs) >= 10
+    for c, g in random.Random(0).sample(pairs, 10):
+        got = _recompute(c, g)
+        assert got is not None
+        assert f"{got:.1f}" == f"{_num(c['value']):.1f}", (c["model"], c["finding"], c["setting"])
+
+
+def _covered(c: dict) -> bool:
+    p = c["result path"]
+    return any(k in p for k in ("attn_knockout", "lens_gate", "ablate_pilot")) or (
+        "d1_verdict" in p and "·" not in c["setting"]
+    )
+
+
+# README's findings table: every number in "Key evidence" must be in grid.csv's rows of that finding (value, interval
+# or the control / reference column). The ones the grid does not show, with why:
+NOT_IN_GRID = {
+    ("2", 66): "the animal suite's recall (statement_positions d1_parts_n80_v1), another rule; not a grid cell",
+    ("3", 21): "Gemma's 21% is not in the grid's name-vs-digit cells (prose draws 28-29%): another run or cell",
+    ("7", 37): "the range over all valid cells from layer 20 on; the grid shows the rules' decisive cells only",
+    ("7", 83): "a layer-16 cell the amended rule reports, not decisive; not a grid cell",
+    ("7", 30): "a layer-16 cell the amended rule reports, not decisive; not a grid cell",
+    ("8", 50): "the README's range over scales; the grid shows the write at 1x pooled over the cell's window",
+    ("8", 59): "the README's range over scales; the grid shows the write at 1x pooled over the cell's window",
+    ("8", 12): "the README's random-push range over scales; the grid shows the random push at 1x and 4x",
+    ("8", 14): "the README's random-push range over scales; the grid shows the random push at 1x and 4x",
+    ("8", 47): "the last-token lens test (c2_cells, elements at layer 44): not a grid cell",
+}
+NUMBER = re.compile(r"\[(\d+), (\d+)\]|\+?(\d+)(?:-(\d+))?(?:%| points)")
+
+
+def _readme_numbers() -> list[tuple[str, int]]:
+    out = []
+    for line in (G.REPO / "README.md").read_text().splitlines():
+        m = re.match(r"\| ([1-8]) \| [^|]+ \| ([^|]+) \|", line)
+        if m:
+            for g in NUMBER.findall(m.group(2)):
+                out += [(m.group(1), int(x)) for x in g if x]
+    return sorted(set(out))
+
+
+README_NUMBERS = _readme_numbers()
+
+
+@pytest.mark.parametrize(("finding", "number"), README_NUMBERS, ids=[f"finding{f}-{n}" for f, n in README_NUMBERS])
+def test_readme_number_in_grid(opened, finding, number):
+    if (finding, number) in NOT_IN_GRID:
+        pytest.xfail(NOT_IN_GRID[(finding, number)])
+    _, table = opened
+    name = next(f.name for f in G.FINDINGS if f.number == finding)
+    seen: set[int] = set()
+    for c in table:
+        if c["finding"] == name:
+            seen |= {round(float(x)) for x in re.findall(r"-?\d+(?:\.\d+)?", " ".join((c["value"], c["95% CI"])))}
+            seen |= {int(x) for x in re.findall(r"\d+", c["chance or control level"])}
+    assert number in seen, f"README finding {finding}: {number} not in grid.csv"
