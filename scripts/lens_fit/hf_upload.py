@@ -30,6 +30,7 @@ def main() -> int:
     ap.add_argument("--sha256", required=True)
     ap.add_argument("--note", required=True, help="the provenance line (recipe, prompts, seed, date)")
     ap.add_argument("--public", action="store_true", help="default: private")
+    ap.add_argument("--card", type=Path, help="a full model card (README.md) to upload instead of the short note")
     a = ap.parse_args()
     token = os.environ.get("HF_TOKEN", "").strip().strip('"').strip("'")
     assert token, "HF_TOKEN is not set for this command"
@@ -37,7 +38,7 @@ def main() -> int:
     api = HfApi(token=token)
     repo_id = f"{api.whoami()['name']}/{a.repo}"
     api.create_repo(repo_id, private=not a.public, exist_ok=True)
-    readme = (f"# {a.repo}\n\n{a.note}\n\nFile: `{a.file.name}` (fp16 J maps, cast to fp32 on load), sha256 `{a.sha256}`.\n\n"
+    readme = a.card.read_text() if a.card else (f"# {a.repo}\n\n{a.note}\n\nFile: `{a.file.name}` (fp16 J maps, cast to fp32 on load), sha256 `{a.sha256}`.\n\n"
               "Fit with the published J++ recipe (safety-research/jpp_lens@93f02cd) for the bridge-jspace project.\n")  # fmt: skip
     with tempfile.TemporaryDirectory() as d:
         (Path(d) / "README.md").write_text(readme)
