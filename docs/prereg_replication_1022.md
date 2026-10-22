@@ -89,3 +89,21 @@ h200_q32_core_1021.sh).
   - the 27B bridge.
 
   If a J++ is fit, J++ becomes Muse's lens of record, matching the other models, and both lenses are reported.
+
+## Amendment 2 (Zach, 2026-10-22 ~02:55 UTC): our own J++ for Muse; the J-lens bridge dropped
+
+- **Muse's lens of record is a J++ we fit**, as for every other model:
+  - recipe: Qwen3-32B's, 32 WikiText prompts, safety-research/jpp_lens@93f02cd plus
+    scripts/lens_fit/jpp_lens_muse_1022.patch (LRP class registry only, checked by scripts/lens_fit/check_muse_lrp.py);
+  - target muse-glimmer-30b, run prefix muse30_.
+- **Its published plain J-lens** (target muse-glimmer-30b-jlens, prefix muse30j_) runs only the lens check and the
+  plain-text gate, as a comparison.
+- **The 27B J-lens bridge is dropped** (Zach). It was there to interpret a plain-J-lens result, and Muse is now judged
+  with a J++.
+- **What was seen when this was decided:**
+  - the 27B's lens-agreement curves: plain J-lens about the logit lens in the middle layers, J++ about +0.08 above it;
+  - no Muse result of any kind.
+- **Every rule above applies to Muse with the J++:**
+  - the untestable gate at 26-32 (muse30_textloss_top_v1);
+  - C1-graded at the ctrl_v8-chosen band;
+  - C2' on muse30_wm2_full2_v1.
