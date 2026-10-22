@@ -3,14 +3,11 @@
 
     caffeinate -i uv run python scripts/remote/h200q_watchdog.py   # log: log/remote/h200q_watchdog.log
     uv run python scripts/remote/h200q_watchdog.py --check         # every condition once; starts and deletes nothing
-    uv run python scripts/remote/h200q_watchdog.py --last-batch    # say the last batch of 122B specs is committed
+    uv run python scripts/remote/h200q_watchdog.py --last-batch    # say the last batch is enqueued
 
 The queue is jobq's (scripts/jobq.py) on the box sesterce-h200x2 (~/jobq; jobs enqueued from the Mac with
-JOBQ_HOST=sesterce-h200x2). This script starts its workers, enqueues new 122B specs, pulls, and ends the box:
-0. Every 5 min (from the start, workers or not): every committed jobs/*/qwen35_122b_*.yaml not yet in the queue (the
-   committed version: a spec with uncommitted edits waits), valid, and not superseded by a committed _rN of it (a
-   pending job superseded later is cancelled) is enqueued, lens-free specs first, the lens stages (their command runs
-   scripts/d1_precheck.py) after them. All of them queue behind the gate, which runs alone (see 1).
+JOBQ_HOST=sesterce-h200x2 ... enqueue). This script enqueues nothing (23 Oct ~01:10: the coordinator enqueues); it
+starts the workers, pulls, and ends the box. Every job queues behind the gate, which runs alone (see 1).
 1. Start: wait (every 2 min) until the fit's ~/work/fit32b/status.json is terminal, the Mac's tmux session h200finish has
    ended (it saves the fit's lens to the Mac), the 122B prefetch printed PREFETCH_DONE with its lens sha256 ok, and
    nvidia-smi shows both GPUs free. Then jobq's worker for GPU 0 (tmux jobq-gpu0 on the box); the worker for GPU 1 once
@@ -22,8 +19,8 @@ JOBQ_HOST=sesterce-h200x2). This script starts its workers, enqueues new 122B sp
 2. Every minute the queue's state; every 5 min jobq's pull (new run dirs into results/, this box's ledger and queue
    state as results/jobq/ledger_sesterce-h200x2.jsonl and cache/jobq/queue_state_sesterce-h200x2.json, drafts, logs).
 3. Final when the queue is finished (nothing running; every pending job waits on a failed one) after the last batch is
-   in (--last-batch wrote cache/jobq/h200q_last_batch, or no new spec was enqueued while the queue sat finished for
-   1 h), the lens gate or the port smoke job failed (other failures are logged and the queue goes on), or at 09:50 UTC
+   in (--last-batch wrote cache/jobq/h200q_last_batch, or the queue sat finished for 1 h: a job enqueued meanwhile
+   makes it unfinished), the lens gate or the port smoke job failed (other failures are logged and the queue goes on), or at 09:50 UTC
    (Dan, 23 Oct ~00:55: the hard limit is 10:00 UTC).
 4. The final (Dan's rule: delete ONLY after everything is verified on the Mac, at the hard limit too): pending jobs are
    cancelled (nothing new starts); then up to 3 tries of: jobq's pull; `rsync -a --ignore-existing
@@ -43,7 +40,6 @@ import argparse
 import datetime as dt
 import hashlib
 import json
-import re
 import shlex
 import subprocess
 import sys
@@ -68,15 +64,12 @@ LAST_BATCH = REPO / "cache" / "jobq" / "h200q_last_batch"  # written by --last-b
 LEDGER = REPO / "results" / "jobq" / f"ledger_{HOST}.jsonl"  # jobq pull's name for this box's ledger
 FIT_COPY = REPO / "log" / "remote" / "h200_fit32b"
 FIT_LENS = REPO / "cache" / "qwen3-32b" / "lenses" / "jpp" / "Qwen3-32B_jpp_lens.pt"
-SPEC_RE = re.compile(r"jobs/[^/]+/(qwen35_122b_[a-z0-9_]+)\.yaml")
-RANK_RE = re.compile(r"^(.*?)(?:_r(\d+))?$")
 WORKER = ("export HF_HOME=$HOME/work/hf UV_CACHE_DIR=$HOME/work/uv-cache; python3 -c {code} 2>&1 | "
           "tee -a ~/jobq/worker-gpu{gpu}.log; exec bash")  # fmt: skip
 WORKER_CODE = (
     'import os, sys; sys.path.insert(0, os.path.expanduser("~/jobq")); import jobq; jobq.worker({gpu}, check_mem=False)'
 )
 WRITE_LOG = True
-REJECTED: set[str] = set()  # specs that failed validation (said once)
 
 
 def now() -> dt.datetime:
@@ -178,61 +171,6 @@ def live_pending(status: dict[str, str], running: set[str], pending: dict[str, l
                 live.add(i)
                 grew = True
     return live
-
-
-def rank(job_id: str) -> tuple[str, int]:
-    """(base id, N) for an id ending in _rN; a plain id is _r1."""
-    m = RANK_RE.fullmatch(job_id)
-    return (m[1], int(m[2] or 1)) if m else (job_id, 1)
-
-
-def new_specs(queued: set[str]) -> tuple[list[tuple[str, Path]], set[str]]:
-    """The committed 122B specs to enqueue, lens-free first (a lens stage runs d1_precheck.py), and the superseded ids
-    (a committed _rN of a higher N exists). A spec with uncommitted edits waits for its commit."""
-    tracked = run(["git", "ls-files", "jobs"], 60)
-    edited = run(["git", "status", "--porcelain", "--", "jobs"], 60)
-    if tracked is None or edited is None or tracked.returncode or edited.returncode:
-        return [], set()
-    changed = {line[3:].strip() for line in edited.stdout.splitlines()}
-    specs = [(m[1], REPO / p) for p in tracked.stdout.split() if (m := SPEC_RE.fullmatch(p)) and p not in changed]
-    best: dict[str, int] = {}
-    for i, _ in specs:
-        base, n = rank(i)
-        best[base] = max(best.get(base, 0), n)
-    superseded = {i for i, _ in specs if rank(i)[1] < best[rank(i)[0]]}
-    out: list[tuple[bool, str, Path]] = []
-    for i, p in specs:
-        if i in queued or i in superseded or i in REJECTED:
-            continue
-        spec = jq.load_spec(p)
-        if errors := jq.validate(spec, p):
-            say(f"not enqueued {p.relative_to(REPO)}: {'; '.join(errors)}")
-            REJECTED.add(i)
-            continue
-        out.append(("d1_precheck.py" in spec["command"], i, p))
-    out.sort(key=lambda x: x[0])  # stable: lens-free first, then the lens stages, each in path order
-    return [(i, p) for _, i, p in out], superseded
-
-
-def enqueue_new(pending: list[str]) -> int:
-    """Enqueue the new committed 122B specs (jobq enqueue --allow-dirty: the jobs run the committed tree) and cancel
-    pending jobs a committed _rN superseded. Returns how many were enqueued."""
-    ids = box("python3 ~/jobq/jobq.py box-ids")
-    if ids is None:
-        return 0
-    new, superseded = new_specs(set(json.loads(ids)))
-    for i in sorted(superseded & set(pending)):
-        say(f"cancel {i}: superseded by a committed _rN")
-        jq.cmd_cancel(i)
-    if not new:
-        return 0
-    try:
-        jq.cmd_enqueue([p for _, p in new], allow_dirty=True)
-    except (SystemExit, subprocess.CalledProcessError) as e:
-        say(f"enqueue of {[i for i, _ in new]} failed: {e}")
-        return 0
-    say(f"enqueued {len(new)}: {', '.join(i for i, _ in new)}")
-    return len(new)
 
 
 def pull() -> bool:
@@ -392,10 +330,6 @@ def check() -> int:
     say(f"start condition {'MET' if ok else 'not met'}: {why}")
     q = queue()
     say(summary(q))
-    ids = box("python3 ~/jobq/jobq.py box-ids")
-    if ids is not None:
-        new, superseded = new_specs(set(json.loads(ids)))
-        say(f"would enqueue {[i for i, _ in new]}; superseded {sorted(superseded)}")
     say(
         f"workers on the box: GPU 0 {worker_running(0)}, GPU 1 {worker_running(1)}; last batch marked {LAST_BATCH.exists()}"
     )
@@ -408,7 +342,7 @@ def check() -> int:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--check", action="store_true", help="every condition once; starts and deletes nothing")
-    ap.add_argument("--last-batch", action="store_true", help="mark the last batch of 122B specs as committed")
+    ap.add_argument("--last-batch", action="store_true", help="mark the last batch as enqueued")
     a = ap.parse_args()
     if a.check:
         return check()
@@ -427,17 +361,12 @@ def main() -> int:
         say(f"workers already on the box: GPU {sorted(started)}")
     seen_failed: set[str] = set()
     actions: set[str] = set()
-    last_why, last_pull, last_scan, last_enqueue, reason = "", 0.0, 0.0, time.time(), None
+    last_why, last_pull, reason = "", 0.0, None
     finished_since: float | None = None
     while True:
         try:
             if reason is None and now() >= FINAL_AT:
                 reason = f"{FINAL_AT:%H:%M} UTC: the hard limit {LIMIT:%H:%M} UTC is 10 min away"
-            if reason is None and time.time() - last_scan >= PULL_S:  # new specs, also while waiting for the fit
-                q0 = queue()
-                if q0 is not None and enqueue_new(q0["pending"]):
-                    last_enqueue = time.time()
-                last_scan = time.time()
             if reason is not None:
                 if final(reason, actions):
                     return 0
@@ -476,12 +405,8 @@ def main() -> int:
                 time.sleep(POLL_S)
                 continue
             finished_since = finished_since or time.time()
-            idle = time.time() - max(finished_since, last_enqueue) >= IDLE_S
-            if not (LAST_BATCH.exists() or idle):
+            if not (LAST_BATCH.exists() or time.time() - finished_since >= IDLE_S):
                 time.sleep(POLL_S)  # finished, but more batches may come
-                continue
-            if enqueue_new(q["pending"]):  # a batch committed just before --last-batch
-                last_enqueue, finished_since = time.time(), None
                 continue
             reason = "the queue is finished, " + ("the last batch marked" if LAST_BATCH.exists() else "idle 1 h")
         except Exception:
