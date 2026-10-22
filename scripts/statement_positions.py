@@ -1556,7 +1556,7 @@ def plain(d: Any) -> Any:
     return d
 
 
-CELL_ORDER = ("BL", "BLR", "RL", "BR", "BRL", "RR", "B", "R")  # lookup-used first, then recall-used
+CELL_ORDER = ("BL", "BLR", "RL", "PP", "BR", "BRL", "RR", "PM", "B", "R")  # lookup-used first, then recall-used
 HEAT_ORDER = ("BL", "BR", "BLR", "BRL", "RL", "RR", "B", "R")  # paired readers side by side
 
 

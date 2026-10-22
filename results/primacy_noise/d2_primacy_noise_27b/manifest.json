@@ -1,0 +1,26 @@
+{
+  "exp": "primacy_noise",
+  "run": "d2_primacy_noise_27b",
+  "why": "random-damage control for the first-sentence bias (Dan, 22 Oct): noise at the last tokens in layers 48-63 instead of blocking the answer's statement, on d2_v4_late_read's items",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "n_per_topic": 100,
+  "competence": "d3v4_competence_27b",
+  "blocking_run": "d2_v4_late_read",
+  "sigmas": [
+    0.05,
+    0.1,
+    0.2,
+    0.4,
+    0.8
+  ],
+  "seed": 0,
+  "written_utc": "2026-10-22T17:12:28Z",
+  "design": "primacy_noise (D2 control, Dan, 2026-10-22): is the first-sentence bias of blocked lookups the model's general way of\nguessing, or specific to blocking the read?\n\nBackground (UNVERIFIED; README slide 3): with the answer's statement hidden from the last tokens in every attention\nlayer, Qwen3.6-27B's wrong answers that are another digit of the list come from statements 1-5 as 128 / 56 / 35 / 25 /\n19, against 59 / 51 / 51 / 51 / 51 under a uniform choice among each scene's 4 other statements (d2_v4_late_read).\n\nDesign. The same items (pointer_v4 main, memory -> prompt, the first 100 eligible scenes per topic, attn_knockout's\ncase builder and gate). Instead of blocking, damage the last tokens' read without any positional structure: at every\nlayer of the read band (the last quarter of the depth: 48-63 on the 27B) add, at the last tokens (the template after\nthe question and the read position), a random direction with norm sigma x that position's unedited residual norm,\nsigma in SIGMAS; one generator per item. Read: the top token: right, another digit of the list (its statement's place\nby where the digit sits in the prompt), or off the list.\n\nDecision rule (fixed 2026-10-22 before the run):\n  sigma*   the sigma whose accuracy is nearest the blocking's on the same items (recomputed from the blocking run's rows;\n           ties: the smaller sigma), chosen on accuracy alone\n  R1       over the items whose answer at sigma* is another digit of the list: observed / expected answers at the 1st\n           statement (expected: uniform over each item's 4 other statements), scene bootstrap 95% interval\n  verdict  'generic' (the bias is how the model guesses anyway) iff R1's lower bound >= 1.5; 'specific to blocking'\n           iff R1's upper bound < 1.5; else inconclusive; fewer than 50 such answers: not testable at sigma*\n  reported, not decisive: every sigma; the 5th statement's ratio (blocking: 19 / 51); the blocking run's own R1 with\n           the same bootstrap; off-list shares\n"
+}
