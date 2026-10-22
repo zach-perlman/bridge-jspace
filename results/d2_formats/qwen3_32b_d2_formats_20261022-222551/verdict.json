@@ -1,0 +1,460 @@
+{
+ "run": "qwen3_32b_d2_formats",
+ "items": {
+  "json/MM": 41,
+  "json/MP": 41,
+  "json/PM": 46,
+  "json/PP": 46,
+  "prose/MM": 32,
+  "prose/MP": 32,
+  "prose/PM": 40,
+  "prose/PP": 40,
+  "table/MM": 38,
+  "table/MP": 38,
+  "table/PM": 31,
+  "table/PP": 31
+ },
+ "formats": {
+  "json": {
+   "late_MP": {
+    "layers": "all",
+    "lookup": [
+     0.0,
+     0.0,
+     0.08567044886890744,
+     41
+    ],
+    "off": [
+     1.0,
+     0.9143295511310926,
+     1.0,
+     41
+    ],
+    "holds": true
+   },
+   "late_PP": {
+    "layers": "all",
+    "lookup": [
+     0.0,
+     -6.938893903907228e-18,
+     0.07707617732978073,
+     46
+    ],
+    "off": [
+     1.0,
+     0.9229238226702192,
+     1.0,
+     46
+    ],
+    "holds": true
+   },
+   "parts_MP": {
+    "valid": true,
+    "question_testable": false,
+    "H-name-q": false,
+    "H-digit-q": false,
+    "H-digit-final": true,
+    "H-name-final": false,
+    "valid-split": true,
+    "H-name-q-split": false,
+    "H-digit-final-split": true
+   },
+   "cells_MP": {
+    "lookup|question": [
+     0.7560975609756098,
+     0.606563693455418,
+     0.8617514424897758
+    ],
+    "lookup|final": [
+     0.0,
+     0.0,
+     0.08567044886890744
+    ],
+    "lookup_name|question": [
+     0.8292682926829268,
+     0.6873709004537024,
+     0.914748560047261
+    ],
+    "lookup_name|final": [
+     0.975609756097561,
+     0.8740465298832192,
+     0.9956815797292835
+    ],
+    "lookup_digit|question": [
+     1.0,
+     0.9143295511310926,
+     1.0
+    ],
+    "lookup_digit|final": [
+     0.07317073170731707,
+     0.025197373252564145,
+     0.19427740017211292
+    ],
+    "lookup_off|question": [
+     1.0,
+     0.9143295511310926,
+     1.0
+    ],
+    "lookup_off|final": [
+     1.0,
+     0.9143295511310926,
+     1.0
+    ],
+    "lookup_off_name|question": [
+     1.0,
+     0.9143295511310926,
+     1.0
+    ],
+    "lookup_off_name|final": [
+     1.0,
+     0.9143295511310926,
+     1.0
+    ],
+    "lookup_off_digit|question": [
+     1.0,
+     0.9143295511310926,
+     1.0
+    ],
+    "lookup_off_digit|final": [
+     1.0,
+     0.9143295511310926,
+     1.0
+    ],
+    "lookup_nodigit|question": [
+     0.7317073170731707,
+     0.5806617472399707,
+     0.8430519471866331
+    ],
+    "lookup_nodigit|final": [
+     0.975609756097561,
+     0.8740465298832192,
+     0.9956815797292835
+    ],
+    "lookup_noname|question": [
+     1.0,
+     0.9143295511310926,
+     1.0
+    ],
+    "lookup_noname|final": [
+     0.0,
+     0.0,
+     0.08567044886890744
+    ],
+    "lookup_off_nodigit|question": [
+     1.0,
+     0.9143295511310926,
+     1.0
+    ],
+    "lookup_off_nodigit|final": [
+     1.0,
+     0.9143295511310926,
+     1.0
+    ],
+    "lookup_off_noname|question": [
+     1.0,
+     0.9143295511310926,
+     1.0
+    ],
+    "lookup_off_noname|final": [
+     1.0,
+     0.9143295511310926,
+     1.0
+    ]
+   }
+  },
+  "prose": {
+   "late_MP": {
+    "layers": "all",
+    "lookup": [
+     0.0625,
+     0.017310203195157234,
+     0.2014746724800358,
+     32
+    ],
+    "off": [
+     1.0,
+     0.8928172849426366,
+     1.0,
+     32
+    ],
+    "holds": true
+   },
+   "late_PP": {
+    "layers": "all",
+    "lookup": [
+     0.05,
+     0.013820377146101098,
+     0.165041708179252,
+     40
+    ],
+    "off": [
+     0.975,
+     0.8711834051199223,
+     0.9955732825922052,
+     40
+    ],
+    "holds": true
+   },
+   "parts_MP": {
+    "valid": true,
+    "question_testable": false,
+    "H-name-q": false,
+    "H-digit-q": false,
+    "H-digit-final": false,
+    "H-name-final": false,
+    "valid-split": true,
+    "H-name-q-split": false,
+    "H-digit-final-split": true
+   },
+   "cells_MP": {
+    "lookup|question": [
+     0.875,
+     0.7193135021517204,
+     0.950299461555257
+    ],
+    "lookup|final": [
+     0.0625,
+     0.017310203195157234,
+     0.2014746724800358
+    ],
+    "lookup_name|question": [
+     0.875,
+     0.7193135021517204,
+     0.950299461555257
+    ],
+    "lookup_name|final": [
+     0.90625,
+     0.7578150066422116,
+     0.9675990373736805
+    ],
+    "lookup_digit|question": [
+     1.0,
+     0.8928172849426366,
+     1.0
+    ],
+    "lookup_digit|final": [
+     0.4375,
+     0.2816508596944317,
+     0.6067469796877387
+    ],
+    "lookup_off|question": [
+     0.90625,
+     0.7578150066422116,
+     0.9675990373736805
+    ],
+    "lookup_off|final": [
+     1.0,
+     0.8928172849426366,
+     1.0
+    ],
+    "lookup_off_name|question": [
+     0.9375,
+     0.7985253275199642,
+     0.9826897968048427
+    ],
+    "lookup_off_name|final": [
+     1.0,
+     0.8928172849426366,
+     1.0
+    ],
+    "lookup_off_digit|question": [
+     1.0,
+     0.8928172849426366,
+     1.0
+    ],
+    "lookup_off_digit|final": [
+     1.0,
+     0.8928172849426366,
+     1.0
+    ],
+    "lookup_nodigit|question": [
+     0.84375,
+     0.6824550744643347,
+     0.9313568089337279
+    ],
+    "lookup_nodigit|final": [
+     0.90625,
+     0.7578150066422116,
+     0.9675990373736805
+    ],
+    "lookup_noname|question": [
+     1.0,
+     0.8928172849426366,
+     1.0
+    ],
+    "lookup_noname|final": [
+     0.0625,
+     0.017310203195157234,
+     0.2014746724800358
+    ],
+    "lookup_off_nodigit|question": [
+     0.90625,
+     0.7578150066422116,
+     0.9675990373736805
+    ],
+    "lookup_off_nodigit|final": [
+     1.0,
+     0.8928172849426366,
+     1.0
+    ],
+    "lookup_off_noname|question": [
+     1.0,
+     0.8928172849426366,
+     1.0
+    ],
+    "lookup_off_noname|final": [
+     1.0,
+     0.8928172849426366,
+     1.0
+    ]
+   }
+  },
+  "table": {
+   "late_MP": {
+    "layers": "all",
+    "lookup": [
+     0.0,
+     0.0,
+     0.09181293258383999,
+     38
+    ],
+    "off": [
+     1.0,
+     0.90818706741616,
+     0.9999999999999999,
+     38
+    ],
+    "holds": true
+   },
+   "late_PP": {
+    "layers": "all",
+    "lookup": [
+     0.06451612903225806,
+     0.017874407775063147,
+     0.20718988318746434,
+     31
+    ],
+    "off": [
+     1.0,
+     0.889740999265246,
+     0.9999999999999999,
+     31
+    ],
+    "holds": true
+   },
+   "parts_MP": {
+    "valid": true,
+    "question_testable": false,
+    "H-name-q": false,
+    "H-digit-q": false,
+    "H-digit-final": true,
+    "H-name-final": false,
+    "valid-split": true,
+    "H-name-q-split": false,
+    "H-digit-final-split": true
+   },
+   "cells_MP": {
+    "lookup|question": [
+     0.7894736842105263,
+     0.6365391162355784,
+     0.8892533964790407
+    ],
+    "lookup|final": [
+     0.0,
+     0.0,
+     0.09181293258383999
+    ],
+    "lookup_name|question": [
+     0.8421052631578947,
+     0.6958287736272311,
+     0.9255623777627731
+    ],
+    "lookup_name|final": [
+     0.8947368421052632,
+     0.7586916879980553,
+     0.9582981020673341
+    ],
+    "lookup_digit|question": [
+     0.9736842105263158,
+     0.8650482156319974,
+     0.9953395324464698
+    ],
+    "lookup_digit|final": [
+     0.15789473684210525,
+     0.07443762223722684,
+     0.3041712263727689
+    ],
+    "lookup_off|question": [
+     0.9736842105263158,
+     0.8650482156319974,
+     0.9953395324464698
+    ],
+    "lookup_off|final": [
+     1.0,
+     0.90818706741616,
+     0.9999999999999999
+    ],
+    "lookup_off_name|question": [
+     0.9473684210526315,
+     0.8271423311893115,
+     0.9854460975514631
+    ],
+    "lookup_off_name|final": [
+     1.0,
+     0.90818706741616,
+     0.9999999999999999
+    ],
+    "lookup_off_digit|question": [
+     1.0,
+     0.90818706741616,
+     0.9999999999999999
+    ],
+    "lookup_off_digit|final": [
+     1.0,
+     0.90818706741616,
+     0.9999999999999999
+    ],
+    "lookup_nodigit|question": [
+     0.7894736842105263,
+     0.6365391162355784,
+     0.8892533964790407
+    ],
+    "lookup_nodigit|final": [
+     0.8157894736842105,
+     0.6658083165848865,
+     0.907783515467425
+    ],
+    "lookup_noname|question": [
+     0.9736842105263158,
+     0.8650482156319974,
+     0.9953395324464698
+    ],
+    "lookup_noname|final": [
+     0.0,
+     0.0,
+     0.09181293258383999
+    ],
+    "lookup_off_nodigit|question": [
+     0.9473684210526315,
+     0.8271423311893115,
+     0.9854460975514631
+    ],
+    "lookup_off_nodigit|final": [
+     1.0,
+     0.90818706741616,
+     0.9999999999999999
+    ],
+    "lookup_off_noname|question": [
+     1.0,
+     0.90818706741616,
+     0.9999999999999999
+    ],
+    "lookup_off_noname|final": [
+     1.0,
+     0.90818706741616,
+     0.9999999999999999
+    ]
+   }
+  }
+ }
+}
