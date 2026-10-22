@@ -716,7 +716,9 @@ def prepare(item: dict, tok) -> dict:
     cf_changed, off_changed = S.changed(ids["clean"], ids["cf"]), S.changed(ids["clean"], ids["off"])
     assert cf_changed, f"{item['id']}: C not token-aligned"
     assert off_changed, f"{item['id']}: O not token-aligned"
-    q_start = rendered["clean"].rindex("\n" + item["question"]) + 1
+    # 2026-10-22: the question's last occurrence (was: after a newline, which Muse Glimmer's template does not put
+    # before a user turn; the same position for every earlier target, checked on the 27B and Qwen3-32B)
+    q_start = rendered["clean"].rindex(item["question"])
     after = max(cf_changed)
     offsets = enc["clean"]["offset_mapping"]
     space = S.ids(tok, " ") if item["answer_kind"] == "digit" else []
