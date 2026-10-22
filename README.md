@@ -10,7 +10,7 @@
 
 1. **Recall goes through the J-space; a lookup does not use the J-space part of its bridge.** The lens reads a stated bridge, but the lookup works without that part (Zach's measures and slide 2; Qwen3.6-27B).
 2. **What the lookup uses instead is the same on five models:** a late attention read of the answer's statement by the last tokens (slide 3), and the choice of statement is set by an order label for the first two statements and by the bridge's identity for the rest (slide 4).
-3. **Open, and the next test:** is that identity carried in a code the lens cannot write? In the one cell where the lens does write recall (chemical elements, layer 44), it moves no lookups on statements 3-5 (0 of 47) while a patch moves 14 of 47 to the bridge's statement; six entities only (slide 5). If it holds more widely, a lens-based monitor would miss what drives lookups.
+3. **Open, and the next test:** is that identity carried in a code the lens cannot write? In the one topic where the lens does write recall at the last tokens (chemical elements, layer 44: 38-49% of recalls), it moves almost no lookups of statements 3-5 to the bridge's statement while a patch does: 0 of 47 vs 14 of 47, and on a second, independent draw of scenes 2 of 201 vs 56 of 201. Six entities only (slide 5). If it holds more widely, a lens-based monitor would miss what drives lookups.
 
 **Slides:** [0 The plan](#0-the-question-and-the-plan) · [Setup](#setup) · [1 Background](#1-background-recall-goes-through-the-j-space-a-lookup-goes-around-it) · [2 Where the bridge is read](#2-where-does-the-lookup-read-the-bridge) · [3 Attention knock-out](#3-attention-knock-out-the-lookup-reads-late-through-attention-from-the-last-tokens) · [4 Pointers](#4-pointers-what-the-last-tokens-carry) · [5 A code that writes the lookup](#5-a-code-that-writes-the-lookup-and-its-cosine-with-the-lens) · [6 Early writes](#6-early-writes-is-a-lens-push-the-same-as-editing-the-input-word) · [7 Longshots](#7-longshots-a-pointer-read-out-and-the-olmo-post-training-ladder) · [8 Across models](#8-across-models) · [9 Conclusions](#9-conclusions) · [10 Next](#10-next-steps) · [Appendix](#appendix)
 
@@ -164,7 +164,7 @@ The **J-lens** (Gurnee et al. 2026, [Verbalizable Representations Form a Global 
 
 **Found.**
 - On Qwen3.6-27B the slot code moves **31-42%** of lookups to the target statement; the lens direction and a random one move **0%**. On OLMo the same fit moves 2%.
-- **The lens's 0% has no positive control here:** at this layer the lens push does not write recall either (memory → memory: 2 of 150 at 1x, 8 of 150 at 2x, while a patch moves 50 of 150). The one cell found so far where it does is chemical elements at layer 44 (recall: 19 of 50 at 1x, 22 of 50 at 2x). There, on lookups of statements 3-5, the lens moves 0 of 47 to the bridge's statement at either size and a patch 14 of 47: the C2 split, on six entities.
+- **The lens's 0% has no positive control here:** at this layer the lens push does not write recall either (memory → memory: 2 of 150 at 1x, 8 of 150 at 2x, while a patch moves 50 of 150). The one cell found so far where it does is chemical elements at layer 44 (recall: 19 of 50 at 1x, 22 of 50 at 2x). There, on lookups of statements 3-5, the lens moves 0 of 47 to the bridge's statement at either size and a patch 14 of 47; on a second, independent draw of scenes the same: recall 41 of 100 (lens 1x), lookups 2 of 201 (lens) vs 56 of 201 (patch). The C2 split, twice, on the same six entities.
 - **Cosine with the lens**: the code's largest cosine with any entity's lens direction is 0.032, against 0.036 for random vectors; its J-space share is 7.1%, against 7.6% for a random vector. It lies outside the J-space.
 - It is an **override, not the model's own address**: at its natural size it moves 4% (the pre-registered bar was 10%), at twice that 26%; it jumps straight to the target (78%), not through the slots in between; it writes the 1st and 2nd slots (65%, 39%) far better than the 3rd-5th (5-13%); removing it from the model leaves 98% of lookups right.
 
@@ -260,20 +260,17 @@ The **J-lens** (Gurnee et al. 2026, [Verbalizable Representations Form a Global 
 
 ## 10. Next steps
 
-| Step | Question |
-|---|---|
 | Step | Question | When |
 |---|---|---|
-| **Sharp C2, step a** (queued): sweep layers 32-48 on five topics; select the cells where the lens push writes recall (≥ 20%) and a patch moves recall, before looking at any lookup | Where is the positive control valid? Needs ≥ 12 entities, so a second late-recall topic | Thu 22 |
-| **Name vs digit** (queued): block only the entity's name or only the digit of the answer's statement, from the question's tokens and from the last tokens | What do the question's tokens take from the statement? | Thu 22 |
-| **Sharp C2, step b**: in the selected cells, on statements 3-5: patch, lens 1x/2x, a supervised identity direction (fitted and tested on different entities; it must move recall too), random; same layers and norm | Does an identity code the lens cannot write steer the lookup? (claim 6) | Fri 23 |
-| Replicate slide 2 (b) on three topics and on Qwen3-32B (its lens from neuronpedia) | Claim 2 beyond one topic and one model | Fri 23 |
+| **Sharp C2, step a** (running): sweep layers 32-48 on five topics; select cells where the lens push writes recall (≥ 20%) and a patch moves recall, from recall rows alone; then read lookups of statements 3-5 with four outcomes: holds / refuted / not testable (the patch moves < 20% of lookups) / inconclusive | Is there a positive control beyond elements? An outside forecast: no new cells (the stated bridge reaches the last tokens only at ~48, where the lens no longer writes recall) | Thu 22 |
+| **Name vs digit, v2** (queued): hide the name, the digit, the statement without its digit, or without its name, from the question's tokens and from the last tokens | What do the question's tokens take from the statement? The split spans guard against leaks through the statement's other tokens | Thu 22 |
+| **D1 on three topics and on Qwen3-32B** (its lens from neuronpedia) | Claim 2 beyond one topic and one model; D1 has its positive control built in (the same vector a recall from the stated bridge uses) | Fri 23 |
+| Sharp C2, step b: the identity direction, only if step a finds ≥ 12 entities; otherwise plan B: a topic recalled late at the last tokens (like elements), or D1 as C2's main evidence | Does an identity code the lens cannot write steer the lookup? (claim 6) | Fri 23 |
 | Freeze claims 1, 3 and slide 2 (b); verify by hand with Zach into VERIFIED.md; sync on Zach's C1 for the other models | Process | Sat-Sun 24-25 |
 | The late read in Zach's six formats (chat turn, table, document, JSON, Python, prose) | Claim 1 beyond toy scenes | Mon-Tue 26-27 |
 | Write-up and slides | | Wed-Fri 28-30 |
 
-Later, if time: the label with two lists in one prompt, a header before the list, or the question before the list (does it follow the list or the user turn?); the identity with each entity in a different language in org and alt (rules out a lexical match); the late head on scenes with a repeated digit.
-| Natural layouts (chat turn, table, document), open- vs closed-book, with Zach | Does any of this survive real prompts? |
+Later, if time: the label with two lists in one prompt, a header before the list, or the question before the list (does it follow the list or the user turn?); the identity with each entity in a different language in org and alt (rules out a lexical match); a random-damage control for the primacy of wrong answers; the late head on scenes with a repeated digit.
 
 ---
 

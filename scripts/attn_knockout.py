@@ -113,11 +113,13 @@ COUNTRIES = ("country-R", "country-B")
 FAMILIES = SUITE + COUNTRIES
 SOURCES = ("lookup", "binding", "lookup_off", "binding_off", "random", "trailing")
 # pointer_v1 / pointer_v4 only, opt-in via --sources: one part of the answer's (or the off-path) statement
-PART_SOURCES = ("lookup_name", "lookup_digit", "lookup_off_name", "lookup_off_digit")
+PART_SOURCES = ("lookup_name", "lookup_digit", "lookup_off_name", "lookup_off_digit",
+                "lookup_nodigit", "lookup_noname", "lookup_off_nodigit", "lookup_off_noname")  # fmt: skip
 CONV_REACH = 3  # the DeltaNet conv's kernel is 4: a token's input reaches the next 3 tokens' queries, keys, values
 DESTS = ("question", "final", "both", "after")
 CONTROL_OF = {"lookup": "lookup_off", "binding": "binding_off", "lookup_name": "lookup_off_name",
-              "lookup_digit": "lookup_off_digit"}  # fmt: skip
+              "lookup_digit": "lookup_off_digit", "lookup_nodigit": "lookup_off_nodigit",
+              "lookup_noname": "lookup_off_noname"}  # fmt: skip
 PATH = {  # sources on each family's path
     "BL": ("lookup", "binding"),
     "BR": ("binding",),
@@ -312,6 +314,11 @@ def pointer_case(item: dict, tok, dataset: str) -> dict:
                 sources[f"{key}_{part}"] = token_span(offsets, a + pa + shift, a + pb + shift)
                 texts[f"{key}_{part}"] = content[a + pa : a + pb]
                 assert sources[f"{key}_{part}"], f"{item['id']}: no tokens for {key}_{part}"
+            # the statement without one part: its other tokens, which may have read that part, are hidden too
+            for part in ("name", "digit"):
+                drop = set(sources[f"{key}_{part}"])
+                sources[f"{key}_no{part}"] = [t for t in sources[key] if t not in drop]
+                texts[f"{key}_no{part}"] = f"{texts[key]} without {texts[f'{key}_{part}']!r}"
     region = list(range(min(min(s) for s in tok_spans), max(max(s) for s in tok_spans) + 1))
     forbidden = set(sources["lookup"])
     for key in ("list", "chain"):  # code selectors (IX's list, CH's chains): on the path, never a random control

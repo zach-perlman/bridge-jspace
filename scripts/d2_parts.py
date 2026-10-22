@@ -21,6 +21,14 @@ Decision rule, per model, memory -> prompt (RL), topics pooled, items answered r
                H-name-final   right(name, final) <= 0.35 and right(digit, final) >= 0.70
 Reported, not decisive: the error type of every cell (another digit of the list vs off the list), named -> prompt,
 memory -> memory, per topic.
+Amended 2026-10-22 16:40, before any d2_parts result was read (the outside review: the statement's other tokens may
+have read the name or the digit, so hiding one part alone can leak): runs with the extra sources lookup_nodigit (the
+statement without its digit: name and the rest), lookup_noname (without its name: digit and the rest) and their
+off-path controls add the leak-robust tests, decisive where present:
+  valid-split      lookup_off_nodigit and lookup_off_noname keep >= 0.90 right at both destinations
+  H-name-q-split   (question testable) right(nodigit, question) <= right(statement, question) + 0.15 and
+                   right(noname, question) >= 0.85
+  H-digit-final-split  right(noname, final) <= 0.35 and right(nodigit, final) >= 0.70
 
 uv run python scripts/d2_parts.py --name RUN
 """
@@ -39,6 +47,7 @@ from bridge_jspace.stats import wilson
 
 D2 = pins.RESULTS_DIR / "attn_knockout"
 PARTS = ("lookup", "lookup_name", "lookup_digit", "lookup_off", "lookup_off_name", "lookup_off_digit")
+SPLIT = ("lookup_nodigit", "lookup_noname", "lookup_off_nodigit", "lookup_off_noname")  # the amended runs only
 CONTROL_MIN, Q_TESTABLE, SAME_MARGIN, PART_KEEP, BROKEN, KEPT = 0.90, 0.70, 0.15, 0.85, 0.35, 0.70
 
 
@@ -54,7 +63,7 @@ def cells(rows: list[dict], cases: dict[str, dict]) -> dict[tuple, dict]:
     ok = {(r["family"], r["id"]) for r in rows if r["source"] == "none" and r["correct"]}
     cnt: dict[tuple, collections.Counter] = collections.defaultdict(collections.Counter)
     for r in rows:
-        if (r["family"], r["id"]) in ok and r["source"] in PARTS and r["layers"] == "all":
+        if (r["family"], r["id"]) in ok and r["source"] in PARTS + SPLIT and r["layers"] == "all":
             cnt[(r["family"], r["source"], r["dest"])][outcome(r, cases[r["id"]])] += 1
     out = {}
     for k, c in cnt.items():
@@ -72,7 +81,7 @@ def verdicts(cl: dict[tuple, dict], fam: str = "RL") -> dict:
     )
     testable = right("lookup", "question") <= Q_TESTABLE
     whole_q = right("lookup", "question")
-    return {
+    out = {
         "valid": valid,
         "question_testable": testable,
         "H-name-q": testable
@@ -84,6 +93,16 @@ def verdicts(cl: dict[tuple, dict], fam: str = "RL") -> dict:
         "H-digit-final": right("lookup_digit", "final") <= BROKEN and right("lookup_name", "final") >= KEPT,
         "H-name-final": right("lookup_name", "final") <= BROKEN and right("lookup_digit", "final") >= KEPT,
     }
+    if all((fam, s, d) in cl for s in SPLIT for d in ("question", "final")):  # the amended, leak-robust tests
+        out |= {
+            "valid-split": all(right(s, d) >= CONTROL_MIN for s in SPLIT[2:] for d in ("question", "final")),
+            "H-name-q-split": testable
+            and right("lookup_nodigit", "question") <= whole_q + SAME_MARGIN
+            and right("lookup_noname", "question") >= PART_KEEP,
+            "H-digit-final-split": right("lookup_noname", "final") <= BROKEN
+            and right("lookup_nodigit", "final") >= KEPT,
+        }
+    return out
 
 
 def main() -> int:

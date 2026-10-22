@@ -497,6 +497,7 @@ def test_statement_parts_name_and_digit():
     assert s2[slice(*parts2["name"])] == "New Zealand" and s2[slice(*parts2["digit"])] == "7"
     with pytest.raises(AssertionError):  # the digit must be a standalone number, once
         K.statement_parts("Drawer 17 holds the file on Peru.", "Peru", 7)
+    assert "lookup_nodigit" in K.PART_SOURCES and K.CONTROL_OF["lookup_noname"] == "lookup_off_noname"
 
 
 def test_general_claim_per_topic_on_cluster_bounds():

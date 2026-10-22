@@ -29,24 +29,37 @@ def test_select_needs_lens_on_recall_a_quiet_random_and_a_working_patch():
     cells = {c["layer"]: c for c in C.select_cells("run", cases, good + noisy)}
     assert cells[44]["selected"] and cells[44]["lens_size"] == 1.0
     assert not cells[46]["selected"]  # the random push moves 5 of 40 recalls (> 0.05)
-    rl_names = [f"rl{i}" for i in range(30)]
+    # the reveal: lookups of statements 3-5 in the selected cell, at the size that wrote recall (1x)
+    rl_names = [f"rl{i}" for i in range(60)]
     rl_cases = {**cases, **_cases(rl_names, 3)}
-    rl = (_rows("RL", "elements", 44, "patch", None, 9, 30, rl_names)
-          + _rows("RL", "elements", 44, "lens", 1.0, 0, 30, rl_names)
-          + _rows("RL", "elements", 44, "random", 1.0, 0, 30, rl_names))  # fmt: skip
-    out = C.reveal_cell(cells[44], rl_cases, good + rl)
-    assert out["c2_lens"] and out["rl_patch"]["k"] == 9 and len(out["rl_entities"]) == 30
-    lens_moves = rl[:30] + _rows("RL", "elements", 44, "lens", 1.0, 6, 30, rl_names) + rl[60:]
-    assert not C.reveal_cell(cells[44], rl_cases, good + lens_moves)["c2_lens"]
-    ident = _rows("RL", "elements", 44, "ident", 1.0, 6, 30, rl_names) + _rows(
+    rl = (_rows("RL", "elements", 44, "patch", None, 18, 60, rl_names)
+          + _rows("RL", "elements", 44, "lens", 1.0, 0, 60, rl_names)
+          + _rows("RL", "elements", 44, "random", 1.0, 0, 60, rl_names))  # fmt: skip
+    parts = C.cell_rows(cells[44], rl_cases, good + rl)
+    assert len(parts["patch"]) == 60 and len(parts["rr_lens"]) == 40
+    j = C.judge(parts, rl_cases, cluster=False)
+    assert j["state"] == "holds" and len(j["entities"]) == 60  # lens 0 of 60 (upper bound ~6%) vs recall lower ~22%
+    ident = _rows("RL", "elements", 44, "ident", 1.0, 12, 60, rl_names) + _rows(
         "RR", "elements", 44, "ident", 1.0, 10, 40, names
     )
-    b = C.reveal_cell(cells[44], rl_cases, good + rl + ident)
-    assert b["two_codes"] and b["rl_ident"]["k"] == 6 and b["rr_ident"]["k"] == 10
-    weak_rr = _rows("RL", "elements", 44, "ident", 1.0, 6, 30, rl_names) + _rows(
-        "RR", "elements", 44, "ident", 1.0, 4, 40, names
-    )
-    assert not C.reveal_cell(cells[44], rl_cases, good + rl + weak_rr)["two_codes"]  # not a bridge code: recall 10%
+    assert C.judge(C.cell_rows(cells[44], rl_cases, good + rl + ident), rl_cases, cluster=False)["two_codes"]
+    weak_rr = ident[:60] + _rows("RR", "elements", 44, "ident", 1.0, 4, 40, names)  # recall 10%: not a bridge code
+    assert not C.judge(C.cell_rows(cells[44], rl_cases, good + rl + weak_rr), rl_cases, cluster=False)["two_codes"]
+
+
+def test_c2_states():
+    assert C.c2_state(patch=0.10, lens=0.0, lens_hi=0.05, rand=0.0, recall_lo=0.3) == "not testable"
+    assert C.c2_state(patch=0.30, lens=0.20, lens_hi=0.30, rand=0.02, recall_lo=0.3) == "refuted"
+    assert C.c2_state(patch=0.30, lens=0.02, lens_hi=0.10, rand=0.0, recall_lo=0.25) == "holds"
+    assert C.c2_state(patch=0.30, lens=0.02, lens_hi=0.15, rand=0.0, recall_lo=0.25) == "inconclusive"  # 0.15 > 0.125
+
+
+def test_primary_takes_one_layer_per_topic():
+    def cell(run, dom, la, r):
+        return {"run": run, "domain": dom, "layer": la, "lens_size": 1.0, "rr_lens": {"1.0": {"rate": r}}}
+
+    prim = C.primary_cells([cell("a", "el", 44, 0.3), cell("a", "el", 46, 0.4), cell("a", "co", 36, 0.25)])
+    assert [(c["domain"], c["layer"]) for c in prim] == [("co", 36), ("el", 46)]
 
 
 def _cl(values: dict[tuple[str, str], float], fam: str = "RL") -> dict:
@@ -63,5 +76,11 @@ def test_parts_verdicts():
     v = P.verdicts(_cl(name_q))
     assert v["valid"] and v["question_testable"] and v["H-name-q"] and not v["H-digit-q"]
     assert v["H-digit-final"] and not v["H-name-final"]
+    assert "H-name-q-split" not in v  # a run without the split sources
+    split = {**name_q, **{(s, d): 0.98 for s in P.SPLIT for d in ("question", "final")},
+             ("lookup_nodigit", "question"): 0.35, ("lookup_noname", "final"): 0.10}  # fmt: skip
+    vs = P.verdicts(_cl(split))
+    assert vs["valid-split"] and vs["H-name-q-split"] and vs["H-digit-final-split"]
+    assert not P.verdicts(_cl({**split, ("lookup_noname", "question"): 0.50}))["H-name-q-split"]
     assert not P.verdicts(_cl({**name_q, ("lookup", "question"): 0.90}))["question_testable"]
     assert not P.verdicts(_cl({**name_q, ("lookup_off_name", "final"): 0.80}))["valid"]
