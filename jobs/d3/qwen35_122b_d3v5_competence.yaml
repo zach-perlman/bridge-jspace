@@ -1,0 +1,22 @@
+id: qwen35_122b_d3v5_competence
+title: "Gate: can Qwen3.5-122B answer pointer_v5's scenes?"
+thread: D3
+gpus: 1
+mem_gb: 135
+est_gpu_hours: 0.7
+depends_on:
+- qwen35_122b_d3v4_swap
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_GEN_BATCH=8 uv run python scripts/pointer_v5.py manifest --name qwen35_122b_d3v5_competence
+  --why "pointer_v5 on Qwen3.5-122B: every alt and control prompt and each step alone"
+  && BJ_TARGET=qwen3.5-122b-a10b BJ_GEN_BATCH=8 uv run python scripts/pointer_v5.py competence --name qwen35_122b_d3v5_competence
+question: 'Does Qwen3.5-122B answer pointer_v5''s prompts?'
+why_it_matters: 'Gate for qwen35_122b_d3v5_swap.'
+hypotheses:
+  H-gate: 'every topic, family and layout >= 80% right. Prior 0.6 (copied from qwen35_9b_d3v5_competence_r2)'
+decision_rule: 'pointer_v1''s competence rule.'
+controls:
+- 'each step alone for memory -> prompt'
+n: 'all of pointer_v5 main'
+seeds: [0]
+notes: "mechanical copy of qwen35_9b_d3v5_competence_r2 for Qwen3.5-122B (Dan, 23 Oct ~00:55: the whole grid on the 2x H200); not opened before Dan's predictions. Primary lens: neuronpedia's published J++ for Qwen3.5-122B-A10B (this job uses no lens). Only BJ_TARGET, the run name, the dependency and the batch change. Runs after qwen35_122b_d3v4_swap, so pointer_swap is known to work on this model (as the source after its d3v4 swap). Memory (Dan, 00:55): FP8 weights ~127 GB of a 143 GB H200, so mem_gb 135 and BJ_GEN_BATCH=8 on the competence reads."
