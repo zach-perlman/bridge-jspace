@@ -573,8 +573,9 @@ def f13_mechanism(out: Path) -> None:
     save(fig, out, "f13_mechanism.png")
 
 
-def by_target(run: str, layer: int) -> dict[int, collections.Counter]:
-    """memory -> prompt, last two tokens, one layer: per alt target statement k, the count of each patched outcome."""
+def by_target(run: str, layer: int, level: str | None = None) -> dict[int, collections.Counter]:
+    """memory -> prompt, last two tokens, one layer (and one level, if given): per alt target statement k, the count of
+    each patched outcome."""
     import sys
 
     sys.path.insert(0, str(ROOT))
@@ -584,9 +585,25 @@ def by_target(run: str, layer: int) -> dict[int, collections.Counter]:
     items = {it["id"]: it for its in PS.load_items(m).values() for it in its}
     c: dict[int, collections.Counter] = collections.defaultdict(collections.Counter)
     for r in rows("pointer_swap", run, file="outcomes.jsonl"):
-        if r["family"] == "RL" and r["source"] == "dissoc" and r["group"] == "last" and str(r["layer"]) == str(layer):
+        if (r["family"] == "RL" and r["source"] == "dissoc" and r["group"] == "last" and str(r["layer"]) == str(layer)
+                and level in (None, r["level"])):  # fmt: skip
             c[items[r["name"]]["slots"]["position"]][r["role"]] += 1
     return dict(c)
+
+
+def slot_word_panel(ax, c: dict[int, collections.Counter]) -> None:
+    """Same slot (orange) and word (blue) shares by asked statement, 95% bands; the 1st and 2nd places shaded."""
+    ks = sorted(c)
+    xs = [k + 1 for k in ks]
+    ax.axvspan(0.5, 2.5, color=SLOT, alpha=0.07, lw=0)
+    for role, col in (("position", SLOT), ("identity", WORD)):
+        ci = [wilson(c[k][role], sum(c[k].values())) for k in ks]
+        ax.plot(xs, [100 * p for p, _, _ in ci], color=col, lw=2.2, marker="o", ms=4)
+        ax.fill_between(xs, [100 * lo for _, lo, _ in ci], [100 * hi for _, _, hi in ci], color=col, alpha=0.15, lw=0)
+    n_per = round(sum(sum(c[k].values()) for k in ks) / len(ks))
+    ax.text(0.98, 0.97, f"~{n_per} per point", transform=ax.transAxes, ha="right", va="top", fontsize=7.5, color=INK2)
+    ax.set_xticks(xs, [str(x) for x in xs], fontsize=8.5)
+    ax.set_xlim(0.6, xs[-1] + 0.4)
 
 
 def f14_slot_by_target(out: Path) -> None:
@@ -628,6 +645,65 @@ def f14_slot_by_target(out: Path) -> None:
     save(fig, out, "f14_slot_by_target.png")
 
 
+def f15_counts_models(out: Path) -> None:
+    """D3 v4x on four models, each at its layer before the alt digit arrives: the k-th from the start, the k-th from the
+    end and the same place in the text, under a moved filler and an alt list one statement longer or shorter."""
+    models = [("Qwen3.6-27B", "d3v4x_swap_main", 50), ("Qwen3.5-9B", "qwen35_9b_d3v4x_swap_r2", 18),
+              ("OLMo-3-7B", "olmo3_7b_instruct_d3v4x_swap", 18), ("Gemma 4 31B", "gemma4it_d3v4x_swap_r2", 40)]  # fmt: skip
+    levels = [("e5-off", "filler\nmoved"), ("e5more", "alt has\n6 statements"), ("e5fewer", "alt has\n4 statements")]
+    roles = [("position", SLOT), ("end", INK2), ("token", LIGHT)]
+    fig, axes = plt.subplots(1, len(models), figsize=(14, 3.4), sharey=True, gridspec_kw={"wspace": 0.06})
+    for ax, (name, run, la) in zip(axes, models, strict=True):
+        style(ax, "y")
+        rates = load("pointer_swap", run)["rates"]
+        for i, (lv, _) in enumerate(levels):
+            d = rates[f"RL|all|{lv}|last|{la}|dissoc"]
+            for j, (role, col) in enumerate(roles):
+                if (
+                    role == "end" and lv == "e5-off"
+                ):  # one filler moved: the k-th from the end is the k-th from the start
+                    continue
+                bar_ci(ax, i + (j - 1) * 0.27, *ci3(d[role]), col, width=0.25, fs=7)
+        ax.set_xticks(range(len(levels)), [t for _, t in levels], fontsize=8.5)
+        ax.set_title(f"{name}, layer {la}", loc="left", fontsize=9.5)
+    axes[0].set_ylim(0, 50)
+    axes[0].set_ylabel("% of patched answers")
+    head(axes[0], "On every model the label counts by order in the list, not by place in the text",
+         "memory → prompt, last two tokens, each model at its layer before the alt digit arrives. The org list has 5 "
+         "statements; the alt list is changed so that\nthree ways of counting point to three different org statements. "
+         "\"From the start\" beats \"from the end\" in the pre-registered test (pooled and in 2 of 3 topics) only on "
+         "Qwen3.6-27B.", above=16)  # fmt: skip
+    fig.legend([box(c) for _, c in roles], ["k-th from the start of the list", "k-th from the end of the list",
+                                            "the same place in the text"], loc="lower center", ncol=3, frameon=False,
+               bbox_to_anchor=(0.5, -0.12))  # fmt: skip
+    save(fig, out, "f15_counts_models.png")
+
+
+def f16_slot_by_target_v5(out: Path) -> None:
+    """pointer_v5: the f14 split with 8 statements (three models) and with colour-word answers (Qwen3.5-9B, the one
+    model whose same-entity control holds for colour words), each at its layer before the alt digit arrives."""
+    panels = [("Qwen3.6-27B, 8 statements, layer 50", "d3v5_swap_27b", 50, "e8-digit"),
+              ("Qwen3.5-9B, 8 statements, layer 18", "qwen35_9b_d3v5_swap_r2", 18, "e8-digit"),
+              ("Gemma 4 31B, 8 statements, layer 40", "gemma4it_d3v5_swap_r2", 40, "e8-digit"),
+              ("Qwen3.5-9B, colour words, layer 22", "qwen35_9b_d3v5_swap_r2", 22, "e5-word")]  # fmt: skip
+    fig, axes = plt.subplots(1, len(panels), figsize=(14, 3.3), sharey=True,
+                             gridspec_kw={"wspace": 0.06, "width_ratios": [8, 8, 8, 5]})  # fmt: skip
+    for ax, (title, run, la, lv) in zip(axes, panels, strict=True):
+        style(ax, "y")
+        slot_word_panel(ax, by_target(run, la, lv))
+        ax.set_title(title, loc="left", fontsize=9.5)
+    axes[0].set_ylim(0, 105)
+    axes[0].set_ylabel("% of patched answers")
+    axes[1].set_xlabel("where the alt question's answer sits in the alt list")
+    head(axes[0], "With 8 statements and with colour-word answers: a label for the 1st and 2nd, then the word",
+         "memory → prompt, last two tokens, the same patch and split as fig. 14. Colour words: \"The cow's locker is "
+         "red.\"; on Qwen3.6-27B and Gemma their same-entity\ncontrol fails (33% and 56% of answers change), so they are "
+         "shown only for Qwen3.5-9B. Shaded: the 1st and 2nd places.", above=16)  # fmt: skip
+    fig.legend([box(SLOT), box(WORD)], ["the same slot in the org list", "bridge alt's own statement (word)"],
+               loc="lower center", ncol=2, frameon=False, bbox_to_anchor=(0.5, -0.12))  # fmt: skip
+    save(fig, out, "f16_slot_by_target_v5.png")
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", default="figures/readme_1021")
@@ -635,5 +711,6 @@ if __name__ == "__main__":
     out.mkdir(parents=True, exist_ok=True)
     for f in (f0_patch_example, f1_two_routes, f2_stated_bridge, f3_early_push, f4_late_read, f5_slot_by_layer,
               f6_slot_counts, f7_pointer_push, f8_shifts, f9_olmo_slot, f10_late_read_models, f11_natural_errors,
-              f12_address_models, f13_mechanism, f14_slot_by_target):  # fmt: skip
+              f12_address_models, f13_mechanism, f14_slot_by_target, f15_counts_models,
+              f16_slot_by_target_v5):  # fmt: skip
         f(out)

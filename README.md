@@ -50,8 +50,8 @@ We name each kind of question by **where the bridge comes from → where the ans
 | 2 | **The lens reads what the model has, not what it uses.** A stated bridge is read by the lens, but its lens-readable part does nothing for a lookup. | **High** on Qwen3.6-27B (partly *verified*), in prose and in Python code | Verified B4; D1 (fig. 2), D1 in code; Zach's C2 descriptive shows the same split by another method |
 | 3 | **An early lens push changes *which entity is recalled*, not the lookup.** | **Medium-high**: pre-registered, one dataset, 2 wordings | D4 (fig. 3) |
 | 4 | **A lookup reads the answer's statement late, from the last tokens, through attention layers** (not DeltaNet), spread over many heads. | **High**, and it holds on every model tested so far (3 of 3: two Qwen hybrids and OLMo with its training stages) | D2 (figs. 4, 10) |
-| 5a | **Just before that, the last tokens carry a label for "the first" or "the second" statement.** Patched in, it moves the answer to the org prompt's 1st or 2nd statement. | **High** in the data: 1st statement 90-100% on every model, 2nd 89-97% on the larger Qwens and 54-58% on the smaller models; a second data seed, 8-statement lists and named bridges give the same; one post-hoc layer per model | D3 (figs. 5, 14) |
-| 5b | **From the 3rd statement on, the bridge word steers the lookup instead.** | **High** in the data: for statements 3-5 the patched answer follows the alt bridge's own statement (27-54%) at least as often as the slot (2-31%), on every model. Unlike lookback results elsewhere (Gur-Arieh et al. 2026: positional at the first and last positions, lexical in the middle), there is no last-position peak | D3 (fig. 14) |
+| 5a | **Just before that, the last tokens carry a label for "the first" or "the second" statement.** Patched in, it moves the answer to the org prompt's 1st or 2nd statement. | **High** in the data: 1st statement 90-100% on every model, 2nd 89-97% on the larger Qwens and 54-58% on the smaller models; a second data seed, named bridges, 8-statement lists (27B, 9B, Gemma) and colour-word answers (9B) give the same; one post-hoc layer per model | D3 (figs. 5, 14, 16) |
+| 5b | **From the 3rd statement on, the bridge word steers the lookup instead.** | **High** in the data: for statements 3-5 the patched answer follows the alt bridge's own statement (27-54%) at least as often as the slot (2-31%), on every model. Unlike lookback results elsewhere (Gur-Arieh et al. 2026: positional at the first and last positions, lexical in the middle), there is no last-position peak | D3 (figs. 14, 16) |
 | 5c | **The label counts statements, not places in the text**, and from the start of the list. | **Medium**: pre-registered; order beats place on all four models tested (27B, 9B, OLMo, Gemma), and survives two position shifts on the three run so far; "from the start" beats "from the end" only on the 27B (pooled only elsewhere). These tests pool all statements, so their signal comes mostly from statements 1-2; under the absolute shift about a quarter of 1st-statement answers follow the place in the text | D3 (figs. 6, 8) |
 | 6 | **A fitted direction can override the lookup; the lens direction cannot.** A ~4-dimensional direction from the slot averages moves the answer to another statement. | **Medium** on Qwen3.6-27B, as an override, not as the model's own address: it works at a patch's norm (31%, more than the patch itself, 26%) or twice its natural size (26%), barely at its natural size (4%, the pre-registered 10% bar missed), and removing it leaves lookups 98% right; not on OLMo (2%) | D3b (figs. 7, 13) |
 | 7 | **A late attention head looks at the statement whose digit the model outputs, even when that answer is wrong.** | **Low**: digits are unique in a scene, so this follows the output itself and adds nothing beyond it yet (339 errors, 9 entities, mostly chemical symbols) | D5a (fig. 11) |
@@ -159,7 +159,7 @@ band is needed; the 8 layers together are), the same in its SFT and DPO checkpoi
 
 ![How a patch is read](figures/readme_1021/f0_patch_example.png)
 
-**How to read the patching figures (5, 6, 8, 9, 14).** Each item is a pair of prompts with the same entities in a
+**How to read the patching figures (5, 8, 9, 14, 15, 16).** Each item is a pair of prompts with the same entities in a
 different order. We copy the alt prompt's last two tokens into the org prompt at one layer and read the digit the org
 prompt now gives. Every outcome is a different digit, so the answer tells which statement the copied tokens pointed
 to: **the same slot** (orange: the org statement at the place where alt's asked statement sits), **the word** (blue:
@@ -186,8 +186,8 @@ each panel: items per point and the share of answers left unchanged.
 (Qwen3.6-27B 100% / 97%, Qwen3-32B 100% / 89%; the 9B and OLMo 90-93% / 54-58%; Gemma 4 40% / 37%, which is 100% /
 78% of the answers that move). From the 3rd on, it follows the bridge word as often as or more than the slot, on every
 model. So the "same slot" of fig. 5 is a label for the first two statements, and its pooled 50% is this mix. The same
-on a second data seed (27B: 100% / 92%, then 14-25%), with 8 statements (100% / 94%, then at most 16% for statements
-3-8) and for named bridges. Recounted from the raw rows by an outside reviewer and by us. Each model at its layer
+on a second data seed (27B: 100% / 92%, then 14-25%), with 8 statements and colour-word answers (fig. 16) and for
+named bridges. Recounted from the raw rows by an outside reviewer and by us. Each model at its layer
 before the alt digit arrives (the 27B's 50 was picked after seeing the first runs). On Gemma, unlike the other models,
 a random patch of the same size does not leave the answer alone: it turns 85% of answers into a digit not in the list
 or a non-digit. It gives no slot or word answers (0-2%), so the slot and word shares do not come from the patch's size
@@ -195,23 +195,33 @@ alone, but Gemma's control is "breaks" rather than "no change". Runs `d3v4_swap_
 `d3v4_seed2_swap_27b`, `d3v5_swap_27b`, `qwen3_32b_d3v4_swap_r2`, `qwen35_9b_d3v4_swap_r2`,
 `olmo3_7b_instruct_d3v4_swap_fn`, `gemma4it_d3v4_swap_v2_r2`.
 
-**Colour-word answers** ("The cow's locker is red.") give the slot a pooled lead (27B: 31% vs 13%; 9B: 23-33% vs
-14-21%), but on the 27B the same-entity control changes a third of the answers, so it cannot be judged there; on the
-9B the lead holds pooled, in no topic alone. Runs `d3v5_swap_27b`, `qwen35_9b_d3v5_swap_r2`.
+![Same split with 8 statements and with colour-word answers](figures/readme_1021/f16_slot_by_target_v5.png)
 
-![How the address counts](figures/readme_1021/f6_slot_counts.png)
+**How to read.** As fig. 14, with lists of 8 statements (three models) and with colour words instead of digits as
+answers ("The cow's locker is red.", 5 statements).
+**What it shows.** The same split. When alt asks its 1st or 2nd statement the answer goes to the org's 1st or 2nd
+(8 statements: Qwen3.6-27B 100% / 94%, Qwen3.5-9B 82% / 56%, Gemma 51% / 37%); from the 3rd on it follows the bridge
+word (27B 33-57%, 9B 44-63%, Gemma 25-52%, against at most 16% for the slot). Colour words on the 9B: 84% / 50%, then
+the word. So the label does not depend on digit answers or on 5-statement lists. The pre-registered test, pooled over
+asked statements, says "keeps the slot" for none of these (8 statements: no model; colour words on the 9B: the slot
+leads pooled, in no topic): with 2 labelled places of 8, pooling hides the label. Colour words cannot be judged on the
+27B or Gemma: the same-entity control changes 33% and 56% of their answers. 31-98 items per point. Runs
+`d3v5_swap_27b`, `qwen35_9b_d3v5_swap_r2`, `gemma4it_d3v5_swap_r2`.
+
+![How the label counts, four models](figures/readme_1021/f15_counts_models.png)
 
 **How to read.** The org list has 5 statements; the alt list is changed (a filler line moved, or 6 or 4 statements)
 so that three ways of counting name three different org statements: the k-th from the start, the k-th from the end,
-and the one at the same place in the text. Bars: % of patched answers that went to each.
-**What it shows.** The label follows the count from the start of the list (31-39%), not the place in the text
-(9-16%) or the count from the end (10-12%). These tests pool all asked statements, so their signal comes mostly from
-the 1st and 2nd (fig. 14). Pre-registered, layer 50, ~435 items per panel; holds pooled and in at least 2 of 3 topics
-in every panel. Run `d3v4x_swap_main`.
-**On other models** (each at its layers before the alt digit arrives): order beats place on Qwen3.5-9B (layer 18: 22%
-vs 5%) and Gemma 4 (layer 40: 12% vs 2%), pooled and in 2 of 3 topics; "from the start" beats "from the end" only
-pooled (9B 14-23% vs 7-10%, Gemma 9-11% vs 1-2%, in 1 topic each), as on OLMo. Runs `qwen35_9b_d3v4x_swap_r2`,
-`gemma4it_d3v4x_swap_r2`, `olmo3_7b_instruct_d3v4x_swap`.
+and the one at the same place in the text. With a moved filler both lists have 5 statements, so "from the end" is the
+same statement as "from the start" and is not drawn. Bars: % of patched answers that went to each. One panel per
+model, each at its layer before the alt digit arrives.
+**What it shows.** On every model the label follows the order in the list, not the place in the text: Qwen3.6-27B 31-39%
+vs 9-16%, Qwen3.5-9B 14-23% vs 5-8%, OLMo 23-31% vs 10-12%, Gemma 9-12% vs 2-3% (pre-registered: order beats place
+pooled and in 2 of 3 topics on all four; on OLMo at layer 17, next to the layer shown). "From the start" beats "from
+the end" in the pre-registered test only on the 27B; on the 9B and Gemma it leads pooled but in 1 topic, on OLMo not
+even pooled. These tests pool all asked statements, so their signal comes mostly from the 1st and 2nd (fig. 14).
+190-442 items per bar. Runs `d3v4x_swap_main`, `qwen35_9b_d3v4x_swap_r2`, `olmo3_7b_instruct_d3v4x_swap`,
+`gemma4it_d3v4x_swap_r2`.
 
 ![The address under position shifts](figures/readme_1021/f8_shifts.png)
 
@@ -297,7 +307,8 @@ symbol, 9 entities in all. Run `d5a_natural_errors_27b`.
 
 - **The label covers only the 1st and 2nd statements.** From the 3rd on, the bridge word steers the lookup, on every
   model. The decisive layers were chosen after seeing the first runs (the 27B's 50), though a second data seed
-  reproduces them; colour-word answers break the control.
+  reproduces them. Colour-word answers break the same-entity control on the 27B and Gemma; on the 9B, where the
+  control holds, they show the same split (fig. 16).
 - **Nothing from Dan's track is human-verified yet.** Candidates to freeze and check by hand with Zach: D1 paired
   readers (pattern 2), the late read (4), "1st / 2nd label, then the word" (5a-b).
 - **Simple scenes.** 3-8 short statements, mostly one-digit answers, the question right after the list.
