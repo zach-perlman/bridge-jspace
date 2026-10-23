@@ -1440,6 +1440,21 @@
   }
  },
  {
+  "value": 88.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "olmo_hybrid",
+  "setting": "table",
+  "part": "",
+  "ci": null,
+  "n": 24,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
   "value": 1.9,
   "what": "% right, the answer's sentence hidden from the tokens after the question",
   "finding": "f4",

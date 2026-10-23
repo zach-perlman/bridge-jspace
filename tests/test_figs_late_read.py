@@ -125,7 +125,7 @@ def test_the_data_file_holds_the_drawn_cells_and_controls(book, tmp_path):
     cells = {(r["model"], r["setting"]) for r in records if r["source"] == "grid.csv"}
     assert ("27b", "long context") in cells and ("gemma", "draw 1") in cells
     assert ("olmo", "prose") not in cells  # prose is not a MAIN panel
-    assert ("muse", "table") not in cells and ("27b", "draw 3") not in cells  # no value: a grey word
+    assert ("muse", "table") not in cells and ("27b", "draw 3") not in cells  # no value: blank, named in the caption
     controls = {(r["model"], r["setting"], r["extra"]["control"]) for r in records if r["source"] == LR.CONTROL_TEXT}
     assert ("27b", "table", "another sentence") in controls and ("27b", "table", "chance") in controls
     chance = {(r["setting"], r["value"]) for r in records if r["source"] == LR.CONTROL_TEXT and r["extra"]["control"] == "chance"}  # fmt: skip
@@ -145,12 +145,51 @@ def test_full_draws_the_not_interpretable_cells_main_does_not(book, tmp_path):
     assert {r["extra"]["control"] for r in main if r["source"] == LR.CONTROL_TEXT} == {"chance", "digit visible"}
 
 
-def test_exceptions_grouped_by_how_they_fail(book):
-    words = LR.exception_words(book, "f4", G.FINDING["f4"].settings, LR.why_f4)
-    assert words == ["Fail at ≈ chance: 27B (long context), Gemma (scene set 1, JSON).",
-                     "Fail on DeltaNet: Olmo-Hybrid (table)."]  # fmt: skip
-    f3 = LR.exception_words(book, "f3", (*LR.DRAWS, "table", "JSON"), DN.why_f3)
-    assert f3 == ["No cell fails the rule.", "Hold above chance: Gemma (scene set 1)."]
+def drawn(b: RB.Book, dots: LR.Dots, panels: tuple[LR.Panel, ...], kind: str):
+    """Draw the panels as dot_figure does; what they leave to the caption, the numbers, the grey words drawn."""
+    fr = C.frame(kind, "t", "s", ncols=len(panels))
+    LR.title_room(fr)
+    notes, numbers = LR.Notes(), []
+    keys = LR.rows_of(b, dots.finding, panels, kind)
+    for i, (ax, p) in enumerate(zip(fr.axes, panels, strict=True)):
+        LR.dot_panel(ax, b, dots, p, LR.setup(ax, p.title, keys, first=i == 0), kind, numbers, notes)
+    words = {t.get_text() for ax in fr.axes for t in ax.texts if t.get_gid() == "status"}
+    C.plt.close(fr.fig)
+    return notes, numbers, words
+
+
+def test_main_leaves_blanks_and_control_failures_to_the_caption(book):
+    notes, numbers, words = drawn(book, LR.DOTS, LR.MAIN_PANELS, "main")
+    assert words == set()  # no grey words in a MAIN panel
+    exceptions = {(c.model, c.setting) for c in notes.labelled + notes.unlabelled}
+    assert exceptions == {("gemma", "draw 1"), ("gemma", "JSON"), ("27b", "long context")}
+    assert [(c.model, c.setting, ctl.name, n.value) for c, ctl, n in notes.on_control] == [
+        ("olmo_hybrid", "table", "DeltaNet", 88.0)
+    ]  # failing on its control: no value label, named in the caption
+    assert notes.blank == {"too few items", "not run"} and notes.fewer  # Muse's table; Gemma's long context, 27B set 3
+    sentences, optional = LR.caption(book, LR.DOTS, "main", LR.RULE, notes, numbers)
+    assert sentences[:3] == ["Labelled = fails the rule at ≈ chance.",
+                             "Olmo-Hybrid's table fails its DeltaNet-layer control (88% kept).",
+                             "Blank or fewer dots: too few items or not run."]  # fmt: skip
+    assert sentences[-1] == LR.FILLED and optional == []
+
+
+def test_full_writes_the_grey_words_and_the_rule(book):
+    notes, numbers, words = drawn(book, LR.DOTS, LR.FULL_PANELS, "full")
+    assert {"too few items", "not run"} <= words and notes.pale  # Olmo's prose: pale
+    sentences, optional = LR.caption(book, LR.DOTS, "full", LR.RULE, notes, numbers)
+    assert f"Rule: {LR.RULE}." in sentences and "Pale = control failed." in sentences
+    assert optional == ["Fewer dots: not run."]
+
+
+def test_digit_not_name_says_how_far_below_digit_only(book):
+    notes, numbers, _ = drawn(book, DN.dots("main"), DN.MAIN_PANELS, "main")
+    gemma = next(c for c in notes.labelled if c.model == "gemma")
+    digit = LR.control(gemma, DN.DIGIT_ONLY)
+    assert digit is not None
+    sentences, _ = LR.caption(book, DN.dots("main"), "main", DN.RULE, notes, numbers, far=True)
+    assert sentences[:2] == ["No cell fails the rule.",
+                             f"Labelled = holds but stays above chance, far below digit only ({LR.pct(digit.value)})."]  # fmt: skip
 
 
 def test_fail_kind_and_why():
@@ -181,8 +220,8 @@ def test_controls_parse_value_and_interval():
 
 
 def test_setting_words():
-    assert LR.setting_words(["draw 1", "draw 2", "JSON"]) == "scene sets 1-2, JSON"
-    assert LR.setting_words(["draw 1", "draw 3"]) == "scene sets 1, 3"
+    assert LR.setting_words(["draw 1", "draw 2", "JSON"]) == "prompt sets 1-2, JSON"
+    assert LR.setting_words(["draw 1", "draw 3"]) == "prompt sets 1, 3"
     assert LR.setting_words(["long context"]) == "long context"
 
 
@@ -204,6 +243,9 @@ def test_pack_keeps_two_lines_and_refuses_three():
     assert LR.pack(fig, [a, c, b]) == f"{a} {c}\n{b}"  # in order when that fits
     with pytest.raises(ValueError):
         LR.pack(fig, [b, b, b])
+    b8, d = sentence("b", 0.8), sentence("d", 0.1)
+    assert LR.pack(fig, [a, b8], [c]) == f"{a}\n{b8}"  # an optional sentence that would cost a move is left out
+    assert LR.pack(fig, [a, b8], [d]) == f"{a}\n{b8} {d}"  # one that fits in order is kept
     C.plt.close(fig)
 
 
