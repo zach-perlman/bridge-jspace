@@ -364,3 +364,16 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   too; rotated within 10), so that band cannot test the split on natural text. Added after seeing it: the same C1 and
   the logit-lens control at the 122B's other band of record, L24-30 (its toy-suite C1 ran at both). The L39-45 controls
   are dropped.
+
+## Amendment 11 (Zach, 2026-10-23 ~12:00 UTC): a second natural seed, and Muse at a mid-depth band
+
+- **Seen when this was written:** amendment 10's results (EXPERIMENTS.md through 6842f86): natural_v1_chat gaps 27B 51,
+  9B 37, Muse 85, all J++; logit-lens gaps 0, -5, 55; the 122B breaks on every word at both bands.
+- **A. Second data seed.** natural_v2 = scripts/natural_v1.py make --seed 802 (same fact tables and templates; new
+  scenes, fictional people, distractor entities, P-final facts, genres and filler). Chat framing only. The 27B (L32-40),
+  9B (L12-16) and Muse (L36-42): competence, then C1 (paper10, rotated) scored by c1_v2. Prediction: each keeps a gap
+  >= 20 (27B >= 30).
+- **B. Muse at L16-22** (a band of its toy C1 run of record, mid-depth) on natural_v1_chat: paper10, paper10_rot,
+  unembed10, unembed10_rot; c1_v2 and c1_specificity. Reading: a J++ gap >= 20 with a logit-lens gap < 10 would make
+  Muse's natural dependence J-specific at mid depth; a J++ gap < 10 would mean it shows only at the late band, where
+  it is mostly shared with the logit lens. Descriptive.
