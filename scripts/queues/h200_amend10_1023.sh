@@ -78,6 +78,15 @@ for step in "$@"; do
     ctl9) natctl qwen3.5-9b qwen35_9b_ natural_v1_chat 12-16 32;;
     ctl27) natctl qwen3.6-27b "" natural_v1_chat 32-40 32;;
     ctlmuse) natctl muse-glimmer-30b muse30_ natural_v1_chat 36-42 32;;
+    nat122b)  # 10B note 3: L39-45 breaks every word on natural chat; the 122B's other band of record, L24-30
+      export BJ_TARGET=qwen3.5-122b-a10b; c=qwen35_122b_natural_v1_chat_competence_v1; r=qwen35_122b_natural_v1_chat_ko_l2430_v1
+      T="--tasks natural_v1_chat --tasks-competence $c --tasks-words PP PM MP MM --tasks-level all --n 1000 --batch 8 --kinds clean"
+      run ablate_v2/$r $PY scripts/ablate_v2.py --name $r --why "$WHY: the 122B, C1 on natural_v1_chat at L24-30 (L39-45 broke every word)" \
+        --plan bands --bands 24-30 --conditions paper10 paper10_rot $T > /workspace/scratch/$r.log 2>&1 \
+        && $PY scripts/c1_v2.py $r --middle L24-30 --set natural_v1_chat | tail -2 || echo "=== 122B natural L24-30 FAILED"
+      run ablate_v2/${r%_v1}_unembed_v1 $PY scripts/ablate_v2.py --name ${r%_v1}_unembed_v1 --why "$WHY: the 122B, the logit-lens control on natural_v1_chat at L24-30" \
+        --plan bands --bands 24-30 --conditions unembed10 unembed10_rot $T > /workspace/scratch/${r%_v1}_unembed_v1.log 2>&1 \
+        && $PY scripts/c1_specificity.py $r ${r%_v1}_unembed_v1 --set natural_v1_chat | tail -3 | sed "s/^/=== spec 122B L24-30: /" || echo "=== 122B L24-30 unembed FAILED";;
     ctl122) natctl qwen3.5-122b-a10b qwen35_122b_ natural_v1_chat 39-45 8;;
     mp9) mp qwen3.5-9b qwen35_9b_ full_v8 qwen35_9b_full_v8_competence_v1 "12-16" 32;;
     mp27) mp qwen3.6-27b "" full_v8 full_v8_competence_v1 "32-40" 16;;

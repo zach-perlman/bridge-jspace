@@ -360,3 +360,7 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   logit-lens control (unembed10 and its rotation; scripts/c1_specificity.py) and each step alone (paper10 and rotated,
   kinds step1 step2). Leading alternative to rule in or out: Muse's toy-suite null is specific to digit answers (the toy
   suite's every answer is a digit; natural answers are words).
+- **10B note 3 (~10:20 UTC):** seen: the 122B on natural_v1_chat at L39-45 loses 89-99 points on every word (prompt-final
+  too; rotated within 10), so that band cannot test the split on natural text. Added after seeing it: the same C1 and
+  the logit-lens control at the 122B's other band of record, L24-30 (its toy-suite C1 ran at both). The L39-45 controls
+  are dropped.
