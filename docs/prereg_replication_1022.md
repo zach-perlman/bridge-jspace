@@ -420,3 +420,24 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   concepts may not use the shared direction): supported if, in the 27B or 9B, the rare-bridge gap is >= 15 points
   below the popular-bridge gap with the intervals apart; against it if the two are within 10. Rare bridges the
   model does not know drop out at competence, so "rare" here means known but less frequent.
+
+## Amendment 15 (Zach, 2026-10-23 ~19:20 UTC): three-step natural chains
+
+- **Set:** nat3_v1_chat (scripts/natural3.py, seed 1101): city -> country -> continent and person -> home country ->
+  continent, start entities balanced across continents; all 8 words (PPP ... MMM), 224 items each; prompt facts are new
+  facts about fictional people / partner cities / film casting / delegations, never the real value; an entity a memory
+  hop must recall is in the passage only when a later prompt hop is keyed by it; every answer is unique among the routes
+  that swap hop 2 or 3 to the other source and the route that skips hop 2. Clean words (no adjacent memory hops): PPP,
+  MPP, PMP, PPM, MPM. Skip-prone (a memorized composite can replace two memory hops): PMM, MMM, MMP.
+- **Seen when this was written:** competence (candidate read) for the 9B and the 27B; no knock-out data. Whole-question
+  accuracy (guess-prompt rate): 27B PPP 54 (36), MPP 62 (31), PMP 58 (29), PPM 82 (28), MPM 74 (25), MMP 67 (23),
+  PMM 97, MMM 90; 9B 32-44 on the six words with a prompt hop (guess 22-29), PMM 95, MMM 90. The 9B cannot compose
+  these chains latently (its PMM / MMM are the memorized composites) and is not run; the 27B is. Estimated share of the
+  27B's right answers that are real composition rather than lucky 5-way guesses: PPP ~52%, MPP ~73%, PMP ~70%, PPM ~91%,
+  MPM ~88%, MMP ~85%.
+- **Procedure (27B, L32-40):** per-word eligibility (whole and every hop alone right), the candidate-rank read, paper10,
+  paper10_rot, unembed10, unembed10_rot; scripts/nat3_score.py: each word's loss and its excess over PPP, bootstrap over
+  start entities; secondary: --min-p 0.5 (confident items only). Muse is added if its competence is like the 27B's.
+- **Hypotheses:** H-final (the final hop's source decides): PPM and MPM excess >= 20; MPP and PMP excess <= 10. The toy
+  suite's pattern (MMP high too) is the discriminating case, with the skip-prone caveat; PMM and MMM are expected high
+  under H-final (descriptive). J-specificity: the logit-lens excesses < 10.

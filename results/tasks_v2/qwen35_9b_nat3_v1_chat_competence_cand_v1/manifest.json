@@ -1,0 +1,17 @@
+{
+  "run": "qwen35_9b_nat3_v1_chat_competence_cand_v1",
+  "why": "Zach (2026-10-23, prereg amendment 15, before its registration: a competence check of the 9B on nat3_v1_chat)",
+  "set": "nat3_v1_chat",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "e27a22e428412f3f116bb58b730011b7200a3283",
+  "guess": true,
+  "read": "cand",
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-23T18:31:25Z"
+}
