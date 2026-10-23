@@ -377,3 +377,5 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   unembed10, unembed10_rot; c1_v2 and c1_specificity. Reading: a J++ gap >= 20 with a logit-lens gap < 10 would make
   Muse's natural dependence J-specific at mid depth; a J++ gap < 10 would mean it shows only at the late band, where
   it is mostly shared with the logit lens. Descriptive.
+- **11 note (~12:30 UTC):** seen: the second seed (27B 44, 9B 38, Muse 85) and Muse at L16-22 (gap -5). Added, same
+  procedure and prediction as 11A: a third natural seed, natural_v3 (seed 803), chat framing, for the 27B, 9B and Muse.
