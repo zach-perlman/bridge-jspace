@@ -71,8 +71,8 @@ def counts(rows, cases, fam, fmt=None):
 def judge(c):
     noname = wilson(*c.get(("lookup_noname", "final"), (0, 0)))
     n = c.get(("lookup_noname", "final"), (0, 0))[1]
-    if n == 0:
-        return n, noname, None, None, "not testable"
+    if n == 0:  # nothing to judge: the other values are placeholders, never printed
+        return n, noname, (math.nan,) * 3, {"question": math.nan, "final": math.nan}, "not testable"
     nodigit = wilson(*c[("lookup_nodigit", "final")])
     offs = {
         d: min(wilson(*c[(s, d)])[0] for s in ("lookup_off_nodigit", "lookup_off_noname"))
@@ -116,8 +116,11 @@ def main():
                     f"{100 * nodigit[0]:.0f}% [{100 * nodigit[1]:.0f}, {100 * nodigit[2]:.0f}]"
                     in g["chance or control level"]
                 )
-                # grid.md's "off-path parts hidden: lowest" text shows the last tokens only (see claim.md)
-                same &= f"lowest {100 * offs['final']:.0f}%" in g["chance or control level"]
+                # "off-path parts hidden: lowest": the last tokens only up to grid 20261023T104743Z (see claim.md);
+                # both destinations from 20261023T105852Z on ("needs >= 90% at both places")
+                both = "at both places" in g["chance or control level"]
+                low = min(offs.values()) if both else offs["final"]
+                same &= f"lowest {100 * low:.0f}%" in g["chance or control level"]
             bad += not same
             done += 1
             txt = "-" if not n else f"{100 * p:5.1f}% [{100 * lo:4.1f}, {100 * hi:4.1f}]  {100 * nodigit[0]:14.0f}%  {100 * offs['question']:3.0f}/{100 * offs['final']:3.0f}%"  # fmt: skip

@@ -111,7 +111,8 @@ def main():
                 continue
             if run not in cache:
                 cache[run] = load(run)
-            n, lk, off, gdn = cell(*cache[run], fam, model in HYBRIDS, fmt)
+            rows, cases = cache[run]
+            n, lk, off, gdn = cell(rows, cases, fam, model in HYBRIDS, fmt)
             verdict = judge(n, lk, off, gdn)
             same = word(g["verdict"]) == verdict and (g["n"] or "0") == str(n)
             note = ""
