@@ -75,6 +75,33 @@ def test_rest_size_verdict_branches():
     assert V.rest_size_verdict(cell({**FORM, "not_jspace_matched": (0, 0)}, RECALL_OK)).startswith("not interpretable")
 
 
+def flags(k: int, n: int = 100) -> dict[str, int]:
+    return {f"item{i}": int(i < k) for i in range(n)}
+
+
+def test_necessity_cell_and_model():
+    lk = {"full": flags(90), "not_jspace": flags(85), "not_rand_sub": flags(88)}  # drop without J: 5 points
+    rc = {"full": flags(90), "not_jspace": flags(40), "not_rand_sub": flags(85)}  # 50 points, random part 5
+    c = V.necessity_cell(lk, rc)
+    assert c["verdict"] == "holds" and c["lookup_J_not_needed"] and c["recall_J_needed"]
+    assert abs(c["recall_dropJ_minus_droprand"][0] - 0.45) < 1e-9 and c["recall_dropJ_minus_droprand"][1] > 0
+    lk_needs = {**lk, "not_jspace": flags(60)}  # the lookup loses 30 points without J
+    assert V.necessity_cell(lk_needs, rc)["verdict"] == "does not hold"
+    rc_size = {**rc, "not_rand_sub": flags(40)}  # removing a random part of J's size costs as much: size, not J
+    assert not V.necessity_cell(lk, rc_size)["recall_J_needed"]
+    rc_small = {**rc, "not_jspace": flags(75)}  # the recall loses only 15 points
+    assert not V.necessity_cell(lk, rc_small)["recall_J_needed"]
+    lk_weak = {"full": flags(40), "not_jspace": flags(40), "not_rand_sub": flags(40)}  # the gate: < 50% switched
+    assert V.necessity_cell(lk_weak, rc)["verdict"].startswith("not interpretable")
+    assert V.necessity_cell({**lk, "not_rand_sub": {}}, rc)["verdict"].startswith("not interpretable")
+    good, bad = {"necessity": {"holds": True}}, {"necessity": {"holds": False}}
+    m = V.necessity_model({"bridge_word:6": good, "bridge_word:8": good, "bridge_word:10": bad,
+                           "bind_bridge:6": good, "bind_bridge:8": bad, "bind_bridge:10": good})  # fmt: skip
+    assert m["verdict"].startswith("holds") and m["sets"]["bridge_word"]["holds_at"] == 2
+    m = V.necessity_model({"bridge_word:6": good, "bridge_word:8": bad, "bind_bridge:6": good, "bind_bridge:8": good})
+    assert m["verdict"].startswith("does not hold")  # 1 of 2 is not a majority
+
+
 def fake_runs(tmp_path, monkeypatch, rates: list[tuple], plan: dict) -> tuple:
     """A map (rates: set, layer, transit, flips) and a parts run (plan: (family, set, layer) -> part -> switched of
     100 items) under tmp_path; returns the statement_positions and d1_verdict folders."""
@@ -155,3 +182,22 @@ def test_rest_size_run_and_figure(tmp_path, monkeypatch):
     assert V.by_cell(b) == 0
     (d2,) = out2.glob("P_*")
     assert json.loads((d2 / "verdict.json").read_text())["verdict"].startswith("not interpretable")
+
+
+def test_necessity_run_and_figure(tmp_path, monkeypatch):
+    rates = [("bridge_word", 6, True, 0.95), ("bind_bridge", 6, True, 0.9)]
+    lk = {"full": 90, "jspace": 3, "not_jspace": 86, "not_rand_sub": 88, "rand_sub": 0}
+    rc = {"full": 92, "jspace": 50, "not_jspace": 35, "not_rand_sub": 88, "rand_sub": 2}
+    plan = {(f, s, 6): d for s in ("bridge_word", "bind_bridge") for f, d in (("PP", lk), ("PM", rc))}
+    _, out = fake_runs(tmp_path, monkeypatch, rates, plan)
+    a = argparse.Namespace(map="M", parts="P", lookup="PP", recall="PM", tasks_set=None, out=str(out), rule="necessity",
+                           cells=["bridge_word:6", "bind_bridge:6"], reference=[], decisive=None, figures=False)  # fmt: skip
+    assert V.by_cell(a) == 0
+    (d,) = out.glob("P_*")
+    v = json.loads((d / "verdict.json").read_text())
+    assert v["rule"] == "necessity" and v["verdict"].startswith("holds")
+    assert v["cells"]["bridge_word:6"]["necessity"]["verdict"] == "holds"
+    assert v["cells"]["bridge_word:6"]["median_share"]["not_rand_sub"] == 0.7  # 1 - the random part's share 0.3
+    a.figures = True
+    assert V.rule_figures(a) == 0
+    assert list(d.glob("analysis-*-figures/necessity.png"))

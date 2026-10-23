@@ -1,0 +1,28 @@
+id: d1_rest_size_27b_r2
+title: "The rest at the lens part's size (Qwen3.6-27B): does a stated bridge's change switch lookups through its form or its size?"
+thread: D1
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.6
+command: >-
+  uv run python scripts/statement_positions.py parts --name d1_rest_size_parts_27b_r2 --map d1_topics2_map_27b --why "A2: the rest of a stated bridge's change at the lens part's size" --lo 32 --sets bind_bridge context --force context:32 bind_bridge:32 context:36
+  && uv run python scripts/d1_verdict.py --rule rest-size --map d1_topics2_map_27b --parts d1_rest_size_parts_27b_r2 --tasks-set d1_topics_v2 --cells context:32 bind_bridge:32 context:36 --decisive context:32
+figures_command: uv run python scripts/d1_verdict.py --rule rest-size --parts d1_rest_size_parts_27b_r2 --figures
+question: >-
+  Shrunk to the size of the lens-readable part, does the rest of a stated bridge's change still switch the lookups where the lens-readable part does not?
+why_it_matters: >-
+  Claim 6's lookup half (finding 2) rests on the lens-readable part of a stated bridge's change switching almost no lookups while the rest switches most. The lens-readable part is the smaller piece of the change, so its silence could be its size, not its form. If the rest, shrunk to the lens part's size, still switches lookups, the silence is about what the lens part carries; if it switches none either, the lookup half of claim 6 carries no information.
+hypotheses:
+  H-form: 'at the decisive cell the rest at the lens part''s size switches lookups with Wilson lower bound >= 20% while the lens part''s Wilson upper bound is <= 5%. Prior: Dan''s (predictions/ batch 20), none set by the agent'
+  H-size: 'at the decisive cell the rest at the lens part''s size switches <= 10% of lookups (Wilson upper bound): the lookup half of claim 6 carries no information. Prior: Dan''s'
+  H-inconclusive: 'neither. Prior: Dan''s'
+decision_rule: >-
+  Written 23 Oct afternoon before any run (scripts/d1_verdict.py --rule rest-size, new; the earlier rules untouched). Parts: C's copy split as in statement_positions' parts stage, with not_jspace_matched new (the rest, not_jspace, each row rescaled to the norm of the lens part's row, jspace; added last so earlier parts and nulls keep their seeds). Cells: the context at layers 32 and 36 and the bridge's sentence at layer 32. The decisive cell is finding 2's own cell on this model, context:32 (fixed before d1_topics2_parts_27b ran); it must be in transit for lookups on the lens-free map d1_topics2_map_27b (it is), else not interpretable. The other two cells get the same verdict, reported only (bind_bridge:32 is not in transit for lookups on the map). Rates: share of lookups (PP) whose top token is the other bridge's answer, Wilson 95%, pooled over topics. H-FORM iff at the decisive cell the rest at the lens part's size switches lookups with Wilson lower bound >= 0.20 while the lens part's Wilson upper bound is <= 0.05. H-SIZE iff there the rest at the lens part's size switches lookups with Wilson upper bound <= 0.10: then the lookup half of claim 6 carries no information. Otherwise INCONCLUSIVE. The two are exclusive (a lower bound >= 20% cannot meet an upper bound <= 10%). Agent's choices for Dan to confirm before enqueue: one decisive cell (finding 2's), the others reported; transit as the filter. Reported per cell, lookups and recalls (PM: the same patch at statement cells): the whole copy, the lens part, the rest, the rest at the lens part's size, rand_sub, jspace_matched, rand_omp, the lens part's random-direction null; per topic at the decisive cell.
+controls:
+- 'rand_sub: C''s copy projected per row on a random subspace (seed 888 + layer) keeping the lens part''s share of the row''s squared norm (a size-matched piece in a random direction), reported'
+- 'recalls (PM) on the same scenes, both parts reported'
+- 'the map''s transit (C''s whole copy against O''s copy and a random-direction copy); the lens part''s random-direction null'
+- 'determinism: context:32 and context:36 repeat cells of d1_topics2_parts_27b on the same scenes (its lens part and rest reproduced)'
+n: '180 scenes per family (PP lookups and PM recalls), d1_topics_v2 (the stated-bridge topics scenes, draw 2), 3 cells'
+seeds: [23]
+notes: "Copy of d1_rest_size_27b, cancelled before running; adds not_rand_sub (Dan 23 Oct): the change minus its random-subspace part of the lens part's share, the last part (after not_jspace_matched), reported; the rule and the cells are unchanged; run name d1_rest_size_parts_27b_r2. Dan, 23 Oct afternoon (A2), A100 queue. Same scenes, map, lens (the frozen 27B J++) and code path as d1_topics2_parts_27b, with --force for the cells (every family gets every cell; d1_verdict uses the map's transit). Data seed 23 (d1_topics_v2); nulls 0, random dictionary 777 + layer, random subspace 888 + layer. Timing basis: d1_topics2_parts_27b ran 1505 s on one A100 80 GB for 3 cells x 2 families x 180 (20k reads); this run has 3 cells and 4 more reads per cell (~24k reads): ~0.5 h, est 0.6 GPU-h. No depends_on: its inputs (the map and its competence run) are committed. Not opened before Dan predicts."

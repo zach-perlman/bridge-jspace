@@ -45,7 +45,8 @@ Stages (manifest.json written first, write-once, under results/statement_positio
              bridge's and X's own lens vectors) and the rest, the J-space part without the own words, a 25-atom OMP over
              a random dictionary (the fitting null), C's copy projected on a random subspace keeping the J-space part's
              share of each row's squared norm (rand_sub, 23 Oct), the rest rescaled per row to the J-space part's norm
-             (not_jspace_matched, 23 Oct), each part's random-direction null, and the matched-size pieces.
+             (not_jspace_matched, 23 Oct), C's copy minus rand_sub (not_rand_sub, 23 Oct), each part's
+             random-direction null, and the matched-size pieces.
   readwrite  at the same cells: the lens read (the bridge's best rank among word tokens over the set's positions, X
              as the floor) and the lens write (v_X - v_I per position at the norm of C's copy there, 0.5-16x, and a
              random direction at the same norms; C's copy itself), as read_write at the question tokens.
@@ -951,8 +952,8 @@ def stage_parts(name: str, map_name: str, why: str, force: dict[str, list[int]] 
     m["parts"] = "suite_split's parts with --calibrate: full (C), O's full copy, lens2 / not_lens2, jspace / not_jspace, " \
         f"jspace_wo_own, rand_omp ({K_ATOMS}-atom signed OMP), rand_sub (C's copy projected per row on a random " \
         "subspace keeping the J-space part's share of the row's squared norm), not_jspace_matched (the rest, each row " \
-        "rescaled to the J-space part's norm), each with its random-direction null, lens2_matched and jspace_matched " \
-        "(exp02's matched-alignment pieces)"  # fmt: skip
+        "rescaled to the J-space part's norm), not_rand_sub (C's copy minus rand_sub), each with its random-direction " \
+        "null, lens2_matched and jspace_matched (exp02's matched-alignment pieces)"  # fmt: skip
     m["seeds"]["random_subspace"] = f"{SUBSPACE_SEED} + layer"
     m["windows"] = {"primary": f"layers [{PRIMARY_LO}, {ONSET})", "secondary": f"layers [{SPLIT_LO}, {ONSET})"}
     m["decision"] = (__doc__ or "").split("\n\n")[6]
@@ -1026,7 +1027,8 @@ def run_parts(out: Path, m: dict) -> None:
                      "jspace_wo_own": signed_omp(dictionary, delta - lens2, K_ATOMS),
                      "rand_omp": signed_omp(rdict, delta, K_ATOMS),
                      "rand_sub": random_subspace_part(delta, j_share, basis)}  # fmt: skip
-            parts["not_jspace_matched"] = rescale_rows(parts["not_jspace"], jspace.norm(dim=-1))  # last (A2, 23 Oct)
+            parts["not_jspace_matched"] = rescale_rows(parts["not_jspace"], jspace.norm(dim=-1))  # A2, 23 Oct
+            parts["not_rand_sub"] = delta.float() - parts["rand_sub"]  # last (B2, 23 Oct): the change minus rand_sub
             for what in ("lens2", "jspace", *CALIBRATION):
                 fve.append({"family": c["family"], "name": c["id"], "scene": c["scene"], "set": s, "layer": la,
                             "what": what, "share": round(float(parts[what].norm() ** 2) / total, 4)})  # fmt: skip
@@ -1429,6 +1431,7 @@ def condition_text(case: dict, o: dict, kind: str) -> str:
                 "not_lens2": "C's copy minus that projection", "rand_omp": "C's copy fitted on a random dictionary",
                 "rand_sub": "C's copy projected on a random subspace of the J-space part's size",
                 "not_jspace_matched": "C's copy minus its J-space part, rescaled to the J-space part's size",
+                "not_rand_sub": "C's copy minus its random-subspace part of the J-space part's size",
                 "jspace_wo_own": "the J-space part after the own words are projected out"}.get(part, part)  # fmt: skip
         return f"{name}{' (random direction at its norms)' if o['null'] else ''} added {where}"
     if part == "copy":

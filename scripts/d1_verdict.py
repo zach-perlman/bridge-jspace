@@ -55,7 +55,20 @@ change)? not_jspace_matched = the rest of the change, each row shrunk to the len
   otherwise inconclusive. Reported per cell: lookups and recalls for every part above (recalls for both the lens part
            and the rest at its size); per topic at the decisive cell.
 
---figures (late-switch, rest-size): the figure of the newest verdict of --parts under that rule, in a new
+--rule necessity (B1, Dan 23 Oct 15:30, written before any run; the rules above untouched): in the band at the
+bridge's word (bridge_word, bind_bridge; early layers), does the lookup need the lens-readable part (J) of the
+stated bridge's change while the recall does? F(x) = share of items switched by pasting x; full = the change
+(delta), not_jspace = delta - J, not_rand_sub = delta - rand_sub (rand_sub: a random subspace of J's share).
+  lookup   J not needed iff F(full) - F(not_jspace) <= 0.10 (point), at a cell where the whole change switches >= 0.50
+           of lookups (the agent's proposed gate; below it: not interpretable)
+  recall   J needed iff F(full) - F(not_jspace) >= 0.20 (point) AND that drop exceeds F(full) - F(not_rand_sub) with
+           the 95% lower bound of the difference of the two drops > 0 (paired bootstrap over scenes, 2000 resamples,
+           seed 0)
+  cell     the claim holds iff both; model: per set, it holds iff it holds at a majority of the set's listed cells
+           (not interpretable cells count as not holding); the model holds iff every set holds (the agent's proposal)
+  reported the parts' median shares of the change's squared norm (J, the random part; the rests are 1 - those)
+
+--figures (late-switch, rest-size, necessity): the figure of the newest verdict of --parts under that rule, in a new
 analysis-*-figures/ folder of the verdict.
 
 uv run python scripts/d1_verdict.py --map M --parts P [--lookup PP --recall PM] [--tasks-set S] [--onset 44]
@@ -75,7 +88,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from bridge_jspace import pins
-from bridge_jspace.stats import wilson
+from bridge_jspace.stats import paired_bootstrap_diff, wilson
 
 SP = pins.RESULTS_DIR / "statement_positions"
 OUT = pins.RESULTS_DIR / "d1_verdict"
@@ -85,7 +98,10 @@ JSPACE_MAX, REST_MIN, POSITIVE_MIN = 0.10, 0.50, 0.30
 LATE_JSPACE_HI, LATE_REST_MIN, LATE_RECALL_MIN, FAIL_JSPACE_LO = 0.05, 0.30, 0.30, 0.20
 LATE_STAYS_HI = 0.10  # (e), Dan 23 Oct 12:30: once quiet, the lens part stays quiet at the set's later decisive cells
 FORM_REST_LO, SIZE_REST_HI = 0.20, 0.10  # rest-size: the rest at the lens part's size, Wilson lower / upper bound
-REPORT_PARTS = ("full", "jspace", "not_jspace", "not_jspace_matched", "rand_sub", "jspace_matched", "rand_omp")
+REPORT_PARTS = ("full", "jspace", "not_jspace", "not_jspace_matched", "rand_sub", "not_rand_sub", "jspace_matched",
+                "rand_omp")  # fmt: skip
+# --rule necessity (B1, Dan 23 Oct 15:30): drops in points; LOOKUP_FULL_MIN is the agent's proposed gate
+NOT_NEEDED_MAX, NEEDED_MIN, LOOKUP_FULL_MIN, NEED_BOOT, NEED_SEED = 0.10, 0.20, 0.50, 2000, 0
 
 
 def decisive_cell(rates: list[dict], lookup: str, lo: int, onset: int) -> dict | None:
@@ -201,8 +217,55 @@ def block(rows: list[dict], fam: str, cell: str) -> dict:
     return out
 
 
+def switched(rows: list[dict], fam: str, cell: str, part: str) -> dict[str, int]:
+    """item -> 1 if pasting `part` at the cell switched it to the other bridge's answer, else 0."""
+    s, la = cell.split(":")
+    return {r["name"]: int(r["role"] == "b") for r in rows if r["family"] == fam and r["set"] == s
+            and r["layer"] == int(la) and r["source"] == "cf" and r["part"] == part and not r["null"]}  # fmt: skip
+
+
+def necessity_cell(lk: dict[str, dict[str, int]], rc: dict[str, dict[str, int]]) -> dict:
+    """--rule necessity at one cell. lk / rc: part -> item -> switched (0/1), parts full, not_jspace, not_rand_sub.
+    F(x) = share switched by pasting x; drop_J = F(full) - F(not_jspace), drop_rand = F(full) - F(not_rand_sub)."""
+
+    def f(d: dict[str, dict[str, int]], p: str) -> float:
+        return sum(d[p].values()) / len(d[p]) if d.get(p) else float("nan")
+
+    if not all(d.get(p) for d in (lk, rc) for p in ("full", "not_jspace", "not_rand_sub")):
+        return {"verdict": "not interpretable: missing parts rows", "holds": False}
+    lk_drop, rc_drop = f(lk, "full") - f(lk, "not_jspace"), f(rc, "full") - f(rc, "not_jspace")
+    rc_drop_rand = f(rc, "full") - f(rc, "not_rand_sub")
+    items = sorted(set(rc["not_rand_sub"]) & set(rc["not_jspace"]))  # drop_J - drop_rand = F(not_rand) - F(not_J)
+    diff = paired_bootstrap_diff([rc["not_rand_sub"][i] for i in items], [rc["not_jspace"][i] for i in items],
+                                 NEED_BOOT, NEED_SEED)  # fmt: skip
+    lookup_gate = f(lk, "full") >= LOOKUP_FULL_MIN
+    not_needed = lookup_gate and lk_drop <= NOT_NEEDED_MAX
+    needed = rc_drop >= NEEDED_MIN and rc_drop > rc_drop_rand and diff[1] > 0
+    if not lookup_gate:
+        verdict = f"not interpretable: the whole change switches < {LOOKUP_FULL_MIN:.0%} of lookups here"
+    else:
+        verdict = "holds" if not_needed and needed else "does not hold"
+    return {"verdict": verdict, "holds": not_needed and needed, "lookup_F_full": f(lk, "full"),
+            "lookup_drop_J": lk_drop, "lookup_J_not_needed": not_needed, "recall_drop_J": rc_drop,
+            "recall_drop_rand": rc_drop_rand, "recall_dropJ_minus_droprand": list(diff), "recall_J_needed": needed,
+            "n_lookup": len(lk["full"]), "n_recall": len(items)}  # fmt: skip
+
+
+def necessity_model(cells: dict[str, dict]) -> dict:
+    """Per set (bridge_word, bind_bridge): holds iff the cell verdict holds at a majority of its listed cells (cells
+    not interpretable count as not holding); the model holds iff it holds in every set (the agent's proposal)."""
+    by_set: dict[str, list[bool]] = {}
+    for k, c in cells.items():
+        by_set.setdefault(k.split(":")[0], []).append(c["necessity"]["holds"])
+    sets = {s: {"holds_at": sum(v), "cells": len(v), "holds": sum(v) > len(v) / 2} for s, v in by_set.items()}
+    ok = bool(sets) and all(v["holds"] for v in sets.values())
+    detail = "; ".join(f"{s} {v['holds_at']}/{v['cells']}" for s, v in sets.items())
+    return {"verdict": f"{'holds' if ok else 'does not hold'} (cells where it holds: {detail})", "sets": sets}
+
+
 def by_cell(a: argparse.Namespace) -> int:
-    """--rule late-switch / rest-size: the rule's verdict, every listed cell reported for lookups and recalls."""
+    """--rule late-switch / rest-size / necessity: the rule's verdict, every listed cell reported for lookups and
+    recalls."""
     rates = json.loads((SP / a.map / "summary.json").read_text())["rates"]
     rows = [json.loads(x) for x in (SP / a.parts / "outcomes.jsonl").read_text().splitlines()]
     fve = [json.loads(x) for x in (SP / a.parts / "fve.jsonl").read_text().splitlines()]
@@ -214,6 +277,8 @@ def by_cell(a: argparse.Namespace) -> int:
     transit = [f"{c['set']}:{c['layer']}" for c in listed if c["transit"]]
     if a.rule == "late-switch":
         decisive = transit
+    elif a.rule == "necessity":  # every listed band cell gets a verdict; the sets combine by majority
+        decisive = [f"{c['set']}:{c['layer']}" for c in listed]
     else:
         assert a.decisive in a.cells, "rest-size: --decisive must be one of --cells"
         decisive = [a.decisive] if a.decisive in transit else []
@@ -238,10 +303,18 @@ def by_cell(a: argparse.Namespace) -> int:
                       "median_share": {w: share(c["set"], c["layer"], w) for w in ("jspace", "rand_sub", "rand_omp")}}  # fmt: skip
         if a.rule == "rest-size":
             cells[key]["verdict"] = rest_size_verdict(cells[key])
+        if a.rule == "necessity":
+            parts = ("full", "not_jspace", "not_rand_sub")
+            cells[key]["necessity"] = necessity_cell({p: switched(rows, a.lookup, key, p) for p in parts},
+                                                     {p: switched(rows, a.recall, key, p) for p in parts})  # fmt: skip
+            cells[key]["median_share"]["not_jspace"] = 1 - (cells[key]["median_share"]["jspace"] or 0.0)
+            cells[key]["median_share"]["not_rand_sub"] = 1 - (cells[key]["median_share"]["rand_sub"] or 0.0)
 
     def verdict_of_cells(sub: dict[str, dict]) -> dict:
         if a.rule == "late-switch":
             return late_switch_verdict(sub)
+        if a.rule == "necessity":
+            return necessity_model(sub)
         if not sub:
             return {
                 "verdict": f"not interpretable: the decisive cell {a.decisive} is not in transit for lookups on the map"
@@ -250,7 +323,7 @@ def by_cell(a: argparse.Namespace) -> int:
 
     out = {"rule": a.rule, "map": a.map, "parts": a.parts, "decisive_cells": decisive,
            **verdict_of_cells({k: cells[k] for k in decisive}), "cells": cells}  # fmt: skip
-    for key in ("format", "topic") if meta else ():  # the same rule on one format's / topic's rows: reported only
+    for key in ("format", "topic") if meta and a.rule != "necessity" else ():  # one format's / topic's rows: reported
         out[f"{key}_verdicts"] = {}
         for v in sorted({m[key] for m in meta.values()}):
             sel = [r for r in rows if meta.get(r["name"], {}).get(key) == v]
@@ -265,6 +338,19 @@ def by_cell(a: argparse.Namespace) -> int:
              f"{', '.join(decisive) or 'none'}", "", f"**Verdict:** {out['verdict']}", ""]  # fmt: skip
     if a.rule == "rest-size":
         lines += ["Per cell: " + "; ".join(f"{k}: {c['verdict']}" for k, c in cells.items()), ""]
+    if a.rule == "necessity":
+        lines += ["| cell | verdict | lookups: F(full), drop without J | recalls: drop without J, without the random "
+                  "part, difference [95% paired bootstrap] | shares of the change: J, random part |", "|---|---|---|---|---|"]  # fmt: skip
+        for k, c in cells.items():
+            n, sh = c["necessity"], c["median_share"]
+            if "recall_drop_J" not in n:
+                lines.append(f"| {k} | {n['verdict']} | - | - | - |")
+                continue
+            dd = n["recall_dropJ_minus_droprand"]
+            lines.append(f"| {k} | {n['verdict']} | {100 * n['lookup_F_full']:.0f}%, {100 * n['lookup_drop_J']:+.0f} pts | "
+                         f"{100 * n['recall_drop_J']:+.0f}, {100 * n['recall_drop_rand']:+.0f}, {100 * dd[0]:+.0f} "
+                         f"[{100 * dd[1]:+.0f}, {100 * dd[2]:+.0f}] pts | {sh['jspace']}, {sh['rand_sub']} |")  # fmt: skip
+        lines.append("")
     for key in ("format", "topic"):
         if f"{key}_verdicts" in out:
             lines += [f"Per {key} (reported): " + "; ".join(f"{t}: {v['verdict']}" for t, v in out[f"{key}_verdicts"].items()), ""]  # fmt: skip
@@ -299,6 +385,20 @@ FIGURE = {  # per rule: series (part, colour, marker, hollow, label), bars per p
         "how": "Late switch: at some dark-labelled cell the lens part (blue) stays under 5% on lookups while the rest "
         "(orange) switches >= 30%, stays under 10% at the later cells of its row (sentence / context), and still "
         "switches >= 30% of recalls, above the grey control.",
+    },
+    "necessity": {
+        "series": (
+            ("full", AQUA, "o", False, "whole change"),
+            ("not_jspace", ORANGE, "s", False, "without the lens part"),
+            ("not_rand_sub", CONTROL, "D", False, "without a random part, the lens part's size"),
+            LENS,
+        ),
+        "bars": {"lookup": (LOOKUP_FULL_MIN,), "recall": ()},
+        "bars_label": "bar: 50%, the whole change must switch this many lookups for the cell to count",
+        "file": "necessity.png",
+        "title": "In the band at the bridge's word, does the lookup need the lens-readable part? Does the recall?",
+        "how": "Per cell: lookups lose <= 10 points without the lens part (orange vs green); recalls lose >= 20 points "
+        "without it, more than without a random part of the same size (grey), paired bootstrap lower bound > 0.",
     },
     "rest-size": {
         "series": (LENS, REST, REST_SMALL, RANDOM),
@@ -392,13 +492,13 @@ def main() -> int:
     ap.add_argument("--cell", default=None, help="SET:LAYER fixed in advance (else chosen from the map)")
     ap.add_argument("--keep-min", type=float, default=None,
                     help="Gemma-style gate: under the lens-part patch, lookups keep their answer on >= this share")  # fmt: skip
-    ap.add_argument("--rule", choices=("replication", "late-switch", "rest-size"), default="replication")
+    ap.add_argument("--rule", choices=("replication", "late-switch", "rest-size", "necessity"), default="replication")
     ap.add_argument("--cells", nargs="+", default=[], help="late-switch / rest-size: the cells, SET:LAYER")
     ap.add_argument("--reference", nargs="*", default=[], help="late-switch: cells reported only, SET:LAYER")
     ap.add_argument("--decisive", default=None, help="rest-size: the cell that decides, SET:LAYER (one of --cells)")
     ap.add_argument("--figures", action="store_true", help="late-switch / rest-size: figure of the newest verdict")
     a = ap.parse_args()
-    if a.rule in ("late-switch", "rest-size"):
+    if a.rule in ("late-switch", "rest-size", "necessity"):
         if a.figures:
             return rule_figures(a)
         assert a.map, f"{a.rule} needs --map"

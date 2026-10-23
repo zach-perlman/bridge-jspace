@@ -199,6 +199,23 @@ def test_rand_sub_is_a_projection_with_the_jspace_parts_share():
     assert torch.all(cos.abs() < 0.5)
 
 
+def test_not_rand_sub_is_the_change_minus_its_random_part():
+    """B2 (23 Oct): run_parts sets not_rand_sub = delta - rand_sub; with rand_sub a projection, the two are orthogonal
+    and their squared norms add up to the change's."""
+    import torch
+
+    d, g = 96, torch.Generator().manual_seed(9)
+    delta = torch.randn(4, d, generator=g)
+    share = torch.tensor([0.0, 0.2, 0.5, 1.0])
+    rand_sub = D.random_subspace_part(delta, share, D.random_basis(d, torch.Generator().manual_seed(10)))
+    rest = delta.float() - rand_sub
+    assert torch.allclose(rest + rand_sub, delta, atol=1e-5)
+    assert torch.allclose((rest * rand_sub).sum(-1), torch.zeros(4), atol=1e-3)
+    norms = delta.norm(dim=-1) ** 2
+    assert torch.allclose(rest.norm(dim=-1) ** 2 + rand_sub.norm(dim=-1) ** 2, norms, rtol=1e-4)
+    assert torch.allclose(rest[0], delta[0]) and torch.allclose(rest[3], torch.zeros(d), atol=1e-4)  # the ends
+
+
 def test_not_jspace_matched_is_the_rest_at_the_lens_parts_size():
     import torch
 

@@ -1,0 +1,27 @@
+id: d1_necessity_27b
+title: "In the band at the bridge's word (Qwen3.6-27B): does the lookup need the lens-readable part, and does the recall?"
+thread: D1
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.4
+command: >-
+  uv run python scripts/statement_positions.py parts --name d1_necessity_parts_27b --map d1_topics2_map_27b --why "B1: the parts in the band at the bridge's word" --lo 16 --sets bridge_word bind_bridge --force bridge_word:16 bridge_word:20 bridge_word:24 bridge_word:28 bind_bridge:16 bind_bridge:20 bind_bridge:24 bind_bridge:28
+  && uv run python scripts/d1_verdict.py --rule necessity --map d1_topics2_map_27b --parts d1_necessity_parts_27b --tasks-set d1_topics_v2 --cells bridge_word:16 bridge_word:20 bridge_word:24 bridge_word:28 bind_bridge:16 bind_bridge:20 bind_bridge:24 bind_bridge:28
+figures_command: uv run python scripts/d1_verdict.py --rule necessity --parts d1_necessity_parts_27b --figures
+question: >-
+  In the band where a lens push at the bridge's word writes recalls but not lookups, does taking the lens-readable part out of a stated bridge's change cost the lookups nothing while it costs the recalls, beyond what taking out a random part of the same size costs?
+why_it_matters: >-
+  The lens push shows what the lens-readable direction can do, not what the model uses. Removing the lens-readable part from the real change tests use: if lookups do not need it and recalls do, the lookup/recall split holds for the model's own change, not only for an added push.
+hypotheses:
+  H-holds: 'in each position set (the bridge''s word, the bridge''s sentence) the claim holds at a majority of the band cells. Prior: Dan''s (predictions/), none set by the agent'
+  H-not: 'it does not hold (the lookup needs the lens part, or the recall does not, or no better than a random part). Prior: Dan''s'
+decision_rule: >-
+  Written 23 Oct ~15:45 +0200 before any run (scripts/d1_verdict.py --rule necessity, new; the earlier rules untouched). Cells: the bridge's word (bridge_word) and the bridge's sentence (bind_bridge) at layers 16, 20, 24, 28 (the 27B's coarse grid, every 4th layer), both families on every cell: lookups (PP) and recalls (PM), the same patch at statement cells. Parts: full (the change, delta), not_jspace (delta minus its lens-readable part J), not_rand_sub (delta minus rand_sub, a random subspace keeping J's share of each row's squared norm; added 23 Oct, last), and jspace, rand_sub, not_jspace_matched reported. F(x) = share of items switched to the other bridge's answer by pasting x. LOOKUP: J not needed iff F(full) - F(not_jspace) <= 0.10 (point), at a cell where F(full) >= 0.50 on lookups (the agent's proposed gate; below it the cell is not interpretable: there is nothing to lose). RECALL: J needed iff F(full) - F(not_jspace) >= 0.20 (point) AND that drop is larger than F(full) - F(not_rand_sub), with the 95% lower bound of the difference of the two drops > 0 (paired bootstrap over scenes, 2000 resamples, seed 0). CELL: the claim (in the band the lookup does not need J while the recall does) holds iff both. MODEL (the agent's proposal, for Dan to confirm): per position set, the claim holds iff it holds at a majority of that set's 4 cells (3 or 4; not interpretable cells count as not holding); the model holds iff it holds in both sets; every cell is reported. Reported: F of every part for both families with Wilson 95%, the two drops and their difference with its CI, the parts' median shares of the change's squared norm (J and the random part; the rests are 1 minus those). On the map, bridge_word:28 is not in transit for lookups.
+controls:
+- 'not_rand_sub: the change minus a random part of the lens part''s size (rand_sub, seed 888 + layer): what removing any piece of that size costs'
+- 'recalls (PM) on the same scenes and patch'
+- 'the lookup gate: the whole change must switch >= 50% of lookups at the cell'
+- 'the parts'' random-direction nulls (reported)'
+n: '180 scenes per family (PP lookups and PM recalls), d1_topics_v2 (the stated-bridge topics scenes, draw 2), 8 cells'
+seeds: [23]
+notes: "Dan, 23 Oct 15:30 (B1, the most important of today's batch), A100 queue. Same scenes, map, lens (the frozen 27B J++) and code path as d1_topics2_parts_27b, with --force for the cells (every family gets every cell). Data seed 23; nulls 0, random dictionary 777 + layer, random subspace 888 + layer; bootstrap seed 0. Timing basis: d1_topics2_parts_27b ran 1505 s on one A100 for 20k reads; this run has 8 cells x 2 families x 180 at ~21 reads per cell (~60k reads): ~1.3 h, est 1.4 GPU-h. No depends_on: its inputs are committed. Not opened before Dan predicts."
