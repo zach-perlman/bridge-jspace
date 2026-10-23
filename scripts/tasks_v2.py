@@ -419,6 +419,7 @@ def start_desc(group: str, dom: Domain, sc: dict, x: str, knobs: dict, c_op: str
         return f"{sc['person']}'s pick"
     if group == "M":
         return (dom.hard_cues if knobs["hard_cues"] else dom.cues).get(x)
+    assert c_op is not None, "a C-group start needs its operation"
     return c_description(c_op, dom, x, rng)
 
 
@@ -444,9 +445,13 @@ def chain(word: str, dom: Domain, sc: dict, x: str, desc: str, dom2: Domain | No
             b = sc["bin"][n]
             steps.append(step(BIN_STEP[dom_name(dom)].format(n=n, o=ORDINAL_WORDS[n]), str(b), "digit", "P"))
             return {"question": Q_BIN[para].format(d=desc), "answer": str(b), "kind": "digit", "steps": steps}
-        z = next((t for t, v in dom2.values.items() if v == n), None) if dom2 else None
+        if dom2 is None:
+            return None
+        z = next((t for t, v in dom2.values.items() if v == n), None)
         if z is None:
             return None
+        assert dom2.reverse_q, "the second domain must be one of REVERSE_DOMAINS"
+        assert dom2.reverse_desc, "the second domain must be one of REVERSE_DOMAINS"
         steps.append(step(dom2.reverse_q.format(n=n), z, "word", "M"))
         return {"question": dom2.reverse_desc[para].format(n=ndesc), "answer": z, "kind": "word", "steps": steps}
     if rest == "P":
@@ -477,6 +482,7 @@ def follow(word: str, dom: Domain, sc: dict, x: str, dom2: Domain | None) -> tup
         bridges.append(str(n))
         if rest[1] == "P":
             return str(sc["bin"][n]), bridges
+        assert dom2 is not None, f"{word}: a three-step word ending in M needs its second domain"
         return next((t for t, v in dom2.values.items() if v == n), None), bridges
     return str(sc["locker"][x] if rest == "P" else dom.values[x]), bridges
 
@@ -485,18 +491,20 @@ def wrong_routes(word: str, dom: Domain, sc: dict, x: str, dom2: Domain | None) 
     """Answers reachable by a wrong route: a skipped step, the other relation (locker for number or back), the
     queried person's look-alike's pick. The right answer must be none of them."""
     alts, rest, start = [], word[1:], x
+    last: str | None = x  # the thing the last step reads; None once a three-step chain has left the things
     if len(rest) == 2 and rest[0] == "P":
         alts.append(str(sc["locker"][x] if rest[1] == "P" else dom.values[x]))  # the partner step skipped
-        x, rest = sc["partner"][x], rest[1:]
+        last, rest = sc["partner"][x], rest[1:]
     elif len(rest) == 2:
         n, lk = dom.values[x], sc["locker"][x]
         if rest[1] == "P":
             alts.append(str(n))  # the bin step skipped (v6: no lockers in a bin question's context)
         else:
+            assert dom2 is not None, f"{word}: a three-step word ending in M needs its second domain"
             alts.append(next((t for t, v in dom2.values.items() if v == lk), None))  # locker read as the number
-        x = None
-    if x is not None:
-        alts.append(str(dom.values[x] if rest == "P" else sc["locker"][x]))  # the other relation
+        last = None
+    if last is not None:
+        alts.append(str(dom.values[last] if rest == "P" else sc["locker"][last]))  # the other relation
     if word[0] == "P":
         alts += [follow(word, dom, sc, t, dom2)[0] for t in confusable_picks(sc) if t != start]
     return [a for a in alts if a is not None]
@@ -680,7 +688,8 @@ def counterfactuals(tok, items: list[dict], group: str, dom: Domain, sc: dict, d
             ok = cf_answer not in (None, it["answer"]) and all(
                 follow(it["word"], dom, sc, t, d2[it["word"]])[0] != cf_answer for t in la
             )  # no look-alike route to the C answer
-            ok = ok and S.answer_token(tok, cf_answer, it["kind"]) != S.answer_token(tok, it["answer"], it["kind"])
+            ok = (ok and cf_answer is not None
+                  and S.answer_token(tok, cf_answer, it["kind"]) != S.answer_token(tok, it["answer"], it["kind"]))  # fmt: skip
             cf_context = cf_contexts[i]
             changed = aligned(i, cf_context, cf_q, limit) if ok else None
             if not changed:
@@ -696,7 +705,7 @@ def counterfactuals(tok, items: list[dict], group: str, dom: Domain, sc: dict, d
         off_contexts = [context_of(off_sc, i) for i in range(len(items))]
         offs = [aligned(i, off_contexts[i], it["question"], MAX_SWAP_CHANGED) for i, it in enumerate(items)]
         if all(offs):
-            return [{**c, "off_context": oc, "off_changed_tokens": len(o), "bridge": x,
+            return [{**c, "off_context": oc, "off_changed_tokens": len(o or ()), "bridge": x,
                      "bridges": follow(it["word"], dom, sc, x, d2[it["word"]])[1], "answer_kind": it["kind"],
                      "scene_facts": {k: sc[k] for k in ("pick", "pairs", "locker")}}
                     for c, o, oc, it in zip(out, offs, off_contexts, items, strict=True)]  # fmt: skip
@@ -827,6 +836,7 @@ def examples(seed: int) -> None:
             its = make_scene(rng, group[0], words, rng.choice(doms), "prose", LEVELS[1], list(DOMAINS))
             if its:
                 break
+        assert its, f"no {group} scene in 200 tries"
         print(f"\n=== {group} scene ({its[0]['domain']}, numbers as {its[0]['numbers']}"
               f"{', ' + its[0]['c_op'] if its[0]['c_op'] else ''})")  # fmt: skip
         for it in its:
@@ -838,6 +848,7 @@ def examples(seed: int) -> None:
             its = make_scene(random.Random(seed + k), "P", ["PMP"], "animals", fmt, LEVELS[1], list(DOMAINS))
             if its:
                 break
+        assert its, f"no {fmt} scene in 200 tries"
         print(f"\n=== format {fmt} (PMP, animals, level 1)\n{its[0]['context'][:900]}\nQ: {its[0]['question']}")
 
 

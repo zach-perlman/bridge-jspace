@@ -274,7 +274,8 @@ def terminate() -> bool:
     try:
         _, after = api("GET", f"/gpu-cloud/instances/{it['_id']}")
         log(f"after: status={after.get('status') if isinstance(after, dict) else after}")
-    except urllib.error.HTTPError as e:  # 404 after a DELETE = the instance is gone (23 Oct: this was read as a failure)
+    # a 404 after a DELETE = the instance is gone (23 Oct: this was read as a failure)
+    except urllib.error.HTTPError as e:
         log(f"after: GET -> {e.code} ({'gone: deleted' if e.code == 404 else 'unexpected'})")
     return code == 204
 

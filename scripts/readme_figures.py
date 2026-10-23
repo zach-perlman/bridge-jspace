@@ -923,8 +923,8 @@ def f21_name_vs_digit(out: Path) -> None:
             cases = {c["id"]: c for c in map(json.loads, (d / "cases.jsonl").read_text().splitlines())}
             cl = P.cells([json.loads(x) for x in (d / "rows.jsonl").read_text().splitlines()], cases)
             for j, (src, _, col, hatch) in enumerate(bars):
-                c = cl[("RL", src, dest)]
-                bar_ci(ax, i + (j - 2.5) * w, *c["right"], col, width=w * 0.95, fs=7.5,
+                p, lo, hi = cl[("RL", src, dest)]["right"]
+                bar_ci(ax, i + (j - 2.5) * w, p, lo, hi, col, width=w * 0.95, fs=7.5,
                        edge=INK2 if hatch else None, hatch=hatch)  # fmt: skip
         ax.axhline(20, color=INK, lw=1, ls=":")
         ax.set_xticks(range(len(models)), [m for m, _ in models])
@@ -1029,8 +1029,8 @@ def f23_name_digit_draws(out: Path) -> None:
                 for k, (run, hatch) in enumerate(((a, None), (b, "///"))):
                     c = cl[run].get((fam, src, dest))
                     if c:
-                        x = i + (2 * j + k - 2.5) * w
-                        bar_ci(ax, x, *c["right"], col, width=w * 0.95, fs=7, edge=INK2 if hatch else None, hatch=hatch)
+                        x, (p, lo, hi) = i + (2 * j + k - 2.5) * w, c["right"]
+                        bar_ci(ax, x, p, lo, hi, col, width=w * 0.95, fs=7, edge=INK2 if hatch else None, hatch=hatch)
         ax.axhline(20, color=INK, lw=1, ls=":")
         ax.set_xticks(range(len(groups)), [f"{m}\n{flab} bridge" for m, _, flab, _, _ in groups])
         ax.set_title(title, loc="left", fontsize=9.5)

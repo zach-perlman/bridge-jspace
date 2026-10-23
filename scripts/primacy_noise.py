@@ -62,7 +62,7 @@ def classify(top: int, case: dict) -> tuple[str, int | None]:
 def ratios(items: list[tuple[int, int, int]], n_slots: int = 5) -> dict[int, float]:
     """items: (scene index, asked place, chosen place) of list-wrong answers -> observed / expected per place."""
     obs = collections.Counter(c for _, _, c in items)
-    exp: collections.Counter = collections.Counter()
+    exp: dict[int, float] = collections.defaultdict(float)  # expected counts are fractional
     for _, asked, _ in items:
         for j in range(1, n_slots + 1):
             if j != asked:

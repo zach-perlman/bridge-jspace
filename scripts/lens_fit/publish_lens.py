@@ -499,7 +499,8 @@ def hub_sha(repo_id: str, name: str, commit: str) -> str | None:
     except Exception as e:  # a failed check is reported, not fatal: the upload itself has finished
         log(f"Hub check failed ({type(e).__name__})")
         return None
-    return getattr(info[0].lfs, "sha256", None) if info and info[0].lfs else None
+    lfs = getattr(info[0], "lfs", None) if info else None  # a RepoFile has it; a RepoFolder (a wrong path) does not
+    return getattr(lfs, "sha256", None) if lfs else None
 
 
 def pins_block(a: argparse.Namespace, layers: list[int], sha: str, hub: tuple[str, str] | None, record: str) -> str:

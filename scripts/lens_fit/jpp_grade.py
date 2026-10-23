@@ -5,6 +5,9 @@ gemma_it_grade.py (Zach, 2026-10-20). Run from the jpp_lens repo root, in its en
 python /workspace/bridge-jspace/scripts/lens_fit/jpp_grade.py MODEL LAYERS OUT_CSV   (LAYERS: comma-separated)
 """
 
+# pandas, lens_evals and workspace_lens live in the jpp_lens environment this runs in, not in this project's
+# pyright: reportMissingImports=false
+
 import sys
 
 import pandas as pd

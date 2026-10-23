@@ -1771,6 +1771,8 @@ def fig_windows(a: dict, m: dict, lv: str, path: Path) -> list[str]:
 
 
 PRIMARY_RUNS = ("d3_main_ae_27b", "d3_levels_animals_27b")
+
+
 def _commit(name: str) -> str:
     from bridge_jspace.ledgers import ledger_records
 

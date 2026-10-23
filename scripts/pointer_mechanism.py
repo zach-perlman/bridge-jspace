@@ -367,7 +367,9 @@ def analyse(rows: list[dict], geo: dict, primary: int) -> dict[str, Any]:
             if r["test"] == "T4" and r["family"] == fam:
                 by_id[r["id"]][r["removed"]] = r["kept"]
         ids = [i for i, v in by_id.items() if len(v) == 3]
-        cell = {b: share([{"k": by_id[i][b]} for i in ids], lambda r: r["k"]) for b in ("slot4", "rand4", "var4")}
+        cell: dict[str, Any] = {
+            b: share([{"k": by_id[i][b]} for i in ids], lambda r: r["k"]) for b in ("slot4", "rand4", "var4")
+        }
         for b in ("rand4", "var4"):
             cell[f"slot4_minus_{b}"] = paired_boot(
                 [float(by_id[i]["slot4"]) for i in ids], [float(by_id[i][b]) for i in ids]

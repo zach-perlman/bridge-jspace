@@ -21,14 +21,17 @@ NOTE = ("J++ for Qwen/Qwen3-32B: safety-research/jpp_lens@93f02cd, 64 WikiText p
         "2x H200")  # fmt: skip
 
 status = json.loads((OUT / "status.json").read_text())
-assert status["state"] == "FAIL" and status.get("at") == "export", f"unexpected state {status.get('state')} at {status.get('at')}"
-assert all(s.get("exit") == 0 for s in status["steps"] if s.get("step") in ("grade", "fit_weights", "evaluate")), "an earlier step failed"
+assert status["state"] == "FAIL", f"unexpected state {status.get('state')}"
+assert status.get("at") == "export", f"failed at {status.get('at')}, not at the export"
+done = [s.get("exit") == 0 for s in status["steps"] if s.get("step") in ("grade", "fit_weights", "evaluate")]
+assert all(done), "an earlier step failed"
 EXPORT.parent.mkdir(exist_ok=True)
 t = time.time()
 with open(OUT / "export_by_hand.log", "w") as log:
     rc = subprocess.run([str(W / "jpp_lens/.venv/bin/python"), str(W / "bridge-jspace/scripts/lens_fit/export_jpp_lens.py"),
                          str(LENS), str(EXPORT), "--note", NOTE], stdout=log, stderr=subprocess.STDOUT).returncode  # fmt: skip
-status["steps"].append({"step": "export (by hand: the launcher passed --note positionally)", "seconds": round(time.time() - t), "exit": rc})
+step = "export (by hand: the launcher passed --note positionally)"
+status["steps"].append({"step": step, "seconds": round(time.time() - t), "exit": rc})
 if rc:
     status.update(state="FAIL", at="export (by hand)")
 else:
