@@ -1,0 +1,833 @@
+{
+ "seconds": 668,
+ "band": "L36-42",
+ "cells": {
+  "PP/none": {
+   "n": 99,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 97,
+    "lure": 0,
+    "bridge": 1,
+    "other_cand": 0,
+    "other": 1
+   },
+   "class_of_cand_failures": {},
+   "top_wrong_replies": [
+    [
+     "Ireland",
+     1
+    ],
+    [
+     "The animal Ben Crowley wrote a",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 24,
+     "other": 1
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 23,
+     "bridge": 1
+    },
+    "people": {
+     "answer": 25
+    }
+   },
+   "other_examples": [
+    "The animal Ben Crowley wrote a school report on is kept"
+   ]
+  },
+  "PP/paper10": {
+   "n": 99,
+   "cand_acc": 0.99,
+   "class": {
+    "answer": 95,
+    "lure": 0,
+    "bridge": 2,
+    "other_cand": 1,
+    "other": 1
+   },
+   "class_of_cand_failures": {
+    "other_cand": 1
+   },
+   "top_wrong_replies": [
+    [
+     "Polish",
+     1
+    ],
+    [
+     "Clara Dunmore relocated to Cal",
+     1
+    ],
+    [
+     "salamander",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 23,
+     "bridge": 1,
+     "other": 1
+    },
+    "cities": {
+     "answer": 24,
+     "bridge": 1
+    },
+    "countries": {
+     "answer": 24
+    },
+    "people": {
+     "answer": 24,
+     "other_cand": 1
+    }
+   },
+   "other_examples": [
+    "reptomammalian house"
+   ]
+  },
+  "PP/paper10_rot": {
+   "n": 99,
+   "cand_acc": 0.96,
+   "class": {
+    "answer": 92,
+    "lure": 0,
+    "bridge": 1,
+    "other_cand": 4,
+    "other": 2
+   },
+   "class_of_cand_failures": {
+    "other_cand": 4
+   },
+   "top_wrong_replies": [
+    [
+     "Africa",
+     1
+    ],
+    [
+     "Ireland",
+     1
+    ],
+    [
+     "South America",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 22,
+     "other_cand": 1,
+     "other": 2
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 21,
+     "other_cand": 2,
+     "bridge": 1
+    },
+    "people": {
+     "answer": 24,
+     "other_cand": 1
+    }
+   },
+   "other_examples": [
+    "The animal Jonah Wells wrote a school report on is kept",
+    "The animal Ben Crowley wrote a school report on is kept"
+   ]
+  },
+  "PP/unembed10": {
+   "n": 99,
+   "cand_acc": 0.98,
+   "class": {
+    "answer": 87,
+    "lure": 0,
+    "bridge": 3,
+    "other_cand": 2,
+    "other": 7
+   },
+   "class_of_cand_failures": {
+    "other_cand": 2
+   },
+   "top_wrong_replies": [
+    [
+     "",
+     6
+    ],
+    [
+     "Ireland",
+     1
+    ],
+    [
+     "Polish",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 21,
+     "other": 2,
+     "other_cand": 1,
+     "bridge": 1
+    },
+    "cities": {
+     "answer": 21,
+     "other": 3,
+     "bridge": 1
+    },
+    "countries": {
+     "answer": 21,
+     "bridge": 1,
+     "other": 2
+    },
+    "people": {
+     "answer": 24,
+     "other_cand": 1
+    }
+   },
+   "other_examples": [
+    "",
+    "",
+    "",
+    "",
+    ""
+   ]
+  },
+  "PM/none": {
+   "n": 99,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 81,
+    "lure": 0,
+    "bridge": 1,
+    "other_cand": 0,
+    "other": 17
+   },
+   "class_of_cand_failures": {},
+   "top_wrong_replies": [
+    [
+     "Mammalia",
+     6
+    ],
+    [
+     "Amphibia",
+     4
+    ],
+    [
+     "Reptilia",
+     4
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 8,
+     "other": 17
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 24,
+     "bridge": 1
+    },
+    "people": {
+     "answer": 24
+    }
+   },
+   "other_examples": [
+    "Amphibia",
+    "Mammalia",
+    "Mammalia",
+    "Mammalia",
+    "Insecta"
+   ]
+  },
+  "PM/paper10": {
+   "n": 99,
+   "cand_acc": 0.374,
+   "class": {
+    "answer": 27,
+    "lure": 13,
+    "bridge": 52,
+    "other_cand": 0,
+    "other": 7
+   },
+   "class_of_cand_failures": {
+    "bridge": 31,
+    "lure": 12,
+    "answer": 15,
+    "other": 4
+   },
+   "top_wrong_replies": [
+    [
+     "North America",
+     3
+    ],
+    [
+     "Chameleon",
+     3
+    ],
+    [
+     "Bee",
+     2
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "lure": 2,
+     "bridge": 19,
+     "other": 4
+    },
+    "cities": {
+     "answer": 16,
+     "bridge": 8,
+     "other": 1
+    },
+    "countries": {
+     "bridge": 15,
+     "answer": 4,
+     "lure": 6
+    },
+    "people": {
+     "lure": 5,
+     "bridge": 10,
+     "answer": 7,
+     "other": 2
+    }
+   },
+   "other_examples": [
+    "Clara Dunmore spent five years writing a thesis on Gr",
+    "Lithuanian",
+    "The city Alice Moreland has lived in since last spring is",
+    "Amphibia",
+    "Mammalia"
+   ]
+  },
+  "PM/paper10_rot": {
+   "n": 99,
+   "cand_acc": 0.98,
+   "class": {
+    "answer": 81,
+    "lure": 1,
+    "bridge": 2,
+    "other_cand": 0,
+    "other": 15
+   },
+   "class_of_cand_failures": {
+    "lure": 1,
+    "other": 1
+   },
+   "top_wrong_replies": [
+    [
+     "Amphibia",
+     5
+    ],
+    [
+     "Mammalia",
+     5
+    ],
+    [
+     "Reptilia",
+     3
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 8,
+     "other": 15,
+     "bridge": 2
+    },
+    "cities": {
+     "answer": 24,
+     "lure": 1
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 24
+    }
+   },
+   "other_examples": [
+    "Amphibia",
+    "Mammalia",
+    "Mammalia",
+    "Insecta",
+    "Reptilia"
+   ]
+  },
+  "PM/unembed10": {
+   "n": 99,
+   "cand_acc": 0.505,
+   "class": {
+    "answer": 24,
+    "lure": 9,
+    "bridge": 58,
+    "other_cand": 1,
+    "other": 7
+   },
+   "class_of_cand_failures": {
+    "bridge": 31,
+    "lure": 9,
+    "other_cand": 1,
+    "other": 3,
+    "answer": 5
+   },
+   "top_wrong_replies": [
+    [
+     "",
+     5
+    ],
+    [
+     "Africa",
+     3
+    ],
+    [
+     "Iceland",
+     2
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "lure": 3,
+     "bridge": 21,
+     "other": 1
+    },
+    "cities": {
+     "answer": 13,
+     "other": 1,
+     "bridge": 11
+    },
+    "countries": {
+     "bridge": 15,
+     "answer": 4,
+     "lure": 4,
+     "other_cand": 1,
+     "other": 1
+    },
+    "people": {
+     "answer": 7,
+     "bridge": 11,
+     "lure": 2,
+     "other": 4
+    }
+   },
+   "other_examples": [
+    "",
+    "",
+    "Clara Dunmore spent five years writing a thesis on Gr",
+    "Mark Ellison spent five years writing a thesis on Mende",
+    ""
+   ]
+  },
+  "MP/none": {
+   "n": 85,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 84,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 0,
+    "other": 1
+   },
+   "class_of_cand_failures": {},
+   "top_wrong_replies": [
+    [
+     "",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 10
+    },
+    "cities": {
+     "answer": 24,
+     "other": 1
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 25
+    }
+   },
+   "other_examples": [
+    ""
+   ]
+  },
+  "MP/paper10": {
+   "n": 85,
+   "cand_acc": 0.976,
+   "class": {
+    "answer": 81,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 2,
+    "other": 2
+   },
+   "class_of_cand_failures": {
+    "other_cand": 2
+   },
+   "top_wrong_replies": [
+    [
+     "",
+     2
+    ],
+    [
+     "French",
+     1
+    ],
+    [
+     "fish house",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 9,
+     "other_cand": 1
+    },
+    "cities": {
+     "answer": 23,
+     "other": 2
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 24,
+     "other_cand": 1
+    }
+   },
+   "other_examples": [
+    "",
+    ""
+   ]
+  },
+  "MP/paper10_rot": {
+   "n": 85,
+   "cand_acc": 0.988,
+   "class": {
+    "answer": 84,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 1,
+    "other": 0
+   },
+   "class_of_cand_failures": {
+    "other_cand": 1
+   },
+   "top_wrong_replies": [
+    [
+     "Africa",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 10
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 24,
+     "other_cand": 1
+    },
+    "people": {
+     "answer": 25
+    }
+   },
+   "other_examples": []
+  },
+  "MP/unembed10": {
+   "n": 85,
+   "cand_acc": 0.976,
+   "class": {
+    "answer": 77,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 2,
+    "other": 6
+   },
+   "class_of_cand_failures": {
+    "other_cand": 2
+   },
+   "top_wrong_replies": [
+    [
+     "",
+     6
+    ],
+    [
+     "Africa",
+     1
+    ],
+    [
+     "French",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 10
+    },
+    "cities": {
+     "answer": 21,
+     "other": 4
+    },
+    "countries": {
+     "answer": 23,
+     "other": 1,
+     "other_cand": 1
+    },
+    "people": {
+     "answer": 23,
+     "other": 1,
+     "other_cand": 1
+    }
+   },
+   "other_examples": [
+    "",
+    "",
+    "",
+    "",
+    ""
+   ]
+  },
+  "MM/none": {
+   "n": 85,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 78,
+    "lure": 0,
+    "bridge": 1,
+    "other_cand": 0,
+    "other": 6
+   },
+   "class_of_cand_failures": {},
+   "top_wrong_replies": [
+    [
+     "Mammalia",
+     4
+    ],
+    [
+     "Amphibia",
+     2
+    ],
+    [
+     "Tortoise",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "other": 6,
+     "answer": 3,
+     "bridge": 1
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 25
+    }
+   },
+   "other_examples": [
+    "Mammalia",
+    "Mammalia",
+    "Amphibia",
+    "Amphibia",
+    "Mammalia"
+   ]
+  },
+  "MM/paper10": {
+   "n": 85,
+   "cand_acc": 0.376,
+   "class": {
+    "answer": 25,
+    "lure": 0,
+    "bridge": 2,
+    "other_cand": 12,
+    "other": 46
+   },
+   "class_of_cand_failures": {
+    "other": 29,
+    "other_cand": 12,
+    "answer": 11,
+    "bridge": 1
+   },
+   "top_wrong_replies": [
+    [
+     "North America",
+     4
+    ],
+    [
+     "South America",
+     2
+    ],
+    [
+     "",
+     2
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "other": 9,
+     "bridge": 1
+    },
+    "cities": {
+     "answer": 7,
+     "other": 18
+    },
+    "countries": {
+     "other": 9,
+     "answer": 6,
+     "other_cand": 9,
+     "bridge": 1
+    },
+    "people": {
+     "other": 10,
+     "answer": 12,
+     "other_cand": 3
+    }
+   },
+   "other_examples": [
+    "The country that measures its progress by Gross National Happiness is on",
+    "Simon Ashby grew up in Argentina.",
+    "Maya Linden grew up in Paraguay. The delegation from Paraguay",
+    "The country that is famous for kente cloth and the Ash",
+    ""
+   ]
+  },
+  "MM/paper10_rot": {
+   "n": 85,
+   "cand_acc": 0.976,
+   "class": {
+    "answer": 76,
+    "lure": 0,
+    "bridge": 1,
+    "other_cand": 2,
+    "other": 6
+   },
+   "class_of_cand_failures": {
+    "other_cand": 2
+   },
+   "top_wrong_replies": [
+    [
+     "Mammalia",
+     4
+    ],
+    [
+     "Amphibia",
+     2
+    ],
+    [
+     "Danish",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "other": 6,
+     "answer": 3,
+     "bridge": 1
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 23,
+     "other_cand": 2
+    }
+   },
+   "other_examples": [
+    "Mammalia",
+    "Mammalia",
+    "Amphibia",
+    "Amphibia",
+    "Mammalia"
+   ]
+  },
+  "MM/unembed10": {
+   "n": 85,
+   "cand_acc": 0.624,
+   "class": {
+    "answer": 43,
+    "lure": 0,
+    "bridge": 4,
+    "other_cand": 9,
+    "other": 29
+   },
+   "class_of_cand_failures": {
+    "bridge": 3,
+    "other_cand": 9,
+    "other": 12,
+    "answer": 8
+   },
+   "top_wrong_replies": [
+    [
+     "",
+     15
+    ],
+    [
+     "Africa",
+     4
+    ],
+    [
+     "Swedish",
+     2
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "other": 9,
+     "bridge": 1
+    },
+    "cities": {
+     "answer": 17,
+     "other": 7,
+     "other_cand": 1
+    },
+    "countries": {
+     "bridge": 2,
+     "answer": 12,
+     "other": 6,
+     "other_cand": 5
+    },
+    "people": {
+     "other": 7,
+     "answer": 14,
+     "other_cand": 3,
+     "bridge": 1
+    }
+   },
+   "other_examples": [
+    "",
+    "Maya Linden grew up in Paraguay. The delegation from Paraguay",
+    "",
+    "Hannah Kerr grew up in Argentina. The government of Manila",
+    ""
+   ]
+  }
+ },
+ "check": {
+  "run": "muse30_natplus_v1_chat_ko_cand2_v1",
+  "read": "cand2",
+  "n": 1480,
+  "agree": 1467
+ }
+}

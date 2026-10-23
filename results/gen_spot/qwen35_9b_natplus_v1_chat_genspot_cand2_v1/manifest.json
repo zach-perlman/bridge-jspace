@@ -1,0 +1,42 @@
+{
+  "run": "qwen35_9b_natplus_v1_chat_genspot_cand2_v1",
+  "why": "Zach (2026-10-23, prereg amendment 20): generation spot-check, qwen3.5-9b",
+  "written_utc": "2026-10-23T22:11:39Z",
+  "git_commit": "a6db0d602e71acc8483e33f68fc389c2ab70c79b",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  ],
+  "set": "natplus_v1_chat",
+  "competence": "qwen35_9b_natplus_v1_chat_competence_cand2_v1",
+  "words": [
+    "PP",
+    "PM",
+    "MP",
+    "MM"
+  ],
+  "level": "all",
+  "n_per_word": 25,
+  "band": "L12-16",
+  "conditions": [
+    "none",
+    "paper10",
+    "paper10_rot",
+    "unembed10"
+  ],
+  "max_new_tokens": 12,
+  "check": "qwen35_9b_natplus_v1_chat_ko_cand2_v1",
+  "read": "cand2",
+  "tf32": true,
+  "seeds": {
+    "rotation": "888+layer"
+  },
+  "doc": "gen_spot (Zach, 2026-10-23, prereg amendment 19): what the model actually says under the knock-out. The candidate\nread asks only whether the right answer outranks its relation's other answers at the first token; this decodes the\nwhole short reply. For eligible items of a natural set (the same eligibility and first-n order as ablate_v2), greedy\ncontinuations (max 12 tokens) unedited and under each condition at one band (edits on prompt positions only, as\nablate_v2; model.generate_batch, one batch row per condition). Each reply is classed: \"answer\" (starts with the\nanswer), \"bridge\" (starts with the bridge or one of its names: hop 1 resolved, hop 2 not given), \"other_cand\" (starts\nwith another answer of the relation), \"other\". The first step's candidate read is recorded too, and checked against\nthe knock-out run's rows (--check RUN, finished runs only) item by item. Amendment 20: TF32 on as ablate_v2, --read\n(default cand2), replies classed by the earliest answer of the relation they name. Descriptive, no rule. Writes\nresults/gen_spot/NAME/."
+}

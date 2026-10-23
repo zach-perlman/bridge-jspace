@@ -1,0 +1,769 @@
+{
+ "seconds": 826,
+ "band": "L12-16",
+ "cells": {
+  "PP/none": {
+   "n": 100,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 100,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 0,
+    "other": 0
+   },
+   "class_of_cand_failures": {},
+   "top_wrong_replies": [],
+   "class_by_domain": {
+    "animals": {
+     "answer": 25
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 25
+    }
+   },
+   "other_examples": []
+  },
+  "PP/paper10": {
+   "n": 100,
+   "cand_acc": 0.87,
+   "class": {
+    "answer": 86,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 11,
+    "other": 3
+   },
+   "class_of_cand_failures": {
+    "other_cand": 11,
+    "other": 2
+   },
+   "top_wrong_replies": [
+    [
+     "Europe",
+     2
+    ],
+    [
+     "North America",
+     1
+    ],
+    [
+     "Slovak",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 21,
+     "other": 1,
+     "other_cand": 3
+    },
+    "cities": {
+     "answer": 21,
+     "other_cand": 4
+    },
+    "countries": {
+     "answer": 22,
+     "other_cand": 3
+    },
+    "people": {
+     "answer": 22,
+     "other": 2,
+     "other_cand": 1
+    }
+   },
+   "other_examples": [
+    "Slovak\n",
+    "Korean\n",
+    "wammal house\n"
+   ]
+  },
+  "PP/paper10_rot": {
+   "n": 100,
+   "cand_acc": 0.95,
+   "class": {
+    "answer": 95,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 5,
+    "other": 0
+   },
+   "class_of_cand_failures": {
+    "other_cand": 5
+   },
+   "top_wrong_replies": [
+    [
+     "Europe",
+     2
+    ],
+    [
+     "Spanish",
+     1
+    ],
+    [
+     "China",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 25
+    },
+    "cities": {
+     "answer": 23,
+     "other_cand": 2
+    },
+    "countries": {
+     "answer": 23,
+     "other_cand": 2
+    },
+    "people": {
+     "answer": 24,
+     "other_cand": 1
+    }
+   },
+   "other_examples": []
+  },
+  "PP/unembed10": {
+   "n": 100,
+   "cand_acc": 0.95,
+   "class": {
+    "answer": 95,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 5,
+    "other": 0
+   },
+   "class_of_cand_failures": {
+    "other_cand": 5
+   },
+   "top_wrong_replies": [
+    [
+     "North America",
+     1
+    ],
+    [
+     "Spanish",
+     1
+    ],
+    [
+     "Germany",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 24,
+     "other_cand": 1
+    },
+    "cities": {
+     "answer": 23,
+     "other_cand": 2
+    },
+    "countries": {
+     "answer": 24,
+     "other_cand": 1
+    },
+    "people": {
+     "answer": 24,
+     "other_cand": 1
+    }
+   },
+   "other_examples": []
+  },
+  "PM/none": {
+   "n": 99,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 94,
+    "lure": 0,
+    "bridge": 2,
+    "other_cand": 0,
+    "other": 3
+   },
+   "class_of_cand_failures": {},
+   "top_wrong_replies": [
+    [
+     "Salamander",
+     1
+    ],
+    [
+     "Salmoniformes",
+     1
+    ],
+    [
+     "Shark",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 20,
+     "bridge": 2,
+     "other": 3
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 24
+    }
+   },
+   "other_examples": [
+    "Salmoniformes\n",
+    "Reptilia\n",
+    "Rodent\n"
+   ]
+  },
+  "PM/paper10": {
+   "n": 99,
+   "cand_acc": 0.505,
+   "class": {
+    "answer": 46,
+    "lure": 17,
+    "bridge": 5,
+    "other_cand": 28,
+    "other": 3
+   },
+   "class_of_cand_failures": {
+    "other_cand": 28,
+    "lure": 17,
+    "bridge": 3,
+    "other": 1
+   },
+   "top_wrong_replies": [
+    [
+     "Spain",
+     9
+    ],
+    [
+     "Europe",
+     8
+    ],
+    [
+     "Italian",
+     6
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 13,
+     "bridge": 1,
+     "lure": 1,
+     "other_cand": 7,
+     "other": 3
+    },
+    "cities": {
+     "other_cand": 9,
+     "answer": 11,
+     "bridge": 3,
+     "lure": 2
+    },
+    "countries": {
+     "answer": 15,
+     "other_cand": 6,
+     "lure": 3,
+     "bridge": 1
+    },
+    "people": {
+     "lure": 11,
+     "answer": 7,
+     "other_cand": 6
+    }
+   },
+   "other_examples": [
+    "Reptilia\n",
+    "Reptilia\n",
+    "Rodent\n"
+   ]
+  },
+  "PM/paper10_rot": {
+   "n": 99,
+   "cand_acc": 0.939,
+   "class": {
+    "answer": 89,
+    "lure": 4,
+    "bridge": 1,
+    "other_cand": 1,
+    "other": 4
+   },
+   "class_of_cand_failures": {
+    "lure": 4,
+    "other_cand": 1,
+    "bridge": 1
+   },
+   "top_wrong_replies": [
+    [
+     "Italian",
+     2
+    ],
+    [
+     "Reptilia",
+     2
+    ],
+    [
+     "German",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 20,
+     "other": 4,
+     "bridge": 1
+    },
+    "cities": {
+     "answer": 24,
+     "lure": 1
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 20,
+     "lure": 3,
+     "other_cand": 1
+    }
+   },
+   "other_examples": [
+    "Reptilia\n",
+    "Salmonidae\n",
+    "Reptilia\n",
+    "Rodent\n"
+   ]
+  },
+  "PM/unembed10": {
+   "n": 99,
+   "cand_acc": 0.99,
+   "class": {
+    "answer": 91,
+    "lure": 1,
+    "bridge": 4,
+    "other_cand": 0,
+    "other": 3
+   },
+   "class_of_cand_failures": {
+    "lure": 1
+   },
+   "top_wrong_replies": [
+    [
+     "Norwegian",
+     1
+    ],
+    [
+     "bat",
+     1
+    ],
+    [
+     "Penguin",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 18,
+     "bridge": 4,
+     "other": 3
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 23,
+     "lure": 1
+    }
+   },
+   "other_examples": [
+    "Salmonidae\n",
+    "Reptilia\n",
+    "Rodent\n"
+   ]
+  },
+  "MP/none": {
+   "n": 84,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 84,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 0,
+    "other": 0
+   },
+   "class_of_cand_failures": {},
+   "top_wrong_replies": [],
+   "class_by_domain": {
+    "animals": {
+     "answer": 9
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 25
+    }
+   },
+   "other_examples": []
+  },
+  "MP/paper10": {
+   "n": 84,
+   "cand_acc": 0.905,
+   "class": {
+    "answer": 76,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 8,
+    "other": 0
+   },
+   "class_of_cand_failures": {
+    "other_cand": 8
+   },
+   "top_wrong_replies": [
+    [
+     "Europe",
+     2
+    ],
+    [
+     "Asia",
+     2
+    ],
+    [
+     "South America",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 9
+    },
+    "cities": {
+     "answer": 23,
+     "other_cand": 2
+    },
+    "countries": {
+     "other_cand": 5,
+     "answer": 20
+    },
+    "people": {
+     "answer": 24,
+     "other_cand": 1
+    }
+   },
+   "other_examples": []
+  },
+  "MP/paper10_rot": {
+   "n": 84,
+   "cand_acc": 0.929,
+   "class": {
+    "answer": 78,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 6,
+    "other": 0
+   },
+   "class_of_cand_failures": {
+    "other_cand": 6
+   },
+   "top_wrong_replies": [
+    [
+     "Europe",
+     1
+    ],
+    [
+     "German",
+     1
+    ],
+    [
+     "French",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 9
+    },
+    "cities": {
+     "other_cand": 2,
+     "answer": 23
+    },
+    "countries": {
+     "answer": 24,
+     "other_cand": 1
+    },
+    "people": {
+     "answer": 22,
+     "other_cand": 3
+    }
+   },
+   "other_examples": []
+  },
+  "MP/unembed10": {
+   "n": 84,
+   "cand_acc": 0.952,
+   "class": {
+    "answer": 80,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 4,
+    "other": 0
+   },
+   "class_of_cand_failures": {
+    "other_cand": 4
+   },
+   "top_wrong_replies": [
+    [
+     "Europe",
+     1
+    ],
+    [
+     "Hungarian",
+     1
+    ],
+    [
+     "French",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 9
+    },
+    "cities": {
+     "answer": 24,
+     "other_cand": 1
+    },
+    "countries": {
+     "answer": 24,
+     "other_cand": 1
+    },
+    "people": {
+     "answer": 23,
+     "other_cand": 2
+    }
+   },
+   "other_examples": []
+  },
+  "MM/none": {
+   "n": 84,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 79,
+    "lure": 0,
+    "bridge": 2,
+    "other_cand": 0,
+    "other": 3
+   },
+   "class_of_cand_failures": {},
+   "top_wrong_replies": [
+    [
+     "Cetacea",
+     2
+    ],
+    [
+     "American",
+     1
+    ],
+    [
+     "Ant",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "other": 2,
+     "answer": 5,
+     "bridge": 2
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 24,
+     "other": 1
+    }
+   },
+   "other_examples": [
+    "American\n",
+    "Cetacea\n",
+    "Cetacea\n"
+   ]
+  },
+  "MM/paper10": {
+   "n": 84,
+   "cand_acc": 0.452,
+   "class": {
+    "answer": 37,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 38,
+    "other": 9
+   },
+   "class_of_cand_failures": {
+    "other_cand": 38,
+    "other": 8
+   },
+   "top_wrong_replies": [
+    [
+     "Europe",
+     14
+    ],
+    [
+     "Spain",
+     5
+    ],
+    [
+     "Swedish",
+     3
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "other": 6,
+     "other_cand": 2,
+     "answer": 1
+    },
+    "cities": {
+     "other_cand": 9,
+     "answer": 14,
+     "other": 2
+    },
+    "countries": {
+     "other_cand": 17,
+     "answer": 8
+    },
+    "people": {
+     "other_cand": 10,
+     "answer": 14,
+     "other": 1
+    }
+   },
+   "other_examples": [
+    "Swiss\n",
+    "Amsterdam\n",
+    "Netherlands\n",
+    "Cetacea\n",
+    "Ameba\n"
+   ]
+  },
+  "MM/paper10_rot": {
+   "n": 84,
+   "cand_acc": 0.976,
+   "class": {
+    "answer": 76,
+    "lure": 0,
+    "bridge": 6,
+    "other_cand": 0,
+    "other": 2
+   },
+   "class_of_cand_failures": {
+    "bridge": 2
+   },
+   "top_wrong_replies": [
+    [
+     "Geneva",
+     2
+    ],
+    [
+     "Cetacea",
+     2
+    ],
+    [
+     "Ant",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "other": 2,
+     "answer": 3,
+     "bridge": 4
+    },
+    "cities": {
+     "answer": 23,
+     "bridge": 2
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 25
+    }
+   },
+   "other_examples": [
+    "Cetacea\n",
+    "Cetacea\n"
+   ]
+  },
+  "MM/unembed10": {
+   "n": 84,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 79,
+    "lure": 0,
+    "bridge": 2,
+    "other_cand": 0,
+    "other": 3
+   },
+   "class_of_cand_failures": {},
+   "top_wrong_replies": [
+    [
+     "Cetacea",
+     2
+    ],
+    [
+     "American",
+     1
+    ],
+    [
+     "Ant",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "other": 2,
+     "answer": 5,
+     "bridge": 2
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 24,
+     "other": 1
+    }
+   },
+   "other_examples": [
+    "American\n",
+    "Cetacea\n",
+    "Cetacea\n"
+   ]
+  }
+ },
+ "check": {
+  "run": "qwen35_9b_natplus_v1_chat_ko_cand2_v1",
+  "read": "cand2",
+  "n": 1472,
+  "agree": 1455
+ }
+}

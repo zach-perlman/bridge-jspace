@@ -1,0 +1,297 @@
+{
+  "seconds": 359,
+  "by_word_level": {
+    "PR/L0": {
+      "n": 84,
+      "whole": 1,
+      "all_steps": 1,
+      "median_margin": 8.12,
+      "guess": 0.024,
+      "top_wrong": []
+    },
+    "PP/L0": {
+      "n": 84,
+      "whole": 0.286,
+      "all_steps": 1,
+      "median_margin": -1.62,
+      "guess": 0.155,
+      "top_wrong": [
+        [
+          "Gary",
+          3
+        ],
+        [
+          "Eric",
+          3
+        ],
+        [
+          "Lisa",
+          3
+        ]
+      ]
+    },
+    "PM/L0": {
+      "n": 84,
+      "whole": 0.56,
+      "all_steps": 0.845,
+      "median_margin": -1.56,
+      "guess": 0.083,
+      "top_wrong": [
+        [
+          "Mer",
+          8
+        ],
+        [
+          "Z",
+          6
+        ],
+        [
+          "J",
+          6
+        ]
+      ]
+    },
+    "KR/L0": {
+      "n": 84,
+      "whole": 0.988,
+      "all_steps": 0.988,
+      "median_margin": 8.5,
+      "guess": 0,
+      "top_wrong": [
+        [
+          "4",
+          1
+        ]
+      ]
+    },
+    "KP/L0": {
+      "n": 84,
+      "whole": 0.155,
+      "all_steps": 0.988,
+      "median_margin": -1.38,
+      "guess": 0.083,
+      "top_wrong": [
+        [
+          "Carl",
+          6
+        ],
+        [
+          "Gary",
+          6
+        ],
+        [
+          "Dan",
+          5
+        ]
+      ]
+    },
+    "KM/L0": {
+      "n": 84,
+      "whole": 0.286,
+      "all_steps": 0.81,
+      "median_margin": -1.16,
+      "guess": 0.012,
+      "top_wrong": [
+        [
+          "\u0394",
+          7
+        ],
+        [
+          "J",
+          7
+        ],
+        [
+          "I",
+          7
+        ]
+      ]
+    },
+    "AR/L0": {
+      "n": 84,
+      "whole": 1,
+      "all_steps": 1,
+      "median_margin": 8.25,
+      "guess": 0.012,
+      "top_wrong": []
+    },
+    "AP/L0": {
+      "n": 84,
+      "whole": 0.155,
+      "all_steps": 1,
+      "median_margin": -1.56,
+      "guess": 0.167,
+      "top_wrong": [
+        [
+          "Sam",
+          8
+        ],
+        [
+          "Leo",
+          8
+        ],
+        [
+          "Paul",
+          4
+        ]
+      ]
+    },
+    "AM/L0": {
+      "n": 84,
+      "whole": 0.155,
+      "all_steps": 0.857,
+      "median_margin": -1.62,
+      "guess": 0.095,
+      "top_wrong": [
+        [
+          "\u0394",
+          15
+        ],
+        [
+          "Mer",
+          5
+        ],
+        [
+          "March",
+          5
+        ]
+      ]
+    },
+    "MR/L0": {
+      "n": 84,
+      "whole": 1,
+      "all_steps": 1,
+      "median_margin": 5.75,
+      "guess": 0.083,
+      "top_wrong": []
+    },
+    "MP/L0": {
+      "n": 84,
+      "whole": 0.167,
+      "all_steps": 1,
+      "median_margin": -1.0,
+      "guess": 0.143,
+      "top_wrong": [
+        [
+          "Gary",
+          15
+        ],
+        [
+          "Leo",
+          7
+        ],
+        [
+          "Ada",
+          7
+        ]
+      ]
+    },
+    "MM/L0": {
+      "n": 84,
+      "whole": 0.429,
+      "all_steps": 0.869,
+      "median_margin": -1.09,
+      "guess": 0.048,
+      "top_wrong": [
+        [
+          "M",
+          6
+        ],
+        [
+          "Sat",
+          5
+        ],
+        [
+          "\u0394",
+          5
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "birds": {
+      "PR": 1,
+      "PP": 0.375,
+      "PM": 0.438,
+      "KR": 0.969,
+      "KP": 0.188,
+      "KM": 0.156,
+      "AR": null,
+      "AP": null,
+      "AM": null,
+      "MR": 1,
+      "MP": 0.071,
+      "MM": 0.357
+    },
+    "cities": {
+      "PR": 1,
+      "PP": 0.346,
+      "PM": 0.654,
+      "KR": 1,
+      "KP": 0.071,
+      "KM": 0.286,
+      "AR": null,
+      "AP": null,
+      "AM": null,
+      "MR": 1,
+      "MP": 0.286,
+      "MM": 0.476
+    },
+    "coins": {
+      "PR": null,
+      "PP": null,
+      "PM": null,
+      "KR": null,
+      "KP": null,
+      "KM": null,
+      "AR": 1,
+      "AP": 0.278,
+      "AM": 0.056,
+      "MR": null,
+      "MP": null,
+      "MM": null
+    },
+    "fruits": {
+      "PR": 1,
+      "PP": 0.115,
+      "PM": 0.615,
+      "KR": 1,
+      "KP": 0.208,
+      "KM": 0.458,
+      "AR": null,
+      "AP": null,
+      "AM": null,
+      "MR": 1,
+      "MP": 0.171,
+      "MM": 0.457
+    },
+    "postcards": {
+      "PR": null,
+      "PP": null,
+      "PM": null,
+      "KR": null,
+      "KP": null,
+      "KM": null,
+      "AR": 1,
+      "AP": 0.088,
+      "AM": 0.147,
+      "MR": null,
+      "MP": null,
+      "MM": null
+    },
+    "stamps": {
+      "PR": null,
+      "PP": null,
+      "PM": null,
+      "KR": null,
+      "KP": null,
+      "KM": null,
+      "AR": 1,
+      "AP": 0.156,
+      "AM": 0.219,
+      "MR": null,
+      "MP": null,
+      "MM": null
+    }
+  },
+  "pick": {}
+}

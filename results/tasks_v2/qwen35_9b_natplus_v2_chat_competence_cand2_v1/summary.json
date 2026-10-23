@@ -1,0 +1,200 @@
+{
+  "seconds": 629,
+  "by_word_level": {
+    "PP/L0": {
+      "n": 292,
+      "whole": 0.801,
+      "all_steps": 0.973,
+      "median_margin": 1.5,
+      "guess": 0.366,
+      "top_wrong": [
+        [
+          "Asia",
+          7
+        ],
+        [
+          "Pol",
+          5
+        ],
+        [
+          "South",
+          4
+        ]
+      ]
+    },
+    "PP/L1": {
+      "n": 292,
+      "whole": 0.798,
+      "all_steps": 0.986,
+      "median_margin": 1.56,
+      "guess": 0.233,
+      "top_wrong": [
+        [
+          "Africa",
+          9
+        ],
+        [
+          "Europe",
+          8
+        ],
+        [
+          "Asia",
+          4
+        ]
+      ]
+    },
+    "PM/L0": {
+      "n": 292,
+      "whole": 0.832,
+      "all_steps": 0.911,
+      "median_margin": 2.31,
+      "guess": 0.127,
+      "top_wrong": [
+        [
+          "German",
+          6
+        ],
+        [
+          "Hung",
+          5
+        ],
+        [
+          "C",
+          5
+        ]
+      ]
+    },
+    "PM/L1": {
+      "n": 292,
+      "whole": 0.822,
+      "all_steps": 0.87,
+      "median_margin": 2.75,
+      "guess": 0.082,
+      "top_wrong": [
+        [
+          "Pol",
+          7
+        ],
+        [
+          "Nor",
+          6
+        ],
+        [
+          "F",
+          5
+        ]
+      ]
+    },
+    "MP/L0": {
+      "n": 292,
+      "whole": 0.822,
+      "all_steps": 0.962,
+      "median_margin": 1.75,
+      "guess": 0.387,
+      "top_wrong": [
+        [
+          "Asia",
+          8
+        ],
+        [
+          "Europe",
+          6
+        ],
+        [
+          "Spain",
+          4
+        ]
+      ]
+    },
+    "MP/L1": {
+      "n": 292,
+      "whole": 0.682,
+      "all_steps": 0.955,
+      "median_margin": 0.81,
+      "guess": 0.219,
+      "top_wrong": [
+        [
+          "Asia",
+          11
+        ],
+        [
+          "South",
+          9
+        ],
+        [
+          "Africa",
+          9
+        ]
+      ]
+    },
+    "MM/L0": {
+      "n": 292,
+      "whole": 0.856,
+      "all_steps": 0.849,
+      "median_margin": 4.12,
+      "guess": 0.14,
+      "top_wrong": [
+        [
+          "M",
+          6
+        ],
+        [
+          "Italy",
+          5
+        ],
+        [
+          "Am",
+          4
+        ]
+      ]
+    },
+    "MM/L1": {
+      "n": 292,
+      "whole": 0.836,
+      "all_steps": 0.801,
+      "median_margin": 3.62,
+      "guess": 0.099,
+      "top_wrong": [
+        [
+          "M",
+          5
+        ],
+        [
+          "Europe",
+          3
+        ],
+        [
+          "German",
+          3
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "animals": {
+      "PP": 0.819,
+      "PM": 0.931,
+      "MP": 0.694,
+      "MM": 0.542
+    },
+    "cities": {
+      "PP": 0.807,
+      "PM": 0.979,
+      "MP": 0.7,
+      "MM": 0.814
+    },
+    "countries": {
+      "PP": 0.761,
+      "PM": 0.989,
+      "MP": 0.679,
+      "MM": 0.957
+    },
+    "people": {
+      "PP": 0.824,
+      "PM": 0.516,
+      "MP": 0.883,
+      "MM": 0.878
+    }
+  },
+  "pick": {}
+}

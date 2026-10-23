@@ -1,0 +1,43 @@
+{
+  "run": "muse30_natplus_v1_chat_genspot_cand2_v1",
+  "why": "Zach (2026-10-23, prereg amendment 20): generation spot-check, muse-glimmer-30b",
+  "written_utc": "2026-10-23T23:09:15Z",
+  "git_commit": "12bdc1571d6dbbe1eb8e731263072880b09aab98",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  ],
+  "set": "natplus_v1_chat",
+  "competence": "muse30_natplus_v1_chat_competence_cand2_v1",
+  "words": [
+    "PP",
+    "PM",
+    "MP",
+    "MM"
+  ],
+  "level": "all",
+  "n_per_word": 25,
+  "band": "L36-42",
+  "conditions": [
+    "none",
+    "paper10",
+    "paper10_rot",
+    "unembed10"
+  ],
+  "max_new_tokens": 12,
+  "check": "muse30_natplus_v1_chat_ko_cand2_v1",
+  "read": "cand2",
+  "tf32": true,
+  "strata": "domain",
+  "seeds": {
+    "rotation": "888+layer"
+  },
+  "doc": "gen_spot (Zach, 2026-10-23, prereg amendment 19): what the model actually says under the knock-out. The candidate\nread asks only whether the right answer outranks its relation's other answers at the first token; this decodes the\nwhole short reply. For eligible items of a natural set (the same eligibility and first-n order as ablate_v2), greedy\ncontinuations (max 12 tokens) unedited and under each condition at one band (edits on prompt positions only, as\nablate_v2; model.generate_batch, one batch row per condition). Each reply is classed: \"answer\" (starts with the\nanswer), \"bridge\" (starts with the bridge or one of its names: hop 1 resolved, hop 2 not given), \"other_cand\" (starts\nwith another answer of the relation), \"other\". The first step's candidate read is recorded too, and checked against\nthe knock-out run's rows (--check RUN, finished runs only) item by item. Amendment 20: TF32 on as ablate_v2, --read\n(default cand2), replies classed by the earliest answer of the relation they name. 20 note: --n items per word\nand relation (--strata domain, the default), and the most common wrong replies. Descriptive, no rule. Writes\nresults/gen_spot/NAME/."
+}

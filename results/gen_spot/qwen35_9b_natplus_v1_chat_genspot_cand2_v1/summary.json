@@ -1,0 +1,238 @@
+{
+ "seconds": 201,
+ "band": "L12-16",
+ "cells": {
+  "PP/none": {
+   "n": 25,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 25,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 0,
+    "other": 0
+   },
+   "class_of_cand_failures": {},
+   "other_examples": []
+  },
+  "PP/paper10": {
+   "n": 25,
+   "cand_acc": 0.88,
+   "class": {
+    "answer": 22,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 3,
+    "other": 0
+   },
+   "class_of_cand_failures": {
+    "other_cand": 3
+   },
+   "other_examples": []
+  },
+  "PP/paper10_rot": {
+   "n": 25,
+   "cand_acc": 0.92,
+   "class": {
+    "answer": 23,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 2,
+    "other": 0
+   },
+   "class_of_cand_failures": {
+    "other_cand": 2
+   },
+   "other_examples": []
+  },
+  "PP/unembed10": {
+   "n": 25,
+   "cand_acc": 0.96,
+   "class": {
+    "answer": 24,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 1,
+    "other": 0
+   },
+   "class_of_cand_failures": {
+    "other_cand": 1
+   },
+   "other_examples": []
+  },
+  "PM/none": {
+   "n": 25,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 25,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 0,
+    "other": 0
+   },
+   "class_of_cand_failures": {},
+   "other_examples": []
+  },
+  "PM/paper10": {
+   "n": 25,
+   "cand_acc": 0.6,
+   "class": {
+    "answer": 15,
+    "lure": 3,
+    "bridge": 1,
+    "other_cand": 6,
+    "other": 0
+   },
+   "class_of_cand_failures": {
+    "other_cand": 6,
+    "lure": 3,
+    "bridge": 1
+   },
+   "other_examples": []
+  },
+  "PM/paper10_rot": {
+   "n": 25,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 25,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 0,
+    "other": 0
+   },
+   "class_of_cand_failures": {},
+   "other_examples": []
+  },
+  "PM/unembed10": {
+   "n": 25,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 25,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 0,
+    "other": 0
+   },
+   "class_of_cand_failures": {},
+   "other_examples": []
+  },
+  "MP/none": {
+   "n": 25,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 25,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 0,
+    "other": 0
+   },
+   "class_of_cand_failures": {},
+   "other_examples": []
+  },
+  "MP/paper10": {
+   "n": 25,
+   "cand_acc": 0.8,
+   "class": {
+    "answer": 20,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 5,
+    "other": 0
+   },
+   "class_of_cand_failures": {
+    "other_cand": 5
+   },
+   "other_examples": []
+  },
+  "MP/paper10_rot": {
+   "n": 25,
+   "cand_acc": 0.96,
+   "class": {
+    "answer": 24,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 1,
+    "other": 0
+   },
+   "class_of_cand_failures": {
+    "other_cand": 1
+   },
+   "other_examples": []
+  },
+  "MP/unembed10": {
+   "n": 25,
+   "cand_acc": 0.96,
+   "class": {
+    "answer": 24,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 1,
+    "other": 0
+   },
+   "class_of_cand_failures": {
+    "other_cand": 1
+   },
+   "other_examples": []
+  },
+  "MM/none": {
+   "n": 25,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 25,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 0,
+    "other": 0
+   },
+   "class_of_cand_failures": {},
+   "other_examples": []
+  },
+  "MM/paper10": {
+   "n": 25,
+   "cand_acc": 0.32,
+   "class": {
+    "answer": 8,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 17,
+    "other": 0
+   },
+   "class_of_cand_failures": {
+    "other_cand": 17
+   },
+   "other_examples": []
+  },
+  "MM/paper10_rot": {
+   "n": 25,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 25,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 0,
+    "other": 0
+   },
+   "class_of_cand_failures": {},
+   "other_examples": []
+  },
+  "MM/unembed10": {
+   "n": 25,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 25,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 0,
+    "other": 0
+   },
+   "class_of_cand_failures": {},
+   "other_examples": []
+  }
+ },
+ "check": {
+  "run": "qwen35_9b_natplus_v1_chat_ko_cand2_v1",
+  "read": "cand2",
+  "n": 400,
+  "agree": 394
+ }
+}
