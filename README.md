@@ -7,7 +7,7 @@
 
 **How to read this page.** Confidence words follow one fixed rule ([below](#confidence-and-verification)): strong, medium, open. "Verified" says who recomputed a number: a person, an independent agent, or nobody yet. Every number comes from the cross-model grid ([grid.md](results/cross_model/20261023T105852Z/grid.md)) unless a run is named next to it; every run is in [RUNS.md](RUNS.md).
 
-> **Status, 23 Oct 2026.** Built at 6c4ec06 from `results/cross_model/20261023T105852Z`. Exploration phase: no main claim is hand-verified yet. An independent agent recomputed claims 1-3, and claim 6 on the 27B, from raw rows: every cell matches. The hand check is today. Running on the A100: Gemma 4's lens tests, Qwen3-32B's tables and JSON, the 27B dose control. On the 122B the lookup follows the J-space form to a later layer than on the other models ([below](#the-122b-difference)); its test runs today on a rented 2x H100.
+> **Status, 23 Oct 2026.** Built at 2c6c68b from `results/cross_model/20261023T105852Z`. Exploration phase: no main claim is hand-verified yet. An independent agent recomputed claims 1-3, and claim 6 on the 27B, from raw rows: every cell matches. The hand check is today. Running on the A100: Gemma 4's lens tests, Qwen3-32B's tables and JSON, the 27B dose control. On the 122B the lookup follows the J-space form to a later layer than on the other models ([below](#the-122b-difference)); its test runs today on a rented 2x H100.
 
 Eight models. Hybrids, which mix attention with DeltaNet layers: Qwen3.6-27B (27B), Qwen3.5-9B (9B), Olmo-Hybrid-7B (Olmo-Hybrid), Qwen3.5-122B (122B). Attention-only: Qwen3-32B (32B), OLMo-3-7B (OLMo-3), Muse 30B (Muse), Gemma 4 31B (Gemma).
 
@@ -38,7 +38,7 @@ Eight models. Hybrids, which mix attention with DeltaNet layers: Qwen3.6-27B (27
 | **What the J-space does and doesn't carry** | | | | | |
 | *Methods note, not a finding:* the lens reads a stated bridge at its own word | On the 27B: 95% at the word, 7% right after it; no logit-lens or embedding baseline yet | 7 of 7 lensed models at the word, 0 of 7 after it | – | none | [4](#4-methods-note-the-lens-reads-a-stated-bridge-at-its-own-word) |
 | A lens push at the bridge's word writes recall; the lookup ignores it from layer 20 on (27B), 6 (9B, OLMo-3), 33 (122B) | On the 122B at layer 33: 0% of lookups move, 89% of recalls; at layer 27, 26% of lookups ([per layer](#5-a-lens-push-writes-recall-the-lookup-ignores-it-from-a-models-own-layer-on)) | 4 of 5 models with a valid test | medium | none | [5](#5-a-lens-push-writes-recall-the-lookup-ignores-it-from-a-models-own-layer-on) |
-| The lens-readable part of a stated bridge moves recall, not the lookup | On the 27B it moves 38% of recalls and 1% of lookups; on the 122B, 29% of lookups | 2 of 4 models; fails on the 122B at layer 24 ([why](#the-122b-difference)) | medium | [agent re-check](verification/agent_check_finding2.md) (27B) | [6](#6-the-lens-readable-part-of-a-stated-bridge-moves-recall-not-the-lookup) |
+| The lens-readable part of a stated bridge moves recall, not the lookup | On the 27B it moves 38% of recalls and 1% of lookups; taken out of the change, it costs recalls 51 points and lookups 2; on the 122B it moves 29% of lookups | 2 of 4 models; fails on the 122B at layer 24 ([why](#the-122b-difference)) | medium | [agent re-check](verification/agent_check_finding2.md) (27B) | [6](#6-the-lens-readable-part-of-a-stated-bridge-moves-recall-not-the-lookup) |
 | Lookups don't need the J-space; how much recall needs it varies | Zach's rule on the 27B: recall loses +36 points more than lookups | 4 of 4 in Zach's runs, three of them quoted and not yet in this repo; ours descriptive | medium | none | [7](#7-lookups-dont-need-the-j-space-recall-does-to-a-varying-degree) |
 
 ![Every claim on every model](figures/cross_model/f_summary_heatmap.png)
@@ -272,15 +272,32 @@ Not tested: Olmo-Hybrid (no lens), OLMo-3 (too few usable scenes), Muse (too few
 
 **Also:** a lens push at the same point writes 0% of lookups on the 27B, and 29% on the 122B.
 
+![The lens-readable part](figures/cross_model/stated_bridge_main.png)
+
+**What each answer needs.** The same runs, read the other way: paste the whole change, then the whole change without its lens-readable part, and count what is lost (% switched, n = 180 per family, the whole prompt; values only, no rule yet).
+
+| Model, layer | Whole change: lookups / recalls | Without the lens-readable part | Lost: lookups / recalls |
+|---|---|---|---|
+| 27B, 32 | 83% / 78% | 81% / 27% | 2 / 51 points |
+| 9B, 16 | 56% / 64% | 52% / 11% | 3 / 53 points |
+| 122B, 24 | 99% / 97% | 75% / 57% | 24 / 40 points |
+| 122B, 27 | 99% / 97% | 51% / 19% | 48 / 78 points |
+| 122B, 30 | 98% / 97% | 86% / 57% | 12 / 39 points |
+
+Runs: [27B](results/statement_positions/d1_topics2_parts_27b/outcomes.jsonl) · [9B](results/statement_positions/qwen35_9b_d1_topics2_parts/outcomes.jsonl) · [122B](results/statement_positions/qwen35_122b_d1_topics2_parts/outcomes.jsonl); every cell recomputed from the raw rows. Against the bars fixed today for the band runs (lookups lose at most 10 points, recalls at least 20), the 27B and 9B fit, and the 122B's lookups lose 12-48 points: on the 122B the lookup needs the lens-readable part too.
+
+![What each answer needs](figures/cross_model/necessity_main.png)
+
+All three 122B layers: [necessity_full.png](figures/cross_model/necessity_full.png).
+
 **Weak spots**
 - The 122B fails at layer 24; see [the 122B difference](#the-122b-difference).
 - On the 27B and 9B a random part of the same size moves lookups as little as the lens part does. So the claim is the contrast, not "the lens part is special for lookups".
+- What recall loses is not yet compared with taking out a random part of the same share: a large enough cut might cost recall 50 points whatever it removes. That comparison is the rule of today's band runs (at the bridge's word, layers 16-28 on the 27B and 6-14 on the 9B and OLMo-3; predictions committed, not yet run).
 
-**What it means.** On the 27B and 9B, the lens-readable part moves recall far beyond its size, and lookups not at all. The lookup takes the stated bridge from the rest.
+**What it means.** On the 27B and 9B, the lens-readable part moves recall far beyond its size, and lookups not at all; taking it out of the change costs recall most of its switches (78% → 27% on the 27B) and the lookup almost none. The lookup takes the stated bridge from the rest. On the 122B the lookup needs both.
 
 Prior work: the workspace paper and two-hop recall (Gurnee et al. 2026; Biran et al., EMNLP 2024): [docs/prior_art.md](docs/prior_art.md#3-a-band-of-layers-where-the-lookup-ignores-the-lens-readable-form).
-
-![The lens-readable part](figures/cross_model/f_lookup_ignores_lens_part_all_models.png)
 
 ### 7. Lookups don't need the J-space; recall does, to a varying degree
 
