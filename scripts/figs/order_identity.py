@@ -40,11 +40,14 @@ WHAT = {"1st-2nd": "position - identity, points", "3rd on": "identity - position
 PART_LABEL = {"1st-2nd": "1st–2nd", "3rd on": "3rd on"}
 MAIN_MODELS = ("27b", "122b", "32b", "olmo")
 POS_BG, ID_BG = "#f4f0f9", "#eef4f2"  # very light: above 0 "position wins", below 0 "identity wins"
-SIDE = -46  # points left of a row's first panel: the side labels (right of them: the y tick labels)
+SIDE = -52  # points left of a row's first panel: the side labels (right of them: the y tick labels)
+LEFT = 0.135  # the panels' left edge: room for the side labels
 
+# plain words (no "donor", "scene set", "memory -> prompt"): the 5-second test of 23 Oct
 TITLE = "Position wins for sentences 1–2, identity after"
-SUBTITLE = "Last two tokens swapped in: % answers at the same place minus % at the donor's entity"
-HOW = "Both parts drawn as place minus entity: up = position wins, down = identity wins."
+SUBTITLE = "Last two tokens copied from another prompt: does the answer follow position or identity?"
+HOW = "Position = same place in the list, identity = the copied entity; one dot per prompt set."
+WHICH = "questions whose bridge is recalled"
 MARKS = "Filled = hybrid, hollow = attention-only; bars: 95% CI."
 
 
@@ -104,12 +107,17 @@ class Facts:
         return out
 
 
+def show(setting: str) -> str:
+    """A setting in plain words: 'prompt set 1' (the grid's draw 1: a fresh set of prompts), '8 sentences'."""
+    return RB.show(setting).replace("scene set", "prompt set")
+
+
 def facts(b: RB.Book, keys: list[str], settings: tuple[str, ...]) -> Facts:
     """The failing parts and the not-interpretable settings (a setting's verdict covers both its parts), the n's."""
     out = Facts()
     for k in keys:
         for s in settings:
-            where = f"{C.MODEL[k].short} {RB.show(s)}"
+            where = f"{C.MODEL[k].short} {show(s)}"
             for p in PARTS:
                 c = cell(b, k, s, p)
                 if c is None:
@@ -141,14 +149,14 @@ def pack(sentences: list[str], width: float = 11.5) -> str:
 
 
 def missing_text(b: RB.Book, keys: list[str], settings: tuple[str, ...]) -> str:
-    """'Not run: Olmo-Hybrid scene set 3; Gemma 8 and 12 sentences.': settings without a value, by reason."""
+    """'Not run: Olmo-Hybrid prompt set 3; Gemma 8 and 12 sentences.': settings without a value, by reason."""
     by: dict[str, list[str]] = {}
     for k in keys:
         gone = [s for s in settings if not any(cell(b, k, s, p) for p in PARTS)]
         if not gone:
             continue
         reason = RB.reason([c for c in b.of(F, k) if c.setting in gone])
-        shown = [RB.show(s) for s in gone]
+        shown = [show(s) for s in gone]
         if len(shown) > 1 and all(s.endswith(" sentences") for s in shown):
             shown = [" and ".join(s.removesuffix(" sentences") for s in shown) + " sentences"]
         by.setdefault(reason, []).append(f"{C.MODEL[k].short} {', '.join(shown)}")
@@ -194,11 +202,12 @@ def base(ax, ylim: tuple[float, float], *, first: bool) -> None:
     ax.tick_params(axis="y", length=3.5 if first else 0, labelleft=first)
     ax.tick_params(axis="x", length=0)
     ax.spines["left"].set_visible(first)
-    if first:
-        for text, y in (("position\nwins", 75), ("identity\nwins", -25)):  # between the ticks (y_range: -60..100 in)
+    if first:  # left of the tick labels, horizontal: what the halves mean, and between them the axis's quantity
+        for text, y, color in (("position\nwins", 85, C.CAPTION_INK), ("position\nminus\nidentity\n(points)", 22, C.INK),
+                               ("identity\nwins", -40, C.CAPTION_INK)):  # fmt: skip
             ax.annotate(text, xy=(0, y), xycoords=ax.get_yaxis_transform(), xytext=(SIDE, 0),
-                        textcoords="offset points", ha="right", va="center", fontsize=C.NOTE, color=C.CAPTION_INK,
-                        gid="side")  # fmt: skip
+                        textcoords="offset points", ha="right", va="center", fontsize=C.NOTE, color=color,
+                        linespacing=1.05, gid="side")  # fmt: skip
 
 
 def parts_axis(ax) -> None:
@@ -221,10 +230,23 @@ def title(ax, m: str) -> None:
 
 
 def fails_word(ax, x: float, y: float, part: str) -> None:
-    """The verdict as a small grey word beside the failing dot, on the side of the gap between the two parts."""
+    """The verdict as a small grey word right beside the failing dot, on the side of the gap between the two parts."""
     left = part == "3rd on"
-    ax.annotate("fails", xy=(x, y), xytext=(-14 if left else 14, 0), textcoords="offset points",
+    ax.annotate("fails", xy=(x, y), xytext=(-10 if left else 10, 0), textcoords="offset points",
                 ha="right" if left else "left", va="center", fontsize=C.NOTE, color=C.CAPTION_INK, gid="status")  # fmt: skip
+
+
+def names_key(fig, keys: list[str], x_mid: float, y_top: float) -> None:
+    """The inset's models by short name in their colors, left to right as its dots, centered under it (kept inside
+    the figure)."""
+    widths = [PS.text_width(fig, C.MODEL[k].short, C.NOTE) for k in keys]
+    gap, w_fig = 0.14, fig.get_figwidth()
+    total = sum(widths) + gap * (len(keys) - 1)
+    x = min(x_mid * w_fig - total / 2, 0.985 * w_fig - total)
+    for k, w in zip(keys, widths, strict=True):
+        fig.text(x / w_fig, y_top, C.MODEL[k].short, color=C.MODEL[k].color, fontsize=C.NOTE, ha="left", va="top",
+                 gid="key")  # fmt: skip
+        x += w + gap
 
 
 def draw_main(b: RB.Book, out: Path = C.OUT) -> list[Path]:
@@ -235,11 +257,10 @@ def draw_main(b: RB.Book, out: Path = C.OUT) -> list[Path]:
     inset = [k for k in keys if has_values(b, k, twelve.settings)]
     fx, f12 = facts(b, keys, five.settings), facts(b, inset, twelve.settings)
     both = Facts(fx.fails + f12.fails, fx.unclear + f12.unclear)  # each named with its setting
-    caption = pack([*both.sentences, f"n = {fx.n_range} items per dot (12 sentences: {f12.n_range}); memory → "
-                    "prompt lookups.", missing_text(b, keys, five.settings + twelve.settings),
-                    C.not_tested(b, F, MAIN_MODELS),
-                    "Inset: 12-sentence lists, same models in the same order." if inset else "", MARKS])  # fmt: skip
-    fr = C.frame("main", TITLE, SUBTITLE, how=HOW, caption=caption, ncols=4, sharey=True, left=0.135, right=0.79,
+    caption = pack([*both.sentences, f"n = {fx.n_range} per dot (inset: {f12.n_range}); {WHICH}.",
+                    missing_text(b, keys, five.settings + twelve.settings), C.not_tested(b, F, MAIN_MODELS),
+                    "Inset: 12-sentence lists, models named below it." if inset else "", MARKS])  # fmt: skip
+    fr = C.frame("main", TITLE, SUBTITLE, how=HOW, caption=caption, ncols=4, sharey=True, left=LEFT, right=0.79,
                  wspace=0.12)  # fmt: skip
     room_for_titles(fr)
     ylim = y_range(b, keys)
@@ -255,14 +276,15 @@ def draw_main(b: RB.Book, out: Path = C.OUT) -> list[Path]:
             for xi, p in enumerate(PARTS):
                 c = dot(ax, b, k, s, p, xi + dx, five, numbers, 12)
                 if c is not None and c.value is not None and failed(c):
-                    fails_word(ax, xi + (offsets[0] if p == "3rd on" else offsets[-1]), SIGN[p] * c.value, p)
+                    fails_word(ax, xi + dx, SIGN[p] * c.value, p)
         parts_axis(ax)
         title(ax, k)
     first, last = fr.axes[0].get_position(), fr.axes[len(keys) - 1].get_position()
-    fr.fig.text((first.x0 + last.x1) / 2, first.y0 - 0.075, "Sentence asked about, in 5-sentence lists (one dot per "
-                "scene set)", ha="center", va="top", fontsize=C.LABEL, gid="xlabel")  # fmt: skip
+    row = first.y0 - 0.075  # the x labels' row under the panels
+    fr.fig.text((first.x0 + last.x1) / 2, row, "Sentence the question asks about, in lists of 5 sentences",
+                ha="center", va="top", fontsize=C.LABEL, gid="xlabel")  # fmt: skip
     if inset:
-        ins = fr.fig.add_axes((0.835, last.y0, 0.14, last.height), sharey=fr.axes[0])
+        ins = fr.fig.add_axes((0.835, last.y0, 0.145, last.height), sharey=fr.axes[0])
         base(ins, ylim, first=False)
         ins.spines["left"].set_visible(True)
         step = 0.54 / max(len(inset) - 1, 1)
@@ -272,6 +294,7 @@ def draw_main(b: RB.Book, out: Path = C.OUT) -> list[Path]:
                 dot(ins, b, k, twelve.settings[0], p, xi + dx, twelve, numbers, 10)
         parts_axis(ins)
         ins.set_title("12 sentences", fontsize=C.LABEL, fontweight="bold", color=C.INK2, pad=8)
+        names_key(fr.fig, inset, 0.835 + 0.145 / 2, row)
     return C.save(fr, STEM, numbers, out)
 
 
@@ -284,9 +307,9 @@ def draw_full(b: RB.Book, out: Path = C.OUT) -> list[Path]:
     ncols = max(len(g) for g in groups)
     fx = facts(b, keys, settings)
     caption = pack([*fx.sentences, missing_text(b, keys, settings), C.not_tested(b, F),
-                    f"n = {fx.n_range}; 5 sentences: 3 scene sets; memory → prompt.", MARKS])  # fmt: skip
+                    f"n = {fx.n_range} per dot; {WHICH}.", MARKS])  # fmt: skip
     fr = C.frame("full", TITLE, SUBTITLE, how=HOW, caption=caption, nrows=len(groups), ncols=ncols, size=(12.0, 10.0),
-                 sharey=True, left=0.135, right=0.975, wspace=0.12, hspace=0.5)  # fmt: skip
+                 sharey=True, left=LEFT, right=0.975, wspace=0.12, hspace=0.5)  # fmt: skip
     room_for_titles(fr, bottom=-22)  # two rows of x tick labels and no x label: the frame's x-label room is spare
     ylim = y_range(b, keys)
     numbers: list[C.Number] = []

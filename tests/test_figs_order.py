@@ -104,15 +104,22 @@ def test_order_identity_caption_facts(book: RB.Book):
     keys = [m.key for m in C.MODELS]
     settings = tuple(s for li in OI.LISTS for s in li.settings)
     got = OI.facts(book, keys, settings)
-    assert got.fails == ["32B scene set 1, 3rd on"]  # only the part whose half of the rule failed
+    assert got.fails == ["32B prompt set 1, 3rd on"]  # only the part whose half of the rule failed
     assert got.unclear == [] and got.n_range == "150–190"
-    assert OI.missing_text(book, keys, settings) == "Not run: Olmo-Hybrid scene set 3; Gemma 8 and 12 sentences."
+    assert OI.missing_text(book, keys, settings) == "Not run: Olmo-Hybrid prompt set 3; Gemma 8 and 12 sentences."
+
+
+def test_figure_text_has_no_jargon():
+    """The 5-second test (23 Oct): no "donor", "swapped", "patched", "scene set" or "memory → prompt" on a figure."""
+    texts = [OI.SUBTITLE, OI.HOW, OI.WHICH, OI.show("draw 1")]
+    for word in ("donor", "swapped", "patched", "scene set", "memory"):
+        assert all(word not in t for t in texts)
 
 
 def test_order_identity_draws_a_failed_control_grey(tmp_path: Path):
     b = write_grid(tmp_path / "grid", synth_rows(missing={}, unclear=("muse", "draw 1")))
     keys = [m.key for m in C.MODELS]
-    assert OI.facts(b, keys, ("draw 1",)).unclear == ["Muse scene set 1"]  # the setting, once for both parts
+    assert OI.facts(b, keys, ("draw 1",)).unclear == ["Muse prompt set 1"]  # the setting, once for both parts
     OI.draw_full(b, tmp_path / "out")
     drawn = {(d["model"], d["setting"]) for d in records(tmp_path / "out", "order_identity", "full")}
     assert ("muse", "draw 1") in drawn  # drawn (grey), not dropped
@@ -145,7 +152,13 @@ def test_counting_saves_and_matches_the_grid(book: RB.Book, tmp_path: Path):
 def test_counting_names_why_the_filler_test_fails(book: RB.Book):
     c = CT.cells(book, "filler moved")["32b"]
     assert CT.control(c, "place in text") == (3.0, 1.0, 6.0)
-    assert CT.why_fails(c).startswith("list order is above when pooled")  # 9 > 6: the topics failed
+    assert CT.why_fails(c).startswith("purple is above grey over all items")  # 9 > 6: the topics failed
+    got = CT.cells(book, "filler moved")
+    keys = [m.key for m in C.MODELS]
+    assert CT.fails_sentence(got, keys) == (
+        "32B fails: purple is above grey over all items, but not in 2 of 3 topics "
+        "as the rule needs; Gemma, as low, passes both."
+    )  # Gemma 12% vs 32B 13%
 
 
 def test_command_line(book: RB.Book, tmp_path: Path):

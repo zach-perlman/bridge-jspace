@@ -6,8 +6,9 @@ place in the text (every setting) and counted from the end (one statement more /
 Control numbers go to the data file with source "grid.csv control text" (check_numbers compares grid values only).
 
 MAIN: the filler-moved test only, one row per model: list order (the accent, big; filled = hybrid, hollow =
-attention-only) vs place in text (light grey). FULL: all three settings side by side, counted from the end as a grey
-tick. A model whose cell fails the rule gets the small grey word "fails" beside its row and is named in the caption.
+attention-only) vs place in text (light grey), each labelled on a row line beside its marks; the caption says why a
+failing model fails and names the holding models as low as it. FULL: all three settings side by side, counted from
+the end as a grey tick. A model whose cell fails the rule gets the small grey word "fails" beside its row.
 
 uv run python scripts/figs/counting.py --grid results/cross_model/<stamp> [--only main|full] [--out DIR]
 """
@@ -24,9 +25,11 @@ from typing import Any
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
+from bridge_jspace import plot_style as PS
 from scripts import readme_build as RB
 from scripts import readme_draft as RD
 from scripts.figs import common as C
+from scripts.figs import order_identity as OI  # pack (the caption), room_for_titles, WHICH: shared with finding 5
 
 STEM = "counting"
 F = "f6"
@@ -55,8 +58,55 @@ def why_fails(c: RD.Cell) -> str:
     interval clears the control's failed on the topics."""
     t = control(c, "place in text")
     if c.ci is not None and t is not None and c.ci[0] > t[2]:
-        return "list order is above when pooled, but not in 2 of 3 topics as the rule needs"
-    return "the two intervals overlap"
+        return "purple is above grey over all items, but not in 2 of 3 topics as the rule needs"
+    return "the purple and grey intervals overlap"
+
+
+def fails_sentence(got: dict[str, RD.Cell], keys: list[str]) -> str:
+    """'32B fails: ...; Gemma, as low, passes both.': each failing model with its reason, and the holding models whose
+    list-order share is as low (within 3 points), so a reader does not take the low dot for the failure."""
+    out = []
+    for k in (k for k in keys if got[k].word == "fails"):
+        v = got[k].value or 0.0
+        low = [h for h in keys if got[h].word == "holds" and (got[h].value or 0.0) <= v + 3]
+        tail = (
+            f"; {', '.join(C.MODEL[h].short for h in low)}, as low, {'pass' if len(low) > 1 else 'passes'} both"
+            if low
+            else ""
+        )
+        out.append(f"{C.MODEL[k].short} fails: {why_fails(got[k])}{tail}.")
+    return " ".join(out)
+
+
+def direct_labels(fig, ax, got: dict[str, RD.Cell], keys: list[str], ys: dict[str, float], xmax: float) -> None:
+    """'same place in the text' and 'same order in the list' on a row line, right of their own marks, in the first row
+    (top down) where the text fits before the next mark; rows with a verdict word are skipped."""
+    inch = ax.get_position().width * fig.get_figwidth() / xmax  # inches per percentage point
+    pad, half = 0.1 / inch, 0.14 / inch  # a gap; half a list-order marker
+    spans: dict[str, dict[str, tuple[float, float]]] = {}
+    for k in keys:
+        c, t = got[k], control(got[k], "place in text")
+        v = c.value or 0.0
+        lo, hi = c.ci if c.ci is not None else (v, v)
+        spans[k] = {"order": (min(lo, v - half), max(hi, v + half))}
+        if t is not None:
+            spans[k]["place in text"] = (min(t[1], t[0] - half), max(t[2], t[0] + half))
+    taken: dict[str, list[tuple[float, float]]] = {k: [] for k in keys}
+    for name, text, color, weight in (("place in text", "same place in the text", C.INK2, "normal"),
+                                      ("order", "same order in the list", C.LOOKUP, "bold")):  # fmt: skip
+        w = PS.text_width(fig, text, C.NOTE, weight) / inch
+        for k in keys:
+            if got[k].word != "holds" or name not in spans[k]:
+                continue
+            start = spans[k][name][1] + pad
+            stops = [a for n, (a, b) in spans[k].items() if n != name and b > start] + [
+                a for a, b in taken[k] if b > start
+            ]
+            if start + w + pad <= min([*stops, xmax]):
+                ax.text(start, ys[k], text, ha="left", va="center", fontsize=C.NOTE, color=color, fontweight=weight,
+                        gid="label")  # fmt: skip
+                taken[k].append((start, start + w))
+                break
 
 
 def dot(key: str, color: str, size: float) -> dict[str, Any]:
@@ -123,7 +173,7 @@ def x_axis(ax, xmax: float, label: bool) -> None:
     ax.set_axisbelow(True)
     ax.spines["left"].set_visible(False)
     if label:
-        ax.set_xlabel("% of patched answers")
+        ax.set_xlabel("% of answers")
 
 
 def x_max(b: RB.Book, settings: tuple[str, ...]) -> float:
@@ -154,31 +204,19 @@ def draw_main(b: RB.Book, out: Path = C.OUT) -> list[Path]:
     keys = [m.key for m in C.MODELS if m.key in got]
     if not keys:
         raise ValueError("no model has a filler-moved value")
-    failing = [k for k in keys if got[k].word == "fails"]
-    line1 = "; ".join(f"{C.MODEL[k].short} fails: {why_fails(got[k])}" for k in failing)
-    line1 = (line1 + ".") if line1 else "Holds on every model shown."
-    untested = C.not_tested(b, F, None)
-    line2 = " ".join(x for x in (f"n = {n_range(b, (setting,))} lookups per model (memory → prompt).", untested, MARKS)
-                     if x)  # fmt: skip
+    caption = OI.pack([fails_sentence(got, keys) or "Holds on every model shown.",
+                       f"n = {n_range(b, (setting,))} per model; {OI.WHICH}.", C.not_tested(b, F, None), MARKS])  # fmt: skip
     fr = C.frame("main", "A moved filler sentence doesn't shift the label",
-                 "Filler moved in the donor: % of patched answers at the same list order or text place",
-                 how="The label counts the list, not the text, where the purple dot is right of the grey one.",
-                 caption=f"{line1}\n{line2}", left=0.2, right=0.95)  # fmt: skip
+                 "Last two tokens copied from a prompt with a filler moved: same list order or text place?",
+                 how="Purple right of grey: the answer follows the list, not the text.", caption=caption, left=0.2,
+                 right=0.95)  # fmt: skip
     ax = fr.axes[0]
     ys = C.model_rows(ax, keys)
     numbers: list[C.Number] = []
     panel(ax, b, setting, ys, numbers, ("place in text",), 13)
     xmax = x_max(b, (setting,))
     x_axis(ax, xmax, True)
-    top = keys[0]  # direct labels above the first row's two marks
-    t = control(got[top], "place in text")
-    for x, text, color in ((got[top].value, "same order in the list", C.LOOKUP),
-                           (t[0] if t else None, "same place in the text", C.INK2)):  # fmt: skip
-        if x is None:
-            continue
-        ha = "left" if x < 0.15 * xmax else "right" if x > 0.85 * xmax else "center"  # stays inside the panel
-        ax.annotate(text, xy=(x, ys[top]), xytext=(0, 13), textcoords="offset points", ha=ha, va="bottom",
-                    fontsize=C.NOTE, color=color, fontweight="bold" if color == C.LOOKUP else "normal", gid="label")  # fmt: skip
+    direct_labels(fr.fig, ax, got, keys, ys, xmax)
     return C.save(fr, STEM, numbers, out)
 
 
@@ -194,13 +232,12 @@ def draw_full(b: RB.Book, out: Path = C.OUT) -> list[Path]:
         groups = [(RB.show(s), fails[s]) for s in SETTINGS]
     parts = [f"{what}: {names(ks)}" for what, ks in groups if ks]
     line1 = ("Fails the rule: " + "; ".join(parts) + ".") if parts else "Holds on every model shown."
-    untested = C.not_tested(b, F, None)
-    line2 = " ".join(x for x in (f"n = {n_range(b, SETTINGS)} lookups per cell (memory → prompt).", untested, MARKS)
-                     if x)  # fmt: skip
+    caption = OI.pack([line1, f"n = {n_range(b, SETTINGS)} per cell; {OI.WHICH}.", C.not_tested(b, F, None), MARKS])
     fr = C.frame("full", "The label counts list order, not place in the text",
-                 "Donor's list changed: % of patched answers at the same list order vs at the controls",
+                 "Last two tokens copied from a prompt with its list changed: list order or a control?",
                  how="Purple: same order in the list. Grey dot: same place in the text. Grey tick: from the end.",
-                 caption=f"{line1}\n{line2}", ncols=3, size=(12.0, 8.0), left=0.17, right=0.97, wspace=0.12)  # fmt: skip
+                 caption=caption, ncols=3, size=(12.0, 8.0), left=0.17, right=0.97, wspace=0.12)  # fmt: skip
+    OI.room_for_titles(fr)
     xmax = x_max(b, SETTINGS)
     numbers: list[C.Number] = []
     for i, (ax, s) in enumerate(zip(fr.axes, SETTINGS, strict=True)):
@@ -212,10 +249,6 @@ def draw_full(b: RB.Book, out: Path = C.OUT) -> list[Path]:
         panel(ax, b, s, ys, numbers, rivals, 11)
         x_axis(ax, xmax, i == 1)
         ax.set_title(RB.show(s).capitalize(), fontsize=C.LABEL, fontweight="bold", pad=10)
-    gs = fr.axes[0].get_subplotspec().get_gridspec()
-    gs.update(top=gs.top - 30 / 72 / fr.fig.get_figheight())  # room for the panel titles under the header
-    for ax in fr.axes:
-        ax.set_position(ax.get_subplotspec().get_position(fr.fig))
     return C.save(fr, STEM, numbers, out)
 
 
