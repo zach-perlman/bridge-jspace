@@ -72,6 +72,11 @@ Drafts, not verified; each point names the cells it rests on.
 - **OLMo-3** (our J++): +28 points [+16, +41], but a control removal keeps only 80% on one family: not interpretable (the plain J-lens: the same).
 - **Gemma** (Zach's earlier refit, listed beside): the removal breaks every answer, and so does a random dictionary of the same size (the rotated fit keeps 100%); the run with his every-layer fit is blocked.
 
+**Why the two rows differ**
+- The intervention: Zach knocks out the lens's top directions at a middle band chosen on held-out items; our removal takes out the whole fitted J-space at the layers where the bridge forms, a larger cut.
+- The tasks and the measure: his generator's chains, scored as points lost by memory-final vs prompt-final chains; our animal suite, scored as the share of recalls and lookups still right (100 items per kind).
+- The models' fragility: on Qwen3-32B any removal of that size costs recalls (his random removals 2-11 points) and our larger one costs lookups too; on Muse the knock-out raises text loss but recalls survive.
+
 **Weak spots**
 - Zach's 9B, 32B and Muse numbers are quoted from his plan, not recomputed here; one data seed, synthetic templates.
 - On Muse the knock-out raises plain-text loss as much as on the others but its recalls survive (Zach), so "Muse does not need the J-space" could also be "the knock-out does not reach Muse's bridge".
@@ -459,6 +464,7 @@ Added on the night of 22-23 Oct (decisions, not results):
 - **Finding 8, stated bridge, in the grid**: the cell holds iff the lens push writes recall and not the lookup at the stated-bridge cell; recall not written means no positive control (not interpretable). Written by the grid agent, accepted by Dan (23 Oct).
 - **Finding 6's decisive layers** on Qwen3.5-9B, Qwen3-32B, Muse, Gemma and Qwen3.5-122B: the swept layers where the donor's digit is still rare (Wilson upper bound below 10%), the specs' rule applied by the grid. Accepted by Dan (23 Oct).
 - **Finding 4, first draws**: judged by the late-read rule fixed on 22 Oct for the second draws (the first draws ran under an older rule); a late read that fails with its interval around chance is footnoted 'at chance' (Dan, 23 Oct).
+- **Gemma's stated-bridge runs, n**: 167 scenes (topics) and 169 (tables and JSON) instead of the pre-registered 180: 73c4a69 skips scenes whose token positions fail the alignment check (the first attempts stopped on them). A deviation from the specs, recorded in the grid; accepted by Dan (23 Oct 12:30).
 - **Reading finding 6 by setting** (a filler sentence moved vs one sentence more or fewer) in the overview and the conclusions, instead of only the per-model state: chosen after seeing the grid (23 Oct).
 - **The layer-gap and embedding analyses** were run once each with the committed `analyze --rule v2`, into new folders; they reproduce the runs' own summaries. The embedding test's committed verdict ("no lead") stands; that it pools scales where the lens push moves nothing is our reading after the data.
 
@@ -789,10 +795,10 @@ Proposals; the humans choose. Ordered by what they decide for the J-space claims
 
 | # | Step | Why | Status |
 |---|---|---|---|
-| 1 | **Gemma 4 lens chain** (stated bridge, lens push, J-space removal with Zach's every-layer J++): the map job reruns with a 30-minute cap; if it fails again on scene alignment, Gemma's lens claims are "not testable (scene alignment)" | The only attention-only family with a lens that passes v1 and enough competence | Running (capped) |
+| 1 | **Gemma 4 lens chain** (stated bridge, lens push, J-space removal with Zach's every-layer J++): both maps rerun past the step that broke them (n 167 / 169 of 180, a recorded deviation); the 8 dependent runs follow | The only attention-only family with a lens that passes v1 and enough competence | Running; ~14:30 UTC |
 | 2 | **Finish Qwen3-32B with our J++:** the lens push (running) and the stated-bridge test in tables and JSON (running, ~5 h) | The 32B's recall control fails on prose; the push is its last lens test | Running |
-| 3 | **"Late binding" on the 122B** (pre-registered before the run): the stated-bridge test at later cells (the bridge's sentence and the context, layers ~30, 33, 36 of 48), with a random-subspace control of the same share of the change's norm. Holds if at some later cell the lens-readable part moves ≤ 5% of lookups (upper bound) while the rest moves ≥ 30%; finding 2 fails on the 122B if the lens-readable part moves ≥ 20% at every later cell | The one counter-example to findings 2 and 8: is it the model or the cell? | Spec being written; needs a rented H200 |
-| 4 | **The 27B's layer gap, two controls** (pre-registered): (a) dose: a push along the full patch's direction, scaled to the lens push's norm, same layers and scenes; (b) the layer-16 split: the patch at the bridge's word, layers 14-18, split into its lens-readable part and the rest | (a) "the patch moves more" may be dose; (b) the input-embedding control is inert, so "an input edit by another name" is still open | Specs being written; A100 |
+| 3 | **"Late binding" on the 122B** (pre-registered before the run): the stated-bridge test at later cells (the bridge's sentence and the context, layers ~30, 33, 36 of 48), with a random-subspace control of the same share of the change's norm. Holds if at some later cell the lens-readable part moves ≤ 5% of lookups (upper bound) while the rest moves ≥ 30%; finding 2 fails on the 122B if the lens-readable part moves ≥ 20% at every later cell | The one counter-example to findings 2 and 8: is it the model or the cell? | Specs and rule committed (d40f14f; Dan's amendment: once quiet, the lens part stays quiet at later cells); waits for Dan's predictions and a box |
+| 4 | **The 27B's layer gap, two controls** (pre-registered): (a) dose: a push along the full patch's direction, scaled to the lens push's norm, same layers and scenes; (b) the layer-16 split: the patch at the bridge's word, layers 14-18, split into its lens-readable part and the rest | (a) "the patch moves more" may be dose; (b) the input-embedding control is inert, so "an input edit by another name" is still open | Specs committed (bedbb9a); (a) running on the A100, results closed; (b) held for Dan's predictions |
 | 5 | **A rule for our animal-suite removal** (finding 1) before any more such runs; Zach's C1 rule already covers his tasks | Our removal cells are descriptive | To decide |
 | 6 | **Olmo-Hybrid in tables:** rerun with more scenes before reading 88% (21 of 24) as "the DeltaNet layers matter" | One item from the bar | Cheap (~1 GPU-h) |
 | 7 | **Verify findings 3-5 by hand** with Zach into VERIFIED.md (frozen is not verified) | They now rest on eight models | Starts 23 Oct |
