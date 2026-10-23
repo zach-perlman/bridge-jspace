@@ -361,6 +361,25 @@ TARGETS: dict[str, dict[str, Any]] = {
         "lenses": {"jpp": ("local", "cache/gpt-oss-20b/lenses/jpp/gpt-oss-20b_jpp_lens.pt", "2902332d4852b27868db7f92182b1b006728b866bb2f1e25b58baedbf22ff077")},
         "frozen_lens_sha256": "2902332d4852b27868db7f92182b1b006728b866bb2f1e25b58baedbf22ff077",
     },
+    # gpt-oss-20b with neuronpedia's published plain J-lens (Zach, 2026-10-23, prereg amendment 8b): a labelled comparison
+    # lens after our LN-rule-only J++ failed the plain-text gate and read the model's own next token at 0.00-0.24 of
+    # positions (logit lens 0.08-0.97). 457 WikiText prompts (converged), source layers 0-22.
+    "gpt-oss-20b-jlens": {
+        "repo": "openai/gpt-oss-20b",
+        "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+        "n_layers": 24,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "gptoss20j_",
+        "snapshot_ignore": ["metal/*", "original/*"],
+        "chat_template_edits": GPTOSS_TEMPLATE_EDITS,
+        "attn": "eager",
+        "dequantize_mxfp4": True,
+        "frozen_lens": "jlens",
+        "lenses": {"jlens": ("neuronpedia/jacobian-lens", "gpt-oss-20b/jlens/Salesforce-wikitext/gpt-oss-20b_jacobian_lens.pt",
+                             "e166deb5ad540932100ef803c8c9bcc2a5453694")},  # fmt: skip
+        "frozen_lens_sha256": "2a8abf062eae4b6d39618b1237ad6945db437affd8c2122a09689114571553be",
+    },
     "gpt-oss-20b-prefit": {
         "repo": "openai/gpt-oss-20b",
         "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
