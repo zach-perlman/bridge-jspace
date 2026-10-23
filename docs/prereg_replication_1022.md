@@ -634,3 +634,19 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   eligibility, natctl_score-style contrasts per start; the dev split only for any band sweep.
 - **Predictions:** for every start (P, M and T), K - M <= -30 and A - M < 0 (as natctl); within each start, M - P >= 20
   (the memory-final rule); T behaves as P (a passage-read bridge): TM - TP within 10 of PM - PP.
+
+## Amendment 24 (Zach, 2026-10-23 ~23:45 UTC): the combined suite, module 2 (numbers, jsuite_v1_numbers)
+
+- **Seen when this was written:** ctxcomp_v1 competence (27B and 9B) and the 9B's ctxcomp knock-outs with both
+  dictionaries: computing a number from the passage and reporting it costs the 9B 1-2 points under the knock-out
+  (KR, AR vs PR 0-1; n 83-84), reporting a recalled number 19-21 (rotated 2); the seat lookup composes poorly (27B
+  19-43%, 9B 15-29%) and even a stated number's seat lookup lost as much as a recall on the 9B (the digit -> ordinal
+  step); recall finals compose on the 27B (54-80%).
+- **Set:** scripts/jsuite_numbers.py (seed 2401, 8 repetitions): starts P stated, K counted, A arithmetic, M recalled
+  (toy domains plus "days in a week"); finals R report (own passages, no list), L a lookup keyed by the number in a
+  digit-labelled list ("Locker 5 belongs to Kate"; no mapping step), M the month or planet at that position. 12 words
+  x 112 items. No "notes" genre (its header names a month); no month or planet names in the filler.
+- **Procedure:** competence first (27B and 9B; the knock-out runs only on words with >= 30 eligible items), then the
+  knock-out at each model's band with both dictionaries (letters; --dict-digits), per-item eligibility.
+- **Predictions:** (1) report: KR and AR within 10 of PR, MR >= PR + 15 (the 9B's ctxcomp pattern); (2) final rule:
+  for each start, SM - SL >= 20; (3) computation feeding a lookup: KL and AL within 10 of PL.
