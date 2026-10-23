@@ -1,0 +1,258 @@
+[
+ {
+  "value": 9.0,
+  "what": "% at the same place in the text (control)",
+  "finding": "f6",
+  "model": "27b",
+  "setting": "filler moved",
+  "part": "",
+  "ci": [
+   7.0,
+   13.0
+  ],
+  "n": 435,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "place in text"
+  }
+ },
+ {
+  "value": 38.6,
+  "what": "% of patched answers at the same order in the list",
+  "finding": "f6",
+  "model": "27b",
+  "setting": "filler moved",
+  "part": "",
+  "ci": [
+   33.8,
+   43.3
+  ],
+  "n": 435,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 5.0,
+  "what": "% at the same place in the text (control)",
+  "finding": "f6",
+  "model": "9b",
+  "setting": "filler moved",
+  "part": "",
+  "ci": [
+   3.0,
+   8.0
+  ],
+  "n": 406,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "place in text"
+  }
+ },
+ {
+  "value": 22.2,
+  "what": "% of patched answers at the same order in the list",
+  "finding": "f6",
+  "model": "9b",
+  "setting": "filler moved",
+  "part": "",
+  "ci": [
+   18.2,
+   26.5
+  ],
+  "n": 406,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 3.0,
+  "what": "% at the same place in the text (control)",
+  "finding": "f6",
+  "model": "32b",
+  "setting": "filler moved",
+  "part": "",
+  "ci": [
+   2.0,
+   6.0
+  ],
+  "n": 365,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "place in text"
+  }
+ },
+ {
+  "value": 13.4,
+  "what": "% of patched answers at the same order in the list",
+  "finding": "f6",
+  "model": "32b",
+  "setting": "filler moved",
+  "part": "",
+  "ci": [
+   9.9,
+   17.3
+  ],
+  "n": 365,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 11.0,
+  "what": "% at the same place in the text (control)",
+  "finding": "f6",
+  "model": "olmo",
+  "setting": "filler moved",
+  "part": "",
+  "ci": [
+   7.0,
+   16.0
+  ],
+  "n": 202,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "place in text"
+  }
+ },
+ {
+  "value": 30.7,
+  "what": "% of patched answers at the same order in the list",
+  "finding": "f6",
+  "model": "olmo",
+  "setting": "filler moved",
+  "part": "",
+  "ci": [
+   24.2,
+   37.4
+  ],
+  "n": 202,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 9.0,
+  "what": "% at the same place in the text (control)",
+  "finding": "f6",
+  "model": "olmo_hybrid",
+  "setting": "filler moved",
+  "part": "",
+  "ci": [
+   6.0,
+   13.0
+  ],
+  "n": 296,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "place in text"
+  }
+ },
+ {
+  "value": 29.0,
+  "what": "% of patched answers at the same order in the list",
+  "finding": "f6",
+  "model": "olmo_hybrid",
+  "setting": "filler moved",
+  "part": "",
+  "ci": [
+   23.5,
+   34.5
+  ],
+  "n": 296,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 9.0,
+  "what": "% at the same place in the text (control)",
+  "finding": "f6",
+  "model": "muse",
+  "setting": "filler moved",
+  "part": "",
+  "ci": [
+   6.0,
+   13.0
+  ],
+  "n": 372,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "place in text"
+  }
+ },
+ {
+  "value": 38.4,
+  "what": "% of patched answers at the same order in the list",
+  "finding": "f6",
+  "model": "muse",
+  "setting": "filler moved",
+  "part": "",
+  "ci": [
+   33.2,
+   43.7
+  ],
+  "n": 372,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 2.0,
+  "what": "% at the same place in the text (control)",
+  "finding": "f6",
+  "model": "gemma",
+  "setting": "filler moved",
+  "part": "",
+  "ci": [
+   1.0,
+   4.0
+  ],
+  "n": 338,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "place in text"
+  }
+ },
+ {
+  "value": 12.4,
+  "what": "% of patched answers at the same order in the list",
+  "finding": "f6",
+  "model": "gemma",
+  "setting": "filler moved",
+  "part": "",
+  "ci": [
+   9.0,
+   16.4
+  ],
+  "n": 338,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 8.0,
+  "what": "% at the same place in the text (control)",
+  "finding": "f6",
+  "model": "122b",
+  "setting": "filler moved",
+  "part": "",
+  "ci": [
+   6.0,
+   12.0
+  ],
+  "n": 425,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "place in text"
+  }
+ },
+ {
+  "value": 29.2,
+  "what": "% of patched answers at the same order in the list",
+  "finding": "f6",
+  "model": "122b",
+  "setting": "filler moved",
+  "part": "",
+  "ci": [
+   24.8,
+   33.7
+  ],
+  "n": 425,
+  "source": "grid.csv",
+  "extra": {}
+ }
+]
