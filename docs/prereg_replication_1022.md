@@ -585,3 +585,17 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   Every ctxcomp knock-out is therefore run twice, with the standard dictionary and with digit tokens added
   (ablate_v2 --dict-digits; runs *_dd). Predictions apply to both; if they disagree, the digits run is the test of
   the number intermediates and the standard run the comparison with every earlier result.
+
+## Amendment 22 (Zach, 2026-10-23 ~23:00 UTC): a probe ceiling for the J-lens (scripts/probe_vs_lens.py)
+
+- **Why:** the TA review: probes can show what the J-lens cannot; how much of an intermediate does the J-lens explain,
+  at which layer, and so where should edits go?
+- **Seen when this was written:** ctxcomp's 9B competence smoke only (no knock-out, no activations).
+- **Procedure:** ctxcomp_v1's eligible items per word (the 27B and 9B), unedited, last prompt position, every second
+  layer (27B) or every layer (9B): a linear probe for X (5-fold over scenes) as the ceiling; the J-lens and logit-lens
+  reads of X (no training, X's digit and number-word tokens); and the share of the class means' spread inside the span
+  of those tokens' J-lens vectors (against a random subspace of equal size).
+- **Expectations (descriptive, no rule):** the probe decodes X at the knock-out band for every start (>= 80% where
+  the model is competent). If the J-lens reads X at the band for M starts but well below the probe for K and A starts,
+  computed numbers sit mostly outside the lens-readable space, and a knock-out null on K and A says little about them
+  (read with amendment 21's two dictionaries).
