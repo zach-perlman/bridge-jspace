@@ -79,6 +79,8 @@ NUMBER_WORDS = S.WORDS  # zero ... nine
 ORDINAL_WORDS = ["zeroth", "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth"]
 DIGIT_INSTRUCTION = "Answer with a single digit and nothing else."
 NATURAL_CHAT_INSTRUCTION = "Answer with just the answer, nothing else."  # scripts/natural_v1.py
+NATURAL_QA_SHOTS = ("Question: What color is the sky on a clear day?\nAnswer: Blue\n\n"
+                    "Question: How many legs does a spider have?\nAnswer: Eight\n\n")  # natural_v1_qa
 
 
 @dataclass(frozen=True)
@@ -567,6 +569,9 @@ def render(tok, item: dict) -> str:
     if item.get("framing") == "cloze":  # natural_v1 (2026-10-23): raw text, the passage then the cloze sentence
         bos = tok.bos_token if pins.TARGETS[pins.TARGET]["bos"] and tok.bos_token else ""
         return f"{bos}{item['context']}\n\n{q}"
+    if item.get("framing") == "qa":  # natural_v1_qa: raw text, a fixed two-example preamble, read after "Answer:"
+        bos = tok.bos_token if pins.TARGETS[pins.TARGET]["bos"] and tok.bos_token else ""
+        return f"{bos}{NATURAL_QA_SHOTS}{item['context']}\n\nQuestion: {q}\nAnswer:"
     if item.get("framing") == "chat":  # natural_v1: one user turn, thinking off, no "Answer:" prefill (on-policy)
         msgs = [{"role": "user", "content": f"{item['context']}\n\n{q} {NATURAL_CHAT_INSTRUCTION}"}]
         return tok.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True, enable_thinking=False)

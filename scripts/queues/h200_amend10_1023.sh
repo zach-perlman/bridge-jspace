@@ -30,6 +30,23 @@ mp() {  # mp TARGET PREFIX SET COMP "BANDS" BATCH: the same M->M knock-out with 
   [ -f results/ablate_v2/${p}mmabs_ko_v1/summary.json ] && $PY scripts/mm_absent_compare.py ${p}mmpres_ko_v1 ${p}mmabs_ko_v1 | sed "s/^/=== mmabs $1: /"
 }
 
+nat() {  # nat TARGET PREFIX SET BAND BATCH: natural_v1 competence (first-token read), then C1 at the model's fixed band
+  export BJ_TARGET=$1; local p=$2 set=$3 band=$4 batch=$5 c=${2}${3}_competence_v1 r=${2}${3}_ko_v1
+  if [ ! -f results/tasks_v2/$c/summary.json ]; then
+    echo "=== competence $c $(date -u +%T)"
+    $PY scripts/natural_v1.py competence --set $set --name $c --why "$WHY: $1 on $set (natural pilot)" > /workspace/scratch/$c.log 2>&1 \
+      || { echo "=== $1 $set competence FAILED"; tail -3 /workspace/scratch/$c.log; return 1; }
+  fi
+  python3 -c "import json,sys; s=json.load(open(sys.argv[1]))['by_word_level']; print('=== natural $1 $set whole:', {k: v['whole'] for k, v in s.items()})" results/tasks_v2/$c/summary.json
+  if [ ! -f results/ablate_v2/$r/summary.json ]; then
+    echo "=== ablate_v2/$r $(date -u +%T)"
+    $PY scripts/ablate_v2.py --name $r --why "$WHY: $1, C1 on $set at its fixed band L$band (natural pilot)" --plan bands --bands $band \
+      --conditions paper10 paper10_rot --tasks $set --tasks-competence $c --tasks-words PP PM MP MM --tasks-level all --n 1000 \
+      --kinds clean --batch $batch > /workspace/scratch/$r.log 2>&1 || { echo "=== $1 $set C1 FAILED"; tail -3 /workspace/scratch/$r.log; return 1; }
+  fi
+  $PY scripts/c1_v2.py $r --middle L$band --set $set | tail -2
+}
+
 for step in "$@"; do
   case $step in
     waitmem:*) want=${step#waitmem:}
@@ -41,6 +58,10 @@ for step in "$@"; do
     mm27) mm qwen3.6-27b "" "32-40" 16;;
     mmmuse) mm muse-glimmer-30b muse30_ "36-42" 32;;
     mm122) mm qwen3.5-122b-a10b qwen35_122b_ "39-45 24-30" 8;;
+    nat9) nat qwen3.5-9b qwen35_9b_ natural_v1_chat 12-16 32; nat qwen3.5-9b qwen35_9b_ natural_v1_qa 12-16 32;;
+    nat27) nat qwen3.6-27b "" natural_v1_chat 32-40 32; nat qwen3.6-27b "" natural_v1_qa 32-40 32;;
+    natmuse) nat muse-glimmer-30b muse30_ natural_v1_chat 36-42 32; nat muse-glimmer-30b muse30_ natural_v1_qa 36-42 32;;
+    nat122) nat qwen3.5-122b-a10b qwen35_122b_ natural_v1_chat 39-45 8; nat qwen3.5-122b-a10b qwen35_122b_ natural_v1_qa 39-45 8;;
     mp9) mp qwen3.5-9b qwen35_9b_ full_v8 qwen35_9b_full_v8_competence_v1 "12-16" 32;;
     mp27) mp qwen3.6-27b "" full_v8 full_v8_competence_v1 "32-40" 16;;
     mpmuse) mp muse-glimmer-30b muse30_ full_v8 muse30_full_v8_competence_v1 "36-42" 32;;

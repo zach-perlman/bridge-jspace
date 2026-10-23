@@ -1,0 +1,6 @@
+{
+  "set": "natural_v1_qa",
+  "from": "natural_v1_chat",
+  "n": 1296,
+  "script": "scripts/natural_v1.py derive-qa"
+}
