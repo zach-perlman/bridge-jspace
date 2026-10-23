@@ -76,3 +76,50 @@ def test_a_row_takes_its_lens_from_the_first_file_that_has_it(tmp_path, monkeypa
     assert files == ["b/eval_ranks.csv"] and ranks == [("typo", "mine", "t", "w", 0, 2)]
     assert pooled == [("typo", "pooled_lens", "t", "w", 0, 40)]
     assert lt.find(lt.Row("qwen3-32b", "absent", "x", "J++", "s", "r", ("a/*.csv",))) == ([], [], [])
+
+
+HEAD = "eval,lens,item,intermediate,layer,rank,n_candidates\n"
+
+
+def test_a_glob_over_several_fit_records_reads_the_newest_only(tmp_path, monkeypatch):
+    monkeypatch.setattr(lt, "REPO", tmp_path)
+    monkeypatch.setattr(lt, "_CACHE", {})
+    for stamp, r in (("20261022-000000", 7), ("20261023-000000", 2)):
+        (tmp_path / f"fit_{stamp}").mkdir()
+        (tmp_path / f"fit_{stamp}/eval_ranks.csv").write_text(HEAD + f"typo,mine,t,w,0,{r},3\n")
+    files, ranks, _ = lt.find(lt.Row("qwen3-32b", "mine", "x", "J++", "s", "r", ("fit_*/eval_ranks*.csv",)))
+    assert files == ["fit_20261023-000000/eval_ranks.csv"] and ranks == [("typo", "mine", "t", "w", 0, 2)]
+
+
+def test_a_lens_graded_on_other_items_than_the_logit_run_is_compared_on_the_shared_items(tmp_path, monkeypatch):
+    """Our fit's evaluate and the lens_eval run grade the model separately: one item each is theirs alone. The lens's
+    own macro keeps its items; the difference to the logit lens is taken on the shared ones, at the layers scored
+    (OLMo: every 3rd, here 0) and at every layer both have (0-1)."""
+    monkeypatch.setattr(lt, "REPO", tmp_path)
+    monkeypatch.setattr(lt, "_CACHE", {})
+    jpp, logit = [], []
+    for ev in lt.EVALS:  # shared: the lens names it at both layers, the logit lens at layer 1 only
+        jpp += [f"{ev},mine,{ev}-1,w,0,1,3", f"{ev},mine,{ev}-1,w,1,1,3"]
+        logit += [f"{ev},logit,{ev}-1,w,0,500,3", f"{ev},logit,{ev}-1,w,1,1,3"]
+    jpp += ["typo,mine,typo-x,w,0,500,3", "typo,mine,typo-x,w,1,500,3"]  # the fit's run only: a miss
+    logit += ["typo,logit,typo-y,w,0,1,3", "typo,logit,typo-y,w,1,1,3"]  # the lens_eval run only: a hit
+    logit += [f"{ev},plain,{ev}-1,w,0,1,3" for ev in lt.EVALS] + ["typo,plain,typo-y,w,0,1,3"]  # the logit's items
+    (tmp_path / "fit_20261023-000000").mkdir()
+    (tmp_path / "fit_20261023-000000/eval_ranks.csv").write_text(HEAD + "\n".join(jpp) + "\n")
+    (tmp_path / "ev").mkdir()
+    (tmp_path / "ev/eval_ranks_g0.csv").write_text(HEAD + "\n".join(logit) + "\n")
+    lrow = lt.Row("olmo-3-7b-instruct", lt.LOGIT, "logit lens", "logit lens", "-", "-", ("ev/eval_ranks*.csv",))
+    row = lt.Row("olmo-3-7b-instruct", "mine", "ours", "J++", "s", "r", ("fit_*/eval_ranks*.csv",))
+    lrec = lt.score_row(lrow, None)
+    rec = lt.score_row(row, lrec)
+    assert rec["layers"] == "0" and rec["items"] == 6 and lrec["items"] == 6
+    assert rec["macro"] == pytest.approx((4 + 0.5) / 5)  # its own items: typo-x missed
+    assert rec["shared_items"] == 5 and "6 here, 6 there, 5 shared" in rec["vs_logit"]
+    assert (rec["macro_same"], rec["logit_same"], rec["d_logit"]) == (pytest.approx(1.0), 0.0, pytest.approx(1.0))
+    assert rec["common_layers"] == "0-1" and rec["d_logit_common"] == pytest.approx(0.0)
+    # a lens of the logit lens's own run: the same items, nothing dropped (logit at layer 0: only typo-y, macro 0.1)
+    same = lt.score_row(
+        lt.Row("olmo-3-7b-instruct", "plain", "x", "plain J-lens", "s", "r", ("ev/eval_ranks*.csv",)), lrec
+    )
+    assert "vs_logit" not in same and "shared_items" not in same
+    assert same["macro"] == pytest.approx(1.0) and same["d_logit"] == pytest.approx(0.9)

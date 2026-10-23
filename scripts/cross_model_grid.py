@@ -1323,7 +1323,9 @@ def lens_block(rows: list[Row]) -> list[str]:
         if r.get("macro") is None:
             return r.get("status", "-")
         d = r.get("d_logit")
-        return f"{r['macro']:.2f}" + ("" if d is None else f" ({d:+.2f} vs the logit lens)")
+        # a lens graded in its own run (our J++ fits) is compared with the logit lens on the items both runs kept
+        shared = f", on the {r['shared_items']} items both runs kept" if r.get("shared_items") else ""
+        return f"{r['macro']:.2f}" + ("" if d is None else f" ({d:+.2f} vs the logit lens{shared})")
 
     def recipe(model: str, lens: str) -> str:
         r = next((x for x in lt if x["model"] == model and x["lens"] == lens), None)

@@ -6,11 +6,13 @@ item-weighted, best rank over the layers scored.
 Numbers are recomputed from the recipe's per-layer rank files (eval_ranks*.csv), so every lens of a model is scored at
 the same layers (the model's comparison set: the layers its lenses share), and a lens's number at every layer it has
 and at Zach's C1 band (lens_check.py's bands) come from the same file. Sources, in order of preference per row:
-results/lens_eval/<job>/ (scripts/lens_fit/lens_eval.py), the fit folders (results/lens_fit/<fit>/, exp19's
-fit_v2), Zach's files on origin/zach/v8-breadth-1021 (read with git show), and last his published card numbers.
-The item sets differ by model (each model answers different items right), so compare lenses within a model; across
-models compare lens minus logit lens. The lens gate columns are left for Dan to fill. Descriptive; nothing here is
-verified.
+results/lens_eval/<job>/ (scripts/lens_fit/lens_eval.py), the fit folders (results/lens_fit/<fit>/, the newest
+<fit>_<stamp>/ for our J++ fit records, exp19's fit_v2), Zach's files on origin/zach/v8-breadth-1021 (read with git
+show), and last his published card numbers. The item sets differ by model (each model answers different items right),
+so compare lenses within a model; across models compare lens minus logit lens. A lens scored by its own fit's evaluate
+(our J++ fits) can keep other items than the logit lens's lens_eval run, as each run grades the model itself: its
+difference to the logit lens is then taken on the items both kept, and the table says so. The lens gate columns are
+left for Dan to fill. Descriptive; nothing here is verified.
 
 uv run python -m scripts.lens_table                                   # -> results/lens_table/<stamp>/table.md, table.json
 uv run python -m scripts.lens_table figure results/lens_eval/<run>    # -> <run>/analysis-<stamp>/pass_at_10.png
@@ -106,11 +108,13 @@ ROWS = (
         ("results/lens_fit/qwen3_32b/eval_ranks.csv", "zach:results/lens_fit/qwen3_32b/eval_ranks.csv"), "pooled_lens",
         note=f"Zach's lens_check: J++ - logit at the C1 band +0.31 ({ZACH_DAY3}).",
         pending="ranks not on origin/zach/v8-breadth-1021 (his lens_check reads results/lens_fit/qwen3_32b/)."),
-    Row("qwen3-32b", "Qwen3-32B_jpp_lens", "our J++ (64 prompts)", "J++", "ours (H200 fit, scripts/lens_fit/h200_fit.py)",
+    Row("qwen3-32b", "Qwen3-32B_jpp_lens", "our J++ (64 prompts)", "J++",
+        "ours (H200 fit, scripts/lens_fit/h200_fit.py; danorel/Qwen3-32B-jpp-lens@8d43d036, sha256 7d6856b6)",
         "J++ (jpp_lens@93f02cd), 64 WikiText prompts (2 shards x 32), layers 16-51",
-        ("results/lens_fit/qwen3_32b_jpp64/eval_ranks.csv",), "pooled_lens",
-        pending="fit running on the H200 box: copy ~/work/fit32b/{eval_ranks.csv,eval_ranks_pass_at_k.csv,"
-        "eval_ranks_stamp.json,model_correctness.csv} to results/lens_fit/qwen3_32b_jpp64/."),
+        ("results/lens_fit/qwen3_32b_jpp64_*/eval_ranks*.csv",), "pooled_lens",
+        note="Our J++ has layers 16-51 only (the fit's range), so it, the plain J-lens and the logit lens are compared "
+        "on 16-51.",
+        pending="no rank file in results/lens_fit/qwen3_32b_jpp64_<stamp>/ (the fit record)."),
     Row("qwen3-32b", LOGIT, "logit lens", "logit lens", "-", "-",
         ("results/lens_eval/qwen3_32b_lens_eval/eval_ranks*.csv", "results/lens_check/qwen3-32b/eval_ranks_logit.csv",
          "zach:results/lens_check/qwen3-32b/eval_ranks_logit.csv"),
@@ -125,10 +129,10 @@ ROWS = (
         ("results/lens_eval/olmo3_7b_instruct_lens_eval/eval_ranks*.csv",),
         pending="jobs/lens_eval/olmo3_7b_instruct_lens_eval.yaml (not enqueued)."),
     Row("olmo-3-7b-instruct", "Olmo-3-7B-Instruct_jpp_lens", "our J++ (64 prompts)", "J++",
-        "ours (jobs/lens_fit/olmo3_7b_instruct_jpp_fit.yaml)", "J++ (jpp_lens@93f02cd), 64 WikiText prompts, layers 0-30",
-        ("results/lens_fit/olmo3_7b_instruct_jpp/eval_ranks.csv",), "pooled_lens",
-        pending="fit not run yet; copy /ephemeral/lens_fit/olmo3_7b_instruct_jpp/{eval_ranks.csv,eval_ranks_pass_at_k.csv,"
-        "eval_ranks_stamp.json,model_correctness.csv} from the A100 box to results/lens_fit/olmo3_7b_instruct_jpp/."),
+        "ours (jobs/lens_fit/olmo3_7b_instruct_jpp_fit.yaml; danorel/Olmo-3-7B-Instruct-jpp-lens@fd8f1d4e, sha256 "
+        "6847cfb3)", "J++ (jpp_lens@93f02cd), 64 WikiText prompts, layers 0-30",
+        ("results/lens_fit/olmo3_7b_instruct_jpp_*/eval_ranks*.csv",), "pooled_lens",
+        pending="no rank file in results/lens_fit/olmo3_7b_instruct_jpp_<stamp>/ (the fit record, publish_lens.py)."),
     Row("olmo-3-7b-instruct", LOGIT, "logit lens", "logit lens", "-", "-",
         ("results/lens_eval/olmo3_7b_instruct_lens_eval/eval_ranks*.csv",),
         pending="jobs/lens_eval/olmo3_7b_instruct_lens_eval.yaml (not enqueued)."),
@@ -212,7 +216,9 @@ _CACHE: dict[str, list[Rank]] = {}
 
 
 def load(location: str) -> dict[str, list[Rank]]:
-    """{file: ranks} for one candidate location: a repo-relative glob, or "zach:<path>" on ZACH_REF (git show)."""
+    """{file: ranks} for one candidate location: a repo-relative glob, or "zach:<path>" on ZACH_REF (git show). A glob
+    that matches several folders (fit records, <name>_<stamp>/) reads the newest one only (last by name), so two
+    records of one fit are never pooled."""
     if location.startswith("zach:"):
         path = location.removeprefix("zach:")
         key = f"{ZACH_REF}:{path}"
@@ -220,9 +226,11 @@ def load(location: str) -> dict[str, list[Rank]]:
             p = subprocess.run(["git", "-C", str(REPO), "show", key], capture_output=True, text=True, check=False)
             _CACHE[key] = read_ranks(p.stdout) if p.returncode == 0 else []
         return {key: _CACHE[key]} if _CACHE[key] else {}
+    files = [f for f in sorted(REPO.glob(location)) if not f.name.endswith("_pass_at_k.csv")]
+    newest = max((f.parent for f in files), default=None)
     out = {}
-    for f in sorted(REPO.glob(location)):
-        if f.name.endswith("_pass_at_k.csv"):
+    for f in files:
+        if f.parent != newest:
             continue
         key = str(f.relative_to(REPO))
         if key not in _CACHE:
@@ -298,17 +306,31 @@ def score_row(row: Row, logit: dict | None) -> dict:
     if row.published.get("macro") is not None:
         rec["published_macro"] = f"{row.published['macro']:.3f} (layers {row.published['layers']})"
     if logit and logit.get("status") == "scored" and row.lens != LOGIT:
-        if logit["items_set"] != items:
-            rec["vs_logit"] = f"items differ from the logit row's ({len(items)} vs {logit['items']})"
-        else:
-            lr = logit["ranks"]
-            lm = pass_at_k(lr, cmp_layers).get("macro")
-            if lm is not None and rec["macro"] is not None and set(cmp_layers) <= {x[4] for x in lr}:
-                rec["d_logit"] = rec["macro"] - lm
-            bm = rec.get("band_macro")
-            if bm is not None and m.band:
-                lb = pass_at_k(lr, range(m.band[0], m.band[1] + 1)).get("macro")
-                rec["d_logit_band"] = None if lb is None else bm - lb
+        mine, lr = ranks, logit["ranks"]
+        shared = items & logit["items_set"]
+        if shared != items or shared != logit["items_set"]:
+            # a lens scored by its own fit's evaluate (our J++ fits) can keep other items than the logit lens's run:
+            # the two runs graded the model separately (model_correctness.csv); compare on the items both kept
+            mine = [x for x in ranks if (x[0], x[2]) in shared]
+            lr = [x for x in lr if (x[0], x[2]) in shared]
+            rec["shared_items"] = len(shared)
+            rec["vs_logit"] = (f"items differ from the logit lens's run (graded separately: {len(items)} here, "
+                               f"{logit['items']} there, {len(shared)} shared); compared on the shared items")  # fmt: skip
+
+        def both(layers: Iterable[int]) -> tuple[float | None, float | None]:
+            return pass_at_k(mine, layers).get("macro"), pass_at_k(lr, layers).get("macro")
+
+        lr_layers = {x[4] for x in lr}
+        a, b = both(cmp_layers)
+        if a is not None and b is not None and set(cmp_layers) <= lr_layers:
+            rec.update(d_logit=a - b, macro_same=a, logit_same=b)
+        common = sorted(have & lr_layers)
+        a, b = both(common)
+        if a is not None and b is not None and common != cmp_layers:  # every layer both lenses have
+            rec.update(d_logit_common=a - b, common_layers=layers_text(common), macro_common=a, logit_common=b)
+        if rec.get("band_macro") is not None and m.band:
+            a, b = both(range(m.band[0], m.band[1] + 1))
+            rec["d_logit_band"] = None if a is None or b is None else a - b
     if row.lens == LOGIT:
         rec["ranks"] = ranks
     return rec
@@ -356,13 +378,20 @@ def build() -> tuple[list[dict], list[str]]:
                 )
             items = "" if rec.get("items") is None else str(rec["items"])
             every = "" if status != "scored" else f"{f3(rec['macro_all'])} ({rec['all_layers']})"
+            if "d_logit_common" in rec:
+                every += f"; − logit at {rec['common_layers']}: {signed(rec['d_logit_common'])}"
+            vs = signed(rec.get("d_logit"))
+            if vs and "shared_items" in rec:
+                vs += f" on the {rec['shared_items']} shared items ({f3(rec['macro_same'])} vs {f3(rec['logit_same'])})"
             cells = [rec["model"], f"{rec['lens']} [{i}]", rec["type"], rec["source"], rec["recipe"], rec["layers"],
                      items, *[f3(rec["per_eval"][ev]) for ev in EVALS], f"**{f3(rec['macro'])}**",
-                     signed(rec.get("d_logit")) or rec.get("vs_logit", ""), every,
+                     vs or rec.get("vs_logit", ""), every,
                      band or ("-" if m.band is None else ""), f3(rec.get("pooled")) or ("n/a" if row.kind == "J++" else "-"),
                      rec.get("published_macro", ""), "", "", "; ".join(rec["files"])]  # fmt: skip
         lines.append("| " + " | ".join(c.replace("|", "/") for c in cells) + " |")
         extra = [row.note] if row.note else []
+        if rec.get("vs_logit"):
+            extra.append(f"{rec['vs_logit'][0].upper()}{rec['vs_logit'][1:]}.")
         if status == "pending" and row.pending:
             extra.append(f"Pending: {row.pending}")
         if rec.get("missing_compare"):
@@ -393,8 +422,12 @@ def write_table(out_root: Path | None = None) -> Path:
         f"- Layers scored = the model's comparison set (the layers its lenses share): {cmp}.",
         f"- C1 band = Zach's lens_check bands (scripts/lens_fit/lens_check.py): {bands}; '-' where none is defined.",
         "- macro − logit: minus the logit lens on the same items and layers (the item sets differ by model, so across "
-        "models compare this, not the macro). pooled macro: the recipe's pooled lens of the same fit, the baseline on "
-        "Zach's cards; n/a for published J++ (no pooled lens is published); '-' for J-lenses and the logit lens.",
+        "models compare this, not the macro). Where a lens was scored by its own fit's evaluate and that run kept other "
+        "items than the logit lens's run (each grades the model itself), both are scored on the items both kept, and the "
+        "cell gives that count and the two macros. 'macro, every layer it has' adds the difference at every layer the "
+        "lens and the logit lens both have where that differs from the layers scored. pooled macro: the recipe's pooled "
+        "lens of the same fit, the baseline on Zach's cards; n/a for published J++ (no pooled lens is published); '-' "
+        "for J-lenses and the logit lens.",
         "- gate v1 / v2: lens gate results, for Dan to fill.",
         f"- Zach's files read from {ZACH_REF} at {zc or 'NOT FETCHED (git fetch origin zach/v8-breadth-1021)'}.",
         "",
@@ -403,7 +436,9 @@ def write_table(out_root: Path | None = None) -> Path:
     ]
     (out / "table.md").write_text("\n".join(text))
     keep = ("model", "lens", "type", "source", "recipe", "status", "files", "layers", "items", "per_eval", "macro",
-            "d_logit", "macro_all", "all_layers", "band_macro", "d_logit_band", "pooled", "published_macro", "vs_logit")  # fmt: skip
+            "d_logit", "shared_items", "macro_same", "logit_same", "macro_all", "all_layers", "d_logit_common",
+            "common_layers", "macro_common", "logit_common", "band_macro", "d_logit_band", "pooled", "published_macro",
+            "vs_logit")  # fmt: skip
     (out / "table.json").write_text(json.dumps({"zach_ref": zc, "rows": [{k: r_[k] for k in keep if k in r_}
                                                                           for r_ in recs]}, indent=1) + "\n")  # fmt: skip
     print("\n".join(text))
