@@ -7,7 +7,7 @@
 
 **How to read this page.** Confidence words follow one fixed rule ([below](#confidence-and-verification)): strong, medium, open. "Verified" says who recomputed a number: a person, an independent agent, or nobody yet. Every number comes from the cross-model grid ([grid.md](results/cross_model/20261023T105852Z/grid.md)); every run is in [RUNS.md](RUNS.md).
 
-> **Status, 23 Oct 2026.** Built at 14f0b6f from `results/cross_model/20261023T105852Z`. Exploration phase: no main claim is hand-verified yet. An independent agent recomputed claims 1-3, and claim 6 on the 27B, from raw rows: every cell matches. The hand check is today. Running on the A100: Gemma 4's lens tests, Qwen3-32B's tables and JSON, the 27B dose control. The one open counter-example is [the 122B](#the-open-counter-example-qwen35-122b).
+> **Status, 23 Oct 2026.** Built at 1bf9685 from `results/cross_model/20261023T105852Z`. Exploration phase: no main claim is hand-verified yet. An independent agent recomputed claims 1-3, and claim 6 on the 27B, from raw rows: every cell matches. The hand check is today. Running on the A100: Gemma 4's lens tests, Qwen3-32B's tables and JSON, the 27B dose control. The one open counter-example is [the 122B](#the-open-counter-example-qwen35-122b).
 
 Eight models. Hybrids, which mix attention with DeltaNet layers: Qwen3.6-27B (27B), Qwen3.5-9B (9B), Olmo-Hybrid-7B (Olmo-Hybrid), Qwen3.5-122B (122B). Attention-only: Qwen3-32B (32B), OLMo-3-7B (OLMo-3), Muse 30B (Muse), Gemma 4 31B (Gemma).
 
@@ -22,7 +22,7 @@ Eight models. Hybrids, which mix attention with DeltaNet layers: Qwen3.6-27B (27
 | lens push | Adding the lens's direction from one word to another (pig → cow) to a hidden state |
 | patch | Copying hidden states from another prompt into this one, at chosen tokens and one layer |
 | blocking | Stopping chosen tokens from attending to one sentence |
-| last tokens | The one or two tokens right before the answer ("Answer:") |
+| last tokens | The tokens between the question and the answer: the chat template's closing tokens and "Answer:" (7-11 tokens). Claim 3 patches only the last two |
 | positive control | A place where a method is known to work, so that a null result elsewhere means something |
 | scene set | A fresh batch of generated prompts with new lists and entities, drawn with a fixed seed |
 

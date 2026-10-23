@@ -124,9 +124,11 @@ class Frame:
 def frame(kind: str, title: str, subtitle: str, *, how: str | None = None, caption: str | None = None,
           nrows: int = 1, ncols: int = 1, size: tuple[float, float] | None = None, sharex: bool = False,
           sharey: bool = False, width_ratios: list[float] | None = None, height_ratios: list[float] | None = None,
-          wspace: float = 0.35, hspace: float = 0.45, left: float = 0.17, right: float = 0.97) -> Frame:  # fmt: skip
+          wspace: float = 0.35, hspace: float = 0.45, left: float = 0.17, right: float = 0.97,
+          panel_titles: bool = False) -> Frame:  # fmt: skip
     """A figure with its header (title, subtitle, how to read) on top, its caption at the bottom, the panels between.
-    `left` leaves room for row labels (model names); panels are created with a gridspec inside the free band."""
+    `left` leaves room for row labels (model names); panels are created with a gridspec inside the free band;
+    `panel_titles` keeps room above the top panels for their titles (ax.set_title)."""
     if len(title.split()) > 12:
         raise ValueError(f"title over 12 words: {title!r}")
     if kind == "main" and nrows * ncols > 4:
@@ -144,7 +146,7 @@ def frame(kind: str, title: str, subtitle: str, *, how: str | None = None, capti
         fig.text(0.03, y, "How to read: " + how, fontsize=HOW, va="top", ha="left", color=INK2, style="italic",
                  gid="how")  # fmt: skip
         y -= (HOW * 1.45) * pt
-    top = y - 14 * pt
+    top = y - (14 + (LABEL * 1.8 if panel_titles else 0)) * pt
     axis_room = TICK * 1.6 + LABEL * 1.8 + 12  # x tick labels and the x label below the lowest panels
     bottom = (18 + axis_room) * pt
     if caption:
