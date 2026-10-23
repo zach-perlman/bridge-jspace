@@ -550,3 +550,8 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   Africa, and its first token is South America's).
   (e) Queues count failed steps and exit nonzero; gen_spot --check takes finished runs only; result directories are
   committed only once they have summary.json (commit 7546083 included partial rows of then-running runs).
+- **20 note (~22:25 UTC, after the 9B's spot-check, before the 27B's and Muse's):** the first 25 eligible items per
+  word were all countries (file order), so gen_spot now takes the first 25 per word and relation (--strata domain)
+  and reports the most common wrong replies and the classes per relation. The 9B's spot-check is rerun this way
+  (qwen35_9b_natplus_v1_chat_genspot_cand2_strat_v1). Seen: the 9B's first spot-check (its memory-final failures
+  name another continent, almost always Europe; 394 of 400 first-step reads agree with the knock-out run).

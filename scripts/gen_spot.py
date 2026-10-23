@@ -6,7 +6,8 @@ ablate_v2; model.generate_batch, one batch row per condition). Each reply is cla
 answer), "bridge" (starts with the bridge or one of its names: hop 1 resolved, hop 2 not given), "other_cand" (starts
 with another answer of the relation), "other". The first step's candidate read is recorded too, and checked against
 the knock-out run's rows (--check RUN, finished runs only) item by item. Amendment 20: TF32 on as ablate_v2, --read
-(default cand2), replies classed by the earliest answer of the relation they name. Descriptive, no rule. Writes
+(default cand2), replies classed by the earliest answer of the relation they name. 20 note: --n items per word
+and relation (--strata domain, the default), and the most common wrong replies. Descriptive, no rule. Writes
 results/gen_spot/NAME/.
 
 python scripts/gen_spot.py --name N --why W --set natplus_v1_chat --competence C --band 32-40 [--n 25] [--check RUN]
@@ -78,9 +79,12 @@ def main(args) -> None:
         "git_commit": commit, "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
         "set": args.set, "competence": args.competence, "words": args.words, "level": args.level, "n_per_word": args.n,
         "band": AV.label(band), "conditions": conds, "max_new_tokens": args.max_new, "check": args.check,
-        "read": args.read, "tf32": True,
+        "read": args.read, "tf32": True, "strata": args.strata,
         "seeds": {"rotation": f"{AV.SEED_ROT}+layer"}, "doc": (__doc__ or "").split("\n\n")[0]}, indent=2) + "\n")  # fmt: skip
-    prompts = AV.tasks_prompts(tok, args.set, args.competence, args.words, args.n, ["clean"], args.level)
+    prompts = AV.tasks_prompts(tok, args.set, args.competence, args.words, args.n if args.strata == "none" else 10**6, ["clean"], args.level)
+    if args.strata == "domain":  # 20 note: the first n per word AND relation (the first n per word were all countries)
+        kept = collections.Counter()
+        prompts = [q for q in prompts if (kept.update([(q["family"], q["domain"])]) or kept[(q["family"], q["domain"])] <= args.n)]
     items = {it["id"]: it for it in T.load(args.set)}
     pp_of = {it["scene"]: it["answer"] for it in items.values() if it["word"] == "PP"}
     for it in items.values():  # amendment 20: PM shares PP's passage, which gives the bridge a made-up value
@@ -139,6 +143,9 @@ def main(args) -> None:
                 "n": len(rs), "cand_acc": round(sum(r["correct"] for r in rs) / len(rs), 3),
                 "class": {k: cls[k] for k in ("answer", "lure", "bridge", "other_cand", "other")},
                 "class_of_cand_failures": dict(collections.Counter(r["class"] for r in fails)),
+                "top_wrong_replies": collections.Counter(r["text"].strip()[:30] for r in rs if r["class"] != "answer").most_common(3),
+                "class_by_domain": {d: dict(collections.Counter(r["class"] for r in rs if items[r["id"]]["domain"] == d))
+                                    for d in sorted({items[r["id"]]["domain"] for r in rs})},
                 "other_examples": [r["text"] for r in rs if r["class"] == "other"][:5]}  # fmt: skip
     if args.check:  # the first step's candidate read against the knock-out run's rows, same item and condition
         ko = {(r["id"], r["condition"]): r["correct"] for r in map(json.loads, (AV.RESULTS / args.check / "rows.jsonl").open())
@@ -176,4 +183,5 @@ if __name__ == "__main__":
     ap.add_argument("--max-new", type=int, default=12)
     ap.add_argument("--check", default=None, help="a finished ablate_v2 run on the same set and band: compare the first-step read")
     ap.add_argument("--read", choices=["top", "cand", "cand2"], default="cand2", help="the first-step read (ablate_v2.reads)")
+    ap.add_argument("--strata", choices=["none", "domain"], default="domain", help="domain (20 note): --n per word per relation")
     main(ap.parse_args())
