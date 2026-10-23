@@ -132,8 +132,25 @@ recalls below lookups, lookup-specific; otherwise not lookup-specific (for patch
 recalls as much as lookups). --reuse RUN (with --same-scenes RUN): only patch_dir_perp's rows are computed; the lens
 push, the random push and the other arms are RUN's rows on the same items.
 
+A shared code at the bridge's word (A5; Dan, 23 Oct, before its run d4_shared_code_27b; `--shared --patch-dir-run RUN`,
+word only): is there one reusable direction, outside the lens's read directions, that moves lookups on scenes it was
+not built on? Training scenes: every scene of the animal suite (wording A) that the run does not push on (held out).
+At each layer, the mean residual at an animal's word in its owner sentence ("Kate's pet is a lion.") over the training
+scenes that state that animal (each scene states three; the clean prompt's context, which the question follows, so the
+question does not matter). For a held-out item with bridge I and other bridge X: shared = mean(X) - mean(I); shared_perp
+= the same without its J-space part (as patch_dir_perp); each pushed at the word at the lens push's norm (scale x ref,
+as the lens push). Arms: shared_perp, shared, the lens push, the random push, at the same norms; recalls (prompt ->
+memory) and memory -> prompt / memory -> memory under every arm. A cell is valid as in the layer gap (its own memory ->
+prompt and memory -> memory changed <= 10%, the random push at that layer and scale switching <= 5% of lookups). At the
+largest scale (8x): H-shared iff at some layer a valid shared_perp cell switches lookups with Wilson lower bound >= 20%
+while the lens push's upper bound there is <= 5%; H-none iff at every layer with a valid shared_perp cell its upper
+bound is <= 5% and patch_dir (RUN, the dose control's run on the same scenes, read when judged) switches lookups with
+lower bound > 5% at a valid cell of one of those layers (the form is scene-specific, not a reusable linear code); else
+inconclusive. Reported: the cosine of shared with the lens push's direction, the share of its squared norm removed with
+its J-space part, the number of training scenes per animal (each needed animal >= 20, asserted).
+
 Stages:  run --name N --why W [--n K] [--scenes map|fresh] [--rule v1|v2] [--patch] [--patch-dir] [--split]
-         [--patch-dir-perp] [--same-scenes RUN] [--reuse RUN] [--gap-bars GAP NO_GAP]
+         [--patch-dir-perp] [--same-scenes RUN] [--reuse RUN] [--gap-bars GAP NO_GAP] [--shared --patch-dir-run RUN]
          analyze --name N [--rule v2.1]   figures --name N
 """
 
@@ -275,6 +292,33 @@ def split_patch(
     share = jspace.norm(dim=-1) ** 2 / (delta.float().norm(dim=-1) ** 2).clamp_min(1e-30)  # as statement_positions
     return {"full": delta, "jspace": jspace, "not_jspace": delta - jspace, "lens2": lens2, "not_lens2": delta - lens2,
             "rand_sub": SP.random_subspace_part(delta, share, basis)}  # fmt: skip
+
+
+def pet_positions(c: dict, wording: str = "A") -> dict[str, list[int]]:
+    """Token positions of every pet's word in its owner sentence in the unedited prompt (stated_positions' w for each
+    pet; people[i] owns pets[i])."""
+    ctx, rendered, offsets = c["context"], c["prompts"]["clean"], c["offsets"]
+    assert rendered.count(ctx) == 1, f"{c['id']}: the context not once in the prompt"
+    c0, out = rendered.index(ctx), {}
+    for person, pet in zip(c["people"], c["pets"], strict=True):
+        sent = S.WORDINGS[wording]["own"].format(p=person, a=pet)
+        assert ctx.count(sent) == 1, f"{c['id']}: {sent!r} not once in the context"
+        a = c0 + ctx.index(sent) + sent.rindex(pet)
+        out[pet] = EP.overlapping(offsets, a, a + len(pet))
+        assert out[pet], f"{c['id']}: no tokens for {pet!r}"
+    return out
+
+
+def shared_code(means: dict[str, torch.Tensor], pairs, dictionary: torch.Tensor, k: int = K_ATOMS) -> dict:
+    """The shared code (docstring, A5) at one layer: for each (I, X) in pairs, (shared, shared_perp, share removed):
+    shared = means[X] - means[I] (the mean residual at the word over training scenes stating X, minus I's), shared_perp
+    = shared without its J-space part (drop_jspace)."""
+    out = {}
+    for i, x in pairs:
+        d = (means[x] - means[i]).float()
+        rest, share = drop_jspace(d[None], dictionary, k)
+        out[(i, x)] = (d, rest[0], share)
+    return out
 
 
 def drop_jspace(delta: torch.Tensor, dictionary: torch.Tensor, k: int = K_ATOMS) -> tuple[torch.Tensor, float]:
@@ -468,6 +512,40 @@ def dose_test(
         out["verdict"] = "inconclusive (partly dose)"
     out["recall_vs_lookup"] = recall_vs_lookup(cells, out[arm], ls, sub, arm)
     return out
+
+
+def shared_test(
+    cells: dict[tuple, dict[str, str]],
+    dose_cells: dict[tuple, dict[str, str]] | None,
+    layers: list[int],
+    sc: float = 8.0,
+    sub: str = "w",
+) -> dict:
+    """The shared-code test (docstring, A5) at scale sc; dose_cells: the patch_dir run's cells (None: not found). Pure."""
+    rows: dict[int, dict] = {}
+    for la in layers:
+        key = ("BL", sub, la, sc, "shared_perp")
+        valid = key in arm_cells(cells, sub, la, "shared_perp")
+        pkey = ("BL", sub, la, sc, "patch_dir")
+        pvalid = dose_cells is not None and pkey in arm_cells(dose_cells, sub, la, "patch_dir")
+        rows[la] = {"valid": valid, "shared_perp": cell_rate(cells.get(key, {})),
+                    "shared": cell_rate(cells.get(("BL", sub, la, sc, "shared"), {})),
+                    "lens": cell_rate(cells.get(("BL", sub, la, sc, "lens"), {})),
+                    "patch_dir_valid": pvalid, "patch_dir": cell_rate((dose_cells or {}).get(pkey, {}))}  # fmt: skip
+    tested = [r for r in rows.values() if r["valid"]]
+    if any(r["shared_perp"][1] >= 0.20 and r["lens"][2] <= RAND_MAX for r in tested):
+        verdict = "H-shared: a shared direction outside the lens's read directions moves lookups on held-out scenes"
+    elif not tested:
+        verdict = "inconclusive (no valid cell of the shared code without its J-space part)"
+    elif dose_cells is None:
+        verdict = "inconclusive (the patch_dir run was not found, so H-none cannot be judged)"
+    elif all(r["shared_perp"][2] <= RAND_MAX for r in tested) and any(
+        r["patch_dir_valid"] and r["patch_dir"][1] > RAND_MAX for la, r in rows.items() if r["valid"]
+    ):
+        verdict = "H-none: the form is scene-specific, not a reusable linear code"
+    else:
+        verdict = "inconclusive"
+    return {"subset": sub, "scale": sc, "verdict": verdict, "layers": rows}
 
 
 def split_cell(cells: dict[tuple, dict[str, str]], sub: str, la: int, part: str) -> dict | None:
@@ -727,6 +805,14 @@ def run_item(model, lens, c: dict, ref: dict, y: str, cfg: dict, k: int, out: di
                     norms = torch.full((len(p),), sc * ref[la], device="cuda")
                     tags = {"kind": "push", "layer": la, "scale": sc, "subset": sname, "dir": "patch_dir_perp"}
                     rows.append((tags, {la: AddRows(at_norm(c["_perp"][(la, sname)][0], norms), p)}))
+    if cfg.get("shared"):  # after every other row (no random draws): the shared code at the word, as the lens push
+        for la in cfg["layers"]:
+            code = c["_shared"][(la, c["bridge"], c["cf_bridge"])]
+            for sc in cfg["scales"]:
+                norms = torch.full((len(pos["w"]),), sc * ref[la], device="cuda")
+                for arm, vec in (("shared", code[0]), ("shared_perp", code[1])):
+                    tags = {"kind": "push", "layer": la, "scale": sc, "subset": "w", "dir": arm}
+                    rows.append((tags, {la: AddRows(EP.push_rows(vec, norms), pos["w"])}))
     ids = torch.tensor([c["read"]["clean"]], device="cuda")
     for start in range(0, len(rows), BATCH - 1):
         chunk = rows[start : start + BATCH - 1]
@@ -745,7 +831,50 @@ def run_item(model, lens, c: dict, ref: dict, y: str, cfg: dict, k: int, out: di
                                   for (la, s), ps in c["_parts"].items()}  # fmt: skip
         if c["_perp"]:  # the share of the patch's squared norm patch_dir_perp removes (its J-space part)
             row["perp_removed"] = {f"{la}/{s}": round(share, 4) for (la, s), (_, share) in c["_perp"].items()}
+    if cfg.get("shared"):  # the shared code against the lens push's direction, and the share its J-space part had
+        cos = torch.nn.functional.cosine_similarity
+        codes = {la: c["_shared"][(la, c["bridge"], c["cf_bridge"])] for la in cfg["layers"]}
+        row["shared"] = {str(la): {"cos_lens": round(float(cos(d, dirs[la]["lens"], dim=0)), 4),
+                                   "cos_lens_perp": round(float(cos(p, dirs[la]["lens"], dim=0)), 4),
+                                   "removed": round(share, 4)} for la, (d, p, share) in codes.items()}  # fmt: skip
     out["cases"].append(row)
+
+
+@torch.no_grad()
+def train_shared(model, lens, cfg: dict, cases: list[dict], letters, out_dir: Path) -> dict:
+    """The shared code (docstring, A5): mean residuals at each animal's word over the training scenes (the suite's
+    scenes the run does not push on), then for every (bridge, other bridge) pair of the pushed cases and every layer
+    the code and the code without its J-space part (shared_code). Writes shared_code.json (training scenes, counts)."""
+    tok, layers, held = model.tokenizer, cfg["layers"], {c["scene"] for c in cases}
+    sums: dict[int, dict[str, torch.Tensor]] = {la: {} for la in layers}
+    counts: collections.Counter = collections.Counter()
+    used, dropped = [], []
+    for it in [it for it in S.load("BL", cfg["wording"]) if it["scene"] not in held]:
+        try:
+            c = EP.augment({**it, **P.prepare(it, tok)}, tok, cfg["wording"])
+        except AssertionError:  # C or O does not line up: suite_split drops the scene too
+            dropped.append(it["scene"])
+            continue
+        _, rec = EP.forward_rows(model, torch.tensor([c["read"]["clean"]], device="cuda"), [{}], tuple(layers))
+        for pet, p in pet_positions(c, cfg["wording"]).items():
+            counts[pet] += 1
+            for la in layers:
+                v = rec[la][0][p].mean(dim=0).to(model.device)
+                sums[la][pet] = sums[la][pet] + v if pet in sums[la] else v
+        used.append(it["scene"])
+    pairs = sorted({(c["bridge"], c["cf_bridge"]) for c in cases})
+    short = {a: counts[a] for pair in pairs for a in pair if counts[a] < 20}
+    assert not short, f"fewer than 20 training scenes state {short}: draw more scenes (a new seed) first"
+    code = {}
+    for la in layers:
+        dictionary = lens.vectors(la, letters)
+        means = {a: s / counts[a] for a, s in sums[la].items()}
+        code |= {(la, i, x): v for (i, x), v in shared_code(means, pairs, dictionary).items()}
+        del dictionary
+    doc = {"training_scenes": used, "dropped_unaligned": dropped, "scenes_per_animal": dict(sorted(counts.items())),
+           "pairs": [list(p) for p in pairs]}  # fmt: skip
+    (out_dir / "shared_code.json").write_text(json.dumps(doc, indent=2) + "\n")
+    return code
 
 
 def stage_run(name: str, why: str, cfg: dict) -> None:
@@ -789,6 +918,10 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
         cases = [EP.augment(c, model.tokenizer, cfg["wording"]) for c in raw]
     else:
         cases = EP.build_cases(model.tokenizer, {**cfg, "countries": False})
+    if cfg.get("shared"):  # the shared code from the suite's scenes this run does not push on (A5)
+        code = train_shared(model, lens, cfg, cases, aux["letters"] if aux else model.letter_token_ids(), out_dir)
+        for c in cases:
+            c["_shared"] = code
     scenes: dict[str, list[dict]] = {}
     for c in cases:
         scenes.setdefault(c["scene"], []).append(c)
@@ -877,6 +1010,14 @@ def stage_analyze(name: str, rule: str | None = None) -> None:
     for arm, key in (("patch_dir", "dose_test"), ("patch_dir_perp", "perp_test")):
         if cfg.get(arm):
             summary[key] = {sub: dose_test(cells, cfg["layers"], sub, arm, *bars) for sub in ("w", "s")}
+    if cfg.get("shared"):  # patch_dir's run is read only here, when the shared-code run is judged
+        run = cfg.get("patch_dir_run")
+        dose_cells = load_cells(run)[1] if run and (RESULTS / run / "outcomes.jsonl").exists() else None
+        summary["shared_test"] = {**shared_test(cells, dose_cells, cfg["layers"], max(cfg["scales"])),
+                                  "patch_dir_run": run if dose_cells is not None else None}  # fmt: skip
+        bl = [r for r in map(json.loads, (RESULTS / name / "cases.jsonl").read_text().splitlines()) if r["family"] == "BL"]  # fmt: skip
+        summary["shared_code"] = {la: {k: round(statistics.median(r["shared"][str(la)][k] for r in bl), 4)
+                                       for k in ("cos_lens", "cos_lens_perp", "removed")} for la in cfg["layers"]}  # fmt: skip
     if cfg.get("split"):
         summary["split_test"] = {sub: split_test(cells, cfg["layers"], sub) for sub in ("w", "s")}
     if uses_scene_patch(cfg):
@@ -921,6 +1062,20 @@ def stage_analyze(name: str, rule: str | None = None) -> None:
             for sub in ("w", "s"):
                 for la in cfg["layers"]:
                     lines.append(f"| {sub} | {la} | " + " | ".join(pct(cell_rate(cells.get((fam, sub, la, sc, d), {}))) for sc, d in arms) + " |")  # fmt: skip
+            lines += [""]
+    if "shared_test" in summary:
+        st, sc_ = summary["shared_test"], summary["shared_code"]
+        lines += [f"**Shared code (w, {st['scale']:g}x):** {st['verdict']} (patch_dir read from {st['patch_dir_run']})", "",
+                  "Median over scenes, by layer: cosine with the lens push's direction (with / without its J-space part), "
+                  "share of its squared norm in its J-space part: " + "; ".join(
+                      f"{la}: {v['cos_lens']:+.2f} / {v['cos_lens_perp']:+.2f}, {v['removed']:.0%}" for la, v in sc_.items()), ""]  # fmt: skip
+        arms = [(sc, d) for d in ("shared_perp", "shared", "lens", "random") for sc in cfg["scales"]]
+        for fam, what in (("BL", "Lookups switched to X (prompt → prompt)"), ("BR", "Recalls switched to X (prompt → memory)")):  # fmt: skip
+            lines += [f"{what}, at the word:", "", "| layer | " + " | ".join(f"{d} {sc:g}x" for sc, d in arms) + " | valid (shared_perp) |",
+                      "|---|" + "---|" * (len(arms) + 1)]  # fmt: skip
+            for la in cfg["layers"]:
+                lines.append(f"| {la} | " + " | ".join(pct(cell_rate(cells.get((fam, "w", la, sc, d), {}))) for sc, d in arms)
+                             + f" | {st['layers'][la]['valid']} |")  # fmt: skip
             lines += [""]
     for sub, g in summary.get("split_test", {}).items():
         lines += [f"**Layer-16 split ({sub}):** {g['verdict']}", ""]
@@ -1010,7 +1165,7 @@ def stage_figures(name: str) -> None:
                  x=0.125, ha="left", fontweight="bold")  # fmt: skip
     fig.savefig(RESULTS / name / "where.png", dpi=150, bbox_inches="tight")
     print("wrote", RESULTS / name / "where.png")
-    if uses_scene_patch(cfg):
+    if uses_scene_patch(cfg) or cfg.get("shared"):
         test_figures(name, m, cells)
 
 
@@ -1095,6 +1250,38 @@ def test_figures(name: str, m: dict, cells: dict) -> None:
              "A layer where an arm reads 0 from there on is where it stops. If the cut-down patch stops with the lens push, the whole patch moved more only because it is larger."),
             ("Control", "A random push of the lens push's size; memory → prompt and memory → memory answers must not move (off-path check, in summary.md).")])  # fmt: skip
         print("wrote", folder / "dose.png")
+    if "shared_test" in s:
+        bars = [("shared_perp", "shared code without its lens-readable part", aqua), ("shared", "shared code", orange),
+                ("lens", "lens push", blue), ("random", "random push", grey)]  # fmt: skip
+        fig, axes = plt.subplots(2, len(cfg["scales"]), figsize=(11, 8.2), sharey=True, squeeze=False)
+        for row, (fam, what) in enumerate((("BL", "lookups"), ("BR", "recalls"))):
+            for ax, sc in zip(axes[row], cfg["scales"], strict=True):
+                style_axes(ax)
+                for i, la in enumerate(layers):
+                    for j, (d, _, col) in enumerate(bars):
+                        x, r = i + (j - 1.5) * 0.2, cell_rate(cells.get((fam, "w", la, sc, d), {}))
+                        if math.isnan(r[0]):
+                            continue
+                        ax.bar(x, r[0], 0.18, color=col, edgecolor="#fcfcfb", lw=1)
+                        ax.plot([x, x], [r[1], r[2]], color=INK, lw=1)
+                        ax.annotate(f"{r[0]:.0%}", (x, r[2]), xytext=(0, 2), textcoords="offset points", ha="center",
+                                    va="bottom", fontsize=7, color=INK)  # fmt: skip
+                ax.set_xticks(range(len(layers)), [f"layer {la}" for la in layers])
+                ax.set_title(f"{what}, at the bridge's word, {sc:g}x the reference norm", loc="left", fontsize=9, color=INK)  # fmt: skip
+                ax.set_ylim(0, 1.08)
+                percent_axis(ax)
+            axes[row][0].set_ylabel(f"{what} switched to\nthe other bridge's answer", color=MUTED)
+        handles = [Patch(color=c, label=lab) for _, lab, c in bars]
+        v = s["shared_test"]["verdict"].split(":")[0]
+        outcome = {"H-shared": "A shared code outside the lens's read directions moves lookups on new scenes",
+                   "H-none": "No shared code outside the lens moves lookups: the form is scene-specific"}.get(v, "The shared code test is inconclusive")  # fmt: skip
+        finish(fig, folder / "shared.png", outcome, data, handles=handles, ncols=4, explain=[
+            ("What we did", "One direction per pair of animals: the average residual at an animal's word over other scenes that "
+             "state it, minus the same for the scene's own bridge; with or without its lens-readable part; added at the "
+             "bridge's word of scenes it was not built on, at the lens push's size."),
+            ("How to read", "Bars: share of lookups (top) and recalls (bottom) that switch to the other bridge's answer (line: 95% interval)."),
+            ("Control", "A random push of the same size; memory → prompt and memory → memory answers must not move (in summary.md).")])  # fmt: skip
+        print("wrote", folder / "shared.png")
     if "split_test" in s:
         bars = [("split_jspace", 0.0, "lens-readable part (J-space)", blue),
                 ("split_rand_sub", 0.0, "control: random subspace, same share", grey),
@@ -1151,6 +1338,8 @@ if __name__ == "__main__":
     ap.add_argument("--same-scenes", default=None, help="run, fresh scenes: assert this run's draw")
     ap.add_argument("--patch-dir-perp", action="store_true", help="run: patch_dir without its J-space part (last)")
     ap.add_argument("--reuse", default=None, help="run, with --patch-dir-perp: only its rows; the rest from this run")
+    ap.add_argument("--shared", action="store_true", help="run: the shared code at the word (A5), from held-in scenes")
+    ap.add_argument("--patch-dir-run", default=None, help="run, with --shared: the run whose patch_dir H-none reads")
     ap.add_argument("--gap-bars", type=int, nargs=2, default=None, metavar=("GAP", "NO_GAP"),
                     help=f"run: the layer-gap bars in layers (default {GAP} {NO_GAP})")  # fmt: skip
     ap.add_argument("--subsets", nargs="+", choices=list(WHERE), default=None, help="run: push positions (default all)")
@@ -1193,6 +1382,9 @@ if __name__ == "__main__":
             cfg["reuse"] = a.reuse
         if a.gap_bars:
             cfg["gap_bars"] = a.gap_bars
+        if a.shared:  # the shared code at the word (A5): its rows push at w
+            assert "w" in (a.subsets or []), "--shared pushes at the word: --subsets must include w"
+            cfg.update(shared=True, patch_dir_run=a.patch_dir_run)
         if a.subsets:
             cfg["subsets"] = a.subsets
         if a.scales:

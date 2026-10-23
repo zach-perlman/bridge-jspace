@@ -433,7 +433,9 @@ def _write_run(d, cfg: dict, rates: dict, n: int = 100) -> None:
     cases = [{"family": f, "name": f"{f}-{i}", "positions": {"w": [8], "s": [3, 4, 5, 6, 7, 8, 9]},
               "ref": {str(la): 2.0 for la in cfg["layers"]}, "patch_norm": {k: 40.0 for k in keys},
               **({"split_share": {k: {p: 0.3 for p in W.SPLIT_PARTS} for k in keys}} if cfg.get("split") else {}),
-              **({"perp_removed": {k: 0.4 for k in keys}} if cfg.get("patch_dir_perp") else {})}
+              **({"perp_removed": {k: 0.4 for k in keys}} if cfg.get("patch_dir_perp") else {}),
+              **({"shared": {str(la): {"cos_lens": 0.3, "cos_lens_perp": 0.01, "removed": 0.2} for la in cfg["layers"]}}
+                 if cfg.get("shared") else {})}
              for f in cfg["families"] for i in range(n)]  # fmt: skip
     (d / "cases.jsonl").write_text("".join(json.dumps(c) + "\n" for c in cases))
 
@@ -555,3 +557,96 @@ def test_layer_gap_with_both_size_matched_arms(tmp_path, monkeypatch):
     assert s["perp_test"]["w"]["recall_vs_lookup"]["statement"].startswith("not lookup-specific")  # 40% vs 40%
     assert s["dose_test"]["w"]["recall_vs_lookup"]["statement"].startswith("not lookup-specific")  # 70% vs 40%
     assert list((tmp_path / "size").glob("analysis-figures-*/dose.png"))
+
+
+# ---- the shared code at the word (A5) ---------------------------------------------------------------------------------
+
+
+def test_pet_positions_find_every_pet_word_in_its_owner_sentence():
+    import re
+
+    people, pets = ["Mark", "Kate", "Lily"], ["chicken", "lion", "cat"]
+    own = [S.WORDINGS["A"]["own"].format(p=p, a=a) for p, a in zip(people, pets, strict=True)]
+    context = " ".join([own[0], own[1], "The lion's locker is 3.", own[2]])
+    rendered = f"<|im_start|>user\n{context}\nWhich locker belongs to Mark's pet?"
+    offsets = [m.span() for m in re.finditer(r"\w+|[^\w\s]", rendered)]  # a word-level stand-in for the tokenizer
+    c = {"id": "BL-0", "people": people, "pets": pets, "context": context, "prompts": {"clean": rendered}, "offsets": offsets}  # fmt: skip
+    pos = W.pet_positions(c)
+    assert set(pos) == set(pets)
+    for pet, p in pos.items():
+        assert [rendered[slice(*offsets[i])] for i in p] == [pet]
+    lion_sentence = context.index(own[1]) + len("<|im_start|>user\n")  # the owner sentence's lion, not the table's
+    assert offsets[pos["lion"][0]][0] > lion_sentence
+
+
+def test_shared_code_is_the_mean_difference_without_its_jspace_part():
+    dictionary, _, sparse = _split_inputs()
+    g = torch.Generator().manual_seed(4)
+    means = {"cow": torch.randn(256, generator=g), "bee": torch.randn(256, generator=g)}
+    means["owl"] = means["cow"] + sparse  # owl - cow lies in the J-space
+    code = W.shared_code(means, [("cow", "bee"), ("cow", "owl")], dictionary, k=25)
+    d, perp, share = code[("cow", "bee")]
+    assert torch.allclose(d, means["bee"] - means["cow"])
+    rest, share2 = W.drop_jspace((means["bee"] - means["cow"])[None], dictionary, k=25)
+    assert torch.allclose(perp, rest[0]) and share == share2 and 0 < share < 1
+    d, perp, share = code[("cow", "owl")]
+    assert share > 0.99 and float(perp.norm()) < 1e-3 * float(d.norm())  # nothing outside the J-space
+
+
+def _shared_cells(perp: dict[int, float], lens: float = 0.0, off: float = 0.0, pdir: dict[int, float] | None = None):
+    rates, dose = {}, {}
+    for la in (20, 24, 28):
+        for sc in (4.0, 8.0):
+            rates[("BL", "w", la, sc, "shared_perp")] = perp.get(la, 0.0)
+            rates[("BL", "w", la, sc, "shared")] = 0.5
+            rates[("BL", "w", la, sc, "lens")] = lens
+            rates[("BL", "w", la, sc, "random")] = 0.0
+            for f in ("RL", "RR"):
+                rates[(f, "w", la, sc, "shared_perp")] = off
+            if pdir is not None:
+                dose[("BL", "w", la, sc, "patch_dir")] = pdir.get(la, 0.0)
+                dose[("BL", "w", la, sc, "random")] = 0.0
+                for f in ("RL", "RR"):
+                    dose[(f, "w", la, sc, "patch_dir")] = 0.0
+    return _cells(rates, n=100)[0], (_cells(dose, n=100)[0] if pdir is not None else None)
+
+
+@pytest.mark.parametrize(("perp", "lens", "off", "pdir", "starts"), [
+    ({24: 0.4}, 0.0, 0.0, {20: 0.4}, "H-shared"),  # 40/100 at 8x: lower bound 31% >= 20%, the lens push at 0
+    ({}, 0.0, 0.0, {20: 0.4}, "H-none"),  # never moves; patch_dir moves at 20
+    ({}, 0.0, 0.0, {}, "inconclusive"),  # never moves, but patch_dir moves nowhere either
+    ({}, 0.0, 0.0, None, "inconclusive (the patch_dir run was not found"),
+    ({24: 0.4}, 0.3, 0.0, {20: 0.4}, "inconclusive"),  # the lens push moves there too
+    ({24: 0.4}, 0.0, 0.3, {20: 0.4}, "inconclusive (no valid cell"),  # off the path at every layer
+    ({24: 0.1}, 0.0, 0.0, {20: 0.4}, "inconclusive"),  # 10/100: neither >= 20% nor <= 5%
+])  # fmt: skip
+def test_shared_test(perp, lens, off, pdir, starts):
+    cells, dose = _shared_cells(perp, lens, off, pdir)
+    t = W.shared_test(cells, dose, [20, 24, 28])
+    assert t["verdict"].startswith(starts), t["verdict"]
+    assert t["scale"] == 8.0 and set(t["layers"]) == {20, 24, 28}
+
+
+def test_shared_run_analyzes_and_draws(tmp_path, monkeypatch):
+    pytest.importorskip("matplotlib")
+    monkeypatch.setattr(W, "RESULTS", tmp_path)
+    base = {**W.DEFAULTS, "scales": [4.0, 8.0], "rule": "v2", "subsets": ["w"], "scenes": "fresh", "layers": [20, 24, 28]}  # fmt: skip
+    cells_rates = {}
+    for la in (20, 24, 28):
+        for sc in (4.0, 8.0):
+            for d, r in (("shared_perp", 0.0), ("shared", 0.3), ("lens", 0.0), ("random", 0.0)):
+                cells_rates[("BL", "w", la, sc, d)] = r
+                cells_rates[("BR", "w", la, sc, d)] = 0.6 if d == "shared" else 0.0
+            for f in ("RL", "RR"):
+                cells_rates[(f, "w", la, sc, "shared_perp")] = 0.0
+    dose_rates = {("BL", "w", 20, 8.0, "patch_dir"): 0.4, ("BL", "w", 20, 8.0, "random"): 0.0}
+    _write_run(tmp_path / "dose", {**base, "patch_dir": True}, dose_rates)
+    _write_run(tmp_path / "shared", {**base, "shared": True, "patch_dir_run": "dose"}, cells_rates)
+    W.stage_analyze("shared")
+    W.stage_figures("shared")
+    s = json.loads((tmp_path / "shared" / "summary.json").read_text())
+    assert s["shared_test"]["verdict"].startswith("H-none") and s["shared_test"]["patch_dir_run"] == "dose"
+    assert s["shared_code"]["24"] == {"cos_lens": 0.3, "cos_lens_perp": 0.01, "removed": 0.2}
+    md = (tmp_path / "shared" / "summary.md").read_text()
+    assert "Shared code (w, 8x)" in md and "Recalls switched to X (prompt → memory), at the word" in md
+    assert list((tmp_path / "shared").glob("analysis-figures-*/shared.png"))
