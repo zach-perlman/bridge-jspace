@@ -2,8 +2,9 @@
 
 The donor prompt's last two tokens are copied into the original prompt at one layer (pointer_swap; memory → prompt:
 family RL, source dissoc, group last). Per swept layer, the share of patched answers that go to the original's sentence
-in the same place in the list (order), to its sentence about the donor's entity (the bridge's identity), and to the
-donor's own digit, with Wilson 95% intervals. Selection and run as the old f_patch_outcomes_by_depth_all_models
+in the same place in the list ("same place": order), to its sentence about the donor's entity ("same entity": the
+bridge's identity), and to the donor's own digit ("the copied digit"), with Wilson 95% intervals. The figure's words are
+plain (5-second test, 23 Oct): no "memory → prompt" or "identity" on it; this docstring keeps the project's terms. Selection and run as the old f_patch_outcomes_by_depth_all_models
 (cross_model_figures.collect_depth / roles_by_layer): each model's finding-5 "draw 1" row in grid.json names the run;
 its outcomes.jsonl is counted here (by_layer; tests/test_figs_depth.py checks it equals roles_by_layer).
 
@@ -22,6 +23,7 @@ from __future__ import annotations
 import argparse
 import collections
 import json
+import math
 import re
 import sys
 from dataclasses import dataclass, field
@@ -45,12 +47,15 @@ STEM = "patch_by_depth"
 MAIN_MODELS = ("27b", "9b", "32b", "gemma")  # two hybrids, two attention-only; the rest in FULL
 DIGIT = "#A6611A"  # the donor's digit: a brown apart from LOOKUP's purple and RECALL's grey (4.8:1 on white)
 BAND = "#EBE1F5"  # the label → digit window: a pale tint of the order line's purple
-# (outcome, direct label, color, marker); order first = drawn on top
+# (outcome, direct label, color, marker, line width, marker size); order first = drawn on top. The identity line is
+# the heaviest so it shows where it runs under the order line (5-second test, 23 Oct).
 OUTCOMES = (
-    ("position", "same order\nin the list", C.LOOKUP, "o"),
-    ("identity", "the bridge's\nidentity", C.RECALL, "s"),
-    ("value", "the donor's\ndigit", DIGIT, "^"),
+    ("position", "same place\nin the list", C.LOOKUP, "o", 2.4, 6.5),
+    ("identity", "same\nentity", C.RECALL, "s", 3.2, 8.0),
+    ("value", "the copied\ndigit", DIGIT, "^", 2.2, 6.5),
 )
+MIN_BAND = 5.0  # % of depth: a narrower window is widened to this, never past the swept layers beside it
+BAND_EDGE = "#C9B3E6"  # a thin darker outline, so a one-layer window stays visible under the markers
 KEPT_MAX = 0.90  # answers move: at most this share unchanged (readme_figures.stages)
 DIGIT_UB = FC.VALUE_UB  # the digit is not there yet: its Wilson upper bound below this
 Triple = tuple[float, float, float]
@@ -79,7 +84,8 @@ class Depth:
 
     def spans(self) -> list[tuple[float, float]]:
         """The window as depth intervals (%): each run of consecutive swept layers in it, from half-way to the swept
-        layer before to half-way to the one after (half a step past an end of the sweep)."""
+        layer before to half-way to the one after (half a step past an end of the sweep); one narrower than MIN_BAND
+        is widened about its middle to MIN_BAND, stopping short of the swept layers beside it."""
         out, ls = [], self.layers
         i = 0
         while i < len(ls):
@@ -90,9 +96,16 @@ class Depth:
             while j + 1 < len(ls) and ls[j + 1] in self.window:
                 j += 1
             step = (ls[1] - ls[0]) if len(ls) > 1 else 1
-            lo = (ls[i - 1] + ls[i]) / 2 if i > 0 else ls[i] - step / 2
-            hi = (ls[j] + ls[j + 1]) / 2 if j + 1 < len(ls) else ls[j] + (ls[j] - ls[j - 1] if j > 0 else step) / 2
-            out.append((self.depth(lo), self.depth(hi)))
+            lo = self.depth((ls[i - 1] + ls[i]) / 2 if i > 0 else ls[i] - step / 2)
+            hi = self.depth(
+                (ls[j] + ls[j + 1]) / 2 if j + 1 < len(ls) else ls[j] + (ls[j] - ls[j - 1] if j > 0 else step) / 2
+            )
+            if hi - lo < MIN_BAND:
+                mid = (lo + hi) / 2
+                floor = self.depth(ls[i - 1]) + 0.5 if i > 0 else -math.inf
+                ceil = self.depth(ls[j + 1]) - 0.5 if j + 1 < len(ls) else math.inf
+                lo, hi = min(lo, max(mid - MIN_BAND / 2, floor)), max(hi, min(mid + MIN_BAND / 2, ceil))
+            out.append((lo, hi))
             i = j + 1
         return out
 
@@ -160,8 +173,8 @@ def title(data: dict[str, Depth]) -> str:
     ok = [d for d in data.values() if not d.faded]
     shown = [d for d in ok if arrives_after(d)]
     if ok and len(shown) == len(ok):
-        return "Order or identity first, the donor's digit later"
-    return f"On {len(shown)} of {len(ok)} models: order or identity first, digit later"
+        return "Same place or entity first, the copied digit later"
+    return f"On {len(shown)} of {len(ok)} models: place or entity first, digit later"
 
 
 def arrives_after(d: Depth) -> bool:
@@ -171,25 +184,24 @@ def arrives_after(d: Depth) -> bool:
 
 
 def caption(data: dict[str, Depth], keys: list[str], missing: dict[str, str], b: RB.Book) -> str:
+    """Line 1: the shading's rule and where the other models are; line 2: n, the bands, the markers, what is missing."""
     drawn = [data[k] for k in keys]
     ns = [t for d in drawn for t in d.totals]
-    ends = all(d.used is not None and d.window and d.used == d.window[-1] for d in drawn)
-    line1 = (f"Band: ≥ {100 - 100 * KEPT_MAX:.0f}% of answers changed and the digit's 95% upper bound "
-             f"< {100 * DIGIT_UB:.0f}%" + ("; it ends at the layer the order test uses." if ends else "."))  # fmt: skip
-    rest = []
+    line1 = (f"Shaded: ≥ {100 - 100 * KEPT_MAX:.0f}% of answers changed, digit's 95% upper bound "
+             f"< {100 * DIGIT_UB:.0f}%.")  # fmt: skip
     others = [C.MODEL[k].short for k in data if k not in keys]
     if others:
-        rest.append(", ".join(others) + ": FULL version.")
-    if missing:
-        rest.append(C.not_tested(b, "f5", list(missing))
-                    or "Not drawn: " + ", ".join(f"{C.MODEL[k].short} ({why})" for k, why in missing.items()) + ".")  # fmt: skip
+        line1 += " FULL: " + ", ".join(others) + "."
     n = f"{min(ns)}" if min(ns) == max(ns) else f"{min(ns)}–{max(ns)}"
-    line2 = f"n = {n} per layer; pale bands: 95% CI; filled markers: hybrid. " + " ".join(rest)
-    return line1 + "\n" + line2.strip()
+    line2 = f"n = {n} per layer; pale bands: 95% CI; filled markers: hybrid, hollow: attention-only."
+    if missing:
+        line2 += " " + (C.not_tested(b, "f5", list(missing))
+                        or "Not drawn: " + ", ".join(f"{C.MODEL[k].short} ({why})" for k, why in missing.items()) + ".")  # fmt: skip
+    return line1 + "\n" + line2
 
 
-SUBTITLE = "% of patched answers by depth, donor's last two tokens copied in (memory → prompt)"
-HOW = "One panel per model. Shaded band: answers move, but the digit has not arrived."
+SUBTITLE = "Last two tokens copied from a prompt with the list reordered: where does the answer go?"
+HOW = "One panel per model. Shaded: the answer already moves, the digit has not arrived."
 
 
 # ---------------------------------------------------------------- drawing
@@ -201,17 +213,17 @@ def panel(ax, d: Depth) -> list[C.Number]:
     x = [d.depth(la) for la in d.layers]
     nums: list[C.Number] = []
     for lo, hi in d.spans():
-        ax.axvspan(lo, hi, color=BAND, lw=0, zorder=0)
+        ax.axvspan(lo, hi, facecolor=BAND, edgecolor=BAND_EDGE, lw=1.0, zorder=0)
         nums += [C.Number(lo, "window start, % of depth", model=d.model, setting="draw 1", source=d.source,
                           extra={"window layers": d.window}),
                  C.Number(hi, "window end, % of depth", model=d.model, setting="draw 1", source=d.source,
                           extra={"window layers": d.window})]  # fmt: skip
-    for z, (role, _, color, shape) in zip((5, 4, 3), OUTCOMES, strict=True):
+    for z, (role, _, color, shape, width, size) in zip((5, 4, 3), OUTCOMES, strict=True):
         col = C.CONTROL if d.faded else color
         ts = d.shares[role]
         ax.fill_between(x, [100 * t[1] for t in ts], [100 * t[2] for t in ts], color=col, alpha=0.16, lw=0, zorder=1)
-        ax.plot(x, [100 * t[0] for t in ts], color=col, lw=2.2, marker=shape, markersize=6,
-                markerfacecolor=col if hybrid else "white", markeredgecolor=col, markeredgewidth=1.6, zorder=z,
+        ax.plot(x, [100 * t[0] for t in ts], color=col, lw=width, marker=shape, markersize=size,
+                markerfacecolor=col if hybrid else "white", markeredgecolor=col, markeredgewidth=1.8, zorder=z,
                 gid="mark")  # fmt: skip
         for la, xx, t, n in zip(d.layers, x, ts, d.totals, strict=True):
             nums.append(C.Number(100 * t[0], f"% of patched answers: {role}", model=d.model, setting="draw 1",
@@ -253,12 +265,12 @@ def direct_labels(ax, d: Depth) -> None:
     for role, *_ in OUTCOMES:
         ys = [t[0] for t in d.shares[role]]
         rise.append(next(xx for xx, y in zip(x, ys, strict=True) if y >= max(ys) / 2))
-    right = min(rise + ([spans[0][0]] if spans else [])) - 2
+    right = min(rise + ([spans[0][0]] if spans else [])) - 4
     peaks = [100 * max(t[0] for t in d.shares[role]) for role, *_ in OUTCOMES]
     lo, hi = ax.get_ylim()
     height_in = ax.get_position().height * ax.figure.get_figheight()
     gap = (C.NOTE * 2.2 + 8) / 72 / height_in * (hi - lo)  # two text lines and a margin, in data units
-    for (_, label, color, _), y in zip(OUTCOMES, spread(peaks, gap, gap / 2, hi - gap / 2), strict=True):
+    for (_, label, color, *_), y in zip(OUTCOMES, spread(peaks, gap, gap / 2, hi - gap / 2), strict=True):
         ax.text(right, y, label, ha="right", va="center", fontsize=C.NOTE, color=color, fontweight="bold",
                 linespacing=1.1, gid="label")  # fmt: skip
 

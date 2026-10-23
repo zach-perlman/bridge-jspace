@@ -8,15 +8,18 @@ f_layer_gap_lens_vs_patch_27b (cross_model_figures.arm_curve over early_push_whe
 memory → memory changed <= OFF_PATH_MAX, the random push switching <= RAND_MAX of lookups at the same layer and scale,
 8x for the patch), here on the summary's rates. The stops are recomputed from the drawn points (early_push_where.
 arm_course: from the first layer on which every later tested layer has its upper bound < RAND_MAX) and must equal the
-summary's. The band: from the lens push's stop to the full patch's, labelled with its size in layers. Inset: recalls
-(BR) switched at the same cells.
+summary's. The band: from the lens push's stop to the full patch's, labelled with its size in layers. Beside the
+lookups: recalls (BR) switched at the same cells, each run of the lens push's drawn size labelled (4x / 8x).
+
+Lookups: the lens push in the accent purple, the full patch in a dark teal (dark grey is the recalls'); each line is
+labelled directly with a plain definition. The caption says when the lens push's stop rests on a smaller size only
+(the larger one fails the off-path check) and how few recalls that size moves: the stop may then be dose.
 
 The dose-matched patch (the guide's third line) is not drawn: its run's predictions are not opened. Hook, for after
 Dan says "open": --dose-summary PATH (draw(..., dose=Arm)) draws that summary's patch_dir arm as a third line.
 
-MAIN: at the stated bridge's word (subset w). FULL: the word and the sentence (w, s), recalls beside, the layer-gap
-rule's verdict per panel as a small grey word (H-gap: holds), the controls (embedding and random pushes) and the lens
-push's valid scales in the caption.
+MAIN: at the stated bridge's word (subset w). FULL: the word and the sentence (w, s), the layer-gap rule's verdict per
+panel as a small grey word (H-gap: holds), the stop rule and the controls (embedding and random pushes) in the caption.
 
 uv run python scripts/figs/layer_gap.py [--grid DIR] [--only main|full] [--out DIR] [--summary PATH]
                                         [--dose-summary PATH]
@@ -37,7 +40,10 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
+from matplotlib.transforms import Bbox
+
 from bridge_jspace import pins
+from bridge_jspace import plot_style as PS
 from scripts import cross_model_figures as CMF
 from scripts import early_push_where as EPW
 from scripts import readme_build as RB
@@ -49,12 +55,14 @@ RUN = "d4_layer_gap_v2_27b"
 SUMMARY = EPW.RESULTS / RUN / "analysis-v2-20261023T090847Z" / "summary.json"
 MODEL = "27b"
 BAND = PD.BAND  # the gap: the pale lookup-purple band of the redesigned depth figures
+PATCH = "#1B7F79"  # dark teal: the full patch's lookups (4.8:1 on white), apart from the lens push's purple
 PLACE = {"w": "word", "s": "sentence"}
-# per arm: label, line style, marker; the color is the quantity's (lookups LOOKUP, recalls RECALL)
-STYLE: dict[str, tuple[str, Any, str]] = {
-    "lens": ("lens push", "-", "o"),
-    "patch": ("full patch", (0, (5, 2.5)), "s"),
-    "patch_dir": ("dose-matched patch", (0, (1.2, 2.2)), "^"),
+# per arm: name, its plain definition (the direct label's second line), line style, marker, color on lookups
+# (recalls are all RECALL grey, told apart by style)
+STYLE: dict[str, tuple[str, str, Any, str, str]] = {
+    "lens": ("lens push", "lens direction only", "-", "o", C.LOOKUP),
+    "patch": ("full patch", "the whole change", (0, (5, 2.5)), "s", PATCH),
+    "patch_dir": ("dose-matched patch", "lens-push size", (0, (1.2, 2.2)), "^", PATCH),
 }
 # direct-label candidates per arm, in order: (point of the line, side of its 95% band)
 PLACES: dict[str, tuple[tuple[str, str], ...]] = {
@@ -202,35 +210,63 @@ def span(layers: list[int], sweep: list[int]) -> str:
     return ", ".join(map(str, layers))
 
 
+WEAK = 0.20  # a lens push that switches fewer recalls than this (point) barely writes recall: its stop may be dose
+
+
+def dose_caveat(lens: Arm) -> str:
+    """'' when the lens push's stop rests on every size; else which size alone is valid from the stop on (the larger
+    fails the off-path check) and, at the first of those layers where it switches < WEAK of recalls, how many."""
+    if lens.stop is None:
+        return ""
+    at = {la: i for i, la in enumerate(lens.layers)}
+    small = [la for la in lens.invalid_top if la >= lens.stop and lens.lookup[at[la]] is not None]
+    if not small:
+        return ""
+    sizes = "/".join(f"{s:g}x" for s in sorted({lens.scale[at[la]] or 0.0 for la in small}))
+    out = f"Only the {sizes} lens push is valid at {span(small, lens.layers)}"
+    weak: list[tuple[int, float]] = []
+    for la in small:
+        t = lens.recall[at[la]]
+        if t is None or t[0] >= WEAK:
+            break
+        weak.append((la, 100 * t[0]))
+    if weak:
+        lo, hi = min(v for _, v in weak), max(v for _, v in weak)
+        pct = f"{lo:.0f}%" if round(lo) == round(hi) else f"{lo:.0f}–{hi:.0f}%"
+        out += f", moving {pct} of recalls at {span([la for la, _ in weak], lens.layers)}"
+    return out + ": its stop may be dose"
+
+
 def caption(kind: str, data: dict[str, dict[str, Arm]], ctl: dict[str, float], dose: Arm | None) -> str:
+    """MAIN: n and how a point is chosen, the controls; then the dose caveat (dose_caveat). FULL: the stop rule too;
+    the caveat for the word."""
     subs = ["w"] if kind == "main" else list(data)
     ns = sorted({n for sub in subs for a in data[sub].values() for n in a.n if n is not None})
     n = f"n = {ns[0]}" if len(ns) == 1 else f"n = {ns[0]}–{ns[-1]}"
-    ci = " (95% CI)" if kind == "main" else ""  # FULL: in the how-to-read line
-    line1 = (f"{n} scenes. Point: the layer's valid cell moving the most lookups{ci}. Stop: all later upper "
-             f"bounds < {100 * EPW.RAND_MAX:.0f}%.")  # fmt: skip
-    lens = data["w"]["lens"]
-    none = [la for la, t in zip(lens.layers, lens.lookup, strict=True) if t is None]
-    small = [la for la in lens.invalid_top if la not in none]
-    scales = "/".join(f"{s:g}x" for s in sorted({lens.scale[lens.layers.index(la)] or 0.0 for la in small}))
-    lens_bits = ([f"none valid at {span(none, lens.layers)}"] if none else []) + (
-        [f"only {scales} at {span(small, lens.layers)} (word)"] if kind == "full" and small else [])  # fmt: skip
-    bits = [f"Lens push: {', '.join(lens_bits)}."] if lens_bits else []
+    if kind == "main":
+        line1 = f"{n} scenes; point: the layer's valid cell moving the most lookups (95% CI)."
+    else:
+        line1 = (
+            f"{n} scenes; point: best valid cell per layer; stop: all later upper bounds < {100 * EPW.RAND_MAX:.0f}%."
+        )
     if all(not math.isnan(v) for v in ctl.values()):
         top = max(ctl.values())
-        what = "Embedding, random pushes" if kind == "main" else "Embedding, random"
-        bits.append(f"{what}: 0%." if top == 0 else f"{what}: ≤ {100 * top:.0f}%.")
-    if dose is None:
-        bits.append("Dose-matched patch: not yet.")
-    return line1 + "\n" + " ".join(bits)
+        line1 += " Embedding, random pushes: " + ("0%." if top == 0 else f"≤ {100 * top:.0f}%.")
+    caveat = dose_caveat(data["w"]["lens"])
+    if caveat and kind == "full":
+        caveat = "At the word o" + caveat[1:]
+    pending = "dose test pending" if dose is None else "see the dose-matched patch"
+    if not caveat:
+        return line1 + "\n" + ("Dose-matched patch: not shown yet." if dose is None else "")
+    return line1 + "\n" + caveat + (f" ({pending})." if kind == "main" else ".")
 
 
 SUBTITLE = {
-    "main": "% of lookups switched by layer (Qwen3.6-27B, push at the stated bridge's word)",
-    "full": "% of lookups switched by layer (Qwen3.6-27B, push at the stated bridge)",
+    "main": "One model (Qwen3.6-27B): % of lookups switched to the other bridge, by layer, at its word",
+    "full": "One model (Qwen3.6-27B): % of lookups switched to the other bridge, by layer",
 }
-HOW = "Shaded: the layers where only the full patch still moves lookups. Inset: recalls."
-HOW_FULL = "Shaded: only the full patch still moves lookups there. Pale bands: 95% CI. Right: recalls."
+HOW = "Shaded: layers where the lens push moves no lookups but the full patch still does."
+HOW_FULL = "Shaded: the lens push moves no lookups, the full patch still does. Pale bands: 95% CI."
 
 
 # ---------------------------------------------------------------- drawing
@@ -240,9 +276,10 @@ def nan_triples(ts: list[Triple | None]) -> list[Triple]:
     return [t if t is not None else (math.nan, math.nan, math.nan) for t in ts]
 
 
-def lines(ax, arm: Arm, what: str, color: str, size: float, width: float) -> list[C.Number]:
-    """One arm's line (lookups or recalls) with a pale 95% band; returns the drawn points."""
-    _, ls, shape = STYLE[arm.key]
+def lines(ax, arm: Arm, what: str, size: float, width: float) -> list[C.Number]:
+    """One arm's line (lookups: in the arm's color; recalls: RECALL grey) with a pale 95% band; returns the points."""
+    _, _, ls, shape, own = STYLE[arm.key]
+    color = own if what == "lookup" else C.RECALL
     ts = nan_triples(arm.lookup if what == "lookup" else arm.recall)
     ns = arm.n if what == "lookup" else arm.n_recall
     ax.fill_between(arm.layers, [100 * t[1] for t in ts], [100 * t[2] for t in ts], color=color, alpha=0.14, lw=0,
@@ -266,55 +303,117 @@ def band(ax, arms: dict[str, Arm], label: bool) -> list[C.Number]:
     ax.axvspan(a, b, color=BAND, lw=0, zorder=0)
     if label:
         ax.text((a + b) / 2, 101, f"{d} layers", ha="center", va="top", fontsize=C.NOTE, fontweight="bold",
-                color=C.LOOKUP, gid="gap label")  # fmt: skip
+                color=C.INK, gid="gap label")  # fmt: skip
     src = arms["lens"].source
     return [C.Number(float(d), "layers between the stops (full patch - lens push)", model=MODEL,
                      setting=f"layer gap, at the bridge's {PLACE.get(arms['lens'].subset)}", source=src,
                      extra={"lens stop": a, "patch stop": b})]  # fmt: skip
 
 
-def label_lines(ax, arms: dict[str, Arm], dose: Arm | None) -> None:
-    """Direct labels, each at the first of its candidate places (PLACES) that stays inside the panel and off every
-    drawn line, the other labels and the inset; the first candidate when none is free."""
-    fig = ax.figure
-    r = fig.canvas.get_renderer()
-    taken = [a.get_tightbbox(r) for a in ax.child_axes] + [t.get_window_extent(r) for t in ax.texts]
-    paths = []
-    for ln in ax.get_lines():
-        xy = ln.get_transform().transform(ln.get_xydata())
-        for (x0, y0), (x1, y1) in itertools.pairwise(xy):
-            if not any(map(math.isnan, (x0, y0, x1, y1))):
-                paths += [(x0 + (x1 - x0) * f / 24, y0 + (y1 - y0) * f / 24) for f in range(25)]
-    inner = ax.get_window_extent(r)
+Spot = tuple[float, float, str, str]  # x, y (data), ha, va
 
-    def free(b: Any) -> bool:
-        b = b.padded(4)
+
+class Placer:
+    """Puts each label at the first of its candidate spots that stays inside the panel and off every drawn line, the
+    labels already placed and the panel's insets; when none is free, at the free spot of a grid over the panel nearest
+    the first candidate (a crowded panel, e.g. with the dose-matched line in); the first candidate when none is."""
+
+    def __init__(self, ax) -> None:
+        self.ax, self.r = ax, ax.figure.canvas.get_renderer()
+        self.taken = [a.get_tightbbox(self.r) for a in ax.child_axes] + [t.get_window_extent(self.r) for t in ax.texts]
+        self.taken += [b for _, b in PS.graphic_boxes(ax.figure, self.r)]  # the markers, as the overlap check sees them
+        self.paths: list[tuple[float, float]] = []
+        for ln in ax.get_lines():
+            xy = ln.get_transform().transform(ln.get_xydata())
+            for (x0, y0), (x1, y1) in itertools.pairwise(xy):
+                if not any(map(math.isnan, (x0, y0, x1, y1))):
+                    self.paths += [(x0 + (x1 - x0) * f / 24, y0 + (y1 - y0) * f / 24) for f in range(25)]
+        self.inner = ax.get_window_extent(self.r)
+
+    def free_box(self, box: Any) -> bool:
+        b, inner = box.padded(4), self.inner
         return (inner.x0 <= b.x0 and b.x1 <= inner.x1 and inner.y0 <= b.y0 and b.y1 <= inner.y1
-                and not any(b.overlaps(t) for t in taken) and not any(b.contains(x, y) for x, y in paths))  # fmt: skip
+                and not any(b.overlaps(o) for o in self.taken)
+                and not any(b.contains(x, y) for x, y in self.paths))  # fmt: skip
 
-    for arm in [arms["lens"], arms["patch"], *([dose] if dose else [])]:
-        pts = [(la, t) for la, t in zip(arm.layers, arm.lookup, strict=True) if t is not None]
-        moving = [(la, t) for la, t in pts if t[1] > EPW.RAND_MAX]
-        if not pts:
-            continue
-        spots = {"peak": max(pts, key=lambda p: p[1][0]), "first": pts[0], "last moving": (moving or pts)[-1]}
-        cands = [(spots[w], w, s) for w, s in PLACES[arm.key]]
-        cands += [(p, "point", s) for s in ("above", "below") for p in pts]  # then above / below every point
+    def free(self, t: Any) -> bool:
+        return self.free_box(t.get_window_extent(self.r))
+
+    def put(self, text: str, spots: list[Spot], **kw: Any) -> None:
         made = []
-        for (la, t), where, side in cands:
-            up = side == "above"
-            x, ha = (la + 0.5, "left") if where == "last moving" else (la, "center" if where == "peak" else "left")
-            y = 100 * (t[2] if up else t[1]) + (3 if up else -3)
-            txt = ax.text(x, y, STYLE[arm.key][0], ha=ha, va="bottom" if up else "top", fontsize=C.NOTE,
-                          fontweight="bold", color=C.LOOKUP, gid="label")  # fmt: skip
-            made.append(txt)
-            if free(txt.get_window_extent(r)):
+        for x, y, ha, va in spots:
+            made.append(self.ax.text(x, y, text, ha=ha, va=va, fontsize=C.NOTE, gid="label", **kw))
+            if self.free(made[-1]):
                 break
-        keep = next((t for t in made if free(t.get_window_extent(r))), made[0])
+        keep = next((t for t in made if self.free(t)), made[0])
         for t in made:
             if t is not keep:
                 t.remove()
-        taken.append(keep.get_window_extent(r))
+        if not self.free(keep):  # the grid: same size, lower-left corners every 1/40 x 1/30 of the free room
+            first = keep.get_window_extent(self.r)
+            w, h, cx, cy = first.width, first.height, (first.x0 + first.x1) / 2, (first.y0 + first.y1) / 2
+            grid = [Bbox.from_bounds(self.inner.x0 + 4 + (self.inner.width - w - 8) * i / 39,
+                                     self.inner.y0 + 4 + (self.inner.height - h - 8) * j / 29, w, h)
+                    for i in range(40) for j in range(30)]  # fmt: skip
+            ok = [b for b in grid if self.free_box(b)]
+            if ok:
+                b = min(ok, key=lambda b: math.hypot(b.x0 + w / 2 - cx, b.y0 + h / 2 - cy))
+                keep.set_position(self.ax.transData.inverted().transform((b.x0, b.y0)))
+                keep.set_horizontalalignment("left")
+                keep.set_verticalalignment("bottom")
+        self.taken.append(keep.get_window_extent(self.r))
+
+
+def spots(pts: list[tuple[int, Triple]], prefer: tuple[tuple[str, str], ...]) -> list[Spot]:
+    """Candidate spots by a line's points: the preferred (point of the line, side of its band) first, then above and
+    below every point."""
+    moving = [(la, t) for la, t in pts if t[1] > EPW.RAND_MAX]
+    at = {"peak": max(pts, key=lambda p: p[1][0]), "first": pts[0], "last moving": (moving or pts)[-1]}
+    out: list[Spot] = []
+    for (la, t), where, side in [(at[w], w, s) for w, s in prefer] + [(p, "point", s) for s in ("above", "below")
+                                                                      for p in pts]:  # fmt: skip
+        up = side == "above"
+        x, ha = (la + 0.5, "left") if where == "last moving" else (la, "center" if where == "peak" else "left")
+        out.append((x, 100 * (t[2] if up else t[1]) + (3 if up else -3), ha, "bottom" if up else "top"))
+    return out
+
+
+def label_lines(ax, arms: dict[str, Arm], dose: Arm | None) -> None:
+    """Each lookup line's name and plain definition, in its color, by its line (PLACES)."""
+    p = Placer(ax)
+    for arm in [arms["lens"], arms["patch"], *([dose] if dose else [])]:
+        pts = [(la, t) for la, t in zip(arm.layers, arm.lookup, strict=True) if t is not None]
+        if pts:
+            name, what, *_, color = STYLE[arm.key]
+            p.put(f"{name}\n({what})", spots(pts, PLACES[arm.key]), color=color, fontweight="bold", linespacing=1.1)
+
+
+def label_recalls(ax, arms: dict[str, Arm], dose: Arm | None, names: bool) -> None:
+    """The recall panel: each run of layers where the lens push's drawn size is the same labelled with that size
+    ('4x' / '8x'), and (names) each line's name."""
+    p = Placer(ax)
+    lens = arms["lens"]
+    if names:  # first: the names need the larger free spots
+        for arm in [arms["patch"], lens, *([dose] if dose else [])]:
+            ps = [(la, t) for la, t in zip(arm.layers, arm.recall, strict=True) if t is not None]
+            if ps:
+                p.put(STYLE[arm.key][0], spots(ps, (("first", "below"), ("first", "above"), ("peak", "above"))),
+                      color=C.RECALL, fontweight="bold")  # fmt: skip
+    pts = [(la, t, sc) for la, t, sc in zip(lens.layers, lens.recall, lens.scale, strict=True) if t is not None]
+    runs: list[list[tuple[int, Triple, float | None]]] = []
+    for q in pts:
+        if runs and runs[-1][-1][2] == q[2] and lens.layers.index(q[0]) == lens.layers.index(runs[-1][-1][0]) + 1:
+            runs[-1].append(q)
+        else:
+            runs.append([q])
+    for run in runs:
+        mid = run[len(run) // 2][0] if len(run) % 2 else (run[0][0] + run[-1][0]) / 2
+        top, low = max(t[2] for _, t, _ in run), min(t[1] for _, t, _ in run)
+        cands: list[Spot] = [(mid, 100 * top + 3, "center", "bottom"), (mid, 100 * low - 3, "center", "top")]
+        cands += [(la + dx, 100 * t[0] + dy, "left", "bottom") for la, t, _ in run
+                  for dx, dy in ((0.6, 4), (1.0, 3), (1.6, 3))]  # right of a point, then farther  # fmt: skip
+        cands += spots([(la, t) for la, t, _ in run], ())
+        p.put(f"{run[0][2] or 0:g}x", cands, color=C.CAPTION_INK)
 
 
 def axes_style(ax, xlabel: bool, ylabel: str | None, ticks: list[int]) -> None:
@@ -328,56 +427,54 @@ def axes_style(ax, xlabel: bool, ylabel: str | None, ticks: list[int]) -> None:
         ax.set_ylabel(ylabel)
 
 
-def recall_axes(ax, arms: dict[str, Arm], dose: Arm | None, small: bool) -> list[C.Number]:
-    """Recalls switched at the same cells, the gap shaded as on the lookups (its number booked there)."""
+def recall_axes(ax, arms: dict[str, Arm], dose: Arm | None, xlabel: bool, names: bool) -> list[C.Number]:
+    """Recalls switched at the same cells, the gap shaded as on the lookups (its number booked there), the lens push's
+    drawn size marked per run of layers, the lines named when `names`."""
     if (gap_of(arms) or 0) > 0:
         ax.axvspan(arms["lens"].stop, arms["patch"].stop, color=BAND, lw=0, zorder=0)
     nums: list[C.Number] = []
     for arm in [*arms.values(), *([dose] if dose else [])]:
-        nums += lines(ax, arm, "recall", C.RECALL, 4 if small else 5, 1.6 if small else 2.0)
+        nums += lines(ax, arm, "recall", 5, 2.0)
     ax.set_xlim(10.8, 35.2)
     ax.set_ylim(0, 105)
     ax.set_xticks([12, 20, 28])
-    ax.set_yticks([0, 100] if small else [0, 50, 100])
-    ax.set_title("Recalls switched", loc="left", fontsize=C.NOTE, color=C.RECALL, pad=6)
+    ax.set_yticks([0, 50, 100])
+    ax.set_ylabel("% of recalls switched")
+    if xlabel:
+        ax.set_xlabel("layer")
+    ax.set_title("Recalls, same pushes", loc="left", fontsize=C.NOTE, color=C.RECALL, pad=8)
+    label_recalls(ax, arms, dose, names)
     return nums
 
 
 def draw(kind: str, data: dict[str, dict[str, Arm]], ctl: dict[str, float], dose: dict[str, Arm] | None = None,
          rule: dict[str, str] | None = None) -> tuple[C.Frame, list[C.Number]]:  # fmt: skip
-    """MAIN: the word, recalls in an inset. FULL: the word and the sentence, recalls beside, each with the layer-gap
-    rule's verdict (`rule`, from verdicts()) as a small grey word. `dose`: {subset: the dose-matched patch's Arm},
-    drawn as a third line (None until its predictions are opened)."""
+    """Per subset (MAIN: the word; FULL: the word and the sentence) the lookups panel and the recalls beside it; FULL
+    also names the subset and the layer-gap rule's verdict (`rule`, from verdicts()) as a small grey word. `dose`:
+    {subset: the dose-matched patch's Arm}, drawn as a third line (None until its predictions are opened)."""
     subs = ["w"] if kind == "main" else [s for s in ("w", "s") if s in data]
     cap = caption(kind, data, ctl, (dose or {}).get("w"))
-    if kind == "main":
-        fr = C.frame("main", title(data["w"]), SUBTITLE["main"], how=HOW, caption=cap, left=0.085, right=0.975)
-        pairs = [(fr.axes[0], None)]
-    else:
-        fr = C.frame("full", title(data["w"]), SUBTITLE["full"], how=HOW_FULL, caption=cap, nrows=len(subs), ncols=2,
-                     width_ratios=[3, 1], left=0.085, right=0.975, wspace=0.16, hspace=0.6)  # fmt: skip
-        PD.head_room(fr, C.LABEL * 1.2 + 8)  # the panel titles above the panels
-        pairs = [(fr.axes[2 * i], fr.axes[2 * i + 1]) for i in range(len(subs))]
+    sub_title = SUBTITLE["main" if kind == "main" else "full"]
+    fr = C.frame(kind, title(data["w"]), sub_title, how=HOW if kind == "main" else HOW_FULL, caption=cap,
+                 nrows=len(subs), ncols=2, width_ratios=[2.5, 1], left=0.085, right=0.975, wspace=0.3,
+                 hspace=0.6)  # fmt: skip
+    PD.head_room(fr, C.LABEL * 1.2 + 8)  # the panel titles above the panels
     nums: list[C.Number] = []
-    for i, (sub, (ax, side)) in enumerate(zip(subs, pairs, strict=True)):
+    for i, sub in enumerate(subs):
+        ax, side = fr.axes[2 * i], fr.axes[2 * i + 1]
         arms = data[sub]
         d = (dose or {}).get(sub)
         nums += band(ax, arms, label=True)
         for arm in [*arms.values(), *([d] if d else [])]:
-            nums += lines(ax, arm, "lookup", C.LOOKUP, 7, 2.6)
+            nums += lines(ax, arm, "lookup", 7, 2.6)
         last = i == len(subs) - 1
         axes_style(ax, last, "% of lookups switched", [12, 16, 20, 24, 28, 32])
         if kind == "full":
             ax.set_title(f"At the bridge's {PLACE[sub]}", loc="left", fontsize=C.LABEL, fontweight="bold", pad=8)
             if rule and sub in rule:
                 ax.set_title(f"layer-gap rule: {rule[sub]}", loc="right", fontsize=C.NOTE, color=C.CAPTION_INK, pad=8)
-        if side is None:  # MAIN: recalls in an inset over the empty upper right
-            nums += recall_axes(ax.inset_axes((0.775, 0.5, 0.215, 0.4)), arms, d, small=True)
-        else:
-            nums += recall_axes(side, arms, d, small=False)
-            if last:
-                side.set_xlabel("layer")
-        if i == 0:  # after the inset and the gap label, which the direct labels keep off
+        nums += recall_axes(side, arms, d, last, names=i == 0)
+        if i == 0:
             label_lines(ax, arms, d)
     return fr, nums
 

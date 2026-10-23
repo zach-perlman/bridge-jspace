@@ -73,9 +73,17 @@ def test_window_and_spans():
     ((lo, hi),) = d.spans()
     assert lo == pytest.approx(100 * (d.layers[2] + d.layers[3]) / 2 / 64)
     assert hi == pytest.approx(100 * (d.layers[4] + d.layers[5]) / 2 / 64)
+    # a one-layer window (half-steps: 9-11 of 64, 3.1% of depth) is widened about its middle to MIN_BAND, stopping
+    # 0.5% short of the next swept layer (12)
     one = PD.depth_of("27b", {10: collections.Counter(position=50, none=50), 12: collections.Counter(value=99, none=1)},
                       "x")  # fmt: skip
-    assert one.window == [10] and one.spans() == [(pytest.approx(100 * 9 / 64), pytest.approx(100 * 11 / 64))]
+    ((lo, hi),) = one.spans()
+    assert one.window == [10] and hi - lo == pytest.approx(PD.MIN_BAND) and lo < 100 * 9 / 64 and hi > 100 * 11 / 64
+    assert hi <= 100 * 12 / 64 - 0.5
+    tight = PD.depth_of("27b", {9: collections.Counter(none=100), 10: collections.Counter(position=50, none=50),
+                                11: collections.Counter(value=99, none=1)}, "x")  # fmt: skip
+    ((lo, hi),) = tight.spans()  # neighbours one layer away: clipped short of both
+    assert lo == pytest.approx(100 * 9 / 64 + 0.5) and hi == pytest.approx(100 * 11 / 64 - 0.5)
     # the digit's upper bound at the bar: not in the window, even though answers move
     near = PD.depth_of("27b", {10: collections.Counter(value=8, position=50, none=42)}, "x")
     assert near.window == []
@@ -83,9 +91,9 @@ def test_window_and_spans():
 
 def test_title_counts_models_without_a_window():
     data = synth_depth()
-    assert PD.title(data) == "Order or identity first, the donor's digit later"
+    assert PD.title(data) == "Same place or entity first, the copied digit later"
     data["muse"] = PD.depth_of("muse", {20: collections.Counter(none=300), 30: collections.Counter(value=300)}, "x")
-    assert PD.title(data) == "On 7 of 8 models: order or identity first, digit later"
+    assert PD.title(data) == "On 7 of 8 models: place or entity first, digit later"
 
 
 @pytest.mark.parametrize("kind", ["main", "full"])
@@ -176,6 +184,16 @@ def test_gap_arms_follow_the_rule(tmp_path: Path):
     assert [s for la, s in zip(lens.layers, lens.scale, strict=True) if la in (16, 22)] == [4.0, 4.0]  # ties: 4x
     assert LG.title(data["w"]) == "The full patch outlasts the lens push by 8 layers"
     assert LG.verdicts(p) == {"w": "holds", "s": "holds"}
+    # the stop rests on the 4x push alone (8x fails the off-path check); its recalls (70%) are not weak
+    assert LG.dose_caveat(lens) == "Only the 4x lens push is valid at 20–26: its stop may be dose"
+    weak = synth_summary()
+    for c in weak["cells"]:
+        if (c["family"], c["subset"], c["scale"], c["dir"]) == ("BR", "w", 4.0, "lens") and c["layer"] in (20, 22):
+            c["to_x"] = [0.08, 0.04, 0.15]
+    p.write_text(json.dumps(weak))
+    assert LG.dose_caveat(LG.load(p)["w"]["lens"]) == (
+        "Only the 4x lens push is valid at 20–26, moving 8% of recalls at 20–22: its stop may be dose"
+    )
     bad = synth_summary()
     bad["layer_gap"]["w"]["lens"]["stop"] = 22
     p.write_text(json.dumps(bad))
@@ -255,6 +273,9 @@ def test_gap_real_matches_the_run(tmp_path: Path):
     data = LG.load()
     assert (data["w"]["lens"].stop, data["w"]["patch"].stop) == (20, 28)
     assert LG.verdicts() == {"w": "holds", "s": "holds"}  # the summary's H-gap
+    assert LG.dose_caveat(data["w"]["lens"]) == (
+        "Only the 4x lens push is valid at 20–28, moving 6–10% of recalls at 20–22: its stop may be dose"
+    )
     LG.build("main", data, LG.controls(), None, tmp_path)
     recs = json.loads((tmp_path / "data" / "layer_gap_main.json").read_text())
     cells = {(c["family"], c["subset"], c["layer"], c["scale"], c["dir"]): c
