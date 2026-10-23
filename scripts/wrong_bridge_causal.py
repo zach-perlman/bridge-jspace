@@ -81,6 +81,7 @@ def answer_lp(model, prompt_ids: list[list[int]], answers: list[list[int]], edit
     return out
 
 
+@torch.no_grad()  # without it each lens dictionary keeps a vocab x d autograd graph (~5 GB per layer on the 27B)
 def main(a) -> None:
     pins.check_run_name(a.name)
     out_dir = OUT / a.name
