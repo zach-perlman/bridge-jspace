@@ -2,6 +2,17 @@
 
 Newest first. What changed in the claims, the runs and the rules; the README shows only the current state.
 
+## 23 Oct 2026, evening: README fixes for the TA call (Dan's brief)
+
+- Claim 1: a new rule, late-read v2, beside the old late-read rule: with the sentence hidden and no other route the null is near zero, not the guessing rate (20%). Gemma's and the 27B's long-text cells read "relay; v2 pending", not "fails", until v2 is in the grid; the relay evidence recomputed from raw rows: Gemma scene set 1 23% (last tokens), 15% (and the question), 2% (every token after the sentence), gemma4it_d2_v4_late_read_v3_r2; the 27B's long text 26%, then 11% with the question, DeltaNet layers blocked instead 100%, d2_late_read_long_27b_r3.
+- Claim 5: "never the lookup" became "from layer 20 on (27B), 6 (9B, OLMo-3), 33 (122B)": on the 122B two valid, selected cells move lookups (sentence, layer 27, 8x: 26%, recall 84%; layer 30, 8x: 18%, recall 83%; qwen35_122b_d4_where, decision.selected under rule v2, checked with early_push_where.cell_valid). A per-layer table of every sweep, valid cells only, added.
+- New section, the band at the word (Dan's main J-space claim): full patch at the word vs the lens push, valid cells only, the position marked per row; maps and pushes recomputed from raw rows; caveats: different scene sets except the 27B's layer gap, the patch not size-matched; an earlier draft's invalid cell (OLMo-3, word, layer 12, 8x, recall 89%) named.
+- The 122B section: "The open counter-example" became "The 122B difference" (the lookup follows the J-space form through layer 30, not at 33); "late binding" became "late switch"; layer 30 already measured in qwen35_122b_d1_topics2_parts (the lens part moves 16% of lookups at the sentence, 19% over the whole prompt); the mixture-of-experts caveat added beside the FP8 one; the test runs today on a rented 2x H100.
+- Claim 4 (the lens gate) became a methods note: no logit-lens or embedding baseline at the same cells. The J-space part without the bridge's own word added (parts runs, claim 6's test points): lookups 0-2% on the 27B, 9B and 122B; recalls 6-14% (27B), 17-18% (9B), 1-2% (122B); the same-share random part 0-7%.
+- Confidence rule: the README now says the "Holds on" counts include cells under 30 items (the builder counts every judged cell); Olmo-Hybrid's tables fail claim 1 by one item (21 of 24 kept with the DeltaNet layers blocked, 87.5% against the 90% bar).
+- Claim 7: Zach's 9B, 32B and Muse numbers (and "lookups lose at most 13 points") marked "quoted, not reproducible from this repo until Zach pushes"; only the 27B's run is on origin/zach/v8-breadth-1021. STATUS.md lists it under "Waiting on Zach".
+- One prior-work line per claim, pointing to docs/prior_art.md (ec2011a), and a Links entry.
+
 ## 23 Oct 2026, day
 
 - README rewritten for newcomers (Dan's guide): six main claims, a summary figure, one section per claim, generated from `docs/README.template.md` and the grid by `scripts/readme_build.py`. The run table moved to RUNS.md, the code mapping to docs/mapping.md, the datasets to docs/datasets.md, the night's notes here.

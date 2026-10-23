@@ -5,9 +5,9 @@
 
 > "Which locker belongs to the animal known for oinking?" The bridge is *pig*. The answer is the pig's locker number, stated in the prompt.
 
-**How to read this page.** Confidence words follow one fixed rule ([below](#confidence-and-verification)): strong, medium, open. "Verified" says who recomputed a number: a person, an independent agent, or nobody yet. Every number comes from the cross-model grid ([grid.md](results/cross_model/20261023T105852Z/grid.md)); every run is in [RUNS.md](RUNS.md).
+**How to read this page.** Confidence words follow one fixed rule ([below](#confidence-and-verification)): strong, medium, open. "Verified" says who recomputed a number: a person, an independent agent, or nobody yet. Every number comes from the cross-model grid ([grid.md](results/cross_model/20261023T105852Z/grid.md)) unless a run is named next to it; every run is in [RUNS.md](RUNS.md).
 
-> **Status, 23 Oct 2026.** Built at 526aaef from `results/cross_model/20261023T105852Z`. Exploration phase: no main claim is hand-verified yet. An independent agent recomputed claims 1-3, and claim 6 on the 27B, from raw rows: every cell matches. The hand check is today. Running on the A100: Gemma 4's lens tests, Qwen3-32B's tables and JSON, the 27B dose control. The one open counter-example is [the 122B](#the-open-counter-example-qwen35-122b).
+> **Status, 23 Oct 2026.** Built at 4881840 from `results/cross_model/20261023T105852Z`. Exploration phase: no main claim is hand-verified yet. An independent agent recomputed claims 1-3, and claim 6 on the 27B, from raw rows: every cell matches. The hand check is today. Running on the A100: Gemma 4's lens tests, Qwen3-32B's tables and JSON, the 27B dose control. On the 122B the lookup follows the J-space form to a later layer than on the other models ([below](#the-122b-difference)); its test runs today on a rented 2x H100.
 
 Eight models. Hybrids, which mix attention with DeltaNet layers: Qwen3.6-27B (27B), Qwen3.5-9B (9B), Olmo-Hybrid-7B (Olmo-Hybrid), Qwen3.5-122B (122B). Attention-only: Qwen3-32B (32B), OLMo-3-7B (OLMo-3), Muse 30B (Muse), Gemma 4 31B (Gemma).
 
@@ -21,8 +21,10 @@ Eight models. Hybrids, which mix attention with DeltaNet layers: Qwen3.6-27B (27
 | lens-readable part | The part of a change in hidden states that lies in the J-space |
 | lens push | Adding the lens's direction from one word to another (pig → cow) to a hidden state |
 | patch | Copying hidden states from another prompt into this one, at chosen tokens and one layer |
+| valid cell | A test point where the push or patch leaves questions off the bridge's path almost unchanged (at most 10% of them change) |
 | blocking | Stopping chosen tokens from attending to one sentence |
 | last tokens | The chat-template tokens after the user's text, up to the answer: 11 on the Qwen models, 7 on OLMo-3, as in every blocking run. Claim 3's patch copies only the last two |
+| relay | A route around a block: the answer reaches the last tokens through other tokens that still see the sentence |
 | positive control | A place where a method is known to work, so that a null result elsewhere means something |
 | scene set | A fresh batch of generated prompts with new lists and entities, drawn with a fixed seed |
 
@@ -31,36 +33,53 @@ Eight models. Hybrids, which mix attention with DeltaNet layers: Qwen3.6-27B (27
 | Claim | Evidence | Holds on | Confidence | Verified | Details |
 |---|---|---|---|---|---|
 | **How a lookup works** | | | | | |
-| The last tokens read the answer's sentence late, through attention, and take its digit | Blocking that read leaves 7% right on the 27B (chance 20%) | 5 of 8 models; Gemma, 27B long text, Olmo-Hybrid tables | medium | [agent re-check](verification/agent_check_finding4.md), [and](verification/agent_check_finding3.md) | [1](#1-the-last-tokens-read-the-answer-late-through-attention) · [2](#2-they-take-the-answers-digit-not-the-entitys-name) |
+| The last tokens read the answer's sentence late, through attention, and take its digit | Blocking that read leaves 7% right on the 27B; with no other route the right null is near zero, not the guessing rate | 5 of 8 models under the old bar; Gemma and the 27B's long text: relay, v2 pending; Olmo-Hybrid's tables miss by one item | medium | [agent re-check](verification/agent_check_finding4.md), [and](verification/agent_check_finding3.md) | [1](#1-the-last-tokens-read-the-answer-late-through-attention) · [2](#2-they-take-the-answers-digit-not-the-entitys-name) |
 | An order label picks the 1st and 2nd sentence; the bridge's identity picks the rest | On the 27B the label leads by +94 / +18 points (1st-2nd / later) | 7 of 8 models; 32B mixed | medium | [agent re-check](verification/agent_check_finding5.md) | [3](#3-an-order-label-picks-the-1st-and-2nd-sentence-the-bridges-identity-the-rest) |
 | **What the J-space does and doesn't carry** | | | | | |
-| The lens reads a stated bridge only at its own word | On the 27B: 95% at the word, 7% right after it | 7 of 7 lensed models | medium | none | [4](#4-the-lens-reads-a-stated-bridge-only-at-its-own-word) |
-| A lens push at the bridge's word writes recall, never the lookup | On the 122B: 0% of lookups move, 89% of recalls | 4 of 5 models with a valid test | medium | none | [5](#5-a-lens-push-at-the-bridges-word-writes-recall-never-the-lookup) |
-| The lens-readable part of a stated bridge moves recall, not the lookup | On the 27B it moves 38% of recalls and 1% of lookups; on the 122B, 29% of lookups | 2 of 4 models; fails on the 122B | medium | [agent re-check](verification/agent_check_finding2.md) (27B) | [6](#6-the-lens-readable-part-of-a-stated-bridge-moves-recall-not-the-lookup) |
-| Lookups don't need the J-space; how much recall needs it varies | Zach's rule on the 27B: recall loses +36 points more than lookups | 4 of 4 in Zach's runs; ours descriptive | medium | none | [7](#7-lookups-dont-need-the-j-space-recall-does-to-a-varying-degree) |
+| *Methods note, not a finding:* the lens reads a stated bridge at its own word | On the 27B: 95% at the word, 7% right after it; no logit-lens or embedding baseline yet | 7 of 7 lensed models at the word, 0 of 7 after it | – | none | [4](#4-methods-note-the-lens-reads-a-stated-bridge-at-its-own-word) |
+| A lens push at the bridge's word writes recall; the lookup ignores it from layer 20 on (27B), 6 (9B, OLMo-3), 33 (122B) | On the 122B at layer 33: 0% of lookups move, 89% of recalls; at layer 27, 26% of lookups ([per layer](#5-a-lens-push-writes-recall-the-lookup-ignores-it-from-a-models-own-layer-on)) | 4 of 5 models with a valid test | medium | none | [5](#5-a-lens-push-writes-recall-the-lookup-ignores-it-from-a-models-own-layer-on) |
+| The lens-readable part of a stated bridge moves recall, not the lookup | On the 27B it moves 38% of recalls and 1% of lookups; on the 122B, 29% of lookups | 2 of 4 models; fails on the 122B at layer 24 ([why](#the-122b-difference)) | medium | [agent re-check](verification/agent_check_finding2.md) (27B) | [6](#6-the-lens-readable-part-of-a-stated-bridge-moves-recall-not-the-lookup) |
+| Lookups don't need the J-space; how much recall needs it varies | Zach's rule on the 27B: recall loses +36 points more than lookups | 4 of 4 in Zach's runs, three of them quoted and not yet in this repo; ours descriptive | medium | none | [7](#7-lookups-dont-need-the-j-space-recall-does-to-a-varying-degree) |
 
 ![Every claim on every model](figures/cross_model/f_summary_heatmap.png)
 
 Every cell, its n and its interval: [grid.md](results/cross_model/20261023T105852Z/grid.md).
 
-## The open counter-example: Qwen3.5-122B
+## A band where the lookup needs the word but not its J-space form
 
-- **What we saw.** On the 122B, the lens-readable part of a stated bridge moves 29% of lookups and 38% of recalls. So at that point there is no lookup/recall split.
-- **Where.** The test point is the whole prompt at layer 24 of 48, chosen by a lens-free map. A lens push at the bridge's word, layer 33, moves 0% of lookups.
-- **Explanation 1: late binding.** The split appears later in depth than on the smaller models. The test at layer 24 is simply too early.
-- **Explanation 2: a real difference.** In the largest model, the lookup does use the lens-readable form.
-- **Also possible.** The 122B runs in FP8, while its lens was fit on bf16 weights.
-- **The planned test** (rule fixed before the run): the same test at layers 30, 33 and 36, with a random part of the same size as a control. Late binding holds if the lens part goes quiet on lookups (upper bound ≤ 5%), stays quiet later, and still moves recalls. The claim fails on the 122B if the lens part moves at least 20% of lookups at every later point.
+Dan's main J-space claim, read from runs already opened (not yet a grid rule): *at the stated bridge's word there is a band of layers where the lookup still depends on that position (the full patch at the word moves it), but not on the bridge's J-space form (the lens push moves no lookups), while a lens push there still writes recall.*
+
+| Model | Band (layers) | Full patch at the word → lookups | Lens push → lookups (valid cells; where, size) | Lens push → recalls (the same cells) | Runs |
+|---|---|---|---|---|---|
+| 27B | 20-26 | 65% at layer 20 → 24% at 26 | 0% (word 4x; sentence 8x); at the word the 8x push fails the off-path check at every band layer | 6-41% (word 4x), 65-93% (sentence 8x) | [patch and push, same scenes](results/early_push_where/d4_layer_gap_v2_27b/summary.json) |
+| 9B | 6-16 (the sweep starts at 6) | 74% → 17% | 0% at every valid cell, word and sentence; the 8x push is valid only at layer 6 | up to 40% (sentence, layer 12, 4x, scene set 2); scene set 1 stays under the recall bar | [map](results/statement_positions/qwen35_9b_d1_topics2_map/summary.md) · [push 1](results/early_push_where/qwen35_9b_d4_where/summary.json) · [push 2](results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json) |
+| OLMo-3 | 6-14 | 53% → 16% | 0% at the word (8x valid at 6, 8, 14), at most 2% at the sentence | up to 51% (word, layer 14, 8x) | [map](results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_map/summary.md) · [push](results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json) |
+| 122B | 33 (the last layer swept) | 44% | 0% (word 8x); 1% (sentence 8x) | 89% (word 8x) | [map](results/statement_positions/qwen35_122b_d1_topics2_map/summary.md) · [push](results/early_push_where/qwen35_122b_d4_where/summary.json) |
+
+- **Different scenes.** The maps use one kind of scene set (several topics), the pushes another (animals), except on the 27B, where the patch and the push ran on the same scenes. On the 27B's map the full patch at the word still moves 48% of lookups at layer 28 ([map](results/statement_positions/d1_topics2_map_27b/summary.md)), where it moves 0% on the push's scenes: where the band ends depends on the scenes.
+- **Size.** The full patch is not size-matched to the push, and in the 27B's band only the smaller push passes the off-path check at the word, so the push may stop because it is weak. Size-matched tests are pending (their predictions are committed).
+- **The 122B at layer 30.** At the word the push moves 0% of lookups there too (recalls 74%), but at the sentence it still moves 18%, and so does the lens-readable part ([next section](#the-122b-difference)); only layer 33 is clean on both.
+- **Valid cells only.** An earlier draft used cells that fail the off-path check (OLMo-3's 89% of recalls at the word, layer 12, 8x).
+- Prior work: the workspace paper (Gurnee et al. 2026) and two-hop recall resolving its bridge early (Biran et al., EMNLP 2024): [docs/prior_art.md](docs/prior_art.md#3-a-band-of-layers-where-the-lookup-ignores-the-lens-readable-form).
+
+## The 122B difference
+
+- **What we saw.** On the 122B the lookup follows the bridge's J-space form through layer 30 and not at 33. The lens push at the bridge's sentence moves 26% of lookups at layer 27 and 18% at 30 (recalls 84%, 83%; valid cells, [run](results/early_push_where/qwen35_122b_d4_where/summary.json)); at layer 33 it moves 0% at the word. The lens-readable part of a stated bridge moves 29% of lookups at layer 24 (the grid's test point, the whole prompt) and still 16% (sentence) and 19% (whole prompt) at layer 30 ([run](results/statement_positions/qwen35_122b_d1_topics2_parts/outcomes.jsonl)).
+- **Reading.** A difference in how long the lookup uses the J-space form, not a counter-example to the band above: the 122B's band starts later.
+- **The late-switch test** (rule fixed before the run; called "late binding" until 23 Oct, logic unchanged): the lens-readable part at the bridge's sentence and the whole prompt at layers 30, 33 and 36, with a random part of the same share as a control. Layer 30 is already measured (above), so 33 and 36 decide. The late switch holds if the lens part goes quiet on lookups (upper bound ≤ 5%), stays quiet later, and still moves recalls. Claim 6 fails on the 122B if the lens part moves at least 20% of lookups at every later point. It runs today on a rented 2x H100.
+- **Also possible.** The 122B runs in FP8, while its lens was fit on bf16 weights. It is also the only mixture-of-experts model here (about 10B parameters active per token), so a difference may come from its experts rather than its size.
 
 ## Findings
 
 ### 1. The last tokens read the answer late, through attention
 
-**Confidence:** medium (holds 5 of 8; 27B: long context fails; Olmo-Hybrid: table (24 items) fails, 2 can't tell; Gemma: scene set 1, scene set 2, prose, JSON fail). **Verified:** [agent re-check](verification/agent_check_finding4.md), every cell matches; hand check pending.
+**Confidence:** medium under the old rule (holds 5 of 8); Gemma and the 27B's long text read as a relay, v2 pending; Olmo-Hybrid's tables miss by one item. **Verified:** [agent re-check](verification/agent_check_finding4.md), every cell matches; hand check pending.
 
 **What we did**
 - Stopped the last tokens from attending to the answer's sentence, in every attention layer.
-- Counted the answers still right, against guessing among the list's digits.
+- Counted the answers still right.
+
+**Rules.** Old (late-read, fixed 22 Oct): at most 20% right with an upper bound of at most 30% (the guessing rate of a five-item list), while hiding another sentence keeps at least 90%. New (late-read v2, beside the old rule, being added to the grid): with the sentence hidden and no other route, the right null is near zero, not the guessing rate. Until v2 is in the grid, a cell above the old bar reads "relay; v2 pending".
 
 | Model | Setting | Result [95% CI] | n | Verdict | All settings |
 |---|---|---|---|---|---|
@@ -73,15 +92,23 @@ Every cell, its n and its interval: [grid.md](results/cross_model/20261023T10585
 | Muse 30B | scene set 2 | 1% [0, 3] | 300 | holds | 4 of 5 hold; prose (5 items): can't tell (a control failed) |
 | Gemma 4 31B | scene set 2 | 22% [17, 27] | 300 | fails | 2 of 6 hold; scene set 1: fails; scene set 2: fails; prose: fails; JSON: fails |
 
+Gemma's and the 27B's long-text "fails" above are the old rule's; read them as a relay, v2 pending.
+
+**The relay.** Blocking more tokens leaves fewer answers right:
+- Gemma, scene set 1: 23% with the last tokens blocked, 15% with the question's tokens blocked too, 2% with every token after the sentence blocked ([run](results/attn_knockout/gemma4it_d2_v4_late_read_v3_r2/rows.jsonl)). Gemma's other runs have no such arms.
+- The 27B's long text: 26%, then 11% with the question's tokens blocked too ([run](results/attn_knockout/d2_late_read_long_27b_r3/rows.jsonl)); blocking the DeltaNet layers instead keeps 100%.
+
 **Controls**
 - Another sentence blocked instead keeps 89-100% right.
 - On the hybrids, blocking the DeltaNet layers instead keeps 88-100% right.
 
 **Weak spots**
-- The bar is the guessing rate, so a lookup that drops to chance but not below fails the rule.
 - The long text is neutral filler, not a real document. A natural-text test is designed and waits for approval.
+- The 27B's long text keeps 11% even with the question blocked; no run blocks every token after the sentence there.
 
-**What it means.** On every model the lookup ends in an ordinary attention read of the answer's sentence.
+**What it means.** On every model the lookup ends in an ordinary attention read of the answer's sentence; where some answers survive the block, they come through other tokens.
+
+Prior work: retrieval heads (Wu et al., ICLR 2025), the recall gap of recurrent layers (Zoology, Arora et al., ICLR 2024; Bick et al., ICML 2025): [docs/prior_art.md](docs/prior_art.md#1-a-lookup-ends-with-a-late-attention-read-of-the-answers-sentence).
 
 ![Blocking the read](figures/cross_model/f_late_read_all_models.png)
 
@@ -112,6 +139,8 @@ Every cell, its n and its interval: [grid.md](results/cross_model/20261023T10585
 - Why the question's words read the name is not tested.
 
 **What it means.** The last tokens fetch the answer's digit; the name is looked up earlier.
+
+Prior work: lookbacks, an address then a payload (Prakash et al., ICLR 2026): [docs/prior_art.md](docs/prior_art.md#1-a-lookup-ends-with-a-late-attention-read-of-the-answers-sentence).
 
 ![Digit, not name](figures/cross_model/f_digit_not_name_all_models.png)
 
@@ -145,38 +174,29 @@ The numbers are two leads in points: place over identity for the 1st-2nd sentenc
 
 **What it means.** This matches lookback work in the middle of the list and differs at its end. It also holds when the bridge is recalled.
 
+Prior work: binding IDs (Feng & Steinhardt, ICLR 2024), ordering IDs (Dai et al., EMNLP 2024); Mixing Mechanisms (Gur-Arieh et al., ICLR 2026) finds a last-position peak that we do not see: [docs/prior_art.md](docs/prior_art.md#2-which-sentence-is-read-an-order-label-then-the-entitys-identity).
+
 ![Order, then identity](figures/cross_model/f_order_then_identity_all_models.png)
 
-### 4. The lens reads a stated bridge only at its own word
+### 4. Methods note: the lens reads a stated bridge at its own word
 
-**Confidence:** v1 holds on 7 of 7 lensed models, v2 fails on 7 of 7. **Verified:** none.
+**Not a finding.** The lens names the stated bridge at its own word on 7 of 7 lensed models (v1) and right after it on 0 of 7 (v2). Without a logit-lens or embedding baseline at the same cells, this describes the tool, not the model. **Verified:** none.
 
-**What we did**
-- Read the stated bridge with the lens, one test at its own word (v1) and one right after it (v2).
-- Every lens is a J++ fit: published ones, Zach's, and our own for the 32B and OLMo-3. Other lenses are listed beside in grid.md.
-- Pass: the bridge in the lens's top 10 on at least half of the items, the other bridge on at most a fifth.
+How it was read: the bridge must be in the lens's top 10 on at least half of the items, the other bridge (which reaches it on 0-18% of items) on at most a fifth. Every lens is a J++ fit (published, Zach's, or ours for the 32B and OLMo-3); per-model numbers and other lenses: [grid.md](results/cross_model/20261023T105852Z/grid.md).
 
-| Model | Setting | Result [95% CI] | n | Verdict | All settings |
-|---|---|---|---|---|---|
-| Qwen3.6-27B | at its word | 95% [86, 98] | 60 | holds | 1 of 2 hold; after its word: fails |
-| Qwen3.5-9B | at its word | 100% [94, 100] | 60 | holds | 1 of 2 hold; after its word: fails |
-| Qwen3.5-122B | at its word | 100% [94, 100] | 60 | holds | 1 of 2 hold; after its word: fails |
-| Qwen3-32B | at its word | 72% [59, 82] | 60 | holds | 1 of 2 hold; after its word: fails |
-| OLMo-3-7B | at its word | 100% [94, 100] | 60 | holds | 1 of 2 hold; after its word: fails |
-| Muse 30B | at its word | 95% [86, 98] | 57 | holds | 1 of 2 hold; after its word: fails |
-| Gemma 4 31B | at its word | 95% [86, 98] | 59 | holds | 1 of 2 hold; after its word: fails |
+**The J-space without the bridge's own word.** In claim 6's runs we also pasted the lens-readable part with the bridge's own word (and the other bridge's) taken out first. At claim 6's test points:
 
-Not tested: Olmo-Hybrid (no lens).
+| Model | Lookups moved | Recalls moved | Same-share random part: lookups / recalls | Runs (scene set 1, scene set 2, tables and JSON) |
+|---|---|---|---|---|
+| 27B | 0-2% | 6-14% | 0% / 0-2% | [1](results/statement_positions/d1_topics_parts_27b/outcomes.jsonl) · [2](results/statement_positions/d1_topics2_parts_27b/outcomes.jsonl) · [3](results/statement_positions/d1_formats_parts_27b/outcomes.jsonl) |
+| 9B | 0% | 17-18% | 0-1% / 2-7% | [2](results/statement_positions/qwen35_9b_d1_topics2_parts/outcomes.jsonl) · [3](results/statement_positions/qwen35_9b_d1_formats_parts/outcomes.jsonl) |
+| 122B | 0-1% | 1-2% | 1% / 2% | [2](results/statement_positions/qwen35_122b_d1_topics2_parts/outcomes.jsonl) · [3](results/statement_positions/qwen35_122b_d1_formats_parts/outcomes.jsonl) |
 
-**Controls**
-- The other bridge in the same scene reaches the top 10 on 0-18% of items.
+The whole lens-readable part moves 9-66% of recalls across models and settings (claim 6).
 
-**Weak spots**
-- One run per model.
+Prior work: the J-lens and the workspace (Gurnee et al. 2026): [docs/prior_art.md](docs/prior_art.md#3-a-band-of-layers-where-the-lookup-ignores-the-lens-readable-form).
 
-**What it means.** "The lens-readable part" in claims 5 and 6 is the bridge word's form at its position.
-
-### 5. A lens push at the bridge's word writes recall, never the lookup
+### 5. A lens push writes recall; the lookup ignores it from a model's own layer on
 
 **Confidence:** medium (holds 4 of 5; Muse: main rule, amended rule can't tell). **Verified:** none.
 
@@ -194,6 +214,25 @@ Not tested: Olmo-Hybrid (no lens).
 
 Not tested: Olmo-Hybrid (no lens), 32B (still running), Gemma (still running).
 
+**Per layer.** The lookup stops following the push from layer 20 on the 27B, from 6 (the first layer swept) on the 9B and OLMo-3, and at 33 on the 122B, where it still follows at 27-30 (table below).
+
+<details><summary>Lookups and recalls the push moves, per layer (valid cells only)</summary>
+
+Each entry: the layer, then the largest share of lookups / of recalls switched over that layer's valid cells (the word or its sentence, any size), in %. † some cells at that layer fail the off-path check and are left out; – no valid cell; bold: a valid cell moves lookups (lower bound over 5%).
+
+| Model, run | Per layer: lookups / recalls |
+|---|---|
+| 27B, scene set 1 ([run](results/early_push_where/d4_where_fresh_27b/summary.json)) | L12 0/14 · **L16 30/84** · L20 0/69† · L24 0/47† · L28 0/70† · L32 0/40† · L36 0/65 · L40 0/4 · L44 0/7 |
+| 27B, scene set 2 ([run](results/early_push_where/d4_where_fresh_seed2_27b/summary.json)) | L12 0/18 · **L16 19/83** · L20 0/65† · L24 0/84† · L28 0/65† · L32 0/34† · L36 0/59 · L40 0/1 · L44 0/2 |
+| 27B, layer gap, 4x and 8x ([run](results/early_push_where/d4_layer_gap_v2_27b/summary.json)) | L12 0/18 · L14 9/67 · **L16 19/83** · **L18 11/76** · L20 0/65† · L22 0/10† · L24 0/84† · L26 0/93† · L28 0/65† · L30 –† · L32 –† · L34 –† |
+| 9B, scene set 1 ([run](results/early_push_where/qwen35_9b_d4_where/summary.json)) | L6 0/26 · L8 0/5† · L10 0/7† · L12 0/2† · L14 0/10† · L16 0/18† · L18 0/14† · L20 0/2† · L22 0/13† |
+| 9B, scene set 2 ([run](results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json)) | L6 0/27† · L8 0/4† · L10 0/6† · L12 0/40† · L14 0/9† · L16 0/19† · L18 0/10† · L20 0/2† · L22 0/2† |
+| OLMo-3 ([run](results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json)) | L6 2/4 · L8 0/11 · L10 1/32† · L12 0/34† · L14 0/51 · L16 0/27 · L18 0/5 · L20 0/0 · L22 0/0 |
+| 122B ([run](results/early_push_where/qwen35_122b_d4_where/summary.json)) | L9 0/1 · L12 0/1 · L15 0/1 · L18 0/6 · L21 0/27 · L24 0/32 · **L27 26/84** · **L30 18/83** · L33 1/89 |
+| Muse, 23 items ([run](results/early_push_where/muse30b_d4_where/summary.json)) | L10 0/4 · L13 0/9 · L16 0/30 · L20 0/35† · L23 0/4† · L26 0/26† · L29 0/13† · L33 0/35 · L36 0/0 |
+
+</details>
+
 **Controls**
 - A random push of the same size moves 0% of lookups.
 - Questions whose bridge is not on that sentence must not move (at most 10%).
@@ -201,12 +240,13 @@ Not tested: Olmo-Hybrid (no lens), 32B (still running), Gemma (still running).
 **Weak spots**
 - One topic and strong pushes, up to eight times a typical change.
 - On the 27B's first scene set the rule picked an early layer, where the lookup moved too.
+- On the 9B the strong pushes fail the off-path check at most layers; its valid cells move at most 40% of recalls.
 
-**What it means.** From about a third of the depth on, the lens writes a stated bridge for recall, and the lookup ignores it.
+**What it means.** The lens writes a stated bridge for recall on every model with a valid test. Whether the lookup follows depends on depth: it does around layer 16 on the 27B and at 27-30 on the 122B, and not after that (per layer above).
+
+Prior work: the J-space carries multi-step reasoning from about a third of the depth on (Gurnee et al. 2026): [docs/prior_art.md](docs/prior_art.md#3-a-band-of-layers-where-the-lookup-ignores-the-lens-readable-form).
 
 ![Lens push](figures/cross_model/f_lens_push_recall_not_lookup_all_models.png)
-
-On the 27B, the full patch keeps moving lookups 8 layers after the lens push stops ([figure](figures/cross_model/f_layer_gap_lens_vs_patch_27b.png); its own run, not a grid cell). But at those layers only the smaller lens push passes the check on questions off the bridge's path, and it barely moves recalls there. So the lens push may stop because it is weak. A size-matched control is running.
 
 ### 6. The lens-readable part of a stated bridge moves recall, not the lookup
 
@@ -233,10 +273,12 @@ Not tested: Olmo-Hybrid (no lens), OLMo-3 (too few usable scenes), Muse (too few
 **Also:** a lens push at the same point writes 0% of lookups on the 27B, and 29% on the 122B.
 
 **Weak spots**
-- The 122B fails; see [the counter-example](#the-open-counter-example-qwen35-122b).
+- The 122B fails at layer 24; see [the 122B difference](#the-122b-difference).
 - On the 27B and 9B a random part of the same size moves lookups as little as the lens part does. So the claim is the contrast, not "the lens part is special for lookups".
 
 **What it means.** On the 27B and 9B, the lens-readable part moves recall far beyond its size, and lookups not at all. The lookup takes the stated bridge from the rest.
+
+Prior work: the workspace paper and two-hop recall (Gurnee et al. 2026; Biran et al., EMNLP 2024): [docs/prior_art.md](docs/prior_art.md#3-a-band-of-layers-where-the-lookup-ignores-the-lens-readable-form).
 
 ![The lens-readable part](figures/cross_model/f_lookup_ignores_lens_part_all_models.png)
 
@@ -259,15 +301,17 @@ Not tested: Olmo-Hybrid (no lens), OLMo-3 (too few usable scenes), Muse (too few
 
 Not tested: Olmo-Hybrid (no lens), Gemma (still running).
 
-**Zach's runs, quoted from his plan (one scene set; not on his pushed branch):** the recall-minus-lookup gaps are 36, 38, 22 and 7 points on 27B, 9B, 32B and Muse. Lookups lose at most 13 points.
+**Zach's runs, quoted from his plan, not reproducible from this repo until Zach pushes them** (one scene set): the recall-minus-lookup gaps are 36, 38, 22 and 7 points on 27B, 9B, 32B and Muse. Lookups lose at most 13 points. Only the 27B's run is on his pushed branch (the grid cell above).
 
 **Why the two tests differ.** His cut is smaller and chosen on held-out items; ours removes the whole J-space. His tasks score points lost; ours score answers still right.
 
-**What it means.** Lookups don't need the J-space on any model tested. Recall needs it on the hybrid Qwens, less on the 32B, barely on Muse.
+**What it means.** On Zach's quoted numbers, lookups don't need the J-space on any model tested, and recall needs it on the hybrid Qwens, less on the 32B, barely on Muse.
+
+Prior work: the workspace paper lists one-step factual recall as bypassing the J-space, while our recall is two-hop, their multi-step case (Gurnee et al. 2026): [docs/prior_art.md](docs/prior_art.md#3-a-band-of-layers-where-the-lookup-ignores-the-lens-readable-form).
 
 ## Confidence and verification
 
-**Confidence rule** (fixed before the grid was opened). Strong: holds on three or more models of both kinds, on two scene sets for two of them, with no failing cell. Open: fails on as many models as it holds on. Medium: everything else. Cells with fewer than 30 items are marked "too few items"; their verdicts are unchanged.
+**Confidence rule** (fixed before the grid was opened). Strong: holds on three or more models of both kinds, on two scene sets for two of them, with no failing cell. Open: fails on as many models as it holds on. Medium: everything else. Cells with fewer than 30 items are marked "too few items"; their verdicts are unchanged, and the "Holds on" counts include them. Example: Olmo-Hybrid's tables fail claim 1 by one item, the DeltaNet layers blocked keeping 21 of 24 (88%) against a bar of at least 90% ([run](results/attn_knockout/olmo_hybrid_7b_d2_formats/rows.jsonl)).
 
 **Verification marks.** Hand: a person recomputed it from raw rows ([VERIFIED.md](VERIFIED.md)). Agent re-check: an independent agent recomputed it ([verification/](verification/)). None: agent analysis only.
 
@@ -277,10 +321,11 @@ Not tested: Olmo-Hybrid (no lens), Gemma (still running).
 |---|---|---|---|
 | The lens-readable part is just small | Paste a random part of the same size instead | It moves 0-1% of lookups and 0-8% of recalls, so the lens part's effect on recall is not its size | checked |
 | FP8 weights vs a lens fit on bf16 (122B) | None yet | – | open |
+| The 122B is the only mixture-of-experts model | None yet | – | open |
 | A weak lens | Lens gate and held-out word-reading score per lens ([lens table](results/cross_model/20261023T105852Z/grid.md)) | A better fit passes the gate on the 32B, but the 32B's recall control still fails | partly checked |
 | The patch only shifts position | A random patch of the same size | Clean on all models but Gemma, in runs before 23 Oct (not in the grid) | checked, outside the grid |
 | The patch copies any digit | Each answer is a different digit; the test layer is where the patched prompt's own digit is still rare | By design | checked |
-| A lookup at chance vs below chance | The rule's bar is the guessing rate of a five-item list | Gemma and the 27B's long text stop at chance. Tables and JSON list three facts, so chance there is 33%; the bar was kept, which is stricter there | reported |
+| Some lookups avoid the late read (answers survive the block) | Block more tokens | Fewer survive: a relay through other tokens ([claim 1](#1-the-last-tokens-read-the-answer-late-through-attention)). Tables and JSON list three facts, so the old bar's guessing rate there is 33% | relay; v2 pending |
 | One scene set | Claims 1-3 on three scene sets; the lens push on two | Same verdicts across sets | partly checked |
 
 ## Choices made after seeing the data
@@ -291,10 +336,15 @@ Not tested: Olmo-Hybrid (no lens), Gemma (still running).
 | Claim 3: layer 50 on the 27B | 21 Oct | Chosen after its first runs | Repeated on two more scene sets |
 | Claim 5: a second rule from about a third of the depth on | 22 Oct | The first rule picked an early layer | Both rules reported; the first stays the main one |
 | Claim 1: the first scene set judged by the rule fixed for the second | 22 Oct | The first runs used an older rule | Accepted by Dan |
-| Claim 1: "at chance" for a lookup that drops to guessing, not below | 23 Oct | The bar is the guessing rate | Footnoted, the verdict unchanged |
+| Claim 1: "at chance" for a lookup that drops to guessing, not below; then the null near zero, not the guessing rate (late-read v2, beside the old rule) | 23 Oct | The bar is the guessing rate; blocking more tokens leaves fewer right (a relay) | Footnoted first; now "relay; v2 pending" until v2 is in the grid |
 | The lens gate after the word (v2) | 22 Oct | v1 read sat on the bridge's own word | Added before any v2 run |
+| Claim 4 becomes a methods note | 23 Oct | No logit-lens or embedding baseline at the same cells | Numbers kept; the J-space without the own word added |
+| Claim 5: "never" becomes "from a model's own layer on" | 23 Oct | Two valid cells on the 122B move lookups | Per-layer table, valid cells only |
+| The band at the word (new section) | 23 Oct | Read from runs already opened, on two kinds of scene sets | Descriptive; size-matched tests pending |
+| The 122B: "counter-example" becomes "difference"; "late binding" becomes "late switch" | 23 Oct | Its lookup uses the J-space form longer, then stops | The test's rule unchanged |
 | Our J++ fits as the main lens (32B, OLMo-3) | 23 Oct | The plain J-lens fails the 32B's gate | Other lenses listed beside, never switched in |
 | Claim 7: our removal shown with an interval | 23 Oct | It has no committed rule | Shown as descriptive |
+| Claim 7: Zach's unpushed numbers marked "quoted" | 23 Oct | Not on his pushed branch | Reproducible once he pushes |
 | Gemma's stated-bridge runs: fewer scenes than planned | 23 Oct | Misaligned scenes are skipped | Recorded as a deviation |
 | "Too few items" for cells under 30 | 23 Oct | Small cells decided labels | Display only; verdicts unchanged |
 | The label's counting read by setting | 23 Oct | The settings disagree | Both reported |
@@ -308,8 +358,9 @@ Only steps that change a claim or its confidence.
 | Step | What it decides | Rule fixed? | Cost | Status | Owner |
 |---|---|---|---|---|---|
 | Hand check of claims 1-3 and 6 (27B) | Their "verified" mark | – | 1-2 hours | Packets ready: [verification/](verification/) (claim, recompute script, checklist) | Dan, Zach |
-| A random part of the same size for claim 6 | Whether "the lens part is special" or only the lookup/recall contrast holds | yes | CPU | Done: the contrast is the claim | agent |
-| The 122B late-binding test | Claim 6 on the largest model | yes | 1.5 GPU-hours, a rented H200 | Waits for a box and Dan's predictions | agent |
+| The late-read v2 rule in the grid | Claim 1 on Gemma and the 27B's long text | being written | CPU | Being added to the grid | agent |
+| The 122B late-switch test | Claim 6 on the largest model | yes | 1.5 GPU-hours, a rented 2x H100 | Runs today | agent |
+| Size-matched patch, with and without its J-space part | Whether the band is the form or the size | yes | – | Predictions committed; results pending | agent |
 | Claim 1 on natural text | Whether the late read holds beyond generated lists | being written | ~4 GPU-hours | Design waits for approval | agent |
 | The layer gap on the 9B | Whether claim 5's gap is general | yes | ~1 GPU-hour | Waits for Dan's predictions | agent |
 | Slides | – | – | – | After the checks | Dan |
@@ -318,4 +369,4 @@ Timeline: update to Neel on Sat 24 Oct; write-up Wed-Fri 28-30 Oct.
 
 ## Links
 
-[grid.md](results/cross_model/20261023T105852Z/grid.md) · [RUNS.md](RUNS.md) · [CHANGELOG.md](CHANGELOG.md) · [predictions and scorecard](predictions/) · [VERIFIED.md](VERIFIED.md) · [docs/mapping.md](docs/mapping.md) · [docs/datasets.md](docs/datasets.md) · [DEVELOPER.md](DEVELOPER.md) · [run log](EXPERIMENTS.md) · [plan (Google Doc)](https://docs.google.com/document/d/1bqqdXePTUXQGlowVjk73sPfJkbV_tsu0RNNX-BiTYUc/edit?usp=drivesdk) · [older README with every number](README_archive.md)
+[grid.md](results/cross_model/20261023T105852Z/grid.md) · [RUNS.md](RUNS.md) · [CHANGELOG.md](CHANGELOG.md) · [STATUS.md](STATUS.md) · [prior work](docs/prior_art.md) · [predictions and scorecard](predictions/) · [VERIFIED.md](VERIFIED.md) · [docs/mapping.md](docs/mapping.md) · [docs/datasets.md](docs/datasets.md) · [DEVELOPER.md](DEVELOPER.md) · [run log](EXPERIMENTS.md) · [plan (Google Doc)](https://docs.google.com/document/d/1bqqdXePTUXQGlowVjk73sPfJkbV_tsu0RNNX-BiTYUc/edit?usp=drivesdk) · [older README with every number](README_archive.md)
