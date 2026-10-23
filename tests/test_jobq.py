@@ -35,12 +35,28 @@ def test_validate_accepts_a_full_spec_and_names_each_problem():
     assert jobq.validate(spec(), Path("jobs/d2/t_ok_v1.yaml")) == []
     errors = jobq.validate(spec(id="Bad-Id", hypotheses={}, gpus=2, typo=1), Path("jobs/d2/x.yaml"))
     joined = " | ".join(errors)
-    for needle in ("id 'Bad-Id'", "'hypotheses' is empty", "single-GPU", "unknown key 'typo'", "<id>.yaml"):
+    for needle in ("id 'Bad-Id'", "'hypotheses' is empty", "BJ_DEVICE_MAP", "unknown key 'typo'", "<id>.yaml"):
         assert needle in joined
     no_rule = spec()
     del no_rule["decision_rule"]
     assert jobq.validate(no_rule) == ["missing 'decision_rule'"]
     assert jobq.validate(spec(gpus=True)) == ["'gpus' must be int"]
+
+
+def test_validate_multi_gpu_jobs_must_split_the_model():
+    split = "BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python x.py"
+    assert jobq.validate(spec(gpus=2, command=split)) == []
+    assert jobq.validate(spec(gpus=2, command="uv run python x.py")) == [
+        "gpus: 2 needs a command that splits the model over them (BJ_DEVICE_MAP=auto)"
+    ]
+    assert jobq.validate(spec(gpus=0)) == ["'gpus' must be >= 1"]
+
+
+def test_gpu_list_and_tag():
+    assert jobq.gpu_list(0) == [0] and jobq.gpu_list("0,1") == [0, 1] and jobq.gpu_list([2, 3]) == [2, 3]
+    assert jobq.gpu_tag([0, 1]) == "0-1" and jobq.gpu_tag([3]) == "3"
+    with pytest.raises(ValueError, match="once each"):
+        jobq.gpu_list("0,0")
 
 
 def test_draft_row_leaves_result_and_verdict_to_a_human():
@@ -142,6 +158,67 @@ def test_claim_is_exclusive(box):
     [path] = jobq.jobs_in(root, "pending")
     assert jobq.claim(path, root) is not None
     assert jobq.claim(path, root) is None
+
+
+def fake_gpus(monkeypatch, free_mib: dict[int, float], used_mib: float = 1024.0, name: str = "NVIDIA H100 PCIe"):
+    """nvidia-smi faked per GPU: memory.free, memory.used and the name."""
+
+    def query(gpu, field):
+        return {"memory.free": str(free_mib[gpu]), "memory.used": str(used_mib), "name": name}[field]
+
+    monkeypatch.setattr(jobq, "gpu_query", query)
+
+
+def test_a_two_gpu_job_waits_for_a_worker_with_two_gpus_and_their_total_memory(box, monkeypatch):
+    """The 122B in FP8 (~125 GB) on 2x H100 80 GB: mem_gb is the total over the job's GPUs, so 135 fits two idle cards
+    (2 x ~79.6 GB free) and never one; a one-GPU worker passes the job over and takes the one-GPU job behind it."""
+    root, enqueue = box
+    fake_gpus(monkeypatch, {0: 81000.0, 1: 81000.0})
+    enqueue(1, id="t_two_v1", gpus=2, mem_gb=135, command="BJ_DEVICE_MAP=auto python3 write.py t_two_v1")
+    enqueue(2, id="t_one_v1", gpus=1, mem_gb=70)
+    path, _ = jobq.pick(root, [0, 1])
+    assert path is not None and path.name.endswith("t_two_v1.json")
+    path, why = jobq.pick(root, 0)  # one GPU: the two-GPU job is left to a worker that has two
+    assert path is not None and path.name.endswith("t_one_v1.json")
+    path, why = jobq.pick(root, [1])
+    assert path is not None and path.name.endswith("t_one_v1.json")
+    fake_gpus(monkeypatch, {0: 81000.0, 1: 40000.0})  # 118 GB free in total: the head job waits, FIFO holds
+    path, why = jobq.pick(root, [0, 1])
+    assert path is None and why == "t_two_v1: needs 135 GB free on GPU 0-1, 118 GB free"
+    for p in jobq.jobs_in(root, "pending"):
+        if p.name.endswith("t_one_v1.json"):
+            p.unlink()
+    path, why = jobq.pick(root, 0)
+    assert path is None and why == "t_two_v1: needs 2 GPUs, a worker on GPU 0 has 1"
+
+
+def test_a_two_gpu_worker_runs_the_job_on_both_gpus_and_records_them(box, monkeypatch):
+    root, enqueue = box
+    fake_gpus(monkeypatch, {0: 81000.0, 1: 81000.0}, used_mib=1024.0)
+    cmd = "BJ_DEVICE_MAP=auto python3 write.py t_two_v1 && echo $CUDA_VISIBLE_DEVICES > results/toy/t_two_v1/cvd.txt"
+    enqueue(1, id="t_two_v1", gpus=2, mem_gb=135, command=cmd)
+    jobq.worker([0, 1], root, once=True)
+    [rec] = jobq.read_ledger(root)
+    assert rec["status"] == "done", rec.get("error")
+    assert (rec["gpu"], rec["gpu_ids"], rec["gpu_name"]) == (0, [0, 1], "2x NVIDIA H100 PCIe")
+    assert rec["baseline_mem_gb"] == 2.0  # 1 GB on each of the two
+    assert (root / "results/toy/t_two_v1/cvd.txt").read_text().strip() == "0,1"
+    enqueue(2, id="t_one_v1", gpus=1, mem_gb=70, command="python3 write.py t_one_v1 && echo $CUDA_VISIBLE_DEVICES > "
+            "results/toy/t_one_v1/cvd.txt")  # fmt: skip
+    jobq.worker([0, 1], root, once=True)  # a one-GPU job on a two-GPU worker gets its first GPU only
+    assert jobq.read_ledger(root)[-1]["gpu_ids"] == [0]
+    assert (root / "results/toy/t_one_v1/cvd.txt").read_text().strip() == "0"
+
+
+def test_mem_sampler_peaks_are_the_total_and_per_gpu(monkeypatch):
+    used = {0: "30000", 1: "50000"}
+    monkeypatch.setattr(jobq, "gpu_query", lambda gpu, field: used[gpu])
+    s = jobq.MemSampler([0, 1])
+    s.sample()
+    used[0], used[1] = "70000", "10000"
+    s.sample()
+    assert s.stop() == round(80000 / 1024, 1)  # the peak of the total (both samples total 80000 MiB)
+    assert s.per_gpu() == [round(70000 / 1024, 1), round(50000 / 1024, 1)]
 
 
 def test_job_page_shows_preregistration_timing_and_examples(tmp_path):

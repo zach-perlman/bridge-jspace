@@ -10,6 +10,12 @@ examples took, the exit code and the GPU's peak memory. On success it runs the j
 EXPERIMENTS.md row (verdict left to a human). `pull` brings results, logs, the ledger and the drafts back; the job
 pages in examples/ (`make examples-render`) show each job's pre-registration, timing and worked examples.
 
+Several GPUs per job (23 Oct, the 122B on 2x H100 80 GB): a worker owns one GPU (--gpu N) or several (--gpus 0,1;
+tmux jobq-gpu0-1). A job with `gpus: k` runs on the first k GPUs of a worker that owns at least k (CUDA_VISIBLE_DEVICES
+lists them; its command splits the model over them, BJ_DEVICE_MAP=auto, which the spec check requires); a worker with
+fewer GPUs passes it over. `mem_gb` is the free memory the job needs in total over its k GPUs, and the peak recorded is
+the total too (per GPU in peak_mem_gb_per_gpu). A worker's GPUs are its own: no other worker may own one of them.
+
 Box layout (~/jobq): repo.git, pending/ running/ done/ failed/ cancelled/ (one JSON per job), runs/<id>/log.txt
 (and runs/<id>/code/, the checkout, removed after the run), results/ (every job's new results dirs), ledger.jsonl,
 drafts/<id>.md, worker-gpu<N>.log, archive/<state>/ (finished records moved out of the listing by `archive`). Jobs
@@ -17,7 +23,7 @@ read earlier jobs' results: results/ is copied into each checkout first.
 
     uv run python -m scripts.jobq validate jobs/d2/d2_ko_v1.yaml     # spec check, no box needed
     uv run python -m scripts.jobq enqueue jobs/d2/d2_ko_v1.yaml      # committed tree only; new ids and run names
-    uv run python -m scripts.jobq status | pull | cancel ID | archive | start-worker [--gpu N]
+    uv run python -m scripts.jobq status | pull | cancel ID | archive | start-worker [--gpu N | --gpus 0,1]
     python3 ~/jobq/jobq.py worker --gpu 0                             # on the box (stdlib only: system python3)
 """
 
@@ -60,7 +66,7 @@ OPTIONAL: dict[str, tuple[type, ...]] = {
     "depends_on": (list,),  # job ids that must be done first (their results are copied in)
     "examples_command": (str,),  # run after a successful command; writes the run's examples.json
     "figures_command": (str,),  # run after examples; writes the run's figures into a new analysis-*/ folder
-    "mem_gb": (int, float),  # free GPU memory the job needs before it starts (default DEFAULT_MEM_GB)
+    "mem_gb": (int, float),  # free GPU memory the job needs before it starts, in total over its gpus (DEFAULT_MEM_GB)
     "notes": (str,),
     "title": (str,),  # the run's plain name, shown instead of its id (jobs/titles.yaml for older runs)
 }
@@ -105,8 +111,13 @@ def validate(spec: Any, path: Path | None = None) -> list[str]:
         errors.append(f"id {spec['id']!r} must match {ID_RE.pattern}")
     if path is not None and isinstance(spec.get("id"), str) and path.stem != spec["id"]:
         errors.append(f"file name {path.name!r} must be <id>.yaml ({spec['id']}.yaml)")
-    if spec.get("gpus") not in (None, 1) and isinstance(spec.get("gpus"), int):
-        errors.append("gpus: only single-GPU jobs are supported so far")
+    gpus = spec.get("gpus")
+    if isinstance(gpus, int) and not isinstance(gpus, bool):
+        if gpus < 1:
+            errors.append("'gpus' must be >= 1")
+        elif gpus > 1 and "BJ_DEVICE_MAP=" not in str(spec.get("command", "")):
+            # without it the model loads onto the first GPU alone and the others sit idle (bridge_jspace.model)
+            errors.append(f"gpus: {gpus} needs a command that splits the model over them (BJ_DEVICE_MAP=auto)")
     return errors
 
 
@@ -295,10 +306,26 @@ def cmd_archive() -> int:
     return 0
 
 
-def cmd_start_worker(gpu: int) -> int:
+def gpu_list(gpus: int | str | list[int]) -> list[int]:
+    """A worker's GPUs: 0, "0,1" or [0, 1] -> [0, 1] (distinct, in the given order)."""
+    if isinstance(gpus, int):
+        return [gpus]
+    out = [int(g) for g in gpus.split(",")] if isinstance(gpus, str) else list(gpus)
+    if not out or len(set(out)) != len(out):
+        raise ValueError(f"GPUs must be listed once each: {gpus!r}")
+    return out
+
+
+def gpu_tag(gpus: list[Any]) -> str:
+    """The worker's name on the box: jobq-gpu<tag>, worker-gpu<tag>.log ("0", or "0-1" for GPUs 0 and 1)."""
+    return "-".join(map(str, gpus))
+
+
+def cmd_start_worker(gpus: list[int]) -> int:
     _install_box_script()
-    s = f"jobq-gpu{gpu}"
-    run = f"python3 ~/{BOX_ROOT}/jobq.py worker --gpu {gpu} 2>&1 | tee -a ~/{BOX_ROOT}/worker-gpu{gpu}.log"
+    tag, arg = gpu_tag(gpus), ",".join(map(str, gpus))
+    s = f"jobq-gpu{tag}"
+    run = f"python3 ~/{BOX_ROOT}/jobq.py worker --gpus {arg} 2>&1 | tee -a ~/{BOX_ROOT}/worker-gpu{tag}.log"
     _ssh(f"tmux has-session -t {s} 2>/dev/null || tmux new-session -d -s {s} bash -c '{run}; exec bash'")
     print(f"worker {s} on {HOST}: ssh {HOST} -t tmux attach -t {s}")
     return 0
@@ -356,14 +383,28 @@ def gpu_query(gpu: int, field: str) -> str | None:
     return out.stdout.strip() if out.returncode == 0 else None
 
 
-def gpu_free_gb(gpu: int) -> float | None:
-    v = gpu_query(gpu, "memory.free")
-    return float(v) / 1024 if v else None
+def gpu_free_gb(gpus: int | list[int]) -> float | None:
+    """Free memory in total over the GPUs (GB); None if any of them cannot be read."""
+    free = [gpu_query(g, "memory.free") for g in gpu_list(gpus)]
+    return None if not all(free) else sum(float(v) for v in free if v) / 1024
 
 
-def pick(root: Path, gpu: int, check_mem: bool = True) -> tuple[Path | None, str]:
-    """The first pending job whose dependencies are done, if the GPU has its memory; else (None, why waiting).
-    First in, first out among ready jobs: a big job is never skipped for a smaller one behind it."""
+def box_gpus() -> list[int]:
+    """Every GPU on this box ([0] without nvidia-smi)."""
+    try:
+        out = subprocess.run(["nvidia-smi", "--query-gpu=index", "--format=csv,noheader"], capture_output=True,
+                             text=True, timeout=30, check=True).stdout.split()  # fmt: skip
+    except (OSError, subprocess.SubprocessError):
+        return [0]
+    return [int(g) for g in out] or [0]
+
+
+def pick(root: Path, gpus: int | list[int], check_mem: bool = True) -> tuple[Path | None, str]:
+    """The first pending job whose dependencies are done and that fits this worker, if its GPUs have the job's memory
+    (mem_gb, in total over the job's first `gpus` GPUs of the worker); else (None, why waiting). First in, first out
+    among ready jobs: a big job is never skipped for a smaller one behind it; a job needing more GPUs than the worker
+    owns is left to a worker that has them."""
+    own = gpu_list(gpus)
     status = {r["id"]: r["status"] for r in read_ledger(root)}
     waiting = []
     for path in jobs_in(root, "pending"):
@@ -375,10 +416,14 @@ def pick(root: Path, gpu: int, check_mem: bool = True) -> tuple[Path | None, str
         if missing := [d for d in deps if status.get(d) != "done"]:
             waiting.append(f"{spec['id']}: waiting for {missing}")
             continue
+        k = int(spec.get("gpus", 1))
+        if k > len(own):
+            waiting.append(f"{spec['id']}: needs {k} GPUs, a worker on GPU {gpu_tag(own)} has {len(own)}")
+            continue
         need = float(spec.get("mem_gb", DEFAULT_MEM_GB))
-        free = gpu_free_gb(gpu) if check_mem else None
+        free = gpu_free_gb(own[:k]) if check_mem else None
         if free is not None and free < need:
-            return None, f"{spec['id']}: needs {need:.0f} GB free on GPU {gpu}, {free:.0f} GB free"
+            return None, f"{spec['id']}: needs {need:.0f} GB free on GPU {gpu_tag(own[:k])}, {free:.0f} GB free"
         return path, ""
     return None, "; ".join(waiting) or "queue empty"
 
@@ -401,23 +446,34 @@ def _run_logged(cmd: list[str], cwd: Path, log: Path, env: dict[str, str] | None
 
 
 class MemSampler(threading.Thread):
-    """Peak memory.used on the job's GPU (the whole device: other processes count too; the baseline is recorded)."""
+    """Peak memory.used on the job's GPUs (whole devices: other processes count too; the baseline is recorded): the
+    peak of the total over its GPUs, and each GPU's own peak."""
 
-    def __init__(self, gpu: int, every: float = 10.0):
+    def __init__(self, gpus: int | list[int], every: float = 10.0):
         super().__init__(daemon=True)
-        self.gpu, self.every, self.peak_mb = gpu, every, None
+        self.gpus, self.every, self.peak_mb = gpu_list(gpus), every, None
+        self.peak_mb_per_gpu: list[float | None] = [None] * len(self.gpus)
         self._stop_event = threading.Event()
+
+    def sample(self) -> None:
+        used = [gpu_query(g, "memory.used") for g in self.gpus]
+        for i, v in enumerate(used):
+            if v:
+                self.peak_mb_per_gpu[i] = max(self.peak_mb_per_gpu[i] or 0.0, float(v))
+        if all(used):
+            self.peak_mb = max(self.peak_mb or 0.0, sum(float(v) for v in used if v))
 
     def run(self) -> None:
         while not self._stop_event.is_set():
-            v = gpu_query(self.gpu, "memory.used")
-            if v:
-                self.peak_mb = max(self.peak_mb or 0.0, float(v))
+            self.sample()
             self._stop_event.wait(self.every)
 
     def stop(self) -> float | None:
         self._stop_event.set()
         return None if self.peak_mb is None else round(self.peak_mb / 1024, 1)
+
+    def per_gpu(self) -> list[float | None]:
+        return [None if v is None else round(v / 1024, 1) for v in self.peak_mb_per_gpu]
 
 
 def results_dirs(results: Path) -> set[str]:
@@ -440,22 +496,27 @@ def draft_row(rec: dict[str, Any]) -> str:
     return f"{date} | {job} | {rec['question']} | {result} | {wandb} | UNVERIFIED; verdict: (human)"
 
 
-def run_job(path: Path, root: Path, gpu: int) -> dict[str, Any]:
+def run_job(path: Path, root: Path, gpus: int | list[int]) -> dict[str, Any]:
+    """Runs the job on the first `gpus` (the spec's count) of the worker's GPUs."""
     rec = json.loads(path.read_text())
     run_dir = root / "runs" / rec["id"]
     code, log = run_dir / "code", run_dir / "log.txt"
     run_dir.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
+    use = gpu_list(gpus)[: int(rec.get("gpus", 1))]
+    name = gpu_query(use[0], "name")
+    used = [gpu_query(g, "memory.used") for g in use]
     rec.update(
         started_at=now(),
         host=socket.gethostname(),
-        gpu=gpu,
-        gpu_name=gpu_query(gpu, "name"),
+        gpu=use[0],  # the first (home) GPU; every GPU in gpu_ids
+        gpu_ids=use,
+        gpu_name=f"{len(use)}x {name}" if name and len(use) > 1 else name,
         worker_pid=os.getpid(),
-        baseline_mem_gb=None if (u := gpu_query(gpu, "memory.used")) is None else round(float(u) / 1024, 1),
+        baseline_mem_gb=round(sum(float(u) for u in used if u) / 1024, 1) if all(used) else None,
     )
     write_json_atomic(path, rec)
-    sampler = MemSampler(gpu)
+    sampler = MemSampler(use)
     exit_code, examples_exit, setup_s, run_s, examples_s, error = None, None, None, None, None, None
     figures_exit, figures_s = None, None
     try:
@@ -476,7 +537,7 @@ def run_job(path: Path, root: Path, gpu: int) -> dict[str, Any]:
         (code / "results").mkdir(exist_ok=True)
         subprocess.run(["rsync", "-a", "--ignore-existing", f"{root / 'results'}/", f"{code / 'results'}/"], check=True)
         before = results_dirs(code / "results")
-        env = {**os.environ, "CUDA_VISIBLE_DEVICES": str(gpu)}
+        env = {**os.environ, "CUDA_VISIBLE_DEVICES": ",".join(map(str, use))}
         env["PATH"] = f"{Path('~/.local/bin').expanduser()}:{env.get('PATH', '')}"
         if (code / "pyproject.toml").exists() and _run_logged(["uv", "sync", "--frozen", "-q"], code, log, env) != 0:
             raise RuntimeError("uv sync failed (see log)")
@@ -504,6 +565,7 @@ def run_job(path: Path, root: Path, gpu: int) -> dict[str, Any]:
         with open(log, "a") as f:
             f.write(f"\n[jobq {now()}] worker error:\n{error}")
     peak = sampler.stop() if sampler.is_alive() else None
+    per_gpu = sampler.per_gpu()  # all None if it never ran
     ok = error is None and exit_code == 0 and examples_exit in (None, 0) and figures_exit in (None, 0)
     log_text = log.read_text(errors="replace") if log.exists() else ""
     rec.update(
@@ -518,6 +580,7 @@ def run_job(path: Path, root: Path, gpu: int) -> dict[str, Any]:
         figures_s=figures_s,
         figures_exit=figures_exit,
         peak_mem_gb=peak,
+        peak_mem_gb_per_gpu=per_gpu,
         error=error,
         log=f"runs/{rec['id']}/log.txt",
         wandb=sorted(set(URL_RE.findall(log_text))),
@@ -542,11 +605,12 @@ def _alive(pid: int) -> bool:
     return True
 
 
-def recover_orphans(root: Path, gpu: int) -> None:
-    """Jobs left in running/ by a dead worker on this GPU and host are failed (re-enqueue under a new id)."""
+def recover_orphans(root: Path, gpus: int | list[int]) -> None:
+    """Jobs left in running/ by a dead worker on these GPUs and host are failed (re-enqueue under a new id)."""
+    own = gpu_list(gpus)
     for path in jobs_in(root, "running"):
         rec = json.loads(path.read_text())
-        if rec.get("gpu") != gpu or rec.get("host") != socket.gethostname() or _alive(rec.get("worker_pid", -1)):
+        if rec.get("gpu") not in own or rec.get("host") != socket.gethostname() or _alive(rec.get("worker_pid", -1)):
             continue
         rec.update(status="failed", ended_at=now(), error="worker died during the run (found on worker restart)")
         rec.setdefault("new_results", [])
@@ -556,14 +620,18 @@ def recover_orphans(root: Path, gpu: int) -> None:
         print(f"[jobq {now()}] {rec['id']}: orphaned by a dead worker, marked failed", flush=True)
 
 
-def worker(gpu: int, root: Path | None = None, once: bool = False, poll: float = 20.0, check_mem: bool = True) -> None:
+def worker(
+    gpus: int | list[int], root: Path | None = None, once: bool = False, poll: float = 20.0, check_mem: bool = True
+) -> None:
+    """One worker owning `gpus` (one GPU, or several for jobs with gpus > 1), one job at a time."""
     root = root or box_root()
+    gpus = gpu_list(gpus)
     ensure_layout(root)
-    recover_orphans(root, gpu)
-    print(f"[jobq {now()}] worker on GPU {gpu}, root {root}", flush=True)
+    recover_orphans(root, gpus)
+    print(f"[jobq {now()}] worker on GPU {gpu_tag(gpus)}, root {root}", flush=True)
     last = None
     while True:
-        path, why = pick(root, gpu, check_mem)
+        path, why = pick(root, gpus, check_mem)
         if path is None:
             if why != last:
                 print(f"[jobq {now()}] idle: {why}", flush=True)
@@ -576,7 +644,7 @@ def worker(gpu: int, root: Path | None = None, once: bool = False, poll: float =
         claimed = claim(path, root)
         if claimed is not None:
             print(f"[jobq {now()}] start {claimed.stem}", flush=True)
-            rec = run_job(claimed, root, gpu)
+            rec = run_job(claimed, root, gpus)
             print(
                 f"[jobq {now()}] {rec['status']} {rec['id']}: run {fmt_duration(rec['run_s'])}, total "
                 f"{fmt_duration(rec['wall_s'])}, exit {rec['exit_code']}",
@@ -612,14 +680,13 @@ def box_status(root: Path, as_json: bool = False) -> str:
     lines = []
     for rec in state["running"]:
         lines.append(
-            f"RUNNING  {rec['id']:<32} GPU {rec.get('gpu')}  {fmt_duration(rec.get('elapsed_s'))} "
-            f"of est {rec['est_gpu_hours']}h  | {rec.get('progress', '')}"
+            f"RUNNING  {rec['id']:<32} GPU {gpu_tag(rec.get('gpu_ids') or [rec.get('gpu')])}  "
+            f"{fmt_duration(rec.get('elapsed_s'))} of est {rec['est_gpu_hours']}h  | {rec.get('progress', '')}"
         )
-    gpu0 = 0
     for rec in state["pending"]:
         lines.append(f"PENDING  {rec['id']:<32} est {rec['est_gpu_hours']}h  deps {rec.get('depends_on', [])}")
-    if state["pending"]:
-        lines.append(f"         next: {pick(root, gpu0)[1] or 'ready'}")
+    if state["pending"]:  # as a worker owning every GPU of the box would see it
+        lines.append(f"         next: {pick(root, box_gpus())[1] or 'ready'}")
     for s in ("done", "failed"):
         for rec in sorted(state[s], key=lambda r: r.get("ended_at", ""))[-10:]:
             lines.append(
@@ -735,10 +802,13 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("pull")
     sub.add_parser("cancel").add_argument("id")
     sub.add_parser("archive", help="move finished jobs' records out of the status listing (ledger unchanged)")
-    sub.add_parser("start-worker").add_argument("--gpu", type=int, default=0)
+    sw = sub.add_parser("start-worker")
     w = sub.add_parser("worker")
-    w.add_argument("--gpu", type=int, default=0)
     w.add_argument("--once", action="store_true")
+    for p in (sw, w):
+        g = p.add_mutually_exclusive_group()
+        g.add_argument("--gpu", type=int, default=0, help="the worker's one GPU")
+        g.add_argument("--gpus", default=None, help="the worker's GPUs, e.g. 0,1: jobs with gpus: 2 run on both")
     sub.add_parser("box-status").add_argument("--json", action="store_true")
     sub.add_parser("box-ids")
     sub.add_parser("box-runs", help="the run dirs in the box's results/ (<exp>/<run>), as JSON")
@@ -765,9 +835,9 @@ def main(argv: list[str] | None = None) -> int:
         print(box_archive(box_root()), end="")
         return 0
     if a.cmd == "start-worker":
-        return cmd_start_worker(a.gpu)
+        return cmd_start_worker(gpu_list(a.gpus if a.gpus is not None else a.gpu))
     if a.cmd == "worker":
-        worker(a.gpu, once=a.once)
+        worker(gpu_list(a.gpus if a.gpus is not None else a.gpu), once=a.once)
         return 0
     if a.cmd == "box-status":
         print(box_status(box_root(), a.json), end="")

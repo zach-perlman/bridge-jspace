@@ -1,7 +1,8 @@
 """A short Qwen3.5-122B-A10B session on a rented 1x H200 / B200 box, torn down by the provider's API (Dan, 23 Oct).
 
-Run on the Mac. It waits for ssh, prepares the box (rsync / tmux / git / curl if missing, uv; checks the GPU: >= 135 GB,
-compute capability >= 8.9 for FP8, driver CUDA >= 12.8; picks the writable disk with the most free space for the repo,
+Run on the Mac. It waits for ssh, prepares the box (rsync / tmux / git / curl if missing, uv; checks the GPUs: >= 135 GB
+in total, one H200 or 2x H100 80 GB, where every step then splits the model over them with BJ_DEVICE_MAP=auto; compute
+capability >= 8.9 on each for FP8, driver CUDA >= 12.8; picks the writable disk with the most free space for the repo,
 HF_HOME and the uv cache), uploads the working tree (tracked and untracked-not-ignored files, without results/ and .env:
 no token goes to the box, the models are public) and starts a runner in tmux on the box: `uv sync --locked`, the model
 (Qwen/Qwen3.5-122B-A10B-FP8 at the revision pinned in pins.TARGETS) and its J++ lens (sha256-checked), then the jobs, one
@@ -81,10 +82,26 @@ def box_steps(jobs: list[dict[str, str]]) -> list[dict[str, str]]:
             {"name": "fetch", "command": "uv run python scripts/remote/launch_122b.py box-fetch"}, *jobs]  # fmt: skip
 
 
-def box_env(work: str) -> dict[str, str]:
-    """Added to the runner's environment for every step (PATH gets ~/.local/bin, where uv installs, in front)."""
-    return {"HF_HOME": f"{work}/hf", "UV_CACHE_DIR": f"{work}/uv-cache", "HF_XET_HIGH_PERFORMANCE": "1",
-            "PYTHONUNBUFFERED": "1"}  # fmt: skip
+def box_env(work: str, n_gpus: int = 1) -> dict[str, str]:
+    """Added to the runner's environment for every step (PATH gets ~/.local/bin, where uv installs, in front). On
+    several GPUs the model is split over them (BJ_DEVICE_MAP=auto): the memory check counts their total."""
+    env = {"HF_HOME": f"{work}/hf", "UV_CACHE_DIR": f"{work}/uv-cache", "HF_XET_HIGH_PERFORMANCE": "1",
+           "PYTHONUNBUFFERED": "1"}  # fmt: skip
+    return {**env, "BJ_DEVICE_MAP": "auto"} if n_gpus > 1 else env
+
+
+def gpu_problems(mem_gib: list[float], compute_caps: list[float]) -> list[str]:
+    """The GPU checks of box-prep, per GPU's memory (GiB) and compute capability: the FP8 weights (~125 GB) and the
+    lens need MIN_GPU_GIB in total over the GPUs (the model is split over several: box_env), and every GPU needs native
+    FP8 (compute capability >= MIN_CC)."""
+    if not mem_gib:
+        return ["no GPU"]
+    out = []
+    if (total := round(sum(mem_gib), 1)) < MIN_GPU_GIB:
+        out.append(f"the GPUs have {total} GiB in total ({len(mem_gib)} x {mem_gib[0]}) < {MIN_GPU_GIB}")
+    if (cc := min(compute_caps)) < MIN_CC:
+        out.append(f"compute capability {cc} < {MIN_CC}: no native FP8")
+    return out
 
 
 # ---------------------------------------------------------------- Mac side
@@ -358,7 +375,7 @@ def cmd_launch(a: argparse.Namespace) -> int:
             inner = (f"{shlex.join(['python3', script, 'box-run', '--budget-s', str(budget)])} 2>&1 | "
                      f"tee -a {shlex.quote(work + '/logs/runner.log')}; exec bash")  # fmt: skip
             box.ssh(shlex.join(["tmux", "new-session", "-d", "-s", SESSION, "-c", f"{work}/bridge-jspace", inner]), 60)
-            env = " ".join(f"{k}={v}" for k, v in box_env(work).items())
+            env = " ".join(f"{k}={v}" for k, v in box_env(work, record["box"]["gpu"].get("n", 1)).items())
             log.say(f"box runner (cwd {work}/bridge-jspace; {env}; PATH=~/.local/bin:$PATH), budget {budget} s:")
             for s in box_steps(jobs):
                 log.say(f"  {s['name']}: {s['command']}")
@@ -441,15 +458,14 @@ def box_prep(disk: str | None) -> int:
     try:
         q = ["nvidia-smi", "--query-gpu=name,memory.total,compute_cap,driver_version", "--format=csv,noheader,nounits"]
         rows = subprocess.run(q, capture_output=True, text=True, check=True, timeout=60).stdout.strip().splitlines()
-        name, mem, cc, driver = (x.strip() for x in rows[0].split(","))
+        each = [[x.strip() for x in r.split(",")] for r in rows]
+        name, driver = each[0][0], each[0][3]
+        mem, ccs = [round(float(r[1]) / 1024, 1) for r in each], [float(r[2]) for r in each]
         cuda = re.search(r"CUDA (?:UMD )?Version:\s*(\d+)\.(\d+)", subprocess.run(["nvidia-smi"], capture_output=True,
                          text=True, check=False, timeout=60).stdout)  # fmt: skip
-        gpu = {"name": name, "n": len(rows), "mem_gib": round(float(mem) / 1024, 1), "compute_cap": float(cc),
-               "driver": driver, "driver_cuda": f"{cuda[1]}.{cuda[2]}" if cuda else None}  # fmt: skip
-        if gpu["mem_gib"] < MIN_GPU_GIB:
-            problems.append(f"GPU 0 has {gpu['mem_gib']} GiB < {MIN_GPU_GIB}")
-        if gpu["compute_cap"] < MIN_CC:
-            problems.append(f"compute capability {cc} < {MIN_CC}: no native FP8")
+        gpu = {"name": name, "n": len(rows), "mem_gib": round(sum(mem), 1), "mem_gib_each": mem,
+               "compute_cap": min(ccs), "driver": driver, "driver_cuda": f"{cuda[1]}.{cuda[2]}" if cuda else None}  # fmt: skip
+        problems += gpu_problems(mem, ccs)
         if not cuda or (int(cuda[1]), int(cuda[2])) < MIN_DRIVER_CUDA:
             problems.append(f"driver CUDA {gpu['driver_cuda']} < 12.8 (torch is cu128)")
     except (OSError, subprocess.SubprocessError, ValueError, IndexError) as e:
@@ -489,7 +505,8 @@ def box_run(budget_s: float) -> int:
     jq = _jobq()
     work = REPO.parent
     jobs = json.loads((work / "jobs.json").read_text())
-    env = {**os.environ, **box_env(str(work))}
+    gpus = jq.box_gpus()
+    env = {**os.environ, **box_env(str(work), len(gpus))}
     env["PATH"] = f"{Path.home() / '.local' / 'bin'}:{os.environ.get('PATH', '')}"
     status: dict[str, Any] = {"state": "RUNNING", "pid": os.getpid(), "started": jq.now(), "gpu": jq.gpu_query(0, "name"),
                               "deadline_epoch": time.time() + budget_s, "steps": []}  # fmt: skip
@@ -512,8 +529,8 @@ def box_run(budget_s: float) -> int:
                     _kill_group(p)
                     killed = True
                     break
-                used = jq.gpu_query(0, "memory.used")
-                peak = max(peak, float(used) / 1024) if used else peak
+                used = [jq.gpu_query(g, "memory.used") for g in gpus]  # the total over the GPUs
+                peak = max(peak, sum(float(u) for u in used if u) / 1024) if all(used) else peak
                 time.sleep(10)
         status["steps"].append({"step": step["name"], "command": step["command"], "started": started,
                                 "seconds": round(time.time() - t, 1), "exit": p.returncode,
