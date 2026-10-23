@@ -160,3 +160,40 @@ def test_decision_helpers():
     assert D.write_verdict(rows)[0] == "not written"
     same = ({"s1": 0.2, "s2": 0.1}, {"s1": 1.0, "s2": 1.0}, {"s1": 0.1, "s2": 0.1})
     assert D.concentration_diff(same, same)[0] == pytest.approx(0.0)
+
+
+def test_random_basis_is_orthonormal_and_seeded():
+    import torch
+
+    q = D.random_basis(64, torch.Generator().manual_seed(3))
+    assert torch.allclose(q.T @ q, torch.eye(64), atol=1e-5)
+    assert torch.equal(q, D.random_basis(64, torch.Generator().manual_seed(3)))
+    assert not torch.allclose(q, D.random_basis(64, torch.Generator().manual_seed(4)))
+
+
+def test_rand_sub_is_a_projection_with_the_jspace_parts_share():
+    import torch
+
+    from scripts.exp04_brew_parts import signed_omp
+
+    d, g = 256, torch.Generator().manual_seed(5)
+    dictionary = torch.nn.functional.normalize(torch.randn(1000, d, generator=g), dim=-1)
+    delta = torch.randn(6, d, generator=g) * torch.tensor([[1.0], [3.0], [0.2], [1.0], [1.0], [1.0]])
+    delta[3] = 0.0  # a position where C's copy is zero
+    jspace = signed_omp(dictionary, delta, 25)  # an OMP fit is a projection: the target size
+    share = jspace.norm(dim=-1) ** 2 / (delta.norm(dim=-1) ** 2).clamp_min(1e-30)
+    share[4], share[5] = 0.0, 1.0  # the ends
+    basis = D.random_basis(d, torch.Generator().manual_seed(6))
+    part = D.random_subspace_part(delta, share, basis)
+    norm2 = delta.norm(dim=-1) ** 2
+    got = part.norm(dim=-1) ** 2 / norm2.clamp_min(1e-30)
+    step = ((delta @ basis) ** 2).max(dim=-1).values / norm2.clamp_min(1e-30)  # one basis direction's contribution
+    live = [0, 1, 2, 4, 5]
+    assert torch.all((got - share)[live].abs() <= step[live] / 2 + 1e-5)  # the same share, row by row
+    assert torch.allclose((part * (delta - part)).sum(-1), torch.zeros(6), atol=1e-3)  # a projection of the change
+    assert torch.equal(part[3], torch.zeros(d)) and torch.equal(part[4], torch.zeros(d))
+    assert torch.allclose(part[5], delta[5], atol=1e-4)
+    rows = [0, 1, 2]  # not the J-space part itself: the remainder off delta points elsewhere
+    off = lambda x: x - (x * delta).sum(-1, keepdim=True) / norm2[:, None].clamp_min(1e-30) * delta  # noqa: E731
+    cos = torch.nn.functional.cosine_similarity(off(part)[rows], off(jspace)[rows], dim=-1)
+    assert torch.all(cos.abs() < 0.5)

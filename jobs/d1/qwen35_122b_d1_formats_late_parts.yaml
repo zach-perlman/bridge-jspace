@@ -1,0 +1,29 @@
+id: qwen35_122b_d1_formats_late_parts
+title: "Late binding in tables and JSON (Qwen3.5-122B): the lens-readable part of a stated bridge at later layers"
+thread: D1
+gpus: 1
+mem_gb: 135
+est_gpu_hours: 0.8
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/d1_precheck.py --gate qwen35_122b_lens_gate_v2 --competence qwen35_122b_d1_topics2_competence --min-topics 0
+  && BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/statement_positions.py parts --name qwen35_122b_d1_formats_late_parts --map qwen35_122b_d1_formats_map --why "Late binding in tables and JSON on 122B: the parts at the later cells" --lo 24 --sets bind_bridge context --force bind_bridge:30 bind_bridge:33 bind_bridge:36 context:24 context:30 context:33 context:36
+  && BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/d1_verdict.py --rule late-binding --map qwen35_122b_d1_formats_map --parts qwen35_122b_d1_formats_late_parts --tasks-set d1_formats_v1 --cells bind_bridge:30 bind_bridge:33 bind_bridge:36 context:30 context:33 context:36 --reference context:24
+figures_command: BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/d1_verdict.py --rule late-binding --parts qwen35_122b_d1_formats_late_parts --figures
+question: >-
+  In tables and JSON, at later cells (the bridge's row / object and the whole context, at layers 30, 33 and 36), does the lens-readable part of a stated bridge's change still switch the lookups on Qwen3.5-122B, and does it still switch the recalls?
+why_it_matters: >-
+  The second scene set for the late-binding test of qwen35_122b_d1_late_parts: finding 2 also failed on the 122B in tables and JSON at the map's cell (the context at layer 24: the lens part switched 41% [34, 48] of lookups, n=180; tables 49% [39, 59], n=88; JSON 34% [25, 44], n=92). A late-binding result in prose only, or in all three formats, reads differently.
+hypotheses:
+  H-late-binding: 'as qwen35_122b_d1_late_parts, pooled over both formats. Prior: Dan''s (predictions/), none set by the agent'
+  H-fails: 'as qwen35_122b_d1_late_parts, pooled. Prior: Dan''s'
+  H-inconclusive: 'neither. Prior: Dan''s'
+decision_rule: >-
+  Written 23 Oct ~12:00 +0200 before any run: qwen35_122b_d1_late_parts's rule (scripts/d1_verdict.py --rule late-binding; same bars, controls and the agent's choices marked there for Dan to confirm), applied to the formats scenes pooled over tables and JSON. A cell decides iff the lens-free map qwen35_122b_d1_formats_map has it in transit for lookups: bind_bridge 30, context 30, 33 and 36; bind_bridge 33 and 36 are reported only (C's whole copy flips 48% and 44% of lookups there, not in transit). context:24 is the earlier reference, not decisive. Per format (table 88 scenes, JSON 92 in the earlier run) and per topic the same rule on their rows, reported only (with ~90 items a Wilson upper bound <= 5% needs 0 switches).
+controls:
+- 'rand_sub: C''s copy projected per row on a random subspace (seed 888 + layer) keeping the lens part''s share of the row''s squared norm'
+- 'PM (recalls) on the same scenes as the positive control: the identical patch at statement cells'
+- 'reported: jspace_matched, rand_omp, the lens part''s random-direction null'
+- 'the map''s transit picks the decisive cells; the lens gate (qwen35_122b_lens_gate_v2, via scripts/d1_precheck.py)'
+n: '180 scenes per family (PP and PM), d1_formats_v1, right on every prompt, both formats in scene order, 7 cells'
+seeds: [41]
+notes: "Dan, 23 Oct ~11:40 ('if cheap, the formats scenes as a second spec'). Same scenes, map and code path as qwen35_122b_d1_formats_parts_b16 with --force for the cells; the precheck command as that spec (only the lens gate matters). Data seed 41 (d1_formats_v1); nulls 0, random dictionary 777 + layer, random subspace 888 + layer. Batch 16; mem_gb 135 (peak of the earlier formats parts run 130 GB). Timing basis: qwen35_122b_d1_formats_parts_b16 ran 2185 s for 9 cells; this run ~0.55-0.8 h. Independent of qwen35_122b_d1_late_parts (on a 2x H200 the two run side by side). Not opened before Dan predicts."

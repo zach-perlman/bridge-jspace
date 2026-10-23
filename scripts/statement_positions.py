@@ -43,7 +43,9 @@ Stages (manifest.json written first, write-once, under results/statement_positio
   parts      at each family's transit cells (below), C's copy split exactly as suite_split's parts with --calibrate:
              J-space part (25-atom signed OMP over the frozen J++'s letter-token vectors) and the rest, lens2 (the
              bridge's and X's own lens vectors) and the rest, the J-space part without the own words, a 25-atom OMP over
-             a random dictionary (the fitting null), each part's random-direction null, and the matched-size pieces.
+             a random dictionary (the fitting null), C's copy projected on a random subspace keeping the J-space part's
+             share of each row's squared norm (rand_sub, 23 Oct), each part's random-direction null, and the
+             matched-size pieces.
   readwrite  at the same cells: the lens read (the bridge's best rank among word tokens over the set's positions, X
              as the floor) and the lens write (v_X - v_I per position at the norm of C's copy there, 0.5-16x, and a
              random direction at the same norms; C's copy itself), as read_write at the question tokens.
@@ -903,7 +905,30 @@ def reload_cases(m: dict, tok) -> list[dict]:
 
 # ---- parts --------------------------------------------------------------------------------------------------------
 
-CALIBRATION = ("jspace_wo_own", "rand_omp")
+CALIBRATION = ("jspace_wo_own", "rand_omp", "rand_sub")
+SUBSPACE_SEED = 888  # rand_sub's random basis at layer L: seed SUBSPACE_SEED + L (the random dictionary's is 777 + L)
+
+
+def random_basis(d: int, generator: torch.Generator, device: str | torch.device = "cpu") -> torch.Tensor:
+    """A random orthonormal basis of R^d as the columns of a [d, d] matrix (QR of a Gaussian, signs fixed: Haar)."""
+    q, r = torch.linalg.qr(torch.randn(d, d, device=device, generator=generator))
+    return q * torch.sign(torch.diagonal(r))
+
+
+def random_subspace_part(delta: torch.Tensor, share: torch.Tensor, basis: torch.Tensor) -> torch.Tensor:
+    """rand_sub (Dan, 23 Oct: the random-subspace control of the late cells): each row of delta [P, d] projected onto
+    the first k columns of `basis` (a random orthonormal basis, one per layer), k chosen per row so that the projection
+    keeps share[row] of the row's squared norm (to within one basis direction's contribution). With share = the J-space
+    part's ||J_row||^2 / ||delta_row||^2 it is a random subspace's part of the change of the same size as the J-space
+    part at every position, hence also per item and cell. Like the J-space part (an OMP fit is a projection), its
+    component along delta is share * delta; only the direction of the remainder differs."""
+    delta = delta.float()
+    coef = delta @ basis  # [P, d]: coordinates in the random basis
+    cum = torch.cumsum(coef**2, dim=-1) / (delta.norm(dim=-1, keepdim=True) ** 2).clamp_min(1e-30)
+    cum = torch.cat([torch.zeros_like(cum[:, :1]), cum], dim=-1)  # [P, d + 1]: the share kept by the first k columns
+    k = (cum - share.float()[:, None]).abs().argmin(dim=-1)  # zero rows: k = 0 (argmin takes the first minimum)
+    keep = torch.arange(basis.shape[1], device=delta.device)[None, :] < k[:, None]
+    return (coef * keep) @ basis.T
 
 
 def stage_parts(name: str, map_name: str, why: str, force: dict[str, list[int]] | None) -> None:
@@ -915,8 +940,10 @@ def stage_parts(name: str, map_name: str, why: str, force: dict[str, list[int]] 
     m["question"] = "Where the copy carries the bridge (transit cells), which part carries it: the J-space or the rest?"
     m["lens"] = {pins.FROZEN_LENS: list(pins.LENS_SOURCES[pins.FROZEN_LENS]), "sha256": pins.FROZEN_LENS_SHA256}
     m["parts"] = "suite_split's parts with --calibrate: full (C), O's full copy, lens2 / not_lens2, jspace / not_jspace, " \
-        f"jspace_wo_own, rand_omp ({K_ATOMS}-atom signed OMP), each with its random-direction null, lens2_matched and " \
-        "jspace_matched (exp02's matched-alignment pieces)"  # fmt: skip
+        f"jspace_wo_own, rand_omp ({K_ATOMS}-atom signed OMP), rand_sub (C's copy projected per row on a random " \
+        "subspace keeping the J-space part's share of the row's squared norm), each with its random-direction null, " \
+        "lens2_matched and jspace_matched (exp02's matched-alignment pieces)"  # fmt: skip
+    m["seeds"]["random_subspace"] = f"{SUBSPACE_SEED} + layer"
     m["windows"] = {"primary": f"layers [{PRIMARY_LO}, {ONSET})", "secondary": f"layers [{SPLIT_LO}, {ONSET})"}
     m["decision"] = (__doc__ or "").split("\n\n")[6]
     out = write_manifest(m)
@@ -944,14 +971,16 @@ def run_parts(out: Path, m: dict) -> None:
     work = [(la, k) for la in layers for k, c in enumerate(cases) if any(la in v for v in cells[c["family"]].values())]
     outcomes: list[dict] = []
     fve: list[dict] = []
-    current, dictionary, rdict = None, None, None
+    current, dictionary, rdict, basis = None, None, None, None
     for la, k in progress(work, "parts (layer, case)"):
         if la != current:  # one layer's dictionaries at a time: two [letters, d] fp32 maps fit next to the 27B
-            dictionary = rdict = None
+            dictionary = rdict = basis = None
             torch.cuda.empty_cache()
             dictionary = lens.vectors(la, letters)
             gen = torch.Generator(device="cuda").manual_seed(777 + la)
             rdict = torch.nn.functional.normalize(torch.randn(dictionary.shape, device="cuda", generator=gen), dim=-1)
+            gen = torch.Generator(device="cuda").manual_seed(SUBSPACE_SEED + la)
+            basis = random_basis(dictionary.shape[1], gen, "cuda")
             g = torch.Generator(device="cuda").manual_seed(BOOT_SEED + la)
             x = torch.randn(P.CHANCE_DRAWS, dictionary.shape[1], device="cuda", generator=g)
             share = (signed_omp(dictionary, x, K_ATOMS).norm(dim=-1) ** 2 / x.norm(dim=-1) ** 2).mean()
@@ -959,6 +988,7 @@ def run_parts(out: Path, m: dict) -> None:
             current = la
         assert dictionary is not None
         assert rdict is not None
+        assert basis is not None
         c = cases[k]
         if "ld_clean" not in c:
             unedited(model, c)
@@ -980,9 +1010,12 @@ def run_parts(out: Path, m: dict) -> None:
                 jobs.append(({**base, "part": "full", "source": "off", "null": False}, {la: AddRows(off, pos)}))
             lens2 = lens2_part(delta, lens.vectors(la, pair))
             jspace = signed_omp(dictionary, delta, K_ATOMS)
+            j_share = jspace.norm(dim=-1) ** 2 / (delta.float().norm(dim=-1) ** 2).clamp_min(1e-30)
+            # rand_sub last: the earlier parts keep their index pi, hence their null seeds
             parts = {"lens2": lens2, "not_lens2": delta - lens2, "jspace": jspace, "not_jspace": delta - jspace,
                      "jspace_wo_own": signed_omp(dictionary, delta - lens2, K_ATOMS),
-                     "rand_omp": signed_omp(rdict, delta, K_ATOMS)}  # fmt: skip
+                     "rand_omp": signed_omp(rdict, delta, K_ATOMS),
+                     "rand_sub": random_subspace_part(delta, j_share, basis)}  # fmt: skip
             for what in ("lens2", "jspace", *CALIBRATION):
                 fve.append({"family": c["family"], "name": c["id"], "scene": c["scene"], "set": s, "layer": la,
                             "what": what, "share": round(float(parts[what].norm() ** 2) / total, 4)})  # fmt: skip
@@ -1078,6 +1111,8 @@ def summarize_parts(outcomes: list[dict], fve: list[dict], cells: dict) -> dict:
                 calib = {}
                 for p in CALIBRATION:
                     eff = P.scores(rows, "frac", part=p, null=False, source="cf")
+                    if not eff:  # runs from before rand_sub existed
+                        continue
                     per: dict[str, list[float]] = collections.defaultdict(list)
                     for f in mine:
                         if f["what"] == p:
@@ -1381,6 +1416,7 @@ def condition_text(case: dict, o: dict, kind: str) -> str:
         name = {"full": "C's full copy" if o["source"] == "cf" else "O's full copy", "jspace": "the J-space part of C's copy",
                 "not_jspace": "C's copy minus its J-space part", "lens2": "C's copy projected on the bridge's and X's lens vectors",
                 "not_lens2": "C's copy minus that projection", "rand_omp": "C's copy fitted on a random dictionary",
+                "rand_sub": "C's copy projected on a random subspace of the J-space part's size",
                 "jspace_wo_own": "the J-space part after the own words are projected out"}.get(part, part)  # fmt: skip
         return f"{name}{' (random direction at its norms)' if o['null'] else ''} added {where}"
     if part == "copy":
