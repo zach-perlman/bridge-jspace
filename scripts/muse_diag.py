@@ -41,8 +41,8 @@ def main(a) -> None:
     band, after = list(range(lo, hi + 1)), [hi + 2, hi + 4]
     model = load_model()
     tok = model.tokenizer
-    comp = f"{pins.TARGETS[pins.TARGET]['run_prefix'] if pins.TARGET != 'qwen3.6-27b' else ''}full_v8_competence_v1"
-    prompts = [p for p in tasks_prompts(tok, "full_v8", comp, ["PM", "MM"], a.n, ["clean"], "all") if p["bridge"]]
+    comp = a.competence or f"{pins.TARGETS[pins.TARGET]['run_prefix'] if pins.TARGET != 'qwen3.6-27b' else ''}full_v8_competence_v1"
+    prompts = [p for p in tasks_prompts(tok, a.set, comp, ["PM", "MM"], a.n, ["clean"], "all") if p["bridge"]]
     lens = JLens(model, pins.FROZEN_LENS)
     letters = model.letter_token_ids()
     wg = model.hf.lm_head.weight[letters].float() * model.norm_gain()
@@ -125,4 +125,6 @@ if __name__ == "__main__":
     ap.add_argument("--why", required=True)
     ap.add_argument("--band", required=True)
     ap.add_argument("--n", type=int, default=60)
+    ap.add_argument("--set", default="full_v8")  # 2026-10-23: the 122B's competence ran on full_v8_two (full_v8's two-step ids)
+    ap.add_argument("--competence", default=None, help="competence run (default: PREFIX + full_v8_competence_v1)")
     main(ap.parse_args())
