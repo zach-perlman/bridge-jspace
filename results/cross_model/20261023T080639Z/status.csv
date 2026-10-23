@@ -1,0 +1,309 @@
+model,finding,setting,lens role,run,status,spec commit,result path
+Qwen3.6-27B,"Removing the J-space breaks recall, not the lookup","tasks, Zach's rule",main,full2_ko_v1,has-run,-,results/ablate_v2/c1_v2/full2_ko_v1.json
+Gemma 4 31B-it,"Removing the J-space breaks recall, not the lookup","tasks, Zach's rule",main,gemma4itf_full_ko_v1,not on Zach's branch,-,results/ablate_v2/c1_v2/gemma4itf_full_ko_v1.json
+Qwen3.6-27B,"Removing the J-space breaks recall, not the lookup",animal suite,main,abl_rot_v1,has-run,-,results/ablate_pilot/abl_rot_v1/summary.json
+Qwen3.5-9B,"Removing the J-space breaks recall, not the lookup",animal suite,main,qwen35_9b_abl_rot_v1,has-run,0a8820d,results/ablate_pilot/qwen35_9b_abl_rot_v1/summary.json
+Qwen3-32B,"Removing the J-space breaks recall, not the lookup",animal suite,main,qwen3_32b_jpp_abl_rot_v1,not enqueued,4162798 (spec added),results/ablate_pilot/qwen3_32b_jpp_abl_rot_v1/summary.json
+OLMo-3-7B-I,"Removing the J-space breaks recall, not the lookup",animal suite,main,olmo3_7b_instruct_jpp_abl_rot_raw_v1,not enqueued,4162798 (spec added),results/ablate_pilot/olmo3_7b_instruct_jpp_abl_rot_raw_v1/summary.json
+OLMo-3-7B-I,"Removing the J-space breaks recall, not the lookup",animal suite,plain J-lens,olmo3_7b_instruct_abl_rot_raw_v1,has-run,1eec3a3,results/ablate_pilot/olmo3_7b_instruct_abl_rot_raw_v1/summary.json
+Muse 30B,"Removing the J-space breaks recall, not the lookup",animal suite,main,muse30b_abl_rot_v1,has-run,0a8820d,results/ablate_pilot/muse30b_abl_rot_v1/summary.json
+Gemma 4 31B-it,"Removing the J-space breaks recall, not the lookup",animal suite,main,gemma4itf_abl_rot_v1,blocked,77b372b (spec added),results/ablate_pilot/gemma4itf_abl_rot_v1/summary.json
+Gemma 4 31B-it,"Removing the J-space breaks recall, not the lookup",animal suite,refit J++,gemma4itr_abl_rot_v1,has-run,-,results/ablate_pilot/gemma4itr_abl_rot_v1/summary.json
+Qwen3.5-122B,"Removing the J-space breaks recall, not the lookup",animal suite,main,qwen35_122b_abl_rot_v1,has-run,54e7edd,results/ablate_pilot/qwen35_122b_abl_rot_v1/summary.json
+Qwen3.5-122B,"Removing the J-space breaks recall, not the lookup",animal suite,Zach's pilot,qwen35_122b_abl_v1,has-run,-,results/ablate_pilot/qwen35_122b_abl_v1/summary.json
+Qwen3.6-27B,A lookup ignores the lens-readable part of a stated bridge,draw 1,main,d1_topics_parts_27b,has-run,3e90959,results/statement_positions/d1_topics_parts_27b/outcomes.jsonl
+Qwen3.6-27B,A lookup ignores the lens-readable part of a stated bridge,draw 2,main,d1_topics2_parts_27b,has-run,a786b36,results/statement_positions/d1_topics2_parts_27b/outcomes.jsonl
+Qwen3.6-27B,A lookup ignores the lens-readable part of a stated bridge,draw 2,plain J-lens,qwen36_27b_jlens_d1_topics2_parts,has-run,b51e964,results/statement_positions/qwen36_27b_jlens_d1_topics2_parts/outcomes.jsonl
+Qwen3.5-9B,A lookup ignores the lens-readable part of a stated bridge,draw 2,main,qwen35_9b_d1_topics2_parts,has-run,a786b36,results/statement_positions/qwen35_9b_d1_topics2_parts/outcomes.jsonl
+Qwen3-32B,A lookup ignores the lens-readable part of a stated bridge,draw 1,main,qwen3_32b_jpp_d1_topics_parts,not enqueued,e50b1dc (spec added),results/statement_positions/qwen3_32b_jpp_d1_topics_parts/outcomes.jsonl
+Qwen3-32B,A lookup ignores the lens-readable part of a stated bridge,draw 1,plain J-lens,qwen3_32b_d1_topics_parts,has-run,3e90959,results/statement_positions/qwen3_32b_d1_topics_parts/outcomes.jsonl
+OLMo-3-7B-I,A lookup ignores the lens-readable part of a stated bridge,draw 2,main,olmo3_7b_instruct_jpp_d1_topics2_parts,not enqueued,e50b1dc (spec added),results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_parts/outcomes.jsonl
+OLMo-3-7B-I,A lookup ignores the lens-readable part of a stated bridge,draw 2,plain J-lens,olmo3_7b_instruct_d1_topics2_parts,failed,921671d,results/statement_positions/olmo3_7b_instruct_d1_topics2_parts/outcomes.jsonl
+Muse 30B,A lookup ignores the lens-readable part of a stated bridge,draw 2,main,muse30b_d1_topics2_parts,blocked,2dadb64 (spec added),results/statement_positions/muse30b_d1_topics2_parts/outcomes.jsonl
+Gemma 4 31B-it,A lookup ignores the lens-readable part of a stated bridge,draw 2,main,gemma4itf_d1_topics2_parts,blocked,c2add04 (spec added),results/statement_positions/gemma4itf_d1_topics2_parts/outcomes.jsonl
+Gemma 4 31B-it,A lookup ignores the lens-readable part of a stated bridge,draw 2,base-model J++,gemma4itb_d1_topics2_parts,not enqueued,2b0701f (spec added),results/statement_positions/gemma4itb_d1_topics2_parts/outcomes.jsonl
+Qwen3.5-122B,A lookup ignores the lens-readable part of a stated bridge,draw 2,main,qwen35_122b_d1_topics2_parts,has-run,4a87d79,results/statement_positions/qwen35_122b_d1_topics2_parts/outcomes.jsonl
+Qwen3.6-27B,A lookup ignores the lens-readable part of a stated bridge,table,main,d1_formats_parts_27b,has-run,dbc4527,results/statement_positions/d1_formats_parts_27b/outcomes.jsonl
+Qwen3.6-27B,A lookup ignores the lens-readable part of a stated bridge,JSON,main,d1_formats_parts_27b,has-run,dbc4527,results/statement_positions/d1_formats_parts_27b/outcomes.jsonl
+Qwen3.5-9B,A lookup ignores the lens-readable part of a stated bridge,table,main,qwen35_9b_d1_formats_parts,has-run,dbc4527,results/statement_positions/qwen35_9b_d1_formats_parts/outcomes.jsonl
+Qwen3.5-9B,A lookup ignores the lens-readable part of a stated bridge,JSON,main,qwen35_9b_d1_formats_parts,has-run,dbc4527,results/statement_positions/qwen35_9b_d1_formats_parts/outcomes.jsonl
+Qwen3-32B,A lookup ignores the lens-readable part of a stated bridge,table,main,qwen3_32b_jpp_d1_formats_parts,not enqueued,df25f1e (spec added),results/statement_positions/qwen3_32b_jpp_d1_formats_parts/outcomes.jsonl
+Qwen3-32B,A lookup ignores the lens-readable part of a stated bridge,JSON,main,qwen3_32b_jpp_d1_formats_parts,not enqueued,df25f1e (spec added),results/statement_positions/qwen3_32b_jpp_d1_formats_parts/outcomes.jsonl
+OLMo-3-7B-I,A lookup ignores the lens-readable part of a stated bridge,table,main,olmo3_7b_instruct_jpp_d1_formats_parts,not enqueued,df25f1e (spec added),results/statement_positions/olmo3_7b_instruct_jpp_d1_formats_parts/outcomes.jsonl
+OLMo-3-7B-I,A lookup ignores the lens-readable part of a stated bridge,JSON,main,olmo3_7b_instruct_jpp_d1_formats_parts,not enqueued,df25f1e (spec added),results/statement_positions/olmo3_7b_instruct_jpp_d1_formats_parts/outcomes.jsonl
+Muse 30B,A lookup ignores the lens-readable part of a stated bridge,table,main,muse30b_d1_formats_parts,blocked,df25f1e (spec added),results/statement_positions/muse30b_d1_formats_parts/outcomes.jsonl
+Muse 30B,A lookup ignores the lens-readable part of a stated bridge,JSON,main,muse30b_d1_formats_parts,blocked,df25f1e (spec added),results/statement_positions/muse30b_d1_formats_parts/outcomes.jsonl
+Gemma 4 31B-it,A lookup ignores the lens-readable part of a stated bridge,table,main,gemma4itf_d1_formats_parts,blocked,df25f1e (spec added),results/statement_positions/gemma4itf_d1_formats_parts/outcomes.jsonl
+Gemma 4 31B-it,A lookup ignores the lens-readable part of a stated bridge,JSON,main,gemma4itf_d1_formats_parts,blocked,df25f1e (spec added),results/statement_positions/gemma4itf_d1_formats_parts/outcomes.jsonl
+Qwen3.5-122B,A lookup ignores the lens-readable part of a stated bridge,table,main,qwen35_122b_d1_formats_parts,has-run,54e7edd,results/statement_positions/qwen35_122b_d1_formats_parts/outcomes.jsonl
+Qwen3.5-122B,A lookup ignores the lens-readable part of a stated bridge,JSON,main,qwen35_122b_d1_formats_parts,has-run,54e7edd,results/statement_positions/qwen35_122b_d1_formats_parts/outcomes.jsonl
+Qwen3.6-27B,"The last tokens read the answer's digit, not the entity's name",draw 1,main,d2_parts_v2_27b,has-run,5cb6a87,results/attn_knockout/d2_parts_v2_27b/rows.jsonl
+Qwen3.6-27B,A lookup ends in a late attention read of the answer's sentence,draw 1,main,d2_v4_late_read,has-run,c2d5b8e,results/attn_knockout/d2_v4_late_read/rows.jsonl
+Qwen3.6-27B,"The last tokens read the answer's digit, not the entity's name",draw 2,main,d2_parts_seed2_27b,has-run,d822f6e,results/attn_knockout/d2_parts_seed2_27b/rows.jsonl
+Qwen3.6-27B,A lookup ends in a late attention read of the answer's sentence,draw 2,main,d2_late_read_seed2_27b,has-run,6538445,results/attn_knockout/d2_late_read_seed2_27b/rows.jsonl
+Qwen3.6-27B,"The last tokens read the answer's digit, not the entity's name",draw 3,main,d2_parts_seed3_27b,no spec,-,results/attn_knockout/d2_parts_seed3_27b/rows.jsonl
+Qwen3.6-27B,A lookup ends in a late attention read of the answer's sentence,draw 3,main,d2_late_read_seed3_27b,no spec,-,results/attn_knockout/d2_late_read_seed3_27b/rows.jsonl
+Qwen3.6-27B,"The last tokens read the answer's digit, not the entity's name",prose,main,d2_formats_27b,has-run,444500e,results/attn_knockout/d2_formats_27b/rows.jsonl
+Qwen3.6-27B,"The last tokens read the answer's digit, not the entity's name",table,main,d2_formats_27b,has-run,444500e,results/attn_knockout/d2_formats_27b/rows.jsonl
+Qwen3.6-27B,"The last tokens read the answer's digit, not the entity's name",JSON,main,d2_formats_27b,has-run,444500e,results/attn_knockout/d2_formats_27b/rows.jsonl
+Qwen3.6-27B,A lookup ends in a late attention read of the answer's sentence,prose,main,d2_formats_27b,has-run,444500e,results/attn_knockout/d2_formats_27b/rows.jsonl
+Qwen3.6-27B,A lookup ends in a late attention read of the answer's sentence,table,main,d2_formats_27b,has-run,444500e,results/attn_knockout/d2_formats_27b/rows.jsonl
+Qwen3.6-27B,A lookup ends in a late attention read of the answer's sentence,JSON,main,d2_formats_27b,has-run,444500e,results/attn_knockout/d2_formats_27b/rows.jsonl
+Qwen3.6-27B,A lookup ends in a late attention read of the answer's sentence,long context,main,d2_late_read_long_27b_r3,has-run,326b54a,results/attn_knockout/d2_late_read_long_27b_r3/rows.jsonl
+OLMo-3-7B-I,"The last tokens read the answer's digit, not the entity's name",draw 1,main,olmo3_7b_instruct_d2_parts_v2,has-run,5cb6a87,results/attn_knockout/olmo3_7b_instruct_d2_parts_v2/rows.jsonl
+OLMo-3-7B-I,A lookup ends in a late attention read of the answer's sentence,draw 1,main,olmo3_7b_instruct_d2_v4_late_read_v3,has-run,9ac2657,results/attn_knockout/olmo3_7b_instruct_d2_v4_late_read_v3/rows.jsonl
+OLMo-3-7B-I,"The last tokens read the answer's digit, not the entity's name",draw 2,main,olmo3_7b_instruct_d2_parts_seed2,has-run,b23c331,results/attn_knockout/olmo3_7b_instruct_d2_parts_seed2/rows.jsonl
+OLMo-3-7B-I,A lookup ends in a late attention read of the answer's sentence,draw 2,main,olmo3_7b_instruct_d2_late_read_seed2,has-run,b23c331,results/attn_knockout/olmo3_7b_instruct_d2_late_read_seed2/rows.jsonl
+OLMo-3-7B-I,"The last tokens read the answer's digit, not the entity's name",draw 3,main,olmo3_7b_instruct_d2_parts_seed3,has-run,c07e7cf,results/attn_knockout/olmo3_7b_instruct_d2_parts_seed3/rows.jsonl
+OLMo-3-7B-I,A lookup ends in a late attention read of the answer's sentence,draw 3,main,olmo3_7b_instruct_d2_late_read_seed3,has-run,c07e7cf,results/attn_knockout/olmo3_7b_instruct_d2_late_read_seed3/rows.jsonl
+OLMo-3-7B-I,"The last tokens read the answer's digit, not the entity's name",prose,main,olmo3_7b_instruct_d2_formats,has-run,2dadb64,results/attn_knockout/olmo3_7b_instruct_d2_formats/rows.jsonl
+OLMo-3-7B-I,"The last tokens read the answer's digit, not the entity's name",table,main,olmo3_7b_instruct_d2_formats,has-run,2dadb64,results/attn_knockout/olmo3_7b_instruct_d2_formats/rows.jsonl
+OLMo-3-7B-I,"The last tokens read the answer's digit, not the entity's name",JSON,main,olmo3_7b_instruct_d2_formats,has-run,2dadb64,results/attn_knockout/olmo3_7b_instruct_d2_formats/rows.jsonl
+OLMo-3-7B-I,A lookup ends in a late attention read of the answer's sentence,prose,main,olmo3_7b_instruct_d2_formats,has-run,2dadb64,results/attn_knockout/olmo3_7b_instruct_d2_formats/rows.jsonl
+OLMo-3-7B-I,A lookup ends in a late attention read of the answer's sentence,table,main,olmo3_7b_instruct_d2_formats,has-run,2dadb64,results/attn_knockout/olmo3_7b_instruct_d2_formats/rows.jsonl
+OLMo-3-7B-I,A lookup ends in a late attention read of the answer's sentence,JSON,main,olmo3_7b_instruct_d2_formats,has-run,2dadb64,results/attn_knockout/olmo3_7b_instruct_d2_formats/rows.jsonl
+OLMo-3-7B-I,A lookup ends in a late attention read of the answer's sentence,long context,main,olmo3_7b_instruct_d2_late_read_long,has-run,2dadb64,results/attn_knockout/olmo3_7b_instruct_d2_late_read_long/rows.jsonl
+Olmo-Hybrid-7B,"The last tokens read the answer's digit, not the entity's name",draw 1,main,olmo_hybrid_7b_d2_parts_v2,has-run,51ff150,results/attn_knockout/olmo_hybrid_7b_d2_parts_v2/rows.jsonl
+Olmo-Hybrid-7B,A lookup ends in a late attention read of the answer's sentence,draw 1,main,olmo_hybrid_7b_d2_v4_late_read_v3,has-run,51ff150,results/attn_knockout/olmo_hybrid_7b_d2_v4_late_read_v3/rows.jsonl
+Olmo-Hybrid-7B,"The last tokens read the answer's digit, not the entity's name",draw 2,main,olmo_hybrid_7b_d2_parts_seed2,has-run,ec3be50,results/attn_knockout/olmo_hybrid_7b_d2_parts_seed2/rows.jsonl
+Olmo-Hybrid-7B,A lookup ends in a late attention read of the answer's sentence,draw 2,main,olmo_hybrid_7b_d2_late_read_seed2,has-run,ec3be50,results/attn_knockout/olmo_hybrid_7b_d2_late_read_seed2/rows.jsonl
+Olmo-Hybrid-7B,"The last tokens read the answer's digit, not the entity's name",draw 3,main,olmo_hybrid_7b_d2_parts_seed3,no spec,-,results/attn_knockout/olmo_hybrid_7b_d2_parts_seed3/rows.jsonl
+Olmo-Hybrid-7B,A lookup ends in a late attention read of the answer's sentence,draw 3,main,olmo_hybrid_7b_d2_late_read_seed3,no spec,-,results/attn_knockout/olmo_hybrid_7b_d2_late_read_seed3/rows.jsonl
+Olmo-Hybrid-7B,"The last tokens read the answer's digit, not the entity's name",prose,main,olmo_hybrid_7b_d2_formats,pending,b3c19e7 (spec added),results/attn_knockout/olmo_hybrid_7b_d2_formats/rows.jsonl
+Olmo-Hybrid-7B,"The last tokens read the answer's digit, not the entity's name",table,main,olmo_hybrid_7b_d2_formats,pending,b3c19e7 (spec added),results/attn_knockout/olmo_hybrid_7b_d2_formats/rows.jsonl
+Olmo-Hybrid-7B,"The last tokens read the answer's digit, not the entity's name",JSON,main,olmo_hybrid_7b_d2_formats,pending,b3c19e7 (spec added),results/attn_knockout/olmo_hybrid_7b_d2_formats/rows.jsonl
+Olmo-Hybrid-7B,A lookup ends in a late attention read of the answer's sentence,prose,main,olmo_hybrid_7b_d2_formats,pending,b3c19e7 (spec added),results/attn_knockout/olmo_hybrid_7b_d2_formats/rows.jsonl
+Olmo-Hybrid-7B,A lookup ends in a late attention read of the answer's sentence,table,main,olmo_hybrid_7b_d2_formats,pending,b3c19e7 (spec added),results/attn_knockout/olmo_hybrid_7b_d2_formats/rows.jsonl
+Olmo-Hybrid-7B,A lookup ends in a late attention read of the answer's sentence,JSON,main,olmo_hybrid_7b_d2_formats,pending,b3c19e7 (spec added),results/attn_knockout/olmo_hybrid_7b_d2_formats/rows.jsonl
+Olmo-Hybrid-7B,A lookup ends in a late attention read of the answer's sentence,long context,main,olmo_hybrid_7b_d2_late_read_long,pending,b3c19e7 (spec added),results/attn_knockout/olmo_hybrid_7b_d2_late_read_long/rows.jsonl
+Qwen3.5-9B,"The last tokens read the answer's digit, not the entity's name",draw 1,main,qwen35_9b_d2_parts_v2,has-run,5cb6a87,results/attn_knockout/qwen35_9b_d2_parts_v2/rows.jsonl
+Qwen3.5-9B,A lookup ends in a late attention read of the answer's sentence,draw 1,main,qwen35_9b_d2_v4_late_read_r2,has-run,0c0c675,results/attn_knockout/qwen35_9b_d2_v4_late_read_r2/rows.jsonl
+Qwen3.5-9B,"The last tokens read the answer's digit, not the entity's name",draw 2,main,qwen35_9b_d2_parts_seed2,has-run,b23c331,results/attn_knockout/qwen35_9b_d2_parts_seed2/rows.jsonl
+Qwen3.5-9B,A lookup ends in a late attention read of the answer's sentence,draw 2,main,qwen35_9b_d2_late_read_seed2,has-run,b23c331,results/attn_knockout/qwen35_9b_d2_late_read_seed2/rows.jsonl
+Qwen3.5-9B,"The last tokens read the answer's digit, not the entity's name",draw 3,main,qwen35_9b_d2_parts_seed3,has-run,c07e7cf,results/attn_knockout/qwen35_9b_d2_parts_seed3/rows.jsonl
+Qwen3.5-9B,A lookup ends in a late attention read of the answer's sentence,draw 3,main,qwen35_9b_d2_late_read_seed3,has-run,c07e7cf,results/attn_knockout/qwen35_9b_d2_late_read_seed3/rows.jsonl
+Qwen3.5-9B,"The last tokens read the answer's digit, not the entity's name",prose,main,qwen35_9b_d2_formats,has-run,2dadb64,results/attn_knockout/qwen35_9b_d2_formats/rows.jsonl
+Qwen3.5-9B,"The last tokens read the answer's digit, not the entity's name",table,main,qwen35_9b_d2_formats,has-run,2dadb64,results/attn_knockout/qwen35_9b_d2_formats/rows.jsonl
+Qwen3.5-9B,"The last tokens read the answer's digit, not the entity's name",JSON,main,qwen35_9b_d2_formats,has-run,2dadb64,results/attn_knockout/qwen35_9b_d2_formats/rows.jsonl
+Qwen3.5-9B,A lookup ends in a late attention read of the answer's sentence,prose,main,qwen35_9b_d2_formats,has-run,2dadb64,results/attn_knockout/qwen35_9b_d2_formats/rows.jsonl
+Qwen3.5-9B,A lookup ends in a late attention read of the answer's sentence,table,main,qwen35_9b_d2_formats,has-run,2dadb64,results/attn_knockout/qwen35_9b_d2_formats/rows.jsonl
+Qwen3.5-9B,A lookup ends in a late attention read of the answer's sentence,JSON,main,qwen35_9b_d2_formats,has-run,2dadb64,results/attn_knockout/qwen35_9b_d2_formats/rows.jsonl
+Qwen3.5-9B,A lookup ends in a late attention read of the answer's sentence,long context,main,qwen35_9b_d2_late_read_long,has-run,ae5f47f,results/attn_knockout/qwen35_9b_d2_late_read_long/rows.jsonl
+Qwen3-32B,"The last tokens read the answer's digit, not the entity's name",draw 1,main,qwen3_32b_d2_parts_v2,has-run,5cb6a87,results/attn_knockout/qwen3_32b_d2_parts_v2/rows.jsonl
+Qwen3-32B,A lookup ends in a late attention read of the answer's sentence,draw 1,main,qwen3_32b_d2_v4_late_read_v2_r2,has-run,0c0c675,results/attn_knockout/qwen3_32b_d2_v4_late_read_v2_r2/rows.jsonl
+Qwen3-32B,"The last tokens read the answer's digit, not the entity's name",draw 2,main,qwen3_32b_d2_parts_seed2,has-run,d822f6e,results/attn_knockout/qwen3_32b_d2_parts_seed2/rows.jsonl
+Qwen3-32B,A lookup ends in a late attention read of the answer's sentence,draw 2,main,qwen3_32b_d2_late_read_seed2,has-run,6538445,results/attn_knockout/qwen3_32b_d2_late_read_seed2/rows.jsonl
+Qwen3-32B,"The last tokens read the answer's digit, not the entity's name",draw 3,main,qwen3_32b_d2_parts_seed3,has-run,c07e7cf,results/attn_knockout/qwen3_32b_d2_parts_seed3/rows.jsonl
+Qwen3-32B,A lookup ends in a late attention read of the answer's sentence,draw 3,main,qwen3_32b_d2_late_read_seed3,has-run,c07e7cf,results/attn_knockout/qwen3_32b_d2_late_read_seed3/rows.jsonl
+Qwen3-32B,"The last tokens read the answer's digit, not the entity's name",prose,main,qwen3_32b_d2_formats,has-run,444500e,results/attn_knockout/qwen3_32b_d2_formats/rows.jsonl
+Qwen3-32B,"The last tokens read the answer's digit, not the entity's name",table,main,qwen3_32b_d2_formats,has-run,444500e,results/attn_knockout/qwen3_32b_d2_formats/rows.jsonl
+Qwen3-32B,"The last tokens read the answer's digit, not the entity's name",JSON,main,qwen3_32b_d2_formats,has-run,444500e,results/attn_knockout/qwen3_32b_d2_formats/rows.jsonl
+Qwen3-32B,A lookup ends in a late attention read of the answer's sentence,prose,main,qwen3_32b_d2_formats,has-run,444500e,results/attn_knockout/qwen3_32b_d2_formats/rows.jsonl
+Qwen3-32B,A lookup ends in a late attention read of the answer's sentence,table,main,qwen3_32b_d2_formats,has-run,444500e,results/attn_knockout/qwen3_32b_d2_formats/rows.jsonl
+Qwen3-32B,A lookup ends in a late attention read of the answer's sentence,JSON,main,qwen3_32b_d2_formats,has-run,444500e,results/attn_knockout/qwen3_32b_d2_formats/rows.jsonl
+Qwen3-32B,A lookup ends in a late attention read of the answer's sentence,long context,main,qwen3_32b_d2_late_read_long,running,2b0701f (spec added),results/attn_knockout/qwen3_32b_d2_late_read_long/rows.jsonl
+Muse 30B,"The last tokens read the answer's digit, not the entity's name",draw 1,main,muse30b_d2_parts,has-run,2dadb64,results/attn_knockout/muse30b_d2_parts/rows.jsonl
+Muse 30B,A lookup ends in a late attention read of the answer's sentence,draw 1,main,muse30b_d2_late_read,has-run,2dadb64,results/attn_knockout/muse30b_d2_late_read/rows.jsonl
+Muse 30B,"The last tokens read the answer's digit, not the entity's name",draw 2,main,muse30b_d2_parts_seed2,has-run,2dadb64,results/attn_knockout/muse30b_d2_parts_seed2/rows.jsonl
+Muse 30B,A lookup ends in a late attention read of the answer's sentence,draw 2,main,muse30b_d2_late_read_seed2,has-run,2dadb64,results/attn_knockout/muse30b_d2_late_read_seed2/rows.jsonl
+Muse 30B,"The last tokens read the answer's digit, not the entity's name",draw 3,main,muse30b_d2_parts_seed3,has-run,c07e7cf,results/attn_knockout/muse30b_d2_parts_seed3/rows.jsonl
+Muse 30B,A lookup ends in a late attention read of the answer's sentence,draw 3,main,muse30b_d2_late_read_seed3,has-run,c07e7cf,results/attn_knockout/muse30b_d2_late_read_seed3/rows.jsonl
+Muse 30B,"The last tokens read the answer's digit, not the entity's name",prose,main,muse30b_d2_formats,has-run,2dadb64,results/attn_knockout/muse30b_d2_formats/rows.jsonl
+Muse 30B,"The last tokens read the answer's digit, not the entity's name",table,main,muse30b_d2_formats,has-run,2dadb64,results/attn_knockout/muse30b_d2_formats/rows.jsonl
+Muse 30B,"The last tokens read the answer's digit, not the entity's name",JSON,main,muse30b_d2_formats,has-run,2dadb64,results/attn_knockout/muse30b_d2_formats/rows.jsonl
+Muse 30B,A lookup ends in a late attention read of the answer's sentence,prose,main,muse30b_d2_formats,has-run,2dadb64,results/attn_knockout/muse30b_d2_formats/rows.jsonl
+Muse 30B,A lookup ends in a late attention read of the answer's sentence,table,main,muse30b_d2_formats,has-run,2dadb64,results/attn_knockout/muse30b_d2_formats/rows.jsonl
+Muse 30B,A lookup ends in a late attention read of the answer's sentence,JSON,main,muse30b_d2_formats,has-run,2dadb64,results/attn_knockout/muse30b_d2_formats/rows.jsonl
+Muse 30B,A lookup ends in a late attention read of the answer's sentence,long context,main,muse30b_d2_late_read_long,pending,2dadb64 (spec added),results/attn_knockout/muse30b_d2_late_read_long/rows.jsonl
+Gemma 4 31B-it,"The last tokens read the answer's digit, not the entity's name",draw 1,main,gemma4it_d2_parts_v2,has-run,b23c331,results/attn_knockout/gemma4it_d2_parts_v2/rows.jsonl
+Gemma 4 31B-it,A lookup ends in a late attention read of the answer's sentence,draw 1,main,gemma4it_d2_v4_late_read_v3_r2,has-run,0c0c675,results/attn_knockout/gemma4it_d2_v4_late_read_v3_r2/rows.jsonl
+Gemma 4 31B-it,"The last tokens read the answer's digit, not the entity's name",draw 2,main,gemma4it_d2_parts_seed2,has-run,b23c331,results/attn_knockout/gemma4it_d2_parts_seed2/rows.jsonl
+Gemma 4 31B-it,A lookup ends in a late attention read of the answer's sentence,draw 2,main,gemma4it_d2_late_read_seed2,has-run,b23c331,results/attn_knockout/gemma4it_d2_late_read_seed2/rows.jsonl
+Gemma 4 31B-it,"The last tokens read the answer's digit, not the entity's name",draw 3,main,gemma4it_d2_parts_seed3,has-run,c07e7cf,results/attn_knockout/gemma4it_d2_parts_seed3/rows.jsonl
+Gemma 4 31B-it,A lookup ends in a late attention read of the answer's sentence,draw 3,main,gemma4it_d2_late_read_seed3,has-run,c07e7cf,results/attn_knockout/gemma4it_d2_late_read_seed3/rows.jsonl
+Gemma 4 31B-it,"The last tokens read the answer's digit, not the entity's name",prose,main,gemma4it_d2_formats,has-run,2dadb64,results/attn_knockout/gemma4it_d2_formats/rows.jsonl
+Gemma 4 31B-it,"The last tokens read the answer's digit, not the entity's name",table,main,gemma4it_d2_formats,has-run,2dadb64,results/attn_knockout/gemma4it_d2_formats/rows.jsonl
+Gemma 4 31B-it,"The last tokens read the answer's digit, not the entity's name",JSON,main,gemma4it_d2_formats,has-run,2dadb64,results/attn_knockout/gemma4it_d2_formats/rows.jsonl
+Gemma 4 31B-it,A lookup ends in a late attention read of the answer's sentence,prose,main,gemma4it_d2_formats,has-run,2dadb64,results/attn_knockout/gemma4it_d2_formats/rows.jsonl
+Gemma 4 31B-it,A lookup ends in a late attention read of the answer's sentence,table,main,gemma4it_d2_formats,has-run,2dadb64,results/attn_knockout/gemma4it_d2_formats/rows.jsonl
+Gemma 4 31B-it,A lookup ends in a late attention read of the answer's sentence,JSON,main,gemma4it_d2_formats,has-run,2dadb64,results/attn_knockout/gemma4it_d2_formats/rows.jsonl
+Gemma 4 31B-it,A lookup ends in a late attention read of the answer's sentence,long context,main,gemma4it_d2_late_read_long,running,2b0701f (spec added),results/attn_knockout/gemma4it_d2_late_read_long/rows.jsonl
+Qwen3.5-122B,"The last tokens read the answer's digit, not the entity's name",draw 1,main,qwen35_122b_d2_parts,has-run,38eb5d4,results/attn_knockout/qwen35_122b_d2_parts/rows.jsonl
+Qwen3.5-122B,A lookup ends in a late attention read of the answer's sentence,draw 1,main,qwen35_122b_d2_late_read,has-run,38eb5d4,results/attn_knockout/qwen35_122b_d2_late_read/rows.jsonl
+Qwen3.5-122B,"The last tokens read the answer's digit, not the entity's name",draw 2,main,qwen35_122b_d2_parts_seed2,has-run,54e7edd,results/attn_knockout/qwen35_122b_d2_parts_seed2/rows.jsonl
+Qwen3.5-122B,A lookup ends in a late attention read of the answer's sentence,draw 2,main,qwen35_122b_d2_late_read_seed2,has-run,54e7edd,results/attn_knockout/qwen35_122b_d2_late_read_seed2/rows.jsonl
+Qwen3.5-122B,"The last tokens read the answer's digit, not the entity's name",draw 3,main,qwen35_122b_d2_parts_seed3,no spec,-,results/attn_knockout/qwen35_122b_d2_parts_seed3/rows.jsonl
+Qwen3.5-122B,A lookup ends in a late attention read of the answer's sentence,draw 3,main,qwen35_122b_d2_late_read_seed3,no spec,-,results/attn_knockout/qwen35_122b_d2_late_read_seed3/rows.jsonl
+Qwen3.5-122B,"The last tokens read the answer's digit, not the entity's name",prose,main,qwen35_122b_d2_formats,has-run,38eb5d4,results/attn_knockout/qwen35_122b_d2_formats/rows.jsonl
+Qwen3.5-122B,"The last tokens read the answer's digit, not the entity's name",table,main,qwen35_122b_d2_formats,has-run,38eb5d4,results/attn_knockout/qwen35_122b_d2_formats/rows.jsonl
+Qwen3.5-122B,"The last tokens read the answer's digit, not the entity's name",JSON,main,qwen35_122b_d2_formats,has-run,38eb5d4,results/attn_knockout/qwen35_122b_d2_formats/rows.jsonl
+Qwen3.5-122B,A lookup ends in a late attention read of the answer's sentence,prose,main,qwen35_122b_d2_formats,has-run,38eb5d4,results/attn_knockout/qwen35_122b_d2_formats/rows.jsonl
+Qwen3.5-122B,A lookup ends in a late attention read of the answer's sentence,table,main,qwen35_122b_d2_formats,has-run,38eb5d4,results/attn_knockout/qwen35_122b_d2_formats/rows.jsonl
+Qwen3.5-122B,A lookup ends in a late attention read of the answer's sentence,JSON,main,qwen35_122b_d2_formats,has-run,38eb5d4,results/attn_knockout/qwen35_122b_d2_formats/rows.jsonl
+Qwen3.5-122B,A lookup ends in a late attention read of the answer's sentence,long context,main,qwen35_122b_d2_late_read_long,has-run,38eb5d4,results/attn_knockout/qwen35_122b_d2_late_read_long/rows.jsonl
+Qwen3.6-27B,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 1,main,d3v4_swap_topics,has-run,d94c169,results/pointer_swap/d3v4_swap_topics/outcomes.jsonl
+Qwen3.6-27B,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 2,main,d3v4_seed2_swap_27b,has-run,d3315bc,results/pointer_swap/d3v4_seed2_swap_27b/outcomes.jsonl
+Qwen3.6-27B,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 3,main,d3v4_seed3_swap_27b,has-run,6538445,results/pointer_swap/d3v4_seed3_swap_27b/outcomes.jsonl
+Qwen3.5-9B,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 1,main,qwen35_9b_d3v4_swap_r2,has-run,0c0c675,results/pointer_swap/qwen35_9b_d3v4_swap_r2/outcomes.jsonl
+Qwen3.5-9B,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 2,main,qwen35_9b_d3v4_seed2_swap,has-run,b23c331,results/pointer_swap/qwen35_9b_d3v4_seed2_swap/outcomes.jsonl
+Qwen3.5-9B,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 3,main,qwen35_9b_d3v4_seed3_swap,has-run,c07e7cf,results/pointer_swap/qwen35_9b_d3v4_seed3_swap/outcomes.jsonl
+Qwen3-32B,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 1,main,qwen3_32b_d3v4_swap_r2,has-run,0c0c675,results/pointer_swap/qwen3_32b_d3v4_swap_r2/outcomes.jsonl
+Qwen3-32B,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 2,main,qwen3_32b_d3v4_seed2_swap,has-run,6538445,results/pointer_swap/qwen3_32b_d3v4_seed2_swap/outcomes.jsonl
+Qwen3-32B,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 3,main,qwen3_32b_d3v4_seed3_swap,has-run,c07e7cf,results/pointer_swap/qwen3_32b_d3v4_seed3_swap/outcomes.jsonl
+OLMo-3-7B-I,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 1,main,olmo3_7b_instruct_d3v4_swap_fn,has-run,dbc3a8d,results/pointer_swap/olmo3_7b_instruct_d3v4_swap_fn/outcomes.jsonl
+OLMo-3-7B-I,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 2,main,olmo3_7b_instruct_d3v4_seed2_swap,has-run,80880cd,results/pointer_swap/olmo3_7b_instruct_d3v4_seed2_swap/outcomes.jsonl
+OLMo-3-7B-I,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 3,main,olmo3_7b_instruct_d3v4_seed3_swap,has-run,c07e7cf,results/pointer_swap/olmo3_7b_instruct_d3v4_seed3_swap/outcomes.jsonl
+Muse 30B,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 1,main,muse30b_d3v4_swap,has-run,2dadb64,results/pointer_swap/muse30b_d3v4_swap/outcomes.jsonl
+Muse 30B,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 2,main,muse30b_d3v4_seed2_swap,has-run,2dadb64,results/pointer_swap/muse30b_d3v4_seed2_swap/outcomes.jsonl
+Muse 30B,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 3,main,muse30b_d3v4_seed3_swap,running,df25f1e (spec added),results/pointer_swap/muse30b_d3v4_seed3_swap/outcomes.jsonl
+Gemma 4 31B-it,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 1,main,gemma4it_d3v4_swap_v2_r2,has-run,0c0c675,results/pointer_swap/gemma4it_d3v4_swap_v2_r2/outcomes.jsonl
+Gemma 4 31B-it,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 2,main,gemma4it_d3v4_seed2_swap,has-run,b23c331,results/pointer_swap/gemma4it_d3v4_seed2_swap/outcomes.jsonl
+Gemma 4 31B-it,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 3,main,gemma4it_d3v4_seed3_swap,running,df25f1e (spec added),results/pointer_swap/gemma4it_d3v4_seed3_swap/outcomes.jsonl
+Olmo-Hybrid-7B,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 1,main,olmo_hybrid_7b_d3v4_swap_fn,has-run,77b372b,results/pointer_swap/olmo_hybrid_7b_d3v4_swap_fn/outcomes.jsonl
+Olmo-Hybrid-7B,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 2,main,olmo_hybrid_7b_d3v4_seed2_swap,has-run,77b372b,results/pointer_swap/olmo_hybrid_7b_d3v4_seed2_swap/outcomes.jsonl
+Olmo-Hybrid-7B,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 3,main,olmo_hybrid_7b_d3v4_seed3_swap,no spec,-,results/pointer_swap/olmo_hybrid_7b_d3v4_seed3_swap/outcomes.jsonl
+Qwen3.5-122B,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 1,main,qwen35_122b_d3v4_swap,has-run,38eb5d4,results/pointer_swap/qwen35_122b_d3v4_swap/outcomes.jsonl
+Qwen3.5-122B,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 2,main,qwen35_122b_d3v4_seed2_swap,has-run,54e7edd,results/pointer_swap/qwen35_122b_d3v4_seed2_swap/outcomes.jsonl
+Qwen3.5-122B,"Order label for the 1st and 2nd sentence, the bridge's identity after",draw 3,main,qwen35_122b_d3v4_seed3_swap,has-run,54e7edd,results/pointer_swap/qwen35_122b_d3v4_seed3_swap/outcomes.jsonl
+Qwen3.6-27B,"Order label for the 1st and 2nd sentence, the bridge's identity after",8 sentences,main,d3v5_len8_swap_27b,has-run,49c008c,results/pointer_swap/d3v5_len8_swap_27b/outcomes.jsonl
+Qwen3.6-27B,"Order label for the 1st and 2nd sentence, the bridge's identity after",12 sentences,main,d3v5_len12_swap_27b,has-run,49c008c,results/pointer_swap/d3v5_len12_swap_27b/outcomes.jsonl
+Qwen3.5-9B,"Order label for the 1st and 2nd sentence, the bridge's identity after",8 sentences,main,qwen35_9b_d3v5_len8_swap,has-run,49c008c,results/pointer_swap/qwen35_9b_d3v5_len8_swap/outcomes.jsonl
+Qwen3.5-9B,"Order label for the 1st and 2nd sentence, the bridge's identity after",12 sentences,main,qwen35_9b_d3v5_len12_swap,has-run,49c008c,results/pointer_swap/qwen35_9b_d3v5_len12_swap/outcomes.jsonl
+Qwen3-32B,"Order label for the 1st and 2nd sentence, the bridge's identity after",8 sentences,main,qwen3_32b_d3v5_len8_swap,has-run,51ff150,results/pointer_swap/qwen3_32b_d3v5_len8_swap/outcomes.jsonl
+Qwen3-32B,"Order label for the 1st and 2nd sentence, the bridge's identity after",12 sentences,main,qwen3_32b_d3v5_len12_swap,has-run,51ff150,results/pointer_swap/qwen3_32b_d3v5_len12_swap/outcomes.jsonl
+OLMo-3-7B-I,"Order label for the 1st and 2nd sentence, the bridge's identity after",8 sentences,main,olmo3_7b_instruct_d3v5_len8_swap,has-run,51ff150,results/pointer_swap/olmo3_7b_instruct_d3v5_len8_swap/outcomes.jsonl
+OLMo-3-7B-I,"Order label for the 1st and 2nd sentence, the bridge's identity after",12 sentences,main,olmo3_7b_instruct_d3v5_len12_swap,has-run,51ff150,results/pointer_swap/olmo3_7b_instruct_d3v5_len12_swap/outcomes.jsonl
+Muse 30B,"Order label for the 1st and 2nd sentence, the bridge's identity after",8 sentences,main,muse30b_d3v5_len8_swap,has-run,51ff150,results/pointer_swap/muse30b_d3v5_len8_swap/outcomes.jsonl
+Muse 30B,"Order label for the 1st and 2nd sentence, the bridge's identity after",12 sentences,main,muse30b_d3v5_len12_swap,has-run,51ff150,results/pointer_swap/muse30b_d3v5_len12_swap/outcomes.jsonl
+Gemma 4 31B-it,"Order label for the 1st and 2nd sentence, the bridge's identity after",8 sentences,main,gemma4it_d3v5_len8_swap,no spec,-,results/pointer_swap/gemma4it_d3v5_len8_swap/outcomes.jsonl
+Gemma 4 31B-it,"Order label for the 1st and 2nd sentence, the bridge's identity after",12 sentences,main,gemma4it_d3v5_len12_swap,no spec,-,results/pointer_swap/gemma4it_d3v5_len12_swap/outcomes.jsonl
+Olmo-Hybrid-7B,"Order label for the 1st and 2nd sentence, the bridge's identity after",8 sentences,main,olmo_hybrid_7b_d3v5_len8_swap,has-run,51ff150,results/pointer_swap/olmo_hybrid_7b_d3v5_len8_swap/outcomes.jsonl
+Olmo-Hybrid-7B,"Order label for the 1st and 2nd sentence, the bridge's identity after",12 sentences,main,olmo_hybrid_7b_d3v5_len12_swap,has-run,51ff150,results/pointer_swap/olmo_hybrid_7b_d3v5_len12_swap/outcomes.jsonl
+Qwen3.5-122B,"Order label for the 1st and 2nd sentence, the bridge's identity after",8 sentences,main,qwen35_122b_d3v5_len8_swap,has-run,54e7edd,results/pointer_swap/qwen35_122b_d3v5_len8_swap/outcomes.jsonl
+Qwen3.5-122B,"Order label for the 1st and 2nd sentence, the bridge's identity after",12 sentences,main,qwen35_122b_d3v5_len12_swap,has-run,54e7edd,results/pointer_swap/qwen35_122b_d3v5_len12_swap/outcomes.jsonl
+Qwen3.6-27B,"The order label counts order in the list, not place in the text",filler moved,main,d3v4x_swap_main,has-run,469ad9c,results/pointer_swap/d3v4x_swap_main/outcomes.jsonl
+Qwen3.6-27B,"The order label counts order in the list, not place in the text",one statement more,main,d3v4x_swap_main,has-run,469ad9c,results/pointer_swap/d3v4x_swap_main/outcomes.jsonl
+Qwen3.6-27B,"The order label counts order in the list, not place in the text",one statement fewer,main,d3v4x_swap_main,has-run,469ad9c,results/pointer_swap/d3v4x_swap_main/outcomes.jsonl
+Qwen3.5-9B,"The order label counts order in the list, not place in the text",filler moved,main,qwen35_9b_d3v4x_swap_r2,has-run,0c0c675,results/pointer_swap/qwen35_9b_d3v4x_swap_r2/outcomes.jsonl
+Qwen3.5-9B,"The order label counts order in the list, not place in the text",one statement more,main,qwen35_9b_d3v4x_swap_r2,has-run,0c0c675,results/pointer_swap/qwen35_9b_d3v4x_swap_r2/outcomes.jsonl
+Qwen3.5-9B,"The order label counts order in the list, not place in the text",one statement fewer,main,qwen35_9b_d3v4x_swap_r2,has-run,0c0c675,results/pointer_swap/qwen35_9b_d3v4x_swap_r2/outcomes.jsonl
+Qwen3-32B,"The order label counts order in the list, not place in the text",filler moved,main,qwen3_32b_d3v4x_swap_r3,has-run,a5f0604,results/pointer_swap/qwen3_32b_d3v4x_swap_r3/outcomes.jsonl
+Qwen3-32B,"The order label counts order in the list, not place in the text",one statement more,main,qwen3_32b_d3v4x_swap_r3,has-run,a5f0604,results/pointer_swap/qwen3_32b_d3v4x_swap_r3/outcomes.jsonl
+Qwen3-32B,"The order label counts order in the list, not place in the text",one statement fewer,main,qwen3_32b_d3v4x_swap_r3,has-run,a5f0604,results/pointer_swap/qwen3_32b_d3v4x_swap_r3/outcomes.jsonl
+OLMo-3-7B-I,"The order label counts order in the list, not place in the text",filler moved,main,olmo3_7b_instruct_d3v4x_swap,has-run,84285f3,results/pointer_swap/olmo3_7b_instruct_d3v4x_swap/outcomes.jsonl
+OLMo-3-7B-I,"The order label counts order in the list, not place in the text",one statement more,main,olmo3_7b_instruct_d3v4x_swap,has-run,84285f3,results/pointer_swap/olmo3_7b_instruct_d3v4x_swap/outcomes.jsonl
+OLMo-3-7B-I,"The order label counts order in the list, not place in the text",one statement fewer,main,olmo3_7b_instruct_d3v4x_swap,has-run,84285f3,results/pointer_swap/olmo3_7b_instruct_d3v4x_swap/outcomes.jsonl
+Olmo-Hybrid-7B,"The order label counts order in the list, not place in the text",filler moved,main,olmo_hybrid_7b_d3v4x_swap,has-run,77b372b,results/pointer_swap/olmo_hybrid_7b_d3v4x_swap/outcomes.jsonl
+Olmo-Hybrid-7B,"The order label counts order in the list, not place in the text",one statement more,main,olmo_hybrid_7b_d3v4x_swap,has-run,77b372b,results/pointer_swap/olmo_hybrid_7b_d3v4x_swap/outcomes.jsonl
+Olmo-Hybrid-7B,"The order label counts order in the list, not place in the text",one statement fewer,main,olmo_hybrid_7b_d3v4x_swap,has-run,77b372b,results/pointer_swap/olmo_hybrid_7b_d3v4x_swap/outcomes.jsonl
+Muse 30B,"The order label counts order in the list, not place in the text",filler moved,main,muse30b_d3v4x_swap,has-run,2dadb64,results/pointer_swap/muse30b_d3v4x_swap/outcomes.jsonl
+Muse 30B,"The order label counts order in the list, not place in the text",one statement more,main,muse30b_d3v4x_swap,has-run,2dadb64,results/pointer_swap/muse30b_d3v4x_swap/outcomes.jsonl
+Muse 30B,"The order label counts order in the list, not place in the text",one statement fewer,main,muse30b_d3v4x_swap,has-run,2dadb64,results/pointer_swap/muse30b_d3v4x_swap/outcomes.jsonl
+Gemma 4 31B-it,"The order label counts order in the list, not place in the text",filler moved,main,gemma4it_d3v4x_swap_r2,has-run,0c0c675,results/pointer_swap/gemma4it_d3v4x_swap_r2/outcomes.jsonl
+Gemma 4 31B-it,"The order label counts order in the list, not place in the text",one statement more,main,gemma4it_d3v4x_swap_r2,has-run,0c0c675,results/pointer_swap/gemma4it_d3v4x_swap_r2/outcomes.jsonl
+Gemma 4 31B-it,"The order label counts order in the list, not place in the text",one statement fewer,main,gemma4it_d3v4x_swap_r2,has-run,0c0c675,results/pointer_swap/gemma4it_d3v4x_swap_r2/outcomes.jsonl
+Qwen3.5-122B,"The order label counts order in the list, not place in the text",filler moved,main,qwen35_122b_d3v4x_swap,has-run,54e7edd,results/pointer_swap/qwen35_122b_d3v4x_swap/outcomes.jsonl
+Qwen3.5-122B,"The order label counts order in the list, not place in the text",one statement more,main,qwen35_122b_d3v4x_swap,has-run,54e7edd,results/pointer_swap/qwen35_122b_d3v4x_swap/outcomes.jsonl
+Qwen3.5-122B,"The order label counts order in the list, not place in the text",one statement fewer,main,qwen35_122b_d3v4x_swap,has-run,54e7edd,results/pointer_swap/qwen35_122b_d3v4x_swap/outcomes.jsonl
+Qwen3.6-27B,The lens names a stated bridge where it is stated (lens gate),v1 (at the word),main,lens_gate_27b,has-run,b7ad363,results/lens_gate/lens_gate_27b/summary.json
+Qwen3.6-27B,The lens names a stated bridge where it is stated (lens gate),v2 (after the word),main,lens_gate_v2_27b,has-run,2b0701f,results/lens_gate/lens_gate_v2_27b/summary.json
+Qwen3.6-27B,The lens names a stated bridge where it is stated (lens gate),v1 (at the word),plain J-lens,qwen36_27b_jlens_lens_gate_v2,has-run,b51e964,results/lens_gate/qwen36_27b_jlens_lens_gate_v2/summary.json
+Qwen3.6-27B,The lens names a stated bridge where it is stated (lens gate),v2 (after the word),plain J-lens,qwen36_27b_jlens_lens_gate_v2,has-run,b51e964,results/lens_gate/qwen36_27b_jlens_lens_gate_v2/summary.json
+Qwen3.5-9B,The lens names a stated bridge where it is stated (lens gate),v1 (at the word),main,qwen35_9b_lens_gate,has-run,b7ad363,results/lens_gate/qwen35_9b_lens_gate/summary.json
+Qwen3.5-9B,The lens names a stated bridge where it is stated (lens gate),v2 (after the word),main,qwen35_9b_lens_gate_v2,has-run,2b0701f,results/lens_gate/qwen35_9b_lens_gate_v2/summary.json
+Qwen3-32B,The lens names a stated bridge where it is stated (lens gate),v1 (at the word),main,qwen3_32b_jpp_lens_gate,not enqueued,e50b1dc (spec added),results/lens_gate/qwen3_32b_jpp_lens_gate/summary.json
+Qwen3-32B,The lens names a stated bridge where it is stated (lens gate),v2 (after the word),main,qwen3_32b_jpp_lens_gate,not enqueued,e50b1dc (spec added),results/lens_gate/qwen3_32b_jpp_lens_gate/summary.json
+Qwen3-32B,The lens names a stated bridge where it is stated (lens gate),v1 (at the word),plain J-lens,qwen3_32b_lens_gate,has-run,b7ad363,results/lens_gate/qwen3_32b_lens_gate/summary.json
+Qwen3-32B,The lens names a stated bridge where it is stated (lens gate),v2 (after the word),plain J-lens,qwen3_32b_lens_gate_v2,has-run,2b0701f,results/lens_gate/qwen3_32b_lens_gate_v2/summary.json
+OLMo-3-7B-I,The lens names a stated bridge where it is stated (lens gate),v1 (at the word),main,olmo3_7b_instruct_jpp_lens_gate,not enqueued,e50b1dc (spec added),results/lens_gate/olmo3_7b_instruct_jpp_lens_gate/summary.json
+OLMo-3-7B-I,The lens names a stated bridge where it is stated (lens gate),v2 (after the word),main,olmo3_7b_instruct_jpp_lens_gate,not enqueued,e50b1dc (spec added),results/lens_gate/olmo3_7b_instruct_jpp_lens_gate/summary.json
+OLMo-3-7B-I,The lens names a stated bridge where it is stated (lens gate),v1 (at the word),plain J-lens,olmo3_7b_instruct_lens_gate_v2,has-run,2b0701f,results/lens_gate/olmo3_7b_instruct_lens_gate_v2/summary.json
+OLMo-3-7B-I,The lens names a stated bridge where it is stated (lens gate),v2 (after the word),plain J-lens,olmo3_7b_instruct_lens_gate_v2,has-run,2b0701f,results/lens_gate/olmo3_7b_instruct_lens_gate_v2/summary.json
+Muse 30B,The lens names a stated bridge where it is stated (lens gate),v1 (at the word),main,muse30b_lens_gate_v2,has-run,2dadb64,results/lens_gate/muse30b_lens_gate_v2/summary.json
+Muse 30B,The lens names a stated bridge where it is stated (lens gate),v2 (after the word),main,muse30b_lens_gate_v2,has-run,2dadb64,results/lens_gate/muse30b_lens_gate_v2/summary.json
+Gemma 4 31B-it,The lens names a stated bridge where it is stated (lens gate),v1 (at the word),main,gemma4itf_lens_gate_v2,has-run,c2add04,results/lens_gate/gemma4itf_lens_gate_v2/summary.json
+Gemma 4 31B-it,The lens names a stated bridge where it is stated (lens gate),v2 (after the word),main,gemma4itf_lens_gate_v2,has-run,c2add04,results/lens_gate/gemma4itf_lens_gate_v2/summary.json
+Gemma 4 31B-it,The lens names a stated bridge where it is stated (lens gate),v1 (at the word),base-model J++,gemma4itb_lens_gate_v2_r2,has-run,c2add04,results/lens_gate/gemma4itb_lens_gate_v2_r2/summary.json
+Gemma 4 31B-it,The lens names a stated bridge where it is stated (lens gate),v2 (after the word),base-model J++,gemma4itb_lens_gate_v2_r2,has-run,c2add04,results/lens_gate/gemma4itb_lens_gate_v2_r2/summary.json
+Qwen3.5-122B,The lens names a stated bridge where it is stated (lens gate),v1 (at the word),main,qwen35_122b_lens_gate_v2,has-run,38eb5d4,results/lens_gate/qwen35_122b_lens_gate_v2/summary.json
+Qwen3.5-122B,The lens names a stated bridge where it is stated (lens gate),v2 (after the word),main,qwen35_122b_lens_gate_v2,has-run,38eb5d4,results/lens_gate/qwen35_122b_lens_gate_v2/summary.json
+Qwen3.6-27B,A lens push writes a stated bridge for recall; the lookup does not follow,main rule,main,d4_where_fresh_27b,has-run,a786b36,results/early_push_where/d4_where_fresh_27b/summary.json
+Qwen3.6-27B,A lens push writes a stated bridge for recall; the lookup does not follow,amended rule,main,d4_where_fresh_27b,has-run,a786b36,results/early_push_where/d4_where_fresh_27b/summary.json
+Qwen3.6-27B,A lens push writes a stated bridge for recall; the lookup does not follow,"main rule, draw 2",main,d4_where_fresh_seed2_27b,has-run,c07e7cf,results/early_push_where/d4_where_fresh_seed2_27b/summary.json
+Qwen3.6-27B,A lens push writes a stated bridge for recall; the lookup does not follow,"amended rule, draw 2",main,d4_where_fresh_seed2_27b,has-run,c07e7cf,results/early_push_where/d4_where_fresh_seed2_27b/summary.json
+Qwen3.5-9B,A lens push writes a stated bridge for recall; the lookup does not follow,main rule,main,qwen35_9b_d4_where,has-run,2b0701f,results/early_push_where/qwen35_9b_d4_where/summary.json
+Qwen3.5-9B,A lens push writes a stated bridge for recall; the lookup does not follow,amended rule,main,qwen35_9b_d4_where,has-run,2b0701f,results/early_push_where/qwen35_9b_d4_where/summary.json
+Qwen3.5-9B,A lens push writes a stated bridge for recall; the lookup does not follow,"main rule, draw 2",main,qwen35_9b_d4_where_fresh_seed2,has-run,c07e7cf,results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json
+Qwen3.5-9B,A lens push writes a stated bridge for recall; the lookup does not follow,"amended rule, draw 2",main,qwen35_9b_d4_where_fresh_seed2,has-run,c07e7cf,results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json
+Qwen3-32B,A lens push writes a stated bridge for recall; the lookup does not follow,main rule,main,qwen3_32b_jpp_d4_where,not enqueued,326b54a (spec added),results/early_push_where/qwen3_32b_jpp_d4_where/summary.json
+Qwen3-32B,A lens push writes a stated bridge for recall; the lookup does not follow,amended rule,main,qwen3_32b_jpp_d4_where,not enqueued,326b54a (spec added),results/early_push_where/qwen3_32b_jpp_d4_where/summary.json
+OLMo-3-7B-I,A lens push writes a stated bridge for recall; the lookup does not follow,main rule,main,olmo3_7b_instruct_jpp_d4_where_raw,not enqueued,fe8f12f (spec added),results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json
+OLMo-3-7B-I,A lens push writes a stated bridge for recall; the lookup does not follow,amended rule,main,olmo3_7b_instruct_jpp_d4_where_raw,not enqueued,fe8f12f (spec added),results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json
+Muse 30B,A lens push writes a stated bridge for recall; the lookup does not follow,main rule,main,muse30b_d4_where,has-run,2dadb64,results/early_push_where/muse30b_d4_where/summary.json
+Muse 30B,A lens push writes a stated bridge for recall; the lookup does not follow,amended rule,main,muse30b_d4_where,has-run,2dadb64,results/early_push_where/muse30b_d4_where/summary.json
+Gemma 4 31B-it,A lens push writes a stated bridge for recall; the lookup does not follow,main rule,main,gemma4itf_d4_where,blocked,77b372b (spec added),results/early_push_where/gemma4itf_d4_where/summary.json
+Gemma 4 31B-it,A lens push writes a stated bridge for recall; the lookup does not follow,amended rule,main,gemma4itf_d4_where,blocked,77b372b (spec added),results/early_push_where/gemma4itf_d4_where/summary.json
+Qwen3.5-122B,A lens push writes a stated bridge for recall; the lookup does not follow,main rule,main,qwen35_122b_d4_where,has-run,38eb5d4,results/early_push_where/qwen35_122b_d4_where/summary.json
+Qwen3.5-122B,A lens push writes a stated bridge for recall; the lookup does not follow,amended rule,main,qwen35_122b_d4_where,has-run,38eb5d4,results/early_push_where/qwen35_122b_d4_where/summary.json
+Qwen3.5-122B,A lens push writes a stated bridge for recall; the lookup does not follow,"main rule, draw 2",main,qwen35_122b_d4_where_fresh_seed2,no spec,-,results/early_push_where/qwen35_122b_d4_where_fresh_seed2/summary.json
+Qwen3.5-122B,A lens push writes a stated bridge for recall; the lookup does not follow,"amended rule, draw 2",main,qwen35_122b_d4_where_fresh_seed2,no spec,-,results/early_push_where/qwen35_122b_d4_where_fresh_seed2/summary.json
+Qwen3.6-27B,"Where the lens writes the bridge, the lookup still does not follow it","stated bridge, draw 1",main,d1_topics_rw_27b,has-run,3e90959,results/statement_positions/d1_topics_rw_27b/summary.json
+Qwen3.6-27B,"Where the lens writes the bridge, the lookup still does not follow it","stated bridge, draw 2",main,d1_topics2_rw_27b,has-run,a786b36,results/statement_positions/d1_topics2_rw_27b/summary.json
+Qwen3.6-27B,"Where the lens writes the bridge, the lookup still does not follow it","stated bridge, draw 2",plain J-lens,qwen36_27b_jlens_d1_topics2_rw,has-run,2dadb64,results/statement_positions/qwen36_27b_jlens_d1_topics2_rw/summary.json
+Qwen3.5-9B,"Where the lens writes the bridge, the lookup still does not follow it","stated bridge, draw 2",main,qwen35_9b_d1_topics2_rw,has-run,a786b36,results/statement_positions/qwen35_9b_d1_topics2_rw/summary.json
+Qwen3-32B,"Where the lens writes the bridge, the lookup still does not follow it","stated bridge, draw 1",main,qwen3_32b_jpp_d1_topics_rw,not enqueued,e50b1dc (spec added),results/statement_positions/qwen3_32b_jpp_d1_topics_rw/summary.json
+Qwen3-32B,"Where the lens writes the bridge, the lookup still does not follow it","stated bridge, draw 1",plain J-lens,qwen3_32b_d1_topics_rw,has-run,3e90959,results/statement_positions/qwen3_32b_d1_topics_rw/summary.json
+OLMo-3-7B-I,"Where the lens writes the bridge, the lookup still does not follow it","stated bridge, draw 2",main,olmo3_7b_instruct_jpp_d1_topics2_rw,not enqueued,e50b1dc (spec added),results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_rw/summary.json
+OLMo-3-7B-I,"Where the lens writes the bridge, the lookup still does not follow it","stated bridge, draw 2",plain J-lens,olmo3_7b_instruct_d1_topics2_rw,not enqueued,2b0701f (spec added),results/statement_positions/olmo3_7b_instruct_d1_topics2_rw/summary.json
+Muse 30B,"Where the lens writes the bridge, the lookup still does not follow it","stated bridge, draw 2",main,muse30b_d1_topics2_rw,pending,2dadb64 (spec added),results/statement_positions/muse30b_d1_topics2_rw/summary.json
+Gemma 4 31B-it,"Where the lens writes the bridge, the lookup still does not follow it","stated bridge, draw 2",main,gemma4itf_d1_topics2_rw,pending,c2add04 (spec added),results/statement_positions/gemma4itf_d1_topics2_rw/summary.json
+Gemma 4 31B-it,"Where the lens writes the bridge, the lookup still does not follow it","stated bridge, draw 2",base-model J++,gemma4itb_d1_topics2_rw,not enqueued,2b0701f (spec added),results/statement_positions/gemma4itb_d1_topics2_rw/summary.json
+Qwen3.5-122B,"Where the lens writes the bridge, the lookup still does not follow it","stated bridge, draw 2",main,qwen35_122b_d1_topics2_rw,has-run,4a87d79,results/statement_positions/qwen35_122b_d1_topics2_rw/summary.json
+Qwen3.6-27B,"Where the lens writes the bridge, the lookup still does not follow it",last tokens,main,d3v4_fit_main,has-run,a15cd0b,results/pointer_fit/d3v4_fit_main/summary.json
+Qwen3.5-9B,"Where the lens writes the bridge, the lookup still does not follow it",last tokens,main,qwen35_9b_d3b_fit_v2,has-run,0a8820d,results/pointer_fit/qwen35_9b_d3b_fit_v2/summary.json
+Qwen3-32B,"Where the lens writes the bridge, the lookup still does not follow it",last tokens,main,qwen3_32b_jpp_d3b_fit_v2,not enqueued,4162798 (spec added),results/pointer_fit/qwen3_32b_jpp_d3b_fit_v2/summary.json
+Gemma 4 31B-it,"Where the lens writes the bridge, the lookup still does not follow it",last tokens,main,gemma4itf_d3b_fit_v2,blocked,77b372b (spec added),results/pointer_fit/gemma4itf_d3b_fit_v2/summary.json
+OLMo-3-7B-I,"Where the lens writes the bridge, the lookup still does not follow it",last tokens,main,olmo3_7b_instruct_jpp_d3b_fit_v2,not enqueued,e50b1dc (spec added),results/pointer_fit/olmo3_7b_instruct_jpp_d3b_fit_v2/summary.json
+Qwen3.5-122B,"Where the lens writes the bridge, the lookup still does not follow it",last tokens,main,qwen35_122b_d3b_fit_v2,has-run,54e7edd,results/pointer_fit/qwen35_122b_d3b_fit_v2/summary.json
+OLMo-3-7B-I,"Where the lens writes the bridge, the lookup still does not follow it",last tokens,plain J-lens,olmo3_7b_instruct_d3b_fit_v2,has-run,6149001,results/pointer_fit/olmo3_7b_instruct_d3b_fit_v2/summary.json
+Olmo-Hybrid-7B,"Removing the J-space breaks recall, not the lookup","tasks, Zach's rule",main,,no lens,-,
+Olmo-Hybrid-7B,"Removing the J-space breaks recall, not the lookup",animal suite,main,,no lens,-,
+Olmo-Hybrid-7B,A lookup ignores the lens-readable part of a stated bridge,draw 1,main,,no lens,-,
+Olmo-Hybrid-7B,A lookup ignores the lens-readable part of a stated bridge,draw 2,main,,no lens,-,
+Olmo-Hybrid-7B,A lookup ignores the lens-readable part of a stated bridge,table,main,,no lens,-,
+Olmo-Hybrid-7B,A lookup ignores the lens-readable part of a stated bridge,JSON,main,,no lens,-,
+Olmo-Hybrid-7B,The lens names a stated bridge where it is stated (lens gate),v1 (at the word),main,,no lens,-,
+Olmo-Hybrid-7B,The lens names a stated bridge where it is stated (lens gate),v2 (after the word),main,,no lens,-,
+Olmo-Hybrid-7B,A lens push writes a stated bridge for recall; the lookup does not follow,main rule,main,,no lens,-,
+Olmo-Hybrid-7B,A lens push writes a stated bridge for recall; the lookup does not follow,amended rule,main,,no lens,-,
+Olmo-Hybrid-7B,A lens push writes a stated bridge for recall; the lookup does not follow,"main rule, draw 2",main,,no lens,-,
+Olmo-Hybrid-7B,A lens push writes a stated bridge for recall; the lookup does not follow,"amended rule, draw 2",main,,no lens,-,
+Olmo-Hybrid-7B,"Where the lens writes the bridge, the lookup still does not follow it","stated bridge, draw 1",main,,no lens,-,
+Olmo-Hybrid-7B,"Where the lens writes the bridge, the lookup still does not follow it","stated bridge, draw 2",main,,no lens,-,
+Olmo-Hybrid-7B,"Where the lens writes the bridge, the lookup still does not follow it",last tokens,main,,no lens,-,
+Qwen3.5-9B,"Removing the J-space breaks recall, not the lookup","tasks, Zach's rule",main,,no spec,-,
+Qwen3-32B,"Removing the J-space breaks recall, not the lookup","tasks, Zach's rule",main,,no spec,-,
+OLMo-3-7B-I,"Removing the J-space breaks recall, not the lookup","tasks, Zach's rule",main,,no spec,-,
+Muse 30B,"Removing the J-space breaks recall, not the lookup","tasks, Zach's rule",main,,no spec,-,
+Qwen3.5-122B,"Removing the J-space breaks recall, not the lookup","tasks, Zach's rule",main,,no spec,-,
+Qwen3.5-9B,A lookup ignores the lens-readable part of a stated bridge,draw 1,main,,no spec,-,
+OLMo-3-7B-I,A lookup ignores the lens-readable part of a stated bridge,draw 1,main,,no spec,-,
+Muse 30B,A lookup ignores the lens-readable part of a stated bridge,draw 1,main,,no spec,-,
+Gemma 4 31B-it,A lookup ignores the lens-readable part of a stated bridge,draw 1,main,,no spec,-,
+Qwen3.5-122B,A lookup ignores the lens-readable part of a stated bridge,draw 1,main,,no spec,-,
+Qwen3-32B,A lookup ignores the lens-readable part of a stated bridge,draw 2,main,,no spec,-,
+Qwen3-32B,A lens push writes a stated bridge for recall; the lookup does not follow,"main rule, draw 2",main,,no spec,-,
+OLMo-3-7B-I,A lens push writes a stated bridge for recall; the lookup does not follow,"main rule, draw 2",main,,no spec,-,
+Muse 30B,A lens push writes a stated bridge for recall; the lookup does not follow,"main rule, draw 2",main,,no spec,-,
+Gemma 4 31B-it,A lens push writes a stated bridge for recall; the lookup does not follow,"main rule, draw 2",main,,no spec,-,
+Qwen3-32B,A lens push writes a stated bridge for recall; the lookup does not follow,"amended rule, draw 2",main,,no spec,-,
+OLMo-3-7B-I,A lens push writes a stated bridge for recall; the lookup does not follow,"amended rule, draw 2",main,,no spec,-,
+Muse 30B,A lens push writes a stated bridge for recall; the lookup does not follow,"amended rule, draw 2",main,,no spec,-,
+Gemma 4 31B-it,A lens push writes a stated bridge for recall; the lookup does not follow,"amended rule, draw 2",main,,no spec,-,
+Qwen3.5-9B,"Where the lens writes the bridge, the lookup still does not follow it","stated bridge, draw 1",main,,no spec,-,
+OLMo-3-7B-I,"Where the lens writes the bridge, the lookup still does not follow it","stated bridge, draw 1",main,,no spec,-,
+Muse 30B,"Where the lens writes the bridge, the lookup still does not follow it","stated bridge, draw 1",main,,no spec,-,
+Gemma 4 31B-it,"Where the lens writes the bridge, the lookup still does not follow it","stated bridge, draw 1",main,,no spec,-,
+Qwen3.5-122B,"Where the lens writes the bridge, the lookup still does not follow it","stated bridge, draw 1",main,,no spec,-,
+Qwen3-32B,"Where the lens writes the bridge, the lookup still does not follow it","stated bridge, draw 2",main,,no spec,-,
+Muse 30B,"Where the lens writes the bridge, the lookup still does not follow it",last tokens,main,,no spec,-,
