@@ -1,0 +1,91 @@
+{
+  "seconds": 679,
+  "band_seconds": {
+    "L39-45": 406
+  },
+  "unedited_accuracy": {
+    "PP/clean": 0.993006993006993,
+    "MP/clean": 0.99,
+    "MM/clean": 1,
+    "PM/clean": 0.993006993006993,
+    "CM/clean": 0.9926470588235294,
+    "CP/clean": 0.9926470588235294
+  },
+  "cells": {
+    "L39-45": {
+      "PP/clean": {
+        "unembed10": {
+          "n": 143,
+          "accuracy": 0.993006993006993,
+          "dlogp": -0.02077012068846009
+        },
+        "unembed10_rot": {
+          "n": 143,
+          "accuracy": 1,
+          "dlogp": 0.009039657822178377
+        }
+      },
+      "MP/clean": {
+        "unembed10": {
+          "n": 100,
+          "accuracy": 0.98,
+          "dlogp": -0.033906618412584064
+        },
+        "unembed10_rot": {
+          "n": 100,
+          "accuracy": 0.97,
+          "dlogp": -0.013132821377366781
+        }
+      },
+      "MM/clean": {
+        "unembed10": {
+          "n": 100,
+          "accuracy": 0.96,
+          "dlogp": -0.10694723650813102
+        },
+        "unembed10_rot": {
+          "n": 100,
+          "accuracy": 0.98,
+          "dlogp": -0.05310989010147751
+        }
+      },
+      "PM/clean": {
+        "unembed10": {
+          "n": 143,
+          "accuracy": 0.8601398601398601,
+          "dlogp": -0.3027214785790318
+        },
+        "unembed10_rot": {
+          "n": 143,
+          "accuracy": 0.9790209790209791,
+          "dlogp": -0.041345614640341775
+        }
+      },
+      "CM/clean": {
+        "unembed10": {
+          "n": 136,
+          "accuracy": 0.9264705882352942,
+          "dlogp": -0.22977212165920613
+        },
+        "unembed10_rot": {
+          "n": 136,
+          "accuracy": 0.9852941176470589,
+          "dlogp": -0.03815213331322679
+        }
+      },
+      "CP/clean": {
+        "unembed10": {
+          "n": 136,
+          "accuracy": 1,
+          "dlogp": -0.03035451184533646
+        },
+        "unembed10_rot": {
+          "n": 136,
+          "accuracy": 1,
+          "dlogp": 0.001706035917296129
+        }
+      }
+    }
+  },
+  "sink_positions": {}
+}

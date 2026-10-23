@@ -1,0 +1,18 @@
+{
+  "run": "qwen35_122b_full_v8_two_competence_v1",
+  "why": "Zach (2026-10-23): Qwen3.5-122B-A10B (published J++) on the v2 pipeline (a third Qwen3.5/3.6 hybrid; larger model): competence on full_v8_two",
+  "set": "full_v8_two",
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "c9a5b31c02b0e1b9bbdc9bdf75c8a906765784cb",
+  "guess": true,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-23T02:49:58Z"
+}

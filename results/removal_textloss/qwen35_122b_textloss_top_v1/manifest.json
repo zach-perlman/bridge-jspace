@@ -1,0 +1,35 @@
+{
+  "run": "qwen35_122b_textloss_top_v1",
+  "why": "Zach (2026-10-23): Qwen3.5-122B-A10B (published J++) on the v2 pipeline (a third Qwen3.5/3.6 hybrid; larger model): plain-text loss under the knock-out, L21-27 (the gate)",
+  "written_utc": "2026-10-23T02:21:23Z",
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  ],
+  "layers": [
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27
+  ],
+  "conditions": [
+    "none",
+    "top1",
+    "top1_rot",
+    "top5",
+    "top5_rot",
+    "top10",
+    "top10_rot"
+  ],
+  "doc": "python scripts/removal_textloss.py --name N --why W --layers L [L ...] [--conditions none jspace rotated top10 top10_rot]\n"
+}
