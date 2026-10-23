@@ -1,0 +1,24 @@
+{
+  "run": "gptoss20_lens_agreement_v1",
+  "why": "Zach (2026-10-23, amendment 8): gpt-oss-20b, our J++, lens check",
+  "written_utc": "2026-10-23T04:05:04Z",
+  "model": {
+    "target": "gpt-oss-20b",
+    "repo": "openai/gpt-oss-20b",
+    "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "2902332d4852b27868db7f92182b1b006728b866bb2f1e25b58baedbf22ff077"
+  ],
+  "argv": [
+    "scripts/lens_agreement.py",
+    "--name",
+    "gptoss20_lens_agreement_v1",
+    "--why",
+    "Zach (2026-10-23, amendment 8): gpt-oss-20b, our J++, lens check"
+  ],
+  "doc": "lens_agreement: does a lens read the model's own next-token prediction from earlier layers? (Zach, 2026-10-21: a\nsanity check for third-party lenses, solarkyle's plain J-lenses for Mistral-Small-24B-2501 and the two bridges, before\nruns lean on them.) On removal_textloss's 16 WikiText rows (first 128 tokens), the share of positions (from 16 on) where\nthe model's own top-1 next token (the final block, unembedded) is in the lens's top 10 at each layer, for the target's\nfrozen lens and for the logit lens (no J). Also the model's mean next-token loss on the rows (from position 4, as\nremoval_textloss), and greedy answers to a few chat questions. Not jpp_lens's pass@10 (other items and grading); numbers\nare comparable across targets run with this script."
+}

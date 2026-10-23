@@ -1,0 +1,32 @@
+{
+  "run": "gptoss20j_textloss_top_v1",
+  "why": "Zach (2026-10-23, prereg amendment 8b): gpt-oss-20b with neuronpedia's plain J-lens (a labelled comparison lens): plain-text loss under the knock-out, L10-13 (the gate)",
+  "written_utc": "2026-10-23T04:16:23Z",
+  "model": {
+    "target": "gpt-oss-20b-jlens",
+    "repo": "openai/gpt-oss-20b",
+    "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jlens",
+    "2a8abf062eae4b6d39618b1237ad6945db437affd8c2122a09689114571553be"
+  ],
+  "layers": [
+    10,
+    11,
+    12,
+    13
+  ],
+  "conditions": [
+    "none",
+    "top1",
+    "top1_rot",
+    "top5",
+    "top5_rot",
+    "top10",
+    "top10_rot"
+  ],
+  "doc": "python scripts/removal_textloss.py --name N --why W --layers L [L ...] [--conditions none jspace rotated top10 top10_rot]\n"
+}

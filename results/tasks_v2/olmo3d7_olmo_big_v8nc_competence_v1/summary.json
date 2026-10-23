@@ -1,0 +1,208 @@
+{
+  "seconds": 1032,
+  "by_word_level": {
+    "PP/L0": {
+      "n": 140,
+      "whole": 0.907,
+      "all_steps": 0.871,
+      "median_margin": 9.19,
+      "whole_by_numbers": {
+        "digits": 0.9,
+        "words": 0.914
+      },
+      "guess": 0.179
+    },
+    "PP/L1": {
+      "n": 140,
+      "whole": 0.721,
+      "all_steps": 0.85,
+      "median_margin": 4.81,
+      "whole_by_numbers": {
+        "digits": 0.792,
+        "words": 0.647
+      },
+      "guess": 0.057
+    },
+    "PP/L2": {
+      "n": 140,
+      "whole": 0.686,
+      "all_steps": 0.871,
+      "median_margin": 3.12,
+      "whole_by_numbers": {
+        "digits": 0.679,
+        "words": 0.695
+      },
+      "guess": 0.071
+    },
+    "PP/L3": {
+      "n": 140,
+      "whole": 0.679,
+      "all_steps": 0.879,
+      "median_margin": 1.94,
+      "whole_by_numbers": {
+        "digits": 0.734,
+        "words": 0.632
+      },
+      "guess": 0.079
+    },
+    "PM/L0": {
+      "n": 140,
+      "whole": 0.614,
+      "all_steps": 0.779,
+      "median_margin": 4.12,
+      "whole_by_numbers": {
+        "digits": 0.657,
+        "words": 0.571
+      },
+      "guess": 0.286
+    },
+    "PM/L1": {
+      "n": 140,
+      "whole": 0.671,
+      "all_steps": 0.786,
+      "median_margin": 3.0,
+      "whole_by_numbers": {
+        "digits": 0.75,
+        "words": 0.588
+      },
+      "guess": 0.186
+    },
+    "PM/L2": {
+      "n": 140,
+      "whole": 0.671,
+      "all_steps": 0.786,
+      "median_margin": 3.75,
+      "whole_by_numbers": {
+        "digits": 0.642,
+        "words": 0.712
+      },
+      "guess": 0.186
+    },
+    "PM/L3": {
+      "n": 140,
+      "whole": 0.629,
+      "all_steps": 0.757,
+      "median_margin": 4.44,
+      "whole_by_numbers": {
+        "digits": 0.609,
+        "words": 0.645
+      },
+      "guess": 0.157
+    },
+    "MP/L0": {
+      "n": 140,
+      "whole": 0.586,
+      "all_steps": 0.707,
+      "median_margin": 1.06,
+      "whole_by_numbers": {
+        "digits": 0.576,
+        "words": 0.595
+      },
+      "guess": 0.121
+    },
+    "MP/L1": {
+      "n": 140,
+      "whole": 0.45,
+      "all_steps": 0.657,
+      "median_margin": -0.62,
+      "whole_by_numbers": {
+        "digits": 0.432,
+        "words": 0.47
+      },
+      "guess": 0.021
+    },
+    "MP/L2": {
+      "n": 80,
+      "whole": 0.312,
+      "all_steps": 0.7,
+      "median_margin": -1.25,
+      "whole_by_numbers": {
+        "digits": 0.244,
+        "words": 0.385
+      },
+      "guess": 0.062
+    },
+    "MP/L3": {
+      "n": 80,
+      "whole": 0.3,
+      "all_steps": 0.7,
+      "median_margin": -1.75,
+      "whole_by_numbers": {
+        "digits": 0.25,
+        "words": 0.35
+      },
+      "guess": 0.05
+    },
+    "MM/L0": {
+      "n": 140,
+      "whole": 0.529,
+      "all_steps": 0.593,
+      "median_margin": 0.88,
+      "whole_by_numbers": {
+        "digits": 0.47,
+        "words": 0.581
+      },
+      "guess": 0.236
+    },
+    "MM/L1": {
+      "n": 140,
+      "whole": 0.521,
+      "all_steps": 0.629,
+      "median_margin": 0.12,
+      "whole_by_numbers": {
+        "digits": 0.568,
+        "words": 0.47
+      },
+      "guess": 0.257
+    },
+    "MM/L2": {
+      "n": 80,
+      "whole": 0.613,
+      "all_steps": 0.625,
+      "median_margin": 0.94,
+      "whole_by_numbers": {
+        "digits": 0.659,
+        "words": 0.564
+      },
+      "guess": 0.175
+    },
+    "MM/L3": {
+      "n": 80,
+      "whole": 0.562,
+      "all_steps": 0.7,
+      "median_margin": 1.06,
+      "whole_by_numbers": {
+        "digits": 0.65,
+        "words": 0.475
+      },
+      "guess": 0.175
+    }
+  },
+  "by_domain": {
+    "planets": 0.454,
+    "animals": 0.723,
+    "greek": 0.362,
+    "elements": 0.593,
+    "shapes": 0.69,
+    "vehicles": 0.606,
+    "instruments": 0.852
+  },
+  "by_format": {
+    "prose": 0.588,
+    "json": 0.659,
+    "table": 0.637,
+    "code": 0.544,
+    "document": 0.616,
+    "chat": 0.607
+  },
+  "by_numbers": {
+    "words": 0.597,
+    "digits": 0.619
+  },
+  "pick": {
+    "PP": 0,
+    "PM": null,
+    "MP": null,
+    "MM": null
+  }
+}

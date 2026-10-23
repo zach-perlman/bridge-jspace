@@ -1,0 +1,346 @@
+{
+  "seconds": 1147,
+  "by_word_level": {
+    "PP/L0": {
+      "n": 48,
+      "whole": 0.979,
+      "all_steps": 0.938,
+      "median_margin": 3.44,
+      "whole_by_numbers": {
+        "digits": 0.96,
+        "words": 1
+      },
+      "cf": 0.964,
+      "off": 0.964,
+      "guess": 0.229
+    },
+    "PP/L1": {
+      "n": 48,
+      "whole": 0.896,
+      "all_steps": 0.979,
+      "median_margin": 2.44,
+      "whole_by_numbers": {
+        "digits": 0.9,
+        "words": 0.893
+      },
+      "cf": 0.964,
+      "off": 0.857,
+      "guess": 0.062
+    },
+    "PP/L2": {
+      "n": 48,
+      "whole": 1,
+      "all_steps": 1,
+      "median_margin": 3.0,
+      "whole_by_numbers": {
+        "digits": 1,
+        "words": 1
+      },
+      "cf": 0.964,
+      "off": 1,
+      "guess": 0.062
+    },
+    "PP/L3": {
+      "n": 48,
+      "whole": 0.833,
+      "all_steps": 0.979,
+      "median_margin": 2.12,
+      "whole_by_numbers": {
+        "digits": 0.857,
+        "words": 0.815
+      },
+      "cf": 0.893,
+      "off": 0.964,
+      "guess": 0.083
+    },
+    "PM/L0": {
+      "n": 48,
+      "whole": 0.812,
+      "all_steps": 0.854,
+      "median_margin": 2.5,
+      "whole_by_numbers": {
+        "digits": 0.8,
+        "words": 0.826
+      },
+      "cf": 0.786,
+      "off": 0.821,
+      "guess": 0.188
+    },
+    "PM/L1": {
+      "n": 48,
+      "whole": 0.896,
+      "all_steps": 0.896,
+      "median_margin": 2.44,
+      "whole_by_numbers": {
+        "digits": 0.85,
+        "words": 0.929
+      },
+      "cf": 0.893,
+      "off": 0.786,
+      "guess": 0.188
+    },
+    "PM/L2": {
+      "n": 48,
+      "whole": 0.833,
+      "all_steps": 0.896,
+      "median_margin": 2.12,
+      "whole_by_numbers": {
+        "digits": 0.833,
+        "words": 0.833
+      },
+      "cf": 0.786,
+      "off": 0.75,
+      "guess": 0.208
+    },
+    "PM/L3": {
+      "n": 48,
+      "whole": 0.792,
+      "all_steps": 0.917,
+      "median_margin": 2.31,
+      "whole_by_numbers": {
+        "digits": 0.857,
+        "words": 0.741
+      },
+      "cf": 0.786,
+      "off": 0.786,
+      "guess": 0.167
+    },
+    "MP/L0": {
+      "n": 48,
+      "whole": 0.771,
+      "all_steps": 0.979,
+      "median_margin": 0.94,
+      "whole_by_numbers": {
+        "digits": 0.792,
+        "words": 0.75
+      },
+      "cf": 0.75,
+      "off": 0.75,
+      "guess": 0.146
+    },
+    "MP/L1": {
+      "n": 48,
+      "whole": 0.75,
+      "all_steps": 0.958,
+      "median_margin": 1.62,
+      "whole_by_numbers": {
+        "digits": 0.773,
+        "words": 0.731
+      },
+      "cf": 0.821,
+      "off": 0.786,
+      "guess": 0.125
+    },
+    "MP/L2": {
+      "n": 28,
+      "whole": 0.643,
+      "all_steps": 0.964,
+      "median_margin": 0.38,
+      "whole_by_numbers": {
+        "digits": 0.632,
+        "words": 0.667
+      },
+      "cf": 0.643,
+      "off": 0.643,
+      "guess": 0.036
+    },
+    "MP/L3": {
+      "n": 28,
+      "whole": 0.5,
+      "all_steps": 1,
+      "median_margin": 0.0,
+      "whole_by_numbers": {
+        "digits": 0.538,
+        "words": 0.467
+      },
+      "cf": 0.571,
+      "off": 0.571,
+      "guess": 0.036
+    },
+    "MM/L0": {
+      "n": 48,
+      "whole": 0.688,
+      "all_steps": 0.896,
+      "median_margin": 1.81,
+      "whole_by_numbers": {
+        "digits": 0.667,
+        "words": 0.708
+      },
+      "cf": 0.821,
+      "off": 0.714,
+      "guess": 0.292
+    },
+    "MM/L1": {
+      "n": 48,
+      "whole": 0.729,
+      "all_steps": 0.896,
+      "median_margin": 1.81,
+      "whole_by_numbers": {
+        "digits": 0.773,
+        "words": 0.692
+      },
+      "cf": 0.75,
+      "off": 0.786,
+      "guess": 0.167
+    },
+    "MM/L2": {
+      "n": 28,
+      "whole": 0.607,
+      "all_steps": 0.821,
+      "median_margin": 0.5,
+      "whole_by_numbers": {
+        "digits": 0.579,
+        "words": 0.667
+      },
+      "cf": 0.714,
+      "off": 0.679,
+      "guess": 0.179
+    },
+    "MM/L3": {
+      "n": 28,
+      "whole": 0.607,
+      "all_steps": 1,
+      "median_margin": 0.5,
+      "whole_by_numbers": {
+        "digits": 0.692,
+        "words": 0.533
+      },
+      "cf": 0.5,
+      "off": 0.607,
+      "guess": 0.25
+    },
+    "CP/L0": {
+      "n": 48,
+      "whole": 0.938,
+      "all_steps": 0.958,
+      "median_margin": 2.56,
+      "whole_by_numbers": {
+        "digits": 0.96,
+        "words": 0.913
+      },
+      "cf": 0.929,
+      "off": 1,
+      "guess": 0.167
+    },
+    "CP/L1": {
+      "n": 48,
+      "whole": 0.875,
+      "all_steps": 0.896,
+      "median_margin": 2.81,
+      "whole_by_numbers": {
+        "digits": 0.842,
+        "words": 0.897
+      },
+      "cf": 1,
+      "off": 0.929,
+      "guess": 0.062
+    },
+    "CP/L2": {
+      "n": 48,
+      "whole": 0.917,
+      "all_steps": 0.979,
+      "median_margin": 2.88,
+      "whole_by_numbers": {
+        "digits": 0.885,
+        "words": 0.955
+      },
+      "cf": 0.964,
+      "off": 0.893,
+      "guess": 0.062
+    },
+    "CP/L3": {
+      "n": 48,
+      "whole": 0.917,
+      "all_steps": 0.958,
+      "median_margin": 2.44,
+      "whole_by_numbers": {
+        "digits": 0.957,
+        "words": 0.88
+      },
+      "cf": 0.929,
+      "off": 0.929,
+      "guess": 0.188
+    },
+    "CM/L0": {
+      "n": 48,
+      "whole": 0.771,
+      "all_steps": 0.833,
+      "median_margin": 1.75,
+      "whole_by_numbers": {
+        "digits": 0.8,
+        "words": 0.739
+      },
+      "cf": 0.679,
+      "off": 0.679,
+      "guess": 0.271
+    },
+    "CM/L1": {
+      "n": 48,
+      "whole": 0.812,
+      "all_steps": 0.854,
+      "median_margin": 1.88,
+      "whole_by_numbers": {
+        "digits": 0.737,
+        "words": 0.862
+      },
+      "cf": 0.75,
+      "off": 0.821,
+      "guess": 0.208
+    },
+    "CM/L2": {
+      "n": 48,
+      "whole": 0.771,
+      "all_steps": 0.896,
+      "median_margin": 1.44,
+      "whole_by_numbers": {
+        "digits": 0.769,
+        "words": 0.773
+      },
+      "cf": 0.679,
+      "off": 0.714,
+      "guess": 0.125
+    },
+    "CM/L3": {
+      "n": 48,
+      "whole": 0.688,
+      "all_steps": 0.875,
+      "median_margin": 1.12,
+      "whole_by_numbers": {
+        "digits": 0.652,
+        "words": 0.72
+      },
+      "cf": 0.679,
+      "off": 0.607,
+      "guess": 0.146
+    }
+  },
+  "by_domain": {
+    "planets": 0.685,
+    "animals": 0.851,
+    "greek": 0.771,
+    "elements": 0.801,
+    "shapes": 0.801,
+    "vehicles": 0.897,
+    "instruments": 0.875
+  },
+  "by_format": {
+    "json": 0.871,
+    "document": 0.771,
+    "code": 0.702,
+    "chat": 0.883,
+    "prose": 0.767,
+    "table": 0.848
+  },
+  "by_numbers": {
+    "digits": 0.804,
+    "words": 0.811
+  },
+  "pick": {
+    "PP": 1,
+    "PM": 1,
+    "MP": null,
+    "MM": null,
+    "CP": 3,
+    "CM": null
+  }
+}

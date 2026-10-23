@@ -1,0 +1,143 @@
+{
+  "n_texts": 16,
+  "n_positions": 1616,
+  "mean_nll": 3.381979286670685,
+  "lens_source_layers": [
+    0,
+    22,
+    23
+  ],
+  "top10_agreement": {
+    "0": {
+      "lens": 0.18193069306930693,
+      "logit": 0.0006188118811881188
+    },
+    "1": {
+      "lens": 0.23948019801980197,
+      "logit": 0.0006188118811881188
+    },
+    "2": {
+      "lens": 0.23081683168316833,
+      "logit": 0.0012376237623762376
+    },
+    "3": {
+      "lens": 0.23267326732673269,
+      "logit": 0.0018564356435643563
+    },
+    "4": {
+      "lens": 0.20173267326732675,
+      "logit": 0.003094059405940594
+    },
+    "5": {
+      "lens": 0.24443069306930693,
+      "logit": 0.006188118811881188
+    },
+    "6": {
+      "lens": 0.23143564356435645,
+      "logit": 0.009900990099009901
+    },
+    "7": {
+      "lens": 0.24133663366336633,
+      "logit": 0.01608910891089109
+    },
+    "8": {
+      "lens": 0.24133663366336633,
+      "logit": 0.017945544554455444
+    },
+    "9": {
+      "lens": 0.19863861386138615,
+      "logit": 0.024133663366336634
+    },
+    "10": {
+      "lens": 0.10643564356435643,
+      "logit": 0.03094059405940594
+    },
+    "11": {
+      "lens": 0.12004950495049505,
+      "logit": 0.04207920792079208
+    },
+    "12": {
+      "lens": 0.08787128712871287,
+      "logit": 0.050742574257425746
+    },
+    "13": {
+      "lens": 0.07920792079207921,
+      "logit": 0.08106435643564357
+    },
+    "14": {
+      "lens": 0.05754950495049505,
+      "logit": 0.16150990099009901
+    },
+    "15": {
+      "lens": 0.055693069306930694,
+      "logit": 0.3155940594059406
+    },
+    "16": {
+      "lens": 0.08601485148514851,
+      "logit": 0.38551980198019803
+    },
+    "17": {
+      "lens": 0.14418316831683167,
+      "logit": 0.4944306930693069
+    },
+    "18": {
+      "lens": 0.20358910891089108,
+      "logit": 0.5903465346534653
+    },
+    "19": {
+      "lens": 0.32116336633663367,
+      "logit": 0.6571782178217822
+    },
+    "20": {
+      "lens": 0.45482673267326734,
+      "logit": 0.7568069306930693
+    },
+    "21": {
+      "lens": 0.7283415841584159,
+      "logit": 0.9467821782178217
+    },
+    "22": {
+      "lens": 0.8465346534653465,
+      "logit": 0.9733910891089109
+    }
+  },
+  "chat": [
+    {
+      "q": "What is the capital of France?",
+      "gold": "Paris",
+      "out": " Paris.<|return|><|return|>analysis<|message|>",
+      "right": true
+    },
+    {
+      "q": "In which country is Lyon located?",
+      "gold": "France",
+      "out": " France.<|return|>analysis<|message|>Need",
+      "right": true
+    },
+    {
+      "q": "What language is spoken in Brazil?",
+      "gold": "Portuguese",
+      "out": " Portuguese.<|return|><|return|>analysis<|message|>",
+      "right": true
+    },
+    {
+      "q": "What is the capital of the country where Munich is located?",
+      "gold": "Berlin",
+      "out": " Berlin.<|return|>analysis<|message|>User",
+      "right": true
+    },
+    {
+      "q": "What currency is used in the country whose capital is Tokyo?",
+      "gold": "Yen",
+      "out": " Japanese yen.<|end|><|start|>assistant",
+      "right": true
+    },
+    {
+      "q": "Emma lives in Kenya. What is the capital of the country where Emma lives?",
+      "gold": "Nairobi",
+      "out": " Nairobi<|return|><|end|><|start|>assistant<|channel|>",
+      "right": true
+    }
+  ],
+  "chat_right": 6
+}

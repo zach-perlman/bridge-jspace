@@ -1,0 +1,18 @@
+{
+  "run": "gptoss20_full_v8_competence_v1",
+  "why": "Zach (2026-10-23, amendments 7b/8): gpt-oss-20b: competence on full_v8",
+  "set": "full_v8",
+  "model": {
+    "target": "gpt-oss-20b-prefit",
+    "repo": "openai/gpt-oss-20b",
+    "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "c18c70a31be642e611d59e2cba606182d992c961",
+  "guess": true,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-23T03:10:32Z"
+}

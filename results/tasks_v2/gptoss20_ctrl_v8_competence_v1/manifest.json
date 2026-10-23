@@ -1,0 +1,18 @@
+{
+  "run": "gptoss20_ctrl_v8_competence_v1",
+  "why": "Zach (2026-10-23, amendment 8): gpt-oss-20b: competence on ctrl_v8",
+  "set": "ctrl_v8",
+  "model": {
+    "target": "gpt-oss-20b-prefit",
+    "repo": "openai/gpt-oss-20b",
+    "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "0f3611d267841d94a5dfb0ce065e32e62c7be3f4",
+  "guess": true,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-23T02:11:00Z"
+}
