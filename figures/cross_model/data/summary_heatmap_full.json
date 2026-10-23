@@ -1,0 +1,1592 @@
+[
+ {
+  "value": 5.0,
+  "what": "The last tokens read the answer's digit: settings that hold",
+  "finding": null,
+  "model": "27b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f3",
+   "state": "holds",
+   "judged": 5,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 6.0,
+  "what": "The last tokens read the answer's digit: settings that hold",
+  "finding": null,
+  "model": "9b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f3",
+   "state": "holds",
+   "judged": 6,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 3.0,
+  "what": "The last tokens read the answer's digit: settings that hold",
+  "finding": null,
+  "model": "olmo_hybrid",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f3",
+   "state": "holds",
+   "judged": 3,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 5.0,
+  "what": "The last tokens read the answer's digit: settings that hold",
+  "finding": null,
+  "model": "122b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f3",
+   "state": "holds",
+   "judged": 5,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 6.0,
+  "what": "The last tokens read the answer's digit: settings that hold",
+  "finding": null,
+  "model": "32b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f3",
+   "state": "holds",
+   "judged": 6,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 5.0,
+  "what": "The last tokens read the answer's digit: settings that hold",
+  "finding": null,
+  "model": "olmo",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f3",
+   "state": "holds",
+   "judged": 5,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 3.0,
+  "what": "The last tokens read the answer's digit: settings that hold",
+  "finding": null,
+  "model": "muse",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f3",
+   "state": "holds",
+   "judged": 4,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": [
+    [
+     "f3",
+     "prose",
+     "fails",
+     5
+    ]
+   ]
+  }
+ },
+ {
+  "value": 6.0,
+  "what": "The last tokens read the answer's digit: settings that hold",
+  "finding": null,
+  "model": "gemma",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f3",
+   "state": "holds",
+   "judged": 6,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 5.0,
+  "what": "The lookup ends in a late attention read: settings that hold",
+  "finding": null,
+  "model": "27b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f4",
+   "state": "holds",
+   "judged": 6,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": [
+    [
+     "f4",
+     "long context",
+     "\u2248 chance",
+     178
+    ]
+   ]
+  }
+ },
+ {
+  "value": 7.0,
+  "what": "The lookup ends in a late attention read: settings that hold",
+  "finding": null,
+  "model": "9b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f4",
+   "state": "holds",
+   "judged": 7,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 2.0,
+  "what": "The lookup ends in a late attention read: settings that hold",
+  "finding": null,
+  "model": "olmo_hybrid",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f4",
+   "state": "holds",
+   "judged": 3,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": [
+    [
+     "f4",
+     "table",
+     "fails",
+     24
+    ]
+   ]
+  }
+ },
+ {
+  "value": 6.0,
+  "what": "The lookup ends in a late attention read: settings that hold",
+  "finding": null,
+  "model": "122b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f4",
+   "state": "holds",
+   "judged": 6,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 7.0,
+  "what": "The lookup ends in a late attention read: settings that hold",
+  "finding": null,
+  "model": "32b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f4",
+   "state": "holds",
+   "judged": 7,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 5.0,
+  "what": "The lookup ends in a late attention read: settings that hold",
+  "finding": null,
+  "model": "olmo",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f4",
+   "state": "holds",
+   "judged": 5,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 4.0,
+  "what": "The lookup ends in a late attention read: settings that hold",
+  "finding": null,
+  "model": "muse",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f4",
+   "state": "holds",
+   "judged": 4,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 2.0,
+  "what": "The lookup ends in a late attention read: settings that hold",
+  "finding": null,
+  "model": "gemma",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f4",
+   "state": "\u2248 chance",
+   "judged": 6,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": [
+    [
+     "f4",
+     "draw 1",
+     "\u2248 chance",
+     300
+    ],
+    [
+     "f4",
+     "draw 2",
+     "\u2248 chance",
+     300
+    ],
+    [
+     "f4",
+     "prose",
+     "\u2248 chance",
+     35
+    ],
+    [
+     "f4",
+     "JSON",
+     "\u2248 chance",
+     56
+    ]
+   ]
+  }
+ },
+ {
+  "value": 5.0,
+  "what": "Order label, then the bridge's identity: settings that hold",
+  "finding": null,
+  "model": "27b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f5",
+   "state": "holds",
+   "judged": 5,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 5.0,
+  "what": "Order label, then the bridge's identity: settings that hold",
+  "finding": null,
+  "model": "9b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f5",
+   "state": "holds",
+   "judged": 5,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 4.0,
+  "what": "Order label, then the bridge's identity: settings that hold",
+  "finding": null,
+  "model": "olmo_hybrid",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f5",
+   "state": "holds",
+   "judged": 4,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 5.0,
+  "what": "Order label, then the bridge's identity: settings that hold",
+  "finding": null,
+  "model": "122b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f5",
+   "state": "holds",
+   "judged": 5,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 4.0,
+  "what": "Order label, then the bridge's identity: settings that hold",
+  "finding": null,
+  "model": "32b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f5",
+   "state": "holds",
+   "judged": 5,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": [
+    [
+     "f5",
+     "draw 1",
+     "fails",
+     178
+    ]
+   ]
+  }
+ },
+ {
+  "value": 5.0,
+  "what": "Order label, then the bridge's identity: settings that hold",
+  "finding": null,
+  "model": "olmo",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f5",
+   "state": "holds",
+   "judged": 5,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 5.0,
+  "what": "Order label, then the bridge's identity: settings that hold",
+  "finding": null,
+  "model": "muse",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f5",
+   "state": "holds",
+   "judged": 5,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 3.0,
+  "what": "Order label, then the bridge's identity: settings that hold",
+  "finding": null,
+  "model": "gemma",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f5",
+   "state": "holds",
+   "judged": 3,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 1.0,
+  "what": "Moved filler: follows list order: settings that hold",
+  "finding": null,
+  "model": "27b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f6a",
+   "state": "holds",
+   "judged": 1,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 1.0,
+  "what": "Moved filler: follows list order: settings that hold",
+  "finding": null,
+  "model": "9b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f6a",
+   "state": "holds",
+   "judged": 1,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 1.0,
+  "what": "Moved filler: follows list order: settings that hold",
+  "finding": null,
+  "model": "olmo_hybrid",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f6a",
+   "state": "holds",
+   "judged": 1,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 1.0,
+  "what": "Moved filler: follows list order: settings that hold",
+  "finding": null,
+  "model": "122b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f6a",
+   "state": "holds",
+   "judged": 1,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "Moved filler: follows list order: settings that hold",
+  "finding": null,
+  "model": "32b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f6a",
+   "state": "fails",
+   "judged": 1,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": [
+    [
+     "f6",
+     "filler moved",
+     "fails",
+     365
+    ]
+   ]
+  }
+ },
+ {
+  "value": 1.0,
+  "what": "Moved filler: follows list order: settings that hold",
+  "finding": null,
+  "model": "olmo",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f6a",
+   "state": "holds",
+   "judged": 1,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 1.0,
+  "what": "Moved filler: follows list order: settings that hold",
+  "finding": null,
+  "model": "muse",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f6a",
+   "state": "holds",
+   "judged": 1,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 1.0,
+  "what": "Moved filler: follows list order: settings that hold",
+  "finding": null,
+  "model": "gemma",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f6a",
+   "state": "holds",
+   "judged": 1,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 2.0,
+  "what": "One sentence more / fewer: settings that hold",
+  "finding": null,
+  "model": "27b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f6b",
+   "state": "holds",
+   "judged": 2,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "One sentence more / fewer: settings that hold",
+  "finding": null,
+  "model": "9b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f6b",
+   "state": "fails",
+   "judged": 2,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": [
+    [
+     "f6",
+     "one statement more",
+     "fails",
+     391
+    ],
+    [
+     "f6",
+     "one statement fewer",
+     "fails",
+     405
+    ]
+   ]
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "One sentence more / fewer: settings that hold",
+  "finding": null,
+  "model": "olmo_hybrid",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f6b",
+   "state": "fails",
+   "judged": 2,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": [
+    [
+     "f6",
+     "one statement more",
+     "fails",
+     270
+    ],
+    [
+     "f6",
+     "one statement fewer",
+     "fails",
+     296
+    ]
+   ]
+  }
+ },
+ {
+  "value": 2.0,
+  "what": "One sentence more / fewer: settings that hold",
+  "finding": null,
+  "model": "122b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f6b",
+   "state": "holds",
+   "judged": 2,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "One sentence more / fewer: settings that hold",
+  "finding": null,
+  "model": "32b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f6b",
+   "state": "fails",
+   "judged": 2,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": [
+    [
+     "f6",
+     "one statement more",
+     "fails",
+     337
+    ],
+    [
+     "f6",
+     "one statement fewer",
+     "fails",
+     361
+    ]
+   ]
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "One sentence more / fewer: settings that hold",
+  "finding": null,
+  "model": "olmo",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f6b",
+   "state": "fails",
+   "judged": 2,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": [
+    [
+     "f6",
+     "one statement more",
+     "fails",
+     190
+    ],
+    [
+     "f6",
+     "one statement fewer",
+     "fails",
+     216
+    ]
+   ]
+  }
+ },
+ {
+  "value": 2.0,
+  "what": "One sentence more / fewer: settings that hold",
+  "finding": null,
+  "model": "muse",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f6b",
+   "state": "holds",
+   "judged": 2,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "One sentence more / fewer: settings that hold",
+  "finding": null,
+  "model": "gemma",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f6b",
+   "state": "fails",
+   "judged": 2,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": [
+    [
+     "f6",
+     "one statement more",
+     "fails",
+     266
+    ],
+    [
+     "f6",
+     "one statement fewer",
+     "fails",
+     276
+    ]
+   ]
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "Where the lens reads a stated bridge: settings that hold",
+  "finding": null,
+  "model": "27b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "lens",
+   "state": "at its word only",
+   "judged": 0,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "Where the lens reads a stated bridge: settings that hold",
+  "finding": null,
+  "model": "9b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "lens",
+   "state": "at its word only",
+   "judged": 0,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "Where the lens reads a stated bridge: settings that hold",
+  "finding": null,
+  "model": "olmo_hybrid",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "lens",
+   "state": "not tested",
+   "judged": 0,
+   "zach": "",
+   "amended_differs": false,
+   "why": "no lens",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "Where the lens reads a stated bridge: settings that hold",
+  "finding": null,
+  "model": "122b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "lens",
+   "state": "at its word only",
+   "judged": 0,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "Where the lens reads a stated bridge: settings that hold",
+  "finding": null,
+  "model": "32b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "lens",
+   "state": "at its word only",
+   "judged": 0,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "Where the lens reads a stated bridge: settings that hold",
+  "finding": null,
+  "model": "olmo",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "lens",
+   "state": "at its word only",
+   "judged": 0,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "Where the lens reads a stated bridge: settings that hold",
+  "finding": null,
+  "model": "muse",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "lens",
+   "state": "at its word only",
+   "judged": 0,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "Where the lens reads a stated bridge: settings that hold",
+  "finding": null,
+  "model": "gemma",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "lens",
+   "state": "at its word only",
+   "judged": 0,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 1.0,
+  "what": "A lens push writes recall, not the lookup: settings that hold",
+  "finding": null,
+  "model": "27b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f7",
+   "state": "holds",
+   "judged": 1,
+   "zach": "",
+   "amended_differs": true,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 1.0,
+  "what": "A lens push writes recall, not the lookup: settings that hold",
+  "finding": null,
+  "model": "9b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f7",
+   "state": "holds",
+   "judged": 1,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "A lens push writes recall, not the lookup: settings that hold",
+  "finding": null,
+  "model": "olmo_hybrid",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f7",
+   "state": "not tested",
+   "judged": 0,
+   "zach": "",
+   "amended_differs": false,
+   "why": "no lens",
+   "misses": []
+  }
+ },
+ {
+  "value": 1.0,
+  "what": "A lens push writes recall, not the lookup: settings that hold",
+  "finding": null,
+  "model": "122b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f7",
+   "state": "holds",
+   "judged": 1,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "A lens push writes recall, not the lookup: settings that hold",
+  "finding": null,
+  "model": "32b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f7",
+   "state": "not tested",
+   "judged": 0,
+   "zach": "",
+   "amended_differs": false,
+   "why": "still running",
+   "misses": []
+  }
+ },
+ {
+  "value": 1.0,
+  "what": "A lens push writes recall, not the lookup: settings that hold",
+  "finding": null,
+  "model": "olmo",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f7",
+   "state": "holds",
+   "judged": 1,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "A lens push writes recall, not the lookup: settings that hold",
+  "finding": null,
+  "model": "muse",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f7",
+   "state": "can't tell",
+   "judged": 0,
+   "zach": "",
+   "amended_differs": false,
+   "why": "a control failed",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "A lens push writes recall, not the lookup: settings that hold",
+  "finding": null,
+  "model": "gemma",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f7",
+   "state": "not tested",
+   "judged": 0,
+   "zach": "",
+   "amended_differs": false,
+   "why": "a run failed",
+   "misses": []
+  }
+ },
+ {
+  "value": 6.0,
+  "what": "The lookup ignores the lens-readable part: settings that hold",
+  "finding": null,
+  "model": "27b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f28",
+   "state": "holds",
+   "judged": 6,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 4.0,
+  "what": "The lookup ignores the lens-readable part: settings that hold",
+  "finding": null,
+  "model": "9b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f28",
+   "state": "holds",
+   "judged": 4,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "The lookup ignores the lens-readable part: settings that hold",
+  "finding": null,
+  "model": "olmo_hybrid",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f28",
+   "state": "not tested",
+   "judged": 0,
+   "zach": "",
+   "amended_differs": false,
+   "why": "no lens",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "The lookup ignores the lens-readable part: settings that hold",
+  "finding": null,
+  "model": "122b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f28",
+   "state": "fails",
+   "judged": 4,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": [
+    [
+     "f2",
+     "draw 2",
+     "fails",
+     180
+    ],
+    [
+     "f2",
+     "table",
+     "fails",
+     88
+    ],
+    [
+     "f2",
+     "JSON",
+     "fails",
+     92
+    ],
+    [
+     "f8",
+     "stated bridge, draw 2",
+     "fails",
+     180
+    ]
+   ]
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "The lookup ignores the lens-readable part: settings that hold",
+  "finding": null,
+  "model": "32b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f28",
+   "state": "can't tell",
+   "judged": 0,
+   "zach": "",
+   "amended_differs": false,
+   "why": "a control failed",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "The lookup ignores the lens-readable part: settings that hold",
+  "finding": null,
+  "model": "olmo",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f28",
+   "state": "can't tell",
+   "judged": 0,
+   "zach": "",
+   "amended_differs": false,
+   "why": "no rule (values only)",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "The lookup ignores the lens-readable part: settings that hold",
+  "finding": null,
+  "model": "muse",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f28",
+   "state": "not tested",
+   "judged": 0,
+   "zach": "",
+   "amended_differs": false,
+   "why": "too few usable scenes",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "The lookup ignores the lens-readable part: settings that hold",
+  "finding": null,
+  "model": "gemma",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f28",
+   "state": "not tested",
+   "judged": 0,
+   "zach": "",
+   "amended_differs": false,
+   "why": "a run failed",
+   "misses": []
+  }
+ },
+ {
+  "value": 1.0,
+  "what": "Removing the J-space spares the lookup: settings that hold",
+  "finding": null,
+  "model": "27b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f1",
+   "state": "holds",
+   "judged": 1,
+   "zach": "",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "Removing the J-space spares the lookup: settings that hold",
+  "finding": null,
+  "model": "9b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f1",
+   "state": "holds (Zach)",
+   "judged": 0,
+   "zach": "holds",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "Removing the J-space spares the lookup: settings that hold",
+  "finding": null,
+  "model": "olmo_hybrid",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f1",
+   "state": "not tested",
+   "judged": 0,
+   "zach": "",
+   "amended_differs": false,
+   "why": "no lens",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "Removing the J-space spares the lookup: settings that hold",
+  "finding": null,
+  "model": "122b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f1",
+   "state": "can't tell",
+   "judged": 0,
+   "zach": "",
+   "amended_differs": false,
+   "why": "no rule (values only)",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "Removing the J-space spares the lookup: settings that hold",
+  "finding": null,
+  "model": "32b",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f1",
+   "state": "holds (Zach)",
+   "judged": 0,
+   "zach": "holds",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "Removing the J-space spares the lookup: settings that hold",
+  "finding": null,
+  "model": "olmo",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f1",
+   "state": "can't tell",
+   "judged": 0,
+   "zach": "",
+   "amended_differs": false,
+   "why": "a control failed",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "Removing the J-space spares the lookup: settings that hold",
+  "finding": null,
+  "model": "muse",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f1",
+   "state": "holds (Zach)",
+   "judged": 0,
+   "zach": "holds-ish",
+   "amended_differs": false,
+   "why": "",
+   "misses": []
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "Removing the J-space spares the lookup: settings that hold",
+  "finding": null,
+  "model": "gemma",
+  "setting": null,
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "summary_states",
+  "extra": {
+   "row": "f1",
+   "state": "not tested",
+   "judged": 0,
+   "zach": "",
+   "amended_differs": false,
+   "why": "a run failed",
+   "misses": []
+  }
+ }
+]

@@ -49,6 +49,7 @@ RECALL = "#3d3d3d"  # dark grey: recalls
 CONTROL = "#a6a6a6"  # light grey: controls (another sentence hidden, a random push, ...)
 CHANCE = "#ececec"  # the chance band's fill
 CAPTION_INK = "#5a5a5a"
+VERDICT_COLOR, VERDICT_EDGE = PS.VERDICT_COLOR, PS.VERDICT_EDGE  # holds, fails, ≈ chance, ... (plot_style)
 
 
 def luminance(hex_color: str) -> float:

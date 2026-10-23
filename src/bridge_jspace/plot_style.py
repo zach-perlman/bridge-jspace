@@ -74,6 +74,14 @@ CHANCE_LINE: dict[str, Any] = {"color": "#6b6b6b", "linestyle": (0, (6, 4)), "li
 RULE_LINE: dict[str, Any] = {"color": INK, "linestyle": (0, (1, 2.2)), "linewidth": 2.2}
 NOT_INTERPRETABLE: dict[str, Any] = {"facecolor": "#f0f0f0", "edgecolor": "#a0a0a0", "hatch": "///", "linewidth": 0}
 VERDICT_SYMBOL = {"holds": "✓", "fails": "✗", "inconclusive": "≈", "open": "○"}
+# Verdict colors, the same meaning in every figure (Dan, 23 Oct): fills that carry dark text (INK on each >= 5:1, WCAG
+# AA); holds and fails are also >= 3:1 against white. Checked with the dataviz palette validator (OKLab x100, all pairs
+# of the five fills): >= 10.8 apart under protan, deutan and tritan simulation, >= 17.4 in normal vision. The state is
+# also written in every cell, so no state rests on color alone. "descriptive": a value that is not a verdict (where the
+# lens reads a stated bridge). "not tested" is white, outlined with VERDICT_EDGE.
+VERDICT_COLOR = {"holds": "#2E9E86", "fails": "#D9782D", "≈ chance": "#EBBE45", "can't tell": "#E6E6E6",
+                 "not tested": "#FFFFFF", "descriptive": "#93B4E0"}  # fmt: skip
+VERDICT_EDGE = "#c4c4c4"
 
 
 def apply() -> None:
