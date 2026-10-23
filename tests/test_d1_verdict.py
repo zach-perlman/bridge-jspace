@@ -3,6 +3,9 @@ model)."""
 
 import argparse
 import json
+import sys
+
+import pytest
 
 from scripts import d1_verdict as V
 
@@ -201,3 +204,17 @@ def test_necessity_run_and_figure(tmp_path, monkeypatch):
     a.figures = True
     assert V.rule_figures(a) == 0
     assert list(d.glob("analysis-*-figures/necessity.png"))
+
+
+def test_cli_rule_arguments(monkeypatch):
+    """The command line, as the specs call it: necessity and late-switch run without --decisive; rest-size needs it."""
+    seen = []
+    monkeypatch.setattr(V, "by_cell", lambda a: seen.append(a.rule) or 0)
+    base = ["d1_verdict.py", "--map", "M", "--parts", "P", "--cells", "bridge_word:6"]
+    for rule in ("necessity", "late-switch"):
+        monkeypatch.setattr(sys, "argv", [*base, "--rule", rule])
+        assert V.main() == 0
+    assert seen == ["necessity", "late-switch"]
+    monkeypatch.setattr(sys, "argv", [*base, "--rule", "rest-size"])
+    with pytest.raises(AssertionError, match="--decisive"):
+        V.main()

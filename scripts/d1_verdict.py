@@ -503,7 +503,7 @@ def main() -> int:
             return rule_figures(a)
         assert a.map, f"{a.rule} needs --map"
         assert a.cells, f"{a.rule} needs --cells"
-        assert a.rule == "late-switch" or a.decisive, "rest-size needs --decisive"
+        assert a.rule != "rest-size" or a.decisive, "rest-size needs --decisive"
         return by_cell(a)
     assert a.map, "--map is required"
     rates = json.loads((SP / a.map / "summary.json").read_text())["rates"]
