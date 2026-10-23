@@ -1,0 +1,432 @@
+{
+  "seconds": 398,
+  "dom_missing_cases": 44,
+  "families": {
+    "PP": {
+      "n": 20,
+      "entities": 12,
+      "best": {
+        "copy": {
+          "flips": 0.85,
+          "ci": [
+            0.7,
+            1.0
+          ],
+          "control": null,
+          "other": 0.05,
+          "pos": "final",
+          "layer": "19",
+          "strength": 1.0,
+          "gated_cells": 16
+        },
+        "lens_add": {
+          "flips": 0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "control": 0,
+          "other": 0.05,
+          "pos": "question",
+          "layer": "13",
+          "strength": 0.05,
+          "gated_cells": 65
+        },
+        "lens_swap": {
+          "flips": 0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "control": 0,
+          "other": 0.05,
+          "pos": "question",
+          "layer": "13",
+          "strength": 1.0,
+          "gated_cells": 48
+        },
+        "early_lens_add": {
+          "flips": 0.05,
+          "ci": [
+            0.0,
+            0.14285714285714285
+          ],
+          "control": 0,
+          "other": 0.3,
+          "pos": "question",
+          "layer": "8",
+          "strength": 0.8,
+          "gated_cells": 5
+        },
+        "early_embed_add": {
+          "flips": 0.05,
+          "ci": [
+            0.0,
+            0.15
+          ],
+          "control": 0,
+          "other": 0.1,
+          "pos": "question",
+          "layer": "8",
+          "strength": 0.8,
+          "gated_cells": 4
+        }
+      }
+    },
+    "PM": {
+      "n": 20,
+      "entities": 12,
+      "best": {
+        "copy": {
+          "flips": 0.7,
+          "ci": [
+            0.5217391304347826,
+            0.8823529411764706
+          ],
+          "control": null,
+          "other": 0.2,
+          "pos": "final",
+          "layer": "19",
+          "strength": 1.0,
+          "gated_cells": 16
+        },
+        "lens_add": {
+          "flips": 0.05,
+          "ci": [
+            0.0,
+            0.15
+          ],
+          "control": 0,
+          "other": 0.05,
+          "pos": "question",
+          "layer": "13",
+          "strength": 0.2,
+          "gated_cells": 51
+        },
+        "lens_swap": {
+          "flips": 0.1,
+          "ci": [
+            0.0,
+            0.23809523809523808
+          ],
+          "control": 0,
+          "other": 0.1,
+          "pos": "final",
+          "layer": "19",
+          "strength": 4.0,
+          "gated_cells": 47
+        },
+        "early_lens_add": {
+          "flips": 0.2,
+          "ci": [
+            0.04,
+            0.4117647058823529
+          ],
+          "control": 0.05,
+          "other": 0.15,
+          "pos": "question",
+          "layer": "12",
+          "strength": 0.8,
+          "gated_cells": 4
+        },
+        "early_embed_add": {
+          "flips": 0.05,
+          "ci": [
+            0.0,
+            0.15
+          ],
+          "control": 0,
+          "other": 0.05,
+          "pos": "question",
+          "layer": "8",
+          "strength": 0.2,
+          "gated_cells": 4
+        }
+      }
+    },
+    "MP": {
+      "n": 17,
+      "entities": 12,
+      "best": {
+        "copy": {
+          "flips": 0.9411764705882353,
+          "ci": [
+            0.7857142857142857,
+            1.0
+          ],
+          "control": null,
+          "other": 0,
+          "pos": "final",
+          "layer": "18",
+          "strength": 1.0,
+          "gated_cells": 16
+        },
+        "lens_add": {
+          "flips": 0.058823529411764705,
+          "ci": [
+            0.0,
+            0.2
+          ],
+          "control": 0,
+          "other": 0.058823529411764705,
+          "pos": "question",
+          "layer": "13",
+          "strength": 0.8,
+          "gated_cells": 49
+        },
+        "lens_swap": {
+          "flips": 0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "control": 0,
+          "other": 0,
+          "pos": "question",
+          "layer": "13",
+          "strength": 1.0,
+          "gated_cells": 26
+        },
+        "early_lens_add": {
+          "flips": 0.11764705882352941,
+          "ci": [
+            0.0,
+            0.3125
+          ],
+          "control": 0,
+          "other": 0.11764705882352941,
+          "pos": "question",
+          "layer": "8",
+          "strength": 0.8,
+          "gated_cells": 5
+        },
+        "early_embed_add": {
+          "flips": 0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "control": 0,
+          "other": 0.058823529411764705,
+          "pos": "question",
+          "layer": "8",
+          "strength": 0.2,
+          "gated_cells": 7
+        }
+      }
+    },
+    "MM": {
+      "n": 17,
+      "entities": 12,
+      "best": {
+        "copy": {
+          "flips": 0.5882352941176471,
+          "ci": [
+            0.3076923076923077,
+            0.8421052631578947
+          ],
+          "control": null,
+          "other": 0,
+          "pos": "final",
+          "layer": "19",
+          "strength": 1.0,
+          "gated_cells": 16
+        },
+        "lens_add": {
+          "flips": 0.5882352941176471,
+          "ci": [
+            0.2857142857142857,
+            0.8095238095238095
+          ],
+          "control": 0,
+          "other": 0.29411764705882354,
+          "pos": "final",
+          "layer": "19",
+          "strength": 0.8,
+          "gated_cells": 63
+        },
+        "lens_swap": {
+          "flips": 0.29411764705882354,
+          "ci": [
+            0.14285714285714285,
+            0.44
+          ],
+          "control": 0,
+          "other": 0.17647058823529413,
+          "pos": "final",
+          "layer": "joint",
+          "strength": 4.0,
+          "gated_cells": 45
+        },
+        "early_lens_add": {
+          "flips": 0.17647058823529413,
+          "ci": [
+            0.0,
+            0.3684210526315789
+          ],
+          "control": 0,
+          "other": 0.058823529411764705,
+          "pos": "question",
+          "layer": "8",
+          "strength": 0.8,
+          "gated_cells": 6
+        },
+        "early_embed_add": {
+          "flips": 0.11764705882352941,
+          "ci": [
+            0.0,
+            0.3157894736842105
+          ],
+          "control": 0,
+          "other": 0.058823529411764705,
+          "pos": "question",
+          "layer": "8",
+          "strength": 0.4,
+          "gated_cells": 8
+        }
+      }
+    },
+    "CP": {
+      "n": 17,
+      "entities": 13,
+      "best": {
+        "copy": {
+          "flips": 1,
+          "ci": [
+            1.0,
+            1.0
+          ],
+          "control": null,
+          "other": 0,
+          "pos": "final",
+          "layer": "18",
+          "strength": 1.0,
+          "gated_cells": 16
+        },
+        "lens_add": {
+          "flips": 0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "control": 0,
+          "other": 0,
+          "pos": "question",
+          "layer": "13",
+          "strength": 0.05,
+          "gated_cells": 72
+        },
+        "lens_swap": {
+          "flips": 0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "control": 0,
+          "other": 0,
+          "pos": "question",
+          "layer": "13",
+          "strength": 1.0,
+          "gated_cells": 48
+        },
+        "early_lens_add": {
+          "flips": 0.11764705882352941,
+          "ci": [
+            0.0,
+            0.25
+          ],
+          "control": 0,
+          "other": 0,
+          "pos": "question",
+          "layer": "8",
+          "strength": 1.6,
+          "gated_cells": 8
+        },
+        "early_embed_add": {
+          "flips": 0.058823529411764705,
+          "ci": [
+            0.0,
+            0.21428571428571427
+          ],
+          "control": 0,
+          "other": 0,
+          "pos": "question",
+          "layer": "8",
+          "strength": 0.8,
+          "gated_cells": 7
+        }
+      }
+    },
+    "CM": {
+      "n": 17,
+      "entities": 13,
+      "best": {
+        "copy": {
+          "flips": 0.5294117647058824,
+          "ci": [
+            0.3181818181818182,
+            0.7857142857142857
+          ],
+          "control": null,
+          "other": 0.23529411764705882,
+          "pos": "final",
+          "layer": "18",
+          "strength": 1.0,
+          "gated_cells": 16
+        },
+        "lens_add": {
+          "flips": 0.4117647058823529,
+          "ci": [
+            0.15789473684210525,
+            0.75
+          ],
+          "control": 0,
+          "other": 0.17647058823529413,
+          "pos": "final",
+          "layer": "joint",
+          "strength": 0.2,
+          "gated_cells": 57
+        },
+        "lens_swap": {
+          "flips": 0.058823529411764705,
+          "ci": [
+            0.0,
+            0.1875
+          ],
+          "control": 0,
+          "other": 0.058823529411764705,
+          "pos": "question",
+          "layer": "joint",
+          "strength": 4.0,
+          "gated_cells": 44
+        },
+        "early_lens_add": {
+          "flips": 0.11764705882352941,
+          "ci": [
+            0.0,
+            0.29411764705882354
+          ],
+          "control": 0,
+          "other": 0,
+          "pos": "question",
+          "layer": "8",
+          "strength": 0.8,
+          "gated_cells": 5
+        },
+        "early_embed_add": {
+          "flips": 0.11764705882352941,
+          "ci": [
+            0.0,
+            0.3125
+          ],
+          "control": 0,
+          "other": 0,
+          "pos": "question",
+          "layer": "12",
+          "strength": 0.8,
+          "gated_cells": 4
+        }
+      }
+    }
+  }
+}

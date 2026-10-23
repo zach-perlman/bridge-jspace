@@ -1,0 +1,58 @@
+{
+  "run": "olmoh7_copy_sweep_full2_v1",
+  "why": "Zach (2026-10-22, prereg amendment 6B): olmo-hybrid-7b (our J++), the Olmo architecture pair: where the question / final positions carry the bridge",
+  "git_commit": "cf1a70980215fc7db33676dd71b38d92dca3ea60",
+  "model": {
+    "target": "olmo-hybrid-7b",
+    "repo": "allenai/Olmo-Hybrid-Instruct-DPO-7B",
+    "revision": "ec62da5af0106ab4e83a60e07c4796ff358fd204",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "layers": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30
+  ],
+  "tasks": [
+    "full_v8",
+    "olmoh7_full_v8_competence_v1"
+  ],
+  "families": [
+    "PP",
+    "PM",
+    "MP",
+    "MM"
+  ],
+  "n_per_family": 40,
+  "window": 6,
+  "written_utc": "2026-10-23T00:40:37Z",
+  "doc": "python scripts/copy_sweep.py --name N --why W [--tasks SET --tasks-competence RUN --families ...] [--n 40] [--step 2]\n                             [--window 12]\n"
+}
