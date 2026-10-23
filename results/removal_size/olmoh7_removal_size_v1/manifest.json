@@ -1,0 +1,24 @@
+{
+  "run": "olmoh7_removal_size_v1",
+  "why": "Zach (2026-10-22, amendment 6B, descriptive): residual share the knock-out removes on Olmo-Hybrid at L14-18 (its plain-text gate moved -0.06 nats)",
+  "model": {
+    "target": "olmo-hybrid-7b",
+    "repo": "allenai/Olmo-Hybrid-Instruct-DPO-7B",
+    "revision": "ec62da5af0106ab4e83a60e07c4796ff358fd204",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "b8dd5d16ba1ee7318c943ec1f3def36aed30f286185724c55afcb14a350c25dc"
+  ],
+  "layers": [
+    14,
+    15,
+    16,
+    17,
+    18
+  ],
+  "written_utc": "2026-10-22T22:20:30Z",
+  "doc": "removal_size: how much of the residual does each knock-out remove? (Zach, 2026-10-22; the caveat on C1's specificity\ncontrol: removing the top-10 unembedding directions per position did nothing on the 27B, but those directions may simply\nhold less of the mid-layer residual than the top-10 J-lens directions do.) On removal_textloss's 16 WikiText rows, at\neach layer: the removed share of the residual's norm, ||h - edit(h)|| / ||h||, per position (position 0 excluded), for\nthe top-K span removal over the J-lens dictionary (paper10's) and over the unit unembedding rows (unembed10's), K = 1 and\n10, and the same-size rotated control (equal norm by construction). Descriptive."
+}

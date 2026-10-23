@@ -1,0 +1,33 @@
+{
+  "run": "qwen35_9b_textloss_top_l12_16_v1",
+  "why": "Zach (2026-10-21): Qwen3.5-9B on the v2 pipeline (published J++), the same set as the others: plain-text loss under the knock-out at the chosen band",
+  "written_utc": "2026-10-22T21:33:13Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  ],
+  "layers": [
+    12,
+    13,
+    14,
+    15,
+    16
+  ],
+  "conditions": [
+    "none",
+    "top1",
+    "top1_rot",
+    "top5",
+    "top5_rot",
+    "top10",
+    "top10_rot"
+  ],
+  "doc": "python scripts/removal_textloss.py --name N --why W --layers L [L ...] [--conditions none jspace rotated top10 top10_rot]\n"
+}

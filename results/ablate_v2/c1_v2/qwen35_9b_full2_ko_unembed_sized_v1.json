@@ -1,0 +1,15 @@
+{
+  "run": "qwen35_9b_full2_ko_unembed_sized_v1",
+  "middle": "L12-16",
+  "bands": {},
+  "rule": {
+    "loss": {},
+    "control_distance": {},
+    "gap": null,
+    "controls_ok": false,
+    "C1_graded_holds": false,
+    "strict_C1_holds": null
+  },
+  "margin_matched": {},
+  "commit": "9522c3c5fb44049835dcb5fbb8afd90f7297dab8"
+}

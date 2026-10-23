@@ -1,0 +1,118 @@
+{
+  "run": "qwen35_9b_full2_ko_steps_v1",
+  "middle": "L12-16",
+  "bands": {
+    "L12-16": {
+      "paper10": {
+        "PP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "PM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "CP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "CM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        }
+      },
+      "paper10_rot": {
+        "PP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "PM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "CP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "CM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        }
+      }
+    }
+  },
+  "rule": {
+    "loss": {},
+    "control_distance": {},
+    "gap": null,
+    "controls_ok": false,
+    "C1_graded_holds": false,
+    "strict_C1_holds": null
+  },
+  "margin_matched": {},
+  "commit": "6c0760e71bcc3a9fbbf8f17415fb43dcb0e60196"
+}

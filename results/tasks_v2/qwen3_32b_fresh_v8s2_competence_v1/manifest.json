@@ -1,0 +1,18 @@
+{
+  "run": "qwen3_32b_fresh_v8s2_competence_v1",
+  "why": "Zach (2026-10-22, prereg amendment 6A): qwen3-32b on a fresh data seed (fresh_v8s2): competence",
+  "set": "fresh_v8s2",
+  "model": {
+    "target": "qwen3-32b",
+    "repo": "Qwen/Qwen3-32B",
+    "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "121caa92ac26f4c3fe437a91292abe4dcd6801d9",
+  "guess": true,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-22T23:33:38Z"
+}

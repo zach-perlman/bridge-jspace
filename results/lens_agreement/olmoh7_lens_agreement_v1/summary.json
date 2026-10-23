@@ -1,0 +1,175 @@
+{
+  "n_texts": 16,
+  "n_positions": 1620,
+  "mean_nll": 2.9140722677111626,
+  "lens_source_layers": [
+    0,
+    30,
+    31
+  ],
+  "top10_agreement": {
+    "0": {
+      "lens": 0.17592592592592593,
+      "logit": 0.015432098765432098
+    },
+    "1": {
+      "lens": 0.18395061728395062,
+      "logit": 0.019135802469135803
+    },
+    "2": {
+      "lens": 0.05185185185185185,
+      "logit": 0.028395061728395062
+    },
+    "3": {
+      "lens": 0.05555555555555555,
+      "logit": 0.07962962962962963
+    },
+    "4": {
+      "lens": 0.12222222222222222,
+      "logit": 0.08518518518518518
+    },
+    "5": {
+      "lens": 0.10555555555555556,
+      "logit": 0.07777777777777778
+    },
+    "6": {
+      "lens": 0.1111111111111111,
+      "logit": 0.08271604938271605
+    },
+    "7": {
+      "lens": 0.10061728395061728,
+      "logit": 0.09691358024691359
+    },
+    "8": {
+      "lens": 0.11790123456790123,
+      "logit": 0.11604938271604938
+    },
+    "9": {
+      "lens": 0.13271604938271606,
+      "logit": 0.12098765432098765
+    },
+    "10": {
+      "lens": 0.20987654320987653,
+      "logit": 0.09753086419753086
+    },
+    "11": {
+      "lens": 0.2858024691358025,
+      "logit": 0.10061728395061728
+    },
+    "12": {
+      "lens": 0.17222222222222222,
+      "logit": 0.10246913580246914
+    },
+    "13": {
+      "lens": 0.21851851851851853,
+      "logit": 0.09876543209876543
+    },
+    "14": {
+      "lens": 0.17407407407407408,
+      "logit": 0.10679012345679012
+    },
+    "15": {
+      "lens": 0.17839506172839506,
+      "logit": 0.11975308641975309
+    },
+    "16": {
+      "lens": 0.1765432098765432,
+      "logit": 0.15493827160493828
+    },
+    "17": {
+      "lens": 0.35185185185185186,
+      "logit": 0.1882716049382716
+    },
+    "18": {
+      "lens": 0.3197530864197531,
+      "logit": 0.24074074074074073
+    },
+    "19": {
+      "lens": 0.25864197530864197,
+      "logit": 0.28888888888888886
+    },
+    "20": {
+      "lens": 0.41790123456790124,
+      "logit": 0.3617283950617284
+    },
+    "21": {
+      "lens": 0.42160493827160495,
+      "logit": 0.42345679012345677
+    },
+    "22": {
+      "lens": 0.3592592592592593,
+      "logit": 0.528395061728395
+    },
+    "23": {
+      "lens": 0.3135802469135803,
+      "logit": 0.6277777777777778
+    },
+    "24": {
+      "lens": 0.4364197530864197,
+      "logit": 0.691358024691358
+    },
+    "25": {
+      "lens": 0.5098765432098765,
+      "logit": 0.7382716049382716
+    },
+    "26": {
+      "lens": 0.5617283950617284,
+      "logit": 0.7765432098765432
+    },
+    "27": {
+      "lens": 0.5444444444444444,
+      "logit": 0.8179012345679012
+    },
+    "28": {
+      "lens": 0.7975308641975308,
+      "logit": 0.8703703703703703
+    },
+    "29": {
+      "lens": 0.6993827160493827,
+      "logit": 0.9320987654320988
+    },
+    "30": {
+      "lens": 0.9648148148148148,
+      "logit": 0.9524691358024692
+    }
+  },
+  "chat": [
+    {
+      "q": "What is the capital of France?",
+      "gold": "Paris",
+      "out": " Paris<|endoftext|>Answer: Paris<|endoftext|>",
+      "right": true
+    },
+    {
+      "q": "In which country is Lyon located?",
+      "gold": "France",
+      "out": " France<|endoftext|>Question: What is",
+      "right": true
+    },
+    {
+      "q": "What language is spoken in Brazil?",
+      "gold": "Portuguese",
+      "out": " Portuguese<|endoftext|>Answer: Portuguese<|endoftext|>",
+      "right": true
+    },
+    {
+      "q": "What is the capital of the country where Munich is located?",
+      "gold": "Berlin",
+      "out": " Germany<|endoftext|>Answer: France<|endoftext|>",
+      "right": false
+    },
+    {
+      "q": "What currency is used in the country whose capital is Tokyo?",
+      "gold": "Yen",
+      "out": " Japanese Yen<|endoftext|>Answer the",
+      "right": true
+    },
+    {
+      "q": "Emma lives in Kenya. What is the capital of the country where Emma lives?",
+      "gold": "Nairobi",
+      "out": " Nairobi<|endoftext|>Question: What is",
+      "right": true
+    }
+  ],
+  "chat_right": 5
+}

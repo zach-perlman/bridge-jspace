@@ -1,0 +1,33 @@
+{
+  "run": "olmoh7_textloss_top_v1",
+  "why": "Zach (2026-10-22, prereg amendment 6B): olmo-hybrid-7b (our J++), the Olmo architecture pair: plain-text loss under the knock-out, L14-18 (the untestable gate)",
+  "written_utc": "2026-10-22T22:18:50Z",
+  "model": {
+    "target": "olmo-hybrid-7b",
+    "repo": "allenai/Olmo-Hybrid-Instruct-DPO-7B",
+    "revision": "ec62da5af0106ab4e83a60e07c4796ff358fd204",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "b8dd5d16ba1ee7318c943ec1f3def36aed30f286185724c55afcb14a350c25dc"
+  ],
+  "layers": [
+    14,
+    15,
+    16,
+    17,
+    18
+  ],
+  "conditions": [
+    "none",
+    "top1",
+    "top1_rot",
+    "top5",
+    "top5_rot",
+    "top10",
+    "top10_rot"
+  ],
+  "doc": "python scripts/removal_textloss.py --name N --why W --layers L [L ...] [--conditions none jspace rotated top10 top10_rot]\n"
+}

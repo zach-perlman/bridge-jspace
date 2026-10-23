@@ -1,0 +1,58 @@
+{
+  "run": "qwen35_9b_copy_sweep_full2_v1",
+  "why": "Zach (2026-10-21): Qwen3.5-9B on the v2 pipeline (published J++), the same set as the others: where the question / final positions carry the bridge",
+  "git_commit": "6c0760e71bcc3a9fbbf8f17415fb43dcb0e60196",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "layers": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30
+  ],
+  "tasks": [
+    "full_v8",
+    "qwen35_9b_full_v8_competence_v1"
+  ],
+  "families": [
+    "PP",
+    "PM",
+    "MP",
+    "MM"
+  ],
+  "n_per_family": 40,
+  "window": 6,
+  "written_utc": "2026-10-22T20:24:28Z",
+  "doc": "python scripts/copy_sweep.py --name N --why W [--tasks SET --tasks-competence RUN --families ...] [--n 40] [--step 2]\n                             [--window 12]\n"
+}

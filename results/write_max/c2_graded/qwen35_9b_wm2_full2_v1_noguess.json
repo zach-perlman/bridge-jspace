@@ -1,0 +1,612 @@
+{
+  "run": "qwen35_9b_wm2_full2_v1",
+  "families": {
+    "CM": {
+      "own_direction": {
+        "flips": 0.21951219512195122,
+        "ci": [
+          0.09090909090909091,
+          0.3548387096774194
+        ],
+        "write": "lens_add",
+        "pos": "final",
+        "layer": "joint",
+        "strength": 0.1,
+        "gated_cells": 115,
+        "n": 41
+      },
+      "transplant": {
+        "flips": 0.17073170731707318,
+        "ci": [
+          0.07317073170731707,
+          0.2777777777777778
+        ],
+        "write": "lens_transpl",
+        "pos": "final",
+        "layer": "19",
+        "strength": 2.0,
+        "gated_cells": 28,
+        "n": 41
+      },
+      "dom": {
+        "flips": 0.5142857142857142,
+        "ci": [
+          0.3125,
+          0.7
+        ],
+        "write": "dom_add",
+        "pos": "final",
+        "layer": "20",
+        "strength": 0.8,
+        "gated_cells": 94,
+        "n": 35
+      },
+      "own_final_only": {
+        "flips": 0.21951219512195122,
+        "ci": [
+          0.09090909090909091,
+          0.3548387096774194
+        ],
+        "write": "lens_add",
+        "pos": "final",
+        "layer": "joint",
+        "strength": 0.1,
+        "gated_cells": 55,
+        "n": 41
+      },
+      "transplant_1x": {
+        "flips": 0.024390243902439025,
+        "ci": [
+          0.0,
+          0.08108108108108109
+        ],
+        "write": "lens_transpl",
+        "pos": "final",
+        "layer": "19",
+        "strength": 1.0,
+        "gated_cells": 15,
+        "n": 41
+      },
+      "any_lens_any_site": {
+        "flips": 0.21951219512195122,
+        "ci": [
+          0.09090909090909091,
+          0.3548387096774194
+        ],
+        "write": "lens_add",
+        "pos": "final",
+        "layer": "joint",
+        "strength": 0.1,
+        "gated_cells": 143,
+        "n": 41
+      },
+      "ceiling_copy": {
+        "flips": 0.7560975609756098,
+        "ci": [
+          0.6046511627906976,
+          0.8979591836734694
+        ],
+        "write": "copy",
+        "pos": "final",
+        "layer": "20",
+        "strength": 1.0,
+        "gated_cells": 16,
+        "n": 41
+      },
+      "cv_own_direction": 0.143913942160052,
+      "cv_transplant": 0.17003625964890268,
+      "cv_dom": 0.5133685043241932
+    },
+    "CP": {
+      "own_direction": {
+        "flips": 0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "write": "lens_add",
+        "pos": "question",
+        "layer": "14",
+        "strength": 0.05,
+        "gated_cells": 126,
+        "n": 39
+      },
+      "transplant": {
+        "flips": 0.07692307692307693,
+        "ci": [
+          0.0,
+          0.18181818181818182
+        ],
+        "write": "lens_transpl",
+        "pos": "final",
+        "layer": "joint",
+        "strength": 2.0,
+        "gated_cells": 32,
+        "n": 39
+      },
+      "dom": {
+        "flips": 0.21212121212121213,
+        "ci": [
+          0.07407407407407407,
+          0.3548387096774194
+        ],
+        "write": "dom_add",
+        "pos": "final",
+        "layer": "18",
+        "strength": 0.4,
+        "gated_cells": 111,
+        "n": 33
+      },
+      "own_final_only": {
+        "flips": 0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "write": "lens_add",
+        "pos": "final",
+        "layer": "14",
+        "strength": 0.05,
+        "gated_cells": 63,
+        "n": 39
+      },
+      "transplant_1x": {
+        "flips": 0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "write": "lens_transpl",
+        "pos": "question",
+        "layer": "14",
+        "strength": 1.0,
+        "gated_cells": 16,
+        "n": 39
+      },
+      "any_lens_any_site": {
+        "flips": 0.07692307692307693,
+        "ci": [
+          0.0,
+          0.18181818181818182
+        ],
+        "write": "lens_transpl",
+        "pos": "final",
+        "layer": "joint",
+        "strength": 2.0,
+        "gated_cells": 158,
+        "n": 39
+      },
+      "ceiling_copy": {
+        "flips": 0.717948717948718,
+        "ci": [
+          0.5714285714285714,
+          0.8717948717948718
+        ],
+        "write": "copy",
+        "pos": "final",
+        "layer": "20",
+        "strength": 1.0,
+        "gated_cells": 16,
+        "n": 39
+      },
+      "cv_own_direction": 0.0,
+      "cv_transplant": 0.06404874375075277,
+      "cv_dom": 0.1413629776441309
+    },
+    "MM": {
+      "own_direction": {
+        "flips": 0.7272727272727273,
+        "ci": [
+          0.5555555555555556,
+          0.8947368421052632
+        ],
+        "write": "lens_add",
+        "pos": "final",
+        "layer": "20",
+        "strength": 0.8,
+        "gated_cells": 125,
+        "n": 22
+      },
+      "transplant": {
+        "flips": 0.22727272727272727,
+        "ci": [
+          0.0,
+          0.47368421052631576
+        ],
+        "write": "lens_transpl",
+        "pos": "final",
+        "layer": "joint",
+        "strength": 1.0,
+        "gated_cells": 31,
+        "n": 22
+      },
+      "dom": {
+        "flips": 0.7058823529411765,
+        "ci": [
+          0.5,
+          0.8461538461538461
+        ],
+        "write": "dom_natural",
+        "pos": "final",
+        "layer": "20",
+        "strength": 2.0,
+        "gated_cells": 95,
+        "n": 17
+      },
+      "own_final_only": {
+        "flips": 0.7272727272727273,
+        "ci": [
+          0.5555555555555556,
+          0.8947368421052632
+        ],
+        "write": "lens_add",
+        "pos": "final",
+        "layer": "20",
+        "strength": 0.8,
+        "gated_cells": 62,
+        "n": 22
+      },
+      "transplant_1x": {
+        "flips": 0.22727272727272727,
+        "ci": [
+          0.0,
+          0.47368421052631576
+        ],
+        "write": "lens_transpl",
+        "pos": "final",
+        "layer": "joint",
+        "strength": 1.0,
+        "gated_cells": 16,
+        "n": 22
+      },
+      "any_lens_any_site": {
+        "flips": 0.7272727272727273,
+        "ci": [
+          0.5555555555555556,
+          0.8947368421052632
+        ],
+        "write": "lens_add",
+        "pos": "final",
+        "layer": "20",
+        "strength": 0.8,
+        "gated_cells": 156,
+        "n": 22
+      },
+      "ceiling_copy": {
+        "flips": 0.7272727272727273,
+        "ci": [
+          0.5238095238095238,
+          0.9411764705882353
+        ],
+        "write": "copy",
+        "pos": "final",
+        "layer": "20",
+        "strength": 1.0,
+        "gated_cells": 16,
+        "n": 22
+      },
+      "cv_own_direction": 0.6092337592962593,
+      "cv_transplant": 0.15461588411588412,
+      "cv_dom": 0.63134946997447
+    },
+    "MP": {
+      "own_direction": {
+        "flips": 0.09090909090909091,
+        "ci": [
+          0.0,
+          0.2
+        ],
+        "write": "lens_add",
+        "pos": "question",
+        "layer": "joint",
+        "strength": 0.2,
+        "gated_cells": 115,
+        "n": 22
+      },
+      "transplant": {
+        "flips": 0.09090909090909091,
+        "ci": [
+          0.0,
+          0.2
+        ],
+        "write": "lens_transpl",
+        "pos": "question",
+        "layer": "joint",
+        "strength": 2.0,
+        "gated_cells": 29,
+        "n": 22
+      },
+      "dom": {
+        "flips": 0.11764705882352941,
+        "ci": [
+          0.0,
+          0.26666666666666666
+        ],
+        "write": "dom_add",
+        "pos": "question",
+        "layer": "17",
+        "strength": 0.4,
+        "gated_cells": 54,
+        "n": 17
+      },
+      "own_final_only": {
+        "flips": 0.045454545454545456,
+        "ci": [
+          0.0,
+          0.17647058823529413
+        ],
+        "write": "lens_add",
+        "pos": "final",
+        "layer": "15",
+        "strength": 0.8,
+        "gated_cells": 57,
+        "n": 22
+      },
+      "transplant_1x": {
+        "flips": 0.045454545454545456,
+        "ci": [
+          0.0,
+          0.17647058823529413
+        ],
+        "write": "lens_transpl",
+        "pos": "question",
+        "layer": "joint",
+        "strength": 1.0,
+        "gated_cells": 15,
+        "n": 22
+      },
+      "any_lens_any_site": {
+        "flips": 0.09090909090909091,
+        "ci": [
+          0.0,
+          0.2
+        ],
+        "write": "lens_add",
+        "pos": "question",
+        "layer": "joint",
+        "strength": 0.2,
+        "gated_cells": 144,
+        "n": 22
+      },
+      "ceiling_copy": {
+        "flips": 0.7727272727272727,
+        "ci": [
+          0.6521739130434783,
+          0.8888888888888888
+        ],
+        "write": "copy",
+        "pos": "question",
+        "layer": "joint",
+        "strength": 1.0,
+        "gated_cells": 16,
+        "n": 22
+      },
+      "cv_own_direction": 0.0,
+      "cv_transplant": 0.03167550505050505,
+      "cv_dom": 0.0
+    },
+    "PM": {
+      "own_direction": {
+        "flips": 0.17857142857142858,
+        "ci": [
+          0.07547169811320754,
+          0.3137254901960784
+        ],
+        "write": "lens_add",
+        "pos": "question",
+        "layer": "joint",
+        "strength": 0.1,
+        "gated_cells": 103,
+        "n": 56
+      },
+      "transplant": {
+        "flips": 0.10714285714285714,
+        "ci": [
+          0.03389830508474576,
+          0.1951219512195122
+        ],
+        "write": "lens_transpl",
+        "pos": "final",
+        "layer": "20",
+        "strength": 2.0,
+        "gated_cells": 24,
+        "n": 56
+      },
+      "dom": {
+        "flips": 0.37209302325581395,
+        "ci": [
+          0.2127659574468085,
+          0.5405405405405406
+        ],
+        "write": "dom_add",
+        "pos": "final",
+        "layer": "20",
+        "strength": 0.4,
+        "gated_cells": 89,
+        "n": 43
+      },
+      "own_final_only": {
+        "flips": 0.17857142857142858,
+        "ci": [
+          0.078125,
+          0.30158730158730157
+        ],
+        "write": "lens_add",
+        "pos": "final",
+        "layer": "joint",
+        "strength": 0.1,
+        "gated_cells": 53,
+        "n": 56
+      },
+      "transplant_1x": {
+        "flips": 0.017857142857142856,
+        "ci": [
+          0.0,
+          0.061224489795918366
+        ],
+        "write": "lens_transpl",
+        "pos": "final",
+        "layer": "19",
+        "strength": 1.0,
+        "gated_cells": 14,
+        "n": 56
+      },
+      "any_lens_any_site": {
+        "flips": 0.17857142857142858,
+        "ci": [
+          0.07547169811320754,
+          0.3137254901960784
+        ],
+        "write": "lens_add",
+        "pos": "question",
+        "layer": "joint",
+        "strength": 0.1,
+        "gated_cells": 127,
+        "n": 56
+      },
+      "ceiling_copy": {
+        "flips": 0.5714285714285714,
+        "ci": [
+          0.47058823529411764,
+          0.68
+        ],
+        "write": "copy",
+        "pos": "final",
+        "layer": "19",
+        "strength": 1.0,
+        "gated_cells": 16,
+        "n": 56
+      },
+      "cv_own_direction": 0.14669922990603068,
+      "cv_transplant": 0.0752262380294448,
+      "cv_dom": 0.3208233396104548
+    },
+    "PP": {
+      "own_direction": {
+        "flips": 0.018518518518518517,
+        "ci": [
+          0.0,
+          0.06666666666666667
+        ],
+        "write": "lens_add",
+        "pos": "final",
+        "layer": "14",
+        "strength": 0.8,
+        "gated_cells": 121,
+        "n": 54
+      },
+      "transplant": {
+        "flips": 0.037037037037037035,
+        "ci": [
+          0.0,
+          0.09615384615384616
+        ],
+        "write": "lens_transpl",
+        "pos": "final",
+        "layer": "joint",
+        "strength": 2.0,
+        "gated_cells": 30,
+        "n": 54
+      },
+      "dom": {
+        "flips": 0.2682926829268293,
+        "ci": [
+          0.15555555555555556,
+          0.39473684210526316
+        ],
+        "write": "dom_add",
+        "pos": "question",
+        "layer": "joint",
+        "strength": 0.4,
+        "gated_cells": 107,
+        "n": 41
+      },
+      "own_final_only": {
+        "flips": 0.018518518518518517,
+        "ci": [
+          0.0,
+          0.06666666666666667
+        ],
+        "write": "lens_add",
+        "pos": "final",
+        "layer": "14",
+        "strength": 0.8,
+        "gated_cells": 63,
+        "n": 54
+      },
+      "transplant_1x": {
+        "flips": 0.018518518518518517,
+        "ci": [
+          0.0,
+          0.06666666666666667
+        ],
+        "write": "lens_transpl",
+        "pos": "question",
+        "layer": "joint",
+        "strength": 1.0,
+        "gated_cells": 16,
+        "n": 54
+      },
+      "any_lens_any_site": {
+        "flips": 0.037037037037037035,
+        "ci": [
+          0.0,
+          0.09615384615384616
+        ],
+        "write": "lens_transpl",
+        "pos": "final",
+        "layer": "joint",
+        "strength": 2.0,
+        "gated_cells": 151,
+        "n": 54
+      },
+      "ceiling_copy": {
+        "flips": 0.5555555555555556,
+        "ci": [
+          0.43137254901960786,
+          0.6923076923076923
+        ],
+        "write": "copy",
+        "pos": "question",
+        "layer": "joint",
+        "strength": 1.0,
+        "gated_cells": 16,
+        "n": 54
+      },
+      "cv_own_direction": 0.0,
+      "cv_transplant": 0.006575097813318421,
+      "cv_dom": 0.19516154494912066
+    }
+  },
+  "cases_dropped": 28,
+  "ceiling_from": null,
+  "rule": {
+    "mp": "MP",
+    "mm": "MM",
+    "mp_best": 0.09090909090909091,
+    "mm_best": 0.7272727272727273,
+    "ratio_ok": true,
+    "gap_ok": true,
+    "ci_ok": true,
+    "C2_graded_holds": true
+  },
+  "rule_relative": {
+    "ceiling": {
+      "MP": 0.7727272727272727,
+      "MM": 0.7272727272727273
+    },
+    "relative": {
+      "MP": 0.0,
+      "MM": 0.8376964190323566
+    },
+    "valid": true,
+    "verdict": "HOLDS"
+  },
+  "positive_control": {
+    "best": {
+      "MM": 0.7272727272727273
+    },
+    "passes": true
+  },
+  "commit": "6c0760e71bcc3a9fbbf8f17415fb43dcb0e60196"
+}

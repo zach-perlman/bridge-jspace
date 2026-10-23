@@ -58,5 +58,65 @@
       "poetry": 8,
       "typo": 77
     }
+  },
+  "Qwen3-32B (our J++, 32 prompts)": {
+    "relative_layers": [
+      8,
+      16,
+      24,
+      32,
+      40,
+      48,
+      56
+    ],
+    "band": {
+      "jpp": 0.35989177489177493,
+      "logit": 0.053668831168831165
+    },
+    "all": {
+      "jpp": 0.6378354978354979,
+      "logit": 0.35125541125541127
+    },
+    "relative7": {
+      "jpp": 0.4735822510822511,
+      "logit": 0.20147186147186144
+    },
+    "items_per_eval": {
+      "association": 80,
+      "multihop": 33,
+      "multilingual": 55,
+      "poetry": 56,
+      "typo": 77
+    }
+  },
+  "Qwen3.5-9B (published J++)": {
+    "relative_layers": [
+      4,
+      8,
+      12,
+      16,
+      20,
+      24,
+      28
+    ],
+    "band": {
+      "jpp": 0.41319204838996076,
+      "logit": 0.09329424694890796
+    },
+    "all": {
+      "jpp": 0.6304218183080833,
+      "logit": 0.3909047343899039
+    },
+    "relative7": {
+      "jpp": 0.589621394310832,
+      "logit": 0.32614331878103064
+    },
+    "items_per_eval": {
+      "association": 82,
+      "multihop": 27,
+      "multilingual": 59,
+      "poetry": 64,
+      "typo": 77
+    }
   }
 }

@@ -1,0 +1,18 @@
+{
+  "run": "olmo3d7_full_v8_competence_v1",
+  "why": "Zach (2026-10-22, prereg amendment 6B): olmo-3-7b (our J++), the Olmo architecture pair: competence on full_v8",
+  "set": "full_v8",
+  "model": {
+    "target": "olmo-3-7b",
+    "repo": "allenai/Olmo-3-7B-Instruct-DPO",
+    "revision": "b33130b7de49f0c2553b5c2b3bc8409ff3e627d1",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "121caa92ac26f4c3fe437a91292abe4dcd6801d9",
+  "guess": true,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-22T23:07:25Z"
+}

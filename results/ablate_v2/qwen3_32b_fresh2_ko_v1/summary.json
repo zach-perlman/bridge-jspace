@@ -1,0 +1,91 @@
+{
+  "seconds": 1190,
+  "band_seconds": {
+    "L44-52": 1034
+  },
+  "unedited_accuracy": {
+    "PP/clean": 1,
+    "PM/clean": 1,
+    "MM/clean": 1,
+    "MP/clean": 1,
+    "CP/clean": 1,
+    "CM/clean": 1
+  },
+  "cells": {
+    "L44-52": {
+      "PP/clean": {
+        "paper10": {
+          "n": 121,
+          "accuracy": 0.9917355371900827,
+          "dlogp": -0.040818156341320105
+        },
+        "paper10_rot": {
+          "n": 121,
+          "accuracy": 1,
+          "dlogp": -0.004681905755890602
+        }
+      },
+      "PM/clean": {
+        "paper10": {
+          "n": 121,
+          "accuracy": 0.768595041322314,
+          "dlogp": -1.1091379159129133
+        },
+        "paper10_rot": {
+          "n": 121,
+          "accuracy": 0.9586776859504132,
+          "dlogp": -0.09671425385410154
+        }
+      },
+      "MM/clean": {
+        "paper10": {
+          "n": 50,
+          "accuracy": 0.8,
+          "dlogp": -0.5142605388775701
+        },
+        "paper10_rot": {
+          "n": 50,
+          "accuracy": 1,
+          "dlogp": 0.010203955881297588
+        }
+      },
+      "MP/clean": {
+        "paper10": {
+          "n": 50,
+          "accuracy": 0.92,
+          "dlogp": -0.2662774744372291
+        },
+        "paper10_rot": {
+          "n": 50,
+          "accuracy": 0.92,
+          "dlogp": -0.09067249962099595
+        }
+      },
+      "CP/clean": {
+        "paper10": {
+          "n": 91,
+          "accuracy": 0.9560439560439561,
+          "dlogp": -0.1867878498787357
+        },
+        "paper10_rot": {
+          "n": 91,
+          "accuracy": 0.9560439560439561,
+          "dlogp": -0.05987063840772892
+        }
+      },
+      "CM/clean": {
+        "paper10": {
+          "n": 91,
+          "accuracy": 0.8241758241758241,
+          "dlogp": -0.6575444115955539
+        },
+        "paper10_rot": {
+          "n": 91,
+          "accuracy": 0.9230769230769231,
+          "dlogp": -0.19413527520709278
+        }
+      }
+    }
+  },
+  "sink_positions": {}
+}
