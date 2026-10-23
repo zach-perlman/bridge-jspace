@@ -74,11 +74,6 @@ CHANCE_LINE: dict[str, Any] = {"color": "#6b6b6b", "linestyle": (0, (6, 4)), "li
 RULE_LINE: dict[str, Any] = {"color": INK, "linestyle": (0, (1, 2.2)), "linewidth": 2.2}
 NOT_INTERPRETABLE: dict[str, Any] = {"facecolor": "#f0f0f0", "edgecolor": "#a0a0a0", "hatch": "///", "linewidth": 0}
 VERDICT_SYMBOL = {"holds": "✓", "fails": "✗", "inconclusive": "≈", "open": "○"}
-# the summary heatmap's four states as fills (dark text on each): every pair at least 9 apart (OKLab x100) under
-# protan, deutan and tritan simulation and 17 apart in normal vision; each cell also carries ✓ / ✗ / ? / –
-STATE_FILL = {"holds": "#2E9E86", "fails": "#F4A582", "can't tell": "#E6E6E6", "not tested": "#FFFFFF"}
-STATE_EDGE = "#c4c4c4"  # the outline of a "not tested" cell (white on white)
-MIXED_HATCH = "#C0562F"  # the hatch on a mixed cell (drawn as fails): a darker vermillion
 
 
 def apply() -> None:

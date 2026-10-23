@@ -21,9 +21,6 @@ Figures (figures/cross_model/<name>.png at 200 dpi and .svg, 16:9):
                                            the main and the amended rule's cells marked, their values printed
   f_layer_gap_lens_vs_patch_27b         g  the 27B's layer-gap test: lens push vs full patch vs embedding push vs
                                            random, the gap between the stops drawn and printed
-  f_summary_heatmap                        the README's summary: findings x models, each cell the model's state for
-                                           the finding (readme_draft.model_state on grid.csv's main-lens cells) in
-                                           four colors, with "settings that hold / settings judged"
 Style: src/bridge_jspace/plot_style.py (one Okabe-Ito color per model; filled markers for hybrids, hollow for
 attention-only; one extra color, lavender, only for the decisive comparison). Dot figures: the compared arms on the
 row line joined by the highlight, each value printed beside its point (white halo; two values too close for two
@@ -48,11 +45,6 @@ colliding texts and exits 1.
 
 Prints, per figure, "figure NAME: K overlaps (layout step S)" and how many cells have a value; with --titles also
 its title (results open only). Colliding texts that could carry a value are named by role unless --titles is given.
-
-The summary heatmap reads only grid.csv (summary_cells): a row is a finding (the lens gate split into its two reads;
-findings 2 and 8 merged, the worse state shown), a cell its model's state over all the finding's settings by
-readme_draft's committed rule, shown as holds / fails (mixed: hatched) / can't tell / not tested, with "✓ k/j" (holds
-in k of the j settings judged) and a corner mark where every failing setting has fewer than 30 items.
 
 uv run python scripts/cross_model_figures.py [--grid DIR] [--out figures/cross_model] [--only NAME[,...]] [--titles]
 """
@@ -90,7 +82,6 @@ from bridge_jspace.stats import wilson
 from scripts import cross_model_grid as G
 from scripts import d2_formats as DF
 from scripts import d2_parts as DP
-from scripts import readme_draft as RD
 
 OUT = pins.REPO_ROOT / "figures" / "cross_model"
 Triple = tuple[float, float, float]
@@ -1796,238 +1787,6 @@ def status_line(name: str, r: Rendered, show_title: bool = False) -> list[str]:
     return out + [f"  unreadable cell: {e}" for e in r.data.errors]
 
 
-# ---------------------------------------------------------------- the summary: findings x models, one heatmap
-
-
-SUMMARY = "f_summary_heatmap"
-FEW_ITEMS = 30  # a failing setting with fewer items than this: "few items" (the README: "too few items")
-SUMMARY_NAMES = {"27b": "Qwen3.6-27B", "9b": "Qwen3.5-9B", "olmo_hybrid": "Olmo-Hybrid-7B", "122b": "Qwen3.5-122B",
-                 "32b": "Qwen3-32B", "olmo": "OLMo-3-7B", "muse": "Muse 30B", "gemma": "Gemma 4 31B"}  # fmt: skip
-
-
-@dataclass(frozen=True)
-class SummaryRow:
-    label: str
-    findings: tuple[str, ...]  # grid findings; two (2 and 8): the worse of their states is shown
-    setting: str = ""  # one grid setting only (the lens gate's two reads); "": every setting of the finding
-
-    @property
-    def lens(self) -> bool:
-        return G.FINDING[self.findings[0]].lens
-
-
-SUMMARY_ROWS = (
-    SummaryRow("The last tokens read the answer's digit", ("f3",)),
-    SummaryRow("The lookup ends in a late attention read", ("f4",)),
-    SummaryRow("Order label, then the bridge's identity", ("f5",)),
-    SummaryRow("The label counts list order", ("f6",)),
-    SummaryRow("Lens reads the bridge at its word", ("gate",), "v1 (at the word)"),
-    SummaryRow("… after its word", ("gate",), "v2 (after the word)"),
-    SummaryRow("A lens push writes recall, not the lookup", ("f7",)),
-    SummaryRow("The lookup ignores the lens-readable part", ("f2", "f8")),
-    SummaryRow("Removing the J-space spares the lookup", ("f1",)),
-)
-ROW_GROUPS = (("The lookup's route", False), ("The lens claims", True))  # label, lens
-# readme_draft's states in four colors; mixed is drawn as fails, hatched
-SHOWN = {"holds": "holds", "fails": "fails", "mixed": "fails", "unclear": "can't tell", "values only": "can't tell",
-         "not testable": "not tested", "missing": "not tested"}  # fmt: skip
-# findings 2 and 8 disagreeing: the worse verdict (fails, then mixed, then holds); where neither has one, the more
-# informative state (can't tell before not tested)
-WORSE = ("fails", "mixed", "holds", "unclear", "values only", "not testable", "missing")
-COL_GAP, ROW_GAP_S = 0.4, 0.35  # extra columns between hybrids and attention-only, extra rows between the row groups
-CORNER = [(-1, 1), (1, 1), (1, -1)]  # the "few items" mark: a triangle in the cell's top-right corner
-CORNER_PT = 11
-
-
-@dataclass(frozen=True)
-class SummaryCell:
-    state: str  # readme_draft.model_state over the row's cells for the model
-    held: int  # settings that hold
-    judged: int  # settings that hold or fail (a setting with parts, finding 5's: model_state over its parts)
-    few: bool  # drawn as fails, and every failing setting has fewer than FEW_ITEMS items
-
-
-def summary_cells(cells: list[RD.Cell]) -> dict[tuple[int, str], SummaryCell]:
-    """(row index in SUMMARY_ROWS, model key) -> the cell, from readme_draft.read_grid's main-lens cells."""
-    out = {}
-    for i, row in enumerate(SUMMARY_ROWS):
-        for m in S.MODELS:
-            per = [[c for c in cells if c.model == m.key and c.finding == f and row.setting in ("", c.setting)]
-                   for f in row.findings]  # fmt: skip
-            state = min((RD.model_state(c.word for c in cs) for cs in per), key=WORSE.index)
-            mine = [c for cs in per for c in cs]
-            by: dict[tuple[str, str], list[str]] = collections.defaultdict(list)
-            for c in mine:
-                by[(c.finding, c.setting)].append(c.word)
-            settings = [RD.model_state(ws) for ws in by.values()]
-            held = settings.count("holds")
-            failing = [c for c in mine if c.word == "fails"]
-            few = SHOWN[state] == "fails" and bool(failing) and all(c.n is not None and c.n < FEW_ITEMS
-                                                                     for c in failing)  # fmt: skip
-            out[(i, m.key)] = SummaryCell(state, held, held + settings.count("fails") + settings.count("mixed"), few)
-    return out
-
-
-def cell_label(c: SummaryCell) -> str:
-    shown = SHOWN[c.state]
-    if shown in ("holds", "fails"):
-        return f"{S.VERDICT_SYMBOL[shown]} {c.held}/{c.judged}"
-    return "?" if shown == "can't tell" else "–"
-
-
-def title_summary(table: dict[tuple[int, str], SummaryCell]) -> str:
-    """The outcome in one sentence: the lens-free rows' judged cells that hold; the models whose lens claims (not the
-    gate) hold where judged, and those where one fails; where the lens reads the bridge."""
-
-    def shown(i: int, key: str) -> str:
-        return SHOWN[table[(i, key)].state]
-
-    route = [shown(i, m.key) for i, r in enumerate(SUMMARY_ROWS) if not r.lens for m in S.MODELS]
-    h, j = route.count("holds"), route.count("holds") + route.count("fails")
-    if not j:
-        out = "The lookup's route is not judged on any model yet"
-    elif h == j:
-        out = "The lookup's route holds on every model tested"
-    else:
-        out = f"The lookup's route holds in {h} of {j} judged cells"
-    claims = [i for i, r in enumerate(SUMMARY_ROWS) if r.lens and r.findings != ("gate",)]
-    yes, no = [], []
-    for m in S.MODELS:
-        got = {shown(i, m.key) for i in claims}
-        if "fails" in got:
-            no.append(TITLE_NAME[m.key])
-        elif "holds" in got:
-            yes.append(TITLE_NAME[m.key])
-    if yes:
-        out += "; the lens claims hold where judged on " + join_and(yes) + (f", not {join_and(no)}" if no else "")
-    elif no:
-        out += f"; the lens claims fail on {join_and(no)}"
-    at, after = ([shown(i, m.key) for m in S.MODELS] for i, r in enumerate(SUMMARY_ROWS) if r.findings == ("gate",))
-    h1, j1 = at.count("holds"), at.count("holds") + at.count("fails")
-    h2, j2 = after.count("holds"), after.count("holds") + after.count("fails")
-    if j1 and h1 == j1 and j2 and h2 == 0:
-        out += "; the lens reads the bridge only at its word"
-    elif j1 or j2:
-        reads = [f"at its word on {h1} of {j1}"] * bool(j1) + [f"after its word on {h2} of {j2}"] * bool(j2)
-        out += "; the lens reads the bridge " + " and ".join(reads) + " models"
-    return out
-
-
-def fit_name(fig: Figure, label: str, width_in: float, wrap: bool) -> str:
-    """The column's model name on one line (wrap False), else cut at the last space or hyphen whose lines fit (the one
-    with the narrowest lines if none does)."""
-    if not wrap:
-        return label
-    cuts = [i for i, ch in enumerate(label) if ch in " -"]
-    splits = [(label[: i + (label[i] == "-")].rstrip(), label[i + 1 :]) for i in cuts]
-    if not splits:
-        return label
-    fits = [s for s in splits if max(S.text_width(fig, x) for x in s) <= width_in]
-    return "\n".join(fits[-1] if fits else min(splits, key=lambda s: max(S.text_width(fig, x) for x in s)))
-
-
-def summary_legend() -> tuple[list, list[str]]:
-    def patch(shown: str, **kw: Any) -> Rectangle:
-        return Rectangle((0, 0), 1, 1, facecolor=S.STATE_FILL[shown], **{"edgecolor": "none", **kw})
-
-    handles = [patch("holds"), patch("fails"), patch("fails", hatch="///", hatchcolor=S.MIXED_HATCH),
-               patch("can't tell"), patch("not tested", edgecolor=S.STATE_EDGE, linewidth=1.2),
-               Line2D([], [], marker=CORNER, markersize=CORNER_PT, markeredgewidth=0, color=S.INK, linestyle="none")]  # fmt: skip
-    labels = ["holds", "fails", "mixed", "can't tell", "not tested", f"few items (failing settings: n < {FEW_ITEMS})"]
-    return handles, labels
-
-
-def draw_summary(table: dict[tuple[int, str], SummaryCell], title: str, subtitle: str) -> Figure:
-    """Rows: the findings (lookup's route, then the lens claims); columns: the models (hybrids, then attention-only),
-    each group apart; a cell's text in dark ink on its state's fill, a halo of the fill over the hatching."""
-    S.apply()
-    fig = plt.figure(figsize=S.FIGSIZE)
-    head = fig_header(fig, title, subtitle)
-    leg_top = footer(fig, *summary_legend(), 6)
-    left = 0.62 + max(S.text_width(fig, r.label) for r in SUMMARY_ROWS) + 0.2
-    xs = {m.key: i + (0 if m.hybrid else COL_GAP) for i, m in enumerate(S.MODELS)}
-    ys = [i + (ROW_GAP_S if r.lens else 0) for i, r in enumerate(SUMMARY_ROWS)]
-    n_x, n_y = len(S.MODELS) + COL_GAP, len(SUMMARY_ROWS) + ROW_GAP_S
-    cw = (W - left - 0.12) / n_x
-    wrap = max(S.text_width(fig, n) for n in SUMMARY_NAMES.values()) > cw  # one name too wide: all on two lines
-    names = {k: fit_name(fig, SUMMARY_NAMES[k], cw, wrap) for k in xs}  # neighbours: the overlap check
-    name_h = 0.25 * max(n.count("\n") + 1 for n in names.values())
-    bottom = leg_top + 0.3
-    grid_top = H - head - 0.2 - 0.36 - name_h - 0.1  # the group labels, the names
-    rh = (grid_top - bottom) / n_y
-    ax = fig.add_axes((left / W, bottom / H, cw * n_x / W, rh * n_y / H))
-    ax.set_xlim(-0.5, n_x - 0.5)
-    ax.set_ylim(n_y - 0.5, -0.5)
-    ax.set_xticks([])
-    ax.set_yticks([])  # no tick labels at all (axis "off" hides them but the overlap check would still see them)
-    ax.axis("off")
-
-    def fx(x: float) -> float:
-        return (left + (x + 0.5) * cw) / W
-
-    def fy(y: float) -> float:
-        return (bottom + (n_y - 0.5 - y) * rh) / H
-
-    gx, gy = 0.025 / cw, 0.025 / rh  # half the white gap between two cells
-    cx, cy = CORNER_PT / 2 / 72 / cw, CORNER_PT / 2 / 72 / rh
-    for i, row in enumerate(SUMMARY_ROWS):
-        ax.text(-0.5 - 0.15 / cw, ys[i], row.label, ha="right", va="center", fontsize=S.FONT, color=S.INK)
-        for m in S.MODELS:
-            c, x, y = table[(i, m.key)], xs[m.key], ys[i]
-            shown = SHOWN[c.state]
-            fill = S.STATE_FILL[shown]
-            kw: dict[str, Any] = {"edgecolor": "none", "linewidth": 0}
-            if shown == "not tested":
-                kw = {"edgecolor": S.STATE_EDGE, "linewidth": 1.2}
-            if c.state == "mixed":
-                kw.update(hatch="///", hatchcolor=S.MIXED_HATCH)
-            box = Rectangle((x - 0.5 + gx, y - 0.5 + gy), 1 - 2 * gx, 1 - 2 * gy, facecolor=fill, zorder=1, **kw)
-            ax.add_patch(box)
-            ax.text(x, y, cell_label(c), ha="center", va="center", fontsize=S.FONT, zorder=4, gid="value",
-                    color=S.INK2 if shown == "not tested" else S.INK,
-                    path_effects=[pe.withStroke(linewidth=5, foreground=fill)])  # fmt: skip
-            if c.few:
-                ax.plot([x + 0.5 - gx - cx], [y - 0.5 + gy + cy], marker=CORNER, markersize=CORNER_PT,
-                        markeredgewidth=0, color=S.INK, linestyle="none", zorder=5, gid="mark")  # fmt: skip
-    for label, lens in ROW_GROUPS:
-        rows = [ys[i] for i, r in enumerate(SUMMARY_ROWS) if r.lens == lens]
-        fig.text(0.16 / W, fy((min(rows) + max(rows)) / 2), label, rotation=90, ha="left", va="center",
-                 fontsize=S.FONT, fontweight="bold", color=S.INK2)  # fmt: skip
-        fig.add_artist(Line2D([0.5 / W] * 2, [fy(min(rows) - 0.4), fy(max(rows) + 0.4)], color=S.COMPARE2, lw=1.5))
-    names_y = grid_top + 0.1
-    for m in S.MODELS:
-        fig.text(fx(xs[m.key]), names_y / H, names[m.key], ha="center", va="bottom", fontsize=S.FONT, color=S.INK,
-                 linespacing=1.0)  # fmt: skip
-    for label, hybrid in S.GROUPS:
-        cols = [xs[m.key] for m in S.MODELS if m.hybrid == hybrid]
-        y_line = names_y + name_h + 0.06
-        fig.add_artist(Line2D([fx(min(cols) - 0.45), fx(max(cols) + 0.45)], [y_line / H] * 2, color=S.COMPARE2,
-                              lw=1.5))  # fmt: skip
-        fig.text(fx((min(cols) + max(cols)) / 2), (y_line + 0.06) / H, f"{label} {'●' if hybrid else '○'}",
-                 ha="center", va="bottom", fontsize=S.FONT, fontweight="bold", color=S.INK2)  # fmt: skip
-    return fig
-
-
-@dataclass
-class Summary:
-    fig: Figure
-    table: dict[tuple[int, str], SummaryCell]
-    title: str
-    overlaps: list[tuple[str, str]]
-
-
-def render_summary(grid_dir: Path, mask: bool = False) -> Summary:
-    """The heatmap from grid_dir/grid.csv, checked for overlapping text (plot_style.overlaps)."""
-    cells, _ = RD.read_grid((grid_dir / "grid.csv").read_text())
-    table = summary_cells(cells)
-    title = title_summary(table)
-    subtitle = (f"A model's state over every setting of the finding (main lens): ✓ / ✗ k/j = holds in k of the j "
-                f"settings judged; mixed = some hold, some fail; can't tell = a control failed, the rule says "
-                f"inconclusive, or values only. Grid {grid_dir.name}.")  # fmt: skip
-    fig = draw_summary(table, title, subtitle)
-    return Summary(fig, table, title, S.overlaps(fig, mask=mask))
-
-
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--grid", default=None, help="a results/cross_model/<stamp> folder (default: the newest)")
@@ -2038,20 +1797,8 @@ def main(argv: list[str] | None = None) -> int:
     grid_dir = Path(a.grid) if a.grid else latest_grid()
     grid = Grid(json.loads((grid_dir / "grid.json").read_text())["rows"])
     print("grid:", G.rel(grid_dir))
-    src: FileSource | None = None  # built only for a figure that reads the files behind the grid
-    failed: list[str] = []
-    for name in a.only.split(",") if a.only else [*FIGURES, SUMMARY]:
-        if name == SUMMARY:
-            s = render_summary(grid_dir, mask=not a.titles)
-            S.save(s.fig, Path(a.out), name)
-            plt.close(s.fig)
-            lines = [f"figure {name}: {len(s.overlaps)} overlaps; cells {len(s.table)}"]
-            lines += [f"  title: {s.title}"] if a.titles else []
-            print("\n".join(lines + [f"  overlap: {x} <> {y}" for x, y in s.overlaps]))
-            if s.overlaps:
-                failed.append(name)
-            continue
-        src = src or FileSource()
+    src, failed = FileSource(), []
+    for name in a.only.split(",") if a.only else list(FIGURES):
         r = render(name, grid, src, mask=not a.titles)
         S.save(r.fig, Path(a.out), name)
         plt.close(r.fig)
