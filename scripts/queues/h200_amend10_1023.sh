@@ -47,6 +47,17 @@ nat() {  # nat TARGET PREFIX SET BAND BATCH: natural_v1 competence (first-token 
   $PY scripts/c1_v2.py $r --middle L$band --set $set | tail -2
 }
 
+natctl() {  # natctl TARGET PREFIX SET BAND BATCH: the logit-lens control and each step alone on a natural set (10B note 2)
+  export BJ_TARGET=$1; local p=$2 set=$3 band=$4 batch=$5 c=${2}${3}_competence_v1 r=${2}${3}_ko_v1
+  local T="--tasks $set --tasks-competence $c --tasks-words PP PM MP MM --tasks-level all --n 1000 --batch $batch"
+  run ablate_v2/${r%_v1}_unembed_v1 $PY scripts/ablate_v2.py --name ${r%_v1}_unembed_v1 --why "$WHY: $1, the logit-lens control on $set at L$band" \
+    --plan bands --bands $band --conditions unembed10 unembed10_rot $T --kinds clean > /workspace/scratch/${r%_v1}_unembed_v1.log 2>&1 \
+    && $PY scripts/c1_specificity.py $r ${r%_v1}_unembed_v1 --set $set | tail -3 | sed "s/^/=== spec $1: /" || echo "=== $1 $set unembed FAILED"
+  run ablate_v2/${r%_v1}_steps_v1 $PY scripts/ablate_v2.py --name ${r%_v1}_steps_v1 --why "$WHY: $1, each step alone on $set at L$band" \
+    --plan bands --bands $band --conditions paper10 paper10_rot $T --kinds step1 step2 > /workspace/scratch/${r%_v1}_steps_v1.log 2>&1 \
+    && $PY scripts/c1_v2.py ${r%_v1}_steps_v1 --middle L$band --set $set > /dev/null && echo "=== steps $1 $set done" || echo "=== $1 $set steps FAILED"
+}
+
 for step in "$@"; do
   case $step in
     waitmem:*) want=${step#waitmem:}
@@ -64,6 +75,10 @@ for step in "$@"; do
     nat27) nat qwen3.6-27b "" natural_v1_chat 32-40 32; nat qwen3.6-27b "" natural_v1_qa 32-40 32;;
     natmuse) nat muse-glimmer-30b muse30_ natural_v1_chat 36-42 32; nat muse-glimmer-30b muse30_ natural_v1_qa 36-42 32;;
     nat122) nat qwen3.5-122b-a10b qwen35_122b_ natural_v1_chat 39-45 8; nat qwen3.5-122b-a10b qwen35_122b_ natural_v1_qa 39-45 8;;
+    ctl9) natctl qwen3.5-9b qwen35_9b_ natural_v1_chat 12-16 32;;
+    ctl27) natctl qwen3.6-27b "" natural_v1_chat 32-40 32;;
+    ctlmuse) natctl muse-glimmer-30b muse30_ natural_v1_chat 36-42 32;;
+    ctl122) natctl qwen3.5-122b-a10b qwen35_122b_ natural_v1_chat 39-45 8;;
     mp9) mp qwen3.5-9b qwen35_9b_ full_v8 qwen35_9b_full_v8_competence_v1 "12-16" 32;;
     mp27) mp qwen3.6-27b "" full_v8 full_v8_competence_v1 "32-40" 16;;
     mpmuse) mp muse-glimmer-30b muse30_ full_v8 muse30_full_v8_competence_v1 "36-42" 32;;

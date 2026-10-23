@@ -354,3 +354,9 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   a model cannot do shows up as too few eligible items (the 30-item floor). Also added for 10A: the bridge-present
   control is rerun M->M only on full_v8 (all M->M items the model gets right, not only whole scenes), so present and
   absent compare on ~100 items rather than ~30.
+- **10B note 2 (~10:15 UTC):** seen: natural_v1_chat C1 for the 9B (gap 37), the 27B (gap 51, HOLDS) and Muse (gap 85,
+  HOLDS: memory-final 9-11% under the knock-out, prompt-final 91-97%, rotated 94-98%). The prediction that Muse stays
+  under 15 is falsified. Checks added before reading anything further, each model on natural_v1_chat at its band: the
+  logit-lens control (unembed10 and its rotation; scripts/c1_specificity.py) and each step alone (paper10 and rotated,
+  kinds step1 step2). Leading alternative to rule in or out: Muse's toy-suite null is specific to digit answers (the toy
+  suite's every answer is a digit; natural answers are words).
