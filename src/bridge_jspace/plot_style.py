@@ -22,6 +22,7 @@ from typing import Any
 import matplotlib as mpl
 import matplotlib.patheffects as pe
 from matplotlib.text import Text
+from matplotlib.transforms import Bbox
 
 OKABE_ITO = {
     "black": "#000000",
@@ -61,7 +62,7 @@ GROUPS = (("Hybrid", True), ("Attention only", False))  # group label, hybrid
 # slide geometry and type
 FIGSIZE = (13.333, 7.5)
 PNG_DPI = 200
-FONT, TICK, LABEL, PANEL_TITLE, SUBTITLE, TITLE = 14, 14, 15, 16, 15, 20  # pt; nothing below FONT
+FONT, TICK, LABEL, PANEL_TITLE, SUBTITLE, TITLE = 14, 14, 15, 16, 15, 18  # pt; nothing below FONT
 INK, INK2, GRID = "#1a1a1a", "#4d4d4d", "#e6e6e6"
 COMPARE, COMPARE2 = "#4d4d4d", "#a3a3a3"  # a comparison series drawn beside a model's own color (dark, light grey)
 # the one extra color, used only for the decisive comparison (the gap between the two arms a claim is about, and the
@@ -134,9 +135,37 @@ def drawn_texts(fig) -> list[tuple[Text, str]]:
     return [(t, role) for t, role in out if t.get_visible() and t.get_text().strip()]
 
 
+GRAPHICS = ("mark", "ci", "gap", "tick")  # Line2D gids a text must not touch: markers, intervals, gap bars, ticks
+
+
+def graphic_boxes(fig, r=None) -> list[tuple[str, Bbox]]:
+    """Display-space boxes of the figure's marks a text must keep off: every Line2D whose gid is in GRAPHICS; a
+    "mark" line gets one box per point (its marker), the others the box of their path grown by half the line width."""
+    r = r or renderer(fig)
+    out: list[tuple[str, Bbox]] = []
+    px = fig.dpi / 72
+    for ax in fig.axes:
+        for ln in ax.get_lines():
+            gid = ln.get_gid()
+            if gid not in GRAPHICS or not ln.get_visible():
+                continue
+            if gid == "mark":
+                half = (ln.get_markersize() / 2 + ln.get_markeredgewidth()) * px
+                xy = ln.get_transform().transform(ln.get_xydata())
+                boxes = [Bbox([[x - half, y - half], [x + half, y + half]]) for x, y in xy]
+                if ln.get_clip_on():  # a clipped marker is drawn only inside its panel
+                    clip = ax.get_window_extent(r)
+                    boxes = [b for b in (Bbox.intersection(b, clip) for b in boxes) if b is not None]
+                out += [(gid, b) for b in boxes]
+            else:
+                out.append((gid, ln.get_window_extent(r).padded(ln.get_linewidth() / 2 * px)))
+    return out
+
+
 def overlaps(fig, pad_px: float = 2.0, mask: bool = False) -> list[tuple[str, str]]:
-    """Pairs of drawn texts whose boxes, each grown by `pad_px` pixels, intersect; and every text that extends
-    outside the figure (paired with "outside the figure"). With `mask`, a text of a MASKED role is named by its role
+    """Pairs of drawn texts whose boxes, each grown by `pad_px` pixels, intersect; a text on a marker, an interval, a
+    gap bar or a tick (graphic_boxes; paired with that mark's role); and every text that extends outside the figure,
+    or (a value or status label) outside its panel. With `mask`, a text of a MASKED role is named by its role
     ("<value>"), so the list can be printed while the figure's numbers stay unread."""
     fig.canvas.draw()
     r = renderer(fig)
@@ -160,6 +189,13 @@ def overlaps(fig, pad_px: float = 2.0, mask: bool = False) -> list[tuple[str, st
         for nb, b in grown[i + 1 :]:
             if a.overlaps(b):
                 out.append((na, nb))
+    marks = graphic_boxes(fig, r)
+    for (_, role), (n, b) in zip(texts, grown, strict=True):
+        if role == "tick":
+            continue
+        hit = next((gid for gid, g in marks if b.overlaps(g)), None)
+        if hit:
+            out.append((n, f"a {hit}"))
     return out
 
 

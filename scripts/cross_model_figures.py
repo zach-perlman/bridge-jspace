@@ -22,24 +22,31 @@ Figures (figures/cross_model/<name>.png at 200 dpi and .svg, 16:9):
   f_layer_gap_lens_vs_patch_27b         g  the 27B's layer-gap test: lens push vs full patch vs embedding push vs
                                            random, the gap between the stops drawn and printed
 Style: src/bridge_jspace/plot_style.py (one Okabe-Ito color per model; filled markers for hybrids, hollow for
-attention-only; one extra color, lavender, only for the decisive comparison). Dot figures: the compared arms as
-dodged dot-and-whisker pairs joined by the highlight, each value printed beside its point (white halo), n and the
-verdict right of each panel, the rule's bars dotted and labelled in place, chance or the control dashed and labelled
-in place; rate axes shared within a figure and cut to the data's span. "not interpretable" is hatched grey with the
-failed control; "not testable" and "missing" are blank with a label. Every model appears in every figure (the
-layer-gap figure is one model's test by design). Titles state the claim each figure tests, not its outcome.
+attention-only; one extra color, lavender, only for the decisive comparison). Dot figures: the compared arms on the
+row line joined by the highlight, each value printed beside its point (white halo; two values too close for two
+labels as one, "6 vs 10%"), n and the verdict right of each panel, the rule's bars dotted and labelled above, chance
+or the control dashed and labelled in place; rate axes shared within a figure and cut to the data's span.
+"not interpretable" is hatched grey with the failed control; "not testable" and "missing" are blank with a label.
+Every model appears in every figure (the layer-gap figure is one model's test by design). Titles state each
+figure's outcome, computed from its cells (title_*), and the subtitle what was measured.
+
+Labels: a Placer puts each value label at the first free place (beside its point on the row line, then in a lane
+above or below the row with a short leader line, then farther along the lane), free meaning touching no text and no
+marker, interval, gap bar or tick as drawn. The decisive arm's value is placed first and never left out; a
+comparison's only where it fits near its point.
 
 Overlaps: every figure is drawn, checked with plot_style.overlaps (every drawn text, boxes grown by 2 px: no two
-intersect, none leaves the figure, no value or status label leaves its panel) and drawn again with the next LAYOUTS
-step until none is left: (1) model names on two lines in the curve panels, (2) tick labels at the axis ends only,
-(3) value labels on the side away from their pair partner, (4) the comparison arms' value labels dropped, (5) every
-value label dropped. Not applicable here: decimals (none are printed), the legend (always outside the panels), more
-rows of panels (the rows of eight models are already at the 14 pt minimum). If a figure still has an overlap the
-script saves it, names it and the colliding texts (a value, n, tick or status text by its role only) and exits 1.
+texts intersect, no text sits on a marker, interval, gap bar or tick, none leaves the figure, no value or status
+label leaves its panel) and drawn again with the next LAYOUTS step until none is left: (1) model names on two lines,
+(2) tick labels at the axis ends only, (3) the comparison arms' value labels left out (never the decisive arm's).
+Not applicable: decimals (none are printed), the legend (always outside the panels), more rows of panels (the rows
+of eight models are at their minimum height). If a figure still has an overlap the script saves it, names it and the
+colliding texts and exits 1.
 
-Prints, per figure, "figure NAME: K overlaps (layout step S)" and how many cells have a value; never a value.
+Prints, per figure, "figure NAME: K overlaps (layout step S)" and how many cells have a value; with --titles also
+its title (results open only). Colliding texts that could carry a value are named by role unless --titles is given.
 
-uv run python scripts/cross_model_figures.py [--grid DIR] [--out figures/cross_model] [--only NAME[,NAME...]]
+uv run python scripts/cross_model_figures.py [--grid DIR] [--out figures/cross_model] [--only NAME[,...]] [--titles]
 """
 
 from __future__ import annotations
@@ -59,10 +66,13 @@ from typing import Any, Protocol
 import matplotlib
 
 matplotlib.use("Agg")
+import matplotlib.patheffects as pe
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.lines import Line2D
 from matplotlib.patches import Rectangle
+from matplotlib.text import Text
+from matplotlib.transforms import Bbox
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -129,6 +139,7 @@ REASONS = (
     ("not testable", "gate v1 failed", "lens gate failed"),
     ("not testable", "precheck", "stopped by precheck"),
     ("not testable", "before the donor's digit", "no early layer"),
+    ("not testable", "competence", "no items"),
     ("not interpretable", "off-path", "off-path control"),
     ("not interpretable", "random-patch", "random-patch control"),
     ("not interpretable", "positive control", "positive control"),
@@ -181,6 +192,7 @@ class Mark:
     note: str = ""
     points: dict[str, Triple] = field(default_factory=dict)
     ticks: dict[str, float] = field(default_factory=dict)  # per-row short lines: "bar" (dotted), "null" (dashed)
+    why: str = ""  # the grid's whole verdict (its reason too), for the title
 
 
 @dataclass
@@ -230,7 +242,8 @@ def mark_of(model: str, row: dict | None, series: str) -> Mark:
     if row.get("value") is None or not row.get("ci"):
         return Mark(model, "missing", "no value in grid")
     lo, hi = row["ci"]
-    return Mark(model, "value", "", w, row.get("n"), points={series: (float(row["value"]), float(lo), float(hi))})
+    return Mark(model, "value", "", w, row.get("n"), points={series: (float(row["value"]), float(lo), float(hi))},
+                why=row["verdict"])  # fmt: skip
 
 
 def broken(model: str, errors: list[str], where: str, e: Exception) -> Mark:
@@ -707,6 +720,8 @@ class SeriesSpec:
     label: str
     shape: str  # marker; "" for a dashed control line (the random push)
     grey: str = ""  # "": the model's own color; else a grey (a comparison or a control, not the model)
+    tick: bool = False  # dot figures: drawn as a short dashed tick at its value (a control level), never labelled
+    below: bool = False  # dot figures: drawn small just under the row line (a second rival), never labelled
 
 
 @dataclass(frozen=True)
@@ -723,8 +738,8 @@ class DotPanel:
     key: str
     title: str
     series: tuple[SeriesSpec, ...]
-    rules: tuple[float, ...] = ()  # dotted: the rule's bars (0-1), labelled in place
-    chance: tuple[float, str] | None = None  # dashed: chance or the control level (0-1), and its in-place label
+    rules: tuple[float, ...] = ()  # dotted: the rule's bars (0-1), labelled in place above the panel
+    chance: tuple[float, str] | None = None  # dashed: chance or the control level (0-1) and its label above the panel
     verdict: bool = True  # the verdict symbol beside n
     pair: tuple[str, tuple[str, ...]] | None = None  # the decisive gap: the claim's arm, its comparison (first present)
     contrast: bool = False  # a difference in points around zero (the decisive comparison), else a rate
@@ -735,18 +750,16 @@ class DotPanel:
 @dataclass(frozen=True)
 class DotSpec:
     stem: str
-    title: str
     subtitle: str
     xlabel: str  # short: drawn left of the first panel's tick labels
     panels: tuple[DotPanel, ...]
     lines: tuple[tuple[str, str], ...]  # legend: ("chance" | "rule" | "bar" | "null" | "gap", label)
-    legend_cols: int = 3
+    legend_cols: int = 4
 
 
 @dataclass(frozen=True)
 class CurveSpec:
     stem: str
-    title: str
     subtitle: str
     xlabel: str
     ylabel: str
@@ -765,36 +778,35 @@ class CurveSpec:
     label_at: tuple[tuple[str, tuple[str, ...]], ...] = ()  # values printed at a mark's x: (mark key, series keys)
     span_marks: tuple[str, str] | None = None  # the decisive comparison between two marks: highlighted, labelled
     panel_titles: tuple[tuple[str, str], ...] = ()  # (panel key, title) where the panels are not models
-    footer: str = ""
-    legend_cols: int = 3
+    verdict_note: str = ""  # what the symbols beside n stand for (a legend entry)
+    legend_cols: int = 4
     hatch_in_legend: bool = True
 
 
 @dataclass(frozen=True)
 class Layout:
-    """The automatic fixes, tried in this order until a figure has no overlapping text (render)."""
+    """The automatic fixes, tried in this order until a figure has no overlap (render)."""
 
     wrap_names: bool = False  # model names on two lines in the curve panels' titles (a dot figure's margin fits them)
     sparse_ticks: bool = False  # tick labels at the axis ends only (and the zero of a contrast)
-    labels_away: bool = False  # a value label tries the side away from its pair partner first
-    compact_status: bool = False  # a cell's label on one line: a hatched cell its reason, another its status word
-    drop_labels: int = 0  # last resort: 1 the comparison arms' value labels, 2 every value label
+    drop_labels: bool = False  # last resort: the comparison arms' value labels left out (the decisive arm's never)
 
 
-LAYOUTS = (Layout(), Layout(wrap_names=True), Layout(True, True), Layout(True, True, True),
-           Layout(True, True, True, True), Layout(True, True, True, True, 1), Layout(True, True, True, True, 2))  # fmt: skip
+LAYOUTS = (Layout(), Layout(wrap_names=True), Layout(True, True), Layout(True, True, True))
 W, H = S.FIGSIZE
-ROW_GAP = 0.7  # extra rows between the hybrids and the attention-only models
+ROW_GAP = 0.4  # extra rows between the hybrids and the attention-only models
 ROW = {m.key: i + (0 if m.hybrid else ROW_GAP) for i, m in enumerate(S.MODELS)}
 ROW_MAX = max(ROW.values())
-Y_TOP, Y_BOTTOM = -0.55, ROW_MAX + 1.25  # the bottom keeps a strip for the in-place chance / control labels
-OFFSETS = {1: (0.0,), 2: (-0.16, 0.16), 3: (-0.22, 0.0, 0.22)}
-VERDICT_KEY = "✓ holds · ✗ fails · ≈ inconclusive · ○ open (no rule), by the grid's committed rules"
-VERDICT_SHORT = "✓ holds · ✗ fails · ≈ inconclusive"
+Y_TOP, Y_BOTTOM = -0.8, ROW_MAX + 0.95  # above: the first row's value lane; below: the chance label's strip
+CHANCE_Y = ROW_MAX + 0.68
+VERDICT_KEY = "✓ holds ✗ fails ≈ inconclusive"
 RATE_STEPS = (0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0)
 LABEL_BOX = {"facecolor": "white", "edgecolor": "none", "pad": 0.6, "alpha": 0.95}
 PAD = 0.1  # inches between a panel's edge and the text beside it
-MARKER_R = 0.085  # inches: half a dot-figure marker (10-11 pt) with its edge
+STEP = 0.06  # inches between two candidate places of a label
+LEADER = 0.14  # inches: a label farther than this from its point gets a leader line
+LANES_IN = (0.2, 0.27)  # inches between a row's points and a value label in a lane above or below them
+MARKER_R = 0.09  # inches: half a dot marker (9 pt) with its edge
 
 
 def nice_rate(x: float) -> float:
@@ -814,34 +826,46 @@ def model_name(key: str, lay: Layout) -> str:
     return label[: i + (label[i] == "-")].rstrip() + "\n" + label[i + 1 :]
 
 
-def fig_header(fig: Figure, title: str, subtitle: str) -> float:
-    """Title and subtitle at the top-left, the subtitle wrapped to the figure's width as drawn; returns the
-    subtitle's bottom in inches from the top."""
-    fig.text(0.22 / W, 1 - 0.18 / H, title, fontsize=S.TITLE, fontweight="bold", va="top", ha="left")
-    width = 130
+def wrap_to(fig: Figure, text: str, size: float, width_in: float, weight: str = "normal") -> str:
+    """`text` wrapped so that every line fits `width_in` as drawn."""
+    if not text.strip():
+        return text
+    width = 140
     while True:
-        text = textwrap.fill(subtitle, width)
-        if max(S.text_width(fig, line, S.SUBTITLE) for line in text.splitlines()) <= W - 0.45 or width < 60:
-            break
-        width -= 4
-    t = fig.text(0.22 / W, 1 - 0.6 / H, text, fontsize=S.SUBTITLE, color=S.INK2, va="top", ha="left", linespacing=1.25)
-    b = t.get_window_extent(S.renderer(fig))
-    return H - b.y0 / fig.dpi
+        out = textwrap.fill(text, width)
+        if max(S.text_width(fig, line, size, weight) for line in out.splitlines()) <= width_in or width < 40:
+            return out
+        width -= 3
 
 
-def footer(fig: Figure, handles: list, labels: list[str], ncol: int, note: str = "") -> float:
-    """The legend (and a note line under it) at the bottom-left; returns the legend's top in inches."""
-    y = 0.1
-    if note:
-        fig.text(0.22 / W, y / H, note, fontsize=S.FONT, color=S.INK2, va="bottom", ha="left")
-        y += 0.34
-    leg = fig.legend(handles, labels, loc="lower left", bbox_to_anchor=(0.22 / W, y / H), ncol=ncol, frameon=False,
-                     handlelength=2.2, columnspacing=1.4, handletextpad=0.5, borderaxespad=0, fontsize=S.FONT)  # fmt: skip
-    return leg.get_window_extent(S.renderer(fig)).y1 / fig.dpi
+def fig_header(fig: Figure, title: str, subtitle: str) -> float:
+    """Title (the outcome) and subtitle (what was measured) at the top-left, each wrapped to the figure's width as
+    drawn; returns the subtitle's bottom in inches from the top."""
+    r = S.renderer(fig)
+    t = fig.text(0.22 / W, 1 - 0.16 / H, wrap_to(fig, title, S.TITLE, W - 0.45, "bold"), fontsize=S.TITLE,
+                 fontweight="bold", va="top", ha="left", linespacing=1.1)  # fmt: skip
+    y = H - t.get_window_extent(r).y0 / fig.dpi + 0.1
+    s = fig.text(0.22 / W, 1 - y / H, wrap_to(fig, subtitle, S.SUBTITLE, W - 0.45), fontsize=S.SUBTITLE,
+                 color=S.INK2, va="top", ha="left", linespacing=1.2)  # fmt: skip
+    return H - s.get_window_extent(r).y0 / fig.dpi
+
+
+def footer(fig: Figure, handles: list, labels: list[str], ncol: int) -> float:
+    """The legend at the bottom-left, with as many columns (up to ncol) as fit the figure's width; returns its top in
+    inches."""
+    r = S.renderer(fig)
+    for n in range(ncol, 0, -1):
+        leg = fig.legend(handles, labels, loc="lower left", bbox_to_anchor=(0.22 / W, 0.1 / H), ncol=n, frameon=False,
+                         handlelength=2.2, columnspacing=1.2, handletextpad=0.5, borderaxespad=0, fontsize=S.FONT)  # fmt: skip
+        b = leg.get_window_extent(r)
+        if b.x1 / fig.dpi <= W - 0.1 or n == 1:
+            return b.y1 / fig.dpi
+        leg.remove()
+    raise AssertionError("unreachable")
 
 
 def series_handle(ss: SeriesSpec, line: bool = False) -> Line2D:
-    if not ss.shape:  # a dashed control line
+    if not ss.shape or ss.tick:  # a dashed control line or tick
         return Line2D([], [], **{**S.CHANCE_LINE, "color": ss.grey or S.COMPARE2})
     col = ss.grey or S.INK
     return Line2D([], [], marker=ss.shape, markersize=11, markerfacecolor=col, markeredgecolor=col, color=col,
@@ -857,6 +881,8 @@ def line_handle(kind: str) -> Any:
         return Line2D([], [], color=S.HIGHLIGHT, linewidth=7, solid_capstyle="round")
     if kind == "hatch":
         return Rectangle((0, 0), 1, 1, **S.NOT_INTERPRETABLE)
+    if kind == "text":  # a legend line that is only words
+        return Line2D([], [], linestyle="none")
     raise ValueError(kind)
 
 
@@ -869,14 +895,54 @@ def pct_label(p: float, contrast: bool) -> str:
     return f"{100 * p:+.0f}".replace("-", "−") if contrast else f"{100 * p:.0f}%"
 
 
-def value_text(ax, x: float, y: float, text: str, ha: str, **kw: Any) -> None:
-    ax.text(x, y, text, ha=ha, va="center", fontsize=S.FONT, color=S.INK, zorder=8, gid="value",
-            path_effects=S.HALO, **kw)  # fmt: skip
+class Placer:
+    """Puts each label at the first of its candidate places where it touches no text already placed and no marker,
+    interval, gap bar or tick (plot_style.graphic_boxes), all measured as drawn; the figure's texts and marks are
+    registered as they are drawn."""
+
+    def __init__(self, fig: Figure):
+        self.fig, self.r = fig, S.renderer(fig)
+        self.taken: list[Bbox] = []
+
+    def take_text(self, t: Text) -> None:
+        if t.get_text().strip():
+            self.taken.append(t.get_window_extent(self.r).padded(2))
+
+    def take_marks(self) -> None:
+        """The marks drawn so far (call after a panel's points)."""
+        self.taken = [b for b in self.taken if b is not None] + [b for _, b in S.graphic_boxes(self.fig, self.r)]
+
+    def put(self, make: Callable[[float, float, str], Text], cands: list[tuple[float, float, str]],
+            within: Bbox | None = None) -> Text | None:  # fmt: skip
+        """The label at the first free candidate (x, y, ha); None, and nothing drawn, if none is free."""
+        for x, y, ha in cands:
+            t = make(x, y, ha)
+            b = t.get_window_extent(self.r).padded(2)
+            inside = within is None or (
+                b.x0 >= within.x0 and b.x1 <= within.x1 and b.y0 >= within.y0 and b.y1 <= within.y1
+            )
+            if inside and not any(b.overlaps(o) for o in self.taken):
+                self.taken.append(b)
+                return t
+            t.remove()
+        return None
 
 
-def status_text(ax, x: float, y: float, text: str, ha: str, italic: bool, **kw: Any) -> None:
-    ax.text(x, y, text, ha=ha, va="center", fontsize=S.FONT, color=S.INK2 if italic else S.INK,
-            style="italic" if italic else "normal", linespacing=0.95, zorder=8, gid="status", bbox=LABEL_BOX, **kw)  # fmt: skip
+def value_text(ax, x: float, y: float, text: str, ha: str, **kw: Any) -> Text:
+    return ax.text(x, y, text, ha=ha, va="center", fontsize=S.FONT, color=S.INK, zorder=8, gid="value",
+                   path_effects=S.HALO, **kw)  # fmt: skip
+
+
+def status_text(target, x: float, y: float, text: str, ha: str, italic: bool, va: str = "center", **kw: Any) -> Text:
+    """A cell's or a panel's label; a white halo (not a box) keeps it legible on hatching and lines while it takes
+    no more room than its letters."""
+    return target.text(x, y, text, ha=ha, va=va, fontsize=S.FONT, color=S.INK2 if italic else S.INK,
+                       style="italic" if italic else "normal", linespacing=0.95, zorder=8, gid="status",
+                       path_effects=[pe.withStroke(linewidth=5, foreground="white")], **kw)  # fmt: skip
+
+
+def join_and(items: list[str]) -> str:
+    return items[0] if len(items) == 1 else ", ".join(items[:-1]) + " and " + items[-1]
 
 
 # ---------------------------------------------------------------- drawing: dot figures (models as rows)
@@ -908,23 +974,9 @@ def n_text(ps: DotPanel, mk: Mark) -> str:
     return f"{mk.n}{sym}" + (f"\n{mk.note}" if mk.note and mk.status == "value" else "")
 
 
-def spanned_rows(spec: DotSpec, data: DotData) -> dict[str, str]:
-    """Models whose every panel would show the same label (not testable, missing): model -> the one label."""
-    out = {}
-    for m in S.MODELS:
-        marks = [data.marks.get((ps.key, m.key)) or Mark(m.key) for ps in spec.panels]
-        if (
-            len(spec.panels) > 1
-            and marks[0].status in ("not testable", "missing")
-            and len({(mk.status, mk.reason) for mk in marks}) == 1
-        ):
-            out[m.key] = f"{marks[0].status}: {marks[0].reason}"
-    return out
-
-
 def legend_entries(spec: DotSpec) -> tuple[list, list[str]]:
     handles, labels = [], []
-    for ss in {s.label: s for p in spec.panels for s in p.series}.values():
+    for ss in {s.label: s for p in spec.panels for s in p.series if s.label}.values():  # "": named by its panel
         handles.append(series_handle(ss))
         labels.append(ss.label)
     for kind, label in spec.lines:
@@ -932,43 +984,70 @@ def legend_entries(spec: DotSpec) -> tuple[list, list[str]]:
         labels.append(label)
     handles.append(line_handle("hatch"))
     labels.append("not interpretable")
+    handles.append(line_handle("text"))
+    labels.append(f"by n: {VERDICT_KEY}")
     return handles, labels
 
 
-def draw_dots(spec: DotSpec, data: DotData, lay: Layout = LAYOUTS[0]) -> Figure:
+def spanned_rows(spec: DotSpec, data: DotData) -> dict[str, str]:
+    """Models whose every panel would show the same label (not testable, missing): model -> the one label."""
+    out = {}
+    for m in S.MODELS:
+        marks = [data.marks.get((ps.key, m.key)) or Mark(m.key) for ps in spec.panels]
+        same = len({(mk.status, mk.reason) for mk in marks}) == 1
+        if len(spec.panels) > 1 and marks[0].status in ("not testable", "missing") and same:
+            out[m.key] = f"{marks[0].status}: {marks[0].reason}"
+    return out
+
+
+def rule_marks(ps: DotPanel) -> list[tuple[float, str]]:
+    """The labels above a panel: each rule bar's value, left to right (the chance line's word sits in the strip under
+    the last row)."""
+    return sorted((100 * r, f"{100 * r:.0f}%") for r in ps.rules)
+
+
+def rule_levels(fig: Figure, ps: DotPanel, xlim: tuple[float, float], pw: float) -> list[int]:
+    """Per label above the panel (rule_marks order), its line: one higher than the one before where they'd touch."""
+    per_unit = 1.04 * (xlim[1] - xlim[0]) / pw
+    last_end, level, out = -1e9, 0, []
+    for x, text in rule_marks(ps):
+        w = (S.text_width(fig, text) + 0.1) * per_unit
+        level = level + 1 if x - w / 2 < last_end else 0
+        last_end = x + w / 2
+        out.append(level)
+    return out
+
+
+def draw_dots(spec: DotSpec, data: DotData, title: str, lay: Layout = LAYOUTS[0]) -> Figure:
     S.apply()
     fig = plt.figure(figsize=S.FIGSIZE)
-    head = fig_header(fig, spec.title, spec.subtitle)
-    handles, labels = legend_entries(spec)
-    leg_top = footer(fig, handles, labels, spec.legend_cols, f"Right of each panel: n and {VERDICT_KEY}.")
-    names = [m.label for m in S.MODELS]  # one line each: the margin is made to fit them (rows are too close for two)
-    left = 0.62 + max(S.text_width(fig, nm) for nm in names) + 0.25
+    placer = Placer(fig)
+    head = fig_header(fig, title, spec.subtitle)
+    leg_top = footer(fig, *legend_entries(spec), spec.legend_cols)
+    names = [model_name(m.key, lay) for m in S.MODELS]  # the margin is made to fit them (two lines: narrower)
+    left = 0.62 + max(S.text_width(fig, line) for nm in names for line in nm.split("\n")) + 0.25
     n_cols = [PAD + 0.12 + max([S.text_width(fig, line) for m in S.MODELS
                                 for line in n_text(ps, data.marks.get((ps.key, m.key)) or Mark(m.key)).split("\n")]
                                + [S.text_width(fig, "n")]) if ps.n_col else 0.0 for ps in spec.panels]  # fmt: skip
-    # between panels: room for the two tick labels that meet there where no n column separates them
     gaps = [0.18 if nc else 0.18 + S.text_width(fig, "100%") for nc in n_cols[:-1]]
     unit = (W - left - 0.06 - sum(n_cols) - sum(gaps)) / sum(ps.width for ps in spec.panels)
     ranges = axis_ranges(spec, data)
     rule_rows = 1 + max(max(rule_levels(fig, ps, ranges[ps.key], unit * ps.width), default=0) for ps in spec.panels)
-    top = head + 0.42 + 0.27 * rule_rows  # the panel titles, and the rule labels above the panels
-    bottom = leg_top + 0.52  # the tick labels
+    top = head + 0.4 + 0.27 * rule_rows  # the panel titles, and the rule labels above the panels
+    bottom = leg_top + 0.5  # the tick labels
     ph = H - top - bottom
     spans = spanned_rows(spec, data)
-    x = left
+    x, axes = left, []
     for i, (ps, nc) in enumerate(zip(spec.panels, n_cols, strict=True)):
         pw = unit * ps.width
         ax = fig.add_axes((x / W, bottom / H, pw / W, ph / H))
-        dot_panel(ax, ps, data, names if i == 0 else None, ranges[ps.key], pw, lay, rule_rows, set(spans))
+        axes.append((ax, ps, pw, nc))
+        dot_frame(ax, ps, names if i == 0 else None, ranges[ps.key], pw, lay, rule_rows)
         x += pw + nc + (gaps[i] if i < len(gaps) else 0.0)
     y0, y1 = bottom / H, (bottom + ph) / H
 
     def fy(row: float) -> float:
         return y1 - (row - Y_TOP) / (Y_BOTTOM - Y_TOP) * (y1 - y0)
-
-    for key, text in spans.items():  # one label across the row where every panel would say the same
-        fig.text((left + 0.05) / W, fy(ROW[key]), text, ha="left", va="center", fontsize=S.FONT, color=S.INK2,
-                 style="italic", zorder=8, gid="status", bbox=LABEL_BOX)  # fmt: skip
 
     for label, hybrid in S.GROUPS:
         rows = [ROW[m.key] for m in S.MODELS if m.hybrid == hybrid]
@@ -976,193 +1055,200 @@ def draw_dots(spec: DotSpec, data: DotData, lay: Layout = LAYOUTS[0]) -> Figure:
         fig.add_artist(Line2D([0.5 / W] * 2, [fy(min(rows) - 0.35), fy(max(rows) + 0.35)], color=S.COMPARE2, lw=1.5))
     if spec.xlabel:
         fig.text((left - 0.3) / W, (bottom - 0.2) / H, spec.xlabel, ha="right", va="center", fontsize=S.LABEL)
+    for key, text in spans.items():  # one label across the row where every panel would say the same
+        status_text(fig, (left + 0.05) / W, fy(ROW[key]), text, "left", italic=True)
+    for ax, ps, pw, nc in axes:  # the marks of every panel, then the labels: a label can see every mark
+        dot_marks(ax, ps, data, ranges[ps.key], set(spans), pw, nc)
+    placer.take_marks()
+    for t in [*fig.texts, *(t for ax, *_ in axes for t in ax.texts)]:
+        placer.take_text(t)
+    for ax, ps, pw, _ in axes:
+        dot_labels(ax, ps, data, ranges[ps.key], set(spans), pw, lay, placer)
     return fig
 
 
-def place_labels(fig: Figure, points: list[tuple[str, float, float, float, str | None]], xlim: tuple[float, float],
-                 per_unit: float, away: bool) -> list[tuple[str, float, str]]:  # fmt: skip
-    """Value labels for one row: (text, x, ha) right beside each point's interval, never on another point's interval
-    or another label (a row's labels share one line); a label with no room beside its point is left out rather than
-    drawn away from it. points: (text, p, lo, hi, partner side "left" / "right" / None) in percent, the claim's arm
-    first. `away`: try the side away from the partner first."""
-    placed: list[tuple[float, float]] = []
-    out = []
-    r = MARKER_R * per_unit
-    # each point's extent: its interval, or its marker where the interval is narrower
-    ext = [(min(lo, p - r), max(hi, p + r)) for _, p, lo, hi, _ in points]
-    for i, (text, _, _, _, partner) in enumerate(points):
-        lo, hi = ext[i]
-        for pad_in, extra_in in ((0.035, 0.04), (0.01, 0.0)):  # a second, tighter try before giving up
-            pad, w = pad_in * per_unit, (S.text_width(fig, text) + extra_in) * per_unit
-            others = [(a - pad, b + pad) for j, (a, b) in enumerate(ext) if j != i] + placed
-            right, left = (hi + pad, hi + pad, "left"), (lo - pad - w, lo - pad, "right")
-            near = [left, right] if away and partner == "right" else [right, left]
-            spot = next(((a, x, ha) for a, x, ha in near
-                         if a >= xlim[0] and a + w <= xlim[1] and not any(a < s1 and a + w > s0 for s0, s1 in others)),
-                        None)  # fmt: skip
-            if spot:
-                out.append((text, spot[1], spot[2]))
-                placed.append((spot[0], spot[0] + w))
-                break
-    return out
-
-
-def merge_close(labels: list, keys: list[str], pair: tuple[str, str] | None, per_unit: float) -> list:
-    """The claim's and its partner's labels as one ("6% vs 10%") where their intervals sit too close for two."""
-    if not pair or pair[0] not in keys or pair[1] not in keys:
-        return labels
-    i, j = keys.index(pair[0]), keys.index(pair[1])
-    a, b = labels[i], labels[j]
-    room = (max(a[2], b[2]) - min(a[3], b[3])) / per_unit  # inches between the two intervals (< 0: they overlap)
-    if room >= 0.15:
-        return labels
-    first = a[0][:-1] if a[0].endswith("%") and b[0].endswith("%") else a[0]  # "12 vs 8%"
-    merged = (f"{first} vs {b[0]}", a[1], min(a[2], b[2]), max(a[3], b[3]), None)
-    return [merged] + [x for k, x in enumerate(labels) if k not in (i, j)]
-
-
-def rule_levels(fig: Figure, ps: DotPanel, xlim: tuple[float, float], pw: float) -> list[int]:
-    """Per rule bar (sorted), the line its label goes on above the panel: one line higher than the label before it
-    where the two would touch."""
-    per_unit = 1.04 * (xlim[1] - xlim[0]) / pw
-    last_end, level, out = -1e9, 0, []
-    for r in sorted(ps.rules):
-        w = (S.text_width(fig, f"{100 * r:.0f}%") + 0.1) * per_unit
-        level = level + 1 if 100 * r - w / 2 < last_end else 0
-        last_end = 100 * r + w / 2
-        out.append(level)
-    return out
-
-
-def rule_labels(ax, ps: DotPanel, xlim: tuple[float, float], pw: float) -> None:
-    for r, level in zip(sorted(ps.rules), rule_levels(ax.figure, ps, xlim, pw), strict=True):
-        ax.annotate(f"{100 * r:.0f}%", (100 * r, Y_TOP), xycoords="data", xytext=(0, 3 + 19 * level),
-                    textcoords="offset points", ha="center", va="bottom", fontsize=S.FONT, color=S.INK,
-                    annotation_clip=False)  # fmt: skip
-
-
-def dot_ticks(ax, ps: DotPanel, x0: float, x1: float, lay: Layout) -> None:
-    if ps.contrast:
-        ticks = [t for t in (x0, 0.0, x1) if t == 0 or (not lay.sparse_ticks and abs(t) >= 0.3 * (x1 - x0))
-                 or (lay.sparse_ticks and t == x1)]  # fmt: skip
-        ax.set_xticks(ticks, [f"{t:+.0f}".replace("-", "−") if t else "0" for t in ticks])
-    else:
-        ticks = [0, x1] if lay.sparse_ticks else [0, x1 / 2, x1]
-        ax.set_xticks(ticks, [f"{t:.0f}%" for t in ticks])
-        ax.set_xticks([x1 / 4, x1 / 2, 3 * x1 / 4] if lay.sparse_ticks else [x1 / 4, 3 * x1 / 4], minor=True)
-
-
-def dot_panel(ax, ps: DotPanel, data: DotData, names: list[str] | None, xlim: tuple[float, float], pw: float,
-              lay: Layout, rule_rows: int, spanned: set[str]) -> None:  # fmt: skip
+def dot_frame(ax, ps: DotPanel, names: list[str] | None, xlim: tuple[float, float], pw: float, lay: Layout,
+              rule_rows: int) -> None:  # fmt: skip
+    """Axes, ticks, the rule and chance lines and their labels, the panel title."""
     x0, x1 = xlim
     span = x1 - x0
     ax.set_xlim(x0 - 0.02 * span, x1 + 0.02 * span)
     ax.set_ylim(Y_BOTTOM, Y_TOP)
+    sparse = lay.sparse_ticks or pw < 3 * S.text_width(ax.figure, "100%") + 0.3  # a narrow panel: the ends only
     if ps.contrast:
         ax.set_facecolor(S.HIGHLIGHT_BG)
-    dot_ticks(ax, ps, x0, x1, lay)
+        ticks = [t for t in (x0, 0.0, x1) if t == 0 or (not sparse and abs(t) >= 0.3 * span)
+                 or (sparse and t == x1)]  # fmt: skip
+        ax.set_xticks(ticks, [f"{t:+.0f}".replace("-", "−") if t else "0" for t in ticks])
+    else:
+        ticks = [0, x1] if sparse else [0, x1 / 2, x1]
+        ax.set_xticks(ticks, [f"{t:.0f}%" for t in ticks])
+        ax.set_xticks([x1 / 4, x1 / 2, 3 * x1 / 4] if sparse else [x1 / 4, 3 * x1 / 4], minor=True)
     ax.grid(axis="x", which="both", color=S.GRID, lw=1)
     ax.set_axisbelow(True)
     ax.spines["left"].set_visible(False)
     ax.tick_params(axis="y", length=0, pad=8)
+    ax.tick_params(axis="x", pad=6)
     ax.set_yticks([ROW[m.key] for m in S.MODELS], names or [""] * len(S.MODELS))
-    if names:
-        for t in ax.get_yticklabels():
-            t.set_linespacing(0.95)
+    for t in ax.get_yticklabels():
+        t.set_linespacing(0.9)
     ax.axhline((ROW[S.MODELS[3].key] + ROW[S.MODELS[4].key]) / 2, color=S.COMPARE2, lw=1.2)
-    per_unit = (ax.get_xlim()[1] - ax.get_xlim()[0]) / pw  # data units per inch
     for r in ps.rules:
         ax.axvline(100 * r, zorder=1.5, **S.RULE_LINE)
-    rule_labels(ax, ps, xlim, pw)
-    for x, text in ([(0.0, "no gap")] if ps.contrast else []) + (
-        [(100 * ps.chance[0], ps.chance[1])] if ps.chance else []
-    ):
+    for x, text in ([(100 * ps.chance[0], ps.chance[1])] if ps.chance else []) + ([(0.0, "no gap")] if ps.contrast
+                                                                                 else []):  # fmt: skip
         ax.axvline(x, zorder=1.4, **S.CHANCE_LINE)
-        ax.text(x, Y_BOTTOM - 0.25, text, ha="center", va="center", fontsize=S.FONT, color=S.INK2, zorder=6,
-                bbox=LABEL_BOX)  # fmt: skip
+        half = (S.text_width(ax.figure, text) / 2 + 0.05) * 1.04 * span / pw  # kept inside the panel
+        xt = min(max(x, x0 + half), x1 - half)
+        ax.text(xt, CHANCE_Y, text, ha="center", va="center", fontsize=S.FONT, color=S.INK2, zorder=6, bbox=LABEL_BOX)
+    for (x, text), level in zip(rule_marks(ps), rule_levels(ax.figure, ps, xlim, pw), strict=True):
+        ax.annotate(text, (x, Y_TOP), xycoords="data", xytext=(0, 3 + 19 * level), textcoords="offset points",
+                    ha="center", va="bottom", fontsize=S.FONT, color=S.INK if "%" in text else S.INK2,
+                    annotation_clip=False)  # fmt: skip
     ax.set_title(ps.title, loc="left", fontsize=S.PANEL_TITLE, fontweight="bold", pad=6 + 19 * rule_rows)
-    ax.tick_params(axis="x", pad=6)
     if ps.n_col:
         ax.annotate("n", (1, Y_TOP), xycoords=("axes fraction", "data"), xytext=(72 * PAD, 3),
                     textcoords="offset points", ha="left", va="bottom", fontsize=S.FONT, color=S.INK2,
                     annotation_clip=False)  # fmt: skip
+
+
+def fit_status(fig: Figure, mk: Mark, width_in: float) -> str:
+    """A cell's one-line label within width_in: "status: reason"; else, in a hatched cell, the reason (the hatch says
+    "not interpretable", the legend); else the status word."""
+    for text in (f"{mk.status}: {mk.reason}", mk.reason if mk.status == "not interpretable" else mk.status):
+        if S.text_width(fig, text) + 0.12 <= width_in:
+            return text
+    return ""
+
+
+def dot_marks(ax, ps: DotPanel, data: DotData, xlim: tuple[float, float], spanned: set[str], pw: float,
+              n_col: float) -> None:  # fmt: skip
+    """Every row's marks: the points on the row line with their 95% intervals, the decisive pair joined by the
+    highlight, the control ticks; a label for a cell without a value (one line, so no two rows' labels can touch);
+    the n column."""
+    x0, x1 = xlim
+    span = x1 - x0
     for m in S.MODELS:
         mk = data.marks.get((ps.key, m.key)) or Mark(m.key)
         y = ROW[m.key]
-        if m.key in spanned:  # labelled once across the row (draw_dots)
+        if m.key in spanned:
             continue
         if mk.status == "value":
-            dot_row(ax, ps, mk, m.key, y, xlim, per_unit, lay)
+            dot_points(ax, ps, mk, m.key, y)
         elif mk.status == "not interpretable":
-            ax.add_patch(Rectangle((x0, y - 0.42), span, 0.84, zorder=1, **S.NOT_INTERPRETABLE))
-            text = fit_status(ax.figure, mk, pw, lay.compact_status)
+            ax.add_patch(Rectangle((x0, y - 0.3), span, 0.6, zorder=1, **S.NOT_INTERPRETABLE))
+            text = fit_status(ax.figure, mk, pw)
             if text:
                 status_text(ax, (x0 + x1) / 2, y, text, "center", italic=False)
         else:
-            status_text(ax, x0 + 0.02 * span, y, fit_status(ax.figure, mk, pw, lay.compact_status), "left", italic=True)
+            # one line, allowed over the n column (which stays empty for such a row)
+            text = fit_status(ax.figure, mk, pw + n_col)
+            bx = ax.transData.transform((x0 + 0.02 * span, y))
+            fx, fy_ = ax.figure.transFigure.inverted().transform(bx)
+            status_text(ax.figure, fx, fy_, text, "left", italic=True)
+            continue
         if ps.n_col:
             ax.annotate(n_text(ps, mk), (1, y), xycoords=("axes fraction", "data"), xytext=(72 * PAD, 0),
                         textcoords="offset points", ha="left", va="center", fontsize=S.FONT, color=S.INK,
                         linespacing=0.95, annotation_clip=False, gid="n")  # fmt: skip
 
 
-def fit_status(fig: Figure, mk: Mark, pw: float, compact: bool) -> str:
-    """A cell's label within the panel's width: "status: reason" on one line where it fits, else "status" over
-    "reason". Compact (one line, so that labelled rows next to each other cannot touch), or where two lines do not fit
-    either: a hatched cell its reason (the hatch says "not interpretable", the legend), another its status word."""
-
-    def fits(text: str) -> bool:
-        return max(S.text_width(fig, line) for line in text.split("\n")) + 0.12 <= pw
-
-    one, two = f"{mk.status}: {mk.reason}", f"{mk.status}\n{mk.reason}"
-    if fits(one):
-        return one
-    if not compact and fits(two):
-        return two
-    short = mk.reason if mk.status == "not interpretable" else mk.status
-    return short if fits(short) else ""
+def pair_of(ps: DotPanel, mk: Mark) -> tuple[str, str] | None:
+    if not ps.pair or not finite(mk.points.get(ps.pair[0])):
+        return None
+    other = next((k for k in ps.pair[1] if finite(mk.points.get(k))), None)
+    return (ps.pair[0], other) if other else None
 
 
-def dot_row(ax, ps: DotPanel, mk: Mark, key: str, y: float, xlim: tuple[float, float], per_unit: float,
-            lay: Layout) -> None:  # fmt: skip
-    """One model's points in one panel: dodged dot-and-whisker per series, the decisive pair joined by the highlight,
-    each value printed beside its point (white halo), the per-row control ticks."""
-    present = [ss for ss in ps.series if finite(mk.points.get(ss.key))]
-    ys = dict(zip((ss.key for ss in present), (y + d for d in OFFSETS.get(len(present), (0.0,) * len(present))),
-                  strict=True))  # fmt: skip
-    partner: dict[str, str] = {}
-    if ps.pair and ps.pair[0] in ys:
-        other = next((k for k in ps.pair[1] if k in ys), None)
-        if other:
-            a, b = mk.points[ps.pair[0]][0], mk.points[other][0]
-            ax.plot([100 * a, 100 * b], [ys[ps.pair[0]], ys[other]], color=S.HIGHLIGHT, lw=7, alpha=0.9,
-                    solid_capstyle="round", zorder=2.4)  # fmt: skip
-            partner = {ps.pair[0]: "right" if b >= a else "left", other: "left" if b >= a else "right"}
-    labels, keys = [], []
-    for i, ss in enumerate(present):
-        p, lo, hi = mk.points[ss.key]
+def dot_points(ax, ps: DotPanel, mk: Mark, key: str, y: float) -> None:
+    pair = pair_of(ps, mk)
+    if pair:
+        a, b = mk.points[pair[0]][0], mk.points[pair[1]][0]
+        ax.plot([100 * a, 100 * b], [y, y], color=S.HIGHLIGHT, lw=6, alpha=0.9, solid_capstyle="round", zorder=2.4,
+                gid="gap")  # fmt: skip
+    for ss in ps.series:
+        t = mk.points.get(ss.key)
+        if not finite(t):
+            continue
+        p, lo, hi = t  # type: ignore[misc]
         lo, hi = min(lo, p), max(hi, p)  # rounding at 0% / 100% can put a bound a hair inside the point
+        if ss.tick:
+            ax.plot([100 * p] * 2, [y - 0.24, y + 0.24], zorder=2.6, gid="tick", **{**S.CHANCE_LINE, "linewidth": 2.2})
+            continue
+        yy = y + (0.24 if ss.below else 0.0)
         col = ss.grey or S.MODEL[key].edge
-        kw = (dict(marker=ss.shape, markersize=10, markerfacecolor=col, markeredgecolor=col, linestyle="none")
-              if ss.grey else S.marker(key, ss.shape))  # fmt: skip
-        ax.plot([100 * lo, 100 * hi], [ys[ss.key]] * 2, color=col, lw=2.6, solid_capstyle="butt", zorder=3)
-        ax.plot([100 * p], [ys[ss.key]], zorder=4, clip_on=False, **kw)
-        if lay.drop_labels >= 2 or (lay.drop_labels == 1 and i > 0) or (partner and ss.key not in partner):
-            continue  # the values printed are the decisive pair's (a third, control series is read off the axis)
-        labels.append((pct_label(p, ps.contrast), 100 * p, 100 * lo, 100 * hi, partner.get(ss.key)))
-        keys.append(ss.key)
-    pair = (ps.pair[0], next((k for k in ps.pair[1] if k in keys), "")) if ps.pair else None
-    merged = merge_close(labels, keys, pair, per_unit)
-    spots = place_labels(ax.figure, merged, xlim, per_unit, lay.labels_away)
-    if merged is not labels and merged[0][0] not in {t for t, _, _ in spots}:  # the joint label found no room
-        spots = place_labels(ax.figure, labels, xlim, per_unit, lay.labels_away)
-    for text, x, ha in spots:
-        value_text(ax, x, y, text, ha)
+        size = 9
+        kw = (dict(marker=ss.shape, markersize=size, markerfacecolor=col, markeredgecolor=col, linestyle="none")
+              if ss.grey else S.marker(key, ss.shape, size=size))  # fmt: skip
+        ax.plot([100 * lo, 100 * hi], [yy, yy], color=col, lw=2.6, solid_capstyle="butt", zorder=3, gid="ci")
+        ax.plot([100 * p], [yy], zorder=4 if not ss.grey else 3.5, clip_on=False, gid="mark", **kw)
     for k, x in mk.ticks.items():
-        half = 0.36 if k == "bar" or k not in ys else 0.13
-        yc = ys.get(k, y)
         style = S.RULE_LINE if k == "bar" else S.CHANCE_LINE
-        ax.plot([100 * x] * 2, [yc - half, yc + half], zorder=2, **style)
+        ax.plot([100 * x] * 2, [y - 0.3, y + 0.3], zorder=2, gid="tick", **style)
+
+
+def dot_labels(ax, ps: DotPanel, data: DotData, xlim: tuple[float, float], spanned: set[str], pw: float,
+               lay: Layout, placer: Placer) -> None:  # fmt: skip
+    """Every row's values in the lane above its points: the decisive arm's first, never left out (it moves along the
+    lane, then below the row, with a leader line), the comparison's next and only where it fits; two values too close
+    for two labels as one ("6 vs 10%")."""
+    per_unit = (ax.get_xlim()[1] - ax.get_xlim()[0]) / pw  # data units per inch
+    within = ax.get_window_extent(placer.r)
+    xs_all = [xlim[0] + i * STEP * per_unit for i in range(int((xlim[1] - xlim[0]) / (STEP * per_unit)) + 1)]
+    for m in S.MODELS:
+        mk = data.marks.get((ps.key, m.key)) or Mark(m.key)
+        if m.key in spanned or mk.status != "value":
+            continue
+        y = ROW[m.key]
+        pair = pair_of(ps, mk)
+        keys = [ss.key for ss in ps.series if not ss.tick and not ss.below and finite(mk.points.get(ss.key))]
+        if pair and pair[1] in keys:
+            keys = [pair[0], pair[1]] + [k for k in keys if k not in pair]
+        elif pair:
+            keys = [pair[0]] + [k for k in keys if k != pair[0]]
+            pair = None  # its comparison is a control tick: read off the axis, not labelled
+        r = MARKER_R * per_unit
+
+        def extent(ks: list[str], pts: dict[str, Triple] = mk.points, r: float = r) -> tuple[float, float]:
+            """The points' intervals and markers, percent."""
+            return (min(min(100 * pts[k][1], 100 * pts[k][0] - r) for k in ks),
+                    max(max(100 * pts[k][2], 100 * pts[k][0] + r) for k in ks))  # fmt: skip
+
+        labels = [(pct_label(mk.points[k][0], ps.contrast), 100 * mk.points[k][0], extent([k])) for k in keys]
+        if pair and abs(labels[0][1] - labels[1][1]) / per_unit < S.text_width(ax.figure, labels[0][0]) + 0.1:
+            first = labels[0][0][:-1] if labels[0][0].endswith("%") and labels[1][0].endswith("%") else labels[0][0]
+            mid = (labels[0][1] + labels[1][1]) / 2
+            labels = [(f"{first} vs {labels[1][0]}", mid, extent(list(pair))), *labels[2:]]
+        row_in = ax.get_position().height * H / (Y_BOTTOM - Y_TOP)
+        lanes = [d / row_in for d in LANES_IN]  # rows above (and below) the points, nearest first
+        pad = 0.05 * per_unit
+        for i, (text, xp, (lo, hi)) in enumerate(labels):
+            if i > 0 and lay.drop_labels:
+                break
+            # on the row line beside the points first, then a lane above, then (the decisive value) below
+            beside = [(hi + pad, y, "left"), (lo - pad, y, "right")]
+            order = sorted(xs_all, key=lambda x, xp=xp: abs(x - xp))
+            close = [x for x in order if abs(x - xp) / per_unit <= 0.5]
+            far = [x for x in order if abs(x - xp) / per_unit > 0.5]
+            signs = (-1, 1) if i == 0 else (-1,)
+            cands = beside + [(x, y + s * ln, "center") for ln in lanes for s in signs for x in close]
+            if i == 0:  # the decisive value: anywhere along the lanes before it is drawn where it touches
+                cands += [(x, y + s * ln, "center") for ln in lanes for s in signs for x in far]
+            t = placer.put(lambda x, yy, ha, text=text: value_text(ax, x, yy, text, ha), cands, within)
+            if t is None and i == 0 and " vs " in text:  # a joint label with no room: the decisive value alone
+                first = text.split(" vs ")[0]
+                text = first if first.endswith("%") or ps.contrast else first + "%"
+                t = placer.put(lambda x, yy, ha, text=text: value_text(ax, x, yy, text, ha), cands, within)
+            if t is None and i == 0:  # the decisive value is never left out: drawn above its point even where it
+                # touches something (plot_style.overlaps then reports it and the render ladder goes on)
+                t = value_text(ax, min(max(xp, xlim[0] + 3 * pad), xlim[1] - 3 * pad), y - lanes[0], text, "center")
+                placer.take_text(t)
+            if t is None:
+                continue
+            tx, ty = t.get_position()
+            if abs(ty - y) > 1e-9 and (abs(tx - xp) / per_unit > LEADER or ty > y):  # a short leader to the label
+                y0, y1 = (y + 0.1, ty - 0.18) if ty > y else (y - 0.1, ty + 0.18)
+                ax.plot([xp, tx], [y0, y1], color=S.INK2, lw=1, zorder=2.2, gid="leader")
 
 
 # ---------------------------------------------------------------- drawing: curve figures (one panel per model)
@@ -1181,15 +1267,20 @@ def curve_legend(spec: CurveSpec) -> tuple[list, list[str]]:
     if spec.hatch_in_legend:
         handles.append(line_handle("hatch"))
         labels.append("not interpretable")
+    if spec.verdict_note:
+        handles.append(line_handle("text"))
+        labels.append(spec.verdict_note)
     return handles, labels
 
 
-def draw_curves(spec: CurveSpec, data: CurveData, keys: list[str] | None = None, lay: Layout = LAYOUTS[0]) -> Figure:
+def draw_curves(spec: CurveSpec, data: CurveData, title: str, keys: list[str] | None = None,
+                lay: Layout = LAYOUTS[0]) -> Figure:  # fmt: skip
     """Panels: the eight models in two rows (hybrids, attention only), or `keys` in one row (a one-model figure)."""
     S.apply()
     fig = plt.figure(figsize=S.FIGSIZE)
-    head = fig_header(fig, spec.title, spec.subtitle)
-    leg_top = footer(fig, *curve_legend(spec), spec.legend_cols, spec.footer)
+    placer = Placer(fig)
+    head = fig_header(fig, title, spec.subtitle)
+    leg_top = footer(fig, *curve_legend(spec), spec.legend_cols)
     rows = (
         [[m.key for m in S.MODELS if m.hybrid], [m.key for m in S.MODELS if not m.hybrid]] if keys is None else [keys]
     )
@@ -1202,12 +1293,14 @@ def draw_curves(spec: CurveSpec, data: CurveData, keys: list[str] | None = None,
     n_c = max(len(r) for r in rows)
     pw = (W - left - right - (n_c - 1) * gap) / n_c
     ph = (H - top - bottom - len(rows) * head_h - (len(rows) - 1) * between) / len(rows)
+    panels = []
     for r, row in enumerate(rows):
         y0 = H - top - head_h - r * (ph + head_h + between) - ph
         for c, key in enumerate(row):
             ax = fig.add_axes(((left + c * (pw + gap)) / W, y0 / H, pw / W, ph / H))
             p = data.panels.get(key) or Panel(key if key in S.MODEL else S.MODELS[0].key)
-            curve_panel(ax, spec, p, key, (c == 0, r == len(rows) - 1, c == len(row) - 1), lay)
+            curve_frame(ax, spec, p, key, (c == 0, r == len(rows) - 1, c == len(row) - 1), lay)
+            panels.append((ax, p))
         if keys is None:
             label, hybrid = S.GROUPS[r]
             group_label(fig, label, hybrid, (y0 + ph / 2) / H)
@@ -1215,6 +1308,14 @@ def draw_curves(spec: CurveSpec, data: CurveData, keys: list[str] | None = None,
              fontsize=S.LABEL)  # fmt: skip
     fig.text((left + (W - left - right) / 2) / W, (bottom - 0.4) / H, spec.xlabel, ha="center", va="top",
              fontsize=S.LABEL)  # fmt: skip
+    placer.take_marks()
+    for t in fig.texts:
+        placer.take_text(t)
+    for ax, _ in panels:
+        for t in ax.texts:
+            placer.take_text(t)
+    for ax, p in panels:  # the labels inside the panels, each where it covers no mark and no other label
+        curve_labels(ax, spec, p, lay, placer)
     return fig
 
 
@@ -1226,15 +1327,8 @@ def spread(ys: list[float], min_gap: float) -> list[float]:
     return out
 
 
-def spread_within(ys: list[float], min_gap: float, lo: float, hi: float) -> list[float]:
-    """spread, kept within [lo, hi]: clamped first, then moved down from the top where the spread runs past hi."""
-    out = spread([min(max(y, lo), hi) for y in ys], min_gap)
-    for i in range(len(out) - 1, -1, -1):
-        out[i] = min(out[i], hi - (len(out) - 1 - i) * min_gap)
-    return out
-
-
-def curve_panel(ax, spec: CurveSpec, p: Panel, key: str, where: tuple[bool, bool, bool], lay: Layout) -> None:
+def curve_frame(ax, spec: CurveSpec, p: Panel, key: str, where: tuple[bool, bool, bool], lay: Layout) -> None:
+    """Axes, lines, the series and the marks of one panel (labels come later: curve_labels)."""
     first_col, last_row, last_col = where
     model = S.MODEL[p.model]
     ax.set_xlim(*spec.xlim)
@@ -1269,20 +1363,14 @@ def curve_panel(ax, spec: CurveSpec, p: Panel, key: str, where: tuple[bool, bool
     if last_col:  # the lines' meaning in place, right of the last panel of each row, spread where close
         lines = sorted((y, t) for y, t in [*([spec.chance] if spec.chance else []), *spec.rules] if t)
         for (y, t), yl in zip(lines, spread([y for y, _ in lines], line_gap), strict=True):
-            ax.annotate(t, (1, y), xycoords=("axes fraction", "data"), xytext=(1.03, yl), textcoords=("axes fraction", "data"),
-                        fontsize=S.FONT, color=S.INK2, va="center", ha="left", annotation_clip=False)  # fmt: skip
-    line_ax = 0.26 / (ax.get_position().height * H)  # one text line, in axes fractions
-    y_note = 0.04
-    for note in reversed(p.notes):  # stacked up from the bottom-left
-        lines = note.count("\n") + 1
-        status_text(ax, 0.03, y_note + lines * line_ax / 2, note, "left", italic=True, transform=ax.transAxes)
-        y_note += lines * line_ax + 0.03
+            ax.annotate(t, (1, y), xycoords=("axes fraction", "data"), xytext=(1.03, yl),
+                        textcoords=("axes fraction", "data"), fontsize=S.FONT, color=S.INK2, va="center", ha="left",
+                        annotation_clip=False)  # fmt: skip
     if p.status not in ("value", "not interpretable"):
         status_text(ax, 0.5, 0.62, f"{p.status}\n{p.reason}", "center", italic=True, transform=ax.transAxes)
         return
     if p.status == "not interpretable":
         ax.add_patch(Rectangle((0, 0), 1, 1, transform=ax.transAxes, zorder=0, **S.NOT_INTERPRETABLE))
-        status_text(ax, *HATCH_LABEL, f"not interpretable\n{p.reason}", "right", italic=False, transform=ax.transAxes)
     styles = {ss.key: ss for ss in spec.series}
     present = [s for s in p.series if s.key in styles and any(finite(t) for t in s.y)]
     for i, s in enumerate(present):
@@ -1292,63 +1380,75 @@ def curve_panel(ax, spec: CurveSpec, p: Panel, key: str, where: tuple[bool, bool
             continue
         same = [k for k in spec.marks[:j] if k.key in p.marks and abs(p.marks[k.key] - p.marks[mk.key]) < 1e-9]
         x = p.marks[mk.key] + len(same) * 0.03 * (spec.xlim[1] - spec.xlim[0])  # side by side where they coincide
-        ax.plot([x], [spec.ylim[1]], marker=mk.glyph, markersize=13, markeredgecolor=mk.color,
+        inside = (13 / 2 + 1.8) / 72 / (ax.get_position().height * H) * (spec.ylim[1] - spec.ylim[0])
+        ax.plot([x], [spec.ylim[1] - inside], marker=mk.glyph, markersize=13, markeredgecolor=mk.color,
                 markerfacecolor=mk.color if mk.filled else "white", markeredgewidth=1.8, linestyle="none",
-                clip_on=False, zorder=7)  # fmt: skip
+                clip_on=False, zorder=7, gid="mark")  # fmt: skip
     if spec.span_marks and all(k in p.marks for k in spec.span_marks):
         a, b = (p.marks[k] for k in spec.span_marks)
-        y = spec.ylim[1] - 0.14 * (spec.ylim[1] - spec.ylim[0])
+        y = spec.ylim[1] - 0.12 * (spec.ylim[1] - spec.ylim[0])
         ax.annotate("", xy=(b, y), xytext=(a, y), arrowprops={"arrowstyle": "<|-|>", "color": S.HIGHLIGHT, "lw": 4,
                                                               "shrinkA": 0, "shrinkB": 0}, zorder=6)  # fmt: skip
-        value_text(ax, (a + b) / 2, y - 0.09 * (spec.ylim[1] - spec.ylim[0]), f"{b - a:+.0f} layers", "center")
-    if lay.drop_labels < 2:
-        value_labels(ax, spec, p, lay, line_gap)
+        ax.plot([a, b], [y, y], alpha=0, gid="gap")  # the arrow's place, for the labels to keep off
 
 
-HATCH_LABEL = (0.97, 0.76)  # axes fractions: the right end and the middle of a hatched curve panel's label
+CORNERS = ((0.03, 0.05, "left", "bottom"), (0.97, 0.05, "right", "bottom"), (0.03, 0.95, "left", "top"),
+           (0.97, 0.95, "right", "top"), (0.5, 0.5, "center", "center"), (0.03, 0.5, "left", "center"),
+           (0.97, 0.5, "right", "center"))  # fmt: skip
 
 
-def value_labels(ax, spec: CurveSpec, p: Panel, lay: Layout, min_gap: float) -> None:
-    """The values at a marked x (the rule's cell, the layer a rule uses), printed beside their points with a white
-    halo, spread vertically where two are close; right of the points where they fit, else left. On a hatched panel a
-    label never sits on the panel's own label: it takes the other side, or is left out."""
+def curve_labels(ax, spec: CurveSpec, p: Panel, lay: Layout, placer: Placer) -> None:
+    """A curve panel's labels, each where it covers no marker and no label: the hatch's reason, the notes on list
+    lengths not drawn, the values at the rule's cell (the decisive arm's first), the gap between two marks."""
+    if p.status not in ("value", "not interpretable"):
+        return
+    within = ax.get_window_extent(placer.r)
     xspan, yspan = spec.xlim[1] - spec.xlim[0], spec.ylim[1] - spec.ylim[0]
     w_in, h_in = ax.get_position().width * W, ax.get_position().height * H
-    hatch = None  # the hatch label's box in data units
+
+    def at_corner(text: str, italic: bool) -> None:
+        def make(i: float, _: float, __: str) -> Text:
+            x, y, ha, va = CORNERS[int(i)]
+            return status_text(ax, x, y, text, ha, italic=italic, va=va, transform=ax.transAxes)
+
+        placer.put(make, [(i, 0.0, "") for i in range(len(CORNERS))], within)
+
     if p.status == "not interpretable":
-        hw = (S.text_width(ax.figure, "not interpretable") + 0.15) / w_in * xspan
-        hh = 0.62 / h_in * yspan
-        hx1, hy = spec.xlim[0] + HATCH_LABEL[0] * xspan, spec.ylim[0] + HATCH_LABEL[1] * yspan
-        hatch = (hx1 - hw, hx1, hy - hh / 2, hy + hh / 2)
+        at_corner(f"not interpretable\n{p.reason}", italic=False)
+    for note in p.notes:
+        at_corner(note, italic=True)
     for mkey, keys in spec.label_at:
         if mkey not in p.marks:
             continue
         found = []
         for s in p.series:
-            if s.key not in keys or not s.x:
-                continue
-            i = min(range(len(s.x)), key=lambda j: abs(s.x[j] - p.marks[mkey]))
-            t = s.y[i]
-            if abs(s.x[i] - p.marks[mkey]) < 1e-6 and finite(t):
-                found.append((100 * t[0], s.x[i]))  # type: ignore[index]
-        if lay.drop_labels == 1:
+            if s.key in keys and s.x:
+                i = min(range(len(s.x)), key=lambda j: abs(s.x[j] - p.marks[mkey]))
+                t = s.y[i]
+                if abs(s.x[i] - p.marks[mkey]) < 1e-6 and finite(t):
+                    found.append((s.key, 100 * t[0], s.x[i]))  # type: ignore[index]
+        found.sort(key=lambda f: keys.index(f[0]))  # the decisive arm first
+        if lay.drop_labels:
             found = found[:1]
-        found.sort()
-        w = (S.text_width(ax.figure, "100%") + 0.1) / w_in * xspan  # a label, data units
-        lh = 0.3 / h_in * yspan  # a label's height
-        ys = spread_within([y for y, _ in found], min_gap, spec.ylim[0] + 0.6 * lh, spec.ylim[1] - 0.6 * lh)
-        for (y, x), yl in zip(found, ys, strict=True):
-            sides = [
-                (x + 0.05 * xspan, x + 0.05 * xspan + w, "left"),
-                (x - 0.05 * xspan - w, x - 0.05 * xspan, "right"),
-            ]
-            for a, b, ha in sides:
-                if a < spec.xlim[0] or b > spec.xlim[1]:
-                    continue
-                if hatch and a < hatch[1] and b > hatch[0] and yl - lh / 2 < hatch[3] and yl + lh / 2 > hatch[2]:
-                    continue
-                value_text(ax, a if ha == "left" else b, yl, f"{y:.0f}%", ha)
-                break
+        dx, dy = 0.1 / w_in * xspan, 0.26 / h_in * yspan
+        glyph = {"o": "●", "s": "■", "^": "▲", "D": "◆", "v": "▼"}
+        shape = {ss.key: ss.shape for ss in spec.series}
+        for key, y, x in found:  # near the point first; farther (with a leader line) before leaving a value out
+            # offsets in 0.1 in steps, starting past the point's own marker; nearest first
+            offsets = sorted(((s * k, v) for k in (1.4, 2, 3, 4, 6, 9) for v in (0, 1, -1, 2, -2, 3, -3, 4, -4)
+                              for s in (1, -1)), key=lambda o: (o[0] * 0.1) ** 2 + (o[1] * 0.26) ** 2)  # fmt: skip
+            cands = [(x + k * dx, y + v * dy, "left" if k > 0 else "right") for k, v in offsets]
+            text = f"{glyph.get(shape.get(key, ''), '')}{y:.0f}%"  # the series' marker names it
+            t = placer.put(lambda xx, yy, ha, text=text: value_text(ax, xx, yy, text, ha), cands, within)
+            if t is not None:
+                tx, ty = t.get_position()
+                if ((tx - x) / dx * 0.1) ** 2 + ((ty - y) / dy * 0.26) ** 2 > 0.12**2:  # moved: a leader to it
+                    ax.plot([x, tx], [y, ty], color=S.INK2, lw=1, zorder=2.2, gid="leader")
+    if spec.span_marks and all(k in p.marks for k in spec.span_marks):
+        a, b = (p.marks[k] for k in spec.span_marks)
+        y = spec.ylim[1] - 0.12 * yspan
+        cands = [((a + b) / 2, y - v * 0.09 * yspan, "center") for v in (1, 2, 3, -1)]
+        placer.put(lambda xx, yy, ha: value_text(ax, xx, yy, f"{b - a:+.0f} layers", ha), cands, within)
 
 
 def draw_series(ax, spec: CurveSpec, ss: SeriesSpec, s: Series, model_key: str, dx: float) -> None:
@@ -1373,7 +1473,8 @@ def draw_series(ax, spec: CurveSpec, ss: SeriesSpec, s: Series, model_key: str, 
     else:
         ax.vlines(xs, los, his, color=ss.grey or model.edge, lw=2.2, alpha=alpha, zorder=2.5)
     ax.plot(xs, ys, zorder=3, alpha=alpha, **kw_line)
-    ax.plot(xs, ys, zorder=4, alpha=alpha, **kw_mark)
+    if kw_mark.get("markersize"):
+        ax.plot(xs, ys, zorder=4, alpha=alpha, gid="mark", **kw_mark)
 
 
 # ---------------------------------------------------------------- the figures
@@ -1381,88 +1482,75 @@ def draw_series(ax, spec: CurveSpec, ss: SeriesSpec, s: Series, model_key: str, 
 
 LATE = DotSpec(
     "f_late_read_all_models",
-    "A lookup ends in a late attention read of the answer's sentence",
-    "% of lookups still right with the answer's sentence hidden from the last tokens in every attention layer (every "
-    "layer on attention-only models), against two controls: another sentence hidden there instead, and on the "
-    "hybrids the answer's sentence hidden in every DeltaNet layer instead. Memory → prompt, items right unedited.",
+    "% of lookups still right with the answer's sentence hidden from the last tokens in every attention layer, against "
+    "hiding it in every DeltaNet layer instead (hybrids) and hiding another sentence (dashed tick). Memory → prompt.",
     "% right",
-    tuple(DotPanel(k, t, (SeriesSpec("attn", "answer's sentence hidden", "o"),
-                          SeriesSpec("deltanet", "hidden in DeltaNet layers instead", "D", S.COMPARE),
-                          SeriesSpec("off", "another sentence hidden instead", "s", S.COMPARE2)),
+    tuple(DotPanel(k, t, (SeriesSpec("attn", "its sentence hidden", "o"),
+                          SeriesSpec("deltanet", "DeltaNet layers instead", "D", S.COMPARE),
+                          SeriesSpec("off", "another sentence (tick)", "", S.COMPARE2, tick=True)),
                    rules=(DF.LATE_HI, DF.GDN_MIN), chance=(G.CHANCE, "chance"), pair=("attn", ("deltanet", "off")))
           for k, t in (("prose", "Prose"), ("table", "Table"), ("JSON", "JSON"), ("long context", "Long context"))),
-    (("gap", "the decisive gap"), ("chance", "chance (20%)"), ("rule", "the rule's bars (and the point ≤ 20%)")),
+    (("gap", "the decisive gap"), ("chance", "chance (20%)"), ("rule", "the rule's bars")),
 )  # fmt: skip
 NAME_DIGIT = DotSpec(
     "f_digit_not_name_all_models",
-    "The last tokens read the answer's digit, not the entity's name",
     "% of lookups still right when the answer's sentence is hidden from the last tokens in every layer except its "
-    "digit, or except its name. Memory → prompt, items right unedited; prose, table and JSON scenes from one run per "
-    "model.",
+    "digit, or except its name. Memory → prompt, items right unedited.",
     "% right",
     tuple(DotPanel(k, t, (SeriesSpec("digit", "only the digit left visible", "o"),
                           SeriesSpec("name", "only the name left visible", "^", S.COMPARE)),
                    rules=(DP.BROKEN, DP.KEPT), chance=(G.CHANCE, "chance"), pair=("digit", ("name",)))
           for k, t in (("prose", "Prose"), ("table", "Table"), ("JSON", "JSON"))),
-    (("gap", "the decisive gap"), ("chance", "chance (20%)"), ("rule", "the rule's bars: name ≤ 35%, digit ≥ 70%")),
+    (("gap", "the decisive gap"), ("chance", "chance (20%)"), ("rule", "the rule's bars")),
 )  # fmt: skip
 COUNTING = DotSpec(
     "f_counts_list_order_not_text_all_models",
-    "The order label counts order in the list, not place in the text",
-    "The donor prompt's last two tokens copied into the original at the decisive layer (memory → prompt): % of "
-    "patched answers at the original's sentence with the same order in the list, at the same place in the text, or "
-    "at the same place counted from the end; three layouts that pull them apart.",
+    "The donor's last two tokens copied in at the decisive layer (memory → prompt): % of patched answers at the "
+    "sentence with the same order in the list, at the same place in the text, or counted from the end.",
     "% of answers",
     tuple(DotPanel(k, k[0].upper() + k[1:], (SeriesSpec("order", "same order in the list", "o"),
                                              SeriesSpec(G.RIVAL["token"], "same place in the text", "s", S.COMPARE),
-                                             SeriesSpec(G.RIVAL["end"], "counted from the end", "v", S.COMPARE2)),
+                                             SeriesSpec(G.RIVAL["end"], "counted from the end", "v", S.COMPARE2,
+                                                        below=True)),
                    chance=(G.CHANCE, "chance"), pair=("order", (G.RIVAL["token"], G.RIVAL["end"])))
           for k, *_ in G.V4X),
-    (("gap", "the decisive gap"), ("chance", "chance (20%)"), ("bar", "the bar: the rivals' upper end")),
+    (("gap", "the decisive gap"), ("chance", "chance (20%)"), ("bar", "the rivals' upper end")),
 )  # fmt: skip
 LENS = DotSpec(
     "f_lookup_ignores_lens_part_all_models",
-    "A lookup ignores the lens-readable part of a stated bridge",
-    "A stated bridge switched by patching only the part of its change the lens can read, or everything else, at a "
-    "cell chosen without the lens. Shaded: recalls minus lookups switched by the lens-readable part (points; Newcombe "
-    "95% interval); then the rates behind it, and the lens gates (the bridge in the lens's top 10 at its sentence).",
+    "A stated bridge switched by patching only the part of its change the lens can read, or the rest. Shaded: recalls "
+    "minus lookups switched by the lens part (points, Newcombe 95%); beside it the rates and the lens gates.",
     "",
-    (DotPanel("contrast", "Recall − lookup", (SeriesSpec("contrast", "recalls minus lookups (points)", "o"),),
-              contrast=True, width=1.5),
-     DotPanel("lens part", "Lens part", (SeriesSpec("lookup", "lookups", "o"),
+    (DotPanel("contrast", "Recall − lookup", (SeriesSpec("contrast", "", "o"),), contrast=True, width=1.45),
+     DotPanel("lens part", "Lens part", (SeriesSpec("lookup", "lookups; gates: the bridge", "o"),
                                          SeriesSpec("recall", "recalls (the control)", "s", S.COMPARE)),
-              rules=(0.10, 0.30), verdict=False, pair=("lookup", ("recall",)), n_col=False),
-     DotPanel("rest", "The rest", (SeriesSpec("rest", "lookups, everything else", "^"),), rules=(0.50,),
-              verdict=False, n_col=False),
-     DotPanel("gate v1", "Gate: word", (SeriesSpec("bridge", "gate: the bridge", "o"),
-                                        SeriesSpec("other", "gate: the other bridge", "^", S.COMPARE)),
+              rules=(0.10, 0.30), verdict=False, pair=("lookup", ("recall",)), n_col=False, width=1.45),
+     DotPanel("rest", "The rest", (SeriesSpec("rest", "lookups, the rest", "^"),), rules=(0.50,),
+              verdict=False, n_col=False, width=0.75),
+     DotPanel("gate v1", "Gate: word", (SeriesSpec("bridge", "lookups; gates: the bridge", "o"),
+                                        SeriesSpec("other", "gates: the other bridge", "^", S.COMPARE)),
               rules=(0.20, 0.50), pair=("bridge", ("other",))),
-     DotPanel("gate v2", "Gate: after", (SeriesSpec("bridge", "gate: the bridge", "o"),
-                                         SeriesSpec("other", "gate: the other bridge", "^", S.COMPARE)),
+     DotPanel("gate v2", "Gate: after", (SeriesSpec("bridge", "lookups; gates: the bridge", "o"),
+                                         SeriesSpec("other", "gates: the other bridge", "^", S.COMPARE)),
               rules=(0.20, 0.50), pair=("bridge", ("other",)))),
-    (("null", "random direction, same size"), ("gap", "the decisive gap"), ("rule", "the rule's bars")),
-    legend_cols=4,
+    (("null", "random direction"), ("gap", "the decisive gap"), ("rule", "the rule's bars")),
 )  # fmt: skip
 ORDER = CurveSpec(
     "f_order_then_identity_all_models",
-    "Order label for the 1st and 2nd sentence, the bridge's identity after",
-    "Donor's last two tokens copied into the original at one layer (memory → prompt): % of patched answers at the "
-    "sentence in the same place minus % at the donor entity's sentence, by the sentence asked; 5-, 8- and "
-    "12-sentence lists. Above zero: the order label; below: the identity.",
+    "The donor's last two tokens copied in at one layer (memory → prompt): % of patched answers at the sentence in "
+    "the same place minus % at the donor entity's, by the sentence asked, in 5-, 8- and 12-sentence lists.",
     "the sentence the donor asks (its place in the list)",
     "same place − donor's entity (points)",
     (SeriesSpec("5", "5 sentences", "o"), SeriesSpec("8", "8 sentences", "s"), SeriesSpec("12", "12 sentences", "^")),
-    xlim=(0.4, 13.6), ylim=(-100, 100), yticks=(-100, -50, 0, 50, 100), xticks=(1, 2, 3, 5, 8, 12),
+    xlim=(0.4, 13.6), ylim=(-112, 112), yticks=(-100, -50, 0, 50, 100), xticks=(1, 2, 3, 5, 8, 12),
     chance=(0.0, ""), rule_segments=((0.0, 0.4, 2.5), (100 * 0.05, 2.5, 13.6)), dodge=0.24,
     lines=(("chance", "no preference (0)"), ("rule", "the rule's bars (pooled)")),
-    footer="Under each name: n and the verdict for 5 · 8 · 12 sentences (" + VERDICT_SHORT + ").",
+    verdict_note="beside n: per list length ✓ holds · ✗ fails", legend_cols=4,
 )  # fmt: skip
 DEPTH = CurveSpec(
     "f_patch_outcomes_by_depth_all_models",
-    "Before the digit arrives, the patch moves the answer to another sentence",
-    "The donor prompt's last two tokens copied into the original at one layer (memory → prompt): % of patched answers "
-    "at the sentence in the same place (the model's color), at the donor's entity's sentence (dark grey) and the "
-    "donor's own digit (light grey), by depth; shaded: 95% intervals.",
+    "The donor's last two tokens copied in at one layer (memory → prompt): % of patched answers at the sentence in "
+    "the same place, at the donor entity's sentence and at the donor's own digit, by depth (95% bands).",
     "depth (% of the model's layers)",
     "% of patched answers",
     (SeriesSpec("position", "same place in the list", "o"), SeriesSpec("identity", "the donor's entity", "s", S.COMPARE),
@@ -1472,14 +1560,11 @@ DEPTH = CurveSpec(
     lines=(("chance", "chance (20%)"), ("rule", "the digit's bar (10%)")),
     marks=(MarkSpec("used", "v", S.INK, True, "layer finding 5 uses"),),
     label_at=(("used", ("position", "identity")),),
-    legend_cols=4,
 )  # fmt: skip
 PUSH = CurveSpec(
     "f_lens_push_recall_not_lookup_all_models",
-    "A lens push writes a stated bridge for recall; the lookup does not follow",
-    "A push along the lens's direction for the other bridge at the stated bridge's sentence or word: % of lookups "
-    "(the model's color) and recalls (dark grey) switched to the other bridge's answer, by depth; per layer the valid "
-    "cell (place, size) that switches the most recalls. Dashed: a random push of the same size on lookups.",
+    "A push along the lens's direction for the other bridge at the stated bridge's sentence or word: % of lookups and "
+    "recalls switched by depth, at each layer's valid cell with the most recalls. Dashed: a random push.",
     "depth (% of the model's layers)",
     "% switched",
     (SeriesSpec("lookup", "lookups", "o"), SeriesSpec("recall", "recalls (the control)", "s", S.COMPARE),
@@ -1490,59 +1575,171 @@ PUSH = CurveSpec(
     marks=(MarkSpec("main", "v", S.INK, True, "the main rule's cell"),
            MarkSpec("amended", "v", S.INK, False, "the amended rule's cell")),
     label_at=(("main", ("lookup", "recall")),),
-    footer="Under each name: n, then each rule's verdict beside its mark (" + VERDICT_SHORT + ").",
-    legend_cols=4,
+    verdict_note="beside n: ▼ / ▽ rule ✓ holds · ✗ fails · ≈ inconclusive",
 )  # fmt: skip
 GAP = CurveSpec(
     "f_layer_gap_lens_vs_patch_27b",
-    "The full patch keeps moving lookups after the lens push stops",
-    "Qwen3.6-27B, fresh scenes, at the stated bridge: % of lookups (prompt → prompt) switched to the other bridge's "
-    "answer by layer, under a push along the lens's direction, the full patch of the residual, a push along the "
-    "input-embedding direction, and a random push; per layer the valid cell with the highest upper end.",
+    "Qwen3.6-27B, fresh scenes, at the stated bridge: % of lookups switched by layer under a lens push, the full patch "
+    "of the residual, an input-embedding push and a random push (valid cells only).",
     "layer (of 64)",
     "% of lookups switched",
     (SeriesSpec("lens", "lens push", "o"), SeriesSpec("patch", "full patch", "s", S.COMPARE),
      SeriesSpec("embed", "embedding push", "^", S.COMPARE2), SeriesSpec("random", "random push", "", "#b5b5b5")),
     xlim=(10, 36), ylim=(0, 100), yticks=(0, 50, 100), xticks=(12, 16, 20, 24, 28, 32),
     rules=((5.0, "5%"),),
-    lines=(("rule", "stop bar: upper end < 5%"), ("gap", "the gap (≥ 6 layers: a gap; ≤ 2: none)")),
+    lines=(("rule", "stop bar: upper end < 5%"), ("gap", "the gap between the stops")),
     marks=(MarkSpec("stop lens", "v", S.MODEL["27b"].color, True, "lens push stops"),
            MarkSpec("stop patch", "v", S.COMPARE, True, "full patch stops"),
            MarkSpec("stop embed", "v", S.COMPARE2, True, "embedding push stops")),
     span_marks=("stop lens", "stop patch"),
     panel_titles=(("w", "At the bridge's word"), ("s", "At the bridge's sentence")),
-    footer="Under each title: n and the layer-gap rule's verdict (" + VERDICT_SHORT + ").",
-    legend_cols=4, hatch_in_legend=False,
+    verdict_note="beside n: the layer-gap rule ✓ holds", hatch_in_legend=False,
 )  # fmt: skip
+
+
+# ---------------------------------------------------------------- the titles: each figure's outcome, from its data
+
+
+PANEL_WORDS = {"prose": "prose", "table": "tables", "JSON": "JSON", "long context": "long context"}
+TITLE_NAME = {
+    "27b": "the 27B",
+    "9b": "the 9B",
+    "olmo_hybrid": "Olmo-Hybrid",
+    "122b": "the 122B",
+    "32b": "the 32B",
+    "olmo": "OLMo-3",
+    "muse": "Muse",
+    "gemma": "Gemma 4",
+}  # short names, for titles
+
+
+def cells(data: DotData, panel: str | None = None) -> list[tuple[str, str, Mark]]:
+    return [(p, m.key, data.marks[(p, m.key)]) for p in data.panels for m in S.MODELS
+            if (p, m.key) in data.marks and (panel is None or p == panel)]  # fmt: skip
+
+
+def title_late(data: DotData) -> str:
+    """The cells that fail, split by the rule's reason: the lookup survives the block, or (a hybrid) blocking the
+    DeltaNet layers instead breaks it too."""
+    survives: dict[str, list[str]] = {}
+    deltanet: dict[str, list[str]] = {}
+    for p, k, mk in cells(data):
+        if mk.status == "value" and mk.verdict == "fails":
+            (deltanet if "DeltaNet" in mk.why else survives).setdefault(k, []).append(PANEL_WORDS.get(p, p))
+    out = "Blocking the late read breaks the lookup on every model tested"
+    if survives:
+        out += " except " + join_and([f"{TITLE_NAME[k]} ({join_and(ps)})" for k, ps in survives.items()])
+    if deltanet:
+        out += "; on " + join_and([f"{TITLE_NAME[k]}'s {join_and(ps)}" for k, ps in deltanet.items()])
+        out += " the DeltaNet layers matter too"
+    return out
+
+
+def counts_of(marks: list[Mark]) -> tuple[int, int]:
+    h = sum(mk.status == "value" and mk.verdict == "holds" for mk in marks)
+    return h, h + sum(mk.status == "value" and mk.verdict == "fails" for mk in marks)
+
+
+def title_name_digit(data: DotData) -> str:
+    h, j = counts_of([mk for *_, mk in cells(data)])
+    return f"The last tokens read the answer's digit, not the entity's name, in {h} of the {j} cells judged"
+
+
+def title_order(data: CurveData) -> str:
+    vs = [s.verdict for p in data.panels.values() for s in p.series if s.y]
+    h, j = vs.count("holds"), vs.count("holds") + vs.count("fails")
+    return f"The order label for the 1st–2nd sentence, identity after, holds in {h} of {j} tests"
+
+
+def title_counting(data: DotData) -> str:
+    (h1, j1), (h2, j2), (h3, j3) = (counts_of([mk for *_, mk in cells(data, p)]) for p in data.panels)
+    return (f"The label counts order in the list, not place in the text, on {h1} of {j1} models when filler moves, "
+            f"on {h2} of {j2} with a sentence more and {h3} of {j3} with one fewer")  # fmt: skip
+
+
+def title_depth(data: CurveData) -> str:
+    vals = []
+    for p in data.panels.values():
+        pos = next((s for s in p.series if s.key == "position"), None)
+        if pos and "used" in p.marks:
+            at = [t for x, t in zip(pos.x, pos.y, strict=True) if t is not None and abs(x - p.marks["used"]) < 1e-6]
+            vals += [100 * t[0] for t in at if finite(t)]
+    if not vals:
+        return "Where the last-two-token patch moves the answer, by depth"
+    return (f"Before the donor's digit arrives, {min(vals):.0f}–{max(vals):.0f}% of patched answers go to the sentence "
+            "in the same place in the list")  # fmt: skip
+
+
+def title_lens(data: DotData) -> str:
+    holds = [TITLE_NAME[k] for _, k, mk in cells(data, "contrast") if mk.status == "value" and mk.verdict == "holds"]
+    fails = [TITLE_NAME[k] for _, k, mk in cells(data, "contrast") if mk.status == "value" and mk.verdict == "fails"]
+    if not holds and not fails:
+        return "The lens part of a stated bridge: no model judged yet"
+    out = "Lookups ignore the lens part of a stated bridge on " + (join_and(holds) if holds else "no model")
+    return out + (f", not on {join_and(fails)}" if fails else "")
+
+
+def title_push(data: CurveData, grid_verdicts: dict[str, str]) -> str:
+    holds = [TITLE_NAME[k] for k, v in grid_verdicts.items() if v == "holds"]
+    other = [(TITLE_NAME[k], v) for k, v in grid_verdicts.items() if v in ("inconclusive", "fails")]
+    out = "A lens push at the stated bridge switches recalls but not lookups on " + (join_and(holds) or "no model")
+    if other:
+        out += (
+            "; on "
+            + join_and([lab for lab, _ in other])
+            + " the lookups move too ("
+            + join_and(sorted({v for _, v in other}))
+            + " by the main rule)"
+        )
+    return out
+
+
+def title_gap(data: CurveData) -> str:
+    p = data.panels.get("w")
+    if not p or "stop lens" not in p.marks or "stop patch" not in p.marks:
+        return "The layer gap between the lens push and the full patch: not run"
+    d = p.marks["stop patch"] - p.marks["stop lens"]
+    if d <= 2:
+        return "The full patch stops moving lookups with the lens push"
+    return f"At the stated bridge's word the full patch keeps moving lookups {d:.0f} layers after the lens push stops"
 
 
 @dataclass(frozen=True)
 class FigureDef:
     spec: DotSpec | CurveSpec
     collect: Callable[[Grid, Source], DotData | CurveData]
+    title: Callable[..., str]
     keys: tuple[str, ...] | None = None  # curve panels that are not the eight models
 
 
 FIGURES: dict[str, FigureDef] = {
-    LATE.stem: FigureDef(LATE, collect_late),
-    NAME_DIGIT.stem: FigureDef(NAME_DIGIT, collect_name_digit),
-    ORDER.stem: FigureDef(ORDER, collect_order),
-    COUNTING.stem: FigureDef(COUNTING, collect_counting),
-    DEPTH.stem: FigureDef(DEPTH, collect_depth),
-    LENS.stem: FigureDef(LENS, collect_lens),
-    PUSH.stem: FigureDef(PUSH, collect_push),
-    GAP.stem: FigureDef(GAP, lambda grid, src: collect_layer_gap(src), keys=("w", "s")),
+    LATE.stem: FigureDef(LATE, collect_late, title_late),
+    NAME_DIGIT.stem: FigureDef(NAME_DIGIT, collect_name_digit, title_name_digit),
+    ORDER.stem: FigureDef(ORDER, collect_order, title_order),
+    COUNTING.stem: FigureDef(COUNTING, collect_counting, title_counting),
+    DEPTH.stem: FigureDef(DEPTH, collect_depth, title_depth),
+    LENS.stem: FigureDef(LENS, collect_lens, title_lens),
+    PUSH.stem: FigureDef(PUSH, collect_push, title_push),
+    GAP.stem: FigureDef(GAP, lambda grid, src: collect_layer_gap(src), title_gap, keys=("w", "s")),
 }
 ONE_MODEL = {GAP.stem}  # figures that are one model's test by design
 
 
-def draw(name: str, data: DotData | CurveData, lay: Layout) -> Figure:
+def title_for(name: str, data: DotData | CurveData, grid: Grid) -> str:
+    f = FIGURES[name]
+    if name == PUSH.stem:
+        verdicts = {m.key: word(r["verdict"]) for m in S.MODELS if (r := grid.get(m.key, "f7", "main rule"))}
+        return f.title(data, verdicts)
+    return f.title(data)
+
+
+def draw(name: str, data: DotData | CurveData, lay: Layout, title: str = "") -> Figure:
     f = FIGURES[name]
     if isinstance(f.spec, DotSpec):
         assert isinstance(data, DotData)
-        return draw_dots(f.spec, data, lay)
+        return draw_dots(f.spec, data, title, lay)
     assert isinstance(data, CurveData)
-    return draw_curves(f.spec, data, list(f.keys) if f.keys else None, lay)
+    return draw_curves(f.spec, data, title, list(f.keys) if f.keys else None, lay)
 
 
 @dataclass
@@ -1551,17 +1748,19 @@ class Rendered:
     data: DotData | CurveData
     step: int  # the LAYOUTS step that has no overlap (or the last one tried)
     overlaps: list[tuple[str, str]]
+    title: str = ""
 
 
 def render(name: str, grid: Grid, src: Source, mask: bool = False) -> Rendered:
-    """Collect the figure's cells once, then draw it with each LAYOUTS step in turn until no text overlaps another
-    or leaves the figure (plot_style.overlaps); the last step's overlaps are kept when none is clean."""
+    """Collect the figure's cells once, title it by its outcome, then draw it with each LAYOUTS step in turn until no
+    text touches another text or a mark (plot_style.overlaps); the last step's overlaps are kept when none is clean."""
     data = FIGURES[name].collect(grid, src)
+    title = title_for(name, data, grid)
     for step, lay in enumerate(LAYOUTS):
-        fig = draw(name, data, lay)
+        fig = draw(name, data, lay, title)
         bad = S.overlaps(fig, mask=mask)
         if not bad or step == len(LAYOUTS) - 1:
-            return Rendered(fig, data, step, bad)
+            return Rendered(fig, data, step, bad, title)
         plt.close(fig)
     raise AssertionError("unreachable")
 
@@ -1577,12 +1776,13 @@ def counts(data: DotData | CurveData) -> tuple[int, int]:
     return len(drawn), len(data.panels) - len(drawn) + gaps
 
 
-def status_line(name: str, r: Rendered) -> list[str]:
-    """The log's lines for one figure: its overlap count and how many cells have a value (never a value; colliding
-    texts named by role where they could carry one)."""
+def status_line(name: str, r: Rendered, show_title: bool = False) -> list[str]:
+    """The log's lines for one figure: its overlap count and how many cells have a value (and, once the results are
+    open, its title); colliding texts named by role where they could carry a value."""
     with_value, label = counts(r.data)
     out = [f"figure {name}: {len(r.overlaps)} overlaps (layout step {r.step}); cells with a value {with_value}, "
            f"drawn as a label {label}"]  # fmt: skip
+    out += [f"  title: {r.title}"] if show_title else []
     out += [f"  overlap: {a} <> {b}" for a, b in r.overlaps]
     return out + [f"  unreadable cell: {e}" for e in r.data.errors]
 
@@ -1592,16 +1792,17 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--grid", default=None, help="a results/cross_model/<stamp> folder (default: the newest)")
     ap.add_argument("--out", default=str(OUT))
     ap.add_argument("--only", default=None, help="figure names, comma-separated")
+    ap.add_argument("--titles", action="store_true", help="print each figure's title (results open only)")
     a = ap.parse_args(argv)
     grid_dir = Path(a.grid) if a.grid else latest_grid()
     grid = Grid(json.loads((grid_dir / "grid.json").read_text())["rows"])
     print("grid:", G.rel(grid_dir))
     src, failed = FileSource(), []
     for name in a.only.split(",") if a.only else list(FIGURES):
-        r = render(name, grid, src, mask=True)
+        r = render(name, grid, src, mask=not a.titles)
         S.save(r.fig, Path(a.out), name)
         plt.close(r.fig)
-        print("\n".join(status_line(name, r)))
+        print("\n".join(status_line(name, r, a.titles)))
         if r.overlaps:
             failed.append(name)
     if failed:

@@ -265,7 +265,8 @@ def test_label_kinds_are_drawn(rendered):
     assert "6 vs 10%" in drawn  # the small gap (Olmo-Hybrid, JSON): both arms in one label beside the pair
     nd = rendered["f_digit_not_name_all_models"]
     assert nd.data.marks[("JSON", "olmo")].status == "not interpretable"
-    assert labelled({x.get_text() for x in texts(nd.fig)}, "not interpretable", "off-path control")
+    # a hatched cell: "not interpretable: reason" where it fits, else the reason alone (the hatch says the rest)
+    assert any(t.endswith("off-path control") for t in {x.get_text() for x in texts(nd.fig)})
     assert any(isinstance(p, Rectangle) and p.get_hatch() for ax in nd.fig.axes for p in ax.patches)
     lens = rendered["f_lookup_ignores_lens_part_all_models"]
     for panel in lens.data.panels:
@@ -363,14 +364,44 @@ def test_zero_overlaps_with_long_names_and_close_values(monkeypatch):
 def test_overlap_check_finds_collisions_and_masks_values():
     fig = plt.figure(figsize=S.FIGSIZE)
     ax = fig.add_axes((0.1, 0.1, 0.8, 0.8))
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
     ax.text(0.5, 0.5, "a title", fontsize=20)
     ax.text(0.5, 0.5, "37%", fontsize=20, gid="value")
     ax.text(0.98, 0.5, "far too long a label for its place", gid="status")
+    ax.plot([0.2], [0.2], marker="o", markersize=10, gid="mark")  # a value label on its own marker
+    ax.text(0.2, 0.2, "4%", gid="value")
+    ax.plot([0.1, 0.4], [0.8, 0.8], lw=6, gid="gap")  # a value label on the gap bar
+    ax.text(0.25, 0.8, "5 vs 9%", gid="value")
+    ax.plot([0.7], [0.2], marker="o", markersize=10, gid="mark")  # a free label beside a marker: fine
+    ax.text(0.73, 0.2, "8%", gid="value")
     found = S.overlaps(fig, mask=True)
     assert ("'a title'", "<value>") in found
     assert ("<status>", "outside its panel") in found
+    assert ("<value>", "a mark") in found and ("<value>", "a gap") in found
+    assert sum(b in ("a mark", "a gap") for _, b in found) == 2
     assert not any("37" in a or "37" in b for a, b in found)  # a masked report never prints the value
     plt.close(fig)
+
+
+def test_the_decisive_value_is_labelled_on_every_row(rendered):
+    """Every row with a value has its decisive arm's number printed in each panel with a decisive pair (alone, or
+    joined with its comparison as '6 vs 10%')."""
+    for name, r in rendered.items():
+        spec = F.FIGURES[name].spec
+        if not isinstance(spec, F.DotSpec):
+            continue
+        assert isinstance(r.data, F.DotData)
+        for ax, ps in zip(r.fig.axes, spec.panels, strict=True):
+            rows = sum(r.data.marks[(ps.key, m.key)].status == "value" for m in S.MODELS)
+            values = sum(t.get_gid() == "value" for t in ax.texts)
+            assert values >= rows, (name, ps.key, values, rows)
+
+
+def test_titles_state_the_outcome(rendered):
+    assert rendered["f_late_read_all_models"].title.endswith("except the 27B (tables)")
+    assert "not on" not in rendered["f_lookup_ignores_lens_part_all_models"].title  # every judged model holds
+    assert "on the 27B" in rendered["f_lens_push_recall_not_lookup_all_models"].title
 
 
 def test_status_log_prints_no_values(rendered):
