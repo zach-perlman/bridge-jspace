@@ -1,3 +1,7 @@
+import hashlib
+import json
+
+import pytest
 import yaml
 
 from bridge_jspace import pins
@@ -25,3 +29,22 @@ def test_olmo_hybrid_pins_agree_with_yaml_and_have_no_lens():
     assert (m["name"], m["revision"], m["n_layers"]) == (t["repo"], t["revision"], t["n_layers"])
     assert m["lenses"] == t["lenses"] == {} and t["lens_layers"] == []
     assert t["run_prefix"] == "olmo_hybrid_7b_"
+
+
+def test_natural_read_items_name_the_pinned_upstream_file():
+    """The derived items (sha256-checked on load) record the raw SQuAD file they were made from: its URL and sha256."""
+    items = pins.natural_read_items()
+    meta = json.loads(pins.NATURAL_READ_FILE.read_text())["meta"]
+    assert (meta["source"]["url"], meta["source"]["sha256"]) == (pins.SQUAD_DEV_URL, pins.SQUAD_DEV_SHA256)
+    assert len(items) == meta["counts"]["items"] == len({it["id"] for it in items})
+
+
+def test_natural_read_items_rebuild_from_the_raw_file():
+    """Where the raw file is cached (cache/ is not committed): `natural_read.py make` gives the pinned items exactly."""
+    if not pins.SQUAD_DEV_FILE.exists():
+        pytest.skip("raw SQuAD file not cached")
+    blob = pins.SQUAD_DEV_FILE.read_bytes()
+    assert hashlib.sha256(blob).hexdigest() == pins.SQUAD_DEV_SHA256
+    from scripts import natural_read as NR
+
+    assert NR.build(json.loads(blob))[0] == pins.natural_read_items()

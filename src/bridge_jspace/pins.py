@@ -505,6 +505,15 @@ WIKITEXT_FILE = DATA_DIR / "wikitext103_test.json"  # generic text for part B's 
 WIKITEXT_SHA256 = "a6b5b17a576932fbb570a96b0f5b6a65ced408690a2dce749a8c56f980bbcc0f"
 LENS_EVAL_MULTIHOP_FILE = DATA_DIR / "lens_eval_multihop.json"
 LENS_EVAL_MULTIHOP_SHA256 = "50b7e4c9255291c0ca2a8e94615be9f44531fa57bb1a844e4f9616056d987416"
+# SQuAD v1.1 dev (Rajpurkar et al. 2016; CC BY-SA 4.0), the raw upstream file at a pinned commit of the dataset's
+# site repo (the site's own copy has the same sha256). Not committed: downloaded once into cache/ (REPO_ROOT's, not a
+# target's CACHE_DIR); scripts/natural_read.py make derives NATURAL_READ_FILE from it (finding 4 on natural text).
+SQUAD_DEV_URL = ("https://raw.githubusercontent.com/rajpurkar/SQuAD-explorer/240e165ab706d95bd4323653bb92421f446208cf/"
+                 "dataset/dev-v1.1.json")  # fmt: skip
+SQUAD_DEV_FILE = REPO_ROOT / "cache" / "natural_read" / "squad" / "dev-v1.1.json"
+SQUAD_DEV_SHA256 = "95aa6a52d5d6a735563366753ca50492a658031da74f301ac5238b03966972c9"
+NATURAL_READ_FILE = DATA_DIR / "natural_read_v1" / "items.json"  # natural_read.py make: one question per paragraph
+NATURAL_READ_SHA256 = "60b8527dc63c2fff3217d40ece1a7f8405a46aa3946f8d7f36f2d475eab21cc9"
 ENTITY_PROMPTS_FILE = DATA_DIR / "entity_prompts.json"
 ENTITY_PROMPTS_TOPUP_FILE = DATA_DIR / "entity_prompts_topup.json"
 ENTITY_PROMPTS_MORE_DIR = DATA_DIR / "entity_prompts_more"  # round 3: part files, merged in name order
@@ -565,6 +574,10 @@ def wikitext_rows() -> list[str]:
 
 def lens_eval_multihop_items() -> list[dict[str, Any]]:
     return load_pinned_items(LENS_EVAL_MULTIHOP_FILE, LENS_EVAL_MULTIHOP_SHA256)
+
+
+def natural_read_items() -> list[dict[str, Any]]:
+    return load_pinned_items(NATURAL_READ_FILE, NATURAL_READ_SHA256)
 
 
 def sha256_file(path: Path) -> str:

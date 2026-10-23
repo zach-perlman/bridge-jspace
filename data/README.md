@@ -119,6 +119,9 @@ Five statements give entities a digit ("The pig's locker is 9."); a question ask
 | `pointer_v4/` | `scripts/pointer_v4.py` | many entities and 3 wordings: countries (36), animals (34), body parts (16) kept by the 27B entity check `d3v4_entity_probe_27b` (sports failed: 14 < 16); a held-out third of each topic's entities and wording 2 never in the fit set (`split.json`); at most 12 scenes per asked entity | main 300 / 300 / 180 scenes per family, fit 200 / 200 / 120 |
 | `pointer_v5/` | `scripts/pointer_v5.py` | pointer_v4's entities in longer lists, digit or colour-word answers on the same scenes: main (5 and 8 statements, seed 871); len8 (8 statements, a fresh draw, seed 872); len12 (12 statements, colour words from 16 colours only, seed 873) | 150 scenes per topic × list length; memory → prompt and named → prompt |
 
+### Natural paragraphs (Dan, 23 Oct; finding 4 on natural text)
+`natural_read_v1/items.json` (`scripts/natural_read.py make`; design: `docs/design_natural_late_read.md`): 718 SQuAD v1.1 dev questions, one per Wikipedia paragraph (48 articles), each with the paragraph cut into sentences, the sentence holding the answer, an off-path sentence of about its length two or more sentences away, and a swap partner (another article's paragraph). Kept only where the answer starts with a letter, has at most 4 words, every annotator starts it with the same word, and no other word of paragraph or question shares that word's first 5 letters; paragraphs of 4+ sentences and at most 1,200 characters. Of 2,067 paragraphs (10,570 questions), 1,319 pass the paragraph filters, 1,266 of their questions pass the answer filters, and 718 paragraphs keep at least one. Each model then keeps the items it answers from the paragraph and from the answer's sentence alone but not without it (a competence run).
+
 ## What the lenses were fitted on
 
 Not on our data: a lens is the average Jacobian of the final residual with respect to a layer's residual over

@@ -1,0 +1,54 @@
+id: qwen36_27b_d2_natural_read
+title: "The late read in real paragraphs (Qwen3.6-27B): the answer's sentence of a SQuAD paragraph hidden from the last tokens"
+thread: D2
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.4
+depends_on: []
+command: >-
+  uv run python scripts/natural_read.py manifest --name qwen36_27b_natural_competence
+  --why "finding 4 on natural text (Dan, 23 Oct): which SQuAD items the model answers from the paragraph, from the answer's sentence alone, not without it, and not after another article's paragraph"
+  && uv run python scripts/natural_read.py competence --name qwen36_27b_natural_competence
+  && uv run python scripts/attn_knockout.py manifest --name qwen36_27b_d2_natural_read --dataset natural_read_v1
+  --n 200 --sources lookup lookup_off --dests final question after --layers all kind --sweep path --sweep-dests final
+  --absent --competence qwen36_27b_natural_competence
+  --why "finding 4 on natural text (Dan, 23 Oct): the sentence holding the answer of a SQuAD paragraph hidden from the last tokens in every attention layer, against another sentence of the paragraph, and in every DeltaNet layer instead"
+  && uv run python scripts/attn_knockout.py run --name qwen36_27b_d2_natural_read
+figures_command: >-
+  uv run python scripts/attn_knockout.py summarise --name qwen36_27b_d2_natural_read
+  && uv run python scripts/natural_read.py verdict --run qwen36_27b_d2_natural_read --competence qwen36_27b_natural_competence
+question: >-
+  In a real Wikipedia paragraph, when the last tokens before the answer cannot attend to the sentence that holds the
+  answer, does the model still answer?
+why_it_matters: >-
+  Finding 4 rests on synthetic lists (and neutral filler). In natural text the answer's sentence is linked to its
+  neighbours (pronouns, topic), the question shares words with it, and the question words could read it and pass the
+  answer on. If the last tokens still have to read the sentence themselves, the late read is how lookups work in text,
+  not an artefact of lists.
+hypotheses:
+  H-late-natural: 'the rule holds: hidden from the last tokens in every attention layer, <= 20% right (upper bound <= 30%); another sentence hidden there keeps >= 90%; hidden in every DeltaNet layer instead keeps >= 90%'
+  H-relay: 'more than 20% right with the sentence hidden from the last tokens while hidden from every later token leaves <= 10%: other positions (the question words, later sentences) read it and pass the answer on'
+  H-deltanet: 'the attention part holds but hiding the sentence in the DeltaNet layers instead costs more than 10 points'
+decision_rule: >-
+  Fixed 2026-10-23 before any run (docs/design_natural_late_read.md; scripts/natural_read.py judge). Items:
+  data/natural_read_v1 (SQuAD v1.1 dev, one question per paragraph, 718), eligible by the competence run (full
+  paragraph: the answer's first token on top and the greedy answer right; the answer's sentence alone: first token
+  right; the paragraph without that sentence: first token wrong), the answer's first token >= 3 characters or its whole
+  first word; the first 200 in the file's seeded order (all if fewer); counted if right unedited in the knockout run.
+  Holds iff the answer's sentence hidden from the last tokens (every token after the user turn: the template and
+  'Answer:') in every attention layer leaves <= 20% right with the Wilson upper bound <= 0.30, the item's off-path
+  sentence (two or more sentences away, character length within 0.75-1.33 of the answer's) hidden there keeps >= 90%
+  right (Wilson lower bound >= 0.85), and the answer's sentence hidden from the last tokens in every DeltaNet layer
+  instead keeps >= 90% right. Not interpretable if the answer's sentence hidden from every later token in every layer
+  (removed from the DeltaNet recurrence) leaves > 10% right, or the off-path control fails. Not testable with fewer
+  than 100 items right unedited. Reported, not decisive: hidden from the question words; the question after another
+  article's paragraph (unedited); the blocked answers scored against another item's answer; an article-cluster
+  bootstrap interval of the decisive cell.
+controls:
+- 'another sentence of the same paragraph, of about the same length, two or more sentences from the answer, hidden the same way'
+- 'the answer''s sentence hidden in every DeltaNet layer instead of every attention layer'
+- 'floor: the answer''s sentence hidden from every later token in every layer and removed from the DeltaNet recurrence'
+- 'baselines: the question after another article''s paragraph (unedited); the blocked answers scored against another item''s answer'
+n: '200 eligible SQuAD items (one per paragraph; fewer if fewer are eligible, >= 100 to be testable)'
+seeds: [0]
+notes: "Dan, 2026-10-23: finding 4 on natural text, lens-free. Data: data/natural_read_v1/items.json (scripts/natural_read.py make; SQuAD v1.1 dev, CC BY-SA 4.0, pinned in pins.py). CPU dry run on this tokenizer: 718 items, 632 after the short-first-token filter, full prompts 109-374 tokens (median 204), the last tokens = 11 template tokens. Rows: 14 knocked reads per item. No priors set by the agent; not opened before Dan predicts."

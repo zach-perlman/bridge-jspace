@@ -79,6 +79,10 @@ tasks_v2 (--dataset tasks_v2 --tasks-set S --competence R [--formats prose table
   bank): Zach's two-step words MP, MM, PP, PM in the places of RL, RR, BL, BR (tasks_case): the bridge's locker
   statement (a sentence, or a table row) and, for PP and PM, the queried person's pick statement, each with a same-length
   off-path statement; PART_SOURCES on the locker statement; n scenes per (topic, format) cell and family.
+
+natural_read_v1 (--dataset natural_read_v1 --competence R; 2026-10-23, finding 4 on natural text): SQuAD paragraphs
+  (scripts/natural_read.py), family NAT; lookup is the sentence holding the answer, lookup_off another sentence of the
+  paragraph of about its length (natural_case); the first n items the competence run makes eligible.
 """
 
 from __future__ import annotations
@@ -708,6 +712,65 @@ def build_tasks_cases(tok, set_name: str, families: list[str], domains: list[str
     return cases, dict(report)
 
 
+# ---- natural_read_v1 (SQuAD paragraphs; finding 4 on natural text, docs/design_natural_late_read.md) ---------------
+
+NATURAL = "natural_read_v1"
+
+
+def natural_case(item: dict, tok) -> dict:
+    """A natural_read item as a case: the sentence holding the answer (lookup) and the item's off-path sentence
+    (lookup_off, chosen by character length in natural_read.make, so every model hides the same sentence; its token
+    length is recorded, not matched), the random span inside the paragraph, the trailing tokens and the destinations
+    (question: the question and the instruction; final: every token after the user turn). The answer is read at its
+    first token after 'Answer:' (a word answer: with its leading space). No confusion set (open vocabulary)."""
+    from scripts import natural_read as NR
+
+    passage = item["passage"]
+    user = NR.content(passage, item["question"])
+    text = chat.chat_text(tok, user)
+    assert text.count(user) == 1, f"{item['id']}: the user content not once in the prompt"
+    shift = text.index(user)
+    ids, offsets, prompt = encode(tok, text, False)
+    sents = [token_span(offsets, a + shift, b + shift) for a, b in item["sentences"]]
+    i, j = item["answer_sentence"], item["off_sentence"]
+    sources = {"lookup": sents[i], "lookup_off": sents[j]}
+    texts = {k: passage[slice(*item["sentences"][x])] for k, x in (("lookup", i), ("lookup_off", j))}
+    flags = {"lookup_off": "same_length" if len(sents[j]) == len(sents[i]) else "length_mismatch"}
+    assert sources["lookup"], f"{item['id']}: no tokens for the answer's sentence"
+    assert sources["lookup_off"], f"{item['id']}: no tokens for the off-path sentence"
+    assert not set(sources["lookup"]) & set(sources["lookup_off"]), f"{item['id']}: the two sentences share a token"
+    a, b = item["answer_char"]
+    assert passage[a:b] == item["answer"], f"{item['id']}: answer_char does not hold the answer"
+    assert set(token_span(offsets, a + shift, b + shift)) <= set(sources["lookup"]), f"{item['id']}: answer outside"
+    q_start = shift + len(passage) + 1
+    ctx_tok = token_span(offsets, shift, shift + len(passage))
+    base = {"id": item["id"], "family": NR.FAMILY, "scene": item["id"], "domain": item["article"], "level": 0,
+            "question_text": item["question"], "wording": "squad_v1.1_dev", "cut": None, "bridge": None, "cue": None,
+            "answer": item["answer"], "answer_kind": "word", "conf_answers": [], "conf_toks": [],
+            "tok_A": S.answer_token(tok, item["answer"], "word"), "statements": sents, "query_slot": i}  # fmt: skip
+    rng = random.Random(f"{SPAN_SEED}:{NATURAL}:{item['id']}")
+    return _complete_case(base, tok, text, (ids, offsets, prompt), (sources, texts, flags), rng, ctx_tok,
+                          set(sources["lookup"]), q_start, ctx_tok, shift + len(user))  # fmt: skip
+
+
+def build_natural_cases(tok, n: int, eligibility: str, competence: str | None) -> tuple[list[dict], dict]:
+    """The first n items in file order (a seeded order), with eligibility 'map' only those natural_read.eligible_ids
+    keeps from the competence run (right unedited on both reads, right from the sentence alone, wrong without it)."""
+    from scripts import natural_read as NR
+
+    items = pins.natural_read_items()
+    short = {it["id"] for it in items if NR.short_first_token(tok, it)}
+    if eligibility == "map":
+        assert competence, "natural_read_v1 eligibility needs a competence run"
+        ok = NR.eligible_ids(NR.competence_rows(competence))
+    else:
+        ok = {it["id"] for it in items}
+    picked = [it for it in items if it["id"] in ok and it["id"] not in short][:n]
+    report = {"items": len(items), "short_first_token": len(short), "eligible": len(ok - short), "picked": len(picked),
+              "eligibility": NR.ELIGIBILITY if eligibility == "map" else "none"}  # fmt: skip
+    return [natural_case(it, tok) for it in picked], report
+
+
 def suite_case(item: dict, tok) -> dict:
     fam = item["family"]
     w = S.WORDINGS["A"]
@@ -1000,8 +1063,12 @@ def stage_manifest(args) -> None:
     for label, ls in sets.items():
         if label.startswith("win") and ":" not in label:
             assert sum(kinds[i] == FULL for i in ls) == 2, f"{label}: not 2 full-attention layers"
-    pointer, tasks = args.dataset in POINTER_SETS, args.dataset == TASKS
-    if pointer:
+    pointer, tasks, natural = args.dataset in POINTER_SETS, args.dataset == TASKS, args.dataset == NATURAL
+    if natural:
+        inputs = [pins.NATURAL_READ_FILE]
+        if args.eligibility == "map":
+            inputs.append(pins.RESULTS_DIR / "natural_read" / args.competence / "items.jsonl")
+    elif pointer:
         inputs = pointer_files(args.dataset, args.families, args.domains, args.set)
         assert inputs, f"no {args.dataset}/{args.set} files for families {args.families}, domains {args.domains}"
         if args.eligibility == "map":
@@ -1026,7 +1093,7 @@ def stage_manifest(args) -> None:
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "model": pins.model_pin(), "dataset": args.dataset, "domains": args.domains,
         "set": args.set if pointer else None, "gate_lo": args.gate_lo,
-        "competence": args.competence if (pointer or tasks) and args.eligibility == "map" else None,
+        "competence": args.competence if (pointer or tasks or natural) and args.eligibility == "map" else None,
         "tasks": {"set": args.tasks_set, "formats": args.formats, "level": args.level,
                   "gate": "tasks_v2.eligible: scenes right on every competence prompt of every requested word of their "
                   "group (whole, steps, C, O), the answer not guessable from half the other things; first n scenes "
@@ -1209,6 +1276,10 @@ def stage_run(name: str) -> None:
     if m.get("dataset", "suite") in POINTER_SETS:
         cases, report = build_pointer_cases(tok, m["dataset"], m["families"], m.get("domains"), m["n_per_family"],
                                             m["eligibility"], m.get("competence"), m.get("set") or "main", m.get("gate_lo"))  # fmt: skip
+        (out_dir / "cases_report.json").write_text(json.dumps(report, indent=2) + "\n")
+        print(json.dumps(report), flush=True)
+    elif m.get("dataset") == NATURAL:
+        cases, report = build_natural_cases(tok, m["n_per_family"], m["eligibility"], m.get("competence"))
         (out_dir / "cases_report.json").write_text(json.dumps(report, indent=2) + "\n")
         print(json.dumps(report), flush=True)
     elif m.get("dataset") == TASKS:
@@ -3734,9 +3805,9 @@ if __name__ == "__main__":
     ap.add_argument("stage", choices=["manifest", "run", "summarise", "analyze", "examples", "figures"])
     ap.add_argument("--name", required=True)
     ap.add_argument("--why")
-    ap.add_argument("--dataset", choices=["suite", *POINTER_SETS, TASKS], default="suite",
-                    help="suite: the animal suite and countries; a pointer-style item set (batch 2); or a tasks_v2 "
-                    "set (--tasks-set)")  # fmt: skip
+    ap.add_argument("--dataset", choices=["suite", *POINTER_SETS, TASKS, NATURAL], default="suite",
+                    help="suite: the animal suite and countries; a pointer-style item set (batch 2); a tasks_v2 "
+                    "set (--tasks-set); or natural_read_v1 (SQuAD paragraphs, family NAT, --competence)")  # fmt: skip
     ap.add_argument("--families", nargs="+", default=None,
                     help="suite: BL BR RL RR BLR BRL country-R country-B (default all); pointer sets: the files' "
                     "family codes (pointer_v1 / alias: RL DL RR; code: DK IX CH2 CH3 RK RR); tasks_v2: MP MM PP PM")  # fmt: skip
@@ -3782,6 +3853,11 @@ if __name__ == "__main__":
             args.families = args.families or list(TASKS_FAMILIES)
             assert set(args.families) <= set(TASKS_FAMILIES), f"tasks_v2 families are {TASKS_FAMILIES}"
             assert args.competence or args.eligibility == "none", "tasks_v2 needs --competence (or --no-eligibility)"
+        elif args.dataset == NATURAL:
+            args.families = ["NAT"]
+            assert args.competence or args.eligibility == "none", (
+                "natural_read_v1 needs --competence (or --no-eligibility)"
+            )
         else:
             assert args.families, "pointer sets need --families"
             args.competence = args.competence or POINTER_COMPETENCE[args.dataset]
