@@ -22,7 +22,7 @@ Eight models. Hybrids, which mix attention with DeltaNet layers: Qwen3.6-27B (27
 | lens push | Adding the lens's direction from one word to another (pig → cow) to a hidden state |
 | patch | Copying hidden states from another prompt into this one, at chosen tokens and one layer |
 | blocking | Stopping chosen tokens from attending to one sentence |
-| last tokens | The tokens between the question and the answer: the chat template's closing tokens and "Answer:" (7-11 tokens). Claim 3 patches only the last two |
+| last tokens | The chat-template tokens after the user's text, up to the answer: 11 on the Qwen models, 7 on OLMo-3, as in every blocking run. Claim 3's patch copies only the last two |
 | positive control | A place where a method is known to work, so that a null result elsewhere means something |
 | scene set | A fresh batch of generated prompts with new lists and entities, drawn with a fixed seed |
 

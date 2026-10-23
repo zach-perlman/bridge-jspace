@@ -299,7 +299,8 @@ WORDS = (
     ("**patch**", "Copy hidden states from a donor prompt into the original prompt, at chosen tokens and one layer, "
      "and see which answer comes out", ""),
     ("**blocking**", "Stop chosen tokens from attending to one sentence, in chosen layers", ""),
-    ("**question tokens / last tokens**", "The words of the question / the 1-2 tokens right before the answer", ""),
+    ("**question tokens / last tokens**", "The words of the question / the chat-template tokens after the user's text, "
+     "up to the answer (11 on the Qwen models, 7 on OLMo-3)", ""),
     ("**positive control**", "A place where a method is known to work, so that a null result elsewhere means "
      "something", ""),
     ("**hybrid / attention-only**", "Attention layers mixed with DeltaNet layers (a compressed running memory) / "
