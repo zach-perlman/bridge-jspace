@@ -1,0 +1,27 @@
+id: olmo_hybrid_7b_d2_parts_seed3
+title: "Name vs digit on a third draw (Olmo-Hybrid-7B Instruct)"
+thread: D2
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.1
+depends_on:
+- olmo_hybrid_7b_port_smoke
+- olmo_hybrid_7b_d3v4_seed3_competence
+command: >-
+  BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/attn_knockout.py manifest --name olmo_hybrid_7b_d2_parts_seed3 --dataset pointer_v4 --set seed3 --families RL DL --n 100 --sources lookup lookup_off lookup_name lookup_digit lookup_off_name lookup_off_digit lookup_nodigit lookup_noname lookup_off_nodigit lookup_off_noname --dests question final --layers all --competence olmo_hybrid_7b_d3v4_seed3_competence --why "name vs digit on a third draw (Olmo-Hybrid-7B Instruct); analysed by scripts/d2_parts.py" && BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/attn_knockout.py run --name olmo_hybrid_7b_d2_parts_seed3
+figures_command: uv run python scripts/d2_parts.py --name olmo_hybrid_7b_d2_parts_seed3
+question: >-
+  Do the last tokens take only the digit from the answer's statement, and the question's tokens its name?
+why_it_matters: >-
+  Finding 3 on Olmo-Hybrid-7B Instruct rests on two draws of scenes (olmo_hybrid_7b_d2_parts_v2, olmo_hybrid_7b_d2_parts_seed2); a third draw with the committed rules, as on the other models (*_d2_parts_seed3).
+hypotheses:
+  H-digit-final-split: 'holds. Prior 0.7 (copied from olmo_hybrid_7b_d2_parts_seed2)'
+  H-name-q-split: 'holds where testable. Prior 0.5 (copied from olmo_hybrid_7b_d2_parts_seed2)'
+decision_rule: >-
+  scripts/d2_parts.py's rule, unchanged: valid-split first; H-digit-final-split (memory -> prompt) and, where the question is testable, H-name-q-split. Replicates iff every verdict that held on this model's main draw (scripts/d2_parts.py on olmo_hybrid_7b_d2_parts_v2) holds here; per topic reported.
+controls:
+- 'the off-path statement of the same token length hidden the same way; unedited accuracy; the competence gate (every prompt of the scene right)'
+n: '100 items per family (RL DL), seed3'
+seeds: [845]
+notes: >-
+  Mechanical copy of olmo3_7b_instruct_d2_parts_seed3 for Olmo-Hybrid-7B Instruct, i.e. olmo_hybrid_7b_d2_parts_seed2 with the seed3 data, as olmo3_7b_instruct_d2_parts_seed3 is its seed2 with the seed3 data. Changed from olmo_hybrid_7b_d2_parts_seed2: the data set (pointer_v4 seed3), the gate (olmo_hybrid_7b_d3v4_seed3_competence), run names; the rule's comparison is the seed3 specs' (every verdict that held on this model's main draw holds here), now that this model's main draw (olmo_hybrid_7b_d2_parts_v2) exists. Every layer, as the source (blocking in every layer covers both kinds). Data: data/pointer_v4/seed3/ (data seed 845). GPU-h from the ledger: the seed2 copy took 0.05 h. Not opened before Dan's predictions.

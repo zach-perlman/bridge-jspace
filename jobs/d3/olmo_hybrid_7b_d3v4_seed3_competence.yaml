@@ -1,0 +1,24 @@
+id: olmo_hybrid_7b_d3v4_seed3_competence
+title: "Seed 3 gate on Olmo-Hybrid-7B Instruct: a third draw of pointer_v4's scenes (read judge)"
+thread: D3
+gpus: 1
+mem_gb: 25
+est_gpu_hours: 0.15
+depends_on:
+- olmo_hybrid_7b_port_smoke
+command: >-
+  BJ_TARGET=olmo-hybrid-7b-instruct-dpo BJ_JUDGE=read uv run python scripts/pointer_v4.py manifest --set seed3 --name olmo_hybrid_7b_d3v4_seed3_competence
+  --why "the competence gate of the seed3 late read, name vs digit and slot test on Olmo-Hybrid-7B Instruct: pointer_v4's third draw (seed 845), chat format, read judge"
+  && BJ_TARGET=olmo-hybrid-7b-instruct-dpo BJ_JUDGE=read uv run python scripts/pointer_v4.py competence --name olmo_hybrid_7b_d3v4_seed3_competence
+question: 'Does Olmo-Hybrid-7B Instruct answer the seed-3 scenes as it answers main''s?'
+why_it_matters: >-
+  Gate for olmo_hybrid_7b_d2_late_read_seed3, olmo_hybrid_7b_d2_parts_seed3 and olmo_hybrid_7b_d3v4_seed3_swap (findings 3-5 on a third draw on Olmo-Hybrid, as on the other models).
+hypotheses:
+  H-gate: 'per topic and family within 5 points of olmo_hybrid_7b_d3v4_competence (this model''s main draw). Prior 0.8 (copied from olmo3_7b_instruct_d3v4_seed3_competence)'
+decision_rule: 'pointer_v1''s competence rule (read judge).'
+controls:
+- 'each step alone for memory -> prompt'
+n: 'pointer_v4 seed3'
+seeds: [845]
+notes: >-
+  Mechanical copy of olmo_hybrid_7b_d3v4_seed2_competence made the way olmo3_7b_instruct_d3v4_seed3_competence was made from its seed2 copy: only the data set (pointer_v4 seed3), run names, the gate's reference (this model's main-draw gate olmo_hybrid_7b_d3v4_competence, which has run since the seed2 spec said there was none) and the thread / folder (D3, as the other models' seed3 gates) change; target, judge, format as there. Data: data/pointer_v4/seed3/ (pointer_v4.py make_set --set seed3, data seed 845; no prompt shared with main or seed2), the 27B's third draw. GPU-h from the ledger: the seed2 gate on this model took 0.10 h. Not opened before Dan's predictions.

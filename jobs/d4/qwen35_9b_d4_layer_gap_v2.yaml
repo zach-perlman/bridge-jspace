@@ -1,0 +1,28 @@
+id: qwen35_9b_d4_layer_gap_v2
+title: "v2, four arms: lens push vs full patch vs input-embedding push at the stated bridge, every layer 6-17 (Qwen3.5-9B, fresh scenes)"
+thread: D4
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.2
+depends_on:
+- qwen35_9b_d4_where
+- qwen35_9b_d4_where_fresh_seed2
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/early_push_where.py run --name qwen35_9b_d4_layer_gap_v2 --n 100 --scenes fresh --fresh-seed 3 --exclude-runs qwen35_9b_d4_where qwen35_9b_d4_where_fresh_seed2 --rule v2 --patch --embed --gap-rule v2 --layers 6 7 8 9 10 11 12 13 14 15 16 17 --context-layers 10 --scales 4 8 --v21-min-layer 10 --why "the layer gap on Qwen3.5-9B: where the lens push stops moving lookups at the stated bridge, against the full patch of the residual there (d4_layer_gap_v2_27b, layers scaled by depth)"
+figures_command: BJ_TARGET=qwen3.5-9b uv run python scripts/early_push_where.py figures --name qwen35_9b_d4_layer_gap_v2
+question: >-
+  Layer by layer on Qwen3.5-9B, does the full residual patch at the stated bridge's word keep moving lookups after the lens push stops?
+why_it_matters: >-
+  On Qwen3.6-27B the full patch at the bridge's word kept moving lookups until layer 26 while the lens push stopped at 20 (d4_layer_gap_v2_27b). If the same gap appears on a second model, the lookup's bridge sits in the residual at the word but outside the lens beyond one model.
+hypotheses:
+  H-gap: 'patch_stop - lens_stop >= 3 layers (the 27B''s 6, scaled by depth), the patch >= 30% at lens_stop. Prior 0.45 (copied from d4_layer_gap_v2_27b)'
+  H-no-gap: 'they stop within 1 layer of each other (the 27B''s 2, scaled by depth). Prior 0.3 (copied from d4_layer_gap_v2_27b)'
+  inconclusive: 'Prior 0.25 (copied from d4_layer_gap_v2_27b)'
+decision_rule: >-
+  scripts/early_push_where.py's layer-gap test v2 (docstring; Dan, 22 Oct 23:30), as d4_layer_gap_v2_27b, with the layers scaled by depth x 32/64: four arms at the stated bridge's word and sentence, every layer 6-17 (the 27B's every second layer 12-34): the lens push (4x, 8x), the input-embedding push W_E[X] - W_E[I] at the same norms (4x, 8x), the full patch of C's residual, a random push. Each arm's valid cells: v2's off-path check with that arm's own rows. An arm stops at a layer iff at every valid cell of that layer its lookup switch rate has the Wilson upper bound < 5%; it keeps moving iff the lower bound > 5% at some valid cell; arm_stop = the first grid layer from which it stops at every later layer with a valid cell. At the word: H-gap iff patch_stop - lens_stop >= 3 and the patch keeps moving at lens_stop; H-no-gap iff patch_stop - lens_stop <= 1; else inconclusive. The layer-count bars are scaled by depth (Dan, 23 Oct ~12:50): 3 and 1 layers on 32 layers for the 27B's 6 and 2 on 64. The embedding arm's stop reported next to the lens's (an input edit would move lookups like the lens push and stop with it). The script's own verdict line (summary.json layer_gap.<w|s>.verdict and the printed summary) applies its fixed bars 6 and 2 (GAP, NO_GAP in early_push_where.py): reported, not decisive; the decisive verdict applies 3 and 1 to the same recorded stops (summary.json layer_gap.w.lens.stop, layer_gap.w.patch.stop) and to the patch's moving flag at lens_stop (layer_gap.w.patch.moving). Reported, not decisive: the sentence the same way; v2 / v2.1 on the recall cells; the context push at layer 10 (the 27B's 20); the off-scene push; the edits.
+controls:
+- 'a random push (4x, 8x) at the same positions; recall (prompt -> memory) curves; the off-scene push; the text edits'
+n: '47 fresh scenes, four families: every scene eligible on the 9B in all four families and not in map_A8_v1 (pool 247) that neither qwen35_9b_d4_where (seed 1) nor qwen35_9b_d4_where_fresh_seed2 (seed 2) drew: 247 - 100 - 100 = 47; --n 100 asks for more, so the draw takes the whole remainder (seed 3 only orders it)'
+seeds: [0, 3]
+notes: >-
+  HOLD (Dan to decide before enqueue): with 47 scenes the stop rule cannot fire. An arm stops at a layer only if its lookup rate's Wilson upper bound is < 5%, and even 0 switched of n has upper bound 3.84 / (n + 3.84), < 5% only from n = 73; at <= 47 lookups per cell no arm can stop, so the verdict is 'inconclusive (an arm never stops for good)' by construction. Options: (a) the 27B's own convention (d4_layer_gap_v2_27b ran on the draw of d4_where_fresh_seed2_27b: --fresh-seed 2 --exclude-runs d4_where_fresh_27b): --fresh-seed 2 --exclude-runs qwen35_9b_d4_where --same-scenes qwen35_9b_d4_where_fresh_seed2, 100 scenes, not new to the 9B; (b) --scenes map: map_A8_v1's scenes, used by no 9B D4 run but chosen by the 27B's eligibility (items wrong unedited on the 9B drop out); (c) as written: fresh, but only 'keeps moving' (lower bound > 5%) is readable, no verdict. Otherwise a mechanical copy of d4_layer_gap_v2_27b (same script, arms, positions, scales, rule): changed are the target, the run name, the layers scaled by depth x 32/64 (12-34 every 2nd -> 6-17 every layer, the same 12 grid layers; --context-layers 20 -> 10; --v21-min-layer 20 -> 10, as the 9B's D4 specs scale 12-44 every 4th to 6-22 every 2nd), the layer-count bars (Dan's decision above) and fresh scenes (seed 3, never used for the 9B; both earlier 9B draws excluded). The dose arm (patch_dir, bedbb9a) is not added: d4_layer_gap_dose_27b is a separate run, not part of d4_layer_gap_v2_27b's command. GPU-h from the ledger: d4_layer_gap_v2_27b 0.97 h for 100 scenes; the 9B's D4 runs took 0.33 of the 27B's (qwen35_9b_d4_where 0.39 h vs d4_where_fresh_27b 1.17 h), so ~0.15 h for 47 scenes (~0.3 h for 100). Rules fixed before the run; not opened before Dan's predictions.
