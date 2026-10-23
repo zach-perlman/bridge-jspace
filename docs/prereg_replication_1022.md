@@ -467,3 +467,21 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
 - **Rule:** scripts/choose_band.py as on ctrl_v8 (most-broken memory-final words among windows whose rotated control
   keeps every word >= 90%). Also reported, descriptive: the window with the largest memory-final minus prompt-final gap.
   If a model's natural band differs from its toy band, C1 is rerun on natplus_v1_chat at the natural band.
+
+## Amendment 18 (Zach, 2026-10-23 ~20:15 UTC): WorkspaceBench's wrong-bridge items, causally
+
+- **Seen when this was written:** WorkspaceBench's README and items (camilablank/workspace-bench@ba33098, MIT): 100
+  raw-text two-hop prompts on which Qwen3.6-27B resolves a wrong bridge B' and answers hop2(B') = A' (gated by the
+  benchmark: >= 4/10 samples give A' and B'; injecting B' gives A', injecting B gives A). No run of ours on them.
+  Also seen: natctl on the 9B (stating the true fact rescues the memory-final loss, K - M = -50) and the 27B's
+  three-step results.
+- **Procedure (scripts/wrong_bridge_causal.py, the 27B at L32-40):** teacher-forced log-probabilities of the full
+  answers A' and A, edits on prompt positions only; knock-out paper10, paper10_rot, unembed10 and paper10_spare (never
+  removing B''s surname-token direction); lens writes unit(v_B - v_B') and, as control, unit(v_C - v_B') (C another
+  item's true bridge) at the band's layers, last position or the prompt span, alpha 0.1-0.8; the write cell chosen on
+  even-indexed items by B's flip rate, scored on the odd ones. Screens (no edits) on the 9B, Muse and the 122B: which
+  items they also answer through the wrong bridge; if >= 30 transfer to the 9B, the same causal test runs on them.
+- **Predictions (27B):** the knock-out lowers logP(A') at least 2 nats more than its rotation does, and the margin
+  logP(A') - logP(A) falls (interval below 0) while the rotated margin's interval covers 0; sparing B''s own direction
+  recovers >= 30% of paper10's margin drop; writing the true bridge flips >= 20% of held-out items to A while the
+  control person flips <= 5%. Together: the J-space carries the bridge the model actually uses, even a wrong one.
