@@ -31,7 +31,9 @@ bridge switched 29% [23, 36] of lookups at the map's cell (context, layer 24). D
            (b) the rest switches >= 0.30 of lookups (point estimate), (c) recall control: the lens part switches >= 0.30
            of recalls there (point; the same patch: the lens part is not too small to act), and (d) random-subspace
            control: on recalls the lens part beats rand_sub (a random subspace keeping the lens part's share of the
-           change, per row) with Wilson intervals apart (lens lower bound > rand_sub upper bound)
+           change, per row) with Wilson intervals apart (lens lower bound > rand_sub upper bound), and (e) it stays quiet
+           (amended by Dan 23 Oct 12:30, before any run): at every later decisive cell of the same position set
+           (sentence / context) the lens part's lookup switching has Wilson upper bound <= 0.10
   finding 2 fails on this model iff at every decisive cell the lens part's lookup switching has Wilson lower bound
            >= 0.20 and lies above rand_sub's on lookups (lens lower bound > rand_sub upper bound: not a size effect)
   otherwise inconclusive (the reason named). Reported per cell, lookups and recalls: full, jspace, not_jspace,
@@ -63,6 +65,7 @@ SETS = ("bind_bridge", "bridge_word", "context")
 JSPACE_MAX, REST_MIN, POSITIVE_MIN = 0.10, 0.50, 0.30
 # --rule late-binding (see the docstring)
 LATE_JSPACE_HI, LATE_REST_MIN, LATE_RECALL_MIN, FAIL_JSPACE_LO = 0.05, 0.30, 0.30, 0.20
+LATE_STAYS_HI = 0.10  # (e), Dan 23 Oct 12:30: once quiet, the lens part stays quiet at the set's later decisive cells
 LATE_PARTS = ("full", "jspace", "not_jspace", "rand_sub", "jspace_matched", "rand_omp")
 
 
@@ -126,22 +129,27 @@ def late_binding_verdict(cells: dict[str, dict]) -> dict:
     checks = {}
     for c, v in cells.items():
         lk, rc = v["lookup"], v["recall"]
+        s, la = c.split(":")
+        after = [x for x in cells if x.split(":")[0] == s and int(x.split(":")[1]) > int(la)]  # same set, later layers
         checks[c] = {
             "split": lk["jspace"][2] <= LATE_JSPACE_HI and lk["not_jspace"][0] >= LATE_REST_MIN,
             "recall_control": rc["jspace"][0] >= LATE_RECALL_MIN,
             "subspace_control_recall": rc["jspace"][1] > rc["rand_sub"][2],
+            "stays_quiet": all(cells[x]["lookup"]["jspace"][2] <= LATE_STAYS_HI for x in after),
             "moves": lk["jspace"][1] >= FAIL_JSPACE_LO,
             "subspace_control_lookup": lk["jspace"][1] > lk["rand_sub"][2],
         }
-    late = [c for c, k in checks.items() if k["split"] and k["recall_control"] and k["subspace_control_recall"]]
-    split_only = [c for c, k in checks.items() if k["split"] and c not in late]
+    holds = ("recall_control", "subspace_control_recall", "stays_quiet")  # (c), (d), (e) on top of the split
+    late = [c for c, k in checks.items() if k["split"] and all(k[h] for h in holds)]
+    split_only = {c: [h for h in holds if not k[h]] for c, k in checks.items() if k["split"] and c not in late}
     size = [c for c, k in checks.items() if k["moves"] and not k["subspace_control_lookup"]]
     if late:
         verdict = f"late binding holds at {', '.join(late)}"
     elif all(k["moves"] and k["subspace_control_lookup"] for k in checks.values()):
         verdict = "finding 2 fails on this model: the lens part moves >= 20% of lookups at every later cell"
     elif split_only:
-        verdict = f"inconclusive: the split holds at {', '.join(split_only)} but its controls fail there"
+        verdict = (f"inconclusive: the split holds at {', '.join(split_only)} but fails there: "
+                   + "; ".join(f"{c} {', '.join(f)}" for c, f in split_only.items()))  # fmt: skip
     elif all(k["moves"] for k in checks.values()):
         verdict = ("inconclusive: the lens part moves >= 20% of lookups at every later cell, but not more than a random "
                    f"subspace of its size at {', '.join(size)}")  # fmt: skip
@@ -278,8 +286,8 @@ def late_figures(a: argparse.Namespace) -> int:
            explain=[("What we did", "Changed the stated bridge, then pasted one part of the change (the lens-readable "
                      "part, the rest, the whole) into the original run at one place and layer."),
                     ("How to read", "Late binding: at some dark-labelled cell the lens part (blue) stays under 5% on "
-                     "lookups while the rest (orange) switches >= 30%, and the lens part still switches >= 30% of "
-                     "recalls, above the grey control."),
+                     "lookups while the rest (orange) switches >= 30%, stays under 10% at the later cells of its row "
+                     "(sentence / context), and still switches >= 30% of recalls, above the grey control."),
                     ("Control", "A random subspace that keeps the same share of the change as the lens part (grey); "
                      "grey labels: cells that do not decide."),
                     ("Verdict", v["verdict"])])  # fmt: skip
