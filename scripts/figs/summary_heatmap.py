@@ -54,7 +54,7 @@ LINE = 0.95  # line spacing of multi-line labels and cell texts
 NB = " "  # a space a cell's text is never broken at ("≈ chance", "5 items")
 # shorter words for a FULL cell (the caption keeps readme_build.reason's)
 WHY = {"a control failed": "control failed", "the rule: inconclusive": "rule: unclear", "no rule (values only)": "no rule",
-       "still running": "running", "too few usable scenes": "too few scenes", "a run failed": "run failed",
+       "still running": "running", "too few usable scenes": "too few scenes",
        "too few items answered right": "too few items", "no layer to test": "no layer",
        "not on Zach's branch": "not run"}  # fmt: skip
 SETTING_WORDS = (("main rule, draw 2", "set 2"), ("main rule", "set 1"), ("stated bridge, ", "stated, "),

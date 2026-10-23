@@ -69,7 +69,7 @@ ROWS = (
         ("one statement more", "one statement fewer"), main=False),
     Row("lens", "Where the lens reads a stated bridge", "where the lens reads", 1, ("gate",), where=True),
     Row("f7", "A lens push writes recall, not the lookup", "lens push", 1, ("f7",), ("main rule", "main rule, draw 2")),
-    Row("f28", "The lookup ignores the lens-readable part", "lens part", 1, ("f2", "f8")),
+    Row("f28", "The lens part moves recall, not the lookup", "lens part", 1, ("f2", "f8")),  # claim 6's wording
     Row("f1", "Removing the J-space spares the lookup", "J-space removal", 1, ("f1",)),
 )  # fmt: skip
 ROW = {r.key: r for r in ROWS}
@@ -138,10 +138,7 @@ def why(cs: list[RD.Cell], state: str) -> str:
         if any(c.word == "not interpretable" for c in cs):
             return "a control failed"
         return "the rule: inconclusive" if any(c.word == "inconclusive" for c in cs) else "no rule (values only)"
-    text = " ".join(c.verdict for c in cs)
-    if "which failed" in text or " failed at the " in text:  # readme_build.reason reads "waits on" as running
-        return "a run failed"
-    return RB.reason(cs)
+    return RB.reason(cs)  # "waits on X" reads as still running: a failed X is requeued (coordinator, 23 Oct)
 
 
 def amended_differs(cs: list[RD.Cell]) -> bool:

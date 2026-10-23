@@ -160,7 +160,7 @@ def test_finding_7_main_rule_and_dagger(tab):
     assert SH.full_text(c) == ["holds 1/1 †"] and SH.main_text(c) == ["holds"]
     assert not tab[("f7", "9b")].amended_differs  # both rules agree
     assert (tab[("f7", "32b")].state, tab[("f7", "32b")].why) == ("not tested", "still running")
-    assert tab[("f7", "gemma")].why == "a run failed"  # waits on a failed run: not "still running"
+    assert tab[("f7", "gemma")].why == "still running"  # waits on a run (a failed one is requeued): readme_build
 
 
 def test_findings_2_and_8_merged_worse(tab):
