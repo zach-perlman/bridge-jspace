@@ -1,0 +1,48 @@
+{
+  "exp": "suite_v1",
+  "run": "gemma4itf_competence_chat_v1",
+  "written_utc": "2026-10-23T11:41:55Z",
+  "why": "the animal suite on Gemma 4 31B-it in chat format under Zach's J++ prefix: which scenes are right on every prompt (D4's fresh-scene eligibility; lens-free)",
+  "model": {
+    "target": "gemma-4-31b-it-full",
+    "repo": "google/gemma-4-31B-it",
+    "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "set": "main",
+  "items": {
+    "BL": {
+      "file": "data/suite_v1/BL.json",
+      "sha256": "1d6bc3264cb78a73cc175f7423923d553a6a1e6201a301a5757d5771cc7cc017"
+    },
+    "BR": {
+      "file": "data/suite_v1/BR.json",
+      "sha256": "b8aacfe7263aa2a81c0bd0e7b973a2057b61753f7470c22fe1119425facbc7fb"
+    },
+    "RL": {
+      "file": "data/suite_v1/RL.json",
+      "sha256": "305f5e5b6679ff83466800cd05c019e62ab4d374dd0d3f916e968c8a733cd045"
+    },
+    "RR": {
+      "file": "data/suite_v1/RR.json",
+      "sha256": "1cedcc460789ba2fee5c2b6f7a0d2302d2e81a9c73acb7853843f54a807fca07"
+    },
+    "NAMES": {
+      "file": "data/suite_v1/NAMES.json",
+      "sha256": "653e0480434c4361e047cc444508aeb3826ac855b931466201d8a002ee5117f3"
+    },
+    "CODE": {
+      "file": "data/suite_v1/CODE.json",
+      "sha256": "a9e35865177f83c170a8155038569ef738fb868a6863eab57efa7a3089df4c4a"
+    }
+  },
+  "limit": null,
+  "format": "chat template, thinking off, 'Answer:' prefilled (BJ_FORMAT=chat); the context, a newline, the question and 'Answer with a single word and nothing else.' as the user turn",
+  "prompts": "clean, C (cf_context + cf_question), O (off_context + question), hop1-hop3 (each step alone, with the item's context or the hop's own code)",
+  "judge": "the first answer of the item's kind in the first non-empty line of the greedy continuation (digits and number words for digits; the family's name / animal / fruit vocabulary otherwise)",
+  "generation": "greedy, 8 new tokens, prompts of one token length batched 64 at a time",
+  "answer_read": "one more forward per prompt, a digit answer's space token appended (the greedy reply's first token): p of the answer's first token, its logit minus the best other token's, and whether that read's top token is the greedy judge's answer",
+  "eligibility": "clean, C and O all answered (as exp09); all_steps: every prompt of the item answered; reliable family: Wilson 95% lower bound of clean >= 0.85"
+}

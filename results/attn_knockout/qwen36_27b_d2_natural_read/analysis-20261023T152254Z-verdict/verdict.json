@@ -1,0 +1,134 @@
+{
+ "run": "qwen36_27b_d2_natural_read",
+ "competence": "qwen36_27b_natural_competence",
+ "model": {
+  "target": "qwen3.6-27b",
+  "repo": "Qwen/Qwen3.6-27B",
+  "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+  "dtype": "bfloat16",
+  "attn": "sdpa",
+  "prompt_format": "chat"
+ },
+ "n_items": 469,
+ "n_right_unedited": 469,
+ "layers_for_late": "attn",
+ "hybrid": true,
+ "cells": {
+  "late": {
+   "rate": [
+    0.3006396588486141,
+    0.2608970212437958,
+    0.34362170130515096
+   ],
+   "n": 469
+  },
+  "off": {
+   "rate": [
+    0.997867803837953,
+    0.9880222315577436,
+    0.9996235254991652
+   ],
+   "n": 469
+  },
+  "deltanet": {
+   "rate": [
+    0.9957356076759062,
+    0.9845862164909281,
+    0.9988297942830816
+   ],
+   "n": 469
+  },
+  "floor": {
+   "rate": [
+    0.0021321961620469083,
+    0.000376474500834916,
+    0.011977768442256388
+   ],
+   "n": 469
+  },
+  "off_floor": {
+   "rate": [
+    0.997867803837953,
+    0.9880222315577436,
+    0.9996235254991652
+   ],
+   "n": 469
+  },
+  "question": {
+   "rate": [
+    0.7078891257995735,
+    0.6651775365940504,
+    0.7472227259885988
+   ],
+   "n": 469
+  }
+ },
+ "baselines": {
+  "swapped_paragraph_unedited": [
+   0.0021321961620469083,
+   0.000376474500834916,
+   0.011977768442256388
+  ],
+  "late_scored_against_another_items_answer": [
+   0.0,
+   0.0,
+   0.008124496660192335
+  ]
+ },
+ "late_article_cluster_ci": [
+  0.3006396588486141,
+  0.25827780362322805,
+  0.34529555646147575
+ ],
+ "bars": {
+  "primary": [
+   0.1,
+   0.2
+  ],
+  "secondary": [
+   0.2,
+   0.3
+  ]
+ },
+ "verdict": "fails (more than 10% right, or the upper bound above 20%)",
+ "verdict_secondary": "fails (more than 20% right, or the upper bound above 30%)",
+ "eligibility_funnel": {
+  "built": 718,
+  "eligible": 469,
+  "steps": [
+   {
+    "dropped_by": "the answer's first token is under 3 characters and not its whole first word",
+    "dropped": 86,
+    "left": 632
+   },
+   {
+    "dropped_by": "with the paragraph, the answer's first token is not on top",
+    "dropped": 145,
+    "left": 487
+   },
+   {
+    "dropped_by": "with the paragraph, the greedy answer is wrong",
+    "dropped": 2,
+    "left": 485
+   },
+   {
+    "dropped_by": "the answer's sentence alone is not enough (first token not on top)",
+    "dropped": 6,
+    "left": 479
+   },
+   {
+    "dropped_by": "without the answer's sentence the first token is still on top (answered without it)",
+    "dropped": 10,
+    "left": 469
+   }
+  ],
+  "failing_each_criterion_alone": {
+   "the answer's first token is under 3 characters and not its whole first word": 86,
+   "with the paragraph, the answer's first token is not on top": 162,
+   "with the paragraph, the greedy answer is wrong": 12,
+   "the answer's sentence alone is not enough (first token not on top)": 153,
+   "without the answer's sentence the first token is still on top (answered without it)": 10
+  },
+  "coverage": "Not covered: items whose answer needs a neighbouring sentence (a pronoun's antecedent, a subject named earlier) fail 'the answer's sentence alone' and are dropped, so the verdict is about answers that one sentence gives on its own."
+ }
+}

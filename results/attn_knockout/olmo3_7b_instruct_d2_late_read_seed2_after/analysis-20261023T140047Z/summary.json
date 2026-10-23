@@ -1,0 +1,267 @@
+{
+  "run": "olmo3_7b_instruct_d2_late_read_seed2_after",
+  "measure": "correct",
+  "items": {
+    "RL": {
+      "items": 100,
+      "unedited_right": 100
+    }
+  },
+  "claims": {
+    "positive_control": {},
+    "late_attention_read": {
+      "RL": {
+        "path": true,
+        "final": {
+          "all": {
+            "acc": 0.0,
+            "verdict": "needed"
+          }
+        },
+        "question_all": {
+          "acc": 0.24,
+          "verdict": "needed"
+        },
+        "late_attention_read": null,
+        "bands": {
+          "early": null,
+          "middle": null,
+          "late": null
+        }
+      }
+    },
+    "C1a_RL_breaks_RR_survives": {
+      "RL": null,
+      "RR": null,
+      "holds": false
+    },
+    "C1b_answer_site_reads_lookup": {
+      "BL": {
+        "final": null,
+        "question": null
+      },
+      "RL": {
+        "final": "needed",
+        "question": "needed"
+      },
+      "BLR": {
+        "final": null,
+        "question": null
+      },
+      "BRL": {
+        "final": null,
+        "question": null
+      }
+    },
+    "C1b_holds": false,
+    "relay_holds": false,
+    "recall_needs_no_locker": {
+      "BR": {
+        "question": null,
+        "final": null,
+        "both": null,
+        "after": null
+      },
+      "RR": {
+        "question": null,
+        "final": null,
+        "both": null,
+        "after": null
+      }
+    },
+    "binding_BL_vs_BR": {
+      "BL": {
+        "question": null,
+        "final": null,
+        "both": null,
+        "after": null
+      },
+      "BR": {
+        "question": null,
+        "final": null,
+        "both": null,
+        "after": null
+      },
+      "BLR": {
+        "question": null,
+        "final": null,
+        "both": null,
+        "after": null
+      },
+      "BRL": {
+        "question": null,
+        "final": null,
+        "both": null,
+        "after": null
+      }
+    },
+    "bands": {}
+  },
+  "cells": [
+    {
+      "family": "RL",
+      "source": "lookup",
+      "dest": "final",
+      "layers": "all",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        0.0,
+        0.0,
+        0.03699480747600191
+      ],
+      "conf": [
+        0.9,
+        0.8256326956323347,
+        0.9447714583868639
+      ],
+      "dlogp": [
+        -8.650205,
+        -9.293642275,
+        -8.002466825000003
+      ],
+      "deltanet_norm_ratio": null,
+      "vs_control": [
+        0.99,
+        0.97,
+        1.0
+      ],
+      "verdict": "needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup",
+      "dest": "question",
+      "layers": "all",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        0.24,
+        0.16691211265459965,
+        0.3323251872329213
+      ],
+      "conf": [
+        0.19,
+        0.1251465399270426,
+        0.27779024070807856
+      ],
+      "dlogp": [
+        -3.0940469999999993,
+        -3.485067925,
+        -2.7141574499999996
+      ],
+      "deltanet_norm_ratio": null,
+      "vs_control": [
+        0.75,
+        0.6599999999999999,
+        0.83
+      ],
+      "verdict": "needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup",
+      "dest": "after",
+      "layers": "all",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        0.07,
+        0.034318824364064096,
+        0.13749671006529757
+      ],
+      "conf": [
+        0.46,
+        0.36560643853331865,
+        0.5573531460647615
+      ],
+      "dlogp": [
+        -4.779292,
+        -5.167847300000001,
+        -4.391398425000001
+      ],
+      "deltanet_norm_ratio": null,
+      "vs_control": [
+        0.9199999999999999,
+        0.87,
+        0.97
+      ],
+      "verdict": "needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup_off",
+      "dest": "final",
+      "layers": "all",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        0.99,
+        0.9455124752390653,
+        0.9982326134344526
+      ],
+      "conf": [
+        0.0,
+        0.0,
+        0.03699480747600191
+      ],
+      "dlogp": [
+        -0.016347999999999998,
+        -0.037398625000000005,
+        -0.0021619750000000004
+      ],
+      "deltanet_norm_ratio": null,
+      "verdict": "not_needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup_off",
+      "dest": "question",
+      "layers": "all",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        0.99,
+        0.9455124752390653,
+        0.9982326134344526
+      ],
+      "conf": [
+        0.0,
+        0.0,
+        0.03699480747600191
+      ],
+      "dlogp": [
+        -0.010423,
+        -0.028059525,
+        0.004255499999999987
+      ],
+      "deltanet_norm_ratio": null,
+      "verdict": "not_needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup_off",
+      "dest": "after",
+      "layers": "all",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        0.99,
+        0.9455124752390653,
+        0.9982326134344526
+      ],
+      "conf": [
+        0.01,
+        0.0017673865655472645,
+        0.0544875247609346
+      ],
+      "dlogp": [
+        -0.043123,
+        -0.17121290000000006,
+        0.03308054999999999
+      ],
+      "deltanet_norm_ratio": null,
+      "verdict": "not_needed"
+    }
+  ]
+}

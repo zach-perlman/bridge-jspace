@@ -1,0 +1,267 @@
+{
+  "run": "muse30b_d2_late_read_seed2_after",
+  "measure": "correct",
+  "items": {
+    "RL": {
+      "items": 300,
+      "unedited_right": 299
+    }
+  },
+  "claims": {
+    "positive_control": {},
+    "late_attention_read": {
+      "RL": {
+        "path": true,
+        "final": {
+          "all": {
+            "acc": 0.013,
+            "verdict": "needed"
+          }
+        },
+        "question_all": {
+          "acc": 0.505,
+          "verdict": "needed"
+        },
+        "late_attention_read": null,
+        "bands": {
+          "early": null,
+          "middle": null,
+          "late": null
+        }
+      }
+    },
+    "C1a_RL_breaks_RR_survives": {
+      "RL": null,
+      "RR": null,
+      "holds": false
+    },
+    "C1b_answer_site_reads_lookup": {
+      "BL": {
+        "final": null,
+        "question": null
+      },
+      "RL": {
+        "final": "needed",
+        "question": "needed"
+      },
+      "BLR": {
+        "final": null,
+        "question": null
+      },
+      "BRL": {
+        "final": null,
+        "question": null
+      }
+    },
+    "C1b_holds": false,
+    "relay_holds": false,
+    "recall_needs_no_locker": {
+      "BR": {
+        "question": null,
+        "final": null,
+        "both": null,
+        "after": null
+      },
+      "RR": {
+        "question": null,
+        "final": null,
+        "both": null,
+        "after": null
+      }
+    },
+    "binding_BL_vs_BR": {
+      "BL": {
+        "question": null,
+        "final": null,
+        "both": null,
+        "after": null
+      },
+      "BR": {
+        "question": null,
+        "final": null,
+        "both": null,
+        "after": null
+      },
+      "BLR": {
+        "question": null,
+        "final": null,
+        "both": null,
+        "after": null
+      },
+      "BRL": {
+        "question": null,
+        "final": null,
+        "both": null,
+        "after": null
+      }
+    },
+    "bands": {}
+  },
+  "cells": [
+    {
+      "family": "RL",
+      "source": "lookup",
+      "dest": "final",
+      "layers": "all",
+      "mode": "value",
+      "n": 299,
+      "acc": [
+        0.013377926421404682,
+        0.005214298641134945,
+        0.033887330725504254
+      ],
+      "conf": [
+        0.9732441471571907,
+        0.9481004265350503,
+        0.9863814940465343
+      ],
+      "dlogp": [
+        -5.963859197324415,
+        -6.173058252508361,
+        -5.7581440802675585
+      ],
+      "deltanet_norm_ratio": null,
+      "vs_control": [
+        0.9832775919732442,
+        0.9698996655518395,
+        0.9966555183946488
+      ],
+      "verdict": "needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup",
+      "dest": "question",
+      "layers": "all",
+      "mode": "value",
+      "n": 299,
+      "acc": [
+        0.5050167224080268,
+        0.44864163240363975,
+        0.5612645363657764
+      ],
+      "conf": [
+        0.39464882943143814,
+        0.34091899830257283,
+        0.4510514575396894
+      ],
+      "dlogp": [
+        -1.377203010033445,
+        -1.508909882943144,
+        -1.2473561705685619
+      ],
+      "deltanet_norm_ratio": null,
+      "vs_control": [
+        0.4916387959866221,
+        0.4347826086956522,
+        0.548494983277592
+      ],
+      "verdict": "needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup",
+      "dest": "after",
+      "layers": "all",
+      "mode": "value",
+      "n": 299,
+      "acc": [
+        0.020066889632107024,
+        0.009228373326794069,
+        0.04308148106573326
+      ],
+      "conf": [
+        0.9163879598662207,
+        0.8794855828210913,
+        0.9427264250404442
+      ],
+      "dlogp": [
+        -3.555064882943144,
+        -3.7155689715719062,
+        -3.4058479515050166
+      ],
+      "deltanet_norm_ratio": null,
+      "vs_control": [
+        0.9665551839464883,
+        0.9464882943143813,
+        0.9832775919732442
+      ],
+      "verdict": "needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup_off",
+      "dest": "final",
+      "layers": "all",
+      "mode": "value",
+      "n": 299,
+      "acc": [
+        0.9966555183946488,
+        0.9813013202671312,
+        0.9994093879050621
+      ],
+      "conf": [
+        0.0033444816053511705,
+        0.0005906120949380513,
+        0.01869867973286896
+      ],
+      "dlogp": [
+        0.005237123745819398,
+        0.0006489966555183948,
+        0.01072669732441471
+      ],
+      "deltanet_norm_ratio": null,
+      "verdict": "not_needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup_off",
+      "dest": "question",
+      "layers": "all",
+      "mode": "value",
+      "n": 299,
+      "acc": [
+        0.9966555183946488,
+        0.9813013202671312,
+        0.9994093879050621
+      ],
+      "conf": [
+        0.0,
+        0.0,
+        0.012685179314862951
+      ],
+      "dlogp": [
+        0.0036006688963210703,
+        -0.0052493478260869555,
+        0.011739280936454845
+      ],
+      "deltanet_norm_ratio": null,
+      "verdict": "not_needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup_off",
+      "dest": "after",
+      "layers": "all",
+      "mode": "value",
+      "n": 299,
+      "acc": [
+        0.9866220735785953,
+        0.9661126692744958,
+        0.9947857013588651
+      ],
+      "conf": [
+        0.013377926421404682,
+        0.005214298641134945,
+        0.033887330725504254
+      ],
+      "dlogp": [
+        -0.04426555183946488,
+        -0.06139683946488295,
+        -0.028216747491638803
+      ],
+      "deltanet_norm_ratio": null,
+      "verdict": "not_needed"
+    }
+  ]
+}
