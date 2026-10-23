@@ -465,6 +465,11 @@ def stage_manifest(args) -> None:
         "seeds": {"sample": SAMPLE_SEED, "null": NULL_SEED, "other": OTHER_SEED},
         "decision": (__doc__ or "").split("Decision rule")[1].split("Stages:")[0].strip(),
     }  # fmt: skip
+    if getattr(args, "donor", "dissoc") == "absent":  # Dan's B4; other runs' manifests keep their keys
+        from scripts import absent_entity as AE
+
+        assert args.data == "pointer_v4", "--donor absent needs pointer_v4's scenes"
+        m |= {"donor": "absent", "donor_rule": AE.rule_text()}
     path.write_text(json.dumps(m, indent=2) + "\n")
     print("wrote", path)
 
@@ -492,8 +497,18 @@ def stage_run(name: str) -> None:
     tok = model.tokenizer
     t0 = time.time()
     items, unaligned = drop_unaligned(load_items(m), tok)
+    no_absent = None
+    if m.get("donor") == "absent":  # scenes with an absent entity only; their donors rebuilt (absent_entity.py)
+        from scripts.absent_entity import with_absent
+
+        items, no_absent = with_absent(items)
     cases, counts = sample_cases(m, items)
     counts["unaligned_scenes"] = unaligned
+    if no_absent is not None:
+        from scripts.absent_entity import absent_cases
+
+        cases = absent_cases(cases)
+        counts["no_absent_entity_scenes"] = no_absent
     print(json.dumps(counts), flush=True)
     # (family, base level) -> items, for 'other' (another domain's item of the same family and layout)
     pool: dict[tuple[str, str, str], list[dict]] = collections.defaultdict(list)
@@ -530,6 +545,10 @@ def stage_run(name: str) -> None:
         runs = {k: model.run(torch.tensor([v], device="cuda"), record=record) for k, v in prep["read_ids"].items()}
         runs["other"] = model.run(torch.tensor([o_ids], device="cuda"), record=record)
         h = {k: v[1] for k, v in runs.items()}
+        if c["sources"]["dissoc"].get("absent"):  # the absent-entity donor's own unedited read (its eligibility)
+            top_d = int(runs["dissoc"][0].argmax())
+            checks.append({"name": c["id"], "check": "donor_unedited", "top": tok.decode([top_d]),
+                           "correct": answer_of.get(top_d) == c["sources"]["dissoc"]["answer"]})  # fmt: skip
         lookup = c["family"] != "RR"
         preds = c["sources"]["dissoc"]["predictions"]
         roles = role_map(c, preds, lookup)
@@ -607,6 +626,10 @@ def stage_run(name: str) -> None:
                                    "max_abs_dlogit": round(float((logits[row] - src_logits).abs().max()), 4)})  # fmt: skip
     write_jsonl(out_dir / "cases.jsonl", [{"id": c["id"], "family": c["family"], "domain": c["domain"],
                                            "level": c["level"]} for c in cases])  # fmt: skip
+    if m.get("donor") == "absent":
+        from scripts.absent_entity import donor_record
+
+        write_jsonl(out_dir / "donors.jsonl", [donor_record(c) for c in cases])
     write_jsonl(out_dir / "outcomes.jsonl", outcomes)
     write_jsonl(out_dir / "checks.jsonl", checks)
     summary = summarise(outcomes, checks, m)
@@ -2419,6 +2442,9 @@ if __name__ == "__main__":
     )
     ap.add_argument("--competence", default=None, help="the --data generator's competence run deciding eligibility")
     ap.add_argument("--no-eligibility", action="store_true", help="smoke runs: sample regardless of competence")
+    ap.add_argument("--donor", default="dissoc", choices=["dissoc", "absent"],
+                    help="absent (pointer_v4 only): the dissoc donor asks about an entity absent from the original "
+                    "(scripts/absent_entity.py)")  # fmt: skip
     ap.add_argument("--k", type=int, default=3)
     ap.add_argument("--seed", type=int, default=EXAMPLE_SEED)
     ap.add_argument("--group", default=None, choices=list(GROUPS))
