@@ -1,0 +1,64 @@
+id: olmo3_7b_instruct_jpp_d4_layer_gap_size_raw
+title: "Layer gap with the size-matched patch, with and without its lens-readable part, at the stated bridge, every layer 6-22 (OLMo-3-7B-Instruct, our J++, raw prompts)"
+thread: D4
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.6
+depends_on:
+- olmo3_7b_instruct_jpp_lens_gate
+- olmo3_7b_instruct_jpp_d4_where_raw
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/d1_precheck.py --gate olmo3_7b_instruct_jpp_lens_gate --competence olmo3_7b_instruct_d1_topics2_competence --min-topics 0
+  && BJ_TARGET=olmo-3-7b-instruct-jpp BJ_FORMAT=raw uv run python scripts/early_push_where.py run --name olmo3_7b_instruct_jpp_d4_layer_gap_size_raw_smoke --n 5 --scenes fresh --rule v2 --patch --embed --gap-rule v2 --patch-dir --patch-dir-perp --gap-bars 3 1 --subsets s w --layers 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 --context-layers 10 --scales 4 8 --v21-min-layer 10 --why "smoke (5 scenes): the raw path's unedited answers must match the raw competence run; not a result"
+  && BJ_TARGET=olmo-3-7b-instruct-jpp BJ_FORMAT=raw uv run python scripts/check_unedited.py --run olmo3_7b_instruct_jpp_d4_layer_gap_size_raw_smoke
+  && BJ_TARGET=olmo-3-7b-instruct-jpp BJ_FORMAT=raw uv run python scripts/early_push_where.py run --name olmo3_7b_instruct_jpp_d4_layer_gap_size_raw --n 100 --scenes fresh --same-scenes olmo3_7b_instruct_jpp_d4_where_raw --rule v2 --patch --embed --gap-rule v2 --patch-dir --patch-dir-perp --gap-bars 3 1 --subsets s w --layers 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 --context-layers 10 --scales 4 8 --v21-min-layer 10 --why "the layer gap on OLMo-3-7B-Instruct (our J++, raw prompts) with the size-matched patch, with and without its J-space part (d4_layer_gap_v2_27b and the dose control, layers and bars scaled by depth)"
+figures_command: BJ_TARGET=olmo-3-7b-instruct-jpp BJ_FORMAT=raw uv run python scripts/early_push_where.py figures --name olmo3_7b_instruct_jpp_d4_layer_gap_size_raw
+question: >-
+  Layer by layer on OLMo-3-7B-Instruct (our J++, raw prompts), at the stated bridge's word: does the full patch keep
+  moving lookups after the lens push stops, and does it still do so when cut to the lens push's size, with and without
+  its lens-readable part?
+why_it_matters: >-
+  On Qwen3.6-27B the full patch at the bridge's word kept moving lookups for 8 layers after the lens push stopped
+  (d4_layer_gap_v2_27b), but the patch was larger than the push. Cut to the push's size, a patch that still outlasts
+  the push carries the bridge in its direction, not its size; without its lens-readable part, a patch that still
+  outlasts the push carries it in a form the lens cannot read. A model from another family, with a lens we fit
+  ourselves, shows whether this is more than Qwen's.
+hypotheses:
+  H-gap: 'the full patch stops >= 3 layers after the lens push and still switches lookups at the lens push''s stop (Wilson lower bound > 5%)'
+  H-no-gap: 'the full patch stops within 1 layer of the lens push'
+  H-direction: 'the patch cut to the lens push''s size stops >= 3 layers after the lens push and still switches lookups at the lens push''s stop (lower bound > 5%, about 11/100 or more, at 4x or 8x)'
+  H-dose: 'cut to the lens push''s size, it stops within 1 layer of the lens push, or before it'
+  H-direction-without-J-space: 'the same patch without its J-space part stops >= 3 layers after the lens push and still switches lookups at the lens push''s stop'
+  H-dose-without-J-space: 'without its J-space part, it stops within 1 layer of the lens push, or before it'
+  inconclusive: 'for each verdict: a gap of 2 layers, an arm never stopping for good, or no valid cell at the lens push''s stop'
+decision_rule: >-
+  As qwen35_9b_d4_layer_gap_size, word for word (the same depth, 32 layers): scripts/early_push_where.py (docstring:
+  the layer-gap test v2, the dose control and the size-matched patch without its J-space part, written 22-23 Oct before
+  this run), bars 3 and 1 layers (--gap-bars 3 1, the 27B's 6 and 2 scaled by depth, Dan 23 Oct). Arms at the stated
+  bridge's word (decisive) and sentence (reported), every layer 6-22: the lens push (4x, 8x the scene's reference
+  norm), the input-embedding push at the same norms, the full patch at its own size, patch_dir = the scene's patch (the
+  prompt -> prompt case's C - clean, one per scene for all four families) rescaled to the lens push's norm (4x, 8x),
+  patch_dir_perp = the same with its J-space part removed (the 25-atom signed OMP per position over our J++'s
+  letter-token vectors, statement_positions' jspace) and rescaled to the lens push's norm (4x, 8x), a random push (4x,
+  8x). Valid cells: v2's off-path check with each arm's own rows (memory -> prompt and memory -> memory changed <= 10%)
+  and the random push at the same layer and scale switching <= 5% of lookups. Stops: an arm stops at a layer iff every
+  valid cell there has the Wilson upper bound < 5%; it keeps moving iff some valid cell has the lower bound > 5%; stop =
+  the first grid layer from which it stops at every later layer with a valid cell (for patch_dir and patch_dir_perp,
+  never stopping counts as after the grid). Three verdicts at the word: (1) H-gap iff patch_stop - lens_stop >= 3 and
+  the full patch keeps moving at lens_stop; H-no-gap iff <= 1; else inconclusive. (2) H-direction iff patch_dir_stop -
+  lens_stop >= 3 and patch_dir keeps moving at lens_stop; H-dose iff <= 1; else inconclusive. (3) the same for
+  patch_dir_perp. Reported, not decisive: the sentence the same way; recalls (prompt -> memory) by layer for every arm;
+  at lens_stop, where patch_dir or patch_dir_perp keeps moving lookups, its recalls against its lookups at its cell with
+  the most lookups switched (Wilson intervals): recalls below lookups -> lookup-specific; otherwise not lookup-specific
+  (for patch_dir_perp: the lens-invisible form moves recalls as much as lookups); the share removed with the J-space
+  part and the patch's norm in units of the 1x lens push (medians); the embedding and off-scene pushes; rule v2 on the
+  recall cells; the edits. First, as olmo3_7b_instruct_jpp_d4_where_raw: our J++ must pass gate v1
+  (scripts/d1_precheck.py, --min-topics 0), and a 5-scene smoke's unedited answers must all be right, as the raw
+  competence run says they are (scripts/check_unedited.py); if not, the chain stops and the cell is skipped and logged.
+controls:
+- 'a random push at the lens push''s norms (4x, 8x) at the same positions'
+- 'off-path: memory -> prompt and memory -> memory under each arm at the same positions (<= 10% changed for a valid cell)'
+- 'recalls (prompt -> memory) under every arm; the input-embedding push; the off-scene push; the text edits; the lens gate and the 5-scene raw smoke'
+n: '100 fresh scenes, four families: the draw of olmo3_7b_instruct_jpp_d4_where_raw (seed 1 from a pool of 171 eligible in raw format, none from map_A8_v1); asserted equal to its selection.json at run time, and reproduced on the tokenizer before this spec was written'
+seeds: [0, 1]
+notes: "Dan, 23 Oct: OLMo-3-7B-Instruct with raw prompts as olmo3_7b_instruct_jpp_d4_where_raw (our J++), the layer gap with patch_dir and patch_dir_perp, layers 6-22, bars 3 and 1, its smoke check kept. The agent's choices, for Dan to change before the run: the scenes are the first OLMo draw's (100), not the second's (71: with fewer than 73 lookups per cell no arm can stop, as with the 9B's held spec); 'layers 6-22' read as every layer (bars of 3 and 1 layers need it); --subsets s w; the recall-against-lookup statement. The source's two competence steps are dropped: that run exists (olmo3_7b_instruct_jpp_competence_raw_v1, written once) and suite_split.competence_file finds it by name. The smoke draws its own 5 scenes (no --same-scenes) and runs every arm, so the new arms run on the raw path before the main run. Cost: 448 rows per item (17 layers) plus one fp32 letter dictionary (about 1.5 GB) per scene and layer: about 0.6 h on one A100 with the precheck and the smoke (olmo3_7b_instruct_jpp_d4_where_raw: 0.36 h for about 390 rows per item); memory about 22 GB (it peaked at 19.5 GB)."

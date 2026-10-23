@@ -1,0 +1,59 @@
+id: qwen35_122b_d4_layer_gap_size
+title: "Layer gap with the size-matched patch, with and without its lens-readable part, at the stated bridge, every layer 24-39 (Qwen3.5-122B-A10B, its D4 scenes, 2x H100)"
+thread: D4
+gpus: 2
+mem_gb: 140
+est_gpu_hours: 1.6
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/d1_precheck.py --gate qwen35_122b_lens_gate_v2 --competence qwen35_122b_d1_topics2_competence --min-topics 0
+  && BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_BATCH=16 uv run python scripts/early_push_where.py run --name qwen35_122b_d4_layer_gap_size_smoke --n 1 --scenes fresh --rule v2 --patch --embed --gap-rule v2 --patch-dir --patch-dir-perp --gap-bars 5 2 --subsets s w --layers 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 --context-layers 30 --scales 4 8 --v21-min-layer 15 --why "smoke (1 scene, both GPUs): not a result"
+  && BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_BATCH=16 uv run python scripts/early_push_where.py run --name qwen35_122b_d4_layer_gap_size --n 100 --scenes fresh --same-scenes qwen35_122b_d4_where --rule v2 --patch --embed --gap-rule v2 --patch-dir --patch-dir-perp --gap-bars 5 2 --subsets s w --layers 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 --context-layers 30 --scales 4 8 --v21-min-layer 15 --why "the layer gap on Qwen3.5-122B-A10B with the size-matched patch, with and without its J-space part, layers 24-39: is the late band where the lookup follows the full patch form, not size?"
+figures_command: BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/early_push_where.py figures --name qwen35_122b_d4_layer_gap_size
+question: >-
+  Layer by layer on Qwen3.5-122B-A10B, at the stated bridge's word and sentence: does the full patch keep moving lookups
+  after the lens push stops, and does it still do so when cut to the lens push's size, with and without its
+  lens-readable part?
+why_it_matters: >-
+  On the 122B the lookup first follows the lens-readable form of a stated bridge (layers 27-30), so a lens push that
+  stops early and a patch that keeps going later could differ in size rather than form. Cutting the patch to the lens
+  push's size, with and without its lens-readable part, checks that the later band (layers 33-38) where only the patch
+  moves lookups is a matter of form, not size, on the largest model in the project.
+hypotheses:
+  H-gap: 'the full patch stops >= 5 layers after the lens push and still switches lookups at the lens push''s stop (Wilson lower bound > 5%)'
+  H-no-gap: 'the full patch stops within 2 layers of the lens push'
+  H-direction: 'the patch cut to the lens push''s size stops >= 5 layers after the lens push and still switches lookups at the lens push''s stop (lower bound > 5%, about 11/94 or more, at 4x or 8x)'
+  H-dose: 'cut to the lens push''s size, it stops within 2 layers of the lens push, or before it'
+  H-direction-without-J-space: 'the same patch without its J-space part stops >= 5 layers after the lens push and still switches lookups at the lens push''s stop'
+  H-dose-without-J-space: 'without its J-space part, it stops within 2 layers of the lens push, or before it'
+  inconclusive: 'for each verdict: a gap of 3-4 layers, an arm never stopping for good, or no valid cell at the lens push''s stop'
+decision_rule: >-
+  scripts/early_push_where.py (docstring: the layer-gap test v2, the dose control and the size-matched patch without its
+  J-space part, written 22-23 Oct before this run), bars 5 and 2 layers (--gap-bars 5 2: the 27B's 6 and 2 scaled by
+  depth to 48 layers, Dan 23 Oct). Arms at the stated bridge's word (decisive) and sentence (reported, as decisive as
+  the word for the 122B question: see notes), every layer 24-39: the lens push (4x, 8x the scene's reference norm),
+  the input-embedding push at the same norms, the full patch at its own size, patch_dir = the scene's patch (the
+  prompt -> prompt case's C - clean, one per scene for all four families) rescaled to the lens push's norm (4x, 8x),
+  patch_dir_perp = the same with its J-space part removed (the 25-atom signed OMP per position over the published
+  J++'s letter-token vectors, statement_positions' jspace) and rescaled to the lens push's norm (4x, 8x), a random push
+  (4x, 8x). Valid cells: v2's off-path check with each arm's own rows (memory -> prompt and memory -> memory changed <=
+  10%) and the random push at the same layer and scale switching <= 5% of lookups. Stops: an arm stops at a layer iff
+  every valid cell there has the Wilson upper bound < 5%; it keeps moving iff some valid cell has the lower bound > 5%;
+  stop = the first grid layer from which it stops at every later layer with a valid cell (for patch_dir and
+  patch_dir_perp, never stopping counts as after the grid). Three verdicts, at the word and at the sentence: (1) H-gap
+  iff patch_stop - lens_stop >= 5 and the full patch keeps moving at lens_stop; H-no-gap iff <= 2; else inconclusive.
+  (2) H-direction iff patch_dir_stop - lens_stop >= 5 and patch_dir keeps moving at lens_stop; H-dose iff <= 2; else
+  inconclusive. (3) the same for patch_dir_perp. Reported, not decisive: recalls (prompt -> memory) by layer for every
+  arm; at lens_stop, where patch_dir or patch_dir_perp keeps moving lookups, its recalls against its lookups at its cell
+  with the most lookups switched (Wilson intervals): recalls below lookups -> lookup-specific; otherwise not
+  lookup-specific (for patch_dir_perp: the lens-invisible form moves recalls as much as lookups); the share removed
+  with the J-space part and the patch's norm in units of the 1x lens push (medians); the embedding and off-scene
+  pushes; rule v2 on the recall cells; the edits. First, as qwen35_122b_d4_where: the published J++ must pass gate v1
+  (scripts/d1_precheck.py, --min-topics 0), then a 1-scene smoke on both GPUs.
+controls:
+- 'a random push at the lens push''s norms (4x, 8x) at the same positions'
+- 'off-path: memory -> prompt and memory -> memory under each arm at the same positions (<= 10% changed for a valid cell)'
+- 'recalls (prompt -> memory) under every arm; the input-embedding push; the off-scene push; the text edits; the lens gate and a 1-scene smoke'
+n: '94 fresh scenes, four families: the draw of qwen35_122b_d4_where (seed 1; its whole pool of 94 eligible scenes not in map_A8_v1); asserted equal to its selection.json at run time, and reproduced on the tokenizer before this spec was written'
+seeds: [0, 1]
+notes: "Dan, 23 Oct: on the 122B the lookup first follows the J-form (layers 27-30), so this checks that the layers 33-38 band is form, not size. Runs on the 2x H100 PCIe box (gpus: 2, BJ_DEVICE_MAP=auto: the FP8 model split over both GPUs; FP8 needs compute capability >= 8.9, which the H100 has); mem_gb is the total over both GPUs. early_push_where.py moves every edit and the recorded patch to the home GPU (Model.homed; a no-op on one GPU), so the split is safe; it has not run split before, so the 1-scene smoke on both GPUs comes first. No depends_on: the gate (qwen35_122b_lens_gate_v2), the competence runs and the scene source (qwen35_122b_d4_where) ran on the deleted H200 box and are committed, so a fresh checkout has them. The agent's choices, for Dan to change before the run: the scenes are qwen35_122b_d4_where's (the only 122B D4 draw; 94 scenes, enough for the stop rule, which needs 73 lookups per cell); 'layers 24-39' read as every layer (bars of 5 and 2 layers need it); the sentence decides as the word does, since the 122B's earlier claims are about both; --subsets s w; the recall-against-lookup statement. The input-embedding arm is kept (the layer gap v2's own), but on this FP8 release the embedding rows may be stored in FP8, so that arm's direction may be off; it is reported only. Cost: 422 rows per item (16 layers) for 376 items, plus one fp32 letter dictionary (about 3 GB) per scene and layer: about 1.6 h wall on both GPUs (3.2 GPU-hours), from qwen35_122b_d4_where (0.67 h on one H200 for about 390 rows per item) at about half that speed split over two H100 PCIe; memory about 125 GB in total (qwen35_122b_d4_where peaked at 120.6 GB at BJ_BATCH=16), BJ_BATCH=16 kept."

@@ -293,15 +293,20 @@ def test_above_compares_wilson_intervals():
     assert W.above((math.nan, math.nan, math.nan), (0.2, 0.1, 0.3)) == "no data"
 
 
-def _dose_cells(lens_until: int, dir_until: int, off: float = 0.0) -> dict:
+def _dose_cells(
+    lens_until: int, dir_until: int, off: float = 0.0, arm: str = "patch_dir", recall: float | None = None
+) -> dict:
+    """recall: the arm's prompt -> memory switch rate (BR rows), where it moves lookups (None: no BR rows)."""
     rates = {}
     for la in GRID:
         for sc in (4.0, 8.0):
             rates[("BL", "w", la, sc, "lens")] = 0.3 if la <= lens_until else 0.0
-            rates[("BL", "w", la, sc, "patch_dir")] = 0.4 if la <= dir_until else 0.0
+            rates[("BL", "w", la, sc, arm)] = 0.4 if la <= dir_until else 0.0
             rates[("BL", "w", la, sc, "random")] = 0.0
+            if recall is not None:
+                rates[("BR", "w", la, sc, arm)] = recall if la <= dir_until else 0.0
             for f in ("RL", "RR"):
-                rates[(f, "w", la, sc, "patch_dir")] = off
+                rates[(f, "w", la, sc, arm)] = off
         rates[("BL", "w", la, 0.0, "patch")] = 0.6 if la <= 26 else 0.0
     return _cells(rates, n=100)[0]
 
@@ -359,6 +364,53 @@ def test_split_test_reports_rand_sub_without_changing_the_verdict():
     assert t["verdict"].startswith("H-lens-part") and t["jspace_vs_rand_sub"]["lookups"] == "overlap"
 
 
+def test_drop_jspace_removes_the_jspace_part_at_any_scale():
+    dictionary, delta, _ = _split_inputs()
+    rest, share = W.drop_jspace(delta[:2], dictionary, k=25)
+    jspace = W.signed_omp(dictionary, delta[:2], 25)  # statement_positions' parts stage's jspace
+    assert torch.allclose(rest, delta[:2] - jspace, atol=1e-6)
+    assert math.isclose(share, float(jspace.norm() ** 2 / delta[:2].norm() ** 2), rel_tol=1e-5)
+    assert torch.allclose((rest * jspace).sum(dim=-1), torch.zeros(2), atol=1e-3)  # a least-squares fit: orthogonal
+    assert torch.allclose(rest[0], torch.zeros_like(rest[0]), atol=1e-4)  # a row inside the J-space: nothing left
+    rest3, share3 = W.drop_jspace(3.0 * delta[:2], dictionary, k=25)
+    assert torch.allclose(rest3, 3.0 * rest, atol=1e-4) and math.isclose(share3, share, rel_tol=1e-4)  # scale-free
+    norms = torch.full((2,), 8 * 2.5)
+    assert math.isclose(float(W.at_norm(rest, norms).norm()), float(norms.norm()), rel_tol=1e-5)  # the lens push's norm
+
+
+@pytest.mark.parametrize(("bars", "starts"), [((6, 2), "inconclusive"), ((3, 1), "H-gap"), ((5, 4), "H-no-gap")])
+def test_layer_gap_bars_are_parameters(bars, starts):
+    """Lens push stops at 20, the patch at 24: a gap of 4 layers reads by the bars given (default 6 / 2)."""
+    cells = _gap_v2_cells(18, 22, 16)
+    g = W.layer_gap_v2(cells, GRID, "w", *bars)
+    assert (g["lens"]["stop"], g["patch"]["stop"]) == (20, 24)
+    assert g["verdict"].startswith(starts) and g["bars"] == list(bars)
+    if bars == (6, 2):
+        assert W.layer_gap_v2(cells, GRID)["verdict"] == g["verdict"]  # the defaults
+    v1 = W.layer_gap(_gap_cells({la: 0.3 if la <= 18 else 0.0 for la in GRID}, {la: 0.6 if la <= 22 else 0.0 for la in GRID}), GRID, "w", *bars)  # fmt: skip
+    assert v1["verdict"].startswith(starts)
+
+
+@pytest.mark.parametrize(("bars", "starts"), [((6, 2), "inconclusive (partly dose)"), ((3, 1), "H-direction")])
+def test_dose_test_bars(bars, starts):
+    d = W.dose_test(_dose_cells(18, 22), GRID, "w", "patch_dir", *bars)  # lens stops at 20, patch_dir at 24
+    assert d["verdict"].startswith(starts), d["verdict"]
+
+
+@pytest.mark.parametrize(("recall", "says"), [
+    (0.4, "not lookup-specific"),  # as many recalls as lookups switched
+    (0.02, "lookup-specific"),  # recalls below lookups
+    (None, "no recall rows"),
+])  # fmt: skip
+def test_perp_second_verdict_and_its_recalls(recall, says):
+    d = W.dose_test(_dose_cells(18, 26, arm="patch_dir_perp", recall=recall), GRID, arm="patch_dir_perp")
+    assert d["verdict"].startswith("H-direction") and "without its J-space part" in d["verdict"]
+    assert d["patch_dir_perp"]["stop"] == 28 and d["recall_vs_lookup"]["statement"].startswith(says)
+    assert W.dose_test(_dose_cells(18, 26, arm="patch_dir_perp"), GRID)["verdict"] == "no data"  # no patch_dir rows
+    stopped = W.dose_test(_dose_cells(18, 14, arm="patch_dir_perp", recall=recall), GRID, arm="patch_dir_perp")
+    assert stopped["verdict"].startswith("H-dose") and stopped["recall_vs_lookup"]["statement"].startswith("not applicable")  # fmt: skip
+
+
 def test_agreement_counts_shared_items_per_arm():
     a = {("BL", "w", 16, 8.0, "lens"): {"i1": "b", "i2": "A"}, ("BL", "w", 16, 0.0, "patch"): {"i1": "b"}}
     b = {("BL", "w", 16, 8.0, "lens"): {"i1": "b", "i2": "b", "i3": "A"}, ("BL", "w", 18, 0.0, "patch"): {"i1": "b"}}
@@ -380,7 +432,8 @@ def _write_run(d, cfg: dict, rates: dict, n: int = 100) -> None:
     keys = [f"{la}/{s}" for la in cfg["layers"] for s in ("s", "w")]
     cases = [{"family": f, "name": f"{f}-{i}", "positions": {"w": [8], "s": [3, 4, 5, 6, 7, 8, 9]},
               "ref": {str(la): 2.0 for la in cfg["layers"]}, "patch_norm": {k: 40.0 for k in keys},
-              **({"split_share": {k: {p: 0.3 for p in W.SPLIT_PARTS} for k in keys}} if cfg.get("split") else {})}
+              **({"split_share": {k: {p: 0.3 for p in W.SPLIT_PARTS} for k in keys}} if cfg.get("split") else {}),
+              **({"perp_removed": {k: 0.4 for k in keys}} if cfg.get("patch_dir_perp") else {})}
              for f in cfg["families"] for i in range(n)]  # fmt: skip
     (d / "cases.jsonl").write_text("".join(json.dumps(c) + "\n" for c in cases))
 
@@ -433,3 +486,72 @@ def test_dose_and_split_runs_analyze_and_draw(tmp_path, monkeypatch):
     assert "J-space part against rand_sub at layer 16" in (tmp_path / "split" / "summary.md").read_text()
     assert s["scene_patch"]["split_share"]["16/w"]["jspace"] == 0.3
     assert list((tmp_path / "split").glob("analysis-figures-*/split.png"))
+
+
+def test_perp_run_reusing_the_lens_push_analyzes_and_draws(tmp_path, monkeypatch):
+    """A --reuse run has only patch_dir_perp's rows; the lens push, random push and full patch come from the reused
+    run on the same items; its bars come from the config."""
+    pytest.importorskip("matplotlib")
+    monkeypatch.setattr(W, "RESULTS", tmp_path)
+    base = {**W.DEFAULTS, "scales": [4.0, 8.0], "rule": "v2", "subsets": ["s", "w"], "scenes": "fresh"}
+    layers = [16, 18, 20, 22, 24, 26, 28, 30]
+    ref, perp = {}, {}
+    for sub in ("w", "s"):
+        for la in layers:
+            for sc in (4.0, 8.0):
+                ref[("BL", sub, la, sc, "lens")] = 0.3 if la <= 18 else 0.0
+                ref[("BL", sub, la, sc, "random")] = 0.0
+                ref[("BR", sub, la, sc, "lens")] = 0.8
+                perp[("BL", sub, la, sc, "patch_dir_perp")] = 0.4 if la <= 22 else 0.0  # stops at 24: 4 layers after
+                perp[("BR", sub, la, sc, "patch_dir_perp")] = 0.05 if la <= 22 else 0.0  # recalls below lookups
+                for f in ("RL", "RR"):
+                    perp[(f, sub, la, sc, "patch_dir_perp")] = 0.0
+            ref[("BL", sub, la, 0.0, "patch")] = 0.6 if la <= 26 else 0.0
+    _write_run(tmp_path / "ref", {**base, "layers": layers, "patch": True, "gap_rule": "v2"}, ref)
+    cfg = {**base, "layers": layers, "patch_dir_perp": True, "same_scenes": "ref", "reuse": "ref", "gap_bars": [3, 1]}
+    _write_run(tmp_path / "perp", cfg, perp)
+    W.stage_analyze("perp")
+    W.stage_figures("perp")
+    s = json.loads((tmp_path / "perp" / "summary.json").read_text())
+    t = s["perp_test"]["w"]
+    assert t["verdict"].startswith("H-direction"), t["verdict"]  # 4 >= 3 (it would be inconclusive at 6 / 2)
+    assert (t["lens"]["stop"], t["patch_dir_perp"]["stop"], t["patch"]["stop"]) == (20, 24, 28)
+    assert t["recall_vs_lookup"]["statement"].startswith("lookup-specific")
+    assert "dose_test" not in s and "layer_gap" not in s
+    assert s["reused"] == {"run": "ref", "arms": ["lens", "patch", "random"], "same_items_right_unedited": True}
+    assert s["scene_patch"]["perp_removed"]["16/w"] == 0.4
+    md = (tmp_path / "perp" / "summary.md").read_text()
+    assert "Without the J-space part (w)" in md and "bars: 3 / 1" in md and "Recalls switched to X" in md
+    assert list((tmp_path / "perp").glob("analysis-figures-*/dose.png"))
+
+
+def test_layer_gap_with_both_size_matched_arms(tmp_path, monkeypatch):
+    """The 9B / OLMo / 122B configuration: the layer gap v2 (patch, embedding push) with patch_dir and patch_dir_perp,
+    bars 3 / 1 for a 32-layer model on an every-layer grid."""
+    pytest.importorskip("matplotlib")
+    monkeypatch.setattr(W, "RESULTS", tmp_path)
+    layers = list(range(6, 23))
+    rates = {}
+    for sub in ("w", "s"):
+        for la in layers:
+            for sc in (4.0, 8.0):
+                rates[("BL", sub, la, sc, "lens")] = 0.3 if la <= 9 else 0.0  # stops at 10
+                rates[("BL", sub, la, sc, "embed")] = 0.0
+                rates[("BL", sub, la, sc, "random")] = 0.0
+                rates[("BL", sub, la, sc, "patch_dir")] = 0.4 if la <= 12 else 0.0  # stops at 13
+                rates[("BL", sub, la, sc, "patch_dir_perp")] = 0.4 if la <= 10 else 0.0  # stops at 11
+                rates[("BR", sub, la, sc, "patch_dir")] = 0.7
+                rates[("BR", sub, la, sc, "patch_dir_perp")] = 0.4
+            rates[("BL", sub, la, 0.0, "patch")] = 0.6 if la <= 13 else 0.0  # stops at 14
+    cfg = {**W.DEFAULTS, "scales": [4.0, 8.0], "rule": "v2", "subsets": ["s", "w"], "scenes": "fresh", "layers": layers,
+           "patch": True, "gap_rule": "v2", "embed": True, "patch_dir": True, "patch_dir_perp": True, "gap_bars": [3, 1]}  # fmt: skip
+    _write_run(tmp_path / "size", cfg, rates)
+    W.stage_analyze("size")
+    W.stage_figures("size")
+    s = json.loads((tmp_path / "size" / "summary.json").read_text())
+    assert s["layer_gap"]["w"]["verdict"] == "H-gap" and s["layer_gap"]["w"]["bars"] == [3, 1]  # 14 - 10 = 4 >= 3
+    assert s["dose_test"]["w"]["verdict"].startswith("H-direction")  # 13 - 10 = 3 >= 3, moving at 10
+    assert s["perp_test"]["w"]["verdict"].startswith("H-dose")  # 11 - 10 = 1 <= 1
+    assert s["perp_test"]["w"]["recall_vs_lookup"]["statement"].startswith("not lookup-specific")  # 40% vs 40%
+    assert s["dose_test"]["w"]["recall_vs_lookup"]["statement"].startswith("not lookup-specific")  # 70% vs 40%
+    assert list((tmp_path / "size").glob("analysis-figures-*/dose.png"))
