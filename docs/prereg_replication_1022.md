@@ -511,3 +511,42 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   per bridge; 2,336 items each, no passage shared with natplus_v1). The 27B at L32-40 and the 9B at L12-16 as
   amendment 14 (candidate read, paper10 / rot / unembed10 / rot, c1_v2, c1_specificity, natplus_split).
   Predictions: amendment 14's for each seed; the popular-rare comparison is also pooled over the three seeds.
+
+## Amendment 20 (Zach, 2026-10-23 ~21:05 UTC): review fixes: the cand2 read, reruns, corrections
+
+- **Seen when this was written:** a read-only review of today's code, data and results (three passes: datasets;
+  scoring and eligibility; new scripts, queues and recomputed numbers). Every headline number recomputed from rows
+  matched. All results of amendments 13-19 except the band sweeps and the 27B natctl.
+- **Bug:** natural_v1.py competence accepted a first name at hop 1 only from natural_v1's FIRST_NAMES; natplus adds
+  its 18 rare people's first names on import, which competence never does. Their hop 1 failed the candidate read, so
+  most rare-person scenes starting from memory were never eligible (27B: 8 of 54). It touches natplus (every seed and
+  dev), natctl and nat3 eligibility, not natural_v1-v3. The items' own alts were always right.
+- **Flaw:** animals' prompt-final values are written lowercase and the model answers lowercase, while the candidate
+  read compared capitalised tokens (27B: every PP and MP animal item fails the top read unedited).
+- **New read cand2** (ablate_v2 and natural_v1 competence, --read cand2): every candidate in either case; right if the
+  top candidate token is a form of the answer or, at hop 1, of one of the item's own names for the bridge. cand is
+  unchanged; all reads are recorded.
+- **Reruns under cand2**, as amendments 14, 15 and 19: natplus_v1_chat for the 27B (L32-40), 9B (L12-16) and Muse
+  (L36-42); nat3_v1_chat for the 27B; gen_spot for the three (checked against these runs, TF32 as ablate_v2, and a
+  reply class "lure" for PM: the value the shared passage gives the bridge itself, i.e. its PP answer);
+  natplus_v2_chat for the 27B and 9B. Not rerun: the Olmos' natplus (null), natctl (its contrasts are within scenes;
+  the missing scenes change its mix, noted). The cand runs stay on record, superseded for natplus and nat3.
+  natplus_v3 is not run (see a).
+- **Predictions:** amendments 14 and 15 unchanged; the 27B's people/rare memory-start n rises from ~8 to ~50; the
+  popular-rare comparison is also reported without animals (every animal is popular).
+- **Corrections:**
+  (a) natplus_dev and natplus_v1-v3 share their chains (bridges, facts, hop-1 descriptions); only passages and
+  wordings differ. A band chosen on dev is chosen on the test facts, so the band sweeps are descriptive, no C1 rerun at
+  a natural band counts as a test, and the 27B sweep is dropped. natplus_v1-v3 are rendering seeds of one fact set;
+  the intervals over bridges carry the fact sampling.
+  (b) natplus (and natural_v1) PM passages give the bridge a made-up value from the same answer list under another
+  relation (e.g. where its delegation meets next); MM passages never name the bridge. PM and MM are reported
+  separately, and MM - MP is the lure-free gap. About 30% of memory-final passages also hold the answer word as
+  another entity's value (conservative; natctl M has none).
+  (c) Amendment 18's write and spare tests used each surname's first sub-token as its concept (fragments for 59 of
+  100 B', e.g. Beethoven -> " Be"; two items' B and C share a token). Only 22 items have single-token, distinct B and
+  B'. The write and spare results are withdrawn, not rerun; the knock-out result (no token choice) stands.
+  (d) nat3: chains through South Africa are left out of scoring (nat3_score --drop; its name contains the answer
+  Africa, and its first token is South America's).
+  (e) Queues count failed steps and exit nonzero; gen_spot --check takes finished runs only; result directories are
+  committed only once they have summary.json (commit 7546083 included partial rows of then-running runs).

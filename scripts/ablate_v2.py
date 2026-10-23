@@ -163,6 +163,11 @@ def tasks_prompts(tok, set_name: str, comp_run: str, words: list[str] | None, n:
                 own = it["steps"][int(kind[4:]) - 1].get("cand_vocab") if kind.startswith("step") else it.get("answer_vocab")
                 vocab = own or natural_vocab(set_name)[(it["domain"], "bridge" if kind == "step1" else "answer")]  # natural3: own
                 out[-1]["cands"] = sorted({S.answer_token(tok, v, k) for v in vocab} | {out[-1]["tok"]})
+                # cand2 (2026-10-23, amendment 20): candidates in either case, and hop 1's other names for the bridge
+                both = lambda v, k=k: {S.answer_token(tok, v, k), S.answer_token(tok, v.lower(), k)}  # noqa: E731
+                ok2 = both(a) | ({t for x in it["steps"][0].get("alts", []) for t in both(x)} if kind == "step1" else set())
+                out[-1]["ok2"] = sorted(ok2)
+                out[-1]["cands2"] = sorted({t for v in vocab for t in both(v)} | ok2)
     return out
 
 
@@ -205,13 +210,17 @@ def answertype_prompts(tok, n: int) -> list[dict]:
 def reads(logits, p: dict, read: str) -> dict:
     """correct: the answer's first token is the top token ("top", every run before 2026-10-23) or, for prompts with
     candidates (natural_v1), the top among its relation's candidate answers ("cand": format tokens cannot fail it).
-    Both are recorded when the prompt has candidates."""
+    Both are recorded when the prompt has candidates. "cand2" (2026-10-23, amendment 20): the candidates in either case,
+    right if the top is any form of the answer (and, for hop 1, of the bridge's other names); all three are recorded."""
     top = int(logits.argmax()) == p["tok"]
     if "cands" not in p:
         return {"correct": top}
     c = torch.tensor(p["cands"], device=logits.device)
     cand = int(c[logits[c].argmax()]) == p["tok"]
-    return {"correct": cand if read == "cand" else top, "correct_top": top, "correct_cand": cand}
+    c2 = torch.tensor(p["cands2"], device=logits.device)
+    cand2 = int(c2[logits[c2].argmax()]) in p["ok2"]
+    return {"correct": {"top": top, "cand": cand, "cand2": cand2}[read], "correct_top": top, "correct_cand": cand,
+            "correct_cand2": cand2}  # fmt: skip
 
 
 def bridge_positions(tok, ids: list[int], word: str) -> list[int]:
@@ -549,7 +558,7 @@ if __name__ == "__main__":
     )
     ap.add_argument("--no-tf32", action="store_true", help="full fp32 matmuls (the v1 numerics check)")
     ap.add_argument("--tasks", default=None, help="a tasks_v2 set to draw prompts from instead of the suite")
-    ap.add_argument("--read", choices=["top", "cand"], default="top",
+    ap.add_argument("--read", choices=["top", "cand", "cand2"], default="top",
                     help='"cand" (natural_v1 only): correct = top among the relation\'s candidate answers')
     ap.add_argument("--tasks-competence", default=None, help="its competence run (eligibility: every part right)")
     ap.add_argument("--tasks-words", nargs="*", default=None, help="tasks_v2 words to include (default: all)")

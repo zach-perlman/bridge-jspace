@@ -3,7 +3,7 @@ Per condition: accuracy lost (points, items right unedited) per word, and each w
 bootstrap interval over start entities (resampled jointly across words); by chain type too. Clean words (no adjacent
 memory hops): PPP, MPP, PMP, PPM, MPM; skip-prone: PMM, MMM, MMP. --min-p keeps only items the model answers
 with at least that probability unedited (most lucky guesses on a 5-way answer are low-confidence). Descriptive.
-Writes results/ablate_v2/nat3_score/RUN[_pX].json.
+--drop (amendment 20) leaves out chains through the named entities. Writes results/ablate_v2/nat3_score/RUN[_pX][_drop].json.
 
 python scripts/nat3_score.py RUN [--set nat3_v1_chat]
 """
@@ -22,7 +22,7 @@ WORDS = ("PPP", "MPP", "PMP", "PPM", "MPM", "MMP", "PMM", "MMM")
 CLEAN = ("PPP", "MPP", "PMP", "PPM", "MPM")
 
 
-def main(run: str, set_name: str, min_p: float = 0.0) -> None:
+def main(run: str, set_name: str, min_p: float = 0.0, drop: tuple[str, ...] = ()) -> None:
     items = {json.loads(line)["id"]: json.loads(line) for line in (DATA / set_name / "items.jsonl").read_text().splitlines()}
     rows = [json.loads(line) for line in (RES / run / "rows.jsonl").read_text().splitlines()]
     import math
@@ -31,7 +31,7 @@ def main(run: str, set_name: str, min_p: float = 0.0) -> None:
     ok = {(r["family"], r["id"]) for r in rows
           if r["condition"] == "none" and r["correct"] and r["kind"] == "clean" and r["logp"] >= floor}  # fmt: skip
     conds = list(dict.fromkeys(r["condition"] for r in rows if r["condition"] != "none"))
-    out: dict = {"run": run, "set": set_name, "min_p": min_p, "cells": {}}
+    out: dict = {"run": run, "set": set_name, "min_p": min_p, "drop": list(drop), "cells": {}}
     rng = random.Random(0)
     for split in ("all", "cities", "people"):
         for cond in conds:
@@ -40,6 +40,8 @@ def main(run: str, set_name: str, min_p: float = 0.0) -> None:
                 if r["condition"] != cond or r["kind"] != "clean" or (r["family"], r["id"]) not in ok:
                     continue
                 it = items[r["id"]]
+                if set(drop) & set(it["bridges"]):  # amendment 20: a chain through a dropped entity
+                    continue
                 if split != "all" and it["domain"] != split:
                     continue
                 sel[r["family"]].append((it["bridge"], r["correct"]))
@@ -69,7 +71,7 @@ def main(run: str, set_name: str, min_p: float = 0.0) -> None:
             print(f"{split:7s} {cond:14s} " + "  ".join(f"{w} {cell[w]['loss']:4.0f} ({cell[w]['excess_over_PPP']:+.0f} {cell[w]['ci']}, n={cell[w]['n']})"
                                                        for w in words))  # fmt: skip
     (RES / "nat3_score").mkdir(exist_ok=True)
-    (RES / "nat3_score" / f"{run}{'_p%g' % min_p if min_p else ''}.json").write_text(json.dumps(out, indent=1) + "\n")
+    (RES / "nat3_score" / f"{run}{'_p%g' % min_p if min_p else ''}{'_drop' if drop else ''}.json").write_text(json.dumps(out, indent=1) + "\n")
 
 
 if __name__ == "__main__":
@@ -77,5 +79,6 @@ if __name__ == "__main__":
     ap.add_argument("run")
     ap.add_argument("--set", default="nat3_v1_chat")
     ap.add_argument("--min-p", type=float, default=0.0, help="only items whose unedited answer probability is at least this (lucky guesses out)")
+    ap.add_argument("--drop", nargs="*", default=[], help="drop items whose chain passes through these entities (amendment 20: South Africa)")
     a = ap.parse_args()
-    main(a.run, a.set, a.min_p)
+    main(a.run, a.set, a.min_p, tuple(a.drop))

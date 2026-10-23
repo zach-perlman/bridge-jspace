@@ -362,7 +362,7 @@ def vocab_of(items: list[dict]) -> dict:
     return v
 
 
-def competence(set_name: str, run: str, why: str, read: str = "top") -> None:
+def competence(set_name: str, run: str, why: str, read: str = "top", limit: int = 0) -> None:
     """Whole question, each hop alone and the guess prompt, one forward each. read "top": correct = the answer's first
     token is the top token (a person's first name counts for hop 1); read "cand" (2026-10-23): the top among the
     relation's candidate answers (bridges for hop 1), so format tokens cannot fail it, as ablate_v2 --read cand. Both
@@ -385,7 +385,7 @@ def competence(set_name: str, run: str, why: str, read: str = "top") -> None:
     model = load_model()
     tok = model.tokenizer
     jobs = []
-    for it in T.load(set_name):
+    for it in T.load(set_name)[: limit or None]:
         parts = [("whole", it["question"], it["answer"])] + [(f"step{i}", s["question"], s["answer"])
                                                              for i, s in enumerate(it["steps"], 1)]
         parts.append(("guess", it["guess_question"], it["answer"]))
@@ -393,7 +393,7 @@ def competence(set_name: str, run: str, why: str, read: str = "top") -> None:
         for part, q, a in parts:
             ids = S.ids(tok, T.render(tok, {**it, "_question": q, "_kind": it["kind"]}))
             alt_s = [tok.decode([S.answer_token(tok, x, it["kind"])]).strip() for x in alts.get(part, [])]
-            jobs.append({"alts": alt_s, "part": part, "id": it["id"], "scene": it["scene"], "word": it["word"], "domain": it["domain"],
+            jobs.append({"alts": alt_s, "alt_names": alts.get(part, []), "part": part, "id": it["id"], "scene": it["scene"], "word": it["word"], "domain": it["domain"],
                          "format": it["format"], "level": it["level"], "numbers": "words", "c_op": None, "ids": ids,
                          "answer_kind": it["kind"], "expected": a, "kind": it["kind"], "answer": a})  # fmt: skip
     t0 = time.time()
@@ -424,9 +424,16 @@ def competence(set_name: str, run: str, why: str, read: str = "top") -> None:
                     ok_ids = {want} | ({S.answer_token(tok, FIRST_NAMES.get(j["expected"], j["expected"]), j["kind"])} if j["part"] == "step1" else set())
                     c = torch.tensor(sorted({S.answer_token(tok, v, j["kind"]) for v in pool} | ok_ids), device="cuda")
                     j["correct_cand"] = int(c[logits[row, c].argmax()]) in ok_ids
+                    # cand2 (2026-10-23, amendment 20): every candidate in either case (animals' prompt answers are
+                    # lowercase), and for hop 1 each of the item's own names for the bridge (natplus's rare people's
+                    # first names were missing from FIRST_NAMES here, so their hop 1 failed the cand read)
+                    both = lambda v, k=j["kind"]: {S.answer_token(tok, v, k), S.answer_token(tok, v.lower(), k)}  # noqa: E731
+                    ok2 = both(j["expected"]) | {t for x in j["alt_names"] for t in both(x)}
+                    c2 = torch.tensor(sorted({t for v in pool for t in both(v)} | ok2), device="cuda")
+                    j["correct_cand2"] = int(c2[logits[row, c2].argmax()]) in ok2
     for j in jobs:  # a person's hop 1 may be read as the first name (Wolfgang for Mozart): either first token counts
         j["correct_top"] = j["margin"] > 0 or j["read_top"] in j["alts"]
-        j["correct"] = j["correct_cand"] if read == "cand" else j["correct_top"]
+        j["correct"] = {"top": j["correct_top"], "cand": j["correct_cand"], "cand2": j["correct_cand2"]}[read]
     rows = [{k: v for k, v in j.items() if k not in ("ids", "forced")} for j in jobs]
     (out / "items.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
     acc = lambda sel: round(statistics.mean(r["correct"] for r in sel), 3) if sel else None  # noqa: E731
@@ -459,11 +466,12 @@ if __name__ == "__main__":
     ap.add_argument("--scenes", type=int, default=2, help="make: scenes per bridge, level and start group")
     ap.add_argument("--set", dest="set_name")
     ap.add_argument("--why")
-    ap.add_argument("--read", choices=["top", "cand"], default="top", help="competence: the read that sets correct")
+    ap.add_argument("--read", choices=["top", "cand", "cand2"], default="top", help="competence: the read that sets correct")
+    ap.add_argument("--limit", type=int, default=0, help="competence: only the first N items (smoke tests)")
     a = ap.parse_args()
     if a.stage == "make":
         make(a.name, a.seed, a.scenes)
     elif a.stage == "derive-qa":
         derive_qa(a.name)
     else:
-        competence(a.set_name, a.name, a.why, a.read)
+        competence(a.set_name, a.name, a.why, a.read, a.limit)
