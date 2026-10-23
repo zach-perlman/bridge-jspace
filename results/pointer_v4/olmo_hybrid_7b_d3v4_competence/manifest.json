@@ -1,0 +1,62 @@
+{
+  "exp": "pointer_v4",
+  "run": "olmo_hybrid_7b_d3v4_competence",
+  "written_utc": "2026-10-23T04:16:40Z",
+  "why": "G3 on Olmo-Hybrid-7B Instruct: pointer_v4's main scenes, chat format, every prompt and step, judged by pointer_swap's one-forward read (as olmo3_7b_instruct_d3v4_competence)",
+  "model": {
+    "target": "olmo-hybrid-7b-instruct-dpo",
+    "repo": "allenai/Olmo-Hybrid-Instruct-DPO-7B",
+    "revision": "ec62da5af0106ab4e83a60e07c4796ff358fd204",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "sets": [
+    "main"
+  ],
+  "split": "/ephemeral/jobq/runs/olmo_hybrid_7b_d3v4_competence/code/data/pointer_v4/split.json",
+  "items": {
+    "main/countries_RL_e5f0": {
+      "file": "data/pointer_v4/main/countries_RL_e5f0.json",
+      "sha256": "43b59cb01f9d4a39e12b71a9c06ca5965206bcae89d7965dc354e39e86c7174b"
+    },
+    "main/countries_DL_e5f0": {
+      "file": "data/pointer_v4/main/countries_DL_e5f0.json",
+      "sha256": "b1f7a187078771c7e3a4169641597baed62c062b62370a6d78d27976e9677752"
+    },
+    "main/countries_RR_e5f0": {
+      "file": "data/pointer_v4/main/countries_RR_e5f0.json",
+      "sha256": "ab26417b4b6348edb7c2bef5ceafc3900ea4fca5461b2d28aadc5362674f98bd"
+    },
+    "main/animals_RL_e5f0": {
+      "file": "data/pointer_v4/main/animals_RL_e5f0.json",
+      "sha256": "c1138a7f05fdeef384d23828afc7ea168282f8599e8a8a20e73055d5162d667b"
+    },
+    "main/animals_DL_e5f0": {
+      "file": "data/pointer_v4/main/animals_DL_e5f0.json",
+      "sha256": "b7fc3832311f683edcd336b0f0a99596ab7c0c58b891f9d493c4b434d11c4ac2"
+    },
+    "main/animals_RR_e5f0": {
+      "file": "data/pointer_v4/main/animals_RR_e5f0.json",
+      "sha256": "c5301782c4ebd22a4589c1ff29bc05490b54253944cdf37b52272e02414d0b52"
+    },
+    "main/body_RL_e5f0": {
+      "file": "data/pointer_v4/main/body_RL_e5f0.json",
+      "sha256": "6e226678ac9e375384cc845ce67f1b9d2b445c1018f9ae5701b983a561ef6b60"
+    },
+    "main/body_DL_e5f0": {
+      "file": "data/pointer_v4/main/body_DL_e5f0.json",
+      "sha256": "f1eed22441089d9e03e295f367cfff04fd6a04b8af905cf37ae5451cf19f1136"
+    },
+    "main/body_RR_e5f0": {
+      "file": "data/pointer_v4/main/body_RR_e5f0.json",
+      "sha256": "74cce980aee4238fb14706d10244a67ceb5c65bd8886e3b8ffd75979ed87efe3"
+    }
+  },
+  "limit": null,
+  "format": "pointer_v1's: chat template, thinking off, 'Answer:' prefilled (BJ_FORMAT=chat); context, newline, question and instruction as the user turn",
+  "prompts": "base; each source (dissoc, same, redigit); hop1 (cue -> entity, with the base context) and hop2 (the lookup with the entity named, or the recalled fact) for RL and RR",
+  "judge_mode": "read",
+  "judge": "pointer_v1's: read judge (BJ_JUDGE=read): a prompt is right iff the top token of one forward (a digit answer's space token appended: pointer_swap's read) is the expected answer's first token; the greedy judge is recorded as correct_greedy, not used (the domain's entities for hop1)",
+  "eligibility": "pointer_swap and pointer_fit use items with every prompt right"
+}

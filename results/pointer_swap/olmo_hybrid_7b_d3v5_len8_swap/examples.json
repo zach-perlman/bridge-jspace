@@ -1,0 +1,1217 @@
+{
+ "exp": "pointer_swap",
+ "run": "olmo_hybrid_7b_d3v5_len8_swap",
+ "seed": 0,
+ "k": 3,
+ "selection": "source dissoc, group last, layers all but 0 and the transit window",
+ "groups": [
+  {
+   "key": "value",
+   "title": "value",
+   "definition": "the patched base answered the source's own answer, absent from the base context (H-value)",
+   "n_total": 706
+  },
+  {
+   "key": "identity",
+   "title": "identity",
+   "definition": "the patched base answered the base's digit for the source's entity (H-word / lexical key)",
+   "n_total": 12
+  },
+  {
+   "key": "context",
+   "title": "context",
+   "definition": "another digit of the base context, predicted by no hypothesis",
+   "n_total": 11
+  },
+  {
+   "key": "position",
+   "title": "position",
+   "definition": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction)",
+   "n_total": 7
+  },
+  {
+   "key": "other",
+   "title": "other",
+   "definition": "any other answer (a recalled digit, another digit, a word)",
+   "n_total": 8
+  },
+  {
+   "key": "same_changed",
+   "title": "same changed",
+   "definition": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer",
+   "n_total": 46
+  }
+ ],
+ "examples": [
+  {
+   "group": "value",
+   "family": "DL",
+   "item_id": "countries-DL-e8-digit-0108",
+   "domain": "countries",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe file on Germany is kept in drawer 2. The file on Canada is kept in drawer 5. The file on Spain is kept in drawer 1. The file on Cuba is kept in drawer 4. The file on Italy is kept in drawer 9. The file on Hungary is kept in drawer 0. The file on Philippines is kept in drawer 6. The file on Turkey is kept in drawer 7.\nWhat drawer keeps the file on Spain? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 612,
+     "end": 613,
+     "role": "patched (last)"
+    },
+    {
+     "start": 251,
+     "end": 289,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 453,
+     "end": 492,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 367,
+     "end": 407,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 523,
+     "end": 528,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe file on Germany is kept in drawer 9. The file on Hungary is kept in drawer 7. The file on Spain is kept in drawer 0. The file on Canada is kept in drawer 6. The file on Italy is kept in drawer 4. The file on Turkey is kept in drawer 8. The file on Cuba is kept in drawer 2. The file on Philippines is kept in drawer 1.\nWhat drawer keeps the file on Turkey? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 370,
+     "end": 409,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "1",
+    "edited": "8",
+    "expected": {
+     "none": "1",
+     "identity": "7",
+     "position": "0",
+     "value": "8"
+    },
+    "unedited_read": "1"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0,
+     "identity": 0.0,
+     "position": 0.0,
+     "value": 1.0
+    },
+    "layer": "transit",
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('8')"
+  },
+  {
+   "group": "value",
+   "family": "DL",
+   "item_id": "countries-DL-e8-word-0095",
+   "domain": "countries",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe red drawer holds the Russia file. The black drawer holds the Ireland file. The blue drawer holds the Belgium file. The brown drawer holds the France file. The pink drawer holds the Egypt file. The white drawer holds the Portugal file. The purple drawer holds the Austria file. The grey drawer holds the Philippines file.\nWhat colour is the drawer with the file on France? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 622,
+     "end": 629,
+     "role": "patched (last)"
+    },
+    {
+     "start": 289,
+     "end": 328,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 451,
+     "end": 494,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 249,
+     "end": 288,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 538,
+     "end": 544,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe blue drawer holds the Belgium file. The green drawer holds the Russia file. The orange drawer holds the Philippines file. The pink drawer holds the Ireland file. The brown drawer holds the France file. The grey drawer holds the Portugal file. The purple drawer holds the Austria file. The red drawer holds the Egypt file.\nWhat colour is the drawer with the file on Philippines? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 250,
+     "end": 295,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "brown",
+    "edited": "orange",
+    "expected": {
+     "none": "brown",
+     "identity": "grey",
+     "position": "blue",
+     "value": "orange"
+    },
+    "unedited_read": "brown"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0,
+     "identity": 0.0,
+     "position": 0.0008,
+     "value": 0.9397
+    },
+    "layer": "transit",
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('orange')"
+  },
+  {
+   "group": "value",
+   "family": "RL",
+   "item_id": "animals-RL-e8-word-0113",
+   "domain": "animals",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe worm's locker is white. The owl's locker is purple. The deer's locker is brown. The camel's locker is pink. The chicken's locker is grey. The goose's locker is orange. The moth's locker is green. The bee's locker is black.\nWhat colour is the locker of the animal known for hooting? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 532,
+     "end": 539,
+     "role": "patched (last)"
+    },
+    {
+     "start": 198,
+     "end": 225,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 370,
+     "end": 396,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 282,
+     "end": 311,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 426,
+     "end": 454,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe chicken's locker is white. The goose's locker is green. The moth's locker is red. The camel's locker is orange. The bee's locker is yellow. The worm's locker is blue. The owl's locker is black. The deer's locker is grey.\nWhat colour is the locker of the animal known for making honey? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 286,
+     "end": 313,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "purple",
+    "edited": "yellow",
+    "expected": {
+     "none": "purple",
+     "identity": "black",
+     "position": "grey",
+     "value": "yellow"
+    },
+    "unedited_read": "purple"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0002,
+     "identity": 0.0004,
+     "position": 0.0002,
+     "value": 0.876
+    },
+    "layer": "transit",
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('yellow')"
+  },
+  {
+   "group": "identity",
+   "family": "RL",
+   "item_id": "animals-RL-e8-word-0082",
+   "domain": "animals",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe tiger's locker is grey. The mosquito's locker is purple. The whale's locker is green. The worm's locker is black. The cow's locker is pink. The lion's locker is red. The goose's locker is white. The cat's locker is yellow.\nIn a locker of which colour does the animal known for its itchy bites keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 560,
+     "end": 567,
+     "role": "patched (last)"
+    },
+    {
+     "start": 198,
+     "end": 230,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 260,
+     "end": 287,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 314,
+     "end": 339,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 430,
+     "end": 466,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe lion's locker is yellow. The cow's locker is pink. The mosquito's locker is grey. The tiger's locker is orange. The whale's locker is brown. The worm's locker is blue. The goose's locker is black. The cat's locker is purple.\nIn a locker of which colour does the animal known for wriggling underground keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 315,
+     "end": 341,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "purple",
+    "edited": "black",
+    "expected": {
+     "none": "purple",
+     "identity": "black",
+     "position": "red",
+     "value": "blue"
+    },
+    "unedited_read": "purple"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0163,
+     "identity": 0.4828,
+     "position": 0.0011,
+     "value": 0.3464
+    },
+    "layer": "transit",
+    "role": "identity"
+   },
+   "why": "the patched base answered the base's digit for the source's entity (H-word / lexical key) ('black')"
+  },
+  {
+   "group": "identity",
+   "family": "RL",
+   "item_id": "body-RL-e8-word-0082",
+   "domain": "body",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe skull chart is in the blue folder. The eye chart is in the orange folder. The wrist chart is in the pink folder. The tongue chart is in the yellow folder. The liver chart is in the black folder. The bladder chart is in the green folder. The heart chart is in the grey folder. The forehead chart is in the purple folder.\nWhat colour is the folder with the chart on the body part above the eyebrows? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 648,
+     "end": 655,
+     "role": "patched (last)"
+    },
+    {
+     "start": 450,
+     "end": 493,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 209,
+     "end": 247,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 248,
+     "end": 286,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 538,
+     "end": 570,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe skull chart is in the red folder. The heart chart is in the pink folder. The eye chart is in the brown folder. The wrist chart is in the grey folder. The forehead chart is in the white folder. The tongue chart is in the orange folder. The bladder chart is in the green folder. The liver chart is in the blue folder.\nWhat colour is the folder with the chart on the body part that sees colours? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 247,
+     "end": 284,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "purple",
+    "edited": "orange",
+    "expected": {
+     "none": "purple",
+     "identity": "orange",
+     "position": "pink",
+     "value": "brown"
+    },
+    "unedited_read": "purple"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.045,
+     "identity": 0.4409,
+     "position": 0.0465,
+     "value": 0.0835
+    },
+    "layer": "transit",
+    "role": "identity"
+   },
+   "why": "the patched base answered the base's digit for the source's entity (H-word / lexical key) ('orange')"
+  },
+  {
+   "group": "identity",
+   "family": "RL",
+   "item_id": "body-RL-e8-word-0009",
+   "domain": "body",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe chart on the eyebrow is kept in the pink folder. The chart on the skull is kept in the orange folder. The chart on the ankle is kept in the blue folder. The chart on the tongue is kept in the black folder. The chart on the ear is kept in the green folder. The chart on the brain is kept in the yellow folder. The chart on the eye is kept in the white folder. The chart on the heart is kept in the purple folder.\nThe chart on the body part that pumps blood is in a folder of which colour? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 738,
+     "end": 745,
+     "role": "patched (last)"
+    },
+    {
+     "start": 533,
+     "end": 585,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 380,
+     "end": 429,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 430,
+     "end": 482,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 599,
+     "end": 629,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe chart on the skull is kept in the purple folder. The chart on the ankle is kept in the green folder. The chart on the tongue is kept in the grey folder. The chart on the eye is kept in the blue folder. The chart on the heart is kept in the white folder. The chart on the ear is kept in the brown folder. The chart on the eyebrow is kept in the pink folder. The chart on the brain is kept in the red folder.\nThe chart on the body part that hears sounds is in a folder of which colour? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 428,
+     "end": 477,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "purple",
+    "edited": "green",
+    "expected": {
+     "none": "purple",
+     "identity": "green",
+     "position": "yellow",
+     "value": "brown"
+    },
+    "unedited_read": "purple"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0766,
+     "identity": 0.3503,
+     "position": 0.0401,
+     "value": 0.0671
+    },
+    "layer": "transit",
+    "role": "identity"
+   },
+   "why": "the patched base answered the base's digit for the source's entity (H-word / lexical key) ('green')"
+  },
+  {
+   "group": "context",
+   "family": "RL",
+   "item_id": "body-RL-e8-word-0069",
+   "domain": "body",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe chart on the ankle is kept in the brown folder. The chart on the brain is kept in the green folder. The chart on the forehead is kept in the white folder. The chart on the liver is kept in the grey folder. The chart on the stomach is kept in the blue folder. The chart on the eyebrow is kept in the red folder. The chart on the tongue is kept in the yellow folder. The chart on the wrist is kept in the pink folder.\nWhich colour is the folder that holds the chart on the body part that digests food? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 750,
+     "end": 757,
+     "role": "patched (last)"
+    },
+    {
+     "start": 380,
+     "end": 432,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 539,
+     "end": 589,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 433,
+     "end": 484,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 641,
+     "end": 672,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe chart on the forehead is kept in the purple folder. The chart on the eyebrow is kept in the white folder. The chart on the liver is kept in the grey folder. The chart on the ankle is kept in the red folder. The chart on the tongue is kept in the pink folder. The chart on the wrist is kept in the orange folder. The chart on the stomach is kept in the brown folder. The chart on the brain is kept in the green folder.\nWhich colour is the folder that holds the chart on the body part joining hand and arm? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 433,
+     "end": 485,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "blue",
+    "edited": "grey",
+    "expected": {
+     "none": "blue",
+     "identity": "pink",
+     "position": "red",
+     "value": "orange"
+    },
+    "unedited_read": "blue"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0174,
+     "identity": 0.1267,
+     "position": 0.0241,
+     "value": 0.134
+    },
+    "layer": "transit",
+    "role": "context"
+   },
+   "why": "another digit of the base context, predicted by no hypothesis ('grey')"
+  },
+  {
+   "group": "context",
+   "family": "RL",
+   "item_id": "body-RL-e8-word-0016",
+   "domain": "body",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe stomach chart is in the white folder. The tongue chart is in the yellow folder. The bladder chart is in the grey folder. The forehead chart is in the brown folder. The eyebrow chart is in the red folder. The elbow chart is in the green folder. The ankle chart is in the black folder. The brain chart is in the pink folder.\nThe chart on the body part that does the thinking is in a folder of which colour? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 655,
+     "end": 662,
+     "role": "patched (last)"
+    },
+    {
+     "start": 458,
+     "end": 496,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 378,
+     "end": 417,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 170,
+     "end": 211,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 510,
+     "end": 546,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe elbow chart is in the purple folder. The stomach chart is in the yellow folder. The forehead chart is in the green folder. The tongue chart is in the white folder. The brain chart is in the black folder. The bladder chart is in the grey folder. The ankle chart is in the blue folder. The eyebrow chart is in the red folder.\nThe chart on the body part that bends the arm is in a folder of which colour? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 170,
+     "end": 210,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "pink",
+    "edited": "grey",
+    "expected": {
+     "none": "pink",
+     "identity": "green",
+     "position": "white",
+     "value": "purple"
+    },
+    "unedited_read": "pink"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0163,
+     "identity": 0.0221,
+     "position": 0.0501,
+     "value": 0.027
+    },
+    "layer": "transit",
+    "role": "context"
+   },
+   "why": "another digit of the base context, predicted by no hypothesis ('grey')"
+  },
+  {
+   "group": "context",
+   "family": "RL",
+   "item_id": "body-RL-e8-word-0036",
+   "domain": "body",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe orange folder holds the bladder chart. The green folder holds the eye chart. The red folder holds the skull chart. The white folder holds the spine chart. The yellow folder holds the heart chart. The blue folder holds the liver chart. The purple folder holds the brain chart. The brown folder holds the ear chart.\nThe chart on the body part that stores urine is in a folder of which colour? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 641,
+     "end": 648,
+     "role": "patched (last)"
+    },
+    {
+     "start": 170,
+     "end": 212,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 213,
+     "end": 250,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 370,
+     "end": 408,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 501,
+     "end": 532,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe brown folder holds the heart chart. The pink folder holds the skull chart. The black folder holds the brain chart. The blue folder holds the bladder chart. The orange folder holds the liver chart. The grey folder holds the eye chart. The yellow folder holds the spine chart. The green folder holds the ear chart.\nThe chart on the body part that sees colours is in a folder of which colour? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 371,
+     "end": 407,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "orange",
+    "edited": "yellow",
+    "expected": {
+     "none": "orange",
+     "identity": "green",
+     "position": "blue",
+     "value": "grey"
+    },
+    "unedited_read": "orange"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.1281,
+     "identity": 0.1301,
+     "position": 0.0196,
+     "value": 0.0464
+    },
+    "layer": "transit",
+    "role": "context"
+   },
+   "why": "another digit of the base context, predicted by no hypothesis ('yellow')"
+  },
+  {
+   "group": "position",
+   "family": "RL",
+   "item_id": "countries-RL-e8-word-0129",
+   "domain": "countries",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe orange drawer holds the Syria file. The purple drawer holds the Canada file. The brown drawer holds the Lebanon file. The green drawer holds the Chile file. The yellow drawer holds the Thailand file. The white drawer holds the Venezuela file. The grey drawer holds the Pakistan file. The blue drawer holds the Italy file.\nWhich colour is the drawer that holds the file on the country whose capital is Bangkok? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 660,
+     "end": 667,
+     "role": "patched (last)"
+    },
+    {
+     "start": 331,
+     "end": 373,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 458,
+     "end": 495,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 210,
+     "end": 250,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 546,
+     "end": 582,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe grey drawer holds the Thailand file. The pink drawer holds the Italy file. The white drawer holds the Venezuela file. The blue drawer holds the Pakistan file. The orange drawer holds the Canada file. The purple drawer holds the Chile file. The yellow drawer holds the Syria file. The red drawer holds the Lebanon file.\nWhich colour is the drawer that holds the file on the country whose capital is Rome? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 211,
+     "end": 248,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "yellow",
+    "edited": "purple",
+    "expected": {
+     "none": "yellow",
+     "identity": "blue",
+     "position": "purple",
+     "value": "pink"
+    },
+    "unedited_read": "yellow"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0006,
+     "identity": 0.0004,
+     "position": 0.5403,
+     "value": 0.2814
+    },
+    "layer": "transit",
+    "role": "position"
+   },
+   "why": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction) ('purple')"
+  },
+  {
+   "group": "position",
+   "family": "RL",
+   "item_id": "countries-RL-e8-word-0077",
+   "domain": "countries",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe brown drawer holds the China file. The red drawer holds the Greece file. The grey drawer holds the Pakistan file. The orange drawer holds the Thailand file. The purple drawer holds the Belgium file. The white drawer holds the Italy file. The green drawer holds the Finland file. The blue drawer holds the Canada file.\nWhat colour is the drawer with the file on the country whose capital is Islamabad? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 651,
+     "end": 658,
+     "role": "patched (last)"
+    },
+    {
+     "start": 247,
+     "end": 287,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 170,
+     "end": 208,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 453,
+     "end": 491,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 535,
+     "end": 573,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe green drawer holds the Thailand file. The orange drawer holds the Finland file. The blue drawer holds the Canada file. The purple drawer holds the Belgium file. The grey drawer holds the Greece file. The red drawer holds the Pakistan file. The brown drawer holds the Italy file. The black drawer holds the China file.\nWhat colour is the drawer with the file on the country whose capital is Beijing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 453,
+     "end": 491,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "grey",
+    "edited": "blue",
+    "expected": {
+     "none": "grey",
+     "identity": "brown",
+     "position": "blue",
+     "value": "black"
+    },
+    "unedited_read": "grey"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0027,
+     "identity": 0.0037,
+     "position": 0.6107,
+     "value": 0.2506
+    },
+    "layer": "transit",
+    "role": "position"
+   },
+   "why": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction) ('blue')"
+  },
+  {
+   "group": "position",
+   "family": "RL",
+   "item_id": "body-RL-e8-word-0147",
+   "domain": "body",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe chart on the knee is kept in the white folder. The chart on the tongue is kept in the orange folder. The chart on the ear is kept in the brown folder. The chart on the brain is kept in the black folder. The chart on the ankle is kept in the grey folder. The chart on the eyebrow is kept in the pink folder. The chart on the liver is kept in the green folder. The chart on the heart is kept in the yellow folder.\nWhat colour is the folder with the chart on the body part that does the thinking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 744,
+     "end": 751,
+     "role": "patched (last)"
+    },
+    {
+     "start": 325,
+     "end": 376,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 170,
+     "end": 220,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 377,
+     "end": 427,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 630,
+     "end": 666,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe chart on the eyebrow is kept in the yellow folder. The chart on the liver is kept in the grey folder. The chart on the heart is kept in the brown folder. The chart on the tongue is kept in the black folder. The chart on the knee is kept in the red folder. The chart on the brain is kept in the blue folder. The chart on the ear is kept in the purple folder. The chart on the ankle is kept in the white folder.\nWhat colour is the folder with the chart on the body part that bends the leg? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 381,
+     "end": 429,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "black",
+    "edited": "grey",
+    "expected": {
+     "none": "black",
+     "identity": "white",
+     "position": "grey",
+     "value": "red"
+    },
+    "unedited_read": "black"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0207,
+     "identity": 0.0182,
+     "position": 0.3096,
+     "value": 0.1703
+    },
+    "layer": "transit",
+    "role": "position"
+   },
+   "why": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction) ('grey')"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "countries-RL-e8-word-0061",
+   "domain": "countries",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe pink drawer holds the Greece file. The yellow drawer holds the Denmark file. The blue drawer holds the Sweden file. The black drawer holds the Canada file. The white drawer holds the Thailand file. The red drawer holds the Turkey file. The purple drawer holds the Belgium file. The green drawer holds the Japan file.\nThe file on the country whose capital is Athens is in a drawer of which colour? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 647,
+     "end": 654,
+     "role": "patched (last)"
+    },
+    {
+     "start": 170,
+     "end": 208,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 290,
+     "end": 329,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 209,
+     "end": 250,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 503,
+     "end": 538,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe blue drawer holds the Turkey file. The brown drawer holds the Canada file. The pink drawer holds the Japan file. The black drawer holds the Denmark file. The orange drawer holds the Greece file. The purple drawer holds the Sweden file. The red drawer holds the Thailand file. The yellow drawer holds the Belgium file.\nThe file on the country whose capital is Ottawa is in a drawer of which colour? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 209,
+     "end": 248,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "pink",
+    "edited": "The",
+    "expected": {
+     "none": "pink",
+     "identity": "black",
+     "position": "yellow",
+     "value": "brown"
+    },
+    "unedited_read": "pink"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.036,
+     "identity": 0.0267,
+     "position": 0.0683,
+     "value": 0.138
+    },
+    "layer": "transit",
+    "role": "other"
+   },
+   "why": "any other answer (a recalled digit, another digit, a word) ('The')"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "countries-RL-e8-word-0104",
+   "domain": "countries",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe Italy file is in the green drawer. The Egypt file is in the yellow drawer. The France file is in the black drawer. The Syria file is in the grey drawer. The Iraq file is in the brown drawer. The Portugal file is in the purple drawer. The Korea file is in the pink drawer. The Peru file is in the blue drawer.\nThe file on the country whose capital is Lima is in a drawer of which colour? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 637,
+     "end": 644,
+     "role": "patched (last)"
+    },
+    {
+     "start": 446,
+     "end": 482,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 408,
+     "end": 445,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 249,
+     "end": 288,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 495,
+     "end": 528,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe Portugal file is in the purple drawer. The Peru file is in the orange drawer. The Korea file is in the white drawer. The Egypt file is in the black drawer. The Syria file is in the grey drawer. The Iraq file is in the yellow drawer. The France file is in the red drawer. The Italy file is in the pink drawer.\nThe file on the country whose capital is Seoul is in a drawer of which colour? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 252,
+     "end": 290,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "blue",
+    "edited": "The",
+    "expected": {
+     "none": "blue",
+     "identity": "pink",
+     "position": "black",
+     "value": "white"
+    },
+    "unedited_read": "blue"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0856,
+     "identity": 0.0156,
+     "position": 0.0527,
+     "value": 0.082
+    },
+    "layer": "transit",
+    "role": "other"
+   },
+   "why": "any other answer (a recalled digit, another digit, a word) ('The')"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "body-RL-e8-digit-0148",
+   "domain": "body",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe tongue chart is in folder 8. The spine chart is in folder 9. The skull chart is in folder 2. The ear chart is in folder 0. The heart chart is in folder 5. The wrist chart is in folder 4. The knee chart is in folder 3. The eye chart is in folder 6.\nWhich folder holds the chart on the body part that protects the brain? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 575,
+     "end": 576,
+     "role": "patched (last)"
+    },
+    {
+     "start": 235,
+     "end": 266,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 329,
+     "end": 360,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 267,
+     "end": 296,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 454,
+     "end": 491,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe ear chart is in folder 6. The spine chart is in folder 8. The eye chart is in folder 2. The wrist chart is in folder 7. The tongue chart is in folder 0. The knee chart is in folder 3. The heart chart is in folder 4. The skull chart is in folder 5.\nWhich folder holds the chart on the body part joining hand and arm? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 262,
+     "end": 293,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "2",
+    "edited": "1",
+    "expected": {
+     "none": "2",
+     "identity": "4",
+     "position": "0",
+     "value": "7"
+    },
+    "unedited_read": "2"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0298,
+     "identity": 0.0115,
+     "position": 0.1153,
+     "value": 0.1931
+    },
+    "layer": "transit",
+    "role": "recall"
+   },
+   "why": "any other answer (a recalled digit, another digit, a word) ('1')"
+  },
+  {
+   "group": "same_changed",
+   "family": "DL",
+   "item_id": "animals-DL-e8-word-0008",
+   "domain": "animals",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe brown locker belongs to the ant. The yellow locker belongs to the duck. The grey locker belongs to the owl. The white locker belongs to the eagle. The purple locker belongs to the sheep. The orange locker belongs to the elephant. The black locker belongs to the camel. The red locker belongs to the frog.\nWhat colour is the locker of the sheep? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 595,
+     "end": 602,
+     "role": "patched (last)"
+    },
+    {
+     "start": 321,
+     "end": 360,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 246,
+     "end": 281,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 207,
+     "end": 245,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 508,
+     "end": 517,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe red locker belongs to the ant. The pink locker belongs to the owl. The purple locker belongs to the sheep. The grey locker belongs to the duck. The brown locker belongs to the eagle. The black locker belongs to the frog. The green locker belongs to the elephant. The orange locker belongs to the camel.\nWhat colour is the locker of the owl? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 205,
+     "end": 240,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 18 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "purple",
+    "edited": "grey",
+    "expected": {
+     "none": "purple",
+     "identity": "grey",
+     "position": "yellow",
+     "value": "pink"
+    },
+    "unedited_read": "purple"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0034,
+     "identity": 0.9165,
+     "position": 0.0,
+     "value": 0.0
+    },
+    "layer": 18,
+    "role": "identity"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('grey')"
+  },
+  {
+   "group": "same_changed",
+   "family": "DL",
+   "item_id": "countries-DL-e8-word-0002",
+   "domain": "countries",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe pink drawer holds the Spain file. The black drawer holds the Japan file. The grey drawer holds the Italy file. The red drawer holds the Poland file. The blue drawer holds the Ireland file. The yellow drawer holds the France file. The brown drawer holds the Philippines file. The purple drawer holds the Sweden file.\nWhich colour is the drawer that holds the file on Ireland? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 625,
+     "end": 632,
+     "role": "patched (last)"
+    },
+    {
+     "start": 323,
+     "end": 362,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 208,
+     "end": 246,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 449,
+     "end": 489,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 540,
+     "end": 547,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe pink drawer holds the Ireland file. The brown drawer holds the Poland file. The white drawer holds the France file. The red drawer holds the Italy file. The yellow drawer holds the Philippines file. The grey drawer holds the Spain file. The black drawer holds the Sweden file. The orange drawer holds the Japan file.\nWhich colour is the drawer that holds the file on Japan? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 451,
+     "end": 490,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 18 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "blue",
+    "edited": "red",
+    "expected": {
+     "none": "blue",
+     "identity": "black",
+     "position": "purple",
+     "value": "orange"
+    },
+    "unedited_read": "blue"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0379,
+     "identity": 0.0,
+     "position": 0.0001,
+     "value": 0.0
+    },
+    "layer": 18,
+    "role": "context"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('red')"
+  },
+  {
+   "group": "same_changed",
+   "family": "RL",
+   "item_id": "body-RL-e8-word-0069",
+   "domain": "body",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe chart on the ankle is kept in the brown folder. The chart on the brain is kept in the green folder. The chart on the forehead is kept in the white folder. The chart on the liver is kept in the grey folder. The chart on the stomach is kept in the blue folder. The chart on the eyebrow is kept in the red folder. The chart on the tongue is kept in the yellow folder. The chart on the wrist is kept in the pink folder.\nWhich colour is the folder that holds the chart on the body part that digests food? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 750,
+     "end": 757,
+     "role": "patched (last)"
+    },
+    {
+     "start": 380,
+     "end": 432,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 539,
+     "end": 589,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 433,
+     "end": 484,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 641,
+     "end": 672,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe chart on the forehead is kept in the purple folder. The chart on the eyebrow is kept in the white folder. The chart on the liver is kept in the grey folder. The chart on the ankle is kept in the red folder. The chart on the tongue is kept in the pink folder. The chart on the wrist is kept in the orange folder. The chart on the stomach is kept in the brown folder. The chart on the brain is kept in the green folder.\nWhich colour is the folder that holds the chart on the body part joining hand and arm? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 433,
+     "end": 485,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 17 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "blue",
+    "edited": "grey",
+    "expected": {
+     "none": "blue",
+     "identity": "pink",
+     "position": "red",
+     "value": "orange"
+    },
+    "unedited_read": "blue"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0813,
+     "identity": 0.0005,
+     "position": 0.0002,
+     "value": 0.0003
+    },
+    "layer": 17,
+    "role": "context"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('grey')"
+  }
+ ]
+}

@@ -1,0 +1,53 @@
+{
+  "git_hash": "93f02cd6c27db765abb127f20eff656bb5d27340",
+  "timestamp": "2026-10-23T01:08:04+00:00",
+  "library_version": "0.1.0",
+  "stage": "merge-experts",
+  "args": {
+    "stage": "merge-experts",
+    "checkpoint_dirs": [
+      "/ephemeral/lens_fit/olmo3_7b_instruct_jpp/artifacts/2026-10-22/fit64/shard0of1"
+    ],
+    "num_clusters": 8,
+    "min_kept_positions": 50,
+    "checkpoint_name": "recipe_experts",
+    "device": "cuda",
+    "out": "/ephemeral/lens_fit/olmo3_7b_instruct_jpp/experts.pt",
+    "pooled_lens_out": "/ephemeral/lens_fit/olmo3_7b_instruct_jpp/pooled_lens.pt"
+  },
+  "num_prompts_trained_on": 64,
+  "layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30
+  ],
+  "pooled_from": "in-memory fp32 sums"
+}

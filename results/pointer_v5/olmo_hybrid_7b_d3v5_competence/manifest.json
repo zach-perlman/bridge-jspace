@@ -1,0 +1,121 @@
+{
+  "exp": "pointer_v5",
+  "run": "olmo_hybrid_7b_d3v5_competence",
+  "written_utc": "2026-10-23T06:42:15Z",
+  "why": "pointer_v5 on Olmo-Hybrid-7B Instruct (chat format, read judge)",
+  "model": {
+    "target": "olmo-hybrid-7b-instruct-dpo",
+    "repo": "allenai/Olmo-Hybrid-Instruct-DPO-7B",
+    "revision": "ec62da5af0106ab4e83a60e07c4796ff358fd204",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "sets": [
+    "main"
+  ],
+  "items": {
+    "main/countries_RL_e5-digit": {
+      "file": "data/pointer_v5/main/countries_RL_e5-digit.json",
+      "sha256": "e3c59266e64d5196af6d321f02caa0f98648c211883343436dfe84ccfa26ea7f"
+    },
+    "main/countries_RL_e5-word": {
+      "file": "data/pointer_v5/main/countries_RL_e5-word.json",
+      "sha256": "ab8ecf48d1be5090a65b8b4dce8d6dfe474b087aab877827e2fd15c6693efac7"
+    },
+    "main/countries_RL_e8-digit": {
+      "file": "data/pointer_v5/main/countries_RL_e8-digit.json",
+      "sha256": "541cd8c36b71ecb32beeb1b918bc6f4a87a0d16a9e1e038ca8ed990079a65e1c"
+    },
+    "main/countries_RL_e8-word": {
+      "file": "data/pointer_v5/main/countries_RL_e8-word.json",
+      "sha256": "c37266f46b866d9311637782402215236850d9ba2dfaf78ffb36fc8361bb17b5"
+    },
+    "main/countries_DL_e5-digit": {
+      "file": "data/pointer_v5/main/countries_DL_e5-digit.json",
+      "sha256": "96832983170c5e861d5e3509d3cacade478e8d4193b4c8b24458fc24511d2cdc"
+    },
+    "main/countries_DL_e5-word": {
+      "file": "data/pointer_v5/main/countries_DL_e5-word.json",
+      "sha256": "470f8976663f45264a03ae5ceaa45826b40ae931d4071d29f115f3c70f7d5573"
+    },
+    "main/countries_DL_e8-digit": {
+      "file": "data/pointer_v5/main/countries_DL_e8-digit.json",
+      "sha256": "18c7b3d0ae8b390d002af610495572d01a75376910e069837fb505698087a77e"
+    },
+    "main/countries_DL_e8-word": {
+      "file": "data/pointer_v5/main/countries_DL_e8-word.json",
+      "sha256": "3144834fa9e0575c2f7531db59c729081d4048abd3b32e518f69e16e9ce755be"
+    },
+    "main/animals_RL_e5-digit": {
+      "file": "data/pointer_v5/main/animals_RL_e5-digit.json",
+      "sha256": "24818018c5ebf564fe787323fbb59fc84ae415811aaa7c014af1be76704b0bc1"
+    },
+    "main/animals_RL_e5-word": {
+      "file": "data/pointer_v5/main/animals_RL_e5-word.json",
+      "sha256": "722b5cf6113772e4d9ba53438e8fb15c0830c2f59bab6da6145c8a54fac4bdce"
+    },
+    "main/animals_RL_e8-digit": {
+      "file": "data/pointer_v5/main/animals_RL_e8-digit.json",
+      "sha256": "a0f46c6bf441f267668f19935985a93f65b400084923fcdd8c0b9035faace167"
+    },
+    "main/animals_RL_e8-word": {
+      "file": "data/pointer_v5/main/animals_RL_e8-word.json",
+      "sha256": "8bfe7bd13a8059e9ef6eb748a987719edfcf461d87c19f965dacc4e1f6f80de8"
+    },
+    "main/animals_DL_e5-digit": {
+      "file": "data/pointer_v5/main/animals_DL_e5-digit.json",
+      "sha256": "a1cb180755a0d8a50b46d8837ee61b1f36e23a11ddd3cd47161814df91d056b4"
+    },
+    "main/animals_DL_e5-word": {
+      "file": "data/pointer_v5/main/animals_DL_e5-word.json",
+      "sha256": "524bfb50903a93c678c5d6bfecf325656f02e126bb66102e32e608d9b7172a5a"
+    },
+    "main/animals_DL_e8-digit": {
+      "file": "data/pointer_v5/main/animals_DL_e8-digit.json",
+      "sha256": "18cfa2dc44829ca68cee95cced601ecb1114ed426ba8dfdb1ce48bda29b7e524"
+    },
+    "main/animals_DL_e8-word": {
+      "file": "data/pointer_v5/main/animals_DL_e8-word.json",
+      "sha256": "9c1db819a4cad3d9aa4a3128f5932f3f86a134c735d3f26334e4b932746ebbe7"
+    },
+    "main/body_RL_e5-digit": {
+      "file": "data/pointer_v5/main/body_RL_e5-digit.json",
+      "sha256": "da03e3e62dc1a6700a756e8d63e1bdfca386e789cbaed490be6326ef64e156ac"
+    },
+    "main/body_RL_e5-word": {
+      "file": "data/pointer_v5/main/body_RL_e5-word.json",
+      "sha256": "dc0b4d94689ff88599004b398928817afc7d92d2836b342e86139fe60cee8ef2"
+    },
+    "main/body_RL_e8-digit": {
+      "file": "data/pointer_v5/main/body_RL_e8-digit.json",
+      "sha256": "85b0d61ee8b066ac149e962b56fecacf652490b0fcb0b2bd7c116a1bd23ede87"
+    },
+    "main/body_RL_e8-word": {
+      "file": "data/pointer_v5/main/body_RL_e8-word.json",
+      "sha256": "59f3b52a01839160e314f9e11cde459621fc91dc2fa33e72553e1dbbc92280c8"
+    },
+    "main/body_DL_e5-digit": {
+      "file": "data/pointer_v5/main/body_DL_e5-digit.json",
+      "sha256": "0aaeab1614a9775627d30e5c2ad69034d5d973e28a06df5bf2c377da012731a3"
+    },
+    "main/body_DL_e5-word": {
+      "file": "data/pointer_v5/main/body_DL_e5-word.json",
+      "sha256": "758896f67df7939eb45224f671da74b4d7237c1bd80133539ef3ee07dada7604"
+    },
+    "main/body_DL_e8-digit": {
+      "file": "data/pointer_v5/main/body_DL_e8-digit.json",
+      "sha256": "97ffb4a98bd480689305b2dc4181cc4d6cf19af1f0db889900126b0aed518d33"
+    },
+    "main/body_DL_e8-word": {
+      "file": "data/pointer_v5/main/body_DL_e8-word.json",
+      "sha256": "3858db0354748e20bae7b4a896c1bedf46e867ed3811363fe53196ce7737708e"
+    }
+  },
+  "limit": null,
+  "format": "pointer_v1's: chat template, thinking off, 'Answer:' prefilled (BJ_FORMAT=chat)",
+  "judge_mode": "read",
+  "judge": "pointer_v1's: read judge (BJ_JUDGE=read): a prompt is right iff the top token of one forward (a digit answer's space token appended: pointer_swap's read) is the expected answer's first token; the greedy judge is recorded as correct_greedy, not used; colour answers: the first colour word of the first line",
+  "prompts": "base; each source (dissoc, same, redigit); hop1 and hop2 for memory -> prompt",
+  "eligibility": "pointer_swap uses scenes with every prompt right in both answer kinds"
+}

@@ -1,0 +1,409 @@
+{
+  "run": "qwen35_9b_d3b_fit_v2",
+  "verdict": "not shown: the slot direction does not steer the lookup by the rule",
+  "checks": {
+    "a_lower_bound_ge_0.30": false,
+    "b_20_points_above_lens_and_random": false,
+    "controls_valid": true,
+    "illusion_flag": false,
+    "unedited_answer_org": 1
+  },
+  "primary": {
+    "layer": 21,
+    "scale": 1.0,
+    "slot": [
+      0.0951,
+      0.0647,
+      0.1274,
+      410
+    ],
+    "lens": [
+      0.0,
+      0.0,
+      0.0093,
+      410
+    ],
+    "random": [
+      0.0,
+      0.0,
+      0.0093,
+      410
+    ],
+    "slot_minus_lens": [
+      0.0951,
+      0.0647,
+      0.1273
+    ],
+    "slot_minus_random": [
+      0.0951,
+      0.0647,
+      0.1273
+    ],
+    "shuffled": [
+      0.0049,
+      0.0,
+      0.0176,
+      410
+    ],
+    "rr_slot": [
+      0.0,
+      0.0,
+      0.025,
+      150
+    ],
+    "span_only": [
+      0.0707,
+      0.0456,
+      0.0997,
+      410
+    ],
+    "rest_only": [
+      0.0,
+      0.0,
+      0.0093,
+      410
+    ],
+    "held_out_entities": [
+      0.0854,
+      0.0521,
+      0.1325,
+      199
+    ],
+    "seen_entities": [
+      0.1043,
+      0.061,
+      0.1548,
+      211
+    ],
+    "patch": [
+      0.1195,
+      0.0916,
+      0.1545,
+      410
+    ],
+    "sub4": [
+      0.0829,
+      0.0599,
+      0.1136,
+      410
+    ]
+  },
+  "pointer_v4": {
+    "ci": {
+      "kind": "entity_cluster",
+      "cluster": "asked entity",
+      "strata": "domain",
+      "n_boot": 2000,
+      "seed": 0,
+      "bounds": "the wider of the cluster bootstrap and the item-level Wilson interval"
+    },
+    "item_level": {
+      "slot": [
+        0.0951,
+        0.0704,
+        0.1274,
+        410
+      ],
+      "lens": [
+        0.0,
+        0.0,
+        0.0093,
+        410
+      ],
+      "random": [
+        0.0,
+        0.0,
+        0.0093,
+        410
+      ],
+      "shuffled": [
+        0.0049,
+        0.0013,
+        0.0176,
+        410
+      ],
+      "rr_slot": [
+        0.0,
+        0.0,
+        0.025,
+        150
+      ],
+      "slot_minus_lens": [
+        0.0951219512195122,
+        0.07073170731707316,
+        0.12439024390243902
+      ],
+      "slot_minus_random": [
+        0.0951219512195122,
+        0.07073170731707316,
+        0.12439024390243902
+      ]
+    },
+    "n_k_t": {
+      "slot": [
+        410,
+        84,
+        27
+      ],
+      "lens": [
+        410,
+        84,
+        27
+      ],
+      "random": [
+        410,
+        84,
+        27
+      ],
+      "shuffled": [
+        410,
+        84,
+        27
+      ],
+      "rr_slot": [
+        150,
+        63,
+        26
+      ]
+    },
+    "per_domain": {
+      "countries": {
+        "slot": [
+          0.02,
+          0.0,
+          0.0571,
+          150
+        ],
+        "lens": [
+          0.0,
+          0.0,
+          0.025,
+          150
+        ],
+        "random": [
+          0.0,
+          0.0,
+          0.025,
+          150
+        ],
+        "n_k_t": [
+          150,
+          36,
+          9
+        ]
+      },
+      "animals": {
+        "slot": [
+          0.1667,
+          0.1045,
+          0.2345,
+          150
+        ],
+        "lens": [
+          0.0,
+          0.0,
+          0.025,
+          150
+        ],
+        "random": [
+          0.0,
+          0.0,
+          0.025,
+          150
+        ],
+        "n_k_t": [
+          150,
+          33,
+          9
+        ]
+      },
+      "body": {
+        "slot": [
+          0.1,
+          0.0408,
+          0.1811,
+          110
+        ],
+        "lens": [
+          0.0,
+          0.0,
+          0.0337,
+          110
+        ],
+        "random": [
+          0.0,
+          0.0,
+          0.0337,
+          110
+        ],
+        "n_k_t": [
+          110,
+          15,
+          9
+        ]
+      }
+    },
+    "per_cut": {
+      "entity": {
+        "slot": [
+          0.0769,
+          0.0353,
+          0.1504,
+          91
+        ],
+        "n_k_t": [
+          91,
+          27,
+          12
+        ]
+      },
+      "template": {
+        "slot": [
+          0.1043,
+          0.061,
+          0.1548,
+          211
+        ],
+        "n_k_t": [
+          211,
+          56,
+          15
+        ]
+      },
+      "both": {
+        "slot": [
+          0.0926,
+          0.0485,
+          0.1621,
+          108
+        ],
+        "n_k_t": [
+          108,
+          27,
+          15
+        ]
+      }
+    }
+  },
+  "fit": {
+    "kept": 505,
+    "of": 520,
+    "layers": [
+      {
+        "layer": 15,
+        "n": 505,
+        "per_slot": [
+          98,
+          100,
+          103,
+          101,
+          103
+        ],
+        "decode_cv": 0.2356,
+        "decode_cv_shuffled": 0.1446,
+        "deviation_norm_median": 0.308,
+        "state_norm_median": 32.74
+      },
+      {
+        "layer": 18,
+        "n": 505,
+        "per_slot": [
+          98,
+          100,
+          103,
+          101,
+          103
+        ],
+        "decode_cv": 0.4812,
+        "decode_cv_shuffled": 0.1564,
+        "deviation_norm_median": 0.649,
+        "state_norm_median": 38.45
+      },
+      {
+        "layer": 21,
+        "n": 505,
+        "per_slot": [
+          98,
+          100,
+          103,
+          101,
+          103
+        ],
+        "decode_cv": 0.4554,
+        "decode_cv_shuffled": 0.1564,
+        "deviation_norm_median": 0.964,
+        "state_norm_median": 63.51
+      },
+      {
+        "layer": 24,
+        "n": 505,
+        "per_slot": [
+          98,
+          100,
+          103,
+          101,
+          103
+        ],
+        "decode_cv": 0.3703,
+        "decode_cv_shuffled": 0.1584,
+        "deviation_norm_median": 1.662,
+        "state_norm_median": 90.92
+      }
+    ],
+    "geometry": [
+      {
+        "layer": 18,
+        "n_vectors": 100,
+        "entities": 86,
+        "max_abs_cos_entity_median": 0.0348,
+        "max_abs_cos_entity_null": 0.0395,
+        "principal_cos": {
+          "4": {
+            "top": 0.1155,
+            "null_top": 0.1737
+          }
+        },
+        "jspace_share_median": 0.0706,
+        "random_dictionary_share_median": 0.1015,
+        "random_vector_jspace_share_median": 0.0897
+      },
+      {
+        "layer": 21,
+        "n_vectors": 100,
+        "entities": 86,
+        "max_abs_cos_entity_median": 0.0363,
+        "max_abs_cos_entity_null": 0.0414,
+        "principal_cos": {
+          "4": {
+            "top": 0.1553,
+            "null_top": 0.1645
+          }
+        },
+        "jspace_share_median": 0.0891,
+        "random_dictionary_share_median": 0.1013,
+        "random_vector_jspace_share_median": 0.096
+      },
+      {
+        "layer": 24,
+        "n_vectors": 100,
+        "entities": 86,
+        "max_abs_cos_entity_median": 0.0366,
+        "max_abs_cos_entity_null": 0.0404,
+        "principal_cos": {
+          "4": {
+            "top": 0.1704,
+            "null_top": 0.1716
+          }
+        },
+        "jspace_share_median": 0.0858,
+        "random_dictionary_share_median": 0.1016,
+        "random_vector_jspace_share_median": 0.0939
+      }
+    ]
+  },
+  "figures": [
+    "fig1_slot_direction_vs_lens.png",
+    "fig2_decision_cell.png",
+    "fig3_geometry.png"
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "exp": "pointer_swap",
+  "run": "muse30b_d3v5_len8_swap",
+  "written_utc": "2026-10-23T06:24:42Z",
+  "why": "finding 5 on lists of 8 sentences (T8) on Muse: the donor's last two tokens copied at layers 26-48 (every 2, Muse's own d3v5 sweep) on a fresh draw (pointer_v5 len8, seed 872); scripts/finding5_confirm.py --sentences 8 decides, per level",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "data": "pointer_v5",
+  "set": "len8",
+  "levels": [
+    "e8-digit",
+    "e8-word"
+  ],
+  "families": [
+    "RL",
+    "DL"
+  ],
+  "domains": [
+    "countries",
+    "animals",
+    "body"
+  ],
+  "family_roles": [
+    "RL",
+    "DL",
+    "RR"
+  ],
+  "items": {
+    "countries_RL_e8-digit": {
+      "file": "data/pointer_v5/len8/countries_RL_e8-digit.json",
+      "sha256": "040f115184f3827bc65e427f77d5a6794d616c46262949cfa60434998e398768"
+    },
+    "countries_RL_e8-word": {
+      "file": "data/pointer_v5/len8/countries_RL_e8-word.json",
+      "sha256": "cc711bda0512d252779f62f94dca0ee11f183e838d405f8c8c13269b7433d73a"
+    },
+    "countries_DL_e8-digit": {
+      "file": "data/pointer_v5/len8/countries_DL_e8-digit.json",
+      "sha256": "4e9d7dd0af5e2fa75a15422a15419641839e32d43104980ad1750d71231b76ab"
+    },
+    "countries_DL_e8-word": {
+      "file": "data/pointer_v5/len8/countries_DL_e8-word.json",
+      "sha256": "d32f241b2ee1b55e65015df3d3a60e33b1ac3049101183b68062c810f9e89d7e"
+    },
+    "animals_RL_e8-digit": {
+      "file": "data/pointer_v5/len8/animals_RL_e8-digit.json",
+      "sha256": "3b8701048054934e3f9c5bd4d612160c660bd4b3e89b29345f327865f1397e06"
+    },
+    "animals_RL_e8-word": {
+      "file": "data/pointer_v5/len8/animals_RL_e8-word.json",
+      "sha256": "9fc3ec33f38a19d5cc6e882eba7b7eea3b5f3344b6b165a50820e368dd16dd56"
+    },
+    "animals_DL_e8-digit": {
+      "file": "data/pointer_v5/len8/animals_DL_e8-digit.json",
+      "sha256": "05b258a7b511b5db0581f715277e1f9984ec7cdf09f85aa0efd3e3d12e8f607c"
+    },
+    "animals_DL_e8-word": {
+      "file": "data/pointer_v5/len8/animals_DL_e8-word.json",
+      "sha256": "999c165841d2446efd78f824c40645802c9d7c833926345931e90086e61df0a6"
+    },
+    "body_RL_e8-digit": {
+      "file": "data/pointer_v5/len8/body_RL_e8-digit.json",
+      "sha256": "3effe3db667756aaae38f5485a48fc2ef028e6e3f22a854bf99ab8c5a2e46aab"
+    },
+    "body_RL_e8-word": {
+      "file": "data/pointer_v5/len8/body_RL_e8-word.json",
+      "sha256": "54c99dbf9cc74968478ef963d43f79da488ac1c33ed45c7a429a1d1d150d5e69"
+    },
+    "body_DL_e8-digit": {
+      "file": "data/pointer_v5/len8/body_DL_e8-digit.json",
+      "sha256": "8a874bed3835613eb22de66dcd83ba4b77efe387dcc9e0c19ffbe95fef49b53b"
+    },
+    "body_DL_e8-word": {
+      "file": "data/pointer_v5/len8/body_DL_e8-word.json",
+      "sha256": "d9fd3777010a5b5a3756220dfe52c2f6f9777435210c0ea2d5b8794117a470fb"
+    }
+  },
+  "ci": {
+    "kind": "entity_cluster",
+    "cluster": "asked entity",
+    "strata": "domain",
+    "n_boot": 2000,
+    "seed": 0,
+    "bounds": "the wider of the cluster bootstrap and the item-level Wilson interval"
+  },
+  "competence": "muse30b_d3v5_len8_competence",
+  "competence_path": "results/pointer_v5/muse30b_d3v5_len8_competence/items.jsonl",
+  "competence_sha256": "229145da93a199a2b0f9214c32a558a46a08d44bdd9b57a6f28c1d571670f506",
+  "n": 150,
+  "layers": [
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48
+  ],
+  "control_stride": 1,
+  "windows": {
+    "early": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23
+    ],
+    "mid": [
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32
+    ],
+    "transit": [
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42
+    ]
+  },
+  "groups": [
+    "last"
+  ],
+  "question_max_layer": null,
+  "control_levels": null,
+  "sources": [
+    "dissoc",
+    "same",
+    "rand",
+    "other"
+  ],
+  "primary_layers": [
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48
+  ],
+  "sample": "per (domain, base level), up to n scenes eligible (every competence prompt right, keyed by set and item id) in all of the run's families and conditions, seed 0; all of them on the same scenes",
+  "seeds": {
+    "sample": 0,
+    "null": 0,
+    "other": 0
+  },
+  "decision": "(fixed before any run; the job specs in jobs/d3/ repeat it). Per cell (family x group x layer or window\nx source dissoc), pooled over domains, Wilson 95% intervals over items:\n  - interpretable iff the dissoc patch changes the answer (1 - share none: lower bound >= 0.20) and the same control\n    changes it rarely (upper bound <= 0.10); otherwise \"none\" (nothing moves) or \"damage\"\n  - verdict X in {identity, position, value} (RR: identity, position) iff X's lower bound exceeds the upper bounds of\n    the other two and the chance bar: the rand control's upper bound for X at that layer (windows: the max over the\n    window's layers) and the per-digit context rate (upper bound of share context / (N - 3), N = 5 only)\n  - otherwise \"mixed\". Primary: RL, group final, window transit (the suite's 98-100% copy flips at 44-52). H-pointer:\n    position; H-word (or a lexical key): identity; H-value: value. DL is the reference (classic binding retrieval),\n    RR the contrast (a pointer is useless there).\n  - Other datasets name their primary / reference / contrast families in the manifest (code_pointer_v1: memory ->\n    prompt RK / named -> prompt DK / RR)."
+}

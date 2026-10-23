@@ -1,0 +1,244 @@
+{
+  "labels": {
+    "len12/countries_RL_e12-word": {
+      "n": 150,
+      "cells": {
+        "clean": {
+          "rate": 0.9866666666666667,
+          "lo": 0.9526921436197238,
+          "hi": 0.9963359476117768,
+          "k": 148
+        },
+        "src_dissoc": {
+          "rate": 0.9466666666666667,
+          "lo": 0.8982949952532904,
+          "hi": 0.9727307871098676,
+          "k": 142
+        },
+        "src_same": {
+          "rate": 0.9466666666666667,
+          "lo": 0.8982949952532904,
+          "hi": 0.9727307871098676,
+          "k": 142
+        },
+        "src_redigit": {
+          "rate": 0.9866666666666667,
+          "lo": 0.9526921436197238,
+          "hi": 0.9963359476117768,
+          "k": 148
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        }
+      },
+      "eligible": 131,
+      "reliable": true,
+      "clean_median_p_answer": 0.9706049999999999,
+      "read_agrees_with_greedy": 0.9988888888888889
+    },
+    "len12/countries_DL_e12-word": {
+      "n": 150,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        }
+      },
+      "eligible": 150,
+      "reliable": true,
+      "clean_median_p_answer": 0.99444,
+      "read_agrees_with_greedy": 1
+    },
+    "len12/animals_RL_e12-word": {
+      "n": 150,
+      "cells": {
+        "clean": {
+          "rate": 0.7333333333333333,
+          "lo": 0.6573840257093969,
+          "hi": 0.7976294426892675,
+          "k": 110
+        },
+        "src_dissoc": {
+          "rate": 0.7666666666666667,
+          "lo": 0.6928407309593593,
+          "hi": 0.8271746614962575,
+          "k": 115
+        },
+        "src_same": {
+          "rate": 0.7933333333333333,
+          "lo": 0.7216049669151186,
+          "hi": 0.8504119647860597,
+          "k": 119
+        },
+        "src_redigit": {
+          "rate": 0.7066666666666667,
+          "lo": 0.6293750243784035,
+          "hi": 0.7736369047746994,
+          "k": 106
+        },
+        "hop1": {
+          "rate": 0.9733333333333334,
+          "lo": 0.9334450938998244,
+          "hi": 0.9895822277088953,
+          "k": 146
+        },
+        "hop2": {
+          "rate": 0.9933333333333333,
+          "lo": 0.9632062470660241,
+          "hi": 0.9988222289768665,
+          "k": 149
+        }
+      },
+      "eligible": 66,
+      "reliable": false,
+      "clean_median_p_answer": 0.968595,
+      "read_agrees_with_greedy": 0.9988888888888889
+    },
+    "len12/animals_DL_e12-word": {
+      "n": 150,
+      "cells": {
+        "clean": {
+          "rate": 0.9933333333333333,
+          "lo": 0.9632062470660241,
+          "hi": 0.9988222289768665,
+          "k": 149
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        }
+      },
+      "eligible": 149,
+      "reliable": true,
+      "clean_median_p_answer": 0.99644,
+      "read_agrees_with_greedy": 1
+    },
+    "len12/body_RL_e12-word": {
+      "n": 150,
+      "cells": {
+        "clean": {
+          "rate": 0.8266666666666667,
+          "lo": 0.7581386789428641,
+          "hi": 0.8788801768152663,
+          "k": 124
+        },
+        "src_dissoc": {
+          "rate": 0.7666666666666667,
+          "lo": 0.6928407309593593,
+          "hi": 0.8271746614962575,
+          "k": 115
+        },
+        "src_same": {
+          "rate": 0.78,
+          "lo": 0.7071754568460243,
+          "hi": 0.8388407052323733,
+          "k": 117
+        },
+        "src_redigit": {
+          "rate": 0.8466666666666667,
+          "lo": 0.7804188029480452,
+          "hi": 0.8956012072442565,
+          "k": 127
+        },
+        "hop1": {
+          "rate": 0.9466666666666667,
+          "lo": 0.8982949952532904,
+          "hi": 0.9727307871098676,
+          "k": 142
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        }
+      },
+      "eligible": 81,
+      "reliable": false,
+      "clean_median_p_answer": 0.96256,
+      "read_agrees_with_greedy": 0.9922222222222222
+    },
+    "len12/body_DL_e12-word": {
+      "n": 150,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        }
+      },
+      "eligible": 150,
+      "reliable": true,
+      "clean_median_p_answer": 0.9962500000000001,
+      "read_agrees_with_greedy": 1
+    }
+  },
+  "seconds_generate": 243,
+  "seconds_read": 235,
+  "prompt_format": "chat",
+  "judge_mode": "greedy",
+  "judge": "the first answer of the item's kind in the first non-empty line of 8 greedy tokens (digits, number words and ordinals for digits; the domain's entities otherwise)",
+  "seconds": 478
+}

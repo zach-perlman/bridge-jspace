@@ -1,0 +1,48 @@
+{
+ "layers": [
+  0,
+  3,
+  6,
+  9,
+  12,
+  15,
+  18,
+  21,
+  24,
+  27,
+  30
+ ],
+ "items": {
+  "association": 77,
+  "multihop": 12,
+  "multilingual": 20,
+  "poetry": 41,
+  "typo": 77
+ },
+ "pass_at_10": {
+  "olmo-3-7b-instruct": {
+   "multihop": 0.6666666666666666,
+   "multilingual": 0.35833333333333334,
+   "typo": 0.6363636363636364,
+   "association": 0.06493506493506493,
+   "poetry": 0.07317073170731707,
+   "macro": 0.35989388660120364
+  },
+  "Olmo-3-1025-7B_jacobian_lens": {
+   "multihop": 0.75,
+   "multilingual": 0.4375,
+   "typo": 0.45454545454545453,
+   "association": 0.0,
+   "poetry": 0.0,
+   "macro": 0.32840909090909093
+  },
+  "logit": {
+   "multihop": 0.6666666666666666,
+   "multilingual": 0.45,
+   "typo": 0.4155844155844156,
+   "association": 0.03896103896103896,
+   "poetry": 0.024390243902439025,
+   "macro": 0.319120473022912
+  }
+ }
+}

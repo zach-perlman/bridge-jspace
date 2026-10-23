@@ -1,0 +1,122 @@
+{
+  "target": "qwen3.5-122b-a10b",
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "checks": {
+    "greedy": [
+      true,
+      true
+    ],
+    "residual_zero": [
+      true,
+      true
+    ],
+    "residual_push": [
+      true,
+      true
+    ],
+    "block_all": [
+      true,
+      true
+    ],
+    "block_full": [
+      true,
+      true
+    ],
+    "block_heads": [
+      true,
+      true
+    ],
+    "block_linear": [
+      true,
+      true
+    ],
+    "block_empty": [
+      true,
+      true
+    ]
+  },
+  "max_abs_dlogit": {
+    "block_all": [
+      4.6562,
+      3.4473
+    ],
+    "block_full": [
+      3.4062,
+      2.4375
+    ],
+    "block_heads": [
+      3.5625,
+      1.7322
+    ],
+    "block_linear": [
+      1.4375,
+      1.6875
+    ]
+  },
+  "layer_kinds": {
+    "full": [
+      3,
+      7,
+      11,
+      15,
+      19,
+      23,
+      27,
+      31,
+      35,
+      39,
+      43,
+      47
+    ],
+    "linear": [
+      0,
+      1,
+      2,
+      4,
+      5,
+      6,
+      8,
+      9,
+      10,
+      12,
+      13,
+      14,
+      16,
+      17,
+      18,
+      20,
+      21,
+      22,
+      24,
+      25,
+      26,
+      28,
+      29,
+      30,
+      32,
+      33,
+      34,
+      36,
+      37,
+      38,
+      40,
+      41,
+      42,
+      44,
+      45,
+      46
+    ]
+  },
+  "kernel_path": "fla",
+  "lens_ok": true,
+  "lens_error": null,
+  "all_hooks_ok": true,
+  "seconds": 89
+}

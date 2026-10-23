@@ -1,0 +1,19 @@
+{
+  "run": "muse30b_d2_formats_competence",
+  "why": "Muse: d2_formats_v1 competence",
+  "set": "d2_formats_v1",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "git_commit": "2dadb641e7d986c2e524264d096e6a42adcf2fd4",
+  "guess": false,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-22T23:41:09Z"
+}

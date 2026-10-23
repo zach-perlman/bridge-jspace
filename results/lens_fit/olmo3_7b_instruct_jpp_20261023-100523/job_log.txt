@@ -1,0 +1,306 @@
+
+[jobq 2026-10-22T22:11:34+00:00] $ uv sync --frozen -q
+
+[jobq 2026-10-22T22:11:34+00:00] $ bash -c set -a; [ -f .env ] && . ./.env; set +a; JPP_DIR=/ephemeral/ext/jpp_lens BJ_REPO=$PWD UV_CACHE_DIR=/ephemeral/uv-cache HF_HOME=/ephemeral/hf bash scripts/lens_fit/fit_jpp.sh allenai/Olmo-3-7B-Instruct 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30 /ephemeral/lens_fit/olmo3_7b_instruct_jpp 64 rlens && cd /ephemeral/ext/jpp_lens && UV_CACHE_DIR=/ephemeral/uv-cache HF_HOME=/ephemeral/hf uv run --no-sync python $OLDPWD/scripts/lens_fit/export_jpp_lens.py /ephemeral/lens_fit/olmo3_7b_instruct_jpp/Olmo-3-7B-Instruct_jpp_lens.pt /ephemeral/lens_fit/olmo3_7b_instruct_jpp/export/Olmo-3-7B-Instruct_jpp_lens_fp16.pt "J++ for allenai/Olmo-3-7B-Instruct: safety-research/jpp_lens@93f02cd, 64 WikiText prompts x 128 tokens, skip 16, router seed 0, target = the last block, rlens LRP, 8 experts, source layers 0-30; fit 22-23 Oct 2026 on an A100 80GB" && sha256sum /ephemeral/lens_fit/olmo3_7b_instruct_jpp/export/Olmo-3-7B-Instruct_jpp_lens_fp16.pt
+=== router 22:11:34
+2026-10-22 22:11:37,775 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-22 22:11:37,779 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/allenai/Olmo-3-7B-Instruct/6e5971d9eba42665f5bd5a0fcf047f299ce1dccc/config.json "HTTP/1.1 200 OK"
+2026-10-22 22:11:37,875 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/model.safetensors "HTTP/1.1 404 Not Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-10-22 22:11:37,875 huggingface_hub.utils._http Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/355 [00:00<?, ?it/s]Loading weights: 100%|██████████| 355/355 [00:00<00:00, 5980.10it/s]
+2026-10-22 22:11:38,174 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/generation_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-22 22:11:38,179 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/allenai/Olmo-3-7B-Instruct/6e5971d9eba42665f5bd5a0fcf047f299ce1dccc/generation_config.json "HTTP/1.1 200 OK"
+2026-10-22 22:11:40,799 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-22 22:11:40,804 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/allenai/Olmo-3-7B-Instruct/6e5971d9eba42665f5bd5a0fcf047f299ce1dccc/config.json "HTTP/1.1 200 OK"
+2026-10-22 22:11:40,832 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-22 22:11:40,837 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/allenai/Olmo-3-7B-Instruct/6e5971d9eba42665f5bd5a0fcf047f299ce1dccc/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-10-22 22:11:40,864 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-22 22:11:40,868 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/allenai/Olmo-3-7B-Instruct/6e5971d9eba42665f5bd5a0fcf047f299ce1dccc/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-10-22 22:11:40,899 httpx HTTP Request: GET https://huggingface.co/api/models/allenai/Olmo-3-7B-Instruct/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-10-22 22:11:40,936 httpx HTTP Request: GET https://huggingface.co/api/models/allenai/Olmo-3-7B-Instruct/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-10-22 22:11:40,974 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/tokenizer.model "HTTP/1.1 404 Not Found"
+2026-10-22 22:11:41,003 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/added_tokens.json "HTTP/1.1 404 Not Found"
+2026-10-22 22:11:41,402 httpx HTTP Request: GET https://huggingface.co/api/models/allenai/Olmo-3-7B-Instruct "HTTP/1.1 200 OK"
+2026-10-22 22:11:42,010 httpx HTTP Request: HEAD https://huggingface.co/datasets/Salesforce/wikitext/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-10-22 22:11:42,015 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/Salesforce/wikitext/b08601e04326c79dfdd32d625aee71d232d685c3/README.md "HTTP/1.1 200 OK"
+2026-10-22 22:11:42,021 httpx HTTP Request: GET https://huggingface.co/api/resolve-cache/datasets/Salesforce/wikitext/b08601e04326c79dfdd32d625aee71d232d685c3/README.md "HTTP/1.1 200 OK"
+2026-10-22 22:11:42,047 httpx HTTP Request: HEAD https://huggingface.co/datasets/Salesforce/wikitext/resolve/b08601e04326c79dfdd32d625aee71d232d685c3/wikitext.py "HTTP/1.1 404 Not Found"
+2026-10-22 22:11:42,133 httpx HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/Salesforce/wikitext/Salesforce/wikitext.py "HTTP/1.1 404 Not Found"
+2026-10-22 22:11:42,171 httpx HTTP Request: GET https://huggingface.co/api/datasets/Salesforce/wikitext/revision/b08601e04326c79dfdd32d625aee71d232d685c3 "HTTP/1.1 200 OK"
+2026-10-22 22:11:42,203 httpx HTTP Request: HEAD https://huggingface.co/datasets/Salesforce/wikitext/resolve/b08601e04326c79dfdd32d625aee71d232d685c3/.huggingface.yaml "HTTP/1.1 404 Not Found"
+2026-10-22 22:11:42,298 httpx HTTP Request: GET https://datasets-server.huggingface.co/info?dataset=Salesforce/wikitext "HTTP/1.1 200 OK"
+2026-10-22 22:11:42,331 httpx HTTP Request: GET https://huggingface.co/api/datasets/Salesforce/wikitext/tree/b08601e04326c79dfdd32d625aee71d232d685c3/wikitext-103-raw-v1?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-10-22 22:11:42,359 httpx HTTP Request: GET https://huggingface.co/api/datasets/Salesforce/wikitext/tree/b08601e04326c79dfdd32d625aee71d232d685c3?recursive=false&expand=false "HTTP/1.1 200 OK"
+2026-10-22 22:11:42,386 httpx HTTP Request: HEAD https://huggingface.co/datasets/Salesforce/wikitext/resolve/b08601e04326c79dfdd32d625aee71d232d685c3/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-10-22 22:11:42,422 httpx HTTP Request: GET https://huggingface.co/datasets/Salesforce/wikitext/resolve/b08601e04326c79dfdd32d625aee71d232d685c3/wikitext-103-raw-v1/train-00000-of-00002.parquet "HTTP/1.1 302 Found"
+2026-10-22 22:11:42,561 httpx HTTP Request: GET https://us.aws.cdn.hf.co/xet-bridge-us/621ffdd236468d709f18200d/8d76dead9d8253b6b8ec0ebefbd6882c9f7894b6c227791c44a9f2db8bd20882?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27train-00000-of-00002.parquet%3B+filename%3D%22train-00000-of-00002.parquet%22%3B&user_id=public&X-Xet-Cas-Uid=public&xip=u0w52CPsnBA&Expires=1792710702&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5hd3MuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjIxZmZkZDIzNjQ2OGQ3MDlmMTgyMDBkLzhkNzZkZWFkOWQ4MjUzYjZiOGVjMGViZWZiZDY4ODJjOWY3ODk0YjZjMjI3NzkxYzQ0YTlmMmRiOGJkMjA4ODJcXD9yZXNwb25zZS1jb250ZW50LWRpc3Bvc2l0aW9uPWlubGluZSUzQitmaWxlbmFtZSUyQSUzRFVURi04JTI3JTI3dHJhaW4tMDAwMDAtb2YtMDAwMDIucGFycXVldCUzQitmaWxlbmFtZSUzRCUyMnRyYWluLTAwMDAwLW9mLTAwMDAyLnBhcnF1ZXQlMjIlM0ImdXNlcl9pZD1wdWJsaWMmWC1YZXQtQ2FzLVVpZD1wdWJsaWMmeGlwPXUwdzUyQ1BzbkJBIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJFcG9jaFRpbWUiOjE3OTI3MTA3MDJ9fX1dfQ__&Signature=MEUCIQCBxCwb%7E1jEL4Kyn4iU10kzuo9TN9QkPHYlxJY8m8W%7EDAIgJnzOjba8fB96PTe3tYc24nqpJk%7EXR1D1EOBxs8Io-K8_&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256 "HTTP/1.1 206 Partial Content"
+2026-10-22 22:11:42,620 httpx HTTP Request: GET https://huggingface.co/datasets/Salesforce/wikitext/resolve/b08601e04326c79dfdd32d625aee71d232d685c3/wikitext-103-raw-v1/train-00000-of-00002.parquet "HTTP/1.1 302 Found"
+2026-10-22 22:11:42,710 httpx HTTP Request: GET https://us.aws.cdn.hf.co/xet-bridge-us/621ffdd236468d709f18200d/8d76dead9d8253b6b8ec0ebefbd6882c9f7894b6c227791c44a9f2db8bd20882?user_id=public&xip=u0w52CPsnBA&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27train-00000-of-00002.parquet%3B+filename%3D%22train-00000-of-00002.parquet%22%3B&X-Xet-Cas-Uid=public&Expires=1792710702&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5hd3MuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjIxZmZkZDIzNjQ2OGQ3MDlmMTgyMDBkLzhkNzZkZWFkOWQ4MjUzYjZiOGVjMGViZWZiZDY4ODJjOWY3ODk0YjZjMjI3NzkxYzQ0YTlmMmRiOGJkMjA4ODJcXD91c2VyX2lkPXB1YmxpYyZ4aXA9dTB3NTJDUHNuQkEmcmVzcG9uc2UtY29udGVudC1kaXNwb3NpdGlvbj1pbmxpbmUlM0IrZmlsZW5hbWUlMkElM0RVVEYtOCUyNyUyN3RyYWluLTAwMDAwLW9mLTAwMDAyLnBhcnF1ZXQlM0IrZmlsZW5hbWUlM0QlMjJ0cmFpbi0wMDAwMC1vZi0wMDAwMi5wYXJxdWV0JTIyJTNCJlgtWGV0LUNhcy1VaWQ9cHVibGljIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJFcG9jaFRpbWUiOjE3OTI3MTA3MDJ9fX1dfQ__&Signature=MEUCIQCCqyTEkIFlpsYUPvNDIAMw0Q8WdTdgIao3iXzljfx4rgIgDQCE2lf0PMZbilJ-3grKlvsyDma3h5aEXBRjDiz09Jc_&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256 "HTTP/1.1 206 Partial Content"
+2026-10-22 22:11:42,782 httpx HTTP Request: GET https://huggingface.co/datasets/Salesforce/wikitext/resolve/b08601e04326c79dfdd32d625aee71d232d685c3/wikitext-103-raw-v1/train-00000-of-00002.parquet "HTTP/1.1 302 Found"
+2026-10-22 22:11:42,878 httpx HTTP Request: GET https://us.aws.cdn.hf.co/xet-bridge-us/621ffdd236468d709f18200d/8d76dead9d8253b6b8ec0ebefbd6882c9f7894b6c227791c44a9f2db8bd20882?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27train-00000-of-00002.parquet%3B+filename%3D%22train-00000-of-00002.parquet%22%3B&X-Xet-Cas-Uid=public&xip=u0w52CPsnBA&user_id=public&Expires=1792710702&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5hd3MuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjIxZmZkZDIzNjQ2OGQ3MDlmMTgyMDBkLzhkNzZkZWFkOWQ4MjUzYjZiOGVjMGViZWZiZDY4ODJjOWY3ODk0YjZjMjI3NzkxYzQ0YTlmMmRiOGJkMjA4ODJcXD9yZXNwb25zZS1jb250ZW50LWRpc3Bvc2l0aW9uPWlubGluZSUzQitmaWxlbmFtZSUyQSUzRFVURi04JTI3JTI3dHJhaW4tMDAwMDAtb2YtMDAwMDIucGFycXVldCUzQitmaWxlbmFtZSUzRCUyMnRyYWluLTAwMDAwLW9mLTAwMDAyLnBhcnF1ZXQlMjIlM0ImWC1YZXQtQ2FzLVVpZD1wdWJsaWMmeGlwPXUwdzUyQ1BzbkJBJnVzZXJfaWQ9cHVibGljIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJFcG9jaFRpbWUiOjE3OTI3MTA3MDJ9fX1dfQ__&Signature=MEUCIQDt7R48iU7VCnLKQZHf3DFdlU8zuFfnVgBZgKrHLT4WKQIgP07%7EduVGxEzqFcWgXqVA05CnR1PqOExqmOt2AB4lm4k_&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256 "HTTP/1.1 206 Partial Content"
+2026-10-22 22:56:05,674 __main__ router saved to /ephemeral/lens_fit/olmo3_7b_instruct_jpp/router.pt (stamp /ephemeral/lens_fit/olmo3_7b_instruct_jpp/router_stamp.json)
+=== fit-shard (64 prompts) 22:56:07
+2026-10-22 22:56:10,344 httpx HTTP Request: HEAD https://huggingface.co/datasets/Salesforce/wikitext/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-10-22 22:56:10,348 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/Salesforce/wikitext/b08601e04326c79dfdd32d625aee71d232d685c3/README.md "HTTP/1.1 200 OK"
+2026-10-22 22:56:10,375 httpx HTTP Request: HEAD https://huggingface.co/datasets/Salesforce/wikitext/resolve/b08601e04326c79dfdd32d625aee71d232d685c3/wikitext.py "HTTP/1.1 404 Not Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-10-22 22:56:10,375 huggingface_hub.utils._http Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-10-22 22:56:10,457 httpx HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/Salesforce/wikitext/Salesforce/wikitext.py "HTTP/1.1 404 Not Found"
+2026-10-22 22:56:10,493 httpx HTTP Request: GET https://huggingface.co/api/datasets/Salesforce/wikitext/revision/b08601e04326c79dfdd32d625aee71d232d685c3 "HTTP/1.1 200 OK"
+2026-10-22 22:56:10,518 httpx HTTP Request: HEAD https://huggingface.co/datasets/Salesforce/wikitext/resolve/b08601e04326c79dfdd32d625aee71d232d685c3/.huggingface.yaml "HTTP/1.1 404 Not Found"
+2026-10-22 22:56:10,592 httpx HTTP Request: GET https://datasets-server.huggingface.co/info?dataset=Salesforce/wikitext "HTTP/1.1 200 OK"
+2026-10-22 22:56:10,623 httpx HTTP Request: GET https://huggingface.co/api/datasets/Salesforce/wikitext/tree/b08601e04326c79dfdd32d625aee71d232d685c3/wikitext-103-raw-v1?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-10-22 22:56:10,653 httpx HTTP Request: GET https://huggingface.co/api/datasets/Salesforce/wikitext/tree/b08601e04326c79dfdd32d625aee71d232d685c3?recursive=false&expand=false "HTTP/1.1 200 OK"
+2026-10-22 22:56:10,683 httpx HTTP Request: HEAD https://huggingface.co/datasets/Salesforce/wikitext/resolve/b08601e04326c79dfdd32d625aee71d232d685c3/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-10-22 22:56:10,717 httpx HTTP Request: GET https://huggingface.co/datasets/Salesforce/wikitext/resolve/b08601e04326c79dfdd32d625aee71d232d685c3/wikitext-103-raw-v1/train-00000-of-00002.parquet "HTTP/1.1 302 Found"
+2026-10-22 22:56:10,838 httpx HTTP Request: GET https://us.aws.cdn.hf.co/xet-bridge-us/621ffdd236468d709f18200d/8d76dead9d8253b6b8ec0ebefbd6882c9f7894b6c227791c44a9f2db8bd20882?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27train-00000-of-00002.parquet%3B+filename%3D%22train-00000-of-00002.parquet%22%3B&user_id=public&xip=u0w52CPsnBA&X-Xet-Cas-Uid=public&Expires=1792713370&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5hd3MuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjIxZmZkZDIzNjQ2OGQ3MDlmMTgyMDBkLzhkNzZkZWFkOWQ4MjUzYjZiOGVjMGViZWZiZDY4ODJjOWY3ODk0YjZjMjI3NzkxYzQ0YTlmMmRiOGJkMjA4ODJcXD9yZXNwb25zZS1jb250ZW50LWRpc3Bvc2l0aW9uPWlubGluZSUzQitmaWxlbmFtZSUyQSUzRFVURi04JTI3JTI3dHJhaW4tMDAwMDAtb2YtMDAwMDIucGFycXVldCUzQitmaWxlbmFtZSUzRCUyMnRyYWluLTAwMDAwLW9mLTAwMDAyLnBhcnF1ZXQlMjIlM0ImdXNlcl9pZD1wdWJsaWMmeGlwPXUwdzUyQ1BzbkJBJlgtWGV0LUNhcy1VaWQ9cHVibGljIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJFcG9jaFRpbWUiOjE3OTI3MTMzNzB9fX1dfQ__&Signature=MEYCIQDzP4r5aIEOIge99ZRR%7EF3K84IVsb1hvQd-m4x-rXrcxQIhAL%7ECC5H888n%7E2Pi6iLrYLTuWyVKBw3pN30OfTVlm0xcI&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256 "HTTP/1.1 206 Partial Content"
+2026-10-22 22:56:10,899 httpx HTTP Request: GET https://huggingface.co/datasets/Salesforce/wikitext/resolve/b08601e04326c79dfdd32d625aee71d232d685c3/wikitext-103-raw-v1/train-00000-of-00002.parquet "HTTP/1.1 302 Found"
+2026-10-22 22:56:10,987 httpx HTTP Request: GET https://us.aws.cdn.hf.co/xet-bridge-us/621ffdd236468d709f18200d/8d76dead9d8253b6b8ec0ebefbd6882c9f7894b6c227791c44a9f2db8bd20882?user_id=public&xip=u0w52CPsnBA&X-Xet-Cas-Uid=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27train-00000-of-00002.parquet%3B+filename%3D%22train-00000-of-00002.parquet%22%3B&Expires=1792713370&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5hd3MuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjIxZmZkZDIzNjQ2OGQ3MDlmMTgyMDBkLzhkNzZkZWFkOWQ4MjUzYjZiOGVjMGViZWZiZDY4ODJjOWY3ODk0YjZjMjI3NzkxYzQ0YTlmMmRiOGJkMjA4ODJcXD91c2VyX2lkPXB1YmxpYyZ4aXA9dTB3NTJDUHNuQkEmWC1YZXQtQ2FzLVVpZD1wdWJsaWMmcmVzcG9uc2UtY29udGVudC1kaXNwb3NpdGlvbj1pbmxpbmUlM0IrZmlsZW5hbWUlMkElM0RVVEYtOCUyNyUyN3RyYWluLTAwMDAwLW9mLTAwMDAyLnBhcnF1ZXQlM0IrZmlsZW5hbWUlM0QlMjJ0cmFpbi0wMDAwMC1vZi0wMDAwMi5wYXJxdWV0JTIyJTNCIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJFcG9jaFRpbWUiOjE3OTI3MTMzNzB9fX1dfQ__&Signature=MEUCIQDsz-CQthErHY-hiCvziVIrv4BLD1mp3X3oJp%7Ekk125mgIgJE6crNH6VrZcuV9qukPkneI6QM0U7bHC5C-5bhAZ9wM_&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256 "HTTP/1.1 206 Partial Content"
+2026-10-22 22:56:11,066 httpx HTTP Request: GET https://huggingface.co/datasets/Salesforce/wikitext/resolve/b08601e04326c79dfdd32d625aee71d232d685c3/wikitext-103-raw-v1/train-00000-of-00002.parquet "HTTP/1.1 302 Found"
+2026-10-22 22:56:11,141 httpx HTTP Request: GET https://us.aws.cdn.hf.co/xet-bridge-us/621ffdd236468d709f18200d/8d76dead9d8253b6b8ec0ebefbd6882c9f7894b6c227791c44a9f2db8bd20882?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27train-00000-of-00002.parquet%3B+filename%3D%22train-00000-of-00002.parquet%22%3B&X-Xet-Cas-Uid=public&user_id=public&xip=u0w52CPsnBA&Expires=1792713371&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5hd3MuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjIxZmZkZDIzNjQ2OGQ3MDlmMTgyMDBkLzhkNzZkZWFkOWQ4MjUzYjZiOGVjMGViZWZiZDY4ODJjOWY3ODk0YjZjMjI3NzkxYzQ0YTlmMmRiOGJkMjA4ODJcXD9yZXNwb25zZS1jb250ZW50LWRpc3Bvc2l0aW9uPWlubGluZSUzQitmaWxlbmFtZSUyQSUzRFVURi04JTI3JTI3dHJhaW4tMDAwMDAtb2YtMDAwMDIucGFycXVldCUzQitmaWxlbmFtZSUzRCUyMnRyYWluLTAwMDAwLW9mLTAwMDAyLnBhcnF1ZXQlMjIlM0ImWC1YZXQtQ2FzLVVpZD1wdWJsaWMmdXNlcl9pZD1wdWJsaWMmeGlwPXUwdzUyQ1BzbkJBIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJFcG9jaFRpbWUiOjE3OTI3MTMzNzF9fX1dfQ__&Signature=MEUCIQDdieK4p1aE-g18Lt-Srdb0TWRcaebp%7ETOOl5ThYKz-gAIgDvpm5cTOCdxvNu0HImClUXrdPyls42LhwqrZrC7xZC4_&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256 "HTTP/1.1 206 Partial Content"
+2026-10-22 22:56:11,426 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-22 22:56:11,431 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/allenai/Olmo-3-7B-Instruct/6e5971d9eba42665f5bd5a0fcf047f299ce1dccc/config.json "HTTP/1.1 200 OK"
+Loading weights:   0%|          | 0/355 [00:00<?, ?it/s]Loading weights: 100%|██████████| 355/355 [00:00<00:00, 6157.74it/s]
+2026-10-22 22:56:11,664 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/generation_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-22 22:56:11,670 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/allenai/Olmo-3-7B-Instruct/6e5971d9eba42665f5bd5a0fcf047f299ce1dccc/generation_config.json "HTTP/1.1 200 OK"
+2026-10-22 22:56:14,333 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-22 22:56:14,339 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/allenai/Olmo-3-7B-Instruct/6e5971d9eba42665f5bd5a0fcf047f299ce1dccc/config.json "HTTP/1.1 200 OK"
+2026-10-22 22:56:14,371 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-22 22:56:14,378 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/allenai/Olmo-3-7B-Instruct/6e5971d9eba42665f5bd5a0fcf047f299ce1dccc/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-10-22 22:56:14,406 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-22 22:56:14,412 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/allenai/Olmo-3-7B-Instruct/6e5971d9eba42665f5bd5a0fcf047f299ce1dccc/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-10-22 22:56:14,443 httpx HTTP Request: GET https://huggingface.co/api/models/allenai/Olmo-3-7B-Instruct/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-10-22 22:56:14,476 httpx HTTP Request: GET https://huggingface.co/api/models/allenai/Olmo-3-7B-Instruct/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-10-22 22:56:14,916 httpx HTTP Request: GET https://huggingface.co/api/models/allenai/Olmo-3-7B-Instruct "HTTP/1.1 200 OK"
+2026-10-22 22:56:15,589 __main__ ExpertJacobianRelPTrainer shard 0/1: prompts [0, 64) of 64, K=[8], checkpoints in /ephemeral/lens_fit/olmo3_7b_instruct_jpp/artifacts/2026-10-22/fit64/shard0of1
+2026-10-22 22:56:15,590 workspace_lens.fitting.expert_fitting LensConfig(hf_model_name='allenai/Olmo-3-7B-Instruct', checkpoint_name='fit64/shard0of1', lens_type='jacobian', checkpoint_every_n_prompts=8, creation_time='2026-10-22_22-56-10', artifacts_base_dir='/ephemeral/lens_fit/olmo3_7b_instruct_jpp/artifacts', checkpoint_path='/ephemeral/lens_fit/olmo3_7b_instruct_jpp/artifacts/2026-10-22/fit64/shard0of1', source_layers=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30], relative_end_transport_layer=-1, d_model=4096, num_prompts_trained_on=0, next_prompt_idx=0, jacobian_rows_per_pass=16, max_seq_len=128, skip_first_n_positions=16, num_clusters=0, cluster_projection_dim=0, lrp_mode='rlens')
+2026-10-22 22:56:15,590 workspace_lens.fitting.expert_fitting expert fit: Ks=[8]
+2026-10-22 22:56:16,110 workspace_lens.fitting.relp_fitting LRP surgery (lrp_mode=rlens): patched 65 RMSNorms, 32 gated MLPs
+2026-10-22 22:58:16,057 workspace_lens.fitting.expert_fitting   prompt 1/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:00:16,097 workspace_lens.fitting.expert_fitting   prompt 2/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:02:15,711 workspace_lens.fitting.expert_fitting   prompt 3/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:04:15,846 workspace_lens.fitting.expert_fitting   prompt 4/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:06:15,880 workspace_lens.fitting.expert_fitting   prompt 5/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:08:15,637 workspace_lens.fitting.expert_fitting   prompt 6/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:10:16,116 workspace_lens.fitting.expert_fitting   prompt 7/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:12:16,532 workspace_lens.fitting.expert_fitting   prompt 8/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:14:36,250 workspace_lens.fitting.expert_fitting   prompt 9/64  seq_len=128 num_source_positions=111  121s
+2026-10-22 23:16:36,386 workspace_lens.fitting.expert_fitting   prompt 10/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:18:36,936 workspace_lens.fitting.expert_fitting   prompt 11/64  seq_len=128 num_source_positions=111  121s
+2026-10-22 23:20:37,354 workspace_lens.fitting.expert_fitting   prompt 12/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:22:37,671 workspace_lens.fitting.expert_fitting   prompt 13/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:24:38,056 workspace_lens.fitting.expert_fitting   prompt 14/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:26:38,363 workspace_lens.fitting.expert_fitting   prompt 15/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:28:38,579 workspace_lens.fitting.expert_fitting   prompt 16/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:31:02,285 workspace_lens.fitting.expert_fitting   prompt 17/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:33:02,444 workspace_lens.fitting.expert_fitting   prompt 18/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:35:02,547 workspace_lens.fitting.expert_fitting   prompt 19/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:37:02,314 workspace_lens.fitting.expert_fitting   prompt 20/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:39:02,090 workspace_lens.fitting.expert_fitting   prompt 21/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:41:01,740 workspace_lens.fitting.expert_fitting   prompt 22/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:43:02,033 workspace_lens.fitting.expert_fitting   prompt 23/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:45:02,165 workspace_lens.fitting.expert_fitting   prompt 24/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:47:24,224 workspace_lens.fitting.expert_fitting   prompt 25/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:49:23,990 workspace_lens.fitting.expert_fitting   prompt 26/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:51:24,194 workspace_lens.fitting.expert_fitting   prompt 27/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:53:24,289 workspace_lens.fitting.expert_fitting   prompt 28/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:55:24,072 workspace_lens.fitting.expert_fitting   prompt 29/64  seq_len=128 num_source_positions=111  120s
+2026-10-22 23:57:23,346 workspace_lens.fitting.expert_fitting   prompt 30/64  seq_len=124 num_source_positions=107  119s
+2026-10-22 23:59:23,120 workspace_lens.fitting.expert_fitting   prompt 31/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:01:22,521 workspace_lens.fitting.expert_fitting   prompt 32/64  seq_len=128 num_source_positions=111  119s
+2026-10-23 00:03:46,125 workspace_lens.fitting.expert_fitting   prompt 33/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:05:46,032 workspace_lens.fitting.expert_fitting   prompt 34/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:07:45,923 workspace_lens.fitting.expert_fitting   prompt 35/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:09:45,872 workspace_lens.fitting.expert_fitting   prompt 36/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:11:45,938 workspace_lens.fitting.expert_fitting   prompt 37/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:13:45,809 workspace_lens.fitting.expert_fitting   prompt 38/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:15:45,318 workspace_lens.fitting.expert_fitting   prompt 39/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:17:44,953 workspace_lens.fitting.expert_fitting   prompt 40/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:20:07,095 workspace_lens.fitting.expert_fitting   prompt 41/64  seq_len=128 num_source_positions=111  119s
+2026-10-23 00:22:06,650 workspace_lens.fitting.expert_fitting   prompt 42/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:24:06,018 workspace_lens.fitting.expert_fitting   prompt 43/64  seq_len=128 num_source_positions=111  119s
+2026-10-23 00:26:05,702 workspace_lens.fitting.expert_fitting   prompt 44/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:28:05,125 workspace_lens.fitting.expert_fitting   prompt 45/64  seq_len=128 num_source_positions=111  119s
+2026-10-23 00:30:04,891 workspace_lens.fitting.expert_fitting   prompt 46/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:32:04,454 workspace_lens.fitting.expert_fitting   prompt 47/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:34:04,287 workspace_lens.fitting.expert_fitting   prompt 48/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:36:26,899 workspace_lens.fitting.expert_fitting   prompt 49/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:38:26,717 workspace_lens.fitting.expert_fitting   prompt 50/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:40:26,546 workspace_lens.fitting.expert_fitting   prompt 51/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:42:25,970 workspace_lens.fitting.expert_fitting   prompt 52/64  seq_len=128 num_source_positions=111  119s
+2026-10-23 00:44:25,960 workspace_lens.fitting.expert_fitting   prompt 53/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:46:25,930 workspace_lens.fitting.expert_fitting   prompt 54/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:48:25,687 workspace_lens.fitting.expert_fitting   prompt 55/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:50:25,660 workspace_lens.fitting.expert_fitting   prompt 56/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:52:48,586 workspace_lens.fitting.expert_fitting   prompt 57/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:54:48,593 workspace_lens.fitting.expert_fitting   prompt 58/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:56:48,411 workspace_lens.fitting.expert_fitting   prompt 59/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 00:58:48,569 workspace_lens.fitting.expert_fitting   prompt 60/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 01:00:48,409 workspace_lens.fitting.expert_fitting   prompt 61/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 01:02:48,166 workspace_lens.fitting.expert_fitting   prompt 62/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 01:04:47,882 workspace_lens.fitting.expert_fitting   prompt 63/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 01:06:47,798 workspace_lens.fitting.expert_fitting   prompt 64/64  seq_len=128 num_source_positions=111  120s
+2026-10-23 01:07:33,705 workspace_lens.fitting.expert_fitting expert fit: done, 64 prompts
+2026-10-23 01:07:34,859 __main__ shard checkpoint in /ephemeral/lens_fit/olmo3_7b_instruct_jpp/artifacts/2026-10-22/fit64/shard0of1
+/ephemeral/lens_fit/olmo3_7b_instruct_jpp/artifacts/2026-10-22/fit64/shard0of1
+=== merge 01:07:35
+2026-10-23 01:07:38,969 workspace_lens.fitting.utils merging checkpoint 1/1: /ephemeral/lens_fit/olmo3_7b_instruct_jpp/artifacts/2026-10-22/fit64/shard0of1/experts_K8_checkpoint.pt
+2026-10-23 01:08:03,211 __main__ experts saved to /ephemeral/lens_fit/olmo3_7b_instruct_jpp/experts.pt (stamp /ephemeral/lens_fit/olmo3_7b_instruct_jpp/experts_stamp.json)
+2026-10-23 01:08:06,142 __main__ pooled lens (in-memory fp32 sums) saved to /ephemeral/lens_fit/olmo3_7b_instruct_jpp/pooled_lens.pt (stamp /ephemeral/lens_fit/olmo3_7b_instruct_jpp/pooled_lens_stamp.json)
+=== grade 01:08:07
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/355 [00:00<?, ?it/s]Loading weights: 100%|██████████| 355/355 [00:00<00:00, 6317.02it/s]
+{False: 239, <NA>: 198, True: 114} of 551
+=== fit-weights 01:08:21
+2026-10-23 01:08:29,402 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-10-23 01:08:29,403 huggingface_hub.utils._http Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-10-23 01:08:29,418 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/allenai/Olmo-3-7B-Instruct/6e5971d9eba42665f5bd5a0fcf047f299ce1dccc/config.json "HTTP/1.1 200 OK"
+Loading weights:   0%|          | 0/355 [00:00<?, ?it/s]Loading weights: 100%|██████████| 355/355 [00:00<00:00, 6561.95it/s]
+2026-10-23 01:08:29,779 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/generation_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-23 01:08:29,794 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/allenai/Olmo-3-7B-Instruct/6e5971d9eba42665f5bd5a0fcf047f299ce1dccc/generation_config.json "HTTP/1.1 200 OK"
+2026-10-23 01:08:32,126 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-23 01:08:32,142 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/allenai/Olmo-3-7B-Instruct/6e5971d9eba42665f5bd5a0fcf047f299ce1dccc/config.json "HTTP/1.1 200 OK"
+2026-10-23 01:08:32,174 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-23 01:08:32,189 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/allenai/Olmo-3-7B-Instruct/6e5971d9eba42665f5bd5a0fcf047f299ce1dccc/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-10-23 01:08:32,219 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-23 01:08:32,233 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/allenai/Olmo-3-7B-Instruct/6e5971d9eba42665f5bd5a0fcf047f299ce1dccc/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-10-23 01:08:32,265 httpx HTTP Request: GET https://huggingface.co/api/models/allenai/Olmo-3-7B-Instruct/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-10-23 01:08:32,301 httpx HTTP Request: GET https://huggingface.co/api/models/allenai/Olmo-3-7B-Instruct/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-10-23 01:08:32,697 httpx HTTP Request: GET https://huggingface.co/api/models/allenai/Olmo-3-7B-Instruct "HTTP/1.1 200 OK"
+2026-10-23 01:08:32,743 lens_evals.readout_evals.readout_eval_items correctness filter kept 288/496 items
+2026-10-23 01:08:32,759 lens_evals.readout_evals.readout_evals dropping multilingual/pt-size-big-small intermediate 'português': no single-token surface
+2026-10-23 01:08:32,761 lens_evals.readout_evals.readout_evals dropping multilingual/pt-place-up-down intermediate 'português': no single-token surface
+2026-10-23 01:08:32,798 lens_evals.readout_evals.readout_evals dropping association/fr-ecole intermediate 'école': no single-token surface
+2026-10-23 01:08:32,798 lens_evals.readout_evals.readout_evals skipping association/fr-ecole: no scoreable intermediates
+2026-10-23 01:08:32,798 lens_evals.readout_evals.readout_evals dropping association/fr-eglise intermediate 'église': no single-token surface
+2026-10-23 01:08:32,798 lens_evals.readout_evals.readout_evals skipping association/fr-eglise: no scoreable intermediates
+2026-10-23 01:08:32,798 lens_evals.readout_evals.readout_evals dropping association/fr-pere intermediate 'père': no single-token surface
+2026-10-23 01:08:32,798 lens_evals.readout_evals.readout_evals skipping association/fr-pere: no scoreable intermediates
+2026-10-23 01:08:32,798 lens_evals.readout_evals.readout_evals dropping association/de-konig intermediate 'König': no single-token surface
+2026-10-23 01:08:32,798 lens_evals.readout_evals.readout_evals skipping association/de-konig: no scoreable intermediates
+2026-10-23 01:08:32,799 lens_evals.readout_evals.readout_evals dropping association/es-rio intermediate 'río': no single-token surface
+2026-10-23 01:08:32,799 lens_evals.readout_evals.readout_evals skipping association/es-rio: no scoreable intermediates
+2026-10-23 01:08:32,799 lens_evals.readout_evals.readout_evals dropping association/pt-agua intermediate 'água': no single-token surface
+2026-10-23 01:08:32,799 lens_evals.readout_evals.readout_evals skipping association/pt-agua: no scoreable intermediates
+2026-10-23 01:08:33,660 lens_evals.eval_utils non-semantic exclusion: 6986 token ids excluded (16 spared as scored surfaces)
+2026-10-23 01:08:33,669 lens_evals.readout_evals.readout_evals dropping multilingual/pt-size-big-small intermediate 'português': no single-token surface
+2026-10-23 01:08:33,670 lens_evals.readout_evals.readout_evals dropping multilingual/pt-place-up-down intermediate 'português': no single-token surface
+2026-10-23 01:08:33,702 lens_evals.readout_evals.readout_evals dropping association/fr-ecole intermediate 'école': no single-token surface
+2026-10-23 01:08:33,702 lens_evals.readout_evals.readout_evals skipping association/fr-ecole: no scoreable intermediates
+2026-10-23 01:08:33,703 lens_evals.readout_evals.readout_evals dropping association/fr-eglise intermediate 'église': no single-token surface
+2026-10-23 01:08:33,703 lens_evals.readout_evals.readout_evals skipping association/fr-eglise: no scoreable intermediates
+2026-10-23 01:08:33,703 lens_evals.readout_evals.readout_evals dropping association/fr-pere intermediate 'père': no single-token surface
+2026-10-23 01:08:33,703 lens_evals.readout_evals.readout_evals skipping association/fr-pere: no scoreable intermediates
+2026-10-23 01:08:33,703 lens_evals.readout_evals.readout_evals dropping association/de-konig intermediate 'König': no single-token surface
+2026-10-23 01:08:33,703 lens_evals.readout_evals.readout_evals skipping association/de-konig: no scoreable intermediates
+2026-10-23 01:08:33,703 lens_evals.readout_evals.readout_evals dropping association/es-rio intermediate 'río': no single-token surface
+2026-10-23 01:08:33,703 lens_evals.readout_evals.readout_evals skipping association/es-rio: no scoreable intermediates
+2026-10-23 01:08:33,703 lens_evals.readout_evals.readout_evals dropping association/pt-agua intermediate 'água': no single-token surface
+2026-10-23 01:08:33,703 lens_evals.readout_evals.readout_evals skipping association/pt-agua: no scoreable intermediates
+2026-10-23 01:08:34,434 lens_evals.readout_evals.readout_evals recorded item 25/282
+2026-10-23 01:08:34,569 lens_evals.readout_evals.readout_evals dropping multilingual/pt-size-big-small intermediate 'português': no single-token surface
+2026-10-23 01:08:34,634 lens_evals.readout_evals.readout_evals dropping multilingual/pt-place-up-down intermediate 'português': no single-token surface
+2026-10-23 01:08:34,977 lens_evals.readout_evals.readout_evals recorded item 50/282
+2026-10-23 01:08:35,509 lens_evals.readout_evals.readout_evals recorded item 75/282
+2026-10-23 01:08:36,042 lens_evals.readout_evals.readout_evals recorded item 100/282
+2026-10-23 01:08:36,584 lens_evals.readout_evals.readout_evals recorded item 125/282
+2026-10-23 01:08:37,123 lens_evals.readout_evals.readout_evals recorded item 150/282
+2026-10-23 01:08:37,665 lens_evals.readout_evals.readout_evals recorded item 175/282
+2026-10-23 01:08:38,209 lens_evals.readout_evals.readout_evals recorded item 200/282
+2026-10-23 01:08:38,753 lens_evals.readout_evals.readout_evals recorded item 225/282
+2026-10-23 01:08:39,302 lens_evals.readout_evals.readout_evals recorded item 250/282
+2026-10-23 01:08:39,858 lens_evals.readout_evals.readout_evals recorded item 275/282
+2026-10-23 01:08:40,012 lens_evals.readout_evals.readout_evals recorded item 282/282
+2026-10-23 01:08:40,266 lens_evals.readout_evals.readout_evals saved 282 readout residuals to /ephemeral/lens_fit/olmo3_7b_instruct_jpp/readout_cache.pt
+2026-10-23 01:08:41,881 workspace_lens.fitting.condense_experts.fitter layer 0: single-expert pass@10 [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0] -> learned 0.013 (uniform, step 185)
+2026-10-23 01:08:43,303 workspace_lens.fitting.condense_experts.fitter layer 1: single-expert pass@10 [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0] -> learned 0.025 (mean_top, step 195)
+2026-10-23 01:08:44,711 workspace_lens.fitting.condense_experts.fitter layer 2: single-expert pass@10 [0.021, 0.0, 0.0, 0.0, 0.0, 0.013, 0.0, 0.0] -> learned 0.032 (mean_top, step 110)
+2026-10-23 01:08:46,135 workspace_lens.fitting.condense_experts.fitter layer 3: single-expert pass@10 [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.011] -> learned 0.032 (uniform, step 190)
+2026-10-23 01:08:47,558 workspace_lens.fitting.condense_experts.fitter layer 4: single-expert pass@10 [0.032, 0.011, 0.0, 0.021, 0.0, 0.0, 0.011, 0.0] -> learned 0.095 (uniform, step 190)
+2026-10-23 01:08:48,980 workspace_lens.fitting.condense_experts.fitter layer 5: single-expert pass@10 [0.021, 0.0, 0.0, 0.021, 0.0, 0.032, 0.053, 0.0] -> learned 0.116 (mean_top, step 145)
+2026-10-23 01:08:50,408 workspace_lens.fitting.condense_experts.fitter layer 6: single-expert pass@10 [0.021, 0.0, 0.0, 0.021, 0.0, 0.021, 0.011, 0.011] -> learned 0.095 (uniform, step 190)
+2026-10-23 01:08:51,840 workspace_lens.fitting.condense_experts.fitter layer 7: single-expert pass@10 [0.011, 0.0, 0.0, 0.021, 0.042, 0.021, 0.042, 0.0] -> learned 0.105 (select_best, step 190)
+2026-10-23 01:08:53,276 workspace_lens.fitting.condense_experts.fitter layer 8: single-expert pass@10 [0.0, 0.0, 0.0, 0.053, 0.032, 0.032, 0.032, 0.0] -> learned 0.147 (uniform, step 195)
+2026-10-23 01:08:54,691 workspace_lens.fitting.condense_experts.fitter layer 9: single-expert pass@10 [0.0, 0.0, 0.0, 0.0, 0.042, 0.011, 0.032, 0.011] -> learned 0.126 (select_best, step 195)
+2026-10-23 01:08:56,114 workspace_lens.fitting.condense_experts.fitter layer 10: single-expert pass@10 [0.0, 0.0, 0.0, 0.011, 0.0, 0.021, 0.032, 0.0] -> learned 0.105 (uniform, step 200)
+2026-10-23 01:08:57,537 workspace_lens.fitting.condense_experts.fitter layer 11: single-expert pass@10 [0.0, 0.0, 0.0, 0.032, 0.0, 0.032, 0.032, 0.011] -> learned 0.128 (mean_top, step 155)
+2026-10-23 01:08:58,946 workspace_lens.fitting.condense_experts.fitter layer 12: single-expert pass@10 [0.0, 0.0, 0.0, 0.042, 0.0, 0.053, 0.032, 0.021] -> learned 0.179 (select_best, step 195)
+2026-10-23 01:09:00,364 workspace_lens.fitting.condense_experts.fitter layer 13: single-expert pass@10 [0.011, 0.0, 0.0, 0.053, 0.0, 0.105, 0.021, 0.053] -> learned 0.200 (mean_top, step 190)
+2026-10-23 01:09:01,774 workspace_lens.fitting.condense_experts.fitter layer 14: single-expert pass@10 [0.011, 0.0, 0.0, 0.042, 0.032, 0.032, 0.011, 0.021] -> learned 0.168 (mean_top, step 95)
+2026-10-23 01:09:03,182 workspace_lens.fitting.condense_experts.fitter layer 15: single-expert pass@10 [0.0, 0.0, 0.0, 0.042, 0.053, 0.032, 0.021, 0.021] -> learned 0.189 (select_best, step 190)
+2026-10-23 01:09:04,591 workspace_lens.fitting.condense_experts.fitter layer 16: single-expert pass@10 [0.042, 0.0, 0.0, 0.021, 0.032, 0.128, 0.053, 0.032] -> learned 0.200 (uniform, step 190)
+2026-10-23 01:09:06,001 workspace_lens.fitting.condense_experts.fitter layer 17: single-expert pass@10 [0.097, 0.0, 0.011, 0.046, 0.063, 0.116, 0.084, 0.042] -> learned 0.200 (mean_top, step 200)
+2026-10-23 01:09:07,416 workspace_lens.fitting.condense_experts.fitter layer 18: single-expert pass@10 [0.0, 0.036, 0.011, 0.023, 0.084, 0.044, 0.13, 0.034] -> learned 0.256 (select_best, step 175)
+2026-10-23 01:09:08,824 workspace_lens.fitting.condense_experts.fitter layer 19: single-expert pass@10 [0.0, 0.073, 0.0, 0.094, 0.032, 0.082, 0.123, 0.094] -> learned 0.202 (uniform, step 190)
+2026-10-23 01:09:10,234 workspace_lens.fitting.condense_experts.fitter layer 20: single-expert pass@10 [0.011, 0.14, 0.011, 0.171, 0.095, 0.148, 0.255, 0.161] -> learned 0.335 (mean_top, step 170)
+2026-10-23 01:09:11,639 workspace_lens.fitting.condense_experts.fitter layer 21: single-expert pass@10 [0.225, 0.148, 0.088, 0.245, 0.074, 0.223, 0.266, 0.148] -> learned 0.348 (select_best, step 195)
+2026-10-23 01:09:13,056 workspace_lens.fitting.condense_experts.fitter layer 22: single-expert pass@10 [0.238, 0.14, 0.134, 0.238, 0.217, 0.238, 0.042, 0.138] -> learned 0.350 (select_best, step 155)
+2026-10-23 01:09:14,466 workspace_lens.fitting.condense_experts.fitter layer 23: single-expert pass@10 [0.238, 0.227, 0.223, 0.248, 0.238, 0.227, 0.032, 0.227] -> learned 0.377 (mean_top, step 185)
+2026-10-23 01:09:15,888 workspace_lens.fitting.condense_experts.fitter layer 24: single-expert pass@10 [0.225, 0.202, 0.223, 0.246, 0.236, 0.225, 0.021, 0.215] -> learned 0.351 (mean_top, step 85)
+2026-10-23 01:09:17,298 workspace_lens.fitting.condense_experts.fitter layer 25: single-expert pass@10 [0.215, 0.215, 0.236, 0.257, 0.215, 0.238, 0.105, 0.215] -> learned 0.320 (uniform, step 165)
+2026-10-23 01:09:18,707 workspace_lens.fitting.condense_experts.fitter layer 26: single-expert pass@10 [0.204, 0.217, 0.326, 0.215, 0.204, 0.204, 0.063, 0.204] -> learned 0.347 (mean_top, step 200)
+2026-10-23 01:09:20,122 workspace_lens.fitting.condense_experts.fitter layer 27: single-expert pass@10 [0.194, 0.204, 0.282, 0.194, 0.204, 0.204, 0.087, 0.204] -> learned 0.347 (mean_top, step 135)
+2026-10-23 01:09:21,535 workspace_lens.fitting.condense_experts.fitter layer 28: single-expert pass@10 [0.217, 0.206, 0.294, 0.194, 0.194, 0.217, 0.154, 0.194] -> learned 0.305 (uniform, step 195)
+2026-10-23 01:09:22,951 workspace_lens.fitting.condense_experts.fitter layer 29: single-expert pass@10 [0.248, 0.248, 0.248, 0.115, 0.248, 0.248, 0.133, 0.248] -> learned 0.271 (select_best, step 200)
+2026-10-23 01:09:24,359 workspace_lens.fitting.condense_experts.fitter layer 30: single-expert pass@10 [0.237, 0.237, 0.236, 0.104, 0.237, 0.225, 0.236, 0.237] -> learned 0.237 (select_best, step 10)
+2026-10-23 01:09:30,679 __main__ lens saved to /ephemeral/lens_fit/olmo3_7b_instruct_jpp/Olmo-3-7B-Instruct_jpp_lens.pt (weights /ephemeral/lens_fit/olmo3_7b_instruct_jpp/Olmo-3-7B-Instruct_jpp_lens_expert_weights.json)
+=== evaluate 01:09:32
+2026-10-23 01:09:35,551 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-10-23 01:09:35,551 huggingface_hub.utils._http Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-10-23 01:09:35,565 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/allenai/Olmo-3-7B-Instruct/6e5971d9eba42665f5bd5a0fcf047f299ce1dccc/config.json "HTTP/1.1 200 OK"
+Loading weights:   0%|          | 0/355 [00:00<?, ?it/s]Loading weights: 100%|██████████| 355/355 [00:00<00:00, 5964.98it/s]
+2026-10-23 01:09:35,978 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/generation_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-23 01:09:35,999 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/allenai/Olmo-3-7B-Instruct/6e5971d9eba42665f5bd5a0fcf047f299ce1dccc/generation_config.json "HTTP/1.1 200 OK"
+2026-10-23 01:09:38,334 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-23 01:09:38,349 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/allenai/Olmo-3-7B-Instruct/6e5971d9eba42665f5bd5a0fcf047f299ce1dccc/config.json "HTTP/1.1 200 OK"
+2026-10-23 01:09:38,380 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-23 01:09:38,395 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/allenai/Olmo-3-7B-Instruct/6e5971d9eba42665f5bd5a0fcf047f299ce1dccc/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-10-23 01:09:38,428 httpx HTTP Request: HEAD https://huggingface.co/allenai/Olmo-3-7B-Instruct/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-10-23 01:09:38,448 httpx HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/allenai/Olmo-3-7B-Instruct/6e5971d9eba42665f5bd5a0fcf047f299ce1dccc/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-10-23 01:09:38,479 httpx HTTP Request: GET https://huggingface.co/api/models/allenai/Olmo-3-7B-Instruct/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-10-23 01:09:38,513 httpx HTTP Request: GET https://huggingface.co/api/models/allenai/Olmo-3-7B-Instruct/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-10-23 01:09:38,927 httpx HTTP Request: GET https://huggingface.co/api/models/allenai/Olmo-3-7B-Instruct "HTTP/1.1 200 OK"
+2026-10-23 01:09:41,099 lens_evals.readout_evals.readout_eval_items correctness filter kept 288/496 items
+2026-10-23 01:09:41,119 lens_evals.readout_evals.readout_evals dropping multilingual/pt-size-big-small intermediate 'português': no single-token surface
+2026-10-23 01:09:41,120 lens_evals.readout_evals.readout_evals dropping multilingual/pt-place-up-down intermediate 'português': no single-token surface
+2026-10-23 01:09:41,162 lens_evals.readout_evals.readout_evals dropping association/fr-ecole intermediate 'école': no single-token surface
+2026-10-23 01:09:41,162 lens_evals.readout_evals.readout_evals skipping association/fr-ecole: no scoreable intermediates
+2026-10-23 01:09:41,162 lens_evals.readout_evals.readout_evals dropping association/fr-eglise intermediate 'église': no single-token surface
+2026-10-23 01:09:41,162 lens_evals.readout_evals.readout_evals skipping association/fr-eglise: no scoreable intermediates
+2026-10-23 01:09:41,162 lens_evals.readout_evals.readout_evals dropping association/fr-pere intermediate 'père': no single-token surface
+2026-10-23 01:09:41,162 lens_evals.readout_evals.readout_evals skipping association/fr-pere: no scoreable intermediates
+2026-10-23 01:09:41,163 lens_evals.readout_evals.readout_evals dropping association/de-konig intermediate 'König': no single-token surface
+2026-10-23 01:09:41,163 lens_evals.readout_evals.readout_evals skipping association/de-konig: no scoreable intermediates
+2026-10-23 01:09:41,163 lens_evals.readout_evals.readout_evals dropping association/es-rio intermediate 'río': no single-token surface
+2026-10-23 01:09:41,163 lens_evals.readout_evals.readout_evals skipping association/es-rio: no scoreable intermediates
+2026-10-23 01:09:41,163 lens_evals.readout_evals.readout_evals dropping association/pt-agua intermediate 'água': no single-token surface
+2026-10-23 01:09:41,163 lens_evals.readout_evals.readout_evals skipping association/pt-agua: no scoreable intermediates
+2026-10-23 01:09:42,000 lens_evals.eval_utils non-semantic exclusion: 6986 token ids excluded (16 spared as scored surfaces)
+2026-10-23 01:11:28,505 lens_evals.readout_evals.readout_evals scored item 25/227
+2026-10-23 01:11:28,506 lens_evals.readout_evals.readout_evals dropping multilingual/pt-size-big-small intermediate 'português': no single-token surface
+2026-10-23 01:11:46,065 lens_evals.readout_evals.readout_evals dropping multilingual/pt-place-up-down intermediate 'português': no single-token surface
+2026-10-23 01:12:39,297 lens_evals.readout_evals.readout_evals scored item 50/227
+2026-10-23 01:13:19,632 lens_evals.readout_evals.readout_evals scored item 75/227
+2026-10-23 01:13:59,615 lens_evals.readout_evals.readout_evals scored item 100/227
+2026-10-23 01:14:39,841 lens_evals.readout_evals.readout_evals scored item 125/227
+2026-10-23 01:15:19,944 lens_evals.readout_evals.readout_evals scored item 150/227
+2026-10-23 01:16:00,125 lens_evals.readout_evals.readout_evals scored item 175/227
+2026-10-23 01:16:40,179 lens_evals.readout_evals.readout_evals scored item 200/227
+2026-10-23 01:17:20,438 lens_evals.readout_evals.readout_evals scored item 225/227
+2026-10-23 01:17:23,625 lens_evals.readout_evals.readout_evals scored item 227/227
+2026-10-23 01:17:23,699 __main__ ranks saved to /ephemeral/lens_fit/olmo3_7b_instruct_jpp/eval_ranks.csv (recall table /ephemeral/lens_fit/olmo3_7b_instruct_jpp/eval_ranks_pass_at_k.csv)
+ eval                        lens  k weighting  pass_at_k
+macro Olmo-3-7B-Instruct_jpp_lens  1      item   0.285668
+macro Olmo-3-7B-Instruct_jpp_lens 10      item   0.491763
+macro                 pooled_lens  1      item   0.157522
+macro                 pooled_lens 10      item   0.390990
+macro Olmo-3-7B-Instruct_jpp_lens  1      pair   0.278205
+macro                 pooled_lens  1      pair   0.157842
+macro Olmo-3-7B-Instruct_jpp_lens 10      pair   0.481983
+macro                 pooled_lens 10      pair   0.386613
+FIT_DONE /ephemeral/lens_fit/olmo3_7b_instruct_jpp/Olmo-3-7B-Instruct_jpp_lens.pt
+usage: export_jpp_lens.py [-h] --note NOTE src dst
+export_jpp_lens.py: error: the following arguments are required: --note

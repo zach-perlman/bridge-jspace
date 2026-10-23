@@ -1,0 +1,250 @@
+{
+  "labels": {
+    "len12/countries_RL_e12-word": {
+      "n": 150,
+      "cells": {
+        "clean": {
+          "rate": 0.8733333333333333,
+          "lo": 0.8106321928453123,
+          "hi": 0.9173893565925509,
+          "k": 131
+        },
+        "src_dissoc": {
+          "rate": 0.8933333333333333,
+          "lo": 0.8337524992356726,
+          "hi": 0.9332702046363619,
+          "k": 134
+        },
+        "src_same": {
+          "rate": 0.86,
+          "lo": 0.7954465685598426,
+          "hi": 0.90657421125524,
+          "k": 129
+        },
+        "src_redigit": {
+          "rate": 0.88,
+          "lo": 0.8182903386460476,
+          "hi": 0.9227315956032063,
+          "k": 132
+        },
+        "hop1": {
+          "rate": 0.9933333333333333,
+          "lo": 0.9632062470660241,
+          "hi": 0.9988222289768665,
+          "k": 149
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        }
+      },
+      "eligible": 100,
+      "reliable": false,
+      "clean_median_p_answer": 0.845005,
+      "read_agrees_with_greedy": 0.9933333333333333,
+      "clean_greedy_right": 0.8933333333333333
+    },
+    "len12/countries_DL_e12-word": {
+      "n": 150,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        }
+      },
+      "eligible": 150,
+      "reliable": true,
+      "clean_median_p_answer": 0.91157,
+      "read_agrees_with_greedy": 1,
+      "clean_greedy_right": 1
+    },
+    "len12/animals_RL_e12-word": {
+      "n": 150,
+      "cells": {
+        "clean": {
+          "rate": 0.7066666666666667,
+          "lo": 0.6293750243784035,
+          "hi": 0.7736369047746994,
+          "k": 106
+        },
+        "src_dissoc": {
+          "rate": 0.7333333333333333,
+          "lo": 0.6573840257093969,
+          "hi": 0.7976294426892675,
+          "k": 110
+        },
+        "src_same": {
+          "rate": 0.6866666666666666,
+          "lo": 0.6085587615654109,
+          "hi": 0.7554520131535207,
+          "k": 103
+        },
+        "src_redigit": {
+          "rate": 0.7,
+          "lo": 0.6224187104297283,
+          "hi": 0.7675928339119842,
+          "k": 105
+        },
+        "hop1": {
+          "rate": 0.9733333333333334,
+          "lo": 0.9334450938998244,
+          "hi": 0.9895822277088953,
+          "k": 146
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        }
+      },
+      "eligible": 61,
+      "reliable": false,
+      "clean_median_p_answer": 0.778365,
+      "read_agrees_with_greedy": 0.9944444444444445,
+      "clean_greedy_right": 0.7066666666666667
+    },
+    "len12/animals_DL_e12-word": {
+      "n": 150,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        }
+      },
+      "eligible": 150,
+      "reliable": true,
+      "clean_median_p_answer": 0.927935,
+      "read_agrees_with_greedy": 1,
+      "clean_greedy_right": 1
+    },
+    "len12/body_RL_e12-word": {
+      "n": 150,
+      "cells": {
+        "clean": {
+          "rate": 0.62,
+          "lo": 0.5402429290748867,
+          "hi": 0.6937639975301408,
+          "k": 93
+        },
+        "src_dissoc": {
+          "rate": 0.6066666666666667,
+          "lo": 0.5267647239233271,
+          "hi": 0.6812414330589196,
+          "k": 91
+        },
+        "src_same": {
+          "rate": 0.6133333333333333,
+          "lo": 0.5334964294452139,
+          "hi": 0.6875101123484232,
+          "k": 92
+        },
+        "src_redigit": {
+          "rate": 0.6,
+          "lo": 0.5200476798506317,
+          "hi": 0.6749580923202245,
+          "k": 90
+        },
+        "hop1": {
+          "rate": 0.74,
+          "lo": 0.6644342013432283,
+          "hi": 0.8035796518668268,
+          "k": 111
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        }
+      },
+      "eligible": 35,
+      "reliable": false,
+      "clean_median_p_answer": 0.45402,
+      "read_agrees_with_greedy": 0.9788888888888889,
+      "clean_greedy_right": 0.62
+    },
+    "len12/body_DL_e12-word": {
+      "n": 150,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "src_same": {
+          "rate": 0.9933333333333333,
+          "lo": 0.9632062470660241,
+          "hi": 0.9988222289768665,
+          "k": 149
+        },
+        "src_redigit": {
+          "rate": 0.9933333333333333,
+          "lo": 0.9632062470660241,
+          "hi": 0.9988222289768665,
+          "k": 149
+        }
+      },
+      "eligible": 148,
+      "reliable": true,
+      "clean_median_p_answer": 0.917385,
+      "read_agrees_with_greedy": 1,
+      "clean_greedy_right": 1
+    }
+  },
+  "seconds_generate": 90,
+  "seconds_read": 75,
+  "prompt_format": "chat",
+  "judge_mode": "read",
+  "judge": "read judge (BJ_JUDGE=read): a prompt is right iff the top token of one forward (a digit answer's space token appended: pointer_swap's read) is the expected answer's first token; the greedy judge is recorded as correct_greedy, not used",
+  "seconds": 166
+}

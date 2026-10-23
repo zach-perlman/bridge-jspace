@@ -1,0 +1,49 @@
+{
+  "exp": "pointer_v5",
+  "run": "olmo3_7b_instruct_d3v5_len12_competence",
+  "written_utc": "2026-10-23T06:04:29Z",
+  "why": "finding 5 on lists of 12 sentences (T8) on OLMo-3-7B-Instruct: pointer_v5 len12 (seed 873), colour-word answers from 16 colours; every alt and control prompt and each step alone (chat format, read judge)",
+  "model": {
+    "target": "olmo-3-7b-instruct",
+    "repo": "allenai/Olmo-3-7B-Instruct",
+    "revision": "6e5971d9eba42665f5bd5a0fcf047f299ce1dccc",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "sets": [
+    "len12"
+  ],
+  "items": {
+    "len12/countries_RL_e12-word": {
+      "file": "data/pointer_v5/len12/countries_RL_e12-word.json",
+      "sha256": "79e5922ae1856739f4e227a1e0449183ae4be75f83ddb6934410a0a31d433703"
+    },
+    "len12/countries_DL_e12-word": {
+      "file": "data/pointer_v5/len12/countries_DL_e12-word.json",
+      "sha256": "0457bd59384b40eace2e59bef32c9a5831cdaa33ecec63d664d6e7e33c4ec254"
+    },
+    "len12/animals_RL_e12-word": {
+      "file": "data/pointer_v5/len12/animals_RL_e12-word.json",
+      "sha256": "193f0ec9d0b471c6abf922435296604963b005a9f6877fd784194b64849eee6c"
+    },
+    "len12/animals_DL_e12-word": {
+      "file": "data/pointer_v5/len12/animals_DL_e12-word.json",
+      "sha256": "5a6c9910453d34992f846f4b3428164fa745e911c9e87c6e41bb0de43fe97e37"
+    },
+    "len12/body_RL_e12-word": {
+      "file": "data/pointer_v5/len12/body_RL_e12-word.json",
+      "sha256": "288fcc371c73bb04aeb4ae19206767b17c5a4901e68529cb399a6e4ba3bcc259"
+    },
+    "len12/body_DL_e12-word": {
+      "file": "data/pointer_v5/len12/body_DL_e12-word.json",
+      "sha256": "36dc19653fc93608151606f0626475fda373bb53dce9569ebab39e2b088f7a47"
+    }
+  },
+  "limit": null,
+  "format": "pointer_v1's: chat template, thinking off, 'Answer:' prefilled (BJ_FORMAT=chat)",
+  "judge_mode": "read",
+  "judge": "pointer_v1's: read judge (BJ_JUDGE=read): a prompt is right iff the top token of one forward (a digit answer's space token appended: pointer_swap's read) is the expected answer's first token; the greedy judge is recorded as correct_greedy, not used; colour answers: the first colour word of the first line",
+  "prompts": "base; each source (dissoc, same, redigit); hop1 and hop2 for memory -> prompt",
+  "eligibility": "pointer_swap uses scenes with every prompt right in both answer kinds"
+}
