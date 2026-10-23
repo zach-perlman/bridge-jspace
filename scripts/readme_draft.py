@@ -208,7 +208,7 @@ QUESTION = (
 LINKS = (
     "[Dan's predictions vs results](predictions/) · [plan (Google Doc)](https://docs.google.com/document/d/"
     "1bqqdXePTUXQGlowVjk73sPfJkbV_tsu0RNNX-BiTYUc/edit?usp=drivesdk) · [run log](EXPERIMENTS.md) · [old README with "
-    "every number](README_archive.md) · [how to run](DEVELOPER.md)"
+    "every number](HISTORY.md) · [how to run](DEVELOPER.md)"
 )
 NEGATIVE_KEPT = (
     "From before 23 Oct: the fitted position code only overrides the lookup (finding 8); a late attention head's "

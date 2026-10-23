@@ -7,7 +7,7 @@
 
 **How to read this page.** Confidence words follow one fixed rule ([below](#confidence-and-verification)): strong, medium, open. "Verified" says who recomputed a number: a person, an independent agent, or nobody yet. Every number comes from the cross-model grid ([grid.md](results/cross_model/20261023T105852Z/grid.md)) unless a run is named next to it; every run is in [RUNS.md](RUNS.md).
 
-> **Status, 23 Oct 2026.** Built at d741aec from `results/cross_model/20261023T105852Z`. Exploration phase: no main claim is hand-verified yet. An independent agent recomputed claims 1-3, and claim 6 on the 27B, from raw rows: every cell matches. The hand check is today. Running on the A100: Gemma 4's lens tests, Qwen3-32B's tables and JSON, the 27B dose control. On the 122B the lookup follows the J-space form to a later layer than on the other models ([below](#the-122b-difference)); its test runs today on a rented 2x H100.
+> **Status, 23 Oct 2026.** Built at 6c4ec06 from `results/cross_model/20261023T105852Z`. Exploration phase: no main claim is hand-verified yet. An independent agent recomputed claims 1-3, and claim 6 on the 27B, from raw rows: every cell matches. The hand check is today. Running on the A100: Gemma 4's lens tests, Qwen3-32B's tables and JSON, the 27B dose control. On the 122B the lookup follows the J-space form to a later layer than on the other models ([below](#the-122b-difference)); its test runs today on a rented 2x H100.
 
 Eight models. Hybrids, which mix attention with DeltaNet layers: Qwen3.6-27B (27B), Qwen3.5-9B (9B), Olmo-Hybrid-7B (Olmo-Hybrid), Qwen3.5-122B (122B). Attention-only: Qwen3-32B (32B), OLMo-3-7B (OLMo-3), Muse 30B (Muse), Gemma 4 31B (Gemma).
 
@@ -369,4 +369,4 @@ Timeline: update to Neel on Sat 24 Oct; write-up Wed-Fri 28-30 Oct.
 
 ## Links
 
-[grid.md](results/cross_model/20261023T105852Z/grid.md) · [RUNS.md](RUNS.md) · [CHANGELOG.md](CHANGELOG.md) · [STATUS.md](STATUS.md) · [prior work](docs/prior_art.md) · [predictions and scorecard](predictions/) · [VERIFIED.md](VERIFIED.md) · [docs/mapping.md](docs/mapping.md) · [docs/datasets.md](docs/datasets.md) · [DEVELOPER.md](DEVELOPER.md) · [run log](EXPERIMENTS.md) · [plan (Google Doc)](https://docs.google.com/document/d/1bqqdXePTUXQGlowVjk73sPfJkbV_tsu0RNNX-BiTYUc/edit?usp=drivesdk) · [older README with every number](README_archive.md)
+[grid.md](results/cross_model/20261023T105852Z/grid.md) · [RUNS.md](RUNS.md) · [CHANGELOG.md](CHANGELOG.md) · [STATUS.md](STATUS.md) · [prior work](docs/prior_art.md) · [predictions and scorecard](predictions/) · [VERIFIED.md](VERIFIED.md) · [docs/mapping.md](docs/mapping.md) · [docs/datasets.md](docs/datasets.md) · [DEVELOPER.md](DEVELOPER.md) · [run log](EXPERIMENTS.md) · [plan (Google Doc)](https://docs.google.com/document/d/1bqqdXePTUXQGlowVjk73sPfJkbV_tsu0RNNX-BiTYUc/edit?usp=drivesdk) · [HISTORY.md: the older README with every number](HISTORY.md) · [ONEPAGER_dan.md](ONEPAGER_dan.md)
