@@ -63,6 +63,9 @@ for step in "$@"; do
         --plan bands --bands 0-46 --conditions paper10 paper10_rot --tasks full_v8_two --tasks-competence qwen35_122b_full_v8_two_competence_v1 \
         --tasks-words PP PM MP MM CP CM --tasks-level all --n 1000 --kinds clean --batch 8 \
         && $PY scripts/c1_v2.py qwen35_122b_full2_ko_all_v1 --middle L0-46 --set full_v8_two | tail -2 || echo "=== 122B all-layer FAILED";;
+    waitc27)  # 2026-10-23 ~06:20: the queue was restarted with fewer steps; the 27B's competence kept running on its own
+      while [ ! -f results/tasks_v2/fresh_v8s3_competence_v1/summary.json ] && pgrep -f "[n]ame fresh_v8s3_competence_v1" > /dev/null; do sleep 30; done
+      echo "=== 27B competence on fresh_v8s3: $([ -f results/tasks_v2/fresh_v8s3_competence_v1/summary.json ] && echo done || echo MISSING) $(date -u +%T)";;
     wait122)
       until grep -qs "^EXIT" $R-h200q122bsteer-1023-0435.log && [ "$(nvidia-smi -i $G --query-gpu=memory.free --format=csv,noheader,nounits)" -ge 135000 ]; do sleep 60; done
       echo "=== GPU $G free $(date -u +%T)";;
