@@ -1,0 +1,31 @@
+--- a/src/workspace_lens/lrp/types.py
++++ b/src/workspace_lens/lrp/types.py
+@@ -3,6 +3,7 @@
+ LrpMode = Literal[
+     "none",
+     "rlens",
++    "ln",  # the LN rule only (bridge-jspace, 2026-10-23: gpt-oss, which has no dense gated MLP)
+     "r+mhc",
+     "all-c4+mhc",
+     "r+moe",
+--- a/src/workspace_lens/lrp/lrp.py
++++ b/src/workspace_lens/lrp/lrp.py
+@@ -218,6 +218,10 @@
+     presets: dict[str, LrpRuleConfig] = {
+         "none": LrpRuleConfig(),
+         "rlens": LrpRuleConfig(**base),
++        # The LN rule alone (bridge-jspace, 2026-10-23): for a model whose only MLPs are routed experts (gpt-oss), the
++        # rlens scope reduces to this, since rlens leaves routed experts with standard gradients; rlens itself would
++        # raise there (its identity/half family matches no dense gated MLP).
++        "ln": LrpRuleConfig(ln_rule=True),
+         # DeepSeek-V4: the minimal RelP rules plus a freeze of the hyper-connection
+         # mixing coefficients.
+         "r+mhc": LrpRuleConfig(**base, mhc_detach=True),
+@@ -334,6 +338,7 @@
+     # Olmo Hybrid (bridge-jspace, 2026-10-22): OlmoHybridRMSNorm's forward is byte-identical to Olmo3RMSNorm's; its
+     # OlmoHybridRMSNormGated (inside the GatedDeltaNet) is not a residual-stream norm and keeps standard gradients.
+     "OlmoHybridRMSNorm": _olmo3_rmsnorm_lrp_forward,
++    "GptOssRMSNorm": _olmo3_rmsnorm_lrp_forward,  # forward byte-identical to Olmo3RMSNorm's (bridge-jspace, 2026-10-23)
+     "Gemma4RMSNorm": _gemma4_rmsnorm_lrp_forward,
+     # Muse Glimmer (bridge-jspace, 2026-10-22): the blocks' CenteredRMSNorm is the Qwen3.5 form (x_f * rsqrt(...)
+     # * (1 + w_f), type_as; eps attr) and the final / embedding RMSNorm the Gemma 4 form (pow(..., -0.5), optional
