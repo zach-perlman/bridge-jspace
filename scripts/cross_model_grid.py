@@ -75,6 +75,9 @@ COLUMNS = ("model", "finding", "setting", "lens", "n", "value", "95% CI", "chanc
            "rule id", "spec commit", "result path")  # fmt: skip
 STAMP_RE = r"\d{8}-\d{6}"
 WHERE = {"question": "the question's tokens", "final": "the last tokens"}
+# the draws' five listed answers only; the grid reads chance per run (chance_of: the formats' scenes list three, 33%).
+# Kept for scripts/cross_model_figures.py, which still draws it on its prose / table / JSON panels too (flagged 23 Oct)
+CHANCE = 0.20
 
 
 # ---------------------------------------------------------------- models, findings, rules
