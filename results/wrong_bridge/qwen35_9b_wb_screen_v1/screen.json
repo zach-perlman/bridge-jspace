@@ -1,0 +1,728 @@
+{
+ "transfer": [
+  "painting_creator-Q2272625-death_year",
+  "building_architect-Q1236564-birth_city",
+  "composition_composer-Q3408309-death_year",
+  "composition_composer-Q146535-birth_year",
+  "novel_author-Q3065390-death_year",
+  "film_director-Q1976428-death_city",
+  "album_label-Q21480481-founded_year",
+  "film_director-Q3794057-death_city",
+  "org_founder-Q640379-death_year",
+  "film_director-Q7398009-death_city",
+  "film_director-Q4003806-death_city",
+  "composition_composer-Q414694-death_city",
+  "game_developer-Q1071800-founded_year",
+  "album_performer-Q221115-birth_year",
+  "product_manufacturer-Q521408-founded_year",
+  "composition_composer-Q689519-birth_year",
+  "person_father-Q311646-birth_city",
+  "painting_creator-Q429753-death_city",
+  "painting_creator-Q4892867-death_city",
+  "novel_author-Q6456953-death_city",
+  "film_director-Q3991294-death_city",
+  "painting_creator-Q2311238-death_city"
+ ],
+ "rows": [
+  {
+   "name": "composition_composer-Q1977772-birth_city",
+   "lp_Ap": -3.5400238037109375,
+   "lp_A": -2.8525238037109375,
+   "greedy": " Vienna.\nQuestion: Who",
+   "transfer": false
+  },
+  {
+   "name": "painting_creator-Q2272625-death_year",
+   "lp_Ap": -2.4147849082946777,
+   "lp_A": -8.009186744689941,
+   "greedy": " 1890.",
+   "transfer": true
+  },
+  {
+   "name": "building_architect-Q1236564-birth_city",
+   "lp_Ap": -0.490660697221756,
+   "lp_A": -9.237279891967773,
+   "greedy": " Ljubljana.\n",
+   "transfer": true
+  },
+  {
+   "name": "composition_composer-Q3408309-death_year",
+   "lp_Ap": -0.5720749497413635,
+   "lp_A": -5.6851372718811035,
+   "greedy": " 1791.",
+   "transfer": true
+  },
+  {
+   "name": "composition_composer-Q146535-birth_year",
+   "lp_Ap": -1.6854853630065918,
+   "lp_A": -2.9761886596679688,
+   "greedy": " 1756.",
+   "transfer": true
+  },
+  {
+   "name": "painting_creator-Q2607050-death_year",
+   "lp_Ap": -4.526937961578369,
+   "lp_A": -3.6544721126556396,
+   "greedy": " 1504.",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q3065390-death_year",
+   "lp_Ap": -1.1876575946807861,
+   "lp_A": -4.760032653808594,
+   "greedy": " 1883.",
+   "transfer": true
+  },
+  {
+   "name": "film_director-Q1976428-death_city",
+   "lp_Ap": -1.9148814678192139,
+   "lp_A": -4.95338773727417,
+   "greedy": " Moscow.\nQuestion: What",
+   "transfer": true
+  },
+  {
+   "name": "album_performer-Q4992532-birth_year",
+   "lp_Ap": -4.52825927734375,
+   "lp_A": -3.558750629425049,
+   "greedy": " 1943.",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q4421388-birth_year",
+   "lp_Ap": -5.381895065307617,
+   "lp_A": -6.034241676330566,
+   "greedy": " 1769.",
+   "transfer": false
+  },
+  {
+   "name": "composition_composer-Q1746043-birth_city",
+   "lp_Ap": -4.768888473510742,
+   "lp_A": -10.087047576904297,
+   "greedy": " St. Petersburg.\nQuestion",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q3984953-death_year",
+   "lp_Ap": -5.754231929779053,
+   "lp_A": -5.157808780670166,
+   "greedy": " 1353.",
+   "transfer": false
+  },
+  {
+   "name": "doctoral_advisor-Q1235503-death_year",
+   "lp_Ap": -4.717451095581055,
+   "lp_A": -4.842451095581055,
+   "greedy": " 1980.",
+   "transfer": false
+  },
+  {
+   "name": "album_label-Q21480481-founded_year",
+   "lp_Ap": -2.0291314125061035,
+   "lp_A": -5.187165260314941,
+   "greedy": " 1939.",
+   "transfer": true
+  },
+  {
+   "name": "film_director-Q524714-birth_year",
+   "lp_Ap": -3.607578754425049,
+   "lp_A": -3.357578754425049,
+   "greedy": " 1900.",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q1306783-birth_year",
+   "lp_Ap": -3.111039876937866,
+   "lp_A": -6.059755325317383,
+   "greedy": " 1868.",
+   "transfer": false
+  },
+  {
+   "name": "namesake-Q989622-death_year",
+   "lp_Ap": -6.055997848510742,
+   "lp_A": -5.166965484619141,
+   "greedy": " 1974.",
+   "transfer": false
+  },
+  {
+   "name": "film_director-Q3794057-death_city",
+   "lp_Ap": -1.6415249109268188,
+   "lp_A": -4.516524791717529,
+   "greedy": " Rome.\nHypothesis",
+   "transfer": true
+  },
+  {
+   "name": "org_founder-Q640379-death_year",
+   "lp_Ap": -1.7295067310333252,
+   "lp_A": -3.604506731033325,
+   "greedy": " 1989.",
+   "transfer": true
+  },
+  {
+   "name": "album_label-Q19345-hq_city",
+   "lp_Ap": -4.692996978759766,
+   "lp_A": -4.856474876403809,
+   "greedy": " Los Angeles.\nQuestion:",
+   "transfer": false
+  },
+  {
+   "name": "film_director-Q7398009-death_city",
+   "lp_Ap": -1.3737059831619263,
+   "lp_A": -3.5612058639526367,
+   "greedy": " Mumbai.\nQuestion: What",
+   "transfer": true
+  },
+  {
+   "name": "composition_composer-Q1348634-death_year",
+   "lp_Ap": -5.152804851531982,
+   "lp_A": -4.388960838317871,
+   "greedy": " 1991.",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q3221113-birth_year",
+   "lp_Ap": -4.536346912384033,
+   "lp_A": -5.938562393188477,
+   "greedy": " 1940.",
+   "transfer": false
+  },
+  {
+   "name": "character_creator-Q1982693-death_year",
+   "lp_Ap": -4.0387725830078125,
+   "lp_A": -4.834386825561523,
+   "greedy": " 1976.",
+   "transfer": false
+  },
+  {
+   "name": "doctoral_advisor-Q653658-death_city",
+   "lp_Ap": -5.048489570617676,
+   "lp_A": -3.9658925533294678,
+   "greedy": " Warsaw.\nFact: The",
+   "transfer": false
+  },
+  {
+   "name": "album_performer-Q591875-formed_year",
+   "lp_Ap": -4.003176689147949,
+   "lp_A": -4.418727874755859,
+   "greedy": " 1989.",
+   "transfer": false
+  },
+  {
+   "name": "film_director-Q4003806-death_city",
+   "lp_Ap": -2.201140880584717,
+   "lp_A": -5.888640880584717,
+   "greedy": " Moscow.\nQuestion: What",
+   "transfer": true
+  },
+  {
+   "name": "composition_composer-Q414694-death_city",
+   "lp_Ap": -2.041332483291626,
+   "lp_A": -2.541332483291626,
+   "greedy": " Leipzig.\nQuestion: Who",
+   "transfer": true
+  },
+  {
+   "name": "album_performer-Q42218057-birth_year",
+   "lp_Ap": -5.445716857910156,
+   "lp_A": -5.980506896972656,
+   "greedy": " 1948.",
+   "transfer": false
+  },
+  {
+   "name": "album_label-Q835555-hq_city",
+   "lp_Ap": -3.3548266887664795,
+   "lp_A": -5.6890549659729,
+   "greedy": " Los Angeles.\nHypo",
+   "transfer": false
+  },
+  {
+   "name": "game_developer-Q1071800-founded_year",
+   "lp_Ap": -1.9949705600738525,
+   "lp_A": -2.6199705600738525,
+   "greedy": " 1996.",
+   "transfer": true
+  },
+  {
+   "name": "person_mother-Q102005-death_year",
+   "lp_Ap": -4.536309242248535,
+   "lp_A": -3.4202330112457275,
+   "greedy": " 1093.",
+   "transfer": false
+  },
+  {
+   "name": "album_performer-Q27981679-birth_city",
+   "lp_Ap": -4.5047807693481445,
+   "lp_A": -9.961191177368164,
+   "greedy": " Detroit, Michigan.\nQuestion",
+   "transfer": false
+  },
+  {
+   "name": "painting_creator-Q586035-birth_year",
+   "lp_Ap": -5.613884449005127,
+   "lp_A": -4.860435485839844,
+   "greedy": " 1862.",
+   "transfer": false
+  },
+  {
+   "name": "album_performer-Q2564709-birth_city",
+   "lp_Ap": -3.4142723083496094,
+   "lp_A": -6.914272308349609,
+   "greedy": " Atlanta.\nQuestion: What",
+   "transfer": false
+  },
+  {
+   "name": "film_director-Q2587854-birth_year",
+   "lp_Ap": -3.262547492980957,
+   "lp_A": -5.8571953773498535,
+   "greedy": " 1900.",
+   "transfer": false
+  },
+  {
+   "name": "song_performer-Q4581006-formed_year",
+   "lp_Ap": -4.627898216247559,
+   "lp_A": -3.6174588203430176,
+   "greedy": " 1973.",
+   "transfer": false
+  },
+  {
+   "name": "album_performer-Q221115-birth_year",
+   "lp_Ap": -2.896338939666748,
+   "lp_A": -4.8142218589782715,
+   "greedy": " 1969.",
+   "transfer": true
+  },
+  {
+   "name": "film_director-Q4069062-birth_year",
+   "lp_Ap": -4.328827381134033,
+   "lp_A": -5.16906213760376,
+   "greedy": " 1860.",
+   "transfer": false
+  },
+  {
+   "name": "person_father-Q285133-death_year",
+   "lp_Ap": -4.904536247253418,
+   "lp_A": -3.2137136459350586,
+   "greedy": " 1106.",
+   "transfer": false
+  },
+  {
+   "name": "person_father-Q150712-death_year",
+   "lp_Ap": -5.1179890632629395,
+   "lp_A": -2.9401774406433105,
+   "greedy": " 888.\n",
+   "transfer": false
+  },
+  {
+   "name": "person_father-Q162543-birth_year",
+   "lp_Ap": -4.594222068786621,
+   "lp_A": -3.5216150283813477,
+   "greedy": " 1861.",
+   "transfer": false
+  },
+  {
+   "name": "composition_composer-Q1537300-death_year",
+   "lp_Ap": -5.403826713562012,
+   "lp_A": -2.7217586040496826,
+   "greedy": " 1751.",
+   "transfer": false
+  },
+  {
+   "name": "product_manufacturer-Q521408-founded_year",
+   "lp_Ap": -3.608593463897705,
+   "lp_A": -4.233593940734863,
+   "greedy": " 1957.",
+   "transfer": true
+  },
+  {
+   "name": "person_father-Q151500-birth_year",
+   "lp_Ap": -4.523274898529053,
+   "lp_A": -5.38890266418457,
+   "greedy": " 1807.",
+   "transfer": false
+  },
+  {
+   "name": "painting_creator-Q655705-death_city",
+   "lp_Ap": -3.035522222518921,
+   "lp_A": -14.388203620910645,
+   "greedy": " Paris.\nHypothesis",
+   "transfer": false
+  },
+  {
+   "name": "painting_creator-Q2881603-death_year",
+   "lp_Ap": -3.904305934906006,
+   "lp_A": -6.246331214904785,
+   "greedy": " 1880.",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q3675181-death_year",
+   "lp_Ap": -7.32423734664917,
+   "lp_A": -6.97093391418457,
+   "greedy": " 1231.",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q1149756-birth_city",
+   "lp_Ap": -7.92884635925293,
+   "lp_A": -5.36634635925293,
+   "greedy": " New York.\nQuestion:",
+   "transfer": false
+  },
+  {
+   "name": "game_developer-Q1436430-hq_city",
+   "lp_Ap": -3.3464837074279785,
+   "lp_A": -5.918966293334961,
+   "greedy": " Tokyo.\nQuestion: What",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q730105-birth_city",
+   "lp_Ap": -3.3677241802215576,
+   "lp_A": -8.056097030639648,
+   "greedy": " London.\nQuestion: What",
+   "transfer": false
+  },
+  {
+   "name": "namesake-Q178416-death_year",
+   "lp_Ap": -4.998663902282715,
+   "lp_A": -5.984889984130859,
+   "greedy": " 1840.",
+   "transfer": false
+  },
+  {
+   "name": "game_developer-Q5236657-hq_city",
+   "lp_Ap": -3.8601865768432617,
+   "lp_A": -7.675122261047363,
+   "greedy": " Tokyo.\nQuestion: Where",
+   "transfer": false
+  },
+  {
+   "name": "song_performer-Q90735184-birth_city",
+   "lp_Ap": -4.546897888183594,
+   "lp_A": -2.921898126602173,
+   "greedy": " London.\nQuestion: What",
+   "transfer": false
+  },
+  {
+   "name": "album_label-Q1130127-hq_city",
+   "lp_Ap": -1.8615975379943848,
+   "lp_A": -5.58161735534668,
+   "greedy": " Los Angeles.\nQuestion:",
+   "transfer": false
+  },
+  {
+   "name": "composition_composer-Q689519-birth_year",
+   "lp_Ap": -1.1608691215515137,
+   "lp_A": -6.635328769683838,
+   "greedy": " 1685.",
+   "transfer": true
+  },
+  {
+   "name": "novel_author-Q2779707-birth_year",
+   "lp_Ap": -4.863823890686035,
+   "lp_A": -5.464695930480957,
+   "greedy": " 1859.",
+   "transfer": false
+  },
+  {
+   "name": "painting_creator-Q455319-birth_year",
+   "lp_Ap": -5.502599239349365,
+   "lp_A": -5.390600204467773,
+   "greedy": " 1440.",
+   "transfer": false
+  },
+  {
+   "name": "person_mother-Q192402-birth_year",
+   "lp_Ap": -3.7032575607299805,
+   "lp_A": -4.339310169219971,
+   "greedy": " 1940.",
+   "transfer": false
+  },
+  {
+   "name": "composition_composer-Q275516-birth_city",
+   "lp_Ap": -4.782569885253906,
+   "lp_A": -3.9075698852539062,
+   "greedy": " Vienna.\nQuestion: Who",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q1069875-death_year",
+   "lp_Ap": -4.721317768096924,
+   "lp_A": -5.346703052520752,
+   "greedy": " 1119.",
+   "transfer": false
+  },
+  {
+   "name": "doctoral_advisor-Q68542-birth_year",
+   "lp_Ap": -4.883645057678223,
+   "lp_A": -4.579554080963135,
+   "greedy": " 1860.",
+   "transfer": false
+  },
+  {
+   "name": "film_director-Q691478-birth_city",
+   "lp_Ap": -3.1399953365325928,
+   "lp_A": -3.3902692794799805,
+   "greedy": " Beijing.\nQuestion: Who",
+   "transfer": false
+  },
+  {
+   "name": "painting_creator-Q1113763-death_city",
+   "lp_Ap": -2.408393144607544,
+   "lp_A": -2.470893144607544,
+   "greedy": " Seville.\nQuestion:",
+   "transfer": false
+  },
+  {
+   "name": "person_father-Q311646-birth_city",
+   "lp_Ap": -1.7974278926849365,
+   "lp_A": -12.06013298034668,
+   "greedy": " Rome.\nQuestion: What",
+   "transfer": true
+  },
+  {
+   "name": "painting_creator-Q2783729-death_city",
+   "lp_Ap": -5.163194179534912,
+   "lp_A": -7.404222011566162,
+   "greedy": " Paris.\nQuestion: What",
+   "transfer": false
+  },
+  {
+   "name": "album_performer-Q792779-formed_year",
+   "lp_Ap": -2.8052587509155273,
+   "lp_A": -2.5552587509155273,
+   "greedy": " 1984.",
+   "transfer": false
+  },
+  {
+   "name": "doctoral_advisor-Q77203-birth_year",
+   "lp_Ap": -4.864034652709961,
+   "lp_A": -5.6165008544921875,
+   "greedy": " 1800.",
+   "transfer": false
+  },
+  {
+   "name": "painting_creator-Q377810-death_year",
+   "lp_Ap": -5.976027011871338,
+   "lp_A": -7.5165252685546875,
+   "greedy": " 1516.",
+   "transfer": false
+  },
+  {
+   "name": "album_performer-Q61927420-birth_city",
+   "lp_Ap": -8.644698143005371,
+   "lp_A": -4.652761459350586,
+   "greedy": " Detroit.\nQuestion: What",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q4062116-birth_city",
+   "lp_Ap": -4.878652095794678,
+   "lp_A": -8.74186897277832,
+   "greedy": " London.\nQuestion: What",
+   "transfer": false
+  },
+  {
+   "name": "composition_composer-Q1190499-death_year",
+   "lp_Ap": -4.758881568908691,
+   "lp_A": -4.160390377044678,
+   "greedy": " 1949.",
+   "transfer": false
+  },
+  {
+   "name": "film_director-Q962306-birth_year",
+   "lp_Ap": -3.8442201614379883,
+   "lp_A": -3.8534035682678223,
+   "greedy": " 1900.",
+   "transfer": false
+  },
+  {
+   "name": "song_performer-Q18208944-birth_city",
+   "lp_Ap": -4.7973127365112305,
+   "lp_A": -9.59981918334961,
+   "greedy": " New York.\nQuestion:",
+   "transfer": false
+  },
+  {
+   "name": "painting_creator-Q429753-death_city",
+   "lp_Ap": -1.5623514652252197,
+   "lp_A": -3.6248514652252197,
+   "greedy": " London.\nHypothesis",
+   "transfer": true
+  },
+  {
+   "name": "composition_composer-Q182537-birth_year",
+   "lp_Ap": -3.020543098449707,
+   "lp_A": -3.020543098449707,
+   "greedy": " 1942.",
+   "transfer": false
+  },
+  {
+   "name": "product_manufacturer-Q848987-hq_city",
+   "lp_Ap": -3.3991024494171143,
+   "lp_A": -4.970623970031738,
+   "greedy": " San Diego.\nQuestion:",
+   "transfer": false
+  },
+  {
+   "name": "tv_network-Q94990702-hq_city",
+   "lp_Ap": -1.9852782487869263,
+   "lp_A": -11.381264686584473,
+   "greedy": " Cape Town.\nQuestion:",
+   "transfer": false
+  },
+  {
+   "name": "film_director-Q384243-death_city",
+   "lp_Ap": -4.830897331237793,
+   "lp_A": -15.526597023010254,
+   "greedy": " Bogot\u00e1.\nQuestion: What",
+   "transfer": false
+  },
+  {
+   "name": "product_manufacturer-Q2072116-hq_city",
+   "lp_Ap": -2.1918983459472656,
+   "lp_A": -11.089818000793457,
+   "greedy": " Fort Lauderdale.\nQuestion:",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q466412-birth_city",
+   "lp_Ap": -13.852917671203613,
+   "lp_A": -16.88195037841797,
+   "greedy": " Gothenburg.\nQuestion",
+   "transfer": false
+  },
+  {
+   "name": "song_performer-Q1503404-birth_city",
+   "lp_Ap": -3.858393430709839,
+   "lp_A": -6.915194511413574,
+   "greedy": " Detroit, Michigan.\nQuestion",
+   "transfer": false
+  },
+  {
+   "name": "film_director-Q6466264-death_city",
+   "lp_Ap": -2.3196654319763184,
+   "lp_A": -5.188510417938232,
+   "greedy": " Mexico.\nHypothesis",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q1305005-death_year",
+   "lp_Ap": -4.874293804168701,
+   "lp_A": -6.9952497482299805,
+   "greedy": " 1980.",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q6077905-death_year",
+   "lp_Ap": -3.5163769721984863,
+   "lp_A": -4.397557258605957,
+   "greedy": " 1849.",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q4449949-birth_year",
+   "lp_Ap": -6.435845851898193,
+   "lp_A": -7.208857536315918,
+   "greedy": " 1700.",
+   "transfer": false
+  },
+  {
+   "name": "person_father-Q199633-birth_year",
+   "lp_Ap": -5.047647476196289,
+   "lp_A": -1.5772922039031982,
+   "greedy": " 1717.",
+   "transfer": false
+  },
+  {
+   "name": "composition_composer-Q369809-death_year",
+   "lp_Ap": -4.8647003173828125,
+   "lp_A": -4.605957984924316,
+   "greedy": " 1991.",
+   "transfer": false
+  },
+  {
+   "name": "painting_creator-Q4892867-death_city",
+   "lp_Ap": -1.566267728805542,
+   "lp_A": -3.7967939376831055,
+   "greedy": " Aix-en-Provence.\n",
+   "transfer": true
+  },
+  {
+   "name": "painting_creator-Q1170194-death_year",
+   "lp_Ap": -5.06251335144043,
+   "lp_A": -7.130068778991699,
+   "greedy": " 1625.",
+   "transfer": false
+  },
+  {
+   "name": "painting_creator-Q24011-birth_year",
+   "lp_Ap": -6.180703639984131,
+   "lp_A": -5.382729530334473,
+   "greedy": " 1724.",
+   "transfer": false
+  },
+  {
+   "name": "product_manufacturer-Q569340-founded_year",
+   "lp_Ap": -5.313839435577393,
+   "lp_A": -5.653187274932861,
+   "greedy": " 1850.",
+   "transfer": false
+  },
+  {
+   "name": "product_manufacturer-Q1887991-hq_city",
+   "lp_Ap": -4.8872528076171875,
+   "lp_A": -5.2622528076171875,
+   "greedy": " San Diego.\nQuestion:",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q6456953-death_city",
+   "lp_Ap": -1.7095630168914795,
+   "lp_A": -5.512092590332031,
+   "greedy": " Dubrovnik.\nQuestion",
+   "transfer": true
+  },
+  {
+   "name": "doctoral_advisor-Q536558-death_city",
+   "lp_Ap": -5.512439250946045,
+   "lp_A": -3.4589269161224365,
+   "greedy": " Princeton.\nHypothesis",
+   "transfer": false
+  },
+  {
+   "name": "film_director-Q3991294-death_city",
+   "lp_Ap": -2.046269178390503,
+   "lp_A": -2.7414567470550537,
+   "greedy": " Rome.\nQuestion: What",
+   "transfer": true
+  },
+  {
+   "name": "painting_creator-Q2311238-death_city",
+   "lp_Ap": -2.2550978660583496,
+   "lp_A": -2.380967617034912,
+   "greedy": " Amsterdam.\nFact: Isaac",
+   "transfer": true
+  },
+  {
+   "name": "composition_composer-Q2446282-birth_year",
+   "lp_Ap": -3.9139275550842285,
+   "lp_A": -3.7889275550842285,
+   "greedy": " 1943.",
+   "transfer": false
+  },
+  {
+   "name": "song_performer-Q246983-birth_year",
+   "lp_Ap": -4.122101306915283,
+   "lp_A": -5.27170467376709,
+   "greedy": " 1960.",
+   "transfer": false
+  },
+  {
+   "name": "album_performer-Q167554-birth_year",
+   "lp_Ap": -6.056034088134766,
+   "lp_A": -3.845191717147827,
+   "greedy": " 1984.",
+   "transfer": false
+  }
+ ]
+}

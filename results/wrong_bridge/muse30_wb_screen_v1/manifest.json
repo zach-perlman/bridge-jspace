@@ -1,0 +1,34 @@
+{
+  "run": "muse30_wb_screen_v1",
+  "why": "Zach (2026-10-23, prereg amendment 18): WorkspaceBench wrong-bridge items: does muse-glimmer-30b answer through the same wrong bridges?",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": "jpp",
+  "band": [
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42
+  ],
+  "screen": true,
+  "items_from": null,
+  "n_items": 100,
+  "alphas": [
+    0.02,
+    0.05,
+    0.1,
+    0.2,
+    0.4
+  ],
+  "git_commit": "49aa4494e9b6f54bc69f9742147392767ab7fd4a",
+  "data": "wsb_wrong_bridge.json",
+  "written_utc": "2026-10-23T20:16:30Z"
+}

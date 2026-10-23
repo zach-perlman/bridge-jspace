@@ -1,0 +1,729 @@
+{
+ "transfer": [
+  "composition_composer-Q1977772-birth_city",
+  "building_architect-Q1236564-birth_city",
+  "novel_author-Q4421388-birth_year",
+  "composition_composer-Q1746043-birth_city",
+  "novel_author-Q1306783-birth_year",
+  "film_director-Q3794057-death_city",
+  "novel_author-Q3221113-birth_year",
+  "doctoral_advisor-Q653658-death_city",
+  "composition_composer-Q414694-death_city",
+  "film_director-Q4069062-birth_year",
+  "painting_creator-Q2881603-death_year",
+  "album_label-Q1130127-hq_city",
+  "composition_composer-Q689519-birth_year",
+  "painting_creator-Q455319-birth_year",
+  "film_director-Q962306-birth_year",
+  "composition_composer-Q182537-birth_year",
+  "product_manufacturer-Q848987-hq_city",
+  "product_manufacturer-Q2072116-hq_city",
+  "composition_composer-Q369809-death_year",
+  "doctoral_advisor-Q536558-death_city",
+  "film_director-Q3991294-death_city",
+  "painting_creator-Q2311238-death_city",
+  "composition_composer-Q2446282-birth_year"
+ ],
+ "rows": [
+  {
+   "name": "composition_composer-Q1977772-birth_city",
+   "lp_Ap": -1.411666989326477,
+   "lp_A": -2.0366668701171875,
+   "greedy": " Bonn, Germany. He was",
+   "transfer": true
+  },
+  {
+   "name": "painting_creator-Q2272625-death_year",
+   "lp_Ap": -4.2548627853393555,
+   "lp_A": -6.136624336242676,
+   "greedy": " 1910. The painter",
+   "transfer": false
+  },
+  {
+   "name": "building_architect-Q1236564-birth_city",
+   "lp_Ap": -1.6969270706176758,
+   "lp_A": -4.758740425109863,
+   "greedy": " Ljubljana. True or false",
+   "transfer": true
+  },
+  {
+   "name": "composition_composer-Q3408309-death_year",
+   "lp_Ap": -2.095828056335449,
+   "lp_A": -4.988407135009766,
+   "greedy": " 1787. The composer",
+   "transfer": false
+  },
+  {
+   "name": "composition_composer-Q146535-birth_year",
+   "lp_Ap": -3.103910207748413,
+   "lp_A": -0.9866609573364258,
+   "greedy": " 1770. The composer",
+   "transfer": false
+  },
+  {
+   "name": "painting_creator-Q2607050-death_year",
+   "lp_Ap": -3.207144260406494,
+   "lp_A": -4.137954235076904,
+   "greedy": " 1524. Fact:",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q3065390-death_year",
+   "lp_Ap": -4.799929141998291,
+   "lp_A": -4.197786808013916,
+   "greedy": " 1933. The author",
+   "transfer": false
+  },
+  {
+   "name": "film_director-Q1976428-death_city",
+   "lp_Ap": -4.539798736572266,
+   "lp_A": -4.352298736572266,
+   "greedy": " Leningrad in 1973",
+   "transfer": false
+  },
+  {
+   "name": "album_performer-Q4992532-birth_year",
+   "lp_Ap": -4.644860744476318,
+   "lp_A": -4.15385103225708,
+   "greedy": " 1948. The artist",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q4421388-birth_year",
+   "lp_Ap": -2.613182306289673,
+   "lp_A": -3.2792348861694336,
+   "greedy": " 1809. The author",
+   "transfer": true
+  },
+  {
+   "name": "composition_composer-Q1746043-birth_city",
+   "lp_Ap": -1.5694278478622437,
+   "lp_A": -3.5705947875976562,
+   "greedy": " Bonn, Germany. He was",
+   "transfer": true
+  },
+  {
+   "name": "novel_author-Q3984953-death_year",
+   "lp_Ap": -3.3919239044189453,
+   "lp_A": -4.588615417480469,
+   "greedy": " 1410. The author",
+   "transfer": false
+  },
+  {
+   "name": "doctoral_advisor-Q1235503-death_year",
+   "lp_Ap": -5.228663444519043,
+   "lp_A": -5.478663444519043,
+   "greedy": " 2000. The doctoral",
+   "transfer": false
+  },
+  {
+   "name": "album_label-Q21480481-founded_year",
+   "lp_Ap": -3.5956437587738037,
+   "lp_A": -4.710577964782715,
+   "greedy": " 2000. The label",
+   "transfer": false
+  },
+  {
+   "name": "film_director-Q524714-birth_year",
+   "lp_Ap": -3.829409599304199,
+   "lp_A": -3.579409599304199,
+   "greedy": " 1900. Fact:",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q1306783-birth_year",
+   "lp_Ap": -1.1023027896881104,
+   "lp_A": -10.433691024780273,
+   "greedy": " 1832. She was",
+   "transfer": true
+  },
+  {
+   "name": "namesake-Q989622-death_year",
+   "lp_Ap": -8.678936004638672,
+   "lp_A": -0.6545199751853943,
+   "greedy": " 1919. The ship",
+   "transfer": false
+  },
+  {
+   "name": "film_director-Q3794057-death_city",
+   "lp_Ap": -1.6987611055374146,
+   "lp_A": -4.886260986328125,
+   "greedy": " Rome, Italy. The director",
+   "transfer": true
+  },
+  {
+   "name": "org_founder-Q640379-death_year",
+   "lp_Ap": -4.551514625549316,
+   "lp_A": -1.4890143871307373,
+   "greedy": " 1981. The founder",
+   "transfer": false
+  },
+  {
+   "name": "album_label-Q19345-hq_city",
+   "lp_Ap": -1.7306091785430908,
+   "lp_A": -5.243359565734863,
+   "greedy": " New York.\n\nFact: The",
+   "transfer": false
+  },
+  {
+   "name": "film_director-Q7398009-death_city",
+   "lp_Ap": -2.5131609439849854,
+   "lp_A": -2.0756609439849854,
+   "greedy": " Chennai, India. The director",
+   "transfer": false
+  },
+  {
+   "name": "composition_composer-Q1348634-death_year",
+   "lp_Ap": -4.293160915374756,
+   "lp_A": -3.021944999694824,
+   "greedy": " 2001. The composer",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q3221113-birth_year",
+   "lp_Ap": -2.2309563159942627,
+   "lp_A": -5.6166157722473145,
+   "greedy": " 1920. The author",
+   "transfer": true
+  },
+  {
+   "name": "character_creator-Q1982693-death_year",
+   "lp_Ap": -4.87116813659668,
+   "lp_A": -6.087512016296387,
+   "greedy": " 1959. The creator",
+   "transfer": false
+  },
+  {
+   "name": "doctoral_advisor-Q653658-death_city",
+   "lp_Ap": -1.6390562057495117,
+   "lp_A": -5.76924991607666,
+   "greedy": " Lviv, and the doctoral",
+   "transfer": true
+  },
+  {
+   "name": "album_performer-Q591875-formed_year",
+   "lp_Ap": -4.566551208496094,
+   "lp_A": -1.8317644596099854,
+   "greedy": " 1973. The artist",
+   "transfer": false
+  },
+  {
+   "name": "film_director-Q4003806-death_city",
+   "lp_Ap": -4.033744812011719,
+   "lp_A": -6.096244812011719,
+   "greedy": " the same name.\n\nFact:",
+   "transfer": false
+  },
+  {
+   "name": "composition_composer-Q414694-death_city",
+   "lp_Ap": -0.9961885809898376,
+   "lp_A": -2.3711886405944824,
+   "greedy": " Leipzig. The city of Leipzig",
+   "transfer": true
+  },
+  {
+   "name": "album_performer-Q42218057-birth_year",
+   "lp_Ap": -3.4992027282714844,
+   "lp_A": -4.513070106506348,
+   "greedy": " 1985. The artist",
+   "transfer": false
+  },
+  {
+   "name": "album_label-Q835555-hq_city",
+   "lp_Ap": -2.807501792907715,
+   "lp_A": -5.787064552307129,
+   "greedy": " New York.\n\nFact: The",
+   "transfer": false
+  },
+  {
+   "name": "game_developer-Q1071800-founded_year",
+   "lp_Ap": -4.67188835144043,
+   "lp_A": -4.29688835144043,
+   "greedy": " 2000.\n\nFact:",
+   "transfer": false
+  },
+  {
+   "name": "person_mother-Q102005-death_year",
+   "lp_Ap": -5.260260581970215,
+   "lp_A": -0.44210413098335266,
+   "greedy": " 1083. William II",
+   "transfer": false
+  },
+  {
+   "name": "album_performer-Q27981679-birth_city",
+   "lp_Ap": -3.3595800399780273,
+   "lp_A": -5.797080039978027,
+   "greedy": " Oakland, California. The artist",
+   "transfer": false
+  },
+  {
+   "name": "painting_creator-Q586035-birth_year",
+   "lp_Ap": -2.8079960346221924,
+   "lp_A": -7.78481388092041,
+   "greedy": " of the birth of the painter",
+   "transfer": false
+  },
+  {
+   "name": "album_performer-Q2564709-birth_city",
+   "lp_Ap": -2.8921866416931152,
+   "lp_A": -7.454686641693115,
+   "greedy": " Compton, California. He is",
+   "transfer": false
+  },
+  {
+   "name": "film_director-Q2587854-birth_year",
+   "lp_Ap": -3.924966812133789,
+   "lp_A": -5.565866947174072,
+   "greedy": " 1900. The director",
+   "transfer": false
+  },
+  {
+   "name": "song_performer-Q4581006-formed_year",
+   "lp_Ap": -4.5142292976379395,
+   "lp_A": -6.369665145874023,
+   "greedy": " 1960. The artist",
+   "transfer": false
+  },
+  {
+   "name": "album_performer-Q221115-birth_year",
+   "lp_Ap": -4.107215404510498,
+   "lp_A": -3.487290859222412,
+   "greedy": " 1974. The artist",
+   "transfer": false
+  },
+  {
+   "name": "film_director-Q4069062-birth_year",
+   "lp_Ap": -2.168286085128784,
+   "lp_A": -4.285683631896973,
+   "greedy": " 1861. The director",
+   "transfer": true
+  },
+  {
+   "name": "person_father-Q285133-death_year",
+   "lp_Ap": -4.641254425048828,
+   "lp_A": -5.140352725982666,
+   "greedy": " 1104. Al-Ad",
+   "transfer": false
+  },
+  {
+   "name": "person_father-Q150712-death_year",
+   "lp_Ap": -3.3374276161193848,
+   "lp_A": -1.6499276161193848,
+   "greedy": " 876. Charles the Fat",
+   "transfer": false
+  },
+  {
+   "name": "person_father-Q162543-birth_year",
+   "lp_Ap": -2.783980369567871,
+   "lp_A": -6.210681915283203,
+   "greedy": " 1844. The father",
+   "transfer": false
+  },
+  {
+   "name": "composition_composer-Q1537300-death_year",
+   "lp_Ap": -2.7154197692871094,
+   "lp_A": -3.560213327407837,
+   "greedy": " 1824. The composer",
+   "transfer": false
+  },
+  {
+   "name": "product_manufacturer-Q521408-founded_year",
+   "lp_Ap": -4.325897216796875,
+   "lp_A": -4.325897216796875,
+   "greedy": " 1950. The TX",
+   "transfer": false
+  },
+  {
+   "name": "person_father-Q151500-birth_year",
+   "lp_Ap": -5.304604530334473,
+   "lp_A": -5.59535026550293,
+   "greedy": " 1800. He was",
+   "transfer": false
+  },
+  {
+   "name": "painting_creator-Q655705-death_city",
+   "lp_Ap": -3.548344135284424,
+   "lp_A": -14.31393814086914,
+   "greedy": " Florence, Italy. The painter",
+   "transfer": false
+  },
+  {
+   "name": "painting_creator-Q2881603-death_year",
+   "lp_Ap": -2.9663357734680176,
+   "lp_A": -5.991381645202637,
+   "greedy": " 1890. The painter",
+   "transfer": true
+  },
+  {
+   "name": "novel_author-Q3675181-death_year",
+   "lp_Ap": -4.5409393310546875,
+   "lp_A": -1.381397008895874,
+   "greedy": " 1198. The author",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q1149756-birth_city",
+   "lp_Ap": -6.843498229980469,
+   "lp_A": -7.249748229980469,
+   "greedy": " Durham, North Carolina. He",
+   "transfer": false
+  },
+  {
+   "name": "game_developer-Q1436430-hq_city",
+   "lp_Ap": -3.2090296745300293,
+   "lp_A": -6.072983264923096,
+   "greedy": " Tokyo, Japan.\n\nFact:",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q730105-birth_city",
+   "lp_Ap": -4.309643745422363,
+   "lp_A": -6.2520036697387695,
+   "greedy": " Edinburgh, Scotland. He was",
+   "transfer": false
+  },
+  {
+   "name": "namesake-Q178416-death_year",
+   "lp_Ap": -4.291430950164795,
+   "lp_A": -7.744874000549316,
+   "greedy": " 1893. The Conserv",
+   "transfer": false
+  },
+  {
+   "name": "game_developer-Q5236657-hq_city",
+   "lp_Ap": -2.8059749603271484,
+   "lp_A": -8.430241584777832,
+   "greedy": " Tokyo, Japan.\n\nFact:",
+   "transfer": false
+  },
+  {
+   "name": "song_performer-Q90735184-birth_city",
+   "lp_Ap": -6.7656354904174805,
+   "lp_A": -2.3906354904174805,
+   "greedy": " London, England, United Kingdom",
+   "transfer": false
+  },
+  {
+   "name": "album_label-Q1130127-hq_city",
+   "lp_Ap": -1.11600923538208,
+   "lp_A": -6.635034084320068,
+   "greedy": " Seattle, Washington. The record",
+   "transfer": true
+  },
+  {
+   "name": "composition_composer-Q689519-birth_year",
+   "lp_Ap": -1.7301042079925537,
+   "lp_A": -3.1636781692504883,
+   "greedy": " 1685. The composer",
+   "transfer": true
+  },
+  {
+   "name": "novel_author-Q2779707-birth_year",
+   "lp_Ap": -4.800554275512695,
+   "lp_A": -3.8655972480773926,
+   "greedy": " 1892. The author",
+   "transfer": false
+  },
+  {
+   "name": "painting_creator-Q455319-birth_year",
+   "lp_Ap": -2.111687183380127,
+   "lp_A": -6.396272659301758,
+   "greedy": " 1471. He died",
+   "transfer": true
+  },
+  {
+   "name": "person_mother-Q192402-birth_year",
+   "lp_Ap": -3.878338098526001,
+   "lp_A": -3.31341814994812,
+   "greedy": " 1945. She is",
+   "transfer": false
+  },
+  {
+   "name": "composition_composer-Q275516-birth_city",
+   "lp_Ap": -4.0237226486206055,
+   "lp_A": -3.8987228870391846,
+   "greedy": " Vienna, Austria. He was",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q1069875-death_year",
+   "lp_Ap": -2.555952548980713,
+   "lp_A": -6.009371757507324,
+   "greedy": " 1086. The author",
+   "transfer": false
+  },
+  {
+   "name": "doctoral_advisor-Q68542-birth_year",
+   "lp_Ap": -4.635176658630371,
+   "lp_A": -3.848141670227051,
+   "greedy": " 1870. Fact:",
+   "transfer": false
+  },
+  {
+   "name": "film_director-Q691478-birth_city",
+   "lp_Ap": -2.7794711589813232,
+   "lp_A": -1.6583681106567383,
+   "greedy": " Hong Kong, China.\n\nFact",
+   "transfer": false
+  },
+  {
+   "name": "painting_creator-Q1113763-death_city",
+   "lp_Ap": -3.0420095920562744,
+   "lp_A": -1.6670095920562744,
+   "greedy": " Valladolid, Spain. The painter",
+   "transfer": false
+  },
+  {
+   "name": "person_father-Q311646-birth_city",
+   "lp_Ap": -3.198519229888916,
+   "lp_A": -12.159753799438477,
+   "greedy": " Tarsus, which is",
+   "transfer": false
+  },
+  {
+   "name": "painting_creator-Q2783729-death_city",
+   "lp_Ap": -5.407794952392578,
+   "lp_A": -6.346996307373047,
+   "greedy": " Arles, France, in",
+   "transfer": false
+  },
+  {
+   "name": "album_performer-Q792779-formed_year",
+   "lp_Ap": -4.819101810455322,
+   "lp_A": -2.4441018104553223,
+   "greedy": " 1986. The artist",
+   "transfer": false
+  },
+  {
+   "name": "doctoral_advisor-Q77203-birth_year",
+   "lp_Ap": -5.176070690155029,
+   "lp_A": -4.8892717361450195,
+   "greedy": " 1842. Ferdinand von",
+   "transfer": false
+  },
+  {
+   "name": "painting_creator-Q377810-death_year",
+   "lp_Ap": -4.821876525878906,
+   "lp_A": -5.773892879486084,
+   "greedy": " 1666. The painter",
+   "transfer": false
+  },
+  {
+   "name": "album_performer-Q61927420-birth_city",
+   "lp_Ap": -6.952528953552246,
+   "lp_A": -0.32752886414527893,
+   "greedy": " Houston, Texas. The artist",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q4062116-birth_city",
+   "lp_Ap": -2.5757358074188232,
+   "lp_A": -5.517742156982422,
+   "greedy": " St. Petersburg, Russia.",
+   "transfer": false
+  },
+  {
+   "name": "composition_composer-Q1190499-death_year",
+   "lp_Ap": -5.285922050476074,
+   "lp_A": -1.8608704805374146,
+   "greedy": " 1937. The composer",
+   "transfer": false
+  },
+  {
+   "name": "film_director-Q962306-birth_year",
+   "lp_Ap": -3.1257476806640625,
+   "lp_A": -4.631547927856445,
+   "greedy": " 1906. The director",
+   "transfer": true
+  },
+  {
+   "name": "song_performer-Q18208944-birth_city",
+   "lp_Ap": -4.524381160736084,
+   "lp_A": -3.274381160736084,
+   "greedy": " Atlanta, Georgia. The song",
+   "transfer": false
+  },
+  {
+   "name": "painting_creator-Q429753-death_city",
+   "lp_Ap": -2.7017123699188232,
+   "lp_A": -3.9517123699188232,
+   "greedy": " Epsom.\n\nFact:",
+   "transfer": false
+  },
+  {
+   "name": "composition_composer-Q182537-birth_year",
+   "lp_Ap": -1.4081772565841675,
+   "lp_A": -5.970677375793457,
+   "greedy": " 1940. The composer",
+   "transfer": true
+  },
+  {
+   "name": "product_manufacturer-Q848987-hq_city",
+   "lp_Ap": -1.8124077320098877,
+   "lp_A": -2.753199577331543,
+   "greedy": " Bath, Maine. The city",
+   "transfer": true
+  },
+  {
+   "name": "tv_network-Q94990702-hq_city",
+   "lp_Ap": -1.3214852809906006,
+   "lp_A": -10.917649269104004,
+   "greedy": " Cape Town, South Africa.\n\n",
+   "transfer": false
+  },
+  {
+   "name": "film_director-Q384243-death_city",
+   "lp_Ap": -4.172956943511963,
+   "lp_A": -14.479966163635254,
+   "greedy": " the film's setting, Madrid",
+   "transfer": false
+  },
+  {
+   "name": "product_manufacturer-Q2072116-hq_city",
+   "lp_Ap": -0.9680537581443787,
+   "lp_A": -9.642338752746582,
+   "greedy": " Miami, Florida. The Jewel",
+   "transfer": true
+  },
+  {
+   "name": "novel_author-Q466412-birth_city",
+   "lp_Ap": -6.227830410003662,
+   "lp_A": -13.848400115966797,
+   "greedy": " Nagoya, Japan. He",
+   "transfer": false
+  },
+  {
+   "name": "song_performer-Q1503404-birth_city",
+   "lp_Ap": -4.49965238571167,
+   "lp_A": -5.74208927154541,
+   "greedy": " New York, New York,",
+   "transfer": false
+  },
+  {
+   "name": "film_director-Q6466264-death_city",
+   "lp_Ap": -4.543376445770264,
+   "lp_A": -4.476025581359863,
+   "greedy": " Bogot\u00e1, Colombia, on ",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q1305005-death_year",
+   "lp_Ap": -2.862551689147949,
+   "lp_A": -6.444710731506348,
+   "greedy": " 1975. The author",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q6077905-death_year",
+   "lp_Ap": -5.506855487823486,
+   "lp_A": -2.6026320457458496,
+   "greedy": " 1824. The author",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q4449949-birth_year",
+   "lp_Ap": -5.440569877624512,
+   "lp_A": -5.823666095733643,
+   "greedy": " 1814. The author",
+   "transfer": false
+  },
+  {
+   "name": "person_father-Q199633-birth_year",
+   "lp_Ap": -6.41164493560791,
+   "lp_A": -3.234135627746582,
+   "greedy": " 1718. The father",
+   "transfer": false
+  },
+  {
+   "name": "composition_composer-Q369809-death_year",
+   "lp_Ap": -1.896063208580017,
+   "lp_A": -3.406611442565918,
+   "greedy": " 1980. The composer",
+   "transfer": true
+  },
+  {
+   "name": "painting_creator-Q4892867-death_city",
+   "lp_Ap": -6.814279556274414,
+   "lp_A": -3.2323057651519775,
+   "greedy": " Arles. The painter of",
+   "transfer": false
+  },
+  {
+   "name": "painting_creator-Q1170194-death_year",
+   "lp_Ap": -6.885926723480225,
+   "lp_A": -5.258247375488281,
+   "greedy": " 1610. The painter",
+   "transfer": false
+  },
+  {
+   "name": "painting_creator-Q24011-birth_year",
+   "lp_Ap": -7.260473251342773,
+   "lp_A": -4.5706071853637695,
+   "greedy": " 1774. The painter",
+   "transfer": false
+  },
+  {
+   "name": "product_manufacturer-Q569340-founded_year",
+   "lp_Ap": -6.248395919799805,
+   "lp_A": -5.1166462898254395,
+   "greedy": " 1870. The SMS",
+   "transfer": false
+  },
+  {
+   "name": "product_manufacturer-Q1887991-hq_city",
+   "lp_Ap": -2.874708890914917,
+   "lp_A": -4.131098747253418,
+   "greedy": " Groton, Connecticut. The",
+   "transfer": false
+  },
+  {
+   "name": "novel_author-Q6456953-death_city",
+   "lp_Ap": -2.421999216079712,
+   "lp_A": -1.7323369979858398,
+   "greedy": " Venice in 1620.",
+   "transfer": false
+  },
+  {
+   "name": "doctoral_advisor-Q536558-death_city",
+   "lp_Ap": -1.8949172496795654,
+   "lp_A": -4.1449174880981445,
+   "greedy": " G\u00f6ttingen. Who was he?\n",
+   "transfer": true
+  },
+  {
+   "name": "film_director-Q3991294-death_city",
+   "lp_Ap": -1.7891261577606201,
+   "lp_A": -3.28912615776062,
+   "greedy": " Rome, Italy. The director",
+   "transfer": true
+  },
+  {
+   "name": "painting_creator-Q2311238-death_city",
+   "lp_Ap": -1.3697494268417358,
+   "lp_A": -4.36981201171875,
+   "greedy": " Amsterdam. Isaac Massa was a",
+   "transfer": true
+  },
+  {
+   "name": "composition_composer-Q2446282-birth_year",
+   "lp_Ap": -4.470087051391602,
+   "lp_A": -4.970087051391602,
+   "greedy": " 1940. The composer",
+   "transfer": true
+  },
+  {
+   "name": "song_performer-Q246983-birth_year",
+   "lp_Ap": -4.29779577255249,
+   "lp_A": -6.207331657409668,
+   "greedy": " 1950. The artist",
+   "transfer": false
+  },
+  {
+   "name": "album_performer-Q167554-birth_year",
+   "lp_Ap": -5.065142631530762,
+   "lp_A": -4.5291428565979,
+   "greedy": " 1986. The artist",
+   "transfer": false
+  }
+ ]
+}

@@ -1,0 +1,32 @@
+{
+  "run": "qwen35_9b_wb_screen_v1",
+  "why": "Zach (2026-10-23, prereg amendment 18): WorkspaceBench wrong-bridge items: does qwen3.5-9b answer through the same wrong bridges?",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": "jpp",
+  "band": [
+    12,
+    13,
+    14,
+    15,
+    16
+  ],
+  "screen": true,
+  "items_from": null,
+  "n_items": 100,
+  "alphas": [
+    0.02,
+    0.05,
+    0.1,
+    0.2,
+    0.4
+  ],
+  "git_commit": "49aa4494e9b6f54bc69f9742147392767ab7fd4a",
+  "data": "wsb_wrong_bridge.json",
+  "written_utc": "2026-10-23T20:15:39Z"
+}
