@@ -45,7 +45,7 @@ from bridge_jspace.tokens import raw_encoding  # noqa: E402
 
 DATA_FILE = pins.REPO_ROOT / "data" / "wsb_wrong_bridge.json"
 OUT = pins.RESULTS_DIR / "wrong_bridge"
-ALPHAS = (0.1, 0.2, 0.4, 0.8)
+ALPHAS = (0.02, 0.05, 0.1, 0.2, 0.4)  # 18 note: 0.8 dropped, smaller added after the smoke
 SEED_ROT = 888
 
 
@@ -175,10 +175,12 @@ def main(a) -> None:
                 return {la: removal_edit("top", d_(la), rs, rotation=rot[la] if kind == "paper10_rot" else None, k=10) for la in band}
             return make
 
-        def write(target: list[int], posset: str, alpha: float):
+        def write(target: list[int], posset: str, alpha: float, where: str = "joint"):
+            layers_ = band if where == "joint" else [band[len(band) // 2]]
+
             def make(meta, width):
                 eds = {}
-                for la in band:
+                for la in layers_:
                     dirs = [torch.nn.functional.normalize(unit(la, target[i]) - unit(la, bp_tok[i]), dim=0) for i in idx] * 2
 
                     def edit(h, dirs=dirs, meta=meta):
@@ -195,9 +197,10 @@ def main(a) -> None:
 
         conds = {k: ko(k) for k in ("paper10", "paper10_rot", "unembed10", "paper10_spare")}
         for tgt_name, tgt in (("B", b_tok), ("C", c_tok)):
-            for posset in ("final", "span"):
-                for al in ALPHAS:
-                    conds[f"write_{tgt_name}/{posset}/{al}"] = write(tgt, posset, al)
+            for where in ("joint", "mid"):
+                for posset in ("final", "span"):
+                    for al in ALPHAS:
+                        conds[f"write_{tgt_name}/{where}/{posset}/{al}"] = write(tgt, posset, al, where)
         for cname, mk in conds.items():
             lps = answer_lp(model, Pb, Ab, mk)
             for j, i in enumerate(idx):
@@ -209,7 +212,7 @@ def main(a) -> None:
     summary["seconds"] = round(time.time() - t0)
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=1) + "\n")
     for k, v in summary["conditions"].items():
-        if not k.startswith("write") or k.endswith("/0.4"):
+        if not k.startswith("write"):
             print(f"WB {k:22s} dlp(A') {v['d_lp_Ap']:+.2f}  dmargin {v['d_margin']:+.2f} {v['d_margin_ci']}  flips {v['flip']:.2f}")
     print("WB cross-validated writes:", json.dumps(summary["cv_writes"]))
 
@@ -236,9 +239,18 @@ def summarise(rows: list[dict]) -> dict:
     even, odd = set(names[0::2]), set(names[1::2])
     cells = sorted({c.split("/", 1)[1] for c in by if c.startswith("write_B/")})
     flips = lambda c, part: statistics.mean(r["lp_A"] > r["lp_Ap"] for r in by[c] if r["name"] in part)  # noqa: E731
-    best = max(cells, key=lambda cell: flips(f"write_B/{cell}", even))
-    out["cv_writes"] = {"cell": best, "B_flip_heldout": round(flips(f"write_B/{best}", odd), 3),
-                        "C_flip_heldout": round(flips(f"write_C/{best}", odd), 3)}  # fmt: skip
+    # 18 note: only non-destructive cells are candidates: the better of the two answers loses < 3 nats on even items
+    drop = lambda c, part: statistics.mean(max(r["base_Ap"], r["base_A"]) - max(r["lp_Ap"], r["lp_A"])  # noqa: E731
+                                           for r in by[c] if r["name"] in part)
+    ok = [cell for cell in cells if drop(f"write_B/{cell}", even) < 3.0]
+    out["write_cells"] = {cell: {"B_flip": round(flips(f"write_B/{cell}", set(names)), 3), "C_flip": round(flips(f"write_C/{cell}", set(names)), 3),
+                                 "B_best_answer_drop": round(drop(f"write_B/{cell}", set(names)), 2)} for cell in cells}  # fmt: skip
+    if ok:
+        best = max(ok, key=lambda cell: flips(f"write_B/{cell}", even))
+        out["cv_writes"] = {"cell": best, "B_flip_heldout": round(flips(f"write_B/{best}", odd), 3),
+                            "C_flip_heldout": round(flips(f"write_C/{best}", odd), 3), "candidates": len(ok)}  # fmt: skip
+    else:
+        out["cv_writes"] = {"cell": None, "note": "no write cell keeps the better answer within 3 nats"}
     return out
 
 

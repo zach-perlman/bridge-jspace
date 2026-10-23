@@ -485,3 +485,9 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   logP(A') - logP(A) falls (interval below 0) while the rotated margin's interval covers 0; sparing B''s own direction
   recovers >= 30% of paper10's margin drop; writing the true bridge flips >= 20% of held-out items to A while the
   control person flips <= 5%. Together: the J-space carries the bridge the model actually uses, even a wrong one.
+- **18 note (~20:25 UTC, after a 4-item smoke, before any real run):** writes at alpha 0.4 over all nine band layers
+  destroy both answers (logP falls 29-38 nats), so flips stop meaning anything (the control person flipped as often
+  as the true bridge). Changes: alphas 0.02 0.05 0.1 0.2 0.4 (0.8 dropped); writes at the band's middle layer alone
+  ("mid") as well as jointly; the cross-validated cell is chosen (by B's flip rate on even items) only among
+  non-destructive cells, where the better of the two answers loses < 3 nats on even items; every cell's B and C flip
+  rates are also reported. Predictions unchanged.
