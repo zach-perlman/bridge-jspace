@@ -1,0 +1,26 @@
+{
+  "seconds": 119,
+  "band_seconds": {
+    "L36-42": 87
+  },
+  "unedited_accuracy": {
+    "MM/clean": 1
+  },
+  "cells": {
+    "L36-42": {
+      "MM/clean": {
+        "paper10": {
+          "n": 78,
+          "accuracy": 0.8589743589743589,
+          "dlogp": -0.3719232409195497
+        },
+        "paper10_rot": {
+          "n": 78,
+          "accuracy": 0.9871794871794872,
+          "dlogp": -0.10263761675630051
+        }
+      }
+    }
+  },
+  "sink_positions": {}
+}

@@ -1,0 +1,70 @@
+{
+  "run": "natural_v1_chat_ko_unembed_v1",
+  "why": "Zach (2026-10-23, prereg amendment 10): qwen3.6-27b, the logit-lens control on natural_v1_chat at L32-40",
+  "written_utc": "2026-10-23T10:53:42Z",
+  "git_commit": "07f486eed70db025ca8fe5e620575d780d6c4426",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  ],
+  "plan": "bands",
+  "bands": [
+    "L32-40"
+  ],
+  "conditions": [
+    "unembed10",
+    "unembed10_rot"
+  ],
+  "families": [
+    "BL",
+    "BR",
+    "RL",
+    "RR",
+    "R",
+    "B"
+  ],
+  "kinds": [
+    "clean"
+  ],
+  "skip": 0,
+  "wording": "A",
+  "n_per_family": 1000,
+  "batch": 32,
+  "tf32": true,
+  "workspace_start": null,
+  "positions": "all",
+  "pad": false,
+  "competence": null,
+  "countries_build": false,
+  "tasks": [
+    "natural_v1_chat",
+    "natural_v1_chat_competence_v1",
+    [
+      "PP",
+      "PM",
+      "MP",
+      "MM"
+    ],
+    "all",
+    [
+      "core"
+    ]
+  ],
+  "tasks_per_word": false,
+  "wide": 9,
+  "seed_offset": 0,
+  "seeds": {
+    "rotation": "888+layer",
+    "rotated_dictionary": "999+layer",
+    "gauss": "777+layer"
+  },
+  "own_cos": 0.5,
+  "doc": "Plans (--plan):\n  v1check   ablate_pilot v1's configuration (layers 32/36/40, the lens dictionary and v1's Gaussian random dictionary,\n            v1's prompts) run with this code; compared item by item with results/ablate_pilot/v1\n  depth     contiguous 3-layer bands sliding by 2 over layers 0 to n-2, and every one of those layers at once\n  bands     the bands given with --bands, e.g. \"32,36,40\" \"16-28\"\nConditions (--conditions): omp25, omp25_rot, omp25_rdict, paper10, paper10_rot, paper10_rdict, keep_own, skip_subject,\n  gauss (v1's Gaussian dictionary); 2026-10-21 (C1's second kill test, decided with Zach): paper10_keepown and\n  paper10_keepown_rot, paper10 with the bridge's own-word directions (its surface tokens and every dictionary row with\n  cosine >= OWN_COS to its concept token, as keep_own) also protected. 2026-10-21 (the specificity control, decided with\n  Zach after the pipeline review): unembed10 and unembed10_rot, paper10's procedure over the unit unembedding rows of\n  letter tokens (the final norm's gain folded in: the logit lens's directions, the same at every layer) instead of the\n  J-lens vectors: is the damage specific to the J-space, or shared by any token-aligned directions? 2026-10-21\n  (docs/prereg_sink_1021.md): any top-K condition with \"_nosink\" before its control suffix (paper10_nosink,\n  paper10_nosink_rot, unembed10_nosink, top5_nosink_rot, paper10_keepown_nosink, ...) leaves attention-sink positions\n  unedited: position 0 and every position whose residual norm exceeds 10x the prompt's median. Prompt kinds (--kinds): clean (the whole question), hop (the last step alone, as\n  v1), step1/step2/step3 (each step alone). Reported per band x family/kind x condition: accuracy (top token = the\n  answer's first token) and the mean change in the answer token's log-probability from the unedited run."
+}

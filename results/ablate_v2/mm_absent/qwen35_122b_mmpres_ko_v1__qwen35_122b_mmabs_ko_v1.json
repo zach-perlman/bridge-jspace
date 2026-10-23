@@ -1,0 +1,75 @@
+{
+ "present": "qwen35_122b_mmpres_ko_v1",
+ "absent": "qwen35_122b_mmabs_ko_v1",
+ "n_items": 105,
+ "bands": {
+  "L39-45": {
+   "paper10/present": {
+    "acc": 91.4,
+    "ci": [
+     85,
+     97
+    ],
+    "n": 105
+   },
+   "paper10/absent": {
+    "acc": 78.1,
+    "ci": [
+     67,
+     87
+    ],
+    "n": 105
+   },
+   "paper10_rot/present": {
+    "acc": 98.1,
+    "ci": [
+     95,
+     100
+    ],
+    "n": 105
+   },
+   "paper10_rot/absent": {
+    "acc": 99.0,
+    "ci": [
+     97,
+     100
+    ],
+    "n": 105
+   }
+  },
+  "L24-30": {
+   "paper10/present": {
+    "acc": 95.2,
+    "ci": [
+     87,
+     100
+    ],
+    "n": 105
+   },
+   "paper10/absent": {
+    "acc": 93.3,
+    "ci": [
+     87,
+     98
+    ],
+    "n": 105
+   },
+   "paper10_rot/present": {
+    "acc": 98.1,
+    "ci": [
+     95,
+     100
+    ],
+    "n": 105
+   },
+   "paper10_rot/absent": {
+    "acc": 95.2,
+    "ci": [
+     90,
+     99
+    ],
+    "n": 105
+   }
+  }
+ }
+}

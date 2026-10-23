@@ -1,0 +1,72 @@
+{
+  "seconds": 493,
+  "by_word_level": {
+    "MM/L0": {
+      "n": 48,
+      "whole": 0.771,
+      "all_steps": 0.729,
+      "median_margin": 2.09,
+      "whole_by_numbers": {
+        "digits": 0.84,
+        "words": 0.696
+      },
+      "guess": 0.062
+    },
+    "MM/L1": {
+      "n": 48,
+      "whole": 0.854,
+      "all_steps": 0.562,
+      "median_margin": 3.25,
+      "whole_by_numbers": {
+        "digits": 0.913,
+        "words": 0.8
+      },
+      "guess": 0.146
+    },
+    "MM/L2": {
+      "n": 28,
+      "whole": 0.643,
+      "all_steps": 0.607,
+      "median_margin": 1.5,
+      "whole_by_numbers": {
+        "digits": 0.722,
+        "words": 0.5
+      },
+      "guess": 0.107
+    },
+    "MM/L3": {
+      "n": 28,
+      "whole": 0.643,
+      "all_steps": 0.786,
+      "median_margin": 2.06,
+      "whole_by_numbers": {
+        "digits": 0.625,
+        "words": 0.667
+      },
+      "guess": 0.143
+    }
+  },
+  "by_domain": {
+    "animals": 0.829,
+    "planets": 0.629,
+    "elements": 0.619,
+    "instruments": 1,
+    "shapes": 0.846,
+    "vehicles": 0.923
+  },
+  "by_format": {
+    "document": 0.92,
+    "prose": 0.857,
+    "chat": 0.727,
+    "code": 0.714,
+    "json": 0.64,
+    "table": 0.625
+  },
+  "by_numbers": {
+    "words": 0.7,
+    "digits": 0.793
+  },
+  "pick": {
+    "MM": 1
+  }
+}

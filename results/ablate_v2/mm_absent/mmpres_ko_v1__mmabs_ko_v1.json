@@ -1,0 +1,41 @@
+{
+ "present": "mmpres_ko_v1",
+ "absent": "mmabs_ko_v1",
+ "n_items": 101,
+ "bands": {
+  "L32-40": {
+   "paper10/present": {
+    "acc": 55.4,
+    "ci": [
+     38,
+     70
+    ],
+    "n": 101
+   },
+   "paper10/absent": {
+    "acc": 31.7,
+    "ci": [
+     17,
+     46
+    ],
+    "n": 101
+   },
+   "paper10_rot/present": {
+    "acc": 97.0,
+    "ci": [
+     91,
+     100
+    ],
+    "n": 101
+   },
+   "paper10_rot/absent": {
+    "acc": 97.0,
+    "ci": [
+     92,
+     100
+    ],
+    "n": 101
+   }
+  }
+ }
+}

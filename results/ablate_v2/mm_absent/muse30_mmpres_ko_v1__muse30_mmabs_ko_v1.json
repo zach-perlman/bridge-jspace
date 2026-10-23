@@ -1,0 +1,41 @@
+{
+ "present": "muse30_mmpres_ko_v1",
+ "absent": "muse30_mmabs_ko_v1",
+ "n_items": 63,
+ "bands": {
+  "L36-42": {
+   "paper10/present": {
+    "acc": 93.7,
+    "ci": [
+     87,
+     99
+    ],
+    "n": 63
+   },
+   "paper10/absent": {
+    "acc": 88.9,
+    "ci": [
+     81,
+     96
+    ],
+    "n": 63
+   },
+   "paper10_rot/present": {
+    "acc": 100.0,
+    "ci": [
+     100,
+     100
+    ],
+    "n": 63
+   },
+   "paper10_rot/absent": {
+    "acc": 98.4,
+    "ci": [
+     95,
+     100
+    ],
+    "n": 63
+   }
+  }
+ }
+}

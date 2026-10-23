@@ -1,0 +1,18 @@
+{
+  "run": "qwen35_9b_full_v8_mmabs_competence_v1",
+  "why": "Zach (2026-10-23, prereg amendment 10): qwen3.5-9b, M->M with the bridge absent from the context: competence on full_v8_mmabs",
+  "set": "full_v8_mmabs",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "08ba305f50f305a98ffaa955fd6a7c928d74bd2a",
+  "guess": true,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-23T07:16:35Z"
+}

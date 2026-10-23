@@ -1,0 +1,1074 @@
+{"family": "PP", "id": "nat:qa:PP-L0-0005", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7412399649620056}
+{"family": "MM", "id": "nat:qa:MM-L0-0302", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.24254067242145538}
+{"family": "MM", "id": "nat:qa:MM-L0-0532", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.07642305642366409}
+{"family": "PP", "id": "nat:qa:PP-L0-0005", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.26449379324913025, "bridge_protected": false, "bridge": "Brazil"}
+{"family": "MM", "id": "nat:qa:MM-L0-0302", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.388540744781494, "bridge_protected": true, "bridge": "Kant"}
+{"family": "MM", "id": "nat:qa:MM-L0-0532", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.09990119934082, "bridge_protected": true, "bridge": "Porto"}
+{"family": "PP", "id": "nat:qa:PP-L0-0005", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5097219944000244, "bridge_protected": false, "bridge": "Brazil"}
+{"family": "MM", "id": "nat:qa:MM-L0-0302", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3496766686439514, "bridge_protected": true, "bridge": "Kant"}
+{"family": "MM", "id": "nat:qa:MM-L0-0532", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.17222322523593903, "bridge_protected": true, "bridge": "Porto"}
+{"family": "PM", "id": "nat:qa:PM-L0-0005", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3065122365951538}
+{"family": "PP", "id": "nat:qa:PP-L0-0085", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3973785638809204}
+{"family": "PP", "id": "nat:qa:PP-L0-0115", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.21390636265277863}
+{"family": "PM", "id": "nat:qa:PM-L0-0005", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -0.7079586386680603, "bridge_protected": true, "bridge": "Brazil"}
+{"family": "PP", "id": "nat:qa:PP-L0-0085", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.1623116284608841, "bridge_protected": false, "bridge": "Norway"}
+{"family": "PP", "id": "nat:qa:PP-L0-0115", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.11476752907037735, "bridge_protected": false, "bridge": "Venezuela"}
+{"family": "PM", "id": "nat:qa:PM-L0-0005", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.44213971495628357, "bridge_protected": true, "bridge": "Brazil"}
+{"family": "PP", "id": "nat:qa:PP-L0-0085", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3706836998462677, "bridge_protected": false, "bridge": "Norway"}
+{"family": "PP", "id": "nat:qa:PP-L0-0115", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.1658935695886612, "bridge_protected": false, "bridge": "Venezuela"}
+{"family": "PP", "id": "nat:qa:PP-L0-0011", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.22256164252758026}
+{"family": "PM", "id": "nat:qa:PM-L0-0261", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.34840139746665955}
+{"family": "PM", "id": "nat:qa:PM-L0-0315", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5659523010253906}
+{"family": "MP", "id": "nat:qa:MP-L0-0342", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2990697920322418}
+{"family": "PP", "id": "nat:qa:PP-L0-0555", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5012595653533936}
+{"family": "PP", "id": "nat:qa:PP-L0-0011", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.2088005393743515, "bridge_protected": false, "bridge": "Canada"}
+{"family": "PM", "id": "nat:qa:PM-L0-0261", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.793246746063232, "bridge_protected": false, "bridge": "Copernicus"}
+{"family": "PM", "id": "nat:qa:PM-L0-0315", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.5726165771484375, "bridge_protected": true, "bridge": "Monet"}
+{"family": "MP", "id": "nat:qa:MP-L0-0342", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.716849684715271, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "PP", "id": "nat:qa:PP-L0-0555", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.355657160282135, "bridge_protected": false, "bridge": "Vancouver"}
+{"family": "PP", "id": "nat:qa:PP-L0-0011", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.20831534266471863, "bridge_protected": false, "bridge": "Canada"}
+{"family": "PM", "id": "nat:qa:PM-L0-0261", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.46567025780677795, "bridge_protected": false, "bridge": "Copernicus"}
+{"family": "PM", "id": "nat:qa:PM-L0-0315", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5751891732215881, "bridge_protected": true, "bridge": "Monet"}
+{"family": "MP", "id": "nat:qa:MP-L0-0342", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.30281952023506165, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "PP", "id": "nat:qa:PP-L0-0555", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5715453624725342, "bridge_protected": false, "bridge": "Vancouver"}
+{"family": "PM", "id": "nat:qa:PM-L0-0011", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.14340607821941376}
+{"family": "MP", "id": "nat:qa:MP-L0-0104", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.714701771736145}
+{"family": "MP", "id": "nat:qa:MP-L0-0258", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4322762191295624}
+{"family": "MP", "id": "nat:qa:MP-L0-0280", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.46400031447410583}
+{"family": "PP", "id": "nat:qa:PP-L0-0309", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3018476963043213}
+{"family": "MP", "id": "nat:qa:MP-L0-0484", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.758306622505188}
+{"family": "PM", "id": "nat:qa:PM-L0-0011", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -0.8106731176376343, "bridge_protected": true, "bridge": "Canada"}
+{"family": "MP", "id": "nat:qa:MP-L0-0104", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.2455861568450928, "bridge_protected": false, "bridge": "Spain"}
+{"family": "MP", "id": "nat:qa:MP-L0-0258", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.3394289016723633, "bridge_protected": false, "bridge": "Chopin"}
+{"family": "MP", "id": "nat:qa:MP-L0-0280", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.1767992973327637, "bridge_protected": false, "bridge": "Freud"}
+{"family": "PP", "id": "nat:qa:PP-L0-0309", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.640514612197876, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "MP", "id": "nat:qa:MP-L0-0484", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.1914243698120117, "bridge_protected": true, "bridge": "Florence"}
+{"family": "PM", "id": "nat:qa:PM-L0-0011", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.19692282378673553, "bridge_protected": true, "bridge": "Canada"}
+{"family": "MP", "id": "nat:qa:MP-L0-0104", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7759765386581421, "bridge_protected": false, "bridge": "Spain"}
+{"family": "MP", "id": "nat:qa:MP-L0-0258", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4452449083328247, "bridge_protected": false, "bridge": "Chopin"}
+{"family": "MP", "id": "nat:qa:MP-L0-0280", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5232632756233215, "bridge_protected": false, "bridge": "Freud"}
+{"family": "PP", "id": "nat:qa:PP-L0-0309", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.23446249961853027, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "MP", "id": "nat:qa:MP-L0-0484", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.8681024312973022, "bridge_protected": true, "bridge": "Florence"}
+{"family": "MP", "id": "nat:qa:MP-L0-0012", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7988327741622925}
+{"family": "PP", "id": "nat:qa:PP-L0-0507", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2777376174926758}
+{"family": "PP", "id": "nat:qa:PP-L0-0531", "kind": "clean", "band": "-", "condition": "none", "correct": false, "logp": -1.4562965631484985}
+{"family": "MP", "id": "nat:qa:MP-L0-0012", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.5468577146530151, "bridge_protected": false, "bridge": "Canada"}
+{"family": "PP", "id": "nat:qa:PP-L0-0507", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.6298410892486572, "bridge_protected": false, "bridge": "Lyon"}
+{"family": "PP", "id": "nat:qa:PP-L0-0531", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.13189977407455444, "bridge_protected": false, "bridge": "Porto"}
+{"family": "MP", "id": "nat:qa:MP-L0-0012", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.789548397064209, "bridge_protected": false, "bridge": "Canada"}
+{"family": "PP", "id": "nat:qa:PP-L0-0507", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4356653094291687, "bridge_protected": false, "bridge": "Lyon"}
+{"family": "PP", "id": "nat:qa:PP-L0-0531", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -2.242872714996338, "bridge_protected": false, "bridge": "Porto"}
+{"family": "MM", "id": "nat:qa:MM-L0-0012", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.15304189920425415}
+{"family": "MM", "id": "nat:qa:MM-L0-0024", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.14558514952659607}
+{"family": "PM", "id": "nat:qa:PM-L0-0085", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4565680921077728}
+{"family": "PM", "id": "nat:qa:PM-L0-0115", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3526790142059326}
+{"family": "PM", "id": "nat:qa:PM-L0-0539", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.229892760515213}
+{"family": "MM", "id": "nat:qa:MM-L0-0012", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.216355562210083, "bridge_protected": false, "bridge": "Canada"}
+{"family": "MM", "id": "nat:qa:MM-L0-0024", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.3284659385681152, "bridge_protected": false, "bridge": "Colombia"}
+{"family": "PM", "id": "nat:qa:PM-L0-0085", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.599325656890869, "bridge_protected": true, "bridge": "Norway"}
+{"family": "PM", "id": "nat:qa:PM-L0-0115", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.078884124755859, "bridge_protected": true, "bridge": "Venezuela"}
+{"family": "PM", "id": "nat:qa:PM-L0-0539", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -6.08834171295166, "bridge_protected": false, "bridge": "Seville"}
+{"family": "MM", "id": "nat:qa:MM-L0-0012", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.23326434195041656, "bridge_protected": false, "bridge": "Canada"}
+{"family": "MM", "id": "nat:qa:MM-L0-0024", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.31189849972724915, "bridge_protected": false, "bridge": "Colombia"}
+{"family": "PM", "id": "nat:qa:PM-L0-0085", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4724891781806946, "bridge_protected": true, "bridge": "Norway"}
+{"family": "PM", "id": "nat:qa:PM-L0-0115", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3100070059299469, "bridge_protected": true, "bridge": "Venezuela"}
+{"family": "PM", "id": "nat:qa:PM-L0-0539", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4528956413269043, "bridge_protected": false, "bridge": "Seville"}
+{"family": "PP", "id": "nat:qa:PP-L0-0013", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.12238514423370361}
+{"family": "MP", "id": "nat:qa:MP-L0-0058", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.30318403244018555}
+{"family": "PM", "id": "nat:qa:PM-L0-0271", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.306679904460907}
+{"family": "MM", "id": "nat:qa:MM-L0-0286", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.22877314686775208}
+{"family": "PM", "id": "nat:qa:PM-L0-0507", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.8235566020011902}
+{"family": "PP", "id": "nat:qa:PP-L0-0511", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.35084646940231323}
+{"family": "PM", "id": "nat:qa:PM-L0-0531", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2499435693025589}
+{"family": "MP", "id": "nat:qa:MP-L0-0556", "kind": "clean", "band": "-", "condition": "none", "correct": false, "logp": -1.3678940534591675}
+{"family": "PP", "id": "nat:qa:PP-L0-0013", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.09846966713666916, "bridge_protected": false, "bridge": "Chile"}
+{"family": "MP", "id": "nat:qa:MP-L0-0058", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.2232666015625, "bridge_protected": false, "bridge": "Italy"}
+{"family": "PM", "id": "nat:qa:PM-L0-0271", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.0719432681798935, "bridge_protected": false, "bridge": "Descartes"}
+{"family": "MM", "id": "nat:qa:MM-L0-0286", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.445438861846924, "bridge_protected": false, "bridge": "Goethe"}
+{"family": "PM", "id": "nat:qa:PM-L0-0507", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -12.843955993652344, "bridge_protected": true, "bridge": "Lyon"}
+{"family": "PP", "id": "nat:qa:PP-L0-0511", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.17233993113040924, "bridge_protected": false, "bridge": "Milan"}
+{"family": "PM", "id": "nat:qa:PM-L0-0531", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -6.270867347717285, "bridge_protected": true, "bridge": "Porto"}
+{"family": "MP", "id": "nat:qa:MP-L0-0556", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.7394863367080688, "bridge_protected": false, "bridge": "Vancouver"}
+{"family": "PP", "id": "nat:qa:PP-L0-0013", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.10279157012701035, "bridge_protected": false, "bridge": "Chile"}
+{"family": "MP", "id": "nat:qa:MP-L0-0058", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.49922817945480347, "bridge_protected": false, "bridge": "Italy"}
+{"family": "PM", "id": "nat:qa:PM-L0-0271", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4124511182308197, "bridge_protected": false, "bridge": "Descartes"}
+{"family": "MM", "id": "nat:qa:MM-L0-0286", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.28253206610679626, "bridge_protected": false, "bridge": "Goethe"}
+{"family": "PM", "id": "nat:qa:PM-L0-0507", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -1.0218751430511475, "bridge_protected": true, "bridge": "Lyon"}
+{"family": "PP", "id": "nat:qa:PP-L0-0511", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6137551665306091, "bridge_protected": false, "bridge": "Milan"}
+{"family": "PM", "id": "nat:qa:PM-L0-0531", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5031588673591614, "bridge_protected": true, "bridge": "Porto"}
+{"family": "MP", "id": "nat:qa:MP-L0-0556", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.9397997260093689, "bridge_protected": false, "bridge": "Vancouver"}
+{"family": "PM", "id": "nat:qa:PM-L0-0013", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0811975970864296}
+{"family": "MP", "id": "nat:qa:MP-L0-0042", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7406967282295227}
+{"family": "PP", "id": "nat:qa:PP-L0-0055", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5144575834274292}
+{"family": "MP", "id": "nat:qa:MP-L0-0086", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.29026272892951965}
+{"family": "MP", "id": "nat:qa:MP-L0-0266", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.32518476247787476}
+{"family": "MP", "id": "nat:qa:MP-L0-0310", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.170754536986351}
+{"family": "MM", "id": "nat:qa:MM-L0-0352", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.13340824842453003}
+{"family": "PM", "id": "nat:qa:PM-L0-0547", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.1782643347978592}
+{"family": "PM", "id": "nat:qa:PM-L0-0013", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.6082425117492676, "bridge_protected": true, "bridge": "Chile"}
+{"family": "MP", "id": "nat:qa:MP-L0-0042", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -0.8358347415924072, "bridge_protected": true, "bridge": "Greece"}
+{"family": "PP", "id": "nat:qa:PP-L0-0055", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.1500089317560196, "bridge_protected": false, "bridge": "Ireland"}
+{"family": "MP", "id": "nat:qa:MP-L0-0086", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.2881612181663513, "bridge_protected": false, "bridge": "Norway"}
+{"family": "MP", "id": "nat:qa:MP-L0-0266", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.1869213581085205, "bridge_protected": false, "bridge": "Dante"}
+{"family": "MP", "id": "nat:qa:MP-L0-0310", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.6083734035491943, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "MM", "id": "nat:qa:MM-L0-0352", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.8892300128936768, "bridge_protected": false, "bridge": "Vermeer"}
+{"family": "PM", "id": "nat:qa:PM-L0-0547", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -6.023199558258057, "bridge_protected": true, "bridge": "Sydney"}
+{"family": "PM", "id": "nat:qa:PM-L0-0013", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.10705514252185822, "bridge_protected": true, "bridge": "Chile"}
+{"family": "MP", "id": "nat:qa:MP-L0-0042", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6163609027862549, "bridge_protected": true, "bridge": "Greece"}
+{"family": "PP", "id": "nat:qa:PP-L0-0055", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4338470697402954, "bridge_protected": false, "bridge": "Ireland"}
+{"family": "MP", "id": "nat:qa:MP-L0-0086", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.28358566761016846, "bridge_protected": false, "bridge": "Norway"}
+{"family": "MP", "id": "nat:qa:MP-L0-0266", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5035209059715271, "bridge_protected": false, "bridge": "Dante"}
+{"family": "MP", "id": "nat:qa:MP-L0-0310", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.259223073720932, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "MM", "id": "nat:qa:MM-L0-0352", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.21354110538959503, "bridge_protected": false, "bridge": "Vermeer"}
+{"family": "PM", "id": "nat:qa:PM-L0-0547", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.2905890643596649, "bridge_protected": true, "bridge": "Sydney"}
+{"family": "MP", "id": "nat:qa:MP-L0-0016", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5853996872901917}
+{"family": "PM", "id": "nat:qa:PM-L0-0061", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.31911614537239075}
+{"family": "PM", "id": "nat:qa:PM-L0-0475", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5148172378540039}
+{"family": "MP", "id": "nat:qa:MP-L0-0016", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.194020986557007, "bridge_protected": false, "bridge": "Chile"}
+{"family": "PM", "id": "nat:qa:PM-L0-0061", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.8004244565963745, "bridge_protected": true, "bridge": "Japan"}
+{"family": "PM", "id": "nat:qa:PM-L0-0475", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -13.84841251373291, "bridge_protected": true, "bridge": "Barcelona"}
+{"family": "MP", "id": "nat:qa:MP-L0-0016", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.45136207342147827, "bridge_protected": false, "bridge": "Chile"}
+{"family": "PM", "id": "nat:qa:PM-L0-0061", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.29416796565055847, "bridge_protected": true, "bridge": "Japan"}
+{"family": "PM", "id": "nat:qa:PM-L0-0475", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7672135829925537, "bridge_protected": true, "bridge": "Barcelona"}
+{"family": "MM", "id": "nat:qa:MM-L0-0016", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.06194083392620087}
+{"family": "MM", "id": "nat:qa:MM-L0-0016", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.020144516602158546, "bridge_protected": true, "bridge": "Chile"}
+{"family": "MM", "id": "nat:qa:MM-L0-0016", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.07991377264261246, "bridge_protected": true, "bridge": "Chile"}
+{"family": "MP", "id": "nat:qa:MP-L0-0022", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7377970814704895}
+{"family": "PP", "id": "nat:qa:PP-L0-0061", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3596380949020386}
+{"family": "MP", "id": "nat:qa:MP-L0-0022", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.5858569145202637, "bridge_protected": false, "bridge": "Colombia"}
+{"family": "PP", "id": "nat:qa:PP-L0-0061", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.5464054346084595, "bridge_protected": false, "bridge": "Japan"}
+{"family": "MP", "id": "nat:qa:MP-L0-0022", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7103883028030396, "bridge_protected": false, "bridge": "Colombia"}
+{"family": "PP", "id": "nat:qa:PP-L0-0061", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.27605560421943665, "bridge_protected": false, "bridge": "Japan"}
+{"family": "MM", "id": "nat:qa:MM-L0-0022", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2190469652414322}
+{"family": "MM", "id": "nat:qa:MM-L0-0550", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.12245222181081772}
+{"family": "MM", "id": "nat:qa:MM-L0-0022", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -6.14888858795166, "bridge_protected": false, "bridge": "Colombia"}
+{"family": "MM", "id": "nat:qa:MM-L0-0550", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.141103267669678, "bridge_protected": false, "bridge": "Toronto"}
+{"family": "MM", "id": "nat:qa:MM-L0-0022", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.31303730607032776, "bridge_protected": false, "bridge": "Colombia"}
+{"family": "MM", "id": "nat:qa:MM-L0-0550", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.21398037672042847, "bridge_protected": false, "bridge": "Toronto"}
+{"family": "MP", "id": "nat:qa:MP-L0-0024", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -1.1213696002960205}
+{"family": "MP", "id": "nat:qa:MP-L0-0048", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.8053860068321228}
+{"family": "PM", "id": "nat:qa:PM-L0-0065", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3141469359397888}
+{"family": "PP", "id": "nat:qa:PP-L0-0077", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.41249600052833557}
+{"family": "PM", "id": "nat:qa:PM-L0-0313", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7577537894248962}
+{"family": "PM", "id": "nat:qa:PM-L0-0491", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5290597677230835}
+{"family": "MP", "id": "nat:qa:MP-L0-0534", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3655128479003906}
+{"family": "MP", "id": "nat:qa:MP-L0-0024", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.3748677968978882, "bridge_protected": false, "bridge": "Colombia"}
+{"family": "MP", "id": "nat:qa:MP-L0-0048", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.1613345593214035, "bridge_protected": true, "bridge": "India"}
+{"family": "PM", "id": "nat:qa:PM-L0-0065", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.5800557136535645, "bridge_protected": true, "bridge": "Kenya"}
+{"family": "PP", "id": "nat:qa:PP-L0-0077", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -0.770767867565155, "bridge_protected": true, "bridge": "Nepal"}
+{"family": "PM", "id": "nat:qa:PM-L0-0313", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.46089544892311096, "bridge_protected": true, "bridge": "Monet"}
+{"family": "PM", "id": "nat:qa:PM-L0-0491", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.3612723350524902, "bridge_protected": true, "bridge": "Hamburg"}
+{"family": "MP", "id": "nat:qa:MP-L0-0534", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.6665988564491272, "bridge_protected": false, "bridge": "Rio"}
+{"family": "MP", "id": "nat:qa:MP-L0-0024", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.7859140634536743, "bridge_protected": false, "bridge": "Colombia"}
+{"family": "MP", "id": "nat:qa:MP-L0-0048", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.8409553170204163, "bridge_protected": true, "bridge": "India"}
+{"family": "PM", "id": "nat:qa:PM-L0-0065", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.36452716588974, "bridge_protected": true, "bridge": "Kenya"}
+{"family": "PP", "id": "nat:qa:PP-L0-0077", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4665113687515259, "bridge_protected": true, "bridge": "Nepal"}
+{"family": "PM", "id": "nat:qa:PM-L0-0313", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6005979180335999, "bridge_protected": true, "bridge": "Monet"}
+{"family": "PM", "id": "nat:qa:PM-L0-0491", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4877168536186218, "bridge_protected": true, "bridge": "Hamburg"}
+{"family": "MP", "id": "nat:qa:MP-L0-0534", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5883029699325562, "bridge_protected": false, "bridge": "Rio"}
+{"family": "MP", "id": "nat:qa:MP-L0-0026", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.29654228687286377}
+{"family": "PM", "id": "nat:qa:PM-L0-0059", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.24600836634635925}
+{"family": "PM", "id": "nat:qa:PM-L0-0079", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.38799968361854553}
+{"family": "MP", "id": "nat:qa:MP-L0-0326", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5991013646125793}
+{"family": "PP", "id": "nat:qa:PP-L0-0479", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.38883092999458313}
+{"family": "MP", "id": "nat:qa:MP-L0-0026", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.4154592454433441, "bridge_protected": false, "bridge": "Egypt"}
+{"family": "PM", "id": "nat:qa:PM-L0-0059", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.3184494972229, "bridge_protected": true, "bridge": "Italy"}
+{"family": "PM", "id": "nat:qa:PM-L0-0079", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.6072115898132324, "bridge_protected": true, "bridge": "Nepal"}
+{"family": "MP", "id": "nat:qa:MP-L0-0326", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.8451523780822754, "bridge_protected": false, "bridge": "Nobel"}
+{"family": "PP", "id": "nat:qa:PP-L0-0479", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -0.9088833332061768, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "MP", "id": "nat:qa:MP-L0-0026", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.34116578102111816, "bridge_protected": false, "bridge": "Egypt"}
+{"family": "PM", "id": "nat:qa:PM-L0-0059", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3911292552947998, "bridge_protected": true, "bridge": "Italy"}
+{"family": "PM", "id": "nat:qa:PM-L0-0079", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4040915071964264, "bridge_protected": true, "bridge": "Nepal"}
+{"family": "MP", "id": "nat:qa:MP-L0-0326", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4917629361152649, "bridge_protected": false, "bridge": "Nobel"}
+{"family": "PP", "id": "nat:qa:PP-L0-0479", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4472125172615051, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "MM", "id": "nat:qa:MM-L0-0026", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.15627871453762054}
+{"family": "MM", "id": "nat:qa:MM-L0-0276", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.11565609276294708}
+{"family": "MM", "id": "nat:qa:MM-L0-0534", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.15636283159255981}
+{"family": "MM", "id": "nat:qa:MM-L0-0026", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.1433520317077637, "bridge_protected": true, "bridge": "Egypt"}
+{"family": "MM", "id": "nat:qa:MM-L0-0276", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -6.000086784362793, "bridge_protected": false, "bridge": "Dostoevsky"}
+{"family": "MM", "id": "nat:qa:MM-L0-0534", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.284790515899658, "bridge_protected": false, "bridge": "Rio"}
+{"family": "MM", "id": "nat:qa:MM-L0-0026", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.22228488326072693, "bridge_protected": true, "bridge": "Egypt"}
+{"family": "MM", "id": "nat:qa:MM-L0-0276", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.18206794559955597, "bridge_protected": false, "bridge": "Dostoevsky"}
+{"family": "MM", "id": "nat:qa:MM-L0-0534", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.37964776158332825, "bridge_protected": false, "bridge": "Rio"}
+{"family": "PP", "id": "nat:qa:PP-L0-0033", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.24852155148983002}
+{"family": "MM", "id": "nat:qa:MM-L0-0048", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.26390981674194336}
+{"family": "MM", "id": "nat:qa:MM-L0-0078", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.12505994737148285}
+{"family": "MM", "id": "nat:qa:MM-L0-0114", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.06382160633802414}
+{"family": "MM", "id": "nat:qa:MM-L0-0120", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.1558331400156021}
+{"family": "MM", "id": "nat:qa:MM-L0-0252", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.07869881391525269}
+{"family": "PP", "id": "nat:qa:PP-L0-0033", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.19057881832122803, "bridge_protected": false, "bridge": "France"}
+{"family": "MM", "id": "nat:qa:MM-L0-0048", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.2420469522476196, "bridge_protected": true, "bridge": "India"}
+{"family": "MM", "id": "nat:qa:MM-L0-0078", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.2901923656463623, "bridge_protected": true, "bridge": "Nepal"}
+{"family": "MM", "id": "nat:qa:MM-L0-0114", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.0027046550530940294, "bridge_protected": true, "bridge": "Venezuela"}
+{"family": "MM", "id": "nat:qa:MM-L0-0120", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.2987751960754395, "bridge_protected": true, "bridge": "Vietnam"}
+{"family": "MM", "id": "nat:qa:MM-L0-0252", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -1.1724936962127686, "bridge_protected": false, "bridge": "Cervantes"}
+{"family": "PP", "id": "nat:qa:PP-L0-0033", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.15046130120754242, "bridge_protected": false, "bridge": "France"}
+{"family": "MM", "id": "nat:qa:MM-L0-0048", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.41633090376853943, "bridge_protected": true, "bridge": "India"}
+{"family": "MM", "id": "nat:qa:MM-L0-0078", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.20933230221271515, "bridge_protected": true, "bridge": "Nepal"}
+{"family": "MM", "id": "nat:qa:MM-L0-0114", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.06236720457673073, "bridge_protected": true, "bridge": "Venezuela"}
+{"family": "MM", "id": "nat:qa:MM-L0-0120", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.1537693440914154, "bridge_protected": true, "bridge": "Vietnam"}
+{"family": "MM", "id": "nat:qa:MM-L0-0252", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.1700245589017868, "bridge_protected": false, "bridge": "Cervantes"}
+{"family": "PM", "id": "nat:qa:PM-L0-0033", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6912133097648621}
+{"family": "MM", "id": "nat:qa:MM-L0-0086", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.1307212859392166}
+{"family": "PM", "id": "nat:qa:PM-L0-0033", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.669755935668945, "bridge_protected": true, "bridge": "France"}
+{"family": "MM", "id": "nat:qa:MM-L0-0086", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.4642229080200195, "bridge_protected": true, "bridge": "Norway"}
+{"family": "PM", "id": "nat:qa:PM-L0-0033", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -1.0555347204208374, "bridge_protected": true, "bridge": "France"}
+{"family": "MM", "id": "nat:qa:MM-L0-0086", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.1534377932548523, "bridge_protected": true, "bridge": "Norway"}
+{"family": "PP", "id": "nat:qa:PP-L0-0035", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.1806609332561493}
+{"family": "PP", "id": "nat:qa:PP-L0-0041", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5017427802085876}
+{"family": "MM", "id": "nat:qa:MM-L0-0290", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.32801106572151184}
+{"family": "PP", "id": "nat:qa:PP-L0-0475", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7620152831077576}
+{"family": "MM", "id": "nat:qa:MM-L0-0484", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.12448941171169281}
+{"family": "MM", "id": "nat:qa:MM-L0-0492", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.24662989377975464}
+{"family": "MP", "id": "nat:qa:MP-L0-0538", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.40947210788726807}
+{"family": "PP", "id": "nat:qa:PP-L0-0035", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.3191564083099365, "bridge_protected": false, "bridge": "France"}
+{"family": "PP", "id": "nat:qa:PP-L0-0041", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.2547426223754883, "bridge_protected": true, "bridge": "Greece"}
+{"family": "MM", "id": "nat:qa:MM-L0-0290", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.312251567840576, "bridge_protected": false, "bridge": "Grieg"}
+{"family": "PP", "id": "nat:qa:PP-L0-0475", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.9300222396850586, "bridge_protected": false, "bridge": "Barcelona"}
+{"family": "MM", "id": "nat:qa:MM-L0-0484", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.887623310089111, "bridge_protected": true, "bridge": "Florence"}
+{"family": "MM", "id": "nat:qa:MM-L0-0492", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.5902457237243652, "bridge_protected": true, "bridge": "Hamburg"}
+{"family": "MP", "id": "nat:qa:MP-L0-0538", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.336015462875366, "bridge_protected": false, "bridge": "Seville"}
+{"family": "PP", "id": "nat:qa:PP-L0-0035", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.21426637470722198, "bridge_protected": false, "bridge": "France"}
+{"family": "PP", "id": "nat:qa:PP-L0-0041", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5158697366714478, "bridge_protected": true, "bridge": "Greece"}
+{"family": "MM", "id": "nat:qa:MM-L0-0290", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4315900206565857, "bridge_protected": false, "bridge": "Grieg"}
+{"family": "PP", "id": "nat:qa:PP-L0-0475", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7996231317520142, "bridge_protected": false, "bridge": "Barcelona"}
+{"family": "MM", "id": "nat:qa:MM-L0-0484", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.30455049872398376, "bridge_protected": true, "bridge": "Florence"}
+{"family": "MM", "id": "nat:qa:MM-L0-0492", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4007379412651062, "bridge_protected": true, "bridge": "Hamburg"}
+{"family": "MP", "id": "nat:qa:MP-L0-0538", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.9621430039405823, "bridge_protected": false, "bridge": "Seville"}
+{"family": "PM", "id": "nat:qa:PM-L0-0035", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6687208414077759}
+{"family": "PM", "id": "nat:qa:PM-L0-0041", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.21916282176971436}
+{"family": "PP", "id": "nat:qa:PP-L0-0083", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2114664614200592}
+{"family": "MM", "id": "nat:qa:MM-L0-0342", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.1448187232017517}
+{"family": "PM", "id": "nat:qa:PM-L0-0035", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -7.234227657318115, "bridge_protected": true, "bridge": "France"}
+{"family": "PM", "id": "nat:qa:PM-L0-0041", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.3072190284729, "bridge_protected": true, "bridge": "Greece"}
+{"family": "PP", "id": "nat:qa:PP-L0-0083", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.017699159681797028, "bridge_protected": false, "bridge": "Nigeria"}
+{"family": "MM", "id": "nat:qa:MM-L0-0342", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -6.9556379318237305, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "PM", "id": "nat:qa:PM-L0-0035", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.8229153156280518, "bridge_protected": true, "bridge": "France"}
+{"family": "PM", "id": "nat:qa:PM-L0-0041", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.42210203409194946, "bridge_protected": true, "bridge": "Greece"}
+{"family": "PP", "id": "nat:qa:PP-L0-0083", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.2669161856174469, "bridge_protected": false, "bridge": "Nigeria"}
+{"family": "MM", "id": "nat:qa:MM-L0-0342", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.1827905774116516, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "PP", "id": "nat:qa:PP-L0-0039", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.22184160351753235}
+{"family": "MP", "id": "nat:qa:MP-L0-0264", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7431557774543762}
+{"family": "PP", "id": "nat:qa:PP-L0-0291", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2313099056482315}
+{"family": "MP", "id": "nat:qa:MP-L0-0532", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2859995663166046}
+{"family": "PP", "id": "nat:qa:PP-L0-0039", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.007943113334476948, "bridge_protected": false, "bridge": "Ghana"}
+{"family": "MP", "id": "nat:qa:MP-L0-0264", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.6634016036987305, "bridge_protected": false, "bridge": "Copernicus"}
+{"family": "PP", "id": "nat:qa:PP-L0-0291", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.4500188827514648, "bridge_protected": false, "bridge": "Grieg"}
+{"family": "MP", "id": "nat:qa:MP-L0-0532", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.1533892154693604, "bridge_protected": false, "bridge": "Porto"}
+{"family": "PP", "id": "nat:qa:PP-L0-0039", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.26485443115234375, "bridge_protected": false, "bridge": "Ghana"}
+{"family": "MP", "id": "nat:qa:MP-L0-0264", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7904331088066101, "bridge_protected": false, "bridge": "Copernicus"}
+{"family": "PP", "id": "nat:qa:PP-L0-0291", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.2275058627128601, "bridge_protected": false, "bridge": "Grieg"}
+{"family": "MP", "id": "nat:qa:MP-L0-0532", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4539703130722046, "bridge_protected": false, "bridge": "Porto"}
+{"family": "PM", "id": "nat:qa:PM-L0-0039", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.15195004642009735}
+{"family": "PM", "id": "nat:qa:PM-L0-0309", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -1.2187820672988892}
+{"family": "PM", "id": "nat:qa:PM-L0-0489", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.48859068751335144}
+{"family": "PM", "id": "nat:qa:PM-L0-0039", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.1161460876464844, "bridge_protected": true, "bridge": "Ghana"}
+{"family": "PM", "id": "nat:qa:PM-L0-0309", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -8.288106918334961, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "PM", "id": "nat:qa:PM-L0-0489", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.0458407402038574, "bridge_protected": true, "bridge": "Hamburg"}
+{"family": "PM", "id": "nat:qa:PM-L0-0039", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.2553020715713501, "bridge_protected": true, "bridge": "Ghana"}
+{"family": "PM", "id": "nat:qa:PM-L0-0309", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6252191066741943, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "PM", "id": "nat:qa:PM-L0-0489", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5177632570266724, "bridge_protected": true, "bridge": "Hamburg"}
+{"family": "MM", "id": "nat:qa:MM-L0-0042", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.10660133510828018}
+{"family": "MM", "id": "nat:qa:MM-L0-0300", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3032192289829254}
+{"family": "MM", "id": "nat:qa:MM-L0-0326", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.32033875584602356}
+{"family": "MM", "id": "nat:qa:MM-L0-0042", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.1063497066497803, "bridge_protected": true, "bridge": "Greece"}
+{"family": "MM", "id": "nat:qa:MM-L0-0300", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.7548367977142334, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MM", "id": "nat:qa:MM-L0-0326", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.456755638122559, "bridge_protected": false, "bridge": "Nobel"}
+{"family": "MM", "id": "nat:qa:MM-L0-0042", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.22806981205940247, "bridge_protected": true, "bridge": "Greece"}
+{"family": "MM", "id": "nat:qa:MM-L0-0300", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.375706285238266, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MM", "id": "nat:qa:MM-L0-0326", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3745289742946625, "bridge_protected": false, "bridge": "Nobel"}
+{"family": "MP", "id": "nat:qa:MP-L0-0050", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6903552412986755}
+{"family": "MP", "id": "nat:qa:MP-L0-0050", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.4064615964889526, "bridge_protected": false, "bridge": "Iran"}
+{"family": "MP", "id": "nat:qa:MP-L0-0050", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5955790877342224, "bridge_protected": false, "bridge": "Iran"}
+{"family": "MM", "id": "nat:qa:MM-L0-0050", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.10151784121990204}
+{"family": "MP", "id": "nat:qa:MP-L0-0300", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.12962666153907776}
+{"family": "MP", "id": "nat:qa:MP-L0-0312", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.32200607657432556}
+{"family": "MP", "id": "nat:qa:MP-L0-0338", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2977147400379181}
+{"family": "MP", "id": "nat:qa:MP-L0-0524", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.10424736142158508}
+{"family": "MM", "id": "nat:qa:MM-L0-0050", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.005353637970983982, "bridge_protected": true, "bridge": "Iran"}
+{"family": "MP", "id": "nat:qa:MP-L0-0300", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.08202379941940308, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MP", "id": "nat:qa:MP-L0-0312", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.2883721888065338, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "MP", "id": "nat:qa:MP-L0-0338", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.15417833626270294, "bridge_protected": false, "bridge": "Tchaikovsky"}
+{"family": "MP", "id": "nat:qa:MP-L0-0524", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.01443103514611721, "bridge_protected": false, "bridge": "Naples"}
+{"family": "MM", "id": "nat:qa:MM-L0-0050", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.16208995878696442, "bridge_protected": true, "bridge": "Iran"}
+{"family": "MP", "id": "nat:qa:MP-L0-0300", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.14177380502223969, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MP", "id": "nat:qa:MP-L0-0312", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.2733127772808075, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "MP", "id": "nat:qa:MP-L0-0338", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.22981016337871552, "bridge_protected": false, "bridge": "Tchaikovsky"}
+{"family": "MP", "id": "nat:qa:MP-L0-0524", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.14394353330135345, "bridge_protected": false, "bridge": "Naples"}
+{"family": "MP", "id": "nat:qa:MP-L0-0052", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4030095636844635}
+{"family": "MP", "id": "nat:qa:MP-L0-0054", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.8296608328819275}
+{"family": "PP", "id": "nat:qa:PP-L0-0271", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.905827522277832}
+{"family": "MP", "id": "nat:qa:MP-L0-0348", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.38713809847831726}
+{"family": "PP", "id": "nat:qa:PP-L0-0549", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7313721776008606}
+{"family": "MP", "id": "nat:qa:MP-L0-0052", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.1396313905715942, "bridge_protected": false, "bridge": "Iran"}
+{"family": "MP", "id": "nat:qa:MP-L0-0054", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.5402886867523193, "bridge_protected": false, "bridge": "Ireland"}
+{"family": "PP", "id": "nat:qa:PP-L0-0271", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.5838118195533752, "bridge_protected": false, "bridge": "Descartes"}
+{"family": "MP", "id": "nat:qa:MP-L0-0348", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.045365810394287, "bridge_protected": false, "bridge": "Verdi"}
+{"family": "PP", "id": "nat:qa:PP-L0-0549", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.2412540912628174, "bridge_protected": false, "bridge": "Toronto"}
+{"family": "MP", "id": "nat:qa:MP-L0-0052", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.31986573338508606, "bridge_protected": false, "bridge": "Iran"}
+{"family": "MP", "id": "nat:qa:MP-L0-0054", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.8478736281394958, "bridge_protected": false, "bridge": "Ireland"}
+{"family": "PP", "id": "nat:qa:PP-L0-0271", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.2751809358596802, "bridge_protected": false, "bridge": "Descartes"}
+{"family": "MP", "id": "nat:qa:MP-L0-0348", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5262231826782227, "bridge_protected": false, "bridge": "Verdi"}
+{"family": "PP", "id": "nat:qa:PP-L0-0549", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6695519685745239, "bridge_protected": false, "bridge": "Toronto"}
+{"family": "MM", "id": "nat:qa:MM-L0-0052", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.07198697328567505}
+{"family": "MM", "id": "nat:qa:MM-L0-0064", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.09873171895742416}
+{"family": "PM", "id": "nat:qa:PM-L0-0095", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.22201386094093323}
+{"family": "PM", "id": "nat:qa:PM-L0-0111", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4139895737171173}
+{"family": "MM", "id": "nat:qa:MM-L0-0264", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.11416206508874893}
+{"family": "MM", "id": "nat:qa:MM-L0-0052", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.128587543964386, "bridge_protected": true, "bridge": "Iran"}
+{"family": "MM", "id": "nat:qa:MM-L0-0064", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.1607401371002197, "bridge_protected": true, "bridge": "Japan"}
+{"family": "PM", "id": "nat:qa:PM-L0-0095", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -7.8530683517456055, "bridge_protected": true, "bridge": "Poland"}
+{"family": "PM", "id": "nat:qa:PM-L0-0111", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -6.710575580596924, "bridge_protected": true, "bridge": "Thailand"}
+{"family": "MM", "id": "nat:qa:MM-L0-0264", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.317697286605835, "bridge_protected": false, "bridge": "Copernicus"}
+{"family": "MM", "id": "nat:qa:MM-L0-0052", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.13591048121452332, "bridge_protected": true, "bridge": "Iran"}
+{"family": "MM", "id": "nat:qa:MM-L0-0064", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.15141893923282623, "bridge_protected": true, "bridge": "Japan"}
+{"family": "PM", "id": "nat:qa:PM-L0-0095", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.34861382842063904, "bridge_protected": true, "bridge": "Poland"}
+{"family": "PM", "id": "nat:qa:PM-L0-0111", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4142969250679016, "bridge_protected": true, "bridge": "Thailand"}
+{"family": "MM", "id": "nat:qa:MM-L0-0264", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.38959604501724243, "bridge_protected": false, "bridge": "Copernicus"}
+{"family": "MM", "id": "nat:qa:MM-L0-0054", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.11885661631822586}
+{"family": "MM", "id": "nat:qa:MM-L0-0258", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2751672565937042}
+{"family": "MM", "id": "nat:qa:MM-L0-0478", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.03780922666192055}
+{"family": "MM", "id": "nat:qa:MM-L0-0516", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.04826057702302933}
+{"family": "PP", "id": "nat:qa:PP-L0-0539", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.9169721603393555}
+{"family": "MM", "id": "nat:qa:MM-L0-0054", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.029581110924482346, "bridge_protected": true, "bridge": "Ireland"}
+{"family": "MM", "id": "nat:qa:MM-L0-0258", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.212714672088623, "bridge_protected": false, "bridge": "Chopin"}
+{"family": "MM", "id": "nat:qa:MM-L0-0478", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -7.749202251434326, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "MM", "id": "nat:qa:MM-L0-0516", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.8854200839996338, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "PP", "id": "nat:qa:PP-L0-0539", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -8.619182586669922, "bridge_protected": false, "bridge": "Seville"}
+{"family": "MM", "id": "nat:qa:MM-L0-0054", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.22579069435596466, "bridge_protected": true, "bridge": "Ireland"}
+{"family": "MM", "id": "nat:qa:MM-L0-0258", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.668547511100769, "bridge_protected": false, "bridge": "Chopin"}
+{"family": "MM", "id": "nat:qa:MM-L0-0478", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.165006622672081, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "MM", "id": "nat:qa:MM-L0-0516", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.09126810729503632, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "PP", "id": "nat:qa:PP-L0-0539", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.6052446365356445, "bridge_protected": false, "bridge": "Seville"}
+{"family": "PM", "id": "nat:qa:PM-L0-0055", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.41488611698150635}
+{"family": "PP", "id": "nat:qa:PP-L0-0095", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5011481046676636}
+{"family": "MM", "id": "nat:qa:MM-L0-0104", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6209591031074524}
+{"family": "PP", "id": "nat:qa:PP-L0-0111", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5497941374778748}
+{"family": "MM", "id": "nat:qa:MM-L0-0308", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3340056240558624}
+{"family": "MM", "id": "nat:qa:MM-L0-0514", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.07402709871530533}
+{"family": "MM", "id": "nat:qa:MM-L0-0560", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.17188921570777893}
+{"family": "PM", "id": "nat:qa:PM-L0-0055", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -7.573731899261475, "bridge_protected": true, "bridge": "Ireland"}
+{"family": "PP", "id": "nat:qa:PP-L0-0095", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.22991058230400085, "bridge_protected": false, "bridge": "Poland"}
+{"family": "MM", "id": "nat:qa:MM-L0-0104", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.858962059020996, "bridge_protected": true, "bridge": "Spain"}
+{"family": "PP", "id": "nat:qa:PP-L0-0111", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.070498526096344, "bridge_protected": false, "bridge": "Thailand"}
+{"family": "MM", "id": "nat:qa:MM-L0-0308", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.7234370112419128, "bridge_protected": false, "bridge": "Linnaeus"}
+{"family": "MM", "id": "nat:qa:MM-L0-0514", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.2170212268829346, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "MM", "id": "nat:qa:MM-L0-0560", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.8370360136032104, "bridge_protected": true, "bridge": "Venice"}
+{"family": "PM", "id": "nat:qa:PM-L0-0055", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.42332902550697327, "bridge_protected": true, "bridge": "Ireland"}
+{"family": "PP", "id": "nat:qa:PP-L0-0095", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.730108916759491, "bridge_protected": false, "bridge": "Poland"}
+{"family": "MM", "id": "nat:qa:MM-L0-0104", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.8297513127326965, "bridge_protected": true, "bridge": "Spain"}
+{"family": "PP", "id": "nat:qa:PP-L0-0111", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5479514598846436, "bridge_protected": false, "bridge": "Thailand"}
+{"family": "MM", "id": "nat:qa:MM-L0-0308", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4492126703262329, "bridge_protected": false, "bridge": "Linnaeus"}
+{"family": "MM", "id": "nat:qa:MM-L0-0514", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.1059960424900055, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "MM", "id": "nat:qa:MM-L0-0560", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.23409053683280945, "bridge_protected": true, "bridge": "Venice"}
+{"family": "PP", "id": "nat:qa:PP-L0-0057", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.29401499032974243}
+{"family": "MP", "id": "nat:qa:MP-L0-0100", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5083016157150269}
+{"family": "MP", "id": "nat:qa:MP-L0-0248", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.25172147154808044}
+{"family": "PM", "id": "nat:qa:PM-L0-0481", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5058701038360596}
+{"family": "PP", "id": "nat:qa:PP-L0-0497", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.24269752204418182}
+{"family": "MP", "id": "nat:qa:MP-L0-0508", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.9126167297363281}
+{"family": "MP", "id": "nat:qa:MP-L0-0514", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2718614935874939}
+{"family": "PP", "id": "nat:qa:PP-L0-0057", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.15411293506622314, "bridge_protected": false, "bridge": "Italy"}
+{"family": "MP", "id": "nat:qa:MP-L0-0100", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.09811991453170776, "bridge_protected": false, "bridge": "Portugal"}
+{"family": "MP", "id": "nat:qa:MP-L0-0248", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.505977988243103, "bridge_protected": false, "bridge": "Beethoven"}
+{"family": "PM", "id": "nat:qa:PM-L0-0481", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -7.03824520111084, "bridge_protected": true, "bridge": "Florence"}
+{"family": "PP", "id": "nat:qa:PP-L0-0497", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.4823433756828308, "bridge_protected": false, "bridge": "Krakow"}
+{"family": "MP", "id": "nat:qa:MP-L0-0508", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.163525104522705, "bridge_protected": false, "bridge": "Lyon"}
+{"family": "MP", "id": "nat:qa:MP-L0-0514", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.3167087137699127, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "PP", "id": "nat:qa:PP-L0-0057", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.41438254714012146, "bridge_protected": false, "bridge": "Italy"}
+{"family": "MP", "id": "nat:qa:MP-L0-0100", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6367300152778625, "bridge_protected": false, "bridge": "Portugal"}
+{"family": "MP", "id": "nat:qa:MP-L0-0248", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.41044849157333374, "bridge_protected": false, "bridge": "Beethoven"}
+{"family": "PM", "id": "nat:qa:PM-L0-0481", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5622722506523132, "bridge_protected": true, "bridge": "Florence"}
+{"family": "PP", "id": "nat:qa:PP-L0-0497", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4070375859737396, "bridge_protected": false, "bridge": "Krakow"}
+{"family": "MP", "id": "nat:qa:MP-L0-0508", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.8194682598114014, "bridge_protected": false, "bridge": "Lyon"}
+{"family": "MP", "id": "nat:qa:MP-L0-0514", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4413653314113617, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "PM", "id": "nat:qa:PM-L0-0057", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.1003231555223465}
+{"family": "PP", "id": "nat:qa:PP-L0-0065", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2970747649669647}
+{"family": "PM", "id": "nat:qa:PM-L0-0331", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.43573787808418274}
+{"family": "PM", "id": "nat:qa:PM-L0-0495", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4121602475643158}
+{"family": "PM", "id": "nat:qa:PM-L0-0501", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.11034902185201645}
+{"family": "MP", "id": "nat:qa:MP-L0-0516", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4711419641971588}
+{"family": "PM", "id": "nat:qa:PM-L0-0535", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5661983489990234}
+{"family": "PM", "id": "nat:qa:PM-L0-0057", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.9643983840942383, "bridge_protected": true, "bridge": "Italy"}
+{"family": "PP", "id": "nat:qa:PP-L0-0065", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.05075298622250557, "bridge_protected": true, "bridge": "Kenya"}
+{"family": "PM", "id": "nat:qa:PM-L0-0331", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -11.19296646118164, "bridge_protected": true, "bridge": "Picasso"}
+{"family": "PM", "id": "nat:qa:PM-L0-0495", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.545475721359253, "bridge_protected": true, "bridge": "Istanbul"}
+{"family": "PM", "id": "nat:qa:PM-L0-0501", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.279956579208374, "bridge_protected": true, "bridge": "Kyoto"}
+{"family": "MP", "id": "nat:qa:MP-L0-0516", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.9365509152412415, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "PM", "id": "nat:qa:PM-L0-0535", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.501969337463379, "bridge_protected": true, "bridge": "Rio"}
+{"family": "PM", "id": "nat:qa:PM-L0-0057", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.23168811202049255, "bridge_protected": true, "bridge": "Italy"}
+{"family": "PP", "id": "nat:qa:PP-L0-0065", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.24889738857746124, "bridge_protected": true, "bridge": "Kenya"}
+{"family": "PM", "id": "nat:qa:PM-L0-0331", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7046470642089844, "bridge_protected": true, "bridge": "Picasso"}
+{"family": "PM", "id": "nat:qa:PM-L0-0495", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.424088716506958, "bridge_protected": true, "bridge": "Istanbul"}
+{"family": "PM", "id": "nat:qa:PM-L0-0501", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3177010715007782, "bridge_protected": true, "bridge": "Kyoto"}
+{"family": "MP", "id": "nat:qa:MP-L0-0516", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4463820159435272, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "PM", "id": "nat:qa:PM-L0-0535", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.771365225315094, "bridge_protected": true, "bridge": "Rio"}
+{"family": "MM", "id": "nat:qa:MM-L0-0058", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.05223443731665611}
+{"family": "MM", "id": "nat:qa:MM-L0-0244", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2633514404296875}
+{"family": "MM", "id": "nat:qa:MM-L0-0524", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.046488434076309204}
+{"family": "MM", "id": "nat:qa:MM-L0-0540", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.15910600125789642}
+{"family": "MM", "id": "nat:qa:MM-L0-0058", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.018092155456543, "bridge_protected": true, "bridge": "Italy"}
+{"family": "MM", "id": "nat:qa:MM-L0-0244", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.996460437774658, "bridge_protected": false, "bridge": "Bach"}
+{"family": "MM", "id": "nat:qa:MM-L0-0524", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.608748912811279, "bridge_protected": true, "bridge": "Naples"}
+{"family": "MM", "id": "nat:qa:MM-L0-0540", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.732784748077393, "bridge_protected": false, "bridge": "Seville"}
+{"family": "MM", "id": "nat:qa:MM-L0-0058", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.09604988992214203, "bridge_protected": true, "bridge": "Italy"}
+{"family": "MM", "id": "nat:qa:MM-L0-0244", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.2887176275253296, "bridge_protected": false, "bridge": "Bach"}
+{"family": "MM", "id": "nat:qa:MM-L0-0524", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.08138586580753326, "bridge_protected": true, "bridge": "Naples"}
+{"family": "MM", "id": "nat:qa:MM-L0-0540", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.37661638855934143, "bridge_protected": false, "bridge": "Seville"}
+{"family": "PP", "id": "nat:qa:PP-L0-0059", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.39788204431533813}
+{"family": "PP", "id": "nat:qa:PP-L0-0079", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6791360378265381}
+{"family": "MP", "id": "nat:qa:MP-L0-0244", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4432237148284912}
+{"family": "MP", "id": "nat:qa:MP-L0-0252", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3177920877933502}
+{"family": "PP", "id": "nat:qa:PP-L0-0509", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3143775761127472}
+{"family": "PP", "id": "nat:qa:PP-L0-0559", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3805329203605652}
+{"family": "PP", "id": "nat:qa:PP-L0-0059", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.06554467976093292, "bridge_protected": false, "bridge": "Italy"}
+{"family": "PP", "id": "nat:qa:PP-L0-0079", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.37855809926986694, "bridge_protected": true, "bridge": "Nepal"}
+{"family": "MP", "id": "nat:qa:MP-L0-0244", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.5492966175079346, "bridge_protected": false, "bridge": "Bach"}
+{"family": "MP", "id": "nat:qa:MP-L0-0252", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.5096732378005981, "bridge_protected": false, "bridge": "Cervantes"}
+{"family": "PP", "id": "nat:qa:PP-L0-0509", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.6225453615188599, "bridge_protected": false, "bridge": "Milan"}
+{"family": "PP", "id": "nat:qa:PP-L0-0559", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.01173026580363512, "bridge_protected": false, "bridge": "Venice"}
+{"family": "PP", "id": "nat:qa:PP-L0-0059", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.42190301418304443, "bridge_protected": false, "bridge": "Italy"}
+{"family": "PP", "id": "nat:qa:PP-L0-0079", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.749303936958313, "bridge_protected": true, "bridge": "Nepal"}
+{"family": "MP", "id": "nat:qa:MP-L0-0244", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.8129035234451294, "bridge_protected": false, "bridge": "Bach"}
+{"family": "MP", "id": "nat:qa:MP-L0-0252", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.44413474202156067, "bridge_protected": false, "bridge": "Cervantes"}
+{"family": "PP", "id": "nat:qa:PP-L0-0509", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6489299535751343, "bridge_protected": false, "bridge": "Milan"}
+{"family": "PP", "id": "nat:qa:PP-L0-0559", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.37802642583847046, "bridge_protected": false, "bridge": "Venice"}
+{"family": "MP", "id": "nat:qa:MP-L0-0064", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5056317448616028}
+{"family": "PP", "id": "nat:qa:PP-L0-0313", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4032386541366577}
+{"family": "PM", "id": "nat:qa:PM-L0-0345", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6498798131942749}
+{"family": "MP", "id": "nat:qa:MP-L0-0064", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -0.9024419784545898, "bridge_protected": true, "bridge": "Japan"}
+{"family": "PP", "id": "nat:qa:PP-L0-0313", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.7513495683670044, "bridge_protected": false, "bridge": "Monet"}
+{"family": "PM", "id": "nat:qa:PM-L0-0345", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -9.388261795043945, "bridge_protected": true, "bridge": "Verdi"}
+{"family": "MP", "id": "nat:qa:MP-L0-0064", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3698072135448456, "bridge_protected": true, "bridge": "Japan"}
+{"family": "PP", "id": "nat:qa:PP-L0-0313", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4238932132720947, "bridge_protected": false, "bridge": "Monet"}
+{"family": "PM", "id": "nat:qa:PM-L0-0345", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.537384033203125, "bridge_protected": true, "bridge": "Verdi"}
+{"family": "MP", "id": "nat:qa:MP-L0-0074", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.37320274114608765}
+{"family": "PP", "id": "nat:qa:PP-L0-0075", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5714190602302551}
+{"family": "MP", "id": "nat:qa:MP-L0-0078", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5387288331985474}
+{"family": "PP", "id": "nat:qa:PP-L0-0099", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4584547281265259}
+{"family": "MP", "id": "nat:qa:MP-L0-0284", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4564409852027893}
+{"family": "MP", "id": "nat:qa:MP-L0-0510", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5239930152893066}
+{"family": "PP", "id": "nat:qa:PP-L0-0513", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6990163326263428}
+{"family": "MP", "id": "nat:qa:MP-L0-0074", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.10364677011966705, "bridge_protected": false, "bridge": "Morocco"}
+{"family": "PP", "id": "nat:qa:PP-L0-0075", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.5240072011947632, "bridge_protected": false, "bridge": "Morocco"}
+{"family": "MP", "id": "nat:qa:MP-L0-0078", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.04038767144083977, "bridge_protected": false, "bridge": "Nepal"}
+{"family": "PP", "id": "nat:qa:PP-L0-0099", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -0.7586337327957153, "bridge_protected": false, "bridge": "Portugal"}
+{"family": "MP", "id": "nat:qa:MP-L0-0284", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.787425518035889, "bridge_protected": false, "bridge": "Galileo"}
+{"family": "MP", "id": "nat:qa:MP-L0-0510", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.722898006439209, "bridge_protected": true, "bridge": "Milan"}
+{"family": "PP", "id": "nat:qa:PP-L0-0513", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.3551573753356934, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "MP", "id": "nat:qa:MP-L0-0074", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3699754476547241, "bridge_protected": false, "bridge": "Morocco"}
+{"family": "PP", "id": "nat:qa:PP-L0-0075", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.661827802658081, "bridge_protected": false, "bridge": "Morocco"}
+{"family": "MP", "id": "nat:qa:MP-L0-0078", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5467003583908081, "bridge_protected": false, "bridge": "Nepal"}
+{"family": "PP", "id": "nat:qa:PP-L0-0099", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.625315248966217, "bridge_protected": false, "bridge": "Portugal"}
+{"family": "MP", "id": "nat:qa:MP-L0-0284", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5454419851303101, "bridge_protected": false, "bridge": "Galileo"}
+{"family": "MP", "id": "nat:qa:MP-L0-0510", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -1.0530519485473633, "bridge_protected": true, "bridge": "Milan"}
+{"family": "PP", "id": "nat:qa:PP-L0-0513", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -1.04891836643219, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "MM", "id": "nat:qa:MM-L0-0074", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.21330402791500092}
+{"family": "MM", "id": "nat:qa:MM-L0-0110", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.24735446274280548}
+{"family": "MM", "id": "nat:qa:MM-L0-0074", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -6.822775363922119, "bridge_protected": true, "bridge": "Morocco"}
+{"family": "MM", "id": "nat:qa:MM-L0-0110", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.7630221843719482, "bridge_protected": true, "bridge": "Thailand"}
+{"family": "MM", "id": "nat:qa:MM-L0-0074", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.2936297059059143, "bridge_protected": true, "bridge": "Morocco"}
+{"family": "MM", "id": "nat:qa:MM-L0-0110", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4872618317604065, "bridge_protected": true, "bridge": "Thailand"}
+{"family": "PM", "id": "nat:qa:PM-L0-0075", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7471268773078918}
+{"family": "PM", "id": "nat:qa:PM-L0-0099", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7721800208091736}
+{"family": "MP", "id": "nat:qa:MP-L0-0332", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.32204943895339966}
+{"family": "PM", "id": "nat:qa:PM-L0-0477", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.1359487771987915}
+{"family": "MM", "id": "nat:qa:MM-L0-0508", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.09827497601509094}
+{"family": "PP", "id": "nat:qa:PP-L0-0527", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4674995541572571}
+{"family": "PM", "id": "nat:qa:PM-L0-0075", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -8.055534362792969, "bridge_protected": true, "bridge": "Morocco"}
+{"family": "PM", "id": "nat:qa:PM-L0-0099", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -8.066079139709473, "bridge_protected": true, "bridge": "Portugal"}
+{"family": "MP", "id": "nat:qa:MP-L0-0332", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -0.7839903831481934, "bridge_protected": false, "bridge": "Picasso"}
+{"family": "PM", "id": "nat:qa:PM-L0-0477", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.437659502029419, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "MM", "id": "nat:qa:MM-L0-0508", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.777773380279541, "bridge_protected": true, "bridge": "Lyon"}
+{"family": "PP", "id": "nat:qa:PP-L0-0527", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.0613652467727661, "bridge_protected": false, "bridge": "Osaka"}
+{"family": "PM", "id": "nat:qa:PM-L0-0075", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5922967195510864, "bridge_protected": true, "bridge": "Morocco"}
+{"family": "PM", "id": "nat:qa:PM-L0-0099", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.7265510559082031, "bridge_protected": true, "bridge": "Portugal"}
+{"family": "MP", "id": "nat:qa:MP-L0-0332", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3778752088546753, "bridge_protected": false, "bridge": "Picasso"}
+{"family": "PM", "id": "nat:qa:PM-L0-0477", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.29455599188804626, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "MM", "id": "nat:qa:MM-L0-0508", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.1573834866285324, "bridge_protected": true, "bridge": "Lyon"}
+{"family": "PP", "id": "nat:qa:PP-L0-0527", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3202432096004486, "bridge_protected": false, "bridge": "Osaka"}
+{"family": "PM", "id": "nat:qa:PM-L0-0077", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4068591296672821}
+{"family": "PP", "id": "nat:qa:PP-L0-0483", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2012079656124115}
+{"family": "PM", "id": "nat:qa:PM-L0-0513", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.46898114681243896}
+{"family": "MP", "id": "nat:qa:MP-L0-0550", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.35411354899406433}
+{"family": "MP", "id": "nat:qa:MP-L0-0554", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7277849912643433}
+{"family": "PM", "id": "nat:qa:PM-L0-0077", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.469854831695557, "bridge_protected": true, "bridge": "Nepal"}
+{"family": "PP", "id": "nat:qa:PP-L0-0483", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.08116176724433899, "bridge_protected": false, "bridge": "Florence"}
+{"family": "PM", "id": "nat:qa:PM-L0-0513", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -6.0030035972595215, "bridge_protected": true, "bridge": "Mumbai"}
+{"family": "MP", "id": "nat:qa:MP-L0-0550", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.3442142903804779, "bridge_protected": false, "bridge": "Toronto"}
+{"family": "MP", "id": "nat:qa:MP-L0-0554", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.9972587823867798, "bridge_protected": true, "bridge": "Vancouver"}
+{"family": "PM", "id": "nat:qa:PM-L0-0077", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6832501888275146, "bridge_protected": true, "bridge": "Nepal"}
+{"family": "PP", "id": "nat:qa:PP-L0-0483", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.2463819831609726, "bridge_protected": false, "bridge": "Florence"}
+{"family": "PM", "id": "nat:qa:PM-L0-0513", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.44053465127944946, "bridge_protected": true, "bridge": "Mumbai"}
+{"family": "MP", "id": "nat:qa:MP-L0-0550", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.39933568239212036, "bridge_protected": false, "bridge": "Toronto"}
+{"family": "MP", "id": "nat:qa:MP-L0-0554", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6477936506271362, "bridge_protected": true, "bridge": "Vancouver"}
+{"family": "PM", "id": "nat:qa:PM-L0-0083", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.1602269411087036}
+{"family": "MM", "id": "nat:qa:MM-L0-0098", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.17683027684688568}
+{"family": "PM", "id": "nat:qa:PM-L0-0083", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -8.538939476013184, "bridge_protected": true, "bridge": "Nigeria"}
+{"family": "MM", "id": "nat:qa:MM-L0-0098", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.086913824081421, "bridge_protected": true, "bridge": "Portugal"}
+{"family": "PM", "id": "nat:qa:PM-L0-0083", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.24749483168125153, "bridge_protected": true, "bridge": "Nigeria"}
+{"family": "MM", "id": "nat:qa:MM-L0-0098", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.34589824080467224, "bridge_protected": true, "bridge": "Portugal"}
+{"family": "PP", "id": "nat:qa:PP-L0-0087", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2162758857011795}
+{"family": "MM", "id": "nat:qa:MM-L0-0254", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.1930178552865982}
+{"family": "MM", "id": "nat:qa:MM-L0-0280", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.1974092721939087}
+{"family": "PP", "id": "nat:qa:PP-L0-0087", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.08089661598205566, "bridge_protected": false, "bridge": "Norway"}
+{"family": "MM", "id": "nat:qa:MM-L0-0254", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -8.65868091583252, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "MM", "id": "nat:qa:MM-L0-0280", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.419252872467041, "bridge_protected": false, "bridge": "Freud"}
+{"family": "PP", "id": "nat:qa:PP-L0-0087", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.16210293769836426, "bridge_protected": false, "bridge": "Norway"}
+{"family": "MM", "id": "nat:qa:MM-L0-0254", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3131766617298126, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "MM", "id": "nat:qa:MM-L0-0280", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.9000738263130188, "bridge_protected": false, "bridge": "Freud"}
+{"family": "PM", "id": "nat:qa:PM-L0-0087", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5323191285133362}
+{"family": "MM", "id": "nat:qa:MM-L0-0348", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.35090529918670654}
+{"family": "PM", "id": "nat:qa:PM-L0-0087", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -6.6358232498168945, "bridge_protected": true, "bridge": "Norway"}
+{"family": "MM", "id": "nat:qa:MM-L0-0348", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -6.072398662567139, "bridge_protected": true, "bridge": "Verdi"}
+{"family": "PM", "id": "nat:qa:PM-L0-0087", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.8094133734703064, "bridge_protected": true, "bridge": "Norway"}
+{"family": "MM", "id": "nat:qa:MM-L0-0348", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3209286630153656, "bridge_protected": true, "bridge": "Verdi"}
+{"family": "MP", "id": "nat:qa:MP-L0-0098", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5382888317108154}
+{"family": "PP", "id": "nat:qa:PP-L0-0113", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7595522999763489}
+{"family": "MP", "id": "nat:qa:MP-L0-0260", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5166746973991394}
+{"family": "PM", "id": "nat:qa:PM-L0-0509", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.28323155641555786}
+{"family": "PM", "id": "nat:qa:PM-L0-0559", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5282448530197144}
+{"family": "MP", "id": "nat:qa:MP-L0-0098", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -0.9890477657318115, "bridge_protected": false, "bridge": "Portugal"}
+{"family": "PP", "id": "nat:qa:PP-L0-0113", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.3541042804718018, "bridge_protected": true, "bridge": "Venezuela"}
+{"family": "MP", "id": "nat:qa:MP-L0-0260", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.0656200647354126, "bridge_protected": false, "bridge": "Chopin"}
+{"family": "PM", "id": "nat:qa:PM-L0-0509", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -6.996389389038086, "bridge_protected": true, "bridge": "Milan"}
+{"family": "PM", "id": "nat:qa:PM-L0-0559", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -6.457944869995117, "bridge_protected": true, "bridge": "Venice"}
+{"family": "MP", "id": "nat:qa:MP-L0-0098", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5583198666572571, "bridge_protected": false, "bridge": "Portugal"}
+{"family": "PP", "id": "nat:qa:PP-L0-0113", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7983240485191345, "bridge_protected": true, "bridge": "Venezuela"}
+{"family": "MP", "id": "nat:qa:MP-L0-0260", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.588326096534729, "bridge_protected": false, "bridge": "Chopin"}
+{"family": "PM", "id": "nat:qa:PM-L0-0509", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5455399751663208, "bridge_protected": true, "bridge": "Milan"}
+{"family": "PM", "id": "nat:qa:PM-L0-0559", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6499871015548706, "bridge_protected": true, "bridge": "Venice"}
+{"family": "MM", "id": "nat:qa:MM-L0-0100", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.12675447762012482}
+{"family": "MM", "id": "nat:qa:MM-L0-0100", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.723474979400635, "bridge_protected": true, "bridge": "Portugal"}
+{"family": "MM", "id": "nat:qa:MM-L0-0100", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.31038928031921387, "bridge_protected": true, "bridge": "Portugal"}
+{"family": "PP", "id": "nat:qa:PP-L0-0109", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.22935950756072998}
+{"family": "PP", "id": "nat:qa:PP-L0-0345", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4256087839603424}
+{"family": "PP", "id": "nat:qa:PP-L0-0481", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5743759274482727}
+{"family": "MP", "id": "nat:qa:MP-L0-0492", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6070842742919922}
+{"family": "PM", "id": "nat:qa:PM-L0-0555", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6683076024055481}
+{"family": "PP", "id": "nat:qa:PP-L0-0109", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.4346638023853302, "bridge_protected": true, "bridge": "Thailand"}
+{"family": "PP", "id": "nat:qa:PP-L0-0345", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.0329535007476807, "bridge_protected": false, "bridge": "Verdi"}
+{"family": "PP", "id": "nat:qa:PP-L0-0481", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.642611026763916, "bridge_protected": false, "bridge": "Florence"}
+{"family": "MP", "id": "nat:qa:MP-L0-0492", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.210310220718384, "bridge_protected": false, "bridge": "Hamburg"}
+{"family": "PM", "id": "nat:qa:PM-L0-0555", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -11.008662223815918, "bridge_protected": false, "bridge": "Vancouver"}
+{"family": "PP", "id": "nat:qa:PP-L0-0109", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.31490200757980347, "bridge_protected": true, "bridge": "Thailand"}
+{"family": "PP", "id": "nat:qa:PP-L0-0345", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7264700531959534, "bridge_protected": false, "bridge": "Verdi"}
+{"family": "PP", "id": "nat:qa:PP-L0-0481", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5905399322509766, "bridge_protected": false, "bridge": "Florence"}
+{"family": "MP", "id": "nat:qa:MP-L0-0492", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7520864009857178, "bridge_protected": false, "bridge": "Hamburg"}
+{"family": "PM", "id": "nat:qa:PM-L0-0555", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.681557536125183, "bridge_protected": false, "bridge": "Vancouver"}
+{"family": "PM", "id": "nat:qa:PM-L0-0109", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2591277062892914}
+{"family": "PM", "id": "nat:qa:PM-L0-0253", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.41630133986473083}
+{"family": "MP", "id": "nat:qa:MP-L0-0276", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2802901268005371}
+{"family": "MP", "id": "nat:qa:MP-L0-0490", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.23267468810081482}
+{"family": "PP", "id": "nat:qa:PP-L0-0495", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3489404320716858}
+{"family": "PP", "id": "nat:qa:PP-L0-0501", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.1978950947523117}
+{"family": "PP", "id": "nat:qa:PP-L0-0535", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.1343039572238922}
+{"family": "MP", "id": "nat:qa:MP-L0-0560", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5199580788612366}
+{"family": "PM", "id": "nat:qa:PM-L0-0109", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.5188236236572266, "bridge_protected": true, "bridge": "Thailand"}
+{"family": "PM", "id": "nat:qa:PM-L0-0253", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.7389745712280273, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "MP", "id": "nat:qa:MP-L0-0276", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.4074151515960693, "bridge_protected": false, "bridge": "Dostoevsky"}
+{"family": "MP", "id": "nat:qa:MP-L0-0490", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.1990821361541748, "bridge_protected": false, "bridge": "Hamburg"}
+{"family": "PP", "id": "nat:qa:PP-L0-0495", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.019796133041382, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "PP", "id": "nat:qa:PP-L0-0501", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.04248557239770889, "bridge_protected": true, "bridge": "Kyoto"}
+{"family": "PP", "id": "nat:qa:PP-L0-0535", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.01312121283262968, "bridge_protected": false, "bridge": "Rio"}
+{"family": "MP", "id": "nat:qa:MP-L0-0560", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.13661940395832062, "bridge_protected": false, "bridge": "Venice"}
+{"family": "PM", "id": "nat:qa:PM-L0-0109", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.2525714337825775, "bridge_protected": true, "bridge": "Thailand"}
+{"family": "PM", "id": "nat:qa:PM-L0-0253", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4093221127986908, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "MP", "id": "nat:qa:MP-L0-0276", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.25750890374183655, "bridge_protected": false, "bridge": "Dostoevsky"}
+{"family": "MP", "id": "nat:qa:MP-L0-0490", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3767887055873871, "bridge_protected": false, "bridge": "Hamburg"}
+{"family": "PP", "id": "nat:qa:PP-L0-0495", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.35429927706718445, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "PP", "id": "nat:qa:PP-L0-0501", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.32201653718948364, "bridge_protected": true, "bridge": "Kyoto"}
+{"family": "PP", "id": "nat:qa:PP-L0-0535", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.2919444143772125, "bridge_protected": false, "bridge": "Rio"}
+{"family": "MP", "id": "nat:qa:MP-L0-0560", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.46536773443222046, "bridge_protected": false, "bridge": "Venice"}
+{"family": "MP", "id": "nat:qa:MP-L0-0110", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.24295710027217865}
+{"family": "MP", "id": "nat:qa:MP-L0-0120", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3611615002155304}
+{"family": "MM", "id": "nat:qa:MM-L0-0306", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4940629005432129}
+{"family": "PP", "id": "nat:qa:PP-L0-0547", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.35621339082717896}
+{"family": "MM", "id": "nat:qa:MM-L0-0558", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.11478284001350403}
+{"family": "MP", "id": "nat:qa:MP-L0-0110", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.016674086451530457, "bridge_protected": false, "bridge": "Thailand"}
+{"family": "MP", "id": "nat:qa:MP-L0-0120", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.3683225214481354, "bridge_protected": true, "bridge": "Vietnam"}
+{"family": "MM", "id": "nat:qa:MM-L0-0306", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.3752715587615967, "bridge_protected": false, "bridge": "Linnaeus"}
+{"family": "PP", "id": "nat:qa:PP-L0-0547", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.9939837455749512, "bridge_protected": true, "bridge": "Sydney"}
+{"family": "MM", "id": "nat:qa:MM-L0-0558", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.200021266937256, "bridge_protected": true, "bridge": "Venice"}
+{"family": "MP", "id": "nat:qa:MP-L0-0110", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3557589054107666, "bridge_protected": false, "bridge": "Thailand"}
+{"family": "MP", "id": "nat:qa:MP-L0-0120", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5081630349159241, "bridge_protected": true, "bridge": "Vietnam"}
+{"family": "MM", "id": "nat:qa:MM-L0-0306", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.41849541664123535, "bridge_protected": false, "bridge": "Linnaeus"}
+{"family": "PP", "id": "nat:qa:PP-L0-0547", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.650395393371582, "bridge_protected": true, "bridge": "Sydney"}
+{"family": "MM", "id": "nat:qa:MM-L0-0558", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.17302770912647247, "bridge_protected": true, "bridge": "Venice"}
+{"family": "PM", "id": "nat:qa:PM-L0-0113", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.331533819437027}
+{"family": "MM", "id": "nat:qa:MM-L0-0246", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3210882842540741}
+{"family": "PP", "id": "nat:qa:PP-L0-0477", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6932032108306885}
+{"family": "PM", "id": "nat:qa:PM-L0-0479", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.18934394419193268}
+{"family": "PM", "id": "nat:qa:PM-L0-0113", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.417694568634033, "bridge_protected": true, "bridge": "Venezuela"}
+{"family": "MM", "id": "nat:qa:MM-L0-0246", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.0251872539520264, "bridge_protected": false, "bridge": "Beethoven"}
+{"family": "PP", "id": "nat:qa:PP-L0-0477", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.050837740302085876, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "PM", "id": "nat:qa:PM-L0-0479", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -9.952604293823242, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "PM", "id": "nat:qa:PM-L0-0113", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6718208193778992, "bridge_protected": true, "bridge": "Venezuela"}
+{"family": "MM", "id": "nat:qa:MM-L0-0246", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5013296604156494, "bridge_protected": false, "bridge": "Beethoven"}
+{"family": "PP", "id": "nat:qa:PP-L0-0477", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6653887033462524, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "PM", "id": "nat:qa:PM-L0-0479", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4082096815109253, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "MP", "id": "nat:qa:MP-L0-0114", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.8315839767456055}
+{"family": "PP", "id": "nat:qa:PP-L0-0285", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.41310420632362366}
+{"family": "PM", "id": "nat:qa:PM-L0-0511", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.23351185023784637}
+{"family": "MP", "id": "nat:qa:MP-L0-0114", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.022031784057617, "bridge_protected": false, "bridge": "Venezuela"}
+{"family": "PP", "id": "nat:qa:PP-L0-0285", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -0.8757860660552979, "bridge_protected": false, "bridge": "Goethe"}
+{"family": "PM", "id": "nat:qa:PM-L0-0511", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.638548851013184, "bridge_protected": true, "bridge": "Milan"}
+{"family": "MP", "id": "nat:qa:MP-L0-0114", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.8232911229133606, "bridge_protected": false, "bridge": "Venezuela"}
+{"family": "PP", "id": "nat:qa:PP-L0-0285", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3833405673503876, "bridge_protected": false, "bridge": "Goethe"}
+{"family": "PM", "id": "nat:qa:PM-L0-0511", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3619372546672821, "bridge_protected": true, "bridge": "Milan"}
+{"family": "MP", "id": "nat:qa:MP-L0-0118", "kind": "clean", "band": "-", "condition": "none", "correct": false, "logp": -0.8793647885322571}
+{"family": "MM", "id": "nat:qa:MM-L0-0248", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4881247878074646}
+{"family": "MP", "id": "nat:qa:MP-L0-0118", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.0569679737091064, "bridge_protected": false, "bridge": "Vietnam"}
+{"family": "MM", "id": "nat:qa:MM-L0-0248", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -6.822834014892578, "bridge_protected": false, "bridge": "Beethoven"}
+{"family": "MP", "id": "nat:qa:MP-L0-0118", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.045074462890625, "bridge_protected": false, "bridge": "Vietnam"}
+{"family": "MM", "id": "nat:qa:MM-L0-0248", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6931402087211609, "bridge_protected": false, "bridge": "Beethoven"}
+{"family": "MM", "id": "nat:qa:MM-L0-0118", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.39342090487480164}
+{"family": "MM", "id": "nat:qa:MM-L0-0118", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.013321399688721, "bridge_protected": true, "bridge": "Vietnam"}
+{"family": "MM", "id": "nat:qa:MM-L0-0118", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.468668133020401, "bridge_protected": true, "bridge": "Vietnam"}
+{"family": "PP", "id": "nat:qa:PP-L1-0121", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7407225370407104}
+{"family": "MM", "id": "nat:qa:MM-L1-0392", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.14439618587493896}
+{"family": "PP", "id": "nat:qa:PP-L1-0121", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.3495352268218994, "bridge_protected": false, "bridge": "Argentina"}
+{"family": "MM", "id": "nat:qa:MM-L1-0392", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.260544538497925, "bridge_protected": false, "bridge": "Dostoevsky"}
+{"family": "PP", "id": "nat:qa:PP-L1-0121", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6142194271087646, "bridge_protected": false, "bridge": "Argentina"}
+{"family": "MM", "id": "nat:qa:MM-L1-0392", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.26170259714126587, "bridge_protected": false, "bridge": "Dostoevsky"}
+{"family": "PM", "id": "nat:qa:PM-L1-0121", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5481430292129517}
+{"family": "MM", "id": "nat:qa:MM-L1-0388", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3136260509490967}
+{"family": "PM", "id": "nat:qa:PM-L1-0121", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -9.524491310119629, "bridge_protected": true, "bridge": "Argentina"}
+{"family": "MM", "id": "nat:qa:MM-L1-0388", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.0011868476867676, "bridge_protected": false, "bridge": "Descartes"}
+{"family": "PM", "id": "nat:qa:PM-L1-0121", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7566016912460327, "bridge_protected": true, "bridge": "Argentina"}
+{"family": "MM", "id": "nat:qa:MM-L1-0388", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4399167597293854, "bridge_protected": false, "bridge": "Descartes"}
+{"family": "PP", "id": "nat:qa:PP-L1-0127", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.8046298027038574}
+{"family": "PP", "id": "nat:qa:PP-L1-0127", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.3254165649414062, "bridge_protected": false, "bridge": "Brazil"}
+{"family": "PP", "id": "nat:qa:PP-L1-0127", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6847115159034729, "bridge_protected": false, "bridge": "Brazil"}
+{"family": "PM", "id": "nat:qa:PM-L1-0127", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3753167390823364}
+{"family": "MM", "id": "nat:qa:MM-L1-0190", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.30475354194641113}
+{"family": "PM", "id": "nat:qa:PM-L1-0127", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.4263501167297363, "bridge_protected": true, "bridge": "Brazil"}
+{"family": "MM", "id": "nat:qa:MM-L1-0190", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.400726318359375, "bridge_protected": true, "bridge": "Mexico"}
+{"family": "PM", "id": "nat:qa:PM-L1-0127", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4888385832309723, "bridge_protected": true, "bridge": "Brazil"}
+{"family": "MM", "id": "nat:qa:MM-L1-0190", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -1.072293758392334, "bridge_protected": true, "bridge": "Mexico"}
+{"family": "MP", "id": "nat:qa:MP-L1-0130", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6456548571586609}
+{"family": "PP", "id": "nat:qa:PP-L1-0181", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.46170249581336975}
+{"family": "MP", "id": "nat:qa:MP-L1-0130", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.4121739864349365, "bridge_protected": false, "bridge": "Canada"}
+{"family": "PP", "id": "nat:qa:PP-L1-0181", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.5416643619537354, "bridge_protected": true, "bridge": "Japan"}
+{"family": "MP", "id": "nat:qa:MP-L1-0130", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6545397639274597, "bridge_protected": false, "bridge": "Canada"}
+{"family": "PP", "id": "nat:qa:PP-L1-0181", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.46370208263397217, "bridge_protected": true, "bridge": "Japan"}
+{"family": "MM", "id": "nat:qa:MM-L1-0130", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.637262761592865}
+{"family": "MM", "id": "nat:qa:MM-L1-0130", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.975253105163574, "bridge_protected": true, "bridge": "Canada"}
+{"family": "MM", "id": "nat:qa:MM-L1-0130", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7642030119895935, "bridge_protected": true, "bridge": "Canada"}
+{"family": "PP", "id": "nat:qa:PP-L1-0131", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -1.0138145685195923}
+{"family": "MM", "id": "nat:qa:MM-L1-0428", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3098203241825104}
+{"family": "MP", "id": "nat:qa:MP-L1-0614", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.9103652238845825}
+{"family": "PP", "id": "nat:qa:PP-L1-0131", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.335986375808716, "bridge_protected": false, "bridge": "Canada"}
+{"family": "MM", "id": "nat:qa:MM-L1-0428", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.899970531463623, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "MP", "id": "nat:qa:MP-L1-0614", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.8276350498199463, "bridge_protected": false, "bridge": "Osaka"}
+{"family": "PP", "id": "nat:qa:PP-L1-0131", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.8498901128768921, "bridge_protected": false, "bridge": "Canada"}
+{"family": "MM", "id": "nat:qa:MM-L1-0428", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3289206624031067, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "MP", "id": "nat:qa:MP-L1-0614", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.5944583415985107, "bridge_protected": false, "bridge": "Osaka"}
+{"family": "PM", "id": "nat:qa:PM-L1-0131", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.16821971535682678}
+{"family": "PM", "id": "nat:qa:PM-L1-0437", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6170980930328369}
+{"family": "PM", "id": "nat:qa:PM-L1-0131", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.3087356984615326, "bridge_protected": true, "bridge": "Canada"}
+{"family": "PM", "id": "nat:qa:PM-L1-0437", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -7.689398765563965, "bridge_protected": false, "bridge": "Napoleon"}
+{"family": "PM", "id": "nat:qa:PM-L1-0131", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.2067132145166397, "bridge_protected": true, "bridge": "Canada"}
+{"family": "PM", "id": "nat:qa:PM-L1-0437", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6659377217292786, "bridge_protected": false, "bridge": "Napoleon"}
+{"family": "MP", "id": "nat:qa:MP-L1-0152", "kind": "clean", "band": "-", "condition": "none", "correct": false, "logp": -1.1038622856140137}
+{"family": "MP", "id": "nat:qa:MP-L1-0152", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.1717365980148315, "bridge_protected": false, "bridge": "Ethiopia"}
+{"family": "MP", "id": "nat:qa:MP-L1-0152", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.0443274974822998, "bridge_protected": false, "bridge": "Ethiopia"}
+{"family": "MM", "id": "nat:qa:MM-L1-0152", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2883405387401581}
+{"family": "MM", "id": "nat:qa:MM-L1-0588", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.20970043540000916}
+{"family": "MM", "id": "nat:qa:MM-L1-0152", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -6.350221157073975, "bridge_protected": false, "bridge": "Ethiopia"}
+{"family": "MM", "id": "nat:qa:MM-L1-0588", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -9.011903762817383, "bridge_protected": false, "bridge": "Krakow"}
+{"family": "MM", "id": "nat:qa:MM-L1-0152", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.312984824180603, "bridge_protected": false, "bridge": "Ethiopia"}
+{"family": "MM", "id": "nat:qa:MM-L1-0588", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4383576512336731, "bridge_protected": false, "bridge": "Krakow"}
+{"family": "MP", "id": "nat:qa:MP-L1-0156", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7157149910926819}
+{"family": "MP", "id": "nat:qa:MP-L1-0156", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.2264494895935059, "bridge_protected": false, "bridge": "France"}
+{"family": "MP", "id": "nat:qa:MP-L1-0156", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.8669542670249939, "bridge_protected": false, "bridge": "France"}
+{"family": "MM", "id": "nat:qa:MM-L1-0156", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3763982653617859}
+{"family": "MM", "id": "nat:qa:MM-L1-0156", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -10.946806907653809, "bridge_protected": true, "bridge": "France"}
+{"family": "MM", "id": "nat:qa:MM-L1-0156", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.46120503544807434, "bridge_protected": true, "bridge": "France"}
+{"family": "MP", "id": "nat:qa:MP-L1-0158", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.756439745426178}
+{"family": "MP", "id": "nat:qa:MP-L1-0158", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -0.9899008274078369, "bridge_protected": false, "bridge": "Ghana"}
+{"family": "MP", "id": "nat:qa:MP-L1-0158", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.671871542930603, "bridge_protected": false, "bridge": "Ghana"}
+{"family": "MM", "id": "nat:qa:MM-L1-0158", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.22117064893245697}
+{"family": "MM", "id": "nat:qa:MM-L1-0158", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -6.6935715675354, "bridge_protected": true, "bridge": "Ghana"}
+{"family": "MM", "id": "nat:qa:MM-L1-0158", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.28357526659965515, "bridge_protected": true, "bridge": "Ghana"}
+{"family": "MP", "id": "nat:qa:MP-L1-0160", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3763495981693268}
+{"family": "MP", "id": "nat:qa:MP-L1-0160", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.15377956628799438, "bridge_protected": false, "bridge": "Ghana"}
+{"family": "MP", "id": "nat:qa:MP-L1-0160", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.31177037954330444, "bridge_protected": false, "bridge": "Ghana"}
+{"family": "MM", "id": "nat:qa:MM-L1-0160", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3535645008087158}
+{"family": "MM", "id": "nat:qa:MM-L1-0160", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -6.433517932891846, "bridge_protected": true, "bridge": "Ghana"}
+{"family": "MM", "id": "nat:qa:MM-L1-0160", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.44866007566452026, "bridge_protected": true, "bridge": "Ghana"}
+{"family": "MP", "id": "nat:qa:MP-L1-0166", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.41026756167411804}
+{"family": "MM", "id": "nat:qa:MM-L1-0638", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.1731363832950592}
+{"family": "MP", "id": "nat:qa:MP-L1-0166", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.16591821610927582, "bridge_protected": true, "bridge": "India"}
+{"family": "MM", "id": "nat:qa:MM-L1-0638", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.3649272918701172, "bridge_protected": false, "bridge": "Toronto"}
+{"family": "MP", "id": "nat:qa:MP-L1-0166", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.35440757870674133, "bridge_protected": true, "bridge": "India"}
+{"family": "MM", "id": "nat:qa:MM-L1-0638", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3136938214302063, "bridge_protected": false, "bridge": "Toronto"}
+{"family": "MM", "id": "nat:qa:MM-L1-0166", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.44941455125808716}
+{"family": "MM", "id": "nat:qa:MM-L1-0166", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -7.083653450012207, "bridge_protected": true, "bridge": "India"}
+{"family": "MM", "id": "nat:qa:MM-L1-0166", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6536968350410461, "bridge_protected": true, "bridge": "India"}
+{"family": "PM", "id": "nat:qa:PM-L1-0181", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6894034147262573}
+{"family": "PM", "id": "nat:qa:PM-L1-0181", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.83485746383667, "bridge_protected": true, "bridge": "Japan"}
+{"family": "PM", "id": "nat:qa:PM-L1-0181", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5685007572174072, "bridge_protected": true, "bridge": "Japan"}
+{"family": "PP", "id": "nat:qa:PP-L1-0183", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.14657464623451233}
+{"family": "PM", "id": "nat:qa:PM-L1-0607", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.44100844860076904}
+{"family": "PP", "id": "nat:qa:PP-L1-0183", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.00657596904784441, "bridge_protected": false, "bridge": "Japan"}
+{"family": "PM", "id": "nat:qa:PM-L1-0607", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.550520420074463, "bridge_protected": true, "bridge": "Munich"}
+{"family": "PP", "id": "nat:qa:PP-L1-0183", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.1412542462348938, "bridge_protected": false, "bridge": "Japan"}
+{"family": "PM", "id": "nat:qa:PM-L1-0607", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4933541417121887, "bridge_protected": true, "bridge": "Munich"}
+{"family": "PM", "id": "nat:qa:PM-L1-0183", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2580605149269104}
+{"family": "PM", "id": "nat:qa:PM-L1-0599", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6904899477958679}
+{"family": "PM", "id": "nat:qa:PM-L1-0183", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.216931104660034, "bridge_protected": true, "bridge": "Japan"}
+{"family": "PM", "id": "nat:qa:PM-L1-0599", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.079283714294434, "bridge_protected": true, "bridge": "Milan"}
+{"family": "PM", "id": "nat:qa:PM-L1-0183", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.1860983520746231, "bridge_protected": true, "bridge": "Japan"}
+{"family": "PM", "id": "nat:qa:PM-L1-0599", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7763708233833313, "bridge_protected": true, "bridge": "Milan"}
+{"family": "PP", "id": "nat:qa:PP-L1-0185", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6783996820449829}
+{"family": "PP", "id": "nat:qa:PP-L1-0185", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.7085236310958862, "bridge_protected": true, "bridge": "Kenya"}
+{"family": "PP", "id": "nat:qa:PP-L1-0185", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7032002806663513, "bridge_protected": true, "bridge": "Kenya"}
+{"family": "PM", "id": "nat:qa:PM-L1-0185", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4411701261997223}
+{"family": "MP", "id": "nat:qa:MP-L1-0638", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6282306909561157}
+{"family": "PM", "id": "nat:qa:PM-L1-0185", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -9.376293182373047, "bridge_protected": true, "bridge": "Kenya"}
+{"family": "MP", "id": "nat:qa:MP-L1-0638", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.494825601577759, "bridge_protected": false, "bridge": "Toronto"}
+{"family": "PM", "id": "nat:qa:PM-L1-0185", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5052401423454285, "bridge_protected": true, "bridge": "Kenya"}
+{"family": "MP", "id": "nat:qa:MP-L1-0638", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5592771768569946, "bridge_protected": false, "bridge": "Toronto"}
+{"family": "MP", "id": "nat:qa:MP-L1-0186", "kind": "clean", "band": "-", "condition": "none", "correct": false, "logp": -1.097538948059082}
+{"family": "MP", "id": "nat:qa:MP-L1-0186", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.78245735168457, "bridge_protected": false, "bridge": "Kenya"}
+{"family": "MP", "id": "nat:qa:MP-L1-0186", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.0102717876434326, "bridge_protected": false, "bridge": "Kenya"}
+{"family": "MM", "id": "nat:qa:MM-L1-0186", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2113582044839859}
+{"family": "MM", "id": "nat:qa:MM-L1-0186", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -6.668157577514648, "bridge_protected": true, "bridge": "Kenya"}
+{"family": "MM", "id": "nat:qa:MM-L1-0186", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3914710283279419, "bridge_protected": true, "bridge": "Kenya"}
+{"family": "PP", "id": "nat:qa:PP-L1-0187", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5025261640548706}
+{"family": "PP", "id": "nat:qa:PP-L1-0187", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.31866776943206787, "bridge_protected": false, "bridge": "Kenya"}
+{"family": "PP", "id": "nat:qa:PP-L1-0187", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5034063458442688, "bridge_protected": false, "bridge": "Kenya"}
+{"family": "PM", "id": "nat:qa:PM-L1-0187", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7417935729026794}
+{"family": "PM", "id": "nat:qa:PM-L1-0187", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -7.040664196014404, "bridge_protected": true, "bridge": "Kenya"}
+{"family": "PM", "id": "nat:qa:PM-L1-0187", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -0.9276335835456848, "bridge_protected": true, "bridge": "Kenya"}
+{"family": "MP", "id": "nat:qa:MP-L1-0190", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5896623730659485}
+{"family": "MP", "id": "nat:qa:MP-L1-0588", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5488379001617432}
+{"family": "MM", "id": "nat:qa:MM-L1-0614", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.19980956614017487}
+{"family": "MP", "id": "nat:qa:MP-L1-0190", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.4080452024936676, "bridge_protected": false, "bridge": "Mexico"}
+{"family": "MP", "id": "nat:qa:MP-L1-0588", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.5920846462249756, "bridge_protected": false, "bridge": "Krakow"}
+{"family": "MM", "id": "nat:qa:MM-L1-0614", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.945665717124939, "bridge_protected": true, "bridge": "Osaka"}
+{"family": "MP", "id": "nat:qa:MP-L1-0190", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4931257367134094, "bridge_protected": false, "bridge": "Mexico"}
+{"family": "MP", "id": "nat:qa:MP-L1-0588", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5847557783126831, "bridge_protected": false, "bridge": "Krakow"}
+{"family": "MM", "id": "nat:qa:MM-L1-0614", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6366769075393677, "bridge_protected": true, "bridge": "Osaka"}
+{"family": "MP", "id": "nat:qa:MP-L1-0210", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6146305203437805}
+{"family": "MM", "id": "nat:qa:MM-L1-0444", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.26416367292404175}
+{"family": "MP", "id": "nat:qa:MP-L1-0210", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.3502907454967499, "bridge_protected": false, "bridge": "Peru"}
+{"family": "MM", "id": "nat:qa:MM-L1-0444", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.2814393043518066, "bridge_protected": true, "bridge": "Nobel"}
+{"family": "MP", "id": "nat:qa:MP-L1-0210", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5830240249633789, "bridge_protected": false, "bridge": "Peru"}
+{"family": "MM", "id": "nat:qa:MM-L1-0444", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3256901502609253, "bridge_protected": true, "bridge": "Nobel"}
+{"family": "MM", "id": "nat:qa:MM-L1-0210", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3689327538013458}
+{"family": "MM", "id": "nat:qa:MM-L1-0210", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.76100492477417, "bridge_protected": true, "bridge": "Peru"}
+{"family": "MM", "id": "nat:qa:MM-L1-0210", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5839051008224487, "bridge_protected": true, "bridge": "Peru"}
+{"family": "PP", "id": "nat:qa:PP-L1-0213", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.29270219802856445}
+{"family": "PP", "id": "nat:qa:PP-L1-0213", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.43363985419273376, "bridge_protected": false, "bridge": "Poland"}
+{"family": "PP", "id": "nat:qa:PP-L1-0213", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.23033475875854492, "bridge_protected": false, "bridge": "Poland"}
+{"family": "PM", "id": "nat:qa:PM-L1-0213", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.526397705078125}
+{"family": "PM", "id": "nat:qa:PM-L1-0569", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5832836627960205}
+{"family": "PM", "id": "nat:qa:PM-L1-0213", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -7.287134170532227, "bridge_protected": true, "bridge": "Poland"}
+{"family": "PM", "id": "nat:qa:PM-L1-0569", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -7.992551803588867, "bridge_protected": true, "bridge": "Florence"}
+{"family": "PM", "id": "nat:qa:PM-L1-0213", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.8098260760307312, "bridge_protected": true, "bridge": "Poland"}
+{"family": "PM", "id": "nat:qa:PM-L1-0569", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7393954992294312, "bridge_protected": true, "bridge": "Florence"}
+{"family": "MP", "id": "nat:qa:MP-L1-0214", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4273572266101837}
+{"family": "MM", "id": "nat:qa:MM-L1-0640", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.36822113394737244}
+{"family": "MP", "id": "nat:qa:MP-L1-0214", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.44537436962127686, "bridge_protected": false, "bridge": "Poland"}
+{"family": "MM", "id": "nat:qa:MM-L1-0640", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.6901655197143555, "bridge_protected": false, "bridge": "Toronto"}
+{"family": "MP", "id": "nat:qa:MP-L1-0214", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3575962781906128, "bridge_protected": false, "bridge": "Poland"}
+{"family": "MM", "id": "nat:qa:MM-L1-0640", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5331875085830688, "bridge_protected": false, "bridge": "Toronto"}
+{"family": "MM", "id": "nat:qa:MM-L1-0214", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.1571299433708191}
+{"family": "MM", "id": "nat:qa:MM-L1-0632", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.42125463485717773}
+{"family": "MM", "id": "nat:qa:MM-L1-0214", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.590063095092773, "bridge_protected": true, "bridge": "Poland"}
+{"family": "MM", "id": "nat:qa:MM-L1-0632", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.1651201248168945, "bridge_protected": true, "bridge": "Shanghai"}
+{"family": "MM", "id": "nat:qa:MM-L1-0214", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.2550012171268463, "bridge_protected": true, "bridge": "Poland"}
+{"family": "MM", "id": "nat:qa:MM-L1-0632", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4736382067203522, "bridge_protected": true, "bridge": "Shanghai"}
+{"family": "MP", "id": "nat:qa:MP-L0-0246", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.45384931564331055}
+{"family": "MP", "id": "nat:qa:MP-L0-0246", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -0.938032865524292, "bridge_protected": false, "bridge": "Beethoven"}
+{"family": "MP", "id": "nat:qa:MP-L0-0246", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5001500844955444, "bridge_protected": false, "bridge": "Beethoven"}
+{"family": "PP", "id": "nat:qa:PP-L0-0253", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3890727758407593}
+{"family": "PP", "id": "nat:qa:PP-L0-0253", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.6151643991470337, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "PP", "id": "nat:qa:PP-L0-0253", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.43520912528038025, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "MP", "id": "nat:qa:MP-L0-0254", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7252219319343567}
+{"family": "PP", "id": "nat:qa:PP-L0-0267", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.32482489943504333}
+{"family": "MP", "id": "nat:qa:MP-L0-0254", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.9611475467681885, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "PP", "id": "nat:qa:PP-L0-0267", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.5134592056274414, "bridge_protected": false, "bridge": "Dante"}
+{"family": "MP", "id": "nat:qa:MP-L0-0254", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -0.8950513005256653, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "PP", "id": "nat:qa:PP-L0-0267", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.36570048332214355, "bridge_protected": false, "bridge": "Dante"}
+{"family": "MM", "id": "nat:qa:MM-L0-0260", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2344687134027481}
+{"family": "MM", "id": "nat:qa:MM-L0-0260", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.1190714836120605, "bridge_protected": false, "bridge": "Chopin"}
+{"family": "MM", "id": "nat:qa:MM-L0-0260", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5061611533164978, "bridge_protected": false, "bridge": "Chopin"}
+{"family": "PP", "id": "nat:qa:PP-L0-0261", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.39861682057380676}
+{"family": "PM", "id": "nat:qa:PM-L0-0269", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6954429149627686}
+{"family": "PP", "id": "nat:qa:PP-L0-0315", "kind": "clean", "band": "-", "condition": "none", "correct": false, "logp": -0.8773757219314575}
+{"family": "PP", "id": "nat:qa:PP-L0-0261", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.31635865569114685, "bridge_protected": false, "bridge": "Copernicus"}
+{"family": "PM", "id": "nat:qa:PM-L0-0269", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -9.632892608642578, "bridge_protected": false, "bridge": "Descartes"}
+{"family": "PP", "id": "nat:qa:PP-L0-0315", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.9434971809387207, "bridge_protected": false, "bridge": "Monet"}
+{"family": "PP", "id": "nat:qa:PP-L0-0261", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5051827430725098, "bridge_protected": false, "bridge": "Copernicus"}
+{"family": "PM", "id": "nat:qa:PM-L0-0269", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7027414441108704, "bridge_protected": false, "bridge": "Descartes"}
+{"family": "PP", "id": "nat:qa:PP-L0-0315", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.729652762413025, "bridge_protected": false, "bridge": "Monet"}
+{"family": "MP", "id": "nat:qa:MP-L0-0262", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2577727735042572}
+{"family": "PP", "id": "nat:qa:PP-L0-0489", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6836939454078674}
+{"family": "PM", "id": "nat:qa:PM-L0-0497", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.27731844782829285}
+{"family": "MP", "id": "nat:qa:MP-L0-0262", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.19925299286842346, "bridge_protected": false, "bridge": "Copernicus"}
+{"family": "PP", "id": "nat:qa:PP-L0-0489", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.9422261714935303, "bridge_protected": false, "bridge": "Hamburg"}
+{"family": "PM", "id": "nat:qa:PM-L0-0497", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.6745100021362305, "bridge_protected": false, "bridge": "Krakow"}
+{"family": "MP", "id": "nat:qa:MP-L0-0262", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.23882171511650085, "bridge_protected": false, "bridge": "Copernicus"}
+{"family": "PP", "id": "nat:qa:PP-L0-0489", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.8553652763366699, "bridge_protected": false, "bridge": "Hamburg"}
+{"family": "PM", "id": "nat:qa:PM-L0-0497", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4127757251262665, "bridge_protected": false, "bridge": "Krakow"}
+{"family": "MM", "id": "nat:qa:MM-L0-0262", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3525906801223755}
+{"family": "MM", "id": "nat:qa:MM-L0-0556", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.17247869074344635}
+{"family": "MM", "id": "nat:qa:MM-L0-0262", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.6684088706970215, "bridge_protected": false, "bridge": "Copernicus"}
+{"family": "MM", "id": "nat:qa:MM-L0-0556", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.8387160301208496, "bridge_protected": true, "bridge": "Vancouver"}
+{"family": "MM", "id": "nat:qa:MM-L0-0262", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7924872040748596, "bridge_protected": false, "bridge": "Copernicus"}
+{"family": "MM", "id": "nat:qa:MM-L0-0556", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7167211174964905, "bridge_protected": true, "bridge": "Vancouver"}
+{"family": "MM", "id": "nat:qa:MM-L0-0266", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.22111064195632935}
+{"family": "MM", "id": "nat:qa:MM-L0-0520", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.08033925294876099}
+{"family": "MM", "id": "nat:qa:MM-L0-0538", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.20918820798397064}
+{"family": "MM", "id": "nat:qa:MM-L0-0266", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -8.45474624633789, "bridge_protected": true, "bridge": "Dante"}
+{"family": "MM", "id": "nat:qa:MM-L0-0520", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.972075462341309, "bridge_protected": true, "bridge": "Munich"}
+{"family": "MM", "id": "nat:qa:MM-L0-0538", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -7.294539451599121, "bridge_protected": false, "bridge": "Seville"}
+{"family": "MM", "id": "nat:qa:MM-L0-0266", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.23687154054641724, "bridge_protected": true, "bridge": "Dante"}
+{"family": "MM", "id": "nat:qa:MM-L0-0520", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.17947620153427124, "bridge_protected": true, "bridge": "Munich"}
+{"family": "MM", "id": "nat:qa:MM-L0-0538", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5716676115989685, "bridge_protected": false, "bridge": "Seville"}
+{"family": "PM", "id": "nat:qa:PM-L0-0267", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.635044276714325}
+{"family": "PP", "id": "nat:qa:PP-L0-0331", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5502992868423462}
+{"family": "PM", "id": "nat:qa:PM-L0-0267", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.572665691375732, "bridge_protected": false, "bridge": "Dante"}
+{"family": "PP", "id": "nat:qa:PP-L0-0331", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.5309646129608154, "bridge_protected": false, "bridge": "Picasso"}
+{"family": "PM", "id": "nat:qa:PM-L0-0267", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.616222083568573, "bridge_protected": false, "bridge": "Dante"}
+{"family": "PP", "id": "nat:qa:PP-L0-0331", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.440559983253479, "bridge_protected": false, "bridge": "Picasso"}
+{"family": "PP", "id": "nat:qa:PP-L0-0269", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5918990969657898}
+{"family": "PM", "id": "nat:qa:PM-L0-0323", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.44963687658309937}
+{"family": "PM", "id": "nat:qa:PM-L0-0503", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4712126851081848}
+{"family": "PP", "id": "nat:qa:PP-L0-0269", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.8228063583374023, "bridge_protected": false, "bridge": "Descartes"}
+{"family": "PM", "id": "nat:qa:PM-L0-0323", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.665672540664673, "bridge_protected": true, "bridge": "Napoleon"}
+{"family": "PM", "id": "nat:qa:PM-L0-0503", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.765265941619873, "bridge_protected": true, "bridge": "Kyoto"}
+{"family": "PP", "id": "nat:qa:PP-L0-0269", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.45377835631370544, "bridge_protected": false, "bridge": "Descartes"}
+{"family": "PM", "id": "nat:qa:PM-L0-0323", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.49424582719802856, "bridge_protected": true, "bridge": "Napoleon"}
+{"family": "PM", "id": "nat:qa:PM-L0-0503", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5949574112892151, "bridge_protected": true, "bridge": "Kyoto"}
+{"family": "MM", "id": "nat:qa:MM-L0-0284", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.166166290640831}
+{"family": "MM", "id": "nat:qa:MM-L0-0338", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.13455918431282043}
+{"family": "MM", "id": "nat:qa:MM-L0-0496", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.09536471217870712}
+{"family": "MM", "id": "nat:qa:MM-L0-0284", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.03677469864487648, "bridge_protected": false, "bridge": "Galileo"}
+{"family": "MM", "id": "nat:qa:MM-L0-0338", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.73512601852417, "bridge_protected": false, "bridge": "Tchaikovsky"}
+{"family": "MM", "id": "nat:qa:MM-L0-0496", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.7021403312683105, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "MM", "id": "nat:qa:MM-L0-0284", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.14780236780643463, "bridge_protected": false, "bridge": "Galileo"}
+{"family": "MM", "id": "nat:qa:MM-L0-0338", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.15957410633563995, "bridge_protected": false, "bridge": "Tchaikovsky"}
+{"family": "MM", "id": "nat:qa:MM-L0-0496", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.21635682880878448, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "PM", "id": "nat:qa:PM-L0-0285", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5315344333648682}
+{"family": "MM", "id": "nat:qa:MM-L0-0490", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.18156194686889648}
+{"family": "MP", "id": "nat:qa:MP-L0-0494", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5410245656967163}
+{"family": "MP", "id": "nat:qa:MP-L0-0520", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2914661467075348}
+{"family": "PM", "id": "nat:qa:PM-L0-0527", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.20179492235183716}
+{"family": "PM", "id": "nat:qa:PM-L0-0285", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -7.7988362312316895, "bridge_protected": false, "bridge": "Goethe"}
+{"family": "MM", "id": "nat:qa:MM-L0-0490", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -1.030367136001587, "bridge_protected": true, "bridge": "Hamburg"}
+{"family": "MP", "id": "nat:qa:MP-L0-0494", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.3911473751068115, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "MP", "id": "nat:qa:MP-L0-0520", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.27565255761146545, "bridge_protected": true, "bridge": "Munich"}
+{"family": "PM", "id": "nat:qa:PM-L0-0527", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.992495059967041, "bridge_protected": false, "bridge": "Osaka"}
+{"family": "PM", "id": "nat:qa:PM-L0-0285", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7887370586395264, "bridge_protected": false, "bridge": "Goethe"}
+{"family": "MM", "id": "nat:qa:MM-L0-0490", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.270093709230423, "bridge_protected": true, "bridge": "Hamburg"}
+{"family": "MP", "id": "nat:qa:MP-L0-0494", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.8475313186645508, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "MP", "id": "nat:qa:MP-L0-0520", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3368262052536011, "bridge_protected": true, "bridge": "Munich"}
+{"family": "PM", "id": "nat:qa:PM-L0-0527", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.18659040331840515, "bridge_protected": false, "bridge": "Osaka"}
+{"family": "MP", "id": "nat:qa:MP-L0-0286", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5393050312995911}
+{"family": "MP", "id": "nat:qa:MP-L0-0286", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.618746042251587, "bridge_protected": false, "bridge": "Goethe"}
+{"family": "MP", "id": "nat:qa:MP-L0-0286", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7101598978042603, "bridge_protected": false, "bridge": "Goethe"}
+{"family": "MP", "id": "nat:qa:MP-L0-0290", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.39264529943466187}
+{"family": "MP", "id": "nat:qa:MP-L0-0558", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5313555598258972}
+{"family": "MP", "id": "nat:qa:MP-L0-0290", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.424957752227783, "bridge_protected": false, "bridge": "Grieg"}
+{"family": "MP", "id": "nat:qa:MP-L0-0558", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.3171136975288391, "bridge_protected": false, "bridge": "Venice"}
+{"family": "MP", "id": "nat:qa:MP-L0-0290", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3606065809726715, "bridge_protected": false, "bridge": "Grieg"}
+{"family": "MP", "id": "nat:qa:MP-L0-0558", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7069239616394043, "bridge_protected": false, "bridge": "Venice"}
+{"family": "PM", "id": "nat:qa:PM-L0-0291", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4115126430988312}
+{"family": "MP", "id": "nat:qa:MP-L0-0478", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -1.012835144996643}
+{"family": "PP", "id": "nat:qa:PP-L0-0491", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2557141184806824}
+{"family": "MP", "id": "nat:qa:MP-L0-0540", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4550243020057678}
+{"family": "PM", "id": "nat:qa:PM-L0-0549", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4918168783187866}
+{"family": "PM", "id": "nat:qa:PM-L0-0291", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.6159887313842773, "bridge_protected": false, "bridge": "Grieg"}
+{"family": "MP", "id": "nat:qa:MP-L0-0478", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.1312084197998047, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "PP", "id": "nat:qa:PP-L0-0491", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.28941115736961365, "bridge_protected": true, "bridge": "Hamburg"}
+{"family": "MP", "id": "nat:qa:MP-L0-0540", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.05839986354112625, "bridge_protected": false, "bridge": "Seville"}
+{"family": "PM", "id": "nat:qa:PM-L0-0549", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -9.693787574768066, "bridge_protected": true, "bridge": "Toronto"}
+{"family": "PM", "id": "nat:qa:PM-L0-0291", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4823591113090515, "bridge_protected": false, "bridge": "Grieg"}
+{"family": "MP", "id": "nat:qa:MP-L0-0478", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.2784452438354492, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "PP", "id": "nat:qa:PP-L0-0491", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.48198917508125305, "bridge_protected": true, "bridge": "Hamburg"}
+{"family": "MP", "id": "nat:qa:MP-L0-0540", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6508774161338806, "bridge_protected": false, "bridge": "Seville"}
+{"family": "PM", "id": "nat:qa:PM-L0-0549", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -0.9394249320030212, "bridge_protected": true, "bridge": "Toronto"}
+{"family": "MP", "id": "nat:qa:MP-L0-0302", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5611080527305603}
+{"family": "MP", "id": "nat:qa:MP-L0-0302", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -0.8344191908836365, "bridge_protected": false, "bridge": "Kant"}
+{"family": "MP", "id": "nat:qa:MP-L0-0302", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.4300379455089569, "bridge_protected": false, "bridge": "Kant"}
+{"family": "MP", "id": "nat:qa:MP-L0-0306", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.29055339097976685}
+{"family": "MP", "id": "nat:qa:MP-L0-0306", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.41397395730018616, "bridge_protected": false, "bridge": "Linnaeus"}
+{"family": "MP", "id": "nat:qa:MP-L0-0306", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.36697760224342346, "bridge_protected": false, "bridge": "Linnaeus"}
+{"family": "MP", "id": "nat:qa:MP-L0-0308", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7118293046951294}
+{"family": "MP", "id": "nat:qa:MP-L0-0352", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6530085802078247}
+{"family": "MP", "id": "nat:qa:MP-L0-0308", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.816669225692749, "bridge_protected": false, "bridge": "Linnaeus"}
+{"family": "MP", "id": "nat:qa:MP-L0-0352", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.282193422317505, "bridge_protected": false, "bridge": "Vermeer"}
+{"family": "MP", "id": "nat:qa:MP-L0-0308", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6939354538917542, "bridge_protected": false, "bridge": "Linnaeus"}
+{"family": "MP", "id": "nat:qa:MP-L0-0352", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6171036958694458, "bridge_protected": false, "bridge": "Vermeer"}
+{"family": "MM", "id": "nat:qa:MM-L0-0310", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.11188873648643494}
+{"family": "MM", "id": "nat:qa:MM-L0-0332", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.10390585660934448}
+{"family": "MM", "id": "nat:qa:MM-L0-0310", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.920524597167969, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "MM", "id": "nat:qa:MM-L0-0332", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.2903993129730225, "bridge_protected": true, "bridge": "Picasso"}
+{"family": "MM", "id": "nat:qa:MM-L0-0310", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.11754660308361053, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "MM", "id": "nat:qa:MM-L0-0332", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.2519884407520294, "bridge_protected": true, "bridge": "Picasso"}
+{"family": "MM", "id": "nat:qa:MM-L0-0312", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.20824778079986572}
+{"family": "MM", "id": "nat:qa:MM-L0-0510", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.16487187147140503}
+{"family": "MM", "id": "nat:qa:MM-L0-0554", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.17584869265556335}
+{"family": "MM", "id": "nat:qa:MM-L0-0312", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.123044013977051, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "MM", "id": "nat:qa:MM-L0-0510", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -10.214184761047363, "bridge_protected": true, "bridge": "Milan"}
+{"family": "MM", "id": "nat:qa:MM-L0-0554", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.576297640800476, "bridge_protected": false, "bridge": "Vancouver"}
+{"family": "MM", "id": "nat:qa:MM-L0-0312", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.2197796255350113, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "MM", "id": "nat:qa:MM-L0-0510", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.34875643253326416, "bridge_protected": true, "bridge": "Milan"}
+{"family": "MM", "id": "nat:qa:MM-L0-0554", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.25685426592826843, "bridge_protected": false, "bridge": "Vancouver"}
+{"family": "PP", "id": "nat:qa:PP-L0-0323", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7261703014373779}
+{"family": "PP", "id": "nat:qa:PP-L0-0323", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.2528367042541504, "bridge_protected": false, "bridge": "Napoleon"}
+{"family": "PP", "id": "nat:qa:PP-L0-0323", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -0.9655488133430481, "bridge_protected": false, "bridge": "Napoleon"}
+{"family": "PP", "id": "nat:qa:PP-L1-0363", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.44059911370277405}
+{"family": "MP", "id": "nat:qa:MP-L1-0458", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.36809030175209045}
+{"family": "PP", "id": "nat:qa:PP-L1-0363", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -0.9410010576248169, "bridge_protected": false, "bridge": "Beethoven"}
+{"family": "MP", "id": "nat:qa:MP-L1-0458", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.4291432201862335, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "PP", "id": "nat:qa:PP-L1-0363", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.40561091899871826, "bridge_protected": false, "bridge": "Beethoven"}
+{"family": "MP", "id": "nat:qa:MP-L1-0458", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.46560439467430115, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "PM", "id": "nat:qa:PM-L1-0363", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7500484585762024}
+{"family": "PM", "id": "nat:qa:PM-L1-0363", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.534547805786133, "bridge_protected": false, "bridge": "Beethoven"}
+{"family": "PM", "id": "nat:qa:PM-L1-0363", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -1.0222618579864502, "bridge_protected": false, "bridge": "Beethoven"}
+{"family": "PP", "id": "nat:qa:PP-L1-0369", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6243448257446289}
+{"family": "PP", "id": "nat:qa:PP-L1-0369", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.145110607147217, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "PP", "id": "nat:qa:PP-L1-0369", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -0.8422271609306335, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "PM", "id": "nat:qa:PM-L1-0369", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6404479146003723}
+{"family": "PM", "id": "nat:qa:PM-L1-0369", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.454293727874756, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "PM", "id": "nat:qa:PM-L1-0369", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.8882305026054382, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "MP", "id": "nat:qa:MP-L1-0370", "kind": "clean", "band": "-", "condition": "none", "correct": false, "logp": -0.8696462512016296}
+{"family": "MP", "id": "nat:qa:MP-L1-0370", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -0.7027395963668823, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "MP", "id": "nat:qa:MP-L1-0370", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.081754207611084, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "MM", "id": "nat:qa:MM-L1-0370", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4037322998046875}
+{"family": "MM", "id": "nat:qa:MM-L1-0370", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -8.092147827148438, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "MM", "id": "nat:qa:MM-L1-0370", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7160353660583496, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "PP", "id": "nat:qa:PP-L1-0379", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7352792024612427}
+{"family": "PP", "id": "nat:qa:PP-L1-0379", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.53836727142334, "bridge_protected": false, "bridge": "Copernicus"}
+{"family": "PP", "id": "nat:qa:PP-L1-0379", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.034568190574646, "bridge_protected": false, "bridge": "Copernicus"}
+{"family": "PM", "id": "nat:qa:PM-L1-0379", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5050086379051208}
+{"family": "PM", "id": "nat:qa:PM-L1-0379", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -6.008409023284912, "bridge_protected": false, "bridge": "Copernicus"}
+{"family": "PM", "id": "nat:qa:PM-L1-0379", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7304850816726685, "bridge_protected": false, "bridge": "Copernicus"}
+{"family": "MP", "id": "nat:qa:MP-L1-0388", "kind": "clean", "band": "-", "condition": "none", "correct": false, "logp": -0.8029818534851074}
+{"family": "MP", "id": "nat:qa:MP-L1-0388", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.869488000869751, "bridge_protected": false, "bridge": "Descartes"}
+{"family": "MP", "id": "nat:qa:MP-L1-0388", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.1694262027740479, "bridge_protected": false, "bridge": "Descartes"}
+{"family": "MP", "id": "nat:qa:MP-L1-0392", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7572098970413208}
+{"family": "MP", "id": "nat:qa:MP-L1-0392", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.6316237449645996, "bridge_protected": false, "bridge": "Dostoevsky"}
+{"family": "MP", "id": "nat:qa:MP-L1-0392", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.903681218624115, "bridge_protected": false, "bridge": "Dostoevsky"}
+{"family": "PP", "id": "nat:qa:PP-L1-0397", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5855748057365417}
+{"family": "PP", "id": "nat:qa:PP-L1-0397", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.150032997131348, "bridge_protected": false, "bridge": "Galileo"}
+{"family": "PP", "id": "nat:qa:PP-L1-0397", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6738017201423645, "bridge_protected": false, "bridge": "Galileo"}
+{"family": "PM", "id": "nat:qa:PM-L1-0397", "kind": "clean", "band": "-", "condition": "none", "correct": false, "logp": -1.026451826095581}
+{"family": "PM", "id": "nat:qa:PM-L1-0397", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -7.235433578491211, "bridge_protected": false, "bridge": "Galileo"}
+{"family": "PM", "id": "nat:qa:PM-L1-0397", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7543142437934875, "bridge_protected": false, "bridge": "Galileo"}
+{"family": "MP", "id": "nat:qa:MP-L1-0414", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5644770860671997}
+{"family": "MP", "id": "nat:qa:MP-L1-0414", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.6198395490646362, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MP", "id": "nat:qa:MP-L1-0414", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6759903430938721, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MM", "id": "nat:qa:MM-L1-0414", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4436831474304199}
+{"family": "MM", "id": "nat:qa:MM-L1-0414", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.600266456604004, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MM", "id": "nat:qa:MM-L1-0414", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7474437952041626, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MP", "id": "nat:qa:MP-L1-0416", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6066256165504456}
+{"family": "PP", "id": "nat:qa:PP-L1-0589", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5109049081802368}
+{"family": "MP", "id": "nat:qa:MP-L1-0416", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.7183408141136169, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "PP", "id": "nat:qa:PP-L1-0589", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.10198613256216049, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "MP", "id": "nat:qa:MP-L1-0416", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6052655577659607, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "PP", "id": "nat:qa:PP-L1-0589", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6160621643066406, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "MM", "id": "nat:qa:MM-L1-0416", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.36021700501441956}
+{"family": "MM", "id": "nat:qa:MM-L1-0624", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3772529065608978}
+{"family": "MM", "id": "nat:qa:MM-L1-0416", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.1233315467834473, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MM", "id": "nat:qa:MM-L1-0624", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.1616716384887695, "bridge_protected": false, "bridge": "Rio"}
+{"family": "MM", "id": "nat:qa:MM-L1-0416", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.39689189195632935, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MM", "id": "nat:qa:MM-L1-0624", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6196319460868835, "bridge_protected": false, "bridge": "Rio"}
+{"family": "MP", "id": "nat:qa:MP-L1-0418", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3723934292793274}
+{"family": "MP", "id": "nat:qa:MP-L1-0418", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.27218908071517944, "bridge_protected": false, "bridge": "Kant"}
+{"family": "MP", "id": "nat:qa:MP-L1-0418", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5094946622848511, "bridge_protected": false, "bridge": "Kant"}
+{"family": "MM", "id": "nat:qa:MM-L1-0418", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.33345577120780945}
+{"family": "PP", "id": "nat:qa:PP-L1-0567", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.526025652885437}
+{"family": "MM", "id": "nat:qa:MM-L1-0418", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.2857328653335571, "bridge_protected": true, "bridge": "Kant"}
+{"family": "PP", "id": "nat:qa:PP-L1-0567", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.3919420540332794, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "MM", "id": "nat:qa:MM-L1-0418", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3956575095653534, "bridge_protected": true, "bridge": "Kant"}
+{"family": "PP", "id": "nat:qa:PP-L1-0567", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6522670984268188, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "MP", "id": "nat:qa:MP-L1-0428", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7580881118774414}
+{"family": "MP", "id": "nat:qa:MP-L1-0428", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.5904226303100586, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "MP", "id": "nat:qa:MP-L1-0428", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7270410656929016, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "PP", "id": "nat:qa:PP-L1-0437", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.512273371219635}
+{"family": "MP", "id": "nat:qa:MP-L1-0628", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5462951064109802}
+{"family": "PP", "id": "nat:qa:PP-L1-0437", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -0.9142241477966309, "bridge_protected": false, "bridge": "Napoleon"}
+{"family": "MP", "id": "nat:qa:MP-L1-0628", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -0.713444173336029, "bridge_protected": false, "bridge": "Seville"}
+{"family": "PP", "id": "nat:qa:PP-L1-0437", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.587060809135437, "bridge_protected": false, "bridge": "Napoleon"}
+{"family": "MP", "id": "nat:qa:MP-L1-0628", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5778722763061523, "bridge_protected": false, "bridge": "Seville"}
+{"family": "MP", "id": "nat:qa:MP-L1-0444", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5830097198486328}
+{"family": "MP", "id": "nat:qa:MP-L1-0444", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.6826765537261963, "bridge_protected": false, "bridge": "Nobel"}
+{"family": "MP", "id": "nat:qa:MP-L1-0444", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -0.9908996224403381, "bridge_protected": false, "bridge": "Nobel"}
+{"family": "MM", "id": "nat:qa:MM-L1-0458", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.20535191893577576}
+{"family": "MM", "id": "nat:qa:MM-L1-0458", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -9.721619606018066, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "MM", "id": "nat:qa:MM-L1-0458", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3724966049194336, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "PM", "id": "nat:qa:PM-L0-0483", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6000687479972839}
+{"family": "MP", "id": "nat:qa:MP-L0-0496", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4989437758922577}
+{"family": "PM", "id": "nat:qa:PM-L0-0483", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -8.090439796447754, "bridge_protected": true, "bridge": "Florence"}
+{"family": "MP", "id": "nat:qa:MP-L0-0496", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.25768348574638367, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "PM", "id": "nat:qa:PM-L0-0483", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6597321033477783, "bridge_protected": true, "bridge": "Florence"}
+{"family": "MP", "id": "nat:qa:MP-L0-0496", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5885635614395142, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "MM", "id": "nat:qa:MM-L0-0494", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.10237381607294083}
+{"family": "MM", "id": "nat:qa:MM-L0-0494", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.4111084938049316, "bridge_protected": true, "bridge": "Istanbul"}
+{"family": "MM", "id": "nat:qa:MM-L0-0494", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.30898159742355347, "bridge_protected": true, "bridge": "Istanbul"}
+{"family": "PP", "id": "nat:qa:PP-L0-0503", "kind": "clean", "band": "-", "condition": "none", "correct": false, "logp": -1.0642991065979004}
+{"family": "PP", "id": "nat:qa:PP-L0-0503", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.465519666671753, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "PP", "id": "nat:qa:PP-L0-0503", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.220537543296814, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "PP", "id": "nat:qa:PP-L1-0563", "kind": "clean", "band": "-", "condition": "none", "correct": false, "logp": -0.8432637453079224}
+{"family": "PP", "id": "nat:qa:PP-L1-0563", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.264168739318848, "bridge_protected": true, "bridge": "Barcelona"}
+{"family": "PP", "id": "nat:qa:PP-L1-0563", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7787976264953613, "bridge_protected": true, "bridge": "Barcelona"}
+{"family": "PM", "id": "nat:qa:PM-L1-0563", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6855723857879639}
+{"family": "PM", "id": "nat:qa:PM-L1-0563", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -12.813983917236328, "bridge_protected": true, "bridge": "Barcelona"}
+{"family": "PM", "id": "nat:qa:PM-L1-0563", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.1619296073913574, "bridge_protected": true, "bridge": "Barcelona"}
+{"family": "PM", "id": "nat:qa:PM-L1-0567", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4206850528717041}
+{"family": "PM", "id": "nat:qa:PM-L1-0567", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -13.012871742248535, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "PM", "id": "nat:qa:PM-L1-0567", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -0.8922674059867859, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "PP", "id": "nat:qa:PP-L1-0569", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.641504168510437}
+{"family": "PP", "id": "nat:qa:PP-L1-0569", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.12231510132551193, "bridge_protected": false, "bridge": "Florence"}
+{"family": "PP", "id": "nat:qa:PP-L1-0569", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7370403409004211, "bridge_protected": false, "bridge": "Florence"}
+{"family": "PM", "id": "nat:qa:PM-L1-0589", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3785475790500641}
+{"family": "PM", "id": "nat:qa:PM-L1-0589", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -9.88177490234375, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "PM", "id": "nat:qa:PM-L1-0589", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.5541881322860718, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "PP", "id": "nat:qa:PP-L1-0599", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6638733148574829}
+{"family": "PP", "id": "nat:qa:PP-L1-0599", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.638819694519043, "bridge_protected": false, "bridge": "Milan"}
+{"family": "PP", "id": "nat:qa:PP-L1-0599", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.212928295135498, "bridge_protected": false, "bridge": "Milan"}
+{"family": "PP", "id": "nat:qa:PP-L1-0607", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.1219189316034317}
+{"family": "PP", "id": "nat:qa:PP-L1-0607", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.008620903827250004, "bridge_protected": false, "bridge": "Munich"}
+{"family": "PP", "id": "nat:qa:PP-L1-0607", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.15854287147521973, "bridge_protected": false, "bridge": "Munich"}
+{"family": "MP", "id": "nat:qa:MP-L1-0612", "kind": "clean", "band": "-", "condition": "none", "correct": false, "logp": -0.8531542420387268}
+{"family": "MP", "id": "nat:qa:MP-L1-0612", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -5.781885623931885, "bridge_protected": false, "bridge": "Naples"}
+{"family": "MP", "id": "nat:qa:MP-L1-0612", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.1007757186889648, "bridge_protected": false, "bridge": "Naples"}
+{"family": "MM", "id": "nat:qa:MM-L1-0612", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.19175685942173004}
+{"family": "MM", "id": "nat:qa:MM-L1-0612", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -6.675228595733643, "bridge_protected": false, "bridge": "Naples"}
+{"family": "MM", "id": "nat:qa:MM-L1-0612", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.2788916230201721, "bridge_protected": false, "bridge": "Naples"}
+{"family": "PP", "id": "nat:qa:PP-L1-0623", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6626361012458801}
+{"family": "PP", "id": "nat:qa:PP-L1-0623", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -1.9289296865463257, "bridge_protected": false, "bridge": "Rio"}
+{"family": "PP", "id": "nat:qa:PP-L1-0623", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6595973372459412, "bridge_protected": false, "bridge": "Rio"}
+{"family": "PM", "id": "nat:qa:PM-L1-0623", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6619746088981628}
+{"family": "PM", "id": "nat:qa:PM-L1-0623", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -6.589365005493164, "bridge_protected": false, "bridge": "Rio"}
+{"family": "PM", "id": "nat:qa:PM-L1-0623", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -5.601666450500488, "bridge_protected": false, "bridge": "Rio"}
+{"family": "MP", "id": "nat:qa:MP-L1-0624", "kind": "clean", "band": "-", "condition": "none", "correct": false, "logp": -1.2077852487564087}
+{"family": "MP", "id": "nat:qa:MP-L1-0624", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -2.702224016189575, "bridge_protected": false, "bridge": "Rio"}
+{"family": "MP", "id": "nat:qa:MP-L1-0624", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.945199966430664, "bridge_protected": false, "bridge": "Rio"}
+{"family": "MM", "id": "nat:qa:MM-L1-0628", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.39093026518821716}
+{"family": "MM", "id": "nat:qa:MM-L1-0628", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -9.088562965393066, "bridge_protected": false, "bridge": "Seville"}
+{"family": "MM", "id": "nat:qa:MM-L1-0628", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.7097536325454712, "bridge_protected": false, "bridge": "Seville"}
+{"family": "MP", "id": "nat:qa:MP-L1-0632", "kind": "clean", "band": "-", "condition": "none", "correct": false, "logp": -1.135428547859192}
+{"family": "MP", "id": "nat:qa:MP-L1-0632", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.0871429443359375, "bridge_protected": true, "bridge": "Shanghai"}
+{"family": "MP", "id": "nat:qa:MP-L1-0632", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.4317363500595093, "bridge_protected": true, "bridge": "Shanghai"}
+{"family": "MP", "id": "nat:qa:MP-L1-0634", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4411107003688812}
+{"family": "MP", "id": "nat:qa:MP-L1-0634", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.410008907318115, "bridge_protected": false, "bridge": "Sydney"}
+{"family": "MP", "id": "nat:qa:MP-L1-0634", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.3784862756729126, "bridge_protected": false, "bridge": "Sydney"}
+{"family": "MM", "id": "nat:qa:MM-L1-0634", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.191850945353508}
+{"family": "MM", "id": "nat:qa:MM-L1-0634", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": true, "logp": -0.24705356359481812, "bridge_protected": true, "bridge": "Sydney"}
+{"family": "MM", "id": "nat:qa:MM-L1-0634", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.6001822352409363, "bridge_protected": true, "bridge": "Sydney"}
+{"family": "MP", "id": "nat:qa:MP-L1-0640", "kind": "clean", "band": "-", "condition": "none", "correct": false, "logp": -0.9622925519943237}
+{"family": "MP", "id": "nat:qa:MP-L1-0640", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -3.532843589782715, "bridge_protected": false, "bridge": "Toronto"}
+{"family": "MP", "id": "nat:qa:MP-L1-0640", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": false, "logp": -1.2484462261199951, "bridge_protected": false, "bridge": "Toronto"}
+{"family": "MP", "id": "nat:qa:MP-L1-0648", "kind": "clean", "band": "-", "condition": "none", "correct": false, "logp": -0.9399221539497375}
+{"family": "MP", "id": "nat:qa:MP-L1-0648", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -4.389318466186523, "bridge_protected": false, "bridge": "Venice"}
+{"family": "MP", "id": "nat:qa:MP-L1-0648", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.8125234842300415, "bridge_protected": false, "bridge": "Venice"}
+{"family": "MM", "id": "nat:qa:MM-L1-0648", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.20946051180362701}
+{"family": "MM", "id": "nat:qa:MM-L1-0648", "kind": "clean", "band": "L39-45", "condition": "paper10", "correct": false, "logp": -7.923078536987305, "bridge_protected": true, "bridge": "Venice"}
+{"family": "MM", "id": "nat:qa:MM-L1-0648", "kind": "clean", "band": "L39-45", "condition": "paper10_rot", "correct": true, "logp": -0.3725970387458801, "bridge_protected": true, "bridge": "Venice"}

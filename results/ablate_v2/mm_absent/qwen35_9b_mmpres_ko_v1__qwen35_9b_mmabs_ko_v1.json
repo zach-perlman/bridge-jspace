@@ -1,0 +1,41 @@
+{
+ "present": "qwen35_9b_mmpres_ko_v1",
+ "absent": "qwen35_9b_mmabs_ko_v1",
+ "n_items": 50,
+ "bands": {
+  "L12-16": {
+   "paper10/present": {
+    "acc": 52.0,
+    "ci": [
+     31,
+     73
+    ],
+    "n": 50
+   },
+   "paper10/absent": {
+    "acc": 52.0,
+    "ci": [
+     33,
+     69
+    ],
+    "n": 50
+   },
+   "paper10_rot/present": {
+    "acc": 98.0,
+    "ci": [
+     93,
+     100
+    ],
+    "n": 50
+   },
+   "paper10_rot/absent": {
+    "acc": 98.0,
+    "ci": [
+     93,
+     100
+    ],
+    "n": 50
+   }
+  }
+ }
+}

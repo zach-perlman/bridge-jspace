@@ -1,0 +1,86 @@
+{
+  "run": "muse30_natural_v1_chat_ko_steps_v1",
+  "middle": "L36-42",
+  "bands": {
+    "L36-42": {
+      "paper10": {
+        "PP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "PM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        }
+      },
+      "paper10_rot": {
+        "PP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "PM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        }
+      }
+    }
+  },
+  "rule": {
+    "loss": {},
+    "control_distance": {},
+    "gap": null,
+    "controls_ok": false,
+    "C1_graded_holds": false,
+    "strict_C1_holds": null
+  },
+  "margin_matched": {},
+  "commit": "07f486eed70db025ca8fe5e620575d780d6c4426"
+}

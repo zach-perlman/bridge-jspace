@@ -1,0 +1,86 @@
+{
+  "run": "qwen35_9b_natural_v1_chat_ko_steps_v1",
+  "middle": "L12-16",
+  "bands": {
+    "L12-16": {
+      "paper10": {
+        "PP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "PM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        }
+      },
+      "paper10_rot": {
+        "PP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MP": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "PM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        },
+        "MM": {
+          "acc": null,
+          "ci": [
+            NaN,
+            NaN
+          ],
+          "n": 0
+        }
+      }
+    }
+  },
+  "rule": {
+    "loss": {},
+    "control_distance": {},
+    "gap": null,
+    "controls_ok": false,
+    "C1_graded_holds": false,
+    "strict_C1_holds": null
+  },
+  "margin_matched": {},
+  "commit": "d2cbf823729350ec23f6838f3db079d91a6a767a"
+}

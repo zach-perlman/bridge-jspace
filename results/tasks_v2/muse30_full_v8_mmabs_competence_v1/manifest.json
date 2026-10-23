@@ -1,0 +1,18 @@
+{
+  "run": "muse30_full_v8_mmabs_competence_v1",
+  "why": "Zach (2026-10-23, prereg amendment 10): muse-glimmer-30b, M->M with the bridge absent from the context: competence on full_v8_mmabs",
+  "set": "full_v8_mmabs",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "3bc4e9e9eefb6f8af367d7c40ef079d58bdd09fb",
+  "guess": true,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-23T09:09:35Z"
+}
