@@ -1,0 +1,35 @@
+id: d3_absent_entity_27b_smoke
+title: "Smoke for the absent-entity donor (Qwen3.6-27B, layer 50): 5 scenes per topic; exit 3 stops the main run"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.05
+depends_on:
+- d3v4_seed3_competence_27b
+- d3v4_seed3_swap_27b
+command: >-
+  uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set seed3 --name d3_absent_entity_27b_smoke
+  --families RL DL --n 5 --layers 50 --groups last --competence d3v4_seed3_competence_27b --donor absent
+  --why "smoke for d3_absent_entity_27b_r2 (5 scenes per topic): the absent-entity donor's GPU path, its own read and
+  the hook checks; not a result"
+  && (uv run python scripts/pointer_swap.py run --name d3_absent_entity_27b_smoke || exit 3)
+  && uv run python scripts/absent_entity.py --run d3_absent_entity_27b_smoke --ordinary d3v4_seed3_swap_27b --smoke
+question: >-
+  Does the absent-entity donor run end to end on the GPU (token-aligned prompts, the patch, the random push, the
+  donor's own read, the hook checks) and does its verdict compute, before the 764-scene run?
+why_it_matters: 'Gate for d3_absent_entity_27b_r2 (Dan, 23 Oct 16:00: a smoke first, exit 3 on failure).'
+hypotheses:
+  H-ok: 'the gate passes (exit 0); no claim: 15 scenes'
+decision_rule: >-
+  scripts/absent_entity.py --smoke (docstring's smoke gate, written before the run): exit 3 (the job fails and
+  d3_absent_entity_27b_r2, which depends on it, is blocked) if the GPU run fails for any reason (the command turns its
+  error into exit 3; an alignment failure is an assertion in that run), or if any of these fails: every sampled item has
+  its patch, random-push and same-entity rows at layer 50's last two tokens, a donors.jsonl record and a donor_unedited
+  check; every original is read right unedited; the self no-op and layer-0 hook checks keep the top token on every
+  item; at least 80% of the donors are read right unedited; the verdict, with the ordinary donor's D from
+  d3v4_seed3_swap_27b, computes. Else exit 0. Nothing is written beyond the run's own folder.
+controls:
+- 'the hook checks (self no-op, layer-0 reproduction of the donor) on every item'
+n: '5 scenes per topic (15), both families (30 items), seed 0'
+seeds: [845, 0]
+notes: "Dan, 23 Oct 16:00. The agent's choices, for Dan to change: 5 scenes per topic (15) rather than 5 in all, so every topic and the other-topic control run as in the main run (about 10 s more); the 80% bar for the donors' own reads (new prompts with no competence run; the main run keeps only the scenes whose donor is right). Cost: model load and 30 items, about 3 min on one A100."

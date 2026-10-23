@@ -133,7 +133,81 @@ def test_k1_and_first_asked_are_reported_not_tested():
     fam = AE.verdict(rows, checks, items, 50)["families"]["RL"]
     assert set(fam["by_k"]) == {1, 2, 3, 4, 5} and "D" not in fam["by_k"][1] and "D" in fam["by_k"][2]
     assert any("=" in o for o in fam["by_k"][1]["all"])  # k_d = 1: order and fallback are one digit
-    assert fam["original_asks_1st"]["n"] == 3 * 4 * 4 * 4
+    f1 = fam["original_asks_1st"]  # their own table: the patch and the random push, per k_d 2-5
+    assert f1["patch"]["n"] == f1["random_push"]["n"] == 3 * 4 * 4 * 4
+    assert set(f1["by_k"]) == {2, 3, 4, 5} and all(c["patch"]["n"] == 3 * 4 * 4 for c in f1["by_k"].values())
+    assert any("fallback=unchanged" in o for o in f1["random_push"])  # the push leaves the 1st statement's answer
+    text = AE.report({"run": "r", **AE.verdict(rows, checks, items, 50)}, "RL")
+    assert (
+        "Originals asking their 1st statement" in text and "| 2 | patch |" in text and "| all | random push |" in text
+    )
+
+
+def _ordinary(items: dict[str, dict], identity_share: float = 1.0) -> tuple[list[dict], dict[str, dict]]:
+    """Finding 5's donor on the same items: its entity at slot 0 for entity 'w', else the last free slot; every read
+    the identity digit for the first identity_share of each entity's items (j % 10 rule as _run), else the order digit."""
+    o_items, rows, seen = {}, [], {}
+    for name, it in items.items():
+        a, k = it["slots"]["query"], it["slots"]["position"]
+        c = next(s for s in ((0, 1, 2, 3, 4) if it["query"] == "w" else (4, 3, 2, 1, 0)) if s not in (a, k))
+        digits = [1, 2, 3, 4, 5]
+        preds = {"none": str(digits[a]), "identity": str(digits[c]), "position": str(digits[k]),
+                 "first": str(digits[0]), "value": "9"}  # fmt: skip
+        o_items[name] = {**it, "slots": {**it["slots"], "identity": c}, "sources": {"dissoc": {"predictions": preds}}}
+        key = (it["domain"], it["query"])
+        j, seen[key] = seen.get(key, 0) % 10, seen.get(key, 0) + 1
+        top = preds["identity"] if j < 10 * identity_share else preds["position"]
+        rows.append({"family": "RL", "domain": it["domain"], "name": name, "group": "last", "layer": 50,
+                     "source": "dissoc", "top": top, "role": "identity"})  # fmt: skip
+    return rows, o_items
+
+
+def test_the_ordinary_donor_is_reported_beside_and_does_not_change_the_verdict():
+    rows, checks, items = _run(0.6, 0.1)
+    plain = AE.verdict(rows, checks, items, 50)["families"]["RL"]
+    fam = AE.verdict(rows, checks, items, 50, _ordinary(items))["families"]["RL"]
+    o = fam.pop("ordinary")
+    assert fam == plain  # reported only
+    assert o["n"] == fam["n_decisive"] and o["missing"] == 0 and set(o["by_k"]) == {2, 3, 4, 5}
+    # every ordinary read is the identity digit: on entity w's items that is the 1st statement's digit (fallback)
+    assert o["n_entity_first"] == 3 * 4 * 12
+    assert o["D_order_minus_fallback"][0] == pytest.approx(-0.25) and o["D_without_entity_first"][0] == 0
+    o2 = AE.verdict(rows, checks, items, 50, _ordinary(items, 0.0))["families"]["RL"]["ordinary"]
+    assert o2["D_order_minus_fallback"][0] == 1.0  # every read the order digit
+
+
+def test_classify_names_the_ordinary_identity():
+    p = {"none": "3", "identity": "1", "position": "4", "first": "1", "value": "9"}
+    assert AE.classify("1", p) == "fallback=identity"
+    assert (
+        AE.classify("1", {**p, "identity": "2"}) == "fallback"
+        and AE.classify("2", {**p, "identity": "2"}) == "identity"
+    )
+
+
+def _smoke_inputs():
+    rows, checks, items = _run(0.6, 0.1, n_per=1)
+    ids = sorted(items)
+    checks += [{"name": i, "check": kind, "same_top": True} for i in ids
+               for kind in ("self_noop", "layer0_all_reproduces_source")]  # fmt: skip
+    return rows, checks, ids
+
+
+def test_the_smoke_gate_passes_a_complete_run_and_names_each_failure():
+    rows, checks, ids = _smoke_inputs()
+    assert AE.smoke_gate(rows, checks, ids, ids, 50) == []
+    assert AE.smoke_gate(rows, checks, [], [], 50) == ["no sampled items"]
+    donors_wrong = [{**c, "correct": i % 4 != 0} if c["check"] == "donor_unedited" else c for i, c in enumerate(checks)]
+    assert any("donors read right" in w for w in AE.smoke_gate(rows, donors_wrong, ids, ids, 50))  # 75% < 80%
+    no_rand = [r for r in rows if not (r["source"] == "rand" and r["name"] == ids[0])]
+    assert any(w.startswith("rand rows") for w in AE.smoke_gate(no_rand, checks, ids, ids, 50))
+    hook = [{**c, "same_top": False} if c["check"] == "self_noop" and c["name"] == ids[1] else c for c in checks]
+    assert any(w.startswith("self_noop") for w in AE.smoke_gate(rows, hook, ids, ids, 50))
+    base_wrong = [{**r, "role": "context"} if r["source"] == "unedited" and r["name"] == ids[2] else r for r in rows]
+    assert any(w.startswith("originals read right") for w in AE.smoke_gate(base_wrong, checks, ids, ids, 50))
+    assert any(w.startswith("donors.jsonl") for w in AE.smoke_gate(rows, checks, ids, ids[1:], 50))
+    no_check = [c for c in checks if not (c["check"] == "donor_unedited" and c["name"] == ids[3])]
+    assert any(w.startswith("donor_unedited checks") for w in AE.smoke_gate(rows, no_check, ids, ids, 50))
 
 
 def test_wrong_donor_or_original_reads_are_left_out():
@@ -198,7 +272,7 @@ def test_the_verdict_stage_end_to_end(tmp_path, monkeypatch, capsys):
     m = _manifest(tmp_path / "runs", monkeypatch, "absent")
     kept, _ = AE.with_absent(PS.load_items(m))
     its = [it for it in AE.absent_cases([i for v in kept.values() for i in v]) if it["family"] == "RL"]
-    rows, checks = [], []
+    rows, checks, o_rows = [], [], []
     for it in its[:300]:
         p = it["sources"]["dissoc"]["predictions"]
         base = {"family": "RL", "domain": it["domain"], "name": it["id"], "group": "last", "layer": 50}
@@ -206,15 +280,35 @@ def test_the_verdict_stage_end_to_end(tmp_path, monkeypatch, capsys):
                  {**base, "source": "dissoc", "top": p["position"], "role": "position"},
                  {**base, "source": "rand", "top": p["none"], "role": "none"},
                  {**base, "source": "same", "top": p["none"], "role": "none"}]  # fmt: skip
-        checks.append({"name": it["id"], "check": "donor_unedited", "top": p["value"], "correct": True})
+        checks += [{"name": it["id"], "check": "donor_unedited", "top": p["value"], "correct": True},
+                   *({"name": it["id"], "check": k, "same_top": True}
+                     for k in ("self_noop", "layer0_all_reproduces_source"))]  # fmt: skip
+        o_rows.append({**base, "source": "dissoc", "top": p["first"], "role": "context"})  # the ordinary: fallback
     run = tmp_path / "runs" / m["run"]
     (run / "outcomes.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
     (run / "checks.jsonl").write_text("".join(json.dumps(c) + "\n" for c in checks))
-    assert AE.main(["--run", m["run"], "--out", str(tmp_path / "out")]) == 0
-    assert "RL (decisive): order" in capsys.readouterr().out
+    (run / "cases.jsonl").write_text("".join(json.dumps({"id": it["id"]}) + "\n" for it in its[:300]))
+    # a smoke stops (exit 3) without the donors file, goes on (exit 0) with it; it writes nothing
+    assert AE.main(["--run", m["run"], "--smoke", "--out", str(tmp_path / "out")]) == 3
+    assert "STOP: donors.jsonl has 0 of 300" in capsys.readouterr().out
+    (run / "donors.jsonl").write_text("".join(json.dumps(AE.donor_record(it)) + "\n" for it in its[:300]))
+    assert AE.main(["--run", m["run"], "--smoke", "--out", str(tmp_path / "out")]) == 0
+    assert "RUN" in capsys.readouterr().out and not (tmp_path / "out").exists()
+    # finding 5's run on the same item files, reported beside
+    o_run = tmp_path / "runs" / "d3_t_ordinary"
+    o_run.mkdir()
+    (o_run / "manifest.json").write_text(json.dumps({**m, "run": "d3_t_ordinary"}))
+    (o_run / "outcomes.jsonl").write_text("".join(json.dumps(r) + "\n" for r in o_rows))
+    (o_run / "checks.jsonl").write_text("")
+    args = ["--run", m["run"], "--ordinary", "d3_t_ordinary", "--out", str(tmp_path / "out")]
+    assert AE.main(args) == 0
+    text = capsys.readouterr().out
+    assert "RL (decisive): order" in text and "ordinary donor (finding 5's)" in text
     (d,) = (tmp_path / "out").iterdir()
     out = json.loads((d / "verdict.json").read_text())
-    assert out["families"]["RL"]["verdict"] == "order" and out["counts"]["both_right"] == 300
+    fam = out["families"]["RL"]
+    assert fam["verdict"] == "order" and out["counts"]["both_right"] == 300 and out["ordinary"] == "d3_t_ordinary"
+    assert fam["ordinary"]["n"] == fam["n_decisive"] and fam["ordinary"]["D_order_minus_fallback"][0] == -1.0
 
 
 def test_every_seed3_scene_sampled_has_an_aligned_absent_donor():
