@@ -197,3 +197,24 @@ def test_rand_sub_is_a_projection_with_the_jspace_parts_share():
     off = lambda x: x - (x * delta).sum(-1, keepdim=True) / norm2[:, None].clamp_min(1e-30) * delta  # noqa: E731
     cos = torch.nn.functional.cosine_similarity(off(part)[rows], off(jspace)[rows], dim=-1)
     assert torch.all(cos.abs() < 0.5)
+
+
+def test_not_jspace_matched_is_the_rest_at_the_lens_parts_size():
+    import torch
+
+    from scripts.exp04_brew_parts import signed_omp
+
+    d, g = 128, torch.Generator().manual_seed(7)
+    dictionary = torch.nn.functional.normalize(torch.randn(500, d, generator=g), dim=-1)
+    delta = torch.randn(5, d, generator=g) * torch.tensor([[1.0], [4.0], [0.3], [1.0], [1.0]])
+    delta[3] = 0.0  # a position where C's copy is zero
+    delta[4] = 2.0 * dictionary[11] - dictionary[40]  # all of it in the J-space: the rest is zero
+    jspace = signed_omp(dictionary, delta, 25)
+    rest = delta - jspace
+    got = D.rescale_rows(rest, jspace.norm(dim=-1))
+    live = [0, 1, 2]
+    assert torch.allclose(got.norm(dim=-1)[live], jspace.norm(dim=-1)[live], rtol=1e-5)  # the lens part's size
+    assert torch.allclose(torch.nn.functional.cosine_similarity(got[live], rest[live], dim=-1), torch.ones(3))
+    assert torch.allclose((got * jspace).sum(-1)[live], torch.zeros(3), atol=1e-3)  # still off the lens part's atoms
+    assert torch.equal(got[3], torch.zeros(d))
+    assert torch.allclose(got[4], torch.zeros(d), atol=1e-3)  # rest ~0 (fit to float precision): stays ~0

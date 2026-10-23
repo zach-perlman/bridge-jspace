@@ -21,13 +21,15 @@ the same verdict on its own rows (topic_verdicts); a topic counts only if its ow
 must keep their original answer on >= K of items (role A at the decisive cell), else the verdict is "not
 interpretable" (a model that breaks under almost any intervention makes a null meaningless).
 
---rule late-binding (Dan, 23 Oct ~12:00 +0200, written before qwen35_122b_d1_late_parts and
-qwen35_122b_d1_formats_late_parts ran; the rules above untouched): on Qwen3.5-122B the lens-readable part of a stated
-bridge switched 29% [23, 36] of lookups at the map's cell (context, layer 24). Does the lookup bind later?
+--rule late-switch (Dan, 23 Oct ~12:00 +0200, written before qwen35_122b_d1_late_parts and
+qwen35_122b_d1_formats_late_parts ran; the rules above untouched; named "late binding" until Dan renamed it, 23 Oct
+afternoon, before any run, logic unchanged: the map shows the bridge still at its position at layers 33-38, so what
+would change is the form the lookup reads, not the place): on Qwen3.5-122B the lens-readable part of a stated bridge
+switched 29% [23, 36] of lookups at the map's cell (context, layer 24). Does the lookup stop reading it later?
   cells    --cells SET:LAYER ... (the bridge's sentence and the context at 30, 33, 36: every 3rd layer is the 122B's
            coarse grid); a cell is decisive iff the lens-free map has it in transit for lookups; the others and
            --reference cells (context:24) are reported only
-  late binding holds iff at some decisive cell (a) the lens part's lookup switching has Wilson upper bound <= 0.05,
+  late switch holds iff at some decisive cell (a) the lens part's lookup switching has Wilson upper bound <= 0.05,
            (b) the rest switches >= 0.30 of lookups (point estimate), (c) recall control: the lens part switches >= 0.30
            of recalls there (point; the same patch: the lens part is not too small to act), and (d) random-subspace
            control: on recalls the lens part beats rand_sub (a random subspace keeping the lens part's share of the
@@ -37,14 +39,30 @@ bridge switched 29% [23, 36] of lookups at the map's cell (context, layer 24). D
   finding 2 fails on this model iff at every decisive cell the lens part's lookup switching has Wilson lower bound
            >= 0.20 and lies above rand_sub's on lookups (lens lower bound > rand_sub upper bound: not a size effect)
   otherwise inconclusive (the reason named). Reported per cell, lookups and recalls: full, jspace, not_jspace,
-           rand_sub, jspace_matched, rand_omp, the lens part's random-direction null, the parts' median shares;
-           per topic and per format (not decisive).
-  --figures: the figure of the newest late-binding verdict of --parts, in a new analysis-*-figures/ folder of it.
+           not_jspace_matched, rand_sub, jspace_matched, rand_omp, the lens part's random-direction null, the parts'
+           median shares; per topic and per format (not decisive).
+
+--rule rest-size (A2, Dan 23 Oct afternoon, written before any run; the rules above untouched): where the lens part of
+a stated bridge's change is quiet on lookups, is that its form (what it carries) or its size (a small piece of the
+change)? not_jspace_matched = the rest of the change, each row shrunk to the lens part's norm.
+  cells    --cells SET:LAYER ... each get the verdict below (reported); --decisive SET:LAYER decides for the model:
+           finding 2's own decisive cell there (Qwen3.6-27B context:32, Qwen3.5-9B context:16). It must be in transit
+           for lookups on the lens-free map, else not interpretable.
+  H-form   the rest at the lens part's size switches lookups with Wilson lower bound >= 0.20 while the lens part's
+           Wilson upper bound is <= 0.05
+  H-size   the rest at the lens part's size switches lookups with Wilson upper bound <= 0.10: the lens part's quiet on
+           lookups says nothing about its form (the lookup half of claim 6 carries no information)
+  otherwise inconclusive. Reported per cell: lookups and recalls for every part above (recalls for both the lens part
+           and the rest at its size); per topic at the decisive cell.
+
+--figures (late-switch, rest-size): the figure of the newest verdict of --parts under that rule, in a new
+analysis-*-figures/ folder of the verdict.
 
 uv run python scripts/d1_verdict.py --map M --parts P [--lookup PP --recall PM] [--tasks-set S] [--onset 44]
                                     [--cell SET:LAYER]
-uv run python scripts/d1_verdict.py --rule late-binding --map M --parts P --cells SET:LAYER ... [--reference ...]
-uv run python scripts/d1_verdict.py --rule late-binding --parts P --figures
+uv run python scripts/d1_verdict.py --rule late-switch --map M --parts P --cells SET:LAYER ... [--reference ...]
+uv run python scripts/d1_verdict.py --rule rest-size --map M --parts P --cells SET:LAYER ... --decisive SET:LAYER
+uv run python scripts/d1_verdict.py --rule late-switch|rest-size --parts P --figures
 """
 
 from __future__ import annotations
@@ -63,10 +81,11 @@ SP = pins.RESULTS_DIR / "statement_positions"
 OUT = pins.RESULTS_DIR / "d1_verdict"
 SETS = ("bind_bridge", "bridge_word", "context")
 JSPACE_MAX, REST_MIN, POSITIVE_MIN = 0.10, 0.50, 0.30
-# --rule late-binding (see the docstring)
+# --rule late-switch and --rule rest-size (see the docstring)
 LATE_JSPACE_HI, LATE_REST_MIN, LATE_RECALL_MIN, FAIL_JSPACE_LO = 0.05, 0.30, 0.30, 0.20
 LATE_STAYS_HI = 0.10  # (e), Dan 23 Oct 12:30: once quiet, the lens part stays quiet at the set's later decisive cells
-LATE_PARTS = ("full", "jspace", "not_jspace", "rand_sub", "jspace_matched", "rand_omp")
+FORM_REST_LO, SIZE_REST_HI = 0.20, 0.10  # rest-size: the rest at the lens part's size, Wilson lower / upper bound
+REPORT_PARTS = ("full", "jspace", "not_jspace", "not_jspace_matched", "rand_sub", "jspace_matched", "rand_omp")
 
 
 def decisive_cell(rates: list[dict], lookup: str, lo: int, onset: int) -> dict | None:
@@ -118,9 +137,10 @@ def load_meta(tasks_set: str | None) -> dict[str, dict]:
     return meta
 
 
-def late_binding_verdict(cells: dict[str, dict]) -> dict:
-    """--rule late-binding on the decisive cells: cell -> {"lookup": {part: [rate, lo, hi, n]}, "recall": {...}} with
-    at least jspace, not_jspace and rand_sub. Returns the verdict, the cells where late binding holds and every check."""
+def late_switch_verdict(cells: dict[str, dict]) -> dict:
+    """--rule late-switch on the decisive cells: cell -> {"lookup": {part: [rate, lo, hi, n]}, "recall": {...}} with
+    at least jspace, not_jspace and rand_sub. Returns the verdict, the cells where the late switch holds and every
+    check."""
     if not cells:
         return {"verdict": "not interpretable: no later cell is in transit for lookups on the map", "checks": {}}
     need = [(f, p) for f in ("lookup", "recall") for p in ("jspace", "not_jspace", "rand_sub")]
@@ -144,7 +164,7 @@ def late_binding_verdict(cells: dict[str, dict]) -> dict:
     split_only = {c: [h for h in holds if not k[h]] for c, k in checks.items() if k["split"] and c not in late}
     size = [c for c, k in checks.items() if k["moves"] and not k["subspace_control_lookup"]]
     if late:
-        verdict = f"late binding holds at {', '.join(late)}"
+        verdict = f"late switch holds at {', '.join(late)}"
     elif all(k["moves"] and k["subspace_control_lookup"] for k in checks.values()):
         verdict = "finding 2 fails on this model: the lens part moves >= 20% of lookups at every later cell"
     elif split_only:
@@ -158,64 +178,103 @@ def late_binding_verdict(cells: dict[str, dict]) -> dict:
     return {"verdict": verdict, "late_cells": late, "checks": checks}
 
 
-def late_binding(a: argparse.Namespace) -> int:
-    """--rule late-binding: the verdict over the later cells, reported per cell for lookups and recalls."""
+def rest_size_verdict(cell: dict) -> str:
+    """--rule rest-size at one cell: {"lookup": {part: [rate, lo, hi, n]}, ...} with jspace and not_jspace_matched."""
+    lk = cell["lookup"]
+    if not (lk["jspace"][3] and lk["not_jspace_matched"][3]):
+        return "not interpretable: no rows of the lens part or of the rest at its size"
+    if lk["not_jspace_matched"][1] >= FORM_REST_LO and lk["jspace"][2] <= LATE_JSPACE_HI:
+        return "H-form: the rest at the lens part's size switches lookups, the lens part does not"
+    if lk["not_jspace_matched"][2] <= SIZE_REST_HI:
+        return "H-size: the rest at the lens part's size does not switch lookups either"
+    return "inconclusive"
+
+
+def block(rows: list[dict], fam: str, cell: str) -> dict:
+    """part -> [rate, lo, hi, n] of one family at one cell (jspace_null: the lens part's random-direction null)."""
+    s, la = cell.split(":")
+    at = [r for r in rows if r["family"] == fam and r["set"] == s and r["layer"] == int(la) and r["source"] == "cf"]
+    out = {}
+    for p, null in [*((p, False) for p in REPORT_PARTS), ("jspace", True)]:
+        got = [r for r in at if r["part"] == p and r["null"] == null]
+        out[f"{p}_null" if null else p] = [*rate(got), len(got)]
+    return out
+
+
+def by_cell(a: argparse.Namespace) -> int:
+    """--rule late-switch / rest-size: the rule's verdict, every listed cell reported for lookups and recalls."""
     rates = json.loads((SP / a.map / "summary.json").read_text())["rates"]
     rows = [json.loads(x) for x in (SP / a.parts / "outcomes.jsonl").read_text().splitlines()]
     fve = [json.loads(x) for x in (SP / a.parts / "fve.jsonl").read_text().splitlines()]
     meta = load_meta(a.tasks_set)
-    later, reference = (
+    listed, reference = (
         [fixed_cell(rates, c, a.lookup) for c in a.cells],
         [fixed_cell(rates, c, a.lookup) for c in a.reference],
     )
-    decisive = [f"{c['set']}:{c['layer']}" for c in later if c["transit"]]
+    transit = [f"{c['set']}:{c['layer']}" for c in listed if c["transit"]]
+    if a.rule == "late-switch":
+        decisive = transit
+    else:
+        assert a.decisive in a.cells, "rest-size: --decisive must be one of --cells"
+        decisive = [a.decisive] if a.decisive in transit else []
 
-    def block(fam: str, cell: str, sel: list[dict]) -> dict:
-        """part -> [rate, lo, hi, n] of one family at one cell (jspace_null: the lens part's random-direction null)."""
-        s, la = cell.split(":")
-        at = [r for r in sel if r["family"] == fam and r["set"] == s and r["layer"] == int(la) and r["source"] == "cf"]
-        out = {}
-        for p, null in [*((p, False) for p in LATE_PARTS), ("jspace", True)]:
-            got = [r for r in at if r["part"] == p and r["null"] == null]
-            out[f"{p}_null" if null else p] = [*rate(got), len(got)]
-        return out
-
-    def share(fam: str, s: str, la: int, what: str) -> float | None:
-        v = sorted(f["share"] for f in fve if f.get("family") == fam and f.get("set") == s and f["layer"] == la
+    def share(s: str, la: int, what: str) -> float | None:
+        v = sorted(f["share"] for f in fve if f.get("family") == a.lookup and f.get("set") == s and f["layer"] == la
                    and f["what"] == what)  # fmt: skip
         return v[len(v) // 2] if v else None
 
+    def role(key: str, c: dict) -> str:
+        if key in decisive:
+            return "decisive"
+        if c in reference:
+            return "reference"
+        return "reported" if a.rule == "rest-size" and c["transit"] else "not in transit"
+
     cells = {}
-    for c in later + reference:
+    for c in listed + reference:
         key = f"{c['set']}:{c['layer']}"
-        cells[key] = {"role": "decisive" if key in decisive else "reference" if c in reference else "not in transit",
-                      "map_lookup_flips": c["map_flips"], "map_transit": c["transit"],
-                      "lookup": block(a.lookup, key, rows), "recall": block(a.recall, key, rows),
-                      "median_share": {w: share(a.lookup, c["set"], c["layer"], w) for w in ("jspace", "rand_sub", "rand_omp")}}  # fmt: skip
-    out = {"rule": "late-binding", "map": a.map, "parts": a.parts, "decisive_cells": decisive,
-           **late_binding_verdict({k: cells[k] for k in decisive}), "cells": cells}  # fmt: skip
+        cells[key] = {"role": role(key, c), "map_lookup_flips": c["map_flips"], "map_transit": c["transit"],
+                      "lookup": block(rows, a.lookup, key), "recall": block(rows, a.recall, key),
+                      "median_share": {w: share(c["set"], c["layer"], w) for w in ("jspace", "rand_sub", "rand_omp")}}  # fmt: skip
+        if a.rule == "rest-size":
+            cells[key]["verdict"] = rest_size_verdict(cells[key])
+
+    def verdict_of_cells(sub: dict[str, dict]) -> dict:
+        if a.rule == "late-switch":
+            return late_switch_verdict(sub)
+        if not sub:
+            return {
+                "verdict": f"not interpretable: the decisive cell {a.decisive} is not in transit for lookups on the map"
+            }
+        return {"verdict": rest_size_verdict(sub[decisive[0]])}
+
+    out = {"rule": a.rule, "map": a.map, "parts": a.parts, "decisive_cells": decisive,
+           **verdict_of_cells({k: cells[k] for k in decisive}), "cells": cells}  # fmt: skip
     for key in ("format", "topic") if meta else ():  # the same rule on one format's / topic's rows: reported only
         out[f"{key}_verdicts"] = {}
         for v in sorted({m[key] for m in meta.values()}):
             sel = [r for r in rows if meta.get(r["name"], {}).get(key) == v]
-            sub = {k: {"lookup": block(a.lookup, k, sel), "recall": block(a.recall, k, sel)} for k in decisive}
-            out[f"{key}_verdicts"][v] = {"verdict": late_binding_verdict(sub)["verdict"], "cells": sub}
+            sub = {k: {"lookup": block(sel, a.lookup, k), "recall": block(sel, a.recall, k)} for k in decisive}
+            out[f"{key}_verdicts"][v] = {"verdict": verdict_of_cells(sub)["verdict"], "cells": sub}
     d = Path(a.out) / f"{a.parts}_{time.strftime('%Y%m%d-%H%M%S')}"
     d.mkdir(parents=True)
     (d / "verdict.json").write_text(json.dumps(out, indent=1) + "\n")
     pct = lambda v: f"{100 * v[0]:.0f}% [{100 * v[1]:.0f}, {100 * v[2]:.0f}]" if v[3] else "-"  # noqa: E731
-    lines = [f"# d1_verdict (late binding) / {a.parts}", "", f"Map {a.map}; decisive cells (in transit for lookups on "
-             f"the map): {', '.join(decisive) or 'none'}", "", f"**Verdict:** {out['verdict']}", ""]  # fmt: skip
+    what = "in transit for lookups on the map" if a.rule == "late-switch" else f"--decisive {a.decisive}, if in transit"
+    lines = [f"# d1_verdict ({a.rule}) / {a.parts}", "", f"Map {a.map}; decisive cells ({what}): "
+             f"{', '.join(decisive) or 'none'}", "", f"**Verdict:** {out['verdict']}", ""]  # fmt: skip
+    if a.rule == "rest-size":
+        lines += ["Per cell: " + "; ".join(f"{k}: {c['verdict']}" for k, c in cells.items()), ""]
     for key in ("format", "topic"):
         if f"{key}_verdicts" in out:
             lines += [f"Per {key} (reported): " + "; ".join(f"{t}: {v['verdict']}" for t, v in out[f"{key}_verdicts"].items()), ""]  # fmt: skip
-    lines += ["| cell | role | map: whole copy flips lookups | family | " + " | ".join(LATE_PARTS) + " | jspace null | n |",
-              "|---|---|---|---|" + "---|" * (len(LATE_PARTS) + 2)]  # fmt: skip
+    lines += ["| cell | role | map: whole copy flips lookups | family | " + " | ".join(REPORT_PARTS) + " | jspace null | n |",
+              "|---|---|---|---|" + "---|" * (len(REPORT_PARTS) + 2)]  # fmt: skip
     for k, c in cells.items():
         flips = "-" if c["map_lookup_flips"] is None else f"{100 * c['map_lookup_flips'][0]:.0f}%"
         for fam, name in (("lookup", a.lookup), ("recall", a.recall)):
             b = c[fam]
-            lines.append(f"| {k} | {c['role']} | {flips} | {name} | " + " | ".join(pct(b[p]) for p in LATE_PARTS)
+            lines.append(f"| {k} | {c['role']} | {flips} | {name} | " + " | ".join(pct(b[p]) for p in REPORT_PARTS)
                          + f" | {pct(b['jspace_null'])} | {b['jspace'][3]} |")  # fmt: skip
     lines += ["", "Median share of the change's squared norm (lookup rows): " + "; ".join(
         f"{k}: " + ", ".join(f"{w} {v:.3f}" if v is not None else f"{w} -" for w, v in c["median_share"].items())
@@ -226,39 +285,66 @@ def late_binding(a: argparse.Namespace) -> int:
     return 0
 
 
-def late_figures(a: argparse.Namespace) -> int:
-    """--figures: the newest late-binding verdict of --parts as one figure (lookups | recalls, every cell)."""
+BLUE, ORANGE, AQUA, CONTROL = "#2a78d6", "#eb6834", "#1baf7a", "#898781"  # statement_positions' validated slots
+LENS, REST = ("jspace", BLUE, "o", False, "lens-readable part"), ("not_jspace", ORANGE, "s", False, "the rest")
+REST_SMALL = ("not_jspace_matched", ORANGE, "s", True, "the rest at the lens part's size")
+RANDOM = ("rand_sub", CONTROL, "D", False, "control: random subspace, the lens part's size")
+FIGURE = {  # per rule: series (part, colour, marker, hollow, label), bars per panel, file, title, how to read
+    "late-switch": {
+        "series": (("full", AQUA, "o", False, "whole patch"), LENS, REST, REST_SMALL, RANDOM),
+        "bars": {"lookup": (LATE_JSPACE_HI, FAIL_JSPACE_LO, LATE_REST_MIN), "recall": (LATE_RECALL_MIN,)},
+        "bars_label": "bars: lookups 5% / 20% (lens part), 30% (the rest); recalls 30% (lens part)",
+        "file": "late_switch.png",
+        "title": "Does the lookup stop using the lens-readable part of a stated bridge at later layers?",
+        "how": "Late switch: at some dark-labelled cell the lens part (blue) stays under 5% on lookups while the rest "
+        "(orange) switches >= 30%, stays under 10% at the later cells of its row (sentence / context), and still "
+        "switches >= 30% of recalls, above the grey control.",
+    },
+    "rest-size": {
+        "series": (LENS, REST, REST_SMALL, RANDOM),
+        "bars": {"lookup": (LATE_JSPACE_HI, SIZE_REST_HI, FORM_REST_LO), "recall": ()},
+        "bars_label": "bars on lookups: 5% (lens part), 10% and 20% (the rest at the lens part's size)",
+        "file": "rest_size.png",
+        "title": "Shrunk to the lens-readable part's size, does the rest of a stated bridge's change still switch "
+        "lookups?",
+        "how": "Form: at the dark-labelled cell the rest at the lens part's size (hollow orange) switches lookups "
+        "(lower bound >= 20%) while the lens part (blue) stays under 5%. Size: the shrunk rest stays under 10% too.",
+    },
+}
+
+
+def rule_figures(a: argparse.Namespace) -> int:
+    """--figures: the newest verdict of --parts under --rule as one figure (lookups | recalls, every cell)."""
     import matplotlib
 
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     from matplotlib.lines import Line2D
 
-    from bridge_jspace.plotting import INK, MUTED, finish, percent_axis, style_axes
+    from bridge_jspace.plotting import INK, MUTED, SURFACE, finish, percent_axis, style_axes
 
     found = [p for p in sorted(Path(a.out).glob(f"{a.parts}_*/verdict.json"))
-             if json.loads(p.read_text()).get("rule") == "late-binding"]  # fmt: skip
-    assert found, f"no late-binding verdict of {a.parts} under {a.out}"
-    v = json.loads(found[-1].read_text())
+             if json.loads(p.read_text()).get("rule") == a.rule]  # fmt: skip
+    assert found, f"no {a.rule} verdict of {a.parts} under {a.out}"
+    v, spec = json.loads(found[-1].read_text()), FIGURE[a.rule]
     folder = found[-1].parent / f"analysis-{time.strftime('%Y%m%d-%H%M%S')}-figures"
     folder.mkdir()
-    blue, orange, aqua, control = "#2a78d6", "#eb6834", "#1baf7a", "#898781"  # statement_positions' validated slots
-    series = (("full", aqua, "o", "whole patch"), ("jspace", blue, "o", "lens-readable part"),
-              ("not_jspace", orange, "s", "the rest"), ("rand_sub", control, "D", "control: random subspace, same size"))  # fmt: skip
+    series = spec["series"]
     keys = sorted(v["cells"], key=lambda k: (SETS.index(k.split(":")[0]), int(k.split(":")[1])))
     fig, axes = plt.subplots(1, 2, figsize=(13, 6.8), sharey=True)
     for ax, fam, name in ((axes[0], "lookup", "lookups (the answer is read from the prompt)"),
                           (axes[1], "recall", "recalls (the answer comes from memory)")):  # fmt: skip
         style_axes(ax)
-        for j, (p, color, marker, _) in enumerate(series):
-            dx = (j - 1.5) * 0.17
+        for j, (p, color, marker, hollow, _) in enumerate(series):
+            dx = (j - (len(series) - 1) / 2) * 0.15
             for i, k in enumerate(keys):
                 r = v["cells"][k][fam][p]
                 if not r[3]:
                     continue
                 ax.plot([i + dx, i + dx], [r[1], r[2]], color=color, lw=2, solid_capstyle="round")
-                ax.scatter([i + dx], [r[0]], c=color, marker=marker, s=44, edgecolors="white", linewidths=1, zorder=3)
-        for y in (LATE_JSPACE_HI, FAIL_JSPACE_LO, LATE_REST_MIN) if fam == "lookup" else (LATE_RECALL_MIN,):
+                ax.scatter([i + dx], [r[0]], c=SURFACE if hollow else color, marker=marker, s=44,
+                           edgecolors=color if hollow else "white", linewidths=1.5 if hollow else 1, zorder=3)  # fmt: skip
+        for y in spec["bars"][fam]:
             ax.axhline(y, color=MUTED, lw=0.8, ls=(0, (2, 2)), zorder=1)
         labels = []
         for k in keys:
@@ -271,27 +357,25 @@ def late_figures(a: argparse.Namespace) -> int:
             t.set_color(INK if v["cells"][k]["role"] == "decisive" else MUTED)
         ax.set_title(name, fontsize=9, color=INK, loc="left")
         ax.set_ylim(-0.02, 1.02)
-        ax.set_yticks([0, LATE_JSPACE_HI, FAIL_JSPACE_LO, LATE_RECALL_MIN, 0.4, 0.6, 0.8, 1.0])  # the bars' values
+        ax.set_yticks(sorted({0, *spec["bars"]["lookup"], *spec["bars"]["recall"], 0.4, 0.6, 0.8, 1.0}))
         percent_axis(ax)
     axes[0].set_ylabel("items whose answer switches to the other bridge's answer", fontsize=8, color=MUTED)
-    handles = [Line2D([], [], color=c, marker=mk, lw=2, label=lab) for _, c, mk, lab in series]
-    handles.append(Line2D([], [], color=MUTED, lw=0.8, ls=(0, (2, 2)),
-                          label="bars: lookups 5% / 20% (lens part), 30% (the rest); recalls 30% (lens part)"))  # fmt: skip
+    handles = [Line2D([], [], color=c, marker=mk, lw=2, label=lab, markerfacecolor=SURFACE if hollow else c)
+               for _, c, mk, hollow, lab in series]  # fmt: skip
+    handles.append(Line2D([], [], color=MUTED, lw=0.8, ls=(0, (2, 2)), label=spec["bars_label"]))
     n = max(c["lookup"]["jspace"][3] for c in v["cells"].values())
-    finish(fig, folder / "late_binding.png",
-           "Does the lookup stop using the lens-readable part of a stated bridge at later layers?",
+    finish(fig, folder / spec["file"], spec["title"],
            f"Map {v['map']}, parts {v['parts']}; up to {n} items per family and cell, the same scenes for both families; "
            "bars: Wilson 95%.",
-           handles=handles, ncols=5, handlelength=2.5,
-           explain=[("What we did", "Changed the stated bridge, then pasted one part of the change (the lens-readable "
-                     "part, the rest, the whole) into the original run at one place and layer."),
-                    ("How to read", "Late binding: at some dark-labelled cell the lens part (blue) stays under 5% on "
-                     "lookups while the rest (orange) switches >= 30%, stays under 10% at the later cells of its row "
-                     "(sentence / context), and still switches >= 30% of recalls, above the grey control."),
+           handles=handles, ncols=3, handlelength=2.5,
+           explain=[("What we did", "Changed the stated bridge, then pasted one part of the change (e.g. the "
+                     "lens-readable part, the rest, the rest shrunk to the lens part's size) into the original run at "
+                     "one place and layer."),
+                    ("How to read", spec["how"]),
                     ("Control", "A random subspace that keeps the same share of the change as the lens part (grey); "
                      "grey labels: cells that do not decide."),
                     ("Verdict", v["verdict"])])  # fmt: skip
-    print("wrote", folder / "late_binding.png")
+    print("wrote", folder / spec["file"])
     return 0
 
 
@@ -308,17 +392,19 @@ def main() -> int:
     ap.add_argument("--cell", default=None, help="SET:LAYER fixed in advance (else chosen from the map)")
     ap.add_argument("--keep-min", type=float, default=None,
                     help="Gemma-style gate: under the lens-part patch, lookups keep their answer on >= this share")  # fmt: skip
-    ap.add_argument("--rule", choices=("replication", "late-binding"), default="replication")
-    ap.add_argument("--cells", nargs="+", default=[], help="late-binding: the later cells, SET:LAYER")
-    ap.add_argument("--reference", nargs="*", default=[], help="late-binding: cells reported only, SET:LAYER")
-    ap.add_argument("--figures", action="store_true", help="late-binding: the figure of the newest verdict of --parts")
+    ap.add_argument("--rule", choices=("replication", "late-switch", "rest-size"), default="replication")
+    ap.add_argument("--cells", nargs="+", default=[], help="late-switch / rest-size: the cells, SET:LAYER")
+    ap.add_argument("--reference", nargs="*", default=[], help="late-switch: cells reported only, SET:LAYER")
+    ap.add_argument("--decisive", default=None, help="rest-size: the cell that decides, SET:LAYER (one of --cells)")
+    ap.add_argument("--figures", action="store_true", help="late-switch / rest-size: figure of the newest verdict")
     a = ap.parse_args()
-    if a.rule == "late-binding":
+    if a.rule in ("late-switch", "rest-size"):
         if a.figures:
-            return late_figures(a)
-        assert a.map, "late-binding needs --map"
-        assert a.cells, "late-binding needs --cells"
-        return late_binding(a)
+            return rule_figures(a)
+        assert a.map, f"{a.rule} needs --map"
+        assert a.cells, f"{a.rule} needs --cells"
+        assert a.rule == "late-switch" or a.decisive, "rest-size needs --decisive"
+        return by_cell(a)
     assert a.map, "--map is required"
     rates = json.loads((SP / a.map / "summary.json").read_text())["rates"]
     cell = fixed_cell(rates, a.cell, a.lookup) if a.cell else decisive_cell(rates, a.lookup, a.lo, a.onset)
