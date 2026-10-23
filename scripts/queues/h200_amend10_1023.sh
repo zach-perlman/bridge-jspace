@@ -52,8 +52,10 @@ for step in "$@"; do
     waitmem:*) want=${step#waitmem:}
       until [ "$(nvidia-smi -i $G --query-gpu=memory.free --format=csv,noheader,nounits)" -ge "$want" ]; do sleep 30; done
       echo "=== GPU $G has >= $want MiB free $(date -u +%T)";;
-    waitq:*) j=${step#waitq:}
-      until grep -qs "^EXIT" $R-$j.log; do sleep 60; done; echo "=== $j finished $(date -u +%T)";;
+    waitq:*) j=${step#waitq:}  # a short job name (h200...) or the full one (2026-10-23 fix: the full name was prefixed twice)
+      case $j in bridge-cse_*) f=/workspace/runs/$j.log;; *) f=$R-$j.log;; esac
+      [ -f "$f" ] || { echo "=== waitq: no log $f: stop"; exit 1; }
+      until grep -qs "^EXIT" "$f"; do sleep 60; done; echo "=== $j finished $(date -u +%T)";;
     mm9) mm qwen3.5-9b qwen35_9b_ "12-16" 32;;
     mm27) mm qwen3.6-27b "" "32-40" 16;;
     mmmuse) mm muse-glimmer-30b muse30_ "36-42" 32;;
