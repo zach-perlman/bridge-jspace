@@ -1,0 +1,30 @@
+{
+  "run": "olmo3_7b_instruct_jpp_abl_rot_raw_v1",
+  "why": "finding 1 (J-space removal) on olmo-3-7b-instruct (raw) with our J++: olmo3_7b_instruct_abl_rot_raw_v1's cells, the J-space now J++'s",
+  "written_utc": "2026-10-23T08:57:37Z",
+  "model": {
+    "target": "olmo-3-7b-instruct-jpp",
+    "repo": "allenai/Olmo-3-7B-Instruct",
+    "revision": "6e5971d9eba42665f5bd5a0fcf047f299ce1dccc",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "raw"
+  },
+  "lens": [
+    "jpp",
+    "6847cfb38a14d7cf0049efff80364d051d69ec91998e44177e7fb5b4b9732451"
+  ],
+  "lens_layers": null,
+  "layers": [
+    15,
+    18,
+    21
+  ],
+  "k_atoms": 25,
+  "n_per_family": 100,
+  "skip_first": 0,
+  "center": false,
+  "rotated": true,
+  "no_random": false,
+  "doc": "At layers 32, 36 and 40 at once (another target: --layers, each a layer its frozen lens has a map at), at every\nposition, each residual loses its 25-atom J-space part (signed OMP over the frozen lens's letter-token vectors: J++ on\nQwen, the J-lens on OLMo, recorded in the manifest with its layers; the split's J-space part, here of the state itself);\nthe control loses the same fit over a random dictionary of the same size (seeded per layer). On unedited-correct\nitems, read at the answer's first token (suite_split's read):\n  clean   the whole question                      hop     the last step alone (suite_v1's hop2 / hop3: a lookup in the\n                                                          prompt for BL, RL; a recalled fact for BR, RR, TYPO, TRANS)\nReported per family: accuracy (top token = the answer's) and the mean change in the answer token's log-probability.\nFamilies: BL, BR, RL, RR (suite main set), TYPO, TRANS (computed set), countries R, B (bind_recall, clean only).\nPrediction from the read/write results (not a decision rule): removing the J-space hurts the recall chains more than\nthe lookup chains, beyond what the step alone loses."
+}

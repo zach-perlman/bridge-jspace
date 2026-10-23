@@ -1,0 +1,1176 @@
+{
+  "primary": {
+    "layer": 50,
+    "scale": 1.0,
+    "slot": [
+      0.0133,
+      0.0028,
+      0.0307,
+      377
+    ],
+    "lens": [
+      0.0,
+      0.0,
+      0.0101,
+      377
+    ],
+    "random": [
+      0.0,
+      0.0,
+      0.0101,
+      377
+    ],
+    "slot_minus_lens": [
+      0.0133,
+      0.0028,
+      0.0249
+    ],
+    "slot_minus_random": [
+      0.0133,
+      0.0028,
+      0.0249
+    ],
+    "shuffled": [
+      0.0,
+      0.0,
+      0.0101,
+      377
+    ],
+    "rr_slot": [
+      0.0,
+      0.0,
+      0.0294,
+      127
+    ],
+    "span_only": [
+      0.0133,
+      0.0028,
+      0.0307,
+      377
+    ],
+    "rest_only": [
+      0.0,
+      0.0,
+      0.0101,
+      377
+    ],
+    "held_out_entities": [
+      0.0122,
+      0.0,
+      0.0434,
+      164
+    ],
+    "seen_entities": [
+      0.0141,
+      0.0,
+      0.0406,
+      213
+    ],
+    "patch": [
+      0.0053,
+      0.0015,
+      0.0191,
+      377
+    ],
+    "sub4": [
+      0.0133,
+      0.0057,
+      0.0307,
+      377
+    ]
+  },
+  "checks": {
+    "a_lower_bound_ge_0.30": false,
+    "b_20_points_above_lens_and_random": false,
+    "controls_valid": true,
+    "illusion_flag": false,
+    "unedited_answer_org": 0.9881
+  },
+  "verdict": "not shown: the slot direction does not steer the lookup by the rule",
+  "grid": {
+    "RL|slot|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 376,
+        "context": 1
+      }
+    },
+    "RL|slot|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 376,
+        "context": 1
+      }
+    },
+    "RL|slot|50|1.0": {
+      "position": [
+        0.0133,
+        0.0057,
+        0.0307,
+        377
+      ],
+      "roles": {
+        "none": 369,
+        "position": 5,
+        "context": 2,
+        "value": 1
+      }
+    },
+    "RL|slot|50|2.0": {
+      "position": [
+        0.0133,
+        0.0057,
+        0.0307,
+        377
+      ],
+      "roles": {
+        "none": 371,
+        "position": 5,
+        "context": 1
+      }
+    },
+    "RL|slot|window|1.0": {
+      "position": [
+        0.0106,
+        0.0041,
+        0.027,
+        377
+      ],
+      "roles": {
+        "none": 370,
+        "position": 4,
+        "context": 2,
+        "value": 1
+      }
+    },
+    "RL|slot|window|2.0": {
+      "position": [
+        0.0106,
+        0.0041,
+        0.027,
+        377
+      ],
+      "roles": {
+        "none": 371,
+        "position": 4,
+        "context": 1,
+        "identity": 1
+      }
+    },
+    "RL|sub4|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 377
+      }
+    },
+    "RL|sub4|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 377
+      }
+    },
+    "RL|sub4|50|1.0": {
+      "position": [
+        0.0133,
+        0.0057,
+        0.0307,
+        377
+      ],
+      "roles": {
+        "none": 369,
+        "position": 5,
+        "context": 2,
+        "value": 1
+      }
+    },
+    "RL|sub4|50|2.0": {
+      "position": [
+        0.0133,
+        0.0057,
+        0.0307,
+        377
+      ],
+      "roles": {
+        "none": 368,
+        "context": 3,
+        "position": 5,
+        "value": 1
+      }
+    },
+    "RL|sub4|window|1.0": {
+      "position": [
+        0.0133,
+        0.0057,
+        0.0307,
+        377
+      ],
+      "roles": {
+        "none": 369,
+        "position": 5,
+        "context": 2,
+        "value": 1
+      }
+    },
+    "RL|sub4|window|2.0": {
+      "position": [
+        0.0159,
+        0.0073,
+        0.0343,
+        377
+      ],
+      "roles": {
+        "none": 367,
+        "context": 2,
+        "position": 6,
+        "identity": 2
+      }
+    },
+    "RL|shuffled|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 377
+      }
+    },
+    "RL|shuffled|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 377
+      }
+    },
+    "RL|shuffled|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 374,
+        "context": 3
+      }
+    },
+    "RL|shuffled|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 374,
+        "context": 2,
+        "identity": 1
+      }
+    },
+    "RL|shuffled|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 376,
+        "context": 1
+      }
+    },
+    "RL|shuffled|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 377
+      }
+    },
+    "RL|random|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 377
+      }
+    },
+    "RL|random|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 377
+      }
+    },
+    "RL|random|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 377
+      }
+    },
+    "RL|random|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 377
+      }
+    },
+    "RL|random|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 377
+      }
+    },
+    "RL|random|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 377
+      }
+    },
+    "RL|lens|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 377
+      }
+    },
+    "RL|lens|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 376,
+        "value": 1
+      }
+    },
+    "RL|lens|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 376,
+        "value": 1
+      }
+    },
+    "RL|lens|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 376,
+        "value": 1
+      }
+    },
+    "RL|lens|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 376,
+        "value": 1
+      }
+    },
+    "RL|lens|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 375,
+        "value": 2
+      }
+    },
+    "RL|span|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 377
+      }
+    },
+    "RL|span|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 377
+      }
+    },
+    "RL|span|50|1.0": {
+      "position": [
+        0.0133,
+        0.0057,
+        0.0307,
+        377
+      ],
+      "roles": {
+        "none": 369,
+        "position": 5,
+        "context": 2,
+        "value": 1
+      }
+    },
+    "RL|span|50|2.0": {
+      "position": [
+        0.0133,
+        0.0057,
+        0.0307,
+        377
+      ],
+      "roles": {
+        "none": 369,
+        "position": 5,
+        "context": 2,
+        "value": 1
+      }
+    },
+    "RL|span|window|1.0": {
+      "position": [
+        0.0133,
+        0.0057,
+        0.0307,
+        377
+      ],
+      "roles": {
+        "none": 369,
+        "position": 5,
+        "context": 2,
+        "value": 1
+      }
+    },
+    "RL|span|window|2.0": {
+      "position": [
+        0.0106,
+        0.0041,
+        0.027,
+        377
+      ],
+      "roles": {
+        "none": 372,
+        "position": 4,
+        "context": 1
+      }
+    },
+    "RL|rest|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 377
+      }
+    },
+    "RL|rest|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 376,
+        "context": 1
+      }
+    },
+    "RL|rest|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 377
+      }
+    },
+    "RL|rest|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 377
+      }
+    },
+    "RL|rest|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 377
+      }
+    },
+    "RL|rest|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 376,
+        "value": 1
+      }
+    },
+    "RL|patch|44|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "roles": {
+        "none": 377
+      }
+    },
+    "RL|patch|50|None": {
+      "position": [
+        0.0053,
+        0.0015,
+        0.0191,
+        377
+      ],
+      "roles": {
+        "none": 370,
+        "recall": 1,
+        "context": 2,
+        "position": 2,
+        "identity": 1,
+        "value": 1
+      }
+    },
+    "RL|patch|window|None": {
+      "position": [
+        0.0027,
+        0.0005,
+        0.0149,
+        377
+      ],
+      "roles": {
+        "none": 372,
+        "recall": 1,
+        "context": 2,
+        "position": 1,
+        "identity": 1
+      }
+    },
+    "RR|slot|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 121,
+        "identity": 6
+      }
+    },
+    "RR|slot|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 121,
+        "identity": 6
+      }
+    },
+    "RR|slot|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 121,
+        "context": 1,
+        "identity": 5
+      }
+    },
+    "RR|slot|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 120,
+        "context": 1,
+        "identity": 6
+      }
+    },
+    "RR|slot|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 120,
+        "context": 1,
+        "identity": 6
+      }
+    },
+    "RR|slot|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 119,
+        "context": 1,
+        "identity": 7
+      }
+    },
+    "RR|shuffled|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 121,
+        "identity": 6
+      }
+    },
+    "RR|shuffled|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 120,
+        "identity": 7
+      }
+    },
+    "RR|shuffled|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 122,
+        "identity": 5
+      }
+    },
+    "RR|shuffled|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 122,
+        "context": 1,
+        "identity": 4
+      }
+    },
+    "RR|shuffled|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 123,
+        "identity": 4
+      }
+    },
+    "RR|shuffled|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 120,
+        "context": 1,
+        "identity": 6
+      }
+    },
+    "RR|random|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 122,
+        "identity": 5
+      }
+    },
+    "RR|random|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 120,
+        "identity": 7
+      }
+    },
+    "RR|random|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 120,
+        "identity": 7
+      }
+    },
+    "RR|random|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 121,
+        "identity": 6
+      }
+    },
+    "RR|random|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 122,
+        "identity": 5
+      }
+    },
+    "RR|random|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 121,
+        "identity": 6
+      }
+    },
+    "RR|lens|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 120,
+        "identity": 7
+      }
+    },
+    "RR|lens|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 120,
+        "identity": 7
+      }
+    },
+    "RR|lens|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 121,
+        "identity": 6
+      }
+    },
+    "RR|lens|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 121,
+        "context": 1,
+        "identity": 5
+      }
+    },
+    "RR|lens|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 120,
+        "identity": 7
+      }
+    },
+    "RR|lens|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 121,
+        "identity": 6
+      }
+    },
+    "RR|patch|44|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 122,
+        "identity": 5
+      }
+    },
+    "RR|patch|50|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 119,
+        "context": 1,
+        "identity": 7
+      }
+    },
+    "RR|patch|window|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "roles": {
+        "none": 119,
+        "context": 1,
+        "identity": 7
+      }
+    }
+  },
+  "pointer_v4": {
+    "ci": {
+      "kind": "entity_cluster",
+      "cluster": "asked entity",
+      "strata": "domain",
+      "n_boot": 2000,
+      "seed": 0,
+      "bounds": "the wider of the cluster bootstrap and the item-level Wilson interval"
+    },
+    "item_level": {
+      "slot": [
+        0.0133,
+        0.0057,
+        0.0307,
+        377
+      ],
+      "lens": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "random": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "shuffled": [
+        0.0,
+        0.0,
+        0.0101,
+        377
+      ],
+      "rr_slot": [
+        0.0,
+        0.0,
+        0.0294,
+        127
+      ],
+      "slot_minus_lens": [
+        0.013262599469496022,
+        0.002652519893899204,
+        0.026525198938992044
+      ],
+      "slot_minus_random": [
+        0.013262599469496022,
+        0.002652519893899204,
+        0.026525198938992044
+      ]
+    },
+    "n_k_t": {
+      "slot": [
+        377,
+        83,
+        27
+      ],
+      "lens": [
+        377,
+        83,
+        27
+      ],
+      "random": [
+        377,
+        83,
+        27
+      ],
+      "shuffled": [
+        377,
+        83,
+        27
+      ],
+      "rr_slot": [
+        127,
+        50,
+        24
+      ]
+    },
+    "per_domain": {
+      "countries": {
+        "slot": [
+          0.0144,
+          0.0,
+          0.0509,
+          139
+        ],
+        "lens": [
+          0.0,
+          -0.0,
+          0.0269,
+          139
+        ],
+        "random": [
+          0.0,
+          -0.0,
+          0.0269,
+          139
+        ],
+        "n_k_t": [
+          139,
+          35,
+          9
+        ]
+      },
+      "animals": {
+        "slot": [
+          0.0075,
+          0.0,
+          0.0414,
+          133
+        ],
+        "lens": [
+          0.0,
+          -0.0,
+          0.0281,
+          133
+        ],
+        "random": [
+          0.0,
+          -0.0,
+          0.0281,
+          133
+        ],
+        "n_k_t": [
+          133,
+          33,
+          9
+        ]
+      },
+      "body": {
+        "slot": [
+          0.019,
+          0.0,
+          0.0668,
+          105
+        ],
+        "lens": [
+          0.0,
+          0.0,
+          0.0353,
+          105
+        ],
+        "random": [
+          0.0,
+          0.0,
+          0.0353,
+          105
+        ],
+        "n_k_t": [
+          105,
+          15,
+          9
+        ]
+      }
+    },
+    "per_cut": {
+      "entity": {
+        "slot": [
+          0.0,
+          0.0,
+          0.0507,
+          72
+        ],
+        "n_k_t": [
+          72,
+          25,
+          12
+        ]
+      },
+      "template": {
+        "slot": [
+          0.0141,
+          0.0,
+          0.0406,
+          213
+        ],
+        "n_k_t": [
+          213,
+          57,
+          15
+        ]
+      },
+      "both": {
+        "slot": [
+          0.0217,
+          0.0,
+          0.0758,
+          92
+        ],
+        "n_k_t": [
+          92,
+          26,
+          15
+        ]
+      }
+    }
+  },
+  "seconds": 740,
+  "edited_reads": 20898,
+  "n_cases": 504
+}

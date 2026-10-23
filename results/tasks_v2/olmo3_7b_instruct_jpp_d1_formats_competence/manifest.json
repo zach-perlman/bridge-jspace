@@ -1,0 +1,19 @@
+{
+  "run": "olmo3_7b_instruct_jpp_d1_formats_competence",
+  "why": "D1 in tables and JSON (OLMo, our J++): scenes right on every prompt",
+  "set": "d1_formats_v1",
+  "model": {
+    "target": "olmo-3-7b-instruct-jpp",
+    "repo": "allenai/Olmo-3-7B-Instruct",
+    "revision": "6e5971d9eba42665f5bd5a0fcf047f299ce1dccc",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "git_commit": "2f3c320b1f8d23f1269dddc65724f2c3549e7aad",
+  "guess": false,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-23T09:08:03Z"
+}

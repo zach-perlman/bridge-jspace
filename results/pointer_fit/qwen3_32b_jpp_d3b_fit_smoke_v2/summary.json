@@ -1,0 +1,584 @@
+{
+  "primary": {
+    "layer": 50,
+    "scale": 1.0,
+    "slot": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ],
+    "lens": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ],
+    "random": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ],
+    "slot_minus_lens": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "slot_minus_random": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "shuffled": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ],
+    "rr_slot": [
+      0.0,
+      -0.0,
+      0.2775,
+      10
+    ],
+    "span_only": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ],
+    "rest_only": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ],
+    "held_out_entities": [
+      0.0,
+      0.0,
+      0.3903,
+      6
+    ],
+    "seen_entities": [
+      0.0,
+      0.0,
+      0.3903,
+      6
+    ],
+    "patch": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ],
+    "sub4": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ]
+  },
+  "checks": {
+    "a_lower_bound_ge_0.30": false,
+    "b_20_points_above_lens_and_random": false,
+    "controls_valid": false,
+    "illusion_flag": false,
+    "unedited_answer_org": 1
+  },
+  "verdict": "not shown: the slot direction does not steer the lookup by the rule (controls failed: not interpretable)",
+  "grid": {
+    "RL|slot|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 11,
+        "context": 1
+      }
+    },
+    "RL|slot|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 11,
+        "context": 1
+      }
+    },
+    "RL|sub4|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 11,
+        "context": 1
+      }
+    },
+    "RL|sub4|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 11,
+        "context": 1
+      }
+    },
+    "RL|shuffled|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|shuffled|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|random|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|random|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|lens|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|lens|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|span|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 11,
+        "context": 1
+      }
+    },
+    "RL|span|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 11,
+        "context": 1
+      }
+    },
+    "RL|rest|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|rest|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|patch|50|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|patch|window|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|slot|50|1.0": {
+      "position": [
+        0.0,
+        -0.0,
+        0.2775,
+        10
+      ],
+      "roles": {
+        "none": 10
+      }
+    },
+    "RR|slot|window|1.0": {
+      "position": [
+        0.0,
+        -0.0,
+        0.2775,
+        10
+      ],
+      "roles": {
+        "none": 10
+      }
+    },
+    "RR|shuffled|50|1.0": {
+      "position": [
+        0.0,
+        -0.0,
+        0.2775,
+        10
+      ],
+      "roles": {
+        "none": 10
+      }
+    },
+    "RR|shuffled|window|1.0": {
+      "position": [
+        0.0,
+        -0.0,
+        0.2775,
+        10
+      ],
+      "roles": {
+        "none": 10
+      }
+    },
+    "RR|random|50|1.0": {
+      "position": [
+        0.0,
+        -0.0,
+        0.2775,
+        10
+      ],
+      "roles": {
+        "none": 10
+      }
+    },
+    "RR|random|window|1.0": {
+      "position": [
+        0.0,
+        -0.0,
+        0.2775,
+        10
+      ],
+      "roles": {
+        "none": 10
+      }
+    },
+    "RR|lens|50|1.0": {
+      "position": [
+        0.0,
+        -0.0,
+        0.2775,
+        10
+      ],
+      "roles": {
+        "none": 10
+      }
+    },
+    "RR|lens|window|1.0": {
+      "position": [
+        0.0,
+        -0.0,
+        0.2775,
+        10
+      ],
+      "roles": {
+        "none": 10
+      }
+    },
+    "RR|patch|50|None": {
+      "position": [
+        0.0,
+        -0.0,
+        0.2775,
+        10
+      ],
+      "roles": {
+        "none": 10
+      }
+    },
+    "RR|patch|window|None": {
+      "position": [
+        0.0,
+        -0.0,
+        0.2775,
+        10
+      ],
+      "roles": {
+        "none": 10
+      }
+    }
+  },
+  "pointer_v4": {
+    "ci": {
+      "kind": "entity_cluster",
+      "cluster": "asked entity",
+      "strata": "domain",
+      "n_boot": 2000,
+      "seed": 0,
+      "bounds": "the wider of the cluster bootstrap and the item-level Wilson interval"
+    },
+    "item_level": {
+      "slot": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "lens": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "random": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "shuffled": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "rr_slot": [
+        0.0,
+        -0.0,
+        0.2775,
+        10
+      ],
+      "slot_minus_lens": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "slot_minus_random": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "n_k_t": {
+      "slot": [
+        12,
+        12,
+        9
+      ],
+      "lens": [
+        12,
+        12,
+        9
+      ],
+      "random": [
+        12,
+        12,
+        9
+      ],
+      "shuffled": [
+        12,
+        12,
+        9
+      ],
+      "rr_slot": [
+        10,
+        9,
+        8
+      ]
+    },
+    "per_domain": {
+      "countries": {
+        "slot": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "lens": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "random": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "n_k_t": [
+          4,
+          4,
+          3
+        ]
+      },
+      "animals": {
+        "slot": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "lens": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "random": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "n_k_t": [
+          4,
+          4,
+          2
+        ]
+      },
+      "body": {
+        "slot": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "lens": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "random": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "n_k_t": [
+          4,
+          4,
+          4
+        ]
+      }
+    },
+    "per_cut": {
+      "entity": {
+        "slot": [
+          0.0,
+          0.0,
+          0.6576,
+          2
+        ],
+        "n_k_t": [
+          2,
+          2,
+          2
+        ]
+      },
+      "template": {
+        "slot": [
+          0.0,
+          0.0,
+          0.3903,
+          6
+        ],
+        "n_k_t": [
+          6,
+          6,
+          5
+        ]
+      },
+      "both": {
+        "slot": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "n_k_t": [
+          4,
+          4,
+          3
+        ]
+      }
+    }
+  },
+  "seconds": 17,
+  "edited_reads": 314,
+  "n_cases": 22
+}

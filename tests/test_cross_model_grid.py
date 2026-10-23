@@ -1,8 +1,9 @@
 """cross_model_grid: the verdict words on synthetic runs (each rule's pass, fail and failed-control case), the cell
-status from the queue without opening any result, and on the runs README.md already reports: 10 random cells
-recomputed from the raw rows, and every number of README's findings table found in grid.csv.
+status from the queue without opening any result, and on the saved runs: 10 random cells recomputed from the raw
+rows, and every number of README's findings table found in grid.csv.
 
-Only README-reported runs are read here (OPENED); the night's runs are never opened by these tests."""
+The real-run tests read every saved run: the night of 22-23 Oct was opened once Dan's predictions were committed
+(a135a54); before that they read only the runs the README reported."""
 
 from __future__ import annotations
 
@@ -15,23 +16,6 @@ import re
 import pytest
 
 from scripts import cross_model_grid as G
-
-# The runs README.md reports (its "Runs behind each slide" list and the body), and nothing else.
-OPENED = {
-    "d2_parts_v2_27b", "qwen3_32b_d2_parts_v2", "qwen35_9b_d2_parts_v2", "olmo3_7b_instruct_d2_parts_v2",
-    "gemma4it_d2_parts_v2", "d2_parts_seed2_27b", "qwen3_32b_d2_parts_seed2", "qwen35_9b_d2_parts_seed2",
-    "olmo3_7b_instruct_d2_parts_seed2", "gemma4it_d2_parts_seed2", "d2_v4_late_read", "qwen3_32b_d2_v4_late_read_v2_r2",
-    "qwen35_9b_d2_v4_late_read_r2", "olmo3_7b_instruct_d2_v4_late_read_v3", "gemma4it_d2_v4_late_read_v3_r2",
-    "d2_late_read_seed2_27b", "qwen3_32b_d2_late_read_seed2", "qwen35_9b_d2_late_read_seed2",
-    "olmo3_7b_instruct_d2_late_read_seed2", "gemma4it_d2_late_read_seed2", "d2_formats_27b", "qwen3_32b_d2_formats",
-    "qwen35_9b_d2_late_read_long", "lens_gate_27b", "qwen3_32b_lens_gate", "qwen35_9b_lens_gate",
-    "d1_topics_parts_27b", "qwen3_32b_d1_topics_parts", "qwen35_9b_d1_topics2_parts", "d1_topics_rw_27b",
-    "qwen3_32b_d1_topics_rw", "qwen35_9b_d1_topics2_rw", "d3v4x_swap_main", "qwen35_9b_d3v4x_swap_r2",
-    "olmo3_7b_instruct_d3v4x_swap", "gemma4it_d3v4x_swap_r2", "d3v4_seed3_swap_27b", "qwen3_32b_d3v4_seed2_swap",
-    "qwen35_9b_d3v4_seed2_swap", "gemma4it_d3v4_seed2_swap", "olmo3_7b_instruct_d3v4_seed2_swap",
-    "qwen35_9b_d3v4_swap_r2", "gemma4it_d3v4_swap_v2_r2", "olmo3_7b_instruct_d3v4_swap_fn", "d4_where_fresh_27b",
-    "d3v4_fit_main", "olmo3_7b_instruct_d3b_fit_v2", "abl_rot_v1", "full2_ko_v1",
-}  # fmt: skip
 
 
 def _jsonl(path, rows):
@@ -327,7 +311,7 @@ def test_grid_md_states_the_seven_words_and_how_finding_1s_interval_is_computed(
 def opened() -> tuple[list, list[dict]]:
     if not (G.RESULTS / "attn_knockout" / "d2_late_read_seed2_27b" / "rows.jsonl").exists():
         pytest.skip("the README's runs are not in results/")
-    rows = G.build(runs=OPENED)
+    rows = G.build()
     return rows, list(csv.DictReader(io.StringIO(G.csv_text(rows))))
 
 
@@ -420,18 +404,7 @@ def _covered(c: dict) -> bool:
 
 # README's findings table: every number in "Key evidence" must be in grid.csv's rows of that finding (value, interval
 # or the control / reference column). The ones the grid does not show, with why:
-NOT_IN_GRID = {
-    ("2", 66): "the animal suite's recall (statement_positions d1_parts_n80_v1), another rule; not a grid cell",
-    ("3", 21): "Gemma's 21% is not in the grid's name-vs-digit cells (prose draws 28-29%): another run or cell",
-    ("7", 37): "the range over all valid cells from layer 20 on; the grid shows the rules' decisive cells only",
-    ("7", 83): "a layer-16 cell the amended rule reports, not decisive; not a grid cell",
-    ("7", 30): "a layer-16 cell the amended rule reports, not decisive; not a grid cell",
-    ("8", 50): "the README's range over scales; the grid shows the write at 1x pooled over the cell's window",
-    ("8", 59): "the README's range over scales; the grid shows the write at 1x pooled over the cell's window",
-    ("8", 12): "the README's random-push range over scales; the grid shows the random push at 1x and 4x",
-    ("8", 14): "the README's random-push range over scales; the grid shows the random push at 1x and 4x",
-    ("8", 47): "the last-token lens test (c2_cells, elements at layer 44): not a grid cell",
-}
+NOT_IN_GRID: dict[tuple[str, int], str] = {}  # README of 23 Oct: every key-evidence number is a grid number
 NUMBER = re.compile(r"\[(\d+), (\d+)\]|\+?(\d+)(?:-(\d+))?(?:%| points)")
 
 
