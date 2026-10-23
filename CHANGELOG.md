@@ -1,0 +1,68 @@
+# Changelog
+
+Newest first. What changed in the claims, the runs and the rules; the README shows only the current state.
+
+## 23 Oct 2026, day
+
+- README rewritten for newcomers (Dan's guide): six main claims, a summary figure, one section per claim, generated from `docs/README.template.md` and the grid by `scripts/readme_build.py`. The run table moved to RUNS.md, the code mapping to docs/mapping.md, the datasets to docs/datasets.md, the night's notes here.
+- Pre-registered before running: the 122B late-binding test (d40f14f, Dan's amendment 98df575), the 27B dose control and layer-16 split (bedbb9a; the split's copy with a same-share random part, 14ef0df), predictions batches 16-17 (e2da840, c3eb3b2).
+- The 27B dose control started at 10:20 UTC, before Dan's batch-16 answers; kept by Dan, results closed until he says open. The layer-16 split was cancelled before running and waits for his answers.
+- Gemma 4's stated-bridge maps rerun as `_r3` (347b40c): the `_r2` copies reused run names whose partial results were on the box. They keep 167 / 169 of 180 scenes (73c4a69 skips misaligned scenes): a recorded deviation.
+- OLMo-3's stated-bridge test in tables and JSON with our J++: not testable (one topic with enough usable scenes); its dependents cancelled.
+- Finding 1 now cites Zach's C1 on four models (his Day 3 plan) next to our descriptive removal (b987cd8, 67bfaca).
+- `drafts/` taken out of the repo and ignored (2f7d9ea, 5bc2a0f).
+
+## 23 Oct 2026, morning
+
+- Dan's predictions for batches 13-15 committed (a135a54); the night's results opened and scored (ab8f9f9: 8 right, 7 partly, 4 wrong, 1 not decidable of 20).
+- The cross-model grid (`scripts/cross_model_grid.py`), merged figures (`scripts/cross_model_figures.py`), the run table (`scripts/run_table.py`) and the lens quality table with our J++ fits.
+- The rented 2x H200 deleted at 08:12 UTC after a verified pull (a0cb92d).
+
+## What changed on the night of 22-23 Oct
+
+182 jobs started from 22 Oct 19:30 UTC: 148 on the 4x A100, 34 on a rented 2x H200 (deleted after a verified pull); 67.2 GPU-hours ([runs](#runs)).
+
+- **Qwen3.5-122B-A10B, every experiment (34 jobs):** findings 3, 4 (two draws, tables, JSON, long context), 5 and 6 hold; the lens push holds (lookups 0%, recall 89%); the stated-bridge test fails (lens part 29% of lookups; tables 49%, JSON 34%) and so does the lens write at that cell (29%).
+- **Lens gate v2 fails on all seven lensed models** (3-13%; v1 72-100%): the lens names the bridge at its word only.
+- **Our J++ lenses for Qwen3-32B and OLMo-3** (fit with the published recipe on 64 prompts; [danorel/Qwen3-32B-jpp-lens](https://huggingface.co/danorel/Qwen3-32B-jpp-lens), [danorel/Olmo-3-7B-Instruct-jpp-lens](https://huggingface.co/danorel/Olmo-3-7B-Instruct-jpp-lens)): pass@10 0.55 and 0.47, +0.43 and +0.15 over the logit lens; gate v1 72% and 100%. With them: the 32B stated-bridge test is not interpretable (recall control fails), OLMo-3's lens push holds (0% vs 51%), OLMo-3's stated-bridge test is not testable (no transit cell), its J-space removal is not interpretable (a control removal keeps 80%).
+- **Third draws** on 9B, 32B, OLMo-3, Muse, Gemma: findings 3, 4 and 5 hold on all five (Gemma's late read 19%). **Lists of 8 and 12 sentences:** finding 5 holds on seven models.
+- **Long context (~2000 tokens of filler):** the late read holds on 9B (1%), 32B (2%), OLMo-3 (5%), Muse (17%), 122B (7%); the 27B drops to chance (26%; the DeltaNet layers blocked instead keep 100%); Gemma ran out of memory twice.
+- **Two new models.** Olmo-Hybrid-7B (no lens): findings 3, 4 and 5 hold on two draws; in tables the DeltaNet layers blocked instead keep 88% (n=24), under the 90% bar. Muse 30B (Zach's J++): findings 4, 5 and 6 hold, finding 3 on three draws (prose fails on 5 items); its lens push has no valid cell; it answers too few table, JSON and stated-bridge scenes.
+- **The stated-bridge test in tables and JSON:** holds on 27B (2-3%) and 9B (0%), fails on 122B.
+- **The 27B layer-gap test:** the lens push stops moving lookups at layer 20, the full patch at 28 (pre-registered "gap"). The input-embedding push moves nothing, recall included, so it cannot say whether the layer-16 lookup movement is an input edit.
+
+## Choices made after seeing the data, full wording
+
+
+Kept from the README of 22 Oct:
+
+| Choice | What happened since |
+|---|---|
+| Finding 5: the split by the asked sentence (the pooled pre-registered test was mixed) | Confirmed as a rule fixed in advance on fresh scenes |
+| Finding 5: layer 50 on Qwen3.6-27B (the other models follow a fixed rule) | Repeated on two more draws of scenes |
+| Finding 2: counting a topic only when its own recall control passes | Stricter than the pre-registered pooled rule |
+| Finding 3: animals on Qwen3-32B's second draw, which missed the competence gate by a rounding margin | Run post hoc with the gate lowered; same verdicts. The gate now rounds to two decimals |
+| Finding 7: reading the cells that pass the off-path check | The decisive cell fixed in advance failed that check. The main rule (the off-path check before the maximum) was fixed after seeing these data; the amendment (from layer 20 on) was added knowing them, before the rerun's results were opened. The main rule stays main; both verdicts are reported |
+| Finding 2, the doubled run: the cell fixed in advance (the first map's choice); on Qwen3.5-9B the 27B's layers scaled by depth | Fixed before those runs |
+| Finding 4: the first-sentence bias as a fall-back to the order label | Dropped from the story; its control was not testable |
+| Batch 12 opened before Dan's predictions (his request, 22 Oct) | His answers count as written after the results |
+| Finding 8: the position code's natural-size test allowed 1x or 2x | Passes only at 2x; we read it as an override |
+| Finding 2's rule: one decisive cell, chosen from the lens-free map | Amended on 22 Oct, after the runs started and before any result was opened |
+
+Added on the night of 22-23 Oct (decisions, not results):
+
+- **Lens gate v2, where the lens is read**: only where the bridge's word is not: after the word in the bridge's own sentence (in prose, its closing period; decisive) and over the context without any mention of either bridge (reported); the same bars as v1. Set after seeing that v1's read sat on the bridge's own word, before any v2 run. v1 still opens the stated-bridge test; v2 is informational: if it fails, 'the lens reads the bridge' becomes 'the lens reads the bridge's word where it stands' (Dan, 22 Oct 23:20; 2b0701f, c2add04).
+- **When an arm of the layer-gap test 'stops'**: at a layer where every valid cell's Wilson upper bound is below 5% of lookups (it keeps moving while some cell's lower bound is above 5%); the gap holds if the full patch stops at least six layers after the lens push and still moves lookups where the lens push stopped. Four arms on the same scenes (lens push, full patch, input-embedding push, random push), each with its own off-path check; set before the rerun, which replaced a first version stopped part-way (c2add04).
+- **The keep-answer gate on Gemma and Muse**: in the stated-bridge test the lookups must keep their answer under the lens-part patch on at least 80% of items, else the cell is not interpretable. Added because a random patch of the same size breaks most of Gemma's answers (finding 5's control); set before any Gemma or Muse stated-bridge run (c2add04).
+- **The primary lens**: where we fit our own J++ with the published recipe (Qwen3-32B, OLMo-3-7B-I; 64 prompts), every claim is judged on it; Zach's fits and the plain J-lens are listed beside it, never switched in silently. Decided by Dan (23 Oct ~00:30) after the plain J-lens results on Qwen3-32B were seen, before the J++ pins and any J++ run (e50b1dc, 193c060, 2f3c320).
+- **The stated-bridge verdict's layer grid (a fix)**: its decisive cell is searched on the map's coarse grid (every sixteenth of the depth), not on every 4th layer, which never met the parts run's layers on Muse, met them at one layer on Gemma and skipped half the grid on the 32-layer models (the 64-layer models are unchanged). Found before any Muse, Gemma or OLMo J++ stated-bridge verdict ran; those runs were requeued (076edbb, 65f8dba).
+- **OLMo-3-7B-I's lens push in raw prompts**: the chat format leaves too few fresh scenes OLMo answers right, so the raw-prompt run was fixed as OLMo's decisive cell before any OLMo J++ result, behind a short smoke check that stops it if the raw prompts' unedited answers differ from its competence run; the chat copy is not run (fe8f12f, f9f06b8).
+- **Qwen3.5-122B at batch 16**: its read-heavy steps run 16 prompts per batch (J-space removal 8), to fit the night on the rented H200s (Dan, 23 Oct ~01:20); the originals queued at batch 4 were cancelled before running and requeued as copies; no rule, layer or item changed (d286f2c, cc02033).
+- **Seven verdict words**: holds, fails, inconclusive (the rule itself says so; no control failed), not interpretable (a control failed: which), not testable (no lens, the gate or competence failed), missing (did not run, failed, or no saved verdict: why), open (values shown under no committed rule). 'Open' is its own word for the descriptive cells (the animal-suite J-space removal, the last-token lens arm), never 'missing' for that reason; the lens push's main rule keeps its own 'inconclusive' where the lookup moves between 10% and 30% (Dan, 23 Oct; 3b8e3cc, 978cbdc).
+- **Finding 1's interval**: the animal-suite removal has no committed rule, so its cell is descriptive: the share of lookups right minus the share of recalls right with the J-space removed (clean question). Its 95% interval: the bridge animals drawn with replacement, separately for the lookups and the recalls (unpaired), 4000 times with seed 0; the interval is the 2.5th to 97.5th percentile of the differences. Chosen after seeing the data; accepted by Dan (23 Oct; 978cbdc).
+- **Finding 8, stated bridge, in the grid**: the cell holds iff the lens push writes recall and not the lookup at the stated-bridge cell; recall not written means no positive control (not interpretable). Written by the grid agent, accepted by Dan (23 Oct).
+- **Finding 6's decisive layers** on Qwen3.5-9B, Qwen3-32B, Muse, Gemma and Qwen3.5-122B: the swept layers where the donor's digit is still rare (Wilson upper bound below 10%), the specs' rule applied by the grid. Accepted by Dan (23 Oct).
+- **Finding 4, first draws**: judged by the late-read rule fixed on 22 Oct for the second draws (the first draws ran under an older rule); a late read that fails with its interval around chance is footnoted 'at chance' (Dan, 23 Oct).
+- **Gemma's stated-bridge runs, n**: 167 scenes (topics) and 169 (tables and JSON) instead of the pre-registered 180: 73c4a69 skips scenes whose token positions fail the alignment check (the first attempts stopped on them). A deviation from the specs, recorded in the grid; accepted by Dan (23 Oct 12:30).
+- **Reading finding 6 by setting** (a filler sentence moved vs one sentence more or fewer) in the overview and the conclusions, instead of only the per-model state: chosen after seeing the grid (23 Oct).
+- **The layer-gap and embedding analyses** were run once each with the committed `analyze --rule v2`, into new folders; they reproduce the runs' own summaries. The embedding test's committed verdict ("no lead") stands; that it pools scales where the lens push moves nothing is our reading after the data.
