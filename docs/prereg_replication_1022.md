@@ -555,3 +555,27 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   and reports the most common wrong replies and the classes per relation. The 9B's spot-check is rerun this way
   (qwen35_9b_natplus_v1_chat_genspot_cand2_strat_v1). Seen: the 9B's first spot-check (its memory-final failures
   name another continent, almost always Europe; 394 of 400 first-step reads agree with the knock-out run).
+
+## Amendment 21 (Zach, 2026-10-23 ~22:55 UTC): computations on the passage (ctxcomp_v1)
+
+- **Why:** the TA review (23 Oct). "Prompt" has meant reading a stated fact. Do computations the model performs on
+  the passage, whose result is never written, need the J-space? Gurnee et al. (2026, 3.5.1) find Claude's linewrap
+  count automatic (a J-lens swap leaves the wrap unchanged) while its explicit report goes through the J-space.
+- **Seen when this was written:** amendments 13-20's results (the 9B natplus cand2 gap 40; the 27B and 9B natctl:
+  stating the true fact removes the loss); not yet the 27B and Muse cand2 natplus runs.
+- **Set:** ctxcomp_v1_chat (scripts/ctxcomp.py, seed 2101): a number X in 2-8, stated in the passage (start P),
+  counted from a list (K), computed by adding or subtracting two numbers in the passage (A), or recalled (M: legs,
+  sides, wheels, strings); used by the final step: report it (R), a lookup keyed by X (P: whose seat is at that
+  position, the row listed with ordinal words so the digit X is not in the passage), or a recall keyed by X (M: the
+  planet, Greek letter or month at that position; elements dropped, Beryllium and Boron share a first token). 12 words x 84 items; R, P and M of one start share the passage
+  (scene eligibility). X is never written in K, A or M passages; two other people get other values. The P final needs
+  a digit -> ordinal step ("4" -> "fourth"), a small lexical mapping.
+- **Procedure:** the 27B (L32-40) and 9B (L12-16): competence (cand2) and the knock-out (paper10, paper10_rot,
+  unembed10, unembed10_rot) on the whole questions, cand2 read; descriptive: the J-lens rank of X's digit at the band.
+- **Predictions** (loss = points lost among items right unedited; controls within 10):
+  (1) *Final-hop rule (C1 extended):* for every start, loss(SM) - loss(SP) >= 20, including the computed starts K and A.
+  (2) *Computation alone does not need the J-space:* loss(KP) and loss(AP) within 10 of loss(PP).
+  (3) *Explicit report (the paper's flexible use):* loss(KR) and loss(AR) >= loss(PR) + 15.
+  (2) and (3) can both hold (report differs from use). **Kill for the memory-vs-prompt framing:** loss(KP) or loss(AP)
+  >= loss(PP) + 20 with controls within 10: then computations on the passage route through the J-space as recalls
+  do, and the split is computed-or-recalled vs read, not memory vs prompt.
