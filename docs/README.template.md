@@ -1,11 +1,11 @@
-<!-- grid: results/cross_model/20261023T105852Z -->
+<!-- grid: results/cross_model/20261023T210238Z -->
 # bridge-jspace
 
 **The question.** A two-step question makes a model find an entity in between, the **bridge**, and then use it. A **J-lens** reads hidden states as words; the **J-space** is the part of a hidden state it reads (Gurnee et al. 2026). Does the model use the bridge in the form the lens reads, or by another route?
 
 > "Which locker belongs to the animal known for oinking?" The bridge is *pig*. A **lookup** takes the pig's locker number from a sentence in the prompt; a **recall** ("How many legs does it have?") takes the answer from memory.
 
-> **Status, 23 Oct 2026, night.** Built at {{head}} from `{{grid}}`; the 23 Oct runs are quoted from their own verdict files (linked). Exploration phase: nothing here is hand-verified; an independent agent recomputed C1 and C2 from raw rows. Eight models: hybrids with DeltaNet layers (Qwen3.6-27B, Qwen3.5-9B, Olmo-Hybrid-7B, Qwen3.5-122B) and attention-only (Qwen3-32B, OLMo-3-7B, Muse 30B, Gemma 4 31B).
+> **Status, 23 Oct 2026, night.** Built at {{head}} from `{{grid}}`; the 23 Oct runs are in it, except the size and dose runs, quoted from their own summaries (linked). Exploration phase: nothing here is hand-verified; an independent agent recomputed C1 and C2 from raw rows. Eight models: hybrids with DeltaNet layers (Qwen3.6-27B, Qwen3.5-9B, Olmo-Hybrid-7B, Qwen3.5-122B) and attention-only (Qwen3-32B, OLMo-3-7B, Muse 30B, Gemma 4 31B).
 
 ## TL;DR
 
@@ -17,11 +17,9 @@
 
 | Claim | Key number (27B) | Holds on | Control | Confidence | Verified |
 |---|---|---|---|---|---|
-| [C1](#c1-a-lookup-ends-with-a-late-attention-read) late read | {{v|f4|27b|draw 2}} still right with the read blocked | {{holds|f4}} models (old rule); v2 below | another sentence blocked keeps {{ctl|f4|another sentence}} | medium | agent re-check |
+| [C1](#c1-a-lookup-ends-with-a-late-attention-read) late read | {{v|f4|27b|draw 2}} still right with the read blocked | {{holds|lr2}} (v2 share) | another sentence blocked keeps {{ctl|f4|another sentence}} | medium | agent re-check |
 | [C2](#c2-an-order-label-then-the-bridges-identity) order, then identity | place leads identity by {{v|f5|27b|draw 2}} (sentences 1-2 / later) | {{holds|f5}} models | random patch of the same size | medium | agent re-check |
 | [C3](#c3-lookups-let-go-of-the-j-space-form-before-recall-does) split by depth | without the lens part: lookups {{q|84% → 4%}}, recalls {{q|98% → 8%}} at layer {{q|16}}; at layer {{q|32}} lookups {{q|83% → 81%}}, recalls {{q|78% → 27%}} (n = {{q|180}}) | 27B, 9B; 122B weaker; OLMo-3 small | a random part of the same share removed instead | open (post hoc) | none |
-
-![Every claim on every model](figures/cross_model/f_summary_heatmap.png)
 
 ## C1. A lookup ends with a late attention read
 
@@ -32,11 +30,10 @@
 **Key numbers**
 - Blocking the read leaves {{v|f4|27b|draw 2}} right on the 27B; with only the name visible, {{v|f3|27b|draw 2}}; with only the digit visible, {{ctl|f3|digit visible|27b|draw 2}}.
 - With every later token blocked too, the last tokens carry at least {{q|70%}} of the drop wherever that is testable ({{q|0.75-1.01}} on 6 models, two scene sets and long text; 122B {{q|1.01}} and {{q|0.95}}) ([summary](docs/runs_2026-10-23/late_read.md)).
-- Where answers survive the block (Gemma {{q|19-23%}}, the 27B's long text {{q|26%}}), swapping the hidden digit shows a relay through other tokens: the new digit gains {{q|+20 [+16, +25]}} and {{q|+24 [+18, +29]}} points, also with the DeltaNet layers blocked ([Gemma](results/relay_swap), [27B](results/relay_swap)).
-- Real paragraphs (SQuAD, n = {{q|426-502}}): {{q|4.7-7.6%}} right on the 9B, 32B and OLMo-3; {{q|30.1% [26.1, 34.4]}} on the 27B.
+- Where answers survive the block (Gemma {{q|19-23%}}, the 27B's long text {{q|26%}}), swapping the hidden digit shows a relay through other tokens: the new digit gains {{v|relay|gemma|draw 1}} {{ci|relay|gemma|draw 1}} and {{v|relay|27b|long context}} {{ci|relay|27b|long context}}, also with the DeltaNet layers blocked ([Gemma](results/relay_swap), [27B](results/relay_swap)).
+- Real paragraphs (SQuAD, n = {{q|426-502}}): {{q|4.7-7.6%}} right on the 9B, 32B and OLMo-3; {{v|natural|27b|SQuAD}} {{ci|natural|27b|SQuAD}} on the 27B.
 
-**Controls**
-- Another sentence blocked keeps {{ctl|f4|another sentence}}; on the hybrids, the same sentence blocked in the DeltaNet layers instead keeps {{ctl|f4|DeltaNet}}.
+**Controls.** Another sentence blocked keeps {{ctl|f4|another sentence}}; on the hybrids, the same sentence blocked in the DeltaNet layers instead keeps {{ctl|f4|DeltaNet}}.
 
 **Weak spots**
 - The 27B on real paragraphs keeps {{q|30%}}; no digit swap has been run there, so it is open, not "a relay".
@@ -60,15 +57,13 @@ Prior work: retrieval heads (Wu et al. 2025); lookbacks, an address then a paylo
 
 **Key numbers**
 - 27B, three scene sets, recalled bridge: the same place wins at sentences 1-2 ({{q|100%}}, {{q|94%}}); at 3-5 the same entity is the largest single outcome ({{q|30 / 46 / 34%}}), the same place {{q|28 / 13 / 19%}}, unchanged {{q|26-32%}} ([table](results/slot_outcomes/20261023T135208Z/table.md)).
-- The donor asks about an entity the original never lists: same place minus first sentence = {{q|+48 [+43, +52]}} points (n = {{q|453}}); by asked sentence 2-5 the same place gets {{q|95 / 47 / 21 / 31%}}; the first sentence {{q|0.7%}} ([verdict](results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.md)).
+- The donor asks about an entity the original never lists: same place minus first sentence = {{v|absent|27b|memory -> prompt}} {{ci|absent|27b|memory -> prompt}} (n = {{n|absent|27b|memory -> prompt}}); by asked sentence 2-5 the same place gets {{q|95 / 47 / 21 / 31%}}; the first sentence {{q|0.7%}} ([verdict](results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.md)).
 - "Another digit" answers are mostly the neighbour of the asked place ({{q|77 of 100}} at sentences 3-5): the label is still there after the 2nd sentence, but blurry.
 
-**Controls**
-- A random patch of the same size: {{q|−0.2 [−0.7, 0.0]}} points; an entity-matched control changes {{q|0.5%}}.
+**Controls.** A random patch of the same size: {{q|−0.2 [−0.7, 0.0]}} points; an entity-matched control changes {{q|0.5%}}.
 
 **Weak spots**
-- One layer per model; the 27B's was chosen after its first runs.
-- From the 3rd sentence the largest share is often "unchanged" when the bridge is named; Gemma's copy leaves {{q|56-69%}} of answers unchanged ([table](results/slot_outcomes/20261023T135208Z/table.md)).
+- One layer per model (the 27B's chosen after its first runs). From the 3rd sentence the largest share is often "unchanged" when the bridge is named; Gemma's copy leaves {{q|56-69%}} of answers unchanged ([table](results/slot_outcomes/20261023T135208Z/table.md)).
 - How the label counts is mixed: list order with a moved filler on {{count|f6|filler moved|holds}} models, with one sentence more or fewer on {{count|f6|one statement more|holds}}.
 
 Prior work: binding and ordering IDs (Feng & Steinhardt 2024; Dai et al. 2024); Mixing Mechanisms (Gur-Arieh et al. 2026) finds a last-position peak we do not see: [docs/prior_art.md](docs/prior_art.md).
@@ -89,8 +84,7 @@ Prior work: binding and ordering IDs (Feng & Steinhardt 2024; Dai et al. 2024); 
 - Removing a random part of the same share instead costs lookups {{q|0.09-0.33}} and recalls at most {{q|0.07}}.
 - Convergent, quoted until Zach pushes his runs: knocking out the lens's top directions costs recall {{q|36}}, {{q|38}}, {{q|22}} and {{q|7}} points more than lookups on the 27B, 9B, 32B and Muse.
 
-**Controls**
-- A random part of the same share (above); the whole change moves at least {{q|50%}} of lookups at every cell counted.
+**Controls.** A random part of the same share (above); the whole change moves at least {{q|50%}} of lookups at every cell counted.
 
 **Weak spots**
 - **Post hoc.** The split depth was read per layer after the pre-registered rule failed ("does not hold" on all three models: it pooled layers before the split). A confirmation with a fresh scene set and a rule fixed in advance is the first next step.
@@ -105,9 +99,7 @@ Prior work: the workspace paper (Gurnee et al. 2026); two-hop recall resolves it
 - The 122B: J-dependence of lookups {{q|0.62, 0.84, 0.46}} at layers {{q|24, 27, 30}}, {{q|0.17}} at {{q|33}} (sentence); recalls {{q|0.49, 0.83, 0.49, 0.39}}. Its late-switch rule is inconclusive: at layers 33 and 36 the lens part moves {{q|0-1%}} of lookups but its recall control fails ({{q|26%, 21%, 8%}} against {{q|30%}}); its 2x H100 numbers drift {{q|4-7}} points from the H200's ([summary](docs/runs_2026-10-23/parts.md)).
 - The lens push per layer (valid cells): the 32B holds (word, layer {{q|24}}: recalls {{q|59%}}, lookups {{q|5%}}); Gemma has no valid cell ([summary](docs/runs_2026-10-23/order.md)).
 
-![The 27B layer gap](figures/cross_model/layer_gap_main.png)
-
-Retired from the main page: [window](figures/cross_model/window_main.png) (mixed scene sets, unmatched sizes), [necessity at one cell](figures/cross_model/necessity_main.png), [stated bridge, sufficiency](figures/cross_model/stated_bridge_main.png).
+Retired from the main page: [the 27B layer gap](figures/cross_model/layer_gap_main.png) (dose arms not yet drawn), [window](figures/cross_model/window_main.png) (mixed scene sets, unmatched sizes), [necessity at one cell](figures/cross_model/necessity_main.png), [stated bridge, sufficiency](figures/cross_model/stated_bridge_main.png).
 
 </details>
 
@@ -129,29 +121,23 @@ Retired from the main page: [window](figures/cross_model/window_main.png) (mixed
 | Any token-aligned part would do | The same test with a logit-lens or embedding dictionary at the same atom count | – | open: the main one for C3 |
 | A relay explains surviving answers | Digit swap under the block | {{q|+20}} (Gemma), {{q|+24}} (27B long text) | checked |
 | A fallback to the 1st sentence explains "order" | Donor entity absent from the original | Fallback {{q|0.7%}}, same place {{q|48%}} | checked |
-| Hardware (the 122B on H100 vs H200) | The same scenes on both | Lens parts {{q|±4-7}} points, the whole copy {{q|±1}} | reported |
-| FP8 vs a bf16-fit lens; the only mixture-of-experts model | None | – | open |
+| The 122B: hardware; FP8 vs a bf16-fit lens; the only mixture-of-experts model | H100 vs H200 on the same scenes; none for the rest | Lens parts {{q|±4-7}} points, the whole copy {{q|±1}} | hardware reported; the rest open |
 | Generated lists only | SQuAD paragraphs | Holds on 3 of 4; the 27B {{q|30%}} | partly checked |
 
-## Choices made after seeing the data (23 Oct)
+## Choices made after seeing the data (23 Oct; older ones in [CHANGELOG.md](CHANGELOG.md))
 
 | Choice | Why | What we did |
 |---|---|---|
 | C3's split depth read per layer | The pre-registered rule pooled layers before the split and failed on all three models | Labeled post hoc; a confirmation with a rule fixed in advance is next |
-| Claims regrouped into C1-C3 | Today's runs changed the band and old claim 6 | Old claims 5-7, the band and the 122B section folded into C3 |
+| Claims regrouped into C1-C3 | The 23 Oct runs changed the band and old claim 6 | Old claims 5-7, the band and the 122B section folded into C3 |
 | Old claim 6's sufficiency headline dropped | The rest at the lens part's size moves no lookups either | Moved to "what didn't work" |
 | The 122B late switch reported as inconclusive | Its recall control fails at layers 33 and 36 | Its necessity reading goes into C3, post hoc |
-| The 27B on SQuAD left open | No digit swap there | Not called a relay |
-| Our J++ fits as the main lens (32B, OLMo-3) | The plain J-lens fails the 32B's gate | Other lenses listed beside, never switched in |
-
-Older choices: [CHANGELOG.md](CHANGELOG.md).
 
 ## Pre-registered tests of 23 Oct and Dan's predictions
 
 | Test | Rule fixed before the run | Verdict | Dan's prediction |
 |---|---|---|---|
-| Size-matched patch without its lens part (27B, 9B, OLMo-3, 122B) | outlasts the push by a set margin: direction; else size | size (OLMo-3 inconclusive) | wrong |
-| Size-matched patch with it (27B) | same | direction, 8x only | partly |
+| Size-matched patch without its lens part (27B, 9B, OLMo-3, 122B) / with it (27B) | outlasts the push by a set margin: direction; else size | without: size (OLMo-3 inconclusive); with: direction, 8x only | wrong / partly |
 | The 27B layer-16 split | the lens part alone moves lookups | lens part ({{q|42%}} vs {{q|0%}}) | wrong |
 | Shared code across scenes (27B) | moves lookups without its lens part | none | partly |
 | The rest at the lens part's size (27B, 9B) | moves at least {{q|20%}} | size | wrong |
@@ -186,14 +172,11 @@ Scorecard for these 11 (scored by agents from Dan's committed answers, batches 1
 | paired readers | A lookup and a recall reading the identical patched prompt, differing only after it |
 | valid cell | A test point where a push or patch changes at most 10% of questions off the bridge's path |
 | last tokens | The chat-template tokens after the user's text: 11 on the Qwen models, 7 on OLMo-3; C2's copy moves the last two |
-| relay | A route around a block: the answer reaches the last tokens through other tokens that still see the sentence |
 
-**Methods note (old finding 4).** The lens names a stated bridge at its own word on {{count|gate|v1 (at the word)|holds}} lensed models and right after it on {{count|gate|v2 (after the word)|holds}}; without a logit-lens baseline at the same cells this describes the tool. Lens quality per model: [grid.md]({{grid}}/grid.md).
-
-**Confidence rule** (fixed before the grid was opened): strong = holds on three or more models of both kinds, on two scene sets for two of them, with no failing cell; open = fails on as many models as it holds on; medium = the rest. **Verification:** hand ([VERIFIED.md](VERIFIED.md)), agent re-check ([verification/](verification/)), or none.
+**Methods note (old finding 4).** The lens names a stated bridge at its own word on {{count|gate|v1 (at the word)|holds}} lensed models and right after it on {{count|gate|v2 (after the word)|holds}}; without a logit-lens baseline at the same cells this describes the tool. Lens quality per model: [grid.md]({{grid}}/grid.md). **Confidence rule** (fixed before the grid was opened): strong = holds on three or more models of both kinds, on two scene sets for two of them, with no failing cell; open = fails on as many models as it holds on; medium = the rest. **Verification:** hand ([VERIFIED.md](VERIFIED.md)), agent re-check ([verification/](verification/)), or none.
 
 </details>
 
 ## Links
 
-[grid.md]({{grid}}/grid.md) · [today's runs, per run](docs/runs_2026-10-23/) · [call pack](docs/call_pack_2026-10-23.md) · [RUNS.md](RUNS.md) · [CHANGELOG.md](CHANGELOG.md) · [STATUS.md](STATUS.md) · [prior work](docs/prior_art.md) · [predictions](predictions/) · [VERIFIED.md](VERIFIED.md) · [DEVELOPER.md](DEVELOPER.md) · [plan (Google Doc)](https://docs.google.com/document/d/1bqqdXePTUXQGlowVjk73sPfJkbV_tsu0RNNX-BiTYUc/edit?usp=drivesdk) · [HISTORY.md](HISTORY.md) · [ONEPAGER_dan.md](ONEPAGER_dan.md)
+[grid.md]({{grid}}/grid.md) · [23 Oct runs, per run](docs/runs_2026-10-23/) · [call pack](docs/call_pack_2026-10-23.md) · [RUNS.md](RUNS.md) · [CHANGELOG.md](CHANGELOG.md) · [STATUS.md](STATUS.md) · [prior work](docs/prior_art.md) · [predictions](predictions/) · [VERIFIED.md](VERIFIED.md) · [DEVELOPER.md](DEVELOPER.md) · [plan (Google Doc)](https://docs.google.com/document/d/1bqqdXePTUXQGlowVjk73sPfJkbV_tsu0RNNX-BiTYUc/edit?usp=drivesdk) · [HISTORY.md](HISTORY.md) · [ONEPAGER_dan.md](ONEPAGER_dan.md)
