@@ -751,9 +751,10 @@ def key(value: float | None, ci: tuple[float, float] | None, n: int | None, unit
 
 def chance_of(cases: dict[str, dict], fam: str, fmt: str | None = None) -> tuple[float, list[int]] | None:
     """Guessing among a scene's listed answers (the asked one and its conf_answers) over the family's items (one
-    format's with `fmt`): (the mean of 1 / k, the k's). The draws list 5 (20%), the formats 3 (33%). None: no list."""
+    format's with `fmt`): (the mean of 1 / k, the k's). The draws list 5 (20%), the formats 3 (33%). None: no list
+    (open vocabulary, e.g. natural_read's empty conf_answers)."""
     ks = [1 + len(c["conf_answers"]) for c in cases.values()
-          if c.get("family") == fam and "conf_answers" in c and (fmt is None or c.get("format") == fmt)]  # fmt: skip
+          if c.get("family") == fam and c.get("conf_answers") and (fmt is None or c.get("format") == fmt)]  # fmt: skip
     return (sum(1 / k for k in ks) / len(ks), sorted(set(ks))) if ks else None
 
 

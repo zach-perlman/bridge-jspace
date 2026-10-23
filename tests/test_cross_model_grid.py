@@ -125,6 +125,7 @@ def test_chance_from_the_scenes_and_the_failing_off_path_control_named(results):
     assert not row.notes  # 22% [18, 27]: below chance 33%, not at chance
     assert G.chance_of({c["family"] + c["id"]: c for c in _cases(4, 5) + _cases(4, 2, "PM")}, "RL") == (0.2, [5])
     assert G.chance_of({"x": {"id": "x", "family": "RL"}}, "RL") is None
+    assert G.chance_of({"x": {"id": "x", "family": "NAT", "conf_answers": []}}, "NAT") is None  # open vocabulary
     rows, cases = _parts_rows({("lookup_noname", "final"): 0.05, ("lookup_off_nodigit", "question"): 0.86})
     _jsonl(results / "attn_knockout" / "h" / "rows.jsonl", rows)
     _jsonl(results / "attn_knockout" / "h" / "cases.jsonl", [{**c, "family": "RL", "conf_answers": list("2345")}
