@@ -362,7 +362,7 @@ def vocab_of(items: list[dict]) -> dict:
     return v
 
 
-def competence(set_name: str, run: str, why: str, read: str = "top", limit: int = 0) -> None:
+def competence(set_name: str, run: str, why: str, read: str = "top", limit: int = 0, hop1: str = "read") -> None:
     """Whole question, each hop alone and the guess prompt, one forward each. read "top": correct = the answer's first
     token is the top token (a person's first name counts for hop 1); read "cand" (2026-10-23): the top among the
     relation's candidate answers (bridges for hop 1), so format tokens cannot fail it, as ablate_v2 --read cand. Both
@@ -380,7 +380,7 @@ def competence(set_name: str, run: str, why: str, read: str = "top", limit: int 
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     (out / "manifest.json").write_text(json.dumps({"run": run, "why": why, "set": set_name, "model": pins.model_pin(),
                                                    "git_commit": commit, "guess": True,
-                                                   "read": read, "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+                                                   "read": read, "hop1": hop1, "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
                                                    "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, indent=2) + "\n")  # fmt: skip
     model = load_model()
     tok = model.tokenizer
@@ -431,9 +431,27 @@ def competence(set_name: str, run: str, why: str, read: str = "top", limit: int 
                     ok2 = both(j["expected"]) | {t for x in j["alt_names"] for t in both(x)}
                     c2 = torch.tensor(sorted({t for v in pool for t in both(v)} | ok2), device="cuda")
                     j["correct_cand2"] = int(c2[logits[row, c2].argmax()]) in ok2
+    if hop1 == "gen":  # 2026-10-23 (amendment 23): hop 1 checked by the name it generates (bridge names share first tokens)
+        step1 = collections.defaultdict(list)
+        for j in jobs:
+            if j["part"] == "step1":
+                step1[len(j["ids"])].append(j)
+        with torch.inference_mode():
+            for group in step1.values():
+                for st in range(0, len(group), 32):
+                    chunk = group[st : st + 32]
+                    ids = torch.tensor([j["ids"] for j in chunk], device="cuda")
+                    seqs = model.hf.generate(input_ids=ids, attention_mask=torch.ones_like(ids), max_new_tokens=8,
+                                             do_sample=False, pad_token_id=tok.eos_token_id)  # fmt: skip
+                    for j, seq in zip(chunk, seqs, strict=True):
+                        j["gen"] = tok.decode(seq[ids.shape[1] :], skip_special_tokens=True)
+                        names = j["alt_names"] or [j["expected"]]
+                        j["correct_gen"] = any(re.search(r"\b" + re.escape(a.lower()) + r"\b", j["gen"].lower()) for a in names)
     for j in jobs:  # a person's hop 1 may be read as the first name (Wolfgang for Mozart): either first token counts
         j["correct_top"] = j["margin"] > 0 or j["read_top"] in j["alts"]
         j["correct"] = {"top": j["correct_top"], "cand": j["correct_cand"], "cand2": j["correct_cand2"]}[read]
+        if hop1 == "gen" and j["part"] == "step1":
+            j["correct"] = j["correct"] and j["correct_gen"]
     rows = [{k: v for k, v in j.items() if k not in ("ids", "forced")} for j in jobs]
     (out / "items.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
     acc = lambda sel: round(statistics.mean(r["correct"] for r in sel), 3) if sel else None  # noqa: E731
@@ -468,10 +486,11 @@ if __name__ == "__main__":
     ap.add_argument("--why")
     ap.add_argument("--read", choices=["top", "cand", "cand2"], default="top", help="competence: the read that sets correct")
     ap.add_argument("--limit", type=int, default=0, help="competence: only the first N items (smoke tests)")
+    ap.add_argument("--hop1", choices=["read", "gen"], default="read", help="competence: hop 1 also checked by its generated name (amendment 23)")
     a = ap.parse_args()
     if a.stage == "make":
         make(a.name, a.seed, a.scenes)
     elif a.stage == "derive-qa":
         derive_qa(a.name)
     else:
-        competence(a.set_name, a.name, a.why, a.read, a.limit)
+        competence(a.set_name, a.name, a.why, a.read, a.limit, a.hop1)

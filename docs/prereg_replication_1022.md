@@ -609,3 +609,28 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   underpowered below 30 items per word, as for C1. probe_vs_lens takes every item whose X report is right
   (--select step1), since a probe of X needs X computed, not composed. If the 27B's competence also shows the seat
   lookup failing to compose, the P final is redesigned (ctxcomp_v2) before its knock-out is read.
+
+## Amendment 23 (Zach, 2026-10-23 ~23:20 UTC): the combined suite, module 1 (fact chains, jsuite_v1_facts)
+
+- **Why:** one item schema, eligibility rule and read for every model, built with the fixes of amendment 20 and the
+  TA review (story memory as a third kind of start; a held-out band-choice split).
+- **Seen when this was written:** all results through amendment 22's 9B probe (a computed X is not linearly
+  decodable at the 9B's last position at L12-16; recalled X partly is), the 9B natplus cand2 runs, the 27B and 9B
+  natctl.
+- **Set:** scripts/jsuite_facts.py (seed 2301): country -> continent, person -> nationality, city -> country (natplus
+  tables, popular and rare; animals dropped). Starts: P (a fictional person's binding), M (an indirect description),
+  T (tracked: where one of two objects moving in interleaved sentences went last; story memory). Finals as natctl: P
+  new fact, K true fact stated, M recall with the answer absent, A recall with the answer present once elsewhere; the
+  four finals share a scene and differ only in final-hop sentences (no lure). 12 words. Bridges split per relation and
+  popularity into dev (jsuite_v1_facts_dev_chat, 3,024 items) and test (jsuite_v1_facts_test_chat, 3,120 items), no
+  bridge in both. Fixed question templates; filler sentences end in . ! ?, ASCII, no digits. Final answers have
+  distinct first tokens in all six tokenizers (27B, 9B, Muse, 122B, Olmo-Hybrid, Olmo-3). Known: some recalled
+  descriptions carry a language cue to the answer (La Scala, Blood Wedding).
+- **Hop 1 by generation:** bridge names share first tokens in every tokenizer (e.g. 37 of 47 people), so competence
+  checks hop 1 by its generated name too (natural_v1 competence --hop1 gen: greedy, 8 tokens, any of the item's names
+  as a word); final answers keep the cand2 read.
+- **Procedure:** test split at each model's pre-registered band (27B L32-40, 9B L12-16, Muse L36-42): competence
+  (cand2, --hop1 gen), the knock-out (paper10, paper10_rot, unembed10, unembed10_rot) on the 12 words, scene
+  eligibility, natctl_score-style contrasts per start; the dev split only for any band sweep.
+- **Predictions:** for every start (P, M and T), K - M <= -30 and A - M < 0 (as natctl); within each start, M - P >= 20
+  (the memory-final rule); T behaves as P (a passage-read bridge): TM - TP within 10 of PM - PP.

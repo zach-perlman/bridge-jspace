@@ -1,0 +1,9 @@
+{
+  "set": "jsuite_v1_facts_dev_chat",
+  "seed": 2301,
+  "scenes_per_bridge": 2,
+  "split": "dev",
+  "n": 3024,
+  "git_commit": "9ef288e97fe707c61be3edfe639dfde8dd7772ce",
+  "script": "scripts/jsuite_facts.py"
+}
