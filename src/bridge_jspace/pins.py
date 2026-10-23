@@ -380,6 +380,30 @@ TARGETS: dict[str, dict[str, Any]] = {
         },
         "frozen_lens_sha256": "b847dbba1406dc019adaeec09d971c60574c18dc28f031a93e8b43fa028b2774",
     },
+    # OLMo-3-7B-Instruct with OUR J++ (Dan, 23 Oct: every lens result on J++), every layer 0-30 (no lens_layers: the
+    # depth-scaled grid, every 2nd layer, as the 9B). The published recipe (safety-research/jpp_lens@93f02cd), 64 WikiText
+    # prompts x 128 tokens, one shard on an A100 80GB, router seed 0, skip 16, target = the last block, rlens LRP, 8 experts;
+    # the fp16 export done by hand (the job passed --note positionally). Primary lens (Dan, 23 Oct ~00:30): ours, the
+    # published recipe on 64 prompts; Zach's fit reported alongside when shared; no silent switch. HF:
+    # danorel/Olmo-3-7B-Instruct-jpp-lens @ fd8f1d4e89e32081c722442d784bda70bf15170e. Fit record:
+    # results/lens_fit/olmo3_7b_instruct_jpp_20261023-100523.
+    "olmo-3-7b-instruct-jpp": {
+        "repo": "allenai/Olmo-3-7B-Instruct",
+        "revision": "6e5971d9eba42665f5bd5a0fcf047f299ce1dccc",
+        "n_layers": 32,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "olmo3_7b_instruct_jpp_",
+        "frozen_lens": "jpp",
+        "lenses": {
+            "jpp": (
+                "local",
+                "cache/olmo-3-7b-instruct/lenses/jpp/Olmo-3-7B-Instruct_jpp_lens.pt",
+                "6847cfb38a14d7cf0049efff80364d051d69ec91998e44177e7fb5b4b9732451",
+            ),
+        },
+        "frozen_lens_sha256": "6847cfb38a14d7cf0049efff80364d051d69ec91998e44177e7fb5b4b9732451",
+    },
     # Olmo-Hybrid-7B Instruct (Dan, 23 Oct): the non-Qwen DeltaNet hybrid, paired with OLMo-3-7B-Instruct (same family,
     # tokenizer and chat template; softmax attention in every layer) to separate architecture from family. Lens-free
     # findings only (late read, name vs digit). The DPO checkpoint is the final Olmo Hybrid Instruct (Ai2 released no

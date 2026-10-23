@@ -1,0 +1,14 @@
+{
+ "export": "sesterce-a100x4:/ephemeral/lens_fit/olmo3_7b_instruct_jpp/export/Olmo-3-7B-Instruct_jpp_lens_fp16.pt",
+ "sha256": "6847cfb38a14d7cf0049efff80364d051d69ec91998e44177e7fb5b4b9732451",
+ "size": 1040198819,
+ "cache_path": "cache/olmo-3-7b-instruct/lenses/jpp/Olmo-3-7B-Instruct_jpp_lens.pt",
+ "box_cache": "sesterce-a100x4:~/bridge-jspace/cache/olmo-3-7b-instruct/lenses/jpp/Olmo-3-7B-Instruct_jpp_lens.pt",
+ "hf": [
+  "danorel/Olmo-3-7B-Instruct-jpp-lens",
+  "fd8f1d4e89e32081c722442d784bda70bf15170e"
+ ],
+ "hf_sha256_ok": true,
+ "target": "olmo-3-7b-instruct-jpp",
+ "pins_block": "    # Primary lens (Dan, 23 Oct ~00:30): ours, the published recipe on 64 prompts; Zach's fit reported alongside when\n    # shared; no silent switch. HF: danorel/Olmo-3-7B-Instruct-jpp-lens @ fd8f1d4e89e32081c722442d784bda70bf15170e. Fit\n    # record: results/lens_fit/olmo3_7b_instruct_jpp_20261023-100523.\n    \"olmo-3-7b-instruct-jpp\": {\n        \"repo\": \"allenai/Olmo-3-7B-Instruct\",\n        \"revision\": \"6e5971d9eba42665f5bd5a0fcf047f299ce1dccc\",\n        \"n_layers\": 32,\n        \"norm_gain\": \"weight\",\n        \"bos\": False,\n        \"run_prefix\": \"olmo3_7b_instruct_jpp_\",\n        \"frozen_lens\": \"jpp\",\n        \"lenses\": {\n            \"jpp\": (\n                \"local\",\n                \"cache/olmo-3-7b-instruct/lenses/jpp/Olmo-3-7B-Instruct_jpp_lens.pt\",\n                \"6847cfb38a14d7cf0049efff80364d051d69ec91998e44177e7fb5b4b9732451\",\n            ),\n        },\n        \"frozen_lens_sha256\": \"6847cfb38a14d7cf0049efff80364d051d69ec91998e44177e7fb5b4b9732451\",\n    },"
+}
