@@ -34,6 +34,7 @@ from scripts.ablate_v2 import question_start, tasks_prompts
 OUT = pins.RESULTS_DIR / "muse_diag"
 
 
+@torch.no_grad()  # 2026-10-23: without it each LensDictionary kept a vocab x d autograd graph (2.8 GiB on the 122B)
 def main(a) -> None:
     out_dir = OUT / a.name
     assert not out_dir.exists(), f"{out_dir} exists; results are written once"
