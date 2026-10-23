@@ -255,7 +255,13 @@ def load_model() -> Model:
     architectures = AutoConfig.from_pretrained(path).architectures or []
     multimodal = any(a.endswith("ForConditionalGeneration") for a in architectures)
     auto = AutoModelForImageTextToText if multimodal else AutoModelForCausalLM  # Gemma 4: the checkpoint's own class
-    hf = auto.from_pretrained(path, dtype=torch.bfloat16, device_map="cuda", attn_implementation="sdpa").eval()
+    extra = {}
+    if pins.TARGETS[pins.TARGET].get("dequantize_mxfp4"):  # gpt-oss (2026-10-23): bf16 experts, as the J++ fitter loads them
+        from transformers import Mxfp4Config
+
+        extra["quantization_config"] = Mxfp4Config(dequantize=True)
+    attn = pins.TARGETS[pins.TARGET].get("attn", "sdpa")  # gpt-oss: eager (learned attention sinks)
+    hf = auto.from_pretrained(path, dtype=torch.bfloat16, device_map="cuda", attn_implementation=attn, **extra).eval()
     n = hf.config.get_text_config().num_hidden_layers
     assert n == pins.N_LAYERS, f"{pins.MODEL_REPO} has {n} blocks; pins.TARGETS says {pins.N_LAYERS}"
     vocab = hf.lm_head.weight.shape[0]

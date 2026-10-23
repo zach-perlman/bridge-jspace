@@ -81,6 +81,14 @@ MISTRAL_CHAT_TEMPLATE = (
 # medium / high / xhigh); the generation prompt opens the answer channel to the user directly ("<|start|>assistant
 # to=user<|message|>"), so the prefill "Answer:" follows as for every target (Qwen: empty think block; Gemma: empty
 # thought channel). Its default system line ("You are a helpful AI assistant." and the knowledge cutoff) is kept.
+# gpt-oss-20b's harmony template (Zach, 2026-10-23): drop the current-date line (prompts must not change by day), set the
+# default reasoning effort to low, and open the assistant turn on the final channel, so the model answers directly
+# (no analysis channel), as the other models answer after their templates' generation prompts.
+GPTOSS_TEMPLATE_EDITS = [
+    ('    {{- "Current date: " + strftime_now("%Y-%m-%d") + "\\n\\n" }}\n', '    {{- "\\n" }}\n'),
+    ('        {%- set reasoning_effort = "medium" %}', '        {%- set reasoning_effort = "low" %}'),
+    ("{%- if add_generation_prompt -%}\n<|start|>assistant\n{%- endif -%}", "{%- if add_generation_prompt -%}\n<|start|>assistant<|channel|>final<|message|>\n{%- endif -%}"),
+]
 MUSE_TEMPLATE_EDITS = [
     (
         "    {%- if current_date is defined and current_date -%}\n"
@@ -331,6 +339,23 @@ TARGETS: dict[str, dict[str, Any]] = {
         "run_prefix": "olmo3d7_",
         "lenses": {"jpp": ("local", "cache/olmo-3-7b/lenses/jpp/Olmo-3-7B-Instruct-DPO_jpp_lens.pt", "1ca44bf5938b400b64a32bf9585b5e4cedb6a10249005b0cb6643f9115e94c11")},
         "frozen_lens_sha256": "1ca44bf5938b400b64a32bf9585b5e4cedb6a10249005b0cb6643f9115e94c11",
+    },
+    # gpt-oss-20b before its J++ exists (Zach, 2026-10-23: the non-Qwen generality model): competence and smoke runs; the
+    # fit (scripts/queues/h200_gptoss_fit_1023.sh) registers "gpt-oss-20b" with the same run prefix. MoE (32 experts, 4
+    # active), 24 blocks alternating sliding-window (128) and full attention with learned sinks: eager attention (sdpa
+    # has no sinks); MXFP4 experts dequantized to bf16 on load, as the J++ fitter's environment does.
+    "gpt-oss-20b-prefit": {
+        "repo": "openai/gpt-oss-20b",
+        "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+        "n_layers": 24,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "gptoss20_",
+        "snapshot_ignore": ["metal/*", "original/*"],
+        "chat_template_edits": GPTOSS_TEMPLATE_EDITS,
+        "attn": "eager",
+        "dequantize_mxfp4": True,
+        "lenses": {},
     },
     "qwen3-32b-jlens": {
         "repo": "Qwen/Qwen3-32B",

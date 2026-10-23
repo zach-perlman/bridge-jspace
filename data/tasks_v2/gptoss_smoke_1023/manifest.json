@@ -1,0 +1,113 @@
+{
+  "set": "gptoss_smoke_1023",
+  "n_scenes_per_group_level": 3,
+  "words": [
+    "PP",
+    "PM",
+    "MP",
+    "MM",
+    "CP",
+    "CM"
+  ],
+  "domains": [
+    "animals",
+    "planets",
+    "elements",
+    "greek",
+    "shapes",
+    "vehicles",
+    "instruments"
+  ],
+  "formats": [
+    "prose",
+    "json",
+    "table",
+    "code",
+    "chat",
+    "document"
+  ],
+  "levels": {
+    "0": {
+      "entities": 3,
+      "distractors": false,
+      "filler": 0,
+      "paraphrase": false,
+      "hard_cues": false
+    },
+    "1": {
+      "entities": 6,
+      "distractors": true,
+      "filler": 5,
+      "paraphrase": false,
+      "hard_cues": false
+    }
+  },
+  "seed": 751,
+  "generator": "scripts/tasks_v2.py make (v8)",
+  "git_commit": "64e7c33c4b259f75e311fde6c0bd674fcfa29b27",
+  "counterfactuals": false,
+  "n_items": 36,
+  "coverage": {
+    "P2/L0": {
+      "scenes": 3,
+      "dead_combinations": [],
+      "by_domain_format": {
+        "shapes/document": 1,
+        "instruments/code": 1,
+        "greek/chat": 1
+      }
+    },
+    "M2/L0": {
+      "scenes": 3,
+      "dead_combinations": [],
+      "by_domain_format": {
+        "elements/json": 1,
+        "shapes/prose": 1,
+        "greek/chat": 1
+      }
+    },
+    "C2/L0": {
+      "scenes": 3,
+      "dead_combinations": [],
+      "by_domain_format": {
+        "shapes/json": 1,
+        "elements/code": 1,
+        "vehicles/table": 1
+      }
+    },
+    "P2/L1": {
+      "scenes": 3,
+      "dead_combinations": [],
+      "by_domain_format": {
+        "elements/table": 1,
+        "shapes/prose": 1,
+        "elements/json": 1
+      }
+    },
+    "M2/L1": {
+      "scenes": 3,
+      "dead_combinations": [],
+      "by_domain_format": {
+        "animals/json": 1,
+        "vehicles/table": 1,
+        "instruments/json": 1
+      }
+    },
+    "C2/L1": {
+      "scenes": 3,
+      "dead_combinations": [],
+      "by_domain_format": {
+        "instruments/json": 1,
+        "greek/table": 1,
+        "instruments/code": 1
+      }
+    }
+  },
+  "three_step_domains": [
+    "animals",
+    "vehicles",
+    "shapes",
+    "elements",
+    "planets"
+  ]
+}

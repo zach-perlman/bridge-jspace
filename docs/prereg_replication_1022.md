@@ -226,3 +226,23 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   paper10_rot; scripts/c1_v2.py.
 - Reported: the third gap with its interval, and the gap pooled over all three seeds. No new threshold: C1 for the 9B is
   read as the pooled graded gap (Day 3 fallback, already triggered).
+
+## Amendment 8 (Zach, 2026-10-23 ~02:30 UTC): gpt-oss-20b, a non-Qwen model from a third lab
+
+- **Why:** every non-Qwen model so far shows no strong need for the J-space (Muse 7; the Olmo pair underpowered), and a
+  reviewer can say the non-Qwen models tested are weak or small. gpt-oss-20b (OpenAI, Aug 2025; MoE, 32 experts, 4
+  active, 24 blocks alternating sliding-window and full attention) is a strong, widely used model from another lab.
+- **Seen when this was written:** a 36-item smoke of its competence (gptoss_smoke_1023, seed 751): steps alone all right;
+  whole questions P->P / P->M 100%, M->M 67%, M->P 0-33% (n=3 per cell). No knock-out, write or lens data.
+- **Setup:** the harmony template opened on the final channel with reasoning effort low and no date line
+  (pins.GPTOSS_TEMPLATE_EDITS), eager attention (learned sinks), MXFP4 experts dequantized to bf16.
+- **Lens:** our own J++, the same recipe (32 WikiText prompts, every source layer 0-22, target the final block), with
+  the LN rule only: gpt-oss has no dense gated MLP, and its routed experts keep standard gradients, which is what the
+  rlens preset does to routed experts in every MoE model (scripts/lens_fit/jpp_lens_gptoss_1023.patch adds the "ln" preset
+  and GptOssRMSNorm, checked value-exact before fitting).
+- **Procedure:** as every model: the gate; competence on ctrl_v8 and olmo_big_v8 (amendment 7's powered 2x2 set, for the
+  M->P pool); the band on ctrl_v8 with 4-layer windows sliding by 2; C1 at that band on olmo_big_v8, plus the logit-lens
+  control, keep-own, and steering. Power floor 30 items per rule word.
+- **Prediction:** given every non-Qwen result so far, C1-graded FAILS (gap < 30). A gap >= 30 would show strong J-space
+  dependence outside the Qwen family. Either way: the write asymmetry (M->M writes > M->P writes) is expected, as in all
+  six models so far.
