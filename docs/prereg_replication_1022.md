@@ -316,3 +316,32 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   and the 27B's C2 on fresh_v8s2 (3.2 GPU-hours to replicate a C2 that fails on full_v8). The time goes to a natural-text
   pilot (amendment 10). Kept: the diagnostic (B), the 27B's third seed (A), C2 on fresh_v8s2 for the 9B and Muse (C), and
   the 122B all-layer row (D).
+
+## Amendment 10 (Zach, 2026-10-23 ~07:45 UTC): the bridge-in-context control and a natural-text pilot
+
+- **Seen when this was written:** amendment 9's 27B third seed (gap 40, HOLDS) and the diagnostics on the 9B,
+  Olmo-Hybrid and Olmo-3; an audit of full_v8: the bridge word appears in the context of 112/112 items of every two-step
+  word, M->M and M->P included (every scene states the start thing's pick and locker), so an M-start step is recall
+  among entities listed in the prompt. Guessability does not explain the split (c1_v2 --drop-guessable: 27B 34, Muse 7).
+  Nothing on the sets below.
+- **A. Bridge absent (toy suite).** full_v8_mmabs (scripts/mm_absent.py): full_v8's 152 M->M items with every sentence,
+  row, record or entry naming the bridge removed; nothing else changes. Per model: competence on it, then the paper10
+  knock-out and its rotation at the model's fixed C1 band(s) (27B L32-40, 9B L12-16, Muse L36-42, 122B L39-45 and
+  L24-30), M->M only. Compared on items right unedited in both sets (bootstrap over bridge entities): M->M accuracy lost,
+  bridge present (the C1 run of record) vs absent. Prediction: if the redundant models (Muse, 122B) fall back on the
+  in-context bridge, their M->M loss rises by >= 15 points when it is absent; the breakers' (27B, 9B) changes less.
+  Descriptive.
+- **B. Natural-text pilot (natural_v1).** Hand-built chains for three bridge types; hop 2 is a many-to-one property, never
+  a name alias of the bridge (Neel's capital/country finding), and hop-1 descriptions do not name the hop-2 answer:
+  countries -> continent; people (single-token surnames) -> nationality; non-capital cities -> country. Per chain the
+  same bridge in all four words: P start = a new fact about a fictional person in the passage ("Lucia Ferrer grew up in
+  Brazil"); M start = an indirect real description ("the country that hosted the 2016 Summer Olympics"); M final = the
+  real property; P final = a new fact in the passage with an answer from the same vocabulary, never equal to the real
+  one ("Brazil's delegation will hold its next meeting in Asia"). The bridge is absent from M->M passages. Passages:
+  templated genres (news, email, forum, conference notes) with real WikiText sentences as filler, at two levels. Two
+  framings, each its own set: cloze (raw text, no chat template, the answer is the next token) and chat with no prefill
+  (the model's own first token must be the answer). Per model and framing: competence (whole question and each hop
+  alone, first-token read), then C1 at the model's fixed band (27B L32-40, 9B L12-16, Muse L36-42, 122B L39-45), paper10
+  and rotated, scored by c1_v2's rule (gap >= 30, controls within 10, floor 30 items per rule word). Prediction: the
+  27B and 9B keep a gap >= 20 in at least one framing; Muse and the 122B stay < 15. A breaker with gap < 10 in both
+  framings would mean the split is a property of the toy suite, not of the models. Descriptive (a pilot).
