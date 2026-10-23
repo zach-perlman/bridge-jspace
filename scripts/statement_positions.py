@@ -462,11 +462,26 @@ def build_cases(tok, n: int, families: list[str]) -> tuple[list[dict], dict]:
     if tasks:
         got, counts["tasks"] = tasks_cases(tok, n, tasks)
         cases += got
+    kept, footprint_skipped = [], collections.Counter()
     for c in cases:
         enc = raw_encoding(tok, c["rendered"], offsets=True)
         assert enc["input_ids"] == c["ids"]["clean"], f"{c['id']}: the rendered prompt is not the run's"
         c["offsets"] = enc["offset_mapping"]
-        c["sets"], c["marks"] = position_sets(c, c["rendered"], c["offsets"])
+        if c["family"] in TASKS:
+            # A tasks scene whose counterfactual, in this tokenizer, changes tokens outside its binding statements does not
+            # line up: skipped and counted like the other unaligned scenes (tasks_cases' unaligned_skipped). Found on
+            # Gemma 4 (23 Oct); the suite and country families still assert.
+            try:
+                c["sets"], c["marks"] = position_sets(c, c["rendered"], c["offsets"])
+            except AssertionError:
+                footprint_skipped[c["family"]] += 1
+                continue
+        else:
+            c["sets"], c["marks"] = position_sets(c, c["rendered"], c["offsets"])
+        kept.append(c)
+    cases = kept
+    if tasks:
+        counts["tasks"]["position_check_skipped"] = dict(footprint_skipped)
     order = {f: i for i, f in enumerate(families)}
     cases.sort(key=lambda c: order[c["family"]])
     return cases, counts
