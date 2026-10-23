@@ -47,7 +47,7 @@ INK, INK2, GRID = "#1a1a1a", "#4d4d4d", "#ececec"
 LOOKUP = "#6A3D9A"  # the accent: lookups, the deciding quantity in a two-quantity figure (not a model color)
 RECALL = "#3d3d3d"  # dark grey: recalls
 CONTROL = "#a6a6a6"  # light grey: controls (another sentence hidden, a random push, ...)
-CHANCE = "#ececec"  # the chance band's fill
+CHANCE = "#d9d9d9"  # the chance band's fill (#ececec was too faint at slide size: 5-second test, 23 Oct)
 CAPTION_INK = "#5a5a5a"
 VERDICT_COLOR, VERDICT_EDGE = PS.VERDICT_COLOR, PS.VERDICT_EDGE  # holds, fails, ≈ chance, ... (plot_style)
 
