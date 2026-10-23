@@ -277,3 +277,13 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
 - **Reading:** a J-lens C1 result is reported as plain-J-lens evidence, next to the 27B's own J-lens vs J++ bridge. If the
   J-lens also fails the gate, gpt-oss is untestable by the knock-out with both lenses; its steering (amendment 8, our J++)
   still runs. Prediction unchanged: C1-graded FAILS.
+
+### 8b addendum (Zach, 2026-10-23 ~04:25 UTC): steering with the J-lens too
+
+- **Seen when this was written:** the J-lens fails the gate (top-1 +2.85, top-10 +3.42, rotated +0.05;
+  gptoss20j_textloss_top_v1), so gpt-oss is untestable by the knock-out with both lenses. The J-lens reads the model's
+  next token far better than our J++ (0.85 vs 0.24 at L22). Our J++ steering (amendment 8) is running; none of its
+  results, nor the copy sweep's, have been looked at.
+- **Added:** the same steering with the J-lens (target gpt-oss-20b-jlens): write_max at 10-15 on full_v8, then the
+  aligned band from its own copy sweep, scored by c2_graded / c2_narrow as every model. Reported next to the J++
+  steering as a lens comparison; neither replaces the other. Expectation unchanged: M->M writes > M->P writes.
