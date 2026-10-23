@@ -25,8 +25,8 @@ run_set() {  # run_set TARGET PREFIX SET RUN MID "BANDS" WORDS
 for step in "$@"; do
   case $step in
     q9s3) run_set qwen3.5-9b qwen35_9b_ fresh_v8s3 fresh3_ko_v1 12-16 "12-16" "PP PM MP MM CP CM";;
-    olmoh) run_set olmo-hybrid-7b olmoh7_ olmo_big_v8 big2_ko_v1 4-8 "4-8 12-16" "PP PM MP MM";;
-    olmo3) run_set olmo-3-7b olmo3d7_ olmo_big_v8 big2_ko_v1 10-14 "10-14 12-16" "PP PM MP MM";;
+    olmoh) run_set olmo-hybrid-7b olmoh7_ olmo_big_v8nc big2_ko_v1 4-8 "4-8 12-16" "PP PM MP MM";;
+    olmo3) run_set olmo-3-7b olmo3d7_ olmo_big_v8nc big2_ko_v1 10-14 "10-14 12-16" "PP PM MP MM";;
   esac
 done
 echo "=== amendment 7 GPU $G done $(date -u +%FT%TZ)"

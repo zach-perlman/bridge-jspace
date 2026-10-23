@@ -11,7 +11,8 @@ set -a; . ./.env; set +a
 export HF_HUB_OFFLINE=0 UV_CACHE_DIR=/workspace/uv-cache PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True CUDA_VISIBLE_DEVICES=1
 PY="uv run --no-sync python"
 R=/workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd
-until grep -qs "^EXIT" $R-h200amend7g1-1023-0116.log && grep -qs "^=== gpt-oss competence done" $R-h200gptosscomp-1023-0230.log; do sleep 60; done
+# 2026-10-23 ~03:15 UTC (amendment 7b): C1 on olmo_big_v8nc, steering on full_v8; waits for the relaunched jobs
+until grep -qs "^EXIT" $R-h200amend7g1c-1023-0318.log && grep -qs "^=== gpt-oss competence done" $R-h200gptosscomp2-1023-0318.log; do sleep 60; done
 echo "=== start $(date -u +%FT%TZ)"
 JP=/workspace/ext/jpp_lens/.venv/bin/python
 $JP -I scripts/lens_fit/check_gptoss_lrp.py 2>&1 | tail -1 | grep -q '"ok": true' || { echo "LRP check failed: stop"; exit 1; }
@@ -117,37 +118,39 @@ print(f"=== gate: top-10 +{d:.2f} nats, rotated +{r:.2f}")
 sys.exit(1 if (d >= 2 and r <= 0.3) else 0)
 PY
 CC=${P}ctrl_v8_competence_v1
-CB=${P}olmo_big_v8_competence_v1
+CB=${P}olmo_big_v8nc_competence_v1
+CF=${P}full_v8_competence_v1
 run ablate_v2/${P}ctrl_sweep_v1 $PY scripts/ablate_v2.py --name ${P}ctrl_sweep_v1 --why "$WHY: depth sweep on ctrl_v8 to choose the middle band (4-layer windows by 2)" \
   --plan bands --bands 0-3 2-5 4-7 6-9 8-11 10-13 12-15 14-17 16-19 18-21 --conditions paper10 paper10_rot \
   --tasks ctrl_v8 --tasks-competence $CC --tasks-words PP PM MP MM --tasks-level all --n 100 --kinds clean --batch 32
 MID=$($PY scripts/choose_band.py ${P}ctrl_sweep_v1 "") || MID=""
 [ -n "$MID" ] || { MID=12-15; echo "=== no band chosen: the relative-depth band 12-15 instead"; }
 echo "=== middle band: $MID"
-T2="--tasks olmo_big_v8 --tasks-competence $CB --tasks-words PP PM MP MM --tasks-level all"
+T2="--tasks olmo_big_v8nc --tasks-competence $CB --tasks-words PP PM MP MM --tasks-level all"
 K="--n 1000 --kinds clean --batch 32"
 BANDS=$(echo "$MID 12-15" | tr " " "\n" | awk 'NF && !s[$0]++' | tr "\n" " ")
 run ablate_v2/${P}smoke_big_ko_1023 $PY scripts/ablate_v2.py --name ${P}smoke_big_ko_1023 --why smoke --plan bands --bands $MID --conditions paper10 paper10_rot $T2 --n 2 --kinds clean --batch 8 \
   || { echo "smoke failed: stop"; exit 1; }
-run ablate_v2/${P}big2_ko_v1 $PY scripts/ablate_v2.py --name ${P}big2_ko_v1 --why "$WHY: C1 at the band and at 12-15 on olmo_big_v8" --plan bands --bands $BANDS \
+run ablate_v2/${P}big2_ko_v1 $PY scripts/ablate_v2.py --name ${P}big2_ko_v1 --why "$WHY: C1 at the band and at 12-15 on olmo_big_v8nc" --plan bands --bands $BANDS \
   --conditions paper10 paper10_rot $T2 $K
-$PY scripts/c1_v2.py ${P}big2_ko_v1 --middle L$MID --set olmo_big_v8 | tail -2
+$PY scripts/c1_v2.py ${P}big2_ko_v1 --middle L$MID --set olmo_big_v8nc | tail -2
 run ablate_v2/${P}big2_ko_unembed_v1 $PY scripts/ablate_v2.py --name ${P}big2_ko_unembed_v1 --why "$WHY: the logit-lens control" --plan bands --bands $MID \
   --conditions unembed10 unembed10_rot $T2 $K
 run ablate_v2/${P}big2_ko_keepown_v1 $PY scripts/ablate_v2.py --name ${P}big2_ko_keepown_v1 --why "$WHY: keep-own" --plan bands --bands $MID \
-  --conditions paper10 paper10_rot paper10_keepown paper10_keepown_rot $T2 $K && $PY scripts/c1_v2.py ${P}big2_ko_keepown_v1 --middle L$MID --set olmo_big_v8 | tail -3
+  --conditions paper10 paper10_rot paper10_keepown paper10_keepown_rot $T2 $K && $PY scripts/c1_v2.py ${P}big2_ko_keepown_v1 --middle L$MID --set olmo_big_v8nc | tail -3
 run ablate_v2/${P}big2_ko_rotseed1_v1 $PY scripts/ablate_v2.py --name ${P}big2_ko_rotseed1_v1 --why "$WHY: control seed 1" --plan bands --bands $MID --conditions paper10_rot --seed-offset 1 $T2 $K
-W2="--tasks olmo_big_v8 --tasks-competence $CB --tasks-level all --families PP PM MP MM"
+W2="--tasks full_v8 --tasks-competence $CF --tasks-level all --families PP PM MP MM CP CM"
 run write_max/${P}smoke_wm2_1023 env BJ_BATCH=16 $PY scripts/write_max.py --name ${P}smoke_wm2_1023 --why smoke --n 2 --band 12-13 --single-step 1 --early 6 \
   --possets question final $W2 || { echo "steering smoke failed: stop"; exit 1; }
-run copy_sweep/${P}copy_sweep_big_v1 $PY scripts/copy_sweep.py --name ${P}copy_sweep_big_v1 --why "$WHY: where the question / final positions carry the bridge" \
-  --tasks olmo_big_v8 --tasks-competence $CB --families PP PM MP MM --n 40 --step 1 --window 4
-run write_max/${P}wm2_big_v1 env BJ_BATCH=64 $PY scripts/write_max.py --name ${P}wm2_big_v1 --why "$WHY: two-step steering at 10-15 (the 27B's 28-40 scaled)" \
+run copy_sweep/${P}copy_sweep_full2_v1 $PY scripts/copy_sweep.py --name ${P}copy_sweep_full2_v1 --why "$WHY: where the question / final positions carry the bridge" \
+  --tasks full_v8 --tasks-competence $CF --families PP PM MP MM --n 40 --step 1 --window 4
+run write_max/${P}wm2_full2_v1 env BJ_BATCH=64 $PY scripts/write_max.py --name ${P}wm2_full2_v1 --why "$WHY: two-step steering at 10-15 (the 27B's 28-40 scaled)" \
   --n 1000 --writes lens_add lens_swap copy early_lens_add early_embed_add --possets question final --band 10-15 --single-step 1 --early 4 6 8 $W2 \
-  && $PY scripts/c2_graded.py ${P}wm2_big_v1 | tail -3
-AB=$($PY scripts/choose_steer_band.py ${P}copy_sweep_big_v1) || AB=""
+  && $PY scripts/c2_graded.py ${P}wm2_full2_v1 | tail -3 && $PY scripts/c2_graded.py ${P}wm2_full2_v1 --drop-guessable > /dev/null \
+  && $PY scripts/c2_narrow.py ${P}wm2_full2_v1 ${P}wm2_full2_v1_noguess > /dev/null
+AB=$($PY scripts/choose_steer_band.py ${P}copy_sweep_full2_v1) || AB=""
 echo "=== aligned band: ${AB:-none}"
-[ -n "$AB" ] && run write_max/${P}wm2_big_aligned_v1 env BJ_BATCH=64 $PY scripts/write_max.py --name ${P}wm2_big_aligned_v1 --why "$WHY: steering at the aligned band ${AB%% *}" \
+[ -n "$AB" ] && run write_max/${P}wm2_full2_aligned_v1 env BJ_BATCH=64 $PY scripts/write_max.py --name ${P}wm2_full2_aligned_v1 --why "$WHY: steering at the aligned band ${AB%% *}" \
   --n 1000 --writes lens_add lens_swap copy early_lens_add early_embed_add --possets question final --band ${AB%% *} --single-step 1 --early 4 6 8 $W2 \
-  && $PY scripts/c2_graded.py ${P}wm2_big_aligned_v1 | tail -3
+  && $PY scripts/c2_graded.py ${P}wm2_full2_aligned_v1 | tail -3
 echo "=== gpt-oss done $(date -u +%FT%TZ)"

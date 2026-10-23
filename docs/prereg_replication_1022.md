@@ -246,3 +246,14 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
 - **Prediction:** given every non-Qwen result so far, C1-graded FAILS (gap < 30). A gap >= 30 would show strong J-space
   dependence outside the Qwen family. Either way: the write asymmetry (M->M writes > M->P writes) is expected, as in all
   six models so far.
+
+## Amendment 7b (Zach, 2026-10-23 ~03:15 UTC): olmo_big_v8 without counterfactuals; gpt-oss steering on full_v8
+
+- **What changed and why:** olmo_big_v8's cf tier (counterfactual search, single core) was still running after 2 h, with
+  every Olmo and gpt-oss run waiting on it. The C1 runs of amendments 7A and 8 now use olmo_big_v8nc: the same generator,
+  domains, levels and scene counts, on seeds 744 / 745 / 746, without counterfactual fields (2,000 items: 560 P->P, 560
+  P->M, 440 M->P, 440 M->M; recall-start items at levels 0-3; no prompt or context shared with full_v8, full_v8b,
+  ctrl_v8, fresh_v8s2 or fresh_v8s3). Counterfactual fields only matter for steering, not for C1.
+- gpt-oss's steering uses full_v8 (with counterfactuals), as every other model's steering did; its competence on full_v8
+  is added. Nothing else in amendments 7 and 8 changes (bands, rules, floors, predictions).
+- **Seen when this was written:** no knock-out, competence or steering result on either big set.
