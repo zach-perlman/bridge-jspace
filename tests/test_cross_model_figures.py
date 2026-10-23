@@ -6,11 +6,15 @@ Checks: every figure renders at 16:9 to PNG and SVG under the names the brief as
 figure (none dropped silently); the three label kinds are drawn; the decisive comparison (the contrast panel, the
 joined pair, the layer gap) with small differences beside large ones; no text below 14 pt, no internal code, a halo on
 every printed value; zero overlapping texts, also with longer model names; the overlap check itself and its masking;
-the status log prints no value; the pure helpers (roles by layer, the best valid push cell per layer)."""
+the status log prints no value; the pure helpers (roles by layer, the best valid push cell per layer). The summary
+heatmap on a synthetic grid.csv: its states and counts (readme_draft's rule, findings 2 and 8 merged, the beside lens
+and breakdown rows ignored), its title, the figure without overlaps, and the command line."""
 
 from __future__ import annotations
 
+import csv
 import dataclasses
+import io
 import random
 import re
 from typing import Any
@@ -24,6 +28,7 @@ from matplotlib.text import Text
 from bridge_jspace import plot_style as S
 from scripts import cross_model_figures as F
 from scripts import cross_model_grid as G
+from scripts import readme_draft as RD
 
 EXPECTED = {
     "f_late_read_all_models", "f_digit_not_name_all_models", "f_order_then_identity_all_models",
@@ -456,3 +461,128 @@ def test_best_valid_by_layer_picks_the_most_recall_among_valid_cells():
     got = F.best_valid_by_layer(cells, [20, 24], [8.0])
     assert got["recall"][0][0] == 0.6 and got["lookup"][0][0] == 0.1
     assert got["recall"][1] is None and got["lookup"][1] is None
+
+
+# ---------------------------------------------------------------- the summary heatmap, on a synthetic grid.csv
+
+MAIN_LENS = "J++, synthetic, 00000000"
+# (model, finding, grid.csv setting, verdict, n); every other model and finding has no row (missing)
+SYNTH = (
+    ("27b", "f3", "draw 1", "holds", 300), ("27b", "f3", "draw 2", "holds", 300),
+    ("27b", "f3", "prose", "fails (the name hidden leaves > 35% right)", 20),  # mixed; its only failure has n < 30
+    ("27b", "f4", "draw 1", "fails", 300), ("27b", "f4", "draw 2", "holds", 300), ("27b", "f4", "table", "fails", 20),
+    ("27b", "f5", "draw 1", "holds", 300), ("27b", "f5", "draw 1, 3rd on", "holds", 400),
+    ("27b", "f5", "draw 2", "fails", 300), ("27b", "f5", "draw 2, 3rd on", "holds", 400),  # draw 2: mixed parts
+    ("27b", "f6", "filler moved", "holds", 400), ("27b", "f6", "one statement more", "holds", 400),
+    ("27b", "gate", "v1 (at the word)", "holds", 60), ("27b", "gate", "v2 (after the word)", "fails", 60),
+    ("27b", "f7", "main rule", "inconclusive (the lookup moves between 10% and 30%)", 100),
+    ("27b", "f7", "amended rule", "holds", 100),
+    ("27b", "f2", "draw 1", "holds", 120), ("27b", "f2", "draw 2", "holds", 180),
+    ("27b", "f8", "stated bridge, draw 1", "fails", 120),  # findings 2 and 8 disagree: the worse is shown
+    ("27b", "f1", "animal suite", "open (descriptive, no committed rule)", 400),
+    ("27b", "f1", "animal suite · lookup, bridge stated", "fails", 100),  # a breakdown row: not judged
+    ("9b", "f3", "draw 1", "holds", 300),
+    ("9b", "f2", "draw 2", "holds", 180),
+    ("9b", "f8", "stated bridge, draw 2", "not interpretable (no recall written)", 180),  # holds beats can't tell
+    ("9b", "f1", "animal suite", "not testable (no lens)", None),
+    ("olmo", "f2", "table", "not testable (gate v1 failed)", None),
+    ("olmo", "f8", "last tokens", "open (values only)", 250),  # values only beats not testable
+)  # fmt: skip
+BESIDE_ROW = ("27b", "f6", "one statement fewer", "fails", 400)  # another lens, listed beside: never read
+
+
+def synth_csv(rows=SYNTH, beside=(BESIDE_ROW,)) -> str:
+    out = io.StringIO()
+    w = csv.writer(out)
+    w.writerow(G.COLUMNS)
+    for (m, f, s, verdict, n), lens in [*((r, MAIN_LENS) for r in rows),
+                                        *((r, "plain J-lens (synthetic, listed beside)") for r in beside)]:  # fmt: skip
+        w.writerow([G.MODEL[m].label, G.FINDING[f].name, s, lens, "" if n is None else n, "" if n is None else "50.0 %",
+                    "" if n is None else "[40.0, 60.0]", "", verdict, "", "-", f"results/fake/{m}_{f}/summary.json"])  # fmt: skip
+    return out.getvalue()
+
+
+def summary_table(rows=SYNTH) -> dict[tuple[int, str], F.SummaryCell]:
+    cells, _ = RD.read_grid(synth_csv(rows))
+    return F.summary_cells(cells)
+
+
+def row_of(label: str) -> int:
+    return next(i for i, r in enumerate(F.SUMMARY_ROWS) if r.label == label)
+
+
+def test_summary_shows_every_state_of_the_committed_rule():
+    assert set(F.SHOWN) == set(RD.STATES) and set(F.WORSE) == set(RD.STATES)
+    assert set(F.SHOWN.values()) == set(S.STATE_FILL)
+    assert [m.key for m in S.MODELS] == list(F.SUMMARY_NAMES)  # hybrids first, then attention-only
+    assert {f for r in F.SUMMARY_ROWS for f in r.findings} == {f.key for f in G.FINDINGS}  # no finding left out
+
+
+def test_summary_states_and_counts():
+    tab = summary_table()
+
+    def got(label: str, model: str) -> tuple[str, str, bool]:
+        c = tab[(row_of(label), model)]
+        return c.state, F.cell_label(c), c.few
+
+    assert got("The last tokens read the answer's digit", "27b") == ("mixed", "✗ 2/3", True)  # failing only at n < 30
+    assert got("The lookup ends in a late attention read", "27b") == ("mixed", "✗ 1/3", False)  # one failure n=300
+    assert got("Order label, then the bridge's identity", "27b") == ("mixed", "✗ 1/2", False)  # settings, not parts
+    assert got("The label counts list order", "27b") == ("holds", "✓ 2/2", False)  # the beside lens's fail ignored
+    assert got("Lens reads the bridge at its word", "27b") == ("holds", "✓ 1/1", False)
+    assert got("… after its word", "27b") == ("fails", "✗ 0/1", False)
+    # the main rule's inconclusive is not judged
+    assert got("A lens push writes recall, not the lookup", "27b") == ("holds", "✓ 1/1", False)
+    assert got("The lookup ignores the lens-readable part", "27b") == ("fails", "✗ 2/3", False)  # 8 fails: the worse
+    assert got("Removing the J-space spares the lookup", "27b") == ("values only", "?", False)  # breakdown row ignored
+    assert got("The last tokens read the answer's digit", "9b") == ("holds", "✓ 1/1", False)
+    assert got("The lookup ignores the lens-readable part", "9b") == ("holds", "✓ 1/1", False)
+    assert got("Removing the J-space spares the lookup", "9b") == ("not testable", "–", False)
+    assert got("The lookup ignores the lens-readable part", "olmo") == ("values only", "?", False)
+    assert got("The last tokens read the answer's digit", "gemma") == ("missing", "–", False)
+    assert len(tab) == len(F.SUMMARY_ROWS) * len(S.MODELS)
+
+
+def test_summary_title_states_the_outcome():
+    assert F.title_summary(summary_table()) == (
+        "The lookup's route holds in 2 of 5 judged cells; the lens claims hold where judged on the 9B, not the 27B; "
+        "the lens reads the bridge only at its word"
+    )
+    only_holds = [r for r in SYNTH if r[3] != "fails" and not r[3].startswith("fails")]
+    title = F.title_summary(summary_table(only_holds))
+    assert title.startswith("The lookup's route holds on every model tested; the lens claims hold where judged on ")
+    assert title.endswith("; the lens reads the bridge at its word on 1 of 1 models")  # the read after: not judged
+    assert F.title_summary(summary_table(())) == "The lookup's route is not judged on any model yet"
+
+
+def test_summary_figure_renders_without_overlaps(tmp_path):
+    (tmp_path / "grid.csv").write_text(synth_csv())
+    s = F.render_summary(tmp_path)
+    assert s.overlaps == [] and S.overlaps(s.fig) == []
+    paths = S.save(s.fig, tmp_path / "out", F.SUMMARY)
+    h, w = mpimg.imread(paths[0]).shape[:2]
+    assert abs(w / h - 16 / 9) < 0.01 and w >= 1920
+    drawn = [x for x in texts(s.fig)]
+    flat = {re.sub(r"-\n", "-", x.get_text()).replace("\n", " ") for x in drawn}
+    assert set(F.SUMMARY_NAMES.values()) <= flat  # every model, also those with no row (missing)
+    assert {r.label for r in F.SUMMARY_ROWS} <= flat
+    assert sum(x.get_gid() == "value" for x in drawn) == len(s.table)  # a text in every cell
+    assert tmp_path.name in s.fig.texts[1].get_text().replace("\n", " ")  # the subtitle names the grid
+    for x in drawn:
+        assert float(x.get_fontsize()) >= S.FONT, x.get_text()
+        assert not CODES.search(x.get_text()), x.get_text()
+    for leg in s.fig.legends:
+        assert all(float(x.get_fontsize()) >= S.FONT for x in leg.get_texts())
+    ax = s.fig.axes[0]
+    hatched = sum(bool(p.get_hatch()) for p in ax.patches)
+    assert hatched == sum(c.state == "mixed" for c in s.table.values()) == 3
+    corners = [ln for ln in ax.get_lines() if ln.get_gid() == "mark"]
+    assert len(corners) == sum(c.few for c in s.table.values()) == 1
+    plt.close(s.fig)
+
+
+def test_summary_from_the_command_line(tmp_path):
+    (tmp_path / "grid.csv").write_text(synth_csv())
+    (tmp_path / "grid.json").write_text('{"rows": []}')
+    assert F.main(["--grid", str(tmp_path), "--out", str(tmp_path / "out"), "--only", F.SUMMARY]) == 0
+    assert {p.name for p in (tmp_path / "out").iterdir()} == {f"{F.SUMMARY}.png", f"{F.SUMMARY}.svg"}
