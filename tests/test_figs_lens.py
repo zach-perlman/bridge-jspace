@@ -12,6 +12,7 @@ import csv
 import io
 import json
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -20,6 +21,7 @@ from scripts import cross_model_grid as G
 from scripts import readme_build as RB
 from scripts.figs import common as C
 from scripts.figs import lens_push_depth as LP
+from scripts.figs import necessity as NE
 from scripts.figs import stated_bridge as SB
 
 LENS = "J++, synthetic, 00000000"
@@ -62,6 +64,20 @@ def f2_control(recall: int, rest: int, rnd: tuple[int, int], n: int) -> str:
             f"recalls {G.pct(rr[0])} {G.ci_txt(rr[1], rr[2])} n={n}")  # fmt: skip
 
 
+def parts_run(d: Path, counts: dict[int, dict[str, dict[str, int]]], n: int) -> None:
+    """A synthetic statement_positions parts run: per layer, family and part, k of n rows switched (role b), plus a
+    random-direction null row and an off-path row that must be left out."""
+    d.mkdir(parents=True)
+    rows = []
+    for la, fams in counts.items():
+        for fam, parts in fams.items():
+            for part, k in parts.items():
+                base = {"family": fam, "set": "context", "layer": la, "part": part, "source": "cf", "null": False}
+                rows += [{**base, "role": "b" if i < k else "A"} for i in range(n)]
+                rows += [{**base, "null": True, "role": "b"}, {**base, "source": "off", "role": "b"}]
+    (d / "outcomes.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+
+
 def f2_files(tmp: Path) -> list[tuple]:
     """Four f2 cells (27B scene set 2 and table hold, 122B fails, 32B not interpretable) and their verdict files."""
     rows = []
@@ -73,10 +89,21 @@ def f2_files(tmp: Path) -> list[tuple]:
     ):
         n = 120 if s == "draw 1" else 180 if s == "draw 2" else 83
         lk, lr, rc, rr = (tri(k, n) for k in (look, rest, recall, recall_rest))
+        v: dict[str, Any]
         if s == "table":
             v = {"by_format": {"table": {"PP_jspace": lk, "PP_not_jspace": lr, "PM_jspace": rc, "PM_not_jspace": rr}}}
         else:
             v = {"lookup": {"jspace": lk, "not_jspace": lr}, "recall": {"jspace": rc, "not_jspace": rr}}
+        if s == "draw 2":  # the parts run behind it (scripts/figs/necessity.py reads its outcomes)
+            layer = 32 if m == "27b" else 24
+            counts = {layer: {"PP": {"full": 150, "not_jspace": rest, "jspace": look, "jspace_matched": 0},
+                              "PM": {"full": 140, "not_jspace": recall_rest, "jspace": recall, "jspace_matched": 1}}}  # fmt: skip
+            for la in NE.EXTRA_LAYERS.get(m, ()):
+                counts[la] = {"PP": {"full": 178, "not_jspace": 90, "jspace": 100, "jspace_matched": 5},
+                              "PM": {"full": 175, "not_jspace": 30, "jspace": 120, "jspace_matched": 6}}  # fmt: skip
+            v.update(parts=f"parts_{m}", cell={"set": "context", "layer": layer})
+            v["lookup"]["full"], v["recall"]["full"] = tri(150, n), tri(140, n)
+            parts_run(tmp / "sp" / f"parts_{m}", counts, n)
         p = tmp / f"verdict_{m}_{s.replace(' ', '')}.json"
         p.write_text(json.dumps(v))
         ctl = f2_control(G.r100(rc[0]), G.r100(lr[0]), (0, 1), n)
@@ -209,6 +236,29 @@ def test_files_that_disagree_with_the_grid_raise(tmp_path):
         LP.collect(b, "27b", "main rule, draw 2")
 
 
+def test_necessity_from_synthetic_inputs(tmp_path):
+    b = synthetic(tmp_path)
+    sp, out = tmp_path / "sp", tmp_path / "out"
+    for kind, make in (("main", NE.figure_main), ("full", NE.figure_full)):
+        fr, numbers = make(b, sp=sp)
+        C.save(fr, NE.STEM, numbers, out)  # raises on overlapping or clipped text
+        data = out / "data" / f"{NE.STEM}_{kind}.json"
+        assert C.check_numbers(data, b) == [] and check_controls(data, b) == []
+    cells = NE.collect(b, "122b", sp=sp)
+    assert [(c.layer, c.decisive) for c in cells] == [(24, True), (27, False), (30, False)]
+    assert [p for p, _ in NE.shown_parts(cells)] == ["full", "not_jspace", "jspace", "jspace_matched"]  # no Δ−rand
+    assert cells[0].parts["lookups"]["jspace"].source == "grid.csv"  # the grid's number at the decisive cell
+    assert cells[1].parts["lookups"]["jspace"].value == pytest.approx(100 * 100 / 180)  # null / off rows left out
+    assert NE.falls(cells) == ["122B: minus J, lookups fall at layers 27, 30."]
+    assert NE.collect(b, "9b", sp=sp) == []  # no finding-2 value: nothing drawn
+    p = tmp_path / "verdict_122b_draw2.json"
+    v = json.loads(p.read_text())
+    v["lookup"]["full"] = tri(10, 180)  # the run's rows say 150 of 180
+    p.write_text(json.dumps(v))
+    with pytest.raises(ValueError, match="verdict file"):
+        NE.collect(b, "122b", sp=sp)
+
+
 def newest_real_grid() -> Path | None:
     try:
         g = SB.newest_grid()
@@ -220,7 +270,7 @@ def newest_real_grid() -> Path | None:
 
 
 @pytest.mark.skipif(newest_real_grid() is None, reason="no grid with its finding 2 and 7 result files here")
-@pytest.mark.parametrize("mod", [SB, LP])
+@pytest.mark.parametrize("mod", [SB, LP, NE])
 def test_real_grid_numbers_match(tmp_path, mod):
     g = newest_real_grid()
     assert g is not None
