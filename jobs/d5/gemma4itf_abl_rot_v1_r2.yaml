@@ -1,0 +1,30 @@
+id: gemma4itf_abl_rot_v1_r2
+title: "J-space removal on Gemma 4 31B-it with Zach's J++: does recall break while lookups survive? (finding 1)"
+thread: D5
+gpus: 1
+est_gpu_hours: 1.2
+mem_gb: 75
+depends_on:
+- gemma4itf_lens_gate_v2
+- gemma4itf_d1_topics2_map_r2
+command: >-
+  BJ_TARGET=gemma-4-31b-it-full uv run python scripts/d1_precheck.py --gate gemma4itf_lens_gate_v2 --competence gemma4itf_d1_topics2_competence --min-topics 0
+  && BJ_TARGET=gemma-4-31b-it-full BJ_FORMAT=chat BJ_ABL_BATCH=4 uv run python scripts/ablate_pilot.py --name gemma4itf_abl_rot_v1
+  --why "finding 1 (J-space removal) on Gemma 4 31B-it with Zach's J++: abl_rot_v1 at Gemma's own cells (30 33 36, as gemma4itr_abl_rot_v1)" --n 100 --layers 30 33 36 --comp-main gemma4itb_competence_v1
+  --comp-computed none --countries-build --rotated --no-random
+question: In Gemma 4 31B-it (chat format), does removing the J-space (25-atom OMP over Zach's J++'s letter-token vectors) at layers 30/33/36 break recall chains (BR, RR) but not prompt lookups (BL, RL), while the same-size rotated removal leaves every family intact?
+why_it_matters: 'Finding 1 (J-space removed: recall 19-22% right, lookup 99%) rests on Qwen3.6-27B alone. On Gemma it could not be tested with the old lenses (README slide 1); Zach''s J++ (every layer) is the instruction-tuned model''s own lens.'
+hypotheses:
+  H_split: 'J-space removal at 30/33/36 leaves BL/RL >= 90% and drops BR/RR by >= 30 points (copied from olmo3_7b_instruct_abl_rot_chat_v1, H_pre, for one model)'
+  H_none: 'no gap >= 20 (copied from olmo3_7b_instruct_abl_rot_chat_v1, H_none)'
+  prior: 'Prior (Dan''s agent, before any run): H_pre 0.35, H_none 0.3 (copied from olmo3_7b_instruct_abl_rot_chat_v1)'
+decision_rule: 'Runs iff Zach''s J++ passes gate v1 (scripts/d1_precheck.py, --min-topics 0: only the gate matters here). GATE G2: the rotated removal keeps accuracy >= 0.90 on every family/step (items right unedited); else the J-space rows are not interpreted (Gemma''s failure mode: the verdict may be "not interpretable"). The random-dictionary removal is dropped: it does not fit next to a 27B-size model on an 80 GB GPU (d2_abl_read_*_27b_v2: --no-random), so G2 reads the rotated control alone. Split measure: gap = mean(BL, RL) - mean(BR, RR) accuracy under J-space removal, clean prompts; ''present'' if the paired-bootstrap 95% CI lower bound >= 20 points, ''absent'' if the upper bound <= 10, else ''inconclusive'' (copied from olmo3_7b_instruct_abl_rot_chat_v1). Layers: Gemma''s own finding-1 cells, 30/33/36 (gemma4itr_abl_rot_v1, Zach: the 27B''s 32/36/40 at Gemma''s depth on the refit lens''s grid). Primary lens (Dan, 23 Oct ~00:30): ours on 64 prompts for Qwen3-32B and OLMo, Zach''s for Gemma and Muse; no silent switch.'
+controls:
+- 'rotated: the J-space fit turned by a fixed random rotation (exact same norm removed, position by position)'
+- 'hop rows: the last step alone, to separate the step from the chain'
+- 'countries R/B (built now from exp09 eligibility on this model): word answers, a known J-space-heavy family'
+n: 100 per family (BL, BR, RL, RR clean + hop; countries R, B)
+seeds:
+- 888
+- 0
+notes: "Mechanical copy of olmo3_7b_instruct_abl_rot_chat_v1 (the 27B's ablate_pilot/abl_rot_v1 on a new target; --no-random and a smaller batch as the 27B's own copies on this box) (Dan, 23 Oct ~01:30: the full J++ lens table); not opened before Dan's predictions. Cases from gemma4itb_competence_v1 (lens-free, same weights and revision; Zach's choice for gemma4itr_abl_rot_v1 and gemma4itr_rw_v1). Zach: J-space removal breaks Gemma's plain text; run anyway with its controls, the verdict may be 'not interpretable' (Dan, 23 Oct ~01:30). Depends on gemma4itf_d1_topics2_map_q only for the precheck's competence file. Memory: Gemma's weights are ~8 GB larger than the 27B's; an OOM is possible (the remedy is a design change for Dan). No examples or figures stage: ablate_pilot.py has none, as the source. Requeued as gemma4itf_abl_rot_v1_r2 after the statement_positions unaligned-scene skip (23 Oct ~10:15; the map failed once on the footprint assert); gemma4itf_abl_rot_v1 never ran or failed once."
