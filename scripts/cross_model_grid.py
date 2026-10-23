@@ -20,9 +20,12 @@ interpretable (a control failed: which), not testable (no lens, gate or competen
 failed, or no saved verdict: why), open (values shown, no committed rule).
 
 Status of a cell without results: the queue ledgers (results/jobq/ledger*.jsonl), the queue states saved by
-`jobq pull` (cache/jobq/queue_state*.json) and the specs in jobs/. A job stopped by scripts/d1_precheck.py (exit 3)
-is "not testable"; a job blocked behind it inherits that; a raw-format smoke stop (scripts/check_unedited.py, exit 3)
-is "missing: raw smoke mismatch".
+`jobq pull` (cache/jobq/queue_state*.json), the job logs it pulled (log/jobq/<id>/log.txt) and the specs in jobs/. A
+job stopped by scripts/d1_precheck.py (exit 3; the reason it printed) or a statement_positions parts stage that finds
+no transit cell from --lo on is "not testable"; a job behind it (pending, cancelled or never queued, through retries
+of the same run) inherits that; a raw-format smoke stop (scripts/check_unedited.py, exit 3) is "missing: raw smoke
+mismatch". Finding 2's cells show the same-share random part (jspace_matched; rand_sub where it ran) beside the lens
+part, at the verdict's cell. DEVIATIONS: accepted deviations from a pre-registration, footnoted by spec.
 
 uv run python scripts/cross_model_grid.py [--cells PAT[,PAT...]] [--no-values] [--out DIR]
   --cells      model:finding[:setting] glob patterns, e.g. "27b:f4:long*,olmo_hybrid:*" (models: 27b 9b olmo_hybrid
@@ -214,6 +217,12 @@ CHOICES = (
     "Seven verdict words: 'open' is its own word for a cell that shows values under no committed rule (finding 1's "
     "animal-suite removal, finding 8's last-token lens arm), never 'missing' for that reason (Dan, 23 Oct).",
 )
+# Accepted deviations from a pre-registration: (a pattern in the command of a spec that writes the cell's run, the
+# cell's footnote). Attached by spec, not by result, so a cell carries its note while the run is pending or missing
+DEVIATIONS = (
+    (r"--map gemma4itf_d1_(topics2|formats)_map", "n = 167 (topics) / 169 (formats) instead of the pre-registered 180: "
+     "73c4a69 skips scenes whose positions fail the alignment check; accepted by Dan, 23 Oct"),
+)  # fmt: skip
 
 
 # ---------------------------------------------------------------- the cell registry
@@ -435,6 +444,11 @@ class Jobs:
         """The cell's job ids: every spec that writes its run (retries _r2, _q, ... included)."""
         return tuple(dict.fromkeys([*cell.jobs, *self.by_run.get(cell.run, [])]))
 
+    def deviations(self, jobs: tuple[str, ...]) -> list[str]:
+        """The DEVIATIONS notes whose pattern a command of these jobs' specs matches."""
+        cmds = [self.spec(j).get("command") or "" for j in jobs]
+        return [note for pat, note in DEVIATIONS if any(re.search(pat, c) for c in cmds)]
+
     def f5_layers(self, run: str, level: str | None) -> list[int] | None:
         """The --layers its spec gives scripts/finding5_confirm.py for `run` (and `level`), if a spec does."""
         for job in self.by_run.get(run, []):
@@ -474,12 +488,26 @@ class Jobs:
                 return f"{c} (spec added)"
         return "-"
 
-    def precheck_stop(self, rec: dict) -> tuple[str, str] | None:
-        """(verdict word, why) when a job's chain was stopped on purpose (exit 3): scripts/d1_precheck.py (the gate
-        failed: not testable) or scripts/check_unedited.py (a raw-format smoke mismatch: missing); None otherwise."""
+    def log(self, job: str) -> str:
+        """The job's log as `jobq pull` brought it (log/jobq/<id>/log.txt), or ''."""
+        p = self.repo / "log" / "jobq" / job / "log.txt"
+        return p.read_text(errors="replace") if p.exists() else ""
+
+    def stop_of(self, rec: dict) -> tuple[str, str] | None:
+        """(verdict word, why) when a failed job's chain stopped because the test cannot be made: scripts/d1_precheck.py
+        (exit 3: the gate failed, or too few eligible scenes; its printed reason) or statement_positions parts finding
+        no transit cell from --lo on (the stated bridge can no longer be moved there): not testable;
+        scripts/check_unedited.py (exit 3, a raw-format smoke mismatch): missing. None otherwise."""
         cmd = rec.get("command", "")
-        stopper = "d1_precheck" in cmd or "check_unedited" in cmd
-        if rec.get("status") != "failed" or rec.get("exit_code") != 3 or not stopper:
+        if rec.get("status") != "failed":
+            return None
+        if "AssertionError: no transit cell in any family" in self.log(rec["id"]):
+            lo = re.search(r"statement_positions\.py parts .*?--lo (\d+)", cmd)
+            return (
+                "not testable",
+                f"no layer from {lo.group(1) if lo else '--lo'} on where the stated bridge can still be moved",
+            )
+        if rec.get("exit_code") != 3 or not ("d1_precheck" in cmd or "check_unedited" in cmd):
             return None
         gate = re.search(r"--gate (\w+)", cmd)
         s = RESULTS / "lens_gate" / gate.group(1) / "summary.json" if gate else None
@@ -488,11 +516,19 @@ class Jobs:
             return "not testable", f"gate v1 failed ({gate.group(1) if gate else '?'})"
         if "check_unedited" in cmd and (passed or "d1_precheck" not in cmd):
             return "missing", "raw smoke mismatch: the smoke's unedited answers differ from the raw competence run"
-        return "not testable", "stopped by the precheck: too few eligible scenes, or the gate"
+        said = [x for x in self.log(rec["id"]).splitlines() if x.startswith("d1_precheck:") and "STOP" in x]
+        how = said[-1].removeprefix("d1_precheck:").strip() if said else "too few eligible scenes, or the gate"
+        return "not testable", f"stopped by the precheck in {rec['id']}: {how}"
+
+    def attempts(self, job: str) -> tuple[str, ...]:
+        """The job and every spec that writes one of its runs (its retries): a dependency is judged by its runs."""
+        names = re.findall(r"--name (\w+)", self.spec(job).get("command") or "")
+        return tuple(dict.fromkeys([job, *(j for n in names for j in self.by_run.get(n, []))]))
 
     def status(self, jobs: tuple[str, ...], values: bool = True, _seen: frozenset = frozenset()) -> tuple[str, str]:
         """(status, reason) of a run that has no results: failed / pending / running / blocked / not enqueued / no
-        spec, or 'not testable' (stopped by the precheck, or blocked behind such a job; only with values)."""
+        spec, or 'not testable' (stop_of, or behind such a job: pending, cancelled or never queued; only with
+        values)."""
         if not jobs:
             return "no spec", "no spec"
         for j in jobs:  # a retry in the queue outranks an earlier attempt's failure
@@ -503,14 +539,14 @@ class Jobs:
                         continue
                     st, why = self.status((d,), values, _seen | {j})
                     if st == "not testable":
-                        return st, f"{why} (blocks {j})"
+                        return st, blocks(why, j)
                     if st == "failed":
                         return "blocked", f"{j} waits on {d}, which failed"
                 return self.queued[j], f"{j} is {self.queued[j]} in the queue"
         rec = self.latest(jobs)
         if rec is not None:
             if rec.get("status") == "failed":
-                stop = self.precheck_stop(rec) if values else None
+                stop = self.stop_of(rec) if values else None
                 if stop:
                     return stop
                 err = (rec.get("error") or "").strip().splitlines()
@@ -520,9 +556,28 @@ class Jobs:
                 return "failed", why + (f": {err[-1][:120]}" if err and values else "")
             if rec.get("status") == "done":
                 return "done, no results", f"job {rec['id']} done but its results are not here (pull?)"
-        if any(j in self.specs for j in jobs):
+        spec_jobs = [j for j in jobs if j in self.specs]
+        if spec_jobs and values:  # never ran (cancelled or never queued): not testable if every attempt waits on a stop
+            behind = [self.stopped_upstream(j, _seen) for j in spec_jobs]
+            if all(behind):
+                return "not testable", behind[-1] or ""
+        if spec_jobs:
             return "not enqueued", f"spec {jobs[-1]} not run (not in the queue or the ledger)"
         return "no spec", "no spec"
+
+    def stopped_upstream(self, job: str, _seen: frozenset = frozenset()) -> str | None:
+        """Why a job that never ran cannot run: a dependency's runs are not testable (stop_of, possibly further up)."""
+        for d in self.spec(job).get("depends_on") or []:
+            if d not in _seen:
+                st, why = self.status(self.attempts(d), True, _seen | {job})
+                if st == "not testable":
+                    return blocks(why, job)
+        return None
+
+
+def blocks(why: str, job: str) -> str:
+    """'<stop>; blocks a' -> '<stop>; blocks a, then b' (the chain behind a stop, nearest first)."""
+    return f"{why}, then {job}" if "; blocks " in why else f"{why}; blocks {job}"
 
 
 # ---------------------------------------------------------------- reading results
@@ -654,6 +709,8 @@ class Row:
     sources: list[str] = field(default_factory=list)
     status: str = "has-run"
     notes: list[str] = field(default_factory=list)  # grid.md footnotes besides the not-interpretable reason
+    # finding 2: the random parts beside the lens part at the verdict's cell (random_parts)
+    random_parts: dict[str, dict[str, list]] = field(default_factory=dict)
 
     @property
     def word(self) -> str:
@@ -946,6 +1003,59 @@ def d1_word(v: str) -> str:
     return f"missing (unknown verdict {v!r})"
 
 
+# the random parts statement_positions parts patches beside the lens part (d1_verdict reports neither as a rule):
+# jspace_matched in every parts run; rand_sub only where a spec asks for it (the 122B late specs)
+RANDOM_PARTS = (("jspace_matched", "same-share random part"), ("rand_sub", "random subspace, same share"))
+
+
+@functools.cache
+def parts_rows(path: Path) -> tuple[dict, ...]:
+    """A parts run's patched rows of the random parts (outcomes.jsonl: source cf, not the random-direction null)."""
+    if not path.exists():  # a verdict without its parts rows here (synthetic tests): nothing beside the lens part
+        return ()
+    keep = {p for p, _ in RANDOM_PARTS}
+    return tuple(r for r in jl(path) if r["source"] == "cf" and not r["null"] and r["part"] in keep)
+
+
+@functools.cache
+def item_formats(manifest: Path) -> dict[str, str]:
+    """Item id -> format, from the parts run's tasks set (d1_verdict.load_meta, which the verdict's by_format uses)."""
+    from scripts import d1_verdict as DV
+
+    tasks = (json.loads(manifest.read_text()).get("tasks") or {}).get("set")
+    return {k: m["format"] for k, m in DV.load_meta(tasks).items()}
+
+
+def random_parts(run: str, at: dict, fmt: str | None = None) -> dict[str, dict[str, list]]:
+    """At the verdict's cell (`at`: its set and layer), each random part with rows: part -> {"lookups" (PP),
+    "recalls" (PM)} -> [switched, Wilson lo, hi, n]; switched = role b, as d1_verdict.rate. `fmt`: that format's items
+    only (table / json), as the verdict's by_format."""
+    d = RESULTS / "statement_positions" / run
+    rows = [r for r in parts_rows(d / "outcomes.jsonl") if r["set"] == at["set"] and r["layer"] == at["layer"]]
+    if fmt is not None:
+        formats = item_formats(d / "manifest.json")
+        rows = [r for r in rows if formats.get(r["name"]) == fmt]
+    out: dict[str, dict[str, list]] = {}
+    for part, _ in RANDOM_PARTS:
+        for fam, who in (("PP", "lookups"), ("PM", "recalls")):
+            sel = [r for r in rows if r["part"] == part and r["family"] == fam]
+            if sel:
+                out.setdefault(part, {})[who] = [*wilson(sum(r["role"] == "b" for r in sel), len(sel)), len(sel)]
+    return out
+
+
+def random_parts_text(rp: dict[str, dict[str, list]]) -> str:
+    """'same-share random part (jspace_matched): lookups 1% [0, 3] n=180, recalls 2% [1, 5] n=180' (+ rand_sub)."""
+    out = []
+    for part, name in RANDOM_PARTS:
+        if part in rp:
+            out.append(f"{name} ({part}): " + ", ".join(f"{who} {pct(x[0])} {ci_txt(x[1], x[2])} n={x[3]}"
+                                                         for who, x in rp[part].items()))  # fmt: skip
+        elif part == "jspace_matched":
+            out.append(f"{name} ({part}): no rows at this cell")
+    return "; ".join(out)
+
+
 def ev_d1(cell: Cell) -> list[Row]:
     saved = latest_dir(RESULTS / "d1_verdict", cell.run)
     if saved is None:
@@ -957,14 +1067,18 @@ def ev_d1(cell: Cell) -> list[Row]:
     v = json.loads((saved / "verdict.json").read_text())
     lk, rc = v["lookup"], v["recall"]
 
-    def row(setting: str, lj: list, ln: list, rj: list, verdict: str, md: str | None) -> Row:
+    def row(setting: str, lj: list, ln: list, rj: list, verdict: str, md: str | None, fmt: str | None = None) -> Row:
         ctl = (f"recall, lens-readable part (the control, needs >= 30%): {pct(rj[0])} {ci_txt(rj[1], rj[2])}; "
                f"lookup, the rest (needs >= 50%): {pct(ln[0])}; cell {v['cell']['set']} at layer {v['cell']['layer']}")  # fmt: skip
         if "kept_under_lens_part" in v and md:
             ctl += f"; lookups keep their answer under the lens-part patch: {pct(v['kept_under_lens_part'][0])}"
+        rp = random_parts(cell.run, v["cell"], fmt) if md else {}  # beside the lens part, at the verdict's cell
+        if md:
+            ctl += "; " + random_parts_text(rp)
         return Row(cell.model, "f2", setting, n=lj[3], value=lj[0], ci=(lj[1], lj[2]), control=ctl,
                    verdict=d1_word(verdict), rule="stated-bridge", path=p, md_setting=md,
-                   md_text=key(lj[0], (lj[1], lj[2]), lj[3]) if md else None, sources=[p])  # fmt: skip
+                   md_text=key(lj[0], (lj[1], lj[2]), lj[3]) if md else None, random_parts=rp,
+                   sources=[p, rel(RESULTS / "statement_positions" / cell.run / "outcomes.jsonl")] if md else [p])  # fmt: skip
 
     if cell.kind == "d1_formats":  # one row per format, its own verdict (format_verdicts); pooled in the control
         out = []
@@ -974,7 +1088,7 @@ def ev_d1(cell: Cell) -> list[Row]:
                 out.append(Row(cell.model, "f2", setting, verdict=f"missing (no {setting} rows in {p})",
                                rule="stated-bridge", path=p, md_setting=setting, md_text="", sources=[p]))  # fmt: skip
                 continue
-            r = row(setting, c["PP_jspace"], c["PP_not_jspace"], c["PM_jspace"], fv, setting)
+            r = row(setting, c["PP_jspace"], c["PP_not_jspace"], c["PM_jspace"], fv, setting, fmt)
             r.control += f"; pooled over formats: {v['verdict']}"
             out.append(r)
         return out
@@ -1242,25 +1356,26 @@ def build(patterns: list[str] | None = None, values: bool = True, runs: set[str]
         if cell.kind == "f5" and "layer" not in cell.opts:
             cell.opts["layers"] = jobs.f5_layers(cell.run, cell.opts.get("level"))
         if cell.kind == "zach_c1" and not present(cell):
-            rows += empty_rows(cell, "missing (no verdict file on Zach's branch)", "not on Zach's branch", jobs)
-            continue
-        if not present(cell):
+            got = empty_rows(cell, "missing (no verdict file on Zach's branch)", "not on Zach's branch", jobs)
+        elif not present(cell):
             st, why = jobs.status(cell.jobs, values)
             word = "not testable" if st == "not testable" else "missing"
-            rows += empty_rows(cell, f"{word} ({why})", st, jobs)
-            continue
-        if not values:
-            rows += empty_rows(cell, "", "has-run", jobs)
-            continue
-        try:
-            got = EVAL[cell.kind](cell)
-        except Exception as e:  # one unreadable run is a missing cell, listed, never a crash of the whole grid
-            why = f"{type(e).__name__}: {e}"[:160]
-            got = [Row(cell.model, cell.finding, s, verdict=f"missing (files inconsistent: {why})",
-                       path=rel(required(cell)), md_setting=s, md_text="") for s in settings_of(cell)]  # fmt: skip
+            got = empty_rows(cell, f"{word} ({why})", st, jobs)
+        elif not values:
+            got = empty_rows(cell, "", "has-run", jobs)
+        else:
+            try:
+                got = EVAL[cell.kind](cell)
+            except Exception as e:  # one unreadable run is a missing cell, listed, never a crash of the whole grid
+                why = f"{type(e).__name__}: {e}"[:160]
+                got = [Row(cell.model, cell.finding, s, verdict=f"missing (files inconsistent: {why})",
+                           path=rel(required(cell)), md_setting=s, md_text="") for s in settings_of(cell)]  # fmt: skip
+            for r in got:
+                r.lens, r.commit, r.role, r.run = lens_of(cell), jobs.commit(cell), cell.role, cell.run
+                assert r.word in VERDICTS, r.verdict
+        notes = jobs.deviations(cell.jobs)  # by spec: the note stands whether or not the run is here
         for r in got:
-            r.lens, r.commit, r.role, r.run = lens_of(cell), jobs.commit(cell), cell.role, cell.run
-            assert r.word in VERDICTS, r.verdict
+            r.notes += notes
         rows += got
     return rows
 
@@ -1295,6 +1410,9 @@ def md_cell(rows: list[Row]) -> tuple[str, list[tuple[str, str]]]:
                      "failed" if " failed at the " in reason else "pending" if "pending in the queue" in reason else
                      "running" if "running in the queue" in reason else "blocked" if " waits on " in reason else
                      "not run" if "not run" in reason else "gate failed" if "gate v1 failed" in reason else
+                     "too few scenes" if "stopped by the precheck" in reason and "gate v1 passed" in reason else
+                     "precheck stop" if "stopped by the precheck" in reason else
+                     reason.split(" where ")[0] if reason.startswith("no layer from ") else
                      "raw smoke mismatch" if "raw smoke mismatch" in reason else
                      "not on Zach's branch" if "Zach's branch" in reason else
                      "no early layer" if "before the donor's digit" in reason else

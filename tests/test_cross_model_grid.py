@@ -304,6 +304,114 @@ def test_grid_md_states_the_seven_words_and_how_finding_1s_interval_is_computed(
     assert "○ gap +1 [0,2] n=8" in md
 
 
+# ---------------------------------------------------------------- 23 Oct: random parts, stops upstream, deviations
+
+
+def _cf(fam: str, part: str, switched: int, n: int, **over) -> list[dict]:
+    """n parts rows of one family and part at context / layer 32 (cf, not null); the first `switched` switch (b)."""
+    return [{"family": fam, "name": f"{fam}-{i}", "set": "context", "layer": 32, "part": part, "source": "cf",
+             "null": False, "role": "b" if i < switched else "A", **over} for i in range(n)]  # fmt: skip
+
+
+def test_stated_bridge_shows_the_same_share_random_part_at_the_verdicts_cell(results, monkeypatch):
+    lens = {"full": [0.9, 0.8, 0.95, 100], "jspace": [0.02, 0.0, 0.07, 100], "not_jspace": [0.85, 0.77, 0.9, 100]}
+    blk = {"PP_jspace": [0.0, 0.0, 0.1, 50], "PP_not_jspace": [0.9, 0.8, 0.95, 50], "PM_jspace": [0.5, 0.3, 0.7, 50]}
+    v = {"cell": {"set": "context", "layer": 32, "map_flips": [0.9, 0.8, 0.95]}, "lookup": lens, "recall": lens,
+         "verdict": "replicates", "topic_verdicts": {"animals": "replicates"}, "by_topic": {"animals": blk},
+         "by_format": {"table": blk, "json": blk}, "format_verdicts": {"table": "replicates", "json": "replicates"}}  # fmt: skip
+    _json(results / "d1_verdict" / "p_20261023-100000" / "verdict.json", v)
+    rows = _cf("PP", "jspace_matched", 3, 100) + _cf("PM", "jspace_matched", 40, 100)
+    # not at the verdict's cell, the random-direction null, O's copy, another part: never counted
+    rows += _cf("PP", "jspace_matched", 100, 100, layer=36) + _cf("PP", "jspace_matched", 100, 100, null=True)
+    rows += _cf("PP", "jspace_matched", 100, 100, source="off") + _cf("PP", "jspace", 100, 100)
+    _jsonl(results / "statement_positions" / "p" / "outcomes.jsonl", rows)
+    main, topic = G.ev_d1(G.Cell("27b", "f2", "draw 2", "d1", "p"))
+    rp = main.random_parts["jspace_matched"]
+    assert rp["lookups"][0] == pytest.approx(0.03) and rp["lookups"][3] == 100
+    assert rp["recalls"][0] == pytest.approx(0.40) and rp["recalls"][3] == 100 and "rand_sub" not in main.random_parts
+    assert (
+        "same-share random part (jspace_matched): lookups 3% [1, 8] n=100, recalls 40% [31, 50] n=100" in main.control
+    )
+    assert "outcomes.jsonl" in main.sources[1] and topic.md_setting is None and not topic.random_parts
+    # rand_sub where a spec ran it (the 122B late specs); per format through the run's tasks set
+    G.parts_rows.cache_clear()
+    _jsonl(results / "statement_positions" / "p" / "outcomes.jsonl", rows + _cf("PP", "rand_sub", 10, 50))
+    monkeypatch.setattr(G, "item_formats", lambda manifest: {f"{f}-{i}": "table" if i < 50 else "json"
+                                                              for f in ("PP", "PM") for i in range(100)})  # fmt: skip
+    table, js = G.ev_d1(G.Cell("27b", "f2", "table", "d1_formats", "p"))
+    tl = table.random_parts["jspace_matched"]["lookups"]
+    assert tl[0] == pytest.approx(0.06) and tl[3] == 50  # 3 of the 50 table items
+    assert (
+        js.random_parts["jspace_matched"]["lookups"][0] == 0 and js.random_parts["jspace_matched"]["recalls"][3] == 50
+    )
+    rs = table.random_parts["rand_sub"]  # lookups only: no recall row has it
+    assert list(rs) == ["lookups"] and rs["lookups"][0] == pytest.approx(0.2) and "rand_sub" not in js.random_parts
+    assert "random subspace, same share (rand_sub): lookups 20%" in table.control
+    G.parts_rows.cache_clear()
+
+
+def test_a_job_behind_a_stop_is_not_testable_with_the_stops_reason(tmp_path, results):
+    """Muse D1: the map's precheck stopped (too few scenes) and its parts and rw were cancelled; OLMo with our J++:
+    the parts found no transit cell from layer 16 on and its rw was cancelled. Both read 'not testable'."""
+    specs = {"map": ([], "python3 scripts/d1_precheck.py --gate g && python3 sp.py map --name m"),
+             "parts": (["map"], "python3 sp.py parts --name p --map m"), "parts_r2": (["map"], "python3 sp.py parts --name p --map m"),
+             "rw": (["parts"], "python3 sp.py readwrite --name w"), "rw_r2": (["parts_r2"], "python3 sp.py readwrite --name w"),
+             "omap": ([], "python3 sp.py map --name om"),
+             "oparts": (["omap"], "python3 scripts/statement_positions.py parts --name op --map om --lo 16 --sets context"),
+             "orw": (["oparts"], "python3 sp.py readwrite --name ow"), "fparts": (["omap"], "python3 sp.py parts --name fp")}  # fmt: skip
+    for job, (deps, cmd) in specs.items():
+        (tmp_path / "jobs" / "d1").mkdir(parents=True, exist_ok=True)
+        (tmp_path / "jobs" / "d1" / f"{job}.yaml").write_text(
+            json.dumps({"id": job, "depends_on": deps, "command": cmd})
+        )
+    _jsonl(tmp_path / "results" / "jobq" / "ledger.jsonl", [
+        {"id": "map", "status": "failed", "exit_code": 3, "ended_at": "1", "command": specs["map"][1]},
+        {"id": "omap", "status": "done", "exit_code": 0, "ended_at": "1", "command": specs["omap"][1]},
+        {"id": "oparts", "status": "failed", "exit_code": 1, "ended_at": "2", "command": specs["oparts"][1]}])  # fmt: skip
+    _json(tmp_path / "cache" / "jobq" / "queue_state.json", {"cancelled": [{"id": j} for j in ("parts", "rw", "orw")]})
+    said = (
+        "d1_precheck: gate v1 passed; eligible scenes per topic {'animals': 11}; STOP (needs the gate and >= 2 topics)"
+    )
+    (tmp_path / "log" / "jobq" / "map").mkdir(parents=True)
+    (tmp_path / "log" / "jobq" / "map" / "log.txt").write_text(f"[jobq] $ ...\n{said}\n")
+    (tmp_path / "log" / "jobq" / "oparts").mkdir(parents=True)
+    (tmp_path / "log" / "jobq" / "oparts" / "log.txt").write_text(
+        "Traceback\nAssertionError: no transit cell in any family\n"
+    )
+    _json(results / "lens_gate" / "g" / "summary.json", {"gate": {"pass": True}})
+    jobs = G.Jobs(tmp_path)
+    stop = "stopped by the precheck in map: gate v1 passed; eligible scenes per topic {'animals': 11}; STOP"
+    st, why = jobs.status(("parts", "parts_r2"))
+    assert st == "not testable" and why.startswith(stop) and why.endswith("; blocks parts_r2")
+    st, why = jobs.status(("rw", "rw_r2"))  # two hops, through the retries of the same run
+    assert st == "not testable" and why.startswith(stop) and why.endswith(", then rw_r2")
+    moved = "no layer from 16 on where the stated bridge can still be moved"
+    assert jobs.status(("oparts",)) == ("not testable", moved)
+    assert jobs.status(("orw",)) == ("not testable", f"{moved}; blocks orw")
+    assert jobs.status(("fparts",))[0] == "not enqueued"  # behind a done job: nothing stops it
+    assert (
+        jobs.status(("rw",), values=False)[0] == "not enqueued"
+        and jobs.status(("oparts",), values=False)[0] == "failed"
+    )
+    texts = [G.md_cell([G.Row("olmo", "f2", "draw 2", verdict=f"not testable ({w})", md_setting="draw 2", md_text="")])[0]
+             for w in (moved, why)]  # fmt: skip
+    assert texts == ["⊘ not testable: no layer from 16 on", "⊘ not testable: too few scenes"]
+
+
+def test_gemmas_stated_bridge_cells_carry_the_n_deviation_by_spec():
+    """The runs are in progress: the note comes from the specs (they read Gemma's D1 maps), not from a result."""
+    rows = G.build(["gemma:f2:*", "gemma:f8:stated bridge, draw 2", "gemma:f7:*", "27b:f2:*"], values=False)
+    noted = {
+        (r.finding, r.setting, r.role) for r in rows if any(n.startswith("n = 167 (topics) / 169") for n in r.notes)
+    }
+    assert noted == {("f2", "draw 2", "main"), ("f2", "table", "main"), ("f2", "JSON", "main"),
+                     ("f8", "stated bridge, draw 2", "main")}  # fmt: skip
+    note = next(r for r in rows if r.notes).notes[0]
+    assert note.endswith("73c4a69 skips scenes whose positions fail the alignment check; accepted by Dan, 23 Oct")
+    text, notes = G.md_cell([next(r for r in rows if r.notes and r.md_setting)])
+    assert text.endswith(" [{n}]") and notes[0][1] == note
+
+
 # ---------------------------------------------------------------- the README's runs
 
 
