@@ -403,3 +403,20 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   the 122B on natural_v1_chat at L24-30 with the logit-lens control; then the 9B and Muse on natural_v1_chat.
 - **Prediction:** the 27B / 9B / Muse gaps move by < 10 points (their prompt-final words already rule out a global
   format change); if the 122B's breakage is a format artefact, its prompt-final words recover under "cand".
+
+## Amendment 14 (Zach, 2026-10-23 ~17:45 UTC): natplus, a wider natural set with rare bridges
+
+- **Seen when this was written:** everything through amendment 13's launch (its candidate-read results not yet in).
+- **Set:** natplus_v1_chat (scripts/natplus.py, seed 901): natural_v1's three relations with their bridges ("popular")
+  plus 47 lesser-known ones ("rare": 16 countries, 18 people, 13 cities), and a fourth relation, animal -> class
+  (popular only); three wordings per fact and question; facts spliced into windows of consecutive real WikiText
+  sentences; the bridge absent from M->M passages; chat framing; 2,336 items (584 per word; 752 with rare bridges).
+- **Procedure:** per model at its band (27B L32-40, 9B L12-16, Muse L36-42, Olmo-Hybrid L4-8, Olmo-3 L10-14):
+  competence and the knock-out with the candidate-rank read (amendment 13); conditions paper10, paper10_rot,
+  unembed10, unembed10_rot; c1_v2 (the rule), c1_specificity, and scripts/natplus_split.py (by popularity and
+  relation, bootstrap over bridges).
+- **Predictions:** the 27B and 9B keep gaps >= 30 and >= 20 overall, J-specific (logit-lens gap < 10); Muse >= 30 at
+  its late band, mostly shared with the logit lens; the Olmos < 15. Neel's narrow-concept prediction (narrowly used
+  concepts may not use the shared direction): supported if, in the 27B or 9B, the rare-bridge gap is >= 15 points
+  below the popular-bridge gap with the intervals apart; against it if the two are within 10. Rare bridges the
+  model does not know drop out at competence, so "rare" here means known but less frequent.
