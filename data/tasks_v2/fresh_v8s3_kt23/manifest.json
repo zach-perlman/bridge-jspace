@@ -1,0 +1,152 @@
+{
+  "set": "fresh_v8s3_kt23",
+  "n_scenes_per_group_level": 20,
+  "words": [
+    "PP",
+    "PM",
+    "CP",
+    "CM"
+  ],
+  "domains": [
+    "shapes",
+    "vehicles",
+    "instruments"
+  ],
+  "formats": [
+    "prose",
+    "json",
+    "table",
+    "code",
+    "chat",
+    "document"
+  ],
+  "levels": {
+    "2": {
+      "entities": 9,
+      "distractors": true,
+      "filler": 10,
+      "paraphrase": true,
+      "hard_cues": true
+    },
+    "3": {
+      "entities": 12,
+      "distractors": true,
+      "filler": 20,
+      "paraphrase": true,
+      "hard_cues": true
+    }
+  },
+  "seed": 733,
+  "generator": "scripts/tasks_v2.py make (v8)",
+  "git_commit": "19c157d3568c0efa5afcea87ef9cf82947a957ab",
+  "counterfactuals": false,
+  "n_items": 160,
+  "coverage": {
+    "P2/L2": {
+      "scenes": 20,
+      "dead_combinations": [
+        "instruments/chat",
+        "instruments/document",
+        "instruments/json"
+      ],
+      "by_domain_format": {
+        "shapes/prose": 2,
+        "vehicles/document": 2,
+        "instruments/chat": 1,
+        "instruments/document": 1,
+        "shapes/document": 2,
+        "vehicles/code": 1,
+        "vehicles/prose": 1,
+        "instruments/code": 1,
+        "shapes/code": 1,
+        "shapes/json": 1,
+        "vehicles/json": 1,
+        "vehicles/chat": 1,
+        "shapes/table": 1,
+        "vehicles/table": 1,
+        "instruments/prose": 1,
+        "shapes/chat": 1,
+        "instruments/table": 1
+      }
+    },
+    "C2/L2": {
+      "scenes": 20,
+      "dead_combinations": [],
+      "by_domain_format": {
+        "instruments/prose": 2,
+        "instruments/table": 2,
+        "instruments/json": 1,
+        "vehicles/prose": 1,
+        "shapes/document": 1,
+        "shapes/code": 1,
+        "instruments/document": 1,
+        "shapes/json": 1,
+        "instruments/chat": 1,
+        "vehicles/code": 1,
+        "vehicles/table": 1,
+        "vehicles/chat": 1,
+        "shapes/table": 1,
+        "vehicles/document": 1,
+        "shapes/chat": 1,
+        "shapes/prose": 1,
+        "instruments/code": 1,
+        "vehicles/json": 1
+      }
+    },
+    "P2/L3": {
+      "scenes": 20,
+      "dead_combinations": [],
+      "by_domain_format": {
+        "instruments/code": 2,
+        "vehicles/document": 2,
+        "instruments/document": 1,
+        "vehicles/prose": 1,
+        "shapes/chat": 1,
+        "vehicles/json": 1,
+        "instruments/table": 1,
+        "shapes/json": 1,
+        "shapes/code": 1,
+        "instruments/chat": 1,
+        "instruments/json": 1,
+        "vehicles/code": 1,
+        "vehicles/chat": 1,
+        "instruments/prose": 1,
+        "shapes/table": 1,
+        "vehicles/table": 1,
+        "shapes/prose": 1,
+        "shapes/document": 1
+      }
+    },
+    "C2/L3": {
+      "scenes": 20,
+      "dead_combinations": [],
+      "by_domain_format": {
+        "vehicles/chat": 2,
+        "instruments/prose": 2,
+        "vehicles/table": 1,
+        "instruments/code": 1,
+        "shapes/table": 1,
+        "shapes/chat": 1,
+        "shapes/code": 1,
+        "shapes/json": 1,
+        "instruments/table": 1,
+        "vehicles/document": 1,
+        "instruments/json": 1,
+        "instruments/document": 1,
+        "vehicles/code": 1,
+        "shapes/document": 1,
+        "shapes/prose": 1,
+        "vehicles/prose": 1,
+        "vehicles/json": 1,
+        "instruments/chat": 1
+      }
+    }
+  },
+  "three_step_domains": [
+    "animals",
+    "vehicles",
+    "shapes",
+    "elements",
+    "planets"
+  ]
+}
