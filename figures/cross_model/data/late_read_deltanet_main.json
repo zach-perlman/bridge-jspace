@@ -1,0 +1,662 @@
+[
+ {
+  "value": 8.7,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "27b",
+  "setting": "draw 1",
+  "part": "",
+  "ci": [
+   6.0,
+   12.4
+  ],
+  "n": 300,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 100.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "27b",
+  "setting": "draw 1",
+  "part": "",
+  "ci": null,
+  "n": 300,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
+  "value": 7.3,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "27b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   4.9,
+   10.9
+  ],
+  "n": 300,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 100.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "27b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": null,
+  "n": 300,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
+  "value": 9.4,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "27b",
+  "setting": "prose",
+  "part": "",
+  "ci": [
+   4.1,
+   20.3
+  ],
+  "n": 53,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 98.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "27b",
+  "setting": "prose",
+  "part": "",
+  "ci": null,
+  "n": 53,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
+  "value": 3.8,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "27b",
+  "setting": "table",
+  "part": "",
+  "ci": [
+   1.1,
+   13.0
+  ],
+  "n": 52,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 100.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "27b",
+  "setting": "table",
+  "part": "",
+  "ci": null,
+  "n": 52,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
+  "value": 1.9,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "27b",
+  "setting": "JSON",
+  "part": "",
+  "ci": [
+   0.3,
+   9.8
+  ],
+  "n": 54,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 100.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "27b",
+  "setting": "JSON",
+  "part": "",
+  "ci": null,
+  "n": 54,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
+  "value": 25.8,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "27b",
+  "setting": "long context",
+  "part": "",
+  "ci": [
+   20.0,
+   32.7
+  ],
+  "n": 178,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 100.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "27b",
+  "setting": "long context",
+  "part": "",
+  "ci": null,
+  "n": 178,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
+  "value": 2.7,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "9b",
+  "setting": "draw 1",
+  "part": "",
+  "ci": [
+   1.4,
+   5.2
+  ],
+  "n": 300,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 100.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "9b",
+  "setting": "draw 1",
+  "part": "",
+  "ci": null,
+  "n": 300,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
+  "value": 1.3,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "9b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   0.5,
+   3.4
+  ],
+  "n": 300,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 100.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "9b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": null,
+  "n": 300,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
+  "value": 2.0,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "9b",
+  "setting": "draw 3",
+  "part": "",
+  "ci": [
+   0.9,
+   4.3
+  ],
+  "n": 300,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 100.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "9b",
+  "setting": "draw 3",
+  "part": "",
+  "ci": null,
+  "n": 300,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
+  "value": 8.3,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "9b",
+  "setting": "prose",
+  "part": "",
+  "ci": [
+   2.3,
+   25.8
+  ],
+  "n": 24,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 96.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "9b",
+  "setting": "prose",
+  "part": "",
+  "ci": null,
+  "n": 24,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "9b",
+  "setting": "table",
+  "part": "",
+  "ci": [
+   0.0,
+   10.7
+  ],
+  "n": 32,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 100.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "9b",
+  "setting": "table",
+  "part": "",
+  "ci": null,
+  "n": 32,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "9b",
+  "setting": "JSON",
+  "part": "",
+  "ci": [
+   0.0,
+   12.5
+  ],
+  "n": 27,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 100.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "9b",
+  "setting": "JSON",
+  "part": "",
+  "ci": null,
+  "n": 27,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
+  "value": 0.6,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "9b",
+  "setting": "long context",
+  "part": "",
+  "ci": [
+   0.1,
+   3.5
+  ],
+  "n": 156,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 100.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "9b",
+  "setting": "long context",
+  "part": "",
+  "ci": null,
+  "n": 156,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
+  "value": 8.0,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "olmo_hybrid",
+  "setting": "draw 1",
+  "part": "",
+  "ci": [
+   4.1,
+   15.0
+  ],
+  "n": 100,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 99.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "olmo_hybrid",
+  "setting": "draw 1",
+  "part": "",
+  "ci": null,
+  "n": 100,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
+  "value": 7.0,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "olmo_hybrid",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   3.4,
+   13.7
+  ],
+  "n": 100,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 100.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "olmo_hybrid",
+  "setting": "draw 2",
+  "part": "",
+  "ci": null,
+  "n": 100,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "olmo_hybrid",
+  "setting": "table",
+  "part": "",
+  "ci": [
+   0.0,
+   13.8
+  ],
+  "n": 24,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 88.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "olmo_hybrid",
+  "setting": "table",
+  "part": "",
+  "ci": null,
+  "n": 24,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
+  "value": 5.0,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "122b",
+  "setting": "draw 1",
+  "part": "",
+  "ci": [
+   3.1,
+   8.1
+  ],
+  "n": 300,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 100.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "122b",
+  "setting": "draw 1",
+  "part": "",
+  "ci": null,
+  "n": 300,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
+  "value": 5.3,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "122b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   3.3,
+   8.5
+  ],
+  "n": 300,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 100.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "122b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": null,
+  "n": 300,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
+  "value": 11.3,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "122b",
+  "setting": "prose",
+  "part": "",
+  "ci": [
+   5.3,
+   22.6
+  ],
+  "n": 53,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 100.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "122b",
+  "setting": "prose",
+  "part": "",
+  "ci": null,
+  "n": 53,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
+  "value": 1.9,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "122b",
+  "setting": "table",
+  "part": "",
+  "ci": [
+   0.3,
+   10.1
+  ],
+  "n": 52,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 98.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "122b",
+  "setting": "table",
+  "part": "",
+  "ci": null,
+  "n": 52,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "122b",
+  "setting": "JSON",
+  "part": "",
+  "ci": [
+   0.0,
+   6.9
+  ],
+  "n": 52,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 100.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "122b",
+  "setting": "JSON",
+  "part": "",
+  "ci": null,
+  "n": 52,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ },
+ {
+  "value": 7.0,
+  "what": "% right, hidden in every attention layer",
+  "finding": "f4",
+  "model": "122b",
+  "setting": "long context",
+  "part": "",
+  "ci": [
+   4.1,
+   11.9
+  ],
+  "n": 171,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 100.0,
+  "what": "% right, hidden in every DeltaNet layer instead",
+  "finding": "f4",
+  "model": "122b",
+  "setting": "long context",
+  "part": "",
+  "ci": null,
+  "n": 171,
+  "source": "grid.csv control text",
+  "extra": {
+   "control": "DeltaNet",
+   "pattern": "DeltaNet layer instead: (\\d+)%"
+  }
+ }
+]
