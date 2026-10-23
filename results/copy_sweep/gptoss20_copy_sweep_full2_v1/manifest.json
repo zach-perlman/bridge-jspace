@@ -1,0 +1,50 @@
+{
+  "run": "gptoss20_copy_sweep_full2_v1",
+  "why": "Zach (2026-10-23, prereg amendment 8): gpt-oss-20b (our J++), the non-Qwen generality model: where the question / final positions carry the bridge",
+  "git_commit": "b817024a964fe4879f6d1afa898601b59f71ce87",
+  "model": {
+    "target": "gpt-oss-20b",
+    "repo": "openai/gpt-oss-20b",
+    "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "layers": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22
+  ],
+  "tasks": [
+    "full_v8",
+    "gptoss20_full_v8_competence_v1"
+  ],
+  "families": [
+    "PP",
+    "PM",
+    "MP",
+    "MM"
+  ],
+  "n_per_family": 40,
+  "window": 4,
+  "written_utc": "2026-10-23T04:16:57Z",
+  "doc": "python scripts/copy_sweep.py --name N --why W [--tasks SET --tasks-competence RUN --families ...] [--n 40] [--step 2]\n                             [--window 12]\n"
+}

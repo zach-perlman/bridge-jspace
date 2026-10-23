@@ -1,0 +1,45 @@
+{
+  "verdict": "UNDERPOWERED",
+  "per_source": {
+    "P": {
+      "write_XP": 0.08152815158697511,
+      "write_XM": 0.021882006882006883,
+      "n_min": 25,
+      "gap_ok": false,
+      "ratio_ok": false,
+      "ci_ok": false,
+      "XM_ci": [
+        0.0,
+        0.19047619047619047
+      ],
+      "XP_ci": [
+        0.043478260869565216,
+        0.2857142857142857
+      ],
+      "pass": false
+    },
+    "C": {
+      "write_XP": 0.06814686702186702,
+      "write_XM": 0.03383168220668221,
+      "n_min": 23,
+      "gap_ok": false,
+      "ratio_ok": false,
+      "ci_ok": false,
+      "XM_ci": [
+        0.0,
+        0.2857142857142857
+      ],
+      "XP_ci": [
+        0.038461538461538464,
+        0.24
+      ],
+      "pass": false
+    }
+  },
+  "run": "gptoss20j_wm2_full2_v1",
+  "rule": "Claim (C2'): a bridge stated in the prompt (P) or computed in it (C) is written by its own lens direction only when the\nlast step recalls from memory (X->M), not when it looks the answer up (X->P).\nRule, per bridge source X in {P, C}, from c2_graded's scoring of the model's two-step steering run (own lens direction,\nlens_add / lens_swap, question / final positions, cells gated by the random control): X passes if\n  (a) the cross-validated write X->M >= X->P + 10 points, and\n  (b) X->M >= 3 x X->P (cross-validated), and\n  (c) the lower end of X->M's best-cell 95% interval over bridge entities >= the upper end of X->P's.\nC2' HOLDS if P and C both pass, PARTIAL if one does, FAILS if neither; UNDERPOWERED (no verdict) if any of P->P, P->M,\nC->P, C->M has fewer than 30 cases. Recalled bridges (M->P, M->M) are reported, not tested.",
+  "recalled_reported": {
+    "MP": 0.0,
+    "MM": 0.0
+  }
+}

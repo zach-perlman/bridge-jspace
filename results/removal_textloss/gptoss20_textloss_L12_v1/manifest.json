@@ -1,0 +1,28 @@
+{
+  "run": "gptoss20_textloss_L12_v1",
+  "why": "Zach (2026-10-23, prereg amendment 8): gpt-oss-20b (our J++), the non-Qwen generality model: descriptive, plain-text loss with fewer layers (L12) after the L10-13 gate failed",
+  "written_utc": "2026-10-23T04:15:42Z",
+  "model": {
+    "target": "gpt-oss-20b",
+    "repo": "openai/gpt-oss-20b",
+    "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "2902332d4852b27868db7f92182b1b006728b866bb2f1e25b58baedbf22ff077"
+  ],
+  "layers": [
+    12
+  ],
+  "conditions": [
+    "none",
+    "top1",
+    "top5",
+    "top10",
+    "top10_rot",
+    "unembed10"
+  ],
+  "doc": "python scripts/removal_textloss.py --name N --why W --layers L [L ...] [--conditions none jspace rotated top10 top10_rot]\n"
+}
