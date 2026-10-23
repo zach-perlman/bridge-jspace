@@ -1,0 +1,32 @@
+id: gemma4itf_d4_where_r3
+title: "Gemma 4 31B-it, Zach's J++: where can the lens write a stated bridge? (fresh scenes, v2 and v2.1)"
+thread: D4
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.8
+depends_on:
+- gemma4itf_lens_gate_v2
+- gemma4itf_d1_topics2_map_r3
+command: >-
+  BJ_TARGET=gemma-4-31b-it-full uv run python scripts/d1_precheck.py --gate gemma4itf_lens_gate_v2 --competence gemma4itf_d1_topics2_competence_r3 --min-topics 0
+  && BJ_TARGET=gemma-4-31b-it-full BJ_FORMAT=chat uv run python scripts/suite_v1.py manifest --set main --name gemma4itf_competence_chat_v1 --why "the animal suite on Gemma 4 31B-it in chat format under Zach's J++ prefix: which scenes are right on every prompt (D4's fresh-scene eligibility; lens-free)"
+  && BJ_TARGET=gemma-4-31b-it-full BJ_FORMAT=chat uv run python scripts/suite_v1.py competence --name gemma4itf_competence_chat_v1
+  && BJ_TARGET=gemma-4-31b-it-full uv run python scripts/early_push_where.py run --name gemma4itf_d4_where_smoke --n 1 --scenes fresh --rule v2 --layers 11 15 19 23 26 30 34 38 41 --context-layers 26 30 34 38 41 --v21-min-layer 19 --why "smoke: not a result"
+  && BJ_TARGET=gemma-4-31b-it-full uv run python scripts/early_push_where.py run --name gemma4itf_d4_where --n 100 --scenes fresh --rule v2 --layers 11 15 19 23 26 30 34 38 41 --context-layers 26 30 34 38 41 --v21-min-layer 19 --why "finding 7 on Gemma 4 with Zach's J++"
+figures_command: BJ_TARGET=gemma-4-31b-it-full uv run python scripts/early_push_where.py analyze --name gemma4itf_d4_where --rule v2.1 && BJ_TARGET=gemma-4-31b-it-full uv run python scripts/early_push_where.py figures --name gemma4itf_d4_where
+question: >-
+  Does recall follow a stated bridge written by the lens at its sentence while the lookup does not (finding 7), on Gemma 4 31B-it with Zach's J++?
+why_it_matters: >-
+  Finding 7 rests on two Qwen models; Gemma 4 is another family (sliding + global attention). Its earlier lenses (base-model J++, the every-3rd-layer refit) failed their controls; Zach's J++ has maps at every layer 0-58.
+hypotheses:
+  H-around: 'the v2 primary valid cell switches prompt -> memory >= 30% and prompt -> prompt <= 10% (scene-paired gap lower bound >= 20 points). Prior 0.4 (copied from muse30b_d4_where; the statement from d4_where_fresh_27b)'
+  H-no-cell: 'no cell passes selection and the off-path check. Prior 0.4 (copied from muse30b_d4_where)'
+  H-where: 'prompt -> prompt also switches >= 30% there. Prior 0.05 (copied from muse30b_d4_where)'
+  inconclusive: 'Prior 0.15 (copied from muse30b_d4_where)'
+decision_rule: >-
+  Runs iff Zach's J++ passes gate v1 (scripts/d1_precheck.py, --min-topics 0: only the gate matters here). scripts/early_push_where.py: rule v2 main, v2.1 reported (boundary 19 = the 27B's 20 x 60/64, rounded half up as muse30b_d4_where rounds); grid the 27B's 12-44 x 60/64 (11 15 19 23 26 30 34 38 41), the context the 27B's 28-44 x 60/64 (26 30 34 38 41); both verdicts shown. Fresh scenes: suite_split's eligibility on this model (the competence run in this job, chat format as the source), none of map_A8_v1's scenes, seed 1. Primary lens (Dan, 23 Oct ~00:30): ours on 64 prompts for Qwen3-32B and OLMo, Zach's for Gemma and Muse; no silent switch.
+controls:
+- 'a random push of the same size; a push toward an animal not in the scene; the text edits; memory -> prompt and memory -> memory off the path (copied from qwen35_9b_d4_where)'
+n: '100 fresh animal-suite scenes eligible on Gemma (gemma4itf_competence_chat_v1, seed 1), four families'
+seeds: [0]
+notes: "Mechanical copy of muse30b_d4_where (the 27B's d4_where_fresh_27b scaled by depth, here x 60/64) (Dan, 23 Oct ~01:30: the full J++ lens table); not opened before Dan's predictions. The competence step is lens-free and runs under gemma-4-31b-it-full so that suite_split finds it by prefix (gemma4itf_competence_chat_v1), as in qwen3_32b_jpp_d4_where; the earlier gemma4itb_competence_v1 (same weights) covers 150 items per family only. Depends on gemma4itf_d1_topics2_map_q only for the precheck's competence file (gemma4itf_d1_topics2_competence). Gemma breaks under most interventions (its random patch breaks 85%): the v2 off-path check may leave no valid cell (H-no-cell). Requeued as gemma4itf_d4_where_r2 after the statement_positions unaligned-scene skip (23 Oct ~10:15; the map failed once on the footprint assert); gemma4itf_d4_where never ran or failed once. Requeued as gemma4itf_d4_where_r3 (23 Oct ~09:25Z): repointed at gemma4itf_d1_topics2_map_r3 (its map run gemma4itf_d1_topics2_map_r3, competence gemma4itf_d1_topics2_competence_r3; the map's _r2 failed on the write-once name clash with the first attempt's partial results); own run names unchanged; gemma4itf_d4_where_r2 never ran."

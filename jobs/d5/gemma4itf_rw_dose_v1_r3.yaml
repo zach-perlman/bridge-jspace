@@ -1,0 +1,31 @@
+id: gemma4itf_rw_dose_v1_r3
+title: "Lens read / write dose on Gemma 4 31B-it with Zach's J++: does the lens write recall but not lookups? (finding 1)"
+thread: D5
+gpus: 1
+est_gpu_hours: 0.5
+mem_gb: 75
+depends_on:
+- gemma4itf_lens_gate_v2
+- gemma4itf_d1_topics2_map_r3
+command: >-
+  BJ_TARGET=gemma-4-31b-it-full uv run python scripts/d1_precheck.py --gate gemma4itf_lens_gate_v2 --competence gemma4itf_d1_topics2_competence_r3 --min-topics 0
+  && BJ_TARGET=gemma-4-31b-it-full BJ_FORMAT=chat uv run python scripts/read_write.py --name gemma4itf_rw_dose_v1
+  --why "finding 1 (lens read / write dose) on Gemma 4 31B-it with Zach's J++: dose_v1 at Gemma's own cells (30 33 36, as gemma4itr_rw_v1)" --from-competence gemma4itb_competence_v1
+  --n 80 --layers 30 33 36 --scales 0.5 1 2 4 8 16
+question: In Gemma 4 31B-it (chat), does Zach's J++ read the bridge at the question tokens (top-10) and can the lens direction v_X - v_I write it (flips to X's answer), for countries (positive control) and for RL vs RR?
+why_it_matters: 'Gate G3 (the lens must read AND write countries, which failed on Gemma with the base-model lens) and slide 1''s push half (Qwen3.6-27B: RL read 95% but never written; RR written 30-36%; read_write/dose_v1), with the instruction-tuned model''s own J++ at every layer.'
+hypotheses:
+  H_gate: 'countries R/B: lens top-10 read >= 70% and lens flips >= 50% at some scale <= 4x with random <= 10% (27B: 95-98% flips at 2-8x) (copied from olmo3_7b_instruct_rw_dose_chat_v1)'
+  H_rw_split: RL read >= 70% but lens flips <= random + 5 points at every scale; RR flips >= 20 points above random at its best scale (copied from olmo3_7b_instruct_rw_dose_chat_v1)
+  H_rw_none: RL and RR alike (both written or neither) (copied from olmo3_7b_instruct_rw_dose_chat_v1)
+decision_rule: Runs iff Zach's J++ passes gate v1 (scripts/d1_precheck.py, --min-topics 0; only the gate matters here). GATE G3 passes iff the countries criterion in H_gate holds at layers 30/33/36 (single layer, best scale). read-not-written for RL holds iff H_rw_split; reported with Wilson CIs, n=80 (copied from olmo3_7b_instruct_rw_dose_chat_v1). Layers - Gemma's own finding-1 cells (gemma4itr_rw_v1, Zach). Primary lens (Dan, 23 Oct ~00:30); ours on 64 prompts for Qwen3-32B and OLMo, Zach's for Gemma and Muse; no silent switch.
+controls:
+- random direction at the same norm per scale
+- C's full copy (the upper bound of a write)
+- X's rank in the clean readout (read floor)
+- countries as the positive control
+n: 80 per family (BL, BR, RL, RR; countries R, B)
+seeds:
+- 10000*case+layer (random directions)
+- 0
+notes: "Mechanical copy of olmo3_7b_instruct_rw_dose_chat_v1 (the 27B's read_write/dose_v1 on a new target) (Dan, 23 Oct ~01:30: the full J++ lens table); not opened before Dan's predictions. Cases from gemma4itb_competence_v1 (lens-free, same weights and revision; Zach's choice for gemma4itr_rw_v1). Depends on gemma4itf_d1_topics2_map_q only for the precheck's competence file. No examples or figures stage: read_write.py has none, as the source. Requeued as gemma4itf_rw_dose_v1_r2 after the statement_positions unaligned-scene skip (23 Oct ~10:15; the map failed once on the footprint assert); gemma4itf_rw_dose_v1 never ran or failed once. Requeued as gemma4itf_rw_dose_v1_r3 (23 Oct ~09:25Z): repointed at gemma4itf_d1_topics2_map_r3 (its map run gemma4itf_d1_topics2_map_r3, competence gemma4itf_d1_topics2_competence_r3; the map's _r2 failed on the write-once name clash with the first attempt's partial results); own run names unchanged; gemma4itf_rw_dose_v1_r2 never ran."
