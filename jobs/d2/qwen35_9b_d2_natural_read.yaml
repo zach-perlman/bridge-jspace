@@ -3,16 +3,16 @@ title: "The late read in real paragraphs (Qwen3.5-9B): the answer's sentence of 
 thread: D2
 gpus: 1
 mem_gb: 40
-est_gpu_hours: 0.2
+est_gpu_hours: 0.3
 depends_on: []
 command: >-
   BJ_TARGET=qwen3.5-9b uv run python scripts/natural_read.py manifest --name qwen35_9b_natural_competence
   --why "finding 4 on natural text (Dan, 23 Oct): which SQuAD items the model answers from the paragraph, from the answer's sentence alone, not without it, and not after another article's paragraph"
   && BJ_TARGET=qwen3.5-9b uv run python scripts/natural_read.py competence --name qwen35_9b_natural_competence
   && BJ_TARGET=qwen3.5-9b uv run python scripts/attn_knockout.py manifest --name qwen35_9b_d2_natural_read --dataset natural_read_v1
-  --n 200 --sources lookup lookup_off --dests final question after --layers all kind --sweep path --sweep-dests final
+  --n 718 --sources lookup lookup_off --dests final question after --layers all kind --sweep path --sweep-dests final
   --absent --competence qwen35_9b_natural_competence
-  --why "finding 4 on natural text (Dan, 23 Oct): the sentence holding the answer of a SQuAD paragraph hidden from the last tokens in every attention layer, against another sentence of the paragraph, and in every DeltaNet layer instead"
+  --why "finding 4 on natural text (Dan, 23 Oct; amended before any run): the sentence holding the answer of a SQuAD paragraph hidden from the last tokens in every attention layer, against another sentence of the paragraph, and in every DeltaNet layer instead; every eligible item"
   && BJ_TARGET=qwen3.5-9b uv run python scripts/attn_knockout.py run --name qwen35_9b_d2_natural_read
 figures_command: >-
   BJ_TARGET=qwen3.5-9b uv run python scripts/attn_knockout.py summarise --name qwen35_9b_d2_natural_read
@@ -26,29 +26,33 @@ why_it_matters: >-
   answer on. If the last tokens still have to read the sentence themselves, the late read is how lookups work in text,
   not an artefact of lists. The 9B is the second DeltaNet hybrid of the Qwen family.
 hypotheses:
-  H-late-natural: 'the rule holds: hidden from the last tokens in every attention layer, <= 20% right (upper bound <= 30%); another sentence hidden there keeps >= 90%; hidden in every DeltaNet layer instead keeps >= 90%'
+  H-late-natural: 'the primary rule holds: hidden from the last tokens in every attention layer, <= 10% right (upper bound <= 20%); another sentence hidden there keeps >= 90%; hidden in every DeltaNet layer instead keeps >= 90%'
+  H-late-near-floor: 'the primary bar fails but finding 4''s bar holds (<= 20% right, upper bound <= 30%): most answers need the late read, a few survive another way'
   H-relay: 'more than 20% right with the sentence hidden from the last tokens while hidden from every later token leaves <= 10%: other positions (the question words, later sentences) read it and pass the answer on'
   H-deltanet: 'the attention part holds but hiding the sentence in the DeltaNet layers instead costs more than 10 points'
 decision_rule: >-
-  Fixed 2026-10-23 before any run (docs/design_natural_late_read.md; scripts/natural_read.py judge), the rule of
-  qwen36_27b_d2_natural_read unchanged. Items: data/natural_read_v1 (SQuAD v1.1 dev, one question per paragraph, 718),
-  eligible by the competence run (full paragraph: the answer's first token on top and the greedy answer right; the
-  answer's sentence alone: first token right; the paragraph without that sentence: first token wrong), the answer's
-  first token >= 3 characters or its whole first word; the first 200 in the file's seeded order (all if fewer); counted
-  if right unedited in the knockout run. Holds iff the answer's sentence hidden from the last tokens (every token after
-  the user turn: the template and 'Answer:') in every attention layer leaves <= 20% right with the Wilson upper bound
-  <= 0.30, the item's off-path sentence (two or more sentences away, character length within 0.75-1.33 of the
-  answer's) hidden there keeps >= 90% right (Wilson lower bound >= 0.85), and the answer's sentence hidden from the
-  last tokens in every DeltaNet layer instead keeps >= 90% right. Not interpretable if the answer's sentence hidden
-  from every later token in every layer (removed from the DeltaNet recurrence) leaves > 10% right, or the off-path
-  control fails. Not testable with fewer than 100 items right unedited. Reported, not decisive: hidden from the
-  question words; the question after another article's paragraph (unedited); the blocked answers scored against
-  another item's answer; an article-cluster bootstrap interval of the decisive cell.
+  Fixed 2026-10-23 before any run and amended by Dan on 23 Oct, before any run (docs/design_natural_late_read.md;
+  scripts/natural_read.py judge, BARS); the rule of qwen36_27b_d2_natural_read unchanged. Items: data/natural_read_v1
+  (SQuAD v1.1 dev, one question per paragraph, 718). The knockout run takes every item the competence run makes
+  eligible, no cap: the answer's first token has 3+ characters or is its whole first word; with the paragraph, the
+  answer's first token is on top and the greedy answer is right; with the answer's sentence alone, the first token is
+  on top; with the paragraph without that sentence, it is not. Counted if right unedited in the knockout run. PRIMARY
+  verdict: holds iff the answer's sentence hidden from the last tokens (every token after the user turn: the template
+  and 'Answer:') in every attention layer leaves <= 10% right with the Wilson upper bound <= 0.20, AND the item's
+  off-path sentence (two or more sentences away, character length within 0.75-1.33 of the answer's) hidden there keeps
+  >= 90% right with the Wilson lower bound >= 0.85, AND the answer's sentence hidden from the last tokens in every
+  DeltaNet layer instead keeps >= 90% right. SECONDARY verdict (finding 4's bar, for comparability): the same with
+  <= 20% right and the upper bound <= 0.30. Both verdicts: not interpretable if the answer's sentence hidden from every
+  later token in every layer (and removed from the DeltaNet recurrence) leaves > 10% right, or if the off-path control
+  fails; not testable with fewer than 100 items right unedited. Reported, not decisive: built -> eligible with the
+  items each criterion drops (answers that need a neighbouring sentence, e.g. a pronoun's antecedent, are not
+  covered); hidden from the question words; the question after another article's paragraph (unedited); the blocked
+  answers scored against another item's answer; an article-cluster bootstrap interval of the decisive cell.
 controls:
 - 'another sentence of the same paragraph, of about the same length, two or more sentences from the answer, hidden the same way'
 - 'the answer''s sentence hidden in every DeltaNet layer instead of every attention layer'
 - 'floor: the answer''s sentence hidden from every later token in every layer and removed from the DeltaNet recurrence'
 - 'baselines: the question after another article''s paragraph (unedited); the blocked answers scored against another item''s answer'
-n: '200 eligible SQuAD items (one per paragraph; fewer if fewer are eligible, >= 100 to be testable)'
+n: 'every eligible SQuAD item, no cap (718 built, 632 after the per-tokenizer filter; >= 100 right unedited to be testable)'
 seeds: [0]
-notes: "Dan, 2026-10-23: finding 4 on natural text, lens-free. Data: data/natural_read_v1/items.json (SQuAD v1.1 dev, CC BY-SA 4.0). The 9B's tokenizer file is the 27B's (pins.py), so the CPU dry run's counts apply: 632 items after the short-first-token filter, full prompts 109-374 tokens, the last tokens = 11 template tokens. Rows: 14 knocked reads per item. No priors set by the agent; not opened before Dan predicts."
+notes: "Dan, 2026-10-23: finding 4 on natural text, lens-free. Amended by Dan 23 Oct, before any run: primary bar 10% / 20% (the floor here is ~0, not 20% chance), finding 4's 20% / 30% reported as secondary; every eligible item (no cap at 200); eligibility kept, with the funnel reported; the another-article control kept as built; HotpotQA not before 30 Oct. Data: data/natural_read_v1/items.json (SQuAD v1.1 dev, CC BY-SA 4.0). The 9B's tokenizer file is the 27B's (pins.py), so the CPU dry run's counts apply: 632 items after the short-first-token filter, full prompts 109-374 tokens, the last tokens = 11 template tokens. Rows: 14 knocked reads per item. No priors set by the agent; not opened before Dan predicts."

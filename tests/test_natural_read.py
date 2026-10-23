@@ -106,6 +106,16 @@ def test_greedy_judge_and_eligibility():
     got += rows("first-token-only", True, False, True, False) + rows("sentence-not-enough", True, True, False, False)
     assert NR.eligible_ids(got) == {"ok"}
 
+    # the funnel (built -> eligible): each item dropped once, at its first failing criterion, in CRITERIA's order
+    got += rows("short-one", True, True, True, False) + rows("wrong-everywhere", False, False, False, True)
+    f = NR.eligibility_funnel(got, {"short-one"})
+    assert (f["built"], f["eligible"]) == (6, len(NR.eligible_ids(got) - {"short-one"})) == (6, 1)
+    assert [s["dropped"] for s in f["steps"]] == [1, 1, 1, 1, 1]
+    assert [s["left"] for s in f["steps"]] == [5, 4, 3, 2, 1]
+    assert list(f["failing_each_criterion_alone"].values()) == [1, 1, 2, 2, 2]
+    assert [s["dropped_by"] for s in f["steps"]] == [why for why, _ in NR.CRITERIA]
+    assert "neighbouring sentence" in f["coverage"]
+
 
 def _run(n: int, late: int, off: int, gdn: int | None, floor: int) -> tuple[list[dict], dict, list[dict]]:
     """Synthetic attn_knockout rows on n items (all right unedited): the first k items right in each cell."""
@@ -127,18 +137,23 @@ def _run(n: int, late: int, off: int, gdn: int | None, floor: int) -> tuple[list
     return rows, cases, comp
 
 
-@pytest.mark.parametrize(("n", "late", "off", "gdn", "floor", "want"), [
-    (150, 15, 148, 150, 0, "holds"),
-    (150, 15, 148, None, 0, "holds"),  # a model without DeltaNet layers
-    (150, 45, 148, 150, 0, "fails (more than 20%"),
-    (150, 15, 148, 120, 0, "fails (the DeltaNet layers"),
-    (150, 15, 120, 150, 0, "not interpretable (the off-path"),
-    (150, 15, 148, 150, 30, "not interpretable (the answer's sentence hidden from everything"),
-    (80, 0, 80, 80, 0, "not testable"),
+@pytest.mark.parametrize(("n", "late", "off", "gdn", "floor", "want", "want_secondary"), [
+    (150, 15, 148, 150, 0, "holds", "holds"),  # 10% [6, 16]
+    (150, 15, 148, None, 0, "holds", "holds"),  # a model without DeltaNet layers
+    (150, 9, 148, 150, 0, "holds", "holds"),  # 6% [3, 11]
+    (150, 25, 148, 150, 0, "fails (more than 10% right, or the upper bound above 20%)", "holds"),  # 17% [12, 23]
+    (150, 17, 148, 150, 0, "fails (more than 10%", "holds"),  # 11%: the point fails the primary bar
+    (150, 45, 148, 150, 0, "fails (more than 10%", "fails (more than 20% right, or the upper bound above 30%)"),
+    (150, 15, 148, 120, 0, "fails (the DeltaNet layers", "fails (the DeltaNet layers"),
+    (150, 15, 120, 150, 0, "not interpretable (the off-path", "not interpretable (the off-path"),
+    (150, 15, 148, 150, 30, "not interpretable (the answer's sentence hidden from everything", "not interpretable"),
+    (80, 0, 80, 80, 0, "not testable", "not testable"),
 ])  # fmt: skip
-def test_verdict_rule(n, late, off, gdn, floor, want):
+def test_verdict_rule(n, late, off, gdn, floor, want, want_secondary):
     out = NR.verdict(*_run(n, late, off, gdn, floor))
     assert out["verdict"].startswith(want)
+    assert out["verdict_secondary"].startswith(want_secondary)
+    assert out["bars"] == {"primary": (0.10, 0.20), "secondary": (0.20, 0.30)}
     assert out["n_right_unedited"] == n and out["layers_for_late"] == ("attn" if gdn is not None else "all")
     assert out["cells"]["late"]["rate"][0] == pytest.approx(late / n)
     # the blocked answers scored against another item's answer: here every item shares one answer token, so the
@@ -159,15 +174,23 @@ def test_stage_verdict_writes_a_new_analysis_folder_with_the_figure(tmp_path, mo
     (run / "manifest.json").write_text(json.dumps({"model": {"repo": "Qwen/Qwen3.6-27B"}}))
     (tmp_path / "nr" / "comp1").mkdir(parents=True)
     (tmp_path / "nr" / "comp1" / "items.jsonl").write_text("".join(json.dumps(r) + "\n" for r in comp))
+    funnel = {"built": 718, "eligible": 150, "coverage": NR.COVERAGE,
+              "steps": [{"dropped_by": why, "dropped": 0, "left": 718} for why, _ in NR.CRITERIA],
+              "failing_each_criterion_alone": {why: 0 for why, _ in NR.CRITERIA}}  # fmt: skip
+    (tmp_path / "nr" / "comp1" / "summary.json").write_text(json.dumps({"eligibility_funnel": funnel}))
     monkeypatch.setattr(AK, "RESULTS", tmp_path / "ko")
     monkeypatch.setattr(NR, "RESULTS", tmp_path / "nr")
     NR.stage_verdict("run1", "comp1")
     (folder,) = run.glob("analysis-*-verdict")
-    assert json.loads((folder / "verdict.json").read_text())["verdict"] == "holds"
+    v = json.loads((folder / "verdict.json").read_text())
+    assert (v["verdict"], v["verdict_secondary"], v["eligibility_funnel"]["built"]) == ("holds", "holds", 718)
     assert (folder / "natural_late_read.png").stat().st_size > 10_000
-    assert (
-        "| answer's sentence hidden from the last tokens | 10% [6, 16] | 150 |" in (folder / "verdict.md").read_text()
-    )
+    md = (folder / "verdict.md").read_text()
+    assert "| answer's sentence hidden from the last tokens | 10% [6, 16] | 150 |" in md
+    assert "Verdict (primary, <= 10% right with the upper bound <= 20%): **holds**" in md
+    assert "Verdict (secondary, finding 4's bar <= 20% / <= 30%): holds" in md
+    assert "718 built -> 150 eligible" in md
+    assert NR.COVERAGE in md
 
 
 @pytest.fixture(scope="module")

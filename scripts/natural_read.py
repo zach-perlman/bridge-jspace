@@ -22,9 +22,10 @@ Stages:
   make                              data/natural_read_v1/items.json from the pinned raw file (cache/, sha256-checked)
   dryrun [--k 3]                    CPU, tokenizer only (BJ_TARGET): every case built, counts, k examples (seed 0)
   manifest --name N --why W         results/natural_read/<N>/manifest.json, before the competence run
-  competence --name N               GPU: items.jsonl (four prompts per item) and summary.json
-  verdict --run R --competence N    CPU: the rule (judge) on attn_knockout run R -> a new
-                                    results/attn_knockout/<R>/analysis-<stamp>-verdict/ (verdict.json, .md, figure)
+  competence --name N               GPU: items.jsonl (four prompts per item) and summary.json (with eligibility_funnel:
+                                    built -> eligible, and why each item is dropped)
+  verdict --run R --competence N    CPU: the rule (judge; primary and secondary bar, BARS) on attn_knockout run R -> a
+                                    new results/attn_knockout/<R>/analysis-<stamp>-verdict/ (verdict.json, .md, figure)
 """
 
 from __future__ import annotations
@@ -142,6 +143,38 @@ def eligible_ids(rows: list[dict]) -> set[str]:
         by[r["id"]][r["kind"]] = r
     return {i for i, k in by.items() if k["full"]["right"] and k["full"]["greedy_right"] and k["alone"]["right"]
             and not k["deleted"]["right"]}  # fmt: skip
+
+
+COVERAGE = ("Not covered: items whose answer needs a neighbouring sentence (a pronoun's antecedent, a subject named "
+            "earlier) fail 'the answer's sentence alone' and are dropped, so the verdict is about answers that one "
+            "sentence gives on its own.")  # fmt: skip
+CRITERIA = (  # the knockout run's eligibility, in the order the funnel applies it: (why an item is dropped, its test)
+    ("the answer's first token is under 3 characters and not its whole first word", lambda k: not k["short"]),
+    ("with the paragraph, the answer's first token is not on top", lambda k: k["full"]["right"]),
+    ("with the paragraph, the greedy answer is wrong", lambda k: k["full"]["greedy_right"]),
+    ("the answer's sentence alone is not enough (first token not on top)", lambda k: k["alone"]["right"]),
+    ("without the answer's sentence the first token is still on top (answered without it)",
+     lambda k: not k["deleted"]["right"]),
+)  # fmt: skip
+
+
+def eligibility_funnel(rows: list[dict], short: set[str]) -> dict:
+    """Built -> eligible on one model (Dan, 23 Oct): the items left after each criterion in CRITERIA's order, how many
+    each drops there, and how many fail each criterion on its own; `short` the items short_first_token drops."""
+    by: dict[str, dict[str, Any]] = collections.defaultdict(lambda: {"short": False})
+    for r in rows:
+        by[r["id"]][r["kind"]] = r
+    for i in short & set(by):
+        by[i]["short"] = True
+    left = set(by)
+    steps, alone = [], {}
+    for why, keep in CRITERIA:
+        dropped = {i for i in left if not keep(by[i])}
+        left -= dropped
+        steps.append({"dropped_by": why, "dropped": len(dropped), "left": len(left)})
+        alone[why] = sum(not keep(k) for k in by.values())
+    return {"built": len(by), "eligible": len(left), "steps": steps, "failing_each_criterion_alone": alone,
+            "coverage": COVERAGE}  # fmt: skip
 
 
 def competence_rows(run: str) -> list[dict]:
@@ -367,11 +400,12 @@ def stage_competence(name: str) -> None:
         for p in prompts
     ]
     write_jsonl(out_dir / "items.jsonl", rows)
-    ok = eligible_ids(rows)
+    short = {it["id"] for it in items if short_first_token(tok, it)}
+    ok = eligible_ids(rows) - short
     summary = {"run": name, "items": len(items), "seconds": round(time.time() - t0),
                "first_token_right": {kd: wilson(sum(r["right"] for r in rows if r["kind"] == kd), len(items)) for kd in KINDS},
                "greedy_right_full": wilson(sum(bool(r.get("greedy_right")) for r in rows), len(items)),
-               "eligible": len(ok), "eligibility": ELIGIBILITY,
+               "eligible": len(ok), "eligibility": ELIGIBILITY, "eligibility_funnel": eligibility_funnel(rows, short),
                "swapped_right_on_eligible": wilson(sum(r["right"] for r in rows if r["kind"] == "swapped" and r["id"] in ok), len(ok))}  # fmt: skip
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=1) + "\n")
     print(json.dumps(summary, indent=1))
@@ -380,6 +414,10 @@ def stage_competence(name: str) -> None:
 # ---- verdict (CPU, saved rows only) ----------------------------------------------------------------------------------
 
 N_MIN, FLOOR_MAX = 100, 0.10  # fewer eligible items: not testable; the floor above FLOOR_MAX: not interpretable
+# The bar on the answer's sentence hidden from the last tokens: (point, Wilson upper bound). Primary (Dan, 23 Oct,
+# before any run): 10% / 20%, as the floor here is ~0, not chance. Secondary: finding 4's bar (scripts/d2_formats.py
+# LATE_MAX, LATE_HI), reported for comparability with the grid. The controls are the same under both.
+BARS = {"primary": (0.10, 0.20), "secondary": (0.20, 0.30)}
 
 
 def cell(rows: list[dict], ok: set[str], source: str, dest: str, layers: str, mode: str = "value") -> dict:
@@ -391,8 +429,9 @@ def cell(rows: list[dict], ok: set[str], source: str, dest: str, layers: str, mo
     return {"rate": wilson(sum(got.values()), len(got)), "n": len(got), "per_item": got}
 
 
-def judge(cells: dict[str, dict], n: int) -> str:
-    """The pre-registered rule (docs/design_natural_late_read.md; the late-read rule's numbers, scripts/d2_formats.py)."""
+def judge(cells: dict[str, dict], n: int, bar: tuple[float, float] = BARS["primary"]) -> str:
+    """The pre-registered rule (docs/design_natural_late_read.md) under one bar (BARS); the controls are finding 4's
+    (scripts/d2_formats.py: another sentence >= 90% with lower bound >= 85%; the DeltaNet layers instead >= 90%)."""
     from scripts import d2_formats as DF
 
     late, off, gdn, floor = (cells[k]["rate"] for k in ("late", "off", "deltanet", "floor"))
@@ -404,13 +443,13 @@ def judge(cells: dict[str, dict], n: int) -> str:
         )
     if not (off[0] >= DF.OFF_MIN and off[1] >= DF.OFF_LO):
         return "not interpretable (the off-path control: another sentence hidden keeps < 90% or its lower bound < 85%)"
-    late_ok = late[0] <= DF.LATE_MAX and late[2] <= DF.LATE_HI
+    late_ok = late[0] <= bar[0] and late[2] <= bar[1]
     gdn_ok = cells["deltanet"]["n"] == 0 or gdn[0] >= DF.GDN_MIN
     if late_ok and gdn_ok:
         return "holds"
     if late_ok:
         return "fails (the DeltaNet layers matter: blocking them instead keeps < 90%)"
-    return "fails (more than 20% right, or the upper bound above 30%)"
+    return f"fails (more than {bar[0]:.0%} right, or the upper bound above {bar[1]:.0%})"
 
 
 def verdict(rows: list[dict], cases: dict[str, dict], comp: list[dict]) -> dict:
@@ -438,7 +477,9 @@ def verdict(rows: list[dict], cases: dict[str, dict], comp: list[dict]) -> dict:
            "baselines": {"swapped_paragraph_unedited": wilson(sum(swapped), len(swapped)),
                          "late_scored_against_another_items_answer": wilson(sum(chance), len(chance))},
            "late_article_cluster_ci": cluster_bootstrap(vals, [cases[i]["domain"] for i in ids], n_boot=4000, seed=0) if vals else None}  # fmt: skip
-    out["verdict"] = judge(cells, len(ok))
+    out["bars"] = BARS
+    out["verdict"] = judge(cells, len(ok), BARS["primary"])
+    out["verdict_secondary"] = judge(cells, len(ok), BARS["secondary"])
     return out
 
 
@@ -449,19 +490,22 @@ def stage_verdict(run: str, competence: str) -> None:
     rows = [json.loads(x) for x in (d / "rows.jsonl").read_text().splitlines()]
     cases = {c["id"]: c for c in map(json.loads, (d / "cases.jsonl").read_text().splitlines())}
     m = json.loads((d / "manifest.json").read_text())
-    out = {
-        "run": run,
-        "competence": competence,
-        "model": m["model"],
-        **verdict(rows, cases, competence_rows(competence)),
-    }
-    dest = (
-        d / f"analysis-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}-verdict"
-    )  # a new folder: the job page's figures
+    funnel = json.loads((RESULTS / competence / "summary.json").read_text())["eligibility_funnel"]
+    out = {"run": run, "competence": competence, "model": m["model"], **verdict(rows, cases, competence_rows(competence)),
+           "eligibility_funnel": funnel}  # fmt: skip
+    dest = d / f"analysis-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}-verdict"  # new: the job page's figures
     dest.mkdir(parents=True)
     (dest / "verdict.json").write_text(json.dumps(out, indent=1) + "\n")
-    lines = [f"# natural_read / {run}", "", f"Verdict: **{out['verdict']}** (n = {out['n_right_unedited']} items right "
-             f"unedited of {out['n_items']})", "", "| cell | right [95% Wilson] | n |", "|---|---|---|"]  # fmt: skip
+    (p1, h1), (p2, h2) = BARS["primary"], BARS["secondary"]
+    lines = [f"# natural_read / {run}", "",
+             f"Verdict (primary, <= {p1:.0%} right with the upper bound <= {h1:.0%}): **{out['verdict']}**", "",
+             f"Verdict (secondary, finding 4's bar <= {p2:.0%} / <= {h2:.0%}): {out['verdict_secondary']}", "",
+             f"Items: {funnel['built']} built -> {funnel['eligible']} eligible (competence run {competence}) -> "
+             f"{out['n_items']} in the knockout run, {out['n_right_unedited']} right unedited there.", "",
+             "| dropped because | dropped at this step | left | failing this criterion on its own |", "|---|---|---|---|",
+             *[f"| {s['dropped_by']} | {s['dropped']} | {s['left']} | {funnel['failing_each_criterion_alone'][s['dropped_by']]} |"
+               for s in funnel["steps"]],
+             "", funnel["coverage"], "", "| cell | right [95% Wilson] | n |", "|---|---|---|"]  # fmt: skip
     for k, v in [*out["cells"].items(), *out["baselines"].items()]:
         r = v["rate"] if isinstance(v, dict) else v
         lines.append(f"| {LABELS.get(k, k)} | {pct(r)} | {v['n'] if isinstance(v, dict) else '-'} |")
@@ -489,7 +533,8 @@ def pct(r: Any) -> str:
 
 def figure(out: dict, path: Path) -> None:
     """One row per cell: % right with its Wilson interval; the test cell in the effect colour, controls and baselines
-    in greys (attn_knockout's validated SERIES colours); the rule's bars (20%, 90%) as dashed lines."""
+    in greys (attn_knockout's validated SERIES colours); the bars (primary 10%, secondary 20%, controls 90%) as dashed
+    lines; both verdicts and built -> eligible in the caption."""
     import matplotlib
 
     matplotlib.use("Agg")
@@ -510,16 +555,21 @@ def figure(out: dict, path: Path) -> None:
         ax.annotate(f"{100 * r[0]:.0f}%" + (f"  n={n}" if n else ""), (r[0], y), xytext=(-8 if right else 8, 6),
                     textcoords="offset points", fontsize=8, color=P.MUTED, ha="right" if right else "left")  # fmt: skip
     ax.set_yticks(range(len(rows)), [r[0] for r in reversed(rows)], fontsize=8.5)
-    ax.set_ylim(-0.6, len(rows) - 0.1)  # headroom above the top row for the bars' labels
-    for x, lab, ha in ((0.20, "bar: ≤ 20% right", "left"), (0.90, "control bar: ≥ 90%", "right")):
+    ax.set_ylim(-0.6, len(rows) + 0.2)  # headroom above the top row for the bars' labels (two lines)
+    (p1, _), (p2, _) = BARS["primary"], BARS["secondary"]
+    for x, lab, ha, dy in ((p1, f"primary bar: ≤ {p1:.0%}", "left", -2),
+                           (p2, f"secondary (finding 4's) bar: ≤ {p2:.0%}", "left", -13),
+                           (0.90, "control bar: ≥ 90%", "right", -2)):  # fmt: skip
         ax.axvline(x, color=P.AXIS, ls="--", lw=1)
-        ax.annotate(lab, (x, 1), xycoords=("data", "axes fraction"), xytext=(3 if ha == "left" else -3, -2),
+        ax.annotate(lab, (x, 1), xycoords=("data", "axes fraction"), xytext=(3 if ha == "left" else -3, dy),
                     textcoords="offset points", fontsize=7.5, color=P.MUTED, va="top", ha=ha)  # fmt: skip
     ax.set_xlim(0, 1.04)
     ax.set_xlabel("% of items still right (the answer's first token)", color=P.MUTED, fontsize=9)
     P.style_axes(ax)
     P.percent_axis(ax, "x")
     model = out["model"]["repo"].split("/")[-1]
+    f = out.get("eligibility_funnel")
+    built = f"{f['built']} items built, {f['eligible']} eligible; " if f else ""
     P.finish(fig, path, f"{model}: does the answer need a late read of its sentence in a real paragraph?", "",
              explain=[("What we did", "SQuAD paragraphs and questions; stopped the last tokens before the answer (the "
                        "chat template and 'Answer:') from attending to the sentence holding the answer, in every "
@@ -530,9 +580,12 @@ def figure(out: dict, path: Path) -> None:
                       ("How to read", "blue: the answer's sentence hidden; grey: another sentence of about the same "
                        "length hidden, or the DeltaNet layers instead of attention; squares: baselines with nothing "
                        "hidden. Lines: 95% Wilson intervals."),
-                      ("Data", f"{model}; {out['n_right_unedited']} items right unedited of {out['n_items']} (one "
-                       f"question per paragraph; right from the answer's sentence alone, wrong without it). "
-                       f"Verdict: {out['verdict']}.")])  # fmt: skip
+                      ("Verdict", f"primary bar ≤ {p1:.0%} (upper bound ≤ {BARS['primary'][1]:.0%}): "
+                       f"{out['verdict']}; secondary, finding 4's bar ≤ {p2:.0%} (upper bound ≤ "
+                       f"{BARS['secondary'][1]:.0%}), for comparison: {out['verdict_secondary']}."),
+                      ("Data", f"{model}; {built}{out['n_right_unedited']} items right unedited of {out['n_items']} "
+                       "(one question per paragraph; right from the answer's sentence alone, wrong without it; "
+                       "answers that need a neighbouring sentence are not covered).")])  # fmt: skip
 
 
 if __name__ == "__main__":
