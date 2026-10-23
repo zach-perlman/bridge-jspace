@@ -1,0 +1,50 @@
+{
+  "target": "qwen3.5-122b-a10b",
+  "band": "39-45",
+  "n_items": 120,
+  "by_word": {
+    "PM": {
+      "n": 60,
+      "bridge_in_clean_top10_final_any_band_layer": 100,
+      "bridge_in_clean_top10_span_any_band_layer": 100,
+      "median_best_clean_rank_final": 0.0,
+      "median_best_clean_rank_span": 0.0,
+      "removed_final": 95.0,
+      "removed_span": 100,
+      "accuracy_ko": 78.3,
+      "accuracy_ko_if_removed_span": 78.3,
+      "accuracy_ko_if_not_removed_span": null,
+      "median_rank_after": {}
+    },
+    "MM": {
+      "n": 60,
+      "bridge_in_clean_top10_final_any_band_layer": 95.0,
+      "bridge_in_clean_top10_span_any_band_layer": 100,
+      "median_best_clean_rank_final": 0.0,
+      "median_best_clean_rank_span": 0.0,
+      "removed_final": 90.0,
+      "removed_span": 100,
+      "accuracy_ko": 93.3,
+      "accuracy_ko_if_removed_span": 93.3,
+      "accuracy_ko_if_not_removed_span": null,
+      "median_rank_after": {}
+    },
+    "all": {
+      "n": 120,
+      "bridge_in_clean_top10_final_any_band_layer": 97.5,
+      "bridge_in_clean_top10_span_any_band_layer": 100,
+      "median_best_clean_rank_final": 0.0,
+      "median_best_clean_rank_span": 0.0,
+      "removed_final": 92.5,
+      "removed_span": 100,
+      "accuracy_ko": 85.8,
+      "accuracy_ko_if_removed_span": 85.8,
+      "accuracy_ko_if_not_removed_span": null,
+      "median_rank_after": {}
+    }
+  },
+  "seconds": 140,
+  "command": "scripts/muse_diag.py --name qwen35_122b_diag_L39-45_v1 --why Zach (2026-10-23, descriptive): the Muse diagnostic on the 122B, its C1 band L39-45 --band 39-45 --n 60 --set full_v8_two --competence qwen35_122b_full_v8_two_competence_v1",
+  "why": "Zach (2026-10-23, descriptive): the Muse diagnostic on the 122B, its C1 band L39-45",
+  "doc": "muse_diag (Zach, 2026-10-22; docs/prereg_replication_1022.md amendment 6C): why can Muse's recalls be steered through\nthe lens but not knocked out? On full_v8's memory-final words (P->M, M->M), items the model gets right, at the model's\nC1 band, the paper10 knock-out is replayed one prompt at a time with its removals logged:\n- (a) the bridge's rank in the lens readout (letter tokens; best of its surface forms) at each band layer, clean, at the\n  final position and at the best position of the question span (question_start .. final);\n- (b) whether the knock-out removes the bridge (any surface form among the 10 removed directions) at one or more band\n  layers, at the final position / at some question-span position;\n- (c) the bridge's rank 2 and 4 layers after the band, clean vs under the knock-out;\n- the answer, clean and under the knock-out (a check against the C1 run).\nThe question-span measure stands in for the pre-registered \"question's last token\" (the span includes it). Descriptive.\nBJ_TARGET=... python scripts/muse_diag.py --name N --why W --band LO-HI [--n 60]\n"
+}
