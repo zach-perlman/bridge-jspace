@@ -1,0 +1,17 @@
+{
+  "set": "natplus_dev_chat",
+  "seed": 902,
+  "scenes_per_bridge": 1,
+  "n": 1168,
+  "git_commit": "df93f5275d612053b36e7af34bc9f1be8ef6ad4d",
+  "script": "scripts/natplus.py",
+  "by_type_popularity": {
+    "countries/popular": 240,
+    "countries/rare": 128,
+    "people/rare": 144,
+    "people/popular": 232,
+    "cities/rare": 104,
+    "cities/popular": 176,
+    "animals/popular": 144
+  }
+}

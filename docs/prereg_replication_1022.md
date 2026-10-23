@@ -441,3 +441,29 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
 - **Hypotheses:** H-final (the final hop's source decides): PPM and MPM excess >= 20; MPP and PMP excess <= 10. The toy
   suite's pattern (MMP high too) is the discriminating case, with the skip-prone caveat; PMM and MMM are expected high
   under H-final (descriptive). J-specificity: the logit-lens excesses < 10.
+
+## Amendment 16 (Zach, 2026-10-23 ~19:45 UTC): is the memory-final loss about recall, or about what the prompt holds?
+
+- **Seen when this was written:** natural_v1 / natplus results so far, and an observational split: memory-final items
+  whose answer word happens to appear in the passage (as another fact's value) lose 15-25 points less under the
+  knock-out (27B P->M 42 vs 66, M->M 44 vs 58; 9B 42 vs 60, 30 vs 47; Muse similar). natplus's animal relation is left
+  out of headline numbers: its prompt answers need a case change ("reptile house" -> "Reptile"), and its P->P loses 24.
+- **Set:** natctl_v1_chat (scripts/natctl.py, seed 1201): natplus's countries, people and cities (popular and rare),
+  three wordings, coherent passages; per chain four final hops sharing one scene: P (a new fact in the passage), K (the
+  passage states the TRUE fact for every entity; the question is M's), M (recall; the answer word absent), A (recall;
+  the answer word present once as a distractor's value); starts P and M; 2,048 items, 256 per word.
+- **Procedure:** the 27B (L32-40) and 9B (L12-16): competence and knock-out with the candidate read, scene eligibility
+  (all four versions of a chain right), paper10, paper10_rot, unembed10, unembed10_rot; scripts/natctl_score.py.
+- **Predictions (27B, 9B):** stating the true fact rescues: K - M <= -25 (K's loss well below M's); the answer word's
+  presence partly rescues: A - M <= -10; a known vs a new fact in the prompt matters little: |P - K| <= 10. If instead
+  K ~ M, the dependence is about recalling known facts even when they are in the prompt, not about where the fact is.
+
+## Amendment 17 (Zach, 2026-10-23 ~19:45 UTC): bands chosen on natural data
+
+- **Why:** every natural run used the band chosen on the toy suite's ctrl_v8.
+- **Dev set:** natplus_dev_chat (scripts/natplus.py, seed 902, one scene per bridge, level and start group), no
+  passage shared with natplus_v1. Sweep (paper10, paper10_rot, n 100 per word, candidate read): the 27B windows of 9 by
+  4 (L0-8 ... L52-60), the 9B windows of 5 by 2 (L0-4 ... L26-30), Muse windows of 7 by 3 (L0-6 ... L42-48).
+- **Rule:** scripts/choose_band.py as on ctrl_v8 (most-broken memory-final words among windows whose rotated control
+  keeps every word >= 90%). Also reported, descriptive: the window with the largest memory-final minus prompt-final gap.
+  If a model's natural band differs from its toy band, C1 is rerun on natplus_v1_chat at the natural band.
