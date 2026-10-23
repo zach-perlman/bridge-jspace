@@ -1,7 +1,8 @@
 """scripts/figs/late_read and digit_not_name (findings 4 and 3) on a SYNTHETIC grid.csv: every figure saves without an
 overlap error, and every number in its data file matches the grid (a cell's value: common.check_numbers; a control's
-number from the cell's control text: late_read.control_mismatches). The exception sentences, the caption packing and
-the control parsing on their own. On the real newest grid, the committed data files match it."""
+number from the cell's control text: late_read.control_mismatches; a floor from its late-read-v2 breakdown row:
+late_read.floor_mismatches). What the panels leave to the caption, the caption packing and the control parsing on
+their own. On the real newest grid, the committed data files match it."""
 
 from __future__ import annotations
 
@@ -9,6 +10,7 @@ import csv
 import io
 import json
 import random
+from dataclasses import asdict
 from pathlib import Path
 
 import pytest
@@ -83,7 +85,21 @@ def synth_csv(seed: int = 0, special: dict | None = None) -> str:
                 w.writerow([G.MODEL[m.key].label, G.FINDING[f].name, s, LENS, "" if n is None else n,
                             "" if value is None else f"{value} %", ci, control, verdict, "", "-",
                             f"results/fake/{m.key}_{f}_{s}/rows.jsonl"])  # fmt: skip
+    for m in C.MODELS:  # the floor: finding 4's late-read-v2 breakdown row of the first prompt set
+        floor = FLOORS.get(m.key)
+        control = "" if floor is None else (
+            f"hidden from the last tokens (every layer): 3% right; from every token after it (all layers): {floor[0]}% "
+            f"[{floor[1]}, {floor[2]}] (the floor, needs <= 10%, upper bound <= 15%); relay +1 points")  # fmt: skip
+        verdict = "missing (the run does not hide the answer's sentence from every token after it)" if floor is None else floor[3]  # fmt: skip
+        w.writerow([G.MODEL[m.key].label, G.FINDING["f4"].name, LR.FLOOR_SETTING, LENS, "" if floor is None else 300,
+                    "" if floor is None else "95.0 %", "" if floor is None else "[90.0, 99.0]", control, verdict,
+                    "late-read-v2", "-", f"results/fake/{m.key}_floor/rows.jsonl"])  # fmt: skip
     return out.getvalue()
+
+
+# model -> (floor %, CI low, CI high, the late-read-v2 verdict); Muse and the 122B have none (their rows: missing)
+FLOORS = {"27b": (1, 0, 2, "holds"), "9b": (3, 1, 5, "holds"), "32b": (10, 7, 14, "holds"), "olmo": (4, 2, 10, "holds"),
+          "gemma": (2, 1, 4, "holds"), "olmo_hybrid": (5, 2, 11, "not interpretable (the off-path control: < 90%)")}  # fmt: skip
 
 
 @pytest.fixture
@@ -115,11 +131,12 @@ def test_every_figure_saves_and_its_numbers_match_the_grid(book, tmp_path):
         data = out / "data" / f"{stem}.json"
         assert C.check_numbers(data, book) == []
         assert LR.control_mismatches(data, book) == []
+        assert LR.floor_mismatches(data, book.grid_dir) == []
         records = json.loads(data.read_text())
         assert records and all(r["finding"] in ("f3", "f4") for r in records)
 
 
-def test_the_data_file_holds_the_drawn_cells_and_controls(book, tmp_path):
+def test_the_data_file_holds_the_drawn_cells_controls_and_floors(book, tmp_path):
     LR.late_read(book, "main", tmp_path)
     records = json.loads((tmp_path / "data" / "late_read_main.json").read_text())
     cells = {(r["model"], r["setting"]) for r in records if r["source"] == "grid.csv"}
@@ -127,9 +144,32 @@ def test_the_data_file_holds_the_drawn_cells_and_controls(book, tmp_path):
     assert ("olmo", "prose") not in cells  # prose is not a MAIN panel
     assert ("muse", "table") not in cells and ("27b", "draw 3") not in cells  # no value: blank, named in the caption
     controls = {(r["model"], r["setting"], r["extra"]["control"]) for r in records if r["source"] == LR.CONTROL_TEXT}
-    assert ("27b", "table", "another sentence") in controls and ("27b", "table", "chance") in controls
+    assert ("27b", "table", "another sentence") in controls
+    assert not any(c == "chance" for _, _, c in controls)  # the floor replaces chance as the reference
+    floor = {r["model"]: r["value"] for r in records if r["source"] == LR.FLOOR_SOURCE}
+    assert floor == {"27b": 1.0, "9b": 3.0, "32b": 10.0, "olmo": 4.0, "gemma": 2.0}  # Olmo-Hybrid's: not interpretable
+
+
+def test_digit_not_name_keeps_chance_per_cell(book, tmp_path):
+    DN.digit_not_name(book, "main", tmp_path)
+    records = json.loads((tmp_path / "data" / "digit_not_name_main.json").read_text())
     chance = {(r["setting"], r["value"]) for r in records if r["source"] == LR.CONTROL_TEXT and r["extra"]["control"] == "chance"}  # fmt: skip
-    assert ("table", 33.0) in chance and ("draw 1", 20.0) in chance  # chance per cell, from its control text
+    assert ("table", 33.0) in chance and ("draw 1", 20.0) in chance  # from each cell's control text
+    assert not any(r["source"] == LR.FLOOR_SOURCE for r in records)
+
+
+def test_floors_read_only_the_first_prompt_set(tmp_path):
+    later = io.StringIO()  # a second-prompt-set floor row (such runs are unopened): never read
+    csv.writer(later).writerow([G.MODEL["muse"].label, G.FINDING["f4"].name, "draw 2 · last tokens' share", LENS, 300,
+                                "95.0 %", "[90.0, 99.0]", "from every token after it (all layers): 7% [4, 9]", "holds",
+                                "late-read-v2", "-", "results/fake/muse_floor2/rows.jsonl"])  # fmt: skip
+    (tmp_path / "grid.csv").write_text(synth_csv() + later.getvalue())
+    have, none = LR.floors(tmp_path)
+    assert set(have) == set(FLOORS) and none == {"122b": "not run", "muse": "not run"}
+    assert have["olmo_hybrid"].word == "not interpretable" and have["32b"].number.ci == (7.0, 14.0)
+    data = tmp_path / "data.json"
+    data.write_text(json.dumps([{**asdict(have["9b"].number), "value": 4.0}]))
+    assert LR.floor_mismatches(data, tmp_path) == ["data.json: floor 9b"]  # a number off its row is caught
 
 
 def test_full_draws_the_not_interpretable_cells_main_does_not(book, tmp_path):
@@ -151,8 +191,10 @@ def drawn(b: RB.Book, dots: LR.Dots, panels: tuple[LR.Panel, ...], kind: str):
     LR.title_room(fr)
     notes, numbers = LR.Notes(), []
     keys = LR.rows_of(b, dots.finding, panels, kind)
+    floor = LR.floors(b.grid_dir) if dots.reference == "floor" else None
     for i, (ax, p) in enumerate(zip(fr.axes, panels, strict=True)):
-        LR.dot_panel(ax, b, dots, p, LR.setup(ax, p.title, keys, first=i == 0), kind, numbers, notes)
+        ys = LR.setup(ax, p.title, keys, first=i == 0, label_room=dots.reference == "chance")
+        LR.dot_panel(ax, b, dots, p, ys, kind, numbers, notes, floor)
     words = {t.get_text() for ax in fr.axes for t in ax.texts if t.get_gid() == "status"}
     C.plt.close(fr.fig)
     return notes, numbers, words
@@ -167,18 +209,21 @@ def test_main_leaves_blanks_and_control_failures_to_the_caption(book):
         ("olmo_hybrid", "table", "DeltaNet", 88.0)
     ]  # failing on its control: no value label, named in the caption
     assert notes.blank == {"too few items", "not run"} and notes.fewer  # Muse's table; Gemma's long context, 27B set 3
+    assert notes.no_floor == {"olmo_hybrid": "control failed", "122b": "not run", "muse": "not run"}
     sentences, optional = LR.caption(book, LR.DOTS, "main", LR.RULE, notes, numbers)
-    assert sentences[:3] == ["Labelled = fails the rule at ≈ chance.",
-                             "Olmo-Hybrid's table fails its DeltaNet-layer control (88% kept).",
-                             "Blank or fewer dots: too few items or not run."]  # fmt: skip
+    assert sentences[:4] == ["Labelled = fails the rule.",  # no chance drawn: a failure at ≈ chance is a failure
+                             "Olmo-Hybrid's table fails its DeltaNet control (88% kept).", LR.FLOOR_NOTE,
+                             "Missing dots or floor: control failed, too few items or not run."]  # fmt: skip
     assert sentences[-1] == LR.FILLED and optional == []
 
 
 def test_full_writes_the_grey_words_and_the_rule(book):
     notes, numbers, words = drawn(book, LR.DOTS, LR.FULL_PANELS, "full")
-    assert {"too few items", "not run"} <= words and notes.pale  # Olmo's prose: pale
-    sentences, optional = LR.caption(book, LR.DOTS, "full", LR.RULE, notes, numbers)
-    assert f"Rule: {LR.RULE}." in sentences and "Pale = control failed." in sentences
+    assert {"too few items", "not run"} <= words and notes.pale  # Olmo's prose and Olmo-Hybrid's floor: pale
+    assert notes.no_floor == {"122b": "not run", "muse": "not run"}
+    sentences, optional = LR.caption(book, LR.DOTS, "full", LR.RULE, notes, numbers, pale_note=False)
+    assert f"{LR.FLOOR_NOTE[:-1]}; none yet: 122B, Muse." in sentences and f"Rule: {LR.RULE}." in sentences
+    assert "Pale = control failed." not in sentences  # How to read says it
     assert optional == ["Fewer dots: not run."]
 
 
@@ -259,3 +304,4 @@ def test_real_grid_matches_the_committed_data_files():
     for f in files:
         assert C.check_numbers(f, b) == []
         assert LR.control_mismatches(f, b) == []
+        assert LR.floor_mismatches(f, grids[-1]) == []

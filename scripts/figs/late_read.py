@@ -5,20 +5,23 @@ sentence in the prompt) still right with that sentence hidden from the tokens af
 tokens up to the answer: attn_knockout's "final" destination), in every attention layer (every layer on
 attention-only models); one panel per setting: the three prompt sets (scene sets 1-3: a dot each, stacked in the
 row), table, JSON, long context. A dot is the model's marker (filled = hybrid, hollow = attention-only) with a thin 95%
-interval, a small grey tick the off-path sentence hidden instead (a control: it should stay high), a light grey band
-chance (per cell, from its control text), labelled "chance". Only the exceptions carry a value label, beside their
-dots: a cell that fails the rule or stays above its chance. A cell failing on a control (Olmo-Hybrid's table: its
-DeltaNet control) is named in the caption with the control's number. MAIN draws no words in the panels: a blank cell
-(or a missing stacked dot) is explained in the caption.
-late_read_full: the same with the prose format and not-interpretable cells in pale grey; a blank cell carries a short
-grey word; the rule in the caption.
+interval, a small grey tick the off-path sentence hidden instead (a control: it should stay high). The one reference
+(Dan, 23 Oct 15:30) is the floor per model, not chance: % still right with the sentence hidden from EVERY token after
+it (all layers: a conservative lower bound), measured on prompt set 1 only, drawn as a short dark line in that
+panel's row (none yet for Muse and the 122B). Only the exceptions carry a value label, beside their dots: a cell that
+fails the rule or stays above its chance. A cell failing on a control (Olmo-Hybrid's table: its DeltaNet control) is
+named in the caption with the control's number. MAIN draws no words in the panels: a blank cell, a missing stacked dot
+or floor is explained in the caption.
+late_read_full: the same with the prose format and not-interpretable cells (and floors) in pale grey; a blank cell
+carries a short grey word; the rule in the caption.
 late_read_deltanet_main: the hybrids only: the sentence hidden in every attention layer (grey) against every DeltaNet
 layer instead (the accent), a dot per setting stacked in the row, the rule's bar (>= 90% kept) as a light band.
 
-Every number is from grid.csv: a cell's value via common.cell_number; a control's number (chance, the off-path
-sentence, the DeltaNet layers) from the cell's control text (readme_build.CONTROLS patterns), recorded with source
-CONTROL_TEXT and its pattern, so control_mismatches can re-read it. digit_not_name draws the same layout with these
-helpers.
+Every number is from grid.csv: a cell's value via common.cell_number; a control's number (the off-path sentence, the
+DeltaNet layers; chance where it is drawn, in digit_not_name) from the cell's control text (readme_build.CONTROLS
+patterns), recorded with source CONTROL_TEXT and its pattern, so control_mismatches can re-read it; a floor from its
+late-read-v2 breakdown row (FLOOR_SOURCE, re-read by floor_mismatches). digit_not_name draws the same layout with
+these helpers.
 
 uv run python -m scripts.figs.late_read [--grid results/cross_model/<stamp>] [--only main|full] [--out DIR]
 """
@@ -26,6 +29,8 @@ uv run python -m scripts.figs.late_read [--grid results/cross_model/<stamp>] [--
 from __future__ import annotations
 
 import argparse
+import csv
+import io
 import json
 import re
 import sys
@@ -64,7 +69,7 @@ class Panel:
     settings: tuple[str, ...]  # grid settings drawn in the panel (several: stacked in the row)
 
 
-MAIN_PANELS = (Panel("Prompt sets", DRAWS), Panel("Table", ("table",)), Panel("JSON", ("JSON",)),
+MAIN_PANELS = (Panel("3 prompt sets", DRAWS), Panel("Table", ("table",)), Panel("JSON", ("JSON",)),
                Panel("Long context", ("long context",)))  # fmt: skip
 FULL_PANELS = (MAIN_PANELS[0], Panel("Prose", ("prose",)), *MAIN_PANELS[1:])
 
@@ -86,7 +91,7 @@ OFF = Control(
     "another sentence", RB.CONTROLS["f4"]["another sentence"], "% right, the off-path sentence hidden instead"
 )
 DELTANET = Control("DeltaNet", RB.CONTROLS["f4"]["DeltaNet"], "% right, hidden in every DeltaNet layer instead",
-                   "DeltaNet", "fails its DeltaNet-layer control ({v} kept)")  # fmt: skip
+                   "DeltaNet", "fails its DeltaNet control ({v} kept)")  # fmt: skip
 
 
 def cell(b: RB.Book, f: str, m: str, setting: str) -> RD.Cell | None:
@@ -113,6 +118,64 @@ def control_mismatches(path: Path, b: RB.Book) -> list[str]:
         x = re.search(d["extra"]["pattern"], c.control) if c else None
         if x is None or abs(float(x.group(1)) - d["value"]) > 1e-9:
             bad.append(f"{path.name}: {d['finding']} {d['model']} {d['setting']} {d['extra']['control']}")
+    return bad
+
+
+# The floor (Dan, 23 Oct 15:30): % still right with the answer's sentence hidden from EVERY token after it (the
+# "after" destination, all layers: a conservative lower bound). grid.csv has it in the late-read-v2 breakdown row of the
+# first prompt set only (readme_build.Book leaves breakdown rows out, so it is read here). Only that row is read: the
+# second-prompt-set and long-context floor runs are unopened.
+FLOOR_SETTING = "draw 1 · last tokens' share"
+FLOOR_ON = "draw 1"  # the grid setting the floor was measured on: drawn in the panel that holds it
+FLOOR_SOURCE = "grid.csv late-read-v2 row"  # Number.source of a floor; checked by floor_mismatches
+FLOOR = Control("floor", r"from every token after it \(all layers\): (\d+)% \[(\d+), (\d+)\]",
+                "% right, the answer's sentence hidden from every token after it (all layers): the floor")  # fmt: skip
+
+
+@dataclass(frozen=True)
+class Floor:
+    number: C.Number
+    word: str  # the late-read-v2 row's verdict word (not interpretable: drawn pale, FULL only)
+
+
+def floor_rows(grid_dir: Path) -> dict[str, dict[str, str]]:
+    """model key -> grid.csv's late-read-v2 row of the first prompt set (main lens)."""
+    out = {}
+    for r in csv.DictReader(io.StringIO((grid_dir / "grid.csv").read_text())):
+        m = RD.MODEL_BY_LABEL.get(r["model"])
+        if m and r["rule id"] == "late-read-v2" and r["setting"] == FLOOR_SETTING and not r["lens"].endswith(RD.BESIDE):
+            out[m.key] = r
+    return out
+
+
+def floors(grid_dir: Path) -> tuple[dict[str, Floor], dict[str, str]]:
+    """The floors by model, and why a model has none (its row's verdict, as blank_reason words)."""
+    have, none = {}, {}
+    rows = floor_rows(grid_dir)
+    for m in C.MODELS:
+        r = rows.get(m.key)
+        x = re.search(FLOOR.pattern, r["chance or control level"]) if r else None
+        if r is None or x is None:
+            none[m.key] = "not run"
+            continue
+        word = next((w for w in G.VERDICTS if r["verdict"].startswith(w)), r["verdict"])
+        n = int(r["n"]) if r["n"].strip() else None
+        num = C.Number(float(x.group(1)), FLOOR.what, F, m.key, FLOOR_SETTING, "", (float(x.group(2)),
+                       float(x.group(3))), n, FLOOR_SOURCE, {"control": "floor", "pattern": FLOOR.pattern})  # fmt: skip
+        have[m.key] = Floor(num, word)
+    return have, none
+
+
+def floor_mismatches(path: Path, grid_dir: Path) -> list[str]:
+    """common.check_numbers for the floors: each must be what FLOOR's pattern finds in its grid.csv row."""
+    rows, bad = floor_rows(grid_dir), []
+    for d in json.loads(path.read_text()):
+        if d["source"] != FLOOR_SOURCE:
+            continue
+        r = rows.get(d["model"])
+        x = re.search(d["extra"]["pattern"], r["chance or control level"]) if r else None
+        if d["setting"] != FLOOR_SETTING or x is None or abs(float(x.group(1)) - d["value"]) > 1e-9:
+            bad.append(f"{path.name}: floor {d['model']}")
     return bad
 
 
@@ -172,6 +235,7 @@ class Dots:
     tick: Control | None = None  # a small grey tick
     second: Control | None = None  # a second mark in the model's colors (a diamond), with its interval
     why: Callable[[RD.Cell], Control | None] | None = None  # a failing cell's failing control (its value passes)
+    reference: str = "chance"  # the one reference: "chance" (a band per panel) or "floor" (per model row, late_read)
 
 
 @dataclass
@@ -183,7 +247,8 @@ class Notes:
     on_control: list[tuple[RD.Cell, Control, C.Number]] = field(default_factory=list)  # failing on a control
     blank: set[str] = field(default_factory=set)  # why a cell (or a stacked dot) is not drawn
     fewer: bool = False  # a stacked row has fewer dots than settings
-    pale: bool = False  # a not-interpretable cell is drawn (FULL)
+    pale: bool = False  # a not-interpretable cell (or floor) is drawn (FULL)
+    no_floor: dict[str, str] = field(default_factory=dict)  # model -> why its row has no floor
 
 
 def above_chance(c: RD.Cell) -> bool:
@@ -196,10 +261,11 @@ def exception(c: RD.Cell) -> bool:
     return c.word == "fails" or above_chance(c)
 
 
-def setup(ax: Any, title: str, keys: list[str], first: bool) -> dict[str, float]:
+def setup(ax: Any, title: str, keys: list[str], first: bool, label_room: bool = True) -> dict[str, float]:
     ys = C.model_rows(ax, keys, gap=1.1, label=first)
-    # the first group heading stays inside the panel, under its title; room under the last row for the band's label
-    ax.set_ylim(max(ys.values()) + 1.55, -1.3)
+    # the first group heading stays inside the panel, under its title; `label_room`: room under the last row for the
+    # chance band's label
+    ax.set_ylim(max(ys.values()) + (1.55 if label_room else 0.75), -1.3)
     if not first:
         ax.set_yticks([])
     ax.spines["left"].set_visible(False)
@@ -238,8 +304,10 @@ def place(ax: Any, y: float, lo: float, hi: float, text: str, gid: str = "value"
 
 
 def dot_panel(ax: Any, b: RB.Book, dots: Dots, panel: Panel, ys: dict[str, float], kind: str,
-              numbers: list[C.Number], notes: Notes) -> None:  # fmt: skip
-    """One panel: per model row, its cells of the panel's settings (several stacked), their controls and chance."""
+              numbers: list[C.Number], notes: Notes,
+              floor: tuple[dict[str, Floor], dict[str, str]] | None = None) -> None:  # fmt: skip
+    """One panel: per model row, its cells of the panel's settings (several stacked), their controls, and the
+    reference (chance across the panel, or the floor per row in the panel that holds the floor's setting)."""
     k = len(panel.settings)
     off = {s: (i - (k - 1) / 2) * 0.3 for i, s in enumerate(panel.settings)}
     size = 11 if k == 1 else 9
@@ -276,7 +344,7 @@ def dot_panel(ax: Any, b: RB.Book, dots: Dots, panel: Panel, ys: dict[str, float
             if not pale:
                 his.append(hi)
                 los.append(lo)
-            if (ch := control(c, CHANCE)) is not None:
+            if dots.reference == "chance" and (ch := control(c, CHANCE)) is not None:
                 numbers.append(ch)
                 chances.append((y, ch.value))
             if dots.tick and (t := control(c, dots.tick)) is not None:
@@ -300,7 +368,34 @@ def dot_panel(ax: Any, b: RB.Book, dots: Dots, panel: Panel, ys: dict[str, float
         if exc:
             text = span([c.value for c in judged if c.value is not None])
             (notes.labelled if place(ax, y, min(los), max(his), text) else notes.unlabelled).extend(exc)
-    band(ax, chances, max(ys.values()) + 1.1 if ys else 0.0)
+    if dots.reference == "chance":
+        band(ax, chances, max(ys.values()) + 1.1 if ys else 0.0)
+    elif floor is not None and FLOOR_ON in panel.settings:
+        floor_bands(ax, ys, floor, kind, numbers, notes)
+
+
+def floor_bands(ax: Any, ys: dict[str, float], floor: tuple[dict[str, Floor], dict[str, str]], kind: str,
+                numbers: list[C.Number], notes: Notes) -> None:  # fmt: skip
+    """The floor per model row: a short dark line at its value, drawn over the row's dots (they sit on or near it: a
+    band behind them would be hidden), short of the next row's; a not-interpretable floor pale on FULL, left out on
+    MAIN; a row without one is named in the caption."""
+    have, none = floor
+    for m, y in ys.items():
+        f = have.get(m)
+        if (
+            f is None
+            or f.word not in (*SHOWN, "not interpretable")
+            or (f.word == "not interpretable" and kind == "main")
+        ):
+            notes.no_floor[m] = (
+                "control failed" if f is not None and f.word == "not interpretable" else none.get(m, "not run")
+            )
+            continue
+        pale = f.word == "not interpretable"
+        ax.plot([f.number.value] * 2, [y - 0.42, y + 0.42], color=C.CONTROL if pale else C.INK2, lw=2.2,
+                solid_capstyle="butt", gid="tick", zorder=5)  # fmt: skip
+        numbers.append(f.number)
+        notes.pale |= pale
 
 
 def band(ax: Any, chances: list[tuple[float, float]], label_y: float) -> None:
@@ -354,20 +449,29 @@ def n_range(numbers: list[C.Number]) -> str:
 
 
 FILLED = "Filled = hybrid, hollow = attention-only."
+FILLED_SHORT = "Filled = hybrid."  # when the long one does not fit two lines (the row headings name both groups)
+FLOOR_NOTE = "Floor: prompt set 1, all layers (a lower bound)."
+
+
+def reasons_words(reasons: set[str]) -> str:
+    return join_or(sorted(reasons, key=lambda r: (BLANK_ORDER.index(r) if r in BLANK_ORDER else len(BLANK_ORDER), r)))
 
 
 def caption(b: RB.Book, dots: Dots, kind: str, rule: str, notes: Notes, numbers: list[C.Number],
-            far: bool = False) -> tuple[list[str], list[str]]:  # fmt: skip
+            far: bool = False, pale_note: bool = True) -> tuple[list[str], list[str]]:  # fmt: skip
     """The caption's sentences (required, optional), in order: whether any cell fails; what the labels mark (`far`:
     how far below the second mark they stay); the cells failing on a control, with its number; exceptions left
-    unlabelled; the untested models; MAIN: why cells are blank; FULL: the rule, pale; n; the markers."""
+    unlabelled; the untested models; the floor (where it comes from); MAIN: why cells are blank, dots fewer or a floor
+    missing; FULL: the rows without a floor, the rule, pale; n; the markers."""
     out = []
     fails = [c for c in notes.labelled + notes.unlabelled if c.word == "fails"] + [c for c, _, _ in notes.on_control]
     if not fails:
         out.append("No cell fails the rule.")
+    # with the floor as the reference no chance is drawn: a failure at ≈ chance is just a failure
+    phrase = {**PHRASE, "≈ chance": PHRASE[""]} if dots.reference == "floor" else PHRASE
     if notes.labelled:
         kinds = sorted({kind_of(c, dots.why) for c in notes.labelled}, key=list(PHRASE).index)
-        s = "Labelled = " + " or ".join(PHRASE[k] for k in kinds)
+        s = "Labelled = " + " or ".join(dict.fromkeys(phrase[k] for k in kinds))
         if far and dots.second and kinds == [HOLDS_ABOVE]:
             seconds = [n.value for c in notes.labelled if (n := control(c, dots.second)) is not None]
             s += f", far below {dots.second.short} ({span(seconds)})" if seconds else ""
@@ -375,16 +479,23 @@ def caption(b: RB.Book, dots: Dots, kind: str, rule: str, notes: Notes, numbers:
     for c, ctl, n in notes.on_control:
         out.append(f"{C.MODEL[c.model].short}'s {setting_words([c.setting])} {ctl.fails.format(v=pct(n.value))}.")
     for k in sorted({kind_of(c, dots.why) for c in notes.unlabelled}, key=list(PHRASE).index):
-        out.append(f"Also {PHRASE[k]}: {cells_words([c for c in notes.unlabelled if kind_of(c, dots.why) == k])}.")
+        out.append(f"Also {phrase[k]}: {cells_words([c for c in notes.unlabelled if kind_of(c, dots.why) == k])}.")
     if u := C.not_tested(b, dots.finding):
         out.append(u)
+    if dots.reference == "floor":
+        none = ""
+        if kind == "full" and notes.no_floor:  # MAIN: in the "Missing" sentence
+            models = ", ".join(C.MODEL[m].short for m in notes.no_floor)
+            why = reasons_words(set(notes.no_floor.values()))
+            none = f"; none yet: {models}" if why == "not run" else f"; none: {models} ({why})"
+        out.append(f"{FLOOR_NOTE[:-1]}{none}.")
     optional = []
-    if kind == "main" and notes.blank:
-        reasons = sorted(notes.blank, key=lambda r: (BLANK_ORDER.index(r) if r in BLANK_ORDER else len(BLANK_ORDER), r))
-        out.append(f"{'Blank or fewer dots' if notes.fewer else 'Blank'}: {join_or(reasons)}.")
+    if kind == "main" and (notes.blank or notes.no_floor):
+        what = " or ".join(["Missing dots"] * bool(notes.blank) + ["floor" if notes.blank else "Missing floor"] * bool(notes.no_floor))  # fmt: skip
+        out.append(f"{what}: {reasons_words(notes.blank | set(notes.no_floor.values()))}.")
     if kind == "full":
         out.append(f"Rule: {rule}.")
-        if notes.pale:
+        if notes.pale and pale_note:  # else How to read says it
             out.append("Pale = control failed.")
         if notes.fewer:
             optional.append("Fewer dots: not run.")
@@ -437,7 +548,8 @@ def rows_of(b: RB.Book, f: str, panels: tuple[Panel, ...], kind: str) -> list[st
 
 def dot_figure(b: RB.Book, dots: Dots, panels: tuple[Panel, ...], kind: str, title: str, subtitle: str, how: str,
                rule: str, stem: str, out: Path, far: bool = False) -> list[Path]:  # fmt: skip
-    """Draw the panels, then the caption from what they left to it, check overlaps, save."""
+    """Draw the panels, then the caption from what they left to it, check overlaps, save. A How to read that names
+    the pale marks keeps the caption from repeating it."""
     keys = rows_of(b, dots.finding, panels, kind)
     numbers: list[C.Number] = []
     notes = Notes()
@@ -446,11 +558,17 @@ def dot_figure(b: RB.Book, dots: Dots, panels: tuple[Panel, ...], kind: str, tit
     fr = C.frame(kind, title, subtitle, how=how, caption="x\nx", ncols=len(panels), wspace=wspace, left=0.155,
                  right=0.975, sharex=True)  # fmt: skip
     title_room(fr)
+    floor = floors(b.grid_dir) if dots.reference == "floor" else None
     for i, (ax, p) in enumerate(zip(fr.axes, panels, strict=True)):
-        ys = setup(ax, p.title, keys, first=i == 0)
-        dot_panel(ax, b, dots, p, ys, kind, numbers, notes)
+        ys = setup(ax, p.title, keys, first=i == 0, label_room=dots.reference == "chance")
+        dot_panel(ax, b, dots, p, ys, kind, numbers, notes, floor)
     cap = next(t for t in fr.fig.texts if t.get_gid() == "caption")
-    cap.set_text(pack(fr.fig, *caption(b, dots, kind, rule, notes, numbers, far)))
+    sentences, optional = caption(b, dots, kind, rule, notes, numbers, far, pale_note="pale =" not in how)
+    try:
+        text = pack(fr.fig, sentences, optional)
+    except ValueError:  # the markers' sentence shortened before giving up
+        text = pack(fr.fig, [FILLED_SHORT if s == FILLED else s for s in sentences], optional)
+    cap.set_text(text)
     return C.save(fr, stem, numbers, out)
 
 
@@ -462,16 +580,18 @@ def why_f4(c: RD.Cell) -> Control | None:
     return DELTANET if "DeltaNet" in c.verdict else None
 
 
-DOTS = Dots(F, "% right, the answer's sentence hidden from the tokens after the question", tick=OFF, why=why_f4)
+DOTS = Dots(F, "% right, the answer's sentence hidden from the tokens after the question", tick=OFF, why=why_f4,
+            reference="floor")  # fmt: skip
 TITLE = "Hiding the answer's sentence breaks the lookup"
 SUBTITLE = "Lookup = answer copied from a prompt sentence. % right with it hidden after the question"
-HOW = "3 dots = 3 prompt sets. Grey tick = another sentence hidden instead (should stay high)."
+HOW = {"main": "dark line = floor: every later token blocked; tick = another sentence hidden (stays high).",
+       "full": "dark line = floor: every later token blocked; tick = other sentence; pale = control failed."}  # fmt: skip
 RULE = "≤ 20% (CI ≤ 30%), controls ≥ 90%"
 
 
 def late_read(b: RB.Book, kind: str, out: Path = C.OUT) -> list[Path]:
     panels = MAIN_PANELS if kind == "main" else FULL_PANELS
-    return dot_figure(b, DOTS, panels, kind, TITLE, SUBTITLE, HOW, RULE, STEM, out)
+    return dot_figure(b, DOTS, panels, kind, TITLE, SUBTITLE, HOW[kind], RULE, STEM, out)
 
 
 # ---------------------------------------------------------------- the DeltaNet figure (hybrids only)

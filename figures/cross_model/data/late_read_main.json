@@ -15,21 +15,6 @@
   "extra": {}
  },
  {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "27b",
-  "setting": "draw 1",
-  "part": "",
-  "ci": null,
-  "n": 300,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 100.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -58,21 +43,6 @@
   "n": 300,
   "source": "grid.csv",
   "extra": {}
- },
- {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "27b",
-  "setting": "draw 2",
-  "part": "",
-  "ci": null,
-  "n": 300,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
  },
  {
   "value": 100.0,
@@ -105,21 +75,6 @@
   "extra": {}
  },
  {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "9b",
-  "setting": "draw 1",
-  "part": "",
-  "ci": null,
-  "n": 300,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 100.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -150,21 +105,6 @@
   "extra": {}
  },
  {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "9b",
-  "setting": "draw 2",
-  "part": "",
-  "ci": null,
-  "n": 300,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 100.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -193,21 +133,6 @@
   "n": 300,
   "source": "grid.csv",
   "extra": {}
- },
- {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "9b",
-  "setting": "draw 3",
-  "part": "",
-  "ci": null,
-  "n": 300,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
  },
  {
   "value": 100.0,
@@ -240,21 +165,6 @@
   "extra": {}
  },
  {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "olmo_hybrid",
-  "setting": "draw 1",
-  "part": "",
-  "ci": null,
-  "n": 100,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 99.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -283,21 +193,6 @@
   "n": 100,
   "source": "grid.csv",
   "extra": {}
- },
- {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "olmo_hybrid",
-  "setting": "draw 2",
-  "part": "",
-  "ci": null,
-  "n": 100,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
  },
  {
   "value": 100.0,
@@ -330,21 +225,6 @@
   "extra": {}
  },
  {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "122b",
-  "setting": "draw 1",
-  "part": "",
-  "ci": null,
-  "n": 300,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 100.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -375,21 +255,6 @@
   "extra": {}
  },
  {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "122b",
-  "setting": "draw 2",
-  "part": "",
-  "ci": null,
-  "n": 300,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 100.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -420,21 +285,6 @@
   "extra": {}
  },
  {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "32b",
-  "setting": "draw 1",
-  "part": "",
-  "ci": null,
-  "n": 300,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 100.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -463,21 +313,6 @@
   "n": 299,
   "source": "grid.csv",
   "extra": {}
- },
- {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "32b",
-  "setting": "draw 2",
-  "part": "",
-  "ci": null,
-  "n": 299,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
  },
  {
   "value": 100.0,
@@ -510,21 +345,6 @@
   "extra": {}
  },
  {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "32b",
-  "setting": "draw 3",
-  "part": "",
-  "ci": null,
-  "n": 199,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 100.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -555,21 +375,6 @@
   "extra": {}
  },
  {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "olmo",
-  "setting": "draw 1",
-  "part": "",
-  "ci": null,
-  "n": 100,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 100.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -598,21 +403,6 @@
   "n": 100,
   "source": "grid.csv",
   "extra": {}
- },
- {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "olmo",
-  "setting": "draw 2",
-  "part": "",
-  "ci": null,
-  "n": 100,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
  },
  {
   "value": 98.0,
@@ -645,21 +435,6 @@
   "extra": {}
  },
  {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "olmo",
-  "setting": "draw 3",
-  "part": "",
-  "ci": null,
-  "n": 99,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 100.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -688,21 +463,6 @@
   "n": 300,
   "source": "grid.csv",
   "extra": {}
- },
- {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "muse",
-  "setting": "draw 1",
-  "part": "",
-  "ci": null,
-  "n": 300,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
  },
  {
   "value": 100.0,
@@ -735,21 +495,6 @@
   "extra": {}
  },
  {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "muse",
-  "setting": "draw 2",
-  "part": "",
-  "ci": null,
-  "n": 300,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 100.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -778,21 +523,6 @@
   "n": 300,
   "source": "grid.csv",
   "extra": {}
- },
- {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "muse",
-  "setting": "draw 3",
-  "part": "",
-  "ci": null,
-  "n": 300,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
  },
  {
   "value": 100.0,
@@ -825,21 +555,6 @@
   "extra": {}
  },
  {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "gemma",
-  "setting": "draw 1",
-  "part": "",
-  "ci": null,
-  "n": 300,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 100.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -868,21 +583,6 @@
   "n": 300,
   "source": "grid.csv",
   "extra": {}
- },
- {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "gemma",
-  "setting": "draw 2",
-  "part": "",
-  "ci": null,
-  "n": 300,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
  },
  {
   "value": 100.0,
@@ -915,21 +615,6 @@
   "extra": {}
  },
  {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "gemma",
-  "setting": "draw 3",
-  "part": "",
-  "ci": null,
-  "n": 300,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 100.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -942,6 +627,96 @@
   "extra": {
    "control": "another sentence",
    "pattern": "off-path sentence hidden instead keeps (\\d+)%"
+  }
+ },
+ {
+  "value": 1.0,
+  "what": "% right, the answer's sentence hidden from every token after it (all layers): the floor",
+  "finding": "f4",
+  "model": "27b",
+  "setting": "draw 1 \u00b7 last tokens' share",
+  "part": "",
+  "ci": [
+   0.0,
+   2.0
+  ],
+  "n": 300,
+  "source": "grid.csv late-read-v2 row",
+  "extra": {
+   "control": "floor",
+   "pattern": "from every token after it \\(all layers\\): (\\d+)% \\[(\\d+), (\\d+)\\]"
+  }
+ },
+ {
+  "value": 3.0,
+  "what": "% right, the answer's sentence hidden from every token after it (all layers): the floor",
+  "finding": "f4",
+  "model": "9b",
+  "setting": "draw 1 \u00b7 last tokens' share",
+  "part": "",
+  "ci": [
+   1.0,
+   5.0
+  ],
+  "n": 300,
+  "source": "grid.csv late-read-v2 row",
+  "extra": {
+   "control": "floor",
+   "pattern": "from every token after it \\(all layers\\): (\\d+)% \\[(\\d+), (\\d+)\\]"
+  }
+ },
+ {
+  "value": 10.0,
+  "what": "% right, the answer's sentence hidden from every token after it (all layers): the floor",
+  "finding": "f4",
+  "model": "32b",
+  "setting": "draw 1 \u00b7 last tokens' share",
+  "part": "",
+  "ci": [
+   7.0,
+   14.0
+  ],
+  "n": 300,
+  "source": "grid.csv late-read-v2 row",
+  "extra": {
+   "control": "floor",
+   "pattern": "from every token after it \\(all layers\\): (\\d+)% \\[(\\d+), (\\d+)\\]"
+  }
+ },
+ {
+  "value": 4.0,
+  "what": "% right, the answer's sentence hidden from every token after it (all layers): the floor",
+  "finding": "f4",
+  "model": "olmo",
+  "setting": "draw 1 \u00b7 last tokens' share",
+  "part": "",
+  "ci": [
+   2.0,
+   10.0
+  ],
+  "n": 100,
+  "source": "grid.csv late-read-v2 row",
+  "extra": {
+   "control": "floor",
+   "pattern": "from every token after it \\(all layers\\): (\\d+)% \\[(\\d+), (\\d+)\\]"
+  }
+ },
+ {
+  "value": 2.0,
+  "what": "% right, the answer's sentence hidden from every token after it (all layers): the floor",
+  "finding": "f4",
+  "model": "gemma",
+  "setting": "draw 1 \u00b7 last tokens' share",
+  "part": "",
+  "ci": [
+   1.0,
+   4.0
+  ],
+  "n": 300,
+  "source": "grid.csv late-read-v2 row",
+  "extra": {
+   "control": "floor",
+   "pattern": "from every token after it \\(all layers\\): (\\d+)% \\[(\\d+), (\\d+)\\]"
   }
  },
  {
@@ -958,21 +733,6 @@
   "n": 52,
   "source": "grid.csv",
   "extra": {}
- },
- {
-  "value": 33.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "27b",
-  "setting": "table",
-  "part": "",
-  "ci": null,
-  "n": 52,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
  },
  {
   "value": 100.0,
@@ -1005,21 +765,6 @@
   "extra": {}
  },
  {
-  "value": 33.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "9b",
-  "setting": "table",
-  "part": "",
-  "ci": null,
-  "n": 32,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 100.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -1048,21 +793,6 @@
   "n": 24,
   "source": "grid.csv",
   "extra": {}
- },
- {
-  "value": 33.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "olmo_hybrid",
-  "setting": "table",
-  "part": "",
-  "ci": null,
-  "n": 24,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
  },
  {
   "value": 100.0,
@@ -1110,21 +840,6 @@
   "extra": {}
  },
  {
-  "value": 33.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "122b",
-  "setting": "table",
-  "part": "",
-  "ci": null,
-  "n": 52,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 100.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -1153,21 +868,6 @@
   "n": 38,
   "source": "grid.csv",
   "extra": {}
- },
- {
-  "value": 33.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "32b",
-  "setting": "table",
-  "part": "",
-  "ci": null,
-  "n": 38,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
  },
  {
   "value": 100.0,
@@ -1200,21 +900,6 @@
   "extra": {}
  },
  {
-  "value": 33.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "olmo",
-  "setting": "table",
-  "part": "",
-  "ci": null,
-  "n": 23,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 100.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -1243,21 +928,6 @@
   "n": 55,
   "source": "grid.csv",
   "extra": {}
- },
- {
-  "value": 33.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "gemma",
-  "setting": "table",
-  "part": "",
-  "ci": null,
-  "n": 55,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
  },
  {
   "value": 100.0,
@@ -1290,21 +960,6 @@
   "extra": {}
  },
  {
-  "value": 33.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "27b",
-  "setting": "JSON",
-  "part": "",
-  "ci": null,
-  "n": 54,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 100.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -1333,21 +988,6 @@
   "n": 27,
   "source": "grid.csv",
   "extra": {}
- },
- {
-  "value": 33.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "9b",
-  "setting": "JSON",
-  "part": "",
-  "ci": null,
-  "n": 27,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
  },
  {
   "value": 100.0,
@@ -1380,21 +1020,6 @@
   "extra": {}
  },
  {
-  "value": 33.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "122b",
-  "setting": "JSON",
-  "part": "",
-  "ci": null,
-  "n": 52,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 100.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -1423,21 +1048,6 @@
   "n": 41,
   "source": "grid.csv",
   "extra": {}
- },
- {
-  "value": 33.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "32b",
-  "setting": "JSON",
-  "part": "",
-  "ci": null,
-  "n": 41,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
  },
  {
   "value": 100.0,
@@ -1470,21 +1080,6 @@
   "extra": {}
  },
  {
-  "value": 33.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "gemma",
-  "setting": "JSON",
-  "part": "",
-  "ci": null,
-  "n": 56,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 100.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -1513,21 +1108,6 @@
   "n": 178,
   "source": "grid.csv",
   "extra": {}
- },
- {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "27b",
-  "setting": "long context",
-  "part": "",
-  "ci": null,
-  "n": 178,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
  },
  {
   "value": 100.0,
@@ -1560,21 +1140,6 @@
   "extra": {}
  },
  {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "9b",
-  "setting": "long context",
-  "part": "",
-  "ci": null,
-  "n": 156,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 100.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -1603,21 +1168,6 @@
   "n": 171,
   "source": "grid.csv",
   "extra": {}
- },
- {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "122b",
-  "setting": "long context",
-  "part": "",
-  "ci": null,
-  "n": 171,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
  },
  {
   "value": 100.0,
@@ -1650,21 +1200,6 @@
   "extra": {}
  },
  {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "32b",
-  "setting": "long context",
-  "part": "",
-  "ci": null,
-  "n": 93,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 100.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -1695,21 +1230,6 @@
   "extra": {}
  },
  {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "olmo",
-  "setting": "long context",
-  "part": "",
-  "ci": null,
-  "n": 41,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
- },
- {
   "value": 100.0,
   "what": "% right, the off-path sentence hidden instead",
   "finding": "f4",
@@ -1738,21 +1258,6 @@
   "n": 167,
   "source": "grid.csv",
   "extra": {}
- },
- {
-  "value": 20.0,
-  "what": "chance, % (1 / the listed answers)",
-  "finding": "f4",
-  "model": "muse",
-  "setting": "long context",
-  "part": "",
-  "ci": null,
-  "n": 167,
-  "source": "grid.csv control text",
-  "extra": {
-   "control": "chance",
-   "pattern": "chance (\\d+)%"
-  }
  },
  {
   "value": 100.0,
