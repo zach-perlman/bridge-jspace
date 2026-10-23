@@ -1,0 +1,48 @@
+id: d4_layer_gap_dose_27b
+title: "Dose control for the layer gap: the full patch's direction cut to the lens push's size, every second layer 12-34 (Qwen3.6-27B, the layer-gap scenes)"
+thread: D4
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.8
+depends_on: []
+command: >-
+  uv run python scripts/early_push_where.py run --name d4_layer_gap_dose_27b --n 100 --scenes fresh --fresh-seed 2
+  --exclude-runs d4_where_fresh_27b --same-scenes d4_layer_gap_v2_27b --rule v2 --patch --patch-dir --gap-rule v2
+  --subsets s w --layers 12 14 16 18 20 22 24 26 28 30 32 34 --context-layers 20 --scales 4 8 --v21-min-layer 20
+  --why "dose control for d4_layer_gap_v2_27b's H-gap: the full patch's direction at the lens push's norm, same scenes, positions, layers and scales"
+figures_command: uv run python scripts/early_push_where.py figures --name d4_layer_gap_dose_27b
+question: >-
+  At the stated bridge's word, when the full patch is cut to the lens push's size but keeps its direction, does it still
+  move lookups at the layers where the lens push moves none (from layer 20 on)?
+why_it_matters: >-
+  In d4_layer_gap_v2_27b the full patch keeps moving lookups until layer 26 while the lens push stops at 20 (H-gap at the
+  word and the sentence). But the patch was pasted at its own size, not at the pushes' size, so "the patch moves more"
+  may only mean "the patch is bigger". If the patch's direction at the lens push's size still moves lookups for several
+  layers after the lens push stops, the gap is about what the patch carries: the lookup's bridge is in the residual at
+  the word, outside what the lens push writes. If it stops with the lens push, H-gap was dose and cannot carry the claim.
+hypotheses:
+  H-direction: 'the cut-down patch stops >= 6 layers after the lens push (lens push stops at 20 -> cut-down patch at 26 or later) and still switches lookups at the lens push''s stop layer (Wilson lower bound > 5%, i.e. about 11/100 or more, at 4x or 8x)'
+  H-dose: 'the cut-down patch stops within 2 layers of the lens push (by layer 22 if the lens push stops at 20), or before it'
+  inconclusive: 'a gap of 3-5 layers (partly dose), the lens push never stopping for good, or no valid cell at the lens push''s stop layer'
+decision_rule: >-
+  scripts/early_push_where.py's dose control (docstring, written 23 Oct before this run), with the layer-gap v2 machinery
+  unchanged. Arms at the stated bridge's word (decisive) and sentence (reported): the lens push (4x, 8x the scene's
+  reference norm), the new arm patch_dir = the scene's patch (the prompt -> prompt case's C - clean at those positions,
+  as one vector) rescaled to the lens push's norm there (at the word, one token: exactly the lens push's norm) at 4x and
+  8x, the full patch at its own size, a random push (4x, 8x). Each arm's valid cells: v2's off-path check with that arm's
+  own rows (memory -> prompt and memory -> memory changed <= 10%; for patch_dir these rows carry the same scene patch at
+  the same word, so the check is a real one) and the random push at the same layer and scale switching <= 5% of lookups.
+  An arm stops at a layer iff every valid cell there has the Wilson upper bound < 5%; it keeps moving iff some valid cell
+  has the lower bound > 5%; arm_stop = the first grid layer from which it stops at every later layer with a valid cell
+  (patch_dir never stopping counts as after the grid). At the word: H-direction iff patch_dir_stop - lens_stop >= 6 and
+  patch_dir keeps moving at lens_stop; H-dose iff patch_dir_stop - lens_stop <= 2; else inconclusive (partly dose).
+  Reported, not decisive: the sentence the same way; the full patch's and the lens push's stops and the layer-gap v2
+  verdict on these rows (a replication of d4_layer_gap_v2_27b) with the item-by-item agreement of the arms both runs
+  have; the full patch's norm in units of the 1x lens push's (median over scenes); the off-scene push; the edits.
+controls:
+- 'a random push at the same norms (4x, 8x) at the same positions'
+- 'off-path: memory -> prompt and memory -> memory answers under the same scene patch at the same word and sentence (<= 10% changed for a valid cell)'
+- 'replication: the lens push and the full patch re-run on the same items, compared item by item with d4_layer_gap_v2_27b'
+n: '100 fresh scenes, four families: the draw of d4_layer_gap_v2_27b (seed 2 from a pool of 148, none from map_A8_v1 or d4_where_fresh_27b); asserted equal to its selection.json at run time, and reproduced on the tokenizer before enqueue'
+seeds: [0, 2]
+notes: "Dan, 23 Oct: 'add a dose control on the A100: push along the full patch's direction, scaled to the lens push's norm, same layers and scenes. Pre-register both.' Written before the run; nothing of this run opened. THE BARS ARE THE AGENT'S PROPOSAL, for Dan to change before the run: the gap bars (>= 6 layers for H-direction, <= 2 for H-dose) are the layer-gap v2 rule's own, so the dose control reads exactly like H-gap with the cut-down patch in place of the full patch; Dan's draft ('still moves lookups at layers where the lens push moves none (20-26) -> not dose; stops by layer 22 -> dose') maps onto them when the lens push stops at 20 again. Design choices to check: (1) at the sentence, the patch is zero on the tokens before the bridge's word (they are the same in both prompts), so the cut-down patch puts the lens push's whole norm over the sentence (scale x ref x sqrt(7)) on the word and the full stop, keeping the patch's own split between them; at the word (one token everywhere in this draw) it is exactly the lens push's norm. (2) one patch per scene, taken from the prompt -> prompt case and given to all four families, so that memory -> prompt and memory -> memory get a real off-path push (their own patch at the statements is zero; the full-patch arm's off-path check is therefore empty). (3) the lens push's 8x cells at the word failed the off-path check at layers 20-28 in d4_layer_gap_v2_27b, so its stop rested on 4x; the same can happen to the cut-down patch at 8x, and then its course rests on 4x. Estimated run: about 2/3 of d4_layer_gap_v2_27b's 58 min (no question-subject or context pushes, no embedding arm)."

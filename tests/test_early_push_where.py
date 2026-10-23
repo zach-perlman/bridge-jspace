@@ -1,7 +1,11 @@
 """early_push_where: push positions on real suite scenes (the target's tokenizer; skipped without it), the off-scene
 animal, the answer roles and the pre-registered decision on synthetic cells (no model)."""
 
+import json
+import math
+
 import pytest
+import torch
 
 from scripts import early_push as EP
 from scripts import early_push_where as W
@@ -222,3 +226,160 @@ def test_layer_gap_v2(lens_until, patch_until, starts):
 def test_layer_gap_v2_needs_valid_cells():
     g = W.layer_gap_v2(_gap_v2_cells(18, 28, 16, rnd=0.2), GRID)  # the random push moves lookups: no valid cell
     assert g["verdict"].startswith("inconclusive") and g["lens"]["stop"] is None
+
+
+# ---- the dose control and the layer-16 split (23 Oct) ----------------------------------------------------------------
+
+
+def test_at_norm_keeps_the_patch_direction_at_the_lens_push_norm():
+    g = torch.Generator().manual_seed(0)
+    delta = torch.randn(4, 16, generator=g)
+    delta[:2] = 0  # the sentence's tokens before the bridge's word: the patch is zero there (causality)
+    norms = torch.full((4,), 8 * 2.5)  # the lens push: 8x a reference norm at every pushed position
+    push = W.at_norm(delta, norms)
+    assert math.isclose(float(push.norm()), float(norms.norm()), rel_tol=1e-5)  # the lens push's total norm
+    assert math.isclose(float(torch.nn.functional.cosine_similarity(push.flatten(), delta.flatten(), dim=0)), 1.0, rel_tol=1e-5)  # fmt: skip
+    assert not push[:2].any()  # no change where the patch has none
+    word = torch.randn(1, 16, generator=g)  # one token (the word): exactly the lens push's norm there
+    assert math.isclose(float(W.at_norm(word, torch.tensor([20.0])).norm()), 20.0, rel_tol=1e-5)
+    with pytest.raises(AssertionError):
+        W.at_norm(torch.zeros(1, 16), torch.tensor([20.0]))
+
+
+def test_split_patch_parts_add_up_and_find_a_sparse_patch():
+    g = torch.Generator().manual_seed(1)
+    dictionary = torch.nn.functional.normalize(torch.randn(64, 32, generator=g), dim=-1)
+    pair = dictionary[:2]
+    sparse = 3.0 * dictionary[5] - 2.0 * dictionary[9]  # inside the dictionary's span with 2 atoms
+    delta = torch.stack([sparse, torch.randn(32, generator=g), torch.zeros(32)])
+    parts = W.split_patch(delta, dictionary, pair, k=4)
+    assert set(parts) == set(W.SPLIT_PARTS)
+    for a, b in (("jspace", "not_jspace"), ("lens2", "not_lens2")):
+        assert torch.allclose(parts[a] + parts[b], delta, atol=1e-5)
+    assert torch.allclose(parts["jspace"][0], sparse, atol=1e-4)  # OMP recovers a 2-atom row with 4 atoms
+    assert torch.allclose(parts["not_lens2"] @ pair.T, torch.zeros(3, 2), atol=1e-4)  # orthogonal to the pair
+    assert not parts["jspace"][2].any() and not parts["lens2"][2].any()  # a zero row stays zero
+
+
+def _dose_cells(lens_until: int, dir_until: int, off: float = 0.0) -> dict:
+    rates = {}
+    for la in GRID:
+        for sc in (4.0, 8.0):
+            rates[("BL", "w", la, sc, "lens")] = 0.3 if la <= lens_until else 0.0
+            rates[("BL", "w", la, sc, "patch_dir")] = 0.4 if la <= dir_until else 0.0
+            rates[("BL", "w", la, sc, "random")] = 0.0
+            for f in ("RL", "RR"):
+                rates[(f, "w", la, sc, "patch_dir")] = off
+        rates[("BL", "w", la, 0.0, "patch")] = 0.6 if la <= 26 else 0.0
+    return _cells(rates, n=100)[0]
+
+
+@pytest.mark.parametrize(("lens_until", "dir_until", "off", "starts"), [
+    (18, 26, 0.0, "H-direction"),  # lens stops at 20, the cut-down patch at 28
+    (18, 30, 0.0, "H-direction"),  # the cut-down patch never stops on the grid: after it
+    (18, 20, 0.0, "H-dose"),  # it stops at 22
+    (18, 14, 0.0, "H-dose"),  # it stops before the lens push
+    (18, 22, 0.0, "inconclusive"),  # 4 layers: partly dose
+    (18, 26, 0.3, "inconclusive"),  # it moves memory -> prompt / memory -> memory too: no valid cell
+])  # fmt: skip
+def test_dose_test(lens_until, dir_until, off, starts):
+    d = W.dose_test(_dose_cells(lens_until, dir_until, off), GRID)
+    assert d["verdict"].startswith(starts), d
+    assert d["lens"]["stop"] == 20 and d["patch"]["stop"] == 28
+
+
+def _split_cells(j: float, rest: float, full: float = 0.85, null: float = 0.0, off: float = 0.0) -> dict:
+    rates = {}
+    for la in (14, 16, 18):
+        for part, r in (("full", full), ("jspace", j), ("not_jspace", rest), ("lens2", 0.0), ("not_lens2", full)):
+            rates[("BL", "w", la, 0.0, f"split_{part}")] = r
+            rates[("BL", "w", la, 0.0, f"split_{part}_null")] = null
+            for f in ("RL", "RR"):
+                rates[(f, "w", la, 0.0, f"split_{part}")] = off
+    return _cells(rates, n=100)[0]
+
+
+@pytest.mark.parametrize(("j", "rest", "full", "null", "off", "starts"), [
+    (0.3, 0.6, 0.85, 0.0, 0.0, "H-lens-part"),
+    (0.0, 0.6, 0.85, 0.0, 0.0, "H-rest"),
+    (0.03, 0.6, 0.85, 0.0, 0.0, "inconclusive"),  # the J-space part neither moves nor is inert
+    (0.0, 0.0, 0.85, 0.0, 0.0, "inconclusive"),  # neither part alone
+    (0.3, 0.6, 0.85, 0.2, 0.0, "inconclusive (the J-space part's cell is not valid)"),  # its null moves lookups
+    (0.3, 0.6, 0.85, 0.0, 0.3, "inconclusive (the J-space part's cell is not valid)"),  # off the path
+    (0.3, 0.6, 0.02, 0.0, 0.0, "not interpretable"),  # the whole patch does not move lookups
+])  # fmt: skip
+def test_split_test(j, rest, full, null, off, starts):
+    t = W.split_test(_split_cells(j, rest, full, null, off), [14, 16, 18])
+    assert t["verdict"].startswith(starts), t
+    assert set(t["cells"][16]) == set(W.SPLIT_PARTS)
+
+
+def test_agreement_counts_shared_items_per_arm():
+    a = {("BL", "w", 16, 8.0, "lens"): {"i1": "b", "i2": "A"}, ("BL", "w", 16, 0.0, "patch"): {"i1": "b"}}
+    b = {("BL", "w", 16, 8.0, "lens"): {"i1": "b", "i2": "b", "i3": "A"}, ("BL", "w", 18, 0.0, "patch"): {"i1": "b"}}
+    assert W.agreement(a, b) == {"lens": [1, 2]}
+
+
+# ---- end to end on a synthetic run folder: analyze and figures (no model) ---------------------------------------------
+
+
+def _write_run(d, cfg: dict, rates: dict, n: int = 100) -> None:
+    d.mkdir(parents=True)
+    rows = [{"family": f, "name": f"{f}-{i}", "scene": f"s{i}", "kind": "none", "role": "A"} for f in cfg["families"] for i in range(n)]  # fmt: skip
+    for (f, sub, la, sc, dr), rate in rates.items():
+        hit, k = ("other" if f.startswith("R") else "b"), round(rate * n)
+        rows += [{"family": f, "name": f"{f}-{i}", "scene": f"s{i}", "kind": "push", "subset": sub, "layer": la,
+                  "scale": sc, "dir": dr, "role": hit if i < k else "A"} for i in range(n)]  # fmt: skip
+    (d / "outcomes.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+    (d / "manifest.json").write_text(json.dumps({"config": cfg, "model": {"repo": "Qwen/Qwen3.6-27B", "n_layers": 64}}))
+    keys = [f"{la}/{s}" for la in cfg["layers"] for s in ("s", "w")]
+    cases = [{"family": f, "name": f"{f}-{i}", "positions": {"w": [8], "s": [3, 4, 5, 6, 7, 8, 9]},
+              "ref": {str(la): 2.0 for la in cfg["layers"]}, "patch_norm": {k: 40.0 for k in keys},
+              **({"split_share": {k: {p: 0.3 for p in W.SPLIT_PARTS} for k in keys}} if cfg.get("split") else {})}
+             for f in cfg["families"] for i in range(n)]  # fmt: skip
+    (d / "cases.jsonl").write_text("".join(json.dumps(c) + "\n" for c in cases))
+
+
+def test_dose_and_split_runs_analyze_and_draw(tmp_path, monkeypatch):
+    pytest.importorskip("matplotlib")
+    monkeypatch.setattr(W, "RESULTS", tmp_path)
+    base = {**W.DEFAULTS, "scales": [4.0, 8.0], "rule": "v2", "subsets": ["s", "w"], "scenes": "fresh"}
+    layers = [16, 18, 20, 22, 24, 26, 28, 30]
+    rates = {}
+    for sub in ("w", "s"):
+        for la in layers:
+            for sc in (4.0, 8.0):
+                rates[("BL", sub, la, sc, "lens")] = 0.3 if la <= 18 else 0.0
+                rates[("BL", sub, la, sc, "patch_dir")] = 0.4 if la <= 26 else 0.0
+                rates[("BL", sub, la, sc, "random")] = 0.0
+                for f in ("BR", "RL", "RR"):
+                    rates[(f, sub, la, sc, "lens")] = 0.0
+            rates[("BL", sub, la, 0.0, "patch")] = 0.6 if la <= 26 else 0.0
+    _write_run(tmp_path / "ref", {**base, "layers": layers}, {k: v for k, v in rates.items() if k[4] != "patch_dir"})
+    cfg = {**base, "layers": layers, "patch": True, "gap_rule": "v2", "patch_dir": True, "same_scenes": "ref"}
+    _write_run(tmp_path / "dose", cfg, rates)
+    W.stage_analyze("dose")
+    W.stage_figures("dose")
+    s = json.loads((tmp_path / "dose" / "summary.json").read_text())
+    assert s["dose_test"]["w"]["verdict"].startswith("H-direction"), s["dose_test"]["w"]
+    assert s["layer_gap"]["w"]["verdict"] == "H-gap"
+    assert s["replication"]["same_role"]["lens"] == [12800, 12800]  # 4 families x 2 subsets x 8 layers x 2 scales x 100
+    assert s["scene_patch"]["patch_over_1x_lens"]["16/w"] == 20.0  # 40 / (2 x sqrt(1))
+    assert "Dose control (w)" in (tmp_path / "dose" / "summary.md").read_text()
+    assert list((tmp_path / "dose").glob("analysis-figures-*/dose.png"))
+
+    split_rates = {}
+    for sub in ("w", "s"):
+        for la in (14, 16, 18):
+            for part, r in (("full", 0.85), ("jspace", 0.3), ("not_jspace", 0.6), ("lens2", 0.1), ("not_lens2", 0.8)):
+                split_rates[("BL", sub, la, 0.0, f"split_{part}")] = r
+                split_rates[("BL", sub, la, 0.0, f"split_{part}_null")] = 0.0
+            for sc in (4.0, 8.0):
+                split_rates[("BL", sub, la, sc, "lens")] = 0.19 if sc == 8.0 else 0.0
+    _write_run(tmp_path / "split", {**base, "layers": [14, 16, 18], "split": True}, split_rates)
+    W.stage_analyze("split")
+    W.stage_figures("split")
+    s = json.loads((tmp_path / "split" / "summary.json").read_text())
+    assert s["split_test"]["w"]["verdict"].startswith("H-lens-part"), s["split_test"]["w"]
+    assert s["scene_patch"]["split_share"]["16/w"]["jspace"] == 0.3
+    assert list((tmp_path / "split").glob("analysis-figures-*/split.png"))

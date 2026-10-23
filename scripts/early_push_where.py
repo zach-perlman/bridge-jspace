@@ -83,8 +83,38 @@ lookup-relevant information before layer 20). H_input iff d_input's lower bound 
 switch <= 5% of lookups at every scale (layer 16 is an input edit). No lead iff the lens push switches <= 5% of lookups
 at 16-18. Else inconclusive.
 
-Stages:  run --name N --why W [--n K] [--scenes map|fresh] [--rule v1|v2] [--patch]   analyze --name N [--rule v2.1]
-         figures --name N
+The scene's patch (the two tests below): C - clean of the scene's prompt -> prompt case at the stated bridge's word (w)
+or sentence (s), one per scene for all four families. prompt -> memory reads the same context (its own patch there is
+the same); memory -> prompt and memory -> memory, whose own C changes only the question (their own patch there is zero),
+get it too, as they get the lens push's word difference, so their off-path check is a real one.
+
+Dose control (Dan, 23 Oct, before its run d4_layer_gap_dose_27b; `--patch --patch-dir --gap-rule v2 --same-scenes
+d4_layer_gap_v2_27b`): in d4_layer_gap_v2_27b the full patch moves lookups to layer 26 and the lens push stops at 20, but
+the patch has its own size, not the pushes'. A fifth arm, patch_dir: the scene's patch over the pushed positions, as one
+vector, rescaled to the lens push's norm there (scale x ref x sqrt(positions); at the word, one token, exactly the lens
+push's), at 4x and 8x. Same scenes (the draw is asserted equal to d4_layer_gap_v2_27b's), positions, layers and scales.
+With the layer-gap v2 machinery (each arm's valid cells, stops, moving; patch_dir's off-path rows are its own, its random
+push the one at the same scale): dose_stop = patch_dir's stop (never stopping counts as after the grid). At the word:
+H-direction (the gap is not dose) iff dose_stop - lens_stop >= 6 and patch_dir keeps moving at lens_stop; H-dose iff
+dose_stop - lens_stop <= 2; else inconclusive (partly dose). Reported: the sentence the same way, the full patch's and the
+lens push's stops (a replication of d4_layer_gap_v2_27b, with the share of items that keep their role), and the full
+patch's norm in units of the 1x lens push's.
+
+Layer-16 split (Dan, 23 Oct, before its run d4_l16_split_27b; `--split --same-scenes d4_layer_gap_v2_27b`, layers 14,
+16, 18): at w and s, the scene's patch split as statement_positions' parts (finding 2; exp04_brew_parts' code): the
+J-space part (25-atom signed OMP over the frozen J++'s letter-token vectors, per position) and the rest, the projection
+on the bridge's and X's own lens vectors (lens2) and the rest, and the full patch; each pasted at its own size, each with
+its null (every row a random direction at that row's norm). A part's cell is valid iff the part changes <= 10% of memory
+-> prompt and of memory -> memory answers and its null switches <= 5% of lookups. A valid part moves lookups iff the
+Wilson lower bound of the lookups switched to X is > 5%, and is inert iff the upper bound is < 5%. At the word, layer 16,
+interpretable only if the full patch moves lookups there (lower bound > 5%): H-lens-part (the early lens write reaches
+the lookup) iff the J-space part moves lookups; H-rest (the layer-16 movement is outside the lens part) iff the J-space
+part is inert and the rest moves them; else inconclusive (a J-space cell that is not valid included). Reported: layers
+14 and 18, the sentence, lens2 / not_lens2, each part's share of the patch's squared norm, the lens push at the same
+cells.
+
+Stages:  run --name N --why W [--n K] [--scenes map|fresh] [--rule v1|v2] [--patch] [--patch-dir] [--split]
+         [--same-scenes RUN]   analyze --name N [--rule v2.1]   figures --name N
 """
 
 from __future__ import annotations
@@ -111,7 +141,7 @@ from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from scripts import early_push as EP
 from scripts import suite_split as P
 from scripts import suite_v1 as S
-from scripts.exp04_brew_parts import AddRows, null_rows
+from scripts.exp04_brew_parts import K_ATOMS, AddRows, lens2_part, null_rows, signed_omp
 
 EXP = "early_push_where"
 RESULTS = pins.RESULTS_DIR / EXP
@@ -126,6 +156,9 @@ V21_MIN_LAYER = 20
 SEL_RATE, SEL_LO, RAND_MAX, OFF_PATH_MAX = 0.30, 0.20, 0.05, 0.10
 WHERE_RATE, WHERE_LO, AROUND_MAX, AROUND_GAP = 0.30, 0.20, 0.10, 0.20
 SLIDE6 = {"RL": 0.73, "RR": 0.84, "BL": 0.01, "BR": 0.02}  # early_push d4_push_wording_b_v1, b, layer 20, 8x
+GAP, NO_GAP = 6, 2  # the layer-gap v2 bars (layers), shared by the dose control
+SPLIT_PARTS = ("full", "jspace", "not_jspace", "lens2", "not_lens2")
+SPLIT_LAYER = 16
 BATCH = P.BATCH
 
 
@@ -199,6 +232,22 @@ def fresh_cases(tok, cfg: dict) -> tuple[list[dict], dict]:
             dropped.append(s)
     pool = len(set.intersection(*(set(v) for v in eligible.values())) - used)
     return cases, {"pool": pool, "picked": len(picked), "unaligned_dropped": dropped, "scenes": picked}
+
+
+def at_norm(delta: torch.Tensor, norms: torch.Tensor) -> torch.Tensor:
+    """The dose control's push: delta [P, d] as one vector, rescaled to the norm of a push with per-position norms
+    `norms` [P] (sqrt(sum norms^2)). Its direction is delta's, positions with no change stay at zero."""
+    size = float(delta.norm())
+    assert size > 0, "a zero patch has no direction"
+    return delta * (float(norms.norm()) / size)
+
+
+def split_patch(delta: torch.Tensor, dictionary: torch.Tensor, pair: torch.Tensor, k: int = K_ATOMS) -> dict:
+    """statement_positions' parts of a patch delta [P, d] (exp04_brew_parts' functions, as finding 2): the J-space part
+    (k-atom signed OMP per row over `dictionary`, the lens's unit letter-token vectors) and the rest, the projection on
+    `pair` (the bridge's and X's lens vectors) and the rest, and the full patch. Each pair of parts sums to delta."""
+    jspace, lens2 = signed_omp(dictionary, delta, k), lens2_part(delta, pair)
+    return {"full": delta, "jspace": jspace, "not_jspace": delta - jspace, "lens2": lens2, "not_lens2": delta - lens2}
 
 
 # ---- the decision (pure) ----------------------------------------------------------------------------------------------
@@ -305,30 +354,105 @@ def arm_cells(cells: dict[tuple, dict[str, str]], sub: str, la: int, arm: str) -
     return out
 
 
-def layer_gap_v2(cells: dict[tuple, dict[str, str]], layers: list[int], sub: str = "w") -> dict:
-    """The layer-gap test v2 (docstring; Dan, 22 Oct 23:30): an arm stops at a layer iff at every valid cell of that
-    layer its lookup switch rate has the Wilson upper bound < 5%; it keeps moving iff the lower bound > 5% at some valid
-    cell; arm_stop = the first grid layer from which it stops at every later layer with a valid cell. Pure."""
-
-    def state(arm: str, la: int) -> tuple[bool | None, bool]:
+def arm_course(cells: dict[tuple, dict[str, str]], layers: list[int], sub: str, arm: str) -> dict:
+    """One arm over the grid (layer-gap test v2): it stops at a layer iff at every valid cell of that layer its lookup
+    switch rate has the Wilson upper bound < 5% (None: no valid cell); it keeps moving iff the lower bound > 5% at some
+    valid cell; stop = the first grid layer from which it stops at every later layer with a valid cell. Pure."""
+    states = {}
+    for la in layers:
         rs = [cell_rate(cells[k]) for k in arm_cells(cells, sub, la, arm)]
-        return (all(r[2] < RAND_MAX for r in rs) if rs else None), any(r[1] > RAND_MAX for r in rs)
+        states[la] = ((all(r[2] < RAND_MAX for r in rs) if rs else None), any(r[1] > RAND_MAX for r in rs))
+    tested = [la for la in layers if states[la][0] is not None]
+    stop = next((la for i, la in enumerate(tested) if all(states[g][0] for g in tested[i:])), None)
+    return {"stop": stop, "stopped": {la: s[0] for la, s in states.items()}, "moving": {la: s[1] for la, s in states.items()}}  # fmt: skip
 
-    out: dict[str, Any] = {"subset": sub}
-    for arm in ("lens", "patch", "embed"):
-        states = {la: state(arm, la) for la in layers}
-        tested = [la for la in layers if states[la][0] is not None]
-        stop = next((la for i, la in enumerate(tested) if all(states[g][0] for g in tested[i:])), None)
-        out[arm] = {"stop": stop, "stopped": {la: s[0] for la, s in states.items()}, "moving": {la: s[1] for la, s in states.items()}}  # fmt: skip
+
+def layer_gap_v2(cells: dict[tuple, dict[str, str]], layers: list[int], sub: str = "w") -> dict:
+    """The layer-gap test v2 (docstring; Dan, 22 Oct 23:30), each arm's course by arm_course. Pure."""
+    out: dict[str, Any] = {"subset": sub, **{arm: arm_course(cells, layers, sub, arm) for arm in ("lens", "patch", "embed")}}  # fmt: skip
     ls, ps = out["lens"]["stop"], out["patch"]["stop"]
     if ls is None or ps is None:
         out["verdict"] = "inconclusive (an arm never stops for good)"
-    elif ps - ls >= 6 and out["patch"]["moving"].get(ls):
+    elif ps - ls >= GAP and out["patch"]["moving"].get(ls):
         out["verdict"] = "H-gap"
-    elif ps - ls <= 2:
+    elif ps - ls <= NO_GAP:
         out["verdict"] = "H-no-gap"
     else:
         out["verdict"] = "inconclusive"
+    return out
+
+
+def dose_test(cells: dict[tuple, dict[str, str]], layers: list[int], sub: str = "w") -> dict:
+    """The dose control (docstring; Dan, 23 Oct): the patch's direction at the lens push's norm (patch_dir) against the
+    lens push, with layer_gap_v2's stops; the full patch's course reported. Pure."""
+    out: dict[str, Any] = {"subset": sub, **{arm: arm_course(cells, layers, sub, arm) for arm in ("lens", "patch_dir", "patch")}}  # fmt: skip
+    ls, ds = out["lens"]["stop"], out["patch_dir"]["stop"]
+    gap = None if ls is None else (math.inf if ds is None else ds - ls)  # patch_dir never stopping: after the grid
+    out["gap"] = gap if gap is None or math.isfinite(gap) else "beyond the grid"
+    if gap is None:
+        out["verdict"] = "inconclusive (the lens push never stops for good)"
+    elif gap >= GAP and out["patch_dir"]["moving"].get(ls):
+        out["verdict"] = "H-direction: at the lens push's norm the patch's direction keeps moving lookups (the gap is not dose)"  # fmt: skip
+    elif gap <= NO_GAP:
+        out["verdict"] = "H-dose: at the lens push's norm the patch's direction stops with the lens push (the gap is dose)"  # fmt: skip
+    else:
+        out["verdict"] = "inconclusive (partly dose)"
+    return out
+
+
+def split_cell(cells: dict[tuple, dict[str, str]], sub: str, la: int, part: str) -> dict | None:
+    """One part of the scene's patch at (subset, layer): lookups switched to X, its null, memory -> prompt / memory ->
+    memory changed, valid (off-path <= 10%, null <= 5%), moves (valid, lower bound > 5%), inert (valid, upper < 5%)."""
+    bl = cells.get(("BL", sub, la, 0.0, f"split_{part}"))
+    if not bl:
+        return None
+    rate = cell_rate(bl)
+    null = cell_rate(cells.get(("BL", sub, la, 0.0, f"split_{part}_null"), {}))
+    off = {f: cell_rate(cells.get((f, sub, la, 0.0, f"split_{part}"), {}), "changed") for f in ("RL", "RR")}
+    valid = all(math.isnan(v[0]) or v[0] <= OFF_PATH_MAX for v in off.values()) and (math.isnan(null[0]) or null[0] <= RAND_MAX)  # fmt: skip
+    return {"n": len(bl), "lookups": rate, "null": null, "off_path": off, "valid": valid,
+            "moves": valid and rate[1] > RAND_MAX, "inert": valid and rate[2] < RAND_MAX}  # fmt: skip
+
+
+def split_test(cells: dict[tuple, dict[str, str]], layers: list[int], sub: str = "w", at: int = SPLIT_LAYER) -> dict:
+    """The layer-16 split (docstring; Dan, 23 Oct): which part of the scene's patch moves lookups at layer `at`. Pure."""
+    by = {la: {p: c for p in SPLIT_PARTS if (c := split_cell(cells, sub, la, p))} for la in layers}
+    full, j, rest = (by.get(at, {}).get(p) for p in ("full", "jspace", "not_jspace"))
+    if not (full and j and rest):
+        verdict = f"no data at layer {at}"
+    elif not full["lookups"][1] > RAND_MAX:
+        verdict = f"not interpretable: the full patch does not move lookups at layer {at}"
+    elif j["moves"]:
+        verdict = "H-lens-part: the J-space part moves lookups (the early lens write reaches the lookup)"
+    elif j["inert"] and rest["moves"]:
+        verdict = "H-rest: only the rest moves lookups (the movement is outside the lens part)"
+    else:
+        verdict = "inconclusive" + ("" if j["valid"] else " (the J-space part's cell is not valid)")
+    return {"subset": sub, "layer": at, "verdict": verdict, "cells": by}
+
+
+def agreement(a: dict[tuple, dict[str, str]], b: dict[tuple, dict[str, str]]) -> dict[str, list[int]]:
+    """Per arm, over the cells and items two runs share: [items with the same role, items]. Pure."""
+    out: dict[str, list[int]] = collections.defaultdict(lambda: [0, 0])
+    for key in a.keys() & b.keys():
+        for item in a[key].keys() & b[key].keys():
+            out[key[4]][0] += a[key][item] == b[key][item]
+            out[key[4]][1] += 1
+    return dict(sorted(out.items()))
+
+
+def scene_norms(case_rows: list[dict]) -> dict:
+    """Medians over scenes (prompt -> prompt rows): the scene's patch norm in units of the 1x lens push's (ref x
+    sqrt(positions)), and with --split each part's share of the patch's squared norm; keys 'layer/subset'."""
+    rows = [r for r in case_rows if r["family"] == "BL" and "patch_norm" in r]
+    out: dict[str, dict] = {"patch_over_1x_lens": {}, "split_share": {}}
+    for key in rows[0]["patch_norm"] if rows else []:
+        la, sub = key.split("/")
+        out["patch_over_1x_lens"][key] = round(statistics.median(
+            r["patch_norm"][key] / (r["ref"][la] * math.sqrt(len(r["positions"][sub]))) for r in rows), 2)  # fmt: skip
+        if "split_share" in rows[0]:
+            out["split_share"][key] = {p: round(statistics.median(r["split_share"][key][p] for r in rows), 4)
+                                       for p in rows[0]["split_share"][key]}  # fmt: skip
     return out
 
 
@@ -389,7 +513,7 @@ def decide(
 # ---- model ------------------------------------------------------------------------------------------------------------
 
 
-def run_scene(model, lens, scene: list[dict], cfg: dict, k0: int, out: dict) -> None:
+def run_scene(model, lens, scene: list[dict], cfg: dict, k0: int, out: dict, letters=None) -> None:
     layers = cfg["layers"]
     for c in scene:
         ids = torch.tensor([c["read"]["clean"], c["read"]["E-cue"]], device="cuda")
@@ -398,12 +522,34 @@ def run_scene(model, lens, scene: list[dict], cfg: dict, k0: int, out: dict) -> 
         r = c["subsets"]["r"]
         c["_ref"] = {la: float((rec[la][1][r] - rec[la][0][r]).norm(dim=-1).pow(2).mean().sqrt()) for la in layers}
         c["_logits"] = logits
-        if cfg.get("patch"):  # the full residual swap clean <- C (token-aligned) at each layer, for the patch rows
-            c["_delta"] = {la: rec[la][1] - rec[la][0] for la in layers}
+        if cfg.get("patch") or cfg.get("patch_dir") or cfg.get("split"):  # the full residual swap clean <- C
+            c["_delta"] = {la: rec[la][1] - rec[la][0] for la in layers}  # (token-aligned) at each layer
     ref = {la: math.sqrt(statistics.mean(c["_ref"][la] ** 2 for c in scene)) for la in layers}
+    if cfg.get("patch_dir") or cfg.get("split"):
+        scene_patch(model, lens, scene, cfg, letters)
     y = offscene_animal(scene[0])
     for i, c in enumerate(scene):
         run_item(model, lens, c, ref, y, cfg, k0 + i, out)
+
+
+@torch.no_grad()
+def scene_patch(model, lens, scene: list[dict], cfg: dict, letters) -> None:
+    """The scene's patch (docstring) at w and s for every case of the scene; with --split its parts at every layer (one
+    fp32 letter dictionary at a time, as statement_positions' parts)."""
+    src = next(c for c in scene if c["family"] == "BL")
+    pos = stated_positions(src)
+    patch = {(la, sub): src["_delta"][la][pos[sub]] for la in cfg["layers"] for sub in ("s", "w")}
+    parts: dict[tuple, dict] = {}
+    if cfg.get("split"):
+        pair = torch.tensor([model.concept_token(a) for a in (src["bridge"], src["cf_bridge"])], device="cuda")
+        for la in cfg["layers"]:
+            dictionary = lens.vectors(la, letters)
+            for sub in ("s", "w"):
+                parts[(la, sub)] = split_patch(patch[(la, sub)], dictionary, lens.vectors(la, pair))
+            del dictionary
+    for c in scene:
+        assert stated_positions(c) == pos, f"{c['id']}: the scene's families push different positions"
+        c["_scene_patch"], c["_parts"] = patch, parts
 
 
 def run_item(model, lens, c: dict, ref: dict, y: str, cfg: dict, k: int, out: dict) -> None:
@@ -435,6 +581,7 @@ def run_item(model, lens, c: dict, ref: dict, y: str, cfg: dict, k: int, out: di
             lg, _ = EP.forward_rows(model, torch.tensor([c["read"][e]], device="cuda"), [{}])
             emit({"kind": "edit", "edit": e}, lg[0])
     gen = torch.Generator(device="cuda").manual_seed(SEED + 1_000_003 * k)
+    gen_split = torch.Generator(device="cuda").manual_seed(SEED + 1_000_003 * k + 1)  # its own: gen's draws unchanged
     rows: list[tuple[dict, dict]] = []
     for la in cfg["layers"]:
         for sc in cfg["scales"]:
@@ -450,11 +597,19 @@ def run_item(model, lens, c: dict, ref: dict, y: str, cfg: dict, k: int, out: di
                 rows.append(({**tags, "dir": "offscene"}, {la: AddRows(EP.push_rows(dirs[la]["offscene"], norms), p)}))
                 if cfg.get("embed"):  # the same norms along the input-embedding difference
                     rows.append(({**tags, "dir": "embed"}, {la: AddRows(EP.push_rows(dirs[la]["embed"], norms), p)}))
+                if cfg.get("patch_dir") and sname in ("s", "w"):  # the scene's patch at the lens push's norm
+                    rows.append(({**tags, "dir": "patch_dir"}, {la: AddRows(at_norm(c["_scene_patch"][(la, sname)], norms), p)}))  # fmt: skip
         if cfg.get("patch"):
             for sname in ("s", "w"):  # C's residual at the stated bridge's sentence / word, at its own size (scale 0)
                 p = pos[sname]
                 tags = {"kind": "push", "layer": la, "scale": 0.0, "subset": sname, "dir": "patch"}
                 rows.append((tags, {la: AddRows(c["_delta"][la][p], p)}))
+        if cfg.get("split"):
+            for sname in ("s", "w"):  # the scene's patch's parts at their own size, each with its null
+                for part, vec in c["_parts"][(la, sname)].items():
+                    tags = {"kind": "push", "layer": la, "scale": 0.0, "subset": sname, "dir": f"split_{part}"}
+                    rows.append((tags, {la: AddRows(vec, pos[sname])}))
+                    rows.append(({**tags, "dir": f"split_{part}_null"}, {la: AddRows(null_rows(vec, gen_split), pos[sname])}))  # fmt: skip
     ids = torch.tensor([c["read"]["clean"]], device="cuda")
     for start in range(0, len(rows), BATCH - 1):
         chunk = rows[start : start + BATCH - 1]
@@ -462,10 +617,16 @@ def run_item(model, lens, c: dict, ref: dict, y: str, cfg: dict, k: int, out: di
         out["diag"].append(float((logits[0] - c["_logits"][0]).abs().max()))
         for j, (tags, _) in enumerate(chunk, start=1):
             emit(tags, logits[j])
-    out["cases"].append({**head, "bridge": c["bridge"], "cf_bridge": c["cf_bridge"], "offscene": y,
-                         "answer": c["answer"], "cf_answer": c["cf_answer"], "subject": c["subject"],
-                         "positions": pos, "prompt": c["prompts"]["clean"],
-                         "ref": {str(la): round(ref[la], 3) for la in cfg["layers"]}})  # fmt: skip
+    row = {**head, "bridge": c["bridge"], "cf_bridge": c["cf_bridge"], "offscene": y,
+           "answer": c["answer"], "cf_answer": c["cf_answer"], "subject": c["subject"],
+           "positions": pos, "prompt": c["prompts"]["clean"],
+           "ref": {str(la): round(ref[la], 3) for la in cfg["layers"]}}  # fmt: skip
+    if cfg.get("patch_dir") or cfg.get("split"):  # the scene's patch: its norm, and its parts' shares of its square
+        row["patch_norm"] = {f"{la}/{s}": round(float(v.norm()), 3) for (la, s), v in c["_scene_patch"].items()}
+        if c["_parts"]:
+            row["split_share"] = {f"{la}/{s}": {p: round(float(v.norm() ** 2 / ps["full"].norm() ** 2), 4) for p, v in ps.items()}
+                                  for (la, s), ps in c["_parts"].items()}  # fmt: skip
+    out["cases"].append(row)
 
 
 def stage_run(name: str, why: str, cfg: dict) -> None:
@@ -482,19 +643,26 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
     ]
     if cfg["scenes"] == "fresh":
         inputs += sorted({P.competence_file(f, cfg["wording"]) for f in cfg["families"]})
+    if cfg.get("same_scenes"):
+        inputs.append(RESULTS / cfg["same_scenes"] / "selection.json")
     doc = __doc__ or ""
     manifest = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "config": cfg,
                 "inputs": {str(p.relative_to(pins.REPO_ROOT)): sha256_of(p) for p in inputs},
                 "seeds": {"random": f"{SEED} + 1000003 x item index", "offscene": f"Random('{SEED}:<scene>')",
-                          "bootstrap": SEED, **({"fresh_scenes": cfg.get("fresh_seed", FRESH_SEED)} if cfg["scenes"] == "fresh" else {})},
+                          "bootstrap": SEED, **({"fresh_scenes": cfg.get("fresh_seed", FRESH_SEED)} if cfg["scenes"] == "fresh" else {}),
+                          **({"split_nulls": f"{SEED} + 1000003 x item index + 1"} if cfg.get("split") else {})},
                 "design": doc.split("Decision rule")[0], "decision": "Decision rule" + doc.split("Decision rule")[1].split("Stages:")[0]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     model = load_model()
     lens = JLens(model, pins.FROZEN_LENS)
+    letters = model.letter_token_ids() if cfg.get("split") else None
     t0 = time.time()
     if cfg["scenes"] == "fresh":
         raw, selection = fresh_cases(model.tokenizer, cfg)
+        if cfg.get("same_scenes"):  # the dose / split runs push on the layer-gap run's scenes, exactly
+            want = json.loads((RESULTS / cfg["same_scenes"] / "selection.json").read_text())
+            assert selection == want, f"the fresh draw differs from {cfg['same_scenes']}'s selection.json"
         (out_dir / "selection.json").write_text(json.dumps(selection, indent=2) + "\n")
         cases = [EP.augment(c, model.tokenizer, cfg["wording"]) for c in raw]
     else:
@@ -506,7 +674,7 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
     done = {"outcomes": 0, "cases": 0}
     k = 0
     for scene in progress(list(scenes.values()), desc="scenes"):
-        run_scene(model, lens, scene, cfg, k, out)
+        run_scene(model, lens, scene, cfg, k, out, letters)
         k += len(scene)
         for f in done:  # appended scene by scene: a run stopped early keeps every finished scene
             with open(out_dir / f"{f}.jsonl", "a") as fh:
@@ -577,6 +745,14 @@ def stage_analyze(name: str, rule: str | None = None) -> None:
     if cfg.get("embed") and not cfg.get("patch"):
         bridge_of = {c["name"]: c["bridge"] for c in map(json.loads, (RESULTS / name / "cases.jsonl").read_text().splitlines())}  # fmt: skip
         summary["embed_test"] = embed_test(cells, bridge_of, cfg["scales"])
+    if cfg.get("patch_dir"):
+        summary["dose_test"] = {sub: dose_test(cells, cfg["layers"], sub) for sub in ("w", "s")}
+    if cfg.get("split"):
+        summary["split_test"] = {sub: split_test(cells, cfg["layers"], sub) for sub in ("w", "s")}
+    if cfg.get("patch_dir") or cfg.get("split"):
+        summary["scene_patch"] = scene_norms([json.loads(x) for x in (RESULTS / name / "cases.jsonl").read_text().splitlines()])  # fmt: skip
+    if cfg.get("same_scenes"):  # the arms both runs have, item by item (the same scenes, so the same items)
+        summary["replication"] = {"run": cfg["same_scenes"], "same_role": agreement(cells, load_cells(cfg["same_scenes"])[1])}  # fmt: skip
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2, default=str) + "\n")
     lines = [f"# {EXP} / {name} (rule {dec['rule']})", "", f"Items: {counts}", "", f"**Verdict:** {dec['verdict']}", ""]
     if dec.get("primary"):
@@ -598,6 +774,32 @@ def stage_analyze(name: str, rule: str | None = None) -> None:
                       f"lookups moved by layer, lens {g.get('lens')}, patch {g.get('patch')}", ""]  # fmt: skip
         else:
             lines += [f"**Layer gap v2 ({sub}):** {g['verdict']}; stops: " + ", ".join(f"{arm} {g[arm]['stop']}" for arm in ("lens", "patch", "embed")), ""]  # fmt: skip
+    if "dose_test" in summary:
+        for sub, g in summary["dose_test"].items():
+            lines += [f"**Dose control ({sub}):** {g['verdict']}; stops: " + ", ".join(f"{arm} {g[arm]['stop']}" for arm in ("lens", "patch_dir", "patch")), ""]  # fmt: skip
+        lines += ["Lookups switched to X (prompt → prompt), by layer:", "",
+                  "| where | layer | lens 4x | lens 8x | patch dir. 4x | patch dir. 8x | full patch | random 8x |", "|---|---|---|---|---|---|---|---|"]  # fmt: skip
+        arms = [(4.0, "lens"), (8.0, "lens"), (4.0, "patch_dir"), (8.0, "patch_dir"), (0.0, "patch"), (8.0, "random")]
+        for sub in ("w", "s"):
+            for la in cfg["layers"]:
+                lines.append(f"| {sub} | {la} | " + " | ".join(pct(cell_rate(cells.get(("BL", sub, la, sc, d), {}))) for sc, d in arms) + " |")  # fmt: skip
+        lines += [""]
+    for sub, g in summary.get("split_test", {}).items():
+        lines += [f"**Layer-16 split ({sub}):** {g['verdict']}", "", "| layer | part | lookups → X | its null | memory → prompt / memory → memory changed | valid |", "|---|---|---|---|---|---|"]  # fmt: skip
+        for la, parts in g["cells"].items():
+            lines += [f"| {la} | {p} | {pct(c['lookups'])} | {pct(c['null'])} | {pct(c['off_path']['RL'])} / {pct(c['off_path']['RR'])} | {c['valid']} |"
+                      for p, c in parts.items()]  # fmt: skip
+        lines += [""]
+    if "replication" in summary:
+        rep = summary["replication"]
+        lines += [f"Same role as {rep['run']}, item by item: " + ", ".join(f"{arm} {k}/{n}" for arm, (k, n) in rep["same_role"].items()), ""]  # fmt: skip
+    if "scene_patch" in summary:
+        sp = summary["scene_patch"]
+        lines += ["The scene's patch in units of the 1x lens push's norm (median over scenes): "
+                  + ", ".join(f"{k} {v:g}x" for k, v in sp["patch_over_1x_lens"].items()), ""]  # fmt: skip
+        if sp["split_share"]:
+            lines += ["Each part's share of the patch's squared norm (median over scenes): " + "; ".join(
+                f"{k}: " + ", ".join(f"{p} {v:.0%}" for p, v in d.items() if p != "full") for k, d in sp["split_share"].items()), ""]  # fmt: skip
     if "below_v21" in dec:
         lines += [f"Valid cells below layer {min_layer} (reported, not decisive): "
                   + ("; ".join(f"{d['subset']} L{d['layer']} {d['scale']:g}x: BR {100 * d['br']:.0f}%, BL "
@@ -660,6 +862,108 @@ def stage_figures(name: str) -> None:
                  x=0.125, ha="left", fontweight="bold")  # fmt: skip
     fig.savefig(RESULTS / name / "where.png", dpi=150, bbox_inches="tight")
     print("wrote", RESULTS / name / "where.png")
+    if cfg.get("patch_dir") or cfg.get("split"):
+        test_figures(name, m, cells)
+
+
+def test_figures(name: str, m: dict, cells: dict) -> None:
+    """The dose control's and the layer-16 split's figures (prompt -> prompt lookups switched to X's answer, Wilson 95%
+    intervals) into a new <run>/analysis-figures-<stamp>/."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.lines import Line2D
+    from matplotlib.patches import Patch
+
+    from bridge_jspace.plotting import INK, MUTED, finish, percent_axis, style_axes
+
+    cfg, s = m["config"], json.loads((RESULTS / name / "summary.json").read_text())
+    folder = RESULTS / name / f"analysis-figures-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    folder.mkdir()
+    layers, model = cfg["layers"], m["model"]["repo"].split("/")[-1]
+    where = {"w": "at the bridge's word", "s": "over the sentence stating the bridge"}
+    blue, orange, aqua, yellow, grey = "#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#52514e"
+    draw = f" (the draw of {cfg['same_scenes']})" if cfg.get("same_scenes") else ""
+    data = (f"{model}; {cfg['n']} scenes{draw}, the prompt → prompt questions the model answers right unedited; "
+            "one run, one random seed.")  # fmt: skip
+
+    def rate(sub: str, la: int, sc: float, d: str) -> tuple[float, float, float]:
+        return cell_rate(cells.get(("BL", sub, la, sc, d), {}))
+
+    def split_plain(verdict: str) -> str:  # the rule's names in words (the other verdicts are words already)
+        v = verdict.split(":")[0]
+        return {"H-lens-part": "the lens-readable part of the patch moves lookups",
+                "H-rest": "only the rest of the patch moves lookups"}.get(v, v)  # fmt: skip
+
+    if "dose_test" in s:
+        arms = [("lens", "lens push (other − original bridge)", blue), ("patch_dir", "the patch's direction, cut to the lens push's size", orange)]  # fmt: skip
+        fig, axes = plt.subplots(1, 2, figsize=(11, 5.4), sharey=True)
+        for ax, sub in zip(axes, ("w", "s"), strict=True):
+            style_axes(ax)
+            for d, _, col in arms:
+                for sc, ls in ((8.0, "-"), (4.0, "--")):
+                    r = [rate(sub, la, sc, d) for la in layers]
+                    ax.plot(layers, [v[0] for v in r], color=col, ls=ls, lw=2, marker="o", ms=4)
+                    if sc == 8.0:
+                        ax.fill_between(layers, [v[1] for v in r], [v[2] for v in r], color=col, alpha=0.12, lw=0)
+            for d, sc, col, ls in (("patch", 0.0, aqua, "-"), ("random", 8.0, grey, ":")):
+                ax.plot(layers, [rate(sub, la, sc, d)[0] for la in layers], color=col, ls=ls, lw=2, marker="o" if d == "patch" else None, ms=4)  # fmt: skip
+            g = s["dose_test"][sub]
+            ax.set_title(f"{where[sub]}\nstops: lens push {g['lens']['stop']}, patch's direction {g['patch_dir']['stop']}, "
+                         f"whole patch {g['patch']['stop']}", loc="left", fontsize=9, color=INK)  # fmt: skip
+            ax.set_xlabel(f"layer (of {m['model'].get('n_layers', pins.N_LAYERS)})", color=MUTED)
+            ax.set_ylim(0, 1)
+            percent_axis(ax)
+        axes[0].set_ylabel("lookups switched to\nthe other bridge's answer", color=MUTED)
+        handles = [Line2D([], [], color=c, lw=2, label=lab) for _, lab, c in arms] + [
+            Line2D([], [], color=aqua, lw=2, marker="o", label="whole patch (its own size)"),
+            Line2D([], [], color=grey, lw=2, ls=":", label="random push 8x"),
+            Line2D([], [], color=MUTED, lw=2, ls="--", label="dashed: 4x, solid: 8x (band: 95% interval)")]  # fmt: skip
+        v = s["dose_test"]["w"]["verdict"].split(":")[0]
+        outcome = {"H-direction": "keeps moving lookups after the lens push stops", "H-dose": "stops with the lens push"}.get(v, "stops in between (inconclusive)")  # fmt: skip
+        finish(fig, folder / "dose.png", f"Cut to the lens push's size, the patch's direction {outcome} (word)", data,
+               handles=handles, ncols=3, handlelength=3, explain=[
+                   ("What we did", "At the stated bridge's word (and sentence), every second layer, we added the patch from the prompt "
+                    "that states the other bridge, rescaled to the lens push's size (4x, 8x a reference norm), next to the lens push itself and the whole patch at its own size."),
+                   ("How to read", "Each line is the share of lookups that switch to the other bridge's answer. A layer where an arm "
+                    "reads 0 from there on is where it stops. If the cut-down patch stops with the lens push, the whole patch moved more only because it is larger."),
+                   ("Control", "A random push of the lens push's size; memory → prompt and memory → memory answers must not move (off-path check, in summary.md).")])  # fmt: skip
+        print("wrote", folder / "dose.png")
+    if "split_test" in s:
+        bars = [("split_jspace", 0.0, "lens-readable part (J-space)", blue), ("split_not_jspace", 0.0, "the rest", orange),
+                ("split_full", 0.0, "whole patch", aqua), ("lens", 8.0, "lens push 8x", yellow)]  # fmt: skip
+        fig, axes = plt.subplots(1, 2, figsize=(11, 5.4), sharey=True)
+        for ax, sub in zip(axes, ("w", "s"), strict=True):
+            style_axes(ax)
+            for i, la in enumerate(layers):
+                for j, (d, sc, _, col) in enumerate(bars):
+                    x, r = i + (j - 1.5) * 0.2, rate(sub, la, sc, d)
+                    if math.isnan(r[0]):
+                        continue
+                    ax.bar(x, r[0], 0.18, color=col, edgecolor="#fcfcfb", lw=1)
+                    ax.plot([x, x], [r[1], r[2]], color=INK, lw=1)
+                    if d.startswith("split_"):
+                        ax.plot(x, rate(sub, la, 0.0, f"{d}_null")[0], marker="D", mfc="none", mec=INK, ms=5, ls="")
+                    if la == SPLIT_LAYER:
+                        ax.annotate(f"{r[0]:.0%}", (x, r[2]), xytext=(0, 2), textcoords="offset points", ha="center",
+                                    va="bottom", fontsize=7.5, color=INK)  # fmt: skip
+            ax.set_xticks(range(len(layers)), [f"layer {la}" for la in layers])
+            ax.set_title(f"{where[sub]}\n{split_plain(s['split_test'][sub]['verdict'])}", loc="left", fontsize=9, color=INK)  # fmt: skip
+            ax.set_ylim(0, 1.05)
+            percent_axis(ax)
+        axes[0].set_ylabel("lookups switched to\nthe other bridge's answer", color=MUTED)
+        handles = [Patch(color=c, label=lab) for *_, lab, c in bars] + [
+            Line2D([], [], marker="D", mfc="none", mec=INK, ls="", label="the part's null (random rows, same sizes)")]  # fmt: skip
+        outcome = split_plain(s["split_test"]["w"]["verdict"])
+        finish(fig, folder / "split.png", f"At layer {SPLIT_LAYER}, {outcome} (word)", data, handles=handles, ncols=3,
+               explain=[
+                   ("What we did", "The patch from the prompt that states the other bridge, at the bridge's word (and sentence), split "
+                    "into the part the lens can read (a 25-word fit on the lens's word directions) and the rest; each added at its own size."),
+                   ("How to read", "Bars: share of lookups that switch to the other bridge's answer (line: 95% interval). The lens push "
+                    "at 8x is the effect being explained; the whole patch is the sum of the two parts."),
+                   ("Control", "Each part's null (diamond); memory → prompt and memory → memory answers must not move (in summary.md).")])  # fmt: skip
+        print("wrote", folder / "split.png")
 
 
 if __name__ == "__main__":
@@ -672,6 +976,9 @@ if __name__ == "__main__":
     ap.add_argument("--patch", action="store_true", help="run: add the full patch of the C residual at s and w")
     ap.add_argument("--embed", action="store_true", help="run: add the input-embedding difference direction")
     ap.add_argument("--gap-rule", choices=["v1", "v2"], default="v1", help="run, with --patch: the layer-gap rule")
+    ap.add_argument("--patch-dir", action="store_true", help="run: the dose control (the scene's patch at the lens push's norm)")  # fmt: skip
+    ap.add_argument("--split", action="store_true", help="run: the scene's patch split, J-space part / rest")
+    ap.add_argument("--same-scenes", default=None, help="run, fresh scenes: assert this run's draw")
     ap.add_argument("--subsets", nargs="+", choices=list(WHERE), default=None, help="run: push positions (default all)")
     ap.add_argument("--rule", choices=["v1", "v2", "v2.1"], default=None,
                     help="run: the rule in the config (default v1); analyze: an amendment into a new folder")  # fmt: skip
@@ -696,6 +1003,13 @@ if __name__ == "__main__":
             cfg["gap_rule"] = a.gap_rule
         if a.embed:
             cfg["embed"] = True
+        if a.patch_dir:
+            cfg["patch_dir"] = True
+        if a.split:
+            cfg["split"] = True
+        if a.same_scenes:
+            assert a.scenes == "fresh", "--same-scenes compares a fresh draw"
+            cfg["same_scenes"] = a.same_scenes
         if a.subsets:
             cfg["subsets"] = a.subsets
         if a.scales:

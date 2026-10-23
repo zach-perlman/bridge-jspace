@@ -1,0 +1,51 @@
+id: d4_l16_split_27b
+title: "The layer-16 split: the full patch at the stated bridge's word split into its lens-readable part and the rest, layers 14, 16, 18 (Qwen3.6-27B, the layer-gap scenes)"
+thread: D4
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.5
+depends_on: []
+command: >-
+  uv run python scripts/early_push_where.py run --name d4_l16_split_27b --n 100 --scenes fresh --fresh-seed 2
+  --exclude-runs d4_where_fresh_27b --same-scenes d4_layer_gap_v2_27b --rule v2 --split --subsets s w
+  --layers 14 16 18 --context-layers 16 --scales 4 8 --v21-min-layer 20
+  --why "the layer-16 split: which part of the full patch at the stated bridge's word moves lookups at layers 14-18, the lens-readable (J-space) part or the rest"
+figures_command: uv run python scripts/early_push_where.py figures --name d4_l16_split_27b
+question: >-
+  At layer 16, at the stated bridge's word, which part of the full patch moves lookups: the part the lens can read (its
+  J-space part), or the rest?
+why_it_matters: >-
+  At layers 14-18 the lens push at the stated bridge's word moves some lookups (19% at layer 16, 8x) and from layer 20
+  none. Whether that early movement is the lens writing what the lookup uses, or an input edit by another name, is open:
+  the input-embedding push meant to settle it moved neither lookups nor recalls, so it was not a working control. The
+  full patch at the same place moves 85% of lookups at layer 16. Splitting it the way finding 2 does asks directly
+  whether its effect at layer 16 goes through the directions the lens reads. If the lens-readable part moves lookups,
+  the early lens write reaches the lookup and the claim "the lookup does not follow a lens-written stated bridge" holds
+  from layer 20 only; if only the rest does, the layer-16 movement is outside the lens part as well.
+hypotheses:
+  H-lens-part: 'the J-space part alone switches lookups at the word, layer 16 (Wilson lower bound > 5%, i.e. about 11/100 or more), at a valid cell'
+  H-rest: 'the J-space part is inert there (Wilson upper bound < 5%, i.e. 0/100 or close) and the rest switches lookups (lower bound > 5%)'
+  inconclusive: 'anything else: the J-space part between the two bars, neither part moving lookups, or the J-space cell failing the off-path or null check'
+decision_rule: >-
+  scripts/early_push_where.py's layer-16 split (docstring, written 23 Oct before this run). At the stated bridge's word
+  (decisive) and sentence (reported), layers 14, 16, 18, the scene's patch (the prompt -> prompt case's C - clean at
+  those positions, one per scene for all four families) is split as statement_positions' parts (finding 2), with the same
+  code (exp04_brew_parts.signed_omp, 25 atoms, over the frozen J++'s unit vectors of every letter-bearing token at that
+  layer; lens2_part): the J-space part and the rest, the projection on the bridge's and X's own lens vectors (lens2) and
+  the rest, and the full patch. Each is pasted at its own size, each with its null (every row a random direction at that
+  row's norm). A part's cell is valid iff the part changes <= 10% of memory -> prompt and of memory -> memory answers
+  (the same parts at the same positions) and its null switches <= 5% of lookups. A valid part moves lookups iff the
+  Wilson lower bound of lookups switched to X's answer is > 5%; it is inert iff the upper bound is < 5%. At the word,
+  layer 16, interpretable only if the full patch moves lookups there (lower bound > 5%): H-lens-part iff the J-space part
+  moves lookups; H-rest iff the J-space part is inert and the rest moves them; else inconclusive. Reported, not
+  decisive: layers 14 and 18; the sentence; lens2 / not_lens2; each part's share of the patch's squared norm (median over
+  scenes); the lens push (4x, 8x) and the random push at the same cells; recall (prompt -> memory) under each part;
+  item-by-item agreement with d4_layer_gap_v2_27b on the arms both runs have.
+controls:
+- 'each part''s null: random rows at that part''s row norms (a dose-matched random push per part)'
+- 'off-path: memory -> prompt and memory -> memory answers under the same parts at the same positions (<= 10% changed for a valid cell)'
+- 'positive control: the full patch must move lookups at the word, layer 16 (it moved 85% there in d4_layer_gap_v2_27b)'
+- 'the lens push (4x, 8x) and the random push at the same cells, re-run on the same items'
+n: '100 fresh scenes, four families: the draw of d4_layer_gap_v2_27b (seed 2 from a pool of 148); asserted equal to its selection.json at run time, and reproduced on the tokenizer before enqueue'
+seeds: [0, 2]
+notes: "Dan, 23 Oct: 'Plus the layer-16 split (lens part vs rest). Pre-register both.' Written before the run; nothing of this run opened. THE BARS ARE THE AGENT'S PROPOSAL, for Dan to change before the run: 'moves' = Wilson lower bound > 5% and 'inert' = upper bound < 5% are the layer-gap v2 rule's own bars; H-rest asks for the J-space part to be inert (about 0/100), not only 'not moving', so a J-space part at 2-10% reads inconclusive rather than H-rest. Where it lives: in early_push_where.py, not statement_positions.py, because it needs the layer-gap run's scenes, positions and lens push; the parts are computed by the very functions statement_positions' parts stage calls (signed_omp with K_ATOMS = 25 over model.letter_token_ids()'s J++ vectors, lens2_part), and statement_positions.py is untouched. Differences from finding 2's parts stage, by design: one patch per scene given to all four families (so the off-path rows are real; finding 2 used each family's own copy), no matched-alignment pieces and no random-dictionary fit (the per-part null is the dose control here). Memory: one fp32 letter dictionary (about 5 GB) at a time, next to the 27B (d4_layer_gap_v2_27b peaked at 62.9 GB). Estimated run: about 25 min (40,800 outcomes; d4_embed_27b did 47,200 in 23 min) plus one dictionary per scene and layer."
