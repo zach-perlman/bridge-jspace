@@ -491,3 +491,23 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   ("mid") as well as jointly; the cross-validated cell is chosen (by B's flip rate on even items) only among
   non-destructive cells, where the better of the two answers loses < 3 nats on even items; every cell's B and C flip
   rates are also reported. Predictions unchanged.
+
+## Amendment 19 (Zach, 2026-10-23 ~20:40 UTC): what the model says under the knock-out; two more natplus seeds
+
+- **Seen when this was written:** amendments 13-18's results except the band sweeps, the 27B natctl and the 9B
+  natplus: the 27B natplus gap 50 (popular 48, rare 55), the 9B natctl (K - M -50), the 27B three-step, the 27B
+  wrong-bridge test (knock-out margin -2.5 vs rotated -0.5; held-out writes B 24% vs C 14%), and the wrong-bridge
+  screens (9B 22 and Muse 23 of 100, under 30: no causal run on either; the test stays a 27B in-depth check).
+- **A. Generation spot-check (scripts/gen_spot.py):** the candidate read scores the first token only. For the first
+  25 eligible items per word (PP PM MP MM) of natplus_v1_chat, greedy 12-token replies unedited and under paper10,
+  paper10_rot and unembed10 at the model's band (27B L32-40, 9B L12-16, Muse L36-42), edits on prompt positions only
+  as in ablate_v2. Replies classed: answer, bridge (the bridge or one of its names: hop 1 given instead of hop 2),
+  other_cand (another answer of the relation), other. Predictions, 27B: the first step's candidate read agrees with
+  the knock-out run's rows on >= 95% of item x condition pairs; under paper10, > 50% of memory-final candidate-read
+  failures name another answer of the relation and < 20% name the bridge; prompt-final replies stay right on >= 85%;
+  rotated and unembed10 replies stay right on >= 90%. Muse: a visible share of its paper10 replies is "other" (its
+  top-read gap was a third larger than its candidate-read gap). Descriptive, no rule.
+- **B. Data seeds:** natplus_v2_chat (seed 903) and natplus_v3_chat (seed 904), made exactly as natplus_v1 (2 scenes
+  per bridge; 2,336 items each, no passage shared with natplus_v1). The 27B at L32-40 and the 9B at L12-16 as
+  amendment 14 (candidate read, paper10 / rot / unembed10 / rot, c1_v2, c1_specificity, natplus_split).
+  Predictions: amendment 14's for each seed; the popular-rare comparison is also pooled over the three seeds.
