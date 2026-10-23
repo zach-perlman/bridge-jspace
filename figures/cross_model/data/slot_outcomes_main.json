@@ -1,0 +1,2222 @@
+[
+ {
+  "value": 100.0,
+  "what": "% of answers: order",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   99.17,
+   100.0
+  ],
+  "n": 460,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "order"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.0,
+   0.83
+  ],
+  "n": 460,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "another"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: donor",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.0,
+   0.83
+  ],
+  "n": 460,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "donor"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: off_list",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": null,
+  "n": 460,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "off_list"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: unchanged",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.0,
+   0.83
+  ],
+  "n": 460,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "unchanged"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: identity",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.0,
+   0.83
+  ],
+  "n": 460,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "identity"
+  }
+ },
+ {
+  "value": 93.92624728850325,
+  "what": "% of answers: order",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   91.36,
+   95.76
+  ],
+  "n": 461,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "order"
+  }
+ },
+ {
+  "value": 1.735357917570499,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.88,
+   3.39
+  ],
+  "n": 461,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "another"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: donor",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.0,
+   0.83
+  ],
+  "n": 461,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "donor"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: off_list",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": null,
+  "n": 461,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "off_list"
+  }
+ },
+ {
+  "value": 2.386117136659436,
+  "what": "% of answers: unchanged",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   1.34,
+   4.22
+  ],
+  "n": 461,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "unchanged"
+  }
+ },
+ {
+  "value": 1.9522776572668112,
+  "what": "% of answers: identity",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   1.03,
+   3.67
+  ],
+  "n": 461,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "identity"
+  }
+ },
+ {
+  "value": 28.289473684210527,
+  "what": "% of answers: order",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   24.35,
+   32.59
+  ],
+  "n": 456,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "order"
+  }
+ },
+ {
+  "value": 14.692982456140351,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   11.74,
+   18.24
+  ],
+  "n": 456,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "another"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: donor",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.0,
+   0.84
+  ],
+  "n": 456,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "donor"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: off_list",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": null,
+  "n": 456,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "off_list"
+  }
+ },
+ {
+  "value": 26.75438596491228,
+  "what": "% of answers: unchanged",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   22.9,
+   31.0
+  ],
+  "n": 456,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "unchanged"
+  }
+ },
+ {
+  "value": 30.263157894736842,
+  "what": "% of answers: identity",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   26.23,
+   34.63
+  ],
+  "n": 456,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "identity"
+  }
+ },
+ {
+  "value": 12.581344902386117,
+  "what": "% of answers: order",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   9.86,
+   15.92
+  ],
+  "n": 461,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "order"
+  }
+ },
+ {
+  "value": 16.268980477223426,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   13.18,
+   19.91
+  ],
+  "n": 461,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "another"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: donor",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.0,
+   0.83
+  ],
+  "n": 461,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "donor"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: off_list",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": null,
+  "n": 461,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "off_list"
+  }
+ },
+ {
+  "value": 25.59652928416486,
+  "what": "% of answers: unchanged",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   21.83,
+   29.77
+  ],
+  "n": 461,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "unchanged"
+  }
+ },
+ {
+  "value": 45.5531453362256,
+  "what": "% of answers: identity",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   41.06,
+   50.12
+  ],
+  "n": 461,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "identity"
+  }
+ },
+ {
+  "value": 19.474835886214443,
+  "what": "% of answers: order",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   16.1,
+   23.35
+  ],
+  "n": 457,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "order"
+  }
+ },
+ {
+  "value": 14.442013129102845,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   11.52,
+   17.96
+  ],
+  "n": 457,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "another"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: donor",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.0,
+   0.83
+  ],
+  "n": 457,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "donor"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: off_list",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": null,
+  "n": 457,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "off_list"
+  }
+ },
+ {
+  "value": 31.728665207877462,
+  "what": "% of answers: unchanged",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   27.63,
+   36.13
+  ],
+  "n": 457,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "unchanged"
+  }
+ },
+ {
+  "value": 34.354485776805255,
+  "what": "% of answers: identity",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   30.15,
+   38.82
+  ],
+  "n": 457,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "identity"
+  }
+ },
+ {
+  "value": 90.76305220883535,
+  "what": "% of answers: order",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   86.52,
+   93.77
+  ],
+  "n": 249,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "order"
+  }
+ },
+ {
+  "value": 0.40160642570281124,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.07,
+   2.24
+  ],
+  "n": 249,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "another"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: donor",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.0,
+   1.52
+  ],
+  "n": 249,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "donor"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: off_list",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": null,
+  "n": 249,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "off_list"
+  }
+ },
+ {
+  "value": 5.220883534136546,
+  "what": "% of answers: unchanged",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   3.08,
+   8.73
+  ],
+  "n": 249,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "unchanged"
+  }
+ },
+ {
+  "value": 3.6144578313253013,
+  "what": "% of answers: identity",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   1.91,
+   6.73
+  ],
+  "n": 249,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "identity"
+  }
+ },
+ {
+  "value": 54.13533834586466,
+  "what": "% of answers: order",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   48.13,
+   60.02
+  ],
+  "n": 266,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "order"
+  }
+ },
+ {
+  "value": 2.6315789473684212,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   1.28,
+   5.33
+  ],
+  "n": 266,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "another"
+  }
+ },
+ {
+  "value": 0.37593984962406013,
+  "what": "% of answers: donor",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.07,
+   2.1
+  ],
+  "n": 266,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "donor"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: off_list",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": null,
+  "n": 266,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "off_list"
+  }
+ },
+ {
+  "value": 7.518796992481203,
+  "what": "% of answers: unchanged",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   4.92,
+   11.33
+  ],
+  "n": 266,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "unchanged"
+  }
+ },
+ {
+  "value": 35.338345864661655,
+  "what": "% of answers: identity",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   29.84,
+   41.25
+  ],
+  "n": 266,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "identity"
+  }
+ },
+ {
+  "value": 13.553113553113553,
+  "what": "% of answers: order",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   10.0,
+   18.12
+  ],
+  "n": 273,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "order"
+  }
+ },
+ {
+  "value": 9.89010989010989,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   6.89,
+   14.01
+  ],
+  "n": 273,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "another"
+  }
+ },
+ {
+  "value": 5.86080586080586,
+  "what": "% of answers: donor",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   3.64,
+   9.31
+  ],
+  "n": 273,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "donor"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: off_list",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": null,
+  "n": 273,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "off_list"
+  }
+ },
+ {
+  "value": 19.78021978021978,
+  "what": "% of answers: unchanged",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   15.49,
+   24.91
+  ],
+  "n": 273,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "unchanged"
+  }
+ },
+ {
+  "value": 50.91575091575091,
+  "what": "% of answers: identity",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   45.01,
+   56.79
+  ],
+  "n": 273,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "identity"
+  }
+ },
+ {
+  "value": 6.551724137931035,
+  "what": "% of answers: order",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   4.23,
+   10.01
+  ],
+  "n": 290,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "order"
+  }
+ },
+ {
+  "value": 11.724137931034482,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   8.51,
+   15.94
+  ],
+  "n": 290,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "another"
+  }
+ },
+ {
+  "value": 7.586206896551724,
+  "what": "% of answers: donor",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   5.06,
+   11.22
+  ],
+  "n": 290,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "donor"
+  }
+ },
+ {
+  "value": 0.6896551724137931,
+  "what": "% of answers: off_list",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": null,
+  "n": 290,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "off_list"
+  }
+ },
+ {
+  "value": 20.689655172413794,
+  "what": "% of answers: unchanged",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   16.43,
+   25.72
+  ],
+  "n": 290,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "unchanged"
+  }
+ },
+ {
+  "value": 52.758620689655174,
+  "what": "% of answers: identity",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   47.01,
+   58.43
+  ],
+  "n": 290,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "identity"
+  }
+ },
+ {
+  "value": 10.661764705882353,
+  "what": "% of answers: order",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   7.53,
+   14.89
+  ],
+  "n": 272,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "order"
+  }
+ },
+ {
+  "value": 10.661764705882353,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   7.53,
+   14.89
+  ],
+  "n": 272,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "another"
+  }
+ },
+ {
+  "value": 13.602941176470589,
+  "what": "% of answers: donor",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   10.03,
+   18.19
+  ],
+  "n": 272,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "donor"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: off_list",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": null,
+  "n": 272,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "off_list"
+  }
+ },
+ {
+  "value": 20.220588235294116,
+  "what": "% of answers: unchanged",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   15.88,
+   25.39
+  ],
+  "n": 272,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "unchanged"
+  }
+ },
+ {
+  "value": 44.85294117647059,
+  "what": "% of answers: identity",
+  "finding": null,
+  "model": "9b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   39.05,
+   50.79
+  ],
+  "n": 272,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "identity"
+  }
+ },
+ {
+  "value": 98.54545454545455,
+  "what": "% of answers: order",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   96.32,
+   99.43
+  ],
+  "n": 275,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "order"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.0,
+   1.38
+  ],
+  "n": 275,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "another"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: donor",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.0,
+   1.38
+  ],
+  "n": 275,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "donor"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: off_list",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": null,
+  "n": 275,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "off_list"
+  }
+ },
+ {
+  "value": 1.0909090909090908,
+  "what": "% of answers: unchanged",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.37,
+   3.16
+  ],
+  "n": 275,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "unchanged"
+  }
+ },
+ {
+  "value": 0.36363636363636365,
+  "what": "% of answers: identity",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.06,
+   2.03
+  ],
+  "n": 275,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "identity"
+  }
+ },
+ {
+  "value": 80.32128514056225,
+  "what": "% of answers: order",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   74.94,
+   84.78
+  ],
+  "n": 249,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "order"
+  }
+ },
+ {
+  "value": 4.016064257028113,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   2.2,
+   7.23
+  ],
+  "n": 249,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "another"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: donor",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.0,
+   1.52
+  ],
+  "n": 249,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "donor"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: off_list",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": null,
+  "n": 249,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "off_list"
+  }
+ },
+ {
+  "value": 8.032128514056225,
+  "what": "% of answers: unchanged",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   5.26,
+   12.08
+  ],
+  "n": 249,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "unchanged"
+  }
+ },
+ {
+  "value": 7.6305220883534135,
+  "what": "% of answers: identity",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   4.94,
+   11.61
+  ],
+  "n": 249,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "identity"
+  }
+ },
+ {
+  "value": 27.04626334519573,
+  "what": "% of answers: order",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   22.19,
+   32.52
+  ],
+  "n": 281,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "order"
+  }
+ },
+ {
+  "value": 15.302491103202847,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   11.56,
+   19.98
+  ],
+  "n": 281,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "another"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: donor",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.0,
+   1.35
+  ],
+  "n": 281,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "donor"
+  }
+ },
+ {
+  "value": 0.35587188612099646,
+  "what": "% of answers: off_list",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": null,
+  "n": 281,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "off_list"
+  }
+ },
+ {
+  "value": 30.96085409252669,
+  "what": "% of answers: unchanged",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   25.84,
+   36.59
+  ],
+  "n": 281,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "unchanged"
+  }
+ },
+ {
+  "value": 26.334519572953738,
+  "what": "% of answers: identity",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   21.53,
+   31.78
+  ],
+  "n": 281,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "identity"
+  }
+ },
+ {
+  "value": 20.21276595744681,
+  "what": "% of answers: order",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   15.94,
+   25.29
+  ],
+  "n": 282,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "order"
+  }
+ },
+ {
+  "value": 14.184397163120567,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   10.59,
+   18.74
+  ],
+  "n": 282,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "another"
+  }
+ },
+ {
+  "value": 1.0638297872340425,
+  "what": "% of answers: donor",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.36,
+   3.08
+  ],
+  "n": 282,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "donor"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: off_list",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": null,
+  "n": 282,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "off_list"
+  }
+ },
+ {
+  "value": 21.631205673758867,
+  "what": "% of answers: unchanged",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   17.22,
+   26.8
+  ],
+  "n": 282,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "unchanged"
+  }
+ },
+ {
+  "value": 42.90780141843972,
+  "what": "% of answers: identity",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   37.26,
+   48.74
+  ],
+  "n": 282,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "identity"
+  }
+ },
+ {
+  "value": 27.45098039215686,
+  "what": "% of answers: order",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   22.34,
+   33.23
+  ],
+  "n": 255,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "order"
+  }
+ },
+ {
+  "value": 22.352941176470587,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   17.67,
+   27.86
+  ],
+  "n": 255,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "another"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: donor",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.0,
+   1.48
+  ],
+  "n": 255,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "donor"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: off_list",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": null,
+  "n": 255,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "off_list"
+  }
+ },
+ {
+  "value": 18.431372549019606,
+  "what": "% of answers: unchanged",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   14.15,
+   23.65
+  ],
+  "n": 255,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "unchanged"
+  }
+ },
+ {
+  "value": 31.764705882352942,
+  "what": "% of answers: identity",
+  "finding": null,
+  "model": "32b",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   26.36,
+   37.71
+  ],
+  "n": 255,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "identity"
+  }
+ },
+ {
+  "value": 40.25423728813559,
+  "what": "% of answers: order",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   34.2,
+   46.62
+  ],
+  "n": 236,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "order"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.0,
+   1.6
+  ],
+  "n": 236,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "another"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: donor",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.0,
+   1.6
+  ],
+  "n": 236,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "donor"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: off_list",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": null,
+  "n": 236,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "off_list"
+  }
+ },
+ {
+  "value": 59.74576271186441,
+  "what": "% of answers: unchanged",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   53.38,
+   65.8
+  ],
+  "n": 236,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "unchanged"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: identity",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.0,
+   1.6
+  ],
+  "n": 236,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 1,
+   "outcome": "identity"
+  }
+ },
+ {
+  "value": 29.88929889298893,
+  "what": "% of answers: order",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   24.75,
+   35.59
+  ],
+  "n": 271,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "order"
+  }
+ },
+ {
+  "value": 0.36900369003690037,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.07,
+   2.06
+  ],
+  "n": 271,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "another"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: donor",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.0,
+   1.4
+  ],
+  "n": 271,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "donor"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: off_list",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": null,
+  "n": 271,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "off_list"
+  }
+ },
+ {
+  "value": 60.51660516605166,
+  "what": "% of answers: unchanged",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   54.59,
+   66.15
+  ],
+  "n": 271,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "unchanged"
+  }
+ },
+ {
+  "value": 9.22509225092251,
+  "what": "% of answers: identity",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   6.33,
+   13.26
+  ],
+  "n": 271,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 2,
+   "outcome": "identity"
+  }
+ },
+ {
+  "value": 1.845018450184502,
+  "what": "% of answers: order",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.79,
+   4.25
+  ],
+  "n": 271,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "order"
+  }
+ },
+ {
+  "value": 2.952029520295203,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   1.5,
+   5.72
+  ],
+  "n": 271,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "another"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: donor",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.0,
+   1.4
+  ],
+  "n": 271,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "donor"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: off_list",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": null,
+  "n": 271,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "off_list"
+  }
+ },
+ {
+  "value": 69.37269372693727,
+  "what": "% of answers: unchanged",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   63.65,
+   74.56
+  ],
+  "n": 271,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "unchanged"
+  }
+ },
+ {
+  "value": 25.830258302583026,
+  "what": "% of answers: identity",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   20.98,
+   31.35
+  ],
+  "n": 271,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "identity"
+  }
+ },
+ {
+  "value": 1.9305019305019304,
+  "what": "% of answers: order",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.83,
+   4.44
+  ],
+  "n": 259,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "order"
+  }
+ },
+ {
+  "value": 3.088803088803089,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   1.57,
+   5.98
+  ],
+  "n": 259,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "another"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: donor",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.0,
+   1.46
+  ],
+  "n": 259,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "donor"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: off_list",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": null,
+  "n": 259,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "off_list"
+  }
+ },
+ {
+  "value": 55.98455598455598,
+  "what": "% of answers: unchanged",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   49.9,
+   61.9
+  ],
+  "n": 259,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "unchanged"
+  }
+ },
+ {
+  "value": 38.996138996138995,
+  "what": "% of answers: identity",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   33.26,
+   45.06
+  ],
+  "n": 259,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "identity"
+  }
+ },
+ {
+  "value": 4.471544715447155,
+  "what": "% of answers: order",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   2.51,
+   7.83
+  ],
+  "n": 246,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "order"
+  }
+ },
+ {
+  "value": 3.658536585365854,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   1.94,
+   6.81
+  ],
+  "n": 246,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "another"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: donor",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   0.0,
+   1.54
+  ],
+  "n": 246,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "donor"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: off_list",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": null,
+  "n": 246,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "off_list"
+  }
+ },
+ {
+  "value": 63.41463414634146,
+  "what": "% of answers: unchanged",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   57.23,
+   69.18
+  ],
+  "n": 246,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "unchanged"
+  }
+ },
+ {
+  "value": 28.45528455284553,
+  "what": "% of answers: identity",
+  "finding": null,
+  "model": "gemma",
+  "setting": "5 sentences, draws pooled",
+  "part": "",
+  "ci": [
+   23.18,
+   34.39
+  ],
+  "n": 246,
+  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "identity"
+  }
+ }
+]
