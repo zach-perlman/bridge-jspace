@@ -4,9 +4,10 @@ figure guide, 6f; title and order from Dan, 23 Oct).
 The test (statement_positions parts runs judged by d1_verdict): the stated bridge is changed (Jack's pet: cow -> pig)
 and one part of that change is pasted back at the decisive cell (from a lens-free map): the lens-readable part
 (J-space), a random part keeping the lens part's share of the change (jspace_matched: the same size), or the rest. A bar
-is the % of answers switched to the new bridge's answer; lookups (the accent color) and recalls (dark grey) side by
-side for each part, in that order: the lens part, the random part beside it as its baseline (light grey), the rest as
-the reference that does move the lookup (lighter tints).
+is the % of answers switched to the new bridge's answer; lookups (the accent color) and recalls (dark grey, one shade
+per kind) side by side for each part, in that order: the lens part, the random part beside it as its baseline (light
+grey, its values printed: a 0 is drawn as a baseline tick, not left blank), the rest as the reference that does move
+the lookup. MAIN names the two kinds on the first panel's bars (direct labels) and defines them in the subtitle.
 
 Numbers: the lookups' lens part is the grid cell's value (common.cell_number); the recalls' lens part, the lookups' rest
 and both random parts are the cell's control text in grid.csv (source CONTROL, extra["control"] = the name in
@@ -24,6 +25,7 @@ uv run python scripts/figs/stated_bridge.py [--grid DIR] [--only main|full] [--o
 from __future__ import annotations
 
 import argparse
+import itertools
 import json
 import re
 import sys
@@ -34,6 +36,7 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
     sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 
+from bridge_jspace import plot_style as PS
 from scripts import cross_model_grid as G
 from scripts import readme_build as RB
 from scripts import readme_draft as RD
@@ -48,7 +51,9 @@ CONTROL = "grid.csv control"  # a number from a cell's control text (check_numbe
 JUDGED = ("holds", "fails", "not interpretable", "inconclusive", "open")
 
 TITLE = "The lens-readable part moves recall, not the lookup"  # Dan, 23 Oct; the 122B in the caption
-SUBTITLE = "% of answers switched when one part of a stated bridge's change is pasted back"
+SUBTITLE = "% switched to the new answer; lookups read it from the prompt, recalls from memory"
+HOW_MAIN = "a stated bridge's change is pasted back in part: lens part, same-size random part, or rest"
+HOW_FULL = "a stated bridge's change is pasted back in part; purple = lookups, grey = recalls"
 NUM = r"(-?\d+(?:\.\d+)?)"
 RECALL_LENS = re.compile(rf"recall, lens-readable part \(the control, needs >= 30%\): {NUM}% \[{NUM}, {NUM}\]")
 REST = re.compile(rf"lookup, the rest \(needs >= 50%\): {NUM}%")
@@ -56,14 +61,8 @@ RANDOM = re.compile(rf"same-share random part \(jspace_matched\): lookups {NUM}%
                     rf"recalls {NUM}% \[{NUM}, {NUM}\] n=(\d+)")  # fmt: skip
 
 
-def tint(hex_color: str, white: float) -> str:
-    """The color mixed with white (0: unchanged, 1: white)."""
-    rgb = [int(hex_color[i : i + 2], 16) for i in (1, 3, 5)]
-    return "#" + "".join(f"{round(c + (255 - c) * white):02x}" for c in rgb)
-
-
-COLOR = {("lookups", "lens"): C.LOOKUP, ("lookups", "rest"): tint(C.LOOKUP, 0.5), ("lookups", "random"): C.CONTROL,
-         ("recalls", "lens"): C.RECALL, ("recalls", "rest"): tint(C.RECALL, 0.45), ("recalls", "random"): C.CONTROL}  # fmt: skip
+FAMS = ("lookups", "recalls")
+COLOR = {"lookups": C.LOOKUP, "recalls": C.RECALL}  # one shade per kind for the lens part and the rest
 PALE = "#e3e3e3"  # a cell that is not interpretable (FULL only)
 SHOWN_WORD = {"holds": "holds", "fails": "fails", "not interpretable": "can't tell", "inconclusive": "can't tell"}
 
@@ -163,7 +162,8 @@ def untested(b: RB.Book, keys=None, f: str = F) -> str:
 
 # ---------------------------------------------------------------- drawing
 
-W, DX = 0.36, 0.2  # bar width; lookups at -DX, recalls at +DX of the part's place
+W, DX = 0.42, 0.24  # bar width; lookups at -DX, recalls at +DX of the part's place
+ALIGN = 15.0  # a place's two value labels whose bars' tops are this close (in %) are printed at one height
 
 
 def shift(fr: C.Frame, top: float = 0, bottom: float = 0) -> None:
@@ -174,45 +174,128 @@ def shift(fr: C.Frame, top: float = 0, bottom: float = 0) -> None:
     gs.update(top=gs.top - top / h, bottom=gs.bottom - bottom / h)
 
 
-def head(ax, left: str, right: str, size: float = C.LABEL) -> None:
-    """A panel's heading: `left` and a small grey word at the right (the verdict)."""
+def head(ax, left: str, right: str, size: float = C.LABEL, right_size: float = C.NOTE) -> None:
+    """A panel's heading: `left` and a grey word at the right (the verdict)."""
     ax.annotate(left, (0, 1), xycoords="axes fraction", xytext=(0, 10), textcoords="offset points", ha="left",
                 va="bottom", fontsize=size, color=C.INK)  # fmt: skip
     ax.annotate(right, (1, 1), xycoords="axes fraction", xytext=(0, 10), textcoords="offset points", ha="right",
-                va="bottom", fontsize=C.NOTE, color=C.CAPTION_INK)  # fmt: skip
+                va="bottom", fontsize=right_size, color=C.CAPTION_INK)  # fmt: skip
 
 
-def draw_panel(ax, bars: Bars, *, ticks: tuple[str, ...], label: tuple[str, ...], pale: bool = False) -> None:
-    """Three places (lens, rest, random), two bars each (lookups, recalls), thin light intervals; the value printed
-    above the bars of the families in `label` at the lens part (one family: above both bars, clear of the other's
-    interval in a narrow panel)."""
+def crosses(ax, bb) -> bool:
+    """A curve of the panel (Line2D gid "curve") passes through the box (each segment sampled in display space)."""
+    for ln in ax.get_lines():
+        if ln.get_gid() != "curve":
+            continue
+        xy = ln.get_transform().transform(ln.get_xydata())
+        for (x0, y0), (x1, y1) in itertools.pairwise(xy):
+            if any(bb.contains(x0 + (x1 - x0) * k / 40, y0 + (y1 - y0) * k / 40) for k in range(41)):
+                return True
+    return False
 
-    def top_of(num: C.Number | None) -> float:
-        return 0.0 if num is None else max(num.value, num.ci[1] if num.ci else num.value)
 
+def free(ax, t, avoid: list) -> bool:
+    """`t` inside its panel, touching no marker or interval of the figure, no curve or bar of its panel and no text
+    in `avoid`."""
+    r = PS.renderer(ax.figure)
+    bb = t.get_window_extent(r).padded(2)
+    box = ax.get_window_extent(r)
+    if not (box.contains(bb.x0, bb.y0) and box.contains(bb.x1, bb.y1)) or crosses(ax, bb):
+        return False
+    if any(bb.overlaps(g) for _, g in PS.graphic_boxes(ax.figure, r)):
+        return False
+    if any(p.get_height() > 0 and bb.overlaps(p.get_window_extent(r)) for p in ax.patches):
+        return False
+    return not any(bb.overlaps(o.get_window_extent(r)) for o in avoid if o is not t)
+
+
+def place(ax, cands: list, make, placed: list, *, required: bool = False):
+    """The first candidate whose text (`make(*candidate)`) is free (see `free`), added to `placed`. None free: nothing
+    drawn, or with `required` the first candidate (the save's overlap check then names it)."""
+    for cand in cands:
+        t = make(*cand)
+        ax.figure.canvas.draw()
+        if free(ax, t, placed):
+            placed.append(t)
+            return t
+        t.remove()
+    if required and cands:
+        t = make(*cands[0])
+        placed.append(t)
+        return t
+    return None
+
+
+def top_of(num: C.Number | None) -> float:
+    """The top of a bar's mark: its interval's upper end, else its value."""
+    return 0.0 if num is None else max(num.value, num.ci[1] if num.ci else num.value)
+
+
+def draw_panel(ax, bars: Bars, *, ticks: tuple[str, ...], label: tuple[str, ...], pale: bool = False,
+               random_values: bool = False, pad: float = 0.52) -> list:  # fmt: skip
+    """Three places (lens, random, rest), two bars each (lookups, recalls; the random part light grey), thin light
+    intervals. Values printed above the lens part's bars of the families in `label` (bold) and, with `random_values`,
+    above the random part's bars (grey): each over its own bar, the two of a place at one height when their bars end
+    within ALIGN of each other (one family labelled: above both bars, clear of the other's interval). A bar under half
+    a percent gets a short baseline tick in its color, so a 0 reads as a 0, not as missing. Returns the labels."""
+    texts = []
     for i, part in enumerate(PARTS):
-        both = max(top_of(bars.parts[fam].get(part)) for fam in ("lookups", "recalls"))
-        for fam, dx in (("lookups", -DX), ("recalls", DX)):
-            num = bars.parts[fam].get(part)
+        nums = {fam: bars.parts[fam].get(part) for fam in FAMS}
+        shown = [f for f in FAMS if nums[f] is not None and ((part == "lens" and f in label) or
+                                                              (part == "random" and random_values))]  # fmt: skip
+        tops = {f: top_of(nums[f]) for f in FAMS}
+        both = max(tops.values())
+        for fam, dx in zip(FAMS, (-DX, DX), strict=True):
+            num = nums[fam]
             if num is None:
                 continue
             x = i + dx
-            ax.bar(x, num.value, width=W, color=PALE if pale else COLOR[(fam, part)], linewidth=0, zorder=2)
+            color = PALE if pale else C.CONTROL if part == "random" else COLOR[fam]
+            ax.bar(x, num.value, width=W, color=color, linewidth=0, zorder=2)
+            if num.value < 0.5:  # drawn as nothing: a baseline tick in the bar's color
+                ax.plot([x - W / 2, x + W / 2], [0, 0], color=color, linewidth=4, solid_capstyle="butt", zorder=2.5,
+                        clip_on=False)  # fmt: skip
             if num.ci is not None:
                 lo, hi = max(0.0, num.ci[0]), num.ci[1]
                 ax.plot([x, x], [lo, hi], color=C.INK, linewidth=C.ERRORBAR["elinewidth"], alpha=C.ERRORBAR["alpha"],
                         solid_capstyle="butt", zorder=3, gid="ci")  # fmt: skip
-            top = top_of(num) if len(label) > 1 else both
-            if part == "lens" and fam in label:
-                ax.annotate(f"{RD.r0(num.value)}%", (x, top), xytext=(0, 4), textcoords="offset points", ha="center",
-                            va="bottom", fontsize=C.NOTE, color=C.CAPTION_INK if pale else C.INK,
-                            fontweight="normal" if pale else "bold", gid="value", zorder=4)  # fmt: skip
-    ax.set_xlim(-0.6, len(PARTS) - 0.4)
+            if fam not in shown:
+                continue
+            together = (len(shown) == 1 and part == "lens") or (
+                len(shown) == 2 and abs(tops[FAMS[0]] - tops[FAMS[1]]) <= ALIGN
+            )
+            strong = part == "lens" and not pale
+            texts.append(ax.annotate(f"{RD.r0(num.value)}%", (x, both if together else tops[fam]), xytext=(0, 4),
+                                     textcoords="offset points", ha="center", va="bottom", fontsize=C.NOTE,
+                                     color=C.INK if strong else C.CAPTION_INK,
+                                     fontweight="bold" if strong else "normal", gid="value", zorder=4))  # fmt: skip
+    ax.set_xlim(-pad, len(PARTS) - 1 + pad)  # a narrow panel needs more room for the first label
     ax.set_xticks(range(len(PARTS)), ticks)
     ax.tick_params(axis="x", length=0, pad=6)
     ax.set_ylim(0, 112)
     ax.set_yticks([0, 50, 100], ["0", "50", "100"])
     ax.spines["bottom"].set_color(C.CONTROL)
+    return texts
+
+
+def direct_labels(ax, bars: Bars, placed: list) -> None:
+    """'lookups' and 'recalls' in their colors right above a bar of theirs (the rest's, else the lens part's; above
+    its value label if it has one), at the first free place: the legend, drawn on the data."""
+    for fam in FAMS:
+        cands = []
+        for part in ("rest", "lens"):
+            num = bars.parts[fam].get(part)
+            if num is None:
+                continue
+            x = PARTS.index(part) + (-DX if fam == FAMS[0] else DX)
+            cands += [(x + off, top_of(num), dy, ha) for dy in (4, 22)
+                      for off, ha in ((0, "center"), (-W / 2, "left"), (W / 2, "right"))]  # fmt: skip
+
+        def make(x, y, dy, ha, fam=fam):
+            return ax.annotate(fam, (x, y), xytext=(0, dy), textcoords="offset points", ha=ha, va="bottom",
+                               fontsize=C.NOTE, color=COLOR[fam], fontweight="bold", gid="direct", zorder=4)  # fmt: skip
+
+        place(ax, cands, make, placed)
 
 
 def figure_main(b: RB.Book, root: Path = C.REPO) -> tuple[C.Frame, list[C.Number]]:
@@ -232,16 +315,17 @@ def figure_main(b: RB.Book, root: Path = C.REPO) -> tuple[C.Frame, list[C.Number
     exc += [f"{', '.join(can_t)}: can't tell (recall control fails)."] if can_t else []
     sets = ", ".join(sorted({RB.show(x.setting) for x in shown})).capitalize()
     exc += [f"{sets}, n = {ns[0]}-{ns[-1]}." if len(ns) > 1 else f"{sets}, n = {ns[0]}."]
-    fr = C.frame("main", TITLE, SUBTITLE, how="purple = lookups, grey = recalls; random = a random part of the same size",
-                 caption=" ".join(exc) + "\n" + untested(b), nrows=1, ncols=len(shown), left=0.085, wspace=0.18,
-                 sharey=True)  # fmt: skip
+    fr = C.frame("main", TITLE, SUBTITLE, how=HOW_MAIN, caption=" ".join(exc) + "\n" + untested(b), nrows=1,
+                 ncols=len(shown), left=0.085, wspace=0.12, sharey=True)  # fmt: skip
     shift(fr, top=30, bottom=C.LABEL * 1.8)
     numbers: list[C.Number] = [x.parts["lookups"]["lens"] for x in fails]  # the caption's numbers
     for ax, bars in zip(fr.axes, shown, strict=True):
-        draw_panel(ax, bars, ticks=("lens part", "random", "rest"), label=("lookups", "recalls"))
-        head(ax, C.MODEL[bars.model].name, SHOWN_WORD.get(bars.word, bars.word))
+        texts = draw_panel(ax, bars, ticks=("lens part", "random", "rest"), label=FAMS, random_values=True)
+        head(ax, C.MODEL[bars.model].name, SHOWN_WORD.get(bars.word, bars.word), right_size=C.LABEL)
         numbers += bars.numbers()
-        if ax is not fr.axes[0]:
+        if ax is fr.axes[0]:
+            direct_labels(ax, bars, texts)
+        else:
             ax.tick_params(axis="y", labelleft=False)
     fr.axes[0].set_ylabel("% switched")
     return fr, numbers
@@ -261,9 +345,8 @@ def figure_full(b: RB.Book, root: Path = C.REPO) -> tuple[C.Frame, list[C.Number
     ns = sorted({x.n for x in grid.values()})
     line1 = "Rule: holds if the lens part moves ≤ 10% of lookups and the rest ≥ 50%, and ≥ 30% of recalls. "
     line1 += f"n = {ns[0]}-{ns[-1]}." if len(ns) > 1 else f"n = {ns[0]}."
-    fr = C.frame("full", TITLE, SUBTITLE, how="purple = lookups, grey = recalls; pale = can't tell (a control fails)",
-                 caption=f"{line1}\n{untested(b)}", nrows=len(rows), ncols=len(cols), size=(12.0, 3.0 + 2.55 * len(rows)),
-                 left=0.125, wspace=0.2, hspace=0.62)  # fmt: skip
+    fr = C.frame("full", TITLE, SUBTITLE, how=HOW_FULL, caption=f"{line1}\n{untested(b)}", nrows=len(rows),
+                 ncols=len(cols), size=(12.0, 3.0 + 2.55 * len(rows)), left=0.125, wspace=0.2, hspace=0.62)  # fmt: skip
     shift(fr, top=30, bottom=C.LABEL * 1.8)
     numbers: list[C.Number] = []
     for r, m in enumerate(rows):  # short names: four setting columns need the width
@@ -277,8 +360,8 @@ def figure_full(b: RB.Book, root: Path = C.REPO) -> tuple[C.Frame, list[C.Number
                 ax.remove()
                 continue
             pale = bars.word not in ("holds", "fails")
-            draw_panel(ax, bars, ticks=("lens", "random", "rest"), label=("lookups",), pale=pale)
-            head(ax, RB.show(s), SHOWN_WORD.get(bars.word, bars.word), size=C.NOTE)
+            draw_panel(ax, bars, ticks=("lens", "random", "rest"), label=FAMS[:1], pale=pale, pad=0.68)
+            head(ax, RB.show(s), SHOWN_WORD.get(bars.word, bars.word), size=C.NOTE, right_size=C.NOTE)
             numbers += bars.numbers()
     return fr, numbers
 

@@ -186,8 +186,11 @@ def test_lens_push_curves_and_choices(tmp_path):
     assert big is not None and big.n_layers == 48 and big.depth == pytest.approx(68.75)
     fr, _ = LP.figure_main(b)  # MAIN: the README table's cell per model (scene set 2's main rule first)
     assert len(fr.axes) == 4
-    exc, invalid = LP.notes(b, {"27b": "main rule, draw 2"})
-    assert exc == ["27B set 1, main rule: 29% of lookups move at layer 16 (can't tell)"] and invalid == ["Muse"]
+    assert [n.extra["layer"] for n in LP.moved(cv)] == [16]  # the bump drawn and labelled
+    assert LP.exceptions(b, [cv]) == [
+        "27B: lookups move 19% at layer 16; on scene set 1 the main rule tested there (29%): can't tell."
+    ]
+    assert LP.invalid(b, {"27b"}) == ["Muse"]
 
 
 def test_files_that_disagree_with_the_grid_raise(tmp_path):

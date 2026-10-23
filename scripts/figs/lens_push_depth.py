@@ -23,7 +23,6 @@ uv run python scripts/figs/lens_push_depth.py [--grid DIR] [--only main|full] [-
 from __future__ import annotations
 
 import argparse
-import itertools
 import json
 import re
 import sys
@@ -56,7 +55,7 @@ MOVED = 5.0  # a lookup point whose Wilson lower bound is above this % is labell
 XLIM, XTICKS, YMAX = (12.0, 82.0), (20, 40, 60), 128.0  # room above 100% for the test point's label
 
 TITLE = "A lens push writes recall, not the lookup"
-SUBTITLE = "% of answers switched to the pushed bridge's answer, by depth of the lens push"
+SUBTITLE = "% switched when the stated bridge is pushed toward another animal, by depth"
 
 
 @dataclass
@@ -149,47 +148,27 @@ def random_is_zero(curves: list[Curve]) -> bool:
 # ---------------------------------------------------------------- drawing
 
 
-def crosses(ax, bb) -> bool:
-    """A curve of the panel (Line2D gid "curve") passes through the box (each segment sampled in display space)."""
-    for ln in ax.get_lines():
-        if ln.get_gid() != "curve":
-            continue
-        xy = ln.get_transform().transform(ln.get_xydata())
-        for (x0, y0), (x1, y1) in itertools.pairwise(xy):
-            if any(bb.contains(x0 + (x1 - x0) * k / 40, y0 + (y1 - y0) * k / 40) for k in range(41)):
-                return True
-    return False
+AROUND = ((7, 5, "left", "bottom"), (7, -5, "left", "top"), (-7, 5, "right", "bottom"), (-7, -5, "right", "top"),
+          (-8, 0, "right", "center"), (8, 0, "left", "center"), (-4, 12, "right", "bottom"),
+          (0, 14, "center", "bottom"), (-4, 24, "right", "bottom"))  # fmt: skip  # offsets (pt) around a point
 
 
-def free(ax, t, avoid: list) -> bool:
-    """`t` inside its panel, touching no marker or interval of the figure, no curve of its panel, no other text."""
-    fig = ax.figure
-    r = PS.renderer(fig)
-    bb = t.get_window_extent(r).padded(2)
-    if not ax.get_window_extent(r).contains(bb.x0, bb.y0) or not ax.get_window_extent(r).contains(bb.x1, bb.y1):
-        return False
-    if any(bb.overlaps(g) for _, g in PS.graphic_boxes(fig, r)) or crosses(ax, bb):
-        return False
-    return not any(bb.overlaps(o.get_window_extent(r)) for o in avoid if o is not t)
+def label(ax, x: float, y: float, texts: tuple[str, ...], placed: list, color: str, gid: str = "value",
+          required: bool = True):  # fmt: skip
+    """A label beside its point (x, y): the first free place around it (SB.free: no text, marker, curve or the
+    panel's edge in the way), trying each of `texts` in turn (the longest first). None free: with `required` the
+    shortest text at the first place (the save's overlap check then names it), else nothing."""
 
+    def make(dx, dy, ha, va, text):
+        return ax.annotate(text, (x, y), xytext=(dx, dy), textcoords="offset points", ha=ha, va=va, fontsize=C.NOTE,
+                           color=color, fontweight="bold", gid=gid, zorder=6, path_effects=PS.HALO)  # fmt: skip
 
-def label(ax, x: float, y: float, text: str, placed: list, color: str = C.INK, bold: bool = True) -> None:
-    """A value label beside its point: the first free place of up-right, down-right, up-left, down-left, left,
-    right, then farther above (free: see `free`; none free: the last candidate, and the save's check reports it)."""
-    t = None
-    for dx, dy, ha, va in ((7, 5, "left", "bottom"), (7, -5, "left", "top"), (-7, 5, "right", "bottom"),
-                           (-7, -5, "right", "top"), (-8, 0, "right", "center"), (8, 0, "left", "center"),
-                           (-4, 12, "right", "bottom"), (0, 14, "center", "bottom"), (-4, 24, "right", "bottom")):  # fmt: skip
+    for i, text in enumerate(texts):
+        last = i == len(texts) - 1
+        t = SB.place(ax, [(*o, text) for o in AROUND], make, placed, required=required and last)
         if t is not None:
-            t.remove()
-        t = ax.annotate(text, (x, y), xytext=(dx, dy), textcoords="offset points", ha=ha, va=va, fontsize=C.NOTE,
-                        color=color, fontweight="bold" if bold else "normal", gid="value", zorder=6,
-                        path_effects=PS.HALO)  # fmt: skip
-        ax.figure.canvas.draw()
-        if free(ax, t, placed):
-            break
-    if t is not None:
-        placed.append(t)
+            return t
+    return None
 
 
 def draw_panel(ax, cv: Curve, *, random_line: bool, placed: list) -> None:
@@ -204,30 +183,56 @@ def draw_panel(ax, cv: Curve, *, random_line: bool, placed: list) -> None:
     if random_line and cv.points.get("random"):
         pts = cv.points["random"]
         ax.plot([n.extra["depth"] for n in pts], [n.value for n in pts], color=C.CONTROL, linewidth=1.6, zorder=2)
-    ax.axvline(cv.depth, color=C.INK2, linewidth=1.1, zorder=0)
+    ax.axvline(cv.depth, color=C.INK2, linewidth=1.1, zorder=0, gid="curve")  # labels keep off it too
     ax.set_xlim(*XLIM)
     ax.set_xticks(XTICKS, [f"{t}%" for t in XTICKS])
     ax.set_ylim(0, YMAX)
     ax.set_yticks([0, 50, 100], ["0", "50", "100"])
     rec, look = cv.chosen["recall"], cv.chosen["lookup"]  # the values first: they carry the story
-    label(ax, cv.depth, rec.value, f"{RD.r0(rec.value)}%", placed, C.RECALL)
-    label(ax, cv.depth, look.value, f"{RD.r0(look.value)}%", placed, C.LOOKUP)
-    for n in cv.points["lookup"]:  # the exceptions: where the lookup moved
-        if n.extra["layer"] != cv.layer and n.ci is not None and n.ci[0] > MOVED:
-            label(ax, n.extra["depth"], n.value, f"{RD.r0(n.value)}%", placed, C.LOOKUP)
-    t = None  # the line's one label: at its top, on two lines where they fit, else one; else lower down
-    for y, sep, dx, ha in ((1, "\n", 6, "left"), (1, "\n", -6, "right"), (1, ": ", 6, "left"), (1, ": ", -6, "right"),
-                           (0.6, "\n", 6, "left"), (0.6, "\n", -6, "right")):  # fmt: skip
-        tp = f"test point{sep}{cv.where}, {cv.scale:g}x"
-        if t is not None:
+    label(ax, cv.depth, rec.value, (f"{RD.r0(rec.value)}%",), placed, C.RECALL)
+    label(ax, cv.depth, look.value, (f"{RD.r0(look.value)}%",), placed, C.LOOKUP)
+    for n in moved(cv):  # the exceptions: where the lookup moved (its layer named where it fits)
+        v = f"{RD.r0(n.value)}%"
+        label(ax, n.extra["depth"], n.value, (f"{v} (layer {n.extra['layer']})", v), placed, C.LOOKUP)
+
+    def make(y, sep, dx, ha):
+        return ax.annotate(f"test point{sep}{cv.where}, {cv.scale:g}x", (cv.depth, y),
+                           xycoords=("data", "axes fraction"), xytext=(dx, -2), textcoords="offset points", ha=ha,
+                           va="top", fontsize=C.NOTE, color=C.INK2, gid="testpoint", linespacing=1.15,
+                           multialignment=ha)  # fmt: skip
+
+    # the line's one label: at its top, on two lines where they fit, else one; else lower down
+    SB.place(ax, [(1, "\n", 6, "left"), (1, "\n", -6, "right"), (1, ": ", 6, "left"), (1, ": ", -6, "right"),
+                  (0.6, "\n", 6, "left"), (0.6, "\n", -6, "right")], make, placed, required=True)  # fmt: skip
+
+
+def moved(cv: Curve) -> list[C.Number]:
+    """The lookup points away from the test point whose Wilson lower bound is above MOVED (the lookup moved)."""
+    return [n for n in cv.points["lookup"] if n.extra["layer"] != cv.layer and n.ci is not None and n.ci[0] > MOVED]
+
+
+def name_curves(fr: C.Frame, curves: list[Curve], placed: list) -> None:
+    """'recalls' and 'lookups' on their curves, in their colors, in the first panel where both fit (the legend,
+    drawn on the data); anchored at a point of the curve: recalls from its highest point down, lookups where the
+    recall curve is farthest above it (the open space over the lookup line)."""
+    for ax, cv in zip(fr.axes, curves, strict=False):
+        got = []
+        rec = {n.extra["layer"]: n.value for n in cv.points["recall"]}
+        order = {
+            "recall": sorted(cv.points["recall"], key=lambda n: -n.value),
+            "lookup": sorted(cv.points["lookup"], key=lambda n, rec=rec: n.value - rec.get(n.extra["layer"], 0.0)),
+        }
+        for fam, word, color in (("recall", "recalls", C.RECALL), ("lookup", "lookups", C.LOOKUP)):
+            for n in order[fam]:
+                t = label(ax, n.extra["depth"], n.value, (word,), placed, color, gid="direct", required=False)
+                if t is not None:
+                    got.append(t)
+                    break
+        if len(got) == 2:
+            return
+        for t in got:  # only one fitted here: try the next panel for both
+            placed.remove(t)
             t.remove()
-        t = ax.annotate(tp, (cv.depth, y), xycoords=("data", "axes fraction"), xytext=(dx, -2),
-                        textcoords="offset points", ha=ha, va="top", fontsize=C.NOTE, color=C.INK2, gid="testpoint",
-                        linespacing=1.15, multialignment=ha)  # fmt: skip
-        ax.figure.canvas.draw()
-        if free(ax, t, placed):
-            break
-    placed.append(t)
 
 
 def scene_set(setting: str) -> str:
@@ -239,37 +244,62 @@ def rules(settings: list[str]) -> str:
     return "both rules" if kinds == {"main", "amended"} else f"{kinds.pop()} rule"
 
 
-def notes(b: RB.Book, shown: dict[str, str]) -> tuple[list[str], list[str]]:
-    """(exceptions: a judged setting that did not hold, with its numbers; models / settings without a valid cell)."""
-    exc, invalid = [], []
+def failing(b: RB.Book) -> list[RD.Cell]:
+    """The judged settings with a value that did not hold (fails, or the rule's own inconclusive)."""
+    return [c for mm in C.MODELS for c in b.of(F, mm.key)
+            if c.part == "" and c.setting in FULL_SETTINGS and c.word in ("fails", "inconclusive") and c.value is not None]  # fmt: skip
+
+
+def test_layer(c: RD.Cell) -> int | None:
+    mt = CELL.search(c.control)
+    return int(mt.group(2)) if mt else None
+
+
+def exceptions(b: RB.Book, curves: list[Curve]) -> list[str]:
+    """The MAIN caption's exceptions: each labelled lookup bump of a drawn curve (with the setting whose rule tested
+    at that layer, if one did not hold there), then the other settings that did not hold."""
+    out, said = [], set()
+    for cv in curves:
+        short = C.MODEL[cv.model].short
+        for n in moved(cv):
+            la = n.extra["layer"]
+            text = f"{short}: lookups move {RD.r0(n.value)}% at layer {la}"
+            there = [c for c in failing(b) if c.model == cv.model and test_layer(c) == la]
+            if there:
+                c = there[0]
+                said.add((c.model, c.setting))
+                text += (f"; on {scene_set(c.setting)} the {c.setting.split(',')[0]} tested there "
+                         f"({RD.r0(c.value or 0)}%): {SB.SHOWN_WORD[c.word]}")  # fmt: skip
+            out.append(text + ".")
+    for c in failing(b):
+        if (c.model, c.setting) not in said:
+            out.append(f"Exception: {C.MODEL[c.model].short} {scene_set(c.setting)}, {c.setting.split(',')[0]}: "
+                       f"{RD.r0(c.value or 0)}% of lookups move at layer {test_layer(c)} ({SB.SHOWN_WORD[c.word]}).")  # fmt: skip
+    return out
+
+
+def invalid(b: RB.Book, shown: set[str]) -> list[str]:
+    """Models (or, for a model drawn, its scene sets) whose rule found no valid test point."""
+    out = []
     for mm in C.MODELS:
-        cs = {c.setting: c for c in b.of(F, mm.key) if c.part == ""}
-        for s in FULL_SETTINGS:
-            c = cs.get(s)
-            if c is None or c.word not in ("fails", "inconclusive") or c.value is None:
-                continue
-            mt = CELL.search(c.control)
-            where = f" at layer {mt.group(2)}" if mt else ""
-            exc.append(f"{mm.short} {scene_set(s).replace('scene ', '')}, {s.split(',')[0]}: {RD.r0(c.value)}% of "
-                       f"lookups move{where} ({SB.SHOWN_WORD[c.word]})")  # fmt: skip
-        bad = sorted({scene_set(s).replace("scene ", "") for s, c in cs.items()
-                      if s in FULL_SETTINGS and c.word == "not interpretable"})  # fmt: skip
+        bad = sorted({scene_set(c.setting).replace("scene ", "") for c in b.of(F, mm.key)
+                      if c.part == "" and c.setting in FULL_SETTINGS and c.word == "not interpretable"})  # fmt: skip
         if bad:
-            invalid.append(f"{mm.short} {', '.join(bad)}" if mm.key in shown else mm.short)
-    return exc, invalid
+            out.append(f"{mm.short} {', '.join(bad)}" if mm.key in shown else mm.short)
+    return out
 
 
-def caption(b: RB.Book, curves: list[Curve], shown: dict[str, str], rule: bool) -> str:
-    exc, invalid = notes(b, shown)
+def caption(b: RB.Book, curves: list[Curve], rule: bool) -> str:
     rnd = "Random push: 0% at every layer." if random_is_zero(curves) else ""
     if rule:  # early_push_where's rule v2 and its amendment v2.1 (v21_min_layer: 31% of the depth on every model)
         first = ("Rule: test point = the valid cell moving most recalls (≥ 30%); holds if lookups ≤ 10%; amended: "
                  "from 31% depth.")  # fmt: skip
         second = ["Random push: 0%." if rnd else ""]
     else:
-        first, second = " ".join([f"Exception: {'; '.join(exc)}." if exc else "", rnd]).strip(), []
-    if invalid:
-        second.append(f"No valid test point: {', '.join(invalid)}.")
+        first, second = " ".join(exceptions(b, curves)), ["Random push: 0%." if rnd else ""]
+    bad = invalid(b, {cv.model for cv in curves})
+    if bad:
+        second.append(f"No valid test point: {', '.join(bad)}.")
     second.append(SB.untested(b, f=F))
     return first + "\n" + " ".join(x for x in second if x)
 
@@ -277,8 +307,8 @@ def caption(b: RB.Book, curves: list[Curve], shown: dict[str, str], rule: bool) 
 def how(curves: list[Curve], random_line: bool) -> str:
     ns = sorted({n.n for cv in curves for n in cv.points["lookup"] if n.n is not None})
     n = f"{ns[0]}-{ns[-1]}" if len(ns) > 1 else str(ns[0])
-    extra = ", light grey = random push" if random_line else ""
-    return f"purple = lookups, grey = recalls (the control){extra}; bands: 95% CI, n = {n}"
+    extra = "; light grey: a random push" if random_line else ""
+    return f"push along the lens; 8x = eight times a typical change; bands: 95% CI, n = {n}{extra}"
 
 
 def figure_main(b: RB.Book, root: Path = C.REPO) -> tuple[C.Frame, list[C.Number]]:
@@ -294,9 +324,8 @@ def figure_main(b: RB.Book, root: Path = C.REPO) -> tuple[C.Frame, list[C.Number
     if len(curves) > 4:
         raise ValueError("finding 7: more than 4 models with a test point; MAIN has at most 4 panels")
     random_line = not random_is_zero(curves)
-    fr = C.frame("main", TITLE, SUBTITLE, how=how(curves, random_line),
-                 caption=caption(b, curves, {cv.model: cv.settings[0] for cv in curves}, rule=False), nrows=1,
-                 ncols=len(curves), left=0.075, wspace=0.1, sharex=True, sharey=True)  # fmt: skip
+    fr = C.frame("main", TITLE, SUBTITLE, how=how(curves, random_line), caption=caption(b, curves, rule=False),
+                 nrows=1, ncols=len(curves), left=0.075, wspace=0.1, sharex=True, sharey=True)  # fmt: skip
     SB.shift(fr, top=48)
     placed: list = []
     numbers: list[C.Number] = []
@@ -306,6 +335,7 @@ def figure_main(b: RB.Book, root: Path = C.REPO) -> tuple[C.Frame, list[C.Number
         numbers += cv.numbers()
         if i:
             ax.tick_params(axis="y", labelleft=False)
+    name_curves(fr, curves, placed)
     fr.axes[0].set_ylabel("% switched")
     xlabel(fr, fr.axes)
     return fr, numbers
@@ -345,10 +375,9 @@ def figure_full(b: RB.Book, root: Path = C.REPO) -> tuple[C.Frame, list[C.Number
     random_line = not random_is_zero(curves)
     ncols = 3
     nrows = (len(curves) + ncols - 1) // ncols
-    fr = C.frame("full", TITLE, SUBTITLE, how=how(curves, random_line),
-                 caption=caption(b, curves, {cv.model: cv.settings[0] for cv in curves}, rule=True), nrows=nrows,
-                 ncols=ncols, size=(12.0, 3.4 + 3.6 * nrows), left=0.075, wspace=0.1, hspace=0.75, sharex=True,
-                 sharey=True)  # fmt: skip
+    fr = C.frame("full", TITLE, SUBTITLE, how=how(curves, random_line), caption=caption(b, curves, rule=True),
+                 nrows=nrows, ncols=ncols, size=(12.0, 3.4 + 3.6 * nrows), left=0.075, wspace=0.1, hspace=0.75,
+                 sharex=True, sharey=True)  # fmt: skip
     SB.shift(fr, top=48)
     placed: list = []
     numbers: list[C.Number] = []
@@ -366,6 +395,7 @@ def figure_full(b: RB.Book, root: Path = C.REPO) -> tuple[C.Frame, list[C.Number
         else:
             ax.set_ylabel("% switched")
         ax.tick_params(axis="x", labelbottom=True)
+    name_curves(fr, curves, placed)
     for r in range(nrows):  # one x label under each row of panels
         xlabel(fr, [ax for ax in fr.axes[r * ncols : (r + 1) * ncols] if ax in fr.fig.axes])
     return fr, numbers
