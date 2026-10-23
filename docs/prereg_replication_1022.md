@@ -317,7 +317,7 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   pilot (amendment 10). Kept: the diagnostic (B), the 27B's third seed (A), C2 on fresh_v8s2 for the 9B and Muse (C), and
   the 122B all-layer row (D).
 
-## Amendment 10 (Zach, 2026-10-23 ~07:45 UTC): the bridge-in-context control and a natural-text pilot
+## Amendment 10 (Zach, 2026-10-23 ~07:15 UTC): the bridge-in-context control and a natural-text pilot
 
 - **Seen when this was written:** amendment 9's 27B third seed (gap 40, HOLDS) and the diagnostics on the 9B,
   Olmo-Hybrid and Olmo-3; an audit of full_v8: the bridge word appears in the context of 112/112 items of every two-step
