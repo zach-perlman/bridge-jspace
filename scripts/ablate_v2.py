@@ -159,7 +159,30 @@ def tasks_prompts(tok, set_name: str, comp_run: str, words: list[str] | None, n:
             )
             out.append({"family": it["word"], "id": it["id"], "kind": kind, "ids": ids, "tok": S.answer_token(tok, a, k),
                         "bridge": it["steps"][0]["answer"], "domain": it["domain"], "format": it["format"]})  # fmt: skip
+            if "framing" in it:  # natural_v1 (2026-10-23): the read's candidates, its relation's answers (bridges for hop 1)
+                vocab = natural_vocab(set_name)[(it["domain"], "bridge" if kind == "step1" else "answer")]
+                out[-1]["cands"] = sorted({S.answer_token(tok, v, k) for v in vocab} | {out[-1]["tok"]})
     return out
+
+
+_NATURAL_VOCAB: dict = {}
+
+
+def natural_vocab(set_name: str) -> dict:
+    """natural_v1 sets: per relation (domain), every answer and every bridge (with a person's first name) in the set."""
+    if set_name not in _NATURAL_VOCAB:
+        from scripts import natural_v1 as N
+        from scripts import tasks_v2 as T
+
+        v: dict = {}
+        for it in T.load(set_name):
+            v.setdefault((it["domain"], "answer"), set()).add(it["answer"])
+            v.setdefault((it["domain"], "bridge"), set()).update(it["steps"][0].get("alts", [it["bridge"]]))
+        for (dom, kind), vals in list(v.items()):
+            if kind == "bridge":
+                vals |= {N.FIRST_NAMES.get(x, x) for x in vals}
+        _NATURAL_VOCAB[set_name] = v
+    return _NATURAL_VOCAB[set_name]
 
 
 def answertype_prompts(tok, n: int) -> list[dict]:
@@ -176,6 +199,18 @@ def answertype_prompts(tok, n: int) -> list[dict]:
             out.append({"family": fam, "id": sc["scene"], "kind": "clean", "ids": ids,
                         "tok": S.answer_token(tok, ans, kind), "bridge": sc["bridge"]})  # fmt: skip
     return out
+
+
+def reads(logits, p: dict, read: str) -> dict:
+    """correct: the answer's first token is the top token ("top", every run before 2026-10-23) or, for prompts with
+    candidates (natural_v1), the top among its relation's candidate answers ("cand": format tokens cannot fail it).
+    Both are recorded when the prompt has candidates."""
+    top = int(logits.argmax()) == p["tok"]
+    if "cands" not in p:
+        return {"correct": top}
+    c = torch.tensor(p["cands"], device=logits.device)
+    cand = int(c[logits[c].argmax()]) == p["tok"]
+    return {"correct": cand if read == "cand" else top, "correct_top": top, "correct_cand": cand}
 
 
 def bridge_positions(tok, ids: list[int], word: str) -> list[int]:
@@ -276,7 +311,7 @@ def main(args) -> None:
                 "git_commit": commit, "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
                 "plan": args.plan, "bands": [label(b) for b in bands], "conditions": args.conditions,
                 "families": args.families, "kinds": args.kinds, "skip": args.skip, "wording": args.wording, "n_per_family": args.n, "batch": args.batch,
-                "tf32": not args.no_tf32, "workspace_start": args.workspace, "positions": args.positions, "pad": args.pad, "competence": args.competence, "countries_build": args.countries_build, "tasks": [args.tasks, args.tasks_competence, args.tasks_words, args.tasks_level, args.tasks_strata], "tasks_per_word": args.tasks_per_word, "wide": WIDE, "seed_offset": args.seed_offset, "seeds": {"rotation": f"{SEED_ROT + args.seed_offset}+layer", "rotated_dictionary": f"{SEED_DICT + args.seed_offset}+layer",
+                "tf32": not args.no_tf32, "workspace_start": args.workspace, "positions": args.positions, "pad": args.pad, "competence": args.competence, "countries_build": args.countries_build, "tasks": [args.tasks, args.tasks_competence, args.tasks_words, args.tasks_level, args.tasks_strata], "tasks_per_word": args.tasks_per_word, "read": args.read, "wide": WIDE, "seed_offset": args.seed_offset, "seeds": {"rotation": f"{SEED_ROT + args.seed_offset}+layer", "rotated_dictionary": f"{SEED_DICT + args.seed_offset}+layer",
                 "gauss": f"{SEED_GAUSS}+layer"}, "own_cos": OWN_COS, "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 
@@ -379,7 +414,7 @@ def main(args) -> None:
             base_logp = clean.log_softmax(-1).gather(1, answer[:, None]).squeeze(1)
             for row, p in enumerate(chunk):
                 rows_out.append({"family": p["family"], "id": p["id"], "kind": p["kind"], "band": "-", "condition": "none",
-                                 "correct": int(clean[row].argmax()) == p["tok"], "logp": float(base_logp[row])})  # fmt: skip
+                                 **reads(clean[row], p, args.read), "logp": float(base_logp[row])})  # fmt: skip
             protected = [row_of[t][row_of[t] >= 0] for t in clean.topk(10, dim=1).indices]
             # does the protected set (clean top-10 at the answer position) shield the bridge itself? (logged per row)
             shields = [bool(p["bridge"]) and bool(set(model.surface_ids(p["bridge"])) & set(t.tolist()))
@@ -422,7 +457,7 @@ def main(args) -> None:
                     logp = logits.log_softmax(-1).gather(1, answer[:, None]).squeeze(1)
                     for row, p in enumerate(chunk):
                         rows_out.append({"family": p["family"], "id": p["id"], "kind": p["kind"], "band": label(band),
-                                         "condition": cond, "correct": int(logits[row].argmax()) == p["tok"],
+                                         "condition": cond, **reads(logits[row], p, args.read),
                                          "logp": float(logp[row]), "bridge_protected": shields[row], "bridge": p["bridge"]})  # fmt: skip
                 band_seconds[label(band)] += time.time() - tb
             with rows_path.open("a") as fh:  # this batch's rows, so partial results are readable during the run
@@ -513,6 +548,8 @@ if __name__ == "__main__":
     )
     ap.add_argument("--no-tf32", action="store_true", help="full fp32 matmuls (the v1 numerics check)")
     ap.add_argument("--tasks", default=None, help="a tasks_v2 set to draw prompts from instead of the suite")
+    ap.add_argument("--read", choices=["top", "cand"], default="top",
+                    help='"cand" (natural_v1 only): correct = top among the relation\'s candidate answers')
     ap.add_argument("--tasks-competence", default=None, help="its competence run (eligibility: every part right)")
     ap.add_argument("--tasks-words", nargs="*", default=None, help="tasks_v2 words to include (default: all)")
     ap.add_argument("--skip", type=int, default=0, help="skip the first K eligible items per family (a fresh sample)")

@@ -389,3 +389,17 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   (paper10, rotated) by c1_v2, then the logit-lens control (unembed10, rotated) by c1_specificity.
 - **Prediction:** both stay null (gap < 15), as on the toy suite. A J-specific gap >= 30 would mean the toy suite hid
   their dependence too.
+
+## Amendment 13 (Zach, 2026-10-23 ~13:45 UTC): a format-robust read for the natural sets
+
+- **Seen when this was written:** everything through amendment 12 (EXPERIMENTS.md through 95f5897), and checks on the
+  natural chat runs: wrong first tokens are almost all wrong answers, not format tokens (Olmo-3: "The" 57 times);
+  dropping guessable items leaves the gaps (27B 52, 9B 39, Muse 86); the answer protection shields the bridge on
+  8-15% of natural rows (toy 0%).
+- **What changes:** a second read, "cand": an answer is right if its first token scores highest among its relation's
+  answers (for hop 1, among the relation's bridges and people's first names). Format tokens ("The", whitespace)
+  cannot fail it. Competence (eligibility) and the knock-out both use it in these runs; every row also keeps the
+  top-token read. Re-scored: the 27B on natural_v1_chat (the run of record) and natural_v1_qa (0% under the top read);
+  the 122B on natural_v1_chat at L24-30 with the logit-lens control; then the 9B and Muse on natural_v1_chat.
+- **Prediction:** the 27B / 9B / Muse gaps move by < 10 points (their prompt-final words already rule out a global
+  format change); if the 122B's breakage is a format artefact, its prompt-final words recover under "cand".

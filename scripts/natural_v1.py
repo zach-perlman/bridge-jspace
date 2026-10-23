@@ -350,9 +350,23 @@ def derive_qa(name: str) -> None:
     print(f"{dst.name}: {len(items)} items")
 
 
-def competence(set_name: str, run: str, why: str) -> None:
-    """Whole question, each hop alone and the guess prompt, one forward each: correct = the answer's first token is the
-    top token (the read every knock-out run uses). Rows and summary in tasks_v2's competence format."""
+def vocab_of(items: list[dict]) -> dict:
+    """Per relation (domain): every answer, and every bridge with a person's first name (the candidate-rank read)."""
+    v: dict = {}
+    for it in items:
+        v.setdefault((it["domain"], "answer"), set()).add(it["answer"])
+        v.setdefault((it["domain"], "bridge"), set()).update(it["steps"][0].get("alts", [it["bridge"]]))
+    for (dom, kind), vals in list(v.items()):
+        if kind == "bridge":
+            vals |= {FIRST_NAMES.get(x, x) for x in vals}
+    return v
+
+
+def competence(set_name: str, run: str, why: str, read: str = "top") -> None:
+    """Whole question, each hop alone and the guess prompt, one forward each. read "top": correct = the answer's first
+    token is the top token (a person's first name counts for hop 1); read "cand" (2026-10-23): the top among the
+    relation's candidate answers (bridges for hop 1), so format tokens cannot fail it, as ablate_v2 --read cand. Both
+    reads are recorded either way. Rows and summary in tasks_v2's competence format."""
     import statistics
 
     from bridge_jspace.model import load_model
@@ -366,7 +380,7 @@ def competence(set_name: str, run: str, why: str) -> None:
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     (out / "manifest.json").write_text(json.dumps({"run": run, "why": why, "set": set_name, "model": pins.model_pin(),
                                                    "git_commit": commit, "guess": True,
-                                                   "read": "suite_v1.read_answers: the answer's first token is the top token (margin > 0)",
+                                                   "read": read, "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
                                                    "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, indent=2) + "\n")  # fmt: skip
     model = load_model()
     tok = model.tokenizer
@@ -384,8 +398,27 @@ def competence(set_name: str, run: str, why: str) -> None:
                          "answer_kind": it["kind"], "expected": a, "kind": it["kind"], "answer": a})  # fmt: skip
     t0 = time.time()
     S.read_answers(model, tok, jobs)
+    import torch
+
+    items_ = T.load(set_name)
+    vocab, dom_of = vocab_of(items_), {it["id"]: it["domain"] for it in items_}
+    by_len = collections.defaultdict(list)
+    for j in jobs:
+        by_len[len(j["ids"])].append(j)
+    with torch.inference_mode():
+        for group in by_len.values():
+            for st in range(0, len(group), 64):
+                chunk = group[st : st + 64]
+                logits = model.hf(input_ids=torch.tensor([j["ids"] for j in chunk], device="cuda"), logits_to_keep=1).logits[:, -1].float()
+                for row, j in enumerate(chunk):
+                    want = S.answer_token(tok, j["expected"], j["kind"])
+                    pool = vocab[(dom_of[j["id"]], "bridge" if j["part"] == "step1" else "answer")]
+                    ok_ids = {want} | ({S.answer_token(tok, FIRST_NAMES.get(j["expected"], j["expected"]), j["kind"])} if j["part"] == "step1" else set())
+                    c = torch.tensor(sorted({S.answer_token(tok, v, j["kind"]) for v in pool} | ok_ids), device="cuda")
+                    j["correct_cand"] = int(c[logits[row, c].argmax()]) in ok_ids
     for j in jobs:  # a person's hop 1 may be read as the first name (Wolfgang for Mozart): either first token counts
-        j["correct"] = j["margin"] > 0 or j["read_top"] in j["alts"]
+        j["correct_top"] = j["margin"] > 0 or j["read_top"] in j["alts"]
+        j["correct"] = j["correct_cand"] if read == "cand" else j["correct_top"]
     rows = [{k: v for k, v in j.items() if k not in ("ids", "forced")} for j in jobs]
     (out / "items.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
     acc = lambda sel: round(statistics.mean(r["correct"] for r in sel), 3) if sel else None  # noqa: E731
@@ -418,10 +451,11 @@ if __name__ == "__main__":
     ap.add_argument("--scenes", type=int, default=2, help="make: scenes per bridge, level and start group")
     ap.add_argument("--set", dest="set_name")
     ap.add_argument("--why")
+    ap.add_argument("--read", choices=["top", "cand"], default="top", help="competence: the read that sets correct")
     a = ap.parse_args()
     if a.stage == "make":
         make(a.name, a.seed, a.scenes)
     elif a.stage == "derive-qa":
         derive_qa(a.name)
     else:
-        competence(a.set_name, a.name, a.why)
+        competence(a.set_name, a.name, a.why, a.read)
