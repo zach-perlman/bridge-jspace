@@ -344,6 +344,23 @@ TARGETS: dict[str, dict[str, Any]] = {
     # fit (scripts/queues/h200_gptoss_fit_1023.sh) registers "gpt-oss-20b" with the same run prefix. MoE (32 experts, 4
     # active), 24 blocks alternating sliding-window (128) and full attention with learned sinks: eager attention (sdpa
     # has no sinks); MXFP4 experts dequantized to bf16 on load, as the J++ fitter's environment does.
+    # gpt-oss-20b with our own J++ (Zach, 2026-10-23, prereg amendment 8): the safety-research/jpp_lens@93f02cd recipe with the
+    # LN rule only (+ scripts/lens_fit/jpp_lens_gptoss_1023.patch), 32 WikiText prompts, source layers 0-22, target the final
+    # block; scripts/queues/h200_gptoss_1023.sh. .
+    "gpt-oss-20b": {
+        "repo": "openai/gpt-oss-20b",
+        "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+        "n_layers": 24,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "gptoss20_",
+        "snapshot_ignore": ["metal/*", "original/*"],
+        "chat_template_edits": GPTOSS_TEMPLATE_EDITS,
+        "attn": "eager",
+        "dequantize_mxfp4": True,
+        "lenses": {"jpp": ("local", "cache/gpt-oss-20b/lenses/jpp/gpt-oss-20b_jpp_lens.pt", "2902332d4852b27868db7f92182b1b006728b866bb2f1e25b58baedbf22ff077")},
+        "frozen_lens_sha256": "2902332d4852b27868db7f92182b1b006728b866bb2f1e25b58baedbf22ff077",
+    },
     "gpt-oss-20b-prefit": {
         "repo": "openai/gpt-oss-20b",
         "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
