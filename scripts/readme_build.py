@@ -49,10 +49,10 @@ JUDGED = ("holds", "fails", "mixed", "unclear")
 # a control's number inside grid.csv's "chance or control level" text, per finding
 CONTROLS: dict[str, dict[str, str]] = {
     "f2": {"recall": r"the control, needs >= 30%\): (\d+(?:\.\d+)?)%", "rest": r"the rest \(needs >= 50%\): (\d+)%",
-           "random lookups": r"same-share random part: lookups (\d+(?:\.\d+)?)%",
-           "random recalls": r"same-share random part:[^;]*recalls (\d+(?:\.\d+)?)%"},
+           "random lookups": r"same-share random part[^:]*: lookups (\d+(?:\.\d+)?)%",
+           "random recalls": r"same-share random part[^:]*: lookups .*?\bn=\d+, recalls (\d+(?:\.\d+)?)%"},
     "f3": {"digit visible": r"the digit left visible \(the sentence without its digit hidden\): (\d+)%",
-           "another sentence": r"off-path parts hidden: lowest (\d+)%"},
+           "another sentence": r"off-path parts hidden[^:]*: lowest (\d+)%"},
     "f4": {"chance": r"chance (\d+)%", "another sentence": r"off-path sentence hidden instead keeps (\d+)%",
            "DeltaNet": r"DeltaNet layer instead: (\d+)%"},
     "f6": {"place in text": r"the same place in the text (\d+)%"},

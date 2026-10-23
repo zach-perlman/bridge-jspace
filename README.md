@@ -5,9 +5,9 @@
 
 > "Which locker belongs to the animal known for oinking?" The bridge is *pig*. The answer is the pig's locker number, stated in the prompt.
 
-**How to read this page.** Confidence words follow one fixed rule ([below](#confidence-and-verification)): strong, medium, open. "Verified" says who recomputed a number: a person, an independent agent, or nobody yet. Every number comes from the cross-model grid ([grid.md](results/cross_model/20261023T091847Z/grid.md)); every run is in [RUNS.md](RUNS.md).
+**How to read this page.** Confidence words follow one fixed rule ([below](#confidence-and-verification)): strong, medium, open. "Verified" says who recomputed a number: a person, an independent agent, or nobody yet. Every number comes from the cross-model grid ([grid.md](results/cross_model/20261023T105852Z/grid.md)); every run is in [RUNS.md](RUNS.md).
 
-> **Status, 23 Oct 2026.** Built at e1cb307 from `results/cross_model/20261023T091847Z`. Exploration phase: no main claim is hand-verified yet. An independent agent recomputed claims 1-3, and claim 6 on the 27B, from raw rows: every cell matches. The hand check is today. Running on the A100: Gemma 4's lens tests, Qwen3-32B's tables and JSON, the 27B dose control. The one open counter-example is [the 122B](#the-open-counter-example-qwen35-122b).
+> **Status, 23 Oct 2026.** Built at 14f0b6f from `results/cross_model/20261023T105852Z`. Exploration phase: no main claim is hand-verified yet. An independent agent recomputed claims 1-3, and claim 6 on the 27B, from raw rows: every cell matches. The hand check is today. Running on the A100: Gemma 4's lens tests, Qwen3-32B's tables and JSON, the 27B dose control. The one open counter-example is [the 122B](#the-open-counter-example-qwen35-122b).
 
 Eight models. Hybrids, which mix attention with DeltaNet layers: Qwen3.6-27B (27B), Qwen3.5-9B (9B), Olmo-Hybrid-7B (Olmo-Hybrid), Qwen3.5-122B (122B). Attention-only: Qwen3-32B (32B), OLMo-3-7B (OLMo-3), Muse 30B (Muse), Gemma 4 31B (Gemma).
 
@@ -36,12 +36,12 @@ Eight models. Hybrids, which mix attention with DeltaNet layers: Qwen3.6-27B (27
 | **What the J-space does and doesn't carry** | | | | | |
 | The lens reads a stated bridge only at its own word | On the 27B: 95% at the word, 7% right after it | 7 of 7 lensed models | medium | none | [4](#4-the-lens-reads-a-stated-bridge-only-at-its-own-word) |
 | A lens push at the bridge's word writes recall, never the lookup | On the 122B: 0% of lookups move, 89% of recalls | 4 of 5 models with a valid test | medium | none | [5](#5-a-lens-push-at-the-bridges-word-writes-recall-never-the-lookup) |
-| The lookup ignores the lens-readable part of a stated bridge | 1% of lookups move on the 27B; 29% on the 122B | 2 of 4 models; fails on the 122B | medium | [agent re-check](verification/agent_check_finding2.md) (27B) | [6](#6-the-lookup-ignores-the-lens-readable-part-of-a-stated-bridge) |
+| The lens-readable part of a stated bridge moves recall, not the lookup | On the 27B it moves 38% of recalls and 1% of lookups; on the 122B, 29% of lookups | 2 of 4 models; fails on the 122B | medium | [agent re-check](verification/agent_check_finding2.md) (27B) | [6](#6-the-lens-readable-part-of-a-stated-bridge-moves-recall-not-the-lookup) |
 | Lookups don't need the J-space; how much recall needs it varies | Zach's rule on the 27B: recall loses +36 points more than lookups | 4 of 4 in Zach's runs; ours descriptive | medium | none | [7](#7-lookups-dont-need-the-j-space-recall-does-to-a-varying-degree) |
 
 ![Every claim on every model](figures/cross_model/f_summary_heatmap.png)
 
-Every cell, its n and its interval: [grid.md](results/cross_model/20261023T091847Z/grid.md).
+Every cell, its n and its interval: [grid.md](results/cross_model/20261023T105852Z/grid.md).
 
 ## The open counter-example: Qwen3.5-122B
 
@@ -105,7 +105,7 @@ Every cell, its n and its interval: [grid.md](results/cross_model/20261023T09184
 
 **Controls**
 - With the digit left visible instead, the 27B keeps 88% right.
-- Hiding the same parts of another sentence keeps 89-100% right.
+- Hiding the same parts of another sentence keeps 86-100% right.
 
 **Weak spots**
 - Gemma's split is weaker than the others'.
@@ -208,7 +208,7 @@ Not tested: Olmo-Hybrid (no lens), 32B (still running), Gemma (still running).
 
 On the 27B, the full patch keeps moving lookups 8 layers after the lens push stops ([figure](figures/cross_model/f_layer_gap_lens_vs_patch_27b.png); its own run, not a grid cell). A size-matched control is running.
 
-### 6. The lookup ignores the lens-readable part of a stated bridge
+### 6. The lens-readable part of a stated bridge moves recall, not the lookup
 
 **Confidence:** medium (holds 2 of 4; 122B: scene set 2, table, JSON fail; 32B: scene set 1 can't tell). **Verified:** [agent re-check](verification/agent_check_finding2.md) on the 27B, every cell matches; hand check pending.
 
@@ -223,20 +223,20 @@ On the 27B, the full patch keeps moving lookups 8 layers after the lens push sto
 | Qwen3.5-122B | scene set 2 | 29% [23, 36] | 180 | fails | 0 of 3 hold; scene set 2: fails; table: fails; JSON: fails |
 | Qwen3-32B | scene set 1 | 5% [2, 10] | 120 | can't tell (a control failed) | 0 of 1 hold; scene set 1: can't tell (a control failed) |
 
-Not tested: Olmo-Hybrid (no lens), OLMo-3 (too few usable scenes), Muse (not run), Gemma (still running).
+Not tested: Olmo-Hybrid (no lens), OLMo-3 (too few usable scenes), Muse (too few usable scenes), Gemma (still running).
 
 **Controls**
-- The lens-readable part moves recall (9-66%): it is not inert.
+- The lens-readable part moves recall (9-66% across models and settings): it is not inert.
 - The rest moves 52-96% of lookups.
-- A random part of the same size: being added to the grid.
+- A random part of the same size moves 0-1% of lookups and 0-8% of recalls.
 
 **Also:** a lens push at the same point writes 0% of lookups on the 27B, and 29% on the 122B.
 
 **Weak spots**
 - The 122B fails; see [the counter-example](#the-open-counter-example-qwen35-122b).
-- Without the random part of the same size, "the lens part is special" is not shown. The claim is the lookup/recall contrast.
+- On the 27B and 9B a random part of the same size moves lookups as little as the lens part does. So the claim is the contrast, not "the lens part is special for lookups".
 
-**What it means.** On the 27B and 9B the lookup reads the stated bridge, but not through its lens-readable form.
+**What it means.** On the 27B and 9B, the lens-readable part moves recall far beyond its size, and lookups not at all. The lookup takes the stated bridge from the rest.
 
 ![The lens-readable part](figures/cross_model/f_lookup_ignores_lens_part_all_models.png)
 
@@ -275,12 +275,12 @@ Not tested: Olmo-Hybrid (no lens), Gemma (still running).
 
 | Explanation | Test | Result | Status |
 |---|---|---|---|
-| The lens-readable part is just small | Paste a random part of the same size instead | Being added to the grid (27B, 9B); planned on the 122B | open |
+| The lens-readable part is just small | Paste a random part of the same size instead | It moves 0-1% of lookups and 0-8% of recalls, so the lens part's effect on recall is not its size | checked |
 | FP8 weights vs a lens fit on bf16 (122B) | None yet | – | open |
-| A weak lens | Lens gate and held-out word-reading score per lens ([lens table](results/cross_model/20261023T091847Z/grid.md)) | A better fit passes the gate on the 32B, but the 32B's recall control still fails | partly checked |
+| A weak lens | Lens gate and held-out word-reading score per lens ([lens table](results/cross_model/20261023T105852Z/grid.md)) | A better fit passes the gate on the 32B, but the 32B's recall control still fails | partly checked |
 | The patch only shifts position | A random patch of the same size | Clean on all models but Gemma, in runs before 23 Oct (not in the grid) | checked, outside the grid |
 | The patch copies any digit | Each answer is a different digit; the test layer is where the patched prompt's own digit is still rare | By design | checked |
-| A lookup at chance vs below chance | The rule's bar is the guessing rate | Gemma and the 27B's long text stop at chance. Tables and JSON list three facts, so chance there is higher than the grid states; being fixed | reported |
+| A lookup at chance vs below chance | The rule's bar is the guessing rate of a five-item list | Gemma and the 27B's long text stop at chance. Tables and JSON list three facts, so chance there is 33%; the bar was kept, which is stricter there | reported |
 | One scene set | Claims 1-3 on three scene sets; the lens push on two | Same verdicts across sets | partly checked |
 
 ## Choices made after seeing the data
@@ -308,7 +308,7 @@ Only steps that change a claim or its confidence.
 | Step | What it decides | Rule fixed? | Cost | Status | Owner |
 |---|---|---|---|---|---|
 | Hand check of claims 1-3 and 6 (27B) | Their "verified" mark | – | 1-2 hours | Packets ready: [verification/](verification/) (claim, recompute script, checklist) | Dan, Zach |
-| A random part of the same size for claim 6 | Whether "the lens part is special" or only the lookup/recall contrast holds | yes | CPU | Running | agent |
+| A random part of the same size for claim 6 | Whether "the lens part is special" or only the lookup/recall contrast holds | yes | CPU | Done: the contrast is the claim | agent |
 | The 122B late-binding test | Claim 6 on the largest model | yes | 1.5 GPU-hours, a rented H200 | Waits for a box and Dan's predictions | agent |
 | Claim 1 on natural text | Whether the late read holds beyond generated lists | being written | ~4 GPU-hours | Design waits for approval | agent |
 | The layer gap on the 9B | Whether claim 5's gap is general | yes | ~1 GPU-hour | Waits for Dan's predictions | agent |
@@ -318,4 +318,4 @@ Timeline: update to Neel on Sat 24 Oct; write-up Wed-Fri 28-30 Oct.
 
 ## Links
 
-[grid.md](results/cross_model/20261023T091847Z/grid.md) · [RUNS.md](RUNS.md) · [CHANGELOG.md](CHANGELOG.md) · [predictions and scorecard](predictions/) · [VERIFIED.md](VERIFIED.md) · [docs/mapping.md](docs/mapping.md) · [docs/datasets.md](docs/datasets.md) · [DEVELOPER.md](DEVELOPER.md) · [run log](EXPERIMENTS.md) · [plan (Google Doc)](https://docs.google.com/document/d/1bqqdXePTUXQGlowVjk73sPfJkbV_tsu0RNNX-BiTYUc/edit?usp=drivesdk) · [older README with every number](README_archive.md)
+[grid.md](results/cross_model/20261023T105852Z/grid.md) · [RUNS.md](RUNS.md) · [CHANGELOG.md](CHANGELOG.md) · [predictions and scorecard](predictions/) · [VERIFIED.md](VERIFIED.md) · [docs/mapping.md](docs/mapping.md) · [docs/datasets.md](docs/datasets.md) · [DEVELOPER.md](DEVELOPER.md) · [run log](EXPERIMENTS.md) · [plan (Google Doc)](https://docs.google.com/document/d/1bqqdXePTUXQGlowVjk73sPfJkbV_tsu0RNNX-BiTYUc/edit?usp=drivesdk) · [older README with every number](README_archive.md)
