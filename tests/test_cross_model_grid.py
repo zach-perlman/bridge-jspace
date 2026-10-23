@@ -404,7 +404,10 @@ def _covered(c: dict) -> bool:
 
 # README's findings table: every number in "Key evidence" must be in grid.csv's rows of that finding (value, interval
 # or the control / reference column). The ones the grid does not show, with why:
-NOT_IN_GRID: dict[tuple[str, int], str] = {}  # README of 23 Oct: every key-evidence number is a grid number
+NOT_IN_GRID = {
+    ("1", 13): "Zach's C1 on 9B / 32B / Muse (lookups lose <= 13 points; a 32B random control 13 off): quoted from his "
+    "Day 3 plan; his runs are not on his pushed branch, so the grid has only the 27B's verdict file",
+}
 NUMBER = re.compile(r"\[(\d+), (\d+)\]|\+?(\d+)(?:-(\d+))?(?:%| points)")
 
 
