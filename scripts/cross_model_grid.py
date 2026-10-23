@@ -853,7 +853,8 @@ def late_read_v2(rows: list[dict], fam: str = "RL") -> dict:
     has it, else in all layers ('all'; on a hybrid a conservative lower bound). Rates: (share right, Wilson lo, hi, n).
     The share = (1 - final) / (1 - after) on the items with both rows (unedited = 1 on items right unedited), with a
     paired item bootstrap interval; None where nothing breaks under the floor."""
-    rows = [r for r in rows if r["family"] == fam and r.get("mode", "value") == "value"]
+    # the unedited rows carry mode '-'; of the blocked ones only mode 'value' counts
+    rows = [r for r in rows if r["family"] == fam and (r["source"] == "none" or r.get("mode", "value") == "value")]
     ok = {r["id"] for r in rows if r["source"] == "none" and r["correct"]}
     labels = {(r["source"], r["dest"], r["layers"]) for r in rows}
     hybrid = ("lookup", "final", "attn") in labels

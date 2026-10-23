@@ -146,8 +146,9 @@ def _v2_rows(
 ) -> list[dict]:
     """n items right unedited; k of n right under each block (after None: the run has no such block). gdn set: a
     hybrid (the last tokens blocked in every attention layer); after_attn: the block also in every attention layer."""
-    rows = [
-        {"family": "RL", "id": f"i{i}", "source": "none", "dest": "-", "layers": "-", "correct": True} for i in range(n)
+    rows = [  # the unedited rows' mode is '-', as in the runs' rows.jsonl (a mode filter must not drop them)
+        {"family": "RL", "id": f"i{i}", "source": "none", "dest": "-", "layers": "-", "mode": "-", "correct": True}
+        for i in range(n)
     ]
     lab = "attn" if gdn is not None else "all"
 
