@@ -631,7 +631,7 @@
  },
  {
   "value": 1.0,
-  "what": "% right, the answer's sentence hidden from every token after it (all layers): the floor",
+  "what": "% right, the answer's sentence hidden from every token after it (all layers): the reference",
   "finding": "f4",
   "model": "27b",
   "setting": "draw 1 \u00b7 last tokens' share",
@@ -643,13 +643,13 @@
   "n": 300,
   "source": "grid.csv late-read-v2 row",
   "extra": {
-   "control": "floor",
+   "control": "every later token blocked",
    "pattern": "from every token after it \\(all layers\\): (\\d+)% \\[(\\d+), (\\d+)\\]"
   }
  },
  {
   "value": 3.0,
-  "what": "% right, the answer's sentence hidden from every token after it (all layers): the floor",
+  "what": "% right, the answer's sentence hidden from every token after it (all layers): the reference",
   "finding": "f4",
   "model": "9b",
   "setting": "draw 1 \u00b7 last tokens' share",
@@ -661,13 +661,13 @@
   "n": 300,
   "source": "grid.csv late-read-v2 row",
   "extra": {
-   "control": "floor",
+   "control": "every later token blocked",
    "pattern": "from every token after it \\(all layers\\): (\\d+)% \\[(\\d+), (\\d+)\\]"
   }
  },
  {
   "value": 10.0,
-  "what": "% right, the answer's sentence hidden from every token after it (all layers): the floor",
+  "what": "% right, the answer's sentence hidden from every token after it (all layers): the reference",
   "finding": "f4",
   "model": "32b",
   "setting": "draw 1 \u00b7 last tokens' share",
@@ -679,13 +679,13 @@
   "n": 300,
   "source": "grid.csv late-read-v2 row",
   "extra": {
-   "control": "floor",
+   "control": "every later token blocked",
    "pattern": "from every token after it \\(all layers\\): (\\d+)% \\[(\\d+), (\\d+)\\]"
   }
  },
  {
   "value": 4.0,
-  "what": "% right, the answer's sentence hidden from every token after it (all layers): the floor",
+  "what": "% right, the answer's sentence hidden from every token after it (all layers): the reference",
   "finding": "f4",
   "model": "olmo",
   "setting": "draw 1 \u00b7 last tokens' share",
@@ -697,13 +697,13 @@
   "n": 100,
   "source": "grid.csv late-read-v2 row",
   "extra": {
-   "control": "floor",
+   "control": "every later token blocked",
    "pattern": "from every token after it \\(all layers\\): (\\d+)% \\[(\\d+), (\\d+)\\]"
   }
  },
  {
   "value": 2.0,
-  "what": "% right, the answer's sentence hidden from every token after it (all layers): the floor",
+  "what": "% right, the answer's sentence hidden from every token after it (all layers): the reference",
   "finding": "f4",
   "model": "gemma",
   "setting": "draw 1 \u00b7 last tokens' share",
@@ -715,7 +715,7 @@
   "n": 300,
   "source": "grid.csv late-read-v2 row",
   "extra": {
-   "control": "floor",
+   "control": "every later token blocked",
    "pattern": "from every token after it \\(all layers\\): (\\d+)% \\[(\\d+), (\\d+)\\]"
   }
  },
