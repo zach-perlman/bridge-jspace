@@ -1,0 +1,25 @@
+id: olmo3_7b_instruct_jpp_d1_necessity_r2
+title: "In the band at the bridge's word (OLMo-3-7B-Instruct, our J++): does the lookup need the lens-readable part, and does the recall?"
+thread: D1
+gpus: 1
+mem_gb: 30
+est_gpu_hours: 0.8
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/statement_positions.py parts --name olmo3_7b_instruct_jpp_d1_necessity_parts_r2 --map olmo3_7b_instruct_jpp_d1_topics2_map --why "B1: the parts in the band at the bridge's word" --lo 6 --sets bridge_word bind_bridge --force bridge_word:6 bridge_word:8 bridge_word:10 bridge_word:12 bridge_word:14 bind_bridge:6 bind_bridge:8 bind_bridge:10 bind_bridge:12 bind_bridge:14
+  && BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/d1_verdict.py --rule necessity --map olmo3_7b_instruct_jpp_d1_topics2_map --parts olmo3_7b_instruct_jpp_d1_necessity_parts_r2 --tasks-set d1_topics_v2 --cells bridge_word:6 bridge_word:8 bridge_word:10 bridge_word:12 bridge_word:14 bind_bridge:6 bind_bridge:8 bind_bridge:10 bind_bridge:12 bind_bridge:14
+figures_command: BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/d1_verdict.py --rule necessity --parts olmo3_7b_instruct_jpp_d1_necessity_parts_r2 --figures
+question: >-
+  On OLMo-3-7B-Instruct with our J++, in the band at the bridge's word, does taking the lens-readable part out of a stated bridge's change cost the lookups nothing while it costs the recalls, beyond a random part of the same size?
+why_it_matters: >-
+  A third model, from another family, for d1_necessity_27b, with the lens we fitted (J++, the published recipe on 64 prompts).
+hypotheses:
+  H-holds: 'in each position set the claim holds at a majority of the band cells. Prior: Dan''s (predictions/), none set by the agent'
+  H-not: 'it does not hold. Prior: Dan''s'
+decision_rule: >-
+  Written 23 Oct ~15:45 +0200 before any run: d1_necessity_27b's rule (scripts/d1_verdict.py --rule necessity), on OLMo-3-7B-Instruct read with our J++. Cells: the bridge's word and the bridge's sentence at layers 6, 8, 10, 12, 14 (its coarse grid, every 2nd layer), lookups and recalls. LOOKUP: J not needed iff F(full) - F(not_jspace) <= 0.10 (point), at a cell where F(full) >= 0.50 on lookups (the agent's proposed gate; else not interpretable). RECALL: J needed iff F(full) - F(not_jspace) >= 0.20 (point) AND that drop is larger than F(full) - F(not_rand_sub), with the 95% lower bound of the difference > 0 (paired bootstrap over scenes, 2000 resamples, seed 0). CELL: holds iff both. MODEL (the agent's proposal): per position set, holds iff it holds at a majority of its 5 cells; the model holds iff both sets hold; every cell reported, with the parts' shares of the change's squared norm. On the map, bridge_word 8-14 and bind_bridge 12-14 are not in transit for lookups (the lookup gate will likely mark several of them not interpretable).
+controls:
+- 'not_rand_sub: the change minus a random part of the lens part''s size (rand_sub, seed 888 + layer)'
+- 'recalls (PM) on the same scenes and patch; the lookup gate; the random-direction nulls (reported)'
+n: '180 scenes per family (PP and PM), d1_topics_v2 (as the map), 10 cells'
+seeds: [23]
+notes: "Copy of olmo3_7b_instruct_jpp_d1_necessity: its verdict step failed after the parts finished (d1_verdict's command line asked --rule necessity for --decisive; fixed in 71463f5); same rule, cells, scenes and seeds; result names suffixed _r2; Dan's batch-22 answers (daa31a0) stand. Dan, 23 Oct 15:30 (B1), A100 queue. Same scenes and map as olmo3_7b_instruct_jpp_d1_topics2_parts; that job stopped at its precheck after 13.5 s, so no OLMo J++ parts run exists to time against or to check determinism with; this spec has no precheck (Dan asked for the run on this model). Seeds: data 23, nulls 0, random dictionary 777 + layer, random subspace 888 + layer, bootstrap 0. Estimate as the 9B (~76k reads, a 7B): ~0.7 h, est 0.8 GPU-h; mem_gb 30 as its other specs. Not opened before Dan predicts."
