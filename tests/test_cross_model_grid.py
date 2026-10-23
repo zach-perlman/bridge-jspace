@@ -7,6 +7,7 @@ The real-run tests read every saved run: the night of 22-23 Oct was opened once 
 
 from __future__ import annotations
 
+import collections
 import csv
 import io
 import json
@@ -394,6 +395,9 @@ def test_every_grid_cell_has_a_row(monkeypatch):
             for m in G.MODELS:
                 assert (m.key, f.key, s) in have, (m.key, f.key, s)
     assert len({(c.model, c.finding, c.setting, c.role, c.run) for c in cells}) == len(cells)
+    # one cell per (model, finding, setting, role): a run's expanded settings get no 'no spec' twin
+    filled = collections.Counter((c.model, c.finding, s, c.role) for c in cells for s in G.settings_of(c))
+    assert max(filled.values()) == 1, [k for k, v in filled.items() if v > 1][:5]
     assert {c.run for c in cells if c.model == "olmo_hybrid" and c.finding in ("f5", "f6")} >= {
         "olmo_hybrid_7b_d3v4_swap_fn", "olmo_hybrid_7b_d3v4_seed2_swap", "olmo_hybrid_7b_d3v4x_swap"}  # fmt: skip
     assert len(G.VERDICTS) == 7 and set(G.SYMBOL) == set(G.VERDICTS)

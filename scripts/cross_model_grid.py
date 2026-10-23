@@ -1783,7 +1783,7 @@ EVAL = {"late": ev_late, "late_v2": ev_late_v2, "parts": ev_parts, "formats_f3":
         "late_switch": ev_late_switch}  # fmt: skip
 EXPAND = {  # the grid cells one run fills (several settings)
     "formats_f3": ("prose", "table", "JSON"), "formats_f4": ("prose", "table", "JSON"), "d1_formats": ("table", "JSON"),
-    "f6": ("filler moved", "one statement more", "one statement fewer"),
+    "f6": ("filler moved", "one statement more", "one statement fewer"), "absent": ABSENT_SETTINGS,
 }  # fmt: skip
 
 
