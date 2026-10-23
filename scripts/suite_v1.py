@@ -906,7 +906,7 @@ HOPS = ("hop1", "hop2", "hop3")
 def answer_token(tok, answer: str, kind: str) -> int:
     """The answer's first token where the read happens: after 'Answer:' plus the space token for a digit, right after
     'Answer:' (with its leading space) otherwise."""
-    return ids(tok, answer)[0] if kind == "digit" else ids(tok, " " + answer)[0]
+    return ids(tok, answer)[0] if kind in ("digit", "open") else ids(tok, " " + answer)[0]  # open: natural_v1 chat, no prefill
 
 
 def read_answers(model, tok, prompts: list[dict]) -> None:

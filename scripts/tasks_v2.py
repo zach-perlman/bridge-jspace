@@ -78,6 +78,7 @@ C_OPS = ("typo", "reverse", "letters")  # v6: Caesar (31% even alone) and acrost
 NUMBER_WORDS = S.WORDS  # zero ... nine
 ORDINAL_WORDS = ["zeroth", "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth"]
 DIGIT_INSTRUCTION = "Answer with a single digit and nothing else."
+NATURAL_CHAT_INSTRUCTION = "Answer with just the answer, nothing else."  # scripts/natural_v1.py
 
 
 @dataclass(frozen=True)
@@ -563,6 +564,12 @@ def render(tok, item: dict) -> str:
 
     q = item.get("_question", item["question"])
     kind = item.get("_kind", item["kind"])
+    if item.get("framing") == "cloze":  # natural_v1 (2026-10-23): raw text, the passage then the cloze sentence
+        bos = tok.bos_token if pins.TARGETS[pins.TARGET]["bos"] and tok.bos_token else ""
+        return f"{bos}{item['context']}\n\n{q}"
+    if item.get("framing") == "chat":  # natural_v1: one user turn, thinking off, no "Answer:" prefill (on-policy)
+        msgs = [{"role": "user", "content": f"{item['context']}\n\n{q} {NATURAL_CHAT_INSTRUCTION}"}]
+        return tok.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True, enable_thinking=False)
     instr = DIGIT_INSTRUCTION if kind == "digit" else S.INSTRUCTION
     if item["format"] != "chat":
         return chat.chat_text(tok, f"{item['context']}\n{q} {instr}")

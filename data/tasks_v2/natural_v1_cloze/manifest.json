@@ -1,0 +1,14 @@
+{
+  "set": "natural_v1_cloze",
+  "seed": 801,
+  "scenes_per_bridge": 2,
+  "n": 1296,
+  "git_commit": "08ba305f50f305a98ffaa955fd6a7c928d74bd2a",
+  "by_word": {
+    "PP": 324,
+    "PM": 324,
+    "MP": 324,
+    "MM": 324
+  },
+  "script": "scripts/natural_v1.py"
+}
