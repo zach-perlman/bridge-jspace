@@ -1,6 +1,6 @@
 """cross_model_grid: the verdict words on synthetic runs (each rule's pass, fail and failed-control case), the cell
 status from the queue without opening any result, and on the saved runs: 10 random cells recomputed from the raw
-rows, and every number of README's findings table found in grid.csv.
+rows. (The README's numbers are rendered from the grid since 4cf5d35: tests/test_readme_build.py.)
 
 The real-run tests read every saved run: the night of 22-23 Oct was opened once Dan's predictions were committed
 (a135a54); before that they read only the runs the README reported."""
@@ -11,7 +11,6 @@ import csv
 import io
 import json
 import random
-import re
 
 import pytest
 
@@ -508,39 +507,3 @@ def _covered(c: dict) -> bool:
     return any(k in p for k in ("attn_knockout", "lens_gate", "ablate_pilot")) or (
         "d1_verdict" in p and "·" not in c["setting"]
     )
-
-
-# README's findings table: every number in "Key evidence" must be in grid.csv's rows of that finding (value, interval
-# or the control / reference column). The ones the grid does not show, with why:
-NOT_IN_GRID = {
-    ("1", 13): "Zach's C1 on 9B / 32B / Muse (lookups lose <= 13 points; a 32B random control 13 off): quoted from his "
-    "Day 3 plan; his runs are not on his pushed branch, so the grid has only the 27B's verdict file",
-}
-NUMBER = re.compile(r"\[(\d+), (\d+)\]|\+?(\d+)(?:-(\d+))?(?:%| points)")
-
-
-def _readme_numbers() -> list[tuple[str, int]]:
-    out = []
-    for line in (G.REPO / "README.md").read_text().splitlines():
-        m = re.match(r"\| ([1-8]) \| [^|]+ \| ([^|]+) \|", line)
-        if m:
-            for g in NUMBER.findall(m.group(2)):
-                out += [(m.group(1), int(x)) for x in g if x]
-    return sorted(set(out))
-
-
-README_NUMBERS = _readme_numbers()
-
-
-@pytest.mark.parametrize(("finding", "number"), README_NUMBERS, ids=[f"finding{f}-{n}" for f, n in README_NUMBERS])
-def test_readme_number_in_grid(opened, finding, number):
-    if (finding, number) in NOT_IN_GRID:
-        pytest.xfail(NOT_IN_GRID[(finding, number)])
-    _, table = opened
-    name = next(f.name for f in G.FINDINGS if f.number == finding)
-    seen: set[int] = set()
-    for c in table:
-        if c["finding"] == name:
-            seen |= {round(float(x)) for x in re.findall(r"-?\d+(?:\.\d+)?", " ".join((c["value"], c["95% CI"])))}
-            seen |= {int(x) for x in re.findall(r"\d+", c["chance or control level"])}
-    assert number in seen, f"README finding {finding}: {number} not in grid.csv"
