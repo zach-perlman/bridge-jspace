@@ -7,7 +7,7 @@
 
 **How to read this page.** Confidence words follow one fixed rule ([below](#confidence-and-verification)): strong, medium, open. "Verified" says who recomputed a number: a person, an independent agent, or nobody yet. Every number comes from the cross-model grid ([grid.md]({{grid}}/grid.md)) unless a run is named next to it; every run is in [RUNS.md](RUNS.md).
 
-> **Status, 23 Oct 2026.** Built at {{head}} from `{{grid}}`. Exploration phase: no main claim is hand-verified yet. An independent agent recomputed claims 1-3, and claim 6 on the 27B, from raw rows: every cell matches. The hand check is today. Running on the A100: Gemma 4's lens tests, Qwen3-32B's tables and JSON, the 27B dose control. On the 122B the lookup follows the J-space form to a later layer than on the other models ([below](#the-122b-difference)); its test runs today on a rented 2x H100.
+> **Status, 23 Oct 2026.** Built at {{head}} from `{{grid}}`. Exploration phase: no main claim is hand-verified yet. An independent agent recomputed claims 1-3, and claim 6 on the 27B, from raw rows: every cell matches. The hand check is pending. Today's runs (size-matched patches, the relay, real paragraphs, the 122B late switch) are summarized [below](#todays-runs-23-oct-evening) and change two readings: the band's lookup does use the word's lens-readable part, and finding 6's lookup side is about size, not form.
 
 Eight models. Hybrids, which mix attention with DeltaNet layers: Qwen3.6-27B (27B), Qwen3.5-9B (9B), Olmo-Hybrid-7B (Olmo-Hybrid), Qwen3.5-122B (122B). Attention-only: Qwen3-32B (32B), OLMo-3-7B (OLMo-3), Muse 30B (Muse), Gemma 4 31B (Gemma).
 
@@ -44,6 +44,41 @@ Eight models. Hybrids, which mix attention with DeltaNet layers: Qwen3.6-27B (27
 ![Every claim on every model](figures/cross_model/f_summary_heatmap.png)
 
 Every cell, its n and its interval: [grid.md]({{grid}}/grid.md).
+
+## Today's runs (23 Oct, evening)
+
+Each rule and Dan's prediction was committed before its run ([predictions](predictions/2026-10-23_dan.md), batches 16-24). Opened on 23 Oct in the evening; read by agents from each run's own verdict files and rows; no hand check yet. Not yet in the grid above, so these numbers sit beside the claims table, not in it. Brackets are {{q|95%}} intervals.
+
+**The headline: on the 27B, what moves the lookup at the bridge's word is inside the lens-readable part, but not along the bridge's own lens direction.**
+- At layer {{q|16}}, the lens-readable part of the full patch alone moves {{q|42% [33, 52]}} of lookups, the rest {{q|0% [0, 4]}}, a random part of the same share ({{q|27%}} of the norm) {{q|0%}} ([run](results/early_push_where/d4_l16_split_27b_r2/summary.md)). Same at layers {{q|14}} ({{q|39%}} vs {{q|0%}}) and {{q|18}} ({{q|20%}} vs {{q|0%}}).
+- The patch cut to the lens push's size moves {{q|20% [13, 29]}} of lookups at layer {{q|20}} with its lens-readable part, {{q|0% [0, 4]}} at every layer without it ([dose](results/early_push_where/d4_layer_gap_dose_27b/summary.md), [without](results/early_push_where/d4_layer_gap_perp_27b/summary.md)).
+- But the lens push itself moves {{q|0%}} from layer {{q|20}}, and so does the patch's projection on the two animals' own lens directions ({{q|15%}} of the norm). A direction shared across scenes, without its lens-readable part, moves {{q|0%}} too ([shared code](results/early_push_where/d4_shared_code_27b/summary.md)).
+- So the band above needs rewording: in the 27B's band the lookup does depend on the word's J-space form, just not on the one direction the lens names. The size-matched tests are clean only at the larger push ({{q|8x}}; at {{q|4x}} nothing moves).
+
+| Test (model) | Rule, fixed before the run | Result | Verdict | Dan predicted |
+|---|---|---|---|---|
+| Size-matched patch without its lens-readable part, at the word (27B) | Outlasts the lens push by {{q|6}}+ layers: direction; stops within {{q|2}}: size | Moves {{q|0% [0, 4]}} of lookups at every layer | size | layer {{q|28}}: wrong |
+| Size-matched patch with it (27B, dose control) | same | Stops at layer {{q|28}}, {{q|8}} after the lens push ({{q|20% [13, 29]}} at {{q|20}}); only at {{q|8x}} | direction | stop at {{q|28}}: right; share {{q|85-90%}}: wrong |
+| The same on the 9B and OLMo-3 | bars {{q|3}} / {{q|1}} layers | Nothing at the push's size moves lookups at the word ({{q|≤ 1%}} on the 9B, {{q|≤ 5%}} on OLMo-3); the full patch still outlasts the push | 9B: size; OLMo-3: inconclusive | partly |
+| The same on the 122B (2x H100) | bars {{q|5}} / {{q|2}} | With the lens part: {{q|34%}} at layer {{q|29}}, {{q|1 of 94}} at {{q|31-33}}; without it {{q|0%}}. No layer {{q|33-38}} where only the patch moves lookups | word: direction, hanging on single items; without: size | moves lookups at {{q|33-38}}: wrong |
+| The rest of the change at the lens part's size (27B, 9B) | Moves ≥ {{q|20%}} of lookups: the lens part's silence is about form; else size | {{q|1%}} (27B), {{q|3%}} (9B) | size: finding 6's lookup side says nothing about form | above {{q|20%}}: wrong |
+| The 122B late switch, layers {{q|33}}, {{q|36}} | Lens part quiet on lookups and still moving recalls | Lookups {{q|0-1%}}; recalls {{q|26%}}, {{q|21%}}, {{q|8%}} against a {{q|30%}} bar | inconclusive (recall control fails); finding 6 does fail only up to layer {{q|30}} | lookups {{q|0-20%}}: right |
+| Donor asks about an entity the original never lists (27B) | Order label: same place minus 1st sentence, lower bound > {{q|0}} and above a random push | {{q|+48 [+43, +52]}} points; per asked sentence 2-5: {{q|+95, +45, +21, +30}}; random {{q|−0.2}} | order | "more of the 1st sentence": wrong |
+| Relay: swap the hidden sentence's digit (Gemma; 27B long text) | New digit gained, lower bound > {{q|5}} points | {{q|+20 [+16, +25]}}; {{q|+24 [+18, +29]}}, and {{q|+23}} with DeltaNet blocked too | relay on both, through other tokens | relay {{q|15-20%}}: about right |
+| Every later token blocked, second scene set and long text (8 models) | Last tokens carry ≥ {{q|70%}} of the drop | Holds on 27B ({{q|0.95}}, long {{q|0.75}}), 9B, Olmo-Hybrid, Muse, Gemma ({{q|0.82}}), 122B; not interpretable on 32B (set 2) and OLMo-3 (long) | holds where testable | matches |
+| Late read in real paragraphs (SQuAD; 4 models) | ≤ {{q|10%}} right, upper bound ≤ {{q|20%}} | 9B {{q|7.6%}}, 32B {{q|7.0%}}, OLMo-3 {{q|4.7%}}; 27B {{q|30.1% [26, 34]}} | holds on 3; fails on the 27B (a relay, as in its long text) | 27B {{q|0-10%}}: wrong |
+| Lens push, Qwen3-32B (our J++) | Recall follows, lookup does not, at a valid cell | Word, layer {{q|24}}: recalls {{q|59%}}, lookups {{q|5%}} | holds | – |
+| Lens push and stated-bridge parts, Gemma | as above | No valid push cell; parts replicate in prose (lookups {{q|0%}}, recalls {{q|40%}}, n = {{q|167}}), not in JSON | push: not testable; parts: prose only | partly |
+| What lookups and recalls need in the band (27B, 9B, OLMo-3) | Lookups lose ≤ {{q|10}} points without J; recalls lose ≥ {{q|20}} and more than without a random part | running at 19:00 | – | holds on all |
+
+What it changes:
+- **Claim 1 (late read):** stronger. The relay on Gemma and the 27B's long text is real (the swapped digit comes through), and the read holds on real paragraphs for three of four models.
+- **Claim 3 (order, identity):** with the asked entity missing from the original, the patch still points to the same place, sharply at the 2nd sentence, weakly from the 3rd.
+- **Claim 6 (lens part moves recall, not the lookup):** the recall side stands; the lookup side is now a size result, not a form result.
+- **The band:** reworded above. The lookup uses the word's lens-readable part, not the bridge's lens direction.
+- **The 122B:** the late switch stays undecided; its H100 numbers drift {{q|4-7}} points from the H200's.
+
+Summaries per run, with every file: [late read and relay](docs/runs_2026-10-23/late_read.md) · [parts](docs/runs_2026-10-23/parts.md) · [size and dose](docs/runs_2026-10-23/size_dose.md) · [order](docs/runs_2026-10-23/order.md).
 
 ## A band where the lookup needs the word but not its J-space form
 
