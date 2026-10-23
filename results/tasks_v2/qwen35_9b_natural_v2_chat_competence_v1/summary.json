@@ -1,0 +1,194 @@
+{
+  "seconds": 225,
+  "by_word_level": {
+    "PP/L0": {
+      "n": 162,
+      "whole": 0.833,
+      "all_steps": 0.988,
+      "median_margin": 3.0,
+      "guess": 0.278,
+      "top_wrong": [
+        [
+          "Asia",
+          4
+        ],
+        [
+          "Europe",
+          3
+        ],
+        [
+          "Sw",
+          2
+        ]
+      ]
+    },
+    "PP/L1": {
+      "n": 162,
+      "whole": 0.802,
+      "all_steps": 0.994,
+      "median_margin": 2.94,
+      "guess": 0.235,
+      "top_wrong": [
+        [
+          "South",
+          4
+        ],
+        [
+          "North",
+          4
+        ],
+        [
+          "Europe",
+          3
+        ]
+      ]
+    },
+    "PM/L0": {
+      "n": 162,
+      "whole": 0.741,
+      "all_steps": 0.914,
+      "median_margin": 3.25,
+      "guess": 0.093,
+      "top_wrong": [
+        [
+          "Spanish",
+          5
+        ],
+        [
+          "Sw",
+          5
+        ],
+        [
+          "Italian",
+          5
+        ]
+      ]
+    },
+    "PM/L1": {
+      "n": 162,
+      "whole": 0.833,
+      "all_steps": 0.963,
+      "median_margin": 4.0,
+      "guess": 0.056,
+      "top_wrong": [
+        [
+          "French",
+          5
+        ],
+        [
+          "Sw",
+          3
+        ],
+        [
+          "Nor",
+          3
+        ]
+      ]
+    },
+    "MP/L0": {
+      "n": 162,
+      "whole": 0.802,
+      "all_steps": 0.975,
+      "median_margin": 2.12,
+      "guess": 0.37,
+      "top_wrong": [
+        [
+          "South",
+          5
+        ],
+        [
+          "Europe",
+          4
+        ],
+        [
+          "Asia",
+          4
+        ]
+      ]
+    },
+    "MP/L1": {
+      "n": 162,
+      "whole": 0.735,
+      "all_steps": 0.981,
+      "median_margin": 2.19,
+      "guess": 0.228,
+      "top_wrong": [
+        [
+          "Africa",
+          6
+        ],
+        [
+          "Europe",
+          5
+        ],
+        [
+          "North",
+          3
+        ]
+      ]
+    },
+    "MM/L0": {
+      "n": 162,
+      "whole": 0.901,
+      "all_steps": 0.901,
+      "median_margin": 5.0,
+      "guess": 0.167,
+      "top_wrong": [
+        [
+          "German",
+          3
+        ],
+        [
+          "Europe",
+          2
+        ],
+        [
+          "Africa",
+          2
+        ]
+      ]
+    },
+    "MM/L1": {
+      "n": 162,
+      "whole": 0.914,
+      "all_steps": 0.926,
+      "median_margin": 5.06,
+      "guess": 0.099,
+      "top_wrong": [
+        [
+          "French",
+          2
+        ],
+        [
+          "German",
+          2
+        ],
+        [
+          "British",
+          2
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "PP": 0.727,
+      "PM": 0.955,
+      "MP": 0.636,
+      "MM": 0.92
+    },
+    "countries": {
+      "PP": 0.8,
+      "PM": 0.975,
+      "MP": 0.717,
+      "MM": 0.942
+    },
+    "people": {
+      "PP": 0.905,
+      "PM": 0.466,
+      "MP": 0.922,
+      "MM": 0.862
+    }
+  },
+  "pick": {}
+}

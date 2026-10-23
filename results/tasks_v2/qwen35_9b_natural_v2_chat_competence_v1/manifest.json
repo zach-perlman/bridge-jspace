@@ -1,0 +1,16 @@
+{
+  "run": "qwen35_9b_natural_v2_chat_competence_v1",
+  "why": "Zach (2026-10-23, prereg amendment 11): qwen3.5-9b on natural_v2_chat (second natural seed)",
+  "set": "natural_v2_chat",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "23daf0c9641275f436a8bee1af6671b067a07f13",
+  "guess": true,
+  "read": "suite_v1.read_answers: the answer's first token is the top token (margin > 0)",
+  "written_utc": "2026-10-23T12:16:13Z"
+}
