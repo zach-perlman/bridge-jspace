@@ -49,7 +49,7 @@ PARTS = (("full", "whole"), ("not_jspace", "minus J"), ("jspace", "J only"), ("n
 FAMILY = {"lookups": "PP", "recalls": "PM"}
 SP = G.RESULTS / "statement_positions"
 
-TITLE = "Only recall needs the lens-readable part"
+TITLE = "27B, 9B: only recall needs the lens-readable part"  # scoped: the 122B needs J too (caption)
 SUBTITLE = "% switched; lookups read the answer from the prompt, recalls from memory"
 HOW = "J = the stated bridge's lens-readable part; values only (no rule), n = {n}"
 
