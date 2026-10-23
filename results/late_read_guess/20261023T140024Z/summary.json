@@ -1,0 +1,1281 @@
+{
+ "written_utc": "2026-10-23T14:00:18Z",
+ "script": "scripts/late_read_guess.py",
+ "git": {
+  "sha": "b42b21a1332002f677f72bc5d75b3ca6e2a84d3a",
+  "dirty": true
+ },
+ "grid": "results/cross_model/20261023T121807Z/grid.csv",
+ "family": "RL",
+ "runs": {
+  "Qwen3.6-27B": {
+   "run": "d2_v4_late_read",
+   "model_repo": "Qwen/Qwen3.6-27B",
+   "model_revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+   "rows_sha256": "71361abbd0f0b96947e1a11ee58b0191b30097c6802d84c71c79bd7ce8a8f783",
+   "cases_sha256": "5822063677c2aee2ea36515f618dcf2641b691a005ad61c6d854c7d1ff2be372",
+   "grid_right_pct_last_after": [
+    9,
+    1
+   ],
+   "items": 300,
+   "right_unedited": 300,
+   "slots_unparsed": 0,
+   "arms": {
+    "unedited": {
+     "label": [
+      "none",
+      "-",
+      "-"
+     ],
+     "layers": "-",
+     "items": "all items",
+     "n": 300,
+     "counts": {
+      "hidden": 300,
+      "visible": 0,
+      "outside": 0,
+      "non-digit": 0,
+      "outside_zero": 0
+     },
+     "right": [
+      1.0,
+      0.9874,
+      1.0
+     ],
+     "visible": [
+      0.0,
+      0.0,
+      0.0126
+     ],
+     "visible_blind_0to9": 0.4,
+     "visible_blind_1to9": 0.44444444444444436,
+     "n_outside": 300,
+     "right_given_outside": [
+      1.0,
+      0.9874,
+      1.0
+     ],
+     "chance_given_outside_0to9": 0.16666666666666666,
+     "n_outside_1to9": 300,
+     "right_given_outside_1to9": [
+      1.0,
+      0.9874,
+      1.0
+     ],
+     "chance_given_outside_1to9": 0.2,
+     "digits_outside_list_per_item": {
+      "6": 300
+     },
+     "non_digit_answers": {},
+     "visible_by_place": {},
+     "hidden_vs_correct_mismatch": 0
+    },
+    "last tokens": {
+     "label": [
+      "lookup",
+      "final",
+      "attn"
+     ],
+     "layers": "every attention layer",
+     "items": "items right unedited",
+     "n": 300,
+     "counts": {
+      "hidden": 26,
+      "visible": 263,
+      "outside": 11,
+      "non-digit": 0,
+      "outside_zero": 0
+     },
+     "right": [
+      0.0867,
+      0.0598,
+      0.124
+     ],
+     "visible": [
+      0.8767,
+      0.8346,
+      0.9092
+     ],
+     "visible_blind_0to9": 0.4,
+     "visible_blind_1to9": 0.44444444444444436,
+     "n_outside": 37,
+     "right_given_outside": [
+      0.7027,
+      0.5422,
+      0.8251
+     ],
+     "chance_given_outside_0to9": 0.16666666666666666,
+     "n_outside_1to9": 37,
+     "right_given_outside_1to9": [
+      0.7027,
+      0.5422,
+      0.8251
+     ],
+     "chance_given_outside_1to9": 0.2,
+     "digits_outside_list_per_item": {
+      "6": 300
+     },
+     "non_digit_answers": {},
+     "visible_by_place": {
+      "-4": 28,
+      "-3": 24,
+      "-2": 71,
+      "-1": 88,
+      "+1": 26,
+      "+2": 11,
+      "+3": 9,
+      "+4": 6
+     },
+     "hidden_vs_correct_mismatch": 0
+    },
+    "after": {
+     "label": [
+      "lookup",
+      "after",
+      "all"
+     ],
+     "layers": "all layers",
+     "items": "items right unedited",
+     "n": 300,
+     "counts": {
+      "hidden": 2,
+      "visible": 295,
+      "outside": 3,
+      "non-digit": 0,
+      "outside_zero": 0
+     },
+     "right": [
+      0.0067,
+      0.0018,
+      0.024
+     ],
+     "visible": [
+      0.9833,
+      0.9616,
+      0.9929
+     ],
+     "visible_blind_0to9": 0.4,
+     "visible_blind_1to9": 0.44444444444444436,
+     "n_outside": 5,
+     "right_given_outside": [
+      0.4,
+      0.1176,
+      0.7693
+     ],
+     "chance_given_outside_0to9": 0.16666666666666666,
+     "n_outside_1to9": 5,
+     "right_given_outside_1to9": [
+      0.4,
+      0.1176,
+      0.7693
+     ],
+     "chance_given_outside_1to9": 0.2,
+     "digits_outside_list_per_item": {
+      "6": 300
+     },
+     "non_digit_answers": {},
+     "visible_by_place": {
+      "-4": 23,
+      "-3": 39,
+      "-2": 56,
+      "-1": 68,
+      "+1": 41,
+      "+2": 28,
+      "+3": 26,
+      "+4": 14
+     },
+     "hidden_vs_correct_mismatch": 0
+    },
+    "last tokens, all layers": {
+     "label": [
+      "lookup",
+      "final",
+      "all"
+     ],
+     "layers": "all layers",
+     "items": "items right unedited",
+     "n": 300,
+     "counts": {
+      "hidden": 26,
+      "visible": 265,
+      "outside": 9,
+      "non-digit": 0,
+      "outside_zero": 0
+     },
+     "right": [
+      0.0867,
+      0.0598,
+      0.124
+     ],
+     "visible": [
+      0.8833,
+      0.8421,
+      0.9149
+     ],
+     "visible_blind_0to9": 0.4,
+     "visible_blind_1to9": 0.44444444444444436,
+     "n_outside": 35,
+     "right_given_outside": [
+      0.7429,
+      0.5793,
+      0.8584
+     ],
+     "chance_given_outside_0to9": 0.16666666666666666,
+     "n_outside_1to9": 35,
+     "right_given_outside_1to9": [
+      0.7429,
+      0.5793,
+      0.8584
+     ],
+     "chance_given_outside_1to9": 0.2,
+     "digits_outside_list_per_item": {
+      "6": 300
+     },
+     "non_digit_answers": {},
+     "visible_by_place": {
+      "-4": 28,
+      "-3": 25,
+      "-2": 75,
+      "-1": 83,
+      "+1": 24,
+      "+2": 15,
+      "+3": 9,
+      "+4": 6
+     },
+     "hidden_vs_correct_mismatch": 0
+    }
+   }
+  },
+  "Qwen3.5-9B": {
+   "run": "qwen35_9b_d2_v4_late_read_r2",
+   "model_repo": "Qwen/Qwen3.5-9B",
+   "model_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+   "rows_sha256": "85d11ef21d4ec9bb0852609ddc5548610d8dbf7c6016918132e17a3300728f6f",
+   "cases_sha256": "a2853f9991fc060599c4a578cd31b63693ce2d43741a5ef38f8e4d6df23c9a2f",
+   "grid_right_pct_last_after": [
+    3,
+    3
+   ],
+   "items": 300,
+   "right_unedited": 300,
+   "slots_unparsed": 0,
+   "arms": {
+    "unedited": {
+     "label": [
+      "none",
+      "-",
+      "-"
+     ],
+     "layers": "-",
+     "items": "all items",
+     "n": 300,
+     "counts": {
+      "hidden": 300,
+      "visible": 0,
+      "outside": 0,
+      "non-digit": 0,
+      "outside_zero": 0
+     },
+     "right": [
+      1.0,
+      0.9874,
+      1.0
+     ],
+     "visible": [
+      0.0,
+      0.0,
+      0.0126
+     ],
+     "visible_blind_0to9": 0.4,
+     "visible_blind_1to9": 0.44444444444444436,
+     "n_outside": 300,
+     "right_given_outside": [
+      1.0,
+      0.9874,
+      1.0
+     ],
+     "chance_given_outside_0to9": 0.16666666666666666,
+     "n_outside_1to9": 300,
+     "right_given_outside_1to9": [
+      1.0,
+      0.9874,
+      1.0
+     ],
+     "chance_given_outside_1to9": 0.2,
+     "digits_outside_list_per_item": {
+      "6": 300
+     },
+     "non_digit_answers": {},
+     "visible_by_place": {},
+     "hidden_vs_correct_mismatch": 0
+    },
+    "last tokens": {
+     "label": [
+      "lookup",
+      "final",
+      "attn"
+     ],
+     "layers": "every attention layer",
+     "items": "items right unedited",
+     "n": 300,
+     "counts": {
+      "hidden": 8,
+      "visible": 289,
+      "outside": 3,
+      "non-digit": 0,
+      "outside_zero": 0
+     },
+     "right": [
+      0.0267,
+      0.0136,
+      0.0517
+     ],
+     "visible": [
+      0.9633,
+      0.9355,
+      0.9794
+     ],
+     "visible_blind_0to9": 0.4,
+     "visible_blind_1to9": 0.44444444444444436,
+     "n_outside": 11,
+     "right_given_outside": [
+      0.7273,
+      0.4343,
+      0.9025
+     ],
+     "chance_given_outside_0to9": 0.16666666666666666,
+     "n_outside_1to9": 11,
+     "right_given_outside_1to9": [
+      0.7273,
+      0.4343,
+      0.9025
+     ],
+     "chance_given_outside_1to9": 0.2,
+     "digits_outside_list_per_item": {
+      "6": 300
+     },
+     "non_digit_answers": {},
+     "visible_by_place": {
+      "-4": 2,
+      "-3": 27,
+      "-2": 64,
+      "-1": 84,
+      "+1": 45,
+      "+2": 32,
+      "+3": 17,
+      "+4": 18
+     },
+     "hidden_vs_correct_mismatch": 0
+    },
+    "after": {
+     "label": [
+      "lookup",
+      "after",
+      "all"
+     ],
+     "layers": "all layers",
+     "items": "items right unedited",
+     "n": 300,
+     "counts": {
+      "hidden": 8,
+      "visible": 255,
+      "outside": 37,
+      "non-digit": 0,
+      "outside_zero": 0
+     },
+     "right": [
+      0.0267,
+      0.0136,
+      0.0517
+     ],
+     "visible": [
+      0.85,
+      0.8052,
+      0.886
+     ],
+     "visible_blind_0to9": 0.4,
+     "visible_blind_1to9": 0.44444444444444436,
+     "n_outside": 45,
+     "right_given_outside": [
+      0.1778,
+      0.0929,
+      0.3133
+     ],
+     "chance_given_outside_0to9": 0.16666666666666666,
+     "n_outside_1to9": 45,
+     "right_given_outside_1to9": [
+      0.1778,
+      0.0929,
+      0.3133
+     ],
+     "chance_given_outside_1to9": 0.2,
+     "digits_outside_list_per_item": {
+      "6": 300
+     },
+     "non_digit_answers": {},
+     "visible_by_place": {
+      "-4": 21,
+      "-3": 29,
+      "-2": 37,
+      "-1": 46,
+      "+1": 55,
+      "+2": 30,
+      "+3": 22,
+      "+4": 15
+     },
+     "hidden_vs_correct_mismatch": 0
+    },
+    "last tokens, all layers": {
+     "label": [
+      "lookup",
+      "final",
+      "all"
+     ],
+     "layers": "all layers",
+     "items": "items right unedited",
+     "n": 300,
+     "counts": {
+      "hidden": 7,
+      "visible": 291,
+      "outside": 2,
+      "non-digit": 0,
+      "outside_zero": 0
+     },
+     "right": [
+      0.0233,
+      0.0113,
+      0.0474
+     ],
+     "visible": [
+      0.97,
+      0.944,
+      0.9841
+     ],
+     "visible_blind_0to9": 0.4,
+     "visible_blind_1to9": 0.44444444444444436,
+     "n_outside": 9,
+     "right_given_outside": [
+      0.7778,
+      0.4526,
+      0.9368
+     ],
+     "chance_given_outside_0to9": 0.16666666666666666,
+     "n_outside_1to9": 9,
+     "right_given_outside_1to9": [
+      0.7778,
+      0.4526,
+      0.9368
+     ],
+     "chance_given_outside_1to9": 0.2,
+     "digits_outside_list_per_item": {
+      "6": 300
+     },
+     "non_digit_answers": {},
+     "visible_by_place": {
+      "-4": 4,
+      "-3": 27,
+      "-2": 62,
+      "-1": 87,
+      "+1": 45,
+      "+2": 29,
+      "+3": 16,
+      "+4": 21
+     },
+     "hidden_vs_correct_mismatch": 0
+    }
+   }
+  },
+  "Olmo-Hybrid-7B": {
+   "run": "olmo_hybrid_7b_d2_v4_late_read_v3",
+   "model_repo": "allenai/Olmo-Hybrid-Instruct-DPO-7B",
+   "model_revision": "ec62da5af0106ab4e83a60e07c4796ff358fd204",
+   "rows_sha256": "bdb51c88a4dee7236475e63431901689f4e712493b30c07cd3835945c2ae5f6d",
+   "cases_sha256": "976451bb098c962d365defc6681a2f19699344548cb63419c303a67287552924",
+   "grid_right_pct_last_after": [
+    8,
+    5
+   ],
+   "items": 100,
+   "right_unedited": 100,
+   "slots_unparsed": 0,
+   "arms": {
+    "unedited": {
+     "label": [
+      "none",
+      "-",
+      "-"
+     ],
+     "layers": "-",
+     "items": "all items",
+     "n": 100,
+     "counts": {
+      "hidden": 100,
+      "visible": 0,
+      "outside": 0,
+      "non-digit": 0,
+      "outside_zero": 0
+     },
+     "right": [
+      1.0,
+      0.963,
+      1.0
+     ],
+     "visible": [
+      0.0,
+      0.0,
+      0.037
+     ],
+     "visible_blind_0to9": 0.4,
+     "visible_blind_1to9": 0.4444444444444444,
+     "n_outside": 100,
+     "right_given_outside": [
+      1.0,
+      0.963,
+      1.0
+     ],
+     "chance_given_outside_0to9": 0.16666666666666663,
+     "n_outside_1to9": 100,
+     "right_given_outside_1to9": [
+      1.0,
+      0.963,
+      1.0
+     ],
+     "chance_given_outside_1to9": 0.2,
+     "digits_outside_list_per_item": {
+      "6": 100
+     },
+     "non_digit_answers": {},
+     "visible_by_place": {},
+     "hidden_vs_correct_mismatch": 0
+    },
+    "last tokens": {
+     "label": [
+      "lookup",
+      "final",
+      "attn"
+     ],
+     "layers": "every attention layer",
+     "items": "items right unedited",
+     "n": 100,
+     "counts": {
+      "hidden": 8,
+      "visible": 73,
+      "outside": 19,
+      "non-digit": 0,
+      "outside_zero": 0
+     },
+     "right": [
+      0.08,
+      0.0411,
+      0.15
+     ],
+     "visible": [
+      0.73,
+      0.6357,
+      0.8073
+     ],
+     "visible_blind_0to9": 0.4,
+     "visible_blind_1to9": 0.4444444444444444,
+     "n_outside": 27,
+     "right_given_outside": [
+      0.2963,
+      0.1585,
+      0.4848
+     ],
+     "chance_given_outside_0to9": 0.16666666666666666,
+     "n_outside_1to9": 27,
+     "right_given_outside_1to9": [
+      0.2963,
+      0.1585,
+      0.4848
+     ],
+     "chance_given_outside_1to9": 0.2,
+     "digits_outside_list_per_item": {
+      "6": 100
+     },
+     "non_digit_answers": {},
+     "visible_by_place": {
+      "-4": 12,
+      "-3": 12,
+      "-2": 21,
+      "-1": 16,
+      "+1": 4,
+      "+2": 3,
+      "+3": 3,
+      "+4": 2
+     },
+     "hidden_vs_correct_mismatch": 0
+    },
+    "after": {
+     "label": [
+      "lookup",
+      "after",
+      "all"
+     ],
+     "layers": "all layers",
+     "items": "items right unedited",
+     "n": 100,
+     "counts": {
+      "hidden": 5,
+      "visible": 40,
+      "outside": 55,
+      "non-digit": 0,
+      "outside_zero": 0
+     },
+     "right": [
+      0.05,
+      0.0215,
+      0.1118
+     ],
+     "visible": [
+      0.4,
+      0.3094,
+      0.498
+     ],
+     "visible_blind_0to9": 0.4,
+     "visible_blind_1to9": 0.4444444444444444,
+     "n_outside": 60,
+     "right_given_outside": [
+      0.0833,
+      0.0361,
+      0.1807
+     ],
+     "chance_given_outside_0to9": 0.16666666666666666,
+     "n_outside_1to9": 60,
+     "right_given_outside_1to9": [
+      0.0833,
+      0.0361,
+      0.1807
+     ],
+     "chance_given_outside_1to9": 0.2,
+     "digits_outside_list_per_item": {
+      "6": 100
+     },
+     "non_digit_answers": {},
+     "visible_by_place": {
+      "-4": 15,
+      "-3": 2,
+      "-2": 8,
+      "-1": 6,
+      "+1": 8,
+      "+4": 1
+     },
+     "hidden_vs_correct_mismatch": 0
+    },
+    "last tokens, all layers": {
+     "label": [
+      "lookup",
+      "final",
+      "all"
+     ],
+     "layers": "all layers",
+     "items": "items right unedited",
+     "n": 100,
+     "counts": {
+      "hidden": 7,
+      "visible": 71,
+      "outside": 22,
+      "non-digit": 0,
+      "outside_zero": 0
+     },
+     "right": [
+      0.07,
+      0.0343,
+      0.1375
+     ],
+     "visible": [
+      0.71,
+      0.6146,
+      0.7899
+     ],
+     "visible_blind_0to9": 0.4,
+     "visible_blind_1to9": 0.4444444444444444,
+     "n_outside": 29,
+     "right_given_outside": [
+      0.2414,
+      0.1222,
+      0.4211
+     ],
+     "chance_given_outside_0to9": 0.16666666666666666,
+     "n_outside_1to9": 29,
+     "right_given_outside_1to9": [
+      0.2414,
+      0.1222,
+      0.4211
+     ],
+     "chance_given_outside_1to9": 0.2,
+     "digits_outside_list_per_item": {
+      "6": 100
+     },
+     "non_digit_answers": {},
+     "visible_by_place": {
+      "-4": 12,
+      "-3": 11,
+      "-2": 21,
+      "-1": 16,
+      "+1": 3,
+      "+2": 3,
+      "+3": 3,
+      "+4": 2
+     },
+     "hidden_vs_correct_mismatch": 0
+    }
+   }
+  },
+  "Qwen3-32B": {
+   "run": "qwen3_32b_d2_v4_late_read_v2_r2",
+   "model_repo": "Qwen/Qwen3-32B",
+   "model_revision": "9216db5781bf21249d130ec9da846c4624c16137",
+   "rows_sha256": "f0c6da0d86b97491162e06a0845d8e340e14a8abae745209ec45789d1de3f09e",
+   "cases_sha256": "f5714a7f8c5a133f7aa8b048e89bf6a0ab141e4a015f4391603d4aa72558cc13",
+   "grid_right_pct_last_after": [
+    3,
+    10
+   ],
+   "items": 300,
+   "right_unedited": 300,
+   "slots_unparsed": 0,
+   "arms": {
+    "unedited": {
+     "label": [
+      "none",
+      "-",
+      "-"
+     ],
+     "layers": "-",
+     "items": "all items",
+     "n": 300,
+     "counts": {
+      "hidden": 300,
+      "visible": 0,
+      "outside": 0,
+      "non-digit": 0,
+      "outside_zero": 0
+     },
+     "right": [
+      1.0,
+      0.9874,
+      1.0
+     ],
+     "visible": [
+      0.0,
+      0.0,
+      0.0126
+     ],
+     "visible_blind_0to9": 0.4,
+     "visible_blind_1to9": 0.44444444444444436,
+     "n_outside": 300,
+     "right_given_outside": [
+      1.0,
+      0.9874,
+      1.0
+     ],
+     "chance_given_outside_0to9": 0.16666666666666666,
+     "n_outside_1to9": 300,
+     "right_given_outside_1to9": [
+      1.0,
+      0.9874,
+      1.0
+     ],
+     "chance_given_outside_1to9": 0.2,
+     "digits_outside_list_per_item": {
+      "6": 300
+     },
+     "non_digit_answers": {},
+     "visible_by_place": {},
+     "hidden_vs_correct_mismatch": 0
+    },
+    "last tokens": {
+     "label": [
+      "lookup",
+      "final",
+      "all"
+     ],
+     "layers": "all layers",
+     "items": "items right unedited",
+     "n": 300,
+     "counts": {
+      "hidden": 10,
+      "visible": 278,
+      "outside": 12,
+      "non-digit": 0,
+      "outside_zero": 0
+     },
+     "right": [
+      0.0333,
+      0.0182,
+      0.0603
+     ],
+     "visible": [
+      0.9267,
+      0.8915,
+      0.9511
+     ],
+     "visible_blind_0to9": 0.4,
+     "visible_blind_1to9": 0.44444444444444436,
+     "n_outside": 22,
+     "right_given_outside": [
+      0.4545,
+      0.2692,
+      0.6534
+     ],
+     "chance_given_outside_0to9": 0.16666666666666666,
+     "n_outside_1to9": 22,
+     "right_given_outside_1to9": [
+      0.4545,
+      0.2692,
+      0.6534
+     ],
+     "chance_given_outside_1to9": 0.2,
+     "digits_outside_list_per_item": {
+      "6": 300
+     },
+     "non_digit_answers": {},
+     "visible_by_place": {
+      "-4": 9,
+      "-3": 30,
+      "-2": 58,
+      "-1": 77,
+      "+1": 49,
+      "+2": 28,
+      "+3": 18,
+      "+4": 9
+     },
+     "hidden_vs_correct_mismatch": 0
+    },
+    "after": {
+     "label": [
+      "lookup",
+      "after",
+      "all"
+     ],
+     "layers": "all layers",
+     "items": "items right unedited",
+     "n": 300,
+     "counts": {
+      "hidden": 29,
+      "visible": 157,
+      "outside": 112,
+      "non-digit": 2,
+      "outside_zero": 0
+     },
+     "right": [
+      0.0967,
+      0.0681,
+      0.1354
+     ],
+     "visible": [
+      0.5233,
+      0.4669,
+      0.5792
+     ],
+     "visible_blind_0to9": 0.4,
+     "visible_blind_1to9": 0.44444444444444436,
+     "n_outside": 141,
+     "right_given_outside": [
+      0.2057,
+      0.1472,
+      0.2798
+     ],
+     "chance_given_outside_0to9": 0.16666666666666666,
+     "n_outside_1to9": 141,
+     "right_given_outside_1to9": [
+      0.2057,
+      0.1472,
+      0.2798
+     ],
+     "chance_given_outside_1to9": 0.2,
+     "digits_outside_list_per_item": {
+      "6": 300
+     },
+     "non_digit_answers": {
+      "' none'": 2
+     },
+     "visible_by_place": {
+      "-4": 7,
+      "-3": 13,
+      "-2": 20,
+      "-1": 37,
+      "+1": 34,
+      "+2": 26,
+      "+3": 8,
+      "+4": 12
+     },
+     "hidden_vs_correct_mismatch": 0
+    }
+   }
+  },
+  "OLMo-3-7B-I": {
+   "run": "olmo3_7b_instruct_d2_v4_late_read_v3",
+   "model_repo": "allenai/Olmo-3-7B-Instruct",
+   "model_revision": "6e5971d9eba42665f5bd5a0fcf047f299ce1dccc",
+   "rows_sha256": "467a1eb708573b6750cd50ca0217334bb2f41be6271f5b76b2708578466ba94a",
+   "cases_sha256": "568d0e04b0bf9e75f4fc244ead9bb600f29a130046bb15f004d9bb0181ac96f3",
+   "grid_right_pct_last_after": [
+    0,
+    4
+   ],
+   "items": 100,
+   "right_unedited": 100,
+   "slots_unparsed": 0,
+   "arms": {
+    "unedited": {
+     "label": [
+      "none",
+      "-",
+      "-"
+     ],
+     "layers": "-",
+     "items": "all items",
+     "n": 100,
+     "counts": {
+      "hidden": 100,
+      "visible": 0,
+      "outside": 0,
+      "non-digit": 0,
+      "outside_zero": 0
+     },
+     "right": [
+      1.0,
+      0.963,
+      1.0
+     ],
+     "visible": [
+      0.0,
+      0.0,
+      0.037
+     ],
+     "visible_blind_0to9": 0.4,
+     "visible_blind_1to9": 0.4444444444444444,
+     "n_outside": 100,
+     "right_given_outside": [
+      1.0,
+      0.963,
+      1.0
+     ],
+     "chance_given_outside_0to9": 0.16666666666666663,
+     "n_outside_1to9": 100,
+     "right_given_outside_1to9": [
+      1.0,
+      0.963,
+      1.0
+     ],
+     "chance_given_outside_1to9": 0.2,
+     "digits_outside_list_per_item": {
+      "6": 100
+     },
+     "non_digit_answers": {},
+     "visible_by_place": {},
+     "hidden_vs_correct_mismatch": 0
+    },
+    "last tokens": {
+     "label": [
+      "lookup",
+      "final",
+      "all"
+     ],
+     "layers": "all layers",
+     "items": "items right unedited",
+     "n": 100,
+     "counts": {
+      "hidden": 0,
+      "visible": 96,
+      "outside": 1,
+      "non-digit": 3,
+      "outside_zero": 0
+     },
+     "right": [
+      0.0,
+      0.0,
+      0.037
+     ],
+     "visible": [
+      0.96,
+      0.9016,
+      0.9843
+     ],
+     "visible_blind_0to9": 0.4,
+     "visible_blind_1to9": 0.4444444444444444,
+     "n_outside": 1,
+     "right_given_outside": [
+      0.0,
+      0.0,
+      0.7935
+     ],
+     "chance_given_outside_0to9": 0.16666666666666666,
+     "n_outside_1to9": 1,
+     "right_given_outside_1to9": [
+      0.0,
+      0.0,
+      0.7935
+     ],
+     "chance_given_outside_1to9": 0.2,
+     "digits_outside_list_per_item": {
+      "6": 100
+     },
+     "non_digit_answers": {
+      "' There'": 1,
+      "' None'": 2
+     },
+     "visible_by_place": {
+      "-3": 10,
+      "-2": 18,
+      "-1": 33,
+      "+1": 12,
+      "+2": 9,
+      "+3": 8,
+      "+4": 6
+     },
+     "hidden_vs_correct_mismatch": 0
+    },
+    "after": {
+     "label": [
+      "lookup",
+      "after",
+      "all"
+     ],
+     "layers": "all layers",
+     "items": "items right unedited",
+     "n": 100,
+     "counts": {
+      "hidden": 4,
+      "visible": 39,
+      "outside": 30,
+      "non-digit": 27,
+      "outside_zero": 21
+     },
+     "right": [
+      0.04,
+      0.0157,
+      0.0984
+     ],
+     "visible": [
+      0.39,
+      0.3002,
+      0.488
+     ],
+     "visible_blind_0to9": 0.4,
+     "visible_blind_1to9": 0.4444444444444444,
+     "n_outside": 34,
+     "right_given_outside": [
+      0.1176,
+      0.0467,
+      0.2662
+     ],
+     "chance_given_outside_0to9": 0.16666666666666666,
+     "n_outside_1to9": 13,
+     "right_given_outside_1to9": [
+      0.3077,
+      0.1268,
+      0.5763
+     ],
+     "chance_given_outside_1to9": 0.2,
+     "digits_outside_list_per_item": {
+      "6": 100
+     },
+     "non_digit_answers": {
+      "'<|endoftext|>'": 23,
+      "' ('": 2,
+      "' None'": 2
+     },
+     "visible_by_place": {
+      "-4": 2,
+      "-2": 7,
+      "-1": 9,
+      "+1": 13,
+      "+2": 5,
+      "+3": 1,
+      "+4": 2
+     },
+     "hidden_vs_correct_mismatch": 0
+    }
+   }
+  },
+  "Gemma 4 31B-it": {
+   "run": "gemma4it_d2_v4_late_read_v3_r2",
+   "model_repo": "google/gemma-4-31B-it",
+   "model_revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+   "rows_sha256": "5fa345d465136f2d1291b2eede5c943af2d591ab9fdfa1b41a8d6e9c45dc9361",
+   "cases_sha256": "31fdbf272e58322a5e75441f659482673782a99e2ba0d89495dc3dfc3cc19632",
+   "grid_right_pct_last_after": [
+    23,
+    2
+   ],
+   "items": 300,
+   "right_unedited": 300,
+   "slots_unparsed": 0,
+   "arms": {
+    "unedited": {
+     "label": [
+      "none",
+      "-",
+      "-"
+     ],
+     "layers": "-",
+     "items": "all items",
+     "n": 300,
+     "counts": {
+      "hidden": 300,
+      "visible": 0,
+      "outside": 0,
+      "non-digit": 0,
+      "outside_zero": 0
+     },
+     "right": [
+      1.0,
+      0.9874,
+      1.0
+     ],
+     "visible": [
+      0.0,
+      0.0,
+      0.0126
+     ],
+     "visible_blind_0to9": 0.4,
+     "visible_blind_1to9": 0.44444444444444436,
+     "n_outside": 300,
+     "right_given_outside": [
+      1.0,
+      0.9874,
+      1.0
+     ],
+     "chance_given_outside_0to9": 0.16666666666666666,
+     "n_outside_1to9": 300,
+     "right_given_outside_1to9": [
+      1.0,
+      0.9874,
+      1.0
+     ],
+     "chance_given_outside_1to9": 0.2,
+     "digits_outside_list_per_item": {
+      "6": 300
+     },
+     "non_digit_answers": {},
+     "visible_by_place": {},
+     "hidden_vs_correct_mismatch": 0
+    },
+    "last tokens": {
+     "label": [
+      "lookup",
+      "final",
+      "all"
+     ],
+     "layers": "all layers",
+     "items": "items right unedited",
+     "n": 300,
+     "counts": {
+      "hidden": 68,
+      "visible": 225,
+      "outside": 7,
+      "non-digit": 0,
+      "outside_zero": 0
+     },
+     "right": [
+      0.2267,
+      0.1829,
+      0.2773
+     ],
+     "visible": [
+      0.75,
+      0.698,
+      0.7956
+     ],
+     "visible_blind_0to9": 0.4,
+     "visible_blind_1to9": 0.44444444444444436,
+     "n_outside": 75,
+     "right_given_outside": [
+      0.9067,
+      0.8197,
+      0.9541
+     ],
+     "chance_given_outside_0to9": 0.16666666666666666,
+     "n_outside_1to9": 75,
+     "right_given_outside_1to9": [
+      0.9067,
+      0.8197,
+      0.9541
+     ],
+     "chance_given_outside_1to9": 0.2,
+     "digits_outside_list_per_item": {
+      "6": 300
+     },
+     "non_digit_answers": {},
+     "visible_by_place": {
+      "-4": 33,
+      "-3": 43,
+      "-2": 55,
+      "-1": 86,
+      "+1": 4,
+      "+2": 1,
+      "+3": 3
+     },
+     "hidden_vs_correct_mismatch": 0
+    },
+    "after": {
+     "label": [
+      "lookup",
+      "after",
+      "all"
+     ],
+     "layers": "all layers",
+     "items": "items right unedited",
+     "n": 300,
+     "counts": {
+      "hidden": 5,
+      "visible": 155,
+      "outside": 140,
+      "non-digit": 0,
+      "outside_zero": 101
+     },
+     "right": [
+      0.0167,
+      0.0071,
+      0.0384
+     ],
+     "visible": [
+      0.5167,
+      0.4603,
+      0.5726
+     ],
+     "visible_blind_0to9": 0.4,
+     "visible_blind_1to9": 0.44444444444444436,
+     "n_outside": 145,
+     "right_given_outside": [
+      0.0345,
+      0.0148,
+      0.0782
+     ],
+     "chance_given_outside_0to9": 0.16666666666666666,
+     "n_outside_1to9": 44,
+     "right_given_outside_1to9": [
+      0.1136,
+      0.0495,
+      0.2398
+     ],
+     "chance_given_outside_1to9": 0.2,
+     "digits_outside_list_per_item": {
+      "6": 300
+     },
+     "non_digit_answers": {},
+     "visible_by_place": {
+      "-4": 13,
+      "-3": 15,
+      "-2": 32,
+      "-1": 30,
+      "+1": 26,
+      "+2": 17,
+      "+3": 15,
+      "+4": 7
+     },
+     "hidden_vs_correct_mismatch": 0
+    }
+   }
+  }
+ },
+ "checks": {
+  "grid_ok": true,
+  "errors": [],
+  "hidden_equals_correct": true
+ }
+}
