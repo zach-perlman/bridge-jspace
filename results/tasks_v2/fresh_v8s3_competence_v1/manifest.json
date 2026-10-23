@@ -1,0 +1,18 @@
+{
+  "run": "fresh_v8s3_competence_v1",
+  "why": "Zach (2026-10-23, prereg amendment 9): qwen3.6-27b on fresh_v8s3: competence on fresh_v8s3",
+  "set": "fresh_v8s3",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "588a05024caac3fdd65b3ec871b381f982ba4a44",
+  "guess": true,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-23T06:17:15Z"
+}

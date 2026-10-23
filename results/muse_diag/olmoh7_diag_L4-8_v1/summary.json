@@ -1,0 +1,89 @@
+{
+  "target": "olmo-hybrid-7b",
+  "band": "4-8",
+  "n_items": 105,
+  "by_word": {
+    "PM": {
+      "n": 48,
+      "bridge_in_clean_top10_final_any_band_layer": 0,
+      "bridge_in_clean_top10_span_any_band_layer": 16.7,
+      "median_best_clean_rank_final": 5404.5,
+      "median_best_clean_rank_span": 73.5,
+      "removed_final": 0,
+      "removed_span": 14.6,
+      "accuracy_ko": 89.6,
+      "accuracy_ko_if_removed_span": 71.4,
+      "accuracy_ko_if_not_removed_span": 92.7,
+      "median_rank_after": {
+        "L10": {
+          "clean_final": 11583.5,
+          "ko_final": 13209.5,
+          "clean_span": 617.5,
+          "ko_span": 804.0
+        },
+        "L12": {
+          "clean_final": 20217.0,
+          "ko_final": 19710.0,
+          "clean_span": 980.5,
+          "ko_span": 1068.0
+        }
+      }
+    },
+    "MM": {
+      "n": 57,
+      "bridge_in_clean_top10_final_any_band_layer": 0,
+      "bridge_in_clean_top10_span_any_band_layer": 57.9,
+      "median_best_clean_rank_final": 2148,
+      "median_best_clean_rank_span": 8,
+      "removed_final": 0,
+      "removed_span": 70.2,
+      "accuracy_ko": 86.0,
+      "accuracy_ko_if_removed_span": 85.0,
+      "accuracy_ko_if_not_removed_span": 88.2,
+      "median_rank_after": {
+        "L10": {
+          "clean_final": 11688,
+          "ko_final": 13458,
+          "clean_span": 24,
+          "ko_span": 40
+        },
+        "L12": {
+          "clean_final": 18303,
+          "ko_final": 18728,
+          "clean_span": 48,
+          "ko_span": 83
+        }
+      }
+    },
+    "all": {
+      "n": 105,
+      "bridge_in_clean_top10_final_any_band_layer": 0,
+      "bridge_in_clean_top10_span_any_band_layer": 39.0,
+      "median_best_clean_rank_final": 4772,
+      "median_best_clean_rank_span": 16,
+      "removed_final": 0,
+      "removed_span": 44.8,
+      "accuracy_ko": 87.6,
+      "accuracy_ko_if_removed_span": 83.0,
+      "accuracy_ko_if_not_removed_span": 91.4,
+      "median_rank_after": {
+        "L10": {
+          "clean_final": 11688,
+          "ko_final": 13458,
+          "clean_span": 103,
+          "ko_span": 202
+        },
+        "L12": {
+          "clean_final": 19962,
+          "ko_final": 19237,
+          "clean_span": 108,
+          "ko_span": 210
+        }
+      }
+    }
+  },
+  "seconds": 53,
+  "command": "scripts/muse_diag.py --name olmoh7_diag_L4-8_v1 --why Zach (2026-10-23, prereg amendment 9): the Muse diagnostic, olmo-hybrid-7b at its C1 band --band 4-8 --n 60 --set olmo_big_v8nc --competence olmoh7_olmo_big_v8nc_competence_v1",
+  "why": "Zach (2026-10-23, prereg amendment 9): the Muse diagnostic, olmo-hybrid-7b at its C1 band",
+  "doc": "muse_diag (Zach, 2026-10-22; docs/prereg_replication_1022.md amendment 6C): why can Muse's recalls be steered through\nthe lens but not knocked out? On full_v8's memory-final words (P->M, M->M), items the model gets right, at the model's\nC1 band, the paper10 knock-out is replayed one prompt at a time with its removals logged:\n- (a) the bridge's rank in the lens readout (letter tokens; best of its surface forms) at each band layer, clean, at the\n  final position and at the best position of the question span (question_start .. final);\n- (b) whether the knock-out removes the bridge (any surface form among the 10 removed directions) at one or more band\n  layers, at the final position / at some question-span position;\n- (c) the bridge's rank 2 and 4 layers after the band, clean vs under the knock-out;\n- the answer, clean and under the knock-out (a check against the C1 run).\nThe question-span measure stands in for the pre-registered \"question's last token\" (the span includes it). Descriptive.\nBJ_TARGET=... python scripts/muse_diag.py --name N --why W --band LO-HI [--n 60]\n"
+}

@@ -1,0 +1,18 @@
+{
+  "run": "muse30_fresh_v8s2_competence_v1",
+  "why": "Zach (2026-10-23, prereg amendment 9): muse-glimmer-30b on fresh_v8s2: competence on fresh_v8s2",
+  "set": "fresh_v8s2",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "588a05024caac3fdd65b3ec871b381f982ba4a44",
+  "guess": true,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-23T06:50:15Z"
+}

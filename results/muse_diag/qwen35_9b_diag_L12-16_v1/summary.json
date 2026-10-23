@@ -1,0 +1,89 @@
+{
+  "target": "qwen3.5-9b",
+  "band": "12-16",
+  "n_items": 116,
+  "by_word": {
+    "PM": {
+      "n": 60,
+      "bridge_in_clean_top10_final_any_band_layer": 0,
+      "bridge_in_clean_top10_span_any_band_layer": 20.0,
+      "median_best_clean_rank_final": 1115.5,
+      "median_best_clean_rank_span": 44.0,
+      "removed_final": 0,
+      "removed_span": 31.7,
+      "accuracy_ko": 48.3,
+      "accuracy_ko_if_removed_span": 31.6,
+      "accuracy_ko_if_not_removed_span": 56.1,
+      "median_rank_after": {
+        "L18": {
+          "clean_final": 93.5,
+          "ko_final": 50897.0,
+          "clean_span": 34.5,
+          "ko_span": 1498.5
+        },
+        "L20": {
+          "clean_final": 8.0,
+          "ko_final": 4289.5,
+          "clean_span": 5.0,
+          "ko_span": 274.5
+        }
+      }
+    },
+    "MM": {
+      "n": 56,
+      "bridge_in_clean_top10_final_any_band_layer": 28.6,
+      "bridge_in_clean_top10_span_any_band_layer": 92.9,
+      "median_best_clean_rank_final": 89.0,
+      "median_best_clean_rank_span": 1.0,
+      "removed_final": 16.1,
+      "removed_span": 92.9,
+      "accuracy_ko": 46.4,
+      "accuracy_ko_if_removed_span": 46.2,
+      "accuracy_ko_if_not_removed_span": 50.0,
+      "median_rank_after": {
+        "L18": {
+          "clean_final": 8.0,
+          "ko_final": 26827.0,
+          "clean_span": 0.5,
+          "ko_span": 343.0
+        },
+        "L20": {
+          "clean_final": 2.5,
+          "ko_final": 738.0,
+          "clean_span": 0.0,
+          "ko_span": 26.0
+        }
+      }
+    },
+    "all": {
+      "n": 116,
+      "bridge_in_clean_top10_final_any_band_layer": 13.8,
+      "bridge_in_clean_top10_span_any_band_layer": 55.2,
+      "median_best_clean_rank_final": 303.0,
+      "median_best_clean_rank_span": 5.0,
+      "removed_final": 7.8,
+      "removed_span": 61.2,
+      "accuracy_ko": 47.4,
+      "accuracy_ko_if_removed_span": 42.3,
+      "accuracy_ko_if_not_removed_span": 55.6,
+      "median_rank_after": {
+        "L18": {
+          "clean_final": 28.5,
+          "ko_final": 37183.0,
+          "clean_span": 7.0,
+          "ko_span": 636.5
+        },
+        "L20": {
+          "clean_final": 5.0,
+          "ko_final": 1190.0,
+          "clean_span": 1.0,
+          "ko_span": 108.0
+        }
+      }
+    }
+  },
+  "seconds": 104,
+  "command": "scripts/muse_diag.py --name qwen35_9b_diag_L12-16_v1 --why Zach (2026-10-23, prereg amendment 9): the Muse diagnostic, qwen3.5-9b at its C1 band --band 12-16 --n 60",
+  "why": "Zach (2026-10-23, prereg amendment 9): the Muse diagnostic, qwen3.5-9b at its C1 band",
+  "doc": "muse_diag (Zach, 2026-10-22; docs/prereg_replication_1022.md amendment 6C): why can Muse's recalls be steered through\nthe lens but not knocked out? On full_v8's memory-final words (P->M, M->M), items the model gets right, at the model's\nC1 band, the paper10 knock-out is replayed one prompt at a time with its removals logged:\n- (a) the bridge's rank in the lens readout (letter tokens; best of its surface forms) at each band layer, clean, at the\n  final position and at the best position of the question span (question_start .. final);\n- (b) whether the knock-out removes the bridge (any surface form among the 10 removed directions) at one or more band\n  layers, at the final position / at some question-span position;\n- (c) the bridge's rank 2 and 4 layers after the band, clean vs under the knock-out;\n- the answer, clean and under the knock-out (a check against the C1 run).\nThe question-span measure stands in for the pre-registered \"question's last token\" (the span includes it). Descriptive.\nBJ_TARGET=... python scripts/muse_diag.py --name N --why W --band LO-HI [--n 60]\n"
+}
