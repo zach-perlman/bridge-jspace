@@ -51,9 +51,11 @@ def main(name: str, why: str, layers: tuple[int, ...], conditions: tuple[str, ..
     tok = model.tokenizer
     lens = JLens(model, pins.FROZEN_LENS)
     letters = model.letter_token_ids()
-    jd = {la: lens.vectors(la, letters) for la in layers}
-    every = {"none": {}, "jspace": {la: Remove(jd[la]) for la in layers},
-             "rotated": {la: Rotated(jd[la], rotation(jd[la].shape[1], 888 + la)) for la in layers}}  # fmt: skip
+    every = {"none": {}}
+    if {"jspace", "rotated"} & set(conditions):  # 2026-10-23: only when asked (vocab x d per layer; OOMed the 122B)
+        jd = {la: lens.vectors(la, letters) for la in layers}
+        every |= {"jspace": {la: Remove(jd[la]) for la in layers},
+                  "rotated": {la: Rotated(jd[la], rotation(jd[la].shape[1], 888 + la)) for la in layers}}  # fmt: skip
     wg = model.hf.lm_head.weight[letters].float() * model.norm_gain()
     dic = {la: LensDictionary(wg, lens.J(la)) for la in layers}
     for c in conditions:
@@ -61,6 +63,12 @@ def main(name: str, why: str, layers: tuple[int, ...], conditions: tuple[str, ..
             k = int(c[3:].removesuffix("_rot").removesuffix("_nosink"))
             rot = c.endswith("_rot")
             every[c] = {la: _top(dic[la], k, rotation_v2(wg.shape[1], 888 + la) if rot else None, "_nosink" in c)
+                        for la in layers}  # fmt: skip
+        elif c.startswith("unembed"):  # 2026-10-23: the logit lens top-K (J = identity), as ablate_v2's unembedK
+            k = int(c[7:].removesuffix("_rot").removesuffix("_nosink"))
+            rot = c.endswith("_rot")
+            ud = LensDictionary(wg, torch.eye(wg.shape[1], device="cuda"))
+            every[c] = {la: _top(ud, k, rotation_v2(wg.shape[1], 888 + la) if rot else None, "_nosink" in c)
                         for la in layers}  # fmt: skip
     conds = {c: every[c] for c in conditions}
     texts = [ids for t in pins.wikitext_rows() if len(ids := raw_encoding(tok, t)["input_ids"][:128]) >= 64][:16]
