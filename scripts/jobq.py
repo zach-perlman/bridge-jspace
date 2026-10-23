@@ -16,7 +16,7 @@ drafts/<id>.md, worker-gpu<N>.log, archive/<state>/ (finished records moved out 
 read earlier jobs' results: results/ is copied into each checkout first.
 
     uv run python -m scripts.jobq validate jobs/d2/d2_ko_v1.yaml     # spec check, no box needed
-    uv run python -m scripts.jobq enqueue jobs/d2/d2_ko_v1.yaml      # committed tree only
+    uv run python -m scripts.jobq enqueue jobs/d2/d2_ko_v1.yaml      # committed tree only; new ids and run names
     uv run python -m scripts.jobq status | pull | cancel ID | archive | start-worker [--gpu N]
     python3 ~/jobq/jobq.py worker --gpu 0                             # on the box (stdlib only: system python3)
 """
@@ -66,6 +66,7 @@ OPTIONAL: dict[str, tuple[type, ...]] = {
 }
 DEFAULT_MEM_GB = 70  # Qwen3.6-27B: ~54 GB bf16 weights + lens maps + activations
 ID_RE = re.compile(r"^[a-z0-9][a-z0-9_]*$")
+NAME_RE = re.compile(r"--name[ =]['\"]?([\w.-]+)")  # a script's run name: it writes results/<script>/<name>/
 URL_RE = re.compile(r"https?://\S*wandb\S*")
 PROGRESS_RE = re.compile(r"\d+%\|")
 
@@ -115,6 +116,29 @@ def load_spec(path: Path) -> dict[str, Any]:
     return yaml.safe_load(path.read_text())
 
 
+def run_names(command: str) -> list[str]:
+    """The run names a command writes (each `--name X`, once, in order; `manifest --name X && run --name X` is one)."""
+    return list(dict.fromkeys(NAME_RE.findall(command)))
+
+
+def name_clashes(specs: list[dict[str, Any]], box_runs: list[str]) -> list[str]:
+    """One line per run name a spec's command would write that is taken: a results/<exp>/<name> dir already on the
+    box (`box_runs`: '<exp>/<name>'; runs are written once, so the job would die on its write-once check), or a name
+    another spec of the same batch writes. [] if none."""
+    on_box: dict[str, list[str]] = {}
+    for r in box_runs:
+        on_box.setdefault(r.split("/", 1)[-1], []).append(f"results/{r}")
+    out, first = [], {}
+    for s in specs:
+        for name in run_names(s["command"]):
+            if name in on_box:
+                out.append(f"{s['id']}: --name {name} exists on the box: {', '.join(sorted(on_box[name]))}")
+            if name in first:
+                out.append(f"{s['id']}: --name {name} is also written by {first[name]} in this batch")
+            first.setdefault(name, s["id"])
+    return out
+
+
 # ---------------------------------------------------------------- Mac side
 
 
@@ -141,9 +165,11 @@ def cmd_validate(paths: list[Path]) -> int:
     return 1 if bad else 0
 
 
-def cmd_enqueue(paths: list[Path], allow_dirty: bool = False) -> int:
+def cmd_enqueue(paths: list[Path], allow_dirty: bool = False, reuse_names: bool = False) -> int:
     """`allow_dirty`: queue although tracked files have uncommitted changes (e.g. another script being edited). The
-    job still runs the committed tree only; the uncommitted paths are recorded in its record as `dirty_paths`."""
+    job still runs the committed tree only; the uncommitted paths are recorded in its record as `dirty_paths`.
+    `reuse_names`: queue although a run name (--name) of a command already exists in the box's results/ (a command
+    that only reads that run); refused otherwise, with the existing folders named (one ssh call per batch)."""
     specs = []
     for p in paths:
         spec = load_spec(p)
@@ -171,6 +197,13 @@ def cmd_enqueue(paths: list[Path], allow_dirty: bool = False) -> int:
         raise SystemExit(f"job ids are write-once and already used: {clash}")
     if other := sorted(ids_on_other_boxes(REPO, HOST) & set(ids)):  # logs / drafts are pulled into one folder per id
         raise SystemExit(f"job ids already used on another queue box (one id, one box): {other}")
+    # the box copies its results/ into every checkout: a run name already there dies on the script's write-once check
+    box_runs = json.loads(_ssh(f"python3 ~/{BOX_ROOT}/jobq.py box-runs"))
+    if (clash := name_clashes([s for _, s in specs], box_runs)) and not reuse_names:
+        raise SystemExit(
+            f"run names are written once and already taken on {HOST}:\n" + "\n".join(clash) + "\nrename the runs "
+            "(e.g. the _rN suffix of a retry) or, if the command only reads that run, pass --reuse-names"
+        )
     refspecs = [f"{commit}:refs/jobq/{s['id']}" for _, s in specs]
     subprocess.run(["git", "push", "-q", f"{HOST}:{BOX_ROOT}/repo.git", *refspecs], cwd=REPO, check=True)
     who = _git("config", "user.name") or "?"
@@ -697,6 +730,7 @@ def main(argv: list[str] | None = None) -> int:
     eq = sub.add_parser("enqueue")
     eq.add_argument("specs", nargs="+", type=Path)
     eq.add_argument("--allow-dirty", action="store_true", help="queue despite uncommitted tracked files (recorded)")
+    eq.add_argument("--reuse-names", action="store_true", help="queue although a --name exists in the box's results/")
     sub.add_parser("status").add_argument("--json", action="store_true")
     sub.add_parser("pull")
     sub.add_parser("cancel").add_argument("id")
@@ -707,6 +741,7 @@ def main(argv: list[str] | None = None) -> int:
     w.add_argument("--once", action="store_true")
     sub.add_parser("box-status").add_argument("--json", action="store_true")
     sub.add_parser("box-ids")
+    sub.add_parser("box-runs", help="the run dirs in the box's results/ (<exp>/<run>), as JSON")
     sub.add_parser("box-cancel").add_argument("id")
     sub.add_parser("box-archive")
     for name in ("stats", "box-stats"):
@@ -717,7 +752,7 @@ def main(argv: list[str] | None = None) -> int:
     if a.cmd == "validate":
         return cmd_validate(a.specs)
     if a.cmd == "enqueue":
-        return cmd_enqueue(a.specs, a.allow_dirty)
+        return cmd_enqueue(a.specs, a.allow_dirty, a.reuse_names)
     if a.cmd == "status":
         return cmd_status(a.json)
     if a.cmd == "pull":
@@ -739,6 +774,9 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if a.cmd == "box-ids":
         print(json.dumps(box_ids(box_root())))
+        return 0
+    if a.cmd == "box-runs":
+        print(json.dumps(sorted(results_dirs(box_root() / "results"))))
         return 0
     if a.cmd == "box-cancel":
         print(box_cancel(box_root(), a.id), end="")

@@ -230,3 +230,76 @@ def test_schedule_respects_dependencies_and_gpus():
     assert Q.schedule([], pend, set(), 2) == 3.0  # a then b on one GPU, c on the other
     assert Q.schedule([0.5], pend[2:], set(), 1) == 1.5  # c waits for the running job
     assert Q.schedule([], [{"id": "x", "est_gpu_hours": 1.0, "depends_on": ["gone"]}], set(), 2) == 0.0
+
+
+# ---------------------------------------------------------------- enqueue: run names are written once
+
+
+@pytest.fixture
+def mac(tmp_path, monkeypatch):
+    """cmd_enqueue with git, the box (ssh, scp, push) and the other boxes' ids faked: no network. Returns a spec
+    writer, the box's results/ listing ('<exp>/<run>') and the calls made."""
+    calls: dict = {"ssh": [], "push": 0}
+    box_runs: list[str] = []
+
+    def ssh(cmd, stdin=None):
+        calls["ssh"].append(cmd)
+        return "[]" if "box-ids" in cmd else json.dumps(box_runs) if "box-runs" in cmd else ""
+
+    def run(cmd, **kw):
+        assert cmd[:2] == ["git", "push"], cmd
+        calls["push"] += 1
+        return subprocess.CompletedProcess(cmd, 0)
+
+    monkeypatch.setattr(jobq, "REPO", tmp_path)
+    monkeypatch.setattr(jobq, "_git", lambda *a: "")
+    monkeypatch.setattr(jobq, "_install_box_script", lambda: None)
+    monkeypatch.setattr(jobq, "_ssh", ssh)
+    monkeypatch.setattr(jobq, "ids_on_other_boxes", lambda repo, host: set())
+    monkeypatch.setattr(jobq.subprocess, "run", run)
+
+    def write(job_id: str, command: str) -> Path:
+        p = tmp_path / "jobs" / "d1" / f"{job_id}.yaml"
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(json.dumps(spec(id=job_id, command=command)))
+        return p
+
+    return write, box_runs, calls
+
+
+def test_enqueue_refuses_a_run_name_already_in_the_box_results(mac):
+    """Gemma's _r2 retries reused the run names whose partial results the first attempt had left on the box."""
+    write, box_runs, calls = mac
+    box_runs += ["tasks_v2/g_competence", "statement_positions/g_map", "statement_positions/other"]
+    retry = ("python3 tasks_v2.py competence --name g_competence && python3 sp.py map --name g_smoke_r2 && "
+             "python3 sp.py map --name g_map")  # fmt: skip
+    paths = [write("g_map_r2", retry), write("g_parts_r2", "python3 sp.py parts --name g_parts --map g_map")]
+    with pytest.raises(SystemExit) as e:
+        jobq.cmd_enqueue(paths)
+    msg = str(e.value)
+    assert "g_map_r2: --name g_competence exists on the box: results/tasks_v2/g_competence" in msg
+    assert "g_map_r2: --name g_map exists on the box: results/statement_positions/g_map" in msg
+    assert "g_smoke_r2" not in msg and "g_parts_r2" not in msg  # new names, and --map only reads
+    assert calls["push"] == 0 and sum("box-runs" in c for c in calls["ssh"]) == 1  # one listing for the batch
+
+
+def test_enqueue_queues_new_run_names_and_refuses_one_name_twice_in_a_batch(mac):
+    write, box_runs, calls = mac
+    box_runs.append("statement_positions/g_map")
+    assert jobq.cmd_enqueue([write("g_map_r3", "python3 sp.py map --name g_map_r3")]) == 0
+    assert calls["push"] == 1 and sum("/pending && cat >" in c for c in calls["ssh"]) == 1
+    reads = write("g_fig", "python3 sp.py figures --name g_map")  # only reads the run: queued with the override
+    with pytest.raises(SystemExit, match="--reuse-names"):
+        jobq.cmd_enqueue([reads])
+    assert jobq.cmd_enqueue([reads], reuse_names=True) == 0 and calls["push"] == 2
+    with pytest.raises(SystemExit, match="x2: --name same is also written by x1 in this batch"):
+        jobq.cmd_enqueue([write("x1", "python3 a.py --name same"), write("x2", "python3 b.py --name=same")])
+    assert jobq.run_names("a manifest --name r && a run --name r && b --name 's' --map q") == ["r", "s"]
+
+
+def test_box_runs_lists_the_box_results_dirs(tmp_path, monkeypatch, capsys):
+    (tmp_path / "results" / "tasks_v2" / "g_competence").mkdir(parents=True)
+    (tmp_path / "results" / "tasks_v2" / "notes.txt").write_text("not a run dir")
+    monkeypatch.setenv("JOBQ_ROOT", str(tmp_path))
+    assert jobq.main(["box-runs"]) == 0
+    assert json.loads(capsys.readouterr().out) == ["tasks_v2/g_competence"]
