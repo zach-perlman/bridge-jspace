@@ -37,6 +37,12 @@ def results(tmp_path, monkeypatch):
 # ---------------------------------------------------------------- synthetic runs: each rule's verdict words
 
 
+def _cases(n: int, listed: int, family: str = "RL") -> list[dict]:
+    """n cases whose scene lists `listed` answers (the asked one and listed - 1 others)."""
+    return [{"id": f"i{i}", "family": family, "tok_A": 1, "conf_toks": [2, 3], "conf_answers": [str(k) for k in
+             range(2, listed + 1)]} for i in range(n)]  # fmt: skip
+
+
 def _late_rows(n: int, attn: int, off: int, gdn: int | None) -> list[dict]:
     rows = [{"family": "RL", "id": f"i{i}", "source": "none", "dest": "none", "layers": "none", "correct": True}
             for i in range(n)]  # fmt: skip
@@ -75,7 +81,7 @@ def test_a_family_with_no_item_right_is_not_testable(results):
     _jsonl(results / "attn_knockout" / "r" / "rows.jsonl", rows)
     (row,) = G.ev_late(G.Cell("muse", "f4", "draw 2", "late", "r"))
     assert row.word == "not testable" and "competence" in row.verdict and row.n == 0
-    row = G.parts_row(G.Cell("muse", "f3", "table", "parts", "r"), "table", {}, "MP", "p")
+    row = G.parts_row(G.Cell("muse", "f3", "table", "parts", "r"), "table", {}, "MP", "p", None)
     assert row.word == "not testable" and "competence" in row.verdict
 
 
@@ -106,6 +112,27 @@ def test_name_vs_digit_verdicts(results, rates, word):
     (row,) = G.ev_parts(G.Cell("27b", "f3", "draw 2", "parts", "r"))
     assert row.word == word
     assert row.value == pytest.approx(rates[("lookup_noname", "final")])
+
+
+def test_chance_from_the_scenes_and_the_failing_off_path_control_named(results):
+    """23 Oct (verification of findings 3-4): the prose / table / JSON scenes list 3 answers (chance 33%), the draws 5
+    (20%), read from cases.jsonl; Olmo-Hybrid's off-path control failed at the question's tokens, which the control
+    text must name (it showed the last tokens' 100%). Verdicts unchanged."""
+    _jsonl(results / "attn_knockout" / "f" / "rows.jsonl", _late_rows(300, 66, 300, None))
+    _jsonl(results / "attn_knockout" / "f" / "cases.jsonl", _cases(300, listed=3))
+    (row,) = G.ev_late(G.Cell("gemma", "f4", "draw 2", "late", "f"))
+    assert row.word == "fails" and "chance 33% (3 listed answers)" in row.control
+    assert not row.notes  # 22% [18, 27]: below chance 33%, not at chance
+    assert G.chance_of({c["family"] + c["id"]: c for c in _cases(4, 5) + _cases(4, 2, "PM")}, "RL") == (0.2, [5])
+    assert G.chance_of({"x": {"id": "x", "family": "RL"}}, "RL") is None
+    rows, cases = _parts_rows({("lookup_noname", "final"): 0.05, ("lookup_off_nodigit", "question"): 0.86})
+    _jsonl(results / "attn_knockout" / "h" / "rows.jsonl", rows)
+    _jsonl(results / "attn_knockout" / "h" / "cases.jsonl", [{**c, "family": "RL", "conf_answers": list("2345")}
+                                                             for c in cases])  # fmt: skip
+    (row,) = G.ev_parts(G.Cell("olmo_hybrid", "f3", "draw 2", "parts", "h"))
+    assert row.word == "not interpretable"
+    assert "lowest 86%, the off-path sentence without its digit hidden from the question's tokens" in row.control
+    assert row.control.endswith("chance 20% (5 listed answers)")
 
 
 def test_gate_verdicts(results):
@@ -209,6 +236,7 @@ def test_lens_arm_is_open_and_late_read_footnotes(results):
     (row,) = G.ev_fitlens(G.Cell("27b", "f8", "last tokens", "fitlens", "r"))
     assert row.verdict == "open (no rule for the lens arm)"
     _jsonl(results / "attn_knockout" / "g" / "rows.jsonl", _late_rows(300, 66, 300, None))
+    _jsonl(results / "attn_knockout" / "g" / "cases.jsonl", _cases(300, listed=5))
     (row,) = G.ev_late(G.Cell("gemma", "f4", "draw 1", "late", "g", opts={"first_draw": True}))
     assert row.word == "fails"
     assert row.notes[0].startswith("at chance (22% [") and row.notes[0].endswith(", chance 20%)")

@@ -74,7 +74,7 @@ ZACH_REF = "origin/zach/v8-breadth-1021"  # Zach's branch: his C1 verdicts (resu
 COLUMNS = ("model", "finding", "setting", "lens", "n", "value", "95% CI", "chance or control level", "verdict",
            "rule id", "spec commit", "result path")  # fmt: skip
 STAMP_RE = r"\d{8}-\d{6}"
-CHANCE = 0.20  # five digits in the list: guessing
+WHERE = {"question": "the question's tokens", "final": "the last tokens"}
 
 
 # ---------------------------------------------------------------- models, findings, rules
@@ -212,8 +212,9 @@ CHOICES = (
     "The lens push's main rule says 'inconclusive' where the lookup moves 10-30%: shown as its own word, "
     "'inconclusive', not as a failed control (Dan, 23 Oct).",
     GAP_METHOD,
-    "A late read that fails with its interval around chance (20%) is footnoted 'at chance' (Gemma's reading in the "
-    "README; Dan, 23 Oct).",
+    "A late read that fails with its interval around chance (guessing among the scene's listed answers: 20% in the "
+    "draws' five, 33% in the prose / table / JSON scenes' three; from each run's cases) is footnoted 'at chance' "
+    "(Gemma's reading in the README; Dan, 23 Oct; chance per run since 23 Oct, it was 20% everywhere before).",
     "Seven verdict words: 'open' is its own word for a cell that shows values under no committed rule (finding 1's "
     "animal-suite removal, finding 8's last-token lens arm), never 'missing' for that reason (Dan, 23 Oct).",
 )
@@ -745,24 +746,40 @@ def key(value: float | None, ci: tuple[float, float] | None, n: int | None, unit
 # ---------------------------------------------------------------- evaluators: each returns rows for one cell
 
 
+def chance_of(cases: dict[str, dict], fam: str, fmt: str | None = None) -> tuple[float, list[int]] | None:
+    """Guessing among a scene's listed answers (the asked one and its conf_answers) over the family's items (one
+    format's with `fmt`): (the mean of 1 / k, the k's). The draws list 5 (20%), the formats 3 (33%). None: no list."""
+    ks = [1 + len(c["conf_answers"]) for c in cases.values()
+          if c.get("family") == fam and "conf_answers" in c and (fmt is None or c.get("format") == fmt)]  # fmt: skip
+    return (sum(1 / k for k in ks) / len(ks), sorted(set(ks))) if ks else None
+
+
+def chance_txt(chance: tuple[float, list[int]] | None) -> str:
+    if chance is None:
+        return "chance: the cases list no answers"
+    return f"chance {pct(chance[0])} ({' or '.join(map(str, chance[1]))} listed answers)"
+
+
 def ev_late(cell: Cell) -> list[Row]:
     d = RESULTS / "attn_knockout" / cell.run
     rows = jl(d / "rows.jsonl")
     ok = {(r["family"], r["id"]) for r in rows if r["source"] == "none" and r["correct"]}
-    res = DF.late_read(rows, ok, cell.opts.get("family", "RL"))
-    return [late_row(cell, cell.setting, res, rel(d / "rows.jsonl"))]
+    fam = cell.opts.get("family", "RL")
+    res = DF.late_read(rows, ok, fam)
+    cases = {c["id"]: c for c in jl(d / "cases.jsonl")} if (d / "cases.jsonl").exists() else {}
+    return [late_row(cell, cell.setting, res, rel(d / "rows.jsonl"), chance_of(cases, fam))]
 
 
 NO_ITEMS = "not testable (competence: no memory -> prompt item the model answers right unedited here)"
 
 
-def late_row(cell: Cell, setting: str, res: dict, path: str) -> Row:
+def late_row(cell: Cell, setting: str, res: dict, path: str, chance: tuple[float, list[int]] | None) -> Row:
     lk, off = res["lookup"], res["off"]
     if not lk[3]:  # nothing to judge (and nothing to format: the rates are nan)
         return Row(cell.model, cell.finding, setting, n=0, verdict=NO_ITEMS, rule="late-read", path=path,
                    md_setting=setting, md_text="", sources=[path])  # fmt: skip
     where = "every attention layer" if res["layers"] == "attn" else "every layer"
-    control = (f"chance {pct(CHANCE)}; blocked in {where}; the off-path sentence hidden instead keeps {pct(off[0])} "
+    control = (f"{chance_txt(chance)}; blocked in {where}; the off-path sentence hidden instead keeps {pct(off[0])} "
                f"{ci_txt(off[1], off[2])}")  # fmt: skip
     if "deltanet" in res:
         control += f"; hidden in every DeltaNet layer instead: {pct(res['deltanet'][0])}"
@@ -775,8 +792,8 @@ def late_row(cell: Cell, setting: str, res: dict, path: str) -> Row:
     else:
         verdict = "fails (more than 20% right, or the upper bound above 30%)"
     notes = []
-    if lk[3] and verdict.startswith("fails") and lk[1] <= CHANCE <= lk[2]:
-        notes.append(f"at chance ({pct(lk[0])} {ci_txt(lk[1], lk[2])}, chance {pct(CHANCE)})")
+    if chance and verdict.startswith("fails") and lk[1] <= chance[0] <= lk[2]:
+        notes.append(f"at chance ({pct(lk[0])} {ci_txt(lk[1], lk[2])}, chance {pct(chance[0])})")
     if cell.opts.get("first_draw") and setting == "draw 1":
         notes.append("draw 1 judged by the late-read rule fixed on 22 Oct for the second draws (the first draws ran "
                      "under the older rule); accepted by Dan, 23 Oct")  # fmt: skip
@@ -785,7 +802,7 @@ def late_row(cell: Cell, setting: str, res: dict, path: str) -> Row:
                md_text=key(lk[0], (lk[1], lk[2]), lk[3]), sources=[path], notes=notes)  # fmt: skip
 
 
-def parts_row(cell: Cell, setting: str, cl: dict, fam: str, path: str) -> Row:
+def parts_row(cell: Cell, setting: str, cl: dict, fam: str, path: str, chance: tuple[float, list[int]] | None) -> Row:
     need = [(fam, s, d) for s in DP.PARTS + DP.SPLIT for d in ("question", "final")]
     if not any(k[0] == fam for k in cl):  # no item of the family answered right: nothing was patched
         return Row(cell.model, cell.finding, setting, n=0, verdict=NO_ITEMS, rule="name-digit", path=path,
@@ -795,12 +812,15 @@ def parts_row(cell: Cell, setting: str, cl: dict, fam: str, path: str) -> Row:
                    "version)", rule="name-digit", path=path, md_setting=setting, md_text="", sources=[path])  # fmt: skip
     v = DP.verdicts(cl, fam)
     noname, nodigit = cl[(fam, "lookup_noname", "final")], cl[(fam, "lookup_nodigit", "final")]
-    offs = {s: cl[(fam, s, d)]["right"][0] for s in DP.SPLIT[2:] for d in ("question", "final")}
+    # valid-split's control: each off-path part hidden at both places (keyed by both: the question's tokens count too)
+    offs = {(s, d): cl[(fam, s, d)]["right"][0] for s in DP.SPLIT[2:] for d in ("question", "final")}
+    (low_s, low_d), low = min(offs.items(), key=lambda kv: kv[1])
     q = ("not testable here (the whole sentence hidden from the question's tokens leaves > 70% right)"
          if not v["question_testable"] else "holds" if v["H-name-q-split"] else "fails")  # fmt: skip
     control = (f"the digit left visible (the sentence without its digit hidden): {pct(nodigit['right'][0])} "
-               f"{ci_txt(*nodigit['right'][1:])}; off-path parts hidden: lowest {pct(min(offs.values()))}; "
-               f"the question's tokens read the name: {q}")  # fmt: skip
+               f"{ci_txt(*nodigit['right'][1:])}; off-path parts hidden (needs >= 90% at both places): lowest "
+               f"{pct(low)}, the off-path sentence without its {'digit' if 'nodigit' in low_s else 'name'} hidden from "
+               f"{WHERE[low_d]}; the question's tokens read the name: {q}; {chance_txt(chance)}")  # fmt: skip
     if not v["valid-split"]:
         verdict = "not interpretable (the off-path control: an off-path sentence's part hidden keeps < 90%)"
     else:
@@ -815,7 +835,7 @@ def ev_parts(cell: Cell) -> list[Row]:
     d = RESULTS / "attn_knockout" / cell.run
     cases = {c["id"]: c for c in jl(d / "cases.jsonl")}
     cl = DP.cells(jl(d / "rows.jsonl"), cases)
-    return [parts_row(cell, cell.setting, cl, "RL", rel(d / "rows.jsonl"))]
+    return [parts_row(cell, cell.setting, cl, "RL", rel(d / "rows.jsonl"), chance_of(cases, "RL"))]
 
 
 @functools.cache
@@ -830,7 +850,8 @@ def formats_eval(run: str) -> dict:
     out = {}
     for fmt in sorted({c["format"] for c in cases.values()}):
         sub = [r for r in rows if cases[r["id"]]["format"] == fmt]
-        out[fmt] = {"late_MP": DF.late_read(sub, ok, "MP"), "cells": DP.cells(sub, cases)}
+        out[fmt] = {"late_MP": DF.late_read(sub, ok, "MP"), "cells": DP.cells(sub, cases),
+                    "chance": chance_of(cases, "MP", fmt)}  # fmt: skip
     return out
 
 
@@ -849,9 +870,9 @@ def ev_formats(cell: Cell) -> list[Row]:
                            rule="formats", path=path, md_setting=setting, md_text=""))  # fmt: skip
             continue
         if cell.finding == "f4":
-            row = late_row(cell, setting, res[fmt]["late_MP"], path)
+            row = late_row(cell, setting, res[fmt]["late_MP"], path, res[fmt]["chance"])
         else:
-            row = parts_row(cell, setting, res[fmt]["cells"], "MP", path)
+            row = parts_row(cell, setting, res[fmt]["cells"], "MP", path, res[fmt]["chance"])
         row.rule = "formats"
         if saved:  # the saved verdict must agree with the recomputation
             sv = json.loads((saved / "verdict.json").read_text())["formats"].get(fmt, {})
@@ -1541,7 +1562,8 @@ def grid_md(rows: list[Row], meta: dict) -> str:
             "over bridge entities], descriptive.",
             "- 2: % of lookups the lens-readable part of a stated bridge's change switches.",
             "- 3: % right with the sentence without its name hidden from the last tokens (the digit hidden too).",
-            "- 4: % right with the answer's sentence hidden from the last tokens (chance 20%).",
+            "- 4: % right with the answer's sentence hidden from the last tokens (chance: 20% in the draws, five "
+            "listed answers; 33% in prose / table / JSON, three).",
             "- 5: points, position - identity for the 1st-2nd asked sentence / identity - position from the 3rd on.",
             "- 6: % of patched answers at the same order in the list vs at the same place in the text (or from the end).",
             "- 7: % of lookups vs recalls the lens push switches at the rule's cell.",
