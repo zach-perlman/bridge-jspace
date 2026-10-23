@@ -145,7 +145,7 @@ def main() -> None:
             f"{N // SHARDS}, one router, seed 0), skip 16, target = the last block, rlens LRP, 8 experts, source layers "
             f"16-51; fit {time.strftime('%Y-%m-%d')} on 2x H200")  # fmt: skip
     run("export", ["uv", "run", "--no-sync", "python", str(W / "bridge-jspace" / "scripts" / "lens_fit" / "export_jpp_lens.py"),
-                   str(lens), str(export), note])  # fmt: skip
+                   str(lens), str(export), "--note", note])  # fmt: skip
     sha = subprocess.run(["sha256sum", str(export)], capture_output=True, text=True, check=True).stdout.split()[0]
     stop("DONE", lens=str(export), sha256=sha, note=note)
 
