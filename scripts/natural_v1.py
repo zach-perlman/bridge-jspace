@@ -402,6 +402,13 @@ def competence(set_name: str, run: str, why: str, read: str = "top") -> None:
 
     items_ = T.load(set_name)
     vocab, dom_of = vocab_of(items_), {it["id"]: it["domain"] for it in items_}
+    own_vocab = {}
+    for it in items_:
+        if it.get("answer_vocab"):
+            own_vocab[(it["id"], "whole")] = own_vocab[(it["id"], "guess")] = it["answer_vocab"]
+        for i, st in enumerate(it["steps"], 1):
+            if st.get("cand_vocab"):
+                own_vocab[(it["id"], f"step{i}")] = st["cand_vocab"]
     by_len = collections.defaultdict(list)
     for j in jobs:
         by_len[len(j["ids"])].append(j)
@@ -412,7 +419,8 @@ def competence(set_name: str, run: str, why: str, read: str = "top") -> None:
                 logits = model.hf(input_ids=torch.tensor([j["ids"] for j in chunk], device="cuda"), logits_to_keep=1).logits[:, -1].float()
                 for row, j in enumerate(chunk):
                     want = S.answer_token(tok, j["expected"], j["kind"])
-                    pool = vocab[(dom_of[j["id"]], "bridge" if j["part"] == "step1" else "answer")]
+                    own = own_vocab.get((j["id"], j["part"]))  # natural3: per-step / whole-question vocabularies
+                    pool = own or vocab[(dom_of[j["id"]], "bridge" if j["part"] == "step1" else "answer")]
                     ok_ids = {want} | ({S.answer_token(tok, FIRST_NAMES.get(j["expected"], j["expected"]), j["kind"])} if j["part"] == "step1" else set())
                     c = torch.tensor(sorted({S.answer_token(tok, v, j["kind"]) for v in pool} | ok_ids), device="cuda")
                     j["correct_cand"] = int(c[logits[row, c].argmax()]) in ok_ids
@@ -424,7 +432,7 @@ def competence(set_name: str, run: str, why: str, read: str = "top") -> None:
     acc = lambda sel: round(statistics.mean(r["correct"] for r in sel), 3) if sel else None  # noqa: E731
     whole = [r for r in rows if r["part"] == "whole"]
     summary: dict = {"seconds": round(time.time() - t0), "by_word_level": {}, "by_domain": {}, "pick": {}}
-    for w in WORDS:
+    for w in dict.fromkeys(r["word"] for r in whole):
         for lv in sorted({r["level"] for r in whole}):
             sel = [r for r in whole if r["word"] == w and r["level"] == lv]
             ids_ = {r["id"] for r in sel}
@@ -438,7 +446,7 @@ def competence(set_name: str, run: str, why: str, read: str = "top") -> None:
                 "guess": acc([r for r in rows if r["id"] in ids_ and r["part"] == "guess"]),
                 "top_wrong": collections.Counter(r["read_top"] for r in sel if not r["correct"]).most_common(3)}  # fmt: skip
     for d in sorted({r["domain"] for r in whole}):
-        summary["by_domain"][d] = {w: acc([r for r in whole if r["domain"] == d and r["word"] == w]) for w in WORDS}
+        summary["by_domain"][d] = {w: acc([r for r in whole if r["domain"] == d and r["word"] == w]) for w in dict.fromkeys(r["word"] for r in whole)}
     (out / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     print(json.dumps(summary, indent=1)[:4000])
 

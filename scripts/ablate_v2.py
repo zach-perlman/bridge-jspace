@@ -160,7 +160,8 @@ def tasks_prompts(tok, set_name: str, comp_run: str, words: list[str] | None, n:
             out.append({"family": it["word"], "id": it["id"], "kind": kind, "ids": ids, "tok": S.answer_token(tok, a, k),
                         "bridge": it["steps"][0]["answer"], "domain": it["domain"], "format": it["format"]})  # fmt: skip
             if "framing" in it:  # natural_v1 (2026-10-23): the read's candidates, its relation's answers (bridges for hop 1)
-                vocab = natural_vocab(set_name)[(it["domain"], "bridge" if kind == "step1" else "answer")]
+                own = it["steps"][int(kind[4:]) - 1].get("cand_vocab") if kind.startswith("step") else it.get("answer_vocab")
+                vocab = own or natural_vocab(set_name)[(it["domain"], "bridge" if kind == "step1" else "answer")]  # natural3: own
                 out[-1]["cands"] = sorted({S.answer_token(tok, v, k) for v in vocab} | {out[-1]["tok"]})
     return out
 

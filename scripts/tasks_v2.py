@@ -934,7 +934,8 @@ def eligible(set_name: str, comp_run: str, words: list[str], n: int, level: str 
         if it["word"] in words
         and stratum(it) in strata
         and (fmt_class is None or format_class(it) == fmt_class)
-        and (it["domain"] in domains if domains else len(it["word"]) == 2 or it["domain"] in THREE_STEP_DOMAINS)
+        and (it["domain"] in domains if domains else len(it["word"]) == 2 or it["domain"] in THREE_STEP_DOMAINS
+             or "framing" in it)  # natural3 (2026-10-23): its relations are its own three-step domains
     ]  # three-step items outside THREE_STEP_DOMAINS (from measurement sets) only when asked for by domains
     # v7 (review): an item whose answer half or more of the scene's other things would also give does not test the
     # bridge (instruments: every thing with 4 strings); it is left out (with its scene, below) of downstream runs
