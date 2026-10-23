@@ -599,3 +599,13 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   the model is competent). If the J-lens reads X at the band for M starts but well below the probe for K and A starts,
   computed numbers sit mostly outside the lens-readable space, and a knock-out null on K and A says little about them
   (read with amendment 21's two dictionaries).
+- **21 note 2 (~23:00 UTC, after the 9B's ctxcomp competence and a mechanical probe smoke, before any ctxcomp
+  knock-out data):** the 9B reports X at 99-100% for every start and answers each lookup or recall alone at 72-100%
+  (seats 100%, months 100%, planets 82%, Greek letters 72%), but composes them in one pass at 15-29% (seat lookup) and
+  4-96% (recalls; months best, from a stated X 96%). Scene eligibility would leave about 5-12 items per word. Every
+  ctxcomp knock-out therefore uses per-item eligibility (ablate_v2 --tasks-per-word: each item right on all its own
+  prompts; runs *_pi), for both models; words are then compared on different items of the same scenes. Prediction 3
+  (report) rests on the R words (about 84 items each); predictions 1 and 2 are reported with their n and called
+  underpowered below 30 items per word, as for C1. probe_vs_lens takes every item whose X report is right
+  (--select step1), since a probe of X needs X computed, not composed. If the 27B's competence also shows the seat
+  lookup failing to compose, the P final is redesigned (ctxcomp_v2) before its knock-out is read.

@@ -1,8 +1,8 @@
 """probe_vs_lens (Zach, 2026-10-23, prereg amendment 22): how much of an intermediate the J-lens shows, against a linear
 probe as the ceiling, layer by layer.
 
-For a tasks_v2 natural set and its competence run: the eligible items of the given words (tasks_v2.eligible, as
-ablate_v2), unedited, residual stream at the last prompt position (block outputs) every --every layers. The target is a
+For a tasks_v2 natural set and its competence run: the items of the given words whose step 1 (the X report) the model
+gets right (--select step1; or tasks_v2-eligible items), unedited, residual stream at the last prompt position (block outputs) every --every layers. The target is a
 number per item (--target x: ctxcomp's X). Per word and layer:
   probe   held-out accuracy of a linear probe for the target (standardise, PCA to --pca dims, multinomial logistic
           regression with L2), 5-fold cross-validation over scenes
@@ -95,8 +95,17 @@ def main(args) -> None:
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     model = load_model()
     tok = model.tokenizer
-    prompts = AV.tasks_prompts(tok, args.set, args.competence, args.words, 10**6, ["clean"], "all")
     items = {it["id"]: it for it in T.load(args.set)}
+    if args.select == "eligible":
+        prompts = AV.tasks_prompts(tok, args.set, args.competence, args.words, 10**6, ["clean"], "all")
+    else:  # step1 (amendment 21 note 2): every item whose X report (step 1) the model gets right; no composition needed
+        from scripts import suite_v1 as S
+
+        comp = [json.loads(line) for line in (pins.RESULTS_DIR / "tasks_v2" / args.competence / "items.jsonl").open()]
+        ok = {r["id"] for r in comp if r["part"] == "step1" and r["correct"]}
+        prompts = [{"family": it["word"], "id": it["id"],
+                    "ids": S.ids(tok, T.render(tok, {**it, "_question": it["question"], "_kind": it["kind"]}))}
+                   for it in items.values() if it["word"] in args.words and it["id"] in ok]  # fmt: skip
     layers = list(range(0, pins.N_LAYERS, args.every))
     lens = JLens(model, pins.FROZEN_LENS)
     lens_layers = set(lens.source_layers)
@@ -161,7 +170,7 @@ def main(args) -> None:
             f"L{r['layer']} p {r['probe']:.2f} j {r.get('jlens', float('nan')):.2f} l {r['logit']:.2f} sh {r.get('jshare', float('nan')):.3f}"
             for r in rows if r["layer"] % (4 * args.every) == 0), flush=True)  # fmt: skip
     res.update({"run": args.name, "set": args.set, "competence": args.competence, "target": args.target, "every": args.every,
-                "pca": args.pca, "git_commit": commit, "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
+                "pca": args.pca, "select": args.select, "git_commit": commit, "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
                 "classes": classes, "surface_ids": {str(c): v for c, v in sids.items()}, "why": args.why,
                 "seconds": round(time.time() - t0)})  # fmt: skip
     RESULTS.mkdir(parents=True, exist_ok=True)
@@ -179,4 +188,5 @@ if __name__ == "__main__":
     ap.add_argument("--every", type=int, default=2)
     ap.add_argument("--pca", type=int, default=64)
     ap.add_argument("--batch", type=int, default=16)
+    ap.add_argument("--select", choices=["step1", "eligible"], default="step1", help="items: X reported right (default) or tasks_v2-eligible")
     main(ap.parse_args())
