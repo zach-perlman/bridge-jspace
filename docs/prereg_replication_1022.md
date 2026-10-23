@@ -309,3 +309,5 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   other model has (descriptive).
 - Order: GPU 0 runs B, then A for the 27B, Muse (and C for Muse), Qwen3-32B, then D; GPU 1, after the 122B steering, runs
   A for the 122B, then C for the 9B and the 27B.
+- **9 note (~06:35 UTC):** Qwen3-32B's weights were deleted on 2026-10-23 to free disk (Zach's OK); re-fetching 62 GB
+  would leave ~13 GB on the shared disk. Its seed (A) and its diagnostic (B) are dropped; no Qwen3-32B data was taken.
