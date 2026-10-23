@@ -1,0 +1,18 @@
+{
+  "set": "full_v8_two",
+  "derived_from": {
+    "set": "full_v8",
+    "sha256": "69a73efe2c5036d71004d1b1abb16f4ce60c2de6e3972556ff5ddc693f569bff"
+  },
+  "rule": "the two-step items of full_v8 (word of length 2), unchanged, same ids (amendment 7: the 122B runs only the two-step words)",
+  "n_items": 1072,
+  "per_word": {
+    "PP": 192,
+    "PM": 192,
+    "MP": 152,
+    "MM": 152,
+    "CP": 192,
+    "CM": 192
+  },
+  "written_utc": "2026-10-23T02:01:36Z"
+}
