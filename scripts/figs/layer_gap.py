@@ -32,6 +32,7 @@ import itertools
 import json
 import math
 import sys
+from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -339,10 +340,12 @@ class Placer:
     def free(self, t: Any) -> bool:
         return self.free_box(t.get_window_extent(self.r))
 
-    def put(self, text: str, spots: list[Spot], **kw: Any) -> None:
+    def put(self, text: str, spots: list[Spot], gid: str = "label", optional: bool = False, **kw: Any) -> None:
+        """`optional`: a label the figure can do without (its caption says the same) is left out, not overlapped,
+        when no spot is free."""
         made = []
         for x, y, ha, va in spots:
-            made.append(self.ax.text(x, y, text, ha=ha, va=va, fontsize=C.NOTE, gid="label", **kw))
+            made.append(self.ax.text(x, y, text, ha=ha, va=va, fontsize=C.NOTE, gid=gid, **kw))
             if self.free(made[-1]):
                 break
         keep = next((t for t in made if self.free(t)), made[0])
@@ -361,10 +364,13 @@ class Placer:
                 keep.set_position(self.ax.transData.inverted().transform((b.x0, b.y0)))
                 keep.set_horizontalalignment("left")
                 keep.set_verticalalignment("bottom")
+            elif optional:
+                keep.remove()
+                return
         self.taken.append(keep.get_window_extent(self.r))
 
 
-def spots(pts: list[tuple[int, Triple]], prefer: tuple[tuple[str, str], ...]) -> list[Spot]:
+def spots(pts: Sequence[tuple[float, Triple]], prefer: tuple[tuple[str, str], ...]) -> list[Spot]:
     """Candidate spots by a line's points: the preferred (point of the line, side of its band) first, then above and
     below every point."""
     moving = [(la, t) for la, t in pts if t[1] > EPW.RAND_MAX]

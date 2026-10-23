@@ -1,0 +1,5647 @@
+[
+ {
+  "value": 1.0,
+  "what": "band layers (count)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layers": [
+    12
+   ],
+   "depth": [
+    18.75
+   ]
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 12,
+   "depth": 18.75,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 14,
+   "depth": 21.875,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 16,
+   "depth": 25.0,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 18,
+   "depth": 28.125,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 20,
+   "depth": 31.25,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 22,
+   "depth": 34.375,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 24,
+   "depth": 37.5,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 26,
+   "depth": 40.625,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 28,
+   "depth": 43.75,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 30,
+   "depth": 46.875,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 32,
+   "depth": 50.0,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 34,
+   "depth": 53.125,
+   "series": "random"
+  }
+ },
+ {
+  "value": 92.0,
+  "what": "% switched, full patch,\nsame scenes",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   85.00173312059694,
+   95.89070305141891
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 12,
+   "depth": 18.75,
+   "series": "patch_same"
+  }
+ },
+ {
+  "value": 88.0,
+  "what": "% switched, full patch,\nsame scenes",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   80.18773199709163,
+   93.00066263473222
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 14,
+   "depth": 21.875,
+   "series": "patch_same"
+  }
+ },
+ {
+  "value": 85.0,
+  "what": "% switched, full patch,\nsame scenes",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   76.71626666784216,
+   90.6940968088377
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 16,
+   "depth": 25.0,
+   "series": "patch_same"
+  }
+ },
+ {
+  "value": 84.0,
+  "what": "% switched, full patch,\nsame scenes",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   75.57955544110557,
+   89.90479765052628
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 18,
+   "depth": 28.125,
+   "series": "patch_same"
+  }
+ },
+ {
+  "value": 65.0,
+  "what": "% switched, full patch,\nsame scenes",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   55.25426042919796,
+   73.63589534652198
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 20,
+   "depth": 31.25,
+   "series": "patch_same"
+  }
+ },
+ {
+  "value": 60.0,
+  "what": "% switched, full patch,\nsame scenes",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   50.20007846184025,
+   69.06002538863972
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 22,
+   "depth": 34.375,
+   "series": "patch_same"
+  }
+ },
+ {
+  "value": 48.0,
+  "what": "% switched, full patch,\nsame scenes",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   38.46438432008055,
+   57.683594909823455
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 24,
+   "depth": 37.5,
+   "series": "patch_same"
+  }
+ },
+ {
+  "value": 24.0,
+  "what": "% switched, full patch,\nsame scenes",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   16.691211265459966,
+   33.23251872329213
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 26,
+   "depth": 40.625,
+   "series": "patch_same"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch,\nsame scenes",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 28,
+   "depth": 43.75,
+   "series": "patch_same"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch,\nsame scenes",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 30,
+   "depth": 46.875,
+   "series": "patch_same"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch,\nsame scenes",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 32,
+   "depth": 50.0,
+   "series": "patch_same"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch,\nsame scenes",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 34,
+   "depth": 53.125,
+   "series": "patch_same"
+  }
+ },
+ {
+  "value": 100.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   97.91037501849418,
+   100.0
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 0,
+   "depth": 0.0,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 100.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   97.91037501849418,
+   100.0
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 4,
+   "depth": 6.25,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 96.66666666666667,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   92.91947482669836,
+   98.46354185722956
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 8,
+   "depth": 12.5,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 86.66666666666667,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   80.92715870345016,
+   90.87378297677891
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 12,
+   "depth": 18.75,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 85.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   79.05541547797237,
+   89.48184703497355
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 16,
+   "depth": 25.0,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 71.66666666666667,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   64.68429127526663,
+   77.74353789941419
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 20,
+   "depth": 31.25,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 63.33333333333333,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   56.0831054545563,
+   70.02632788370882
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 24,
+   "depth": 37.5,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 47.77777777777778,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   40.60343903442582,
+   55.04498874253001
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 28,
+   "depth": 43.75,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 37.22222222222222,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   30.49636539766245,
+   44.482094319833486
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 32,
+   "depth": 50.0,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 35.55555555555556,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   28.931215725066885,
+   42.78356482514592
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 33,
+   "depth": 51.5625,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 33.33333333333333,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   26.858305601207526,
+   40.50490272596108
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 34,
+   "depth": 53.125,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 16.666666666666664,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   11.931105652108458,
+   22.79531100222875
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 35,
+   "depth": 54.6875,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 15.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   10.518152965026447,
+   20.944584522027622
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 36,
+   "depth": 56.25,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 15.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   10.518152965026447,
+   20.944584522027622
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 37,
+   "depth": 57.8125,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 15.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   10.518152965026447,
+   20.944584522027622
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 38,
+   "depth": 59.375,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 7.777777777777778,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   4.689299044362849,
+   12.630828717797622
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 39,
+   "depth": 60.9375,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 7.777777777777778,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   4.689299044362849,
+   12.630828717797622
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 40,
+   "depth": 62.5,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 7.777777777777778,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   4.689299044362849,
+   12.630828717797622
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 41,
+   "depth": 64.0625,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 5.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   2.652483692561692,
+   9.228178790793546
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 42,
+   "depth": 65.625,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 1.1111111111111112,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.3052310908307383,
+   3.960180002197173
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 43,
+   "depth": 67.1875,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.5555555555555556,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.09813408130013804,
+   3.0793839559667266
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 44,
+   "depth": 68.75,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.5555555555555556,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.09813408130013804,
+   3.0793839559667266
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 45,
+   "depth": 70.3125,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 46,
+   "depth": 71.875,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 47,
+   "depth": 73.4375,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 48,
+   "depth": 75.0,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 49,
+   "depth": 76.5625,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 50,
+   "depth": 78.125,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 51,
+   "depth": 79.6875,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 52,
+   "depth": 81.25,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 56,
+   "depth": 87.5,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 60,
+   "depth": 93.75,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 18.0,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   11.700131654251038,
+   26.667536024213085
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 12,
+   "depth": 18.75,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 67.0,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   57.30516033971139,
+   75.43701620610456
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 14,
+   "depth": 21.875,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 83.0,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   74.45181876635702,
+   89.10652394022685
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 16,
+   "depth": 25.0,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 76.0,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   66.76748127670787,
+   83.30878873454004
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 18,
+   "depth": 28.125,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 72.0,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   62.51178763865427,
+   79.86044083240164
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 20,
+   "depth": 31.25,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 75.0,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   65.69535362992417,
+   82.45490599627573
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 22,
+   "depth": 34.375,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 87.0,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   79.01947810519012,
+   92.24290614158575
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 24,
+   "depth": 37.5,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 95.0,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   88.82480347279117,
+   97.84566385436864
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 26,
+   "depth": 40.625,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 99.0,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   94.55124752390654,
+   99.82326134344525
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 28,
+   "depth": 43.75,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 99.0,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   94.55124752390654,
+   99.82326134344525
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 30,
+   "depth": 46.875,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 100.0,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   96.30051925239981,
+   99.99999999999999
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 32,
+   "depth": 50.0,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 96.0,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   90.16278276739263,
+   98.4336949448152
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 34,
+   "depth": 53.125,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 12,
+   "depth": 18.75,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 9.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   4.807199516388487,
+   16.226374696643667
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 14,
+   "depth": 21.875,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 19.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   12.514653992704261,
+   27.779024070807857
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 16,
+   "depth": 25.0,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 11.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   6.254131955225126,
+   18.631463027903024
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 18,
+   "depth": 28.125,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 20,
+   "depth": 31.25,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 22,
+   "depth": 34.375,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 24,
+   "depth": 37.5,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 26,
+   "depth": 40.625,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 28,
+   "depth": 43.75,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 30,
+   "depth": 46.875,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 32,
+   "depth": 50.0,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_layer_gap_v2_27b/summary.json",
+  "extra": {
+   "layer": 34,
+   "depth": 53.125,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 1.0,
+  "what": "band layers (count)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layers": [
+    12
+   ],
+   "depth": [
+    18.75
+   ]
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 12,
+   "depth": 18.75,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 16,
+   "depth": 25.0,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 20,
+   "depth": 31.25,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 24,
+   "depth": 37.5,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 28,
+   "depth": 43.75,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 32,
+   "depth": 50.0,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 36,
+   "depth": 56.25,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 40,
+   "depth": 62.5,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 44,
+   "depth": 68.75,
+   "series": "random"
+  }
+ },
+ {
+  "value": 100.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   97.91037501849418,
+   100.0
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 0,
+   "depth": 0.0,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 100.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   97.91037501849418,
+   100.0
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 4,
+   "depth": 6.25,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 96.66666666666667,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   92.91947482669836,
+   98.46354185722956
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 8,
+   "depth": 12.5,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 86.66666666666667,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   80.92715870345016,
+   90.87378297677891
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 12,
+   "depth": 18.75,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 85.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   79.05541547797237,
+   89.48184703497355
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 16,
+   "depth": 25.0,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 71.66666666666667,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   64.68429127526663,
+   77.74353789941419
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 20,
+   "depth": 31.25,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 63.33333333333333,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   56.0831054545563,
+   70.02632788370882
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 24,
+   "depth": 37.5,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 47.77777777777778,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   40.60343903442582,
+   55.04498874253001
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 28,
+   "depth": 43.75,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 37.22222222222222,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   30.49636539766245,
+   44.482094319833486
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 32,
+   "depth": 50.0,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 35.55555555555556,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   28.931215725066885,
+   42.78356482514592
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 33,
+   "depth": 51.5625,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 33.33333333333333,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   26.858305601207526,
+   40.50490272596108
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 34,
+   "depth": 53.125,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 16.666666666666664,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   11.931105652108458,
+   22.79531100222875
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 35,
+   "depth": 54.6875,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 15.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   10.518152965026447,
+   20.944584522027622
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 36,
+   "depth": 56.25,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 15.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   10.518152965026447,
+   20.944584522027622
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 37,
+   "depth": 57.8125,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 15.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   10.518152965026447,
+   20.944584522027622
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 38,
+   "depth": 59.375,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 7.777777777777778,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   4.689299044362849,
+   12.630828717797622
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 39,
+   "depth": 60.9375,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 7.777777777777778,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   4.689299044362849,
+   12.630828717797622
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 40,
+   "depth": 62.5,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 7.777777777777778,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   4.689299044362849,
+   12.630828717797622
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 41,
+   "depth": 64.0625,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 5.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   2.652483692561692,
+   9.228178790793546
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 42,
+   "depth": 65.625,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 1.1111111111111112,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.3052310908307383,
+   3.960180002197173
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 43,
+   "depth": 67.1875,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.5555555555555556,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.09813408130013804,
+   3.0793839559667266
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 44,
+   "depth": 68.75,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.5555555555555556,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.09813408130013804,
+   3.0793839559667266
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 45,
+   "depth": 70.3125,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 46,
+   "depth": 71.875,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 47,
+   "depth": 73.4375,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 48,
+   "depth": 75.0,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 49,
+   "depth": 76.5625,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 50,
+   "depth": 78.125,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 51,
+   "depth": 79.6875,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 52,
+   "depth": 81.25,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 56,
+   "depth": 87.5,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_map_27b/summary.json",
+  "extra": {
+   "layer": 60,
+   "depth": 93.75,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 12.0,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   6.999337365267776,
+   19.812268002908368
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 12,
+   "depth": 18.75,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 90.0,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   82.56326956323346,
+   94.4771458386864
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 16,
+   "depth": 25.0,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 61.0,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   51.20283616749817,
+   69.98327806802979
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 36,
+   "depth": 56.25,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 40,
+   "depth": 62.5,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 1.0,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.17673865655472645,
+   5.4487524760934605
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 44,
+   "depth": 68.75,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 81.0,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   72.22097592919215,
+   87.48534600729573
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 20,
+   "depth": 31.25,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 87.0,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   79.01947810519012,
+   92.24290614158575
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 24,
+   "depth": 37.5,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 100.0,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   96.30051925239981,
+   99.99999999999999
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 28,
+   "depth": 43.75,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 100.0,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   96.30051925239981,
+   99.99999999999999
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 32,
+   "depth": 50.0,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 12,
+   "depth": 18.75,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 20.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   13.33659225590988,
+   28.883096192650235
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 16,
+   "depth": 25.0,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 36,
+   "depth": 56.25,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 40,
+   "depth": 62.5,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 44,
+   "depth": 68.75,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 20,
+   "depth": 31.25,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 24,
+   "depth": 37.5,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 28,
+   "depth": 43.75,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "27b",
+  "setting": "27b first",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_27b/summary.json",
+  "extra": {
+   "layer": 32,
+   "depth": 50.0,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 1.0,
+  "what": "band layers (count)",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layers": [
+    6
+   ],
+   "depth": [
+    18.75
+   ]
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   1.8846005918320894
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 6,
+   "depth": 18.75,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   1.8846005918320894
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 8,
+   "depth": 25.0,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   1.8846005918320894
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 10,
+   "depth": 31.25,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   1.8846005918320894
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 12,
+   "depth": 37.5,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   1.8846005918320894
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 14,
+   "depth": 43.75,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   1.8846005918320894
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 16,
+   "depth": 50.0,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   1.8846005918320894
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 18,
+   "depth": 56.25,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   1.8846005918320894
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 20,
+   "depth": 62.5,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   1.8846005918320894
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 22,
+   "depth": 68.75,
+   "series": "random"
+  }
+ },
+ {
+  "value": 99.44444444444444,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   96.92061604403328,
+   99.90186591869987
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 0,
+   "depth": 0.0,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 91.66666666666666,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   86.70691981623806,
+   94.88505936584042
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 2,
+   "depth": 6.25,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 88.88888888888889,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   83.46121176358893,
+   92.69130213968431
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 4,
+   "depth": 12.5,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 74.44444444444444,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   67.60787580147182,
+   80.25941865201423
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 6,
+   "depth": 18.75,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 55.00000000000001,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   47.70322185607413,
+   62.087815645775294
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 8,
+   "depth": 25.0,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 52.22222222222223,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   44.95501125747,
+   59.39656096557419
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 10,
+   "depth": 31.25,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 47.22222222222222,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   40.06342890596589,
+   54.497105815228885
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 12,
+   "depth": 37.5,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 37.77777777777778,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   31.02002342705114,
+   45.046329346205845
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 14,
+   "depth": 43.75,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 17.22222222222222,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   12.406319680495356,
+   23.407990029602903
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 16,
+   "depth": 50.0,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 8.333333333333332,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   5.114940634159579,
+   13.293080183761937
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 17,
+   "depth": 53.125,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 4.444444444444445,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   2.268982119311463,
+   8.523787308282728
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 18,
+   "depth": 56.25,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 19,
+   "depth": 59.375,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 20,
+   "depth": 62.5,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 21,
+   "depth": 65.625,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 22,
+   "depth": 68.75,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 23,
+   "depth": 71.875,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 24,
+   "depth": 75.0,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 25,
+   "depth": 78.125,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 26,
+   "depth": 81.25,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 28,
+   "depth": 87.5,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 24.5,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   19.05677791468589,
+   30.90436838714848
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 6,
+   "depth": 18.75,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 75.0,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   68.56577652038048,
+   80.49192318370348
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 8,
+   "depth": 25.0,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 81.5,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   75.54281794988185,
+   86.26988367726393
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 10,
+   "depth": 31.25,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 95.5,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   91.67024063390322,
+   97.61477282752958
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 12,
+   "depth": 37.5,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 98.0,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   94.97121344948062,
+   99.21956998236058
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 14,
+   "depth": 43.75,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 95.0,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   91.04209437021562,
+   97.26176509713551
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 16,
+   "depth": 50.0,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 94.5,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   90.42120755340645,
+   96.90149791986299
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 18,
+   "depth": 56.25,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 64.0,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   57.14139956562681,
+   70.3309122686602
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 20,
+   "depth": 62.5,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 38.0,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   31.558893661239217,
+   44.89341048080049
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 22,
+   "depth": 68.75,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   1.8846005918320894
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 6,
+   "depth": 18.75,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   1.8846005918320894
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 8,
+   "depth": 25.0,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   1.8846005918320894
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 10,
+   "depth": 31.25,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   1.8846005918320894
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 12,
+   "depth": 37.5,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   1.8846005918320894
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 14,
+   "depth": 43.75,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   1.8846005918320894
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 16,
+   "depth": 50.0,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   1.8846005918320894
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 18,
+   "depth": 56.25,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   1.8846005918320894
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 20,
+   "depth": 62.5,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "9b",
+  "setting": "9b",
+  "part": "",
+  "ci": [
+   0.0,
+   1.8846005918320894
+  ],
+  "n": 200,
+  "source": "results/early_push_where/qwen35_9b_d4_where/summary.json + results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "layer": 22,
+   "depth": 68.75,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 2.0,
+  "what": "band layers (count)",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layers": [
+    6,
+    8
+   ],
+   "depth": [
+    18.75,
+    25.0
+   ]
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 6,
+   "depth": 18.75,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 8,
+   "depth": 25.0,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 10,
+   "depth": 31.25,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 12,
+   "depth": 37.5,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 14,
+   "depth": 43.75,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 16,
+   "depth": 50.0,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 18,
+   "depth": 56.25,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 20,
+   "depth": 62.5,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 22,
+   "depth": 68.75,
+   "series": "random"
+  }
+ },
+ {
+  "value": 97.41379310344827,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   92.67119938162736,
+   99.11662721614837
+  ],
+  "n": 116,
+  "source": "results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 0,
+   "depth": 0.0,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 89.65517241379311,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   82.78521079405644,
+   93.98278963317418
+  ],
+  "n": 116,
+  "source": "results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 2,
+   "depth": 6.25,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 83.62068965517241,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   75.82979797070108,
+   89.25611543499443
+  ],
+  "n": 116,
+  "source": "results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 4,
+   "depth": 12.5,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 53.44827586206896,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   44.40632412936442,
+   62.269154168655625
+  ],
+  "n": 116,
+  "source": "results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 6,
+   "depth": 18.75,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 47.41379310344828,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   38.556248966471564,
+   56.4371423100134
+  ],
+  "n": 116,
+  "source": "results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 8,
+   "depth": 25.0,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 41.37931034482759,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   32.833338088538916,
+   50.47796616641096
+  ],
+  "n": 116,
+  "source": "results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 10,
+   "depth": 31.25,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 34.48275862068966,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   26.45561947174846,
+   43.50472818716131
+  ],
+  "n": 116,
+  "source": "results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 12,
+   "depth": 37.5,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 15.517241379310345,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   10.046527191229783,
+   23.198689828569684
+  ],
+  "n": 116,
+  "source": "results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 14,
+   "depth": 43.75,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 2.586206896551724,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.883372783851618,
+   7.328800618372652
+  ],
+  "n": 116,
+  "source": "results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 16,
+   "depth": 50.0,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.2055646787092287
+  ],
+  "n": 116,
+  "source": "results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 17,
+   "depth": 53.125,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.2055646787092287
+  ],
+  "n": 116,
+  "source": "results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 18,
+   "depth": 56.25,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.2055646787092287
+  ],
+  "n": 116,
+  "source": "results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 19,
+   "depth": 59.375,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.2055646787092287
+  ],
+  "n": 116,
+  "source": "results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 20,
+   "depth": 62.5,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.2055646787092287
+  ],
+  "n": 116,
+  "source": "results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 21,
+   "depth": 65.625,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.2055646787092287
+  ],
+  "n": 116,
+  "source": "results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 22,
+   "depth": 68.75,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.2055646787092287
+  ],
+  "n": 116,
+  "source": "results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 23,
+   "depth": 71.875,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.2055646787092287
+  ],
+  "n": 116,
+  "source": "results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 24,
+   "depth": 75.0,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.2055646787092287
+  ],
+  "n": 116,
+  "source": "results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 25,
+   "depth": 78.125,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.2055646787092287
+  ],
+  "n": 116,
+  "source": "results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 26,
+   "depth": 81.25,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.2055646787092287
+  ],
+  "n": 116,
+  "source": "results/statement_positions/olmo3_7b_instruct_jpp_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 28,
+   "depth": 87.5,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 4.0,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   1.5663050551848017,
+   9.837217232607372
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 6,
+   "depth": 18.75,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 11.0,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   6.254131955225126,
+   18.631463027903024
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 8,
+   "depth": 25.0,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 51.0,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   41.34784047743415,
+   60.578169907613855
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 14,
+   "depth": 43.75,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 27.0,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   19.269460917664823,
+   36.43230022623127
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 16,
+   "depth": 50.0,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 5.0,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   2.154336145631356,
+   11.175196527208817
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 18,
+   "depth": 56.25,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 20,
+   "depth": 62.5,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 22,
+   "depth": 68.75,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 53.0,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   43.28868313724773,
+   62.48934801789626
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 10,
+   "depth": 31.25,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 89.0,
+  "what": "% switched, lens push \u2192 recalls (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   81.36853697209699,
+   93.74586804477487
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 12,
+   "depth": 37.5,
+   "series": "lens_recall",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 6,
+   "depth": 18.75,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 8,
+   "depth": 25.0,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 14,
+   "depth": 43.75,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 16,
+   "depth": 50.0,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 18,
+   "depth": 56.25,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 20,
+   "depth": 62.5,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 22,
+   "depth": 68.75,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 10,
+   "depth": 31.25,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups (invalid cell, drawn pale)",
+  "finding": null,
+  "model": "olmo",
+  "setting": "olmo",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "layer": 12,
+   "depth": 37.5,
+   "series": "lens_lookup",
+   "valid": false
+  }
+ },
+ {
+  "value": 8.0,
+  "what": "band layers (count)",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layers": [
+    9,
+    12,
+    15,
+    18,
+    21,
+    24,
+    30,
+    33
+   ],
+   "depth": [
+    18.75,
+    25.0,
+    31.25,
+    37.5,
+    43.75,
+    50.0,
+    62.5,
+    68.75
+   ]
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 9,
+   "depth": 18.75,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 12,
+   "depth": 25.0,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 15,
+   "depth": 31.25,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 18,
+   "depth": 37.5,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 21,
+   "depth": 43.75,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 24,
+   "depth": 50.0,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 27,
+   "depth": 56.25,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 30,
+   "depth": 62.5,
+   "series": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, random push \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 33,
+   "depth": 68.75,
+   "series": "random"
+  }
+ },
+ {
+  "value": 98.88888888888889,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   96.03981999780284,
+   99.69476890916927
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 0,
+   "depth": 0.0,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 98.88888888888889,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   96.03981999780284,
+   99.69476890916927
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 3,
+   "depth": 6.25,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 98.88888888888889,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   96.03981999780284,
+   99.69476890916927
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 6,
+   "depth": 12.5,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 98.88888888888889,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   96.03981999780284,
+   99.69476890916927
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 9,
+   "depth": 18.75,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 98.88888888888889,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   96.03981999780284,
+   99.69476890916927
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 12,
+   "depth": 25.0,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 96.66666666666667,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   92.91947482669836,
+   98.46354185722956
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 15,
+   "depth": 31.25,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 95.55555555555556,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   91.47621269171728,
+   97.73101788068854
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 18,
+   "depth": 37.5,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 91.11111111111111,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   86.04949853903025,
+   94.45458758728718
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 21,
+   "depth": 43.75,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 86.11111111111111,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   80.3007298111238,
+   90.41231881334424
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 24,
+   "depth": 50.0,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 86.11111111111111,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   80.3007298111238,
+   90.41231881334424
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 25,
+   "depth": 52.083333333333336,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 83.33333333333334,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   77.20468899777126,
+   88.06889434789154
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 26,
+   "depth": 54.166666666666664,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 82.22222222222221,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   75.98131328927978,
+   87.1164839448609
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 27,
+   "depth": 56.25,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 81.66666666666667,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   75.37252847530411,
+   86.63737570307555
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 28,
+   "depth": 58.333333333333336,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 72.77777777777777,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   65.85001485735322,
+   78.75360042884968
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 29,
+   "depth": 60.416666666666664,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 67.77777777777779,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   60.640612157759044,
+   74.17196562659444
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 30,
+   "depth": 62.5,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 46.666666666666664,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   39.524296450687025,
+   53.94834521474671
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 31,
+   "depth": 64.58333333333333,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 48.888888888888886,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   41.68608689330762,
+   56.1381269951703
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 32,
+   "depth": 66.66666666666667,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 44.44444444444444,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   37.37658347497552,
+   51.74448596741402
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 33,
+   "depth": 68.75,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 43.888888888888886,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   36.84187237930174,
+   51.191304007326764
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 34,
+   "depth": 70.83333333333333,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 36.11111111111111,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   29.451952434375105,
+   43.350721171598735
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 35,
+   "depth": 72.91666666666667,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 36.666666666666664,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   29.973672116291183,
+   43.91689454544371
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 36,
+   "depth": 75.0,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 32.77777777777778,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   26.34264423150192,
+   39.93267103990564
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 37,
+   "depth": 77.08333333333333,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 23.88888888888889,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   18.2465027117642,
+   30.622523667466616
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 38,
+   "depth": 79.16666666666667,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 39,
+   "depth": 81.25,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, full patch \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   0.0,
+   2.089624981505818
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_map/summary.json",
+  "extra": {
+   "layer": 42,
+   "depth": 87.5,
+   "series": "patch"
+  }
+ },
+ {
+  "value": 1.0638297872340425,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   0.1880347339052478,
+   5.782431816110288
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 9,
+   "depth": 18.75,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 1.0638297872340425,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   0.1880347339052478,
+   5.782431816110288
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 12,
+   "depth": 25.0,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 1.0638297872340425,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   0.1880347339052478,
+   5.782431816110288
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 15,
+   "depth": 31.25,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 4.25531914893617,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   1.6670278401570267,
+   10.435799587031408
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 18,
+   "depth": 37.5,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 19.148936170212767,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   12.470043241202648,
+   28.25046827945932
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 21,
+   "depth": 43.75,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 25.53191489361702,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   17.799224189785487,
+   35.18600908522227
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 24,
+   "depth": 50.0,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 71.27659574468085,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   61.43663617863795,
+   79.44576966918137
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 27,
+   "depth": 56.25,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 74.46808510638297,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   64.81399091477772,
+   82.20077581021451
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 30,
+   "depth": 62.5,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 89.36170212765957,
+  "what": "% switched, lens push \u2192 recalls",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   81.51427646530539,
+   94.11817435316038
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 33,
+   "depth": 68.75,
+   "series": "lens_recall"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 9,
+   "depth": 18.75,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 12,
+   "depth": 25.0,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 15,
+   "depth": 31.25,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 18,
+   "depth": 37.5,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 21,
+   "depth": 43.75,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 24,
+   "depth": 50.0,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 6.382978723404255,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   2.9579332197396004,
+   13.23313479223077
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 27,
+   "depth": 56.25,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 30,
+   "depth": 62.5,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% switched, lens push \u2192 lookups",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "layer": 33,
+   "depth": 68.75,
+   "series": "lens_lookup"
+  }
+ },
+ {
+  "value": 37.77777777777778,
+  "what": "% switched, diamonds: lens part",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   31.02002342705114,
+   45.046329346205845
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_parts/outcomes.jsonl",
+  "extra": {
+   "layer": 24,
+   "depth": 50.0,
+   "series": "part_recall"
+  }
+ },
+ {
+  "value": 66.11111111111111,
+  "what": "% switched, diamonds: lens part",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   58.92390407484821,
+   72.62499454222214
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_parts/outcomes.jsonl",
+  "extra": {
+   "layer": 27,
+   "depth": 56.25,
+   "series": "part_recall"
+  }
+ },
+ {
+  "value": 36.11111111111111,
+  "what": "% switched, diamonds: lens part",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   29.451952434375105,
+   43.350721171598735
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_parts/outcomes.jsonl",
+  "extra": {
+   "layer": 30,
+   "depth": 62.5,
+   "series": "part_recall"
+  }
+ },
+ {
+  "value": 29.4,
+  "what": "% of lookups switched, lens part of the context",
+  "finding": "f2",
+  "model": "122b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   23.3,
+   36.5
+  ],
+  "n": 180,
+  "source": "grid.csv",
+  "extra": {
+   "layer": 24,
+   "source file": "results/statement_positions/qwen35_122b_d1_topics2_parts/outcomes.jsonl"
+  }
+ },
+ {
+  "value": 56.111111111111114,
+  "what": "% switched, diamonds: lens part",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   48.80869599267324,
+   63.15812762069827
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_parts/outcomes.jsonl",
+  "extra": {
+   "layer": 27,
+   "depth": 56.25,
+   "series": "part_lookup"
+  }
+ },
+ {
+  "value": 19.444444444444446,
+  "what": "% switched, diamonds: lens part",
+  "finding": null,
+  "model": "122b",
+  "setting": "122b",
+  "part": "",
+  "ci": [
+   14.326319874946408,
+   25.839562058196037
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_parts/outcomes.jsonl",
+  "extra": {
+   "layer": 30,
+   "depth": 62.5,
+   "series": "part_lookup"
+  }
+ }
+]

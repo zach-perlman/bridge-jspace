@@ -83,31 +83,39 @@ class Depth:
         return 100 * layer / self.n_layers
 
     def spans(self) -> list[tuple[float, float]]:
-        """The window as depth intervals (%): each run of consecutive swept layers in it, from half-way to the swept
-        layer before to half-way to the one after (half a step past an end of the sweep); one narrower than MIN_BAND
-        is widened about its middle to MIN_BAND, stopping short of the swept layers beside it."""
-        out, ls = [], self.layers
-        i = 0
-        while i < len(ls):
-            if ls[i] not in self.window:
-                i += 1
-                continue
-            j = i
-            while j + 1 < len(ls) and ls[j + 1] in self.window:
-                j += 1
-            step = (ls[1] - ls[0]) if len(ls) > 1 else 1
-            lo = self.depth((ls[i - 1] + ls[i]) / 2 if i > 0 else ls[i] - step / 2)
-            hi = self.depth(
-                (ls[j] + ls[j + 1]) / 2 if j + 1 < len(ls) else ls[j] + (ls[j] - ls[j - 1] if j > 0 else step) / 2
-            )
-            if hi - lo < MIN_BAND:
-                mid = (lo + hi) / 2
-                floor = self.depth(ls[i - 1]) + 0.5 if i > 0 else -math.inf
-                ceil = self.depth(ls[j + 1]) - 0.5 if j + 1 < len(ls) else math.inf
-                lo, hi = min(lo, max(mid - MIN_BAND / 2, floor)), max(hi, min(mid + MIN_BAND / 2, ceil))
-            out.append((lo, hi))
-            i = j + 1
-        return out
+        return layer_spans(self.layers, self.window, self.n_layers)
+
+
+def layer_spans(
+    layers: list[int], inside: list[int], n_layers: int, min_width: float = MIN_BAND
+) -> list[tuple[float, float]]:
+    """`inside` (some of the swept `layers`) as depth intervals (%): each run of consecutive swept layers in it, from
+    half-way to the swept layer before to half-way to the one after (half a step past an end of the sweep); one
+    narrower than min_width is widened about its middle to min_width, stopping short of the swept layers beside it."""
+
+    def depth(layer: float) -> float:
+        return 100 * layer / n_layers
+
+    out, ls = [], layers
+    i = 0
+    while i < len(ls):
+        if ls[i] not in inside:
+            i += 1
+            continue
+        j = i
+        while j + 1 < len(ls) and ls[j + 1] in inside:
+            j += 1
+        step = (ls[1] - ls[0]) if len(ls) > 1 else 1
+        lo = depth((ls[i - 1] + ls[i]) / 2 if i > 0 else ls[i] - step / 2)
+        hi = depth((ls[j] + ls[j + 1]) / 2 if j + 1 < len(ls) else ls[j] + (ls[j] - ls[j - 1] if j > 0 else step) / 2)
+        if hi - lo < min_width:
+            mid = (lo + hi) / 2
+            floor = depth(ls[i - 1]) + 0.5 if i > 0 else -math.inf
+            ceil = depth(ls[j + 1]) - 0.5 if j + 1 < len(ls) else math.inf
+            lo, hi = min(lo, max(mid - min_width / 2, floor)), max(hi, min(mid + min_width / 2, ceil))
+        out.append((lo, hi))
+        i = j + 1
+    return out
 
 
 # ---------------------------------------------------------------- loading (the files the grid names)
