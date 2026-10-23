@@ -1,0 +1,17 @@
+{
+  "run": "natural_v1_qa_competence_cand_v1",
+  "why": "Zach (2026-10-23, prereg amendment 13): candidate-rank read: qwen3.6-27b on natural_v1_qa",
+  "set": "natural_v1_qa",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "ba60129416c5ad35877855c4575288cbff889c8e",
+  "guess": true,
+  "read": "cand",
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-23T17:24:31Z"
+}

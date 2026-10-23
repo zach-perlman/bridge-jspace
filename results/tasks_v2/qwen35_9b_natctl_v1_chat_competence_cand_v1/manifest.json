@@ -1,0 +1,17 @@
+{
+  "run": "qwen35_9b_natctl_v1_chat_competence_cand_v1",
+  "why": "Zach (2026-10-23, prereg amendment 16): natctl, qwen3.5-9b",
+  "set": "natctl_v1_chat",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "2b95595cfb4f1e1065d543c5a5da71553f0a9d7e",
+  "guess": true,
+  "read": "cand",
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-23T19:43:42Z"
+}

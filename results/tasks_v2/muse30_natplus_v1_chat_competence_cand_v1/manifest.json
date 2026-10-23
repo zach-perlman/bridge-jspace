@@ -1,0 +1,17 @@
+{
+  "run": "muse30_natplus_v1_chat_competence_cand_v1",
+  "why": "Zach (2026-10-23, prereg amendment 13): candidate-rank read: muse-glimmer-30b on natplus_v1_chat",
+  "set": "natplus_v1_chat",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "6ba91f249805c826cc817e3edbb672966ec1529d",
+  "guess": true,
+  "read": "cand",
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-23T18:14:38Z"
+}

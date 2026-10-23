@@ -1,0 +1,17 @@
+{
+  "run": "qwen35_122b_natural_v1_chat_competence_cand_v1",
+  "why": "Zach (2026-10-23, prereg amendment 13): candidate-rank read: qwen3.5-122b-a10b on natural_v1_chat",
+  "set": "natural_v1_chat",
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "ba60129416c5ad35877855c4575288cbff889c8e",
+  "guess": true,
+  "read": "cand",
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-23T17:24:31Z"
+}

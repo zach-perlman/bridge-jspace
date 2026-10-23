@@ -1,0 +1,17 @@
+{
+  "run": "olmoh7_natplus_v1_chat_competence_cand_v1",
+  "why": "Zach (2026-10-23, prereg amendment 13): candidate-rank read: olmo-hybrid-7b on natplus_v1_chat",
+  "set": "natplus_v1_chat",
+  "model": {
+    "target": "olmo-hybrid-7b",
+    "repo": "allenai/Olmo-Hybrid-Instruct-DPO-7B",
+    "revision": "ec62da5af0106ab4e83a60e07c4796ff358fd204",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "df93f5275d612053b36e7af34bc9f1be8ef6ad4d",
+  "guess": true,
+  "read": "cand",
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-23T19:10:30Z"
+}
