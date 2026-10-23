@@ -10,6 +10,8 @@ __pycache__/
 *.egg-info/
 *.pt
 *.safetensors
+# generated drafts (scripts/readme_draft.py, run_table.py): regenerate from the grid; README.md is the deliverable
+/drafts/
 # jlens interactive slice pages from examples runs: ~0.5 MB each, regenerate with the examples config
 results/**/slices/
 examples/**/slices/

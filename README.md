@@ -894,7 +894,7 @@ Which locker belongs to Maria's pick?                                       → 
 |---|---|---|
 | The grid, this page's numbers | `scripts/cross_model_grid.py` (tests: `tests/test_cross_model_grid.py`) | `results/cross_model/<stamp>/` |
 | Merged figures | `scripts/cross_model_figures.py`, `src/bridge_jspace/plot_style.py` | `figures/cross_model/` |
-| This page's draft | `scripts/readme_draft.py` | `drafts/README_<stamp>.md` |
+| This page's draft | `scripts/readme_draft.py` | `drafts/README_<stamp>.md` (not committed) |
 | Lens quality table | `scripts/lens_table.py` | `results/lens_table/<stamp>/` |
 | Our J++ fits | `scripts/lens_fit/` | `results/lens_fit/`, Hugging Face |
 | Job queue, pre-registered specs | `scripts/jobq.py`, `jobs/` | `results/jobq/` (one ledger per box) |
