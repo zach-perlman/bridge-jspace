@@ -555,148 +555,56 @@
   }
  },
  {
-  "value": 90.76305220883535,
+  "value": 94.73684210526316,
   "what": "% of answers: order",
   "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
   "part": "",
   "ci": [
-   86.52,
-   93.77
+   88.99000000000001,
+   97.57000000000001
   ],
-  "n": 249,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "n": 114,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
   "extra": {
    "family": "RL",
-   "k": 1,
+   "k": 2,
    "outcome": "order"
   }
  },
  {
-  "value": 0.40160642570281124,
-  "what": "% of answers: another",
-  "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
-  "part": "",
-  "ci": [
-   0.07,
-   2.24
-  ],
-  "n": 249,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
-  "extra": {
-   "family": "RL",
-   "k": 1,
-   "outcome": "another"
-  }
- },
- {
   "value": 0.0,
-  "what": "% of answers: donor",
+  "what": "% of answers: fallback",
   "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
   "part": "",
   "ci": [
    0.0,
-   1.52
+   0.0
   ],
-  "n": 249,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
-  "extra": {
-   "family": "RL",
-   "k": 1,
-   "outcome": "donor"
-  }
- },
- {
-  "value": 0.0,
-  "what": "% of answers: off_list",
-  "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
-  "part": "",
-  "ci": null,
-  "n": 249,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
-  "extra": {
-   "family": "RL",
-   "k": 1,
-   "outcome": "off_list"
-  }
- },
- {
-  "value": 5.220883534136546,
-  "what": "% of answers: unchanged",
-  "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
-  "part": "",
-  "ci": [
-   3.08,
-   8.73
-  ],
-  "n": 249,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
-  "extra": {
-   "family": "RL",
-   "k": 1,
-   "outcome": "unchanged"
-  }
- },
- {
-  "value": 3.6144578313253013,
-  "what": "% of answers: identity",
-  "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
-  "part": "",
-  "ci": [
-   1.91,
-   6.73
-  ],
-  "n": 249,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
-  "extra": {
-   "family": "RL",
-   "k": 1,
-   "outcome": "identity"
-  }
- },
- {
-  "value": 54.13533834586466,
-  "what": "% of answers: order",
-  "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
-  "part": "",
-  "ci": [
-   48.13,
-   60.02
-  ],
-  "n": 266,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "n": 114,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
   "extra": {
    "family": "RL",
    "k": 2,
-   "outcome": "order"
+   "outcome": "fallback"
   }
  },
  {
-  "value": 2.6315789473684212,
+  "value": 1.7543859649122806,
   "what": "% of answers: another",
   "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
   "part": "",
   "ci": [
-   1.28,
-   5.33
+   0.48,
+   6.17
   ],
-  "n": 266,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "n": 114,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
   "extra": {
    "family": "RL",
    "k": 2,
@@ -704,18 +612,18 @@
   }
  },
  {
-  "value": 0.37593984962406013,
+  "value": 0.0,
   "what": "% of answers: donor",
   "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
   "part": "",
   "ci": [
-   0.07,
-   2.1
+   0.0,
+   0.0
   ],
-  "n": 266,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "n": 114,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
   "extra": {
    "family": "RL",
    "k": 2,
@@ -726,12 +634,12 @@
   "value": 0.0,
   "what": "% of answers: off_list",
   "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
   "part": "",
   "ci": null,
-  "n": 266,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "n": 114,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
   "extra": {
    "family": "RL",
    "k": 2,
@@ -739,18 +647,18 @@
   }
  },
  {
-  "value": 7.518796992481203,
+  "value": 3.508771929824561,
   "what": "% of answers: unchanged",
   "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
   "part": "",
   "ci": [
-   4.92,
-   11.33
+   1.37,
+   8.68
   ],
-  "n": 266,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "n": 114,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
   "extra": {
    "family": "RL",
    "k": 2,
@@ -758,37 +666,18 @@
   }
  },
  {
-  "value": 35.338345864661655,
-  "what": "% of answers: identity",
-  "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
-  "part": "",
-  "ci": [
-   29.84,
-   41.25
-  ],
-  "n": 266,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
-  "extra": {
-   "family": "RL",
-   "k": 2,
-   "outcome": "identity"
-  }
- },
- {
-  "value": 13.553113553113553,
+  "value": 46.902654867256636,
   "what": "% of answers: order",
   "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
   "part": "",
   "ci": [
-   10.0,
-   18.12
+   37.96,
+   56.05
   ],
-  "n": 273,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "n": 113,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
   "extra": {
    "family": "RL",
    "k": 3,
@@ -796,18 +685,37 @@
   }
  },
  {
-  "value": 9.89010989010989,
-  "what": "% of answers: another",
+  "value": 1.7699115044247788,
+  "what": "% of answers: fallback",
   "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
   "part": "",
   "ci": [
-   6.89,
-   14.01
+   0.49,
+   6.22
   ],
-  "n": 273,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "n": 113,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
+  "extra": {
+   "family": "RL",
+   "k": 3,
+   "outcome": "fallback"
+  }
+ },
+ {
+  "value": 23.008849557522122,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
+  "part": "",
+  "ci": [
+   16.21,
+   31.580000000000002
+  ],
+  "n": 113,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
   "extra": {
    "family": "RL",
    "k": 3,
@@ -815,18 +723,18 @@
   }
  },
  {
-  "value": 5.86080586080586,
+  "value": 0.0,
   "what": "% of answers: donor",
   "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
   "part": "",
   "ci": [
-   3.64,
-   9.31
+   0.0,
+   0.0
   ],
-  "n": 273,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "n": 113,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
   "extra": {
    "family": "RL",
    "k": 3,
@@ -837,12 +745,12 @@
   "value": 0.0,
   "what": "% of answers: off_list",
   "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
   "part": "",
   "ci": null,
-  "n": 273,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "n": 113,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
   "extra": {
    "family": "RL",
    "k": 3,
@@ -850,129 +758,129 @@
   }
  },
  {
-  "value": 19.78021978021978,
+  "value": 28.31858407079646,
   "what": "% of answers: unchanged",
   "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
   "part": "",
   "ci": [
-   15.49,
-   24.91
+   20.830000000000002,
+   37.230000000000004
   ],
-  "n": 273,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "n": 113,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
   "extra": {
    "family": "RL",
    "k": 3,
    "outcome": "unchanged"
-  }
- },
- {
-  "value": 50.91575091575091,
-  "what": "% of answers: identity",
-  "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
-  "part": "",
-  "ci": [
-   45.01,
-   56.79
-  ],
-  "n": 273,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
-  "extra": {
-   "family": "RL",
-   "k": 3,
-   "outcome": "identity"
-  }
- },
- {
-  "value": 6.551724137931035,
-  "what": "% of answers: order",
-  "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
-  "part": "",
-  "ci": [
-   4.23,
-   10.01
-  ],
-  "n": 290,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
-  "extra": {
-   "family": "RL",
-   "k": 4,
-   "outcome": "order"
-  }
- },
- {
-  "value": 11.724137931034482,
-  "what": "% of answers: another",
-  "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
-  "part": "",
-  "ci": [
-   8.51,
-   15.94
-  ],
-  "n": 290,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
-  "extra": {
-   "family": "RL",
-   "k": 4,
-   "outcome": "another"
-  }
- },
- {
-  "value": 7.586206896551724,
-  "what": "% of answers: donor",
-  "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
-  "part": "",
-  "ci": [
-   5.06,
-   11.22
-  ],
-  "n": 290,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
-  "extra": {
-   "family": "RL",
-   "k": 4,
-   "outcome": "donor"
-  }
- },
- {
-  "value": 0.6896551724137931,
-  "what": "% of answers: off_list",
-  "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
-  "part": "",
-  "ci": null,
-  "n": 290,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
-  "extra": {
-   "family": "RL",
-   "k": 4,
-   "outcome": "off_list"
   }
  },
  {
   "value": 20.689655172413794,
-  "what": "% of answers: unchanged",
+  "what": "% of answers: order",
   "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
   "part": "",
   "ci": [
-   16.43,
-   25.72
+   14.32,
+   28.939999999999998
   ],
-  "n": 290,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "n": 116,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "order"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: fallback",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
+  "part": "",
+  "ci": [
+   0.0,
+   0.0
+  ],
+  "n": 116,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "fallback"
+  }
+ },
+ {
+  "value": 40.51724137931034,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
+  "part": "",
+  "ci": [
+   32.029999999999994,
+   49.62
+  ],
+  "n": 116,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "another"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: donor",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
+  "part": "",
+  "ci": [
+   0.0,
+   0.0
+  ],
+  "n": 116,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "donor"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "% of answers: off_list",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
+  "part": "",
+  "ci": null,
+  "n": 116,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
+  "extra": {
+   "family": "RL",
+   "k": 4,
+   "outcome": "off_list"
+  }
+ },
+ {
+  "value": 38.793103448275865,
+  "what": "% of answers: unchanged",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
+  "part": "",
+  "ci": [
+   30.42,
+   47.88
+  ],
+  "n": 116,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
   "extra": {
    "family": "RL",
    "k": 4,
@@ -980,37 +888,18 @@
   }
  },
  {
-  "value": 52.758620689655174,
-  "what": "% of answers: identity",
-  "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
-  "part": "",
-  "ci": [
-   47.01,
-   58.43
-  ],
-  "n": 290,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
-  "extra": {
-   "family": "RL",
-   "k": 4,
-   "outcome": "identity"
-  }
- },
- {
-  "value": 10.661764705882353,
+  "value": 30.90909090909091,
   "what": "% of answers: order",
   "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
   "part": "",
   "ci": [
-   7.53,
-   14.89
+   23.04,
+   40.07
   ],
-  "n": 272,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "n": 110,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
   "extra": {
    "family": "RL",
    "k": 5,
@@ -1018,18 +907,37 @@
   }
  },
  {
-  "value": 10.661764705882353,
-  "what": "% of answers: another",
+  "value": 0.9090909090909091,
+  "what": "% of answers: fallback",
   "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
   "part": "",
   "ci": [
-   7.53,
-   14.89
+   0.16,
+   4.97
   ],
-  "n": 272,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "n": 110,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
+  "extra": {
+   "family": "RL",
+   "k": 5,
+   "outcome": "fallback"
+  }
+ },
+ {
+  "value": 24.545454545454547,
+  "what": "% of answers: another",
+  "finding": null,
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
+  "part": "",
+  "ci": [
+   17.45,
+   33.36
+  ],
+  "n": 110,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
   "extra": {
    "family": "RL",
    "k": 5,
@@ -1037,18 +945,18 @@
   }
  },
  {
-  "value": 13.602941176470589,
+  "value": 0.0,
   "what": "% of answers: donor",
   "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
   "part": "",
   "ci": [
-   10.03,
-   18.19
+   0.0,
+   0.0
   ],
-  "n": 272,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "n": 110,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
   "extra": {
    "family": "RL",
    "k": 5,
@@ -1059,12 +967,12 @@
   "value": 0.0,
   "what": "% of answers: off_list",
   "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
   "part": "",
   "ci": null,
-  "n": 272,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "n": 110,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
   "extra": {
    "family": "RL",
    "k": 5,
@@ -1072,41 +980,22 @@
   }
  },
  {
-  "value": 20.220588235294116,
+  "value": 43.63636363636363,
   "what": "% of answers: unchanged",
   "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
+  "model": "27b",
+  "setting": "5 sentences, entity absent",
   "part": "",
   "ci": [
-   15.88,
-   25.39
+   34.74,
+   52.959999999999994
   ],
-  "n": 272,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
+  "n": 110,
+  "source": "results/absent_entity/d3_absent_entity_27b_r2_20261023-150258/verdict.json",
   "extra": {
    "family": "RL",
    "k": 5,
    "outcome": "unchanged"
-  }
- },
- {
-  "value": 44.85294117647059,
-  "what": "% of answers: identity",
-  "finding": null,
-  "model": "9b",
-  "setting": "5 sentences, draws pooled",
-  "part": "",
-  "ci": [
-   39.05,
-   50.79
-  ],
-  "n": 272,
-  "source": "results/slot_outcomes/20261023T135208Z/table.csv",
-  "extra": {
-   "family": "RL",
-   "k": 5,
-   "outcome": "identity"
   }
  },
  {

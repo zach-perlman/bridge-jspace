@@ -270,3 +270,50 @@ def test_command_line(table: Path, tmp_path: Path):
     out = tmp_path / "cli"
     assert FIG.main(["--table", str(table), "--only", "main", "--out", str(out)]) == 0
     assert {p.name for p in out.glob("*.png")} == {"slot_outcomes_main.png"}
+
+
+def absent_verdict(tmp_path: Path) -> Path:
+    """A synthetic absent-entity verdict.json: k = 1 has no decisive item; k = 2-5 shares of n."""
+    by_k = {"1": {"all": {}, "decisive": {"n": 0}}}
+    for k, (n, order, fallback, other, unchanged) in {2: (100, 0.9, 0.0, 0.02, 0.08), 3: (80, 0.5, 0.0125, 0.2, 0.2875),
+                                                      4: (50, 0.2, 0.0, 0.4, 0.4), 5: (40, 0.3, 0.025, 0.25, 0.425)}.items():  # fmt: skip
+        d = {"n": n, "order": [order, order - 0.05, order + 0.05], "other_digit": [other, 0.0, other + 0.1],
+             "unchanged": [unchanged, 0.0, unchanged + 0.1]}  # fmt: skip
+        if fallback:
+            d["fallback"] = [fallback, 0.0, 0.05]
+        by_k[str(k)] = {"all": {}, "decisive": d}
+    p = tmp_path / "absent" / "verdict.json"
+    p.parent.mkdir()
+    p.write_text(json.dumps({"families": {"RL": {"by_k": by_k}}}))
+    return p
+
+
+def test_absent_panel_reads_the_decisive_shares_and_draws_beside_the_models(table: Path, tmp_path: Path):
+    path = absent_verdict(tmp_path)
+    rows = FIG.read_absent(path)
+    assert [r["k"] for r in rows] == ["2", "3", "4", "5"]  # k = 1: not tested
+    assert rows[1]["order_n"] == "40" and rows[1]["fallback_n"] == "1" and rows[1]["another_n"] == "16"
+    assert all("identity_n" not in r and r["donor_n"] == "0" for r in rows)  # the entity is not in the original
+    out = tmp_path / "out"
+    FIG.draw_main(table, out, path)
+    main = records(out, "main")
+    absent = [d for d in main if d["setting"] == FIG.ABSENT_KEY[2]]
+    assert {d["extra"]["k"] for d in absent} == {2, 3, 4, 5}
+    assert next(d for d in absent if d["extra"]["k"] == 3 and d["extra"]["outcome"] == "fallback")["value"] == 1.25
+    bars_sum_to_100(main)
+
+
+def test_absent_shares_that_do_not_sum_to_n_are_refused(tmp_path: Path):
+    path = absent_verdict(tmp_path)
+    d = json.loads(path.read_text())
+    d["families"]["RL"]["by_k"]["2"]["decisive"]["order"][0] = 0.5
+    path.write_text(json.dumps(d))
+    with pytest.raises(ValueError, match="do not sum"):
+        FIG.read_absent(path)
+
+
+def test_unchanged_range_rounds_the_pooled_bars(table: Path):
+    rows = FIG.read_table(table)
+    us = [FIG.shares(r)["unchanged"] for r in rows[("gemma", "RL", SO.POOLED)]]
+    lo, hi = round(min(us)), round(max(us))
+    assert FIG.unchanged_range(rows, "gemma") == (f"{lo}%" if lo == hi else f"{lo}–{hi}%")
