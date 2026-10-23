@@ -129,6 +129,30 @@ TARGETS: dict[str, dict[str, Any]] = {
         },
         "frozen_lens_sha256": "0af5ccf2e1c251bedc202607a7ca214f3b9f60980bab73d67a3d0b887db213d8",
     },
+    # Qwen3-32B with OUR J++ (Dan, 23 Oct): every lens result on J++. Primary lens (Dan, 23 Oct ~00:30, fixed before any
+    # J++ result): ours, the published recipe (safety-research/jpp_lens@93f02cd) on 64 WikiText prompts x 128 tokens (2
+    # shards x 32 on 2x H200, one router, seed 0, merged; the merge checked exact on Qwen3.5-0.8B), skip 16, target = the
+    # last block, rlens LRP, 8 experts, source layers 16-51 only; Zach's 32-prompt fit is reported alongside when shared;
+    # no silent switch. Published: huggingface.co/danorel/Qwen3-32B-jpp-lens (commit 8d43d036, public), fp16 export.
+    # lens_layers: the plain J-lens runs' grid (every 4th layer) inside the fit's 16-51, so the stages read the same cells.
+    "qwen3-32b-jpp": {
+        "repo": "Qwen/Qwen3-32B",
+        "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+        "n_layers": 64,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "qwen3_32b_jpp_",
+        "frozen_lens": "jpp",
+        "lens_layers": list(range(16, 52, 4)),
+        "lenses": {
+            "jpp": (
+                "local",
+                "cache/qwen3-32b/lenses/jpp/Qwen3-32B_jpp_lens.pt",
+                "7d6856b60c958ee7a088f4afed3ed39ffbc8b88b69ad5a7a3c7e33290e64e781",
+            ),
+        },
+        "frozen_lens_sha256": "7d6856b60c958ee7a088f4afed3ed39ffbc8b88b69ad5a7a3c7e33290e64e781",
+    },
     # Gemma 4 31B-it with neuronpedia's published J++ fit on the BASE model (google/gemma-4-31B; 64 wikitext prompts,
     # target layer 59): no published lens is fit on the instruction-tuned model, and our own (gemma-4-31b-it above) was
     # lost with the old box. A stand-in (Zach, 2026-10-20): results on this target say what a base-model lens sees and
