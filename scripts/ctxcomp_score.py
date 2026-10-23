@@ -1,5 +1,6 @@
-"""ctxcomp_score (Zach, 2026-10-23, prereg amendment 21): a knock-out run on ctxcomp_v1_chat (12 words SF: start S in
-P stated, K counted, A arithmetic, M recalled; final F in R report, P seat lookup, M recall). Per condition: points
+"""ctxcomp_score (Zach, 2026-10-23, prereg amendments 21 and 24): a knock-out run on ctxcomp_v1_chat or
+jsuite_v1_numbers_chat (12 words SF: start S in P stated, K counted, A arithmetic, M recalled; final F in R report, P
+seat lookup (ctxcomp_v1) or L locker lookup (jsuite_v1_numbers), M recall; the lookup letter is read from the run). Per condition: points
 lost per word (items right unedited), and amendment 21's contrasts with 95% bootstrap intervals over scenes
 (resampled within each start; a scene holds its start's R, P and M items):
   final rule   SM - SP for each start S (prediction 1: >= 20)
@@ -20,8 +21,12 @@ from pathlib import Path
 
 RES = Path(__file__).resolve().parents[1] / "results" / "ablate_v2"
 DATA = Path(__file__).resolve().parents[1] / "data" / "tasks_v2"
-STARTS, FINALS = "PKAM", "RPM"
-CONTRASTS = [(f"{s}M", f"{s}P") for s in STARTS] + [("KP", "PP"), ("AP", "PP"), ("KR", "PR"), ("AR", "PR"), ("MR", "PR")]
+STARTS = "PKAM"
+
+
+def contrasts(lk: str) -> list[tuple[str, str]]:
+    """lk: the lookup final's letter (P in ctxcomp_v1, L in jsuite_v1_numbers)."""
+    return [(f"{s}M", f"{s}{lk}") for s in STARTS] + [(f"K{lk}", f"P{lk}"), (f"A{lk}", f"P{lk}"), ("KR", "PR"), ("AR", "PR"), ("MR", "PR")]
 
 
 def main(run: str, set_name: str) -> None:
@@ -29,6 +34,8 @@ def main(run: str, set_name: str) -> None:
     rows = [json.loads(line) for line in (RES / run / "rows.jsonl").read_text().splitlines()]
     ok = {(r["family"], r["id"]) for r in rows if r["condition"] == "none" and r["correct"] and r["kind"] == "clean"}
     conds = list(dict.fromkeys(r["condition"] for r in rows if r["condition"] != "none"))
+    lk = "L" if any(r["family"].endswith("L") for r in rows) else "P"  # jsuite_v1_numbers: L; ctxcomp_v1: P
+    FINALS, CONTRASTS = "R" + lk + "M", contrasts(lk)
     out: dict = {"run": run, "set": set_name, "cells": {}}
     rng = random.Random(0)
     for cond in conds:

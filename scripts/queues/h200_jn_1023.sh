@@ -1,0 +1,52 @@
+#!/bin/bash
+# Zach (2026-10-23, prereg amendment 24): jsuite module 2 (numbers), both dictionaries, per-item eligibility. Usage: h200_jn_1023.sh GPU STEP ...
+#   comp:TARGET:PREFIX                 competence only (cand2)
+#   cc:TARGET:PREFIX:BAND:BATCH:DICT   competence (cand2, shared) + knock-out (paper10/rot, unembed10/rot) on the 12 words +
+#                                      ctxcomp_score; DICT letters (standard) or digits (--dict-digits, runs *_dd);
+#                                      per-item eligibility (--tasks-per-word, amendment 21 note 2; runs *_pi)
+#   waitq:JOB / mem:GB                 as h200_fix_1023.sh
+# Failed steps are counted; the queue exits with the count.
+set -u
+G=$1; shift
+cd /workspace/bridge-jspace
+set -a; . ./.env; set +a
+export UV_CACHE_DIR=/workspace/uv-cache PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True CUDA_VISIBLE_DEVICES=$G
+PY="uv run --no-sync python"
+R=/workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd
+W="Zach (2026-10-23, prereg amendment 24)"
+SET=jsuite_v1_numbers_chat
+WORDS="PR PL PM KR KL KM AR AL AM MR ML MM"
+fails=0
+fail() { echo "=== $1 FAILED"; tail -3 "$2"; fails=$((fails + 1)); }
+for step in "$@"; do
+  IFS=: read -r kind a b c d e <<< "$step"
+  case $kind in
+    waitq) until grep -qs "^EXIT" $R-$a.log; do sleep 60; done; echo "=== $a finished $(date -u +%T)";;
+    mem) until [ "$(nvidia-smi -i $G --query-gpu=memory.free --format=csv,noheader,nounits)" -ge $((a * 1024)) ]; do sleep 60; done
+      echo "=== GPU $G has $a GB free $(date -u +%T)";;
+    comp)
+      export BJ_TARGET=$a; p=$b; cn=${p}${SET}_competence_cand2_v1
+      [ -f results/tasks_v2/$cn/summary.json ] && { echo "=== $cn exists"; continue; }
+      echo "=== competence $cn $(date -u +%T)"
+      $PY scripts/natural_v1.py competence --set $SET --name $cn --read cand2 --why "$W: $a on $SET" > /workspace/scratch/$cn.log 2>&1 \
+        || { fail "$a competence" /workspace/scratch/$cn.log; continue; }
+      python3 -c "import json,sys; s=json.load(open(sys.argv[1]))['by_word_level']; print('=== JNCOMP $a whole:', {k.split('/')[0]: round(v['whole'], 2) for k, v in s.items()})" results/tasks_v2/$cn/summary.json;;
+    cc)
+      export BJ_TARGET=$a; p=$b; band=$c; batch=$d; dict=$e; cn=${p}${SET}_competence_cand2_v1
+      r=${p}${SET}_ko_cand2_pi_v1; extra="--tasks-per-word"; [ "$dict" = digits ] && { r=${p}${SET}_ko_cand2_pi_dd_v1; extra="--tasks-per-word --dict-digits"; }
+      if [ ! -f results/tasks_v2/$cn/summary.json ]; then
+        echo "=== competence $cn $(date -u +%T)"
+        $PY scripts/natural_v1.py competence --set $SET --name $cn --read cand2 --why "$W: $a on $SET" > /workspace/scratch/$cn.log 2>&1 \
+          || { fail "$a competence" /workspace/scratch/$cn.log; continue; }
+        python3 -c "import json,sys; s=json.load(open(sys.argv[1]))['by_word_level']; print('=== JNCOMP $a whole:', {k: v['whole'] for k, v in s.items()})" results/tasks_v2/$cn/summary.json
+      fi
+      echo "=== ablate_v2/$r $(date -u +%T)"
+      [ -f results/ablate_v2/$r/summary.json ] || $PY scripts/ablate_v2.py --name $r --why "$W: $a, ctxcomp at L$band, dictionary $dict" --plan bands --bands $band \
+        --conditions paper10 paper10_rot unembed10 unembed10_rot --tasks $SET --tasks-competence $cn --tasks-words $WORDS \
+        --tasks-level all --n 1000 --kinds clean --batch $batch --read cand2 $extra > /workspace/scratch/$r.log 2>&1 || { fail "$a ctxcomp KO $dict" /workspace/scratch/$r.log; continue; }
+      $PY scripts/ctxcomp_score.py $r --set $SET | sed "s/^/=== JN $a $dict: /";;
+    *) echo "=== unknown step $step"; fails=$((fails + 1));;
+  esac
+done
+echo "=== jn GPU $G done, $fails failed $(date -u +%FT%TZ)"
+exit $fails
