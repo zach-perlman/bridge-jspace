@@ -389,8 +389,8 @@ def test_every_grid_cell_has_a_row(monkeypatch):
     monkeypatch.setattr(G, "EVAL", dict.fromkeys(G.EVAL, lambda cell: []))
     cells = G._cells()
     have = {(c.model, c.finding, s) for c in cells for s in G.settings_of(c)}
-    for f in G.FINDINGS:
-        for s in f.settings:
+    for f in G.ALL_FINDINGS:
+        for s in f.settings if f.fill else ():  # per-run settings (necessity's cells): only the runs' own rows
             for m in G.MODELS:
                 assert (m.key, f.key, s) in have, (m.key, f.key, s)
     assert len({(c.model, c.finding, c.setting, c.role, c.run) for c in cells}) == len(cells)
@@ -399,6 +399,40 @@ def test_every_grid_cell_has_a_row(monkeypatch):
     assert len(G.VERDICTS) == 7 and set(G.SYMBOL) == set(G.VERDICTS)
     text = G.csv_text([G.Row("27b", "f4", "draw 2", verdict="missing (x)")])
     assert next(csv.reader(io.StringIO(text))) == list(G.COLUMNS)
+
+
+def _write_json(path, obj):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(obj))
+
+
+def test_new_c1_c3_evaluators_read_the_runs_own_verdicts(tmp_path, monkeypatch):
+    """relay swap, natural read, absent entity, necessity, rest at size, late switch: each run's own verdict word,
+    mapped one to one, never recomputed; necessity's J-dependence = (F(full) - F(not_jspace)) / F(full)."""
+    monkeypatch.setattr(G, "RESULTS", tmp_path)
+    r3 = [0.2, 0.15, 0.25]
+    blk = {"n": 300, "k": 84, "R": r3, "R_items": r3, "sub_new": r3, "orig_new": [0, 0, 0.01], "topics": {}}
+    _write_json(tmp_path / "relay_swap" / "rs" / "analysis-1" / "verdict.json",
+                {"late": "all", "test": blk, "positive": [1, 0.99, 1], "off_path": {**blk, "sub_new": [1, 0.99, 1]},
+                 "floor": {**blk, "R": [0, 0, 0]}, "every_layer": None, "verdict": "relay"})  # fmt: skip
+    (row,) = G.ev_relay(G.Cell("gemma", "relay", "draw 1", "relay", "rs"))
+    assert row.word == "holds" and row.unit == "pts" and row.n == 300 and row.value == 0.2
+    cells = {k: {"rate": [0.3, 0.26, 0.34], "n": 469} for k in ("late", "off", "deltanet", "floor", "question")}
+    _write_json(tmp_path / "attn_knockout" / "nr" / "analysis-1-verdict" / "verdict.json",
+                {"cells": cells, "layers_for_late": "attn", "hybrid": True, "late_article_cluster_ci": [0.3, 0.25, 0.35],
+                 "verdict": "fails (more than 10% right, or the upper bound above 20%)", "verdict_secondary": "fails"})  # fmt: skip
+    (row,) = G.ev_natural(G.Cell("27b", "natural", "SQuAD", "natural", "nr"))
+    assert row.word == "fails" and row.n == 469
+    lk = {"full": [0.8, 0.7, 0.9, 180], "not_jspace": [0.2, 0.1, 0.3, 180], "not_rand_sub": [0.6, 0.5, 0.7, 180]}
+    nv = {"verdict": "does not hold", "lookup_drop_J": 0.6, "recall_drop_J": 0.6, "recall_drop_rand": 0.2}
+    _write_json(tmp_path / "d1_verdict" / "np_20261023-000000" / "verdict.json",
+                {"verdict": "does not hold (cells where it holds: bridge_word 0/1)", "sets": {},
+                 "cells": {"bridge_word:16": {"lookup": lk, "recall": lk, "necessity": nv}}})  # fmt: skip
+    rows = G.ev_nec(G.Cell("27b", "nec", "model", "nec", "np"))
+    assert [r.setting for r in rows] == ["model", "bridge_word:16 lookups", "bridge_word:16 recalls"]
+    assert all(r.word == "fails" for r in rows) and rows[1].value == pytest.approx(0.75)
+    assert all(r.setting in G.FINDING["nec"].settings for r in rows)
+    assert "the random slice's (F(full) - F(not_rand_sub)) / F(full): 25%" in rows[1].control
 
 
 def test_grid_md_states_the_seven_words_and_how_finding_1s_interval_is_computed():
@@ -507,7 +541,8 @@ def test_a_job_behind_a_stop_is_not_testable_with_the_stops_reason(tmp_path, res
 
 
 def test_gemmas_stated_bridge_cells_carry_the_n_deviation_by_spec():
-    """The runs are in progress: the note comes from the specs (they read Gemma's D1 maps), not from a result."""
+    """The note comes from the specs (they read Gemma's D1 maps), not from a result: it stands with or without the
+    run (--no-values: a run that is here has no verdict text, so the md cell is given one)."""
     rows = G.build(["gemma:f2:*", "gemma:f8:stated bridge, draw 2", "gemma:f7:*", "27b:f2:*"], values=False)
     noted = {
         (r.finding, r.setting, r.role) for r in rows if any(n.startswith("n = 167 (topics) / 169") for n in r.notes)
@@ -516,7 +551,9 @@ def test_gemmas_stated_bridge_cells_carry_the_n_deviation_by_spec():
                      ("f8", "stated bridge, draw 2", "main")}  # fmt: skip
     note = next(r for r in rows if r.notes).notes[0]
     assert note.endswith("73c4a69 skips scenes whose positions fail the alignment check; accepted by Dan, 23 Oct")
-    text, notes = G.md_cell([next(r for r in rows if r.notes and r.md_setting)])
+    r0 = next(r for r in rows if r.notes and r.md_setting)
+    r0.verdict = r0.verdict or "missing (status only)"
+    text, notes = G.md_cell([r0])
     assert text.endswith(" [{n}]") and notes[0][1] == note
 
 
@@ -613,6 +650,9 @@ def test_zach_c1_on_the_27b_holds_as_the_readme_says(opened):
 
 def _covered(c: dict) -> bool:
     p = c["result path"]
+    if c["finding"] not in {f.name for f in G.FINDINGS}:  # the 23 Oct C1-C3 rows: read from the runs' own verdicts
+        return False
+    # d1_verdict: _recompute pools the formats, so the per-format rows (table, JSON) are not covered
     return any(k in p for k in ("attn_knockout", "lens_gate", "ablate_pilot")) or (
-        "d1_verdict" in p and "·" not in c["setting"]
+        "d1_verdict" in p and "·" not in c["setting"] and c["setting"] not in ("table", "JSON")
     )

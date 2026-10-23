@@ -52,7 +52,7 @@ SINCE = "2026-10-22T19:30:00+00:00"  # the night of 22-23 Oct (coordinator, 23 O
 FINDINGS = tuple(f for f in G.FINDINGS if f.key != "gate")
 GATE = G.FINDING["gate"]
 MODEL_BY_LABEL = {m.label: m for m in G.MODELS}
-FINDING_BY_NAME = {f.name: f for f in G.FINDINGS}
+FINDING_BY_NAME = {f.name: f for f in G.ALL_FINDINGS}  # the 23 Oct C1-C3 findings too (readme_build)
 SHORT = {"27b": "27B", "9b": "9B", "olmo_hybrid": "Olmo-Hybrid", "32b": "32B", "olmo": "OLMo-3", "muse": "Muse",
          "gemma": "Gemma", "122b": "122B"}  # fmt: skip
 ARCH = {"hybrid": "hybrids", "attention": "attention-only models"}

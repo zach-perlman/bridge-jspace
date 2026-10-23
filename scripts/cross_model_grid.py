@@ -117,6 +117,18 @@ class Finding:
     settings: tuple[str, ...]  # the rows of grid.md, in order
     codes: str  # internal names, for the mapping table only
     scripts: str
+    fill: bool = True  # every model without a run gets a 'no spec' (or 'no lens') cell in every setting
+
+
+# late-read-v2 as a finding of its own (key lr2), so that readme_build can read it; the same rows stay under f4's
+# breakdown settings (LAST_SHARE) for the scripts that read them there (late_read_guess, figs/late_read)
+LR2_SETTINGS = ("draw 1", "draw 2", "long context")
+# necessity (B1): one row per listed cell and family; the model's verdict in "model"
+NEC_CELLS = (*(f"{s}:{la}" for s in ("bridge_word", "bind_bridge") for la in (6, 8, 10, 12, 14, 16, 20, 24, 28)),
+             "context:24", *(f"{s}:{la}" for s in ("bind_bridge", "context") for la in (30, 33, 36)))  # fmt: skip
+NEC_SETTINGS = ("model", *(f"{c} {w}" for c in NEC_CELLS for w in ("lookups", "recalls")))
+ABSENT_SETTINGS = tuple(f"{f}{k}" for f in ("memory -> prompt", "named -> prompt")
+                        for k in ("", *(f" k_d {i}" for i in range(2, 6))))  # fmt: skip
 
 
 # finding 4's rows under late-read-v2 (the share of the drop the last tokens carry), beside the late read's own rows:
@@ -151,7 +163,29 @@ FINDINGS = (
             ("stated bridge, draw 1", "stated bridge, draw 2", "last tokens"), "D1 readwrite; D3b lens arm",
             "scripts/statement_positions.py readwrite, scripts/pointer_fit.py"),
 )  # fmt: skip
-FINDING = {f.key: f for f in FINDINGS}
+# 23 Oct evening (the README's claims C1-C3): kept out of FINDINGS, which readme_draft (the old README) iterates;
+# readme_build reads them through ALL_FINDINGS
+C_FINDINGS = (
+    Finding("lr2", "", "The last tokens carry the drop (late read v2)", False, LR2_SETTINGS,
+            "late-read-v2 (relay floor, A3)", "scripts/attn_knockout.py, scripts/cross_model_grid.py late_read_v2"),
+    Finding("relay", "", "With the last tokens blocked, the answer follows a new digit in the sentence (relay swap)",
+            False, ("draw 1", "long context"), "relay swap", "scripts/relay_swap.py"),
+    Finding("natural", "", "A lookup in real paragraphs ends in a late attention read (SQuAD)", False, ("SQuAD",),
+            "natural read", "scripts/natural_read.py, scripts/attn_knockout.py"),
+    Finding("absent", "", "With the asked entity absent from the list, the patch points to the same place (order)",
+            False, ABSENT_SETTINGS, "B4 (absent entity)", "scripts/absent_entity.py"),
+    Finding("nec", "", "At the bridge's word, recalls need the lens-readable part and lookups do not (necessity)", True,
+            NEC_SETTINGS, "B1 (necessity parts)", "scripts/statement_positions.py parts, scripts/d1_verdict.py",
+            fill=False),
+    Finding("rest_size", "", "The lens part's quiet on lookups is its size: the rest at its size is quiet too", True,
+            ("decisive cell",), "A2 (rest at size)", "scripts/statement_positions.py parts, scripts/d1_verdict.py",
+            fill=False),
+    Finding("late_switch", "", "Later in the band the lookup stops reading the lens part (late switch)", True,
+            ("draw 2", "formats"), "D1 late parts (late switch)",
+            "scripts/statement_positions.py parts, scripts/d1_verdict.py", fill=False),
+)  # fmt: skip
+ALL_FINDINGS = (*FINDINGS, *C_FINDINGS)
+FINDING = {f.key: f for f in ALL_FINDINGS}
 
 RULES = {
     "late-read": "the answer's sentence hidden from the last tokens in every attention layer (every layer on "
@@ -210,6 +244,37 @@ RULES = {
     "the cell not interpretable. The 32B, Gemma and Muse runs (and the 27B's d2_abl_read_*_v2 copies) ran without "
     "the random-dictionary control (too large next to the model on an 80 GB GPU): G2 reads the rotated control "
     "alone. Zach's pilots (the 27B's abl_rot_v1, Gemma's refit, the 122B's abl_v1) have no G2",
+    "relay-swap": "the run's own verdict (scripts/relay_swap.py figures: analysis-*/verdict.json, Dan 23 Oct): R = "
+    "mean(substituted prompt answers the new digit - original prompt answers it), the answer's sentence hidden from "
+    "the last tokens as in the late read, entity-cluster bootstrap 95% interval; 'relay' iff R's lower bound > 5 "
+    "points (shown as holds: the claim tested is the relay), 'no relay' as fails; a failed control (positive, "
+    "off-path >= 90% new digit, floor R's lower bound <= 5 points) is not interpretable",
+    "natural-read": "the run's own verdict (scripts/natural_read.py verdict: the newest analysis-*-verdict/verdict.json): "
+    "SQuAD paragraphs, items right unedited; the answer's sentence hidden from the last tokens leaves <= 10% right "
+    "with the Wilson upper bound <= 20% (primary bar, Dan 23 Oct); finding 4's controls (another sentence hidden "
+    ">= 90%, lower bound >= 85%; on a hybrid the DeltaNet layers instead >= 90%); the floor (hidden from every token "
+    "after it) <= 10% or not interpretable; < 100 items not testable. Finding 4's bar (20% / 30%) reported beside",
+    "absent-entity": "the run's own verdict (scripts/absent_entity.py, B4, fixed before the run): memory -> prompt "
+    "decisive, named -> prompt reported; D = mean(1[order] - 1[fallback]) over the decisive items (k_d 2-5, original "
+    "not asking its 1st), entity-cluster bootstrap 95% interval; 'order' iff D's lower bound > 0 and > the random "
+    "push's upper bound (shown as holds), 'fallback' mirrored (fails), 'neither' (inconclusive). Per k_d rows: D on "
+    "that k_d's decisive items, reported (the verdict is the pooled D)",
+    "necessity": "scripts/d1_verdict.py --rule necessity (B1, Dan 23 Oct 15:30): F(x) = share of items switched by "
+    "pasting x; per cell lookups' J not needed iff F(full) - F(not_jspace) <= 0.10 where F(full) >= 0.50, recalls' J "
+    "needed iff the drop >= 0.20 and above the random slice's drop (paired bootstrap lower bound > 0); a cell holds "
+    "iff both, a set iff a majority of its cells, the model iff every set ('does not hold' shown as fails). The grid "
+    "shows per cell and family the J-dependence (F(full) - F(not_jspace)) / F(full) and beside it the random slice's "
+    "(F(full) - F(not_rand_sub)) / F(full): computed here from the verdict's rates, no interval. Qwen3.5-122B: its "
+    "parts runs (topics2, late) had no necessity rule and no random-slice removal (not_rand_sub): values only, open",
+    "rest-size": "scripts/d1_verdict.py --rule rest-size (A2, Dan 23 Oct): at the decisive cell, the rest of the change "
+    "shrunk to the lens part's norm (not_jspace_matched); H-size iff it switches lookups with the Wilson upper bound "
+    "<= 0.10 (shown as holds), H-form iff its lower bound >= 0.20 with the lens part's upper bound <= 0.05 (fails), "
+    "otherwise inconclusive",
+    "late-switch": "scripts/d1_verdict.py --rule late-switch (Dan 23 Oct ~12:00, 122B): the late switch holds iff at "
+    "some decisive cell the lens part switches lookups with the Wilson upper bound <= 0.05, the rest >= 0.30, the "
+    "recall control (lens part >= 0.30 of recalls) and the random-subspace control pass and it stays quiet later; "
+    "finding 2 fails iff the lens part moves >= 20% of lookups (lower bound) at every decisive cell above rand_sub; "
+    "otherwise inconclusive (the run's verdict, read as it is)",
 }
 # How finding 1's interval is computed, in plain words (grid.md's legend and its choices list)
 GAP_METHOD = (
@@ -361,11 +426,28 @@ def _cells() -> list[Cell]:
         "122b": ("qwen35_122b_d2_late_read", "qwen35_122b_d2_late_read_seed2_after", "qwen35_122b_d2_late_read_long_after"),
     }  # fmt: skip
     for m, runs in relay.items():
-        for setting, run in zip(LAST_SHARE, runs, strict=True):
-            if run:
-                add(m, "f4", setting, "late_v2", run)
-            else:
-                none(m, "f4", setting, "its long context ran out of memory twice on an 80 GB GPU: no spec")
+        for setting, short, run in zip(LAST_SHARE, LR2_SETTINGS, runs, strict=True):
+            for f, s in (("f4", setting), ("lr2", short)):
+                if run:
+                    add(m, f, s, "late_v2", run)
+                else:
+                    none(m, f, s, "its long context ran out of memory twice on an 80 GB GPU: no spec")
+    # 23 Oct evening: relay swap, natural text, absent entity, necessity, rest at size, the 122B's late switch
+    add("gemma", "relay", "draw 1", "relay", "gemma4it_d2_relay_swap")
+    add("27b", "relay", "long context", "relay", "d2_relay_swap_long_27b")
+    for m, run in (("27b", "qwen36_27b_d2_natural_read"), ("9b", "qwen35_9b_d2_natural_read"),
+                   ("32b", "qwen3_32b_d2_natural_read"), ("olmo", "olmo3_7b_instruct_d2_natural_read")):  # fmt: skip
+        add(m, "natural", "SQuAD", "natural", run)
+    add("27b", "absent", "memory -> prompt", "absent", "d3_absent_entity_27b_r2")
+    for m, run in (("27b", "d1_necessity_parts_27b_r2"), ("9b", "qwen35_9b_d1_necessity_parts_r2"),
+                   ("olmo", "olmo3_7b_instruct_jpp_d1_necessity_parts_r2")):  # fmt: skip
+        add(m, "nec", "model", "nec", run)
+    add("122b", "nec", "context:24 lookups", "nec_open", "qwen35_122b_d1_topics2_parts")
+    add("122b", "nec", "bind_bridge:30 lookups", "nec_open", "qwen35_122b_d1_late_parts")
+    for m, run in (("27b", "d1_rest_size_parts_27b_r2"), ("9b", "qwen35_9b_d1_rest_size_parts_r2")):
+        add(m, "rest_size", "decisive cell", "rest_size", run)
+    add("122b", "late_switch", "draw 2", "late_switch", "qwen35_122b_d1_late_parts")
+    add("122b", "late_switch", "formats", "late_switch", "qwen35_122b_d1_formats_late_parts_r2")
     # finding 5: draws 1-3 (main, seed2, seed3) and the 8 / 12-statement lists. layer: fixed (the 27B's 50), else
     # the spec's finding5_confirm --layers (Jobs.f5_layers), else the run's swept layers
     add("27b", "f5", "draw 1", "f5", "d3v4_swap_topics", layer=50)
@@ -439,14 +521,14 @@ def _cells() -> list[Cell]:
         add(m, "f8", "last tokens", "fitlens", run)
     add("olmo", "f8", "last tokens", "fitlens", "olmo3_7b_instruct_d3b_fit_v2", role="plain J-lens")
     # lens findings on a model without a lens
-    for f in FINDINGS:
-        if f.lens:
+    for f in ALL_FINDINGS:
+        if f.lens and f.fill:
             for s in f.settings:
                 none("olmo_hybrid", f.key, s, "no lens")
     # every other grid cell without a registered run: no spec
     have = {(c.model, c.finding, s) for c in out for s in settings_of(c)}
-    for f in FINDINGS:
-        for s in f.settings:
+    for f in ALL_FINDINGS:
+        for s in f.settings if f.fill else ():
             for m in MODELS:
                 if (m.key, f.key, s) not in have:
                     none(m.key, f.key, s)
@@ -658,6 +740,14 @@ def required(cell: Cell) -> Path:
         return RESULTS / "ablate_pilot" / r / "summary.json"
     if k == "zach_c1":  # on Zach's branch, not in this tree (present() reads it with git show)
         return RESULTS / "ablate_v2" / "c1_v2" / f"{r}.json"
+    if k == "relay":
+        return RESULTS / "relay_swap" / r / "rows.jsonl"
+    if k == "natural":
+        return RESULTS / "attn_knockout" / r / "rows.jsonl"
+    if k in ("absent", "nec", "nec_open", "rest_size", "late_switch"):  # the saved verdict is the result
+        parent = RESULTS / ("absent_entity" if k == "absent" else "d1_verdict")
+        d = latest_dir(parent, r)
+        return (d or parent / f"{r}_<no verdict>") / "verdict.json"
     raise ValueError(k)
 
 
@@ -693,7 +783,7 @@ LENS_KNOWN = {  # sha256 prefix -> (type, source); the pins in src/bridge_jspace
     "ef50bc54": ("J++", "published (neuronpedia, base model)"), "323733a9": ("J++", "Zach (refit, layers 24-45)"),
     "90fc5e52": ("J++", "Zach"), "b771e502": ("J++", "published (neuronpedia)"), "0b092e93": ("J++", "ours (old fit)"),
 }  # fmt: skip
-LENS_FREE = ("late", "late_v2", "parts", "formats_f3", "formats_f4", "f5", "f6")
+LENS_FREE = ("late", "late_v2", "parts", "formats_f3", "formats_f4", "f5", "f6", "relay", "natural", "absent")
 
 
 def lens_of(cell: Cell) -> str:
@@ -704,7 +794,8 @@ def lens_of(cell: Cell) -> str:
         return "none (no lens)" if cell.why == "no lens" else ""
     exp = {"gate": "lens_gate", "d1": "statement_positions", "d1_formats": "statement_positions",
            "d4": "early_push_where", "rw": "statement_positions", "fitlens": "pointer_fit",
-           "removal": "ablate_pilot", "zach_c1": ""}[cell.kind]  # fmt: skip
+           "removal": "ablate_pilot", "zach_c1": "", "nec": "statement_positions", "nec_open": "statement_positions",
+           "rest_size": "statement_positions", "late_switch": "statement_positions"}[cell.kind]  # fmt: skip
     name, sha = "", ""
     mp = RESULTS / exp / cell.run / "manifest.json"
     if exp and mp.exists():
@@ -922,7 +1013,7 @@ def ev_late_v2(cell: Cell) -> list[Row]:
     last = "every attention layer" if v["layers"] == "attn" else "every layer"
     notes = []
     if not v["has_after"]:
-        return [Row(cell.model, "f4", cell.setting, verdict=v["verdict"], rule="late-read-v2", path=path,
+        return [Row(cell.model, cell.finding, cell.setting, verdict=v["verdict"], rule="late-read-v2", path=path,
                     md_setting=cell.setting, md_text="", sources=[path])]  # fmt: skip
     control = (f"hidden from the last tokens ({last}): {pct(fin[0])} right; from every token after it ({where}): "
                f"{pct(aft[0])} {ci_txt(aft[1], aft[2])} (the floor, needs <= 10%, upper bound <= 15%); relay "
@@ -936,7 +1027,7 @@ def ev_late_v2(cell: Cell) -> list[Row]:
         notes.append("every token after the answer's sentence blocked in all layers, DeltaNet included (the first scene "
                      "set's runs have no other block): a conservative lower bound on the last tokens' share (Dan, 23 Oct)")  # fmt: skip
     s, ci = v["share"], v["share_ci"]
-    return [Row(cell.model, "f4", cell.setting, n=v["n"], value=s, ci=ci, control=control, verdict=v["verdict"],
+    return [Row(cell.model, cell.finding, cell.setting, n=v["n"], value=s, ci=ci, control=control, verdict=v["verdict"],
                 rule="late-read-v2", path=path, md_setting=cell.setting,
                 md_text=f"share {key(s, ci, v['n'])}" if s is not None else "", sources=[path], notes=notes)]  # fmt: skip
 
@@ -1465,9 +1556,231 @@ def ev_removal(cell: Cell) -> list[Row]:
     return out
 
 
+def rate_txt(x: list | tuple) -> str:
+    """'84% [78, 89]' from [rate, lo, hi, ...]."""
+    return f"{pct(x[0])} {ci_txt(x[1], x[2])}"
+
+
+def ev_relay(cell: Cell) -> list[Row]:
+    """The relay swap's own verdict (relay_swap figures), read as it is: relay -> holds, no relay -> fails."""
+    d = RESULTS / "relay_swap" / cell.run
+    saved = sorted(d.glob("analysis-*/verdict.json"))
+    if not saved:
+        p = rel(d / "rows.jsonl")
+        return [Row(cell.model, cell.finding, cell.setting, verdict="missing (no saved verdict: relay_swap figures not "
+                    "run)", rule="relay-swap", path=p, md_setting=cell.setting, md_text="", sources=[p])]  # fmt: skip
+    p = rel(saved[-1])
+    v = json.loads(saved[-1].read_text())
+    t, word = v["test"], v["verdict"]
+    verdict = {"relay": "holds (relay: R's lower bound > 5 points)", "no relay": "fails (no relay: R's lower bound "
+               "<= 5 points)"}.get(word, word if word.startswith("not interpretable") else f"missing (unknown verdict {word!r})")  # fmt: skip
+    where = "every attention layer" if v["late"] == "attn" else "every layer"
+    ctl = (f"the run's verdict: {word}; the last tokens blocked in {where}; R with the item bootstrap "
+           f"{pts(t['R_items'][0])} {ci_txt(*t['R_items'][1:], unit='pts')}; substituted prompt answers the new digit "
+           f"{rate_txt(t['sub_new'])}, the original {rate_txt(t['orig_new'])}; positive control (unedited, new digit) "
+           f"{rate_txt(v['positive'])}; off-path sentence hidden instead: new digit {rate_txt(v['off_path']['sub_new'])}; "
+           f"floor (hidden from every token after it) R {pts(v['floor']['R'][0])} "
+           f"{ci_txt(*v['floor']['R'][1:], unit='pts')}")  # fmt: skip
+    if v.get("every_layer"):
+        e = v["every_layer"]["R"]
+        ctl += f"; R with every layer blocked (DeltaNet included) {pts(e[0])} {ci_txt(e[1], e[2], unit='pts')}"
+    ctl += "; by topic: " + ", ".join(f"{k} {pts(x['R'][0])} n={x['n']}" for k, x in t.get("topics", {}).items())
+    R = t["R"]
+    return [Row(cell.model, cell.finding, cell.setting, n=t["n"], value=R[0], ci=(R[1], R[2]), control=ctl,
+                verdict=verdict, rule="relay-swap", path=p, unit="pts", md_setting=cell.setting,
+                md_text=f"R {key(R[0], (R[1], R[2]), t['n'], 'pts')}", sources=[p])]  # fmt: skip
+
+
+def ev_natural(cell: Cell) -> list[Row]:
+    """natural_read's own verdict (the newest analysis-*-verdict/verdict.json), read as it is."""
+    d = RESULTS / "attn_knockout" / cell.run
+    saved = sorted(d.glob("analysis-*-verdict/verdict.json"))
+    if not saved:
+        p = rel(d / "rows.jsonl")
+        return [Row(cell.model, cell.finding, cell.setting, verdict="missing (no saved verdict: natural_read verdict "
+                    "not run)", rule="natural-read", path=p, md_setting=cell.setting, md_text="", sources=[p])]  # fmt: skip
+    p = rel(saved[-1])
+    v = json.loads(saved[-1].read_text())
+    c = v["cells"]
+    late = c["late"]["rate"]
+    where = "every attention layer" if v.get("layers_for_late") == "attn" else "every layer"
+    ctl = (f"open vocabulary (no listed answers): the null is the floor, not chance; blocked in {where}; another "
+           f"sentence hidden instead keeps {rate_txt(c['off']['rate'])}")  # fmt: skip
+    if v.get("hybrid"):
+        ctl += f"; hidden in every DeltaNet layer instead: {pct(c['deltanet']['rate'][0])}"
+    ctl += (f"; the floor (hidden from every token after it) {rate_txt(c['floor']['rate'])}; article-cluster interval "
+            f"{ci_txt(*v['late_article_cluster_ci'][1:])}; finding 4's bar (20% / 30%): {v['verdict_secondary']}")  # fmt: skip
+    word = v["verdict"]
+    verdict = word if any(word.startswith(w) for w in VERDICTS) else f"missing (unknown verdict {word!r})"
+    n = c["late"]["n"]
+    return [Row(cell.model, cell.finding, cell.setting, n=n, value=late[0], ci=(late[1], late[2]), control=ctl,
+                verdict=verdict, rule="natural-read", path=p, md_setting=cell.setting,
+                md_text=key(late[0], (late[1], late[2]), n), sources=[p])]  # fmt: skip
+
+
+ABSENT_WORD = {"order": "holds (order: D's lower bound above 0 and the random push's)",
+               "fallback": "fails (fallback: D's upper bound below 0 and the random push's)",
+               "neither": "inconclusive (neither order nor fallback, by the rule)"}  # fmt: skip
+
+
+def ev_absent(cell: Cell) -> list[Row]:
+    """B4's own verdict (absent_entity verdict.json): memory -> prompt (RL) decides, named -> prompt (DL) reported."""
+    path = required(cell)
+    p = rel(path)
+    v = json.loads(path.read_text())
+    out = []
+    for fam, name in (("RL", "memory -> prompt"), ("DL", "named -> prompt")):
+        b = v["families"].get(fam)
+        if b is None:
+            continue
+        verdict: str = ABSENT_WORD.get(b["verdict"]) or str(b["verdict"])
+        if not any(verdict.startswith(w) for w in VERDICTS):
+            verdict = f"missing (unknown verdict {b['verdict']!r})"
+        if fam == "DL":
+            verdict += " [reported: named -> prompt is not the decisive family]"
+        D, Dr, sh = b["D_order_minus_fallback"], b["D_rand"], b["shares_decisive"]
+        fb = sh.get("fallback", [0.0, 0.0, 0.0])
+        o = b.get("ordinary") or {}
+        ctl = (f"random push D {pts(Dr[0])} {ci_txt(Dr[1], Dr[2], unit='pts')}; decisive answers: order "
+               f"{pct(sh['order'][0])}, fallback {pct(fb[0])}, unchanged {pct(sh.get('unchanged', [0])[0])}, another "
+               f"digit {pct(sh.get('other_digit', [0])[0])}; same-entity control changed {pct(b['same_changed'][0])}; "
+               f"layer {v['layer']}; per k_d: " + ", ".join(f"{k} {pts(x['D'][0])} n={x['decisive']['n']}"
+                                                         for k, x in b["by_k"].items() if "D" in x))  # fmt: skip
+        if o.get("D_order_minus_fallback"):
+            od = o["D_order_minus_fallback"]
+            ctl += f"; ordinary donor (finding 5's) on the same items {pts(od[0])} {ci_txt(od[1], od[2], unit='pts')}"
+        out.append(Row(cell.model, cell.finding, name, n=b["n_decisive"], value=D[0], ci=(D[1], D[2]), control=ctl,
+                       verdict=verdict, rule="absent-entity", path=p, unit="pts", md_setting=name,
+                       md_text=f"D {key(D[0], (D[1], D[2]), b['n_decisive'], 'pts')}", sources=[p]))  # fmt: skip
+        for k, x in b["by_k"].items():
+            if "D" not in x:
+                continue
+            dk, s = x["D"], x["decisive"]
+            out.append(Row(cell.model, cell.finding, f"{name} k_d {k}", n=s["n"], value=dk[0], ci=(dk[1], dk[2]),
+                           control=f"reported (the verdict is the pooled D); decisive answers: order "
+                           f"{pct(s.get('order', [0])[0])}, fallback {pct(s.get('fallback', [0])[0])}, unchanged "
+                           f"{pct(s.get('unchanged', [0])[0])}", verdict=verdict, rule="absent-entity", path=p,
+                           unit="pts", sources=[p]))  # fmt: skip
+    return out
+
+
+def nec_word(v: str) -> str:
+    if v == "holds" or v.startswith("holds"):
+        return v
+    if v.startswith("does not hold"):
+        return "fails (" + v.removeprefix("does not hold").strip(" ()") + ")" if v != "does not hold" else "fails"
+    if v.startswith("not interpretable"):
+        return "not interpretable (" + v.split(":", 1)[-1].strip() + ")"
+    return f"missing (unknown verdict {v!r})"
+
+
+def dep(full: float, part: float | None) -> float | None:
+    """(F(full) - F(part)) / F(full): the share of the switching that needs what `part` leaves out."""
+    return None if part is None or not full else (full - part) / full
+
+
+def nec_rows(cell: Cell, c: dict, k: str, verdict: str, p: str, rule: str) -> list[Row]:
+    """The two rows (lookups, recalls) of one necessity cell."""
+    out = []
+    nv = c.get("necessity") or {}
+    for who, fam in (("lookups", "lookup"), ("recalls", "recall")):
+        f = c[fam]
+        full, nj, nr = f["full"], f["not_jspace"], f.get("not_rand_sub")
+        dj, drand = dep(full[0], nj[0]), dep(full[0], nr[0] if nr else None)
+        ctl = (f"F(full) {rate_txt(full)}; F(full - J) {rate_txt(nj)}; J-dependence (F(full) - F(not_jspace)) / F(full)"
+               f" {pct(dj)}; the random slice's (F(full) - F(not_rand_sub)) / F(full): "
+               + (f"{pct(drand)} (F(full - random slice) {rate_txt(nr)})" if nr else "no random-slice removal in this "
+                  "run") + f"; J's median share of the change: {c.get('median_share', {}).get('jspace', '-')}")  # fmt: skip
+        if nv:
+            ctl += (f"; the cell's verdict: {nv['verdict']} (lookup drop {pts(nv['lookup_drop_J'])}, recall drop "
+                    f"{pts(nv['recall_drop_J'])} vs the random slice's {pts(nv['recall_drop_rand'])})")  # fmt: skip
+        s = f"{k} {who}"
+        out.append(Row(cell.model, cell.finding, s, n=full[3], value=dj, control=ctl, verdict=verdict, rule=rule,
+                       path=p, md_setting=s, md_text=f"J {pct(dj)} vs random {pct(drand)} n={full[3]}", sources=[p]))  # fmt: skip
+    return out
+
+
+def ev_nec(cell: Cell) -> list[Row]:
+    """B1 (d1_verdict --rule necessity): the model's verdict, then every listed cell's lookups and recalls."""
+    path = required(cell)
+    p = rel(path)
+    v = json.loads(path.read_text())
+    sets = "; ".join(f"{s} {x['holds_at']}/{x['cells']}" for s, x in v.get("sets", {}).items())
+    out = [Row(cell.model, cell.finding, "model", control=f"cells where it holds: {sets}; cells {', '.join(v['cells'])}",
+               verdict=nec_word(v["verdict"]), rule="necessity", path=p, md_setting="model", md_text="", sources=[p])]  # fmt: skip
+    for k, c in v["cells"].items():
+        out += nec_rows(cell, c, k, nec_word(c["necessity"]["verdict"]), p, "necessity")
+    return out
+
+
+def ev_nec_open(cell: Cell) -> list[Row]:
+    """The 122B's parts runs under no necessity rule: the same values, open (no random-slice removal there)."""
+    path = required(cell)
+    p = rel(path)
+    v = json.loads(path.read_text())
+    word = "open (no necessity rule on this model's runs; no random-slice removal: values only)"
+    if "cells" in v:  # late-switch verdict: every listed cell but the reference (context:24 comes from topics2)
+        return [
+            r for k, c in v["cells"].items() if k != "context:24" for r in nec_rows(cell, c, k, word, p, "necessity")
+        ]
+    c = {"lookup": v["lookup"], "recall": v["recall"]}
+    return nec_rows(cell, c, f"{v['cell']['set']}:{v['cell']['layer']}", word, p, "necessity")
+
+
+def ev_rest_size(cell: Cell) -> list[Row]:
+    """A2 (d1_verdict --rule rest-size) at its decisive cell: H-size -> holds, H-form -> fails."""
+    path = required(cell)
+    p = rel(path)
+    v = json.loads(path.read_text())
+    w = v["verdict"]
+    verdict = (f"holds ({w})" if w.startswith("H-size") else f"fails ({w})" if w.startswith("H-form") else
+               w if any(w.startswith(x) for x in VERDICTS) else f"missing (unknown verdict {w!r})")  # fmt: skip
+    k = v["decisive_cells"][0]
+    c = v["cells"][k]
+    lk, rc = c["lookup"], c["recall"]
+    r = lk["not_jspace_matched"]
+    ctl = (f"cell {k}; lookups: the lens part {rate_txt(lk['jspace'])}, the whole rest {rate_txt(lk['not_jspace'])}, "
+           f"the whole change {rate_txt(lk['full'])}, random subspace of the same share {rate_txt(lk['rand_sub'])}; "
+           f"recalls: the lens part {rate_txt(rc['jspace'])}, the rest at its size {rate_txt(rc['not_jspace_matched'])}")  # fmt: skip
+    return [Row(cell.model, cell.finding, cell.setting, n=r[3], value=r[0], ci=(r[1], r[2]), control=ctl,
+                verdict=verdict, rule="rest-size", path=p, md_setting=cell.setting,
+                md_text=key(r[0], (r[1], r[2]), r[3]), sources=[p])]  # fmt: skip
+
+
+def ev_late_switch(cell: Cell) -> list[Row]:
+    """The 122B's late switch (d1_verdict --rule late-switch), its verdict read as it is; the value: the lens part's
+    lookup switching at the last decisive cell."""
+    path = required(cell)
+    p = rel(path)
+    v = json.loads(path.read_text())
+    w = v["verdict"]
+    if w.startswith("inconclusive"):
+        verdict = "inconclusive (" + w.removeprefix("inconclusive").strip(": ") + ")"
+    elif w.startswith("late switch holds"):
+        verdict = f"holds ({w})"
+    elif w.startswith("finding 2 fails"):
+        verdict = f"fails ({w})"
+    else:
+        verdict = f"missing (unknown verdict {w!r})"
+    dec = [k for k in v["decisive_cells"] if k in v["cells"]]
+    per = "; ".join(f"{k}: lookups lens part {pct(v['cells'][k]['lookup']['jspace'][0])}, rest "
+                    f"{pct(v['cells'][k]['lookup']['not_jspace'][0])}, recalls lens part "
+                    f"{pct(v['cells'][k]['recall']['jspace'][0])}" for k in dec)  # fmt: skip
+    if not dec:
+        return [Row(cell.model, cell.finding, cell.setting, control=per, verdict=verdict, rule="late-switch", path=p,
+                    md_setting=cell.setting, md_text="", sources=[p])]  # fmt: skip
+    j = v["cells"][dec[-1]]["lookup"]["jspace"]
+    return [Row(cell.model, cell.finding, cell.setting, n=j[3], value=j[0], ci=(j[1], j[2]),
+                control=f"shown: the lens part's lookup switching at {dec[-1]}; {per}", verdict=verdict,
+                rule="late-switch", path=p, md_setting=cell.setting, md_text=key(j[0], (j[1], j[2]), j[3]),
+                sources=[p])]  # fmt: skip
+
+
 EVAL = {"late": ev_late, "late_v2": ev_late_v2, "parts": ev_parts, "formats_f3": ev_formats, "formats_f4": ev_formats, "f5": ev_f5,
         "f6": ev_f6, "gate": ev_gate, "d1": ev_d1, "d1_formats": ev_d1, "d4": ev_d4, "rw": ev_rw,
-        "fitlens": ev_fitlens, "removal": ev_removal, "zach_c1": ev_zach_c1}  # fmt: skip
+        "fitlens": ev_fitlens, "removal": ev_removal, "zach_c1": ev_zach_c1, "relay": ev_relay, "natural": ev_natural,
+        "absent": ev_absent, "nec": ev_nec, "nec_open": ev_nec_open, "rest_size": ev_rest_size,
+        "late_switch": ev_late_switch}  # fmt: skip
 EXPAND = {  # the grid cells one run fills (several settings)
     "formats_f3": ("prose", "table", "JSON"), "formats_f4": ("prose", "table", "JSON"), "d1_formats": ("table", "JSON"),
     "f6": ("filler moved", "one statement more", "one statement fewer"),
@@ -1690,7 +2003,7 @@ def grid_md(rows: list[Row], meta: dict) -> str:
     tab = ["## The grid", "",
            "| # | Finding | Setting | " + " | ".join(m.label for m in models) + " |",
            "|---|---|---|" + "---|" * len(models)]  # fmt: skip
-    for f in FINDINGS:
+    for f in ALL_FINDINGS:
         if f.key == "gate":
             continue
         for s in f.settings:
@@ -1721,7 +2034,7 @@ def grid_md(rows: list[Row], meta: dict) -> str:
     choices = ["## Choices made after seeing the data", ""] + [f"- {c}" for c in CHOICES] + [""]
     mapping = ["## Mapping: names, internal codes, scripts, rules", "",
                "| # | Finding | Internal codes | Scripts | Rule ids |", "|---|---|---|---|---|"]  # fmt: skip
-    for f in FINDINGS:
+    for f in ALL_FINDINGS:
         ids = sorted({r.rule for r in rows if r.finding == f.key and r.rule})
         mapping.append(f"| {f.number} | {f.name} | {f.codes} | {f.scripts} | {', '.join(ids) or '-'} |")
     mapping += ["", "| Rule id | Rule |", "|---|---|"] + [f"| {k} | {v} |" for k, v in RULES.items()] + [""]
