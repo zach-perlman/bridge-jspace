@@ -7,7 +7,7 @@
 
 **How to read this page.** Confidence words follow one fixed rule ([below](#confidence-and-verification)): strong, medium, open. "Verified" says who recomputed a number: a person, an independent agent, or nobody yet. Every number comes from the cross-model grid ([grid.md](results/cross_model/20261023T105852Z/grid.md)) unless a run is named next to it; every run is in [RUNS.md](RUNS.md).
 
-> **Status, 23 Oct 2026.** Built at 4881840 from `results/cross_model/20261023T105852Z`. Exploration phase: no main claim is hand-verified yet. An independent agent recomputed claims 1-3, and claim 6 on the 27B, from raw rows: every cell matches. The hand check is today. Running on the A100: Gemma 4's lens tests, Qwen3-32B's tables and JSON, the 27B dose control. On the 122B the lookup follows the J-space form to a later layer than on the other models ([below](#the-122b-difference)); its test runs today on a rented 2x H100.
+> **Status, 23 Oct 2026.** Built at d741aec from `results/cross_model/20261023T105852Z`. Exploration phase: no main claim is hand-verified yet. An independent agent recomputed claims 1-3, and claim 6 on the 27B, from raw rows: every cell matches. The hand check is today. Running on the A100: Gemma 4's lens tests, Qwen3-32B's tables and JSON, the 27B dose control. On the 122B the lookup follows the J-space form to a later layer than on the other models ([below](#the-122b-difference)); its test runs today on a rented 2x H100.
 
 Eight models. Hybrids, which mix attention with DeltaNet layers: Qwen3.6-27B (27B), Qwen3.5-9B (9B), Olmo-Hybrid-7B (Olmo-Hybrid), Qwen3.5-122B (122B). Attention-only: Qwen3-32B (32B), OLMo-3-7B (OLMo-3), Muse 30B (Muse), Gemma 4 31B (Gemma).
 
@@ -33,7 +33,7 @@ Eight models. Hybrids, which mix attention with DeltaNet layers: Qwen3.6-27B (27
 | Claim | Evidence | Holds on | Confidence | Verified | Details |
 |---|---|---|---|---|---|
 | **How a lookup works** | | | | | |
-| The last tokens read the answer's sentence late, through attention, and take its digit | Blocking that read leaves 7% right on the 27B; with no other route the right null is near zero, not the guessing rate | 5 of 8 models under the old bar; Gemma and the 27B's long text: relay, v2 pending; Olmo-Hybrid's tables miss by one item | medium | [agent re-check](verification/agent_check_finding4.md), [and](verification/agent_check_finding3.md) | [1](#1-the-last-tokens-read-the-answer-late-through-attention) · [2](#2-they-take-the-answers-digit-not-the-entitys-name) |
+| The last tokens read the answer's sentence late, through attention, and take its digit | Blocking that read leaves 7% right on the 27B; with no other route the right null is near zero, not the guessing rate | 6 of 8 models under the old bar; Gemma and the 27B's long text: relay, v2 pending; Olmo-Hybrid's tables miss by one item | medium | [agent re-check](verification/agent_check_finding4.md), [and](verification/agent_check_finding3.md) | [1](#1-the-last-tokens-read-the-answer-late-through-attention) · [2](#2-they-take-the-answers-digit-not-the-entitys-name) |
 | An order label picks the 1st and 2nd sentence; the bridge's identity picks the rest | On the 27B the label leads by +94 / +18 points (1st-2nd / later) | 7 of 8 models; 32B mixed | medium | [agent re-check](verification/agent_check_finding5.md) | [3](#3-an-order-label-picks-the-1st-and-2nd-sentence-the-bridges-identity-the-rest) |
 | **What the J-space does and doesn't carry** | | | | | |
 | *Methods note, not a finding:* the lens reads a stated bridge at its own word | On the 27B: 95% at the word, 7% right after it; no logit-lens or embedding baseline yet | 7 of 7 lensed models at the word, 0 of 7 after it | – | none | [4](#4-methods-note-the-lens-reads-a-stated-bridge-at-its-own-word) |
@@ -73,7 +73,7 @@ Dan's main J-space claim, read from runs already opened (not yet a grid rule): *
 
 ### 1. The last tokens read the answer late, through attention
 
-**Confidence:** medium under the old rule (holds 5 of 8); Gemma and the 27B's long text read as a relay, v2 pending; Olmo-Hybrid's tables miss by one item. **Verified:** [agent re-check](verification/agent_check_finding4.md), every cell matches; hand check pending.
+**Confidence:** medium under the old rule (holds 6 of 8); Gemma and the 27B's long text read as a relay, v2 pending; Olmo-Hybrid's tables miss by one item. **Verified:** [agent re-check](verification/agent_check_finding4.md), every cell matches; hand check pending.
 
 **What we did**
 - Stopped the last tokens from attending to the answer's sentence, in every attention layer.
@@ -114,7 +114,7 @@ Prior work: retrieval heads (Wu et al., ICLR 2025), the recall gap of recurrent 
 
 ### 2. They take the answer's digit, not the entity's name
 
-**Confidence:** medium (holds 7 of 8; Muse: prose (5 items) fails). **Verified:** [agent re-check](verification/agent_check_finding3.md), every cell matches; hand check pending.
+**Confidence:** medium (holds 8 of 8; Muse: prose (5 items) fails). **Verified:** [agent re-check](verification/agent_check_finding3.md), every cell matches; hand check pending.
 
 **What we did**
 - Hid part of the answer's sentence from the last tokens: everything except its name, or everything except its digit.
@@ -311,7 +311,7 @@ Prior work: the workspace paper lists one-step factual recall as bypassing the J
 
 ## Confidence and verification
 
-**Confidence rule** (fixed before the grid was opened). Strong: holds on three or more models of both kinds, on two scene sets for two of them, with no failing cell. Open: fails on as many models as it holds on. Medium: everything else. Cells with fewer than 30 items are marked "too few items"; their verdicts are unchanged, and the "Holds on" counts include them. Example: Olmo-Hybrid's tables fail claim 1 by one item, the DeltaNet layers blocked keeping 21 of 24 (88%) against a bar of at least 90% ([run](results/attn_knockout/olmo_hybrid_7b_d2_formats/rows.jsonl)).
+**Confidence rule** (fixed before the grid was opened). Strong: holds on three or more models of both kinds, on two scene sets for two of them, with no failing cell. Open: fails on as many models as it holds on. Medium: everything else. Cells with fewer than 30 items are marked "too few items"; their verdicts are unchanged, and the "Holds on" counts leave them out. Example: Olmo-Hybrid's tables fail claim 1 by one item, the DeltaNet layers blocked keeping 21 of 24 (88%) against a bar of at least 90% ([run](results/attn_knockout/olmo_hybrid_7b_d2_formats/rows.jsonl)).
 
 **Verification marks.** Hand: a person recomputed it from raw rows ([VERIFIED.md](VERIFIED.md)). Agent re-check: an independent agent recomputed it ([verification/](verification/)). None: agent analysis only.
 

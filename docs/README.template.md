@@ -260,7 +260,7 @@ Prior work: the workspace paper lists one-step factual recall as bypassing the J
 
 ## Confidence and verification
 
-**Confidence rule** (fixed before the grid was opened). Strong: holds on three or more models of both kinds, on two scene sets for two of them, with no failing cell. Open: fails on as many models as it holds on. Medium: everything else. Cells with fewer than 30 items are marked "too few items"; their verdicts are unchanged, and the "Holds on" counts include them. Example: Olmo-Hybrid's tables fail claim 1 by one item, the DeltaNet layers blocked keeping {{q|21 of 24}} ({{ctl|f4|DeltaNet|olmo_hybrid|table}}) against a bar of at least 90% ([run](results/attn_knockout/olmo_hybrid_7b_d2_formats/rows.jsonl)).
+**Confidence rule** (fixed before the grid was opened). Strong: holds on three or more models of both kinds, on two scene sets for two of them, with no failing cell. Open: fails on as many models as it holds on. Medium: everything else. Cells with fewer than 30 items are marked "too few items"; their verdicts are unchanged, and the "Holds on" counts leave them out. Example: Olmo-Hybrid's tables fail claim 1 by one item, the DeltaNet layers blocked keeping {{q|21 of 24}} ({{ctl|f4|DeltaNet|olmo_hybrid|table}}) against a bar of at least 90% ([run](results/attn_knockout/olmo_hybrid_7b_d2_formats/rows.jsonl)).
 
 **Verification marks.** Hand: a person recomputed it from raw rows ([VERIFIED.md](VERIFIED.md)). Agent re-check: an independent agent recomputed it ([verification/](verification/)). None: agent analysis only.
 

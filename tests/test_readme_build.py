@@ -51,9 +51,10 @@ def test_cell_markers(book):
 
 
 def test_holds_and_confidence(book):
-    assert book.holds("f4") == "0 of 3"  # 27B and Olmo-Hybrid mixed, Gemma fails; the 32B is not judged
+    # Olmo-Hybrid's failing table has 24 items: left out of the count, so it holds; 27B mixed, Gemma fails; 32B not judged
+    assert book.holds("f4") == "1 of 3"
     conf = book.conf("f4")
-    assert conf.startswith("open (holds 0 of 3")
+    assert conf.startswith("open (holds 1 of 3")
     assert "Olmo-Hybrid: table (24 items) fails" in conf
 
 

@@ -126,7 +126,8 @@ class Book:
         return RD.states(self.of(f))
 
     def holds(self, f: str) -> str:
-        st = self.states(f)
+        """'7 of 8' over cells with at least FEW items (Dan, 23 Oct): a cell of 5 or 24 items does not decide a count."""
+        st = RD.states([c for c in self.of(f) if c.n is None or c.n >= FEW])
         judged = [m for m in ORDER if st[m] in JUDGED]
         return f"{sum(st[m] == 'holds' for m in judged)} of {len(judged)}"
 
