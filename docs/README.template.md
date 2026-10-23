@@ -161,7 +161,7 @@ The numbers are two leads in points: place over identity for the 1st-2nd sentenc
 
 ![Lens push](figures/cross_model/f_lens_push_recall_not_lookup_all_models.png)
 
-On the 27B, the full patch keeps moving lookups {{q|8}} layers after the lens push stops ([figure](figures/cross_model/f_layer_gap_lens_vs_patch_27b.png); its own run, not a grid cell). A size-matched control is running.
+On the 27B, the full patch keeps moving lookups {{q|8}} layers after the lens push stops ([figure](figures/cross_model/f_layer_gap_lens_vs_patch_27b.png); its own run, not a grid cell). But at those layers only the smaller lens push passes the check on questions off the bridge's path, and it barely moves recalls there. So the lens push may stop because it is weak. A size-matched control is running.
 
 ### 6. The lens-readable part of a stated bridge moves recall, not the lookup
 
