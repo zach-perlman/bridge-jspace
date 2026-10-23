@@ -1,0 +1,194 @@
+{
+  "seconds": 292,
+  "by_word_level": {
+    "PP/L0": {
+      "n": 162,
+      "whole": 0.012,
+      "all_steps": 0.309,
+      "median_margin": -2.91,
+      "guess": 0.006,
+      "top_wrong": [
+        [
+          "the",
+          97
+        ],
+        [
+          ":",
+          40
+        ],
+        [
+          "which",
+          22
+        ]
+      ]
+    },
+    "PP/L1": {
+      "n": 162,
+      "whole": 0.006,
+      "all_steps": 0.309,
+      "median_margin": -3.25,
+      "guess": 0,
+      "top_wrong": [
+        [
+          "the",
+          72
+        ],
+        [
+          ":",
+          53
+        ],
+        [
+          "which",
+          36
+        ]
+      ]
+    },
+    "PM/L0": {
+      "n": 162,
+      "whole": 0.105,
+      "all_steps": 0.537,
+      "median_margin": -3.84,
+      "guess": 0.031,
+      "top_wrong": [
+        [
+          ":",
+          66
+        ],
+        [
+          "the",
+          35
+        ],
+        [
+          "which",
+          32
+        ]
+      ]
+    },
+    "PM/L1": {
+      "n": 162,
+      "whole": 0.062,
+      "all_steps": 0.605,
+      "median_margin": -3.38,
+      "guess": 0.006,
+      "top_wrong": [
+        [
+          ":",
+          64
+        ],
+        [
+          "which",
+          53
+        ],
+        [
+          "the",
+          25
+        ]
+      ]
+    },
+    "MP/L0": {
+      "n": 162,
+      "whole": 0.012,
+      "all_steps": 0.111,
+      "median_margin": -2.72,
+      "guess": 0.086,
+      "top_wrong": [
+        [
+          "the",
+          99
+        ],
+        [
+          "which",
+          33
+        ],
+        [
+          ":",
+          26
+        ]
+      ]
+    },
+    "MP/L1": {
+      "n": 162,
+      "whole": 0.006,
+      "all_steps": 0.179,
+      "median_margin": -2.75,
+      "guess": 0.068,
+      "top_wrong": [
+        [
+          "the",
+          105
+        ],
+        [
+          ":",
+          37
+        ],
+        [
+          "which",
+          16
+        ]
+      ]
+    },
+    "MM/L0": {
+      "n": 162,
+      "whole": 0.438,
+      "all_steps": 0.253,
+      "median_margin": -0.22,
+      "guess": 0.086,
+      "top_wrong": [
+        [
+          ":",
+          47
+        ],
+        [
+          "which",
+          16
+        ],
+        [
+          "the",
+          16
+        ]
+      ]
+    },
+    "MM/L1": {
+      "n": 162,
+      "whole": 0.426,
+      "all_steps": 0.191,
+      "median_margin": -0.41,
+      "guess": 0.043,
+      "top_wrong": [
+        [
+          ":",
+          43
+        ],
+        [
+          "which",
+          26
+        ],
+        [
+          "the",
+          11
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "PP": 0.023,
+      "PM": 0,
+      "MP": 0,
+      "MM": 0.432
+    },
+    "countries": {
+      "PP": 0.008,
+      "PM": 0.225,
+      "MP": 0.025,
+      "MM": 0.75
+    },
+    "people": {
+      "PP": 0,
+      "PM": 0,
+      "MP": 0,
+      "MM": 0.103
+    }
+  },
+  "pick": {}
+}

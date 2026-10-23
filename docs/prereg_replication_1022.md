@@ -345,3 +345,12 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   and rotated, scored by c1_v2's rule (gap >= 30, controls within 10, floor 30 items per rule word). Prediction: the
   27B and 9B keep a gap >= 20 in at least one framing; Muse and the 122B stay < 15. A breaker with gap < 10 in both
   framings would mean the split is a property of the toy suite, not of the models. Descriptive (a pilot).
+- **10B note (~07:40 UTC, before any natural knock-out):** the plain cloze framing failed on the 9B's competence
+  (qwen35_9b_natural_v1_cloze_competence_v1: whole question 1-11% on P->P, P->M; the read token was " the" or ":";
+  a 120-item probe: stems 0-9% on three words, raw "Question:/Answer:" 17-53%, the 9B wanting a blank line after
+  "Answer:"). The pretraining-style framing is now natural_v1_qa: the same items as raw text with a fixed two-example
+  Question/Answer preamble (scripts/natural_v1.py derive-qa), read after "Answer:". The chat framing was 71-89% whole on
+  the probe and is unchanged. C1 runs on natural_v1_chat and natural_v1_qa for the 9B, 27B, Muse and the 122B; a framing
+  a model cannot do shows up as too few eligible items (the 30-item floor). Also added for 10A: the bridge-present
+  control is rerun M->M only on full_v8 (all M->M items the model gets right, not only whole scenes), so present and
+  absent compare on ~100 items rather than ~30.
