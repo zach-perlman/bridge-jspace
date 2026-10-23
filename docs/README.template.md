@@ -84,9 +84,9 @@ Prior work: binding and ordering IDs (Feng & Steinhardt 2024; Dai et al. 2024); 
 **What we did.** Changed a stated bridge (Jack's pet: cow → pig) and pasted the change into the prompt, whole or without its lens-readable part (the part in the J-space), at the bridge's word, over depth. At these positions the lookup and the recall get the identical patch on the same scenes, because the question comes after: a difference is in what the reader uses, not in the edit.
 
 **Key numbers** (J-dependence = the share of switches lost without the lens part; [27B](results/d1_verdict/d1_necessity_parts_27b_r2_20261023-164424/verdict.md), [9B](results/d1_verdict/qwen35_9b_d1_necessity_parts_r2_20261023-162800/verdict.md), [OLMo-3](results/d1_verdict/olmo3_7b_instruct_jpp_d1_necessity_parts_r2_20261023-161410/verdict.md))
-- 27B: lookups {{q|0.95, 0.44, 0.25, 0.31}} at layers {{q|16, 20, 24, 28}}, then {{q|0.03}} at {{q|32}}; recalls {{q|0.92, 0.41, 0.22, 0.69}}, then {{q|0.65}}.
-- 9B: lookups {{q|0.86 → 0.11}} over layers {{q|6-14}}, at the random level from layer {{q|12}}; recalls stay {{q|0.62-0.90}}.
-- Removing a random part of the same share instead costs lookups {{q|0.10-0.32}} and recalls at most {{q|0.06}}.
+- 27B: lookups {{q|0.95, 0.44, 0.25, 0.31}} at layers {{q|16, 20, 24, 28}}, then {{q|0.03}} at {{q|32}}; recalls {{q|0.92, 0.42, 0.22, 0.69}}, then {{q|0.65}}.
+- 9B: lookups {{q|0.87 → 0.09}} over layers {{q|6-14}}, at the random level from layer {{q|12}}; recalls stay {{q|0.62-0.90}}.
+- Removing a random part of the same share instead costs lookups {{q|0.09-0.33}} and recalls at most {{q|0.07}}.
 - Convergent, quoted until Zach pushes his runs: knocking out the lens's top directions costs recall {{q|36}}, {{q|38}}, {{q|22}} and {{q|7}} points more than lookups on the 27B, 9B, 32B and Muse.
 
 **Controls**
@@ -94,15 +94,15 @@ Prior work: binding and ordering IDs (Feng & Steinhardt 2024; Dai et al. 2024); 
 
 **Weak spots**
 - **Post hoc.** The split depth was read per layer after the pre-registered rule failed ("does not hold" on all three models: it pooled layers before the split). A confirmation with a fresh scene set and a rule fixed in advance is the first next step.
-- The 27B's recall dips at layers 20-24 ({{q|0.41}}, {{q|0.22}}) before rising at 28; OLMo-3's gap is small (recall {{q|0.2-0.4}}); the 122B runs have no random-part removal at these cells.
-- The bridge's own lens direction is a weak handle: an 8x lens push steers recall where cells are valid, and lookups only before the split (27B layers {{q|16-18}}, 122B {{q|27-30}}).
+- The 27B's recall dips at layers 20-24 ({{q|0.42}}, {{q|0.22}}) before rising at 28; OLMo-3 shows no split (recall {{q|0.2-0.4}}, never clear of lookups); the 122B runs have no random-part removal at these cells.
+- The bridge's own lens direction is a weak handle: an 8x lens push steers recall at valid cells on 4 models, and moves lookups ({{q|11-30%}}) only before the split (27B layers {{q|16-18}}, 122B {{q|27-30}}, sentence only).
 
 Prior work: the workspace paper (Gurnee et al. 2026); two-hop recall resolves its bridge early (Biran et al. 2024): [docs/prior_art.md](docs/prior_art.md).
 
 <details><summary>The 27B close-up, the lens push per layer, the 122B, and the retired figures</summary>
 
 - Size-matched patch at the word (27B, [dose](results/early_push_where/d4_layer_gap_dose_27b/summary.md), [without J](results/early_push_where/d4_layer_gap_perp_27b/summary.md)): with its lens part {{q|20% [13, 29]}} of lookups at layer {{q|20}}, stopping at {{q|28}} (8x only); without it {{q|0% [0, 4]}} at every layer. At layer {{q|16}} the lens part alone moves {{q|42% [33, 52]}} of lookups, the rest {{q|0%}} ([split](results/early_push_where/d4_l16_split_27b_r2/summary.md)).
-- The 122B: J-dependence of lookups {{q|0.62, 0.84, 0.46}} at layers {{q|24, 27, 30}}, {{q|0.18}} at {{q|33}} (sentence); recalls {{q|0.49, 0.83, 0.49, 0.39}}. Its late-switch rule is inconclusive: at layers 33 and 36 the lens part moves {{q|0-1%}} of lookups but its recall control fails ({{q|26%, 21%, 8%}} against {{q|30%}}); its 2x H100 numbers drift {{q|4-7}} points from the H200's ([summary](docs/runs_2026-10-23/parts.md)).
+- The 122B: J-dependence of lookups {{q|0.62, 0.84, 0.46}} at layers {{q|24, 27, 30}}, {{q|0.17}} at {{q|33}} (sentence); recalls {{q|0.49, 0.83, 0.49, 0.39}}. Its late-switch rule is inconclusive: at layers 33 and 36 the lens part moves {{q|0-1%}} of lookups but its recall control fails ({{q|26%, 21%, 8%}} against {{q|30%}}); its 2x H100 numbers drift {{q|4-7}} points from the H200's ([summary](docs/runs_2026-10-23/parts.md)).
 - The lens push per layer (valid cells): the 32B holds (word, layer {{q|24}}: recalls {{q|59%}}, lookups {{q|5%}}); Gemma has no valid cell ([summary](docs/runs_2026-10-23/order.md)).
 
 ![The 27B layer gap](figures/cross_model/layer_gap_main.png)
