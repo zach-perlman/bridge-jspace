@@ -321,7 +321,7 @@ def main(args) -> None:
                 "git_commit": commit, "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
                 "plan": args.plan, "bands": [label(b) for b in bands], "conditions": args.conditions,
                 "families": args.families, "kinds": args.kinds, "skip": args.skip, "wording": args.wording, "n_per_family": args.n, "batch": args.batch,
-                "tf32": not args.no_tf32, "workspace_start": args.workspace, "positions": args.positions, "pad": args.pad, "competence": args.competence, "countries_build": args.countries_build, "tasks": [args.tasks, args.tasks_competence, args.tasks_words, args.tasks_level, args.tasks_strata], "tasks_per_word": args.tasks_per_word, "read": args.read, "wide": WIDE, "seed_offset": args.seed_offset, "seeds": {"rotation": f"{SEED_ROT + args.seed_offset}+layer", "rotated_dictionary": f"{SEED_DICT + args.seed_offset}+layer",
+                "tf32": not args.no_tf32, "workspace_start": args.workspace, "positions": args.positions, "pad": args.pad, "competence": args.competence, "countries_build": args.countries_build, "tasks": [args.tasks, args.tasks_competence, args.tasks_words, args.tasks_level, args.tasks_strata], "tasks_per_word": args.tasks_per_word, "read": args.read, "dict_digits": args.dict_digits, "wide": WIDE, "seed_offset": args.seed_offset, "seeds": {"rotation": f"{SEED_ROT + args.seed_offset}+layer", "rotated_dictionary": f"{SEED_DICT + args.seed_offset}+layer",
                 "gauss": f"{SEED_GAUSS}+layer"}, "own_cos": OWN_COS, "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 
@@ -370,6 +370,10 @@ def main(args) -> None:
 
     lens = JLens(model, pins.FROZEN_LENS)
     letters = model.letter_token_ids()
+    if args.dict_digits:  # 2026-10-23 (amendment 21 note): digit tokens join the dictionary, for numbers as intermediates
+        digits = [i for i, s_ in enumerate(model.decoded) if i not in model.special_ids and s_.strip().isdigit()]
+        letters = torch.tensor(sorted(set(letters.tolist()) | set(digits)), device="cuda")
+        print(f"dictionary: {letters.numel()} tokens ({len(digits)} digit tokens added)", flush=True)
     wg = model.hf.lm_head.weight[letters].float() * model.norm_gain()
     row_of = torch.full((model.hf.lm_head.weight.shape[0],), -1, dtype=torch.long, device="cuda")
     row_of[letters] = torch.arange(letters.numel(), device="cuda")
@@ -557,6 +561,7 @@ if __name__ == "__main__":
         "--pad", action="store_true", help="length-sorted right-padded batches (validated against exact-length)"
     )
     ap.add_argument("--no-tf32", action="store_true", help="full fp32 matmuls (the v1 numerics check)")
+    ap.add_argument("--dict-digits", action="store_true", help="add digit tokens to the letter-token dictionary (amendment 21 note)")
     ap.add_argument("--tasks", default=None, help="a tasks_v2 set to draw prompts from instead of the suite")
     ap.add_argument("--read", choices=["top", "cand", "cand2"], default="top",
                     help='"cand" (natural_v1 only): correct = top among the relation\'s candidate answers')

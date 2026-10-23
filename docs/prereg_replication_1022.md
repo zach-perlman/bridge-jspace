@@ -579,3 +579,9 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   (2) and (3) can both hold (report differs from use). **Kill for the memory-vs-prompt framing:** loss(KP) or loss(AP)
   >= loss(PP) + 20 with controls within 10: then computations on the passage route through the J-space as recalls
   do, and the split is computed-or-recalled vs read, not memory vs prompt.
+- **21 note (~22:50 UTC, before any ctxcomp knock-out data; only a 9B competence smoke running):** the knock-out's
+  dictionary has been letter-bearing tokens only since ablate_v2 v1 (model.letter_token_ids), so a digit token's
+  direction is never removed. ctxcomp's X is a number: a null on K or A could be the dictionary, not the J-space.
+  Every ctxcomp knock-out is therefore run twice, with the standard dictionary and with digit tokens added
+  (ablate_v2 --dict-digits; runs *_dd). Predictions apply to both; if they disagree, the digits run is the test of
+  the number intermediates and the standard run the comparison with every earlier result.
