@@ -696,16 +696,20 @@ def ev_late(cell: Cell) -> list[Row]:
     return [late_row(cell, cell.setting, res, rel(d / "rows.jsonl"))]
 
 
+NO_ITEMS = "not testable (competence: no memory -> prompt item the model answers right unedited here)"
+
+
 def late_row(cell: Cell, setting: str, res: dict, path: str) -> Row:
     lk, off = res["lookup"], res["off"]
+    if not lk[3]:  # nothing to judge (and nothing to format: the rates are nan)
+        return Row(cell.model, cell.finding, setting, n=0, verdict=NO_ITEMS, rule="late-read", path=path,
+                   md_setting=setting, md_text="", sources=[path])  # fmt: skip
     where = "every attention layer" if res["layers"] == "attn" else "every layer"
     control = (f"chance {pct(CHANCE)}; blocked in {where}; the off-path sentence hidden instead keeps {pct(off[0])} "
                f"{ci_txt(off[1], off[2])}")  # fmt: skip
     if "deltanet" in res:
         control += f"; hidden in every DeltaNet layer instead: {pct(res['deltanet'][0])}"
-    if not lk[3]:
-        verdict = "missing (no memory -> prompt items in the run)"
-    elif res["holds"]:
+    if res["holds"]:
         verdict = "holds"
     elif not (off[0] >= DF.OFF_MIN and off[1] >= DF.OFF_LO):
         verdict = "not interpretable (the off-path control: the off-path sentence hidden keeps < 90% or its lower bound < 85%)"
@@ -726,6 +730,9 @@ def late_row(cell: Cell, setting: str, res: dict, path: str) -> Row:
 
 def parts_row(cell: Cell, setting: str, cl: dict, fam: str, path: str) -> Row:
     need = [(fam, s, d) for s in DP.PARTS + DP.SPLIT for d in ("question", "final")]
+    if not any(k[0] == fam for k in cl):  # no item of the family answered right: nothing was patched
+        return Row(cell.model, cell.finding, setting, n=0, verdict=NO_ITEMS, rule="name-digit", path=path,
+                   md_setting=setting, md_text="", sources=[path])  # fmt: skip
     if not all(k in cl for k in need):
         return Row(cell.model, cell.finding, setting, verdict="missing (the run has no leak-robust parts: first "
                    "version)", rule="name-digit", path=path, md_setting=setting, md_text="", sources=[path])  # fmt: skip
@@ -1290,7 +1297,8 @@ def md_cell(rows: list[Row]) -> tuple[str, list[tuple[str, str]]]:
                      "not run" if "not run" in reason else "gate failed" if "gate v1 failed" in reason else
                      "raw smoke mismatch" if "raw smoke mismatch" in reason else
                      "not on Zach's branch" if "Zach's branch" in reason else
-                     "no early layer" if "before the donor's digit" in reason else "see csv")  # fmt: skip
+                     "no early layer" if "before the donor's digit" in reason else
+                     "no item right" if reason.startswith("competence") else "see csv")  # fmt: skip
             text = f"{sym} {r.word}: {short}" if r.md_text == "" or r.md_text is None else f"{sym} {r.md_text}"
         else:
             text = f"{sym} {r.md_text}"

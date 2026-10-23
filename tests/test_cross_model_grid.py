@@ -85,6 +85,17 @@ def test_late_read_verdicts(results, attn, off, gdn, word):
         assert "off-path" in row.verdict
 
 
+def test_a_family_with_no_item_right_is_not_testable(results):
+    """A run whose competence filter left no memory -> prompt item (Muse's table and JSON scenes): not testable, and
+    no crash on the empty rates (a crash took the whole formats cell, prose included, to 'files inconsistent')."""
+    rows = [{**r, "family": "PP"} for r in _late_rows(20, 1, 20, None)]  # items of another family only
+    _jsonl(results / "attn_knockout" / "r" / "rows.jsonl", rows)
+    (row,) = G.ev_late(G.Cell("muse", "f4", "draw 2", "late", "r"))
+    assert row.word == "not testable" and "competence" in row.verdict and row.n == 0
+    row = G.parts_row(G.Cell("muse", "f3", "table", "parts", "r"), "table", {}, "MP", "p")
+    assert row.word == "not testable" and "competence" in row.verdict
+
+
 def _parts_rows(rates: dict[tuple[str, str], float], n: int = 100) -> tuple[list[dict], list[dict]]:
     cases = [{"id": f"i{i}", "tok_A": 1, "conf_toks": [2, 3]} for i in range(n)]
     rows = [{"family": "RL", "id": f"i{i}", "source": "none", "dest": "none", "layers": "all", "correct": True, "top": 1}
