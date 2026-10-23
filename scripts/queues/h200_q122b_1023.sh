@@ -1,5 +1,5 @@
 #!/bin/bash
-# Zach (2026-10-23; approved: "Go ahead" on the 122B): Qwen3.5-122B-A10B (FP8, published J++) through every model's C1
+# Zach (2026-10-23; approved: "Go ahead" on the 122B; GPU 0 alone once downloaded: the Olmo-3 run moved to GPU 1): Qwen3.5-122B-A10B (FP8, published J++) through every model's C1
 # procedure on GPU 0, after the 122B download and the Olmo-3 powered run. 48 blocks: 7-layer windows sliding by 3 (as
 # Muse's 52). Batch 8 (the old pipeline ran out of memory at 16). Competence on ctrl_v8 and full_v8_two (full_v8's two-step
 # items, same ids). Steps: the untestable gate (L21-27), competence, ctrl_v8 sweep, band, C1 at the band and at the
@@ -11,7 +11,6 @@ export UV_CACHE_DIR=/workspace/uv-cache PYTORCH_CUDA_ALLOC_CONF=expandable_segme
 PY="uv run --no-sync python"
 R=/workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd
 until grep -qs "^=== 122B downloaded" $R-h200dl122b-1023-0200.log; do sleep 60; done
-until grep -qs "^EXIT" $R-h200amend7g0b-1023-0135.log; do sleep 60; done
 export BJ_TARGET=qwen3.5-122b-a10b
 P=qwen35_122b_
 WHY="Zach (2026-10-23): Qwen3.5-122B-A10B (published J++) on the v2 pipeline (a third Qwen3.5/3.6 hybrid; larger model)"
