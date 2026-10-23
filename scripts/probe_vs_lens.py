@@ -99,7 +99,7 @@ def main(args) -> None:
     items = {it["id"]: it for it in T.load(args.set)}
     layers = list(range(0, pins.N_LAYERS, args.every))
     lens = JLens(model, pins.FROZEN_LENS)
-    lens_layers = set(lens.layers) if hasattr(lens, "layers") else set(layers)
+    lens_layers = set(lens.source_layers)
     gain = model.norm_gain()
     classes = sorted({items[p["id"]][args.target] for p in prompts})
     sids = {c: surface_ids(tok, c) for c in classes}
