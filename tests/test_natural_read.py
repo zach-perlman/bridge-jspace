@@ -161,6 +161,17 @@ def test_verdict_rule(n, late, off, gdn, floor, want, want_secondary):
     assert out["baselines"]["late_scored_against_another_items_answer"][0] == pytest.approx(late / n)
 
 
+def test_figure_draws_a_cell_at_100_percent(tmp_path):
+    # 21 of 21: stats.wilson's upper bound is 0.9999999999999999, ~1e-16 under the rate; the figure must still draw
+    # (the 9B's and 32B's natural-text figures failed on this, 23 Oct)
+    out = NR.verdict(*_run(21, 2, 21, 21, 0))
+    assert out["cells"]["off"]["rate"][2] < out["cells"]["off"]["rate"][0]
+    out["eligibility_funnel"] = {"built": 21, "eligible": 21}
+    out["model"] = {"repo": "Qwen/Qwen3.5-9B"}
+    NR.figure(out, tmp_path / "f.png")
+    assert (tmp_path / "f.png").stat().st_size > 10_000
+
+
 def test_stage_verdict_writes_a_new_analysis_folder_with_the_figure(tmp_path, monkeypatch):
     import json
 

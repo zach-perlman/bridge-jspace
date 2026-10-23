@@ -549,7 +549,10 @@ def figure(out: dict, path: Path) -> None:
     fig, ax = plt.subplots(figsize=(8.6, 0.42 * len(rows) + 3.4))
     for y, (_, r, n, k) in enumerate(reversed(rows)):
         c = colour.get(k, "#5f5e59" if k in out["cells"] else "#7f7d77")
-        ax.errorbar([r[0]], [y], xerr=[[r[0] - r[1]], [r[2] - r[0]]], fmt="o" if k in out["cells"] else "s", ms=7,
+        # at 0% or 100% stats.wilson's bound can sit ~1e-16 past the rate (float rounding); errorbar refuses a negative
+        # length. Clipped here only: the stored intervals stay as computed, so committed verdicts still reproduce.
+        err = [[max(r[0] - r[1], 0.0)], [max(r[2] - r[0], 0.0)]]
+        ax.errorbar([r[0]], [y], xerr=err, fmt="o" if k in out["cells"] else "s", ms=7,
                     color=c, ecolor=c, elinewidth=1.6, capsize=0)  # fmt: skip
         right = r[0] > 0.8  # labels of points near 100% go to their left, inside the panel
         ax.annotate(f"{100 * r[0]:.0f}%" + (f"  n={n}" if n else ""), (r[0], y), xytext=(-8 if right else 8, 6),
