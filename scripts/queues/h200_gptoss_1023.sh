@@ -27,7 +27,7 @@ LENS=cache/$KEY/lenses/jpp/${STEM}_jpp_lens.pt
 LOG=/workspace/scratch/${KEY}_fit.log
 if [ ! -f "$LENS" ]; then
   mkdir -p "$OUT"; cd /workspace/ext/jpp_lens
-  C="$JP scripts/jpp_cli.py"; M="--hf-model-name $HF"
+  C="$JP scripts/jpp_cli.py"; M="--hf-model-name $HF --attn-implementation eager"  # gpt-oss: no sdpa (learned sinks)
   echo "=== router $(date -u +%T)"
   [ -f "$OUT/router.pt" ] || { $C fit-router $M --layers "$LAYERS" --num-prompts 64 --skip-first-n-positions 16 --max-seq-len 128 --seed 0 --out "$OUT/router.tmp.pt" > $LOG 2>&1 \
     && mv "$OUT/router.tmp.pt" "$OUT/router.pt" || { echo "router FAILED: stop"; tail -5 $LOG; exit 1; }; }
@@ -45,7 +45,7 @@ if [ ! -f "$LENS" ]; then
   $C merge-experts --checkpoint-dirs $(ls -d "$OUT"/artifacts/*/fit32/shard0of* | tail -1) --out "$OUT/experts.pt" --pooled-lens-out "$OUT/pooled_lens.pt" --device cpu >> $LOG 2>&1 \
     || { echo "merge FAILED: stop"; tail -5 $LOG; exit 1; }
   rm -rf "${OUT:?}"/artifacts
-  $JP /workspace/bridge-jspace/scripts/lens_fit/jpp_grade.py $HF "$LAYERS" "$OUT/model_correctness.csv" >> $LOG 2>&1 || { echo "grade FAILED: stop"; exit 1; }
+  JPP_ATTN=eager $JP /workspace/bridge-jspace/scripts/lens_fit/jpp_grade.py $HF "$LAYERS" "$OUT/model_correctness.csv" >> $LOG 2>&1 || { echo "grade FAILED: stop"; exit 1; }
   $C fit-weights $M --layers "$LAYERS" --experts "$OUT/experts.pt" --items fit:0 --correctness-csv "$OUT/model_correctness.csv" --cache-path "$OUT/readout_cache.pt" \
     --out "$OUT/${STEM}_jpp_lens.pt" >> $LOG 2>&1 || { echo "fit-weights FAILED: stop"; exit 1; }
   echo "=== evaluate $(date -u +%T)"
