@@ -24,6 +24,7 @@ import json
 import subprocess
 import sys
 import time
+import urllib.error
 import urllib.request
 from datetime import UTC, datetime
 from pathlib import Path
@@ -270,8 +271,11 @@ def terminate() -> bool:
     code, _ = api("DELETE", f"/gpu-cloud/instances/{it['_id']}")
     log(f"DELETE /gpu-cloud/instances/{it['_id']} -> {code}")
     time.sleep(30)
-    _, after = api("GET", f"/gpu-cloud/instances/{it['_id']}")
-    log(f"after: status={after.get('status') if isinstance(after, dict) else after}")
+    try:
+        _, after = api("GET", f"/gpu-cloud/instances/{it['_id']}")
+        log(f"after: status={after.get('status') if isinstance(after, dict) else after}")
+    except urllib.error.HTTPError as e:  # 404 after a DELETE = the instance is gone (23 Oct: this was read as a failure)
+        log(f"after: GET -> {e.code} ({'gone: deleted' if e.code == 404 else 'unexpected'})")
     return code == 204
 
 

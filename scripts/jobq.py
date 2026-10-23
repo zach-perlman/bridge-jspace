@@ -744,8 +744,11 @@ def main(argv: list[str] | None = None) -> int:
         print(box_cancel(box_root(), a.id), end="")
         return 0
     if a.cmd == "stats":
-        _install_box_script()
-        print(_ssh(f"python3 ~/{BOX_ROOT}/jobq.py box-stats --hours {a.hours} --gpus {a.gpus}"), end="")
+        try:
+            _install_box_script()
+            print(_ssh(f"python3 ~/{BOX_ROOT}/jobq.py box-stats --hours {a.hours} --gpus {a.gpus}"), end="")
+        except subprocess.CalledProcessError:  # a deleted box (e.g. the 2x H200 after its queue) is not an error here
+            print(f"{HOST}: unreachable (deleted or down); its pulled ledger: results/jobq/ledger_{HOST}.jsonl")
         return 0
     if a.cmd == "box-stats":
         print(box_stats(box_root(), a.hours, a.gpus), end="")
