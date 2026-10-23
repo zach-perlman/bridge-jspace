@@ -467,6 +467,24 @@ def test_head_grid_ranges_and_rows_per_family():
     assert K.unit_key({"layers": "L07:h01", "dest": "question"}, m) == "L07:h01"
 
 
+def test_after_swept_like_the_other_destinations_comes_last():
+    """The relay floor (23 Oct): 'after' (every position after the source) may be a sweep destination, so it is blocked
+    in every attention layer alone ('attn') as well as in all layers; the original conditions keep their relative
+    order (the random spans are drawn per case, not per condition)."""
+    from scripts import attn_knockout as K
+
+    case = {"family": "RL", "sources": {"lookup": [4, 5], "lookup_off": [7, 8]}, "ids": list(range(12)),
+            "dests": {"question": [9], "final": [10, 11], "both": [9, 10, 11]}}  # fmt: skip
+    old = {"sources": ["lookup", "lookup_off"], "dests": ["final", "question"], "absent": False, "sweep": "path",
+           "sweep_dests": ["question", "final", "both"], "layer_sets": {"all": [0, 1, 2, 3], "attn": [3], "gdn": [0, 1, 2]}}  # fmt: skip
+    new = {**old, "dests": ["final", "question", "after"], "sweep_dests": ["question", "final", "both", "after"]}
+    a, b = K.conditions(case, old), K.conditions(case, new)
+    keys = [(x["source"], x["dest"], x["layers"]) for x in b]
+    assert {("lookup", "after", la) for la in ("all", "attn", "gdn")} <= set(keys)
+    assert [k for k in keys if k[1] != "after"] == [(x["source"], x["dest"], x["layers"]) for x in a]
+    assert K.positions(case, {"source": "lookup", "dest": "after"}) == ([4, 5], list(range(6, 12)))
+
+
 def test_compare_reports_domains_entities_and_cluster_intervals():
     """compare: n items / k entities, the drop = control - cell, per domain; entity-correlated items widen the
     cluster interval beyond the item-level one."""

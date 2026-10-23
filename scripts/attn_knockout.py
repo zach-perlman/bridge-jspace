@@ -38,7 +38,8 @@ Grid: every source x every destination at all layers (DeltaNet mode 'value'), pl
   direct influence at all: the positive control); for every other layer set,
   the sweep sources (--sweep path: each family's path sources and their same-kind controls, RR with RL's; path+random:
   those and the random span; --sweep all:
-  every source) x the sweep destinations (default question, final, both).
+  every source) x the sweep destinations (default question, final, both; after on request, e.g. every attention
+  layer alone: the relay floor's definition, 23 Oct).
 
 Read: suite_split's (one forward of the prompt, a digit answer's space appended, at the answer's first token). Per row:
 correct (top token = the answer's), kept (top token = the item's unedited top token in the same batch; each batch has
@@ -3832,7 +3833,7 @@ if __name__ == "__main__":
         default=["all"],
     )
     ap.add_argument("--sweep", choices=["path", "path+random", "all"], default="path")
-    ap.add_argument("--sweep-dests", nargs="+", choices=["question", "final", "both"], default=["question", "final", "both"])  # fmt: skip
+    ap.add_argument("--sweep-dests", nargs="+", choices=["question", "final", "both", "after"], default=["question", "final", "both"])  # fmt: skip
     ap.add_argument("--absent", action="store_true", help="add the DeltaNet mode-absent rows (both, after; all layers)")
     ap.add_argument("--head-ranges", nargs="+", choices=list(HEAD_RANGES), default=list(HEAD_RANGES),
                     help="heads grid: the ranges of depth to block head by head (HEAD_RANGES)")  # fmt: skip
