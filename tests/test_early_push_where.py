@@ -246,19 +246,51 @@ def test_at_norm_keeps_the_patch_direction_at_the_lens_push_norm():
         W.at_norm(torch.zeros(1, 16), torch.tensor([20.0]))
 
 
-def test_split_patch_parts_add_up_and_find_a_sparse_patch():
+def _split_inputs(d: int = 256):
     g = torch.Generator().manual_seed(1)
-    dictionary = torch.nn.functional.normalize(torch.randn(64, 32, generator=g), dim=-1)
-    pair = dictionary[:2]
+    dictionary = torch.nn.functional.normalize(torch.randn(512, d, generator=g), dim=-1)
     sparse = 3.0 * dictionary[5] - 2.0 * dictionary[9]  # inside the dictionary's span with 2 atoms
-    delta = torch.stack([sparse, torch.randn(32, generator=g), torch.zeros(32)])
-    parts = W.split_patch(delta, dictionary, pair, k=4)
+    delta = torch.stack([sparse, torch.randn(d, generator=g), torch.zeros(d)])
+    return dictionary, delta, sparse
+
+
+def test_split_patch_parts_add_up_and_find_a_sparse_patch():
+    dictionary, delta, sparse = _split_inputs()
+    pair = dictionary[:2]
+    basis = W.SP.random_basis(delta.shape[1], torch.Generator().manual_seed(W.SP.SUBSPACE_SEED + 16))
+    parts = W.split_patch(delta, dictionary, pair, basis, k=4)
     assert set(parts) == set(W.SPLIT_PARTS)
     for a, b in (("jspace", "not_jspace"), ("lens2", "not_lens2")):
         assert torch.allclose(parts[a] + parts[b], delta, atol=1e-5)
     assert torch.allclose(parts["jspace"][0], sparse, atol=1e-4)  # OMP recovers a 2-atom row with 4 atoms
     assert torch.allclose(parts["not_lens2"] @ pair.T, torch.zeros(3, 2), atol=1e-4)  # orthogonal to the pair
-    assert not parts["jspace"][2].any() and not parts["lens2"][2].any()  # a zero row stays zero
+    for p in ("jspace", "lens2", "rand_sub"):
+        assert not parts[p][2].any()  # a zero row stays zero
+
+
+def test_split_patch_rand_sub_keeps_the_jspace_share_in_random_directions():
+    """rand_sub is statement_positions' random_subspace_part: per row a projection (the rest is orthogonal to it) that
+    keeps the J-space part's share of the row's squared norm, to within one basis direction's contribution."""
+    dictionary, delta, _ = _split_inputs()
+    d = delta.shape[1]
+    basis = W.SP.random_basis(d, torch.Generator().manual_seed(W.SP.SUBSPACE_SEED + 16))
+    parts = W.split_patch(delta, dictionary, dictionary[:2], basis, k=25)
+    rs, rows = parts["rand_sub"], delta[:2]
+    rs_share = rs[:2].norm(dim=-1) ** 2 / rows.norm(dim=-1) ** 2
+    j_share = parts["jspace"][:2].norm(dim=-1) ** 2 / rows.norm(dim=-1) ** 2
+    one_direction = ((rows @ basis) ** 2).max(dim=-1).values / rows.norm(dim=-1) ** 2
+    assert torch.all((rs_share - j_share).abs() <= one_direction + 1e-5)
+    assert torch.allclose(((rows - rs[:2]) * rs[:2]).sum(dim=-1), torch.zeros(2), atol=1e-3)  # a projection
+    assert float(torch.nn.functional.cosine_similarity(rs[1], parts["jspace"][1], dim=0)) < 0.9  # other directions
+    again = W.split_patch(delta, dictionary, dictionary[:2], W.SP.random_basis(d, torch.Generator().manual_seed(W.SP.SUBSPACE_SEED + 16)), k=25)  # fmt: skip
+    assert torch.equal(again["rand_sub"], rs)  # seeded
+
+
+def test_above_compares_wilson_intervals():
+    assert W.above((0.4, 0.3, 0.5), (0.05, 0.02, 0.1)) == "above"
+    assert W.above((0.05, 0.02, 0.1), (0.4, 0.3, 0.5)) == "below"
+    assert W.above((0.2, 0.1, 0.3), (0.25, 0.15, 0.35)) == "overlap"
+    assert W.above((math.nan, math.nan, math.nan), (0.2, 0.1, 0.3)) == "no data"
 
 
 def _dose_cells(lens_until: int, dir_until: int, off: float = 0.0) -> dict:
@@ -291,9 +323,11 @@ def test_dose_test(lens_until, dir_until, off, starts):
 def _split_cells(j: float, rest: float, full: float = 0.85, null: float = 0.0, off: float = 0.0) -> dict:
     rates = {}
     for la in (14, 16, 18):
-        for part, r in (("full", full), ("jspace", j), ("not_jspace", rest), ("lens2", 0.0), ("not_lens2", full)):
+        parts = (("full", full), ("jspace", j), ("not_jspace", rest), ("lens2", 0.0), ("not_lens2", full), ("rand_sub", 0.0))  # fmt: skip
+        for part, r in parts:
             rates[("BL", "w", la, 0.0, f"split_{part}")] = r
             rates[("BL", "w", la, 0.0, f"split_{part}_null")] = null
+            rates[("BR", "w", la, 0.0, f"split_{part}")] = 0.6 if part == "jspace" else 0.5  # recalls
             for f in ("RL", "RR"):
                 rates[(f, "w", la, 0.0, f"split_{part}")] = off
     return _cells(rates, n=100)[0]
@@ -312,6 +346,17 @@ def test_split_test(j, rest, full, null, off, starts):
     t = W.split_test(_split_cells(j, rest, full, null, off), [14, 16, 18])
     assert t["verdict"].startswith(starts), t
     assert set(t["cells"][16]) == set(W.SPLIT_PARTS)
+    assert t["cells"][16]["jspace"]["recalls"][0] == 0.6
+
+
+def test_split_test_reports_rand_sub_without_changing_the_verdict():
+    t = W.split_test(_split_cells(0.3, 0.6), [14, 16, 18])  # rand_sub moves no lookup, half the recalls
+    assert t["verdict"].startswith("H-lens-part")
+    assert t["jspace_vs_rand_sub"] == {"lookups": "above", "recalls": "overlap"}
+    cells = _split_cells(0.3, 0.6)
+    cells[("BL", "w", 16, 0.0, "split_rand_sub")] = cells[("BL", "w", 16, 0.0, "split_jspace")]  # as the lens part
+    t = W.split_test(cells, [14, 16, 18])
+    assert t["verdict"].startswith("H-lens-part") and t["jspace_vs_rand_sub"]["lookups"] == "overlap"
 
 
 def test_agreement_counts_shared_items_per_arm():
@@ -371,15 +416,20 @@ def test_dose_and_split_runs_analyze_and_draw(tmp_path, monkeypatch):
     split_rates = {}
     for sub in ("w", "s"):
         for la in (14, 16, 18):
-            for part, r in (("full", 0.85), ("jspace", 0.3), ("not_jspace", 0.6), ("lens2", 0.1), ("not_lens2", 0.8)):
+            parts = (("full", 0.85), ("jspace", 0.3), ("not_jspace", 0.6), ("lens2", 0.1), ("not_lens2", 0.8), ("rand_sub", 0.0))  # fmt: skip
+            for part, r in parts:
                 split_rates[("BL", sub, la, 0.0, f"split_{part}")] = r
                 split_rates[("BL", sub, la, 0.0, f"split_{part}_null")] = 0.0
+                split_rates[("BR", sub, la, 0.0, f"split_{part}")] = 0.0 if part == "rand_sub" else 0.7
             for sc in (4.0, 8.0):
                 split_rates[("BL", sub, la, sc, "lens")] = 0.19 if sc == 8.0 else 0.0
+                split_rates[("BR", sub, la, sc, "lens")] = 0.83 if sc == 8.0 else 0.4
     _write_run(tmp_path / "split", {**base, "layers": [14, 16, 18], "split": True}, split_rates)
     W.stage_analyze("split")
     W.stage_figures("split")
     s = json.loads((tmp_path / "split" / "summary.json").read_text())
     assert s["split_test"]["w"]["verdict"].startswith("H-lens-part"), s["split_test"]["w"]
+    assert s["split_test"]["w"]["jspace_vs_rand_sub"] == {"lookups": "above", "recalls": "above"}
+    assert "J-space part against rand_sub at layer 16" in (tmp_path / "split" / "summary.md").read_text()
     assert s["scene_patch"]["split_share"]["16/w"]["jspace"] == 0.3
     assert list((tmp_path / "split").glob("analysis-figures-*/split.png"))

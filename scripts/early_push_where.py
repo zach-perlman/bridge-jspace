@@ -111,7 +111,11 @@ interpretable only if the full patch moves lookups there (lower bound > 5%): H-l
 the lookup) iff the J-space part moves lookups; H-rest (the layer-16 movement is outside the lens part) iff the J-space
 part is inert and the rest moves them; else inconclusive (a J-space cell that is not valid included). Reported: layers
 14 and 18, the sentence, lens2 / not_lens2, each part's share of the patch's squared norm, the lens push at the same
-cells.
+cells. rand_sub (Dan, 23 Oct, before d4_l16_split_27b_r2; d4_l16_split_27b was cancelled before running): a sixth part,
+statement_positions' random_subspace_part, each row of the patch projected on the first k directions of a random
+orthonormal basis (seed 888 + layer), k chosen per row so it keeps the J-space part's share of the row's squared norm;
+with its null like the other parts. At the word, layer 16, the J-space part against rand_sub on lookups and on recalls
+(prompt -> memory): above / below / overlap (Wilson intervals), reported next to the verdict, not a condition of it.
 
 Stages:  run --name N --why W [--n K] [--scenes map|fresh] [--rule v1|v2] [--patch] [--patch-dir] [--split]
          [--same-scenes RUN]   analyze --name N [--rule v2.1]   figures --name N
@@ -139,6 +143,7 @@ from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from scripts import early_push as EP
+from scripts import statement_positions as SP
 from scripts import suite_split as P
 from scripts import suite_v1 as S
 from scripts.exp04_brew_parts import K_ATOMS, AddRows, lens2_part, null_rows, signed_omp
@@ -157,7 +162,7 @@ SEL_RATE, SEL_LO, RAND_MAX, OFF_PATH_MAX = 0.30, 0.20, 0.05, 0.10
 WHERE_RATE, WHERE_LO, AROUND_MAX, AROUND_GAP = 0.30, 0.20, 0.10, 0.20
 SLIDE6 = {"RL": 0.73, "RR": 0.84, "BL": 0.01, "BR": 0.02}  # early_push d4_push_wording_b_v1, b, layer 20, 8x
 GAP, NO_GAP = 6, 2  # the layer-gap v2 bars (layers), shared by the dose control
-SPLIT_PARTS = ("full", "jspace", "not_jspace", "lens2", "not_lens2")
+SPLIT_PARTS = ("full", "jspace", "not_jspace", "lens2", "not_lens2", "rand_sub")  # rand_sub last (earlier nulls kept)
 SPLIT_LAYER = 16
 BATCH = P.BATCH
 
@@ -242,12 +247,18 @@ def at_norm(delta: torch.Tensor, norms: torch.Tensor) -> torch.Tensor:
     return delta * (float(norms.norm()) / size)
 
 
-def split_patch(delta: torch.Tensor, dictionary: torch.Tensor, pair: torch.Tensor, k: int = K_ATOMS) -> dict:
+def split_patch(
+    delta: torch.Tensor, dictionary: torch.Tensor, pair: torch.Tensor, basis: torch.Tensor, k: int = K_ATOMS
+) -> dict:
     """statement_positions' parts of a patch delta [P, d] (exp04_brew_parts' functions, as finding 2): the J-space part
     (k-atom signed OMP per row over `dictionary`, the lens's unit letter-token vectors) and the rest, the projection on
-    `pair` (the bridge's and X's lens vectors) and the rest, and the full patch. Each pair of parts sums to delta."""
+    `pair` (the bridge's and X's lens vectors) and the rest, the full patch, and rand_sub (statement_positions'
+    random_subspace_part: each row projected on the first columns of the random orthonormal `basis`, as many as keep
+    the J-space part's share of that row's squared norm). Each pair of parts sums to delta."""
     jspace, lens2 = signed_omp(dictionary, delta, k), lens2_part(delta, pair)
-    return {"full": delta, "jspace": jspace, "not_jspace": delta - jspace, "lens2": lens2, "not_lens2": delta - lens2}
+    share = jspace.norm(dim=-1) ** 2 / (delta.float().norm(dim=-1) ** 2).clamp_min(1e-30)  # as statement_positions
+    return {"full": delta, "jspace": jspace, "not_jspace": delta - jspace, "lens2": lens2, "not_lens2": delta - lens2,
+            "rand_sub": SP.random_subspace_part(delta, share, basis)}  # fmt: skip
 
 
 # ---- the decision (pure) ----------------------------------------------------------------------------------------------
@@ -401,17 +412,26 @@ def dose_test(cells: dict[tuple, dict[str, str]], layers: list[int], sub: str = 
 
 
 def split_cell(cells: dict[tuple, dict[str, str]], sub: str, la: int, part: str) -> dict | None:
-    """One part of the scene's patch at (subset, layer): lookups switched to X, its null, memory -> prompt / memory ->
-    memory changed, valid (off-path <= 10%, null <= 5%), moves (valid, lower bound > 5%), inert (valid, upper < 5%)."""
+    """One part of the scene's patch at (subset, layer): lookups switched to X, its null, recalls (prompt -> memory)
+    switched to X, memory -> prompt / memory -> memory changed, valid (off-path <= 10%, null <= 5%), moves (valid, lower
+    bound > 5%), inert (valid, upper < 5%)."""
     bl = cells.get(("BL", sub, la, 0.0, f"split_{part}"))
     if not bl:
         return None
     rate = cell_rate(bl)
     null = cell_rate(cells.get(("BL", sub, la, 0.0, f"split_{part}_null"), {}))
+    recalls = cell_rate(cells.get(("BR", sub, la, 0.0, f"split_{part}"), {}))
     off = {f: cell_rate(cells.get((f, sub, la, 0.0, f"split_{part}"), {}), "changed") for f in ("RL", "RR")}
     valid = all(math.isnan(v[0]) or v[0] <= OFF_PATH_MAX for v in off.values()) and (math.isnan(null[0]) or null[0] <= RAND_MAX)  # fmt: skip
-    return {"n": len(bl), "lookups": rate, "null": null, "off_path": off, "valid": valid,
+    return {"n": len(bl), "lookups": rate, "null": null, "recalls": recalls, "off_path": off, "valid": valid,
             "moves": valid and rate[1] > RAND_MAX, "inert": valid and rate[2] < RAND_MAX}  # fmt: skip
+
+
+def above(a: tuple[float, float, float], b: tuple[float, float, float]) -> str:
+    """Two Wilson intervals: 'above' (a's lower bound over b's upper), 'below', 'overlap' or 'no data'."""
+    if math.isnan(a[0]) or math.isnan(b[0]):
+        return "no data"
+    return "above" if a[1] > b[2] else "below" if a[2] < b[1] else "overlap"
 
 
 def split_test(cells: dict[tuple, dict[str, str]], layers: list[int], sub: str = "w", at: int = SPLIT_LAYER) -> dict:
@@ -428,7 +448,9 @@ def split_test(cells: dict[tuple, dict[str, str]], layers: list[int], sub: str =
         verdict = "H-rest: only the rest moves lookups (the movement is outside the lens part)"
     else:
         verdict = "inconclusive" + ("" if j["valid"] else " (the J-space part's cell is not valid)")
-    return {"subset": sub, "layer": at, "verdict": verdict, "cells": by}
+    rs = by.get(at, {}).get("rand_sub")  # reported, not a condition of the verdict (Dan, 23 Oct)
+    vs = {w: above(j[w], rs[w]) for w in ("lookups", "recalls")} if j and rs else None
+    return {"subset": sub, "layer": at, "verdict": verdict, "jspace_vs_rand_sub": vs, "cells": by}
 
 
 def agreement(a: dict[tuple, dict[str, str]], b: dict[tuple, dict[str, str]]) -> dict[str, list[int]]:
@@ -513,7 +535,7 @@ def decide(
 # ---- model ------------------------------------------------------------------------------------------------------------
 
 
-def run_scene(model, lens, scene: list[dict], cfg: dict, k0: int, out: dict, letters=None) -> None:
+def run_scene(model, lens, scene: list[dict], cfg: dict, k0: int, out: dict, split: dict | None = None) -> None:
     layers = cfg["layers"]
     for c in scene:
         ids = torch.tensor([c["read"]["clean"], c["read"]["E-cue"]], device="cuda")
@@ -526,26 +548,31 @@ def run_scene(model, lens, scene: list[dict], cfg: dict, k0: int, out: dict, let
             c["_delta"] = {la: rec[la][1] - rec[la][0] for la in layers}  # (token-aligned) at each layer
     ref = {la: math.sqrt(statistics.mean(c["_ref"][la] ** 2 for c in scene)) for la in layers}
     if cfg.get("patch_dir") or cfg.get("split"):
-        scene_patch(model, lens, scene, cfg, letters)
+        scene_patch(model, lens, scene, cfg, split)
     y = offscene_animal(scene[0])
     for i, c in enumerate(scene):
         run_item(model, lens, c, ref, y, cfg, k0 + i, out)
 
 
 @torch.no_grad()
-def scene_patch(model, lens, scene: list[dict], cfg: dict, letters) -> None:
+def scene_patch(model, lens, scene: list[dict], cfg: dict, split: dict | None) -> None:
     """The scene's patch (docstring) at w and s for every case of the scene; with --split its parts at every layer (one
-    fp32 letter dictionary at a time, as statement_positions' parts)."""
+    fp32 letter dictionary at a time, as statement_positions' parts; split = {"letters": ids, "bases": {layer: basis}},
+    rand_sub's basis built once per layer with statement_positions' seed)."""
     src = next(c for c in scene if c["family"] == "BL")
     pos = stated_positions(src)
     patch = {(la, sub): src["_delta"][la][pos[sub]] for la in cfg["layers"] for sub in ("s", "w")}
     parts: dict[tuple, dict] = {}
     if cfg.get("split"):
+        assert split is not None
         pair = torch.tensor([model.concept_token(a) for a in (src["bridge"], src["cf_bridge"])], device="cuda")
         for la in cfg["layers"]:
-            dictionary = lens.vectors(la, letters)
+            dictionary = lens.vectors(la, split["letters"])
+            if la not in split["bases"]:
+                gen = torch.Generator(device="cuda").manual_seed(SP.SUBSPACE_SEED + la)
+                split["bases"][la] = SP.random_basis(dictionary.shape[1], gen, "cuda")
             for sub in ("s", "w"):
-                parts[(la, sub)] = split_patch(patch[(la, sub)], dictionary, lens.vectors(la, pair))
+                parts[(la, sub)] = split_patch(patch[(la, sub)], dictionary, lens.vectors(la, pair), split["bases"][la])
             del dictionary
     for c in scene:
         assert stated_positions(c) == pos, f"{c['id']}: the scene's families push different positions"
@@ -651,12 +678,13 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
                 "inputs": {str(p.relative_to(pins.REPO_ROOT)): sha256_of(p) for p in inputs},
                 "seeds": {"random": f"{SEED} + 1000003 x item index", "offscene": f"Random('{SEED}:<scene>')",
                           "bootstrap": SEED, **({"fresh_scenes": cfg.get("fresh_seed", FRESH_SEED)} if cfg["scenes"] == "fresh" else {}),
-                          **({"split_nulls": f"{SEED} + 1000003 x item index + 1"} if cfg.get("split") else {})},
+                          **({"split_nulls": f"{SEED} + 1000003 x item index + 1",
+                              "rand_sub_basis": f"{SP.SUBSPACE_SEED} + layer"} if cfg.get("split") else {})},
                 "design": doc.split("Decision rule")[0], "decision": "Decision rule" + doc.split("Decision rule")[1].split("Stages:")[0]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     model = load_model()
     lens = JLens(model, pins.FROZEN_LENS)
-    letters = model.letter_token_ids() if cfg.get("split") else None
+    split = {"letters": model.letter_token_ids(), "bases": {}} if cfg.get("split") else None
     t0 = time.time()
     if cfg["scenes"] == "fresh":
         raw, selection = fresh_cases(model.tokenizer, cfg)
@@ -674,7 +702,7 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
     done = {"outcomes": 0, "cases": 0}
     k = 0
     for scene in progress(list(scenes.values()), desc="scenes"):
-        run_scene(model, lens, scene, cfg, k, out, letters)
+        run_scene(model, lens, scene, cfg, k, out, split)
         k += len(scene)
         for f in done:  # appended scene by scene: a run stopped early keeps every finished scene
             with open(out_dir / f"{f}.jsonl", "a") as fh:
@@ -785,9 +813,12 @@ def stage_analyze(name: str, rule: str | None = None) -> None:
                 lines.append(f"| {sub} | {la} | " + " | ".join(pct(cell_rate(cells.get(("BL", sub, la, sc, d), {}))) for sc, d in arms) + " |")  # fmt: skip
         lines += [""]
     for sub, g in summary.get("split_test", {}).items():
-        lines += [f"**Layer-16 split ({sub}):** {g['verdict']}", "", "| layer | part | lookups → X | its null | memory → prompt / memory → memory changed | valid |", "|---|---|---|---|---|---|"]  # fmt: skip
+        lines += [f"**Layer-16 split ({sub}):** {g['verdict']}", ""]
+        if g.get("jspace_vs_rand_sub"):  # reported, not decisive
+            lines += [f"J-space part against rand_sub at layer {g['layer']} (Wilson intervals): " + ", ".join(f"{w} {v}" for w, v in g["jspace_vs_rand_sub"].items()), ""]  # fmt: skip
+        lines += ["| layer | part | lookups → X | its null | recalls → X | memory → prompt / memory → memory changed | valid |", "|---|---|---|---|---|---|---|"]  # fmt: skip
         for la, parts in g["cells"].items():
-            lines += [f"| {la} | {p} | {pct(c['lookups'])} | {pct(c['null'])} | {pct(c['off_path']['RL'])} / {pct(c['off_path']['RR'])} | {c['valid']} |"
+            lines += [f"| {la} | {p} | {pct(c['lookups'])} | {pct(c['null'])} | {pct(c['recalls'])} | {pct(c['off_path']['RL'])} / {pct(c['off_path']['RR'])} | {c['valid']} |"
                       for p, c in parts.items()]  # fmt: skip
         lines += [""]
     if "replication" in summary:
@@ -931,28 +962,32 @@ def test_figures(name: str, m: dict, cells: dict) -> None:
                    ("Control", "A random push of the lens push's size; memory → prompt and memory → memory answers must not move (off-path check, in summary.md).")])  # fmt: skip
         print("wrote", folder / "dose.png")
     if "split_test" in s:
-        bars = [("split_jspace", 0.0, "lens-readable part (J-space)", blue), ("split_not_jspace", 0.0, "the rest", orange),
-                ("split_full", 0.0, "whole patch", aqua), ("lens", 8.0, "lens push 8x", yellow)]  # fmt: skip
-        fig, axes = plt.subplots(1, 2, figsize=(11, 5.4), sharey=True)
-        for ax, sub in zip(axes, ("w", "s"), strict=True):
-            style_axes(ax)
-            for i, la in enumerate(layers):
-                for j, (d, sc, _, col) in enumerate(bars):
-                    x, r = i + (j - 1.5) * 0.2, rate(sub, la, sc, d)
-                    if math.isnan(r[0]):
-                        continue
-                    ax.bar(x, r[0], 0.18, color=col, edgecolor="#fcfcfb", lw=1)
-                    ax.plot([x, x], [r[1], r[2]], color=INK, lw=1)
-                    if d.startswith("split_"):
-                        ax.plot(x, rate(sub, la, 0.0, f"{d}_null")[0], marker="D", mfc="none", mec=INK, ms=5, ls="")
-                    if la == SPLIT_LAYER:
-                        ax.annotate(f"{r[0]:.0%}", (x, r[2]), xytext=(0, 2), textcoords="offset points", ha="center",
-                                    va="bottom", fontsize=7.5, color=INK)  # fmt: skip
-            ax.set_xticks(range(len(layers)), [f"layer {la}" for la in layers])
-            ax.set_title(f"{where[sub]}\n{split_plain(s['split_test'][sub]['verdict'])}", loc="left", fontsize=9, color=INK)  # fmt: skip
-            ax.set_ylim(0, 1.05)
-            percent_axis(ax)
-        axes[0].set_ylabel("lookups switched to\nthe other bridge's answer", color=MUTED)
+        bars = [("split_jspace", 0.0, "lens-readable part (J-space)", blue),
+                ("split_rand_sub", 0.0, "control: random subspace, same share", grey),
+                ("split_not_jspace", 0.0, "the rest", orange), ("split_full", 0.0, "whole patch", aqua),
+                ("lens", 8.0, "lens push 8x", yellow)]  # fmt: skip
+        fig, axes = plt.subplots(2, 2, figsize=(11, 8.2), sharey=True)
+        for row, (fam, what) in enumerate((("BL", "lookups"), ("BR", "recalls"))):
+            for ax, sub in zip(axes[row], ("w", "s"), strict=True):
+                style_axes(ax)
+                for i, la in enumerate(layers):
+                    for j, (d, sc, _, col) in enumerate(bars):
+                        x, r = i + (j - 2) * 0.17, cell_rate(cells.get((fam, sub, la, sc, d), {}))
+                        if math.isnan(r[0]):
+                            continue
+                        ax.bar(x, r[0], 0.15, color=col, edgecolor="#fcfcfb", lw=1)
+                        ax.plot([x, x], [r[1], r[2]], color=INK, lw=1)
+                        if d.startswith("split_") and fam == "BL":
+                            ax.plot(x, rate(sub, la, 0.0, f"{d}_null")[0], marker="D", mfc="none", mec=INK, ms=5, ls="")
+                        if la == SPLIT_LAYER:
+                            ax.annotate(f"{r[0]:.0%}", (x, r[2]), xytext=(0, 2), textcoords="offset points", ha="center",
+                                        va="bottom", fontsize=7, color=INK)  # fmt: skip
+                ax.set_xticks(range(len(layers)), [f"layer {la}" for la in layers])
+                verdict = f"\n{split_plain(s['split_test'][sub]['verdict'])}" if fam == "BL" else ""
+                ax.set_title(f"{what}, {where[sub]}{verdict}", loc="left", fontsize=9, color=INK)
+                ax.set_ylim(0, 1.08)
+                percent_axis(ax)
+            axes[row][0].set_ylabel(f"{what} switched to\nthe other bridge's answer", color=MUTED)
         handles = [Patch(color=c, label=lab) for *_, lab, c in bars] + [
             Line2D([], [], marker="D", mfc="none", mec=INK, ls="", label="the part's null (random rows, same sizes)")]  # fmt: skip
         outcome = split_plain(s["split_test"]["w"]["verdict"])
@@ -960,9 +995,10 @@ def test_figures(name: str, m: dict, cells: dict) -> None:
                explain=[
                    ("What we did", "The patch from the prompt that states the other bridge, at the bridge's word (and sentence), split "
                     "into the part the lens can read (a 25-word fit on the lens's word directions) and the rest; each added at its own size."),
-                   ("How to read", "Bars: share of lookups that switch to the other bridge's answer (line: 95% interval). The lens push "
-                    "at 8x is the effect being explained; the whole patch is the sum of the two parts."),
-                   ("Control", "Each part's null (diamond); memory → prompt and memory → memory answers must not move (in summary.md).")])  # fmt: skip
+                   ("How to read", "Bars: share of lookups (top) and recalls (bottom) that switch to the other bridge's answer (line: 95% "
+                    "interval). The lens push at 8x is the effect being explained; the whole patch is the sum of the two parts."),
+                   ("Control", "The random subspace keeps the lens-readable part's share of the patch at every position, in random "
+                    "directions; each part's null (diamond); memory → prompt and memory → memory answers must not move (in summary.md).")])  # fmt: skip
         print("wrote", folder / "split.png")
 
 
