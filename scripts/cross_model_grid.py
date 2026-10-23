@@ -119,8 +119,10 @@ class Finding:
     scripts: str
 
 
-# finding 4's rows under late-read-v2 (the share of the drop the last tokens carry), beside the late read's own rows
-LAST_SHARE = ("draw 1, last tokens' share", "draw 2, last tokens' share", "long context, last tokens' share")
+# finding 4's rows under late-read-v2 (the share of the drop the last tokens carry), beside the late read's own rows:
+# not among finding 4's settings (the late read's), named as breakdown rows (' · ') so that readers of finding 4's
+# settings (README draft, figures, run table) leave them out; grid.md shows them in a section of their own
+LAST_SHARE = ("draw 1 · last tokens' share", "draw 2 · last tokens' share", "long context · last tokens' share")
 FINDINGS = (
     Finding("f1", "1", "Removing the J-space breaks recall, not the lookup", True,
             ("tasks, Zach's rule", "animal suite"), "C1 (Zach's J-space knock-out; the J-space removal)",
@@ -132,7 +134,7 @@ FINDINGS = (
             ("draw 1", "draw 2", "draw 3", "prose", "table", "JSON"), "D2 parts (name vs digit)",
             "scripts/attn_knockout.py, scripts/d2_parts.py, scripts/d2_formats.py"),
     Finding("f4", "4", "A lookup ends in a late attention read of the answer's sentence", False,
-            ("draw 1", "draw 2", "draw 3", "prose", "table", "JSON", "long context", *LAST_SHARE),
+            ("draw 1", "draw 2", "draw 3", "prose", "table", "JSON", "long context"),
             "D2 late read (C1b); relay floor (A3)", "scripts/attn_knockout.py, scripts/d2_formats.py"),
     Finding("f5", "5", "Order label for the 1st and 2nd sentence, the bridge's identity after", False,
             ("draw 1", "draw 2", "draw 3", "8 sentences", "12 sentences"), "D3 v4 / v5 (pointer_swap)",
@@ -1695,6 +1697,12 @@ def grid_md(rows: list[Row], meta: dict) -> str:
             if not any((f.key, s, m.key) in cells for m in models):
                 continue
             tab.append(f"| {f.number} | {f.name} | {s} | " + " | ".join(text((f.key, s, m.key)) for m in models) + " |")
+    share = ["", "## Finding 4 beside the late read: the share of the drop the last tokens carry", "",
+             "Rule late-read-v2 (mapping table below); the late read's own verdicts above do not change. Share = "
+             "(unedited - last tokens blocked) / (unedited - every token after the sentence blocked) [95% CI], n.", "",
+             "| Setting | " + " | ".join(m.label for m in models) + " |", "|---|" + "---|" * len(models)]  # fmt: skip
+    for s in LAST_SHARE:
+        share.append(f"| {s.split(' · ')[0]} | " + " | ".join(text(("f4", s, m.key)) for m in models) + " |")
     what = ["", "What the key numbers are, by finding:", "",
             "- 1: tasks, Zach's rule: points, memory-final minus prompt-final loss under the lens knock-out (his "
             "verdict); animal suite: points, lookups minus recalls right with the J-space removed [unpaired bootstrap "
@@ -1702,8 +1710,8 @@ def grid_md(rows: list[Row], meta: dict) -> str:
             "- 2: % of lookups the lens-readable part of a stated bridge's change switches.",
             "- 3: % right with the sentence without its name hidden from the last tokens (the digit hidden too).",
             "- 4: % right with the answer's sentence hidden from the last tokens (chance: 20% in the draws, five "
-            "listed answers; 33% in prose / table / JSON, three). Last tokens' share: the share of the drop the last "
-            "tokens carry, (unedited - last tokens blocked) / (unedited - every token after the sentence blocked).",
+            "listed answers; 33% in prose / table / JSON, three). Beside it, in its own section: the share of the drop "
+            "the last tokens carry.",
             "- 5: points, position - identity for the 1st-2nd asked sentence / identity - position from the 3rd on.",
             "- 6: % of patched answers at the same order in the list vs at the same place in the text (or from the end).",
             "- 7: % of lookups vs recalls the lens push switches at the rule's cell.",
@@ -1717,7 +1725,7 @@ def grid_md(rows: list[Row], meta: dict) -> str:
         ids = sorted({r.rule for r in rows if r.finding == f.key and r.rule})
         mapping.append(f"| {f.number} | {f.name} | {f.codes} | {f.scripts} | {', '.join(ids) or '-'} |")
     mapping += ["", "| Rule id | Rule |", "|---|---|"] + [f"| {k} | {v} |" for k, v in RULES.items()] + [""]
-    body = [*head, *key_lines, *lens_block(rows), *tab, *what, *foot, *choices, *mapping]
+    body = [*head, *key_lines, *lens_block(rows), *tab, *share, *what, *foot, *choices, *mapping]
     return "\n".join(body)
 
 

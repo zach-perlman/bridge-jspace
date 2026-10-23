@@ -203,12 +203,17 @@ def test_last_tokens_share_lower_bound_and_the_attention_only_floor(results):
     assert v["share"] == pytest.approx(0.9 / 0.95)
     assert not G.late_read_v2(_v2_rows(100, final=10, after=2))["lower_bound"]  # attention only: all = every attention
     _jsonl(results / "attn_knockout" / "h" / "rows.jsonl", _v2_rows(100, final=10, after=2, gdn=95))
-    (row,) = G.ev_late_v2(G.Cell("27b", "f4", "draw 1, last tokens' share", "late_v2", "h"))
+    (row,) = G.ev_late_v2(G.Cell("27b", "f4", G.LAST_SHARE[0], "late_v2", "h"))
     assert row.word == "holds" and (row.md_text or "").startswith("share 92% [") and row.rule == "late-read-v2"
     assert "conservative lower bound" in row.notes[0] and "relay +8 points" in row.control
     _jsonl(results / "attn_knockout" / "m" / "rows.jsonl", _v2_rows(100, final=10, after=None))
-    (row,) = G.ev_late_v2(G.Cell("muse", "f4", "draw 1, last tokens' share", "late_v2", "m"))
-    assert row.word == "missing" and G.md_cell([row])[0] == "· missing: no floor block in this run"
+    (miss,) = G.ev_late_v2(G.Cell("muse", "f4", G.LAST_SHARE[0], "late_v2", "m"))
+    assert miss.word == "missing" and G.md_cell([miss])[0] == "· missing: no floor block in this run"
+    # beside the late read, not among its settings: the README draft, the figures and the run table read those
+    assert not set(G.LAST_SHARE) & set(G.FINDING["f4"].settings) and all(" · " in s for s in G.LAST_SHARE)
+    md = G.grid_md([row, miss], {"git": "test", "written_utc": "test"})
+    section = md.split("## Finding 4 beside the late read")[1].split("\n## ")[0]
+    assert "| draw 1 | " in section and "✓ share 92% [" in section and "· missing: no floor block" in section
 
 
 def test_gate_verdicts(results):
