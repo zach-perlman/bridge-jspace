@@ -68,7 +68,7 @@ Prior work: retrieval heads (Wu et al. 2025); lookbacks, an address then a paylo
 
 **Weak spots**
 - One layer per model; the 27B's was chosen after its first runs.
-- From the 3rd sentence the largest share is often "unchanged" when the bridge is named; Gemma's copy leaves most answers unchanged.
+- From the 3rd sentence the largest share is often "unchanged" when the bridge is named; Gemma's copy leaves {{q|56-69%}} of answers unchanged ([table](results/slot_outcomes/20261023T135208Z/table.md)).
 - How the label counts is mixed: list order with a moved filler on {{count|f6|filler moved|holds}} models, with one sentence more or fewer on {{count|f6|one statement more|holds}}.
 
 Prior work: binding and ordering IDs (Feng & Steinhardt 2024; Dai et al. 2024); Mixing Mechanisms (Gur-Arieh et al. 2026) finds a last-position peak we do not see: [docs/prior_art.md](docs/prior_art.md).

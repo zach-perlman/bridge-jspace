@@ -5,7 +5,7 @@
 
 > "Which locker belongs to the animal known for oinking?" The bridge is *pig*. A **lookup** takes the pig's locker number from a sentence in the prompt; a **recall** ("How many legs does it have?") takes the answer from memory.
 
-> **Status, 23 Oct 2026, night.** Built at fb327e8 from `results/cross_model/20261023T105852Z`; the 23 Oct runs are quoted from their own verdict files (linked). Exploration phase: nothing here is hand-verified; an independent agent recomputed C1 and C2 from raw rows. Eight models: hybrids with DeltaNet layers (Qwen3.6-27B, Qwen3.5-9B, Olmo-Hybrid-7B, Qwen3.5-122B) and attention-only (Qwen3-32B, OLMo-3-7B, Muse 30B, Gemma 4 31B).
+> **Status, 23 Oct 2026, night.** Built at 3ea829e from `results/cross_model/20261023T105852Z`; the 23 Oct runs are quoted from their own verdict files (linked). Exploration phase: nothing here is hand-verified; an independent agent recomputed C1 and C2 from raw rows. Eight models: hybrids with DeltaNet layers (Qwen3.6-27B, Qwen3.5-9B, Olmo-Hybrid-7B, Qwen3.5-122B) and attention-only (Qwen3-32B, OLMo-3-7B, Muse 30B, Gemma 4 31B).
 
 ## TL;DR
 
@@ -77,7 +77,7 @@ Prior work: retrieval heads (Wu et al. 2025); lookbacks, an address then a paylo
 
 **Weak spots**
 - One layer per model; the 27B's was chosen after its first runs.
-- From the 3rd sentence the largest share is often "unchanged" when the bridge is named; Gemma's copy leaves most answers unchanged.
+- From the 3rd sentence the largest share is often "unchanged" when the bridge is named; Gemma's copy leaves 56-69% of answers unchanged ([table](results/slot_outcomes/20261023T135208Z/table.md)).
 - How the label counts is mixed: list order with a moved filler on 7 of 8 models, with one sentence more or fewer on 3 of 8.
 
 Prior work: binding and ordering IDs (Feng & Steinhardt 2024; Dai et al. 2024); Mixing Mechanisms (Gur-Arieh et al. 2026) finds a last-position peak we do not see: [docs/prior_art.md](docs/prior_art.md).
