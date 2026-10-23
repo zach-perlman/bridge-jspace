@@ -1,0 +1,194 @@
+{
+  "seconds": 215,
+  "by_word_level": {
+    "PP/L0": {
+      "n": 162,
+      "whole": 0.901,
+      "all_steps": 0.988,
+      "median_margin": 3.19,
+      "guess": 0.377,
+      "top_wrong": [
+        [
+          "Europe",
+          3
+        ],
+        [
+          "Japan",
+          3
+        ],
+        [
+          "South",
+          2
+        ]
+      ]
+    },
+    "PP/L1": {
+      "n": 162,
+      "whole": 0.821,
+      "all_steps": 1,
+      "median_margin": 2.81,
+      "guess": 0.241,
+      "top_wrong": [
+        [
+          "Africa",
+          5
+        ],
+        [
+          "Asia",
+          4
+        ],
+        [
+          "China",
+          2
+        ]
+      ]
+    },
+    "PM/L0": {
+      "n": 162,
+      "whole": 0.809,
+      "all_steps": 0.926,
+      "median_margin": 2.69,
+      "guess": 0.123,
+      "top_wrong": [
+        [
+          "German",
+          7
+        ],
+        [
+          "D",
+          5
+        ],
+        [
+          "A",
+          4
+        ]
+      ]
+    },
+    "PM/L1": {
+      "n": 162,
+      "whole": 0.802,
+      "all_steps": 0.901,
+      "median_margin": 3.75,
+      "guess": 0.086,
+      "top_wrong": [
+        [
+          "Spanish",
+          6
+        ],
+        [
+          "Nor",
+          6
+        ],
+        [
+          "Italian",
+          5
+        ]
+      ]
+    },
+    "MP/L0": {
+      "n": 162,
+      "whole": 0.778,
+      "all_steps": 0.975,
+      "median_margin": 2.25,
+      "guess": 0.401,
+      "top_wrong": [
+        [
+          "Asia",
+          8
+        ],
+        [
+          "Europe",
+          6
+        ],
+        [
+          "Africa",
+          5
+        ]
+      ]
+    },
+    "MP/L1": {
+      "n": 162,
+      "whole": 0.784,
+      "all_steps": 0.975,
+      "median_margin": 2.06,
+      "guess": 0.222,
+      "top_wrong": [
+        [
+          "Asia",
+          7
+        ],
+        [
+          "Africa",
+          4
+        ],
+        [
+          "Japan",
+          4
+        ]
+      ]
+    },
+    "MM/L0": {
+      "n": 162,
+      "whole": 0.889,
+      "all_steps": 0.895,
+      "median_margin": 5.0,
+      "guess": 0.167,
+      "top_wrong": [
+        [
+          "Europe",
+          2
+        ],
+        [
+          "Africa",
+          2
+        ],
+        [
+          "French",
+          2
+        ]
+      ]
+    },
+    "MM/L1": {
+      "n": 162,
+      "whole": 0.901,
+      "all_steps": 0.907,
+      "median_margin": 5.06,
+      "guess": 0.111,
+      "top_wrong": [
+        [
+          "German",
+          3
+        ],
+        [
+          "Asia",
+          2
+        ],
+        [
+          "Europe",
+          2
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "PP": 0.818,
+      "PM": 1,
+      "MP": 0.648,
+      "MM": 0.909
+    },
+    "countries": {
+      "PP": 0.85,
+      "PM": 0.992,
+      "MP": 0.7,
+      "MM": 0.917
+    },
+    "people": {
+      "PP": 0.905,
+      "PM": 0.466,
+      "MP": 0.966,
+      "MM": 0.862
+    }
+  },
+  "pick": {}
+}

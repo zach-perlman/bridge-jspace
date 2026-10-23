@@ -1,0 +1,16 @@
+{
+  "run": "muse30_natural_v3_chat_competence_v1",
+  "why": "Zach (2026-10-23, prereg amendment 11 note): muse-glimmer-30b on natural_v3_chat (third natural seed)",
+  "set": "natural_v3_chat",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "fd32325e0f354b3f4c617a3a9ef82265d8b2d21f",
+  "guess": true,
+  "read": "suite_v1.read_answers: the answer's first token is the top token (margin > 0)",
+  "written_utc": "2026-10-23T12:30:49Z"
+}

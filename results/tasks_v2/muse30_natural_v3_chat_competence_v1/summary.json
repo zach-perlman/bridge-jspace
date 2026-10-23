@@ -1,0 +1,194 @@
+{
+  "seconds": 252,
+  "by_word_level": {
+    "PP/L0": {
+      "n": 162,
+      "whole": 0.802,
+      "all_steps": 0.988,
+      "median_margin": 1.78,
+      "guess": 0.414,
+      "top_wrong": [
+        [
+          "Europe",
+          5
+        ],
+        [
+          "South",
+          3
+        ],
+        [
+          "Africa",
+          3
+        ]
+      ]
+    },
+    "PP/L1": {
+      "n": 162,
+      "whole": 0.698,
+      "all_steps": 0.988,
+      "median_margin": 0.88,
+      "guess": 0.259,
+      "top_wrong": [
+        [
+          "Africa",
+          7
+        ],
+        [
+          "Europe",
+          6
+        ],
+        [
+          "South",
+          4
+        ]
+      ]
+    },
+    "PM/L0": {
+      "n": 162,
+      "whole": 0.858,
+      "all_steps": 0.827,
+      "median_margin": 2.22,
+      "guess": 0.148,
+      "top_wrong": [
+        [
+          "Polish",
+          5
+        ],
+        [
+          "Dutch",
+          4
+        ],
+        [
+          "Spanish",
+          4
+        ]
+      ]
+    },
+    "PM/L1": {
+      "n": 162,
+      "whole": 0.864,
+      "all_steps": 0.79,
+      "median_margin": 1.94,
+      "guess": 0.068,
+      "top_wrong": [
+        [
+          "Polish",
+          6
+        ],
+        [
+          "Italian",
+          5
+        ],
+        [
+          "A",
+          2
+        ]
+      ]
+    },
+    "MP/L0": {
+      "n": 162,
+      "whole": 0.747,
+      "all_steps": 0.944,
+      "median_margin": 1.12,
+      "guess": 0.377,
+      "top_wrong": [
+        [
+          "Africa",
+          7
+        ],
+        [
+          "Asia",
+          7
+        ],
+        [
+          "Europe",
+          4
+        ]
+      ]
+    },
+    "MP/L1": {
+      "n": 162,
+      "whole": 0.648,
+      "all_steps": 0.969,
+      "median_margin": 0.75,
+      "guess": 0.296,
+      "top_wrong": [
+        [
+          "Africa",
+          7
+        ],
+        [
+          "Europe",
+          7
+        ],
+        [
+          "Asia",
+          6
+        ]
+      ]
+    },
+    "MM/L0": {
+      "n": 162,
+      "whole": 0.883,
+      "all_steps": 0.852,
+      "median_margin": 2.47,
+      "guess": 0.123,
+      "top_wrong": [
+        [
+          "Asia",
+          3
+        ],
+        [
+          "Europe",
+          3
+        ],
+        [
+          "Sw",
+          3
+        ]
+      ]
+    },
+    "MM/L1": {
+      "n": 162,
+      "whole": 0.907,
+      "all_steps": 0.846,
+      "median_margin": 2.38,
+      "guess": 0.086,
+      "top_wrong": [
+        [
+          "Europe",
+          4
+        ],
+        [
+          "Asia",
+          3
+        ],
+        [
+          "Spain",
+          2
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "PP": 0.795,
+      "PM": 1,
+      "MP": 0.466,
+      "MM": 0.886
+    },
+    "countries": {
+      "PP": 0.667,
+      "PM": 0.992,
+      "MP": 0.642,
+      "MM": 0.875
+    },
+    "people": {
+      "PP": 0.802,
+      "PM": 0.621,
+      "MP": 0.931,
+      "MM": 0.922
+    }
+  },
+  "pick": {}
+}
