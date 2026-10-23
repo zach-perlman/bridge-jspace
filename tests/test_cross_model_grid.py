@@ -136,6 +136,80 @@ def test_chance_from_the_scenes_and_the_failing_off_path_control_named(results):
     assert row.control.endswith("chance 20% (5 listed answers)")
 
 
+def _v2_rows(
+    n: int,
+    final: int,
+    after: int | None,
+    off_after: int | None = None,
+    gdn: int | None = None,
+    after_attn: int | None = None,
+) -> list[dict]:
+    """n items right unedited; k of n right under each block (after None: the run has no such block). gdn set: a
+    hybrid (the last tokens blocked in every attention layer); after_attn: the block also in every attention layer."""
+    rows = [
+        {"family": "RL", "id": f"i{i}", "source": "none", "dest": "-", "layers": "-", "correct": True} for i in range(n)
+    ]
+    lab = "attn" if gdn is not None else "all"
+
+    def add(src: str, dest: str, layers: str, k: int, mode: str = "value") -> None:
+        rows.extend({"family": "RL", "id": f"i{i}", "source": src, "dest": dest, "layers": layers, "mode": mode,
+                     "correct": i < k} for i in range(n))  # fmt: skip
+
+    add("lookup", "final", lab, final)
+    add("lookup_off", "final", lab, n)
+    if after is not None:
+        add("lookup", "after", "all", after)
+        add("lookup_off", "after", "all", n if off_after is None else off_after)
+        add("lookup", "after", "all", n, mode="absent")  # the 27B's positive control: never counted
+    if gdn is not None:
+        add("lookup", "final", "gdn", gdn)
+    if after_attn is not None:
+        add("lookup", "after", "attn", after_attn)
+        add("lookup_off", "after", "attn", n)
+    return rows
+
+
+@pytest.mark.parametrize(
+    ("kw", "word", "why"),
+    [
+        ({"final": 10, "after": 2}, "holds", ""),
+        ({"final": 10, "after": 2, "gdn": 95}, "holds", ""),
+        ({"final": 40, "after": 2}, "fails", "less than 70%"),
+        ({"final": 10, "after": 2, "gdn": 50}, "fails", "DeltaNet"),
+        ({"final": 10, "after": 20}, "not interpretable", "the floor"),
+        ({"final": 10, "after": 2, "off_after": 80}, "not interpretable", "off-path"),
+        ({"final": 10, "after": None}, "missing", "every token after it"),
+    ],
+)
+def test_last_tokens_share_verdicts(kw, word, why):
+    """late-read-v2 (Dan, 23 Oct): share = (1 - final) / (1 - after) on items right unedited, beside the late read."""
+    v = G.late_read_v2(_v2_rows(100, **kw))
+    assert v["verdict"].startswith(word) and why in v["verdict"]
+    if kw["after"] is not None and kw["after"] < 100:
+        assert v["share"] == pytest.approx((1 - kw["final"] / 100) / (1 - kw["after"] / 100))
+        assert v["n"] == 100 and v["relay"] == pytest.approx((kw["final"] - kw["after"]) / 100)
+        lo, hi = v["share_ci"]
+        assert lo <= v["share"] <= hi
+
+
+def test_last_tokens_share_lower_bound_and_the_attention_only_floor(results):
+    """A hybrid whose run blocks every later token in all layers only (the first scene set): a conservative lower
+    bound, footnoted; with the block in every attention layer (the new runs) that one is used, all layers reported."""
+    v = G.late_read_v2(_v2_rows(100, final=10, after=2, gdn=95))
+    assert v["lower_bound"] and v["after_layers"] == "all"
+    v = G.late_read_v2(_v2_rows(100, final=10, after=0, gdn=95, after_attn=5))
+    assert not v["lower_bound"] and v["after_layers"] == "attn" and v["after_all"][0] == 0
+    assert v["share"] == pytest.approx(0.9 / 0.95)
+    assert not G.late_read_v2(_v2_rows(100, final=10, after=2))["lower_bound"]  # attention only: all = every attention
+    _jsonl(results / "attn_knockout" / "h" / "rows.jsonl", _v2_rows(100, final=10, after=2, gdn=95))
+    (row,) = G.ev_late_v2(G.Cell("27b", "f4", "draw 1, last tokens' share", "late_v2", "h"))
+    assert row.word == "holds" and (row.md_text or "").startswith("share 92% [") and row.rule == "late-read-v2"
+    assert "conservative lower bound" in row.notes[0] and "relay +8 points" in row.control
+    _jsonl(results / "attn_knockout" / "m" / "rows.jsonl", _v2_rows(100, final=10, after=None))
+    (row,) = G.ev_late_v2(G.Cell("muse", "f4", "draw 1, last tokens' share", "late_v2", "m"))
+    assert row.word == "missing" and G.md_cell([row])[0] == "· missing: no floor block in this run"
+
+
 def test_gate_verdicts(results):
     g = {"pass": False, "bridge_top10": [0.4, 0.3, 0.5], "x_top10": [0.1, 0.05, 0.2], "n": 60}
     _json(results / "lens_gate" / "r" / "summary.json", {"gate": g})

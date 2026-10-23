@@ -1,8 +1,11 @@
 """cross_model_grid: one table of every finding on every model, each cell judged by its committed rule (Dan, 23 Oct).
 
 Every cell reads the saved outputs of its run, or calls the repo's own verdict functions on the run's saved rows; no
-rule is written here. Rules used (ids in RULES, printed in grid.md's mapping table):
+rule is written here except late-read-v2 (Dan, 23 Oct: the grid is where it is defined). Rules used (ids in RULES,
+printed in grid.md's mapping table):
   late read (finding 4)       scripts/d2_formats.py late_read: the answer's sentence hidden from the last tokens
+  last tokens' share (4)      late_read_v2 here: the share of the drop the last tokens carry, against the answer's
+                              sentence hidden from every token after it (beside the late read, which is unchanged)
   name vs digit (finding 3)   scripts/d2_parts.py cells / verdicts: valid-split, then H-digit-final-split
   tables and JSON             the same two, per format, as scripts/d2_formats.py main (computed in memory)
   order label / identity (5)  results/finding5_confirm/<run>_<stamp>/verdict.json, else finding5_confirm's functions
@@ -116,6 +119,8 @@ class Finding:
     scripts: str
 
 
+# finding 4's rows under late-read-v2 (the share of the drop the last tokens carry), beside the late read's own rows
+LAST_SHARE = ("draw 1, last tokens' share", "draw 2, last tokens' share", "long context, last tokens' share")
 FINDINGS = (
     Finding("f1", "1", "Removing the J-space breaks recall, not the lookup", True,
             ("tasks, Zach's rule", "animal suite"), "C1 (Zach's J-space knock-out; the J-space removal)",
@@ -127,8 +132,8 @@ FINDINGS = (
             ("draw 1", "draw 2", "draw 3", "prose", "table", "JSON"), "D2 parts (name vs digit)",
             "scripts/attn_knockout.py, scripts/d2_parts.py, scripts/d2_formats.py"),
     Finding("f4", "4", "A lookup ends in a late attention read of the answer's sentence", False,
-            ("draw 1", "draw 2", "draw 3", "prose", "table", "JSON", "long context"), "D2 late read (C1b)",
-            "scripts/attn_knockout.py, scripts/d2_formats.py"),
+            ("draw 1", "draw 2", "draw 3", "prose", "table", "JSON", "long context", *LAST_SHARE),
+            "D2 late read (C1b); relay floor (A3)", "scripts/attn_knockout.py, scripts/d2_formats.py"),
     Finding("f5", "5", "Order label for the 1st and 2nd sentence, the bridge's identity after", False,
             ("draw 1", "draw 2", "draw 3", "8 sentences", "12 sentences"), "D3 v4 / v5 (pointer_swap)",
             "scripts/pointer_swap.py, scripts/finding5_confirm.py"),
@@ -151,6 +156,18 @@ RULES = {
     "attention-only models) leaves <= 20% right with the Wilson upper bound <= 30%; the off-path sentence hidden "
     "there keeps >= 90% (lower bound >= 85%); on a hybrid, hidden in every DeltaNet layer instead keeps >= 90%. "
     "Memory -> prompt, items right unedited (fixed 22 Oct; scripts/d2_formats.py late_read)",
+    "late-read-v2": "reported beside late-read, whose verdicts do not change (Dan, 23 Oct). Memory -> prompt, items "
+    "right unedited. The last tokens' share of the drop = (unedited - the answer's sentence hidden from the last "
+    "tokens) / (unedited - hidden from every token after it); the relay = the first block's share right minus the "
+    "second's. Holds iff the share >= 0.70, hidden from every token after it leaves <= 10% right with the Wilson upper "
+    "bound <= 15% (the floor), the off-path sentence hidden at the same places keeps >= 90% at both, and on a hybrid "
+    "the answer's sentence hidden in every DeltaNet layer instead keeps >= 90%. The last tokens are blocked as in "
+    "late-read (every attention layer on a hybrid, every layer otherwise); every token after the sentence in every "
+    "attention layer where the run has that block, else in all layers: the first scene set's runs blocked it in all "
+    "layers, DeltaNet included, which on a hybrid hides more than the definition, so their share is a conservative "
+    "lower bound (Dan, 23 Oct). A failed off-path control or a floor above its bar is not interpretable; a share below "
+    "0.70 fails, as does a DeltaNet block that keeps < 90% (as in late-read). The share's 95% interval: items "
+    "resampled with replacement (paired), 4000 draws, seed 0 (scripts/cross_model_grid.py late_read_v2)",
     "name-digit": "the off-path sentence's parts hidden keep >= 90% at both places (valid-split); then the sentence "
     "without its name hidden from the last tokens leaves <= 35% right and without its digit >= 70% "
     "(H-digit-final-split). Memory -> prompt (amended 22 Oct 16:40; scripts/d2_parts.py verdicts)",
@@ -327,6 +344,26 @@ def _cells() -> list[Cell]:
         add(m, "f3", "prose", "formats_f3", fmt)
         add(m, "f4", "prose", "formats_f4", fmt)
         add(m, "f4", "long context", "late", long)
+    # finding 4 under late-read-v2: the first scene set's late reads (every token after the sentence blocked in all
+    # layers only), the second set and the long context rerun with that block added (the relay floor, 23 Oct)
+    relay = {
+        "27b": ("d2_v4_late_read", "d2_late_read_seed2_after_27b", "d2_late_read_long_after_27b"),
+        "9b": ("qwen35_9b_d2_v4_late_read_r2", "qwen35_9b_d2_late_read_seed2_after", "qwen35_9b_d2_late_read_long_after"),
+        "olmo_hybrid": ("olmo_hybrid_7b_d2_v4_late_read_v3", "olmo_hybrid_7b_d2_late_read_seed2_after",
+                        "olmo_hybrid_7b_d2_late_read_long_after"),
+        "32b": ("qwen3_32b_d2_v4_late_read_v2_r2", "qwen3_32b_d2_late_read_seed2_after", "qwen3_32b_d2_late_read_long_after"),
+        "olmo": ("olmo3_7b_instruct_d2_v4_late_read_v3", "olmo3_7b_instruct_d2_late_read_seed2_after",
+                 "olmo3_7b_instruct_d2_late_read_long_after"),
+        "muse": ("muse30b_d2_late_read", "muse30b_d2_late_read_seed2_after", "muse30b_d2_late_read_long_after"),
+        "gemma": ("gemma4it_d2_v4_late_read_v3_r2", "gemma4it_d2_late_read_seed2_after", ""),
+        "122b": ("qwen35_122b_d2_late_read", "qwen35_122b_d2_late_read_seed2_after", "qwen35_122b_d2_late_read_long_after"),
+    }  # fmt: skip
+    for m, runs in relay.items():
+        for setting, run in zip(LAST_SHARE, runs, strict=True):
+            if run:
+                add(m, "f4", setting, "late_v2", run)
+            else:
+                none(m, "f4", setting, "its long context ran out of memory twice on an 80 GB GPU: no spec")
     # finding 5: draws 1-3 (main, seed2, seed3) and the 8 / 12-statement lists. layer: fixed (the 27B's 50), else
     # the spec's finding5_confirm --layers (Jobs.f5_layers), else the run's swept layers
     add("27b", "f5", "draw 1", "f5", "d3v4_swap_topics", layer=50)
@@ -601,7 +638,7 @@ def latest_dir(parent: Path, run: str, tag: str = "") -> Path | None:
 def required(cell: Cell) -> Path:
     """The file whose presence means the run is here (no result is read)."""
     k, r = cell.kind, cell.run
-    if k in ("late", "parts", "formats_f3", "formats_f4"):
+    if k in ("late", "late_v2", "parts", "formats_f3", "formats_f4"):
         return RESULTS / "attn_knockout" / r / "rows.jsonl"
     if k in ("f5", "f6"):
         return RESULTS / "pointer_swap" / r / "outcomes.jsonl"
@@ -654,7 +691,7 @@ LENS_KNOWN = {  # sha256 prefix -> (type, source); the pins in src/bridge_jspace
     "ef50bc54": ("J++", "published (neuronpedia, base model)"), "323733a9": ("J++", "Zach (refit, layers 24-45)"),
     "90fc5e52": ("J++", "Zach"), "b771e502": ("J++", "published (neuronpedia)"), "0b092e93": ("J++", "ours (old fit)"),
 }  # fmt: skip
-LENS_FREE = ("late", "parts", "formats_f3", "formats_f4", "f5", "f6")
+LENS_FREE = ("late", "late_v2", "parts", "formats_f3", "formats_f4", "f5", "f6")
 
 
 def lens_of(cell: Cell) -> str:
@@ -804,6 +841,101 @@ def late_row(cell: Cell, setting: str, res: dict, path: str, chance: tuple[float
     return Row(cell.model, cell.finding, setting, n=lk[3], value=lk[0], ci=(lk[1], lk[2]), control=control,
                verdict=verdict, rule="late-read", path=path, md_setting=setting,
                md_text=key(lk[0], (lk[1], lk[2]), lk[3]), sources=[path], notes=notes)  # fmt: skip
+
+
+SHARE_MIN, FLOOR_MAX, FLOOR_HI, V2_OFF_MIN, V2_GDN_MIN = 0.70, 0.10, 0.15, 0.90, 0.90  # late-read-v2's bars
+
+
+def late_read_v2(rows: list[dict], fam: str = "RL") -> dict:
+    """late-read-v2 on one family's rows (RULES['late-read-v2']), items right unedited, DeltaNet mode 'value' (the
+    default; the 27B's first set also has the 'absent' positive control). 'final': the last tokens blocked as the late
+    read blocks them; 'after': every token after the answer's sentence, in every attention layer ('attn') where the run
+    has it, else in all layers ('all'; on a hybrid a conservative lower bound). Rates: (share right, Wilson lo, hi, n).
+    The share = (1 - final) / (1 - after) on the items with both rows (unedited = 1 on items right unedited), with a
+    paired item bootstrap interval; None where nothing breaks under the floor."""
+    rows = [r for r in rows if r["family"] == fam and r.get("mode", "value") == "value"]
+    ok = {r["id"] for r in rows if r["source"] == "none" and r["correct"]}
+    labels = {(r["source"], r["dest"], r["layers"]) for r in rows}
+    hybrid = ("lookup", "final", "attn") in labels
+    lab = "attn" if hybrid else "all"
+    after_lab = "attn" if ("lookup", "after", "attn") in labels else "all"
+
+    def got(source: str, dest: str, layers: str) -> dict[str, bool]:
+        return {r["id"]: bool(r["correct"]) for r in rows
+                if r["id"] in ok and (r["source"], r["dest"], r["layers"]) == (source, dest, layers)}  # fmt: skip
+
+    def rate(by: dict[str, bool]) -> tuple[float, float, float, int]:
+        return (*wilson(sum(by.values()), len(by)), len(by))
+
+    fin, aft = got("lookup", "final", lab), got("lookup", "after", after_lab)
+    out: dict[str, Any] = {"layers": lab, "after_layers": after_lab, "lower_bound": hybrid and after_lab == "all",
+                           "has_after": bool(aft), "final": rate(fin), "after": rate(aft),
+                           "off_final": rate(got("lookup_off", "final", lab)),
+                           "off_after": rate(got("lookup_off", "after", after_lab))}  # fmt: skip
+    if hybrid:
+        out["deltanet"] = rate(got("lookup", "final", "gdn"))
+    if after_lab == "attn":  # the new runs block it in all layers too (comparable with the first set)
+        out["after_all"] = rate(got("lookup", "after", "all"))
+    both = sorted(set(fin) & set(aft))
+    f = np.array([fin[i] for i in both], dtype=float)
+    a = np.array([aft[i] for i in both], dtype=float)
+    share, lo, hi = None, None, None
+    if len(both) and a.mean() < 1:
+        share = float((1 - f.mean()) / (1 - a.mean()))
+        rng = np.random.default_rng(GAP_SEED)
+        pick = rng.integers(0, len(both), size=(GAP_BOOT, len(both)))
+        fb, ab = f[pick].mean(1), a[pick].mean(1)
+        keep = ab < 1
+        lo, hi = (float(x) for x in np.quantile((1 - fb[keep]) / (1 - ab[keep]), [0.025, 0.975]))
+    out.update(share=share, share_ci=(lo, hi) if share is not None else None, n=len(both),
+               relay=out["final"][0] - out["after"][0] if aft and fin else None)  # fmt: skip
+    off_ok = out["off_final"][0] >= V2_OFF_MIN and out["off_after"][0] >= V2_OFF_MIN
+    floor_ok = out["after"][0] <= FLOOR_MAX and out["after"][2] <= FLOOR_HI
+    if not aft:
+        out["verdict"] = ("missing (the run does not hide the answer's sentence from every token after it: the "
+                          "second scene set and the long context rerun with that block)")  # fmt: skip
+    elif not off_ok:
+        out["verdict"] = (
+            "not interpretable (the off-path control: the off-path sentence hidden keeps < 90% at one place)"
+        )
+    elif not floor_ok:
+        out["verdict"] = ("not interpretable (the floor: hidden from every token after it, more than 10% stay right "
+                          "or the upper bound is above 15%)")  # fmt: skip
+    elif share is None or share < SHARE_MIN:
+        out["verdict"] = "fails (the last tokens carry less than 70% of the drop)"
+    elif hybrid and out["deltanet"][0] < V2_GDN_MIN:
+        out["verdict"] = "fails (the DeltaNet layers matter: blocking them instead keeps < 90%)"
+    else:
+        out["verdict"] = "holds"
+    return out
+
+
+def ev_late_v2(cell: Cell) -> list[Row]:
+    d = RESULTS / "attn_knockout" / cell.run
+    path = rel(d / "rows.jsonl")
+    v = late_read_v2(jl(d / "rows.jsonl"), cell.opts.get("family", "RL"))
+    fin, aft = v["final"], v["after"]
+    where = "every attention layer" if v["after_layers"] == "attn" else "all layers"
+    last = "every attention layer" if v["layers"] == "attn" else "every layer"
+    notes = []
+    if not v["has_after"]:
+        return [Row(cell.model, "f4", cell.setting, verdict=v["verdict"], rule="late-read-v2", path=path,
+                    md_setting=cell.setting, md_text="", sources=[path])]  # fmt: skip
+    control = (f"hidden from the last tokens ({last}): {pct(fin[0])} right; from every token after it ({where}): "
+               f"{pct(aft[0])} {ci_txt(aft[1], aft[2])} (the floor, needs <= 10%, upper bound <= 15%); relay "
+               f"{pts(v['relay'])} points; the off-path sentence hidden there keeps {pct(v['off_final'][0])} / "
+               f"{pct(v['off_after'][0])}")  # fmt: skip
+    if "deltanet" in v:
+        control += f"; hidden in every DeltaNet layer instead: {pct(v['deltanet'][0])}"
+    if "after_all" in v:
+        control += f"; every token after it blocked in all layers instead: {pct(v['after_all'][0])}"
+    if v["lower_bound"]:
+        notes.append("every token after the answer's sentence blocked in all layers, DeltaNet included (the first scene "
+                     "set's runs have no other block): a conservative lower bound on the last tokens' share (Dan, 23 Oct)")  # fmt: skip
+    s, ci = v["share"], v["share_ci"]
+    return [Row(cell.model, "f4", cell.setting, n=v["n"], value=s, ci=ci, control=control, verdict=v["verdict"],
+                rule="late-read-v2", path=path, md_setting=cell.setting,
+                md_text=f"share {key(s, ci, v['n'])}" if s is not None else "", sources=[path], notes=notes)]  # fmt: skip
 
 
 def parts_row(cell: Cell, setting: str, cl: dict, fam: str, path: str, chance: tuple[float, list[int]] | None) -> Row:
@@ -1330,7 +1462,7 @@ def ev_removal(cell: Cell) -> list[Row]:
     return out
 
 
-EVAL = {"late": ev_late, "parts": ev_parts, "formats_f3": ev_formats, "formats_f4": ev_formats, "f5": ev_f5,
+EVAL = {"late": ev_late, "late_v2": ev_late_v2, "parts": ev_parts, "formats_f3": ev_formats, "formats_f4": ev_formats, "f5": ev_f5,
         "f6": ev_f6, "gate": ev_gate, "d1": ev_d1, "d1_formats": ev_d1, "d4": ev_d4, "rw": ev_rw,
         "fitlens": ev_fitlens, "removal": ev_removal, "zach_c1": ev_zach_c1}  # fmt: skip
 EXPAND = {  # the grid cells one run fills (several settings)
@@ -1438,6 +1570,8 @@ def md_cell(rows: list[Row]) -> tuple[str, list[tuple[str, str]]]:
                      "too few scenes" if "stopped by the precheck" in reason and "gate v1 passed" in reason else
                      "precheck stop" if "stopped by the precheck" in reason else
                      reason.split(" where ")[0] if reason.startswith("no layer from ") else
+                     "no floor block in this run" if "from every token after it:" in reason else
+                     "out of memory" if "ran out of memory" in reason else
                      "raw smoke mismatch" if "raw smoke mismatch" in reason else
                      "not on Zach's branch" if "Zach's branch" in reason else
                      "no early layer" if "before the donor's digit" in reason else
@@ -1567,7 +1701,8 @@ def grid_md(rows: list[Row], meta: dict) -> str:
             "- 2: % of lookups the lens-readable part of a stated bridge's change switches.",
             "- 3: % right with the sentence without its name hidden from the last tokens (the digit hidden too).",
             "- 4: % right with the answer's sentence hidden from the last tokens (chance: 20% in the draws, five "
-            "listed answers; 33% in prose / table / JSON, three).",
+            "listed answers; 33% in prose / table / JSON, three). Last tokens' share: the share of the drop the last "
+            "tokens carry, (unedited - last tokens blocked) / (unedited - every token after the sentence blocked).",
             "- 5: points, position - identity for the 1st-2nd asked sentence / identity - position from the 3rd on.",
             "- 6: % of patched answers at the same order in the list vs at the same place in the text (or from the end).",
             "- 7: % of lookups vs recalls the lens push switches at the rule's cell.",
