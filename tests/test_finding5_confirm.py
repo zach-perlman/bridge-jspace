@@ -88,3 +88,11 @@ def test_report_names_the_last_statement():
     assert "3rd-12th" in text and "(e12-word, 12 statements)" in text
     ks = (1, 2, 3, 5, 8, 11, 12, 21)
     assert [F.ordinal(k) for k in ks] == ["1st", "2nd", "3rd", "5th", "8th", "11th", "12th", "21st"]
+
+
+def test_an_empty_group_is_not_testable() -> None:
+    from scripts.finding5_confirm import diff, judge
+
+    nan3 = diff([], "position", "identity")
+    out = judge(nan3, [0.1, 0.05, 0.2])
+    assert out["A"] is None and out["verdict"].startswith("not testable")

@@ -30,6 +30,7 @@ from __future__ import annotations
 import argparse
 import collections
 import json
+import math
 import sys
 import time
 from pathlib import Path
@@ -47,13 +48,19 @@ SENTENCES = 5  # finding 5's list length, the default
 
 
 def diff(rows: list[dict], a: str, b: str) -> list[float]:
-    """mean(1[role a] - 1[role b]) with its entity-cluster bootstrap interval (within topic)."""
+    """mean(1[role a] - 1[role b]) with its entity-cluster bootstrap interval (within topic); NaNs for no rows (a group
+    the competence filter emptied, e.g. the few 1st / 2nd-sentence scenes of a 12-sentence set: judged not testable)."""
+    if not rows:
+        return [float("nan")] * 3
     vals = [float(r["role"] == a) - float(r["role"] == b) for r in rows]
     return list(cluster_bootstrap(vals, [r["_entity"] for r in rows], [r["domain"] for r in rows], n_boot=N_BOOT,
                                   seed=SEED))  # fmt: skip
 
 
 def judge(first2: list[float], rest: list[float]) -> dict:
+    if math.isnan(first2[0]) or math.isnan(rest[0]):  # a test with no items cannot pass or fail
+        empty = [name for name, v in (("A (1st-2nd)", first2), ("B (3rd on)", rest)) if math.isnan(v[0])]
+        return {"A": None, "B": None, "verdict": f"not testable (no items: {', '.join(empty)})"}
     a = first2[1] > A_LO
     b = rest[0] >= B_POINT and rest[1] >= B_LO
     return {"A": a, "B": b, "verdict": "confirms" if a and b else "partly" if a or b else "fails"}
