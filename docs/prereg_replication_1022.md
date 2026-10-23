@@ -379,3 +379,13 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   it is mostly shared with the logit lens. Descriptive.
 - **11 note (~12:30 UTC):** seen: the second seed (27B 44, 9B 38, Muse 85) and Muse at L16-22 (gap -5). Added, same
   procedure and prediction as 11A: a third natural seed, natural_v3 (seed 803), chat framing, for the 27B, 9B and Muse.
+
+## Amendment 12 (Zach, 2026-10-23 ~13:00 UTC): the natural pilot on the Olmo pair
+
+- **Seen when this was written:** amendments 10-11 (natural gaps over three seeds: 27B 51 / 44 / 42, 9B 37 / 38 / 37,
+  both J-specific; Muse 85 x3 at its late band, mostly shared with the logit lens, -5 at L16-22). The Olmos' toy C1 was
+  a powered null (gaps 1 and 4). Nothing on the Olmos with natural data.
+- **Procedure:** natural_v1_chat for Olmo-Hybrid (L4-8) and Olmo-3 (L10-14), their bands of record: competence, then C1
+  (paper10, rotated) by c1_v2, then the logit-lens control (unembed10, rotated) by c1_specificity.
+- **Prediction:** both stay null (gap < 15), as on the toy suite. A J-specific gap >= 30 would mean the toy suite hid
+  their dependence too.
