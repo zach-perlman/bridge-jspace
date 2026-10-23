@@ -1,0 +1,822 @@
+{"family": "PP", "id": "nat:chat:PP-L0-0005", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.10031787306070328}
+{"family": "MM", "id": "nat:chat:MM-L0-0268", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.00975154060870409}
+{"family": "MM", "id": "nat:chat:MM-L0-0316", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.07068059593439102}
+{"family": "PM", "id": "nat:chat:PM-L0-0477", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3386748135089874}
+{"family": "PP", "id": "nat:chat:PP-L0-0005", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.24438965320587158, "bridge_protected": true, "bridge": "Brazil"}
+{"family": "MM", "id": "nat:chat:MM-L0-0268", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.016171595081686974, "bridge_protected": false, "bridge": "Dante"}
+{"family": "MM", "id": "nat:chat:MM-L0-0316", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -2.587228775024414, "bridge_protected": false, "bridge": "Monet"}
+{"family": "PM", "id": "nat:chat:PM-L0-0477", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.6622231006622314, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "PP", "id": "nat:chat:PP-L0-0005", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -2.3817596435546875, "bridge_protected": true, "bridge": "Brazil"}
+{"family": "MM", "id": "nat:chat:MM-L0-0268", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.005431300029158592, "bridge_protected": false, "bridge": "Dante"}
+{"family": "MM", "id": "nat:chat:MM-L0-0316", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.3002200126647949, "bridge_protected": false, "bridge": "Monet"}
+{"family": "PM", "id": "nat:chat:PM-L0-0477", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.5928099751472473, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "PM", "id": "nat:chat:PM-L0-0005", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.007674140390008688}
+{"family": "PP", "id": "nat:chat:PP-L0-0115", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.00046075694262981415}
+{"family": "PM", "id": "nat:chat:PM-L0-0005", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.015136146917939186, "bridge_protected": true, "bridge": "Brazil"}
+{"family": "PP", "id": "nat:chat:PP-L0-0115", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0015428080223500729, "bridge_protected": false, "bridge": "Venezuela"}
+{"family": "PM", "id": "nat:chat:PM-L0-0005", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0067043364979326725, "bridge_protected": true, "bridge": "Brazil"}
+{"family": "PP", "id": "nat:chat:PP-L0-0115", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0003034608089365065, "bridge_protected": false, "bridge": "Venezuela"}
+{"family": "PP", "id": "nat:chat:PP-L0-0013", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0012310316087678075}
+{"family": "MP", "id": "nat:chat:MP-L0-0540", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.1597355753183365}
+{"family": "PP", "id": "nat:chat:PP-L0-0543", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.20123320817947388}
+{"family": "PP", "id": "nat:chat:PP-L0-0553", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5593554973602295}
+{"family": "PP", "id": "nat:chat:PP-L0-0013", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0028372055385261774, "bridge_protected": false, "bridge": "Chile"}
+{"family": "MP", "id": "nat:chat:MP-L0-0540", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.2507871687412262, "bridge_protected": false, "bridge": "Seville"}
+{"family": "PP", "id": "nat:chat:PP-L0-0543", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0875111073255539, "bridge_protected": false, "bridge": "Shanghai"}
+{"family": "PP", "id": "nat:chat:PP-L0-0553", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.004494565073400736, "bridge_protected": false, "bridge": "Vancouver"}
+{"family": "PP", "id": "nat:chat:PP-L0-0013", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.00374520942568779, "bridge_protected": false, "bridge": "Chile"}
+{"family": "MP", "id": "nat:chat:MP-L0-0540", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.02445635199546814, "bridge_protected": false, "bridge": "Seville"}
+{"family": "PP", "id": "nat:chat:PP-L0-0543", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.8782011270523071, "bridge_protected": false, "bridge": "Shanghai"}
+{"family": "PP", "id": "nat:chat:PP-L0-0553", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -2.50703763961792, "bridge_protected": false, "bridge": "Vancouver"}
+{"family": "PM", "id": "nat:chat:PM-L0-0013", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0156807042658329}
+{"family": "MM", "id": "nat:chat:MM-L0-0050", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.006367158610373735}
+{"family": "PP", "id": "nat:chat:PP-L0-0283", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.019254213199019432}
+{"family": "MP", "id": "nat:chat:MP-L0-0332", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.003012406872585416}
+{"family": "PP", "id": "nat:chat:PP-L0-0541", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0003097769513260573}
+{"family": "PM", "id": "nat:chat:PM-L0-0013", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.04099154472351074, "bridge_protected": false, "bridge": "Chile"}
+{"family": "MM", "id": "nat:chat:MM-L0-0050", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.010736322030425072, "bridge_protected": true, "bridge": "Iran"}
+{"family": "PP", "id": "nat:chat:PP-L0-0283", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.011213024146854877, "bridge_protected": false, "bridge": "Galileo"}
+{"family": "MP", "id": "nat:chat:MP-L0-0332", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.004818138666450977, "bridge_protected": false, "bridge": "Picasso"}
+{"family": "PP", "id": "nat:chat:PP-L0-0541", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0004609952447935939, "bridge_protected": false, "bridge": "Shanghai"}
+{"family": "PM", "id": "nat:chat:PM-L0-0013", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.026881316676735878, "bridge_protected": false, "bridge": "Chile"}
+{"family": "MM", "id": "nat:chat:MM-L0-0050", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.010050758719444275, "bridge_protected": true, "bridge": "Iran"}
+{"family": "PP", "id": "nat:chat:PP-L0-0283", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.11449487507343292, "bridge_protected": false, "bridge": "Galileo"}
+{"family": "MP", "id": "nat:chat:MP-L0-0332", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0021144431084394455, "bridge_protected": false, "bridge": "Picasso"}
+{"family": "PP", "id": "nat:chat:PP-L0-0541", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.00028463127091526985, "bridge_protected": false, "bridge": "Shanghai"}
+{"family": "MP", "id": "nat:chat:MP-L0-0016", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.014690679498016834}
+{"family": "MM", "id": "nat:chat:MM-L0-0302", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0067563182674348354}
+{"family": "MM", "id": "nat:chat:MM-L0-0560", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.021347979083657265}
+{"family": "MP", "id": "nat:chat:MP-L0-0016", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.07957705855369568, "bridge_protected": false, "bridge": "Chile"}
+{"family": "MM", "id": "nat:chat:MM-L0-0302", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.00983582716435194, "bridge_protected": false, "bridge": "Kant"}
+{"family": "MM", "id": "nat:chat:MM-L0-0560", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.015455944463610649, "bridge_protected": false, "bridge": "Venice"}
+{"family": "MP", "id": "nat:chat:MP-L0-0016", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.053340133279561996, "bridge_protected": false, "bridge": "Chile"}
+{"family": "MM", "id": "nat:chat:MM-L0-0302", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.03425372391939163, "bridge_protected": false, "bridge": "Kant"}
+{"family": "MM", "id": "nat:chat:MM-L0-0560", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.08080381900072098, "bridge_protected": false, "bridge": "Venice"}
+{"family": "MM", "id": "nat:chat:MM-L0-0016", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.006964455358684063}
+{"family": "MM", "id": "nat:chat:MM-L0-0016", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0017351347487419844, "bridge_protected": false, "bridge": "Chile"}
+{"family": "MM", "id": "nat:chat:MM-L0-0016", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.008590529672801495, "bridge_protected": false, "bridge": "Chile"}
+{"family": "PP", "id": "nat:chat:PP-L0-0033", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.06827828288078308}
+{"family": "PP", "id": "nat:chat:PP-L0-0033", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -2.5915181636810303, "bridge_protected": true, "bridge": "France"}
+{"family": "PP", "id": "nat:chat:PP-L0-0033", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.01038587186485529, "bridge_protected": true, "bridge": "France"}
+{"family": "PM", "id": "nat:chat:PM-L0-0033", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0007545484695583582}
+{"family": "PM", "id": "nat:chat:PM-L0-0033", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0010283663868904114, "bridge_protected": true, "bridge": "France"}
+{"family": "PM", "id": "nat:chat:PM-L0-0033", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0009970461251214147, "bridge_protected": true, "bridge": "France"}
+{"family": "PP", "id": "nat:chat:PP-L0-0041", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.23242905735969543}
+{"family": "PM", "id": "nat:chat:PM-L0-0283", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.020786652341485023}
+{"family": "MM", "id": "nat:chat:MM-L0-0314", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.046377480030059814}
+{"family": "MM", "id": "nat:chat:MM-L0-0344", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.06761268526315689}
+{"family": "MM", "id": "nat:chat:MM-L0-0504", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.004169699735939503}
+{"family": "PP", "id": "nat:chat:PP-L0-0041", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0010563514661043882, "bridge_protected": false, "bridge": "Greece"}
+{"family": "PM", "id": "nat:chat:PM-L0-0283", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.09396613389253616, "bridge_protected": false, "bridge": "Galileo"}
+{"family": "MM", "id": "nat:chat:MM-L0-0314", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.031525298953056335, "bridge_protected": false, "bridge": "Monet"}
+{"family": "MM", "id": "nat:chat:MM-L0-0344", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.3059968948364258, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "MM", "id": "nat:chat:MM-L0-0504", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.8464305400848389, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "PP", "id": "nat:chat:PP-L0-0041", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.04190649837255478, "bridge_protected": false, "bridge": "Greece"}
+{"family": "PM", "id": "nat:chat:PM-L0-0283", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.06447330117225647, "bridge_protected": false, "bridge": "Galileo"}
+{"family": "MM", "id": "nat:chat:MM-L0-0314", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.06626096367835999, "bridge_protected": false, "bridge": "Monet"}
+{"family": "MM", "id": "nat:chat:MM-L0-0344", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.12419760227203369, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "MM", "id": "nat:chat:MM-L0-0504", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.013151450082659721, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "PM", "id": "nat:chat:PM-L0-0041", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.00782282929867506}
+{"family": "PM", "id": "nat:chat:PM-L0-0041", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.010890806093811989, "bridge_protected": false, "bridge": "Greece"}
+{"family": "PM", "id": "nat:chat:PM-L0-0041", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.005564912222325802, "bridge_protected": false, "bridge": "Greece"}
+{"family": "MP", "id": "nat:chat:MP-L0-0050", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.028275582939386368}
+{"family": "MP", "id": "nat:chat:MP-L0-0268", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.01807234436273575}
+{"family": "MP", "id": "nat:chat:MP-L0-0344", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.002943471074104309}
+{"family": "MP", "id": "nat:chat:MP-L0-0050", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.14830251038074493, "bridge_protected": false, "bridge": "Iran"}
+{"family": "MP", "id": "nat:chat:MP-L0-0268", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.700448751449585, "bridge_protected": false, "bridge": "Dante"}
+{"family": "MP", "id": "nat:chat:MP-L0-0344", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.010027981363236904, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "MP", "id": "nat:chat:MP-L0-0050", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.09729252755641937, "bridge_protected": false, "bridge": "Iran"}
+{"family": "MP", "id": "nat:chat:MP-L0-0268", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.1905488669872284, "bridge_protected": false, "bridge": "Dante"}
+{"family": "MP", "id": "nat:chat:MP-L0-0344", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0023688608780503273, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "MP", "id": "nat:chat:MP-L0-0052", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0010550415609031916}
+{"family": "PM", "id": "nat:chat:PM-L0-0543", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0009841842111200094}
+{"family": "PP", "id": "nat:chat:PP-L0-0547", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0920475423336029}
+{"family": "PM", "id": "nat:chat:PM-L0-0553", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.04934786260128021}
+{"family": "MP", "id": "nat:chat:MP-L0-0052", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0011399445356801152, "bridge_protected": false, "bridge": "Iran"}
+{"family": "PM", "id": "nat:chat:PM-L0-0543", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.07101242989301682, "bridge_protected": false, "bridge": "Shanghai"}
+{"family": "PP", "id": "nat:chat:PP-L0-0547", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.007776226382702589, "bridge_protected": false, "bridge": "Sydney"}
+{"family": "PM", "id": "nat:chat:PM-L0-0553", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.6537303924560547, "bridge_protected": false, "bridge": "Vancouver"}
+{"family": "MP", "id": "nat:chat:MP-L0-0052", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0006343498243950307, "bridge_protected": false, "bridge": "Iran"}
+{"family": "PM", "id": "nat:chat:PM-L0-0543", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.00301133724860847, "bridge_protected": false, "bridge": "Shanghai"}
+{"family": "PP", "id": "nat:chat:PP-L0-0547", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.29270851612091064, "bridge_protected": false, "bridge": "Sydney"}
+{"family": "PM", "id": "nat:chat:PM-L0-0553", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.12913982570171356, "bridge_protected": false, "bridge": "Vancouver"}
+{"family": "MM", "id": "nat:chat:MM-L0-0052", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.008934401907026768}
+{"family": "MM", "id": "nat:chat:MM-L0-0052", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.010098082944750786, "bridge_protected": true, "bridge": "Iran"}
+{"family": "MM", "id": "nat:chat:MM-L0-0052", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.012803375720977783, "bridge_protected": true, "bridge": "Iran"}
+{"family": "PP", "id": "nat:chat:PP-L0-0059", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.006398666650056839}
+{"family": "PM", "id": "nat:chat:PM-L0-0263", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.09670105576515198}
+{"family": "PP", "id": "nat:chat:PP-L0-0321", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.005971566773951054}
+{"family": "PP", "id": "nat:chat:PP-L0-0059", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0036452056374400854, "bridge_protected": false, "bridge": "Italy"}
+{"family": "PM", "id": "nat:chat:PM-L0-0263", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.054996948689222336, "bridge_protected": false, "bridge": "Copernicus"}
+{"family": "PP", "id": "nat:chat:PP-L0-0321", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0021344278939068317, "bridge_protected": false, "bridge": "Napoleon"}
+{"family": "PP", "id": "nat:chat:PP-L0-0059", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.00716177886351943, "bridge_protected": false, "bridge": "Italy"}
+{"family": "PM", "id": "nat:chat:PM-L0-0263", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.5870039463043213, "bridge_protected": false, "bridge": "Copernicus"}
+{"family": "PP", "id": "nat:chat:PP-L0-0321", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.010927123948931694, "bridge_protected": false, "bridge": "Napoleon"}
+{"family": "PM", "id": "nat:chat:PM-L0-0059", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0012863941956311464}
+{"family": "PP", "id": "nat:chat:PP-L0-0505", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.008954014629125595}
+{"family": "PM", "id": "nat:chat:PM-L0-0059", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0016041041817516088, "bridge_protected": true, "bridge": "Italy"}
+{"family": "PP", "id": "nat:chat:PP-L0-0505", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0008054111385717988, "bridge_protected": false, "bridge": "Lyon"}
+{"family": "PM", "id": "nat:chat:PM-L0-0059", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.00126079679466784, "bridge_protected": true, "bridge": "Italy"}
+{"family": "PP", "id": "nat:chat:PP-L0-0505", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.003871447406709194, "bridge_protected": false, "bridge": "Lyon"}
+{"family": "PP", "id": "nat:chat:PP-L0-0061", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.20485174655914307}
+{"family": "PM", "id": "nat:chat:PM-L0-0285", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3666965067386627}
+{"family": "MP", "id": "nat:chat:MP-L0-0496", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.04829363152384758}
+{"family": "MP", "id": "nat:chat:MP-L0-0538", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0020681675523519516}
+{"family": "PM", "id": "nat:chat:PM-L0-0547", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0020103498827666044}
+{"family": "PP", "id": "nat:chat:PP-L0-0061", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.5818575024604797, "bridge_protected": false, "bridge": "Japan"}
+{"family": "PM", "id": "nat:chat:PM-L0-0285", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.6090399026870728, "bridge_protected": false, "bridge": "Goethe"}
+{"family": "MP", "id": "nat:chat:MP-L0-0496", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.03823235630989075, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "MP", "id": "nat:chat:MP-L0-0538", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.003041643649339676, "bridge_protected": false, "bridge": "Seville"}
+{"family": "PM", "id": "nat:chat:PM-L0-0547", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.007553114090114832, "bridge_protected": false, "bridge": "Sydney"}
+{"family": "PP", "id": "nat:chat:PP-L0-0061", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.3171882629394531, "bridge_protected": false, "bridge": "Japan"}
+{"family": "PM", "id": "nat:chat:PM-L0-0285", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.24342036247253418, "bridge_protected": false, "bridge": "Goethe"}
+{"family": "MP", "id": "nat:chat:MP-L0-0496", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.024486016482114792, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "MP", "id": "nat:chat:MP-L0-0538", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.009258550591766834, "bridge_protected": false, "bridge": "Seville"}
+{"family": "PM", "id": "nat:chat:PM-L0-0547", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.004406504333019257, "bridge_protected": false, "bridge": "Sydney"}
+{"family": "PM", "id": "nat:chat:PM-L0-0061", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.021618083119392395}
+{"family": "MM", "id": "nat:chat:MM-L0-0320", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.12849372625350952}
+{"family": "PM", "id": "nat:chat:PM-L0-0061", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.13113605976104736, "bridge_protected": true, "bridge": "Japan"}
+{"family": "MM", "id": "nat:chat:MM-L0-0320", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.18477211892604828, "bridge_protected": false, "bridge": "Mozart"}
+{"family": "PM", "id": "nat:chat:PM-L0-0061", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.00839206948876381, "bridge_protected": true, "bridge": "Japan"}
+{"family": "MM", "id": "nat:chat:MM-L0-0320", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.3469627797603607, "bridge_protected": false, "bridge": "Mozart"}
+{"family": "MP", "id": "nat:chat:MP-L0-0068", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.07523558288812637}
+{"family": "PP", "id": "nat:chat:PP-L0-0289", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.16140760481357574}
+{"family": "MP", "id": "nat:chat:MP-L0-0490", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.19499780237674713}
+{"family": "MP", "id": "nat:chat:MP-L0-0492", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.058353982865810394}
+{"family": "PP", "id": "nat:chat:PP-L0-0517", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.14593373239040375}
+{"family": "MP", "id": "nat:chat:MP-L0-0068", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0012566297082230449, "bridge_protected": false, "bridge": "Kenya"}
+{"family": "PP", "id": "nat:chat:PP-L0-0289", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.024786323308944702, "bridge_protected": false, "bridge": "Grieg"}
+{"family": "MP", "id": "nat:chat:MP-L0-0490", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.43767091631889343, "bridge_protected": false, "bridge": "Hamburg"}
+{"family": "MP", "id": "nat:chat:MP-L0-0492", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.13996446132659912, "bridge_protected": false, "bridge": "Hamburg"}
+{"family": "PP", "id": "nat:chat:PP-L0-0517", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.005183590110391378, "bridge_protected": false, "bridge": "Munich"}
+{"family": "MP", "id": "nat:chat:MP-L0-0068", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.39961495995521545, "bridge_protected": false, "bridge": "Kenya"}
+{"family": "PP", "id": "nat:chat:PP-L0-0289", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.3614751994609833, "bridge_protected": false, "bridge": "Grieg"}
+{"family": "MP", "id": "nat:chat:MP-L0-0490", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.19492746889591217, "bridge_protected": false, "bridge": "Hamburg"}
+{"family": "MP", "id": "nat:chat:MP-L0-0492", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.13605958223342896, "bridge_protected": false, "bridge": "Hamburg"}
+{"family": "PP", "id": "nat:chat:PP-L0-0517", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.18999774754047394, "bridge_protected": false, "bridge": "Munich"}
+{"family": "MM", "id": "nat:chat:MM-L0-0068", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.01397937536239624}
+{"family": "PM", "id": "nat:chat:PM-L0-0089", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.05458153411746025}
+{"family": "MM", "id": "nat:chat:MM-L0-0492", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0010918376501649618}
+{"family": "MP", "id": "nat:chat:MP-L0-0518", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.03626921772956848}
+{"family": "MM", "id": "nat:chat:MM-L0-0068", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.10228309035301208, "bridge_protected": false, "bridge": "Kenya"}
+{"family": "PM", "id": "nat:chat:PM-L0-0089", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.04999760538339615, "bridge_protected": false, "bridge": "Peru"}
+{"family": "MM", "id": "nat:chat:MM-L0-0492", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0010338444262742996, "bridge_protected": false, "bridge": "Hamburg"}
+{"family": "MP", "id": "nat:chat:MP-L0-0518", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.028066620230674744, "bridge_protected": false, "bridge": "Munich"}
+{"family": "MM", "id": "nat:chat:MM-L0-0068", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.008618776686489582, "bridge_protected": false, "bridge": "Kenya"}
+{"family": "PM", "id": "nat:chat:PM-L0-0089", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.1303814798593521, "bridge_protected": false, "bridge": "Peru"}
+{"family": "MM", "id": "nat:chat:MM-L0-0492", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.003258872777223587, "bridge_protected": false, "bridge": "Hamburg"}
+{"family": "MP", "id": "nat:chat:MP-L0-0518", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.026461949571967125, "bridge_protected": false, "bridge": "Munich"}
+{"family": "MP", "id": "nat:chat:MP-L0-0074", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0016479019541293383}
+{"family": "PP", "id": "nat:chat:PP-L0-0285", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.1597440093755722}
+{"family": "PM", "id": "nat:chat:PM-L0-0329", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7398071885108948}
+{"family": "MP", "id": "nat:chat:MP-L0-0074", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.08450477570295334, "bridge_protected": false, "bridge": "Morocco"}
+{"family": "PP", "id": "nat:chat:PP-L0-0285", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.3851573169231415, "bridge_protected": false, "bridge": "Goethe"}
+{"family": "PM", "id": "nat:chat:PM-L0-0329", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.2158757597208023, "bridge_protected": false, "bridge": "Picasso"}
+{"family": "MP", "id": "nat:chat:MP-L0-0074", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0022156708873808384, "bridge_protected": false, "bridge": "Morocco"}
+{"family": "PP", "id": "nat:chat:PP-L0-0285", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.2374212145805359, "bridge_protected": false, "bridge": "Goethe"}
+{"family": "PM", "id": "nat:chat:PM-L0-0329", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -1.3146162033081055, "bridge_protected": false, "bridge": "Picasso"}
+{"family": "MM", "id": "nat:chat:MM-L0-0074", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.012116402387619019}
+{"family": "MM", "id": "nat:chat:MM-L0-0074", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.03758743777871132, "bridge_protected": false, "bridge": "Morocco"}
+{"family": "MM", "id": "nat:chat:MM-L0-0074", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.006411577574908733, "bridge_protected": false, "bridge": "Morocco"}
+{"family": "PP", "id": "nat:chat:PP-L0-0089", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.49736058712005615}
+{"family": "MP", "id": "nat:chat:MP-L0-0266", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.004279978107661009}
+{"family": "PM", "id": "nat:chat:PM-L0-0505", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0006314906058833003}
+{"family": "PP", "id": "nat:chat:PP-L0-0089", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.08396082371473312, "bridge_protected": false, "bridge": "Peru"}
+{"family": "MP", "id": "nat:chat:MP-L0-0266", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0055620670318603516, "bridge_protected": false, "bridge": "Dante"}
+{"family": "PM", "id": "nat:chat:PM-L0-0505", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0033822020050138235, "bridge_protected": false, "bridge": "Lyon"}
+{"family": "PP", "id": "nat:chat:PP-L0-0089", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.30092135071754456, "bridge_protected": false, "bridge": "Peru"}
+{"family": "MP", "id": "nat:chat:MP-L0-0266", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.007503066677600145, "bridge_protected": false, "bridge": "Dante"}
+{"family": "PM", "id": "nat:chat:PM-L0-0505", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0014604389434680343, "bridge_protected": false, "bridge": "Lyon"}
+{"family": "PP", "id": "nat:chat:PP-L0-0109", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.002955119125545025}
+{"family": "MP", "id": "nat:chat:MP-L0-0256", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0026968084275722504}
+{"family": "MP", "id": "nat:chat:MP-L0-0280", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0020761380437761545}
+{"family": "MP", "id": "nat:chat:MP-L0-0334", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.007414679042994976}
+{"family": "PP", "id": "nat:chat:PP-L0-0109", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0015336429933086038, "bridge_protected": false, "bridge": "Thailand"}
+{"family": "MP", "id": "nat:chat:MP-L0-0256", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.004545712377876043, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "MP", "id": "nat:chat:MP-L0-0280", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0017754758009687066, "bridge_protected": false, "bridge": "Freud"}
+{"family": "MP", "id": "nat:chat:MP-L0-0334", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.030375314876437187, "bridge_protected": false, "bridge": "Rembrandt"}
+{"family": "PP", "id": "nat:chat:PP-L0-0109", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.00034290633630007505, "bridge_protected": false, "bridge": "Thailand"}
+{"family": "MP", "id": "nat:chat:MP-L0-0256", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.08231697976589203, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "MP", "id": "nat:chat:MP-L0-0280", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.001211147871799767, "bridge_protected": false, "bridge": "Freud"}
+{"family": "MP", "id": "nat:chat:MP-L0-0334", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.014054019935429096, "bridge_protected": false, "bridge": "Rembrandt"}
+{"family": "PM", "id": "nat:chat:PM-L0-0109", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.006956642493605614}
+{"family": "PP", "id": "nat:chat:PP-L0-0351", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.017019527032971382}
+{"family": "PP", "id": "nat:chat:PP-L0-0489", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0209799837321043}
+{"family": "PM", "id": "nat:chat:PM-L0-0495", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.058015670627355576}
+{"family": "PP", "id": "nat:chat:PP-L0-0497", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.20614513754844666}
+{"family": "PM", "id": "nat:chat:PM-L0-0109", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.008896475657820702, "bridge_protected": false, "bridge": "Thailand"}
+{"family": "PP", "id": "nat:chat:PP-L0-0351", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.028611943125724792, "bridge_protected": false, "bridge": "Vermeer"}
+{"family": "PP", "id": "nat:chat:PP-L0-0489", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0025593640748411417, "bridge_protected": false, "bridge": "Hamburg"}
+{"family": "PM", "id": "nat:chat:PM-L0-0495", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.6052224040031433, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "PP", "id": "nat:chat:PP-L0-0497", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.04410148411989212, "bridge_protected": false, "bridge": "Krakow"}
+{"family": "PM", "id": "nat:chat:PM-L0-0109", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.010171955451369286, "bridge_protected": false, "bridge": "Thailand"}
+{"family": "PP", "id": "nat:chat:PP-L0-0351", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.03475423902273178, "bridge_protected": false, "bridge": "Vermeer"}
+{"family": "PP", "id": "nat:chat:PP-L0-0489", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.11337530612945557, "bridge_protected": false, "bridge": "Hamburg"}
+{"family": "PM", "id": "nat:chat:PM-L0-0495", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.08163034170866013, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "PP", "id": "nat:chat:PP-L0-0497", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -1.5596513748168945, "bridge_protected": false, "bridge": "Krakow"}
+{"family": "PM", "id": "nat:chat:PM-L0-0115", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.020735861733555794}
+{"family": "MM", "id": "nat:chat:MM-L0-0244", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.012754061259329319}
+{"family": "PM", "id": "nat:chat:PM-L0-0115", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.032612692564725876, "bridge_protected": false, "bridge": "Venezuela"}
+{"family": "MM", "id": "nat:chat:MM-L0-0244", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.011144179850816727, "bridge_protected": false, "bridge": "Bach"}
+{"family": "PM", "id": "nat:chat:PM-L0-0115", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.104569211602211, "bridge_protected": false, "bridge": "Venezuela"}
+{"family": "MM", "id": "nat:chat:MM-L0-0244", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.02051784284412861, "bridge_protected": false, "bridge": "Bach"}
+{"family": "PP", "id": "nat:chat:PP-L1-0121", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.03316061943769455}
+{"family": "PM", "id": "nat:chat:PM-L1-0583", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.01640639640390873}
+{"family": "PP", "id": "nat:chat:PP-L1-0121", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.048713140189647675, "bridge_protected": true, "bridge": "Argentina"}
+{"family": "PM", "id": "nat:chat:PM-L1-0583", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -1.0542714595794678, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "PP", "id": "nat:chat:PP-L1-0121", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.010584879666566849, "bridge_protected": true, "bridge": "Argentina"}
+{"family": "PM", "id": "nat:chat:PM-L1-0583", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.07861296832561493, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "PM", "id": "nat:chat:PM-L1-0121", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.40673667192459106}
+{"family": "PM", "id": "nat:chat:PM-L1-0121", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.4415172338485718, "bridge_protected": true, "bridge": "Argentina"}
+{"family": "PM", "id": "nat:chat:PM-L1-0121", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.19615478813648224, "bridge_protected": true, "bridge": "Argentina"}
+{"family": "MP", "id": "nat:chat:MP-L1-0130", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.46296074986457825}
+{"family": "MP", "id": "nat:chat:MP-L1-0130", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -6.364330768585205, "bridge_protected": true, "bridge": "Canada"}
+{"family": "MP", "id": "nat:chat:MP-L1-0130", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.013139097020030022, "bridge_protected": true, "bridge": "Canada"}
+{"family": "MM", "id": "nat:chat:MM-L1-0130", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.003986033145338297}
+{"family": "MM", "id": "nat:chat:MM-L1-0130", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.03397352993488312, "bridge_protected": true, "bridge": "Canada"}
+{"family": "MM", "id": "nat:chat:MM-L1-0130", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.002587663009762764, "bridge_protected": true, "bridge": "Canada"}
+{"family": "PP", "id": "nat:chat:PP-L1-0147", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2854674458503723}
+{"family": "PP", "id": "nat:chat:PP-L1-0221", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0302115511149168}
+{"family": "PP", "id": "nat:chat:PP-L1-0147", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.33881500363349915, "bridge_protected": true, "bridge": "Egypt"}
+{"family": "PP", "id": "nat:chat:PP-L1-0221", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -0.9467431306838989, "bridge_protected": false, "bridge": "Spain"}
+{"family": "PP", "id": "nat:chat:PP-L1-0147", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.17574180662631989, "bridge_protected": true, "bridge": "Egypt"}
+{"family": "PP", "id": "nat:chat:PP-L1-0221", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.02137901820242405, "bridge_protected": false, "bridge": "Spain"}
+{"family": "PM", "id": "nat:chat:PM-L1-0147", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2599808871746063}
+{"family": "PM", "id": "nat:chat:PM-L1-0221", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.004217896144837141}
+{"family": "MM", "id": "nat:chat:MM-L1-0470", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.035329874604940414}
+{"family": "PP", "id": "nat:chat:PP-L1-0639", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.03561175987124443}
+{"family": "PM", "id": "nat:chat:PM-L1-0147", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.16913694143295288, "bridge_protected": true, "bridge": "Egypt"}
+{"family": "PM", "id": "nat:chat:PM-L1-0221", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.00822301022708416, "bridge_protected": true, "bridge": "Spain"}
+{"family": "MM", "id": "nat:chat:MM-L1-0470", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0807432308793068, "bridge_protected": false, "bridge": "Vivaldi"}
+{"family": "PP", "id": "nat:chat:PP-L1-0639", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.002526070224121213, "bridge_protected": false, "bridge": "Toronto"}
+{"family": "PM", "id": "nat:chat:PM-L1-0147", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0832192599773407, "bridge_protected": true, "bridge": "Egypt"}
+{"family": "PM", "id": "nat:chat:PM-L1-0221", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.005381976254284382, "bridge_protected": true, "bridge": "Spain"}
+{"family": "MM", "id": "nat:chat:MM-L1-0470", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.03566214442253113, "bridge_protected": false, "bridge": "Vivaldi"}
+{"family": "PP", "id": "nat:chat:PP-L1-0639", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.016228951513767242, "bridge_protected": false, "bridge": "Toronto"}
+{"family": "PP", "id": "nat:chat:PP-L1-0151", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.007612859830260277}
+{"family": "PM", "id": "nat:chat:PM-L1-0625", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.31635692715644836}
+{"family": "PP", "id": "nat:chat:PP-L1-0151", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.015885232016444206, "bridge_protected": false, "bridge": "Ethiopia"}
+{"family": "PM", "id": "nat:chat:PM-L1-0625", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.9369561672210693, "bridge_protected": false, "bridge": "Seville"}
+{"family": "PP", "id": "nat:chat:PP-L1-0151", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.006983988452702761, "bridge_protected": false, "bridge": "Ethiopia"}
+{"family": "PM", "id": "nat:chat:PM-L1-0625", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -2.7602288722991943, "bridge_protected": false, "bridge": "Seville"}
+{"family": "PM", "id": "nat:chat:PM-L1-0151", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.017829502001404762}
+{"family": "PP", "id": "nat:chat:PP-L1-0573", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.00011288482346571982}
+{"family": "PM", "id": "nat:chat:PM-L1-0151", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.036878567188978195, "bridge_protected": false, "bridge": "Ethiopia"}
+{"family": "PP", "id": "nat:chat:PP-L1-0573", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.00023803261865396053, "bridge_protected": false, "bridge": "Geneva"}
+{"family": "PM", "id": "nat:chat:PM-L1-0151", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.027377992868423462, "bridge_protected": false, "bridge": "Ethiopia"}
+{"family": "PP", "id": "nat:chat:PP-L1-0573", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -8.83301836438477e-05, "bridge_protected": false, "bridge": "Geneva"}
+{"family": "PP", "id": "nat:chat:PP-L1-0185", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.06017012149095535}
+{"family": "MM", "id": "nat:chat:MM-L1-0456", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.19845212996006012}
+{"family": "PP", "id": "nat:chat:PP-L1-0185", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.03654107078909874, "bridge_protected": false, "bridge": "Kenya"}
+{"family": "MM", "id": "nat:chat:MM-L1-0456", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.134821891784668, "bridge_protected": false, "bridge": "Tchaikovsky"}
+{"family": "PP", "id": "nat:chat:PP-L1-0185", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.04909876734018326, "bridge_protected": false, "bridge": "Kenya"}
+{"family": "MM", "id": "nat:chat:MM-L1-0456", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.18370972573757172, "bridge_protected": false, "bridge": "Tchaikovsky"}
+{"family": "PM", "id": "nat:chat:PM-L1-0185", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.023983245715498924}
+{"family": "MP", "id": "nat:chat:MP-L1-0194", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.681404709815979}
+{"family": "MM", "id": "nat:chat:MM-L1-0358", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.013788331300020218}
+{"family": "MM", "id": "nat:chat:MM-L1-0448", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.05257154628634453}
+{"family": "PP", "id": "nat:chat:PP-L1-0575", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6190832853317261}
+{"family": "PM", "id": "nat:chat:PM-L1-0185", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.04786314815282822, "bridge_protected": false, "bridge": "Kenya"}
+{"family": "MP", "id": "nat:chat:MP-L1-0194", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.1937252283096313, "bridge_protected": false, "bridge": "Morocco"}
+{"family": "MM", "id": "nat:chat:MM-L1-0358", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.010774296708405018, "bridge_protected": false, "bridge": "Bach"}
+{"family": "MM", "id": "nat:chat:MM-L1-0448", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.11186389625072479, "bridge_protected": false, "bridge": "Picasso"}
+{"family": "PP", "id": "nat:chat:PP-L1-0575", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.6498830318450928, "bridge_protected": false, "bridge": "Geneva"}
+{"family": "PM", "id": "nat:chat:PM-L1-0185", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.013357790187001228, "bridge_protected": false, "bridge": "Kenya"}
+{"family": "MP", "id": "nat:chat:MP-L1-0194", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.4155215620994568, "bridge_protected": false, "bridge": "Morocco"}
+{"family": "MM", "id": "nat:chat:MM-L1-0358", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.028493773192167282, "bridge_protected": false, "bridge": "Bach"}
+{"family": "MM", "id": "nat:chat:MM-L1-0448", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.055182985961437225, "bridge_protected": false, "bridge": "Picasso"}
+{"family": "PP", "id": "nat:chat:PP-L1-0575", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -2.2162272930145264, "bridge_protected": false, "bridge": "Geneva"}
+{"family": "PP", "id": "nat:chat:PP-L1-0193", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4022773802280426}
+{"family": "PM", "id": "nat:chat:PM-L1-0199", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.013715784065425396}
+{"family": "PP", "id": "nat:chat:PP-L1-0201", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.18425916135311127}
+{"family": "MP", "id": "nat:chat:MP-L1-0230", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4452863037586212}
+{"family": "MM", "id": "nat:chat:MM-L1-0432", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.617615818977356}
+{"family": "MM", "id": "nat:chat:MM-L1-0458", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5245981216430664}
+{"family": "PP", "id": "nat:chat:PP-L1-0193", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.6851605772972107, "bridge_protected": false, "bridge": "Morocco"}
+{"family": "PM", "id": "nat:chat:PM-L1-0199", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.2554876506328583, "bridge_protected": false, "bridge": "Nepal"}
+{"family": "PP", "id": "nat:chat:PP-L1-0201", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.046451110392808914, "bridge_protected": false, "bridge": "Nigeria"}
+{"family": "MP", "id": "nat:chat:MP-L1-0230", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -0.9764859676361084, "bridge_protected": false, "bridge": "Thailand"}
+{"family": "MM", "id": "nat:chat:MM-L1-0432", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.2075409889221191, "bridge_protected": false, "bridge": "Monet"}
+{"family": "MM", "id": "nat:chat:MM-L1-0458", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -1.0996503829956055, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "PP", "id": "nat:chat:PP-L1-0193", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -1.4842880964279175, "bridge_protected": false, "bridge": "Morocco"}
+{"family": "PM", "id": "nat:chat:PM-L1-0199", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.013050852343440056, "bridge_protected": false, "bridge": "Nepal"}
+{"family": "PP", "id": "nat:chat:PP-L1-0201", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.11717027425765991, "bridge_protected": false, "bridge": "Nigeria"}
+{"family": "MP", "id": "nat:chat:MP-L1-0230", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.040006689727306366, "bridge_protected": false, "bridge": "Thailand"}
+{"family": "MM", "id": "nat:chat:MM-L1-0432", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -1.3521262407302856, "bridge_protected": false, "bridge": "Monet"}
+{"family": "MM", "id": "nat:chat:MM-L1-0458", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.4254142642021179, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "PM", "id": "nat:chat:PM-L1-0193", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.12848544120788574}
+{"family": "PM", "id": "nat:chat:PM-L1-0201", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.008874734863638878}
+{"family": "PP", "id": "nat:chat:PP-L1-0361", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.03321424126625061}
+{"family": "PM", "id": "nat:chat:PM-L1-0603", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.015510407276451588}
+{"family": "MM", "id": "nat:chat:MM-L1-0604", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0017888034926727414}
+{"family": "PM", "id": "nat:chat:PM-L1-0193", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.07832597941160202, "bridge_protected": false, "bridge": "Morocco"}
+{"family": "PM", "id": "nat:chat:PM-L1-0201", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.07383368164300919, "bridge_protected": false, "bridge": "Nigeria"}
+{"family": "PP", "id": "nat:chat:PP-L1-0361", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.04029538854956627, "bridge_protected": false, "bridge": "Beethoven"}
+{"family": "PM", "id": "nat:chat:PM-L1-0603", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.141152262687683, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "MM", "id": "nat:chat:MM-L1-0604", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0013703251024708152, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "PM", "id": "nat:chat:PM-L1-0193", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.05793827399611473, "bridge_protected": false, "bridge": "Morocco"}
+{"family": "PM", "id": "nat:chat:PM-L1-0201", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.01258691493421793, "bridge_protected": false, "bridge": "Nigeria"}
+{"family": "PP", "id": "nat:chat:PP-L1-0361", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.24169813096523285, "bridge_protected": false, "bridge": "Beethoven"}
+{"family": "PM", "id": "nat:chat:PM-L1-0603", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.01943100430071354, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "MM", "id": "nat:chat:MM-L1-0604", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0031527597457170486, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "MM", "id": "nat:chat:MM-L1-0194", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.025332508608698845}
+{"family": "MM", "id": "nat:chat:MM-L1-0194", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0224270261824131, "bridge_protected": false, "bridge": "Morocco"}
+{"family": "MM", "id": "nat:chat:MM-L1-0194", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.016562117263674736, "bridge_protected": false, "bridge": "Morocco"}
+{"family": "PP", "id": "nat:chat:PP-L1-0195", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.29365333914756775}
+{"family": "PP", "id": "nat:chat:PP-L1-0195", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.22589397430419922, "bridge_protected": false, "bridge": "Morocco"}
+{"family": "PP", "id": "nat:chat:PP-L1-0195", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.2911248505115509, "bridge_protected": false, "bridge": "Morocco"}
+{"family": "PM", "id": "nat:chat:PM-L1-0195", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.27276143431663513}
+{"family": "MM", "id": "nat:chat:MM-L1-0630", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0029250476509332657}
+{"family": "PM", "id": "nat:chat:PM-L1-0195", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -0.8293479681015015, "bridge_protected": false, "bridge": "Morocco"}
+{"family": "MM", "id": "nat:chat:MM-L1-0630", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -0.8082008361816406, "bridge_protected": false, "bridge": "Shanghai"}
+{"family": "PM", "id": "nat:chat:PM-L1-0195", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.3678828775882721, "bridge_protected": false, "bridge": "Morocco"}
+{"family": "MM", "id": "nat:chat:MM-L1-0630", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.004736513365060091, "bridge_protected": false, "bridge": "Shanghai"}
+{"family": "PP", "id": "nat:chat:PP-L1-0199", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.22429321706295013}
+{"family": "PP", "id": "nat:chat:PP-L1-0199", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.6647536158561707, "bridge_protected": false, "bridge": "Nepal"}
+{"family": "PP", "id": "nat:chat:PP-L1-0199", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.018271584063768387, "bridge_protected": false, "bridge": "Nepal"}
+{"family": "MP", "id": "nat:chat:MP-L1-0204", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.03949814289808273}
+{"family": "MP", "id": "nat:chat:MP-L1-0358", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.01963745430111885}
+{"family": "MP", "id": "nat:chat:MP-L1-0204", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.001817719079554081, "bridge_protected": false, "bridge": "Nigeria"}
+{"family": "MP", "id": "nat:chat:MP-L1-0358", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.05612371116876602, "bridge_protected": false, "bridge": "Bach"}
+{"family": "MP", "id": "nat:chat:MP-L1-0204", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.005876999814063311, "bridge_protected": false, "bridge": "Nigeria"}
+{"family": "MP", "id": "nat:chat:MP-L1-0358", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.07667526602745056, "bridge_protected": false, "bridge": "Bach"}
+{"family": "MM", "id": "nat:chat:MM-L1-0204", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.005613397341221571}
+{"family": "MM", "id": "nat:chat:MM-L1-0204", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.012883520685136318, "bridge_protected": false, "bridge": "Nigeria"}
+{"family": "MM", "id": "nat:chat:MM-L1-0204", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.007230187766253948, "bridge_protected": false, "bridge": "Nigeria"}
+{"family": "PP", "id": "nat:chat:PP-L1-0213", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0023098711390048265}
+{"family": "PP", "id": "nat:chat:PP-L1-0213", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.001520311925560236, "bridge_protected": false, "bridge": "Poland"}
+{"family": "PP", "id": "nat:chat:PP-L1-0213", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.005530177149921656, "bridge_protected": false, "bridge": "Poland"}
+{"family": "PM", "id": "nat:chat:PM-L1-0213", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.002334847114980221}
+{"family": "PM", "id": "nat:chat:PM-L1-0569", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0008386432309634984}
+{"family": "PM", "id": "nat:chat:PM-L1-0213", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.02144552767276764, "bridge_protected": false, "bridge": "Poland"}
+{"family": "PM", "id": "nat:chat:PM-L1-0569", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.022368857637047768, "bridge_protected": false, "bridge": "Florence"}
+{"family": "PM", "id": "nat:chat:PM-L1-0213", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0021633333526551723, "bridge_protected": false, "bridge": "Poland"}
+{"family": "PM", "id": "nat:chat:PM-L1-0569", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0021343089174479246, "bridge_protected": false, "bridge": "Florence"}
+{"family": "PP", "id": "nat:chat:PP-L1-0215", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.45515406131744385}
+{"family": "MP", "id": "nat:chat:MP-L1-0232", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5268323421478271}
+{"family": "MM", "id": "nat:chat:MM-L1-0414", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.10306453704833984}
+{"family": "MM", "id": "nat:chat:MM-L1-0416", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.05529500171542168}
+{"family": "PM", "id": "nat:chat:PM-L1-0607", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.005274428054690361}
+{"family": "PP", "id": "nat:chat:PP-L1-0645", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7335871458053589}
+{"family": "PP", "id": "nat:chat:PP-L1-0215", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.014913732185959816, "bridge_protected": false, "bridge": "Poland"}
+{"family": "MP", "id": "nat:chat:MP-L1-0232", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.5043764114379883, "bridge_protected": false, "bridge": "Thailand"}
+{"family": "MM", "id": "nat:chat:MM-L1-0414", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -2.19474196434021, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MM", "id": "nat:chat:MM-L1-0416", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.4311806559562683, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "PM", "id": "nat:chat:PM-L1-0607", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.024776555597782135, "bridge_protected": false, "bridge": "Munich"}
+{"family": "PP", "id": "nat:chat:PP-L1-0645", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.5319200754165649, "bridge_protected": false, "bridge": "Venice"}
+{"family": "PP", "id": "nat:chat:PP-L1-0215", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.011529835872352123, "bridge_protected": false, "bridge": "Poland"}
+{"family": "MP", "id": "nat:chat:MP-L1-0232", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.04523671045899391, "bridge_protected": false, "bridge": "Thailand"}
+{"family": "MM", "id": "nat:chat:MM-L1-0414", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.05916522070765495, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MM", "id": "nat:chat:MM-L1-0416", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.05674676597118378, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "PM", "id": "nat:chat:PM-L1-0607", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0033658065367490053, "bridge_protected": false, "bridge": "Munich"}
+{"family": "PP", "id": "nat:chat:PP-L1-0645", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -2.3752126693725586, "bridge_protected": false, "bridge": "Venice"}
+{"family": "PM", "id": "nat:chat:PM-L1-0215", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.010533214546740055}
+{"family": "MM", "id": "nat:chat:MM-L1-0406", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2631791830062866}
+{"family": "PM", "id": "nat:chat:PM-L1-0215", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.21422933042049408, "bridge_protected": false, "bridge": "Poland"}
+{"family": "MM", "id": "nat:chat:MM-L1-0406", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.3440164625644684, "bridge_protected": false, "bridge": "Grieg"}
+{"family": "PM", "id": "nat:chat:PM-L1-0215", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.09770679473876953, "bridge_protected": false, "bridge": "Poland"}
+{"family": "MM", "id": "nat:chat:MM-L1-0406", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -0.7420281171798706, "bridge_protected": false, "bridge": "Grieg"}
+{"family": "PP", "id": "nat:chat:PP-L1-0227", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.010088642127811909}
+{"family": "PP", "id": "nat:chat:PP-L1-0227", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0061429026536643505, "bridge_protected": false, "bridge": "Sweden"}
+{"family": "PP", "id": "nat:chat:PP-L1-0227", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.024595588445663452, "bridge_protected": false, "bridge": "Sweden"}
+{"family": "PM", "id": "nat:chat:PM-L1-0227", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3024982810020447}
+{"family": "MP", "id": "nat:chat:MP-L1-0448", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0018499656580388546}
+{"family": "PP", "id": "nat:chat:PP-L1-0581", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.008916915394365788}
+{"family": "PM", "id": "nat:chat:PM-L1-0613", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.03159436956048012}
+{"family": "PM", "id": "nat:chat:PM-L1-0227", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -0.8951220512390137, "bridge_protected": true, "bridge": "Sweden"}
+{"family": "MP", "id": "nat:chat:MP-L1-0448", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.006303784437477589, "bridge_protected": false, "bridge": "Picasso"}
+{"family": "PP", "id": "nat:chat:PP-L1-0581", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.004123400431126356, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "PM", "id": "nat:chat:PM-L1-0613", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.12069649994373322, "bridge_protected": false, "bridge": "Osaka"}
+{"family": "PM", "id": "nat:chat:PM-L1-0227", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.551645040512085, "bridge_protected": true, "bridge": "Sweden"}
+{"family": "MP", "id": "nat:chat:MP-L1-0448", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.005384466610848904, "bridge_protected": false, "bridge": "Picasso"}
+{"family": "PP", "id": "nat:chat:PP-L1-0581", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -1.2520111799240112, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "PM", "id": "nat:chat:PM-L1-0613", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.027403974905610085, "bridge_protected": false, "bridge": "Osaka"}
+{"family": "MM", "id": "nat:chat:MM-L1-0230", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0571090392768383}
+{"family": "PM", "id": "nat:chat:PM-L1-0575", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.03461940214037895}
+{"family": "MM", "id": "nat:chat:MM-L1-0230", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.00900328066200018, "bridge_protected": true, "bridge": "Thailand"}
+{"family": "PM", "id": "nat:chat:PM-L1-0575", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.19425399601459503, "bridge_protected": false, "bridge": "Geneva"}
+{"family": "MM", "id": "nat:chat:MM-L1-0230", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.029935775324702263, "bridge_protected": true, "bridge": "Thailand"}
+{"family": "PM", "id": "nat:chat:PM-L1-0575", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.061158761382102966, "bridge_protected": false, "bridge": "Geneva"}
+{"family": "MM", "id": "nat:chat:MM-L1-0232", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.004584160167723894}
+{"family": "MM", "id": "nat:chat:MM-L1-0232", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0027070327196270227, "bridge_protected": false, "bridge": "Thailand"}
+{"family": "MM", "id": "nat:chat:MM-L1-0232", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.004309296607971191, "bridge_protected": false, "bridge": "Thailand"}
+{"family": "PP", "id": "nat:chat:PP-L1-0239", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5277958512306213}
+{"family": "PP", "id": "nat:chat:PP-L1-0239", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -4.391262054443359, "bridge_protected": false, "bridge": "Vietnam"}
+{"family": "PP", "id": "nat:chat:PP-L1-0239", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.06476474553346634, "bridge_protected": false, "bridge": "Vietnam"}
+{"family": "PM", "id": "nat:chat:PM-L1-0239", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0031600084621459246}
+{"family": "PM", "id": "nat:chat:PM-L1-0239", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.00490046851336956, "bridge_protected": false, "bridge": "Vietnam"}
+{"family": "PM", "id": "nat:chat:PM-L1-0239", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.003101303242146969, "bridge_protected": false, "bridge": "Vietnam"}
+{"family": "MP", "id": "nat:chat:MP-L0-0244", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.01983112469315529}
+{"family": "PM", "id": "nat:chat:PM-L0-0493", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.26992008090019226}
+{"family": "MP", "id": "nat:chat:MP-L0-0504", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5315365195274353}
+{"family": "PP", "id": "nat:chat:PP-L0-0559", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4904727637767792}
+{"family": "MP", "id": "nat:chat:MP-L0-0244", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.02203202247619629, "bridge_protected": false, "bridge": "Bach"}
+{"family": "PM", "id": "nat:chat:PM-L0-0493", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -2.701125144958496, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "MP", "id": "nat:chat:MP-L0-0504", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.11642609536647797, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "PP", "id": "nat:chat:PP-L0-0559", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.046209488064050674, "bridge_protected": false, "bridge": "Venice"}
+{"family": "MP", "id": "nat:chat:MP-L0-0244", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.02976951003074646, "bridge_protected": false, "bridge": "Bach"}
+{"family": "PM", "id": "nat:chat:PM-L0-0493", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -1.3255351781845093, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "MP", "id": "nat:chat:MP-L0-0504", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.4895854592323303, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "PP", "id": "nat:chat:PP-L0-0559", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -0.910915732383728, "bridge_protected": false, "bridge": "Venice"}
+{"family": "PP", "id": "nat:chat:PP-L0-0245", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.002918391488492489}
+{"family": "PM", "id": "nat:chat:PM-L0-0257", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.04194353520870209}
+{"family": "PP", "id": "nat:chat:PP-L0-0245", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0026150099001824856, "bridge_protected": false, "bridge": "Beethoven"}
+{"family": "PM", "id": "nat:chat:PM-L0-0257", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.034072622656822205, "bridge_protected": false, "bridge": "Chopin"}
+{"family": "PP", "id": "nat:chat:PP-L0-0245", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.009016748517751694, "bridge_protected": false, "bridge": "Beethoven"}
+{"family": "PM", "id": "nat:chat:PM-L0-0257", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.13304837048053741, "bridge_protected": false, "bridge": "Chopin"}
+{"family": "PM", "id": "nat:chat:PM-L0-0245", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.08288146555423737}
+{"family": "PP", "id": "nat:chat:PP-L0-0487", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.470794677734375}
+{"family": "PP", "id": "nat:chat:PP-L0-0501", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.06345045566558838}
+{"family": "PM", "id": "nat:chat:PM-L0-0245", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.8646118640899658, "bridge_protected": false, "bridge": "Beethoven"}
+{"family": "PP", "id": "nat:chat:PP-L0-0487", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.46933040022850037, "bridge_protected": false, "bridge": "Geneva"}
+{"family": "PP", "id": "nat:chat:PP-L0-0501", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.1459013819694519, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "PM", "id": "nat:chat:PM-L0-0245", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.030841708183288574, "bridge_protected": false, "bridge": "Beethoven"}
+{"family": "PP", "id": "nat:chat:PP-L0-0487", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.7199373841285706, "bridge_protected": false, "bridge": "Geneva"}
+{"family": "PP", "id": "nat:chat:PP-L0-0501", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.3151102066040039, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "MP", "id": "nat:chat:MP-L0-0250", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5326240062713623}
+{"family": "MP", "id": "nat:chat:MP-L0-0250", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.3051738440990448, "bridge_protected": false, "bridge": "Cervantes"}
+{"family": "MP", "id": "nat:chat:MP-L0-0250", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.25890687108039856, "bridge_protected": false, "bridge": "Cervantes"}
+{"family": "MM", "id": "nat:chat:MM-L0-0250", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.008914552628993988}
+{"family": "MM", "id": "nat:chat:MM-L0-0532", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0015300721861422062}
+{"family": "PM", "id": "nat:chat:PM-L0-0541", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.001311871805228293}
+{"family": "MM", "id": "nat:chat:MM-L0-0250", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.1133977621793747, "bridge_protected": false, "bridge": "Cervantes"}
+{"family": "MM", "id": "nat:chat:MM-L0-0532", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0016242180718109012, "bridge_protected": false, "bridge": "Porto"}
+{"family": "PM", "id": "nat:chat:PM-L0-0541", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -3.9313018321990967, "bridge_protected": false, "bridge": "Shanghai"}
+{"family": "MM", "id": "nat:chat:MM-L0-0250", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.009228785522282124, "bridge_protected": false, "bridge": "Cervantes"}
+{"family": "MM", "id": "nat:chat:MM-L0-0532", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.003787250956520438, "bridge_protected": false, "bridge": "Porto"}
+{"family": "PM", "id": "nat:chat:PM-L0-0541", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.016638679429888725, "bridge_protected": false, "bridge": "Shanghai"}
+{"family": "MP", "id": "nat:chat:MP-L0-0254", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0038526849821209908}
+{"family": "MP", "id": "nat:chat:MP-L0-0314", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.00013958434283267707}
+{"family": "MP", "id": "nat:chat:MP-L0-0254", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0010093123419210315, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "MP", "id": "nat:chat:MP-L0-0314", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.00010430268594063818, "bridge_protected": false, "bridge": "Monet"}
+{"family": "MP", "id": "nat:chat:MP-L0-0254", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.006657443940639496, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "MP", "id": "nat:chat:MP-L0-0314", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0002783149539027363, "bridge_protected": false, "bridge": "Monet"}
+{"family": "MM", "id": "nat:chat:MM-L0-0254", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.05842426419258118}
+{"family": "MM", "id": "nat:chat:MM-L0-0342", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.22012653946876526}
+{"family": "MP", "id": "nat:chat:MP-L0-0542", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -1.0712600946426392}
+{"family": "MM", "id": "nat:chat:MM-L0-0254", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.08050062507390976, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "MM", "id": "nat:chat:MM-L0-0342", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.7535668015480042, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "MP", "id": "nat:chat:MP-L0-0542", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -2.826573133468628, "bridge_protected": false, "bridge": "Shanghai"}
+{"family": "MM", "id": "nat:chat:MM-L0-0254", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.17377743124961853, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "MM", "id": "nat:chat:MM-L0-0342", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -1.5932592153549194, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "MP", "id": "nat:chat:MP-L0-0542", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.06608400493860245, "bridge_protected": false, "bridge": "Shanghai"}
+{"family": "MM", "id": "nat:chat:MM-L0-0256", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.7060526013374329}
+{"family": "MM", "id": "nat:chat:MM-L0-0256", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.477415680885315, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "MM", "id": "nat:chat:MM-L0-0256", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -1.1932400465011597, "bridge_protected": false, "bridge": "Chekhov"}
+{"family": "PP", "id": "nat:chat:PP-L0-0257", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0014349650591611862}
+{"family": "PP", "id": "nat:chat:PP-L0-0257", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.003202312160283327, "bridge_protected": false, "bridge": "Chopin"}
+{"family": "PP", "id": "nat:chat:PP-L0-0257", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.009325280785560608, "bridge_protected": false, "bridge": "Chopin"}
+{"family": "PP", "id": "nat:chat:PP-L0-0263", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.04944374039769173}
+{"family": "PP", "id": "nat:chat:PP-L0-0495", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0002964295563288033}
+{"family": "MP", "id": "nat:chat:MP-L0-0532", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.30372676253318787}
+{"family": "PP", "id": "nat:chat:PP-L0-0263", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.011866927146911621, "bridge_protected": false, "bridge": "Copernicus"}
+{"family": "PP", "id": "nat:chat:PP-L0-0495", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0016108882846310735, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "MP", "id": "nat:chat:MP-L0-0532", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.08871235698461533, "bridge_protected": false, "bridge": "Porto"}
+{"family": "PP", "id": "nat:chat:PP-L0-0263", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.13003025949001312, "bridge_protected": false, "bridge": "Copernicus"}
+{"family": "PP", "id": "nat:chat:PP-L0-0495", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0004390706308186054, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "MP", "id": "nat:chat:MP-L0-0532", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -4.79564905166626, "bridge_protected": false, "bridge": "Porto"}
+{"family": "MM", "id": "nat:chat:MM-L0-0266", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.05428642779588699}
+{"family": "MM", "id": "nat:chat:MM-L0-0518", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.05783297121524811}
+{"family": "MM", "id": "nat:chat:MM-L0-0266", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.042159903794527054, "bridge_protected": false, "bridge": "Dante"}
+{"family": "MM", "id": "nat:chat:MM-L0-0518", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -0.797931432723999, "bridge_protected": false, "bridge": "Munich"}
+{"family": "MM", "id": "nat:chat:MM-L0-0266", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.07986006140708923, "bridge_protected": false, "bridge": "Dante"}
+{"family": "MM", "id": "nat:chat:MM-L0-0518", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.020486775785684586, "bridge_protected": false, "bridge": "Munich"}
+{"family": "MP", "id": "nat:chat:MP-L0-0278", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.001720854314044118}
+{"family": "PM", "id": "nat:chat:PM-L0-0291", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3069155812263489}
+{"family": "PM", "id": "nat:chat:PM-L0-0555", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.06150609999895096}
+{"family": "MP", "id": "nat:chat:MP-L0-0278", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0009738231892697513, "bridge_protected": false, "bridge": "Freud"}
+{"family": "PM", "id": "nat:chat:PM-L0-0291", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -2.143449544906616, "bridge_protected": false, "bridge": "Grieg"}
+{"family": "PM", "id": "nat:chat:PM-L0-0555", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.9890875816345215, "bridge_protected": false, "bridge": "Vancouver"}
+{"family": "MP", "id": "nat:chat:MP-L0-0278", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0037617175839841366, "bridge_protected": false, "bridge": "Freud"}
+{"family": "PM", "id": "nat:chat:PM-L0-0291", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.3964802026748657, "bridge_protected": false, "bridge": "Grieg"}
+{"family": "PM", "id": "nat:chat:PM-L0-0555", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -3.782428503036499, "bridge_protected": false, "bridge": "Vancouver"}
+{"family": "MM", "id": "nat:chat:MM-L0-0278", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.027908042073249817}
+{"family": "MM", "id": "nat:chat:MM-L0-0516", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0007427555974572897}
+{"family": "PP", "id": "nat:chat:PP-L0-0521", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.17767676711082458}
+{"family": "MM", "id": "nat:chat:MM-L0-0278", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0692935362458229, "bridge_protected": false, "bridge": "Freud"}
+{"family": "MM", "id": "nat:chat:MM-L0-0516", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0011337526375427842, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "PP", "id": "nat:chat:PP-L0-0521", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.012106391601264477, "bridge_protected": false, "bridge": "Naples"}
+{"family": "MM", "id": "nat:chat:MM-L0-0278", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.07730529457330704, "bridge_protected": false, "bridge": "Freud"}
+{"family": "MM", "id": "nat:chat:MM-L0-0516", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.001479841535910964, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "PP", "id": "nat:chat:PP-L0-0521", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.3590300679206848, "bridge_protected": false, "bridge": "Naples"}
+{"family": "MM", "id": "nat:chat:MM-L0-0280", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.013497286476194859}
+{"family": "MM", "id": "nat:chat:MM-L0-0280", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.020077219232916832, "bridge_protected": false, "bridge": "Freud"}
+{"family": "MM", "id": "nat:chat:MM-L0-0280", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.015078258700668812, "bridge_protected": false, "bridge": "Freud"}
+{"family": "MP", "id": "nat:chat:MP-L0-0286", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.148704394698143}
+{"family": "MP", "id": "nat:chat:MP-L0-0286", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.006048707291483879, "bridge_protected": false, "bridge": "Goethe"}
+{"family": "MP", "id": "nat:chat:MP-L0-0286", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -1.0657960176467896, "bridge_protected": false, "bridge": "Goethe"}
+{"family": "MM", "id": "nat:chat:MM-L0-0286", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.03330475836992264}
+{"family": "MP", "id": "nat:chat:MP-L0-0300", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.011678660288453102}
+{"family": "PM", "id": "nat:chat:PM-L0-0351", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.08025190979242325}
+{"family": "PP", "id": "nat:chat:PP-L0-0535", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0016807490028440952}
+{"family": "MM", "id": "nat:chat:MM-L0-0286", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.11159215867519379, "bridge_protected": false, "bridge": "Goethe"}
+{"family": "MP", "id": "nat:chat:MP-L0-0300", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.01385828759521246, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "PM", "id": "nat:chat:PM-L0-0351", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.6057897806167603, "bridge_protected": false, "bridge": "Vermeer"}
+{"family": "PP", "id": "nat:chat:PP-L0-0535", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.003121386980637908, "bridge_protected": false, "bridge": "Rio"}
+{"family": "MM", "id": "nat:chat:MM-L0-0286", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.030950356274843216, "bridge_protected": false, "bridge": "Goethe"}
+{"family": "MP", "id": "nat:chat:MP-L0-0300", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.34738051891326904, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "PM", "id": "nat:chat:PM-L0-0351", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -1.2624660730361938, "bridge_protected": false, "bridge": "Vermeer"}
+{"family": "PP", "id": "nat:chat:PP-L0-0535", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0005237876321189106, "bridge_protected": false, "bridge": "Rio"}
+{"family": "PM", "id": "nat:chat:PM-L0-0289", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5211043357849121}
+{"family": "PM", "id": "nat:chat:PM-L0-0489", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0004614718782249838}
+{"family": "PM", "id": "nat:chat:PM-L0-0497", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0009901388548314571}
+{"family": "PP", "id": "nat:chat:PP-L0-0537", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0027447191532701254}
+{"family": "PP", "id": "nat:chat:PP-L0-0551", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0206611305475235}
+{"family": "PM", "id": "nat:chat:PM-L0-0289", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -2.8465209007263184, "bridge_protected": false, "bridge": "Grieg"}
+{"family": "PM", "id": "nat:chat:PM-L0-0489", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0031123552471399307, "bridge_protected": false, "bridge": "Hamburg"}
+{"family": "PM", "id": "nat:chat:PM-L0-0497", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.007956359535455704, "bridge_protected": false, "bridge": "Krakow"}
+{"family": "PP", "id": "nat:chat:PP-L0-0537", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0008366183610633016, "bridge_protected": false, "bridge": "Seville"}
+{"family": "PP", "id": "nat:chat:PP-L0-0551", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.006978779565542936, "bridge_protected": false, "bridge": "Toronto"}
+{"family": "PM", "id": "nat:chat:PM-L0-0289", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.3869137763977051, "bridge_protected": false, "bridge": "Grieg"}
+{"family": "PM", "id": "nat:chat:PM-L0-0489", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0005606033373624086, "bridge_protected": false, "bridge": "Hamburg"}
+{"family": "PM", "id": "nat:chat:PM-L0-0497", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0016532575245946646, "bridge_protected": false, "bridge": "Krakow"}
+{"family": "PP", "id": "nat:chat:PP-L0-0537", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.011145240627229214, "bridge_protected": false, "bridge": "Seville"}
+{"family": "PP", "id": "nat:chat:PP-L0-0551", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.016406044363975525, "bridge_protected": false, "bridge": "Toronto"}
+{"family": "PP", "id": "nat:chat:PP-L0-0291", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.016809135675430298}
+{"family": "PP", "id": "nat:chat:PP-L0-0291", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.015191097743809223, "bridge_protected": false, "bridge": "Grieg"}
+{"family": "PP", "id": "nat:chat:PP-L0-0291", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.03038306161761284, "bridge_protected": false, "bridge": "Grieg"}
+{"family": "PP", "id": "nat:chat:PP-L0-0297", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.05273756757378578}
+{"family": "PP", "id": "nat:chat:PP-L0-0297", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.053157251328229904, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "PP", "id": "nat:chat:PP-L0-0297", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.15570390224456787, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "PM", "id": "nat:chat:PM-L0-0297", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2281302511692047}
+{"family": "PM", "id": "nat:chat:PM-L0-0297", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.48108696937561035, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "PM", "id": "nat:chat:PM-L0-0297", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.46573004126548767, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MP", "id": "nat:chat:MP-L0-0298", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.005799490958452225}
+{"family": "MP", "id": "nat:chat:MP-L0-0298", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.00380114559084177, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MP", "id": "nat:chat:MP-L0-0298", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.025651386007666588, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MM", "id": "nat:chat:MM-L0-0298", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.037194475531578064}
+{"family": "MM", "id": "nat:chat:MM-L0-0298", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.053770747035741806, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MM", "id": "nat:chat:MM-L0-0298", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.040548406541347504, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MM", "id": "nat:chat:MM-L0-0300", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.09658092260360718}
+{"family": "MM", "id": "nat:chat:MM-L0-0496", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.004631150048226118}
+{"family": "MM", "id": "nat:chat:MM-L0-0300", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -2.1670734882354736, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MM", "id": "nat:chat:MM-L0-0496", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0030074152164161205, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "MM", "id": "nat:chat:MM-L0-0300", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.15946505963802338, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MM", "id": "nat:chat:MM-L0-0496", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0051807439886033535, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "MP", "id": "nat:chat:MP-L0-0302", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.007491116411983967}
+{"family": "PP", "id": "nat:chat:PP-L0-0305", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.140793114900589}
+{"family": "MP", "id": "nat:chat:MP-L0-0320", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0015261442167684436}
+{"family": "PP", "id": "nat:chat:PP-L0-0341", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.007272438146173954}
+{"family": "MP", "id": "nat:chat:MP-L0-0302", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.01807585544884205, "bridge_protected": false, "bridge": "Kant"}
+{"family": "PP", "id": "nat:chat:PP-L0-0305", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.1028591394424438, "bridge_protected": false, "bridge": "Linnaeus"}
+{"family": "MP", "id": "nat:chat:MP-L0-0320", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0018786415457725525, "bridge_protected": false, "bridge": "Mozart"}
+{"family": "PP", "id": "nat:chat:PP-L0-0341", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.020060161128640175, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "MP", "id": "nat:chat:MP-L0-0302", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.03151709586381912, "bridge_protected": false, "bridge": "Kant"}
+{"family": "PP", "id": "nat:chat:PP-L0-0305", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.30017462372779846, "bridge_protected": false, "bridge": "Linnaeus"}
+{"family": "MP", "id": "nat:chat:MP-L0-0320", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.001732040662318468, "bridge_protected": false, "bridge": "Mozart"}
+{"family": "PP", "id": "nat:chat:PP-L0-0341", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.021392904222011566, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "PM", "id": "nat:chat:PM-L0-0305", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -1.019288182258606}
+{"family": "PP", "id": "nat:chat:PP-L0-0329", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.13313540816307068}
+{"family": "PM", "id": "nat:chat:PM-L0-0341", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.8394066095352173}
+{"family": "PM", "id": "nat:chat:PM-L0-0487", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.05848633125424385}
+{"family": "PM", "id": "nat:chat:PM-L0-0501", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0630798414349556}
+{"family": "PM", "id": "nat:chat:PM-L0-0305", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -2.3035354614257812, "bridge_protected": false, "bridge": "Linnaeus"}
+{"family": "PP", "id": "nat:chat:PP-L0-0329", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.06628662347793579, "bridge_protected": false, "bridge": "Picasso"}
+{"family": "PM", "id": "nat:chat:PM-L0-0341", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -4.517247200012207, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "PM", "id": "nat:chat:PM-L0-0487", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.3212714195251465, "bridge_protected": false, "bridge": "Geneva"}
+{"family": "PM", "id": "nat:chat:PM-L0-0501", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.055708885192871, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "PM", "id": "nat:chat:PM-L0-0305", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -2.161977767944336, "bridge_protected": false, "bridge": "Linnaeus"}
+{"family": "PP", "id": "nat:chat:PP-L0-0329", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.21880121529102325, "bridge_protected": false, "bridge": "Picasso"}
+{"family": "PM", "id": "nat:chat:PM-L0-0341", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -4.689742088317871, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "PM", "id": "nat:chat:PM-L0-0487", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.09061840176582336, "bridge_protected": false, "bridge": "Geneva"}
+{"family": "PM", "id": "nat:chat:PM-L0-0501", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.3499407470226288, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "MP", "id": "nat:chat:MP-L0-0316", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.005219167564064264}
+{"family": "MP", "id": "nat:chat:MP-L0-0316", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0006625840906053782, "bridge_protected": false, "bridge": "Monet"}
+{"family": "MP", "id": "nat:chat:MP-L0-0316", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.005521285813301802, "bridge_protected": false, "bridge": "Monet"}
+{"family": "PM", "id": "nat:chat:PM-L0-0321", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.05651460215449333}
+{"family": "PM", "id": "nat:chat:PM-L0-0321", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.5450547933578491, "bridge_protected": false, "bridge": "Napoleon"}
+{"family": "PM", "id": "nat:chat:PM-L0-0321", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.5062031745910645, "bridge_protected": false, "bridge": "Napoleon"}
+{"family": "MM", "id": "nat:chat:MM-L0-0332", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2745092213153839}
+{"family": "MM", "id": "nat:chat:MM-L0-0332", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.5923287868499756, "bridge_protected": false, "bridge": "Picasso"}
+{"family": "MM", "id": "nat:chat:MM-L0-0332", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.24396869540214539, "bridge_protected": false, "bridge": "Picasso"}
+{"family": "MM", "id": "nat:chat:MM-L0-0334", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.016664354130625725}
+{"family": "MM", "id": "nat:chat:MM-L0-0334", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.04483272507786751, "bridge_protected": false, "bridge": "Rembrandt"}
+{"family": "MM", "id": "nat:chat:MM-L0-0334", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.03508324548602104, "bridge_protected": false, "bridge": "Rembrandt"}
+{"family": "MP", "id": "nat:chat:MP-L0-0342", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.005457265302538872}
+{"family": "MP", "id": "nat:chat:MP-L0-0342", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0012322221882641315, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "MP", "id": "nat:chat:MP-L0-0342", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.016904432326555252, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "PM", "id": "nat:chat:PM-L1-0361", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.051220282912254333}
+{"family": "MM", "id": "nat:chat:MM-L1-0472", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.025257423520088196}
+{"family": "PM", "id": "nat:chat:PM-L1-0361", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.3438849449157715, "bridge_protected": false, "bridge": "Beethoven"}
+{"family": "MM", "id": "nat:chat:MM-L1-0472", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.013963505625724792, "bridge_protected": false, "bridge": "Vivaldi"}
+{"family": "PM", "id": "nat:chat:PM-L1-0361", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.1461566537618637, "bridge_protected": false, "bridge": "Beethoven"}
+{"family": "MM", "id": "nat:chat:MM-L1-0472", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.01800338551402092, "bridge_protected": false, "bridge": "Vivaldi"}
+{"family": "MP", "id": "nat:chat:MP-L1-0366", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.023058844730257988}
+{"family": "MP", "id": "nat:chat:MP-L1-0366", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.021411223337054253, "bridge_protected": false, "bridge": "Cervantes"}
+{"family": "MP", "id": "nat:chat:MP-L1-0366", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.02785656787455082, "bridge_protected": false, "bridge": "Cervantes"}
+{"family": "MM", "id": "nat:chat:MM-L1-0366", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4967002272605896}
+{"family": "MM", "id": "nat:chat:MM-L1-0366", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.0546369552612305, "bridge_protected": false, "bridge": "Cervantes"}
+{"family": "MM", "id": "nat:chat:MM-L1-0366", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.2315603494644165, "bridge_protected": false, "bridge": "Cervantes"}
+{"family": "MP", "id": "nat:chat:MP-L1-0382", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0032373659778386354}
+{"family": "MP", "id": "nat:chat:MP-L1-0468", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.002659357851371169}
+{"family": "MP", "id": "nat:chat:MP-L1-0382", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.004173498135060072, "bridge_protected": false, "bridge": "Dante"}
+{"family": "MP", "id": "nat:chat:MP-L1-0468", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -6.818637847900391, "bridge_protected": false, "bridge": "Vermeer"}
+{"family": "MP", "id": "nat:chat:MP-L1-0382", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.004273449536412954, "bridge_protected": false, "bridge": "Dante"}
+{"family": "MP", "id": "nat:chat:MP-L1-0468", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.003985558170825243, "bridge_protected": false, "bridge": "Vermeer"}
+{"family": "MM", "id": "nat:chat:MM-L1-0382", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.19100593030452728}
+{"family": "MP", "id": "nat:chat:MP-L1-0630", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.06337650120258331}
+{"family": "MM", "id": "nat:chat:MM-L1-0382", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.17986604571342468, "bridge_protected": false, "bridge": "Dante"}
+{"family": "MP", "id": "nat:chat:MP-L1-0630", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.023995349183678627, "bridge_protected": false, "bridge": "Shanghai"}
+{"family": "MM", "id": "nat:chat:MM-L1-0382", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.10423093289136887, "bridge_protected": false, "bridge": "Dante"}
+{"family": "MP", "id": "nat:chat:MP-L1-0630", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.033234190195798874, "bridge_protected": false, "bridge": "Shanghai"}
+{"family": "MP", "id": "nat:chat:MP-L1-0394", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0005364171229302883}
+{"family": "MP", "id": "nat:chat:MP-L1-0394", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0006403064471669495, "bridge_protected": false, "bridge": "Freud"}
+{"family": "MP", "id": "nat:chat:MP-L1-0394", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.000962151971179992, "bridge_protected": false, "bridge": "Freud"}
+{"family": "MM", "id": "nat:chat:MM-L1-0394", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.018284577876329422}
+{"family": "MM", "id": "nat:chat:MM-L1-0394", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.019565213471651077, "bridge_protected": false, "bridge": "Freud"}
+{"family": "MM", "id": "nat:chat:MM-L1-0394", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.08247901499271393, "bridge_protected": false, "bridge": "Freud"}
+{"family": "MP", "id": "nat:chat:MP-L1-0396", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.001760838902555406}
+{"family": "MP", "id": "nat:chat:MP-L1-0396", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.002359227742999792, "bridge_protected": false, "bridge": "Freud"}
+{"family": "MP", "id": "nat:chat:MP-L1-0396", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.004376595374196768, "bridge_protected": false, "bridge": "Freud"}
+{"family": "MM", "id": "nat:chat:MM-L1-0396", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.08200996369123459}
+{"family": "MM", "id": "nat:chat:MM-L1-0396", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -2.9961159229278564, "bridge_protected": false, "bridge": "Freud"}
+{"family": "MM", "id": "nat:chat:MM-L1-0396", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.9378973245620728, "bridge_protected": false, "bridge": "Freud"}
+{"family": "MP", "id": "nat:chat:MP-L1-0406", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2033020257949829}
+{"family": "PM", "id": "nat:chat:PM-L1-0567", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.014223506674170494}
+{"family": "MP", "id": "nat:chat:MP-L1-0406", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.31552088260650635, "bridge_protected": false, "bridge": "Grieg"}
+{"family": "PM", "id": "nat:chat:PM-L1-0567", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.4197934865951538, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "MP", "id": "nat:chat:MP-L1-0406", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.23028863966464996, "bridge_protected": false, "bridge": "Grieg"}
+{"family": "PM", "id": "nat:chat:PM-L1-0567", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.005647655110806227, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "MP", "id": "nat:chat:MP-L1-0414", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.022123442962765694}
+{"family": "MP", "id": "nat:chat:MP-L1-0414", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.057431675493717194, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MP", "id": "nat:chat:MP-L1-0414", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.013233920559287071, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MP", "id": "nat:chat:MP-L1-0416", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0012819890398532152}
+{"family": "MP", "id": "nat:chat:MP-L1-0432", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.012029128149151802}
+{"family": "MP", "id": "nat:chat:MP-L1-0416", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0014221088495105505, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MP", "id": "nat:chat:MP-L1-0432", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.024923769757151604, "bridge_protected": false, "bridge": "Monet"}
+{"family": "MP", "id": "nat:chat:MP-L1-0416", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0017886845162138343, "bridge_protected": false, "bridge": "Ibsen"}
+{"family": "MP", "id": "nat:chat:MP-L1-0432", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.01728787273168564, "bridge_protected": false, "bridge": "Monet"}
+{"family": "MP", "id": "nat:chat:MP-L1-0418", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0057365549728274345}
+{"family": "PP", "id": "nat:chat:PP-L1-0459", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.3342759311199188}
+{"family": "MP", "id": "nat:chat:MP-L1-0418", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0044648959301412106, "bridge_protected": false, "bridge": "Kant"}
+{"family": "PP", "id": "nat:chat:PP-L1-0459", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.04177810996770859, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "MP", "id": "nat:chat:MP-L1-0418", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.021190200001001358, "bridge_protected": false, "bridge": "Kant"}
+{"family": "PP", "id": "nat:chat:PP-L1-0459", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.4552801251411438, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "MM", "id": "nat:chat:MM-L1-0418", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.01497926376760006}
+{"family": "PP", "id": "nat:chat:PP-L1-0625", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0006681832019239664}
+{"family": "MM", "id": "nat:chat:MM-L1-0418", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.006479564122855663, "bridge_protected": false, "bridge": "Kant"}
+{"family": "PP", "id": "nat:chat:PP-L1-0625", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.003126853611320257, "bridge_protected": false, "bridge": "Seville"}
+{"family": "MM", "id": "nat:chat:MM-L1-0418", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.03300468996167183, "bridge_protected": false, "bridge": "Kant"}
+{"family": "PP", "id": "nat:chat:PP-L1-0625", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0035411526914685965, "bridge_protected": false, "bridge": "Seville"}
+{"family": "MP", "id": "nat:chat:MP-L1-0420", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.03553525358438492}
+{"family": "MP", "id": "nat:chat:MP-L1-0420", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.002832331694662571, "bridge_protected": false, "bridge": "Kant"}
+{"family": "MP", "id": "nat:chat:MP-L1-0420", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -1.082345962524414, "bridge_protected": false, "bridge": "Kant"}
+{"family": "MM", "id": "nat:chat:MM-L1-0420", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.013331323862075806}
+{"family": "PP", "id": "nat:chat:PP-L1-0607", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.020335284993052483}
+{"family": "MM", "id": "nat:chat:MM-L1-0420", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.01917785033583641, "bridge_protected": false, "bridge": "Kant"}
+{"family": "PP", "id": "nat:chat:PP-L1-0607", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.004473084583878517, "bridge_protected": false, "bridge": "Munich"}
+{"family": "MM", "id": "nat:chat:MM-L1-0420", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.01986606791615486, "bridge_protected": false, "bridge": "Kant"}
+{"family": "PP", "id": "nat:chat:PP-L1-0607", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.2875829339027405, "bridge_protected": false, "bridge": "Munich"}
+{"family": "PP", "id": "nat:chat:PP-L1-0423", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.13230213522911072}
+{"family": "MM", "id": "nat:chat:MM-L1-0428", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.035477038472890854}
+{"family": "PP", "id": "nat:chat:PP-L1-0591", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.12725622951984406}
+{"family": "PP", "id": "nat:chat:PP-L1-0423", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.060084473341703415, "bridge_protected": false, "bridge": "Linnaeus"}
+{"family": "MM", "id": "nat:chat:MM-L1-0428", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.17278742790222168, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "PP", "id": "nat:chat:PP-L1-0591", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.011433553881943226, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "PP", "id": "nat:chat:PP-L1-0423", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.36536675691604614, "bridge_protected": false, "bridge": "Linnaeus"}
+{"family": "MM", "id": "nat:chat:MM-L1-0428", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.016886381432414055, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "PP", "id": "nat:chat:PP-L1-0591", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.4652968645095825, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "PM", "id": "nat:chat:PM-L1-0423", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.8911083936691284}
+{"family": "PM", "id": "nat:chat:PM-L1-0423", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.6296347379684448, "bridge_protected": false, "bridge": "Linnaeus"}
+{"family": "PM", "id": "nat:chat:PM-L1-0423", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -1.2327284812927246, "bridge_protected": false, "bridge": "Linnaeus"}
+{"family": "PP", "id": "nat:chat:PP-L1-0425", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0023503080010414124}
+{"family": "PP", "id": "nat:chat:PP-L1-0425", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.05040767043828964, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "PP", "id": "nat:chat:PP-L1-0425", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.005834453739225864, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "PM", "id": "nat:chat:PM-L1-0425", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6394431591033936}
+{"family": "PM", "id": "nat:chat:PM-L1-0425", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.9410842061042786, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "PM", "id": "nat:chat:PM-L1-0425", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -2.2672948837280273, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "MP", "id": "nat:chat:MP-L1-0428", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.5004923939704895}
+{"family": "MP", "id": "nat:chat:MP-L1-0428", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.7569547891616821, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "MP", "id": "nat:chat:MP-L1-0428", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.049058474600315094, "bridge_protected": false, "bridge": "Michelangelo"}
+{"family": "PP", "id": "nat:chat:PP-L1-0445", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.1886828988790512}
+{"family": "MP", "id": "nat:chat:MP-L1-0472", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.003262912854552269}
+{"family": "MP", "id": "nat:chat:MP-L1-0604", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.002086844528093934}
+{"family": "PP", "id": "nat:chat:PP-L1-0445", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.009814579039812088, "bridge_protected": false, "bridge": "Picasso"}
+{"family": "MP", "id": "nat:chat:MP-L1-0472", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.003891753265634179, "bridge_protected": false, "bridge": "Vivaldi"}
+{"family": "MP", "id": "nat:chat:MP-L1-0604", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.015852848067879677, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "PP", "id": "nat:chat:PP-L1-0445", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.22472302615642548, "bridge_protected": false, "bridge": "Picasso"}
+{"family": "MP", "id": "nat:chat:MP-L1-0472", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0023253324907273054, "bridge_protected": false, "bridge": "Vivaldi"}
+{"family": "MP", "id": "nat:chat:MP-L1-0604", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.002879285253584385, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "PM", "id": "nat:chat:PM-L1-0445", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.36242273449897766}
+{"family": "PM", "id": "nat:chat:PM-L1-0445", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -3.1109910011291504, "bridge_protected": false, "bridge": "Picasso"}
+{"family": "PM", "id": "nat:chat:PM-L1-0445", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -6.898495197296143, "bridge_protected": false, "bridge": "Picasso"}
+{"family": "MP", "id": "nat:chat:MP-L1-0456", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.00904061272740364}
+{"family": "MP", "id": "nat:chat:MP-L1-0456", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0034410094376653433, "bridge_protected": false, "bridge": "Tchaikovsky"}
+{"family": "MP", "id": "nat:chat:MP-L1-0456", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.02384462207555771, "bridge_protected": false, "bridge": "Tchaikovsky"}
+{"family": "MP", "id": "nat:chat:MP-L1-0458", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0027625514194369316}
+{"family": "MP", "id": "nat:chat:MP-L1-0458", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0008406681008636951, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "MP", "id": "nat:chat:MP-L1-0458", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.002934675430878997, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "PM", "id": "nat:chat:PM-L1-0459", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.4720793068408966}
+{"family": "PM", "id": "nat:chat:PM-L1-0459", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -3.193314790725708, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "PM", "id": "nat:chat:PM-L1-0459", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -1.3658767938613892, "bridge_protected": false, "bridge": "Tolstoy"}
+{"family": "MP", "id": "nat:chat:MP-L1-0466", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0012816318776458502}
+{"family": "MP", "id": "nat:chat:MP-L1-0466", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.001919690752401948, "bridge_protected": false, "bridge": "Vermeer"}
+{"family": "MP", "id": "nat:chat:MP-L1-0466", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0018174811266362667, "bridge_protected": false, "bridge": "Vermeer"}
+{"family": "MM", "id": "nat:chat:MM-L1-0466", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.008552235551178455}
+{"family": "MM", "id": "nat:chat:MM-L1-0466", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.010895994491875172, "bridge_protected": false, "bridge": "Vermeer"}
+{"family": "MM", "id": "nat:chat:MM-L1-0466", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.03880691155791283, "bridge_protected": false, "bridge": "Vermeer"}
+{"family": "MM", "id": "nat:chat:MM-L1-0468", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.006278907414525747}
+{"family": "MM", "id": "nat:chat:MM-L1-0468", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.006519595626741648, "bridge_protected": false, "bridge": "Vermeer"}
+{"family": "MM", "id": "nat:chat:MM-L1-0468", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.021486015990376472, "bridge_protected": false, "bridge": "Vermeer"}
+{"family": "MP", "id": "nat:chat:MP-L1-0470", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0021394239738583565}
+{"family": "MP", "id": "nat:chat:MP-L1-0470", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0028041587211191654, "bridge_protected": false, "bridge": "Vivaldi"}
+{"family": "MP", "id": "nat:chat:MP-L1-0470", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.004540016409009695, "bridge_protected": false, "bridge": "Vivaldi"}
+{"family": "PP", "id": "nat:chat:PP-L0-0477", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0006381620769388974}
+{"family": "PM", "id": "nat:chat:PM-L0-0483", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2061990648508072}
+{"family": "PP", "id": "nat:chat:PP-L0-0477", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0009623901569284499, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "PM", "id": "nat:chat:PM-L0-0483", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.22926917672157288, "bridge_protected": true, "bridge": "Florence"}
+{"family": "PP", "id": "nat:chat:PP-L0-0477", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0005889588501304388, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "PM", "id": "nat:chat:PM-L0-0483", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.01680057682096958, "bridge_protected": true, "bridge": "Florence"}
+{"family": "PP", "id": "nat:chat:PP-L0-0483", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0014256800059229136}
+{"family": "PM", "id": "nat:chat:PM-L0-0535", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.07423155009746552}
+{"family": "PP", "id": "nat:chat:PP-L0-0483", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.009723089635372162, "bridge_protected": false, "bridge": "Florence"}
+{"family": "PM", "id": "nat:chat:PM-L0-0535", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.2942029535770416, "bridge_protected": true, "bridge": "Rio"}
+{"family": "PP", "id": "nat:chat:PP-L0-0483", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0014024670235812664, "bridge_protected": false, "bridge": "Florence"}
+{"family": "PM", "id": "nat:chat:PM-L0-0535", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.4510195255279541, "bridge_protected": true, "bridge": "Rio"}
+{"family": "MM", "id": "nat:chat:MM-L0-0490", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.002522384049370885}
+{"family": "MM", "id": "nat:chat:MM-L0-0490", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.002062219427898526, "bridge_protected": false, "bridge": "Hamburg"}
+{"family": "MM", "id": "nat:chat:MM-L0-0490", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.003901490243151784, "bridge_protected": false, "bridge": "Hamburg"}
+{"family": "PP", "id": "nat:chat:PP-L0-0493", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0001551984460093081}
+{"family": "MP", "id": "nat:chat:MP-L0-0560", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0003756771038752049}
+{"family": "PP", "id": "nat:chat:PP-L0-0493", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.00019035911827813834, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "MP", "id": "nat:chat:MP-L0-0560", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.014214574359357357, "bridge_protected": false, "bridge": "Venice"}
+{"family": "PP", "id": "nat:chat:PP-L0-0493", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0003625689132604748, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "MP", "id": "nat:chat:MP-L0-0560", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.00027616979787126184, "bridge_protected": false, "bridge": "Venice"}
+{"family": "PP", "id": "nat:chat:PP-L0-0503", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.764163613319397}
+{"family": "PP", "id": "nat:chat:PP-L0-0503", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.7524219751358032, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "PP", "id": "nat:chat:PP-L0-0503", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -3.4532179832458496, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "PM", "id": "nat:chat:PM-L0-0503", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.038106366991996765}
+{"family": "PM", "id": "nat:chat:PM-L0-0503", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.033025335520505905, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "PM", "id": "nat:chat:PM-L0-0503", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -1.4271568059921265, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "MP", "id": "nat:chat:MP-L0-0516", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0030250048730522394}
+{"family": "PM", "id": "nat:chat:PM-L0-0537", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.6355560421943665}
+{"family": "PM", "id": "nat:chat:PM-L0-0551", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.16357029974460602}
+{"family": "MP", "id": "nat:chat:MP-L0-0516", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.018749622628092766, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "PM", "id": "nat:chat:PM-L0-0537", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.5882432460784912, "bridge_protected": false, "bridge": "Seville"}
+{"family": "PM", "id": "nat:chat:PM-L0-0551", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.5017002820968628, "bridge_protected": true, "bridge": "Toronto"}
+{"family": "MP", "id": "nat:chat:MP-L0-0516", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.01234909612685442, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "PM", "id": "nat:chat:PM-L0-0537", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -3.898221015930176, "bridge_protected": false, "bridge": "Seville"}
+{"family": "PM", "id": "nat:chat:PM-L0-0551", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.16347768902778625, "bridge_protected": true, "bridge": "Toronto"}
+{"family": "PM", "id": "nat:chat:PM-L0-0517", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.01764083281159401}
+{"family": "PP", "id": "nat:chat:PP-L0-0555", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.00724048400297761}
+{"family": "PM", "id": "nat:chat:PM-L0-0517", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.39737609028816223, "bridge_protected": false, "bridge": "Munich"}
+{"family": "PP", "id": "nat:chat:PP-L0-0555", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0030709984712302685, "bridge_protected": false, "bridge": "Vancouver"}
+{"family": "PM", "id": "nat:chat:PM-L0-0517", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.022731680423021317, "bridge_protected": false, "bridge": "Munich"}
+{"family": "PP", "id": "nat:chat:PP-L0-0555", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.003545666579157114, "bridge_protected": false, "bridge": "Vancouver"}
+{"family": "PM", "id": "nat:chat:PM-L0-0521", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.20288598537445068}
+{"family": "PM", "id": "nat:chat:PM-L0-0521", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -2.209272861480713, "bridge_protected": false, "bridge": "Naples"}
+{"family": "PM", "id": "nat:chat:PM-L0-0521", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -1.3481645584106445, "bridge_protected": false, "bridge": "Naples"}
+{"family": "MM", "id": "nat:chat:MM-L0-0538", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.06215762719511986}
+{"family": "MM", "id": "nat:chat:MM-L0-0538", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -2.3641817569732666, "bridge_protected": false, "bridge": "Seville"}
+{"family": "MM", "id": "nat:chat:MM-L0-0538", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.04722054675221443, "bridge_protected": false, "bridge": "Seville"}
+{"family": "MM", "id": "nat:chat:MM-L0-0540", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.1983972042798996}
+{"family": "MM", "id": "nat:chat:MM-L0-0540", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -2.536656141281128, "bridge_protected": false, "bridge": "Seville"}
+{"family": "MM", "id": "nat:chat:MM-L0-0540", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.23480652272701263, "bridge_protected": false, "bridge": "Seville"}
+{"family": "MM", "id": "nat:chat:MM-L0-0542", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.004068313166499138}
+{"family": "MM", "id": "nat:chat:MM-L0-0542", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.7823574542999268, "bridge_protected": false, "bridge": "Shanghai"}
+{"family": "MM", "id": "nat:chat:MM-L0-0542", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0025541323702782393, "bridge_protected": false, "bridge": "Shanghai"}
+{"family": "PM", "id": "nat:chat:PM-L0-0559", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0042190831154584885}
+{"family": "PM", "id": "nat:chat:PM-L0-0559", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.029966432601213455, "bridge_protected": false, "bridge": "Venice"}
+{"family": "PM", "id": "nat:chat:PM-L0-0559", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0332159698009491, "bridge_protected": false, "bridge": "Venice"}
+{"family": "MP", "id": "nat:chat:MP-L1-0562", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.37695544958114624}
+{"family": "PP", "id": "nat:chat:PP-L1-0583", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.32264015078544617}
+{"family": "MP", "id": "nat:chat:MP-L1-0562", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.25591978430747986, "bridge_protected": false, "bridge": "Barcelona"}
+{"family": "PP", "id": "nat:chat:PP-L1-0583", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.6479853391647339, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "MP", "id": "nat:chat:MP-L1-0562", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.14951486885547638, "bridge_protected": false, "bridge": "Barcelona"}
+{"family": "PP", "id": "nat:chat:PP-L1-0583", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.03783849999308586, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "MM", "id": "nat:chat:MM-L1-0562", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.006488565355539322}
+{"family": "MM", "id": "nat:chat:MM-L1-0562", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.009430859237909317, "bridge_protected": false, "bridge": "Barcelona"}
+{"family": "MM", "id": "nat:chat:MM-L1-0562", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.007571215741336346, "bridge_protected": false, "bridge": "Barcelona"}
+{"family": "PP", "id": "nat:chat:PP-L1-0567", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.002811172278597951}
+{"family": "PP", "id": "nat:chat:PP-L1-0567", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.006007945630699396, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "PP", "id": "nat:chat:PP-L1-0567", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0032245328184217215, "bridge_protected": false, "bridge": "Casablanca"}
+{"family": "PP", "id": "nat:chat:PP-L1-0569", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.05861449986696243}
+{"family": "PP", "id": "nat:chat:PP-L1-0569", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.785240650177002, "bridge_protected": false, "bridge": "Florence"}
+{"family": "PP", "id": "nat:chat:PP-L1-0569", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.23417390882968903, "bridge_protected": false, "bridge": "Florence"}
+{"family": "PM", "id": "nat:chat:PM-L1-0573", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.2245800942182541}
+{"family": "PM", "id": "nat:chat:PM-L1-0573", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.1949685662984848, "bridge_protected": false, "bridge": "Geneva"}
+{"family": "PM", "id": "nat:chat:PM-L1-0573", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": false, "logp": -3.1773746013641357, "bridge_protected": false, "bridge": "Geneva"}
+{"family": "PM", "id": "nat:chat:PM-L1-0581", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.016706794500350952}
+{"family": "PM", "id": "nat:chat:PM-L1-0581", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.6665888428688049, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "PM", "id": "nat:chat:PM-L1-0581", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.07485149800777435, "bridge_protected": false, "bridge": "Istanbul"}
+{"family": "PM", "id": "nat:chat:PM-L1-0591", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.1017465740442276}
+{"family": "PP", "id": "nat:chat:PP-L1-0613", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0071755084209144115}
+{"family": "PM", "id": "nat:chat:PM-L1-0591", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -1.8068413734436035, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "PP", "id": "nat:chat:PP-L1-0613", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0044486369006335735, "bridge_protected": false, "bridge": "Osaka"}
+{"family": "PM", "id": "nat:chat:PM-L1-0591", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.11449774354696274, "bridge_protected": false, "bridge": "Kyoto"}
+{"family": "PP", "id": "nat:chat:PP-L1-0613", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.007887763902544975, "bridge_protected": false, "bridge": "Osaka"}
+{"family": "PP", "id": "nat:chat:PP-L1-0603", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.21303364634513855}
+{"family": "PP", "id": "nat:chat:PP-L1-0603", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.029652632772922516, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "PP", "id": "nat:chat:PP-L1-0603", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.589824914932251, "bridge_protected": false, "bridge": "Mumbai"}
+{"family": "PP", "id": "nat:chat:PP-L1-0615", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.03481767699122429}
+{"family": "PP", "id": "nat:chat:PP-L1-0615", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0015112657565623522, "bridge_protected": false, "bridge": "Osaka"}
+{"family": "PP", "id": "nat:chat:PP-L1-0615", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.06335457414388657, "bridge_protected": false, "bridge": "Osaka"}
+{"family": "PM", "id": "nat:chat:PM-L1-0615", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0007801587926223874}
+{"family": "PM", "id": "nat:chat:PM-L1-0615", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.0023278300650417805, "bridge_protected": false, "bridge": "Osaka"}
+{"family": "PM", "id": "nat:chat:PM-L1-0615", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0017204972682520747, "bridge_protected": false, "bridge": "Osaka"}
+{"family": "PM", "id": "nat:chat:PM-L1-0639", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.0018208129331469536}
+{"family": "PM", "id": "nat:chat:PM-L1-0639", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": true, "logp": -0.13024377822875977, "bridge_protected": true, "bridge": "Toronto"}
+{"family": "PM", "id": "nat:chat:PM-L1-0639", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.0028153329622000456, "bridge_protected": true, "bridge": "Toronto"}
+{"family": "PM", "id": "nat:chat:PM-L1-0645", "kind": "clean", "band": "-", "condition": "none", "correct": true, "logp": -0.26009005308151245}
+{"family": "PM", "id": "nat:chat:PM-L1-0645", "kind": "clean", "band": "L10-14", "condition": "paper10", "correct": false, "logp": -8.25716495513916, "bridge_protected": false, "bridge": "Venice"}
+{"family": "PM", "id": "nat:chat:PM-L1-0645", "kind": "clean", "band": "L10-14", "condition": "paper10_rot", "correct": true, "logp": -0.23486411571502686, "bridge_protected": false, "bridge": "Venice"}

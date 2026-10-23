@@ -1,0 +1,16 @@
+{
+  "run": "olmoh7_natural_v1_chat_competence_v1",
+  "why": "Zach (2026-10-23, prereg amendment 12): olmo-hybrid-7b on natural_v1_chat",
+  "set": "natural_v1_chat",
+  "model": {
+    "target": "olmo-hybrid-7b",
+    "repo": "allenai/Olmo-Hybrid-Instruct-DPO-7B",
+    "revision": "ec62da5af0106ab4e83a60e07c4796ff358fd204",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "c34be5da226cb6083873002c788724c4a8a28e1a",
+  "guess": true,
+  "read": "suite_v1.read_answers: the answer's first token is the top token (margin > 0)",
+  "written_utc": "2026-10-23T12:58:17Z"
+}

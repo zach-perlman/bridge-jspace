@@ -1,0 +1,16 @@
+{
+  "run": "olmo3d7_natural_v1_chat_competence_v1",
+  "why": "Zach (2026-10-23, prereg amendment 12): olmo-3-7b on natural_v1_chat",
+  "set": "natural_v1_chat",
+  "model": {
+    "target": "olmo-3-7b",
+    "repo": "allenai/Olmo-3-7B-Instruct-DPO",
+    "revision": "b33130b7de49f0c2553b5c2b3bc8409ff3e627d1",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "c34be5da226cb6083873002c788724c4a8a28e1a",
+  "guess": true,
+  "read": "suite_v1.read_answers: the answer's first token is the top token (margin > 0)",
+  "written_utc": "2026-10-23T12:58:17Z"
+}
