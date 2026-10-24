@@ -5,7 +5,7 @@
 
 > "Iris picked the frog. The locker of the frog is 5. ..." The bridge is *frog*. A **lookup** ("Which locker belongs to Iris's pick?") takes the answer from a sentence in the prompt; a **recall** ("How many legs does Iris's pick have?") takes it from memory.
 
-> **Status, 24 Oct 2026, evening.** Built at 15bcdb6c from the X0 run files. This page is the first experiment of the direction, X0 (pre-registered 24 Oct; [jobs/c3/X0.md](jobs/c3/X0.md)), and the plan it led to. Numbers are quoted from the run files (linked). Exploration phase: nothing here is hand-verified (UNVERIFIED). Models: Qwen3.6-27B and Qwen3.5-9B, hybrids with DeltaNet layers. The earlier claims (the late read, order then identity) are in [CHANGELOG.md](CHANGELOG.md).
+> **Status, 24 Oct 2026, evening.** Built at 4cc2a6c6 from the X0 run files. This page is the first experiment of the direction, X0 (pre-registered 24 Oct; [jobs/c3/X0.md](jobs/c3/X0.md)), and the plan it led to. Numbers are quoted from the run files (linked). Exploration phase: nothing here is hand-verified (UNVERIFIED). Models: Qwen3.6-27B and Qwen3.5-9B, hybrids with DeltaNet layers. The earlier claims (the late read, order then identity) are in [CHANGELOG.md](CHANGELOG.md).
 
 ## TL;DR
 
@@ -46,6 +46,11 @@
     - random atoms (share 0.264): 0.06 / 0.01.
   - At about 0.4 every dictionary costs both readers (W_E 0.67 / 0.52), but only J++ costs more than a random subspace of the same share (excess 0.58 / 0.50; the others ≤ 0.12).
   - A rerun on recomputed items reproduces layer 32 (lookup excess 0.12, recall 0.77).
+  - On the 9B (layer 12, about a third of ‖Δ‖²; [tables](results/x0_necessity/qwen35_9b_x0_kmatch/descriptive-20261024T143539Z/tables.md)), the costs to lookups / recalls are:
+    - J++ (50 atoms, share 0.329): 0.31 / 0.74;
+    - W_E (share 0.329): 0.34 / 0.09;
+    - random atoms (share 0.323): 0.38 / 0.07.
+  - So on the 9B, the lookup's cost does not depend on the dictionary and the recall's is J++-specific. On the 27B both are J++-specific, the lookup's less.
 - **The split** (lookup "around" and recall "through" at the same layer): 27B layer 30; 9B layers 12-14.
 
 ![Equal removed share](figures/x0_necessity/kmatch.png)

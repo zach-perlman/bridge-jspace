@@ -1,0 +1,78 @@
+{
+  "exp": "x0_necessity",
+  "run": "qwen35_9b_x0_kmatch",
+  "why": "X0 descriptive, added after data (agent, 24 Oct, beside the critic's 27B request): every dictionary at k = 50 / 100 / 200 at L12, for equal removed shares",
+  "written_utc": "2026-10-24T14:26:12Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "f35cec28e293096f144592fc55a31db52263ceda",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "set": "d1_topics_v3",
+  "inputs": {
+    "data/tasks_v2/d1_topics_v3/items.jsonl": "364c234bda17f194a6bbd2392b35fd0616cf19c1d88e1b9ab6825440894cfb1b",
+    "jobs/c3/X0.md": "8bd044f5bf9f34d1db18d8381b37fd12ccc8e69c9b89fc2aaa10b028aa2768de"
+  },
+  "layers": [
+    12
+  ],
+  "predicted": 12,
+  "renderings": [
+    "chat"
+  ],
+  "dicts": [
+    "jpp",
+    "wu",
+    "we",
+    "rand"
+  ],
+  "k": 25,
+  "k_curve": {
+    "dicts": [
+      "jpp",
+      "we",
+      "wu",
+      "rand"
+    ],
+    "k": [
+      50,
+      100,
+      200
+    ]
+  },
+  "n": {
+    "items": 200,
+    "min": 150
+  },
+  "gate": 0.8,
+  "position": "bridge_word (the asked person's pick, one token)",
+  "read": {
+    "decisive": "the top token over the vocabulary is the alt answer's first token (Dan, 24 Oct)",
+    "chat": "one forward of the prompt with a digit's space token appended (23 Oct)",
+    "raw": "the first non-whitespace token of the greedy continuation of the prompt ending 'Answer:' (no trailing space; at most 4 forwards)",
+    "cand": "the alt answer's first token ranks first among the digit tokens (descriptive)"
+  },
+  "seeds": {
+    "random_dictionary": "777 + layer (CPU)",
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "design": "jobs/c3/X0.md"
+}

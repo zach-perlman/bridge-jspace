@@ -46,6 +46,11 @@
     - random atoms (share {{q|0.264}}): {{q|0.06}} / {{q|0.01}}.
   - At about {{q|0.4}} every dictionary costs both readers (W_E {{q|0.67}} / {{q|0.52}}), but only J++ costs more than a random subspace of the same share (excess {{q|0.58}} / {{q|0.50}}; the others ≤ {{q|0.12}}).
   - A rerun on recomputed items reproduces layer 32 (lookup excess {{q|0.12}}, recall {{q|0.77}}).
+  - On the 9B (layer 12, about a third of ‖Δ‖²; [tables](results/x0_necessity/qwen35_9b_x0_kmatch/descriptive-20261024T143539Z/tables.md)), the costs to lookups / recalls are:
+    - J++ (50 atoms, share {{q|0.329}}): {{q|0.31}} / {{q|0.74}};
+    - W_E (share {{q|0.329}}): {{q|0.34}} / {{q|0.09}};
+    - random atoms (share {{q|0.323}}): {{q|0.38}} / {{q|0.07}}.
+  - So on the 9B, the lookup's cost does not depend on the dictionary and the recall's is J++-specific. On the 27B both are J++-specific, the lookup's less.
 - **The split** (lookup "around" and recall "through" at the same layer): 27B layer {{q|30}}; 9B layers {{q|12-14}}.
 
 ![Equal removed share](figures/x0_necessity/kmatch.png)
