@@ -56,12 +56,46 @@ def compare(new: dict[tuple, dict], ref: dict[tuple, dict]) -> dict:
                                       "pass": gated["rows"] > 0 and gated["agreement"] >= MIN_AGREEMENT}}  # fmt: skip
 
 
+def figure(run: str) -> Path:
+    """Agreement per part (real and null rows), the gate's bar marked, in a new analysis-*-figures/ folder."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    res = json.loads((OUT / run / "verdict.json").read_text())
+    parts = {g.removeprefix("part "): v for g, v in res["groups"].items() if g.startswith("part ")}
+    names = sorted(parts, key=lambda p: (p.endswith(" null"), p))
+    fig, ax = plt.subplots(figsize=(8, 0.28 * len(names) + 1.4))
+    gated = [p in DETERMINISTIC for p in names]
+    ax.barh(range(len(names)), [parts[p]["agreement"] for p in names],
+            color=["#6A3D9A" if g else "#a6a6a6" for g in gated])  # fmt: skip
+    ax.set_yticks(range(len(names)), names, fontsize=8)
+    ax.invert_yaxis()
+    ax.axvline(MIN_AGREEMENT, color="red", lw=1, ls="--")
+    ax.set_xlim(0.9, 1.0)
+    ax.set_xlabel("share of rows whose read role matches the 23 Oct row")
+    ax.set_title(f"Hardware gate {'PASS' if res['gate']['pass'] else 'FAIL'}: {res['gate']['agreement']:.4f} over "
+                 f"{res['gate']['rows']} gated rows (purple; grey = random draws, reported)", fontsize=9)  # fmt: skip
+    fig.tight_layout()
+    folder = OUT / run / f"analysis-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}-figures"
+    folder.mkdir()
+    fig.savefig(folder / "agreement_by_part.png", dpi=150)
+    plt.close(fig)
+    print(folder / "agreement_by_part.png")
+    return folder
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--new", required=True)
     ap.add_argument("--ref", default="d1_necessity_parts_27b_r2")
     ap.add_argument("--cell", default="bridge_word:16")
+    ap.add_argument("--figures", action="store_true", help="the figure of an existing verdict of --new")
     a = ap.parse_args()
+    if a.figures:
+        figure(a.new)
+        return 0
     s, la = a.cell.split(":")
     res = compare(rows_of(a.new, s, int(la)), rows_of(a.ref, s, int(la)))
     res = {"new": a.new, "ref": a.ref, "cell": a.cell, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),

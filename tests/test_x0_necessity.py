@@ -67,6 +67,45 @@ def test_correlated_entities_widen_the_interval():
     assert width(clustered) > 2 * width(independent)
 
 
+def fake_rows(n_scenes: int = 60) -> list[dict]:
+    """Outcome rows of one chat run at layers 30 and 32: the lookup loses nothing without J++, the recall loses most;
+    every other dictionary costs neither reader."""
+    rows = []
+    for s in range(n_scenes):
+        for la in (30, 32):
+            for w in X.READERS:
+                base = {"scene": f"s{s}", "domain": "greek", "entity": f"e{s % 12}", "rendering": "chat", "layer": la,
+                        "reader": w, "upstream": s % 2 == 0, "role": "b", "org_first": 0, "p_org": 0.1,
+                        "p_alt": 0.8, "ld": 2.0}  # fmt: skip
+                rows.append({**base, "dict": "-", "k": 0, "omp": "-", "arm": "whole", "switched": 1})
+                for d in X.DICTS:
+                    lost = int(w == X.RECALL and d == "jpp" and s % 5 != 0)
+                    rows.append({**base, "dict": d, "k": X.K_MAIN, "omp": "signed", "arm": "no_part", "switched": 1 - lost})
+                    rows.append({**base, "dict": d, "k": X.K_MAIN, "omp": "signed", "arm": "no_rand", "switched": 1})
+    return rows
+
+
+def test_verdict_and_figures_on_a_fake_run(tmp_path, monkeypatch):
+    import json
+
+    monkeypatch.setattr(X, "RESULTS", tmp_path)
+    run = tmp_path / "fake"
+    run.mkdir()
+    lens = {"name": "jpp", "source": ["repo", "file.pt", "rev"], "sha256": "ab" * 32}
+    (run / "manifest.json").write_text(json.dumps({"predicted": 32, "set": "toy", "lens": lens,
+                                                   "model": {"target": "toy", "revision": "0" * 40}}))  # fmt: skip
+    gate = {"chat": {"org_accuracy": {"PP": 1.0, "PM": 1.0}, "pass": True, "eligible": 60}}
+    (run / "gate.json").write_text(json.dumps({"counts": {}, "gate": gate}))
+    (run / "outcomes.jsonl").write_text("".join(json.dumps(r) + "\n" for r in fake_rows()))
+    out = X.write_verdict("fake", n_boot=300)
+    v = json.loads((out / "verdict.json").read_text())["verdict"]
+    assert v["chat"]["verdict"] == "confirmed" and v["chat"]["split_layers"] == [30, 32]
+    assert v["chat"]["h_token"].startswith("neither") and v["reads_agree_on_whole"] == 1.0
+    assert "S_noRandOMP" in (out / "verdict.md").read_text()
+    made = X.figures(out)
+    assert [p.name for p in made] == ["x0_chat.png"] and made[0].stat().st_size > 10_000
+
+
 def test_h_token_branches():
     around = X.cell(outcomes(200, 160, 156, 156), ents(200), n_boot=500)
     needs = X.cell(outcomes(200, 160, 100, 156), ents(200), n_boot=500)

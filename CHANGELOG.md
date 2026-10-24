@@ -2,6 +2,11 @@
 
 Newest first. What changed in the claims, the runs and the rules; the README shows only the current state.
 
+## 24 Oct 2026: the lens pin, the X0 hardware gate
+
+- Lens pin (Dan, 24 Oct): `pins.LENS_REVISION` and the Qwen3.5-0.8B, 2B, 4B and Qwen3.6-27B model configs moved from neuronpedia/jacobian-lens@9fa267f8 (no longer on the Hub: "Invalid rev id") to e166deb5. The 27B J++ file at e166deb5, downloaded into a clean directory, has sha256 bbef480b…f2b58f8f = `FROZEN_LENS_SHA256`: the frozen lens is byte-identical. Every file pinned at the old revision exists at e166deb5; the 27B J-lens's LFS oid (1718c8c5) equals the sha256 `scripts/lens_table.py` recorded at 9fa267f8. The pins are shared with Zach's branch.
+- Hardware gate for X0 (2x H100 80GB PCIe box, `jobs/c3/x0_hw_gate_27b.yaml`): one 23 Oct cell (d1_necessity_parts_27b_r2, bridge_word:16) rerun; read-role agreement 0.9898 over 2,744 rows without random draws (bar 0.97): PASS. Lowest arms: jspace_wo_own 0.972, jspace 0.978; the random-draw arms agree on ≥ 0.978 of rows.
+
 ## 23 Oct 2026, night: README rebuilt around three claims (Dan's brief, 22:45)
 
 - Seven claims, the band section and the 122B section became C1 (late read; old 1-2), C2 (order, then identity; old 3 and the absent-entity donor) and C3 (lookups let go of the J-space form before recall does; old 5-7, post hoc split depth). 425 → 200 lines. Pinned to grid 20261023T210238Z (new keys lr2, relay, natural, absent, nec, rest_size, late_switch); the size and dose runs are quoted from their summaries.

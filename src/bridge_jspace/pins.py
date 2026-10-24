@@ -23,7 +23,10 @@ QWEN_REPO = "Qwen/Qwen3.6-27B"
 QWEN_REVISION = "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9"
 
 LENS_REPO = "neuronpedia/jacobian-lens"
-LENS_REVISION = "9fa267f841d62aa468dab5b9b38c3dc45a82d863"
+# Re-pinned 24 Oct 2026 (Dan): the old pin 9fa267f8 no longer exists on the Hub (its history was rewritten). At
+# e166deb5 the 27B J++ file, downloaded into a clean directory, has sha256 FROZEN_LENS_SHA256 (the same bytes); the
+# 27B J-lens's LFS oid is 1718c8c5, as scripts/lens_table.py recorded for 9fa267f8.
+LENS_REVISION = "e166deb5ad540932100ef803c8c9bcc2a5453694"
 LENS_FILE = "qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt"
 JPP_FILE = "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt"  # same repo, revision and format
 LENS_FILES = {"jlens": LENS_FILE, "jpp": JPP_FILE}  # part B's lens choice (exp01 variant, exp02 from its probes)

@@ -7,8 +7,8 @@ dtype: float32
 device_map: cpu
 lenses:
   jlens:
-    revision: 9fa267f841d62aa468dab5b9b38c3dc45a82d863
+    revision: e166deb5ad540932100ef803c8c9bcc2a5453694
     filename: qwen3.5-0.8b/jlens/Salesforce-wikitext/Qwen3.5-0.8B_jacobian_lens.pt
   jpp:
-    revision: 9fa267f841d62aa468dab5b9b38c3dc45a82d863
+    revision: e166deb5ad540932100ef803c8c9bcc2a5453694
     filename: qwen3.5-0.8b/jpp/Salesforce-wikitext/Qwen3.5-0.8B_jpp_lens.pt
