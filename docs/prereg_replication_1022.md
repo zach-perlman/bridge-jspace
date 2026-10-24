@@ -826,7 +826,7 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   (a)-(c); if it is a Qwen-family property, M - P < 10. The 7B's nulls (with a weak lens) and the 122B's module-1
   reversal of its toy null pull opposite ways.
 
-## Amendment 32 (Zach, 2026-10-24 ~17:30 UTC): the J-subspace swap at the bridge's mention (a sufficiency test)
+## Amendment 32 (Zach, 2026-10-24 16:59 UTC, commit e12eb38): the J-subspace swap at the bridge's mention (a sufficiency test)
 
 - **Why:** amendment 30 put the whole memory-final dependence of a read or tracked bridge on the bridge's own mention
   tokens, and the logit-lens control there removes nothing (27B and 9B, 0 points): the knock-out shows those J-directions
@@ -847,7 +847,7 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   whole residual). If the swap's transfer is < 5 on PM and TM, the J-part is necessary but not sufficient (it is not
   where the attribute is held, or the attribute needs more than the top-10 span).
 
-## Amendment 33 (Zach, 2026-10-24 ~18:30 UTC): the combined suite v2, one dataset (jsuite_v2)
+## Amendment 33 (Zach, 2026-10-24 17:23 UTC, commit 4464369): the combined suite v2, one dataset (jsuite_v2)
 
 - **Why:** the dataset audit of 2026-10-24 (read-only, module 1 on the 27B): the effect survived every check (no leak;
   difficulty, length, genre, popularity, level do not explain it; 60 of 65 bridges positive), but it found (1) the P
@@ -874,7 +874,7 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   independent replication on disjoint facts); M - N two-sided: >= 10 would say lures inflate the M loss, within 10 that
   they do not; per relation, M - K > 0 in at least 6 of 8.
 
-## Amendment 34 (Zach, 2026-10-24 ~21:00 UTC): the J-swap and readout on the 122B, and on v2
+## Amendment 34 (Zach, 2026-10-24 20:47 UTC, commit bea4877): the J-swap and readout on the 122B, and on v2
 
 - **Seen when this was written:** amendment 32's J-swaps and readouts on the 27B, 9B (pre-registered) and on OLMo-3 32B
   and Muse (diagnostics: sufficient, not necessary); the 9B's v2 knock-out; nothing on these runs.
@@ -887,7 +887,7 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   as amendment 32, plus the swap's transfer on the memory finals > 0 in at least 6 of the 8 relations; for OLMo the
   same sufficiency predictions (its knock-out was null; sufficiency without necessity is what its v1 diagnostic showed).
 
-## Amendment 35 (Zach, 2026-10-24 ~20:50 UTC): v1 retired; jsuite_v2_1 is the dataset of record for new work
+## Amendment 35 (Zach, 2026-10-24 20:53 UTC, commit 42ae4e0): v1 retired; jsuite_v2_1 is the dataset of record for new work
 
 - **Decision (Zach):** the combined suite v1 (jsuite_v1_*) is retired for new runs; its files stay frozen because every
   result through amendment 34 references them. v1's one condition v2 lacked, a recalled start that never names the
