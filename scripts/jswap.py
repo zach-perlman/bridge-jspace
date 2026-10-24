@@ -89,6 +89,7 @@ def forms(tok, v: str, kind: str) -> set[int]:
     return {S.answer_token(tok, v, kind), S.answer_token(tok, v.lower(), kind)}
 
 
+@torch.no_grad()  # 2026-10-24: the first full run kept autograd activations and ran out of GPU memory
 def main(a) -> None:
     out_dir = RES / a.name
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
