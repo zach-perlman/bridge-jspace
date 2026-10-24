@@ -12,7 +12,7 @@ echo "=== env $(date -u +%T)"
 [ -x $ENV/bin/python ] || uv venv $ENV --python 3.12 || { echo "=== kolibri env FAILED"; exit 1; }
 uv pip install --python $ENV/bin/python --index-url https://download.pytorch.org/whl/cu128 "torch==2.11.0" > /workspace/scratch/kolibri_env.log 2>&1 \
   && uv pip install --python $ENV/bin/python "transformers[kernels]>=5.20" "accelerate>=1.14" huggingface_hub safetensors "numpy==2.5.3" "scipy==1.18.1" \
-     "pydantic>=2.8" "pyyaml>=6.0" "python-dotenv>=1.0" "tqdm>=4.66" "kernels==0.16.2" \
+     "pydantic>=2.8" "pyyaml>=6.0" "python-dotenv>=1.0" "tqdm>=4.66" \
      "jlens @ git+https://github.com/anthropics/jacobian-lens@581d398613e5602a5af361e1c34d3a92ea82ba8e" >> /workspace/scratch/kolibri_env.log 2>&1 \
   || { echo "=== kolibri env install FAILED"; tail -5 /workspace/scratch/kolibri_env.log; exit 1; }
 $ENV/bin/python -c "import torch, transformers; print('=== KOLENV torch', torch.__version__, 'transformers', transformers.__version__)"
