@@ -405,6 +405,19 @@ TARGETS: dict[str, dict[str, Any]] = {
         "run_prefix": "kol1_",
         "lenses": {},
     },
+    # Qwen/Qwen3.5-9B-Base (Qwen3.5 hybrid: Gated DeltaNet linear attention and full attention, base, pre-trained only; base vs instruct on matched lenses, prereg amendment 27; Zach, 2026-10-24): our own J++, the
+    # safety-research/jpp_lens@93f02cd recipe (as patched in /workspace/ext/jpp_lens), 32 WikiText prompts, one shard,
+    # source layers 0-30, target the final block; scripts/queues/h200_q9fit_1024.sh. held-out macro pass@10: {'Qwen3.5-9B-Base_jpp_lens': 0.621, 'logit': 0.402, 'pooled_lens': 0.483}.
+    "qwen3.5-9b-base": {
+        "repo": "Qwen/Qwen3.5-9B-Base",
+        "revision": "68c46c4b3498877f3ef123c856ecfde50c39f404",
+        "n_layers": 32,
+        "norm_gain": "one_plus_weight",
+        "bos": False,
+        "run_prefix": "qwen35_9bb_",
+        "lenses": {"jpp": ("local", "cache/qwen3.5-9b-base/lenses/jpp/Qwen3.5-9B-Base_jpp_lens.pt", "d80ffa435c1e5e0a7afa26e8e653df47f81085f64330429b1e023d8c99b55adf")},
+        "frozen_lens_sha256": "d80ffa435c1e5e0a7afa26e8e653df47f81085f64330429b1e023d8c99b55adf",
+    },
     "qwen3-32b-jlens": {
         "repo": "Qwen/Qwen3-32B",
         "revision": "9216db5781bf21249d130ec9da846c4624c16137",
